@@ -103,6 +103,11 @@ tglobalbool globalbool[gswitches_last] = {
   { CRC_AKAMATCHNET              }, // 0xFD6E;
 };
 
+void CfgJAMSMAPIHighwater(bool value)
+{
+  CFG->switches.handle(CRC_JAMSMAPIHIGHWATER, value ? "YES" : "NO");
+}
+
 bool gswitches::handle(word crc, const char* value) {
 
   uint left,right,middle;
@@ -140,7 +145,7 @@ int SwitchCfg(word crc, char k, char* v) {
   val = v;
   bool found = true;
 
-  if(CFG->switches.handle(crc,v))
+  if(CFG->switches.handle(crc, v))
     return true;
 
   // Switch the first letter of the keyword
