@@ -777,6 +777,35 @@ void guserbase::update_addressbook(GMsg* msg, bool reverse, bool force) {
         if(nlname and strieql(nlname, name))
           return;
 
+        // 9. It is an addressmacro
+        if(not CFG->addressmacro.empty()) {
+          std::vector<AddrMacro>::iterator n;
+          for(n=CFG->addressmacro.begin(); n != CFG->addressmacro.end(); n++) {
+            if(strieql(name, n->name) or strieql(n->name, iaddr))
+              return;
+            if(iaddr[0] != NUL) {
+              INam buf, buf1, buf2;
+              char *ptr;
+
+              if(n->name[0] == '@') {
+                strcpy(buf, n->name+1);
+                // UUCP/INTERNET addressing
+                ptr = strchr(buf, '/');
+                if(ptr) {
+                  *ptr++ = NUL;
+                  if(strieql(name, buf))
+                    return;
+                }
+              }
+              else if(AA->isinternet()) {
+                ptr = n->name;
+              }
+              ParseInternetAddr(ptr, buf1, buf2);
+              if(strieql(iaddr, buf2) or strieql(name, buf1))
+                return;
+            }
+          }
+        }
       }
 
       // Ok, let's add it...

@@ -12,6 +12,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+! GoldED+ will no longer add new entry to addressbook if it is an
+  addressmacro.
+
 ! Updated uulib to the latest version. Few bugs fixed. Unordered
   UU encode now should be processed more accurately than with original
   library.
