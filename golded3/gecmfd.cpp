@@ -121,7 +121,7 @@ void Area::DeleteMsg(GMsg* msg, int direction) {
     if(isnet())
       TouchNetscan(false);
 
-    if(issoftdelete()) {
+    if(not issoftdelete()) {
       // Remove message from internal table
       Msgn.Del(msg->msgno);
     }
