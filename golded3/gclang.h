@@ -334,6 +334,7 @@ const word CRC_IL_NOUSERDEFINED     = 0xBCA0;
 const word CRC_IL_NOAKADEFINED      = 0x7FBD;
 const word CRC_IL_NOTPLDEFINED      = 0x38A0;
 const word CRC_MS_SKIPPINGTWIT      = 0x1139;
+const word CRC_MS_SKIPPINGDELETED   = 0xBD4C;
 const word CRC_MS_KILLINGTWIT       = 0x477B;
 const word CRC_IL_WRITINGCFG        = 0x3637;
 const word CRC_IL_COULDNOTOPEN      = 0xC54F;
