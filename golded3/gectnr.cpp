@@ -149,8 +149,9 @@ void Container::StyleCodeHighlight(const char* text, int row, int col, bool dohi
           txptr = end;
           ptr = end-1;
         }
-        else if(((ptr == text) or not in_ftn_domained_address(ptr, text))
-                and (isascii(*ptr) and not isspace(*ptr) and not ispunct(*ptr))) {
+        else if(((ptr == text) or not in_ftn_domained_address(ptr, text)) and
+                (isascii(*ptr) and not isspace(*ptr) and not ispunct(*ptr) and
+                 ((ptr == text) or (not isxalnum(ptr[-1]) and (ptr[-1] != '@'))))) {
           // try to guess e-mail address...
           const char *commerce_at = NULL;
 
@@ -163,19 +164,24 @@ void Container::StyleCodeHighlight(const char* text, int row, int col, bool dohi
           else {
             commerce_at = strpbrk(ptr, " \t:/@");
           }
-          if ((commerce_at != NULL) and (*commerce_at == '@')) {
+          if((commerce_at != NULL) and (*commerce_at == '@')) {
+            bool dot_found = false;
             ++commerce_at;
             while((*commerce_at != NUL) and (isalnum(*commerce_at) or (*commerce_at == '.') or (*commerce_at == '-'))) {
+              if(*commerce_at == '.')
+                dot_found = true;
               ++commerce_at;
             }
-            strxcpy(buf, txptr, (uint)(ptr-txptr)+1);
-            prints(row, col+sclen, color, buf);
-            sclen += strlen(buf);
-            strxcpy(buf, ptr, (uint)(commerce_at-ptr)+1);
-            prints(row, col+sclen, C_READU, buf);
-            sclen += strlen(buf);
-            txptr = commerce_at;
-            ptr = commerce_at-1;
+            if(dot_found) {
+              strxcpy(buf, txptr, (uint)(ptr-txptr)+1);
+              prints(row, col+sclen, color, buf);
+              sclen += strlen(buf);
+              strxcpy(buf, ptr, (uint)(commerce_at-ptr)+1);
+              prints(row, col+sclen, C_READU, buf);
+              sclen += strlen(buf);
+              txptr = commerce_at;
+              ptr = commerce_at-1;
+            }
           }
         }
       }
