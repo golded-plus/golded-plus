@@ -43,6 +43,10 @@
 #include <dos.h>
 #endif
 
+#if defined(__UNIX__)
+#include <pwd.h>
+#include <sys/types.h>
+#endif
 
 //  ------------------------------------------------------------------
 
@@ -217,8 +221,16 @@ void MakePathname(char* pathname, const char* path, const char* name) {
   strbtrim(tmppath);
   strchg(tmppath, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
   strchg(tmpname, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
-  if(strpbrk(tmpname, GOLD_SLASH_STR))
-    strcpy(pathname, tmpname);
+  if(strpbrk(tmpname, GOLD_SLASH_STR)){
+    #if defined(__UNIX__)
+    if(tmpname[0] == '~' && tmpname[1] == GOLD_SLASH_CHR){
+      struct passwd* pw = getpwuid(getuid());
+      strxmerge(pathname, sizeof(Path), pw->pw_dir, tmpname+1, NULL);
+    }
+    else
+    #endif
+      strcpy(pathname, tmpname);
+  }
   else {
     strcpy(newpath, tmppath);
     if(*newpath)
@@ -296,8 +308,15 @@ void TouchFile(const char* filename) {
 //  ------------------------------------------------------------------
 
 char* PathCopy(char* __dst, const char* __src) {
-
-  return AddBackslash(strxcpy(__dst, __src, sizeof(Path)));
+  #if defined(__UNIX__)
+  if(__src[0] == '~' && __src[1] == GOLD_SLASH_CHR){
+    struct passwd* pw = getpwuid(getuid());
+    strxmerge(__dst, sizeof(Path), pw->pw_dir, __src+1, NULL);
+    return AddBackslash(__dst);
+  }
+  else
+  #endif
+    return AddBackslash(strxcpy(__dst, __src, sizeof(Path)));
 }
 
 

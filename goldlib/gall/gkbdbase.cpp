@@ -57,6 +57,7 @@
 
 #if defined(__linux__)
 #include <sys/ioctl.h>
+#include <stdio.h>
 #endif
 
 
@@ -1303,7 +1304,7 @@ gkey kbxget_raw(int mode) {
     if(ioctl(fileno(stdin), TIOCLINUX, &shifts) == -1)
       shifts = 0;
     if(shifts & ALT)
-      key = Key_A_BS;
+      k = Key_A_BS;
   }
   #endif
 
