@@ -1,0 +1,128 @@
+
+//  ------------------------------------------------------------------
+//  GoldED+
+//  Copyright (C) 1990-1999 Odinn Sorensen
+//  Copyright (C) 1999-2000 Alexander S. Aganichev
+//  ------------------------------------------------------------------
+//  This program is free software; you can redistribute it and/or
+//  modify it under the terms of the GNU General Public License as
+//  published by the Free Software Foundation; either version 2 of the
+//  License, or (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+//  General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program; if not, write to the Free Software
+//  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+//  MA 02111-1307 USA
+//  ------------------------------------------------------------------
+//  $Id$
+//  ------------------------------------------------------------------
+//  Container class.
+//  ------------------------------------------------------------------
+
+#include "golded.h"
+
+
+//  ------------------------------------------------------------------
+
+inline int isstylechar(char c) { return (c == '*') or (c == '/') or (c == '_') or (c == '#'); }
+
+void Container::StyleCodeHighlight(char* text, int row, int col, bool dohide, int color) {
+
+  uint sclen = 0;
+  char* txptr = text;
+  char buf[200];
+  char* ptr = text;
+  const char* stylemargins = " -|\\";    // we probably have to make a keyword for it
+  char* punctchars = CFG->stylecodepunct;
+  char* stylestopchars = CFG->stylecodestops;
+  char prevchar = ' ';
+
+  if(dohide or CFG->usestylies) {
+    while(*ptr) {
+      if(isstylechar(*ptr)) {
+        if(strchr(punctchars, prevchar)) {
+          int bb = 0, bi = 0, bu = 0, br = 0;
+          char* beginstyle = ptr;
+          while(isstylechar(*ptr)) {
+            switch(*ptr) {
+              case '*': bb++; break;
+              case '/': bi++; break;
+              case '_': bu++; break;
+              case '#': br++; break;
+            }
+            ptr++;
+          }
+          if((bb <= 1) and (bi <= 1) and (br <= 1) and (bu <= 1) and *ptr) {
+            char* beginword = ptr;                       //  _/*>another*/_
+            char endchar = NUL;
+            char* end = ptr;
+            do {
+              end = strpbrk(++end, punctchars);
+            } while ((end) and not isstylechar(*(end-1)));
+            if(end)
+              endchar = *end;
+            else
+              end = ptr+strlen(ptr);
+            *end = NUL;
+            char* endstyle = end-1;                      //  _/*another*/>_
+            if(isstylechar(*endstyle) and not strchr(stylemargins, *beginword)) {
+              char* endword = endstyle;
+              int eb = 0, ei = 0, eu = 0, er = 0;
+              while(isstylechar(*endword)) {
+                switch(*endword) {
+                  case '*': eb++; break;
+                  case '/': ei++; break;
+                  case '_': eu++; break;
+                  case '#': er++; break;
+                }
+                endword--;
+              }                                          //  _/*anothe>r*/_
+              if(endword >= beginword and not strchr(stylemargins, *endword)) {
+                if((bb == eb) and (bi == ei) and (bu == eu) and (br == er)) {
+                  char endwordchar = *endword;
+                  *endword = NUL;
+                  char* style_stops_present = strpbrk(beginword, stylestopchars);
+                  *endword = endwordchar;
+                  if(not style_stops_present) {
+                    int colorindex = (bb ? 1 : 0) | (bi ? 2 : 0) | (bu ? 4 : 0) | (br ? 8 : 0);
+                    strxcpy(buf, txptr, (uint)(beginstyle-txptr)+1);
+                    prints(row, col+sclen, color, buf);
+                    sclen += strlen(buf);
+                    if(dohide)
+                      strxcpy(buf, beginword, (uint)(endword-beginword)+2);
+                    else
+                      strxcpy(buf, beginstyle, (uint)(endstyle-beginstyle)+2);
+                    prints(row, col+sclen, C_STYLE[colorindex], buf);
+                    sclen += strlen(buf);
+                    txptr = end;
+                  }
+                }
+              }
+            }
+            *end = endchar;
+            ptr = end-1;
+          }
+        }
+      }
+      if(*ptr)
+        prevchar = *ptr++;
+    }
+  }
+  if(*txptr) {
+    prints(row, col+sclen, color, txptr);
+    sclen += strlen(txptr);
+  }
+  uint splen = strlen(text) - sclen;
+  if(splen) {
+    memset(buf, ' ', splen); buf[splen] = NUL;
+    prints(row, col+sclen, color, buf);
+  }
+}
+
+
+//  ------------------------------------------------------------------

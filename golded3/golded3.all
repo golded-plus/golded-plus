@@ -1,0 +1,87 @@
+
+##  ------------------------------------------------------------------
+##  GoldED+
+##  Copyright (C) 1990-1999 Odinn Sorensen
+##  Copyright (C) 1999-2000 Alexander S. Aganichev
+##  ------------------------------------------------------------------
+##  This program is free software; you can redistribute it and/or
+##  modify it under the terms of the GNU General Public License as
+##  published by the Free Software Foundation; either version 2 of the
+##  License, or (at your option) any later version.
+##
+##  This program is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+##  General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+##  MA 02111-1307 USA
+##  ------------------------------------------------------------------
+##  $Id$
+##  ------------------------------------------------------------------
+##  Master build file.
+##  ------------------------------------------------------------------
+
+gcalst   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gcarea   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gccfgg   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gccfgg0  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gccfgg1  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gccfgg2  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gccfgg3  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gccfgg4  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gccfgg5  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gccfgg6  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gccfgg7  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gccfgg8  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gckeys   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gclang   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gcmisc   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gealst   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gearea   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gecarb   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gecmfd   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gectnr   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gectrl   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gedoit   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gedoss   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+geedit   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+geedit2  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+geedit3  cpp all nov bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gefile   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gefind   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+geglob   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gehdre   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gehdrs   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+geinit   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+geline   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gelmsg   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gemain   cpp all nov bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gemenu   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gemlst   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gemnus   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gemrks   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gemsgs   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+genode   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+geplay   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gepost   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+geqwks   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gerand   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+geread   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+geread2  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gescan   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gesrch   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gesoup   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+getpls   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+geusrbse cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+geutil   cpp all nov bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+geutil2  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+geview   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gmarea   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+golded3  cpp all nov bcd bco bcx djg emx lnx rsx wcn wco wcx cyg
+gedcyg   rc                                                  cyg
+gedemx   rc                          emx
+
+##  ------------------------------------------------------------------
