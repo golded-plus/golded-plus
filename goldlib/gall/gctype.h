@@ -51,8 +51,9 @@ inline char toupper(char c) { return tu[c]; }
 
 //  ------------------------------------------------------------------
 
-inline int iswhite(char c)  { return c < '!' and c; }
-inline int isxalnum(char c) { return isalnum(c) or (c >= 128); }
+inline int iswhite(char c)  { return c and (iscntrl(c) or (c == ' ')); }
+// NLS chars detected by converting to lower or upper case and in case they don't match they treated as characters
+inline int isxalnum(char c) { return isalnum(c) or ((c >= 128) and ((c != tolower(c)) or (c != toupper(c)))); }
 
 
 //  ------------------------------------------------------------------

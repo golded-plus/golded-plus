@@ -997,9 +997,6 @@ int GMenuNavigate::Run() {
       TAG_UTIL_LIST    = (int)KK_ReadMessageList,
       TAG_UTIL_WRITE   = (int)KK_ReadWriteMsg,
       TAG_UTIL_FREQ    = (int)KK_ReadFileRequest,
-    TAG_HELP = 104,
-      TAG_HELP_GENERAL,
-      TAG_HELP_ABOUT,
     TAG_SEPARATOR,
     TAG_END
   };
@@ -1046,12 +1043,6 @@ int GMenuNavigate::Run() {
       Item(TAG_UTIL_LIST,  "L List messages         ");
       Item(TAG_UTIL_WRITE, "W Write to disk/printer ");
       Item(TAG_UTIL_FREQ,  "F File request          ");
-    End();
-    Item(TAG_UTIL, "H Help ");
-    BeginPullDown();
-      Item(TAG_HELP_GENERAL, "G General ");
-      Item(TAG_SEPARATOR,    "----------", M_NOSEL);
-      Item(TAG_HELP_ABOUT,   "A About   ");
     End();
   End();
   Start();

@@ -2146,8 +2146,6 @@ int IEclass::Start(int __mode, uint* __position, GMsg* __msg) {
   if(marginquotes > margintext)
     marginquotes = margintext;
 
-  whelppcat(H_Editor);
-
   if(currline == NULL) {
     currline = new Line("\n");
     throw_xnew(currline);
@@ -2266,7 +2264,6 @@ int IEclass::Start(int __mode, uint* __position, GMsg* __msg) {
 
   msgptr->lin = findfirstline();
   savefile(quitnow ? MODE_UPDATE : MODE_SAVE);
-  whelpop();
 
   // Prune killbuffer
   if(Edit__killbuf) {
@@ -2336,6 +2333,7 @@ UndoStack::~UndoStack() {
   while(last_item) {
     switch(last_item->action & EDIT_UNDO_ACTION) {
       case EDIT_UNDO_DEL_TEXT:
+      case EDIT_UNDO_INS_TEXT:
       case EDIT_UNDO_WRAP_TEXT:
         throw_delete(last_item->data.text_ptr);
         break;

@@ -529,6 +529,7 @@ int SelectFromFile(const char* file, char* selection, const char* title, const c
     n = wpickstr(6, 0, 6+n+1, -1, W_BASK, C_ASKB, C_ASKW, C_ASKS, Listi, 0, title_shadow);
     if(n != -1) {
       strcpy(selection, Listi[n]);
+      strtrim(selection);
       retval = true;
     }
     for(n=0; n<lines; n++)

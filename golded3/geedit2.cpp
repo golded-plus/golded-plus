@@ -92,6 +92,7 @@ void IEclass::windowopen() {
   gwin.style = STYLE_NOCLEAR;
   editwin.open(win_minrow, win_mincol, win_maxrow, win_maxcol, 5, C_READB, C_READW, C_READPB);
   gwin.style = _tmp;
+  whelppcat(H_Editor);
 }
 
 
@@ -99,6 +100,7 @@ void IEclass::windowopen() {
 
 void IEclass::windowclose() {
 
+  whelpop();
   // Close editor window without removing the window itself
   editwin.unlink();
 }
@@ -629,13 +631,15 @@ void IEclass::BlockDel(Line* anchor) {
   // The firstcutline and lastcutline pointers
   // are now pointing where they should
 
-  Undo->PushItem(EDIT_UNDO_DEL_TEXT, firstcutline, firstcol);
   if(firstcutline != lastcutline) {
+    Undo->PushItem(EDIT_UNDO_DEL_TEXT, firstcutline, firstcol);
     firstcutline->txt.erase(firstcol);
     firstcutline->txt += lastcutline->txt.c_str()+lastcol;
   }
-  else
+  else {
+    Undo->PushItem(EDIT_UNDO_DEL_TEXT, firstcutline, firstcol, lastcol-firstcol);
     firstcutline->txt.erase(firstcol, lastcol-firstcol);
+  }
   setlinetype(firstcutline);
   firstcutline->type &= ~GLINE_BLOK;
   blockcol = -1;
@@ -901,10 +905,10 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
     ImportMode = MenuImportTxt.Run();
   }
 
-  Path filenamebuf, tmpfile;
+  string filenamebuf;
+  Path tmpfile;
   bool isPipe = NO;
-  char* _filenameptr = filenamebuf;
-  char* _selectedfile = NULL;
+  bool fileselected = false;
 
   // Should the imported text be quoted or uuencoded?
   #define quoteit    (ImportMode == 1)
@@ -918,79 +922,71 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
     AA->SetInputfile(CFG->inputfile);
 
     // Pointer to the filename string
-    _filenameptr = strcpy(filenamebuf, AA->Inputfile());
+    filenamebuf = AA->Inputfile();
 
-    if(_filenameptr[0] == '|'){
+    if(filenamebuf.c_str()[0] == '|'){
       Path cmdline;
 
       isPipe = YES;
-      mktemp(strcpy(tmpfile, AddPath(CFG->goldpath, "GIXXXXXX")));
-      strxmerge(cmdline, sizeof(Path), _filenameptr+1, " > ", tmpfile, NULL);
+      mktemp(strxcpy(tmpfile, AddPath(CFG->goldpath, "GIXXXXXX"), sizeof(Path)));
+      strxmerge(cmdline, sizeof(Path), filenamebuf.c_str()+1, " > ", tmpfile, NULL);
       ShellToDos(cmdline, "", NO, NO);
-      _selectedfile = _filenameptr = tmpfile;
+      filenamebuf = tmpfile;
+      fileselected = true;
     } else {
       // Check for wildcards
       // Is the filename a directory?
-      if(is_dir(_filenameptr)) {
+      if(is_dir(filenamebuf)) {
 
         // Does the filename contain wildcards?
-        if(not strpbrk(_filenameptr, "*?")) {
+        if(not strpbrk(filenamebuf.c_str(), "*?")) {
 
           // Add match-all wildcards
-          strcat(AddBackslash(_filenameptr), "*");
+          AddBackslash(filenamebuf);
+          filenamebuf += "*";
         }
       }
 
-      // Pointer to selected filename or NULL if no file is selected
-      _selectedfile = _filenameptr;
+      fileselected = true;
 
       // Does the filename contain wildcards?
-      if(strpbrk(_filenameptr, "*?")) {
+      if(strpbrk(filenamebuf.c_str(), "*?")) {
 
         // Set selection window title and statusline
         set_title(LNG->ImportTitle, TCENTER, C_MENUT);
-        update_statuslinef(LNG->ImportStatus, _filenameptr);
-
-        // Copy filename with wildcards to a temp buffer
-        Path _filenamebuf;
-        strcpy(_filenamebuf, _filenameptr);
+        update_statuslinef(LNG->ImportStatus, filenamebuf.c_str());
 
         // Start the file picker
-        _selectedfile = wpickfile(
-          win_minrow,
-          win_mincol,
-          win_maxrow,
-          win_maxcol,
-          W_BMENU,
-          C_MENUB,
-          C_MENUW,
-          C_MENUS,
-          NO,
-          _filenamebuf,
-          _filenameptr,
-          maketitle
-        );
-
-        // If a file was selected, copy the filename
-        if(_selectedfile)
-          strcpy(_filenameptr, _selectedfile);
+        fileselected = wpickfile(win_minrow, win_mincol, win_maxrow, win_maxcol, W_BMENU, C_MENUB, C_MENUW, C_MENUS, NO, filenamebuf, maketitle);
       }
     }
   }
 
-  if(_selectedfile or getclip) {
+  if(fileselected or getclip) {
 
     // Open the file/clipboard
     FILE* fp = NULL;
     gclipbrd clipbrd;
 
     if(getclip)
-      _filenameptr = strcpy(filenamebuf, CLIP_NAME);
+      filenamebuf = CLIP_NAME;
 
     if(getclip ? clipbrd.openread() :
-       (fp = fsopen(_filenameptr, binary ? "rb" : "rt", CFG->sharemode))!=NULL) {
+       (fp = fsopen(filenamebuf.c_str(), binary ? "rb" : "rt", CFG->sharemode))!=NULL) {
 
-      update_statuslinef(LNG->ImportStatus, _filenameptr);
+      if (isPipe)
+        filenamebuf = AA->Inputfile();
+
+      const char *imp_filename = (getclip or isPipe) ? filenamebuf.c_str() : CleanFilename(filenamebuf.c_str());
+
+      // we need to truncate filename to prevent unpredictable results
+      int delta = strlen(imp_filename) - margintext;
+      if(delta > 0) {
+        filenamebuf.erase(filenamebuf.length()-delta);
+        imp_filename = (getclip or isPipe) ? filenamebuf.c_str() : CleanFilename(filenamebuf.c_str());
+      }
+
+      update_statuslinef(LNG->ImportStatus, filenamebuf.c_str());
 
       // Allocate paragraph read buffer
       char* _parabuf = (char*)throw_malloc(EDIT_PARABUFLEN);
@@ -1004,15 +1000,18 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
       // Add import begin text, if any
       if(*CFG->importbegin) {
         sprintf(_parabuf, "%s\n", CFG->importbegin);
-        strischg(_parabuf, "@file", getclip ? _filenameptr : isPipe ? AA->Inputfile() : CleanFilename(_filenameptr));
+        strischg(_parabuf, "@file", imp_filename);
         _parabuf[margintext] = NUL;
+        _parabuf[margintext-1] = '\n';
         __line = insertlinebelow(__line, _parabuf);
         setlinetype(__line);
       }
 
       if(uuencode) {
 
-        sprintf(_parabuf, "begin 644 %s\n", CleanFilename(_filenameptr));
+        sprintf(_parabuf, "begin 644 %s\n", imp_filename);
+        _parabuf[margintext] = NUL;
+        _parabuf[margintext-1] = '\n';
         __line = insertlinebelow(__line, _parabuf);
         setlinetype(__line);
 
@@ -1046,7 +1045,8 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
 
         base64_engine b64;
 
-        sprintf(_parabuf, "Content-type: application/octet-stream; name=\"%s\"\n", CleanFilename(_filenameptr));
+        sprintf(_parabuf, "Content-type: application/octet-stream; name=\"%s\"\n", imp_filename);
+        strcpy(_parabuf+margintext-2, "\"\n");
         __line = insertlinebelow(__line, _parabuf);
         setlinetype(__line);
         sprintf(_parabuf, "Content-transfer-encoding: base64\n");
@@ -1162,8 +1162,9 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
       // Add import end text, if any
       if(*CFG->importend or *CFG->importbegin) {
         sprintf(_parabuf, "%s\n", *CFG->importend ? CFG->importend : CFG->importbegin);
-        strischg(_parabuf, "@file", getclip ? _filenameptr : isPipe ? AA->Inputfile() : CleanFilename(_filenameptr));
+        strischg(_parabuf, "@file", imp_filename);
         _parabuf[margintext] = NUL;
+        _parabuf[margintext-1] = '\n';
         __line = insertlinebelow(__line, _parabuf);
         setlinetype(__line);
       }
@@ -1176,7 +1177,7 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
         fclose(fp);
     }
     else {
-      w_infof(LNG->CouldNotOpen, _filenameptr);
+      w_infof(LNG->CouldNotOpen, filenamebuf.c_str());
       waitkeyt(10000);
       w_info(NULL);
     }

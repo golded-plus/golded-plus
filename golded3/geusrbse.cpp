@@ -270,6 +270,7 @@ void addressbook_form::LoadForm() {
   voicephone= entry.voicephone;
   faxphone  = entry.faxphone;
   dataphone = entry.dataphone;
+  group     = entry.group;
   snail1    = entry.snail1;
   snail2    = entry.snail2;
   snail3    = entry.snail3;
@@ -295,6 +296,7 @@ void addressbook_form::SaveForm() {
   strcpy(entry.voicephone, voicephone.c_str());
   strcpy(entry.faxphone, faxphone.c_str());
   strcpy(entry.dataphone, dataphone.c_str());
+  entry.group = group.c_str()[0];
   strcpy(entry.snail1, snail1.c_str());
   strcpy(entry.snail2, snail2.c_str());
   strcpy(entry.snail3, snail3.c_str());
@@ -373,10 +375,11 @@ bool guserbase::edit_entry(uint idx) {
   form.add_field(addressbook_form::id_voicephone,   5, 13, 20, form.voicephone, sizeof(entry.voicephone));
   form.add_field(addressbook_form::id_faxphone,     6, 13, 20, form.faxphone, sizeof(entry.faxphone));
   form.add_field(addressbook_form::id_dataphone,    7, 13, 20, form.dataphone, sizeof(entry.dataphone));
+  form.add_field(addressbook_form::id_group,        8, 13, 20, form.group, sizeof(entry.group)+1);
   form.add_field(addressbook_form::id_snail1,       5, 46, 26, form.snail1, sizeof(entry.snail1));
-  form.add_field(addressbook_form::id_snail2,       6, 46, 26, form.snail2, sizeof(entry.snail2));  
+  form.add_field(addressbook_form::id_snail2,       6, 46, 26, form.snail2, sizeof(entry.snail2));
   form.add_field(addressbook_form::id_snail3,       7, 46, 26, form.snail3, sizeof(entry.snail3));
-  form.add_field(addressbook_form::id_homepage ,    8, 46, 26, form.homepage, sizeof(entry.homepage));
+  form.add_field(addressbook_form::id_homepage,     8, 46, 26, form.homepage, sizeof(entry.homepage));
   form.add_field(addressbook_form::id_comment1,     9, 13, 59, form.comment1, sizeof(entry.comment1));
   form.add_field(addressbook_form::id_comment2,    10, 13, 59, form.comment2, sizeof(entry.comment2));
   form.add_field(addressbook_form::id_comment3,    11, 13, 59, form.comment3, sizeof(entry.comment3));

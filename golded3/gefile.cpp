@@ -32,10 +32,10 @@
 
 //  ------------------------------------------------------------------
 
-char CFG__frqinvfilechars[40] = { "\"()+,.\\/:;<=>[]| \xff@" };
+char CFG__frqinvfilechars[40] = { "\"()+,.\\/:;<=>[]| @" };
 char CFG__frqskipwordchars[40] = { "0123456789-[" };
 
-inline char* invalidfilechar(char ch) { return strchr(CFG__frqinvfilechars, ch); }
+inline bool invalidfilechar(char ch) { return not isascii(ch&0xff) or strchr(CFG__frqinvfilechars, ch); }
 
 
 //  ------------------------------------------------------------------
@@ -574,18 +574,15 @@ static int frqchkdesc(char* desc) {
   if(*desc == NUL)
     strcpy(desc, " ");
   else {
-    while(*ptr) {
-      if(isalnum(*ptr))
-        break;
+    while(*ptr and not isxalnum(*ptr))
       ptr++;
-    }
     if(*ptr == NUL) {
       *desc = NUL;
       return true;
     }
   }
   ptr = desc + strlen(desc) - 1;
-  while(((*ptr < '!') or (*ptr > '\x7F')) and (ptr>desc))
+  while(not isascii(*ptr&0xff) and not isxalnum(*ptr) and (ptr>desc))
     *ptr-- = NUL;
 
   return false;
@@ -607,11 +604,11 @@ static int frqgetfile(char* file, char* desc, char* filesize, const char* txt) {
     if(not invalidfilechar(*ptr) and ((ptr - txt) > 1)) {
 
       // Find end of extension
-      while(*ptr and (*ptr != ' '))
+      while(*ptr and ((*ptr == '.') or not invalidfilechar(*ptr)))
         ptr++;
 
-      // Strip invalid chars from the end of the extension
-      while(invalidfilechar(*(ptr-1)))
+      // Strip dots from the end of the extension
+      while(*(ptr-1) == '.')
         ptr--;
 
       // Copy the filename

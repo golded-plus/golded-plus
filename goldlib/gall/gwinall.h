@@ -34,6 +34,7 @@
 //  ------------------------------------------------------------------
 
 #include <gdefs.h>
+#include <gstrall.h>
 #include <gkbdbase.h>
 #include <gvidall.h>
 
@@ -368,7 +369,7 @@ int       wmove       (int nsrow, int nscol);
 int       wopen       (int srow, int scol, int erow, int ecol, int btype, int battr, int wattr, int sbattr=-1, int loattr=-1);
 inline int wopen_     (int srow, int scol, int vlen, int hlen, int btype, int battr, int wattr, int sbattr=-1, int loattr=-1) { return wopen(srow, scol, srow+vlen-1, scol+hlen-1, btype, battr, wattr, sbattr, loattr); }
 int       wperror     (const char* message);
-char*     wpickfile   (int srow, int scol, int erow, int ecol, int btype, int bordattr, int winattr, int barattr, bool title, const char* filespec, char* selectedfile, VfvCP open, bool casesens=false);
+bool      wpickfile   (int srow, int scol, int erow, int ecol, int btype, int bordattr, int winattr, int barattr, bool title, string &filespec, VfvCP open, bool casesens=false);
 int       wpickstr    (int srow, int scol, int erow, int ecol, int btype, int bordattr, int winattr, int barattr, char* strarr[], int initelem, VfvCP open);
 int       wprintc     (int wrow, int wcol, int attr, vchar ch);
 int       wprintf     (const char* format, ...) __attribute__ ((format (printf, 1, 2)));

@@ -117,11 +117,12 @@ void update_statusline(const char* info) {
 
 void update_statuslinef(const char* format, ...) {
 
+  char winfobuf[350];
   va_list argptr;
   va_start(argptr, format);
-  vsprintf(information, format, argptr);
+  vsprintf(winfobuf, format, argptr);
   va_end(argptr);
-  update_statuslines();
+  update_statusline(winfobuf);
 }
 
 

@@ -435,10 +435,8 @@ int wpickstr(int srow, int scol, int erow, int ecol, int btype, int bordattr, in
   r.wheight = (erow-border)-(srow+border)+1;
 
   // make sure longest string can fit in window
-  if(r.maxstrlen > r.wwidth) {
-    gwin.werrno=W_STRLONG;
-    return -1;
-  }
+  if(r.maxstrlen > r.wwidth)
+    r.maxstrlen = r.wwidth;
 
   // open window which strings will reside in
   hide_mouse_cursor_pck();

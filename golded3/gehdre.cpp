@@ -428,7 +428,7 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view) {
 
   ChgAttrs(false, msg);
 
-  whelpcat(help);
+//  whelppcat(help);
 
   if(not hedit.dropped and not gkbd.quitall) {
 

@@ -117,7 +117,7 @@ static void pre_exit(char** p, int numelems) {
 
 //  ------------------------------------------------------------------
 
-char* wpickfile(int srow, int scol, int erow, int ecol, int btype, int bordattr, int winattr, int barattr, bool title, const char* filespec, char* selectedfile, VfvCP open, bool casesens) {
+bool wpickfile(int srow, int scol, int erow, int ecol, int btype, int bordattr, int winattr, int barattr, bool title, string &filespec, VfvCP open, bool casesens) {
 
   Path cwd, dir, namext, tcwd, path, spec;
 
@@ -138,7 +138,7 @@ char* wpickfile(int srow, int scol, int erow, int ecol, int btype, int bordattr,
   getcwd(tcwd, GMAXPATH);
 
   // if drive was specified, change to it
-  char* q = strcpy(spec, filespec);
+  char* q = strxcpy(spec, filespec.c_str(), sizeof(Path));
 
   // split up input filespec into its current
   // working directory and filename/extension
@@ -168,7 +168,7 @@ char* wpickfile(int srow, int scol, int erow, int ecol, int btype, int bordattr,
     if(*dir) {
       if(gchdir(dir)) {
         pre_exit(p, 0);
-        return NULL;
+        return false;
       }
     }
 
@@ -187,7 +187,7 @@ char* wpickfile(int srow, int scol, int erow, int ecol, int btype, int bordattr,
         const char* name = NULL;
         if(de->is_directory()) {
           if(de->name != ".") {
-            strcpy(stpcpy(path, de->name.c_str()), GOLD_SLASH_STR);
+            strxmerge(path, sizeof(Path), de->name.c_str(), GOLD_SLASH_STR, NULL);
             name = path;
           }
         }
@@ -215,7 +215,7 @@ char* wpickfile(int srow, int scol, int erow, int ecol, int btype, int bordattr,
       picked = wpickstr(srow, scol, erow, ecol, btype, bordattr, winattr, barattr, p, 0, disp_title);
     if(picked == -1 or files == 0) {
       pre_exit(p, files);
-      return NULL;
+      return false;
     }
 
     // see if a directory was selected. if so save
@@ -231,8 +231,8 @@ char* wpickfile(int srow, int scol, int erow, int ecol, int btype, int bordattr,
     }
     else {
       finished = true;
-      PathCopy(path, cwd);
-      strcat(path, p[picked]);
+      PathCopy(filespec, cwd);
+      filespec += p[picked];
     }
 
     // free allocated strings
@@ -248,8 +248,7 @@ char* wpickfile(int srow, int scol, int erow, int ecol, int btype, int bordattr,
   throw_xfree(p);
 
   // return normally
-  strcpy(selectedfile, path);
-  return selectedfile;
+  return true;
 }
 
 

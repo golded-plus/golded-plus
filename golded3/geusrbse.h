@@ -98,6 +98,7 @@ class addressbook_form : public gwinput2 {
   string voicephone;
   string faxphone;
   string homepage;
+  string group;
   string comment1;
   string comment2;
   string comment3;

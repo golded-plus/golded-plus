@@ -635,7 +635,7 @@ void UUDecode(GMsg* msg) {
         w_progress(MODE_UPDATE, C_INFOW, n+1, AA->Mark.Count(), LNG->Preparing);
         AA->LoadMsg(msg, AA->Mark[n], 79);
         SaveLines(overwrite ? MODE_WRITE : MODE_APPEND, infile, msg);
-	  }
+      }
       if(AA->Mark.Count())
         w_progress(MODE_QUIT, 0, 0, 0, NULL);
     }

@@ -107,7 +107,7 @@ void CheckSubject(GMsg* msg, char* subj) {
             fspec = (FileSpec*)throw_realloc(fspec, (fspecs+1)*sizeof(FileSpec));
             memset(fspec+fspecs, 0, sizeof(FileSpec));
             fspec[fspecs].files = 1;
-            strcpy(fspec[fspecs].path, ptr);
+            strxcpy(fspec[fspecs].path, ptr, sizeof(Path));
             specfiles++;
             fspecs++;
           }
@@ -120,9 +120,9 @@ void CheckSubject(GMsg* msg, char* subj) {
       ISub buf;
       if(strblank(subj)) {
         if(*CFG->attachpath)
-          strcpy(subj, CFG->attachpath);
+          strxcpy(subj, CFG->attachpath, sizeof(ISub));
         else
-          strcpy(subj, CFG->goldpath);
+          strxcpy(subj, CFG->goldpath, sizeof(ISub));
       }
       strcpy(buf, subj);
       char* ptr = strtok(buf, " ");
@@ -133,7 +133,7 @@ void CheckSubject(GMsg* msg, char* subj) {
           fspec[fspecs].delsent = YES;
           ptr++;
         }
-        strcpy(fspec[fspecs].path, ptr);
+        strxcpy(fspec[fspecs].path, ptr, sizeof(Path));
         FileSelect(msg, LNG->AttachFiles, &fspec[fspecs]);
         specfiles += fspec[fspecs].files;
         if(fspec[fspecs].files)
@@ -156,7 +156,7 @@ void CheckSubject(GMsg* msg, char* subj) {
         else {
           fspec = (FileSpec*)throw_realloc(fspec, (fspecs+1)*sizeof(FileSpec));
           memset(fspec+fspecs, 0, sizeof(FileSpec));
-          strcpy(fspec[fspecs].path, ptr);
+          strxcpy(fspec[fspecs].path, ptr, sizeof(Path));
           FileSelect(msg, LNG->UpdreqFiles, &fspec[fspecs]);
           specfiles += fspec[fspecs].files;
           if(fspec[fspecs].files)

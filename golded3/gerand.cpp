@@ -45,11 +45,10 @@ char* GetRandomLine(char* __buf, size_t __bufsize, const char* __file) {
       if(FiletimeCmp(__file, idxfile) > 0)
         idxexist = false;
 
-    FILE* fpi = fsopen(idxfile, idxexist ? "rb" : "wb+", CFG->sharemode);
-    if(fpi) {
-
-      // Create index if one was missing
-      if(not idxexist) {
+    // Create index if one was missing
+    if(not idxexist) {
+      FILE* fpi = fsopen(idxfile, "wb+", CFG->sharemode);
+      if(fpi) {
         setvbuf(fp, NULL, _IOFBF, 32000);
         setvbuf(fpi, NULL, _IOFBF, 16000);
         long fpos = 0;
@@ -58,7 +57,12 @@ char* GetRandomLine(char* __buf, size_t __bufsize, const char* __file) {
           fwrite(&fpos, sizeof(long), 1, fpi);
           fpos += strlen(buf);
         }
+        fclose(fpi);
       }
+    }
+
+    FILE* fpi = fsopen(idxfile, "rb", CFG->sharemode);
+    if(fpi) {
 
       // Get random line if there is at least one
       int _lines = (int)(fsize(fpi)/sizeof(long));

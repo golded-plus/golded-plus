@@ -12,6 +12,24 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.4.7, November xx 2000
 ______________________________________________________________________
 
+- It is now possible to use filepicker if there's very long filenames.
+
+- Fixed filelist parser for national languages.
+
++ It is now possible to edit Group field in addressbook even though
+  there's no sence for this :-)
+
+- Added workaround for inserting of random line into message.
+
+- Fixed incorrect help category display after EDITHeader.
+
+! Removed unused help entries from READMainmenu.
+
+- Fixed memory overrun in file attach creation.
+
+- Fixed insertion of extra spaces around Origin line if entry is taken
+  from file.
+
 + Logged version name now combined with release date (for easy sorting
   out the logs received).
 
