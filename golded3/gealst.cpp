@@ -24,6 +24,7 @@
 //  Arealist functions.
 //  ------------------------------------------------------------------
 
+#include <algorithm>
 #include <golded.h>
 
 
@@ -205,6 +206,11 @@ extern "C" int AreaListCmp(const Area** __a, const Area** __b) {
   return cmp;
 }
 
+static bool AreaListCmp2(const Area* a, const Area* b) {
+
+  return AreaListCmp(&a, &b) < 0;
+}
+
 //  ------------------------------------------------------------------
 //  Arealist sort areas
 
@@ -216,8 +222,9 @@ void AreaList::Sort(const char* specs, int first, int last) {
     strcpy(sortspec, CFG->arealistsort);
   if(last == -1)
     last = idx.size();
-  if(*sortspec)
-    qsort(&idx[first], last-first, sizeof(Area *), (StdCmpCP)AreaListCmp);
+  if(*sortspec) {
+    sort(idx.begin()+first, idx.begin()+last, AreaListCmp2);
+  }
 }
 
 
