@@ -726,7 +726,7 @@ void ReadPeekURLs(GMsg* msg) {
 
     if(n != -1) {
       char cmdline[1024];
-      strxcpy(cmdline, CFG->urlhandler.c_str(), sizeof(cmdline));
+      strxcpy(cmdline, CFG->urlhandler.cmdline, sizeof(cmdline));
       strxmerge(buf, sizeof(buf), "\"", strtrim(strltrim(Listi[n])), "\"", NULL);
       strischg(cmdline, "@url", buf);
       strxcpy(buf, CFG->goldpath, sizeof(buf));
@@ -735,14 +735,14 @@ void ReadPeekURLs(GMsg* msg) {
       TokenXlat(MODE_NEW, cmdline, msg, msg, CurrArea);
 
       int pauseval = 0;
-      if(CFG->externoptions & EXTUTIL_PAUSEONERROR)
+      if(CFG->urlhandler.options & EXTUTIL_PAUSEONERROR)
         pauseval = -1;
-      if(CFG->externoptions & EXTUTIL_PAUSE)
+      if(CFG->urlhandler.options & EXTUTIL_PAUSE)
         pauseval = 1;
 
       ShellToDos(cmdline, "", 
-        CFG->externoptions & EXTUTIL_CLS ? LGREY|_BLACK : 0,
-        CFG->externoptions & EXTUTIL_CURSOR,
+        CFG->urlhandler.options & EXTUTIL_CLS ? LGREY|_BLACK : 0,
+        CFG->urlhandler.options & EXTUTIL_CURSOR,
         pauseval
       );
     }

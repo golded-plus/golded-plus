@@ -648,7 +648,7 @@ tglobalkey globalkeys[] = {
   { CRC_EDITBLOCKHOME          , KK_EditBlockHome        , KT_E }, // 0x8B82
   { CRC_READDELETEMSG          , KK_ReadDeleteMsg        , KT_R }, // 0x8BCE
   { CRC_EDITTAB                , KK_EditTab              , KT_E }, // 0x8C26
-  { CRC_K_KEY5                 , Key_5                   ,    0 }, // 0x9062
+  { CRC_K_KEY5                 , Key_5Num                ,    0 }, // 0x9062
   { CRC_EDITPASTE              , KK_EditPaste            , KT_E }, // 0x90C4
   { CRC_HEADERTOGGLEAUDIT      , KK_HeaderToggleAudit    , KT_H }, // 0x91B7
   { CRC_EDITGOBOTLINE          , KK_EditGoBotLine        , KT_E }, // 0x92DD

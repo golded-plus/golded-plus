@@ -466,47 +466,49 @@ gkey keyscanxlat(gkey k) {
   // Only translate ASCII keys
   if(KCodAsc(k)) {
 
-    // if scancode zero and ascii-code non-zero, it's a "explicit" character,
-    // entered by ALT + <Numpad 0-9>, so don't change it
-    //if(KCodScn(k) == 0x00)
-    //  return k;
-
     // Check for certain ctrl-keys
     switch(KCodAsc(k)) {
 
       case 0x08:  // CtrlH or BackSpace                     23/0E
-        if(KCodScn(k) == 0x0E)
+        if(k == Key_BS)
           return k;
         else
           break;
 
       case 0x09:  // CtrlI or Tab                           17/0F
-        if(KCodScn(k) == 0x0F)
+        if(k == Key_Tab)
           return k;
         else
           break;
 
       case 0x0A:  // CtrlJ or CtrlEnter or GreyCtrlEnter    24/1C/E0
       case 0x0D:  // CtrlM or Enter or GreyEnter            32/1C/E0
-        if(KCodScn(k) == 0x1C)
+        // First, translate Numpad-Enter to main Enter...
+        if(k == Key_EntG)
+          k = Key_Ent;
+        else if(k == Key_C_EntG)
+          k = Key_C_Ent;
+        else if(k == Key_A_EntG)
+          k = Key_A_Ent;
+        // ...and now return if main Enter
+        if((k == Key_Ent) or (k == Key_C_Ent) or (k == Key_A_Ent))
           return k;
-        else if(KCodScn(k) == 0xE0) {
-          KCodScn(k) = 0x1C;  // Translate Numpad-Enter to main Enter
-          return k;
-        }
         else
           break;
 
       case 0x1B:  // Ctrl[ or Esc                           1A/01
-        if(KCodScn(k) == 0x01)
+        if(k == Key_Esc)
           return k;
         else
           break;
 
+      // asa: Not sure that the following case is required:
+      // Key_S_3 == 0x0423, Key_C_U == 0x1615
       case 0x15: // CtrlU or Shift3 (on german keyboards)   16/04
         if(KCodScn(k) == 0x04)
           return k;
         break;
+
       case 0xE0: // Check for extended key and fix it if necessary
         if(KCodScn(k)) {
           KCodAsc(k) = 0x00;
@@ -520,13 +522,6 @@ gkey keyscanxlat(gkey k) {
       return (gkey)(scancode_table[KCodAsc(k)] | KCodAsc(k));
     else
       return (gkey)(KCodAsc(k));
-  }
-  else {
-
-    // Check if its the center key and translate it to '5'
-    if(k == 0x4c00)
-      k = (gkey)(scancode_table['5'] | '5');
-
   }
 
   return k;
@@ -628,17 +623,17 @@ int gkbd_curstable[] = {
   -1,        //  KEY_SR
   Key_PgDn,  //  KEY_NPAGE
   Key_PgUp,  //  KEY_PPAGE
-  -1,        //  KEY_STAB
+  Key_Tab,   //  KEY_STAB
   -1,        //  KEY_CTAB
   -1,        //  KEY_CATAB
   Key_Ent,   //  KEY_ENTER
   -1,        //  KEY_SRESET
   -1,        //  KEY_RESET
   -1,        //  KEY_PRINT
-  Key_End,   //  KEY_LL
+  Key_End,   //  KEY_LL (hmm... this should be lower left)
   Key_Home,  //  KEY_A1
   Key_PgUp,  //  KEY_A3
-  Key_Cent,  //  KEY_B2
+  Key_5Num,  //  KEY_B2
   Key_End,   //  KEY_C1
   Key_PgDn,  //  KEY_C3
   Key_S_Tab, //  KEY_BTAB
@@ -745,89 +740,89 @@ struct kbd {
 //  ------------------------------------------------------------------
 //  Virtual key   Normal      Shift       Control     Alt
 
-  { VK_BACK,      0x0E08,     0x0E08,     0x0E7F,     EXT(14)  },
-  { VK_TAB,       0x0F09,     EXT(15),    EXT(148),   EXT(165) },
-  { VK_RETURN,    0x1C0D,     0x1C0D,     0x1C0A,     EXT(166) },
-  { VK_ESCAPE,    0x011B,     0x011B,     0x011B,     EXT(1)   },
-  { VK_SPACE,     0x20,       0x20,       0x20,       0x20,    },
+  { VK_BACK,      Key_BS,     Key_BS,     Key_C_BS,   Key_A_BS },
+  { VK_TAB,       Key_Tab,    Key_S_Tab,  Key_C_Tab,  Key_A_Tab },
+  { VK_RETURN,    Key_Ent,    Key_Ent,    Key_C_Ent,  Key_A_Ent },
+  { VK_ESCAPE,    Key_Esc,    Key_Esc,    Key_Esc,    Key_A_Esc },
+  { VK_SPACE,     Key_Space,  Key_Space,  Key_Space,  Key_Space },
 
-  { '0',          '0',        ')',        -1,         EXT(129) },
-  { '1',          '1',        '!',        -1,         EXT(120) },
-  { '2',          '2',        '@',        EXT(3),     EXT(121) },
-  { '3',          '3',        '#',        -1,         EXT(122) },
-  { '4',          '4',        '$',        -1,         EXT(123) },
-  { '5',          '5',        '%',        -1,         EXT(124) },
-  { '6',          '6',        '^',        0x1E,       EXT(125) },
-  { '7',          '7',        '&',        -1,         EXT(126) },
-  { '8',          '8',        '*',        -1,         EXT(127) },
-  { '9',          '9',        '(',        -1,         EXT(128) },
+  { '0',          Key_0,      Key_S_0,    -1,         Key_A_0 },
+  { '1',          Key_1,      Key_S_1,    -1,         Key_A_1 },
+  { '2',          Key_2,      Key_S_2,    Key_C_2,    Key_A_2 },
+  { '3',          Key_3,      Key_S_3,    -1,         Key_A_3 },
+  { '4',          Key_4,      Key_S_4,    -1,         Key_A_4 },
+  { '5',          Key_5,      Key_S_5,    -1,         Key_A_5 },
+  { '6',          Key_6,      Key_S_6,    Key_C_6,    Key_A_6 },
+  { '7',          Key_7,      Key_S_7,    -1,         Key_A_7 },
+  { '8',          Key_8,      Key_S_8,    -1,         Key_A_8 },
+  { '9',          Key_9,      Key_S_9,    -1,         Key_A_9 },
+  { 'A',          Key_A,      Key_S_A,    Key_C_A,    Key_A_A },
+  { 'B',          Key_B,      Key_S_B,    Key_C_B,    Key_A_B },
+  { 'C',          Key_C,      Key_S_C,    Key_C_C,    Key_A_C },
+  { 'D',          Key_D,      Key_S_D,    Key_C_D,    Key_A_D },
+  { 'E',          Key_E,      Key_S_E,    Key_C_E,    Key_A_E },
+  { 'F',          Key_F,      Key_S_F,    Key_C_F,    Key_A_F },
+  { 'G',          Key_G,      Key_S_G,    Key_C_G,    Key_A_G },
+  { 'H',          Key_H,      Key_S_H,    Key_C_H,    Key_A_H },
+  { 'I',          Key_I,      Key_S_I,    Key_C_I,    Key_A_I },
+  { 'J',          Key_J,      Key_S_J,    Key_C_J,    Key_A_J },
+  { 'K',          Key_K,      Key_S_K,    Key_C_K,    Key_A_K },
+  { 'L',          Key_L,      Key_S_L,    Key_C_L,    Key_A_L },
+  { 'M',          Key_M,      Key_S_M,    Key_C_M,    Key_A_M },
+  { 'N',          Key_N,      Key_S_N,    Key_C_N,    Key_A_N },
+  { 'O',          Key_O,      Key_S_O,    Key_C_O,    Key_A_O },
+  { 'P',          Key_P,      Key_S_P,    Key_C_P,    Key_A_P },
+  { 'Q',          Key_Q,      Key_S_Q,    Key_C_Q,    Key_A_Q },
+  { 'R',          Key_R,      Key_S_R,    Key_C_R,    Key_A_R },
+  { 'S',          Key_S,      Key_S_S,    Key_C_S,    Key_A_S },
+  { 'T',          Key_T,      Key_S_T,    Key_C_T,    Key_A_T },
+  { 'U',          Key_U,      Key_S_U,    Key_C_U,    Key_A_U },
+  { 'V',          Key_V,      Key_S_V,    Key_C_V,    Key_A_V },
+  { 'W',          Key_W,      Key_S_W,    Key_C_W,    Key_A_W },
+  { 'X',          Key_X,      Key_S_X,    Key_C_X,    Key_A_X },
+  { 'Y',          Key_Y,      Key_S_Y,    Key_C_Y,    Key_A_Y },
+  { 'Z',          Key_Z,      Key_S_Z,    Key_C_Z,    Key_A_Z },
 
-  { 'A',          'a',        'A',        0x01,       EXT(30)  },
-  { 'B',          'b',        'B',        0x02,       EXT(48)  },
-  { 'C',          'c',        'C',        0x03,       EXT(46)  },
-  { 'D',          'd',        'D',        0x04,       EXT(32)  },
-  { 'E',          'e',        'E',        0x05,       EXT(18)  },
-  { 'F',          'f',        'F',        0x06,       EXT(33)  },
-  { 'G',          'g',        'G',        0x07,       EXT(34)  },
-  { 'H',          'h',        'H',        0x08,       EXT(35)  },
-  { 'I',          'i',        'I',        0x09,       EXT(23)  },
-  { 'J',          'j',        'J',        0x0A,       EXT(36)  },
-  { 'K',          'k',        'K',        0x0B,       EXT(37)  },
-  { 'L',          'l',        'L',        0x0C,       EXT(38)  },
-  { 'M',          'm',        'M',        0x0D,       EXT(50)  },
-  { 'N',          'n',        'N',        0x0E,       EXT(49)  },
-  { 'O',          'o',        'O',        0x0F,       EXT(24)  },
-  { 'P',          'p',        'P',        0x10,       EXT(25)  },
-  { 'Q',          'q',        'Q',        0x11,       EXT(16)  },
-  { 'R',          'r',        'R',        0x12,       EXT(19)  },
-  { 'S',          's',        'S',        0x13,       EXT(31)  },
-  { 'T',          't',        'T',        0x14,       EXT(20)  },
-  { 'U',          'u',        'U',        0x15,       EXT(22)  },
-  { 'V',          'v',        'V',        0x16,       EXT(47)  },
-  { 'W',          'w',        'W',        0x17,       EXT(17)  },
-  { 'X',          'x',        'X',        0x18,       EXT(45)  },
-  { 'Y',          'y',        'Y',        0x19,       EXT(21)  },
-  { 'Z',          'z',        'Z',        0x1A,       EXT(44)  },
+  { VK_PRIOR,     Key_PgUp,   Key_S_PgUp, Key_C_PgUp, Key_A_PgUp },
+  { VK_NEXT,      Key_PgDn,   Key_S_PgDn, Key_C_PgDn, Key_A_PgDn },
+  { VK_END,       Key_End,    Key_S_End,  Key_C_End,  Key_A_End },
+  { VK_HOME,      Key_Home,   Key_S_Home, Key_C_Home, Key_A_Home },
+  { VK_LEFT,      Key_Lft,    Key_S_Lft,  Key_C_Lft,  Key_A_Lft },
+  { VK_UP,        Key_Up,     Key_S_Up,   Key_C_Up,   Key_A_Up },
+  { VK_RIGHT,     Key_Rgt,    Key_S_Rgt,  Key_C_Rgt,  Key_A_Rgt },
+  { VK_DOWN,      Key_Dwn,    Key_S_Dwn,  Key_C_Dwn,  Key_A_Dwn },
+  { VK_INSERT,    Key_Ins,    Key_S_Ins,  Key_C_Ins,  Key_A_Ins },
+  { VK_DELETE,    Key_Del,    Key_S_Del,  Key_C_Del,  Key_A_Del },
+  { VK_CLEAR,     Key_5Num,   Key_S_5Num, Key_C_5Num, Key_A_5Num },
+  { VK_NUMPAD0,   Key_0,      Key_S_Ins,  Key_C_Ins,  -1 },
+  { VK_NUMPAD1,   Key_1,      Key_S_End,  Key_C_End,  -1 },
+  { VK_NUMPAD2,   Key_2,      Key_S_Dwn,  Key_C_Dwn,  -1 },
+  { VK_NUMPAD3,   Key_3,      Key_S_PgDn, Key_C_PgDn, -1 },
+  { VK_NUMPAD4,   Key_4,      Key_S_Lft,  Key_C_Lft,  -1 },
+  { VK_NUMPAD5,   Key_5,      Key_S_5Num, Key_C_5Num, -1 },
+  { VK_NUMPAD6,   Key_6,      Key_S_Rgt,  Key_C_Rgt,  -1 },
+  { VK_NUMPAD7,   Key_7,      Key_S_Home, Key_C_Home, -1 },
+  { VK_NUMPAD8,   Key_8,      Key_S_Up,   Key_C_Up,   -1 },
+  { VK_NUMPAD9,   Key_9,      Key_S_PgUp, Key_C_PgUp, -1 },
+  { VK_MULTIPLY,  Key_Multi,  Key_Multi,  Key_Multi,  Key_Multi },
+  { VK_ADD,       Key_Plus,   Key_Plus,   Key_Plus,   Key_Plus },
+  { VK_SUBTRACT,  Key_Minus,  Key_Minus,  Key_Minus,  Key_Minus },
+  { VK_DECIMAL,   Key_Dot,    Key_Dot,    Key_C_Del,  Key_A_Del },
+  { VK_DIVIDE,    Key_Sls,    Key_Sls,    Key_Sls,    Key_Sls },
+  { VK_F1,        Key_F1,     Key_S_F1,   Key_C_F1,   Key_A_F1 },
+  { VK_F2,        Key_F2,     Key_S_F2,   Key_C_F2,   Key_A_F2 },
+  { VK_F3,        Key_F3,     Key_S_F3,   Key_C_F3,   Key_A_F3 },
+  { VK_F4,        Key_F4,     Key_S_F4,   Key_C_F4,   Key_A_F4 },
+  { VK_F5,        Key_F5,     Key_S_F5,   Key_C_F5,   Key_A_F5 },
+  { VK_F6,        Key_F6,     Key_S_F6,   Key_C_F6,   Key_A_F6 },
+  { VK_F7,        Key_F7,     Key_S_F7,   Key_C_F7,   Key_A_F7 },
+  { VK_F8,        Key_F8,     Key_S_F8,   Key_C_F8,   Key_A_F8 },
+  { VK_F9,        Key_F9,     Key_S_F9,   Key_C_F9,   Key_A_F9 },
+  { VK_F10,       Key_F10,    Key_S_F10,  Key_C_F10,  Key_A_F10 },
+  { VK_F11,       Key_F11,    Key_S_F11,  Key_C_F11,  Key_A_F11 },
+  { VK_F12,       Key_F12,    Key_S_F12,  Key_C_F12,  Key_A_F12 },
 
-  { VK_PRIOR,     EXT(73),    EXT(73|0x80),    EXT(132),   EXT(153) },
-  { VK_NEXT,      EXT(81),    EXT(81|0x80),    EXT(118),   EXT(161) },
-  { VK_END,       EXT(79),    EXT(79|0x80),    EXT(117),   EXT(159) },
-  { VK_HOME,      EXT(71),    EXT(71|0x80),    EXT(119),   EXT(151) },
-  { VK_LEFT,      EXT(75),    EXT(75|0x80),    EXT(115),   EXT(155) },
-  { VK_UP,        EXT(72),    EXT(72|0x80),    EXT(141),   EXT(152) },
-  { VK_RIGHT,     EXT(77),    EXT(77|0x80),    EXT(116),   EXT(157) },
-  { VK_DOWN,      EXT(80),    EXT(80|0x80),    EXT(145),   EXT(160) },
-  { VK_INSERT,    EXT(82),    EXT(82|0x80),    EXT(146),   EXT(162) },
-  { VK_DELETE,    EXT(83),    EXT(83|0x80),    EXT(147),   EXT(163) },
-  { VK_NUMPAD0,   '0',        EXT(82|0x80),    EXT(146),   -1       },
-  { VK_NUMPAD1,   '1',        EXT(79|0x80),    EXT(117),   -1       },
-  { VK_NUMPAD2,   '2',        EXT(80|0x80),    EXT(145),   -1       },
-  { VK_NUMPAD3,   '3',        EXT(81|0x80),    EXT(118),   -1       },
-  { VK_NUMPAD4,   '4',        EXT(75|0x80),    EXT(115),   -1       },
-  { VK_NUMPAD5,   '5',        EXT(76),         EXT(143),   -1       },
-  { VK_NUMPAD6,   '6',        EXT(77|0x80),    EXT(116),   -1       },
-  { VK_NUMPAD7,   '7',        EXT(71|0x80),    EXT(119),   -1       },
-  { VK_NUMPAD8,   '8',        EXT(72|0x80),    EXT(141),   -1       },
-  { VK_NUMPAD9,   '9',        EXT(73|0x80),    EXT(132),   -1       },
-  { VK_MULTIPLY,  '*',        '*',        EXT(150),   EXT(55)  },
-  { VK_ADD,       '+',        '+',        EXT(144),   EXT(78)  },
-  { VK_SUBTRACT,  '-',        '-',        EXT(142),   EXT(74)  },
-  { VK_DECIMAL,   '.',        '.',        EXT(83),    EXT(147) },
-  { VK_DIVIDE,    '/',        '/',        EXT(149),   EXT(164) },
-  { VK_F1,        EXT(59),    EXT(84),    EXT(94),    EXT(104) },
-  { VK_F2,        EXT(60),    EXT(85),    EXT(95),    EXT(105) },
-  { VK_F3,        EXT(61),    EXT(86),    EXT(96),    EXT(106) },
-  { VK_F4,        EXT(62),    EXT(87),    EXT(97),    EXT(107) },
-  { VK_F5,        EXT(63),    EXT(88),    EXT(98),    EXT(108) },
-  { VK_F6,        EXT(64),    EXT(89),    EXT(99),    EXT(109) },
-  { VK_F7,        EXT(65),    EXT(90),    EXT(100),   EXT(110) },
-  { VK_F8,        EXT(66),    EXT(91),    EXT(101),   EXT(111) },
-  { VK_F9,        EXT(67),    EXT(92),    EXT(102),   EXT(112) },
-  { VK_F10,       EXT(68),    EXT(93),    EXT(103),   EXT(113) },
-  { VK_F11,       EXT(133),   EXT(135),   EXT(137),   EXT(139) },
-  { VK_F12,       EXT(134),   EXT(136),   EXT(138),   EXT(140) },
-
-  { -1,           -1,         -1,         -1,         -1       }  // THE END
+  { -1,           -1,         -1,         -1,         -1 }  // THE END
 };
 
 

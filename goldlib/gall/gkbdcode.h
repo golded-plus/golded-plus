@@ -110,7 +110,7 @@
 #define  Key_MinG    0x4A2D          //   <->                - G - -
 #define  Key_Dot     0x342E          //   <.>                - - - -
 #define  Key_BS      0x0E08          //   <BS>               - - - -
-#define  Key_Cent    0x4C00          //   <Cent>             N - E -
+#define  Key_5Num    0x4C00          //   <Cent>             N - E -
 #define  Key_Del     0x5300          //   <Del>              N - - -
 #define  Key_DelG    0x53E0          //   <Del>     Grey     - G E T
 #define  Key_Dwn     0x5000          //   <Down>             N - - -

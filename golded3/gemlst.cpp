@@ -389,8 +389,10 @@ bool GMsgList::handle_key() {
       {
         GMenuQuit MenuQuit;
         aborted = gkbd.quitall = (MenuQuit.Run());
-        if(gkbd.quitall)
+        if(gkbd.quitall) {
           AA->bookmark = AA->Msgn.CvtReln(msgmark2);
+          return false;
+        }
       }
       break;
 
@@ -1031,6 +1033,8 @@ bool GThreadlist::handle_key() {
       {
         GMenuQuit MenuQuit;
         aborted = gkbd.quitall = (MenuQuit.Run());
+        if(gkbd.quitall)
+          return false;
       }
       break;
 

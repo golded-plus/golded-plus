@@ -12,6 +12,16 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+! URLHANDLER now accepts externutil options just like EXTERNUTIL (with
+  the exception of utility number of course), and global EXTERNOPTIONS
+  are no longer affected to the utility execution behaviour.
+
+- Few fixes to the keyboard. Key5 should work now.
+
+- Fixed LISTaskexit operation.
+
+- Fixed default writetemplate.
+
 + Added FileToggleMarkAll to the goldkeys.cfg to invert all selected
   files on the file selection panel. Default assignment is '*'.
 
