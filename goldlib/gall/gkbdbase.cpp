@@ -1230,11 +1230,6 @@ gkey kbxget_raw(int mode) {
         }
         else {
           ReadConsoleInput(gkbd_hin, &inp, 1, &nread);
-//          if(is_oem_key(VKC) and (ascii == '\0')) {
-//            do {
-//              PeekConsoleInput(gkbd_hin, &inp, 1, &nread);
-//            } while(nread and (inp.EventType != KEY_EVENT));
-//          }
         }
 
         switch(VKC) {
