@@ -816,7 +816,7 @@ void ChangeMsg() {
           if(u->addr.net != GFTN_ALL or reader_msg->orig.net == 0 or not AA->isnet())
             reader_keyok = NO;
           else {
-            for(vector<gaka>::iterator x = CFG->aka.begin(); x != CFG->aka.begin(); x++) {
+            for(vector<gaka>::iterator x = CFG->aka.begin(); x != CFG->aka.end(); x++) {
               if(reader_msg->orig.match(x->addr)) {
                 reader_keyok = NO;
                 break;

@@ -22,6 +22,13 @@ ______________________________________________________________________
 - Fixed small bug regarding cursor position after deleting stuff
   in input fields.
 
+- Fixed crash after saving message to text file.
+
+- Fixed incorrect Editcompletion behaviour in overwrite mode.
+
+- Fixed incorrect "this message is not from you" message appearance
+  in netmail areas.
+
 ______________________________________________________________________
 
              Notes for GoldED+ 1.1.4.3, February xx 2000

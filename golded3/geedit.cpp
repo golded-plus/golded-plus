@@ -1937,6 +1937,9 @@ void IEclass::statusline() {
         uint tlen = strlen(trig);
         if(col >= tlen) {
           if(strneql(trig, currline->txt.c_str()+col-tlen, tlen)) {
+	    int saved_insert = insert;
+	    insert = true;
+	    batch_mode = BATCH_MODE;
             uint n;
             for(n=0; n<tlen; n++)
               DelLeft();
@@ -1945,6 +1948,7 @@ void IEclass::statusline() {
             for(n=0; n<clen; n++)
               insertchar(*cptr++);
             HandleGEvent(EVTT_EDITCOMPLETION);
+	    insert = saved_insert;
             break;
           }
         }
