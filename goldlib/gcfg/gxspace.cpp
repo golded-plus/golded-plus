@@ -247,7 +247,7 @@ void gareafile::ReadSpaceCtl(const char* file) {
 
     while(fgets(buf, 4000, fp) != NULL) {
 
-      aa.type = 0xFF;
+      aa.type = GMB_NONE;
 
       char* key;
       char* val = buf;
@@ -285,7 +285,7 @@ void gareafile::ReadSpaceCtl(const char* file) {
           break;
       }
 
-      if(aa.type != 0xFF) {
+      if(aa.type != GMB_NONE) {
 
         aa.aka = primary_aka;
 

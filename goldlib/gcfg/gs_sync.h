@@ -54,6 +54,39 @@ const int LEN_SQWKNAME = 10;
 
 //  ------------------------------------------------------------------
 
+// Bit values for sub[x].misc
+const int SUB_NSCAN = (1L<<0);    // Scan this sub-board for new msgs
+const int SUB_YSCAN = (1L<<1);    // Scan for new messages to you only
+const int SUB_SSCAN = (1L<<2);    // Scan this sub-board for msgs to you
+const int SUB_QNET = (1L<<3);     // Sub-board is netted via QWK network
+const int SUB_PNET = (1L<<4);     // Sub-board is netted via PostLink
+const int SUB_FIDO = (1L<<5);     // Sub-board is netted via FidoNet
+const int SUB_PRIV = (1L<<6);     // Allow private posts on sub
+const int SUB_PONLY = (1L<<7);    // Private posts only
+const int SUB_ANON = (1L<<8);     // Allow anonymous posts on sub
+const int SUB_AONLY = (1L<<9);    // Anonymous only
+const int SUB_NAME = (1L<<10);    // Must use real names
+const int SUB_DEL = (1L<<11);     // Allow users to delete messages
+const int SUB_DELLAST = (1L<<12); // Allow users to delete last msg only
+const int SUB_FORCED = (1L<<13);  // Sub-board is forced scanning
+const int SUB_NOTAG = (1L<<14);   // Don't add tag or origin lines
+const int SUB_TOUSER = (1L<<15);  // Prompt for to user on posts
+const int SUB_ASCII = (1L<<16);   // ASCII characters only
+const int SUB_QUOTE = (1L<<17);   // Allow online quoting
+const int SUB_NSDEF = (1L<<18);   // New-Scan on by default
+const int SUB_UNUSED = (1L<<19);  // Currently unused
+const int SUB_FAST = (1L<<20);    // Fast storage mode
+const int SUB_KILL = (1L<<21);    // Kill read messages automatically
+const int SUB_KILLP = (1L<<22);   // Kill read pvt messages automatically
+const int SUB_SYSPERM =(1L<<23);  // Sysop messages are permament
+const int SUB_GATE = (1L<<24);    // Gateway between Network types
+const int SUB_LZH = (1L<<25);     // Use LZH compression for msgs
+const int SUB_SSDEF = (1L<<26);   // Default ON for Scan for Your msgs
+const int SUB_HYPER = (1L<<27);   // Hyper allocation
+
+
+//  ------------------------------------------------------------------
+
 typedef struct {                // Message group info
   char   lname[LEN_GLNAME+1],   // Short name
          sname[LEN_GSNAME+1];   // Long name

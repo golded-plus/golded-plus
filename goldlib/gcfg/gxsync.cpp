@@ -91,7 +91,7 @@ void gareafile::ReadSynchronet(char* tag) {
         aa.type = GMB_ECHO;
         aa.attr = attribsecho;
         aa.msgbase = GMB_SMB;
-        aa.setechoid(sub.code);
+        aa.setechoid((sub.misc & SUB_FIDO) ? sub.sname : sub.code);
         aa.setdesc(sub.lname);
         aa.groupid = 0x8000 + sub.grp;
         if(*sub.data_dir)

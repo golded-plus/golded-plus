@@ -21,7 +21,7 @@ LIBEXT=.a
 CXX=$(CC)
 else
 ifneq ($(DJGPP),)
-CAT=type
+CAT=command.com /c type
 CC=gcc
 CXX=gpp
 AR=ar

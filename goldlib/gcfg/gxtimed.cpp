@@ -83,7 +83,7 @@ void gareafile::ReadTimedFile(char* path, char* file, char* options, char* origi
       char* ptr = strskip_wht(strtrim(buf));
       if(*ptr != ';' and *ptr) {
 
-        aa.type = 0xFF;
+        aa.type = GMB_NONE;
 
         char* key;
         char* val = ptr;
@@ -161,7 +161,7 @@ void gareafile::ReadTimedFile(char* path, char* file, char* options, char* origi
             break;
         }
 
-        if(aa.type != 0xFF) {
+        if(aa.type != GMB_NONE) {
 
           // Get description
           getkeyval(&key, &val);

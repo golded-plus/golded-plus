@@ -12,6 +12,11 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ Added EchoAreaDefaults support to Fidoconfig parser.
+
++ Synchronet configuration parser now will use short description
+  instead of internal code as echoid for the Fidonet areas.
+
 - Fixed keyboard macro handling broken somewhere in pre-1.1.5s.
 
 - Fixed Synchronet configuration parser :-)

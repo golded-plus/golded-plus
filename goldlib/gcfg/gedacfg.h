@@ -67,6 +67,8 @@ const uint GMB_NEWSGROUP = 0x0008;
 const uint GMB_LOCAL     = 0x0010;
 const uint GMB_QWK       = 0x1000;
 const uint GMB_SOUP      = 0x2000;
+const uint GMB_NONE      = 0x00ff;
+const uint GMB_DEFAULT   = 0xf00f;
 
 
 //  ------------------------------------------------------------------

@@ -77,6 +77,84 @@ const char* AreaCfg::setorigin(const char* s) {
 
 
 //  ------------------------------------------------------------------
+//  Reset area data
+
+void AreaCfg::reset() {
+
+  *echoid = *desc = *path = NUL;
+  origin = "";
+  areaid = 0;
+  groupid = 0;
+  originno = 0;
+  board = 0;
+  msgbase = 0;
+  aka.reset();
+  type = GMB_NONE;
+  scan = 0;
+  scanexcl = 0;
+  scanincl = 0;
+  pmscan = 0;
+  pmscanexcl = 0;
+  pmscanincl = 0;
+  attr.reset();
+}
+
+
+//  ------------------------------------------------------------------
+//  Set area description
+
+const char* AreaCfg::setdesc(const char* _desc) {
+
+  return strxcpy(desc, _desc, sizeof(Desc));
+}
+
+
+//  ------------------------------------------------------------------
+//  Set area echoid
+
+const char* AreaCfg::setechoid(const char* _echoid) {
+
+  return strxcpy(echoid, _echoid, sizeof(Echo));
+}
+
+
+//  ------------------------------------------------------------------
+//  Set area path/filename
+
+const char* AreaCfg::setpath(const char* _path) {
+
+  return StripQuotes(strxcpy(path, _path, sizeof(Path)));
+}
+
+
+//  ------------------------------------------------------------------
+
+AreaCfg& AreaCfg::operator=(const AreaCfg& AC) {
+
+  strcpy(this->echoid, AC.echoid);
+  strcpy(this->desc, AC.desc);
+  strcpy(this->path, AC.path);
+  this->origin = AC.origin;
+  this->areaid = AC.areaid;
+  this->groupid = AC.groupid;
+  this->originno = AC.originno;
+  this->board = AC.board;
+  this->msgbase = AC.msgbase;
+  this->aka = AC.aka;
+  this->type = AC.type;
+  this->scan = AC.scan;
+  this->scanexcl = AC.scanexcl;
+  this->scanincl = AC.scanincl;
+  this->pmscan = AC.pmscan;
+  this->pmscanexcl = AC.pmscanexcl;
+  this->pmscanincl = AC.pmscanincl;
+  this->attr = AC.attr;
+
+  return *this;
+}
+
+
+//  ------------------------------------------------------------------
 
 EchoListClass::EchoListClass() {
 
@@ -470,14 +548,6 @@ bool gareafile::ReadAreafile(word crc, char* parameters) {
   }
 
   return true;
-}
-
-
-//  ------------------------------------------------------------------
-
-AreaCfg& AreaCfg::operator=(const AreaCfg&) {
-
-  return *this;
 }
 
 

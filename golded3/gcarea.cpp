@@ -971,88 +971,6 @@ void AreaList::GetAreaDesc(char* val) {
 
 
 //  ------------------------------------------------------------------
-//  Reset area data
-
-void AreaCfg::reset() {
-
-  *echoid = *desc = *path = NUL;
-  origin = "";
-  areaid = 0;
-  groupid = 0;
-  originno = 0;
-  board = 0;
-  msgbase = 0;
-  aka.reset();
-  type = 0;
-  scan = 0;
-  scanexcl = 0;
-  scanincl = 0;
-  pmscan = 0;
-  pmscanexcl = 0;
-  pmscanincl = 0;
-  attr.reset();
-}
-
-
-//  ------------------------------------------------------------------
-//  Set area description
-
-const char* AreaCfg::setdesc(const char* _desc) {
-
-  return strxcpy(desc, _desc, sizeof(Desc));
-}
-
-
-//  ------------------------------------------------------------------
-//  Set area echoid
-
-const char* AreaCfg::setautoid(const char* _echoid) {
-
-  return strxcpy(echoid, CFG->areaautoid ? "" : _echoid, sizeof(Echo));
-}
-
-
-//  ------------------------------------------------------------------
-//  Set area echoid
-
-const char* AreaCfg::setechoid(const char* _echoid) {
-
-  return strxcpy(echoid, _echoid, sizeof(Echo));
-}
-
-
-//  ------------------------------------------------------------------
-//  Set area path/filename
-
-const char* AreaCfg::setpath(const char* _path) {
-
-  return StripQuotes(strxcpy(path, _path, sizeof(Path)));
-}
-
-
-//  ------------------------------------------------------------------
-//  Set area origin
-
-int AreaCfgBase::setorigin(std::string& _origin) {
-
-  if(not strblank(_origin.c_str())) {
-
-    // Check if it already exists
-    gstrarray::iterator n;
-    for(n = CFG->origin.begin(), originno = 0; n != CFG->origin.end(); originno++, n++)
-      if(*n == _origin)
-        return originno;
-
-    // Not found, so add it
-    CfgOrigin(_origin.c_str());
-    // originno = CFG->origin.size()-1;
-  }
-
-  return originno;
-}
-
-
-//  ------------------------------------------------------------------
 
 Area::Area(gmo_area* a) {
 
@@ -1116,6 +1034,37 @@ char* MapPath(char* map, bool reverse) {
     }
   }
   return map;
+}
+
+
+//  ------------------------------------------------------------------
+//  Set area origin
+
+int AreaCfgBase::setorigin(std::string& _origin) {
+
+  if(not strblank(_origin.c_str())) {
+
+    // Check if it already exists
+    gstrarray::iterator n;
+    for(n = CFG->origin.begin(), originno = 0; n != CFG->origin.end(); originno++, n++)
+      if(*n == _origin)
+        return originno;
+
+    // Not found, so add it
+    CfgOrigin(_origin.c_str());
+    // originno = CFG->origin.size()-1;
+  }
+
+  return originno;
+}
+
+
+//  ------------------------------------------------------------------
+//  Set area echoid
+
+const char* AreaCfg::setautoid(const char* _echoid) {
+
+  return strxcpy(echoid, CFG->areaautoid ? "" : _echoid, sizeof(Echo));
 }
 
 

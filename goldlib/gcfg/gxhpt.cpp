@@ -168,8 +168,9 @@ void gareafile::ReadHPTFile(char* path, char* file, char* options, char* origin,
   const word CRC_SYSOP = 0x967F;
   const word CRC_VERSION = 0xF78F;
   const word CRC_COMMENTCHAR = 0xE2CC;
+  const word CRC_ECHOAREADEFAULTS = 0x2CBB;
 
-  AreaCfg aa;
+  AreaCfg aa, ad;
   Path buf2;
 
   FILE* fp = fsopen(file, "rb", sharemode);
@@ -180,6 +181,7 @@ void gareafile::ReadHPTFile(char* path, char* file, char* options, char* origin,
       std::cout << "* Reading " << file << std::endl;
 
     aa.reset();
+    ad.reset();
 
     std::string s;
     while(ReadHPTLine(fp, &s)) {
@@ -189,7 +191,9 @@ void gareafile::ReadHPTFile(char* path, char* file, char* options, char* origin,
         char *alptr = throw_xstrdup(s.c_str());
         char *ptr = alptr;
 
-        aa.type = 0xFF;
+        aa.type = GMB_NONE;
+        aa.msgbase = fidomsgtype;
+        aa.groupid = group;
 
         char* key;
         char* val = ptr;
@@ -235,18 +239,30 @@ void gareafile::ReadHPTFile(char* path, char* file, char* options, char* origin,
             aa.type = GMB_LOCAL;
             break;
           case CRC_ECHOAREA:
+            aa = ad;
             aa.type = GMB_ECHO;
+            break;
+          case CRC_ECHOAREADEFAULTS:
+            ad.reset();
+            aa.type = GMB_DEFAULT;
             break;
         }
 
-        if(aa.type != 0xFF) {
+        if(aa.type != GMB_NONE) {
 
-          // Get echoid
-          gettok(&key, &val);
-          aa.setechoid(key);
+          if(aa.type == GMB_DEFAULT) {
 
-          // Get path
-          gettok(&key, &val);
+             *key = NUL;
+          }
+          else {
+
+            // Get echoid
+            gettok(&key, &val);
+            aa.setechoid(key);
+
+            // Get path
+            gettok(&key, &val);
+          }
 
           // If not pass-through
           if(not strieql("Passthrough", key)) {
@@ -254,8 +270,6 @@ void gareafile::ReadHPTFile(char* path, char* file, char* options, char* origin,
             if(strchg(key, '[', '%') != 0)
               strchg(key, ']', '%');
             aa.setpath(key);
-            aa.msgbase = fidomsgtype;
-            aa.groupid = group;
 
             gettok(&key, &val);
 
@@ -316,19 +330,27 @@ void gareafile::ReadHPTFile(char* path, char* file, char* options, char* origin,
               gettok(&key, &val);
             }
                                 
+            aa.setorigin(origin);
+
             switch(aa.type) {
               case GMB_NET:
                 aa.attr = attribsnet;
+                AddNewArea(aa);
                 break;
               case GMB_ECHO:
                 aa.attr = attribsecho;
+                AddNewArea(aa);
                 break;
               case GMB_LOCAL:
                 aa.attr = attribslocal;
+                AddNewArea(aa);
+                break;
+              case GMB_DEFAULT:
+                ad = aa;
+                break;
+              default:
                 break;
             }
-            aa.setorigin(origin);
-            AddNewArea(aa);
           }
 
           aa.reset();

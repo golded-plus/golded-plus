@@ -90,7 +90,7 @@ void gareafile::ReadCrashmailCfg(const char* file) {
     size_t jbcpos;
     AreaCfg aa;
     aa.reset();
-    aa.type = 0xff;
+    aa.type = GMB_NONE;
     address[0] = NUL;
     domain[0] = NUL;
 
@@ -140,7 +140,7 @@ void gareafile::ReadCrashmailCfg(const char* file) {
           ReadCrashmail(path);
           break;
         case CRC_NETMAILDIR:
-          if(aa.type != 0xff) {
+          if(aa.type != GMB_NONE) {
             if(not unconfirmed)
               AddNewArea(aa);
             aa.reset();
@@ -159,7 +159,7 @@ void gareafile::ReadCrashmailCfg(const char* file) {
         case CRC_AREA:
         case CRC_NETMAIL:
         case CRC_LOCALAREA:
-          if(aa.type != 0xff) {
+          if(aa.type != GMB_NONE) {
             if(not unconfirmed)
               AddNewArea(aa);
             aa.reset();
@@ -167,7 +167,7 @@ void gareafile::ReadCrashmailCfg(const char* file) {
           unconfirmed = false;
           jbstrcpy(tmp, buf, 100, &jbcpos);
           if(strieql(tmp, "DEFAULT") or strnieql(tmp, "DEFAULT_", 8)) {
-            aa.type = 0xff;
+            aa.type = GMB_NONE;
             break;
           }
           switch(crc16) {
@@ -201,10 +201,10 @@ void gareafile::ReadCrashmailCfg(const char* file) {
               break;
             default:
               aa.reset();
-              aa.type = 0xff;
+              aa.type = GMB_NONE;
               break;
           }
-          if(aa.type == 0xff)
+          if(aa.type == GMB_NONE)
             break;
           jbstrcpy(path, buf, sizeof(Path), &jbcpos);
           aa.setpath(path);
@@ -226,7 +226,7 @@ void gareafile::ReadCrashmailCfg(const char* file) {
           break;
       }
     }
-    if(aa.type != 0xff) {
+    if(aa.type != GMB_NONE) {
       if(not unconfirmed) {
         AddNewArea(aa);
       }

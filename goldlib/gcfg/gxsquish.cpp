@@ -63,7 +63,7 @@ void gareafile::ReadSquishFile(char* path, char* file, char* options, char* orig
       char* ptr = strskip_wht(strtrim(buf));
       if(*ptr != ';' and *ptr) {
 
-        aa.type = 0xFF;
+        aa.type = GMB_NONE;
 
         char* key;
         char* val = ptr;
@@ -97,7 +97,7 @@ void gareafile::ReadSquishFile(char* path, char* file, char* options, char* orig
             break;
         }
 
-        if(aa.type != 0xFF) {
+        if(aa.type != GMB_NONE) {
 
           // Get echoid
           getkeyval(&key, &val);
