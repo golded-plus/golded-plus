@@ -44,7 +44,7 @@ ulong getMsgId() {
   ulong id;
   char *err;
 
-  if(CFG->seqmsgid and not ((CFG->seqmsgid == MAYBE) and (*CFG->seqdir == NUL))) {
+  if((CFG->seqmsgid == YES) or ((CFG->seqmsgid == MAYBE) and (*CFG->seqdir != NUL))) {
     id = GenMsgIdEx(CFG->seqdir, CFG->seqoutrun, getClassicMsgId, &err);
     if(err) {
       LOG.printf("* Warning, SeqMsgId failed: %s, fall to classic algorythm!", err);
