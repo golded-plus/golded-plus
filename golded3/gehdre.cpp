@@ -408,8 +408,6 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view) {
       break;
   }
 
-  int help = gwin.help;
-
   ChgAttrs(true, msg);
 
   whelpdef(CFG->helpged, Key_F1, C_HELPB, C_HELPW, C_HELPQ, C_HELPS, NULL);
@@ -427,8 +425,6 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view) {
   vcurhide();
 
   ChgAttrs(false, msg);
-
-//  whelppcat(help);
 
   if(not hedit.dropped and not gkbd.quitall) {
 
