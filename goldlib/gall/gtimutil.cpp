@@ -67,16 +67,12 @@ const char* gmonths[] = {
 
 int tzoffset() {
 
-  time_t t = time(NULL);
-  struct tm *a = localtime(&t);
-  int tz = a->tm_hour * 100 + a->tm_min;
-  a = gmtime(&t);
-  tz -= a->tm_hour * 100 + a->tm_min;
-  if(tz < -24*100)
-    tz += 24*100;
-  else if(tz > 24*100)
-    tz -= 24*100;
-  return tz;
+  time_t t1 = time(NULL);
+  struct tm *tp = gmtime(&t1);
+  tp->tm_isdst=-1;
+  time_t t2 = mktime(tp);
+  int dt = (int)(t1 - t2);
+  return (dt / 3600) * 100 + (dt % 3600) / 60;
 }
 
 
