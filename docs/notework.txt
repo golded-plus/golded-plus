@@ -12,6 +12,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ Added -pass switch support to Fidoconfig parser.
+
 - Fixed bug in HPT config parser: areas which was not explicitly
   given messagebase type was omited.
 

@@ -326,6 +326,11 @@ void gareafile::ReadHPTFile(char* path, char* file, char* origin, int group) {
                   gettok(&key, &val);
                   aa.setdesc(key);
                 }
+                else if (strieql(opt, "pass")) {
+
+                  aa.type = GMB_NONE;
+                  break;
+                }
               }
 
               gettok(&key, &val);
