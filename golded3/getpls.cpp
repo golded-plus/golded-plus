@@ -80,7 +80,6 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
   char initials[10];
   char quotestr[100];
   char qbuf[100];
-  int chg;
   uint len;
   int y;
   int tmptpl = NO;
@@ -309,7 +308,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
   while(fgets(buf, sizeof(buf), fp)) {
     ptr = strskip_wht(buf);
     if(*ptr != ';') {
-      chg = NO;
+      bool chg = false;
       quotebufline = NO;
       ptr = buf;
       int token = end_token;
@@ -352,21 +351,21 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
             case TPLTOKEN_CHANGED:
               if(mode != MODE_CHANGE)
                 goto loop_next;
-              chg = YES;
+              chg = true;
               token = end_token;
               break;
 
             case TPLTOKEN_HEADER:
               if((mode != MODE_HEADER) and (mode != MODE_WRITEHEADER))
                 goto loop_next;
-              chg = YES;
+              chg = true;
               token = end_token;
               break;
 
             case TPLTOKEN_WRITE:
               if((mode != MODE_WRITE) and (mode != MODE_WRITEHEADER))
                 goto loop_next;
-              chg = YES;
+              chg = true;
               token = end_token;
               break;
 
@@ -506,7 +505,11 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
             continue;
 
           case TPLTOKEN_RANDOM:
-            if(mode != MODE_QUOTEBUF) {
+            if((mode != MODE_QUOTEBUF) and
+               (not chg and ((mode != MODE_CHANGE) and
+                             (mode != MODE_WRITEHEADER) and
+                             (mode != MODE_WRITE) and
+                             (mode != MODE_HEADER)))) {
               strtrim(ptr);
               ptr = strskip_wht(strskip_txt(ptr));
               if(*ptr) {
@@ -605,7 +608,8 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
             continue;
 
           case TPLTOKEN_QUOTE:
-            if(mode == MODE_QUOTE or mode == MODE_REPLYCOMMENT or mode == MODE_QUOTEBUF) {
+            if((mode == MODE_QUOTE) or (mode == MODE_REPLYCOMMENT) or
+               (mode == MODE_QUOTEBUF)) {
               y = 0;
               ptr = strskip_wht(oldmsg->By());
               while(*ptr) {
@@ -771,9 +775,9 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
         }
       }
 
-      if((mode == MODE_CHANGE) or (mode == MODE_WRITEHEADER) or (mode == MODE_WRITE) or (mode == MODE_HEADER))
-        if(chg == NO)
-          continue;
+      if(not chg and ((mode == MODE_CHANGE) or (mode == MODE_WRITEHEADER) or
+                      (mode == MODE_WRITE) or (mode == MODE_HEADER)))
+        continue;
       if((mode == MODE_QUOTEBUF) and not quotebufline)
         continue;
       TokenXlat(mode, buf, msg, oldmsg, origarea);
@@ -794,6 +798,13 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
     ctrlinfo = AA->Ctrlinfo();
     ctrlinfo |= CI_TAGL;
     if(ctrlinfo & (CI_TAGL|CI_TEAR|CI_ORIG)) {
+
+      // Add CR if it missed in template
+      if(msg->txt[pos-1] != CR) {
+        size++;
+        msg->txt[pos++] = CR;
+      }
+
       do {
         if((ctrlinfo & CI_ORIG) and not (ctrlinfo & CI_TEAR) and not (ctrlinfo & CI_TAGL)) {
           sprintf(buf, " * Origin: %s", msg->origin);
