@@ -15,18 +15,18 @@ FDEPPATH=$(TOP)/$(DEPPATH)/$(PLATFORM)
 bld$(PLATFORM).inc: $(TARGET).all
 	@echo making sourcelist
 	@grep -w $(PLATFORM) $< \
-		| sed 's;^\([[:alnum:]_]*\)[ ]*\([[:alnum:]_]*\).*;SOURCES+=\1.\2;' > $@
+		| sed 's;^\([[:alnum:]_]*\)[ ]*\([[:alnum:]_]*\).*;SOURCES+=\1.\2;' > $@; [ -s $@ ] || rm -f $@
 
 ifeq ($(FDEPPATH)/dep,$(wildcard $(FDEPPATH)/de?))
 $(FDEPPATH)/$(TARGET)/%.d: %.cpp
 	@echo making depends for $<
 	@$(SHELL) -ec '$(CXX) -c -M $(CPPFLAGS) $< \
-		| sed '\''s;\($*\)\$(OBJEXT)[ :]*;$(subst /,\/,$(FOBJPATH))\/\1\$(OBJEXT) $(subst /,\/,$@): ;g'\'' > $@'
+		| sed '\''s;\($*\)\$(OBJEXT)[ :]*;$(subst /,\/,$(FOBJPATH))\/\1\$(OBJEXT) $(subst /,\/,$@): ;g'\'' > $@; [ -s $@ ] || rm -f $@'
 
 $(FDEPPATH)/$(TARGET)/%.d: %.c
 	@echo making depends for $<
 	@$(SHELL) -ec '$(CC) -c -M $(CFLAGS) $< \
-		| sed '\''s;\($*\)\$(OBJEXT)[ :]*;$(subst /,\/,$(FOBJPATH))\/\1\$(OBJEXT) $(subst /,\/,$@): ;g'\'' > $@'
+		| sed '\''s;\($*\)\$(OBJEXT)[ :]*;$(subst /,\/,$(FOBJPATH))\/\1\$(OBJEXT) $(subst /,\/,$@): ;g'\'' > $@; [-s $@ ] || rm -f $@'
 endif
 
 $(FOBJPATH)/%$(OBJEXT): %.cpp
