@@ -460,7 +460,7 @@ static LangCrc LangCrcs[] = {
   { CRC_WT_ADDRESSBOOK        , NULL  , " Addressbook " },
   { CRC_WT_ADVANCEDSEARCH     , NULL  , " Advanced Search " },
   { CRC_IL_NOMOREMATCHES      , NULL  , " No more matches found " },
-  { CRC_WT_HEADEREDITHELP_1   , NULL  , " #F10: Nodelist " },
+  { CRC_WT_HEADEREDITHELP_1   , NULL  , " Shift-F10: Nodelist " },
   { CRC_WT_HEADEREDITHELP_2   , NULL  , " F10: Addressbook " },
   { CRC_WT_THREADLISTTITLE    , NULL  , " Message Thread List " },
   { CRC_WT_ADVANCEDMARKING    , NULL  , " Advanced Marking " },
