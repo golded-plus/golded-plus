@@ -2595,8 +2595,16 @@ void UndoStack::PlayItem() {
 
     uint curr_row_num = thisrow;
     uint curr_col_num = col;
-    currline = (item->action & PREV_LINE) ? item->line->next : item->line;
+    if((item->action & PREV_LINE) and item->line->next)
+      currline = item->line->next;
+    else
+      currline = item->line;
     editor->getthisrow(currline);
+
+    int _maxrow = maxrow;
+    if((item->action & PREV_LINE) and not item->line->next)
+      _maxrow--;
+
     col = item->col.num;
 
     if(curr_row_num != thisrow) {
@@ -2617,7 +2625,7 @@ void UndoStack::PlayItem() {
           }
         }
         else {
-          if(row < maxrow)
+          if(row < _maxrow)
             curr_row_num++, row++;
           else {
             Line* l = currline;
@@ -2635,6 +2643,10 @@ void UndoStack::PlayItem() {
     uint _prow = item->prow;
 
     if(undo_ready) {
+
+      if((item->action & PREV_LINE) and not item->line->next) {
+        row++; thisrow++; curr_row_num++;
+      }
 
       bool in_batch;
 

@@ -12,6 +12,10 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed undo of the last removed line.
+
+- Improved a bit speed for long messages handling.
+
 - When deleting marked messages the pointer moved always on the
   previous message instead of the next in movement direction.
 
