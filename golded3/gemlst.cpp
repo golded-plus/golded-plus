@@ -125,7 +125,7 @@ void GMsgList::close() {
 
 void GMsgList::update_marks(MLst *ml) {
 
-  ml->high = 0;
+  ml->high &= ~(MLST_HIGH_BOOK|MLST_HIGH_MARK);
 
   strcpy(ml->marks, "  ");
 
@@ -157,6 +157,7 @@ void GMsgList::ReadMlst(int n) {
 
   ml->msgno = AA->Msgn.CvtReln(n + 1);
 
+  ml->high = 0;
   update_marks(ml);
 
   if(AA->Msglistfast()) {

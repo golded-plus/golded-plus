@@ -1887,7 +1887,7 @@ void IEclass::ToLower() {
 
   GFTRK("EditToLower");
 
-  if(col >= currline->txt.length()) {
+  if(col < currline->txt.length()) {
     Undo->PushItem(EDIT_UNDO_OVR_CHAR);
     currline->txt[col] = tolower(currline->txt[col]);
   }
@@ -1902,7 +1902,7 @@ void IEclass::ToggleCase() {
 
   GFTRK("EditToggleCase");
 
-  if(col >= currline->txt.length()) {
+  if(col < currline->txt.length()) {
     Undo->PushItem(EDIT_UNDO_OVR_CHAR);
     if(toupper(currline->txt[col]) == currline->txt[col])
       currline->txt[col] = tolower(currline->txt[col]);
