@@ -689,7 +689,7 @@ static void read_nodelists() {
 
             if(ISTWIRLY(no)) {
               int len = 16-strlen(name);
-              std::cout << "\r* \\--" << name << std::setw((len > 0) ? len : 1) << " " << "Zone " << nlst.addr.zone << "\tNet " << nlst.addr.net << "\tNodes " << (ulong)no << std::flush;
+              std::cout << "\r* \\--" << name << std::setw((len > 0) ? len : 1) << " " << "Zone " << nlst.addr.zone << "   \tNet " << nlst.addr.net << "   \tNodes " << (ulong)no << "        " << std::flush;
             }
 
             bool include = true;
@@ -820,7 +820,7 @@ static void read_nodelists() {
 
             if(ISTWIRLY(nodes)) {
               int len = 16-strlen(name);
-              std::cout << "\r* \\--" << name << std::setw((len > 0) ? len : 1) << " " << "Nodes: " << (ulong)nodes << std::flush;
+              std::cout << "\r* \\--" << name << std::setw((len > 0) ? len : 1) << " " << "Nodes: " << (ulong)nodes << "        " << std::flush;
             }
 
             // Indicate userlist
