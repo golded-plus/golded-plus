@@ -927,23 +927,15 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
               throw_free(msg->inreplyto);
               msg->inreplyto = throw_strdup(omsg->messageid);
             }
-            if(CFG->switches.get(internetreply) or (*omsg->iaddr and (strlen(omsg->iaddr) >= sizeof(Name)))) {
-              strcpy(msg->iaddr, omsg->iaddr);
-              strcpy(msg->igate, omsg->igate);
-              if(*msg->igate) {
-                msg->dest.set(msg->igate);
-                char* ptr = strchr(msg->igate, ' ');
-                if(ptr) {
-                  if(not isuucp(msg->to))
-                    strcpy(msg->realto, msg->to);
-                  strcpy(msg->to, strskip_wht(ptr));
-                }
+            strcpy(msg->igate, omsg->igate);
+            if(*msg->igate) {
+              msg->dest.set(msg->igate);
+              char* ptr = strchr(msg->igate, ' ');
+              if(ptr) {
+                if(not isuucp(msg->to))
+                  strcpy(msg->realto, msg->to);
+                strcpy(msg->to, strskip_wht(ptr));
               }
-            }
-            else if(not AA->isinternet() and *omsg->iaddr and (strlen(omsg->iaddr) < sizeof(Name))) {
-              if(not isuucp(msg->to))
-                strcpy(msg->realto, msg->to);
-              strcpy(msg->to, omsg->iaddr);
             }
           }
           else {

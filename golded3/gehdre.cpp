@@ -365,7 +365,10 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view, bool doedithdr) {
     to_addr = msg->idest;
   }
   else {
-    to_name = (*msg->iaddr and not *msg->igate) ? msg->iaddr : msg->to;
+    if(AA->isnet())
+      to_name = (*msg->iaddr and not *msg->igate) ? msg->iaddr : msg->to;
+    else
+      to_name = msg->to;
     if(msg->dest.valid())
       msg->dest.make_string(to_addr, msg->ddom);
   }
@@ -490,7 +493,7 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view, bool doedithdr) {
           strcpy(msg->iaddr, to_name.c_str());
         }
         else {
-          if(to_name.length() > 34) {
+          if(to_name.length() >= sizeof(Name)) {
             strcpy(msg->to, "UUCP");
             strcpy(msg->iaddr, to_name.c_str());
           }
@@ -502,6 +505,15 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view, bool doedithdr) {
       }
       else
         strcpy(msg->to, to_name.c_str());
+
+      if(not CFG->switches.get(internetreply)) {
+        if(*msg->iaddr and (strlen(msg->iaddr) < sizeof(Name))) {
+          if(not *msg->realto)
+            strcpy(msg->to, msg->realto);
+          strcpy(msg->to, msg->iaddr);
+          *msg->iaddr = NUL;
+        }
+      }
 
       if(*msg->iaddr) {
         if(not (CFG->internetgateexp == RFCAddress) and *msg->To() and (strpbrk(msg->iaddr, "<>()\"") == NULL) and not isuucp(msg->To())) {
