@@ -527,7 +527,7 @@ void CheckTick(gkey quitkey) {
   Clock idle_secs = (gkbd.tickvalue - gkbd.tickpress) / 10L;
 
   if(CFG->timeout) {
-    if(idle_secs >= CFG->timeout) {
+    if(((signed long)idle_secs > 0) and (idle_secs >= CFG->timeout)) {
       kbput(quitkey);
       return;
     }
