@@ -42,6 +42,10 @@
 #define mymkdir(path) mkdir(path, 0)
 #endif
 
+#ifndef O_BINARY
+#define O_BINARY 0
+#endif
+
 /* fexists.c */
 int fexist(const char *filename);
 long fsize(const char *filename);
