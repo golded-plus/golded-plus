@@ -219,8 +219,18 @@ void MakePathname(char* pathname, const char* path, const char* name) {
     return;
   }
 
+  bool have_path = false;
+
+  if(isslash(tmpname[0]))
+    have_path = true;
+  #if defined(__HAVE_DRIVES__)
+  // Check if it's a root path (X:\)
+  else if(isalpha(tmpname[0]) and (tmpname[1] == ':') and isslash(tmpname[2]))
+    have_path = true;  // The root is a directory
+  #endif
+
   strchg(tmpname, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
-  if(strpbrk(tmpname, GOLD_SLASH_STR)) {
+  if(have_path) {
     strxcpy(pathname, tmpname, sizeof(Path));
   }
   else {

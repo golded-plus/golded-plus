@@ -12,6 +12,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- When reading pathnames from Maximus 3 areafile GoldED+ had not
+  prepend Maximus path. Fixed.
+
 - Fixed undo of the last removed line.
 
 - Improved a bit speed for long messages handling.
