@@ -110,7 +110,7 @@ void gareafile::ReadSynchronet(char* tag) {
           break;
         AreaCfg aa;
         aa.reset();
-        aa.type = (sub_misc & SUB_QNET) ? GMB_LOCAL : GMB_ECHO;
+        aa.type = (sub.misc & SUB_QNET) ? GMB_LOCAL : GMB_ECHO;
         aa.attr = attribsecho;
         aa.msgbase = GMB_SMB;
         aa.setechoid((sub.misc & SUB_FIDO) ? sub.sname : sub.code);
