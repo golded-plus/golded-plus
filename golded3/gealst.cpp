@@ -131,28 +131,14 @@ extern "C" int AreaListCmp(const Area** __a, const Area** __b) {
         break;
       case 'G':
         {
-          int ga = A->groupid();
-          int gb = B->groupid();
+          register int ga = A->groupid();
+          register int gb = B->groupid();
 
-          char* p = strpbrk(AL.sortspec, "tT");
-          bool groupfirst = p > ptr;
-          bool ignoretype = p == NULL or groupfirst;
+          if((cmp = compare_groups(ga ? ga : INT_MAX, gb ? gb : INT_MAX)) != 0)
+            return cmp;
 
-          if(ga == 0 and ((not A->isseparator()^rev) or ignoretype))
-            ga = INT_MAX;
-          if(gb == 0 and ((not B->isseparator()^rev) or ignoretype))
-            gb = INT_MAX;
-
-          if((A->isseparator() or B->isseparator()) and ga == gb) {
-            if(groupfirst and (cmp = compare_two(CFG->areatypeorder[A->type()&0xFF], CFG->areatypeorder[B->type()&0xFF])) != 0)
-              return cmp;
-            if((cmp = compare_two(b->isseparator(), a->isseparator())) != 0)
-              return cmp;
-          }
-          else {
-            if((cmp = compare_groups(ga, gb)) != 0)
-              return cmp;
-          }
+          if((cmp = compare_two(b->isseparator(), a->isseparator())) != 0)
+            return cmp;
         }
         break;
       case 'M':
