@@ -630,8 +630,12 @@ void IEclass::BlockDel(Line* anchor) {
   // are now pointing where they should
 
   Undo->PushItem(EDIT_UNDO_DEL_TEXT, firstcutline, firstcol);
-  firstcutline->txt.erase(firstcol);
-  firstcutline->txt += lastcutline->txt.c_str()+lastcol;
+  if(firstcutline != lastcutline) {
+    firstcutline->txt.erase(firstcol);
+    firstcutline->txt += lastcutline->txt.c_str()+lastcol;
+  }
+  else
+    firstcutline->txt.erase(firstcol, lastcol);
   setlinetype(firstcutline);
   firstcutline->type &= ~GLINE_BLOK;
   blockcol = -1;

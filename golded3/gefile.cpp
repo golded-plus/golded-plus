@@ -897,8 +897,8 @@ void FileRequest(GMsg* msg) {
             msg->attr.frq1();
             ptr = freqfile[n]+1;      //  01234567890123456
             ptr2 = strskip_txt(ptr);
-            __extension__ char tmpbuf[ptr2-ptr1+1];
-            strxcpy(tmpbuf, ptr1, ptr2-ptr1+1);
+            __extension__ char tmpbuf[ptr2-ptr+1];
+            strxcpy(tmpbuf, ptr, ptr2-ptr+1);
             ptr2 = strskip_wht(ptr2);
             if((strlen(msg->re) + strlen(tmpbuf)) < sizeof(ISub)) {  // We can only fill one subject line in this version...
               strcat(msg->re, tmpbuf);
@@ -916,8 +916,8 @@ void FileRequest(GMsg* msg) {
           msg->attr.frq1();
           ptr = freqfile[crsr]+1;      //  01234567890123456
           ptr2 = strskip_txt(ptr);
-          __extension__ char tmpbuf[ptr2-ptr1+1];
-          strxcpy(tmpbuf, ptr1, ptr2-ptr1+1);
+          __extension__ char tmpbuf[ptr2-ptr+1];
+          strxcpy(tmpbuf, ptr, ptr2-ptr+1);
           ptr2 = strskip_wht(ptr2);
           if((strlen(msg->re) + strlen(tmpbuf)) < sizeof(ISub)) {  // We can only fill one subject line in this version...
             strcat(msg->re, tmpbuf);
