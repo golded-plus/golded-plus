@@ -110,11 +110,55 @@ void Container::StyleCodeHighlight(const char* text, int row, int col, bool dohi
                     prints(row, col+sclen, C_STYLE[colorindex], buf);
                     sclen += strlen(buf);
                     txptr = end;
+                    ptr = end-1;
                   }
                 }
               }
             }
-            ptr = end-1;
+          }
+        }
+      }
+      else {
+        if(not strnicmp(ptr, "http://", 7) or not strnicmp(ptr, "ftp://", 6) or
+           not strnicmp(ptr, "www.", 4) or not strnicmp(ptr, "ftp.", 4) or
+           not strnicmp(ptr, "mailto:", 7)) {
+          const char *end = ptr+4+strcspn(ptr+4, " \t\"\'<>");
+
+          strxcpy(buf, txptr, (uint)(ptr-txptr)+1);
+          prints(row, col+sclen, color, buf);
+          sclen += strlen(buf);
+          strxcpy(buf, ptr, (uint)(end-ptr)+1);
+          prints(row, col+sclen, C_READU, buf);
+          sclen += strlen(buf);
+          txptr = end;
+          ptr = end-1;
+        }
+        else if(isascii(*ptr) and not isspace(*ptr) and not ispunct(*ptr)) {
+          // try to guess e-mail address...
+          const char *commerce_at = NULL;
+
+          if(*ptr == '\"') {
+            const char *pair_quote = strchr(ptr+1, '\"');
+            if(pair_quote != NULL) {
+              commerce_at = pair_quote+1;
+            }
+          }
+          else {
+            commerce_at = strpbrk(ptr, " \t@");
+          }
+          if ((commerce_at != NULL)  and (*commerce_at == '@')) {
+            ++commerce_at;
+            while((*commerce_at != NUL) and (isalnum(*commerce_at) or (*commerce_at == '.') or (*commerce_at == '-'))) {
+              ++commerce_at;
+            }
+            strxcpy(buf, txptr, (uint)(ptr-txptr)+1);
+            prints(row, col+sclen, color, buf);
+            sclen += strlen(buf);
+            strxcpy(buf, ptr, (uint)(commerce_at-ptr)+1);
+            prints(row, col+sclen, C_READU, buf);
+            sclen += strlen(buf);
+            txptr = commerce_at;
+            ptr = commerce_at-1;
           }
         }
       }

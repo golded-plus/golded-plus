@@ -149,6 +149,7 @@ const word CRC_UNSENTHIGH        = 0xB4FD;
 const word CRC_QUOTE2            = 0xF400;
 const word CRC_QUOTE1            = 0xF403;
 const word CRC_SIGNATURE         = 0x1A6E;
+const word CRC_URL               = 0x581C;
 
 
 const word CRC_B                 = 0x0042;
@@ -531,6 +532,9 @@ void GetColors(char* value) {
       break;
     case CRC_SIGNATURE:
       wptr->_Signature = attr;
+      break;
+    case CRC_URL:
+      wptr->_URL = attr;
       break;
     case CRC_UNSENTHIGH:
       wptr->_HighlightUnsent = attr;

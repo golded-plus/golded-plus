@@ -654,6 +654,7 @@ struct SaveUtil {
 #define _Pagebar   c[11]
 #define _Signature c[12]
 #define _Quote2    c[13]
+#define _URL       c[14]
 
 #define _WindowUnsent     c[6]
 #define _WindowUnread     c[7]
@@ -711,8 +712,9 @@ struct SaveUtil {
 #define C_READT   GC_READ_._Tearline
 #define C_READO   GC_READ_._Origin
 #define C_READPB  GC_READ_._Pagebar
-#define C_READQ2  GC_READ_._Quote2
 #define C_READS   GC_READ_._Signature
+#define C_READQ2  GC_READ_._Quote2
+#define C_READU   GC_READ_._URL
 #define C_HEADW   GC_HEAD_._Window
 #define C_HEADB   GC_HEAD_._Border
 #define C_HEADT   GC_HEAD_._Title
