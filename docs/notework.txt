@@ -12,6 +12,19 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Added EditDeleteSOL action: delete text to the start of line. It
+  works the same way as EditDeleteEOL in terms of what we consider to
+  be a line, since it deletes to the start of the line as it seen in
+  viewer, not as the line is internally represented.
+
+- MapPath now applied to GoldPath and XlatPath.
+
+- GoldNode now supports MapPath keyword.
+
+- Extended conditionals in GoldNode to the same set as in GoldED.
+
+- Fixed SHAREMODE in GoldNode.
+
 - Fixed *.?lo file creation where the character in '?' was uppercase,
   in file requests.
 
