@@ -250,7 +250,7 @@ void JamArea::save_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
           case CTRL_VIA:
             _loid = JAMSUB_TRACE;
             _maxlen = JAMSUB_TRACE_LEN;
-            _offset = 6;
+            _offset = 5;
             break;
           case CTRL_SEENBY:
             _loid = JAMSUB_SEENBY2D;
