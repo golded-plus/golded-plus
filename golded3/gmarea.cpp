@@ -247,7 +247,8 @@ void Area::Scan() {
 void Area::SaveMsg(int mode, GMsg* msg) {
 
   if(CFG->switches.get(frqwazoo) and msg->attr.frq()) {
-    FreqWaZOO(msg->re, msg->dest, msg->attr);
+    if(not (mode & GMSG_NOLSTUPD))
+      FreqWaZOO(msg->re, msg->dest, msg->attr);
     if(CFG->frqoptions & FREQ_NOWAZOOMSG)
       return;
     msg->attr.frq0();
