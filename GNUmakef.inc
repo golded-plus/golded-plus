@@ -46,7 +46,7 @@ $(FOBJPATH)/%$(OBJEXT): %.c
 ifeq ($(PLATFORM),cyg)
 $(FOBJPATH)/%$(OBJEXT): %.rc
 	@echo creating resources
-	@$(WINDRES) -o $@ $<
+	@$(WINDRES) --use-temp-file -o $@ $<
 endif
 
 ifeq ($(PLATFORM),emx)
