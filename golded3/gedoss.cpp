@@ -32,6 +32,10 @@
 #ifdef __UNIX__
 #include <gkbdunix.h>
 #endif
+#ifdef __WIN32__
+#include <windows.h>
+extern OSVERSIONINFO WinVer;
+#endif
 
 
 //  ------------------------------------------------------------------
@@ -218,6 +222,9 @@ int ShellToDos(char* command, char* message, int cls, int cursor, int pause) {
   #endif
 
   #ifndef __UNIX__
+  #ifdef __WIN32__
+  if(WinVer.dwPlatformId != VER_PLATFORM_WIN32_NT)
+  #endif
   if(strlen(command) > 125) {
     w_info(" Warning: Command line longer than 125 characters! ");
     waitkeyt(10000);
