@@ -175,7 +175,7 @@ void GPickArealist::dispbuf(char* buf, int areano) {
 
   char unreadbuf[33];
   if(area->isscanned)
-    sprintf(unreadbuf, "%u", (uint)(CFG->arealisttype ? area->unread : area->lastread()));
+    sprintf(unreadbuf, "%u", (uint)((CFG->arealisttype == AL_TOTNEW) ? area->unread : area->lastread()));
   else
     strcpy(unreadbuf, "-");
   int unreadwidth = strlen(unreadbuf);
