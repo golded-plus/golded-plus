@@ -241,7 +241,7 @@ int ImportQWK() {
               INam _fromname;
               IAdr _fromaddr;
               ParseInternetAddr(msg->ifrom, _fromname, _fromaddr);
-              if(AA->Internetgate().addr.net) {
+              if(AA->Internetgate().addr.valid()) {
                 char abuf[40];
                 sprintf(kbuf, "\x1""REPLYTO %s %s\r""\x1""REPLYADDR %s\r",
                   AA->Internetgate().addr.make_string(abuf),

@@ -169,7 +169,7 @@ void ProcessSoupMsg(char* lbuf, GMsg* msg, int& msgs, char* areaname, int tossto
 
     msgs++;
 
-    msg->orig = msg->oorig = CFG->internetgate.addr.net ? CFG->internetgate.addr : AA->aka();
+    msg->orig = msg->oorig = CFG->internetgate.addr.valid() ? CFG->internetgate.addr : AA->aka();
     msg->dest = msg->odest = AA->aka();
     time_t a = time(NULL);
     struct tm *tp = gmtime(&a);
@@ -237,7 +237,7 @@ void ProcessSoupMsg(char* lbuf, GMsg* msg, int& msgs, char* areaname, int tossto
             IAdr fromaddr;
             ParseInternetAddr(mptr, fromname, fromaddr, false);
             strxcpy(msg->by, *fromname ? fromname : fromaddr, sizeof(msg->by));
-            if(AA->Internetgate().addr.net) {
+            if(AA->Internetgate().addr.valid()) {
               char abuf[40];
               char kbuf[2048];
               sprintf(kbuf, "\x1""REPLYTO %s %s",

@@ -655,12 +655,22 @@ void DoKludges(int mode, GMsg* msg, int kludges) {
     else if(((mode != MODE_CHANGE) or AA->Internetrfcbody()) and AA->isnet()) {
       if(*msg->ito) {
         sprintf(buf, "To: %s", msg->ito);
-        line = AddKludge(line, buf);
-        line->kludge = GKLUD_RFC;
-
-        if(AA->Internetrfcbody() and line->next and not strblank(line->next->txt.c_str())) {
-          line = AddKludge(line, "");
+        if(AA->Internetrfcbody()) {
+          line = AddKludge(line, buf);
           line->kludge = GKLUD_RFC;
+        }
+        else {
+          line = AddLine(line, buf);
+        }
+
+        if(line->next and not strblank(line->next->txt.c_str())) {
+          if(AA->Internetrfcbody()) {
+            line = AddKludge(line, "");
+            line->kludge = GKLUD_RFC;
+          }
+          else {
+            line = AddLine(line, "");
+          }
         }
       }
     }

@@ -825,7 +825,8 @@ void guserbase::update_addressbook(GMsg* msg, bool reverse, bool force) {
     // Update address
     if(AA->isinternet() or (not *entry.iaddr and *iaddr))
       strxcpy(entry.iaddr, iaddr, sizeof(entry.iaddr));
-    if(not AA->isinternet() and not (AA->Internetgate().addr.valid() and (fidoaddr == AA->Internetgate().addr)))
+    // If iaddr is not empty then we adding entry from gated message
+    if(not AA->isinternet() and not *iaddr and (not AA->Internetgate().addr.valid() or (AA->Internetgate().addr != fidoaddr)))
       entry.fidoaddr = fidoaddr;
 
     lock();
@@ -855,7 +856,7 @@ bool guserbase::lookup_addressbook(GMsg* msg, char* name, char* aka, bool browse
 
       found = true;
 
-      if(*msg->iaddr and not AA->isinternet()) {
+      if(not strblank(entry.iaddr) and not AA->isinternet()) {
         // do UUCP addressing
         strcpy(msg->realto, entry.name);
         if(*AA->Internetgate().name)
@@ -867,6 +868,8 @@ bool guserbase::lookup_addressbook(GMsg* msg, char* name, char* aka, bool browse
         strcpy(name, entry.name);
         if(AA->isinternet())
           strcpy(msg->realto, entry.name);
+        else
+          *msg->realto = NUL;
       }
 
       if(not strblank(entry.pseudo))
@@ -874,8 +877,11 @@ bool guserbase::lookup_addressbook(GMsg* msg, char* name, char* aka, bool browse
 
       if(aka) {
         *aka = NUL;
-        if(AA->isinternet())
+        if(AA->isinternet()) {
           strcpy(aka, entry.iaddr);
+          strcpy(msg->idest, entry.iaddr);
+          strcpy(msg->iaddr, entry.iaddr);
+        }
         else {
           entry.fidoaddr.make_string(aka);
           if(strblank(aka) and not strblank(entry.iaddr)) {
@@ -883,6 +889,10 @@ bool guserbase::lookup_addressbook(GMsg* msg, char* name, char* aka, bool browse
             strcpy(msg->iaddr, entry.iaddr);
             if(AA->Internetgate().addr.valid())
               AA->Internetgate().addr.make_string(aka);
+          }
+          else {
+            *msg->iaddr = NUL;
+            *msg->idest = NUL;
           }
         }
       }

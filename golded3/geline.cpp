@@ -2583,6 +2583,20 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode) {
 
       // Scan for kludge-, tear- and originlines
       ScanKludges(msg, getvalue);
+
+      // Try to fix the following situation:
+      // Messagebase From field: fido7@da.ru
+      // @REPLYADDR: fido7@da.ru
+      // @REPLYTO: 2:5020/52 Sergey Kitsya
+      // From: fido7@da.ru
+      if(getvalue and streql(msg->by, msg->iaddr) and not *msg->realby and *msg->igate) {
+        ptr = strchr(msg->igate, ' ');
+        if(ptr) {
+          ptr = strskip_wht(ptr);
+          if(not isuucp(ptr))
+            strcpy(msg->realby, ptr);
+        }
+      }
     }
   }
 

@@ -155,14 +155,19 @@ bool set_to_address(GMsg* msg, gsetaddr* toname, gsetaddr* toaddr, gsetaddr* fro
           strcpy(msg->realto, buf2);
           strcpy(msg->idest, buf);
           strcpy(msg->iaddr, buf);
-          if(ptr)
-            strcpy(buf2, buf1+1);
-          ptr = strcpy(buf1, ptr and *buf2 ? buf2 : *buf ? buf : buf2);
+          if(AA->isinternet())
+            ptr = strcpy(buf1, *buf2 ? buf2 : buf);
+          else {
+            if(ptr)
+              strcpy(buf2, buf1+1);
+            ptr = strcpy(buf1, ptr and *buf2 ? buf2 : *buf ? buf : buf2);
+          }
         }
         else if(AA->isinternet()) {
           ParseInternetAddr(buf1, buf2, buf);
           strcpy(msg->realto, buf2);
           strcpy(msg->idest, buf);
+          strcpy(msg->iaddr, buf);
           ptr = strcpy(buf1, *buf2 ? buf2 : buf);
         }
         else {
@@ -206,7 +211,7 @@ bool set_to_address(GMsg* msg, gsetaddr* toname, gsetaddr* toaddr, gsetaddr* fro
 
   // Internet gating
   if(not AA->isinternet()) {
-    if(strchr(toname->buf, '@') and AA->Internetgate().addr.net) {
+    if(strchr(toname->buf, '@') and AA->Internetgate().addr.valid()) {
       if(*AA->Internetgate().name) {
         strcpy(msg->iaddr, toname->buf);
         strcpy(msg->to, AA->Internetgate().name);
@@ -316,14 +321,6 @@ bool GMsgHeaderEdit::validate() {
     MakeAttrStr(bot2, sizeof(bot2), &msg->attr);
     strsetsz(bot2, EDIT->HdrNodeLen());
     window.prints(1, EDIT->HdrNodePos(), C_HEADW, bot2);
-
-    // once we changed name invalidate realto and internet address
-    if(not strieql(orig_toname.c_str(), toname.buf)) {
-      if(strieql(realto.c_str(), msg->realto))
-        *msg->realto = NUL;
-      if(not AA->isinternet() and strieql(iaddr.c_str(), msg->iaddr))
-        *msg->iaddr = NUL;
-    }
 
     if(toname.update) current->update();
     if(toaddr.update) ftoaddr->update();
@@ -500,7 +497,7 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view, bool doedithdr) {
           else
             strcpy(msg->to, to_name.c_str());
         }
-        if(AA->Internetgate().addr.net)
+        if(AA->Internetgate().addr.valid())
           msg->dest = AA->Internetgate().addr;
       }
       else
@@ -522,6 +519,8 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view, bool doedithdr) {
         }
         else
           strcpy(msg->ito, msg->iaddr);
+        if(not *msg->idest)
+          strcpy(msg->idest, msg->iaddr);
       }
 
       if(not *msg->realto and isuucp(msg->to))

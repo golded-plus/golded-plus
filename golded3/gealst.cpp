@@ -317,6 +317,7 @@ int AreaList::SetActiveAreaId(int __areaid) {
 class SelMaskPick : public gwinpick {
 
   gwindow window;
+  int DESC_LEN;
 
   void open();                        // Called after window is opened
   void close();                       // Called after window is closed
@@ -345,9 +346,9 @@ void SelMaskPick::close() {
 
 void SelMaskPick::print_line(uint idx, uint pos, bool isbar) {
 
-  char buf[sizeof(Desc)+3];
+  __extension__ char buf[DESC_LEN+3];
 
-  *buf = ' '; strcpy(buf+1, AL.alistselections[idx]);
+  *buf = ' '; strxcpy(buf+1, AL.alistselections[idx], DESC_LEN);
   window.printns(pos, 0, isbar ? sattr : wattr, buf, xlen);
 }
 
@@ -367,7 +368,7 @@ bool SelMaskPick::handle_key() {
     default:
       if(key < KK_Commands) {
         kbput(key);
-        edit_string(AL.alistselections[index], sizeof(Desc)-1, LNG->SelectMarksEdit, H_SelectMarks);
+        edit_string(AL.alistselections[index], DESC_LEN-1, LNG->SelectMarksEdit, H_SelectMarks);
         display_bar();
       }
       break;
@@ -378,10 +379,12 @@ bool SelMaskPick::handle_key() {
 
 void SelMaskPick::Run() {
 
+  DESC_LEN = (sizeof(Desc) > (MAXCOL-6)) ? MAXCOL-6 : sizeof(Desc);
+
   ypos = (MAXROW-18)/2;
-  xpos = (MAXCOL-sizeof(Desc)-4)/2-1;
+  xpos = (MAXCOL-DESC_LEN-4)/2-1;
   ylen = 16;
-  xlen = sizeof(Desc)+2;
+  xlen = DESC_LEN+2;
   btype = W_BMENU;
   battr = C_MENUB;
   wattr = C_MENUW;

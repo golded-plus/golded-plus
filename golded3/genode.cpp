@@ -888,7 +888,7 @@ void Lookup(GMsg* msg, Addr* addr, char* name, int topline, char* status) {
   }
 
   // Automatic internet gating
-  if(strchr(name, '@') and AA->Internetgate().addr.net) {
+  if(strchr(name, '@') and AA->Internetgate().addr.valid()) {
     strcpy(msg->idest, name);
     if(*AA->Internetgate().name) {
       strcpy(msg->iaddr, name);
@@ -1041,7 +1041,7 @@ void Lookup(GMsg* msg, Addr* addr, char* name, int topline, char* status) {
 
   if(topline >= 0) {
     if(CFG->switches.get(internetlookup)) {
-      if(*entry.system and strchr(entry.system, '@') and AA->Internetgate().addr.net) {
+      if(*entry.system and strchr(entry.system, '@') and AA->Internetgate().addr.valid()) {
         strcpy(msg->iaddr, entry.system);
         strcpy(msg->idest, entry.system);
         if(*AA->Internetgate().name)

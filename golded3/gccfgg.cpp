@@ -730,7 +730,7 @@ CfgGed::CfgGed() {
   quotemargin = 70;
   quotewraphard = false;
   ra2usersbbs = 0;
-  replylink = 0;
+  replylink = REPLYLINK_DIRECT;
   replylinklist = 0;
   screenblanker = 180;
   screenblankertype = BLANK_SLIDEWIN;
