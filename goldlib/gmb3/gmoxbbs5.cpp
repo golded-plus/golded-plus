@@ -70,7 +70,7 @@ Line* XbbsArea::make_dump_msg(Line*& lin, gmsg* msg, char* lng_head) {
   AddLine (NULL, "Hexdump of AdeptXBBS message header and text");
   AddLineF(line, "------------------------------------------------------------------------------");
   line = AddLine(line, "");
-  AddLineF(line, "Path       : %s", path());
+  AddLineF(line, "Path       : %s", real_path());
   AddLineF(line, "UserRecno  : %u (%s)", wide->userno, WideUsername[0]);
   line = AddLine(line, "");
   AddLineF(line, "Header Record:");

@@ -48,11 +48,11 @@ void JamArea::lock() {
     while(::lock(data->fhjhr, 0, 1) == -1) {
 
       // Tell the world
-      if(PopupLocked(++_tries, true, path()) == false) {
+      if(PopupLocked(++_tries, true, real_path()) == false) {
         WideLog->ErrLock();
         raw_close();
         WideLog->printf("! A JAM msgbase file could not be locked.");
-        WideLog->printf(": %s.JHR.", path());
+        WideLog->printf(": %s.jhr.", real_path());
         WideLog->ErrOSInfo();
         LockErrorExit();
       }
@@ -72,7 +72,7 @@ void JamArea::lock() {
   if(not jamwide->smapihw) {
     if(data->fhjhw == -1) {
       Path file;
-      sprintf(file, "%s.cmhw", path()); data->fhjhw = ::sopen(file, O_RDWR|O_BINARY, WideSharemode, S_STDRW);
+      sprintf(file, "%s.cmhw", real_path()); data->fhjhw = ::sopen(file, O_RDWR|O_BINARY, WideSharemode, S_STDRW);
     }
     if(data->fhjhw != -1) {
       lseek(data->fhjhw, 0, SEEK_SET);

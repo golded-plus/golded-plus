@@ -97,13 +97,13 @@ void JamArea::raw_open() {
   GFTRK("JamArea::raw_open");
 
   Path file;
-  sprintf(file, "%s.jhr", path());  data->fhjhr = test_open(file);
-  sprintf(file, "%s.jdx", path());  data->fhjdx = test_open(file);
-  sprintf(file, "%s.jlr", path());  data->fhjlr = test_open(file);
+  sprintf(file, "%s.jhr", real_path());  data->fhjhr = test_open(file);
+  sprintf(file, "%s.jdx", real_path());  data->fhjdx = test_open(file);
+  sprintf(file, "%s.jlr", real_path());  data->fhjlr = test_open(file);
   if(not just_scanning) {
-    sprintf(file, "%s.jdt", path());  data->fhjdt = test_open(file);
+    sprintf(file, "%s.jdt", real_path());  data->fhjdt = test_open(file);
     if(not jamwide->smapihw) {
-      sprintf(file, "%s.cmhw", path()); data->fhjhw = ::sopen(file, O_RDWR|O_BINARY, WideSharemode, S_STDRW);
+      sprintf(file, "%s.cmhw", real_path()); data->fhjhw = ::sopen(file, O_RDWR|O_BINARY, WideSharemode, S_STDRW);
     }
   }
 
@@ -208,6 +208,12 @@ void JamArea::raw_scan(int __keep_index, int __scanpm) {
   if(not _was_open) {
     if(not __keep_index or __scanpm)
       just_scanning = true;
+    if(ispacked()) {
+      const char* newpath = Unpack(path());
+      if(newpath == NULL)
+        packed(false);
+      set_real_path(newpath ? newpath : path());
+    }
     isopen++;
     data_open();
     open_area();
@@ -325,7 +331,6 @@ void JamArea::raw_scan(int __keep_index, int __scanpm) {
     );
   }
 
-
   // Free the .JDX buffer
   throw_free(_jdxbuf);
 
@@ -333,6 +338,9 @@ void JamArea::raw_scan(int __keep_index, int __scanpm) {
   if(not _was_open) {
     raw_close();
     data_close();
+    if(ispacked()) {
+      CleanUnpacked(real_path());
+    }
     isopen--;
   }
 

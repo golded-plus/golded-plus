@@ -88,9 +88,20 @@ void XbbsArea::raw_scan(int __keep_index, int __scanpm) {
     wide = xbbswide;
   }
 
+  int _wasopen = isopen;
+  if(not _wasopen) {
+    if(ispacked()) {
+      const char* newpath = Unpack(path());
+      if(newpath == NULL)
+        packed(false);
+      set_real_path(newpath ? newpath : path());
+    }
+    isopen++;
+  }
+
   // Load the lastread
   ulong _lastread = 0;
-  int _fh = ::sopen(AddPath(path(), ".lmr"), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
+  int _fh = ::sopen(AddPath(real_path(), ".lmr"), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
   if(_fh != -1) {
     lseekset(_fh, wide->userno+1, sizeof(ulong));
     read(_fh, &_lastread, sizeof(ulong));
@@ -98,13 +109,13 @@ void XbbsArea::raw_scan(int __keep_index, int __scanpm) {
   }
 
   // Open AdeptXBBS files for scanning unless they are already open
-  if(not isopen) {
+  if(not _wasopen) {
 
     data->idx = NULL;
     data->idx_size = 0;
 
     // Open index file
-    data->fhindex = ::sopen(AddPath(path(), ".Index"), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
+    data->fhindex = ::sopen(AddPath(real_path(), ".Index"), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
     if(data->fhindex != -1) {
 
       // Allocate index buffer and read from file
@@ -114,6 +125,10 @@ void XbbsArea::raw_scan(int __keep_index, int __scanpm) {
       ::close(data->fhindex);
       data->fhindex = -1;
     } 
+    if(ispacked()) {
+      CleanUnpacked(real_path());
+    }
+    isopen--;
   }
 
   register uint _active = 0;

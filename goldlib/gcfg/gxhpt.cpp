@@ -2,7 +2,7 @@
 
 //  ------------------------------------------------------------------
 //  The Goldware Library
-//  Copyright (C) 1999-2000 Alexander S. Aganichev
+//  Copyright (C) 1999-2002 Alexander S. Aganichev
 //  ------------------------------------------------------------------
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Library General Public
@@ -301,7 +301,9 @@ void gareafile::ReadHPTFile(char* path, char* file, char* options, char* origin,
     
                   gettok(&key, &val);
     
-                  if(isalpha(*key))
+                  if(isdigit(*key))
+                    aa.groupid = 0x8000+atoi(key);
+                  else if(isalpha(*key))
                     aa.groupid = toupper(*key);
                 }
                 else if (strieql(opt, "d")) {

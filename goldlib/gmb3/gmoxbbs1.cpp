@@ -124,9 +124,9 @@ void XbbsArea::raw_open() {
 
   GFTRK("XbbsRawOpen");
 
-  data->fhdata  = test_open(AddPath(path(), ".Data"));
-  data->fhindex = test_open(AddPath(path(), ".Index"));
-  data->fhtext  = test_open(AddPath(path(), ".Text"));
+  data->fhdata  = test_open(AddPath(real_path(), ".Data"));
+  data->fhindex = test_open(AddPath(real_path(), ".Index"));
+  data->fhtext  = test_open(AddPath(real_path(), ".Text"));
   wide->isopen++;
   if(wide->isopen == 1)
     wide->user->fh = ::sopen(AddPath(wide->path, "Users"), O_RDONLY|O_BINARY, WideSharemode, S_STDRW);
@@ -222,7 +222,7 @@ void XbbsArea::save_lastread() {
 
   GFTRK("XbbsSaveLastread");
 
-  int _fh = ::sopen(AddPath(path(), ".lmr"), O_RDWR|O_CREAT|O_BINARY, WideSharemode, S_STDRW);
+  int _fh = ::sopen(AddPath(real_path(), ".lmr"), O_RDWR|O_CREAT|O_BINARY, WideSharemode, S_STDRW);
   if(_fh != -1) {
     ulong _lastread = Msgn->CvtReln(lastread);
     lseekset(_fh, wide->userno+1, sizeof(ulong));

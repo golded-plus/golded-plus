@@ -45,11 +45,11 @@ void WCatArea::lock() {
     if(WideCanLock) {
       long _tries = 0;
       while(::lock(data->fhix, 0, 1) == -1) {
-        if(PopupLocked(++_tries, true, path()) == false) {
+        if(PopupLocked(++_tries, true, real_path()) == false) {
           WideLog->ErrLock();
           raw_close();
           WideLog->printf("! A WildCat! msgbase file could not be locked.");
-          WideLog->printf(": %s.IX.", path());
+          WideLog->printf(": %s.ix.", real_path());
           WideLog->ErrOSInfo();
           LockErrorExit();
         }

@@ -2,7 +2,7 @@
 
 //  ------------------------------------------------------------------
 //  The Goldware Library
-//  Copyright (C) 1999-2000 Alexander S. Aganichev
+//  Copyright (C) 1999-2002 Alexander S. Aganichev
 //  ------------------------------------------------------------------
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Library General Public
@@ -217,8 +217,12 @@ void gareafile::ReadCrashmailCfg(const char* file) {
           unconfirmed = true;
           break;
         case CRC_GROUP:
-          if(jbstrcpy(tmp, buf, 100, &jbcpos))
-            aa.groupid = toupper(tmp[0]);
+          if(jbstrcpy(tmp, buf, 100, &jbcpos)) {
+            if(isdigit(tmp[0]))
+              aa.groupid = 0x8000+atoi(tmp);
+            else if(isalpha(tmp[0]))
+              aa.groupid = toupper(tmp[0]);
+          }
           break;
       }
     }

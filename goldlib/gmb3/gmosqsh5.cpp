@@ -88,7 +88,7 @@ Line* SquishArea::make_dump_msg(Line*& lin, gmsg* msg, char* lng_head) {
   AddLine (NULL, "Hexdump of Squish-style message header and text");
   AddLineF(line, "------------------------------------------------------------------------------");
   line = AddLine(line, "");
-  AddLineF(line, "Msgbase        : %s", path());
+  AddLineF(line, "Msgbase        : %s", real_path());
   AddLineF(line, "From           : %-36.36s", _hdr.from);
   AddLineF(line, "To             : %-36.36s", _hdr.to);
   AddLineF(line, "Subject        : %-72.72s", _hdr.subj);

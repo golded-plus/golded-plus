@@ -78,9 +78,20 @@ void WCatArea::raw_scan(int __keep_index, int __scanpm) {
     wide = wcatwide;
   }
 
+  int _wasopen = isopen;
+  if(not _wasopen) {
+    if(ispacked()) {
+      const char* newpath = Unpack(path());
+      if(newpath == NULL)
+        packed(false);
+      set_real_path(newpath ? newpath : path());
+    }
+    isopen++;
+  }
+
   // Load the lastread
   dword _lastread = 0;
-  int _fh = ::sopen(AddPath(path(), ".lrd"), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
+  int _fh = ::sopen(AddPath(real_path(), ".lrd"), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
   if(_fh != -1) {
     lseekset(_fh, wide->userno, sizeof(dword));
     read(_fh, &_lastread, sizeof(dword));
@@ -88,7 +99,7 @@ void WCatArea::raw_scan(int __keep_index, int __scanpm) {
   }
 
   // Open WildCat! files for scanning unless they are already open
-  if(not isopen) {
+  if(not _wasopen) {
 
     data->idx = NULL;
     data->base.recsize = 0;
@@ -96,7 +107,7 @@ void WCatArea::raw_scan(int __keep_index, int __scanpm) {
     data->base.nextmsgno = 0;
 
     // Open index file
-    data->fhix = ::sopen(AddPath(path(), ".ix"), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
+    data->fhix = ::sopen(AddPath(real_path(), ".ix"), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
     if(data->fhix != -1) {
 
       // Allocate index buffer and read from file
@@ -106,6 +117,10 @@ void WCatArea::raw_scan(int __keep_index, int __scanpm) {
       ::close(data->fhix);
       data->fhix = -1;
     } 
+    if(ispacked()) {
+      CleanUnpacked(real_path());
+    }
+    isopen--;
   }
 
   register uint _active = 0;

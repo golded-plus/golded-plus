@@ -12,6 +12,13 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed packed messagebase operation. The feature was only implemented
+  for the Squish messagebase and even there scan was improperly
+  implemented.
+
+- Fixed numerical group parsing for Crashmail/CrashEcho, HPT,
+  SpaceToss, QEcho and Partoss.
+
 - Fixed reverse order sorting in 'M' criteria of AREALISTSORT (broken
   in previous snapshots).
 

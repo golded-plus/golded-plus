@@ -75,8 +75,8 @@ int FidoArea::renumber() {
     if(_msgno != Msgn->at(_count)) {
 
       Path _oldname, _newname;
-      sprintf(_oldname, "%s%lu.msg", path(), Msgn->at(_count));
-      sprintf(_newname, "%s%lu.msg", path(), _msgno);
+      sprintf(_oldname, "%s%lu.msg", real_path(), Msgn->at(_count));
+      sprintf(_newname, "%s%lu.msg", real_path(), _msgno);
 
       // Get the file attribute of the message
       struct stat st;
@@ -152,7 +152,7 @@ Line* FidoArea::make_dump_msg(Line*& lin, gmsg* msg, char* lng_head) {
   AddLine (NULL, "Hexdump of Fido/Opus-style message header and text");
   AddLineF(line, "------------------------------------------------------------------------------");
   line = AddLine(line, "");
-  AddLineF(line, "File     : %s%lu.msg", path(), msg->msgno);
+  AddLineF(line, "File     : %s%lu.msg", real_path(), msg->msgno);
   AddLineF(line, "From     : %-35.35s", _hdr.by);
   AddLineF(line, "To       : %-35.35s", _hdr.to);
   AddLineF(line, "Subject  : %-72.72s", _hdr.re);

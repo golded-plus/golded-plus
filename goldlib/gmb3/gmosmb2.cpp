@@ -36,8 +36,15 @@ void SMBArea::raw_scan(bool keep_index, bool scanpm)
   GFTRK("SMBArea::raw_scan");
 
   smb_t *_was_data = data;
-  if(_was_data == NULL)
+  if(_was_data == NULL) {
+    if(ispacked()) {
+      const char* newpath = Unpack(path());
+      if(newpath == NULL)
+        packed(false);
+      set_real_path(newpath ? newpath : path());
+    }
     data_open();
+  }
   ulong firstmsgno = 0;
   ulong lastmsgno = 0;
   Msgn->Reset();
@@ -105,8 +112,12 @@ void SMBArea::raw_scan(bool keep_index, bool scanpm)
       scanpm ? (int)PMrk->Count() : -1
     );
   }
-  if(_was_data == NULL)
+  if(_was_data == NULL) {
     data_close();
+    if(ispacked()) {
+      CleanUnpacked(real_path());
+    }
+  }
 
   GFTRK(NULL);
 }

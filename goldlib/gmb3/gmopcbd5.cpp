@@ -107,7 +107,7 @@ Line* PcbArea::make_dump_msg(Line*& lin, gmsg* __msg, char* lng_head) {
   AddLine (NULL, "Hexdump of PCBoard message header and text");
   AddLineF(line, "------------------------------------------------------------------------------");
   line = AddLine(line, "");
-  AddLineF(line, "Msgbase   : %s", path());
+  AddLineF(line, "Msgbase   : %s", real_path());
   AddLineF(line, "BoardNo   : %u", board());
   AddLineF(line, "MsgOffset : %li", _idx.offset);
   AddLineF(line, "Status    : \'%c\'", _hdr.status);

@@ -37,11 +37,22 @@ void FidoArea::raw_scan(bool __scanpm) {
 
   GFTRK("FidoArea::raw_scan");
 
+  int _wasopen = isopen;
+  if(not _wasopen) {
+    isopen++;
+    if(ispacked()) {
+      const char* newpath = Unpack(path());
+      if(newpath == NULL)
+        packed(false);
+      set_real_path(newpath ? newpath : path());
+    }
+  }
+
   register uint _active = 0;
   register ulong* _msgnoptr = NULL;
   register ulong* _msgndx = Msgn->tag;
 
-  gposixdir d(path());
+  gposixdir d(real_path());
   if(WideDebug)
     WideLog->printf("- %s/*.msg", d.fullpath());
   const gdirentry *de;
@@ -65,7 +76,7 @@ void FidoArea::raw_scan(bool __scanpm) {
 
   // Get the lastread msgno
   word _lastread = 0;
-  int _fh = ::sopen(AddPath(path(), wide->fidolastread), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
+  int _fh = ::sopen(AddPath(real_path(), wide->fidolastread), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
   if(_fh != -1) {
     lseekset(_fh, wide->userno, sizeof(word));
     read(_fh, &_lastread, sizeof(word));
@@ -113,7 +124,7 @@ void FidoArea::raw_scan(bool __scanpm) {
   // Read highwater mark
   data->highwatermark = 0;
   if(isecho() and wide->fidohwmarks) {
-    _fh = test_open(AddPath(path(), "1.msg"), O_RDONLY|O_BINARY, WideSharemode);
+    _fh = test_open(AddPath(real_path(), "1.msg"), O_RDONLY|O_BINARY, WideSharemode);
     if(_fh != -1) {
       read(_fh, &_hdr, sizeof(FidoHdr));
       data->highwatermark = _hdr.replyto;
@@ -173,6 +184,13 @@ void FidoArea::raw_scan(bool __scanpm) {
       fidowide->userno,
       __scanpm ? (int)PMrk->Count() : -1
     );
+  }
+
+  if(not _wasopen) {
+    if(ispacked()) {
+      CleanUnpacked(real_path());
+    }
+    isopen--;
   }
 
   GFTRK(NULL);

@@ -60,7 +60,7 @@ void SMBInit() {
 void SMBArea::data_open() {
 
   data = smbdata + (smbdatano++);
-  strxcpy(data->file, path(), sizeof(data->file) - 3);
+  strxcpy(data->file, real_path(), sizeof(data->file) - 3);
   data->sdt_fp = data->shd_fp = data->sid_fp = data->sda_fp = data->sha_fp = NULL;
   data->retry_time = 1;
   data->last_error[0] = NUL;
@@ -113,7 +113,7 @@ void SMBArea::open() {
           // User requested to exit
           WideLog->ErrOpen();
           WideLog->printf("! Synchronet message base could not be opened (%s).", data->last_error);
-          WideLog->printf(": %s", path());
+          WideLog->printf(": %s", real_path());
           WideLog->ErrOSInfo();
           OpenErrorExit();
         }
@@ -136,7 +136,7 @@ void SMBArea::open() {
 
         WideLog->ErrOpen();
         WideLog->printf("! Synchronet message base could not be created (%s).", data->last_error);
-        WideLog->printf(": %s", path());
+        WideLog->printf(": %s", real_path());
         WideLog->ErrOSInfo();
         OpenErrorExit();
       }
@@ -199,7 +199,7 @@ void SMBArea::resume()
         // User requested to exit
         WideLog->ErrOpen();
         WideLog->printf("! Synchronet message base could not be opened (%s).", data->last_error);
-        WideLog->printf(": %s", path());
+        WideLog->printf(": %s", real_path());
         WideLog->ErrOSInfo();
         OpenErrorExit();
       }
@@ -222,7 +222,7 @@ void SMBArea::resume()
 
       WideLog->ErrOpen();
       WideLog->printf("! Synchronet message base could not be created (%s).", data->last_error);
-      WideLog->printf(": %s", path());
+      WideLog->printf(": %s", real_path());
       WideLog->ErrOSInfo();
       OpenErrorExit();
     }

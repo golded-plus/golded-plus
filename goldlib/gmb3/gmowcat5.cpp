@@ -66,7 +66,7 @@ Line* WCatArea::make_dump_msg(Line*& lin, gmsg* msg, char* lng_head) {
   AddLine (NULL, "Hexdump of WildCat! message header and text");
   AddLineF(line, "------------------------------------------------------------------------------");
   line = AddLine(line, "");
-  AddLineF(line, "Path       : %s", path());
+  AddLineF(line, "Path       : %s", real_path());
   AddLineF(line, "MagicNumber: %08lXh", _hdr.magicnumber);
   AddLineF(line, "MsgNumber  : %u", _hdr.msgno);
   AddLineF(line, "Orig       : %s", STRNP2C(_hdr.from));

@@ -202,8 +202,8 @@ void PcbArea::raw_open() {
   GFTRK("PcbRawOpen");
 
   if(not just_scanning)
-    data->fhmsg = test_open(path());
-  data->fhidx = test_open(AddPath(path(), ".idx"));
+    data->fhmsg = test_open(real_path());
+  data->fhidx = test_open(AddPath(real_path(), ".idx"));
 
   GFTRK(NULL);
 }
@@ -220,6 +220,12 @@ void PcbArea::raw_scan(int __keep_index, int __scanpm) {
   if(not _was_open) {
     if(not __keep_index)
       just_scanning = true;
+    if(ispacked()) {
+      const char* newpath = Unpack(path());
+      if(newpath == NULL)
+        packed(false);
+      set_real_path(newpath ? newpath : path());
+    }
     isopen++;
     data_open();
     raw_open();
@@ -345,6 +351,9 @@ void PcbArea::raw_scan(int __keep_index, int __scanpm) {
   if(not _was_open) {
     raw_close();
     data_close();
+    if(ispacked()) {
+      CleanUnpacked(real_path());
+    }
     isopen--;
   }
 

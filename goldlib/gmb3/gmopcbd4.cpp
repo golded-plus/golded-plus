@@ -45,11 +45,11 @@ void PcbArea::lock() {
     if(WideCanLock) {
       long _tries = 0;
       while(::lock(data->fhmsg, 16, 6) == -1) {
-        if(PopupLocked(++_tries, true, path()) == false) {
+        if(PopupLocked(++_tries, true, real_path()) == false) {
           WideLog->ErrLock();
           raw_close();
           WideLog->printf("! A PCBoard msgbase file could not be locked.");
-          WideLog->printf(": %s.", path());
+          WideLog->printf(": %s.", real_path());
           WideLog->ErrOSInfo();
           LockErrorExit();
         }

@@ -36,6 +36,12 @@ void EzycomArea::raw_scan(int __keep_index) {
 
   int _wasopen = isopen;
   if(not _wasopen) {
+    if(ispacked()) {
+      const char* newpath = Unpack(path());
+      if(newpath == NULL)
+        packed(false);
+      set_real_path(newpath ? newpath : path());
+    }
     isopen++;
     data_open();
     test_raw_open(__LINE__);
@@ -107,6 +113,9 @@ void EzycomArea::raw_scan(int __keep_index) {
   if(not _wasopen) {
     raw_close();
     data_close();
+    if(ispacked()) {
+      CleanUnpacked(real_path());
+    }
     isopen--;
   }
 

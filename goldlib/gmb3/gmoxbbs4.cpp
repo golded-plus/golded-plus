@@ -61,11 +61,11 @@ void XbbsArea::lock_file(int handle, long position, long length) {
 
   long tries = 0;
   while(::lock(handle, position, length) == -1) {
-    if(PopupLocked(++tries, true, path()) == false) {
+    if(PopupLocked(++tries, true, real_path()) == false) {
       WideLog->ErrLock();
       raw_close();
       Path file;
-      strcpy(file, path());
+      strcpy(file, real_path());
       if(handle == data->fhdata)
         strcat(file, ".Data");
       else if(handle == data->fhtext)

@@ -111,8 +111,8 @@ void WCatArea::raw_open() {
 
   GFTRK("WCatRawOpen");
 
-  data->fhix  = test_open(AddPath(path(), ".ix"));
-  data->fhdat = test_open(AddPath(path(), ".dat"));
+  data->fhix  = test_open(AddPath(real_path(), ".ix"));
+  data->fhdat = test_open(AddPath(real_path(), ".dat"));
 
   GFTRK(NULL);
 }
@@ -178,7 +178,7 @@ void WCatArea::save_lastread() {
 
   GFTRK("WCatSaveLastread");
 
-  int _fh = ::sopen(AddPath(path(), ".lrd"), O_RDWR|O_CREAT|O_BINARY, WideSharemode, S_STDRW);
+  int _fh = ::sopen(AddPath(real_path(), ".lrd"), O_RDWR|O_CREAT|O_BINARY, WideSharemode, S_STDRW);
   if(_fh != -1) {
     word _lastread = (word)Msgn->CvtReln(lastread);
     lseekset(_fh, wcatwide->userno, sizeof(word));

@@ -2,7 +2,7 @@
 
 //  ------------------------------------------------------------------
 //  The Goldware Library
-//  Copyright (C) 1999 Alexander S. Aganichev
+//  Copyright (C) 1999, 2002 Alexander S. Aganichev
 //  ------------------------------------------------------------------
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Library General Public
@@ -49,7 +49,11 @@ void gareafile::ReadQEchoFile(char* file, char* options, char* origin) {
 
       char* ptr = strtok(buf, " \t");
       aa.reset();
-      aa.groupid = atoi(ptr);
+
+      if(isdigit(*ptr))
+        aa.groupid = 0x8000+atoi(ptr);
+      else if(isalpha(*ptr))
+        aa.groupid = toupper(*ptr);
 
       if((ptr = strtok(NULL, " \t")) != NULL) {
         if(*ptr == '*') {

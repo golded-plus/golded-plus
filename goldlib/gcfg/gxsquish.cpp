@@ -118,8 +118,12 @@ void gareafile::ReadSquishFile(char* path, char* file, char* options, char* orig
               if(strnieql(p, "-$", 2)) {
                 aa.msgbase = GMB_SQUISH;
                 p += 2;
-                if((tolower(*p) == 'g') and isalpha(p[1]))
-                  aa.groupid = toupper(p[1]);
+                if((tolower(*p) == 'g') and isalpha(p[1])) {
+                  if(isdigit(p[1]))
+                    aa.groupid = 0x8000+atoi(p+1);
+                  else if(isalpha(p[1]))
+                    aa.groupid = toupper(p[1]);
+                }
                 else if(tolower(*p) == 'n') {
                   key = ++p;
                   getkeyval(&key, &p);

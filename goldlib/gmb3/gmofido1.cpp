@@ -61,7 +61,7 @@ void FidoArea::data_close() {
 
 char* FidoArea::build_msgname(char* __buf, ulong __msgno) {
 
-  sprintf(__buf, "%s%lu.msg", path(), __msgno);
+  sprintf(__buf, "%s%lu.msg", real_path(), __msgno);
   return __buf;
 }
 
@@ -192,7 +192,7 @@ void FidoArea::save_lastread() {
 
   GFTRK("FidoSaveLastread");
 
-  int _fh = ::sopen(AddPath(path(), wide->fidolastread), O_RDWR|O_CREAT|O_BINARY, WideSharemode, S_STDRW);
+  int _fh = ::sopen(AddPath(real_path(), wide->fidolastread), O_RDWR|O_CREAT|O_BINARY, WideSharemode, S_STDRW);
   if(_fh != -1) {
     word _lastread = (word)Msgn->CvtReln(lastread);
     lseekset(_fh, wide->userno, sizeof(word));

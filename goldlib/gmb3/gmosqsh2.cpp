@@ -83,6 +83,17 @@ void SquishArea::raw_scan(int __keep_index, int __scanpm) {
     wide = squishwide;
   }
 
+  int _wasopen = isopen;
+  if(not _wasopen) {
+    if(ispacked()) {
+      const char* newpath = Unpack(path());
+      if(newpath == NULL)
+        packed(false);
+      set_real_path(newpath ? newpath : path());
+    }
+    isopen++;
+  }
+
   // Load the lastread
   dword _lastread = 0;
   int _fh = ::sopen(AddPath(real_path(), ".sql"), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
@@ -93,7 +104,7 @@ void SquishArea::raw_scan(int __keep_index, int __scanpm) {
   }
 
   // Open Squish files for scanning unless they are already open
-  if(not isopen) {
+  if(not _wasopen) {
 
     data->idx = NULL;
     data->base.totalmsgs = 0;
@@ -129,6 +140,10 @@ void SquishArea::raw_scan(int __keep_index, int __scanpm) {
       ::close(data->fhsqi);
       data->fhsqi = -1;
     }
+    if(ispacked()) {
+      CleanUnpacked(real_path());
+    }
+    isopen--;
   }
 
   register ulong _msgno;
