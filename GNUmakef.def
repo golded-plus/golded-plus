@@ -57,7 +57,7 @@ LIBEXT=.a
 endif
 endif
 endif
-CFLAGS+=-g -funsigned-char $(INCS) -Wall -Wno-sign-compare -pedantic -O2 -DGOLDEDPLUS # -fomit-frame-pointer
+CFLAGS+=-g -funsigned-char $(INCS) -Wall -Wno-sign-compare -pedantic -O2 -DPRAGMA_PACK # -fomit-frame-pointer
 LNKFLAGS+=-g
 CPPFLAGS+=$(CFLAGS) -fno-exceptions -fno-rtti
 

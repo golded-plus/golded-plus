@@ -387,7 +387,9 @@ enum {
 #endif
 
 #if defined(PRAGMA_PACK)
+#if !defined(__GNUC__)
 #pragma pack(push)		/* Disk image structures must be packed */
+#endif
 #pragma pack(1)
 #endif
 
@@ -484,7 +486,11 @@ typedef struct _PACK {		// Network (type and address)
 	} net_t;
 
 #if defined(PRAGMA_PACK)
+#if defined(__GNUC__)
+#define pack()
+#else
 #pragma pack(pop)		/* original packing */
+#endif
 #endif
 
 typedef struct {				// Message
