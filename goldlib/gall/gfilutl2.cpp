@@ -87,12 +87,17 @@ int strschg_environ(std::string& s) {
 #ifndef __HAVE_DRIVES__
   if(not s.empty() and (s[0] == '~')) {
     std::string name;
+    char* lname;
     const char *p = s.c_str()+1;
     if((s.length() != 1) and not isslash(*p)) {
       while(*p and not isslash(*p))
         name += *p++;
-    } else
-        name = getlogin();
+    }
+    else {
+      if ((lname = getlogin()) == NULL)
+        lname = getenv("LOGNAME");
+      name = lname;
+    }
     struct passwd *pe = getpwnam(name.c_str());
     if(pe != NULL) {
       std::string dirname = pe->pw_dir;
@@ -188,12 +193,16 @@ bool maketruepath(std::string &dirname) {
 #endif
 #else
   if(!dirname.empty() && (dirname[0] == '~')) {
+    char* lname;
     const char *p = dirname.c_str()+1;
     if((dirname.length() != 1) && !isslash(*p)) {
       while(*p && !isslash(*p))
         ndirname += *p++; // get user name
-    } else
-      ndirname = getlogin(); // get current user name
+    } else {
+      if ((lname = getlogin()) == NULL)
+        lname = getenv("LOGNAME");
+      ndirname = lname; // get current user name
+    }
     struct passwd *pe = getpwnam(ndirname.c_str()); // get home
     if(pe != NULL) {
       ndirname = pe->pw_dir;
