@@ -765,7 +765,7 @@ void Reader() {
               case KK_ExternUtil23:   reader_keyok = ExternUtil(msg, 23);   break;
               case KK_ExternUtil24:   reader_keyok = ExternUtil(msg, 24);   break;
 
-              case KK_AreaShowDel:
+              case KK_ReadShowDel:
                 CFG->showdeleted = not CFG->showdeleted;
                 reader_keyok = true;
                 break;

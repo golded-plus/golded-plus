@@ -199,6 +199,26 @@ bool gfileselect::handle_key() {
 
       break;
 
+    case KK_FileToggleMarkAll:
+
+      selfiles = 0;
+      selbytes = 0;
+
+      for(n=0; n<=maximum_index; n++) {
+        if(fblk[n].selected) {
+          fblk[n].selected = false;
+        }
+        else {
+          fblk[n].selected = true;
+          selbytes += fblk[n].size;
+          selfiles++;
+        }
+      }
+
+      update();
+
+      break;
+
     case KK_FileAskExit:
       {
         GMenuQuit MenuQuit;

@@ -12,7 +12,13 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
-- Added set of new keywords for the language configuration file to
++ Added FileToggleMarkAll to the goldkeys.cfg to invert all selected
+  files on the file selection panel. Default assignment is '*'.
+
+! Keyboard configuration token AreaShowDel renamed to ReadShowDel for
+  better consistency.
+
++ Added set of new keywords for the language configuration file to
   make READmainmenu language-configurable:
 
   MI_MMMAIN             "M Main "
@@ -40,13 +46,13 @@ ______________________________________________________________________
   MI_MMWRITE            "W Write to disk/printer "
   MI_MMFREQ             "F File request          "
 
-- Help topic number associated with READmainmenu changed from 9999 to
+! Help topic number associated with READmainmenu changed from 9999 to
   3019.
 
-- GoldED+ should now recognize AREAFILE keyword in CrashEcho config
++ GoldED+ should now recognize AREAFILE keyword in CrashEcho config
   (not tested).
 
-- GoldED+ should now recognize environment variables in INCLUDE and
++ GoldED+ should now recognize environment variables in INCLUDE and
   area path definitions in Fidoconfig (not tested).
 
 - Fixed small bug in goldkeys.cfg parser so the last line without
