@@ -43,7 +43,7 @@
 
 extern DWORD APIENTRY (*pfnmciSendString)(LPSTR, LPSTR, WORD, HWND, WORD);
 extern DWORD APIENTRY (*pfnmciGetErrorString)(DWORD, LPSTR, WORD);
-extern HMODULE ge_os2_mdmHandle = 0;
+extern HMODULE ge_os2_mdmHandle;
 
 
 //  ------------------------------------------------------------------
