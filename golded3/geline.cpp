@@ -441,7 +441,7 @@ char* strxmimecpy(char* dest, const char* source, int level, int size, bool dete
 
   if(detect) {
     if(table == -1)
-      LoadCharset(AA->Xlatimport(), CFG->xlatlocalset);
+      LoadCharset("N/A", "N/A");
     else
       LoadCharset(CFG->xlatcharset[table].imp, CFG->xlatcharset[table].exp);
   }
@@ -1559,7 +1559,7 @@ void ScanKludges(GMsg* msg, int getvalue) {
         }
 
         // Check if it's a signature indicator
-        else if(AA->isinternet()) {
+        else if(AA->isinternet() or *msg->ito or *msg->ifrom) {
           if(streql(ptr, "-- ")) {
             for(Line* q = line; q; q = q->next) {
               if((q->type & (GLINE_KLUDGE|GLINE_ORIG|GLINE_TEAR)) == 0) {
