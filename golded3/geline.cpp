@@ -1845,6 +1845,9 @@ inline bool put_on_new_line(const char *ptr, const char *prev_ptr) {
   if(((ptr[0] == ptr[1]) and (ptr[0] == ptr[2])) or
      strneql(ptr, " * Origin: ", 11) or
      strneql(ptr, "SEEN-BY:", 8) or
+     strneql(ptr, "Reply-To:", 9) or
+     strneql(ptr, "To:", 3) or
+     strneql(ptr, "From:", 5) or
      (ptr[0] == prev_ptr[0]) and (ptr[1] == prev_ptr[1]))
     return true;
   return false;
