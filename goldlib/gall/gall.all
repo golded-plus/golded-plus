@@ -140,6 +140,7 @@ gutlos2  cpp     all         bco         wco         emx
 gutlos2m cpp     all         bco         wco         emx
 gutlwin  cpp     all             bcx                             cyg
 gutlwinm cpp     all             bcx                             cyg
+gutlunix cpp     all                             lnx
 
 ## Low-level text video
 gvidbase cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg

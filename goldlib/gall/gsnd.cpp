@@ -37,6 +37,7 @@
 #include <gstrall.h>
 #include <gasmamis.h>
 #include <gsndall.h>
+#include <gfilutil.h>
 
 //  ------------------------------------------------------------------
 
@@ -256,7 +257,7 @@ int gsnd::open(const char* file) {
   if(file_open)
     close();
 
-  char buf[_MAX_PATH];
+  char buf[GMAXPATH+sizeof("open  alias noise wait")];
   sprintf(buf, "open %s alias noise wait", file);
   if(g_send_mci_string(buf, NULL)) {
     file_open = true;

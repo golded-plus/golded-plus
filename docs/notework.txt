@@ -12,6 +12,15 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ Added Midnight Commander compatible clipboard support for UNIX
+  version. Should only be available if "~/.cedit" directory exist at
+  GoldED+ startup time. (not tested)
+
+- Fixed problem with charset conversion on calling externutil with
+  kludges shown and reload option set. You should have reverse charset
+  table for this message (xlatlocalset to message charset) in order
+  this fix to work.
+
 - Fixed small bug in the Crahmail/Crashecho parser when the last
   address may left unread.
 
