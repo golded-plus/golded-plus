@@ -704,9 +704,7 @@ ScanData (FILE *datei, char *fname, int *errcode,
 	ptr += 8;
 	while (isspace (*ptr)) ptr++;
 	p2 = ptr;
-	while (isalnum(*p2) || 
-	       *p2 == '.' || *p2=='_' || *p2 == '-' ||
-	       *p2 == '!' || *p2=='@' || *p2 == '$')
+	while (isalnum(*p2) || (strchr(uufnchars, *p2)!=NULL))
 	  p2++;
 	c = *p2; *p2 = '\0';
 	if (p2 != ptr && result->filename == NULL)

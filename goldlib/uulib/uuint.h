@@ -210,6 +210,8 @@ extern int uu_more_mime;
 extern char *uusavepath;
 extern char *uuencodeext;
 
+extern char *uufnchars;
+
 /*
  * Encoding/Decoding tables
  */

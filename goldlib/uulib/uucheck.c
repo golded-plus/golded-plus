@@ -84,7 +84,7 @@ static char *nofname = "UNKNOWN";
  * special characters we allow an unquoted filename to have
  */
 
-static char *fnchars = "._-~!";
+char *uufnchars = "._-~!$@";
 
 /*
  * Policy for extracting a part number from the subject line.
@@ -164,7 +164,7 @@ UUGetFileName (char *subject, char *ptonum, char *ptonend)
       iter++;
     count = length = alflag = 0;
     while (iter[count] && 
-	   (isalnum (iter[count]) || strchr (fnchars, iter[count])!=NULL)) {
+	   (isalnum (iter[count]) || strchr (uufnchars, iter[count])!=NULL)) {
       if (isalpha (iter[count]))
 	alflag++;
       count++;
@@ -201,7 +201,7 @@ UUGetFileName (char *subject, char *ptonum, char *ptonend)
       count = length = 0;
       iter++;
       while (iter[count] &&
-	     (isalnum(iter[count])||strchr(fnchars, iter[count])!=NULL))
+	     (isalnum(iter[count])||strchr(uufnchars, iter[count])!=NULL))
 	count++;
       if (iter[count] == ' ' && length > 4) {
 	length = count;
@@ -229,7 +229,7 @@ UUGetFileName (char *subject, char *ptonum, char *ptonend)
 	continue;
       }
       
-      while ((isalnum(*iter)||strchr(fnchars, *iter)!=NULL||
+      while ((isalnum(*iter)||strchr(uufnchars, *iter)!=NULL||
 	      *iter=='/') && *iter && iter != ptonum && *iter != '.') {
 	if (isalpha (*iter))
 	  alflag = 1;
@@ -263,7 +263,7 @@ UUGetFileName (char *subject, char *ptonum, char *ptonend)
       length += count + 1;
       count   = 0;
       
-      while ((isalnum(iter[count])||strchr(fnchars, iter[count])!=NULL||
+      while ((isalnum(iter[count])||strchr(uufnchars, iter[count])!=NULL||
 	      iter[count]=='/') && iter[count] && iter[count] != '.')
 	count++;
       
@@ -286,7 +286,7 @@ UUGetFileName (char *subject, char *ptonum, char *ptonend)
       }
       
       while (iter[count] &&
-	     (isalnum(iter[count])||strchr(fnchars, iter[count])!=NULL||
+	     (isalnum(iter[count])||strchr(uufnchars, iter[count])!=NULL||
 	      iter[count]=='/'))
 	count++;
       
@@ -313,7 +313,7 @@ UUGetFileName (char *subject, char *ptonum, char *ptonend)
     while (*ptr && !isalpha (*ptr))
       ptr++;
 
-    while ((isalnum(ptr[length])||strchr(fnchars,ptr[length])!=NULL||
+    while ((isalnum(ptr[length])||strchr(uufnchars,ptr[length])!=NULL||
 	    ptr[length] == '/') && 
 	   ptr[length] && ptr+length!=part && ptr+length!=ptonum)
       length++;
