@@ -56,7 +56,7 @@ void DispHeader(GMsg* msg, bool prn, FILE* fp, int width) {
   int datewidth = width - CFG->disphdrdateset.pos;
 
   char headerline[200];
-  memset(headerline, _box_table(W_BHEAD,1), width);
+  memset(headerline, '=', width);
   headerline[width] = NUL;
 
   INam whofrom;
