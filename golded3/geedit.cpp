@@ -1285,8 +1285,6 @@ void IEclass::Newline() {
     // wrapped
 
     Undo->PushItem(EDIT_UNDO_WRAP_TEXT|BATCH_MODE, currline->prev, _quotelen, _splitbuf.length() - _quotelen);
-
-    setlinetype(currline);
   }
   else {
     currline = currline->next;
@@ -1295,6 +1293,7 @@ void IEclass::Newline() {
 
     Undo->PushItem(EDIT_UNDO_WRAP_TEXT|BATCH_MODE, currline->prev, _quotelen1, _splitbuf.length() - _quotelen1);
   }
+  setlinetype(currline);
 
   // Move down the cursor
   col = 0;

@@ -512,6 +512,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
                              (mode != MODE_WRITEHEADER) and
                              (mode != MODE_WRITE) and
                              (mode != MODE_HEADER)))) {
+              indexfile[0] = '\0';
               strtrim(ptr);
               ptr = strskip_wht(strskip_txt(ptr));
               if(*ptr) {
@@ -536,7 +537,9 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
                 strcpy(textfile, "random.txt");
               }
 
-              replaceextension(indexfile, textfile, ".mdx");
+              if(indexfile[0] == '\0') {
+                replaceextension(indexfile, textfile, ".mdx");
+              }
 
               MakePathname(textfile, CFG->cookiepath, textfile);
               MakePathname(indexfile, CFG->cookiepath, indexfile);

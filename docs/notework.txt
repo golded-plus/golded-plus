@@ -12,6 +12,15 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed small problem in editor when quoteline might left not painted
+  after EDITNewLine.
+
+- Fixed Ctrl-Down behaviour in lists.
+
+- Fixed ignorance of index file name in @random token.
+
+- Fixed missed expanding of environment variables in @file tokens.
+
 - Fixed names highlighting in the header when MsgListHeader is active.
 
 + JAMSMAPIHIGHWATER is now active by default if "areafile fidoconfig"

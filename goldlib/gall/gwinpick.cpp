@@ -276,13 +276,15 @@ void gwinpick::cursor_scroll_up() {
 void gwinpick::cursor_scroll_down() {
 
   uint oldidx = index;
-  do {
-    if(index < maximum_index)
-      index++;
-    else
-      while((not is_selectable(--index)) and (index > minimum_index))
-        ;
-  } while(not is_selectable(index));
+  if(index != maximum_index) {
+    do {
+      if(index < maximum_index)
+        index++;
+      else
+        while((not is_selectable(--index)) and (index > minimum_index))
+          ;
+    } while(not is_selectable(index));
+  }
   if(index!=oldidx)
     display_page();
 
