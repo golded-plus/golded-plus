@@ -924,8 +924,15 @@ int LoadMessage(GMsg* msg, int margin) {
       // Update the "Times Read" field
       msg->orig_timesread = msg->timesread++;
 
-      if(reader_rcv_noise > 1)
-        AA->SaveHdr(GMSG_UPDATE, msg);
+      if(reader_rcv_noise > 1) {
+        GMsg* tmsg = throw_calloc(1, sizeof(GMsg));
+	AA->LoadHdr(tmsg, msg->msgno);
+	tmsg->attr = msg->attr;
+	tmsg->orig_timesread = msg->orig_timesread;
+	tmsg->received = msg->received;
+        AA->SaveHdr(GMSG_UPDATE, tmsg);
+	throw_free(tmsg);
+      }
 
       msg->attr.upd0();
 

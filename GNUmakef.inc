@@ -68,7 +68,7 @@ clean:
 
 ifeq ($(FDEPPATH)/dep,$(wildcard $(FDEPPATH)/de?))
 ifneq ($(DEPS),)
-include $(DEPS)
+-include $(DEPS)
 endif
 endif
 
