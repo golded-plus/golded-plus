@@ -147,32 +147,23 @@ bool set_to_address(GMsg* msg, gsetaddr* toname, gsetaddr* toaddr, gsetaddr* fro
           ptr = strchr(buf1, '/');
           if(ptr) {
             *ptr++ = NUL;
-            strcpy(msg->idest, ptr);
-            strcpy(msg->realto, buf1+1);
-            if(*AA->Internetgate().name) {
-              strcpy(msg->iaddr, ptr);
-              ptr = strcpy(buf1, AA->Internetgate().name);
-            }
-            else
-              strcpy(buf1, ptr);
+            ParseInternetAddr(ptr, buf2, buf);
           }
           else {
-            strcpy(msg->idest, buf1+1);
-            if(*AA->Internetgate().name) {
-              strcpy(msg->iaddr, buf1+1);
-              ptr = strcpy(buf1, AA->Internetgate().name);
-            }
-            else {
-              strcpy(buf2, buf1+1);
-              ptr = strcpy(buf1, buf2);
-            }
+            ParseInternetAddr(buf1+1, buf2, buf);
           }
+          strcpy(msg->realto, buf2);
+          strcpy(msg->idest, buf);
+          strcpy(msg->iaddr, buf);
+          if(ptr)
+            strcpy(buf2, buf1+1);
+          ptr = strcpy(buf1, ptr and *buf2 ? buf2 : *buf ? buf : buf2);
         }
         else if(AA->isinternet()) {
           ParseInternetAddr(buf1, buf2, buf);
-          ptr = buf2;
-          strcpy(buf1, buf2);
+          strcpy(msg->realto, buf2);
           strcpy(msg->idest, buf);
+          ptr = strcpy(buf1, *buf2 ? buf2 : buf);
         }
         else {
           *msg->iaddr = NUL;
@@ -453,17 +444,18 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view) {
       to_name = tmp_to_name;
 
     if(AA->isinternet()) {
-      strcpy(msg->to, *AA->Internetgate().name ? AA->Internetgate().name : to_name.c_str());
+      strcpy(msg->to, *AA->Internetgate().name ? AA->Internetgate().name : msg->idest);
       strcpy(msg->realby, msg->by);
-      strcpy(msg->realto, msg->to);
+      if(not *msg->realto and not strchr(msg->to, '@'))
+        strcpy(msg->realto, msg->to);
       strcpy(msg->iorig, from_addr.c_str());
       strcpy(msg->idest, to_addr.c_str());
-      if(*msg->by)
-        sprintf(msg->ifrom, "%s (%s)", msg->iorig, msg->by);
+      if(*msg->realby)
+        sprintf(msg->ifrom, "\"%s\" <%s>", msg->realby, msg->iorig);
       else
         sprintf(msg->ifrom, "%s", msg->iorig);
-      if(*msg->to)
-        sprintf(msg->ito, "%s (%s)", msg->idest, msg->to);
+      if(*msg->realto)
+        sprintf(msg->ito, "\"%s\" %s", msg->realto, msg->idest);
       else
         sprintf(msg->ito, "%s", msg->idest);
       if(msg->orig.net == 0)
@@ -474,6 +466,7 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view) {
     else {
       if(strchr(to_name.c_str(), '@')) {
         if(*AA->Internetgate().name) {
+          strcpy(msg->to, AA->Internetgate().name);
           strcpy(msg->iaddr, to_name.c_str());
         }
         else {
@@ -484,6 +477,8 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view) {
           else
             strcpy(msg->to, to_name.c_str());
         }
+        if(AA->Internetgate().addr.net)
+          msg->dest = AA->Internetgate().addr;
       }
       else
         strcpy(msg->to, to_name.c_str());

@@ -7,5 +7,5 @@ $(TARGET): $(FLIBPATH)/lib$(TARGET)$(LIBEXT)
 $(FLIBPATH)/lib$(TARGET)$(LIBEXT): $(OBJS)
 	@echo -n Creating library $(TARGET)...
 	@$(AR) cru $@ $(FOBJPATH)/*$(OBJEXT)
-	@ranlib $@
+	@$(RANLIB) $@
 	@echo done

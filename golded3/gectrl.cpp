@@ -439,7 +439,7 @@ void DoKludges(int mode, GMsg* msg, bool attronly) {
 
       if(*msg->iorig) {
         mime_header_encode(buf2, msg->By(), msg);
-        sprintf(buf, "%sFrom: %s (%s)", rfc, msg->iorig, buf2);
+        sprintf(buf, "%sFrom: \"%s\" <%s>", rfc, buf2, msg->iorig);
         line = AddKludge(line, buf);
         line->kludge = GKLUD_RFC;
       }
@@ -512,7 +512,7 @@ void DoKludges(int mode, GMsg* msg, bool attronly) {
 
       if(*msg->iorig) {
         mime_header_encode(buf2, msg->By(), msg);
-        sprintf(buf, "%sSender: %s (%s)", rfc, msg->iorig, buf2);
+        sprintf(buf, "%sSender: \"%s\" <%s>", rfc, buf2, msg->iorig);
         line = AddKludge(line, buf);
         line->kludge = GKLUD_RFC;
       }

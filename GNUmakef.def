@@ -3,6 +3,7 @@
 ifeq ($(findstring EMX, $(PATH)), EMX)
 CC=gcc
 AR=ar
+RANLIB=ranlib
 PLATFORM=emx
 SHELL=bash
 EXEEXT=.exe
@@ -10,6 +11,7 @@ OBJEXT=.o
 LIBEXT=.a
 #CC=gcc -Zomf
 #AR=emxomfar
+#RANLIB=ranlib
 #PLATFORM=emx
 #SHELL=bash
 #EXEEXT=.exe
@@ -21,6 +23,7 @@ ifneq ($(DJGPP),)
 CC=gcc
 CXX=gpp
 AR=ar
+RANLIB=ranlib
 PLATFORM=djg
 SHELL=bash
 EXEEXT=.exe
@@ -31,6 +34,8 @@ ifeq ($(TERM),cygwin)
 CC=gcc -mno-cygwin
 CXX=g++ -mno-cygwin
 AR=ar
+RANLIB=ranlib
+WINDRES=windres
 PLATFORM=cyg
 SHELL=bash
 EXEEXT=.exe
@@ -40,6 +45,7 @@ else
 CC=gcc
 CXX=g++
 AR=ar
+RANLIB=ranlib
 PLATFORM=lnx
 EXEEXT=
 OBJEXT=.o

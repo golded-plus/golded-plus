@@ -12,6 +12,11 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+! A lot of manipulations with Internet addressing was done.
+
+! GoldED+ now produce Internet addresses in RFC preferable form
+  "name" <email@address> instead of email@address (name).
+
 + Added ShowDeleted indicator to status line.
 
 - Fixed few bugs in Undo feature.
@@ -104,12 +109,6 @@ ______________________________________________________________________
   saving messages. Could be used in Random System Groups or globally.
 
 + You can explicitly select built-in template by defining "built-in".
-
-! A lot of manipulations with Internet addressing was done. If at
-  least one person will be able to send message to expected
-  destination I'll be happy :-) If you'll find a bug please write me
-  a detailed guide (functional requirements specification :)) on how
-  everything should work.
 
 ! Fixed filelocking in UNIX version.
 

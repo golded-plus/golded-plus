@@ -46,7 +46,7 @@ $(FOBJPATH)/%$(OBJEXT): %.c
 ifeq ($(PLATFORM),cyg)
 $(FOBJPATH)/%$(OBJEXT): %.rc
 	@echo creating resources
-	@windres -o $@ $<
+	@$(WINDRES) -o $@ $<
 endif
 
 ifeq ($(PLATFORM),emx)

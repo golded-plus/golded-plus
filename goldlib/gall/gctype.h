@@ -49,16 +49,10 @@ extern "C" {
 extern char tl[256], tu[256];
 inline int _nls_tolower(int c) { return tl[c]; }
 inline int _nls_toupper(int c) { return tu[c]; }
-#ifdef __MSVCRT__
-inline int _nls_isspace(int c) { return (iscntrl(c) or (c == ' ')); }
-#endif
 #ifdef __cplusplus
 }
 #define tolower(a) _nls_tolower((unsigned char)(a))
 #define toupper(a) _nls_toupper((unsigned char)(a))
-#ifdef __MSVCRT__
-#define isspace(a) _nls_isspace((unsigned char)(a))
-#endif
 #endif
 #endif
 
