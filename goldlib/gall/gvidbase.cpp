@@ -1361,9 +1361,10 @@ void vscroll(int srow, int scol, int erow, int ecol, int atr, int lines) {
   // Does anyone know a better solution?
 
   if(lines >= 0) {
-    if (lines <= 1 + erow - srow) {
-      vatch *buf = vsave (srow + lines, scol, erow, ecol);
-      vrestore (buf, srow, scol, erow - lines, ecol);
+    if(lines <= 1 + erow - srow) {
+      vatch *buf = vsave(srow + lines, scol, erow, ecol);
+      vrestore(buf, srow, scol, erow - lines, ecol);
+      throw_xfree(buf);
     }
     else
       lines = 1 + erow - srow;
@@ -1374,9 +1375,10 @@ void vscroll(int srow, int scol, int erow, int ecol, int atr, int lines) {
   }
   else {
     lines*=-1;
-    if (lines <= 1 + erow - srow) {
-      vatch *buf = vsave (srow, scol, erow - lines, ecol);
-      vrestore (buf, srow + lines, scol, erow, ecol);
+    if(lines <= 1 + erow - srow) {
+      vatch *buf = vsave(srow, scol, erow - lines, ecol);
+      vrestore(buf, srow + lines, scol, erow, ecol);
+      throw_xfree(buf);
     }
     else
       lines = 1 + erow - srow;

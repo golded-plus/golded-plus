@@ -2,7 +2,7 @@
 Random remarks about the ncurses support for GoldEd+
                   by Jacobo Tarrio, 2:348/102.11@fidonet <jtarrio@iname.com>
 
-This version of GoldEd+ bears the second public release of the ncurses
+This version of GoldEd+ bears the third public release of the ncurses
 implementation of its video code; it's still considered beta, so expect some
 strange behaviour while it is being completed.
 
@@ -24,7 +24,30 @@ If you find any bug not listed here, please report to Jacobo Tarrio,
 2:348/102.11@fidonet <jtarrio@iname.com> ASAP to get it fixed soon, or,
 better, fix it yourself and send me the patch :-)
 
-=== 2000-02-25: Second public release
+=== 2000-02-17: Third public release
+Known bugs:
+
+! Statusline displays a couple of odd characters (after GoldEd+'s name and
+  before the current time)
+! Screen may become corrupted if someone other than GoldEd+ writes on the
+  terminal
+! Messages from the program viewed before entering full-screen are not
+  displayed properly
+* The cursor grows very big every 30 seconds when editing a message
+  (possible reincarnation of a similar bug in former versions)
+* The splash screen looks ugly, but not as much as before :)
+
+Notes:
+
+* ESCDELAY is now set by default to 50ms. If it is too short for you, you
+  can set the ESCDELAY environment variable to override it (under ncurses).
+  It must hold an integer value representing the delay in milliseconds.
+  Quite useful over wide area network links or on very-very-i-really-mean-it
+  slow terminals. Undocumented in ncurses 4, but functional. Documented
+  in ncurses 5 and above (I believe).
+
+
+=== 2000-02-05: Second public release
 Known bugs:
 
 ! The splash screen looks a bit ugly :-)
@@ -71,3 +94,4 @@ Notes:
   implementation; also, it would make GoldEd+ unusable over a network or
   with some dumb terminals or terminal emulators; this way you can press
   ESC followed immediately by an A to "press" ALT-A.
+

@@ -9,6 +9,18 @@ ______________________________________________________________________
 
 ______________________________________________________________________
 
+              Notes for GoldED+ 1.1.4.4, March xx 2000
+______________________________________________________________________
+
+- Fixed sound support under DOS (GSNDAPI).
+
+- From the previous version GoldED+ does not read goldrand.cfg
+  separately. Just include it with INCLUDE if not yet ;-)
+
+- Fixed some memory leaks.
+
+______________________________________________________________________
+
              Notes for GoldED+ 1.1.4.3, February xx 2000
 ______________________________________________________________________
 

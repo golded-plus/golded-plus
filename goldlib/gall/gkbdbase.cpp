@@ -32,6 +32,8 @@
 #include <gkbdbase.h>
 #include <gmemall.h>
 
+#include <stdlib.h>
+
 #if defined(__OS2__)
 #define INCL_BASE
 #include <os2.h>
@@ -98,12 +100,13 @@ void GKbd::Init() {
   intrflush(stdscr, FALSE);
   keypad(stdscr, TRUE);
 
-  // WARNING: this might break with another version of ncurses, or
+  // WARNING: this might break with an old version of ncurses, or
   // with another implementation of curses. I'm putting it here because
   // it is quote useful most of the time :-) For other implementations of
   // curses, you might have to compile curses yourself to achieve this.  -jt
   #if defined(NCURSES_VERSION)
-  ESCDELAY = 50; // ms, slow for a 300bps terminal, fast for humans :-)
+  if(not getenv("ESCDELAY")) // If not specified by user via environment, set
+    ESCDELAY = 50; // ms, slow for a 300bps terminal, fast for humans :-)
   #endif
   // For more ncurses-dependent code, look at the gkbd_curstable array
   // and at the kbxget_raw() function  -jt

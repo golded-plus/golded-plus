@@ -374,6 +374,14 @@ static void w_brag() {
   char buf[200];
   char* logo[6];
 
+  #if defined(__USE_NCURSES__)
+  logo[0] = throw_strdup("                    88     88            88  ");
+  logo[1] = throw_strdup("      oooooo oooooo 88 oooo88 oooooo oooo88  ");
+  logo[2] = throw_strdup("      88  88 88  88 88 88  88 88oo88 88  88  ");
+  logo[3] = throw_strdup("      88oo88 88oo88 88 88oo88 88oooo 88oo88  ");
+  logo[4] = throw_strdup("  oo      88                                 ");
+  logo[5] = throw_strdup("  88oooooo88                                 ");
+  #else
   if(W_BBRAG == 7) {
     logo[0] = throw_strdup("                    **     **            **  ");
     logo[1] = throw_strdup("      ****** ****** ** ****** ****** ******  ");
@@ -383,7 +391,7 @@ static void w_brag() {
     logo[5] = throw_strdup("  **********                                 ");
   }
   else {
-    #if defined(__UNIX__) and not defined(__USE_NCURSES__)
+    #if defined(__UNIX__)
     if(gvid_xterm) {
       logo[0] = throw_strdup("                    Ú¿     Ú¿            Ú¿  ");
       logo[1] = throw_strdup("      ÚÂÄÄÂ¿ ÚÂÄÄÂ¿ ³³ ÚÂÄÄ´³ ÚÂÄÄÂ¿ ÚÂÄÄ´³  ");
@@ -400,7 +408,7 @@ static void w_brag() {
       logo[3] = throw_strdup("      ÈÊÍÍ¹º ÈÊÍÍÊ¼ È¼ ÈÊÍÍÊ¼ ÈÊÍÍÊ¼ ÈÊÍÍÊ¼  ");
       logo[4] = throw_strdup("  É»      ºº                                 ");
       logo[5] = throw_strdup("  ÈÊÍÍÍÍÍÍÊ¼                                 ");
-    #if defined(__UNIX__) and not defined(__USE_NCURSES__)
+    #if defined(__UNIX__)
     }
     gvid_boxcvt(logo[0]);
     gvid_boxcvt(logo[1]);
@@ -410,6 +418,7 @@ static void w_brag() {
     gvid_boxcvt(logo[5]);
     #endif
   }
+  #endif  
 
   W_READ = wopen_(1, 2, MAXROW-4, MAXCOL-5, W_BBRAG, C_BRAGB, C_BRAGW);
   w_shadow();
