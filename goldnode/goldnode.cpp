@@ -45,8 +45,9 @@
 #include <glog.h>
 #include <iomanip>
 #include <iostream>
+#include <fstream>
 
-//#define GOLDNODE_STATS 1
+#define GOLDNODE_STATS 1
 
 #ifdef GOLDNODE_STATS
 #include <math.h>
@@ -497,7 +498,7 @@ void calc_statistic(std::ofstream &ofp, int* observation, float N) {
   }
 
   ofp << "|-----+-------+-------+--------+--------------|" << std::endl
-      << "| sum | " << std::setprecision(0) << std::setw(5) << N << " | " << std::setprecision(3) << std::setw(5) << sumfrekvens << " | " << std::setw(5) << mean << " | " << std::setw(12) << varians << " |" << std::endl
+      << "| sum | " << std::setprecision(0) << std::setw(5) << N << " | " << std::setprecision(3) << std::setw(5) << sumfrekvens << " | " << std::setw(6) << mean << " | " << std::setw(12) << varians << " |" << std::endl
       << "`---------------------------------------------'" << std::endl
       << std::endl
       << "Mean: " << std::setprecision(1) << mean << std::endl
@@ -858,7 +859,7 @@ static void read_nodelists() {
     if(not ofp) {
       if(not quiet) std::cout << "Error opening statfile " << statfilename << '!' << std::endl;
     }
-    else
+    else {
       ofp << "Nodename size statistics:" << std::endl;
       calc_statistic(ofp, statistic.nodename, nodes);
 

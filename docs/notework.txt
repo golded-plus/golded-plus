@@ -12,6 +12,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+! Thread list optimized a bit by speed. It aslo should not crash on
+  long threads now.
+
 - Fixed serious bug with forwarding when ADDRESSLOOKUPFIRST set to
   MSGID (or no Origin line available) and you call either spellchecker
   or EditLoadFile function. The address was set to the address of
