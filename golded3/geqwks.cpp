@@ -209,10 +209,14 @@ int ImportQWK() {
           _tm.tm_sec   = 0;
           _tm.tm_isdst = -1;
           time_t a = mktime(&_tm);
-          time_t b = mktime(gmtime(&a));
+          struct tm *tp = gmtime(&a);
+          tp->tm_isdst = -1;
+          time_t b = mktime(tp);
           msg->written = a + a - b;
           a = time(NULL);
-          b = mktime(gmtime(&a));
+          tp = gmtime(&a);
+          tp->tm_isdst = -1;
+          b = mktime(tp);
           msg->arrived = a + a - b;
 
           // Read message text

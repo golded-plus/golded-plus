@@ -442,7 +442,9 @@ void guserbase::write_entry(uint idx, bool updateit) {
 
   if(updateit and not entry.is_deleted) {
     time_t a = time(NULL);
-    time_t b = mktime(gmtime(&a));
+    struct tm *tp = gmtime(&a);
+    tp->tm_isdst = -1;
+    time_t b = mktime(tp);
     entry.lastdate = a + a - b;
     if(not entry.firstdate)
       entry.firstdate = entry.lastdate;

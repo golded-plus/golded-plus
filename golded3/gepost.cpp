@@ -223,7 +223,9 @@ static void MakeMsg3(int& mode, GMsg* msg) {
   // Do Timefields
   if(msg->attr.fmu()) {
     time_t a = time(NULL);
-    time_t b = mktime(gmtime(&a));
+    struct tm *tp = gmtime(&a);
+    tp->tm_isdst = -1;
+    time_t b = mktime(tp);
     a += a - b;
     if(AA->isjam() or AA->iswildcat())
       msg->received = a;
@@ -792,7 +794,9 @@ void MakeMsg(int mode, GMsg* omsg) {
       }
       if(dochgdate) {
         time_t a = time(NULL);
-        time_t b = mktime(gmtime(&a));
+        struct tm *tp = gmtime(&a);
+        tp->tm_isdst = -1;
+        time_t b = mktime(tp);
         a += a - b;
         msg->received = msg->arrived = msg->written = a;
       }

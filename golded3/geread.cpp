@@ -908,7 +908,9 @@ int LoadMessage(GMsg* msg, int margin) {
         reader_rcv_noise = 1;
         if(not msg->attr.rcv()) {         // Have we seen it?
           time_t a = time(NULL);
-          time_t b = mktime(gmtime(&a));
+          struct tm *tp = gmtime(&a);
+          tp->tm_isdst = -1;
+          time_t b = mktime(tp);
           msg->received = a + a - b;      // Get current date
           msg->attr.rcv1();               // Mark as received
           reader_rcv_noise++;

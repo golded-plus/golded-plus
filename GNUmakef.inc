@@ -6,11 +6,11 @@ all: $(TARGET)
 
 include $(TOP)/GNUmakef.def
 
-# Config files formats
-include $(TOP)/Config.def
-
 # Messagebase formats
 include $(TOP)/MSGBase.def
+
+# Config files formats
+include $(TOP)/Config.def
 
 FOBJPATH=$(TOP)/$(OBJPATH)/$(PLATFORM)/$(TARGET)
 FLIBPATH=$(TOP)/$(LIBPATH)/$(PLATFORM)

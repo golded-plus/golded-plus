@@ -15,6 +15,9 @@ ______________________________________________________________________
 - Fixed Bug #109368: Ged+ crashes if there are more than 30 links in
   the help. Now accepts up to 50, and ignores more.
 
+- Fixed bug that made GoldED+ not behave well with daylight savings
+  time (it showed an hour less).
+
 ______________________________________________________________________
 
                Notes for GoldED+ 1.1.4.6, August 7 2000
