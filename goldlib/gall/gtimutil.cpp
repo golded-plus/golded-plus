@@ -361,7 +361,9 @@ time_t FTimeToTime(FTime* __ftime, struct tm* __tm) {
         __tm->tm_isdst = -1;
 
         time_t a = mktime(__tm);
-        time_t b = mktime(gmtime(&a));
+        struct tm *tp = gmtime(&a);
+        tp->tm_isdst = -1;
+        time_t b = mktime(tp);
         _time = a + a - b;
 
         if(_time == (ulong)0xFFFFFFFFL)
@@ -450,7 +452,9 @@ time_t FidoTimeToUnix(char* ptr) {
     t.tm_sec   = second;
     t.tm_isdst = -1;
     time_t a = mktime(&t);
-    time_t b = mktime(gmtime(&a));
+    struct tm *tp = gmtime(&a);
+    tp->tm_isdst = -1;
+    time_t b = mktime(tp);
     return a + a - b;
   }
   return (ulong)-1;

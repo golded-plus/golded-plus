@@ -305,7 +305,9 @@ int SMBArea::load_hdr(gmsg* __msg, smbmsg_t *smsg)
   __msg->attr.tfs(smsgp->hdr.auxattr & MSG_TRUNCFILE);
 
   time_t a = smsgp->hdr.when_written.time;
-  time_t b = mktime(gmtime(&a));
+  struct tm *tp = gmtime(&a);
+  tp->tm_isdst = -1;
+  time_t b = mktime(tp);
   __msg->written = a + a - b;
   a = smsgp->hdr.when_imported.time;
   b = mktime(gmtime(&a));
@@ -511,7 +513,9 @@ void SMBArea::save_hdr(int mode, gmsg* msg)
   else {
     memcpy(smsg.hdr.id, "SHD\x1a", 4);
     smsg.hdr.version = SMB_VERSION;
-    smsg.hdr.when_written.time = mktime(gmtime(&msg->written));
+    struct tm *tp = gmtime(&msg->written);
+    tp->tm_isdst = -1;
+    smsg.hdr.when_written.time = mktime(tp);
   }
   smsg.hdr.when_imported.time = time(NULL);
 

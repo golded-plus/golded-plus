@@ -322,8 +322,8 @@ bool gareafile::ReadAreafile(word crc, char* parameters) {
   const word CRC_AREASBBS      = 0xF77C;
   const word CRC_CRASHMAIL     = 0x7551;
   const word CRC_DBRIDGE       = 0xD365;
-  const word CRC_D_BRIDGE      = 0x48DA;
   const word CRC_DUTCHIE       = 0x0B08;
+  const word CRC_D_BRIDGE      = 0x48DA;
   const word CRC_EZYCOM        = 0xC81B;
   const word CRC_FASTECHO      = 0xF2F0;
   const word CRC_FE_ABS        = 0x8007;
@@ -351,8 +351,8 @@ bool gareafile::ReadAreafile(word crc, char* parameters) {
   const word CRC_SQUISH        = 0xFCF6;
   const word CRC_SUPERBBS      = 0x497F;
   const word CRC_TERMAIL       = 0x147A;
-  const word CRC_TMAIL         = 0xE837;
   const word CRC_TIMED         = 0xE977;
+  const word CRC_TMAIL         = 0xE837;
   const word CRC_TOSSCAN       = 0x43DD;
   const word CRC_WATERGATE     = 0x3ADB;
   const word CRC_WMAIL         = 0xB167;
@@ -384,7 +384,7 @@ bool gareafile::ReadAreafile(word crc, char* parameters) {
 #ifndef GCFG_NOFIDOCONF
     case CRC_FIDOCONFIG:    ReadHPT(parameters);           break;
 #endif
-#ifndef GCFG_NOPCB
+#ifndef GCFG_NOFIDOPCB
     case CRC_FIDOPCB:       ReadFidoPCB(parameters);       break;
 #endif
 #ifndef GCFG_NOFMAIL

@@ -428,6 +428,10 @@ char* strxmimecpy(char* dest, const char* source, int level, int size, bool dete
   if(need_reload) {
     table = LoadCharset(NULL, NULL, 1);
     level = LoadCharset(charset, CFG->xlatlocalset);
+    if (!level) {
+      strcpy(charset, CFG->xlatimport);
+      level = LoadCharset(charset, CFG->xlatlocalset);
+    }
   }
 
   XlatStr(buf, buf2, level, CharTable);

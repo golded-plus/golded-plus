@@ -221,16 +221,26 @@ protected:
   Path pathprefix;
 
   // Fidoconfig parser functions
+#ifndef GCFG_NOFIDOCONF
   void replace_slashes(char **key);
   void gettok(char** key, char** val);
+#endif
+#ifndef GCFG_NOCMAIL
   // Crashmail II parser function
   bool jbstrcpy(char *dest, char *src, size_t maxlen, size_t *jbc);
+#endif
+#ifndef GCFG_NOTIMED
   // Timed parser function
   void nullastbackslash(char* val);
+#endif
+#ifndef GCFG_NOWATERGATE
   // Watergate parser function
   uint gettype(uint msgtype, const byte wtrtype);
+#endif
+#ifndef GCFG_NOXMAIL
   // XMail parser function
   char* ClipDosFilename(char* __file);
+#endif
 
   void adjustpath(char* path);
 
