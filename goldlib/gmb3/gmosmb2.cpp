@@ -35,22 +35,21 @@ void SMBArea::raw_scan(bool keep_index, bool scanpm)
 {
   GFTRK("SMBArea::raw_scan");
 
-  SMBData* _was_data = data;
+  smb_t *_was_data = data;
   if(_was_data == NULL)
     data_open();
   ulong firstmsgno = 0;
   ulong lastmsgno = 0;
   Msgn->Reset();
   PMrk->Reset();
-  if(isopen or smb_open(10) == 0) {
-    if(smb_locksmbhdr(10) == 0) {
-      smbstatus_t status;
-      int res = smb_getstatus(&status);
-      smb_unlocksmbhdr();
+  if(isopen or smb_open(data) == 0) {
+    if(smb_locksmbhdr(data) == 0) {
+      int res = smb_getstatus(data);
+      smb_unlocksmbhdr(data);
       ulong total_msgs = 0;
       if(res == 0) {
-        total_msgs = status.total_msgs;
-        lastmsgno = status.last_msg;
+        total_msgs = data->status.total_msgs;
+        lastmsgno = data->status.last_msg;
         if(keep_index or scanpm) {
           smbmsg_t msg;
           int umax = (WidePersonalmail & PM_ALLNAMES) ? WideUsernames : 1;
@@ -59,9 +58,9 @@ void SMBArea::raw_scan(bool keep_index, bool scanpm)
           while(l <= total_msgs) {
             if(not fread(&msg.idx, 1, sizeof(idxrec_t), data->sid_fp))
               break;
-            if(smb_lockmsghdr(msg, 10) == 0) {
-              int rc = smb_getmsghdr(&msg);
-              smb_unlockmsghdr(msg);
+            if(smb_lockmsghdr(data, &msg) == 0) {
+              int rc = smb_getmsghdr(data, &msg);
+              smb_unlockmsghdr(data, &msg);
               if(rc == 0) {
                 if(firstmsgno == 0)
                   firstmsgno = msg.hdr.number;
@@ -81,7 +80,7 @@ void SMBArea::raw_scan(bool keep_index, bool scanpm)
                     gotpm = false;
                   }
                 }
-                smb_freemsgmem(msg);
+                smb_freemsgmem(&msg);
               }
             }
             l++;
@@ -90,7 +89,7 @@ void SMBArea::raw_scan(bool keep_index, bool scanpm)
         }
       }
       if(not isopen)
-        smb_close();
+        smb_close(data);
       Msgn->SetCount(total_msgs);
     }
   }

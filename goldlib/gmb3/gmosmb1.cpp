@@ -30,13 +30,12 @@
 #include <gmemdbg.h>
 #include <gdbgerr.h>
 #include <gdbgtrk.h>
-#include <glzh.h>
 #include <gmosmb.h>
 
 
 //  ------------------------------------------------------------------
 
-SMBData* smbdata = NULL;
+smb_t* smbdata = NULL;
 int smbdatano = 0;
 
 
@@ -52,71 +51,7 @@ void SMBExit() {
 
 void SMBInit() {
 
-  smbdata = (SMBData*)throw_calloc(3, sizeof(SMBData));
-}
-
-
-//  ------------------------------------------------------------------
-
-FILE* SMBArea::smb_openexlusively(const char *__file, int retry_time) {
-
-  FILE *_f;
-  long _tries = 0;
-
-  do {
-
-    _f = fsopen(__file, "rb+", SH_DENYRW);
-    if(_f == NULL) {
-
-      if((errno != EACCES) or (PopupLocked(++_tries, false, __file) == false)) {
-
-        // User requested to exit
-        WideLog->ErrOpen();
-        WideLog->printf("! Synchronet message base could not be opened (exclusively).");
-        WideLog->printf(": %s", __file);
-        WideLog->ErrOSInfo();
-        OpenErrorExit();
-      }
-    }
-  } while(_f == NULL);
-
-  // Remove the popup window
-  if(_tries)
-    PopupLocked(0, 0, NULL);
-
-  return _f;
-}
-
-
-//  ------------------------------------------------------------------
-
-int SMBArea::smb_openexlusively2(const char *__file, int retry_time) {
-
-  int _fh;
-  long _tries = 0;
-
-  do {
-
-    _fh = ::sopen(__file, O_RDWR|O_CREAT|O_BINARY, SH_DENYRW, S_STDRW);
-    if(_fh == -1) {
-
-      if((errno != EACCES) or (PopupLocked(++_tries, false, __file) == false)) {
-
-        // User requested to exit
-        WideLog->ErrOpen();
-        WideLog->printf("! Synchronet message base could not be opened (exclusively).");
-        WideLog->printf(": %s", __file);
-        WideLog->ErrOSInfo();
-        OpenErrorExit();
-      }
-    }
-  } while(_fh == -1);
-
-  // Remove the popup window
-  if(_tries)
-    PopupLocked(0, 0, NULL);
-
-  return _fh;
+  smbdata = (smb_t *)throw_calloc(3, sizeof(smb_t));
 }
 
 
@@ -125,7 +60,10 @@ int SMBArea::smb_openexlusively2(const char *__file, int retry_time) {
 void SMBArea::data_open() {
 
   data = smbdata + (smbdatano++);
+  strxcpy(data->file, path(), sizeof(data->file) - 3);
   data->sdt_fp = data->shd_fp = data->sid_fp = data->sda_fp = data->sha_fp = NULL;
+  data->retry_time = 1;
+  data->last_error[0] = NUL;
 }
 
 
@@ -156,9 +94,45 @@ void SMBArea::open() {
   }
   if(isopen == 1) {
     data_open();
-    smb_open(10);
-    if(not fsize(data->shd_fp))
-      smb_create(2000, 2000, 0, 0, 10);
+
+    int _tries = 0;
+
+    for(;;) {
+      if(smb_open(data) != 0) {
+
+        if((errno != EACCES) or (PopupLocked(++_tries, false, data->file) == false)) {
+
+          // User requested to exit
+          WideLog->ErrOpen();
+          WideLog->printf("! Synchronet message base could not be opened (%s).", data->last_error);
+          WideLog->printf(": %s", path());
+          WideLog->ErrOSInfo();
+          OpenErrorExit();
+        }
+      }
+      else
+        break;
+    };
+
+    // Remove the popup window
+    if(_tries)
+      PopupLocked(0, 0, NULL);
+
+    if(not fsize(data->shd_fp)) {
+      data->status.max_crcs = 0;
+      data->status.max_age = 0;
+      data->status.max_msgs = 1000;
+      data->status.attr = 0;
+      if(smb_create(data) != 0) {
+        smb_close(data);
+
+        WideLog->ErrOpen();
+        WideLog->printf("! Synchronet message base could not be created (%s).", data->last_error);
+        WideLog->printf(": %s", path());
+        WideLog->ErrOSInfo();
+        OpenErrorExit();
+      }
+    }
     scan();
   }
 
@@ -174,7 +148,7 @@ void SMBArea::close()
 
   if(isopen) {
     if(isopen == 1) {
-      smb_close();
+      smb_close(data);
       data_close();
     }
     isopen--;
@@ -196,7 +170,7 @@ void SMBArea::close()
 
 void SMBArea::suspend()
 {
-  smb_close();
+  smb_close(data);
 }
 
 
@@ -204,9 +178,44 @@ void SMBArea::suspend()
 
 void SMBArea::resume()
 {
-  smb_open(10);
-  if(not fsize(data->shd_fp))
-    smb_create(2000, 2000, 0, 0, 10);
+  int _tries = 0;
+
+  for(;;) {
+    if(smb_open(data) != 0) {
+
+      if((errno != EACCES) or (PopupLocked(++_tries, false, data->file) == false)) {
+
+        // User requested to exit
+        WideLog->ErrOpen();
+        WideLog->printf("! Synchronet message base could not be opened (%s).", data->last_error);
+        WideLog->printf(": %s", path());
+        WideLog->ErrOSInfo();
+        OpenErrorExit();
+      }
+    }
+    else
+      break;
+  };
+
+  // Remove the popup window
+  if(_tries)
+    PopupLocked(0, 0, NULL);
+
+  if(not fsize(data->shd_fp)) {
+    data->status.max_crcs = 0;
+    data->status.max_age = 0;
+    data->status.max_msgs = 1000;
+    data->status.attr = 0;
+    if(smb_create(data) != 0) {
+      smb_close(data);
+
+      WideLog->ErrOpen();
+      WideLog->printf("! Synchronet message base could not be created (%s).", data->last_error);
+      WideLog->printf(": %s", path());
+      WideLog->ErrOSInfo();
+      OpenErrorExit();
+    }
+  }
 }
 
 
@@ -238,12 +247,12 @@ int SMBArea::load_hdr(gmsg* __msg, smbmsg_t *smsg)
     return false;
   }
   fseek(data->sid_fp, (reln - 1L) * sizeof(idxrec_t), SEEK_SET);
-  if(not fread(&smsgp->idx, 1, sizeof(idxrec_t), data->sid_fp) or (smb_lockmsghdr(*smsgp, 10) != 0)) {
+  if(not fread(&smsgp->idx, 1, sizeof(idxrec_t), data->sid_fp) or (smb_lockmsghdr(data, smsgp) != 0)) {
     GFTRK(NULL);
     return false;
   }
-  int rv = smb_getmsghdr(smsgp);
-  smb_unlockmsghdr(*smsgp);
+  int rv = smb_getmsghdr(data, smsgp);
+  smb_unlockmsghdr(data, smsgp);
   if(rv != 0) {
     GFTRK(NULL);
     return false;
@@ -315,7 +324,7 @@ int SMBArea::load_hdr(gmsg* __msg, smbmsg_t *smsg)
   __msg->received = 0;
 
   if(not smsg)
-    smb_freemsgmem(*smsgp);
+    smb_freemsgmem(smsgp);
   GFTRK(NULL);
   return true;
 }
@@ -327,7 +336,7 @@ int SMBArea::load_msg(gmsg* msg)
 {
   smbmsg_t smsg;
   ushort xlat;
-  char *inbuf;
+  uchar *inbuf;
   long outlen;
   char buf[512];
   int i;
@@ -425,11 +434,11 @@ common:
           l += 2;
         }
         if(lzh) {
-          inbuf = (char *)throw_xmalloc(smsg.dfield[i].length);
+          inbuf = (uchar *)throw_xmalloc(smsg.dfield[i].length);
           fread(inbuf, smsg.dfield[i].length - l, 1, data->sdt_fp);
           outlen = *(long *)inbuf;
           msg->txt = (char *)throw_realloc(msg->txt, txt_len+outlen);
-          glzh_decode(inbuf, smsg.dfield[i].length - l, msg->txt+txt_len-1);
+          lzh_decode(inbuf, smsg.dfield[i].length - l, (uchar *)(msg->txt+txt_len-1));
           throw_xfree(inbuf);
         } else {
           outlen = smsg.dfield[i].length - l;
@@ -464,7 +473,7 @@ add2:
     }
 
 
-  smb_freemsgmem(smsg);
+  smb_freemsgmem(&smsg);
 
   GFTRK(NULL);
   return true;
@@ -482,12 +491,11 @@ void SMBArea::save_hdr(int mode, gmsg* msg)
   char *fbuf, *sbody, *stail;
   char buf[256];
   smbmsg_t smsg;
-  smbstatus_t status;
   fidoaddr_t destaddr, origaddr;
 
   GFTRK("SMBSaveHdr");
 
-  smb_getstatus(&status);
+  smb_getstatus(data);
   memset(&smsg, 0, sizeof(smbmsg_t));
   if(not (mode & GMSG_NEW)) {
     ulong reln = Msgn->ToReln(msg->msgno);
@@ -496,12 +504,12 @@ void SMBArea::save_hdr(int mode, gmsg* msg)
       return;
     }
     fseek(data->sid_fp, (reln - 1L) * sizeof(idxrec_t), SEEK_SET);
-    if(not fread(&smsg.idx, 1, sizeof(idxrec_t), data->sid_fp) or (smb_lockmsghdr(smsg, 10) != 0)) {
+    if(not fread(&smsg.idx, 1, sizeof(idxrec_t), data->sid_fp) or (smb_lockmsghdr(data, &smsg) != 0)) {
       GFTRK(NULL);
       return;
     }
-    int rv = smb_getmsghdr(&smsg);
-    smb_unlockmsghdr(smsg);
+    int rv = smb_getmsghdr(data, &smsg);
+    smb_unlockmsghdr(data, &smsg);
     if(rv != 0) {
       GFTRK(NULL);
       return;
@@ -512,7 +520,7 @@ void SMBArea::save_hdr(int mode, gmsg* msg)
   }
   else {
     memcpy(smsg.hdr.id, "SHD\x1a", 4);
-    smsg.hdr.version = SMB_VERSION;
+    smsg.hdr.version = smb_ver();
     struct tm *tp = gmtime(&msg->written);
     tp->tm_isdst = -1;
     smsg.hdr.when_written.time = mktime(tp);
@@ -548,23 +556,28 @@ void SMBArea::save_hdr(int mode, gmsg* msg)
 
   if((mode & GMSG_UPDATE) and not (mode & GMSG_TXT)) {
     if(mode & GMSG_NEW)
-      smb_addmsghdr(&smsg, &status, 1, 10);
+      smb_addmsghdr(data, &smsg, data->status.attr & SMB_HYPERALLOC);
     else
-      smb_putmsghdr(smsg);
-    smb_freemsgmem(smsg);
+      smb_putmsghdr(data, &smsg);
+    smb_freemsgmem(&smsg);
     GFTRK(NULL);
     return;
   }
 
   if(not (mode & GMSG_NEW)) {
-    if(smb_open_da(10) == 0) {
-      if(smb_open_ha(10) == 0) {
-        smb_freemsg(smsg, status);
-        fclose(data->sha_fp);
+    if(not (data->status.attr & SMB_HYPERALLOC)) {
+      if(smb_open_da(data) == 0) {
+        if(smb_open_ha(data) == 0) {
+          smb_freemsg(data, &smsg);
+          smb_close_ha(data);
+        }
+        smb_close_da(data);
       }
-      fclose(data->sda_fp);
     }
-    smb_freemsgmem(smsg);
+    else {
+      smb_freemsg(data, &smsg);
+    }
+    smb_freemsgmem(&smsg);
     smsg.dfield = NULL;
     smsg.hdr.total_dfields = 0;
     smsg.total_hfields = 0;
@@ -703,44 +716,53 @@ void SMBArea::save_hdr(int mode, gmsg* msg)
     bodylen-=2; // remove last CRLF if present
 
   crc = ~memCrc32(sbody, bodylen, false, CRC32_MASK_CCITT);
-  rv = smb_addcrc(status.max_crcs, crc, 10);
+  rv = smb_addcrc(data, crc);
 
   while(taillen and (iscntrl(stail[taillen-1]) or isspace(stail[taillen-1])))
     taillen--;
 
-  if(smb_open_da(10) == 0) {
-    l = bodylen+2;
-    if(taillen)
-      l += (taillen+2);
-    smsg.hdr.offset = smb_fallocdat(l, 1);
-    fclose(data->sda_fp);
-    if(not (smsg.hdr.offset and smsg.hdr.offset<1L)) {
-      fseek(data->sdt_fp, smsg.hdr.offset, SEEK_SET);
-      ushort xlat = XLAT_NONE;
-      fwrite(&xlat, 2, 1, data->sdt_fp);
-      l = ftell(data->sdt_fp);
-      fwrite(sbody, SDT_BLOCK_LEN, smb_datblocks(bodylen), data->sdt_fp);
-      if(taillen) {
-        fseek(data->sdt_fp, l+bodylen, SEEK_SET);
-        fwrite(&xlat, 2, 1, data->sdt_fp);
-        fwrite(stail, SDT_BLOCK_LEN, smb_datblocks(taillen), data->sdt_fp);
-      }
-      fflush(data->sdt_fp);
-      smb_dfield(&smsg, TEXT_BODY, bodylen+2);
-      if(taillen)
-        smb_dfield(&smsg, TEXT_TAIL, taillen+2);
+  l = bodylen+2;
+  if(taillen)
+    l += (taillen+2);
 
-      if(mode & GMSG_NEW) {
-        smb_addmsghdr(&smsg, &status, 1, 10);
-        Msgn->Append(smsg.hdr.number);
-      }
-      else
-        smb_putmsghdr(smsg);
+  if(not (data->status.attr & SMB_HYPERALLOC)) {
+    if(smb_open_da(data) == 0) {
+      smsg.hdr.offset = smb_allocdat(data, l, 1);
+      smb_close_da(data);
     }
+    else
+      smsg.hdr.offset = -1L;
+  }
+  else {
+    smsg.hdr.offset = smb_hallocdat(data);
+  }
+
+  if(smsg.hdr.offset >= 0) {
+    fseek(data->sdt_fp, smsg.hdr.offset, SEEK_SET);
+    ushort xlat = XLAT_NONE;
+    fwrite(&xlat, 2, 1, data->sdt_fp);
+    l = ftell(data->sdt_fp);
+    fwrite(sbody, SDT_BLOCK_LEN, smb_datblocks(bodylen), data->sdt_fp);
+    if(taillen) {
+      fseek(data->sdt_fp, l+bodylen, SEEK_SET);
+      fwrite(&xlat, 2, 1, data->sdt_fp);
+      fwrite(stail, SDT_BLOCK_LEN, smb_datblocks(taillen), data->sdt_fp);
+    }
+    fflush(data->sdt_fp);
+    smb_dfield(&smsg, TEXT_BODY, bodylen+2);
+    if(taillen)
+      smb_dfield(&smsg, TEXT_TAIL, taillen+2);
+
+    if(mode & GMSG_NEW) {
+      smb_addmsghdr(data, &smsg, data->status.attr & SMB_HYPERALLOC);
+      Msgn->Append(smsg.hdr.number);
+    }
+    else
+      smb_putmsghdr(data, &smsg);
   }
   throw_xfree(sbody);
   throw_xfree(stail);
-  smb_freemsgmem(smsg);
+  smb_freemsgmem(&smsg);
 
   GFTRK(NULL);
 }
@@ -771,20 +793,20 @@ void SMBArea::del_msg(gmsg* msg)
     return;
   }
   fseek(data->sid_fp, (reln - 1L) * sizeof(idxrec_t), SEEK_SET);
-  if(not fread(&smsg.idx, 1, sizeof(idxrec_t), data->sid_fp) or (smb_lockmsghdr(smsg, 10) != 0)) {
+  if(not fread(&smsg.idx, 1, sizeof(idxrec_t), data->sid_fp) or (smb_lockmsghdr(data, &smsg) != 0)) {
     GFTRK(NULL);
     return;
   }
-  if(smb_getmsghdr(&smsg) == 0) {
+  if(smb_getmsghdr(data, &smsg) == 0) {
     smsg.hdr.attr |= MSG_DELETE;
-    int rv = smb_putmsghdr(smsg);
-    smb_unlockmsghdr(smsg);
+    int rv = smb_putmsghdr(data, &smsg);
+    smb_unlockmsghdr(data, &smsg);
     if(rv == 0)
       msg->attr.del1();
   }
   else
-    smb_unlockmsghdr(smsg);
-  smb_freemsgmem(smsg);
+    smb_unlockmsghdr(data, &smsg);
+  smb_freemsgmem(&smsg);
 
   GFTRK(NULL);
 }
@@ -794,10 +816,9 @@ void SMBArea::del_msg(gmsg* msg)
 
 void SMBArea::new_msgno(gmsg* msg)
 {
-  smbstatus_t status;
-  int res = smb_getstatus(&status);
-  smb_unlocksmbhdr();
-  msg->msgno = (res == 0) ? status.last_msg+1 : 0;
+  int res = smb_getstatus(data);
+  smb_unlocksmbhdr(data);
+  msg->msgno = (res == 0) ? data->status.last_msg+1 : 0;
 }
 
 
@@ -971,7 +992,7 @@ Line* SMBArea::make_dump_msg(Line*& lin, gmsg* msg, char* lng_head)
   line = AddLine(line, buf);
 
   ushort xlat;
-  char *inbuf;
+  uchar *inbuf;
   long outlen;
   bool lzh;
   bool tail = true;
@@ -1004,11 +1025,11 @@ common:
           l += 2;
         }
         if(lzh) {
-          inbuf = (char *)throw_xmalloc(smsg.dfield[i].length);
+          inbuf = (uchar *)throw_xmalloc(smsg.dfield[i].length);
           fread(inbuf, smsg.dfield[i].length - l, 1, data->sdt_fp);
           outlen = *(long *)inbuf;
           msg->txt = (char *)throw_realloc(msg->txt, txt_len+outlen);
-          glzh_decode(inbuf, smsg.dfield[i].length - l, msg->txt+txt_len-1);
+          lzh_decode(inbuf, smsg.dfield[i].length - l, (uchar *)(msg->txt+txt_len-1));
           throw_xfree(inbuf);
         } else {
           outlen = smsg.dfield[i].length - l;
@@ -1020,7 +1041,7 @@ common:
         break;
     }
 
-  smb_freemsgmem(smsg);
+  smb_freemsgmem(&smsg);
 
   GFTRK(NULL);
 

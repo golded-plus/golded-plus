@@ -12,6 +12,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+! Completely redone Synchronet support. Should be more stable and
+  adequate.
+
 + Added support for SpaceToss areafile. WARNING: there's no known way
   to obtain primary AKA for echo areas from tosser config ver 1.10 so
   you'll need to define them manually. Main AKA will be used by
