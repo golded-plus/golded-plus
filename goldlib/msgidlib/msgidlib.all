@@ -1,0 +1,7 @@
+##  ------------------------------------------------------------------
+##  Master build file.
+##  ------------------------------------------------------------------
+genmsgid c       all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+ffind    c       all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+fexist   c       all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+patmat   c       all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx
