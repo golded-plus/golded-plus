@@ -12,6 +12,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+! Reverted back to old behaviour of ZapQuotesBelow.
+
 - Fixed EDITHEADERFIRST operation.
 
 + Added new keyword AreaListGroupOrder to specify groups sorting order

@@ -1521,39 +1521,20 @@ void IEclass::deleteline(bool zapquotesbelow) {
 
   GFTRK("Editdeleteline");
 
-  if(zapquotesbelow and not (currline->type & GLINE_QUOT)) {
-    GFTRK(NULL);
-    return;
-  }
-
-  // Stop reflow if the quotestring on the next line is not the same
-  uint _qlen1;
-  char _qstr1[MAXQUOTELEN];
-  GetQuotestr(currline->txt.c_str(), _qstr1, &_qlen1);
-
   bool done = false;
 
   do {
  
     // Break if need to zap quotes, but the current line is not quote and is not empty
-    if(zapquotesbelow) {
-      if(isempty(currline) or (currline->type & (GLINE_KLUDGE|GLINE_TEAR|GLINE_ORIG|GLINE_TAGL)))
-        break;
-
-      // Stop zap if the quotestring on the line is not the same
-      uint _qlen2;
-      char _qstr2[MAXQUOTELEN];
-      GetQuotestr(currline->txt.c_str(), _qstr2, &_qlen2);
-      if(not cmp_quotes(_qstr1, _qstr2))
-        break;
-    }
+    if(zapquotesbelow and not ((currline->type & GLINE_QUOT) or isempty(currline)))
+      break;
 
     // Pointer to the deleted line
     Line* _deletedline = currline;
 
     // If last line to be deleted delete to EOL and exit
     if(currline->next == NULL) {
-      if(currline->txt.empty())
+      if(isempty(currline))
         break;
       insertlinebelow(currline, "", batch_mode);
       batch_mode = BATCH_MODE;
@@ -1678,16 +1659,11 @@ void IEclass::ZapQuoteBelow() {
   else
     Undo->PushItem(EDIT_UNDO_VOID|batch_mode, currline);
   batch_mode = BATCH_MODE;
+  UndoItem* item_to_fix = Undo->last_item;
 
   deleteline(true);
-  if(row) {
-    GoUp();
-    GoEOL();
-  }
-  else {
-    UndoItem* i = Undo->last_item;
-    do { i = i->prev; } while(i->action & BATCH_MODE);
-    i->line = currline;
+  if(row == 0) {
+    item_to_fix->line = currline;
   }
 
   GFTRK(NULL);
