@@ -74,11 +74,11 @@
       <name/Denis Zavorotny/, <name/Alexander Batalov/, <name/Eugene Roshal/,
       <name/Igor Vanin/, <name/Alexey Froloff/, <name/Andrew Shakhmatov/,
       <name/Roman Trunov/, <name/Alex Druinsky/, <name>Alexander
-      Tsvyashchenko</name>, <name/Pavel Tsekov/ and of course by the
-      maintainers of <name/GoldED+/ (<name/Alexander Aganichev/ and
-      <name/Jacobo Tarrio/). Some portions of code was taken from C/C++
-      snippets collected by <name/Bob Stouts/ (personal thanks goes to
-      <name/Thad Smith/, <name/Raymond Gardner/, <name/Jeff Dunlop/,
+      Tsvyashchenko</name>, <name/Pavel Tsekov/, <name/Alexander Reznikov/ and
+      (of course) by the maintainers of <name/GoldED+/ (<name>Alexander
+      Aganichev</name> and <name/Jacobo Tarrio/). Some portions of code was
+      taken from C/C++ snippets collected by <name/Bob Stouts/ (personal thanks
+      goes to <name/Thad Smith/, <name/Raymond Gardner/, <name/Jeff Dunlop/,
       <name/Mark G. Mendel/, <name/Gary S. Brown/, <name/John Rex/, and
       <name/Walter Bright/) and some other from <name/GNU/ libraries
       (thanks goes to <name/GNU/ C library maintainers, <name/Rob Swindell/,
@@ -86,15 +86,16 @@
       Yoshizaki</name>, <name/SLang/ maintainers, <name/TIN/ maintainers, and
       <name/Eric Newton/). Also, there are portions of code which are courtesy
       of various FTN software authors: <name/Scott J. Dudley/ and <name>Lanius
-      Corporation</name>, <name/Bit Bucket Software/, <name/Thomas Waldmann/,
-      <name/Peter Davies/, <name/Ron Clark/, <name/Tobias Burchhardt/,
-      <name/Andreas Klein/, <name/Folkert J. Wijnstra/, <name>Gerard J. van der
-      Land</name>, <name/Peter Stewart/ and <name/InterZone Software, Inc./,
-      <name/Marco Maccaferri/, <name/Wynn Wagner III/, <name/Andrew Milner/ and
-      <name/Continental Software/, <name/Bjarne Maschoreck/, <name>Roger
-      Kirchhoff</name>, <name/Stefan Graf/, <name/Nicolai Dufva/, and
-      <name/Morten Baun/. If you feel that your name is missed here please drop
-      an e-mail to the <name/GoldED+/ maintainers.
+      Corporation</name>, <name/Bit Bucket Software/, <name/Husky Team/,
+      <name/Thomas Waldmann/, <name/Peter Davies/, <name/Ron Clark/,
+      <name/Tobias Burchhardt/, <name/Andreas Klein/, <name>Folkert J.
+      Wijnstra</name>, <name/Gerard J. van der Land/, <name/Peter Stewart/ and
+      <name/InterZone Software, Inc./, <name/Marco Maccaferri/,
+      <name/Wynn Wagner III/, <name/Andrew Milner/ and <name>Continental
+      Software</name>, <name/Bjarne Maschoreck/, <name/Roger Kirchhoff/,
+      <name/Stefan Graf/, <name/Nicolai Dufva/, and <name/Morten Baun/. If you
+      feel that your name is missed here please drop an e-mail to the
+      <name/GoldED+/ maintainers.
     </p>
     <p>
       We also need to thanks all that people who have contributed configuration
@@ -110,7 +111,8 @@
       <name/Cees Schouten/, <name/Andrew Voronin/, <name/Arkady Grikurov/,
       <name/Mik Karlsson/, <name/K. Simonsen/, <name/Thomas Gradin/,
       <name/Andre van de Wijdeven/, <name/Robert Bashe/, <name>Kees
-      Bergwerf</name>, and <name/Ferdinand Grassmann/.
+      Bergwerf</name>, <name/Ferdinand Grassmann/, <name/Laurent Jumet/,
+      <name/Andrew Porokhnyak/, and <name/Oleksandr Liutyi/.
     </p>
     <p>
       Special thanks goes to <name/Fra&#96;2k/ for helping in testing :-)
