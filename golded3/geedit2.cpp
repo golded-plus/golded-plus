@@ -858,6 +858,8 @@ void IEclass::LoadFile() {
     for(i=0; l->next and i<row; i++)
       l = l->next;
 
+    if(l->next == NULL)
+      row = i;
     currline = l;
     col = mincol;
 

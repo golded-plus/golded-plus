@@ -26,6 +26,8 @@
 
 #include <golded.h>
 #include <gcharset.h>
+#include <iostream>
+#include <iomanip>
 
 
 //  ------------------------------------------------------------------
@@ -616,6 +618,8 @@ public:
   ulong replyto;
   ulong reply1st;
   ulong replynext;
+  ulong replytoindex;
+  ulong level;
 };
 
 #define MAX_LEVEL 20
@@ -631,8 +635,8 @@ private:
   uint                  h_offset;
 
   void BuildThreadIndex(dword msgno);
-  void recursive_build(ulong msgn, ulong rn);
-  void GenTree(char* buf2, int idx);
+  void recursive_build(ulong msgn, ulong rn, ulong level);
+  void GenTree(char* buf2, int idx, ulong maxlev);
   void update_title();
   bool NextThread(bool next);
 
@@ -723,7 +727,7 @@ void GThreadlist::close() {
 
 //  ------------------------------------------------------------------
 
-void GThreadlist::GenTree(char* buf, int idx) {
+void GThreadlist::GenTree(char* buf, int idx, ulong maxlev) {
 
 #ifdef KOI8
   static char graph[4]="ÜÑÅ";
@@ -742,36 +746,30 @@ void GThreadlist::GenTree(char* buf, int idx) {
   }
 #endif
 
-  t = list[idx];
+  ThreadEntry te = list[idx];
 
-  uint level = 0;
-  char* q = &buf[1000];
+  buf[0] = ' ';
 
-  *q-- = NUL;
-  *q-- = ' ';
-  *q-- = (t.replynext) ? graph[0] : graph[1];
+  if(te.level == 0) {
+    buf[1] = NUL;
+    return;
+  }
 
-  while(t.replyto) {
-    for(uint i=0; i<list.size(); i++) {
-      if(list[i].msgno == t.replyto) {
-        t = list[i];
-        level++;
-        break;
-      }
+  if(te.level < maxlev) {
+    buf[(te.level-1)*2+1] = (te.replynext) ? graph[0] : graph[1];
+    buf[(te.level-1)*2+2] = ' ';
+    buf[(te.level-1)*2+3] = NUL;
+  }
+
+  while(te.replyto) {
+    te = list[te.replytoindex];
+    if((te.level != 0) and (te.level < maxlev)) {
+      buf[(te.level-1)*2+1] = (te.replynext) ? graph[2] : ' ';
+      buf[(te.level-1)*2+2] = ' ';
     }
-    *q-- = ' ';
-    *q-- = (t.replynext) ? graph[2] :  ' ';
   }
 
-  t = list[idx];
-
-  if(level) {
-    q+=2;
-    memcpy(buf, q, strlen(q)+1);
-  }
-  else {
-    buf[0] = ' '; buf[1] = NUL;
-  }
+  buf[maxlev*2+1] = NUL;
 }
 
 
@@ -780,7 +778,8 @@ void GThreadlist::GenTree(char* buf, int idx) {
 void GThreadlist::print_line(uint idx, uint pos, bool isbar) {
 
   char buf[256];
-  char buf2[1001];
+  ulong maxlev = (window.width()+h_offset+1)/2;
+  __extension__ char buf2[maxlev*2+2];
   int attrh, attrw;
   uint tdlen;
 
@@ -808,7 +807,7 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar) {
     attrh = hattr;
   }
 
-  GenTree(buf2, idx);
+  GenTree(buf2, idx, maxlev);
   
   #if defined(__UNIX__) && !defined(__USE_NCURSES__)
   gvid_boxcvt(buf2);
@@ -872,7 +871,7 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar) {
 
 //  ------------------------------------------------------------------
 
-void GThreadlist::recursive_build(ulong msgn, ulong rn) {
+void GThreadlist::recursive_build(ulong msgn, ulong rn, ulong level) {
 
   ulong oldmsgno = msg.msgno;
 
@@ -882,6 +881,8 @@ void GThreadlist::recursive_build(ulong msgn, ulong rn) {
     t.replyto   = msg.link.to();
     t.reply1st  = msg.link.first();
     t.replynext = rn;
+    t.level     = level;
+    t.replytoindex = 0;
 
     if(not AA->Msgn.ToReln(t.replyto))
       t.replyto = 0;
@@ -894,6 +895,7 @@ void GThreadlist::recursive_build(ulong msgn, ulong rn) {
     bool found = false;
     for(j=0; j<list_size; j++) {
       if(list[j].msgno == t.replyto) {
+        t.replytoindex = j;
         found = true;
         break;
       }
@@ -902,11 +904,11 @@ void GThreadlist::recursive_build(ulong msgn, ulong rn) {
     if(found or (list_size == 0))
       list.push_back(t);
 
-    recursive_build(msg.link.first(), msg.link.list(0));
+    recursive_build(msg.link.first(), msg.link.list(0), level+1);
 
     for(int n=0; n < msg.link.list_max()-1; n++) {
       if(msg.link.list(n)) {
-        recursive_build(msg.link.list(n), msg.link.list(n+1));
+        recursive_build(msg.link.list(n), msg.link.list(n+1), level+1);
       } else
         break;
     }
@@ -937,7 +939,7 @@ void GThreadlist::BuildThreadIndex(dword msgn) {
     msgno = msg.link.to();
   }
 
-  recursive_build(msg.msgno, 0);
+  recursive_build(msg.msgno, 0, 0);
 
   w_info(NULL);
 
