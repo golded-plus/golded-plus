@@ -1,5 +1,13 @@
 # -*- makefile -*-
 
+ifeq ($(TERM),msys)
+MSYS=true
+else
+ifeq ($(OSTYPE),msys)
+MSYS=true
+endif
+endif
+
 TOP=..
 SHORTTARGET=gn
 TARGET=goldnode
@@ -10,7 +18,7 @@ else
 ifeq ($(TERM),cygwin)
 STDLIBS=-luser32
 else
-ifeq ($(TERM),msys)
+ifdef MSYS
 STDLIBS=-luser32
 endif
 endif

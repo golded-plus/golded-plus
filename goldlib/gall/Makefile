@@ -1,5 +1,13 @@
 # -*- makefile -*-
 
+ifeq ($(TERM),msys)
+MSYS=true
+else
+ifeq ($(OSTYPE),msys)
+MSYS=true
+endif
+endif
+
 TOP=../..
 TARGET=gall
 INCS=-I$(TOP)/goldlib/gall
@@ -9,7 +17,7 @@ else
 ifeq ($(TERM),cygwin)
 INCS+=-I$(TOP)/goldlib/glibc
 else
-ifeq ($(TERM),msys)
+ifdef MSYS
 INCS+=-I$(TOP)/goldlib/glibc
 endif
 endif
