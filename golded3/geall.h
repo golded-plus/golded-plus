@@ -625,7 +625,6 @@ struct SaveUtil {
 #define GC_CFGB_    CFG->color[11]
 #define GC_STYLE_   CFG->color[12]
 #define GC_SHAD_    CFG->color[13]
-#define GC_READ2_   CFG->color[14]
 
 
 //  ------------------------------------------------------------------
@@ -643,10 +642,8 @@ struct SaveUtil {
 #define _Kludge    c[5]
 #define _Tearline  c[6]
 #define _Edit      c[6]
-#define _Signature c[6]
 #define _Block     c[7]
 #define _Input     c[7]
-#define _Quote2    c[7]
 #define _Shadow    c[7]
 #define _Origin    c[8]
 #define _To        c[8]
@@ -654,6 +651,8 @@ struct SaveUtil {
 #define _Tagline   c[9]
 #define _Hidden    c[10]
 #define _Pagebar   c[11]
+#define _Signature c[12]
+#define _Quote2    c[13]
 
 #define _WindowUnsent     c[6]
 #define _WindowUnread     c[7]
@@ -711,8 +710,8 @@ struct SaveUtil {
 #define C_READT   GC_READ_._Tearline
 #define C_READO   GC_READ_._Origin
 #define C_READPB  GC_READ_._Pagebar
-#define C_READQ2  GC_READ2_._Quote2
-#define C_READS   GC_READ2_._Signature
+#define C_READQ2  GC_READ_._Quote2
+#define C_READS   GC_READ_._Signature
 #define C_HEADW   GC_HEAD_._Window
 #define C_HEADB   GC_HEAD_._Border
 #define C_HEADT   GC_HEAD_._Title
@@ -850,8 +849,8 @@ struct SaveUtil {
 //  Window structure
 
 struct Win {
-  int  btype;        // Border type
-  int  c[12];        // Colors
+  int btype;        // Border type
+  int c[16];        // Colors
   int w;            // Window handle
 };
 

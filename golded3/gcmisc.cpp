@@ -465,8 +465,7 @@ void GetColors(char* value) {
       break;
     case CRC_QUOTE:
       wptr->_Quote = attr;
-      if(wptr == &GC_READ_)
-        GC_READ2_._Quote2 = attr;
+      wptr->_Quote2 = attr;
       break;
     case CRC_CURSOR:
       wptr->_Cursor = attr;
@@ -528,12 +527,10 @@ void GetColors(char* value) {
       wptr->_Quote = attr;
       break;
     case CRC_QUOTE2:
-      if(wptr == &GC_READ_)
-        GC_READ2_._Quote2 = attr;
+      wptr->_Quote2 = attr;
       break;
     case CRC_SIGNATURE:
-      if(wptr == &GC_READ_)
-        GC_READ2_._Signature = attr;
+      wptr->_Signature = attr;
       break;
     case CRC_UNSENTHIGH:
       wptr->_HighlightUnsent = attr;
