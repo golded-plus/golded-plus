@@ -866,7 +866,7 @@ int gkbd_nt2bios(INPUT_RECORD& inp) {
 
   if(c != -1)
     if(ascii and not (right_alt_same_as_left ? (state & (LEFT_ALT_PRESSED | RIGHT_ALT_PRESSED)) : (state & LEFT_ALT_PRESSED)))
-      if(isalnum(keycode))
+      if(!iscntrl(keycode))
         return ascii;
   if(ISEXT(c))
     return EXTVAL(c) << 8;
@@ -1245,7 +1245,7 @@ gkey kbxget_raw(int mode) {
             }
             // fall through
           default:
-            if(ascii == '\x2e') {
+            if((ascii == '\x2e') or (alt_pressed and ctrl_pressed)) {
               k = (gkey)ascii;
             }
             else {
