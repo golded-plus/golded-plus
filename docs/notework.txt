@@ -17,6 +17,9 @@ ______________________________________________________________________
 
 - Fixed small bug in console shiftstate code under Linux.
 
++ Filenames in file requests are not converted to uppercase in Linux
+  any more.
+
 ______________________________________________________________________
 
                Notes for GoldED+ 1.1.4.5, June 18 2000
