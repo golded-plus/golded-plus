@@ -166,12 +166,13 @@ static void strfmt(char *str, const char *fmt, ...) {
           ival = va_arg(vp, int);
           bool padding = true;
           while(ilen) {
-            ival = (ival % pow[ilen]) / pow[ilen-1];
-            if(ival)
+            ival %= pow[ilen];
+            int cval = ival / pow[ilen-1];
+            if(cval)
               padding = false;
             if(--ilen and padding)
-              ival = ' ' - '0';
-            *str++ = (char)('0' + ival);
+              cval = ' ' - '0';
+            *str++ = (char)('0' + cval);
           }
         }
         else {
