@@ -34,7 +34,7 @@
 //  ------------------------------------------------------------------
 
 #ifdef __UNIX__
-#define GOLDMARK '\xB2'
+#define GOLDMARK '^' // xwindow fonts has no square sign :(
 #else
 #define GOLDMARK '\xFD'
 #endif

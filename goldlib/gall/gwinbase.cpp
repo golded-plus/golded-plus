@@ -886,6 +886,23 @@ int wprints(int wrow, int wcol, int attr, const char* str) {
   return gwin.werrno=W_NOERROR;
 }
 
+int wprints_box(int wrow, int wcol, int attr, const char* str) {
+
+  // check for active window
+  if(!gwin.total)
+    return gwin.werrno=W_NOACTIVE;
+
+  // check for valid coordinates
+  #ifdef GOLD_WCHK
+  if(wchkcoord(wrow,wcol))
+    return gwin.werrno=W_INVCOORD;
+  #endif
+
+  const int &border = gwin.active->border;
+  vputs_box(gwin.active->srow+wrow+border,gwin.active->scol+wcol+border,attr,str);
+  return gwin.werrno=W_NOERROR;
+}
+
 
 //  ------------------------------------------------------------------
 //  Displays a string inside active window

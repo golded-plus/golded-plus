@@ -376,12 +376,23 @@ static void w_brag() {
   W_READ = wopen_(1, 2, MAXROW-4, MAXCOL-5, W_BBRAG, C_BRAGB, C_BRAGW);
   w_shadow();
 
-  wprints(0, 0, C_BRAGB, "                   88     88            88     ");
-  wprints(1, 0, C_BRAGB, "     oooooo oooooo 88 oooo88 oooooo oooo88  o  ");
-  wprints(2, 0, C_BRAGB, "     88  88 88  88 88 88  88 88oo88 88  88 o8o ");
-  wprints(3, 0, C_BRAGB, "     88oo88 88oo88 88 88oo88 88oooo 88oo88  8  ");
-  wprints(4, 0, C_BRAGB, " oo      88                                    ");
-  wprints(5, 0, C_BRAGB, " 88oooooo88                                    ");
+
+  if(W_BBRAG == 7) {
+    wprints(0, 0, C_BRAGB, "                   88     88            88     ");
+    wprints(1, 0, C_BRAGB, "     oooooo oooooo 88 oooo88 oooooo oooo88  o  ");
+    wprints(2, 0, C_BRAGB, "     88  88 88  88 88 88  88 88oo88 88  88 o8o ");
+    wprints(3, 0, C_BRAGB, "     88oo88 88oo88 88 88oo88 88oooo 88oo88  8  ");
+    wprints(4, 0, C_BRAGB, " oo      88                                    ");
+    wprints(5, 0, C_BRAGB, " 88oooooo88                                    ");
+  }
+  else {
+    wprints_box(0, 0, C_BRAGT|ACSET, "                   ษป     ษป            ษป     ");
+    wprints_box(1, 0, C_BRAGT|ACSET, "     ษหออหป ษหออหป บบ ษหออนบ ษหออหป ษหออนบ  ห  ");
+    wprints_box(2, 0, C_BRAGT|ACSET, "     บบ  บบ บบ  บบ บบ บบ  บบ บฬออสผ บบ  บบ อฮอ ");
+    wprints_box(3, 0, C_BRAGT|ACSET, "     ศสออนบ ศสออสผ ศผ ศสออสผ ศสออสผ ศสออสผ  ส  ");
+    wprints_box(4, 0, C_BRAGT|ACSET, " ษป      บบ                                    ");
+    wprints_box(5, 0, C_BRAGT|ACSET, " ศสออออออสผ                                    ");
+  }
 
   wprints(4, 46-strlen(__gver_longpid__)-1-strlen(__gver_ver__), C_BRAGW, __gver_longpid__);
   wprints(4, 46-strlen(__gver_ver__), C_BRAGW, __gver_ver__);

@@ -376,6 +376,7 @@ int       wprintf     (const char* format, ...) __attribute__ ((format (printf, 
 int       wprintaf    (int attr, const char* format, ...) __attribute__ ((format (printf, 2, 3)));
 int       wprintfs    (int wrow, int wcol, int attr, const char* format, ...) __attribute__ ((format (printf, 4, 5)));
 int       wprints     (int wrow, int wcol, int attr, const char* str);
+int       wprints_box (int wrow, int wcol, int attr, const char* str);
 int       wprintvs    (int wrow, int wcol, int attr, const vchar* str);
 int       wprintns    (int wrow, int wcol, int attr, const char* str, uint len, vchar fill=' ', int fill_attr=-1);
 int       wprintsf    (int wrow, int wcol, int attr, const char* format, const char* str);

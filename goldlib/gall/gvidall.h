@@ -369,6 +369,7 @@ void vputws     (int row, int col, vatch* buf, uint len);
 void vputc      (int row, int col, int atr, vchar chr);
 void vputvs     (int row, int col, int atr, const vchar* str);
 void vputs      (int row, int col, int atr, const char* str);
+void vputs_box  (int row, int col, int atr, const char* str);
 void vputns     (int row, int col, int atr, const char* str, uint len);
 void vputx      (int row, int col, int atr, vchar chr, uint len);
 void vputy      (int row, int col, int atr, vchar chr, uint len);

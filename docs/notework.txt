@@ -12,6 +12,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+! Old logo returned back with Pavel Gulchouck's patch :-)
+
 - Fixed double WAZOO FREQ bug (Thanx to Dmitry Lebus for discovering
   problem).
 

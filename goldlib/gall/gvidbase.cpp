@@ -79,6 +79,7 @@
 //  ------------------------------------------------------------------
 
 static bool __vcurhidden = false;
+static unsigned long gvid_boxcvtc(char);
 
 #if !defined(__USE_NCURSES__)
 
@@ -778,6 +779,20 @@ void vputvs(int row, int col, int atr, const vchar* str) {
 
 //  ------------------------------------------------------------------
 //  Print string with attribute at specfied location
+
+void vputs_box(int row, int col, int atr, const char* str) {
+#if defined(__USE_NCURSES__)
+  uint counter;
+  int len = strlen(str);
+  int attr = gvid_attrcalc(atr);
+  move(row, col);
+  for(counter = 0; counter < len; counter++)
+    addch(gvid_tcpr(gvid_boxcvtc(str[counter])) | attr);
+  refresh();
+#else
+  vputs(row, col, atr, str);
+#endif
+}
 
 void vputs(int row, int col, int atr, const char* str) {
 
@@ -2069,25 +2084,52 @@ chtype _box_table(int type, int c) {
 
 //  ------------------------------------------------------------------
 
-#if defined(__UNIX__) && !defined(__USE_NCURSES__)
+#if defined(__UNIX__)
 void gvid_boxcvt(char* s) {
+  while(*s)
+    *s++ = (char)gvid_boxcvtc(*s);
+}
 
-  while(*s) {
-    switch(*s) {
-      case 'Ú': *s = _box_table(8, 0); break;
-      case 'Ä': *s = _box_table(8, 1); break;
-      case '¿': *s = _box_table(8, 2); break;
-      case '³': *s = _box_table(8, 4); break;
-      case 'À': *s = _box_table(8, 5); break;
-      case 'Ù': *s = _box_table(8, 7); break;
-      case 'Å': *s = _box_table(8, 8); break;
-      case 'Ã': *s = _box_table(8, 9); break;
-      case '´': *s = _box_table(8, 10); break;
-      case 'Â': *s = _box_table(8, 11); break;
-      case 'Á': *s = _box_table(8, 12); break;
+static unsigned long gvid_boxcvtc(char c) {
+    switch(c) {
+#if 0
+      case 'Ú': return _box_table(8, 0);
+      case 'Ä': return _box_table(8, 1);
+      case '¿': return _box_table(8, 2);
+      case '³': return _box_table(8, 4);
+      case 'À': return _box_table(8, 5);
+      case 'Ù': return _box_table(8, 7);
+      case 'Å': return _box_table(8, 8);
+      case 'Ã': return _box_table(8, 9);
+      case '´': return _box_table(8, 10);
+      case 'Â': return _box_table(8, 11);
+      case 'Á': return _box_table(8, 12);
+#else
+      case 'Ú': return _box_table(0, 0);
+      case 'Ä': return _box_table(0, 1);
+      case '¿': return _box_table(0, 2);
+      case '³': return _box_table(0, 4);
+      case 'À': return _box_table(0, 5);
+      case 'Ù': return _box_table(0, 7);
+      case 'Å': return _box_table(0, 8);
+      case 'Ã': return _box_table(0, 9);
+      case '´': return _box_table(0, 10);
+      case 'Â': return _box_table(0, 11);
+      case 'Á': return _box_table(0, 12);
+      case 'É': return _box_table(1, 0);
+      case 'Í': return _box_table(1, 1);
+      case '»': return _box_table(1, 2);
+      case 'º': return _box_table(1, 4);
+      case 'È': return _box_table(1, 5);
+      case '¼': return _box_table(1, 7);
+      case 'Î': return _box_table(1, 8);
+      case 'Ì': return _box_table(1, 9);
+      case '¹': return _box_table(1, 10);
+      case 'Ë': return _box_table(1, 11);
+      case 'Ê': return _box_table(1, 12);
+#endif
     }
-    s++;
-  }
+    return c;
 }
 #endif
 
