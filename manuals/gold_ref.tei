@@ -4481,14 +4481,6 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     </div2>
     <div2>
       <head>
-        HAPPYBIRTHDAY &lt;value&gt;
-      </head>
-      <p>
-    The only valid value is "friend". Currently do nothing.
-      </p>
-    </div2>
-    <div2>
-      <head>
         HIGHLIGHTUNREAD &lt;yes/no&gt;
       </head>
       <p>
@@ -4859,20 +4851,6 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     configured (with lines of "Allow_Xxx:" in GIGO's HEADERS.CFG,
     where Xxx are the RFC headerlines the gate administrator wants to
     allow).
-      </p>
-    </div2>
-    <div2>
-      <head>
-        INTERNETSERVER &lt;nntp/smpt&gt; &lt;server&gt;
-      </head>
-      <p>
-    </div2>
-    <div2>
-      <head>
-        INTERNETSERVER &lt;pop3&gt; &lt;server&gt; &lsqb;&lt;username&gt;&rsqb; &lsqb;&lt;password&gt;&rsqb;
-      </head>
-      <p>
-    No code currently associated with this keyword.
       </p>
     </div2>
     <div2>

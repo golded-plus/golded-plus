@@ -291,7 +291,8 @@ void PrevArea();
 void Reader();
 void UpdateArea(GMsg* msg);
 int ExternUtil(GMsg* __msg, int __utilno);
-void ExternUtilMenu();
+void ExternUtilMenu(GMsg* msg);
+void ReadPeekURLs(GMsg* msg);
 uint next_msg(int direction);
 
 void ChangeAttributes();
@@ -451,6 +452,11 @@ inline char *spanfeeds(const char *str) {
 //  ------------------------------------------------------------------
 
 bool isuucp(const char *name);
+
+
+//  ------------------------------------------------------------------
+
+const char *url_begin(const char *ptr);
 
 
 //  ------------------------------------------------------------------

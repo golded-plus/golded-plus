@@ -266,6 +266,13 @@ const int FREQ_USEFLOWFILE = 0x0020;
 
 
 //  ------------------------------------------------------------------
+//  Peek URLs options
+
+const int PEEK_SORT        = 0x0001;
+const int PEEK_FROMTOP     = 0x0002;
+
+
+//  ------------------------------------------------------------------
 //  Automatic echoid names
 
 const int AUTOID_VERBOSE = 0;
@@ -966,23 +973,6 @@ struct MailList {
 struct FrqNodeMap {
   Addr from;
   Addr to;
-};
-
-
-//  ------------------------------------------------------------------
-
-struct InetServers {
-  struct {
-    char server[61];
-  } nntp;
-  struct {
-    char server[61];
-  } smtp;
-  struct {
-    char server[61];
-    char username[61];
-    char password[61];
-  } pop3;
 };
 
 

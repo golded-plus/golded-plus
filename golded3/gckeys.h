@@ -264,6 +264,7 @@ const word CRC_READMSGPGDN          = 0x4908;
 const word CRC_READMSGPGUP          = 0x5816;
 const word CRC_READNEWAREA          = 0xAB5E;
 const word CRC_READNEWMSG           = 0x30CA;
+const word CRC_READPEEKURLS         = 0x07BA;
 const word CRC_READQUITNOW          = 0xAC15;
 const word CRC_READQUOTEBUF         = 0x49EE;
 const word CRC_READQUOTEMSG         = 0xBE00;

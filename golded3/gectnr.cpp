@@ -54,7 +54,7 @@ static bool in_ftn_domained_address(const char *ptr, const char *txt) {
 
 //  ------------------------------------------------------------------
 
-static const char *url_begin(const char *ptr) {
+const char *url_begin(const char *ptr) {
 
   if(strnieql(ptr, "http://", 7))
     return ptr+7;
@@ -89,10 +89,11 @@ void Container::StyleCodeHighlight(const char* text, int row, int col, bool dohi
   char* punctchars = CFG->stylecodepunct;
   char* stylestopchars = CFG->stylecodestops;
   char prevchar = ' ';
+  bool usestylies = dohide or CFG->usestylies;
 
-  if(dohide or CFG->usestylies) {
+  if(usestylies or CFG->highlighturls) {
     while(*ptr) {
-      if(isstylechar(*ptr)) {
+      if(usestylies and isstylechar(*ptr)) {
         if(strchr(punctchars, prevchar)) {
           int bb = 0, bi = 0, bu = 0, br = 0;
           const char* beginstyle = ptr;
@@ -149,7 +150,7 @@ void Container::StyleCodeHighlight(const char* text, int row, int col, bool dohi
           }
         }
       }
-      else {
+      else if(CFG->highlighturls) {
         const char *begin;
 
         if((begin = url_begin(ptr)) != NULL) {

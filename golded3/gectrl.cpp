@@ -434,137 +434,149 @@ void DoKludges(int mode, GMsg* msg, bool attronly) {
         line->kludge = GKLUD_RFC;
       }
 
-      if(*msg->ifrom) {
-        INam _fromname;
-        IAdr _fromaddr;
-
-        strcpy(buf2, msg->ifrom);
-        ParseInternetAddr(buf2, _fromname, _fromaddr);
-        if(_fromname[0] != NUL) {
-          mime_header_encode(buf2, _fromname, msg);
-          char quot[2] = "\"";
-          if((buf2[0] == '\"') or (strpbrk(buf2, " \t") == NULL))
-            quot[0] = NUL;
-          sprintf(buf, "%sFrom: %s%s%s <%s>", rfc, quot, buf2, quot, _fromaddr);
+      if(CFG->internetviagate) {
+        mime_header_encode(buf2, msg->by, msg);
+        strxcpy(msg->by, buf2, sizeof(INam));
+        mime_header_encode(buf2, msg->to, msg);
+        strxcpy(msg->to, buf2, sizeof(INam));
+        if(not (msg->attr.frq() or msg->attr.att() or msg->attr.urq())) {
+          mime_header_encode(buf2, msg->re, msg);
+          strxcpy(msg->re, buf2, sizeof(ISub));
         }
-        else
-          sprintf(buf, "%sFrom: %s", rfc, msg->ifrom);
+      }
+      else {
+        if(*msg->ifrom) {
+          INam _fromname;
+          IAdr _fromaddr;
+
+          strcpy(buf2, msg->ifrom);
+          ParseInternetAddr(buf2, _fromname, _fromaddr);
+          if(_fromname[0] != NUL) {
+            mime_header_encode(buf2, _fromname, msg);
+            char quot[2] = "\"";
+            if((buf2[0] == '\"') or (strpbrk(buf2, " \t") == NULL))
+              quot[0] = NUL;
+            sprintf(buf, "%sFrom: %s%s%s <%s>", rfc, quot, buf2, quot, _fromaddr);
+          }
+          else
+            sprintf(buf, "%sFrom: %s", rfc, msg->ifrom);
+          line = AddKludge(line, buf);
+          line->kludge = GKLUD_RFC;
+        }
+        else if(*msg->iorig) {
+          mime_header_encode(buf2, msg->By(), msg);
+          if(*buf2) {
+            char quot[2] = "\"";
+            if((buf2[0] == '\"') or (strpbrk(buf2, " \t") == NULL))
+              quot[0] = NUL;
+            sprintf(buf, "%sFrom: %s%s%s <%s>", rfc, quot, buf2, quot, msg->iorig);
+          } else
+            sprintf(buf, "%sFrom: %s", rfc, msg->iorig);
+          line = AddKludge(line, buf);
+          line->kludge = GKLUD_RFC;
+        }
+
+        if(AA->isnewsgroup()) {
+          sprintf(buf, "%sNewsgroups: %s", rfc, strlwr(strcpy(buf2, AA->echoid())));
+          line = AddKludge(line, buf);
+          line->kludge = GKLUD_RFC;
+        }
+
+        if(*msg->re) {
+          mime_header_encode(buf2, msg->re, msg);
+          sprintf(buf, "%sSubject: %s", rfc, buf2);
+          line = AddKludge(line, buf);
+          line->kludge = GKLUD_RFC;
+        }
+
+        struct tm* tm = gmtime(&msg->written);
+        sprintf(buf, "%sDate: %s, %02d %s %04d %02d:%02d:%02d", rfc,
+          __gsweekday[tm->tm_wday],
+          tm->tm_mday, __gsmonth[tm->tm_mon], 1900+tm->tm_year,
+          tm->tm_hour, tm->tm_min, tm->tm_sec
+        );
+        if(AA->Usetzutc())
+          sprintf(buf + strlen(buf), " %+05d", tzoffset());
+
         line = AddKludge(line, buf);
         line->kludge = GKLUD_RFC;
-      }
-      else if(*msg->iorig) {
-        mime_header_encode(buf2, msg->By(), msg);
-        if(*buf2) {
+
+        if(msg->messageid) {
+          sprintf(buf, "%sMessage-ID: %s", rfc, msg->messageid);
+          line = AddKludge(line, buf);
+          line->kludge = GKLUD_RFC;
+        }
+
+        if(msg->references) {
+          sprintf(buf, "%sReferences: %s", rfc, msg->references);
+          line = AddKludge(line, buf);
+          line->kludge = GKLUD_RFC;
+        }
+
+        if(msg->inreplyto) {
+          sprintf(buf, "%sIn-Reply-To: %s", rfc, msg->inreplyto);
+          line = AddKludge(line, buf);
+          line->kludge = GKLUD_RFC;
+        }
+
+        if(*msg->organization) {
+          sprintf(buf, "%sOrganization: %s", rfc, msg->organization);
+          line = AddKludge(line, buf);
+          line->kludge = GKLUD_RFC;
+        }
+
+        sprintf(buf, "%sMIME-Version: 1.0", rfc);
+        line = AddKludge(line, buf);
+        line->kludge = GKLUD_RFC;
+        char encoding[100];
+        bool isusascii = striinc("ASCII", msg->charset);
+        bool isqp = not isusascii and IsQuotedPrintable(msg->charset);
+        if(strnieql(msg->charset, "latin", 5))
+          Latin2ISO(encoding, msg->charset);
+        else if(isusascii)
+          strcpy(encoding, "us-ascii");
+        else if(isqp)
+          strcpy(encoding, ExtractPlainCharset(msg->charset));
+        else
+          strcpy(encoding, msg->charset);
+        strlwr(encoding);
+        sprintf(buf, "%sContent-Type: text/plain; charset=%s", rfc, strlword(encoding));
+        line = AddKludge(line, buf);
+        line->kludge = GKLUD_RFC;
+        sprintf(buf, "%sContent-Transfer-Encoding: %s", rfc, isqp ? "quoted-printable" : isusascii ? "7bit" : "8bit");
+        line = AddKludge(line, buf);
+        line->kludge = GKLUD_RFC;
+
+        if(*msg->iorig) {
+          mime_header_encode(buf2, msg->By(), msg);
           char quot[2] = "\"";
           if((buf2[0] == '\"') or (strpbrk(buf2, " \t") == NULL))
             quot[0] = NUL;
-          sprintf(buf, "%sFrom: %s%s%s <%s>", rfc, quot, buf2, quot, msg->iorig);
-        } else
-          sprintf(buf, "%sFrom: %s", rfc, msg->iorig);
-        line = AddKludge(line, buf);
-        line->kludge = GKLUD_RFC;
-      }
+          sprintf(buf, "%sSender: %s%s%s <%s>", rfc, quot, buf2, quot, msg->iorig);
+          line = AddKludge(line, buf);
+          line->kludge = GKLUD_RFC;
+        }
 
-      if(AA->isnewsgroup()) {
-        sprintf(buf, "%sNewsgroups: %s", rfc, strlwr(strcpy(buf2, AA->echoid())));
-        line = AddKludge(line, buf);
-        line->kludge = GKLUD_RFC;
-      }
+        if((*msg->ireplyto or *CFG->soupreplyto) and (not streql(*msg->ireplyto ? msg->ireplyto : CFG->soupreplyto, msg->iorig))) {
+          sprintf(buf, "%sReply-To: %s", rfc, *msg->ireplyto ? msg->ireplyto : CFG->soupreplyto);
+          line = AddKludge(line, buf);
+          line->kludge = GKLUD_RFC;
+        }
 
-      if(*msg->re) {
-        mime_header_encode(buf2, msg->re, msg);
-        sprintf(buf, "%sSubject: %s", rfc, buf2);
-        line = AddKludge(line, buf);
-        line->kludge = GKLUD_RFC;
-      }
+        if(striinc("MNEMONIC", msg->charset)) {
+          sprintf(buf, "%sX-Charset: ISO_8859-1", rfc);
+          line = AddKludge(line, buf);
+          line->kludge = GKLUD_RFC;
+          sprintf(buf, "%sX-Char-Esc: 29", rfc);
+          line = AddKludge(line, buf);
+          line->kludge = GKLUD_RFC;
+        }
 
-      struct tm* tm = gmtime(&msg->written);
-      sprintf(buf, "%sDate: %s, %02d %s %04d %02d:%02d:%02d", rfc,
-        __gsweekday[tm->tm_wday],
-        tm->tm_mday, __gsmonth[tm->tm_mon], 1900+tm->tm_year,
-        tm->tm_hour, tm->tm_min, tm->tm_sec
-      );
-      if(AA->Usetzutc())
-        sprintf(buf + strlen(buf), " %+05d", tzoffset());
-
-      line = AddKludge(line, buf);
-      line->kludge = GKLUD_RFC;
-
-      if(msg->messageid) {
-        sprintf(buf, "%sMessage-ID: %s", rfc, msg->messageid);
-        line = AddKludge(line, buf);
-        line->kludge = GKLUD_RFC;
-      }
-
-      if(msg->references) {
-        sprintf(buf, "%sReferences: %s", rfc, msg->references);
-        line = AddKludge(line, buf);
-        line->kludge = GKLUD_RFC;
-      }
-
-      if(msg->inreplyto) {
-        sprintf(buf, "%sIn-Reply-To: %s", rfc, msg->inreplyto);
-        line = AddKludge(line, buf);
-        line->kludge = GKLUD_RFC;
-      }
-
-      if(*msg->organization) {
-        sprintf(buf, "%sOrganization: %s", rfc, msg->organization);
-        line = AddKludge(line, buf);
-        line->kludge = GKLUD_RFC;
-      }
-
-      sprintf(buf, "%sMIME-Version: 1.0", rfc);
-      line = AddKludge(line, buf);
-      line->kludge = GKLUD_RFC;
-      char encoding[100];
-      bool isusascii = striinc("ASCII", msg->charset);
-      bool isqp = not isusascii and IsQuotedPrintable(msg->charset);
-      if(strnieql(msg->charset, "latin", 5))
-        Latin2ISO(encoding, msg->charset);
-      else if(isusascii)
-        strcpy(encoding, "us-ascii");
-      else if(isqp)
-        strcpy(encoding, ExtractPlainCharset(msg->charset));
-      else
-        strcpy(encoding, msg->charset);
-      strlwr(encoding);
-      sprintf(buf, "%sContent-Type: text/plain; charset=%s", rfc, strlword(encoding));
-      line = AddKludge(line, buf);
-      line->kludge = GKLUD_RFC;
-      sprintf(buf, "%sContent-Transfer-Encoding: %s", rfc, isqp ? "quoted-printable" : isusascii ? "7bit" : "8bit");
-      line = AddKludge(line, buf);
-      line->kludge = GKLUD_RFC;
-
-      if(*msg->iorig) {
-        mime_header_encode(buf2, msg->By(), msg);
-        char quot[2] = "\"";
-        if((buf2[0] == '\"') or (strpbrk(buf2, " \t") == NULL))
-          quot[0] = NUL;
-        sprintf(buf, "%sSender: %s%s%s <%s>", rfc, quot, buf2, quot, msg->iorig);
-        line = AddKludge(line, buf);
-        line->kludge = GKLUD_RFC;
-      }
-
-      if((*msg->ireplyto or *CFG->soupreplyto) and (not streql(*msg->ireplyto ? msg->ireplyto : CFG->soupreplyto, msg->iorig))) {
-        sprintf(buf, "%sReply-To: %s", rfc, *msg->ireplyto ? msg->ireplyto : CFG->soupreplyto);
-        line = AddKludge(line, buf);
-        line->kludge = GKLUD_RFC;
-      }
-
-      if(striinc("MNEMONIC", msg->charset)) {
-        sprintf(buf, "%sX-Charset: ISO_8859-1", rfc);
-        line = AddKludge(line, buf);
-        line->kludge = GKLUD_RFC;
-        sprintf(buf, "%sX-Char-Esc: 29", rfc);
-        line = AddKludge(line, buf);
-        line->kludge = GKLUD_RFC;
-      }
-
-      if(AA->isnewsgroup() or AA->isemail()) {
-        sprintf(buf, "%sX-%s: %s", rfc, AA->isnewsgroup() ? "Newsreader" : "Mailreader", get_informative_string());
-        line = AddKludge(line, buf);
-        line->kludge = GKLUD_RFC;
+        if(AA->isnewsgroup() or AA->isemail()) {
+          sprintf(buf, "%sX-%s: %s", rfc, AA->isnewsgroup() ? "Newsreader" : "Mailreader", get_informative_string());
+          line = AddKludge(line, buf);
+          line->kludge = GKLUD_RFC;
+        }
       }
 
       if(AA->Internetrfcbody() and line->next and not strblank(line->next->txt.c_str())) {
@@ -572,12 +584,16 @@ void DoKludges(int mode, GMsg* msg, bool attronly) {
         line->kludge = GKLUD_RFC;
       }
     }
-
-    if(((mode != MODE_CHANGE) or AA->Internetrfcbody()) and AA->isnet() and not AA->isinternet()) {
+    else if(((mode != MODE_CHANGE) or AA->Internetrfcbody()) and AA->isnet()) {
       if(*msg->ito) {
-        sprintf(buf, "To: %s\r", msg->ito);
+        sprintf(buf, "To: %s", msg->ito);
         line = AddKludge(line, buf);
         line->kludge = GKLUD_RFC;
+
+        if(AA->Internetrfcbody() and line->next and not strblank(line->next->txt.c_str())) {
+          line = AddKludge(line, "");
+          line->kludge = GKLUD_RFC;
+        }
       }
     }
   }

@@ -78,6 +78,8 @@
 #define H_MenuConfirm       3014
 #define H_GotoReplies       3015
 #define H_ReplyThread       3016
+#define H_ReadExternUtil    3017
+#define H_PeekURL           3018
 
 
 //  ------------------------------------------------------------------

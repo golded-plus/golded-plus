@@ -2850,11 +2850,6 @@ Here is the complete keyword list:
     details.
 
 
-HAPPYBIRTHDAY <value>
-
-    The only valid value is "friend". Currently do nothing.
-
-
 HIGHLIGHTUNREAD <yes/no>  (no)
 
     If enabled, GoldED updates (increases) the "timesread" field in
@@ -3104,12 +3099,6 @@ Here is the complete keyword list:
     configured (with lines of "Allow_Xxx:" in GIGO's HEADERS.CFG,
     where Xxx are the RFC headerlines the gate administrator wants to
     allow).
-
-
-INTERNETSERVER <nntp/smpt> <server>
-INTERNETSERVER <pop3> <server> [<username>] [<password>]
-
-    No code currently associated with this keyword.
 
 
 INVALIDATE <type> <"findstring"> <"replacestring">

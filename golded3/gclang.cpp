@@ -475,6 +475,15 @@ static LangCrc LangCrcs[] = {
   { CRC_IL_DECODE             , NULL  , "Decode" },
   { CRC_IL_PREPARING          , NULL  , "Preparing" },
 
+  { CRC_WT_EXTERNUTIL         , NULL  , "External utilities" },
+  { CRC_ST_EXTERNUTIL         , NULL  , "Select external utility to execute" },
+  { CRC_WT_EXECCMDLINE        , NULL  , "Enter command line to execute" },
+  { CRC_MI_ENTERCMDLINE       , NULL  , " Enter command line " },
+
+  { CRC_WT_PEEKURL            , NULL  , "Available URLs" },
+  { CRC_ST_PEEKURL            , NULL  , "Select URL" },
+  { CRC_IL_PEEKINFONOURLS     , NULL  , " No valid URLs were found in this msg! " },
+
   { CRC_LAST_CRC              , NULL  , NULL }
 };
 

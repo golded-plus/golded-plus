@@ -36,10 +36,9 @@ extern char* val;
 
 //  ------------------------------------------------------------------
 
-void CfgHappybirthday() {
+void CfgHighlighturls() {
 
-  if(strieql(val, "FRIEND"))
-    CFG->happybirthday = true;
+  CFG->highlighturls = GetYesno(val) ? true : false;
 }
 
 //  ------------------------------------------------------------------
@@ -215,34 +214,9 @@ void CfgInternetrfcbody() {
 
 //  ------------------------------------------------------------------
 
-void CfgInternetserver() {
+void CfgInternetviagate() {
 
-  GTok t;
-  if(t.First(val)) {
-    int server = 0;
-    if(strieql(t.Token(), "NNTP"))
-      server = 1;
-    else if(strieql(t.Token(), "SMTP"))
-      server = 2;
-    else if(strieql(t.Token(), "POP3"))
-      server = 3;
-    int parameter = 1;
-    while(t.Next()) {
-      if(server == 1)
-        strxcpy(CFG->internetserver.nntp.server, t.Token(), sizeof(CFG->internetserver.nntp.server));
-      else if(server == 2)
-        strxcpy(CFG->internetserver.smtp.server, t.Token(), sizeof(CFG->internetserver.smtp.server));
-      else if(server == 3) {
-        if(parameter == 1)
-          strxcpy(CFG->internetserver.pop3.server, t.Token(), sizeof(CFG->internetserver.pop3.server));
-        else if(parameter == 2)
-          strxcpy(CFG->internetserver.pop3.username, t.Token(), sizeof(CFG->internetserver.pop3.username));
-        else if(parameter == 3)
-          strxcpy(CFG->internetserver.pop3.password, t.Token(), sizeof(CFG->internetserver.pop3.password));
-      }
-      parameter++;
-    }
-  }
+  CFG->internetviagate = GetYesno(val) ? true : false;
 }
 
 //  ------------------------------------------------------------------

@@ -310,6 +310,7 @@ const gkey KK_ReadUUDecode         = 0xFFA0;
 const gkey KK_ReadWriteMsg         = 0xFFA1;
 const gkey KK_ReadDirQuoteMsg      = 0xFFA2;
 const gkey KK_ReadMoveDirQuoteMsg  = 0xFFA3;
+const gkey KK_ReadPeekURLs         = 0xFFA4;
 
 const gkey KK_AddressbookQuit      = 0xFFB0;
 const gkey KK_AddressbookAdd       = 0xFFB1;

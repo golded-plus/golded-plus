@@ -439,8 +439,8 @@ void GMsgBodyView::PaintLine(int row, Line *line) {
     }
     else
       StyleCodeHighlight(line->txt.c_str(), vrow, 0, not AA->attr().hex() and CFG->hidestylies, color);
-      int tlen = strlen(line->txt.c_str());
-      vputns(vrow, tlen, color, "", visible_width-tlen);
+    int tlen = strlen(line->txt.c_str());
+    vputns(vrow, tlen, color, "", visible_width-tlen);
   }
   else
     vputns(vrow, 0, color, line->txt.c_str(), visible_width);

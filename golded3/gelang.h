@@ -462,7 +462,14 @@ struct LangGed {
   char*  Decode;             // IL_DECODE       
   char*  Preparing;          // MI_PREPARING    
 
+  char*  ExternUtil;         // WT_EXTERNUTIL
+  char*  SelectExternUtil;   // ST_EXTERNUTIL
+  char*  ExecCmdLine;        // WT_EXECCMDLINE
+  char*  EnterCmdLine;       // MI_ENTERCMDLINE
 
+  char*  PeekURLMenuTitle;   // WT_PEEKURL
+  char*  PeekURLStat;        // ST_PEEKURL
+  char*  PeekInfoNoURLs;     // IL_PEEKINFONOURLS
 
   char*  EndLanguage;        // LAST_CRC
 

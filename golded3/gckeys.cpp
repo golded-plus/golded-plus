@@ -370,6 +370,7 @@ tglobalkey globalkeys[] = {
   { CRC_K_SEND                 , Key_S_End               ,    0 }, // 0x0590
 #endif
   { CRC_READGOTOPREVMSG        , KK_ReadGotoPrevMsg      , KT_R }, // 0x06D9
+  { CRC_READPEEKURLS           , KK_ReadPeekURLs         , KT_R }, // 0x07BA
   { CRC_K_STAB                 , Key_S_Tab               ,    0 }, // 0x0886
   { CRC_EDITLOADFILE           , KK_EditLoadFile         , KT_A }, // 0x0931
   { CRC_READFILEREQUEST        , KK_ReadFileRequest      , KT_R }, // 0x0A07

@@ -355,11 +355,11 @@ SwitchG:
 
 SwitchH:
   switch(crc) {
-    case CRC_HAPPYBIRTHDAY    :  CfgHappybirthday    ();  break;
     case CRC_HUDSONPATH       :  CfgHudsonpath       ();  break;
     case CRC_HUDSONSIZEWARN   :  CfgHudsonsizewarn   ();  break;
     case CRC_HUDSONSYSPATH    :  CfgHudsonsyspath    ();  break;
     case CRC_HUDSONUSERNO     :  CfgHudsonuserno     ();  break;
+    case CRC_HIGHLIGHTURLS    :  CfgHighlighturls    ();  break;
     default                   :  found = false;
   }
   goto End;
@@ -379,7 +379,7 @@ SwitchI:
     case CRC_INTERNETGATEEXP  :  CfgInternetgateexp  ();  break;
     case CRC_INTERNETMSGID    :  CfgInternetmsgid    ();  break;
     case CRC_INTERNETRFCBODY  :  CfgInternetrfcbody  ();  break;
-    case CRC_INTERNETSERVER   :  CfgInternetserver   ();  break;
+    case CRC_INTERNETVIAGATE  :  CfgInternetviagate  ();  break;
     case CRC_INVALIDATE       :  CfgInvalidate       ();  break;
     default                   :  found = false;
   }
@@ -456,6 +456,7 @@ SwitchP:
   switch(crc) {
     case CRC_PCBOARDPATH      :  CfgPcboardpath      ();  break;
     case CRC_PCBOARDUSERNO    :  CfgPcboarduserno    ();  break;
+    case CRC_PEEKURLOPTIONS   :  CfgPeekurloptions   ();  break;
     case CRC_PERSONALMAIL     :  CfgPersonalmail     ();  break;
     case CRC_PLAY             :  CfgPlay             ();  break;
     case CRC_PRINTDEVICE      :  CfgPrintdevice      ();  break;
@@ -555,6 +556,7 @@ SwitchT:
 
 SwitchU:
   switch(crc) {
+    case CRC_URLHANDLER       :  CfgUrlhandler       ();  break;
     case CRC_USEAREA          :  CfgUsearea          ();  break;
     case CRC_USECHARSET       :  CfgUsecharset       ();  break;
     case CRC_USEFWD           :  CfgUsefwd           ();  break;

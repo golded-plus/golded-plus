@@ -12,6 +12,37 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ Added peek URL feature. Goldkeys.cfg keyword: READPeekURLs, help
+  topic number is 3018. The behaviour is controlled by the
+  PeekURLOptions keyword: available parameters are SORT, FROMTOP,
+  NOTFROMTOP. Selected URL will be processed with the commandline
+  predefined with URLHANDLER (the token replaced with URL is @url).
+  Language configuration:
+
+  WT_PEEKURL         "Available URLs"
+  ST_PEEKURL         "Select URL"
+  IL_PEEKINFONOURLS  " No valid URLs were found in this msg! "
+
++ Imlemented READExternUtilMenu. You can now process message by
+  entering command line. Command line executed using EXTERNOPTIONS.
+  Associated help topic number is 3017. Language configuration:
+
+  WT_EXTERNUTIL      "External utilities"
+  ST_EXTERNUTIL      "Select external utility to execute"
+  WT_EXECCMDLINE     "Enter command line to execute"
+  MI_ENTERCMDLINE    " Enter command line "
+
++ Added new keyword InternetViaGate (default to no). Allows usage of
+  SoupGate with AreaIsEmail. When set to yes GoldED+ will generate
+  only To: line for e-mail areas, but will also encrypt message header
+  in quoted printable if enabled by EncodeEmailHeaders keyword.
+
++ Added new keyword HighlightURLs (default to yes). Allows enable or
+  disable URLs and emails highlighting.
+
+! Removed HappyBirthday and InternetServer keywords. Anyway, they were
+  useless.
+
 - Fixed more quirks with charset.
 
 - Fixed quotewrap in internal editor if quotestring contains a space

@@ -707,7 +707,11 @@ void Reader() {
                 break;
 
               case KK_ReadExternUtilMenu:
-                ExternUtilMenu();
+                ExternUtilMenu(msg);
+                break;
+
+              case KK_ReadPeekURLs:
+                ReadPeekURLs(msg);
                 break;
 
               case KK_ReadAddressbookAdd:

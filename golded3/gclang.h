@@ -487,6 +487,15 @@ const word CRC_MI_ALSELECTIONS2     = 0xBFEF;
 const word CRC_IL_DECODE            = 0x10D9;
 const word CRC_IL_PREPARING         = 0x2CD6;
 
+const word CRC_MI_ENTERCMDLINE      = 0xFF94;
+const word CRC_WT_EXECCMDLINE       = 0x591D;
+const word CRC_ST_EXTERNUTIL        = 0x090E;
+const word CRC_WT_EXTERNUTIL        = 0x5849;
+
+const word CRC_WT_PEEKURL           = 0x2A26;
+const word CRC_ST_PEEKURL           = 0x254B;
+const word CRC_IL_PEEKINFONOURLS    = 0x361D;
+
 const word CRC_LAST_CRC             = 0xFFFF;
 
 

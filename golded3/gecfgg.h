@@ -226,8 +226,8 @@ public:
   Path        goldbasesyspath;
   int         goldbaseuserno;
   Path        goldpath;
-  int         happybirthday;
   bool        hidestylies;
+  bool        highlighturls;
   Path        hudsonpath;
   long        hudsonsizewarn;
   Path        hudsonsyspath;
@@ -244,7 +244,7 @@ public:
   int         internetgateexp;
   bool        internetmsgid;
   bool        internetrfcbody;
-  InetServers internetserver;
+  bool        internetviagate;
   Invalidate  invalidate;
   Path        jampath;
   int         keybmode;
@@ -275,6 +275,7 @@ public:
   Path        pathreportfile;
   Path        pcboardpath;
   int         pcboarduserno;
+  int         peekurloptions;
   int         personalmail;
   GPlay       play;
   Path        printdevice;          // p_device;
@@ -336,6 +337,7 @@ public:
   int         twitmode;             // showtwits;
   std::vector<Node> twitname;
   gstrarray   twitsubj;
+  std::string urlhandler;
   bool        usearea;
   bool        usecharset;
   int         usefwd;

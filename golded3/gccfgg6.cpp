@@ -260,6 +260,18 @@ void CfgPcboarduserno() {
 
 //  ------------------------------------------------------------------
 
+void CfgPeekurloptions() {
+
+  if(striinc("SORT", val))
+    CFG->peekurloptions |= PEEK_SORT;
+  if(striinc("FROMTOP", val))
+    CFG->peekurloptions |= PEEK_FROMTOP;
+  if(striinc("NOTFROMTOP", val))
+    CFG->peekurloptions &= ~PEEK_FROMTOP;
+}
+
+//  ------------------------------------------------------------------
+
 void CfgPersonalmail() {
 
   if(striinc("STARTUP", val))

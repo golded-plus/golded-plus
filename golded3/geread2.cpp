@@ -521,82 +521,89 @@ void TouchNetscan(int popup) {
 
 //  ------------------------------------------------------------------
 
-int ExternUtil(GMsg* msg, int utilno) {
+int ExternUtil(GMsg *msg, ExtUtil *extutil) {
 
-  Path editorfile, tmpfile;
-  strcpy(editorfile, AddPath(CFG->goldpath, EDIT->File()));
+  Path editorfile, tmpfile, buf;
+  strxcpy(editorfile, AddPath(CFG->goldpath, EDIT->File()), sizeof(Path));
+
+  char cmdline[1024];
+  strxcpy(cmdline, extutil->cmdline, sizeof(cmdline));
+
+  int mode = (extutil->options & EXTUTIL_KEEPCTRL) ? MODE_SAVE : MODE_SAVENOCTRL;
+  SaveLines(mode, editorfile, msg, 79);
+  strcpy(buf, editorfile);
+  strchg(buf, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
+  strischg(cmdline, "@file", buf);
+  if(striinc("@tmpfile", cmdline)) {
+    mktemp(strcpy(tmpfile, AddPath(CFG->goldpath, "GDXXXXXX")));
+    SaveLines(mode, tmpfile, msg, 79);
+    strcpy(buf, tmpfile);
+    strchg(buf, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
+    strischg(cmdline, "@tmpfile", buf);
+  }
+  else
+    tmpfile[0] = NUL;
+  strcpy(buf, CFG->goldpath);
+  strchg(buf, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
+  strischg(cmdline, "@path", buf);
+  TokenXlat(MODE_NEW, cmdline, msg, msg, CurrArea);
+
+  int pauseval = 0;
+  if(extutil->options & EXTUTIL_PAUSEONERROR)
+    pauseval = -1;
+  if(extutil->options & EXTUTIL_PAUSE)
+    pauseval = 1;
+
+  ShellToDos(cmdline, "",
+    extutil->options & EXTUTIL_CLS ? LGREY|_BLACK : 0,
+    extutil->options & EXTUTIL_CURSOR,
+    pauseval
+  );
+
+  if(extutil->options & EXTUTIL_RELOAD) {
+
+    if(not (extutil->options & EXTUTIL_KEEPCTRL)) {
+      if(*msg->tearline or *msg->origin) {
+        gfile fp;
+        fp.fopen(editorfile, "at");
+        if(fp.isopen()) {
+          if(*msg->tearline)
+            fp.printf("--- %s\n", msg->tearline);
+          if(*msg->origin)
+            fp.printf(" * Origin: %s\n", msg->origin);
+          fp.fclose();
+        }
+      }
+    }
+
+    int hardlines = EDIT->HardLines();
+    EDIT->HardLines(false);
+    LoadText(msg, editorfile);
+    if(extutil->options & EXTUTIL_WIPE)
+      WipeFile(editorfile, 0);
+    if(tmpfile[0] != NUL)
+      WipeFile(tmpfile, 0);
+
+    EDIT->HardLines(hardlines);
+    msg->attr.tou1();   // Ignore any kludge address found
+    msg->TextToLines(CFG->dispmargin-(int)CFG->switches.get(disppagebar));
+    msg->attr.tou0();
+  }
+
+  return YES;
+}
+
+
+//  ------------------------------------------------------------------
+
+int ExternUtil(GMsg *msg, int utilno) {
 
   std::vector<ExtUtil>::iterator extutil = CFG->externutil.begin();
 
   for(int utlno=0; extutil != CFG->externutil.end(); utlno++, extutil++) {
 
     if(extutil->utilno == utilno) {
-
-      char cmdline[256], buf[256];
-      strcpy(cmdline, extutil->cmdline);
-
-      int mode = (extutil->options & EXTUTIL_KEEPCTRL) ? MODE_SAVE : MODE_SAVENOCTRL;
-      SaveLines(mode, editorfile, msg, 79);
-      strcpy(buf, editorfile);
-      strchg(buf, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
-      strischg(cmdline, "@file", buf);
-      if(striinc("@tmpfile", cmdline)) {
-        mktemp(strcpy(tmpfile, AddPath(CFG->goldpath, "GDXXXXXX")));
-        SaveLines(mode, tmpfile, msg, 79);
-        strcpy(buf, tmpfile);
-        strchg(buf, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
-        strischg(cmdline, "@tmpfile", buf);
-      }
-      else
-        tmpfile[0] = NUL;
-      strcpy(buf, CFG->goldpath);
-      strchg(buf, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
-      strischg(cmdline, "@path", buf);
-      TokenXlat(MODE_NEW, cmdline, msg, msg, CurrArea);
-
-      int pauseval = 0;
-      if(extutil->options & EXTUTIL_PAUSEONERROR)
-        pauseval = -1;
-      if(extutil->options & EXTUTIL_PAUSE)
-        pauseval = 1;
-
-      ShellToDos(cmdline, "",
-        extutil->options & EXTUTIL_CLS ? LGREY|_BLACK : 0,
-        extutil->options & EXTUTIL_CURSOR,
-        pauseval
-      );
-
-      if(extutil->options & EXTUTIL_RELOAD) {
-
-        if(not (extutil->options & EXTUTIL_KEEPCTRL)) {
-          if(*msg->tearline or *msg->origin) {
-            gfile fp;
-            fp.fopen(editorfile, "at");
-            if(fp.isopen()) {
-              if(*msg->tearline)
-                fp.printf("--- %s\n", msg->tearline);
-              if(*msg->origin)
-                fp.printf(" * Origin: %s\n", msg->origin);
-              fp.fclose();
-            }
-          }
-        }
-
-        int hardlines = EDIT->HardLines();
-        EDIT->HardLines(false);
-        LoadText(msg, editorfile);
-        if(extutil->options & EXTUTIL_WIPE)
-          WipeFile(editorfile, 0);
-        if(tmpfile[0] != NUL)
-          WipeFile(tmpfile, 0);
-
-        EDIT->HardLines(hardlines);
-        msg->attr.tou1();   // Ignore any kludge address found
-        msg->TextToLines(CFG->dispmargin-(int)CFG->switches.get(disppagebar));
-        msg->attr.tou0();
-      }
-
-      return YES;
+      return ExternUtil(msg, extutil);
     }
   }
 
@@ -607,9 +614,149 @@ int ExternUtil(GMsg* msg, int utilno) {
 
 //  ------------------------------------------------------------------
 
-void ExternUtilMenu() {
+void ExternUtilMenu(GMsg* msg) {
+  int n;
+  std::vector<ExtUtil>::iterator i;
+  static int startat = 0;
+  char** Listi;
+  char buf[100];
+  static char cmdline[1024] = "";
 
-  // Not implemented yet
+  Listi = (char**)throw_calloc(CFG->externutil.size()+2, sizeof(char*));
+  Listi[0] = throw_strdup(LNG->EnterCmdLine);
+  for(i = CFG->externutil.begin(), n=1; i != CFG->externutil.end(); n++, i++) {
+    sprintf(buf, " %02d %.59s%s ", i->utilno, i->cmdline, strlen(i->cmdline) > 59 ? ">" : "" );
+    Listi[n] = throw_strdup(buf);
+  }
+  n = MinV(n, (MAXROW-10));
+  set_title(LNG->ExternUtil, TCENTER, C_ASKT);
+  update_statusline(LNG->SelectExternUtil);
+  whelppcat(H_ReadExternUtil);
+  n = wpickstr(6, 0, 6+n+1, -1, W_BASK, C_ASKB, C_ASKW, C_ASKS, Listi, startat, title_shadow);
+  whelpop();
+  if(n != -1) {
+    if(n == 0) {
+      if(edit_string(cmdline, sizeof(cmdline), LNG->ExecCmdLine, H_ReadExternUtil)) {
+        ExtUtil extutil;
+        extutil.utilno = 0;
+        strxcpy(extutil.cmdline, cmdline, sizeof(extutil.cmdline));
+        extutil.options = CFG->externoptions;
+        ExternUtil(msg, &extutil);
+      }
+    }
+    else {
+      ExternUtil(msg, &CFG->externutil[n-1]);
+    }
+  }
+  for(n=CFG->externutil.size()+1; n; n--)
+    throw_free(Listi[n-1]);
+  throw_free(Listi);
+}
+
+
+//  ------------------------------------------------------------------
+
+static int PeekURLCmp(const char** a, const char** b) {
+
+  return stricmp(*a, *b);
+}
+
+
+//  ------------------------------------------------------------------
+
+void ReadPeekURLs(GMsg* msg) {
+
+  Line **lin = msg->line;
+  const char *ptr, *end, *begin;
+  char buf[256];
+  std::vector<char *> urls;
+  std::vector<char *>::iterator i;
+  int n;
+
+  w_info(LNG->Wait);
+
+  // Scan the current msg for urls
+  int tline = reader_topline;
+  if(CFG->peekurloptions & PEEK_FROMTOP)
+    tline = 0;
+  for(n=tline; n<msg->lines; n++) {
+
+    ptr = lin[n]->txt.c_str();
+
+    while(*ptr) {
+      if(((begin = url_begin(ptr)) != NULL) and not strneql(ptr, "mailto:", 7)) {
+        end = begin+strcspn(begin, " \t\"\'<>()[]");
+        if(ispunct(end[-1]) and (end[-1] != '/'))
+          --end;
+        if(begin < end) {
+          buf[0] = ' ';
+          strxcpy(buf+1, ptr, MinV((end-ptr)+1, MAXCOL-2-2-2));
+          strcat(buf, " ");
+          for(i = urls.begin(); i != urls.end(); i++)
+            if(strieql(*i, buf))
+              break;
+          if(i == urls.end())
+            urls.push_back(throw_strdup(buf));
+          ptr = end-1;
+        }
+      }
+      ptr++;
+    }
+  }
+
+  w_info(NULL);
+
+  if(not urls.empty()) {
+
+    char** Listi = (char**)throw_calloc(urls.size()+1, sizeof(char*));
+
+    for(n = 0, i = urls.begin(); i != urls.end(); i++, n++)
+      Listi[n] = *i;
+
+    // Sort list if requested
+    if(CFG->peekurloptions & FREQ_SORT)
+      qsort(Listi, urls.size(), sizeof(char*), (StdCmpCP)PeekURLCmp);
+
+    // Run the picker
+    n = MinV((int)urls.size(), (MAXROW-10));
+    set_title(LNG->PeekURLMenuTitle, TCENTER, C_ASKT);
+    update_statusline(LNG->PeekURLStat);
+    whelppcat(H_PeekURL);
+    n = wpickstr(6, 0, 6+n+1, -1, W_BASK, C_ASKB, C_ASKW, C_ASKS, Listi, 0, title_shadow);
+    whelpop();
+
+    if(n != -1) {
+      char cmdline[1024];
+      strxcpy(cmdline, CFG->urlhandler.c_str(), sizeof(cmdline));
+      strxmerge(buf, sizeof(buf), "\"", strtrim(strltrim(Listi[n])), "\"", NULL);
+      strischg(cmdline, "@url", buf);
+      strxcpy(buf, CFG->goldpath, sizeof(buf));
+      strchg(buf, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
+      strischg(cmdline, "@path", buf);
+      TokenXlat(MODE_NEW, cmdline, msg, msg, CurrArea);
+
+      int pauseval = 0;
+      if(CFG->externoptions & EXTUTIL_PAUSEONERROR)
+        pauseval = -1;
+      if(CFG->externoptions & EXTUTIL_PAUSE)
+        pauseval = 1;
+
+      ShellToDos(cmdline, "", 
+        CFG->externoptions & EXTUTIL_CLS ? LGREY|_BLACK : 0,
+        CFG->externoptions & EXTUTIL_CURSOR,
+        pauseval
+      );
+    }
+
+    for(n = 0, i = urls.begin(); i != urls.end(); i++, n++)
+      throw_free(Listi[n]);
+    throw_free(Listi);
+  }
+  else {
+    w_info(LNG->PeekInfoNoURLs);
+    waitkeyt(10000);
+    w_info(NULL);
+  }
 }
 
 

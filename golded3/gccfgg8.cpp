@@ -274,6 +274,13 @@ void CfgTwitsubj() {
 
 //  ------------------------------------------------------------------
 
+void CfgUrlhandler() {
+
+  CFG->urlhandler = val;
+}
+
+//  ------------------------------------------------------------------
+
 void CfgUsearea() {
 
   int flag = GetYesno(val) ? true : false;
