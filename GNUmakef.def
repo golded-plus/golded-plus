@@ -1,10 +1,10 @@
 # -*- makefile -*-
 
-ifeq ($(TERM),msys)
-MSYS=true
+ifeq ($(TERM),cygwin)
+MINGW=true
 else
 ifeq ($(OSTYPE),msys)
-MSYS=true
+MINGW=true
 endif
 endif
 
@@ -40,7 +40,7 @@ EXEEXT=.exe
 OBJEXT=.o
 LIBEXT=.a
 else
-ifeq ($(TERM),cygwin)
+ifdef MINGW
 CAT=cat
 CC=gcc -mno-cygwin
 CXX=g++ -mno-cygwin
@@ -48,19 +48,9 @@ AR=ar
 RANLIB=ranlib
 WINDRES=windres
 PLATFORM=cyg
+ifeq ($(OSTYPE),msys)
 SHELL=bash
-EXEEXT=.exe
-OBJEXT=.o
-LIBEXT=.a
-else
-ifdef MSYS
-CAT=cat
-CC=gcc
-CXX=g++
-AR=ar
-RANLIB=ranlib
-WINDRES=windres
-PLATFORM=cyg
+endif
 EXEEXT=.exe
 OBJEXT=.o
 LIBEXT=.a
@@ -86,7 +76,6 @@ PLATFORM=lnx
 EXEEXT=
 OBJEXT=.o
 LIBEXT=.a
-endif
 endif
 endif
 endif

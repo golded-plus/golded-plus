@@ -1,10 +1,10 @@
 # -*- makefile -*-
 
-ifeq ($(TERM),msys)
-MSYS=true
+ifeq ($(TERM),cygwin)
+MINGW=true
 else
 ifeq ($(OSTYPE),msys)
-MSYS=true
+MINGW=true
 endif
 endif
 
@@ -15,12 +15,8 @@ INCS=-I$(TOP)/goldlib/gall -I$(TOP)/goldlib/gcfg -I$(TOP)/golded3/
 ifeq ($(findstring EMX, $(PATH)), EMX)
 STDLIBS=-lstdcpp
 else
-ifeq ($(TERM),cygwin)
+ifdef MINGW
 STDLIBS=-luser32
-else
-ifdef MSYS
-STDLIBS=-luser32
-endif
 endif
 endif
 GLIBS=gall

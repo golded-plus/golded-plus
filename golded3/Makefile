@@ -1,10 +1,10 @@
 # -*- makefile -*-
 
-ifeq ($(TERM),msys)
-MSYS=true
+ifeq ($(TERM),cygwin)
+MINGW=true
 else
 ifeq ($(OSTYPE),msys)
-MSYS=true
+MINGW=true
 endif
 endif
 
@@ -18,14 +18,9 @@ ifeq ($(findstring EMX, $(PATH)), EMX)
 STDLIBS=-los2me -lstdcpp
 GLIBS+=glibc
 else
-ifeq ($(TERM),cygwin)
+ifdef MINGW
 STDLIBS=-luser32 -lwinmm
 GLIBS+=glibc
-else
-ifdef MSYS
-STDLIBS=-luser32 -lwinmm
-GLIBS+=glibc
-endif
 endif
 endif
 
