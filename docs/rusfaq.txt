@@ -21,13 +21,14 @@ assistance!
 10. Что за левизна в адресах кросспостов, начиная с 1.1.3?
 11. Почему не вводится русская "Э" под Win95?
 12. Backspace в Linux'e
-13. А зачем мне этот <censored> редактор нужен? У Одинна было лучше!
-14. А вот я хочу аналог MCITY встроенный.
-15. $^%$^*! Что ты сделал с сохранением сообщений в 1.1.5?
-16. После установки GoldED+ у меня начали раздаваться стуки из-под пола.
-17. А почему я не могу поставить атрибуты письма?
-18. Как же работает AREAREPLYDIRECT?
-19. Типа эта... А писать куда автору? ;-)
+13. Alt во FreeBSD.
+14. А зачем мне этот <censored> редактор нужен? У Одинна было лучше!
+15. А вот я хочу аналог MCITY встроенный.
+16. $^%$^*! Что ты сделал с сохранением сообщений в 1.1.5?
+17. После установки GoldED+ у меня начали раздаваться стуки из-под пола.
+18. А почему я не могу поставить атрибуты письма?
+19. Как же работает AREAREPLYDIRECT?
+20. Типа эта... А писать куда автору? ;-)
 
 >==============================================================================
 
@@ -116,6 +117,104 @@ assistance!
 *Q:* Не работает backspace, приходится пользоватся стандартным Ctrl-?
 *A:* Alexey Froloff: ``keycode 14 = delete delete delete delete'' в keymap'е
      прописать надо.
+
+*Q:* А как нажать Alt-S во FreeBSD? ;-)
+*A:* andrey i. mavlyanov: так (привычнее, ИМХО + там на винюковые клавиши альт
+     навешан => все альты используются как альты, потом переключение по
+     Ctrl+Shift а CapsLock работает во всех режимах как caps.lock).
+
+=== BOF ru.koi8-r.shift.diff ===
+*** ru.koi8-r.shift.kbd Mon Feb 25 19:06:59 2002
+-+- ru.koi8-r.aim.kbd   Mon Feb 25 20:16:52 2002
+***************
+*** 57,67 ****
+    051   ','    '<'    nop    nop    172    188    nop    nop     O
+    052   '.'    '>'    nop    nop    174    190    nop    nop     O
+    053   '/'    '?'    nop    nop    175    191    nop    nop     O
+!   054   rshift rshift rshift rshift rshift rshift rshift rshift  O
+    055   '*'    '*'    nl     nl     170    170    138    138     O
+    056   lalt   lalt   lalt   lalt   lalt   lalt   lalt   lalt    O
+    057   ' '    ' '    nul    ' '    160    160    susp   160     O
+!   058   alock  clock  clock  clock  clock  clock  clock  clock   O
+    059   fkey01 fkey13 fkey25 fkey37 scr01  scr11  scr01  scr11   O
+    060   fkey02 fkey14 fkey26 fkey38 scr02  scr12  scr02  scr12   O
+    061   fkey03 fkey15 fkey27 fkey39 scr03  scr13  scr03  scr13   O
+-+- 57,67 ----
+    051   ','    '<'    nop    nop    172    188    nop    nop     O
+    052   '.'    '>'    nop    nop    174    190    nop    nop     O
+    053   '/'    '?'    nop    nop    175    191    nop    nop     O
+!   054   rshift rshift alock  rshift rshift rshift rshift rshift  O
+    055   '*'    '*'    nl     nl     170    170    138    138     O
+    056   lalt   lalt   lalt   lalt   lalt   lalt   lalt   lalt    O
+    057   ' '    ' '    nul    ' '    160    160    susp   160     O
+!   058   clock  clock  clock  clock  clock  clock  clock  clock   O
+    059   fkey01 fkey13 fkey25 fkey37 scr01  scr11  scr01  scr11   O
+    060   fkey02 fkey14 fkey26 fkey38 scr02  scr12  scr02  scr12   O
+    061   fkey03 fkey15 fkey27 fkey39 scr03  scr13  scr03  scr13   O
+***************
+*** 108,116 ****
+    102   fkey60 fkey60 fkey60 fkey60 fkey60 fkey60 fkey60 fkey60  O
+    103 fkey61 fkey61 fkey61 fkey61 fkey61 fkey61 boot   fkey61  O
+    104   slock  saver  slock  saver  susp   nop    susp   nop     O
+!   105 fkey62 fkey62 fkey62 fkey62 fkey62 fkey62 fkey62 fkey62  O
+!   106 fkey63 fkey63 fkey63 fkey63 fkey63 fkey63 fkey63 fkey63  O
+!   107 fkey64 fkey64 fkey64 fkey64 fkey64 fkey64 fkey64 fkey64  O
+    108   nop    nop    nop    nop    nop    nop    nop    nop     O
+    109   nop    nop    nop    nop    nop    nop    nop    nop     O
+    110   nop    nop    nop    nop    nop    nop    nop    nop     O
+-+- 108,116 ----
+    102   fkey60 fkey60 fkey60 fkey60 fkey60 fkey60 fkey60 fkey60  O
+    103 fkey61 fkey61 fkey61 fkey61 fkey61 fkey61 boot   fkey61  O
+    104   slock  saver  slock  saver  susp   nop    susp   nop     O
+!   105   meta   meta   meta   meta   meta   meta   meta   meta    O
+!   106   meta   meta   meta   meta   meta   meta   meta   meta    O
+!   107   meta   meta   meta   meta   meta   meta   meta   meta    O
+    108   nop    nop    nop    nop    nop    nop    nop    nop     O
+    109   nop    nop    nop    nop    nop    nop    nop    nop     O
+    110   nop    nop    nop    nop    nop    nop    nop    nop     O
+***************
+*** 185,195 ****
+    179   194    226    nop    nop    172    188    nop    nop     C
+    180   192    224    nop    nop    174    190    nop    nop     C
+    181   '/'    '?'    nop    nop    175    191    nop    nop     O
+!   182   rshift rshift rshift rshift rshift rshift rshift rshift  O
+    183   '*'    '*'    nl     nl     170    170    138    138     O
+    184   lalt   lalt   lalt   lalt   lalt   lalt   lalt   lalt    O
+    185   ' '    ' '    nul    ' '    160    160    160    160     O
+!   186   alock  clock  clock  clock  clock  clock  clock  clock   O
+    187   fkey01 fkey13 fkey25 fkey37 scr01  scr11  scr01  scr11   O
+    188   fkey02 fkey14 fkey26 fkey38 scr02  scr12  scr02  scr12   O
+    189   fkey03 fkey15 fkey27 fkey39 scr03  scr13  scr03  scr13   O
+-+- 185,195 ----
+    179   194    226    nop    nop    172    188    nop    nop     C
+    180   192    224    nop    nop    174    190    nop    nop     C
+    181   '/'    '?'    nop    nop    175    191    nop    nop     O
+!   182   rshift rshift alock  rshift rshift rshift rshift rshift  O
+    183   '*'    '*'    nl     nl     170    170    138    138     O
+    184   lalt   lalt   lalt   lalt   lalt   lalt   lalt   lalt    O
+    185   ' '    ' '    nul    ' '    160    160    160    160     O
+!   186   clock  clock  clock  clock  clock  clock  clock  clock   O
+    187   fkey01 fkey13 fkey25 fkey37 scr01  scr11  scr01  scr11   O
+    188   fkey02 fkey14 fkey26 fkey38 scr02  scr12  scr02  scr12   O
+    189   fkey03 fkey15 fkey27 fkey39 scr03  scr13  scr03  scr13   O
+***************
+*** 236,242 ****
+    230   fkey60 fkey60 fkey60 fkey60 fkey60 fkey60 fkey60 fkey60  O
+    231 fkey61 fkey61 fkey61 fkey61 fkey61 fkey61 boot   fkey61  O
+    232   slock  saver  slock  saver  susp   nop    susp   nop     O
+!   233 fkey62 fkey62 fkey62 fkey62 fkey62 fkey62 fkey62 fkey62  O
+!   234 fkey63 fkey63 fkey63 fkey63 fkey63 fkey63 fkey63 fkey63  O
+!   235 fkey64 fkey64 fkey64 fkey64 fkey64 fkey64 fkey64 fkey64  O
+    236   nop    nop    nop    nop    nop    nop    nop    nop     O
+-+- 236,242 ----
+    230   fkey60 fkey60 fkey60 fkey60 fkey60 fkey60 fkey60 fkey60  O
+    231 fkey61 fkey61 fkey61 fkey61 fkey61 fkey61 boot   fkey61  O
+    232   slock  saver  slock  saver  susp   nop    susp   nop     O
+!   233   meta   meta   meta   meta   meta   meta   meta   meta    O
+!   234   meta   meta   meta   meta   meta   meta   meta   meta    O
+!   235   meta   meta   meta   meta   meta   meta   meta   meta    O
+    236   nop    nop    nop    nop    nop    nop    nop    nop     O
+===  EOF ru.koi8-r.shift.diff  ===
 
 *Q:* А зачем мне этот <censored> редактор нужен? У Одинна было лучше!
 *A:* А кто-то заставляет пользоваться? :-) Не нравится - сноси и пользуйся тем,
