@@ -49,10 +49,16 @@ extern "C" {
 extern char tl[256], tu[256];
 inline int _nls_tolower(int c) { return tl[c]; }
 inline int _nls_toupper(int c) { return tu[c]; }
+#ifdef __MSVCRT__
+inline int _nls_isspace(int c) { return (iscntrl(c) or (c == ' ')); }
+#endif
 #ifdef __cplusplus
 }
 #define tolower(a) _nls_tolower((unsigned char)(a))
 #define toupper(a) _nls_toupper((unsigned char)(a))
+#ifdef __MSVCRT__
+#define isspace(a) _nls_isspace((unsigned char)(a))
+#endif
 #endif
 #endif
 
@@ -62,9 +68,8 @@ inline int _nls_toupper(int c) { return tu[c]; }
 #ifdef __cplusplus
 extern "C" {
 #endif
-inline int iswhite(char c)  { return c and (iscntrl(c) or (c == ' ')); }
 // NLS chars detected by converting to lower or upper case and in case they don't match they treated as characters
-inline int isxalnum(char c) { return isalnum(c) or ((c >= 128) and ((c != tolower(c)) or (c != toupper(c)))); }
+inline int isxalnum(char c) { return isascii(c) ? isalnum(c) : (c != tolower(c)) or (c != toupper(c)); }
 #ifdef __cplusplus
 }
 #endif

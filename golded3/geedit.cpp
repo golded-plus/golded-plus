@@ -113,12 +113,11 @@ int IEclass::dispchar(vchar __ch, int attr) {
 
   if(__ch == NUL) // possible if line empty
     __ch = ' ';
-  if(__ch != '\n') {
-    if(__ch == ' ')
-      __ch = EDIT->CharSpace();
-  }
-  else {
+  if(__ch == '\n') {
     __ch = EDIT->CharPara();
+  }
+  else if(__ch == ' ') {
+    __ch = EDIT->CharSpace();
   }
 
   int atr;
@@ -566,7 +565,8 @@ void IEclass::GoLeft() {
       GoUp();
       GoEOL();
 //      if((col != mincol) and ((currline->txt[col] == '\n') or not ((col == (maxcol + 1)) and (currline->txt[col-1] == ' '))))
-//        col--;
+      if((col != mincol) and (currline->txt.c_str()[col] == NUL))
+        col--;
     }
   }
   else
@@ -587,7 +587,7 @@ void IEclass::GoRight() {
 
   _test_haltab(col > maxcol, col, maxcol);
 
-  if((col == maxcol) or (col >= currline->txt.length()) or (currline->txt[col] == '\n')) {
+  if((col == maxcol) or ((col+1) >= currline->txt.length())) {
     if(currline->next != NULL) {
       GoDown();
       col = mincol;
@@ -609,6 +609,8 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, boo
 
   _test_halt(__currline == NULL);
   _test_halt(*__currline == NULL);
+
+  int scroll = 0;
 
   uint  _quotelen;
   char  _quotebuf[MAXQUOTELEN];
@@ -632,7 +634,7 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, boo
     uint _wrapmargin = (_thisline->type & GLINE_QUOT) ? marginquotes : margintext;
 
     // Does this line need wrapping?
-    if((_thislen > _wrapmargin) or ((_thislen == _wrapmargin) and not (_thisline->txt[_thislen-1] == ' '))) {
+    if((_thislen > _wrapmargin) or ((_thislen == _wrapmargin) and not ((_thisline->txt[_thislen-1] == ' ') or (_thisline->txt[_thislen-1] == '\n')))) {
 
       // Reset quote string length
       _quotelen = 0;
@@ -668,7 +670,7 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, boo
         // NOTE: Leading spaces to this word will be nulled out!
 
         // Begin at the first char outside the margin
-        if((_wrappos + 1) <= maxcol)
+        if(_wrappos <= maxcol)
           _wrappos++;
       }
       else {
@@ -681,7 +683,7 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, boo
         int _atmargin = _wrappos;
 
         // Search backwards until a space or the beginning of the line is found 
-        while(_wrappos > 0 and (_thisline->txt[_wrappos-1] != ' '))
+        while((_wrappos > 0) and (_thisline->txt[_wrappos-1] != ' '))
           _wrappos--;
 
         // Check if we hit leading spaces
@@ -702,7 +704,7 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, boo
         }
       }
 
-      // The wrapptr now points to the location to be wrapped or NUL
+      // The wrappos now points to the location to be wrapped or NUL
 
       // Is the line hard-terminated?
       if(_thisline->txt.find('\n', _wrappos) != _thisline->txt.npos) {
@@ -733,7 +735,7 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, boo
           if(_thisrow < maxrow) {
 
             // Scroll the lines below to make room for the new line
-            scrolldown(mincol, _thisrow+1, maxcol, maxrow);
+            --scroll;
 
             // Display the new line
             if(_wrapline->txt.length() <= (maxcol+1))
@@ -788,7 +790,7 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, boo
           if(_line_added_below and (_thisrow < maxrow)) {
 
             // Scroll the lines below to make room for the new line
-            scrolldown(mincol, _thisrow+1, maxcol, maxrow);
+            --scroll;
           }
 
           // Display the new/wrapped line
@@ -890,10 +892,18 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, boo
     if(_cursrow > maxrow) {
       _cursrow = maxrow;
       if(__display) {
-        scrollup(mincol, minrow, maxcol, maxrow);
+        ++scroll;
+        if(scroll > 0) {
+          scrollup(mincol, minrow, maxcol, maxrow);
+          scroll = 0;
+        }
         displine(*__currline, *__curr_row);
       }
     }
+  }
+
+  if(__display and (scroll != 0)) {
+    refresh((*__currline)->next, _cursrow+1);
   }
 
   // Update cursor position
@@ -1011,6 +1021,12 @@ void IEclass::DelChar() {
     _thisline->txt.erase(col, 1);
     batch_mode = BATCH_MODE;
   }
+  else if((col == _thislen) && _nextline) {
+    GFTRK(NULL);
+    GoRight();
+    DelChar();
+    return;
+  }
 
   // Did we delete the last char on the line or
   // was the cursor at or beyond the nul-terminator?
@@ -1061,9 +1077,16 @@ void IEclass::DelChar() {
   setlinetype(_thisline);
 
   // Rewrap this line
-  wrapdel(&currline, &col, &row);
-
-  refresh(currline, row);
+  bool display = (row > maxrow / 2) ? false : true;
+  wrapdel(&currline, &col, &row, display);
+  if(display) {
+    refresh(currline, row);
+  }
+  else {
+    // Refresh the display
+    Line* _topline = findtopline();
+    refresh(_topline, minrow);
+  }
 
   GFTRK(NULL);
 }

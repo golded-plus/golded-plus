@@ -2395,7 +2395,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
               reflow = true;
             line->type |= GLINE_WRAP;
             ptr = spanfeeds(ptr);
-            if((*bp == ' ') or (isspace(*ptr) && (*ptr != LF)))
+            if((*bp == ' ') or (isspace(*ptr) and (*ptr != LF)))
               ptr = spanspaces(ptr);
             else {
               if(tmp) {

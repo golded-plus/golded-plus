@@ -796,8 +796,9 @@ int wmenuitem(int wrow, int wcol, const char* str, char schar, int tagid, int fm
 
     int width = 1 + (gwin.cmenu->ecol-border) - (gwin.cmenu->scol+border);
     size_t _titlen = gwin.cmenu->title ? strlen(gwin.cmenu->title) : 0;
-    int length = maximum_of_two(strlen(str), _titlen);
-    if(length > width)
+    size_t _strlen = strlen(str);
+    size_t length = maximum_of_two(_strlen, _titlen);
+    if((int)length > width)
       gwin.cmenu->ecol += length - width;
 
     if(gwin.cmenu->menutype & M_VERT) {
