@@ -139,7 +139,7 @@ inline struct tm* glocaltime(time_t* arg) {
 
 #if defined(__OS2__)
 inline void usleep(long duration) { DosSleep(duration); }
-#elif defined(__MINGW32__)
+#elif defined(__MINGW32__) || defined(_MSC_VER)
 inline void usleep(long duration) { Sleep(duration); }
 #endif
 
