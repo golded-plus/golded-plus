@@ -67,7 +67,7 @@
     <p>
       <name/GoldED+/ takes his history from the patch collection made by
       <name>Alexander S. Aganichev</name>. A lot of code was contributed to
-      <name/GoldED+/ by different people around the world. At least
+      <name/GoldED+/ by different people around the world. At least,
       <name/GoldED+/ contains portions of code written by the core team of
       <name/GoldED/ (<name/Odinn Sorensen/, <name>Dirk A. Mueller</name>, and
       <name/Leonid Lisovsky/), <name/Mike Smedley/, <name/Pavel Gulchouck/,
@@ -1107,8 +1107,8 @@ RDDT path.rpt -n2:5020/604.19 -l2:5020/604 2:5020/604.19 -p</eg>
       </list>
     </p>
     <p>
-      When the using <ref target=AREAFILE><kw/AREAFILE/</ref> feature to read
-      external area configuration from other programs, the individual
+      When using the <ref target=AREAFILE><kw/AREAFILE/</ref> feature to read
+      external area configuration from the other programs, the individual
       <ref target=AREAFILE><kw/AREAFILE/</ref>'s may use specific environment
       variables to find the files. Please read the
       <ptr target=AREACONFIGURATION> chapter for specific details of each
@@ -2141,7 +2141,7 @@ AKAMATCH 23:      22:33/44</eg>
           See also:
         </label>
         <item>
-          <ref target=REM/Remark/ chapter
+          <ref target=REM/Remarks/
         </item>
         <label>
           Example:
@@ -2716,7 +2716,7 @@ AREA:&lt;OriginalEchoID&gt;</eg>
               </cell>
               <cell>
                 Group ID uppercase letter (A-Z) or 0 if not in a group. Use
-                &num;groupnumber to specify group numbers in the 1-999 range.
+                #groupnumber to specify group numbers in the 1-999 range.
               </cell>
             </row>
             <row>
@@ -2866,7 +2866,7 @@ AREA:&lt;OriginalEchoID&gt;</eg>
               </cell>
               <cell>
                 Optional groupid uppercase letter (A-Z) or 0 if not in a group.
-                Use &num;groupnumber to specify group numbers in the 1-999
+                Use #groupnumber to specify group numbers in the 1-999
                 range or <q>-</q> to keep the existing groupid. 
               </cell>
             </row>
@@ -3096,7 +3096,7 @@ AREAEXCL INT*.*   ; Excludes all areas beginning with INT and
         </item>
       </list>
     </div2>
-    <div2>
+    <div2 id=AREAFILEGROUPS>
       <head>
         AREAFILEGROUPS
       </head>
@@ -3112,7 +3112,7 @@ AREAEXCL INT*.*   ; Excludes all areas beginning with INT and
         </label>
         <item>
           In some <ref target=AREAFILE><kw/AREAFILE/</ref> setups, you can
-          groups the areas using single letters (A-Z) or numbers (&num;1-999).
+          groups the areas using single letters (A-Z) or numbers (#1-999).
         </item>
         <label>
           Parameters:
@@ -3269,7 +3269,7 @@ AREAEXCL INT*.*   ; Excludes all areas beginning with INT and
           <ref target=FRQNODEMAP><kw/FRQNODEMAP/</ref>,
           <ref target=FRQOPTIONS><kw/FRQOPTIONS/</ref>,
           <ref target=FRQWAZOO><kw/FRQWAZOO/</ref>,
-          <ref target=OUTBOUND><kw/OUTBOUND/</ref>
+          <ref target=OUTBOUNDPATH><kw/OUTBOUNDPATH/</ref>
         </item>
       </list>
     </div2>
@@ -3331,7 +3331,7 @@ AREAEXCL INT*.*   ; Excludes all areas beginning with INT and
           <ref target=FRQNODEMAP><kw/FRQNODEMAP/</ref>,
           <ref target=FRQOPTIONS><kw/FRQOPTIONS/</ref>,
           <ref target=FRQWAZOO><kw/FRQWAZOO/</ref>,
-          <ref target=OUTBOUND><kw/OUTBOUND/</ref>
+          <ref target=OUTBOUNDPATH><kw/OUTBOUNDPATH/</ref>
         </item>
       </list>
     </div2>
@@ -3366,8 +3366,6 @@ AREAEXCL INT*.*   ; Excludes all areas beginning with INT and
           Notes:
         </label>
         <item>
-          You can use the <kw/AREAINCL/ keyword to reinclude areas which have
-          been excluded with <ref target=AREAEXCL><kw/AREAEXCL/</ref>.<lb>
           This keyword must be placed before any of
           <ref target=AREA><kw/AREA/</ref>,
           <ref target=AREADEF><kw/AREADEF/</ref>,
@@ -3602,7 +3600,7 @@ AREAISNEWS alt.*, rec.*, sci.*</eg>
           Synopsis:
         </label>
         <item>
-          <kw/AREALISTECHOMAX/ <ident/size/
+          <kw/AREALISTECHOMAX/ <ident/&lt;size&gt;/
         </item>
         <label>
           Description:
@@ -3667,7 +3665,7 @@ AREAISNEWS alt.*, rec.*, sci.*</eg>
           Synopsis:
         </label>
         <item>
-          <kw/AREALISTFORMAT/ <ident/string/
+          <kw/AREALISTFORMAT/ <ident/&lt;string&gt;/
         </item>
         <label>
           Description:
@@ -3855,7 +3853,7 @@ AREALISTFORMAT "AM D C4PU4N E G "]]></eg>
         <item>
           This feature provides a way to hide group ID on the arealist screen,
           in a column to the right of the <gi/EchoID/ column. If a group ID is
-          not a letter in the range A-Z (a value in the range &num;65-&num;90),
+          not a letter in the range A-Z (a value in the range #65-#90),
           the groupid is not shown anyway.
         </item>
         <label>
@@ -3888,6 +3886,7 @@ AREALISTFORMAT "AM D C4PU4N E G "]]></eg>
           See also:
         </label>
         <item>
+	  <ref target=AREAFILEGROUPS><kw/AREAFILEGROUPS/</ref>,
           <ref target=AREALISTFORMAT><kw/AREALISTFORMAT/</ref>,
           <ref target=AREALISTGROUPORDER><kw/AREALISTGROUPORDER/</ref>
         </item>
@@ -3902,7 +3901,7 @@ AREALISTFORMAT "AM D C4PU4N E G "]]></eg>
           Synopsis:
         </label>
         <item>
-          <kw/AREALISTGROUPORDER/ <ident/string/
+          <kw/AREALISTGROUPORDER/ <ident/&lt;string&gt;/
         </item>
         <label>
           Description:
@@ -3936,11 +3935,11 @@ AREALISTFORMAT "AM D C4PU4N E G "]]></eg>
           See also:
         </label>
         <item>
+	  <ref target=AREAFILEGROUPS><kw/AREAFILEGROUPS/</ref>,
           <ref target=AREALISTGROUPID><kw/AREALISTGROUPID/</ref>,
           <ref target=AREALISTSORT><kw/AREALISTSORT/</ref>
         </item>
       </list>
-      </p>
     </div2>
     <div2 id=AREALISTNOS>
       <head>
@@ -4123,7 +4122,7 @@ mbutil link -clean
           Synopsis:
         </label>
         <item>
-          <kw/AREALISTSORT/ <ident/sortspec/
+          <kw/AREALISTSORT/ <ident/&lt;sortspec&gt;/
         </item>
         <label>
           Description:
@@ -4325,7 +4324,7 @@ mbutil link -clean
         <label>
           Example:
         </label>
-        <item><eg><![ CDATA [
+        <item><eg>
 AREALISTSORT -U+TE</eg>
         </item>
       </list>
@@ -4339,7 +4338,7 @@ AREALISTSORT -U+TE</eg>
           Synopsis:
         </label>
         <item>
-          <kw/AREALISTTYPE/ <ident>NEW/LAST</ident>
+          <kw/AREALISTTYPE/ <ident>&lt;NEW/LAST&gt;</ident>
         </item>
         <label>
           Description:
@@ -4394,77 +4393,224 @@ AREALISTSORT -U+TE</eg>
         </item>
       </list>
     </div2>
-
-
-<!-- finished here -->
-
-
-    <div2>
+    <div2 id=AREAPATH>
       <head>
         AREAPATH &lt;path&gt;
       </head>
-      <p>
-        If you use the <kw>AREAFILE</kw> keyword, <name>GoldED+</name> might
-        need to know where the area setup files are located. This keyword
-        specifies where they are found, if not current directory.
-      </p>
-      <p>
-        <hi>NOTE:</hi> Most <kw>AREAFILE</kw> types can find the path using the
-        environment variable(s) specific for the program(s). Such environment
-        variables (or a path specified with the <kw>AREAFILE</kw> definition)
-        always overrides the <kw>AREAPATH</kw>.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREAPATH/ <ident/&lt;path&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword defines where the area setup files are located when
+          <ref target=AREAFILE><kw/AREAFILE/</ref> keyword is used. It is
+          also defines default path for the semaphores.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The <ident/path/ defines the path to the area setup files.
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          Most <ref target=AREAFILE><kw/AREAFILE/</ref> types can find the path
+          using the environment variable(s) specific for the program(s). Such
+          environment variables (or a path specified with the
+          <ref target=AREAFILE><kw/AREAFILE/</ref> definition) always overrides
+          the <ref target=AREAFILE><kw/AREAFILE/</ref>.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ptr target=AREACONFIGURATION> chapter,
+          <ref target=AREAFILE><kw/AREAFILE/</ref>,
+          <ref target=SEMAPHORE><kw/SEMAPHORE/</ref>
+        </item>
+      </list>
     </div2>
     <div2 id=AREAPMSCAN>
       <head>
-        AREAPMSCAN &lt;echoid mask&gt;
+        AREAPMSCAN
       </head>
-      <p>
-        This keyword defines areas which will be automatically scanned for
-        personal mail when starting <name>GoldED+</name>.
-        <name>DOS</name>/<name>4DOS</name>-style wildcards (* and ?) can be
-        used in the echoid mask.
-      </p>
-      <p>
-        Examples:<eg>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREAPMSCAN/ <ident/&lt;echoid mask&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword defines areas which will be automatically scanned for
+          personal mail when starting <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The <ident/&lt;echoid mask&gt;/ may contain <name>4DOS</name>-style
+          wildcards (<q/*/ and <q/?/). You may specify multiple masks separated
+          with commas.
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          It is recommended to have to scan all areas at startup. If you don't
+          want to wait for the scan to complete, you can abort the scan by
+          pressing &lt;ESC&gt; during startup.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=AREAPMSCANEXCL><kw/AREAPMSCANEXCL/</ref>,
+          <ref target=AREAPMSCANINCL><kw/AREAPMSCANINCL/</ref>,
+          <ref target=AREASCAN><kw/AREASCAN/</ref>,
+          <ref target=AREASCANEXCL><kw/AREASCANEXCL/</ref>,
+          <ref target=AREASCANINCL><kw/AREASCANINCL/</ref>
+        </item>
+        <label>
+          Example:
+        </label>
+        <item><eg>
 AREAPMSCAN *       ; Scan all areas.
 AREAPMSCAN *INTER* ; Scan all areas containing INTER anywhere in the
                    ; echoid
 AREAPMSCAN INT*.*  ; Scan all areas beginning with INT and
                    ; containing a dot anywhere in the echoid</eg>
-      </p>
-      <p>
-        It is recommended to have an <q>AREAPMSCAN *</q> to scan all areas at
-        startup. If you don't want to wait for the scan to complete, you can
-        abort the scan by pressing &lt;ESC&gt; during startup.
-      </p>
-      <p>
-          <ref target=AREAPMSCANEXCL><kw/AREAPMSCANEXCL/</ref>,
+        </item>
+      </list>
+    </div2>
+    <div2 id=AREAPMSCANEXCL>
+      <head>
+        AREAPMSCANEXCL
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREAPMSCANEXCL/ <ident/&lt;echoid mask&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          With this keyword you can prevent areas from being scanned with
+          <ref target=AREAPMSCAN><kw/AREAPMSCAN/</ref> on startup.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The <ident/&lt;echoid mask&gt;/ may contain <name>4DOS</name>-style
+          wildcards (<q/*/ and <q/?/). You may specify multiple masks separated
+          with commas.
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          This is good if you use <ref target=AREAPMSCAN><kw/AREAPMSCAN/</ref>
+          to scan all areas, but have some big areas which slows it down.<lb>
+          You can use the <ref target=AREAPMSCANINCL><kw/AREAPMSCANINCL/</ref>
+          keyword to reinclude areas which have been excluded with
+          <kw/AREAPMSCANEXCL/.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=AREAPMSCAN><kw/AREAPMSCAN/</ref>,
           <ref target=AREAPMSCANINCL><kw/AREAPMSCANINCL/</ref>,
+          <ref target=AREASCAN><kw/AREASCAN/</ref>,
           <ref target=AREASCANEXCL><kw/AREASCANEXCL/</ref>,
           <ref target=AREASCANINCL><kw/AREASCANINCL/</ref>
-      </p>
+        </item>
+      </list>
     </div2>
-    <div2>
+    <div2 id=AREAPMSCANINCL>
       <head>
-        AREAPMSCANEXCL &lt;echoid or wildcards&gt;
+        AREAPMSCANINCL
       </head>
-      <p>
-        With this keyword you can prevent areas from being scanned with
-        <kw>AREAPMSCAN</kw> on startup. This is good if you use
-        <q>AREAPMSCAN *</q>, but have some big areas which slows it down.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREAPMSCANINCL/ <ident/&lt;echoid mask&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword allows to specify areas which are to be scanned with
+          <ref target=AREAPMSCAN><kw/AREAPMSCAN/</ref> even if they were
+          excluded with <ref target=AREAPMSCANEXCL><kw/AREAPMSCANEXCL/</ref>.
+          Useful for partial reversal of wildcard specs in the excludes.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The <ident/&lt;echoid mask&gt;/ may contain <name>4DOS</name>-style
+          wildcards (<q/*/ and <q/?/). You may specify multiple masks separated
+          with commas.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=AREAPMSCAN><kw/AREAPMSCAN/</ref>,
+          <ref target=AREAPMSCANEXCL><kw/AREAPMSCANEXCL/</ref>,
+          <ref target=AREASCAN><kw/AREASCAN/</ref>,
+          <ref target=AREASCANEXCL><kw/AREASCANEXCL/</ref>,
+          <ref target=AREASCANINCL><kw/AREASCANINCL/</ref>
+        </item>
+      </list>
     </div2>
-    <div2>
-      <head>
-        AREAPMSCANINCL &lt;echoid or wildcards&gt;
-      </head>
-      <p>
-        Here you can specify areas to be scanned with <kw>AREAPMSCAN</kw> even
-        if they were excluded with <kw>AREAPMSCANEXCL</kw>. Useful for partial
-        reversal of wildcard specs in the excludes.
-      </p>
-    </div2>
+
+
+<!-- finished here -->
+
+
     <div2>
       <head>
         AREAREADONLY &lt;(soft)/hard&gt;
@@ -4511,7 +4657,8 @@ AREARENAME LOCAL001 BBS.USERS</eg>
         at the top of the messages, you should create a random system group for
         the area and enable <kw>AREAREPLYDIRECT</kw> in it:<eg>
 Group ECHO_PERSONAL
-  AreaReplyDirect yes</eg>
+  AreaReplyDirect yes
+EndGroup</eg>
       </p>
       <p>
         With such a setup, <name>GoldED+</name> replies directly to the area
@@ -4578,7 +4725,7 @@ AREASCAN INT*.*  ; Scan all areas beginning with INT and
         abort the scan by pressing &lt;ESC&gt; during startup.
       </p>
     </div2>
-    <div2>
+    <div2 id=AREASCANEXCL>
       <head>
         AREASCANEXCL &lt;echoid or wildcards&gt;
       </head>
@@ -4588,7 +4735,7 @@ AREASCAN INT*.*  ; Scan all areas beginning with INT and
         <q>AREASCAN *</q>, but have some big areas which slows it down.
       </p>
     </div2>
-    <div2>
+    <div2 id=AREASCANINCL>
       <head>
         AREASCANINCL &lt;echoid or wildcards&gt;
       </head>
@@ -4642,7 +4789,7 @@ AREASEP &excl;LOCAL "Local areas"     0 Local]]></eg>
       </p>
       <p>
         These can be used to separate areas with group letters (it will also
-        work with group numbers like &num;117). Areas should then be sorted
+        work with group numbers like #117). Areas should then be sorted
         primarily on the group.
       </p>
       <p>Example:<eg><![ CDATA [
@@ -8107,7 +8254,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
       </p>
       <p>
       &dollar;Hex          A hexadecimal string.
-      &num;Decimal      A decimal (integer) number.
+      #Decimal      A decimal (integer) number.
       "String"      Text string, enclosed in double quotes.
       'String'      Text string, enclosed in single quotes.
       Other chars   Ignored.
@@ -8778,7 +8925,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     This keyword can be used globally and in Random System groups.
       </p>
     </div2>
-    <div2>
+    <div2 id=SEMAPHORE>
       <head>
         SEMAPHORE &lt;type&gt; &lt;file&gt;
       </head>
@@ -8874,7 +9021,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     applied to this keyword.
       </p>
     </div2>
-<div2 id=SHAREMODE><head>SHAREMODE &lt;yes/no/mode&num;&gt;</head>
+<div2 id=SHAREMODE><head>SHAREMODE &lt;yes/no/mode#&gt;</head>
       <p>
   (yes)
       </p>
@@ -9133,7 +9280,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
       <p>
     If enabled (yes or hide), <name>GoldED+</name> will highlight text surrounded by
     one of the following characters in a different color: '*' for bold
-    text, '/' for italic text, '_' for underlined text and '&num;' for
+    text, '/' for italic text, '_' for underlined text and '#' for
     reversed text. These are commonly used "stylecodes" which add
     emphasis to the text, without making it harder to read. Examples:
     *This* will be shown in bold color, /this/ in italic color and
@@ -10600,7 +10747,7 @@ The &lt;programname&gt; can be one of the following:
       </p>
       <p>
     The optional /G switch specifies the default group of the imported
-    areas, i.e. /g=G or /g=&num;103.
+    areas, i.e. /g=G or /g=#103.
       </p>
       <p>
     Looks for the "SQUISH" and "MAXIMUS" environment variables.
@@ -10733,7 +10880,7 @@ ENDGROUP
 The Group &lt;id&gt; can be one of three things:
       </p>
       <p>
-1.  A group letter or &num;number, matching the group letters or numbers
+1.  A group letter or #number, matching the group letters or numbers
     used in the AREAFILE's of D'Bridge, GEcho, IMAIL, TosScan and many
     others. To use this feature, you need to enable the AREAFILEGROUPS
     keyword.
@@ -11138,14 +11285,14 @@ The following is a description of the different window parts:
   STYLECODE BU        _*BoldUnderline*_
   STYLECODE IU        /_ItalicUnderline_/
   STYLECODE BIU       _/*BoldItalicUnderline*/_
-  STYLECODE R         &num;Reverse&num;
-  STYLECODE RB        *&num;ReverseBold&num;*
-  STYLECODE RI        /&num;ReverseItalic&num;/
-  STYLECODE RBI       /*&num;ReverseBoldItalic&num;*/
-  STYLECODE RU        _&num;ReverseUnderline_&num;
-  STYLECODE RBU       _*&num;ReverseBoldUnderline&num;*_
-  STYLECODE RIU       _/&num;ReverseItalicUnderline&num;/_
-  STYLECODE RBIU      _/*&num;ReverseItalicUnderline&num;*/_
+  STYLECODE R         #Reverse#
+  STYLECODE RB        *#ReverseBold#*
+  STYLECODE RI        /#ReverseItalic#/
+  STYLECODE RBI       /*#ReverseBoldItalic#*/
+  STYLECODE RU        _#ReverseUnderline_#
+  STYLECODE RBU       _*#ReverseBoldUnderline#*_
+  STYLECODE RIU       _/#ReverseItalicUnderline#/_
+  STYLECODE RBIU      _/*#ReverseItalicUnderline#*/_
       </p>
       <p>
   Note that stylecode color definitions must be placed below COLOR
@@ -11951,7 +12098,7 @@ Unshifted function keys
 Shift-function keys
       </p>
       <p>
-    &num;F1  &num;F2  &num;F3  &num;F4  &num;F5  &num;F6  &num;F7  &num;F8  &num;F9  &num;F10  &num;F11  &num;F12
+    #F1  #F2  #F3  #F4  #F5  #F6  #F7  #F8  #F9  #F10  #F11  #F12
       </p>
       <p>
 Alt-function keys
@@ -12024,7 +12171,7 @@ Cursor up/down
 Misc other keys
       </p>
       <p>
-    Esc  ^Grey*  Key5  Space  Tab  &num;Tab  @Tab  BackSpace  ^BackSpace
+    Esc  ^Grey*  Key5  Space  Tab  #Tab  @Tab  BackSpace  ^BackSpace
     @BackSpace  Enter  ^Enter  @Enter
       </p>
       <p>
@@ -12299,7 +12446,7 @@ and a short description of what they are used for.
     </div2>
     <div2>
       <head>
-        FWDMSGID &lt;aka serial&num;&gt;
+        FWDMSGID &lt;aka serial#&gt;
       </head>
       <p>
         <name>FSC-0092</name>: The original <gi>MSGID</gi> in forwards.
