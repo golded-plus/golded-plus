@@ -296,6 +296,11 @@ void CmfMsgs(GMsg* msg) {
       loadmode |= GMSG_COPY;
       break;
     case MODE_MOVE:
+      if(AA->attr().r_o()) {
+        GMenuReadonly MenuReadonly;
+        if(not MenuReadonly.Run())
+          return;
+      }
       GFTRK("MoveMsgs");
       pickstr = LNG->MoveArea;
       markstr = LNG->Move;
@@ -336,6 +341,8 @@ void CmfMsgs(GMsg* msg) {
     GFTRK(NULL);
     return;
   }
+
+  int xlat_table = LoadCharset(NULL, NULL, 1);
 
   AL.SetActiveAreaId(OrigArea);
   AreaData* orig_adat = AA->adat;
@@ -558,6 +565,11 @@ void CmfMsgs(GMsg* msg) {
   throw_free(AA->adat);
   AA->adat = orig_adat;
   AA->Unlock();
+
+  if(xlat_table != -1)
+    LoadCharset(CFG->xlatcharset[xlat_table].imp, CFG->xlatcharset[xlat_table].exp);
+  else
+    LoadCharset("N/A", "N/A");
 
   if(do_mode == MODE_MARKED) {
     if(cmf == MODE_MOVE)
