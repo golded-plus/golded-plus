@@ -696,7 +696,7 @@ CfgGed::CfgGed() {
   displistcursor = NO;
   dispmargin = NO;
   dispmsgsize = DISPMSGSIZE_BYTES;
-  disptabsize = 4;
+  disptabsize = 8;
   encodeemailheaders = true;
   externoptions = EXTUTIL_CLS | EXTUTIL_SWAP | EXTUTIL_CURSOR | EXTUTIL_RELOAD | EXTUTIL_PAUSEONERROR | EXTUTIL_KEEPCTRL;
   ezycomuserno = 0;

@@ -1077,6 +1077,7 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
         memset(spaces, ' ', tabsz);
         spaces[tabsz] = NUL;
         int level = LoadCharset(AA->Xlatimport(), CFG->xlatlocalset);
+        size_t buf_len = EDIT_PARABUFLEN;
         char* buf = (char*) throw_malloc(EDIT_PARABUFLEN);
         Line* saveline = __line->next;
         __line->next = NULL;
@@ -1115,14 +1116,21 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
               doinvalidate(buf, CFG->invalidate.xp.first.c_str(), CFG->invalidate.xp.second.c_str());
           }
 
+          size_t read_len = strlen(buf);
+
           // Replace tabs
           char *ht = buf;
           while((ht = strchr(ht, '\t')) != NULL) {
             int rposn = ht-buf;
             int rstart = rposn%tabsz+1;
             *ht = ' ';
-            if(tabsz > rstart)
+            if(tabsz > rstart) {
+              if((read_len + tabsz - rstart) >= (buf_len - 7)) {
+                buf_len += tabsz;
+                buf = (char*)throw_realloc(buf, buf_len);
+              }
               strins(spaces+rstart, buf, rposn);
+            }
           }
 
           // Copy the paragraph to the new line and retype it

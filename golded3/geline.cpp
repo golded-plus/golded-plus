@@ -2978,7 +2978,7 @@ char* ParseInternetAddr(char* __string, char* __name, char* __addr) {
 
   StripQuotes(__name);
 
-  strxmimecpy(__name, __name, 0, strlen(__name), true);
+  strxmimecpy(__name, __name, 0, strlen(__name)+1, true);
 
   return __name;
 }

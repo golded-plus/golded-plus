@@ -49,9 +49,8 @@ void update_statuslines() {
     called = YES;
 
     vchar sep = _box_table(W_BSTAT, 3);
-    char help[200], meminfo[200], clkinfo[200];
+    char help[200], clkinfo[200];
     *clkinfo = NUL;
-    *meminfo = NUL;
     *help = NUL;
 
     if(CFG->switches.get(statuslineclock)) {
@@ -77,12 +76,29 @@ void update_statuslines() {
         __gver_postversion__
       );
     
-    int len = MAXCOL-strlen(help)-strlen(meminfo)-strlen(clkinfo)-2;
-    sprintf(buf, " %s%-*.*s%s%s ", help, len, len, information, meminfo, clkinfo);
+    int help_len = strlen(help);
+    int clk_len = strlen(clkinfo);
+    int len = MAXCOL-help_len-clk_len-2;
+    sprintf(buf, " %s%-*.*s%s ", help, len, len, information, clkinfo);
 
-    if(streql(old_status_line, buf))
+    char *begin = buf;
+    char *obegin = old_status_line;
+    char *end = buf + MAXCOL;
+    char *oend = old_status_line + MAXCOL;
+    while((*begin != NUL) and (*begin == *obegin)) {
+      ++begin;
+      ++obegin;
+    }
+    if(begin == end)
       return;
-    strcpy(old_status_line, buf);
+    // we have at least one mismatch
+    if(*obegin) {
+      while(*end == *oend) {
+        --end;
+        --oend;
+      }
+    }
+    memcpy(obegin, begin, end-begin+1);
 
     #ifdef GOLD_MOUSE
     gmou.GetStatus();
@@ -91,10 +107,12 @@ void update_statuslines() {
     #endif
     int row, col;
     vposget(&row, &col);
-    wwprintstr(W_STAT, 0,0, C_STATW, buf);
-    if(*help)
-      wwprintc(W_STAT, 0,strlen(help)-1, C_STATW, sep);
-    wwprintc(W_STAT, 0,MAXCOL-strlen(clkinfo), C_STATW, sep);
+    *(++end) = NUL;
+    wwprintstr(W_STAT, 0,begin-buf, C_STATW, begin);
+    if(*help and ((begin - buf) < (help_len-1)) and ((end - buf) > (help_len-1)))
+      wwprintc(W_STAT, 0,help_len-1, C_STATW, sep);
+    if(((begin - buf) < (MAXCOL-clk_len)) and ((end - buf) > (MAXCOL-clk_len)))
+      wwprintc(W_STAT, 0,MAXCOL-clk_len, C_STATW, sep);
     vposset(row, col);
     #ifdef GOLD_MOUSE
     if(gmou.Row() == MAXROW-1)

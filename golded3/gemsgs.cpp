@@ -398,20 +398,25 @@ void LoadText(GMsg* msg, const char* textfile) {
   char* ptr;
   char* txtptr;
   int hardcr = NO, hardlen;
-  char hardline[20], tabspaces[9];
-
-  strcpy(tabspaces, "        ");
-  #define PBUFSIZE 4096   // Allow a 4k long paragraph
-
-  buf = (char*)throw_malloc(PBUFSIZE);
+  char hardline[20];
 
   fp = fsopen(textfile, "rt", CFG->sharemode);
   if(fp) {
+
+    #define PBUFSIZE 4096   // Allow a 4k long paragraph
+
+    size_t buf_len = PBUFSIZE;
+    buf = (char*)throw_malloc(PBUFSIZE);
+
+    int tabsz = CFG->disptabsize ? CFG->disptabsize : 1;
+    __extension__ char spaces[tabsz+1];
+    memset(spaces, ' ', tabsz);
+    spaces[tabsz] = NUL;
+
     uint tlen = (uint)(fsize(fp)+512);
     msg->txt = txtptr = (char*)throw_realloc(msg->txt, tlen);
     memset(msg->txt, NUL, tlen);
 
-    tabspaces[CFG->disptabsize] = NUL;
     if(EDIT->HardLines())
       strcpy(hardline, EDIT->HardLine());
     else
@@ -420,8 +425,8 @@ void LoadText(GMsg* msg, const char* textfile) {
     hardlen = strlen(hardline);
     *txtptr = NUL;
 
-    while(fgets(buf, PBUFSIZE, fp)) {
-      strsrep(buf, "\t", tabspaces);  // Expand tabs
+    while(fgets(buf, PBUFSIZE-1, fp)) {
+
       if(EDIT->HardLines() and strneql(buf, hardline, hardlen)) {
         hardcr = not hardcr;
         if(*txtptr == LF)
@@ -431,43 +436,74 @@ void LoadText(GMsg* msg, const char* textfile) {
         continue;
       }
       else {
+        size_t read_len = strlen(buf);
+
+        char *ht = buf;
+        while((ht = strchr(ht, '\t')) != NULL) {
+          int rposn = ht-buf;
+          int rstart = rposn%tabsz+1;
+          *ht = ' ';
+          if(tabsz > rstart) {
+            if((read_len + tabsz - rstart) >= (buf_len-1)) {
+              buf_len += tabsz;
+              buf = (char*)throw_realloc(buf, buf_len);
+            }
+            strins(spaces+rstart, buf, rposn);
+          }
+        }
+
         ptr = buf;
         while(*ptr == ' ')    // Skip leading spaces
           ptr++;
         if(*ptr != LF) {
           strsrep(buf, hardline, "\r");
+          read_len = strlen(buf);
           if(hardcr or *buf == CTRL_A) {
-            buf[strlen(buf)-1] = CR;
+            if(not isspace(buf[read_len-1])) read_len += 1;
+            buf[read_len-1] = CR;
+            buf[read_len] = NUL;
             if(*txtptr == LF)
               *txtptr = CR;
           }
           else if(is_quote(buf)) {
-            buf[strlen(buf)-1] = CR;
+            if(not isspace(buf[read_len-1])) read_len += 1;
+            buf[read_len-1] = CR;
+            buf[read_len] = NUL;
             if(*txtptr == LF)
               *txtptr = CR;
           }
           else if((buf[0] == buf[1]) and (buf[0] == buf[2])) {
-            buf[strlen(buf)-1] = CR;
+            if(not isspace(buf[read_len-1])) read_len += 1;
+            buf[read_len-1] = CR;
+            buf[read_len] = NUL;
             if(*txtptr == LF)
               *txtptr = CR;
           }
           else if(strnieql(buf, " * Origin: ", 11)) {
-            buf[strlen(buf)-1] = CR;
+            if(not isspace(buf[read_len-1])) read_len += 1;
+            buf[read_len-1] = CR;
+            buf[read_len] = NUL;
             if(*txtptr == LF)
               *txtptr = CR;
           }
           else if(strnieql(ptr, "CC:", 3)) {
-            buf[strlen(buf)-1] = CR;
+            if(not isspace(buf[read_len-1])) read_len += 1;
+            buf[read_len-1] = CR;
+            buf[read_len] = NUL;
             if(*txtptr == LF)
               *txtptr = CR;
           }
           else if(strnieql(ptr, "XC:", 3)) {
-            buf[strlen(buf)-1] = CR;
+            if(not isspace(buf[read_len-1])) read_len += 1;
+            buf[read_len-1] = CR;
+            buf[read_len] = NUL;
             if(*txtptr == LF)
               *txtptr = CR;
           }
           else if(strnieql(buf, "SEEN-BY: ", 9)) {
-            buf[strlen(buf)-1] = CR;
+            if(not isspace(buf[read_len-1])) read_len += 1;
+            buf[read_len-1] = CR;
+            buf[read_len] = NUL;
             if(*txtptr == LF)
               *txtptr = CR;
           }
@@ -486,10 +522,9 @@ void LoadText(GMsg* msg, const char* textfile) {
           strcpy(buf, "\r");
         }
       }
-      if(*(txtptr-1) == CR or *txtptr == NUL) {
-        ptr = buf;
-        size = strlen(ptr);
-        memcpy(txtptr, ptr, size);
+      if((*(txtptr-1) == CR) or (*txtptr == NUL)) {
+        size = strlen(buf);
+        memcpy(txtptr, buf, size);
         txtptr += size-1;
       }
     }
@@ -497,8 +532,8 @@ void LoadText(GMsg* msg, const char* textfile) {
       *(++txtptr) = CR;
     *(++txtptr) = NUL;
     fclose(fp);
+    throw_free(buf);
   }
-  throw_free(buf);
 }
 
 

@@ -41,6 +41,7 @@ void IEclass::Clip2Buf() {
   spaces[tabsz] = NUL;
 
   // Allocate paragraph read buffer
+  size_t buf_len = EDIT_PARABUFLEN;
   char *buf = (char *)throw_malloc(EDIT_PARABUFLEN);
   Line *__line = NULL;
 
@@ -49,14 +50,21 @@ void IEclass::Clip2Buf() {
   // Read paragraphs
   while(clipbrd.read(buf, EDIT_PARABUFLEN-6)) {
 
+    size_t read_len = strlen(buf);
+
     // Replace tabs
     char *ht = buf;
     while((ht = strchr(ht, '\t')) != NULL) {
       int rposn = ht-buf;
       int rstart = rposn%tabsz+1;
       *ht = ' ';
-      if(tabsz > rstart)
+      if(tabsz > rstart) {
+        if((read_len + tabsz - rstart) >= (buf_len - 6)) {
+          buf_len += tabsz;
+          buf = (char*)throw_realloc(buf, buf_len);
+        }
         strins(spaces+rstart, buf, rposn);
+      }
     }
 
     // Copy the paragraph to the new line and retype it

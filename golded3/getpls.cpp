@@ -516,9 +516,9 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
                 ifp = fsopen(indexfile, "rb", CFG->sharemode);
                 if(ifp) {
                   fseek(ifp, 0L, SEEK_END);
-                  int idxs = (int)(ftell(ifp)/4L);
+                  int idxs = (int)(ftell(ifp)/sizeof(long));
                   if(idxs) {
-                    fseek(ifp, (long)(rand()%idxs)*4L, SEEK_SET);
+                    fseek(ifp, (long)(rand()%idxs)*sizeof(long), SEEK_SET);
                     fread(&fpos, sizeof(long), 1, ifp);
                     fseek(tfp, fpos, SEEK_SET);
                     while(fgets(buf, 255, tfp)) {

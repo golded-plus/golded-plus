@@ -575,12 +575,12 @@ void GVid::detectinfo(GVidInfo* _info) {
   assert(GetConsoleScreenBufferInfo(gvid_hout, &csbi) != 0);
 
   _info->screen.mode = 0;
-  _info->screen.rows = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
-  _info->screen.columns = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+  _info->screen.rows = csbi.dwSize.Y;
+  _info->screen.columns = csbi.dwSize.X;
 
   // Get cursor position and character attribute under the cursor
-  _info->cursor.row = csbi.dwCursorPosition.Y - csbi.srWindow.Top;
-  _info->cursor.column = csbi.dwCursorPosition.X - csbi.srWindow.Left;
+  _info->cursor.row = csbi.dwCursorPosition.Y;
+  _info->cursor.column = csbi.dwCursorPosition.X;
   _info->color.textattr = csbi.wAttributes;
 
   // Get cursor form

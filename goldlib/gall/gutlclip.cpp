@@ -125,7 +125,7 @@ char* gclipbrd::read(char* buffer, int maxlen) {
       if(len > i and strchr("\r\n", *(p+1)) and (*p != *(p+1)))
         ++i;
     }
-    strxcpy(buffer, clipdata, ++i);
+    strxcpy(buffer, clipdata, i+1);
     char* p2 = strpbrk(buffer, "\r\n");
     if(p2) *p2 = 0;
     if(p) strcat(buffer, "\n");

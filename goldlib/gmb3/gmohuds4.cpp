@@ -63,20 +63,18 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::update_netecho
   // Delete or add the header index
   if(__delete) {
     if(_pos < _total) {
-      memmove(_scanidx+_pos, _scanidx+_pos+1, (_total-_pos-1)*sizeof(msgn_t));
-      _total--;
+      --_total;
+      if(_total != _pos)
+        memmove(_scanidx+_pos, _scanidx+_pos+1, (_total-_pos)*sizeof(msgn_t));
     }
   }
   else {
     if(_scanidx[_closest] != __hdridx) {
-      _scanidx[_total++] = __hdridx;
-      for(uint k=_total >> 1; k; k >>= 1)
-        for(uint i=k; i < _total; i++)
-          for(uint j=i-k; (j >= 0) and CmpV(_scanidx[j], _scanidx[j+k]) > 0; j-=k) {
-            msgn_t e = _scanidx[j];
-            _scanidx[j] = _scanidx[j+k];
-            _scanidx[j+k] = e;
-          }
+      ++_closest;
+      if(_closest != _total)
+        memmove(_scanidx+_closest+1, _scanidx+_closest, (_total-_closest+1)*sizeof(msgn_t));
+      _scanidx[_closest] = __hdridx;
+      ++_total;
     }
   }
 

@@ -12,6 +12,17 @@ ______________________________________________________________________
                 Notes for GoldED+ 1.1.5, February xx 2001
 ______________________________________________________________________
 
+! Window size in Win32 version now calculated from different
+  parameters, you may need to adjust screen properties before running
+  GoldED+ (especially in Win2k with it's defaults 300 rows :)). Though
+  most users shouldn't noticed this change.
+
++ Status line update speed improved.
+
+- Fixed character stripping on the clipboard block boundary.
+
+! Default value for DispTabSize changed to 8.
+
 ! If @pseudo token created from address it now stops not only on space
   but at @ as well, so no more "Hello bigfoot@shoes.com!" :-)
 
