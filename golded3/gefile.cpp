@@ -32,7 +32,7 @@
 
 //  ------------------------------------------------------------------
 
-char CFG__frqinvfilechars[40] = { "\"()+,.\\/:;<=>[]| @" };
+char CFG__frqinvfilechars[40] = { "\"()+,.\\/:;<=>[]| " };
 char CFG__frqskipwordchars[40] = { "0123456789-[" };
 
 inline bool invalidfilechar(char ch) { return not isascii(ch&0xff) or strchr(CFG__frqinvfilechars, ch); }
