@@ -73,8 +73,10 @@
   #endif
 #endif
 
+#ifdef __GNUC__
 #if __GNUC__ < 2 || (__GNUC__ == 2 && __GNUC_MINOR__ < 8)
 #error You definetly need to upgrade your gcc at least up to 2.8.x
+#endif
 #endif
 
 

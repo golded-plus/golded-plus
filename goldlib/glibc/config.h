@@ -6,7 +6,9 @@
 
 #define HAVE_DIRENT_H 1
 #define STDC_HEADERS  1
+#ifdef _POSIX_SOURCE
 #define HAVE_UNISTD_H 1
+#endif
 #define HAVE_STRING_H 1
 #define HAVE_MEMORY_H 1
 #define HAVE_STRCOLL  1

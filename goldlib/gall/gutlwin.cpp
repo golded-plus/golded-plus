@@ -162,30 +162,28 @@ int g_init_os(int flags) {
 #endif
   // Due to Win9x doesn't have proper locale support we should rebuild
   // tolower/toupper tables
-  char src[2], dst[2];
-  for(i = 0; i < 128; i++) {
+  char src[2], dst[2], tst[2];
+  for(i = 0; i < 32; i++) {
     tu[i] = (toupper)(i);
     tl[i] = (tolower)(i);
   }
-  for(i = 128; i < 256; i++) {
+  for(i = 32; i < 256; i++) {
+    tu[i] = tl[i] = i;
     *dst = i; dst[1] = 0;
     OemToChar(dst, src);
-    LCMapString(LOCALE_SYSTEM_DEFAULT, LCMAP_UPPERCASE, src, 1, dst, 2);
-    CharToOem(dst, src);
-    tu[i] = (*src & 0xff);
+    CharToOem(src, tst);
+    if(*dst != *tst)
+      continue;
+    if(LCMapString(LOCALE_SYSTEM_DEFAULT, LCMAP_UPPERCASE, src, 1, dst, 2)) {
+      CharToOem(dst, src);
+      tu[i] = *src;
+    }
     *dst = i; dst[1] = 0;
     OemToChar(dst, src);
-    LCMapString(LOCALE_SYSTEM_DEFAULT, LCMAP_LOWERCASE, src, 1, dst, 2);
-    CharToOem(dst, src);
-    tl[i] = (*src & 0xff);
-  }
-  for(i = 128; i < 256; i++) {
-    if((tu[tl[i]] != i) && (tl[tu[i]] != i))
-      tu[i] = tl[i] = i;
-    if(tu[tl[i]] != tu[i])
-      tu[i] = i;
-    if(tl[tu[i]] != tl[i])
-      tl[i] = i;
+    if(LCMapString(LOCALE_SYSTEM_DEFAULT, LCMAP_LOWERCASE, src, 1, dst, 2)) {
+      CharToOem(dst, src);
+      tl[i] = *src;
+    }
   }
   return 0;
 }

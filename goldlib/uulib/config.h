@@ -55,7 +55,9 @@
 #define HAVE_FCNTL_H 1
 
 /* Define if you have the <io.h> header file.  */
-#undef HAVE_IO_H
+#ifndef _POSIX_SOURCE
+#define HAVE_IO_H
+#endif
 
 /* Define if you have the <malloc.h> header file.  */
 #undef HAVE_MALLOC_H
@@ -70,7 +72,9 @@
 #define HAVE_SYS_TIME_H 1
 
 /* Define if you have the <unistd.h> header file.  */
+#ifdef _POSIX_SOURCE
 #define HAVE_UNISTD_H 1
+#endif
 
 /* Define if you have the <varargs.h> header file.  */
 /* #undef HAVE_VARARGS_H */

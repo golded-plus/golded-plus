@@ -34,7 +34,11 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#ifdef _POSIX_SOURCE
 #include <unistd.h>
+#else
+#include <cstdlib>
+#endif
 #include <cerrno>
 #include <cstdio>
 #include <string>
