@@ -47,6 +47,7 @@ End         AREAgotolast
 ^Left       AREAjump
 ^Right      AREAjump
 ^Enter      AREAjumpnextmatch
+;           AREAmark
 Tab         AREAjumpnextmatch
 ^Q          AREAquitnow
 @S          AREAscan
@@ -57,6 +58,7 @@ Enter       AREAselect
 Ins         AREAtoggle
 @T          AREAtoggle
 ^Z          AREAtouchnetscan
+;           AREAunmark
 @W          AREAwritegoldlast
 @Z          AREAzap
 @0          AREASoundKill ; Прекратить воспроизведение звукового файла.
@@ -83,9 +85,10 @@ Del         EditDelChar
 BackSpace   EditDelLeft
 ^Del        EditDelete 
 ^Y          EditDelLine
-^F5         EditDelLtWord
-^BackSpace  EditDelLtWord
-^F6         EditDelRtWord
+^F5         EditDelLtWord ; Удаление слова слева от курсора.
+^BackSpace  EditDelLtWord ; Удаление слова слева от курсора.
+^F6         EditDelRtWord ; Удаление слова справа от курсора.
+;^T          EditDelRtWord ; Было -> Удаление слова справа от курсора; Кому интеpесно: сейчас пеpеопpеделено на макpос для вставки фpазы [...skipped...]! 
 @O          EditDosShell
 F4          EditDupLine
 @W          EditExportText
@@ -185,6 +188,7 @@ Home        LISTgotofirst
 End         LISTgotolast
 Right       LISTgotonext
 Left        LISTgotoprev
+;           LISTmark
 S           LISTmarkingoptions
 @S          LISTmarkingoptions
 @F9         LISTmarkingoptions
@@ -194,7 +198,8 @@ Tab         LISTtogglebookmark
 ^D          LISTtoggledate
 Space       LISTtogglemark
 ^B          LISTtogglewidesubj
-
+;           LISTunmark
+;           LISTwidesubj
 
 ;   ------------------------------------------------------------------
 ;   КОМАHДЫ ВЫЗОВА И ПРОСМОТРА HОДЛИСТА
@@ -376,6 +381,7 @@ H           READtogglehidden
 @V          READtogglehiddklud
 V           READtogglehiddklud
 ^F5         READtogglehiddklud
+;           READtogglehtml ; Toggle HTML tags display mode
 @K          READtogglekludge
 K           READtogglekludge
 ^F6         READtogglekludge
@@ -395,6 +401,30 @@ Y           READtogglerealmsgno
 T           READtoggletwits
 ^Z          READtouchnetscan
 @F8         READShowDel ; Для JAM_базы ; В веpсии GoldEd+ 1.1.5 взамен AreaShowDel
+;           READstriphtml  ; Strip HTML tags
+;           READshowhtml   ; Show HTML tags
+;           READSHOWKLUDGE
+;           READHIDEKLUDGE
+;           READSHOWHIDDEN
+;           READHIDEHIDDEN
+;           READSHOWHIDDKLUD
+;           READHIDEHIDDKLUD
+;           READMARK
+;           READUNMARK
+;           READREADMARKED
+;           READREADALL
+;           READREALMSGNO
+;           READSEQUENTMSGNO
+;           READSTYLESNONE
+;           READSTYLESSHOW
+;           READSTYLESSTRIP
+;           READTWITSSHOW
+;           READTWITSBLANK
+;           READTWITSSKIP
+;           READTWITSIGNORE
+;           READTWITSKILL
+;           READSHOWQUOTE
+;           READHIDEQUOTE
 ^X          READuudecode
 @W          READwritemsg
 F7          READwritemsg
@@ -416,7 +446,7 @@ W           READwritemsg
 ;   МАКРОСЫ
 ;   ------------------------------------------------------------------
 ;
-;   Синтаксис макpоса: <Клавиша> Macro <Клавиша,Стpока,Команда> [..]
+;   Синтаксис макpоса: <Клавиша> EditMacro <Клавиша,Стpока,Команда> [..]
 ;
 ;   <Клавиша>   Любое пpавильное обозначение клавиши.
 ;   <Стpока>    Стpока символов в скобках.
@@ -425,7 +455,7 @@ W           READwritemsg
 ;   Если на месте <Клавиша> стоит "Auto", то макpос будет автоматически
 ;   выполнен пpи запуске GoldED.
 ;
-@Del           Macro EditDelete Enter "[...skipped...]" EDITnewline         
+^S             EditMacro EditDelete Enter "[...skipped...]" EDITnewline         
 ^T             EditMacro "[...skipped...]"
 ;   ------------------------------------------------------------------
 

@@ -573,6 +573,8 @@ RobotName Mtic
 RobotName SqaFix
 RobotName FAQServer
 RobotName KarMan
+RobotName FileManager
+RobotName TicMan
 
 // Что делать при написании письма в другую зону.
 ZoneGating ASK    ; Спросить пользователя.
@@ -611,6 +613,10 @@ EditHeaderFirst Yes             ; Всегда
 ;EditHeaderFirst Replies        ; При ответе.
 ;EditHeaderFirst Forwards       ; При перенаправлении.
 ;EditHeaderFirst No             ; Никогда.
+
+// Default setting for Write->Header setting <Yes/No/Only>.
+// Defaults to Yes.  Can be used in Random System Group.
+WriteHeader Yes
 
 ----------------------------------------------------------------------
 -- ШАБЛОНЫ (MESSAGE TEMPLATES)
@@ -785,9 +791,11 @@ PeekURLOptions FromTop, Sort
 // Фоpмат: URLHANDLER <externutil_options> <командная_стpока> <токен>
 // Где: <externutil_options> - паpаметpы аналогичные задаваемым
 // для Внешних Утилит (кpоме номеpа внешней утилиты).
-// В данном случае запускается пpогpамма
-// "Microsoft Internet Explorer" с адpесом выбpанного URL:
-URLHANDLER -NoPause -NoKeepCtrl -Wipe E:\PROGRA~1\PLUS!\MICROS~1\IEXPLORE.EXE @url
+// В пpимеpе ниже, пpи нажатии Enter на найденном URL, запускается
+// пpогpамма "Microsoft Internet Explorer" с адpесом выбpанного URL:
+; URLHANDLER -NoPause -NoKeepCtrl -Wipe E:\PROGRA~1\PLUS!\MICROS~1\IEXPLORE.EXE @url
+// А в этом случае найденные URL можно собиpать в текстовый файл:
+URLHANDLER echo @url >> C:\FIDO\Urls_Ged.txt
 
 // Разрешается использовать из SoupGate совместно с AreaIsEmail.
 // (По умолчанию - No).
@@ -865,6 +873,11 @@ EndIf
 ;TIMEZONEOFFSET -0600  ; Central Standard Time
 ;TIMEZONEOFFSET +0100  ; Central European Time
 
+// Activate quick-n-dirty HTML-tag stripper. <Yes/No>.  Defaults - No.
+// It known to fail in some cases but more likely will not be improoved.
+// The keyword may be used in Random System Group. 
+// NOTE: Strip HTML mode forces quoted-printable decoding.
+StripHTML No
 
 ----------------------------------------------------------------------
 -- ПОДДЕРЖКА QWK
@@ -1192,7 +1205,7 @@ LogFormat Fd
 -- ЗВУКОВАЯ ПОДДЕРЖКА
 
 // Разрешить/запретить ВСЕ звуки. Это главный выключатель.
-BeepNoises No
+BeepNoises Yes
 
 // Разрешить издавать звук, когда встроенный редактор встретит EditComment.
 BeepComment Yes
@@ -1201,29 +1214,45 @@ BeepComment Yes
 BeepFactor 1000
 
 // Разрешить издавать звук при просмотре локального сообщения
-;BeepLocalMsg Yes
+BeepLocalMsg No
 
 // Когда издавать звук, при чтении сообщения Вам.
-;BeepYourMail Always    ; Всегда.
-BeepYourMail Yes        ; Только при прочтении в первый раз.
+BeepYourMail Always    ; Всегда.
+;BeepYourMail Yes        ; Только при прочтении в первый раз.
 ;BeepYourMail No        ; Никогда.
 
 // Путь к коллекции звуковых файлов.
-;SoundPath S:\Music\Wav\
+SoundPath C:\Fido\GED\Sound\
 
 // Определение, какой файл проиграть по событию.
-// Существуют несколько "стандартных" звуков.
 //
+// Существуют несколько "стандартных" звуков.
 // TheEnd    Высокая и низкая ноты.
 // GotIt     Два аккорда из высоких и низких нот.
 // TooBad    "Падающий" звук.
 // ToYou     Возрастающий и падающий звук.
 // SayBiBi   Короткий писк.
 // SOS       S O S (...---...).
-;Event Arealist       Play ding.wav
-;Event AskYesNo       Play choose.wav
-;Event Attention      Play chord.wav
 
+Event Arealist       Play Korken.wav     ; Когда arealist показан.
+Event AskYesNo       Play Sound16.wav    ; Любая подсказка типа Yes/No.
+Event Attention      Play Enterprise.wav ; Предупреждения или всплывающие инф. сообщения.
+;Event DosShell       Play GotIt          ; Когда переходит в DOS или OS/2 оболочку.
+Event EditComment    Play oe8djk.wav     ; Когда editcomment найден.
+;Event EditCompletion Play SayBiBi        ; При EditCompletion_замене в редакторе.
+Event EndOfMsgs      Play Midnight.wav   ; Когда нет больше сообщений в этой области.
+Event ErrorFatal     Play SOS            ; Выход по фатальной ошибке.
+Event Exit           Play Disconnect.wav ; Выход от GoldED. 
+Event JobDone        Play Sound45.wav    ; Успешное завершение работы.  
+Event JobFailed      Play TheEnd         ; Неудачное завершение работы.
+Event MsgDeleting    Play Sound49.wav    ; При удалении сообщения.  
+Event MsgFromYou     Play online.wav     ; Когда сообщение от вас найдено.
+Event MsgIsLocal     Play wirr.wav       ; Когда сообщение отмеченное Lockal найдено.
+Event MsgIsTwit      Play Sound7.wav     ; Когда сообщение от Twit. найдено.
+Event MsgToYou       Play fan.wav        ; Когда сообщение к вам найдено.
+Event SearchFailed   Play Sound560.wav   ; Оператор Поиск потерпел неудачу.
+Event SearchSuccess  Play newemail.wav   ; Оператор Поиск был успешен. 
+Event Startup        Play Sound1.wav     ; Когда показан экрана запуска GoldED.  
 ----------------------------------------------------------------------
 -- ЗНАЧЕНИЯ МЕНЮ ПО УМОЛЧАНИЮ
 
@@ -1429,8 +1458,8 @@ XlatEscSet  MNEMONIC    CP850       MNE_850.esc
 XlatCharSet  AUTO       CP866       866_866.chs
 XlatCharSet  KOI8R      CP866       K8R_866.chs
 XlatCharSet  KOI8-R     CP866       KOI_866.chs
-XlatCharSet  CP1251     CP866       1251_866.chs
-XLatCharSet  LATIN1QP   CP866       K8R_866.chs
+XlatCharSet  CP1251     CP866       UKR_866.chs
+XlatCharSet  LATIN1QP   CP866       K8R_866.chs
 XlatCharSet  ISO        CP866       ISO_866.chs
 XlatCharSet  CP1125     CP866       UKR_866.chs
 XlatCharSet  KOI8U      CP866       KOU_866.chs
@@ -1442,8 +1471,6 @@ XlatCharSet  8859       CP866       ISO_866.chs
 XlatCharSet  LATIN-1    CP850       ISO_850.chs
 XlatCharSet  LATIN1QP   CP850       IQP_850.chs
 XlatCharSet  MAC        CP850       MAC_850.chs
-XlatCharSet  CP1125     KOI8-U      UKR_KOU.chs
-XlatCharSet  KOI8-U     CP1125      KOU_UKR.chs
 
 // Таблицы импорта для мессаг с нестандартным ^CHRS
 XlatCharSet  IBMPC      CP866       866_866.chs
@@ -1507,7 +1534,6 @@ XlatCharSet UK          ASCII       uk__asc.chs
 
 // Основные таблицы экспорта (8-bit -> 8-bit)
 XlatCharSet CP866       CP1251      866_1251.chs
-XlatCharSet CP866       KOI8R       866_K8R.chs
 XlatCharSet CP866       KOI8-R      866_KOI.chs
 XlatCharSet CP866       LATIN1QP    866_IQP.chs
 XlatCharSet CP866       +7_FIDO     RUS_FTN.chs
@@ -1515,8 +1541,7 @@ XlatCharSet CP866       ISO         866_ISO.chs
 XlatCharSet CP866       LATIN-1     866_ISO.chs
 XlatCharSet CP866       MAC         866_MAC.chs
 XlatCharSet CP866       I51         866_i51.chs
-XlatCharSet CP866       CP1125      866_UKR.chs
-XlatCharSet CP866       KOI8U       866_KOU.chs
+XlatCharSet CP866       CP1125      866_1125.chs
 XlatCharSet CP866       KOI8-U      866_KOU.chs
 XlatCharSet CP850       LATIN-1     850_ISO.chs
 XlatCharSet CP850       LATIN1QP    850_IQP.chs
@@ -1528,13 +1553,11 @@ XlatCharSet CP866       COMPOSED    866_CMP.chs
 XlatCharSet CP866       VT100       866_VT1.chs
 XlatCharSet CP850       ASCII       850_ASC.chs
 
-
 // Определение входящей кодировки по умолчанию. Если приходящее 
 // сообщение не имеет клуджа ^CHRS, то будет считаться, что оно
 // соответствует этому набору символов.
 ;XlatImport <кодировка>
 
-;XlatImport CP1125
 ;XlatImport ASCII 
 ;XlatImport CP850
  XlatImport CP866
@@ -1548,10 +1571,9 @@ XlatCharSet CP850       ASCII       850_ASC.chs
 // "^aCHRS: XXххх 2".
 ;XlatExport <кодировка>
 
-;XlatExport CP1125
-;XlatExport ASCII 
-;XlatExport KOI8-R 
-;XlatExport CP1251 
+;XlatExport ASCII
+;XlatExport KOI8-R
+;XlatExport CP1251
 ;XlatExport CP850
  XlatExport CP866 ; по умолчанию
 
@@ -1564,9 +1586,9 @@ XlatCharSet CP850       ASCII       850_ASC.chs
 // перекодировка в реальный набор символов.
 ;XlatLocalSet <кодировка>
 
-;XlatLocalSet CP1125
-;XlatLocalSet KOI8-U
 ;XlatLocalSet CP850
+;XlatLocalSet KOI8-U
+;XlatLocalSet CP1125
  XlatLocalSet CP866
 
 ----------------------------------------------------------------------
