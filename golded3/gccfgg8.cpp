@@ -274,6 +274,20 @@ void CfgTwitsubj() {
 
 //  ------------------------------------------------------------------
 
+void CfgUnpacker() {
+
+  char* key;
+  std::pair<std::string, std::string> unpackerentry;
+
+  getkeyval(&key, &val);
+
+  unpackerentry.first = key;
+  unpackerentry.second = StripQuotes(val);
+  CFG->unpacker.push_back(unpackerentry);
+}
+
+//  ------------------------------------------------------------------
+
 void CfgUrlhandler() {
 
   // Get util number

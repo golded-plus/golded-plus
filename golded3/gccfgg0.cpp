@@ -555,6 +555,7 @@ SwitchT:
 
 SwitchU:
   switch(crc) {
+    case CRC_UNPACKER         :  CfgUnpacker         ();  break;
     case CRC_URLHANDLER       :  CfgUrlhandler       ();  break;
     case CRC_USEAREA          :  CfgUsearea          ();  break;
     case CRC_USECHARSET       :  CfgUsecharset       ();  break;

@@ -154,6 +154,12 @@ void WCatArea::open() {
     TestErrorExit();
   }
   if(isopen == 1) {
+    if(ispacked()) {
+      isopen--;
+      const char* newpath = Unpack(path());
+      set_real_path(newpath ? newpath : path());
+      isopen++;
+    }
     data_open();
     raw_open();
     refresh();
@@ -195,6 +201,9 @@ void WCatArea::close() {
       Msgn->Reset();
       throw_release(data->idx);
       data_close();
+      if(ispacked()) {
+        CleanUnpacked(real_path());
+      }
     }
     isopen--;
   }

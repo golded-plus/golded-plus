@@ -162,8 +162,8 @@ void SquishArea::raw_open() {
 
   GFTRK("SquishRawOpen");
 
-  data->fhsqd = test_open(AddPath(path(), ".sqd"));
-  data->fhsqi = test_open(AddPath(path(), ".sqi"));
+  data->fhsqd = test_open(AddPath(real_path(), ".sqd"));
+  data->fhsqi = test_open(AddPath(real_path(), ".sqi"));
 
   GFTRK(NULL);
 }
@@ -186,6 +186,12 @@ void SquishArea::open() {
     TestErrorExit();
   }
   if(isopen == 1) {
+    if(ispacked()) {
+      isopen--;
+      const char* newpath = Unpack(path());
+      set_real_path(newpath ? newpath : path());
+      isopen++;
+    }
     data_open();
     raw_open();
     refresh();
@@ -202,7 +208,7 @@ void SquishArea::save_lastread() {
 
   GFTRK("SquishSaveLastread");
 
-  int _fh = ::sopen(AddPath(path(), ".sql"), O_RDWR|O_CREAT|O_BINARY, WideSharemode, S_STDRW);
+  int _fh = ::sopen(AddPath(real_path(), ".sql"), O_RDWR|O_CREAT|O_BINARY, WideSharemode, S_STDRW);
   if(_fh != -1) {
     lseekset(_fh, wide->userno, sizeof(dword));
     dword _lastread = Msgn->CvtReln(lastread);
@@ -227,6 +233,9 @@ void SquishArea::close() {
       Msgn->Reset();
       throw_xrelease(data->idx);
       data_close();
+      if(ispacked()) {
+        CleanUnpacked(real_path());
+      }
     }
     isopen--;
   }

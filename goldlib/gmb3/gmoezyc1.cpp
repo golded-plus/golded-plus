@@ -338,6 +338,12 @@ void EzycomArea::open() {
     TestErrorExit();
   }
   if(isopen == 1) {
+    if(ispacked()) {
+      isopen--;
+      const char* newpath = Unpack(path());
+      set_real_path(newpath ? newpath : path());
+      isopen++;
+    }
     data_open();
     test_raw_open(__LINE__);
     scan();
@@ -390,6 +396,9 @@ void EzycomArea::close() {
       raw_close();
       Msgn->Reset();
       data_close();
+      if(ispacked()) {
+        CleanUnpacked(real_path());
+      }
     }
     isopen--;
   }

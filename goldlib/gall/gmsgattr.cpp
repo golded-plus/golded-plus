@@ -81,6 +81,8 @@ void ftn_attr::add(const ftn_attr& b) {
   if(b.nok())  nok1();
   if(b.fax())  fax1();
   if(b.prn())  prn1();
+
+  if(b.pkd())  pkd1();
 }
  
 
@@ -188,6 +190,7 @@ void ftn_attr::get(const std::string& __s) {
   if(striinc("NOK", s))  nok1();
   if(striinc("FAX", s))  fax1();
   if(striinc("PRN", s))  prn1();
+  if(striinc("PKD", s))  pkd1();
 }
 
 

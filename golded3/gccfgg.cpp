@@ -611,6 +611,7 @@ CfgGed::CfgGed() {
   // tpl.clear();
   // twitname.clear();
   // twitsubj.clear();
+  // unpacker.clear();
   // username.clear();
   // wtpl.clear();
   // xlatcharset.clear();

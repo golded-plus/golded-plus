@@ -170,6 +170,12 @@ void FidoArea::open() {
     TestErrorExit();
   }
   if(isopen == 1) {
+    if(ispacked()) {
+      isopen--;
+      const char* newpath = Unpack(path());
+      set_real_path(newpath ? newpath : path());
+      isopen++;
+    }
     data_open();
     scan();
   }
@@ -207,6 +213,9 @@ void FidoArea::close() {
       save_lastread();
       Msgn->Reset();
       data_close();
+      if(ispacked()) {
+        CleanUnpacked(real_path());
+      }
     }
     isopen--;
   }

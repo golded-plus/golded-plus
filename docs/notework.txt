@@ -12,6 +12,27 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ Added ability to READ packed messagebases. You need to add PKD
+  attribute to such echo definition and specify UNPACKER for the
+  extension defined. You should pack all files from the single
+  messagebase to the archive with the same name. For *.msg areas you
+  should add the directory as well. When entering to the archived area
+  UNPACKER will be executed to unpack files to TEMPPATH. On exit, all
+  files will be deleted.
+
+  New UNPACKER keyword have the following syntax:
+
+  UNPACKER <extension> <"commandline">
+
+  The commandline should provide the ability to extract all files from
+  @file.<extension> to the current directory. F.e.:
+
+  UNPACKER zip "unzip @file"
+
+  Note that all changes to the messagebase will be discarded.
+
+  This feature is not supported for Hudson and GoldBase messagebases.
+
 ! AREAPATH now used as default path for all SEMAPHOREs rather than
   occasionally.
 

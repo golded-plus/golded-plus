@@ -337,6 +337,7 @@ public:
   int         twitmode;             // showtwits;
   std::vector<Node> twitname;
   gstrarray   twitsubj;
+  std::vector< std::pair<std::string, std::string> > unpacker;
   ExtUtil     urlhandler;
   bool        usearea;
   bool        usecharset;

@@ -45,7 +45,7 @@ void SquishArea::refresh() {
       SqshBase& _base = data->base;
       memset(&_base, 0, sizeof(SqshBase));
       _base.size = sizeof(SqshBase);
-      strxcpy(_base.name, path(), sizeof(_base.name));
+      strxcpy(_base.name, real_path(), sizeof(_base.name));
       _base.endframe = _base.size;
       _base.framesize = sizeof(SqshFrm);
       _base.nextmsgno = 2;
@@ -85,7 +85,7 @@ void SquishArea::raw_scan(int __keep_index, int __scanpm) {
 
   // Load the lastread
   dword _lastread = 0;
-  int _fh = ::sopen(AddPath(path(), ".sql"), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
+  int _fh = ::sopen(AddPath(real_path(), ".sql"), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
   if(_fh != -1) {
     lseekset(_fh, wide->userno, sizeof(dword));
     read(_fh, &_lastread, sizeof(dword));
@@ -99,7 +99,7 @@ void SquishArea::raw_scan(int __keep_index, int __scanpm) {
     data->base.totalmsgs = 0;
 
     // Open index file
-    data->fhsqi = ::sopen(AddPath(path(), ".sqi"), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
+    data->fhsqi = ::sopen(AddPath(real_path(), ".sqi"), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
     if(data->fhsqi != -1) {
 
       // Get the number of index records
@@ -111,7 +111,7 @@ void SquishArea::raw_scan(int __keep_index, int __scanpm) {
       if((data->base.totalmsgs == 1) or (wide->squishscan == SQS_API)) {
 
         // Open, read and close data file
-        data->fhsqd = ::sopen(AddPath(path(), ".sqd"), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
+        data->fhsqd = ::sopen(AddPath(real_path(), ".sqd"), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
         if(data->fhsqd != -1) {
           read(data->fhsqd, &data->base, sizeof(SqshBase));
           ::close(data->fhsqd);

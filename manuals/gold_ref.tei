@@ -2782,7 +2782,12 @@ AREA:&lt;OriginalEchoID&gt;</eg>
           the optional default origin makes it simpler to create a common
           <ref target=INCLUDE><kw/INCLUDE/</ref>'able area configuration
           for several setups with different addresses, for example two people
-          sharing the same msgbase.
+          sharing the same msgbase.<lb>
+          If you wish to read packed area (f.e. from CD archive) <name/GoldED+/
+          allows you that. You need to specify pathname <b/with/ extension
+          in the <ident>path/board</ident> field, set <gi/PKD/ attribute and
+          define packer with <ref target=UNPACKER><kw/UNPACKER/</ref> keyword.
+          This feature is not supported for Hudson and GoldBase messagebases.
         </item>
         <label>
           Processed by:
@@ -9648,6 +9653,33 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     random system group.
       </p>
     </div2>
+    <div2 id=UNPACKER>
+      <head>
+        UNPACKER
+      </head>
+      <p>
+  Added ability to READ packed messagebases. You need to add PKD
+  attribute to such echo definition and specify UNPACKER for the
+  extension defined. You should pack all files from the single
+  messagebase to the archive with the same name. For *.msg areas you
+  should add the directory as well. When entering to the archived area
+  UNPACKER will be executed to unpack files to TEMPPATH. On exit, all
+  files will be deleted.
+
+  New UNPACKER keyword have the following syntax:
+
+  UNPACKER &gt;extension&lt; &gt;<q/commandline/&lt;
+
+  The commandline should provide the ability to extract all files from
+  @file.<extension> to the current directory. F.e.:
+
+  UNPACKER zip <q/unzip @file/
+
+  Note that all changes to the messagebase will be discarded.
+
+  This feature is not supported for Hudson and GoldBase messagebases.
+      </p>
+    </div2>
     <div2>
       <head>
         USECHARSET &lt;yes/no&gt;
@@ -10308,6 +10340,7 @@ LET   Fax letterhead.
 LOC   Local. Message was written on your system.
 LOK   Lock. Prevents send/delete/purge/editing.
 ORP   Orphan. Could not be sent because destination node is unknown.
+PKD   Packed. Used in area definitions to unpack before using.
 PRN   Msg has been printed. Specific for Squish (bitvalue 00040000h).
 PVT   Private. Message may only be read by the addressee and author.
 R/O   Read only. Used in area definitions to prevent writing.

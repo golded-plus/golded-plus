@@ -341,6 +341,7 @@ void CfgTwitmode         ();
 void CfgTwitname         ();
 void CfgTwitsubj         ();
 void CfgTwitto           ();
+void CfgUnpacker         ();
 void CfgUrlhandler       ();
 void CfgUsearea          ();
 void CfgUsecharset       ();

@@ -86,6 +86,7 @@ public:
   const ftn_addr& aka() const     { return cfg.aka; }
         int   originno() const    { return cfg.originno; }
         Attr& attr()              { return cfg.attr; }
+        bool  ispacked() const    { return cfg.attr.pkd(); }
 
   bool ascan()          { return (bool)cfg.scan; }
   bool ascanexcl()      { return (bool)cfg.scanexcl; }
@@ -185,6 +186,11 @@ public:
 
   virtual void set_highwater_mark() { }
   virtual void reset_highwater_mark() { }
+
+protected:
+  Path realpath;
+  const char* real_path() const        { return ispacked() ? realpath : path(); }
+  void set_real_path(const char* newpath) { strxcpy(realpath, newpath, sizeof(Path)); }
 };
 
 
@@ -281,6 +287,8 @@ extern int          WidePersonalmail;
 //  ------------------------------------------------------------------
 
 int PopupLocked(long __tries, int __isopen, const char* __file);
+const char* Unpack(const char* archive);
+void CleanUnpacked(const char* unpacked);
 
 
 //  ------------------------------------------------------------------

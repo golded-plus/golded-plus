@@ -46,11 +46,11 @@ void SquishArea::lock() {
     if(WideCanLock) {
       long _tries = 0;
       while(::lock(data->fhsqd, 0, 1) == -1) {
-        if(PopupLocked(++_tries, true, path()) == false) {
+        if(PopupLocked(++_tries, true, real_path()) == false) {
           WideLog->ErrLock();
           raw_close();
           WideLog->printf("! A Squish msgbase file could not be locked.");
-          WideLog->printf(": %s.SQD.", path());
+          WideLog->printf(": %s.sqd.", real_path());
           WideLog->ErrOSInfo();
           LockErrorExit();
         }

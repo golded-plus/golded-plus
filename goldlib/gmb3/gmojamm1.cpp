@@ -93,6 +93,12 @@ void JamArea::open() {
     TestErrorExit();
   }
   if(isopen == 1) {
+    if(ispacked()) {
+      isopen--;
+      const char* newpath = Unpack(path());
+      set_real_path(newpath ? newpath : path());
+      isopen++;
+    }
     data_open();
     open_area();
     scan();
@@ -161,6 +167,9 @@ void JamArea::close() {
       raw_close();
       Msgn->Reset();
       data_close();
+      if(ispacked()) {
+        CleanUnpacked(real_path());
+      }
     }
     isopen--;
   }

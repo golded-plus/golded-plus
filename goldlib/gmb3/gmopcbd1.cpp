@@ -181,6 +181,12 @@ void PcbArea::open() {
     TestErrorExit();
   }
   if(isopen == 1) {
+    if(ispacked()) {
+      isopen--;
+      const char* newpath = Unpack(path());
+      set_real_path(newpath ? newpath : path());
+      isopen++;
+    }
     PcbWideOpen();
     data_open();
     raw_open();
@@ -237,6 +243,9 @@ void PcbArea::close() {
       Msgn->Reset();
       data_close();
       PcbWideClose();
+      if(ispacked()) {
+        CleanUnpacked(real_path());
+      }
     }
     isopen--;
   }

@@ -359,6 +359,7 @@ const word CRC_TWITMODE         = 0x9DC8;
 const word CRC_TWITNAME         = 0x2055;
 const word CRC_TWITSUBJ         = 0x08C0;
 const word CRC_TWITTO           = 0x9DFE;
+const word CRC_UNPACKER         = 0x5691;
 const word CRC_URLHANDLER       = 0x688E;
 const word CRC_USEAREA          = 0x2FD4;
 const word CRC_USECHARSET       = 0xE1B9;

@@ -114,6 +114,8 @@ const ulong GATTR_FWD = 0x02000000UL;  // forwarded (wildcat)
 const ulong GATTR_EFL = 0x04000000UL;  // echoflag (wildcat)
 const ulong GATTR_HRP = 0x08000000UL;  // has replies (wildcat)
 
+const ulong GATTR_PKD = 0x10000000UL;  // Archived
+
 class ftn_attr {
 
 protected:
@@ -219,6 +221,8 @@ public:
   int efl() const  { return (attr2 & GATTR_EFL) != 0; }
   int hrp() const  { return (attr2 & GATTR_HRP) != 0; }
 
+  int pkd() const  { return (attr2 & GATTR_PKD) != 0; }
+
   //  ----------------------------------------------------------------
 
   void pvt(ulong x)  { if(x) attr1 |= GATTR_PVT; else attr1 &= ~GATTR_PVT; }
@@ -295,6 +299,8 @@ public:
   void fwd(ulong x)  { if(x) attr2 |= GATTR_FWD; else attr2 &= ~GATTR_FWD; }
   void efl(ulong x)  { if(x) attr2 |= GATTR_EFL; else attr2 &= ~GATTR_EFL; }
   void hrp(ulong x)  { if(x) attr2 |= GATTR_HRP; else attr2 &= ~GATTR_HRP; }
+
+  void pkd(ulong x)  { if(x) attr2 |= GATTR_PKD; else attr2 &= ~GATTR_PKD; }
 
   //  -------------------------------------------------------------
 
@@ -413,6 +419,8 @@ public:
   void fax1()  { attr2 |= GATTR_FAX; }
 
   void prn1()  { attr2 |= GATTR_PRN; }
+
+  void pkd1()  { attr2 |= GATTR_PKD; }
 
   //  ----------------------------------------------------------------
 

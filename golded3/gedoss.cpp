@@ -26,6 +26,7 @@
 
 
 #include <golded.h>
+#include <gdirposx.h>
 #include <gutlos.h>
 #include <gmoprot.h>
 #ifdef __UNIX__
@@ -122,6 +123,7 @@ void Cleanup(void) {
     CFG->xlatescset.clear();
     CFG->cmdkey.clear();
     CFG->macro.clear();
+    CFG->unpacker.clear();
 
     // Free misc data
     throw_xrelease(CharTable);
@@ -464,6 +466,87 @@ int ShellToDos(char* command, char* message, int cls, int cursor, int pause) {
   return status;
 }
 
+
+//  ------------------------------------------------------------------
+
+const char* Unpack(const char* archive) {
+
+  static Path newname;
+  const char *filename = CleanFilename(archive);
+
+  std::vector< std::pair<std::string, std::string> >::iterator i;
+  for(i = CFG->unpacker.begin(); i != CFG->unpacker.end(); i++) {
+    int dots;
+    const char *ext, *myext;
+    for(dots = 0, ext = i->first.c_str() - 1; ext != NULL; dots++)
+      ext = strchr(ext+1, '.');
+    for(myext = filename + strlen(filename); (myext != filename) and (dots != 0); dots--) {
+      do
+        --myext;
+      while((myext != filename) and (myext[0] != '.'));
+    }
+    if(dots or not strieql(myext+1, i->first.c_str()))
+      continue;
+
+    Path newdir;
+    mktemp(strxcpy(newdir, AddPath(CFG->temppath, "GDXXXXXX"), sizeof(Path)));
+    mkdir(newdir, S_IWUSR);
+    char cmdline[1024];
+    strxcpy(cmdline, i->second.c_str(), sizeof(cmdline));
+    strxcpy(newname, archive, sizeof(Path));
+    strchg(newname, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
+    strischg(cmdline, "@file", newname);
+    // Store current drive/dir and change it to the temporary
+    Path orgdir;
+    getcwd(orgdir, sizeof(Path));
+    gchdir(newdir);
+    // Now unpack it
+    ShellToDos(cmdline, "", LGREY|_BLACK, 0, -1);
+    // Restore current directory
+    gchdir(orgdir);
+    strxcpy(newname, AddPath(AddBackslash(newdir), filename), sizeof(Path));
+    newname[strlen(newname) - (i->first.length() + 1)] = NUL;
+    return newname;
+  }
+
+  return NULL;
+}
+
+
+//  ------------------------------------------------------------------
+
+void CleanUnpacked(const char* unpacked) {
+
+  gposixdir d(unpacked);
+  const gdirentry *de;
+  std::string removeme;
+  if(is_dir(unpacked)) {
+    while((de = d.nextentry("*", true)) != NULL) {
+      removeme = de->dirname;
+      removeme += GOLD_SLASH_CHR;
+      removeme += de->name;
+      if(is_dir(removeme.c_str()))
+        rmdir(removeme.c_str());
+      else
+        remove(removeme.c_str());
+    }
+  }
+  Path tmpdir, tmpdir2;
+  strxcpy(tmpdir2, unpacked, sizeof(Path));
+  StripBackslash(tmpdir2);
+  extractdirname(tmpdir, tmpdir2);
+  d.cd(tmpdir);
+  while((de = d.nextentry("*", true)) != NULL) {
+    removeme = de->dirname;
+    removeme += GOLD_SLASH_CHR;
+    removeme += de->name;
+    if(is_dir(removeme.c_str()))
+      rmdir(removeme.c_str());
+    else
+      remove(removeme.c_str());
+  }
+  rmdir(tmpdir);
+}
 
 //  ------------------------------------------------------------------
 //  Error exit function

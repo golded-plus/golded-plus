@@ -115,14 +115,15 @@ const gdirentry *gposixdir::nextentry(const char *mask, bool nameonly)
 		}
 		ret.name = entries[last_entry];
 		ret.dirname = dirname.c_str();
-		std::string pn = ret.dirname;
-		pn += "/";
-		pn += ret.name;
-		size_t skipfrom;
-		while((skipfrom=pn.find("//")) != pn.npos)
-			pn.erase(skipfrom, 1);
-		if(!nameonly)
+		if(!nameonly) {
+			std::string pn = ret.dirname;
+			pn += "/";
+			pn += ret.name;
+			size_t skipfrom;
+			while((skipfrom=pn.find("//")) != pn.npos)
+				pn.erase(skipfrom, 1);
 			stat(pn.c_str(), &ret.stat_info);
+		}
 		++last_entry;
 		return &ret;
 	}
