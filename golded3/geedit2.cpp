@@ -780,6 +780,8 @@ void IEclass::LoadFile() {
   FILE* _fp = fsopen(AddPath(CFG->goldpath, EDIT->File()), "rb", CFG->sharemode);
   if(_fp) {
 
+    XlatName __oldxlatimport;
+
     // Pop up a wait window
     cursoroff();
     w_info(LNG->Wait);
@@ -813,9 +815,16 @@ void IEclass::LoadFile() {
     fread(msgptr->txt, 1, (uint)fsize(_fp), _fp);
     fclose(_fp);
 
+    // Save current charset
+    strcpy(__oldxlatimport, AA->Xlatimport());
+    AA->SetXlatimport(CFG->xlatlocalset);
+
     // Index message text
     msgptr->TextToLines(margintext-1);
     _line = currline = msgptr->lin;
+
+    // Restore charset
+    AA->SetXlatimport(__oldxlatimport);
 
     // Change lines to internal editor format
     while(_line) {
@@ -892,7 +901,8 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
     ImportMode = MenuImportTxt.Run();
   }
 
-  Path filenamebuf;
+  Path filenamebuf, tmpfile;
+  bool isPipe = NO;
   char* _filenameptr = filenamebuf;
   char* _selectedfile = NULL;
 
@@ -910,51 +920,61 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
     // Pointer to the filename string
     _filenameptr = strcpy(filenamebuf, AA->Inputfile());
 
-    // Check for wildcards
-    // Is the filename a directory?
-    if(is_dir(_filenameptr)) {
+    if(_filenameptr[0] == '|'){
+      Path cmdline;
+
+      isPipe = YES;
+      mktemp(strcpy(tmpfile, AddPath(CFG->goldpath, "GIXXXXXX")));
+      strxmerge(cmdline, sizeof(Path), _filenameptr+1, " > ", tmpfile, NULL);
+      ShellToDos(cmdline, "", NO, NO);
+      _selectedfile = _filenameptr = tmpfile;
+    } else {
+      // Check for wildcards
+      // Is the filename a directory?
+      if(is_dir(_filenameptr)) {
+
+        // Does the filename contain wildcards?
+        if(not strpbrk(_filenameptr, "*?")) {
+
+          // Add match-all wildcards
+          strcat(AddBackslash(_filenameptr), "*");
+        }
+      }
+
+      // Pointer to selected filename or NULL if no file is selected
+      _selectedfile = _filenameptr;
 
       // Does the filename contain wildcards?
-      if(not strpbrk(_filenameptr, "*?")) {
+      if(strpbrk(_filenameptr, "*?")) {
 
-        // Add match-all wildcards
-        strcat(AddBackslash(_filenameptr), "*");
+        // Set selection window title and statusline
+        set_title(LNG->ImportTitle, TCENTER, C_MENUT);
+        update_statuslinef(LNG->ImportStatus, _filenameptr);
+
+        // Copy filename with wildcards to a temp buffer
+        Path _filenamebuf;
+        strcpy(_filenamebuf, _filenameptr);
+
+        // Start the file picker
+        _selectedfile = wpickfile(
+          win_minrow,
+          win_mincol,
+          win_maxrow,
+          win_maxcol,
+          W_BMENU,
+          C_MENUB,
+          C_MENUW,
+          C_MENUS,
+          NO,
+          _filenamebuf,
+          _filenameptr,
+          maketitle
+        );
+
+        // If a file was selected, copy the filename
+        if(_selectedfile)
+          strcpy(_filenameptr, _selectedfile);
       }
-    }
-
-    // Pointer to selected filename or NULL if no file is selected
-    _selectedfile = _filenameptr;
-
-    // Does the filename contain wildcards?
-    if(strpbrk(_filenameptr, "*?")) {
-
-      // Set selection window title and statusline
-      set_title(LNG->ImportTitle, TCENTER, C_MENUT);
-      update_statuslinef(LNG->ImportStatus, _filenameptr);
-
-      // Copy filename with wildcards to a temp buffer
-      Path _filenamebuf;
-      strcpy(_filenamebuf, _filenameptr);
-
-      // Start the file picker
-      _selectedfile = wpickfile(
-        win_minrow,
-        win_mincol,
-        win_maxrow,
-        win_maxcol,
-        W_BMENU,
-        C_MENUB,
-        C_MENUW,
-        C_MENUS,
-        NO,
-        _filenamebuf,
-        _filenameptr,
-        maketitle
-      );
-
-      // If a file was selected, copy the filename
-      if(_selectedfile)
-        strcpy(_filenameptr, _selectedfile);
     }
   }
 
@@ -984,7 +1004,7 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
       // Add import begin text, if any
       if(*CFG->importbegin) {
         sprintf(_parabuf, "%s\n", CFG->importbegin);
-        strischg(_parabuf, "@file", getclip ? _filenameptr : CleanFilename(_filenameptr));
+        strischg(_parabuf, "@file", getclip ? _filenameptr : isPipe ? AA->Inputfile() : CleanFilename(_filenameptr));
         _parabuf[margintext] = NUL;
         __line = insertlinebelow(__line, _parabuf);
         setlinetype(__line);
@@ -1142,7 +1162,7 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
       // Add import end text, if any
       if(*CFG->importend or *CFG->importbegin) {
         sprintf(_parabuf, "%s\n", *CFG->importend ? CFG->importend : CFG->importbegin);
-        strischg(_parabuf, "@file", getclip ? _filenameptr : CleanFilename(_filenameptr));
+        strischg(_parabuf, "@file", getclip ? _filenameptr : isPipe ? AA->Inputfile() : CleanFilename(_filenameptr));
         _parabuf[margintext] = NUL;
         __line = insertlinebelow(__line, _parabuf);
         setlinetype(__line);
@@ -1160,6 +1180,9 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
       waitkeyt(10000);
       w_info(NULL);
     }
+
+    if(isPipe)
+      unlink(tmpfile);
   }
 
   AA->SetXlatimport(__oldxlatimport);
