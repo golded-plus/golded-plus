@@ -102,14 +102,23 @@ int g_init_os(int flags) {
 
   int rc;
   PTIB ptib;
+  const char *env;
 
-  rc = DosQueryModuleHandle((PSZ)"PMWIN", &ge_os2_hmte);
   memset(&pminfo, 0, sizeof (pminfo));
 
   DosGetInfoBlocks(&ptib, &pminfo.ppib);
   pminfo.savedtype = pminfo.ppib->pib_ultype;
 
-  // Morph application into PM
+  // Check PMWIN environment variable, if it set to NO do not try to use
+  // PMWIN functions
+  if(((env = getenv("PMWIN")) != NULL) and strieql(env, "NO")) {
+    rc = 1;
+  }
+  else {
+    // Morph application into PM
+    rc = DosQueryModuleHandle((PSZ)"PMWIN", &ge_os2_hmte);
+  }
+
   if(not rc) {
     pminfo.ppib->pib_ultype = 3;
     rc = DosLoadModule((PSZ)ge_os2_loaderr, sizeof(ge_os2_loaderr), (PSZ)"PMWIN", &ge_os2_hmte);
