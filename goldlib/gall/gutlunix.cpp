@@ -116,9 +116,11 @@ char* g_get_clip_text(void) {
       text[size] = NUL;
       fclose(f);
     }
+
+    return text;
   }
 
-  return text;
+  return NULL;
 }
 
 
