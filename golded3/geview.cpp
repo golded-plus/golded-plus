@@ -194,9 +194,9 @@ void GMsgHeaderView::Paint() {
     }
   }
 
-  if(not area->isecho() and *msg->ifrom and *msg->realby)
+  if((not area->isecho() or area->isnewsgroup()) and *msg->ifrom and *msg->realby)
     strxmerge(buf, (namewidth+nodewidth), msg->realby, " <", msg->iorig, ">", NULL);
-  else if(not area->isecho() and *msg->ifrom and *msg->iorig)
+  else if((not area->isecho() or area->isnewsgroup()) and *msg->ifrom and *msg->iorig)
     strxcpy(buf, msg->iorig, (namewidth+nodewidth));
   else
     strxcpy(buf, msg->By(), (namewidth+nodewidth));
@@ -217,7 +217,7 @@ void GMsgHeaderView::Paint() {
   // Generate dest node data
   nodegenerated = false;
   if(not area->isinternet()) {
-    if(area->isecho() or not (*msg->ito and (*msg->realto or *msg->idest))) {
+    if(not (*msg->ito and (*msg->realto or *msg->idest))) {
       if(msg->dest.net and area->isnet()) {
         msg->dest.make_string(buf);
         if(msg->odest.net) {
@@ -232,9 +232,9 @@ void GMsgHeaderView::Paint() {
     }
   }
 
-  if(not area->isecho() and *msg->ito and *msg->realto)
+  if((not area->isecho() or area->isnewsgroup()) and *msg->ito and *msg->realto)
     strxmerge(buf, (namewidth+nodewidth), msg->realto, " <", msg->idest, ">", NULL);
-  else if(not area->isecho() and *msg->ito and *msg->idest)
+  else if((not area->isecho() or area->isnewsgroup()) and *msg->ito and *msg->idest)
     strxcpy(buf, msg->idest, (namewidth+nodewidth));
   else
     strxcpy(buf, msg->To(), (namewidth+nodewidth));

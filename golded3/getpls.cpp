@@ -203,11 +203,14 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
     if(fp) {
       fputs("@header= @oecho (@caddr) @align{79}{=}\n", fp);
       fputs("@header Msg  : @msgno of @msgs@align{44}@attr\n", fp);
-      if(AA->isinternet())
-        fputs("@header From : @ofrom@align{64}@odate @otime\n", fp);
-      else
-        fputs("@header From : @oname@align{44}@oaddr@align{64}@odate @otime\n", fp);
-      fputs("@header To   : @dname\n", fp);
+      if(AA->isinternet()) {
+        fputs("@header From : @ofrom@align{64}@odtime\n", fp);
+        fputs("@header From : @oto\n", fp);
+      }
+      else {
+        fputs("@header From : @oname@align{44}@oaddr@align{64}@odtime\n", fp);
+        fputs("@header To   : @dname\n", fp);
+      }
       fputs("@header Subj : @subject\n", fp);
       fputs("@header@align{79}{=}\n", fp);
       fputs("@moved* Replying to a msg in @oecho (@odesc)\n@moved\n", fp);

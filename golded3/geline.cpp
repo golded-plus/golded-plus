@@ -1809,9 +1809,7 @@ static int cmp_quotes(char* q1, char* q2) {
 
 void GMsg::TextToLines(int __line_width, bool header_recode) {
 
-  line_width = __line_width;
-
-  MakeLineIndex(this, line_width, header_recode);
+  MakeLineIndex(this, __line_width, header_recode);
 }
 
 

@@ -12,6 +12,8 @@ ______________________________________________________________________
                  Notes for GoldED+ 1.1.5, March xx 2001
 ______________________________________________________________________
 
+- Fixed some quirks in internal editor.
+
 - Fixed EDITHARDLINE keyword operation.
 
 - Fixed QUOTEWRAPHARD keyword operation.
@@ -24,9 +26,9 @@ ______________________________________________________________________
 + Added new keyword INTERNETGATEEXP to configure expansion of UUCP
   gated e-mail into To: line:
 
-  INTERNETGATEEXP Address      // To: bob@fisher.com
-  INTERNETGATEEXP Address,Name // To: bob@fisher.com (Bob Fisher)
-  INTERNETGATEEXP Name,Address // To: "Bob Fisher" <bob@fisher.com>
+  INTERNETGATEEXP Address       // To: bob@fisher.com
+  INTERNETGATEEXP Address, Name // To: bob@fisher.com (Bob Fisher)
+  INTERNETGATEEXP Name, Address // To: "Bob Fisher" <bob@fisher.com>
 
   Other combinations treated as "Address, Name". Default assignment
   "Name, Address".
@@ -38,9 +40,6 @@ ______________________________________________________________________
 
 - Template keyword now properly extracts filename within random system
   groups.
-
-+ @cfrom and @cto macroses added. Same as @ofrom and @oto but for
-  current message.
 
 ! If @ofrom or @oto is about to expanding to nothing they expanded to
   real name of person (if available).
@@ -55,7 +54,7 @@ ______________________________________________________________________
 
   @header= @oecho (@caddr) @align{79}{=}
   @header Msg  : @msgno of @msgs@align{44}@attr
-  @header From : @_oname  @_oaddr @odate @otime
+  @header From : @_oname @_oaddr @odtime
   @header To   : @dname
   @header Subj : @subject
   @header@align{79}{=}
@@ -73,6 +72,11 @@ ______________________________________________________________________
   @msgs             number of messages in current messagebase
   @attr             attribute string
   @align{pos}{char} align to `pos' with `char'
+  @cfrom            same as @ofrom but for current message
+  @cto              same as @oto but for current message
+  @odtime           expanded according to MS_DateTimeFmt for original
+                    message time
+  @cdtime           current time in MS_DateTimeFmt format
 
 - Fixed bug in expanding fixed lenght macroses.
 

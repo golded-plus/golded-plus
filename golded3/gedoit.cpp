@@ -68,7 +68,7 @@ void SaveLines(int mode, const char* savefile, GMsg* msg, int margin, bool clip)
     }
 #else
     TemplateToText(((mode == MODE_WRITE) and prnheader) ? ((prnheader & WRITE_ONLY_HEADER) ? MODE_HEADER : MODE_WRITEHEADER) : MODE_WRITE, msg, msg, AA->Tpl(), CurrArea);
-    msg->TextToLines(-margin);
+    msg->TextToLines(margin);
 #endif
     int n = 0;
     Line** lin = msg->line;

@@ -207,7 +207,7 @@
 #define  Key_S_Bsl   0x2B7C          // <\ |>                - - - -
 #define  Key_S_Rbr   0x1B7D          // <] }>                - - - -
 #define  Key_S_Grv   0x297E          // <` ~>                - - - -
-#define  Key_S_Num5  0x4C35          // S <Cent 5>           N - - -
+#define  Key_S_5Num  0x4C35          // S <Cent 5>           N - - -
 #define  Key_S_F1    0x5400          // S <F1>               - - - -
 #define  Key_S_F2    0x5500          // S <F2>               - - - -
 #define  Key_S_F3    0x5600          // S <F3>               - - - -

@@ -472,8 +472,6 @@ void IEclass::GoEOL() {
 
   // Move cursor to the last char on the line
   col = currline->txt.length();
-  if(col)
-    col--;
 
   // String must not be longer than the window width
   _test_haltab(col > maxcol, col, maxcol);
@@ -631,7 +629,7 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, int
     uint _wrapmargin = (_thisline->type & GLINE_QUOT) ? marginquotes : margintext;
 
     // Does this line need wrapping?
-    if(_thislen > _wrapmargin or (_thislen == _wrapmargin and not isspace(_thisline->txt[_thislen-1]))) {
+    if(_thislen >= _wrapmargin) {
 
       // Reset quote string length
       _quotelen = 0;
@@ -678,7 +676,7 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, int
         // Keep copy of original pointer
         int _atmargin = _wrappos;
 
-        // Search backwards until a space or the beginning of the line is found
+        // Search backwards until a space or the beginning of the line is found 
         while(_wrappos > 0 and (_thisline->txt[_wrappos-1] != ' '))
           _wrappos--;
 
@@ -727,7 +725,7 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, int
         // and length. While in Undo, appends the copied part to previous line and deletes
         // it on current, moving the rest over deleted.
         Undo->PushItem(EDIT_UNDO_WRAP_TEXT|BATCH_MODE, _thisline, _quotelen, _wraplen);
-        
+
         _wrapline->type = _thisline->type;
         // Make sure the type of the line is correct
         setlinetype(_wrapline);
@@ -943,8 +941,6 @@ void IEclass::insertchar(char __ch) {
   if((selecting ? (BlockCut(true), batch_mode = BATCH_MODE) : false) or
      (col >= _currline_len) or (currline->txt[col] == '\n') or insert) {
     Undo->PushItem(EDIT_UNDO_INS_CHAR|batch_mode);
-    if((col == _currline_len) and (__ch != ' ') and (__ch != '\n'))
-      currline->txt += ' ';
     currline->txt.insert(col, 1, __ch);
   } else {
     Undo->PushItem(EDIT_UNDO_OVR_CHAR|batch_mode);
@@ -2524,8 +2520,6 @@ void UndoStack::PlayItem() {
                 currline->txt.erase(last_item->col.num,1);
                 break;
               case EDIT_UNDO_DEL_CHAR:
-                if((last_item->col.num == currline->txt.length()) and (last_item->data.char_int != ' ') and (last_item->data.char_int != '\n'))
-                  currline->txt += ' ';
                 currline->txt.insert(last_item->col.num, 1, last_item->data.char_int);
                 break;
               case EDIT_UNDO_OVR_CHAR:

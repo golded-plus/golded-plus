@@ -82,9 +82,10 @@ static bool tokenxchg(char*& dst, char* tok, const char* src, int len = 0, int c
 
 //  ------------------------------------------------------------------
 
-static bool domain_requested(const char *str) {
+inline bool domain_requested(const char *str, size_t pos) {
 
-  return strnieql(str, "{domain}", 8);
+  if(str[1] == '_') pos++;
+  return strnieql(str+pos, "{domain}", 8);
 }
 
 //  ------------------------------------------------------------------
@@ -106,11 +107,15 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
   strftimei(cdate, 80, LNG->DateFmt, written_tm);
   char ctime[80];
   strftimei(ctime, 80, LNG->TimeFmt, written_tm);
+  char cdtime[80];
+  strftimei(cdtime, 80, LNG->DateTimeFmt, written_tm);
   written_tm = gmtime(&oldmsg->written);
   char odate[80];
   strftimei(odate, 80, LNG->DateFmt, written_tm);
   char otime[80];
   strftimei(otime, 80, LNG->TimeFmt, written_tm);
+  char odtime[80];
+  strftimei(odtime, 80, LNG->DateTimeFmt, written_tm);
 
   const char* origareaid = AL.AreaIdToPtr(__origarea)->echoid();
   bool origareaisinet = AL.AreaIdToPtr(__origarea)->isinternet();
@@ -152,20 +157,6 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
           continue;
         if(tokenxchg(dst, "@odesc", AL.AreaEchoToPtr(origareaid)->desc()))
           continue;
-        if(origareaisinet) {
-          if(tokenxchg(dst, "@oaddr", oldmsg->iorig, 19, 1, 0))
-            continue;
-        }
-        else {
-          if(tokenxchg(dst, "@oaddr", oldmsg->orig.make_string(buf, domain_requested(dst+6) ? oldmsg->odom : NULL), 19, 1, 0))
-            continue;
-          if(strnieql(dst, "@o3daddr", 8)) {
-            ftn_addr boss = oldmsg->orig;
-            boss.point = 0;
-            tokenxchg(dst, "@o3daddr", boss.make_string(buf, domain_requested(dst+8) ? oldmsg->odom : NULL), 19, 1, 0);
-            continue;
-          }
-        }
         if(tokenxchg(dst, "@oname", strbtrim(strtmp(oldmsg->By())), 34, 2,
             msg->by_me(), msg->by_you()))
           continue;
@@ -179,6 +170,8 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
           continue;
         if(tokenxchg(dst, "@otime", otime))
           continue;
+        if(tokenxchg(dst, "@odtime", odtime))
+          continue;
         if(tokenxchg(dst, "@otzoffset", (oldmsg->tzutc == -32767) ? "" : (sprintf(buf, " %+05d", oldmsg->tzutc), buf)))
           continue;
         if(tokenxchg(dst, "@ofrom", *oldmsg->ifrom ? oldmsg->ifrom : oldmsg->By()))
@@ -189,20 +182,6 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
           continue;
 	if(tokenxchg(dst, "@omsgid", *msg->replys ? msg->replys : ""))
 	  continue;
-        if(origareaisinet) {
-          if(tokenxchg(dst, "@daddr", oldmsg->iaddr, 19, 1, 0))
-            continue;
-        }
-        else {
-          if(tokenxchg(dst, "@daddr", oldmsg->dest.make_string(buf, domain_requested(dst+6) ? oldmsg->ddom : NULL), 19, 1, 0))
-            continue;
-          if(strnieql(dst, "@d3daddr", 8)) {
-            ftn_addr boss = oldmsg->dest;
-            boss.point = 0;
-            tokenxchg(dst, "@d3daddr", boss.make_string(buf, domain_requested(dst+8) ? oldmsg->ddom : NULL), 19, 1, 0);
-            continue;
-          }
-        }
         if(tokenxchg(dst, "@dname", strbtrim(strtmp(oldmsg->To())), 34, 3,
             msg->to_me(), msg->to_you(), oldmsg->to_all()))
           continue;
@@ -212,18 +191,66 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
         if(tokenxchg(dst, "@dlname", strrword(oldmsg->To()), 0, 3,
             msg->to_me(), msg->to_you(), oldmsg->to_all()))
           continue;
+        if(origareaisinet) {
+          if(tokenxchg(dst, "@oaddr", oldmsg->iorig, 19, 1, 0))
+            continue;
+          if(tokenxchg(dst, "@daddr", oldmsg->iaddr, 19, 1, 0))
+            continue;
+        }
         if(currareaisinet) {
+          if(tokenxchg(dst, "@caddr", AA->Internetaddress(), 19, 1, 0))
+            continue;
+          if(tokenxchg(dst, "@faddr", msg->iorig, 19, 1, 0))
+            continue;
           if(tokenxchg(dst, "@taddr", msg->iaddr, 19, 1, 0))
             continue;
         }
-        else {
-          if(tokenxchg(dst, "@taddr", msg->dest.make_string(buf, domain_requested(dst+6) ? msg->ddom : NULL), 19, 1, 0))
-            continue;
-          if(strnieql(dst, "@t3daddr", 8)) {
-            ftn_addr boss = msg->dest;
-            boss.point = 0;
-            tokenxchg(dst, "@t3daddr", boss.make_string(buf, domain_requested(dst+8) ? msg->ddom : NULL), 19, 1, 0);
-            continue;
+        if((not origareaisinet or not currareaisinet) and (strlen(dst) >= 6)) {
+          bool dr = domain_requested(dst, 6);
+          if(not origareaisinet) {
+            if(tokenxchg(dst, "@oaddr", oldmsg->orig.make_string(buf, dr ? oldmsg->odom : NULL), 19, 1, 0))
+              continue;
+            if(strnieql(dst, "@o3daddr", 8)) {
+              ftn_addr boss = oldmsg->orig;
+              boss.point = 0;
+              tokenxchg(dst, "@o3daddr", boss.make_string(buf, domain_requested(dst, 8) ? oldmsg->odom : NULL), 19, 1, 0);
+              continue;
+            }
+            if(tokenxchg(dst, "@daddr", oldmsg->dest.make_string(buf, dr ? oldmsg->ddom : NULL), 19, 1, 0))
+              continue;
+            if(strnieql(dst, "@d3daddr", 8)) {
+              ftn_addr boss = oldmsg->dest;
+              boss.point = 0;
+              tokenxchg(dst, "@d3daddr", boss.make_string(buf, domain_requested(dst, 8) ? oldmsg->ddom : NULL), 19, 1, 0);
+              continue;
+            }
+          }
+          if(not currareaisinet) {
+            const gaka &caka=AA->Aka();
+            if(tokenxchg(dst, "@caddr", caka.addr.make_string(buf, dr ? caka.domain : NULL), 19, 1, 0))
+              continue;
+            if(strnieql(dst, "@c3daddr", 8)) {
+              ftn_addr boss = caka.addr;
+              boss.point = 0;
+              tokenxchg(dst, "@c3daddr", boss.make_string(buf, domain_requested(dst, 8) ? caka.domain : NULL), 19, 1, 0);
+              continue;
+            }
+            if(tokenxchg(dst, "@taddr", msg->dest.make_string(buf, dr ? msg->ddom : NULL), 19, 1, 0))
+              continue;
+            if(strnieql(dst, "@t3daddr", 8)) {
+              ftn_addr boss = msg->dest;
+              boss.point = 0;
+              tokenxchg(dst, "@t3daddr", boss.make_string(buf, domain_requested(dst, 8) ? msg->ddom : NULL), 19, 1, 0);
+              continue;
+            }
+            if(tokenxchg(dst, "@faddr", msg->orig.make_string(buf, dr ? msg->odom : NULL), 19, 1, 0))
+              continue;
+            if(strnieql(dst, "@f3daddr", 8)) {
+              ftn_addr boss = msg->orig;
+              boss.point = 0;
+              tokenxchg(dst, "@f3daddr", boss.make_string(buf, domain_requested(dst, 8) ? msg->odom : NULL), 19, 1, 0);
+              continue;
+            }
           }
         }
         if(tokenxchg(dst, "@tname", strbtrim(strtmp(msg->To())), 34, 3,
@@ -235,21 +262,6 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
         if(tokenxchg(dst, "@tlname", strrword(msg->To()), 0, 3,
             false, false, msg->to_all()))
           continue;
-        if(currareaisinet) {
-          if(tokenxchg(dst, "@caddr", AA->Internetaddress(), 19, 1, 0))
-            continue;
-        }
-        else {
-          const gaka &caka=AA->Aka();
-          if(tokenxchg(dst, "@caddr", caka.addr.make_string(buf, domain_requested(dst+6) ? caka.domain : NULL), 19, 1, 0))
-            continue;
-          if(strnieql(dst, "@c3daddr", 8)) {
-            ftn_addr boss = caka.addr;
-            boss.point = 0;
-            tokenxchg(dst, "@c3daddr", boss.make_string(buf, domain_requested(dst+8) ? caka.domain : NULL), 19, 1, 0);
-            continue;
-          }
-        }
         if(tokenxchg(dst, "@cname", AA->Username().name, 34))
           continue;
         if(tokenxchg(dst, "@cfname", strlword(strcpy(buf, AA->Username().name))))
@@ -264,22 +276,10 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
           continue;
         if(tokenxchg(dst, "@ctime", ctime))
           continue;
+        if(tokenxchg(dst, "@cdtime", cdtime))
+          continue;
         if(tokenxchg(dst, "@ctzoffset", AA->Usetzutc() ? (sprintf(buf, " %+05d", tzoffset()), buf) : ""))
           continue;
-        if(currareaisinet) {
-          if(tokenxchg(dst, "@faddr", msg->iorig, 19, 1, 0))
-            continue;
-        }
-        else {
-          if(tokenxchg(dst, "@faddr", msg->orig.make_string(buf, domain_requested(dst+6) ? msg->odom : NULL), 19, 1, 0))
-            continue;
-          if(strnieql(dst, "@f3daddr", 8)) {
-            ftn_addr boss = msg->orig;
-            boss.point = 0;
-            tokenxchg(dst, "@f3daddr", boss.make_string(buf, domain_requested(dst+8) ? msg->odom : NULL), 19, 1, 0);
-            continue;
-          }
-        }
         if(tokenxchg(dst, "@fname", strbtrim(strtmp(msg->By())), 34))
           continue;
         if(tokenxchg(dst, "@ffname", strlword(msg->By())))

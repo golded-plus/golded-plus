@@ -92,8 +92,6 @@ public:
   char*       inreplyto;        // Internet In-Reply-To (allocated)
   char*       references;       // Internet References (allocated)
 
-  int         line_width;       // Line width used
-
   const char* areakludgeid;     // Echoid from AREA: kludge or NULL
 
   char* By() { return *realby ? realby : by; }
