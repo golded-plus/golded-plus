@@ -78,7 +78,7 @@ void gareafile::ReadSpaceAr(const char* file) {
     setvbuf(fp, NULL, _IOFBF, 8192);
 
     if(not quiet)
-      cout << "* Reading " << file << endl;
+      std::cout << "* Reading " << file << std::endl;
 
     char buf[4000];
     AreaCfg aa;
@@ -170,7 +170,7 @@ void gareafile::ReadSpaceNtm(const char* file) {
     setvbuf(fp, NULL, _IOFBF, 8192);
 
     if(not quiet)
-      cout << "* Reading " << file << endl;
+      std::cout << "* Reading " << file << std::endl;
 
     char buf[4000];
     AreaCfg aa;
@@ -235,7 +235,7 @@ void gareafile::ReadSpaceCtl(const char* file) {
     setvbuf(fp, NULL, _IOFBF, 8192);
 
     if(not quiet)
-      cout << "* Reading " << file << endl;
+      std::cout << "* Reading " << file << std::endl;
 
     char buf[4000];
     AreaCfg aa;

@@ -12,6 +12,17 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+! Some actions will not reload message if it is not required.
+
++ Added possibility to specify AKA in AREASEP:
+
+  AREASEP <echoid> <"desc"> <group> <type> <aka>
+
+! AREALISTSORT changed again. Added 'p' for personal mail presence,
+  'u' for unread mail presence, and 'S' for overriding default sorting
+  for criterias which are not applicable for AREASEP (F.e. try
+  "PYTGSUE", "TSPYGUE", etc.).
+
 - Fixed "EditChangeDate Always" operation.
 
 ! AREALISTSORT letters a bit changed in the way they processed:

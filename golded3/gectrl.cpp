@@ -432,8 +432,13 @@ void DoKludges(int mode, GMsg* msg, int kludges) {
             quot[0] = NUL;
           sprintf(buf, "%s%sTo: %s%s%s <%s>", rfc, AA->isnewsgroup() ? "X-" : "", quot, buf2, quot, _toaddr);
         }
-        else
-          sprintf(buf, "%s%sTo: %s", rfc, AA->isnewsgroup() ? "X-" : "", ptr);
+        else if(stricmp(_toname, AA->Whoto())) {
+          mime_header_encode(buf2, _toname, msg);
+          char quot[2] = "\"";
+          if((buf2[0] == '\"') or (strpbrk(buf2, " \t") == NULL))
+            quot[0] = NUL;
+          sprintf(buf, "%s%sTo: %s%s%s <%s>", rfc, AA->isnewsgroup() ? "X-Comment-" : "", quot, buf2, quot, _toaddr);
+        }
         line = AddKludge(line, buf);
         line->kludge = GKLUD_RFC;
       }

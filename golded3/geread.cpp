@@ -419,6 +419,7 @@ void Reader() {
 
               case KK_ReadSoundkill:
                 HandleGEvent(EVTT_STOPVOICE);
+                reader_keyok = true;
                 break;
 
               case KK_ReadChangeAttrs:
@@ -427,22 +428,27 @@ void Reader() {
 
               case KK_ReadChangeAka:
                 ChangeAka();
+                reader_keyok = true;
                 break;
 
               case KK_ReadChangeTagline:
                 ChangeTagline();
+                reader_keyok = true;
                 break;
 
               case KK_ReadChangeOrigin:
                 ChangeOrigin();
+                reader_keyok = true;
                 break;
 
               case KK_ReadChangeUsername:
                 ChangeUsername();
+                reader_keyok = true;
                 break;
 
               case KK_ReadChangeTemplate:
                 ChangeTemplate();
+                reader_keyok = true;
                 break;
 
               case KK_ReadChangeXlatImport:
@@ -662,10 +668,12 @@ void Reader() {
 
               case KK_ReadMakeUserlist:
                 MakeUserList();
+                reader_keyok = true;
                 break;
 
               case KK_ReadMakePathreport:
                 MakePathreport();
+                reader_keyok = true;
                 break;
 
               case KK_ReadWriteMsg:
@@ -712,6 +720,7 @@ void Reader() {
 
               case KK_ReadPeekURLs:
                 ReadPeekURLs(msg);
+                reader_keyok = true;
                 break;
 
               case KK_ReadAddressbookAdd:

@@ -579,16 +579,18 @@ int ExternUtil(GMsg *msg, ExtUtil *extutil) {
     int hardlines = EDIT->HardLines();
     EDIT->HardLines(false);
     LoadText(msg, editorfile);
-    if(extutil->options & EXTUTIL_WIPE)
-      WipeFile(editorfile, 0);
-    if(tmpfile[0] != NUL)
-      WipeFile(tmpfile, 0);
 
     EDIT->HardLines(hardlines);
     // Ignore any kludge address found
     msg->TextToLines(CFG->dispmargin-(int)CFG->switches.get(disppagebar), false);
   }
 
+  if(extutil->options & EXTUTIL_WIPE)
+    WipeFile(editorfile, 0);
+  if(tmpfile[0] != NUL)
+    WipeFile(tmpfile, 0);
+
+  reader_keyok = true;
   return YES;
 }
 

@@ -173,6 +173,7 @@ void gareafile::ReadFastecho(char* tag) {
   while(ptr) {
     if(*ptr != '-') {
       strcpy(file, ptr);
+      strschg_environ(file);
       break;
     }
     ptr = strtok(NULL, " \t");
@@ -180,7 +181,7 @@ void gareafile::ReadFastecho(char* tag) {
   if(*file == NUL) {
     ptr = getenv("FASTECHO");
     if(ptr)
-      AddBackslash(strcpy(file, ptr));
+      PathCopy(file, ptr);
   }
   if(*file == NUL)
     strcpy(file, areapath);

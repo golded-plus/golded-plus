@@ -405,6 +405,8 @@ public:
   bool pmscanincl()     { return area->pmscanincl(); }
   bool ismarked() const { return (marks & (1<<AL.mask)) ? true : false; }
 
+  bool isnewmail() const { return (isvalidchg and isunreadchg) ? true : false; }
+
   const char* echoid() const      { return area->echoid(); }
   const char* desc() const        { return area->desc(); }
   const char* path() const        { return area->path(); }

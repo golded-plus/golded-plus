@@ -248,6 +248,7 @@ void gareafile::ReadCrashmail(char* tag) {
   while(ptr) {
     if(*ptr != '-') {
       strcpy(file, ptr);
+      strschg_environ(file);
     }
     ptr = strtok(NULL, " \t");
   }

@@ -4220,7 +4220,24 @@ mbutil link -clean
                 <ident/P/
               </cell>
               <cell>
-                Sort by personal mail.
+                Sort by personal mail count.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/p/
+              </cell>
+              <cell>
+                Sort by personal mail presence.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/S/
+              </cell>
+              <cell>
+                Sort separators first from this point for criterias that not
+                applicable for AREASEP.
               </cell>
             </row>
             <row>
@@ -4237,7 +4254,15 @@ mbutil link -clean
                 <ident/U/
               </cell>
               <cell>
-                Sort by unread messages (try it&excl;).
+                Sort by unread messages count (try it&excl;).
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/u/
+              </cell>
+              <cell>
+                Sort by unread messages presence (try it&excl;).
               </cell>
             </row>
             <row>
@@ -5434,7 +5459,8 @@ AREASEP &excl;C "Group C" C Local]]></eg>
         <item>
           <ptr target=MESSAGEATTRS> chapter,
           <ptr target=FILESELECTION> chapter,
-          <ref target=ATTRIBSATTACH><kw/ATTRIBSATTACH/</ref>
+          <ref target=ATTRIBSATTACH><kw/ATTRIBSATTACH/</ref>,
+          <ref target=EDITAUTOATTACH><kw/EDITAUTOATTACH/</ref>
         </item>
       </list>
     </div2>
@@ -5496,7 +5522,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     </div2>
     <div2 id=ATTRIBSCC>
       <head>
-        ATTRIBSCC &lt;attributes&gt;
+        ATTRIBSCC
       </head>
       <list type=gloss>
         <label>
@@ -5554,7 +5580,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     </div2>
     <div2 id=ATTRIBSCFM>
       <head>
-        ATTRIBSCFM &lt;attributes&gt;
+        ATTRIBSCFM
       </head>
       <list type=gloss>
         <label>
@@ -8244,119 +8270,292 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           See also:
         </label>
         <item>
-          <ptr target=MESSAGEATTRS> chapter,
-          <ref target=BEEPLOCALMSG><kw/BEEPLOCALMSG/</ref>,
-          <ref target=BEEPYOURMAIL><kw/BEEPYOURMAIL/</ref>,
-          <ref target=COLOR><kw/COLOR/</ref>,
-          <ref target=HIGHLIGHTUNREAD><kw/HIGHLIGHTUNREAD/</ref>
+          <!-- FIX ME!!! -->AREAdosshell,
+          <!-- FIX ME!!! -->EDITdosshell,
+          <!-- FIX ME!!! -->FILEdosshell,
+          <!-- FIX ME!!! -->LISTdosshell,
+          <!-- FIX ME!!! -->NODEdosshell,
+          <!-- FIX ME!!! -->READdosshell,
+          <ref target=EVENT><kw/EVENT/</ref>,
+          <ref target=LOADLANGUAGE><kw/LOADLANGUAGE/</ref>
         </item>
       </list>
+    </div2>
+    <div2 id=EDITAUTOATTACH>
+      <head>
+        EDITAUTOATTACH
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/EDITAUTOATTACH/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          If you use drivespec (<code/C:/, <code/D:/, etc.) in the subject in
+          a netmail message, <name/GoldED+/ can automatically turn on the file
+          attach attribute. Autoattaching only works if the subject has been
+          edited, so that subject files will not automatically be re-attached
+          in replies.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/YES/ this feature is enabled, otherwise disabled.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=ATTACHPATH><kw/ATTACHPATH/</ref>,
+          <ref target=ATTRIBSATTACH><kw/ATTRIBSATTACH/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2>
+      <head>
+        EDITAUTOSAVE
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/EDITAUTOSAVE/ <ident/&lt;seconds&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword provides the way for keeping automatic backup of the
+          message you are writing. The saved file can be restored with the
+          <!-- FIX ME --><kw/EDITloadfile/ command. The name of the saved file
+          is defined with the <ref target=EDITORFILE><kw/EDITORFILE/</ref>
+          keyword.<lb>
+          If disaster strikes (crash, lockup, power blackout, etc.) while
+          you are writing a message in the internal editor, this feature
+          lets you continue from the last autosaved message, which will
+          popup automatically when you enter the internal editor again.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If a non-zero value is given, the internal editor will automatically
+          execute the <!-- FIX ME!!! --><kw/EDITsavefile/ function with
+          intervals of <ident/seconds/.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          30
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          This feature only works 100% if
+          <ref target=KEYBMODE><kw/KEYBMODE/</ref> is set to <ident/POLL/.
+          If <ref target=KEYBMODE><kw/KEYBMODE/</ref> is set to <ident/BLOCK/,
+          autosave won't happen until you press a key after the interval has
+          passed.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <!-- FIX ME!!! --><kw/EDITloadfile/,
+          <!-- FIX ME!!! --><kw/EDITsavefile/,
+          <ref target=EDITORFILE><kw/EDITORFILE/</ref>,
+          <ref target=KEYBMODE><kw/KEYBMODE/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2 id=EDITCHANGEDATE>
+      <head>
+        EDITCHANGEDATE
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/EDITCHANGEDATE/ <ident>&lt;ALWAYS/YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls whether <name/GoldED+/ should change the date
+          timestamp of the changed message.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/ALWAYS/, <name/GoldED+/ will always <q/touch/ the
+          message date in the header after saving it. If set to <ident/YES/,
+          <name/GoldED+/ will only <q/touch/ the message date in the header,
+          if you change a message written by yourself. This is useful in cases
+          such as when you need to edit messages written by other people
+          which may be mis-addressed or something without messing up the date.
+          If set to <ident/NO/, the message date is not changed when changing a
+          message.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <!-- FIX ME!!! -->READchangemsg
+        </item>
+      </list>
+    </div2>
+    <div2 id=EDITCHARPARA>
+      <head>
+        EDITCHARPARA
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/EDITCHARPARA/ <ident/&lsqb;'&rsqb;&lt;char&gt;&lsqb;'&rsqb;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword defines the character <name/GoldED+/ will display at the
+          end of paragraphs in the internal editor. This is where the <gi/CR/
+          character will be placed once the msg is saved.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The <ident/char/ defines the character <name/GoldED+/ will display at
+          the end of paragraphs in the internal editor. The space character
+          should be enclosed in quotes.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/' '/
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          This keyword is primarily for debugging, the suggested replacement
+          is a paragraph sign (<name/ASCII/ 20).
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=EDITCHARSPACE><kw/EDITCHARSPACE/</ref>
+        </item>
+    </div2>
+    <div2 id=EDITCHARSPACE>
+      <head>
+        EDITCHARSPACE
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/EDITCHARSPACE/ <ident/&lsqb;'&rsqb;&lt;char&gt;&lsqb;'&rsqb;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword defines the character <name/GoldED+/ will display
+          instead of a space character in the internal editor.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The <ident/char/ defines the character <name/GoldED+/ will display
+          instead of a space character in the internal editor. The space
+          character should be enclosed in quotes.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/' '/
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          This keyword is primarily for debugging, the suggested replacement
+          is a small dot (CP437 250).
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=EDITCHARPARA><kw/EDITCHARPARA/</ref>
+        </item>
     </div2>
 
 
 <!-- finished here -->
 
 
-    <div2>
-      <head>
-        EDITAUTOATTACH &lt;yes/no&gt;
-      </head>
-      <p>
-  (yes)
-      </p>
-      <p>
-    If enabled, and you use drivespec (C:, D:, etc.) in the subject in
-    a netmail message, <name>GoldED+</name> will automatically turn on the file
-    attach attribute. Autoattaching only works if the subject has been
-    edited, so that subject files will not automatically be
-    re-attached in replies.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        EDITAUTOSAVE &lt;seconds&gt;
-      </head>
-      <p>
-  (30)
-      </p>
-      <p>
-    If a non-zero value is given, the internal editor will
-    automatically execute the <kw>EDITsavefile</kw> function with intervals of
-    &lt;seconds&gt;. Good for keeping automatic backup of the message you
-    are writing. The saved file can be restored with the <kw>EDITloadfile</kw>
-    command. The name of the saved file is defined with the <kw>EDITORFILE</kw>
-    keyword.
-      </p>
-      <p>
-    If disaster strikes (crash, lockup, power blackout, etc.) while
-    you are writing a message in the internal editor, this feature
-    lets you continue from the last autosaved message, which will
-    popup automatically when you enter the internal editor again.
-      </p>
-      <p>
-    NOTE: This feature only works 100% if KEYBMODE is set to "poll".
-    If <kw>KEYBMODE</kw> is set to "block", autosave won't happen until you
-    press a key after the interval has passed.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        EDITCHANGEDATE &lt;always/yes/no&gt;
-      </head>
-      <p>
-  (yes)
-      </p>
-      <p>
-    If set to "always", <name>GoldED+</name> will always "touch" the message date in
-    the header, if you change a message after saving it.
-      </p>
-      <p>
-    If set to "yes", <name>GoldED+</name> will only "touch" the message date in the
-    header, if you change a message written by yourself. This is
-    useful in cases such as when you need to edit messages written by
-    other people (in-transit netmails for example) which may be
-    mis-addressed or something without messing up the date.
-      </p>
-      <p>
-    If set to "no", the message date is not changed when changing a
-    message.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        EDITCHARPARA &lsqb;'&rsqb;&lt;char&gt;&lsqb;'&rsqb;
-      </head>
-      <p>
-  (' ')
-      </p>
-      <p>
-    This keyword defines the character <name>GoldED+</name> displays at the end of
-    paragraphs in the internal editor. This is where the CR character
-    will be placed once the msg is saved.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        EDITCHARSPACE &lsqb;'&rsqb;&lt;char&gt;&lsqb;'&rsqb;
-      </head>
-      <p>
-  (' ')
-      </p>
-      <p>
-    This keyword defines the character <name>GoldED+</name> displays when it should
-    display a space character in the internal editor. See also the
-    description of the <kw>EDITCHARPARA</kw> keyword.
-      </p>
-      <p>
-    The keywords <kw>EDITCHARPARA</kw> and <kw>EDITCHARSPACE</kw> were added to aid me
-    while rewriting and debugging the new internal editor. By
-    redefining them to visible characters instead of spaces, I could
-    see if strange things were happening while inserting or deleting
-    characters. This was a great help. Personally I now always use
-    redefinitions to ASCII 20 (a paragraph sign) and CP437 250 (a
-    small dot).
-      </p>
-    </div2>
     <div2 id=EDITCOMMENT>
       <head>
         EDITCOMMENT &lt;"word"&gt; &lt;"comment"&gt;
@@ -8384,6 +8583,44 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
       <p>
     Have fun with it&excl;
       </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls statusline appearance in the <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/NO/, the statusline at the bottom will be disabled.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
+          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
+        </item>
     </div2>
     <div2>
       <head>
@@ -8406,6 +8643,44 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
     an abbreviation, completion will NOT be triggered if "xx" is
     typed.
       </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls statusline appearance in the <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/NO/, the statusline at the bottom will be disabled.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
+          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
+        </item>
     </div2>
     <div2>
       <head>
@@ -8421,6 +8696,44 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
     version of the Dutchie mail processor, that apparently needed the
     CR/LF termination of kludge lines.
       </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls statusline appearance in the <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/NO/, the statusline at the bottom will be disabled.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
+          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
+        </item>
     </div2>
     <div2>
       <head>
@@ -8433,6 +8746,44 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
     If enabled, the input-fields will be automatically cleared for new
     entry, if a non-edit key is the first key pressed.
       </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls statusline appearance in the <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/NO/, the statusline at the bottom will be disabled.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
+          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
+        </item>
     </div2>
     <div2>
       <head>
@@ -8450,6 +8801,44 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
     The concept of "hardlines" is explained in the Hardline Feature
     chapter.
       </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls statusline appearance in the <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/NO/, the statusline at the bottom will be disabled.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
+          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
+        </item>
     </div2>
     <div2>
       <head>
@@ -8464,6 +8853,44 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
     and the editor message file is read back exactly as entered,
     including terminating CR's on all lines.
       </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls statusline appearance in the <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/NO/, the statusline at the bottom will be disabled.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
+          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
+        </item>
     </div2>
     <div2 id=EDITHARDTERM>
       <head>
@@ -8484,6 +8911,44 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           <ref target=DISPMARGIN><kw/DISPMARGIN/</ref>,
           <ref target=SOUPEXPORTMARGIN><kw/SOUPEXPORTMARGIN/</ref>
       </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls statusline appearance in the <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/NO/, the statusline at the bottom will be disabled.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
+          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
+        </item>
     </div2>
     <div2 id=EDITHDRNAMESET>
       <head>
@@ -8523,6 +8988,44 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
     that is shown during header edit. Even if the window is turned
     off, the Alt-keys are still active for toggling attributes.
       </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls statusline appearance in the <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/NO/, the statusline at the bottom will be disabled.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
+          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
+        </item>
     </div2>
     <div2>
       <head>
@@ -8567,6 +9070,44 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
     <kw>EDITSAVEMENU</kw> enabled, or use the internal editor, because
     otherwise it is not possible to edit the header at all.
       </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls statusline appearance in the <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/NO/, the statusline at the bottom will be disabled.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
+          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
+        </item>
     </div2>
     <div2>
       <head>
@@ -8581,6 +9122,44 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
     the editor menu (if <kw>EDITMENU</kw> is enabled) before you start writing
     your message.
       </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls statusline appearance in the <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/NO/, the statusline at the bottom will be disabled.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
+          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
+        </item>
     </div2>
     <div2>
       <head>
@@ -8596,6 +9175,44 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
     and save a keystroke, but you will of course lose the features
     available from the menu, such as selection of template etc.
       </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls statusline appearance in the <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/NO/, the statusline at the bottom will be disabled.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
+          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
+        </item>
     </div2>
     <div2 id=EDITMIXCASE>
       <head>
@@ -8618,6 +9235,44 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
       <p>
     These would be re-cased to "Odinn Sorensen".
       </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls statusline appearance in the <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/NO/, the statusline at the bottom will be disabled.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
+          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
+        </item>
     </div2>
     <div2>
       <head>
@@ -8639,8 +9294,46 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
       @line           Token which is replaced by the @Position
                       template line number.
       </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls statusline appearance in the <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/NO/, the statusline at the bottom will be disabled.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
+          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
+        </item>
     </div2>
-    <div2>
+    <div2 id=EDITORFILE>
       <head>
         EDITORFILE &lt;file&gt;
       </head>
@@ -8655,6 +9348,44 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
       <p>
     The file is written in the GOLDPATH if there is no explicit path.
       </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls statusline appearance in the <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/NO/, the statusline at the bottom will be disabled.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
+          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
+        </item>
     </div2>
     <div2 id=EDITQUOTEMARGIN>
       <head>
@@ -8668,6 +9399,44 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
     editor. This should be set to the same or wider than the
     <kw>QUOTEMARGIN</kw>.
       </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls statusline appearance in the <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/NO/, the statusline at the bottom will be disabled.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
+          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
+        </item>
     </div2>
     <div2 id=EDITREPLYRE>
       <head>
@@ -8693,6 +9462,44 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
       <p>
     This keyword can be used globally and in Random System groups.
       </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls statusline appearance in the <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/NO/, the statusline at the bottom will be disabled.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
+          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
+        </item>
     </div2>
     <div2 id=EDITSAVEMENU>
       <head>
@@ -8708,6 +9515,44 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
     discarded if not edited) immediately and save you a keystroke, but
     you will also lose the features available from the menu.
       </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls statusline appearance in the <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/NO/, the statusline at the bottom will be disabled.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
+          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
+        </item>
     </div2>
     <div2>
       <head>
@@ -8734,6 +9579,44 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
     directly call an external utility to do things like encoding or
     encrypting msgs before saving them.
       </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls statusline appearance in the <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/NO/, the statusline at the bottom will be disabled.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
+          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
+        </item>
     </div2>
     <div2 id=EDITSOFTCRXLAT>
       <head>
@@ -8750,6 +9633,44 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
       <p>
     You also have to enable the <kw>DISPSOFTCR</kw> keyword.
       </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls statusline appearance in the <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/NO/, the statusline at the bottom will be disabled.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
+          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
+        </item>
     </div2>
     <div2>
       <head>
@@ -8768,6 +9689,44 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
       &lsqb;@file&rsqb;         Token which is replaced by the message filename
                       (defined by the <kw>EDITORFILE</kw> keyword).
       </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls statusline appearance in the <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/NO/, the statusline at the bottom will be disabled.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
+          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
+        </item>
     </div2>
     <div2>
       <head>
@@ -8780,6 +9739,44 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
     This keyword defines the number of lines to keep in the undelete
     buffer between messages.
       </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls statusline appearance in the <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/NO/, the statusline at the bottom will be disabled.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
+          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
+        </item>
     </div2>
     <div2>
       <head>
@@ -8795,6 +9792,44 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
     information, but in a safer form in a safer place. The PID kludge
     is proposed in FidoNet document FSC-0046.
       </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls statusline appearance in the <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/NO/, the statusline at the bottom will be disabled.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
+          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
+        </item>
     </div2>
     <div2>
       <head>
@@ -8809,6 +9844,44 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
     probably want to say No here if you're in Russia ;-) This keyword
     supported only in -asa versions.
       </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls statusline appearance in the <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/NO/, the statusline at the bottom will be disabled.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
+          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
+        </item>
     </div2>
     <div2>
       <head>
@@ -8817,6 +9890,44 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
       <p>
     Ends a Random System <kw>GROUP</kw> definition.
       </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls statusline appearance in the <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/NO/, the statusline at the bottom will be disabled.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
+          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
+        </item>
     </div2>
     <div2 id=EVENT>
       <head>
@@ -8903,6 +10014,44 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
     honking, wailing and farting monster and drive your poor family or
     yourself nuts with a cacophony of noises...
       </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls statusline appearance in the <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/NO/, the statusline at the bottom will be disabled.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
+          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
+        </item>
     </div2>
     <div2 id=EXCLUDENODES>
       <head>
@@ -8917,6 +10066,44 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
       <p>
     Excluded nodes can be re-included with the <kw>INCLUDENODES</kw> keyword.
       </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls statusline appearance in the <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/NO/, the statusline at the bottom will be disabled.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
+          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
+        </item>
     </div2>
     <div2>
       <head>
@@ -8952,6 +10139,44 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
     over the entire length of the file, then truncating it to zero
     bytes and finally deleting it. The default is not to wipe files.
       </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls statusline appearance in the <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/NO/, the statusline at the bottom will be disabled.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
+          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
+        </item>
     </div2>
     <div2>
       <head>
@@ -9131,6 +10356,44 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
       <p>
     Then it should work. If not, try using full path to command.com.
       </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls statusline appearance in the <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/NO/, the statusline at the bottom will be disabled.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
+          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
+        </item>
     </div2>
     <div2>
       <head>
@@ -9140,6 +10403,44 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
     Defines the base path for the Ezycom msgbase. If not set, AREAFILE
     Ezycom will set it.
       </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls statusline appearance in the <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/NO/, the statusline at the bottom will be disabled.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
+          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
+        </item>
     </div2>
     <div2>
       <head>
@@ -9149,6 +10450,45 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
     Defines the base path for the Ezycom userbase. If not set,
     AREAFILE Ezycom will set it.
       </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls statusline appearance in the <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/NO/, the statusline at the bottom will be disabled.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
+          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
+        </item>
+      </list>
     </div2>
     <div2 id=EZYCOMUSERNO>
       <head>
@@ -9160,7 +10500,56 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
       <p>
     Defines the lastread set used in the Ezycom message base.
       </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls statusline appearance in the <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/NO/, the statusline at the bottom will be disabled.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
+          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
+        </item>
+      </list>
     </div2>
+
+
+
+
+
+
+
+
+
+
     <div2>
       <head>
         FIDOHWMARKS &lt;yes/no&gt;
@@ -10066,7 +11455,7 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
     non-extended keyboard.
       </p>
     </div2>
-    <div2>
+    <div2 id=KEYBMODE>
       <head>
         KEYBMODE &lt;poll/block&gt;
       </head>

@@ -642,6 +642,13 @@ void AreaList::GetAreaSep(char* val) {
   if(not GetAreaFirstPart(aa, key, val))
     return;
 
+  // Get aka
+  getkeyval(&key, &val);
+  if(not CFG->aka.empty())               // Seed aka with main address
+    aa.aka = CFG->aka[0].addr;
+
+  aa.aka.set(key);
+
   AddNewArea(&aa);
 }
 

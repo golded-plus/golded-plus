@@ -94,11 +94,13 @@ extern "C" int AreaListCmp(const Area** __a, const Area** __b) {
   const Area* B = b;
   int cmp = 0;
 
+  bool sepfirst = false;
+
   bool rev = false;
   char* ptr = AL.sortspec;
 
   while(*ptr) {
-    switch(toupper(*ptr)) {
+    switch(*ptr) {
       case '-':
         rev = true;
         A = b;  B = a;
@@ -108,26 +110,37 @@ extern "C" int AreaListCmp(const Area** __a, const Area** __b) {
         A = a;  B = b;
         break;
       case 'A':
-        if(a->isseparator() or b->isseparator())
-          break;
+      case 'a':
         if((cmp = A->aka().compare(B->aka())) != 0)
           return cmp;
         break;
       case 'B':
-        if(a->isseparator() or b->isseparator())
+      case 'b':
+        if(A->isseparator() and B->isseparator())
           break;
-        if((cmp = compare_two(A->board(), B->board())) != 0)
+        else if(A->isseparator()) {
+          if(B->board())
+            return sepfirst?-1:1;
+        }
+        else if(B->isseparator()) {
+          if(A->board())
+            return sepfirst?1:-1;
+        }
+        else if((cmp = compare_two(A->board(), B->board())) != 0)
           return cmp;
         break;
       case 'D':
+      case 'd':
         if((cmp = stricmp(A->desc(), B->desc())) != 0)
           return cmp;
         break;
       case 'E':
+      case 'e':
         if((cmp = stricmp(A->echoid(), B->echoid())) != 0)
           return cmp;
         break;
       case 'F':
+      case 'f':
         if(*area_maybe) {
           register bool amay = striinc(area_maybe, A->echoid()) ? true : false;
           register bool bmay = striinc(area_maybe, B->echoid()) ? true : false;
@@ -137,18 +150,36 @@ extern "C" int AreaListCmp(const Area** __a, const Area** __b) {
         }
         break;
       case 'G':
+      case 'g':
         if((cmp = compare_groups(A->groupid(), B->groupid())) != 0)
           return cmp;
         break;
       case 'M':
-        if(a->isseparator() or b->isseparator())
+      case 'm':
+        if(A->isseparator() and B->isseparator())
           break;
-        if((cmp = compare_two(A->ismarked(), B->ismarked())) != 0)
+        else if(A->isseparator()) {
+          if(B->ismarked())
+            return sepfirst?-1:1;
+        }
+        else if(B->isseparator()) {
+          if(A->ismarked())
+            return sepfirst?1:-1;
+        }
+        else if((cmp = compare_two(A->ismarked(), B->ismarked())) != 0)
           return cmp;
         break;
       case 'P':
-        if(a->isseparator() or b->isseparator())
+        if(A->isseparator() and B->isseparator())
           break;
+        else if(A->isseparator()) {
+          if(B->PMrk.Count())
+            return sepfirst?-1:1;
+        }
+        else if(B->isseparator()) {
+          if(A->PMrk.Count())
+            return sepfirst?1:-1;
+        }
         else {
           register int aunread = A->PMrk.Count();
           register int bunread = B->PMrk.Count();
@@ -159,17 +190,41 @@ extern "C" int AreaListCmp(const Area** __a, const Area** __b) {
             return cmp;
         }
         break;
+      case 'p':
+        if(A->isseparator() and B->isseparator())
+          break;
+        else if(A->isseparator()) {
+          if(B->PMrk.Count())
+            return sepfirst?-1:1;
+        }
+        else if(B->isseparator()) {
+          if(A->PMrk.Count())
+            return sepfirst?1:-1;
+        }
+        else if((cmp = compare_two(B->PMrk.Count()?1:0, A->PMrk.Count()?1:0)) != 0)
+          return cmp;
+        break;
       case 'O':
+      case 'o':
         if((cmp = compare_two(A->areaid(), B->areaid())) != 0)
           return cmp;
         break;
       case 'T':
+      case 't':
         if((cmp = compare_two(CFG->areatypeorder[A->type()&0xFF], CFG->areatypeorder[B->type()&0xFF])) != 0)
           return cmp;
         break;
       case 'U':
-        if(a->isseparator() or b->isseparator())
+        if(A->isseparator() and B->isseparator())
           break;
+        else if(A->isseparator()) {
+          if(B->unread)
+            return sepfirst?-1:1;
+        }
+        else if(B->isseparator()) {
+          if(A->unread)
+            return sepfirst?1:-1;
+        }
         else {
           register int aunread = A->unread;
           register int bunread = B->unread;
@@ -180,36 +235,73 @@ extern "C" int AreaListCmp(const Area** __a, const Area** __b) {
             return cmp;
         }
         break;
-      case 'X':
-        if(a->isseparator() or b->isseparator())
+      case 'u':
+        if(A->isseparator() and B->isseparator())
           break;
-        if((cmp = compare_two(A->msgbase(), B->msgbase())) != 0)
+        else if(A->isseparator()) {
+          if(B->unread)
+            return sepfirst?-1:1;
+        }
+        else if(B->isseparator()) {
+          if(A->unread)
+            return sepfirst?1:-1;
+        }
+        else if((cmp = compare_two(B->unread?1:0, A->unread?1:0)) != 0)
+          return cmp;
+        break;
+      case 'X':
+      case 'x':
+        if(A->isseparator() and B->isseparator())
+          break;
+        else if(A->isseparator()) {
+          if(B->msgbase())
+            return sepfirst?-1:1;
+        }
+        else if(B->isseparator()) {
+          if(A->msgbase())
+            return sepfirst?1:-1;
+        }
+        else if((cmp = compare_two(A->msgbase(), B->msgbase())) != 0)
           return cmp;
         break;
       case 'Y':
-        if(a->isseparator() or b->isseparator())
+      case 'y':
+        if(A->isseparator() and B->isseparator())
           break;
-        else {
-          register bool anew = A->isvalidchg and A->isunreadchg;
-          register bool bnew = B->isvalidchg and B->isunreadchg;
-
-          // New mail _first_
-          if((cmp = compare_two(bnew, anew)) != 0)
-            return cmp;
+        else if(A->isseparator()) {
+          if(B->isnewmail())
+            return sepfirst?-1:1;
         }
+        else if(B->isseparator()) {
+          if(A->isnewmail())
+            return sepfirst?1:-1;
+        }
+        else if((cmp = compare_two(B->isnewmail(), A->isnewmail())) != 0)
+          return cmp;
         break;
       case 'Z':
-        if(a->isseparator() or b->isseparator())
+      case 'z':
+        if(A->isseparator() and B->isseparator())
           break;
+        else if(A->isseparator())
+          return sepfirst?-1:1;
+        else if(B->isseparator())
+          return sepfirst?1:-1;
         else if((cmp = stricmp(A->path(), B->path())) != 0)
           return cmp;
+        break;
+      case 'S':
+      case 's':
+        sepfirst = not rev;
         break;
     }
     ptr++;
   }
 
-  if(cmp == 0)
-    return compare_two(b->isseparator(), a->isseparator());
+  if(cmp == 0) {
+    cmp = compare_two(b->isseparator(), a->isseparator());
+    return sepfirst?-cmp:cmp;
+  }
 
   return cmp;
 }

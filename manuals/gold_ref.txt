@@ -5904,6 +5904,7 @@ The following is a description of the different window parts:
   READER TAGLINE      Taglines. (Only the one just above tearline).
   READER TEARLINE     Tearline.
   READER ORIGIN       Origin.
+  READER URL          URL (http://, ftp://, E-mail).
 
   The KLUDGE/HIDDEN colors replaces the old KLUDHIDD color. Note that
   KLUDHIDD will set both the KLUDGE and HIDDEN colors, so remember to
