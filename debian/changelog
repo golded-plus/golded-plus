@@ -1,0 +1,65 @@
+goldedplus (1.1.4.7+1.1.5.20020906-1) unstable; urgency=low
+
+  * Upstream CVS snapshot (see upstream ChangeLog for further details):
+   - Added FSP-0013 support; various other charset fixes.
+   - Added AdeptXBBS support for non-OS/2 systems.
+   - Added support for CommentChar token in FidoConfig.
+   - Added support for SMAPI and CrashMail II highwater marks in JAM.
+   - Added support for the CrashEcho tosser.
+   - Added support for the SpaceToss tosser.
+   - Added support for compressed messagebases (read-only).
+   - Added numerous configuration keywords to golded.cfg and goldkeys.cfg.
+   - Added new template macros.
+   - Can now find URLs in messages and send to a configured application.
+   - Imprtoved SoupGate support.
+   - Some changes to default configuration.
+   - Various bugfixes.
+  * Updated to Standards-Version 3.5.6
+   - Moved example configurations and similar from /usr/share/golded to
+     /usr/share/goldedplus and linked from documentation directory.
+  * Updated to more modern debhelper usage.
+
+ -- Peter Karlsson <peterk@debian.org>  Fri, 06 Sep 2002 22:00:00 +0100
+
+goldedplus (1.1.4.7-1.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Changed so that it compiles under hppa with GCC 3.0 (DABS party).
+
+ -- Jacobo Tarrio <jtarrio@trasno.net>  Sun, 15 Jul 2001 21:26:55 +0200
+
+goldedplus (1.1.4.7-1) unstable; urgency=low
+
+  * New upstream release (see upstream ChangeLog for further details):
+   - @CC kludges created at top of messages.
+   - Corrected problems with daylight savings time.
+   - Recognises tilde even better (~user/file) in paths.
+   - Recognises environmental variables (%TEMP%/file) in paths.
+   - Various bugfixes.
+  * Noted change of official homepage to SourceForge.
+  * Merged Debianization patches with upstream sources on SourceForge.
+  * Moved manual pages to the distribution archive.
+
+ -- peter karlsson <peterk@debian.org>  Wed, 06 Dec 2000 07:50:00 +0200
+
+goldedplus (1.1.4.6-1) unstable; urgency=low
+
+  * New upstream release (see upstream ChangeLog for further details):
+   - Recognises tilde (~) in paths.
+   - Does not uppercase names in file requests.
+   - Can import output from commands by entering filenames beginning with a
+     pipe symbol (|).
+   - Generates proper RFC headers for latin-xx codepages.
+   - Various bugfixes.
+  * Change Suggests line to suggest either crashmail (a Fidonet tosser) or
+    Uqwk (a SOUP generator).
+  * Added Build-Depends.
+  * Add manual pages based on the software documentation.
+
+ -- peter karlsson <peterk@debian.org>  Wed, 20 Sep 2000 21:04:45 +0200
+
+goldedplus (1.1.4.4-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- peter karlsson <peterk@debian.org>  Tue, 27 Jun 2000 17:35:00 +0200

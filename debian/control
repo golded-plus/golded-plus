@@ -1,0 +1,20 @@
+Source: goldedplus
+Section: mail
+Priority: optional
+Maintainer: peter karlsson <peterk@debian.org>
+Standards-Version: 3.5.6
+Build-Depends: debhelper (>= 2.2.0), libncurses5-dev
+
+Package: goldedplus
+Architecture: any
+Depends: ${shlibs:Depends}
+Suggests: crashmail | uqwk
+Description: Offline mail reader for Fidonet and Usenet
+ GoldED+ is an offline mail reader for Fidonet message bases in
+ AdeptXBBS, EzyCOM, Fido (*.MSG), Goldbase, Hudson, JAM, PCBoard,
+ Synchronet, Squish and WildCat. It is also able to import QWK
+ (BBS offline mail format) and SOUP (Usenet offline mail format)
+ packages into said message bases, and re-export packages for
+ upload.
+ .
+ GoldED+ is a successor of the well-known GoldED mail editor.

@@ -1,0 +1,4 @@
+?package(goldedplus):needs=text section=Apps/Net\
+  icon=/usr/X11R6/include/X11/pixmaps/golded.xpm\
+  title="GoldED+" longtitle="GoldED+ Offline Mail Reader"\
+  command="/usr/bin/golded" hints="Fidonet"
