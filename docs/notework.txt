@@ -12,6 +12,12 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Partially fixed ATTRIBSEMAIL and ATTRIBSNEWS operation. They still
+  not affected to the areas defined as such through the AREAISEMAIL
+  and AREAISNEWS and if no ATTRIBUTES defined in the Random System
+  group. It seems will never been fixed but will rather documented as
+  a feature.
+
 ! REPLYLINK defaults changed to DIRECT.
 
 ! AREAAUTOID defaults changed to LONG.

@@ -2150,7 +2150,7 @@ APP OtherProg IRQ 5</eg>
         </item>
       </list>
     </div2>
-    <div2>
+    <div2 id=AREA>
       <head>
         AREA
       </head>
@@ -2259,8 +2259,26 @@ APP OtherProg IRQ 5</eg>
           See also:
         </label>
         <item>
+          <ptr target=MESSAGEATTRS> chapter,
           <ref target=AREADEF><kw/AREADEF/</ref>,
-          <ref target=AREAFILE><kw/AREAFILE/</ref>
+          <ref target=AREADESC><kw/AREADESC/</ref>,
+          <ref target=AREAFILE><kw/AREAFILE/</ref>,
+          <ref target=AREAEXCL><kw/AREAEXCL/</ref>,
+          <ref target=AREAINCL><kw/AREAINCL/</ref>,
+          <ref target=AREAISEMAIL><kw/AREAISEMAIL/</ref>,
+          <ref target=AREAISNEWS><kw/AREAISNEWS/</ref>,
+          <ref target=AREARENAME><kw/AREARENAME/</ref>,
+          <ref target=AREASEP><kw/AREASEP/</ref>,
+          <ref target=ATTRIBSECHO><kw/ATTRIBSECHO/</ref>,
+          <ref target=ATTRIBSEMAIL><kw/ATTRIBSEMAIL/</ref>,
+          <ref target=ATTRIBSLOCAL><kw/ATTRIBSLOCAL/</ref>,
+          <ref target=ATTRIBSNET><kw/ATTRIBSNET/</ref>,
+          <ref target=ATTRIBSNEWS><kw/ATTRIBSNEWS/</ref>,
+          <ref target=ATTRIBUTES><kw/ATTRIBUTES/</ref>,
+          <ref target=GOLDBASEPATH><kw/GOLDBASEPATH/</ref>,
+          <ref target=GOLDBASESYSPATH><kw/GOLDBASESYSPATH/</ref>,
+          <ref target=HUDSONPATH><kw/HUDSONPATH/</ref>,
+          <ref target=HUDSONSYSPATH><kw/HUDSONSYSPATH/</ref>
         </item>
       </list>
     </div2>
@@ -2378,278 +2396,551 @@ APP OtherProg IRQ 5</eg>
         </item>
       </list>
     </div2>
+    <div2>
+      <head>
+        AREACATCHUPREAD
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREACATCHUPREAD/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls whether <!-- FIX ME!!! --><kw/AREAcatchup/
+          will set all skipped messages to read or not.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If enabled, <name/GoldED+/ will set all skipped messages to read when
+          using <!-- FIX ME!!! --><kw/AREAcatchup/ in the arealist-screen.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          This implies that
+          <ref target=HIGHLIGHTUNREAD><kw/HIGHLIGHTUNREAD/</ref> feature is
+          used, otherwise it has no function.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <!-- FIX ME!!! --><kw/AREAcatchup/,
+          <ref target=HIGHLIGHTUNREAD><kw/HIGHLIGHTUNREAD/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2 id=AREACFMREPLYTO>
+      <head>
+        AREACFMREPLYTO
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREACFMREPLYTO/ <ident/&lt;echoid&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Sets the area where <name/GoldED+/ will create confirmation messages.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The destination area for the confirmation messages.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=AREACOPYTO><kw/AREACOPYTO/</ref>
+          <ref target=AREAFREQTO><kw/AREAFREQTO/</ref>,
+          <ref target=AREAREPLYTO><kw/AREAREPLYTO/</ref>,
+          <ref target=AREAYOUWROTETO><kw/AREAYOUWROTETO/</ref>,
+          <ref target=ATTRIBSCFM><kw/ATTRIBSCFM/</ref>,
+          <ref target=CONFIRMFILE><kw/CONFIRMFILE/</ref>,
+          <ref target=CONFIRMRESPONSE><kw/CONFIRMRESPONSE/</ref>,
+          <ref target=RCVDISABLESCFM><kw/RCVDISABLESCFM/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2 id=AREACOPYADDID>
+      <head>
+        AREACOPYADDID
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREACOPYADDID/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          It is useful if you copy echomails to some local archive areas. In
+          this case <name/GoldED+/ can add the<eg>
+AREA:&lt;OriginalEchoID&gt;</eg>
+          kludge line to inform you from where you copied the mail to. This
+          keyword should be enabled in the destination area parameters when
+          used in the <ref target=RANDOMSYSTEM>Random System</ref> group.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If enabled, <name>GoldED+</name> will insert the <gi/AREA/ kludge
+          at the top of each message that is copied or moved.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/NO/
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          This keyword can be used globally and in a
+          <ref target=RANDOMSYSTEM>Random System</ref> group.<lb>
+          Do not enable this unless you know what you doing!
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <!-- FIX ME!!! --><kw/READcopymoveforward/,
+          <ref target=AREACOPYDIRECT><kw/AREACOPYDIRECT/</ref>,
+          <ref target=AREACOPYTO><kw/AREACOPYTO/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2 id=AREACOPYDIRECT>
+      <head>
+        AREACOPYDIRECT
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREACOPYDIRECT/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls whether copy/move functions should bypass area
+          selection screen. The destination area should be set with
+          <ref target=AREACOPYTO><kw/AREACOPYTO/</ref> keyword.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If enabled, the destination area selection list is bypassed, thereby
+          making possible a <q/seamless/ copy/move to the default destination
+          area.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/NO/
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          This keyword can be used globally and in a
+          <ref target=RANDOMSYSTEM>Random System</ref> group.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <!-- FIX ME!!! --><kw/READcopymoveforward/,
+          <ref target=AREACOPYADDID><kw/AREACOPYADDID/</ref>,
+          <ref target=AREACOPYTO><kw/AREACOPYTO/</ref>
+          <ref target=AREAFORWARDDIRECT><kw/AREAFORWARDDIRECT/</ref>,
+          <ref target=AREAFREQDIRECT><kw/AREAFREQDIRECT/</ref>,
+          <ref target=AREAREPLYDIRECT><kw/AREAREPLYDIRECT/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2 id=AREACOPYTO>
+      <head>
+        AREACOPYTO
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREACOPYTO/ <ident/&lt;echoid&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Sets the default area for the copy/move functions. Typically you
+          could set it to a safe/permanent storage type of area.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The default destination area for the copy/move functions.
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          This keyword can be used globally and in a
+          <ref target=RANDOMSYSTEM>Random System</ref> group.<lb>
+          The forward function uses the
+          <ref target=AREAREPLYTO><kw/AREAREPLYTO/</ref> area instead.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <!-- FIX ME!!! --><kw/READcopymoveforward/,
+          <ref target=AREACFMREPLYTO><kw/AREACFMREPLYTO/</ref>,
+          <ref target=AREACOPYADDID><kw/AREACOPYADDID/</ref>,
+          <ref target=AREACOPYDIRECT><kw/AREACOPYDIRECT/</ref>,
+          <ref target=AREAFREQTO><kw/AREAFREQTO/</ref>,
+          <ref target=AREAREPLYTO><kw/AREAREPLYTO/</ref>,
+          <ref target=AREAYOUWROTETO><kw/AREAYOUWROTETO/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2 id=AREADEF>
+      <head>
+        AREADEF
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREADEF/ <ident>&lt;echoid&gt; &lt;<![ CDATA ["desc"]]>&gt;
+          &lt;group&gt; &lt;type&gt; &lt;msgbase&gt; &lt;path/board&gt;
+          &lt;aka&gt; &lt;(attrs)&gt;
+          &lsqb;<![ CDATA ["origin"]]>&rsqb;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword defines a mail area in <name>GoldED+</name>. It looks a
+          lot like the <ref target=AREA><kw/AREA/</ref> keyword. Additional
+          parameters are the <ident/group/, the verbose <ident/type/ and
+          <ident/msgbase/, the fully specified <ident/aka/ address, the
+          brackets for the attributes and the optional <ident/origin/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          <table rows=9 cols=2>
+            <row>
+              <cell>
+                <ident>echoid</ident>
+              </cell>
+              <cell>
+                Mail area identifier.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident><![ CDATA ["desc"]]></ident>
+              </cell>
+              <cell>
+                Area description in quotes.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident>group</ident>
+              </cell>
+              <cell>
+                Group ID uppercase letter (A-Z) or 0 if not in a group. Use
+                &num;groupnumber to specify group numbers in the 1-999 range.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident>type</ident>
+              </cell>
+              <cell>
+                <ident/Net/, <ident/Echo/, <ident/Local/, <ident/EMail/ or
+                <ident/News/.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident>msgbase</ident>
+              </cell>
+              <cell>
+                <name>Opus</name>, <name>FTS1</name>, <name>Hudson</name>,
+                <name>Squish</name>, <name>Ezycom</name>, <name>JAM</name>,
+                <name>Goldbase</name>, <name>PCBoard</name>, or <name/SMB/.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident>path/board</ident>
+              </cell>
+              <cell>
+                Area path, boardnumber or base filename.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident>aka</ident>
+              </cell>
+              <cell>
+                Address for the area, or <q>.</q> for the main address.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident>(attrs)</ident>
+              </cell>
+              <cell>
+                Default attributes in brackets.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident><![ CDATA ["origin"]]></ident>
+              </cell>
+              <cell>
+                Optional default origin in quotes.
+              </cell>
+            </row>
+          </table>
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          If more than one area defined to the same path or areatag then last
+          definition overrides previous ones.<lb>
+          The possibility of using <q/./ to specify the main <abbr/AKA/ and
+          the optional default origin makes it simpler to create a common
+          <ref target=INCLUDE><kw/INCLUDE/</ref>'able area configuration
+          for several setups with different addresses, for example two people
+          sharing the same msgbase.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ptr target=MESSAGEATTRS> chapter,
+          <ref target=AREA><kw/AREA/</ref>,
+          <ref target=AREADESC><kw/AREADESC/</ref>,
+          <ref target=AREAFILE><kw/AREAFILE/</ref>,
+          <ref target=AREAEXCL><kw/AREAEXCL/</ref>,
+          <ref target=AREAINCL><kw/AREAINCL/</ref>,
+          <ref target=AREAISEMAIL><kw/AREAISEMAIL/</ref>,
+          <ref target=AREAISNEWS><kw/AREAISNEWS/</ref>,
+          <ref target=AREARENAME><kw/AREARENAME/</ref>,
+          <ref target=AREASEP><kw/AREASEP/</ref>,
+          <ref target=ATTRIBSECHO><kw/ATTRIBSECHO/</ref>,
+          <ref target=ATTRIBSEMAIL><kw/ATTRIBSEMAIL/</ref>,
+          <ref target=ATTRIBSLOCAL><kw/ATTRIBSLOCAL/</ref>,
+          <ref target=ATTRIBSNET><kw/ATTRIBSNET/</ref>,
+          <ref target=ATTRIBSNEWS><kw/ATTRIBSNEWS/</ref>,
+          <ref target=ATTRIBUTES><kw/ATTRIBUTES/</ref>,
+          <ref target=GOLDBASEPATH><kw/GOLDBASEPATH/</ref>,
+          <ref target=GOLDBASESYSPATH><kw/GOLDBASESYSPATH/</ref>,
+          <ref target=HUDSONPATH><kw/HUDSONPATH/</ref>,
+          <ref target=HUDSONSYSPATH><kw/HUDSONSYSPATH/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2 id=AREADESC>
+      <head>
+        AREADESC
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREADESC/ <ident>&lt;echoid&gt; &lt;<![ CDATA ["desc"]]>&gt;
+          &lsqb;group&rsqb; &lsqb;aka&rsqb; &lsqb;(attrs)&rsqb;
+          &lsqb;<![ CDATA ["origin"]]>&rsqb;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Adds a description and optionally a group letter, <abbr>AKA</abbr>,
+          attributes and origin to an <hi>existing</hi> (previously defined)
+          area. This is useful if you use an areafile that does not contain
+          descriptions, groups, akas, attributes or origins.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          <table rows=6 cols=2>
+            <row>
+              <cell>
+                <ident>echoid</ident>
+              </cell>
+              <cell>
+                Mail area identifier.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident><![ CDATA ["desc"]]></ident>
+              </cell>
+              <cell>
+                Area description in quotes.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident>group</ident>
+              </cell>
+              <cell>
+                Optional groupid uppercase letter (A-Z) or 0 if not in a group.
+                Use &num;groupnumber to specify group numbers in the 1-999
+                range or <q>-</q> to keep the existing groupid. 
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident>aka</ident>
+              </cell>
+              <cell>
+                Optional <abbr>AKA</abbr> address for the area, or <q>.</q> for
+                main <abbr>AKA</abbr>, or <q>-</q> to keep the existing
+                <abbr>AKA</abbr>.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident>(attrs)</ident>
+              </cell>
+              <cell>
+                Optional default attributes in brackets, <q>-</q> to keep the
+                existing attributes. Note that if they are specified, they are
+                <hi>added</hi> to the default net/echo/local attributes.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident><![ CDATA ["origin"]]></ident>
+              </cell>
+              <cell>
+                Optional default origin in quotes.
+              </cell>
+            </row>
+          </table>
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          You cannot skip any of the optional parts in the middle, even if you
+          only want to set, say, an origin. Use <q>-</q> to keep the existing
+          value for the parts you skip.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ptr target=MESSAGEATTRS> chapter,
+          <ref target=AREA><kw/AREA/</ref>,
+          <ref target=AREADEF><kw/AREADEF/</ref>,
+          <ref target=AREAFILE><kw/AREAFILE/</ref>,
+          <ref target=AREAISEMAIL><kw/AREAISEMAIL/</ref>,
+          <ref target=AREAISNEWS><kw/AREAISNEWS/</ref>,
+          <ref target=AREARENAME><kw/AREARENAME/</ref>,
+          <ref target=AREASEP><kw/AREASEP/</ref>,
+          <ref target=ATTRIBSECHO><kw/ATTRIBSECHO/</ref>,
+          <ref target=ATTRIBSEMAIL><kw/ATTRIBSEMAIL/</ref>,
+          <ref target=ATTRIBSLOCAL><kw/ATTRIBSLOCAL/</ref>,
+          <ref target=ATTRIBSNET><kw/ATTRIBSNET/</ref>,
+          <ref target=ATTRIBSNEWS><kw/ATTRIBSNEWS/</ref>,
+          <ref target=ATTRIBUTES><kw/ATTRIBUTES/</ref>
+        </item>
+      </list>
+    </div2>
 
 
 <!-- finished here -->
 
 
-    <div2>
-      <head>
-        AREACATCHUPREAD &lt;(yes)/no&gt;
-      </head>
-      <p>
-        If enabled, <name>GoldED+</name> will set all skipped messages to
-        <q>read</q> when using <kw>AREAcatchup</kw> in the arealist-screen.
-        This implies that <code>HIGHLIGHTUNREAD YES</code> is used, otherwise
-        it has no function.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        AREACOPYADDID &lt;yes/(no)&gt;
-      </head>
-      <p>
-        If enabled, <name>GoldED+</name> will insert the control line
-        <q>AREA:&lt;OriginalEchoID&gt;</q> at the top of each message that is
-        copied or moved. This can be a help when regularly copying messages to
-        a <gi>THE_SAFE</gi> type area.
-      </p>
-      <p>
-        This keyword can and should only be used in the Random System groups.
-      </p>
-      <p>
-        It is useful if you copy echomails to some local archive areas. In this
-        case <name>GoldED+</name> can add the
-        <q>AREA:&lt;OriginalEchoID&gt;</q>-kludge to inform you from where you
-        copied the mail to.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        AREACOPYDIRECT &lt;yes/(no)&gt;
-      </head>
-      <p>
-        If enabled, the destination area selection list is bypassed, thereby
-        making possible a <q>seamless</q> copy/move to the default destination
-        area. The destination area should be set with <kw>AREACOPYTO</kw>.
-      </p>
-      <p>
-        This keyword can be used globally and in a Random System group.
-      </p>
-      <p>
-        <hi>NOTE</hi>: It is probably not a good idea to enable this keyword
-        globally.
-      </p>
-    </div2>
-    <div2 id=AREACOPYTO>
-      <head>
-        AREACOPYTO &lt;echoid&gt;
-      </head>
-      <p>
-        Sets the default area for the Copy/Move functions. Typically you could
-        set it to a <q>safe/permanent storage</q> type of area, for example a
-        <gi>JOKES2KEEP</gi> or <gi>THE_SAFE</gi> area. Note that the Forward
-        function uses the <kw>AREAREPLYTO</kw> area instead.
-      </p>
-      <p>
-        This keyword can be used globally and in a Random System Group.
-      </p>
-      <p>
-        Related keywords: <ref target=AREAFREQTO><kw>AREAFREQTO</kw></ref>,
-        <ref target=AREAREPLYTO><kw>AREAREPLYTO</kw></ref>.
-      </p>
-    </div2>
-    <div2 id=AREADEF>
-      <head>
-        AREADEF &lt;setup&gt;
-      </head>
-      <p>
-        This is newer version of the <kw>AREA</kw> keyword, with more detailed
-        parameters.
-      </p>
-      <p>
-        The full syntax is (must be all on one line):
-      </p>
-      <p>
-        <code>AREADEF &lt;echoid&gt; &lt;<![ CDATA ["desc"]]>&gt; &lt;group&gt;
-        &lt;type&gt; &lt;msgbase&gt; &lt;path/board&gt; &lt;aka&gt;
-        &lt;(attrs)&gt; &lsqb;<![ CDATA ["origin"]]>&rsqb;</code>
-        <table rows=9 cols=2>
-          <row>
-            <cell>
-              <ident>echoid</ident>
-            </cell>
-            <cell>
-              Mail area identifier.
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident><![ CDATA ["desc"]]></ident>
-            </cell>
-            <cell>
-              Area description in quotes.
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident>group</ident>
-            </cell>
-            <cell>
-              Groupid uppercase letter (A-Z) or 0 if not in a group. Use
-              &num;groupnumber to specify group numbers in the 1-999 range,
-              for example: <code>&num;117</code>.
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident>type</ident>
-            </cell>
-            <cell>
-              Net, Echo, Local, EMail or News.
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident>msgbase</ident>
-            </cell>
-            <cell>
-              <name>Opus</name>, <name>FTS1</name>, <name>Hudson</name>,
-              <name>Squish</name>, <name>Ezycom</name>, <name>JAM</name>,
-              <name>Goldbase</name> or <name>PCBoard</name>.
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident>path/board</ident>
-            </cell>
-            <cell>
-              Area path, boardnumber or base filename.
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident>aka</ident>
-            </cell>
-            <cell>
-              <abbr>AKA</abbr> address for the area, or <q>.</q> for main
-              <abbr>AKA</abbr>.
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident>(attrs)</ident>
-            </cell>
-            <cell>
-              Default attributes in brackets.
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident><![ CDATA ["origin"]]></ident>
-            </cell>
-            <cell>
-              Optional default origin in quotes.
-            </cell>
-          </row>
-        </table>
-      </p>
-      <p>
-        This looks a lot like the AREA keyword. Additional parameters are
-        the <ident>group</ident>, the verbose <ident>type</ident> and
-        <ident>msgbase</ident>, the fully specified <ident>aka</ident>
-        address, the brackets for the attributes and the optional
-        <ident>origin</ident>.
-      </p>
-      <p>
-        Note the possibility of using <q>.</q> to specify the main
-        <abbr>AKA</abbr>. This, and the optional default origin, makes it
-        simpler to create a common <kw>INCLUDE</kw>'able area configuration
-        for several setups with different addresses, for example two people
-        sharing the same msgbase.
-      </p>
-      <p>
-        <name>GoldED+</name> can handle enviroment variables correctly in paths
-        specified in connection with this keyword. For example, if a path is
-        defined as <code>%MAIL%&bsol;path&bsol;name</code>, and
-        <code>SET MAIL=C:&bsol;POINT</code> is in <code>AUTOEXEC.BAT</code> (or
-        whatever), then <name>GoldED+</name> translates the path to
-        <code>C:&bsol;POINT&bsol;path&bsol;name</code>.
-      </p>
-      <p>
-        <hi>NOTE</hi> that the translation is done at config compile time, so
-        if you change the environment variable and haven't changed anything
-        else that would cause <name>GoldED+</name> to recompile it's config,
-        you must force it with the <code>-F</code> or <code>-FF</code> command
-        parameter.
-      </p>
-    </div2>
-    <div2 id=AREADESC>
-      <head>
-        AREADESC &lt;echoid&gt; &lt;<q>desc</q>&gt; &lsqb;group&rsqb;
-        &lsqb;aka&rsqb; &lsqb;(attrs)&rsqb; &lsqb;<q>origin</q>&rsqb;
-      </head>
-      <p>
-        Adds a description and optionally a group letter, <abbr>AKA</abbr>,
-        attributes and origin to an <hi>existing</hi> (previously defined)
-        area. This is useful if you use an <kw>AREAFILE</kw> that does not
-        contain descriptions, groups, akas, attributes or origins.
-      </p>
-      <p>
-        <table rows=6 cols=2>
-          <row>
-            <cell>
-              <ident>echoid</ident>
-            </cell>
-            <cell>
-              Mail area identifier.
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident><![ CDATA ["desc"]]></ident>
-            </cell>
-            <cell>
-              Area description in quotes.
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident>group</ident>
-            </cell>
-            <cell>
-              Optional groupid uppercase letter (A-Z) or 0 if not in a group.
-              Use &num;groupnumber to specify group numbers in the 1-999 range
-              or <q>-</q> to keep the existing groupid. 
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident>aka</ident>
-            </cell>
-            <cell>
-              Optional <abbr>AKA</abbr> address for the area, or <q>.</q> for
-              main <abbr>AKA</abbr>, or <q>-</q> to keep the existing
-              <abbr>AKA</abbr>.
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident>(attrs)</ident>
-            </cell>
-            <cell>
-              Optional default attributes in brackets, <q>-</q> to keep the
-              existing attributes. Note that if they are specified, they are
-              <hi>added</hi> to the default net/echo/local attributes.
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident><![ CDATA ["origin"]]></ident>
-            </cell>
-            <cell>
-              Optional default origin in quotes.
-            </cell>
-          </row>
-        </table>
-      </p>
-      <p>
-        <hi>NOTE</hi> that you cannot skip any of the optional parts in the
-        middle, even if you only want to set, say, an origin. Use <q>-</q> to
-        keep the existing value for the parts you skip.
-      </p>
-    </div2>
-    <div2>
+    <div2 id=AREAEXCL>
       <head>
         AREAEXCL &lt;echoid mask&gt;
       </head>
@@ -2750,7 +3041,13 @@ AREAEXCL INT*.*   ; Excludes all areas beginning with INT and
         See <ptr target=RANDOMSYSTEM> chapter for details.
       </p>
     </div2>
-    <div2>
+    <div2 id=AREAFORWARDDIRECT>
+      <head>
+        AREAFORWARDDIRECT
+      </head>
+      <p></p>
+    </div2>
+    <div2 id=AREAFREQDIRECT>
       <head>
         AREAFREQDIRECT &lt;yes/(no)&gt;
       </head>
@@ -2790,7 +3087,7 @@ AREAEXCL INT*.*   ; Excludes all areas beginning with INT and
         <ref target=AREAREPLYTO><kw>AREAREPLYTO</kw></ref>.
       </p>
     </div2>
-    <div2>
+    <div2 id=AREAINCL>
       <head>
         AREAINCL &lt;echoid mask&gt;
       </head>
@@ -2833,7 +3130,7 @@ AREAINCL INT*.*   ; Includes all areas beginning with INT and
 AREAISEMAIL alt.*, rec.*, sci.*</eg>
       </p>
     </div2>
-    <div2>
+    <div2 id=AREAISNEWS>
       <head>
         AREAISNEWS &lt;echoid&gt;
       </head>
@@ -2974,7 +3271,7 @@ AREALISTFORMAT "ME D CPUN G "]]></eg>
               <ident>P</ident>
             </cell>
             <cell>
-              Personal mail mark ('+')
+              Personal mail mark (<q/+/)
             </cell>
             <cell>
               1
@@ -2996,7 +3293,7 @@ AREALISTFORMAT "ME D CPUN G "]]></eg>
               <ident>N</ident>
             </cell>
             <cell>
-              Changed since last scan mark (<q>*</q>)
+              Changed since last scan mark (<q/*/)
             </cell>
             <cell>
               1
@@ -3410,7 +3707,7 @@ AREAPMSCAN INT*.*  ; Scan all areas beginning with INT and
         enough to enter a message in a read-only area despite the warning menu.
       </p>
     </div2>
-    <div2>
+    <div2 id=AREARENAME>
       <head>
         AREARENAME &lt;from echoid&gt; &lt;to echoid&gt;
       </head>
@@ -3427,7 +3724,7 @@ AREARENAME ECHO001 BAD_MSGS
 AREARENAME LOCAL001 BBS.USERS</eg>
       </p>
     </div2>
-    <div2>
+    <div2 id=AREAREPLYDIRECT>
       <head>
         AREAREPLYDIRECT &lt;yes/(no)&gt;
       </head>
@@ -3548,7 +3845,7 @@ AREASCAN INT*.*  ; Scan all areas beginning with INT and
         sortspecs.
       </p>
     </div2>
-    <div2>
+    <div2 id=AREASEP>
       <head>
         AREASEP &lt;echoid&gt; &lt;"desc"&gt; &lt;group&gt; &lt;type&gt;
       </head>
@@ -3647,7 +3944,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
         <kw>AREASEP</kw> feature.
       </p>
     </div2>
-    <div2>
+    <div2 id=AREAYOUWROTETO>
       <head>
         AREAYOUWROTETO &lt;echoid&gt;
       </head>
@@ -3700,7 +3997,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
         original message. Usually used to add the <q>Kill/Sent</q> attribute.
       </p>
     </div2>
-    <div2>
+    <div2 id=ATTRIBSCFM>
       <head>
         ATTRIBSCFM &lt;attributes&gt;
       </head>
@@ -3708,7 +4005,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
         Defines the default attributes of the Confirmation Receipt message.
       </p>
     </div2>
-    <div2>
+    <div2 id=ATTRIBSECHO>
       <head>
         ATTRIBSECHO &lt;attributes&gt;
       </head>
@@ -3716,7 +4013,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
         Defines the default attributes of messages entered in echomail areas.
       </p>
     </div2>
-    <div2>
+    <div2 id=ATTRIBSEMAIL>
       <head>
         ATTRIBSEMAIL &lt;attributes&gt;
       </head>
@@ -3735,7 +4032,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
         automatically.
       </p>
     </div2>
-    <div2>
+    <div2 id=ATTRIBSLOCAL>
       <head>
         ATTRIBSLOCAL &lt;attributes&gt;
       </head>
@@ -3743,7 +4040,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
         Defines the default attributes of messages entered in local areas.
       </p>
     </div2>
-    <div2>
+    <div2 id=ATTRIBSNET>
       <head>
         ATTRIBSNET &lt;attributes&gt;
       </head>
@@ -3751,7 +4048,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
         Defines the default attributes of messages entered in netmail areas.
       </p>
     </div2>
-    <div2>
+    <div2 id=ATTRIBSNEWS>
       <head>
         ATTRIBSNEWS &lt;attributes&gt;
       </head>
@@ -3759,7 +4056,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
         Defines the default attributes of messages entered in news groups.
       </p>
     </div2>
-    <div2>
+    <div2 id=ATTRIBUTES>
       <head>
         ATTRIBUTES &lt;attributes&gt;
       </head>
@@ -3882,7 +4179,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     The Mono set is the default when a monochrome adapter is detected.
       </p>
     </div2>
-    <div2>
+    <div2 id=CONFIRMFILE>
       <head>
         CONFIRMFILE &lt;filename&gt;
       </head>
@@ -3903,7 +4200,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     Template tokens are explained in the Message Template chapter.
       </p>
     </div2>
-    <div2>
+    <div2 id=CONFIRMRESPONSE>
       <head>
         CONFIRMRESPONSE &lt;yes/no/ask&gt;
       </head>
@@ -5569,7 +5866,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     Windows it could be defined to yes for this.
       </p>
     </div2>
-    <div2>
+    <div2 id=GOLDBASEPATH>
       <head>
         GOLDBASEPATH &lt;path&gt;
       </head>
@@ -5578,7 +5875,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     files.
       </p>
     </div2>
-    <div2>
+    <div2 id=GOLDBASESYSPATH>
       <head>
         GOLDBASESYSPATH &lt;path&gt;
       </head>
@@ -5619,7 +5916,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     details.
       </p>
     </div2>
-    <div2>
+    <div2 id=HIGHLIGHTUNREAD>
       <head>
         HIGHLIGHTUNREAD &lt;yes/no&gt;
       </head>
@@ -5647,7 +5944,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     attributes which *could* be used. Let me know if you want this.
       </p>
     </div2>
-    <div2>
+    <div2 id=HUDSONPATH>
       <head>
         HUDSONPATH &lt;path&gt;
       </head>
@@ -5671,7 +5968,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     think the default is too low or too high.
       </p>
     </div2>
-    <div2>
+    <div2 id=HUDSONSYSPATH>
       <head>
         HUDSONSYSPATH &lt;path&gt;
       </head>
@@ -5757,7 +6054,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     the correct file areas.
       </p>
     </div2>
-    <div2>
+    <div2 id=INCLUDE>
       <head>
         INCLUDE
       </head>
@@ -7413,7 +7710,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     _after_ any AREAFILE keyword.
       </p>
     </div2>
-    <div2>
+    <div2 id=RCVDISABLESCFM>
       <head>
         RCVDISABLESCFM &lt;yes/no&gt;
       </head>

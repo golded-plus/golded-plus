@@ -770,11 +770,11 @@ CfgGed::CfgGed() {
   attribscc.loc1();
   attribscfm.loc1();
   attribsecho.loc1();
-  // attribsemail.reset();
+  attribsemail.loc1();
   attribsfrq.loc1();
   attribslocal.loc1();
   attribsnet.loc1();
-  // attribsnews.reset();
+  attribsnews.loc1();
   switches.set(akamatchnet, true);
   switches.set(areaautonext, true);
   switches.set(areacatchupread, true);

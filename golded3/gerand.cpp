@@ -259,7 +259,11 @@ void Area::RandomizeData(int mode) {
     CFG->grp.GetItm(GRP_AKAMATCHING, adat->akamatching);
 
     if(CFG->grp.GetItm(GRP_ATTRIBUTES, buf, sizeof(buf))) {
-      if(isnet())
+      if(isemail())
+        adat->attributes = CFG->attribsemail;
+      else if(isnewsgroup())
+        adat->attributes = CFG->attribsnews;
+      else if(isnet())
         adat->attributes = CFG->attribsnet;
       else if(isecho())
         adat->attributes = CFG->attribsecho;

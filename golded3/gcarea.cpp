@@ -615,11 +615,11 @@ bool AreaList::GetAreaFirstPart(AreaCfg& aa, char*& key, char*& val) {
       break;
     case CRC_EMAIL:
       aa.type = AT_EMAIL | AT_NET;
-      aa.attr = CFG->attribsnet;
+      aa.attr = CFG->attribsemail;
       break;
     case CRC_NEWS:
       aa.type = AT_NEWSGROUP | AT_ECHO;
-      aa.attr = CFG->attribsecho;
+      aa.attr = CFG->attribsnews;
       break;
     default:
       return false;
