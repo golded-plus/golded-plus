@@ -377,7 +377,9 @@ enum {
 /************/
 
 #if defined(_WIN32) || defined(__BORLANDC__)
-	#define PRAGMA_PACK
+	#ifndef PRAGMA_PACK
+		#define PRAGMA_PACK
+	#endif
 #endif
 
 #if defined(PRAGMA_PACK)
@@ -487,7 +489,7 @@ typedef struct _PACK {		// Network (type and address)
 
 #if defined(PRAGMA_PACK)
 #if defined(__GNUC__)
-#define pack()
+#pragma pack()
 #else
 #pragma pack(pop)		/* original packing */
 #endif

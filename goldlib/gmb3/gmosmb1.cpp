@@ -435,15 +435,16 @@ add:
         }
 common:
         fseek(data->sdt_fp, smsg.hdr.offset + smsg.dfield[i].offset, SEEK_SET);
-        fread(&xlat, 2, 1, data->sdt_fp);
-        l = 2;
+        l = sizeof(xlat);
+        fread(&xlat, sizeof(xlat), 1, data->sdt_fp);
         lzh = false;
-        while(xlat != XLAT_NONE) {
-          if(xlat == XLAT_LZH)
-            lzh = true;
-          fread(&xlat, 2, 1, data->sdt_fp);
-          l += 2;
+        if(xlat == XLAT_LZH) {
+          lzh = true;
+          fread(&xlat, sizeof(xlat), 1, data->sdt_fp); 
+          l += sizeof(xlat);
         }
+        if(xlat != XLAT_NONE) /* no other translations currently supported */
+          continue;
         if(lzh) {
           inbuf = (uchar *)throw_xmalloc(smsg.dfield[i].length);
           fread(inbuf, smsg.dfield[i].length - l, 1, data->sdt_fp);
@@ -459,7 +460,7 @@ common:
         }
         else
           outlen = 0;
-        txt_len+=outlen;
+        txt_len += outlen;
         msg->txt[txt_len-1] = NUL;
         break;
     }
@@ -1059,15 +1060,16 @@ Line* SMBArea::make_dump_msg(Line*& lin, gmsg* msg, char* lng_head)
         }
 common:
         fseek(data->sdt_fp, smsg.hdr.offset + smsg.dfield[i].offset, SEEK_SET);
-        fread(&xlat, 2, 1, data->sdt_fp);
-        l = 2;
+        l = sizeof(xlat);
+        fread(&xlat, sizeof(xlat), 1, data->sdt_fp);
         lzh = false;
-        while(xlat != XLAT_NONE) {
-          if(xlat == XLAT_LZH)
-            lzh = true;
-          fread(&xlat, 2, 1, data->sdt_fp);
-          l += 2;
+        if(xlat == XLAT_LZH) {
+          lzh = true;
+          fread(&xlat, sizeof(xlat), 1, data->sdt_fp); 
+          l += sizeof(xlat);
         }
+        if(xlat != XLAT_NONE) /* no other translations currently supported */
+          continue;
         if(lzh) {
           inbuf = (uchar *)throw_xmalloc(smsg.dfield[i].length);
           fread(inbuf, smsg.dfield[i].length - l, 1, data->sdt_fp);
