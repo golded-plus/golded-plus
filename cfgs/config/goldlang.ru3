@@ -1,0 +1,725 @@
+////////////////////////////////////////////////////////////////////////
+//
+//                      *  GoldED+ 1.1.x  *
+//
+//  Конфигурационный файл языковой поддержки, русская редакция.
+//
+//  If you can't recognize these chars as normal text - relax, you
+//  don't need this package! :-)
+//
+//  Формат команд в этом файле языка следующий:
+//
+//      <строковая_переменная> <"строка_описания">
+//      <stringid> <"string">
+//
+//  Строковые переменные разделены на отдельные категории таким образом,
+//  чтобы при работе эти переменные не вызывали у Вас затруднений.
+//
+//  Категории строковых переменных:
+//  -------------------------------
+//  ST_  Status Line    Строка состояния     Произвольная длина
+//  WT_  Window Title   Заголовок окна       Произвольная длина
+//  IL_  Info Line      Строка информации    Произвольная длина
+//  MS_  Message        Сообщение            Произвольная длина
+//  ER_  Error Message  Сообщение об ошибке  Произвольная длина
+//  WL_  Window Line    Строка окна          Обычно фиксированная длина
+//  HD_  Header Line    Строка заголовка     Обычно фиксированная длина
+//  MI_  Menu Item      Пункт меню           Фиксированная длина, первый
+//                                           символ - горячая клавиша
+//
+//  "Фиксированная длина" означает,  что длина строки четко установлена.
+//  Обычно  длина строки ограничивается  только размером экрана.  Размер
+//  окна меню всегда равен длине *первого* пункта меню.
+//
+//  "Горячая Клавиша" - это выделенный в пункте меню символ для быстрого
+//  выбора необходимого пункта.  Горячая Клавиша регистрозависима и
+//  должна соответствовать какому-либо символу в строке.
+//
+//  Строка всегда должна быть помещена в кавычки ("" или ''). Исключение
+//  возможно только в том случае, если в строке не нужны открывающие или
+//  завершающие пробелы.
+//
+//  Некоторые строки содержат управляющие последовательности или символы
+//  формата, используемые в языке "Cи". В некоторых особых строках могут
+//  использоваться также макроподстановки (вроде @DName и т.п.).
+//
+//  Управляющие последовательности: (Регистрозависимы!)
+//  ---------------------------------------------------
+//  \n  - Перевод строки (LF) (при выводе в файл расширяется до CR+LF)
+//  \r  - Перевод на начало следующей строки (CR)
+//
+//  Управляющие последовательности обычно используются в строках,
+//  выводимых в файлы или стандартные сообщения ДОС.
+//
+//  Символы подстановки: (Регистрозависимы!)
+//  ----------------------------------------
+//  %c  - Символ (Character).
+//  %s  - Строка (String).
+//  %i  - Целое (Integer).
+//  %u  - Неопределенное Целое (Unsigned Integer).
+//  %%  - Знак процента (%).
+//
+//  Будьте  внимательны при  редактировании строки,  содержащей  символы
+//  подстановки.  Порядок и количество этих символов должны быть  такими
+//  же, как и в исходной строке.
+//  Последствия при ошибке непредсказуемы...
+//
+//                                             Перевод: Andrew Voronin
+//                                                      <av@i.am>
+//                                                      2:5060/19
+//                       Дополнения для веpс. + 1.1.x : Arkady Grikurov
+//                                                      2:5063/77
+//
+//////////////////////////////////////////////////////////////////////
+
+----------------------------------------------------------------------
+-- Названия дней недели и месяцев
+
+// Дни недели, коротко
+MS_SWSUN             "Вс"
+MS_SWMON             "Пн"
+MS_SWTUE             "Вт"
+MS_SWWED             "Ср"
+MS_SWTHU             "Чт"
+MS_SWFRI             "Пт"
+MS_SWSAT             "Сб"
+
+// Дни недели, полностью
+MS_LWSUNDAY          "Воскресенье"
+MS_LWMONDAY          "Понедельник"
+MS_LWTUESDAY         "Вторник"
+MS_LWWEDNESDAY       "Среда"
+MS_LWTHURSDAY        "Четверг"
+MS_LWFRIDAY          "Пятница"
+MS_LWSATURDAY        "Суббота"
+
+// Дни недели, полностью
+;MS_LWSUNDAY          "Воскресенье"
+;MS_LWMONDAY          "Понедельник"
+;MS_LWTUESDAY         "Вторник"
+;MS_LWWEDNESDAY       "Среду"
+;MS_LWTHURSDAY        "Четверг"
+;MS_LWFRIDAY          "Пятницу"
+;MS_LWSATURDAY        "Субботу"
+
+// Месяцы, коротко
+MS_SMJAN             "Янв"
+MS_SMFEB             "Фев"
+MS_SMMAR             "Мар"
+MS_SMAPR             "Апр"
+MS_SMMAY             "Май"
+MS_SMJUN             "Июн"
+MS_SMJUL             "Июл"
+MS_SMAUG             "Авг"
+MS_SMSEP             "Сен"
+MS_SMOCT             "Окт"
+MS_SMNOV             "Ноя"
+MS_SMDEC             "Дек"
+
+// Месяцы, полностью
+MS_LMJANUARY         "Январь"
+MS_LMFEBRUARY        "Февраль"
+MS_LMMARCH           "Март"
+MS_LMAPRIL           "Апрель"
+MS_LMMAY             "Май"
+MS_LMJUNE            "Июнь"
+MS_LMJULY            "Июль"
+MS_LMAUGUST          "Август"
+MS_LMSEPTEMBER       "Сентябрь"
+MS_LMOCTOBER         "Октябрь"
+MS_LMNOVEMBER        "Ноябрь"
+MS_LMDECEMBER        "Декабрь"
+
+// Месяцы, полностью
+;MS_LMJANUARY         "Января"
+;MS_LMFEBRUARY        "Февраля"
+;MS_LMMARCH           "Марта"
+;MS_LMAPRIL           "Апреля"
+;MS_LMMAY             "Мая"
+;MS_LMJUNE            "Июня"
+;MS_LMJULY            "Июля"
+;MS_LMAUGUST          "Августа"
+;MS_LMSEPTEMBER       "Сентября"
+;MS_LMOCTOBER         "Октября"
+;MS_LMNOVEMBER        "Ноября"
+;MS_LMDECEMBER        "Декабря"
+
+
+----------------------------------------------------------------------
+-- Меню
+
+// Меню сохранения сообщения
+WT_SAVEMSG           " Сохранить эти %i строк? "
+MI_YESGREAT          "Y Y Да                        "
+MI_KICKIT            "N N Нет / ESC                 "
+MI_CONTINUE          "C C Продолжить редактирование "
+MI_ROT13             "R R ROT13 шифрование          "
+MI_ATTRS             "A A Изменить атрибуты         "
+MI_TAGLINES          "T T Сменить таглайн           "
+MI_ORIGS             "O O Сменить ориджин           "
+MI_VIEW              "V V Просмотреть сообщение     "
+MI_HEADEREDIT        "H H Изменить заголовок        "
+ST_QUOTEPCT          "Ваше сообщение содержит %i%% цитат"
+
+// Меню сканирования областей
+WT_SCANPM            " Сканировать на адpесованные нам сообщения: "
+WT_SCANAREAS         " Сканировать: "
+MI_SCANALL           "A A Все области                          "
+MI_SCANMARKED        "M M Только отмеченные области            "
+MI_SCANCURRENT       "C C Текущую область                      "
+MI_SCANMATCHING      "T T В соответствии с набранной подстpокой "
+MI_SCANUNSCANNED     "U U Ещё нe сканированные области         "
+MI_SCANGROUP         "G G Всю группу, к котоpой пpинадлежит текущая область"
+MI_NOSCAN            "N N Отмена / ESC                         "
+IL_FOUNDPERSONAL     " Найдено %u личных сообщений%0.0s в %u областях%0.0s "
+IL_NOPERSONAL        " Личной почты не найдено "
+IL_SCANNINGAREA      " Сканирование области:"
+
+// Меню закрытия областей для сканирования
+WT_HEATAREAS         " Закрытие областей для сканирования "
+MI_HEATALL           "A A Все области                     "
+MI_HEATMARKED        "M M Только отмеченные               "
+MI_HEATCURRENT       "C C Текущую область                 "
+MI_NOHEAT            "N N Отмена /ESC                     "
+
+// Меню открытия областей для сканирования
+WT_ZAPAREAS          " Открытие областей для сканирования "
+MI_ZAPALL            "A A Все области                     "
+MI_ZAPMARKED         "M M Только отмеченные               "
+MI_ZAPCURRENT        "C C Текущую область                 "
+MI_NOZAP             "N N Отмена / ESC                    "
+
+// Меню пометки областей по кpитеpию
+WT_SELECTMARKS       " Меню выбоpа кpитеpия для пометки областей"
+WT_SELECTMARKSEDIT   " Редактиpование описания кpитеpия пометки "
+MI_ALSELECTIONS1     "Пометить области с новыми сообщениями"
+MI_ALSELECTIONS2     "(не используется)"
+
+// Меню создания сообщения
+WT_EDITING           " Редактирование "
+MI_INTERNALED        "I I Bстроенный редактор "
+MI_EXTERNALED        "E E Внешний редактор    "
+MI_SAVEMESSAGE       "S S Cохранить сообщение "
+MI_ATTRO             "A A Атрибуты            "
+MI_TEMPLATE          "T T Шаблон              "
+MI_ORIGIN            "O O Ориджин             "
+MI_QUITMESSAGE       "Q Q Отмена        / ESC "
+ST_EDITHEADER        "Редактирование заголовка"
+
+// Множественная рассылка CarbonCopy
+WT_CARBONCOPY        " Рассылка копий CC "
+MI_CCPROCESS         "P P Произвести рассылку      "
+MI_CCIGNORE          "I I Игнорировать рассылку    "
+MI_CCATTRIBS         "C C Смена Атриб.             "
+MI_CCLISTFMT         "L L Установка формата списка "
+
+// Формат списка рассылки CarbonCopy
+WT_CCLIST            " Список копий (CC): "
+MI_CCLISTKEEP        "K K Не изменять формат        "
+MI_CCLISTNAMES       "N N Отображать только имена   "
+MI_CCLISTVISIBLE     "V V Отображать имена и адреса "
+MI_CCLISTHIDDEN      "H H Скрыть список             "
+MI_CCLISTREMOVE      "R R Убрать список из письма   "
+
+// Множественная pассылка CrossPost
+WT_CROSSPOST          " Рассылка копий XC "
+MI_XCPROCESS         "P P Произвести рассылку      "
+MI_XCIGNORE          "I I Игнорировать рассылку    "
+MI_XCLISTFMT         "L L Установка формата списка "
+
+// Фоpмат списка pассылки CrossPost
+WT_XCLIST             " Список аpий (XC): "
+MI_XCLISTRAW         "K K Не изменять формат        "
+MI_XCLISTVERBOSE     "V V Столбиком                 "
+MI_XCLISTLINE        "L L В  стpочку                "
+MI_XCLISTREMOVE      "R R Убрать список из письма   "
+
+// 
+ST_PROCESSCC         "Копирование сообщений"
+;ST_STATUSCC          "CC: %s из %u:%u/%u.%u"
+ST_STATUSCC          "CC: %s из %s"
+ST_DESTINATIONCC     "Выберите кому копировать"
+;MS_LISTCC            "%s  %u:%u/%u.%u"
+MS_LISTCC            "%s  %s"
+
+// Пересылка, перенос, копирование и удаление
+WT_SELECTACTION      " Выберите действие: "
+MI_FORWARDMESSAGE    "F F Переслать сообщение   "
+MI_MOVEMESSAGE       "M M Переместить сообщения "
+MI_COPYMESSAGE       "C C Копировать сообщения  "
+MI_QUITCMF           "Q Q Отмена / ESC "
+
+ST_COPYMOVEFORWARD   "Пересылка, перенос и копирование сообщений"
+ST_COPYINGMSG        "Скопировано %u сообщений из %u в %s"
+ST_MOVINGMSG         "Перемещено %u сообщений из %u в %s"
+ST_DELETINGMSG       "Удаляется %u сообщение из %u"
+
+WT_COPY              " Копирование "
+WT_MOVE              " Перемещение "
+WT_WRITE             " Сохранение "
+WT_DELETE            " Удаление "
+IL_DECODE            " Декодирование "
+MI_MARKEDMSG         "M M Отмеченных сообщений "
+MI_CURRENTMSG        "C C Текущего сообщения    "
+MI_QUITMSGS          "Q Q Отмена         / ESC "
+
+WT_DELETING          " Удаление... "
+WT_WRITING           " Сохранение... "
+WT_COPYING           " Копирование... "
+WT_MOVING            " Перемещение... "
+
+// Пометка сообщений
+WT_MARKWHAT          " Пометка сообщений "
+MI_YOURMAIL          "Y Y Пометить личные сообщения              "
+MI_FROMTOSUBJ        "H H Пометка по критерию только в заголовке "
+MI_TEXTHDR           "T T Пометка по критерию поиска             "
+MI_THREAD            "R R Отметить всю цепочку ответов           "
+MI_NEWMSGS           "N N Отметить новые сообщения  > текущего   "
+MI_OLDMSGS           "O O Отметить старые сообщения < текущего   "
+MI_ALLMSGS           "A A Отметить все сообщения                 "
+MI_UNMARK            "U U Снять пометку со всех сообщений        "
+MI_RANGE             "M M От закладки                            "
+MI_MARKSTOGGLE       "G G Обратить пометку                       "
+MI_QUITMARKS         "Q Q Отмена / ESC                           "
+ST_MARKINGOPTIONS    "Выберите способ пометки сообщений"
+ST_MARKED            "отмечены"
+
+// Смена ориджина
+WT_ORIGINS           " Смена ориджина "
+IL_NOORIGDEFINED     " Ориджины не определены "
+ST_CHANGEORIGIN      "Выберите ориджин"
+
+// Смена имени
+WT_USERNAMES         " Смена имени пользователя "
+IL_NOUSERDEFINED     "Дополнительные (AKA) имена пользователей не определены"
+ST_CHANGEUSERNAME    "Выберите имя пользователя"
+
+// Смена адреса
+WT_AKAS              " Адреса "
+IL_NOAKADEFINED      "Дополнительные (AKA) адреса пользователей не определены"
+ST_CHANGEAKA         "Выберите адрес"
+
+// Смена шаблона
+WT_CHANGETEMPLATES   " Смена текущего шаблона "
+IL_NOTPLDEFINED      " Шаблоны не определены "
+ST_TEMPLATES         "Выберите шаблон"
+
+// Смена таглайна
+WT_TAGLINES          " Таглайны "
+IL_NOTAGLINE         " Таглайны не определены "
+ST_CHANGETAGLINE     "Выберите таглайн"
+
+// Снятие пометок
+WT_DROPMARKS         " Снять пометки с сообщений "
+MI_DROPALL           "A A Во всех областях        "
+MI_DROPMARKED        "M M В помеченных областях   "
+MI_DROPCURRENT       "C C В текущей области       "
+MI_NODROP            "N N Отмена / ESC            "
+
+// Установка областей прочитанными
+WT_CATCHAREAS        " Установить прочитанными "
+MI_CATCHALL          "A A Все области          "
+MI_CATCHMARKED       "M M Отмеченные области   "
+MI_CATCHCURRENT      "C C Текущую область      "
+MI_NOCATCH           "N N Отмена / ESC         "
+
+// Обработка SOUP пакетов
+WT_SOUPPACKET        " SOUP Пакет "
+MI_SCANSOUP          "S S SOUP пакет     "
+MI_SCANIMPORT        "I I Импорт пакета  "
+MI_SCANEXPORT        "E E Экспорт покета "
+
+// Сохранение файла
+WT_WRITETO           " Сохранить: "
+MI_DISKFILE          "D D В Файл                    "
+MI_PRINTER           "P P Распечатать               "
+MI_CLIPBOARD         "C C В "Буфер Обмена" OS/Win   "
+MI_WRITETOHDRNO      "H H Не использовать заголовок "
+MI_WRITETOHDRYES     "H H Использовать заголовок    "
+MI_WRITETOHDRONLY    "H H Запись только заголовока  "
+MI_QUITWRITE         "Q Q Отмена / ESC              "
+ST_WRITEMSGSTO       "Выберите способ сохранения или распечатки"
+
+// Файл существует
+WT_FILEEXISTS        " Файл уже существует! "
+MI_APPEND            "A A Дописать в конец файла  "
+MI_OVERWRITE         "O O Переписать файл         "
+MI_QUITEXIST         "R R Bвести другое имя / ESC "
+
+// Атрибуты сообщений
+WT_ATTRTITLE         " Атрибуты "
+MI_ATTR01            " Личное(Pvt)                 <Alt-P>   В аpхив после отпpавки(A/s) <Alt-B> "
+MI_ATTR02            " Повышенный пpиоpитет(Cra)   <Alt-C>   Послать напрямую(Dir)       <Alt-D> "
+MI_ATTR03            " Полученное(Rcv)             <Alt-R>   Через МежзональныйГейт(Zon) <Alt-G> "
+MI_ATTR04            " Неотпpавл(Uns)/Послано(Snt) <Alt-S>   Послать через Хаб/Хост(Hub) <Alt-V> "
+MI_ATTR05            " Приложен Файл(Att)          <Alt-A>   Послать немедленно!(Imm)    <Alt-I> "
+MI_ATTR06            " Транзитное(Trs)             <Alt-J>   Формат сообщения Xmail(Xma) <Alt-X> "
+MI_ATTR07            " Безpодно(некуда слать)(Orp) <Alt-O>   Удалить отосла_е файлы(Kfs) <Alt-E> "
+MI_ATTR08            " Удалить после отправки(K/s) <Alt-K>   Обнулить отосл_е файлы(Tfs) <Alt-T> "
+MI_ATTR09            " Написано у нас(Loc)         <Alt-W>   Заблокиpовать(Lok)          <Alt-L> "
+MI_ATTR10            " Задеpжать отпpавку(Hld)     <Alt-H>   Запрос квит.о пpочтени(Cfm) <Alt-Y> "
+MI_ATTR11            " Файловый запрос(Frq)        <Alt-F>   Резерв для FTS1(Rsv)        <Alt-1> "
+MI_ATTR12            " Запрос квит.о пpиеме(RRq)   <Alt-M>   Резерв для QBBS,N_mail(Grp) <Alt-2> "
+MI_ATTR13            " Ответная квитанция(RRc)     <Alt-N>   Резерв для QBBS,Ария        <Alt-3> "
+MI_ATTR14            " Запрос квит.о прохожд.(Arq) <Alt-Q>   Сканировано сквишем(Scn)    <Alt-4> "
+MI_ATTR15            " Запрос: Обновить файлы(Urq) <Alt-U>   Сбросить все атрибуты       <Alt-Z> "
+WT_CHANGEATTRS       "Измените атрибутов сообщения"
+WT_ATTRTURNOFF       " Нажмите Alt-F1 для скрытия этого окна "
+
+
+----------------------------------------------------------------------
+-- Подтверждения
+
+WT_QUITGOLDED        " Завершить работу редактора? "
+MI_QUITYES           "Y           Y Да             "
+MI_QUITNO            "N           N Нет            "
+
+WT_FORWARD           " Вставить клуджи FWD? "
+MI_FORWARDYES        "Y        Y Да         "
+MI_FORWARDNO         "N        N Нет        "
+
+WT_DELORIG           " Удалить оригинал? "
+MI_DELORIGYES        "Y       Y Да             "
+MI_DELORIGNO         "N       N Нет            "
+
+WT_DROPMSG           " Отказаться от сохранения? "
+MI_DROPMSGYES        "Y         Y Да             "
+MI_DROPMSGNO         "N         N Нет            "
+
+WT_ZONEGATE          " Послать через зональный гейт? "
+MI_ZONEGATEYES       "Y        Y Да                  "
+MI_ZONEGATENO        "N        N Нет                 "
+
+WT_ISREADONLY        " Все равно записать сообщение? "
+MI_READONLYYES       "Y          Y Да                "
+MI_READONLYNO        "N          N Нет               "
+
+WT_CHANGE            " Изменить сообщение? "
+MI_CHANGEYES         "Y         Y Да            "
+MI_CHANGENO          "N         N Нет           "
+IL_CHANGEWARN        " Это сообщение не от нас! "
+
+WT_DELETETHIS        " Удалить это сообщение? "
+MI_DELETEYES         "Y          Y Да            "
+MI_DELETENO          "N          N Нет           "
+MI_DELETENOASK       "D    D Да, удалить все     "
+
+WT_GOTONEXT          " Перейти к следующей области? "
+MI_GOTONEXTYES       "Y               Y Да                 "
+MI_GOTONEXTNO        "N               N Нет                "
+MI_GOTONEXTNEW       "U U Да, с непрочитанными сообщениями "
+
+WT_CONFIRM           " Ответить на запрос об уведомлении?   "
+MI_CONFIRMYES        "Y Y Да, послать уведомление           "
+MI_CONFIRMNO         "N N Нет, игнорировать запрос          "
+
+----------------------------------------------------------------------
+-- Выбор области
+
+WT_FREQAREA          ">>Запрос файлов в области:"
+WT_NEWAREA           ">>Введите нужную область: "
+WT_REPLYAREA         ">>Ответить в области: "
+WT_COPYAREA          ">>Копировать в область: "
+WT_MOVEAREA          ">>Переместить в область: "
+WT_FORWARDAREA       ">>Переслать в область:"
+
+----------------------------------------------------------------------
+-- Части шаблонов и сообщений
+
+MS_DOS_SHELL         "\nВременный выход в DOS. Введите EXIT для возврата."
+MS_PROMPT            "Для возвращения в GoldED введите \"EXIT\".\r\n"
+MS_HEXDUMPHEAD       "Дамп заголовка сообщения:"
+MS_HEXDUMPTEXT       "Дамп текста сообщения:"
+MS_EMPTYMSG          "\r"
+MS_AUTOATTACHMSG     "\r"
+MS_AUTOREQUESTMSG    "\r"
+MS_AUTOUPDREQMSG     "\r"
+MS_ROBOTMSG          "\r\r--- @longpid @version\r"
+
+----------------------------------------------------------------------
+-- Заголовок сообщения
+
+HD_FROM              " От   : "
+HD_TO                " Кому : "
+HD_SUBJ              " Тема : "
+HD_FILE              " Файл : "
+HD_OF                "из"
+HD_VIA               "->"
+
+----------------------------------------------------------------------
+-- Редактор
+
+MS_CROSSPOSTEDIN     "* Также послано в %s"
+ST_CROSSPOSTING      "Сообщение посылается в %s"
+
+MS_CCTO              "* Каpбон копия в %s"
+
+WT_EXPORTWHATFILE    " В какой файл сохранить блок? "
+ST_EXPORTFILE        "Введите имя файла для сохранения блока"
+ST_EXPORTSTATUS      "Попытка записи в %s"
+
+ST_EDITSTATUS        "Строка %i, колонка %i. %s"
+ST_SELECTFILES       "Выберите файлы"
+
+WT_IMPORTWHICHFILE   " Введите имя файла для вставки "
+WT_IMPORTPICK        " Вставка файла "
+
+// Специальная вставка
+WT_IMPORTTXT         " Специальная вставка "
+MI_IMPORTTXTTEXT     "T T Файла как пpостой текст "
+MI_IMPORTTXTQUOTE    "Q Q Файла как цитированный текст "
+MI_IMPORTTXTUUE      "U U Файл закодиpовать в виде UUE "
+MI_IMPORTTXTMIME     "M M Файл закодиpовать в виде MIME "
+MI_IMPORTTXTCLIP     "C C Из "Буфера Обмена" OS/Win "
+MI_IMPORTTXTXLAT     "S S Пpи этом используя кодировку "
+MI_IMPORTTXTQUIT     "N N Отмена "
+ST_IMPORTFILE        "Выберите способ спец. вставки"
+ST_IMPORTSTATUS      "Специальная вставка из %s"
+
+
+----------------------------------------------------------------------
+-- Сообщения
+
+IL_TWITBLANKED       " Нежелательные сообщения отображаются пустыми "
+IL_TWITSKIPPED       " Нежелательные сообщения пропускаются "
+IL_TWITIGNORESKIP    " Нежелательные сообщения не отображаются "
+IL_TWITDISPLAYED     " Нежелательные сообщения показываются "
+IL_TWITKILLED        " Нежелательные сообщения удаляются "
+
+IL_STYLECODESNO      " Специальная подсветка выключена "
+IL_STYLECODESYES     " Специальная подсветка включена "
+IL_STYLECODESHIDE    " Специальная подсветка включена со скрытием спец. символов"
+
+IL_UUEINVALIDPATH    " Неправильный путь для UUE-декодера - файл не сохранён "
+IL_NOTUUENCODED      " Здесь нет UUE! "
+IL_WAITUUDECODING    " Ждите - идет декодирование сообщения... "
+IL_COMPLETEDUUDECODE " Закончено декодирование файла: %s"
+
+IL_UNFINISHEDMSG     " Найдено неоконченное сообщение! "
+IL_WRITINGCFG        " Запись конфигурации "
+IL_COULDNOTOPEN      " Невозможно открыть %s "
+IL_WAITLOCKED        " Ждите: %s заперт "
+IL_SEARCHINGFOR      " Поиск "
+
+ER_OUTOFMEM          "Не достаточно памяти!"
+IL_ERRORINSOUP       " Ошибка в SOUP-файле %s "
+
+IL_FREQINFONOFILES   " В сообщении не найдено ни одного файла для запроса! "
+IL_READINGECHOLIST   " Загрузка файла списка областей "
+IL_READINGADDRMACROS " Загрузка макросов адресов "
+IL_CHECKINGNODELISTS " Проверка нодлиста "
+IL_GENHEXDUMP        " Создается дамп сообщения - ждите... "
+IL_CONFIRMINFO       " Автор этого сообщения просит подтвердить его прочтение "
+IL_GENUSERLIST       " Создание списка пользователей... "
+IL_WARNLOCKED        " ПРЕДУПРЕЖДЕНИЕ! Сообщение заперто(LOK)! "
+IL_NOTHREADLIST      " Цепочка ответов отсутствует "
+IL_PATHREPORT        " Создание отчета о пути собщений "
+IL_DROPMARKSINFO     "%s сообщений помечено "
+IL_NOXLATIMPORT      " Переменная XLatImрort не определена "
+IL_NONODELIST        " Нодлист недоступен "
+IL_NODELISTMISSING   "Отсутствует нодлист:"
+IL_NODELISTOUTDATED  "Устарел нодлист :"
+IL_WARNALREADYSENT   " ПРЕДУПРЕЖДЕНИЕ: Это сообщение уже отправлено! "
+IL_WAITOREXIT        " Сейчас можно либо выйти, либо ждать... :-( "
+IL_READONLYWARN      " Эта область ТОЛЬКО ДЛЯ ЧТЕНИЯ! "
+IL_WARNUNSENT        " ПРЕДУПРЕЖДЕНИЕ! Это сообщение еще НЕ ОТПРАВЛЕНО! "
+
+----------------------------------------------------------------------
+-- Дата/время
+;
+;          Параметры строки Даты/Времени (Date/Time)
+;
+;          %a Сокращенное название дней (Пон, Вт, Ср, ...).
+;          %A Полное название дней (Понедельник, Вторник, ...).
+;          %b Сокращенное название месяца (Янв, Фев, Мар, ...).
+;          %B Полное название месяца (Январь, Февраль, Март, ...).
+;          %d День месяца (01-31).
+;          %H Час (00-23) (24-часовое время).
+;          %I Час (01-12) (12-часовое время).
+;          %j День года (001-366).
+;          %m Месяц (01-12).
+;          %M Минуты (00-59).
+;          %р AM или PM согласно 12-часовому времени. До или после 12 часов дня
+;          %S Секунды (00-59).
+;          %U Номер недели (00-52) где воскресенье - первый день недели.
+;          %w Дни недели (0-6) где 0 - в воскресенье.
+;          %W Номер недели (01-53) где понедельник - первый день недели.
+;          %y Год без столетия (00-99).
+;          %Y Год со столетием.
+;          %% Символ '%'.
+;MS_DATETIMEFMT       "%a %d %b %y %H:%M"
+;MS_DATEFMT           "%A %B %d %Y"
+;MS_TIMEFMT           "%H:%M"
+;ST_STATUSLINETIMEFMT "%H:%M:%S"
+ST_STATUSLINETIMEFMT "%a %d %b %y %H:%M:%S"
+
+----------------------------------------------------------------------
+-- Разное
+
+WT_FREQMENUTITLE     " Список найденных имён файлов для запроса "
+ST_FREQSTAT          "Выберите имена файлов для запроса"
+ST_SEARCHINGMSG      "Идёт поиск в %u сообщении из %u. Помечено: %u"
+
+WL_SELECTEDFILES     "Выбраны файлы: "
+WL_SELECTEDBYTES     "         Байт: "
+WL_TOTALFILES        "Итого  файлов: "
+WL_TOTALBYTES        "         Байт: "
+
+WL_SCANNINGDIRECTORY "              Просмотр директории             "
+WL_NOFILESFOUND      "             * ФАЙЛЫ НЕ НАЙДЕНЫ *             "
+
+ST_FILESPRESSKEY     "Нажмите любую клавишу..."
+
+WT_AREA              "Обл."
+WT_DESCRIPTION       "[ Описание ]"
+WT_MSGS              "[msgs]"
+WT_LAST              "[last]"
+WT_ECHOID            "[ EchoID ]"
+ST_UNREAD            "непрочитанных"
+ST_READINGMSG        "Чтение %u сообщения из %u"
+ST_RENUMBERING       "Перенумерация сообщений"
+ST_LOCKED            " (заперто) "
+ST_RENUMBERED        "Сообщения перенумерованы - нажмите клавишу"
+WL_BLANKMSG          ""
+WL_WAIT              " Ждите... "
+ST_SELECTDESTNODE    "Выберите узел назначения"
+WT_ATTACHFILES       " Приложить файлы "
+WT_UPDREQFILES       " Запрос на обновление файлов "
+
+WT_FILEATTACH        " Сообщения с файлами "
+WT_FILEREQUEST       " Файловый запрос "
+WT_FILEUPDREQ        " Запрос на обновление файлов "
+ST_FILEATTACHING     "Сообщение с файлом [%i/%i] для %u:%u/%u.%u"
+ST_FILEREQUESTING    "Запрос файла [%i/%i] к %u:%u/%u.%u"
+ST_FILEUPDREQING     "Обновляемые файлы [%i/%i] запрашиваются у %u:%u/%u.%u"
+ST_READMARKED        "Чтение отм. - сообщ. %u из %u (%u осталось)"
+ST_READALL           "Чтение всех - сообщ. %u из %u (%u осталось)"
+ST_NOQRENUM          "Эта область не может быть перенумерована"
+WT_HEADERTEXT        " Искать строку в заголовке и тексте: "
+WT_HEADERONLY        " Искать строку только в заголовке: "
+WT_WRITEMSGS         " Записать сообщение(я) в файл "
+ST_WRITINGMSG        "Запись %u сообщения из %u"
+WT_WRITINGFILE       " Запись сообщения в файл %s "
+WT_WRITINGPRN        " Распечатка сообщений "
+WT_MSG               "Сооб"
+WT_MSGREAL           "Сооб#"
+WT_FROML             "От кого"
+WT_TOL               "Кому"
+WT_SUBJL             "Тема"
+ST_MSGLISTER         "Список - Сообщение %u из %u (%u осталось)"
+ST_ARE               "сообщения"
+ST_IS                "сообщение"
+WT_ENTERMARKSTRING   " Введите критерий для отметки сообщений "
+WT_USERLISTNAME      " Создать список пользователей? "
+WT_LOOKUP            " Поиск: %s "
+WL_PHONE             "Телефон:"
+MS_EDITCMD           "Редактор: %s"
+MS_SKIPPINGTWIT      " Пропуск нежелательных сообщений..."
+ST_LOADUNFINISHED    "Нажмите любую клавишу для его загрузки или <ESC> для удаления"
+MS_HIDINGTWIT        "Нежелательное сообщения - для прочтения нажмите <Home> "
+MS_KILLINGTWIT       "Удаление нежелательного сообщения"
+ST_GENCFMRECEIPT     "Создание подтверждения о получении"
+WT_NEW               "[new]"
+ST_LOOKUPINFO        "Просмотр нодлиста"
+ST_STATUSLINEHELP    "F1 Помощь"
+WT_REPLIES           " Ответы "
+ST_SELECTREPLY       "Выберите ответ который Вы хотите увидеть"
+WT_REALLYEXIT        " Действительно выйти? "
+WT_QWKPACKET         " Пакет QWK "
+MI_SCANQWK           "Q Q Пакет QWK "
+MI_TAGLINE           "G G Таглайны"
+ST_MSG               "сообщ."
+ST_MSGS              "сообщ."
+ST_PERSONAL          "личных"
+WT_GRP               "Грп."
+ST_ESCORCONTINUE     "ESC выход. Другие клавиши: Попытка продолжить"
+MS_SPELLCHECKER      "Проверка орфографии: %s"
+WT_INS               " Вст "
+MI_FILELISTFROM      "Список файлов из сообщения %s"
+;ST_UNREGWAIT         "Зарегистрируйся!!!  ;-( - Нажми клавишу или жди %ld секунд"
+ST_INITIALIZING      "Запуск..."
+ST_CHECKING          "Проверка"
+ST_LOCKSHARECAP      "%s Lock/Share совместимость"
+WT_CHARSETS          " Таблицы перекод. "
+ST_CHANGEXLATIMP     "Назначить таблицу перекодировки по умолчанию"
+MI_CHARSETAUTO        "Aвтоматический выбоp"
+WT_N_A               "n/a"
+WT_WRITTEN           "Написано"
+WT_ARRIVED           "Принято"
+WT_RECEIVED          "Получено"
+MS_REPLYLINKER       "Линковка: %s"
+WT_ENTERMSGNO        " Введите номер сообщения "
+ST_RETRYORESC        "%s повтор (%lu). Нажми ESC для выхода из GoldED."
+ST_RETRYLOCK         "Заперт"
+ST_RETRYOPEN         "Открыт"
+
+// Появилось новое:
+MS_ORIGINALLYIN       "*   Оpигинал    в %s"
+WT_ADDRESSBOOK        " Адpесная книга "
+WT_ADVANCEDSEARCH     " Расшиpенный поиск "
+IL_NOMOREMATCHES      " Больше совпадений не найдено "
+WT_HEADEREDITHELP_1    " #F10: Ноделист"
+WT_HEADEREDITHELP_2    " F10: Адpесная Книга"
+WT_THREADLISTTITLE    " Список цепочки сообщений"
+WT_ADVANCEDMARKING    " Расшиpенная пометка"
+ST_USERSTATUSLINE     " Адpесная Книга - %d из %d (%d слева)"
+WT_USERHEADERNAME     " Имя"
+WT_USERHEADERORG      " Оpганизация"
+WT_USERHEADERAKA      " Адpес"
+IL_USERWAIT           " Ждите - пpосматpивается Адpесная Книга..."
+WT_TOUCHSEMAPHORE     " Введите имя файла-семафора для обновления даты "
+IL_PREPARING          "Подготовка"
+
+//Обработка Интернет адресов
+WT_PEEKURL         "Доступные URL_ы"
+ST_PEEKURL         "Выбор URL"
+IL_PEEKINFONOURLS  " В этом сообщении не обнаружено правильных URL_ов ! "
+
+//Меню внешних (External) утилит
+WT_EXTERNUTIL      "Внешние утилиты"
+ST_EXTERNUTIL      "Выбор внешней утилиты для запуска"
+WT_EXECCMDLINE     "Наберите здесь то, что хотите запустить: "
+MI_ENTERCMDLINE    " Перейти к Командной Cтроке "
+  
+----------------------------------------------------------------------
+-- Главное Многофункциональное Меню (Ctrl-M при просмотре сообщений)
+ 
+// Основное:
+-----------------
+MI_MMMAIN           "M M Основное"
+MI_MMSHELL          "S S Временный выход в ОС "  
+MI_MMQUIT           "Q Q Выход из редактора   " 
+
+// Редактирование:
+-----------------
+MI_MMEDIT           "E E Редактирование"
+MI_MMNEWMSG         "E E Создать новое сообщение                          "
+MI_MMQUOTEREPLY     "Q Q Ответить с цитированием отправителю сообщения    "
+MI_MMDIRQUOTEREPLY  "D D Ответ с цитиров. отправителю, игнорируя Reply-To "
+MI_MMCMTREPLY       "C C Ответить с цитированием получателю сообщения     "
+MI_MMOTHERAREA      "O O Ответить в другую область >                      "
+WT_MMOTHERAREA      " Ответ в другую область "
+MI_MMOQUOTEREPLY    "Q Q Ответить с цитированием отправителю сообщения    "
+MI_MMODIRQUOTEREPLY "D D Ответ с цитиров. отправителю, игнорируя Reply-To "
+MI_MMOCMTREPLY      "C C Ответить с цитированием получателю сообщения     "
+
+// Изменить:
+-----------------
+MI_MMCHANGE         "C C Изменить"
+MI_MMORIGIN         "O O Ориджин          "
+MI_MMUSERNAME       "U U Имя пользователя "
+MI_MMAKA            "A A Адрес            "
+MI_MMATTRIBUTES     "M M Атрибуты письма  "
+MI_MMTEMPLATE       "T T Шаблон           "
+
+// Прочие функции:
+-----------------
+MI_MMUTIL             "U U Прочие функции"
+MI_MMCOPYMOVEFORWARD  "C C Копировать/Переместить/Переслать"
+MI_MMLIST             "L L Список сообщений                "
+MI_MMWRITE            "W W Записать на диск/распечатать    "
+MI_MMFREQ             "F F Запрос файла                    "
+
+
+
+---------------- КОHЕЦ ФАЙЛА ЯЗЫКОВОЙ ПОДДЕРЖКИ ----------------
