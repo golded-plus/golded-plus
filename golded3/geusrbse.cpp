@@ -75,7 +75,7 @@ guserbase::guserbase() {
     strcpy(entry.snail2, "Moscow");
     strcpy(entry.snail3, "Russia");
     entry.dataphone[0] = NUL;
-    strcpy(entry.voicephone, "+7-(095)-532-79-03";
+    strcpy(entry.voicephone, "+7-(095)-532-79-03");
     entry.faxphone[0] = NUL;
     entry.firstdate = entry.lastdate = entry.times = 0;
     strcpy(entry.homepage, "http://asa.i-connect.ru");
