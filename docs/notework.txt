@@ -12,6 +12,9 @@ ______________________________________________________________________
                  Notes for GoldED+ 1.1.5, March xx 2001
 ______________________________________________________________________
 
+- Fixed double recoding of header during forward, quote-reply, and
+  change.
+
 + Added new keyword WRITETEMPLATE which defines template to be used on
   saving messages. Could be used in Random System Groups or globally.
 

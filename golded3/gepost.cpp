@@ -762,7 +762,7 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
         msg->inreplyto = NULL;
         msg->references = NULL;
         msg->attr.tou0();
-        msg->TextToLines(CFG->dispmargin-1);
+        msg->TextToLines(CFG->dispmargin-1, false);
         *msg->iorig = NUL;
         *msg->idest = NUL;
         *msg->ireplyto = NUL;
@@ -788,7 +788,7 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
         msg->inreplyto = NULL;
         msg->references = NULL;
         msg->attr.tou0();
-        msg->TextToLines(CFG->dispmargin-1);
+        msg->TextToLines(CFG->dispmargin-1, false);
         break;
       case MODE_NEW:
         wfill(MINROW, 0, MAXROW-2, MAXCOL-1, ' ', C_READW);
@@ -830,7 +830,7 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
         case MODE_QUOTE:
         case MODE_REPLYCOMMENT:
           omsg->attr.tou0();
-          omsg->TextToLines(-CFG->quotemargin);
+          omsg->TextToLines(-CFG->quotemargin, false);
           if(ignore_replyto)
             *omsg->ireplyto = NUL;
           if(omsg->attr.rot())
