@@ -227,16 +227,6 @@ int gfile::unlock(long __offset, long __len) {
 
 //  ------------------------------------------------------------------
 
-int gfile::eof() {
-
-  int _ret = ::eof(fh);
-  status = (_ret == -1) ? errno : 0;
-  return _ret;
-}
-
-
-//  ------------------------------------------------------------------
-
 int gfile::getftime(dword* __ftime) {
 
   struct stat s;

@@ -116,6 +116,11 @@ const char* __gver_shortver__ = __GVER_SVER__(__GVER_MAJOR__,__GVER_MINOR__,__GV
 #define __GVER_SHORTPLATFORM__ "BeOS"
 #define __GVER_SHORTLOGNAME__  "B"
 #define __GVER_CFGEXT__        ".gbe"
+#elif defined(__QNXNTO__)
+#define __GVER_PLATFORM__      "/QNX"
+#define __GVER_SHORTPLATFORM__ "QNX"
+#define __GVER_SHORTLOGNAME__  "Q"
+#define __GVER_CFGEXT__        ".gqx"
 #elif defined(__UNIX__)
 #define __GVER_PLATFORM__      "/UNX"
 #define __GVER_SHORTPLATFORM__ "UNX"

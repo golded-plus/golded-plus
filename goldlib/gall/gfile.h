@@ -112,8 +112,6 @@ public:
 
   int     getftime    (dword* __ftime);
 
-  int     eof         ();
-
 
   //  --------------------------------------------------------------
   //  ANSI-style streaming buffered I/O

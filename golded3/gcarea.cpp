@@ -1016,9 +1016,9 @@ char* MapPath(char* map, bool reverse) {
       char sl1, sl2;
       char* ptr;
 
-      ptr = strpbrk(p, "/\\");
+      ptr = strpbrk((char *)p, "/\\");
       sl1 = ptr ? *ptr : NUL;
-      ptr = strpbrk(q, "/\\");
+      ptr = strpbrk((char *)q, "/\\");
       sl2 = ptr ? *ptr : NUL;
 
       if(sl1 and sl2 and (sl1 != sl2))

@@ -44,6 +44,9 @@
 #define strupr(s) (char *)_nls_strupr((unsigned char *)(s))
 #define strlwr(s) (char *)_nls_strlwr((unsigned char *)(s))
 #elif defined(__GNUC__)
+#if defined(__QNXNTO__)
+#include <strings.h>
+#endif
 #define stricmp strcasecmp
 #define strnicmp strncasecmp
 char* strupr(char* s);

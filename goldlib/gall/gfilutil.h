@@ -52,7 +52,7 @@
 //  ------------------------------------------------------------------M
 
 #if defined(__UNIX__)
-#if !defined(__BEOS__)
+#if !defined(__BEOS__) && !defined(__QNXNTO__)
 #define O_TEXT 0
 #define O_BINARY 0
 #endif
@@ -236,22 +236,18 @@ int unlock(int handle, long offset, long length);
 #if !defined(__DJGPP__) && defined(__GNUC__)
 int lock(int handle, long offset, long length);
 int unlock(int handle, long offset, long length);
+#if !defined(__QNXNTO__) && !defined(__MINGW32__)
 inline long tell(int fh) { return lseek(fh, 0, SEEK_CUR); }
 #endif
+#endif
 
-#if !defined(__MINGW32__) && !defined(__EMX__) && defined(__GNUC__)
-
-inline int eof(int h) {
-  return tell(h) > filelength(h);
-}
-
+#if !defined(sopen) && !defined(__MINGW32__) && !defined(__EMX__) && !defined(__QNXNTO__) && defined(__GNUC__)
 inline int sopen(const char* path, int access, int shflag, int mode) {
 #ifdef __UNIX__
   shflag = 0;
 #endif
   return open(path, access|shflag, mode);
 }
-
 #endif
 
 #if defined(__UNIX__) || defined(__CYGWIN__)
