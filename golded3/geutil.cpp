@@ -56,15 +56,15 @@ void update_statuslines() {
 
     if(CFG->switches.get(statuslineclock)) {
       time_t t = time(NULL);
-      sprintf(clkinfo, " %c %s", sep, strftimei(help, 40, LNG->StatusLineTimeFmt, localtime(&t)));
+      sprintf(clkinfo, "   %s", strftimei(help, 40, LNG->StatusLineTimeFmt, localtime(&t)));
     }
 
     if(CFG->statuslinehelp == -1)
       *help = NUL;
     else if(CFG->statuslinehelp)
-      sprintf(help, "%s %c ", LNG->StatusLineHelp, sep);
+      sprintf(help, "%s   ", LNG->StatusLineHelp);
     else
-      sprintf(help, "%s%s%s%s%c%s%i.%i.%i%s %c ",
+      sprintf(help, "%s%s%s%s%c%s%i.%i.%i%s   ",
         __gver_prename__,
         __gver_name__,
         __gver_postname__,
@@ -74,8 +74,7 @@ void update_statuslines() {
         __gver_major__,
         __gver_minor__,
         __gver_release__,
-        __gver_postversion__,
-        sep
+        __gver_postversion__
       );
     
     int len = MAXCOL-strlen(help)-strlen(meminfo)-strlen(clkinfo)-2;
@@ -93,6 +92,8 @@ void update_statuslines() {
     int row, col;
     vposget(&row, &col);
     wwprintstr(W_STAT, 0,0, C_STATW, buf);
+    wwprintc(W_STAT, 0,strlen(help)-1, C_STATW, sep);
+    wwprintc(W_STAT, 0,MAXCOL-strlen(clkinfo), C_STATW, sep);
     vposset(row, col);
     #ifdef GOLD_MOUSE
     if(gmou.Row() == MAXROW-1)

@@ -1581,6 +1581,7 @@ void vclrscr(int atr) {
 
   #if defined(__USE_NCURSES__)
 
+  clearok(stdscr, TRUE);
   for(int row = 0; row < LINES; row++)
     mvhline(row, 0, ' ' | gvid_attrcalc(atr), COLS);
   move(0, 0);
@@ -1930,7 +1931,7 @@ void vcurset(int sline, int eline) {
 
   if((sline == 0) and (eline == 0))
     curs_set(0);
-  else if((eline - sline) <= 3)
+  else if((eline - sline) <= 4)
     curs_set(1);
   else
     curs_set(2);

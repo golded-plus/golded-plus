@@ -4,6 +4,7 @@
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
 //  Copyright (C) 1999-2000 Alexander S. Aganichev
+//  Copyright (C) 2000 Jacobo Tarrio
 //  ------------------------------------------------------------------
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Library General Public
@@ -1581,6 +1582,33 @@ static void update_buffers(vatch* pcurr, int shadow) {
   }
 }
 
+//  ------------------------------------------------------------------
+
+int wwprintc(int whandle, int wrow, int wcol, int attr, const vchar chr) {
+
+  // check for existance of active window or hidden windows
+  if(!gwin.total and gwin.hidden==NULL)
+    return gwin.werrno=W_NOACTIVE;
+
+  // find address of window's record
+  _wrec_t* found = wfindrec(whandle);
+  if(found==NULL) {
+    found = gwin.hidden;
+    while(found) {
+      if(whandle==found->whandle)
+        break;
+      found = found->prev;
+    }
+    if(found==NULL)
+      return gwin.werrno=W_NOTFOUND;
+  }
+
+  // display character
+  vputc(found->srow+wrow+found->border, found->scol+wcol+found->border, attr, chr);
+
+  // return to caller
+  return gwin.werrno = W_NOERROR;
+}
 
 //  ------------------------------------------------------------------
 
