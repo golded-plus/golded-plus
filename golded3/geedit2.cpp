@@ -933,7 +933,7 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
       Path cmdline;
 
       isPipe = YES;
-      mktemp(strxcpy(tmpfile, AddPath(CFG->goldpath, "GIXXXXXX"), sizeof(Path)));
+      mktemp(strxcpy(tmpfile, AddPath(CFG->temppath, "GIXXXXXX"), sizeof(Path)));
       strxmerge(cmdline, sizeof(Path), filenamebuf.c_str()+1, " > ", tmpfile, NULL);
       ShellToDos(cmdline, "", NO, NO);
       filenamebuf = tmpfile;

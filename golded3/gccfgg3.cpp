@@ -244,13 +244,6 @@ void CfgEditmixcase() {
 
 //  ------------------------------------------------------------------
 
-void CfgEditmsgsize() {
-
-  EDIT->MsgSize(atol(val));
-}
-
-//  ------------------------------------------------------------------
-
 void CfgEditor() {
 
   EDIT->External(val);

@@ -92,10 +92,7 @@ int PcbArea::load_message(int __mode, gmsg* __msg, PcbHdr& __hdr) {
   strtrim(strncpy(__msg->re, __hdr.subject,  25));
   strtrim(strncpy(__msg->pcboard.password, __hdr.password, 12));
   
-  // Make sure the msg size is within user/system limits
   uint _msgsize = (uint)__msg->txtlength;
-  if(_msgsize > WideMsgSize)
-    _msgsize = (uint)WideMsgSize;
 
   // Allocate memory for the message text
   __msg->txt = (char*)throw_realloc(__msg->txt, _msgsize+256);

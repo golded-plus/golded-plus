@@ -515,7 +515,6 @@ GoldedCfgEdit::GoldedCfgEdit() {
   HeaderFirst(EDITHEADERFIRST_YES);
   Internal(true);
   Menu(true);
-  MsgSize(512000L);
   QuoteMargin(75);
   SaveMenu(true);
   UnDelete(50);

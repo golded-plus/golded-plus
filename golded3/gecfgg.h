@@ -431,7 +431,6 @@ protected:
     int  hdrnodepos;
     int  hdrnodelen;
     int  headerfirst;
-    long msgsize;
     int  quotemargin;
     int  replyre;
     char softcrxlat;
@@ -488,7 +487,6 @@ public:
   bool Internal()                { return cfg.internal; }
   bool Menu()                    { return cfg.menu; }
   bool MixCase()                 { return cfg.mixcase; }
-  long MsgSize()                 { return cfg.msgsize; }
   int QuoteMargin()              { return cfg.quotemargin; }
   int ReplyRe()                  { return cfg.replyre; }
   bool SaveMenu()                { return cfg.savemenu; }
@@ -520,7 +518,6 @@ public:
   void Internal(bool s)          { cfg.internal = s; }
   void Menu(bool s)              { cfg.menu = s; }
   void MixCase(bool s)           { cfg.mixcase = s; }
-  void MsgSize(long s)           { cfg.msgsize = s; }
   void QuoteMargin(int s)        { cfg.quotemargin = s; }
   void ReplyRe(int s)            { cfg.replyre = s; }
   void SaveMenu(bool s)          { cfg.savemenu = s; }

@@ -129,15 +129,12 @@ int FidoArea::load_message(int __mode, gmsg* __msg, FidoHdr& __hdr) {
   // If message text is used
   if(__mode & GMSG_TXT) {
 
-    // Get length of message text and adjust if necessary
-    long _fillen = filelength(_fh);
-    long _txtlen = _fillen >= sizeof(FidoHdr) ? _fillen - sizeof(FidoHdr) : 0;
-    if((_txtlen+256) > WideMsgSize)
-      _txtlen = WideMsgSize;
-    uint _alloclen = (uint)(_txtlen+256);
+    // Get length of message text
+    size_t _fillen = filelength(_fh);
+    uint _txtlen = (uint) ((_fillen >= sizeof(FidoHdr)) ? (_fillen - sizeof(FidoHdr)) : 0);
 
     // Allocate space for the message text
-    __msg->txt = (char*)throw_calloc(1, _alloclen);
+    __msg->txt = (char*)throw_calloc(1, _txtlen+256);
 
     // Read the message text
     read(_fh, __msg->txt, (uint)_txtlen);

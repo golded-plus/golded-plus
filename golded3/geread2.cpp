@@ -535,7 +535,7 @@ int ExternUtil(GMsg *msg, ExtUtil *extutil) {
   strchg(buf, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
   strischg(cmdline, "@file", buf);
   if(striinc("@tmpfile", cmdline)) {
-    mktemp(strcpy(tmpfile, AddPath(CFG->goldpath, "GDXXXXXX")));
+    mktemp(strcpy(tmpfile, AddPath(CFG->temppath, "GDXXXXXX")));
     SaveLines(mode, tmpfile, msg, 79);
     strcpy(buf, tmpfile);
     strchg(buf, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
@@ -768,7 +768,7 @@ void UUDecode(GMsg* msg) {
 
   if((*CFG->uudecodepath == NUL) or is_dir(CFG->uudecodepath)) {
 
-    mktemp(strcpy(infile, AddPath(CFG->goldpath, "GDXXXXXX")));
+    mktemp(strcpy(infile, AddPath(CFG->temppath, "GDXXXXXX")));
     strcpy(outfile, CFG->uudecodepath);
 
     GMenuDomarks MenuDomarks;

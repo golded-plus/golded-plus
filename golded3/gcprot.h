@@ -153,7 +153,6 @@ void CfgEditheaderfirst  ();
 void CfgEditinternal     ();
 void CfgEditmenu         ();
 void CfgEditmixcase      ();
-void CfgEditmsgsize      ();
 void CfgEditor           ();
 void CfgEditorfile       ();
 void CfgEditquotemargin  ();

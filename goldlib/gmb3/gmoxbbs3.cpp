@@ -132,14 +132,11 @@ int XbbsArea::load_message(int __mode, gmsg* __msg, XbbsHdr& __hdr) {
   // If message text is requested
   if(__mode & GMSG_TXT) {
 
+    // Get length of message text
     uint _txtlen = __hdr.length;
-    if((_txtlen+256) > WideMsgSize)
-      _txtlen = WideMsgSize;
-    uint _alloclen = (uint)(_txtlen+256);
 
-    // Get length of message text and adjust if necessary
     // Allocate space for the message text
-    __msg->txt = (char*)throw_calloc(1, _alloclen);
+    __msg->txt = (char*)throw_calloc(1, _txtlen+256);
 
     // Read the message text
     lseekset(data->fhtext, __hdr.start);

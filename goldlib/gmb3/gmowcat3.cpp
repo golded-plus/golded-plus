@@ -170,14 +170,11 @@ int WCatArea::load_message(int __mode, gmsg* __msg, WCatHdr& __hdr) {
   // If message text is requested
   if(__mode & GMSG_TXT) {
 
+    // Get length of message text
     uint _txtlen = __hdr.msgbytes;
-    if((_txtlen+256) > WideMsgSize)
-      _txtlen = (uint)WideMsgSize;
-    uint _alloclen = (uint)(_txtlen+256);
 
-    // Get length of message text and adjust if necessary
     // Allocate space for the message text
-    __msg->txt = (char*)throw_calloc(1, _alloclen);
+    __msg->txt = (char*)throw_calloc(1, _txtlen+256);
 
     // Read the message text
     read(_fhdat, __msg->txt, _txtlen);
@@ -185,7 +182,7 @@ int WCatArea::load_message(int __mode, gmsg* __msg, WCatHdr& __hdr) {
     // Convert kludge char from NUL to CTRL-A
     char* p = __msg->txt;
     for(int n=0; n<_txtlen; n++,p++) {
-      if(!*p)
+      if(*p == '\0')
         *p = CTRL_A;
     }
   }

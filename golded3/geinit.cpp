@@ -1002,8 +1002,7 @@ void Initialize(int argc, char* argv[]) {
   update_statuslinef(LNG->LockShareCap, LNG->Checking);
   WideLog = &LOG;
   WideDebug = cmdlinedebughg;
-  WideMsgSize = EDIT->MsgSize();
-  WideCanLock = CFG->sharemode ? TestLockPath(CFG->goldpath) : false;
+  WideCanLock = CFG->sharemode ? TestLockPath(CFG->temppath) : false;
   WideSharemode = CFG->sharemode;
   WideUsernames = CFG->username.size();
   WideUsername = new const char*[WideUsernames];

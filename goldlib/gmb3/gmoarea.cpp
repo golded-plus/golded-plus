@@ -38,12 +38,6 @@ uint         WideSharemode = SH_DENYNO;
 int          WideDispsoftcr = false;
 int          WidePersonalmail = 0;
 
-#if defined(GOLD_16BIT)
-long         WideMsgSize = 64000L;
-#else
-long         WideMsgSize = 512000L;
-#endif
-
 
 //  ------------------------------------------------------------------
 

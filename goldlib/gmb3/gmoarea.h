@@ -271,7 +271,6 @@ const int PM_LISTONLY = 0x0004;
 extern glog*        WideLog;
 extern int          WideDebug;
 extern int          WideCanLock;
-extern long         WideMsgSize;
 extern const char** WideUsername;
 extern int          WideUsernames;
 extern uint         WideSharemode;

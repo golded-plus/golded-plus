@@ -3872,6 +3872,13 @@ AREALISTFORMAT "AM D C4PU4N E G "]]></eg>
           <ident/YES/
         </item>
         <label>
+          Notes:
+        </label>
+        <item>
+          The same effect is achieved by skipping <ident/G/ letter in the
+          <ref target=AREALISTFORMAT><kw/AREALISTFORMAT/</ref> definition.
+        </item>
+        <label>
           Processed by:
         </label>
         <item>
@@ -3978,7 +3985,8 @@ AREALISTFORMAT "AM D C4PU4N E G "]]></eg>
         </label>
         <item>
           <ref target=AREALISTFORMAT><kw/AREALISTFORMAT/</ref>,
-          <ref target=AREALISTECHOMAX><kw/AREALISTECHOMAX/</ref>
+          <ref target=AREALISTECHOMAX><kw/AREALISTECHOMAX/</ref>,
+          <ref target=AREALISTTYPE><kw/AREALISTTYPE/</ref>
         </item>
       </list>
     </div2>
@@ -4108,7 +4116,7 @@ mbutil link -clean
     </div2>
     <div2 id=AREALISTSORT>
       <head>
-        AREALISTSORT &lt;sortspec=<q></q>&gt;
+        AREALISTSORT
       </head>
       <list type=gloss>
         <label>
@@ -4291,6 +4299,12 @@ mbutil link -clean
           keyword.
         </item>
         <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
           See also:
         </label>
         <item>
@@ -4316,38 +4330,73 @@ AREALISTSORT -U+TE</eg>
         </item>
       </list>
     </div2>
+    <div2 id=AREALISTTYPE>
+      <head>
+        AREALISTTYPE
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREALISTTYPE/ <ident>NEW/LAST</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Defines the contents of the 4th column (the one after the <gi/Total/
+          column).
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          <table rows=2 cols=2>
+            <row>
+              <cell>
+                <ident/NEW/
+              </cell>
+              <cell>
+                Displays the amount of new (unread) msgs (Actually number of
+                messages after lastread mark).
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/LAST/
+              </cell>
+              <cell>
+                 Displays the number of the last msg read.
+              </cell>
+            </row>
+          </table>
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/NEW/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=AREALISTFORMAT><kw/AREALISTFORMAT/</ref>,
+          <ref target=AREALISTGROUPID><kw/AREALISTGROUPID/</ref>,
+          <ref target=AREALISTNOS><kw/AREALISTNOS/</ref>
+        </item>
+      </list>
+    </div2>
 
 
 <!-- finished here -->
-
-
-    <div2 id=AREALISTTYPE>
-      <head>
-        AREALISTTYPE &lt;(new)/last&gt;
-      </head>
-      <p>
-        Defines the contents of the 4th column (the one after the <q>Total</q>
-        column).
-        <table rows=2 cols=2>
-          <row>
-            <cell>
-              New
-            </cell>
-            <cell>
-              Displays the amount of new (unread) msgs.
-            </cell>
-          </row>
-          <row>
-            <cell>
-              Last
-            </cell>
-            <cell>
-              Displays the number of the last msg read.
-            </cell>
-          </row>
-        </table>
-      </p>
-    </div2>
 
 
     <div2>
@@ -5729,21 +5778,6 @@ AREASEP &excl;C "Group C" C Local]]></eg>
       </p>
       <p>
     These would be re-cased to "Odinn Sorensen".
-      </p>
-    </div2>
-    <div2>
-      <head>
-        EDITMSGSIZE &lt;bytes&gt;
-      </head>
-      <p>
-  (64000 in DOS, 512000 in all others)
-      </p>
-      <p>
-    This lets you limit the size of loaded msgs. <name>GoldED+</name> currently
-    cannot handle msgs larger than 64k in the DOS version (all other
-    platforms do not have this limit). This keyword ensures that the
-    system will not get confused and possibly crash or exit, if a 
-    message was encountered that was larger than 64k.
       </p>
     </div2>
     <div2>
@@ -9966,7 +10000,8 @@ ones or remove them.
   MAPDRIVE        MAPPATH
   MATCHAKA        AKAMATCH
   MAXCOLS         SCREENMAXCOL
-  MAXMSGSIZE      EDITMSGSIZE
+  MAXMSGSIZE      (removed)
+  EDITMSGSIZE     (removed)
   MAXROWS         SCREENMAXROW
   MIXCASE         EDITMIXCASE
   MULTIQBBS       (removed)

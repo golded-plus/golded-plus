@@ -154,7 +154,6 @@ const word CRC_EDITHEADERFIRST  = 0xE583;
 const word CRC_EDITINTERNAL     = 0xC2EA;
 const word CRC_EDITMENU         = 0x833E;
 const word CRC_EDITMIXCASE      = 0x5814;
-const word CRC_EDITMSGSIZE      = 0xCF31;
 const word CRC_EDITOR           = 0xF1C3;
 const word CRC_EDITORFILE       = 0xA49C;
 const word CRC_EDITQUOTEMARGIN  = 0xACC7;

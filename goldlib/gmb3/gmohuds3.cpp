@@ -163,16 +163,11 @@ int _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::load_message(in
   // If message text is used
   if(__mode & GMSG_TXT) {
 
-    // Get length of message text and adjust if necessary
+    // Get length of message text
     uint _numrecs = __hdr.numrecs;
-    long _txtlen = (long)(_numrecs+1)*256L;
-    if(_txtlen > WideMsgSize) {
-      _txtlen = WideMsgSize;
-      _numrecs = (uint)(_txtlen/256L);
-    }
 
     // Allocate memory for message text
-    __msg->txt = (char*)throw_realloc(__msg->txt, (_numrecs+1)*256);
+    __msg->txt = (char*)throw_realloc(__msg->txt, _numrecs*256+256);
     *__msg->txt = NUL;
 
     // Read message text and convert it to a NUL-terminated C string

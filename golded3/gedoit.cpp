@@ -212,7 +212,7 @@ static void WriteMsgs(GMsg* msg) {
         else if(target & WRITE_CLIPBRD) {
           overwrite = YES;
           strcpy(ofname, AA->Outputfile());
-          mktemp(strcpy(fname, AddPath(CFG->goldpath, "GDXXXXXX")));
+          mktemp(strcpy(fname, AddPath(CFG->temppath, "GDXXXXXX")));
           AA->SetOutputfile(fname);
         }
         w_info(NULL);
@@ -309,7 +309,7 @@ static void WriteMsgs(GMsg* msg) {
         else if(target & WRITE_CLIPBRD) {
           w_info(LNG->Wait);
 
-          mktemp(strcpy(fname, AddPath(CFG->goldpath, "GDXXXXXX")));
+          mktemp(strcpy(fname, AddPath(CFG->temppath, "GDXXXXXX")));
 
           AA->LoadMsg(msg, msg->msgno, prnmargin);
           SaveLines(MODE_WRITE, fname, msg, prnmargin, true);

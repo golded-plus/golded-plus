@@ -302,7 +302,6 @@ SwitchE:
     case CRC_EDITINTERNAL     :  CfgEditinternal     ();  break;
     case CRC_EDITMENU         :  CfgEditmenu         ();  break;
     case CRC_EDITMIXCASE      :  CfgEditmixcase      ();  break;
-    case CRC_EDITMSGSIZE      :  CfgEditmsgsize      ();  break;
     case CRC_EDITOR           :  CfgEditor           ();  break;
     case CRC_EDITORFILE       :  CfgEditorfile       ();  break;
     case CRC_EDITQUOTEMARGIN  :  CfgEditquotemargin  ();  break;
