@@ -285,7 +285,7 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
           continue;
         if(tokenxchg(dst, "@fname", strbtrim(strtmp(msg->By())), 34))
           continue;
-        if(tokenxchg(dst, "fpgp", *msg->iorig ? msg->iorig : msg->By()))
+        if(tokenxchg(dst, "@fpgp", *msg->iorig ? msg->iorig : msg->By()))
           continue;
         if(tokenxchg(dst, "@ffname", strlword(msg->By())))
           continue;
