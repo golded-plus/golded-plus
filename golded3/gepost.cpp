@@ -687,7 +687,7 @@ static void GetLastLink(GMsg* msg, ulong& msgno) {
 
 //  ------------------------------------------------------------------
 
-void MakeMsg(int mode, GMsg* omsg) {
+void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
 
   GFTRK("MakeMsg");
 
@@ -833,6 +833,8 @@ void MakeMsg(int mode, GMsg* omsg) {
         case MODE_REPLYCOMMENT:
           omsg->attr.tou0();
           omsg->TextToLines(-CFG->quotemargin, false);
+          if(ignore_replyto)
+            omsg->ireplyto[0] = NUL;
           if(omsg->attr.rot())
             Rot13(omsg);
           // Drop through

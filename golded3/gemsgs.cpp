@@ -102,16 +102,17 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
   char xmailer[356];
   get_informative_string(xmailer);
 
-  struct tm* written_tm = gmtime(&msg->written);
-  char cdate[32];
-  strftimei(cdate, 32, LNG->DateFmt, written_tm);
-  char ctime[32];
-  strftimei(ctime, 32, LNG->TimeFmt, written_tm);
+  time_t t = time(NULL);
+  struct tm* written_tm = localtime(&t);
+  char cdate[80];
+  strftimei(cdate, 80, LNG->DateFmt, written_tm);
+  char ctime[80];
+  strftimei(ctime, 80, LNG->TimeFmt, written_tm);
   written_tm = gmtime(&oldmsg->written);
-  char odate[32];
-  strftimei(odate, 32, LNG->DateFmt, written_tm);
-  char otime[32];
-  strftimei(otime, 32, LNG->TimeFmt, written_tm);
+  char odate[80];
+  strftimei(odate, 80, LNG->DateFmt, written_tm);
+  char otime[80];
+  strftimei(otime, 80, LNG->TimeFmt, written_tm);
 
   const char* osslashbuf = __gver_platform__;
 
@@ -120,7 +121,7 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
   bool currareaisinet = AA->isinternet();
   char* modereptr = oldmsg->re;
 
-  if(mode == MODE_QUOTE or mode == MODE_REPLYCOMMENT or mode == MODE_REPLY) {
+  if((mode == MODE_QUOTE) or (mode == MODE_REPLYCOMMENT) or (mode == MODE_REPLY)) {
     if(AL.AreaIdToPtr(__origarea)->Areareplydirect() and oldmsg->areakludgeid)
       origareaid = oldmsg->areakludgeid;
   }
@@ -309,7 +310,7 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
           tokenxchg(dst, "@fpseudo", msg->pseudofrom);
           continue;
         }
-        if(tokenxchg(dst, "@cpseudo", *AA->Nickname() ? AA->Nickname() : strlword(strcpy(buf, AA->Username().name))))
+        if(tokenxchg(dst, "@cpseudo", *AA->Nickname() ? AA->Nickname() : strlword(strcpy(buf, AA->Username().name), " @")))
           continue;
         if(tokenxchg(dst, "@version", longverbuf))
           continue;

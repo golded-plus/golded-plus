@@ -113,7 +113,7 @@ void IEclass::setlinetype(Line* __line) {
 
 int IEclass::dispchar(vchar __ch, int attr) {
 
-  if(__ch == '\0') // possible if line empty
+  if(__ch == NUL) // possible if line empty
     __ch = ' ';
   if(__ch != '\n') {
     if(__ch == ' ')

@@ -1609,7 +1609,7 @@ void ScanKludges(GMsg* msg, int getvalue) {
         const char* ptr = line->txt.c_str() + 9;
         ptr = strskip_wht(ptr);
         char* tmp = UnwrapLine(line, ptr);
-        KludgeREPLYADDR(msg, tmp ? tmp : ptr);
+        KludgeREPLY_TO(msg, tmp ? tmp : ptr);
         if(tmp)
           throw_free(tmp);
       }
@@ -2639,16 +2639,17 @@ void MsgLineReIndex(GMsg* msg, int viewhidden, int viewkludge, int viewquote) {
       if(not viewquote) {
         GetQuotestr(line->txt.c_str(), qbuf, &qlen);
         strtrim(qbuf);
-        if(strieql(qbuf0, qbuf)) {
-          if(strpbrk(line->txt.c_str()+qlen, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"))
-            qmatches++;
-        }
-        else {
+        if(not strieql(qbuf0, qbuf)) {
           strcpy(qbuf0, qbuf);
-          if(strpbrk(line->txt.c_str()+qlen, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"))
-            qmatches = 1;
-          else
-            qmatches = 0;
+          qmatches = 0;
+        }
+        const char *p = line->txt.c_str()+qlen;
+        while(*p != NUL) {
+          if(isxalnum(*p)) {
+            qmatches++;
+            break;
+          }
+          ++p;
         }
         if(qmatches != 1) {
           line = line->next;
@@ -2976,6 +2977,8 @@ char* ParseInternetAddr(char* __string, char* __name, char* __addr) {
     *commaptr = ',';
 
   StripQuotes(__name);
+
+  strxmimecpy(__name, __name, 0, strlen(__name), true);
 
   return __name;
 }

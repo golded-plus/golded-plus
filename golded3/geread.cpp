@@ -602,11 +602,11 @@ void Reader() {
                 break;
 
               case KK_ReadMoveQuoteMsg:
-                OtherAreaQuoteMsg();
+                OtherAreaQuoteMsg(false);
                 break;
 
               case KK_ReadMoveDirQuoteMsg:
-                OtherAreaDirQuoteMsg();
+                OtherAreaQuoteMsg(true);
                 break;
 
               case KK_ReadMoveCommentMsg:
@@ -618,11 +618,11 @@ void Reader() {
                 break;
 
               case KK_ReadQuoteMsg:
-                QuoteMsg();
+                QuoteMsg(false);
                 break;
 
               case KK_ReadDirQuoteMsg:
-                DirQuoteMsg();
+                QuoteMsg(true);
                 break;
 
               case KK_ReadCommentMsg:

@@ -255,7 +255,7 @@ bool set_to_address(GMsg* msg, gsetaddr* toname, gsetaddr* toaddr, gsetaddr* fro
 //  ------------------------------------------------------------------
 //  GEPOST prototypes
 
-void MakeMsg(int mode, GMsg* oldmsg);
+void MakeMsg(int mode, GMsg* oldmsg, bool ignore_replyto=false);
 int EditHeaderinfo(int mode, GMsgHeaderView &view);
 void CheckSubject(GMsg* msg, char* subj);
 
@@ -315,13 +315,11 @@ void MarkingOptions();
 void MessageBrowse();
 void NewArea(bool jumpnext = false);
 void NewMsg();
-void OtherAreaQuoteMsg();
-void OtherAreaDirQuoteMsg();
+void OtherAreaQuoteMsg(bool ignore_replyto=false);
 void OtherAreaCommentMsg();
 void QuitNow();
 void QuoteBuf(GMsg* msg);
-void DirQuoteMsg();
-void QuoteMsg();
+void QuoteMsg(bool ignore_replyto=false);
 void RenumberArea();
 void ReplyMsg();
 void ToggleBookMark();

@@ -9,10 +9,20 @@ ______________________________________________________________________
 
 ______________________________________________________________________
 
-                Notes for GoldED+ 1.1.5, December xx 2000
+                Notes for GoldED+ 1.1.5, February xx 2001
 ______________________________________________________________________
 
-- PGP encoded/signed messages now detected by substring
+! If @pseudo token created from address it now stops not only on space
+  but at @ as well, so no more "Hello bigfoot@shoes.com!" :-)
+
+! Maximum number of commands that could be assigned to single macro
+  extended upto 127 commands.
+
+- ViewQuote operation fixed for locales different from ASCII.
+
+- @cdate and @ctime now should be correct for changed messages.
+
+! PGP encoded/signed messages now detected by substring
 
   "-----BEGIN PGP "
 
@@ -77,7 +87,7 @@ ______________________________________________________________________
 + Added READDirQuoteMsg and READMoveDirQuoteMsg entries for
   goldkeys.cfg: quote message ignoring Reply-To kludge (in current and
   another area correspondingly). Both added to READMainmenu menu.
-  There's no default keyboard assignment. (Not tested)
+  There's no default keyboard assignment.
 
 - Fixed READMainmenu operation.
 

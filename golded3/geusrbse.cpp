@@ -848,7 +848,7 @@ bool guserbase::lookup_addressbook(GMsg* msg, char* name, char* aka, bool browse
 
 void guserbase::build_pseudo(GMsg* msg, char* name, char* aka, bool direction) {
 
-  strcpy(direction ? msg->pseudoto : msg->pseudofrom, strlword(name));
+  strcpy(direction ? msg->pseudoto : msg->pseudofrom, strlword(name, " @"));
 
   if(find_entry(name, true) and not entry.is_deleted) {
 

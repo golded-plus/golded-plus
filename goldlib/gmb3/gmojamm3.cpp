@@ -204,7 +204,7 @@ int JamArea::load_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
         break;
 
       case JAMSUB_TRACE:
-        sprintf(_kludges+strlen(_kludges), "\001VIA: %s\r", _buf);
+        sprintf(_kludges+strlen(_kludges2), "\001Via %s\r", _buf);
         // Not processed
         break;
 
@@ -289,7 +289,7 @@ int JamArea::load_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
         break;
 
       case JAMSUB_TZUTCINFO:
-        sprintf(_kludges+strlen(_kludges), "\001TZUTCINFO: %s\r", _buf);
+        sprintf(_kludges+strlen(_kludges), "\001TZUTC: %s\r", _buf);
         // Not processed
         break;
     }

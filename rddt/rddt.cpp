@@ -2,7 +2,7 @@
 //  ------------------------------------------------------------------
 //  Route Diagram Drawing Tool.
 //  Copyright (C) 1999 Odinn Sorensen
-//  Copyright (C) 1999-2000 Alexander S. Aganichev
+//  Copyright (C) 1999-2001 Alexander S. Aganichev
 //  ------------------------------------------------------------------
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License as
@@ -248,18 +248,30 @@ void nodetree::print() {
         }
       }
 
-      if(above and below)
+      if(above and below) {
+#ifdef KOI8
+        strcpy(buf, "");
+#else
         strcpy(buf, "³");
-      else
+#endif
+      } else
         *buf = NUL;
       strsetsz(buf, indent);
       n->display += buf;
     }
 
     if(n->depth) {
+#ifdef KOI8
+      strcpy(buf, "„");
+#else
       strcpy(buf, "À");
+#endif
       strsetsz(buf, indent);
+#ifdef KOI8
+      strchg(buf, ' ', '€');
+#else
       strchg(buf, ' ', 'Ä');
+#endif
       n->display += buf;
     }
 
@@ -271,11 +283,20 @@ void nodetree::print() {
   for(n=nodes.begin(); n != nodes.end(); n++) {
     list_node::iterator x=n;
     if(++x != nodes.end()) {
+#ifdef KOI8
+      const char* p = strchr(n->display.c_str(), '„');
+#else
       const char* p = strchr(n->display.c_str(), 'À');
+#endif
       if(p) {
         int len = p - n->display.c_str();
+#ifdef KOI8
+        if((x->display[len] == '') or (x->display[len] == '„'))
+          n->display[len] = '†';
+#else
         if((x->display[len] == '³') or (x->display[len] == 'À'))
           n->display[len] = 'Ã';
+#endif
       }
     }
     n->display.resize(maxdisp, ' ');
@@ -298,9 +319,13 @@ int main(int argc, char** argv) {
   // set locale
   setlocale(LC_CTYPE, "");
 
-  cout << "Route Diagram Drawing Tool 1.1" << endl
+#ifdef KOI8
+  cout << "Route Diagram Drawing Tool 1.1.1 (koi8)" << endl
+#else
+  cout << "Route Diagram Drawing Tool 1.1.1" << endl
+#endif
        << "Copyright (C) 1999 Odinn Sorensen" << endl
-       << "Copyright (C) 1999-2000 Alexander S. Aganichev" << endl
+       << "Copyright (C) 1999-2001 Alexander S. Aganichev" << endl
        << "----------------------------------------------------------------------" << endl
        << endl;
 

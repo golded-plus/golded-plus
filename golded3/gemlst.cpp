@@ -868,6 +868,23 @@ void GThreadlist::close() {
 
 void GThreadlist::GenTree(char* buf, int idx) {
 
+#ifdef KOI8
+  static char graph[4]="†„";
+#else
+  static char graph_ibmpc[4]="ÃÀ³";
+  static char graph[]="";
+
+  if(graph[0] == NUL) {
+    int table = LoadCharset(NULL, NULL, 1);
+    int level = LoadCharset("IBMPC", CFG->xlatlocalset);
+    XlatStr(graph, graph_ibmpc, level, CharTable);
+    if(table == -1)
+      LoadCharset(CFG->xlatimport, CFG->xlatlocalset);
+    else
+      LoadCharset(CFG->xlatcharset[table].imp, CFG->xlatcharset[table].exp);
+  }
+#endif
+
   t = list[idx];
 
   uint level = 0;
@@ -875,7 +892,7 @@ void GThreadlist::GenTree(char* buf, int idx) {
 
   *q-- = NUL;
   *q-- = ' ';
-  *q-- = (t.replynext) ? 'Ã' : 'À';
+  *q-- = (t.replynext) ? graph[0] : graph[1];
 
   while(t.replyto) {
     for(uint i=0; i<list.size(); i++) {
@@ -886,7 +903,7 @@ void GThreadlist::GenTree(char* buf, int idx) {
       }
     }
     *q-- = ' ';
-    *q-- = (t.replynext) ? '³' :  ' ';
+    *q-- = (t.replynext) ? graph[2] :  ' ';
   }
 
   t = list[idx];

@@ -1171,8 +1171,6 @@ gkey kbxget_raw(int mode) {
     WORD &VKC = inp.Event.KeyEvent.wVirtualKeyCode;
     char &ascii = inp.Event.KeyEvent.uChar.AsciiChar;
 
-    // Get next key
-    inp.Event.KeyEvent.bKeyDown = false;
     while(1) {
 
       PeekConsoleInput(gkbd_hin, &inp, 1, &nread);

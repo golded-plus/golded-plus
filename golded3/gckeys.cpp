@@ -951,7 +951,7 @@ int ReadKeysCfg(int force) {
           while(*ptr) {
             if(*ptr == '\"') {  // Start of literal string
               ptr++;
-              while(*ptr != '\"' and n < 79) {
+              while((*ptr != '\"') and (n < (sizeof(tmp2.buf)/sizeof(gkey)))) {
                 ch = *ptr++;
                 tmp2.buf[n++] = (gkey)(ch | (scancode(ch) << 8));
               }
@@ -964,7 +964,7 @@ int ReadKeysCfg(int force) {
               int tmpkt;
               keycmd = SwitchKeyDefs(strCrc16(strupr(ptr2)), &tmpkt);
               if(keycmd) {
-                if(n < 79)
+                if(n < (sizeof(tmp2.buf)/sizeof(gkey)))
                   tmp2.buf[n++] = (gkey)keycmd;
               }
               else {

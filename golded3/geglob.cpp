@@ -256,7 +256,7 @@ void CfgInit2() {
 
 bool inline samekey(gkey key1, gkey key2) {
 
-  if(key1 > 0xff) // special key
+  if(key1 >= KK_Commands) // special key
     return false;
   return (tolower(key1) == key2) or (toupper(key1) == key2);
 }

@@ -252,13 +252,13 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
 
   // build @tpseudo
   if(is_user(msg->to))
-    strcpy(msg->pseudoto, *AA->Nickname() ? AA->Nickname() : strlword(msg->to));
+    strcpy(msg->pseudoto, *AA->Nickname() ? AA->Nickname() : strlword(msg->to, " @"));
   else
     *(msg->pseudoto) = NUL;
 
   // build @fpseudo
   if(is_user(msg->By()))
-    strcpy(msg->pseudofrom, *AA->Nickname() ? AA->Nickname() : strlword(msg->By()));
+    strcpy(msg->pseudofrom, *AA->Nickname() ? AA->Nickname() : strlword(msg->By(), " @"));
   else
     *(msg->pseudofrom) = NUL;
 
@@ -944,16 +944,7 @@ void ReplyMsg() {
 
 //  ------------------------------------------------------------------
 
-void DirQuoteMsg() {
-
-  if(reader_msg->ireplyto) *reader_msg->ireplyto = NUL;
-  QuoteMsg();
-}
-
-
-//  ------------------------------------------------------------------
-
-void QuoteMsg() {
+void QuoteMsg(bool ignore_replyto) {
 
   if(CurrArea == OrigArea) {
     if(AA->Areareplydirect() and reader_msg->areakludgeid) {
@@ -978,7 +969,7 @@ void QuoteMsg() {
       reader_keyok = not MenuReadonly.Run();
     }
     if(not reader_keyok)
-      MakeMsg(MODE_QUOTE, reader_msg);
+      MakeMsg(MODE_QUOTE, reader_msg, ignore_replyto);
   }
 }
 
@@ -1017,16 +1008,7 @@ void CommentMsg() {
 
 //  ------------------------------------------------------------------
 
-void OtherAreaDirQuoteMsg() {
-
-  if(reader_msg->ireplyto) *reader_msg->ireplyto = NUL;
-  OtherAreaQuoteMsg();
-}
-
-
-//  ------------------------------------------------------------------
-
-void OtherAreaQuoteMsg() {
+void OtherAreaQuoteMsg(bool ignore_replyto) {
 
   if(AA->Msgn.Count()) {
     int destarea = CurrArea;
@@ -1063,7 +1045,7 @@ void OtherAreaQuoteMsg() {
           AA->adat->viewquote   = adat_viewquote;
         }
       }
-      QuoteMsg();
+      QuoteMsg(ignore_replyto);
       if(CurrArea != OrigArea) {
         AA->Close();
         AL.SetActiveAreaId(OrigArea);

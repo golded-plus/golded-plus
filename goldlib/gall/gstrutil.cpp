@@ -487,7 +487,7 @@ char* strltrim(char* str) {
 
 //  ------------------------------------------------------------------
 
-const char* strlword(const char* str) {
+const char* strlword(const char* str, const char *separator) {
 
   char buf[256];
   static char left[40];
@@ -495,7 +495,7 @@ const char* strlword(const char* str) {
   *left = NUL;
   if(*str) {
     strxcpy(buf, str, sizeof(buf));
-    if(strtok(buf, " ") != NULL) {
+    if(strtok(buf, (separator == NULL) ? " \t\n\r" : separator) != NULL) {
       strxcpy(left, buf, sizeof(left));
     }
   }
@@ -505,7 +505,7 @@ const char* strlword(const char* str) {
 
 //  ------------------------------------------------------------------
 
-const char* strrword(const char* str) {
+const char* strrword(const char* str, const char *separator) {
 
   char* ptr;
   char* ptr2;
@@ -515,11 +515,14 @@ const char* strrword(const char* str) {
   *right = NUL;
   if(*str) {
     strxcpy(buf, str, sizeof(buf));
-    ptr = strtok(buf, " ");
+    if(separator == NULL) {
+      separator = " \t\n\r";
+    }
+    ptr = strtok(buf, separator);
     ptr2 = ptr;
     while(ptr != NULL) {
       ptr2 = ptr;
-      ptr = strtok(NULL, " ");
+      ptr = strtok(NULL, separator);
     }
     if(ptr2) {
       strxcpy(right, ptr2, sizeof(right));

@@ -87,8 +87,8 @@ char* strnp2c(char* str, int n);
 char* strnp2cc(char* dest, const char* str, int n);
 char* strp2c(char* str);
 
-const char* strlword(const char* str);
-const char* strrword(const char* str);
+const char* strlword(const char* str, const char *separator=NULL);
+const char* strrword(const char* str, const char *separator=NULL);
 
 char* strrevname(char* reversedname, const char* name);
 char* strunrevname(char* unreversedname, const char* name);
