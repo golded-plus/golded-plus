@@ -197,10 +197,10 @@ public:
   void prepare_form();
   void finish_form();
 
-  bool handle_key(uint key);
+  bool handle_key(gkey key);
 
   // These are supposed to be overridden by the inheriting class
-  virtual bool handle_other_keys(uint& key);
+  virtual bool handle_other_keys(gkey& key);
   virtual bool validate();
   virtual void before();
   virtual void after();

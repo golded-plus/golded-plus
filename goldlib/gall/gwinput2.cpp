@@ -589,7 +589,7 @@ void gwinput::finish_form() {
 
 //  ------------------------------------------------------------------
 
-bool gwinput::handle_other_keys(uint&) {
+bool gwinput::handle_other_keys(gkey&) {
 
   return false;
 }
@@ -597,7 +597,7 @@ bool gwinput::handle_other_keys(uint&) {
 
 //  ------------------------------------------------------------------
 
-bool gwinput::handle_key(uint key) {
+bool gwinput::handle_key(gkey key) {
 
   switch(key) {
     case Key_Esc:           drop_form();                 break;
@@ -955,6 +955,7 @@ bool gwinput::field::delete_char() {
       buf_end_pos--;
       memmove(buf+buf_pos, buf+buf_pos+1, buf_len-buf_pos);
       draw(pos);
+      move_cursor();
       return true;
     }
   }

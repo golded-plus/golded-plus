@@ -19,6 +19,9 @@ ______________________________________________________________________
 
 - Fixed some memory leaks.
 
+- Fixed small bug regarding cursor position after deleting stuff
+  in input fields.
+
 ______________________________________________________________________
 
              Notes for GoldED+ 1.1.4.3, February xx 2000
