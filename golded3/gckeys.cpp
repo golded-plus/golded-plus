@@ -594,6 +594,7 @@ tglobalkey globalkeys[] = {
   { CRC_K_CDEL                 , Key_C_Del               ,    0 }, // 0x60BC
   { CRC_KK_AUTO                , Key_Auto                ,    0 }, // 0x60E2
   { CRC_READFINDHEADER         , KK_ReadFindHeader       , KT_R }, // 0x6343
+  { CRC_EDITDELETESOL          , KK_EditDeleteSOL        , KT_E }, // 0x63B4
   { CRC_K_PGUP                 , Key_PgUp                ,    0 }, // 0x63CC
   { CRC_HEADERTOGGLEFREQ       , KK_HeaderToggleFreq     , KT_H }, // 0x63D9
   { CRC_EDITABORT              , KK_EditAbort            , KT_E }, // 0x6468

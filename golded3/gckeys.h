@@ -76,6 +76,7 @@ const word CRC_EDITCUT              = 0xFAE6;
 const word CRC_EDITDELCHAR          = 0xA3C7;
 const word CRC_EDITDELETE           = 0x4A37;
 const word CRC_EDITDELETEEOL        = 0x1143;
+const word CRC_EDITDELETESOL        = 0x63B4;
 const word CRC_EDITDELLEFT          = 0x6552;
 const word CRC_EDITDELLINE          = 0xACCF;
 const word CRC_EDITDELLTWORD        = 0x3B67;

@@ -1517,6 +1517,30 @@ void IEclass::DeleteEOL() {
 
 //  ------------------------------------------------------------------
 
+void IEclass::DeleteSOL() {
+
+  GFTRK("EditDeleteSOL");
+
+  if(col == 0) {
+    GFTRK(NULL);
+    return;
+  }
+
+  int _oldcol = col;
+
+  col = 0;
+
+  Undo->PushItem(EDIT_UNDO_DEL_TEXT, currline, col, _oldcol);
+  currline->txt.erase(col, _oldcol);
+
+  wrapdel(&currline, &col, &row);
+
+  GFTRK(NULL);
+}
+
+
+//  ------------------------------------------------------------------
+
 void IEclass::deleteline(bool zapquotesbelow) {
 
   GFTRK("Editdeleteline");
@@ -2122,6 +2146,7 @@ noselecting:
     case KK_EditCopyAboveChar:    CopyAboveChar();      break;
     case KK_EditDelChar:          DelChar();            break;
     case KK_EditDeleteEOL:        DeleteEOL();          break;
+    case KK_EditDeleteSOL:        DeleteSOL();          break;
     case KK_EditDelLeft:          DelLeft();            break;
     case KK_EditDelLine:          DelLine();            break;
     case KK_EditDelLtWord:        DelLtWord();          break;

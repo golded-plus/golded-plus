@@ -358,6 +358,7 @@ public:
   void CopyAboveChar  ();
   void DelChar        ();
   void DeleteEOL      ();
+  void DeleteSOL      ();
   void DelLeft        ();
   void DelLine        ();
   void DelLtWord      ();
