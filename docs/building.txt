@@ -1,5 +1,5 @@
 
-GoldED+ compilation how to
+GoldED+ compilation howto
 by Alexander Aganichev, 2:5020/201.58 <aaganichev@netscape.net>
 
 -------------------------------------------------------------------------------
@@ -11,10 +11,9 @@ To compile GoldED+ and utilities you'll need:
  - vi, emacs, or any other editor you like
  - beer or bear on your choice ;-)
 
---- MINGW32 ONLY ---
-Remove alloc.h from the $(include)/mingw32 to avoid unpredictable problems.
-Change arguments to sopen (to be `const char *' instead of `char *') and
-atexit (to be `void (func *)(void)' instead of `void (func *)()').
+--- MINGW ONLY ---
+Please consult this howto on installing MinGW over Cygwin:
+http://www.xraylith.wisc.edu/~khan/software/gnu-win32/mno-cygwin-howto.txt
 ------ COMMON ------
 
 First, edit GNUmakef.def for the preferrable compilation options.
@@ -23,7 +22,8 @@ Now go to golded3 and copy mygolded.__h to mygolded.h and adjust it for
 yourself (put your name, FTN address and e-mail). Goto root again.
 
 Exec 'make' (or `gmake' on BSD) and drink beer or play with bear until
-compilation in progress.
+compilation in progress. But better - help your wife (if you have one) or
+wives (if you have more :)) with home work ;-)
 
 ls bin/
 

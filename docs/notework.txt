@@ -12,6 +12,12 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.4.7, November xx 2000
 ______________________________________________________________________
 
+- It was impossible to change To: field when replying to the Internet
+  gated message when lookup turned off. Fixed.
+
++ Via, Recd and Forwarded kludges now displayed in the bottom of
+  message in JAM areas.
+
 - Cut-n-paste Unicode clipboard under Windows NT now properly filled
   with Unicode version of control characters with the exception of CR,
   LF, tabulation. It's fun to copy kludges from GoldED+ to WordPad ;-)

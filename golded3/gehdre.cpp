@@ -297,7 +297,9 @@ bool GMsgHeaderEdit::validate() {
     field* ftoaddr = get_field(id_to_addr);
     field* fsubj = get_field(id_subject);
     gsetaddr toname, toaddr, fromaddr, subj;
+    string orig_toname;
 
+    orig_toname = msg->to;
     toname.buf = current->buf; toname.update = false;
     toaddr.buf = ftoaddr->buf; toaddr.update = false;
     fromaddr.buf = ffromaddr->buf; fromaddr.update = false;
@@ -310,6 +312,10 @@ bool GMsgHeaderEdit::validate() {
     MakeAttrStr(bot2, &msg->attr);
     strsetsz(bot2, EDIT->HdrNodeLen());
     window.prints(1, EDIT->HdrNodePos(), C_HEADW, bot2);
+
+    // once we changed name invalidate realto
+    if(not strieql(orig_toname.c_str(), toname.buf))
+      *msg->realto = NUL;
 
     if(toname.update) current->update();
     if(toaddr.update) ftoaddr->update();
@@ -452,8 +458,8 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view) {
         if(*AA->Internetgate().name)
           strcpy(msg->iaddr, to_name.c_str());
         else {
-          if(strlen(to_name.c_str()) > 34) {
-            strcpy(msg->to, *AA->Internetgate().name ? AA->Internetgate().name : "UUCP");
+          if(to_name.length() > 34) {
+            strcpy(msg->to, "UUCP");
             strcpy(msg->iaddr, to_name.c_str());
           }
           else

@@ -238,7 +238,14 @@ int JamArea::load_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
         break;
 
       case JAMSUB_FTSKLUDGE:
-        sprintf(_kludges+strlen(_kludges), "\001%s\r", _buf);
+        {
+          char *_kludgesx;
+          if(strneql(_buf, "Via ", 4) or strneql(_buf, "Recd", 4) or strneql(_buf, "Forwarded", 9))
+            _kludgesx = _kludges2;
+          else
+            _kludgesx = _kludges;
+          sprintf(_kludgesx+strlen(_kludgesx), "\001%s\r", _buf);
+        }
         // Not processed
         break;
 
