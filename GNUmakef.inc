@@ -61,7 +61,7 @@ include bld$(PLATFORM).inc
 endif
 
 ifeq ($(PLATFORM),cyg)
-OBJS=$(addprefix $(FOBJPATH)/,$(patsubst %.rc,$(OBJEXT),$(patsubst %.c,$(OBJEXT),$(patsubst %.cpp,%$(OBJEXT),$(filter %.c %.cpp %.rc,$(SOURCES))))))
+OBJS=$(addprefix $(FOBJPATH)/,$(patsubst %.rc,%$(OBJEXT),$(patsubst %.c,%$(OBJEXT),$(patsubst %.cpp,%$(OBJEXT),$(filter %.c %.cpp %.rc,$(SOURCES))))))
 else
 ifeq ($(PLATFORM),emx)
 OBJS=$(addprefix $(FOBJPATH)/,$(patsubst %.rc,%.res,$(patsubst %.c,%$(OBJEXT),$(patsubst %.cpp,%$(OBJEXT),$(filter %.c %.cpp %.rc,$(SOURCES))))))
