@@ -12,6 +12,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+! Synchronized with recent Fidoconfig features. Removed -lame feature,
+  slashes no longer parsed as escape sequencies in neither case.
+
 + Added peek URL feature. Goldkeys.cfg keyword: READPeekURLs, help
   topic number is 3018. The behaviour is controlled by the
   PeekURLOptions keyword: available parameters are SORT, FROMTOP,

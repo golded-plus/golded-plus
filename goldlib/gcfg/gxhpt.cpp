@@ -34,7 +34,6 @@
 
 //  ------------------------------------------------------------------
 
-static bool lame = false;
 static bool comment_char = '#';
 
 //  ------------------------------------------------------------------
@@ -72,58 +71,8 @@ bool gareafile::ReadHPTLine(FILE* f, std::string* s, bool add, int state) {
     }
     else {
       switch(*ptr) {
-        case '\\':
-          if(lame)
-            break;
-          if(ptr == str.end()-1) {
-            str.erase(ptr);
-            const char *p = strskip_wht(str.c_str());
-            if(add)
-              *s += p;
-            else
-              *s = p;
-            ReadHPTLine(f, s, true, state);
-            return true;
-          } else
-            if(ptr[1] == comment_char) {
-              str.erase(ptr, str.end());
-              const char *p = strskip_wht(str.c_str());
-              if(add)
-                *s += p;
-              else
-                *s = p;
-              ReadHPTLine(f, s, true, state);
-              return true;
-            }
-            switch(ptr[1]) {
-              case ' ':
-              case '\t':
-                {
-                  std::string::iterator i = ptr;
-                  while((i != str.end()) and isspace(*i))
-                    ++i;
-                  if(*i != '#')
-                    break;
-                }
-              case NUL:
-              case '\n':
-                str.erase(ptr, str.end());
-                {
-                  const char *p = strskip_wht(str.c_str());
-                  if(add)
-                    *s += p;
-                  else
-                    *s = p;
-                }
-                ReadHPTLine(f, s, true, state);
-                return true;
-              default:
-                break;
-            }
-          ++ptr;
-          break;
         case '\"':
-          state = 1;
+          state = (state == 1) ? 0 : 1;
           break;
         default:
           break;
@@ -143,39 +92,6 @@ bool gareafile::ReadHPTLine(FILE* f, std::string* s, bool add, int state) {
     *s = p;
 
   return true;  
-}
-
-
-//  ------------------------------------------------------------------
-
-void gareafile::replace_slashes(char **key) {
-
-  if(lame)
-    return;
-
-  char* p = *key;
-
-  while(*p) {
-    if(*p == '\\') {
-
-      int size = 1;
-      uint chr = p[1];
-
-      if(isxdigit(p[1])) {
-        if(isxdigit(p[2])) {
-          size = 2;
-          sscanf(p, "\\%02x", &chr);
-        }
-        else
-          sscanf(p, "\\%1x", &chr);
-      }
-      strcpy(p, p+size);
-      *p = chr;
-      if(chr == NUL)
-        break;
-    }
-    ++p;
-  }
 }
 
 
@@ -234,8 +150,6 @@ void gareafile::gettok(char** key, char** val) {
 
   // Get the value
   *val = p;
-
-  replace_slashes(key);
 }
 
 
@@ -245,7 +159,8 @@ void gareafile::ReadHPTFile(char* path, char* file, char* options, char* origin,
 
   const word CRC_ADDRESS = 0xFDD6;
   const word CRC_INCLUDE = 0x379B;
-  const word CRC_NETAREA = 0xD2D7;
+  const word CRC_NETAREA = 0x8F1C;
+  const word CRC_NETMAILAREA = 0xD2D7;
   const word CRC_LOCALAREA = 0xAEC1;
   const word CRC_ECHOAREA = 0x0D63;
   const word CRC_DUPEAREA = 0xD8B9;
@@ -281,7 +196,6 @@ void gareafile::ReadHPTFile(char* path, char* file, char* options, char* origin,
         gettok(&key, &val);
         switch(strCrc16(key)) {
           case CRC_VERSION:
-            replace_slashes(&val);
             {
               int ver_maj, ver_min;
               sscanf(val, "%d.%d", &ver_maj, &ver_min);
@@ -293,27 +207,24 @@ void gareafile::ReadHPTFile(char* path, char* file, char* options, char* origin,
             }
             break;
           case CRC_ADDRESS:
-            replace_slashes(&val);
             CfgAddress(val);
             break;
           case CRC_SYSOP:
-            replace_slashes(&val);
             CfgUsername(val);
             break;
           case CRC_INCLUDE:
-            replace_slashes(&val);
             strxcpy(buf2, val, sizeof(buf2));
             MakePathname(buf2, path, buf2);
             ReadHPTFile(path, buf2, options, origin, group);
             break;
           case CRC_COMMENTCHAR:
-            replace_slashes(&val);
             if((strlen(val) == 3) and (val[0] == val[2]) and strpbrk(val, "\'\""))
               comment_char = val[1];
             else if(*val)
               comment_char = val[0];
             break;
           case CRC_NETAREA:
+          case CRC_NETMAILAREA:
             aa.type = GMB_NET;
             break;
           case CRC_LOCALAREA:
@@ -344,21 +255,25 @@ void gareafile::ReadHPTFile(char* path, char* file, char* options, char* origin,
 
             gettok(&key, &val);
 
-            while((*key == '-') or strieql(key, "Squish") or strieql(key, "Jam")) {
+            while((*key == '-') or strieql(key, "Squish") or strieql(key, "Jam") or strieql(key, "MSG")) {
 
               if(strieql(key, "Squish"))
                 aa.msgbase = GMB_SQUISH;
               else if(strieql(key, "Jam"))
                 aa.msgbase = GMB_JAM;
+              else if(strieql(key, "MSG"))
+                aa.msgbase = fidomsgtype;
               else {
 
                 char *opt = key + 1;
     
-                if(strieql(opt, "p") or strieql(opt, "$m") or strieql(opt, "lr")
-                    or strieql(opt, "lw") or strieql(opt, "tinysb")
-                    or strieql(opt, "dupeCheck") or strieql(opt, "dupehistory")
-                    or strieql(opt, "r") or strieql(opt, "w")
-                    or strieql(opt, "l")) {
+                if(strieql(opt, "p") or strieql(opt, "$m")
+                   or strieql(opt, "lr") or strieql(opt, "lw")
+                   or strieql(opt, "dupeCheck") or strieql(opt, "dupehistory")
+                   or strieql(opt, "r") or strieql(opt, "w")
+                   or strieql(opt, "l") or strieql(opt, "fperm")
+                   or strieql(opt, "fowner") or strnieql(opt, "sbadd(", 6)
+                   or strnieql(opt, "sbign(", 6)) {
     
                   gettok(&key, &val);
                 }
@@ -370,9 +285,15 @@ void gareafile::ReadHPTFile(char* path, char* file, char* options, char* origin,
                 }
                 else if(strieql(opt, "h") or strieql(opt, "manual")
                         or strieql(opt, "nopause") or strieql(opt, "mandatory")
-                        or strieql(opt, "dosfile") or strieql(opt, "ccoff")) {
+                        or strieql(opt, "dosfile") or strieql(opt, "ccoff")
+                        or strieql(opt, "b") or strieql(opt, "tinysb")
+                        or strieql(opt, "killsb") or strieql(opt, "keepunread")
+                        or strieql(opt, "killread") or strieql(opt, "h")
+                        or strieql(opt, "nolink") or strieql(opt, "debug")
+                        or strieql(opt, "nopack") or strieql(opt, "keepsb")
+                        or strieql(opt, "$") or strieql(opt, "0")) {
                 }
-                else if (strieql(opt, "g")) {
+                else if(strieql(opt, "g")) {
     
                   gettok(&key, &val);
     
@@ -426,7 +347,6 @@ void gareafile::ReadHPT(char* tag) {
   word defaultgroup = 0;
   Path file, path;
 
-  lame = false;
   *origin = NUL;
   *file = NUL;
   strcpy(options, tag);
@@ -443,8 +363,6 @@ void gareafile::ReadHPT(char* tag) {
         else
           defaultgroup = (word)(isupper(*ptr) ? *ptr : 0);
       }
-      else if(strieql(ptr, "lame"))
-        lame = true;
     }
     ptr = strtok(NULL, " \t");
   }

@@ -222,7 +222,6 @@ protected:
 
 #ifndef GCFG_NOFIDOCONF
   // Fidoconfig parser functions
-  void replace_slashes(char **key);
   void gettok(char** key, char** val);
 #endif
 #if !defined(GCFG_NOCMAIL) || !defined(GCFG_NOCECHO)
