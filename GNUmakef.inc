@@ -1,6 +1,6 @@
 # -*- makefile -*-
 
-.PHONY: all clean sourcelist deps clean_sl
+.PHONY: all clean sourcelist
 
 all: $(TARGET)
 
@@ -13,8 +13,8 @@ include $(TOP)/MSGBase.def
 include $(TOP)/Config.def
 
 FOBJPATH=$(TOP)/$(OBJPATH)/$(PLATFORM)/$(TARGET)
+FDEPPATH=$(TOP)/$(OBJPATH)/$(PLATFORM)/$(TARGET)
 FLIBPATH=$(TOP)/$(LIBPATH)/$(PLATFORM)
-FDEPPATH=$(TOP)/$(DEPPATH)/$(PLATFORM)
 
 .SUFFIXES: .c .cpp .all .rc
 
@@ -25,23 +25,21 @@ bld$(PLATFORM).inc: $(TARGET).all
 	@grep -w $(PLATFORM) $< \
 		| sed 's;^\([[:alnum:]_]*\)[ ]*\([[:alnum:]_]*\).*;SOURCES+=\1.\2;' > $@; [ -s $@ ] || rm -f $@
 
-$(FDEPPATH)/$(TARGET)/%.d: %.cpp
-	@echo making depends for $<
-	@$(SHELL) -ec '$(CXX) -c -M $(CPPFLAGS) $< \
-		| sed '\''s;\($*\)\$(OBJEXT)[ :]*;$(subst /,\/,$(FOBJPATH))\/\1\$(OBJEXT) $(subst /,\/,$@): ;g'\'' > $@; [ -s $@ ] || rm -f $@'
-
-$(FDEPPATH)/$(TARGET)/%.d: %.c
-	@echo making depends for $<
-	@$(SHELL) -ec '$(CC) -c -M $(CFLAGS) $< \
-		| sed '\''s;\($*\)\$(OBJEXT)[ :]*;$(subst /,\/,$(FOBJPATH))\/\1\$(OBJEXT) $(subst /,\/,$@): ;g'\'' > $@; [ -s $@ ] || rm -f $@'
-
 $(FOBJPATH)/%$(OBJEXT): %.cpp
 	@echo building $(basename $<)$(OBJEXT)
-	@$(CXX) -c $(CPPFLAGS) -o $@ $<
+	@$(CXX) -c -MD $(CPPFLAGS) -o $@ $<
+	@$(SHELL) -c "[ -s $(patsubst %.cpp,%.d,$<) ] &&					\
+		echo -n $(FOBJPATH)/>$(FDEPPATH)/$(patsubst %.cpp,%.d,$<) &&		\
+		$(CAT) $(patsubst %.cpp,%.d,$<)>>$(FDEPPATH)/$(patsubst %.cpp,%.d,$<) &&\
+		rm $(patsubst %.cpp,%.d,$<) || true"
 
 $(FOBJPATH)/%$(OBJEXT): %.c
 	@echo building $(basename $<)$(OBJEXT)
-	@$(CC) -c $(CFLAGS) -o $@ $<
+	@$(CC) -c -MD $(CFLAGS) -o $@ $<
+	@$(SHELL) -c "[ -s $(patsubst %.c,%.d,$<) ] &&					\
+		echo -n $(FOBJPATH)/>$(FDEPPATH)/$(patsubst %.c,%.d,$<) &&		\
+		$(CAT) $(patsubst %.c,%.d,$<)>>$(FDEPPATH)/$(patsubst %.c,%.d,$<) &&	\
+		rm $(patsubst %.c,%.d,$<) || true"
 
 ifeq ($(PLATFORM),cyg)
 $(FOBJPATH)/%$(OBJEXT): %.rc
@@ -56,7 +54,7 @@ $(FOBJPATH)/%.res: %.rc
 endif
 
 SOURCES=
-ifeq ($(FDEPPATH)/source.lst,$(wildcard $(FDEPPATH)/source.ls?))
+ifeq ($(wildcard $(TOP)/$(OBJPATH)/$(PLATFORM)/source.ls?),$(TOP)/$(OBJPATH)/$(PLATFORM)/source.lst)
 include bld$(PLATFORM).inc
 endif
 
@@ -69,20 +67,13 @@ else
 OBJS=$(addprefix $(FOBJPATH)/,$(patsubst %.c,%$(OBJEXT),$(patsubst %.cpp,%$(OBJEXT),$(filter %.c %.cpp %.rc,$(SOURCES)))))
 endif
 endif
-DEPS=$(addprefix $(FDEPPATH)/$(TARGET)/,$(patsubst %.c,%.d,$(patsubst %.cpp,%.d,$(filter %.c %.cpp,$(SOURCES)))))
+DEPS = $(wildcard $(FDEPPATH)/*.d)
+ALLOBJS = $(wildcard $(FOBJPATH)/*.o)
 
 clean:
 	@echo cleaning...
-	@-rm -f $(OBJS) $(DEPS)
+	@-rm -f $(ALLOBJS) $(DEPS) bld$(PLATFORM).inc
 
-clean_sl:
-	@echo deleting sourcelist
-	@-rm -f bld$(PLATFORM).inc
-
-deps: $(DEPS)
-
-ifeq ($(FDEPPATH)/dep,$(wildcard $(FDEPPATH)/de?))
 ifneq ($(DEPS),)
-include $(DEPS)
-endif
+-include $(DEPS)
 endif
