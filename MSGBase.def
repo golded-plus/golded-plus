@@ -1,0 +1,18 @@
+# Uncomment to disable Ezycom messagebase format
+#CPPFLAGS+=-DGMB_NOEZY
+# Uncomment to disable Goldbase messagebase format
+#CPPFLAGS+=-DGMB_NOGOLD
+# Uncomment to disable Hudson messagebase format
+#CPPFLAGS+=-DGMB_NOHUDS
+# Uncomment to disable JAM messagebase format
+#CPPFLAGS+=-DGMB_NOJAM
+# Uncomment to disable PCBoard messagebase format
+#CPPFLAGS+=-DGMB_NOPCB
+# Uncomment to disable Squish messagebase format
+#CPPFLAGS+=-DGMB_NOSQSH
+# Uncomment to disable SMB messagebase format
+#CPPFLAGS+=-DGMB_NOSMB
+# Uncomment to disable WildCat! messagebase format
+#CPPFLAGS+=-DGMB_NOWCAT
+# Uncomment to disable AdeptXBBS messagebase format
+#CPPFLAGS+=-DGMB_NOXBBS
