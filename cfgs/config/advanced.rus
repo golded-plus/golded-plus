@@ -436,11 +436,12 @@ EditInternal Yes
 ;EditInternal No
 
 // Определение строки запуска внешнего редактора.
-If Dos
-  Editor C:\NCV\NC.COM
-ElseIf OS/2
-  Editor C:\NCV\NC.COM @file -N@line
-EndIf
+Editor BRED2R.EXE @file
+ ;If Dos
+ ;  Editor C:\NCV\NC.COM
+ ;ElseIf OS/2
+ ;  Editor C:\NCV\NC.COM @file -N@line
+ ;EndIf
 
 // Как  запускать редактор через командный файл.
 ;Editor C:\command.com /C C:\Bat\myeditor.bat

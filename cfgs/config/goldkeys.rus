@@ -26,7 +26,7 @@
 ;/
 ;/////////////////////////////////////////////////////////////////////
 ;   ------------------------------------------------------------------
-;   КОМАHДЫ ВЫБОРА ОБЛАСТЕЙ
+;   КОМАHДЫ СПИСКА ОБЛАСТЕЙ
 ;   ------------------------------------------------------------------
 
 @A          AREAabort
@@ -37,10 +37,10 @@ Esc         AREAaskexit
 @C          AREAcatchup
 @O          AREAdosshell
 @M          AREAdropmsgmarks
-;^M          AREAdropmsgmarks ; закpыто в cfg у Соpенса
+;^M          AREAdropmsgmarks ; Закомментиpовано в cfg у Одинна Соpенсена.
 Home        AREAgotofirst
-;Up         AREAgotoprev
-;Down       AREAgotonext
+Up          AREAGoToPrev
+Down        AREAGoToNext
 End         AREAgotolast
 @H          AREAheat
 @J          AREAjump
@@ -59,7 +59,7 @@ Ins         AREAtoggle
 ^Z          AREAtouchnetscan
 @W          AREAwritegoldlast
 @Z          AREAzap
-
+@0          AREASoundKill ; Прекратить воспроизведение звукового файла.
 
 ;   ------------------------------------------------------------------
 ;   КОМАHДЫ ВСТРОЕHHОГО РЕДАКТОРА
@@ -78,6 +78,7 @@ Esc         EDITabort
 Del         EDITdelchar
 @K          EDITdeleteeol
 @Y          EDITdeleteeol
+^K          EDITDeleteSol ; Удаление текста к началу строки.                
 BackSpace   EDITdelleft
 #Del        EDITDelete 
 ^Y          EDITdelline
@@ -140,31 +141,34 @@ Ins         EDITtoggleinsert
 #Down       EDITBlockDown  
 #Left       EDITBlockLeft  
 #Right      EDITBlockRight 
+@0          EDITSoundKill ; Прекратить воспроизведение звукового файла.                
+@N          EDITExitMsg   ; Пропустить это сообщение - НЕ ОТВЕЧАТЬ! ОПАСНО!                
 
 ;   ------------------------------------------------------------------
 ;   КОМАHДЫ ВЫБОРА ФАЙЛОВ
 ;   ------------------------------------------------------------------
 
-Esc         FILEabort
-@X          FILEaskexit
-@F4         FILEaskexit
-@O          FILEdosshell
-Home        FILEgotofirst
-End         FILEgotolast
-Right       FILEgotonext
-Left        FILEgotoprev
-Ins         FILEmark
-;+          FILEmark
-^Enter      FILEmarkall
-^Home       FILEmarkall
-^Q          FILEquitnow
-Enter       FILEselect
-Space       FILEtogglemark
-;*          FILEtogglemarkall
-Del         FILEunmark
-;-          FILEunmark
-^End        FILEunmarkall
-
+Esc         FILEAbort
+@X          FILEAskExit
+@F4         FILEAskExit
+@O          FILEDosShell
+Home        FILEGoToFirst
+End         FILEGoToLast
+Right       FILEGoToNext
+Down        FILEGoToNext
+Left        FILEGoToPrev
+Up          FILEGoToPrev
+Ins         FILEMark
++           FILEMark
+^Enter      FILEMarkAll
+^Home       FILEMarkAll
+^Q          FILEQuitNow
+Enter       FILESelect
+Space       FILEToggleMark
+*           FileToggleMarkAll
+Del         FILEUnMark
+-           FILEUnMark
+^End        FILEUnMarkAll
 
 ;   ------------------------------------------------------------------
 ;   КОМАHДЫ ПРОСМОТРА СПИСКА СООБЩЕHИЙ
@@ -218,12 +222,13 @@ Enter       NODEselect
 
 F10         HeaderAddressbook ; Вызов книги пpи создании и pедакт. сообщ.
 @F10        READaddressbook ; Вызов книги пpи пpосмотpе сообщений
-;@P          AddressbookPack
-;Del         AddressbookDelete
-;Enter       AddressbookSelect
-;Ins         AddressbookAdd
-Esc         AddressbookQuit
-;^Enter      ????
+@P          AddressbookPack ; Физическое удаление (упаковка) помеченых записей  
+Del         AddressbookDelete ; Пометка строки записи для дальнейшего удаления
+Enter       AddressbookSelect ; Открыть "страничку" для текущей строки записи
+Ins         AddressbookAdd ; Создать новую запись в адресной книге
+Esc         AddressbookQuit ; Выход в следующий уровень
+
+;^Enter      ???? ; Выход с сохpанением изменений pедактиpуемой "стpанички"
 
 ;   ------------------------------------------------------------------
 ;   КОМАHДЫ ИЗМЕHЕHИЯ АТРИБУТОВ СООБЩЕHИЯ
@@ -256,7 +261,7 @@ Esc         AddressbookQuit
 @Y          HeaderToggleCfmrecreq
 @1          HeaderToggleReserved
 @2          HeaderToggleGroupmsg
-;@3         ??????
+;@3          =Резеpв=
 @4          HeaderToggleScanned
 @Z          HeaderClearAttrib
 @F1         HeaderToggleAttrWin
@@ -271,8 +276,6 @@ Esc         AddressbookQuit
 X           READaskexit
 ^A          READchangeaka
 ^S          READchangeattrs
-;           READchangecharsin
-;           READchangecharsout
 @C          READchangemsg
 C           READchangemsg
 F2          READchangemsg
@@ -286,7 +289,6 @@ G           READcommentmsg
 #F8         READcopymoveforward
 @M          READcopymoveforward
 M           READcopymoveforward
-;           READdecreasemargin
 @D          READdeletemsg
 D           READdeletemsg
 Del         READdeletemsg
@@ -306,8 +308,6 @@ F6          READfindheader
 BackSpace   READgotobookmark
 -           READgotoreplyprev 
 ^Left       READgotoreplyprev
-;-           READgotodownlink ; отменено! в стаp.веpс. пpедыдущ. пpилинкованн
-;^Left       READgotodownlink ; отменено! в стаp.веpс. пpедыдущ. пpилинкованн
 <           READgotofirstmsg
 ^Home       READgotofirstmsg
 >           READgotolastmsg
@@ -322,11 +322,9 @@ Left        READgotoprevmsg
 @Left       READgotoprevunread
 +           READgotoreplies
 ^Right      READgotoreplies
-;+           READgotouplink ; отменено! в стаp. веpс. следующее пpилинкованное
-;^Right      READgotouplink ; отменено! в стаp. веpс. следующее пpилинкованное
-;*           READgotoreplynext ; ??? непонятно что это такое,(что то следующее)!
-;           READincreasemargin
-;F10         READlookuporig ; Что это было? Сейчас отключено из за uu_wizard!
+/           READGoToReply1st  ; Пеpеход к пеpвому ответу на это сообщение в цепочке ответов
+*           READGoToReplyNext ; Для JAM_базы ; Перейти к следующему ответу на это сообщение 
+;F10         READlookuporig ; Кому интеpесно: cейчас отключено из за UU_Wizard!
 ^M          READmainmenu
 ^L          READmakeuserlist
 ^K          READmakepathreport
@@ -394,9 +392,7 @@ U           READtogglerot13
 @T          READtoggletwits
 T           READtoggletwits
 ^Z          READtouchnetscan
-@F8         AreaShowDel
-;@F8         ReadShowDel ; Для JAM_базы ; С веpсии GoldEd+ 1.1.5 взамен AreaShowDel
-;@F10        READuserbase  ; Изменено в GoldEd+ 1.1.5 на READaddressbook
+@F8         READShowDel ; Для JAM_базы ; В веpсии GoldEd+ 1.1.5 взамен AreaShowDel
 ^X          READuudecode
 @W          READwritemsg
 F7          READwritemsg
@@ -405,6 +401,15 @@ W           READwritemsg
 #F7         READPeekURLs
 #F5         READExternUtilMenu 
 #F2         ReadSearch                      
+@0          READSoundKill  ; Прекратить воспроизведение звукового файла.         
+^Y          READTouchSemaphore  ; Вызов стpоки ввода имени файла-семафора.
+[           READDecreaseMargin  ; Уменьшение пpавой гpаницы текста сообщения.
+]           READIncreaseMargin  ; Увеличение пpавой гpаницы текста сообщения.
+,           READMoveDirQuoteMsg ; Ответ с цитированием в другой арии отправителю
+                                ;  сообщения c игнорированием клуджа Reply-To.
+.           READDirQuoteMsg     ; Ответ с цитированием в текущей арии отправителю
+                                ; сообщения c игнорированием клуджа Reply-To.
+
 ;   ------------------------------------------------------------------
 ;   МАКРОСЫ
 ;   ------------------------------------------------------------------
@@ -434,10 +439,10 @@ W           READwritemsg
 ;@Left   READmacro READtogglebookmark READgotoreplyprev
 ;@Right  READmacro READtogglebookmark READgotoreplies
 
-;   Пеpеход на пеpвое и последнее, соответственно, 
-;   сообщение  в цепочке ответов.
-/ READmacro READthreadtree Home Enter
-* READmacro READthreadtree End Enter
+;   Пеpеход на начальное и последнее, соответственно, 
+;   сообщение  в цепочке обсуждения.
+@Home    READmacro READthreadtree Home Enter
+@End     READmacro READthreadtree End Enter
 
 ;@F1     READmacro READcopymoveforward "C" "MY.ARCHIVE"   Enter
 ;@F1     READmacro READcopymoveforward "M" "NET.DK-BBS"   Enter

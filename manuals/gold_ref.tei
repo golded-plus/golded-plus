@@ -557,7 +557,7 @@
     </p>
   </div1>
 <!-- --------------------------------------------------------------------- -->
-  <div1>
+  <div1 id=COMMANDLINE>
     <head>
       Commandline Reference
     </head>
@@ -2178,7 +2178,7 @@ APP OtherProg IRQ 5</eg>
           <table rows=7 cols=2>
             <row>
               <cell>
-                <ident>echoid</ident>
+                <ident/echoid/
               </cell>
               <cell>
                 Mail area identifier.
@@ -2186,7 +2186,7 @@ APP OtherProg IRQ 5</eg>
             </row>
             <row>
               <cell>
-                <ident>desc</ident>
+                <ident/desc/
               </cell>
               <cell>
                 Area description in (<q></q>) quotes.
@@ -2194,30 +2194,28 @@ APP OtherProg IRQ 5</eg>
             </row>
             <row>
               <cell>
-                <ident>msgbase</ident>
+                <ident/msgbase/
               </cell>
               <cell>
-                O,F(<name>Opus</name> <code>*.MSG</code>),
-                S(<name>FTS-0001</name> <code>*.MSG</code>),
-                Q(<name>QuickBBS</name>), R(<name>RemoteAccess</name>),
-                H(<name>Hudson</name>), M(<name>Squish</name>),
-                J(<name>JAM</name>), E(<name>Ezycom</name>),
-                G(<name>Goldbase</name>), P(<name>PCBoard</name>),
-                X(<name>AdeptXBBS</name>), W(<name>WildCat!</name>),
-                Y(<name/Synchronet/)
+                F, O (<name/Opus/ <code/*.msg/);
+                S (<name/FTS-0001/ <code/*.msg/);
+                H, R, Q (<name/Hudson/, <name/QuickBBS/, <name/RemoteAccess/);
+                M (<name/Squish/); J (<name/JAM/); E (<name/Ezycom/);
+                G (<name/Goldbase/); P (<name/PCBoard/); X (<name/AdeptXBBS/);
+                W (<name/WildCat!/); Y (<name/Synchronet/)
               </cell>
             </row>
             <row>
               <cell>
-                <ident>type</ident>
+                <ident/type/
               </cell>
               <cell>
-                N(Netmail), E(Echomail), L(Local).
+                N (Netmail), E (Echomail), L (Local).
               </cell>
             </row>
             <row>
               <cell>
-                <ident>location</ident>
+                <ident/location/
               </cell>
               <cell>
                 Directory path/file or Hudson board number.
@@ -2225,7 +2223,7 @@ APP OtherProg IRQ 5</eg>
             </row>
             <row>
               <cell>
-                <ident>akano</ident>
+                <ident/akano/
               </cell>
               <cell>
                 AKA number (starting from 0)
@@ -2233,7 +2231,7 @@ APP OtherProg IRQ 5</eg>
             </row>
             <row>
               <cell>
-                <ident>attrs</ident>
+                <ident/attrs/
               </cell>
               <cell>
                 <gi>R/O</gi> (Read-Only), and/or other attributes.
@@ -2735,9 +2733,9 @@ AREA:&lt;OriginalEchoID&gt;</eg>
                 <ident>msgbase</ident>
               </cell>
               <cell>
-                <name>Opus</name>, <name>FTS1</name>, <name>Hudson</name>,
-                <name>Squish</name>, <name>Ezycom</name>, <name>JAM</name>,
-                <name>Goldbase</name>, <name>PCBoard</name>, or <name/SMB/.
+                <ident/Opus/, <ident/FTS1/, <ident/Hudson/, <ident/Squish/,
+                <ident/Ezycom/, <ident/JAM/, <ident/Goldbase/, <ident/PCBoard/,
+                or <ident/SMB/.
               </cell>
             </row>
             <row>
@@ -3588,6 +3586,8 @@ AREAISNEWS alt.*, rec.*, sci.*</eg>
         <item>
           <!-- FIX ME!!! --><kw/AREAscan/,
           <!-- FIX ME!!! --><kw/AREAscanpm/,
+          <!-- FIX ME!!! --><kw/AREAwritegoldlast/,
+          <ref target=AREALISTSCAN><kw/AREALISTSCAN/</ref>,
           <ref target=AREAPMSCAN><kw/AREAPMSCAN/</ref>,
           <ref target=AREASCAN><kw/AREASCAN/</ref>
         </item>
@@ -3828,7 +3828,7 @@ AREAISNEWS alt.*, rec.*, sci.*</eg>
           <ref target=AREALISTPAGEBAR><kw/AREALISTPAGEBAR/</ref>,
           <ref target=AREALISTSORT><kw/AREALISTSORT/</ref>,
           <ref target=AREALISTTYPE><kw/AREALISTTYPE/</ref>,
-          <ref target=AREASEP><kw/AREASEP/</ref>,
+          <ref target=AREASEP><kw/AREASEP/</ref>
         </item>
         <label>
           Example:
@@ -3838,100 +3838,263 @@ AREALISTFORMAT "AM D C4PU4N E G "]]></eg>
         </item>
       </list>
     </div2>
-
-
-<!-- finished here -->
-
-
     <div2 id=AREALISTGROUPID>
       <head>
-        AREALISTGROUPID &lt;(yes)/no&gt;
+        AREALISTGROUPID
       </head>
-      <p>
-        If enabled, the arealist screen will display the groupid letters, if
-        any, in a column to the right of the <q>EchoID</q> column. If a groupid
-        is not a letter in the range A-Z (a value in the range
-        &num;65-&num;90), the groupid is not shown.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREALISTGROUPID/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This feature provides a way to hide group ID on the arealist screen,
+          in a column to the right of the <gi/EchoID/ column. If a group ID is
+          not a letter in the range A-Z (a value in the range &num;65-&num;90),
+          the groupid is not shown anyway.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If enabled, the arealist screen will display the groupid letters, if
+          any.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=AREALISTFORMAT><kw/AREALISTFORMAT/</ref>,
+          <ref target=AREALISTGROUPORDER><kw/AREALISTGROUPORDER/</ref>
+        </item>
+      </list>
     </div2>
-
-
     <div2 id=AREALISTGROUPORDER>
       <head>
         AREALISTGROUPORDER
       </head>
-      <p>
-+ Added new keyword AreaListGroupOrder to specify groups sorting order
-  in arealist. The only parameter is string which specifies groups
-  order (case sensitive!). If some groups are not found in the list
-  they will be placed below specifyed ones in regular order.
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREALISTGROUPORDER/ <ident/string/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword allows to change the order in which areas will be sorted
+          when sorting by group ID is used. If some groups are not found in the
+          <ident/string/ they will be placed below specifyed ones in
+          alphabetical order.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The only parameter is string which specifies groups order (case
+          sensitive!).
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          Empty string.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=AREALISTGROUPID><kw/AREALISTGROUPID/</ref>,
+          <ref target=AREALISTSORT><kw/AREALISTSORT/</ref>
+        </item>
+      </list>
       </p>
     </div2>
-
     <div2 id=AREALISTNOS>
       <head>
-        AREALISTNOS &lt;yes/(no)&gt;
+        AREALISTNOS
       </head>
-      <p>
-        If enabled, <name>GoldED+</name> will display the board numbers of
-        <name>Hudson</name> areas in the arealist instead of the default
-        sequential numbers.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREALISTNOS/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword allows to specify whether board number or sequential
+          area number will be displayed in the arealist.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If enabled, <name/GoldED+/ will display the board numbers of
+          <name/Hudson/ or <name/GoldBase/ areas in the arealist instead of
+          the default sequential numbers.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/NO/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=AREALISTFORMAT><kw/AREALISTFORMAT/</ref>,
+          <ref target=AREALISTECHOMAX><kw/AREALISTECHOMAX/</ref>
+        </item>
+      </list>
     </div2>
-
-
     <div2 id=AREALISTPAGEBAR>
       <head>
-        AREALISTPAGEBAR &lt;(yes)/no&gt;
+        AREALISTPAGEBAR
       </head>
-      <p>
-        Enables or disables a pagebar (scrollbar) in the arealist.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREALISTPAGEBAR/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Enables or disables a pagebar (scrollbar) in the arealist.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If enabled, <name/GoldED+/ will display pagebar in the arealist, if
+          disabled - will not.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=AREALISTFORMAT><kw/AREALISTFORMAT/</ref>
+        </item>
+      </list>
     </div2>
-
-
     <div2 id=AREALISTSCAN>
       <head>
-        AREALISTSCAN &lt;<q>L menu text</q>&gt;
-        &lsqb;path&rsqb;&lt;filename&gt; &lsqb;-delete&rsqb;&rsqb;
+        AREALISTSCAN
       </head>
-      <p>
-        This keyword allows you to define additional menu items for the
-        arealist scanning menus (&lt;Alt-S&gt; or &lt;Alt-P&gt;).
-      </p>
-      <p>
-        The first two characters of the menu text are the <q>hotkey</q> letter
-        that will be highlighted in the menu text, plus a space.
-      </p>
-      <p>
-        The filename specifies a plain text file, with the echoids (wildcards
-        allowed) of the areas you want to scan when the menu item is selected.
-        There can be several echoids on each line in the file. If no path is
-        given, the file is loaded from the <code>GOLDPATH</code>.
-      </p>
-      <p>
-        The <ident>-delete</ident> option will cause <name>GoldED+</name> to
-        delete the list file after scanning the areas in it. For example, if
-        your mail processor generates a list of the areas that it tossed new
-        mail to, you could add the list as a menu item on the scanning menu and
-        use it to scan only those areas with new mail. Note that some mail
-        processors automatically delete their list after using it for
-        replylinking. You may want to do some creative stuff with batchfiles to
-        grab a copy.
-      </p>
-      <p>
-        Examples:<eg><![ CDATA [
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREALISTSCAN/ <ident>&lt;<![ CDATA ["L menu text"]]>&gt;
+          &lsqb;path&rsqb;&lt;filename&gt; &lsqb;-delete&rsqb;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword allows you to define additional menu items for the
+          arealist scanning menus (<!-- FIX ME!!! --><kw/AREAscan/ or
+          <!-- FIX ME!!! --><kw/AREAscanpm/).
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The first two characters of the menu text are the <q/hotkey/ letter
+          that will be highlighted in the menu text, plus a space.<lb>
+          The filename specifies a plain text file, with the echoids (wildcards
+          allowed) of the areas you want to scan when the menu item is
+          selected. There can be several echoids on each line in the file. If
+          no path is given, the file is loaded from the
+          <ref target=GOLDPATH><kw/GOLDPATH/</ref>.<lb>
+          The <ident/-delete/ option will cause <name/GoldED+/ to delete the
+          list file after scanning the areas in it. For example, if your mail
+          processor generates a list of the areas that it tossed new mail to,
+          you could add the list as a menu item on the scanning menu and use it
+          to scan only those areas with new mail.
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          Some mail processors automatically delete their list after using it
+          for replylinking. You may want to do some creative stuff with
+          batchfiles to grab a copy.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <!-- FIX ME!!! --><kw/AREAscan/,
+          <!-- FIX ME!!! --><kw/AREAscanpm/
+        </item>
+        <label>
+          Example:
+        </label>
+        <item><eg><![ CDATA [
 AREALISTSCAN "g Scan Newsgroups" NEWSGRPS.LST
 AREALISTSCAN "L Scan Latest" R:&bsol;GECHO&bsol;IMPORT.ALL -delete]]></eg>
-      </p>
-      <p>
         <eg>
 === Cut, NEWSGRPS.LST ===
 ALT.*, COMP.*, MISC.*, NEWS.*
 REC.*, SOC.*, SCI.*, TALK.*
 === Cut ===</eg>
-      </p>
-      <p>
         <eg>
 === Cut from an import batchfile ===
 gecho mgr toss pack -tossbad
@@ -3940,197 +4103,222 @@ if exist import.hmb type import.hmb &gt;&gt;import.all
 if exist import.sdm type import.sdm &gt;&gt;import.all
 mbutil link -clean
 === Cut ===</eg>
-      </p>
+        </item>
+      </list>
     </div2>
-
-
     <div2 id=AREALISTSORT>
       <head>
-        AREALISTSORT &lt;sortspec=<q>FYTUE</q>&gt;
+        AREALISTSORT &lt;sortspec=<q></q>&gt;
       </head>
-      <p>
-        This keyword defines how the area list should be sorted. You can
-        override the default setting from the commandline with the
-        <code>-S</code> switch.
-      </p>
-      <p>
-        The &lt;sortspec&gt; can be composed of the following types:
-        <table rows=16 cols=2>
-          <row>
-            <cell>
-              A
-            </cell>
-            <cell>
-              Sort by aka.
-            </cell>
-          </row>
-          <row>
-            <cell>
-              B
-            </cell>
-            <cell>
-              Sort by board number.
-            </cell>
-          </row>
-          <row>
-            <cell>
-              D
-            </cell>
-            <cell>
-              Sort by description.
-            </cell>
-          </row>
-          <row>
-            <cell>
-              E
-            </cell>
-            <cell>
-              Sort by echoid.
-            </cell>
-          </row>
-          <row>
-            <cell>
-              F
-            </cell>
-            <cell>
-              Sorts all "fuzzy search" matches first.
-            </cell>
-          </row>
-          <row>
-            <cell>
-              G
-            </cell>
-            <cell>
-              Sort by group (if any).
-            </cell>
-          </row>
-          <row>
-            <cell>
-              M
-            </cell>
-            <cell>
-              Sorts all marked areas first.
-            </cell>
-          </row>
-          <row>
-            <cell>
-              O
-            </cell>
-            <cell>
-              Sort by original order.
-            </cell>
-          </row>
-          <row>
-            <cell>
-              P
-            </cell>
-            <cell>
-              Sort by personal mail.
-            </cell>
-          </row>
-          <row>
-            <cell>
-              T
-            </cell>
-            <cell>
-              Sort by type (in the order net, echo, local).
-            </cell>
-          </row>
-          <row>
-            <cell>
-              U
-            </cell>
-            <cell>
-              Sort by unread messages (try it&excl;).
-            </cell>
-          </row>
-          <row>
-            <cell>
-              X
-            </cell>
-            <cell>
-              Sort by msgbase type.
-            </cell>
-          </row>
-          <row>
-            <cell>
-              Y
-            </cell>
-            <cell>
-              Sorts all areas with "new" mail first.
-            </cell>
-          </row>
-          <row>
-            <cell>
-              Z
-            </cell>
-            <cell>
-              Sort by msgbase path.
-            </cell>
-          </row>
-          <row>
-            <cell>
-              -
-            </cell>
-            <cell>
-              Descending sort (largest first).
-            </cell>
-          </row>
-          <row>
-            <cell>
-              +
-            </cell>
-            <cell>
-              Ascending sort (smallest first) (default).
-            </cell>
-          </row>
-        </table>
-      </p>
-      <p>
-        In practice <q>M</q> and <q>Y</q> will usually give the same result,
-        because <name>GoldED+</name> automatically marks scanned areas if they
-        contain new mail.
-      </p>
-      <p>
-        Example:<eg>
-AREALISTSORT T-U+E</eg>
-      </p>
-      <p>
-        This sorts ascending by type, descending by unread (that is, areas with
-        the most unread messages comes first) and ascending by echoid (in case
-        two areas have the same number of unread msgs).
-      </p>
-      <p>
-        By default no sorting is done, and all areas are listed in the order
-        they were found (unless sorting was specified with an <kw>AREAFILE</kw>
-        keyword). However, the configuration examples all make use of the
-        unread sorting type. This is a very useful way of sorting areas,
-        because it keeps all the areas with mail together.
-      </p>
-      <p>
-        Personally I now sort my areas like this: <q>AREALISTSORT FYTUE</q>.
-        This puts all areas with new mail first, then sorts these into type
-        (net/echo/local), then into number of new msgs and finally into echoid.
-        The <q>F</q> at the start enables fuzzy match sorting, which is very
-        handy when looking for an echoid containing a particular word. Let's
-        say I want a list of all GOLDED echoes. I can now simply type
-        <q>GOLDED</q> and then the arealist automatically sorts itself so that
-        all echoes with an echoid containing <q>GOLDED</q> comes first :-)
-      </p>
-      <p>
-        The <q>X</q> sort type sorts areas according to msgbase type, in the
-        following order: <name>Hudson</name>, <name>Goldbase</name>,
-        <name>JAM</name>, <name>Squish</name>, <name>OPUS</name>
-        <code>*.MSG</code>, <name>FTS-1</name> <code>*.MSG</code>,
-        <name>Ezycom</name>, <name>PCBoard</name>.
-      </p>
-      <p>
-        The <q>X</q> and <q>Z</q> sort types were implemented for internal use,
-        to optimize area scanning speed. When scanning areas,
-        <name>GoldED+</name> starts by sorting the arealist using the sortspec
-        defined with the <kw>AREASCANSORT</kw> keyword.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREALISTSORT/ <ident/sortspec/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword defines how the area list should be sorted. You can
+          override the default setting from the commandline with the
+          <code>-s</code> switch.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The &lt;sortspec&gt; can be composed of the following types:
+          <table rows=16 cols=2>
+            <row>
+              <cell>
+                <ident/A/
+              </cell>
+              <cell>
+                Sort by aka.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/B/
+              </cell>
+              <cell>
+                Sort by board number.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/D/
+              </cell>
+              <cell>
+                Sort by description.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/E/
+              </cell>
+              <cell>
+                Sort by echoid.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/F/
+              </cell>
+              <cell>
+                Sorts all <q/fuzzy search/ matches first.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/G/
+              </cell>
+              <cell>
+                Sort by group (if any).
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/M/
+              </cell>
+              <cell>
+                Sorts all marked areas first.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/O/
+              </cell>
+              <cell>
+                Sort by original order.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/P/
+              </cell>
+              <cell>
+                Sort by personal mail.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/T/
+              </cell>
+              <cell>
+                Sort by type (according to
+                <ref target=AREATYPEORDER><kw/AREATYPEORDER/</ref>).
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/U/
+              </cell>
+              <cell>
+                Sort by unread messages (try it&excl;).
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/X/
+              </cell>
+              <cell>
+                Sort by msgbase type.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/Y/
+              </cell>
+              <cell>
+                Sorts all areas with <q/new/ mail first.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/Z/
+              </cell>
+              <cell>
+                Sort by msgbase path.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/-/
+              </cell>
+              <cell>
+                Descending sort (largest first).
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/+/
+              </cell>
+              <cell>
+                Ascending sort (smallest first) (default).
+              </cell>
+            </row>
+          </table>
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/FYTUE/
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          In practice <ident/M/ and <ident/Y/ will usually give the same
+          result, because <name/GoldED+/ automatically marks scanned areas if
+          they contain new mail.<lb>
+          The <ident/F/ enables fuzzy match sorting, which is very handy when
+          looking for an echoid containing a particular word. Let's say you
+          want a list of all <name/GoldED/ echoes. You can simply type
+          <q/GOLDED/ and then the arealist automatically sorts itself so that
+          all echoes with an echoid containing <q/GOLDED/ comes first.<lb>
+          The <ident/X/ sort type sorts areas according to msgbase type, in the
+          following order: <name/Hudson/, <name/Goldbase/, <name/JAM/,
+          <name/Squish/, <name/Opus/ <code/*.msg/, <name/FTS-0001/
+          <code/*.msg/, <name/Ezycom/, <name/PCBoard/.<lb>
+          The <ident/X/ and <ident/Z/ sort types were implemented for internal
+          use, to optimize area scanning speed. When scanning areas,
+          <name/GoldED+/ starts by sorting the arealist using the sortspec
+          defined with the <ref target=AREASCANSORT><kw/AREASCANSORT/</ref>
+          keyword.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ptr target=AREACONFIGURATION> chapter,
+          <ptr target=COMMANDLINE> chapter,
+          <ref target=AREA><kw/AREA/</ref>,
+          <ref target=AREADEF><kw/AREADEF/</ref>,
+          <ref target=AREAEXCL><kw/AREAEXCL/</ref>,
+          <ref target=AREAFILE><kw/AREAFILE/</ref>,
+          <ref target=AREAFILEGROUPS><kw/AREAFILEGROUPS/</ref>,
+          <ref target=AREAINCL><kw/AREAINCL/</ref>,
+          <ref target=AREAISEMAIL><kw/AREAISEMAIL/</ref>,
+          <ref target=AREAISNEWS><kw/AREAISNEWS/</ref>,
+          <ref target=AREALISTGROUPORDER><kw/AREALISTGROUPORDER/</ref>,
+          <ref target=AREASEP><kw/AREASEP/</ref>,
+          <ref target=AREATYPEORDER><kw/AREATYPEORDER/</ref>
+        </item>
+        <label>
+          Example:
+        </label>
+        <item><eg><![ CDATA [
+AREALISTSORT -U+TE</eg>
+        </item>
+      </list>
     </div2>
+
+
+<!-- finished here -->
 
 
     <div2 id=AREALISTTYPE>
@@ -4200,6 +4388,12 @@ AREAPMSCAN INT*.*  ; Scan all areas beginning with INT and
         It is recommended to have an <q>AREAPMSCAN *</q> to scan all areas at
         startup. If you don't want to wait for the scan to complete, you can
         abort the scan by pressing &lt;ESC&gt; during startup.
+      </p>
+      <p>
+          <ref target=AREAPMSCANEXCL><kw/AREAPMSCANEXCL/</ref>,
+          <ref target=AREAPMSCANINCL><kw/AREAPMSCANINCL/</ref>,
+          <ref target=AREASCANEXCL><kw/AREASCANEXCL/</ref>,
+          <ref target=AREASCANINCL><kw/AREASCANINCL/</ref>
       </p>
     </div2>
     <div2>
@@ -4355,7 +4549,7 @@ AREASCAN INT*.*  ; Scan all areas beginning with INT and
         reversal of wildcard specs in the excludes.
       </p>
     </div2>
-    <div2>
+    <div2 id=AREASCANSORT>
       <head>
         AREASCANSORT &lt;sortspec=XZBE&gt;
       </head>
@@ -4456,7 +4650,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
         <code>-E</code> commandline switch.
       </p>
     </div2>
-    <div2>
+    <div2 id=AREATYPEORDER>
       <head>
         AREATYPEORDER &lt;type1=Net&gt; &lt;type2=EMail&gt; &lt;type3=Echo&gt;
         &lt;type4=News&gt; &lt;type5=Local&gt;
