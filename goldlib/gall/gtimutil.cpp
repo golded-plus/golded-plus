@@ -72,9 +72,9 @@ int tzoffset() {
   int tz = a->tm_hour * 100 + a->tm_min;
   a = gmtime(&t);
   tz -= a->tm_hour * 100 + a->tm_min;
-  if(tz < -12*100)
+  if(tz < -24*100)
     tz += 24*100;
-  else if(tz > 12*100)
+  else if(tz > 24*100)
     tz -= 24*100;
   return tz;
 }

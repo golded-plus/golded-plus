@@ -58,6 +58,8 @@ const char *url_begin(const char *ptr) {
 
   if(strnieql(ptr, "http://", 7))
     return ptr+7;
+  if(strnieql(ptr, "https://", 8))
+    return ptr+8;
   if(strnieql(ptr, "ftp://", 6))
     return ptr+6;
   if(strnieql(ptr, "www.", 4))

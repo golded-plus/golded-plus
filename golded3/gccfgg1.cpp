@@ -356,7 +356,7 @@ void CfgArealistscan() {
 
 void CfgArealistsort() {
 
-  strupr(strxcpy(CFG->arealistsort, val, sizeof(CFG->arealistsort)));
+  strxcpy(CFG->arealistsort, val, sizeof(CFG->arealistsort));
 }
 
 //  ------------------------------------------------------------------

@@ -12,6 +12,11 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed the problem with 13 hour of UTC displacement. I hope noone
+  have 25 hour displacement, yep? :)
+
+- Added forgotten https:// to the list of known URLs beginning.
+
 - Fixed packed messagebase operation. The feature was only implemented
   for the Squish messagebase and even there scan was improperly
   implemented.
