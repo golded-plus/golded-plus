@@ -646,7 +646,8 @@ int ExportSoupMsg(GMsg* msg, char* msgfile, gfile& fp, int ismail) {
     while(line) {
       if(line->type & GLINE_KLUDGE) {
         if((line->kludge == GKLUD_RFC) or (line->kludge == 0)) {
-          strcpy(mbuf, (*line->txt.c_str() == CTRL_A) ? line->txt.c_str()+1 : line->txt.c_str());
+          const char *ltxt = line->txt.c_str();
+          XlatStr(mbuf, (*ltxt == CTRL_A) ? (ltxt + 1) : ltxt, level, CharTable);
           msglen += fp.printf("%s%s", mbuf, (line->type & GLINE_WRAP) ? "" : "\n");
         }
         else if(line->type & GLINE_WRAP) {

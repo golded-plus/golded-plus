@@ -12,6 +12,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed header encoding in exported SOUP packets.
+
 - Fixed small problem in editor when quoteline might left not painted
   after EDITNewLine.
 
