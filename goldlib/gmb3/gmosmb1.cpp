@@ -731,13 +731,13 @@ void SMBArea::save_hdr(int mode, gmsg* msg)
       smb_close_da(data);
     }
     else
-      smsg.hdr.offset = -1L;
+      smsg.hdr.offset = (ulong)-1L;
   }
   else {
     smsg.hdr.offset = smb_hallocdat(data);
   }
 
-  if(smsg.hdr.offset >= 0) {
+  if(smsg.hdr.offset != (ulong)-1L) {
     fseek(data->sdt_fp, smsg.hdr.offset, SEEK_SET);
     ushort xlat = XLAT_NONE;
     fwrite(&xlat, 2, 1, data->sdt_fp);

@@ -427,7 +427,7 @@ int SMBCALL smb_getstatus(smb_t* smb)
 	setvbuf(smb->shd_fp,smb->shd_buf,_IOFBF,SHD_BLOCK_LEN);
 	if(i==sizeof(smbstatus_t))
 		return(0);
-	sprintf(smb->last_error,"read %d instead of %d",i,sizeof(smbstatus_t));
+	sprintf(smb->last_error,"read %d instead of %d",i,(int)sizeof(smbstatus_t));
 	return(1);
 }
 
@@ -444,7 +444,7 @@ int SMBCALL smb_putstatus(smb_t* smb)
 	fflush(smb->shd_fp);
 	if(i==sizeof(smbstatus_t))
 		return(0);
-	sprintf(smb->last_error,"wrote %d instead of %d",i,sizeof(smbstatus_t));
+	sprintf(smb->last_error,"wrote %d instead of %d",i,(int)sizeof(smbstatus_t));
 	return(1);
 }
 
@@ -639,7 +639,7 @@ int SMBCALL smb_getmsghdr(smb_t* smb, smbmsg_t* msg)
 		=(dfield_t *)MALLOC(sizeof(dfield_t)*msg->hdr.total_dfields))==NULL) {
 		smb_freemsgmem(msg);
 		sprintf(smb->last_error,"malloc failure of %d bytes for %d data fields"
-			,sizeof(dfield_t)*msg->hdr.total_dfields, msg->hdr.total_dfields);
+			,(int)sizeof(dfield_t)*msg->hdr.total_dfields, msg->hdr.total_dfields);
 		return(-3); 
 	}
 	i=0;
@@ -664,7 +664,7 @@ int SMBCALL smb_getmsghdr(smb_t* smb, smbmsg_t* msg)
 			smb_freemsgmem(msg);
 			sprintf(smb->last_error
 				,"realloc failure of %d bytes for header field data"
-				,sizeof(void*)*(i+1));
+				,(int)sizeof(void*)*(i+1));
 			return(-3); 
 		}
 		msg->hfield_dat=vpp;
@@ -672,7 +672,7 @@ int SMBCALL smb_getmsghdr(smb_t* smb, smbmsg_t* msg)
 			smb_freemsgmem(msg);
 			sprintf(smb->last_error
 				,"realloc failure of %d bytes for header fields"
-				,sizeof(hfield_t)*(i+1));
+				,(int)sizeof(hfield_t)*(i+1));
 			return(-3); 
 		}
 		msg->hfield=vp;
