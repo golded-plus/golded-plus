@@ -447,8 +447,8 @@ struct LangGed {
   char*  Addressbook;        // WT_ADDRESSBOOK
   char*  AdvancedSearch;     // WT_ADVANCEDSEARCH
   char*  NoMoreMatches;      // IL_NOMOREMATCHES
-  char*  HeaderEditHelp1;    // WT_HEADEREDITHELP1
-  char*  HeaderEditHelp2;    // WT_HEADEREDITHELP2
+  char*  HeaderEditHelp1;    // WT_HEADEREDITHELP_1
+  char*  HeaderEditHelp2;    // WT_HEADEREDITHELP_2
   char*  ThreadlistTitle;    // WT_THREADLISTTITLE
   char*  AdvancedMarking;    // WT_ADVANCEDMARKING
   char*  UserStatusline;     // ST_USERSTATUSLINE
@@ -470,6 +470,31 @@ struct LangGed {
   char*  PeekURLMenuTitle;   // WT_PEEKURL
   char*  PeekURLStat;        // ST_PEEKURL
   char*  PeekInfoNoURLs;     // IL_PEEKINFONOURLS
+
+  char*  MMMain;             // MI_MMMAIN
+  char*  MMShell;            // MI_MMSHELL
+  char*  MMQuit;             // MI_MMQUIT
+  char*  MMEdit;             // MI_MMEDIT
+  char*  MMNew;              // MI_MMNEWMSG
+  char*  MMQuote;            // MI_MMQUOTEREPLY
+  char*  MMDirQuote;         // MI_MMDIRQUOTEREPLY
+  char*  MMComment;          // MI_MMCMTREPLY
+  char*  MMOtherAreaReply;   // MI_MMOTHERAREA
+  char*  MMOtherArea;        // WT_MMOTHERAREA
+  char*  MMOQuote;           // MI_MMOQUOTEREPLY
+  char*  MMODirQuote;        // MI_MMODIRQUOTEREPLY
+  char*  MMOComment;         // MI_MMOCMTREPLY
+  char*  MMChange;           // MI_MMCHANGE
+  char*  MMOrigin;           // MI_MMORIGIN
+  char*  MMUsername;         // MI_MMUSERNAME
+  char*  MMAka;              // MI_MMAKA
+  char*  MMAttrs;            // MI_MMATTRIBUTES
+  char*  MMTemplate;         // MI_MMTEMPLATE
+  char*  MMUtil;             // MI_MMUTIL
+  char*  MMCopyMoveForward;  // MI_MMCOPYMOVEFORWARD
+  char*  MMList;             // MI_MMLIST
+  char*  MMWrite;            // MI_MMWRITE
+  char*  MMFreq;             // MI_MMFREQ
 
   char*  EndLanguage;        // LAST_CRC
 

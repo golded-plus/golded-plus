@@ -12,6 +12,37 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Added set of new keywords for the language configuration file to
+  make READmainmenu language-configurable:
+
+  MI_MMMAIN             "M Main "
+  MI_MMSHELL            "S Shell to OS "
+  MI_MMQUIT             "Q Quit GoldED "
+  MI_MMEDIT             "E Edit "
+  MI_MMNEWMSG           "E Enter new msg                        "
+  MI_MMQUOTEREPLY       "Q Quote-reply                          "
+  MI_MMDIRQUOTEREPLY    "D Direct quote-reply (ignore Reply-To) "
+  MI_MMCMTREPLY         "C Comment-reply                        "
+  MI_MMOTHERAREA        "O Other area reply >                   "
+  WT_MMOTHERAREA        " Other Area "
+  MI_MMOQUOTEREPLY      "Q Quote-reply                          "
+  MI_MMODIRQUOTEREPLY   "D Direct quote-reply (ignore Reply-To) "
+  MI_MMOCMTREPLY        "C Comment-reply                        "
+  MI_MMCHANGE           "C Change "
+  MI_MMORIGIN           "O Origin    "
+  MI_MMUSERNAME         "U Username  "
+  MI_MMAKA              "A Aka       "
+  MI_MMATTRIBUTES       "M Msg attrs "
+  MI_MMTEMPLATE         "T Template  "
+  MI_MMUTIL             "U Util "
+  MI_MMCOPYMOVEFORWARD  "C Copy/Move/Forward     "
+  MI_MMLIST             "L List messages         "
+  MI_MMWRITE            "W Write to disk/printer "
+  MI_MMFREQ             "F File request          "
+
+- Help topic number associated with READmainmenu changed from 9999 to
+  3019.
+
 - GoldED+ should now recognize AREAFILE keyword in CrashEcho config
   (not tested).
 

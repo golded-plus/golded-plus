@@ -80,6 +80,7 @@
 #define H_ReplyThread       3016
 #define H_ReadExternUtil    3017
 #define H_PeekURL           3018
+#define H_MainMenu          3019
 
 
 //  ------------------------------------------------------------------
