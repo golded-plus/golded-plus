@@ -9,8 +9,16 @@ ______________________________________________________________________
 
 ______________________________________________________________________
 
-                 Notes for GoldED+ 1.1.5, March xx 2001
+                 Notes for GoldED+ 1.1.5, April xx 2001
 ______________________________________________________________________
+
+- Fixed cursor position in XlatImport menu when Auto encoding
+  selected.
+
+- Added support for CommentChar token in FidoConfig (untested).
+
+- Added code for trimming particular subfields in JAM as required by
+  JAM specification.
 
 - Fixed users.bbs handling for *.msg and Squish areas.
 
@@ -18,7 +26,7 @@ ______________________________________________________________________
   deletion any more.
 
 + Added new switch JamSMAPIHighwater. If defined GoldED+ will handle
-  highwaters just like SMAPI did. Recommended for use with HPT.
+  highwaters just like SMAPI do. Recommended for use with HPT.
   Defaults to No. Support for Crashmail II style highwaters added as
   well.
 

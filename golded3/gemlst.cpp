@@ -195,8 +195,10 @@ void GMsgList::do_delayed() {
     wactiv_(mlstwh);
   }
 
-  if(CFG->switches.get(msglistviewsubj))
-    wtitle(msg.re, TCENTER|TBOTTOM, tattr);
+  if(CFG->switches.get(msglistviewsubj)) {
+    ReadMlst(index);
+    wtitle(mlst[index].re, TCENTER|TBOTTOM, tattr);
+  }
 
   if(CFG->switches.get(msglistpagebar))
     wscrollbar(W_VERT, maximum_index+1, maximum_index, index);

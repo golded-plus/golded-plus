@@ -103,16 +103,16 @@ void JamArea::unlock() {
 
 //  ------------------------------------------------------------------
 
-void JamArea::add_subfield(JamHdr& __hdr, byte*& __subfield, word __loid, word __hiid, char* __data) {
+void JamArea::add_subfield(JamHdr& __hdr, byte*& __subfield, word __loid, word __hiid, char* __data, ulong __maxlen) {
 
-  uint _datlen = strlen(__data);
+  ulong _datlen = strlen(__data);
   __subfield = (byte*)throw_realloc(__subfield, (uint)__hdr.subfieldlen+sizeof(JamSubFieldHdr)+_datlen);
   JamSubField* _subfieldptr = (JamSubField*)(__subfield + (uint)__hdr.subfieldlen);
   _subfieldptr->loid = __loid;
   _subfieldptr->hiid = __hiid;
-  _subfieldptr->datlen = _datlen;
-  memcpy(_subfieldptr->buffer, __data, _datlen);
-  __hdr.subfieldlen += sizeof(JamSubFieldHdr) + _datlen;
+  _subfieldptr->datlen = MinV(_datlen, __maxlen);
+  memcpy(_subfieldptr->buffer, __data, _subfieldptr->datlen);
+  __hdr.subfieldlen += sizeof(JamSubFieldHdr) + _subfieldptr->datlen;
 }
 
 
@@ -196,23 +196,23 @@ void JamArea::save_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
     }
 
     if(*__msg->by)
-      add_subfield(__hdr, _subfield, JAMSUB_SENDERNAME, 0, __msg->by);
+      add_subfield(__hdr, _subfield, JAMSUB_SENDERNAME, 0, __msg->by, JAMSUB_SENDERNAME_LEN);
 
     if(__msg->orig.net) {
       __msg->orig.make_string(_buf, __msg->odom);
-      add_subfield(__hdr, _subfield, JAMSUB_OADDRESS, 0, _buf);
+      add_subfield(__hdr, _subfield, JAMSUB_OADDRESS, 0, _buf, JAMSUB_OADDRESS_LEN);
     }
 
     if(*__msg->to)
-      add_subfield(__hdr, _subfield, JAMSUB_RECEIVERNAME, 0, __msg->to);
+      add_subfield(__hdr, _subfield, JAMSUB_RECEIVERNAME, 0, __msg->to, JAMSUB_RECEIVERNAME_LEN);
 
     if(__msg->dest.net) {
       __msg->dest.make_string(_buf, __msg->ddom);
-      add_subfield(__hdr, _subfield, JAMSUB_DADDRESS, 0, _buf);
+      add_subfield(__hdr, _subfield, JAMSUB_DADDRESS, 0, _buf, JAMSUB_DADDRESS_LEN);
     }
 
     if(*__msg->re)
-      add_subfield(__hdr, _subfield, JAMSUB_SUBJECT, 0, __msg->re);
+      add_subfield(__hdr, _subfield, JAMSUB_SUBJECT, 0, __msg->re, JAMSUB_SUBJECT_LEN);
 
     // Convert kludges
     _line = 0;
@@ -221,6 +221,7 @@ void JamArea::save_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
       if(_pdptr->control > CTRL_KLUDGE) {
         uint _offset = 0;
         word _loid = 0;
+        ulong _maxlen = 0;
         switch(_pdptr->control) {
           case CTRL_INTL:
           case CTRL_FMPT:
@@ -229,44 +230,53 @@ void JamArea::save_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
             break;
           case CTRL_MSGID:
             _loid = JAMSUB_MSGID;
+            _maxlen = JAMSUB_MSGID_LEN;
             _offset = 8;
             strxcpy(__msg->msgids, _pdptr->text+_offset, sizeof(__msg->msgids));
             break;
           case CTRL_REPLY:
             _loid = JAMSUB_REPLYID;
+            _maxlen = JAMSUB_REPLYID_LEN;
             _offset = 8;
             strxcpy(__msg->replys, _pdptr->text+_offset, sizeof(__msg->replys));
             break;
           case CTRL_PID:
             _loid = JAMSUB_PID;
+            _maxlen = JAMSUB_PID_LEN;
             _offset = 6;
             break;
           case CTRL_VIA:
             _loid = JAMSUB_TRACE;
+            _maxlen = JAMSUB_TRACE_LEN;
             _offset = 6;
             break;
           case CTRL_SEENBY:
             _loid = JAMSUB_SEENBY2D;
+            _maxlen = JAMSUB_SEENBY2D_LEN;
             _offset = 9;
             break;
           case CTRL_SEENBY1:
             _loid = JAMSUB_SEENBY2D;
+            _maxlen = JAMSUB_SEENBY2D_LEN;
             _offset = 10;
             break;
           case CTRL_PATH:
             _loid = JAMSUB_PATH2D;
+            _maxlen = JAMSUB_PATH2D_LEN;
             _offset = 7;
             break;
           case CTRL_FLAGS:
             _loid = JAMSUB_FLAGS;
+            _maxlen = JAMSUB_FLAGS_LEN;
             _offset = 7;
             break;
           default:
             _loid = JAMSUB_FTSKLUDGE;
+            _maxlen = JAMSUB_FTSKLUDGE_LEN;
             _offset = 1;
         }
         if(_offset)
-          add_subfield(__hdr, _subfield, _loid, 0, _pdptr->text+_offset);
+          add_subfield(__hdr, _subfield, _loid, 0, _pdptr->text+_offset, _maxlen);
       }
       _pdptr++;
       _line++;

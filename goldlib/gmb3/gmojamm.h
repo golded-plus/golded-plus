@@ -118,7 +118,27 @@
 #define JAMSUB_PATH2D              2002
 #define JAMSUB_FLAGS               2003
 #define JAMSUB_TZUTCINFO           2004
-#define JAMSUB_UNKNOWN             0xFFFF
+
+#define JAMSUB_OADDRESS_LEN                      100
+#define JAMSUB_DADDRESS_LEN                      100
+#define JAMSUB_SENDERNAME_LEN                    100
+#define JAMSUB_RECEIVERNAME_LEN                  100
+#define JAMSUB_MSGID_LEN                         100
+#define JAMSUB_REPLYID_LEN                       100
+#define JAMSUB_SUBJECT_LEN                       100
+#define JAMSUB_PID_LEN                            40
+#define JAMSUB_TRACE_LEN               ((ulong)(-1))
+#define JAMSUB_ENCLOSEDFILE_LEN        ((ulong)(-1))
+#define JAMSUB_ENCLOSEDFILEWALIAS_LEN  ((ulong)(-1))
+#define JAMSUB_ENCLOSEDFREQ_LEN        ((ulong)(-1))
+#define JAMSUB_ENCLOSEDFILEWCARD_LEN   ((ulong)(-1))
+#define JAMSUB_ENCLOSEDINDIRECFILE_LEN ((ulong)(-1))
+#define JAMSUB_EMBINDAT_LEN            ((ulong)(-1))
+#define JAMSUB_FTSKLUDGE_LEN                     255
+#define JAMSUB_SEENBY2D_LEN            ((ulong)(-1))
+#define JAMSUB_PATH2D_LEN              ((ulong)(-1))
+#define JAMSUB_FLAGS_LEN               ((ulong)(-1))
+#define JAMSUB_TZUTCINFO_LEN           ((ulong)(-1))
 
 
 //  ------------------------------------------------------------------
@@ -273,7 +293,7 @@ protected:
 
   int load_message(int __mode, gmsg* __msg, JamHdr& __hdr);
 
-  void add_subfield(JamHdr& __hdr, byte*& __subfield, word __loid, word __hiid, char* __data);
+  void add_subfield(JamHdr& __hdr, byte*& __subfield, word __loid, word __hiid, char* __data, ulong maxlen);
 
   void save_message(int __mode, gmsg* __msg, JamHdr& __hdr);
 

@@ -35,7 +35,7 @@
 //  ------------------------------------------------------------------
 
 static bool lame = false;
-
+static bool comment_char = '#';
 
 //  ------------------------------------------------------------------
 
@@ -64,59 +64,70 @@ bool gareafile::ReadHPTLine(FILE* f, string* s, bool add, int state) {
   //       2: end
   //       3: whitespace
   while((ptr != str.end()) and (state != 2)) {
-    switch(*ptr) {
-      case '\\':
-        if(lame)
-          break;
-        if(ptr == str.end()-1) {
-          str.erase(ptr);
-          const char *p = strskip_wht(str.c_str());
-          if(add)
-            *s += p;
-          else
-            *s = p;
-          ReadHPTLine(f, s, true, state);
-          return true;
-        } else
-          switch(ptr[1]) {
-            case ' ':
-            case '\t':
-              {
-                string::iterator i = ptr;
-                while((i != str.end()) and isspace(*i))
-                  ++i;
-                if(*i != '#')
-                  break;
-              }
-            case '#':
-            case NUL:
-            case '\n':
+    if(*ptr == comment_char) {
+      if(state != 1) {
+        str.erase(ptr, str.end());
+        state = 2;
+      }
+    }
+    else {
+      switch(*ptr) {
+        case '\\':
+          if(lame)
+            break;
+          if(ptr == str.end()-1) {
+            str.erase(ptr);
+            const char *p = strskip_wht(str.c_str());
+            if(add)
+              *s += p;
+            else
+              *s = p;
+            ReadHPTLine(f, s, true, state);
+            return true;
+          } else
+            if(ptr[1] == comment_char) {
               str.erase(ptr, str.end());
-              {
-                const char *p = strskip_wht(str.c_str());
-                if(add)
-                  *s += p;
-                else
-                  *s = p;
-              }
+              const char *p = strskip_wht(str.c_str());
+              if(add)
+                *s += p;
+              else
+                *s = p;
               ReadHPTLine(f, s, true, state);
               return true;
-            default:
-              break;
-          }
-        ++ptr;
-        break;
-      case '\"':
-        state = 1;
-        break;
-      case '#':
-        if(state != 1) {
-          str.erase(ptr, str.end());
-          state = 2;
-        }
-        break;
-      default:
-        break;
+            }
+            switch(ptr[1]) {
+              case ' ':
+              case '\t':
+                {
+                  string::iterator i = ptr;
+                  while((i != str.end()) and isspace(*i))
+                    ++i;
+                  if(*i != '#')
+                    break;
+                }
+              case NUL:
+              case '\n':
+                str.erase(ptr, str.end());
+                {
+                  const char *p = strskip_wht(str.c_str());
+                  if(add)
+                    *s += p;
+                  else
+                    *s = p;
+                }
+                ReadHPTLine(f, s, true, state);
+                return true;
+              default:
+                break;
+            }
+          ++ptr;
+          break;
+        case '\"':
+          state = 1;
+          break;
+        default:
+          break;
+      }
     }
     ++ptr;
   }
@@ -241,6 +252,7 @@ void gareafile::ReadHPTFile(char* path, char* file, char* options, char* origin,
   const word CRC_BADAREA = 0x8DA5;
   const word CRC_SYSOP = 0x967F;
   const word CRC_VERSION = 0xF78F;
+  const word CRC_COMMENTCHAR = 0xE2CC;
 
   AreaCfg aa;
   Path buf2;
@@ -293,6 +305,13 @@ void gareafile::ReadHPTFile(char* path, char* file, char* options, char* origin,
             strxcpy(buf2, val, sizeof(buf2));
             MakePathname(buf2, path, buf2);
             ReadHPTFile(path, buf2, options, origin, group);
+            break;
+          case CRC_COMMENTCHAR:
+            replace_slashes(&val);
+            if((strlen(val) == 3) and (val[0] == val[2]) and strpbrk(val, "\'\""))
+              comment_char = val[1];
+            else if(*val)
+              comment_char = val[0];
             break;
           case CRC_NETAREA:
             aa.type = GMB_NET;

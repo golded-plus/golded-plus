@@ -905,7 +905,7 @@ int ChangeXlatImport() {
       if(strieql(xlt->exp, CFG->xlatlocalset)) {
         maximport = MaxV(maximport, (int)strlen(xlt->imp));
         maxexport = MaxV(maxexport, (int)strlen(xlt->exp));
-        if(strieql(xlt->imp, AA->Xlatimport()))
+        if((CFG->ignorecharset == true) and strieql(xlt->imp, AA->Xlatimport()))
           startat = xlatimports;
         xlatimports++;
       }
