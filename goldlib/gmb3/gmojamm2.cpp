@@ -140,8 +140,10 @@ void JamArea::open_area() {
   memset(&data->hdrinfo, 0, sizeof(JamHdrInfo));
   read(data->fhjhr, &data->hdrinfo, sizeof(JamHdrInfo));
 
-  if(not jamwide->smapihw and (data->fhjhw != -1))
+  if(not jamwide->smapihw and (data->fhjhw != -1)) {
+    lseek(data->fhjhw, 0, SEEK_SET);
     read(data->fhjhw, &data->highwater, sizeof(long));
+  }
   else
     data->highwater = -1;
 

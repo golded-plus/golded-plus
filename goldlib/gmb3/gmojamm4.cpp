@@ -74,8 +74,10 @@ void JamArea::lock() {
       Path file;
       sprintf(file, "%s.cmhw", path()); data->fhjhw = ::sopen(file, O_RDWR|O_BINARY, WideSharemode, S_STDRW);
     }
-    if(data->fhjhw != -1)
+    if(data->fhjhw != -1) {
+      lseek(data->fhjhw, 0, SEEK_SET);
       read(data->fhjhw, &data->highwater, sizeof(long));
+    }
     else
       data->highwater = -1;
   }
@@ -439,6 +441,7 @@ void JamArea::save_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
     else if((data->highwater != -1) and (data->fhjhw != -1)) {
       if(data->highwater >= __msg->msgno) {
         data->highwater = __msg->msgno - 1;
+        lseek(data->fhjhw, 0, SEEK_SET);
         write(data->fhjhw, &data->highwater, sizeof(long));
       }
     }
