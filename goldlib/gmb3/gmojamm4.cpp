@@ -386,7 +386,7 @@ void JamArea::save_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
     throw_release(_subfield);
 
     // Update the header info
-    if(__mode & GMSG_NEW)
+    if((__mode & GMSG_NEW) or (was_deleted and not __msg->attr.del()))
       data->hdrinfo.activemsgs++;
     data->hdrinfo.modcounter++;
     lseekset(data->fhjhr, 0);
