@@ -107,8 +107,10 @@
       Hembo</name>, <name/Thomas Endres/, <name/Nathan Moschkin/,
       <name/Micheal Dunnagan/, <name/Joseph Carnage/, <name/Thomas Endres/,
       <name/Niels Axelsson/, <name/Gustav Brock/, <name/Stig Jacobsen/,
-      <name/Erik Wachtmeester/, <name/Dirk Frieborg/, <name/Gd'A/, and
-      <name/Cees Schouten/.
+      <name/Erik Wachtmeester/, <name/Dirk Frieborg/, <name/Gd'A/,
+      <name/Cees Schouten/, <name/Andrew Voronin/, <name/Arkady Grikurov/,
+      <name/Mik Karlsson/, <name/K. Simonsen/, <name/Thomas Gradin/, and
+      <name/Andre van de Wijdeven/.
     </p>
   </div1>
 <!-- --------------------------------------------------------------------- -->
@@ -329,8 +331,8 @@
       </head>
       <p>
         <name/JAM/ format as defined in the <name/JAM(mbp)/ revision 001.
-        Also supports <name/CrashMail/, <name/CrashEcho/, and <name/HPT/
-        highwater marks.
+        Also <name/CrashMail/, <name/CrashEcho/, and <name/HPT/ highwater
+        marks are supported.
       </p>
       <p>
         <name/GoldED+/ currently ignores revision number of header structure
@@ -2961,7 +2963,8 @@ AREA:&lt;OriginalEchoID&gt;</eg>
         </label>
         <item>
           The <ident/&lt;echoid mask&gt;/ may contain <name>4DOS</name>-style
-          wildcards (<q/*/ and <q/?/).
+          wildcards (<q/*/ and <q/?/). You may specify multiple masks separated
+          with commas.
         </item>
         <label>
           Notes:
@@ -3358,7 +3361,8 @@ AREAEXCL INT*.*   ; Excludes all areas beginning with INT and
         </label>
         <item>
           The <ident/&lt;echoid mask&gt;/ may contain <name>4DOS</name>-style
-          wildcards (<q/*/ and <q/?/).
+          wildcards (<q/*/ and <q/?/). You may specify multiple masks separated
+          with commas.
         </item>
         <label>
           Notes:
@@ -3399,237 +3403,447 @@ AREAINCL INT*.*   ; Includes all areas beginning with INT and
         </item>
       </list>
     </div2>
+    <div2 id=AREAISEMAIL>
+      <head>
+        AREAISEMAIL
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREAISEMAIL/ <ident/&lt;echoid mask&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          These keyword is designed to mark areas which are read from an
+          <ref target=AREAFILE><kw/AREAFILE/</ref> as <name/Internet/ e-mail.
+          This may be necessary in some cases to enable the <name/Internet/
+          specific features without having to manually define all
+          <name/Internet/ areas.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The <ident/&lt;echoid mask&gt;/ may contain <name>4DOS</name>-style
+          wildcards (<q/*/ and <q/?/). You may specify multiple masks separated
+          with commas.
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          This keyword must be placed before any of
+          <ref target=AREA><kw/AREA/</ref>,
+          <ref target=AREADEF><kw/AREADEF/</ref>,
+          or <ref target=AREAFILE><kw/AREAFILE/</ref> keywords.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=AREA><kw/AREA/</ref>,
+          <ref target=AREADEF><kw/AREADEF/</ref>,
+          <ref target=AREAFILE><kw/AREAFILE/</ref>,
+          <ref target=AREAISNEWS><kw/AREAISNEWS/</ref>,
+          <ref target=AREARENAME><kw/AREARENAME/</ref>
+        </item>
+        <label>
+          Example:
+        </label>
+        <item><eg>
+AREAISEMAIL djgpp*, golded-plus*</eg>
+        </item>
+      </list>
+    </div2>
+    <div2 id=AREAISNEWS>
+      <head>
+        AREAISNEWS
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREAISNEWS/ <ident/&lt;echoid mask&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          These keyword is designed to mark areas which are read from an
+          <ref target=AREAFILE><kw/AREAFILE/</ref> as <name/Internet/
+          newsgroup. This may be necessary in some cases to enable the
+          <name/Internet/ specific features without having to manually define
+          all <name/Internet/ areas.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The <ident/&lt;echoid mask&gt;/ may contain <name>4DOS</name>-style
+          wildcards (<q/*/ and <q/?/). You may specify multiple masks separated
+          with commas.
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          This keyword must be placed before any of
+          <ref target=AREA><kw/AREA/</ref>,
+          <ref target=AREADEF><kw/AREADEF/</ref>,
+          or <ref target=AREAFILE><kw/AREAFILE/</ref> keywords.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=AREA><kw/AREA/</ref>,
+          <ref target=AREADEF><kw/AREADEF/</ref>,
+          <ref target=AREAFILE><kw/AREAFILE/</ref>,
+          <ref target=AREAISEMAIL><kw/AREAISEMAIL/</ref>,
+          <ref target=AREARENAME><kw/AREARENAME/</ref>
+        </item>
+        <label>
+          Example:
+        </label>
+        <item><eg>
+AREAISNEWS alt.*, rec.*, sci.*</eg>
+        </item>
+      </list>
+    </div2>
+    <div2 id=AREAKEEPLAST>
+      <head>
+        AREAKEEPLAST
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREAKEEPLAST/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls whether <name/GoldED+/ should write the file
+          <code/goldlast.lst/ in the <ref target=GOLDPATH><kw/GOLDPATH/</ref>
+          at exit and read it back when run next time. The contents of the file
+          is a list of lastread information for each area as it was at last
+          scan.<lb>
+          This feature is helpful when you know that there have not been tossed
+          new mail and don't want to wait for a full msgbase scan. Now you can
+          just hit &lt;ESC&gt; at the startup screen to abort the area scan and
+          <name/GoldED+/ will put up the lastread info from the previous
+          session.<lb>
+          It also makes the <q/new mail since last scan/ feature even better,
+          because the new mail marker now shows which areas that have new mail
+          since last session even when scanning areas at startup.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          Setting this keyword to <ident/YES/ enables <code/goldlast.lst/
+          usage, setting to <ident/NO/ disables writes to this file.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          <name/GoldED+/ only writes the <code/goldlast.lst/ file at exit if it
+          survived the initial startup scan.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <!-- FIX ME!!! --><kw/AREAscan/,
+          <!-- FIX ME!!! --><kw/AREAscanpm/,
+          <ref target=AREAPMSCAN><kw/AREAPMSCAN/</ref>,
+          <ref target=AREASCAN><kw/AREASCAN/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2 id=AREALISTECHOMAX>
+      <head>
+        AREALISTECHOMAX
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREALISTECHOMAX/ <ident/size/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Allows you to specify a fixed or dynamically sized width of the
+          <gi/EchoID/ column in the arealist.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If a negative value is specified, the width will be the that of the
+          widest echoid in the arealist plus the negative value. This might be
+          useful if some long-name echoes have uninteresting ends, such as
+          <gi/VERYLONGECHOID_R23.PUB/ (could benefit from a <ident/size/ of
+          -7). There is currently no provision for long echoids with common
+          beginning.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/0/
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          The arealist can dynamically resize the <gi/EchoID/ and
+          <gi/Description/ columns, so that long echoids are not cut off. The
+          sizing of the <q>EchoID</q> column is done against the
+          <gi/Description/ column, which thereby looses or gains width.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=AREALISTFORMAT><kw/AREALISTFORMAT/</ref>,
+          <ref target=AREALISTGROUPID><kw/AREALISTGROUPID/</ref>,
+          <ref target=AREALISTGROUPORDER><kw/AREALISTGROUPORDER/</ref>,
+          <ref target=AREALISTNOS><kw/AREALISTNOS/</ref>,
+          <ref target=AREALISTPAGEBAR><kw/AREALISTPAGEBAR/</ref>,
+          <ref target=AREALISTSORT><kw/AREALISTSORT/</ref>,
+          <ref target=AREALISTTYPE><kw/AREALISTTYPE/</ref>,
+          <ref target=AREASEP><kw/AREASEP/</ref>,
+        </item>
+      </list>
+    </div2>
+    <div2 id=AREALISTFORMAT>
+      <head>
+        AREALISTFORMAT
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREALISTFORMAT/ <ident/string/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          The arealist column layout is configurable. This keyword allows you
+          to change the layout to whatever you like.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The string should be composed from the following letters:
+          <table rows=10 cols=3>
+            <row>
+              <cell>
+                Letter
+              </cell>
+              <cell>
+                Meaning
+              </cell>
+              <cell>
+                Default width
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/A/
+              </cell>
+              <cell>
+                Area number
+              </cell>
+              <cell>
+                4
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/M/
+              </cell>
+              <cell>
+                Marked
+              </cell>
+              <cell>
+                1
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/D/
+              </cell>
+              <cell>
+                Description
+              </cell>
+              <cell>
+                Dynamic
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/C/
+              </cell>
+              <cell>
+                Number of messages
+              </cell>
+              <cell>
+                6
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/P/
+              </cell>
+              <cell>
+                Personal mail mark (<q/+/)
+              </cell>
+              <cell>
+                1
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/U/
+              </cell>
+              <cell>
+                Number of unread/new messages
+              </cell>
+              <cell>
+                6
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/N/
+              </cell>
+              <cell>
+                Changed since last scan mark (<q/*/)
+              </cell>
+              <cell>
+                1
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/E/
+              </cell>
+              <cell>
+                Echoid
+              </cell>
+              <cell>
+                <ref target=AREALISTECHOMAX><kw/AREALISTECHOMAX/</ref>
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/G/
+              </cell>
+              <cell>
+                Groupid
+              </cell>
+              <cell>
+                Dynamic: 0, 1 or 3
+              </cell>
+            </row>
+          </table>
+          You can also specify widths for each or particular fields if you
+          don't like the defaults by putting number right after the letter.<lb>
+          If you leave out a letter, that column will not be shown.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident><![ CDATA ["AM D CPUN E G "]]></ident>
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          Use only the defined letters. Use spaces to specify required space
+          between columns. Use only positive numbers for widths. Failure to
+          obey these rules may cause undocumented behaviour.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=AREALISTECHOMAX><kw/AREALISTECHOMAX/</ref>,
+          <ref target=AREALISTGROUPID><kw/AREALISTGROUPID/</ref>,
+          <ref target=AREALISTGROUPORDER><kw/AREALISTGROUPORDER/</ref>,
+          <ref target=AREALISTNOS><kw/AREALISTNOS/</ref>,
+          <ref target=AREALISTPAGEBAR><kw/AREALISTPAGEBAR/</ref>,
+          <ref target=AREALISTSORT><kw/AREALISTSORT/</ref>,
+          <ref target=AREALISTTYPE><kw/AREALISTTYPE/</ref>,
+          <ref target=AREASEP><kw/AREASEP/</ref>,
+        </item>
+        <label>
+          Example:
+        </label>
+        <item><eg><![ CDATA [
+AREALISTFORMAT "AM D C4PU4N E G "]]></eg>
+        </item>
+      </list>
+    </div2>
 
 
 <!-- finished here -->
 
 
-    <div2 id=AREAISEMAIL>
-      <head>
-        AREAISEMAIL &lt;echoid&gt;
-      </head>
-      <p>
-        Wildcards * and ? are allowed. These keyword is designed to mark areas
-        which are read from an <kw>AREAFILE</kw> as <name>Internet</name>
-        e-mail. This may be necessary in some cases to enable the
-        <name>Internet</name> specific features without having to manually
-        define all <name>Internet</name> areas.
-      </p>
-      <p>
-        Examples:<eg>
-AREAISEMAIL alt.*, rec.*, sci.*</eg>
-      </p>
-    </div2>
-    <div2 id=AREAISNEWS>
-      <head>
-        AREAISNEWS &lt;echoid&gt;
-      </head>
-      <p>
-        For <name>Internet</name> news areas. See <ref target=AREAISEMAIL>
-        <kw>AREAISEMAIL</kw></ref> for details.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        AREAKEEPLAST &lt;(yes)/no&gt;
-      </head>
-      <p>
-        If enabled, <name>GoldED+</name> will write the file
-        <code>GOLDLAST.LST</code> in the <code>GOLDPATH</code> at exit and read
-        it back when run next time. The contents of the file is a list of
-        lastread information for each area as it was at last scan.
-      </p>
-      <p>
-        This feature is helpful when you know that there have not been tossed
-        new mail and don't want to wait for a full msgbase scan. Now you can
-        just hit ESC at the startup screen to abort the area scan and
-        <name>GoldED+</name> will put up the lastread info from the previous
-        session.
-      </p>
-      <p>
-        It also makes the <q>new mail since last scan</q> feature even better,
-        because the new mail marker now shows which areas that have new mail
-        since last session even when scanning areas at startup.
-      </p>
-      <p>
-        <name>GoldED+</name> only writes the <code>GOLDLAST.LST</code> file at
-        exit if it survived the initial startup scan.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        AREALISTECHOMAX &lt;size=0&gt;
-      </head>
-      <p>
-        Allows you to specify a fixed or dynamically sized width of the
-        <q>EchoID</q> column in the arealist.
-      </p>
-      <p>
-        If a negative value is specified, the width will be the that of the
-        widest echoid in the arealist plus the negative value. This might be
-        useful if some long-name echoes have uninteresting ends, such as
-        <q>VERYLONGECHOID_R23.PUB</q> (could benefit from a <ident>size</ident>
-        of -7). There is currently no provision for long echoids with common
-        beginning.
-      </p>
-      <p>
-        The arealist can dynamically resize the <q>EchoID</q> and
-        <q>Description</q> columns, so that long echoids are not cut off. The
-        sizing of the <q>EchoID</q> column is done against the
-        <q>Description</q> column, which thereby looses or gains width.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        AREALISTFORMAT &lt;string=<q>AM D CPUN E G </q>&gt;
-      </head>
-      <p>
-        The arealist column layout is configurable. This keyword allows you to
-        change the layout to whatever you like.
-      </p>
-      <p>
-        The default is:<eg><![ CDATA [
-AREALISTFORMAT "AM D CPUN E G "]]></eg>
-      </p>
-      <p>
-        This produces the usual layout. Here is another:<eg><![ CDATA [
-AREALISTFORMAT "ME D CPUN G "]]></eg>
-      </p>
-      <p>
-        This one puts the echoid in front and eliminates the area numbers.
-      </p>
-      <p>
-        The letters stand for the following:
-        <table rows=10 cols=3>
-          <row>
-            <cell>
-              Letter
-            </cell>
-            <cell>
-              Meaning
-            </cell>
-            <cell>
-              Default width
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident>A</ident>
-            </cell>
-            <cell>
-              Area number
-            </cell>
-            <cell>
-              4
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident>M</ident>
-            </cell>
-            <cell>
-              Marked
-            </cell>
-            <cell>
-              1
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident>D</ident>
-            </cell>
-            <cell>
-              Description
-            </cell>
-            <cell>
-              Dynamic
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident>C</ident>
-            </cell>
-            <cell>
-              Number of messages
-            </cell>
-            <cell>
-              6
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident>P</ident>
-            </cell>
-            <cell>
-              Personal mail mark (<q/+/)
-            </cell>
-            <cell>
-              1
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident>U</ident>
-            </cell>
-            <cell>
-              Number of unread/new messages
-            </cell>
-            <cell>
-              6
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident>N</ident>
-            </cell>
-            <cell>
-              Changed since last scan mark (<q/*/)
-            </cell>
-            <cell>
-              1
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident>E</ident>
-            </cell>
-            <cell>
-              Echoid
-            </cell>
-            <cell>
-              AREALISTECHOMAX
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident>G</ident>
-            </cell>
-            <cell>
-              Groupid
-            </cell>
-            <cell>
-              Dynamic: 0, 1 or 3
-            </cell>
-          </row>
-        </table>
-      </p>
-      <p>
-        You can also specify widths if you don't like the defaults:
-        <eg><![ CDATA [
-AREALISTFORMAT "AM D C4PU4N E G "]]></eg>
-        In this example, the <q>Msgs</q> and <q>New</q> columns are put back
-        to the size they had in <q>old days</q>.
-      </p>
-      <p>
-        If you leave out a letter, that column will not be shown.
-      </p>
-      <p>
-        Use only the defined letters. Use spaces to specify required space
-        between columns. Use only positive numbers for widths. Failure to
-        obey these rules may cause undocumented behaviour.
-      </p>
-    </div2>
-    <div2>
+    <div2 id=AREALISTGROUPID>
       <head>
         AREALISTGROUPID &lt;(yes)/no&gt;
       </head>
@@ -3640,7 +3854,21 @@ AREALISTFORMAT "AM D C4PU4N E G "]]></eg>
         &num;65-&num;90), the groupid is not shown.
       </p>
     </div2>
-    <div2>
+
+
+    <div2 id=AREALISTGROUPORDER>
+      <head>
+        AREALISTGROUPORDER
+      </head>
+      <p>
++ Added new keyword AreaListGroupOrder to specify groups sorting order
+  in arealist. The only parameter is string which specifies groups
+  order (case sensitive!). If some groups are not found in the list
+  they will be placed below specifyed ones in regular order.
+      </p>
+    </div2>
+
+    <div2 id=AREALISTNOS>
       <head>
         AREALISTNOS &lt;yes/(no)&gt;
       </head>
@@ -3650,7 +3878,9 @@ AREALISTFORMAT "AM D C4PU4N E G "]]></eg>
         sequential numbers.
       </p>
     </div2>
-    <div2>
+
+
+    <div2 id=AREALISTPAGEBAR>
       <head>
         AREALISTPAGEBAR &lt;(yes)/no&gt;
       </head>
@@ -3658,7 +3888,9 @@ AREALISTFORMAT "AM D C4PU4N E G "]]></eg>
         Enables or disables a pagebar (scrollbar) in the arealist.
       </p>
     </div2>
-    <div2>
+
+
+    <div2 id=AREALISTSCAN>
       <head>
         AREALISTSCAN &lt;<q>L menu text</q>&gt;
         &lsqb;path&rsqb;&lt;filename&gt; &lsqb;-delete&rsqb;&rsqb;
@@ -3710,6 +3942,8 @@ mbutil link -clean
 === Cut ===</eg>
       </p>
     </div2>
+
+
     <div2 id=AREALISTSORT>
       <head>
         AREALISTSORT &lt;sortspec=<q>FYTUE</q>&gt;
@@ -3897,7 +4131,9 @@ AREALISTSORT T-U+E</eg>
         defined with the <kw>AREASCANSORT</kw> keyword.
       </p>
     </div2>
-    <div2>
+
+
+    <div2 id=AREALISTTYPE>
       <head>
         AREALISTTYPE &lt;(new)/last&gt;
       </head>
@@ -3924,6 +4160,8 @@ AREALISTSORT T-U+E</eg>
         </table>
       </p>
     </div2>
+
+
     <div2>
       <head>
         AREAPATH &lt;path&gt;
@@ -3940,7 +4178,7 @@ AREALISTSORT T-U+E</eg>
         always overrides the <kw>AREAPATH</kw>.
       </p>
     </div2>
-    <div2>
+    <div2 id=AREAPMSCAN>
       <head>
         AREAPMSCAN &lt;echoid mask&gt;
       </head>
@@ -4074,7 +4312,7 @@ EndGroup</eg>
         Related keywords: <kw>AREACOPYTO</kw>, <kw>AREAFREQTO</kw>.
       </p>
     </div2>
-    <div2>
+    <div2 id=AREASCAN>
       <head>
         AREASCAN &lt;echoid mask&gt;
       </head>
