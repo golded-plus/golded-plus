@@ -216,7 +216,7 @@ void Area::DelMsgs(GMsg* msg) {
                   dellocked = true;
               }
             }
-            DeleteMsg(msg, DIR_PREV);
+            DeleteMsg(msg, reader_direction);
             PMrk.Del(msg->msgno);
           }
         }

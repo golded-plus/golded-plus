@@ -12,6 +12,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- When deleting marked messages the pointer moved always on the
+  previous message instead of the next in movement direction.
+
 - Fixed some problems with readonly areas: it is now not possible to
   change messages in R/O areas, it is possible to set group of areas
   to R/O using ATTRIBUTES keyword in Random System Group.
