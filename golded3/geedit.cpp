@@ -472,6 +472,8 @@ void IEclass::GoEOL() {
 
   // Move cursor to the last char on the line
   col = currline->txt.length();
+  if(currline->txt[col-1] == '\n')
+    --col;
 
   // String must not be longer than the window width
   _test_haltab(col > maxcol, col, maxcol);

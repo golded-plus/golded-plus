@@ -357,6 +357,7 @@ void CfgViewkludge       ();
 void CfgViewquote        ();
 void CfgWhoto            ();
 void CfgWildcatuserno    ();
+void CfgWritetemplate    ();
 void CfgXlatcharset      ();
 void CfgXlatescset       ();
 void CfgXlatexport       ();

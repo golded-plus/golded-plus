@@ -435,6 +435,20 @@ void CfgWildcatuserno() {
 
 //  ------------------------------------------------------------------
 
+void CfgWritetemplate() {
+
+  if(cfgingroup) {
+    Path buf;
+    strxcpy(buf, val, sizeof(buf));
+    CFG->grp.AddItm(GRP_WRITETEMPLATE, buf, strlen(buf)+1);
+  }
+  else {
+    CFG->wtpl = val;
+  }
+}
+
+//  ------------------------------------------------------------------
+
 void CfgXlatcharset() {
 
   Map xlt;

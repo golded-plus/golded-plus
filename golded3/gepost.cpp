@@ -832,7 +832,7 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
           omsg->attr.tou0();
           omsg->TextToLines(-CFG->quotemargin);
           if(ignore_replyto)
-            omsg->ireplyto[0] = NUL;
+            *omsg->ireplyto = NUL;
           if(omsg->attr.rot())
             Rot13(omsg);
           // Drop through
@@ -859,14 +859,12 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
           }
 
           // Do aka matching
-          {
-            if(AA->Akamatching()) {
-              // ... but only if we did NOT change aka manually
-              if(AA->Aka().addr.equals(AA->aka())) {
-                Addr aka_addr = AA->Aka().addr;
-                AkaMatch(&aka_addr, &omsg->orig);
-                AA->SetAka(aka_addr);
-              }
+          if(AA->Akamatching()) {
+            // ... but only if we did NOT change aka manually
+            if(AA->Aka().addr.equals(AA->aka())) {
+              Addr aka_addr = AA->Aka().addr;
+              AkaMatch(&aka_addr, &omsg->orig);
+              AA->SetAka(aka_addr);
             }
           }
 
@@ -882,6 +880,8 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
             msg->dest = omsg->orig;
             strcpy(msg->idest, *omsg->ireplyto ? omsg->ireplyto : omsg->iorig);
           }
+          if(not *msg->iaddr)
+            strcpy(msg->iaddr, msg->idest);
           strcpy(msg->re, omsg->re);
 
           if(AA->Replyre() or AA->isinternet()) {
@@ -928,13 +928,15 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
                 msg->dest.set(msg->igate);
                 char* ptr = strchr(msg->igate, ' ');
                 if(ptr) {
-                  strcpy(msg->realto, msg->to);
+                  if(not isuucp(msg->to))
+                    strcpy(msg->realto, msg->to);
                   strcpy(msg->to, strskip_wht(ptr));
                 }
               }
             }
             else if(*omsg->iaddr and (strlen(omsg->iaddr) < sizeof(Name))) {
-              strcpy(msg->realto, msg->to);
+              if(not isuucp(msg->to))
+                strcpy(msg->realto, msg->to);
               strcpy(msg->to, omsg->iaddr);
             }
           }

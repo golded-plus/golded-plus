@@ -37,6 +37,14 @@ int _use_fwd = true;
 
 //  ------------------------------------------------------------------
 
+bool isuucp(const char *name) {
+
+  return strieql("UUCP", name) or (*AA->Internetgate().name and strieql(AA->Internetgate().name, name));
+}
+
+
+//  ------------------------------------------------------------------
+
 char* MakeOrigin(GMsg* msg, const char* orig) {
 
   char buf[256];
@@ -537,17 +545,8 @@ void DoKludges(int mode, GMsg* msg, bool attronly) {
     }
 
     if(AA->isnet()) {
-      if(*msg->iaddr and not AA->isinternet()) {
-        if(not (CFG->internetgateexp == RFCAddress) and *msg->To() and (strpbrk(msg->iaddr, "<>()\"") == NULL) and not strieql(msg->To(), *AA->Internetgate().name ? AA->Internetgate().name : "UUCP")) {
-          Name name;
-          strcpy(name, msg->To());
-          if(CFG->internetgateexp == ((RFCName << 2) | RFCAddress))
-            sprintf(buf, "To: \"%s\" <%s>\r", StripQuotes(name), msg->iaddr);
-          else
-            sprintf(buf, "To: %s (%s)\r", msg->iaddr, StripQuotes(name));
-        }
-        else
-          sprintf(buf, "To: %s\r", msg->iaddr);
+      if(*msg->ito and not AA->isinternet()) {
+        sprintf(buf, "To: %s\r", msg->ito);
         line = AddKludge(line, buf);
       }
     }

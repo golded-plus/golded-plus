@@ -579,6 +579,7 @@ SwitchW:
   switch(crc) {
     case CRC_WHOTO            :  CfgWhoto            ();  break;
     case CRC_WILDCATUSERNO    :  CfgWildcatuserno    ();  break;
+    case CRC_WRITETEMPLATE    :  CfgWritetemplate    ();  break;
     default                   :  found = false;
   }
   goto End;

@@ -174,9 +174,9 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
           continue;
         if(tokenxchg(dst, "@otzoffset", (oldmsg->tzutc == -32767) ? "" : (sprintf(buf, " %+05d", oldmsg->tzutc), buf)))
           continue;
-        if(tokenxchg(dst, "@ofrom", *oldmsg->ifrom ? oldmsg->ifrom : oldmsg->By()))
+        if(tokenxchg(dst, "@ofrom", oldmsg->ifrom))
           continue;
-        if(tokenxchg(dst, "@oto", *oldmsg->ito ? oldmsg->ito : oldmsg->To()))
+        if(tokenxchg(dst, "@oto", oldmsg->ito))
           continue;
         if(tokenxchg(dst, "@omessageid", oldmsg->messageid ? oldmsg->messageid : ""))
           continue;
@@ -184,6 +184,8 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
 	  continue;
         if(tokenxchg(dst, "@dname", strbtrim(strtmp(oldmsg->To())), 34, 3,
             msg->to_me(), msg->to_you(), oldmsg->to_all()))
+          continue;
+        if(tokenxchg(dst, "@dpgp", *msg->iaddr ? msg->iaddr : msg->To()))
           continue;
         if(tokenxchg(dst, "@dfname", strlword(oldmsg->To()), 0, 3,
             msg->to_me(), msg->to_you(), oldmsg->to_all()))
@@ -268,9 +270,9 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
           continue;
         if(tokenxchg(dst, "@clname", strrword(strcpy(buf, AA->Username().name))))
           continue;
-        if(tokenxchg(dst, "@cfrom", *msg->ifrom ? msg->ifrom : msg->By()))
+        if(tokenxchg(dst, "@cfrom", msg->ifrom))
           continue;
-        if(tokenxchg(dst, "@cto", *msg->ito ? msg->ito : msg->To()))
+        if(tokenxchg(dst, "@cto", msg->ito))
           continue;
         if(tokenxchg(dst, "@cdate", cdate))
           continue;
@@ -281,6 +283,8 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
         if(tokenxchg(dst, "@ctzoffset", AA->Usetzutc() ? (sprintf(buf, " %+05d", tzoffset()), buf) : ""))
           continue;
         if(tokenxchg(dst, "@fname", strbtrim(strtmp(msg->By())), 34))
+          continue;
+        if(tokenxchg(dst, "fpgp", *msg->iorig ? msg->iorig : msg->By()))
           continue;
         if(tokenxchg(dst, "@ffname", strlword(msg->By())))
           continue;

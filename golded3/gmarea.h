@@ -310,6 +310,7 @@ struct AreaData {
   Node     username;
   bool     usetzutc;
   IAdr     whoto;
+  Path     wtpl;
   XlatName xlatexport;
   XlatName xlatimport;
 
@@ -569,6 +570,7 @@ public:
         bool   Viewkludge() const       { return adat->viewkludge; }
         bool   Viewquote() const        { return adat->viewquote; }
   const char*  Whoto() const            { return adat->whoto; }
+  const char*  WTpl() const             { return adat->wtpl; }
   const char*  Xlatexport() const       { return adat->xlatexport; }
   const char*  Xlatimport() const       { return adat->xlatimport; }
 

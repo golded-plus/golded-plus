@@ -373,6 +373,7 @@ const word CRC_VIEWKLUDGE       = 0x4078;
 const word CRC_VIEWQUOTE        = 0x0AB3;
 const word CRC_WHOTO            = 0xB25F;
 const word CRC_WILDCATUSERNO    = 0xC2FE;
+const word CRC_WRITETEMPLATE    = 0xF4CB;
 const word CRC_XLATCHARSET      = 0xA860;
 const word CRC_XLATESCSET       = 0x4BA7;
 const word CRC_XLATEXPORT       = 0x29CB;

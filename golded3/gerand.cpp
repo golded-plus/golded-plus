@@ -310,6 +310,11 @@ void Area::RandomizeData(int mode) {
           strxcpy(adat->tpl, buf, sizeof(adat->tpl));
         }
     }
+    if(CFG->grp.GetItm(GRP_WRITETEMPLATE, buf, sizeof(buf))) {
+      if(*buf == '@')
+        GetRandomLine(buf, sizeof(buf), buf+1);
+      strxcpy(adat->wtpl, buf, sizeof(adat->wtpl));
+    }
 
     CFG->grp.GetItm(GRP_TEMPLATEMATCH, adat->templatematch);
     CFG->grp.GetItm(GRP_TWITMODE, adat->twitmode);

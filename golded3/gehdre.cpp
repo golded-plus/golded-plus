@@ -305,23 +305,21 @@ bool GMsgHeaderEdit::validate() {
     fromaddr.buf = ffromaddr->buf; fromaddr.update = false;
     subj.buf = fsubj->buf; subj.update = false;
 
-    INam iaddr, realto;
-    strcpy(iaddr, msg->iaddr);
-    strcpy(realto, msg->realto);
+    string iaddr(msg->iaddr), realto(msg->realto);
 
     bool res = set_to_address(msg, &toname, &toaddr, &fromaddr, &subj, 0, LNG->SelectDestNode, lookup);
 
     vcurshow();
-    char bot2[200];
+    __extension__ char bot2[EDIT->HdrNodeLen()+1];
     MakeAttrStr(bot2, sizeof(bot2), &msg->attr);
     strsetsz(bot2, EDIT->HdrNodeLen());
     window.prints(1, EDIT->HdrNodePos(), C_HEADW, bot2);
 
     // once we changed name invalidate realto and internet address
     if(not strieql(orig_toname.c_str(), toname.buf)) {
-      if(strieql(realto, msg->realto))
+      if(strieql(realto.c_str(), msg->realto))
         *msg->realto = NUL;
-      if(not AA->isinternet() and strieql(iaddr, msg->iaddr))
+      if(not AA->isinternet() and strieql(iaddr.c_str(), msg->iaddr))
         *msg->iaddr = NUL;
     }
 
@@ -445,7 +443,7 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view) {
       to_name = tmp_to_name;
 
     if(AA->isinternet()) {
-      strcpy(msg->to, to_name.c_str());
+      strcpy(msg->to, *AA->Internetgate().name ? AA->Internetgate().name : to_name.c_str());
       strcpy(msg->realby, msg->by);
       strcpy(msg->realto, msg->to);
       strcpy(msg->iorig, from_addr.c_str());
@@ -481,14 +479,20 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view) {
         strcpy(msg->to, to_name.c_str());
 
       if(*msg->iaddr) {
-        if(*msg->To() and (strpbrk(msg->iaddr, "<>()\"") == NULL) and not strieql(msg->To(), *AA->Internetgate().name ? AA->Internetgate().name : "UUCP")) {
+        if(not (CFG->internetgateexp == RFCAddress) and *msg->To() and (strpbrk(msg->iaddr, "<>()\"") == NULL) and not isuucp(msg->To())) {
           Name name;
           strcpy(name, msg->To());
-          sprintf(msg->ito, "%s (%s)", msg->iaddr, StripQuotes(name));
+          if(CFG->internetgateexp == ((RFCName << 2) | RFCAddress))
+            sprintf(msg->ito, "\"%s\" <%s>", StripQuotes(name), msg->iaddr);
+          else
+            sprintf(msg->ito, "%s (%s)", msg->iaddr, StripQuotes(name));
         }
         else
           strcpy(msg->ito, msg->iaddr);
       }
+
+      if(not *msg->realto and isuucp(msg->to))
+        strcpy(msg->realto, strlword(msg->iaddr, "@"));
 
       Addr address;
       address = AA->Aka().addr;

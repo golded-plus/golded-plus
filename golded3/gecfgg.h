@@ -351,6 +351,7 @@ public:
   bool        viewquote;
   Name        whoto;
   int         wildcatuserno;
+  string      wtpl;
   vector<Map> xlatcharset;
   vector<Map> xlatescset;
   char        xlatexport[17];       // exportcharset[17];

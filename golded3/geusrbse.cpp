@@ -715,7 +715,7 @@ void guserbase::update_addressbook(GMsg* msg, bool reverse, bool force) {
   INam name;
 
   strcpy(name, (reverse ? msg->By() : msg->To()));
-  strcpy(iaddr, (reverse ? msg->iorig : msg->idest));
+  strcpy(iaddr, (reverse ? (*msg->iorig ? msg->iorig : msg->iaddr) : msg->idest));
   fidoaddr = (reverse ? msg->orig : msg->dest);
 
   if(not strblank(name)) {
@@ -755,7 +755,7 @@ void guserbase::update_addressbook(GMsg* msg, bool reverse, bool force) {
         }
 
         // 6. It's a UUCP name
-        if(strieql("UUCP", name) or (*AA->Internetgate().name and strieql(AA->Internetgate().name, name)))
+        if(isuucp(name))
           return;
 
         // 7. If it is already an email address
@@ -815,7 +815,17 @@ bool guserbase::lookup_addressbook(GMsg* msg, char* name, char* aka, bool browse
 
       found = true;
 
-      strcpy(name, entry.name);
+      if(*msg->iaddr and not AA->isinternet()) {
+        // do UUCP addressing
+        strcpy(msg->realto, entry.name);
+        if(*AA->Internetgate().name)
+          strcpy(name, AA->Internetgate().name);
+        else
+          strcpy(name, entry.name);
+      }
+      else
+        strcpy(name, entry.name);
+
       if(not strblank(entry.pseudo))
         strcpy(msg->pseudoto, entry.pseudo);
 
@@ -826,14 +836,10 @@ bool guserbase::lookup_addressbook(GMsg* msg, char* name, char* aka, bool browse
         else {
           entry.fidoaddr.make_string(aka);
           if(strblank(aka) and not strblank(entry.iaddr)) {
-            // do UUCP addressing
-            strcpy(msg->realto, entry.name);
             strcpy(msg->idest, entry.iaddr);
             strcpy(msg->iaddr, entry.iaddr);
             if(AA->Internetgate().addr.valid())
               AA->Internetgate().addr.make_string(aka);
-            if(*AA->Internetgate().name)
-              strcpy(name, AA->Internetgate().name);
           }
         }
       }
@@ -849,7 +855,7 @@ bool guserbase::lookup_addressbook(GMsg* msg, char* name, char* aka, bool browse
 
 void guserbase::build_pseudo(GMsg* msg, char* name, char* aka, bool direction) {
 
-  if(*msg->iaddr and strieql("UUCP", name) or (*AA->Internetgate().name and strieql(AA->Internetgate().name, name)))
+  if(*msg->iaddr and isuucp(name))
     strcpy(direction ? msg->pseudoto : msg->pseudofrom, strlword(msg->iaddr, " @"));
   else
     strcpy(direction ? msg->pseudoto : msg->pseudofrom, strlword(name, " @"));

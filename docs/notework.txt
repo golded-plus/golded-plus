@@ -12,6 +12,17 @@ ______________________________________________________________________
                  Notes for GoldED+ 1.1.5, March xx 2001
 ______________________________________________________________________
 
++ Added new keyword WRITETEMPLATE which defines template to be used on
+  saving messages. Could be used in Random System Groups or globally.
+
++ You can explicitly select built-in template by defining "built-in".
+
+! A lot of manipulations with Internet addressing was done. If at
+  least one person will be able to send message to expected
+  destination I'll be happy :-) If you'll find a bug please write me
+  a detailed guide (functional requirements specification :)) on how
+  everything should work.
+
 ! Fixed filelocking in UNIX version.
 
 - Fixed "Via" kludge handling in JAM areas.
@@ -47,9 +58,6 @@ ______________________________________________________________________
 - Template keyword now properly extracts filename within random system
   groups.
 
-! If @ofrom or @oto is about to expanding to nothing they expanded to
-  real name of person (if available).
-
 ! @*addr macroses now expanded by default without domain, if you ever
   need 5d addresses use @*addr{domain} scheme.
 
@@ -83,6 +91,8 @@ ______________________________________________________________________
   @odtime           expanded according to MS_DateTimeFmt for original
                     message time
   @cdtime           current time in MS_DateTimeFmt format
+  @fpgp             either e-mail or name from "From" field
+  @dpgp             either e-mail or name from "To" field
 
 - Fixed bug in expanding fixed lenght macroses.
 

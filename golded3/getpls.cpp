@@ -179,24 +179,30 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
 
   strcpy(tplfile, tpl);
 
-  if(AA->Templatematch() and not (CFG->tplno or AA->isnewsgroup() or AA->isemail())) {
-    if(not ((mode == MODE_NEW or mode == MODE_REPLYCOMMENT or mode == MODE_FORWARD)
-            and (AA->isecho() or AA->islocal()))) {
-      vector<Tpl>::iterator tp;
-      for(tp = CFG->tpl.begin(); tp != CFG->tpl.end(); tp++)
-        if(tp->match.net and msg->dest.match(tp->match)) {
-          strcpy(tplfile, tp->file);
-          break;
-        }
+  if((mode != MODE_WRITEHEADER) and (mode != MODE_WRITE) and (mode != MODE_HEADER)) {
+    if(AA->Templatematch() and not (CFG->tplno or AA->isnewsgroup() or AA->isemail())) {
+      if(not ((mode == MODE_NEW or mode == MODE_REPLYCOMMENT or mode == MODE_FORWARD)
+              and (AA->isecho() or AA->islocal()))) {
+        vector<Tpl>::iterator tp;
+        for(tp = CFG->tpl.begin(); tp != CFG->tpl.end(); tp++)
+          if(tp->match.net and msg->dest.match(tp->match)) {
+            strcpy(tplfile, tp->file);
+            break;
+          }
+      }
     }
   }
 
-  if(tplfile == CleanFilename(tplfile))
-    strcpy(tplfile, AddPath(CFG->templatepath, tplfile));
+  if(not strieql(tplfile, "built-in")) {
+    if(tplfile == CleanFilename(tplfile))
+      strcpy(tplfile, AddPath(CFG->templatepath, tplfile));
 
-  if(not fexist(tplfile) and not CFG->tpl.empty())
-    strcpy(tplfile, AddPath(CFG->templatepath, CFG->tpl[CFG->tplno].file));
-  if(not fexist(tplfile) or CFG->tpl.empty()) {
+    if((mode != MODE_WRITEHEADER) and (mode != MODE_WRITE) and (mode != MODE_HEADER)) {
+      if(not fexist(tplfile) and not CFG->tpl.empty())
+        strcpy(tplfile, AddPath(CFG->templatepath, CFG->tpl[CFG->tplno].file));
+    }
+  }
+  if(strieql(tplfile, "built-in") or not fexist(tplfile) or CFG->tpl.empty()) {
     tmptpl = YES;   // Create a temporary template
     mktemp(strcpy(tplfile, AddPath(CFG->templatepath, "GDXXXXXX")));
     fp = fsopen(tplfile, "wt", CFG->sharemode);
