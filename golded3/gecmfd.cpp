@@ -28,9 +28,10 @@
 
 
 //  ------------------------------------------------------------------
-//  Global data from GEREAD
+//  Global data from GEREAD & GECTRL
 
 extern GMsg* reader_msg;
+extern int _use_fwd;
 
 
 //  ------------------------------------------------------------------
@@ -357,7 +358,6 @@ void CmfMsgs(GMsg* msg) {
 
   // Handle a forward
   if(cmf == MODE_FORWARD) {
-    extern int _use_fwd;
     _use_fwd = orig_adat->usefwd;
     if(_use_fwd == ASK) {
       GMenuForward MenuForward;

@@ -12,6 +12,10 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+! GoldED+ will now show hidden lines and RFC header in the message
+  editor. This is primarily to be able to add cc:, copy:, etc. lines
+  in the Internet areas.
+
 - Fixed old bug with ADDRESSLOOKUPFIRST when it set to the ORIGIN and
   no valid address defined in the origin.
 

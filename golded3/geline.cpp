@@ -613,11 +613,30 @@ static void KludgeTO(GMsg* msg, const char* ptr) {
 
 static void KludgeBCC(GMsg* msg, const char* ptr) {
 
-  char* ibcc = msg->ibcc;
-  char* buf = (char*)throw_malloc(strlen(ibcc) + strlen(ptr) + 3);
-  strcpy(stpcpy(stpcpy(buf, ibcc), *ibcc ? ", " : ""), ptr);
-  strxmimecpy(msg->ibcc, buf, 0, sizeof(msg->ibcc), true);
-  throw_free(buf);
+  INam _toname;
+  IAdr _toaddr, buf;
+
+  gstrarray bccs;
+  tokenize(bccs, ptr, ",");
+  for(int i=0; i < bccs.size(); i++) {
+    strxcpy(buf, strskip_wht(bccs[i].c_str()), sizeof(IAdr));
+    ParseInternetAddr(buf, _toname, _toaddr);
+    if(*_toaddr and not striinc(_toaddr, msg->ibcc)) {
+      if(*msg->ibcc)
+        strxcat(msg->ibcc, ", ", sizeof(msg->ibcc));
+      if(_toname[0] != NUL) {
+        IAdr buf2;
+        mime_header_encode(buf2, _toname, msg);
+        char quot[2] = "\"";
+        if((buf2[0] == '\"') or (strpbrk(buf2, " \t") == NULL))
+          quot[0] = NUL;
+        sprintf(buf, "%s%s%s <%s>", quot, buf2, quot, _toaddr);
+      }
+      else
+        sprintf(buf, "%s", _toaddr);
+      strxcat(msg->ibcc, buf, sizeof(msg->ibcc));
+    }
+  }
 }
 
 
@@ -625,11 +644,30 @@ static void KludgeBCC(GMsg* msg, const char* ptr) {
 
 static void KludgeCC(GMsg* msg, const char* ptr) {
 
-  char* icc = msg->icc;
-  char* buf = (char*)throw_malloc(strlen(icc) + strlen(ptr) + 3);
-  strcpy(stpcpy(stpcpy(buf, icc), *icc ? ", " : ""), ptr);
-  strxcpy(icc, buf, sizeof(msg->icc));
-  throw_free(buf);
+  INam _toname;
+  IAdr _toaddr, buf;
+
+  gstrarray ccs;
+  tokenize(ccs, ptr, ",");
+  for(int i=0; i < ccs.size(); i++) {
+    strxcpy(buf, strskip_wht(ccs[i].c_str()), sizeof(IAdr));
+    ParseInternetAddr(buf, _toname, _toaddr);
+    if(*_toaddr and not striinc(_toaddr, msg->icc)) {
+      if(*msg->icc)
+        strxcat(msg->icc, ", ", sizeof(msg->icc));
+      if(_toname[0] != NUL) {
+        IAdr buf2;
+        mime_header_encode(buf2, _toname, msg);
+        char quot[2] = "\"";
+        if((buf[0] == '\"') or (strpbrk(buf2, " \t") == NULL))
+          quot[0] = NUL;
+        sprintf(buf, "%s%s%s <%s>", quot, buf2, quot, _toaddr);
+      }
+      else
+        sprintf(buf, "%s", _toaddr);
+      strxcat(msg->icc, buf, sizeof(msg->icc));
+    }
+  }
 }
 
 
@@ -1147,7 +1185,7 @@ int HandleRFCs(GMsg* msg, Line* line, int kludgenum, const char* ptr, int getval
 
     case RFC_BCC:
       line->kludge = GKLUD_RFC;
-      if(getvalue) {
+      if(true /* getvalue */) {
         char* tmp = UnwrapLine(line, ptr);
         KludgeBCC(msg, tmp ? tmp : ptr);
         if(tmp)
@@ -1157,7 +1195,7 @@ int HandleRFCs(GMsg* msg, Line* line, int kludgenum, const char* ptr, int getval
 
     case RFC_CC:
       line->kludge = GKLUD_RFC;
-      if(getvalue) {
+      if(true /* getvalue */) {
         char* tmp = UnwrapLine(line, ptr);
         KludgeCC(msg, tmp ? tmp : ptr);
         if(tmp)
@@ -1880,6 +1918,9 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode) {
     line = nextline;
   }
 
+  msg->icc[0] = NUL;
+  msg->ibcc[0] = NUL;
+
   msg->lines = 0;
   msg->lin = NULL;
 
@@ -2513,7 +2554,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode) {
                     }
                   }
                 }
-                else if(--irfcbody == 0)
+                else
                   break;
               }
             }
@@ -2599,7 +2640,6 @@ void MsgLineReIndex(GMsg* msg, int viewhidden, int viewkludge, int viewquote) {
 
   x = 0;
   msg->lines = 0;
-  line = msg->lin;
 
   char qbuf[MAXQUOTELEN];
   char qbuf0[MAXQUOTELEN];
@@ -2607,12 +2647,11 @@ void MsgLineReIndex(GMsg* msg, int viewhidden, int viewkludge, int viewquote) {
   int qmatches = 0;
 
   *qbuf0 = NUL;
-  while(line) {
+  for(line = msg->lin; line != NULL; line = line->next) {
     if(line->type & GLINE_KLUD) {
       *qbuf0 = NUL;
       qmatches = 0;
       if(not viewkludge) {
-        line = line->next;
         continue;
       }
     }
@@ -2620,7 +2659,6 @@ void MsgLineReIndex(GMsg* msg, int viewhidden, int viewkludge, int viewquote) {
       *qbuf0 = NUL;
       qmatches = 0;
       if(not viewhidden) {
-        line = line->next;
         continue;
       }
     }
@@ -2640,7 +2678,6 @@ void MsgLineReIndex(GMsg* msg, int viewhidden, int viewkludge, int viewquote) {
           ++p;
         }
         if(qmatches != 1) {
-          line = line->next;
           continue;
         }
       }
@@ -2651,7 +2688,6 @@ void MsgLineReIndex(GMsg* msg, int viewhidden, int viewkludge, int viewquote) {
     }
     msg->line[x++] = line;
     msg->lines++;
-    line = line->next;
   }
 
   msg->line[x] = NULL;  // Mark end of index

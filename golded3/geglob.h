@@ -73,10 +73,6 @@ extern FileSpec* fspec;
 // GEMENU.CPP
 extern GMsg* MenuMsgPtr;
 
-// GEPOST.CPP
-extern uint position;
-extern ulong msgcount;
-
 // GEREAD.CPP
 extern int reader_finished;
 extern int reader_done;

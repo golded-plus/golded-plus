@@ -31,7 +31,7 @@
 //  ------------------------------------------------------------------
 
 extern GMsg* reader_msg;
-extern int reader_gen_confirm;
+extern bool reader_gen_confirm;
 
 
 //  ------------------------------------------------------------------
@@ -926,7 +926,7 @@ void ConfirmMsg() {
     doit = MenuConfirm.Run();
   }
 
-  reader_gen_confirm = NO;
+  reader_gen_confirm = false;
   if(doit and AA->isnet() and (reader_msg->attr.cfm() or reader_msg->attr.rrq())) {
     int a = AL.AreaEchoToNo(CFG->areacfmreplyto);
     if(a != -1) {
@@ -986,9 +986,9 @@ void OtherAreaReplyMsg() {
         destarea = AreaPick(LNG->ReplyArea, 6, &destarea);
     }
     if(destarea != -1) {
-      int adat_viewhidden = AA->adat->viewhidden;
-      int adat_viewkludge = AA->adat->viewkludge;
-      int adat_viewquote  = AA->adat->viewquote;
+      int adat_viewhidden = AA->Viewhidden();
+      int adat_viewkludge = AA->Viewkludge();
+      int adat_viewquote  = AA->Viewquote();
       AL.SetActiveAreaId(destarea);
       if(CurrArea != OrigArea) {
         AA->Open();
@@ -1142,9 +1142,9 @@ void OtherAreaQuoteMsg(bool ignore_replyto) {
         destarea = AreaPick(LNG->ReplyArea, 6, &destarea);
     }
     if(destarea != -1) {
-      int adat_viewhidden = AA->adat->viewhidden;
-      int adat_viewkludge = AA->adat->viewkludge;
-      int adat_viewquote  = AA->adat->viewquote;
+      int adat_viewhidden = AA->Viewhidden();
+      int adat_viewkludge = AA->Viewkludge();
+      int adat_viewquote  = AA->Viewquote();
       AL.SetActiveAreaId(destarea);
       if(CurrArea != OrigArea) {
         AA->Open();
@@ -1192,9 +1192,9 @@ void OtherAreaCommentMsg() {
         destarea = AreaPick(LNG->ReplyArea, 6, &destarea);
     }
     if(destarea != -1) {
-      int adat_viewhidden = AA->adat->viewhidden;
-      int adat_viewkludge = AA->adat->viewkludge;
-      int adat_viewquote  = AA->adat->viewquote;
+      int adat_viewhidden = AA->Viewhidden();
+      int adat_viewkludge = AA->Viewkludge();
+      int adat_viewquote  = AA->Viewquote();
       AL.SetActiveAreaId(destarea);
       if(CurrArea != OrigArea) {
         AA->Open();

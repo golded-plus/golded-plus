@@ -32,6 +32,7 @@
 
 //  ------------------------------------------------------------------
 
+static ulong msgcount = 0;
 int _use_fwd = true;
 
 
@@ -256,7 +257,9 @@ void DoKludges(int mode, GMsg* msg, int kludges) {
     }
   }
 
-  line = msg->lin;
+  for(line = msg->lin; line; line = line->next)
+    if(not (line->type & (GLINE_HIDD|GLINE_KLUD)))
+      break;
 
   if(kludges == GKLUD_FLAGS) {
     if(AA->isnet())
@@ -432,6 +435,62 @@ void DoKludges(int mode, GMsg* msg, int kludges) {
           sprintf(buf, "%s%sTo: %s", rfc, AA->isnewsgroup() ? "X-" : "", ptr);
         line = AddKludge(line, buf);
         line->kludge = GKLUD_RFC;
+      }
+
+      if(AA->isemail()) {
+        if(*msg->icc) {
+          int i = 0;
+          while(strlen(msg->icc + i) > CFG->soupexportmargin) {
+            char *prev = strchr(msg->icc+i, ',');
+            if(prev == NULL)
+              break;
+            else {
+              char *curr = prev;
+              while((curr - (msg->icc + i)) < CFG->soupexportmargin) {
+                prev = curr;
+                curr = strchr(prev+1, ',');
+                if(curr == NULL)
+                  break;
+              }
+              *prev = NUL;
+              sprintf(buf, "%sCc: %s", rfc, msg->icc + i);
+              line = AddKludge(line, buf);
+              line->kludge = GKLUD_RFC;
+              *prev = ',';
+              i = prev + 2 - msg->icc;
+            }
+          }
+          sprintf(buf, "%sCc: %s", rfc, msg->icc + i);
+          line = AddKludge(line, buf);
+          line->kludge = GKLUD_RFC;
+        }
+
+        if(*msg->ibcc) {
+          int i = 0;
+          while(strlen(msg->ibcc + i) > CFG->soupexportmargin) {
+            char *prev = strchr(msg->ibcc+i, ',');
+            if(prev == NULL)
+              break;
+            else {
+              char *curr = prev;
+              while((curr - (msg->ibcc + i)) < CFG->soupexportmargin) {
+                prev = curr;
+                curr = strchr(prev+1, ',');
+                if(curr == NULL)
+                  break;
+              }
+              *prev = NUL;
+              sprintf(buf, "%sBcc: %s", rfc, msg->ibcc + i);
+              line = AddKludge(line, buf);
+              line->kludge = GKLUD_RFC;
+              *prev = ',';
+              i = prev + 2 - msg->ibcc;
+            }
+          }
+          sprintf(buf, "%sBcc: %s", rfc, msg->ibcc + i);
+          line = AddKludge(line, buf);
+          line->kludge = GKLUD_RFC;
+        }
       }
 
       if(CFG->internetviagate) {

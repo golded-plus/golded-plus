@@ -143,7 +143,7 @@ int DoCarboncopy(GMsg* msg, GMsg** carbon) {
             HeaderView->Paint();
             GMenuCarbon MenuCarbon;
             ignorecc = MenuCarbon.Run(msg) ? false : true;
-            if(ignorecc)                    // Do not process carcon copies
+            if(ignorecc)                    // Do not process carbon copies
               break;
             if(newline)
               ccline = newline->prev;       // Store the position of first line
@@ -196,9 +196,10 @@ int DoCarboncopy(GMsg* msg, GMsg** carbon) {
       newline = newline->next;
     } while(newline != NULL);
 
-    std::string temp;
     // Fix the CC list in the message
-    if(cc and ccline) {
+    if(not ignorecc and cc and ccline) {
+      std::string temp;
+
       switch(CFG->carboncopylist) {
         case CC_REMOVE:
           // No list
@@ -413,7 +414,7 @@ void DoCrosspost(GMsg* msg, std::vector<int> &postareas) {
     } while(newline != NULL);
 
     // Fix the XC list in the message, ignore crossposting to itself only
-    if((local_xps < postareas.size()+1) and xcline) {
+    if(not ignorexc and (local_xps < postareas.size()+1) and xcline) {
       switch(CFG->crosspostlist) {
         case CC_REMOVE:
           // No list
@@ -455,20 +456,19 @@ void DoCrosspost(GMsg* msg, std::vector<int> &postareas) {
           break;
         case CC_NAMES:
           // Expand in column
-          {
-            if(not hideoriginal) {
-              sprintf(buf, LNG->Originallyin, AA->echoid());
-              xcline = AddLine(xcline, buf);
-            }
-
-            for(int i=local_xps; i < postareas.size(); i++) {
-              const char *echoid = AL[postareas[i]]->echoid();
-              if(postareas_attrs[i] or strieql(AA->echoid(), echoid))
-                continue;
-              sprintf(buf, LNG->Crosspostedin, echoid);
-              xcline = AddLine(xcline, buf);
-            }
+          if(not hideoriginal) {
+            sprintf(buf, LNG->Originallyin, AA->echoid());
+            xcline = AddLine(xcline, buf);
           }
+
+          for(int i=local_xps; i < postareas.size(); i++) {
+            const char *echoid = AL[postareas[i]]->echoid();
+            if(postareas_attrs[i] or strieql(AA->echoid(), echoid))
+              continue;
+            sprintf(buf, LNG->Crosspostedin, echoid);
+            xcline = AddLine(xcline, buf);
+          }
+          break;
       }
     }
   }

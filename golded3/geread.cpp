@@ -34,13 +34,13 @@ extern bool cmdlinenoscan;
 extern bool cmdlineexportsoup;
 
 GMsg* reader_msg;
-int reader_gen_confirm = false;
+bool reader_gen_confirm = false;
 int reader_finished;
 int reader_done = false;
 int reader_topline;
 int reader_keyok;
 int reader_direction;
-int reader_rcv_noise = false;
+int reader_rcv_noise = 0;
 gkey reader_keycode;
 gkey reader_lastcode = 0;
 bool reader_msglistfirst = false;

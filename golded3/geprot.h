@@ -101,6 +101,7 @@ void GetRandom(int mode, GMsg* msg);
 char* GetRandomLine(char* __buf, size_t __bufsize, const char* __file);
 char* HandleRandomLine(char* buf, size_t bufsize);
 const char* get_informative_string(void);
+char* mime_header_encode(char* dest, const char* source, GMsg* msg);
 
 
 //  ------------------------------------------------------------------

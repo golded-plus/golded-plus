@@ -29,9 +29,7 @@
 
 //  ------------------------------------------------------------------
 
-std::vector<int> post_xparea;
-uint position;
-ulong msgcount = 0;
+static std::vector<int> post_xparea;
 
 
 //  ------------------------------------------------------------------
@@ -514,14 +512,11 @@ static void MakeMsg2(int& mode, int& status, int& forwstat, int& topline, GMsg* 
       msg->TextToLines(CFG->dispmargin-1, false); // Ignore any kludge address found
       msg->attr.pos0();
     }
-    uint lineno = position = reader_topline+1;
-    line = msg->lin;
-    while(line) {
-      if(not (line->type & GLINE_QUOT))
-        if(line->type & GLINE_POSI)
-          position = lineno;
-      lineno++;
-      line = line->next;
+    uint lineno, position = reader_topline+1;
+    for(lineno = 0; lineno < msg->lines; lineno++) {
+      if(not (msg->line[lineno]->type & GLINE_QUOT))
+        if(msg->line[lineno]->type & GLINE_POSI)
+          position = lineno+reader_topline+1;
     }
     if(*EDIT->External() and not EDIT->Internal()) {
       SaveLines(MODE_NEW, AddPath(CFG->goldpath, EDIT->File()), msg, 79);
@@ -568,7 +563,7 @@ static void MakeMsg2(int& mode, int& status, int& forwstat, int& topline, GMsg* 
         newline = line = msg->lin;
         while(line) {
           newline = line;
-          if(((line->type & GLINE_HIDD) and not AA->Viewhidden()) or ((line->type & GLINE_KLUD) and not AA->Viewkludge()))
+          if((line->type & GLINE_KLUD) and not AA->Viewkludge() and not (line->kludge & GKLUD_RFC))
             newline = line = DeleteLine(line);
           else {
             strtrimline(line->txt);
@@ -621,7 +616,16 @@ static void MakeMsg2(int& mode, int& status, int& forwstat, int& topline, GMsg* 
           LoadText(msg, AddPath(CFG->goldpath, EDIT->File()));
         if(mode == MODE_FORWARD)
           msg->attr.pos1();
+        int adat_viewhidden = AA->Viewhidden();
+        int adat_viewkludge = AA->Viewkludge();
+        int adat_viewquote  = AA->Viewquote();
+        AA->adat->viewhidden = true;
+        AA->adat->viewkludge = true;
+        AA->adat->viewquote = true;
         msg->TextToLines(CFG->dispmargin-1, false); // Ignore any kludge address found
+        AA->adat->viewhidden = adat_viewhidden;
+        AA->adat->viewkludge = adat_viewkludge;
+        AA->adat->viewquote = adat_viewquote;
         msg->attr.pos0();
 
         if(not savedirect) {
