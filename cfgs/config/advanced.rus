@@ -1336,6 +1336,7 @@ ExterNutil 9 -NoPause -NoKeepCtrl -Wipe E:\Progra~1\OutLoo~1\MSIMN.EXE          
 ExternUtil 10 -NoCls -NoPause -NoKeepCtrl -Wipe -NoReload -NoSwap echo off> C:\FIDO\TM\Flags\echoscan.t-m  ; Создание флага для сканирования эхо-областей
 ExternUtil 11 -NoCls -NoPause -NoKeepCtrl -Wipe -NoReload -NoSwap echo off> C:\FIDO\TM\Flags\netmail.t-m   ; Создание флага для обработки нетмейла
 ExternUtil 12 -NoPause -NoKeepCtrl -Wipe C:\FIDO\UUW\UUWIZARD.EXE /Open @OEcho @OName @OAddr               ; Запуск программы UU Wizard v1.64.63
+ExternUtil 13 -NoPause -NoKeepCtrl -Wipe C:\FIDO\EchoList.bat                                              ; Запуск программы "EchoList"
 
 // Перечисленные Внешние Утилиты вызываются при редактировании сообщения:
 EditSaveUtil 1 "  PGP: Подписать в оболочке"
@@ -1353,6 +1354,7 @@ EditSaveUtil 4 "  PGP: Зашифровать и подписать"
 //   F11    ExternUtil10  ; Создание флага для сканирования эхо-областей.
 //   @F11   ExternUtil11  ; Создание флага для обработки нетмейла.
 //   F10    ExternUtil12  ; Запуск программы UU Wizard v1.64.63 
+//   @F7    ExternUtil13  ; Запуск прогpаммы "EchoList"
 
 ----------------------------------------------------------------------
 -- НАСТРОЙКИ ПЕЧАТИ
