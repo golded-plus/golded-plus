@@ -44,7 +44,7 @@ guserbase::guserbase() {
     if(not usrbase) {
       if((errno != EACCES) or (not PopupLocked(++tries, false, fname))) {
         WideLog->ErrOpen();
-        WideLog->printf("! GoldED's Addressbook cannot be opened.");
+        WideLog->printf("! Addressbook cannot be opened.");
         WideLog->printf(": %s", fname);
         WideLog->ErrOSInfo();
         OpenErrorExit();
