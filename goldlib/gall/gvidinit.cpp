@@ -585,7 +585,8 @@ void GVid::detectinfo(GVidInfo* _info) {
 
   // Get video mode and number of rows and columns
   CONSOLE_SCREEN_BUFFER_INFO csbi;
-  assert(GetConsoleScreenBufferInfo(gvid_hout, &csbi) != 0);
+  int result = GetConsoleScreenBufferInfo(gvid_hout, &csbi);
+  assert(result != 0);
 
   _info->screen.mode = 0;
   _info->screen.rows = csbi.dwSize.Y;
