@@ -1132,7 +1132,10 @@ void IEclass::DelLeft() {
 
   // Go left(/up) and delete the character there
   if(not batch_mode) {
-    Undo->PushItem(EDIT_UNDO_VOID);
+    if(col == mincol)
+      Undo->PushItem(EDIT_UNDO_VOID|PREV_LINE, currline->prev);
+    else
+      Undo->PushItem(EDIT_UNDO_VOID);
     batch_mode = BATCH_MODE;
   }
   GoLeft();
