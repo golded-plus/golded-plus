@@ -41,6 +41,19 @@ bool strncont(const char *beginword, const char *stylestopchars, int n)
 
 //  ------------------------------------------------------------------
 
+bool in_ftn_domained_address(const char *ptr, const char *txt) {
+
+  while((ptr != txt) and (not isspace(*ptr) and not isalpha(*ptr))) {
+    if(isdigit(ptr[0]) and ((ptr[1] == ':') or (ptr[1] == '/')) and isdigit(ptr[2]))
+      return true;
+    --ptr;
+  }
+  return false;
+}
+
+
+//  ------------------------------------------------------------------
+
 inline bool isstylechar(char c) {
 
   if(strchr(CFG->stylecodestops, c) != NULL)
@@ -133,7 +146,8 @@ void Container::StyleCodeHighlight(const char* text, int row, int col, bool dohi
           txptr = end;
           ptr = end-1;
         }
-        else if(isascii(*ptr) and not isspace(*ptr) and not ispunct(*ptr)) {
+        else if(((ptr == text) or not in_ftn_domained_address(ptr, text))
+                and (isascii(*ptr) and not isspace(*ptr) and not ispunct(*ptr))) {
           // try to guess e-mail address...
           const char *commerce_at = NULL;
 
@@ -144,9 +158,9 @@ void Container::StyleCodeHighlight(const char* text, int row, int col, bool dohi
             }
           }
           else {
-            commerce_at = strpbrk(ptr, " \t:@");
+            commerce_at = strpbrk(ptr, " \t:/@");
           }
-          if ((commerce_at != NULL)  and (*commerce_at == '@')) {
+          if ((commerce_at != NULL) and (*commerce_at == '@')) {
             ++commerce_at;
             while((*commerce_at != NUL) and (isalnum(*commerce_at) or (*commerce_at == '.') or (*commerce_at == '-'))) {
               ++commerce_at;
