@@ -58,16 +58,33 @@ int AreaTypeOrder[17] = {
 
 int compare_groups(int _ga, int _gb)
 {
-  char *gap, *gbp;
-
   register int ga = _ga ? _ga : INT_MAX;
   register int gb = _gb ? _gb : INT_MAX;
 
-  if((ga > 0xff) || (gb > 0xff))
-    return compare_two(ga, gb);
+  const char *gap = NULL;
+  const char *gbp = NULL;
 
-  gap = strchr(CFG->arealistgrouporder, (char)ga);
-  gbp = strchr(CFG->arealistgrouporder, (char)gb);
+  const char *g;
+
+  for(g = CFG->arealistgrouporder; *g != NUL;) {
+
+    int gr = getgroup(g);
+
+    if(gr == ga)
+      gap = g;
+
+    if(gr == gb)
+      gbp = g;
+
+    if(*g == '#') {
+      do {
+        g++;
+      } while(isdigit(*g));
+    }
+    else
+      g++;
+  }
+    
   if(gap == NULL) {
     if(gbp != NULL)
       return 1;

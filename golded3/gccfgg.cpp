@@ -36,6 +36,17 @@ extern char v7modemtype[8][9];
 
 
 //  ------------------------------------------------------------------
+
+int getgroup(const char *key)
+{
+  if(*key == '#')
+    return atoi(key+1)+0x8000u;
+  else
+    return (isupper(*key) ? *key : 0);
+}
+
+
+//  ------------------------------------------------------------------
 //  Read GOLDED.CFG
 
 bool ReadGoldedCfg(int& force) {
@@ -156,19 +167,22 @@ void WriteGoldGed() {
 
     // Check scan in/excludes
     for(i = CFG->areascan.begin(); i != CFG->areascan.end(); i++) {
-      if(strwild((*AL.item)->echoid(), i->c_str())) {
+      const char *current = i->c_str();
+      if(((current[0] == '>') and ((*AL.item)->groupid() == getgroup(current+1))) or strwild((*AL.item)->echoid(), current)) {
         (*AL.item)->set_scan(true);
         break;
       }
     }
     for(i = CFG->areascanexcl.begin(); i != CFG->areascanexcl.end(); i++) {
-      if(strwild((*AL.item)->echoid(), i->c_str())) {
+      const char *current = i->c_str();
+      if(((current[0] == '>') and ((*AL.item)->groupid() == getgroup(current+1))) or strwild((*AL.item)->echoid(), current)) {
         (*AL.item)->set_scanexcl(true);
         break;
       }
     }
     for(i = CFG->areascanincl.begin(); i != CFG->areascanincl.end(); i++) {
-      if(strwild((*AL.item)->echoid(), i->c_str())) {
+      const char *current = i->c_str();
+      if(((current[0] == '>') and ((*AL.item)->groupid() == getgroup(current+1))) or strwild((*AL.item)->echoid(), current)) {
         (*AL.item)->set_scanincl(true);
         break;
       }
@@ -176,19 +190,22 @@ void WriteGoldGed() {
 
     // Check pmscan in/excludes
     for(i = CFG->areapmscan.begin(); i != CFG->areapmscan.end(); i++) {
-      if(strwild((*AL.item)->echoid(), i->c_str())) {
+      const char *current = i->c_str();
+      if(((current[0] == '>') and ((*AL.item)->groupid() == getgroup(current+1))) or strwild((*AL.item)->echoid(), current)) {
         (*AL.item)->set_pmscan(true);
         break;
       }
     }
     for(i = CFG->areapmscanexcl.begin(); i != CFG->areapmscanexcl.end(); i++) {
-      if(strwild((*AL.item)->echoid(), i->c_str())) {
+      const char *current = i->c_str();
+      if(((current[0] == '>') and ((*AL.item)->groupid() == getgroup(current+1))) or strwild((*AL.item)->echoid(), current)) {
         (*AL.item)->set_pmscanexcl(true);
         break;
       }
     }
     for(i = CFG->areapmscanincl.begin(); i != CFG->areapmscanincl.end(); i++) {
-      if(strwild((*AL.item)->echoid(), i->c_str())) {
+      const char *current = i->c_str();
+      if(((current[0] == '>') and ((*AL.item)->groupid() == getgroup(current+1))) or strwild((*AL.item)->echoid(), current)) {
         (*AL.item)->set_pmscanincl(true);
         break;
       }

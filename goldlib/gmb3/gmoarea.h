@@ -287,7 +287,7 @@ extern int          WidePersonalmail;
 
 //  ------------------------------------------------------------------
 
-int PopupLocked(long __tries, int __isopen, const char* __file);
+bool PopupLocked(long __tries, int __isopen, const char* __file);
 const char* Unpack(const char* archive);
 void CleanUnpacked(const char* unpacked);
 

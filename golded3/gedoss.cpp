@@ -493,7 +493,9 @@ const char* Unpack(const char* archive) {
     mkdir(newdir, S_IWUSR);
     char cmdline[1024];
     strxcpy(cmdline, i->second.c_str(), sizeof(cmdline));
-    strxcpy(newname, archive, sizeof(Path));
+    std::string archive_truename = archive;
+    maketruepath(archive_truename);
+    strxcpy(newname, archive_truename.c_str(), sizeof(Path));
     strchg(newname, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
     strischg(cmdline, "@file", newname);
     // Store current drive/dir and change it to the temporary

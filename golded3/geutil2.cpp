@@ -83,7 +83,7 @@ bool edit_pathname(char* buf, int buf_size, char* title, int helpcat) {
 
 //  ------------------------------------------------------------------
 
-int PopupLocked(long tries, int isopen, const char* file) {
+bool PopupLocked(long tries, int isopen, const char* file) {
 
   // Close popup window if requested
   if(tries == 0) {

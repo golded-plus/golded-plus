@@ -34,7 +34,7 @@
 
 void ErrorExit(int type) {
 
-  static int in_error_exit = false;
+  static int in_error_exit = 0;
 
   if(not in_error_exit++) {
     error_exit = type;

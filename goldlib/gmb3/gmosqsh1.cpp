@@ -133,7 +133,7 @@ int SquishArea::test_open(const char* __file) {
     if(_fh == -1) {
 
       // Tell the world
-      if(PopupLocked(++_tries, false, __file) == false) {
+      if((errno != EACCES) or (PopupLocked(++_tries, false, __file) == false)) {
 
         // User requested to exit
         WideLog->ErrOpen();

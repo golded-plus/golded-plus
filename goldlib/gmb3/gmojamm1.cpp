@@ -163,7 +163,8 @@ void JamArea::close() {
 
   if(isopen) {
     if(isopen == 1) {
-      save_lastread();
+      if(data->fhjhr != -1)
+        save_lastread();
       if(data->islocked)
         unlock();
       raw_close();

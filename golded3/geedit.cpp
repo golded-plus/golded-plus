@@ -2140,12 +2140,16 @@ int IEclass::handlekey(gkey __key) {
 
     case KK_EditDelChar:
     case KK_EditDelLeft:
+      if(selecting) {
+        __key = KK_EditUndefine;
+      }
+      // fall through
+
     case KK_EditPaste:
+    case KK_EditNewline:
       if(selecting) {
         BlockCut(true);
         batch_mode = BATCH_MODE;
-        if(__key != KK_EditPaste)
-          __key = KK_EditUndefine;
       }
       goto noselecting;
       break;

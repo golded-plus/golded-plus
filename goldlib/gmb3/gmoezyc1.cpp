@@ -130,7 +130,7 @@ int EzycomArea::test_open(const char* __file, int __mode, int __share) {
     if(_fh == -1) {
 
       // Tell the world
-      if(PopupLocked(++_tries, false, _path) == false) {
+      if((errno != EACCES) or (PopupLocked(++_tries, false, _path) == false)) {
         WideLog->ErrOpen();
         raw_close();
         WideLog->printf("! A Ezycom msgbase file could not be opened.");

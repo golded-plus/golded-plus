@@ -601,10 +601,7 @@ bool AreaList::GetAreaFirstPart(AreaCfg& aa, char*& key, char*& val) {
 
   // Get group (letter)
   getkeyval(&key, &val);
-  if(*key == '#')
-    aa.groupid = atoi(key+1)+0x8000u;
-  else
-    aa.groupid = (isupper(*key) ? *key : 0);
+  aa.groupid = getgroup(key);
 
   // Get type
   word crc = getkeyvalcrc(&key, &val);
@@ -931,10 +928,7 @@ void AreaList::GetAreaDesc(char* val) {
   getkeyval(&key, &val);
   if(*key) {
     if(*key != '-') {
-      if(*key == '#')
-        aa->set_groupid(atoi(key+1)+0x8000u);
-      else
-        aa->set_groupid(toupper(*key));
+      aa->set_groupid(getgroup(key));
     }
 
     // Get aka (optional)

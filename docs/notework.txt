@@ -12,6 +12,21 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+! AREALISTGROUPORDER now supports #num format entries.
+
+! You can now use area groups in the *SCAN* keywords: just prepend the
+  '>' character before the group, i.e.:
+
+  AREASCAN >#12
+  AREASCANEXCL >G
+
+- When calling unpacker the path to the area will be converted to the
+  full qualified path.
+
+! EditNewline now deletes the selected block.
+
+- Fixed exit from the locked/non-existing JAM areas.
+
 - Fixed small bug in UUE decoder which prevents unsorted multipart UUE
   from decoding.
 

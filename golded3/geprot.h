@@ -55,6 +55,8 @@ void WriteGoldGed();
 void InstallDetect(char* path);
 int InstallFinish();
 
+int getgroup(const char *key);
+
 
 //  ------------------------------------------------------------------
 //  GCKEYS prototypes
