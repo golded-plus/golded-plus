@@ -166,7 +166,7 @@ static void strfmt(char *str, const char *fmt, ...) {
           ival = va_arg(vp, int);
           bool padding = true;
           while(ilen) {
-            ival %= pow[ilen] / pow[ilen-1];
+            ival = (ival % pow[ilen]) / pow[ilen-1];
             if(ival)
               padding = false;
             if(--ilen and padding)

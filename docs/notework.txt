@@ -12,6 +12,8 @@ ______________________________________________________________________
                  Notes for GoldED+ 1.1.5, March xx 2001
 ______________________________________________________________________
 
+- Fixed leading space macroses in date/time format strings.
+
 - Fixed double recoding of header during forward, quote-reply, and
   change.
 
