@@ -407,7 +407,7 @@ static LangCrc LangCrcs[] = {
   { CRC_IL_NOTAGLINE          , NULL  , " No taglines defined. Press key " },
   { CRC_WT_CHARSETS           , NULL  , " Charsets " },
   { CRC_ST_CHANGEXLATIMP      , NULL  , "Change Default Import Charset" },
-  { CRC_MI_CHARSETAUTO        , NULL  , "Auto" },
+  { CRC_MI_CHARSETAUTO        , NULL  , " Auto " },
   { CRC_IL_NOXLATIMPORT       , NULL  , " No XLATIMPORT's defined. Press key " },
   { CRC_WT_N_A                , NULL  , "n/a" },
   { CRC_WT_WRITTEN            , NULL  , "Written" },

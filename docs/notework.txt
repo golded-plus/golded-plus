@@ -9,8 +9,16 @@ ______________________________________________________________________
 
 ______________________________________________________________________
 
-               Notes for GoldED+ 1.1.4.7, September 24 2000
+               Notes for GoldED+ 1.1.4.7, November xx 2000
 ______________________________________________________________________
+
+- Cosmetic fix: MI_CHARSETAUTO now defaults to " Auto " (i.e. with two
+  spaces around).
+
++ Being annoyed by users who dislike read notework, added COLOR READER
+  QUOTE1. COLOR READER QUOTE now set color for QUOTE1 and QUOTE2 as in
+  old good times. If QUOTE appears before QUOTE2 you may change
+  nothing in your config.
 
 - Fixed some bugs in undo feature.
 
@@ -30,10 +38,8 @@ ______________________________________________________________________
   where CC: found (this feature was also silently introduced in
   1.1.4.5 binaries for some platforms).
 
-! Added historical section to this file regarding to 3.0.1-asa8
-  release. The older release I have is -asa4 but it doesn't contains
-  notework at all :-( If anyone could recall anything about that
-  versions please let me know.
+! Added historical section to this file regarding to 3.0.1-asa8 and
+  -asa4 releases. No more history left, only guesses...
 
 - Fixed Bug #109368: Ged+ crashes if there are more than 30 links in
   the help. Now accepts up to 50, and ignores more.
@@ -129,7 +135,7 @@ ______________________________________________________________________
 
 ______________________________________________________________________
 
-             Notes for GoldED+ 1.1.4.3, February xx 2000
+             Notes for GoldED+ 1.1.4.3, February 21 2000
 ______________________________________________________________________
 
 - Fixed incorrect timestamps on messages.
@@ -979,13 +985,19 @@ ______________________________________________________________________
 - Little fix to stylecode-detection to skip marking of c:* c:\*.*,
   also could be done by STYLECODESTOPS/STYLECODEPUNCT in config.
 
-+ FSC-0032 compliant quote-check, except for space after '>'. Bound
-  is set to 10 chars.
-
 - Bugfix in @*pseudo handling. I've stupidly copied portion of code...
   Sorry to all ;(
 
 - Bugfix in origin detection.
+
+______________________________________________________________________
+
+                 Notes for 3.0.1-asa4, February 21 1999
+                    (binary release DOS/386g, Win32)
+______________________________________________________________________
+
++ FSC-0032 compliant quote-check, except for space after '>'. Bound
+  is set to 10 chars.
 
 + New stylecode-detection algorithm. /usr/sbin/ftpd and *.* no longer
   will be marked. Please report any problems to <asa@eed.miee.ru> or

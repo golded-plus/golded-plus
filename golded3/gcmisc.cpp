@@ -147,6 +147,7 @@ const word CRC_UNSENT            = 0xC20B;
 const word CRC_UNREADHIGH        = 0x66D0;
 const word CRC_UNSENTHIGH        = 0xB4FD;
 const word CRC_QUOTE2            = 0xF400;
+const word CRC_QUOTE1            = 0xF403;
 const word CRC_SIGNATURE         = 0x1A6E;
 
 
@@ -464,6 +465,8 @@ void GetColors(char* value) {
       break;
     case CRC_QUOTE:
       wptr->_Quote = attr;
+      if(wptr == &GC_READ_)
+        GC_READ2_._Quote2 = attr;
       break;
     case CRC_CURSOR:
       wptr->_Cursor = attr;
@@ -520,6 +523,9 @@ void GetColors(char* value) {
       break;
     case CRC_UNREADHIGH:
       wptr->_HighlightUnread = attr;
+      break;
+    case CRC_QUOTE1:
+      wptr->_Quote = attr;
       break;
     case CRC_QUOTE2:
       if(wptr == &GC_READ_)
