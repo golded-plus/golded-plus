@@ -451,6 +451,18 @@ char* strtrim(char* p) {
 }
 
 
+string& strtrim(string& p) {
+
+  if(not p.empty()) {
+    string::iterator trail = p.end();
+    while(trail != p.begin() and *(--trail) < '!') {}
+    if(*trail > ' ') trail++;
+    p.erase(trail, p.end());
+  }
+  return p;
+}
+
+
 //  ------------------------------------------------------------------
 //  Trims leading spaces off of a string
 

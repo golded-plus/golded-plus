@@ -25,17 +25,14 @@
 //  String manipulation functions.
 //  ------------------------------------------------------------------
 
-
-//  ------------------------------------------------------------------
-//  Only include once!
-
-#ifndef __GSTRALL_H
-#define __GSTRALL_H
+#ifndef __gstrall_h
+#define __gstrall_h
 
 
 //  ------------------------------------------------------------------
 //  Required headers
 
+#include <string>
 #include <gctype.h>
 #include <cstring>
 #include <gdefs.h>
@@ -73,6 +70,7 @@ char* strshr(char* str, int count);
 char* strsrep(char* str, const char* search, const char* replace);
 char* strltrim(char* str);
 char* strtrim(char* str);
+string& strtrim(string& p);
 char* struplow(char* str);
 
 char* longdotstr(long num);                               // Convert a long to a dotted string: xxx.xxx.xxx.xxx
