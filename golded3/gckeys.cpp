@@ -986,30 +986,23 @@ int ReadKeysCfg(int force) {
         continue;
       }
       *ptr++ = NUL;
-      keycmd = SwitchKeyDefs(strCrc16(strupr(ptr2)), &keytype);
-      if(keycmd) {
-        if(keytype) {
+      // If either straight Key or $Key do not make lookup by CRC
+      if(*ptr2 == '$') {
+        uint _keyval = 0;
+        sscanf(ptr2+1, "%4x", &_keyval);
+        keyval = (gkey)_keyval;
+      }
+      else if(strlen(ptr2) == 1)
+        keyval = (gkey)tolower(*ptr2);  // Always convert to lowercase internally
+      else {
+        keycmd = SwitchKeyDefs(strCrc16(strupr(ptr2)), &keytype);
+        if(not keycmd or keytype) {
           std::cout << "* " << cfgname << ": Invalid key \"" << ptr2 << "\" in line " << line << "." << std::endl;
           SayBibi();
           cfgerrors++;
           continue;
         }
         keyval = keycmd;
-      }
-      else {  // Either straight Key or $Key
-        if(*ptr2 == '$') {
-          uint _keyval = 0;
-          sscanf(ptr2+1, "%4x", &_keyval);
-          keyval = (gkey)_keyval;
-        }
-        else if(strlen(ptr2) == 1)
-          keyval = (gkey)tolower(*ptr2);  // Always convert to lowercase internally
-        else {
-          std::cout << "* " << cfgname << ": Invalid key \"" << ptr2 << "\" in line " << line << "." << std::endl;
-          SayBibi();
-          cfgerrors++;
-          continue;
-        }
       }
       ptr = strskip_wht(ptr);
       ptr2 = ptr;
