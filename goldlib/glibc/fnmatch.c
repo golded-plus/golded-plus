@@ -27,7 +27,7 @@
 
 #include <errno.h>
 #include <fnmatch.h>
-#include <ctype.h>
+#include <gctype.h>
 
 #if HAVE_STRING_H
 # include <string.h>

@@ -210,7 +210,7 @@ init_syntax_once ()
 #include "regex.h"
 
 /* isalpha etc. are used for the character classes.  */
-#include <ctype.h>
+#include <gctype.h>
 
 /* Jim Meyering writes:
 

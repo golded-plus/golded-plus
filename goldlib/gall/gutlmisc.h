@@ -31,6 +31,7 @@
 
 //  ------------------------------------------------------------------
 
+#include <gdefs.h>
 #include <gctype.h>
 #include <cstdlib>
 

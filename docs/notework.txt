@@ -12,6 +12,12 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed crash on very long name in Internet messages.
+
+! ZapQuotesBelow now acts only on the single quotation block, not on
+  the all quotes below. It's more handy, especially in case of
+  removing attach from the file.
+
 ! A lot of improvements in charset handling added. QP postfix now
   could be used with any charset, not only with LATIN1. Completely
   untested!

@@ -30,8 +30,6 @@
 
 //  ------------------------------------------------------------------
 
-#include <gdefs.h>
-#include <gutlos.h>
 #ifdef __BORLANDC__
 #define __USELOCALES__
 #elif defined(__EMX__)
@@ -47,13 +45,13 @@
 extern "C" {
 #endif
 extern char tl[256], tu[256];
-inline int _nls_tolower(int c) { return tl[c]; }
-inline int _nls_toupper(int c) { return tu[c]; }
+__inline__ int _nls_tolower(int c) { return tl[c]; }
+__inline__ int _nls_toupper(int c) { return tu[c]; }
 #ifdef __cplusplus
 }
+#endif
 #define tolower(a) _nls_tolower((unsigned char)(a))
 #define toupper(a) _nls_toupper((unsigned char)(a))
-#endif
 #endif
 
 
@@ -63,7 +61,7 @@ inline int _nls_toupper(int c) { return tu[c]; }
 extern "C" {
 #endif
 // NLS chars detected by converting to lower or upper case and in case they don't match they treated as characters
-inline int isxalnum(char c) { return isascii(c) ? isalnum(c) : (c != tolower(c)) or (c != toupper(c)); }
+__inline__ int isxalnum(char c) { return isascii(c) ? isalnum(c) : (c != tolower(c)) || (c != toupper(c)); }
 #ifdef __cplusplus
 }
 #endif

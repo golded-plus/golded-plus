@@ -160,6 +160,7 @@ enum {
   RFC_MIME_VERSION,
   RFC_NEWSGROUPS,
   RFC_NEWS_SOFTWARE,
+  RFC_NNTP_POSTING_DATE,
   RFC_NNTP_POSTING_HOST,
   RFC_NNTP_POSTING_USER,
   RFC_OLD_DATE,
@@ -335,6 +336,7 @@ static const Kludges rfc_list[] = {
   { "MIME-Version"               , RFC_MIME_VERSION              , KCRQ_COLON },
   { "Newsgroups"                 , RFC_NEWSGROUPS                , KCRQ_COLON },
   { "News-Software"              , RFC_NEWS_SOFTWARE             , KCRQ_COLON },
+  { "NNTP-Posting-Date"          , RFC_NNTP_POSTING_DATE         , KCRQ_COLON },
   { "NNTP-Posting-Host"          , RFC_NNTP_POSTING_HOST         , KCRQ_COLON },
   { "NNTP-Posting-User"          , RFC_NNTP_POSTING_USER         , KCRQ_COLON },
   { "Old-Date"                   , RFC_OLD_DATE                  , KCRQ_COLON },
@@ -1266,6 +1268,7 @@ int HandleRFCs(GMsg* msg, Line* line, int kludgenum, const char* ptr, int getval
     case RFC_LINES:
     case RFC_MAILING_LIST:
     case RFC_NEWS_SOFTWARE:
+    case RFC_NNTP_POSTING_DATE:
     case RFC_NNTP_POSTING_HOST:
     case RFC_NNTP_POSTING_USER:
     case RFC_OLD_DATE:
@@ -2469,7 +2472,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
                     char lwsp = *linep->next->txt.c_str();
                     while((lwsp == ' ') or (lwsp == '\t') or (linep->type & GLINE_WRAP)) {
                       linep = linep->next;
-                      linep->type |= linep->prev->type;
+                      linep->type |= linep->prev->type & (GLINE_KLUD|GLINE_HIDD);
                       linep->color = linep->prev->color;
                       if(linep->next)
                         lwsp = *linep->next->txt.c_str();
@@ -2928,8 +2931,6 @@ Line* AddHexdump(Line*& line, void* data, size_t datalen) {
 char* ParseInternetAddr(char* __string, char* __name, char* __addr) {
 
   *__name = *__addr = NUL;
-  char* name = __name;
-  char* addr = __addr;
   char* commaptr = NULL;
   
   if(strchr(__string, ',')) {
@@ -2968,12 +2969,8 @@ char* ParseInternetAddr(char* __string, char* __name, char* __addr) {
     }
     if(*begchar == '(' /*)*/)
       begchar++;
-    if(not strchr(__string, '@') and strchr(begchar, '@')) {
-      name = __addr;
-      addr = __name;
-    }
-    strbtrim(strxcpy(name, begchar, (uint)(endchar-begchar)+1));
-    strbtrim(strxcpy(addr, __string, (uint)(begchar-__string)));
+    strbtrim(strxcpy(__name, begchar, MinV((uint)(endchar-begchar)+1, sizeof(INam))));
+    strbtrim(strxcpy(__addr, __string, MinV((uint)(begchar-__string), sizeof(IAdr))));
   }
   else if(*endchar == '>') {
     char* endaddr = endchar;
@@ -2985,15 +2982,11 @@ char* ParseInternetAddr(char* __string, char* __name, char* __addr) {
       endchar--;
     }
     __string = strskip_wht(__string);
-    if(not strchr(begaddr, '@') and strchr(__string, '@')) {
-      name = __addr;
-      addr = __name;
-    }
-    strbtrim(strxcpy(name, __string, (uint)(endchar-__string)+1));
-    strbtrim(strxcpy(addr, begaddr, (uint)(endaddr-begaddr)+1));
+    strbtrim(strxcpy(__name, __string, MinV((uint)(endchar-__string)+1, sizeof(INam))));
+    strbtrim(strxcpy(__addr, begaddr, MinV((uint)(endaddr-begaddr)+1, sizeof(IAdr))));
   }
   else {
-    strcpy(__addr, __string);
+    strxcpy(__addr, __string, sizeof(IAdr));
   }
 
   if(*__addr == '@') {
@@ -3006,6 +2999,9 @@ char* ParseInternetAddr(char* __string, char* __name, char* __addr) {
     *commaptr = ',';
 
   StripQuotes(__name);
+
+  if(not strchr(__addr, '@'))
+    *__addr = NUL;
 
   strxmimecpy(__name, __name, 0, strlen(__name)+1, true);
 

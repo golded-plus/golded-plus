@@ -902,7 +902,10 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, boo
   }
 
   if(__display and (scroll != 0)) {
-    refresh((*__currline)->next, _cursrow+1);
+    if((*__currline)->next != NULL)
+      refresh((*__currline)->next, _cursrow+1);
+    else
+      refresh(*__currline, _cursrow);
   }
 
   // Update cursor position
@@ -1204,15 +1207,13 @@ void IEclass::Newline() {
   // Pointer to the split position
   int _splitpos = col;
 
-  char _quotebuf[MAXQUOTELEN];
-  *_quotebuf = NUL;
-
   // Buffer for the second part of the split line
   string _splitbuf;
 
   // If the split line was quoted, get the quotestring
   // But do not get it if the cursor points to a linefeed or is
   uint _quotelen;
+  char _quotebuf[MAXQUOTELEN];
   GetQuotestr(currline->txt.c_str(), _quotebuf, &_quotelen);
 
   // Eliminate the quotestring if
@@ -1238,17 +1239,32 @@ void IEclass::Newline() {
   setlinetype(currline);
   displine(currline, row);
 
-  // Insert a new line below, set the line text to the split-off part
-  currline = insertlinebelow(currline, _splitbuf.c_str());
+  uint _quotelen1 = 0;
+  char _quotebuf1[MAXQUOTELEN] = "";
+  if(currline->next != NULL) {
+    GetQuotestr(currline->next->txt.c_str(), _quotebuf1, &_quotelen1);
+  }
 
-  //                  --v--
-  // This line would be wrapped
-  // This line would be
-  // wrapped
+  if((_splitbuf.find('\n') != _splitbuf.npos) or (currline->next == NULL) or not strieql(_quotebuf, _quotebuf1)) {
+    // Insert a new line below, set the line text to the split-off part
+    currline = insertlinebelow(currline, _splitbuf.c_str());
 
-  Undo->PushItem(EDIT_UNDO_WRAP_TEXT|BATCH_MODE, currline->prev, _quotelen, _splitbuf.length() - _quotelen);
+    //                  --v--
+    // This line would be wrapped
+    // This line would be
+    // wrapped
 
-  setlinetype(currline);
+    Undo->PushItem(EDIT_UNDO_WRAP_TEXT|BATCH_MODE, currline->prev, _quotelen, _splitbuf.length() - _quotelen);
+
+    setlinetype(currline);
+  }
+  else {
+    currline = currline->next;
+
+    currline->txt.insert(_quotelen1, _splitbuf.substr(_quotelen1));
+
+    Undo->PushItem(EDIT_UNDO_WRAP_TEXT|BATCH_MODE, currline->prev, _quotelen1, _splitbuf.length() - _quotelen1);
+  }
 
   // Move down the cursor
   col = 0;
@@ -1259,7 +1275,8 @@ void IEclass::Newline() {
     scrolldown(mincol, row, maxcol, maxrow);
 
   // Rewrap the split-off line
-  wrapdel(&currline, &col, &row);
+  wrapdel(&currline, &col, &row, true);
+  refresh(currline, row);
 
   GFTRK(NULL);
 }
@@ -1504,13 +1521,32 @@ void IEclass::deleteline(bool zapquotesbelow) {
 
   GFTRK("Editdeleteline");
 
+  if(zapquotesbelow and not (currline->type & GLINE_QUOT)) {
+    GFTRK(NULL);
+    return;
+  }
+
+  // Stop reflow if the quotestring on the next line is not the same
+  uint _qlen1;
+  char _qstr1[MAXQUOTELEN];
+  GetQuotestr(currline->txt.c_str(), _qstr1, &_qlen1);
+
   bool done = false;
 
   do {
  
     // Break if need to zap quotes, but the current line is not quote and is not empty
-    if(zapquotesbelow and not ((currline->type & GLINE_QUOT) or strblank(currline->txt.c_str())))
-      break;
+    if(zapquotesbelow) {
+      if(isempty(currline) or (currline->type & (GLINE_KLUDGE|GLINE_TEAR|GLINE_ORIG|GLINE_TAGL)))
+        break;
+
+      // Stop zap if the quotestring on the line is not the same
+      uint _qlen2;
+      char _qstr2[MAXQUOTELEN];
+      GetQuotestr(currline->txt.c_str(), _qstr2, &_qlen2);
+      if(not cmp_quotes(_qstr1, _qstr2))
+        break;
+    }
 
     // Pointer to the deleted line
     Line* _deletedline = currline;
@@ -1647,7 +1683,6 @@ void IEclass::ZapQuoteBelow() {
   if(row) {
     GoUp();
     GoEOL();
-    Newline();
   }
   else {
     UndoItem* i = Undo->last_item;

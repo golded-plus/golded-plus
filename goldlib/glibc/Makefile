@@ -2,7 +2,7 @@
 
 TOP=../..
 TARGET=glibc
-INCS=-I$(TOP)/goldlib/glibc
+INCS=-I$(TOP)/goldlib/glibc -I$(TOP)/goldlib/gall
 CFLAGS=-DHAVE_CONFIG_H
 
 include $(TOP)/GNUmakef.inc
