@@ -39,7 +39,7 @@
 #   include <unistd.h>
 #endif 
 
-#if defined(__BEOS__)
+#if defined(UNIX)
 #define stricmp strcasecmp
 #endif
 
