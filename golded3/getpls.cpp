@@ -714,7 +714,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
 
                 // Invalidate kludge chars
                 std::string& tempref = strtrim(oldmsg->line[n]->txt);
-                replace(tempref.begin(), tempref.end(), CTRL_A, '@');
+                std::replace(tempref.begin(), tempref.end(), CTRL_A, '@');
                 quote = tempref.c_str();
 
                 if(is_quote(oldmsg->line[n]->txt.c_str())) {
@@ -985,7 +985,7 @@ void ConfirmMsg() {
   }
 
   reader_gen_confirm = false;
-  if(doit and AA->isnet() and (reader_msg->attr.cfm() or reader_msg->attr.rrq())) {
+  if(doit and AA->isnet() and reader_msg->attr.cfm()) {
     int a = AL.AreaEchoToNo(CFG->areacfmreplyto);
     if(a != -1) {
       AL.SetActiveAreaNo(a);
@@ -1004,7 +1004,6 @@ void ConfirmMsg() {
     }
   }
   if(not CFG->switches.get(rcvdisablescfm)) {
-    reader_msg->attr.rrq0();
     reader_msg->attr.cfm0();
     reader_msg->attr.upd1();
     reader_msg->charsetlevel = LoadCharset(CFG->xlatlocalset, reader_msg->charset);
