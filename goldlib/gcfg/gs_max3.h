@@ -129,7 +129,7 @@ typedef enum {
               // enumeration uses a word, instead of a byte, in case we
               // really expand this structure sometime soon.
 
-} option __attribute__((packed));
+} max_option __attribute__((packed));
 
 
 //  ------------------------------------------------------------------
@@ -519,7 +519,7 @@ struct _ovride {
   /* Only one of 'opt' or 'name' should be used.  If opt==0, use name.  If  *
    * name==0, use opt.                                                      */
 
-  option opt;           /* Type of menu option to override     ...OR...     */
+  max_option opt;       /* Type of menu option to override     ...OR...     */
   byte   name;          /* First letter of command to override              */
   byte   rsvd1;         /* Reserved for future use                          */
   zstr   acs;           /* New ACS required to access option                */
