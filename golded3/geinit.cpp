@@ -684,7 +684,7 @@ void Initialize(int argc, char* argv[]) {
   #endif
 
   // Start the log
-  char buf[200];
+  static char buf[200];
   sprintf(buf, "%s (%s %s)", __gver_longpid__, __gver_date__, __gver_time__);
   LOG.open(CFG->logfile, buf, __gver_shortlogname__, CFG->logformat);
 
