@@ -336,14 +336,20 @@ void gareafile::ReadHPTFile(char* path, char* file, char* origin, int group) {
             switch(aa.type) {
               case GMB_NET:
                 aa.attr = attribsnet;
+                if(aa.msgbase == 0)
+                  aa.msgbase = fidomsgtype;
                 AddNewArea(aa);
                 break;
               case GMB_ECHO:
                 aa.attr = attribsecho;
+                if(aa.msgbase == 0)
+                  aa.msgbase = fidomsgtype;
                 AddNewArea(aa);
                 break;
               case GMB_LOCAL:
                 aa.attr = attribslocal;
+                if(aa.msgbase == 0)
+                  aa.msgbase = fidomsgtype;
                 AddNewArea(aa);
                 break;
               case GMB_DEFAULT:

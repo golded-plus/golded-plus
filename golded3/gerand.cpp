@@ -180,6 +180,8 @@ void Area::InitData() {
   adat->viewhidden = CFG->viewhidden;
   adat->viewkludge = CFG->viewkludge;
   adat->viewquote = CFG->viewquote;
+  adat->writeheader = CFG->writeheader;
+  adat->striphtml = CFG->striphtml;
   strcpy(adat->nickname, CFG->nickname);
   strcpy(adat->netname, CFG->netname);
   strcpy(adat->whoto, CFG->whoto);
@@ -405,6 +407,8 @@ void Area::RandomizeData(int mode) {
       CFG->grp.GetItm(GRP_VIEWHIDDEN, adat->viewhidden);
       CFG->grp.GetItm(GRP_VIEWKLUDGE, adat->viewkludge);
       CFG->grp.GetItm(GRP_VIEWQUOTE, adat->viewquote);
+      CFG->grp.GetItm(GRP_STRIPHTML, adat->striphtml);
+      CFG->grp.GetItm(GRP_WRITEHEADER, adat->writeheader);
     }
 
     if(CFG->grp.GetItm(GRP_NICKNAME, buf, sizeof(buf)))

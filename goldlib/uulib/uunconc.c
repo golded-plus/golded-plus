@@ -76,7 +76,8 @@ char * uunconc_id = "$Id$";
 #define BEGIN     (1)
 #define DATA      (2)
 #define END       (3)
-#define DONE      (4)
+#define END2      (4)
+#define DONE      (5)
 
 /*
  * mallocable areas
@@ -1072,7 +1073,15 @@ UUDecodePart (FILE *datain, FILE *dataout, int *state,
       tc = tf = vlc = 0;
       lc[0] = lc[1] = 0;
     }
-    else if ((*state == END) &&
+    else if ((*state == END) && (method == UU_ENCODED)) {
+      if (strncmp (line, "`", 1) == 0)
+	*state = END2;
+    }
+    else if ((*state == END) && (method == XX_ENCODED)) {
+      if (strncmp (line, "+", 1) == 0)
+	*state = END2;
+    }
+    else if ((*state == END2) &&
 	     (method == UU_ENCODED || method == XX_ENCODED)) {
       if (strncmp (line, "end", 3) == 0) {
 	*state = DONE;
@@ -1117,7 +1126,7 @@ UUDecodePart (FILE *datain, FILE *dataout, int *state,
       break;
     }
 
-    if (*state == DATA || *state == END) {
+    if (*state == DATA || *state == END || *state == END2) {
       if (method==B64ENCODED && line[0]=='-' && line[1]=='-' && tc) {
 	break;
       }
@@ -1173,9 +1182,9 @@ UUDecodePart (FILE *datain, FILE *dataout, int *state,
 	}
 
 	if (method == UU_ENCODED)
-	  *state = (line[0] == 'M') ? DATA : END;
+	  *state = (line[0] == 'M') ? DATA : (line[0] == '`') ? END2 : END;
 	else if (method == XX_ENCODED)
-	  *state = (line[0] == 'h') ? DATA : END;
+	  *state = (line[0] == 'h') ? DATA : (line[0] == '+') ? END2 : END;
 	else if (method == B64ENCODED)
 	  *state = (strchr (line, '=') == NULL) ? DATA : DONE;
 	else if (method == BH_ENCODED)

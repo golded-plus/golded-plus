@@ -766,6 +766,7 @@ CfgGed::CfgGed() {
   squishscan = 2; // SQS_QUICK
   squishuserno = 0;
   statuslinehelp = 0;
+  striphtml = false;
   taglineno = 0;
   taglinechar = '.';
   taglinesupport = true;
@@ -785,6 +786,7 @@ CfgGed::CfgGed() {
   viewhidden = false;
   viewkludge = false;
   viewquote = true;
+  writeheader = 1;
   wildcatuserno = 0;
   zonegating = ASK;
 

@@ -412,6 +412,34 @@ bool GMsgList::handle_key() {
     case KK_ListSelect:
       return false;
 
+    case KK_ListMark:
+      {
+        ulong temp = AA->Mark.Find(mlst[index]->msgno);
+        if(not temp) {
+          AA->Mark.Add(mlst[index]->msgno);
+          update_marks(mlst[index]);
+        }
+      }
+      if(index < maximum_index)
+        cursor_down();
+      else
+        display_bar();
+      break;
+
+    case KK_ListUnmark:
+      {
+        ulong temp = AA->Mark.Find(mlst[index]->msgno);
+        if(temp) {
+          AA->Mark.DelReln(temp);
+          update_marks(mlst[index]);
+        }
+      }
+      if(index < maximum_index)
+        cursor_down();
+      else
+        display_bar();
+      break;
+
     case KK_ListToggleMark:
       {
         ulong temp = AA->Mark.Find(mlst[index]->msgno);
@@ -496,6 +524,22 @@ bool GMsgList::handle_key() {
 
     case KK_ListDosShell:
       DosShell();
+      break;
+
+    case KK_ListWideSubj:
+      if(not AA->Msglistwidesubj()) {
+        AA->ToggleMsglistwidesubj();
+        update_title();
+        update();
+      }
+      break;
+
+    case KK_ListNarrowSubj:
+      if(AA->Msglistwidesubj()) {
+        AA->ToggleMsglistwidesubj();
+        update_title();
+        update();
+      }
       break;
 
     case KK_ListToggleWideSubj:

@@ -155,6 +155,16 @@ void ToggleHidden() {
 
 //  ------------------------------------------------------------------
 
+void ToggleStripHTML() {
+
+  AA->ToggleStripHTML();
+  MsgLineReIndex(reader_msg);
+  reader_topline = 0;
+}
+
+
+//  ------------------------------------------------------------------
+
 void ToggleQuote() {
 
   AA->ToggleViewquote();

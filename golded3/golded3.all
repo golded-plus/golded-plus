@@ -81,6 +81,7 @@ geutil   cpp all nov bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be
 geutil2  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be
 geview   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be
 gmarea   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be
+gehtml   cpp all nov bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be
 golded3  cpp all nov bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be
 gedcyg   rc                                                  cyg
 gedemx   rc                          emx

@@ -322,6 +322,7 @@ public:
   int         squishuserno;
   Path        squishuserpath;
   int         statuslinehelp;
+  bool        striphtml;
   char        stylecodepunct[41];
   char        stylecodestops[41];
   gstrarray   tagline;
@@ -358,6 +359,7 @@ public:
   bool        viewquote;
   Name        whoto;
   int         wildcatuserno;
+  int         writeheader;
   std::string      wtpl;
   std::vector<Map> xlatcharset;
   std::vector<Map> xlatescset;

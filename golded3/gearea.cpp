@@ -592,6 +592,20 @@ bool GPickArealist::handle_key() {
       cursor_down();
       break;
 
+    case KK_AreaMark:
+      AL[index]->set_marked(true);
+      display_bar();
+      precursor();
+      cursor_down();
+      break;
+
+    case KK_AreaUnmark:
+      AL[index]->set_marked(false);
+      display_bar();
+      precursor();
+      cursor_down();
+      break;
+
     case KK_AreaBoardnos:
       CFG->switches.set(arealistnos, not CFG->switches.get(arealistnos));
       update();

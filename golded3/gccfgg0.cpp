@@ -530,6 +530,7 @@ SwitchS:
     case CRC_SQUISHUSERNO     :  CfgSquishuserno     ();  break;
     case CRC_SQUISHUSERPATH   :  CfgSquishuserpath   ();  break;
     case CRC_STATUSLINEHELP   :  CfgStatuslinehelp   ();  break;
+    case CRC_STRIPHTML        :  CfgStripHTML        ();  break;
     case CRC_STYLECODEPUNCT   :  CfgStylecodepunct   ();  break;
     case CRC_STYLECODES       :  CfgStylecodes       ();  break;
     case CRC_STYLECODESTOPS   :  CfgStylecodestops   ();  break;
@@ -588,6 +589,7 @@ SwitchW:
   switch(crc) {
     case CRC_WHOTO            :  CfgWhoto            ();  break;
     case CRC_WILDCATUSERNO    :  CfgWildcatuserno    ();  break;
+    case CRC_WRITEHEADER      :  CfgWriteheader      ();  break;
     case CRC_WRITETEMPLATE    :  CfgWritetemplate    ();  break;
     default                   :  found = false;
   }

@@ -619,13 +619,16 @@ static void MakeMsg2(int& mode, int& status, int& forwstat, int& topline, GMsg* 
         int adat_viewhidden = AA->Viewhidden();
         int adat_viewkludge = AA->Viewkludge();
         int adat_viewquote  = AA->Viewquote();
+        bool adat_striphtml = AA->StripHTML();
         AA->adat->viewhidden = true;
         AA->adat->viewkludge = true;
         AA->adat->viewquote = true;
+        AA->adat->striphtml = false;
         msg->TextToLines(CFG->dispmargin-1, false); // Ignore any kludge address found
         AA->adat->viewhidden = adat_viewhidden;
         AA->adat->viewkludge = adat_viewkludge;
         AA->adat->viewquote = adat_viewquote;
+        AA->adat->striphtml = adat_striphtml;
         msg->attr.pos0();
 
         InvalidateControlInfo(msg);

@@ -525,6 +525,7 @@ ScanData (FILE *datei, char *fname, int *errcode,
   long preheaders=0, oldposition;
   long yefilesize=0, yepartends=0;
   size_t dcc, bhopc;
+  char prevlinefirstchar;
 
   *errcode = UURET_OK;
   (void) UUDecodeLine (NULL, NULL, 0);          /* init */
@@ -545,7 +546,9 @@ ScanData (FILE *datei, char *fname, int *errcode,
   if (boundary)
     blen = strlen (boundary);
 
+  line[0] = '\0';
   while (!feof (datei)) {
+    prevlinefirstchar = line[0];
     oldposition = ftell (datei);
     if (_FP_fgets (line, 299, datei) == NULL)
       break;
@@ -675,7 +678,17 @@ ScanData (FILE *datei, char *fname, int *errcode,
 	result->uudet = XX_ENCODED;
 
       if (result->uudet != B64ENCODED) {
-	result->end = 1;
+	if (result->uudet == XX_ENCODED) {
+	  if (prevlinefirstchar == '+')
+	    result->end = 1;
+	}
+	if (result->uudet == UU_ENCODED) {
+	  if (prevlinefirstchar == '`')
+	    result->end = 1;
+	}
+	else {
+	  result->end = 1;
+	}
 	if (dflag && encoding)
 	  result->uudet = encoding;
 	continue;
@@ -839,6 +852,7 @@ ScanData (FILE *datei, char *fname, int *errcode,
 	(((ptr = _FP_strrstr (line+2, "--")) == NULL) ||
 	 (*(ptr+2) != '\012' && *(ptr+2) != '\015')) &&
 	_FP_strstr (line+2, "_=_") != NULL) {
+      prevlinefirstchar = line[0];
       if (_FP_fgets (line, 255, datei) == NULL) {
 	break;
       }
@@ -1096,6 +1110,7 @@ ScanData (FILE *datei, char *fname, int *errcode,
 	      break;
 	    }
 
+	    prevlinefirstchar = line[0];
 	    oldposition = ftell (datei);
 	    if (_FP_fgets (line, 255, datei) == NULL)
 	      break;
@@ -1117,8 +1132,18 @@ ScanData (FILE *datei, char *fname, int *errcode,
 	    else if (line[0] == 'e' && (result->uudet == UU_ENCODED ||
 					result->uudet == XX_ENCODED)) {
 	      if (strncmp (line, "end", 3) == 0) {
-		result->end = 1;
-		break;
+		if (result->uudet == XX_ENCODED) {
+		  if (prevlinefirstchar == '+') {
+		    result->end = 1;
+		    break;
+		  }
+		}
+		else {
+		  if (prevlinefirstchar == '`') {
+		    result->end = 1;
+		    break;
+		  }
+		}
 	      }
 	    }
 	    else if (line[0] == 'b') {

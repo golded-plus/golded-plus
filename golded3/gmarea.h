@@ -323,6 +323,8 @@ struct AreaData {
   bool   viewhidden;
   bool   viewkludge;
   bool   viewquote;
+  bool   striphtml;
+  int    writeheader;
 };
 
 //  ------------------------------------------------------------------
@@ -559,6 +561,7 @@ public:
         bool   Quotewraphard() const    { return adat->quotewraphard; }
   const GPlay& Play() const             { return adat->play; }
   const int    Replyre() const          { return adat->replyre; }
+        bool   StripHTML() const        { return adat->striphtml; }
   const char*  Searchfor() const        { return adat->searchfor; }
   const char*  Tagline() const          { return adat->tagline; }
         char   Taglinechar() const      { return adat->taglinechar; }
@@ -575,6 +578,7 @@ public:
         bool   Viewkludge() const       { return adat->viewkludge; }
         bool   Viewquote() const        { return adat->viewquote; }
   const char*  Whoto() const            { return adat->whoto; }
+        int    Writeheader() const      { return adat->writeheader; }
   const char*  WTpl() const             { return adat->wtpl; }
   const char*  Xlatexport() const       { return adat->xlatexport; }
   const char*  Xlatimport() const       { return adat->xlatimport; }
@@ -596,7 +600,7 @@ public:
         int    ToggleViewhidden()             { adat->viewhidden = not adat->viewhidden; return adat->viewhidden; }
         int    ToggleViewkludge()             { adat->viewkludge = not adat->viewkludge; return adat->viewkludge; }
         int    ToggleViewquote()              { adat->viewquote = not adat->viewquote; return adat->viewquote; }
-
+        bool   ToggleStripHTML()              { adat->striphtml = not adat->striphtml; return adat->striphtml; }
 };
 
 

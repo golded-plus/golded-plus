@@ -66,6 +66,17 @@ void CfgStatuslinehelp() {
 
 //  ------------------------------------------------------------------
 
+void CfgStripHTML() {
+
+  bool flag = GetYesno(val);
+  if(cfgingroup)
+    CFG->grp.AddItm(GRP_STRIPHTML, flag);
+  else
+    CFG->striphtml = flag;
+}
+
+//  ------------------------------------------------------------------
+
 void CfgStylecodepunct() {
 
   char* key;
@@ -488,6 +499,23 @@ void CfgWhoto() {
 void CfgWildcatuserno() {
 
   CFG->wildcatuserno = atoi(val);
+}
+
+//  ------------------------------------------------------------------
+
+void CfgWriteheader() {
+
+  int flag;
+
+  if(strieql(val, "ONLY"))
+    flag = 2;
+  else
+    flag = GetYesno(val) ? 1 : 0;
+
+  if(cfgingroup)
+    CFG->grp.AddItm(GRP_WRITEHEADER, flag);
+  else
+    CFG->writeheader = flag;
 }
 
 //  ------------------------------------------------------------------

@@ -363,6 +363,7 @@ static const Kludges rfc_list[] = {
   { "X-Char-Esc"                 , RFC_X_CHAR_ESC                , KCRQ_COLON },
   { "X-FTN-To"                   , RFC_X_FTN_TO                  , KCRQ_COLON },
   { "X-Mailer"                   , RFC_X_MAILER                  , KCRQ_COLON },
+  { "X-Mailreader"               , RFC_X_MAILER                  , KCRQ_COLON },
   { "X-Newsreader"               , RFC_X_NEWSREADER              , KCRQ_COLON },
   { "X-To"                       , RFC_X_TO                      , KCRQ_COLON },
   { "#!"                         , RFC_RNEWS                     , KCRQ_NONE  },
@@ -1527,13 +1528,23 @@ void ScanKludges(GMsg* msg, int getvalue) {
         // Check if it's a tearline
         else if(not (gottear or gottag) and strneql("---", ptr, 3) and (ptr[3] == ' ' or ptr[3] == NUL)) {
 
-          Line* nnel = next_non_empty(line->next);
-          if(not lineno or ((lineno-1) == originlineno) or not nnel or nnel->type & GLINE_KLUDGE) {
+          Line* tearln = line;
+          int tearlnno = lineno;
+          while (tearln->type & GLINE_WRAP) {
+            tearln = tearln->next;
+            tearlnno--;
+          }
+          Line* nnel = next_non_empty(tearln->next);
+          if(not tearlnno or ((tearlnno-1) == originlineno) or not nnel or nnel->type & GLINE_KLUDGE) {
             // Found Tearline
             gottear = YES;
             tearlineno = lineno;
-            line->type |= GLINE_TEAR;
-            line->color = C_READT;
+            for (tearln = line; tearln->type & GLINE_WRAP; tearln = tearln->next) {
+              tearln->type |= GLINE_TEAR;
+              tearln->color = C_READT;
+            }
+            tearln->type |= GLINE_TEAR;
+            tearln->color = C_READT;
             strbtrim(strcpy(msg->tearline, ptr+3));
 
             if(getvalue and CFG->gedhandshake) {
@@ -1900,7 +1911,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode) {
   int wraps=0, para=0, chslev;
   bool reflow = false, quoteflag = false;
   bool quotewraphard = AA->Quotewraphard();
-  bool qpencoded = getvalue and IsQuotedPrintable(AA->Xlatimport());
+  bool qpencoded = getvalue and (IsQuotedPrintable(AA->Xlatimport()) or AA->StripHTML());
   bool gotmime = false;
   bool gotmultipart = false;
   bool inheader = false;
@@ -1953,6 +1964,8 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode) {
 
     char prev_ptr[3] = {"\xFF\xFF"};
 
+    if(AA->StripHTML())
+      RemoveHTML(msg->txt);
     ptr = spanfeeds(msg->txt);
 
     // Set default conversion table for area

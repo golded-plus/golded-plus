@@ -337,6 +337,7 @@ void ToggleBookMark();
 void ToggleHidden();
 void ToggleHiddKlud();
 void ToggleKludge();
+void ToggleStripHTML();
 void ToggleMark();
 void ToggleMarkRead();
 void TogglePageBar();
@@ -468,6 +469,11 @@ bool isuucp(const char *name);
 //  ------------------------------------------------------------------
 
 const char *url_begin(const char *ptr);
+
+
+//  ------------------------------------------------------------------
+
+void RemoveHTML(char *&txt);
 
 
 //  ------------------------------------------------------------------

@@ -1,14 +1,13 @@
 
 GoldED+ compilation howto
-by Alexander Aganichev, 2:5020/201.58 <aaganichev@netscape.net>
+by Alexander Aganichev, 2:5020/201.58 <aaganichev@yandex.ru>
 
 -------------------------------------------------------------------------------
 
 To compile GoldED+ and utilities you'll need:
 
- - GNU C++ newer than 2.8.x, gcc 2.95.3 or gcc 3.0.x are recommended, gcc 3.1
-   not tested yet.
- - GNU make and GNU sed
+ - GNU C/C++ newer than 2.8.x, gcc 2.95.3 or gcc 3.x.x are recommended
+ - GNU make, GNU sed and GNU grep
  - vi, emacs, or any other editor you like
  - beer or bear on your choice ;-)
 
@@ -23,7 +22,7 @@ from www.mingw.org, copy .../lib/stdlibc++.a to /usr/local/lib/mingw, copy
 
 ---- DJGPP ONLY ----
 When building in DJGPP environment you may wish to use liblocal which may be
-found on http://aaganichev.narod.ru/djgpp/llocl01b.zip. This provides basic
+found on http://aaganichev.narod.ru/djgpp/llocl02b.zip. This provides basic
 locale support via country.sys driver. Otherwise just comment -llocal in
 GNUmakef.def.
 ------ COMMON ------

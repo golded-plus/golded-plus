@@ -327,11 +327,9 @@ int GMenuDomarks::Run(char* dowhat) {
 
 //  ------------------------------------------------------------------
 
-static int gmwm_usehdr = 1;
-
 void do_togglehdr() {
-  ++gmwm_usehdr; gmwm_usehdr %= 3;
-  gwin.cmenu->citem->str = (gmwm_usehdr == 1 ? LNG->WriteToHdrYES : gmwm_usehdr == 2 ? LNG->WriteToHdrONLY : LNG->WriteToHdrNO)+1;
+  ++AA->adat->writeheader; AA->adat->writeheader %= 3;
+  gwin.cmenu->citem->str = (AA->Writeheader() == 1 ? LNG->WriteToHdrYES : AA->Writeheader() == 2 ? LNG->WriteToHdrONLY : LNG->WriteToHdrNO) + 1;
   gwin.cmenu->citem->redisp = true;
 }
 
@@ -354,7 +352,7 @@ int GMenuWriteMsg::Run() {
     Item(TAG_DISKFILE,       LNG->Diskfile);
     Item(TAG_PRINTER,        LNG->Printer);
     Item(TAG_CLIPBRD,        LNG->Clipboard);
-    Item(TAG_TOGGLEHDR,      (gmwm_usehdr == 1 ? LNG->WriteToHdrYES : gmwm_usehdr == 2 ? LNG->WriteToHdrONLY : LNG->WriteToHdrNO), 0, do_togglehdr);
+    Item(TAG_TOGGLEHDR,      (AA->Writeheader() == 1 ? LNG->WriteToHdrYES : AA->Writeheader() == 2 ? LNG->WriteToHdrONLY : LNG->WriteToHdrNO), 0, do_togglehdr);
     Item(TAG_QUIT,           LNG->QuitWrite);
     SetTag(_prevtag);
   End();
@@ -362,7 +360,7 @@ int GMenuWriteMsg::Run() {
   Start();
 
   _prevtag = finaltag;
-  int header = gmwm_usehdr == 1 ? 0 : gmwm_usehdr == 2 ? WRITE_ONLY_HEADER : WRITE_NO_HEADER;
+  int header = AA->Writeheader() == 1 ? 0 : AA->Writeheader() == 2 ? WRITE_ONLY_HEADER : WRITE_NO_HEADER;
   switch(finaltag) {
     case TAG_DISKFILE:        return WRITE_FILE|header;
     case TAG_PRINTER:         return WRITE_PRINTER|header;

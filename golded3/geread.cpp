@@ -270,24 +270,28 @@ void Reader() {
               if(AA->isreadmark or AA->isreadpm) {
                 GTag& tag = AA->isreadpm ? AA->PMrk : AA->Mark;
                 uint mtemp = tag.Find(msg->msgno);
-                sprintf(buf2, "%s [%s%s%s%s]",
+                sprintf(buf2, "%s [%s%s%s%s%s%s]",
                   LNG->ReadMarked,
                   AA->Viewhidden() ? "H" : "",
                   AA->Viewkludge() ? "K" : "",
                   AA->Twitmode() == TWIT_IGNORE ? "Ti" : AA->Twitmode() == TWIT_SKIP ? "Ts" : AA->Twitmode() == TWIT_BLANK ? "Tb" : AA->Twitmode() == TWIT_KILL ? "Tk" : "",
-                  CFG->showdeleted ? "D" : ""
+                  CFG->showdeleted ? "D" : "",
+                  AA->Viewquote() ? "Q" : "",
+                  AA->StripHTML() ? "S" : ""
                 );
                 sprintf(buf, buf2,
                   mtemp, tag.Count(), tag.Count()-mtemp
                 );
               }
               else {
-                sprintf(buf2, "%s [%s%s%s%s]",
+                sprintf(buf2, "%s [%s%s%s%s%s%s]",
                   LNG->ReadAll,
                   AA->Viewhidden() ? "H" : "",
                   AA->Viewkludge() ? "K" : "",
                   AA->Twitmode() == TWIT_IGNORE ? "Ti" : AA->Twitmode() == TWIT_SKIP ? "Ts" : AA->Twitmode() == TWIT_BLANK ? "Tb" : AA->Twitmode() == TWIT_KILL ? "Tk" : "",
-                  CFG->showdeleted ? "D" : ""
+                  CFG->showdeleted ? "D" : "",
+                  AA->Viewquote() ? "Q" : "",
+                  AA->StripHTML() ? "S" : ""
                 );
                 sprintf(buf, buf2,
                   AA->lastread(), AA->Msgn.Count(), AA->Msgn.Count()-AA->lastread()
@@ -480,6 +484,29 @@ void Reader() {
                 IncMargin();
                 break;
 
+              case KK_ReadStylesNone:
+                if(CFG->usestylies or CFG->hidestylies)
+                  CFG->usestylies = CFG->hidestylies = false;
+                else
+                  reader_keyok = true;
+                break;
+
+              case KK_ReadStylesShow:
+                if(not CFG->usestylies or CFG->hidestylies) {
+                  CFG->usestylies = true;
+                  CFG->hidestylies = false;
+                }
+                else
+                  reader_keyok = true;
+                break;
+
+              case KK_ReadStylesStrip:
+                if(not CFG->usestylies or not CFG->hidestylies)
+                  CFG->usestylies = CFG->hidestylies = true;
+                else
+                  reader_keyok = true;
+                break;
+
               case KK_ReadToggleStyles:
                 ToggleStyles();
                 break;
@@ -488,12 +515,103 @@ void Reader() {
                 AA->attr().hexX();
                 break;
 
+              case KK_ReadStripHTML:
+                if(not AA->StripHTML())
+                  ToggleStripHTML();
+                else
+                  reader_keyok = true;
+                break;
+
+              case KK_ReadShowHTML:
+                if(AA->StripHTML())
+                  ToggleStripHTML();
+                else
+                  reader_keyok = true;
+                break;
+
+              case KK_ReadToggleHTML:
+                ToggleStripHTML();
+                break;
+
+              case KK_ReadTwitsShow:
+                if(AA->Twitmode() != TWIT_SHOW) {
+                  AA->SetTwitmode(TWIT_SHOW);
+                  CFG->twitmode = TWIT_SHOW;
+                }
+                else
+                  reader_keyok = true;
+                break;
+
+              case KK_ReadTwitsBlank:
+                if(AA->Twitmode() != TWIT_BLANK) {
+                  AA->SetTwitmode(TWIT_BLANK);
+                  CFG->twitmode = TWIT_BLANK;
+                }
+                else
+                  reader_keyok = true;
+                break;
+
+              case KK_ReadTwitsSkip:
+                if(AA->Twitmode() != TWIT_SKIP) {
+                  AA->SetTwitmode(TWIT_SKIP);
+                  CFG->twitmode = TWIT_SKIP;
+                }
+                else
+                  reader_keyok = true;
+                break;
+
+              case KK_ReadTwitsIgnore:
+                if(AA->Twitmode() != TWIT_IGNORE) {
+                  AA->SetTwitmode(TWIT_IGNORE);
+                  CFG->twitmode = TWIT_IGNORE;
+                }
+                else
+                  reader_keyok = true;
+                break;
+
+              case KK_ReadTwitsKill:
+                if(AA->Twitmode() != TWIT_KILL) {
+                  AA->SetTwitmode(TWIT_KILL);
+                  CFG->twitmode = TWIT_KILL;
+                }
+                else
+                  reader_keyok = true;
+                break;
+
               case KK_ReadToggleTwits:
                 ToggleTwits();
                 break;
 
+              case KK_ReadReadMarked:
+                if(not AA->isreadmark)
+                  ToggleMarkRead();
+                else
+                  reader_keyok = true;
+                break;
+
+              case KK_ReadReadAll:
+                if(AA->isreadmark)
+                  ToggleMarkRead();
+                else
+                  reader_keyok = true;
+                break;
+
               case KK_ReadToggleMarkRead:
                 ToggleMarkRead();
+                break;
+
+              case KK_ReadMark:
+                if(not AA->Mark.Find(reader_msg->msgno))
+                  ToggleMark();
+                else
+                  reader_keyok = true;
+                break;
+
+              case KK_ReadUnmark:
+                if(AA->Mark.Find(reader_msg->msgno))
+                  ToggleMark();
+                else
+                  reader_keyok = true;
                 break;
 
               case KK_ReadToggleMark:
@@ -549,16 +667,80 @@ void Reader() {
                 GotoPrevUnread();
                 break;
 
+              case KK_ReadShowHiddKlud:
+                if(not AA->Viewhidden() and not AA->Viewkludge())
+                  ToggleHiddKlud();
+                else if(not AA->Viewhidden())
+                  ToggleHidden();
+                else if(not AA->Viewkludge())
+                  ToggleKludge();
+                else
+                  reader_keyok = true;
+                break;
+
+              case KK_ReadHideHiddKlud:
+                if(AA->Viewhidden() and AA->Viewkludge())
+                  ToggleHiddKlud();
+                else if(AA->Viewhidden())
+                  ToggleHidden();
+                else if(AA->Viewkludge())
+                  ToggleKludge();
+                else
+                  reader_keyok = true;
+                break;
+
               case KK_ReadToggleHiddKlud:
                 ToggleHiddKlud();
+                break;
+
+              case KK_ReadShowKludge:
+                if(not AA->Viewkludge())
+                  ToggleKludge();
+                else
+                  reader_keyok = true;
+                break;
+
+              case KK_ReadHideKludge:
+                if(AA->Viewkludge())
+                  ToggleKludge();
+                else
+                  reader_keyok = true;
                 break;
 
               case KK_ReadToggleKludge:
                 ToggleKludge();
                 break;
 
+              case KK_ReadShowHidden:
+                if(not AA->Viewhidden())
+                  ToggleHidden();
+                else
+                  reader_keyok = true;
+                break;
+
+              case KK_ReadHideHidden:
+                if(AA->Viewhidden())
+                  ToggleHidden();
+                else
+                  reader_keyok = true;
+                break;
+
               case KK_ReadToggleHidden:
                 ToggleHidden();
+                break;
+
+              case KK_ReadShowQuote:
+                if(not AA->Viewquote())
+                  ToggleQuote();
+                else
+                  reader_keyok = true;
+                break;
+
+              case KK_ReadHideQuote:
+                if(AA->Viewquote())
+                  ToggleQuote();
+                else
+                  reader_keyok = true;
                 break;
 
               case KK_ReadToggleQuote:
@@ -571,6 +753,20 @@ void Reader() {
 
               case KK_ReadTogglePageBar:
                 TogglePageBar();
+                break;
+
+              case KK_ReadRealMsgno:
+                if(not CFG->switches.get(disprealmsgno))
+                  ToggleRealMsgno();
+                else
+                  reader_keyok = true;
+                break;
+
+              case KK_ReadSequentMsgno:
+                if(CFG->switches.get(disprealmsgno))
+                  ToggleRealMsgno();
+                else
+                  reader_keyok = true;
                 break;
 
               case KK_ReadToggleRealMsgno:

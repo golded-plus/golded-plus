@@ -325,6 +325,7 @@ void CfgSquishuserno     ();
 void CfgSquishuserpath   ();
 void CfgStatuslineclock  ();
 void CfgStatuslinehelp   ();
+void CfgStripHTML        ();
 void CfgStylecodes       ();
 void CfgStylecodepunct   ();
 void CfgStylecodestops   ();
@@ -363,6 +364,7 @@ void CfgViewkludge       ();
 void CfgViewquote        ();
 void CfgWhoto            ();
 void CfgWildcatuserno    ();
+void CfgWriteheader      ();
 void CfgWritetemplate    ();
 void CfgXlatcharset      ();
 void CfgXlatescset       ();
@@ -378,4 +380,3 @@ void CfgZonegating       ();
 #endif
 
 //  ------------------------------------------------------------------
-
