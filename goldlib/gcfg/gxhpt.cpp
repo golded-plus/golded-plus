@@ -181,6 +181,9 @@ void gareafile::ReadHPTFile(char* path, char* file, char* origin, int group) {
       std::cout << "* Reading " << file << std::endl;
 
     aa.reset();
+    aa.type = GMB_NONE;
+    aa.msgbase = fidomsgtype;
+    aa.groupid = group;
 
     std::string s;
     while(ReadHPTLine(fp, &s)) {
@@ -231,6 +234,7 @@ void gareafile::ReadHPTFile(char* path, char* file, char* origin, int group) {
           case CRC_LOCALAREA:
           case CRC_DUPEAREA:
           case CRC_BADAREA:
+            aa = echoareadefaults;
             aa.type = GMB_LOCAL;
             break;
           case CRC_ECHOAREA:
@@ -240,6 +244,8 @@ void gareafile::ReadHPTFile(char* path, char* file, char* origin, int group) {
           case CRC_ECHOAREADEFAULTS:
             echoareadefaults.reset();
             aa.type = GMB_DEFAULT;
+            aa.msgbase = fidomsgtype;
+            aa.groupid = group;
             break;
         }
 

@@ -659,6 +659,11 @@ bool gwinput::handle_key(gkey key) {
     case Key_C_Ins:         // fall through
 #endif
     case Key_C_C:           clipboard_copy();            break;
+#if !defined(__UNIX__) || defined(__USE_NCURSES__)
+    case Key_C_Del:         // fall through
+#endif
+    case Key_C_Y:           // fall through
+    case Key_C_D:           clear_field();               break;
     default:
       if(not handle_other_keys(key))
         enter_char(KCodAsc(key));
@@ -671,9 +676,7 @@ bool gwinput::handle_key(gkey key) {
 //  ------------------------------------------------------------------
 
 gwinput::field::field(gwinput* iform, int idnum, int wrow, int wcol, int field_width, std::string& dest, int dest_size, int cvt, int mode)
-
   : destination(dest)
-
 {
   prev = next = NULL;
   pos = buf_pos = buf_left_pos = 0;
@@ -779,7 +782,9 @@ void gwinput::field::deactivate() {
 
 void gwinput::field::restore() {
 
+  std::string tmp(buf);
   strxcpy(buf, destination.c_str(), buf_len+1);
+  destination = tmp;
   convert();
   activate();
 }
