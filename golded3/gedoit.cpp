@@ -52,16 +52,8 @@ void SaveLines(int mode, const char* savefile, GMsg* msg, bool clip) {
     prnacc = "wt";
 
   strcpy(fnam, "PRN");
-  if(mode == MODE_WRITE and streql(savefile, "\001PRN")) {
+  if(mode == MODE_WRITE and streql(savefile, "\001PRN"))
     prn = YES;
-    #ifdef __UNIX__
-    if(prnfp == NULL)
-      prnfp = popen(fnam, "w");
-    #else
-    if(prnfp == NULL)
-      prnfp = fsopen(fnam, prnacc, CFG->sharemode);
-    #endif
-  }
   else {
     strcpy(fnam, savefile);
     strschg_environ(fnam);
@@ -126,8 +118,10 @@ void SaveLines(int mode, const char* savefile, GMsg* msg, bool clip) {
        (not prn and not clip and CFG->switches.get(formfeedseparator))) {
       fwrite("\f", 1, 1, prnfp);
     }
-    if(not prn)
+    if(not prn) {
       fclose(prnfp);
+      prnfp = NULL;
+    }
   }
   else {
     char buf[256];
@@ -141,7 +135,7 @@ void SaveLines(int mode, const char* savefile, GMsg* msg, bool clip) {
 
 //  ------------------------------------------------------------------
 
-void WriteMsgs(GMsg* msg) {
+static void WriteMsgs(GMsg* msg) {
 
   if(AA->Msgn.Tags() == 0)
     return;

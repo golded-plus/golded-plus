@@ -127,6 +127,11 @@ struct Stamp {
 #define mkdir(path,unused) mkdir(path)
 #endif
 
+#ifdef __EMX__ // untested !!!
+#define getcwd _getcwd2
+#define chdir _chdir2
+#endif
+
 FILE* fsopen(const char* path, const char* type, int shflag);
 inline FILE* fsopen(const string& path, const char* type, int shflag) { return fsopen(path.c_str(), type, shflag); }
 
