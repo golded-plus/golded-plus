@@ -92,7 +92,8 @@ void update_statuslines() {
     int row, col;
     vposget(&row, &col);
     wwprintstr(W_STAT, 0,0, C_STATW, buf);
-    wwprintc(W_STAT, 0,strlen(help)-1, C_STATW, sep);
+    if(*help)
+      wwprintc(W_STAT, 0,strlen(help)-1, C_STATW, sep);
     wwprintc(W_STAT, 0,MAXCOL-strlen(clkinfo), C_STATW, sep);
     vposset(row, col);
     #ifdef GOLD_MOUSE

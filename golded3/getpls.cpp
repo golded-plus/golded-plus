@@ -207,7 +207,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
       fputs("Hello @pseudo{}{}{everybody}.\n", fp);
       fputs("@new\n", fp);
       fputs("@position\n", fp);
-      fputs("@replyReplying to a msg dated @odate @otime, from @oname{I}{you} to @dname{me}{you}{all}.\n", fp);
+      fputs("@replyReplying to a msg dated @odate @otime, from @oname{me}{you} to @dname{me}{you}{all}.\n", fp);
       fputs("@reply@position\n", fp);
       fputs("@quoted@odate @otime, @oname{I}{you} wrote to @dname{me}{you}{all}:\n", fp);
       fputs("@quoted@position\n", fp);
