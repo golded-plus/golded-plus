@@ -67,8 +67,17 @@ void SaveLines(int mode, const char* savefile, GMsg* msg, int margin, bool clip)
       }
     }
 #else
-    if(mode == MODE_WRITE)
-      AA->LoadMsg(msg, msg->msgno, margin); // reload message
+    if(mode == MODE_WRITE) {
+      if(AA->LoadMsg(msg, msg->msgno, margin) == false) {
+        msg->txt = throw_strdup("");
+        msg->attr.tou0();
+        msg->TextToLines(margin);
+      }
+    }
+    else if((mode == MODE_SAVE) or (mode == MODE_SAVENOCTRL)) {
+      msg->attr.tou0();
+      msg->TextToLines(margin);
+    }
     TemplateToText(((mode == MODE_WRITE) and prnheader) ? ((prnheader & WRITE_ONLY_HEADER) ? MODE_HEADER : MODE_WRITEHEADER) : MODE_WRITE, msg, msg, AA->WTpl(), CurrArea);
     msg->attr.tou1();
     msg->TextToLines(margin);

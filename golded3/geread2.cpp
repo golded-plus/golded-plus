@@ -525,7 +525,6 @@ int ExternUtil(GMsg* msg, int utilno) {
 
   Path editorfile, tmpfile;
   strcpy(editorfile, AddPath(CFG->goldpath, EDIT->File()));
-  mktemp(strcpy(tmpfile, AddPath(CFG->goldpath, "GDXXXXXX")));
 
   std::vector<ExtUtil>::iterator extutil = CFG->externutil.begin();
 
@@ -538,18 +537,21 @@ int ExternUtil(GMsg* msg, int utilno) {
 
       int mode = (extutil->options & EXTUTIL_KEEPCTRL) ? MODE_SAVE : MODE_SAVENOCTRL;
       SaveLines(mode, editorfile, msg, 79);
-      if(striinc("@tmpfile", cmdline))
-        SaveLines(mode, tmpfile, msg, 79);
-
-      strcpy(buf, CFG->goldpath);
-      strchg(buf, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
-      strischg(cmdline, "@path", buf);
       strcpy(buf, editorfile);
       strchg(buf, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
       strischg(cmdline, "@file", buf);
-      strcpy(buf, tmpfile);
+      if(striinc("@tmpfile", cmdline)) {
+        mktemp(strcpy(tmpfile, AddPath(CFG->goldpath, "GDXXXXXX")));
+        SaveLines(mode, tmpfile, msg, 79);
+        strcpy(buf, tmpfile);
+        strchg(buf, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
+        strischg(cmdline, "@tmpfile", buf);
+      }
+      else
+        tmpfile[0] = NUL;
+      strcpy(buf, CFG->goldpath);
       strchg(buf, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
-      strischg(cmdline, "@tmpfile", buf);
+      strischg(cmdline, "@path", buf);
       TokenXlat(MODE_NEW, cmdline, msg, msg, CurrArea);
 
       int pauseval = 0;
@@ -585,7 +587,8 @@ int ExternUtil(GMsg* msg, int utilno) {
         LoadText(msg, editorfile);
         if(extutil->options & EXTUTIL_WIPE)
           WipeFile(editorfile, 0);
-        WipeFile(tmpfile, 0);
+        if(tmpfile[0] != NUL)
+          WipeFile(tmpfile, 0);
 
         EDIT->HardLines(hardlines);
         msg->attr.tou1();   // Ignore any kludge address found
