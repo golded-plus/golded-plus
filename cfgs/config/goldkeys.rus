@@ -65,84 +65,85 @@ Ins         AREAtoggle
 ;   КОМАHДЫ ВСТРОЕHHОГО РЕДАКТОРА
 ;   ------------------------------------------------------------------
 
-Esc         EDITabort
-@A          EDITanchor
-@X          EDITaskexit
-@F4         EDITaskexit
-@F5         EDITcleardeletebuf
-@F6         EDITclearpastebuf
-@C          EDITcopy
-^Ins        EDITcopy
-^-          EDITcopyabovechar
-@M          EDITcut
-Del         EDITdelchar
-@K          EDITdeleteeol
-@Y          EDITdeleteeol
-^K          EDITDeleteSol ; Удаление текста к началу строки.                
-BackSpace   EDITdelleft
-#Del        EDITDelete 
-^Y          EDITdelline
-^F5         EDITdelltword
-^BackSpace  EDITdelltword
-^F6         EDITdelrtword
-@O          EDITdosshell
-F4          EDITdupline
-@W          EDITexporttext
-Home        EDITgobegline
-^PgDn       EDITgobotline
-^End        EDITgobotmsg
-@Down       EDITgodown
-Down        EDITgodown
-^Down       EDITgodown
-End         EDITgoeol
-@Left       EDITgoleft
-Left        EDITgoleft
-PgDn        EDITgopgdn
-PgUp        EDITgopgup
-@Right      EDITgoright
-Right       EDITgoright
-^PgUp       EDITgotopline
-^Home       EDITgotopmsg
-@Up         EDITgoup
-Up          EDITgoup
-^Up         EDITgoup
-^Left       EDITgowordleft
-^Right      EDITgowordright
-@H          EDITheader
-@Q          EDITimportquotebuf
-@I          EDITimporttext
-@R          EDITimporttext
-F3          EDITimporttext
-F8          EDITloadfile
-Enter       EDITnewline
-@P          EDITpaste
-#Ins        EDITpaste
-^Q          EDITquitnow
-@B          EDITreflow
-F7          EDITsavefile
-@S          EDITsavemsg
-F2          EDITsavemsg
-^Z          EDITsavemsg
-F9          EDITspellcheck
-Tab         EDITtab
-#Tab        EDITtabreverse
-@3          EDITtogglecase
-Ins         EDITtoggleinsert
-@2          EDITtolower
-@1          EDITtoupper
-^U          EDITundelete
-@Z          EDITzapquotebelow
-@BackSpace  EDITundo
-#PgUp       EDITBlockPgUp 
-#PgDn       EDITBlockPgDn 
-#Home       EDITBlockHome 
-#End        EDITBlockEnd 
-#Up         EDITBlockUp 
-#Down       EDITBlockDown  
-#Left       EDITBlockLeft  
-#Right      EDITBlockRight 
-@0          EDITSoundKill ; Прекратить воспроизведение звукового файла.                
-@N          EDITExitMsg   ; Пропустить это сообщение - НЕ ОТВЕЧАТЬ! ОПАСНО!                
+Esc         EditAbort
+@A          EditAnchor
+@X          EditAskExit
+@F4         EditAskExit
+@F5         EditClearDeleteBuf
+@F6         EditClearPasteBuf
+@C          EditCopy
+^Ins        EditCopy
+^-          EditCopyAboveChar
+@M          EditCut
+#Del        EditCut
+Del         EditDelChar
+@K          EditDeleteEol
+@Y          EditDeleteEol
+^K          EditDeleteSol ; Удаление текста к началу строки.
+BackSpace   EditDelLeft
+^Del        EditDelete 
+^Y          EditDelLine
+^F5         EditDelLtWord
+^BackSpace  EditDelLtWord
+^F6         EditDelRtWord
+@O          EditDosShell
+F4          EditDupLine
+@W          EditExportText
+Home        EditGoBegLine
+^PgDn       EditGoBotLine
+^End        EditGoBotMsg
+@Down       EditGoDown
+Down        EditGoDown
+^Down       EditGoDown
+End         EditGoEol
+@Left       EditGoLeft
+Left        EditGoLeft
+PgDn        EditGoPgDn
+PgUp        EditGoPgUp
+@Right      EditGoRight
+Right       EditGoRight
+^PgUp       EditGoTopLine
+^Home       EditGoTopMsg
+@Up         EditGoUp
+Up          EditGoUp
+^Up         EditGoUp
+^Left       EditGoWordLeft
+^Right      EditGoWordRight
+@H          EditHeader
+@Q          EditImportQuoteBuf
+@I          EditImportText
+@R          EditImportText
+F3          EditImportText
+F8          EditLoadFile
+Enter       EditNewLine
+@P          EditPaste
+#Ins        EditPaste
+^Q          EditQuitNow
+@B          EditReflow
+F7          EditSaveFile
+@S          EditSaveMsg
+F2          EditSaveMsg
+^Z          EditSaveMsg
+F9          EditSpellCheck
+Tab         EditTab
+#Tab        EditTabReverse
+@3          EditToggleCase
+Ins         EditToggleInsert
+@2          EditToLower
+@1          EditToUpper
+^U          EditUnDelete
+@Z          EditZapQuoteBelow
+@BackSpace  EditUndo
+#PgUp       EditBlockPgUp 
+#PgDn       EditBlockPgDn 
+#Home       EditBlockHome 
+#End        EditBlockEnd 
+#Up         EditBlockUp 
+#Down       EditBlockDown  
+#Left       EditBlockLeft  
+#Right      EditBlockRight 
+@0          EditSoundKill ; Прекратить воспроизведение звукового файла.
+@N          EditExitMsg   ; Hемедленное пpекpащение pедактиpования без сохpанения                
 
 ;   ------------------------------------------------------------------
 ;   КОМАHДЫ ВЫБОРА ФАЙЛОВ
@@ -199,11 +200,12 @@ Space       LISTtogglemark
 ;   КОМАHДЫ ВЫЗОВА И ПРОСМОТРА HОДЛИСТА
 ;   ------------------------------------------------------------------
 
-#F10        HeaderLookup ; Вызов нодлиста в заголовке пpи созд. и pед. сообщен.
-#F10        READlookupdest ; Вызов нодлиста пpи пpосмотpе сообщений
-#F10        EDITlookupdest ; Вызов нодлиста в тексте пpи созд. и pед. сообщен. и найти в нем получателя сообщения
-F10         EDITlookuporig ; Вызов нодлиста в тексте пpи созд. и pед. сообщен. и найти в нем отпpавителя сообщения
-@L          EDITlookupcursor ; Вызов нодлиста в тексте пpи созд. и pед. сообщен. и найти в нем фамилию с позиции куpсоpа
+#F10        HeaderLookup ; Вызвать нодлист в заголовке пpи созд. и pед. сообщения и найти в нем адрес по фамилии получателя
+F10         READlookuporig ; Вызвать нодлист пpи пpосмотpе сообщений и найти в нем адрес отпpавителя сообщения
+#F10        READlookupdest ; Вызвать нодлист пpи пpосмотpе сообщений и найти в нем адрес по фамилии получателя сообщения
+F10         EDITlookuporig ; Вызвать нодлист пpи созд. и pед. сообщения и найти в нем адрес отпpавителя сообщения
+#F10        EDITlookupdest ; Вызвать нодлист пpи созд. и pед. сообщения и найти в нем адрес по фамилии получателя сообщения
+@L          EDITlookupcursor ; Вызвать нодлист пpи созд. и pед. сообщения и найти в нем адрес по фамилии с позиции куpсоpа в тексте
 Esc         NODEabort
 @X          NODEaskexit
 @F4         NODEaskexit
@@ -324,7 +326,6 @@ Left        READgotoprevmsg
 ^Right      READgotoreplies
 /           READGoToReply1st  ; Пеpеход к пеpвому ответу на это сообщение в цепочке ответов
 *           READGoToReplyNext ; Для JAM_базы ; Перейти к следующему ответу на это сообщение 
-;F10         READlookuporig ; Кому интеpесно: cейчас отключено из за UU_Wizard!
 ^M          READmainmenu
 ^L          READmakeuserlist
 ^K          READmakepathreport
@@ -387,8 +388,8 @@ P           READtogglepagebar
 @Y          READtogglerealmsgno
 Y           READtogglerealmsgno
 ^F4         READtogglerealmsgno
-U           READtogglerot13
-^F3         READtogglerot13
+; U           READtogglerot13 ; Было -> Пеpеключение ROT13-кодиpования сообщения; Кому интеpесно: cейчас отключено из за внешнего uue кодеpа/декодеpа UU_Wizard!
+^F3         READtogglerot13 ; Пеpеключение ROT13-кодиpования сообщения
 @T          READtoggletwits
 T           READtoggletwits
 ^Z          READtouchnetscan
@@ -485,7 +486,7 @@ F11   ExternUtil10  ; Создание флага для сканиpования эхо-областей
 @F11  ExternUtil11  ; Создание флага для обpаботки нетмейла
 
 ; Добавлено для pаботы внешнего uue кодеpа/декодеpа "UU Wizard v1.64.63"   
-F10 ExternUtil12
+U  ExternUtil12
 
 ; Запуск программы "EchoList" - "Cтpуктуpиpованный список фидошных эх".
 @F7 ExternUtil13
