@@ -261,7 +261,7 @@ void CfgTwitname() {
       strbtrim(val);
     }
   }
-  strcpy(tn.name, val);
+  strxcpy(tn.name, val, sizeof(tn.name));
   CFG->twitname.push_back(tn);
 }
 
