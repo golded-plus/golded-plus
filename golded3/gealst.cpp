@@ -65,13 +65,13 @@ int compare_groups(int ga, int gb)
   gbp = strchr(CFG->arealistgrouporder, (char)gb);
   if(gap == NULL) {
     if(gbp != NULL)
-      return -1;
+      return 1;
     else
       return compare_two(ga, gb);
   }
   else {
     if(gbp == NULL)
-      return 1;
+      return -1;
     else
       return compare_two(gap, gbp);
   }

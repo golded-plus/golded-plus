@@ -889,19 +889,16 @@ void GThreadlist::recursive_build(ulong msgn, ulong rn) {
     if(not AA->Msgn.ToReln(t.replynext))
       t.replynext = 0;
 
-    uint j;
+    uint j, list_size = list.size();
     bool found = false;
-    for(j=0; j<list.size(); j++) {
+    for(j=0; j<list_size; j++) {
       if(list[j].msgno == t.replyto) {
         found = true;
         break;
       }
     }
 
-    if(found and list[j].msgno != t.replyto)
-      list.erase(&list[j]);
-
-    if(found or list.size() == 0)
+    if(found or (list_size == 0))
       list.push_back(t);
 
     recursive_build(msg.link.first(), msg.link.list(0));
