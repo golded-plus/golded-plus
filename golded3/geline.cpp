@@ -558,7 +558,6 @@ static void KludgePID(GMsg* msg, const char* ptr) {
 static void KludgeREPLYADDR(GMsg* msg, const char* ptr) {
 
   INam name;
-  name[0] = NUL;
   char *buf=throw_strdup(ptr);
   ParseInternetAddr(buf, *msg->realby ? name : msg->realby, msg->iaddr);
   if(*name)
@@ -582,7 +581,7 @@ static void KludgeFROM(GMsg* msg, const char* ptr) {
   INam _fromname;
   IAdr _fromaddr;
   char* buf = throw_strdup(ptr);
-  strxcpy(msg->ifrom, buf, sizeof(msg->ifrom));
+  strxmimecpy(msg->ifrom, buf, 0, sizeof(msg->ifrom), true);
   ParseInternetAddr(buf, _fromname, _fromaddr);
   throw_free(buf);
   if(*_fromaddr)
@@ -599,7 +598,7 @@ static void KludgeTO(GMsg* msg, const char* ptr) {
   INam _toname;
   IAdr _toaddr;
   char* buf = throw_strdup(ptr);
-  strxcpy(msg->ito, buf, sizeof(msg->ito));
+  strxmimecpy(msg->ito, buf, 0, sizeof(msg->ito), true);
   ParseInternetAddr(buf, _toname, _toaddr);
   throw_free(buf);
   if(*_toaddr)
@@ -616,7 +615,7 @@ static void KludgeBCC(GMsg* msg, const char* ptr) {
   char* ibcc = msg->ibcc;
   char* buf = (char*)throw_malloc(strlen(ibcc) + strlen(ptr) + 3);
   strcpy(stpcpy(stpcpy(buf, ibcc), *ibcc ? ", " : ""), ptr);
-  strxcpy(ibcc, buf, sizeof(msg->ibcc));
+  strxmimecpy(msg->ibcc, buf, 0, sizeof(msg->ibcc), true);
   throw_free(buf);
 }
 
@@ -651,10 +650,8 @@ static void KludgeREPLY_TO(GMsg* msg, const char* ptr) {
 
 static void KludgeSUBJECT(GMsg* msg, const char* ptr) {
 
-  char* buf = throw_strdup(ptr);
-  if(not msg->attr.att())
-    strxcpy(msg->re, buf, sizeof(msg->re));
-  throw_free(buf);
+  if(not (msg->attr.frq() or msg->attr.att() or msg->attr.urq()))
+    strxmimecpy(msg->re, ptr, 0, sizeof(msg->re), true);
 }
 
 
@@ -807,7 +804,7 @@ static void KludgeORGANIZATION(GMsg* msg, const char* ptr) {
 
 static void KludgeX_FTN_TO(GMsg* msg, const char* ptr) {
 
-  strxcpy(msg->realto, ptr, sizeof(msg->realto));
+  strxmimecpy(msg->realto, ptr, 0, sizeof(msg->realto), true);
 }
 
 
@@ -1793,18 +1790,16 @@ void GMsg::TextToLines(int __line_width, bool header_recode) {
 
 //  ------------------------------------------------------------------
 
-bool check_multipart(const char* ptr, const char* keptr, char* boundary) {
+static bool check_multipart(const char* ptr, char* boundary) {
 
   if(striinc("multipart", ptr)) {
     const char* boundptr = striinc("boundary=", ptr);
-    if(not boundptr)
-      boundptr = striinc("boundary=", keptr+1);
     if(boundptr) {
       boundptr += 9;
       const char* boundend;
-      if(*boundptr == '"') {
+      if(*boundptr == '\"') {
         boundptr++;
-        boundend = strchr(boundptr, '"');
+        boundend = strchr(boundptr, '\"');
       }
       else {
         boundend = strpbrk(boundptr, " \r\n");
@@ -1867,6 +1862,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
   bool gotmime = false;
   bool gotmultipart = false;
   bool inheader = false;
+  gstrarray boundary_set;
   char boundary[100];
 
   *buf = *qbuf = *qbuf2 = NUL;
@@ -1976,8 +1972,14 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
         if(wraps == 0) {
         
           if(gotmultipart) {
-            if(*ptr == '-' and ptr[1] == '-' and strneql(ptr+2, boundary, strlen(boundary)))
-              inheader = true;
+            if(*ptr == '-' and ptr[1] == '-') {
+              gstrarray::iterator ib;
+              for(ib = boundary_set.begin(); ib != boundary_set.end(); ib++)
+              if(strneql(ptr+2, (*ib).c_str(), (*ib).length())) {
+                inheader = true;
+                break;
+              }
+            }
             else if(*ptr == '\n' or *ptr == '\r')
               inheader = false;
           }
@@ -2061,10 +2063,15 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
               }
               else if(kludgetype == RFC_CONTENT_TYPE) {
                 // Content-Type: text/plain; charset="us-ascii"
-                string tmp = ptr;
-                if(keptr and (keptr[1] == ' '))
-                  tmp += keptr+1;
-                const char *mime_charset = striinc("charset=", tmp.c_str());
+                while(keptr and ((keptr[1] == ' ') or (keptr[1] == '\t'))) {
+                  *keptr = endchar;
+                  keptr = strpbrk(keptr+1, "\r\n");
+                  if(keptr) {
+                    endchar = *keptr;
+                    *keptr = NUL;
+                  }
+                }
+                const char *mime_charset = striinc("charset=", ptr);
                 if(mime_charset != NULL) {
                   if(mime_charset[8] == '\"') {
                     strxcpy(chsbuf, mime_charset+9, sizeof(chsbuf));
@@ -2088,7 +2095,8 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
                     strcpy(msg->charset, chsbuf);
                   gotmime = true;
                 }
-                else if(check_multipart(ptr, keptr, boundary)) {
+                else if(check_multipart(ptr, boundary)) {
+                  boundary_set.push_back(boundary);
                   gotmultipart = true;
                   gotmime = true;
                 }
@@ -2532,19 +2540,6 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
 
       // Scan for kludge-, tear- and originlines
       ScanKludges(msg, getvalue);
-
-      // Charset translate header fields
-      if(header_recode) {
-        strxmimecpy(msg->realby, msg->realby, 0, sizeof(INam), true);
-        strxmimecpy(msg->realto, msg->realto, 0, sizeof(INam), true);
-        strxmimecpy(msg->ifrom, msg->ifrom, 0, sizeof(INam), true);
-        strxmimecpy(msg->ito, msg->ito, 0, sizeof(msg->ito), true);
-
-        strxmimecpy(msg->by, msg->by, 0, sizeof(INam), true);
-        strxmimecpy(msg->to, msg->to, 0, sizeof(INam), true);
-        if(not (msg->attr.frq() or msg->attr.att() or msg->attr.urq()))
-          strxmimecpy(msg->re, msg->re, 0, sizeof(ISub), true);
-      }
     }
   }
 

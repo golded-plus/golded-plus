@@ -182,6 +182,34 @@ void Area::InitData() {
   strcpy(adat->xlatexport, CFG->xlatexport);
   strcpy(adat->xlatimport, CFG->xlatimport);
 
+  char _groupid[10];
+  if(CFG->areafilegroups and groupid()) {
+    if(groupid() & 0x8000u)
+      sprintf(_groupid, "#%u", groupid() & 0x7FFF);
+    else {
+      _groupid[0] = (char)(isalpha(groupid()) ? groupid() : NUL);
+      _groupid[1] = NUL;
+    }
+  }
+  else {
+    *_groupid = NUL;
+  }
+
+  const char* found = CFG->grp.SetGrp(echoid());
+  int curgrp = CFG->grp.currgrpno;
+  if(*_groupid) {
+    found = CFG->grp.SetGrp(_groupid);
+    if(found and (strieql(found, "*") or ((curgrp >= 0) and (curgrp < CFG->grp.currgrpno))))
+      found = NULL;
+    if(not found)
+      found = CFG->grp.SetGrp(echoid());
+  }
+
+  if(found) {
+    CFG->grp.GetItm(GRP_XLATEXPORT, adat->xlatexport, sizeof(adat->xlatexport));
+    CFG->grp.GetItm(GRP_XLATIMPORT, adat->xlatimport, sizeof(adat->xlatimport));
+  }
+
   LoadLanguage(adat->loadlanguage);
 }
 
@@ -212,17 +240,14 @@ void Area::RandomizeData(int mode) {
     *_groupid = NUL;
   }
 
-  Echo _echoid;
-  strcpy(_echoid, echoid());
-
-  const char* found = CFG->grp.SetGrp(_echoid);
+  const char* found = CFG->grp.SetGrp(echoid());
   int curgrp = CFG->grp.currgrpno;
   if(*_groupid) {
     found = CFG->grp.SetGrp(_groupid);
     if(found and (strieql(found, "*") or ((curgrp >= 0) and (curgrp < CFG->grp.currgrpno))))
       found = NULL;
     if(not found)
-      found = CFG->grp.SetGrp(_echoid);
+      found = CFG->grp.SetGrp(echoid());
   }
 
   if(found) {
@@ -385,9 +410,6 @@ void Area::RandomizeData(int mode) {
         GetRandomLine(buf, sizeof(buf), buf+1);
       strxcpy(adat->whoto, buf, sizeof(adat->whoto));
     }
-
-    CFG->grp.GetItm(GRP_XLATEXPORT, adat->xlatexport, sizeof(adat->xlatexport));
-    CFG->grp.GetItm(GRP_XLATIMPORT, adat->xlatimport, sizeof(adat->xlatimport));
   }
 
   std::vector<MailList>::iterator z;

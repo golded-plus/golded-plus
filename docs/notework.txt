@@ -12,6 +12,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed more quirks with charset.
+
 - Fixed quotewrap in internal editor if quotestring contains a space
   inside.
 

@@ -81,6 +81,7 @@ const char *get_charset(void)
   strcpy(charsetbuf, "LATIN-1");
   cp = setlocale(LC_CTYPE, "");
   if((cp != NULL) and ((cp = strchr(cp, '.')) != NULL)) {
+    cp++;
     if(strieql(cp, "KOI8R") or strieql(cp, "KOI8"))
       cp = "KOI8-R";
     if(strieql(cp, "KOI8U"))

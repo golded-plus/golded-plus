@@ -465,12 +465,20 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view, bool doedithdr) {
         strcpy(msg->to, "UUCP");
       else
         strcpy(msg->to, msg->idest);
-      if(*msg->realby and *msg->iorig)
-        sprintf(msg->ifrom, "\"%s\" <%s>", msg->realby, msg->iorig);
+      if(*msg->realby and *msg->iorig) {
+        char quot[2] = "\"";
+        if((msg->realby[0] == '\"') or (strpbrk(msg->realby, " \t") == NULL))
+          quot[0] = NUL;
+        sprintf(msg->ifrom, "%s%s%s <%s>", quot, msg->realby, quot, msg->iorig);
+      }
       else
         strcpy(msg->ifrom, msg->iorig);
-      if(*msg->realto)
-        sprintf(msg->ito, "\"%s\" <%s>", msg->realto, msg->idest);
+      if(*msg->realto) {
+        char quot[2] = "\"";
+        if((msg->realto[0] == '\"') or (strpbrk(msg->realto, " \t") == NULL))
+          quot[0] = NUL;
+        sprintf(msg->ito, "%s%s%s <%s>", quot, msg->realto, quot, msg->idest);
+      }
       else
         strcpy(msg->ito, msg->idest);
       if(msg->orig.net == 0)
@@ -502,10 +510,15 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view, bool doedithdr) {
         if(not (CFG->internetgateexp == RFCAddress) and *msg->To() and (strpbrk(msg->iaddr, "<>()\"") == NULL) and not isuucp(msg->To())) {
           Name name;
           strcpy(name, msg->To());
-          if(CFG->internetgateexp == ((RFCName << 2) | RFCAddress))
-            sprintf(msg->ito, "\"%s\" <%s>", StripQuotes(name), msg->iaddr);
+          StripQuotes(name);
+          if(CFG->internetgateexp == ((RFCName << 2) | RFCAddress)) {
+            char quot[2] = "\"";
+            if((name[0] == '\"') or (strpbrk(name, " \t") == NULL))
+              quot[0] = NUL;
+            sprintf(msg->ito, "%s%s%s <%s>", quot, name, quot, msg->iaddr);
+          }
           else
-            sprintf(msg->ito, "%s (%s)", msg->iaddr, StripQuotes(name));
+            sprintf(msg->ito, "%s (%s)", msg->iaddr, name);
         }
         else
           strcpy(msg->ito, msg->iaddr);

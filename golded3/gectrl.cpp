@@ -415,28 +415,51 @@ void DoKludges(int mode, GMsg* msg, bool attronly) {
 
       const char* rfc = AA->Internetrfcbody() ? "" : "\001";
 
-      char to_buf[256];
-      *to_buf = NUL;
-
       if(AA->isemail() and (*msg->ito or strchr(msg->to, '@'))) {
+        INam _toname;
+        IAdr _toaddr;
         char* ptr = *msg->ito ? msg->ito : msg->to;
-        mime_header_encode(buf, ptr, msg);
-        sprintf(to_buf, "%s%sTo: %s", rfc, AA->isnewsgroup() ? "X-" : "", buf);
-        line = AddKludge(line, to_buf);
+        strxcpy(buf2, ptr, 1024);
+        ParseInternetAddr(buf2, _toname, _toaddr);
+        if(_toname[0] != NUL) {
+          mime_header_encode(buf2, _toname, msg);
+          char quot[2] = "\"";
+          if((buf2[0] == '\"') or (strpbrk(buf2, " \t") == NULL))
+            quot[0] = NUL;
+          sprintf(buf, "%s%sTo: %s%s%s <%s>", rfc, AA->isnewsgroup() ? "X-" : "", quot, buf2, quot, _toaddr);
+        }
+        else
+          sprintf(buf, "%s%sTo: %s", rfc, AA->isnewsgroup() ? "X-" : "", ptr);
+        line = AddKludge(line, buf);
         line->kludge = GKLUD_RFC;
       }
 
       if(*msg->ifrom) {
-        mime_header_encode(buf2, msg->ifrom, msg);
-        sprintf(buf, "%sFrom: %s", rfc, buf2);
+        INam _fromname;
+        IAdr _fromaddr;
+
+        strcpy(buf2, msg->ifrom);
+        ParseInternetAddr(buf2, _fromname, _fromaddr);
+        if(_fromname[0] != NUL) {
+          mime_header_encode(buf2, _fromname, msg);
+          char quot[2] = "\"";
+          if((buf2[0] == '\"') or (strpbrk(buf2, " \t") == NULL))
+            quot[0] = NUL;
+          sprintf(buf, "%sFrom: %s%s%s <%s>", rfc, quot, buf2, quot, _fromaddr);
+        }
+        else
+          sprintf(buf, "%sFrom: %s", rfc, msg->ifrom);
         line = AddKludge(line, buf);
         line->kludge = GKLUD_RFC;
       }
       else if(*msg->iorig) {
         mime_header_encode(buf2, msg->By(), msg);
-        if(*buf2)
-          sprintf(buf, "%sFrom: \"%s\" <%s>", rfc, buf2, msg->iorig);
-        else
+        if(*buf2) {
+          char quot[2] = "\"";
+          if((buf2[0] == '\"') or (strpbrk(buf2, " \t") == NULL))
+            quot[0] = NUL;
+          sprintf(buf, "%sFrom: %s%s%s <%s>", rfc, quot, buf2, quot, msg->iorig);
+        } else
           sprintf(buf, "%sFrom: %s", rfc, msg->iorig);
         line = AddKludge(line, buf);
         line->kludge = GKLUD_RFC;
@@ -513,14 +536,12 @@ void DoKludges(int mode, GMsg* msg, bool attronly) {
       line = AddKludge(line, buf);
       line->kludge = GKLUD_RFC;
 
-      if(*to_buf and AA->isnewsgroup()) {
-        line = AddKludge(line, to_buf);
-        line->kludge = GKLUD_RFC;
-      }
-
       if(*msg->iorig) {
         mime_header_encode(buf2, msg->By(), msg);
-        sprintf(buf, "%sSender: \"%s\" <%s>", rfc, buf2, msg->iorig);
+        char quot[2] = "\"";
+        if((buf2[0] == '\"') or (strpbrk(buf2, " \t") == NULL))
+          quot[0] = NUL;
+        sprintf(buf, "%sSender: %s%s%s <%s>", rfc, quot, buf2, quot, msg->iorig);
         line = AddKludge(line, buf);
         line->kludge = GKLUD_RFC;
       }
@@ -541,7 +562,7 @@ void DoKludges(int mode, GMsg* msg, bool attronly) {
       }
 
       if(AA->isnewsgroup() or AA->isemail()) {
-        sprintf(buf, "%sX-%s: %s", rfc, AA->isnewsgroup() ? "Newsreader" : "Mailer", get_informative_string());
+        sprintf(buf, "%sX-%s: %s", rfc, AA->isnewsgroup() ? "Newsreader" : "Mailreader", get_informative_string());
         line = AddKludge(line, buf);
         line->kludge = GKLUD_RFC;
       }
