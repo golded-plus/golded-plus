@@ -12,5 +12,8 @@
 #define HAVE_STRING_H 1
 #define HAVE_MEMORY_H 1
 #define HAVE_STRCOLL  1
+#ifdef _MSC_VER
+#define HAVE_MALLOC_H 1
+#endif
 
 #define __P(protos)   protos

@@ -298,6 +298,9 @@ init_syntax_once ()
 #   if HAVE_ALLOCA_H
 #    include <alloca.h>
 #   endif /* HAVE_ALLOCA_H */
+#   if HAVE_MALLOC_H
+#    include <malloc.h>
+#   endif /* HAVE_MALLOC_H */
 #  endif /* not __GNUC__ */
 
 # endif /* not alloca */
