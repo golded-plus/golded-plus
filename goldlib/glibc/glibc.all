@@ -1,4 +1,4 @@
 regex    c       all                                 emx         cyg
-fnmatch  c       all                                             cyg
-glob     c       all                                             cyg
+fnmatch  c       all
+glob     c       all
 dummy    c       all nov bcd bco bcx wcn wco wcx lnx     djg rsx
