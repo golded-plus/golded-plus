@@ -78,10 +78,22 @@ LNKFLAGS+=-g
 CPPFLAGS+=$(CFLAGS) -fno-exceptions -fno-rtti
 
 # comment following lines if you dislike ncurses
+# uncomment "buggy ncurses" if your build requires additional keypresses to
+# pass areascan
 # NOTE: lnx is active for any *NIX system and only ncurses mode is portable
 ifeq ($(PLATFORM),lnx)
-CPPFLAGS+=-D__USE_NCURSES__
+CPPFLAGS+=-D__USE_NCURSES__ #-DBUGGY_NCURSES
 STDLIBS+=-lncurses
+endif
+
+# uncomment the next line for better koi-8 support. do not do it for
+# international builds since latin-1 support will be broken.
+ifeq ($(PLATFORM),lnx)
+CPPFLAGS+=#-DKOI8
+endif
+
+ifeq ($(PLATFORM),be)
+CPPFLAGS+=#-DBEOS_BONE_BUILD
 endif
 
 # force not to use coprocessor features in DOS, if you have one you may remove this
