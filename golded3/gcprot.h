@@ -63,6 +63,7 @@ void CfgAreakeeplast     ();
 void CfgArealistechomax  ();
 void CfgArealistformat   ();
 void CfgArealistgroupid  ();
+void CfgArealistgrouporder();
 void CfgArealistnos      ();
 void CfgArealistpagebar  ();
 void CfgArealistscan     ();

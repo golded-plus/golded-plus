@@ -26,6 +26,7 @@
 
 #include <golded.h>
 #include <gmoprot.h>
+#include <gcharset.h>
 
 
 //  ------------------------------------------------------------------
@@ -629,6 +630,7 @@ CfgGed::CfgGed() {
 
   // strings
   strcpy(arealistformat, "AM D CPUN E G ");
+  *arealistgrouporder = 0;
   strcpy(arealistsort, "FYTUE");
   strcpy(areascansort, "XZBE");
   strcpy(importbegin, "=== Cut ===");
@@ -656,14 +658,9 @@ CfgGed::CfgGed() {
     __gver_postname__, __gver_platform__);
   strcpy(tearline, "@longpid @version");
   strcpy(whoto, "All");
-  *xlatexport = 0;
-  *xlatimport = 0;
-  #ifdef __UNIX__
-  strcpy(xlatlocalset, "LATIN-1");
-  #else
-  strcpy(xlatlocalset, "IBMPC");
-  #endif
-
+  strcpy(xlatlocalset, get_charset());
+  strcpy(xlatimport, get_dos_charset(xlatlocalset));
+  strcpy(xlatexport, xlatimport);
   // variables & switches
   adeptxbbsuserno = 0;
   addressbookadd = YES;

@@ -157,6 +157,7 @@ public:
   gstrarray   areaisnews;
   int         arealistechomax;
   char        arealistformat[80];
+  char        arealistgrouporder[256];
   char        arealistsort[20];     // areasort[10];
   int         arealisttype;
   Path        areapath;

@@ -54,12 +54,14 @@ char* CvtMessageIDtoMSGID(const char* mptr, char* msgidbuf, const char* echoid, 
       else {
         *bptr++ = *mptr++;
       }
+      if(bptr-msgidbuf > 200) // Check for overrun
+        break;
     }
     *bptr = NUL;
   }
   else {
 
-    int spaces = strchr(mptr, ' ') ? true : false;
+    bool spaces = strchr(mptr, ' ') ? true : false;
 
     dword crc32 = CRC32_MASK_CCITT;
     crc32 = strCrc32(mptr, NO, crc32);
@@ -72,6 +74,8 @@ char* CvtMessageIDtoMSGID(const char* mptr, char* msgidbuf, const char* echoid, 
       if(spaces and (*mptr == '\"'))
         *bptr++ = '\"';
       *bptr++ = *mptr++;
+      if(bptr-msgidbuf > (200-9-(spaces?2:0))) // Check for overrun
+        break;
     }
     if(spaces)
       *bptr++ = '\"';
@@ -252,6 +256,9 @@ void ProcessSoupMsg(char* lbuf, GMsg* msg, int& msgs, char* areaname, int tossto
             IAdr toaddr;
             ParseInternetAddr(mptr, toname, toaddr);
             strxcpy(msg->to, *toname ? toname : toaddr, sizeof(msg->to));
+          }
+          else if(MatchRFC(mptr, "X-Comment-To: ")) {
+            strxcpy(msg->to, mptr, sizeof(msg->to));
           }
           else if(MatchRFC(mptr, "Cc: ")) {
             char* ccbuf = (char*)throw_malloc(strlen(msg->icc) + strlen(mptr) + 3);

@@ -12,6 +12,26 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed EDITHEADERFIRST operation.
+
++ Added new keyword AreaListGroupOrder to specify groups sorting order
+  in arealist. The only parameter is string which specifies groups
+  order (case sensitive!). If some groups are not found in the list
+  they will be placed below specifyed ones in regular order.
+
++ Implemented FSP-0013 support. You may notice warnings about obsolete
+  codepages in your config, please fix them. If you use XLATEXPORT to
+  obsolte codepage and this is required on some reason you may prevent
+  error by setting USECHARSET to No.
+
++ GoldED+ now tries to set up correct values for XLATLOCALSET,
+  XLATIMPORT and XLATEXPORT basing on your locale settings.
+
++ Added Serg Borodin's patch for X-Comment-To recognition on SOUP
+  import.
+
+- Fixed crash on long Message ID in Internet messages.
+
 - Fixed crash on very long name in Internet messages.
 
 ! ZapQuotesBelow now acts only on the single quotation block, not on

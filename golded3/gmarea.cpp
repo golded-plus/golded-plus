@@ -97,14 +97,14 @@ void FreqWaZOO(const char* files, const Addr& dest, const Attr& attr) {
   strcpy(filename, outbound);
 
   if(dest.zone != CFG->aka[0].addr.zone) {
-    sprintf(tmp, ".%03X", dest.zone);
+    sprintf(tmp, ".%03x", dest.zone);
     strcat(filename, tmp);
     if(not is_dir(filename))
       mkdir(filename, S_IWUSR);
   }
 
   AddBackslash(filename);
-  sprintf(tmp, "%04X%04X", dest.net, dest.node);
+  sprintf(tmp, "%04x%04x", dest.net, dest.node);
   strcat(filename, tmp);
 
   if(dest.point) {
@@ -112,7 +112,7 @@ void FreqWaZOO(const char* files, const Addr& dest, const Attr& attr) {
     if(not is_dir(filename))
       mkdir(filename, S_IWUSR);
     AddBackslash(filename);
-    sprintf(tmp, "%08X", dest.point);
+    sprintf(tmp, "%08x", dest.point);
     strcat(filename, tmp);
   }
 

@@ -261,7 +261,7 @@ bool set_to_address(GMsg* msg, gsetaddr* toname, gsetaddr* toaddr, gsetaddr* fro
 //  GEPOST prototypes
 
 void MakeMsg(int mode, GMsg* oldmsg, bool ignore_replyto=false);
-int EditHeaderinfo(int mode, GMsgHeaderView &view);
+int EditHeaderinfo(int mode, GMsgHeaderView &view, bool doedithdr = true);
 void CheckSubject(GMsg* msg, char* subj);
 
 

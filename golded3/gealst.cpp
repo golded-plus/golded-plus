@@ -53,6 +53,32 @@ int AreaTypeOrder[17] = {
 
 
 //  ------------------------------------------------------------------
+//  Areagroups compare
+
+int compare_groups(int ga, int gb)
+{
+  char *gap, *gbp;
+
+  if((ga > 0xff) || (gb > 0xff))
+    return compare_two(ga, gb);
+  gap = strchr(CFG->arealistgrouporder, (char)ga);
+  gbp = strchr(CFG->arealistgrouporder, (char)gb);
+  if(gap == NULL) {
+    if(gbp != NULL)
+      return -1;
+    else
+      return compare_two(ga, gb);
+  }
+  else {
+    if(gbp == NULL)
+      return 1;
+    else
+      return compare_two(gap, gbp);
+  }
+}
+
+
+//  ------------------------------------------------------------------
 //  Arealist compare
 
 extern "C" int AreaListCmp(const Area** __a, const Area** __b) {
@@ -123,7 +149,7 @@ extern "C" int AreaListCmp(const Area** __a, const Area** __b) {
               return cmp;
           }
           else {
-            if((cmp = compare_two(ga, gb)) != 0)
+            if((cmp = compare_groups(ga, gb)) != 0)
               return cmp;
           }
         }

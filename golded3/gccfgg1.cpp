@@ -331,7 +331,15 @@ void CfgArealistechomax() {
 
 void CfgArealistformat() {
 
-  strcpy(CFG->arealistformat, StripQuotes(val));
+  strxcpy(CFG->arealistformat, StripQuotes(val), sizeof(CFG->arealistformat));
+}
+
+
+//  ------------------------------------------------------------------
+
+void CfgArealistgrouporder() {
+
+  strxcpy(CFG->arealistgrouporder, StripQuotes(val), sizeof(CFG->arealistgrouporder));
 }
 
 

@@ -346,7 +346,7 @@ bool GMsgHeaderEdit::validate() {
 
 //  ------------------------------------------------------------------
 
-int EditHeaderinfo(int mode, GMsgHeaderView &view) {
+int EditHeaderinfo(int mode, GMsgHeaderView &view, bool doedithdr) {
 
   GMsgHeaderEdit hedit(view);
   GMsg *msg = view.msg;
@@ -374,64 +374,69 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view) {
   }
   subject = msg->re;
 
-  if(AA->isnet())
-    hedit.lookup = CFG->switches.get(lookupnet);
-  else if(AA->isecho())
-    hedit.lookup = CFG->switches.get(lookupecho);
-  else
-    hedit.lookup = CFG->switches.get(lookuplocal);
+  if(doedithdr) {
 
-  int from_name_pos = EDIT->HdrNamePos();
-  int from_name_len = EDIT->HdrNameLen();
-  int from_addr_pos = EDIT->HdrNodePos();
-  int from_addr_len = EDIT->HdrNodeLen();
-  int to_name_pos = from_name_pos;
-  int to_name_len = from_name_len;
-  int to_addr_pos = from_addr_pos;
-  int to_addr_len = hedit.lookup or AA->isnet() ? from_addr_len : 0;
-  int subject_pos = 8;
-  int subject_len = MAXCOL - subject_pos;
-  int name_cvt = AA->Editmixcase() ? GMsgHeaderEdit::cvt_mixedcase : GMsgHeaderEdit::cvt_none;
-  int addr_cvt = GMsgHeaderEdit::cvt_none;
-  int subj_cvt = GMsgHeaderEdit::cvt_none;
+    if(AA->isnet())
+      hedit.lookup = CFG->switches.get(lookupnet);
+    else if(AA->isecho())
+      hedit.lookup = CFG->switches.get(lookupecho);
+    else
+      hedit.lookup = CFG->switches.get(lookuplocal);
 
-  hedit.setup(C_HEADW, C_HEADW, C_HEADE, _box_table(W_BHEAD,13), true);
+    int from_name_pos = EDIT->HdrNamePos();
+    int from_name_len = EDIT->HdrNameLen();
+    int from_addr_pos = EDIT->HdrNodePos();
+    int from_addr_len = EDIT->HdrNodeLen();
+    int to_name_pos = from_name_pos;
+    int to_name_len = from_name_len;
+    int to_addr_pos = from_addr_pos;
+    int to_addr_len = hedit.lookup or AA->isnet() ? from_addr_len : 0;
+    int subject_pos = 8;
+    int subject_len = MAXCOL - subject_pos;
+    int name_cvt = AA->Editmixcase() ? GMsgHeaderEdit::cvt_mixedcase : GMsgHeaderEdit::cvt_none;
+    int addr_cvt = GMsgHeaderEdit::cvt_none;
+    int subj_cvt = GMsgHeaderEdit::cvt_none;
 
-  hedit.add_field(GMsgHeaderEdit::id_from_name, 2, from_name_pos, from_name_len, from_name, sizeof(INam), name_cvt);
-  hedit.add_field(GMsgHeaderEdit::id_from_addr, 2, from_addr_pos, from_addr_len, from_addr, sizeof(IAdr), addr_cvt);
-  hedit.add_field(GMsgHeaderEdit::id_to_name,   3,   to_name_pos,   to_name_len,   to_name, sizeof(INam), name_cvt);
-  hedit.add_field(GMsgHeaderEdit::id_to_addr,   3,   to_addr_pos,   to_addr_len,   to_addr, sizeof(IAdr), addr_cvt);
-  hedit.add_field(GMsgHeaderEdit::id_subject,   4,   subject_pos,   subject_len,   subject, sizeof(ISub), subj_cvt);
+    hedit.setup(C_HEADW, C_HEADW, C_HEADE, _box_table(W_BHEAD,13), true);
 
-  hedit.start_id = GMsgHeaderEdit::id_to_name;
-  switch(mode) {
-    case MODE_REPLYCOMMENT:
-      if(not (msg->dest.net or not AA->isnet()))
+    hedit.add_field(GMsgHeaderEdit::id_from_name, 2, from_name_pos, from_name_len, from_name, sizeof(INam), name_cvt);
+    hedit.add_field(GMsgHeaderEdit::id_from_addr, 2, from_addr_pos, from_addr_len, from_addr, sizeof(IAdr), addr_cvt);
+    hedit.add_field(GMsgHeaderEdit::id_to_name,   3,   to_name_pos,   to_name_len,   to_name, sizeof(INam), name_cvt);
+    hedit.add_field(GMsgHeaderEdit::id_to_addr,   3,   to_addr_pos,   to_addr_len,   to_addr, sizeof(IAdr), addr_cvt);
+    hedit.add_field(GMsgHeaderEdit::id_subject,   4,   subject_pos,   subject_len,   subject, sizeof(ISub), subj_cvt);
+
+    hedit.start_id = GMsgHeaderEdit::id_to_name;
+    switch(mode) {
+      case MODE_REPLYCOMMENT:
+        if(not (msg->dest.net or not AA->isnet()))
+          break;
+        // else drop through ...
+      case MODE_REPLY:
+      case MODE_QUOTE:
+      case MODE_CHANGE:
+        hedit.start_id = GMsgHeaderEdit::id_subject;
         break;
-      // else drop through ...
-    case MODE_REPLY:
-    case MODE_QUOTE:
-    case MODE_CHANGE:
-      hedit.start_id = GMsgHeaderEdit::id_subject;
-      break;
+    }
+
+    ChgAttrs(YES, msg);
+
+    vcurshow();
+    if(not (hedit.lookup or AA->isnet())) {
+      char date2[25] = "";
+      strsetsz(date2, view.width - CFG->disphdrdateset.pos);
+      view.window.prints(3, CFG->disphdrdateset.pos, view.to_color, date2);
+    }
+
+    view.window.prints(5, view.width-strlen(LNG->HeaderEditHelp1)-1, view.title_color, LNG->HeaderEditHelp1);
+    view.window.prints(5, view.width-strlen(LNG->HeaderEditHelp1)-strlen(LNG->HeaderEditHelp2)-3, view.title_color, LNG->HeaderEditHelp2);
+
+    hedit.run(H_Header);
+    vcurhide();
+
+    ChgAttrs(NO, msg);
   }
-
-  ChgAttrs(YES, msg);
-
-  vcurshow();
-  if(not (hedit.lookup or AA->isnet())) {
-    char date2[25] = "";
-    strsetsz(date2, view.width - CFG->disphdrdateset.pos);
-    view.window.prints(3, CFG->disphdrdateset.pos, view.to_color, date2);
-  }
-
-  view.window.prints(5, view.width-strlen(LNG->HeaderEditHelp1)-1, view.title_color, LNG->HeaderEditHelp1);
-  view.window.prints(5, view.width-strlen(LNG->HeaderEditHelp1)-strlen(LNG->HeaderEditHelp2)-3, view.title_color, LNG->HeaderEditHelp2);
-
-  hedit.run(H_Header);
-  vcurhide();
-
-  ChgAttrs(NO, msg);
+  else
+    hedit.dropped = false;
 
   if(not hedit.dropped and not gkbd.quitall) {
 

@@ -65,6 +65,7 @@ enum {
   FSC_CHARSET,
   FSC_CHRC,
   FSC_CHRS,
+  FSC_CODEPAGE,
   FSC_DOMAIN,
   FSC_EID,
   FSC_ENC,
@@ -92,7 +93,6 @@ enum {
 enum {
   MASK_XXX = 0x8000,
   XXX_ACUPDATE,
-  XXX_CODEPAGE,
   XXX_DESTADDR,
   XXX_ENCRYPTION,
   XXX_EOT,
@@ -235,6 +235,7 @@ static const Kludges fsc_list[] = {
   { "CHARSET"                    , FSC_CHARSET                   , KCRQ_CASE  },
   { "CHRC"                       , FSC_CHRC                      , KCRQ_CASE  },
   { "CHRS"                       , FSC_CHRS                      , KCRQ_CASE  },
+  { "CODEPAGE"                   , FSC_CODEPAGE                  , KCRQ_CASE  },
   { "DOMAIN"                     , FSC_DOMAIN                    , KCRQ_CASE  },
   { "EID"                        , FSC_EID                       , KCRQ_CASE  },
   { "ENC"                        , FSC_ENC                       , KCRQ_CASE  },
@@ -265,7 +266,6 @@ static const Kludges fsc_list[] = {
 static const Kludges xxx_list[] = {
 
   { "ACUPDATE"                   , XXX_ACUPDATE                  , KCRQ_CASE  },
-  { "CODEPAGE"                   , XXX_CODEPAGE                  , KCRQ_CASE  },
   { "DESTADDR"                   , XXX_DESTADDR                  , KCRQ_CASE  },
   { "ENCRYPTION"                 , XXX_ENCRYPTION                , KCRQ_CASE  },
   { "EOT"                        , XXX_EOT                       , KCRQ_CASE  },
@@ -958,6 +958,10 @@ static int HandleKludges(GMsg* msg, Line* line, int kludgenum, const char* ptr, 
       line->kludge = GKLUD_CHARSET;
       return true;
 
+    case FSC_CODEPAGE:
+      line->kludge = GKLUD_CHARSET;
+      return true;
+
     case FSC_DOMAIN:
       //line->kludge = GKLUD_DOMAIN;
       if(getvalue)
@@ -1072,7 +1076,6 @@ static int HandleKludges(GMsg* msg, Line* line, int kludgenum, const char* ptr, 
       return true;
 
     case XXX_ACUPDATE:
-    case XXX_CODEPAGE:
     case XXX_ENCRYPTION:
     case XXX_EOT:
     case XXX_GATECHK:
@@ -2018,6 +2021,8 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
                 kludgetype = FSC_I51;
               else if(strieql(kludge, "CHRS") or strieql(kludge, "CHARSET"))
                 kludgetype = FSC_CHARSET;
+              else if(strieql(kludge, "CODEPAGE"))
+                kludgetype = FSC_CODEPAGE;
               else if(strieql(kludge, "Content-Type"))
                 kludgetype = RFC_CONTENT_TYPE;
               else if(strieql(kludge, "Content-Transfer-Encoding"))
@@ -2045,10 +2050,13 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
                   strcpy(msg->charset, chsbuf);
                 }
               }
-              else if(kludgetype == FSC_CHARSET) {
+              else if((kludgetype == FSC_CHARSET) || (kludgetype == FSC_CODEPAGE)) {
                 *chsbuf = NUL;
                 qpencoded = IsQuotedPrintable(ptr);
-                strxcpy(chsbuf, qpencoded ? ExtractPlainCharset(ptr) : ptr, sizeof(chsbuf));
+                if(kludgetype == FSC_CODEPAGE)
+                  strxmerge(chsbuf, sizeof(chsbuf), "CP", ptr, NULL);
+                else
+                  strxcpy(chsbuf, qpencoded ? ExtractPlainCharset(ptr) : ptr, sizeof(chsbuf));
                 // Workaround for buggy mailreaders which stores '_' in charset name
                 strchg(chsbuf,'_',' ');
                 chslev = LoadCharset(chsbuf, CFG->xlatlocalset);

@@ -135,6 +135,7 @@ gutlmisc cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
 gutlmtsk cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
 gutltag  cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
 gutlvers cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gcharset cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
 
 ## OS specific utilities
 gutldos  cpp     all                                     djg

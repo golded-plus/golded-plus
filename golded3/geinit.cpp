@@ -498,7 +498,7 @@ void Initialize(int argc, char* argv[]) {
   // set locale
   setlocale(LC_CTYPE, "");
   // and get it's name
-  char* lc = setlocale(LC_CTYPE, "");
+  const char* lc = setlocale(LC_CTYPE, "");
   if(lc and not (strstr(lc, "German_") or strstr(lc, "Polish_")))
     right_alt_same_as_left = true;
   #if defined(GUTLOS_FUNCS)

@@ -334,6 +334,8 @@ int is_quote(const char* ptr) {
   if(IsQuoteChar(ptr)) 
     return true;
 
+  endptr = ptr + 11; // match 10 chars after whitespaces
+
   int spaces = 0;
   while((ptr < endptr) and *ptr) {
 

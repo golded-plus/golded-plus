@@ -698,6 +698,8 @@ void ReadXlatTables() {
           }
           fclose(ifp);
         }
+        else
+          cout << "* XLAT table " << buf << " could not be opened." << endl;
 
         fwrite(&ChsTable, sizeof(Chs), 1, ofp);
       }
@@ -775,6 +777,8 @@ void ReadXlatTables() {
 
           fclose(ifp);
         }
+        else
+          cout << "* XLAT table " << buf << " could not be opened." << endl;
 
         fwrite(&EscTable, sizeof(Esc), 1, ofp);
       }

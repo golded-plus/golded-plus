@@ -203,6 +203,7 @@ SwitchA:
     case CRC_AREAISNEWS       :  CfgAreaisnews       ();  break;
     case CRC_AREALISTECHOMAX  :  CfgArealistechomax  ();  break;
     case CRC_AREALISTFORMAT   :  CfgArealistformat   ();  break;
+    case CRC_AREALISTGROUPORDER: CfgArealistgrouporder(); break;
     case CRC_AREALISTSCAN     :  CfgArealistscan     ();  break;
     case CRC_AREALISTSORT     :  CfgArealistsort     ();  break;
     case CRC_AREALISTTYPE     :  CfgArealisttype     ();  break;
