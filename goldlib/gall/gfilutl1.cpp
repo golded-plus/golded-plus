@@ -98,7 +98,7 @@ long GetFilesize(const char* file) {
 
 dword gfixstattime(time_t st_time) {
 
-  #if defined(__MINGW32__) || defined(__CYGWIN__)
+  #if (defined(__MINGW32__) && !defined(__MSVCRT__)) || defined(__CYGWIN__)
   struct tm &f = *gmtime(&st_time);
   #else
   struct tm &f = *localtime(&st_time);
@@ -110,7 +110,7 @@ dword gfixstattime(time_t st_time) {
   t.ft_hour  = f.tm_hour;
   t.ft_min   = f.tm_min;
   t.ft_tsec  = f.tm_sec / 2;
-  #if defined(__MINGW32__) || defined(__CYGWIN__)
+  #if (defined(__MINGW32__) && !defined(__MSVCRT__)) || defined(__CYGWIN__)
   union {
     DWORD t;
     struct {
