@@ -51,11 +51,11 @@ CFLAGS+=-g -funsigned-char $(INCS) -Wall -Wno-sign-compare -pedantic -O2# -fomit
 LNKFLAGS+=-g
 CPPFLAGS+=$(CFLAGS) -fno-exceptions -fno-rtti
 
-# comment following lines if you dislike ncurses
-ifeq ($(PLATFORM),lnx)
-CPPFLAGS+=-D__USE_NCURSES__
-STDLIBS+=-lncurses
-endif
+# uncomment following lines if you like ncurses
+# ifeq ($(PLATFORM),lnx)
+# CPPFLAGS+=-D__USE_NCURSES__
+# STDLIBS+=-lncurses
+# endif
 
 # force not to use coprocessor features in DOS, if you have one you may remove this
 ifeq ($(PLATFORM),djg)
