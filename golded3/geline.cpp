@@ -441,7 +441,7 @@ char* strxmimecpy(char* dest, const char* source, int level, int size, bool dete
 
   if(detect) {
     if(table == -1)
-      LoadCharset(CFG->xlatimport, CFG->xlatlocalset);
+      LoadCharset(AA->Xlatimport(), CFG->xlatlocalset);
     else
       LoadCharset(CFG->xlatcharset[table].imp, CFG->xlatcharset[table].exp);
   }

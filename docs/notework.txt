@@ -12,6 +12,11 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed improper charset conversion when replying on message without
+  charset between areas with different Xlatimport.
+
+- Fixed externutils/external editor with freshly created messages.
+
 - Fixed bug in Latin-x to ISO-8859-x converter, now charset in
   Internet mail should be properly specifyed as ISO rather than as
   Latin.

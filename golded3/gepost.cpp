@@ -558,6 +558,11 @@ static void MakeMsg2(int& mode, int& status, int& forwstat, int& topline, GMsg* 
                     status = MODE_QUIT;
           }
         }
+        if(status != MODE_QUIT) {
+          LoadCharset("N/A", "N/A");
+          strcpy(stpcpy(msg->charset, CFG->xlatlocalset), " 2");
+          msg->charsetlevel = 2;
+        }
       }
       else if(forwstat == NO and (EDIT->Internal() or not *EDIT->External())) {
         w_info(LNG->Wait);
@@ -830,6 +835,8 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
       switch(mode) {
         case MODE_QUOTE:
         case MODE_REPLYCOMMENT:
+          if(CurrArea != OrigArea)
+            AA->SetXlatimport(AL.AreaIdToPtr(OrigArea)->Xlatimport());
           omsg->attr.tou0();
           omsg->TextToLines(-CFG->quotemargin, false);
           if(ignore_replyto)
