@@ -90,10 +90,10 @@ void gareafile::ReadSquishFile(char* path, char* file, char* options, char* orig
             aa.type = GMB_NET;
             break;
           case CRC_ECHOAREA:
-          case CRC_DUPEAREA:
-          case CRC_BADAREA:
             aa.type = GMB_ECHO;
             break;
+          case CRC_DUPEAREA:
+          case CRC_BADAREA:
           case CRC_LOCALAREA:
             aa.type = GMB_LOCAL;
             break;

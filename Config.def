@@ -52,8 +52,8 @@
 #CPPFLAGS+=-DGCFG_NORAECHO
 # Uncomment to disable RemoteAccess support
 #CPPFLAGS+=-DGCFG_NORA
-# Uncomment to disable SpaceTosser support
-CPPFLAGS+=-DGCFG_NOSPCT
+# Uncomment to disable SpaceToss support
+#CPPFLAGS+=-DGCFG_NOSPCT
 # Uncomment to disable Squish support
 #CPPFLAGS+=-DGCFG_NOSQSH
 # Uncomment to disable SuperBBS support

@@ -58,6 +58,7 @@ gxqecho  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
 gxquick  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
 gxra     cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
 gxraecho cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxspace  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
 gxsquish cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
 gxsuper  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
 gxtimed  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
