@@ -54,6 +54,8 @@ public:
   SMBArea() { data = NULL; }
   virtual ~SMBArea() {}
 
+  virtual bool issoftdelete() const { return true; }
+
   //  ----------------------------------------------------------------
   //  Messagebase member functions
   

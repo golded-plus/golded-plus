@@ -196,9 +196,9 @@ void CfgFidolastread() {
 void CfgFidomsgtype() {
 
   if(striinc("FTS", val))
-    CFG->fidomsgtype = MT_FTS1;
+    CFG->fidomsgtype = "FTS1";
   else
-    CFG->fidomsgtype = MT_OPUS;
+    CFG->fidomsgtype = "OPUS";
 }
 
 //  ------------------------------------------------------------------

@@ -602,3 +602,13 @@ char* strtmp(const char* str) {
 
 //  ------------------------------------------------------------------
 
+bool find(const std::vector<const char *> &vec, const char *str) {
+
+  std::vector<const char *>::const_iterator i;
+
+  for(i = vec.begin(); i != vec.end(); i++)
+    if(streql(*i, str))
+      return true;
+
+  return false;
+}

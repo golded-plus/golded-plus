@@ -105,11 +105,11 @@ void gareafile::ReadGEcho(char* tag) {
         CfgHudsonpath(gesetup->hmbpath);
         CfgJampath(gesetup->jampath);
 
-        int _fidomsgtype = fidomsgtype;
+        const char *_fidomsgtype = fidomsgtype;
 
         if(ge_version >= 102) {
-          _fidomsgtype = (gesetup->extraoptions & OPUSDATES) ? GMB_OPUS : GMB_FTS1;
-          if((_fidomsgtype == GMB_FTS1) and (fidomsgtype == GMB_OPUS)) {
+          _fidomsgtype = (gesetup->extraoptions & OPUSDATES) ? "OPUS" : "FTS1";
+          if((streql(_fidomsgtype, "FTS1")) and (streql(fidomsgtype, "OPUS"))) {
             std::cout << 
               "* Warning - FTS-1 format is used for *.MSG. For better compatibility set this" << std::endl << 
               "* in GSETUP: Miscellanous->GEcho Options->MSG compatibilty = Opus (not Fido)." << std::endl << 
@@ -127,7 +127,7 @@ void gareafile::ReadGEcho(char* tag) {
         // Old netmail board (no longer in use by GEcho, but just in case...)
         if(gesetup->oldnetmailboard and gesetup->oldnetmailboard < 201) {
           aa.reset();
-          aa.msgbase = GMB_HUDSON;
+          aa.basetype = "HUDSON";
           aa.type = GMB_NET;
           aa.attr = attribsnet;
           aa.aka = _aka[0];
@@ -138,7 +138,7 @@ void gareafile::ReadGEcho(char* tag) {
         }
         else if(not strblank(gesetup->mailpath)) {
           aa.reset();
-          aa.msgbase = _fidomsgtype;
+          aa.basetype = _fidomsgtype;
           aa.type = GMB_NET;
           aa.attr = attribsnet;
           aa.aka = _aka[0];
@@ -152,7 +152,7 @@ void gareafile::ReadGEcho(char* tag) {
         uint _badboard = (ge_version >= 110) ? gesetup->badarea : gesetup->oldbadboard;
         if(_badboard and _badboard < 201) {
           aa.reset();
-          aa.msgbase = GMB_HUDSON;
+          aa.basetype = "HUDSON";
           aa.type = GMB_ECHO;
           aa.attr = attribsecho;
           aa.board = _badboard;
@@ -163,7 +163,7 @@ void gareafile::ReadGEcho(char* tag) {
         }
         else if(not strblank(gesetup->badecho_path)) {
           aa.reset();
-          aa.msgbase = _fidomsgtype;
+          aa.basetype = _fidomsgtype;
           aa.type = GMB_ECHO;
           aa.attr = attribsecho;
           aa.aka = _aka[0];
@@ -179,7 +179,7 @@ void gareafile::ReadGEcho(char* tag) {
           uint _dupboard = (ge_version >= 110) ? gesetup->reserved5 : gesetup->olddupboard;
           if(_dupboard and _dupboard < 201) {
             aa.reset();
-            aa.msgbase = GMB_HUDSON;
+            aa.basetype = "HUDSON";
             aa.type = GMB_ECHO;
             aa.attr = attribsecho;
             aa.board = _dupboard;
@@ -193,7 +193,7 @@ void gareafile::ReadGEcho(char* tag) {
         // Recovery
         if(gesetup->recoveryboard and gesetup->recoveryboard < 201) {
           aa.reset();
-          aa.msgbase = GMB_HUDSON;
+          aa.basetype = "HUDSON";
           aa.type = GMB_ECHO;
           aa.attr = attribsecho;
           aa.board = gesetup->recoveryboard;
@@ -207,7 +207,7 @@ void gareafile::ReadGEcho(char* tag) {
         uint _rcvdboard = (ge_version >= 110) ? gesetup->rcvdarea : gesetup->oldrcvdboard;
         if(_rcvdboard and _rcvdboard < 201) {
           aa.reset();
-          aa.msgbase = GMB_HUDSON;
+          aa.basetype = "HUDSON";
           aa.type = GMB_ECHO;
           aa.attr = attribsecho;
           aa.board = _rcvdboard;
@@ -218,7 +218,7 @@ void gareafile::ReadGEcho(char* tag) {
         }
         else if(not strblank(gesetup->rcvdmailpath)) {
           aa.reset();
-          aa.msgbase = _fidomsgtype;
+          aa.basetype = _fidomsgtype;
           aa.type = GMB_NET;
           aa.attr = attribsnet;
           aa.aka = _aka[0];
@@ -232,7 +232,7 @@ void gareafile::ReadGEcho(char* tag) {
         uint _sentboard = (ge_version >= 110) ? gesetup->sentarea : gesetup->oldsentboard;
         if(gesetup->oldsentboard and gesetup->oldsentboard < 201) {
           aa.reset();
-          aa.msgbase = GMB_HUDSON;
+          aa.basetype = "HUDSON";
           aa.type = GMB_ECHO;
           aa.attr = attribsecho;
           aa.board = _sentboard;
@@ -243,7 +243,7 @@ void gareafile::ReadGEcho(char* tag) {
         }
         else if(not strblank(gesetup->sentmailpath)) {
           aa.reset();
-          aa.msgbase = _fidomsgtype;
+          aa.basetype = _fidomsgtype;
           aa.type = GMB_NET;
           aa.attr = attribsnet;
           aa.aka = _aka[0];
@@ -259,7 +259,7 @@ void gareafile::ReadGEcho(char* tag) {
           uint _persmailboard = (ge_version >= 110) ? gesetup->persmailarea[u] : gesetup->oldpersmailboard[u];
           if(_persmailboard and _persmailboard < 201) {
             aa.reset();
-            aa.msgbase = GMB_HUDSON;
+            aa.basetype = "HUDSON";
             aa.type = GMB_ECHO;
             aa.attr = attribsecho;
             aa.aka = _aka[0];
@@ -276,7 +276,7 @@ void gareafile::ReadGEcho(char* tag) {
         // Personal mail
         if(not strblank(gesetup->persmail_path)) {
           aa.reset();
-          aa.msgbase = _fidomsgtype;
+          aa.basetype = _fidomsgtype;
           aa.type = GMB_ECHO;
           aa.attr = attribsecho;
           aa.aka = _aka[0];
@@ -292,7 +292,7 @@ void gareafile::ReadGEcho(char* tag) {
           uint _userboard = (ge_version >= 110) ? gesetup->userarea[u] : gesetup->olduserboard[u];
           if(_userboard and _userboard < 201) {
             aa.reset();
-            aa.msgbase = GMB_HUDSON;
+            aa.basetype = "HUDSON";
             aa.type = GMB_NET;
             aa.attr = attribsnet;
             aa.aka = _aka[0];
@@ -312,7 +312,7 @@ void gareafile::ReadGEcho(char* tag) {
           uint _akaboard = (ge_version >= 110) ? gesetup->akaarea[a] : gesetup->oldakaboard[a];
           if(_aka[a].net and _akaboard and _akaboard < 201) {
             aa.reset();
-            aa.msgbase = GMB_HUDSON;
+            aa.basetype = "HUDSON";
             aa.type = GMB_NET;
             aa.attr = attribsnet;
             aa.aka = _aka[a];
@@ -355,39 +355,39 @@ void gareafile::ReadGEcho(char* tag) {
                 switch(area->areaformat) {
                   case FORMAT_HMB:
                     if(area->areanumber and area->areanumber < 201) {
-                      aa.msgbase = GMB_HUDSON;
+                      aa.basetype = "HUDSON";
                       aa.board = area->areanumber;
                       break;
                     }
                     continue;
                   case FORMAT_SDM:
                     if(not strblank(area->path)) {
-                      aa.msgbase = _fidomsgtype;
+                      aa.basetype = _fidomsgtype;
                       aa.setpath(area->path);
                       break;
                     }
                     continue;
                   case FORMAT_JAM:
                     if(not strblank(area->path)) {
-                      aa.msgbase = GMB_JAM;
+                      aa.basetype = "JAM";
                       aa.setpath(area->path);
                       break;
                     }
                     continue;
                   case FORMAT_SQUISH:
                     if(not strblank(area->path)) {
-                      aa.msgbase = GMB_SQUISH;
+                      aa.basetype = "SQUISH";
                       aa.setpath(area->path);
                       break;
                     }
                     continue;
                   case FORMAT_PCB:
-                    aa.msgbase = GMB_PCBOARD;
+                    aa.basetype = "PCBOARD";
                     aa.board = area->areanumber;
                     aa.setpath(area->path);
                     break;
                   case FORMAT_WC:
-                    aa.msgbase = GMB_WILDCAT;
+                    aa.basetype = "WILDCAT";
                     aa.board = area->areanumber;
                     aa.setpath(area->path);
                     break;
@@ -395,11 +395,11 @@ void gareafile::ReadGEcho(char* tag) {
                     if(ge_version >= 102)
                       continue;
                     if(area->areanumber and area->areanumber < 201) {
-                      aa.msgbase = GMB_HUDSON;
+                      aa.basetype = "HUDSON";
                       aa.board = area->areanumber;
                     }
                     else if((area->options & SDM) and not strblank(area->path)) {
-                      aa.msgbase = _fidomsgtype;
+                      aa.basetype = _fidomsgtype;
                       aa.setpath(area->path);
                     }
                 }

@@ -75,7 +75,7 @@ void gareafile::ReadTmailFile(char* file, char* options, char* origin) {
             aa.reset();
             aa.type = GMB_NET;
             aa.attr = attribsnet;
-            aa.msgbase = fidomsgtype;
+            aa.basetype = fidomsgtype;
             aa.setdesc("Terminate Netmail");
             aa.setautoid("NETMAIL");
             adjustpath(val);

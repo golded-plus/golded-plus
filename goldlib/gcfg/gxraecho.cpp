@@ -98,14 +98,14 @@ void gareafile::ReadRaEcho(char* tag) {
         STRNP2C(area.echoid);
         STRNP2C(area.origin);
         if(area.isopus and *area.path and stricmp(area.path, "P")) {
-          aa.msgbase = fidomsgtype;
+          aa.basetype = fidomsgtype;
           aa.setpath(area.path);
         }
         else if(areano <= 200) {
-          aa.msgbase = GMB_HUDSON;
+          aa.basetype = "HUDSON";
           aa.board = areano;
         }
-        if(aa.msgbase) {
+        if(aa.basetype[0] != '\0') {
           aa.aka = area.addr;
           switch(area.type) {
             case RAE_LOCAL:

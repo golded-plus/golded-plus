@@ -81,7 +81,7 @@ public:
         int   areaid() const      { return cfg.areaid; }
         int   groupid() const     { return cfg.groupid; }
         uint  type() const        { return cfg.type; }
-        uint  msgbase() const     { return cfg.msgbase; }
+  const char *basetype() const    { return cfg.basetype; }
         uint  board() const       { return cfg.board; }
   const ftn_addr& aka() const     { return cfg.aka; }
         int   originno() const    { return cfg.originno; }
@@ -103,7 +103,7 @@ public:
   void set_areaid(int a)        { cfg.areaid = a; }
   void set_groupid(int g)       { cfg.groupid = g; }
   void set_type(uint t)         { cfg.type = t; }
-  void set_msgbase(uint m)      { cfg.msgbase = m; }
+  void set_basetype(const char *m) { cfg.basetype = m; }
   void set_board(uint b)        { cfg.board = b; }
   void set_aka(ftn_addr& a)     { cfg.aka = a; }
   void set_originno(int o)      { cfg.originno = o; }
@@ -125,19 +125,17 @@ public:
   //  ----------------------------------------------------------------
   //  Determine msgbase format
 
-  int isfts1() const;
-  int isopus() const;
-  int isezycom() const;
-  int isfido() const;
-  int isgoldbase() const;
-  int ishudson() const;
-  int isjam() const;
-  int ispcboard() const;
-  int issquish() const;
-  int issmb() const;
-  int iswildcat() const;
-  int isadeptxbbs() const;
-  int isseparator() const;
+  bool isseparator() const;
+
+
+  //  ----------------------------------------------------------------
+  //  Determine area features
+
+  virtual bool issoftdelete() const { return false; }
+  virtual bool havearrivedstamp() const { return true; }
+  virtual bool havereceivedstamp() const { return true; }
+  virtual bool requirehardterm() const { return false; }
+  virtual bool requiresoftterm() const { return false; }
 
 
   //  ----------------------------------------------------------------
@@ -198,19 +196,7 @@ protected:
 //  ------------------------------------------------------------------
 //  Inline implementations
 
-inline int gmo_area::isfts1() const      { return cfg.isfts1(); }
-inline int gmo_area::isopus() const      { return cfg.isopus(); }
-inline int gmo_area::isezycom() const    { return cfg.isezycom(); }
-inline int gmo_area::isfido() const      { return cfg.isfido(); }
-inline int gmo_area::isgoldbase() const  { return cfg.isgoldbase(); }
-inline int gmo_area::ishudson() const    { return cfg.ishudson(); }
-inline int gmo_area::isjam() const       { return cfg.isjam(); }
-inline int gmo_area::ispcboard() const   { return cfg.ispcboard(); }
-inline int gmo_area::issquish() const    { return cfg.issquish(); }
-inline int gmo_area::issmb() const       { return cfg.issmb(); }
-inline int gmo_area::iswildcat() const   { return cfg.iswildcat(); }
-inline int gmo_area::isadeptxbbs() const { return cfg.isadeptxbbs(); }
-inline int gmo_area::isseparator() const { return cfg.isseparator(); }
+inline bool gmo_area::isseparator() const { return cfg.isseparator(); }
 
 inline int gmo_area::isnet() const       { return cfg.isnet(); }
 inline int gmo_area::isecho() const      { return cfg.isecho(); }

@@ -148,7 +148,7 @@ void gareafile::ReadCrashmailCfg(const char* file) {
           aa.aka = primary_aka;
           aa.type = GMB_NET;
           aa.attr = attribsnet;
-          aa.msgbase = fidomsgtype;
+          aa.basetype = fidomsgtype;
           jbstrcpy(path, buf, sizeof(Path), &jbcpos);
           aa.setpath(path);
           aa.setdesc("CrashEcho Netmail");
@@ -162,12 +162,12 @@ void gareafile::ReadCrashmailCfg(const char* file) {
           if(aa.type != GMB_NONE) {
             if(not unconfirmed)
               AddNewArea(aa);
-            aa.reset();
           }
+          aa.reset();
+          aa.type = GMB_NONE;
           unconfirmed = false;
           jbstrcpy(tmp, buf, 100, &jbcpos);
           if(strieql(tmp, "DEFAULT") or strnieql(tmp, "DEFAULT_", 8)) {
-            aa.type = GMB_NONE;
             break;
           }
           switch(crc16) {
@@ -191,13 +191,13 @@ void gareafile::ReadCrashmailCfg(const char* file) {
           jbstrcpy(tmp, buf, 10, &jbcpos);
           switch(strCrc16(tmp)) {
             case CRC_MSG:
-              aa.msgbase = fidomsgtype;
+              aa.basetype = fidomsgtype;
               break;
             case CRC_JAM:
-              aa.msgbase = GMB_JAM;
+              aa.basetype = "JAM";
               break;
             case CRC_SQUISH:
-              aa.msgbase = GMB_SQUISH;
+              aa.basetype = "SQUISH";
               break;
             default:
               aa.reset();

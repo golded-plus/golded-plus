@@ -613,14 +613,10 @@ void GMsgList::Run() {
   helpcat = H_MessageBrowser;                 // Window Help Category
   listwrap  = CFG->switches.get(displistwrap);
 
-  if(AA->Msglistdate() != MSGLISTDATE_NONE) {
-    if(AA->Msglistdate() != MSGLISTDATE_WRITTEN) {
-      if(AA->ishudson() or AA->isgoldbase() or AA->ispcboard())
-        AA->SetMsglistdate(MSGLISTDATE_WRITTEN);
-      else if((AA->isezycom() or AA->isfido()) and (AA->Msglistdate() == MSGLISTDATE_RECEIVED))
-        AA->SetMsglistdate(MSGLISTDATE_WRITTEN);
-    }
-  }
+  if((AA->Msglistdate() == MSGLISTDATE_RECEIVED) and not AA->havereceivedstamp())
+    AA->SetMsglistdate(MSGLISTDATE_WRITTEN);
+  else if((AA->Msglistdate() == MSGLISTDATE_ARRIVED) and not AA->havearrivedstamp())
+    AA->SetMsglistdate(MSGLISTDATE_WRITTEN);
 
   mlst_with_date(AA->Msglistdate());
 

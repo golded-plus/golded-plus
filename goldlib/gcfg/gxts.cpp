@@ -95,7 +95,7 @@ void gareafile::ReadTosScan(char* tag) {
         aa.reset();
         aa.type = GMB_NET;
         aa.attr = attribsnet;
-        aa.msgbase = fidomsgtype;
+        aa.basetype = fidomsgtype;
         aa.attr.r_o(editor->netfolderflags & EDREADONLY);
         aa.attr.pvt(editor->msgbits & MSGPRIVATE);
         aa.attr.cra(editor->msgbits & MSGCRASH);
@@ -127,11 +127,11 @@ void gareafile::ReadTosScan(char* tag) {
           aa.type = GMB_ECHO;
           aa.attr = attribsecho;
           if(areafile->board) {
-            aa.msgbase = GMB_HUDSON;
+            aa.basetype = "HUDSON";
             aa.board = areafile->board;
           }
           else {
-            aa.msgbase = fidomsgtype;
+            aa.basetype = fidomsgtype;
             aa.setpath(areafile->path);
           }
           aa.setdesc(areafile->desc);

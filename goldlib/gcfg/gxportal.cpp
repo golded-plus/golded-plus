@@ -97,7 +97,7 @@ void gareafile::ReadPortal(char* tag) {
     if(popcfg->MailScanner.NetMailBoard and popcfg->MailScanner.NetMailBoard < 201) {
       aa.reset();
       aa.aka = CAST(ftn_addr, popcfg->Adresses[popcfg->MainAdrNum]);
-      aa.msgbase = GMB_HUDSON;
+      aa.basetype = "HUDSON";
       aa.type = GMB_NET;
       aa.attr = attribsnet;
       aa.board = popcfg->MailScanner.NetMailBoard;
@@ -108,7 +108,7 @@ void gareafile::ReadPortal(char* tag) {
     else if(not strblank(popcfg->MailScanner.NetMailDir)) {
       aa.reset();
       aa.aka = CAST(ftn_addr, popcfg->Adresses[popcfg->MainAdrNum]);
-      aa.msgbase = fidomsgtype;
+      aa.basetype = fidomsgtype;
       aa.type = GMB_NET;
       aa.attr = attribsnet;
       aa.setpath(popcfg->MailScanner.NetMailDir);
@@ -121,7 +121,7 @@ void gareafile::ReadPortal(char* tag) {
     if(not strblank(popcfg->MailScanner.BadMsgs)) {
       aa.reset();
       aa.aka = CAST(ftn_addr, popcfg->Adresses[popcfg->MainAdrNum]);
-      aa.msgbase = fidomsgtype;
+      aa.basetype = fidomsgtype;
       aa.type = GMB_ECHO;
       aa.attr = attribsecho;
       aa.setpath(popcfg->MailScanner.BadMsgs);
@@ -134,7 +134,7 @@ void gareafile::ReadPortal(char* tag) {
     if(not strblank(popcfg->MailScanner.SaveDupesDir)) {
       aa.reset();
       aa.aka = CAST(ftn_addr, popcfg->Adresses[popcfg->MainAdrNum]);
-      aa.msgbase = fidomsgtype;
+      aa.basetype = fidomsgtype;
       aa.type = GMB_ECHO;
       aa.attr = attribsecho;
       aa.setpath(popcfg->MailScanner.SaveDupesDir);
@@ -159,7 +159,7 @@ void gareafile::ReadPortal(char* tag) {
           aa.aka = CAST(ftn_addr, poparea->UsedAka ? popcfg->Adresses[popcfg->MainAdrNum] : popcfg->Adresses[poparea->UsedAka]);
           aa.type = GMB_ECHO;
           aa.attr = attribsecho;
-          aa.msgbase = fidomsgtype;
+          aa.basetype = fidomsgtype;
           aa.setdesc(STRNP2C(poparea->Description));
           aa.setechoid(STRNP2C(poparea->EchoNames[0]));
           aa.setorigin(STRNP2C(poparea->Origin));

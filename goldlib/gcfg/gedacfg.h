@@ -72,26 +72,6 @@ const uint GMB_DEFAULT   = 0xf00f;
 
 
 //  ------------------------------------------------------------------
-//  Msgbase types
-
-const uint GMB_HUDSON    = 0x0001;
-const uint GMB_GOLDBASE  = 0x0002;
-const uint GMB_JAM       = 0x0004;
-const uint GMB_SQUISH    = 0x0008;
-const uint GMB_OPUS      = 0x0010;
-const uint GMB_FTS1      = 0x0020;
-const uint GMB_FIDO      = 0x0030;
-const uint GMB_EZYCOM    = 0x0040;
-const uint GMB_PCBOARD   = 0x0080;
-const uint GMB_WILDCAT   = 0x0100;
-const uint GMB_ADEPTXBBS = 0x0200;
-const uint GMB_MAILBOX   = 0x1000;
-const uint GMB_NEWSSPOOL = 0x2000;
-const uint GMB_SEPARATOR = 0x8000;
-const uint GMB_SMB       = 0x10000;
-
-
-//  ------------------------------------------------------------------
 
 class AreaCfgBase {
 
@@ -102,7 +82,7 @@ public:
   int      originno;        // Origin number
   uint     board;           // Board number (Hudson/Goldbase/Ezycom/PCBoard fmts)
   uint     type;            // Type of msgarea (GMB_xxx)
-  uint     msgbase;         // Type of msgbase (GMB_xxx)
+  const char *basetype;     // Type of msgbase
   ftn_addr aka;             // The AKA to use in the area
   ftn_attr attr;            // Default attributes
   byte     scan       : 1;  // TRUE if listed with AREASCAN
@@ -114,19 +94,7 @@ public:
 
   int setorigin(std::string& origin);
 
-  bool isfts1() const                { return !!(msgbase & GMB_FTS1); }
-  bool isopus() const                { return !!(msgbase & GMB_OPUS); }
-  bool isezycom() const              { return !!(msgbase & GMB_EZYCOM); }
-  bool isfido() const                { return !!(msgbase & (GMB_FTS1|GMB_OPUS)); }
-  bool isgoldbase() const            { return !!(msgbase & GMB_GOLDBASE); }
-  bool ishudson() const              { return !!(msgbase & GMB_HUDSON); }
-  bool isjam() const                 { return !!(msgbase & GMB_JAM); }
-  bool ispcboard() const             { return !!(msgbase & GMB_PCBOARD); }
-  bool issquish() const              { return !!(msgbase & GMB_SQUISH); }
-  bool iswildcat() const             { return !!(msgbase & GMB_WILDCAT); }
-  bool isadeptxbbs() const           { return !!(msgbase & GMB_ADEPTXBBS); }
-  bool isseparator() const           { return !!(msgbase & GMB_SEPARATOR); }
-  bool issmb() const                 { return !!(msgbase & GMB_SMB); }
+  bool isseparator() const           { return streql(basetype, "SEPARATOR"); }
 
   bool isnet() const                 { return !!(type & GMB_NET); }
   bool isecho() const                { return !!(type & GMB_ECHO); }
@@ -237,7 +205,7 @@ protected:
 #endif
 #ifndef GCFG_NOWATERGATE
   // Watergate parser function
-  uint gettype(uint msgtype, const byte wtrtype);
+  const char *gettype(const char *msgtype, const byte wtrtype);
 #endif
 #ifndef GCFG_NOXMAIL
   // XMail parser function
@@ -320,7 +288,7 @@ public:
   int quiet;
 
   int sharemode;
-  int fidomsgtype;
+  const char *fidomsgtype;
   int ra2usersbbs;
   int squishuserno;
 
@@ -467,37 +435,6 @@ void CfgJampath(const char *path, bool force = false);
 void CfgPcboardpath(const char *path, bool force = false);
 void CfgSquishuserpath(const char *path, bool force = false);
 void CfgFidolastread(const char *path);
-
-//  ------------------------------------------------------------------
-//  Legacy area types
-
-const uint AT_NET       = GMB_NET;
-const uint AT_EMAIL     = GMB_EMAIL;
-const uint AT_ECHO      = GMB_ECHO;
-const uint AT_NEWSGROUP = GMB_NEWSGROUP;
-const uint AT_LOCAL     = GMB_LOCAL;
-const uint AT_QWK       = GMB_QWK;
-const uint AT_SOUP      = GMB_SOUP;
-
-
-//  ------------------------------------------------------------------
-//  Legacy msgbase types
-
-const uint MT_HUDSON    = GMB_HUDSON;
-const uint MT_GOLDBASE  = GMB_GOLDBASE;
-const uint MT_JAM       = GMB_JAM;
-const uint MT_SQUISH    = GMB_SQUISH;
-const uint MT_OPUS      = GMB_OPUS;
-const uint MT_FTS1      = GMB_FTS1;
-const uint MT_FIDO      = GMB_FIDO;
-const uint MT_EZYCOM    = GMB_EZYCOM;
-const uint MT_PCBOARD   = GMB_PCBOARD;
-const uint MT_WILDCAT   = GMB_WILDCAT;
-const uint MT_ADEPTXBBS = GMB_ADEPTXBBS;
-const uint MT_MAILBOX   = GMB_MAILBOX;
-const uint MT_NEWSSPOOL = GMB_NEWSSPOOL;
-const uint MT_SEPARATOR = GMB_SEPARATOR;
-const uint MT_SMB       = GMB_SMB;
 
 
 //  ------------------------------------------------------------------

@@ -34,22 +34,22 @@ AreaList AL;
 
 int AreaTypeOrder[17] = {
   0,
-  1,      // AT_NET
-  2,      // AT_EMAIL
-  3,      // AT_NET | AT_EMAIL
-  4,      // AT_ECHO
+  1,      // GMB_NET
+  2,      // GMB_EMAIL
+  3,      // GMB_NET | GMB_EMAIL
+  4,      // GMB_ECHO
   5,
   6,
   7,
-  8,      // AT_NEWSGROUP
+  8,      // GMB_NEWSGROUP
   9,
   10,
   11,
-  12,     // AT_ECHO | AT_NEWSGROUP
+  12,     // GMB_ECHO | GMB_NEWSGROUP
   13,
   14,
   15,
-  16      // AT_LOCAL
+  16      // GMB_LOCAL
 };
 
 
@@ -274,14 +274,12 @@ extern "C" int AreaListCmp(const Area** __a, const Area** __b) {
         if(A->isseparator() and B->isseparator())
           break;
         else if(A->isseparator()) {
-          if(B->msgbase())
-            return sepfirst?-1:1;
+          return sepfirst?-1:1;
         }
         else if(B->isseparator()) {
-          if(A->msgbase())
-            return sepfirst?1:-1;
+          return sepfirst?1:-1;
         }
-        else if((cmp = compare_two(A->msgbase(), B->msgbase())) != 0)
+        else if((cmp = strcmp(A->basetype(), B->basetype())) != 0)
           return cmp;
         break;
       case 'Y':

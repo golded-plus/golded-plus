@@ -45,7 +45,7 @@ EXEEXT=.exe
 OBJEXT=.o
 LIBEXT=.a
 else
-ifeq ($(TERM),MSYS)
+ifeq ($(TERM),msys)
 CAT=cat
 CC=gcc
 CXX=g++
@@ -53,7 +53,6 @@ AR=ar
 RANLIB=ranlib
 WINDRES=windres
 PLATFORM=cyg
-SHELL=bash
 EXEEXT=.exe
 OBJEXT=.o
 LIBEXT=.a

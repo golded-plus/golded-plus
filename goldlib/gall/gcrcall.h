@@ -52,6 +52,7 @@ extern dword __crc32_table[];
 //  prototyped unsigned parameters anyway, so we have no problem here.
 
 inline word updCrc16(byte ch, word crc) { return (word)(__crc16_table[byte(crc >> 8)] ^ (crc << 8) ^ (ch)); }
+inline word updCrc16c(byte ch, word crc) { return (word)(__crc16_table[byte(crc >> 8) ^ (ch)] ^ (crc << 8)); }
 inline dword updCrc32(byte ch, dword crc) { return (dword)(__crc32_table[byte(crc) ^ byte(ch)] ^ (crc >> 8)); }
 
 
@@ -68,6 +69,7 @@ const dword CRC32_MASK_CCITT  = 0xFFFFFFFFUL;
 //  Prototypes
 
 word  strCrc16(const char* s,         bool nocase=true, word mask=CRC16_MASK_NORMAL);
+word  strCrc16c(const char* s,        bool nocase=true, word mask=CRC16_MASK_NORMAL);
 dword strCrc32(const char* s,         bool nocase=true, dword mask=CRC32_MASK_NORMAL);
 
 dword strHash32(const char* s,        bool nocase=true);

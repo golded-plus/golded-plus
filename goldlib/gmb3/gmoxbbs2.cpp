@@ -54,30 +54,6 @@ void XbbsArea::refresh() {
 
 //  ------------------------------------------------------------------
 
-void XbbsWideOpen() {
-
-  GFTRK("XbbsWideOpen");
-
-  // Open the personal mail index
-
-  GFTRK(NULL);
-}
-
-
-//  ------------------------------------------------------------------
-
-void XbbsWideClose() {
-
-  GFTRK("XbbsWideClose");
-
-  // Close the personal mail index
-
-  GFTRK(NULL);
-}
-
-
-//  ------------------------------------------------------------------
-
 void XbbsArea::raw_scan(int __keep_index, int __scanpm) {
 
   GFTRK("XbbsRawScan");

@@ -78,8 +78,12 @@ void gareafile::ReadAdeptXbbsFile(char* path, char* file, char* options) {
             break;
           case CRC_AREAEND:
             aa.setechoid(*usenet ? usenet : name);
-            sprintf(buf, "%s%s", apath, name);
-            aa.setpath((aa.msgbase & GMB_FIDO) ? apath : buf);
+            if(streql(aa.basetype, "OPUS") or streql(aa.basetype, "FTS1"))
+              aa.setpath(apath);
+            else {
+              sprintf(buf, "%s%s", apath, name);
+              aa.setpath(buf);
+            }
             AddNewArea(aa);
             aa.reset();
             break;
@@ -116,13 +120,13 @@ void gareafile::ReadAdeptXbbsFile(char* path, char* file, char* options) {
               aa.attr = attribslocal;
             }
             if(flags & M_SQUISH)
-              aa.msgbase = GMB_SQUISH;
+              aa.basetype = "SQUISH";
             else if(flags & M_FIDO)
-              aa.msgbase = GMB_OPUS;
+              aa.basetype = "OPUS";
             else if(flags & M_JAM)
-              aa.msgbase = GMB_JAM;
+              aa.basetype = "JAM";
             else
-              aa.msgbase = GMB_ADEPTXBBS;
+              aa.basetype = "ADEPTXBBS";
             break;
           case CRC_USENET:
             strcpy(usenet, val);

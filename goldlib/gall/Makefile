@@ -9,7 +9,7 @@ else
 ifeq ($(TERM),cygwin)
 INCS+=-I$(TOP)/goldlib/glibc
 else
-ifeq ($(TERM),MSYS)
+ifeq ($(TERM),msys)
 INCS+=-I$(TOP)/goldlib/glibc
 endif
 endif

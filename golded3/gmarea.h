@@ -191,7 +191,7 @@ public:
   char sortspec[20];
 
   // Active msgbases (bitmap of MT_* contants)
-  uint msgbases;
+  std::vector<const char *> basetypes;
 
   // Additional items to the area scan menu
   GAreaListScan ListScan;
@@ -214,7 +214,7 @@ public:
   void Reset();
 
   // Return pointer to a new'd area of the specified format
-  Area* NewArea(int msgbase);
+  Area* NewArea(const char *basetype);
 
   // Sort areas
   void Sort(const char* specs=NULL, int first=0, int last=-1);
@@ -393,7 +393,7 @@ public:
         int   areaid() const      { return area->areaid(); }
         int   groupid() const     { return area->groupid(); }
         uint  type() const        { return area->type(); }
-        uint  msgbase() const     { return area->msgbase(); }
+        const char *basetype() const { return area->basetype(); }
         uint  board() const       { return area->board(); }
   const ftn_addr& aka() const     { return area->aka(); }
         int   originno() const    { return area->originno(); }
@@ -418,7 +418,7 @@ public:
   void set_areaid(int a)        { area->set_areaid(a); }
   void set_groupid(int g)       { area->set_groupid(g); }
   void set_type(uint t)         { area->set_type(t); }
-  void set_msgbase(uint m)      { area->set_msgbase(m); }
+  void set_basetype(const char *m) { area->set_basetype(m); }
   void set_board(uint b)        { area->set_board(b); }
   void set_aka(ftn_addr& a)     { area->set_aka(a); }
   void set_originno(int o)      { area->set_originno(o); }
@@ -439,20 +439,17 @@ public:
 
   //  ----------------------------------------------------------------
   //  Determine msgbase format
+  bool isseparator() const;
 
-  int isfts1() const;
-  int isopus() const;
-  int isezycom() const;
-  int isfido() const;
-  int isgoldbase() const;
-  int ishudson() const;
-  int isjam() const;
-  int ispcboard() const;
-  int issquish() const;
-  int issmb() const;
-  int iswildcat() const;
-  int isadeptxbbs() const;
-  int isseparator() const;
+
+  //  ----------------------------------------------------------------
+  //  Determine area features
+
+  bool issoftdelete() const;
+  bool havearrivedstamp() const;
+  bool havereceivedstamp() const;
+  bool requirehardterm() const;
+  bool requiresoftterm() const;
 
 
   //  ----------------------------------------------------------------
@@ -607,19 +604,13 @@ public:
 //  ------------------------------------------------------------------
 //  Inline implementations
 
-inline int Area::isfts1() const      { return area->isfts1(); }
-inline int Area::isopus() const      { return area->isopus(); }
-inline int Area::isezycom() const    { return area->isezycom(); }
-inline int Area::isfido() const      { return area->isfido(); }
-inline int Area::isgoldbase() const  { return area->isgoldbase(); }
-inline int Area::ishudson() const    { return area->ishudson(); }
-inline int Area::isjam() const       { return area->isjam(); }
-inline int Area::ispcboard() const   { return area->ispcboard(); }
-inline int Area::issquish() const    { return area->issquish(); }
-inline int Area::issmb() const       { return area->issmb(); }
-inline int Area::iswildcat() const   { return area->iswildcat(); }
-inline int Area::isadeptxbbs() const { return area->isadeptxbbs(); }
-inline int Area::isseparator() const { return area->isseparator(); }
+inline bool Area::isseparator() const { return area->isseparator(); }
+
+inline bool Area::issoftdelete() const { return area->issoftdelete(); }
+inline bool Area::havearrivedstamp() const { return area->havearrivedstamp(); }
+inline bool Area::havereceivedstamp() const { return area->havereceivedstamp(); }
+inline bool Area::requirehardterm() const { return area->requirehardterm(); }
+inline bool Area::requiresoftterm() const { return area->requiresoftterm(); }
 
 inline int Area::isnet() const       { return area->isnet(); }
 inline int Area::isecho() const      { return area->isecho(); }
@@ -654,22 +645,6 @@ inline void Area::SetHighwaterMark() { area->set_highwater_mark(); }
 inline void Area::ResetHighwaterMark() { area->reset_highwater_mark(); }
 
 inline void Area::UpdateTimesread(GMsg* msg) { area->update_timesread(msg); }
-
-
-//  ------------------------------------------------------------------
-
-class MsgbaseManager {
-
-public:
-
-  void Init();
-  void Exit();
-
-  void WideScanBegin();
-  void WideScanEnd();
-
-
-};
 
 
 //  ------------------------------------------------------------------

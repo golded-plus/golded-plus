@@ -84,7 +84,7 @@ void gareafile::ReadLoraBBS(char* tag) {
     // Netmail *.MSG
     if(not strblank(cfg->netmail_dir)) {
       aa.reset();
-      aa.msgbase = GMB_OPUS;
+      aa.basetype = "OPUS";
       aa.type = GMB_NET;
       aa.aka = CAST(ftn_addr, cfg->alias[0]);
       aa.setpath(cfg->netmail_dir);
@@ -96,7 +96,7 @@ void gareafile::ReadLoraBBS(char* tag) {
     // Bad *.MSG
     if(not strblank(cfg->bad_msgs)) {
       aa.reset();
-      aa.msgbase = GMB_OPUS;
+      aa.basetype = "OPUS";
       aa.type = GMB_ECHO;
       aa.aka = CAST(ftn_addr, cfg->alias[0]);
       aa.setpath(cfg->bad_msgs);
@@ -108,7 +108,7 @@ void gareafile::ReadLoraBBS(char* tag) {
     // Dupes *.MSG
     if(not strblank(cfg->dupes)) {
       aa.reset();
-      aa.msgbase = GMB_OPUS;
+      aa.basetype = "OPUS";
       aa.type = GMB_ECHO;
       aa.aka = CAST(ftn_addr, cfg->alias[0]);
       aa.setpath(cfg->dupes);
@@ -120,7 +120,7 @@ void gareafile::ReadLoraBBS(char* tag) {
     // Personal mail *.MSG
     if(cfg->save_my_mail and not strblank(cfg->my_mail)) {
       aa.reset();
-      aa.msgbase = GMB_OPUS;
+      aa.basetype = "OPUS";
       aa.type = GMB_ECHO;
       aa.aka = CAST(ftn_addr, cfg->alias[0]);
       aa.setpath(cfg->my_mail);
@@ -147,11 +147,11 @@ void gareafile::ReadLoraBBS(char* tag) {
         aa.reset();
 
         if(sysmsg->gold_board) {
-          aa.msgbase = GMB_GOLDBASE;
+          aa.basetype = "GOLDBASE";
           aa.board = sysmsg->gold_board;
         }
         else if(sysmsg->quick_board) {
-          aa.msgbase = GMB_HUDSON;
+          aa.basetype = "HUDSON";
           aa.board = sysmsg->quick_board;
         }
         else if(sysmsg->pip_board) {
@@ -159,11 +159,11 @@ void gareafile::ReadLoraBBS(char* tag) {
           continue;
         }
         else if(sysmsg->squish) {
-          aa.msgbase = GMB_SQUISH;
+          aa.basetype = "SQUISH";
           aa.setpath(sysmsg->msg_path);
         }
         else {
-          aa.msgbase = GMB_OPUS;
+          aa.basetype = "OPUS";
           aa.setpath(sysmsg->msg_path);
         }
 

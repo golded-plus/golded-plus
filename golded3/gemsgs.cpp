@@ -602,9 +602,9 @@ void GMsg::LinesToText() {
     strxcpy(re, _buf, sizeof(ISub));
   }
 
-  int _lfterm = EDIT->CrLfTerm() and not AA->ispcboard();
-  int _hardterm = AA->Edithardterm() or AA->ispcboard() or AA->iswildcat();
-  int _isezycom = AA->isezycom();
+  bool _lfterm = EDIT->CrLfTerm() and strcmp(AA->basetype(), "PCBOARD");
+  bool _hardterm = AA->Edithardterm() or AA->requirehardterm();
+  bool _softterm = AA->requiresoftterm();
 
   uint _alloc_size = 1024;
   Line* _line = lin;
@@ -650,10 +650,10 @@ void GMsg::LinesToText() {
       if(*_buf and not _line->ishard()) {
         if(_line->next) {
           if((*(_bptr-1) != ' ') and (*_line->next->txt.c_str() != ' '))
-            if(_isezycom or not _hardterm)
+            if(_softterm or not _hardterm)
               *_bptr++ = ' ';
           if(not _hardterm) {
-            if(_isezycom and not CFG->switches.get(dispsoftcr))
+            if(_softterm and not CFG->switches.get(dispsoftcr))
               *_bptr++ = SOFTCR;
             _hterm = false;
           }

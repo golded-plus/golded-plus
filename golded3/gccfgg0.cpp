@@ -845,7 +845,7 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
             *ptr = NUL;
             Area* ap = AL.AreaEchoToPtr(buf2);
             if(ap)
-              ap->set_type(ap->isnet() ? AT_SOUP|AT_EMAIL|AT_NET : AT_SOUP|AT_NEWSGROUP|AT_ECHO);
+              ap->set_type(ap->isnet() ? GMB_SOUP|GMB_EMAIL|GMB_NET : GMB_SOUP|GMB_NEWSGROUP|GMB_ECHO);
           }
         }
         gfp.fclose();
@@ -854,14 +854,14 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
       if(*CFG->soupemail) {
         Area* ap = AL.AreaEchoToPtr(buf);
         if(ap)
-          ap->set_type(AT_SOUP|AT_EMAIL|AT_NET);
+          ap->set_type(GMB_SOUP|GMB_EMAIL|GMB_NET);
       }
 
       std::vector<MailList>::iterator z;
       for(z = CFG->mailinglist.begin(); z != CFG->mailinglist.end(); z++) {
         Area* ap = AL.AreaEchoToPtr(z->echoid);
         if(ap)
-          ap->set_type(AT_SOUP|AT_EMAIL|AT_NET);
+          ap->set_type(GMB_SOUP|GMB_EMAIL|GMB_NET);
       }
 
       // Mark all QWK areas
@@ -871,7 +871,7 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
             do {
               Area* ap = AL.AreaEchoToPtr(buf);
               if(ap)
-                ap->set_type(ap->type() | AT_QWK);
+                ap->set_type(ap->type() | GMB_QWK);
             } while(QWK->NextConf());
           }
         } while(QWK->NextBBS());

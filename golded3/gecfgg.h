@@ -213,7 +213,7 @@ public:
   Ezycom      ezycom;
   int         ezycomuserno;
   Path        fidolastread;         // lastread;
-  int         fidomsgtype;
+  const char *fidomsgtype;
   Path        fidouserlist;
   int         fidouserno;           // lastreaduser;
   std::vector<FileAlias> filealias;

@@ -177,13 +177,13 @@ void gareafile::ReadTimedFile(char* path, char* file, char* options, char* origi
           aa.board = atoi(key);
 
           if(striinc("-$", val))
-            aa.msgbase = GMB_SQUISH;
+            aa.basetype = "SQUISH";
           else if(striinc("-J", val))
-            aa.msgbase = GMB_JAM;
+            aa.basetype = "JAM";
           else if(striinc("-H", val))
-            aa.msgbase = GMB_HUDSON;
+            aa.basetype = "HUDSON";
           else
-            aa.msgbase = fidomsgtype;
+            aa.basetype = fidomsgtype;
 
           const char* ptr2 = striinc("-p", val);
           if(ptr2) {

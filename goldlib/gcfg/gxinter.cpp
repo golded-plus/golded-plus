@@ -83,7 +83,7 @@ void gareafile::ReadInterMail(char* tag) {
       aa.reset();
       aa.aka = CAST(ftn_addr, ctl->t.newaka[0]);
       aa.type = GMB_NET;
-      aa.msgbase = GMB_OPUS;
+      aa.basetype = "OPUS";
       aa.attr.pvt(ctl->e.msgbits & MSGPRIVATE);
       aa.attr.cra(ctl->e.msgbits & MSGCRASH);
       aa.attr.k_s(ctl->e.msgbits & MSGKILL);
@@ -97,10 +97,10 @@ void gareafile::ReadInterMail(char* tag) {
       aa.aka = CAST(ftn_addr, ctl->t.newaka[ctl->e.dupes.useaka]);
       aa.type = GMB_ECHO;
       switch(ctl->e.dupes.ftype) {
-        case F_MSG:     aa.msgbase = GMB_OPUS;     break;
-        case F_HUDSON:  aa.msgbase = GMB_HUDSON;   break;
-        case F_PCB15:   aa.msgbase = GMB_PCBOARD;  break;
-        case F_JAM:     aa.msgbase = GMB_JAM;      break;
+        case F_MSG:     aa.basetype = "OPUS";     break;
+        case F_HUDSON:  aa.basetype = "HUDSON";   break;
+        case F_PCB15:   aa.basetype = "PCBOARD";  break;
+        case F_JAM:     aa.basetype = "JAM";      break;
       }
       aa.attr.r_o(ctl->e.dupes.behave & EDREADONLY);
       aa.board = ctl->e.dupes.board;
@@ -114,10 +114,10 @@ void gareafile::ReadInterMail(char* tag) {
       aa.aka = CAST(ftn_addr, ctl->t.newaka[ctl->e.badecho.useaka]);
       aa.type = GMB_ECHO;
       switch(ctl->e.badecho.ftype) {
-        case F_MSG:     aa.msgbase = GMB_OPUS;     break;
-        case F_HUDSON:  aa.msgbase = GMB_HUDSON;   break;
-        case F_PCB15:   aa.msgbase = GMB_PCBOARD;  break;
-        case F_JAM:     aa.msgbase = GMB_JAM;      break;
+        case F_MSG:     aa.basetype = "OPUS";     break;
+        case F_HUDSON:  aa.basetype = "HUDSON";   break;
+        case F_PCB15:   aa.basetype = "PCBOARD";  break;
+        case F_JAM:     aa.basetype = "JAM";      break;
       }
       aa.attr.r_o(ctl->e.badecho.behave & EDREADONLY);
       aa.board = ctl->e.badecho.board;
@@ -143,10 +143,10 @@ void gareafile::ReadInterMail(char* tag) {
 
             aa.reset();
             switch(_folder->ftype) {
-              case F_MSG:     aa.msgbase = GMB_OPUS;     break;
-              case F_HUDSON:  aa.msgbase = GMB_HUDSON;   break;
-              case F_PCB15:   aa.msgbase = GMB_PCBOARD;  break;
-              case F_JAM:     aa.msgbase = GMB_JAM;      break;
+              case F_MSG:     aa.basetype = "OPUS";     break;
+              case F_HUDSON:  aa.basetype = "HUDSON";   break;
+              case F_PCB15:   aa.basetype = "PCBOARD";  break;
+              case F_JAM:     aa.basetype = "JAM";      break;
               default:        continue;
             }
             long _behave = _folder->behave;
@@ -195,11 +195,14 @@ void gareafile::ReadInterMail(char* tag) {
                 aa.type = GMB_LOCAL;
               else if(_behave & ECHOMAIL)
                 aa.type = GMB_ECHO;
-              aa.msgbase = (_behave & BOARDTYPE) ? GMB_HUDSON : GMB_OPUS;
-              if(aa.msgbase == GMB_HUDSON)
+              if(_behave & BOARDTYPE) {
+                aa.basetype = "HUDSON";
                 aa.board = _folder->board;
-              else
+              }
+              else {
+                aa.basetype = "OPUS";
                 aa.setpath(_folder->path);
+              }
               aa.attr.pvt(_behave & PRIVATE);
               aa.attr.r_o(_behave & READONLY);
               aa.setdesc(_folder->title);

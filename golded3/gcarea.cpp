@@ -39,11 +39,11 @@ void FixEchoid(char* echoid, int type) {
 
   if(*echoid == NUL) {
     const char* t = CFG->areaautoid == AUTOID_LONG ? "MAIL" : "";
-    if(type & AT_NET)
+    if(type & GMB_NET)
       sprintf(echoid, "NET%s%03u", t, netnum++);
-    else if(type & AT_ECHO)
+    else if(type & GMB_ECHO)
       sprintf(echoid, "ECHO%s%03u", t, echonum++);
-    else if(type & AT_LOCAL)
+    else if(type & GMB_LOCAL)
       sprintf(echoid, "LOCAL%03u", localnum++);
   }
 }
@@ -111,14 +111,14 @@ void CheckEMailOrNews(char* echoid, uint& type) {
 
   for(i = CFG->areaisemail.begin(); i != CFG->areaisemail.end(); i++) {
     if(strwild(echoid, i->c_str())) {
-      type = AT_EMAIL | AT_NET;
+      type = GMB_EMAIL | GMB_NET;
       break;
     }
   }
 
   for(i = CFG->areaisnews.begin(); i != CFG->areaisnews.end(); i++) {
     if(strwild(echoid, i->c_str())) {
-      type = AT_NEWSGROUP | AT_ECHO;
+      type = GMB_NEWSGROUP | GMB_ECHO;
       break;
     }
   }
@@ -150,7 +150,7 @@ void AreaList::AddNewArea(AreaCfg* aa) {
 
   if(veryverbose) {
     std::string temp;
-    std::cout << "  fmt=" << aa->msgbase << ", eid=\"" << aa->echoid <<
+    std::cout << "  fmt=" << aa->basetype << ", eid=\"" << aa->echoid <<
          "\", pth=\"" << aa->path << "\", brd=" << aa->board <<
          ", gid=" << aa->groupid << ", aka=" << aa->aka.make_string(temp);
     std::cout << " " << aa->attr.make_string(temp) << std::endl;
@@ -165,93 +165,96 @@ void AreaList::AddNewArea(AreaCfg* aa) {
   *desc = NUL;
 
   // Make sure the path field is 100% correct for the msgbase
-  switch(aa->msgbase) {
-    case MT_FTS1:
-    case MT_OPUS:
-      if(*aa->path == NUL)
-        return;
-      MapPath(aa->path);
-      AddBackslash(aa->path);
-      strschg_environ(aa->path);
-      break;
-    #ifndef GMB_NOHUDS
-    case MT_HUDSON:
-      if((aa->board < 1) or (aa->board > 200))  // Ignore areas with invalid numbers
-        return;
-      sprintf(aa->path, "%u", aa->board);
-      break;
-    #endif
-    #ifndef GMB_NOGOLD
-    case MT_GOLDBASE:
-      if((aa->board < 1) or (aa->board > 500))  // Ignore areas with invalid numbers
-        return;
-      sprintf(aa->path, "%u", aa->board);
-      break;
-    #endif
-    #ifndef GMB_NOEZY
-    case MT_EZYCOM:
-      // Ignore areas with invalid numbers
-      if((aa->board < 1) or (aa->board > 1536))
-        return;
-      sprintf(aa->path, "%u", aa->board);
-      break;
-    #endif
-    #ifndef GMB_NOWCAT
-    case MT_WILDCAT:
-      if(*aa->path == NUL)
-        return;
-      MapPath(aa->path);
-      StripBackslash(aa->path);
-      strschg_environ(aa->path);
-      break;
-    #endif
-    #ifndef GMB_NOXBBS
-    case MT_ADEPTXBBS:
-      if(*aa->path == NUL)
-        return;
-      MapPath(aa->path);
-      StripBackslash(aa->path);
-      strschg_environ(aa->path);
-      break;
-    #endif
-    #ifndef GMB_NOSQSH
-    case MT_SQUISH:
-    #endif
-    #ifndef GMB_NOJAM
-    case MT_JAM:
-    #endif
-    #if !defined(GMB_NOJAM) || !defined(GMB_NOSQSH)
-      if(*aa->path == NUL)
-        return;
-      MapPath(aa->path);
-      StripBackslash(aa->path);
-      strschg_environ(aa->path);
-      break;
-    #endif
-    #ifndef GMB_NOPCB
-    case MT_PCBOARD:
-      MapPath(aa->path);
-      StripBackslash(aa->path);
-      strschg_environ(aa->path);
-      break;
-    #endif
-    #ifndef GMB_NOSMB
-    case MT_SMB:
-      if(*aa->path == NUL)
-        return;
-      MapPath(aa->path);
-      StripBackslash(aa->path);
-      strschg_environ(aa->path);
-      break;
-    #endif
-    case MT_SEPARATOR:
-      break;
-    default:
+  if(streql(aa->basetype, "FTS1") or streql(aa->basetype, "OPUS")) {
+    if(*aa->path == NUL)
+      return;
+    MapPath(aa->path);
+    AddBackslash(aa->path);
+    strschg_environ(aa->path);
+  }
+  #ifndef GMB_NOHUDS
+  else if(streql(aa->basetype, "HUDSON")) {
+    if((aa->board < 1) or (aa->board > 200))  // Ignore areas with invalid numbers
+      return;
+    sprintf(aa->path, "%u", aa->board);
+  }
+  #endif
+  #ifndef GMB_NOGOLD
+  else if(streql(aa->basetype, "GOLDBASE")) {
+    if((aa->board < 1) or (aa->board > 500))  // Ignore areas with invalid numbers
+      return;
+    sprintf(aa->path, "%u", aa->board);
+  }
+  #endif
+  #ifndef GMB_NOEZY
+  else if(streql(aa->basetype, "EZYCOM")) {
+    // Ignore areas with invalid numbers
+    if((aa->board < 1) or (aa->board > 1536))
+      return;
+    sprintf(aa->path, "%u", aa->board);
+  }
+  #endif
+  #ifndef GMB_NOWCAT
+  else if(streql(aa->basetype, "WILDCAT")) {
+    if(*aa->path == NUL)
+      return;
+    MapPath(aa->path);
+    StripBackslash(aa->path);
+    strschg_environ(aa->path);
+  }
+  #endif
+  #ifndef GMB_NOXBBS
+  else if(streql(aa->basetype, "ADEPTXBBS")) {
+    if(*aa->path == NUL)
+      return;
+    MapPath(aa->path);
+    StripBackslash(aa->path);
+    strschg_environ(aa->path);
+  }
+  #endif
+  #ifndef GMB_NOSQSH
+  else if(streql(aa->basetype, "SQUISH")) {
+    if(*aa->path == NUL)
+      return;
+    MapPath(aa->path);
+    StripBackslash(aa->path);
+    strschg_environ(aa->path);
+  }
+  #endif
+  #ifndef GMB_NOJAM
+  else if(streql(aa->basetype, "JAM")) {
+    if(*aa->path == NUL)
+      return;
+    MapPath(aa->path);
+    StripBackslash(aa->path);
+    strschg_environ(aa->path);
+  }
+  #endif
+  #ifndef GMB_NOPCB
+  else if(streql(aa->basetype, "PCBOARD")) {
+    MapPath(aa->path);
+    StripBackslash(aa->path);
+    strschg_environ(aa->path);
+  }
+  #endif
+  #ifndef GMB_NOSMB
+  else if(streql(aa->basetype, "SMB")) {
+    if(*aa->path == NUL)
+      return;
+    MapPath(aa->path);
+    StripBackslash(aa->path);
+    strschg_environ(aa->path);
+  }
+  #endif
+  else if(streql(aa->basetype, "SEPARATOR")) {
+  }
+  else {
       return;
   }
 
   // Note msgbase type
-  msgbases |= aa->msgbase;
+  if(not find(basetypes, aa->basetype))
+    basetypes.push_back(aa->basetype);
 
   // Things to do for real areas only
   if(not aa->isseparator()) {
@@ -296,10 +299,11 @@ void AreaList::AddNewArea(AreaCfg* aa) {
       break;
     }
     else if(not (*ap)->isseparator()) {
-      int eq_path    = strieql(aa->path, (*ap)->path());
-      int eq_board   = (aa->board == (*ap)->board());
-      int eq_msgbase = (aa->msgbase == (*ap)->msgbase());
-      int eq_isfido  = (aa->isfido() and (*ap)->isfido());
+      bool eq_path    = strieql(aa->path, (*ap)->path());
+      bool eq_board   = (aa->board == (*ap)->board());
+      bool eq_msgbase = streql(aa->basetype, (*ap)->basetype());
+      bool eq_isfido  = ((streql(aa->basetype, "OPUS") or streql(aa->basetype, "FTS1"))
+                         and (streql((*ap)->basetype(), "OPUS") or streql((*ap)->basetype(), "FTS1")));
       if(eq_path and eq_board and (eq_msgbase or eq_isfido)) {
         // We had it already, so override with the new data
         newarea = false;
@@ -321,7 +325,7 @@ void AreaList::AddNewArea(AreaCfg* aa) {
 
   // Increase area index size if new area
   if(newarea) {
-    idx.push_back(NewArea(aa->msgbase));
+    idx.push_back(NewArea(aa->basetype));
     throw_new(idx[_currarea]);
     ap = idx.end(); --ap;
   }
@@ -348,7 +352,7 @@ void AreaList::AddNewArea(AreaCfg* aa) {
     (*ap)->set_echoid(aa->echoid);
     (*ap)->set_path(aa->path);
     (*ap)->set_board(aa->board);
-    (*ap)->set_msgbase(aa->msgbase);
+    (*ap)->set_basetype(aa->basetype);
   }
   (*ap)->set_desc(newarea or strblank(desc) ? aa->desc : desc);
   (*ap)->set_areaid(aa->areaid);
@@ -473,81 +477,81 @@ void AreaList::GetArea(char* def) {
     switch(toupper(*base)) {        // Store area info
 
       case '-':
-        aa.msgbase = MT_SEPARATOR;
+        aa.basetype = "SEPARATOR";
         break;
 
       case 'M':
-        aa.msgbase = MT_SQUISH;
+        aa.basetype = "SQUISH";
         aa.setpath(loc);
         break;
 
       case 'Y':
-        aa.msgbase = MT_SMB;
+        aa.basetype = "SMB";
         aa.setpath(loc);
         break;
 
       case 'H':
       case 'R':
       case 'Q':
-        aa.msgbase = MT_HUDSON;
+        aa.basetype = "HUDSON";
         aa.board = (uint) atoi(loc);
         break;
 
       case 'G':
-        aa.msgbase = MT_GOLDBASE;
+        aa.basetype = "GOLDBASE";
         aa.board = (uint) atoi(loc);
         break;
 
       case 'E':
-        aa.msgbase = MT_EZYCOM;
+        aa.basetype = "EZYCOM";
         aa.board = (uint) atoi(loc);
         break;
 
       case 'J':
-        aa.msgbase = MT_JAM;
+        aa.basetype = "JAM";
         aa.setpath(loc);
         break;
 
       case 'P':
-        aa.msgbase = MT_PCBOARD;
+        aa.basetype = "PCBOARD";
         aa.setpath(loc);
         break;
 
       case 'W':
-        aa.msgbase = MT_WILDCAT;
+        aa.basetype = "WILDCAT";
         aa.setpath(loc);
         break;
 
       case 'X':
-        aa.msgbase = MT_ADEPTXBBS;
+        aa.basetype = "ADEPTXBBS";
         aa.setpath(loc);
         break;
 
       case 'S':
-        aa.msgbase = MT_FTS1;
+        aa.basetype = "FTS1";
         aa.setpath(loc);
         break;
 
       case 'F':
       case 'O':
       default:
-        aa.msgbase = MT_OPUS;
+        aa.basetype = "OPUS";
         aa.setpath(loc);
     }
 
-    aa.type = AT_ECHO;
+    aa.type = GMB_ECHO;
     aa.attr = CFG->attribsecho;
     strupr(base);
     if(strchr(base, 'N')) {
-      aa.type = AT_NET;
+      aa.type = GMB_NET;
       aa.attr = CFG->attribsnet;
     }
     if(strchr(base, 'L')) {
-      aa.type = AT_LOCAL;
+      aa.type = GMB_LOCAL;
       aa.attr = CFG->attribslocal;
     }
     if(strchr(base, 'E')) {
-      aa.type = AT_ECHO;
+      aa.type = GMB_ECHO;
       aa.attr = CFG->attribsecho;
     }
     if(attr) {                      // Get attributes and AKAs
@@ -607,23 +611,23 @@ bool AreaList::GetAreaFirstPart(AreaCfg& aa, char*& key, char*& val) {
   word crc = getkeyvalcrc(&key, &val);
   switch(crc) {
     case CRC_NET:
-      aa.type = AT_NET;
+      aa.type = GMB_NET;
       aa.attr = CFG->attribsnet;
       break;
     case CRC_ECHO:
-      aa.type = AT_ECHO;
+      aa.type = GMB_ECHO;
       aa.attr = CFG->attribsecho;
       break;
     case CRC_LOCAL:
-      aa.type = AT_LOCAL;
+      aa.type = GMB_LOCAL;
       aa.attr = CFG->attribslocal;
       break;
     case CRC_EMAIL:
-      aa.type = AT_EMAIL | AT_NET;
+      aa.type = GMB_EMAIL | GMB_NET;
       aa.attr = CFG->attribsemail;
       break;
     case CRC_NEWS:
-      aa.type = AT_NEWSGROUP | AT_ECHO;
+      aa.type = GMB_NEWSGROUP | GMB_ECHO;
       aa.attr = CFG->attribsnews;
       break;
     default:
@@ -642,7 +646,7 @@ void AreaList::GetAreaSep(char* val) {
   AreaCfg aa;
 
   aa.reset();
-  aa.msgbase = MT_SEPARATOR;
+  aa.basetype = "SEPARATOR";
 
   if(not GetAreaFirstPart(aa, key, val))
     return;
@@ -695,22 +699,22 @@ void AreaList::GetAreaDef(char* val) {
   getkeyval(&key, &val);        // Get path/board
   switch(crc) {
     case CRC_SEP:
-      aa.msgbase = MT_SEPARATOR;
+      aa.basetype = "SEPARATOR";
       break;
     case CRC_FIDO:
     case CRC_OPUS:
     case CRC_SDMSG:
-      aa.msgbase = MT_OPUS;
+      aa.basetype = "OPUS";
       aa.setpath(key);
       break;
     case CRC_FTS1:
     case CRC_FTSC:
-      aa.msgbase = MT_FTS1;
+      aa.basetype = "FTS1";
       aa.setpath(key);
       break;
     case CRC_QBBS:
     case CRC_HUDSON:
-      aa.msgbase = MT_HUDSON;
+      aa.basetype = "HUDSON";
       aa.board = (uint) atoi(key);
       if((aa.board < 1) or (aa.board > 200)) {
         return;
@@ -718,40 +722,40 @@ void AreaList::GetAreaDef(char* val) {
       break;
     case CRC_GOLD:
     case CRC_GOLDBASE:
-      aa.msgbase = MT_GOLDBASE;
+      aa.basetype = "GOLDBASE";
       aa.board = atoi(key);
       if((aa.board < 1) or (aa.board > 500)) {
         return;
       }
       break;
     case CRC_SQUISH:
-      aa.msgbase = MT_SQUISH;
+      aa.basetype = "SQUISH";
       aa.setpath(key);
       break;
     case CRC_SMB:
-      aa.msgbase = MT_SMB;
+      aa.basetype = "SMB";
       aa.setpath(key);
       break;
     case CRC_EZYCOM:
-      aa.msgbase = MT_EZYCOM;
+      aa.basetype = "EZYCOM";
       aa.board = atoi(key);
       break;
     case CRC_JAM:
-      aa.msgbase = MT_JAM;
+      aa.basetype = "JAM";
       aa.setpath(key);
       break;
     case CRC_PCB:
     case CRC_PCBOARD:
-      aa.msgbase = MT_PCBOARD;
+      aa.basetype = "PCBOARD";
       aa.setpath(key);
       break;
     case CRC_WCAT:
     case CRC_WILDCAT:
-      aa.msgbase = MT_WILDCAT;
+      aa.basetype = "WILDCAT";
       aa.setpath(key);
       break;
     case CRC_XBBS:
-      aa.msgbase = MT_ADEPTXBBS;
+      aa.basetype = "ADEPTXBBS";
       aa.setpath(key);
       break;
     default:

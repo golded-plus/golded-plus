@@ -1889,7 +1889,7 @@ inline bool put_on_new_line(const char *ptr, const char *prev_ptr) {
 
 void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode) {
 
-  uint idx=0;
+  uint idx=0, idxadjust=0;
   uint len;
   int level=0;
   uint n;
@@ -1951,8 +1951,10 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode) {
       line = AddLine(line, "");
       ptr = msg->txt;
       uint _size = strlen(msg->txt);
+      if(streql(AA->basetype(), "OPUS") or streql(AA->basetype(), "FTS1"))
+        idxadjust = 190;
       for(idx=0; idx < _size; ptr+=16,idx+=16) {
-        sprintf(buf, "%04X   ", idx+(AA->isfido()?190:0));
+        sprintf(buf, "%04X   ", idx+idxadjust);
         HexDump16(buf+7, ptr, MinV((int)(_size-idx), 16), HEX_DUMP2);
         line = AddLine(line, buf);
       }

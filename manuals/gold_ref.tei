@@ -2747,7 +2747,7 @@ AREA:&lt;OriginalEchoID&gt;</eg>
               <cell>
                 <ident/Opus/, <ident/FTS1/, <ident/Hudson/, <ident/Squish/,
                 <ident/Ezycom/, <ident/JAM/, <ident/Goldbase/, <ident/PCBoard/,
-                or <ident/SMB/.
+                <ident/WildCat/, <ident/XBBS/, or <ident/SMB/.
               </cell>
             </row>
             <row>

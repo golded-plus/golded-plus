@@ -10,7 +10,7 @@ else
 ifeq ($(TERM),cygwin)
 STDLIBS=-luser32
 else
-ifeq ($(TERM),MSYS)
+ifeq ($(TERM),msys)
 STDLIBS=-luser32
 endif
 endif

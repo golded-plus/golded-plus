@@ -167,7 +167,7 @@ void gareafile::ReadFidoPCB(char* tag) {
     // *.MSG style netmail
     aa.reset();
     aa.aka = mainaddr;
-    aa.msgbase = fidomsgtype;
+    aa.basetype = fidomsgtype;
     aa.type = GMB_NET;
     aa.attr = attribsnet;
     aa.setpath(mailpath);
@@ -179,7 +179,7 @@ void gareafile::ReadFidoPCB(char* tag) {
     if(*netmailpath) {
       aa.reset();
       aa.aka = mainaddr;
-      aa.msgbase = GMB_PCBOARD;
+      aa.basetype = "PCBOARD";
       aa.type = GMB_NET;
       aa.attr = attribsnet;
       strcat(AddBackslash(netmailpath), "MATRIX");
@@ -194,7 +194,7 @@ void gareafile::ReadFidoPCB(char* tag) {
     if(*lostmailpath) {
       aa.reset();
       aa.aka = mainaddr;
-      aa.msgbase = GMB_PCBOARD;
+      aa.basetype = "PCBOARD";
       aa.type = GMB_ECHO;
       aa.attr = attribsecho;
       strcat(AddBackslash(lostmailpath), "LOST");
@@ -210,7 +210,7 @@ void gareafile::ReadFidoPCB(char* tag) {
     for(int n=0; n<areas; n++,ap++) {
       aa.reset();
       aa.aka = mainaddr;
-      aa.msgbase = GMB_PCBOARD;
+      aa.basetype = "PCBOARD";
       aa.type = GMB_ECHO;
       aa.attr = attribsecho;
       if(not ap->msgs)

@@ -102,7 +102,7 @@ void gareafile::ReadOpus(char* tag) {
         fseek(fp, (long)msgsys.Scan_Len*(long)sizeof(struct _ascan), SEEK_CUR);
         fseek(fp, (long)msgsys.Other_Len, SEEK_CUR);
 
-        aa.msgbase = fidomsgtype;
+        aa.basetype = fidomsgtype;
         aa.type = ((msgsys.Attrib & SYSMAIL) ? GMB_NET : (msgsys.Attrib & _ECHOMAIL) ? GMB_ECHO : GMB_LOCAL);
         aa.attr = ((msgsys.Attrib & SYSMAIL) ? attribsnet : (msgsys.Attrib & _ECHOMAIL) ? attribsecho : attribslocal);
         aa.setechoid(*msgsys.Echo_Name ? msgsys.Echo_Name : msgsys.Area_Name);
@@ -140,7 +140,7 @@ void gareafile::ReadOpus(char* tag) {
           fread(&sysdat, sizeof(_systemdat), 1, fp);
           if(*sysdat.msgpath and *sysdat.msgtitle) {
             aa.reset();
-            aa.msgbase = fidomsgtype;
+            aa.basetype = fidomsgtype;
             aa.setpath(sysdat.msgpath);
             aa.setdesc(sysdat.msgtitle);
             aa.setechoid(sysdat.EchoName);

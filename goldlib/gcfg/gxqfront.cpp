@@ -88,7 +88,7 @@ void gareafile::ReadQFront(char* tag) {
         aa.attr = attribsecho;
         STRNP2C(area->AreaName);
         aa.board = area->ConfNum;
-        aa.msgbase = GMB_PCBOARD;
+        aa.basetype = "PCBOARD";
         aa.setechoid(area->AreaName);
         aa.setorigin(origin->OriginLine[area->OriginLine]);
         AddNewArea(aa);

@@ -71,7 +71,7 @@ void gareafile::ReadEzycom102(FILE* fp, char* path, char* file, char* options) {
     // Fido netmail directory
     if(not strblank(config->netmailpath)) {
       aa.reset();
-      aa.msgbase = fidomsgtype;
+      aa.basetype = fidomsgtype;
       aa.type = GMB_NET;
       aa.attr = attribsnet;
       aa.aka.zone  = constant->netaddress[0].zone;
@@ -89,7 +89,7 @@ void gareafile::ReadEzycom102(FILE* fp, char* path, char* file, char* options) {
       if(constant->netaddress[n].net) {
         if(constant->netmailboard[n]) {
           aa.reset();
-          aa.msgbase = GMB_EZYCOM;
+          aa.basetype = "EZYCOM";
           aa.type = GMB_NET;
           aa.attr = attribsnet;
           aa.aka.zone  = constant->netaddress[n].zone;
@@ -110,7 +110,7 @@ void gareafile::ReadEzycom102(FILE* fp, char* path, char* file, char* options) {
     // Ezycom watchdog board
     if(constant->watchmess) {
       aa.reset();
-      aa.msgbase = GMB_EZYCOM;
+      aa.basetype = "EZYCOM";
       aa.type = GMB_LOCAL;
       aa.attr = attribslocal;
       aa.aka.zone  = constant->netaddress[0].zone;
@@ -126,7 +126,7 @@ void gareafile::ReadEzycom102(FILE* fp, char* path, char* file, char* options) {
     // Ezycom paging board
     if(constant->pagemessboard) {
       aa.reset();
-      aa.msgbase = GMB_EZYCOM;
+      aa.basetype = "EZYCOM";
       aa.type = GMB_LOCAL;
       aa.attr = attribslocal;
       aa.aka.zone  = constant->netaddress[0].zone;
@@ -142,7 +142,7 @@ void gareafile::ReadEzycom102(FILE* fp, char* path, char* file, char* options) {
     // Ezycom bad logon board
     if(constant->badpwdmsgboard) {
       aa.reset();
-      aa.msgbase = GMB_EZYCOM;
+      aa.basetype = "EZYCOM";
       aa.type = GMB_LOCAL;
       aa.attr = attribslocal;
       aa.aka.zone  = constant->netaddress[0].zone;
@@ -158,7 +158,7 @@ void gareafile::ReadEzycom102(FILE* fp, char* path, char* file, char* options) {
     // Ezycom bad qwk board
     if(constant->qwkmsgboard) {
       aa.reset();
-      aa.msgbase = GMB_EZYCOM;
+      aa.basetype = "EZYCOM";
       aa.type = GMB_ECHO;
       aa.attr = attribsecho;
       aa.aka.zone  = constant->netaddress[0].zone;
@@ -174,7 +174,7 @@ void gareafile::ReadEzycom102(FILE* fp, char* path, char* file, char* options) {
     // Ezycom bad echomail board
     if(constant->badmsgboard) {
       aa.reset();
-      aa.msgbase = GMB_EZYCOM;
+      aa.basetype = "EZYCOM";
       aa.type = GMB_ECHO;
       aa.attr = attribsecho;
       aa.aka.zone  = constant->netaddress[0].zone;
@@ -216,7 +216,7 @@ void gareafile::ReadEzycom102(FILE* fp, char* path, char* file, char* options) {
                 STRNP2C(messages->originline);
 
                 aa.board = record;
-                aa.msgbase = GMB_EZYCOM;
+                aa.basetype = "EZYCOM";
                 aa.groupid = messages->areagroup;
                 aa.setorigin(*messages->originline ? messages->originline : config->defaultorigin);
 
@@ -235,6 +235,7 @@ void gareafile::ReadEzycom102(FILE* fp, char* path, char* file, char* options) {
                   default:
                     aa.type = GMB_ECHO;
                     aa.attr = attribsecho;
+                    break;
                 }
 
                 switch(messages->msgkinds) {

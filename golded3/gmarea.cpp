@@ -291,7 +291,7 @@ void Area::SaveMsg(int mode, GMsg* msg) {
         echopost++;
       }
 
-      if(isjam() and (isecho() or isnet())) {
+      if(streql(basetype(), "JAM") and (isecho() or isnet())) {
         Path p;
 
         sprintf(file, "%s%smail.jam", CFG->jampath, isecho() ? "echo" : "net");

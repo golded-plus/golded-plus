@@ -68,7 +68,7 @@ void gareafile::ReadQEchoFile(char* file, char* options, char* origin) {
         if((ptr = strtok(NULL, " \t")) != NULL)
           if(not strieql("Passthrough", ptr)) {
             aa.setpath(ptr);
-            aa.msgbase = GMB_JAM;
+            aa.basetype = "JAM";
             if((ptr = strtok(NULL, " \t")) != NULL)
               if((*ptr == '*') and ((ptr = strtok(NULL, " \t")) != NULL)) {
                 CfgAddress(ptr);

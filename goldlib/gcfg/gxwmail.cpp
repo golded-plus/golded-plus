@@ -81,7 +81,7 @@ void gareafile::ReadWMail(char* tag) {
     aa.aka = wmprm->aka[0].addr;
     aa.type = GMB_NET;
     aa.attr = attribsnet;
-    aa.msgbase = fidomsgtype;
+    aa.basetype = fidomsgtype;
     STRNP2C(wmprm->dir.mail);
     aa.setpath(wmprm->dir.mail);
     aa.setdesc("WMail Netmail");
@@ -94,7 +94,7 @@ void gareafile::ReadWMail(char* tag) {
       aa.aka = wmprm->aka[0].addr;
       aa.type = GMB_ECHO;
       aa.attr = attribsecho;
-      aa.msgbase = fidomsgtype;
+      aa.basetype = fidomsgtype;
       STRNP2C(wmprm->dir.badecho);
       aa.setpath(wmprm->dir.badecho);
       aa.setdesc("WMail Bad Msgs Area");
@@ -108,7 +108,7 @@ void gareafile::ReadWMail(char* tag) {
       aa.aka = wmprm->aka[0].addr;
       aa.type = GMB_ECHO;
       aa.attr = attribsecho;
-      aa.msgbase = fidomsgtype;
+      aa.basetype = fidomsgtype;
       STRNP2C(wmprm->dir.dupes);
       aa.setpath(wmprm->dir.dupes);
       aa.setdesc("WMail Dupes Area");
@@ -151,9 +151,9 @@ void gareafile::ReadWMail(char* tag) {
         aa.setpath(arprm->path);
         aa.board = atoi(aa.path);
         if(aa.board and aa.board <= 200)
-          aa.msgbase = GMB_HUDSON;
+          aa.basetype = "HUDSON";
         else
-          aa.msgbase = fidomsgtype;
+          aa.basetype = fidomsgtype;
         STRNP2C(arprm->titolo);
         STRNP2C(arprm->tag);
         aa.setdesc(arprm->titolo);

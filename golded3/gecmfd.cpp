@@ -118,10 +118,10 @@ void Area::DeleteMsg(GMsg* msg, int direction) {
     DelMsg(msg);
 
     // Update scanning files
-    if(isnet() and isfido())
+    if(isnet())
       TouchNetscan(false);
 
-    if(not issmb() and not iswildcat() and not (isjam() and not CFG->switches.get(jamharddelete))) {
+    if(issoftdelete()) {
       // Remove message from internal table
       Msgn.Del(msg->msgno);
     }
@@ -460,9 +460,8 @@ void CmfMsgs(GMsg* msg) {
       msg->link.reset();
 
       // Fake Scn-Attribute if copied to squisharea
-      if(AA->issquish() and not AAorig->issquish())
-        if(msg->attr.loc() and msg->attr.snt())
-          msg->attr.scn1();
+      if(msg->attr.loc() and msg->attr.snt())
+        msg->attr.scn1();
 
       if(AA->Areacopyaddid() and not AA->isnet()) {
         char* ptr = msg->txt + (*msg->txt == CTRL_A);
@@ -480,7 +479,7 @@ void CmfMsgs(GMsg* msg) {
       bool need_fmpt = true;
       bool need_topt = true;
 
-      if(not need_netmail_kludges and AAorig->issquish() and not AAdest->issquish() and AAdest->isnet() and AAorig->isnet()) {
+      if(not need_netmail_kludges and streql(AAorig->basetype(), "SQUISH") and strcmp(AAdest->basetype(), "SQUISH") and AAdest->isnet() and AAorig->isnet()) {
         if(msg->orig.point and not strstr(msg->txt, "\001FMPT"))
           need_netmail_kludges = true;
         else

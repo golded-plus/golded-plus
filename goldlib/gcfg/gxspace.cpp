@@ -39,20 +39,20 @@ static Path SpaceTossAreafile;
 void gareafile::ParseSpaceArea(const char *type_path, AreaCfg &aa) {
 
   if(strnieql(type_path, "msg", 3))
-    aa.msgbase = fidomsgtype;
+    aa.basetype = fidomsgtype;
   else if(strnieql(type_path, "hud", 3)) {
-    aa.msgbase = GMB_HUDSON;
+    aa.basetype = "HUDSON";
     aa.board = atoi(type_path+3);
     return;
   }
   else if(strnieql(type_path, "jam", 3))
-    aa.msgbase = GMB_JAM;
+    aa.basetype = "JAM";
   else if(strnieql(type_path, "sqh", 3))
-    aa.msgbase = GMB_SQUISH;
+    aa.basetype = "SQUISH";
   else if(strnieql(type_path, "smb", 3))
-    aa.msgbase = GMB_SMB;
+    aa.basetype = "SMB";
   else {
-    aa.msgbase = 0;
+    aa.basetype = "";
     return;
   }
   aa.setpath(type_path+3);
@@ -145,7 +145,7 @@ void gareafile::ReadSpaceAr(const char* file) {
             aa.groupid = toupper(*val);
           break;
         case CRC_ENDAREA:
-          if(aa.msgbase)
+          if(aa.basetype[0] != '\0')
             AddNewArea(aa);
           aa.reset();
           break;
@@ -208,7 +208,7 @@ void gareafile::ReadSpaceNtm(const char* file) {
           exportarea = GetYesno(val) ? true : false;
           break;
         case CRC_ENDNETMAIL:
-          if(exportarea and aa.msgbase)
+          if(exportarea and (aa.basetype[0] != '\0'))
             AddNewArea(aa);
           aa.reset();
           break;
@@ -292,7 +292,7 @@ void gareafile::ReadSpaceCtl(const char* file) {
         // Get type/path
         ParseSpaceArea(val, aa);
 
-        if(aa.msgbase) {
+        if(aa.basetype[0] != '\0') {
           AddNewArea(aa);
         }
       }

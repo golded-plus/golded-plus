@@ -34,15 +34,15 @@
 
 //  ------------------------------------------------------------------
 
-uint gareafile::gettype(uint msgtype, const byte wtrtype) {
+const char *gareafile::gettype(const char *msgtype, const byte wtrtype) {
 
   switch(wtrtype) {
     case 1: return msgtype;
-    case 2: return GMB_SQUISH;
-    case 3: return GMB_JAM;
-    case 4: return GMB_WILDCAT;
+    case 2: return "SQUISH";
+    case 3: return "JAM";
+    case 4: return "WILDCAT";
   }
-  return 0;
+  return "";
 }
 
  
@@ -65,7 +65,7 @@ void gareafile::ReadWtrGteFile(char* options, FILE* fp) {
 
   if(c.fidonetmailtype) {
     aa.reset();
-    aa.msgbase = gettype(c.opusdateformat ? GMB_OPUS : GMB_FTS1, c.fidonetmailtype);
+    aa.basetype = gettype(c.opusdateformat ? "OPUS" : "FTS1", c.fidonetmailtype);
     aa.type = GMB_NET;
     aa.attr = attribsnet;
     aa.aka  = CAST(ftn_addr, c.nodenrs[0]);
@@ -77,7 +77,7 @@ void gareafile::ReadWtrGteFile(char* options, FILE* fp) {
 
   if(c.fidobadareatype) {
     aa.reset();
-    aa.msgbase = gettype(c.opusdateformat ? GMB_OPUS : GMB_FTS1, c.fidobadareatype);
+    aa.basetype = gettype(c.opusdateformat ? "OPUS" : "FTS1", c.fidobadareatype);
     aa.type = GMB_ECHO;
     aa.attr = attribsecho;
     aa.aka  = CAST(ftn_addr, c.nodenrs[0]);
@@ -89,7 +89,7 @@ void gareafile::ReadWtrGteFile(char* options, FILE* fp) {
 
   if(c.fidodupeareatype) {
     aa.reset();
-    aa.msgbase = gettype(c.opusdateformat ? GMB_OPUS : GMB_FTS1, c.fidodupeareatype);
+    aa.basetype = gettype(c.opusdateformat ? "OPUS" : "FTS1", c.fidodupeareatype);
     aa.type = GMB_NET;
     aa.attr = attribsnet;
     aa.aka  = CAST(ftn_addr, c.nodenrs[0]);
@@ -128,7 +128,7 @@ void gareafile::ReadWtrGteFile(char* options, FILE* fp) {
               continue;
           }
             
-          aa.msgbase = gettype(c.opusdateformat ? GMB_OPUS : GMB_FTS1, ar->fidomsgstyle);
+          aa.basetype = gettype(c.opusdateformat ? "OPUS" : "FTS1", ar->fidomsgstyle);
           if(in_range(ar->originaka, (byte) 1, (byte) 20))
             aa.aka  = CAST(ftn_addr, c.nodenrs[ar->originaka-1]);
           aa.setpath(strp2c(ar->fidomsgpath));

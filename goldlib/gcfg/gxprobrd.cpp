@@ -122,19 +122,19 @@ void gareafile::ReadProBoard(char* tag) {
         aa.attr.pvt1();
       switch(area->msgbasetype) {
         case MSGBASE_HUDSON:
-          aa.msgbase = GMB_HUDSON;
+          aa.basetype = "HUDSON";
           aa.board = area->areanum;
           break;
         case MSGBASE_SQUISH:
-          aa.msgbase = GMB_SQUISH;
+          aa.basetype = "SQUISH";
           aa.setpath(area->path);
           break;
         case MSGBASE_SDM:
-          aa.msgbase = GMB_OPUS;
+          aa.basetype = "OPUS";
           aa.setpath(area->path);
           break;
         case MSGBASE_JAM:
-          aa.msgbase = GMB_JAM;
+          aa.basetype = "JAM";
           aa.setpath(area->path);
           break;
       }

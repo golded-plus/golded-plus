@@ -1016,60 +1016,60 @@ void Initialize(int argc, char* argv[]) {
   if(CFG->loadlanguage[0])
     LoadLanguage(CFG->loadlanguage);
 
-  if(AL.msgbases & MT_FIDO) {
+  if(find(AL.basetypes, "OPUS") or find(AL.basetypes, "FTS1")) {
     update_statuslinef("%s Fido", LNG->Checking);
     FidoInit(CFG->fidolastread, CFG->switches.get(fidohwmarks), CFG->switches.get(fidonullfix), CFG->fidouserno, CFG->squishuserpath);
   }
   #ifndef GMB_NOEZY
-  if(AL.msgbases & MT_EZYCOM) {
+  if(find(AL.basetypes, "EZYCOM")) {
     update_statuslinef("%s Ezycom", LNG->Checking);
     EzycomInit(CFG->ezycom.msgbasepath, CFG->ezycom.userbasepath, CFG->ezycomuserno);
   }
   #endif
   #ifndef GMB_NOGOLD
-  if(AL.msgbases & MT_GOLDBASE) {
+  if(find(AL.basetypes, "GOLDBASE")) {
     update_statuslinef("%s Goldbase", LNG->Checking);
     GoldInit(CFG->goldbasepath, CFG->goldbasesyspath, CFG->goldbaseuserno);
   }
   #endif
   #ifndef GMB_NOHUDS
-  if(AL.msgbases & MT_HUDSON) {
+  if(find(AL.basetypes, "HUDSON")) {
     update_statuslinef("%s Hudson", LNG->Checking);
     HudsInit(CFG->hudsonpath, CFG->hudsonsyspath, CFG->hudsonuserno, CFG->hudsonsizewarn, CFG->ra2usersbbs);
   }
   #endif
   #ifndef GMB_NOJAM
-  if(AL.msgbases & MT_JAM) {
+  if(find(AL.basetypes, "JAM")) {
     update_statuslinef("%s JAM", LNG->Checking);
     JamInit(CFG->jampath, CFG->switches.get(jamharddelete), CFG->switches.get(jamsmapihw));
   }
   #endif
   #ifndef GMB_NOPCB
-  if(AL.msgbases & MT_PCBOARD) {
+  if(find(AL.basetypes, "PCBOARD")) {
     update_statuslinef("%s PCBoard", LNG->Checking);
     PcbInit(CFG->pcboardpath, CFG->pcboarduserno);
   }
   #endif
   #ifndef GMB_NOSQSH
-  if(AL.msgbases & MT_SQUISH) {
+  if(find(AL.basetypes, "SQUISH")) {
     update_statuslinef("%s Squish", LNG->Checking);
     SquishInit(CFG->squishuserpath, CFG->squishuserno, CFG->switches.get(squishdirect), true, CFG->squishscan);
   }
   #endif
   #ifndef GMB_NOWCAT
-  if(AL.msgbases & MT_WILDCAT) {
+  if(find(AL.basetypes, "WILDCAT")) {
     update_statuslinef("%s WildCat!", LNG->Checking);
     WCatInit(CFG->wildcatuserno);
   }
   #endif
   #ifndef GMB_NOXBBS
-  if(AL.msgbases & MT_ADEPTXBBS) {
+  if(find(AL.basetypes, "ADEPTXBBS")) {
     update_statuslinef("%s AdeptXBBS", LNG->Checking);
     XbbsInit(CFG->adeptxbbspath, CFG->adeptxbbsuserno);
   }
   #endif
   #ifndef GMB_NOSMB
-  if(AL.msgbases & MT_SMB) {
+  if(find(AL.basetypes, "SMB")) {
     update_statuslinef("%s Synchronet", LNG->Checking);
     SMBInit();
   }

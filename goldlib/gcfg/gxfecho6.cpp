@@ -80,7 +80,7 @@ void gareafile::ReadFastecho142(int fh) {
   aa.aka = aka[0].main;
   aa.type = GMB_NET;
   aa.attr = attribsnet;
-  aa.msgbase = fidomsgtype;
+  aa.basetype = fidomsgtype;
   aa.setpath(cfg->NetMPath);
   aa.setdesc("FastEcho Netmail");
   aa.setautoid("NETMAIL");
@@ -97,19 +97,19 @@ void gareafile::ReadFastecho142(int fh) {
 
       switch(area->flags.storage) {
         case QBBS:
-          aa.msgbase = GMB_HUDSON;
+          aa.basetype = "HUDSON";
           aa.board = area->board;
           break;
         case FIDO:
-          aa.msgbase = fidomsgtype;
+          aa.basetype = fidomsgtype;
           aa.setpath(area->path);
           break;
         case SQUISH:
-          aa.msgbase = GMB_SQUISH;
+          aa.basetype = "SQUISH";
           aa.setpath(area->path);
           break;
         case JAM:
-          aa.msgbase = GMB_JAM;
+          aa.basetype = "JAM";
           aa.setpath(area->path);
           break;
         default:

@@ -35,18 +35,12 @@
 void EzycomInit(const char* msgbasepath, const char* userbasepath, int userno);
 void EzycomExit();
 
-void EzycomWideOpen();
-void EzycomWideClose();
-
 
 //  ------------------------------------------------------------------
 
 void FidoInit(const char* fidolastread, int fidohwmarks, int fidonullfix, int fidouserno, const char* squishuserpath);
 void FidoExit();
 void FidoRenumberProgress(const char* s);
-
-void FidoWideOpen();
-void FidoWideClose();
 
 
 //  ------------------------------------------------------------------
@@ -74,9 +68,6 @@ void HGWarnRebuild();
 
 void JamInit(const char* jampath, int harddelete, int smapihw);
 void JamExit();
-
-void JamWideOpen();
-void JamWideClose();
 
 
 //  ------------------------------------------------------------------
@@ -106,17 +97,11 @@ void SMBExit();
 void WCatInit(int userno);
 void WCatExit();
 
-void WCatWideOpen();
-void WCatWideClose();
-
 
 //  ------------------------------------------------------------------
 
 void XbbsInit(const char* path, int userno);
 void XbbsExit();
-
-void XbbsWideOpen();
-void XbbsWideClose();
 
 
 //  ------------------------------------------------------------------

@@ -182,7 +182,7 @@ void gareafile::ReadHPTFile(char* path, char* file, char* origin, int group) {
 
     aa.reset();
     aa.type = GMB_NONE;
-    aa.msgbase = fidomsgtype;
+    aa.basetype = fidomsgtype;
     aa.groupid = group;
 
     std::string s;
@@ -244,7 +244,7 @@ void gareafile::ReadHPTFile(char* path, char* file, char* origin, int group) {
           case CRC_ECHOAREADEFAULTS:
             echoareadefaults.reset();
             aa.type = GMB_DEFAULT;
-            aa.msgbase = fidomsgtype;
+            aa.basetype = fidomsgtype;
             aa.groupid = group;
             break;
         }
@@ -277,11 +277,11 @@ void gareafile::ReadHPTFile(char* path, char* file, char* origin, int group) {
             while((*key == '-') or strieql(key, "Squish") or strieql(key, "Jam") or strieql(key, "MSG")) {
 
               if(strieql(key, "Squish"))
-                aa.msgbase = GMB_SQUISH;
+                aa.basetype = "SQUISH";
               else if(strieql(key, "Jam"))
-                aa.msgbase = GMB_JAM;
+                aa.basetype = "JAM";
               else if(strieql(key, "MSG"))
-                aa.msgbase = fidomsgtype;
+                aa.basetype = fidomsgtype;
               else {
 
                 char *opt = key + 1;
@@ -341,20 +341,20 @@ void gareafile::ReadHPTFile(char* path, char* file, char* origin, int group) {
             switch(aa.type) {
               case GMB_NET:
                 aa.attr = attribsnet;
-                if(aa.msgbase == 0)
-                  aa.msgbase = fidomsgtype;
+                if(*aa.basetype == '\0')
+                  aa.basetype = fidomsgtype;
                 AddNewArea(aa);
                 break;
               case GMB_ECHO:
                 aa.attr = attribsecho;
-                if(aa.msgbase == 0)
-                  aa.msgbase = fidomsgtype;
+                if(*aa.basetype == '\0')
+                  aa.basetype = fidomsgtype;
                 AddNewArea(aa);
                 break;
               case GMB_LOCAL:
                 aa.attr = attribslocal;
-                if(aa.msgbase == 0)
-                  aa.msgbase = fidomsgtype;
+                if(*aa.basetype == '\0')
+                  aa.basetype = fidomsgtype;
                 AddNewArea(aa);
                 break;
               case GMB_DEFAULT:
@@ -417,7 +417,7 @@ void gareafile::ReadHPT(char* tag) {
   CfgJAMSMAPIHighwater(true);
 
   echoareadefaults.type = GMB_NONE;
-  echoareadefaults.msgbase = fidomsgtype;
+  echoareadefaults.basetype = fidomsgtype;
   echoareadefaults.groupid = defaultgroup;
 
   ReadHPTFile(path, file, origin, defaultgroup);

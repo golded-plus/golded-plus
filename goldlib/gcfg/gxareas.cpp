@@ -60,21 +60,21 @@ void gareafile::ReadAreasBBS(char* tag) {
         aa.attr = attribsecho;
         aa.board = atoi(path);
         if(aa.board and (aa.board < 201))
-          aa.msgbase = GMB_HUDSON;
+          aa.basetype = "HUDSON";
         else if((aa.board > 200) and (aa.board < 501))
-          aa.msgbase = GMB_GOLDBASE;
+          aa.basetype = "GOLDBASE";
         else if(*path == '$') {
-          aa.msgbase = GMB_SQUISH;
+          aa.basetype = "SQUISH";
           adjustpath(path+1);
           aa.setpath(path+1);
         }
         else if(*path == '!') {
-          aa.msgbase = GMB_JAM;
+          aa.basetype = "JAM";
           adjustpath(path+1);
           aa.setpath(path+1);
         }
         else {
-          aa.msgbase = fidomsgtype;
+          aa.basetype = fidomsgtype;
           adjustpath(path);
           aa.setpath(path);
         }

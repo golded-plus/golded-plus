@@ -224,7 +224,7 @@ void gareafile::ReadPCBoard(char* tag) {
         strcpy(netmailpath, dir3->outgoing_msg);
       if(*netmailpath) {
         aa.reset();
-        aa.msgbase = fidomsgtype;
+        aa.basetype = fidomsgtype;
         aa.type = GMB_NET;
         aa.attr = attribsnet;
         if(fido_version == 2)
@@ -269,7 +269,7 @@ void gareafile::ReadPCBoard(char* tag) {
           fp2.fread(_cnamesadd, sizeof(PcbAddConf));
           if(*_cnames->name and *_cnames->msgfile) {
             aa.reset();
-            aa.msgbase = GMB_PCBOARD;
+            aa.basetype = "PCBOARD";
             switch(_cnamesadd->conftype) {
               case PCBCONFTYPE_EMAIL:
               case PCBCONFTYPE_USENETMOD:

@@ -450,19 +450,19 @@ int InstallFinish() {
       fprintf(fp, "ADDRESS %s\n", buf);
       CfgAddress(buf);
     }
-    if(AL.msgbases == 0) {
+    if(AL.basetypes.empty()) {
       if(EnterString("Please enter the path to your *.msg netmail area:", buf, sizeof(buf)))
         return -1;
-      fprintf(fp, "AREADEF NETMAIL \"Netmail\" 0 Net Opus %s\n", buf);
       AreaCfg aa;
       aa.reset();
       aa.setdesc("Netmail");
       aa.setechoid("NETMAIL");
-      aa.msgbase = MT_OPUS;
-      aa.type = AT_NET;
+      aa.basetype = "OPUS";
+      aa.type = GMB_NET;
       aa.setpath(buf);
       aa.attr = CFG->attribsnet;
       AL.AddNewArea(&aa);
+      fprintf(fp, "AREADEF %s \"%s\" 0 Net %s %s\n", aa.desc, aa.echoid, aa.basetype, buf);
       if(EnterString("Please enter the path *and* filename of your areas.bbs file:", buf, sizeof(buf)))
         goto install_terminated;
       fprintf(fp, "AREAFILE AreasBBS %s\n", buf);
@@ -471,7 +471,7 @@ int InstallFinish() {
       AL.GetAreafile(buf2);
     }
     #ifndef GMB_NOHUDS
-    if((AL.msgbases & MT_HUDSON) and (*CFG->hudsonpath == NUL)) {
+    if(find(AL.basetypes, "HUDSON") and (*CFG->hudsonpath == NUL)) {
       if(EnterString("Please enter the path to your Hudson msgbase files:", buf, sizeof(buf)))
         goto install_terminated;
       fprintf(fp, "HUDSONPATH %s\n", buf);
@@ -479,7 +479,7 @@ int InstallFinish() {
     }
     #endif
     #ifndef GMB_NOGOLD
-    if((AL.msgbases & MT_GOLDBASE) and (*CFG->goldbasepath == NUL)) {
+    if(find(AL.basetypes, "GOLDBASE") and (*CFG->goldbasepath == NUL)) {
       if(EnterString("Please enter the path to your Goldbase msgbase files:", buf, sizeof(buf)))
         goto install_terminated;
       fprintf(fp, "GOLDBASEPATH %s\n", buf);
@@ -487,7 +487,7 @@ int InstallFinish() {
     }
     #endif
     #ifndef GMB_NOJAM
-    if((AL.msgbases & MT_JAM) and (*CFG->jampath == NUL)) {
+    if(find(AL.basetypes, "JAM") and (*CFG->jampath == NUL)) {
       if(EnterString("Please enter the path where net/echomail.jam can be placed:", buf, sizeof(buf)))
         goto install_terminated;
       fprintf(fp, "JAMPATH %s\n", buf);
@@ -495,7 +495,7 @@ int InstallFinish() {
     }
     #endif
     #ifndef GMB_NOPCB
-    if((AL.msgbases & MT_PCBOARD) and (*CFG->pcboardpath == NUL)) {
+    if(find(AL.basetypes, "PCBOARD") and (*CFG->pcboardpath == NUL)) {
       if(EnterString("Please enter the path to PCBoard:", buf, sizeof(buf)))
         goto install_terminated;
       fprintf(fp, "PCBOARDPATH %s\n", buf);
@@ -717,7 +717,7 @@ CfgGed::CfgGed() {
   encodeemailheaders = true;
   externoptions = EXTUTIL_CLS | EXTUTIL_CURSOR | EXTUTIL_RELOAD | EXTUTIL_PAUSEONERROR | EXTUTIL_KEEPCTRL;
   ezycomuserno = 0;
-  fidomsgtype = MT_OPUS;
+  fidomsgtype = "OPUS";
   fidouserno = 0;
   forcetemplate = false;
   frqoptions = FREQ_FROMTOP;
@@ -840,11 +840,11 @@ CfgGed::CfgGed() {
   disphdrnodeset.pos = 44;
 
   // unsorted structures
-  areatypeorder[AT_NET]               = 1;
-  areatypeorder[AT_NET|AT_EMAIL]      = 2;
-  areatypeorder[AT_ECHO]              = 3;
-  areatypeorder[AT_ECHO|AT_NEWSGROUP] = 4;
-  areatypeorder[AT_LOCAL]             = 5;
+  areatypeorder[GMB_NET]                = 1;
+  areatypeorder[GMB_NET|GMB_EMAIL]      = 2;
+  areatypeorder[GMB_ECHO]               = 3;
+  areatypeorder[GMB_ECHO|GMB_NEWSGROUP] = 4;
+  areatypeorder[GMB_LOCAL]              = 5;
   if(gvid->adapter & V_MONO)
     memcpy(color, gold_mono1, sizeof(color));
   else

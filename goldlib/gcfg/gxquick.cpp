@@ -66,7 +66,7 @@ void gareafile::ReadQ260(char* qbpath, char* origin, char* options) {
         aa.reset();
 
         aa.board = n + 1;
-        aa.msgbase = GMB_HUDSON;
+        aa.basetype = "HUDSON";
         aa.setdesc(STRNP2C(brd[n].Name));
         aa.setorigin(*cfg->OriginLine ? cfg->OriginLine : origin);
 
@@ -160,7 +160,8 @@ void gareafile::ReadQ276(char* qbpath, char* origin, char* options) {
       std::cout << "* Reading " << file << std::endl;
 
     int _recs = (int)(filelength(fileno(fp)) / sizeof(Q276BrdRecT));
-    int _fmt = (_recs > 200) ? GMB_GOLDBASE : GMB_HUDSON;
+//    int _fmt = (_recs > 200) ? GMB_GOLDBASE : GMB_HUDSON;
+    const char *_fmt = (_recs > 200) ? "GOLDBASE" : "HUDSON";
 
     for(int n=0; n<_recs; n++) {
 
@@ -171,7 +172,7 @@ void gareafile::ReadQ276(char* qbpath, char* origin, char* options) {
         aa.reset();
 
         aa.board = n + 1;
-        aa.msgbase = _fmt;
+        aa.basetype = _fmt;
         //aa.groupid = brd->Group;
         aa.setorigin(*brd->OriginLine ? STRNP2C(brd->OriginLine) : origin);
 

@@ -85,7 +85,7 @@ void MakeFlags(GMsg* msg, Line** line, char* buf) {
   // The FrontDoor FLAGS netmail kludge
   if(CFG->switches.get(useflags)) {
     sprintf(buf, "\001FLAGS ");
-    if(AA->ishudson()) {
+    if(streql(AA->basetype(), "HUDSON")) {
       if(msg->attr.hld())
         strcat(buf, "HLD ");
       if(msg->attr.frq())
@@ -338,7 +338,7 @@ void DoKludges(int mode, GMsg* msg, int kludges) {
       msg->orig.make_string(buf2, msg->odom);
       sprintf(msg->msgids, "%s %08lx", buf2, getMsgId());
     }
-    if(CFG->switches.get(usemsgid) and not AA->ispcboard()) {
+    if(CFG->switches.get(usemsgid) and strcmp(AA->basetype(), "PCBOARD")) {
       sprintf(buf, "\001MSGID: %s", msg->msgids);
       line = AddKludge(line, buf);
       line->kludge = GKLUD_MSGID;
@@ -429,14 +429,14 @@ void DoKludges(int mode, GMsg* msg, int kludges) {
         char* ptr = *msg->ito ? msg->ito : msg->to;
         strxcpy(buf2, ptr, 1024);
         ParseInternetAddr(buf2, _toname, _toaddr);
-        if(_toname[0] != NUL) {
+        /*--- if(_toname[0] != NUL) {
           mime_header_encode(buf2, _toname, msg);
           char quot[2] = "\"";
           if((buf2[0] == '\"') or (strpbrk(buf2, " \t") == NULL))
             quot[0] = NUL;
           sprintf(buf, "%s%sTo: %s%s%s <%s>", rfc, AA->isnewsgroup() ? "X-" : "", quot, buf2, quot, _toaddr);
         }
-        else if(stricmp(_toname, AA->Whoto())) {
+        else ---*/ if(stricmp(_toname, AA->Whoto())) {
           mime_header_encode(buf2, _toname, msg);
           char quot[2] = "\"";
           if((buf2[0] == '\"') or (strpbrk(buf2, " \t") == NULL))

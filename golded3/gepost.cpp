@@ -247,9 +247,9 @@ static void MakeMsg3(int& mode, GMsg* msg) {
     tp->tm_isdst = -1;
     time_t b = mktime(tp);
     a += a - b;
-    if(AA->isjam() or AA->iswildcat())
+    if(AA->havereceivedstamp())
       msg->received = a;
-    else
+    if(AA->havearrivedstamp())
       msg->arrived = a;
   }
 
@@ -958,7 +958,7 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
               throw_release(msg->references);
           }
           if(CurrArea == OrigArea) {
-            if((CFG->replylink == REPLYLINK_DIRECT) or AA->isjam())
+            if((CFG->replylink == REPLYLINK_DIRECT) or streql(AA->basetype(), "JAM"))
               reply_msgno = omsg->msgno;
             else if(CFG->replylink == REPLYLINK_CHAIN)
               GetLastLink(omsg, reply_msgno);
@@ -1110,7 +1110,7 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
           if(AA->LoadHdr(reply, reply_msgno, false)) {
             ulong replynext;
             bool ok2save = false;
-            if(AA->issquish()) {
+            if(streql(AA->basetype(), "SQUISH")) {
               if(reply->link.first()) {
                 for(int r=0; r<reply->link.list_max()-1; r++) {
                   if(reply->link.list(r) == 0) {
@@ -1125,7 +1125,7 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
                 ok2save = true;
               }
             }
-            else if(AA->isjam()) {
+            else if(streql(AA->basetype(), "JAM")) {
               if(reply->link.first()) {
                 replynext = reply->link.first();
                 do {

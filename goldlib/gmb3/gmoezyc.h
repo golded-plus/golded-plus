@@ -209,6 +209,9 @@ public:
   EzycomArea() { wide = NULL; data = NULL; }
   virtual ~EzycomArea() {}
 
+  virtual bool havereceivedstamp() const { return false; }
+  virtual bool requiresoftterm() const { return true; }
+
   //  ----------------------------------------------------------------
   //  Messagebase member functions
   

@@ -104,7 +104,7 @@ void gareafile::ReadxMailFile(char* file, char* options) {
             aa.reset();
             aa.type = GMB_NET;
             aa.attr = attribsnet;
-            aa.msgbase = fidomsgtype;
+            aa.basetype = fidomsgtype;
             aa.setdesc("xMail Netmail");
             aa.setautoid("NETMAIL");
             aa.setpath(val);
@@ -178,19 +178,19 @@ void gareafile::ReadXMail(char* tag) {
 
         switch(area.StoreType) {
           case FmtHudson:
-            aa.msgbase = GMB_HUDSON;
+            aa.basetype = "HUDSON";
             aa.board = areano;
             break;
           case FmtMsg:
-            aa.msgbase = fidomsgtype;
+            aa.basetype = fidomsgtype;
             aa.setpath(ClipDosFilename(area.MsgDirectory));
             break;
           case FmtSquish:
-            aa.msgbase = GMB_SQUISH;
+            aa.basetype = "SQUISH";
             aa.setpath(ClipDosFilename(area.MsgDirectory));
             break;
           case FmtJam:
-            aa.msgbase = GMB_JAM;
+            aa.basetype = "JAM";
             aa.setpath(ClipDosFilename(area.MsgDirectory));
             break;
           default:

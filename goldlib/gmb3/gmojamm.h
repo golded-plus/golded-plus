@@ -214,7 +214,7 @@ struct JamSubField {
 struct JamIndex {
 
   dword  usercrc;    // CRC-32 of destination username
-  ulong hdroffset;  // Offset of header in .JHR file
+  ulong  hdroffset;  // Offset of header in .JHR file
 };
 
 
@@ -301,6 +301,8 @@ public:
 
   JamArea() { wide = NULL; data = NULL; just_scanning = false; }
   virtual ~JamArea() {}
+
+  virtual bool issoftdelete() const { return (wide != NULL) ? not wide->harddelete : true; }
 
   //  ----------------------------------------------------------------
   //  Messagebase member functions

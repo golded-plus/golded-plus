@@ -14,7 +14,7 @@ ifeq ($(TERM),cygwin)
 STDLIBS=-luser32 -lwinmm
 GLIBS+=glibc
 else
-ifeq ($(TERM),MSYS)
+ifeq ($(TERM),msys)
 STDLIBS=-luser32 -lwinmm
 GLIBS+=glibc
 endif

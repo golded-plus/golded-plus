@@ -98,7 +98,7 @@ void gareafile::ReadFrontDoor(char* tag) {
       aa.aka = shared->aka[0];
       aa.type = GMB_NET;
       aa.attr = attribsnet;
-      aa.msgbase = fidomsgtype;
+      aa.basetype = fidomsgtype;
       aa.attr.r_o(editor->netfolderflags & EDREADONLY);
       aa.attr.pvt(editor->msgbits & MSGPRIVATE);
       aa.attr.cra(editor->msgbits & MSGCRASH);
@@ -132,15 +132,15 @@ void gareafile::ReadFrontDoor(char* tag) {
         aa.attr = (behave & FOLDER_ECHOMAIL) ? attribsecho : attribslocal;
         aa.attr.r_o(behave & FOLDER_READONLY);
         if(behave & FOLDER_HMB) {
-          aa.msgbase = GMB_HUDSON;
+          aa.basetype = "HUDSON";
           aa.board = folder->board;
         }
         else if(behave & FOLDER_JAM) {
-          aa.msgbase = GMB_JAM;
+          aa.basetype = "JAM";
           aa.setpath(folder->path);
         }
         else {
-          aa.msgbase = fidomsgtype;
+          aa.basetype = fidomsgtype;
           aa.setpath(folder->path);
         }
         if(behave & FOLDER_PRIVATE)

@@ -113,11 +113,11 @@ void CfgAreatypeorder() {
   if(t.First(val)) {
     do {
       switch(strCrc16(t.Token())) {
-        case CRC_NET:    CFG->areatypeorder[AT_NET] = order;  break;
-        case CRC_EMAIL:  CFG->areatypeorder[AT_NET|AT_EMAIL] = order;  break;
-        case CRC_ECHO:   CFG->areatypeorder[AT_ECHO] = order;  break;
-        case CRC_NEWS:   CFG->areatypeorder[AT_ECHO|AT_NEWSGROUP] = order;  break;
-        case CRC_LOCAL:  CFG->areatypeorder[AT_LOCAL] = order; break;
+        case CRC_NET:    CFG->areatypeorder[GMB_NET] = order;  break;
+        case CRC_EMAIL:  CFG->areatypeorder[GMB_NET|GMB_EMAIL] = order;  break;
+        case CRC_ECHO:   CFG->areatypeorder[GMB_ECHO] = order;  break;
+        case CRC_NEWS:   CFG->areatypeorder[GMB_ECHO|GMB_NEWSGROUP] = order;  break;
+        case CRC_LOCAL:  CFG->areatypeorder[GMB_LOCAL] = order; break;
       }
       order++;
     } while(t.Next());

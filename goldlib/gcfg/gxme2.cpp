@@ -72,7 +72,7 @@ void gareafile::ReadME2(char* tag) {
               aa.reset();
               aa.type = GMB_LOCAL;
               aa.attr = attribslocal;
-              aa.msgbase = fidomsgtype;
+              aa.basetype = fidomsgtype;
               ptr = strskip_wht(ptr+5);
               ptr2 = strskip_to(++ptr, '\'');
               if(*ptr2) *ptr2++ = NUL;

@@ -190,6 +190,10 @@ public:
   PcbArea() { wide = NULL; data = NULL; just_scanning = false; }
   virtual ~PcbArea() {}
 
+  virtual bool havearrivedstamp() const { return false; }
+  virtual bool havereceivedstamp() const { return false; }
+  virtual bool requirehardterm() const { return true; }
+
   //  ----------------------------------------------------------------
   //  Messagebase member functions
   

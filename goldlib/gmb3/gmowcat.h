@@ -195,6 +195,9 @@ public:
   WCatArea() { wide = NULL; data = NULL; }
   virtual ~WCatArea() {}
 
+  virtual bool issoftdelete() const { return true; }
+  virtual bool requirehardterm() const { return true; }
+
   //  ----------------------------------------------------------------
   //  Messagebase member functions
   

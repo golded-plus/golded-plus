@@ -50,4 +50,24 @@ word strCrc16(const char* s, bool __case, word mask) {
 
 
 //  ------------------------------------------------------------------
+//  Generate bugfree CRC-16 of a normal nul-terminated string
+
+word strCrc16c(const char* s, bool __case, word mask) {
+
+  word crc = mask;
+
+  if(__case) {
+    while(*s)
+      crc = updCrc16c(toupper(*s++), crc);
+  }
+  else {
+    while(*s)
+      crc = updCrc16c(*s++, crc);
+  }
+
+  return crc;
+}
+
+
+//  ------------------------------------------------------------------
 

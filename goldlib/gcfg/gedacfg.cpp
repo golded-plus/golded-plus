@@ -40,7 +40,8 @@ gareafile::gareafile() {
   quiet = true;
 
   sharemode = 0;
-  fidomsgtype = 0;
+//  fidomsgtype = 0;
+  fidomsgtype = "";
   ra2usersbbs = 0;
   squishuserno = 0;
 
@@ -87,7 +88,7 @@ void AreaCfg::reset() {
   groupid = 0;
   originno = 0;
   board = 0;
-  msgbase = 0;
+  basetype = "";
   aka.reset();
   type = GMB_NONE;
   scan = 0;
@@ -139,7 +140,7 @@ AreaCfg& AreaCfg::operator=(const AreaCfg& AC) {
   this->groupid = AC.groupid;
   this->originno = AC.originno;
   this->board = AC.board;
-  this->msgbase = AC.msgbase;
+  this->basetype = AC.basetype;
   this->aka = AC.aka;
   this->type = AC.type;
   this->scan = AC.scan;

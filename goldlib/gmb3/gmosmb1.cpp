@@ -615,17 +615,17 @@ void SMBArea::save_hdr(int mode, gmsg* msg)
   smb_hfield(&smsg, SENDER, strlen(msg->by), msg->by);
   strcpy(buf, msg->by);
   strlwr(buf);
-  smsg.idx.from = strCrc16(buf);
+  smsg.idx.from = strCrc16c(buf);
 
   smb_hfield(&smsg, RECIPIENT, strlen(msg->to), msg->to);
   strcpy(buf, msg->to);
   strlwr(buf);
-  smsg.idx.to = strCrc16(buf);
+  smsg.idx.to = strCrc16c(buf);
 
   smb_hfield(&smsg, SUBJECT, strlen(msg->re), msg->re);
   strcpy(buf, msg->re);
   strlwr(buf);
-  smsg.idx.subj = strCrc16(buf);
+  smsg.idx.subj = strCrc16c(buf);
 
   // calculate maximum possible size of sbody/stail
   for(l = 0, fbuf = msg->txt; *fbuf != NUL; l++, fbuf++)

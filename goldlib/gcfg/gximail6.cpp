@@ -68,7 +68,7 @@ void gareafile::ReadIMail185(char* options, char* file, char* impath) {
     // Fido netmail
     if(not strblank(CF->netmail)) {
       aa.reset();
-      aa.msgbase = fidomsgtype;
+      aa.basetype = fidomsgtype;
       aa.type = GMB_NET;
       aa.attr = attribsnet;
       aa.aka = CAST(ftn_addr, CF->aka[0]);
@@ -96,22 +96,22 @@ void gareafile::ReadIMail185(char* options, char* file, char* impath) {
           switch(AR.msg_base_type & BASEMASK) {
 
             case MSGTYPE_SDM:
-              aa.msgbase = fidomsgtype;
+              aa.basetype = fidomsgtype;
               strcpy(aa.path, AR.msg_path);
               break;
 
             case MSGTYPE_SQUISH:
-              aa.msgbase = GMB_SQUISH;
+              aa.basetype = "SQUISH";
               strcpy(aa.path, AR.msg_path);
               break;
 
             case MSGTYPE_JAM:
-              aa.msgbase = GMB_JAM;
+              aa.basetype = "JAM";
               strcpy(aa.path, AR.msg_path);
               break;
 
             case MSGTYPE_HUDSON:
-              aa.msgbase = GMB_HUDSON;
+              aa.basetype = "HUDSON";
               if((AR.brd >= 1) and (AR.brd <= 200))
                 aa.board = AR.brd;
               else {

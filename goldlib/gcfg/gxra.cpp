@@ -142,7 +142,7 @@ void gareafile::ReadRemoteAccess(char* tag) {
 
             if(area->Attribute & 0x80) {
               aa.setpath(STRNP2C(area->JAMbase));
-              aa.msgbase = GMB_JAM;
+              aa.basetype = "JAM";
               AddNewArea(aa);
             }
             else {
@@ -150,7 +150,7 @@ void gareafile::ReadRemoteAccess(char* tag) {
                 aa.board = area->AreaNum;
               else
                 aa.board = n;
-              aa.msgbase = GMB_HUDSON;
+              aa.basetype = "HUDSON";
               AddNewArea(aa);
             }
           }
@@ -163,7 +163,7 @@ void gareafile::ReadRemoteAccess(char* tag) {
           fread(area, sizeof(_messagesra), 1, fp);
           if(*area->name) {
             aa.reset();
-            aa.msgbase = GMB_HUDSON;
+            aa.basetype = "HUDSON";
             aa.board = n+1;
             aa.aka = CAST(ftn_addr, config->Address[area->akaaddress]);
             switch(area->type) {

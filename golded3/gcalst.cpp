@@ -105,41 +105,38 @@ void AreaList::Reset() {
 //  ------------------------------------------------------------------
 //  Return a new'ed area of the specified format
 
-Area* AreaList::NewArea(int msgbase) {
+Area* AreaList::NewArea(const char *basetype) {
 
   gmo_area* ap = NULL;
-  switch(msgbase) {
-    case MT_SEPARATOR:  ap = new SepArea;     break;
-    case MT_FTS1:
-    case MT_OPUS:       ap = new FidoArea;    break;
-    #ifndef GMB_NOEZY
-    case MT_EZYCOM:     ap = new EzycomArea;  break;
-    #endif
-    #ifndef GMB_NOGOLD
-    case MT_GOLDBASE:   ap = new GoldArea;    break;
-    #endif
-    #ifndef GMB_NOHUDS
-    case MT_HUDSON:     ap = new HudsArea;    break;
-    #endif
-    #ifndef GMB_NOJAM
-    case MT_JAM:        ap = new JamArea;     break;
-    #endif
-    #ifndef GMB_NOPCB
-    case MT_PCBOARD:    ap = new PcbArea;     break;
-    #endif
-    #ifndef GMB_NOSQSH
-    case MT_SQUISH:     ap = new SquishArea;  break;
-    #endif
-    #ifndef GMB_NOWCAT
-    case MT_WILDCAT:    ap = new WCatArea;    break;
-    #endif
-    #ifndef GMB_NOXBBS
-    case MT_ADEPTXBBS:  ap = new XbbsArea;    break;
-    #endif
-    #ifndef GMB_NOSMB
-    case MT_SMB:        ap = new SMBArea;     break;
-    #endif
-  }
+  if(streql(basetype, "SEPARATOR")) ap = new SepArea;
+  else if(streql(basetype, "FTS1") or streql(basetype, "OPUS")) ap = new FidoArea;
+  #ifndef GMB_NOEZY
+  else if(streql(basetype, "EZYCOM")) ap = new EzycomArea;
+  #endif
+  #ifndef GMB_NOGOLD
+  else if(streql(basetype, "GOLDBASE")) ap = new GoldArea;
+  #endif
+  #ifndef GMB_NOHUDS
+  else if(streql(basetype, "HUDSON")) ap = new HudsArea;
+  #endif
+  #ifndef GMB_NOJAM
+  else if(streql(basetype, "JAM")) ap = new JamArea;
+  #endif
+  #ifndef GMB_NOPCB
+  else if(streql(basetype, "PCBOARD")) ap = new PcbArea;
+  #endif
+  #ifndef GMB_NOSQSH
+  else if(streql(basetype, "SQUISH")) ap = new SquishArea;
+  #endif
+  #ifndef GMB_NOWCAT
+  else if(streql(basetype, "WILDCAT")) ap = new WCatArea;
+  #endif
+  #ifndef GMB_NOXBBS
+  else if(streql(basetype, "ADEPTXBBS")) ap = new XbbsArea;
+  #endif
+  #ifndef GMB_NOSMB
+  else if(streql(basetype, "SMB")) ap = new SMBArea;
+  #endif
   return new Area(ap);
 }
 
@@ -265,7 +262,7 @@ void AreaList::WriteAreaDef(const char* file) {
   Path path;
   char groupid[10], echoid[sizeof(Echo)+2];
   int maxechoid=0, maxdesc=0, maxgroupid=0, maxpath=0, maxaddr=0, maxattr=0;
-  char desc[sizeof(Desc)+2], type[6], msgbase[7], addr[40], attr[150], origin[163];
+  char desc[sizeof(Desc)+2], type[6], msgbase[9], addr[40], attr[150], origin[163];
 
   fp = fsopen(file, "wt", CFG->sharemode);
   if(fp) {
@@ -318,37 +315,12 @@ void AreaList::WriteAreaDef(const char* file) {
         strcpy(type, "Echo ");
       else if((*aa)->islocal())
         strcpy(type, "Local");
-      switch((*aa)->msgbase()) {
-        case MT_OPUS:      strcpy(msgbase, "Opus  "); break;
-        case MT_FTS1:      strcpy(msgbase, "Fts1  "); break;
-        #ifndef GMB_NOHUDS
-        case MT_HUDSON:    strcpy(msgbase, "Hudson"); break;
-        #endif
-        #ifndef GMB_NOGOLD
-        case MT_GOLDBASE:  strcpy(msgbase, "Gold  "); break;
-        #endif
-        #ifndef GMB_NOSQSH
-        case MT_SQUISH:    strcpy(msgbase, "Squish"); break;
-        #endif
-        #ifndef GMB_NOEZY
-        case MT_EZYCOM:    strcpy(msgbase, "Ezycom"); break;
-        #endif
-        #ifndef GMB_NOJAM
-        case MT_JAM:       strcpy(msgbase, "Jam   "); break;
-        #endif
-        #ifndef GMB_NOPCB
-        case MT_PCBOARD:   strcpy(msgbase, "Pcb   "); break;
-        #endif
-        #ifndef GMB_NOWCAT
-        case MT_WILDCAT:   strcpy(msgbase, "WCat  "); break;
-        #endif
-        #ifndef GMB_NOXBBS
-        case MT_ADEPTXBBS: strcpy(msgbase, "XBBS  "); break;
-        #endif
-        #ifndef GMB_NOSMB
-        case MT_SMB:       strcpy(msgbase, "SMB   "); break;
-        #endif
-      }
+      #ifndef GMB_NOXBBS
+      if(streql((*aa)->basetype(), "ADEPTXBBS"))
+        strcpy(msgbase, "XBBS");
+      else
+      #endif
+        strxcpy(msgbase, (*aa)->basetype(), sizeof(msgbase));
       if(strchr((*aa)->echoid(), ' '))
         sprintf(echoid, "\"%s\"", (*aa)->echoid());
       else
@@ -419,11 +391,12 @@ void AreaList::SetAreaDesc(char* echoid, char* desc) {
 
 //  ------------------------------------------------------------------
 
+#ifndef GMB_NOPCB
 void PcbAdjustArea(uint rec, const char* msgfile) {
 
   for(uint n=0; n<AL.size(); n++) {
     Area* a = AL[n];
-    if(a->ispcboard()) {
+    if(streql(a->basetype(), "PCBOARD")) {
       if((a->board() == rec) and (*a->path() == NUL)) {
         a->set_path(msgfile);
         break;
@@ -435,6 +408,7 @@ void PcbAdjustArea(uint rec, const char* msgfile) {
     }
   }
 }
+#endif
 
 
 //  ------------------------------------------------------------------

@@ -68,11 +68,11 @@ void gareafile::ReadDB130(char* tag, char* dbpath) {
           aa.reset();
           switch(toupper(AA2.msgbase)) {
             case 'Q':
-              aa.msgbase = GMB_HUDSON;
+              aa.basetype = "HUDSON";
               aa.board = AA2.board;
               break;
             case 'F':
-              aa.msgbase = fidomsgtype;
+              aa.basetype = fidomsgtype;
               aa.setpath(STRNP2C(AA2.path));
               break;
           }
@@ -129,11 +129,11 @@ void gareafile::ReadDB1046(char* file, char* tag) {
         aa.reset();
         switch(toupper(ADF->msgbase)) {
           case 'Q':
-            aa.msgbase = GMB_HUDSON;
+            aa.basetype = "HUDSON";
             aa.board = ADF->board;
             break;
           case 'F':
-            aa.msgbase = fidomsgtype;
+            aa.basetype = fidomsgtype;
             aa.setpath(STRNP2C(ADF->path));
             break;
         }
@@ -192,11 +192,11 @@ void gareafile::ReadDB1047A22(char* file, int reclen, char* tag) {
           aa.reset();
           switch(toupper(ADF->msgbase)) {
             case 'Q':
-              aa.msgbase = GMB_HUDSON;
+              aa.basetype = "HUDSON";
               aa.board = ADF->board;
               break;
             case 'F':
-              aa.msgbase = fidomsgtype;
+              aa.basetype = fidomsgtype;
               aa.setpath(STRNP2C(ADF->path));
               break;
           }
@@ -258,11 +258,11 @@ void gareafile::ReadDB2011(char* file, int reclen, char* tag) {
             case 'Q':
               if(ADF->board < 1 or ADF->board > 200)
                 continue;   // Bad area number
-              aa.msgbase = GMB_HUDSON;
+              aa.basetype = "HUDSON";
               aa.board = ADF->board;
               break;
             case 'F':
-              aa.msgbase = fidomsgtype;
+              aa.basetype = fidomsgtype;
               aa.setpath(STRNP2C(ADF->path));
               break;
           }
@@ -384,12 +384,12 @@ void gareafile::ReadDBridge(char* tag) {
       aa.type = GMB_NET;
       aa.attr = attribsnet;
       if(type == 'F') {
-        aa.msgbase = fidomsgtype;
+        aa.basetype = fidomsgtype;
         aa.setpath(strbtrim(netpath));
       }
       else if(type == 'Q') {
         strtrim(buf);
-        aa.msgbase = GMB_HUDSON;
+        aa.basetype = "HUDSON";
         aa.board = atoi(buf+50);
       }
       aa.setdesc("D'Bridge Netmail");
@@ -400,7 +400,7 @@ void gareafile::ReadDBridge(char* tag) {
     strbtrim(badecho);
     if(*badecho) {
       aa.reset();
-      aa.msgbase = fidomsgtype;
+      aa.basetype = fidomsgtype;
       aa.type = GMB_ECHO;
       aa.attr = attribsecho;
       aa.setpath(badecho);

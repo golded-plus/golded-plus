@@ -114,7 +114,7 @@ void gareafile::ReadSuperBBS(char* tag) {
               aa.reset();
 
               aa.board = n + 1;
-              aa.msgbase = GMB_HUDSON;
+              aa.basetype = "HUDSON";
               aa.groupid = boards->Group;
               aa.setorigin(*config->OriginLine ? config->OriginLine : origin);
 

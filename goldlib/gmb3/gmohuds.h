@@ -292,6 +292,9 @@ public:
   _HudsArea() { wide = NULL; }
   virtual ~_HudsArea() {}
 
+  virtual bool havearrivedstamp() const { return false; }
+  virtual bool havereceivedstamp() const { return false; }
+
   //  ----------------------------------------------------------------
   //  Messagebase member functions
   

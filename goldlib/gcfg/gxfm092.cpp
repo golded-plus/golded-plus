@@ -49,7 +49,7 @@ void gareafile::ReadFMail092(FILE* fp, char* path, char* file, char* options) {
   if(not strblank(cfg->netPath)) {
     aa.reset();
     aa.aka = cfg->akaList[0].nodeNum;
-    aa.msgbase = fidomsgtype;
+    aa.basetype = fidomsgtype;
     aa.type = GMB_NET;
     aa.attr = attribsnet;
     aa.setpath(cfg->netPath);
@@ -62,7 +62,7 @@ void gareafile::ReadFMail092(FILE* fp, char* path, char* file, char* options) {
   if(not strblank(cfg->sentPath)) {
     aa.reset();
     aa.aka = cfg->akaList[0].nodeNum;
-    aa.msgbase = fidomsgtype;
+    aa.basetype = fidomsgtype;
     aa.type = GMB_NET;
     aa.attr = attribsnet;
     aa.setpath(cfg->sentPath);
@@ -75,7 +75,7 @@ void gareafile::ReadFMail092(FILE* fp, char* path, char* file, char* options) {
   if(not strblank(cfg->rcvdPath)) {
     aa.reset();
     aa.aka = cfg->akaList[0].nodeNum;
-    aa.msgbase = fidomsgtype;
+    aa.basetype = fidomsgtype;
     aa.type = GMB_NET;
     aa.attr = attribsnet;
     aa.setpath(cfg->rcvdPath);
@@ -88,7 +88,7 @@ void gareafile::ReadFMail092(FILE* fp, char* path, char* file, char* options) {
   for(int x=0; x<MAX_AKAS; x++) {
     if(cfg->netmailBoard[x] and cfg->netmailBoard[x] < 201) {
       aa.reset();
-      aa.msgbase = GMB_HUDSON;
+      aa.basetype = "HUDSON";
       aa.type = GMB_NET;
       aa.attr = attribsnet;
       aa.board = cfg->netmailBoard[x];
@@ -106,7 +106,7 @@ void gareafile::ReadFMail092(FILE* fp, char* path, char* file, char* options) {
   if(cfg->recBoard and cfg->recBoard < 201) {
     aa.reset();
     aa.aka = cfg->akaList[0].nodeNum;
-    aa.msgbase = GMB_HUDSON;
+    aa.basetype = "HUDSON";
     aa.type = GMB_ECHO;
     aa.attr = attribsecho;
     aa.board = cfg->recBoard;
@@ -119,7 +119,7 @@ void gareafile::ReadFMail092(FILE* fp, char* path, char* file, char* options) {
   if(cfg->badBoard and cfg->badBoard < 201) {
     aa.reset();
     aa.aka = cfg->akaList[0].nodeNum;
-    aa.msgbase = GMB_HUDSON;
+    aa.basetype = "HUDSON";
     aa.type = GMB_ECHO;
     aa.attr = attribsecho;
     aa.board = cfg->badBoard;
@@ -132,7 +132,7 @@ void gareafile::ReadFMail092(FILE* fp, char* path, char* file, char* options) {
   if(cfg->dupBoard and cfg->dupBoard < 201) {
     aa.reset();
     aa.aka = cfg->akaList[0].nodeNum;
-    aa.msgbase = GMB_HUDSON;
+    aa.basetype = "HUDSON";
     aa.type = GMB_ECHO;
     aa.attr = attribsecho;
     aa.board = cfg->dupBoard;
@@ -145,7 +145,7 @@ void gareafile::ReadFMail092(FILE* fp, char* path, char* file, char* options) {
   if(not strblank(cfg->pmailPath)) {
     aa.reset();
     aa.aka = cfg->akaList[0].nodeNum;
-    aa.msgbase = fidomsgtype;
+    aa.basetype = fidomsgtype;
     aa.type = GMB_ECHO;
     aa.attr = attribsecho;
     aa.setpath(cfg->pmailPath);
@@ -189,7 +189,7 @@ void gareafile::ReadFMail092(FILE* fp, char* path, char* file, char* options) {
             break;
         }
         aa.board = ar->board;
-        aa.msgbase = GMB_HUDSON;
+        aa.basetype = "HUDSON";
         aa.setdesc(ar->comment);
         aa.setechoid(ar->areaNameOld[0] ? ar->areaNameOld : ar->areaName);
         aa.setorigin(ar->originLine);

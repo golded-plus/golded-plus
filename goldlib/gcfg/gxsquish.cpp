@@ -110,13 +110,13 @@ void gareafile::ReadSquishFile(char* path, char* file, char* options, char* orig
           // If not pass-through
           if(not striinc("-0", val)) {
 
-            aa.msgbase = fidomsgtype;
+            aa.basetype = fidomsgtype;
             aa.groupid = group;
             char* p = val;
 
             while(*p) {
               if(strnieql(p, "-$", 2)) {
-                aa.msgbase = GMB_SQUISH;
+                aa.basetype = "SQUISH";
                 p += 2;
                 if((tolower(*p) == 'g') and isalpha(p[1])) {
                   if(isdigit(p[1]))
@@ -132,7 +132,7 @@ void gareafile::ReadSquishFile(char* path, char* file, char* options, char* orig
                 }
               }
               else if(strnieql(p, "-f", 2)) {
-                aa.msgbase = fidomsgtype;
+                aa.basetype = fidomsgtype;
                 p += 2;
               }
               else if(strnieql(p, "-p", 2)) {

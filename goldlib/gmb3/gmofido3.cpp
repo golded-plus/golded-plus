@@ -65,29 +65,27 @@ int FidoArea::load_message(int __mode, gmsg* __msg, FidoHdr& __hdr) {
   strxcpy(__msg->to, __hdr.to, 36);
   strxcpy(__msg->re, __hdr.re, 72);
 
-  __msg->orig.zone  = __msg->oorig.zone  = __hdr.ftsc.origzone;
-  __msg->orig.net   = __msg->oorig.net   = __hdr.orignet;
-  __msg->orig.node  = __msg->oorig.node  = __hdr.orignode;
-  __msg->orig.point = __msg->oorig.point = __hdr.ftsc.origpoint;
-
-  __msg->dest.zone  = __msg->odest.zone  = __hdr.ftsc.destzone;
-  __msg->dest.net   = __msg->odest.net   = __hdr.destnet;
-  __msg->dest.node  = __msg->odest.node  = __hdr.destnode;
-  __msg->dest.point = __msg->odest.point = __hdr.ftsc.destpoint;
-
   if(isopus()) {
     __msg->orig.zone  = __msg->oorig.zone  =
     __msg->dest.zone  = __msg->odest.zone  =
     __msg->orig.point = __msg->oorig.point =
     __msg->dest.point = __msg->odest.point = 0;
-  }
 
-  // Convert datetime
-  if(isopus()) {
+    // Convert datetime
     __msg->written = FTimeToTime(&__hdr.opus.written);
     __msg->arrived = FTimeToTime(&__hdr.opus.arrived);
   }
   else {
+    __msg->orig.zone  = __msg->oorig.zone  = __hdr.ftsc.origzone;
+    __msg->orig.net   = __msg->oorig.net   = __hdr.orignet;
+    __msg->orig.node  = __msg->oorig.node  = __hdr.orignode;
+    __msg->orig.point = __msg->oorig.point = __hdr.ftsc.origpoint;
+
+    __msg->dest.zone  = __msg->odest.zone  = __hdr.ftsc.destzone;
+    __msg->dest.net   = __msg->odest.net   = __hdr.destnet;
+    __msg->dest.node  = __msg->odest.node  = __hdr.destnode;
+    __msg->dest.point = __msg->odest.point = __hdr.ftsc.destpoint;
+
     __msg->written = __msg->arrived = 0;
   }
   __msg->written = __msg->written ? __msg->written : FidoTimeToUnix(__hdr.datetime);

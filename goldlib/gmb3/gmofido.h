@@ -139,6 +139,8 @@ protected:
   FidoWide* wide;
   FidoData* data;
 
+  inline bool isopus() const { return streql(cfg.basetype, "OPUS"); }
+
   void data_open();
   void data_close();
 
@@ -153,6 +155,9 @@ public:
 
   FidoArea() { wide = NULL; data = NULL; }
   virtual ~FidoArea() {}
+
+  virtual bool havearrivedstamp() const { return isopus() ? true : false; }
+  virtual bool havereceivedstamp() const { return false; }
 
   //  ----------------------------------------------------------------
   //  Messagebase member functions

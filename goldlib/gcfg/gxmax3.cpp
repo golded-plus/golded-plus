@@ -114,10 +114,10 @@ void gareafile::ReadMaximus3(char* mxpath, char* areafile, char* options) {
           aa.reset();
           switch(area->type) {
             case MSGTYPE_SQUISH:
-              aa.msgbase = GMB_SQUISH;
+              aa.basetype = "SQUISH";
               break;
             case MSGTYPE_SDM:
-              aa.msgbase = fidomsgtype;
+              aa.basetype = fidomsgtype;
               break;
             default:
               continue;

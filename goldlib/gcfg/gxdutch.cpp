@@ -75,7 +75,7 @@ void gareafile::ReadDutchie(char* tag) {
       if(*ptr != ';' and *ptr != '-' and strnicmp(ptr, "PASSTHRU", 8) and *ptr != '\x1A' and *ptr) {
 
         aa.reset();
-        aa.msgbase = GMB_FTS1;
+        aa.basetype = "FTS1";
         ptr = strtok(ptr, " \t");     // Get path
         aa.setpath(ptr);
         ptr = strtok(NULL, " \t");    // Get description

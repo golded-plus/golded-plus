@@ -64,41 +64,41 @@ void Cleanup(void) {
     AL.Reset();
 
     #ifndef GMB_NOXBBS
-    if(AL.msgbases & MT_ADEPTXBBS)
+    if(find(AL.basetypes, "ADEPTXBBS"))
       XbbsExit();
     #endif
     #ifndef GMB_NOEZY
-    if(AL.msgbases & MT_EZYCOM)
+    if(find(AL.basetypes, "EZYCOM"))
       EzycomExit();
     #endif
-    if(AL.msgbases & MT_FIDO)
+    if(find(AL.basetypes, "OPUS") or find(AL.basetypes, "FTS1"))
       FidoExit();
     #ifndef GMB_NOGOLD
-    if(AL.msgbases & MT_GOLDBASE)
+    if(find(AL.basetypes, "GOLDBASE"))
       GoldExit();
     #endif
     #ifndef GMB_NOHUDS
-    if(AL.msgbases & MT_HUDSON)
+    if(find(AL.basetypes, "HUDSON"))
       HudsExit();
     #endif
     #ifndef GMB_NOJAM
-    if(AL.msgbases & MT_JAM)
+    if(find(AL.basetypes, "JAM"))
       JamExit();
     #endif
     #ifndef GMB_NOPCB
-    if(AL.msgbases & MT_PCBOARD)
+    if(find(AL.basetypes, "PCBOARD"))
       PcbExit();
     #endif
     #ifndef GMB_NOSQSH
-    if(AL.msgbases & MT_SQUISH)
+    if(find(AL.basetypes, "SQUISH"))
       SquishExit();
     #endif
     #ifndef GMB_NOWCAT
-    if(AL.msgbases & MT_WILDCAT)
+    if(find(AL.basetypes, "WILDCAT"))
       WCatExit();
     #endif
     #ifndef GMB_NOSMB
-    if(AL.msgbases & MT_SMB)
+    if(find(AL.basetypes, "SMB"))
       SMBExit();
     #endif
 
