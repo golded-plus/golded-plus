@@ -2969,8 +2969,8 @@ char* ParseInternetAddr(char* __string, char* __name, char* __addr) {
     }
     if(*begchar == '(' /*)*/)
       begchar++;
-    strbtrim(strxcpy(__name, begchar, MinV((uint)(endchar-begchar)+1, sizeof(INam))));
-    strbtrim(strxcpy(__addr, __string, MinV((uint)(begchar-__string), sizeof(IAdr))));
+    strbtrim(strxcpy(__name, begchar, MinV((size_t)(endchar-begchar)+1, (size_t)sizeof(INam))));
+    strbtrim(strxcpy(__addr, __string, MinV((size_t)(begchar-__string), (size_t)sizeof(IAdr))));
   }
   else if(*endchar == '>') {
     char* endaddr = endchar;
@@ -2982,8 +2982,8 @@ char* ParseInternetAddr(char* __string, char* __name, char* __addr) {
       endchar--;
     }
     __string = strskip_wht(__string);
-    strbtrim(strxcpy(__name, __string, MinV((uint)(endchar-__string)+1, sizeof(INam))));
-    strbtrim(strxcpy(__addr, begaddr, MinV((uint)(endaddr-begaddr)+1, sizeof(IAdr))));
+    strbtrim(strxcpy(__name, __string, MinV((size_t)(endchar-__string)+1, (size_t)sizeof(INam))));
+    strbtrim(strxcpy(__addr, begaddr, MinV((size_t)(endaddr-begaddr)+1, (size_t)sizeof(IAdr))));
   }
   else {
     strxcpy(__addr, __string, sizeof(IAdr));
