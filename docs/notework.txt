@@ -12,6 +12,10 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ Added patch by Vladimir V. Korablin for @notforward template token.
+  The line containing this token is left only when message IS NOT
+  a forward. This is "@forward"'s counterpart.
+
 ! If two AreaSep have the same echotag then they will appear only
   once.
 

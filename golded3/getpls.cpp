@@ -89,6 +89,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
 
   enum TPL_TOKEN_IDS {
     TPLTOKEN_FORWARD,
+    TPLTOKEN_NOTFORWARD,
     TPLTOKEN_CHANGED,
     TPLTOKEN_NET,
     TPLTOKEN_ECHO,
@@ -127,6 +128,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
 
   static const tpl_token token_list[] = {
     { CSTR_COMMA_SIZEOF_CSTR("forward")      },
+    { CSTR_COMMA_SIZEOF_CSTR("notforward")   },
     { CSTR_COMMA_SIZEOF_CSTR("changed")      },
     { CSTR_COMMA_SIZEOF_CSTR("net")          },
     { CSTR_COMMA_SIZEOF_CSTR("echo")         },
@@ -344,6 +346,12 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
 
             case TPLTOKEN_FORWARD:
               if(mode != MODE_FORWARD)
+                goto loop_next;
+              token = end_token;
+              break;
+
+            case TPLTOKEN_NOTFORWARD:
+              if(mode == MODE_FORWARD)
                 goto loop_next;
               token = end_token;
               break;
