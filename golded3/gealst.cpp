@@ -343,7 +343,7 @@ void AreaList::Sort(const char* specs, int first, int last) {
   if(last == -1)
     last = idx.size();
   if(*sortspec) {
-    sort(idx.begin()+first, idx.begin()+last, AreaListCmp2);
+    std::sort(idx.begin()+first, idx.begin()+last, AreaListCmp2);
   }
 }
 
