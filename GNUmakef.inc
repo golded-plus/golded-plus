@@ -15,14 +15,13 @@ FDEPPATH=$(TOP)/$(DEPPATH)/$(PLATFORM)
 bld$(PLATFORM).inc: $(TARGET).all
 	@echo making sourcelist
 	@grep -w $(PLATFORM) $< \
-		| sed 's/^\([[:alnum:]_]*\)[ ]*\([[:alnum:]_]*\).*/SOURCES+=\1.\2/g' > $@
+		| sed 's;^\([[:alnum:]_]*\)[ ]*\([[:alnum:]_]*\).*;SOURCES+=\1.\2;' > $@
 
 ifeq ($(FDEPPATH)/dep,$(wildcard $(FDEPPATH)/de?))
 $(FDEPPATH)/$(TARGET)/%.d: %.cpp
 	@echo making depends for $<
 	@$(SHELL) -ec '$(CXX) -c -M $(CPPFLAGS) $< \
-		| sed '\''s;\($*\)\$(OBJEXT)[ :]*;$(subst /,\/,$(FOBJPATH))\/\1\$(OBJEXT) $(subst /,\/,$@): ;g'\'' > $@; \
-		[ -s $@ ] || rm -f $@'
+		| sed '\''s;\($*\)\$(OBJEXT)[ :]*;$(subst /,\/,$(FOBJPATH))\/\1\$(OBJEXT) $(subst /,\/,$@): ;g'\'' > $@'
 
 $(FDEPPATH)/$(TARGET)/%.d: %.c
 	@echo making depends for $<
@@ -51,7 +50,7 @@ $(FOBJPATH)/%.res: %.rc
 endif
 
 SOURCES=
--include bld$(PLATFORM).inc
+include bld$(PLATFORM).inc
 ifeq ($(PLATFORM),cyg)
 OBJS=$(addprefix $(FOBJPATH)/,$(patsubst %.rc,%.o,$(patsubst %.c,%.o,$(patsubst %.cpp,%.o,$(filter %.c %.cpp %.rc,$(SOURCES))))))
 else
@@ -69,6 +68,8 @@ clean:
 
 ifeq ($(FDEPPATH)/dep,$(wildcard $(FDEPPATH)/de?))
 ifneq ($(DEPS),)
--include $(DEPS)
+include $(DEPS)
 endif
 endif
+
+
