@@ -380,6 +380,8 @@ void gareafile::ReadHPT(char* tag) {
 
   CfgSquishuserpath(path);
 
+  CfgJAMSMAPIHighwater(true);
+
   ReadHPTFile(path, file, options, origin, defaultgroup);
 }
 

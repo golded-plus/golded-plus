@@ -448,6 +448,7 @@ void AddNewArea(AreaCfg& aa);
 void CfgAddress(char* value);
 void CfgOrigin(const char* value);
 void CfgUsername(char* value);
+void CfgJAMSMAPIHighwater(bool value);
 void ReadEcholist(char* value);
 void SetAreaDesc(char* echoid, char* desc);
 
