@@ -25,6 +25,11 @@ ______________________________________________________________________
 
 - Fixed the message-forward feature.
 
+- Fixed a bug in message quoting if QUOTEWRPHARD == YES
+
++ You can now read the output of a command instead of a file, using
+  the syntax |command as the input filename.
+
 ______________________________________________________________________
 
                Notes for GoldED+ 1.1.4.5, June 18 2000

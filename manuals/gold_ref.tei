@@ -8082,6 +8082,14 @@ The &lt;programname&gt; can be one of the following:
     </div2>
     <div2>
       <head>
+        Crashmail
+      </head>
+      <p>
+    Reads the CrashMail II configuration file.
+      </p>
+    </div2>
+    <div2>
+      <head>
         D'Bridge
       </head>
       <p>
