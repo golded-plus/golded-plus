@@ -460,6 +460,7 @@ void extractdirname(char *dir, const char *path) {
   const char *p1 = path;
   char *p2, *p3;
   p3 = p2 = dir;
+  *p3 = NUL;
   while(*p1) {
     if(isslash(*p1))
       p2 = p3;
