@@ -331,8 +331,8 @@
       </head>
       <p>
         <name/JAM/ format as defined in the <name/JAM(mbp)/ revision 001.
-        Also <name/CrashMail/, <name/CrashEcho/, and <name/HPT/ highwater
-        marks are supported.
+        Also <name/CrashMail/, <name/CrashEcho/, and <name/SMAPI/ (<name/HPT/)
+	highwater marks are supported.
       </p>
       <p>
         <name/GoldED+/ currently ignores revision number of header structure
@@ -479,7 +479,7 @@
       <p>
         There is a keyword
         <ref target=WILDCATUSERNO><kw/WILDCATUSERNO/</ref>, which works just
-        like the other <kw/>&lt;msgbase&gt;USERNO</kw> keywords. By default
+        like the other <kw>&lt;msgbase&gt;USERNO</kw> keywords. By default
         <name/GoldED+/ will use the first record in the lastread file
         (<code/*.lrd/), so if you are not the first person in the userbase,
         or you are sharing the messagebase with others, you may have to
@@ -662,8 +662,8 @@ golded &lsqb;options&rsqb; &lsqb;keystacking&rsqb;</eg>
           </label>
           <item>
             Mute. Disables all sounds in <name/GoldED+/. The same functionality
-            provided by the <ptr ref=BEEPNOISES><kw/BEEPNOISES/</ref> keyword
-            in the configuration file.
+            provided by the <ref target=BEEPNOISES><kw/BEEPNOISES/</ref>
+            keyword in the configuration file.
           </item>
           <label>
             <code>-n</code>
@@ -2786,7 +2786,7 @@ AREA:&lt;OriginalEchoID&gt;</eg>
           for several setups with different addresses, for example two people
           sharing the same msgbase.<lb>
           If you wish to read packed area (f.e. from CD archive) <name/GoldED+/
-          allows you that. You need to specify pathname <b/with/ extension
+          allows you that. You need to specify pathname <hi/with/ extension
           in the <ident>path/board</ident> field, set <gi/PKD/ attribute and
           define packer with <ref target=UNPACKER><kw/UNPACKER/</ref> keyword.
           This feature is not supported for <name/Hudson/ and <name/GoldBase/
@@ -4039,7 +4039,10 @@ AREALISTFORMAT "AM D C4PU4N E G "]]></eg>
           See also:
         </label>
         <item>
-          <ref target=AREALISTFORMAT><kw/AREALISTFORMAT/</ref>
+          <ref target=AREALISTFORMAT><kw/AREALISTFORMAT/</ref>,
+          <ref target=DISPPAGEBAR><kw/DISPPAGEBAR/</ref>,
+          <ref target=FILELISTPAGEBAR><kw/FILELISTPAGEBAR/</ref>,
+          <ref target=MSGLISTPAGEBAR><kw/MSGLISTPAGEBAR/</ref>
         </item>
       </list>
     </div2>
@@ -4760,7 +4763,7 @@ AREARENAME LOCAL001 BBS.USERS</eg>
           Parameters:
         </label>
         <item>
-          If enabled, <name/GoldED+/ will display pagebar in the arealist, if
+          If enabled, <name/GoldED+/ will bypass area selection screen, if
           disabled - will not.
         </item>
         <label>
@@ -5149,8 +5152,8 @@ AREASCAN INT*.*    ; Scan all areas beginning with INT and
           are sorted into the positions you want. If you don't sort areas, you
           must make sure that the <kw/AREASEP/ definitions are placed correctly
           in your configuration file, that is, between/before
-          <ref taget=AREA><kw/AREA/</ref> and
-          <ref taget=AREADEF><kw/AREADEF/</ref> lines.<lb>
+          <ref target=AREA><kw/AREA/</ref> and
+          <ref target=AREADEF><kw/AREADEF/</ref> lines.<lb>
           You will note that the separation lines are not fully connected into
           the left and right edges. This is both by design and for practical
           reasons (easier to implement), not a bug.<lb>
@@ -5491,7 +5494,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
         </item>
       </list>
     </div2>
-    <div2>
+    <div2 id=ATTRIBSCC>
       <head>
         ATTRIBSCC &lt;attributes&gt;
       </head>
@@ -5582,9 +5585,9 @@ AREASEP &excl;C "Group C" C Local]]></eg>
         <label>
           Notes:
         </label>
-        <ident>
+        <item>
           Suggested attribute is: <gi/RRC/.
-        </ident>
+        </item>
         <label>
           Processed by:
         </label>
@@ -5596,7 +5599,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
         </label>
         <item>
           <ptr target=MESSAGEATTRS> chapter,
-          <ref target=AREACFMTO><kw/AREACFMTO/</ref>,
+          <ref target=AREACFMREPLYTO><kw/AREACFMREPLYTO/</ref>,
           <ref target=ATTRIBSATTACH><kw/ATTRIBSATTACH/</ref>,
           <ref target=ATTRIBSCC><kw/ATTRIBSCC/</ref>,
           <ref target=ATTRIBSECHO><kw/ATTRIBSECHO/</ref>,
@@ -5763,9 +5766,9 @@ AREASEP &excl;C "Group C" C Local]]></eg>
         <label>
           Notes:
         </label>
-        <ident>
+        <item>
           Suggested attributes are: <gi/PVT/ <gi>K/S</gi> <gi/CRA/.
-        </ident>
+        </item>
         <label>
           Processed by:
         </label>
@@ -6246,7 +6249,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
         </item>
       </list>
     </div2>
-    <div2>
+    <div2 id=BEEPYOURMAIL>
       <head>
         BEEPYOURMAIL
       </head>
@@ -6386,7 +6389,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
         </item>
       </list>
     </div2>
-    <div2>
+    <div2 id=COLOR>
       <head>
         COLOR
       </head>
@@ -6426,7 +6429,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
         </item>
       </list>
     </div2>
-    <div2>
+    <div2 id=COLORSET>
       <head>
         COLORSET
       </head>
@@ -6526,7 +6529,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
         <item>
           <ptr target=MESSAGEATTRS> chapter,
           <ptr target=MESSAGETEMPLATE> chapter,
-          <ref target=AREACFMTO><kw/AREACFMTO/</ref>,
+          <ref target=AREACFMREPLYTO><kw/AREACFMREPLYTO/</ref>,
           <ref target=ATTRIBSCFM><kw/ATTRIBSCFM/</ref>,
           <ref target=CONFIRMRESPONSE><kw/CONFIRMRESPONSE/</ref>,
           <ref target=RCVDISABLESCFM><kw/RCVDISABLESCFM/</ref>
@@ -6578,7 +6581,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
         </label>
         <item>
           <ptr target=MESSAGEATTRS> chapter,
-          <ref target=AREACFMTO><kw/AREACFMTO/</ref>,
+          <ref target=AREACFMREPLYTO><kw/AREACFMREPLYTO/</ref>,
           <ref target=ATTRIBSCFM><kw/ATTRIBSCFM/</ref>,
           <ref target=CONFIRMFILE><kw/CONFIRMFILE/</ref>,
           <ref target=CONFIRMRESPONSE><kw/CONFIRMRESPONSE/</ref>,
@@ -6826,7 +6829,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
           This keyword is valid <hi/ONLY/ in a
           <ref target=RANDOMSYSTEM>Random System</ref> group.<lb>
           This may be helpful for <abbr/QWK/ users, who can create a group for
-          the <attr/QWK/ areas and disable <kw/CTRLINFO/ there.
+          the <abbr/QWK/ areas and disable <kw/CTRLINFO/ there.
         </item>
         <label>
           Processed by:
@@ -7392,8 +7395,8 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           Parameters:
         </label>
         <item>
-          Either the exact <ident/BYTE/ size, the rounded <ident/KBYTE/ size,
-          or <ident/NO/ display at all.
+          The following options are provided: the exact size in <ident/BYTES/,
+          the rounded size in <ident/KBYTES/, or <ident/NO/ display at all.
         </item>
         <label>
           Default:
@@ -7420,7 +7423,8 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           See also:
         </label>
         <item>
-          <ref target=ATTRIBSATTACH><kw/ATTRIBSATTACH/</ref>
+          <ref target=ATTRIBSATTACH><kw/ATTRIBSATTACH/</ref>,
+          <ref target=DISPMSGSIZE><kw/DISPMSGSIZE/</ref>
         </item>
       </list>
     </div2>
@@ -7559,7 +7563,8 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
         </label>
         <item>
           <ref target=DISPHDRDATESET><kw/DISPHDRDATESET/</ref>,
-          <ref target=DISPHDRNODESET><kw/DISPHDRNODESET/</ref>
+          <ref target=DISPHDRNODESET><kw/DISPHDRNODESET/</ref>,
+          <ref target=EDITHDRNAMESET><kw/EDITHDRNAMESET/</ref>
         </item>
       </list>
     </div2>
@@ -7613,7 +7618,637 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
         </label>
         <item>
           <ref target=DISPHDRDATESET><kw/DISPHDRDATESET/</ref>,
-          <ref target=DISPHDRNAMESET><kw/DISPHDRNAMESET/</ref>
+          <ref target=DISPHDRNAMESET><kw/DISPHDRNAMESET/</ref>,
+          <ref target=EDITHDRNODESET><kw/EDITHDRNODESET/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2 id=DISPLISTCURSOR>
+      <head>
+        DISPLISTCURSOR
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPLISTCURSOR/
+          <ident>&lt;TOP/NEARTOP/MIDDLE/NEARBOTTOM/BOTTOM&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Selects the starting position of selection bar in the message list
+          and nodelist browsers.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          <table rows=5 cols=2>
+            <row>
+              <cell>
+                <ident/TOP/
+              </cell>
+              <cell>
+                At the top if possible
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/NEARTOP/
+              </cell>
+              <cell>
+                At top + 1/3 if possible
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/MIDDLE/
+              </cell>
+              <cell>
+                At middle of possible
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/NEARBOTTOM/
+              </cell>
+              <cell>
+                At bottom - 1/3
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/BOTTOM/
+              </cell>
+              <cell>
+                At bottom
+              </cell>
+            </row>
+          </table>
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/MIDDLE/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+      </list>
+    </div2>
+    <div2 id=DISPLISTWRAP>
+      <head>
+        DISPLISTWRAP
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPLISTWRAP/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Enables or disables wrap-around when the selection bar in the main
+          list/browser windows reaches the top or bottom.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/YES/, <name/GoldED+/ will wrap-around when the
+          selection bar in the main list/browser windows reaches the top or
+          bottom. If set to <ident/NO/, the selection bar will stop at the
+          top or bottom when reaches them.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/NO/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+      </list>
+    </div2>
+    <div2 id=DISPLOCALHIGH>
+      <head>
+        DISPLOCALHIGH
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPLOCALHIGH/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls whether <name/GoldED+/ will display the
+          <gi/FROM/ name with the highlight color if a message has the
+          <gi/LOC/ attribute set.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If enabled, <name/GoldED+/ will display the <gi/FROM/ name with the
+          highlight color if a message has the <gi/LOC/ attribute set,
+          otherwise will not.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ptr target=MESSAGEATTRS> chapter,
+          <ref target=BEEPLOCALMSG><kw/BEEPLOCALMSG/</ref>,
+          <ref target=BEEPYOURMAIL><kw/BEEPYOURMAIL/</ref>,
+          <ref target=COLOR><kw/COLOR/</ref>,
+          <ref target=HIGHLIGHTUNREAD><kw/HIGHLIGHTUNREAD/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2 id=DISPMARGIN>
+      <head>
+        DISPMARGIN
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPMARGIN/ <ident/&lt;width&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword defines the right margin (display width) used for
+          message display.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If the <ident/width/ is 0 (zero), <name/GoldED+/ will default to the
+          current screen width. If a negative value is specified, that value
+          will be added to the current screen width (thereby decreasing the
+          display width relative to the screen width).
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          0
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          If the <ref target=DISPPAGEBAR><kw/DISPPAGEBAR/</ref> keyword is
+          enabled, the right margin is automatically decreased by one char.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <!-- FIX ME!!! -->READdecreasemargin,
+          <!-- FIX ME!!! -->READincreasemargin,
+          <ref target=DISPPAGEBAR><kw/DISPPAGEBAR/</ref>,
+          <ref target=EDITQUOTEMARGIN><kw/EDITQUOTEMARGIN/</ref>,
+          <ref target=PRINTMARGIN><kw/PRINTMARGIN/</ref>,
+          <ref target=QUOTEMARGIN><kw/QUOTEMARGIN/</ref>,
+          <ref target=SOUPEXPORTMARGIN><kw/SOUPEXPORTMARGIN/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2 id=DISPMSGSIZE>
+      <head>
+        DISPMSGSIZE
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPMSGSIZE/ <ident>&lt;BYTES/KBYTES/LINES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          When enabled, this keyword displays the msgbody size in the lower
+          left side of the header. The size displayed is for the message body
+          text only, the header and NUL-terminator (and anything that may lurk
+          beyond it) is excluded from the calculation.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The following options are provided: the exact size in <ident/BYTES/,
+          the rounded size in <ident/KBYTES/, the number of <ident/LINES/, or
+          <ident/NO/ display at all.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/BYTES/
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          This feature only works when <hi/reading/ messages. While editing a
+          message in the internal editor, this feature is disabled - however,
+          the size will be displayed when you are in the save message menu
+          (if <ref target=EDITSAVEMENU><kw/EDITSAVEMENU/</ref> is enabled).<lb>
+          If the <ident/KBYTES/ setting is chosen, the value is rounded
+          according to the following formula: kbytes = (bytes + 512) / 1024.
+          So a 600 bytes file is rounded up to <q/1k/, but a 500 bytes
+          file is rounded down to <q/0k/.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=DISPATTACHSIZE><kw/DISPATTACHSIZE/</ref>,
+          <ref target=EDITSAVEMENU><kw/EDITSAVEMENU/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2 id=DISPPAGEBAR>
+      <head>
+        DISPPAGEBAR
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPPAGEBAR/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          If enabled, a <q/pagebar/ (similar to the scrollbar in GUI's) will
+          appear on the right margin, telling you about the relative size
+          and position in the message you are reading.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If enabled, <name/GoldED+/ will display the pagebar, otherwise will
+          not.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          Pagebar is only displayed if a message is longer than a
+          screenful.<lb>
+          The pagebar automatically decreases the
+          <ref target=DISPMARGIN><kw/DISPMARGIN/</ref> by one char.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=AREALISTPAGEBAR><kw/AREALISTPAGEBAR/</ref>,
+          <ref target=DISPMARGIN><kw/DISPMARGIN/</ref>,
+          <ref target=FILELISTPAGEBAR><kw/FILELISTPAGEBAR/</ref>,
+          <ref target=MSGLISTPAGEBAR><kw/MSGLISTPAGEBAR/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2 id=DISPREALMSGNO>
+      <head>
+        DISPREALMSGNO
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPREALMSGNO/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls how the <name/GoldED+/ displays message number
+          in the message reader.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+         If set to <ident/YES/ the actual (real) message numbers will be
+         displayed. When set to <ident/NO/, <name/GoldED+/ will display
+         <q/relative/ numbers, which are always sequential from msg number 1.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/NO/
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          Normally the relative numbers are best, because they reflect the
+          actual number of messages in the system.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <!-- FIX ME!!! -->READtogglerealmsgno
+        </item>
+      </list>
+    </div2>
+    <div2 id=DISPSOFTCR>
+      <head>
+        DISPSOFTCR
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPSOFTCR/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This option controls how <name/GoldED+/ will process the so-called
+          <gi/Soft-CR/ character (<name/ASCII/ 141, hexadecimal 8Dh) when
+          display message containing this character.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If enabled, <name/GoldED+/ will treat the <gi/Soft-CR/ character just
+          like any other displayable character, instead of ignoring it like
+          linefeed chars.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/NO/
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          Enabling this feature is <hi/mandatory/ to make
+          <ref target=EDITSOFTCRXLAT><kw/EDITSOFTCRXLAT/</ref> feature
+          working.<lb>
+          The <name/Ezycom/ message base format requires the <gi/Soft-CR/ to
+          terminate each line. Therefore this feature is unlikely to be useful
+          to <name/Ezycom/ sysops.<lb>
+          The similar functionality may be obtained by defining translation
+          table with <gi/Soft-CR/ translated to the space character. This may
+          be useful if you need different settings for the different areas.<lb>
+          Note that by enabling this feature, you <hi/disable/ the character
+          translation feature that uses the <gi/Soft-CR/ as an escape character
+          (this applies only to so-called <q/COMPOSED/ charset).
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=EDITSOFTCRXLAT><kw/EDITSOFTCRXLAT/</ref>,
+          <ref target=XLATIMPORT><kw/XLATIMPORT/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2 id=DISPSTATUSLINE>
+      <head>
+        DISPSTATUSLINE
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls statusline appearance in the <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/NO/, the statusline at the bottom will be disabled.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
+          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2 id=DISPTABSIZE>
+      <head>
+        DISPTABSIZE
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPTABSIZE/ <ident/&lt;size&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword defines the tab size (number of spaces) used when
+          displaying the tab (<name/ASCII/ 9) character, when pressing
+          keys assigned to <!-- FIX ME!!! -->EDITtab and
+          <!-- FIX ME!!! -->EDITtabreverse, and when importing external data
+          in the internal editor.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The <ident/size/ specifies tab width in the characters.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          8
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          If you use an external editor, you should switch it to create spaces
+          instead of tabs, because tabs are technically not allowed in
+          <name/FidoNet/ technology messages.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <!-- FIX ME!!! -->EDITimportquotebuf,
+          <!-- FIX ME!!! -->EDITimporttext,
+          <!-- FIX ME!!! -->EDITpaste,
+          <!-- FIX ME!!! -->EDITtab,
+          <!-- FIX ME!!! -->EDITtabreverse
+        </item>
+      </list>
+    </div2>
+    <div2 id=DOSPROMPT>
+      <head>
+        DOSPROMPT
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DOSPROMPT/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Controls whether <name/GoldED+/ should add a message about itself to
+          the operating system shell prompt when shelling out.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/YES/, the <name/GoldED+/ will add the message
+          defined with <ref target=LOADLANGUAGE><kw/MS_PROMPT/</ref> keyword in
+          the language configuration file to the system shell.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Bugs:
+        </label>
+        <item>
+          This feature is known to be broken on some platforms.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ptr target=MESSAGEATTRS> chapter,
+          <ref target=BEEPLOCALMSG><kw/BEEPLOCALMSG/</ref>,
+          <ref target=BEEPYOURMAIL><kw/BEEPYOURMAIL/</ref>,
+          <ref target=COLOR><kw/COLOR/</ref>,
+          <ref target=HIGHLIGHTUNREAD><kw/HIGHLIGHTUNREAD/</ref>
         </item>
       </list>
     </div2>
@@ -7622,197 +8257,6 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
 <!-- finished here -->
 
 
-    <div2>
-      <head>
-        DISPLISTCURSOR &lt;top/neartop/middle/nearbottom/bottom&gt;
-      </head>
-      <p>
-  (middle)
-      </p>
-      <p>
-    Selects the starting position of selection bar in the message list
-    and nodelist browsers.
-      </p>
-      <p>
-    Top             At the top if possible.
-    NearTop         At top + 1/3 if possible.
-    Middle          At middle of possible.
-    NearBottom      At bottom - 1/3.
-    Bottom          At bottom.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        DISPLISTWRAP &lt;yes/no&gt;
-      </head>
-      <p>
-  (no)
-      </p>
-      <p>
-    Enables/disables wrap-around when the selection bar in the main
-    list/browser windows reaches the top or bottom.
-      </p>
-    </div2>
-    <div2 id=DISPLOCALHIGH>
-      <head>
-        DISPLOCALHIGH &lt;yes/no&gt;
-      </head>
-      <p>
-  (yes)
-      </p>
-      <p>
-    If enabled, <name>GoldED+</name> will display the FROM name with the highlight
-    color, if a message has the Local (LOC) attribute set.
-      </p>
-      <p>
-    A related keyword is <kw>BEEPLOCALMSG</kw>.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        DISPMARGIN &lt;width&gt;
-      </head>
-      <p>
-  (0)
-      </p>
-      <p>
-    This is the right margin (display width) used for message display.
-    If the value is 0 (zero), <name>GoldED+</name> will default to the current
-    screen width. If a negative value is specified, that value will be
-    added to the current screen width (thereby decreasing the display
-    width relative to the screen width).
-      </p>
-      <p>
-    If the <kw>DISPPAGEBAR</kw> keyword is enabled, the right margin is
-    automatically decreased by one char.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        DISPMSGSIZE &lt;bytes/kbytes/lines/no&gt;
-      </head>
-      <p>
-  (bytes)
-      </p>
-      <p>
-    When enabled, this keyword displays the msgbody size in bytes,
-    kbytes or lines in the lower left side of the header. The size
-    displayed is for the message body text only, the header and
-    nul-terminator (and anything that may lurk beyond it) is excluded
-    from the calculation.
-      </p>
-      <p>
-    NOTE: This feature currently only works when _reading_ msgs. While
-    editing a msg in the internal editor, this feature is disabled -
-    however, the size will be displayed when you are in the Save msg
-    menu (if <kw>EDITSAVEMENU</kw> is enabled).
-      </p>
-    </div2>
-    <div2>
-      <head>
-        DISPPAGEBAR &lt;yes/no&gt;
-      </head>
-      <p>
-  (yes)
-      </p>
-      <p>
-    If enabled, a "pagebar" (similar to the scrollbar in GUI's) will
-    appear on the right margin, telling you about the relative size
-    and position in the message you are reading. It is only displayed
-    if a message is longer than a screenful.
-      </p>
-      <p>
-    The pagebar automatically decreases the <kw>DISPMARGIN</kw> by one char.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        DISPREALMSGNO &lt;yes/no&gt;
-      </head>
-      <p>
-  (no)
-      </p>
-      <p>
-    <name>GoldED+</name> can display the message numbers in two ways:
-      </p>
-      <p>
-    1.   As the actual (real) msg numbers.
-    2.   As "relative" numbers, which are always sequential from msg
-         number 1.
-      </p>
-      <p>
-    Normally the relative numbers are best, because they reflect the
-    actual number of msgs in the system.
-
-READtogglerealmsgno
-      </p>
-    </div2>
-    <div2>
-      <head>
-        DISPSOFTCR &lt;yes/no&gt;
-      </head>
-      <p>
-  (no)
-      </p>
-      <p>
-    If enabled, <name>GoldED+</name> will treat the so-called Soft-CR character
-    (ASCII 141, HEX 8D) just like any other displayable character,
-    instead of ignoring it like linefeed chars (LF). Note that by
-    enabling this feature, you _disable_ the character translation
-    feature that uses the Soft-CR as an escape character. This feature
-    was added to help users in countries which use the Soft-CR
-    character for other purposes like 2-byte characters in Japan.
-      </p>
-      <p>
-    NOTE: The Ezycom msgbase format requires the Soft-CR to terminate
-    each line. Therefore this feature is unlikely to be useful to
-    Ezycom sysops.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        DISPSTATUSLINE &lt;yes/no&gt;
-      </head>
-      <p>
-  (yes)
-      </p>
-      <p>
-    If set to NO, the statusline with memory meter, clock etc. will be
-    disabled. This option has been implemented as a temporary help for
-    visually impaired users. More extensive help may be implemented in
-    future versions.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        DISPTABSIZE &lt;chars&gt;
-      </head>
-      <p>
-  (4)
-      </p>
-      <p>
-    The tab size (number of spaces) used when displaying the tab
-    (ASCII 9) character, and when pressing &lt;Tab&gt; in the internal
-    editor.
-      </p>
-      <p>
-    If you use an external editor, you should switch it to create
-    spaces instead of tabs, because tabs are technically not allowed
-    in FidoNet technology messages.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        DOSPROMPT (yes/no)
-      </head>
-      <p>
-  (yes)
-      </p>
-      <p>
-    If enabled, <name>GoldED+</name> will add a message about itself to the DOS
-    prompt when shelling out.
-      </p>
-    </div2>
     <div2>
       <head>
         EDITAUTOATTACH &lt;yes/no&gt;
@@ -8021,7 +8465,7 @@ READtogglerealmsgno
     including terminating CR's on all lines.
       </p>
     </div2>
-    <div2>
+    <div2 id=EDITHARDTERM>
       <head>
         EDITHARDTERM &lt;yes/no&gt;
       </head>
@@ -8037,9 +8481,11 @@ READtogglerealmsgno
       </p>
       <p>
     This keyword can be used globally and in Random System groups.
+          <ref target=DISPMARGIN><kw/DISPMARGIN/</ref>,
+          <ref target=SOUPEXPORTMARGIN><kw/SOUPEXPORTMARGIN/</ref>
       </p>
     </div2>
-    <div2>
+    <div2 id=EDITHDRNAMESET>
       <head>
         EDITHDRNAMESET &lt;pos&gt; &lt;len&gt;
       </head>
@@ -8052,7 +8498,7 @@ READtogglerealmsgno
     is added to the current display width.
       </p>
     </div2>
-    <div2>
+    <div2 id=EDITHDRNODESET>
       <head>
         EDITHDRNODESET &lt;pos&gt; &lt;len&gt;
       </head>
@@ -8065,7 +8511,7 @@ READtogglerealmsgno
     value is added to the current display width.
       </p>
     </div2>
-    <div2>
+    <div2 id=EDITHEADERATTRS>
       <head>
         EDITHEADERATTRS &lt;yes/no&gt;
       </head>
@@ -8151,7 +8597,7 @@ READtogglerealmsgno
     available from the menu, such as selection of template etc.
       </p>
     </div2>
-    <div2>
+    <div2 id=EDITMIXCASE>
       <head>
         EDITMIXCASE &lt;yes/no&gt;
       </head>
@@ -8210,7 +8656,7 @@ READtogglerealmsgno
     The file is written in the GOLDPATH if there is no explicit path.
       </p>
     </div2>
-    <div2>
+    <div2 id=EDITQUOTEMARGIN>
       <head>
         EDITQUOTEMARGIN &lt;margin&gt;
       </head>
@@ -8223,7 +8669,7 @@ READtogglerealmsgno
     <kw>QUOTEMARGIN</kw>.
       </p>
     </div2>
-    <div2>
+    <div2 id=EDITREPLYRE>
       <head>
         EDITREPLYRE &lt;yes/no/numeric&gt;
       </head>
@@ -8248,7 +8694,7 @@ READtogglerealmsgno
     This keyword can be used globally and in Random System groups.
       </p>
     </div2>
-    <div2>
+    <div2 id=EDITSAVEMENU>
       <head>
         EDITSAVEMENU &lt;yes/no&gt;
       </head>
@@ -8289,7 +8735,7 @@ READtogglerealmsgno
     encrypting msgs before saving them.
       </p>
     </div2>
-    <div2>
+    <div2 id=EDITSOFTCRXLAT>
       <head>
         EDITSOFTCRXLAT &lt;char&gt;
       </head>
@@ -8372,7 +8818,7 @@ READtogglerealmsgno
     Ends a Random System <kw>GROUP</kw> definition.
       </p>
     </div2>
-    <div2>
+    <div2 id=EVENT>
       <head>
         EVENT &lt;eventtype&gt; &lt;eventcommand &lsqb;parameters&rsqb;&gt;
       </head>
@@ -8843,7 +9289,7 @@ READtogglerealmsgno
     prompt, and the long filename will be used.
       </p>
     </div2>
-    <div2>
+    <div2 id=FILELISTPAGEBAR>
       <head>
         FILELISTPAGEBAR &lt;yes/no&gt;
       </head>
@@ -8855,7 +9301,7 @@ READtogglerealmsgno
     function.
       </p>
     </div2>
-    <div2>
+    <div2 id=FORCETEMPLATE>
       <head>
         FORCETEMPLATE &lt;yes/no&gt;
       </head>
@@ -9090,7 +9536,7 @@ READtogglerealmsgno
     MSGSEEN; in Ezycom, extattr 0x80) for the purpose of marking a
     message as read at least once. The other formats (PCBoard,
     WildCat) have no timesread field, but they have reserved fields or
-    attributes which *could* be used. Let me know if you want this.
+    attributes which *could* be used.
       </p>
     </div2>
     <div2 id=HUDSONPATH>
@@ -9249,7 +9695,7 @@ READtogglerealmsgno
     keyword is only used by GoldNODE.
       </p>
     </div2>
-    <div2>
+    <div2 id=INPUTFILE>
       <head>
         INPUTFILE &lt;filename&gt;
       </head>
@@ -9286,7 +9732,7 @@ READtogglerealmsgno
     keyword, and try out one of the intense color setup examples.
       </p>
     </div2>
-    <div2>
+    <div2 id=INTERNETADDRESS>
       <head>
         INTERNETADDRESS &lt;internet-address&gt;
       </head>
@@ -9416,7 +9862,7 @@ READtogglerealmsgno
     nodelist for automatic processing.
       </p>
     </div2>
-    <div2>
+    <div2 id=INTERNETMSGID>
       <head>
         INTERNETMSGID &lt;yes/no&gt;
       </head>
@@ -9452,7 +9898,7 @@ READtogglerealmsgno
     in the header.
       </p>
     </div2>
-    <div2>
+    <div2 id=INTERNETRFCBODY>
       <head>
         INTERNETRFCBODY &lt;yes/no&gt;
       </head>
@@ -9697,7 +10143,7 @@ READtogglerealmsgno
       KLUDGE "Subject:"
       KLUDGE "To:"
       KLUDGE "Errors-To:"
-      KLUDGE "X-FTN-From:"
+      KLUDGE "FTN-From:"          ; X-FTN-From:
       KLUDGE "ORIGREF:"           ; Gated?
       KLUDGE "ORIGID:"            ; Gated?
       KLUDGE "RFC-"               ; Seen in NET_DEV
@@ -9725,7 +10171,7 @@ READtogglerealmsgno
     "^aCHARSET" kludge when appropriate.
       </p>
     </div2>
-    <div2>
+    <div2 id=LOADLANGUAGE>
       <head>
         LOADLANGUAGE &lt;file&gt;
       </head>
@@ -9915,7 +10361,7 @@ READtogglerealmsgno
     for the operating system.
       </p>
     </div2>
-    <div2>
+    <div2 id=MEMBER>
       <head>
         MEMBER &lt;echoid&gt;
       </head>
@@ -9969,7 +10415,7 @@ READtogglerealmsgno
     keyword is ignored.
       </p>
     </div2>
-    <div2>
+    <div2 id=MSGLISTDATE>
       <head>
         MSGLISTDATE &lt;written/arrived/received/no&gt;
       </head>
@@ -10010,7 +10456,7 @@ READtogglerealmsgno
     instead.
       </p>
     </div2>
-    <div2>
+    <div2 id=MSGLISTFAST>
       <head>
         MSGLISTFAST &lt;yes/no&gt;
       </head>
@@ -10039,7 +10485,7 @@ READtogglerealmsgno
     This keyword can be used globally and in Random System groups.
       </p>
     </div2>
-    <div2>
+    <div2 id=MSGLISTFIRST>
       <head>
         MSGLISTFIRST &lt;yes/no&gt;
       </head>
@@ -10054,7 +10500,7 @@ READtogglerealmsgno
     This keyword can be used globally and in Random System groups.
       </p>
     </div2>
-    <div2>
+    <div2 id=MSGLISTHEADER>
       <head>
         MSGLISTHEADER &lt;yes/no&gt;
       </head>
@@ -10072,7 +10518,7 @@ READtogglerealmsgno
     This keyword can be used globally and in Random System groups.
       </p>
     </div2>
-    <div2>
+    <div2 id=MSGLISTPAGEBAR>
       <head>
         MSGLISTPAGEBAR &lt;yes/no&gt;
       </head>
@@ -10096,7 +10542,7 @@ READtogglerealmsgno
     scrolling a bit.
       </p>
     </div2>
-    <div2>
+    <div2 id=MSGLISTWIDESUBJ>
       <head>
         MSGLISTWIDESUBJ &lt;yes/no&gt;
       </head>
@@ -10140,8 +10586,8 @@ READtogglerealmsgno
         NETNAME <q/string/
       </head>
       <!--
-            This is the "netname" that is placed in the originline, in front
-            of the address.
+            This is the "netname" that is placed in the originline, after
+            the address.
         
             Example:
         
@@ -10159,7 +10605,7 @@ READtogglerealmsgno
       -->
       <p>dummy text</p>
     </div2>
-    <div2>
+    <div2 id=NICKNAME>
       <head>
         NICKNAME &lt;your pseudo&gt;
       </head>
@@ -10339,7 +10785,7 @@ READtogglerealmsgno
     <name>GoldED+</name> setup.
       </p>
     </div2>
-    <div2>
+    <div2 id=ORGANIZATION>
       <head>
         ORGANIZATION &lt;text&gt;
       </head>
@@ -10381,7 +10827,7 @@ READtogglerealmsgno
     of your primary outbound without extension.
       </p>
     </div2>
-    <div2>
+    <div2 id=OUTPUTFILE>
       <head>
         OUTPUTFILE &lt;file&gt;
       </head>
@@ -10442,7 +10888,7 @@ READtogglerealmsgno
     USERNAME's at startup.
       </p>
     </div2>
-    <div2>
+    <div2 id=PLAY>
       <head>
         PLAY &lt;filename.ext/beepnoise&gt;
       </head>
@@ -10524,7 +10970,7 @@ READtogglerealmsgno
     printed when every time PRINTLENGTH lines have been printed.
       </p>
     </div2>
-    <div2>
+    <div2 id=PRINTMARGIN>
       <head>
         PRINTMARGIN &lt;characters&gt;
       </head>
@@ -10559,7 +11005,7 @@ READtogglerealmsgno
     quote. Otherwise blank lines are left blank in quotes.
       </p>
     </div2>
-    <div2>
+    <div2 id=QUOTEBUFFILE>
       <head>
         QUOTEBUFFILE &lt;filename&gt;
       </head>
@@ -10615,7 +11061,7 @@ READtogglerealmsgno
     them.
       </p>
     </div2>
-    <div2>
+    <div2 id=QUOTECHARS>
       <head>
         QUOTECHARS &lsqb;"&rsqb;&lt;chars&gt;&lsqb;"&rsqb;
       </head>
@@ -10650,7 +11096,7 @@ READtogglerealmsgno
     a smiley :-)
       </p>
     </div2>
-    <div2>
+    <div2 id=QUOTECTRL>
       <head>
         QUOTECTRL &lt;Tearline,Origin,yes/no&gt;
       </head>
@@ -10662,7 +11108,7 @@ READtogglerealmsgno
     This keyword can be used in random system groups.
       </p>
     </div2>
-    <div2>
+    <div2 id=QUOTEMARGIN>
       <head>
         QUOTEMARGIN &lt;chars&gt;
       </head>
@@ -10688,7 +11134,33 @@ READtogglerealmsgno
     improves the readability of some messages.
       </p>
     </div2>
-    <div2>
+    <div2 id=QUOTESTOPS>
+      <head>
+        QUOTESTOPS
+      </head>
+      <list type=gloss>
+        <label>
+	  Synopsis:
+	</label>
+	<item>
+	  <kw/QUOTESTOPS/ <ident/&lt;string&gt;/
+	</item>
+	<label>
+	  Description:
+	</label>
+	<item>
+	  If one of characters defined by this keyword found before quotechar
+	  then line will be not treated as quote.
+	</item>
+	<label>
+	  Default:
+	</label>
+	<item>
+	  <![ CDATA ["<\"'-"]]>
+	</item>
+      </list>
+    </div2>
+    <div2 id=QUOTESTRING>
       <head>
         QUOTESTRING &lt;quotespec&gt;
       </head>
@@ -10716,7 +11188,7 @@ READtogglerealmsgno
     This keyword can be used globally and in Random System Groups.
       </p>
     </div2>
-    <div2>
+    <div2 id=QUOTEWRAPHARD>
       <head>
         QUOTEWRAPHARD &lt;yes/no&gt;
       </head>
@@ -10878,7 +11350,7 @@ READtogglerealmsgno
     resetted. It is useful if your netmail tracker sets RCV flag
     before you actually read messages.
           <ptr target=MESSAGEATTRS> chapter,
-          <ref target=AREACFMTO><kw/AREACFMTO/</ref>,
+          <ref target=AREACFMREPLYTO><kw/AREACFMREPLYTO/</ref>,
           <ref target=ATTRIBSCFM><kw/ATTRIBSCFM/</ref>,
           <ref target=CONFIRMFILE><kw/CONFIRMFILE/</ref>,
           <ref target=CONFIRMRESPONSE><kw/CONFIRMRESPONSE/</ref>
@@ -11143,7 +11615,7 @@ READtogglerealmsgno
     This feature is only interpreted in the DOS version.
       </p>
     </div2>
-    <div2>
+    <div2 id=SEARCHFOR>
       <head>
         SEARCHFOR &lsqb;"&rsqb;&lt;string&verbar;string&verbar;..&gt;&lsqb;"&rsqb;
       </head>
@@ -11294,7 +11766,7 @@ READtogglerealmsgno
     It is normally not necessary to change the default.
       </p>
     </div2>
-    <div2>
+    <div2 id=SOUNDPATH>
       <head>
         SOUNDPATH &lt;path&gt;
       </head>
@@ -11324,7 +11796,7 @@ READtogglerealmsgno
     be a netmail or e-mail area.
       </p>
     </div2>
-    <div2>
+    <div2 id=SOUPEXPORTMARGIN>
       <head>
         SOUPEXPORTMARGIN &lt;margin&gt;
       </head>
@@ -11481,7 +11953,7 @@ READtogglerealmsgno
     filename from MAX.PRM.
       </p>
     </div2>
-    <div2>
+    <div2 id=STATUSLINECLOCK>
       <head>
         STATUSLINECLOCK &lt;yes/no&gt;
       </head>
@@ -11502,7 +11974,7 @@ READtogglerealmsgno
     "poll".
       </p>
     </div2>
-    <div2>
+    <div2 id=STATUSLINEHELP>
       <head>
         STATUSLINEHELP &lt;yes/no/nologo&gt;
       </head>
@@ -11602,7 +12074,7 @@ READtogglerealmsgno
     front of it - the sequence (&bsol;&quot;) is translated to a single (&quot;).
       </p>
     </div2>
-    <div2>
+    <div2 id=TAGLINE>
       <head>
         TAGLINE &lt;string or filename&gt;
       </head>
@@ -11624,7 +12096,7 @@ READtogglerealmsgno
     default global taglines defined with this keyword.
       </p>
     </div2>
-    <div2>
+    <div2 id=TAGLINECHAR>
       <head>
         TAGLINECHAR &lt;char&gt;
       </head>
@@ -11662,7 +12134,7 @@ READtogglerealmsgno
     Sets window title in Win32 and OS/2 versions, ignored in other.
       </p>
     </div2>
-    <div2>
+    <div2 id=TEARLINE>
       <head>
         TEARLINE &lt;string&gt;
       </head>
@@ -11688,7 +12160,7 @@ READtogglerealmsgno
     description of USEPID keyword.
       </p>
     </div2>
-    <div2>
+    <div2 id=TEMPLATE>
       <head>
         TEMPLATE &lt;file&gt; &lsqb;"desc"&rsqb; &lsqb;match-address&rsqb;
       </head>
@@ -11753,7 +12225,7 @@ READtogglerealmsgno
       TEMPLATE ENGLISH.TPL "English" *
       </p>
     </div2>
-    <div2>
+    <div2 id=TEMPLATEMATCH>
       <head>
         TEMPLATEMATCH &lt;yes/no&gt;
       </head>
@@ -11840,7 +12312,7 @@ READtogglerealmsgno
     OS/2 versions only)
       </p>
     </div2>
-    <div2>
+    <div2 id=TWITMODE>
       <head>
         TWITMODE &lt;mode&gt;
       </head>
@@ -11923,7 +12395,7 @@ READtogglerealmsgno
   UNPACKER &gt;extension&lt; &gt;<q/commandline/&lt;
 
   The commandline should provide the ability to extract all files from
-  @file.<extension> to the current directory. F.e.:
+  @file.&lt;extension&gt; to the current directory. F.e.:
 
   UNPACKER zip <q/unzip @file/
 
@@ -11970,7 +12442,7 @@ READtogglerealmsgno
     are not defined in the Hudson message format.
       </p>
     </div2>
-    <div2>
+    <div2 id=USEFWD>
       <head>
         USEFWD &lt;yes/no/ask&gt;
       </head>
@@ -12111,7 +12583,7 @@ READtogglerealmsgno
     This keyword can be used globally and in a Random System group.
       </p>
     </div2>
-    <div2>
+    <div2 id=USETZUTC>
       <head>
         USETZUTC &lt;yes/no&gt;
       </head>
@@ -12147,7 +12619,7 @@ READtogglerealmsgno
     The specified path *must* exist &excl;
       </p>
     </div2>
-    <div2>
+    <div2 id=VIEWHIDDEN>
       <head>
         VIEWHIDDEN &lt;yes/no&gt;
       </head>
@@ -12180,7 +12652,7 @@ READtogglerealmsgno
     to the way the JAM specification stores FidoNet kludges.
       </p>
     </div2>
-    <div2>
+    <div2 id=VIEWKLUDGE>
       <head>
         VIEWKLUDGE &lt;yes/no&gt;
       </head>
@@ -12199,7 +12671,7 @@ READtogglerealmsgno
     This keyword can be used globally and in a Random System group.
       </p>
     </div2>
-    <div2>
+    <div2 id=VIEWQUOTE>
       <head>
         VIEWQUOTE &lt;yes/no&gt;
       </head>
@@ -12249,7 +12721,13 @@ READtogglerealmsgno
     Defines the lastread set used in the WildCat&excl; 4.x message base.
       </p>
     </div2>
-    <div2>
+    <div2 id=WRITETEMPLATE>
+      <head>
+        WRITETEMPLATE
+      </head>
+      <p></p>
+    </div2>
+    <div2 id=XLATCHARSET>
       <head>
         XLATCHARSET &lt;importid&gt; &lt;exportid&gt; &lt;file&gt;
       </head>
@@ -12265,7 +12743,7 @@ READtogglerealmsgno
     See the Character Translation chapter for details.
       </p>
     </div2>
-    <div2>
+    <div2 id=XLATESCSET>
       <head>
         XLATESCSET &lt;import&gt; &lt;export&gt; &lt;escfile&gt;
       </head>
@@ -12281,7 +12759,7 @@ READtogglerealmsgno
     See the Character Translation chapter for details.
       </p>
     </div2>
-    <div2>
+    <div2 id=XLATEXPORT>
       <head>
         XLATEXPORT &lt;charsetid&gt;
       </head>
@@ -12296,7 +12774,7 @@ READtogglerealmsgno
     It can also be used in templates (the @xlatexport token).
       </p>
     </div2>
-    <div2>
+    <div2 id=XLATIMPORT>
       <head>
         XLATIMPORT &lt;charsetid&gt;
       </head>
@@ -13214,66 +13692,66 @@ will be picked randomly (hence the name "Random System"), while <name>GoldED+</n
 collects items when entering an area.
       </p>
       <p>
-        Random Item Keywords: <ptr target=AKA><kw/AKA/</ref>,
-        <ptr target=AKAMATCHING><kw/AKAMATCHING/</ref>,
-        <ptr target=AREACOPYADDID><kw/AREACOPYADDID/</ref>,
-        <ptr target=AREACOPYDIRECT><kw/AREACOPYDIRECT/</ref>,
-        <ptr target=AREACOPYTO><kw/AREACOPYTO/</ref>,
-        <ptr target=AREAFORWARDDIRECT><kw/AREAFORWARDDIRECT/</ref>,
-        <ptr target=AREAFREQDIRECT><kw/AREAFREQDIRECT/</ref>,
-        <ptr target=AREAFREQTO><kw/AREAFREQTO/</ref>,
-        <ptr target=AREAREPLYDIRECT><kw/AREAREPLYDIRECT/</ref>,
-        <ptr target=AREAREPLYTO><kw/AREAREPLYTO/</ref>,
-        <ptr target=AREAYOUWROTETO><kw/AREAYOUWROTETO/</ref>,
-        <ptr target=ATTRIBUTES><kw/ATTRIBUTES/</ref>,
-        <ptr target=CTRLINFO><kw/CTRLINFO/</ref>,
-        <ptr target=EDITHARDTERM><kw/EDITHARDTERM/</ref>,
-        <ptr target=EDITMIXCASE><kw/EDITMIXCASE/</ref>,
-        <ptr target=EDITREPLYRE><kw/EDITREPLYRE/</ref>,
-        <ptr target=FORCETEMPLATE><kw/FORCETEMPLATE/</ref>,
-        <ptr target=INPUTFILE><kw/INPUTFILE/</ref>,
-        <ptr target=INTERNETADDRESS><kw/INTERNETADDRESS/</ref>,
-        <ptr target=INTERNETGATE><kw/INTERNETGATE/</ref>,
-        <ptr target=INTERNETMSGID><kw/INTERNETMSGID/</ref>,
-        <ptr target=INTERNETRFCBODY><kw/INTERNETRFCBODY/</ref>,
-        <ptr target=LOADLANGUAGE><kw/LOADLANGUAGE/</ref>,
-        <ptr target=MEMBER><kw/MEMBER/</ref>,
-        <ptr target=MSGLISTDATE><kw/MSGLISTDATE/</ref>,
-        <ptr target=MSGLISTFAST><kw/MSGLISTFAST/</ref>,
-        <ptr target=MSGLISTFIRST><kw/MSGLISTFIRST/</ref>,
-        <ptr target=MSGLISTHEADER><kw/MSGLISTHEADER/</ref>,
-        <ptr target=MSGLISTWIDESUBJ><kw/MSGLISTWIDESUBJ/</ref>,
-        <ptr target=NICKNAME><kw/NICKNAME/</ref>,
-        <ptr target=NETNAME><kw/NETNAME/</ref>,
-        <ptr target=ORGANIZATION><kw/ORGANIZATION/</ref>,
-        <ptr target=ORIGIN><kw/ORIGIN/</ref>,
-        <ptr target=OUTPUTFILE><kw/OUTPUTFILE/</ref>,
-        <ptr target=PLAY><kw/PLAY/</ref>,
-        <ptr target=QUOTEBUFFILE><kw/QUOTEBUFFILE/</ref>,
-        <ptr target=QUOTECHARS><kw/QUOTECHARS/</ref>,
-        <ptr target=QUOTECTRL><kw/QUOTECTRL/</ref>,
-        <ptr target=QUOTESTRING><kw/QUOTESTRING/</ref>,
-        <ptr target=QUOTESTOPS><kw/QUOTESTOPS/</ref>,
-        <ptr target=QUOTEWRAPHARD><kw/QUOTEWRAPHARD/</ref>,
-        <ptr target=SEARCHFOR><kw/SEARCHFOR/</ref>,
-        <ptr target=TAGLINE><kw/TAGLINE/</ref>,
-        <ptr target=TAGLINECHAR><kw/TAGLINECHAR/</ref>,
-        <ptr target=TAGLINESUPPORT><kw/TAGLINESUPPORT/</ref>,
-        <ptr target=TEARLINE><kw/TEARLINE/</ref>,
-        <ptr target=TEMPLATE><kw/TEMPLATE/</ref>,
-        <ptr target=TEMPLATEMATCH><kw/TEMPLATEMATCH/</ref>,
-        <ptr target=TWITMODE><kw/TWITMODE/</ref>,
-        <ptr target=USEAREA><kw/USEAREA/</ref>,
-        <ptr target=USEFWD><kw/USEFWD/</ref>,
-        <ptr target=USERNAME><kw/USERNAME/</ref>,
-        <ptr target=USETZUTC><kw/USETZUTC/</ref>,
-        <ptr target=VIEWHIDDEN><kw/VIEWHIDDEN/</ref>,
-        <ptr target=VIEWKLUDGE><kw/VIEWKLUDGE/</ref>,
-        <ptr target=VIEWQUOTE><kw/VIEWQUOTE/</ref>,
-        <ptr target=WHOTO><kw/WHOTO/</ref>,
-        <ptr target=WRITETEMPLATE><kw/WRITETEMPLATE/</ref>,
-        <ptr target=XLATEXPORT><kw/XLATEXPORT/</ref>,
-        <ptr target=XLATIMPORT><kw/XLATIMPORT/</ref>.
+        Random Item Keywords: <ref target=AKA><kw/AKA/</ref>,
+        <ref target=AKAMATCHING><kw/AKAMATCHING/</ref>,
+        <ref target=AREACOPYADDID><kw/AREACOPYADDID/</ref>,
+        <ref target=AREACOPYDIRECT><kw/AREACOPYDIRECT/</ref>,
+        <ref target=AREACOPYTO><kw/AREACOPYTO/</ref>,
+        <ref target=AREAFORWARDDIRECT><kw/AREAFORWARDDIRECT/</ref>,
+        <ref target=AREAFREQDIRECT><kw/AREAFREQDIRECT/</ref>,
+        <ref target=AREAFREQTO><kw/AREAFREQTO/</ref>,
+        <ref target=AREAREPLYDIRECT><kw/AREAREPLYDIRECT/</ref>,
+        <ref target=AREAREPLYTO><kw/AREAREPLYTO/</ref>,
+        <ref target=AREAYOUWROTETO><kw/AREAYOUWROTETO/</ref>,
+        <ref target=ATTRIBUTES><kw/ATTRIBUTES/</ref>,
+        <ref target=CTRLINFO><kw/CTRLINFO/</ref>,
+        <ref target=EDITHARDTERM><kw/EDITHARDTERM/</ref>,
+        <ref target=EDITMIXCASE><kw/EDITMIXCASE/</ref>,
+        <ref target=EDITREPLYRE><kw/EDITREPLYRE/</ref>,
+        <ref target=FORCETEMPLATE><kw/FORCETEMPLATE/</ref>,
+        <ref target=INPUTFILE><kw/INPUTFILE/</ref>,
+        <ref target=INTERNETADDRESS><kw/INTERNETADDRESS/</ref>,
+        <ref target=INTERNETGATE><kw/INTERNETGATE/</ref>,
+        <ref target=INTERNETMSGID><kw/INTERNETMSGID/</ref>,
+        <ref target=INTERNETRFCBODY><kw/INTERNETRFCBODY/</ref>,
+        <ref target=LOADLANGUAGE><kw/LOADLANGUAGE/</ref>,
+        <ref target=MEMBER><kw/MEMBER/</ref>,
+        <ref target=MSGLISTDATE><kw/MSGLISTDATE/</ref>,
+        <ref target=MSGLISTFAST><kw/MSGLISTFAST/</ref>,
+        <ref target=MSGLISTFIRST><kw/MSGLISTFIRST/</ref>,
+        <ref target=MSGLISTHEADER><kw/MSGLISTHEADER/</ref>,
+        <ref target=MSGLISTWIDESUBJ><kw/MSGLISTWIDESUBJ/</ref>,
+        <ref target=NICKNAME><kw/NICKNAME/</ref>,
+        <ref target=NETNAME><kw/NETNAME/</ref>,
+        <ref target=ORGANIZATION><kw/ORGANIZATION/</ref>,
+        <ref target=ORIGIN><kw/ORIGIN/</ref>,
+        <ref target=OUTPUTFILE><kw/OUTPUTFILE/</ref>,
+        <ref target=PLAY><kw/PLAY/</ref>,
+        <ref target=QUOTEBUFFILE><kw/QUOTEBUFFILE/</ref>,
+        <ref target=QUOTECHARS><kw/QUOTECHARS/</ref>,
+        <ref target=QUOTECTRL><kw/QUOTECTRL/</ref>,
+        <ref target=QUOTESTRING><kw/QUOTESTRING/</ref>,
+        <ref target=QUOTESTOPS><kw/QUOTESTOPS/</ref>,
+        <ref target=QUOTEWRAPHARD><kw/QUOTEWRAPHARD/</ref>,
+        <ref target=SEARCHFOR><kw/SEARCHFOR/</ref>,
+        <ref target=TAGLINE><kw/TAGLINE/</ref>,
+        <ref target=TAGLINECHAR><kw/TAGLINECHAR/</ref>,
+        <ref target=TAGLINESUPPORT><kw/TAGLINESUPPORT/</ref>,
+        <ref target=TEARLINE><kw/TEARLINE/</ref>,
+        <ref target=TEMPLATE><kw/TEMPLATE/</ref>,
+        <ref target=TEMPLATEMATCH><kw/TEMPLATEMATCH/</ref>,
+        <ref target=TWITMODE><kw/TWITMODE/</ref>,
+        <ref target=USEAREA><kw/USEAREA/</ref>,
+        <ref target=USEFWD><kw/USEFWD/</ref>,
+        <ref target=USERNAME><kw/USERNAME/</ref>,
+        <ref target=USETZUTC><kw/USETZUTC/</ref>,
+        <ref target=VIEWHIDDEN><kw/VIEWHIDDEN/</ref>,
+        <ref target=VIEWKLUDGE><kw/VIEWKLUDGE/</ref>,
+        <ref target=VIEWQUOTE><kw/VIEWQUOTE/</ref>,
+        <ref target=WHOTO><kw/WHOTO/</ref>,
+        <ref target=WRITETEMPLATE><kw/WRITETEMPLATE/</ref>,
+        <ref target=XLATEXPORT><kw/XLATEXPORT/</ref>,
+        <ref target=XLATIMPORT><kw/XLATIMPORT/</ref>.
       </p>
       <p>
 See the Configuration Keyword Reference chapter for details about each
