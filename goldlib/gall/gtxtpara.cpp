@@ -146,7 +146,7 @@ uint GParagraph::CheckCtrlLines() {
         case CHR4_CHARSET:  if(strneql(_ptr, "\001CHARSET: ", 10))  _pdptr->control = CTRL_CHARSET;  break;
         case CHR4_CHRS:     if(strneql(_ptr, "\001CHRS: ", 7))      _pdptr->control = CTRL_CHRS;     break;
         case CHR4_TZUTC:    if(strneql(_ptr, "\001TZUTC: ", 8))     _pdptr->control = CTRL_TZUTC;    break;
-        case CHR4_VIA:      if(strneql(_ptr, "\001VIA: ", 6))       _pdptr->control = CTRL_VIA;      break;
+        case CHR4_VIA:      if(strneql(_ptr, "\001Via ", 5))        _pdptr->control = CTRL_VIA;      break;
         case CHR4_FLAGS:    if(strneql(_ptr, "\001FLAGS ", 7))      _pdptr->control = CTRL_FLAGS;    break;
       }
 

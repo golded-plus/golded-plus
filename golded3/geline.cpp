@@ -1843,6 +1843,19 @@ bool check_multipart(const char* ptr, const char* keptr, char* boundary) {
 
 //  ------------------------------------------------------------------
 
+inline bool put_on_new_line(const char *ptr, const char *prev_ptr) {
+
+  if(((ptr[0] == ptr[1]) and (ptr[0] == ptr[2])) or
+     strneql(ptr, " * Origin: ", 11) or
+     strneql(ptr, "SEEN-BY:", 8) or
+     (ptr[0] == prev_ptr[0]) and (ptr[1] == prev_ptr[1]))
+    return true;
+  return false;
+}
+
+
+//  ------------------------------------------------------------------
+
 void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
 
   uint idx=0;
@@ -1864,12 +1877,13 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
   char* tmp=NULL;
   char* linetmp=NULL;
   uint qlen=0, qlen2=0;
-  int wraps=0, para=0, reflow=NO, quoteflag=NO, chslev;
-  int getvalue = not msg->attr.tou();
+  int wraps=0, para=0, chslev;
+  bool reflow = false, quoteflag = false;
+  bool getvalue = not msg->attr.tou();
   bool quotewraphard = AA->Quotewraphard();
-  int qpencoded = strieql(AA->Xlatimport(), "LATIN1QP") ? true : false;
-  int gotmime = false;
-  int firstemptyline = false;
+  bool qpencoded = getvalue and (strieql(AA->Xlatimport(), "LATIN1QP") ? true : false);
+  bool gotmime = false;
+  bool firstemptyline = false;
   bool gotmultipart = false;
   bool inheader = false;
   char boundary[100];
@@ -1878,7 +1892,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
 
   if(margin < 0) {
     margin = -margin;
-    quoteflag = YES;
+    quoteflag = true;
   }
 
   // Free all previously allocated lines
@@ -1955,7 +1969,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
         if(reflow) {
           len = qlen;
           qptr = qbuf;
-          reflow = NO;
+          reflow = false;
           // Insert previous quotestring
           for(n=0; n<qlen; n++) {
             *(++bp) = *qptr++;
@@ -2111,7 +2125,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
 
         // Get one line
 
-        ch = 0;
+        ch = '\0';
         tmp = NULL;
         while(*ptr and (len < (uint)margin)) {
           switch(*ptr) {
@@ -2123,28 +2137,20 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
               if(wraps and not ((line->type & GLINE_HARD) and not (line->type & GLINE_QUOT))) {
                 if(para != GLINE_QUOT) {
                   if(quoteflag) {
-                    if(prevline and *prevline->txt.c_str() == CTRL_A and prevline->type & GLINE_WRAP) {
+                    if(prevline and (*prevline->txt.c_str() == CTRL_A) and (prevline->type & GLINE_WRAP)) {
                       wraps = 0;
                       break;
                     }
-                    if(*ptr == CR or is_quote(ptr) or *ptr == CTRL_A) {
+                    if((*ptr == CR) or is_quote(ptr) or (*ptr == CTRL_A)) {
                       wraps = 0;
                       break;
                     }
-                    if(((ptr[0] == ptr[1]) and (ptr[0] == ptr[2])) or strneql(ptr, " * Origin: ", 11)) {
-                      wraps = 0;
-                      break;
-                    }
-                    if(strneql(ptr, "SEEN-BY:", 8)) {
-                      wraps = 0;
-                      break;
-                    }
-                    if((ptr[0] == prev_ptr[0]) and (ptr[1] == prev_ptr[1])) {
+                    if(put_on_new_line(ptr, prev_ptr)) {
                       wraps = 0;
                       break;
                     }
                     char* lp = ptr;
-                    while(*lp == ' ')
+                    while((*lp == ' ') or (*lp == '\t'))
                       lp++;
                     if(*lp == CR) {
                       wraps = 0;
@@ -2152,12 +2158,12 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
                     }
                     else {
                       ptr = lp;
+                      if(*bp != ' ') {
+                        *(++bp) = ' ';
+                        len++;
+                      }
                     }
-                    if(*ptr != ' ' and *ptr != '\t' and *bp != ' ') {
-                      *(++bp) = ' ';
-                      len++;
-                    }
-                    ch = 0;
+                    ch = '\0';
                     continue;
                   }
                   else {
@@ -2167,12 +2173,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
                 }
                 else {
                   GetQuotestr(ptr, qbuf2, &qlen2);
-                  if(*ptr == CR) {
-                    wraps = 0;
-                    para = 0;
-                    break;
-                  }
-                  else if(cmp_quotes(qbuf2, qbuf)) {
+                  if((*ptr != CR) and cmp_quotes(qbuf2, qbuf)) {
                     char* lp = ptr + qlen2;
                     if(is_quote(lp)) {
                       wraps = 0;
@@ -2182,9 +2183,21 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
                     else {
                       ptr = lp;
                       para = GLINE_QUOT;
-                      if(*ptr != ' ' and *bp != ' ') {
+                      if((*ptr != ' ') and (*bp != ' ')) {
+                        if(put_on_new_line(ptr, prev_ptr)) {
+                          ptr -= qlen2;
+                          wraps = 0;
+                          break;
+                        }
+                        tmp = ptr-1;
+                        btmp = bp;
                         *(++bp) = ' ';
                         len++;
+                      }
+                      else if(*ptr == ' ') {
+                        ptr -= qlen2;
+                        wraps = 0;
+                        break;
                       }
                       ch = 0;
                       continue;
@@ -2301,7 +2314,37 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
               *(++bp) = *ptr++;
               ++len;
               break;
+            case '=':
+              if(qpencoded) {
+                if(isxdigit(ptr[1]) and isxdigit(ptr[2])) {
+                  // Decode the character
+                  dochar = (char)((xtoi(ptr[1]) << 4) | xtoi(ptr[2]));
+                  ptr += 3;
+                  if(dochar == '\t') {
+                    if(len >= qlen) {
+                      tmp = ptr-3;
+                      btmp = bp;
+                    }
+                    goto do_ht;
+                  }
+                  else if(dochar == CR)
+                    goto do_cr;
+                  goto chardo;
+                }
+                else if((ptr[1] == CR) or (ptr[1] == LF)) {
+                  // Skip soft line break
+                  ptr++;
+                  while((*ptr == CR) or (*ptr == LF))
+                    ptr++;
+                  break;
+                }
+              }
+              goto defaultchardo;
             case '\t':
+              if(len >= qlen) {
+                tmp = ptr;
+                btmp = bp;
+              }
               ptr++;
               do_ht:
               if(CFG->disptabsize) {
@@ -2316,27 +2359,6 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
                 len++;
               }
               break;
-            case '=':
-              if(qpencoded) {
-                if(isxdigit(ptr[1]) and isxdigit(ptr[2])) {
-                  // Decode the character
-                  dochar = (char)((xtoi(ptr[1]) << 4) | xtoi(ptr[2]));
-                  ptr += 3;
-                  if(dochar == '\t')
-                    goto do_ht;
-                  else if(dochar == CR)
-                    goto do_cr;
-                  goto chardo;
-                }
-                else if((ptr[1] == CR) or (ptr[1] == LF)) {
-                  // Skip soft line break
-                  ptr++;
-                  while((*ptr == CR) or (*ptr == LF))
-                    ptr++;
-                  break;
-                }
-              }
-              goto defaultchardo;
             case ' ':
               if(len >= qlen) {
                 tmp = ptr;
@@ -2430,8 +2452,11 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
                     tptr = strchr(tptr, ' ');
                     if(tptr) {
                       tptr = strskip_wht(tptr);
-                      if(kludgetype == RFC_CONTENT_TYPE) {
-                        if(getvalue) {
+                      if(kludgetype == HEADERLINE) {
+                        linep->type |= GLINE_HIDD;
+                      }
+                      else if(getvalue) {
+                        if(kludgetype == RFC_CONTENT_TYPE) {
                           if(striinc("iso-8859-1", tptr)) {
                             strcpy(chsbuf, "LATIN-1");
                             chslev = LoadCharset(chsbuf, CFG->xlatlocalset);
@@ -2449,9 +2474,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
                             }
                           }
                         }
-                      }
-                      else if(kludgetype == RFC_CONTENT_TRANSFER_ENCODING) {
-                        if(getvalue) {
+                        else if(kludgetype == RFC_CONTENT_TRANSFER_ENCODING) {
                           if(striinc("quoted-printable", tptr)) {
                             qpencoded = true;
                             msg->charsetencoding |= GCHENC_QP;
@@ -2465,9 +2488,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
                             }
                           }
                         }
-                      }
-                      else if(kludgetype == RFC_X_CHARSET) {
-                        if(getvalue) {
+                        else if(kludgetype == RFC_X_CHARSET) {
                           if(not gotmime) {
                             strcpy(chsbuf, (striinc("8859-1", tptr) or striinc("Latin1", tptr)) ? "LATIN-1" : CFG->xlatlocalset);
                             chslev = LoadCharset(chsbuf, CFG->xlatlocalset);
@@ -2477,14 +2498,10 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
                             }
                           }
                         }
-                      }
-                      else if(kludgetype == RFC_X_CHAR_ESC) {
-                        if(getvalue)
+                        else if(kludgetype == RFC_X_CHAR_ESC) {
                           if(not gotmime)
                             msg->charsetencoding |= GCHENC_MNE;
-                      }
-                      else if(kludgetype == HEADERLINE) {
-                        linep->type |= GLINE_HIDD;
+                        }
                       }
                     }
                     headerlines++;

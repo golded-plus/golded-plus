@@ -63,7 +63,7 @@ const dword CHR4_PATH    = MK_CHR4('\001','P','A','T');
 const dword CHR4_CHARSET = MK_CHR4('\001','C','H','A');
 const dword CHR4_CHRS    = MK_CHR4('\001','C','H','R');
 const dword CHR4_TZUTC   = MK_CHR4('\001','T','Z','U');
-const dword CHR4_VIA     = MK_CHR4('\001','V','I','A');
+const dword CHR4_VIA     = MK_CHR4('\001','V','i','a');
 const dword CHR4_FLAGS   = MK_CHR4('\001','F','L','A');
 
 
