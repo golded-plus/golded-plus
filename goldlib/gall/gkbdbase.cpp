@@ -952,13 +952,7 @@ gkey kbxget_raw(int mode) {
   if(mode == 2) {
     // We can't do much but we can at least this :-)
     k = kbxget_raw(1);
-    #ifdef __linux__
-    // Under Linux we could use TIOCLINUX fn. 6 to read shift states on console
-    // Of course it is very unportable but should produce good results :-)
-    key = 6;
-    if(ioctl(fileno(stdin), TIOCLINUX, &key) == -1)
-    #endif
-      key = 0;
+    key = 0;
     switch(k) {
       case Key_C_Brk:
         key = GCTRL;
@@ -1259,7 +1253,11 @@ gkey kbxget_raw(int mode) {
 
   #ifdef __linux__
   if(linux_cui_key(k)) {
-    int shifts = kbxget_raw(2);
+    // Under Linux we could use TIOCLINUX fn. 6 to read shift states on console
+    // Of course it is very unportable but should produce good results :-)
+    int shifts = 6;
+    if(ioctl(fileno(stdin), TIOCLINUX, &shifts) == -1)
+      shifts = 0;
     if(shifts & (LSHIFT | RSHIFT))
       KCodScn(k) |= 0x80;
     else if(shifts & GCTRL) {
@@ -1297,7 +1295,11 @@ gkey kbxget_raw(int mode) {
       }
     }
   } else if(k == Key_BS) {
-    int shifts = kbxget_raw(2);
+    // Under Linux we could use TIOCLINUX fn. 6 to read shift states on console
+    // Of course it is very unportable but should produce good results :-)
+    int shifts = 6;
+    if(ioctl(fileno(stdin), TIOCLINUX, &shifts) == -1)
+      shifts = 0;
     if(shifts & ALT)
       key = Key_A_BS;
   }
