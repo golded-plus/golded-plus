@@ -98,7 +98,7 @@ void IEclass::setlinetype(Line* __line) {
 
   _test_halt(__line == NULL);
 
-  __line->type &= ~GLINE_ALL;
+  __line->type &= ~(GLINE_ALL|GLINE_TEAR|GLINE_ORIG|GLINE_TAGL);
   __line->type |= is_quote(__line->txt.c_str()) ? GLINE_QUOT : (__line->txt[0] == CTRL_A) ? GLINE_HIDD : 0;
 }
 
