@@ -1,6 +1,6 @@
 
 Random remarks about the ncurses support for GoldEd+
-                  by Jacobo Tarrio, 2:345/430.2@fidonet <jtarrio@iname.com>
+                  by Jacobo Tarrio, 2:348/105.93@fidonet <jtarrio@iname.com>
 
 This version of GoldEd+ bears the fourth public release of the ncurses
 implementation of its video code; it's still considered beta, so expect some
@@ -21,19 +21,23 @@ fresh new ones to show up in the next public release of the ncurses support
 marked with '!', whilst new ones are marked with '*'.
 
 If you find any bug not listed here, please report to Jacobo Tarrio,
-2:345/430.2@fidonet <jtarrio@iname.com> ASAP to get it fixed soon, or,
+2:348/105.93@fidonet <jtarrio@iname.com> ASAP to get it fixed soon, or,
 even better, fix it yourself and send me the patch :-)
 
 === 2000-03-05: Fourth public release
 Known bugs:
 
-! Screen may become corrupted if someone other than GoldEd+ writes on the
-  terminal
 ! Messages from the program viewed before entering full-screen are not
   displayed properly
 ! The cursor grows very big every 30 seconds when editing a message
   (possible reincarnation of a similar bug in former versions)
+* Terminal is messed up after exiting GoldED+ if shell was invoked.
 
+Notes:
+
+* I'm downgrading this one from bug to note: "Screen may become corrupted if
+  someone other than GoldEd+ writes on the terminal". As it happens with
+  other platforms too, I'm considering it no longer a ncurses-specific bug.
 
 === 2000-02-17: Third public release
 Known bugs:
