@@ -45,15 +45,6 @@ gareafile::gareafile() {
   squishuserno = 0;
 
   areapath = NULL;
-  adeptxbbspath = NULL;
-  jampath = NULL;
-  squishuserpath = NULL;
-  hudsonpath = NULL;
-  goldbasepath = NULL;
-  pcboardpath = NULL;
-  ezycom_msgbasepath = NULL;
-  ezycom_userbasepath = NULL;
-  fidolastread = NULL;
 }
 
 
@@ -321,6 +312,7 @@ bool gareafile::ReadAreafile(word crc, char* parameters) {
   const word CRC_AREAS_BBS     = 0xBCEC;
   const word CRC_AREASBBS      = 0xF77C;
   const word CRC_CRASHMAIL     = 0x7551;
+  const word CRC_CRASHECHO     = 0xDDB9;
   const word CRC_DBRIDGE       = 0xD365;
   const word CRC_DUTCHIE       = 0x0B08;
   const word CRC_D_BRIDGE      = 0x48DA;
@@ -348,6 +340,7 @@ bool gareafile::ReadAreafile(word crc, char* parameters) {
   const word CRC_RAECHO        = 0x701F;
   const word CRC_RA_ECHO       = 0x4FDF;
   const word CRC_REMOTEACCESS  = 0xECD0;
+  const word CRC_SPACETOSS     = 0xD2A6;
   const word CRC_SQUISH        = 0xFCF6;
   const word CRC_SUPERBBS      = 0x497F;
   const word CRC_TERMAIL       = 0x147A;
@@ -364,7 +357,8 @@ bool gareafile::ReadAreafile(word crc, char* parameters) {
 #endif
     case CRC_AREAS_BBS:
     case CRC_AREASBBS:      ReadAreasBBS(parameters);      break;
-#ifndef GCFG_NOCMAIL
+#if !defined(GCFG_NOCMAIL) || !defined(GCFG_NOCECHO)
+    case CRC_CRASHECHO:
     case CRC_CRASHMAIL:     ReadCrashmail(parameters);     break;
 #endif
 #ifndef GCFG_NODB
@@ -445,6 +439,9 @@ bool gareafile::ReadAreafile(word crc, char* parameters) {
 #endif
 #ifndef GCFG_NOSBBS
     case CRC_SUPERBBS:      ReadSuperBBS(parameters);      break;
+#endif
+#ifndef GCFG_NOSPCT
+    case CRC_SPACETOSS:     ReadSpaceToss(parameters);     break;
 #endif
 #ifndef GCFG_NOTERMAIL
     case CRC_TMAIL:

@@ -61,25 +61,25 @@ bool ReadGoldedCfg(int& force) {
 
     if(*CFG->squishuserpath == NUL) {
       char* ptr = getenv("MAXIMUS");
-      if(ptr) {
-        if(is_dir(ptr))
-          AddBackslash(strcpy(CFG->squishuserpath, ptr));
+      if(ptr != NULL) {
+        CfgSquishuserpath(ptr);
       }
       else {
         ptr = getenv("SQUISH");
-        if(ptr)
-          AddBackslash(strcpy(CFG->squishuserpath, ptr));
+        if(ptr != NULL)
+          CfgSquishuserpath(ptr);
         else
-          strcpy(CFG->squishuserpath, CFG->areapath);
+          CfgSquishuserpath(CFG->areapath);
       }
     }
 
-    if(*CFG->hudsonpath == NUL)       strcpy(CFG->hudsonpath, CFG->goldpath);
-    if(*CFG->hudsonsyspath == NUL)    strcpy(CFG->hudsonsyspath, CFG->hudsonpath);
-    if(*CFG->goldbasepath == NUL)     strcpy(CFG->goldbasepath, CFG->hudsonpath);
-    if(*CFG->goldbasesyspath == NUL)  strcpy(CFG->goldbasesyspath, CFG->goldbasepath);
-    if(*CFG->jampath == NUL)
-      strcpy(CFG->jampath, CFG->hudsonpath);
+    CfgHudsonpath(CFG->goldpath);
+    if(*CFG->hudsonsyspath == NUL)
+      strcpy(CFG->hudsonsyspath, CFG->hudsonpath);
+    CfgGoldbasepath(CFG->hudsonpath);
+    if(*CFG->goldbasesyspath == NUL)
+      strcpy(CFG->goldbasesyspath, CFG->goldbasepath);
+    CfgJampath(CFG->hudsonpath);
 
     MakePathname(CFG->goldcfg, CFG->goldpath, CFG->goldcfg);
     MakePathname(CFG->helpcfg.fn, CFG->goldpath, CFG->helpcfg.fn);
@@ -318,7 +318,7 @@ void InstallDetect(char* path) {
   if(fp) {
 
     if(*path) {
-      PathCopy(CFG->areapath, path);
+      MapPath(PathCopy(CFG->areapath, path));
       fprintf(fp, "AREAPATH %s\n", path);
     }
 

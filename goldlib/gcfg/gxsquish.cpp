@@ -107,8 +107,7 @@ void gareafile::ReadSquishFile(char* path, char* file, char* options, char* orig
 
           // Get path
           getkeyval(&key, &val);
-          strxcpy(buf2, key, sizeof(buf2));
-          aa.setpath(MapPath(buf2));
+          aa.setpath(key);
 
           // If not pass-through
           if(not striinc("-0", val)) {
@@ -211,8 +210,7 @@ void gareafile::ReadSquish(char* tag) {
 
   extractdirname(path, file);
 
-  if(*squishuserpath == NUL)
-    PathCopy(squishuserpath, path);
+  CfgSquishuserpath(path);
 
   ReadSquishFile(path, file, options, origin, defaultgroup);
 }

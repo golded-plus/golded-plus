@@ -69,8 +69,7 @@ void gareafile::ReadProBoard(char* tag) {
 
     fread(cfg, sizeof(Config), 1, fp);
 
-    if(*hudsonpath == NUL)
-      PathCopy(hudsonpath, MapPath(cfg->msgpath));
+    CfgHudsonpath(cfg->msgpath);
 
     fclose(fp);
   }
@@ -128,15 +127,15 @@ void gareafile::ReadProBoard(char* tag) {
           break;
         case MSGBASE_SQUISH:
           aa.msgbase = GMB_SQUISH;
-          aa.setpath(MapPath(area->path));
+          aa.setpath(area->path);
           break;
         case MSGBASE_SDM:
           aa.msgbase = GMB_OPUS;
-          aa.setpath(MapPath(area->path));
+          aa.setpath(area->path);
           break;
         case MSGBASE_JAM:
           aa.msgbase = GMB_JAM;
-          aa.setpath(MapPath(area->path));
+          aa.setpath(area->path);
           break;
       }
       aa.aka = aka[area->aka];

@@ -220,12 +220,12 @@ protected:
 
   Path pathprefix;
 
-  // Fidoconfig parser functions
 #ifndef GCFG_NOFIDOCONF
+  // Fidoconfig parser functions
   void replace_slashes(char **key);
   void gettok(char** key, char** val);
 #endif
-#ifndef GCFG_NOCMAIL
+#if !defined(GCFG_NOCMAIL) || !defined(GCFG_NOCECHO)
   // Crashmail II parser function
   bool jbstrcpy(char *dest, char *src, size_t maxlen, size_t *jbc);
 #endif
@@ -315,6 +315,9 @@ public:
   int ra2usersbbs;
   int squishuserno;
 
+  const char *areapath;
+  const char *pcboardpath;
+
   ftn_addr primary_aka;
 
   ftn_attr attribsnet;
@@ -323,24 +326,13 @@ public:
   ftn_attr attribsemail;
   ftn_attr attribslocal;
 
-  char* areapath;
-  char* adeptxbbspath;
-  char* jampath;
-  char* squishuserpath;
-  char* hudsonpath;
-  char* goldbasepath;
-  char* pcboardpath;
-  char* ezycom_msgbasepath;
-  char* ezycom_userbasepath;
-  char* fidolastread;
-
   void GetAreasBBS(char* name, char* origin, char* options);
 
   void ReadAreasBBS(char* tag);
 #ifndef GCFG_NOXBBS
   void ReadAdeptXBBS(char* tag);
 #endif
-#ifndef GCFG_NOCMAIL
+#if !defined(GCFG_NOCMAIL) || !defined(GCFG_NOCECHO)
   void ReadCrashmail(char* tag);
 #endif
 #ifndef GCFG_NODB
@@ -415,6 +407,9 @@ public:
 #if !defined(GCFG_NOSQSH) || !defined(GCFG_NOPARTOSS)
   void ReadSquish(char* tag);
 #endif
+#ifndef GCFG_NOSPCT
+  void ReadSpaceToss(char *tag);
+#endif
 #ifndef GCFG_NOSBBS
   void ReadSuperBBS(char* tag);
 #endif
@@ -450,6 +445,15 @@ void CfgUsername(char* value);
 void ReadEcholist(char* value);
 void SetAreaDesc(char* echoid, char* desc);
 
+void CfgAdeptxbbspath(const char *path, bool force = false);
+void CfgEzycommsgbase(const char *path, bool force = false);
+void CfgEzycomuserbase(const char *path, bool force = false);
+void CfgGoldbasepath(const char *path, bool force = false);
+void CfgHudsonpath(const char *path, bool force = false);
+void CfgJampath(const char *path, bool force = false);
+void CfgPcboardpath(const char *path, bool force = false);
+void CfgSquishuserpath(const char *path, bool force = false);
+void CfgFidolastread(const char *path);
 
 //  ------------------------------------------------------------------
 //  Legacy area types

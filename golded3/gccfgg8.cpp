@@ -42,9 +42,19 @@ void CfgSquishuserno() {
 
 //  ------------------------------------------------------------------
 
+void CfgSquishuserpath(const char *path, bool force) {
+
+  if(force or strblank(CFG->squishuserpath)) {
+
+    MapPath(PathCopy(CFG->squishuserpath, path));
+    if(not is_dir(CFG->squishuserpath))
+      StripBackslash(CFG->squishuserpath);
+  }
+}
+
 void CfgSquishuserpath() {
 
-  PathCopy(CFG->squishuserpath, val);
+  CfgSquishuserpath(val, true);
 }
 
 //  ------------------------------------------------------------------

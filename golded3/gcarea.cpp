@@ -387,6 +387,8 @@ void AreaList::GetAreafile(char* value) {
     AFILE->fidomsgtype = CFG->fidomsgtype;
     AFILE->ra2usersbbs = CFG->ra2usersbbs;
     AFILE->squishuserno = CFG->squishuserno;
+    AFILE->areapath = CFG->areapath;
+    AFILE->pcboardpath = CFG->pcboardpath;
 
     if(not CFG->aka.empty())
       AFILE->primary_aka = CFG->aka[0].addr;
@@ -398,17 +400,6 @@ void AreaList::GetAreafile(char* value) {
     AFILE->attribsnews = CFG->attribsnews;
     AFILE->attribsemail = CFG->attribsemail;
     AFILE->attribslocal = CFG->attribslocal;
-
-    AFILE->areapath = CFG->areapath;
-    AFILE->adeptxbbspath = CFG->adeptxbbspath;
-    AFILE->jampath = CFG->jampath;
-    AFILE->squishuserpath = CFG->squishuserpath;
-    AFILE->hudsonpath = CFG->hudsonpath;
-    AFILE->goldbasepath = CFG->goldbasepath;
-    AFILE->pcboardpath = CFG->pcboardpath;
-    AFILE->ezycom_msgbasepath = CFG->ezycom.msgbasepath;
-    AFILE->ezycom_userbasepath = CFG->ezycom.userbasepath;
-    AFILE->fidolastread = CFG->fidolastread;
 
     AFILE->ReadAreafile(crcval, value);
 
@@ -1083,7 +1074,7 @@ Area::~Area() {
 
 char* MapPath(char* map, bool reverse) {
 
-  Path buf,cmap;
+  Path buf, cmap;
 
   strxcpy(cmap, map, sizeof(Path));
   if(reverse)

@@ -44,9 +44,15 @@ void CfgHappybirthday() {
 
 //  ------------------------------------------------------------------
 
+void CfgHudsonpath(const char *path, bool force) {
+
+  if(force or strblank(CFG->hudsonpath))
+    MapPath(PathCopy(CFG->hudsonpath, path));
+}
+
 void CfgHudsonpath() {
 
-  PathCopy(CFG->hudsonpath, val);
+  CfgHudsonpath(val, true);
 }
 
 //  ------------------------------------------------------------------
@@ -286,9 +292,15 @@ void CfgInvalidate() {
 
 //  ------------------------------------------------------------------
 
+void CfgJampath(const char *path, bool force) {
+
+  if(force or strblank(CFG->jampath))
+    MapPath(PathCopy(CFG->jampath, path));
+}
+
 void CfgJampath() {
 
-  PathCopy(CFG->jampath, val);
+  CfgJampath(val, true);
 }
 
 //  ------------------------------------------------------------------

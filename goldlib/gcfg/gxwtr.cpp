@@ -56,12 +56,12 @@ void gareafile::ReadWtrGteFile(char* options, FILE* fp) {
   ConfigRecord& c = *_tmp;
   fread(&c, sizeof(ConfigRecord), 1, fp);
 
-  strp2c(c.systemdir); MapPath(c.systemdir);
+  strp2c(c.systemdir);
+  CfgJampath(c.systemdir);
+  MapPath(c.systemdir);
+
   strp2c(c.origins[0]);
   strp2c(c.origins[1]);
-
-  if(*jampath == NUL)
-    PathCopy(jampath, c.systemdir);
 
   if(c.fidonetmailtype) {
     aa.reset();

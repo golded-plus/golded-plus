@@ -85,8 +85,7 @@ void gareafile::ReadRemoteAccess(char* tag) {
           ra2usersbbs = 2;
 
       STRNP2C(config->MsgBasePath);
-      if(*hudsonpath == NUL)
-        PathCopy(hudsonpath, MapPath(config->MsgBasePath));
+      CfgHudsonpath(config->MsgBasePath);
     }
 
     MakePathname(file, rapath, "messages.ra");

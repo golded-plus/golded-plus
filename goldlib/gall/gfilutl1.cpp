@@ -28,7 +28,11 @@
 #include <gtimall.h>
 #include <gstrall.h>
 #include <gfilutil.h>
+#if defined(__MINGW32__)
+#include <sys/utime.h>
+#else
 #include <utime.h>
+#endif
 
 #if defined(__OS2__)
 #define INCL_BASE
@@ -207,28 +211,29 @@ const char* AddPath(const char* path, const char* file) {
 
 void MakePathname(char* pathname, const char* path, const char* name) {
 
-  char newpath[GMAXPATH];
   Path tmpname;
-  Path tmppath;
   strcpy(tmpname, name);
-  strcpy(tmppath, path);
 
   if(strblank(tmpname)) {
     *pathname = NUL;
     return;
   }
 
-  strbtrim(tmppath);
-  strchg(tmppath, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
   strchg(tmpname, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
-  if(strpbrk(tmpname, GOLD_SLASH_STR))
-    strschg_environ(strxcpy(pathname, tmpname, sizeof(Path)));
-  else {
-    strcpy(newpath, tmppath);
-    if(*newpath)
-      AddBackslash(newpath);
-    strxmerge(pathname, sizeof(Path), newpath, tmpname, NULL);
+  if(strpbrk(tmpname, GOLD_SLASH_STR)) {
+    strxcpy(pathname, tmpname, sizeof(Path));
   }
+  else {
+    Path tmppath;
+
+    strcpy(tmppath, path);
+    strbtrim(tmppath);
+    strchg(tmppath, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
+    if(*tmppath)
+      AddBackslash(tmppath);
+    strxmerge(pathname, sizeof(Path), tmppath, tmpname, NULL);
+  }
+  strschg_environ(pathname);
 }
 
 

@@ -63,7 +63,7 @@ void gareafile::ReadQEchoFile(char* file, char* options, char* origin) {
         aa.setechoid(ptr);
         if((ptr = strtok(NULL, " \t")) != NULL)
           if(not strieql("Passthrough", ptr)) {
-            aa.setpath(MapPath(ptr));
+            aa.setpath(ptr);
             aa.msgbase = GMB_JAM;
             if((ptr = strtok(NULL, " \t")) != NULL)
               if((*ptr == '*') and ((ptr = strtok(NULL, " \t")) != NULL)) {

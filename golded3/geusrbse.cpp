@@ -66,10 +66,10 @@ guserbase::guserbase() {
     entry.fidoaddr.net  = 5020;
     entry.fidoaddr.node = 604;
     entry.fidoaddr.point = 19;
-    strcpy(entry.iaddr, "aaganichev@netscape.net");
+    strcpy(entry.iaddr, "aaganichev@yandex.ru");
     entry.prefer_internet = YES;
     entry.is_deleted = NO;
-    strcpy(entry.pseudo, "As\'ka");
+    strcpy(entry.pseudo, "");
     strcpy(entry.organisation, "GoldED+ Development Team");
     strcpy(entry.snail1, "Zelenograd");
     strcpy(entry.snail2, "Moscow");
@@ -78,7 +78,7 @@ guserbase::guserbase() {
     strcpy(entry.voicephone, "+7-(095)-536-2374");
     entry.faxphone[0] = NUL;
     entry.firstdate = entry.lastdate = entry.times = 0;
-    strcpy(entry.homepage, "http://asa.i-connect.ru");
+    strcpy(entry.homepage, "http://aaganichev.narod.ru");
     entry.group = 0;
     strcpy(entry.comment1, "GoldED+ Maintainer");
     entry.comment2[0] = NUL;

@@ -93,8 +93,7 @@ void gareafile::ReadSuperBBS(char* tag) {
       fclose(fp);
 
       STRNP2C(sconfig->MsgBasePath);
-      if(*hudsonpath == NUL)
-        PathCopy(hudsonpath, MapPath(sconfig->MsgBasePath));
+      CfgHudsonpath(sconfig->MsgBasePath);
 
       // Is it 1.16 or later?
       if(sconfig->VersionNumber >= 0x0110) {

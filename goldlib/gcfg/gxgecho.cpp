@@ -102,11 +102,8 @@ void gareafile::ReadGEcho(char* tag) {
         //for(n=0; n<USERS; n++)
           //CfgUsername(gesetup->username[n]);
 
-        if(*hudsonpath == NUL)
-          PathCopy(hudsonpath, MapPath(gesetup->hmbpath));
-
-        if(*jampath == NUL)
-          PathCopy(jampath, MapPath(gesetup->jampath));
+        CfgHudsonpath(gesetup->hmbpath);
+        CfgJampath(gesetup->jampath);
 
         int _fidomsgtype = fidomsgtype;
 
@@ -328,11 +325,6 @@ void gareafile::ReadGEcho(char* tag) {
             AddNewArea(aa);
           }
         }
-
-        // Set the JAM message base path
-        if(*gesetup->jampath)
-          PathCopy(jampath, gesetup->jampath);
-
 
         //  --------------------------------------------------------------
 

@@ -59,10 +59,12 @@ void gareafile::ReadMaximus3(char* mxpath, char* areafile, char* options) {
     fread(offsets, (uint)heapsz, 1, fp);
     fclose(fp);
 
-    if(*squishuserpath == NUL)
-      strcat(PathCopy(squishuserpath, PRM(user_file)), ".bbs");
+    Path userfile;
+    strxmerge(userfile, sizeof(Path), PRM(user_file), ".bbs", NULL);
+    CfgSquishuserpath(userfile);
 
     strcpy(stpcpy(areafile, PRM(marea_name)), ".dat");
+    MapPath(areafile);
 
     fp = fsopen(areafile, "rb", sharemode);
     if(fp) {
@@ -120,14 +122,9 @@ void gareafile::ReadMaximus3(char* mxpath, char* areafile, char* options) {
               continue;
           }
 
-          if(ZSTR(path)[1] != ':') {
-            Path areapath;
-            strcpy(stpcpy(areapath, mxpath), ZSTR(path));
-            aa.setpath(areapath);
-          }
-          else {
-            aa.setpath(ZSTR(path));
-          }
+          Path apath;
+          MakePathname(apath, mxpath, ZSTR(path));
+          aa.setpath(apath);
 
           aa.aka = CAST(ftn_addr, area->primary);
           aa.setdesc(*ZSTR(descript) ? ZSTR(descript) : ZSTR(name));
@@ -236,8 +233,7 @@ void gareafile::ReadMaximus(char* tag) {
       MakePathname(areafile, mxpath, "area.dat");
   }
 
-  if(*squishuserpath == NUL)
-    PathCopy(squishuserpath, mxpath);
+  CfgSquishuserpath(mxpath);
 
   if(is_maximus3)
     ReadMaximus3(mxpath, areafile, options);

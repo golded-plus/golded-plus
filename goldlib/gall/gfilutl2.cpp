@@ -53,7 +53,6 @@ string& AddBackslash(string& p) {
 void MakePathname(string& pathname, const string& path, const string& name) {
 
   Path pn;
-  strcpy(pn, pathname.c_str());
   MakePathname(pn, path.c_str(), name.c_str());
   pathname = pn;
 }

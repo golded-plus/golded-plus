@@ -65,10 +65,8 @@ void gareafile::ReadEzycom102(FILE* fp, char* path, char* file, char* options) {
     STRNP2C(constant->sysopname);
     STRNP2C(constant->sysopalias);
 
-    if(*ezycom_msgbasepath == NUL)
-      AddBackslash(strcpy(ezycom_msgbasepath, MapPath(config->msgpath)));
-    if(*ezycom_userbasepath == NUL)
-      AddBackslash(strcpy(ezycom_userbasepath, MapPath(config->userbasepath)));
+    CfgEzycommsgbase(config->msgpath);
+    CfgEzycomuserbase(config->userbasepath);
 
     // Fido netmail directory
     if(not strblank(config->netmailpath)) {

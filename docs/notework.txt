@@ -12,6 +12,8 @@ ______________________________________________________________________
                  Notes for GoldED+ 1.1.5, April xx 2001
 ______________________________________________________________________
 
++ Thanks to Alexey Froloff added support for CrashEcho tosser.
+
 - Fixed Y2K bug in WildCat! and PCBoard bases.
 
 - Fixed cursor position in XlatImport menu when Auto encoding

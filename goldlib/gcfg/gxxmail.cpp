@@ -114,8 +114,7 @@ void gareafile::ReadxMailFile(char* file, char* options) {
             CfgOrigin(val);
             break;
           case CRC_MESSAGEBASE:
-            if(*hudsonpath == NUL)
-              PathCopy(hudsonpath, MapPath(val));
+            CfgHudsonpath(val);
             break;
         }
       }

@@ -75,9 +75,8 @@ void gareafile::ReadInterMail(char* tag) {
     if(not memcmp(ctl->fingerprint, "JoHo", 5) and (ctl->sysrev == IM_THISREV)) {
 
       fp.fclose();
-      
-      if(*hudsonpath == NUL)
-        PathCopy(hudsonpath, MapPath(ctl->e.qbase));
+
+      CfgHudsonpath(ctl->e.qbase);
 
       AreaCfg aa;
 

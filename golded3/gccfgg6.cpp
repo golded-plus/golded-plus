@@ -240,9 +240,15 @@ void CfgPathreportfile() {
 
 //  ------------------------------------------------------------------
 
+void CfgPcboardpath(const char *path, bool force) {
+
+  if(force or strblank(CFG->pcboardpath))
+    MapPath(PathCopy(CFG->pcboardpath, path));
+}
+
 void CfgPcboardpath() {
-  
-  PathCopy(CFG->pcboardpath, val);
+
+  CfgPcboardpath(val, true);
 }
 
 //  ------------------------------------------------------------------

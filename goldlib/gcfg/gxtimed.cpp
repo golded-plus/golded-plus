@@ -103,12 +103,10 @@ void gareafile::ReadTimedFile(char* path, char* file, char* options, char* origi
             ReadTimedFile(path, buf2, options, origin);
             break;
           case CRC_HUDSONPATH:
-            if(*hudsonpath == NUL)
-              PathCopy(hudsonpath, MapPath(val));
+            CfgHudsonpath(val);
             break;
           case CRC_JAMLOG:
-            if(*jampath == NUL)
-              PathCopy(jampath, MapPath(val));
+            CfgJampath(val);
             break;
 #ifndef GCFG_NOSQSH
           case CRC_SQUISHCFG:
@@ -147,7 +145,7 @@ void gareafile::ReadTimedFile(char* path, char* file, char* options, char* origi
             break;
 #endif
           case CRC_LASTREAD:
-            strcpy(fidolastread, val);
+            CfgFidolastread(val);
             break;
           case CRC_SQUISHOFFSET:
             squishuserno = atoi(val);

@@ -334,18 +334,17 @@ void gareafile::ReadHPTFile(char* path, char* file, char* options, char* origin,
 
           // Get path
           gettok(&key, &val);
-          strxcpy(buf2, key, sizeof(buf2));
 
           // If not pass-through
-          if(not strieql("Passthrough", buf2)) {
+          if(not strieql("Passthrough", key)) {
 
-            aa.setpath(MapPath(buf2));
+            aa.setpath(key);
             aa.msgbase = fidomsgtype;
             aa.groupid = group;
 
             gettok(&key, &val);
 
-            while(*key == '-' || strieql(key, "Squish") || strieql(key, "Jam")) {
+            while((*key == '-') or strieql(key, "Squish") or strieql(key, "Jam")) {
 
               if(strieql(key, "Squish"))
                 aa.msgbase = GMB_SQUISH;
@@ -455,8 +454,7 @@ void gareafile::ReadHPT(char* tag) {
 
   extractdirname(path, file);
 
-  if(*squishuserpath == NUL)
-    PathCopy(squishuserpath, path);
+  CfgSquishuserpath(path);
 
   ReadHPTFile(path, file, options, origin, defaultgroup);
 }

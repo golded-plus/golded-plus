@@ -47,8 +47,7 @@ void gareafile::ReadFastecho142(int fh) {
   read(fh, cfg, sizeof(CONFIG6));
 
   // Get Hudson msgbase path
-  if(*hudsonpath == NUL)
-    PathCopy(hudsonpath, MapPath(cfg->MsgBase));
+  CfgHudsonpath(cfg->MsgBase);
 
   // Setup aka and origin lists
   SysAddress* aka = (SysAddress*)throw_calloc(cfg->AkaCnt, sizeof(SysAddress));

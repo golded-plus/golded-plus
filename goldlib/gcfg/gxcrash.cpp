@@ -21,7 +21,7 @@
 //  ------------------------------------------------------------------
 //  $Id$
 //  ------------------------------------------------------------------
-//  Read areas from Crashmail II
+//  Read areas from Crashmail II/CrashEcho
 //  ------------------------------------------------------------------
 
 #include <cstdlib>
@@ -71,7 +71,7 @@ bool gareafile::jbstrcpy(char *dest, char *src, size_t maxlen, size_t *jbc) {
 
 
 //  ------------------------------------------------------------------
-//  Read areas from Crashmail (echomail processor)
+//  Read areas from Crashmail II/CrashEcho (echomail processor)
 
 void gareafile::ReadCrashmail(char* tag) {
 
@@ -89,8 +89,7 @@ void gareafile::ReadCrashmail(char* tag) {
 
   extractdirname(path, file);
 
-  if(*squishuserpath == NUL)
-    PathCopy(squishuserpath, path);
+  CfgSquishuserpath(path);
 
   FILE* fp = fsopen(file, "rb", sharemode);
   if(fp) {
@@ -117,6 +116,7 @@ void gareafile::ReadCrashmail(char* tag) {
     const word CRC_DOMAIN = 0xFFCA;
     const word CRC_GROUP = 0x1C9B;
     const word CRC_NETMAIL = 0xE42E;
+    const word CRC_NETMAILDIR = 0x180A;
     const word CRC_SYSOP = 0x967F;
     const word CRC_UNCONFIRMED = 0x195E;
 
@@ -144,6 +144,24 @@ void gareafile::ReadCrashmail(char* tag) {
         case CRC_DOMAIN:
           jbstrcpy(domain, buf, 50, &jbcpos);
           break;
+#ifndef GCFG_NOCECHO
+        case CRC_NETMAILDIR:
+          if(aa.type != 0xff) {
+            if(not unconfirmed)
+              AddNewArea(aa);
+            aa.reset();
+          }
+          aa.aka = primary_aka;
+          aa.type = GMB_NET;
+          aa.attr = attribsnet;
+          aa.msgbase = fidomsgtype;
+          jbstrcpy(path, buf, sizeof(Path), &jbcpos);
+          aa.setpath(path);
+          aa.setdesc("CrashEcho Netmail");
+          aa.setautoid("NETMAIL");
+          unconfirmed = false;
+          break;
+#endif
         case CRC_AREA:
         case CRC_NETMAIL:
         case CRC_LOCALAREA:
@@ -195,8 +213,7 @@ void gareafile::ReadCrashmail(char* tag) {
           if(aa.type == 0xff)
             break;
           jbstrcpy(path, buf, sizeof(Path), &jbcpos);
-          strxcpy(buf, path, sizeof(Path));
-          aa.setpath(MapPath(buf));
+          aa.setpath(path);
           break;
         case CRC_DESCRIPTION:
           jbstrcpy(tmp, buf, 100, &jbcpos);

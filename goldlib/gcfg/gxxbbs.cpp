@@ -180,8 +180,7 @@ void gareafile::ReadAdeptXBBS(char* tag) {
 
   strcpy(stpcpy(file, path), cfg);
 
-  if(strblank(adeptxbbspath))
-    strcpy(adeptxbbspath, path);
+  CfgAdeptxbbspath(path);
 
   ReadAdeptXbbsFile(path, file, options);
 

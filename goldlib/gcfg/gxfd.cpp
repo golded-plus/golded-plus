@@ -93,8 +93,7 @@ void gareafile::ReadFrontDoor(char* tag) {
       fread(editor, sizeof(FD_Editor), 1, fp);
       fread(shared, sizeof(FD_Shared), 1, fp);
       //CfgUsername(shared->user[0].name);
-      if(*hudsonpath == NUL)
-        PathCopy(hudsonpath, MapPath(editor->qbase));
+      CfgHudsonpath(editor->qbase);
       aa.reset();
       aa.aka = shared->aka[0];
       aa.type = GMB_NET;

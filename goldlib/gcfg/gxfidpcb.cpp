@@ -120,7 +120,7 @@ void gareafile::ReadFidoPCB(char* tag) {
             PathCopy(mailpath, val);
             break;
           case CRC_PCBOARD:
-            PathCopy(pcboardpath, val);
+            CfgPcboardpath(val);
             break;
           case CRC_LOST_MAIL:
             PathCopy(lostmailpath, val);

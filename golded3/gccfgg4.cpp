@@ -148,16 +148,28 @@ void CfgExternutil() {
 
 //  ------------------------------------------------------------------
 
+void CfgEzycommsgbase(const char *path, bool force) {
+
+  if(force or strblank(CFG->ezycom.msgbasepath))
+    MapPath(PathCopy(CFG->ezycom.msgbasepath, path));
+}
+
 void CfgEzycommsgbase() {
 
-  PathCopy(CFG->ezycom.msgbasepath, val);
+  CfgEzycommsgbase(val, true);
 }
 
 //  ------------------------------------------------------------------
 
+void CfgEzycomuserbase(const char *path, bool force) {
+
+  if(force or strblank(CFG->ezycom.userbasepath))
+    MapPath(PathCopy(CFG->ezycom.userbasepath, path));
+}
+
 void CfgEzycomuserbase() {
 
-  PathCopy(CFG->ezycom.userbasepath, val);
+  CfgEzycomuserbase(val, true);
 }
 
 //  ------------------------------------------------------------------
@@ -169,9 +181,14 @@ void CfgEzycomuserno() {
 
 //  ------------------------------------------------------------------
 
+void CfgFidolastread(const char *path) {
+
+  MapPath(strxcpy(CFG->fidolastread, val, sizeof(Path)));
+}
+
 void CfgFidolastread() {
 
-  strcpy(CFG->fidolastread, val);
+  CfgFidolastread(val);
 }
 
 //  ------------------------------------------------------------------
@@ -286,9 +303,15 @@ void CfgGermankeyboard() {
   
 //  ------------------------------------------------------------------
 
+void CfgGoldbasepath(const char *path, bool force) {
+
+  if(force or strblank(CFG->goldbasepath))
+    MapPath(PathCopy(CFG->goldbasepath, path));
+}
+
 void CfgGoldbasepath() {
 
-  PathCopy(CFG->goldbasepath, val);
+  CfgGoldbasepath(val, true);
 }
 
 //  ------------------------------------------------------------------

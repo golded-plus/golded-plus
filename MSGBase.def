@@ -15,4 +15,6 @@
 # Uncomment to disable WildCat! messagebase format
 #CPPFLAGS+=-DGMB_NOWCAT
 # Uncomment to disable AdeptXBBS messagebase format
-#CPPFLAGS+=-DGMB_NOXBBS
+ifneq ($(findstring EMX, $(PATH)), EMX)
+CPPFLAGS+=-DGMB_NOXBBS
+endif

@@ -146,8 +146,7 @@ void gareafile::ReadQ276(char* qbpath, char* origin, char* options) {
     fread(cfg, sizeof(Q276CfgRecT), 1, fp);
 
     STRNP2C(cfg->MsgPath);
-    if(*hudsonpath == NUL)
-      PathCopy(hudsonpath, MapPath(cfg->MsgPath));
+    CfgHudsonpath(cfg->MsgPath);
 
     fclose(fp);
   }

@@ -76,10 +76,8 @@ void gareafile::ReadLoraBBS(char* tag) {
 
     //CfgUsername(cfg->sysop);
 
-    if(*hudsonpath == NUL)
-      PathCopy(hudsonpath, MapPath(cfg->quick_msgpath));
-    if(*goldbasepath == NUL)
-      PathCopy(goldbasepath, MapPath(cfg->quick_msgpath));
+    CfgHudsonpath(cfg->quick_msgpath);
+    CfgGoldbasepath(cfg->quick_msgpath);
 
     AreaCfg aa;
 

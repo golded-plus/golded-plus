@@ -78,8 +78,7 @@ void gareafile::ReadPCBoard(char* tag) {
   if(*_path == NUL)
     strcpy(_path, areapath);
 
-  if(*pcboardpath == NUL)
-    strcpy(pcboardpath, _path);
+  CfgPcboardpath(_path);
 
   gfile fp;
   const char* _file = AddPath(_path, "pcboard.dat");

@@ -52,12 +52,9 @@ void gareafile::ReadIMail160(char* options, char* file, char* impath) {
     fread(CF, sizeof(im_config_type), 1, fp);
     fclose(fp);
 
-    if(*jampath == NUL)
-      PathCopy(jampath, MapPath(CF->echojam));
-    
-    if(*hudsonpath == NUL)
-      PathCopy(hudsonpath, MapPath(CF->quickbbs));
-    
+    CfgJampath(CF->echojam);
+    CfgHudsonpath(CF->quickbbs);
+
     // Fido netmail
     if(not strblank(CF->netmail)) {
       aa.reset();

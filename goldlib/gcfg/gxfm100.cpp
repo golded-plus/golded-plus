@@ -44,8 +44,7 @@ void gareafile::ReadFMail098(FILE* fp, char* path, char* file, char* options) {
   fclose(fp);
 
   // Get Hudson msgbase path
-  if(*hudsonpath == NUL)
-    PathCopy(hudsonpath, MapPath(cfg->bbsPath));
+  CfgHudsonpath(cfg->bbsPath);
 
   // .MSG style netmail
   if(not strblank(cfg->netPath)) {

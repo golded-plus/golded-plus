@@ -360,8 +360,7 @@ void gareafile::ReadDBridge(char* tag) {
     for(; line <= 11; line++)
       fgets(buf, 255, fp);
     strtrim(buf);
-    if(*hudsonpath == NUL)
-      PathCopy(hudsonpath, MapPath(buf));
+    CfgHudsonpath(buf);
 
     // Primary address
     for(; line <= 15; line++)

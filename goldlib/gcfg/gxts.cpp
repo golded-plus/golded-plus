@@ -91,8 +91,7 @@ void gareafile::ReadTosScan(char* tag) {
         fseek(fp, sizeof(FD_Mailer), SEEK_CUR);   // Seek past some data
         fread(editor, sizeof(FD_Editor), 1, fp);
         fread(shared, sizeof(FD_Shared), 1, fp);
-        if(*hudsonpath == NUL)
-          PathCopy(hudsonpath, MapPath(editor->qbase));
+        CfgHudsonpath(editor->qbase);
         aa.reset();
         aa.type = GMB_NET;
         aa.attr = attribsnet;
