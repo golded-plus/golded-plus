@@ -12,6 +12,15 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed more bugs with block deletion undo.
+
++ OS/2 only: if environment variable PMWIN set to NO then GoldED+ will
+  not try to use PMWIN functions.
+
+- Fixed cosmetic bug in thread tree: line was painted incompletely.
+
+- Fixed environment variables expansion recently broken.
+
 - When reading pathnames from Maximus 3 areafile GoldED+ had not
   prepend Maximus path. Fixed.
 

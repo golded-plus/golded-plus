@@ -634,7 +634,15 @@ void IEclass::BlockDel(Line* anchor) {
   if(firstcutline != lastcutline) {
     size_t __len = firstcutline->txt.length();
     firstcutline->txt += lastcutline->txt.c_str()+lastcol;
+
+    // We need to set up prow to prevent cosmetic bugs
+    uint __prow = prow;
+    getthisrow(firstcutline);
+    prow = thisrow;
+    getthisrow(currline);
     Undo->PushItem(EDIT_UNDO_INS_TEXT, firstcutline, __len);
+    prow = __prow;
+
     Undo->PushItem(EDIT_UNDO_DEL_TEXT|BATCH_MODE, firstcutline, firstcol, __len-firstcol);
     firstcutline->txt.erase(firstcol, __len-firstcol);
   }

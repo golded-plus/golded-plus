@@ -77,12 +77,12 @@ void IEclass::debugtest(char* __test, int __a, int __b, char* __file, int __line
     LOG.printf("! An internal editor range check failed.");
     if(__values)
       LOG.printf(": Details: (%s) <%i,%i>.", __test, __a, __b);
-    else
+    else {
       LOG.printf(": Details: (%s).", __test);
       LOG.printf(": Details: r%u,c%u,mr%u,mc%u,i%u,dm%u,qm%u,eqm%u.",
-      row, col, maxrow, maxcol, insert,
-      CFG->dispmargin, CFG->quotemargin, EDIT->QuoteMargin()
-    );
+                 row, col, maxrow, maxcol, insert,
+                 CFG->dispmargin, CFG->quotemargin, EDIT->QuoteMargin());
+    }
     LOG.printf("+ Advice: Report to the Author.");
     TestErrorExit();
   }
@@ -2767,18 +2767,18 @@ void UndoStack::PlayItem() {
 
         // we need to fit thisrow into the screen boundaries
         if(delta > 0) {
-          for (row -= delta; (int)row < (int)minrow; row++) {
-            if(templine) // cause refresh() issue an error since templine should never be NULL
-              templine = templine->next;
-          }
-          temprow = minrow;
-        }
-        else {
-          for (row -= delta; row > maxrow; row--) {
+          for(row += delta; row > maxrow; row--) {
             if(templine) // cause refresh() issue an error since templine should never be NULL
               templine = templine->prev;
           }
           temprow = maxrow;
+        }
+        else {
+          for(row += delta; (int)row < (int)minrow; row++) {
+            if(templine) // cause refresh() issue an error since templine should never be NULL
+              templine = templine->next;
+          }
+          temprow = minrow;
         }
 
         // move pointer to the top of screen so we refresh scrolled area
