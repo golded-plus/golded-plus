@@ -12,6 +12,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed quotewrap in internal editor if quotestring contains a space
+  inside.
+
 ! GoldED+ will no longer add new entry to addressbook if it is an
   addressmacro.
 

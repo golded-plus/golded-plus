@@ -682,7 +682,7 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, boo
         int _atmargin = _wrappos;
 
         // Search backwards until a space or the beginning of the line is found 
-        while((_wrappos > 0) and (_thisline->txt[_wrappos-1] != ' '))
+        while((_wrappos > _quotelen) and (_thisline->txt[_wrappos-1] != ' '))
           _wrappos--;
 
         // Check if we hit leading spaces
@@ -694,7 +694,7 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, boo
         }
 
         // Did we search all the way back to the beginning of the line?
-        if((_wrappos == 0) or (_wrappos == _quotelen) or (_thisline->txt[_spacepos] == ' ')) {
+        if((_wrappos == _quotelen) or (_thisline->txt[_spacepos] == ' ')) {
 
           // Case 3: There are no spaces within the margin or we hit leading spaces
 
