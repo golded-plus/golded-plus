@@ -62,20 +62,26 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::update_netecho
 
   // Delete or add the header index
   if(__delete) {
-    if(_pos < _total) {
+    if(_total and (_scanidx[_closest] == __hdridx)) {
+      if(_closest != _total) {
+        memmove(_scanidx+_closest, _scanidx+_closest+1, (_total-_closest+1)*sizeof(msgn_t));
+      }
       --_total;
-      if(_total != _pos)
-        memmove(_scanidx+_pos, _scanidx+_pos+1, (_total-_pos)*sizeof(msgn_t));
     }
   }
   else {
-    if(_scanidx[_closest] != __hdridx) {
-      ++_closest;
-      if(_closest != _total)
-        memmove(_scanidx+_closest+1, _scanidx+_closest, (_total-_closest+1)*sizeof(msgn_t));
-      _scanidx[_closest] = __hdridx;
-      ++_total;
+    if(_total) {
+      if(_scanidx[_closest] != __hdridx) {
+        if(_scanidx[_closest] < __hdridx)
+          _closest++;
+        if(_closest != _total)
+          memmove(_scanidx+_closest+1, _scanidx+_closest, (_total-_closest)*sizeof(msgn_t));
+        ++_total;
+      }
     }
+    else
+      ++_total;
+    _scanidx[_closest++] = __hdridx;
   }
 
   // Write the changed scanning file from scratch

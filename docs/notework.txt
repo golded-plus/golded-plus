@@ -12,6 +12,11 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed net/echomail.bss updating in Hudson/GoldBase.
+
+- Fixed reverse order sorting in 'F' criteria of AREALISTSORT (broken
+  in previous snapshots).
+
 - GoldED+ should no longer exit when system time is changed to the
   past and Timeout is non-zero. But... Timeout still calculated from
   timestamp of previous keypress.

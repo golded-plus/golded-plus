@@ -604,7 +604,7 @@ int ExternUtil(GMsg *msg, int utilno) {
   for(int utlno=0; extutil != CFG->externutil.end(); utlno++, extutil++) {
 
     if(extutil->utilno == utilno) {
-      return ExternUtil(msg, extutil);
+      return ExternUtil(msg, &(*extutil));
     }
   }
 

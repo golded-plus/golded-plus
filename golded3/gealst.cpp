@@ -145,7 +145,7 @@ extern "C" int AreaListCmp(const Area** __a, const Area** __b) {
           register bool amay = striinc(area_maybe, A->echoid()) ? true : false;
           register bool bmay = striinc(area_maybe, B->echoid()) ? true : false;
 
-          if((cmp = compare_two(amay, bmay)) != 0)
+          if((cmp = compare_two(bmay, amay)) != 0)
             return cmp;
         }
         break;
