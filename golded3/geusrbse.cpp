@@ -606,11 +606,20 @@ void guserbase::update_screen(bool force) {
 
 bool guserbase::handle_key() {
 
+  gkey kk;
+
+  if(key < KK_Commands) {
+    key = key_tolower(key);
+    kk = SearchKey(key, AddressbookKey, AddressbookKeys);
+    if(kk)
+      key = kk;
+  }
+
   switch(key) {
-    case Key_Esc:
+    case KK_AddressbookQuit:
       aborted = true;
       return false;
-    case Key_Ins:           // Add new entry
+    case KK_AddressbookAdd:
       {
         clear_entry(&entry);
         lock();
@@ -629,7 +638,7 @@ bool guserbase::handle_key() {
         center(CFG->displistcursor);
       }
       break;
-    case Key_Ent:          // Select/Edit entry
+    case KK_AddressbookSelect:
       if(not select_list) {
         if(not entry.is_deleted) {
           lock();
@@ -645,7 +654,7 @@ bool guserbase::handle_key() {
         aborted = false;
         return false;
       }
-    case Key_Del:          // Soft-Delete Entry       
+    case KK_AddressbookDelete:
       lock();
       refresh_maximum_index();
       read_entry(index);
@@ -654,7 +663,7 @@ bool guserbase::handle_key() {
       unlock();
       update_screen();
       break;
-    case Key_A_P:          // Pack Addressbook
+    case KK_AddressbookPack:
       pack_addressbook();
       index = position = 0;
       update_screen();

@@ -1594,8 +1594,9 @@ int setonkey(gkey keycode, VfvCP func, gkey pass) {
 
 gkey key_tolower(gkey __keycode) {
 
-  if(isupper(KCodAsc(__keycode)))
-    return (gkey)(__keycode + 'a' - 'A');
+  byte &ascii = KCodAsc(__keycode);
+  if(isupper(ascii))
+    ascii = tolower(ascii);
   return __keycode;
 }
 

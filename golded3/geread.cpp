@@ -713,7 +713,7 @@ void Reader() {
                 }
                 break;
 
-              case KK_ReadUserbase:
+              case KK_ReadAddressbook:
                 edit_addressbook(msg);
                 break;
 

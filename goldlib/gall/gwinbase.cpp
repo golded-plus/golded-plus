@@ -309,14 +309,14 @@ int wshadow(int attr) {
     // read current screen characters/attributes and save in shadow's buffer
     vatch tmp[2];
     *q = vgetw(crow, ccol);
-#ifndef __linux__
+#if defined(__USE_NCURSES__) || !defined(__UNIX__)
     tmp[0] = vsattr(*q, attr);
 #else
     tmp[0] = vsattr(' ', attr);
 #endif
     q++;
     *q = vgetw(crow, ccol + 1);
-#ifndef __linux__
+#if defined(__USE_NCURSES__) || !defined(__UNIX__)
     tmp[1] = vsattr(*q, attr);
 #else
     tmp[1] = vsattr(' ', attr);
@@ -339,7 +339,7 @@ int wshadow(int attr) {
 
     // read attribs/chars and store in buffers
     *q = vgetw(crow, ccol++);
-#ifndef __linux__
+#if defined(__USE_NCURSES__) || !defined(__UNIX__)
     *wptr++ = vsattr(*q, attr);
 #else
     *wptr++ = vsattr(' ', attr);
@@ -914,6 +914,16 @@ int wputx(int wrow, int wcol, int attr, vchar chr, uint len) {
 
   const int &border = gwin.active->border;
   vputx(gwin.active->srow+wrow+border,gwin.active->scol+wcol+border,attr,chr,len);
+  return gwin.werrno=W_NOERROR;
+}
+
+
+//  ------------------------------------------------------------------
+
+int wputy(int wrow, int wcol, int attr, vchar chr, uint len) {
+
+  const int &border = gwin.active->border;
+  vputy(gwin.active->srow+wrow+border,gwin.active->scol+wcol+border,attr,chr,len);
   return gwin.werrno=W_NOERROR;
 }
 
@@ -1882,83 +1892,32 @@ int wmessage(const char* str, int border, int leftofs, int attr) {
 //  ------------------------------------------------------------------
 //  Proportion bar
 
-void wpropbar(int mode, int xx, int yy, long len, long barlen, int attr, long pos, long size) {
+void wpropbar(int xx, int yy, long len, int attr, long pos, long size) {
 
-  //  mode   = PROP_PAGE or PROP_BARGRAPH.
   //  xx, yy = start position in window.
   //  len    = length (in chars) of progress field.
   //  attr   = color to use for progress field.
   //  pos    = present position.
   //  size   = total size of field.
 
-#ifndef __linux__
-  const vchar _fld = ACS_BOARD;
-  const vchar _bar = ACS_BLOCK;
+  const vchar barchar   = _box_table(gwin.active->btype, 13);
+#ifdef __UNIX__ // prefferable under xterm
+  const vchar thumbchar = ' ';
+  int thumbattr         = revsattr(attr);
 #else
-  const vchar _fld = ' ';
-  const vchar _bar = _box_table(gwin.active->btype, 13);
+  const vchar thumbchar = '\xDB';
+  int thumbattr         = attr;
 #endif
-  const vchar _up  = '\x18';
-  const vchar _dwn = '\x19';
 
-  int dir=0, x, y;
-  long first, width, length;
+  long thumblen = (pos*len)/size;
 
-  if(len > 0)
-    dir = 1;      // Vertical
-  else
-    len = -len;   // Horizontal
-
-  if(not barlen)
-    length = size-len;
-  else
-    length = size;
-
-  if((size > len) or (mode!=PROP_PAGE)) {
-    if(not barlen)
-      barlen = (len*len)/size;
-    if(not barlen)
-      barlen = 1;
-    width  = len-barlen;
-    first  = (pos*width)/length;
+  int x = xx;
+  if(thumblen != 0) {
+    wputx(yy, x, thumbattr|ACSET, thumbchar, thumblen);
+    x += thumblen;
   }
-  else {
-    first = 0;
-    barlen = len;
-  }
-
-  if(dir) {
-    if(mode==PROP_PAGE) {
-      if(pos > 0)
-        wprintc(yy,xx,revsattr(attr),_up);
-      else
-        wprintc(yy,xx,revsattr(attr),' ');
-      if(pos+len < size)
-        wprintc(yy+(int)len-1,xx,revsattr(attr),_dwn);
-      else
-        wprintc(yy+(int)len-1,xx,revsattr(attr),' ');
-    }
-    for(y=yy+(mode==PROP_PAGE); y<(yy+first); y++) {
-      wprintc(y,xx,attr|ACSET,mode==PROP_BARGRAPH?_bar:_fld);
-    }
-    for(; y<(yy+first+barlen); y++) {
-      wprintc(y,xx,attr|ACSET,_bar);
-    }
-    for(; y<(yy+len-(mode==PROP_PAGE)); y++) {
-      wprintc(y,xx,attr|ACSET,_fld);
-    }
-  }
-  else {
-    for(x=xx; x<(xx+first); x++) {
-      wprintc(yy,x,attr|ACSET,mode==PROP_BARGRAPH?_bar:_fld);
-    }
-    for(; x<(xx+first+barlen); x++) {
-      wprintc(yy,x,attr|ACSET,_bar);
-    }
-    for(; x<(xx+len); x++) {
-      wprintc(yy,x,attr|ACSET,_fld);
-    }
-  }
+  if(thumblen != len)
+    wputx(yy, x, attr|ACSET, barchar, len-thumblen);
 }
 
 
@@ -2044,85 +2003,78 @@ int wtitle(const char* str, int tpos, int tattr) {
 
 void wscrollbar(int orientation, uint total, uint maxpos, uint pos, int sadd) {
 
+  int attr = (gwin.active->sbattr == -1) ? gwin.active->battr : gwin.active->sbattr;
+  int invattr                = revsattr(attr);
+
   const vchar barchar        = _box_table(gwin.active->btype, 13);
-  const vchar thumbchar      = ACS_BLOCK;
   const vchar arrowupchar    = '\x18';
   const vchar arrowdownchar  = '\x19';
   const vchar arrowleftchar  = '\x1B';
   const vchar arrowrightchar = '\x1A';
-
-  int attr = (gwin.active->sbattr == -1) ? gwin.active->battr : gwin.active->sbattr;
-#ifdef __linux__
-  int thumbattr = revsattr(attr);
+#ifdef __UNIX__ // prefferable under xterm
+  const vchar thumbchar      = ' ';
+  int thumbattr              = revsattr(attr);
+#else
+  const vchar thumbchar      = '\xDB';
+  int thumbattr              = attr;
 #endif
-
-  int srow, scol;
-  uint visiblelen, barlen;
-  uint maxthumbpos, thumbpos, thumblen;
 
   if(maxpos == 0)
     maxpos = 1;
 
-  if(orientation == W_VERT) {
-    srow = gwin.active->srow + gwin.active->border + sadd;
-    scol = gwin.active->ecol;
+  uint visiblelen;
+  if(orientation == W_VERT)
     visiblelen = (gwin.active->erow - (gwin.active->srow+sadd)) + 1 - (gwin.active->border?2:0);
-  }
-  else {
-    srow = gwin.active->erow;
-    scol = gwin.active->scol + gwin.active->border + sadd;
+  else
     visiblelen = (gwin.active->ecol - (gwin.active->scol+sadd)) + 1 - (gwin.active->border?2:0) - 2;
-  }
-
-  barlen = visiblelen - 2;
-  thumblen = (visiblelen*barlen) / total;
+  uint barlen = visiblelen - 2;
+  uint thumblen = (visiblelen*barlen) / total;
   if(thumblen == 0)
     thumblen = 1;
   else if(thumblen > barlen)
     thumblen = barlen;
-  maxthumbpos = barlen - thumblen;
-  thumbpos = (pos*maxthumbpos) / maxpos;
+  uint maxthumbpos = barlen - thumblen;
+  uint thumbpos = (pos*maxthumbpos) / maxpos;
   uint thumbdiv = (pos*maxthumbpos) % maxpos;
   if((thumbdiv >= (maxpos/2)) and (maxpos > 1))
     thumbpos++;
   if(thumbpos > maxthumbpos)
     thumbpos = maxthumbpos;
+  barlen -= thumbpos + thumblen;
 
   if(orientation == W_VERT) {
-    register int row = srow;
-    register int erow1 = srow + thumbpos + 1;
-    register int erow2 = erow1 + thumblen;
-    register int erow3 = srow + barlen + 1;
-    vputc(row++, scol, revsattr(attr), arrowupchar);
-    while(row < erow1)
-      vputc(row++, scol, attr|ACSET, barchar);
-    while(row < erow2)
-#ifdef __linux__
-      vputc(row++, scol, thumbattr|ACSET, thumbchar);
-#else
-      vputc(row++, scol, attr|ACSET, thumbchar);
-#endif
-    while(row < erow3)
-      vputc(row++, scol, attr|ACSET, barchar);
-    vputc(row, scol, revsattr(attr), arrowdownchar);
+    uint scol = gwin.active->ecol - gwin.active->scol - gwin.active->border;
+    vputc((sadd++)+gwin.active->srow+gwin.active->border, gwin.active->ecol, invattr|ACSET, arrowupchar);
+    if(thumbpos != 0) {
+      wputy(sadd, scol, attr|ACSET, barchar, thumbpos);
+      sadd += thumbpos;
+    }
+    if(thumblen != 0) {
+      wputy(sadd, scol, thumbattr|ACSET, thumbchar, thumblen);
+      sadd += thumblen;
+    }
+    if(barlen != 0) {
+      wputy(sadd, scol, attr|ACSET, barchar, barlen);
+      sadd += barlen;
+    }
+    vputc(sadd+gwin.active->srow+gwin.active->border, gwin.active->ecol, invattr|ACSET, arrowdownchar);
   }
   else {
-    register int col = scol;
-    register int ecol1 = scol + thumbpos + 1;
-    register int ecol2 = ecol1 + thumblen;
-    register int ecol3 = scol + barlen + 1;
-    vputc(srow, col++, revsattr(attr), arrowleftchar);
-    while(col < ecol1)
-      vputc(srow, col++, attr|ACSET, barchar);
-    while(col < ecol2)
-#ifdef __linux__
-      vputc(srow, col++, thumbattr|ACSET, thumbchar);
-#else
-      vputc(srow, col++, attr|ACSET, thumbchar);
-#endif
-    while(col < ecol3)
-      vputc(srow, col++, attr|ACSET, barchar);
-    vputc(srow, col, revsattr(attr), arrowrightchar);
+    uint srow = gwin.active->erow - gwin.active->srow - gwin.active->border;
+    vputc(gwin.active->erow, (sadd++)+gwin.active->scol+gwin.active->border, invattr|ACSET, arrowleftchar);
+    if(thumbpos != 0) {
+      wputx(srow, sadd, attr|ACSET, barchar, thumbpos);
+      sadd += thumbpos;
+    }
+    if(thumblen != 0) {
+      wputx(srow, sadd, thumbattr|ACSET, thumbchar, thumblen);
+      sadd += thumblen;
+    }
+    if(barlen != 0) {
+      wputx(srow, sadd, attr|ACSET, barchar, barlen);
+      sadd += barlen;
+    }
+    vputc(gwin.active->erow, sadd+gwin.active->scol+gwin.active->border, invattr|ACSET, arrowrightchar);
   }
 }
 

@@ -100,8 +100,8 @@ extern char m_title[];
 extern int m_titlepos;
 extern int m_titleattr;
 
-extern int AreaKeys, ReadKeys, ListKeys, NodeKeys, EditKeys, FileKeys;
-extern list<CmdKey>::iterator AreaKey, ReadKey, ListKey, NodeKey, EditKey, FileKey;
+extern int AreaKeys, ReadKeys, ListKeys, NodeKeys, EditKeys, FileKeys, AddressbookKeys, HeaderKeys;
+extern list<CmdKey>::iterator AreaKey, ReadKey, ListKey, NodeKey, EditKey, FileKey, AddressbookKey, HeaderKey;
 
 extern int inforow;
 

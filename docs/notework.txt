@@ -12,6 +12,61 @@ ______________________________________________________________________
                  Notes for GoldED+ 1.1.5, March xx 2001
 ______________________________________________________________________
 
+! Message lister redesigned. Should be quicker if you roll up and down
+  but consumes more memory.
+
++ Added tonn of configuration keywords to goldkeys.cfg:
+
+  Keyword                Default Assignment
+
+  AddressbookPack        Alt-P
+  AddressbookDelete      Del
+  AddressbookSelect      Enter
+  AddressbookAdd         Ins
+  AddressbookQuit        Esc
+  HeaderToggleScanned    Alt-4
+  HeaderToggleGroupmsg   Alt-2
+  HeaderToggleZonegate   Alt-G
+  HeaderToggleHubhost    Alt-V
+  HeaderToggleRetrecreq  Alt-M
+  HeaderToggleCrash      Alt-C
+  HeaderToggleLocked     Alt-L
+  HeaderToggleReceived   Alt-R
+  HeaderToggleLocal      Alt-W
+  HeaderToggleRetrec     Alt-N
+  HeaderToggleFreq       Alt-F
+  HeaderLookup           Shift-F10
+  HeaderToggleImm        Alt-I
+  HeaderToggleAttrWin    Alt-F1
+  HeaderAddressbook      F10
+  HeaderToggleArcsent    Alt-B
+  HeaderToggleHold       Alt-H
+  HeaderToggleAudit      Alt-Q
+  HeaderToggleXmail      Alt-X
+  HeaderToggleTrunc      Alt-T
+  HeaderToggleUpdreq     Alt-U
+  HeaderClearAttrib      Alt-Z
+  HeaderToggleKill       Alt-K
+  HeaderToggleTransit    Alt-J
+  HeaderToggleCfmrecreq  Alt-Y
+  HeaderToggleOrphan     Alt-O
+  HeaderToggleFile       Alt-A
+  HeaderToggleDelsent    Alt-E
+  HeaderToggleDirect     Alt-D
+  HeaderToggleReserved   Alt-1
+  HeaderTogglePvt        Alt-P
+  HeaderToggleSent       Alt-S
+
+! READuserbase renamed to READaddressbook.
+
+! Changed default values for the following keywords:
+
+  Keyword        New Default    Old Default
+
+  ASKDELORIG     NO             YES
+  STYLECODES     YES            HIDE
+  QUOTEWRAPHARD  NO             YES
+
 - Fixed leading space macroses in date/time format strings.
 
 - Fixed double recoding of header during forward, quote-reply, and

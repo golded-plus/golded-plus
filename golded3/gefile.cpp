@@ -345,7 +345,6 @@ void FileSelect(GMsg* msg, char* title, FileSpec* fspec) {
 
   if((strpbrk(fbuf, "*?")) or done) {
     winop = true;
-    ChgAttrs(NO, msg);
     vcurhide();
     wopen_(6,0, MAX_POS+3, MAXCOL, W_BMENU, C_MENUB, C_MENUW, C_MENUPB);
 
@@ -419,7 +418,6 @@ void FileSelect(GMsg* msg, char* title, FileSpec* fspec) {
 
   if(winop) {
     wclose();
-    ChgAttrs(YES, msg);
     vcurshow();
   }
 

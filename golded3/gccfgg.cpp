@@ -708,7 +708,7 @@ CfgGed::CfgGed() {
   gedhandshake = true;
   goldbaseuserno = 0;
   happybirthday = 0;
-  hidestylies = true;
+  hidestylies = false;
   hudsonsizewarn = 16000000L;
   hudsonuserno = 0;
   ignorecharset = false;
@@ -731,7 +731,7 @@ CfgGed::CfgGed() {
   quotebufmode = QBUF_ASK;
   quotectrl = CI_TEAR|CI_ORIG;
   quotemargin = 70;
-  quotewraphard = true;
+  quotewraphard = false;
   ra2usersbbs = 0;
   replylink = 0;
   replylinklist = 0;
@@ -783,7 +783,7 @@ CfgGed::CfgGed() {
   switches.set(areakeeplast, true);
   switches.set(arealistgroupid, true);
   switches.set(arealistpagebar, true);
-  switches.set(askdelorig, true);
+  switches.set(askdelorig, false);
   switches.set(beepcomment, true);
   switches.set(beepnoises, true);
   switches.set(dispautonext, true);

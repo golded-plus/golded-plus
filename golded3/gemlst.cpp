@@ -31,10 +31,6 @@
 
 extern GMsg* reader_msg;
 
-static GMsg* MLstMsgPtr;
-static GMsg* mlstmsg = NULL;
-static uint msgmark2;
-static MLst* mlst;
 static int mlst_bysiz;
 static int mlst_tosiz;
 static int mlst_resiz;
@@ -71,36 +67,205 @@ inline void mlst_with_date(int with_date) {
 
 //  ------------------------------------------------------------------
 
-static void mlst_dodelayed(PInf* p) {
-  
-  // Update header and statusline
+class GMsgList : public gwinpick {
 
-  if(AA->Msglistheader()) {
-    AA->LoadMsg(MLstMsgPtr, mlst[p->pos].msgno, CFG->dispmargin-(int)CFG->switches.get(disppagebar));
-    mlst[p->pos].goldmark = goldmark;
-    int mlstwh = whandle();
-    HeaderView->Use(AA, MLstMsgPtr);
-    HeaderView->Paint();
-    wactiv_(mlstwh);
-  }
+  gwindow        window;
+  GMsg           msg;
+  vector<MLst>   mlst;
+  uint           msgmark2;
 
-  if(CFG->switches.get(msglistviewsubj))
-    wtitle(mlst[p->pos].re, TCENTER|TBOTTOM, p->tattr);
+  void open();                        // Called after window is opened
+  void close();                       // Called after window is closed
+  void update_title();
+  void do_delayed();
+  void print_line(uint idx, uint pos, bool isbar);
+  bool handle_key();                  // Handles keypress
+  void ReadMlst(int n);
 
-  if(CFG->switches.get(msglistpagebar))
-    wscrollbar(W_VERT, p->maxidx+1, p->maxidx, p->idx);
+public:
 
-  update_statuslinef(LNG->MsgLister, p->idx+1, p->maxidx+1, p->maxidx-p->idx);
+  void Run();
+
+  GMsgList() { memset(&msg, 0, sizeof(GMsg)); };
+  ~GMsgList() { ResetMsg(&msg); };
+};
+
+
+//  ------------------------------------------------------------------
+
+void GMsgList::open() {
+
+  window.openxy(ypos, xpos, ylen+2, xlen+2, btype, battr, wattr, sbattr);
+  update_title();
+  center(CFG->displistcursor);
 }
 
 
 //  ------------------------------------------------------------------
 
-static void mlst_dispbuf(char* abuf, MLst* ml) {
+void GMsgList::close() {
 
+  window.close();
+}
+
+
+//  ------------------------------------------------------------------
+
+void GMsgList::ReadMlst(int n) {
+
+  MLst* ml = &mlst[n];
+
+  if(ml->initialized)
+    return;
+
+  ml->high = 0;
+
+  strcpy(ml->marks, "  ");
+
+  ml->msgno = AA->Msgn.CvtReln(n + 1);
+
+  if(AA->bookmark == AA->Msgn.CvtReln(n + 1)) {
+    ml->marks[0] = MMRK_BOOK;
+    ml->high |= MLST_HIGH_BOOK;
+  }
+
+  if(AA->Mark.Count()) {
+    if(AA->Mark.Find(ml->msgno)) {
+      ml->marks[1] = MMRK_MARK;
+      ml->high |= MLST_HIGH_MARK;
+    }
+  }
+
+  if(AA->Msglistfast()) {
+    AA->LoadHdr(&msg, ml->msgno);
+  }
+  else {
+    AA->LoadMsg(&msg, ml->msgno, CFG->dispmargin-(int)CFG->switches.get(disppagebar));
+  }
+  ml->goldmark = goldmark;
+
+  for(vector<Node>::iterator x = CFG->username.begin(); x != CFG->username.end(); x++) {
+    if(strieql(msg.By(), x->name)) {
+      ml->high |= MLST_HIGH_FROM;
+      msg.attr.fmu1();
+    }
+    if(strieql(msg.to, x->name)) {
+      ml->high |= MLST_HIGH_TO;
+      msg.attr.tou1();
+    }
+  }
+  if(strieql(msg.to, AA->Internetaddress())) {
+    ml->high |= MLST_HIGH_TO;
+    msg.attr.tou1();
+  }
+
+  // Highlight FROM if local
+  if(CFG->switches.get(displocalhigh) and msg.attr.loc())
+    ml->high |= MLST_HIGH_FROM;
+
+  // Highlight if unread
+  if(msg.timesread == 0 and CFG->switches.get(highlightunread))
+    ml->high |= MLST_HIGH_UNREAD;
+
+  // Highlight if unsent
+  if(msg.attr.uns()and not msg.attr.rcv() and not msg.attr.del())
+    ml->high |= MLST_HIGH_UNSENT;
+
+  ml->written = msg.written;
+  ml->arrived = msg.arrived;
+  ml->received = msg.received;
+  strcpy(ml->by, msg.By());
+  strcpy(ml->to, msg.To());
+  strcpy(ml->re, msg.re);
+}
+
+
+//  ------------------------------------------------------------------
+
+void GMsgList::do_delayed() {
+  
+  // Update header and statusline
+  if(AA->Msglistheader()) {
+    ReadMlst(index);
+    AA->LoadMsg(&msg, mlst[index].msgno, CFG->dispmargin-(int)CFG->switches.get(disppagebar));
+    mlst[index].goldmark = goldmark;
+    int mlstwh = whandle();
+    HeaderView->Use(AA, &msg);
+    HeaderView->Paint();
+    wactiv_(mlstwh);
+  }
+
+  if(CFG->switches.get(msglistviewsubj))
+    wtitle(msg.re, TCENTER|TBOTTOM, tattr);
+
+  if(CFG->switches.get(msglistpagebar))
+    wscrollbar(W_VERT, maximum_index+1, maximum_index, index);
+
+  update_statuslinef(LNG->MsgLister, index+1, maximum_index+1, maximum_index-index);
+}
+
+
+//  ------------------------------------------------------------------
+
+void GMsgList::update_title() {
+
+  int bycol = 8;
+  int tocol = bycol + mlst_bysiz + 1 + fldadd1;
+  int recol = tocol + mlst_tosiz + 1 + fldadd1;
+  int dtcol = recol + mlst_resiz + 1 + fldadd2;
+  if(AA->Msglistwidesubj())
+    recol = tocol;
+
+  window.title(NULL, tattr, TCENTER);
+  window.message(CFG->switches.get(disprealmsgno) ? LNG->MsgReal : LNG->Msg, TP_BORD, 3, tattr);
+  window.message(LNG->FromL, TP_BORD, bycol, tattr);
+  if(not AA->Msglistwidesubj())
+    window.message(LNG->ToL, TP_BORD, tocol, tattr);
+  window.message(LNG->SubjL, TP_BORD, recol, tattr);
+  switch(AA->Msglistdate()) {
+    case MSGLISTDATE_WRITTEN:   window.message(LNG->Written, TP_BORD, dtcol, tattr);   break;
+    case MSGLISTDATE_ARRIVED:   window.message(LNG->Arrived, TP_BORD, dtcol, tattr);   break;
+    case MSGLISTDATE_RECEIVED:  window.message(LNG->Received, TP_BORD, dtcol, tattr);  break;
+  }
+}
+
+
+//  ------------------------------------------------------------------
+
+void GMsgList::print_line(uint idx, uint pos, bool isbar) {
+
+  int bycol = 7;
+  int tocol = bycol + mlst_bysiz + 1 + fldadd1;
   int bysiz = mlst_bysiz + fldadd1;
   int tosiz = mlst_tosiz + fldadd1;
   int resiz = mlst_resiz + fldadd2;
+
+  ReadMlst(idx);
+  MLst* ml = &mlst[idx];
+
+  int wattr_, hattr_, mattr_;
+  if(isbar) {
+    wattr_ = sattr;
+    hattr_ = sattr;
+    mattr_ = sattr;
+  }
+  else if(ml->high & MLST_HIGH_UNSENT) {
+    wattr_ = C_MENUW_UNSENT;
+    hattr_ = C_MENUQ_UNSENTHIGH;
+    mattr_ = hattr;
+  }
+  else if(ml->high & MLST_HIGH_UNREAD) {
+    wattr_ = C_MENUW_UNREAD;
+    hattr_ = C_MENUQ_UNREADHIGH;
+    mattr_ = hattr;
+  }
+  else {
+    wattr_ = wattr;
+    hattr_ = hattr;
+    mattr_ = hattr;
+  }
+
+  char buf[256];
 
   if(AA->Msglistwidesubj()) {
     resiz += tosiz + 1;
@@ -123,7 +288,7 @@ static void mlst_dispbuf(char* abuf, MLst* ml) {
   else
     *dbuf = NUL;
   sprintf(nbuf, "%5lu", CFG->switches.get(disprealmsgno) ? ml->msgno : AA->Msgn.ToReln(ml->msgno));
-  sprintf(abuf, "%-5.5s%s%-*.*s %-*.*s%s%-*.*s %s",
+  sprintf(buf, "%-5.5s%s%-*.*s %-*.*s%s%-*.*s %s",
     nbuf, ml->marks,
     bysiz, bysiz, ml->by,
     tosiz, tosiz, ml->to,
@@ -131,49 +296,15 @@ static void mlst_dispbuf(char* abuf, MLst* ml) {
     resiz, resiz, ml->re,
     dbuf
   );
-}
 
-
-//  ------------------------------------------------------------------
-
-static void mlst_dispit(PInf* p, uint pos, int type) {
-
-  int bycol = 7;
-  int tocol = bycol + mlst_bysiz + 1 + fldadd1;
-  int bysiz = mlst_bysiz + fldadd1;
-  int tosiz = mlst_tosiz + fldadd1;
-
-  MLst* ml = &mlst[pos];
-
-  int wattr, hattr, mattr=p->hattr;
-  if(type == PICK_BAR) {
-    wattr = p->sattr;
-    hattr = p->sattr;
-    mattr = p->sattr;
-  }
-  else if(ml->high & MLST_HIGH_UNSENT) {
-    wattr = C_MENUW_UNSENT;
-    hattr = C_MENUQ_UNSENTHIGH;
-  }
-  else if(ml->high & MLST_HIGH_UNREAD) {
-    wattr = C_MENUW_UNREAD;
-    hattr = C_MENUQ_UNREADHIGH;
-  }
-  else {
-    wattr = p->wattr;
-    hattr = p->hattr;
-  }
-
-  char buf[256];
-  mlst_dispbuf(buf, ml);
-  wprints(pos, 0, wattr, buf);
+  window.prints(pos, 0, wattr_, buf);
 
   if(ml->high & (MLST_HIGH_BOOK|MLST_HIGH_MARK))
-    wprints(pos, 5, mattr, ml->marks);
+    window.prints(pos, 5, mattr_, ml->marks);
   if(ml->high & MLST_HIGH_FROM)
-    wprintns(pos, bycol, hattr, ml->by, bysiz);
+    window.printns(pos, bycol, hattr_, ml->by, bysiz);
   if((ml->high & MLST_HIGH_TO) and not AA->Msglistwidesubj())
-    wprintns(pos, tocol, hattr, ml->to, tosiz);
+    window.printns(pos, tocol, hattr_, ml->to, tosiz);
 
   goldmark = ml->goldmark;
 }
@@ -181,408 +312,131 @@ static void mlst_dispit(PInf* p, uint pos, int type) {
 
 //  ------------------------------------------------------------------
 
-static void mlst_disp(PInf* p) {
+bool GMsgList::handle_key() {
 
-  mlst_dispit(p, p->pos, p->type);
-}
-
-
-//  ------------------------------------------------------------------
-
-static void mlst_get_mlst(MLst* ml, PInf* p, int n) {
-
-  GMsg* msg = mlstmsg;
-
-  ml->high = 0;
-
-  strcpy(ml->marks, "  ");
-
-  ml->msgno = AA->Msgn.CvtReln(p->idx + n + 1);
-
-  if(AA->bookmark == AA->Msgn.CvtReln(p->idx + n + 1)) {
-    ml->marks[0] = MMRK_BOOK;
-    ml->high |= MLST_HIGH_BOOK;
-  }
-
-  if(AA->Mark.Count()) {
-    if(AA->Mark.Find(ml->msgno)) {
-      ml->marks[1] = MMRK_MARK;
-      ml->high |= MLST_HIGH_MARK;
-    }
-  }
-
-  if(AA->Msglistfast()) {
-    AA->LoadHdr(msg, ml->msgno);
-  }
-  else {
-    AA->LoadMsg(msg, ml->msgno, CFG->dispmargin-(int)CFG->switches.get(disppagebar), GMSG_COPY); // do quick load
-  }
-  ml->goldmark = goldmark;
-
-  for(vector<Node>::iterator x = CFG->username.begin(); x != CFG->username.end(); x++) {
-    if(strieql(msg->By(), x->name)) {
-      ml->high |= MLST_HIGH_FROM;
-      msg->attr.fmu1();
-    }
-    if(strieql(msg->to, x->name)) {
-      ml->high |= MLST_HIGH_TO;
-      msg->attr.tou1();
-    }
-  }
-  if(strieql(msg->to, AA->Internetaddress())) {
-    ml->high |= MLST_HIGH_TO;
-    msg->attr.tou1();
-  }
-
-  // Highlight FROM if local
-  if(CFG->switches.get(displocalhigh) and msg->attr.loc())
-    ml->high |= MLST_HIGH_FROM;
-
-  // Highlight if unread
-  if(msg->timesread == 0 and CFG->switches.get(highlightunread))
-    ml->high |= MLST_HIGH_UNREAD;
-
-  // Highlight if unsent
-  if(msg->attr.uns()and not msg->attr.rcv() and not msg->attr.del())
-    ml->high |= MLST_HIGH_UNSENT;
-
-  ml->written = msg->written;
-  ml->arrived = msg->arrived;
-  ml->received = msg->received;
-  strcpy(ml->by, msg->By());
-  strcpy(ml->to, msg->To());
-  strcpy(ml->re, msg->re);
-}
-
-
-//  ------------------------------------------------------------------
-
-static void mlst_page(PInf* p) {
-
-  char linebuf[200];
-  vchar vlinebuf[200];
-  uint m, n;
-
-  if(not AA->Msglistfast())
-    w_info(LNG->Wait);
-
-  p->idx -= p->pos;
-  m = p->maxidx - p->idx;
-
-  for(n=0; n<=p->maxpos and n<=m; n++)
-    mlst_get_mlst(&mlst[n], p, n);
-
-  if(not AA->Msglistfast())
-    w_info(NULL);
-
-  for(n=0; n<=p->maxpos and n<=m; n++)
-    mlst_dispit(p, n, (n==p->pos) ? PICK_BAR : PICK_DISP);
-
-  for(int c = 0; c < MAXCOL-2; c++)
-    vlinebuf[c] = _box_table(p->btype, 1);
-  vlinebuf[MAXCOL-2] = NUL;
-
-  if(n <= p->maxpos or (p->maxpos == p->maxidx and p->maxpos < (p->height-3)))
-    wprintvs(n, 0, p->wattr|ACSET, vlinebuf);
-
-  memset(linebuf, ' ', MAXCOL-2);
-  linebuf[MAXCOL-2] = NUL;
-
-  for(++n; n<=p->height-2; n++)
-    wprints(n, 0, p->wattr, linebuf);
-  p->idx += p->pos;
-}
-
-
-//  ------------------------------------------------------------------
-
-static void mlst_center(PInf* p) {
-
-  uint botroom = p->maxidx - p->idx;
-
-  switch(CFG->displistcursor) {
-    case LIST_TOP:
-      if(botroom > p->maxpos)
-        p->pos = 0;
-      else
-        p->pos = p->maxpos - botroom;
-      break;
-    case LIST_NEARTOP:
-      {
-        uint room;
-        uint toproom = p->idx;
-        if(toproom > (p->maxpos/4)) {
-          if(botroom > (p->maxpos/4))
-            room = p->maxpos/4;
-          else if(botroom)
-            room = p->maxpos - botroom;
-          else
-            room = p->maxpos;
-        }
-        else
-          room = toproom;
-        p->pos = room;
-      }
-      break;
-    case LIST_MIDDLE:
-      {
-        uint room;
-        uint toproom = p->idx;
-        if(toproom > (p->maxpos/2)) {
-          if(botroom > (p->maxpos/2))
-            room = p->maxpos/2;
-          else if(botroom)
-            room = p->maxpos - botroom;
-          else
-            room = p->maxpos;
-        }
-        else
-          room = toproom;
-        p->pos = room;
-      }
-      break;
-    case LIST_NEARBOTTOM:
-      {
-        uint room;
-        uint toproom = p->idx;
-        if(toproom > 3*(p->maxpos/4)) {
-          if(botroom > 3*(p->maxpos/4))
-            room = 3*(p->maxpos/4);
-          else if(botroom)
-            room = p->maxpos - botroom;
-          else
-            room = p->maxpos;
-        }
-        else
-          room = toproom;
-        p->pos = room;
-      }
-      break;
-    case LIST_BOTTOM:
-      p->pos = p->maxpos;
-      break;
-  }
-  mlst_page(p);
-}
-
-
-//  ------------------------------------------------------------------
-
-static void mlst_scroll(PInf* p, int direction) {
-
-  if(direction == SUP) {
-    memmove(&mlst[0], &mlst[1], p->maxpos*sizeof(MLst));
-    mlst_get_mlst(&mlst[p->maxpos], p, 0);
-  }
-  else {
-    memmove(&mlst[1], &mlst[0], p->maxpos*sizeof(MLst));
-    mlst_get_mlst(&mlst[0], p, 0);
-  }
-  wscroll(1, direction);
-}
-
-
-//  ------------------------------------------------------------------
-
-static void mlst_title(PInf* p) {
-
-  int bycol = 8;
-  int tocol = bycol + mlst_bysiz + 1 + fldadd1;
-  int recol = tocol + mlst_tosiz + 1 + fldadd1;
-  int dtcol = recol + mlst_resiz + 1 + fldadd2;
-  if(AA->Msglistwidesubj())
-    recol = tocol;
-
-  wtitle(NULL, TCENTER, p->tattr);
-  wmessage(CFG->switches.get(disprealmsgno) ? LNG->MsgReal : LNG->Msg, TP_BORD, 3, p->tattr);
-  wmessage(LNG->FromL, TP_BORD, bycol, p->tattr);
-  if(not AA->Msglistwidesubj())
-    wmessage(LNG->ToL, TP_BORD, tocol, p->tattr);
-  wmessage(LNG->SubjL, TP_BORD, recol, p->tattr);
-  switch(AA->Msglistdate()) {
-    case MSGLISTDATE_WRITTEN:   wmessage(LNG->Written, TP_BORD, dtcol, p->tattr);   break;
-    case MSGLISTDATE_ARRIVED:   wmessage(LNG->Arrived, TP_BORD, dtcol, p->tattr);   break;
-    case MSGLISTDATE_RECEIVED:  wmessage(LNG->Received, TP_BORD, dtcol, p->tattr);  break;
-  }
-}
-
-
-//  ------------------------------------------------------------------
-
-static void mlst_open(PInf* p) {
-
-  wopen_(p->row, p->column, p->height, p->width, p->btype, p->battr, p->wattr, p->sbattr);
-  mlst_title(p);
-  mlst_center(p);
-}
-
-
-//  ------------------------------------------------------------------
-
-static void mlst_close(PInf* p) {
-
-  NW(p);
-  wclose();
-}
-
-
-//  ------------------------------------------------------------------
-
-static int mlst_dokey(PInf* p, gkey* keycode) {
-
-  int tpos;
-  gkey key, kk;
-  uint temp, tmpmsgno;
-
-  key = *keycode;
-  *keycode = 0;
+  gkey kk;
 
   if(key < KK_Commands) {
-    key = key_tolower(key);
+    // See if it's a listkey
     kk = SearchKey(key, ListKey, ListKeys);
     if(kk)
       key = kk;
-  }
-
-  // See if it's a listkey
-  switch(key) {
-    case KK_ListGotoPrev:
-    case KK_ListGotoNext:
-    case KK_ListGotoFirst:
-    case KK_ListGotoLast:
-    case KK_ListAskExit:
-    case KK_ListQuitNow:
-    case KK_ListAbort:
-    case KK_ListSelect:
-    case KK_ListToggleMark:
-    case KK_ListToggleBookMark:
-    case KK_ListGotoBookMark:
-    case KK_ListMarkingOptions:
-    case KK_ListDosShell:
-    case KK_ListMacro:
-    case Key_0:
-    case Key_1:
-    case Key_2:
-    case Key_3:
-    case Key_4:
-    case Key_5:
-    case Key_6:
-    case Key_7:
-    case Key_8:
-    case Key_9:
-      break;
-
-    // If not a listkey, see if it matches a readkey
-    default:
+    else {
+      // If not a listkey, see if it matches a readkey
       if(not IsMacro(key, KT_M)) {
         kk = SearchKey(key, ReadKey, ReadKeys);
         if(kk)
           key = kk;
       }
+    }
   }
+
+  ReadMlst(index);
 
   switch(key) {
     case KK_ListGotoPrev:
-      *keycode = Key_Up;
+      key = Key_Up;
+      default_handle_key();
       break;
 
     case KK_ListGotoNext:
-      *keycode = Key_Dwn;
+    listgotonext:
+      key = Key_Dwn;
+      default_handle_key();
       break;
 
     case KK_ListGotoFirst:
-      *keycode = Key_Home;
+      key = Key_Home;
+      default_handle_key();
       break;
 
     case KK_ListGotoLast:
-      *keycode = Key_End;
+      key = Key_End;
+      default_handle_key();
       break;
 
     case KK_ListAskExit:
       {
         GMenuQuit MenuQuit;
-        p->aborted = gkbd.quitall = (MenuQuit.Run());
-        if(gkbd.quitall) {
+        aborted = gkbd.quitall = (MenuQuit.Run());
+        if(gkbd.quitall)
           AA->bookmark = AA->Msgn.CvtReln(msgmark2);
-          return NO;
-        }
       }
       break;
 
     case KK_ListQuitNow:
-      p->aborted = gkbd.quitall = true;
-      AA->bookmark = AA->Msgn.CvtReln(msgmark2);
-      return NO;
+      gkbd.quitall = true;
+      ///////////////// Drop Through
 
     case KK_ListAbort:
+      aborted = true;
       AA->bookmark = AA->Msgn.CvtReln(msgmark2);
-      p->aborted = YES;
       ///////////////// Drop Through
 
     case KK_ListSelect:
-      return NO;
+      return false;
 
     case KK_ListToggleMark:
-      temp = AA->Mark.Find(mlst[p->pos].msgno);
-      if(temp) {
-        AA->Mark.DelReln(temp);
-        mlst[p->pos].marks[1] = ' ';
-        mlst[p->pos].high &= ~MLST_HIGH_MARK;
+      {
+        ulong temp = AA->Mark.Find(mlst[index].msgno);
+        if(temp) {
+          AA->Mark.DelReln(temp);
+        }
+        else {
+          AA->Mark.Add(mlst[index].msgno);
+        }
       }
-      else {
-        AA->Mark.Add(mlst[p->pos].msgno);
-        mlst[p->pos].marks[1] = MMRK_MARK;
-        mlst[p->pos].high |= MLST_HIGH_MARK;
-      }
-      if(p->idx < p->maxidx) {
-        mlst_disp(p);
-        *keycode = Key_Dwn;
-      }
-      break;
+      goto listgotonext;
 
     case KK_ListToggleBookMark:
-      if(AA->bookmark == mlst[p->pos].msgno) {
-        mlst[p->pos].marks[0] = ' ';
+      if(AA->bookmark == mlst[index].msgno) {
+        mlst[index].marks[0] = ' ';
         AA->bookmark = 0;
-        mlst[p->pos].high &= ~MLST_HIGH_BOOK;
-        mlst_disp(p);
+        mlst[index].high &= ~MLST_HIGH_BOOK;
+        display_bar();
       }
       else {
-        temp = AA->Msgn.ToReln(AA->bookmark-1);
-        AA->bookmark = mlst[p->pos].msgno;
-        mlst[p->pos].marks[0] = MMRK_BOOK;
-        mlst[p->pos].high |= MLST_HIGH_BOOK;
-        mlst_disp(p);
-        if(temp) {
-          tpos = p->pos;
-          p->pos += (temp - p->idx);
-          if(p->pos <= p->maxpos) {
-            mlst[p->pos].marks[0] = ' ';
-            mlst[p->pos].high &= ~MLST_HIGH_BOOK;
-            mlst_disp(p);
+        long prevbm = AA->Msgn.ToReln(AA->bookmark-1);
+        long newbm = index;
+        AA->bookmark = mlst[index].msgno;
+        mlst[index].marks[0] = MMRK_BOOK;
+        mlst[index].high |= MLST_HIGH_BOOK;
+        display_bar();
+        if(prevbm) {
+          if(in_range((long)position + prevbm - newbm, 0l, (long)maximum_position)) {
+            ReadMlst(prevbm);
+            mlst[prevbm].marks[0] = ' ';
+            mlst[prevbm].high &= ~MLST_HIGH_BOOK;
+            index = prevbm;
+            position += prevbm - newbm;
+            display_line();
+            index = newbm;
+            position -= prevbm - newbm;
           }
-          p->pos = tpos;
         }
       }
       break;
 
     case KK_ListGotoBookMark:
       if(AA->bookmark) {
-        tpos = p->pos + ((AA->Msgn.ToReln(AA->bookmark-1)) - p->idx);
-        temp = p->idx + 1;
-        p->idx = AA->Msgn.ToReln(AA->bookmark-1);
-        AA->bookmark = AA->Msgn.CvtReln(temp);
-        if(tpos >= 0 and (uint)tpos <= p->maxpos) {
-          mlst[tpos].marks[0] = ' ';
-          mlst[tpos].high &= ~MLST_HIGH_BOOK;
-          mlst[p->pos].marks[0] = MMRK_BOOK;
-          mlst[p->pos].high |= MLST_HIGH_BOOK;
-          mlst_disp(p);
-          p->pos = tpos;
-          mlst_disp(p);
+        long prevbm = AA->Msgn.ToReln(AA->bookmark-1);
+        long newbm = index;
+        index = prevbm;
+        AA->bookmark = mlst[newbm].msgno;
+        if(in_range((long)position + prevbm - newbm, 0l, (long)maximum_position)) {
+          mlst[newbm].marks[0] = MMRK_BOOK;
+          mlst[newbm].high |= MLST_HIGH_BOOK;
+          index = newbm;
+          display_line();
+          index = prevbm;
+          ReadMlst(index);
+          mlst[index].marks[0] = ' ';
+          mlst[index].high &= ~MLST_HIGH_BOOK;
+          position += prevbm - newbm;
+          display_bar();
         }
         else
-          mlst_center(p);
+          center(CFG->displistcursor);
       }
       else
         SayBibi();
@@ -591,11 +445,11 @@ static int mlst_dokey(PInf* p, gkey* keycode) {
     case KK_ListMarkingOptions:
       {
         uint lrbak = AA->lastread();
-        AA->set_lastread(p->idx + 1);
-        MLstMsgPtr->msgno = AA->Msgn.CvtReln(AA->lastread());
-        MarkMsgs(MLstMsgPtr);
+        AA->set_lastread(index + 1);
+        msg.msgno = AA->Msgn.CvtReln(AA->lastread());
+        MarkMsgs(&msg);
         AA->set_lastread(lrbak);
-        mlst_page(p);
+        update();
       }
       break;
 
@@ -605,39 +459,19 @@ static int mlst_dokey(PInf* p, gkey* keycode) {
 
     case KK_ListToggleWideSubj:
       AA->ToggleMsglistwidesubj();
-      mlst_title(p);
-      mlst_page(p);
+      update_title();
+      update();
       break;
 
     case KK_ListToggleDate:
       AA->NextMsglistdate();
       mlst_with_date(AA->Msglistdate());
-      mlst_title(p);
-      mlst_page(p);
-      break;
-
-    case Key_0:
-    case Key_1:
-    case Key_2:
-    case Key_3:
-    case Key_4:
-    case Key_5:
-    case Key_6:
-    case Key_7:
-    case Key_8:
-    case Key_9:
-    case KK_ReadGotoMsgno:
-      tmpmsgno = p->idx;
-      reader_keycode = key;
-      GotoMsgno();
-      if(AA->lastread()-1 != tmpmsgno) {
-        p->idx = AA->lastread()-1;
-        mlst_center(p);
-      }
+      update_title();
+      update();
       break;
 
     case KK_ReadMessageList:
-      mlst_center(p);
+      center(CFG->displistcursor);
       break;
 
     case Key_Tick:
@@ -649,63 +483,43 @@ static int mlst_dokey(PInf* p, gkey* keycode) {
 
     default:
       if(not PlayMacro(key, KT_M)) {
-        switch(key) {
-          case KK_ReadNewArea:
-            p->aborted = true;
-        }
         if(gkbd.kbuf == NULL)
           kbput(key);
-        return NO;
+        switch(key) {
+          case KK_ListAbort:
+          case KK_ReadNewArea:
+            aborted = true;
+        }
+        return false;
       }
   }
-  return YES;
+  return true;
 }
 
 
 //  ------------------------------------------------------------------
 
-uint MsgBrowser(GMsg* msg) {
+void GMsgList::Run() {
 
-  GFTRK("MsgBrowser");
+  ypos    = AA->Msglistheader() ? 6 : 1;      // Window Starting Row
+  xpos    = 0;                                // Window Starting Column
+  ylen    = MAXROW-3-ypos;                    // Window Height
+  xlen    = MAXCOL-2;                         // Window Width
+  btype   = W_BMENU;                          // Window Border Type
+  battr   = C_MENUB;                          // Window Border Color
+  wattr   = C_MENUW;                          // Window Color
+  tattr   = C_MENUT;                          // Window Title Color
+  sattr   = C_MENUS;                          // Window Selection Bar Color
+  hattr   = C_MENUQ;                          // Window Highlight Color
+  sbattr  = C_MENUPB;                         // Window Scrollbar Color
+  title   = LNG->ThreadlistTitle;             // Window Title
+  helpcat = H_MessageBrowser;                 // Window Help Category
+  listwrap  = CFG->switches.get(displistwrap);
 
-  Pick pick;
-  PInf p;
-
-  memset(&p, 0, sizeof(PInf));
-  memset(&pick, 0, sizeof(Pick));
-  p.btype = W_BMENU;
-  p.battr = C_MENUB;
-  p.wattr = C_MENUW;
-  p.sattr = C_MENUS;
-  p.tattr = C_MENUT;
-  p.hattr = C_MENUQ;
-  p.sbattr = C_MENUPB;
-  p.row = AA->Msglistheader() ? 6 : 1;
-  p.height = MAXROW-p.row-1;
-  p.width = MAXCOL;
-  p.helpcat = H_MessageBrowser;
-  p.delay = 150;  // milliseconds
-  p.listwrap = CFG->switches.get(displistwrap);
-
-  pick.open      = mlst_open;
-  pick.close     = mlst_close;
-  pick.disp      = mlst_disp;
-  pick.page      = mlst_page;
-  pick.scroll    = mlst_scroll;
-  pick.dokey     = mlst_dokey;
-  pick.dodelayed = mlst_dodelayed;
-  
-  p.maxidx = AA->Msgn.Count()-1;
-  p.maxpos = MinV((uint)(p.height-3), p.maxidx);
-  p.aborted = NO;
-
-  p.idx = AA->Msgn.ToReln(msg->msgno)-1;
+  index = AA->Msgn.ToReln(reader_msg->msgno)-1;
+  minimum_index = 0;
+  maximum_index = AA->Msgn.Count()-1;
   msgmark2 = AA->Msgn.ToReln(AA->bookmark);
-
-  MLstMsgPtr = msg;
-
-  mlst = (MLst*)throw_calloc(p.maxpos+2, sizeof(MLst));
-  mlstmsg = (GMsg*)throw_calloc(1, sizeof(GMsg));
 
   if(AA->Msglistdate() != MSGLISTDATE_NONE) {
     if(AA->Msglistdate() != MSGLISTDATE_WRITTEN) {
@@ -721,22 +535,24 @@ uint MsgBrowser(GMsg* msg) {
   fldadd1 = (MAXCOL-80)/3;
   fldadd2 = (MAXCOL-80) - (fldadd1*2);
 
-  _in_msglist = true;
+  mlst.clear();
 
-  Picker(&p, &pick);
+  MLst dummy_mlst;
+  dummy_mlst.initialized = false;
+  for(uint i=0; i<maximum_index; i++)
+    mlst.push_back(dummy_mlst);
 
-  _in_msglist = false;
+  maximum_position = MinV((uint)maximum_index - 1, (uint)ylen - 1);
 
-  ResetMsg(mlstmsg);
-  throw_release(mlstmsg);
-  throw_release(mlst);
+  if(mlst.size() != 0)
+    run_picker();
+  else
+    aborted = true;
 
-  GFTRK(NULL);
-
-  if(not p.aborted)
-    return p.idx+1;
-
-  return 0;
+  if(not aborted) {
+    ReadMlst(index);
+    AA->set_lastread(AA->Msgn.ToReln(mlst[index].msgno));
+  }
 }
 
 
@@ -745,10 +561,10 @@ uint MsgBrowser(GMsg* msg) {
 void MessageBrowse() {
 
   if(AA->Msgn.Count()) {
-    uint temp = AA->lastread();
-    AA->set_lastread(MsgBrowser(reader_msg));
-    if(AA->lastread() == 0)
-      AA->set_lastread(temp);
+    GMsgList p;
+    _in_msglist = true;
+    p.Run();
+    _in_msglist = false;
     if(AA->PMrk.Tags() == 0)
       AA->isreadpm = false;
     if(AA->Mark.Count() == 0)
@@ -760,8 +576,6 @@ void MessageBrowse() {
 
 
 //  ------------------------------------------------------------------
-
-#include <vector>
 
 class ThreadEntry {
 
@@ -802,7 +616,6 @@ public:
 
   GThreadlist() { memset(&msg, 0, sizeof(GMsg)); };
   ~GThreadlist() { ResetMsg(&msg); };
-
 };
 
 
@@ -1133,55 +946,21 @@ bool GThreadlist::handle_key() {
 
   if(key < KK_Commands) {
     key = key_tolower(key);
+    // See if it's a listkey
     kk = SearchKey(key, ListKey, ListKeys);
     if(kk)
       key = kk;
-  }
-
-  // See if it's a listkey
-  switch(key) {
-    case KK_ListGotoPrev:
-    case KK_ListGotoNext:
-    case KK_ListGotoFirst:
-    case KK_ListGotoLast:
-    case KK_ListAskExit:
-    case KK_ListQuitNow:
-    case KK_ListAbort:
-    case KK_ListSelect:
-    case KK_ListToggleMark:
-    case KK_ListToggleBookMark:
-    case KK_ListGotoBookMark:
-    case KK_ListMarkingOptions:
-    case KK_ListDosShell:
-    case Key_0:
-    case Key_1:
-    case Key_2:
-    case Key_3:
-    case Key_4:
-    case Key_5:
-    case Key_6:
-    case Key_7:
-    case Key_8:
-    case Key_9:
-      break;
-
-    // If not a listkey, see if it matches a readkey
-    default:
+    else {
+      // If not a listkey, see if it matches a readkey
       if(not IsMacro(key, KT_M)) {
         kk = SearchKey(key, ReadKey, ReadKeys);
         if(kk)
           key = kk;
       }
+    }
   }
 
   switch(key) {
-    case Key_C_PgUp:
-    case Key_C_PgDn:
-      NextThread((key == Key_C_PgDn));
-      if(list.size() <= 1)
-        return false;
-      center(CFG->displistcursor);
-      break;
     case KK_ListGotoPrev:
     case KK_ListGotoNext:
       NextThread((key == KK_ListGotoNext));
@@ -1189,8 +968,16 @@ bool GThreadlist::handle_key() {
         return false;
       center(CFG->displistcursor);
       break;
-    case KK_ListGotoFirst: precursor(); cursor_first(); break;
-    case KK_ListGotoLast:  precursor(); cursor_last();  break;
+
+    case KK_ListGotoFirst:
+      key = Key_Home;
+      default_handle_key();
+      break;
+
+    case KK_ListGotoLast:
+      key = Key_End;
+      default_handle_key();
+      break;
 
     case KK_ListAskExit:
       {
@@ -1254,7 +1041,7 @@ bool GThreadlist::handle_key() {
           case KK_ReadNewArea:
             aborted = true;
         }
-        return NO;
+        return false;
       }
   }
   return true;
@@ -1284,8 +1071,7 @@ void GThreadlist::Run() {
 
   if(list.size() > 1)
     run_picker();
-
-  if(list.size() <= 1) {
+  else {
     w_info(LNG->NoThreadlist);
     waitkeyt(5000);
     w_info(NULL);

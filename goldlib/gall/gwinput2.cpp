@@ -518,20 +518,6 @@ void gwinput::delete_right_word() {
 
 //  ------------------------------------------------------------------
 
-void gwinput::clear_to_end_field() {
-
-}
-
-
-//  ------------------------------------------------------------------
-
-void gwinput::clear_to_end_form() {
-
-}
-
-
-//  ------------------------------------------------------------------
-
 void gwinput::go_left_word() {
 
   current->left_word();
@@ -619,8 +605,6 @@ bool gwinput::handle_key(gkey key) {
     case Key_C_R:           restore_field();             break;
     case Key_C_BS:          delete_left_word();          break;
     case Key_C_T:           delete_right_word();         break;
-    case Key_C_U:           clear_to_end_field();        break;
-    case Key_C_Y:           clear_to_end_form();         break;
     case Key_C_Lft:         go_left_word();              break;
     case Key_C_Rgt:         go_right_word();             break;
     default:

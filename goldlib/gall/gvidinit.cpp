@@ -92,7 +92,6 @@ GVid *gvid;
 #elif defined(__UNIX__)
 
 int gvid_stdout = -1;
-bool gvid_xterm = false;
 const char* gvid_acs_enable;
 const char* gvid_acs_disable;
 
@@ -401,26 +400,31 @@ int GVid::detectadapter() {
 
   adapter = V_VGA;
 
-  #elif defined(__UNIX__)
+  #elif defined(__linux__)
 
+  for(int n=0; n<8; n++)
+    __box_table[n] = __box_table[8];
+
+  gvid_acs_enable  = "\016";
+  gvid_acs_disable  = "\017";
+
+  gvid_stdout = fileno(stdout);
+
+  adapter = V_VGA;
+
+  #elif defined(__UNIX__) // code below should not be normally used...
+
+  bool gvid_xterm = false;
   const char* term = getenv("TERM");
-#ifndef __linux__
+
   if(term and strneql(term, "xterm", 5)) {
-#endif
     gvid_xterm = true;
     for(int n=0; n<8; n++)
       __box_table[n] = __box_table[8];
-#ifndef __linux__
   }
-#endif
-    
-#ifndef __linux__
+
   gvid_acs_enable  = gvid_xterm ? "\033)0\033(B\016" : "\033[11m";
   gvid_acs_disable = gvid_xterm ? "\033(B\033)B\017" : "\033[10m";
-#else
-  gvid_acs_enable  = gvid_xterm ? "\016" : "";
-  gvid_acs_disable  = gvid_xterm ? "\017" : "";
-#endif
 
   gvid_stdout = fileno(stdout);
 

@@ -177,7 +177,6 @@ inline gdma gdmaptr(int col, int row) {
 //  ------------------------------------------------------------------
 
 extern int gvid_stdout;
-extern bool gvid_xterm;
 extern const char* gvid_acs_enable;
 extern const char* gvid_acs_disable;
 int gvid_last_attr = 0;

@@ -50,9 +50,10 @@ void gareafile::ReadAreasBBS(char* tag) {
   // Read each AREAS.BBS
   while(ptr) {
     if(*ptr != '-') {
+      int echos_before = echolist.Echos();
       GetAreasBBS(ptr, origin, options);
       echos = echolist.Echos();
-      for(int n=0; n<echos; n++) {
+      for(int n=echos_before; n<echos; n++) {
         echolist.GetEcho(n, &echoid, &path, &desc);
         aa.reset();
         aa.type = GMB_ECHO;

@@ -56,7 +56,9 @@ int ListKeys = 0;
 int NodeKeys = 0;
 int EditKeys = 0;
 int FileKeys = 0;
-list<CmdKey>::iterator AreaKey, ReadKey, ListKey, NodeKey, EditKey, FileKey;
+int AddressbookKeys = 0;
+int HeaderKeys = 0;
+list<CmdKey>::iterator AreaKey, ReadKey, ListKey, NodeKey, EditKey, FileKey, AddressbookKey, HeaderKey;
 
 int inforow = 18;
 

@@ -304,19 +304,58 @@ const gkey KK_ReadToggleStyles     = 0xFF9B;
 const gkey KK_ReadToggleTwits      = 0xFF9C;
 const gkey KK_ReadTouchNetscan     = 0xFF9D;
 const gkey KK_ReadTouchSemaphore   = 0xFF9E;
-const gkey KK_ReadUserbase         = 0xFF9F;
+const gkey KK_ReadAddressbook      = 0xFF9F;
 const gkey KK_ReadUUDecode         = 0xFFA0;
 const gkey KK_ReadWriteMsg         = 0xFFA1;
 const gkey KK_ReadDirQuoteMsg      = 0xFFA2;
 const gkey KK_ReadMoveDirQuoteMsg  = 0xFFA3;
 
-const gkey KK_AreaUndefine         = 0xFFB0;
-const gkey KK_EditUndefine         = 0xFFB1;
-const gkey KK_FileUndefine         = 0xFFB2;
-const gkey KK_ListUndefine         = 0xFFB3;
-const gkey KK_NodeUndefine         = 0xFFB4;
-const gkey KK_ReadUndefine         = 0xFFB5;
-const gkey KK_ZzzzLast             = 0xFFB6;
+const gkey KK_AddressbookQuit      = 0xFFB0;
+const gkey KK_AddressbookAdd       = 0xFFB1;
+const gkey KK_AddressbookSelect    = 0xFFB2;
+const gkey KK_AddressbookDelete    = 0xFFB3;
+const gkey KK_AddressbookPack      = 0xFFB4;
+
+const gkey KK_HeaderAddressbook    = 0xFFC0;
+const gkey KK_HeaderLookup         = 0xFFC1;
+const gkey KK_HeaderToggleAttrWin  = 0xFFC2;
+const gkey KK_HeaderClearAttrib    = 0xFFC3;
+const gkey KK_HeaderToggleReserved = 0xFFC4;
+const gkey KK_HeaderToggleGroupmsg = 0xFFC5;
+const gkey KK_HeaderToggleScanned  = 0xFFC6;
+const gkey KK_HeaderToggleFile     = 0xFFC7;
+const gkey KK_HeaderToggleArcsent  = 0xFFC8;
+const gkey KK_HeaderToggleCrash    = 0xFFC9;
+const gkey KK_HeaderToggleDirect   = 0xFFCA;
+const gkey KK_HeaderToggleDelsent  = 0xFFCB;
+const gkey KK_HeaderToggleFreq     = 0xFFCC;
+const gkey KK_HeaderToggleZonegate = 0xFFCD;
+const gkey KK_HeaderToggleHold     = 0xFFCE;
+const gkey KK_HeaderToggleImm      = 0xFFCF;
+const gkey KK_HeaderToggleTransit  = 0xFFD0;
+const gkey KK_HeaderToggleKill     = 0xFFD1;
+const gkey KK_HeaderToggleLocked   = 0xFFD2;
+const gkey KK_HeaderToggleRetrecreq= 0xFFD3;
+const gkey KK_HeaderToggleRetrec   = 0xFFD4;
+const gkey KK_HeaderToggleOrphan   = 0xFFD5;
+const gkey KK_HeaderTogglePvt      = 0xFFD6;
+const gkey KK_HeaderToggleAudit    = 0xFFD7;
+const gkey KK_HeaderToggleReceived = 0xFFD8;
+const gkey KK_HeaderToggleSent     = 0xFFD9;
+const gkey KK_HeaderToggleTrunc    = 0xFFDA;
+const gkey KK_HeaderToggleUpdreq   = 0xFFDB;
+const gkey KK_HeaderToggleHubhost  = 0xFFDC;
+const gkey KK_HeaderToggleLocal    = 0xFFDD;
+const gkey KK_HeaderToggleXmail    = 0xFFDE;
+const gkey KK_HeaderToggleCfmrecreq= 0xFFDF;
+
+const gkey KK_AreaUndefine         = 0xFFE0;
+const gkey KK_EditUndefine         = 0xFFE1;
+const gkey KK_FileUndefine         = 0xFFE2;
+const gkey KK_ListUndefine         = 0xFFE3;
+const gkey KK_NodeUndefine         = 0xFFE4;
+const gkey KK_ReadUndefine         = 0xFFE5;
+const gkey KK_ZzzzLast             = 0xFFE6;
 
 
 //  ------------------------------------------------------------------
@@ -329,6 +368,8 @@ const int KT_M =  8;   // Msg lister
 const int KT_N = 16;   // Node browser
 const int KT_R = 32;   // Reader                  (+ external utils)
 const int KT_F = 64;   // File browser
+const int KT_B = 128;  // Addressbook browser
+const int KT_H = 256;  // Header editor
 
 
 //  ------------------------------------------------------------------

@@ -47,66 +47,6 @@ const int LIST_TOP         = 2;
 
 
 //  ------------------------------------------------------------------
-//  Picker info
-
-struct PInf {
-
-  PInf() : ypos(row), xpos(column), ylen(height), xlen(width) {}
-
-  uint& ypos;
-  uint& xpos;
-  uint& ylen;
-  uint& xlen;
-  uint  row;      //ypos;                         // Window Starting Row
-  uint  column;   //xpos;                         // Window Starting Column
-  uint  height;   //ylen;                         // Window Height
-  uint  width;    //xlen;                         // Window Width
-  int   btype;                        // Window Border Type
-  int   battr;                        // Window Border Color
-  int   wattr;                        // Window Color
-  int   tattr;                        // Window Title Color
-  int   sattr;                        // Window Selection Bar Color
-  int   hattr;                        // Window Highlight Color
-  int   loattr;                       // Window LoAttr Color
-  int   sbattr;                       // Window Scrollbar Color
-  char* title;                        // Window Title
-  int   helpcat;                      // Window Help Category
-  uint  maxidx;                       // List Entries - 1
-  uint  minidx;                       // Minimum index in the list
-  uint  maxpos;                       // Display Pos
-  uint  idx;                          // List Index
-  uint  pos;                          // Display Pos
-  long  delay;                        // Ticks until delay
-  int   type;                         // Bar or Disp
-  int   retval;                       // Return value
-  bool  aborted;                      // True if aborted
-  bool  listwrap;                     // True if wrap-around is supported
-  int   direction;                    // 1 if next, -1 if previous
-};
-
-
-//  ------------------------------------------------------------------
-//  Picker definable functions
-
-struct Pick {
-  void  (*open)     (PInf*);        // Called after window is opened
-  void  (*close)    (PInf*);        // Called after window is closed
-  void  (*precursor)(PInf*);        // Called before any cursor movement
-  void  (*dodelayed)(PInf*);        // Called after a delay
-  void  (*disp)     (PInf*);        // Display line
-  void  (*page)     (PInf*);        // Display page
-  void  (*scroll)   (PInf*, int);   // Scroll list (direction)
-  int   (*dokey)    (PInf*, gkey*);  // Called with key (&keycode)
-};
-
-
-//  ------------------------------------------------------------------
-//  Prototypes
-
-int Picker(PInf* p, Pick* pick);
-
-
-//  ------------------------------------------------------------------
 
 class gwinpick {
 

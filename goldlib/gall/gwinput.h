@@ -188,8 +188,6 @@ public:
   void restore_field();
   void delete_left_word();
   void delete_right_word();
-  void clear_to_end_field();
-  void clear_to_end_form();
   void go_left_word();
   void go_right_word();
   void enter_char(char ch);

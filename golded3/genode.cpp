@@ -742,9 +742,6 @@ static int browse_nodelist(GMsg* msg, char* title, int topline) {
   NodelistBrowser* browser = new NodelistBrowser;
   throw_new(browser);
 
-  if(topline == 0)
-    ChgAttrs(NO, msg);   // Close the attributes menu
-
   browser->btype = W_BMENU;
   browser->battr = C_MENUB;
   browser->wattr = C_MENUW;
@@ -769,9 +766,6 @@ static int browse_nodelist(GMsg* msg, char* title, int topline) {
     entry = browser->entries[browser->pos-1];
 
   delete browser;
-
-  if(topline == 0)
-    ChgAttrs(YES, msg);  // Turn on the attributes menu again
 
   return (not aborted);
 }

@@ -183,6 +183,7 @@ void InvalidateControlInfo(GMsg *msg);
 
 void DispHeadAttrs(GMsg* msg);
 void AskAttributes(GMsg* msg);
+bool ProcessAttrs(gkey &key);
 void ChgAttrs(int mode, GMsg* msg);
 int ChangeAka();
 int ChangeCharsIn();
@@ -197,7 +198,6 @@ int ChangeXlatImport();
 //  ------------------------------------------------------------------
 //  GEMLST prototypes
 
-uint MsgBrowser(GMsg* msg);
 void MsgThreadlist();
 
 

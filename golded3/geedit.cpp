@@ -836,8 +836,10 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, boo
           displine(_thisline, _thisrow);
       }
 
+      _thislen = _thisline->txt.length();
+
       // If we are on the cursor line, check if the cursor char was wrapped
-      if(_thisrow == _cursrow and _thisline->txt.length() <= _curscol) {
+      if((_thisrow == _cursrow) and (_thislen <= _curscol) and not ((_thislen == _curscol) and (_thisline->txt[_curscol] != ' '))) {
         _curscol = _quotelen + ((_curscol > _wrappos) ? _curscol-_wrappos : 0);
         _cursrow++;
         UndoItem* i = Undo->last_item;
@@ -1018,14 +1020,9 @@ void IEclass::DelChar() {
       GetQuotestr(_nextline->txt.c_str(), _dummybuf, &_quotelen);
     }
 
-    // Copy the next line's text to this line
-    // Skip past the next line's quote string and blanks, if any
-    const char* _nextptr = _nextline->txt.c_str()+_quotelen;
-    if(not ((_nextline->type & GLINE_QUOT) and (col == 0))) {
-      while(*_nextptr == ' ')
-        _nextptr++;
-    }
-    _thisline->txt += _nextptr;
+    // Copy the next line's text to this line without quote string
+    const char *_nexttext = _nextline->txt.c_str()+_quotelen;
+    _thisline->txt += _nexttext + strspn(_nexttext, " ");
 
     Undo->PushItem(EDIT_UNDO_CUT_TEXT|batch_mode, _thisline, col);
 
@@ -1054,10 +1051,12 @@ void IEclass::DelChar() {
   // Make sure the line type still is correct
   setlinetype(_thisline);
 
+  uint _thisrow = row;
+
   // Rewrap this line
   wrapdel(&currline, &col, &row, false);
 
-  refresh(currline, row);
+  refresh(_thisline, _thisrow);
 
   GFTRK(NULL);
 }
@@ -1453,7 +1452,7 @@ void IEclass::DeleteEOL() {
 
   GFTRK("EditDeleteEOL");
 
-  bool _has_linefeed = currline->txt.find('\n') != currline->txt.npos ? true : false;
+  bool _has_linefeed = (currline->txt.find('\n') != currline->txt.npos) ? true : false;
  
   Undo->PushItem(EDIT_UNDO_DEL_TEXT, currline);
 

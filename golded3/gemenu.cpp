@@ -433,51 +433,145 @@ static void toggle_dispattrwindow() {
 
 //  ------------------------------------------------------------------
 
-void ChgAttrs(int mode, GMsg* __msg) {
+bool ProcessAttrs(gkey &key) {
 
-  static KBnd* k1;
+  switch(key) {
+    case KK_HeaderToggleScanned:
+      toggle_scanned();
+      return true;
+
+    case KK_HeaderToggleGroupmsg:
+      toggle_groupmsg();
+      return true;
+
+    case KK_HeaderToggleZonegate:
+      toggle_zonegate();
+      return true;
+
+    case KK_HeaderToggleHubhost:
+      toggle_hubhost();
+      return true;
+
+    case KK_HeaderToggleRetrecreq:
+      toggle_retrecreq();
+      return true;
+
+    case KK_HeaderToggleCrash:
+      toggle_crash();
+      return true;
+
+    case KK_HeaderToggleLocked:
+      toggle_locked();
+      return true;
+
+    case KK_HeaderToggleReceived:
+      toggle_received();
+      return true;
+
+    case KK_HeaderToggleLocal:
+      toggle_local();
+      return true;
+
+    case KK_HeaderToggleRetrec:
+      toggle_retrec();
+      return true;
+
+    case KK_HeaderToggleFreq:
+      toggle_freq();
+      return true;
+
+    case KK_HeaderToggleImm:
+      toggle_imm();
+      return true;
+
+    case KK_HeaderToggleAttrWin:
+      toggle_dispattrwindow();
+      return true;
+
+    case KK_HeaderToggleArcsent:
+      toggle_arcsent();
+      return true;
+
+    case KK_HeaderToggleHold:
+      toggle_hold();
+      return true;
+
+    case KK_HeaderToggleAudit:
+      toggle_audit();
+      return true;
+
+    case KK_HeaderToggleXmail:
+      toggle_xmail();
+      return true;
+
+    case KK_HeaderToggleTrunc:
+      toggle_trunc();
+      return true;
+
+    case KK_HeaderToggleUpdreq:
+      toggle_updreq();
+      return true;
+
+    case KK_HeaderClearAttrib:
+      clear_attrib();
+      return true;
+
+    case KK_HeaderToggleKill:
+      toggle_kill();
+      return true;
+
+    case KK_HeaderToggleTransit:
+      toggle_transit();
+      return true;
+
+    case KK_HeaderToggleCfmrecreq:
+      toggle_cfmrecreq();
+      return true;
+
+    case KK_HeaderToggleOrphan:
+      toggle_orphan();
+      return true;
+
+    case KK_HeaderToggleFile:
+      toggle_file();
+      return true;
+
+    case KK_HeaderToggleDelsent:
+      toggle_delsent();
+      return true;
+
+    case KK_HeaderToggleDirect:
+      toggle_direct();
+      return true;
+
+    case KK_HeaderToggleReserved:
+      toggle_reserved();
+      return true;
+
+    case KK_HeaderTogglePvt:
+      toggle_pvt();
+      return true;
+
+    case KK_HeaderToggleSent:
+      toggle_sent();
+      return true;
+  }
+  return false;
+}
+
+//  ------------------------------------------------------------------
+
+void ChgAttrs(int mode, GMsg* __msg) {
 
   if(mode) {
     MenuMsgPtr = __msg;
 
     if(EDIT->HeaderAttrs() or (mode == ALWAYS))
       DispAttrWindow(true);
-    k1 = chgonkey(NULL);
-    setonkey(Key_A_F1, toggle_dispattrwindow, 0);
-    setonkey(Key_A_1, toggle_reserved   , 0);
-    setonkey(Key_A_2, toggle_groupmsg   , 0);
-    setonkey(Key_A_4, toggle_scanned    , 0);
-    setonkey(Key_A_A, toggle_file       , 0);
-    setonkey(Key_A_B, toggle_arcsent    , 0);
-    setonkey(Key_A_C, toggle_crash      , 0);
-    setonkey(Key_A_D, toggle_direct     , 0);
-    setonkey(Key_A_E, toggle_delsent    , 0);
-    setonkey(Key_A_F, toggle_freq       , 0);
-    setonkey(Key_A_G, toggle_zonegate   , 0);
-    setonkey(Key_A_H, toggle_hold       , 0);
-    setonkey(Key_A_I, toggle_imm        , 0);
-    setonkey(Key_A_J, toggle_transit    , 0);
-    setonkey(Key_A_K, toggle_kill       , 0);
-    setonkey(Key_A_L, toggle_locked     , 0);
-    setonkey(Key_A_M, toggle_retrecreq  , 0);
-    setonkey(Key_A_N, toggle_retrec     , 0);
-    setonkey(Key_A_O, toggle_orphan     , 0);
-    setonkey(Key_A_P, toggle_pvt        , 0);
-    setonkey(Key_A_Q, toggle_audit      , 0);
-    setonkey(Key_A_R, toggle_received   , 0);
-    setonkey(Key_A_S, toggle_sent       , 0);
-    setonkey(Key_A_T, toggle_trunc      , 0);
-    setonkey(Key_A_U, toggle_updreq     , 0);
-    setonkey(Key_A_V, toggle_hubhost    , 0);
-    setonkey(Key_A_W, toggle_local      , 0);
-    setonkey(Key_A_X, toggle_xmail      , 0);
-    setonkey(Key_A_Y, toggle_cfmrecreq  , 0);
-    setonkey(Key_A_Z, clear_attrib      , 0);
   }
   else {
     DispAttrWindow(false);
     freonkey();
-    chgonkey(k1);
   }
 }
 
@@ -490,9 +584,23 @@ void AskAttributes(GMsg* __msg) {
   update_statusline(LNG->ChangeAttrs);
   whelpdef(CFG->helpged, Key_F1, C_HELPB, C_HELPW, C_HELPQ, C_HELPS, NULL);
   whelppcat(H_Attributes);
-  getxch();
+
+  gkey key;
+  do {
+    gkey kk;
+
+    key = getxch();
+    if(key < KK_Commands) {
+      key = key_tolower(key);
+      kk = SearchKey(key, HeaderKey, HeaderKeys);
+      if(kk)
+        key = kk;
+    }
+  }
+  while(ProcessAttrs(key) == true);
+
   whelpop();
-  ChgAttrs(false, __msg);
+  ChgAttrs(NO, __msg);
 }
 
 

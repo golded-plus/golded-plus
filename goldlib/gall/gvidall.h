@@ -35,13 +35,6 @@
 #include <gdefs.h>
 #if defined(__USE_NCURSES__)
 #include <gcurses.h>
-#else
-#define ACS_BOARD '°'
-#ifndef __linux__
-#define ACS_BLOCK 'Û'
-#else
-#define ACS_BLOCK ' '
-#endif
 #endif
 #if defined(__WIN32__)
 #include <windows.h>
@@ -196,7 +189,7 @@ struct __int10_ah1b_statebuf {
 #endif
 #define INTENSE     8
 
-#if defined(__UNIX__) and not defined(__USE_NCURSES__)
+#if defined(__UNIX__) && !defined(__USE_NCURSES__)
 #define ACSET       BLINK
 #else
 #define ACSET       0
@@ -345,15 +338,11 @@ public:
 
 extern GVid *gvid;
 
-#if defined(__UNIX__) and not defined(__USE_NCURSES__)
-extern bool gvid_xterm;
-#endif
-
 
 //  ------------------------------------------------------------------
 //  Box characters table
 
-#if not defined(__USE_NCURSES__)
+#if !defined(__USE_NCURSES__)
 
 extern char* __box_table[];
 #define _box_table(i,j) (__box_table[i][j])

@@ -256,7 +256,7 @@ void w_progress(int mode, int attr, long pos, long size, const char* title) {
         goto oops;  // Oops, someone forgot to open the window..
       if((pos*58/size) != (prev_pos*58/size)) {
       force_update:
-        wpropbar(PROP_BARGRAPH, 1, 0, -59, 1, attr, pos, size);
+        wpropbar(1, 0, 59, attr, pos, size);
       }
       prev_pos = pos;
       break;

@@ -58,18 +58,29 @@ public:
 
 bool GMsgHeaderEdit::handle_other_keys(gkey& key) {
 
+  gkey kk;
+
+  if(key < KK_Commands) {
+    key = key_tolower(key);
+    kk = SearchKey(key, HeaderKey, HeaderKeys);
+    if(kk)
+      key = kk;
+  }
+
+  if(ProcessAttrs(key) == true)
+    return true;
+
   switch(key) {
-    case Key_F10:
+    case KK_HeaderAddressbook:
       vcurhide();
-      ChgAttrs(NO, msg);
       lookup_addressbook(msg, get_field(id_to_name)->buf, get_field(id_to_addr)->buf, true);
-      ChgAttrs(YES, msg);
       get_field(id_to_name)->draw();
       get_field(id_to_addr)->draw();
       current->update();
       vcurshow();
-      break;
-    case Key_S_F10:
+      return true;
+
+    case KK_HeaderLookup:
       {
         Addr addr,addr2;
         INam buf;
@@ -110,6 +121,7 @@ bool GMsgHeaderEdit::handle_other_keys(gkey& key) {
         }
       }
       return true;
+
     default:
       if(PlayMacro(key, 0))
         return true;
@@ -414,7 +426,7 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view) {
       break;
   }
 
-  ChgAttrs(true, msg);
+  ChgAttrs(YES, msg);
 
   whelpdef(CFG->helpged, Key_F1, C_HELPB, C_HELPW, C_HELPQ, C_HELPS, NULL);
   vcurshow();
@@ -430,7 +442,7 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view) {
   hedit.run(H_Header);
   vcurhide();
 
-  ChgAttrs(false, msg);
+  ChgAttrs(NO, msg);
 
   if(not hedit.dropped and not gkbd.quitall) {
 
