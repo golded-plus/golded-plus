@@ -58,8 +58,9 @@ STDLIBS+=-lncurses
 endif
 
 # force not to use coprocessor features in DOS, if you have one you may remove this
-ifneq ($(DJGPP),)
+ifeq ($(PLATFORM),djg)
 CFLAGS+=-m386 -mno-80387 -mno-fp-ret-in-387 -mno-fancy-math-387
+LNKFLAGS+=-lemu
 endif
 
 BIN=bin

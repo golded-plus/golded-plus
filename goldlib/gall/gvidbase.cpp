@@ -607,7 +607,7 @@ void vputw(int row, int col, vatch chat) {
 
   #elif defined(__OS2__)
 
-  VioWrtNCell(&chat, 1, (USHORT)row, (USHORT)col, 0);
+  VioWrtNCell((BYTE *)&chat, 1, (USHORT)row, (USHORT)col, 0);
 
   #elif defined(__WIN32__)
 
@@ -922,7 +922,7 @@ void vputns(int row, int col, int atr, const char* str, uint width) {
 
   if(width > len) {
     vatch filler = vcatch(fillchar, atr);
-    VioWrtNCell((CHAR *)&filler, (USHORT)(width-len), (USHORT)row, (USHORT)(col+len), 0);
+    VioWrtNCell((BYTE *)&filler, (USHORT)(width-len), (USHORT)row, (USHORT)(col+len), 0);
   }
 
   #elif defined(__WIN32__)
@@ -1015,7 +1015,7 @@ void vputx(int row, int col, int atr, vchar chr, uint len) {
   #elif defined(__OS2__)
 
   vatch filler = vcatch(chr, atr);
-  VioWrtNCell((CHAR *)&filler, (USHORT)len, (USHORT)row, (USHORT)col, 0);
+  VioWrtNCell((BYTE *)&filler, (USHORT)len, (USHORT)row, (USHORT)col, 0);
 
   #elif defined(__WIN32__)
 
@@ -1091,7 +1091,7 @@ void vputy(int row, int col, int atr, vchar chr, uint len) {
 
   vatch filler = vcatch(chr, atr);
   for(int n=0; n<len; n++)
-    VioWrtNCell((CHAR *)&filler, 1, (USHORT)row++, (USHORT)col, 0);
+    VioWrtNCell((BYTE *)&filler, 1, (USHORT)row++, (USHORT)col, 0);
 
   #elif defined(__WIN32__)
 
@@ -1172,7 +1172,7 @@ vatch vgetw(int row, int col) {
   vatch chat;
   USHORT len=sizeof(chat);
 
-  VioReadCellStr((CHAR *)&chat, &len, (USHORT)row, (USHORT)col, 0);
+  VioReadCellStr((BYTE *)&chat, &len, (USHORT)row, (USHORT)col, 0);
 
   return chat;
 
@@ -1316,9 +1316,9 @@ void vscroll(int srow, int scol, int erow, int ecol, int atr, int lines) {
   vatch filler = vcatch(' ', atr);
 
   if(lines > 0)
-    VioScrollUp((USHORT)srow, (USHORT)scol, (USHORT)erow, (USHORT)ecol, (USHORT)lines, (CHAR *)&filler, 0);
+    VioScrollUp((USHORT)srow, (USHORT)scol, (USHORT)erow, (USHORT)ecol, (USHORT)lines, (BYTE *)&filler, 0);
   else
-    VioScrollDn((USHORT)srow, (USHORT)scol, (USHORT)erow, (USHORT)ecol, (USHORT)-lines, (CHAR *)&filler, 0);
+    VioScrollDn((USHORT)srow, (USHORT)scol, (USHORT)erow, (USHORT)ecol, (USHORT)-lines, (BYTE *)&filler, 0);
 
   #elif defined(__WIN32__)
 
@@ -1499,7 +1499,7 @@ void vclrscr(int atr) {
   #elif defined(__OS2__)
 
   vatch filler = vcatch(' ', atr);
-  VioScrollUp(0, 0, 0xFFFF, 0xFFFF, 0xFFFF, (CHAR *)&filler, 0);
+  VioScrollUp(0, 0, 0xFFFF, 0xFFFF, 0xFFFF, (BYTE *)&filler, 0);
 
   #elif defined(__WIN32__)
 
