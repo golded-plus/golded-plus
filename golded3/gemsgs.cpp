@@ -347,6 +347,14 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
               memset(dst, filler, size);
               dst += size;
             }
+            else {
+              if ((ptr[1] == '{') and (ptr[3] == '}'))
+                ptr += 3;
+              memmove(dst, ptr+1, strlen(ptr+1)+1);
+            }
+          }
+          else {
+             memmove(dst, ptr+1, strlen(ptr+1)+1);
           }
           continue;
         }

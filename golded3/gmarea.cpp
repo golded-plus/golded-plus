@@ -253,10 +253,10 @@ void Area::SaveMsg(int mode, GMsg* msg) {
     msg->attr.frq0();
   }
 
-  if(isinternet()) {           // Adjust fields for compatibility
+  if(isinternet() or isecho()) {           // Adjust fields for compatibility
     if(*msg->realby)
       strcpy(msg->by, msg->realby);
-    if(*msg->realto)
+    if(*msg->realto and not isnet())
       strcpy(msg->to, msg->realto);
   }
 
