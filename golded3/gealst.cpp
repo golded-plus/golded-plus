@@ -136,7 +136,8 @@ extern "C" int AreaListCmp(const Area** __a, const Area** __b) {
 
           if((cmp = compare_groups(ga ? ga : INT_MAX, gb ? gb : INT_MAX)) != 0)
             return cmp;
-
+          if(strpbrk(ptr+1, "tT") != NULL)
+            break;
           if((cmp = compare_two(b->isseparator(), a->isseparator())) != 0)
             return cmp;
         }
@@ -158,6 +159,8 @@ extern "C" int AreaListCmp(const Area** __a, const Area** __b) {
       case 'T':
         if((cmp = compare_two(CFG->areatypeorder[A->type()&0xFF], CFG->areatypeorder[B->type()&0xFF])) != 0)
           return cmp;
+        if(strpbrk(ptr+1, "gG") != NULL)
+          break;
         if((cmp = compare_two(b->isseparator(), a->isseparator())) != 0)
           return cmp;
         break;
