@@ -132,28 +132,6 @@ typedef struct {
 #ifndef begin
 # define begin        {
 # define end          }
-//# define true         (-1)
-# define false        0
-# define Procedure    void
-# define shl          <<
-# define shr          >>
-# define xor          ^
-# define and          &&
-# define or           ||
-# define not          !
-# define mod          %
-  typedef unsigned      Bit;
-  typedef unsigned char const * const  STRING;
-# define fallthrough        /* ... for use in switch statements for clarity. */
-#endif
-
-
-#ifndef max
-#define max(a,b)     ((a)>(b)?(a):(b))
-#endif
-
-#ifndef min
-#define min(a,b)     ((a)<=(b)?(a):(b))
 #endif
 
 
@@ -1265,40 +1243,6 @@ struct   _Hello
 /* Copyright 1991 Wynn Wagner III, Doug Boone and John Valentyn.            */
 /*                                                                          */
 /*--------------------------------------------------------------------------*/
-
-/*--------------------------------------------------------------------------*/
-/* LEGIBLE SECTION.  Definitions to make "C" look like a real language.     */
-/*--------------------------------------------------------------------------*/
-
-#ifndef begin
-# define begin        {
-# define end          }
-# define true         (-1)
-# define false        0
-# define Procedure    void
-# define shl          <<
-# define shr          >>
-# define xor          ^
-# define and          &&
-# define or           ||
-# define not          !
-# define mod          %
-  typedef unsigned      Bit;
-  typedef unsigned short  word;
-  typedef unsigned char byte;
-  typedef unsigned char const * const  STRING;
-# define fallthrough        /* ... for use in switch statements for clarity. */
-#endif
-
-
-#ifndef max
-#define max(a,b)     ((a)>(b)?(a):(b))
-#endif
-
-#ifndef min
-#define min(a,b)     ((a)<=(b)?(a):(b))
-#endif
-
 
 /*--------------------------------------------------------------------------*/
 /* Structure for SYSMSG.DAT                                                 */
