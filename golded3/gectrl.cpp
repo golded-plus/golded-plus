@@ -377,8 +377,11 @@ void DoKludges(int mode, GMsg* msg, int kludges) {
 
     // The FWD* kludges
     if(_use_fwd) {
+      int _xlat_level = CharTable ? (CharTable->level ? CharTable->level : 2) : 0;
+
       if(*msg->fwdfrom) {
-        sprintf(buf, "\001FWDFROM %s", msg->fwdfrom);
+        strcpy(buf, "\001FWDFROM ");
+        XlatStr(buf + 9, msg->fwdfrom, _xlat_level, CharTable);
         line = AddKludge(line, buf);
         line->kludge = GKLUD_FWD;
       }
@@ -388,7 +391,8 @@ void DoKludges(int mode, GMsg* msg, int kludges) {
         line->kludge = GKLUD_FWD;
       }
       if(*msg->fwdto) {
-        sprintf(buf, "\001FWDTO %s", msg->fwdto);
+        strcpy(buf, "\001FWDTO ");
+        XlatStr(buf + 7, msg->fwdto, _xlat_level, CharTable);
         line = AddKludge(line, buf);
         line->kludge = GKLUD_FWD;
       }
@@ -398,7 +402,8 @@ void DoKludges(int mode, GMsg* msg, int kludges) {
         line->kludge = GKLUD_FWD;
       }
       if(*msg->fwdsubj) {
-        sprintf(buf, "\001FWDSUBJ %s", msg->fwdsubj);
+        strcpy(buf, "\001FWDSUBJ ");
+        XlatStr(buf + 9, msg->fwdsubj, _xlat_level, CharTable);
         line = AddKludge(line, buf);
         line->kludge = GKLUD_FWD;
       }

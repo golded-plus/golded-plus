@@ -12,6 +12,12 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed FWD kludges encoding.
+
+- Hooks to the delete and move messages added for the read-only areas.
+
+- Fixed SEEN-BY invalidation.
+
 - GoldED+ should now properly prepend data/subs path to the Synchronet
   bases, so copying of msgs.cnf to that directory should not be done
   anymore in order to make Synchronet areafile reader working.

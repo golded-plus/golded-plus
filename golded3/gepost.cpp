@@ -628,6 +628,8 @@ static void MakeMsg2(int& mode, int& status, int& forwstat, int& topline, GMsg* 
         AA->adat->viewquote = adat_viewquote;
         msg->attr.pos0();
 
+        InvalidateControlInfo(msg);
+
         if(not savedirect) {
           HeaderView->Use(AA, msg);
           HeaderView->Paint();
@@ -647,8 +649,6 @@ static void MakeMsg2(int& mode, int& status, int& forwstat, int& topline, GMsg* 
             }
           } while(status == MODE_VIEW);
         }
-
-        InvalidateControlInfo(msg);
 
         if(status == MODE_SAVE)
           DoCrosspost(msg, post_xparea);
@@ -767,6 +767,8 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
         msg->messageid = NULL;
         msg->inreplyto = NULL;
         msg->references = NULL;
+        if(CurrArea != OrigArea)
+          AA->SetXlatimport(AL.AreaIdToPtr(OrigArea)->Xlatimport());
         msg->TextToLines(CFG->dispmargin-1, true, false);
         msg->msgid.reset();
         *msg->iorig = NUL;
@@ -973,7 +975,7 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
               msg->fwdorig = msg->orig;
               strcpy(msg->fwdto, msg->To());
               msg->fwddest = msg->dest;
-              strxcpy(msg->fwdsubj, msg->re, sizeof(msg->fwdsubj));
+              strxcpy(msg->fwdsubj, msg->re, sizeof(Subj));
               Area* fwdarea = AL.AreaIdToPtr(OrigArea);
               strcpy(msg->fwdarea, fwdarea->isecho() ? fwdarea->echoid() : "");
               strcpy(msg->fwdmsgid, msg->msgids);

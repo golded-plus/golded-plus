@@ -432,7 +432,7 @@ char* strxmimecpy(char* dest, const char* source, int level, int size, bool dete
   if(detect) {
     table = LoadCharset(NULL, NULL, 1);
     level = LoadCharset(charset, CFG->xlatlocalset);
-    if (not level) {
+    if(not level) {
       level = LoadCharset(AA->Xlatimport(), CFG->xlatlocalset);
     }
   }
@@ -445,7 +445,7 @@ char* strxmimecpy(char* dest, const char* source, int level, int size, bool dete
     else
       LoadCharset(CFG->xlatcharset[table].imp, CFG->xlatcharset[table].exp);
   }
-  
+
   strxcpy(dest, buf, size);
 
   return dest;
@@ -3088,9 +3088,6 @@ void InvalidateControlInfo(GMsg* msg) {
   Line* line = msg->lin;
   char buf[256];
 
-  // This required if we change tearline / origin lines
-  ScanKludges(msg, 0);
-
   while(line) {
 
     if(not (line->type & (GLINE_TEAR | GLINE_ORIG))) {
@@ -3117,6 +3114,8 @@ void InvalidateControlInfo(GMsg* msg) {
 
       if(stricmp(buf, line->txt.c_str())) {
         line->type &= ~GLINE_KLUDGE;
+        line->kludge = 0;
+        line->color = C_READW;
         line->txt = buf;
       }
 
