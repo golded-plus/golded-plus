@@ -2218,7 +2218,7 @@ APP OtherProg IRQ 5</eg>
                 <ident/location/
               </cell>
               <cell>
-                Directory path/file or Hudson board number.
+                Directory path/file or board number.
               </cell>
             </row>
             <row>
@@ -2743,7 +2743,7 @@ AREA:&lt;OriginalEchoID&gt;</eg>
                 <ident>path/board</ident>
               </cell>
               <cell>
-                Area path, boardnumber or base filename.
+                Area path, board number or base filename.
               </cell>
             </row>
             <row>
@@ -2787,7 +2787,8 @@ AREA:&lt;OriginalEchoID&gt;</eg>
           allows you that. You need to specify pathname <b/with/ extension
           in the <ident>path/board</ident> field, set <gi/PKD/ attribute and
           define packer with <ref target=UNPACKER><kw/UNPACKER/</ref> keyword.
-          This feature is not supported for Hudson and GoldBase messagebases.
+          This feature is not supported for <name/Hudson/ and <name/GoldBase/
+          messagebases.
         </item>
         <label>
           Processed by:
@@ -2965,7 +2966,7 @@ AREA:&lt;OriginalEchoID&gt;</eg>
           Parameters:
         </label>
         <item>
-          The <ident/&lt;echoid mask&gt;/ may contain <name>4DOS</name>-style
+          The <ident/&lt;echoid mask&gt;/ may contain <name/4DOS/-style
           wildcards (<q/*/ and <q/?/). You may specify multiple masks separated
           with commas.
         </item>
@@ -3312,9 +3313,7 @@ AREAEXCL INT*.*   ; Excludes all areas beginning with INT and
         </label>
         <item>
           This keyword can be used globally and in a
-          <ref target=RANDOMSYSTEM>Random System</ref> group.<lb>
-          The forward function uses the
-          <ref target=AREAREPLYTO><kw/AREAREPLYTO/</ref> area instead.
+          <ref target=RANDOMSYSTEM>Random System</ref> group.
         </item>
         <label>
           Processed by:
@@ -3363,7 +3362,7 @@ AREAEXCL INT*.*   ; Excludes all areas beginning with INT and
           Parameters:
         </label>
         <item>
-          The <ident/&lt;echoid mask&gt;/ may contain <name>4DOS</name>-style
+          The <ident/&lt;echoid mask&gt;/ may contain <name/4DOS/-style
           wildcards (<q/*/ and <q/?/). You may specify multiple masks separated
           with commas.
         </item>
@@ -3429,7 +3428,7 @@ AREAINCL INT*.*   ; Includes all areas beginning with INT and
           Parameters:
         </label>
         <item>
-          The <ident/&lt;echoid mask&gt;/ may contain <name>4DOS</name>-style
+          The <ident/&lt;echoid mask&gt;/ may contain <name/4DOS/-style
           wildcards (<q/*/ and <q/?/). You may specify multiple masks separated
           with commas.
         </item>
@@ -3491,7 +3490,7 @@ AREAISEMAIL djgpp*, golded-plus*</eg>
           Parameters:
         </label>
         <item>
-          The <ident/&lt;echoid mask&gt;/ may contain <name>4DOS</name>-style
+          The <ident/&lt;echoid mask&gt;/ may contain <name/4DOS/-style
           wildcards (<q/*/ and <q/?/). You may specify multiple masks separated
           with commas.
         </item>
@@ -4323,6 +4322,7 @@ mbutil link -clean
           <ref target=AREAISEMAIL><kw/AREAISEMAIL/</ref>,
           <ref target=AREAISNEWS><kw/AREAISNEWS/</ref>,
           <ref target=AREALISTGROUPORDER><kw/AREALISTGROUPORDER/</ref>,
+          <ref target=AREASCANSORT><kw/AREASCANSORT/</ref>,
           <ref target=AREASEP><kw/AREASEP/</ref>,
           <ref target=AREATYPEORDER><kw/AREATYPEORDER/</ref>
         </item>
@@ -4471,7 +4471,7 @@ AREALISTSORT -U+TE</eg>
           Parameters:
         </label>
         <item>
-          The <ident/&lt;echoid mask&gt;/ may contain <name>4DOS</name>-style
+          The <ident/&lt;echoid mask&gt;/ may contain <name/4DOS/-style
           wildcards (<q/*/ and <q/?/). You may specify multiple masks separated
           with commas.
         </item>
@@ -4533,7 +4533,7 @@ AREAPMSCAN INT*.*  ; Scan all areas beginning with INT and
           Parameters:
         </label>
         <item>
-          The <ident/&lt;echoid mask&gt;/ may contain <name>4DOS</name>-style
+          The <ident/&lt;echoid mask&gt;/ may contain <name/4DOS/-style
           wildcards (<q/*/ and <q/?/). You may specify multiple masks separated
           with commas.
         </item>
@@ -4589,7 +4589,7 @@ AREAPMSCAN INT*.*  ; Scan all areas beginning with INT and
           Parameters:
         </label>
         <item>
-          The <ident/&lt;echoid mask&gt;/ may contain <name>4DOS</name>-style
+          The <ident/&lt;echoid mask&gt;/ may contain <name/4DOS/-style
           wildcards (<q/*/ and <q/?/). You may specify multiple masks separated
           with commas.
         </item>
@@ -4611,262 +4611,680 @@ AREAPMSCAN INT*.*  ; Scan all areas beginning with INT and
         </item>
       </list>
     </div2>
-
-
-<!-- finished here -->
-
-
-    <div2>
+    <div2 id=AREAREADONLY>
       <head>
-        AREAREADONLY &lt;(soft)/hard&gt;
+        AREAREADONLY
       </head>
-      <p>
-        If this keyword is set to <ident>hard</ident>, it is no longer possible
-        to enter/reply/change messages in areas marked read-only with the R/O
-        area attribute. The <ident>soft</ident> setting uses a menu to ask
-        permission as in the previous versions. This option is designed for
-        those who setup a system for new computer users who might be confused
-        enough to enter a message in a read-only area despite the warning menu.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREAREADONLY/ <ident>&lt;SOFT/HARD&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This option is designed for those who setup a system for new computer
+          users who might be confused enough to enter a message in a read-only
+          area despite the warning menu.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If this keyword is set to <ident/HARD/, it is no longer possible to
+          enter/reply/change messages in areas marked read-only with the
+          <gi>R/O</gi> area attribute. The <ident/SOFT/ setting uses a menu to
+          ask permission as in the previous versions.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/SOFT/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ptr target=MESSAGEATTRS> chapter,
+          <ref target=AREA><kw/AREA/</ref>,
+          <ref target=AREADEF><kw/AREADEF/</ref>,
+          <ref target=AREADESC><kw/AREADESC/</ref>
+        </item>
+      </list>
     </div2>
     <div2 id=AREARENAME>
       <head>
-        AREARENAME &lt;from echoid&gt; &lt;to echoid&gt;
+        AREARENAME
       </head>
-      <p>
-        Renames one echoid to another. The feature is meant to be used in
-        connection with <kw>AREAFILE</kw>, where some types do not store
-        echoids with the areas (and <name>GoldED+</name> then automatically
-        gives them unique echoids).
-      </p>
-      <p>
-        Examples:<eg>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREARENAME/ <ident/&lt;from echoid&gt; &lt;to echoid&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Renames one echoid to another. The feature is meant to be used in
+          connection with <kw>AREAFILE</kw>, where some types do not store
+          echoids with the areas (and <name>GoldED+</name> then automatically
+          gives them unique echoids). Also you may rename areas with long
+          echoid to the shorter one.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          <ident/&lt;From echoid&gt;/ defines the original name for the area
+          (given by the <name/GoldED+/ automatically) and
+          <ident/&lt;to echoid&gt;/ defines echoid in the form it will be
+          listed in the arealist.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=AREAAUTOID><kw/AREAAUTOID/</ref>,
+          <ref target=AREAFILE><kw/AREAFILE/</ref>,
+          <ref target=AREALISTFORMAT><kw/AREALISTFORMAT/</ref>
+        </item>
+        <label>
+          Example:
+        </label>
+        <item><eg>
 AREARENAME NET001 NETMAIL
 AREARENAME ECHO001 BAD_MSGS
 AREARENAME LOCAL001 BBS.USERS</eg>
-      </p>
+        </item>
+      </list>
     </div2>
     <div2 id=AREAREPLYDIRECT>
       <head>
-        AREAREPLYDIRECT &lt;yes/(no)&gt;
+        AREAREPLYDIRECT
       </head>
-      <p>
-        If enabled, the destination area selection list is bypassed, thereby
-        making possible a <q>seamless</q> reply/forward to the default
-        destination area. The destination area should be set with
-        <kw>AREAREPLYTO</kw>.
-      </p>
-      <p>
-        <hi>TIP:</hi> If you run a utility or have a mail processor which
-        copies personal mail to a separate area and puts an <q>AREA:</q> line
-        at the top of the messages, you should create a random system group for
-        the area and enable <kw>AREAREPLYDIRECT</kw> in it:<eg>
-Group ECHO_PERSONAL
-  AreaReplyDirect yes
-EndGroup</eg>
-      </p>
-      <p>
-        With such a setup, <name>GoldED+</name> replies directly to the area
-        found in the <q>AREA:</q> line, so that you do not have to explicitly
-        use the &lt;Alt-N&gt; command to reply in the original area, because
-        <name>GoldED+</name> automatically stores the reply in the appropiate
-        area. However, if you use &lt;ALT-N&gt;, you can select a diffrent area
-        (i.e. Netmail).
-      </p>
-      <p>
-        This keyword can be used globally and in a Random System group.
-      </p>
-      <p>
-        <hi>NOTE:</hi> It is probably not a good idea to enable this keyword
-        globally.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREAREPLYDIRECT/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls whether <!-- FIX ME!!! --><kw/READcommentmsg/,
+          <!-- FIX ME!!! --><kw/READquotemsg/, and
+          <!-- FIX ME!!! --><kw/READcommentmsg/ functions should reply
+          to the different area bypassing area selection screen. The
+          destination area is choosen as follows:
+          <list type=simple>
+            <item>
+              Contents of the <gi/AREA/ kludge if enabled with
+              <ref target=USEAREA><kw/USEAREA/</ref>.
+            </item>
+            <item>
+              Area set with <ref target=AREAREPLYTO><kw/AREAREPLYTO/</ref>
+              keyword.
+            </item>
+            <item>
+              Current area.
+            </item>
+          </list>
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If enabled, <name/GoldED+/ will display pagebar in the arealist, if
+          disabled - will not.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/NO/
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          This keyword can be used globally and in a
+          <ref target=RANDOMSYSTEM>Random System</ref> group.<lb>
+          It is probably not a good idea to enable this keyword globally.<lb>
+          If you run a utility or have a mail processor which copies personal
+          mail to a separate area and puts an <gi/AREA/ kludge at the top of
+          the messages, you should create a random system group for the area
+          and enable <kw>AREAREPLYDIRECT</kw> in it.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <!-- FIX ME!!! --><kw/READcommentmsg/,
+          <!-- FIX ME!!! --><kw/READquotemsg/,
+          <!-- FIX ME!!! --><kw/READcommentmsg/,
+          <ref target=AREACOPYDIRECT><kw/AREACOPYDIRECT/</ref>,
+          <ref target=AREAFORWARDDIRECT><kw/AREAFORWARDDIRECT/</ref>,
+          <ref target=AREAFREQDIRECT><kw/AREAFREQDIRECT/</ref>,
+          <ref target=AREAREPLYTO><kw/AREAREPLYTO/</ref>
+        </item>
+        <label>
+          Example:
+        </label>
+        <item><eg>
+GROUP ECHO_PERSONAL
+  AREAREPLYDIRECT YES
+ENDGROUP</eg>
+        </item>
+      </list>
     </div2>
     <div2 id=AREAREPLYTO>
       <head>
-        AREAREPLYTO &lt;echoid=first netmail area&gt;
+        AREAREPLYTO
       </head>
-      <p>
-        Sets the default area for the <kw>READmovequotemsg</kw>,
-        <kw>READmovecommentmsg</kw> and Forward functions. The default area is
-        the first netmail area found in your setup. You should check if
-        <name>GoldED+</name> found the correct one if you have more than one.
-        If you find yourself often forwarding or quoting from one area to
-        another, it might be a good idea to setup a Random System group and put
-        in this keyword.
-      </p>
-      <p>
-        Example:<eg>
-Group GOLDED
-  AreaReplyto GOLDED.BETA
-EndGroup</eg>
-      </p>
-      <p>
-        This keyword can be used globally and in a Random System group.
-      </p>
-      <p>
-        Related keywords: <kw>AREACOPYTO</kw>, <kw>AREAFREQTO</kw>.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREAREPLYTO/ <ident/&lt;echoid&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Sets the default area for the reply and forward functions. Typically
+          you could set it to a safe/permanent storage type of area.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The default destination area for the reply and forward functions.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          First netmail area.
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          This keyword can be used globally and in a
+          <ref target=RANDOMSYSTEM>Random System</ref> group.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <!-- FIX ME!!! --><kw/READcopymoveforward/,
+          <!-- FIX ME!!! --><kw/READmovecommentmsg/,
+          <!-- FIX ME!!! --><kw/READmovequotemsg/,
+          <ref target=AREACFMREPLYTO><kw/AREACFMREPLYTO/</ref>,
+          <ref target=AREACOPYTO><kw/AREACOPYTO/</ref>,
+          <ref target=AREAFREQTO><kw/AREAFREQTO/</ref>,
+          <ref target=AREAREPLYDIRECT><kw/AREAREPLYDIRECT/</ref>,
+          <ref target=AREAYOUWROTETO><kw/AREAYOUWROTETO/</ref>
+        </item>
+      </list>
     </div2>
     <div2 id=AREASCAN>
       <head>
-        AREASCAN &lt;echoid mask&gt;
+        AREASCAN
       </head>
-      <p>
-        This keyword defines areas which will be automatically scanned when
-        starting <name>GoldED+</name>. <name>DOS</name>/<name>4DOS</name>-style
-        wildcards (* and ?) can be used in the echoid mask.
-      </p>
-      <p>
-        Examples:<eg>
-AREASCAN *       ; Scan all areas.
-AREASCAN *INTER* ; Scan all areas containing INTER anywhere in
-                 ; the echoid.
-AREASCAN INT*.*  ; Scan all areas beginning with INT and
-                 ; containing a dot anywhere in the echoid.</eg>
-      </p>
-      <p>
-        It is recommended to have an <q>AREASCAN *</q> to scan all areas at
-        startup. If you don't want to wait for the scan to complete, you can
-        abort the scan by pressing &lt;ESC&gt; during startup.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREASCAN/ <ident/&lt;echoid mask&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword defines areas which will be automatically scanned for
+          new mail when starting <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The <ident/&lt;echoid mask&gt;/ may contain <name/4DOS/-style
+          wildcards (<q/*/ and <q/?/). You may specify multiple masks separated
+          with commas.
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          It is recommended to have to scan all areas at startup. If you don't
+          want to wait for the scan to complete, you can abort the scan by
+          pressing &lt;ESC&gt; during startup.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=AREAPMSCAN><kw/AREAPMSCAN/</ref>,
+          <ref target=AREAPMSCANEXCL><kw/AREAPMSCANEXCL/</ref>,
+          <ref target=AREAPMSCANINCL><kw/AREAPMSCANINCL/</ref>,
+          <ref target=AREASCANEXCL><kw/AREASCANEXCL/</ref>,
+          <ref target=AREASCANINCL><kw/AREASCANINCL/</ref>
+        </item>
+        <label>
+          Example:
+        </label>
+        <item><eg>
+AREASCAN *         ; Scan all areas.
+AREASCAN *INTER*   ; Scan all areas containing INTER anywhere in the
+                   ; echoid
+AREASCAN INT*.*    ; Scan all areas beginning with INT and
+                   ; containing a dot anywhere in the echoid</eg>
+        </item>
+      </list>
     </div2>
     <div2 id=AREASCANEXCL>
       <head>
-        AREASCANEXCL &lt;echoid or wildcards&gt;
+        AREASCANEXCL
       </head>
-      <p>
-        With this keyword you can prevent areas from being scanned with
-        <kw>AREASCAN</kw> on startup. This is good if you use
-        <q>AREASCAN *</q>, but have some big areas which slows it down.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREASCANEXCL/ <ident/&lt;echoid mask&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          With this keyword you can prevent areas from being scanned with
+          <ref target=AREASCAN><kw/AREASCAN/</ref> on startup.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The <ident/&lt;echoid mask&gt;/ may contain <name/4DOS/-style
+          wildcards (<q/*/ and <q/?/). You may specify multiple masks separated
+          with commas.
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          This is good if you use <ref target=AREASCAN><kw/AREASCAN/</ref>
+          to scan all areas, but have some big areas which slows it down.<lb>
+          You can use the <ref target=AREASCANINCL><kw/AREASCANINCL/</ref>
+          keyword to reinclude areas which have been excluded with
+          <kw/AREASCANEXCL/.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=AREAPMSCAN><kw/AREAPMSCAN/</ref>,
+          <ref target=AREAPMSCANEXCL><kw/AREAPMSCANEXCL/</ref>,
+          <ref target=AREAPMSCANINCL><kw/AREAPMSCANINCL/</ref>,
+          <ref target=AREASCAN><kw/AREASCAN/</ref>,
+          <ref target=AREASCANINCL><kw/AREASCANINCL/</ref>
+        </item>
+      </list>
     </div2>
     <div2 id=AREASCANINCL>
       <head>
-        AREASCANINCL &lt;echoid or wildcards&gt;
+        AREASCANINCL
       </head>
-      <p>
-        Here you can specify areas to be scanned with <kw>AREASCAN</kw> even if
-        they were excluded with <kw>AREASCANEXCL</kw>. Useful for partial
-        reversal of wildcard specs in the excludes.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREASCANINCL/ <ident/&lt;echoid mask&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword allows to specify areas which are to be scanned with
+          <ref target=AREASCAN><kw/AREASCAN/</ref> even if they were
+          excluded with <ref target=AREASCANEXCL><kw/AREASCANEXCL/</ref>.
+          Useful for partial reversal of wildcard specs in the excludes.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The <ident/&lt;echoid mask&gt;/ may contain <name/4DOS/-style
+          wildcards (<q/*/ and <q/?/). You may specify multiple masks separated
+          with commas.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=AREAPMSCAN><kw/AREAPMSCAN/</ref>,
+          <ref target=AREAPMSCANEXCL><kw/AREAPMSCANEXCL/</ref>,
+          <ref target=AREAPMSCANINCL><kw/AREAPMSCANINCL/</ref>
+          <ref target=AREASCAN><kw/AREASCAN/</ref>,
+          <ref target=AREASCANEXCL><kw/AREASCANEXCL/</ref>,
+        </item>
+      </list>
     </div2>
     <div2 id=AREASCANSORT>
       <head>
-        AREASCANSORT &lt;sortspec=XZBE&gt;
+        AREASCANSORT
       </head>
-      <p>
-        When scanning areas, <name>GoldED+</name> can optimize area scanning
-        speed if it first sorts the arealist in an order so that each msgbase
-        format is scanned in sequence rather than on semi-random order.
-      </p>
-      <p>
-        If you don't like this or don't need it, you can define your own sort
-        order.
-      </p>
-      <p>
-        See the <kw>AREALISTSORT</kw> keyword for the definition of the
-        sortspecs.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREASCANSORT/ <ident/&lt;sortspec&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          When scanning areas, <name/GoldED+/ can optimize area scanning
+          speed if it first sorts the arealist in an order so that each msgbase
+          format is scanned in sequence rather than on semi-random order.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The &lt;sortspec&gt; described in details in the
+          <ref target=AREALISTSORT><kw/AREALISTSORT/</ref> chapter.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/XZBE/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=AREALISTSORT><kw/AREALISTSORT/</ref>
+        </item>
+      </list>
     </div2>
     <div2 id=AREASEP>
       <head>
-        AREASEP &lt;echoid&gt; &lt;"desc"&gt; &lt;group&gt; &lt;type&gt;
+        AREASEP
       </head>
-      <p>
-        You can define area separation lines between groups or areatypes. The
-        syntax is nearly the same as the <kw>AREADEF</kw> keyword except for
-        the fields after &lt;type&gt;.
-      </p>
-      <p>
-        Examples:
-      </p>
-      <p>
-        These five are area separation lines that are designed to list before
-        each type of area. This works well when <kw>AREALISTSORT</kw> has
-        <ident>T</ident> (for type) as one of the primary sort orders.
-      </p>
-      <p>Example:<eg><![ CDATA [
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREASEP/ <ident>&lt;echoid&gt; &lt;<![ CDATA ["desc"]]>&gt;
+          &lt;group&gt; &lt;type&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          You can define area separation lines between groups or areatypes.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          <table rows=9 cols=2>
+            <row>
+              <cell>
+                <ident>echoid</ident>
+              </cell>
+              <cell>
+                Mail area identifier.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident><![ CDATA ["desc"]]></ident>
+              </cell>
+              <cell>
+                Area description in quotes.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident>group</ident>
+              </cell>
+              <cell>
+                Group ID uppercase letter (A-Z) or 0 if not in a group. Use
+                #groupnumber to specify group numbers in the 1-999 range.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident>type</ident>
+              </cell>
+              <cell>
+                <ident/Net/, <ident/Echo/, <ident/Local/, <ident/EMail/ or
+                <ident/News/.
+              </cell>
+            </row>
+          </table>
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          The area separation lines are implemented like a special kind of
+          area, and are therefore sorted in the arealist just as if they were
+          actual areas. This is also the reason why you can place the cursor
+          bar on the separation lines. The fuzzy feature may be used to quickly
+          go to an area group, that's why cursor can be placed on separation
+          lines.<lb>
+          When configuring area separation lines, be careful to consider the
+          <ref target=AREALISTSORT><kw/AREALISTSORT/</ref>, so that the lines
+          are sorted into the positions you want. If you don't sort areas, you
+          must make sure that the <kw/AREASEP/ definitions are placed correctly
+          in your configuration file, that is, between/before
+          <ref taget=AREA><kw/AREA/</ref> and
+          <ref taget=AREADEF><kw/AREADEF/</ref> lines.<lb>
+          You will note that the separation lines are not fully connected into
+          the left and right edges. This is both by design and for practical
+          reasons (easier to implement), not a bug.<lb>
+          Currently the descriptions are hardcoded to the natural location in
+          the description column.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=AREA><kw/AREA/</ref>,
+          <ref target=AREADEF><kw/AREADEF/</ref>,
+          <ref target=AREAFILE><kw/AREAFILE/</ref>,
+          <ref target=AREAFILEGROUPS><kw/AREAFILEGROUPS/</ref>,
+          <ref target=AREALISTFORMAT><kw/AREALISTFORMAT/</ref>,
+          <ref target=AREALISTGROUPORDER><kw/AREALISTGROUPORDER/</ref>,
+          <ref target=AREALISTSORT><kw/AREALISTSORT/</ref>,
+          <ref target=AREATYPEORDER><kw/AREATYPEORDER/</ref>
+        </item>
+        <label>
+          Example:
+        </label>
+        <item><eg><![ CDATA [
+; In this example areas will be separated by types
+AREALISTSORT TYUE
 AREASEP &excl;NET   "Netmail areas"   0 Net
 AREASEP &excl;EMAIL "E-mail areas"    0 EMail
 AREASEP &excl;ECHO  "Echomail areas"  0 Echo
 AREASEP &excl;NEWS  "Newsgroup areas" 0 News
 AREASEP &excl;LOCAL "Local areas"     0 Local]]></eg>
-      </p>
-      <p>
-        These can be used to separate areas with group letters (it will also
-        work with group numbers like #117). Areas should then be sorted
-        primarily on the group.
-      </p>
-      <p>Example:<eg><![ CDATA [
+          <eg><![ CDATA [
+; And in this one areas will be separated by groups
+AREALISTSORT GYUE
 AREASEP &excl;A "Group A" A Local
 AREASEP &excl;B "Group B" B Local
 AREASEP &excl;C "Group C" C Local]]></eg>
-      </p>
-      <p>
-        In these examples, I put a <q>&excl;</q> in front of the echoid to make
-        sure it is sorted ahead of the areas. This may not be necessary in all
-        cases, depending on the sort order in effect. If you do put
-        <q>&excl;</q> in front of the echoid, have fuzzy sorting as the primary
-        sort order, and type <q>&excl;</q> in the fuzzy search, you'll get the
-        interesting effect that all area separation lines collect themselves at
-        the top :-)
-      </p>
-      <p>
-        The area separation lines are implemented like a special kind of area,
-        and are therefore sorted in the arealist just as if they were actual
-        areas. This is also the reason why you can place the cursor bar on the
-        separation lines. Originally I wanted to make the cursor skip the
-        separation lines, but I think I'll leave it as it is, because it can be
-        useful sometimes, especially when using the fuzzy feature to quickly go
-        to an area, for example, type <q>&excl;C</q> to quickly move down to
-        the group C areas (using the group sorted example).
-      </p>
-      <p>
-        When configuring area separation lines, be careful to consider the
-        <kw>AREALISTSORT</kw>, so that the lines are sorted into the positions
-        you want. If you don't sort areas, you must make sure that the
-        <kw>AREASEP</kw> definitions are placed correctly in your
-        <code>GOLDED.CFG</code> or <code>GOLDAREA.CFG</code>, that is,
-        between/before <kw>AREADEF</kw> lines.
-      </p>
-      <p>
-        You will note that the separation lines are not fully connected into
-        the left and right edges. This is both by design and for practical
-        reasons (easier to implement), not a bug.
-      </p>
-      <p>
-        Currently the descriptions are hardcoded to the natural location in the
-        description column.
-      </p>
+        </item>
+      </list>
     </div2>
     <div2 id=AREASTART>
       <head>
-        AREASTART &lt;echoid&gt;
+        AREASTART
       </head>
-      <p>
-        Normally <name>GoldED+</name> starts by displaying the arealist, to let
-        you select which area you want to read. If this keyword is defined, the
-        arealist is bypassed and <name>GoldED+</name> starts directly in the
-        configured area. You can override <kw>AREASTART</kw> with the
-        <code>-E</code> commandline switch.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREASTART/ <ident/&lt;echoid&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Normally <name>GoldED+</name> starts by displaying the arealist, to
+          let you select which area you want to read. If this keyword is
+          defined, the arealist is bypassed and <name/GoldED+/ starts directly
+          in the configured area. You can override <kw>AREASTART</kw> with the
+          <code>-e</code> commandline switch.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The <ident/&lt;echoid&gt;/ parameter specifies the echo
+          <name/GoldED+/ should start directly in.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ptr target=COMMANDLINE> chapter
+        </item>
+      </list>
     </div2>
     <div2 id=AREATYPEORDER>
       <head>
-        AREATYPEORDER &lt;type1=Net&gt; &lt;type2=EMail&gt; &lt;type3=Echo&gt;
-        &lt;type4=News&gt; &lt;type5=Local&gt;
+        AREATYPEORDER
       </head>
-      <p>
-        This keyword allows you to change the ordering of the
-        <ident>Net</ident>, <ident>Echo</ident>, <ident>Local</ident>,
-        <ident>EMail</ident> and <ident>News</ident> types when sorted by
-        <kw>AREALISTSORT</kw>.
-      </p>
-      <p>
-        This keyword was added to give greater flexibility to the
-        <kw>AREASEP</kw> feature.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREATYPEORDER/ <ident>&lt;type1&gt; &lt;type2&gt; &lt;type3&gt;
+          &lt;type4&gt; &lt;type5&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword allows you to change the ordering of the different
+          area types when sorted by
+          <ref target=AREALISTSORT><kw/AREALISTSORT/</ref>.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The following types are allowed: <ident/NET/, <ident/ECHO/,
+          <ident/LOCAL/, <ident/EMAIL/ and <ident/NEWS/.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/NET/ <ident/EMAIL/ <ident/ECHO/ <ident/NEWS/ <ident/LOCAL/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=AREALISTFORMAT><kw/AREALISTFORMAT/</ref>,
+          <ref target=AREALISTSORT><kw/AREALISTSORT/</ref>
+        </item>
+      </list>
     </div2>
+
+
+<!-- finished here -->
+
+
     <div2 id=AREAYOUWROTETO>
       <head>
         AREAYOUWROTETO &lt;echoid&gt;
@@ -9678,6 +10096,17 @@ AREASEP &excl;C "Group C" C Local]]></eg>
   Note that all changes to the messagebase will be discarded.
 
   This feature is not supported for Hudson and GoldBase messagebases.
+      </p>
+    </div2>
+    <div2 id=USEAREA>
+      <head>
+        USEAREA &lt;yes/no&gt;
+      </head>
+      <p>
+  (yes)
+      </p>
+      <p>
+        If set to no then GoldEd will not recognize <gi/AREA/ kludge.
       </p>
     </div2>
     <div2>
