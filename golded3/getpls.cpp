@@ -70,8 +70,8 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
   char* ptr;
   char* ptr2;
   char* quote;
-  uint size = 0;
-  uint pos = 0;
+  uint size;
+  uint pos;
   uint ctrlinfo;
   char textfile[GMAXPATH];
   char indexfile[GMAXPATH];
@@ -281,10 +281,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
 
   *buf = NUL;
   msg->txt = throw_strdup(buf);
-
-  len = strlen(msg->txt);
-  size += len;
-  pos += len;
+  len = size = pos = 0;
 
   while(fgets(buf, sizeof(buf), fp)) {
     ptr = strskip_wht(buf);

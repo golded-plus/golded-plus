@@ -12,6 +12,10 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.4.7, September 24 2000
 ______________________________________________________________________
 
+- Fixed some bugs in undo feature.
+
+- Fixed empty message creation (used in attach, filerequest, etc.)
+
 ! Message header now translated with default rules in most cases. If
   there's something wrong with it (f.e. double decoding or no decoding
   at all) please report. Also, original message header should be

@@ -1913,7 +1913,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
 
     char prev_ptr[3] = {"\xFF\xFF"};
 
-    ptr = msg->txt;
+    ptr = spanfeeds(msg->txt);
 
     // Set default conversion table for area
     if(getvalue) {
@@ -1924,15 +1924,10 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
       }
     }
 
-    line = msg->lin = new Line();
-    throw_xnew(line);
-      
-    ptr = spanfeeds(ptr);
+    if(*ptr != NUL) {
+      line = msg->lin = new Line();
+      throw_xnew(line);
 
-    if(*ptr == NUL) {
-      throw_xrelease(msg->lin);
-    }
-    else {
       // Alloc space for one line
       linetmp = (char*)throw_calloc(1, margin+512);
       while(*ptr) {

@@ -686,10 +686,10 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, int
 
         // Check if we hit leading spaces
         int _spacepos = _wrappos;
-        if(_spacepos > 0) {
-          do {
-            _spacepos--;
-          } while(_spacepos > 0 and _thisline->txt[_spacepos] == ' ');
+        while(_spacepos > 0) {
+          _spacepos--;
+          if (_thisline->txt[_spacepos] != ' ')
+            break;
         }
 
         // Did we search all the way back to the beginning of the line?
@@ -728,7 +728,7 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, int
         // Saves pointer to a line where from the wrapped part was copied, its begining
         // and length. While in Undo, appends the copied part to previous line and deletes
         // it on current, moving the rest over deleted.
-        Undo->PushItem(EDIT_UNDO_WRAP_TEXT|BATCH_MODE, _wrapline, _quotelen, _wraplen);
+        Undo->PushItem(EDIT_UNDO_WRAP_TEXT|BATCH_MODE, _thisline, _quotelen, _wraplen);
         
         _wrapline->type = _thisline->type;
         // Make sure the type of the line is correct
@@ -780,7 +780,7 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, int
 
         _nextline->txt.insert(_quotelen, _thisline->txt.substr(_wrappos));
 
-        Undo->PushItem(EDIT_UNDO_WRAP_TEXT|BATCH_MODE, _nextline, 0, _quotelen+_wraplen);
+        Undo->PushItem(EDIT_UNDO_WRAP_TEXT|BATCH_MODE, _thisline, 0, _quotelen+_wraplen);
 
         // Make sure the type of the line is correct
         setlinetype(_nextline);
@@ -835,9 +835,9 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, int
       }
 
       // If we are on the cursor line, check if the cursor char was wrapped
-      if(_thisrow == *__curr_row and _thisline->txt.length() <= *__curr_col) {
-        _curscol = _quotelen + ((*__curr_col > _wrappos) ? *__curr_col-_wrappos : 0);
-        _cursrow++, thisrow++;
+      if(_thisrow == _cursrow and _thisline->txt.length() <= _curscol) {
+        _curscol = _quotelen + ((_curscol > _wrappos) ? _curscol-_wrappos : 0);
+        _cursrow++;
         UndoItem* i = Undo->last_item;
         do { i = i->prev; } while(i->action & BATCH_MODE);
         if(i->col.num >= i->line->txt.length()) {
@@ -880,18 +880,21 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, int
 
   // Move to the next line if the cursor was wrapped
   if(_cursrow != *__curr_row) {
-    *__currline = (*__currline)->next;
+    int i = *__curr_row;
+    while ((i++ != _cursrow) and (__currline != NULL))
+      *__currline = (*__currline)->next;
     if(_cursrow > maxrow) {
       _cursrow = maxrow;
-      scrollup(mincol, minrow, maxcol, maxrow);
-      displine(*__currline, row);
+      if(__display) {
+        scrollup(mincol, minrow, maxcol, maxrow);
+        displine(*__currline, *__curr_row);
+      }
     }
   }
 
   // Update cursor position
   *__curr_row = _cursrow;
   *__curr_col = _curscol;
-  //thisrow = _cursrow;
 
   GFTRK(NULL);
 
@@ -1200,7 +1203,7 @@ void IEclass::Newline() {
   // This line would be
   // wrapped
 
-  Undo->PushItem(EDIT_UNDO_WRAP_TEXT|BATCH_MODE, currline, _quotelen, strlen(_splitbuf) - _quotelen);
+  Undo->PushItem(EDIT_UNDO_WRAP_TEXT|BATCH_MODE, currline->prev, _quotelen, strlen(_splitbuf) - _quotelen);
 
   setlinetype(currline);
   throw_free(_splitbuf);
@@ -2387,8 +2390,9 @@ void UndoStack::PushItem(uint action, Line* __line, uint __col, uint __len) {
         break;
       case EDIT_UNDO_DEL_TEXT:
         last_item->line = __line;
+        __col = last_item->col.num;
         if(__len == NO_VALUE)
-          __len = strlen(__line->txt.c_str() + __col) + 1;
+          __len = __line->txt.length() - __col + 1;
         throw_new(last_item->data.text_ptr = new(__len) text_item(__col, __len));
         memcpy(last_item->data.text_ptr->text, __line->txt.c_str() + __col, __len);
         break;
@@ -2518,21 +2522,21 @@ void UndoStack::PlayItem() {
 
           case EDIT_UNDO_TEXT: {
             text_item* text_data = last_item->data.text_ptr;
-            string& txt = currline->txt;
+            string *txt = &currline->txt;
             switch(undo_action) {
               case EDIT_UNDO_DEL_TEXT:
-                txt.insert(text_data->col, text_data->text, text_data->len);
+                txt->insert(text_data->col, text_data->text, text_data->len);
                 throw_delete(text_data);
                 break;
               case EDIT_UNDO_CUT_TEXT:
-                txt.erase(last_item->col.num);
+                txt->erase(last_item->col.num);
                 break;
               case EDIT_UNDO_WRAP_TEXT:
-                txt.append(currline->next->txt.c_str()+text_data->col, text_data->len);
-                txt = currline->next->txt;
+                txt->append(currline->next->txt.c_str()+text_data->col, text_data->len);
+                txt = &currline->next->txt;
                 // fall through...
               case EDIT_UNDO_INS_TEXT:
-                txt.erase(text_data->col, text_data->len);
+                txt->erase(text_data->col, text_data->len);
                 throw_delete(text_data);
                 break;
             }

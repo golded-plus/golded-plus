@@ -375,39 +375,39 @@ static void w_brag() {
   char* logo[6];
 
   #if defined(__USE_NCURSES__)
-  logo[0] = throw_strdup("                    88     88            88  ");
-  logo[1] = throw_strdup("      oooooo oooooo 88 oooo88 oooooo oooo88  ");
-  logo[2] = throw_strdup("      88  88 88  88 88 88  88 88oo88 88  88  ");
-  logo[3] = throw_strdup("      88oo88 88oo88 88 88oo88 88oooo 88oo88  ");
-  logo[4] = throw_strdup("  oo      88                                 ");
-  logo[5] = throw_strdup("  88oooooo88                                 ");
+  logo[0] = throw_strdup("                   88     88            88     ");
+  logo[1] = throw_strdup("     oooooo oooooo 88 oooo88 oooooo oooo88  o  ");
+  logo[2] = throw_strdup("     88  88 88  88 88 88  88 88oo88 88  88 o8o ");
+  logo[3] = throw_strdup("     88oo88 88oo88 88 88oo88 88oooo 88oo88  8  ");
+  logo[4] = throw_strdup(" oo      88                                    ");
+  logo[5] = throw_strdup(" 88oooooo88                                    ");
   #else
   if(W_BBRAG == 7) {
-    logo[0] = throw_strdup("                    **     **            **  ");
-    logo[1] = throw_strdup("      ****** ****** ** ****** ****** ******  ");
-    logo[2] = throw_strdup("      **  ** **  ** ** **  ** ****** **  **  ");
-    logo[3] = throw_strdup("      ****** ****** ** ****** ****** ******  ");
-    logo[4] = throw_strdup("  **      **                                 ");
-    logo[5] = throw_strdup("  **********                                 ");
+    logo[0] = throw_strdup("                   **     **            **     ");
+    logo[1] = throw_strdup("     ****** ****** ** ****** ****** ******  *  ");
+    logo[2] = throw_strdup("     **  ** **  ** ** **  ** ****** **  ** *** ");
+    logo[3] = throw_strdup("     ****** ****** ** ****** ****** ******  *  ");
+    logo[4] = throw_strdup(" **      **                                    ");
+    logo[5] = throw_strdup(" **********                                    ");
   }
   else {
     #if defined(__UNIX__)
     if(gvid_xterm) {
-      logo[0] = throw_strdup("                    ฺฟ     ฺฟ            ฺฟ  ");
-      logo[1] = throw_strdup("      ฺยฤฤยฟ ฺยฤฤยฟ ณณ ฺยฤฤดณ ฺยฤฤยฟ ฺยฤฤดณ  ");
-      logo[2] = throw_strdup("      ณณ  ณณ ณณ  ณณ ณณ ณณ  ณณ ณรฤฤมู ณณ  ณณ  ");
-      logo[3] = throw_strdup("      ภมฤฤดณ ภมฤฤมู ภู ภมฤฤมู ภมฤฤมู ภมฤฤมู  ");
-      logo[4] = throw_strdup("  ฺฟ      ณณ                                 ");
-      logo[5] = throw_strdup("  ภมฤฤฤฤฤฤมู                                 ");
+      logo[0] = throw_strdup("                   ฺฟ     ฺฟ            ฺฟ     ");
+      logo[1] = throw_strdup("     ฺยฤฤยฟ ฺยฤฤยฟ ณณ ฺยฤฤดณ ฺยฤฤยฟ ฺยฤฤดณ  ย  ");
+      logo[2] = throw_strdup("     ณณ  ณณ ณณ  ณณ ณณ ณณ  ณณ ณรฤฤมู ณณ  ณณ รลด ");
+      logo[3] = throw_strdup("     ภมฤฤดณ ภมฤฤมู ภู ภมฤฤมู ภมฤฤมู ภมฤฤมู  ม  ");
+      logo[4] = throw_strdup(" ฺฟ      ณณ                                    ");
+      logo[5] = throw_strdup(" ภมฤฤฤฤฤฤมู                                    ");
     }
     else {
     #endif
-      logo[0] = throw_strdup("                    ษป     ษป            ษป  ");
-      logo[1] = throw_strdup("      ษหออหป ษหออหป บบ ษหออนบ ษหออหป ษหออนบ  ");
-      logo[2] = throw_strdup("      บบ  บบ บบ  บบ บบ บบ  บบ บฬออสผ บบ  บบ  ");
-      logo[3] = throw_strdup("      ศสออนบ ศสออสผ ศผ ศสออสผ ศสออสผ ศสออสผ  ");
-      logo[4] = throw_strdup("  ษป      บบ                                 ");
-      logo[5] = throw_strdup("  ศสออออออสผ                                 ");
+      logo[0] = throw_strdup("                   ษป     ษป            ษป     ");
+      logo[1] = throw_strdup("     ษหออหป ษหออหป บบ ษหออนบ ษหออหป ษหออนบ  ห  ");
+      logo[2] = throw_strdup("     บบ  บบ บบ  บบ บบ บบ  บบ บฬออสผ บบ  บบ ฬฮน ");
+      logo[3] = throw_strdup("     ศสออนบ ศสออสผ ศผ ศสออสผ ศสออสผ ศสออสผ  ส  ");
+      logo[4] = throw_strdup(" ษป      บบ                                    ");
+      logo[5] = throw_strdup(" ศสออออออสผ                                    ");
     #if defined(__UNIX__)
     }
     gvid_boxcvt(logo[0]);
@@ -433,20 +433,20 @@ static void w_brag() {
   for(int n=0; n<6; n++)
     throw_free(logo[n]);
 
-  if((__gver_minor__ & 1))
-    wprints(5, 16, C_BRAGW, "THIS IS DEVELOPMENT VERSION");
-
   wprints(4, 43-strlen(__gver_longpid__), C_BRAGW, __gver_longpid__);
 
-  wprints(0, 46, C_BRAGW, "   GoldED+ Message Editor  ");
-  wprints(1, 46, C_BRAGW, " by Alexander S. Aganichev ");
-  wprints(2, 46, C_BRAGW, "        Originally         ");
-  wprints(3, 46, C_BRAGW, "    by Odinn Sorensen      ");
-  sprintf(buf, "  Copyright (C) 1990-%s  ",__gver_date__+7);
-  wprints(5, 46, C_BRAGW, buf);
+  wprints(5, 12, C_BRAGW, "http://golded-plus.sourceforge.net");
+
+  wprints(0, 48, C_BRAGW, " GoldED+  Message Editor ");
+  sprintf(buf, " Copyright (C) 1990-%s ",__gver_date__+7);
+  wprints(1, 48, C_BRAGW, buf);
+  wprints(2, 48, C_BRAGW, "    by Odinn Sorensen,  ");
+  wprints(3, 48, C_BRAGW, "   Alexander Aganichev, ");
+  wprints(4, 48, C_BRAGW, "      Jacobo Tarrio     ");
+  wprints(5, 48, C_BRAGW, "       and others       ");
 
   whline(6, 0, MAXCOL-5, W_BBRAG, C_BRAGB);
-  wvline(0, 45, 7, W_BBRAG, C_BRAGB);
+  wvline(0, 47, 7, W_BBRAG, C_BRAGB);
 
   sprintf(buf, "---*-*-*** %s ***-*-*---", __gver_releasename__);
   wcenters(8, C_BRAGW, buf);
@@ -595,10 +595,9 @@ void Initialize(int argc, char* argv[]) {
 
   // Print commandline help and exit if requested
   if(cmdlinehelp) {
-
     cout <<
-       "Copyright (C) 1990-1999 Odinn Sorensen" << endl <<
-       "Copyright (C) 1999-2000 Alexander S. Aganichev" << endl <<
+       "Copyright (C) 1990-2000 Odinn Sorensen, Alexander Aganichev, Jacobo Tarrio and" << endl <<
+       "                        others" << endl <<
        "-------------------------------------------------------------------------------" << endl <<
        endl <<
        "Invocation: " << argv[0] << " [-options] [keystacking]" << endl <<
@@ -1043,6 +1042,10 @@ void Initialize(int argc, char* argv[]) {
     WideUsername[w] = i->name;
   WidePersonalmail = CFG->personalmail;
   WideDispsoftcr = CFG->switches.get(dispsoftcr);
+
+  if(CFG->loadlanguage[0])
+    LoadLanguage(CFG->loadlanguage);
+
   if(AL.msgbases & MT_FIDO) {
     update_statuslinef("%s Fido", LNG->Checking);
     FidoInit(CFG->fidolastread, CFG->switches.get(fidohwmarks), CFG->switches.get(fidonullfix), CFG->fidouserno, CFG->squishuserpath);
@@ -1108,9 +1111,6 @@ void Initialize(int argc, char* argv[]) {
     remove(AddPath(CFG->areapath, "DBRIDGE.NMW"));
     remove(AddPath(CFG->areapath, "DBRIDGE.EMW"));
   }
-
-  if(CFG->loadlanguage[0])
-    LoadLanguage(CFG->loadlanguage);
 
   // Unlink windows
   wunlink(W_READ);

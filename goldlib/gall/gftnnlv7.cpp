@@ -106,7 +106,7 @@ static void v7unpack(char* src, char* dest, uint count) {
 
     strcat(dest, obuf);
   }
-  #ifdef DEBUGx
+  #ifdef DEBUG
   printf("{%s}", dest);
   #endif
 }
@@ -297,7 +297,7 @@ void ftn_version7_nodelist_index::getindexkey() {
   key[keylength] = NUL;
 
   #ifdef DEBUG
-  printf("ÀÄÄÄ%02d:%02d <%04ld> ",
+  printf("`---%02d:%02d <%04ld> ",
     inode,
     block.ndx.inodeblk.indxcnt,
     block.ndx.inodeblk.indxref[inode-1].indxptr
@@ -316,7 +316,7 @@ void ftn_version7_nodelist_index::getleafkey() {
   key[keylength] = NUL;
 
   #ifdef DEBUG
-  printf("ÀÄÄÄ%02d:%02d ", node, block.ndx.lnodeblk.indxcnt);
+  printf("`---%02d:%02d ", node, block.ndx.lnodeblk.indxcnt);
   #endif
 }
 

@@ -4,9 +4,9 @@ This file is not up to date, some wishes still in my netmail/email
 folders.
 ______________________________________________________________________
 
-GoldED+ plans. As always I don't guarantee order of implementing
-features and that to do list will be implemented at all. Any help will
-be appreciated.
+GoldED+ plans. As always there's no any guarantee of feature
+implementation order and that to do list will be implemented at all.
+Any help will be appreciated.
 ______________________________________________________________________
 
 To do:
@@ -20,7 +20,6 @@ To do:
 * Refresh message header after calling externutil.
 * Try to save position in message after printing, changing xlat table,
   etc.
-* Wrapping /lnx screen output to ncurses (almost done).
 * Major xlat/recode engine update (in progress).
 * CUI in /lnx and input prompts.
 * Activating built-in MIME-QP convertor by key (on whole message).
@@ -43,12 +42,9 @@ ______________________________________________________________________
 
 To fix:
 
-* Test SOS sound in DOS version.
 * UUdecoder not 100% reliable: any volunteers for uulib maintaining?
 * Adding e-mail's to addressbook from UUCP gated messages.
 * QUOTEHARDTERM is always NO.
-* Under sertain circumstances quotes incorrectly reflowed (seems like
-  it depends on QUOTEMARGIN keyword).
 * Need some workarounds on -install feature under Linux (UNIX).
 * Win32 (only when runned under Win9x) version does not support case
   insensitive search of regexp's for high part of ASCII table. That's

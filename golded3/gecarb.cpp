@@ -108,7 +108,7 @@ int DoCarboncopy(GMsg* msg, GMsg** carbon) {
 
   // Insert empty line at the top first for practical purposes
 
-  newline = new Line("");
+  newline = new Line();
   throw_xnew(newline);
   msg->lin = newline = line = InsertLine(newline, msg->lin, DIR_PREV);
 
@@ -330,7 +330,7 @@ void DoCrosspost(GMsg* msg, vector<int> &postareas) {
 
   // Insert empty line at the top first for practical purposes
 
-  newline = new Line("");
+  newline = new Line();
   throw_xnew(newline);
   msg->lin = newline = InsertLine(newline, msg->lin, DIR_PREV);
 

@@ -57,6 +57,11 @@ CPPFLAGS+=-D__USE_NCURSES__
 STDLIBS+=-lncurses
 endif
 
+# force not to use coprocessor features in DOS, if you have one you may remove this
+ifneq ($(DJGPP),)
+CFLAGS+=-m386 -mno-80387 -mno-fp-ret-in-387 -mno-fancy-math-387
+endif
+
 BIN=bin
 OBJPATH=obj
 LIBPATH=lib

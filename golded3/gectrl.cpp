@@ -222,17 +222,14 @@ char* get_informative_string(char* buf) {
 void DoKludges(int mode, GMsg* msg, bool attronly) {
 
   char* buf = (char*)throw_malloc(4096);
-  char buf2[356];
-  Line* line = msg->lin;
-  Line* newline;
+  char* buf2 = (char*)throw_malloc(1024);
+  Line* line;
   
-  int __tzoffset = tzoffset();
-
   // Insert empty line at the top for practical purposes
 
-  newline = new Line("");
-  throw_xnew(newline);
-  newline = line = InsertLine(newline, line, DIR_PREV);
+  line = new Line();
+  throw_xnew(line);
+  msg->lin = line = InsertLine(line, msg->lin, DIR_PREV);
 
   // Strip all the kludges we insert ourselves
 
@@ -252,7 +249,7 @@ void DoKludges(int mode, GMsg* msg, bool attronly) {
     }
   }
 
-  line = newline;
+  line = msg->lin;
 
   if(attronly) {
     if(AA->isnet())
@@ -268,10 +265,8 @@ void DoKludges(int mode, GMsg* msg, bool attronly) {
 
     if(AA->isnet()) {
 
-      Line* firstline = FirstLine(line);
-      firstline = firstline->next;
-                                // 123456789012345678901234567
-      if(strneql(firstline->txt.c_str(), "-----BEGIN PGP MESSAGE-----", 27)) {
+                                                       // 123456789012345678901234567
+      if(line->next and strneql(line->next->txt.c_str(), "-----BEGIN PGP MESSAGE-----", 27)) {
         line = AddKludge(line, "\001ENC: PGP");
       }
 
@@ -364,6 +359,7 @@ void DoKludges(int mode, GMsg* msg, bool attronly) {
 
     // The TZUTC kludge for timezone info
     if(AA->Usetzutc()) {
+      int __tzoffset = tzoffset();
       sprintf(buf, "\001TZUTC: %0*d", (__tzoffset < 0) ? 5 : 4, __tzoffset);
       line = AddKludge(line, buf);
       line->kludge = GKLUD_KNOWN;
@@ -457,7 +453,7 @@ void DoKludges(int mode, GMsg* msg, bool attronly) {
         tm->tm_hour, tm->tm_min, tm->tm_sec
       );
       if(AA->Usetzutc())
-        sprintf(buf + strlen(buf), " %+05d", __tzoffset);
+        sprintf(buf + strlen(buf), " %+05d", tzoffset());
 
       line = AddKludge(line, buf);
       line->kludge = GKLUD_RFC;
@@ -552,11 +548,12 @@ void DoKludges(int mode, GMsg* msg, bool attronly) {
   }
 
   // Reset line pointer
-  msg->lin = DeleteLine(FirstLine(line));
+  msg->lin = DeleteLine(msg->lin);
 
   MsgLineReIndex(msg, YES, YES, YES);
 
   throw_free(buf);
+  throw_free(buf2);
 }
 
 
