@@ -2412,6 +2412,8 @@ void UndoStack::PushItem(uint action, Line* __line, uint __col, uint __len) {
       case EDIT_UNDO_INS_TEXT:
       case EDIT_UNDO_WRAP_TEXT:
         last_item->line = __line;
+        if(__len == NO_VALUE)
+          __len = __line->txt.length() - __col + 1;
         throw_new(last_item->data.text_ptr = new text_item(__col, __len));
         break;
       case EDIT_UNDO_NEW_LINE:

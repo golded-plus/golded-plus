@@ -428,8 +428,6 @@ static void w_brag() {
   wcenters(MAXROW-9, C_BRAGW, buf);
   sprintf(buf, "Compiled on %s %s", __gver_date__, __gver_time__);
   wcenters(MAXROW-8, C_BRAGW, buf);
-
-  update_statusline(LNG->Initializing);
 }
 
 
@@ -852,6 +850,8 @@ void Initialize(int argc, char* argv[]) {
 
   w_back();     // Open a nice background window
   w_brag();     // Display Brag Window
+
+  update_statusline(LNG->Initializing);
 
   HandleGEvent(EVTT_STARTUP);
 
