@@ -12,6 +12,12 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed some problems with readonly areas: it is now not possible to
+  change messages in R/O areas, it is possible to set group of areas
+  to R/O using ATTRIBUTES keyword in Random System Group.
+
+- Fixed small reflow bug in message viewer.
+
 - Fixed recently introduced bug with replying on gated messages in
   echo and following change of destination name. There's still some
   work to be done in this field.

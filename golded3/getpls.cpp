@@ -865,6 +865,13 @@ void ChangeMsg() {
 
   if(AA->Msgn.Count()) {
 
+    if(AA->attr().r_o()) {
+      GMenuReadonly MenuReadonly;
+      reader_keyok = not MenuReadonly.Run();
+      if(reader_keyok)
+        return;
+    }
+
     reader_keyok = YES;
 
     if(AA->attr().hex()) {

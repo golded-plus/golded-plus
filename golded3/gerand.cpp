@@ -421,11 +421,15 @@ void Area::RandomizeData(int mode) {
   }
 
   std::vector<MailList>::iterator z;
-  for(z = CFG->mailinglist.begin(); z != CFG->mailinglist.end(); z++)
+  for(z = CFG->mailinglist.begin(); z != CFG->mailinglist.end(); z++) {
     if(strieql(echoid(), z->echoid)) {
       strcpy(adat->whoto, *z->contribution ? z->contribution : z->sender);
       break;
     }
+  }
+
+  if(adat->attributes.r_o())
+    area->attr().r_o1();
 }
 
 

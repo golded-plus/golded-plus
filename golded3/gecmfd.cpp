@@ -344,6 +344,8 @@ void CmfMsgs(GMsg* msg) {
   AL.SetActiveAreaId(destarea);
   Area* AAdest = AA;
 
+  AA->RandomizeData();
+
   // Is it readonly?
   if(AA->attr().r_o()) {
     GMenuReadonly MenuReadonly;
