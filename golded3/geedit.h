@@ -104,8 +104,6 @@
 //  ------------------------------------------------------------------
 //  Globals
 
-extern int CFG__editquotewrap;
-
 extern Line* Edit__killbuf;
 extern Line* Edit__pastebuf;
 

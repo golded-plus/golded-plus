@@ -376,14 +376,15 @@ static void w_brag() {
   W_READ = wopen_(1, 2, MAXROW-4, MAXCOL-5, W_BBRAG, C_BRAGB, C_BRAGW);
   w_shadow();
 
-  wprints(0, 0, C_BRAGW, "                   88     88            88     ");
-  wprints(1, 0, C_BRAGW, "     oooooo oooooo 88 oooo88 oooooo oooo88  o  ");
-  wprints(2, 0, C_BRAGW, "     88  88 88  88 88 88  88 88oo88 88  88 o8o ");
-  wprints(3, 0, C_BRAGW, "     88oo88 88oo88 88 88oo88 88oooo 88oo88  8  ");
-  wprints(4, 0, C_BRAGW, " oo      88                                    ");
-  wprints(5, 0, C_BRAGW, " 88oooooo88                                    ");
+  wprints(0, 0, C_BRAGB, "                   88     88            88     ");
+  wprints(1, 0, C_BRAGB, "     oooooo oooooo 88 oooo88 oooooo oooo88  o  ");
+  wprints(2, 0, C_BRAGB, "     88  88 88  88 88 88  88 88oo88 88  88 o8o ");
+  wprints(3, 0, C_BRAGB, "     88oo88 88oo88 88 88oo88 88oooo 88oo88  8  ");
+  wprints(4, 0, C_BRAGB, " oo      88                                    ");
+  wprints(5, 0, C_BRAGB, " 88oooooo88                                    ");
 
-  wprints(4, 43-strlen(__gver_longpid__), C_BRAGW, __gver_longpid__);
+  wprints(4, 46-strlen(__gver_longpid__)-1-strlen(__gver_ver__), C_BRAGW, __gver_longpid__);
+  wprints(4, 46-strlen(__gver_ver__), C_BRAGW, __gver_ver__);
 
   wprints(5, 12, C_BRAGW, "http://golded-plus.sourceforge.net");
 

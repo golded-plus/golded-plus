@@ -37,8 +37,6 @@
 //  ------------------------------------------------------------------
 //  Globals
 
-int CFG__editquotewrap = YES;
-
 Line* Edit__killbuf  = NULL;
 Line* Edit__pastebuf = NULL;
 
@@ -639,7 +637,7 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, boo
       _quotelen = 0;
 
       // Is this line quoted?
-      if((_thisline->type & GLINE_QUOT) and CFG__editquotewrap) {
+      if(_thisline->type & GLINE_QUOT) {
 
         // Get quote string and length
         GetQuotestr(_thisline->txt.c_str(), _quotebuf, &_quotelen);
@@ -839,7 +837,7 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, boo
       _thislen = _thisline->txt.length();
 
       // If we are on the cursor line, check if the cursor char was wrapped
-      if((_thisrow == _cursrow) and (_thislen <= _curscol) and not ((_thislen == _curscol) and (_thisline->txt[_curscol] != ' '))) {
+      if((_thisrow == _cursrow) and (_thislen <= _curscol)) {
         _curscol = _quotelen + ((_curscol > _wrappos) ? _curscol-_wrappos : 0);
         _cursrow++;
         UndoItem* i = Undo->last_item;
@@ -947,6 +945,15 @@ void IEclass::insertchar(char __ch) {
   // Insert or overwrite the char, replacing the block if any
   if((selecting ? (BlockCut(true), batch_mode = BATCH_MODE) : false) or
      (col >= _currline_len) or (currline->txt[col] == '\n') or insert) {
+    if(not isspace(__ch) and (col == mincol)) {
+      // if previous line was wrapped on non-space character
+      if(currline->prev and not currline->prev->txt.empty() and
+         (currline->prev->txt.find('\n') == currline->prev->txt.npos) and
+         not isspace(currline->prev->txt[currline->prev->txt.length()-1])) {
+        GoUp();
+        GoEOL();
+      }
+    }
     Undo->PushItem(EDIT_UNDO_INS_CHAR|batch_mode);
     currline->txt.insert(col, 1, __ch);
   } else {
@@ -1013,7 +1020,7 @@ void IEclass::DelChar() {
     // Is the next line quoted?
     // And is the cursor column non-zero?
     uint _quotelen = 0;
-    if((_nextline->type & GLINE_QUOT) and CFG__editquotewrap and col) {
+    if((_nextline->type & GLINE_QUOT) and col) {
 
       // Get quote string length
       char _dummybuf[100];
@@ -1022,7 +1029,7 @@ void IEclass::DelChar() {
 
     // Copy the next line's text to this line without quote string
     const char *_nexttext = _nextline->txt.c_str()+_quotelen;
-    _thisline->txt += _nexttext + strspn(_nexttext, " ");
+    _thisline->txt += _nexttext + (col ? strspn(_nexttext, " ") : 0);
 
     Undo->PushItem(EDIT_UNDO_CUT_TEXT|batch_mode, _thisline, col);
 
@@ -1051,12 +1058,10 @@ void IEclass::DelChar() {
   // Make sure the line type still is correct
   setlinetype(_thisline);
 
-  uint _thisrow = row;
-
   // Rewrap this line
-  wrapdel(&currline, &col, &row, false);
+  wrapdel(&currline, &col, &row);
 
-  refresh(_thisline, _thisrow);
+  refresh(currline, row);
 
   GFTRK(NULL);
 }
