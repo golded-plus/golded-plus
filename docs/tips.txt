@@ -24,15 +24,10 @@ Tips and tricks
    #Left is not described in manual they present ;-) I'll describe it when
    it will be implemented in Linux version.
 
-7. Having problems with HPT? According to fidoconfig specification "\"
-   initiates escape-sequence which is properly processed by GoldED+ and not
-   processed by original fidoconfig library. You may consider using of
-   '-lame' option :-)
-
-8. If you have a problem with incorrect recoding in message lister try
+7. If you have a problem with incorrect recoding in message lister try
    add "MsgListFast No" to your config.
 
-9. In order to make usable backspace in Linux version add following to your
+8. In order to make usable backspace in Linux version add following to your
    keymap if not yet: ``keycode 14 = delete delete delete delete''
 
-10. If you want add something to this file - feel free to contact me.
+9. If you want add something to this file - feel free to contact me.
