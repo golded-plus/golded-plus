@@ -421,13 +421,13 @@ void LoadText(GMsg* msg, const char* textfile) {
 
     while(fgets(buf, PBUFSIZE, fp)) {
       strsrep(buf, "\t", tabspaces);  // Expand tabs
-      if(strneql(buf, hardline, hardlen)) {
+      if(EDIT->HardLines() and strneql(buf, hardline, hardlen)) {
         hardcr = not hardcr;
         if(*txtptr == LF)
           *txtptr = CR;
         if(*txtptr)
           txtptr++;
-        strcpy(buf, "\r");
+        continue;
       }
       else {
         ptr = buf;
