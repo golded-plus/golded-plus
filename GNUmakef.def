@@ -45,6 +45,19 @@ EXEEXT=.exe
 OBJEXT=.o
 LIBEXT=.a
 else
+ifeq ($(TERM),MSYS)
+CAT=cat
+CC=gcc
+CXX=g++
+AR=ar
+RANLIB=ranlib
+WINDRES=windres
+PLATFORM=cyg
+SHELL=bash
+EXEEXT=.exe
+OBJEXT=.o
+LIBEXT=.a
+else
 ifeq ($(OSTYPE),beos) # BeOS build
 CAT=cat
 CC=gcc
@@ -69,6 +82,7 @@ PLATFORM=lnx
 EXEEXT=
 OBJEXT=.o
 LIBEXT=.a
+endif
 endif
 endif
 endif

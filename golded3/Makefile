@@ -13,6 +13,11 @@ else
 ifeq ($(TERM),cygwin)
 STDLIBS=-luser32 -lwinmm
 GLIBS+=glibc
+else
+ifeq ($(TERM),MSYS)
+STDLIBS=-luser32 -lwinmm
+GLIBS+=glibc
+endif
 endif
 endif
 
