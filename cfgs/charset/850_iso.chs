@@ -1,5 +1,6 @@
 ;
 ; This file is a charset conversion module in text form.
+; Build on FEB 2003 by Laurent Jumet laurent.jumet@advalvas.be
 ;
 ; This module Converts IBM CP850 characters to ISO 8859-1 characters.
 ;
@@ -13,7 +14,7 @@
 ;
 ; cedilla = ,   ; dieresis = ..       ; acute = '
 ; grave = `     ; circumflex = ^      ; ring = o
-; tilde = ~     ; caron = v 
+; tilde = ~     ; caron = v
 ; All of these are above the character, apart from the cedilla which is below.
 ;
 ; \ is the escape character: \0 means decimal zero,
@@ -51,9 +52,9 @@ LATIN-1		; to set
 \0 \xC6         ; 146 92 latin capital letter ae
 \0 \xF4         ; 147 93 latin small letter o with circumflex
 \0 \xF6         ; 148 94 latin small letter o with diaeresis
-\0 \xF3         ; 149 95 latin small letter o with grave
-\0 \xDB         ; 150 96 latin small letter u with circumflex
-\0 \xD9         ; 151 97 latin small letter u with grave
+\0 \xF2         ; 149 95 latin small letter o with grave [Etait "\xF3"]
+\0 \xFB         ; 150 96 latin small letter u with circumflex   [Etait: "\xDB"]
+\0 \xF9         ; 151 97 latin small letter u with grave  [Etait "\xD9"]
 \0 \xFF         ; 152 98 latin small letter y with diaeresis
 \0 \xD6         ; 153 99 latin capital letter o with diaeresis
 \0 \xDC         ; 154 9A latin capital letter u with diaeresis
@@ -63,9 +64,9 @@ LATIN-1		; to set
 \0 \xD7         ; 158 9E multiplication sign
 F l             ; 159 9F dutch guilder sign (ibm437 159)
 \0 \xE1         ; 160 A0 latin small letter a with acute
-\0 \xCC         ; 161 A1 latin small letter i with acute
-\0 \xF2         ; 162 A2 latin small letter o with acute
-\0 \xF9         ; 163 A3 latin small letter u with acute
+\0 \xCD         ; 161 A1 latin small letter i with acute [Etait "\xCC"]
+\0 \xF3         ; 162 A2 latin small letter o with acute [Etait "\xF2"]
+\0 \xFA         ; 163 A3 latin small letter u with acute [Etait "\xF9"]
 \0 \xF1         ; 164 A4 latin small letter n with tilde
 \0 \xD1         ; 165 A5 latin capital letter n with tilde
 \0 \xAA         ; 166 A6 feminine ordinal indicator
@@ -92,7 +93,7 @@ F l             ; 159 9F dutch guilder sign (ibm437 159)
 \0 +            ; 187 BB box drawings heavy down and left
 \0 +            ; 188 BC box drawings heavy up and left
 \0 \xA2         ; 189 BD cent sign
-\0 \xAE         ; 190 BE yen sign
+\0 \xA5         ; 190 BE yen sign [Etait "\xAE"]
 \0 +            ; 191 BF box drawings light down and left
 \0 +            ; 192 C0 box drawings light up and right
 \0 -            ; 193 C1 box drawings light up and horizontal
@@ -114,7 +115,7 @@ F l             ; 159 9F dutch guilder sign (ibm437 159)
 \0 \xD0         ; 209 D1 latin capital letter eth (icelandic)
 \0 \xCA         ; 210 D2 latin capital letter e with circumflex
 \0 \xCB         ; 211 D3 latin capital letter e with diaeresis
-\0 \xD4         ; 212 D4 latin capital letter e with grave
+\0 \xC8         ; 212 D4 latin capital letter e with grave [Etait "\xD4"]
 \0 i            ; 213 D5 latin small letter i dotless
 \0 \xCD         ; 214 D6 latin capital letter i with acute
 \0 \xCE         ; 215 D7 latin capital letter i with circumflex
@@ -133,9 +134,9 @@ F l             ; 159 9F dutch guilder sign (ibm437 159)
 \0 \xF5         ; 228 E4 latin small letter o with tilde
 \0 \xD5         ; 229 E5 latin capital letter o with tilde
 \0 \xB5         ; 230 E6 greek small letter mu
-\0 \xDE         ; 231 E7 latin capital letter thorn (icelandic)
-\0 \xFE         ; 232 E8 latin small letter thorn (icelandic)
-\0 \xDA         ; 233 E9 latin capital letter u with acute
+\0 \xFE         ; 231 E7 latin capital letter thorn (icelandic) [Etait "\xDE"]
+\0 \xDE         ; 232 E8 latin small letter thorn (icelandic) [Etait "\xFE"]
+\0 \xD3         ; 233 E9 latin capital letter u with acute [Etait "\xDA"]
 \0 \xDB         ; 234 EA latin capital letter u with circumflex
 \0 \xD9         ; 235 EB latin capital letter u with grave
 \0 \xFD         ; 236 EC latin small letter y with acute
