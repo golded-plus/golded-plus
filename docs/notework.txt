@@ -13,8 +13,10 @@ ______________________________________________________________________
 ______________________________________________________________________
 
 + Added support for SpaceToss areafile. WARNING: there's no known way
-  to obtain primary AKA for echo areas from tosser config so you'll
-  need to define them manually. Main AKA will be used by default.
+  to obtain primary AKA for echo areas from tosser config ver 1.10 so
+  you'll need to define them manually. Main AKA will be used by
+  default. On newer versions (with UseAKA support) you should not
+  expirience this problem.
 
 - Thanks to Pavel Tsekov few more memory leaks was eliminated.
 

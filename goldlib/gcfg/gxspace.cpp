@@ -21,7 +21,7 @@
 //  ------------------------------------------------------------------
 //  $Id$
 //  ------------------------------------------------------------------
-//  Read areas from SpaceToss 1.10
+//  Read areas from SpaceToss 1.10 and higher
 //  ------------------------------------------------------------------
 
 #include <cstdlib>
@@ -31,6 +31,8 @@
 #undef GCFG_NOSPCT
 #include <gedacfg.h>
 
+static Path SpaceTossAreafile;
+
 
 //  ------------------------------------------------------------------
 
@@ -38,12 +40,17 @@ void gareafile::ParseSpaceArea(const char *type_path, AreaCfg &aa) {
 
   if(strnieql(type_path, "msg", 3))
     aa.msgbase = fidomsgtype;
-  else if(strnieql(type_path, "hud", 3))
+  else if(strnieql(type_path, "hud", 3)) {
     aa.msgbase = GMB_HUDSON;
+    aa.board = atoi(type_path+3);
+    return;
+  }
   else if(strnieql(type_path, "jam", 3))
     aa.msgbase = GMB_JAM;
   else if(strnieql(type_path, "sqh", 3))
     aa.msgbase = GMB_SQUISH;
+  else if(strnieql(type_path, "smb", 3))
+    aa.msgbase = GMB_SMB;
   else {
     aa.msgbase = 0;
     return;
@@ -62,6 +69,8 @@ void gareafile::ReadSpaceAr(const char* file) {
   const word CRC_PATH = 0x0212;
   const word CRC_FLAGS = 0xF81A;
   const word CRC_GROUP = 0x1C9B;
+  const word CRC_TYPE = 0x59E2;
+  const word CRC_USEAKA = 0x2F7D;
   const word CRC_ENDAREA = 0x3E9F;
 
   FILE* fp = fsopen(file, "rb", sharemode);
@@ -95,12 +104,40 @@ void gareafile::ReadSpaceAr(const char* file) {
         case CRC_PATH:
           ParseSpaceArea(val, aa);
           break;
+        case CRC_USEAKA:
+          aa.aka.set(val);
+          break;
         case CRC_FLAGS:
           if(strpbrk(val,"Ll")) {
             aa.type = GMB_LOCAL;
             aa.attr = attribslocal;
           }
           break;
+        case CRC_TYPE: {
+          const word CRC_ECHO = 0xC2D1;
+          const word CRC_NET = 0xEC5E;
+          const word CRC_LOCAL = 0x4CD5;
+          const word CRC_DUPE = 0x9B1D;
+          const word CRC_BAD = 0x29C2;
+
+          switch(getkeyvalcrc(&key, &val)) {
+            case CRC_ECHO:
+              aa.type = GMB_ECHO;
+              aa.attr = attribsecho;
+              break;
+            case CRC_NET:
+              aa.type = GMB_NET;
+              aa.attr = attribsnet;
+              break;
+            case CRC_LOCAL:
+            case CRC_DUPE:
+            case CRC_BAD:
+              aa.type = GMB_LOCAL;
+              aa.attr = attribslocal;
+              break;
+          }
+          break;
+        }
         case CRC_GROUP:
           aa.groupid = toupper(*val);
           break;
@@ -189,6 +226,9 @@ void gareafile::ReadSpaceCtl(const char* file) {
   const word CRC_NETMAIL = 0xE42E;
   const word CRC_BADMAIL = 0xE697;
   const word CRC_DUPEMAIL = 0xB38B;
+  const word CRC_HUDSONPATH = 0x52A7;
+  const word CRC_EXPORTLISTS = 0xB709;
+  const word CRC_AREAFILE = 0xB487;
 
   FILE* fp = fsopen(file, "rb", sharemode);
   if(fp) {
@@ -230,6 +270,15 @@ void gareafile::ReadSpaceCtl(const char* file) {
           aa.setdesc("SpaceToss Dupemail");
           aa.type = GMB_LOCAL;
           aa.attr = attribslocal;
+          break;
+        case CRC_HUDSONPATH:
+          CfgHudsonpath(val);
+          break;
+        case CRC_EXPORTLISTS:
+          CfgJampath(val);
+          break;
+        case CRC_AREAFILE:
+          strxcpy(SpaceTossAreafile, val, sizeof(SpaceTossAreafile));
           break;
       }
 
@@ -274,11 +323,13 @@ void gareafile::ReadSpaceToss(char* tag) {
 
   CfgSquishuserpath(path);
 
+  strcpy(SpaceTossAreafile, "spctoss.ar");
+
   MakePathname(file, path, "spctoss.ctl");
   ReadSpaceCtl(file);
   MakePathname(file, path, "spctoss.ntm");
   ReadSpaceNtm(file);
-  MakePathname(file, path, "spctoss.ar");
+  MakePathname(file, path, SpaceTossAreafile);
   ReadSpaceAr(file);
 }
 

@@ -79,7 +79,9 @@
 //  ------------------------------------------------------------------
 
 static bool __vcurhidden = false;
+#if defined(__UNIX__) || defined(__USE_NCURSES__)
 static unsigned long gvid_boxcvtc(char);
+#endif
 
 #if !defined(__USE_NCURSES__)
 
