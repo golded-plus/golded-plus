@@ -6,18 +6,26 @@ by Alexander Aganichev, 2:5020/201.58 <aaganichev@netscape.net>
 
 To compile GoldED+ and utilities you'll need:
 
- - GNU C++ newer than 2.8.x, gcc 2.95.2 recommended
+ - GNU C++ newer than 2.8.x, gcc 2.95.3 or gcc 3.0.x are recommended, gcc 3.1
+   not tested yet.
  - GNU make and GNU sed
  - vi, emacs, or any other editor you like
  - beer or bear on your choice ;-)
 
---- MINGW ONLY ---
+---- MINGW ONLY ----
 Please consult this howto on installing MinGW over Cygwin:
 http://www.xraylith.wisc.edu/~khan/software/gnu-win32/mno-cygwin-howto.txt
 --- gcc-2.95.3-5.tar.bz2 + mingw-runtime-1.3-2.tar.bz2 ---
 Move /usr/include/mingw to /usr/local/include/mingw, take gcc-2.95.3-xxx.tar.gz
 from www.mingw.org, copy .../lib/stdlibc++.a to /usr/local/lib/mingw, copy
 .../include/g++-3 to /usr/local/include/mingw/g++-3.
+------ COMMON ------
+
+---- DJGPP ONLY ----
+When building in DJGPP environment you may wish to use liblocal which may be
+found on http://aaganichev.narod.ru/djgpp/llocl01b.zip. This provides basic
+locale support via country.sys driver. Otherwise just comment -llocal in
+GNUmakef.def.
 ------ COMMON ------
 
 First, edit GNUmakef.def for the preferrable compilation options.
@@ -33,7 +41,3 @@ ls bin/
 
 You have to get ged{short-patform-name}, gn{short-patform-name}, and
 rddt{short-patform-name}. If so, you did it!
-
-When building in DJGPP environment you may wish to patch libc with djlocale
-patch which may be found on http://asa.i-connect.com/djlocale.zip. This patch
-intended for those who worried about NLS support.
