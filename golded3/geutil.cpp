@@ -288,6 +288,7 @@ int maketitle_and_status(char *dir) {
 
   maketitle();
   update_statuslinef(LNG->ImportStatus, dir);
+  return 0;
 }
 
 //  ------------------------------------------------------------------
