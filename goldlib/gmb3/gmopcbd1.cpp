@@ -184,6 +184,8 @@ void PcbArea::open() {
     if(ispacked()) {
       isopen--;
       const char* newpath = Unpack(path());
+      if(newpath == NULL)
+        packed(false);
       set_real_path(newpath ? newpath : path());
       isopen++;
     }
