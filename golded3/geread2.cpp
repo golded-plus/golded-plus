@@ -630,6 +630,9 @@ void UUDecode(GMsg* msg) {
     if(source == WRITE_QUIT)
       return;
 
+    bool old_quotespacing = CFG->switches.get(quotespacing);
+    CFG->switches.set(quotespacing, false);
+
     if(source == WRITE_MARKED) {
       for(uint n=0; n<AA->Mark.Count(); n++) {
         if(overwrite and n)
@@ -641,8 +644,12 @@ void UUDecode(GMsg* msg) {
       if(AA->Mark.Count())
         w_progress(MODE_QUIT, 0, 0, 0, NULL);
     }
-    else if(source == WRITE_CURRENT)
+    else if(source == WRITE_CURRENT) {
+      AA->LoadMsg(msg, msg->msgno, 79);
       SaveLines(MODE_WRITE, infile, msg, 79);
+    }
+
+    CFG->switches.set(quotespacing, old_quotespacing);
 
     uulist* item;
     int i, res;
