@@ -38,6 +38,7 @@
 #include <unistd.h>
 #else
 #include <cstdlib>
+#include <direct.h>
 #endif
 #include <cerrno>
 #include <cstdio>
@@ -68,6 +69,17 @@
 #define S_STDRD S_IRUSR
 #endif
 
+#ifndef S_ISDIR
+#define S_ISDIR(st_mode) ((st_mode)&_S_IFDIR)
+#endif
+
+#ifndef S_ISREG
+#define S_ISREG(st_mode) ((st_mode)&_S_IFREG)
+#endif
+
+#ifndef R_OK
+#define R_OK 0
+#endif
 
 //  ------------------------------------------------------------------
 
@@ -138,7 +150,7 @@ inline FILE* fsopen(const std::string& path, const char* type, int shflag) { ret
 int is_dir(const char* path);
 inline int is_dir(const std::string& path) { return is_dir(path.c_str()); }
 
-inline bool fexist(const char* filename) { return *filename ? ((access(filename, 0) == 0) and not is_dir(filename)) : false; }
+inline bool fexist(const char* filename) { return *filename ? ((access(filename, R_OK) == 0) and not is_dir(filename)) : false; }
 inline bool fexist(const std::string& filename) { return fexist(filename.c_str()); }
 
 dword gfixstattime(time_t st_time);

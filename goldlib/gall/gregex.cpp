@@ -26,7 +26,6 @@
 
 #include <sys/types.h>
 #include <cstddef>
-#include <regex.h>
 #include <gregex.h>
 #include <gmemdbg.h>
 
@@ -52,8 +51,8 @@ gregex::~gregex() {
 void gregex::reset() {
 
   if(preg) {
-    regfree((regex_t*)preg);
-    throw_delete((regex_t*)preg);
+    regfree(preg);
+    throw_delete(preg);
   }
 }
 
@@ -72,7 +71,7 @@ bool gregex::compile(const char* pattern, int cflags) {
     throw_new(preg);
   }
 
-  return (bool)regcomp((regex_t*)preg, pattern, cflgs);
+  return regcomp(preg, pattern, cflgs) ? true : false;
 }
 
 
@@ -84,7 +83,7 @@ bool gregex::match(const char* str, int eflags) {
   if(eflags & notbol) eflgs |= REG_NOTBOL;
   if(eflags & noteol) eflgs |= REG_NOTEOL;
 
-  return not regexec((regex_t*)preg, str, 0, NULL, eflgs);
+  return not regexec(preg, str, 0, NULL, eflgs);
 }
 
 

@@ -1004,12 +1004,12 @@ bool gwinput::field::delete_word(bool left) {
 
   if(entry != gwinput::entry_noedit) {
 
-    bool state = isspace(buf[buf_pos-((int) left)]);
+    bool state = isspace(buf[buf_pos-((int) left)]) ? true : false;
 
     while(left ? buf_pos > 0 : buf_pos < buf_end_pos) {
       left ? delete_left() : delete_char();
 
-      if(isspace(buf[buf_pos-((int) left)]) != state)
+      if((isspace(buf[buf_pos-((int) left)]) ? true : false) != state)
         break;
     }
     return true;

@@ -78,7 +78,7 @@ public:
 
   ~gfile();             // Destructor (closes file)
 
-  operator bool() { return isopen(); }
+  operator bool() { return isopen() ? true : false; }
 
 
   //  --------------------------------------------------------------

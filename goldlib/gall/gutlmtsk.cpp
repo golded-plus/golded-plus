@@ -82,7 +82,7 @@ int GMTsk::os2() {
   #if defined(__OS2__)
   detected = GMTSK_OS2;
   name = "OS/2";
-  #elif !defined(__GNUC__)
+  #elif !defined(__GNUC__) && !defined(_MSC_VER)
   if(_osmajor >= 10) {
     detected = GMTSK_OS2;
     name = "OS/2";

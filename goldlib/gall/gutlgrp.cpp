@@ -53,9 +53,9 @@ Grp::~Grp() {
   std::multimap<int, grp_stock>::iterator i;
   for(currgrp = container.begin(); currgrp != container.end(); currgrp++)
     for(i = currgrp->second.begin(); i != currgrp->second.end(); i++) {
-      if(i->second.type == TYPE_OBJECT)
+      if(i->second.type == grp_stock::TYPE_OBJECT)
         throw_free(i->second.data.object_item);
-      else if(i->second.type == TYPE_STRING)
+      else if(i->second.type == grp_stock::TYPE_STRING)
         throw_delete(i->second.data.string_item);
     }
 }

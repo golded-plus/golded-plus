@@ -116,17 +116,17 @@ class Grp {
 
 private:
 
-  enum {
-    TYPE_BOOL,
-    TYPE_CHAR,
-    TYPE_INT,
-    TYPE_STRING,
-    TYPE_OBJECT
-  };
-
   class grp_stock { 
 
   public:
+
+    enum {
+      TYPE_BOOL,
+      TYPE_CHAR,
+      TYPE_INT,
+      TYPE_STRING,
+      TYPE_OBJECT
+	};
 
     int type;
     union {

@@ -53,6 +53,13 @@ typedef long Clock;
 
 
 //  ------------------------------------------------------------------
+
+#if defined(GOLD_CANPACK)
+#pragma pack(1)
+#endif
+
+
+//  ------------------------------------------------------------------
 //  DOS "findfirst" timestamp
 
 struct gfiletime {
@@ -65,7 +72,7 @@ struct gfiletime {
 
   const char* c_str(char* buf);
   dword number() { return *(dword*)this; }
-} __attribute__((packed));
+};
 
 typedef gfiletime FFTime;
 
@@ -83,9 +90,16 @@ struct gopustime {
 
   const char* c_str(char* buf);
   dword number() { return *(dword*)this; }
-} __attribute__((packed));
+};
 
 typedef gopustime FTime;
+
+
+//  ------------------------------------------------------------------
+
+#if defined(GOLD_CANPACK)
+#pragma pack()
+#endif
 
 
 //  ------------------------------------------------------------------
@@ -127,6 +141,10 @@ inline struct tm* glocaltime(time_t* arg) {
 inline void usleep(long duration) { DosSleep(duration); }
 #elif defined(__MINGW32__)
 inline void usleep(long duration) { Sleep(duration); }
+#endif
+
+#ifndef CLK_TCK
+#define CLK_TCK CLOCKS_PER_SEC
 #endif
 
 #ifdef __UNIX__

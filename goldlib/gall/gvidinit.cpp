@@ -26,6 +26,7 @@
 //  Device-independent video functions
 //  ------------------------------------------------------------------
 
+#include <cassert>
 #include <cstdio>
 #include <cstdlib>
 #include <cstdarg>

@@ -28,7 +28,7 @@
 #include <gtimall.h>
 #include <gstrall.h>
 #include <gfilutil.h>
-#if defined(__MINGW32__)
+#if defined(__MINGW32__) || defined(_MSC_VER)
 #include <sys/utime.h>
 #else
 #include <utime.h>
@@ -360,11 +360,10 @@ void WipeFile(const char* file, int options) {
   uint n;
   byte buf[512];
 
-  switch(options) {
-    default:
-      for(n=0; n<512; n++)
-        buf[n] = (byte)(rand() % 256);
-  }
+  (void)options;
+
+  for(n=0; n<512; n++)
+    buf[n] = (byte)(rand() % 256);
 
   int fh = sopen(file, O_RDWR|O_BINARY, SH_DENYRW, S_STDRW);
   if(fh != -1) {

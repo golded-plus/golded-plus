@@ -79,6 +79,11 @@
 #endif
 #endif
 
+#ifndef __GNUC__
+#define __attribute__(A)
+#define __inline__ static
+#define __extension__
+#endif
 
 //  ------------------------------------------------------------------
 //  Check if type "char" is unsigned or signed

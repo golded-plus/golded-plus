@@ -57,19 +57,19 @@ extern mail_ctype mail_ctype_global;
 
 //  ------------------------------------------------------------------
 
-inline bool is_mail_char(uint c)       { return mail_ctype_global.table[c] & mail_ctype::mail_char; }
-inline bool is_mail_alpha(uint c)      { return mail_ctype_global.table[c] & mail_ctype::mail_alpha; }
-inline bool is_mail_ctl(uint c)        { return mail_ctype_global.table[c] & mail_ctype::mail_ctl; }
+inline bool is_mail_char(uint c)       { return (mail_ctype_global.table[c] & mail_ctype::mail_char) ? true : false; }
+inline bool is_mail_alpha(uint c)      { return (mail_ctype_global.table[c] & mail_ctype::mail_alpha) ? true : false; }
+inline bool is_mail_ctl(uint c)        { return (mail_ctype_global.table[c] & mail_ctype::mail_ctl) ? true : false; }
 inline bool is_mail_cr(uint c)         { return c == CR; }
 inline bool is_mail_lf(uint c)         { return c == LF; }
 inline bool is_mail_space(uint c)      { return c == ' '; }
 inline bool is_mail_htab(uint c)       { return c == HT; }
 inline bool is_mail_crlf(uint c)       { return is_mail_cr(c) or is_mail_lf(c); }
-inline bool is_mail_lwsp(uint c)       { return mail_ctype_global.table[c] & mail_ctype::mail_lwsp; }
-inline bool is_mail_special(uint c)    { return mail_ctype_global.table[c] & mail_ctype::mail_special; }
-inline bool is_mail_delimiters(uint c) { return mail_ctype_global.table[c] & mail_ctype::mail_delimiters; }
-inline bool is_mime_tspecial(uint c)   { return mail_ctype_global.table[c] & mail_ctype::mime_tspecial; }
-inline bool is_mime_especial(uint c)   { return mail_ctype_global.table[c] & mail_ctype::mime_especial; }
+inline bool is_mail_lwsp(uint c)       { return (mail_ctype_global.table[c] & mail_ctype::mail_lwsp) ? true : false; }
+inline bool is_mail_special(uint c)    { return (mail_ctype_global.table[c] & mail_ctype::mail_special) ? true : false; }
+inline bool is_mail_delimiters(uint c) { return (mail_ctype_global.table[c] & mail_ctype::mail_delimiters) ? true : false; }
+inline bool is_mime_tspecial(uint c)   { return (mail_ctype_global.table[c] & mail_ctype::mime_tspecial) ? true : false; }
+inline bool is_mime_especial(uint c)   { return (mail_ctype_global.table[c] & mail_ctype::mime_especial) ? true : false; }
 inline bool is_mail_atom_delimiters(uint c) { return is_mail_delimiters(c) or is_mail_ctl(c); }
 inline bool is_mime_ct_token_valid(uint c) { return not (is_mail_lwsp(c) or is_mail_ctl(c) or is_mime_tspecial(c)); }
 

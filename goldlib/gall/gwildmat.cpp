@@ -26,6 +26,9 @@
 
 #include <gstrall.h>
 #include <gwildmat.h>
+#ifdef _MSC_VER
+#include <malloc.h>
+#endif
 
 
 //  ------------------------------------------------------------------
