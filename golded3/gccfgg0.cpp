@@ -772,6 +772,7 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
             switch(crc) {
               case CRC_INCLUDE:
                 strschg_environ(val);
+                MapPath(val);
                 if(not quiet)
                   std::cout << "* Including " << val << std::endl;
                 ReadCfg(val);          // NOTE! This is a recursive call!
@@ -780,6 +781,7 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
                 break;
               case CRC_AREAFILE:
                 strschg_environ(val);
+                MapPath(val);
                 if(not quiet)
                   std::cout << "* Handling " << key << " " << val << std::endl;
                 AL.GetAreafile(val);
