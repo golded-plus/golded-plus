@@ -427,6 +427,7 @@ SwitchN:
   switch(crc) {
     case CRC_NAMESFILE        :  CfgNamesfile        ();  break;
     case CRC_NICKNAME         :  CfgNickname         ();  break;
+    case CRC_NETNAME          :  CfgNetname          ();  break;
     case CRC_NODELIST         :  CfgNodelist         ();  break;
     case CRC_NODEPATH         :  CfgNodepath         ();  break;
     case CRC_NODEPATHFD       :  CfgNodepathfd       ();  break;

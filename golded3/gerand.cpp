@@ -171,6 +171,7 @@ void Area::InitData() {
   adat->viewkludge = CFG->viewkludge;
   adat->viewquote = CFG->viewquote;
   strcpy(adat->nickname, CFG->nickname);
+  strcpy(adat->netname, CFG->netname);
   strcpy(adat->whoto, CFG->whoto);
   strcpy(adat->xlatexport, CFG->xlatexport);
   strcpy(adat->xlatimport, CFG->xlatimport);
@@ -361,6 +362,9 @@ void Area::RandomizeData(int mode) {
 
     if(CFG->grp.GetItm(GRP_NICKNAME, buf, sizeof(buf)))
       strxcpy(adat->nickname, buf, sizeof(adat->nickname));
+
+    if(CFG->grp.GetItm(GRP_NETNAME, buf, sizeof(buf)))
+      strxcpy(adat->netname, buf, sizeof(adat->netname));
 
     if(CFG->grp.GetItm(GRP_WHOTO, buf, sizeof(buf))) {
       if(*buf == '@')

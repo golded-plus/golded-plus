@@ -45,9 +45,9 @@ char* MakeOrigin(GMsg* msg, const char* orig) {
   strxcpy(origin, orig, sizeof(origin));
 
   if(msg->orig.net)
-    msg->orig.make_string(buf);
+    msg->orig.make_string(buf, *AA->Netname() ? (*msg->odom ? msg->odom : AA->Netname()) : NULL);
   else
-    AA->Aka().addr.make_string(buf);
+    AA->Aka().addr.make_string(buf, *AA->Netname() ? (*AA->Aka().domain ? AA->Aka().domain : AA->Netname()) : NULL);
 
   if(*origin == '@')
     GetRandomLine(origin, sizeof(origin), origin+1);

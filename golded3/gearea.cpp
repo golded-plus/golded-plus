@@ -447,6 +447,10 @@ void GPickArealist::print_line(uint idx, uint pos, bool isbar) {
 
 void GPickArealist::AreaCatchUp(uint n) {
 
+  // Do not do catch up if there's active area
+  if(AA->isopen())
+    return false;
+
   GMenuAreaCatchup MenuAreaCatchup;
   GMsg* msg = (GMsg*)throw_calloc(1, sizeof(GMsg));
 

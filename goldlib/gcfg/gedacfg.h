@@ -255,6 +255,8 @@ protected:
   void ReadEzycom110(FILE* fp, char* path, char* file, char* options);
 #endif
 #ifndef GCFG_NOFE
+  void ReadFastecho11x(int fh);
+  void ReadFastecho141(int fh);
   void ReadFastecho142(int fh);
 #endif
 #ifndef GCFG_NOFMAIL

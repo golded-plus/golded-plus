@@ -653,6 +653,7 @@ tglobalkey globalkeys[] = {
 #endif
   { CRC_READTOGGLEQUOTE        , KK_ReadToggleQuote      , KT_R }, // 0xB293
   { CRC_EDITUNDO               , KK_EditUndo             , KT_E }, // 0xB295
+  { CRC_READDIRQUOTEMSG        , KK_ReadDirQuoteMsg      , KT_R }, // 0xB351
   { CRC_FILETOGGLEMARK         , KK_FileToggleMark       , KT_F }, // 0xB431
   { CRC_FILEGOTOPREV           , KK_FileGotoPrev         , KT_F }, // 0xB644
   { CRC_EDITLOOKUPCURSOR       , KK_EditLookupCursor     , KT_E }, // 0xB7CC
@@ -700,6 +701,7 @@ tglobalkey globalkeys[] = {
   { CRC_LISTASKEXIT            , KK_ListAskExit          , KT_M }, // 0xD922
   { CRC_AREACATCHUP            , KK_AreaCatchUp          , KT_A }, // 0xDA5C
   { CRC_READGOTOREPLYPREV      , KK_ReadGotoReplyPrev    , KT_R }, // 0xDBE7
+  { CRC_READMOVEDIRQUOTEMSG    , KK_ReadMoveDirQuoteMsg  , KT_R }, // 0xDBC0
   { CRC_EDITANCHOR             , KK_EditAnchor           , KT_E }, // 0xDC07
   { CRC_FILEQUITNOW            , KK_FileQuitNow          , KT_F }, // 0xDD19
   { CRC_AREAINFO               , KK_AreaInfo             , KT_A }, // 0xDE54

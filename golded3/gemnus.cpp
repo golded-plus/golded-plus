@@ -977,28 +977,29 @@ int GMenuNavigate::Run() {
 
   enum {
     TAG_MAIN = 100,
-      TAG_MAIN_SHELL   = (int)KK_ReadDosShell,
-      TAG_MAIN_QUIT    = (int)KK_ReadQuitNow,
+      TAG_MAIN_SHELL    = (int)KK_ReadDosShell,
+      TAG_MAIN_QUIT     = (int)KK_ReadQuitNow,
     TAG_EDIT = 101,
-      TAG_EDIT_ENTER   = (int)KK_ReadNewMsg,
-      TAG_EDIT_QUOTE   = (int)KK_ReadQuoteMsg,
-      TAG_EDIT_COMMENT = (int)KK_ReadCommentMsg,
+      TAG_EDIT_ENTER    = (int)KK_ReadNewMsg,
+      TAG_EDIT_QUOTE    = (int)KK_ReadQuoteMsg,
+      TAG_EDIT_DIRQUOTE = (int)KK_ReadDirQuoteMsg,
+      TAG_EDIT_COMMENT  = (int)KK_ReadCommentMsg,
       TAG_EDIT_OTHER = 1010,
-        TAG_EDIT_OTHER_QUOTE   = (int)KK_ReadMoveQuoteMsg,
-        TAG_EDIT_OTHER_COMMENT = (int)KK_ReadMoveCommentMsg,
+        TAG_EDIT_OTHER_QUOTE    = (int)KK_ReadMoveQuoteMsg,
+        TAG_EDIT_OTHER_DIRQUOTE = (int)KK_ReadMoveQuoteMsg,
+        TAG_EDIT_OTHER_COMMENT  = (int)KK_ReadMoveCommentMsg,
     TAG_SEL = 102,
-      TAG_SEL_ORIGIN   = (int)KK_ReadChangeOrigin,
-      TAG_SEL_USERNAME = (int)KK_ReadChangeUsername,
-      TAG_SEL_AKA      = (int)KK_ReadChangeAka,
-      TAG_SEL_ATTRS    = (int)KK_ReadChangeAttrs,
-      TAG_SEL_TEMPLATE = (int)KK_ReadChangeTemplate,
+      TAG_SEL_ORIGIN    = (int)KK_ReadChangeOrigin,
+      TAG_SEL_USERNAME  = (int)KK_ReadChangeUsername,
+      TAG_SEL_AKA       = (int)KK_ReadChangeAka,
+      TAG_SEL_ATTRS     = (int)KK_ReadChangeAttrs,
+      TAG_SEL_TEMPLATE  = (int)KK_ReadChangeTemplate,
     TAG_UTIL = 103,
-      TAG_UTIL_CMF     = (int)KK_ReadCopyMoveForward,
-      TAG_UTIL_LIST    = (int)KK_ReadMessageList,
-      TAG_UTIL_WRITE   = (int)KK_ReadWriteMsg,
-      TAG_UTIL_FREQ    = (int)KK_ReadFileRequest,
-    TAG_SEPARATOR,
-    TAG_END
+      TAG_UTIL_CMF      = (int)KK_ReadCopyMoveForward,
+      TAG_UTIL_LIST     = (int)KK_ReadMessageList,
+      TAG_UTIL_WRITE    = (int)KK_ReadWriteMsg,
+      TAG_UTIL_FREQ     = (int)KK_ReadFileRequest,
+    TAG_END = 104
   };
 
   Init();
@@ -1019,14 +1020,16 @@ int GMenuNavigate::Run() {
     End();
     Item(TAG_EDIT, "E Edit ");
     BeginPullDown();
-      Item(TAG_EDIT_ENTER,   "E Enter new msg     ");
-      Item(TAG_EDIT_QUOTE,   "Q Quote-reply       ");
-      Item(TAG_EDIT_COMMENT, "C Comment-reply     ");
-      Item(TAG_EDIT_OTHER,   "O Other area reply >");
+      Item(TAG_EDIT_ENTER,    "E Enter new msg                        ");
+      Item(TAG_EDIT_QUOTE,    "Q Quote-reply                          ");
+      Item(TAG_EDIT_DIRQUOTE, "D Direct quote-reply (ignore Reply-To) ");
+      Item(TAG_EDIT_COMMENT,  "C Comment-reply                        ");
+      Item(TAG_EDIT_OTHER,    "O Other area reply >                   ");
       SetTitle(" Other Area ");
       Begin();
-        Item(TAG_EDIT_OTHER_QUOTE,   "Q Quote-reply   ");
-        Item(TAG_EDIT_OTHER_COMMENT, "C Comment-reply ");
+        Item(TAG_EDIT_OTHER_QUOTE,    "Q Quote-reply                          ");
+        Item(TAG_EDIT_OTHER_DIRQUOTE, "D Direct quote-reply (ignore Reply-To) ");
+        Item(TAG_EDIT_OTHER_COMMENT,  "C Comment-reply                        ");
       End();
     End();
     Item(TAG_SEL, "C Change ");
@@ -1046,7 +1049,7 @@ int GMenuNavigate::Run() {
     End();
   End();
   Start();
-  if((finaltag >= TAG_MAIN) and (finaltag < (TAG_END*10)))
+  if((finaltag >= TAG_MAIN) and (finaltag <= TAG_END))
     finaltag = -1;
   return finaltag;
 }

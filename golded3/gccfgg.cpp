@@ -636,6 +636,7 @@ CfgGed::CfgGed() {
   *internetdomain = 0;
   *keybstack = 0;
   *nickname = 0;
+  *netname = 0;
   *organization = 0;
   #ifdef __UNIX__
   strcpy(printdevice, "/usr/bin/lpr > /dev/null 2>&1");

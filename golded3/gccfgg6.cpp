@@ -88,6 +88,19 @@ void CfgNickname() {
   
 //  ------------------------------------------------------------------
 
+void CfgNetname() {
+  
+  Name buf;
+  
+  strxcpy(buf, val, sizeof(buf));
+  if(cfgingroup)
+    CFG->grp.AddItm(GRP_NETNAME, buf, strlen(buf)+1);
+  else
+    strcpy(CFG->netname, buf);
+}
+  
+//  ------------------------------------------------------------------
+
 void CfgNodelist() {
 
   // Only used by GoldNODE

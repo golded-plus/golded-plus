@@ -1244,7 +1244,10 @@ gkey kbxget_raw(int mode) {
             }
             // fall through
           default:
-            {
+            if(ascii == '\x2e') {
+              return (gkey)ascii;
+            }
+            else {
               int kc = gkbd_nt2bios(inp);
               if(kc != -1)
                 return (gkey)kc;

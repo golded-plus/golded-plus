@@ -944,6 +944,15 @@ void ReplyMsg() {
 
 //  ------------------------------------------------------------------
 
+void DirQuoteMsg() {
+
+  if(reader_msg->ireplyto) *reader_msg->ireplyto = NUL;
+  QuoteMsg();
+}
+
+
+//  ------------------------------------------------------------------
+
 void QuoteMsg() {
 
   if(CurrArea == OrigArea) {
@@ -1003,6 +1012,15 @@ void CommentMsg() {
     if(not reader_keyok)
       MakeMsg(MODE_REPLYCOMMENT, reader_msg);
   }
+}
+
+
+//  ------------------------------------------------------------------
+
+void OtherAreaDirQuoteMsg() {
+
+  if(reader_msg->ireplyto) *reader_msg->ireplyto = NUL;
+  OtherAreaQuoteMsg();
 }
 
 

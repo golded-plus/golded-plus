@@ -12,6 +12,26 @@ ______________________________________________________________________
                 Notes for GoldED+ 1.1.5, December xx 2000
 ______________________________________________________________________
 
+- Support for old Fastechoes reverted back.
+
+- Area Catch-up and Scan now disabled if there's active area. This
+  should improve stability.
+
+! Returned NETNAME keyword in another incarnation:
+
+   * Origin: bla-bla-bla (2:5020/604.19@fidonet)
+
+  This style doesn't break any of FTS or FSC. Domain from Address or
+  AKA keyword overrides Netname keyword if specific address used.
+  This keyword could be used in random system groups.
+
++ Added READDirQuoteMsg and READMoveDirQuoteMsg entries for
+  goldkeys.cfg: quote message ignoring Reply-To kludge (in current and
+  another area correspondingly). Both added to READMainmenu menu.
+  There's no default keyboard assignment. (Not tested)
+
+- Fixed EDITMainmenu operation.
+
 - Fixed incorrect filenames displaying in /w32 version.
 
 - Fixed crash of Win32 version when output/input redirected to/from

@@ -307,6 +307,8 @@ const gkey KK_ReadTouchSemaphore   = 0xFF9E;
 const gkey KK_ReadUserbase         = 0xFF9F;
 const gkey KK_ReadUUDecode         = 0xFFA0;
 const gkey KK_ReadWriteMsg         = 0xFFA1;
+const gkey KK_ReadDirQuoteMsg      = 0xFFA2;
+const gkey KK_ReadMoveDirQuoteMsg  = 0xFFA3;
 
 const gkey KK_AreaUndefine         = 0xFFB0;
 const gkey KK_EditUndefine         = 0xFFB1;

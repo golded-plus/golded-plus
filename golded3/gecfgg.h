@@ -262,6 +262,7 @@ public:
   bool        msglistwidesubj;
   Path        namesfile;
   Name        nickname;
+  Name        netname;
   Path        nodepath;
   Path        nodepathfd;
   Path        nodepathv7;

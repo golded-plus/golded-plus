@@ -65,7 +65,7 @@ int inforow = 18;
 char goldmark = ' ';
 
 int startecho = -1;
-Echo stecho;
+Echo stecho = "";
 
 int fieldupd = 2;  // State of field mode in winpdef()
 

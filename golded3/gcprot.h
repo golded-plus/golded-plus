@@ -248,6 +248,7 @@ void CfgMsglistwidesubj  ();
 void CfgNamesfile        ();
 void CfgNewsgroups       ();
 void CfgNickname         ();
+void CfgNetname          ();
 void CfgNodelist         ();
 void CfgNodelistwarn     ();
 void CfgNodepath         ();

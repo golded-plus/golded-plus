@@ -107,6 +107,10 @@ int AreaList::SetActiveAreaNo(int __areano) {
 
 int AreaList::AreaScan(int mode, uint currno, int pmscan, int& pmails, int& pmareas, const char* file) {
 
+  // Never scan if there's active area
+  if(AA->isopen())
+    return false;
+
   gstrarray bag;
   int groupid = -1;
 

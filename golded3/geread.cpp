@@ -605,6 +605,10 @@ void Reader() {
                 OtherAreaQuoteMsg();
                 break;
 
+              case KK_ReadMoveDirQuoteMsg:
+                OtherAreaDirQuoteMsg();
+                break;
+
               case KK_ReadMoveCommentMsg:
                 OtherAreaCommentMsg();
                 break;
@@ -615,6 +619,10 @@ void Reader() {
 
               case KK_ReadQuoteMsg:
                 QuoteMsg();
+                break;
+
+              case KK_ReadDirQuoteMsg:
+                DirQuoteMsg();
                 break;
 
               case KK_ReadCommentMsg:

@@ -291,6 +291,7 @@ struct AreaData {
   bool     msglistheader;
   bool     msglistwidesubj;
   Name     nickname;
+  Name     netname;
   INam     organization;
   char     origin[160];
   Path     quotebuffile;
@@ -542,6 +543,7 @@ public:
         bool   Msglistheader() const    { return adat->msglistheader; }
         bool   Msglistwidesubj() const  { return adat->msglistwidesubj; }
   const char*  Nickname() const         { return adat->nickname; }
+  const char*  Netname() const          { return adat->netname; }
   const char*  Organization() const     { return adat->organization; }
   const char*  Origin() const           { return adat->origin; }
   const char*  Outputfile() const       { return adat->outputfile; }
@@ -706,7 +708,6 @@ public:
   int  Run(const char* _title, int wpos, int& idx);
 
   GPickArealist();
-
 };
 
 

@@ -33,6 +33,8 @@ gxdutch  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
 gxezy102 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
 gxezy110 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
 gxfd     cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxfecho4 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxfecho5 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
 gxfecho6 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
 gxfidpcb cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
 gxfm092  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg

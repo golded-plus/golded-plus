@@ -256,6 +256,7 @@ const word CRC_MSGLISTVIEWSUBJ  = 0xED92;
 const word CRC_MSGLISTWIDESUBJ  = 0xF385;
 const word CRC_NAMESFILE        = 0x1743;
 const word CRC_NICKNAME         = 0x70D8;
+const word CRC_NETNAME          = 0xB574;
 const word CRC_NODELIST         = 0x0E0A;
 const word CRC_NODELISTWARN     = 0xF818;
 const word CRC_NODEPATH         = 0xCE00;
