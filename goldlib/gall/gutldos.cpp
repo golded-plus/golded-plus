@@ -271,7 +271,7 @@ char* g_get_clip_text(void) {
 
 //  ------------------------------------------------------------------
 
-int g_put_clip_text(char* buf) {
+int g_put_clip_text(const char* buf) {
 
   if(winapi == NOAPI)
     return -1;

@@ -542,10 +542,9 @@ int GMenuEditfile::Run(GMsg* __msg) {
           Line* _line = __msg->lin;
           while(_line) {
             if(_line->type & GLINE_TAGL) {
-              throw_release(_line->text);
               sprintf(_buf, "%c%c%c %s ", AA->Taglinechar(), AA->Taglinechar(), AA->Taglinechar(), __msg->tagline);
-              _line->text = throw_strdup(_buf);
-              strtrim(_line->text);
+              strtrim(_buf);
+              _line->txt = _buf;
               break;
             }
             _line = _line->next;
@@ -565,10 +564,9 @@ int GMenuEditfile::Run(GMsg* __msg) {
           Line* _line = __msg->lin;
           while(_line) {
             if(_line->type & GLINE_ORIG) {
-              throw_release(_line->text);
               sprintf(_buf, " * Origin: %s ", __msg->origin);
-              _line->text = throw_strdup(_buf);
-              strtrim(_line->text);
+              strtrim(_buf);
+              _line->txt = _buf;
               break;
             }
             _line = _line->next;

@@ -91,7 +91,7 @@ void AddCCList(const char *ptr, bool cchide, GMsg* msg, GMsg** carbon, int &cc, 
 int DoCarboncopy(GMsg* msg, GMsg** carbon) {
 
   int n, cc = 0;
-  char* ptr;
+  const char* ptr;
   Attr attr;
   bool cchide;
   bool ignorecc = false;
@@ -108,7 +108,8 @@ int DoCarboncopy(GMsg* msg, GMsg** carbon) {
 
   // Insert empty line at the top first for practical purposes
 
-  newline = (Line*)throw_xcalloc(1, sizeof(Line));
+  newline = new Line("");
+  throw_xnew(newline);
   msg->lin = newline = line = InsertLine(newline, msg->lin, DIR_PREV);
 
   // Deal with carbon copies
@@ -130,8 +131,8 @@ int DoCarboncopy(GMsg* msg, GMsg** carbon) {
     int xc2to = 0;
 
     do {
-      ptr = newline->text;
-      if(ptr and strnieql(ptr, "CC:", 3)) {
+      ptr = newline->txt.c_str();
+      if(strnieql(ptr, "CC:", 3)) {
         if(not ignorecc) {
           if(ask) {
             msg->attr.nwm1();
@@ -316,7 +317,7 @@ void DoCrosspost(GMsg* msg, vector<int> &postareas) {
   if(CFG->crosspost == NO)
     return;
   char buf[256];
-  char *ptr;
+  const char *ptr;
   bool ignorexc = false;
   Line* newline;
   Line* xcline = NULL;
@@ -328,7 +329,8 @@ void DoCrosspost(GMsg* msg, vector<int> &postareas) {
 
   // Insert empty line at the top first for practical purposes
 
-  newline = (Line*)throw_xcalloc(1, sizeof(Line));
+  newline = new Line("");
+  throw_xnew(newline);
   msg->lin = newline = InsertLine(newline, msg->lin, DIR_PREV);
 
   // Deal with carbon copies
@@ -348,8 +350,8 @@ void DoCrosspost(GMsg* msg, vector<int> &postareas) {
 
       if(not (newline->type & (GLINE_KLUDGE|GLINE_TEAR|GLINE_ORIG))) {
 
-        ptr = newline->text;
-        if(not ignorexc and ptr and (strnieql(ptr, "XC:", 3) or strnieql(ptr, "XP:", 3))) {
+        ptr = newline->txt.c_str();
+        if(not ignorexc and (strnieql(ptr, "XC:", 3) or strnieql(ptr, "XP:", 3))) {
           if(ask) {
             GMenuCross MenuCross;
             ignorexc = (CFG->crosspost != ASK) or MenuCross.Run(msg) ? false : true;

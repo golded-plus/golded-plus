@@ -373,17 +373,10 @@ static void MakeMsg3(int& mode, GMsg* msg) {
 
       // remove unnessesary To: line from message if present
       for(Line* line = cmsg->lin; line; line = line->next)
-        if(line->text) {
-          if(strnieql(line->text, "To:", 3)) {
-             line = DeleteLine(line);
-             if(line and not line->text)
-               line = DeleteLine(line);
-          }
-          else if(line->type & GLINE_KLUDGE)
-            continue;
-          else
-            break;
-        }
+        if(strnieql(line->txt.c_str(), "To:", 3))
+           line = DeleteLine(line);
+        else if(line->type & GLINE_KLUDGE)
+          continue;
         else
           break;
 
@@ -551,11 +544,11 @@ static void MakeMsg2(int& mode, int& status, int& forwstat, int& topline, GMsg* 
           if(((line->type & GLINE_HIDD) and not AA->Viewhidden()) or ((line->type & GLINE_KLUD) and not AA->Viewkludge()))
             newline = line = DeleteLine(line);
           else {
-            strtrim(line->text);
+            strtrim(line->txt);
             if(line->type & GLINE_HARD)
-              strcat(line->text, "\n");
+              line->txt += "\n";
             else
-              strcat(line->text, " ");
+              line->txt += " ";
             line = line->next;
           }
         }
@@ -572,22 +565,18 @@ static void MakeMsg2(int& mode, int& status, int& forwstat, int& topline, GMsg* 
         if(status != MODE_QUIT) {
           line = msg->lin;
           while(line) {
-            if(line->text) {
-              if(strchr(line->text, LF))
+            if(line->txt.find(LF) != line->txt.npos)
+              line->type = GLINE_HARD;
+            else if(line->next and (line->next->type & GLINE_QUOT))
+              line->type = GLINE_HARD;
+            else
+              line->type = 0;
+            strtrim(line->txt);
+            if(AA->isinternet()) {
+              // Check for signature indicator
+              if(streql(line->txt.c_str(), "--")) {
+                line->txt = "-- ";
                 line->type = GLINE_HARD;
-              else if(line->next and (line->next->type & GLINE_QUOT))
-                line->type = GLINE_HARD;
-              else
-                line->type = 0;
-              strtrim(line->text);
-              if(AA->isinternet()) {
-                // Check for signature indicator
-                if(streql(line->text, "--")) {
-                  if(line->isallocated())
-                    throw_free(line->text);
-                  line->text = throw_strdup("-- ");
-                  line->type = GLINE_HARD;
-                }
               }
             }
             line = line->next;

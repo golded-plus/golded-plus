@@ -1070,7 +1070,7 @@ void Lookup(GMsg* msg, Addr* addr, char* name, int topline, char* status) {
 //  ------------------------------------------------------------------
 //  Lookup and display info about the node
 
-void LookupNode(GMsg* msg, char* name, int what) {
+void LookupNode(GMsg* msg, const char* name, int what) {
 
   Subj statuslinebak;
   strcpy(statuslinebak, information);

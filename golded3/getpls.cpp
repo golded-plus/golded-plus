@@ -627,7 +627,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
               n = 0;
               *buf = NUL;
               while(oldmsg->line[n]) {
-                quote = strtrim(oldmsg->line[n]->text);
+                quote = strtrim(oldmsg->line[n]->txt).c_str();
                 if(oldmsg->line[n]->type & GLINE_TEAR) {
                   // Invalidate tearline
                   oldmsg->line[n]->type &= ~GLINE_TEAR;
@@ -648,7 +648,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
                 // Invalidate kludge chars
                 strchg(quote, CTRL_A, '@');
 
-                if(is_quote(oldmsg->line[n]->text)) {
+                if(is_quote(oldmsg->line[n]->txt.c_str())) {
                   quote += GetQuotestr(quote, qbuf, &len);
                   strbtrim(qbuf);
                   ptr = qbuf;
@@ -685,8 +685,8 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
             if(mode == MODE_FORWARD or mode == MODE_CHANGE) {
               n = 0;
               while(oldmsg->line[n]) {
-                if(oldmsg->line[n]->text) {
-                  strcpy(buf, oldmsg->line[n]->text);
+                if(oldmsg->line[n]->txt.c_str()) {
+                  strcpy(buf, oldmsg->line[n]->txt.c_str());
                   if(mode == MODE_FORWARD) {
                     // Invalidate tearline
                     if(not CFG->invalidate.tearline.first.empty())
@@ -720,11 +720,9 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
                   }
                   else {
                     if(oldmsg->line[n+1]) {
-                      if(oldmsg->line[n+1]->text) {
-                        if(msg->txt[pos-1] != ' ' and *oldmsg->line[n+1]->text != ' ') {
-                          msg->txt[pos++] = ' ';
-                          size++;
-                        }
+                      if(msg->txt[pos-1] != ' ' and *oldmsg->line[n+1]->txt.c_str() != ' ') {
+                        msg->txt[pos++] = ' ';
+                        size++;
                       }
                     }
                   }

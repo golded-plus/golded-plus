@@ -172,7 +172,7 @@ Line* InsertLine(Line* newline, Line* oldline, int pos);
 Line* LastLine(Line* line);
 void  MakeLineIndex(GMsg* msg, int rmargin, bool header_recode = true);
 void  MsgLineReIndex(GMsg* msg, int viewhidden=-1, int viewkludge=-1, int viewquote=-1);
-char* XlatStr(char* dest, char* src, int level, Chs* chrtbl, int qpencoded=false, bool i51=false);
+char* XlatStr(char* dest, const char* src, int level, Chs* chrtbl, int qpencoded=false, bool i51=false);
 char* mime_header_decode(char* decoded, const char* encoded, char* charset = NULL);
 char* strxmimecpy(char* dest, const char* source, int level, int size, bool detect = false);
 void InvalidateControlInfo(GMsg *msg);
@@ -227,7 +227,7 @@ bool Lookup2(Addr& addr, char* name, int topline, const char* status);
 
 const char *lookup_nodelist(ftn_addr* addr);
 
-void LookupNode(GMsg* msg, char* name, int what);
+void LookupNode(GMsg* msg, const char* name, int what);
 void CheckNodelists();
 
 
@@ -351,7 +351,7 @@ void CheckSemaphores();
 //  GESOUP prototypes
 
 char* CvtMSGIDtoMessageID(char* midbuf, char* msgid, ftn_addr* addr, char* domain, char* from, char* to, char* subject, struct tm* datetime);
-char* CvtMessageIDtoMSGID(char* mptr, char* msgidbuf, const char* echoid, char* kludge);
+char* CvtMessageIDtoMSGID(const char* mptr, char* msgidbuf, const char* echoid, char* kludge);
 
 int ImportSOUP();
 int ExportSOUP();

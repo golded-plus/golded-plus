@@ -96,7 +96,7 @@ bool gclipbrd::openread() {
 
 //  ------------------------------------------------------------------
 
-bool gclipbrd::writeclipbrd(char* buf) {
+bool gclipbrd::writeclipbrd(const char* buf) {
 
   if(not clipboard_available) {
     if(fake_clipboard)

@@ -291,7 +291,7 @@ protected:
   int   dispchar        (vchar __ch, int attr=-1);
   void  dispins         ();
   void  displine        (Line* __line, uint __row);
-  void  dispstring      (char* __string, uint __row, int attr=-1, Line* line=NULL);
+  void  dispstring      (const char* __string, uint __row, int attr=-1, Line* line=NULL);
   int   downoneline     (uint __row);
   void  editexport      (Line* __exportline, int __endat);
   Line* findanchor      ();
@@ -303,7 +303,7 @@ protected:
   void  editimport      (Line* __line, char* __filename, bool imptxt = false);
   void  imptxt          (char* __filename, bool imptxt = false);
   void  insertchar      (char __ch);
-  Line* insertlinebelow (Line* __currline, char* __text = NULL, long __batch_mode = 0);
+  Line* insertlinebelow (Line* __currline, const char* __text = NULL, long __batch_mode = 0);
   int   isempty         (Line* __line=NULL);
   void  killkillbuf     ();
   void  killpastebuf    ();
@@ -316,8 +316,6 @@ protected:
   void  setcolor        (Line* __line);
   void  setlinetype     (Line* __line);
   void  statusline      ();
-  void  strdelchr       (char* __string, uint __position);
-  void  strinschr       (char*& __string, char __ch, uint __position);
   void  windowclose     ();
   void  windowopen      ();
   Line* wrapit          (Line** __currline, uint* __curr_col, uint* __curr_row, int __display=YES);

@@ -353,7 +353,7 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
 void Rot13(GMsg* msg) {
 
   char c;
-  char* ptr;
+  int ptr;
   int n;
   Line* line;
   static char rot13_table[256];
@@ -375,9 +375,10 @@ void Rot13(GMsg* msg) {
   line = msg->lin;
   while(line) {
     if(not (line->type & (GLINE_KLUDGE|GLINE_TEAR|GLINE_ORIG))) {
-      ptr = line->text;
-      while((c = *ptr) != NUL)
-        *ptr++ = ROT13_DECODE(c);
+      for(ptr = 0; ptr != line->txt.length(); ptr++) {
+        c = line->txt[ptr];
+        line->txt[ptr] = ROT13_DECODE(c);
+      }
     }
     line = line->next;
   }
@@ -532,7 +533,7 @@ void GMsg::LinesToText() {
 
   // Approximate the size of the text
   while(_line) {
-    _alloc_size += strlen(_line->text);
+    _alloc_size += _line->txt.length();
     _line = _line->next;
     _lines++;
   }
@@ -553,10 +554,10 @@ void GMsg::LinesToText() {
     char* _bptr;
     bool _hterm = true;
     if(_line->isheader()) {
-      _bptr = stpcpy(_buf, _line->text);
+      _bptr = stpcpy(_buf, _line->txt.c_str());
       while(_line->next and _line->iswrapped()) {
         _line = _line->next;
-        _bptr = stpcpy(_bptr, _line->text);
+        _bptr = stpcpy(_bptr, _line->txt.c_str());
         if((_bptr-_buf) > (bufsize-256)) {
           int bptrlen = (int)(_bptr - _buf);
           bufsize += 4096;
@@ -566,18 +567,16 @@ void GMsg::LinesToText() {
       }
     }
     else {
-      _bptr = XlatStr(_buf, _line->text, _xlat_level, _xlat_table);
+      _bptr = XlatStr(_buf, _line->txt.c_str(), _xlat_level, _xlat_table);
       if(*_buf and not _line->ishard()) {
         if(_line->next) {
-          if(_line->next->text) {
-            if((*(_bptr-1) != ' ') and (*_line->next->text != ' '))
-              if(_isezycom or not _hardterm)
-                *_bptr++ = ' ';
-            if(not _hardterm) {
-              if(_isezycom and not CFG->switches.get(dispsoftcr))
-                *_bptr++ = SOFTCR;
-              _hterm = false;
-            }
+          if((*(_bptr-1) != ' ') and (*_line->next->txt.c_str() != ' '))
+            if(_isezycom or not _hardterm)
+              *_bptr++ = ' ';
+          if(not _hardterm) {
+            if(_isezycom and not CFG->switches.get(dispsoftcr))
+              *_bptr++ = SOFTCR;
+            _hterm = false;
           }
         }
       }

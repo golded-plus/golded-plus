@@ -39,9 +39,7 @@ void ResetMsg(GMsg* msg) {
   Line* line = msg->lin;
   while(line) {
     Line* nextline = line->next;
-    if(line->isallocated())
-      throw_free(line->text);
-    throw_xfree(line);
+    throw_xdelete(line);
     line = nextline;
   }
   memset(msg, 0, sizeof(GMsg));

@@ -31,12 +31,12 @@
 
 inline int isstylechar(char c) { return (c == '*') or (c == '/') or (c == '_') or (c == '#'); }
 
-void Container::StyleCodeHighlight(char* text, int row, int col, bool dohide, int color) {
+void Container::StyleCodeHighlight(const char* text, int row, int col, bool dohide, int color) {
 
   uint sclen = 0;
   char* txptr = text;
   char buf[200];
-  char* ptr = text;
+  const char* ptr = text;
   const char* stylemargins = " -|\\";    // we probably have to make a keyword for it
   char* punctchars = CFG->stylecodepunct;
   char* stylestopchars = CFG->stylecodestops;
@@ -47,7 +47,7 @@ void Container::StyleCodeHighlight(char* text, int row, int col, bool dohide, in
       if(isstylechar(*ptr)) {
         if(strchr(punctchars, prevchar)) {
           int bb = 0, bi = 0, bu = 0, br = 0;
-          char* beginstyle = ptr;
+          const char* beginstyle = ptr;
           while(isstylechar(*ptr)) {
             switch(*ptr) {
               case '*': bb++; break;
@@ -58,7 +58,7 @@ void Container::StyleCodeHighlight(char* text, int row, int col, bool dohide, in
             ptr++;
           }
           if((bb <= 1) and (bi <= 1) and (br <= 1) and (bu <= 1) and *ptr) {
-            char* beginword = ptr;                       //  _/*>another*/_
+            const char* beginword = ptr;                       //  _/*>another*/_
             char endchar = NUL;
             char* end = ptr;
             do {

@@ -60,22 +60,10 @@ void IEclass::Clip2Buf() {
     }
 
     // Copy the paragraph to the new line and retype it
-    Line* _newline = __line = insertlinebelow(__line, buf);
+    __line = insertlinebelow(__line, buf);
     if(Edit__pastebuf == NULL)
-      Edit__pastebuf = _newline;
-    setlinetype(_newline);
-
-    // If the paragraph is longer than one line
-    uint _wrapmargin = (_newline->type & GLINE_QUOT) ? marginquotes : margintext;
-    if(strlen(_newline->text) >= _wrapmargin) {
-
-      // Wrap it
-      uint _tmpcol = 0;
-      uint _tmprow = 0;
-      _newline = wrapins(&_newline, &_tmpcol, &_tmprow, NO);
-    }
-
-    __line = _newline;
+      Edit__pastebuf = __line;
+    setlinetype(__line);
   }
   Undo->undo_enabled = YES;
   throw_free(buf);
@@ -86,25 +74,15 @@ void IEclass::Clip2Buf() {
 void IEclass::Buf2Clip() {
 
   gclipbrd clipbrd;
-  int buflen = 0;
   Line *_bufline;
+  string clipdata;
 
   for(_bufline = Edit__pastebuf; _bufline; _bufline = _bufline->next)
-    buflen += strlen(_bufline->text) + 1;
-
-  char *clipdata = (char *)throw_malloc(buflen);
-
-  char *curptr = clipdata;
-  *curptr = NUL;
-  for(_bufline = Edit__pastebuf; _bufline; _bufline = _bufline->next) {
-    strcpy(curptr, _bufline->text);
-    if(*curptr) {
-      curptr += strlen(curptr) - 1;
-      if(*curptr == '\n') strcpy(curptr, "\r\n");
+    if(not _bufline->txt.empty()) {
+      clipdata += _bufline->txt;
+      if(*(clipdata.end()-1) == '\n')
+        clipdata.replace(clipdata.end()-1, clipdata.end(), "\r\n");
     }
-    curptr += strlen(curptr);
-  }
 
-  clipbrd.writeclipbrd(clipdata);
-  throw_free(clipdata);
+  clipbrd.writeclipbrd(clipdata.c_str());
 }

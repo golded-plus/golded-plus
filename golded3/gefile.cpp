@@ -592,9 +592,9 @@ static int frqchkdesc(char* desc) {
 
 //  ------------------------------------------------------------------
 
-static int frqgetfile(char* file, char* desc, char* filesize, char* txt) {
+static int frqgetfile(char* file, char* desc, char* filesize, const char* txt) {
 
-  char* ptr = txt;
+  const char* ptr = txt;
 
   // Scan filename for first invalid char (.extension)
   while(*ptr and not invalidfilechar(*ptr))
@@ -626,7 +626,7 @@ static int frqgetfile(char* file, char* desc, char* filesize, char* txt) {
           while(strchr(CFG__frqskipwordchars, *ptr) and *ptr) {
             if(not *filesize) {
               // is a file-size given?
-              char* p  = ptr;
+              const char* p  = ptr;
               while(strchr(".,0123456789bBkKmMgG", *p))
                 p++;
 
@@ -669,10 +669,10 @@ void FileRequest(GMsg* msg) {
   if(AA->Msgn.Count() and msg->line and msg->lines) {
 
     char buf[256];
-    char* ptr;
-    char* ptr1;
-    char* ptr2;
-    char* txtptr;
+    const char* ptr;
+    const char* ptr1 = NULL;
+    const char* ptr2;
+    const char* txtptr;
     char** freqfile = NULL;
     int gotticket = false;
     int getnextdesc = false;
@@ -697,7 +697,7 @@ void FileRequest(GMsg* msg) {
       if(lin[n]->type & (GLINE_KLUDGE|GLINE_TEAR|GLINE_ORIG))
         continue;
 
-      ptr = txtptr = lin[n]->text;
+      ptr = txtptr = lin[n]->txt.c_str();
 
       // Skip past whitespace and highbit junk
       while(((*ptr < '!') or (*ptr > '\x7F')) and *ptr)
@@ -727,8 +727,9 @@ void FileRequest(GMsg* msg) {
           else
             ptr1 = ptr2;
           ptr2 = strskip_txt(ptr1);
-          *ptr2 = NUL;
-          frqgetfile(file, desc, filesize, ptr1);
+          __extension__ char tmpbuf[ptr2-ptr1+1];
+          strxcpy(tmpbuf, ptr1, ptr2-ptr1+1);
+          frqgetfile(file, desc, filesize, tmpbuf);
           *desc = NUL;  // Description never comes before filename
           continue;
         }
@@ -764,8 +765,9 @@ void FileRequest(GMsg* msg) {
             if(txtptr[16] == '/' and txtptr[19] == '/' and txtptr[24] == '(' /*)*/) {
               ptr1 = strskip_wht(txtptr);
               ptr2 = strskip_txt(ptr1);
-              *ptr2 = NUL;
-              frqgetfile(file, desc, filesize, ptr1);
+              __extension__ char tmpbuf[ptr2-ptr1+1];
+              strxcpy(tmpbuf, ptr1, ptr2-ptr1+1);
+              frqgetfile(file, desc, filesize, tmpbuf);
               *desc = NUL;  // Description never comes before filename
               gotticket = true;
               continue;
@@ -802,7 +804,7 @@ void FileRequest(GMsg* msg) {
           for(e = CFG->frqext.begin(); e != CFG->frqext.end(); e++) {
             if(strnicmpw(e->c_str(), ptr2, MinV(e->length(), strlen(ptr2))) == 0) {
               // Find beginning of filename
-              char* ptr3 = ptr2-1;
+              const char* ptr3 = ptr2-1;
               while((ptr3 > ptr) and not invalidfilechar(*ptr3))
                 ptr3--;
               if(invalidfilechar(*ptr3))
@@ -895,13 +897,14 @@ void FileRequest(GMsg* msg) {
             msg->attr.frq1();
             ptr = freqfile[n]+1;      //  01234567890123456
             ptr2 = strskip_txt(ptr);
-            *ptr2++ = NUL;
+            __extension__ char tmpbuf[ptr2-ptr1+1];
+            strxcpy(tmpbuf, ptr1, ptr2-ptr1+1);
             ptr2 = strskip_wht(ptr2);
-            if((strlen(msg->re) + strlen(ptr)) < sizeof(ISub)) {  // We can only fill one subject line in this version...
-              strcat(msg->re, ptr);
+            if((strlen(msg->re) + strlen(tmpbuf)) < sizeof(ISub)) {  // We can only fill one subject line in this version...
+              strcat(msg->re, tmpbuf);
               strcat(msg->re, " ");
               if(fh != -1) {
-                sprintf(buf, "%-12s %s\n", ptr, ptr2);
+                sprintf(buf, "%-12s %s\n", tmpbuf, ptr2);
                 write(fh, buf, strlen(buf));
               }
               freqs++;
@@ -913,13 +916,14 @@ void FileRequest(GMsg* msg) {
           msg->attr.frq1();
           ptr = freqfile[crsr]+1;      //  01234567890123456
           ptr2 = strskip_txt(ptr);
-          *ptr2++ = NUL;
+          __extension__ char tmpbuf[ptr2-ptr1+1];
+          strxcpy(tmpbuf, ptr1, ptr2-ptr1+1);
           ptr2 = strskip_wht(ptr2);
-          if((strlen(msg->re) + strlen(ptr)) < sizeof(ISub)) {  // We can only fill one subject line in this version...
-            strcat(msg->re, ptr);
+          if((strlen(msg->re) + strlen(tmpbuf)) < sizeof(ISub)) {  // We can only fill one subject line in this version...
+            strcat(msg->re, tmpbuf);
             strcat(msg->re, " ");
             if(fh != -1) {
-              sprintf(buf, "%-12s %s\n", ptr, ptr2);
+              sprintf(buf, "%-12s %s\n", tmpbuf, ptr2);
               write(fh, buf, strlen(buf));
             }
             freqs++;

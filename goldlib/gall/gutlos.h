@@ -64,7 +64,7 @@ void   g_set_osicon(void);
 
 bool   g_is_clip_available(void);
 char*  g_get_clip_text(void);
-int    g_put_clip_text(char *cd);
+int    g_put_clip_text(const char *cd);
 
 void   g_get_ostitle_name(char *);
 void   g_set_ostitle_name(char *, int);

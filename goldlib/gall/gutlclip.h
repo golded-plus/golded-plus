@@ -58,7 +58,7 @@ public:
   char* read(char* buffer, int maxlen);
   void close();
 
-  bool writeclipbrd(char* buf);
+  bool writeclipbrd(const char* buf);
 
   gclipbrd();
 

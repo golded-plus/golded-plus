@@ -38,7 +38,7 @@ static bool lame = false;
 
 //  ------------------------------------------------------------------
 
-bool gareafile::ReadHPTLine(FILE* f, string* s, bool add=false, int state=0) {
+bool gareafile::ReadHPTLine(FILE* f, string* s, bool add, int state) {
 
   string str;
   char buf[81];

@@ -322,7 +322,7 @@ static void leave_pm_clipboard(int mode) {
 
 //  ------------------------------------------------------------------
 
-int g_put_clip_text(char *cd) {
+int g_put_clip_text(const char *cd) {
 
   ULONG len;
   void *text;

@@ -21,7 +21,8 @@ ifeq ($(FDEPPATH)/dep,$(wildcard $(FDEPPATH)/de?))
 $(FDEPPATH)/$(TARGET)/%.d: %.cpp
 	@echo making depends for $<
 	@$(SHELL) -ec '$(CXX) -c -M $(CPPFLAGS) $< \
-		| sed '\''s;\($*\)\$(OBJEXT)[ :]*;$(subst /,\/,$(FOBJPATH))\/\1\$(OBJEXT) $(subst /,\/,$@): ;g'\'' > $@'
+		| sed '\''s;\($*\)\$(OBJEXT)[ :]*;$(subst /,\/,$(FOBJPATH))\/\1\$(OBJEXT) $(subst /,\/,$@): ;g'\'' > $@; \
+		[ -s $@ ] || rm -f $@'
 
 $(FDEPPATH)/$(TARGET)/%.d: %.c
 	@echo making depends for $<
@@ -50,7 +51,7 @@ $(FOBJPATH)/%.res: %.rc
 endif
 
 SOURCES=
-include bld$(PLATFORM).inc
+-include bld$(PLATFORM).inc
 ifeq ($(PLATFORM),cyg)
 OBJS=$(addprefix $(FOBJPATH)/,$(patsubst %.rc,%.o,$(patsubst %.c,%.o,$(patsubst %.cpp,%.o,$(filter %.c %.cpp %.rc,$(SOURCES))))))
 else
@@ -71,4 +72,3 @@ ifneq ($(DEPS),)
 -include $(DEPS)
 endif
 endif
-

@@ -304,7 +304,7 @@ bool golded_search_manager::search(GMsg* msg, bool quick, bool shortcircuit) {
         if(item->where.kludges and (type & GLINE_KLUDGE))
           search_this_line = true;
         if(search_this_line) {
-          if(item->search(line->text)) {
+          if(item->search(line->txt.c_str())) {
             line->type |= GLINE_HIGH;
             if(type & (GLINE_TAGL|GLINE_TEAR|GLINE_ORIG|GLINE_SIGN|GLINE_KLUDGE)) {
               if(type & GLINE_TAGL)

@@ -24,6 +24,8 @@
 //  Container class.
 //  ------------------------------------------------------------------
 
+#ifndef __gectnr_h
+#define __gectnr_h
 
 //  ------------------------------------------------------------------
 
@@ -35,8 +37,12 @@ public:
 
   virtual ~Container() { }
   
-  void StyleCodeHighlight(char* text, int row, int col, bool dohide, int color);
+  void StyleCodeHighlight(const char* text, int row, int col, bool dohide, int color);
 };
 
+
+//  ------------------------------------------------------------------
+
+#endif
 
 //  ------------------------------------------------------------------

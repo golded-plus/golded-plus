@@ -109,14 +109,12 @@ void IEclass::windowclose() {
 void Edit__killpastebuf() {
 
   while(Edit__pastebuf) {
-    throw_release(Edit__pastebuf->text);
     if(Edit__pastebuf->next) {
       Edit__pastebuf = Edit__pastebuf->next;
-      throw_xrelease(Edit__pastebuf->prev);
+      throw_xdelete(Edit__pastebuf->prev);
     }
-    else {
-      throw_xrelease(Edit__pastebuf);
-    }
+    else
+      throw_xdelete(Edit__pastebuf);
   }
 }
 
@@ -126,14 +124,12 @@ void Edit__killpastebuf() {
 void Edit__killkillbuf() {
 
   while(Edit__killbuf) {
-    throw_release(Edit__killbuf->text);
     if(Edit__killbuf->prev) {
       Edit__killbuf = Edit__killbuf->prev;
-      throw_xrelease(Edit__killbuf->next);
+      throw_xdelete(Edit__killbuf->next);
     }
-    else {
-      throw_xrelease(Edit__killbuf);
-    }
+    else
+      throw_xdelete(Edit__killbuf);
   }
 }
 
@@ -153,14 +149,12 @@ void IEclass::killkillbuf() {
       }
     }
     else {
-      throw_release(Edit__killbuf->text);
       if(Edit__killbuf->prev) {
         Edit__killbuf = Edit__killbuf->prev;
-        throw_xrelease(Edit__killbuf->next);
+        throw_xdelete(Edit__killbuf->next);
       }
-      else {
-        throw_xrelease(Edit__killbuf);
-      }
+      else
+        throw_xdelete(Edit__killbuf);
     }
   }
 }
@@ -222,36 +216,32 @@ void IEclass::DelLtWord() {
 
   GFTRK("EditDelLtWord");
 
-  char* _ptr;
-  char* _ptr2;
-  char* _bptr;
-
   if(col == 0) {
     DelLeft();
     GFTRK(NULL);
     return;
   }
 
-  _bptr = currline->text;
-  _ptr = _ptr2 = currline->text + col;
+  int _ptr, _ptr2;
+  _ptr = _ptr2 = col;
   _ptr--;
 
   // test test test test     test test test test
   // test test test test ,   test test test test
   // test test test test ,,  test test test test
 
-  if(*_ptr == ' ') {
-    while((*_ptr == ' ') and (_bptr < _ptr))
+  if(currline->txt[_ptr] == ' ') {
+    while((currline->txt[_ptr] == ' ') and (_ptr > 0))
       _ptr--;
-    if(*_ptr != ' ')
+    if(currline->txt[_ptr] != ' ')
       _ptr++;
   }
-  else if(isxalnum(*_ptr)) {
-    while(isxalnum(*_ptr) and (_bptr < _ptr))
+  else if(isxalnum(currline->txt[_ptr])) {
+    while(isxalnum(currline->txt[_ptr]) and (_ptr > 0))
       _ptr--;
-    while((*_ptr == ' ') and (_bptr < _ptr))
+    while((currline->txt[_ptr] == ' ') and (_ptr > 0))
       _ptr--;
-    if((*_ptr != ' ') and (_bptr < _ptr))
+    if((currline->txt[_ptr] != ' ') and (_ptr > 0))
       _ptr++;
   }
   else {
@@ -260,11 +250,10 @@ void IEclass::DelLtWord() {
     return;
   }
 
-  col -= (int)(_ptr2-_ptr);
+  col -= _ptr2-_ptr;
 
   Undo->PushItem(EDIT_UNDO_DEL_TEXT, currline, col, _ptr2-_ptr);
-  memmove(_ptr, _ptr2, strlen(_ptr2)+1);
-  THROW_CHECKPTR(currline->text);
+  currline->txt.erase(_ptr, _ptr2-_ptr);
 
   wrapdel(&currline, &col, &row);
 
@@ -278,30 +267,28 @@ void IEclass::DelRtWord() {
 
   GFTRK("EditDelRtWord");
 
-  char* _ptr;
-  char* _ptr2;
-
-  if((currline->text[col+1] == NUL) or (currline->text[col+1] == '\n')) {
+  if((currline->txt.length() == col+1) or (currline->txt[col+1] == '\n')) {
     DelChar();
     GFTRK(NULL);
     return;
   }
   
-  _ptr = _ptr2 = currline->text + col;
+  int _ptr, _ptr2;
+  _ptr = _ptr2 = col;
 
   // test test test test,   test test test test
   // test test test test,   test test test test
 
-  if(*_ptr == ' ') {
-    while((*_ptr == ' ') and (*_ptr != '\n') and *_ptr)
+  if(currline->txt[_ptr] == ' ') {
+    while(_ptr != currline->txt.length() and currline->txt[_ptr] == ' ')
       _ptr++;
   }
-  else if(isxalnum(*_ptr)) {
+  else if(isxalnum(currline->txt[_ptr])) {
     // Delete word
-    while(isxalnum(*_ptr) and (*_ptr != '\n') and *_ptr)
+    while(_ptr != currline->txt.length() and isxalnum(currline->txt[_ptr]))
       _ptr++;
     // Delete spaces after word
-    while((*_ptr == ' ') and (*_ptr != '\n') and *_ptr)
+    while(_ptr != currline->txt.length() and currline->txt[_ptr] == ' ')
       _ptr++;
   }
   else {
@@ -311,8 +298,7 @@ void IEclass::DelRtWord() {
   }
 
   Undo->PushItem(EDIT_UNDO_DEL_TEXT, currline, col, _ptr-_ptr2);
-  memmove(_ptr2, _ptr, strlen(_ptr2)+1);
-  THROW_CHECKPTR(currline->text);
+  currline->txt.erase(_ptr2, _ptr-_ptr2);
 
   wrapdel(&currline, &col, &row);
 
@@ -546,18 +532,19 @@ void IEclass::BlockCopy() {
     while(1) {
 
       // Allocate a new line
-      Line* _copyline = (Line*)throw_xcalloc(1, sizeof(Line));
+      Line* _copyline;
 
       // Copy text and type
       if(_prevline == NULL)
-        _copyline->text = throw_strdup(_firstcopyline->text + firstcol);
+        _copyline = new Line(_firstcopyline->txt.c_str() + firstcol);
       else
-        _copyline->text = throw_strdup(_firstcopyline->text);
+        _copyline = new Line(_firstcopyline->txt.c_str());
+      throw_xnew(_copyline);
       if(_firstcopyline == _lastcopyline) {
         if(_prevline)
-          _copyline->text[lastcol] = NUL;
+          _copyline->txt.erase(lastcol);
         else
-          _copyline->text[lastcol-firstcol] = NUL;
+          _copyline->txt.erase(lastcol-firstcol);
       }
       _copyline->type = _firstcopyline->type & ~GLINE_BLOK;
 
@@ -643,11 +630,8 @@ void IEclass::BlockDel(Line* anchor) {
   // are now pointing where they should
 
   Undo->PushItem(EDIT_UNDO_DEL_TEXT, firstcutline, firstcol);
-  char *newtext = (char *)throw_malloc(firstcol+strlen(lastcutline->text)-lastcol+1);
-  strxcpy(newtext, firstcutline->text, firstcol+1);
-  strcat(newtext, lastcutline->text+lastcol);
-  throw_free(firstcutline->text);
-  firstcutline->text = newtext;
+  firstcutline->txt.erase(firstcol);
+  firstcutline->txt += lastcutline->txt.c_str()+lastcol;
   setlinetype(firstcutline);
   firstcutline->type &= ~GLINE_BLOK;
   blockcol = -1;
@@ -726,7 +710,7 @@ void IEclass::BlockPaste() {
 
   if(Edit__pastebuf) {
 
-    Line* _pasteline   = Edit__pastebuf;
+    Line* _pasteline = Edit__pastebuf;
 
     if(not batch_mode)
       Undo->PushItem(EDIT_UNDO_VOID);
@@ -734,21 +718,20 @@ void IEclass::BlockPaste() {
     // For each of the lines in the paste buffer
     while(_pasteline) {
 
-      uint  curlen = strlen(currline->text);
-      uint  pastelen = strlen(_pasteline->text);
-      char *newtext = NULL;
+      uint  curlen = currline->txt.length();
+      uint  pastelen = _pasteline->txt.length();
 
       if(col > curlen)
         col = curlen;
 
-      if(strchr(_pasteline->text, '\n')) {
+      if(_pasteline->txt.find('\n') != _pasteline->txt.npos) {
         // append to current line
         Undo->PushItem(EDIT_UNDO_DEL_TEXT|BATCH_MODE, currline, col);
-        Line* _newline = insertlinebelow(currline, currline->text + col, BATCH_MODE);
-        currline->text = (char*)throw_realloc(currline->text, pastelen + col + 1);
-        strcpy(currline->text+col, _pasteline->text);
+        Line* _newline = insertlinebelow(currline, currline->txt.c_str()+col, BATCH_MODE);
+        currline->txt.erase(col);
+        currline->txt += _pasteline->txt;
         setlinetype(currline);
-        col = strlen(currline->text);
+        col = currline->txt.length();
         wrapins(&currline, &col, &row, NO);
         currline = _newline;
         col = 0;
@@ -757,13 +740,9 @@ void IEclass::BlockPaste() {
       }
       else {
         // insert into current line
-        newtext = (char*)throw_malloc(curlen + pastelen + 1);
-        strxcpy(newtext, currline->text, col+1);
-        strcpy(stpcpy(newtext+col, _pasteline->text), currline->text + col);
-        throw_free(currline->text);
-        currline->text = newtext;
+        currline->txt.insert(col, _pasteline->txt);
         Undo->PushItem(EDIT_UNDO_INS_TEXT|BATCH_MODE, currline, col, pastelen);
-        col += strlen(_pasteline->text);
+        col += _pasteline->txt.length();
         wrapins(&currline, &col, &row, NO);
       }
 
@@ -809,8 +788,7 @@ void IEclass::LoadFile() {
     // Remove all lines
     while(_line) {
       Line* _nextline = _line->next;
-      throw_release(_line->text);
-      throw_xfree(_line);
+      throw_xdelete(_line);
       _line = _nextline;
     }
 
@@ -837,15 +815,11 @@ void IEclass::LoadFile() {
 
     // Change lines to internal editor format
     while(_line) {
-      strtrim(_line->text);
-      if(_line->type & GLINE_HARD) {
-        strcat(_line->text, "\n");
-        THROW_CHECKPTR(_line->text);
-      }
-      else {
-        strcat(_line->text, " ");
-        THROW_CHECKPTR(_line->text);
-      }
+      strtrim(_line->txt);
+      if(_line->type & GLINE_HARD)
+        _line->txt += "\n";
+      else
+        _line->txt += " ";
       _line = _line->next;
     }
 
@@ -1075,15 +1049,18 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
         spaces[tabsz] = NUL;
         int level = LoadCharset(AA->Xlatimport(), CFG->xlatlocalset);
         char* buf = (char*) throw_malloc(EDIT_PARABUFLEN);
-	Line* saveline = __line->next;
-	__line->next = NULL;
+        Line* saveline = __line->next;
+        __line->next = NULL;
 
         // Read paragraphs
         while(getclip ? clipbrd.read(_parabuf, EDIT_PARABUFLEN-7) : fgets(_parabuf, EDIT_PARABUFLEN-7, fp)) {
 
           XlatStr(buf, _parabuf, level, CharTable);
 
-          if(not quoteit) {
+          // Insert a quotestring if asked
+          if(quoteit)
+            strins(" > ", buf, 0);
+          else {
             // Invalidate tearline
             if(not CFG->invalidate.tearline.first.empty())
               doinvalidate(buf, CFG->invalidate.tearline.first.c_str(), CFG->invalidate.tearline.second.c_str(), true);
@@ -1109,10 +1086,6 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
               doinvalidate(buf, CFG->invalidate.xp.first.c_str(), CFG->invalidate.xp.second.c_str());
           }
 
-          // Insert a quotestring if asked
-          if(quoteit)
-            strins(" > ", buf, 0);
-
           // Replace tabs
           char *ht = buf;
           while((ht = strchr(ht, '\t')) != NULL) {
@@ -1129,7 +1102,7 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
 
           // If the paragraph is longer than one line
           uint _wrapmargin = (_newline->type & GLINE_QUOT) ? marginquotes : margintext;
-          if(strlen(_newline->text) >= _wrapmargin) {
+          if(_newline->txt.length() >= _wrapmargin) {
 
             // Wrap it
             uint _tmpcol = 0;
@@ -1140,17 +1113,17 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
           __line = _newline;
         }
 
-	while(__line->next and __line->next->text)
-	  __line = __line->next;
-        if(__line->text and __line->text[0] and (__line->text[strlen(__line->text)-1] != '\n')) {
-          Undo->PushItem(EDIT_UNDO_INS_CHAR|BATCH_MODE, __line, strlen(__line->text));
-          strinschr(__line->text, '\n', strlen(__line->text));
+        while(__line->next)
+          __line = __line->next;
+        if(not __line->txt.empty() and (*(__line->txt.end()-1) != '\n')) {
+          Undo->PushItem(EDIT_UNDO_INS_CHAR|BATCH_MODE, __line, __line->txt.length());
+          __line->txt += '\n';
           // Wrap it
           uint _tmpcol = 0;
           uint _tmprow = 0;
           __line = wrapins(&__line, &_tmpcol, &_tmprow, NO);
         }
-	__line->next = saveline;
+        __line->next = saveline;
 
         throw_free(buf);
       }
@@ -1248,8 +1221,8 @@ void IEclass::editexport(Line* __exportline, int __endat) {
       fputc('\n', _fp);
 
       while((__endat ? __exportline != currline : 1) and __exportline) {
-        fputs(__exportline->text, _fp);
-        if(not strchr(__exportline->text, '\n'))
+        fputs(__exportline->txt.c_str(), _fp);
+        if(__exportline->txt.find('\n') != __exportline->txt.npos)
           fputc('\n', _fp);
         __exportline = __exportline->next;
       }

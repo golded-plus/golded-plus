@@ -370,7 +370,7 @@ void GMsgBodyView::Create() {
     scrollbar_color
   );
 
-  dummy_line.text = "";
+  dummy_line.txt = "";
   dummy_line.type = 0;
   dummy_line.color = window_color;
 
@@ -432,7 +432,7 @@ void GMsgBodyView::PaintLine(int row, Line *line) {
 
   // Calculate effective coordinates for vputs
   int vrow = gwin.active->srow + row;
-  uint llen = strlen(line->text);
+  uint llen = line->txt.length();
 
   int color = (line->type & GLINE_HIGH) ? highlight_color : line->color;
 
@@ -440,22 +440,22 @@ void GMsgBodyView::PaintLine(int row, Line *line) {
   // cases, but always when hex dump displayed.
   if(llen > visible_width) {
     llen = visible_width;
-    line->text[llen] = NUL;
+    line->txt.erase(llen);
   }
 
   // Print it
   if(not SearchHighlight(line, vrow, visible_width, highlight_color)) {
-    if(line->type & GLINE_ORIG and strneql(line->text, " * Origin: ", 11)) {
+    if(line->type & GLINE_ORIG and strneql(line->txt.c_str(), " * Origin: ", 11)) {
       vputs(vrow, 0, color, " * Origin: ");
-      StyleCodeHighlight(line->text+11, vrow, 11, not AA->attr().hex() and CFG->hidestylies, color);
+      StyleCodeHighlight(line->txt.c_str()+11, vrow, 11, not AA->attr().hex() and CFG->hidestylies, color);
     }
     else
-      StyleCodeHighlight(line->text, vrow, 0, not AA->attr().hex() and CFG->hidestylies, color);
-      int tlen = strlen(line->text);
+      StyleCodeHighlight(line->txt.c_str(), vrow, 0, not AA->attr().hex() and CFG->hidestylies, color);
+      int tlen = strlen(line->txt.c_str());
       vputns(vrow, tlen, color, "", visible_width-tlen);
   }
   else
-    vputns(vrow, 0, color, line->text, visible_width);
+    vputns(vrow, 0, color, line->txt.c_str(), visible_width);
 }
 
 

@@ -223,7 +223,8 @@ void DoKludges(int mode, GMsg* msg, bool attronly) {
 
   // Insert empty line at the top for practical purposes
 
-  newline = (Line*)throw_xcalloc(1, sizeof(Line));
+  newline = new Line("");
+  throw_xnew(newline);
   newline = line = InsertLine(newline, line, DIR_PREV);
 
   // Strip all the kludges we insert ourselves
@@ -259,6 +260,13 @@ void DoKludges(int mode, GMsg* msg, bool attronly) {
     }
 
     if(AA->isnet()) {
+
+      Line* firstline = FirstLine(line);
+      firstline = firstline->next;
+                                // 123456789012345678901234567
+      if(strneql(firstline->txt.c_str(), "-----BEGIN PGP MESSAGE-----", 27)) {
+        line = AddKludge(line, "\001ENC: PGP");
+      }
 
       // The INTL kludge for zone crossing
       if(CFG->useintl and (CFG->useintl == YES or (msg->dest.zone != msg->orig.zone))) {
@@ -516,20 +524,13 @@ void DoKludges(int mode, GMsg* msg, bool attronly) {
         line->kludge = GKLUD_RFC;
       }
 
-      if(AA->Internetrfcbody() and line->next and not strblank(line->next->text)) {
+      if(AA->Internetrfcbody() and line->next and not strblank(line->next->txt.c_str())) {
         line = AddKludge(line, "");
         line->kludge = GKLUD_RFC;
       }
     }
 
     if(AA->isnet()) {
-      Line* firstline = FirstLine(line);
-      firstline = firstline->next;
-                                // 123456789012345678901234567
-      if(strneql(firstline->text, "-----BEGIN PGP MESSAGE-----", 27)) {
-        line = AddKludge(line, "\001ENC: PGP");
-      }
-
       if(*msg->iaddr and not AA->isinternet()) {
         if(*msg->To() and (strpbrk(msg->iaddr, "<>()\"") == NULL) and not strieql(msg->To(), *AA->Internetgate().name ? AA->Internetgate().name : "UUCP")) {
           Name name;
@@ -602,12 +603,14 @@ void DoTearorig(int mode, GMsg* msg) {
   line = LastLine(msg->lin);
   if(line == NULL)
     msg->lin = line = AddLine(NULL, "");
+#if 0
   else {
-    ptr = line->text;
+    ptr = line->txt.c_str();
     if(not strblank(ptr))
       if(not ((ptr[0] == ptr[1]) and (ptr[1] == ptr[2])))
         line = AddLine(line, "");
   }
+#endif
 
   // Check and fix originline
   if(*msg->origin) {

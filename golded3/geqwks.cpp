@@ -417,7 +417,7 @@ int ExportQwkMsg(GMsg* msg, gfile& fp, int confno, int& pktmsgno) {
     if(line->type & GLINE_KLUDGE) {
       if(AA->isinternet()) {
         if((line->kludge == GKLUD_RFC) or (line->kludge == 0)) {
-          XlatStr(mbuf, line->text, level, CharTable);
+          XlatStr(mbuf, line->txt.c_str(), level, CharTable);
           msglen += fp.printf("%s%c", mbuf, qwkterm);
         }
         else if(line->type & GLINE_WRAP) {
@@ -427,7 +427,7 @@ int ExportQwkMsg(GMsg* msg, gfile& fp, int confno, int& pktmsgno) {
       }
       else {
         if((line->type & GLINE_KLUDGE) and QWK->KludgesAllowed()) {
-          XlatStr(mbuf, line->text, level, CharTable);
+          XlatStr(mbuf, line->txt.c_str(), level, CharTable);
           msglen += fp.printf("%s%c", mbuf, qwkterm);
         }
       }
@@ -444,7 +444,7 @@ int ExportQwkMsg(GMsg* msg, gfile& fp, int confno, int& pktmsgno) {
   line = msg->lin;
   while(line) {
     if(not (line->type & GLINE_KLUDGE)) {
-      XlatStr(mbuf, line->text, level, CharTable);
+      XlatStr(mbuf, line->txt.c_str(), level, CharTable);
       msglen += fp.printf("%s%c", mbuf, qwkterm);
     }
     line = line->next;

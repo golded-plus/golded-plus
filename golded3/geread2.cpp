@@ -776,7 +776,7 @@ void make_pathreport(const char* reportfile) {
         Line* line = msg->lin;
         while(line) {
           if(line->kludge == GKLUD_PATH)
-            path += line->text + 6;
+            path += line->txt.c_str() + 6;
           line = line->next;
         }
         if(path.length()) {

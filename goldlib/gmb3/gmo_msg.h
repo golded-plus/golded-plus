@@ -143,9 +143,13 @@ public:
   int   color;            // Line color
   uint  type;             // GLINE_*
   uint  kludge;           // GKLUD_*
-  char* text;             // Pointer to the line text
+  string txt;             // The line text
   Line* prev;             // Pointer to previous line
   Line* next;             // Pointer to next line
+
+  Line()               { txt = ""; color = type = kludge = 0; prev = next = NULL; }
+  Line(const char *str) { txt = str; color = type = kludge = 0; prev = next = NULL; }
+  ~Line()              {}
 
   int  istearline()    { return !!(type & GLINE_TEAR); }
   int  isorigin()      { return !!(type & GLINE_ORIG); }

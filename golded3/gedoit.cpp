@@ -80,39 +80,37 @@ void SaveLines(int mode, const char* savefile, GMsg* msg, bool clip) {
     if(lin and not (prnheader & WRITE_ONLY_HEADER)) {
       Line* line = lin[n];
       while(line) {
-        if(line->text) {
-          uint lineisctrl = line->type & (GLINE_TEAR|GLINE_ORIG|GLINE_KLUDGE);
-          if(not ((mode == MODE_SAVENOCTRL) and lineisctrl)) {
-            char* ptr = line->text;
-            while(*ptr) {
-              if(mode == MODE_WRITE) {
-                // Replace control codes, except the ANSI escape code
-                if(*ptr < ' ') {
-                  // only allow ESC in file write
-                  if(prn or (*ptr != '\x1B')) {
-                    *ptr = (*ptr == CTRL_A) ? '@' : '.';
-                  }
-                }
-              }
-              ptr++;
-            }
-            ptr = line->text;
-            fwrite(ptr, strlen(ptr), 1, prnfp);
-            if(mode == MODE_NEW) {
-              if(EDIT->HardLines()) {
-                if(line->type & GLINE_HARD) {
-                  if(not ((line->type & (GLINE_TEAR|GLINE_ORIG|GLINE_KLUDGE|GLINE_QUOT)) or strblank(ptr))) {
-                    fwrite(EDIT->HardLine(), strlen(EDIT->HardLine()), 1, prnfp);
-                  }
+        uint lineisctrl = line->type & (GLINE_TEAR|GLINE_ORIG|GLINE_KLUDGE);
+        if(not ((mode == MODE_SAVENOCTRL) and lineisctrl)) {
+          string::iterator p = line->txt.begin();
+          while(p != line->txt.end()) {
+            if(mode == MODE_WRITE) {
+              // Replace control codes, except the ANSI escape code
+              if(*p < ' ') {
+                // only allow ESC in file write
+                if(prn or (*p != '\x1B')) {
+                  *p = (*p == CTRL_A) ? '@' : '.';
                 }
               }
             }
-            fwrite(prn ? NL : "\n", prn ? sizeof(NL) : 1, 1, prnfp);
-            if(prn) {
-              lines++;
-              if(lines%CFG->printlength == 0 and CFG->switches.get(printformfeed)) {
-                fwrite("\f", 1, 1, prnfp);
+            p++;
+          }
+          const char *ptr = line->txt.c_str();
+          fwrite(ptr, strlen(ptr), 1, prnfp);
+          if(mode == MODE_NEW) {
+            if(EDIT->HardLines()) {
+              if(line->type & GLINE_HARD) {
+                if(not ((line->type & (GLINE_TEAR|GLINE_ORIG|GLINE_KLUDGE|GLINE_QUOT)) or strblank(ptr))) {
+                  fwrite(EDIT->HardLine(), strlen(EDIT->HardLine()), 1, prnfp);
+                }
               }
+            }
+          }
+          fwrite(prn ? NL : "\n", prn ? sizeof(NL) : 1, 1, prnfp);
+          if(prn) {
+            lines++;
+            if(lines%CFG->printlength == 0 and CFG->switches.get(printformfeed)) {
+              fwrite("\f", 1, 1, prnfp);
             }
           }
         }

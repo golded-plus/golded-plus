@@ -31,11 +31,11 @@
 
 //  ------------------------------------------------------------------
 
-void KludgeDATE(GMsg* msg, char* ptr);
+void KludgeDATE(GMsg* msg, const char* ptr);
 
 //  ------------------------------------------------------------------
                       
-char* CvtMessageIDtoMSGID(char* mptr, char* msgidbuf, const char* echoid, char* kludge) {
+char* CvtMessageIDtoMSGID(const char* mptr, char* msgidbuf, const char* echoid, char* kludge) {
 
   sprintf(msgidbuf, "\x1""%s: ", kludge);
   char* bptr = msgidbuf + strlen(msgidbuf);
@@ -639,7 +639,7 @@ int ExportSoupMsg(GMsg* msg, char* msgfile, gfile& fp, int ismail) {
     while(line) {
       if(line->type & GLINE_KLUDGE) {
         if((line->kludge == GKLUD_RFC) or (line->kludge == 0)) {
-          strcpy(mbuf, (*line->text == CTRL_A) ? line->text+1 : line->text);
+          strcpy(mbuf, (*line->txt.c_str() == CTRL_A) ? line->txt.c_str()+1 : line->txt.c_str());
           msglen += fp.printf("%s%s", mbuf, (line->type & GLINE_WRAP) ? "" : "\n");
         }
         else if(line->type & GLINE_WRAP) {
@@ -657,7 +657,7 @@ int ExportSoupMsg(GMsg* msg, char* msgfile, gfile& fp, int ismail) {
     line = msg->lin;
     while(line) {
       if(not (line->type & (GLINE_KLUDGE|GLINE_TEAR|GLINE_ORIG))) {
-        XlatStr(mbuf, line->text, level, CharTable);
+        XlatStr(mbuf, line->txt.c_str(), level, CharTable);
         char* mptr = mbuf;
         if(qp and strlen(mptr) > 76) {
           // 12345v7890

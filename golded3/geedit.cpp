@@ -99,72 +99,14 @@ void IEclass::debugtest(char* __test, int __a, int __b, char* __file, int __line
 void IEclass::setlinetype(Line* __line) {
 
   _test_halt(__line == NULL);
-  _test_halt(__line->text == NULL);
 
   __line->type &= ~GLINE_ALL;
-  __line->type |= is_quote(__line->text) ? GLINE_QUOT : (*__line->text == CTRL_A) ? GLINE_HIDD : 0;
+  __line->type |= is_quote(__line->txt.c_str()) ? GLINE_QUOT : (__line->txt[0] == CTRL_A) ? GLINE_HIDD : 0;
 }
 
 
 //  ------------------------------------------------------------------
 //  Insert character in string at position
-
-void IEclass::strinschr(char*& __string, char __ch, uint __position) {
-
-  _test_halt(__string == NULL);
-
-  //  0123456789  _position = 2
-  //  1234567890  length = 4
-  //  helo<       < = nul
-  //  he lo<
-  //  hello<
-
-  // Get string length
-  uint _length = strlen(__string);
-
-  // Is position beyond the nul-terminator in the string?
-  _test_haltab(__position > _length, __position, _length);
-
-  // Reallocate string to make room for the char (3=nul+newchar+possible space)
-  __string = (char*)throw_realloc(__string, _length+3);
-
-  // Make room for the char to insert
-  memmove(__string+__position+1, __string+__position, _length-__position+1);
-  THROW_CHECKPTR(__string);
-
-  // Put in the char
-  __string[__position] = __ch;
-  THROW_CHECKPTR(__string);
-  if((__string[__position+1] == NUL) and (__ch != ' ') and (__ch != '\n')) {
-    __string[__position+1] = ' ';
-    __string[__position+2] = NUL;
-    THROW_CHECKPTR(__string);
-  }
-}
-
-
-//  ------------------------------------------------------------------
-//  Delete character in string at position
-
-void IEclass::strdelchr(char* __string, uint __position) {
-
-  _test_halt(__string == NULL);
-
-  //  0123456789  _position = 1
-  //  1234567890  length = 5
-  //  hello<      < = nul
-  //  hllo<
-
-  uint _length = strlen(__string);
-
-  // Is position at or beyond the nul-terminator in the string?
-  _test_haltab(__position >= _length, __position, _length);
-
-  // Delete the character
-  memmove(__string+__position, __string+__position+1, _length-__position);
-  THROW_CHECKPTR(__string);
-}
-
 
 //  ------------------------------------------------------------------
 //  Zero-based
@@ -290,7 +232,7 @@ void IEclass::gotorowcol(uint __col, uint __row) {
 
 //  ------------------------------------------------------------------
 
-void IEclass::dispstring(char* __string, uint __row, int attr, Line* line) {
+void IEclass::dispstring(const char* __string, uint __row, int attr, Line* line) {
 
   GFTRK("Editdispstring");
 
@@ -315,7 +257,7 @@ void IEclass::dispstring(char* __string, uint __row, int attr, Line* line) {
   if(attr == -1) {
     char* _bufptr = _buf;
     uint _position = 0;
-    char* __str = __string;
+    const char* __str = __string;
     while(_position < _length) {
       switch(*__str) {
         case ' ':   *_bufptr = EDIT->CharSpace();  break;
@@ -390,7 +332,7 @@ void IEclass::setcolor(Line* __line) {
   else if(__line->type & GLINE_ORIG)
     editwin.text_color(C_READO);
   else if(__line->type & GLINE_QUOT)
-    editwin.text_color(quotecolor(__line->text));
+    editwin.text_color(quotecolor(__line->txt.c_str()));
   else if(__line->type & GLINE_SIGN)
     editwin.text_color(C_READS);
   else
@@ -407,12 +349,11 @@ void IEclass::displine(Line* __line, uint __row) {
   GFTRK("Editdispline");
 
   _test_halt(__line == NULL);
-  _test_halt(__line->text == NULL);
   _test_haltab(__row > maxrow, __row, maxrow);
 
   // Display line
   setcolor(__line);
-  dispstring(__line->text, __row, -1, __line);
+  dispstring(__line->txt.c_str(), __row, -1, __line);
 
   GFTRK(NULL);
 }
@@ -472,12 +413,12 @@ void IEclass::refresh(Line* __currline, uint __row) {
 
 //  ------------------------------------------------------------------
 
-Line* IEclass::insertlinebelow(Line* __currline, char* __text, long __batch_mode) {
+Line* IEclass::insertlinebelow(Line* __currline, const char* __text, long __batch_mode) {
 
   GFTRK("Editinsertlinebelow");
 
-  Line* _nextline = (Line*)throw_xcalloc(1, sizeof(Line));
-  _nextline->text = __text ? throw_strdup(__text) : (char*)NULL;
+  Line* _nextline = new Line(__text ? __text : "");
+  throw_xnew(_nextline);
 
   if(__currline) {
 
@@ -527,7 +468,7 @@ void IEclass::GoEOL() {
   GFTRK("EditGoEOL");
 
   // Move cursor to the last char on the line
-  col = strlen(currline->text);
+  col = currline->txt.length();
   if(col)
     col--;
 
@@ -568,7 +509,7 @@ void IEclass::GoUp() {
       }
     }
 
-    if((col+1) > strlen(currline->text))
+    if((col+1) > currline->txt.length())
       GoEOL();
   }
 
@@ -603,7 +544,7 @@ void IEclass::GoDown() {
       }
     }
 
-    if((col+1) > strlen(currline->text))
+    if((col+1) > currline->txt.length())
       GoEOL();
   }
 
@@ -643,7 +584,7 @@ void IEclass::GoRight() {
 
   _test_haltab(col > maxcol, col, maxcol);
 
-  char _cursorchar = currline->text[col];
+  char _cursorchar = currline->txt[col];
 
   if((col == maxcol) or (_cursorchar == '\n') or (_cursorchar == NUL)) {
     if(currline->next != NULL) {
@@ -684,12 +625,12 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, int
   while(_thisline) {
 
     // Length of this line
-    uint _thislen = strlen(_thisline->text);
+    uint _thislen = _thisline->txt.length();
 
     uint _wrapmargin = (_thisline->type & GLINE_QUOT) ? marginquotes : margintext;
 
     // Does this line need wrapping?
-    if(_thislen > _wrapmargin or (_thislen == _wrapmargin and not isspace(_thisline->text[_thislen-1]))) {
+    if(_thislen > _wrapmargin or (_thislen == _wrapmargin and not isspace(_thisline->txt[_thislen-1]))) {
 
       // Reset quote string length
       _quotelen = 0;
@@ -698,7 +639,7 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, int
       if((_thisline->type & GLINE_QUOT) and CFG__editquotewrap) {
 
         // Get quote string and length
-        GetQuotestr(_thisline->text, _quotebuf, &_quotelen);
+        GetQuotestr(_thisline->txt.c_str(), _quotebuf, &_quotelen);
       }
 
       // wrapmargin = 40
@@ -712,12 +653,12 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, int
       // Case 4: >thisxisxaxtestxwithxaxlinexthatxneedxwrapping.
 
       // Point to the last char inside the margin
-      char* _wrapptr = _thisline->text + _wrapmargin - 1;
+      int _wrappos = _wrapmargin - 1;
 
       // Locate the word to be wrapped
 
       // Did we find a space?
-      if(*_wrapptr == ' ') {
+      if(_thisline->txt[_wrappos] == ' ') {
 
         // Case 1: A space was found as the last char inside the margin
         //
@@ -725,7 +666,7 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, int
         // NOTE: Leading spaces to this word will be nulled out!
 
         // Begin at the first char outside the margin
-        _wrapptr++;
+        _wrappos++;
       }
       else {
 
@@ -734,59 +675,52 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, int
         // Now we must locate the beginning of the word we found.
 
         // Keep copy of original pointer
-        char* _atmargin = _wrapptr;
+        int _atmargin = _wrappos;
 
         // Search backwards until a space or the beginning of the line is found
-        while((_wrapptr > _thisline->text) and (*(_wrapptr-1) != ' '))
-          _wrapptr--;
+        while(_wrappos > 0 and (_thisline->txt[_wrappos-1] != ' '))
+          _wrappos--;
 
         // Check if we hit leading spaces
-        char* _spaceptr = _wrapptr;
-        if(_spaceptr > _thisline->text) {
-          _spaceptr--;
-          while((_spaceptr > _thisline->text) and (*_spaceptr == ' '))
-            _spaceptr--;
+        int _spacepos = _wrappos;
+        if(_spacepos > 0) {
+          do {
+            _spacepos--;
+          } while(_spacepos > 0 and _thisline->txt[_spacepos] == ' ');
         }
 
         // Did we search all the way back to the beginning of the line?
-        if((_wrapptr == _thisline->text) or (_wrapptr == (_thisline->text+_quotelen)) or (*_spaceptr == ' ')) {
+        if(_wrappos == 0 or _wrappos == _quotelen or _thisline->txt[_spacepos] == ' ') {
 
           // Case 3: There are no spaces within the margin or we hit leading spaces
 
           // We have to break it up at the margin
-          _wrapptr = _atmargin;
+          _wrappos = _atmargin;
         }
       }
 
       // The wrapptr now points to the location to be wrapped or NUL
 
       // Get length of the wrapped part
-      uint _wraplen = strlen(_wrapptr);
+      uint _wraplen = _thisline->txt.length() - _wrappos;
 
       // Is the line hard-terminated?
-      if(strchr(_wrapptr, '\n')) {
+      if(_thisline->txt.find('\n', _wrappos) != _thisline->txt.npos) {
 
         // The line is hard-terminated.
         //
         // The wrapped part must be placed on a new line below.
 
         Line* _wrapline = _lastadded = insertlinebelow(_thisline, NULL, BATCH_MODE);
-        // Allocate space for the new line
-        _wrapline->text = (char*)throw_malloc(_quotelen + _wraplen + 1);
 
         // Copy the quote string, if any, to the new line first
-        if(_quotelen) {
-          strcpy(_wrapline->text, _quotebuf);
-          THROW_CHECKPTR(_wrapline->text);
-        }
-        else {
-          *_wrapline->text = NUL;
-          THROW_CHECKPTR(_wrapline->text);
-        }
+        if(_quotelen)
+          _wrapline->txt = _quotebuf;
+        else
+          _wrapline->txt = "";
 
         // Copy/append the wrapped part to the new line
-        strcat(_wrapline->text, _wrapptr);
-        THROW_CHECKPTR(_wrapline->text);
+        _wrapline->txt += _thisline->txt.substr(_wrappos);
 
         // Saves pointer to a line where from the wrapped part was copied, its begining
         // and length. While in Undo, appends the copied part to previous line and deletes
@@ -806,7 +740,7 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, int
             scrolldown(mincol, _thisrow+1, maxcol, maxrow);
 
             // Display the new line
-            if(strlen(_wrapline->text) <= (maxcol+1))
+            if(_wrapline->txt.length() <= (maxcol+1))
               displine(_wrapline, _thisrow+1);
           }
         }
@@ -834,31 +768,16 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, int
           _line_added_below = true;
         }
 
-        // Get length of the text of next line
-        uint _nextlen = _nextline->text ? strlen(_nextline->text) : 0;
-
-        // Reallocate next line's text to make room for the wrapped part
-        _nextline->text = (char*)throw_realloc(_nextline->text, _quotelen+_wraplen+_nextlen+1);
-
-        // Move the next line's text to make room for the wrapped part and the quote string, if any
-        memmove(_nextline->text+_quotelen+_wraplen, _nextline->text, _nextlen+1);
-        THROW_CHECKPTR(_nextline->text);
-
-        // Copy the wrapped part
-        memmove(_nextline->text+_quotelen, _wrapptr, _wraplen);
-        THROW_CHECKPTR(_nextline->text);
-
         // Was this line quoted?
         if(_quotelen) {
 
           // Copy the quote string
-          memmove(_nextline->text, _quotebuf, _quotelen);
-          THROW_CHECKPTR(_nextline->text);
-
-          Undo->PushItem(EDIT_UNDO_INS_TEXT|BATCH_MODE, _nextline, 0, _quotelen);
+          _nextline->txt.insert(0, _quotebuf, _quotelen);
         }
 
-        Undo->PushItem(EDIT_UNDO_WRAP_TEXT|BATCH_MODE, _nextline, _quotelen, _wraplen);
+        _nextline->txt.insert(_quotelen, _thisline->txt.substr(_wrappos));
+
+        Undo->PushItem(EDIT_UNDO_WRAP_TEXT|BATCH_MODE, _nextline, 0, _quotelen+_wraplen);
 
         // Make sure the type of the line is correct
         setlinetype(_nextline);
@@ -873,35 +792,33 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, int
           }
 
           // Display the new/wrapped line
-          if((_thisrow+1) <= maxrow and strlen(_nextline->text) <= (maxcol+1))
+          if((_thisrow+1) <= maxrow and _nextline->txt.length() <= (maxcol+1))
             displine(_nextline, _thisrow+1);
         }
       }
 
-      // Nul-terminate at the wrapping location
-      *_wrapptr = NUL;
-      THROW_CHECKPTR(_thisline->text);
+      // Truncate at the wrapping location
+      _thisline->txt.erase(_wrappos);
 
       // Was this line quoted?
       if(_quotelen) {
 
         // Trim spaces off the end of the line
-        char* _trimptr = _wrapptr - 1;
-        if(*_trimptr == ' ') {
-          while(*(_trimptr-1) == ' ')
-            _trimptr--;
-          if(_quotelen and _trimptr-_thisline->text < _quotelen)
-            _trimptr++;
-          Undo->PushItem(EDIT_UNDO_OVR_CHAR|BATCH_MODE, _thisline, _trimptr - _thisline->text);
-          Undo->PushItem(EDIT_UNDO_OVR_CHAR|BATCH_MODE, _thisline, _trimptr - _thisline->text + 1);
-          *_trimptr = NUL;
+        int _trimpos = _wrappos - 1;
+        if(_thisline->txt[_trimpos] == ' ') {
+          while(_trimpos > 0 and _thisline->txt[_trimpos-1] == ' ')
+            _trimpos--;
+          if(_quotelen and _trimpos < _quotelen)
+            _trimpos++;
+          Undo->PushItem(EDIT_UNDO_OVR_CHAR|BATCH_MODE, _thisline, _trimpos);
+          Undo->PushItem(EDIT_UNDO_OVR_CHAR|BATCH_MODE, _thisline, _trimpos+1);
+          _thisline->txt.erase(_trimpos);
         }
         else
-          Undo->PushItem(EDIT_UNDO_OVR_CHAR|BATCH_MODE, _thisline, _wrapptr - _thisline->text);
+          Undo->PushItem(EDIT_UNDO_OVR_CHAR|BATCH_MODE, _thisline, _wrappos);
 
         // Append a new linefeed
-        strcat(_thisline->text, "\n");
-        THROW_CHECKPTR(_thisline->text);
+        _thisline->txt += "\n";
       }
 
       // Make sure the line type still is correct
@@ -915,13 +832,12 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, int
       }
 
       // If we are on the cursor line, check if the cursor char was wrapped
-      if(_thisrow == *__curr_row and strlen(_thisline->text) <= *__curr_col) {
-        char* _colptr = _thisline->text + *__curr_col;
-        _curscol = _quotelen + ((_colptr > _wrapptr) ? _colptr - _wrapptr : 0);
+      if(_thisrow == *__curr_row and _thisline->txt.length() <= *__curr_col) {
+        _curscol = _quotelen + ((*__curr_col > _wrappos) ? *__curr_col-_wrappos : 0);
         _cursrow++, thisrow++;
         UndoItem* i = Undo->last_item;
         do { i = i->prev; } while(i->action & BATCH_MODE);
-        if(i->col.num >= strlen(i->line->text)) {
+        if(i->col.num >= i->line->txt.length()) {
           i->action |= PREV_LINE;
           i->col.sav = i->col.num;
           i->col.num = _curscol;
@@ -931,11 +847,11 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, int
 
     // If this line is hard-terminated, we have finished wrapping
     // Unless the next line has grown too large
-    if(strchr(_thisline->text, '\n')) {
+    if(_thisline->txt.find('\n') != _thisline->txt.npos) {
       if(_thisline->next == NULL)
         break;
       _wrapmargin = (_thisline->next->type & GLINE_QUOT) ? marginquotes : margintext;
-      if(strlen(_thisline->next->text) <= _wrapmargin)
+      if(_thisline->next->txt.length() <= _wrapmargin)
         break;
     }
 
@@ -1014,19 +930,20 @@ void IEclass::insertchar(char __ch) {
 
   GFTRK("Editinsertchar");
 
+#ifndef NDEBUG
+  uint _currline_len = currline->txt.length();
+  _test_haltab(col > _currline_len, col, _currline_len);
+#endif
   // Insert or overwrite the char, replacing the block if any
   if((selecting ? (BlockCut(true), batch_mode = BATCH_MODE) : false) or
-     (currline->text[col] == '\n') or (currline->text[col] == NUL) or insert) {
+     (currline->txt[col] == '\n') or (currline->txt[col] == NUL) or insert) {
     Undo->PushItem(EDIT_UNDO_INS_CHAR|batch_mode);
-    strinschr(currline->text, __ch, col);
+    if(col == currline->txt.length() and __ch != ' ' and __ch != '\n')
+      currline->txt += ' ';
+    currline->txt.insert(col, 1, __ch);
   } else {
-#ifndef NDEBUG
-    uint _currline_len = strlen(currline->text);
-    _test_haltab(col > _currline_len, col, _currline_len);
-#endif
     Undo->PushItem(EDIT_UNDO_OVR_CHAR|batch_mode);
-    currline->text[col] = __ch;
-    THROW_CHECKPTR(currline->text);
+    currline->txt[col] = __ch;
   }
   batch_mode = BATCH_MODE;
 
@@ -1069,12 +986,12 @@ void IEclass::DelChar() {
 
   Line* _thisline = currline;
   Line* _nextline = currline->next;
-  uint  _thislen = strlen(_thisline->text);
+  uint  _thislen = _thisline->txt.length();
 
   // Cannot delete at or beyond the nul-terminator
   if(col < _thislen) {
     Undo->PushItem(EDIT_UNDO_DEL_CHAR|batch_mode);
-    strdelchr(_thisline->text, col);
+    _thisline->txt.erase(col, 1);
     batch_mode = BATCH_MODE;
   }
 
@@ -1092,21 +1009,17 @@ void IEclass::DelChar() {
 
       // Get quote string length
       char _dummybuf[100];
-      GetQuotestr(_nextline->text, _dummybuf, &_quotelen);
+      GetQuotestr(_nextline->txt.c_str(), _dummybuf, &_quotelen);
     }
-
-    // Reallocate this line's text to make room for the next
-    _thisline->text = (char*)throw_realloc(_thisline->text, _thislen + strlen(_nextline->text) - _quotelen + 1);
 
     // Copy the next line's text to this line
     // Skip past the next line's quote string and blanks, if any
-    char* _nextptr = _nextline->text+_quotelen;
+    const char* _nextptr = _nextline->txt.c_str()+_quotelen;
     if(not ((_nextline->type & GLINE_QUOT) and (col == 0))) {
       while(*_nextptr == ' ')
         _nextptr++;
     }
-    strcat(_thisline->text, _nextptr);
-    THROW_CHECKPTR(_thisline->text);
+    _thisline->txt += _nextptr;
 
     Undo->PushItem(EDIT_UNDO_CUT_TEXT|batch_mode, _thisline, col);
 
@@ -1168,14 +1081,14 @@ void IEclass::GoWordLeft() {
  
     col--;
  
-    if(not isxalnum(currline->text[col])) {
-      while(not isxalnum(currline->text[col]) and (col > 0))
+    if(not isxalnum(currline->txt[col])) {
+      while(not isxalnum(currline->txt[col]) and (col > 0))
         col--;
-      while(isxalnum(currline->text[col]) and (col > 0))
+      while(isxalnum(currline->txt[col]) and (col > 0))
         col--;
     }
     else {
-      while(isxalnum(currline->text[col]) and (col > 0))
+      while(isxalnum(currline->txt[col]) and (col > 0))
         col--;
     }
 
@@ -1196,28 +1109,28 @@ void IEclass::GoWordRight() {
 
   GFTRK("EditGoWordRight");
 
-  if((currline->text[col] == NUL) or (currline->text[col] == '\n')) {
+  if(currline->txt.length() == col or currline->txt[col] == '\n') {
     if(currline->next) {
       GoDown();
       col = 0;
     }
    }
    else {
-    if(not isxalnum(currline->text[col])) {
-      while(not isxalnum(currline->text[col]) and ((col+1) <= strlen(currline->text)))
+    if(not isxalnum(currline->txt[col])) {
+      while(not isxalnum(currline->txt[col]) and ((col+1) <= currline->txt.length()))
         col++;
     }
     else {
-      while(isxalnum(currline->text[col]) and ((col+1) <= strlen(currline->text)))
+      while(isxalnum(currline->txt[col]) and ((col+1) <= currline->txt.length()))
         col++;
-      while(not isxalnum(currline->text[col]) and ((col+1) <= strlen(currline->text)))
+      while(not isxalnum(currline->txt[col]) and ((col+1) <= currline->txt.length()))
         col++;
     }
 
-    if(currline->text[col-1] == '\n')
+    if(currline->txt[col-1] == '\n')
        col--;
 
-    if(currline->text[col] == NUL) {
+    if(currline->txt.length() == col) {
       if(currline->next) {
         GoDown();
         col = 0;
@@ -1240,14 +1153,8 @@ void IEclass::Newline() {
 
   GFTRK("EditNewline");
 
-  char* _text = currline->text;
-
-  // If the line is not hard-terminated, make room for it
-  if(not strchr(_text, '\n') and (_text[col] == NUL))
-    _text = currline->text = (char*)throw_realloc(_text, strlen(_text)+3);
-
   // Pointer to the split position
-  char* _splitptr = _text + col;
+  int _splitpos = col;
 
   // Buffer for the second part of the split line
   char* _splitbuf = (char*)throw_malloc(EDIT_BUFLEN);
@@ -1256,27 +1163,27 @@ void IEclass::Newline() {
   // If the split line was quoted, get the quotestring
   // But do not get it if the cursor points to a linefeed or is
   uint _quotelen = 0;
-  if(is_quote(_text)) {
-    GetQuotestr(_text, _splitbuf, &_quotelen);
+  if(is_quote(currline->txt.c_str())) {
+    GetQuotestr(currline->txt.c_str(), _splitbuf, &_quotelen);
     THROW_CHECKPTR(_splitbuf);
   }
 
   // Eliminate the quotestring if
   // - the cursor points to a linefeed or
   // - the cursor is located inside the quotestring
-  if(_quotelen and ((*_splitptr == '\n') or (*_splitptr == NUL) or (col < _quotelen)))
+  if(_quotelen and ((currline->txt.length() == col) or (currline->txt[_splitpos] == '\n') or (col < _quotelen)))
     *_splitbuf = _quotelen = 0;
 
   // Append the second part to the split buffer
-  strcat(_splitbuf, _splitptr);
+  strcat(_splitbuf, currline->txt.substr(_splitpos).c_str());
   THROW_CHECKPTR(_splitbuf);
 
   Undo->PushItem(EDIT_UNDO_INS_TEXT|batch_mode, currline, col, 1);
   batch_mode = BATCH_MODE;
   
   // Copy linefeed+nul to the split position
-  strcpy(_splitptr, "\n");
-  THROW_CHECKPTR(currline->text);
+  currline->txt.erase(_splitpos);
+  currline->txt += "\n";
 
   // Re-type and display the split line
   setlinetype(currline);
@@ -1318,10 +1225,9 @@ void IEclass::CopyAboveChar() {
 
   char _ch = ' ';
   if(currline->prev) {
-    char* _ptr = currline->prev->text;
-    uint _len = strlen(_ptr);
+    uint _len = currline->prev->txt.length();
     if(_len and _len > col)
-      _ch = _ptr[col];
+      _ch = currline->prev->txt[col];
     if(_ch == '\n')
       _ch = ' ';
   }
@@ -1339,7 +1245,7 @@ void IEclass::DupLine() {
 
   Undo->PushItem(EDIT_UNDO_VOID);
   
-  Line* _nextline = insertlinebelow(currline, currline->text, BATCH_MODE);
+  Line* _nextline = insertlinebelow(currline, currline->txt.c_str(), BATCH_MODE);
   _nextline->type   = currline->type & ~GLINE_BLOK;
   _nextline->color  = currline->color;
   _nextline->kludge = currline->kludge;
@@ -1411,7 +1317,7 @@ void IEclass::GoPgUp() {
     GoTopMsg();
   }
 
-  if((col+1) > strlen(currline->text))
+  if(col+1 > currline->txt.length())
     GoEOL();
 
   GFTRK(NULL);
@@ -1469,7 +1375,7 @@ void IEclass::GoPgDn() {
     GoBotMsg();
   }
 
-  if((col+1) > strlen(currline->text))
+  if(col+1 > currline->txt.length())
     GoEOL();
 
   GFTRK(NULL);
@@ -1488,7 +1394,7 @@ void IEclass::Tab() {
   do {
     if(insert)
       insertchar(' ');
-    else if(currline->text[col] != '\n')
+    else if(currline->txt[col] != '\n')
       GoRight();
     else
       break;
@@ -1528,17 +1434,14 @@ void IEclass::DeleteEOL() {
 
   GFTRK("EditDeleteEOL");
 
-  bool _has_linefeed = strchr(currline->text, '\n') ? true : false;
+  bool _has_linefeed = currline->txt.find('\n') != currline->txt.npos ? true : false;
  
   Undo->PushItem(EDIT_UNDO_DEL_TEXT, currline);
 
-  currline->text[col] = NUL;
-  THROW_CHECKPTR(currline->text);
+  currline->txt.erase(col);
 
-  if(_has_linefeed) {
-    strcat(currline->text, "\n");
-    THROW_CHECKPTR(currline->text);
-  }
+  if(_has_linefeed)
+    currline->txt += "\n";
 
   clreol();
 
@@ -1557,7 +1460,7 @@ void IEclass::deleteline(bool zapquotesbelow) {
   do {
  
     // Break if need to zap quotes, but the current line is not quote and is not empty
-    if(zapquotesbelow and not ((currline->type & GLINE_QUOT) or strblank(currline->text)))
+    if(zapquotesbelow and not ((currline->type & GLINE_QUOT) or strblank(currline->txt.c_str())))
       break;
 
     // Pointer to the deleted line
@@ -1565,7 +1468,7 @@ void IEclass::deleteline(bool zapquotesbelow) {
 
     // If last line to be deleted delete to EOL and exit
     if(currline->next == NULL) {
-      if(currline->text[0] == NUL)
+      if(currline->txt.empty())
         break;
       insertlinebelow(currline, "", batch_mode);
       batch_mode = BATCH_MODE;
@@ -1612,7 +1515,7 @@ void IEclass::deleteline(bool zapquotesbelow) {
     Edit__killbuf->next = NULL;
 
     // Move the cursor to EOL if necessary
-    if((col+1) > strlen(currline->text))
+    if(col+1 > currline->txt.length())
       GoEOL();
 
     if(not zapquotesbelow)
@@ -1666,7 +1569,7 @@ void IEclass::UnDelete(bool before) {
     Undo->PushItem(EDIT_UNDO_POP_LINE);
 
     // Move the cursor to EOL if necessary
-    if((col+1) > strlen(currline->text))
+    if(col+1 > currline->txt.length())
       GoEOL();
 
     if(down)
@@ -1762,7 +1665,7 @@ void IEclass::savefile(int __status) {
 
       // Copy the line to a buffer
       char _buf[EDIT_BUFLEN];
-      strcpy(_buf, _saveline->text);
+      strcpy(_buf, _saveline->txt.c_str());
 
       // If a LF was found, replace it with a CR/LF combo
       char* _lfptr = strchr(_buf, '\n');
@@ -1820,7 +1723,7 @@ int IEclass::isempty(Line* __line) {
   if(__line == NULL)
     __line = currline;
 
-  return (*__line->text == '\n') or (*__line->text == NUL);
+  return (__line->txt.empty() or __line->txt[0] == '\n');
 }
 
 
@@ -1843,7 +1746,7 @@ int IEclass::reflowok(char* __qstr) {
   // Stop reflow if the quotestring on the next line is not the same
   uint _qlen2;
   char _qstr2[100];
-  GetQuotestr(currline->next->text, _qstr2, &_qlen2);
+  GetQuotestr(currline->next->txt.c_str(), _qstr2, &_qlen2);
   if(not strieql(__qstr, _qstr2))
     return false;
 
@@ -1870,14 +1773,14 @@ void IEclass::Reflow() {
   // Get the first quotestring
   uint _qlen1;
   char _qstr1[100];
-  GetQuotestr(currline->text, _qstr1, &_qlen1);
-  char* _qlenptr = currline->text + _qlen1;
+  GetQuotestr(currline->txt.c_str(), _qstr1, &_qlen1);
+  const char* _qlenptr = currline->txt.c_str() + _qlen1;
 
   // Strip leading spaces from the first line
-  char* ptr = strskip_wht(_qlenptr);
+  const char* ptr = strskip_wht(_qlenptr);
   if(ptr != _qlenptr) {
     Undo->PushItem(EDIT_UNDO_DEL_TEXT, currline, _qlen1, ptr-_qlenptr);
-    memmove(_qlenptr, ptr, strlen(ptr) + 1);
+    currline->txt.erase(_qlen1, ptr-_qlenptr);
   }
 
   // Perform the reflow
@@ -1944,7 +1847,7 @@ void IEclass::ToUpper() {
   GFTRK("EditToUpper");
 
   Undo->PushItem(EDIT_UNDO_OVR_CHAR);
-  currline->text[col] = toupper(currline->text[col]);
+  currline->txt[col] = toupper(currline->txt[col]);
 
   GFTRK(NULL);
 }
@@ -1957,7 +1860,7 @@ void IEclass::ToLower() {
   GFTRK("EditToLower");
 
   Undo->PushItem(EDIT_UNDO_OVR_CHAR);
-  currline->text[col] = tolower(currline->text[col]);
+  currline->txt[col] = tolower(currline->txt[col]);
 
   GFTRK(NULL);
 }
@@ -1970,10 +1873,10 @@ void IEclass::ToggleCase() {
   GFTRK("EditToggleCase");
 
   Undo->PushItem(EDIT_UNDO_OVR_CHAR);
-  if(toupper(currline->text[col]) == currline->text[col])
-    currline->text[col] = tolower(currline->text[col]);
+  if(toupper(currline->txt[col]) == currline->txt[col])
+    currline->txt[col] = tolower(currline->txt[col]);
   else
-    currline->text[col] = toupper(currline->text[col]);
+    currline->txt[col] = toupper(currline->txt[col]);
 
   GFTRK(NULL);
 }
@@ -1985,7 +1888,7 @@ void IEclass::LookupCursor() {
 
   GFTRK("EditLookupCursor");
 
-  LookupNode(msgptr, currline->text+col, LOOK_NAME);
+  LookupNode(msgptr, currline->txt.c_str()+col, LOOK_NAME);
 
   GFTRK(NULL);
 }
@@ -2033,7 +1936,7 @@ void IEclass::statusline() {
         const char* trig = EDIT->Completion.Trigger();
         uint tlen = strlen(trig);
         if(col >= tlen) {
-          if(strneql(trig, currline->text+col-tlen, tlen)) {
+          if(strneql(trig, currline->txt.c_str()+col-tlen, tlen)) {
             uint n;
             for(n=0; n<tlen; n++)
               DelLeft();
@@ -2057,7 +1960,7 @@ void IEclass::statusline() {
       const char* trig = EDIT->Comment.Trigger();
       uint tlen = strlen(trig);
       if(col >= tlen) {
-        if(strnieql(trig, currline->text+col-tlen, tlen)) {
+        if(strnieql(trig, currline->txt.c_str()+col-tlen, tlen)) {
           strcpy(_buf, EDIT->Comment.Text());
           break;
         }
@@ -2235,8 +2138,8 @@ int IEclass::Start(int __mode, uint* __position, GMsg* __msg) {
   whelppcat(H_Editor);
 
   if(currline == NULL) {
-    currline = (Line*)throw_xcalloc(1, sizeof(Line));
-    currline->text = throw_strdup("\n");
+    currline = new Line("\n");
+    throw_xnew(currline);
   }
 
   // Check if there is an unfinished backup message
@@ -2294,7 +2197,7 @@ int IEclass::Start(int __mode, uint* __position, GMsg* __msg) {
 
     int backattr = 0;
     if(blockcol == -1) {
-      backattr = dispchar(currline->text[col], C_READC);
+      backattr = dispchar(currline->txt[col], C_READC);
       gotorowcol(col, row);
     }
 
@@ -2334,7 +2237,7 @@ int IEclass::Start(int __mode, uint* __position, GMsg* __msg) {
     }
 
     if(blockcol == -1)
-      dispchar(currline->text[col], backattr);
+      dispchar(currline->txt[col], backattr);
 
     chartyped = false;
     if((_ch < KK_Commands) and (_ch & 0xFF) and not ismacro) {
@@ -2377,14 +2280,12 @@ int IEclass::Start(int __mode, uint* __position, GMsg* __msg) {
         }
       }
       else {
-        throw_release(__line->text);
         if(__line->prev) {
           __line = __line->prev;
-          throw_xrelease(__line->next);
+          throw_xdelete(__line->next);
         }
-        else {
-          throw_xrelease(__line);
-        }
+        else
+          throw_xdelete(__line);
       }
     }
   }
@@ -2425,12 +2326,10 @@ UndoStack::~UndoStack() {
     switch(last_item->action & EDIT_UNDO_ACTION) {
       case EDIT_UNDO_DEL_TEXT:
       case EDIT_UNDO_WRAP_TEXT:
-        delete last_item->data.text_ptr;
+        throw_delete(last_item->data.text_ptr);
         break;
       case EDIT_UNDO_DEL_LINE:
-        if(last_item->data.line_ptr->isallocated())
-          throw_release(last_item->data.line_ptr->text);   
-        throw_xfree(last_item->data.line_ptr);
+        throw_xdelete(last_item->data.line_ptr);
     }
     delete last_item;
   }
@@ -2476,14 +2375,14 @@ void UndoStack::PushItem(uint action, Line* __line, uint __col, uint __len) {
       case EDIT_UNDO_DEL_CHAR:
       case EDIT_UNDO_OVR_CHAR:
         last_item->line = __line ? __line : currline;
-        last_item->data.char_int = last_item->line->text[last_item->col.num];
+        last_item->data.char_int = last_item->line->txt[last_item->col.num];
         break;
       case EDIT_UNDO_DEL_TEXT:
         last_item->line = __line;
         if(__len == NO_VALUE)
-          __len = strlen(__line->text + __col) + 1;
+          __len = strlen(__line->txt.c_str() + __col) + 1;
         throw_new(last_item->data.text_ptr = new(__len) text_item(__col, __len));
-        memcpy(last_item->data.text_ptr->text, __line->text + __col, __len);
+        memcpy(last_item->data.text_ptr->text, __line->txt.c_str() + __col, __len);
         break;
       case EDIT_UNDO_CUT_TEXT:
         last_item->line = __line;
@@ -2543,7 +2442,7 @@ void UndoStack::PlayItem() {
 
       // Let user to see the position before performing Undo, unless it's a
       // neighbour line and the same column.
-      undo_ready = (abs(int(curr_row_num - thisrow)) < 2 and (curr_col_num == col or col+1 > strlen(currline->text)));
+      undo_ready = (abs(int(curr_row_num - thisrow)) < 2 and (curr_col_num == col or col+1 > currline->txt.length()));
 
       // Move cursor up or down depending on where the undo line is,
       // then refresh window if the line is invisible.
@@ -2569,7 +2468,7 @@ void UndoStack::PlayItem() {
       } while(curr_row_num != thisrow);
     }
     else
-      undo_ready = (abs(int(curr_col_num - col)) < 2 or col+1 > strlen(currline->text));
+      undo_ready = (abs(int(curr_col_num - col)) < 2 or col+1 > currline->txt.length());
 
     uint _pcol = item->pcol;
     uint _prow = item->prow;
@@ -2597,13 +2496,15 @@ void UndoStack::PlayItem() {
           case EDIT_UNDO_CHAR:
             switch(undo_action) {
               case EDIT_UNDO_INS_CHAR:
-                editor->strdelchr(currline->text, last_item->col.num);
+                currline->txt.erase(last_item->col.num,1);
                 break;
               case EDIT_UNDO_DEL_CHAR:
-                editor->strinschr(currline->text, last_item->data.char_int, last_item->col.num);
+                if(last_item->col.num == currline->txt.length() and last_item->data.char_int != ' ' and last_item->data.char_int != '\n')
+                  currline->txt += ' ';
+                currline->txt.insert(last_item->col.num, 1, last_item->data.char_int);
                 break;
               case EDIT_UNDO_OVR_CHAR:
-                currline->text[last_item->col.num] = last_item->data.char_int;
+                currline->txt[last_item->col.num] = last_item->data.char_int;
                 break;
             }
             editor->setlinetype(currline);
@@ -2611,27 +2512,22 @@ void UndoStack::PlayItem() {
 
           case EDIT_UNDO_TEXT: {
             text_item* text_data = last_item->data.text_ptr;
-            char *dest_ptr, *from_ptr, *thistext = currline->text;
+            string& txt = currline->txt;
             switch(undo_action) {
               case EDIT_UNDO_DEL_TEXT:
-                thistext = currline->text = (char*)throw_realloc(thistext, strlen(thistext) + text_data->len + 1);
-                memmove(thistext + text_data->col + text_data->len, thistext + text_data->col, strlen(thistext + text_data->col) + 1);
-                memcpy(thistext + text_data->col, text_data->text, text_data->len);
-                delete text_data;
+                txt.insert(text_data->col, text_data->text, text_data->len);
+                throw_delete(text_data);
                 break;
               case EDIT_UNDO_CUT_TEXT:
-                thistext[last_item->col.num] = NUL;
+                txt.erase(last_item->col.num);
                 break;
               case EDIT_UNDO_WRAP_TEXT:
-                thistext = currline->text = (char*)throw_realloc(thistext, strlen(thistext) + text_data->len + 1);
-                strncat(thistext, currline->next->text + text_data->col, text_data->len);
-                thistext = currline->next->text;
+                txt.append(currline->next->txt.c_str()+text_data->col, text_data->len);
+                txt = currline->next->txt;
                 // fall through...
               case EDIT_UNDO_INS_TEXT:
-                dest_ptr = thistext + text_data->col;
-                from_ptr = dest_ptr + text_data->len;
-                memmove(dest_ptr, from_ptr, strlen(from_ptr) + 1);
-                delete text_data;
+                txt.erase(text_data->col, text_data->len);
+                throw_delete(text_data);
                 break;
             }
             editor->setlinetype(currline);
@@ -2650,16 +2546,13 @@ void UndoStack::PlayItem() {
                 }
                 else
                   currline = thisline->next;
-                throw_release(thisline->text);
-                throw_xfree(thisline);
+                throw_xdelete(thisline);
                 break;
               case EDIT_UNDO_ORPHAN_LINE:
                 if(last_item->action & LAST_LINE) {
                   thisline->prev = currline;
                   thisline->next = currline ? currline->next : NULL;
-                  /*if(row == maxrow)
-                    down = true;
-                  else*/ if((row < maxrow) and currline)
+                  if((row < maxrow) and currline)
                     row++;
                 }
                 else {
@@ -2730,7 +2623,7 @@ void UndoStack::PlayItem() {
       }
     }
     // Move the cursor to EOL if necessary
-    else if((col+1) > strlen(currline->text))
+    else if(col+1 > currline->txt.length())
       editor->GoEOL();
     undo_ready = YES;
   }

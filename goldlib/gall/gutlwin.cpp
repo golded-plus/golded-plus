@@ -261,7 +261,7 @@ char* g_get_clip_text(void) {
 
 //  ------------------------------------------------------------------
 
-int g_put_clip_text(char *Data) {
+int g_put_clip_text(const char *Data) {
 
   long DataSize;
   if((Data != NULL) and ((DataSize = strlen(Data)) != 0)) {

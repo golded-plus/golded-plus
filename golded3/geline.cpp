@@ -445,7 +445,7 @@ char* strxmimecpy(char* dest, const char* source, int level, int size, bool dete
 
 //  ------------------------------------------------------------------
 
-void KludgeAREA(GMsg* msg, char* echoid) {
+static void KludgeAREA(GMsg* msg, const char* echoid) {
 
   Area* ap = AL.AreaEchoToPtr(echoid);
   if(ap)
@@ -455,7 +455,7 @@ void KludgeAREA(GMsg* msg, char* echoid) {
 
 //  ------------------------------------------------------------------
 
-void KludgeINTL(GMsg* msg, char* ptr) {
+static void KludgeINTL(GMsg* msg, const char* ptr) {
 
   char buf1[201], buf2[201];
   word fmpt = msg->orig.point;
@@ -470,7 +470,7 @@ void KludgeINTL(GMsg* msg, char* ptr) {
 
 //  ------------------------------------------------------------------
 
-void KludgeFMPT(GMsg* msg, char* ptr) {
+static void KludgeFMPT(GMsg* msg, const char* ptr) {
 
   msg->orig.point = atow(ptr);
 }
@@ -478,7 +478,7 @@ void KludgeFMPT(GMsg* msg, char* ptr) {
 
 //  ------------------------------------------------------------------
 
-void KludgeTOPT(GMsg* msg, char* ptr) {
+static void KludgeTOPT(GMsg* msg, const char* ptr) {
 
   msg->dest.point = atow(ptr);
 }
@@ -486,7 +486,7 @@ void KludgeTOPT(GMsg* msg, char* ptr) {
 
 //  ------------------------------------------------------------------
 
-void KludgeMSGID(GMsg* msg, char* ptr) {
+static void KludgeMSGID(GMsg* msg, const char* ptr) {
 
   strxcpy(msg->msgids, ptr, sizeof(msg->msgids));
   msg->msgid.reset(msg->msgids, msg->odom);
@@ -495,7 +495,7 @@ void KludgeMSGID(GMsg* msg, char* ptr) {
 
 //  ------------------------------------------------------------------
 
-void KludgeREPLY(GMsg* msg, char* ptr) {
+static void KludgeREPLY(GMsg* msg, const char* ptr) {
 
   strxcpy(msg->replys, ptr, sizeof(msg->replys));
 }
@@ -503,7 +503,7 @@ void KludgeREPLY(GMsg* msg, char* ptr) {
 
 //  ------------------------------------------------------------------
 
-void KludgeDOMAIN(GMsg* msg, char* ptr) {
+static void KludgeDOMAIN(GMsg* msg, const char* ptr) {
 
   char buf1[201], buf2[201];
   sscanf(ptr, "%s %s %s %s", msg->ddom, buf1, msg->odom, buf2);
@@ -514,7 +514,7 @@ void KludgeDOMAIN(GMsg* msg, char* ptr) {
 
 //  ------------------------------------------------------------------
 
-void KludgeFLAGS(GMsg* msg, char* ptr) {
+static void KludgeFLAGS(GMsg* msg, const char* ptr) {
 
   GetAttribstr(&msg->attr, ptr);
 }
@@ -522,7 +522,7 @@ void KludgeFLAGS(GMsg* msg, char* ptr) {
 
 //  ------------------------------------------------------------------
 
-void KludgeMSGTO(GMsg* msg, char* ptr) {
+static void KludgeMSGTO(GMsg* msg, const char* ptr) {
 
   msg->dest.reset(ptr, msg->ddom);
 }
@@ -530,7 +530,7 @@ void KludgeMSGTO(GMsg* msg, char* ptr) {
 
 //  ------------------------------------------------------------------
 
-void KludgePID(GMsg* msg, char* ptr) {
+static void KludgePID(GMsg* msg, const char* ptr) {
 
   strxcpy(msg->pid, ptr, sizeof(msg->pid));
 
@@ -544,7 +544,7 @@ void KludgePID(GMsg* msg, char* ptr) {
 
 //  ------------------------------------------------------------------
 
-void KludgeREPLYADDR(GMsg* msg, char* ptr) {
+static void KludgeREPLYADDR(GMsg* msg, const char* ptr) {
 
   Name name;
   name[0] = NUL;
@@ -558,7 +558,7 @@ void KludgeREPLYADDR(GMsg* msg, char* ptr) {
 
 //  ------------------------------------------------------------------
 
-void KludgeREPLYTO(GMsg* msg, char* ptr) {
+static void KludgeREPLYTO(GMsg* msg, const char* ptr) {
 
   strcpy(msg->igate, ptr);
 }
@@ -566,7 +566,7 @@ void KludgeREPLYTO(GMsg* msg, char* ptr) {
 
 //  ------------------------------------------------------------------
 
-void KludgeFROM(GMsg* msg, char* ptr) {
+static void KludgeFROM(GMsg* msg, const char* ptr) {
 
   INam fromname;
   IAdr fromaddr;
@@ -581,7 +581,7 @@ void KludgeFROM(GMsg* msg, char* ptr) {
 
 //  ------------------------------------------------------------------
 
-void KludgeTO(GMsg* msg, char* ptr) {
+static void KludgeTO(GMsg* msg, const char* ptr) {
 
   INam _toname;
   IAdr _toaddr;
@@ -598,7 +598,7 @@ void KludgeTO(GMsg* msg, char* ptr) {
 
 //  ------------------------------------------------------------------
 
-void KludgeBCC(GMsg* msg, char* ptr) {
+static void KludgeBCC(GMsg* msg, const char* ptr) {
 
   char* ibcc = msg->ibcc;
   char* buf = (char*)throw_malloc(strlen(ibcc) + strlen(ptr) + 3);
@@ -610,7 +610,7 @@ void KludgeBCC(GMsg* msg, char* ptr) {
 
 //  ------------------------------------------------------------------
 
-void KludgeCC(GMsg* msg, char* ptr) {
+static void KludgeCC(GMsg* msg, const char* ptr) {
 
   char* icc = msg->icc;
   char* buf = (char*)throw_malloc(strlen(icc) + strlen(ptr) + 3);
@@ -622,7 +622,7 @@ void KludgeCC(GMsg* msg, char* ptr) {
 
 //  ------------------------------------------------------------------
 
-void KludgeREPLY_TO(GMsg* msg, char* ptr) {
+static void KludgeREPLY_TO(GMsg* msg, const char* ptr) {
 
   INam _rtname;
   IAdr _rtaddr;
@@ -636,7 +636,7 @@ void KludgeREPLY_TO(GMsg* msg, char* ptr) {
 
 //  ------------------------------------------------------------------
 
-void KludgeSUBJECT(GMsg* msg, char* ptr) {
+static void KludgeSUBJECT(GMsg* msg, const char* ptr) {
 
   char* buf = throw_strdup(ptr);
   if(not msg->attr.att())
@@ -647,7 +647,7 @@ void KludgeSUBJECT(GMsg* msg, char* ptr) {
 
 //  ------------------------------------------------------------------
 
-void KludgeTZUTC(GMsg* msg, char* ptr) {
+static void KludgeTZUTC(GMsg* msg, const char* ptr) {
 
   msg->tzutc = atoi(ptr);
 }
@@ -655,7 +655,7 @@ void KludgeTZUTC(GMsg* msg, char* ptr) {
 
 //  ------------------------------------------------------------------
 
-void KludgeDATE(GMsg* msg, char* ptr) {
+void KludgeDATE(GMsg* msg, const char* ptr) {
 
   // RFC822 Date: BNF
   //
@@ -722,10 +722,7 @@ void KludgeDATE(GMsg* msg, char* ptr) {
                   // Setting timezone
                   ptr = strskip_wht(strskip_digits(ptr));
                   if(*ptr) {
-                    if(*ptr == '(' /*)*/ ) {
-                      char* p;
-                      if((p = strskip_to(++ptr, /*(*/ ')')) != NULL) *p = 0;
-                    }
+                    if(*ptr == '(' /*)*/ ) ++ptr;
                     msg->tzutc = atoi(ptr);
                   }
                 }
@@ -755,7 +752,7 @@ void KludgeDATE(GMsg* msg, char* ptr) {
 
 //  ------------------------------------------------------------------
 
-void KludgeMESSAGE_ID(GMsg* msg, char* ptr) {
+static void KludgeMESSAGE_ID(GMsg* msg, const char* ptr) {
 
   char buf[201];
   throw_free(msg->messageid);
@@ -767,7 +764,7 @@ void KludgeMESSAGE_ID(GMsg* msg, char* ptr) {
 
 //  ------------------------------------------------------------------
 
-void KludgeREFERENCES(GMsg* msg, char* ptr) {
+static void KludgeREFERENCES(GMsg* msg, const char* ptr) {
 
   throw_free(msg->references);
   msg->references = throw_strdup(ptr);
@@ -776,7 +773,7 @@ void KludgeREFERENCES(GMsg* msg, char* ptr) {
 
 //  ------------------------------------------------------------------
 
-void KludgeIN_REPLY_TO(GMsg* msg, char* ptr) {
+static void KludgeIN_REPLY_TO(GMsg* msg, const char* ptr) {
 
   throw_free(msg->inreplyto);
   msg->inreplyto = throw_strdup(ptr);
@@ -785,7 +782,7 @@ void KludgeIN_REPLY_TO(GMsg* msg, char* ptr) {
 
 //  ------------------------------------------------------------------
 
-void KludgeORGANIZATION(GMsg* msg, char* ptr) {
+static void KludgeORGANIZATION(GMsg* msg, const char* ptr) {
 
   strxcpy(msg->organization, ptr, sizeof(msg->organization));
 }
@@ -793,7 +790,7 @@ void KludgeORGANIZATION(GMsg* msg, char* ptr) {
 
 //  ------------------------------------------------------------------
 
-void KludgeX_FTN_TO(GMsg* msg, char* ptr) {
+static void KludgeX_FTN_TO(GMsg* msg, const char* ptr) {
 
   strxcpy(msg->realto, ptr, sizeof(msg->realto));
 }
@@ -801,7 +798,7 @@ void KludgeX_FTN_TO(GMsg* msg, char* ptr) {
 
 //  ------------------------------------------------------------------
 
-void KludgeFWDFROM(GMsg* msg, char* ptr) {
+static void KludgeFWDFROM(GMsg* msg, const char* ptr) {
 
   strxcpy(msg->fwdfrom, ptr, sizeof(msg->fwdfrom));
 }
@@ -809,7 +806,7 @@ void KludgeFWDFROM(GMsg* msg, char* ptr) {
 
 //  ------------------------------------------------------------------
 
-void KludgeFWDORIG(GMsg* msg, char* ptr) {
+static void KludgeFWDORIG(GMsg* msg, const char* ptr) {
 
   msg->fwdorig.reset(ptr);
 }
@@ -817,7 +814,7 @@ void KludgeFWDORIG(GMsg* msg, char* ptr) {
 
 //  ------------------------------------------------------------------
 
-void KludgeFWDTO(GMsg* msg, char* ptr) {
+static void KludgeFWDTO(GMsg* msg, const char* ptr) {
 
   strxcpy(msg->fwdto, ptr, sizeof(msg->fwdto));
 }
@@ -825,7 +822,7 @@ void KludgeFWDTO(GMsg* msg, char* ptr) {
 
 //  ------------------------------------------------------------------
 
-void KludgeFWDDEST(GMsg* msg, char* ptr) {
+static void KludgeFWDDEST(GMsg* msg, const char* ptr) {
 
   msg->fwddest.reset(ptr);
 }
@@ -833,7 +830,7 @@ void KludgeFWDDEST(GMsg* msg, char* ptr) {
 
 //  ------------------------------------------------------------------
 
-void KludgeFWDSUBJ(GMsg* msg, char* ptr) {
+static void KludgeFWDSUBJ(GMsg* msg, const char* ptr) {
 
   strxcpy(msg->fwdsubj, ptr, sizeof(msg->fwdsubj));
 }
@@ -841,7 +838,7 @@ void KludgeFWDSUBJ(GMsg* msg, char* ptr) {
 
 //  ------------------------------------------------------------------
 
-void KludgeFWDAREA(GMsg* msg, char* ptr) {
+static void KludgeFWDAREA(GMsg* msg, const char* ptr) {
 
   strxcpy(msg->fwdarea, ptr, sizeof(msg->fwdarea));
 }
@@ -849,7 +846,7 @@ void KludgeFWDAREA(GMsg* msg, char* ptr) {
 
 //  ------------------------------------------------------------------
 
-void KludgeFWDMSGID(GMsg* msg, char* ptr) {
+static void KludgeFWDMSGID(GMsg* msg, const char* ptr) {
 
   strxcpy(msg->fwdmsgid, ptr, sizeof(msg->fwdmsgid));
 }
@@ -857,20 +854,20 @@ void KludgeFWDMSGID(GMsg* msg, char* ptr) {
 
 //  ------------------------------------------------------------------
 
-char* UnwrapLine(Line* line, char* ptr, int addspace = false) {
+char* UnwrapLine(Line* line, const char* ptr, int addspace = false) {
 
   if(line->type & GLINE_WRAP) {
     uint len = strlen(ptr);
     char* uptr = throw_strdup(ptr);
     while(line and (line->type & GLINE_WRAP)) {
       if(line->next) {
-        uint nextlen = strlen(line->next->text);
+        uint nextlen = line->next->txt.length();
         uptr = (char*)throw_realloc(uptr, len+nextlen+2);
         if(addspace and len and (uptr[len-1] != ' ')) {
           strcat(uptr, " ");
           len++;
         }
-        strcpy(uptr+len, line->next->text);
+        strcpy(uptr+len, line->next->txt.c_str());
         len += nextlen;
       }
       line = line->next;
@@ -884,7 +881,7 @@ char* UnwrapLine(Line* line, char* ptr, int addspace = false) {
 
 //  ------------------------------------------------------------------
 
-int HandleKludges(GMsg* msg, Line* line, int kludgenum, char* ptr, int getvalue) {
+static int HandleKludges(GMsg* msg, Line* line, int kludgenum, const char* ptr, int getvalue) {
 
   switch(kludgenum) {
 
@@ -1100,7 +1097,7 @@ int HandleKludges(GMsg* msg, Line* line, int kludgenum, char* ptr, int getvalue)
 
 //  ------------------------------------------------------------------
 
-int HandleRFCs(GMsg* msg, Line* line, int kludgenum, char* ptr, int getvalue) {
+int HandleRFCs(GMsg* msg, Line* line, int kludgenum, const char* ptr, int getvalue) {
 
   switch(kludgenum) {
 
@@ -1308,26 +1305,28 @@ int ScanCtrlList(Kludges* k, char* kludge, char endchar) {
 
 //  ------------------------------------------------------------------
 
-int ScanLine(GMsg* msg, Line* line, char* ptr, int getvalue, int mask) {
+int ScanLine(GMsg* msg, Line* line, const char* ptr, int getvalue, int mask) {
 
   // Kludge number
   int kludgenum = 0;
 
   // Pointer to kludge id
-  char* kludge = ptr;
+  const char* kludge1 = ptr;
 
   // Skip past "RFC" string, if any
-  if(strnieql(kludge, "RFC", 3) and (kludge[3] != ':')) {
-    kludge += 3;
-    if(not isalpha(*kludge))
-      kludge++;
+  if(strnieql(kludge1, "RFC", 3) and (kludge1[3] != ':')) {
+    kludge1 += 3;
+    if(not isalpha(*kludge1))
+      kludge1++;
   }
 
   // Keep copy of id terminating char
   while((*ptr != ' ') and (*ptr != ':') and *ptr)
     ptr++;
   char endchar = *ptr;
-  *ptr = NUL;
+
+  __extension__ char kludge[ptr-kludge1+1];
+  strxcpy(kludge, kludge1, ptr-kludge1+1);
 
   // Search for it in the known kludges list
   if(*kludge) {
@@ -1362,7 +1361,6 @@ int ScanLine(GMsg* msg, Line* line, char* ptr, int getvalue, int mask) {
   }
 
   // Restore terminating char
-  *ptr = endchar;
   if(*ptr != ' ')
     ptr++;
 
@@ -1402,7 +1400,7 @@ Line* next_non_empty(Line *line) {
   Line* nl = line;
 
   while(nl) {
-    if(nl->text and not *nl->text)
+    if(nl->txt.empty())
       nl = nl->next;
     else
       break;
@@ -1414,7 +1412,7 @@ Line* next_non_empty(Line *line) {
 
 void ScanKludges(GMsg* msg, int getvalue) {
 
-  char* ptr;
+  const char* ptr;
   int tearlineno = INT_MAX;
   int originlineno = INT_MAX;
   int gotorig=NO, gottear=NO, gottag=NO;
@@ -1430,7 +1428,7 @@ void ScanKludges(GMsg* msg, int getvalue) {
   Line* line = LastLine(msg->lin);
 
   do {
-    ptr = line->text;
+    ptr = line->txt.c_str();
     if(*ptr == CTRL_A) {
 
       // Set kludge/hidden color
@@ -1444,11 +1442,11 @@ void ScanKludges(GMsg* msg, int getvalue) {
     }
     else {
 
-      if(strneql(ptr, "AREA:", 5) and ((line->prev == NULL) or line->prev->text[0] == CTRL_A)) {
+      if(strneql(ptr, "AREA:", 5) and (line->prev == NULL or *line->prev->txt.c_str() == CTRL_A)) {
         line->color = C_READK;
         line->kludge = GKLUD_AREA;
         line->type |= GLINE_KLUD;
-        char* areakludgeptr = ptr+5;   // Extract echoid from kludge
+        const char* areakludgeptr = ptr+5;   // Extract echoid from kludge
         areakludgeptr = strskip_wht(areakludgeptr);
         Area* ap = AL.AreaEchoToPtr(areakludgeptr);
         if(ap)
@@ -1515,20 +1513,20 @@ void ScanKludges(GMsg* msg, int getvalue) {
         else if(not (gotorig or gottear or gottag) and strneql(" * Origin: ", ptr, 11)) {
 
           // Found Origin line
-          bool cnd = line->next and line->next->text;
+          bool cnd = line->next != NULL;
 	  Line* nnel = next_non_empty(line->next);
 	  bool nextkl = cnd ? not nnel or nnel->type & GLINE_KLUDGE : false;
 	  nnel = cnd ? next_non_empty(line->next->next) : NULL;
-	  bool nextor = cnd ? (not nnel or nnel->type & GLINE_KLUDGE) and strchr(line->next->text, ')') : false;
+	  bool nextor = cnd ? (not nnel or nnel->type & GLINE_KLUDGE) and (line->next->txt.find(/*(*/')') != line->next->txt.npos) : false;
 	  if(not line->next or nextkl or nextor) {
            
             gotorig = YES;
             originlineno = lineno;
             line->type |= GLINE_ORIG;
             line->color = C_READO;
-            strcpy(msg->origin, line->text+11);
+            strcpy(msg->origin, line->txt.c_str()+11);
             if(nextor) {  // Get the next line too
-              strcat(msg->origin, line->next->text);
+              strcat(msg->origin, line->next->txt.c_str());
               line->next->color = C_READO;
               line->next->type |= GLINE_ORIG;     // Mark next line as Origin too
             }
@@ -1550,7 +1548,7 @@ void ScanKludges(GMsg* msg, int getvalue) {
                 q->type |= GLINE_SIGN;
                 if(q != line)
                   q->type |= GLINE_HARD;
-                if(q->text and strneql("----", q->text, 4))
+                if(strneql("----", q->txt.c_str(), 4))
                   break;
               }
             }
@@ -1577,9 +1575,9 @@ void ScanKludges(GMsg* msg, int getvalue) {
   for(line = msg->lin; line; line = line->next)
     if(line->type & GLINE_KLUDGE)
       continue;
-    else if(line->text) {
-      if(strnieql(line->text, "From:", 5)) {
-        char* ptr = line->text + 5;
+    else {
+      if(strnieql(line->txt.c_str(), "From:", 5)) {
+        const char* ptr = line->txt.c_str() + 5;
         ptr = strskip_wht(ptr);
         char* tmp = UnwrapLine(line, ptr);
         KludgeFROM(msg, tmp ? tmp : ptr);
@@ -1588,8 +1586,8 @@ void ScanKludges(GMsg* msg, int getvalue) {
         if(not AA->isinternet())
           *msg->ifrom = NUL;
       }
-      else if(strnieql(line->text, "To:", 3)) {
-        char* ptr = line->text + 3;
+      else if(strnieql(line->txt.c_str(), "To:", 3)) {
+        const char* ptr = line->txt.c_str() + 3;
         ptr = strskip_wht(ptr);
         char* tmp = UnwrapLine(line, ptr);
         KludgeTO(msg, tmp ? tmp : ptr);
@@ -1601,8 +1599,6 @@ void ScanKludges(GMsg* msg, int getvalue) {
       else
         break;
     }
-    else
-      break;
 
   if(not gottag)
     *msg->tagline = NUL;
@@ -1640,7 +1636,7 @@ void ScanKludges(GMsg* msg, int getvalue) {
 
 //  ------------------------------------------------------------------
 
-char* XlatStr(char* dest, char* src, int level, Chs* chrtbl, int qpencoded, bool i51) {
+char* XlatStr(char* dest, const char* src, int level, Chs* chrtbl, int qpencoded, bool i51) {
 
   if(not chrtbl)
     return stpcpy(dest, src);
@@ -1650,7 +1646,7 @@ char* XlatStr(char* dest, char* src, int level, Chs* chrtbl, int qpencoded, bool
   int translated;
   char* tptr;
   char* escp;
-  char* sptr = src;
+  const char* sptr = src;
   char* dptr = dest;
   char dochar;
   ChsTab* chrs = chrtbl ? chrtbl->t : (ChsTab*)NULL;
@@ -1880,8 +1876,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
   line = msg->lin;
   while(line) {
     nextline = line->next;
-    throw_release(line->text);
-    throw_xfree(line);
+    throw_xdelete(line);
     line = nextline;
   }
 
@@ -1924,7 +1919,8 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
       }
     }
 
-    line = msg->lin = (Line*)throw_xcalloc(1, sizeof(Line));
+    line = msg->lin = new Line();
+    throw_xnew(line);
       
     ptr = spanfeeds(ptr);
 
@@ -2118,7 +2114,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
               if(wraps and not ((line->type & GLINE_HARD) and not (line->type & GLINE_QUOT))) {
                 if(para != GLINE_QUOT) {
                   if(quoteflag) {
-                    if(prevline and prevline->text[0] == CTRL_A and prevline->type & GLINE_WRAP) {
+                    if(prevline and *prevline->txt.c_str() == CTRL_A and prevline->type & GLINE_WRAP) {
                       wraps = 0;
                       break;
                     }
@@ -2384,7 +2380,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
         else
           line->type |= GLINE_HARD;
 
-        *(bp+1) = NUL;
+        *(++bp/*+1*/) = NUL;
 
         // Get line length
         uint tmplinelength = (uint)((long)bp-(long)bptr);
@@ -2396,32 +2392,28 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
         }
 
         // Store line
-        if(line->isallocated())
-          throw_free(line->text);
-        line->text = (char*)throw_malloc(tmplinelength+10);
-        line->type &= ~GLINE_NOAL;
-        memcpy(line->text, linetmp+1, tmplinelength+5);
-        prev_ptr[0] = line->text[0];
-        prev_ptr[1] = line->text[1];
+        line->txt = linetmp+1; // .assign(linetmp+1, tmplinelength+5);
+        prev_ptr[0] = line->txt.empty() ? 0xFF : line->txt[0];
+        prev_ptr[1] = line->txt.length() < 2 ? 0xFF : line->txt[1];
 
         // Set line color and type
-        if((line->type & GLINE_QUOT) and not is_quote(line->text))
+        if((line->type & GLINE_QUOT) and not is_quote(line->txt.c_str()))
           line->type ^= GLINE_QUOT;
         if(line->type & GLINE_QUOT)
-          line->color = quotecolor(line->text);
+          line->color = quotecolor(line->txt.c_str());
         else if(inheader)
           line->color = C_READT;
         else
           line->color = C_READW;
 
         // Scan msg body top for RFC headerlines
-        if((*line->text == NUL) and not firstemptyline) {
+        if(line->txt.empty() and not firstemptyline) {
           firstemptyline = true;
           if(AA->Internetrfcbody()) {
             Line* linep = FirstLine(line);
             int headerlines = 0;
             while(linep) {
-              char* tptr = linep->text;
+              const char* tptr = linep->txt.c_str();
               if(*tptr) {
                 if(*tptr != CTRL_A) {
                   int kludgetype = ScanLine(msg, linep, tptr, getvalue, MASK_RFC);
@@ -2441,7 +2433,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
                             gotmime = true;
                           }
                           else {
-                            const char* keptr = linep->next ? linep->next->text : " ";
+                            const char* keptr = linep->next ? linep->next->txt.c_str() : " ";
                             if(check_multipart(ptr, keptr, boundary)) {
                               gotmultipart = true;
                               gotmime = true;
@@ -2492,13 +2484,13 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
                     else
                       linep->color = C_READK;
                     if(linep->next) {
-                      char lwsp = *linep->next->text;
+                      char lwsp = *linep->next->txt.c_str();
                       while((lwsp == ' ') or (lwsp == '\t') or (linep->type & GLINE_WRAP)) {
                         linep = linep->next;
                         linep->type |= linep->prev->type;
                         linep->color = linep->prev->color;
                         if(linep->next)
-                          lwsp = *linep->next->text;
+                          lwsp = *linep->next->txt.c_str();
                         else
                           break;
                       }
@@ -2526,16 +2518,15 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
         }
 
         prevline = line;
-        line = (Line*)throw_xcalloc(1, sizeof(Line));
+        line = new Line();
+        throw_xnew(line);
         line->prev = prevline;
 
         ptr = spanfeeds(ptr);
       }
 
       throw_release(linetmp);
-      if(line->isallocated())
-        throw_free(line->text);
-      throw_xfree(line);
+      throw_xdelete(line);
 
       // Scan for kludge-, tear- and originlines
       ScanKludges(msg, getvalue);
@@ -2579,7 +2570,7 @@ void MsgLineReIndex(GMsg* msg, int viewhidden, int viewkludge, int viewquote) {
     msg->lines++;
     if(line->next) {
       if(line->type & GLINE_QUOT) {
-        if(not (line->next->type & GLINE_QUOT) and not strblank(line->next->text)) {
+        if(not (line->next->type & GLINE_QUOT) and not strblank(line->next->txt.c_str())) {
           if(CFG->switches.get(quotespacing)) {
             line = AddLine(line, "");
             msg->lines++;
@@ -2587,10 +2578,12 @@ void MsgLineReIndex(GMsg* msg, int viewhidden, int viewkludge, int viewquote) {
         }
       }
       else {
-        if(msg->attr.pos())
-          if(strischg(line->text, "@position", ""))
-            line->type |= GLINE_POSI;
-        if((line->next->type & GLINE_QUOT) and not strblank(line->text)) {
+        const char *posn, *posn2 = line->txt.c_str();
+        if(msg->attr.pos() and ((posn = striinc("@position", posn2)) != NULL)) {
+          line->txt.erase(posn - posn2, 9);
+          line->type |= GLINE_POSI;
+        }
+        if((line->next->type & GLINE_QUOT) and not strblank(line->txt.c_str())) {
           if(CFG->switches.get(quotespacing)) {
             line = AddLine(line, "");
             msg->lines++;
@@ -2632,15 +2625,15 @@ void MsgLineReIndex(GMsg* msg, int viewhidden, int viewkludge, int viewquote) {
     }
     else if(line->type & GLINE_QUOT) {
       if(not viewquote) {
-        GetQuotestr(line->text, qbuf, &qlen);
+        GetQuotestr(line->txt.c_str(), qbuf, &qlen);
         strtrim(qbuf);
         if(strieql(qbuf0, qbuf)) {
-          if(strpbrk(line->text+qlen, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"))
+          if(strpbrk(line->txt.c_str()+qlen, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"))
             qmatches++;
         }
         else {
           strcpy(qbuf0, qbuf);
-          if(strpbrk(line->text+qlen, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"))
+          if(strpbrk(line->txt.c_str()+qlen, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"))
             qmatches = 1;
           else
             qmatches = 0;
@@ -2668,8 +2661,8 @@ void MsgLineReIndex(GMsg* msg, int viewhidden, int viewkludge, int viewquote) {
   line = msg->lin;
   while(line) {
     if(not (line->type & (GLINE_KLUDGE|GLINE_TEAR|GLINE_ORIG))) {
-      if(line->text) {
-        int n = strlen(line->text);
+      if(line->txt.c_str()) {
+        int n = line->txt.length();
         nonquotes += n;
         if(line->type & GLINE_QUOT)
            quotes += n;
@@ -2749,8 +2742,7 @@ Line* DeleteLine(Line* line) {
       line->next->prev = line->prev;
       nextline = line->next;
     }
-    throw_release(line->text);
-    throw_xfree(line);
+    throw_xdelete(line);
   }
 
   return nextline;
@@ -2807,13 +2799,10 @@ Line* LastLine(Line* line) {
 
 Line* AddLine(Line* line, char* buf, int where) {
 
-  Line* newline;
-
-  newline = (Line*)throw_xcalloc(1, sizeof(Line));
+  Line* newline = new Line(buf);
+  throw_xnew(newline);
   newline->type = GLINE_HARD;
-  newline->text = (char*)throw_malloc(strlen(buf)+10);
   newline->color = C_READW;
-  strcpy(newline->text, buf);
 
   return InsertLine(newline, line, where);
 }
@@ -2831,9 +2820,9 @@ Line* AddLine(Line* line, char* buf) {
 
 Line* AddLineFast(Line* oldline, char* text) {
 
-  Line* newline = (Line*)throw_xcalloc(1, sizeof(Line));
-  newline->type = GLINE_HARD|GLINE_NOAL;
-  newline->text = text;
+  Line* newline = new Line(text);
+  throw_xnew(newline);
+  newline->type = GLINE_HARD;
   newline->color = C_READW;
   newline->prev = oldline;
   newline->next = oldline->next;
@@ -2848,14 +2837,10 @@ Line* AddLineFast(Line* oldline, char* text) {
 
 Line* AddKludge(Line* line, char* buf, int where) {
 
-  Line* newline;
-
-  newline = (Line*)throw_xcalloc(1, sizeof(Line));
+  Line* newline = new Line(buf);
+  throw_xnew(newline);
   newline->type = GLINE_HARD|GLINE_KLUD;
-  newline->text = (char*)throw_malloc(strlen(buf)+10);
   newline->color = C_READK;
-  strcpy(newline->text, buf);
-
   return InsertLine(newline, line, where);
 }
 
@@ -2996,9 +2981,9 @@ void InvalidateControlInfo(GMsg* msg) {
 
   while(line) {
 
-    if(line->text and not (line->type & (GLINE_TEAR | GLINE_ORIG))) {
+    if(not (line->type & (GLINE_TEAR | GLINE_ORIG))) {
 
-      strcpy(buf, line->text);
+      strcpy(buf, line->txt.c_str());
 
       // Invalidate tearline
       if(not CFG->invalidate.tearline.first.empty())
@@ -3018,11 +3003,9 @@ void InvalidateControlInfo(GMsg* msg) {
       else
         doinvalidate(buf, "SEEN-BY: ", "SEEN+BY: ");
 
-      if(stricmp(buf, line->text)) {
+      if(stricmp(buf, line->txt.c_str())) {
         line->type &= ~GLINE_KLUDGE;
-        throw_release(line->text);
-        line->text = (char*)throw_malloc(strlen(buf)+10);
-        strcpy(line->text, buf);
+        line->txt = buf;
       }
 
     }
