@@ -110,7 +110,7 @@ const word _NET   = 0x0003;
 const word _ZONE  = 0x0004;
 const word _TEST  = 777;
 
-static string nodepath;                // Path to the nodelist files
+static std::string nodepath;                // Path to the nodelist files
 
 static time_t runtime = 0;
 static int    sh_mod = SH_DENYWR;
@@ -855,7 +855,7 @@ static void read_nodelists() {
 
     if(not quiet) std::cout << "* Writing statistics to " << statfilename << std::endl;
 
-    ofstream ofp(statfilename);
+    std::ofstream ofp(statfilename);
     if(not ofp) {
       if(not quiet) std::cout << "Error opening statfile " << statfilename << '!' << std::endl;
     }
