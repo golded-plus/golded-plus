@@ -736,8 +736,10 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
       msg->TextToLines(CFG->dispmargin-1);
       msg->orig = AA->Aka().addr;
       msg->charsetlevel = LoadCharset(CFG->xlatlocalset, AA->Xlatexport());
-      if(msg->charsetlevel!=0 and CharTable and not strblank(CharTable->exp))
-        strcpy(msg->charset, CharTable->exp);
+      if(msg->charsetlevel)
+        sprintf(msg->charset, "%s %d", AA->Xlatexport(), msg->charsetlevel);
+      else
+        sprintf(msg->charset, "%s 2", CFG->xlatlocalset);
       strcpy(msg->odom, CFG->aka[AkaMatch(&msg->orig, &AA->Aka().addr)].domain);
       if(AA->isecho() or have_origin(msg))
         DoTearorig(mode, msg);
