@@ -56,6 +56,9 @@ EXEEXT=
 OBJEXT=.o
 LIBEXT=.a
 LNKFLAGS+=-lbe
+#uncomment the following line if you build version to be used
+#on BONE-powered systems(Dan0 etc.) This improves some operations ...
+CPPFLAGS+=-DBEOS_BONE_BUILD
 else
 CAT=cat
 CC=gcc

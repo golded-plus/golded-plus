@@ -39,6 +39,10 @@
 #   include <unistd.h>
 #endif 
 
+#if defined(__BEOS__)
+#define stricmp strcasecmp
+#endif
+
 #include "hsksupp.h"
 #include "ffind.h"
 
