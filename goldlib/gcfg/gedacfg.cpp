@@ -350,6 +350,7 @@ bool gareafile::ReadAreafile(word crc, char* parameters) {
   const word CRC_WATERGATE     = 0x3ADB;
   const word CRC_WMAIL         = 0xB167;
   const word CRC_XMAIL         = 0x9D56;
+  const word CRC_SBBS          = 0xFD1E;
 
   switch(crc) {
 #ifndef GCFG_NOXBBS
@@ -461,6 +462,9 @@ bool gareafile::ReadAreafile(word crc, char* parameters) {
 #endif
 #ifndef GCFG_NOXMAIL
     case CRC_XMAIL:         ReadXMail(parameters);         break;
+#endif
+#ifndef GCFG_NOXMAIL
+    case CRC_SBBS:          ReadSynchronet(parameters);    break;
 #endif
     default:                return false;
   }

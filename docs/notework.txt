@@ -12,6 +12,25 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ Added Synchronet configuration parser:
+
+  Areafile Synchronet path\to\msgs.cnf
+
++ Added clipboard support for the input prompts. Since the selection
+  keys are not available the action is performed on the whole line.
+
+  Default assignments (which cannont be redefined -- sorry):
+
+  Shift-Ins, Ctrl-V   Paste
+  Shift-Del, Ctrl-X   Cut
+  Ctrl-Ins, Ctrl-C    Copy
+
+  In overwrite mode paste overwrites the whole input line otherwise
+  inserts one line from the clipboard from the current position.
+
+  Also added alias to Ctrl-R key - Alt-Backspace which reverts the
+  input prompt to it's initial value.
+
 + Added Midnight Commander compatible clipboard support for UNIX
   version. Should only be available if "~/.cedit" directory exist at
   GoldED+ startup time. (not tested)

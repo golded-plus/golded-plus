@@ -437,6 +437,9 @@ public:
 #ifndef GCFG_NOXMAIL
   void ReadXMail(char* tag);
 #endif
+#ifndef GCFG_NOSBBS
+  void ReadSynchronet(char* tag);
+#endif
 
   bool ReadAreafile(word crc, char* parameters);
 };

@@ -70,3 +70,5 @@
 #CPPFLAGS+=-DGCFG_NOWMAIL
 # Uncomment to disable xMail support
 #CPPFLAGS+=-DGCFG_NOXMAIL
+# Uncomment to disable SBBS support
+#CPPFLAGS+=-DGCFG_NOSBBS
