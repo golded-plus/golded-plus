@@ -95,9 +95,9 @@ void gareafile::ReadSynchronet(char* tag) {
         aa.setdesc(sub.lname);
         aa.groupid = 0x8000 + sub.grp;
         if(*sub.data_dir)
-          MakePathname(file, sub.data_dir, sub.code);
+          MakePathname(file, sub.data_dir, strlwr(sub.code));
         else
-          MakePathname(file, path, sub.code);
+          MakePathname(file, path, strlwr(sub.code));
         aa.setpath(file);
         aa.aka = primary_aka;
         aa.aka.set(sub.faddr);
