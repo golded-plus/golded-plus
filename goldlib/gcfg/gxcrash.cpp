@@ -108,6 +108,7 @@ void gareafile::ReadCrashmail(char* tag) {
     aa.reset();
     aa.type = 0xff;
     address[0] = NUL;
+    domain[0] = NUL;
 
     const word CRC_AKA = 0x13A4;
     const word CRC_AREA = 0x010B;
@@ -151,6 +152,12 @@ void gareafile::ReadCrashmail(char* tag) {
               AddNewArea(aa);
             aa.reset();
           }
+          unconfirmed = false;
+          jbstrcpy(tmp, buf, 100, &jbcpos);
+          if(strieql(tmp, "DEFAULT") or strnieql(tmp, "DEFAULT_", 8)) {
+            aa.type = 0xff;
+            break;
+          }
           switch(crc16) {
             case CRC_NETMAIL:
               aa.type = GMB_NET;
@@ -165,10 +172,6 @@ void gareafile::ReadCrashmail(char* tag) {
               aa.attr = attribslocal;
               break;
           }
-          unconfirmed = false;
-          jbstrcpy(tmp, buf, 100, &jbcpos);
-          if(strieql(tmp, "DEFAULT") or strnieql(tmp, "DEFAULT_", 8))
-            break;
           aa.setechoid(tmp);
           jbstrcpy(tmp, buf, 50, &jbcpos);
           aa.aka = primary_aka;

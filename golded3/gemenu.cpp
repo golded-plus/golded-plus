@@ -530,6 +530,7 @@ int SelectFromFile(const char* file, char* selection, const char* title, const c
     if(n != -1) {
       strcpy(selection, Listi[n]);
       strtrim(selection);
+      strltrim(selection);
       retval = true;
     }
     for(n=0; n<lines; n++)
