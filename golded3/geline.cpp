@@ -421,31 +421,35 @@ char* strxmimecpy(char* dest, const char* source, int level, int size, bool dete
 
   ISub buf, buf2;
   char charset[100];
-  bool need_reload;
   int table = -1;
 
   strxcpy(buf, source, sizeof(buf));
   mime_header_decode(buf2, buf, charset);
 
-  need_reload = (detect and *charset);
-  if(need_reload) {
-    table = LoadCharset(NULL, NULL, 1);
-    level = LoadCharset(charset, CFG->xlatlocalset);
-    if (!level) {
-      strcpy(charset, CFG->xlatimport);
+  if(*charset) {
+    if(detect) {
+      table = LoadCharset(NULL, NULL, 1);
       level = LoadCharset(charset, CFG->xlatlocalset);
+      if (!level) {
+        strxcpy(charset, AA->Xlatimport(), sizeof(charset));
+        level = LoadCharset(charset, CFG->xlatlocalset);
+      }
     }
+
+    XlatStr(buf, buf2, level, CharTable);
+
+    if(detect) {
+      if(table == -1)
+        LoadCharset(CFG->xlatimport, CFG->xlatlocalset);
+      else
+        LoadCharset(CFG->xlatcharset[table].imp, CFG->xlatcharset[table].exp);
+    }
+
+    strxcpy(dest, buf, size);
   }
+  else
+    strxcpy(dest, buf2, size);
 
-  XlatStr(buf, buf2, level, CharTable);
-
-  if(need_reload)
-    if(table == -1)
-      LoadCharset(CFG->xlatimport, CFG->xlatlocalset);
-    else
-      LoadCharset(CFG->xlatcharset[table].imp, CFG->xlatcharset[table].exp);
-
-  strxcpy(dest, buf, size);
   return dest;
 }
 
@@ -1941,8 +1945,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
     // Set default conversion table for area
     if(getvalue) {
       if(not strieql(AA->Xlatimport(), CFG->xlatlocalset)) {
-        memset(msg->charset, 0, sizeof(msg->charset));
-        strcpy(msg->charset, AA->Xlatimport());
+        strxcpy(msg->charset, AA->Xlatimport(), sizeof(msg->charset));
         level = msg->charsetlevel = LoadCharset(msg->charset, CFG->xlatlocalset);
       }
     }
@@ -2052,8 +2055,12 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
               if(kludgetype == FSC_I51) {
                 msg->i51 = true;
                 // Convert FSC-0051.003 to FSC-0054.003
-                strcpy(chsbuf, "LATIN-1");
+                strxcpy(chsbuf, "LATIN-1", sizeof(chsbuf));
                 chslev = LoadCharset(chsbuf, CFG->xlatlocalset);
+                if(!chslev) {
+                  strxcpy(chsbuf, AA->Xlatimport(), sizeof(chsbuf));
+                  chslev = LoadCharset(chsbuf, CFG->xlatlocalset);
+                }
                 if(chslev) {
                   level = msg->charsetlevel = chslev;
                   strcpy(msg->charset, chsbuf);
@@ -2069,6 +2076,10 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
                 // Workaround for buggy mailreaders which stores '_' in charset name
                 strchg(chsbuf,'_',' ');
                 chslev = LoadCharset(chsbuf, CFG->xlatlocalset);
+                if(!chslev) {
+                  strxcpy(chsbuf, AA->Xlatimport(), sizeof(chsbuf));
+                  chslev = LoadCharset(chsbuf, CFG->xlatlocalset);
+                }
                 if(chslev) {
                   level = msg->charsetlevel = chslev;
                   strcpy(msg->charset, chsbuf);
@@ -2078,7 +2089,10 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
               }
               else if(kludgetype == RFC_CONTENT_TYPE) {
                 // Content-Type: text/plain; charset="us-ascii"
-                const char *mime_charset = striinc("charset=", ptr);
+                string tmp = ptr;
+                if(keptr and (keptr[1] == ' '))
+                  tmp += keptr+1;
+                const char *mime_charset = striinc("charset=", tmp.c_str());
                 if(mime_charset != NULL) {
                   if(mime_charset[8] == '\"') {
                     strxcpy(chsbuf, mime_charset+9, sizeof(chsbuf));
@@ -2090,6 +2104,10 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
                   if(striinc("8859", chsbuf))
                     ISO2Latin(chsbuf, chsbuf);
                   chslev = LoadCharset(chsbuf, CFG->xlatlocalset);
+                  if(!chslev) {
+                    strxcpy(chsbuf, AA->Xlatimport(), sizeof(chsbuf));
+                    chslev = LoadCharset(chsbuf, CFG->xlatlocalset);
+                  }
                   if(chslev) {
                     level = msg->charsetlevel = chslev;
                     strcpy(msg->charset, chsbuf);
@@ -2109,6 +2127,10 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
                   msg->charsetencoding |= GCHENC_QP;
                   strcpy(chsbuf, MakeQuotedPrintable(msg->charset));
                   chslev = LoadCharset(msg->charset, CFG->xlatlocalset);
+                  if(!chslev) {
+                    strxcpy(chsbuf, AA->Xlatimport(), sizeof(chsbuf));
+                    chslev = LoadCharset(chsbuf, CFG->xlatlocalset);
+                  }
                   if(chslev) {
                     level = msg->charsetlevel = chslev;
                     strcpy(msg->charset, chsbuf);
@@ -2122,6 +2144,10 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
                   else
                     strxcpy(chsbuf, ptr, sizeof(chsbuf));
                   chslev = LoadCharset(chsbuf, CFG->xlatlocalset);
+                  if(!chslev) {
+                    strxcpy(chsbuf, AA->Xlatimport(), sizeof(chsbuf));
+                    chslev = LoadCharset(chsbuf, CFG->xlatlocalset);
+                  }
                   if(chslev) {
                     level = msg->charsetlevel = chslev;
                     strcpy(msg->charset, chsbuf);
