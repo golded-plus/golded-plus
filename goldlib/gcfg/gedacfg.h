@@ -283,6 +283,12 @@ protected:
 #ifndef GCFG_NOQECHO
   void ReadQEchoFile(char* file, char* options, char* origin);
 #endif
+#ifndef GCFG_NOSPCT
+  void ParseSpaceArea(const char *type_path, AreaCfg &aa);
+  void ReadSpaceCtl(const char *path);
+  void ReadSpaceNtm(const char *path);
+  void ReadSpaceAr(const char *path);
+#endif
 #if !defined(GCFG_NOSQSH) || !defined(GCFG_NOPARTOSS)
   void ReadSquishFile(char* path, char* file, char* options, char* origin, int group);
 #endif
