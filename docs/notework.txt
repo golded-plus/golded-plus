@@ -12,6 +12,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+! Win32 console: if buffer size is set to more than 100 lines then
+  windows size will be used.
+
 - Fixed infinite loop when last message is twitkill, previous deleted
   and showdeleted is off (untested).
 

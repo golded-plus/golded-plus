@@ -595,6 +595,13 @@ void GVid::detectinfo(GVidInfo* _info) {
   _info->cursor.column = csbi.dwCursorPosition.X;
   _info->color.textattr = csbi.wAttributes;
 
+  if(_info->screen.rows > 100) {
+    _info->screen.rows = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+    _info->screen.columns = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+    _info->cursor.row = csbi.dwCursorPosition.Y - csbi.srWindow.Top + 1;
+    _info->cursor.column = csbi.dwCursorPosition.X - csbi.srWindow.Left + 1;
+  }
+
   // Get cursor form
   CONSOLE_CURSOR_INFO cci;
   GetConsoleCursorInfo(gvid_hout, &cci);
