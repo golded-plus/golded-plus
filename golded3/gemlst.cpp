@@ -539,10 +539,10 @@ void GMsgList::Run() {
 
   MLst dummy_mlst;
   dummy_mlst.initialized = false;
-  for(uint i=0; i<maximum_index; i++)
+  for(uint i=0; i<= maximum_index; i++)
     mlst.push_back(dummy_mlst);
 
-  maximum_position = MinV((uint)maximum_index - 1, (uint)ylen - 1);
+  maximum_position = MinV((uint)maximum_index, (uint)ylen - 1);
 
   if(mlst.size() != 0)
     run_picker();
