@@ -744,7 +744,7 @@ struct kbd {
   { VK_TAB,       Key_Tab,    Key_S_Tab,  Key_C_Tab,  Key_A_Tab },
   { VK_RETURN,    Key_Ent,    Key_Ent,    Key_C_Ent,  Key_A_Ent },
   { VK_ESCAPE,    Key_Esc,    Key_Esc,    Key_Esc,    Key_A_Esc },
-  { VK_SPACE,     Key_Space,  Key_Space,  Key_Space,  Key_Space },
+  { VK_SPACE,     -1,         -1,         Key_Space,  Key_Space },
 
   { '0',          Key_0,      Key_S_0,    -1,         Key_A_0 },
   { '1',          Key_1,      Key_S_1,    -1,         Key_A_1 },
@@ -894,7 +894,7 @@ int gkbd_nt2bios(INPUT_RECORD& inp) {
   if(c != -1)
     if(ascii and not (right_alt_same_as_left ? (state & (LEFT_ALT_PRESSED | RIGHT_ALT_PRESSED)) : (state & LEFT_ALT_PRESSED)))
       if(isalnum(keycode))
-        return ascii;
+        return (ascii == ' ') ? Key_Space : ascii;
   if(ISEXT(c))
     return EXTVAL(c) << 8;
 

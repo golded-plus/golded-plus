@@ -231,9 +231,10 @@ char* g_get_clip_text(void) {
         cpu.bx(0x0000);
         cpu.genint(0x2f);
         if(cpu.ax() != 0x0000) {
-          text = (char *) throw_malloc(len);
+          text = (char *) throw_malloc(len+1);
           if(text)
             movedata(selector, 0, _my_ds(), (unsigned) text, len);
+          text[len] = NUL;
         }
         __dpmi_free_dos_memory(selector);
       }
