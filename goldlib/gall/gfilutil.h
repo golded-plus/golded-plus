@@ -67,11 +67,7 @@
 
 //  ------------------------------------------------------------------
 
-#ifdef PATH_MAX
-#define GMAXPATH (PATH_MAX+1)
-#else
-#define GMAXPATH 1025
-#endif
+#define GMAXPATH (FILENAME_MAX+1) /* ANSI C */
 
 
 //  ------------------------------------------------------------------

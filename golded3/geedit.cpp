@@ -113,6 +113,8 @@ void IEclass::setlinetype(Line* __line) {
 
 int IEclass::dispchar(vchar __ch, int attr) {
 
+  if(__ch == '\0') // possible if line empty
+    __ch = ' ';
   if(__ch != '\n') {
     if(__ch == ' ')
       __ch = EDIT->CharSpace();
@@ -2201,7 +2203,7 @@ int IEclass::Start(int __mode, uint* __position, GMsg* __msg) {
 
     int backattr = 0;
     if(blockcol == -1) {
-      backattr = dispchar(currline->txt[col], C_READC);
+      backattr = dispchar(currline->txt.c_str()[col], C_READC);
       gotorowcol(col, row);
     }
 
@@ -2241,7 +2243,7 @@ int IEclass::Start(int __mode, uint* __position, GMsg* __msg) {
     }
 
     if(blockcol == -1)
-      dispchar(currline->txt[col], backattr);
+      dispchar(currline->txt.c_str()[col], backattr);
 
     chartyped = false;
     if((_ch < KK_Commands) and (_ch & 0xFF) and not ismacro) {
