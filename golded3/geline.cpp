@@ -2561,6 +2561,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode) {
             else {
               if(headerlines) {
                 linep->type |= GLINE_KLUD;
+                linep->kludge = GKLUD_RFC;
                 linep->color = C_READK;
               }
               if(--irfcbody == 0)

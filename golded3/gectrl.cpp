@@ -241,11 +241,12 @@ void DoKludges(int mode, GMsg* msg, int kludges) {
 
   // Strip all the kludges we insert ourselves
 
-  int stripkludges = (~kludges)&(GKLUD_RFC|GKLUD_FWD|GKLUD_INTL|GKLUD_FMPT|GKLUD_TOPT|GKLUD_FLAGS|GKLUD_AREA|GKLUD_MSGID|GKLUD_REPLY|GKLUD_PID|GKLUD_CHARSET|GKLUD_KNOWN|GKLUD_PATH|GKLUD_SEENBY);
+  if(kludges == 0)
+    kludges = (GKLUD_RFC|GKLUD_FWD|GKLUD_INTL|GKLUD_FMPT|GKLUD_TOPT|GKLUD_FLAGS|GKLUD_AREA|GKLUD_MSGID|GKLUD_REPLY|GKLUD_PID|GKLUD_CHARSET|GKLUD_KNOWN|GKLUD_PATH|GKLUD_SEENBY);
 
   while(line) {
 
-    if(line->kludge & stripkludges) {
+    if(line->kludge & kludges) {
       bool waswrapped;
       do {
         waswrapped = (line->type & GLINE_WRAP) ? true : false;
@@ -504,12 +505,19 @@ void DoKludges(int mode, GMsg* msg, int kludges) {
         }
 
         if(AA->Internetrfcbody() and not AA->isnewsgroup() and line->next) {
-          const char *nline_txt = line->next->txt.c_str();
-          if(not strblank(nline_txt) and not strnieql(nline_txt, "XPost:", 6) and
-             not strnieql(nline_txt, "Copy:", 5) and not strnieql(nline_txt, "BCopy:", 6)) {
-            line = AddKludge(line, "");
-            line->kludge = GKLUD_RFC;
-          }
+          do {
+            const char *nline_txt = line->next->txt.c_str();
+            if(strblank(nline_txt))
+              break;
+            else if(not strnieql(nline_txt, "XPost:", 6) and
+                    not strnieql(nline_txt, "Copy:", 5) and
+                    not strnieql(nline_txt, "BCopy:", 6)) {
+              line = AddKludge(line, "");
+              line->kludge = GKLUD_RFC;
+              break;
+            }
+            line = line->next;
+          } while(line->next);
         }
       }
       else {

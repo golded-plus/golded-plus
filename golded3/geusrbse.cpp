@@ -856,7 +856,7 @@ bool guserbase::lookup_addressbook(GMsg* msg, char* name, char* aka, bool browse
 
       found = true;
 
-      if(not strblank(entry.iaddr) and not AA->isinternet()) {
+      if(not entry.fidoaddr.valid() and not strblank(entry.iaddr) and not AA->isinternet()) {
         // do UUCP addressing
         strcpy(msg->realto, entry.name);
         if(*AA->Internetgate().name)
