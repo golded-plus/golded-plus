@@ -221,7 +221,9 @@ char* g_get_clip_text(void) {
     cpu.genint(0x2f);
     len = cpu.ax() + (cpu.dx() << 16);
     if(len != 0)
-      if((seg = __dpmi_allocate_dos_memory(len >> 4, &selector)) != -1) {
+      // For compatibility with http://www.chat.ru/~tulser/clipbrd.zip
+      // we'll round up memory.
+      if((seg = __dpmi_allocate_dos_memory((len + 0x1f) >> 4, &selector)) != -1) {
         // Get clipboard data
         cpu.ax(0x1705);
         cpu.dx(0x07); // OEM text

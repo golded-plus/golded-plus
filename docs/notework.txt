@@ -12,6 +12,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Compatibility fix for http://www.chat.ru/~tulser/clipbrd.zip. Though
+  it is not GoldED+ fault.
+
 - Some fixes for replying through the gate. If someone use
   "INTERNETREPLY NO" please report if it get broken with this changes.
 
