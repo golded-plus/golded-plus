@@ -688,13 +688,18 @@ ScanData (FILE *datei, char *fname, int *errcode,
      * Detect a UUDeview-Style header
      */
 
-    if (_FP_strnicmp (line, "_=_ Part ", 9) == 0 &&
+    if ((_FP_strnicmp (line, "_=_ Part ", 9) == 0 ||
+	_FP_strnicmp (line, "section ", 8) == 0) &&
 	result->uudet != YENC_ENCODED) {
       if (result->uudet) {
 	fseek (datei, oldposition, SEEK_SET);
 	break;
       }
       result->partno = atoi (line + 8);
+      if ((ptr = _FP_stristr (line, " of ")) != NULL) {
+        int maxpno = atoi (ptr + 4);
+        if(maxpno != 0) result->maxpno = maxpno;
+      }
       if ((ptr = _FP_stristr (line, "of file ")) != NULL) {
 	ptr += 8;
 	while (isspace (*ptr)) ptr++;

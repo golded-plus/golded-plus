@@ -12,6 +12,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed small bug in UUE decoder which prevents unsorted multipart UUE
+  from decoding.
+
 - EchoAreaDefaults was not applied to the local areas. Fixed.
 
 ! Ctrl-R and Alt-Backspace in fields now toggles information between

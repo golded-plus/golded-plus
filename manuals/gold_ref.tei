@@ -1640,7 +1640,8 @@ ADDRESS 2:236/77@fidonet      ; Node address with domain</eg>
           See also:
         </label>
         <item>
-          <ref target=INTERNETGATE><kw/INTERNETGATE/</ref>
+          <ref target=INTERNETGATE><kw/INTERNETGATE/</ref>,
+          <ref target=NAMESFILE><kw/NAMESFILE/</ref>
         </item>
         <label>
           Examples:
@@ -2162,13 +2163,16 @@ APP OtherProg IRQ 5</eg>
         <item>
           <kw/AREA/ <ident>&lt;echoid&gt; &lt;<![ CDATA ["desc"]]>&gt;
           &lt;msgbase&gt;&lsqb;type&rsqb; &lt;location&gt; &lsqb;akano&rsqb;
-          &lsqb;attrs&rsqb;</ident>
+          &lsqb;attrs&rsqb;</ident><lb>
+          <kw/AREA/ <ident>&lt;-FILE&gt; &lt;type&gt; &lsqb;path/file&rsqb;
+          &lsqb;switches&rsqb;</ident>
         </item>
         <label>
           Description:
         </label>
         <item>
-          This keyword defines a mail area in <name>GoldED+</name>.
+          This <strong/obsolete/ keyword defines a mail area or external
+          area setup.
         </item>
         <label>
           Parameters:
@@ -2243,10 +2247,12 @@ APP OtherProg IRQ 5</eg>
         </label>
         <item>
           It is recommended to use the newer
-          <ref target=AREADEF><kw>AREADEF</kw></ref> keyword, which allows more
+          <ref target=AREADEF><kw/AREADEF/</ref> keyword, which allows more
           detailed mail area setup.<lb>
           If more than one area defined to the same path or areatag then last
-          definition overrides previous ones.
+          definition overrides previous ones.<lb>
+          For the <ident/-FILE/ parameters see
+          <ref target=AREAFILE><kw/AREAFILE/</ref> keyword.
         </item>
         <label>
           Processed by:

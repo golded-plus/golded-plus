@@ -448,6 +448,7 @@ UUGetPartNo (char *subject, char **where, char **whend)
       break;
   }
 
+#if 0 /* asa */
   /*
    * look for the string "part " followed by a number
    */
@@ -487,6 +488,7 @@ UUGetPartNo (char *subject, char **where, char **whend)
       }
     }
   }
+#endif /* asa */
 
   /*
    * look for the string "part" followed by a number
