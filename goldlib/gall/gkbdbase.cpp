@@ -1233,7 +1233,7 @@ gkey kbxget_raw(int mode) {
         }
 
         // Fix Win9x anomaly
-        if((CKS & NUMLOCK_ON) and (VKC == VK_DELETE))
+        if((CKS & NUMLOCK_ON) and (VKC == VK_DELETE) and ascii)
           VKC = VK_DECIMAL;
 
         switch(VKC) {
