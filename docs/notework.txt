@@ -12,6 +12,10 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- To fix problem with related pathname in NODEPATH the Goldnode will
+  write only filename in .gxl file. Most users should not notice this
+  change at all.
+
 - InternetReply should only affect netmail areas. Fixed.
 
 - Fixed more bugs with block deletion undo.
