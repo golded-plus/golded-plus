@@ -565,8 +565,8 @@ void IEclass::GoLeft() {
     if(currline->prev) {
       GoUp();
       GoEOL();
-      if((col != mincol) and ((currline->txt[col] == '\n') or not ((col == (maxcol + 1)) and (currline->txt[col-1] == ' '))))
-        col--;
+//      if((col != mincol) and ((currline->txt[col] == '\n') or not ((col == (maxcol + 1)) and (currline->txt[col-1] == ' '))))
+//        col--;
     }
   }
   else
