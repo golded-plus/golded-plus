@@ -216,6 +216,10 @@ void GMsgList::do_delayed() {
     ReadMlst(index);
     AA->LoadMsg(&msg, mlst[index]->msgno, CFG->dispmargin-(int)CFG->switches.get(disppagebar));
     mlst[index]->goldmark = goldmark;
+    if(mlst[index]->high & MLST_HIGH_FROM)
+      msg.attr.fmu1();
+    if(mlst[index]->high & MLST_HIGH_TO)
+      msg.attr.tou1();
     int mlstwh = whandle();
     HeaderView->Use(AA, &msg);
     HeaderView->Paint();
@@ -690,6 +694,17 @@ void GThreadlist::do_delayed() {
   // Update header and statusline
   if(AA->Msglistheader()) {
     AA->LoadMsg(&msg, list[index].msgno, CFG->dispmargin-(int)CFG->switches.get(disppagebar));
+    for(std::vector<Node>::iterator x = CFG->username.begin(); x != CFG->username.end(); x++) {
+      if(strieql(msg.By(), x->name)) {
+        msg.attr.fmu1();
+      }
+      if(strieql(msg.to, x->name)) {
+        msg.attr.tou1();
+      }
+    }
+    if(strieql(msg.to, AA->Internetaddress())) {
+      msg.attr.tou1();
+    }
     int mlstwh = whandle();
     HeaderView->Use(AA, &msg);
     HeaderView->Paint();
