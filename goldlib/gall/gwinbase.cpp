@@ -309,10 +309,18 @@ int wshadow(int attr) {
     // read current screen characters/attributes and save in shadow's buffer
     vatch tmp[2];
     *q = vgetw(crow, ccol);
+#ifndef __linux__
     tmp[0] = vsattr(*q, attr);
+#else
+    tmp[0] = vsattr(' ', attr);
+#endif
     q++;
     *q = vgetw(crow, ccol + 1);
+#ifndef __linux__
     tmp[1] = vsattr(*q, attr);
+#else
+    tmp[1] = vsattr(' ', attr);
+#endif
     q++;
 
     // write characters back to screen using shadow's attribute
@@ -331,7 +339,11 @@ int wshadow(int attr) {
 
     // read attribs/chars and store in buffers
     *q = vgetw(crow, ccol++);
+#ifndef __linux__
     *wptr++ = vsattr(*q, attr);
+#else
+    *wptr++ = vsattr(' ', attr);
+#endif
     q++;
   }
 
@@ -1879,8 +1891,13 @@ void wpropbar(int mode, int xx, int yy, long len, long barlen, int attr, long po
   //  pos    = present position.
   //  size   = total size of field.
 
+#ifndef __linux__
   const vchar _fld = ACS_BOARD;
   const vchar _bar = ACS_BLOCK;
+#else
+  const vchar _fld = ' ';
+  const vchar _bar = _box_table(gwin.active->btype, 13);
+#endif
   const vchar _up  = '\x18';
   const vchar _dwn = '\x19';
 
@@ -2035,6 +2052,9 @@ void wscrollbar(int orientation, uint total, uint maxpos, uint pos, int sadd) {
   const vchar arrowrightchar = '\x1A';
 
   int attr = (gwin.active->sbattr == -1) ? gwin.active->battr : gwin.active->sbattr;
+#ifdef __linux__
+  int thumbattr = revsattr(attr);
+#endif
 
   int srow, scol;
   uint visiblelen, barlen;
@@ -2077,7 +2097,11 @@ void wscrollbar(int orientation, uint total, uint maxpos, uint pos, int sadd) {
     while(row < erow1)
       vputc(row++, scol, attr|ACSET, barchar);
     while(row < erow2)
+#ifdef __linux__
+      vputc(row++, scol, thumbattr|ACSET, thumbchar);
+#else
       vputc(row++, scol, attr|ACSET, thumbchar);
+#endif
     while(row < erow3)
       vputc(row++, scol, attr|ACSET, barchar);
     vputc(row, scol, revsattr(attr), arrowdownchar);
@@ -2091,7 +2115,11 @@ void wscrollbar(int orientation, uint total, uint maxpos, uint pos, int sadd) {
     while(col < ecol1)
       vputc(srow, col++, attr|ACSET, barchar);
     while(col < ecol2)
+#ifdef __linux__
+      vputc(srow, col++, thumbattr|ACSET, thumbchar);
+#else
       vputc(srow, col++, attr|ACSET, thumbchar);
+#endif
     while(col < ecol3)
       vputc(srow, col++, attr|ACSET, barchar);
     vputc(srow, col, revsattr(attr), arrowrightchar);

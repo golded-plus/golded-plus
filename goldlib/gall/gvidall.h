@@ -37,7 +37,11 @@
 #include <gcurses.h>
 #else
 #define ACS_BOARD '°'
+#ifndef __linux__
 #define ACS_BLOCK 'Û'
+#else
+#define ACS_BLOCK ' '
+#endif
 #endif
 #if defined(__WIN32__)
 #include <windows.h>
