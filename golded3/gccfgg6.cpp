@@ -92,7 +92,7 @@ void CfgNetname() {
   
   Name buf;
   
-  strxcpy(buf, val, sizeof(buf));
+  strxcpy(buf, StripQuotes(val), sizeof(buf));
   if(cfgingroup)
     CFG->grp.AddItm(GRP_NETNAME, buf, strlen(buf)+1);
   else

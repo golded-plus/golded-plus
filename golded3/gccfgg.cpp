@@ -665,7 +665,7 @@ CfgGed::CfgGed() {
   adeptxbbsuserno = 0;
   addressbookadd = YES;
   addresslookupfirst = false;
-  areaautoid = AUTOID_VERBOSE;
+  areaautoid = AUTOID_LONG;
   areacopydirect = false;
   areacopyaddid = false;
   areaforwarddirect = false;

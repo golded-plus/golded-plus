@@ -1,4 +1,4 @@
-<!doctype tei.2 public '-//TEI//DTD TEI Tools 0.1//EN'>
+<!doctype tei.2 public '-7//TEI//DTD TEI Tools 0.1//EN'>
 <!-- $Id$ -->
 <TEI.2 lang='en'>
 <!-- --------------------------------------------------------------------- -->
@@ -135,7 +135,7 @@
     </p>
     <p>
       Additionally, permission is hereby specifically given to link
-      <name/GoldED+/, <name/the Goldware Utilities/ and the <name>Goldware
+      <name/GoldED+/, the <name/Goldware Utilities/ and the <name>Goldware
       Library</name> with any software or software library that meets the
       <name/Open Source Definition/, as given on
       <xref type='URL'>http://www.opensource.org</xref>. This includes
@@ -195,6 +195,244 @@
     <p>
       Products and company names listed are trademarks or trade names of their
       respective companies.
+    </p>
+  </div1>
+<!-- --------------------------------------------------------------------- -->
+  <div1>
+    <head>
+      The Message Database Formats
+    </head>
+    <p>
+      <list type=gloss>
+        <label>
+          <name/Opus/, <name/FTS-0001/
+        </label>
+        <item>
+          These are two variants of the same type of msgbase. It works by using
+          one physical file per message (<code/1.msg/, <code/2.msg/ etc.),
+          collecting them in a directory for each area. Depending on the
+          clustersize on the harddisk, this can be a very wasteful and slow
+          way to store messages. With a clustersize of about 512 bytes, the
+          waste may be acceptable, but the access speed can be dramatically
+          slow if there are many <code/*.msg/ files, due to the file system.
+          Cache adjustments can improve it, but there are limits.<bl>
+          In echomail areas, this format has a special quirk: The first message
+          (<code/1.msg/) is normally used to store the so-called
+          <q/highwatermark/. The highwatermark tells the echomail processor
+          where it should start scanning for new messages entered by users.
+          By deleting (zapping) the highwatermark, you can make the echomail
+          processor re-scan the whole area again. This may cause messages to
+          be sent out as <q/dupes/, so this should be used sparingly and
+          carefully, if at all!  The highwatermark can also be <q/heated/ -
+          which means that it is set to the last msg in the area. This
+          prevents the echomail processor from finding newly entered
+          unscanned msgs. Use with care.<bl>
+          The variants: The <name/Opus/ format originated in the <name/Opus/
+          <abbr/BBS/ system. It put some <name/Fido/ undocumented (?) fields to
+          use as date/time stamps. The <name/FTS-0001/ (defined in FTS-0001,
+          revision 12 and later) format uses the undocumented fields to set the
+          zone/point information for the message. To the authors knowledge, the
+          <name/Opus/ variant is the dominant, and the <name/FTS-0001/ variant
+          is doomed to oblivion. If in doubt, use the <name/Opus/ format.
+        </item>
+        <label>
+          <name/QuickBBS/, <name/RemoteAccess/, and <name/Hudson/
+        </label>
+        <item>
+          This msgbase format was invented by <name/Adam Hudson/, and was first
+          used in his <name/QuickBBS/ package. Later several other
+          <abbr/BBS/'es were cloned from <name/QuickBBS/ (like
+          <name/RemoteAccess/ and <name/SuperBBS/).<bl>
+          The format limits the total size of <code/msgtxt.bbs/ to a maximum of
+          16MB, which translates to about 16000 msgs of <q/average/ length.
+          <name/GoldED+/ automatically warns you if the limit is close to being
+          reached, and advises you to pack the msgbase.<lb>
+          The first incarnations of <name/QuickBBS/ did not support <q/sharing/
+          of the msgbase. This became more and more important in later years as
+          multitaskers and networks got cheaper. <name/RemoteAccess/ <abbr/BBS/
+          was the first to implement a useful method, and later a better method
+          was evolved (known as <name/RA/ 1.01 or <name/RA/ 1.1x), which is now
+          the standard for all modern software that supports msgbase sharing.
+          <name/GoldED+/ fully supports the new standard of course.<lb>
+          The main virtue of this format is that it is very fast to access the
+          msgbase.<lb>
+          The main disadvantage is that it can be very sensitive to disk
+          problems, and it is a common horror story that people loose their
+          entire msgbase because the disk developed bad clusters or some
+          program went berserk and messed up the msgbase files.
+        </item>
+        <label>
+          <name/Goldbase/
+        </label>
+        <item>
+          This is an enhanced version of the <name/Hudson/ format, introduced
+          in <name/QuickBBS/ 2.80 by the <name/QuickBBS/ group.<lb>
+          The <name/Goldbase/ format removes the 16MB size limit and allows up
+          to 500 message areas instead of the 200 in <name/Hudson/.
+        </item>
+        <label>
+          <name/Squish/
+        </label>
+        <item>
+          The <name/Squish/ format was invented by <name/Maximus/ <abbr/BBS/
+          author <name/Scott Dudley/ in 1991, and was first used in
+          <name/Maximus CBCS/ v2.00.<bl>
+          The use of a database for each area - instead of one file per msg,
+          or all msgs in one big database - makes this format fast, very
+          safe and resistant to disk problems. Even if something messed up a
+          <name/Squish/ area, it can almost always be fixed and recovered,
+          using the <name/SQFIX/ or <name/SQREIDX/ utilities that come with the
+          <name/Squish/ echomail processor.<lb>
+          A special feature of <name/Squish/ areas is that they can be
+          self-maintaining. You can setup a <name/Squish/ area so that it may
+          only contain a maximum of so-and-so many msgs, and then it will
+          automatically re-use the space used by old msgs when the limit is
+          reached, and so it will practically stop growing. It will still need
+          packing, but not nearly as often as a <name/Hudson/ msgbase has to.
+        </item>
+        <label>
+          <name/Ezycom/
+        </label>
+        <item>
+          <name/Ezycom/ format.
+        </item>
+        <label>
+          <name/JAM/
+        </label>
+        <item>
+          <name/JAM/ format as defined in the <name/JAM(mbp)/ revision 001.
+          Also supports <name/CrashMail/, <name/CrashEcho/, and <name/HPT/
+          highwater marks.<bl>
+          <name/GoldED+/ currently ignores revision number of header structure
+          and assumes that future revisions will remain backward compatible.
+          When creating new msgs, GoldED uses the revision 1 header
+          structure.<bl>
+          <name/GoldED+/ currently doesn't support passwords to access the
+          message base and/or indiviual messages. When creating a new
+          <name/JAM/ msgbase and/or new <name/JAM/ msgs, <name/GoldED+/ sets
+          the password to FFFFFFFFh. If you change an existing message which
+          has a password, the password is <hi/NOT/ preserved, but reset to
+          FFFFFFFFh.<bl>
+          The <name/JAM/ lastread file is designed such that is has to be
+          searched for a userid/usercrc, because one cannot assume that the
+          records are in a specific order. The <name/JAM/ <abbr/API/ searches
+          the userid field. However <name/GoldED+/ searches for the usercrc,
+          not the userid. In any case, it seems that <name/RemoteAccess/ 2.x
+          sets both the userid and usercrc to the same value.<bl>
+          <name/GoldED+/ currently doesn't support the escaping described in
+          the <name/JAM/ specs. The specs state that the current revision of
+          <name/JAM/ does not support it either, so it seems to be not great
+          loss.<bl>
+          <name/GoldED+/ does not supports the following <name/JAM/ subfields:
+          <q/Force pickup/, and <q>Msg may not be displayed to user</q> (always
+          displayed).<bl>
+          <name/GoldED+ optionally may use tricky method invented by
+          <name/Odinn/ and aprooved by the <name/JAM/ developers when deleting
+          messages. The configuration keyword
+          <ref target=JAMHARDDELETE><kw/JAMHARDDELETE/</ref> specifies which
+          method to use.
+        </item>
+        <label>
+          <name/PCBoard/
+        </label>
+        <item>
+          <name/PCBoard/ v15.x format.<lb>
+          <name/GoldED+/ is aware of <name/PCBoard/ v15.x extended headers in
+          the message text. The <gi/TO/, <gi/TO2/, <gi/FROM/, <gi/FROM2/ and
+          <gi/SUBJECT/ extended headers are directly supported and
+          <q/swallowed/ when reading a message. Other extended headers are
+          currently treated like normal message text and is therefore not
+          hidden to the reader.<lb>
+          Passwords are not supported.<lb>
+          The Private, Received, Crash and Direct attributed are supported.<lb>
+          <name/GoldED+/ reads the <code/pcboard.dat/ file to determine whether
+          to use E3h or 0Dh (<gi/CR/) as the line/paragraph termination
+          character when reading and writing message text.<lb>
+          The mail waiting flags are updated when you write to people that are
+          named in the userbase.<lb>
+          When changing a message, the new edition is saved as if it were a new
+          message, with a new message number, and then the old edition is
+          deleted. This behaviour is consistent with the way <name/PCBoard/
+          itself works when changing a message. The old edition will still
+          exist with the <gi/DEL/ attribute.
+        </item>
+        <label>
+          <name/AdeptXBBS/
+        </label>
+        <item>
+          The implementation is based on the documentation in version 1.05,
+          experimentation and questions to the authors. Thanks go to
+          <name/Frank Jacobberger for the initial testing and prodding of the
+          authors to answer <name/Odinns/ questions :-)<bl>
+          The <name/AdeptXBBS/ format does not have a quick method of finding
+          deleted messages via the index file. This means that deleted messages
+          left in the messagebase marked with the <gi/DEL/ attribute.<bl>
+          Mixing of netmail and echomail or other types of mail in the same
+          area is not directly supported. If an area is setup as both netmail
+          and echomail, <name/GoldED+/ will treat it as netmail. If an area is
+          neither netmail nor echomail, <name/GoldED+/ wil treat it as a local
+          area.<bl>
+          <name/GoldED+/ detects <name/Usenet/ (newsgroup) and <name/Internet/
+          e-mail areas in the <name/AdeptXBBS/ setup and uses them as such, but
+          it has not yet been tested if <name/GoldED+/ and <name/AdeptXBBS/ are
+          compatible in the way they store and process <name/Internet/ header
+          information.<bl>
+          The <name/AdeptXBBS/ personal mail feature (the index in the
+          <code/Personal_Mail/ directory) is supported for mails you write to
+          other users on the <abbr/BBS/. However, personal mail for you via
+          this feature or by other means is not yet supported.<bl>
+          The replylinking method used by <name/AdeptXBBS/ (whatever the method
+          is??!) is not yet supported. This means that links to other messages
+          are missing.
+        </item>
+        <label>
+          <name/WildCat!/
+        </label>
+        <item>
+          The <name/WildCat!/ 4.x format does not have a quick method of
+          finding deleted messages via the index file. This means that deleted
+          messages left in the messagebase marked with the <gi/DEL/
+          attribute.<bl>
+          WildCat features which are not supported yet:
+          <list type=simple>
+            <item/The userbase./
+            <item/The message unread chain./
+            <item/The message from/to title./
+            <item/The message network name./
+            <item/The message internal and external attach./
+          </list>
+          There is a keyword
+          <ref target=WILDCATUSERNO><kw/WILDCATUSERNO/</ref>, which works just
+          like the other <kw/>&lt;msgbase&gt;USERNO</kw> keywords. By default
+          <name/GoldED+/ will use the first record in the lastread file
+          (<code/*.lrd/), so if you are not the first person in the userbase,
+          or you are sharing the messagebase with others, you may have to
+          change this user number. The userbase is currently not supported
+          (i.e.: you can't set the number to -1 to let <name/GoldED+/ find the
+          correct user and lastread automatically).<bl>
+          <hi/Note/: The <name/WildCat!/ support is currently not very
+          well-tested, so use it with caution. Limited testing shown that
+          <name/GoldED+/ not damages the messagebases, but you should probably
+          test it on less important areas and/or make backups until it is
+          determined that it is safe.
+        </item>
+        <label>
+          <name/Synchronet/
+        </label>
+        <item>
+          <name/Synchronet/ message base as described in <name>Synchronet
+          Message Base Specification</name> version 1.21. <name/GoldED+/
+          currently linked with <name/SMBLib/ taken from the <name/Synchronet/
+          <abbr/BBS/ sources slightly adopted to the <name/GoldED+/ internal
+          definitions.<bl>
+          Just like <name/WildCat!/ format, <name/Synchronet/ format does not
+          have a quick method of finding deleted messages via the index file.
+          This means that deleted messages left in the messagebase marked with
+          the <gi/DEL/ attribute.<bl>
+          <hi/Note/: The <name/Synchronet/ support is currently not tested at
+          all.
+        </item>
+      </list>
     </p>
   </div1>
 <!-- --------------------------------------------------------------------- -->
@@ -407,8 +645,7 @@ golded -noscan -importsoup @x y</eg>
             compiles. It also displays the name of the detected multitasker, if
             any. This can be useful for debugging your setup, and see if
             <name>GoldED+</name> accesses the files (especially the
-            <ref target=AREACONFIGURATION><kw>AREAFILE</kw></ref>'s) it is
-            supposed to.
+            <ref target=AREAFILE><kw/AREAFILE/</ref>'s) it is supposed to.
           </item>
           <label>
             <code>-vv</code>
@@ -427,11 +664,11 @@ golded -noscan -importsoup @x y</eg>
             <ref target=AREADEF><kw/AREADEF/</ref> form, sorted by your
             <ref target=AREALISTSORT><kw>AREALISTSORT</kw></ref> specification.
             This is very useful for converting your
-            <ref target=AREACONFIGURATION><kw/AREAFILE/</ref>'s to a form
-            you can edit with your favorite text editor and use in
-            <name/GoldED+/. It is also useful if you have used the new
+            <ref target=AREAFILE><kw/AREAFILE/</ref>'s to a form you can edit
+            with your favorite text editor and use in <name/GoldED+/. It is
+            also useful if you have used the new
             <ref target=AREADESC><kw>AREADESC</kw></ref> keyword or the
-            <ref target=AREACONFIGURATION><kw/AREAFILE</ref>
+            <ref target=AREAFILE><kw/AREAFILE</ref>
             <ref target=ECHOLIST><gi/EchoList/</ref> reader. The
             <code>goldarea.inc</code> file (created in the
             <ref target=GOLDPATH><kw/GOLDPATH/</ref>) can be used by adding<eg>
@@ -787,168 +1024,13 @@ RDDT path.rpt -n2:5020/604.19 -l2:5020/604 2:5020/604.19 -p</eg>
       </list>
     </p>
     <p>
-      When the using <kw>AREAFILE</kw> feature to read external area
-      configuration from other programs, the individual <kw>AREAFILE</kw>'s
-      may use specific environment variables to find the files. Please read
-      the <ptr target=AREACONFIGURATION> chapter for specific details of each
-      supported <kw>AREAFILE</kw>.
+      When the using <ref targe=AREAFILE><kw/AREAFILE/</ref> feature to read
+      external area configuration from other programs, the individual
+      <ref target=AREAFILE><kw/AREAFILE/</ref>'s may use specific environment
+      variables to find the files. Please read the
+      <ptr target=AREACONFIGURATION> chapter for specific details of each
+      supported <ref target=AREAFILE><kw/AREAFILE/</ref>.
     </p>
-  </div1>
-<!-- --------------------------------------------------------------------- -->
-  <div1>
-    <head>
-      Configuration Control
-    </head>
-    <p>
-      The configuration reader can be directed in the several ways with special
-      keywords:
-    </p>
-    <div2>
-      <head>
-        Conditionals
-      </head>
-      <p>
-        <emph>
-          <code>IF &lt;condition&gt;</code><lb>
-          <code>ELIF &lt;condition&gt;</code><lb>
-          <code>ELSEIF &lt;condition&gt;</code><lb>
-          <code>ELSE</code><lb>
-          <code>ENDIF</code>
-        </emph>
-      </p>
-      <p>
-        These control keywords can be used to setup sections of configuration
-        which enable different sets of keywords depending on which version
-        that is used.
-      </p>
-      <p>
-        The following conditions can be used:
-        <table rows=8 cols=2>
-          <row>
-            <cell>
-              <ident>DOS</ident>, <ident>386</ident>
-            </cell>
-            <cell>
-              true, if <name>DPMI32</name> version is used
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident>OS2</ident>
-            </cell>
-            <cell>
-              true, if <name>OS/2</name> version is used
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident>W32</ident>
-            </cell>
-            <cell>
-              true, if <name>Win32</name> version is used
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident>Linux, UNIX</ident>
-            </cell>
-            <cell>
-              true, if <name>Linux</name> version is used
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident>Firebird</ident>
-            </cell>
-            <cell>
-              true, if <name>GoldED</name> 3.xx or <name>GoldED+</name> is used
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident>ASA</ident>
-            </cell>
-            <cell>
-              true, if <name>GoldED-asa</name> or <name>GoldED+</name> is used
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident>Yes</ident>, <ident>True</ident>, <ident>On</ident>
-            </cell>
-            <cell>
-              always true
-            </cell>
-          </row>
-        </table>
-      </p>
-      <p>
-        Example:<eg>
-IF OS2
-  EDITOR c:\qedit\os2\q.exe @file -n@line
-  EDITSPELLCHECK c:\os2\cmd.exe /c c:\ss\ss.exe @file
-ELIF DOS
-  EDITOR c:\qedit\dos\q.exe @file -n@line
-  EDITSPELLCHECK c:\ss\ss.exe @file
-ENDIF</eg>
-      </p>
-    </div2>
-    <div2>
-      <head>
-        IGNORE
-      </head>
-      <p>
-        This tells the configuration file reader to ignore all subsequent lines
-        until another <kw>IGNORE</kw> or <kw/IF/ keyword is encountered. Useful
-        for testing and quickly switching portions of configuration.
-      </p>
-      <p>
-        However it is probably more useful to use the
-        <kw>IF</kw>/<kw>ELIF</kw>/<kw>ENDIF</kw> control keywords.
-      </p>
-      <p>
-        This keyword may cause unpredicable results if used within
-        <kw>IF</kw>/<kw>ELIF</kw>/<kw>ENDIF</kw> control keywords.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        INCLUDE &lt;file&gt;
-      </head>
-      <p>
-        This tells the configuration file reader to stop reading the current
-        <code>.CFG</code> file, and start reading the
-        <ident>&lt;file&gt;</ident> as an extra configuration file, then
-        resume reading the previous <code>.CFG</code>. The <kw>INCLUDE</kw>
-        filenames are stored and their timestamps are checked when
-        <name>GoldED+</name> is started. <kw>INCLUDE</kw> files can be nested
-        without limit.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        REM
-      </head>
-      <p>
-        Signifies a remark (comment) line. The line is ignored.
-      </p>
-      <p>
-        Any non-alphabetic non-whitespace character at the beginning of a line
-        makes the line a comment. Example:<eg>
-; This is a comment
-% This is a comment
-* This is a comment
-// This is a comment
-/* This is a comment */</eg>
-      </p>
-      <p>
-        By tradition, the semicolon is the standard comment character. The
-        semicolon (and only that) can also be used to add a comment at the end
-        of a configuration line. Example:<eg>
-ADDRESS 2:236/77      ; Main address.
-AKA     2:236/77.1    ; SysOp point.</eg>
-      </p>
-    </div2>
   </div1>
 <!-- --------------------------------------------------------------------- -->
   <div1>
@@ -956,22 +1038,8 @@ AKA     2:236/77.1    ; SysOp point.</eg>
       Configuration Keyword Reference
     </head>
     <p>
-      This is an alphabetical list of all the configuration keywords that can
-      be used in the main <name>GoldED+</name> configuration file
-      (<code>GOLDED.CFG</code> and any file included from it). It also lists
-      and documents the keywords that are specific to the Random System groups.
-    </p>
-    <p>
       The following special symbols are used in the keyword parameter lists:
       <table rows=6 cols=2>
-        <row>
-          <cell>
-            <ident>()</ident>
-          </cell>
-          <cell>
-            Default value.
-          </cell>
-        </row>
         <row>
           <cell>
             <ident>&lsqb;&rsqb;</ident>
@@ -1015,420 +1083,1196 @@ AKA     2:236/77.1    ; SysOp point.</eg>
       </table>
     </p>
     <p>
-      Here is the complete keyword list:
+      There's no mandatory keywords but the mail reader should have defined at
+      least name, address and area; nodelist compiler should have address and
+      either nodelist or userlist defined.
     </p>
+    <p>
+      Whenever path is expected you may use environment variables enclosed in
+      percent signs, f.e. <code>%FIDO%/myfile.txt</code>. This also valid for
+      input prompts where path is expected :-)
+    </p>
+    <div2 id=REM>
+      <head>
+        Remarks
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/REM/ <ident/&lsqb;text&rsqb;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Signifies a remark (comment) line.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The <ident/text/ contains remark line. The line is ignored.
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          Any non-alphabetic non-whitespace character at the beginning of a
+          line makes the line a comment. By tradition, the semicolon is the
+          standard comment character. The semicolon (and only that) can also
+          be used to add a comment at the end of a configuration line.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader and nodelist compiler.
+        </item>
+        <label>
+          Example:
+        </label>
+        <item><eg>
+REM This is a comment
+; This is a comment
+% This is a comment
+* This is a comment
+// This is a comment
+/* This is a comment */
+ADDRESS 2:236/77      ; Main address.
+AKA     2:236/77.1    ; SysOp point.</eg>
+        </item>
+      </list>
+    </div2>
+    <div2 id=CONDITIONALS>
+      <head>
+        Conditionals
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/IF/ <ident/&lt;condition&gt;/<lb>
+          <kw/ELIF/ <ident/&lt;condition&gt;/<lb>
+          <kw/ELSEIF/ <ident/&lt;condition&gt;/<lb>
+          <kw/ELSE/<lb>
+          <kw/ENDIF/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          These control keywords can be used to setup sections of configuration
+          which enable different sets of keywords depending on which version
+          that is used.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The following conditions can be used:
+          <table rows=8 cols=2>
+            <row>
+              <cell>
+                <ident/DOS/, <ident/386/, <ident/DPMI32/
+              </cell>
+              <cell>
+                true, if <name>DPMI32</name> version is used
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident>OS/2</ident>, <ident/OS2/
+              </cell>
+              <cell>
+                true, if <name>OS/2</name> version is used
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/WIN32/, <ident/W32/, <ident/NT/
+              </cell>
+              <cell>
+                true, if <name>Win32</name> version is used
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident>Linux, UNIX</ident>
+              </cell>
+              <cell>
+                true, if <name/Linux/ or <name/FreeBSD/ version is used
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident>Firebird</ident>
+              </cell>
+              <cell>
+                true, if <name/GoldED/ 3.xx or <name/GoldED+/ is used
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident>ASA</ident>
+              </cell>
+              <cell>
+                true, if <name/GoldED-asa/ or <name/GoldED+/ is used
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident>Yes</ident>, <ident>True</ident>, <ident>On</ident>
+              </cell>
+              <cell>
+                always true
+              </cell>
+            </row>
+          </table>
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader and nodelist compiler.
+        </item>
+        <label>
+          Example:
+        </label>
+        <item><eg>
+IF OS2
+  EDITOR c:\qedit\os2\q.exe @file -n@line
+  EDITSPELLCHECK c:\os2\cmd.exe /c c:\ss\ss.exe @file
+ELIF DOS
+  EDITOR c:\qedit\dos\q.exe @file -n@line
+  EDITSPELLCHECK c:\ss\ss.exe @file
+ELIF WIN32
+  EDITOR c:\progra~1\far\far.exe -i -e@line @file
+  EDITSPELLCHECK c:\fido\goldkorr\goldkorr.exe @file /A /Q
+ENDIF</eg>
+        </item>
+      </list>
+    </div2>
+    <div2 id=IGNORE>
+      <head>
+        IGNORE
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/IGNORE/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This tells the configuration file reader to ignore all subsequent
+          lines until another <kw/IGNORE/ or <kw/IF/ keyword is encountered.
+          Useful for testing and quickly switching portions of configuration.
+          However it is probably more useful to use the
+          <ref target=CONDITIONALS/conditionals/ control keywords.
+        </item>
+        <label>
+          Bugs:
+        </label>
+        <item>
+          This keyword may cause unpredicable results if used within
+          <ref target=CONDITIONALS/conditionals/ control keywords.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=CONDITIONALS/Conditionals/
+        </item>
+      </list>
+    </div2>
     <div2 id=ADDRESS>
       <head>
-        ADDRESS &lt;zone:net/node&lsqb;.point&rsqb;&lsqb;@domain&rsqb;&lsqb;,
-        pointnet&rsqb;&gt;
+        ADDRESS
       </head>
-      <p>
-        Your network address, <name>FidoNet</name>-style. More than one
-        address can be specified if you are member of more than one network.
-        The keywords <kw>ADDRESS</kw> and <kw>AKA</kw> can be used
-        interchangeably.
-      </p>
-      <p>
-        If a pointnet is specified with a point address, <name>GoldED+</name>
-        will use the so-called <term>3D</term> addressing method in netmail
-        msgs, otherwise the <term>4D</term> method is used. The
-        <term>3D</term> method works by putting the address
-        <ident>zone:pointnet/point.0</ident> in the msg header, instead of the
-        <term>4D</term> format <ident>zone:net/node.point</ident>. Most modern
-        mailers and mail processors now supports the <term>4D</term> format,
-        but if you are a point, you should always consult your boss about
-        which format to use.
-      </p>
-      <p>
-        The optional <ident>@domain</ident> part can be used to specify a
-        <term>fifth</term> dimension to the <term>4D</term> address. It is
-        normally not necessary to specify a domain. Domains are never shown in
-        the header. See also <!-- ref target=NETNAME --><kw>NETNAME</kw><!-- /ref -->
-      </p>
-      <p>
-        Examples:<eg>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/ADDRESS/
+          <ident>&lt;zone:net/node&lsqb;.point&rsqb;&lsqb;@domain&rsqb;
+          &lsqb;,pointnet&rsqb;&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Your network address, <name/FidoNet/-style. More than one address can
+          be specified if you are member of more than one network. The keywords
+          <kw/ADDRESS/ and <ref target=AKA><kw/AKA/</ref> can be used
+          interchangeably.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If a <ident/pointnet/ is specified with a point address,
+          <name/GoldED+/ will use the so-called <term/3D/ addressing method in
+          netmail msgs, otherwise the <term/4D/ method is used. The <term/3D/
+          method works by putting the address
+          <ident>zone:pointnet/point.0</ident> in the msg header, instead of
+          the <term/4D/ format <ident>zone:net/node.point</ident>. Most modern
+          mailers and mail processors now supports the <term/4D/ format,
+          but if you are a point, you should always consult your boss about
+          which format to use.<bl>
+          The optional <ident/@domain/ part can be used to specify a
+          <term/fifth/ dimension to the <term/4D/ address. It is normally not
+          necessary to specify a domain. Domains are never shown in the header.
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          This keyword can be used globally and in a
+          <ref target=RANDOMSYSTEM>Random System</ref> group.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader and nodelist compiler.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=AKA><kw/AKA/</ref>,
+          <ref target=NETNAME><kw/NETNAME/</ref>
+        </item>
+        <label>
+          Example:
+        </label>
+        <item><eg>
 ADDRESS 2:236/77              ; Node address
 ADDRESS 2:236/77.1            ; Point address (4D)
 ADDRESS 2:236/77.1, 16077     ; Point address (3D)
 ADDRESS 2:236/77@fidonet      ; Node address with domain</eg>
-      </p>
-      <p>
-        This keyword can be used globally and in a Random System group.
-      </p>
+        </item>
+      </list>
     </div2>
     <div2>
       <head>
-        ADDRESSBOOKADD &lt;(yes)/no/always&gt;
+        ADDRESSBOOKADD
       </head>
-      <p>
-        Setting this keyword to <ident>always</ident> means that
-        <name>GoldED+</name> will always add unknown addressees to the
-        addressbook when writing new or quoted mails automatically. If you set
-        the value to <ident>yes</ident>, <name>GoldED+</name> will add them
-        only if it's a netmail/email. <code>ADDRESSBOOKADD NO</code> disables
-        this feature entirely.
-      </p>
-      <p>
-        <hi>NOTE</hi> that <name>GoldED+</name> won't add unknown users if their name match
-        one of the following criteria:
-        <list type=simple>
-          <item>
-            it's a <kw>USERNAME</kw>
-          </item>
-          <item>
-            it's a <kw>ROBOTNAME</kw>
-          </item>
-          <item>
-            it's the <kw>WHOTO</kw>
-          </item>
-          <item>
-            it's the mailinglist's sender address
-          </item>
-          <item>
-            it's already an email address
-          </item>
-          <item>
-            address/aka is unknown
-          </item>
-        </list>
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/ADDRESSBOOKADD/ <ident>&lt;YES/NO/ALWAYS&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls whether <name/GoldED+/ will add unknown
+          addressees into the addressbook when writing new or quoted mails.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          Setting this keyword to <ident/ALWAYS/ means that <name/GoldED+/ will
+          always add unknown addressees to the addressbook when writing new or
+          quoted mails automatically. If you set the value to <ident/YES/,
+          <name/GoldED+/ will add them only if it's a netmail/email. Setting to
+          <ident/NO/ disables this feature entirely.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          <name/GoldED+/ won't add unknown users if their name match one of the
+          following criterias:
+          <list type=simple>
+            <item>
+              it's a <kw/ROBOTNAME/
+            </item>
+            <item>
+              it's a <kw/USERNAME/
+            </item>
+            <item>
+              it's the <kw/WHOTO/
+            </item>
+            <item>
+              it's the mailinglist's sender address
+            </item>
+            <item>
+              it's an UUCP
+            </item>
+            <item>
+              it's already an email address
+            </item>
+            <item>
+              address/aka is unknown
+            </item>
+            <item>
+              it's an <kw/ADDRESSMACRO/
+            </item>
+          </list>
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=ADDRESSMACRO><kw/ADDRESSMACRO/</ref>,
+          <ref target=INTERNETGATE><kw/INTERNETGATE/</ref>,
+          <ref target=MAILINGLIST><kw/MAILINGLIST/</ref>,
+          <ref target=ROBOTNAME><kw/ROBOTNAME/</ref>,
+          <ref target=USERNAME><kw/USERNAME/</ref>,
+          <ref target=WHOTO><kw/WHOTO/</ref>
+        </item>
+      </list>
     </div2>
     <div2>
       <head>
-        ADDRESSLOOKUPFIRST &lt;MsgID/(Origin)&gt;
+        ADDRESSLOOKUPFIRST
       </head>
-      <p>
-        By default address of sender taken from <gi>Origin</gi> line. If this
-        keyword set to <ident>MsgID</ident> then <name>GoldED+</name> looks
-        for correct <abbr>FTN</abbr> address in <gi>MSGID</gi> kludge first.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/ADDRESSLOOKUPFIRST/ <ident>&lt;MSGID/ORIGIN&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword defines the first source to lookup address. If valid
+          address could not be found in the specifyed location then second
+          source is used.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If defined to <ident/ORIGIN/ then address of sender taken from
+          <gi/Origin/ line. If this keyword set to <ident/MSGID/ then
+          <name/GoldED+/ looks for correct <abbr/FTN/ address in <gi/MSGID/
+          kludge first.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/ORIGIN/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+      </list>
     </div2>
-    <div2>
+    <div2 id=ADDRESSMACRO>
       <head>
-        ADDRESSMACRO &lt;macro&gt;, &lt;name&gt;, &lt;address&gt;
-        &lsqb;,<q>subject</q>&rsqb; &lsqb;,attribs&rsqb;
+        ADDRESSMACRO
       </head>
-      <p>
-        Defines a short name for often used addresses. Typical uses are for
-        <name>AreaFix</name>/<name>AreaMgr</name>, your uplink, boss, points
-        or others you write to often. To use a defined address macro, you just
-        type it in the <gi>To:</gi> name field.
-      </p>
-      <p>
-        If (and <hi>only</hi> if) the subject is enclosed in quotes (<q></q>
-        or ''), <name>GoldED+</name> will look for message attributes after
-        the subject. See the <ptr target=MESSAGEATTRS> for a valid attribute.
-        You cannot have quotes within quotes (not the same type anyway).
-      </p>
-      <p>
-        The attribues are <hi>added</hi> to the ones already there, they do
-        <hi>not</hi> replace them.
-      </p>
-      <p>
-        Examples:<eg><![ CDATA [
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/ADDRESSMACRO/ <ident/&lt;macro&gt;, &lt;name&gt;, &lt;address&gt;
+          &lsqb;,<q>subject</q>&rsqb; &lsqb;,attribs&rsqb;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Defines a short name for often used addresses. Typical uses are for
+          <name/AreaFix//<name/AreaMgr/, your uplink, boss, points or others
+          you write to often. To use a defined address macro, you just type it
+          in the <gi/To:/ name field.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If (and <hi>only</hi> if) the subject is enclosed in quotes (<q//
+          or ''), <name/GoldED+/ will look for message attributes after the
+          <ident/subject/ field. See the <ptr target=MESSAGEATTRS> for the
+          valid attributes. You cannot have quotes within quotes (not the same
+          type anyway). The attribues are <hi/added/ to the ones already there,
+          they do <hi/not/ replace them.<lb>
+          A special format is supported for <abbr/UUCP/ or <name/Internet/
+          gateways. The special format is indicated with a <q/@/ as the first
+          character in the <ident/name/ field. You may specify <name/Internet/
+          gate name here if it other then default specifyed with
+          <ref target=INTERNETGATE><kw/INTERNETGATE/</ref> keyword, just put
+          gate name right after the <q/@/ and terminate it with the slash
+          (<q>/</q>).
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          The address macros can also be specified in an external file, like
+          the <code/names.fd/ file supported by the <name/FrontDoor/
+          mailer/editor and <name/Maximus/ <abbr/BBS/. See the keyword
+          <ref target=NAMESFILE><kw/NAMESFILE/</ref> for details. However, you
+          should not use the syntax with the attributes in the <code/names.fd/
+          file, because <name/FrontDoor/ and <name/Maximus/ do not know this
+          syntax.
+        </item>
+        <label>
+          Bugs:
+        </label>
+        <item>
+          When used in the <name/Internet/ area, name should <hi/not/ contain
+          <q/@/ as the first character in the <ident/name/ field.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=INTERNETGATE><kw/INTERNETGATE/</ref>
+        </item>
+        <label>
+          Examples:
+        </label>
+        <item><eg><![ CDATA [
 ADDRESSMACRO afup,AreaFix,2:236/512,"password -q -l",K/S
 ADDRESSMACRO ffup,FileFix,2:236/512,password
-ADDRESSMACRO odin,Odinn Sorensen,2:236/77,GoldED - What else? :-)]]></eg>
-      </p>
-      <p>
-        A special format is supported for <abbr>UUCP</abbr> or
-        <name>Internet</name> gateways. The special format is indicated with a
-        <q>@</q> as the first character in the <ident>&lt;name&gt;</ident>:<eg>
+ADDRESSMACRO odin,Odinn Sorensen,2:236/77,GoldED - What else? :-)
 ADDRESSMACRO jfu,@fallesen@diku.dk,2:310/33
-ADDRESSMACRO dn,@INTERNET/david@csource.oz.au,2:241/999</eg>
-      </p>
-      <p>
-        In the first example, <name>GoldED+</name> will put <q>UUCP</q> (the
-        default gateway name) in the <gi>To:</gi> message header field and
-        <q>To: fallesen@diku.dk</q> on the first line of the message text.
-      </p>
-      <p>
-        In the second example, <name>GoldED+</name> will put <q>INTERNET</q>
-        in the <gi>To:</gi> field, and <q>To: david@csource.oz.au</q> in the
-        message. The forward slash (<q>/</q>) separates the gateway name from
-        the addressee. Any gateway name may be used.
-      </p>
-      <p>
-        The address macros can also be specified in an external file, like the
-        <code>NAMES.FD</code> file supported by the <name>FrontDoor</name>
-        mailer/editor and <name>Maximus</name> <abbr>BBS</abbr>. See the
-        keyword <kw>NAMESFILE</kw> for details. However, you should not use
-        the syntax with the attributes in the <code>NAMES.FD</code> file,
-        because <name>FrontDoor</name> and <name>Maximus</name> do not know
-        this syntax.
-      </p>
+ADDRESSMACRO vp,@vasya@pupkin.ru (Vasya Pupkin),2:5020/128
+ADDRESSMACRO dn,@INTERNET/david@csource.oz.au,2:241/999]]></eg>
+        </item>
+      </list>
     </div2>
     <div2>
       <head>
-        ADEPTXBBSPATH &lt;path&gt;
+        ADEPTXBBSPATH
       </head>
-      <p>
-        The path where you keep your <name>AdeptXBBS</name>.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/ADEPTXBBSPATH/ <ident/&lt;path&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Specifyes the path where you keep your <name/AdeptXBBS/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          <ident/Path/ where you keep your <name/AdeptXBBS/.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=ADEPTXBBSUSERNO><kw/ADEPTXBBSUSERNO/</ref>,
+          <ptr target=AREACONFIGURATION> chapter
+        </item>
+      </list>
     </div2>
-    <div2>
+    <div2 id=ADEPTXBBSUSERNO>
       <head>
-        ADEPTXBBSUSERNO &lt;userno&gt;
+        ADEPTXBBSUSERNO
       </head>
-      <p>
-        By default <name>GoldED+</name> will use the first record in the
-        userfile and lastreads. If you are not the first user in the userfile,
-        or are sharing the messagebase with other <name>GoldED+</name> users,
-        you must either set this keyword to -1, or use a different number for
-        each user. Each user must be defined in the userbase.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/ADEPTXBBSUSERNO/ <ident/&lt;userno&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Specifyes the record number in the userfile and lastreads.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If you are not the first user in the userfile, or are sharing the
+          messagebase with other <name/GoldED+/ users, you must either set this
+          keyword to -1, or use a different number for each user. Each user
+          must be defined in the userbase.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          By default <name/GoldED+/ will use the first record in the userfile
+          and lastreads.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=ADEPTXBBSPATH><kw/ADEPTXBBSPATH/</ref>,
+          <ptr target=AREACONFIGURATION> chapter,
+          <ref target=EZYCOMUSERNO><kw/EZYCOMUSERNO/</ref>,
+          <ref target=FIDOUSERNO><kw/FIDOUSERNO/</ref>,
+          <ref target=GOLDBASEUSERNO><kw/GOLDBASEUSERNO/</ref>,
+          <ref target=HUDSONUSERNO><kw/HUDSONUSERNO/</ref>,
+          <ref target=PCBOARDUSERNO><kw/PCBOARDUSERNO/</ref>,
+          <ref target=SQUISHUSERNO><kw/SQUISHUSERNO/</ref>,
+          <ref target=WILDCATUSERNO><kw/WILDCATUSERNO/</ref>
+        </item>
+      </list>
     </div2>
-    <div2>
+    <div2 id=AKA>
       <head>
-        AKA &lt;zone:net/node&lsqb;.point&rsqb;&lsqb;@domain&rsqb;&lsqb;,
-        pointnet&rsqb;&gt;
+        AKA
       </head>
-      <p>
-        <kw>AKA</kw> (Also Known As) is an alias for the <ref target=ADDRESS>
-        <kw>ADDRESS</kw></ref> keyword.
-      </p>
-      <p>
-        This keyword can be used globally and in a Random System group.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AKA/
+          <ident>&lt;zone:net/node&lsqb;.point&rsqb;&lsqb;@domain&rsqb;
+          &lsqb;,pointnet&rsqb;&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Your network address, <name/FidoNet/-style. More than one address can
+          be specified if you are member of more than one network. The keywords
+          <kw/ADDRESS/ and <ref target=AKA><kw/AKA/</ref> can be used
+          interchangeably.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If a <ident/pointnet/ is specified with a point address,
+          <name/GoldED+/ will use the so-called <term/3D/ addressing method in
+          netmail msgs, otherwise the <term/4D/ method is used. The <term/3D/
+          method works by putting the address
+          <ident>zone:pointnet/point.0</ident> in the msg header, instead of
+          the <term/4D/ format <ident>zone:net/node.point</ident>. Most modern
+          mailers and mail processors now supports the <term/4D/ format,
+          but if you are a point, you should always consult your boss about
+          which format to use.<bl>
+          The optional <ident/@domain/ part can be used to specify a
+          <term/fifth/ dimension to the <term/4D/ address. It is normally not
+          necessary to specify a domain. Domains are never shown in the header.
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          This keyword can be used globally and in a
+          <ref target=RANDOMSYSTEM>Random System</ref> group.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader and nodelist compiler.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=ADDRESS><kw/ADDRESS/</ref>,
+          <ref target=NETNAME><kw/NETNAME/</ref>
+        </item>
+        <label>
+          Example:
+        </label>
+        <item><eg>
+AKA 2:236/77.1</eg>
+        </item>
+      </list>
     </div2>
-    <div2>
+    <div2 id=AKAMATCH>
       <head>
-        AKAMATCH &lt;match&gt; &lt;aka&gt;
+        AKAMATCH
       </head>
-      <p>
-        This is an enhancement of the existing aka matching logic, which in
-        some circumstances fails to find the correct aka.
-      </p>
-      <p>
-        Example: Lets say that zone 21, 22 and 23 are part of the same
-        network, and that you have an aka in zone 22. You would put something
-        like this in your setup:<eg>
-ADDRESS 2:236/77
-AKA     22:33/44</eg>
-      </p>
-      <p>
-        In this case, if a mail comes in from zone 23, the normal aka matching
-        logic would fail, because it does not try to guess the correct zone.
-        To the rescue comes this keyword. You can add this to your setup:<eg>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AKAMATCH/ <ident/&lt;pattern&gt; &lt;aka&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This is an enhancement of the existing aka matching logic, which in
+          some circumstances fails to find the correct aka.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If the destination address matches <ident/pattern/ then
+          <name/GoldED+/ will use <ident/aka/ specifyed instead of default
+          best-match rule. All patterns are checked in the order they follow
+          in the configuration files.<lb>
+          Wildcards are not strictly necessary in the match <ident/pattern/,
+          you could write f.e. <q>zone:*/*.*</q> or <q>zone:</q>, etc.
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          When an address does not match any <kw>AKAMATCH</kw> definition, the
+          normal aka matching logic takes over.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=AKAMATCHECHO><kw/AKAMATCHECHO/</ref>,
+          <ref target=AKAMATCHING><kw/AKAMATCHING/</ref>,
+          <ref target=AKAMATCHLOCAL><kw/AKAMATCHLOCAL/</ref>,
+          <ref target=AKAMATCHNET><kw/AKAMATCHNET/</ref>
+        </item>
+        <label>
+          Example:
+        </label>
+        <item><eg>
+ADDRESS  2:236/77           ; this is primary address
+AKA      22:33/44           ; this address valid for zones 21:, 22:, and 23
 AKAMATCH 21:*/*.* 22:33/44
-AKAMATCH 23:*/*.* 22:33/44</eg>
-      </p>
-      <p>
-        It tells <name>GoldED+</name> that any mail from zone 21 or 23 matches
-        your zone 22 aka. Note the use of wildcards here. Wildcards are not
-        strictly necessary, you could also have just written <q>23:</q> or
-        <q>23:*</q>.
-      </p>
-      <p>
-        When an address does not match any <kw>AKAMATCH</kw> definition, the
-        normal aka matching logic takes over.
-      </p>
+AKAMATCH 23:      22:33/44</eg>
+        </item>
+      </list>
+    </div2>
+    <div2 id=AKAMATCHECHO>
+      <head>
+        AKAMATCHECHO
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AKAMATCHECHO/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls whether <name/GoldED+/ should do akamatching
+          in echomail areas.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/YES/, <name/GoldED+/ will attempt to match one of
+          your akas to the address of the person you are replying to in
+          echomail areas.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/NO/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          Normally it is not desirable to enable aka matching in echomail,
+          because some echoes may be restricted to members of one particular
+          network, and an accidental wrong aka matching may attract unwanted
+          attention from the moderator or the compulsive flamers :-)
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=AKAMATCH><kw/AKAMATCH/</ref>,
+          <ref target=AKAMATCHING><kw/AKAMATCHING/</ref>,
+          <ref target=AKAMATCHLOCAL><kw/AKAMATCHLOCAL/</ref>,
+          <ref target=AKAMATCHNET><kw/AKAMATCHNET/</ref>
+        </item>
+      </list>
     </div2>
     <div2>
       <head>
-        AKAMATCHECHO &lt;yes/(no)&gt;
+        AKAMATCHING
       </head>
-      <p>
-        If enabled, <name>GoldED+</name> will attempt to match one of your akas to the
-        address of the person you are replying to in echomail areas.
-      </p>
-      <p>
-        Normally it is not desirable to enable aka matching in echomail,
-        because some echoes may be restricted to members of one particular
-        network, and an accidental wrong aka matching may attract unwanted
-        attention from the moderator or the compulsive flamers :-)
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AKAMATCHING/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls whether <name/GoldED+/ should do akamatching
+          in areas within <ref target=RANDOMSYSTEM>Random System</ref> group it
+          is defined. When used, it overrides any global
+          <ref target=AKAMATCHECHO><kw/AKAMATCHECHO/</ref>,
+          <ref target=AKAMATCHLOCAL><kw/AKAMATCHLOCAL/</ref>, or
+          <ref target=AKAMATCHNET><kw/AKAMATCHNET/</ref> you may have.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/YES/, <name/GoldED+/ will attempt to match one of
+          your akas to the address of the person you are replying to.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/NO/
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          This keyword is valid <hi/ONLY/ in a
+          <ref target=RANDOMSYSTEM>Random System</ref> group.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=AKAMATCH><kw/AKAMATCH/</ref>,
+          <ref target=AKAMATCHING><kw/AKAMATCHING/</ref>,
+          <ref target=AKAMATCHLOCAL><kw/AKAMATCHLOCAL/</ref>,
+          <ref target=AKAMATCHNET><kw/AKAMATCHNET/</ref>
+        </item>
+      </list>
     </div2>
     <div2>
       <head>
-        AKAMATCHING &lt;yes/no&gt;
+        AKAMATCHLOCAL
       </head>
-      <p>
-        This keyword is only valid in the Random System groups. When used, it
-        overrides any global <kw>AKAMATCHNET</kw>, <kw>AKAMATCHECHO</kw> or
-        <kw>AKAMATCHLOCAL</kw> you may have.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AKAMATCHLOCAL/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls whether <name/GoldED+/ should do akamatching
+          in local areas.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/YES/, <name/GoldED+/ will attempt to match one of
+          your akas to the address of the person you are replying to in local
+          areas.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/NO/
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          It doesn't really make sense to do aka matching in local areas. The
+          keyword is just there for completeness.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=AKAMATCH><kw/AKAMATCH/</ref>,
+          <ref target=AKAMATCHECHO><kw/AKAMATCHECHO/</ref>,
+          <ref target=AKAMATCHING><kw/AKAMATCHING/</ref>,
+          <ref target=AKAMATCHNET><kw/AKAMATCHNET/</ref>
+        </item>
+      </list>
     </div2>
     <div2>
       <head>
-        AKAMATCHLOCAL &lt;yes/(no)&gt;
+        AKAMATCHNET
       </head>
-      <p>
-        If enabled, <name>GoldED+</name> will attempt to match one of your akas
-        to the address of the person you are replying to in local areas.
-      </p>
-      <p>
-        It doesn't really make sense to do aka matching in local areas. The
-        keyword is just there for completeness.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AKAMATCHNET/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls whether <name/GoldED+/ should do akamatching
+          in netmail areas. This is especially useful if you are a member in
+          more than one network, and therefore have more than one address.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/YES/, <name/GoldED+/ will attempt to match one of
+          your akas to the address of the person you are replying to in
+          netmail areas.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          Normally it is not desirable to enable aka matching in echomail,
+          because some echoes may be restricted to members of one particular
+          network, and an accidental wrong aka matching may attract unwanted
+          attention from the moderator or the compulsive flamers :-)
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=AKAMATCH><kw/AKAMATCH/</ref>,
+          <ref target=AKAMATCHECHO><kw/AKAMATCHECHO/</ref>,
+          <ref target=AKAMATCHING><kw/AKAMATCHING/</ref>,
+          <ref target=AKAMATCHLOCAL><kw/AKAMATCHLOCAL/</ref>
+        </item>
+      </list>
     </div2>
     <div2>
       <head>
-        AKAMATCHNET &lt;(yes)/no&gt;
+        APP
       </head>
-      <p>
-        If enabled, <name>GoldED+</name> will attempt to match one of your akas
-        to the address of the person you are replying to in netmail areas. This
-        is especially useful if you are a member in more than one network, and
-        therefore have more than one address.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        APP &lt;programname&gt; &lsqb;keyword and/or parameters&rsqb;
-      </head>
-      <p>
-        This is a way for other programs to place configuration data in
-        <name>GoldED+</name>'s configuration file.
-      </p>
-      <p>
-        For example, if a program named <name>OtherProg</name> wants to read
-        its configuration from <code>GOLDED.CFG</code>, here is how it might
-        look:<eg>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/APP/ <ident>&lt;programname&gt; &lsqb;text&rsqb;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword provides a way for other programs to place configuration
+          data in <name/GoldED+/'s configuration file.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The <ident/programname/ parameter defines name of the software which
+          wants to read its configuration from <name/GoldED+/ configuration
+          file. <name/GoldED+/ itself will ignore <kw/APP/ lines just like
+          <ref target=REM><kw/remark/</ref> lines.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=REM><kw/Remark/</ref> chapter
+        </item>
+        <label>
+          Example:
+        </label>
+        <item><eg>
 APP OtherProg REGKEY xyaxajlsaduoiweqeq
 APP OtherProg IRQ 5</eg>
-      </p>
-      <p>
-        <name>GoldED+</name> itself will ignore APP lines just like
-        <kw>REM</kw> lines.
-      </p>
+        </item>
+      </list>
     </div2>
     <div2>
       <head>
-        AREA &lt;echoid&gt; &lt;<q>desc</q>&gt; &lt;msgbase&gt;&lsqb;type&rsqb;
-        &lt;location&gt; &lsqb;akano&rsqb; &lsqb;attrs&rsqb;
+        AREA
       </head>
-      <p>
-        This keyword defines a mail area in <name>GoldED+</name>. You need to
-        define at least one mail area to run <name>GoldED+</name>, or use the
-        <kw>AREAFILE</kw> keyword to read the area setup of your mailer, mail
-        processor or <abbr>BBS</abbr>.
-      </p>
-      <p>
-        <table rows=7 cols=2>
-          <row>
-            <cell>
-              <ident>echoid</ident>
-            </cell>
-            <cell>
-              Mail area identifier.
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident>desc</ident>
-            </cell>
-            <cell>
-              Area description in (<q></q>) quotes.
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident>msgbase</ident>
-            </cell>
-            <cell>
-              O(<name>Opus</name> <code>*.MSG</code>),
-              S(<name>FTS-0001</name> <code>*.MSG</code>),
-              Q(<name>QuickBBS</name>), R(<name>RemoteAccess</name>),
-              H(<name>Hudson</name>), M(<name>Squish</name>),
-              J(<name>JAM</name>), E(<name>Ezycom</name>),
-              G(<name>Goldbase</name>), P(<name>PCBoard</name>),
-              X(<name>AdeptXBBS</name>), W(<name>WildCat!</name>).
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident>type</ident>
-            </cell>
-            <cell>
-              N(Netmail), E(Echomail), L(Local).
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident>location</ident>
-            </cell>
-            <cell>
-              Directory path/file or Hudson board number.
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident>akano</ident>
-            </cell>
-            <cell>
-              AKA number (starting from 0)
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident>attrs</ident>
-            </cell>
-            <cell>
-              R/O(Read-Only), and/or other attributes.
-            </cell>
-          </row>
-        </table>
-        <q>O(<name>Opus</name>)</q> are <code>*.MSG</code> files with binary
-        date/time stamps. <q>S(<name>FTS-0001</name>)</q> are
-        <code>*.MSG</code> files, but with zone/point header fields.
-        <q>Q(<name>QuickBBS</name>)</q>, <q>R(<name>RemoteAccess</name>)</q>
-        and <q>H(<name>Hudson</name>)</q> are synonyms.
-        <q>M(<name>Squish</name>)</q> is the <name>Squish</name> format.
-        <q>E(<name>Ezycom</name>)</q> is the <name>Ezycom</name> format.
-        <q>J(<name>JAM</name>)</q> is the <name>JAM</name> format.
-        <q>G(<name>Goldbase</name>)</q> is the <name>Goldbase</name> format.
-        <q>P(<name>PCBoard</name>)</q> is the <name>PCBoard</name> format.
-        <q>X(<name>AdeptXBBS</name>)</q> is the <name>AdeptXBBS</name> format.
-        <q>W(<name>WildCat!</name>)</q> is the <name>WildCat!</name> 4.x
-        format.
-      </p>
-      <p>
-        <name>GoldED+</name> can handle enviroment variables correctly in paths
-        specified in connection with this keyword. For example, if a path is
-        defined as <code>%MAIL%&bsol;path&bsol;name</code>, and
-        <code>SET MAIL=C:&bsol;POINT</code> is in <code>AUTOEXEC.BAT</code> (or
-        whatever), then <name>GoldED+</name> translates the path to
-        <code>C:&bsol;POINT&bsol;path&bsol;name</code>.
-      </p>
-      <p>
-        <hi>NOTE</hi> that the translation is done at config compile time, so
-        if you change the environment variable and haven't changed anything
-        else that would cause <name>GoldED+</name> to recompile it's config,
-        you must force it with the <code>-F</code> or <code>-FF</code> command
-        parameter.
-      </p>
-      <p>
-        It is recommended to use the newer <ref target=AREADEF><kw>AREADEF</kw>
-        </ref> keyword, which allows more detailed mail area setup.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREA/ <ident>&lt;echoid&gt; &lt;<q>desc</q>&gt;
+          &lt;msgbase&gt;&lsqb;type&rsqb; &lt;location&gt; &lsqb;akano&rsqb;
+          &lsqb;attrs&rsqb;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword defines a mail area in <name>GoldED+</name>.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          <table rows=7 cols=2>
+            <row>
+              <cell>
+                <ident>echoid</ident>
+              </cell>
+              <cell>
+                Mail area identifier.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident>desc</ident>
+              </cell>
+              <cell>
+                Area description in (<q></q>) quotes.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident>msgbase</ident>
+              </cell>
+              <cell>
+                O,F(<name>Opus</name> <code>*.MSG</code>),
+                S(<name>FTS-0001</name> <code>*.MSG</code>),
+                Q(<name>QuickBBS</name>), R(<name>RemoteAccess</name>),
+                H(<name>Hudson</name>), M(<name>Squish</name>),
+                J(<name>JAM</name>), E(<name>Ezycom</name>),
+                G(<name>Goldbase</name>), P(<name>PCBoard</name>),
+                X(<name>AdeptXBBS</name>), W(<name>WildCat!</name>),
+                Y(<name/Synchronet/)
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident>type</ident>
+              </cell>
+              <cell>
+                N(Netmail), E(Echomail), L(Local).
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident>location</ident>
+              </cell>
+              <cell>
+                Directory path/file or Hudson board number.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident>akano</ident>
+              </cell>
+              <cell>
+                AKA number (starting from 0)
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident>attrs</ident>
+              </cell>
+              <cell>
+                <gi>R/O</gi> (Read-Only), and/or other attributes.
+              </cell>
+            </row>
+          </table>
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          It is recommended to use the newer
+          <ref target=AREADEF><kw>AREADEF</kw></ref> keyword, which allows more
+          detailed mail area setup.<lb>
+          If more than one area defined to the same path or areatag then last
+          definition overrides previous ones.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=AREADEF><kw/AREADEF/</ref>,
+          <ref target=AREAFILE><kw/AREAFILE/</ref>
+        </item>
+      </list>
     </div2>
-    <div2>
+    <div2 id=AREAAUTOID>
       <head>
-        AREAAUTOID &lt;(verbose)/long/short&gt;
+        AREAAUTOID
       </head>
-      <p>
-        Defines how an automatically created echoid should look, when
-        <kw>AREAFILE</kw> finds an area without an echoid.
-      </p>
-      <p>
-        When the <ident>verbose</ident> option is used, the echoid is given a
-        name similar to the function of the area, such as <gi>NETMAIL</gi>,
-        <gi>NET_SENT</gi>, <gi>ECHO_BAD</gi>, <gi>ECHO_DUPES</gi> and so on.
-      </p>
-      <p>
-        When the <ident>long</ident> option is used, the echoids are numbered
-        sequentially like this: <gi>NETMAILxxx</gi>, <gi>ECHOMAILxxx</gi> and
-        <gi>LOCALxxx</gi>. This is how it worked in older versions of
-        <name>GoldED</name> (including 2.42.gamma).
-      </p>
-      <p>
-        When the <ident>short</ident> option is used, the echoids are numbered
-        sequentially like this: <gi>NETxxx</gi>, <gi>ECHOxxx</gi> and
-        <gi>LOCALxxx</gi>. This is how it worked in <name>GoldED</name>
-        2.50.beta until B1016.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREAAUTOID/ <ident>&lt;SHORT/VERBOSE/LONG&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Defines how an automatically created echoid should look, when
+          <ref target=AREAFILE><kw/AREAFILE/</ref> finds an area without an
+          echoid.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          <table rows=3 cols=2>
+            <row>
+              <cell>
+                <ident>VERBOSE</ident>
+              </cell>
+              <cell>
+                The echoids are given a name similar to the function of the
+                area, such as <gi/NETMAIL/, <gi/NET_SENT/, <gi/ECHO_BAD/,
+                <gi/ECHO_DUPES/ and so on.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident>LONG</ident>
+              </cell>
+              <cell>
+                The echoids are numbered sequentially like this:
+                <gi/NETMAILxxx/, <gi/ECHOMAILxxx/ and <gi/LOCALxxx/.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident>SHORT</ident>
+              </cell>
+              <cell>
+                The echoids are numbered sequentially like this: <gi/NETxxx/,
+                <gi/ECHOxxx/ and <gi/LOCALxxx/.
+              </cell>
+            </row>
+          </table>
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          LONG
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=AREAFILE><kw/AREAFILE/</ref>
+        </item>
+      </list>
     </div2>
+
+
+<!-- finished here -->
+
+
     <div2>
       <head>
         AREAAUTONEXT &lt;(yes)/no&gt;
@@ -1734,7 +2578,7 @@ AREAEXCL INT*.*   ; Excludes all areas beginning with INT and
         <kw>AREA</kw>, <kw>AREADEF</kw> or <kw>AREAFILE</kw> keywords.
       </p>
     </div2>
-    <div2>
+    <div2 id=AREAFILE>
       <head>
         AREAFILE &lt;type&gt; &lsqb;path/file&rsqb; &lsqb;switches&rsqb;
       </head>
@@ -4314,7 +5158,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     AREAFILE Ezycom will set it.
       </p>
     </div2>
-    <div2>
+    <div2 id=EZYCOMUSERNO>
       <head>
         EZYCOMUSERNO &lt;userno&gt;
       </head>
@@ -4421,7 +5265,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     supports a name lookup (to get the address).
       </p>
     </div2>
-    <div2>
+    <div2 id=FIDOUSERNO>
       <head>
         FIDOUSERNO &lt;userno&gt;
       </head>
@@ -4644,7 +5488,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     GOLDBASEPATH is used.
       </p>
     </div2>
-    <div2>
+    <div2 id=GOLDBASEUSERNO>
       <head>
         GOLDBASEUSERNO &lt;userno&gt;
       </head>
@@ -4737,7 +5581,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     HUDSONPATH is used.
       </p>
     </div2>
-    <div2>
+    <div2 id=HUDSONUSERNO>
       <head>
         HUDSONUSERNO &lt;userno&gt;
       </head>
@@ -4812,6 +5656,41 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     the inbound path, ready for when the requested files are moved to
     the correct file areas.
       </p>
+    </div2>
+    <div2>
+      <head>
+        INCLUDE
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/INCLUDE/ <ident/&lt;filename&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This tells the configuration file reader to stop reading the current
+          configuration file, and start reading the file specifyed as an
+          extra configuration source, then resume reading the previous
+          configuration file. <kw/INCLUDE/ files can be nested without limit.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The <ident/filename/ parameter should contain absolute path
+          and name to the configuration file.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader and nodelist compiler.
+        </item>
+      </list>
     </div2>
     <div2 id=INCLUDENODES>
       <head>
@@ -4898,7 +5777,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     fine.
       </p>
     </div2>
-    <div2>
+    <div2 id=INTERNETGATE>
       <head>
         INTERNETGATE &lsqb;gatename&lt;,&gt;&rsqb;&lt;address&gt;
       </head>
@@ -5416,7 +6295,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     disable the lookup. Previously the lookup was always enabled.
       </p>
     </div2>
-    <div2>
+    <div2 id=MAILINGLIST>
       <head>
         MAILINGLIST &lt;echoid&gt; &lt;senderaddress&gt; &lsqb;contribution address&rsqb;
       </head>
@@ -5710,6 +6589,29 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     format).
       </p>
     </div2>
+    <div2 id=NETNAME>
+      <head>
+        NETNAME <q/string/
+      </head>
+      <!--
+            This is the "netname" that is placed in the originline, in front
+            of the address.
+        
+            Example:
+        
+              NETNAME fidonet
+        
+            Produces:
+        
+              * Origin: Whatever (2:236/77@fidonet)
+        
+            This keyword can be used globally and in a Random System group.
+        
+            NOTE: The netname is a non-standard practice with no technical
+            merit and should not be used. It is provided for cosmetical
+            purposes and backward compatibility only.
+      -->
+    </div2>
     <div2>
       <head>
         NICKNAME &lt;your pseudo&gt;
@@ -5953,7 +6855,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     setup files if it can't find the PCBOARD environment variable.
       </p>
     </div2>
-    <div2>
+    <div2 id=PCBOARDUSERNO>
       <head>
         PCBOARDUSERNO &lt;userno&gt;
       </head>
@@ -6494,7 +7396,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     slow.
       </p>
     </div2>
-    <div2>
+    <div2 id=ROBOTNAME>
       <head>
         ROBOTNAME &lt;name&gt;
       </head>
@@ -7586,7 +8488,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     userlist output file generated with the READmakeuserlist command.
       </p>
     </div2>
-    <div2>
+    <div2 id=USERNAME>
       <head>
         USERNAME &lt;name&gt;&lsqb;&lsqb;,&rsqb;&lt; &gt;address&rsqb;
       </head>
@@ -7731,7 +8633,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     This keyword can be used globally and in a Random System group.
       </p>
     </div2>
-    <div2>
+    <div2 id=WHOTO>
       <head>
         WHOTO &lt;name&gt;
       </head>
