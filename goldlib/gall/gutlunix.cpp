@@ -105,14 +105,17 @@ char* g_get_clip_text(void) {
   std::string clipfile = CLIPFILE;
   strschg_environ(clipfile);
   size_t size = GetFilesize(clipfile.c_str());
-  char *text = (char *)throw_malloc(size+1);
-  *text = NUL;
 
-  FILE *f = fopen(clipfile.c_str(), "rt");
-  if(f != NULL) {
-    fread(text, 1, size, f);
-    text[size] = NUL;
-    fclose(f);
+  if(size != -1) {
+    char *text = (char *)throw_malloc(size+1);
+    *text = NUL;
+
+    FILE *f = fopen(clipfile.c_str(), "rt");
+    if(f != NULL) {
+      fread(text, 1, size, f);
+      text[size] = NUL;
+      fclose(f);
+    }
   }
 
   return text;
