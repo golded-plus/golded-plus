@@ -120,7 +120,7 @@ bool gareafile::ReadHPTLine(FILE* f, string* s, bool add, int state) {
     ++ptr;
   }
 
-  if(not str.empty() and (*(str.end()-1) == '\n'))
+  while(not str.empty() and ((*(str.end()-1) == '\n') or (*(str.end()-1) == '\r')))
     str.erase(str.end()-1);
 
   const char *p = strskip_wht(str.c_str());

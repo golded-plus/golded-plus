@@ -110,6 +110,7 @@ void gareafile::ReadCrashmail(char* tag) {
 
     const word CRC_AKA = 0x13A4;
     const word CRC_AREA = 0x010B;
+    const word CRC_LOCALAREA = 0xAEC1;
     const word CRC_DESCRIPTION = 0x2DF1;
     const word CRC_DOMAIN = 0xFFCA;
     const word CRC_GROUP = 0x1C9B;
@@ -121,10 +122,12 @@ void gareafile::ReadCrashmail(char* tag) {
     const word CRC_JAM = 0xA8C3;
     const word CRC_SQUISH = 0xFCF6;
 
-    while(fgets(buf, 81, fp) != NULL) {
+    word crc16;
+
+    while(fgets(buf, 4000, fp) != NULL) {
       jbcpos=0;
       jbstrcpy(key, buf, 30, &jbcpos);
-      switch(strCrc16(key)) {
+      switch(crc16 = strCrc16(key)) {
         case CRC_SYSOP:
           jbstrcpy(tmp, buf, 100, &jbcpos);
           CfgUsername(tmp);
@@ -141,12 +144,13 @@ void gareafile::ReadCrashmail(char* tag) {
           break;
         case CRC_AREA:
         case CRC_NETMAIL:
+	case CRC_LOCALAREA:
           if(aa.type != 0xff) {
             if(not unconfirmed)
               AddNewArea(aa);
             aa.reset();
           }
-          aa.type = (strCrc16(key) == CRC_NETMAIL) ? GMB_NET : GMB_ECHO;
+          aa.type = (crc16 == CRC_NETMAIL) ? GMB_NET : (crc16 == CRC_LOCALAREA) ? GMB_LOCAL : GMB_ECHO;
           switch(aa.type) {
             case GMB_NET:
               aa.attr = attribsnet;
