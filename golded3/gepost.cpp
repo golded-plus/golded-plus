@@ -133,7 +133,10 @@ void CheckSubject(GMsg* msg, char* subj) {
           fspec[fspecs].delsent = YES;
           ptr++;
         }
-        strxcpy(fspec[fspecs].path, ptr, sizeof(Path));
+        if((ptr == CleanFilename(ptr)) and *CFG->attachpath)
+          strxmerge(fspec[fspecs].path, sizeof(Path), CFG->attachpath, ptr, NULL);
+        else
+          strxcpy(fspec[fspecs].path, ptr, sizeof(Path));
         FileSelect(msg, LNG->AttachFiles, &fspec[fspecs]);
         specfiles += fspec[fspecs].files;
         if(fspec[fspecs].files)

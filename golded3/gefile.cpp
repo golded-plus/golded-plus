@@ -333,6 +333,8 @@ void FileSelect(GMsg* msg, char* title, FileSpec* fspec) {
   MapPath(fbuf);
 
   Path fullpath;
+  if(fbuf[0] and is_dir(fbuf))
+    AddBackslash(fbuf);
   extractdirname(fullpath, fbuf);
   const char* wildlistname = (isslash(fbuf[strlen(fbuf)-1]) or is_dir(fbuf)) ? "*" : CleanFilename(fbuf);
   gposixdir f(fullpath);
@@ -371,7 +373,7 @@ void FileSelect(GMsg* msg, char* title, FileSpec* fspec) {
     strcpy(fb->name, de->name.c_str());
     fb->selected = false;
     FFTime ftm;
-    dword _ftm = GetFiletime(fb->name);
+    dword _ftm = gfixstattime(de->stat_info.st_mtime);
     memcpy(&ftm, &_ftm, sizeof(FFTime));
     fb->year = ftm.ft_year + 1980;
     fb->month = ftm.ft_month;

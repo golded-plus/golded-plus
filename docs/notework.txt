@@ -12,6 +12,16 @@ ______________________________________________________________________
                 Notes for GoldED+ 1.1.5, December xx 2000
 ______________________________________________________________________
 
++ If filenames specified without path and File Attach attribute is set
+  Attachpath automatically prepended to every filename.
+
+- Fixed date in attach selection menu.
+
+- If directory typed in subject field without slash at the end files
+  from proper directory selected instead of GOLDEDPATH.
+
+- Fixed attached file size display if path starts from slash.
+
 - Support for old Fastechoes reverted back.
 
 - Area Catch-up and Scan now disabled if there's active area. This

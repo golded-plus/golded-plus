@@ -646,7 +646,7 @@ void Initialize(int argc, char* argv[]) {
   truepathtmp = CFG->goldpath;
   maketruepath(truepathtmp);
   strxcpy(CFG->goldpath, truepathtmp.c_str(), sizeof(CFG->goldpath)-1);
-  strxmerge(CFG->goldpath, sizeof(Path), truepathtmp.c_str(), "/", NULL);
+  strxmerge(CFG->goldpath, sizeof(Path), truepathtmp.c_str(), GOLD_SLASH_STR, NULL);
   strxmerge(CFG->goldcfg, sizeof(Path), CFG->goldpath, CleanFilename(cmdlinecfg), NULL);
 
   // Call install detect procedure
