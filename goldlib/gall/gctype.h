@@ -43,17 +43,29 @@
 #define tolower(a) _nls_tolower((unsigned char)(a))
 #define toupper(a) _nls_toupper((unsigned char)(a))
 #elif defined(__WIN32__)
+#ifdef __cplusplus
+extern "C" {
+#endif
 extern char tl[256], tu[256];
-inline char tolower(char c) { return tl[c]; }
-inline char toupper(char c) { return tu[c]; }
+inline int tolower(int c) { return tl[c]; }
+inline int toupper(int c) { return tu[c]; }
+#ifdef __cplusplus
+}
+#endif
 #endif
 
 
 //  ------------------------------------------------------------------
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 inline int iswhite(char c)  { return c and (iscntrl(c) or (c == ' ')); }
 // NLS chars detected by converting to lower or upper case and in case they don't match they treated as characters
 inline int isxalnum(char c) { return isalnum(c) or ((c >= 128) and ((c != tolower(c)) or (c != toupper(c)))); }
+#ifdef __cplusplus
+}
+#endif
 
 
 //  ------------------------------------------------------------------

@@ -12,6 +12,14 @@ ______________________________________________________________________
                 Notes for GoldED+ 1.1.5, December xx 2000
 ______________________________________________________________________
 
+- PGP encoded/signed messages now detected by substring
+
+  "-----BEGIN PGP "
+
+  in first line of message rather than 
+
+  "-----BEGIN PGP MESSAGE-----"
+
 - Fixed keyboard handling in Win9x/ME (not well tested).
 
 - Control characters (except tab, CR and LF) no longer stripped at the
@@ -71,7 +79,7 @@ ______________________________________________________________________
   another area correspondingly). Both added to READMainmenu menu.
   There's no default keyboard assignment. (Not tested)
 
-- Fixed EDITMainmenu operation.
+- Fixed READMainmenu operation.
 
 - Fixed incorrect filenames displaying in /w32 version.
 

@@ -266,7 +266,7 @@ void DoKludges(int mode, GMsg* msg, bool attronly) {
     if(AA->isnet()) {
 
                                                        // 123456789012345678901234567
-      if(line->next and strneql(line->next->txt.c_str(), "-----BEGIN PGP MESSAGE-----", 27)) {
+      if(line->next and strneql(line->next->txt.c_str(), "-----BEGIN PGP ", 15)) {
         line = AddKludge(line, "\001ENC: PGP");
       }
 

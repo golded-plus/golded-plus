@@ -254,11 +254,21 @@ void CfgInit2() {
 
 //  ------------------------------------------------------------------
 
+bool inline samekey(gkey key1, gkey key2) {
+
+  if(key1 > 0xff) // special key
+    return false;
+  return (tolower(key1) == key2) or (toupper(key1) == key2);
+}
+
+
+//  ------------------------------------------------------------------
+
 int IsMacro(gkey key, int type) {
 
   vector<Macro>::iterator m = CFG->macro.begin();
   while(m != CFG->macro.end()) {
-    if(((key == m->key) or (tolower(key) == m->key) or (toupper(key) == m->key)) and (type == m->type))
+    if(((key == m->key) or samekey(key, m->key)) and (type == m->type))
       return true;
     m++;
   }
@@ -273,7 +283,7 @@ int PlayMacro(gkey key, int type) {
 
   vector<Macro>::iterator m = CFG->macro.begin();
   while(m != CFG->macro.end()) {
-    if(((key == m->key) or (tolower(key) == m->key) or (toupper(key) == m->key)) and (type == m->type)) {
+    if(((key == m->key) or samekey(key, m->key)) and (type == m->type)) {
       RunMacro(m);
       return true;
     }
