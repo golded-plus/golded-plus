@@ -135,7 +135,12 @@ Line* JamArea::make_dump_msg(Line*& lin, gmsg* __msg, char* lng_head) {
   AddLineF(line, "ActiveMsgs    : %lu",    _base->activemsgs);
   AddLineF(line, "PasswordCRC   : %08lXh", _base->passwordcrc);
   AddLineF(line, "BaseMsgNum    : %lu",    _base->basemsgnum);
-  AddLineF(line, "HighWaterMark : %lu",    _base->highwatermark);
+  if(jamwide->smapihw)
+    AddLineF(line, "HighWaterMark : %lu",    _base->highwatermark);
+  else if(data->highwater != -1)
+    AddLineF(line, "HighWaterMark : %lu",    data->highwater);
+  else
+    AddLineF(line, "HighWaterMark : unknown");
   line = AddLine(line, "");
   AddLineF(line, "Subfields:");
   line = AddLine(line, "");

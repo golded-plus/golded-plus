@@ -224,9 +224,11 @@ struct JamData {
   int fhjdt;
   int fhjdx;
   int fhjlr;
+  int fhjhw;             // highwater if available
   int islocked;          // Area is locked?
   int timesposted;
-  long lastpos;           // Lastread position
+  long lastpos;          // Lastread position
+  long highwater;
   JamLast lastrec;       // .JLR Lastread record
   JamHdrInfo hdrinfo;    // .JHR Header info record
 };
@@ -240,6 +242,7 @@ struct JamWide {
   int lookreplies;
   const char* jampath;
   int harddelete;
+  int smapihw;
 };
 
   

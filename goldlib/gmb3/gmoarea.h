@@ -132,6 +132,7 @@ public:
   int isjam() const;
   int ispcboard() const;
   int issquish() const;
+  int issmb() const;
   int iswildcat() const;
   int isadeptxbbs() const;
   int isseparator() const;
@@ -199,6 +200,7 @@ inline int gmo_area::ishudson() const    { return cfg.ishudson(); }
 inline int gmo_area::isjam() const       { return cfg.isjam(); }
 inline int gmo_area::ispcboard() const   { return cfg.ispcboard(); }
 inline int gmo_area::issquish() const    { return cfg.issquish(); }
+inline int gmo_area::issmb() const       { return cfg.issmb(); }
 inline int gmo_area::iswildcat() const   { return cfg.iswildcat(); }
 inline int gmo_area::isadeptxbbs() const { return cfg.isadeptxbbs(); }
 inline int gmo_area::isseparator() const { return cfg.isseparator(); }

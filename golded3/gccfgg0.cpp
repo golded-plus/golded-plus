@@ -66,6 +66,7 @@ tglobalbool globalbool[gswitches_last] = {
   { CRC_AREALISTPAGEBAR          }, // 0x6C37;
   { CRC_USEMSGID                 }, // 0x6FDB;
   { CRC_LOOKUPNET                }, // 0x7359;
+  { CRC_JAMSMAPIHIGHWATER        }, // 0x74A4;
   { CRC_SQUISHDIRECT             }, // 0x7C35;
   { CRC_FIDOHWMARKS              }, // 0x7E07;
   { CRC_MSGLISTPAGEBAR           }, // 0x8041;

@@ -53,6 +53,7 @@ enum en_gswitches {
   arealistpagebar,
   usemsgid,
   lookupnet,
+  jamsmapihw,
   squishdirect,
   fidohwmarks,
   msglistpagebar,

@@ -39,7 +39,7 @@ void JamArea::data_open() {
 
   wide = jamwide;
   data = jamdata + (jamdatano++);
-  data->fhjhr = data->fhjdt = data->fhjdx = data->fhjlr = -1;
+  data->fhjhr = data->fhjdt = data->fhjdx = data->fhjlr = data->fhjhw = -1;
   data->islocked = false;
   data->timesposted = 0;
   data->lastpos = 0;
@@ -102,6 +102,9 @@ void JamArea::raw_open() {
   sprintf(file, "%s.jlr", path());  data->fhjlr = test_open(file);
   if(NOT just_scanning) {
     sprintf(file, "%s.jdt", path());  data->fhjdt = test_open(file);
+    if(not jamwide->smapihw) {
+      sprintf(file, "%s.cmhw", path()); data->fhjhw = ::sopen(file, O_RDWR|O_BINARY, WideSharemode, S_STDRW);
+    }
   }
 
   GFTRK(NULL);
@@ -114,10 +117,11 @@ void JamArea::raw_close() {
 
   GFTRK("JamArea::raw_close");
 
-  if(data->fhjlr != -1)  ::close(data->fhjlr);  data->fhjlr = -1;
-  if(data->fhjdx != -1)  ::close(data->fhjdx);  data->fhjdx = -1;
-  if(data->fhjdt != -1)  ::close(data->fhjdt);  data->fhjdt = -1;
-  if(data->fhjhr != -1)  ::close(data->fhjhr);  data->fhjhr = -1;
+  if(data->fhjlr != -1) { ::close(data->fhjlr);  data->fhjlr = -1; }
+  if(data->fhjdx != -1) { ::close(data->fhjdx);  data->fhjdx = -1; }
+  if(data->fhjdt != -1) { ::close(data->fhjdt);  data->fhjdt = -1; }
+  if(data->fhjhr != -1) { ::close(data->fhjhr);  data->fhjhr = -1; }
+  if(data->fhjhw != -1) { ::close(data->fhjhw);  data->fhjhw = -1; }
 
   GFTRK(NULL);
 }
@@ -135,6 +139,11 @@ void JamArea::open_area() {
   // Read the header info
   memset(&data->hdrinfo, 0, sizeof(JamHdrInfo));
   read(data->fhjhr, &data->hdrinfo, sizeof(JamHdrInfo));
+
+  if(not jamwide->smapihw and (data->fhjhw != -1))
+    read(data->fhjhw, &data->highwater, sizeof(long));
+  else
+    data->highwater = -1;
 
   // Is the signature invalid?
   if(memcmp(data->hdrinfo.signature, JAM_SIGNATURE, 4)) {

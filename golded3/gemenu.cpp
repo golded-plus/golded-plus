@@ -571,7 +571,6 @@ void ChgAttrs(int mode, GMsg* __msg) {
   }
   else {
     DispAttrWindow(false);
-    freonkey();
   }
 }
 
@@ -582,7 +581,6 @@ void AskAttributes(GMsg* __msg) {
 
   ChgAttrs(ALWAYS, __msg);
   update_statusline(LNG->ChangeAttrs);
-  whelpdef(CFG->helpged, Key_F1, C_HELPB, C_HELPW, C_HELPQ, C_HELPS, NULL);
   whelppcat(H_Attributes);
 
   gkey key;

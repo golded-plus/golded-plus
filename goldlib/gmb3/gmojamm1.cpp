@@ -54,7 +54,7 @@ void JamExit() {
 
 //  ------------------------------------------------------------------
 
-void JamInit(const char* jampath, int harddelete) {
+void JamInit(const char* jampath, int harddelete, int jamsmapihw) {
 
   GFTRK("JamInit");
 
@@ -63,6 +63,7 @@ void JamInit(const char* jampath, int harddelete) {
 
   jamwide->jampath = jampath;
   jamwide->harddelete = harddelete;
+  jamwide->smapihw = jamsmapihw;
 
   // Calculate CRC32 of our username for the lastreads
   INam _name;

@@ -226,6 +226,7 @@ const word CRC_INTERNETSERVER   = 0xA01B;
 const word CRC_INVALIDATE       = 0x69CB;
 const word CRC_JAMHARDDELETE    = 0xE2D5;
 const word CRC_JAMPATH          = 0x1200;
+const word CRC_JAMSMAPIHIGHWATER= 0x74A4;
 const word CRC_KEYBCLEAR        = 0xD407;
 const word CRC_KEYBDEFAULTS     = 0x9FAE;
 const word CRC_KEYBEXT          = 0xC48A;

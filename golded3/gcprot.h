@@ -216,7 +216,6 @@ void CfgInternetreply    ();
 void CfgInternetrfcbody  ();
 void CfgInternetserver   ();
 void CfgInvalidate       ();
-void CfgJamharddelete    ();
 void CfgJampath          ();
 void CfgKeybclear        ();
 void CfgKeybdefaults     ();

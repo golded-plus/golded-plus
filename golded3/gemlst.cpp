@@ -340,7 +340,6 @@ bool GMsgList::handle_key() {
       break;
 
     case KK_ListGotoNext:
-    listgotonext:
       key = Key_Dwn;
       default_handle_key();
       break;

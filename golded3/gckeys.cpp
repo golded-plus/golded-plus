@@ -1120,7 +1120,7 @@ int ReadKeysCfg(int force) {
   vector<Macro>::iterator k;
   for(k=CFG->macro.begin(), n=0; k != CFG->macro.end(); k++, n++) {
     if(k->type == 0) {
-      if((k->key == KK_Auto) or (k->key == 0x0300)) {
+      if(k->key == KK_Auto) {
         // Start automacro
         mac = k->buf;
         while(*mac) {

@@ -72,7 +72,7 @@ void HGWarnRebuild();
 
 //  ------------------------------------------------------------------
 
-void JamInit(const char* jampath, int harddelete);
+void JamInit(const char* jampath, int harddelete, int smapihw);
 void JamExit();
 
 void JamWideOpen();

@@ -427,7 +427,6 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view) {
 
   ChgAttrs(YES, msg);
 
-  whelpdef(CFG->helpged, Key_F1, C_HELPB, C_HELPW, C_HELPQ, C_HELPS, NULL);
   vcurshow();
   if(not (hedit.lookup or AA->isnet())) {
     char date2[25] = {""};

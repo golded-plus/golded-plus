@@ -444,6 +444,7 @@ public:
   int isjam() const;
   int ispcboard() const;
   int issquish() const;
+  int issmb() const;
   int iswildcat() const;
   int isadeptxbbs() const;
   int isseparator() const;
@@ -607,6 +608,7 @@ inline int Area::ishudson() const    { return area->ishudson(); }
 inline int Area::isjam() const       { return area->isjam(); }
 inline int Area::ispcboard() const   { return area->ispcboard(); }
 inline int Area::issquish() const    { return area->issquish(); }
+inline int Area::issmb() const       { return area->issmb(); }
 inline int Area::iswildcat() const   { return area->iswildcat(); }
 inline int Area::isadeptxbbs() const { return area->isadeptxbbs(); }
 inline int Area::isseparator() const { return area->isseparator(); }

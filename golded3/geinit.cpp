@@ -1033,7 +1033,7 @@ void Initialize(int argc, char* argv[]) {
   #ifndef GMB_NOJAM
   if(AL.msgbases & MT_JAM) {
     update_statuslinef("%s JAM", LNG->Checking);
-    JamInit(CFG->jampath, CFG->switches.get(jamharddelete));
+    JamInit(CFG->jampath, CFG->switches.get(jamharddelete), CFG->switches.get(jamsmapihw));
   }
   #endif
   #ifndef GMB_NOPCB

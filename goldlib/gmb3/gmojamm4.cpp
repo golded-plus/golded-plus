@@ -69,6 +69,19 @@ void JamArea::lock() {
   lseekset(data->fhjhr, 0);
   read(data->fhjhr, &data->hdrinfo, sizeof(JamHdrInfo));
 
+  if(not jamwide->smapihw) {
+    if(data->fhjhw == -1) {
+      Path file;
+      sprintf(file, "%s.cmhw", path()); data->fhjhw = ::sopen(file, O_RDWR|O_BINARY, WideSharemode, S_STDRW);
+    }
+    if(data->fhjhw != -1)
+      read(data->fhjhw, &data->highwater, sizeof(long));
+    else
+      data->highwater = -1;
+  }
+  else
+    data->highwater = -1;
+
   GFTRK(NULL);
 }
 
@@ -406,6 +419,18 @@ void JamArea::save_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
 
       // Update internal array
       Msgn->Append(__msg->msgno);
+    }
+
+    // Adjust the highwatermark if required
+    if(jamwide->smapihw and __msg->attr.uns()) {
+      if(data->hdrinfo.highwatermark >= __msg->msgno)
+        data->hdrinfo.highwatermark = __msg->msgno - 1;
+    }
+    else if((data->highwater != -1) and (data->fhjhw != -1)) {
+      if(data->highwater >= __msg->msgno) {
+        data->highwater = __msg->msgno - 1;
+        write(data->fhjhw, &data->highwater, sizeof(long));
+      }
     }
   }
   else {
