@@ -55,7 +55,7 @@ static bool tokenxchg(char*& dst, char* tok, const char* src, int len = 0, int c
   va_list a;
   va_start(a, cnt);
   for(int i = 0; i < cnt; i ++) {
-    use = va_arg(a, bool);
+    use = va_arg(a, int);
     if(dst[toklen] == '{') {
       char *p = strchr(dst+toklen, '}');
       if(p) {
@@ -158,13 +158,13 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
         if(tokenxchg(dst, "@odesc", AL.AreaEchoToPtr(origareaid)->desc()))
           continue;
         if(tokenxchg(dst, "@oname", strbtrim(strtmp(oldmsg->By())), 34, 2,
-            msg->by_me(), msg->by_you()))
+            (int)msg->by_me(), (int)msg->by_you()))
           continue;
         if(tokenxchg(dst, "@ofname", strlword(oldmsg->By()), 0, 2,
-            msg->by_me(), msg->by_you()))
+            (int)msg->by_me(), (int)msg->by_you()))
           continue;
         if(tokenxchg(dst, "@olname", strrword(oldmsg->By()), 0, 2,
-            msg->by_me(), msg->by_you()))
+            (int)msg->by_me(), (int)msg->by_you()))
           continue;
         if(tokenxchg(dst, "@odate", odate))
           continue;
@@ -183,15 +183,15 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
 	if(tokenxchg(dst, "@omsgid", *msg->replys ? msg->replys : ""))
 	  continue;
         if(tokenxchg(dst, "@dname", strbtrim(strtmp(oldmsg->To())), 34, 3,
-            msg->to_me(), msg->to_you(), oldmsg->to_all()))
+            (int)msg->to_me(), (int)msg->to_you(), (int)oldmsg->to_all()))
           continue;
         if(tokenxchg(dst, "@dpgp", *msg->iaddr ? msg->iaddr : msg->To()))
           continue;
         if(tokenxchg(dst, "@dfname", strlword(oldmsg->To()), 0, 3,
-            msg->to_me(), msg->to_you(), oldmsg->to_all()))
+            (int)msg->to_me(), (int)msg->to_you(), (int)oldmsg->to_all()))
           continue;
         if(tokenxchg(dst, "@dlname", strrword(oldmsg->To()), 0, 3,
-            msg->to_me(), msg->to_you(), oldmsg->to_all()))
+            (int)msg->to_me(), (int)msg->to_you(), (int)oldmsg->to_all()))
           continue;
         if(origareaisinet) {
           if(tokenxchg(dst, "@oaddr", oldmsg->iorig, 19, 1, 0))
@@ -256,13 +256,13 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
           }
         }
         if(tokenxchg(dst, "@tname", strbtrim(strtmp(msg->To())), 34, 3,
-            false, false, msg->to_all()))
+            (int)false, (int)false, (int)msg->to_all()))
           continue;
         if(tokenxchg(dst, "@tfname", strlword(msg->To()), 0, 3,
-            false, false, msg->to_all()))
+            (int)false, (int)false, (int)msg->to_all()))
           continue;
         if(tokenxchg(dst, "@tlname", strrword(msg->To()), 0, 3,
-            false, false, msg->to_all()))
+            (int)false, (int)false, (int)msg->to_all()))
           continue;
         if(tokenxchg(dst, "@cname", AA->Username().name, 34))
           continue;
@@ -293,26 +293,26 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
         if(strnieql(dst, "@dpseudo", 8)) {
           if(*(oldmsg->pseudoto) == NUL)
             build_pseudo(oldmsg);
-          tokenxchg(dst, "@dpseudo", oldmsg->pseudoto, 0, 3, msg->to_me(), msg->to_you(), oldmsg->to_all());
+          tokenxchg(dst, "@dpseudo", oldmsg->pseudoto, 0, 3, (int)msg->to_me(), (int)msg->to_you(), (int)oldmsg->to_all());
           continue;
         }
         if(strnieql(dst, "@opseudo", 8)) {
           if(*(oldmsg->pseudofrom) == NUL)
             build_pseudo(oldmsg, false);
-          tokenxchg(dst, "@opseudo", oldmsg->pseudofrom, 0, 2, msg->by_me(), msg->by_you());
+          tokenxchg(dst, "@opseudo", oldmsg->pseudofrom, 0, 2, (int)msg->by_me(), (int)msg->by_you());
           continue;
         }
         if(strnieql(dst, "@tpseudo", 8)) {
           if(*(msg->pseudoto) == NUL)
             build_pseudo(msg);
-          tokenxchg(dst, "@tpseudo", msg->pseudoto, 0, 3, false, false, msg->to_all());
+          tokenxchg(dst, "@tpseudo", msg->pseudoto, 0, 3, (int)false, (int)false, (int)msg->to_all());
           continue;
         }
         // Same as above (just for backward compatibility)
         if(strnieql(dst, "@pseudo", 7)) {
           if(*(msg->pseudoto) == NUL)
             build_pseudo(msg);
-          tokenxchg(dst, "@pseudo", msg->pseudoto, 0, 3, false, false, msg->to_all());
+          tokenxchg(dst, "@pseudo", msg->pseudoto, 0, 3, (int)false, (int)false, (int)msg->to_all());
           continue;
         }
         if(strnieql(dst, "@fpseudo", 8)) {

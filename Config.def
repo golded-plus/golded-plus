@@ -66,3 +66,5 @@
 #CPPFLAGS+=-DGCFG_NOWMAIL
 # Uncomment to disable xMail support
 #CPPFLAGS+=-DGCFG_NOXMAIL
+# Uncomment to disable SpaceTosser support
+#CPPFLAGS+=-DGCFG_NOSPCT
