@@ -62,7 +62,7 @@
 	#else	/* self-contained executable */
 		#define SMBEXPORT
 	#endif
-#elif defined __unix__
+#elif defined __unix__ || defined __GNUC__
 	#define SMBCALL
 	#define SMBEXPORT
 #elif defined __FLAT__
