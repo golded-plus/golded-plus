@@ -155,7 +155,7 @@ void gareafile::gettok(char** key, char** val) {
 
 //  ------------------------------------------------------------------
 
-void gareafile::ReadHPTFile(char* path, char* file, char* options, char* origin, int group) {
+void gareafile::ReadHPTFile(char* path, char* file, char* origin, int group) {
 
   const word CRC_ADDRESS = 0xFDD6;
   const word CRC_INCLUDE = 0x379B;
@@ -170,7 +170,7 @@ void gareafile::ReadHPTFile(char* path, char* file, char* options, char* origin,
   const word CRC_COMMENTCHAR = 0xE2CC;
   const word CRC_ECHOAREADEFAULTS = 0x2CBB;
 
-  AreaCfg aa, ad;
+  AreaCfg aa;
   Path buf2;
 
   FILE* fp = fsopen(file, "rb", sharemode);
@@ -181,7 +181,6 @@ void gareafile::ReadHPTFile(char* path, char* file, char* options, char* origin,
       std::cout << "* Reading " << file << std::endl;
 
     aa.reset();
-    ad.reset();
 
     std::string s;
     while(ReadHPTLine(fp, &s)) {
@@ -190,10 +189,6 @@ void gareafile::ReadHPTFile(char* path, char* file, char* options, char* origin,
 
         char *alptr = throw_xstrdup(s.c_str());
         char *ptr = alptr;
-
-        aa.type = GMB_NONE;
-        aa.msgbase = fidomsgtype;
-        aa.groupid = group;
 
         char* key;
         char* val = ptr;
@@ -221,7 +216,7 @@ void gareafile::ReadHPTFile(char* path, char* file, char* options, char* origin,
             if(strchg(buf2, '[', '%') != 0)
               strchg(buf2, ']', '%');
             MakePathname(buf2, path, buf2);
-            ReadHPTFile(path, buf2, options, origin, group);
+            ReadHPTFile(path, buf2, origin, group);
             break;
           case CRC_COMMENTCHAR:
             if((strlen(val) == 3) and (val[0] == val[2]) and strpbrk(val, "\'\""))
@@ -239,11 +234,11 @@ void gareafile::ReadHPTFile(char* path, char* file, char* options, char* origin,
             aa.type = GMB_LOCAL;
             break;
           case CRC_ECHOAREA:
-            aa = ad;
+            aa = echoareadefaults;
             aa.type = GMB_ECHO;
             break;
           case CRC_ECHOAREADEFAULTS:
-            ad.reset();
+            echoareadefaults.reset();
             aa.type = GMB_DEFAULT;
             break;
         }
@@ -346,7 +341,7 @@ void gareafile::ReadHPTFile(char* path, char* file, char* options, char* origin,
                 AddNewArea(aa);
                 break;
               case GMB_DEFAULT:
-                ad = aa;
+                echoareadefaults = aa;
                 break;
               default:
                 break;
@@ -404,7 +399,11 @@ void gareafile::ReadHPT(char* tag) {
 
   CfgJAMSMAPIHighwater(true);
 
-  ReadHPTFile(path, file, options, origin, defaultgroup);
+  echoareadefaults.type = GMB_NONE;
+  echoareadefaults.msgbase = fidomsgtype;
+  echoareadefaults.groupid = defaultgroup;
+
+  ReadHPTFile(path, file, origin, defaultgroup);
 }
 
 

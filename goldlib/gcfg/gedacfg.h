@@ -267,8 +267,9 @@ protected:
   void ReadFMail116(FILE* fp, char* path, char* file, char* options);
 #endif
 #ifndef GCFG_NOFIDOCONF
+  AreaCfg echoareadefaults;
   bool ReadHPTLine(FILE* f, std::string* s, bool add=false, int state=0);
-  void ReadHPTFile(char* path, char* file, char* options, char* origin, int group);
+  void ReadHPTFile(char* path, char* file, char* origin, int group);
 #endif
 #ifndef GCFG_NOIMAIL
   void ReadIMail160(char* options, char* file, char* impath);

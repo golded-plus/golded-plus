@@ -585,7 +585,12 @@ int GMenuEditfile::Run(GMsg* __msg) {
 
       default:
         if(finaltag >= TAG_UTILS) {
+          XlatName __oldxlatimport;
+          // Save current charset
+          strcpy(__oldxlatimport, AA->Xlatimport());
+          AA->SetXlatimport(CFG->xlatlocalset);
           ExternUtil(__msg, EDIT->SaveUtil.Number(finaltag-TAG_UTILS));
+          AA->SetXlatimport(__oldxlatimport);
           BodyView->Use(AA, __msg, _topline);
           BodyView->Paint();
         }

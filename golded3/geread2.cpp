@@ -613,7 +613,6 @@ int ExternUtil(GMsg *msg, ExtUtil *extutil) {
   if(tmpfile[0] != NUL)
     WipeFile(tmpfile, 0);
 
-  reader_keyok = true;
   return YES;
 }
 
@@ -665,11 +664,11 @@ void ExternUtilMenu(GMsg* msg) {
         extutil.utilno = 0;
         strxcpy(extutil.cmdline, cmdline, sizeof(extutil.cmdline));
         extutil.options = CFG->externoptions;
-        ExternUtil(msg, &extutil);
+        reader_keyok = ExternUtil(msg, &extutil);
       }
     }
     else {
-      ExternUtil(msg, &CFG->externutil[n-1]);
+      reader_keyok = ExternUtil(msg, &CFG->externutil[n-1]);
     }
   }
   for(n=CFG->externutil.size()+1; n; n--)

@@ -45,7 +45,6 @@
 #include <sys/nls.h>
 #define tolower(c) _nls_tolower((unsigned char)(c))
 #define toupper(c) _nls_toupper((unsigned char)(c))
-#endif
 #elif defined(__WIN32__)
 #ifdef __cplusplus
 extern "C" {
@@ -55,19 +54,20 @@ __inline__ int toupper(int c) { return tu[c]; }
 }
 #else
 extern char tl[256], tu[256];
-#define tolower(c) tl[(int)(unsigned char)c]
-#define toupper(c) tu[(int)(unsigned char)c]
+#define tolower(c) tl[(int)(unsigned char)(c)]
+#define toupper(c) tu[(int)(unsigned char)(c)]
 #endif
 #endif
 
 
 //  ------------------------------------------------------------------
 
+// NLS chars detected by converting to lower or upper case and in case they don't match they treated as characters
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-// NLS chars detected by converting to lower or upper case and in case they don't match they treated as characters
-__inline__ int isxalnum(char c) { return isascii(c) ? isalnum(c) : (c != tolower(c)) || (c != toupper(c)); }
+extern __inline__ int isxalnum(char c) { return isascii(c) ? isalnum(c) : (c != tolower(c)) || (c != toupper(c)); }
 #ifdef __cplusplus
 }
 #endif
