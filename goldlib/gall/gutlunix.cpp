@@ -38,11 +38,6 @@
 #define CLIPDIR  "~/.cedit"
 #define CLIPFILE "~/.cedit/cooledit.clip"
 
-#ifdef __BEOS__
-char          ge_beos_title[GMAXTITLE] = "";
-int           ge_beos_ext_title;
-#endif
-
 //  ------------------------------------------------------------------
 
 int g_init_os(int flags) {
@@ -64,13 +59,7 @@ void g_deinit_os(void) {
 
 void g_init_title(char *tasktitle, int titlestatus) {
 
-#ifndef __BEOS__
   NW(tasktitle); NW(titlestatus);
-#else
-  strncpy(ge_beos_title, tasktitle, GMAXTITLE);
-  ge_beos_title[GMAXTITLE-1] = '\0';
-  ge_beos_ext_title = titlestatus;
-#endif
 }
 
 
@@ -86,13 +75,7 @@ void g_increase_priority(void) {
 
 void g_set_ostitle(char* title, word dx) {
 
-  NW(dx);
-#ifndef __BEOS__
-  NW(title);
-#else
-  printf("\x1b\x5d\x32\x3b%s\x07", title);
-  fflush(stdout);
-#endif
+  NW(dx); NW(title);
 }
 
 
@@ -168,26 +151,7 @@ void g_get_ostitle_name(char* title) {
 
 void g_set_ostitle_name(char* title, int mode) {
 
-#ifndef __BEOS__
   NW(title); NW(mode);
-#else
-  if(mode == 0) {
-    char fulltitle[GMAXTITLE];
-    strcpy(fulltitle, ge_beos_title);
-    if(ge_beos_ext_title) {
-      int len = strlen(fulltitle);
-      if(len < GMAXTITLE-4) {
-        if(len)
-          strcat(fulltitle, " - ");
-        strncpy(fulltitle+len+3, title, GMAXTITLE-len-3);
-        fulltitle[GMAXTITLE-1] = '\0';
-      }
-    }
-    g_set_ostitle(fulltitle, 0);
-  }
-  else
-    g_set_ostitle(title, 0);
-#endif
 }
 
 
