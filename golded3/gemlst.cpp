@@ -80,6 +80,7 @@ class GMsgList : public gwinpick {
   void do_delayed();
   void print_line(uint idx, uint pos, bool isbar);
   bool handle_key();                  // Handles keypress
+  void update_marks(MLst *ml);
   void ReadMlst(int n);
 
 public:
@@ -122,23 +123,13 @@ void GMsgList::close() {
 
 //  ------------------------------------------------------------------
 
-void GMsgList::ReadMlst(int n) {
-
-  MLst* ml = mlst[n];
-
-  if(ml != NULL)
-    return;
-
-  ml = mlst[n] = new MLst;
-  throw_new(ml);
+void GMsgList::update_marks(MLst *ml) {
 
   ml->high = 0;
 
   strcpy(ml->marks, "  ");
 
-  ml->msgno = AA->Msgn.CvtReln(n + 1);
-
-  if(AA->bookmark == AA->Msgn.CvtReln(n + 1)) {
+  if(AA->bookmark == ml->msgno) {
     ml->marks[0] = MMRK_BOOK;
     ml->high |= MLST_HIGH_BOOK;
   }
@@ -149,6 +140,24 @@ void GMsgList::ReadMlst(int n) {
       ml->high |= MLST_HIGH_MARK;
     }
   }
+}
+
+
+//  ------------------------------------------------------------------
+
+void GMsgList::ReadMlst(int n) {
+
+  MLst* ml = mlst[n];
+
+  if(ml != NULL)
+    return;
+
+  ml = mlst[n] = new MLst;
+  throw_new(ml);
+
+  ml->msgno = AA->Msgn.CvtReln(n + 1);
+
+  update_marks(ml);
 
   if(AA->Msglistfast()) {
     AA->LoadHdr(&msg, ml->msgno);
@@ -400,6 +409,7 @@ bool GMsgList::handle_key() {
         else {
           AA->Mark.Add(mlst[index]->msgno);
         }
+        update_marks(mlst[index]);
       }
       if(index < maximum_index)
         cursor_down();
