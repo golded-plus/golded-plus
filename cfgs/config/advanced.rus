@@ -1432,8 +1432,9 @@ XlatCharSet  KOI8-R     CP866       KOI_866.chs
 XlatCharSet  CP1251     CP866       1251_866.chs
 XLatCharSet  LATIN1QP   CP866       K8R_866.chs
 XlatCharSet  ISO        CP866       ISO_866.chs
-XlatCharSet  CP1125     CP866       1125_866.chs
-XlatCharSet  KOI8U      CP866       K8U_866.chs
+XlatCharSet  CP1125     CP866       UKR_866.chs
+XlatCharSet  KOI8U      CP866       KOU_866.chs
+XlatCharSet  KOI8-U     CP866       KOU_866.chs
 XlatCharSet  LATIN-1    CP866       ISO_866.chs 
 XlatCharSet  MAC        CP866       MAC_866.chs
 XlatCharSet  I51        CP866       ISO_866.chs
@@ -1441,11 +1442,13 @@ XlatCharSet  8859       CP866       ISO_866.chs
 XlatCharSet  LATIN-1    CP850       ISO_850.chs
 XlatCharSet  LATIN1QP   CP850       IQP_850.chs
 XlatCharSet  MAC        CP850       MAC_850.chs
+XlatCharSet  CP1125     KOI8-U      UKR_KOU.chs
+XlatCharSet  KOI8-U     CP1125      KOU_UKR.chs
 
 // Таблицы импорта для мессаг с нестандартным ^CHRS
 XlatCharSet  IBMPC      CP866       866_866.chs
 XlatCharSet  +7_FIDO    CP866       866_866.chs
-XlatCharSet  UKR        CP866       K8U_866.chs
+XlatCharSet  UKR        CP866       UKR_866.chs
 
 // Таблицы для восстановления после гейта с заменой H
 XlatCharSet  WIN+K8R+H  CP866       WK2_866.chs
@@ -1512,8 +1515,9 @@ XlatCharSet CP866       ISO         866_ISO.chs
 XlatCharSet CP866       LATIN-1     866_ISO.chs
 XlatCharSet CP866       MAC         866_MAC.chs
 XlatCharSet CP866       I51         866_i51.chs
-XlatCharSet CP866       CP1125      866_1125.chs
-XlatCharSet CP866       KOI8U       866_K8U.chs
+XlatCharSet CP866       CP1125      866_UKR.chs
+XlatCharSet CP866       KOI8U       866_KOU.chs
+XlatCharSet CP866       KOI8-U      866_KOU.chs
 XlatCharSet CP850       LATIN-1     850_ISO.chs
 XlatCharSet CP850       LATIN1QP    850_IQP.chs
 
@@ -1524,11 +1528,13 @@ XlatCharSet CP866       COMPOSED    866_CMP.chs
 XlatCharSet CP866       VT100       866_VT1.chs
 XlatCharSet CP850       ASCII       850_ASC.chs
 
+
 // Определение входящей кодировки по умолчанию. Если приходящее 
 // сообщение не имеет клуджа ^CHRS, то будет считаться, что оно
 // соответствует этому набору символов.
 ;XlatImport <кодировка>
 
+;XlatImport CP1125
 ;XlatImport ASCII 
 ;XlatImport CP850
  XlatImport CP866
@@ -1542,6 +1548,7 @@ XlatCharSet CP850       ASCII       850_ASC.chs
 // "^aCHRS: XXххх 2".
 ;XlatExport <кодировка>
 
+;XlatExport CP1125
 ;XlatExport ASCII 
 ;XlatExport KOI8-R 
 ;XlatExport CP1251 
@@ -1557,6 +1564,8 @@ XlatCharSet CP850       ASCII       850_ASC.chs
 // перекодировка в реальный набор символов.
 ;XlatLocalSet <кодировка>
 
+;XlatLocalSet CP1125
+;XlatLocalSet KOI8-U
 ;XlatLocalSet CP850
  XlatLocalSet CP866
 
