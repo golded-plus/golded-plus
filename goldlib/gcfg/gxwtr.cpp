@@ -27,6 +27,7 @@
 #include <cstdlib>
 #include <gstrall.h>
 #include <gmemdbg.h>
+#undef GCFG_NOWATERGATE
 #include <gedacfg.h>
 #include <gs_wtr.h>
 

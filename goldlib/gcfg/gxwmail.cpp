@@ -28,6 +28,7 @@
 #include <gfilutil.h>
 #include <gstrall.h>
 #include <gmemdbg.h>
+#undef GCFG_NOWMAIL
 #include <gedacfg.h>
 #include <gs_wmail.h>
 

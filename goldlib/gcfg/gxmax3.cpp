@@ -29,6 +29,7 @@
 #include <gfilutil.h>
 #include <gmemdbg.h>
 #include <gstrall.h>
+#undef GCFG_NOMAXIMUS
 #include <gedacfg.h>
 #include <gs_max3.h>
 

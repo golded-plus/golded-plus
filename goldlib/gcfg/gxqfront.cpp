@@ -27,6 +27,7 @@
 #include <cstdlib>
 #include <gmemdbg.h>
 #include <gstrall.h>
+#undef GCFG_NOQFRONT
 #include <gedacfg.h>
 #include <gs_qfrnt.h>
 

@@ -58,7 +58,7 @@ void JamInit(const char* jampath, int harddelete) {
 
   GFTRK("JamInit");
 
-  jamdata = (JamData*)throw_calloc(2, sizeof(JamData));
+  jamdata = (JamData*)throw_calloc(3, sizeof(JamData));
   jamwide = (JamWide*)throw_calloc(1, sizeof(JamWide));
 
   jamwide->jampath = jampath;

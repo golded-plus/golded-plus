@@ -28,6 +28,7 @@
 #include <cstdlib>
 #include <gfilutil.h>
 #include <gmemdbg.h>
+#undef GCFG_NOFE
 #include <gedacfg.h>
 #include <gs_fech6.h>
 

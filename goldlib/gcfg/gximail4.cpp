@@ -26,6 +26,7 @@
 
 #include <gstrall.h>
 #include <gmemdbg.h>
+#undef GCFG_NOIMAIL
 #include <gedacfg.h>
 #include <gs_im160.h>
 

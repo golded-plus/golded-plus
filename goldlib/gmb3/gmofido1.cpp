@@ -123,7 +123,7 @@ void FidoExit() {
 
 void FidoInit(const char* fidolastread, int fidohwmarks, int fidonullfix, int fidouserno, const char* squishuserpath) {
 
-  fidodata = (FidoData*)throw_calloc(2, sizeof(FidoData));
+  fidodata = (FidoData*)throw_calloc(3, sizeof(FidoData));
   fidowide = (FidoWide*)throw_calloc(1, sizeof(FidoWide));
 
   fidowide->fidolastread = fidolastread;

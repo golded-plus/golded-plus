@@ -26,6 +26,7 @@
 
 #include <cstdlib>
 #include <gstrall.h>
+#undef GCFG_NORAECHO
 #include <gedacfg.h>
 #include <gs_recho.h>
 

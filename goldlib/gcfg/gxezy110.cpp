@@ -27,6 +27,7 @@
 #include <cstdlib>
 #include <gstrall.h>
 #include <gmemdbg.h>
+#undef GCFG_NOEZY
 #include <gedacfg.h>
 #include <gs_ez110.h>
 

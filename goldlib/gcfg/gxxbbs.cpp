@@ -27,6 +27,7 @@
 #include <cstdlib>
 #include <gcrcall.h>
 #include <gstrall.h>
+#undef GCFG_NOXBBS
 #include <gedacfg.h>
 
 #ifdef __OS2__

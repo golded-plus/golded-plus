@@ -28,6 +28,7 @@
 #include <cstdlib>
 #include <gmemdbg.h>
 #include <gfile.h>
+#undef GCFG_NOINTERMAIL
 #include <gedacfg.h>
 #include <gs_inter.h>
 

@@ -322,8 +322,8 @@ bool gareafile::ReadAreafile(word crc, char* parameters) {
   const word CRC_AREASBBS      = 0xF77C;
   const word CRC_CRASHMAIL     = 0x7551;
   const word CRC_DBRIDGE       = 0xD365;
-  const word CRC_DUTCHIE       = 0x0B08;
   const word CRC_D_BRIDGE      = 0x48DA;
+  const word CRC_DUTCHIE       = 0x0B08;
   const word CRC_EZYCOM        = 0xC81B;
   const word CRC_FASTECHO      = 0xF2F0;
   const word CRC_FE_ABS        = 0x8007;
@@ -351,54 +351,120 @@ bool gareafile::ReadAreafile(word crc, char* parameters) {
   const word CRC_SQUISH        = 0xFCF6;
   const word CRC_SUPERBBS      = 0x497F;
   const word CRC_TERMAIL       = 0x147A;
-  const word CRC_TIMED         = 0xE977;
   const word CRC_TMAIL         = 0xE837;
+  const word CRC_TIMED         = 0xE977;
   const word CRC_TOSSCAN       = 0x43DD;
   const word CRC_WATERGATE     = 0x3ADB;
   const word CRC_WMAIL         = 0xB167;
   const word CRC_XMAIL         = 0x9D56;
 
   switch(crc) {
+#ifndef GCFG_NOXBBS
     case CRC_ADEPTXBBS:     ReadAdeptXBBS(parameters);     break;
+#endif
     case CRC_AREAS_BBS:
     case CRC_AREASBBS:      ReadAreasBBS(parameters);      break;
+#ifndef GCFG_NOCMAIL
     case CRC_CRASHMAIL:     ReadCrashmail(parameters);     break;
+#endif
+#ifndef GCFG_NODB
     case CRC_D_BRIDGE:
     case CRC_DBRIDGE:       ReadDBridge(parameters);       break;
+#endif
+#ifndef GCFG_NODUTCHIE
     case CRC_DUTCHIE:       ReadDutchie(parameters);       break;
+#endif
+#ifndef GCFG_NOEZY
     case CRC_EZYCOM:        ReadEzycom(parameters);        break;
+#endif
+#ifndef GCFG_NOFE
     case CRC_FE_ABS:
     case CRC_FASTECHO:      ReadFastecho(parameters);      break;
+#endif
+#ifndef GCFG_NOFIDOCONF
     case CRC_FIDOCONFIG:    ReadHPT(parameters);           break;
+#endif
+#ifndef GCFG_NOPCB
     case CRC_FIDOPCB:       ReadFidoPCB(parameters);       break;
+#endif
+#ifndef GCFG_NOFMAIL
     case CRC_FMAIL:         ReadFMail(parameters);         break;
+#endif
+#ifndef GCFG_NOFD
     case CRC_FRONTDOOR:     ReadFrontDoor(parameters);     break;
+#endif
+#ifndef GCFG_NOGECHO
     case CRC_GECHO:         ReadGEcho(parameters);         break;
+#endif
+#ifndef GCFG_NOIMAIL
     case CRC_IMAIL:         ReadIMail(parameters);         break;
+#endif
+#ifndef GCFG_NOINTERMAIL
     case CRC_INTERMAIL:     ReadInterMail(parameters);     break;
+#endif
+#ifndef GCFG_NOLORA
     case CRC_LORABBS:       ReadLoraBBS(parameters);       break;
+#endif
+#ifndef GCFG_NOMAXIMUS
     case CRC_MAXIMUS:       ReadMaximus(parameters);       break;
+#endif
+#ifndef GCFG_NOME2
     case CRC_ME2:           ReadME2(parameters);           break;
+#endif
+#ifndef GCFG_NOOPUS
     case CRC_OPUS:          ReadOpus(parameters);          break;
+#endif
+#ifndef GCFG_NOPCB
     case CRC_PCBOARD:       ReadPCBoard(parameters);       break;
+#endif
+#ifndef GCFG_NOPORTAL
     case CRC_PORTAL:        ReadPortal(parameters);        break;
+#endif
+#ifndef GCFG_NOPROBOARD
     case CRC_PROBOARD:      ReadProBoard(parameters);      break;
+#endif
+#ifndef GCFG_NOQECHO
     case CRC_QECHO:         ReadQEcho(parameters);         break;
+#endif
+#ifndef GCFG_NOQFRONT
     case CRC_QFRONT:        ReadQFront(parameters);        break;
+#endif
+#ifndef GCFG_NOQBBS
     case CRC_QUICKBBS:      ReadQuickBBS(parameters);      break;
+#endif
+#ifndef GCFG_NORAECHO
     case CRC_RA_ECHO:
     case CRC_RAECHO:        ReadRaEcho(parameters);        break;
+#endif
+#ifndef GCFG_NORA
     case CRC_REMOTEACCESS:  ReadRemoteAccess(parameters);  break;
+#endif
+#if not defined(GCFG_NOSQSH) or not defined(GCFG_NOPARTOSS)
     case CRC_PARTOSS:
     case CRC_SQUISH:        ReadSquish(parameters);        break;
+#endif
+#ifndef GCFG_NOSBBS
     case CRC_SUPERBBS:      ReadSuperBBS(parameters);      break;
+#endif
+#ifndef GCFG_NOTERMAIL
     case CRC_TMAIL:
     case CRC_TERMAIL:       ReadTmail(parameters);         break;
+#endif
+#ifndef GCFG_NOTIMED
     case CRC_TIMED:         ReadTimed(parameters);         break;
+#endif
+#ifndef GCFG_NOTOSSCAN
     case CRC_TOSSCAN:       ReadTosScan(parameters);       break;
+#endif
+#ifndef GCFG_NOWATERGATE
     case CRC_WATERGATE:     ReadWtrGte(parameters);        break;
+#endif
+#ifndef GCFG_NOWMAIL
     case CRC_WMAIL:         ReadWMail(parameters);         break;
+#endif
+#ifndef GCFG_NOXMAIL
     case CRC_XMAIL:         ReadXMail(parameters);         break;
+#endif
     default:                return false;
   }
 

@@ -20,6 +20,11 @@ ______________________________________________________________________
 + Filenames in file requests are not converted to uppercase in Linux
   any more.
 
++ Now it is possible to exclude config file formats and messagebase
+  formats from GoldEd+ at compile-time.
+
+- Fixed the message-forward feature.
+
 ______________________________________________________________________
 
                Notes for GoldED+ 1.1.4.5, June 18 2000

@@ -27,6 +27,7 @@
 #include <cstdlib>
 #include <gmemdbg.h>
 #include <gstrall.h>
+#undef GCFG_NODB
 #include <gedacfg.h>
 #include <gs_db.h>
 

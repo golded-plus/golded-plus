@@ -27,6 +27,7 @@
 #include <cstdlib>
 #include <gmemdbg.h>
 #include <gstrall.h>
+#undef GCFG_NORA
 #include <gedacfg.h>
 #include <gs_ra.h>
 #include <gs_ra2.h>

@@ -52,7 +52,7 @@ void SMBExit() {
 
 void SMBInit() {
 
-  smbdata = (SMBData*)throw_calloc(2, sizeof(SMBData));
+  smbdata = (SMBData*)throw_calloc(3, sizeof(SMBData));
 }
 
 

@@ -26,6 +26,7 @@
 
 #include <cstdlib>
 #include <gstrall.h>
+#undef GCFG_NODUTCHIE
 #include <gedacfg.h>
 
 

@@ -31,6 +31,7 @@
 
 #include <stdlib.h>
 #include <gstrall.h>
+#undef GCFG_NOIMAIL
 #include <gedacfg.h>
 
 #ifdef HAVE_IM18X

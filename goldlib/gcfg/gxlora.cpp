@@ -28,6 +28,7 @@
 #include <gmemdbg.h>
 #include <gfile.h>
 #include <gstrall.h>
+#undef GCFG_NOLORA
 #include <gedacfg.h>
 #include <gs_lo240.h>
 

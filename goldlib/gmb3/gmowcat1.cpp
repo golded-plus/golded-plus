@@ -131,7 +131,7 @@ void WCatExit() {
 
 void WCatInit(int userno) {
 
-  wcatdata = (WCatData*)throw_calloc(2, sizeof(WCatData));
+  wcatdata = (WCatData*)throw_calloc(3, sizeof(WCatData));
   wcatwide = (WCatWide*)throw_calloc(1, sizeof(WCatWide));
 
   wcatwide->userno = userno;

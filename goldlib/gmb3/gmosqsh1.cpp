@@ -74,7 +74,7 @@ void SquishExit() {
 
 void SquishInit(const char* userpath, int userno, int direct, int recycle, int squishscan) {
 
-  squishdata = (SqshData*)throw_calloc(2, sizeof(SqshData));
+  squishdata = (SqshData*)throw_calloc(3, sizeof(SqshData));
   squishwide = (SqshWide*)throw_calloc(1, sizeof(SqshWide));
 
   squishwide->userpath = userpath;

@@ -27,6 +27,7 @@
 #include <cstring>
 #include <cstdlib>
 #include <gmemdbg.h>
+#undef GCFG_NOPROBOARD
 #include <gedacfg.h>
 #include <gs_pb200.h>
 

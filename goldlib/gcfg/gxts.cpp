@@ -27,6 +27,7 @@
 #include <cstdlib>
 #include <gstrall.h>
 #include <gmemdbg.h>
+#undef GCFG_NOTOSSCAN
 #include <gedacfg.h>
 #include <gs_fd.h>      // Structures for FrontDoor fd.sys+folder.sys / setup.fd+folder.fd
 #include <gs_ts.h>      // Structures for TosScan   areafile.fd

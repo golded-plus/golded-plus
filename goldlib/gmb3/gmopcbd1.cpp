@@ -57,7 +57,7 @@ void PcbExit() {
 
 void PcbInit(const char* path, int userno) {
 
-  pcbdata = (PcbData*)throw_calloc(2, sizeof(PcbData));
+  pcbdata = (PcbData*)throw_calloc(3, sizeof(PcbData));
   pcbwide = (PcbWide*)throw_calloc(1, sizeof(PcbWide));
 
   pcbwide->path = path;

@@ -234,31 +234,61 @@ protected:
 
   void adjustpath(char* path);
 
+#ifndef GCFG_NODB
   void ReadDB130(char* tag, char* dbpath);
   void ReadDB1046(char* file, char* tag);
   void ReadDB1047A22(char* file, int reclen, char* tag);
   void ReadDB2011(char* file, int reclen, char* tag);
+#endif
+#ifndef GCFG_NOEZY
   void ReadEzycom102(FILE* fp, char* path, char* file, char* options);
   void ReadEzycom110(FILE* fp, char* path, char* file, char* options);
+#endif
+#ifndef GCFG_NOFE
   void ReadFastecho142(int fh);
+#endif
+#ifndef GCFG_NOFMAIL
   void ReadFMail092(FILE* fp, char* path, char* file, char* options);
   void ReadFMail098(FILE* fp, char* path, char* file, char* options);
   void ReadFMail116(FILE* fp, char* path, char* file, char* options);
+#endif
+#ifndef GCFG_NOFIDOCONF
   bool ReadHPTLine(FILE* f, string* s, bool add=false, int state=0);
   void ReadHPTFile(char* path, char* file, char* options, char* origin, int group);
+#endif
+#ifndef GCFG_NOIMAIL
   void ReadIMail160(char* options, char* file, char* impath);
   void ReadIMail170(char* options, char* file, char* impath);
   void ReadIMail185(char* options, char* file, char* impath);
+#endif
+#ifndef GCFG_NOMAXIMUS
   void ReadMaximus3(char* mxpath, char* areafile, char* options);
+#endif
+#ifndef GCFG_NOQBBS
   void ReadQ260(char* qbpath, char* origin, char* options);
   void ReadQ276(char* qbpath, char* origin, char* options);
+#endif
+#ifndef GCFG_NOQECHO
   void ReadQEchoFile(char* file, char* options, char* origin);
+#endif
+#if not defined(GCFG_NOSQSH) or not defined(GCFG_NOPARTOSS)
   void ReadSquishFile(char* path, char* file, char* options, char* origin, int group);
+#endif
+#ifndef GCFG_NOTIMED
   void ReadTimedFile(char* path, char* file, char* options, char* origin);
+#endif
+#ifndef GCFG_NOTERMAIL
   void ReadTmailFile(char* file, char* options, char* origin);
+#endif
+#ifndef GCFG_NOWATERGATE
   void ReadWtrGteFile(char* options, FILE* fp);
+#endif
+#ifndef GCFG_NOXBBS
   void ReadAdeptXbbsFile(char* path, char* file, char* options);
+#endif
+#ifndef GCFG_NOXMAIL
   void ReadxMailFile(char* file, char* options);
+#endif
 
 public:
 
@@ -295,39 +325,105 @@ public:
   void GetAreasBBS(char* name, char* origin, char* options);
 
   void ReadAreasBBS(char* tag);
+#ifndef GCFG_NOXBBS
   void ReadAdeptXBBS(char* tag);
+#endif
+#ifndef GCFG_NOCMAIL
   void ReadCrashmail(char* tag);
+#endif
+#ifndef GCFG_NODB
   void ReadDBridge(char* tag);
+#endif
+#ifndef GCFG_NODUTCHIE
   void ReadDutchie(char* tag);
+#endif
+#ifndef GCFG_NOEZY
   void ReadEzycom(char* tag);
+#endif
+#ifndef GCFG_NOFE
   void ReadFastecho(char* tag);
+#endif
+#ifndef GCFG_NOFIDOPCB
   void ReadFidoPCB(char* tag);
+#endif
+#ifndef GCFG_NOFMAIL
   void ReadFMail(char* tag);
+#endif
+#ifndef GCFG_NOFD
   void ReadFrontDoor(char* tag);
+#endif
+#ifndef GCFG_NOGECHO
   void ReadGEcho(char* tag);
+#endif
+#ifndef GCFG_NOFIDOCONF
   void ReadHPT(char* tag);
+#endif
+#ifndef GCFG_NOIMAIL
   void ReadIMail(char* tag);
+#endif
+#ifndef GCFG_NOINTERMAIL
   void ReadInterMail(char* tag);
+#endif
+#ifndef GCFG_NOLORA
   void ReadLoraBBS(char* tag);
+#endif
+#ifndef GCFG_NOMAXIMUS
   void ReadMaximus(char* tag);
+#endif
+#ifndef GCFG_NOME2
   void ReadME2(char* tag);
+#endif
+#ifndef GCFG_NOOPUS
   void ReadOpus(char* tag);
+#endif
+#ifndef GCFG_NOPCB
   void ReadPCBoard(char* tag);
+#endif
+#ifndef GCFG_NOPORTAL
   void ReadPortal(char* tag);
+#endif
+#ifndef GCFG_NOPROBOARD
   void ReadProBoard(char* tag);
+#endif
+#ifndef GCFG_NOQECHO
   void ReadQEcho(char* tag);
+#endif
+#ifndef GCFG_NOQFRONT
   void ReadQFront(char* tag);
+#endif
+#ifndef GCFG_NOQBBS
   void ReadQuickBBS(char* tag);
+#endif
+#ifndef GCFG_NORAECHO
   void ReadRaEcho(char* tag);
+#endif
+#ifndef GCFG_NORA
   void ReadRemoteAccess(char* tag);
+#endif
+#if not defined(GCFG_NOSQSH) or not defined(GCFG_NOPARTOSS)
   void ReadSquish(char* tag);
+#endif
+#ifndef GCFG_NOSBBS
   void ReadSuperBBS(char* tag);
+#endif
+#ifndef GCFG_NOTIMED
   void ReadTimed(char* tag);
+#endif
+#ifndef GCFG_NOTERMAIL
   void ReadTmail(char* tag);
+#endif
+#ifndef GCFG_NOTOSSCAN
   void ReadTosScan(char* tag);
+#endif
+#ifndef GCFG_NOWMAIL
   void ReadWMail(char* tag);
+#endif
+#ifndef GCFG_NOWATERGATE
   void ReadWtrGte(char* tag);
+#endif
+#ifndef GCFG_NOXMAIL
   void ReadXMail(char* tag);
+#endif
 
   bool ReadAreafile(word crc, char* parameters);
 };

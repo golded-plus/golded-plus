@@ -27,6 +27,7 @@
 #include <cstdlib>
 #include <gmemdbg.h>
 #include <gstrall.h>
+#undef GCFG_NOGECHO
 #include <gedacfg.h>
 
 #if defined(ADDRESS)

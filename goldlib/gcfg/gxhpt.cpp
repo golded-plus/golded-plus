@@ -28,6 +28,7 @@
 #include <gcrcall.h>
 #include <gstrall.h>
 #include <gmemdbg.h>
+#undef GCFG_NOFIDOCONF
 #include <gedacfg.h>
 
 

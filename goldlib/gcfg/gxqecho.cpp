@@ -27,6 +27,7 @@
 #include <cstdlib>
 #include <gcrcall.h>
 #include <gstrall.h>
+#undef GCFG_NOQECHO
 #include <gedacfg.h>
 
 

@@ -30,6 +30,7 @@
 #include <gfilutil.h>
 #include <gdirposx.h>
 #include <gwildmat.h>
+#undef GCFG_NOOPUS
 #include <gedacfg.h>
 #undef _NORMAL
 #include <gs_opus.h>    // Structures for Opus 1.1x SYSTEM??.DAT

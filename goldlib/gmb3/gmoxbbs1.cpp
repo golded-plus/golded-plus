@@ -150,7 +150,7 @@ void XbbsExit() {
 
 void XbbsInit(const char* path, int userno) {
 
-  xbbsdata = (XbbsData*)throw_calloc(2, sizeof(XbbsData));
+  xbbsdata = (XbbsData*)throw_calloc(3, sizeof(XbbsData));
   xbbswide = (XbbsWide*)throw_calloc(1, sizeof(XbbsWide));
 
   xbbswide->path = path;

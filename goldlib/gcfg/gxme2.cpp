@@ -25,6 +25,7 @@
 //  ------------------------------------------------------------------
 
 #include <gstrall.h>
+#undef GCFG_NOME2
 #include <gedacfg.h>
 
 

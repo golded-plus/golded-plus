@@ -27,6 +27,7 @@
 #include <cstdlib>
 #include <gmemdbg.h>
 #include <gstrall.h>
+#undef GCFG_NOIMAIL
 #include <gedacfg.h>
 
 #undef MAXPATH

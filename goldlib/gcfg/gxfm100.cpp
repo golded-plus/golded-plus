@@ -27,6 +27,7 @@
 #include <cstdlib>
 #include <gmemdbg.h>
 #include <gstrall.h>
+#undef GCFG_NOFMAIL
 #include <gedacfg.h>
 #include <gs_fm10g.h>
 

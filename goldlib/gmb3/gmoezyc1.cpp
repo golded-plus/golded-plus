@@ -256,7 +256,7 @@ void EzycomExit() {
 
 void EzycomInit(const char* msgbasepath, const char* userbasepath, int userno) {
 
-  ezycomdata = (EzycData*)throw_calloc(2, sizeof(EzycData));
+  ezycomdata = (EzycData*)throw_calloc(3, sizeof(EzycData));
   ezycomwide = (EzycWide*)throw_calloc(1, sizeof(EzycWide));
 
   ezycomwide->msgbasepath = msgbasepath;

@@ -28,6 +28,7 @@
 #include <gmemdbg.h>
 #include <gcrcall.h>
 #include <gstrall.h>
+#undef GCFG_NOFIDOPCB
 #include <gedacfg.h>
 
 

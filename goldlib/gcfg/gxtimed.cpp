@@ -27,6 +27,7 @@
 #include <cstdlib>
 #include <gcrcall.h>
 #include <gstrall.h>
+#undef GCFG_NOTIMED
 #include <gedacfg.h>
 
 
@@ -109,30 +110,42 @@ void gareafile::ReadTimedFile(char* path, char* file, char* options, char* origi
             if(*jampath == NUL)
               PathCopy(jampath, MapPath(val));
             break;
+#ifndef GCFG_NOSQSH
           case CRC_SQUISHCFG:
             sprintf(buf2, "-c%s", val);
             ReadSquish(buf2);
             break;
+#endif
+#ifndef GCFG_NOFE
           case CRC_FASTECHOCFG:
             nullastbackslash(val);
             ReadFastecho(val);
             break;
+#endif
+#ifndef GCFG_NOGECHO
           case CRC_GECHOCFG:
             nullastbackslash(val);
             ReadGEcho(val);
             break;
+#endif
+#ifndef GCFG_NOIMAIL
           case CRC_IMAILCFG:
             nullastbackslash(val);
             ReadIMail(val);
             break;
+#endif
+#ifndef GCFG_NOXMAIL
           case CRC_XMAILCFG:
             nullastbackslash(val);
             ReadXMail(val);
             break;
+#endif
+#ifndef GCFG_NOFMAIL
           case CRC_FMAILCFG:
             nullastbackslash(val);
             ReadFMail(val);
             break;
+#endif
           case CRC_LASTREAD:
             strcpy(fidolastread, val);
             break;

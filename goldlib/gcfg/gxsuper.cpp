@@ -27,6 +27,7 @@
 #include <cstdlib>
 #include <gstrall.h>
 #include <gmemdbg.h>
+#undef GCFG_NOSBBS
 #include <gedacfg.h>
 #include <gs_sbbs.h>
 

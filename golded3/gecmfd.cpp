@@ -364,6 +364,8 @@ void CmfMsgs(GMsg* msg) {
     if(CurrArea != OrigArea)
       AA->Open();
     MakeMsg(MODE_FORWARD, msg);
+    if(CurrArea != OrigArea)
+      AA->Close();
     AL.SetActiveAreaId(OrigArea);
     throw_free(AA->adat);
     AA->adat = orig_adat;
