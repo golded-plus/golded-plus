@@ -12,6 +12,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Once again Numlock was not taken into account for Del in Win9x (not
+  tested).
+
 - Fixed deadkey-space combinations in Win32 version.
 
 - Compatibility fix for http://www.chat.ru/~tulser/clipbrd.zip. Though

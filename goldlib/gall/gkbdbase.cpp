@@ -1232,6 +1232,10 @@ gkey kbxget_raw(int mode) {
           ReadConsoleInput(gkbd_hin, &inp, 1, &nread);
         }
 
+        // Fix Win9x anomaly
+        if((CKS & NUMLOCK_ON) and (VKC == VK_DELETE))
+          VKC = VK_DECIMAL;
+
         switch(VKC) {
           // Not meanful keys
           case VK_SHIFT:
