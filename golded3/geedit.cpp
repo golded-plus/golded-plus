@@ -293,7 +293,10 @@ void IEclass::dispstring(const char* __string, uint __row, int attr, Line* line)
 
       savechar = _buf[endblock];
       _buf[endblock] = NUL;
+      bool oldusestylies = CFG->usestylies;
+      CFG->usestylies = false;
       StyleCodeHighlight(_buf+begblock, __row, mincol+begblock, false, C_READA);
+      CFG->usestylies = oldusestylies;
       _buf[endblock] = savechar;
       StyleCodeHighlight(_buf+endblock, __row, mincol+endblock, false, attr);
     }
@@ -302,12 +305,24 @@ void IEclass::dispstring(const char* __string, uint __row, int attr, Line* line)
 
       char savechar = _buf[blockmark];
       _buf[blockmark] = NUL;
+      bool oldusestylies = CFG->usestylies;
+      if(selected)
+        CFG->usestylies = false;
       StyleCodeHighlight(_buf, __row, mincol, false, selected ? C_READA : attr);
+      CFG->usestylies = oldusestylies;
       _buf[blockmark] = savechar;
+      if(not selected)
+        CFG->usestylies = false;
       StyleCodeHighlight(_buf+blockmark, __row, mincol+blockmark, false, selected ? attr : C_READA);
+      CFG->usestylies = oldusestylies;
     }
-    else
+    else {
+      bool oldusestylies = CFG->usestylies;
+      if(selected)
+        CFG->usestylies = false;
       StyleCodeHighlight(_buf, __row, mincol, false, selected ? C_READA : attr);
+      CFG->usestylies = oldusestylies;
+    }
   }
   else
     StyleCodeHighlight(_buf, __row, mincol, false, attr);
