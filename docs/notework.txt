@@ -12,6 +12,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed "EditChangeDate Always" operation.
+
 ! AREALISTSORT letters a bit changed in the way they processed:
   P - sort by personal mail count, not by the presence
   Y - sort by changing from last scan (the same criteria as used for
