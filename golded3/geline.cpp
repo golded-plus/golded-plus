@@ -1977,7 +1977,16 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
           reflow = false;
           // Insert previous quotestring
           for(n=0; n<qlen; n++) {
-            *(++bp) = *qptr++;
+            if((level&3) and ChsTP) {   // Translate level 1 and 2
+              tptr = (char*)ChsTP[(byte)(*qptr++)];
+              chln = *tptr++;
+              while(chln--) {
+                *(++bp) = *tptr++;
+              }
+            }
+            else {
+              *(++bp) = *qptr++;
+            }
           }
           if(quotewraphard) {
             *qbuf = NUL;
