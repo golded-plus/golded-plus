@@ -423,10 +423,10 @@ inline bool issoftcr(char c) {
 
 inline char *spanspaces(const char *str) {
   if(CFG->switches.get(dispsoftcr))
-    while(strchr(" \t", *str))
+    while(isspace(*str))
       str++;
   else
-    while(strchr(" \t", *str) or (*str == SOFTCR))
+    while(isspace(*str) or (*str == SOFTCR))
       str++;
   return (char *)str;
 }
