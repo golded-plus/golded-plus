@@ -35,7 +35,7 @@ void EzycomArea::raw_scan(int __keep_index) {
   GFTRK("EzycomRawScan");
 
   int _wasopen = isopen;
-  if(NOT _wasopen) {
+  if(not _wasopen) {
     isopen++;
     data_open();
     test_raw_open(__LINE__);
@@ -73,7 +73,7 @@ void EzycomArea::raw_scan(int __keep_index) {
       while(1) {
 
         // Set lastread pointer
-        if((*_msgnoptr >= _lastread) AND (_lastread_reln == 0)) {
+        if((*_msgnoptr >= _lastread) and (_lastread_reln == 0)) {
           _lastreadfound = *_msgnoptr;
           _lastread_reln = _count - (*_msgnoptr != _lastread ? 1 : 0);
           break;
@@ -85,7 +85,7 @@ void EzycomArea::raw_scan(int __keep_index) {
     }
 
     // If the exact lastread was not found
-    if(_active AND (_lastreadfound != _lastread)) {
+    if(_active and (_lastreadfound != _lastread)) {
 
       // Higher than highest or lower than lowest?
       if(_lastread > _lastmsgno)
@@ -101,10 +101,10 @@ void EzycomArea::raw_scan(int __keep_index) {
     ::close(_fh);
   }
 
-  if(NOT __keep_index)
+  if(not __keep_index)
     Msgn->Reset();
   
-  if(NOT _wasopen) {
+  if(not _wasopen) {
     raw_close();
     data_close();
     isopen--;

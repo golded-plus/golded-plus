@@ -594,7 +594,7 @@ GTok::GTok(char* sep) {
 
 //  ------------------------------------------------------------------
 
-#if defined(__GNUC__) and not defined(__EMX__)
+#if defined(__GNUC__) && !defined(__EMX__)
 
 char* strupr(char* s) {
 

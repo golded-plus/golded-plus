@@ -221,7 +221,7 @@
 #define  Key_S_F11   0x8700          // S <F11>              - - E -
 #define  Key_S_F12   0x8800          // S <F12>              - - E -
 #define  Key_S_Tab   0x0F00          // S <Tab>              - - - -
-#if not defined(__UNIX__) or defined(__USE_NCURSES__)
+#if !defined(__UNIX__) || defined(__USE_NCURSES__)
 #define  Key_S_Ins   0xD200          // S <Ins>     Grey     - G E T
 #define  Key_S_Lft   0xCB00          // S <Left>    Grey     - G E T
 #define  Key_S_PgDn  0xD100          // S <PgDn>    Grey     - G E T

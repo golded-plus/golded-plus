@@ -55,7 +55,7 @@ extern "C" {
 
 //  ------------------------------------------------------------------
 
-#if (defined(__BORLANDC__) and defined(__OS2__)) or defined(__UNIX__) or defined(__EMX__)
+#if (defined(__BORLANDC__) && defined(__OS2__)) || defined(__UNIX__) || defined(__EMX__)
 
 long filelength(int handle) {
 
@@ -133,7 +133,7 @@ int unlock(int handle, long ofs, long length)
 
 //  ------------------------------------------------------------------
 
-#if defined(__UNIX__) or defined(__CYGWIN__)
+#if defined(__UNIX__) || defined(__CYGWIN__)
 
 int lock(int handle, long offset, long length) {
 
@@ -151,7 +151,7 @@ int lock(int handle, long offset, long length) {
 
 //  ------------------------------------------------------------------
 
-#if defined(__UNIX__) or defined(__CYGWIN__)
+#if defined(__UNIX__) || defined(__CYGWIN__)
 
 int unlock(int handle, long offset, long length) {
 
@@ -169,7 +169,7 @@ int unlock(int handle, long offset, long length) {
 
 //  ------------------------------------------------------------------
 
-#if defined(__MINGW32__) or defined(_MSC_VER)
+#if defined(__MINGW32__) || defined(_MSC_VER)
 
 int lock(int fh, long offs, long len) {
 
@@ -182,7 +182,7 @@ int lock(int fh, long offs, long len) {
 
 //  ------------------------------------------------------------------
 
-#if defined(__MINGW32__) or defined(_MSC_VER)
+#if defined(__MINGW32__) || defined(_MSC_VER)
 
 int unlock(int fh, long offs, long len) {
 

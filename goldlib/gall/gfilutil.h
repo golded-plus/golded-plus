@@ -39,7 +39,7 @@
 #include <cstdio>
 #include <string>
 #include <gshare.h>
-#if not defined(__UNIX__)
+#if !defined(__UNIX__)
 #include <io.h>
 #endif
 
@@ -83,7 +83,7 @@
 //  ------------------------------------------------------------------
 //  Misc. defines
 
-#if defined(__MSDOS__) or defined(__OS2__) or defined(__WIN32__)
+#if defined(__MSDOS__) || defined(__OS2__) || defined(__WIN32__)
   #define GOLD_SLASH_CHR                    '\\'              // Backslash
   #define GOLD_SLASH_STR                    "\\"
   #define GOLD_WRONG_SLASH_CHR              '/'               // Fwrdslash
@@ -119,11 +119,11 @@ struct Stamp {
 //  ------------------------------------------------------------------
 //  Prototypes
 
-#if not defined(__GNUC__) or defined(__MINGW32__)
+#if !defined(__GNUC__) || defined(__MINGW32__)
 #define mkdir(path,unused) mkdir(path)
 #endif
 
-#ifdef __EMX__ // untested !!!
+#ifdef __EMX__
 #define getcwd _getcwd2
 #define chdir _chdir2
 #endif
@@ -190,7 +190,7 @@ extern "C" {
 
 //  ------------------------------------------------------------------
 
-#if (defined(__BORLANDC__) and defined(__OS2__)) or defined(__UNIX__) or defined(__EMX__)
+#if (defined(__BORLANDC__) && defined(__OS2__)) || defined(__UNIX__) || defined(__EMX__)
 long filelength(int fh);
 #endif
 
@@ -215,13 +215,13 @@ int unlock(int handle, long offset, long length);
 #undef sopen
 #endif
 
-#if not defined(__DJGPP__) and defined(__GNUC__)
+#if !defined(__DJGPP__) && defined(__GNUC__)
 int lock(int handle, long offset, long length);
 int unlock(int handle, long offset, long length);
 inline long tell(int fh) { return lseek(fh, 0, SEEK_CUR); }
 #endif
 
-#if not defined(__MINGW32__) and not defined(__EMX__) and defined(__GNUC__)
+#if !defined(__MINGW32__) && !defined(__EMX__) && defined(__GNUC__)
 
 inline int eof(int h) {
   return tell(h) > filelength(h);
@@ -236,7 +236,7 @@ inline int sopen(const char* path, int access, int shflag, int mode) {
 
 #endif
 
-#if defined(__UNIX__) or defined(__CYGWIN__)
+#if defined(__UNIX__) || defined(__CYGWIN__)
 inline int chsize(int handle, long size) { return ftruncate(handle, size); }
 #endif
 

@@ -71,7 +71,7 @@ bool gareafile::jbstrcpy(char *dest, char *src, size_t maxlen, size_t *jbc) {
 
 
 //  ------------------------------------------------------------------
-//  Read areas from HPT (echomail processor)
+//  Read areas from Crashmail (echomail processor)
 
 void gareafile::ReadCrashmail(char* tag) {
 

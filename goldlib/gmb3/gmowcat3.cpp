@@ -90,13 +90,13 @@ int WCatArea::load_message(int __mode, gmsg* __msg, WCatHdr& __hdr) {
 
   __msg->written = __msg->arrived = __msg->received = 0;
 
-  if(__hdr.msgdate AND __hdr.msgtime) {
+  if(__hdr.msgdate and __hdr.msgtime) {
     JDN2YMD(__hdr.msgdate+1, &_year, &_month, &_day);
     _time = __hdr.msgtime-1;
     _hour = (unsigned)(_time / 3600L);
     _minute = (unsigned)((_time % 3600L) / 60L);
     _second = (unsigned)(_time - (((long)_hour*3600L)+(long)_minute*60L));
-    _tm.tm_year  = _year;
+    _tm.tm_year  = _year - 1900;
     _tm.tm_mon   = _month - 1;
     _tm.tm_mday  = _day;
     _tm.tm_hour  = _hour;
@@ -110,13 +110,13 @@ int WCatArea::load_message(int __mode, gmsg* __msg, WCatHdr& __hdr) {
     __msg->written = a + a - b;
   }
 
-  if(__hdr.readdate AND __hdr.readtime) {
+  if(__hdr.readdate and __hdr.readtime) {
     JDN2YMD(__hdr.readdate+1, &_year, &_month, &_day);
     _time = __hdr.readtime-1;
     _hour = (unsigned)(_time / 3600L);
     _minute = (unsigned)((_time % 3600L) / 60L);
     _second = (unsigned)(_time - (((long)_hour*3600L)+(long)_minute*60L));
-    _tm.tm_year  = _year;
+    _tm.tm_year  = _year - 1900;
     _tm.tm_mon   = _month - 1;
     _tm.tm_mday  = _day;
     _tm.tm_hour  = _hour;

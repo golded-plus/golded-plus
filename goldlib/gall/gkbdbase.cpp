@@ -43,7 +43,7 @@
 #include <windows.h>
 #endif
 
-#if defined(__UNIX__) and not defined(__USE_NCURSES__)
+#if defined(__UNIX__) && !defined(__USE_NCURSES__)
 #include <gkbdunix.h>
 #endif
 
@@ -78,7 +78,7 @@ int curses_initialized = 0;
 //  ------------------------------------------------------------------
 //  Global keyboard data
 
-#if defined(__WIN32__) and not defined(__USE_NCURSES__)
+#if defined(__WIN32__) && !defined(__USE_NCURSES__)
 HANDLE gkbd_hin;
 DWORD  gkbd_kbdmode;
 int    gkbd_nt;
@@ -171,13 +171,13 @@ GKbd::GKbd() {
   extkbd = _farpeekb (_dos_ds, 0x0496) & (1 << 4);
   #elif defined(__MSDOS__)
   extkbd = *((byte*)0x0496) & (1 << 4);
-  #elif defined(__OS2__) or defined(__WIN32__)
+  #elif defined(__OS2__) || defined(__WIN32__)
   extkbd = true;
   #endif
 
   Init();
 
-  #if defined(__UNIX__) and not defined(__USE_NCURSES__)
+  #if defined(__UNIX__) && !defined(__USE_NCURSES__)
 
   gkbd_keymap_init();
 
@@ -908,7 +908,7 @@ bool is_numpad_key(const INPUT_RECORD& inp) {
 //  ------------------------------------------------------------------
 //  Numpad translation table
 
-#elif defined(__MSDOS__) or defined(__OS2__)
+#elif defined(__MSDOS__) || defined(__OS2__)
 
 const word numpad_keys[] = {
   0x4737, 0x4838, 0x4939, 0x0000,

@@ -103,7 +103,7 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::save_message(i
 
   // Lock msgbase before doing anything
   int _was_locked = wide->islocked;
-  if(NOT _was_locked)
+  if(not _was_locked)
     lock();
 
   // Find header index
@@ -175,7 +175,7 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::save_message(i
 
     // If the msg is new or the text is too large to fit
     uint _txtlen = strlen(__msg->txt)+1;
-    if((__mode & GMSG_NEW) OR (_txtlen > ((long)__msg->txtlength*255L)))
+    if((__mode & GMSG_NEW) or (_txtlen > ((long)__msg->txtlength*255L)))
       __hdr.startrec = (msgn_t)(filelength(wide->fhtxt)/256L);
 
     // Calculate the number of text records to write
@@ -270,9 +270,9 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::save_message(i
   write(wide->fhinf, &wide->msginfo, sizeof(HudsInfo));
 
   // Update scanning files
-  if((__hdr.msgattr & HUDS_NETTRANS) OR (__mode & GMSG_DELETE))
+  if((__hdr.msgattr & HUDS_NETTRANS) or (__mode & GMSG_DELETE))
     wide->update_netecho(__HUDSON ? "netmail" HUDS_EXT : "netmail" GOLD_EXT, _hdridx, __hdr.msgattr & HUDS_DELETED);
-  if((__hdr.msgattr & HUDS_ECHOTRANS) OR (__mode & GMSG_DELETE))
+  if((__hdr.msgattr & HUDS_ECHOTRANS) or (__mode & GMSG_DELETE))
     wide->update_netecho(__HUDSON ? "echomail" HUDS_EXT : "echomail" GOLD_EXT, _hdridx, __hdr.msgattr & HUDS_DELETED);
 
   if(__mode & GMSG_NEW) {
@@ -285,7 +285,7 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::save_message(i
   }
 
   // Unlock msgbase after use
-  if(NOT _was_locked)
+  if(not _was_locked)
     unlock();
 
   GFTRK(NULL);

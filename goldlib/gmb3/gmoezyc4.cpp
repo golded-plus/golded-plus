@@ -69,7 +69,7 @@ void EzycomArea::unlock() {
 void EzycomArea::save_message(int __mode, gmsg* __msg, EzycHdr& __hdr) {
 
   int _was_locked = data->islocked;
-  if(NOT _was_locked)
+  if(not _was_locked)
     lock();
 
   if(__mode & GMSG_NEW)
@@ -140,7 +140,7 @@ void EzycomArea::save_message(int __mode, gmsg* __msg, EzycHdr& __hdr) {
 
     // Write the message text
     uint _size = strlen(__msg->txt) + 1;
-    if((__mode & GMSG_NEW) OR (_size > __hdr.messagelength))
+    if((__mode & GMSG_NEW) or (_size > __hdr.messagelength))
       __hdr.startposition = filelength(data->fhtxt);
     lseekset(data->fhtxt, __hdr.startposition);
     write(data->fhtxt, __msg->txt, _size);
@@ -238,7 +238,7 @@ void EzycomArea::save_message(int __mode, gmsg* __msg, EzycHdr& __hdr) {
     Msgn->Append(__msg->msgno);
   }
 
-  if(NOT _was_locked)
+  if(not _was_locked)
     unlock();
 
   GFTRK(NULL);

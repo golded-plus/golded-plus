@@ -131,7 +131,7 @@ ulong* GTag::Add(ulong __tagn) {
   uint _reln = ToReln(__tagn, TAGN_CLOSEST);
 
   // Do we have it already?
-  if((_reln == RELN_INVALID) OR (tag[_reln-1] != __tagn)) {
+  if((_reln == RELN_INVALID) or (tag[_reln-1] != __tagn)) {
 
     // Resize tag array to make room for the new number
     Resize(tags+1);
@@ -143,7 +143,7 @@ ulong* GTag::Add(ulong __tagn) {
     //    - no tags in array (if _reln == RELN_INVALID)
     //    - tag[_reln-1] is larger than __tagn
 
-    if(_reln AND (tag[_reln-1] > __tagn))
+    if(_reln and (tag[_reln-1] > __tagn))
       _reln--;
 
     // Move data to make room for the new tag number

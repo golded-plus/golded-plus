@@ -71,7 +71,7 @@ class GMsgList : public gwinpick {
 
   gwindow        window;
   GMsg           msg;
-  vector<MLst>   mlst;
+  MLst           **mlst;
   uint           msgmark2;
 
   void open();                        // Called after window is opened
@@ -86,8 +86,19 @@ public:
 
   void Run();
 
-  GMsgList() { memset(&msg, 0, sizeof(GMsg)); };
-  ~GMsgList() { ResetMsg(&msg); };
+  GMsgList() {
+    memset(&msg, 0, sizeof(GMsg));
+    mlst = NULL;
+    maximum_index = AA->Msgn.Count()-1;
+  };
+  ~GMsgList() {
+    ResetMsg(&msg);
+    if(mlst) {
+      for(uint i=0; i<= maximum_index; i++)
+        throw_xdelete(mlst[i]);
+      throw_free(mlst);
+    }
+  };
 };
 
 
@@ -113,10 +124,13 @@ void GMsgList::close() {
 
 void GMsgList::ReadMlst(int n) {
 
-  MLst* ml = &mlst[n];
+  MLst* ml = mlst[n];
 
-  if(ml->initialized)
+  if(ml != NULL)
     return;
+
+  ml = mlst[n] = new MLst;
+  throw_new(ml);
 
   ml->high = 0;
 
@@ -164,11 +178,11 @@ void GMsgList::ReadMlst(int n) {
     ml->high |= MLST_HIGH_FROM;
 
   // Highlight if unread
-  if(msg.timesread == 0 and CFG->switches.get(highlightunread))
+  if((msg.timesread == 0) and CFG->switches.get(highlightunread))
     ml->high |= MLST_HIGH_UNREAD;
 
   // Highlight if unsent
-  if(msg.attr.uns()and not msg.attr.rcv() and not msg.attr.del())
+  if(msg.attr.uns() and not msg.attr.rcv() and not msg.attr.del())
     ml->high |= MLST_HIGH_UNSENT;
 
   ml->written = msg.written;
@@ -187,8 +201,8 @@ void GMsgList::do_delayed() {
   // Update header and statusline
   if(AA->Msglistheader()) {
     ReadMlst(index);
-    AA->LoadMsg(&msg, mlst[index].msgno, CFG->dispmargin-(int)CFG->switches.get(disppagebar));
-    mlst[index].goldmark = goldmark;
+    AA->LoadMsg(&msg, mlst[index]->msgno, CFG->dispmargin-(int)CFG->switches.get(disppagebar));
+    mlst[index]->goldmark = goldmark;
     int mlstwh = whandle();
     HeaderView->Use(AA, &msg);
     HeaderView->Paint();
@@ -197,7 +211,7 @@ void GMsgList::do_delayed() {
 
   if(CFG->switches.get(msglistviewsubj)) {
     ReadMlst(index);
-    wtitle(mlst[index].re, TCENTER|TBOTTOM, tattr);
+    wtitle(mlst[index]->re, TCENTER|TBOTTOM, tattr);
   }
 
   if(CFG->switches.get(msglistpagebar))
@@ -243,7 +257,7 @@ void GMsgList::print_line(uint idx, uint pos, bool isbar) {
   int resiz = mlst_resiz + fldadd2;
 
   ReadMlst(idx);
-  MLst* ml = &mlst[idx];
+  MLst* ml = mlst[idx];
 
   int wattr_, hattr_, mattr_;
   if(isbar) {
@@ -379,12 +393,12 @@ bool GMsgList::handle_key() {
 
     case KK_ListToggleMark:
       {
-        ulong temp = AA->Mark.Find(mlst[index].msgno);
+        ulong temp = AA->Mark.Find(mlst[index]->msgno);
         if(temp) {
           AA->Mark.DelReln(temp);
         }
         else {
-          AA->Mark.Add(mlst[index].msgno);
+          AA->Mark.Add(mlst[index]->msgno);
         }
       }
       if(index < maximum_index)
@@ -394,24 +408,24 @@ bool GMsgList::handle_key() {
       break;
 
     case KK_ListToggleBookMark:
-      if(AA->bookmark == mlst[index].msgno) {
-        mlst[index].marks[0] = ' ';
+      if(AA->bookmark == mlst[index]->msgno) {
+        mlst[index]->marks[0] = ' ';
         AA->bookmark = 0;
-        mlst[index].high &= ~MLST_HIGH_BOOK;
+        mlst[index]->high &= ~MLST_HIGH_BOOK;
         display_bar();
       }
       else {
         long prevbm = AA->Msgn.ToReln(AA->bookmark-1);
         long newbm = index;
-        AA->bookmark = mlst[index].msgno;
-        mlst[index].marks[0] = MMRK_BOOK;
-        mlst[index].high |= MLST_HIGH_BOOK;
+        AA->bookmark = mlst[index]->msgno;
+        mlst[index]->marks[0] = MMRK_BOOK;
+        mlst[index]->high |= MLST_HIGH_BOOK;
         display_bar();
         if(prevbm) {
           if(in_range((long)position + prevbm - newbm, 0l, (long)maximum_position)) {
             ReadMlst(prevbm);
-            mlst[prevbm].marks[0] = ' ';
-            mlst[prevbm].high &= ~MLST_HIGH_BOOK;
+            mlst[prevbm]->marks[0] = ' ';
+            mlst[prevbm]->high &= ~MLST_HIGH_BOOK;
             index = prevbm;
             position += prevbm - newbm;
             display_line();
@@ -427,16 +441,16 @@ bool GMsgList::handle_key() {
         long prevbm = AA->Msgn.ToReln(AA->bookmark-1);
         long newbm = index;
         index = prevbm;
-        AA->bookmark = mlst[newbm].msgno;
+        AA->bookmark = mlst[newbm]->msgno;
         if(in_range((long)position + prevbm - newbm, 0l, (long)maximum_position)) {
-          mlst[newbm].marks[0] = MMRK_BOOK;
-          mlst[newbm].high |= MLST_HIGH_BOOK;
+          mlst[newbm]->marks[0] = MMRK_BOOK;
+          mlst[newbm]->high |= MLST_HIGH_BOOK;
           index = newbm;
           display_line();
           index = prevbm;
           ReadMlst(index);
-          mlst[index].marks[0] = ' ';
-          mlst[index].high &= ~MLST_HIGH_BOOK;
+          mlst[index]->marks[0] = ' ';
+          mlst[index]->high &= ~MLST_HIGH_BOOK;
           position += prevbm - newbm;
           display_bar();
         }
@@ -506,6 +520,15 @@ bool GMsgList::handle_key() {
 
 void GMsgList::Run() {
 
+  if(maximum_index == 0) {
+    aborted = true;
+    return;
+  }
+
+  index = AA->Msgn.ToReln(reader_msg->msgno)-1;
+  minimum_index = 0;
+  msgmark2 = AA->Msgn.ToReln(AA->bookmark);
+
   ypos    = AA->Msglistheader() ? 6 : 1;      // Window Starting Row
   xpos    = 0;                                // Window Starting Column
   ylen    = MAXROW-3-ypos;                    // Window Height
@@ -521,11 +544,6 @@ void GMsgList::Run() {
   helpcat = H_MessageBrowser;                 // Window Help Category
   listwrap  = CFG->switches.get(displistwrap);
 
-  index = AA->Msgn.ToReln(reader_msg->msgno)-1;
-  minimum_index = 0;
-  maximum_index = AA->Msgn.Count()-1;
-  msgmark2 = AA->Msgn.ToReln(AA->bookmark);
-
   if(AA->Msglistdate() != MSGLISTDATE_NONE) {
     if(AA->Msglistdate() != MSGLISTDATE_WRITTEN) {
       if(AA->ishudson() or AA->isgoldbase() or AA->ispcboard())
@@ -540,23 +558,18 @@ void GMsgList::Run() {
   fldadd1 = (MAXCOL-80)/3;
   fldadd2 = (MAXCOL-80) - (fldadd1*2);
 
-  mlst.clear();
+  mlst = (MLst **)throw_malloc(sizeof(MLst *) * (maximum_index + 1));
 
-  MLst dummy_mlst;
-  dummy_mlst.initialized = false;
   for(uint i=0; i<= maximum_index; i++)
-    mlst.push_back(dummy_mlst);
+    mlst[i] = NULL;
 
   maximum_position = MinV((uint)maximum_index, (uint)ylen - 1);
 
-  if(mlst.size() != 0)
-    run_picker();
-  else
-    aborted = true;
+  run_picker();
 
   if(not aborted) {
     ReadMlst(index);
-    AA->set_lastread(AA->Msgn.ToReln(mlst[index].msgno));
+    AA->set_lastread(AA->Msgn.ToReln(mlst[index]->msgno));
   }
 }
 
@@ -766,7 +779,7 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar) {
 
   GenTree(buf2, idx);
   
-  #if defined(__UNIX__) and not defined(__USE_NCURSES__)
+  #if defined(__UNIX__) && !defined(__USE_NCURSES__)
   gvid_boxcvt(buf2);
   #endif
   

@@ -89,8 +89,8 @@ int JamArea::load_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
   __msg->attr.lok(__hdr.attribute & JAMATTR_LOCKED);
   __msg->attr.del(__hdr.attribute & JAMATTR_DELETED);
 
-  if(isnet() OR isecho())
-    __msg->attr.uns(__msg->attr.loc() AND NOT __msg->attr.snt());
+  if(isnet() or isecho())
+    __msg->attr.uns(__msg->attr.loc() and not __msg->attr.snt());
   else
     __msg->attr.uns0();
 
@@ -140,7 +140,7 @@ int JamArea::load_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
     switch(_subfieldptr->loid) {
 
       case JAMSUB_OADDRESS:
-        if(NOT _got_oaddr) {
+        if(not _got_oaddr) {
           _got_oaddr = true;
           __msg->oorig.set(_buf, __msg->odom);
           __msg->orig = __msg->oorig;
@@ -161,7 +161,7 @@ int JamArea::load_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
         break;
 
       case JAMSUB_DADDRESS:
-        if(NOT _got_daddr) {
+        if(not _got_daddr) {
           _got_daddr = true;
           __msg->odest.set(_buf, __msg->ddom);
           __msg->dest = __msg->odest;
@@ -184,7 +184,7 @@ int JamArea::load_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
         __msg->msgid.reset_fast();
         if(atoi(__msg->msgids)) {
           __msg->msgid.set(__msg->msgids, __msg->odom);
-          if(__msg->msgid.net AND (__msg->orig.net == 0))
+          if(__msg->msgid.net and (__msg->orig.net == 0))
             __msg->orig = __msg->msgid;
         }
         break;
@@ -304,10 +304,10 @@ int JamArea::load_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
   throw_free(_subfield);
 
   // Get reply numbers in chain
-  if(wide->lookreplies AND __msg->link.first()) {
+  if(wide->lookreplies and __msg->link.first()) {
     int r = 0;
     ulong m = __msg->link.first();
-    while(m AND (r<__msg->link.list_max())) {
+    while(m and (r < __msg->link.list_max())) {
       JamHdr _rhdr;
       memset(&_rhdr, 0, sizeof(JamHdr));
       lseekset(data->fhjdx, m-data->hdrinfo.basemsgnum, sizeof(JamIndex));

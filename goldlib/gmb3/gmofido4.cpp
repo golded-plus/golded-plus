@@ -72,7 +72,7 @@ void FidoArea::save_message(int __mode, gmsg* __msg, FidoHdr& __hdr) {
 
     // Never create a new 1.MSG in echo or local areas.
     if(__msg->msgno == 1) {
-      if(NOT isnet()) {
+      if(not isnet()) {
         __msg->msgno = 2;
         build_msgname(_msgfile, __msg->msgno);
       }
@@ -120,9 +120,8 @@ void FidoArea::save_message(int __mode, gmsg* __msg, FidoHdr& __hdr) {
   int _fh = test_open(_msgfile, _omode, WideSharemode, YES);
 
   // Get date/time of message file
-  if(NOT(__mode & GMSG_NEW)) {
-    if(NOT __msg->attr.upd())
-      fstat(_fh, &st);
+  if(not (__mode & GMSG_NEW) and not __msg->attr.upd()) {
+    fstat(_fh, &st);
   }
 
   memset(&__hdr, 0, sizeof(FidoHdr));
@@ -189,13 +188,11 @@ void FidoArea::save_message(int __mode, gmsg* __msg, FidoHdr& __hdr) {
   ::close(_fh);
 
   // Reset date/time of message file
-  if(NOT(__mode & GMSG_NEW)) {
-    if(NOT __msg->attr.upd()) {
-      struct utimbuf t;
-      t.actime = st.st_atime;
-      t.modtime = st.st_mtime;
-      utime(_msgfile, &t);
-    }
+  if(not (__mode & GMSG_NEW) and not __msg->attr.upd()) {
+    struct utimbuf t;
+    t.actime = st.st_atime;
+    t.modtime = st.st_mtime;
+    utime(_msgfile, &t);
   }
 
   // If the message has locked status, make it read-only

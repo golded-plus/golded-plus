@@ -510,7 +510,7 @@ const word CRC_K_SPACE              = 0x1281;
 const word CRC_KK_MACRO             = 0x4BE9;
 const word CRC_KK_AUTO              = 0x60E2;
 
-#if not defined(__UNIX__) or defined(__USE_NCURSES__)
+#if !defined(__UNIX__) || defined(__USE_NCURSES__)
 const word CRC_K_SINS               = 0xC40B;
 const word CRC_K_SDEL               = 0x1EB9;
 const word CRC_K_SHOME              = 0xAF9D;

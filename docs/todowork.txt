@@ -21,7 +21,7 @@ To do:
 * Try to save position in message after printing, changing xlat table,
   etc.
 * Major xlat/recode engine update (in progress).
-* CUI in /lnx and input prompts.
+* CUI in input prompts.
 * Activating built-in MIME-QP convertor by key (on whole message).
 * Postpone.
 * Highlight up to 3 groups of users by different color.
@@ -43,8 +43,6 @@ ______________________________________________________________________
 To fix:
 
 * UUdecoder not 100% reliable: any volunteers for uulib maintaining?
-* Adding e-mail's to addressbook from UUCP gated messages.
-* QUOTEHARDTERM is always NO.
 * Need some workarounds on -install feature under Linux (UNIX).
 * Win32 (only when runned under Win9x) version does not support case
   insensitive search of regexp's for high part of ASCII table. That's
@@ -55,7 +53,6 @@ ______________________________________________________________________
 
 Known wishes that not currently planned (any volunteers?):
 
-* FREQ catcher (not 100% reliable detects files)
 * Interactive Twit-list edition.
 * Pass areaname, message number, etc. to external utility.
 * Hide empty areas / areas without new messages from arealist.

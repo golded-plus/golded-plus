@@ -317,7 +317,7 @@ int MakeColor(char* colors) {
   char* ink_;
   char* paper_;
 
-  #if defined(__UNIX__) or defined(__USE_NCURSES__)
+  #if defined(__UNIX__) || defined(__USE_NCURSES__)
   blink = 0;
   #else
   blink = (stridela("blinking", colors) ? 128 : 0);

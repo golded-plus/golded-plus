@@ -122,7 +122,7 @@ void XbbsWideClose();
 //  ------------------------------------------------------------------
 //  When not in OS/2, use DUMMY AdeptXBBS functions
 
-#if not defined(__OS2__)
+#if !defined(__OS2__)
 
 #ifndef GMB_NOXBBS
 inline void XbbsInit(const char*, int) { }

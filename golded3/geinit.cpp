@@ -565,7 +565,7 @@ void Initialize(int argc, char* argv[]) {
        "-M              Mute sounds. Disables all noises in GoldED+." << endl <<
        "-N              Disable share-compatible file opens during startup." << endl <<
        "-NOSCAN         Temporarily disable area scan during startup." << endl <<
-       #if defined(GUTLOS_FUNCS) and not defined(__MSDOS__)
+       #if defined(GUTLOS_FUNCS) && !defined(__MSDOS__)
        "-P              Increase program priority to run faster." << endl <<
        #endif
        "-S<sortspec>    Sorts all mail areas according to the sort specs." << endl <<

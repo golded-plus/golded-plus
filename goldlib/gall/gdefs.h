@@ -154,12 +154,6 @@ template <class T> inline bool make_bool(T a)            { return a ? true : fal
 //  ------------------------------------------------------------------
 //  Legacy defines
 
-#ifndef AND
-#define NOT      !
-#define AND      &&
-#define OR       ||
-#endif
-
 #define RngV in_range
 #define AbsV absolute
 #define CmpV compare_two

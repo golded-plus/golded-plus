@@ -62,7 +62,7 @@
 #define __GPID__ "GoldNode+/386"
 #elif defined(__linux__)
 #define __GPID__ "GoldNODE+/LNX"
-#elif defined(__FreeBSD__) or defined(__OpenBSD__)
+#elif defined(__FreeBSD__) || defined(__OpenBSD__)
 #define __GPID__ "GoldNODE+/BSD"
 #else
 #define __GPID__ "GoldNODE+"
@@ -1081,14 +1081,14 @@ static void fatal_error(const char* what) {
 
 static int do_if(char* val) {
 
-  if(strieql(val, "OS/2") OR strieql(val, "OS2")) {
+  if(strieql(val, "OS/2") or strieql(val, "OS2")) {
     #ifdef __OS2__
     return true;
     #else
     return false;
     #endif
   }
-  else if(strieql(val, "NT") OR strieql(val, "W32") OR strieql(val, "WIN32")) {
+  else if(strieql(val, "NT") or strieql(val, "W32") or strieql(val, "WIN32")) {
     #ifdef __WIN32__
     return true;
     #else
@@ -1128,7 +1128,7 @@ static int do_if(char* val) {
   else if(strieql(val, "FIREBIRD")) {
     return true;
   }
-  else if(strieql(val, "YES") OR strieql(val, "TRUE") OR strieql(val, "ON"))
+  else if(strieql(val, "YES") or strieql(val, "TRUE") or strieql(val, "ON"))
     return true;
   return atoi(val) != 0;
 }

@@ -63,7 +63,7 @@ int FidoArea::renumber() {
   // In echo or local, start with 2.MSG so we don't conflict
   // with highwater marks, unless there is already a 1.MSG
   ulong _msgno1st = 1;
-  if((NOT isnet()) AND (Msgn->at(0) != 1))
+  if(not isnet() and (Msgn->at(0) != 1))
     _msgno1st++;
 
   // Renumber *.MSG files
@@ -105,7 +105,7 @@ int FidoArea::renumber() {
         read(_fh, &_hdr, sizeof(FidoHdr));
 
         // Update the replylinks
-        if(_hdr.replyto OR _hdr.reply1st) {
+        if(_hdr.replyto or _hdr.reply1st) {
           _hdr.replyto  = (word)Msgn->ToReln(_hdr.replyto);
           _hdr.reply1st = (word)Msgn->ToReln(_hdr.reply1st);
           lseekset(_fh, 0);

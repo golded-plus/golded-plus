@@ -58,7 +58,7 @@
 //  ------------------------------------------------------------------
 //  Check if Borland C++ for OS/2 1.0 header has been fixed
 
-#if defined(__OS2__) and defined(__BORLANDC__)
+#if defined(__OS2__) && defined(__BORLANDC__)
   #if __BORLANDC__ <= 0x400
     #ifndef BCOS2_BSESUB_FIXED
     #error There is a bug in the BSESUB.H header. Please fix it.
@@ -80,7 +80,7 @@
 
 static bool __vcurhidden = false;
 
-#if not defined(__USE_NCURSES__)
+#if !defined(__USE_NCURSES__)
 
 //  ------------------------------------------------------------------
 
@@ -103,7 +103,7 @@ inline WCHAR gvid_tcpr(vchar chr) {
 
 //  ------------------------------------------------------------------
 
-#if defined(__MSDOS__) or defined(__UNIX__)
+#if defined(__MSDOS__) || defined(__UNIX__)
 
 #if defined(__MSDOS__)
 extern int __gdvdetected;
@@ -356,7 +356,7 @@ void vputansi(int row, int col, word* buf, int len) {
 
 #endif
 
-#endif // not defined(__USE_NCURSES__)
+#endif // !defined(__USE_NCURSES__)
 
 
 //  ------------------------------------------------------------------
@@ -393,7 +393,7 @@ int revsattr(int attr) {
   return (int)(((attr>>4)&0x07)|((attr<<4)&0x70)|(attr&0x80)|(attr&0x08));
 }
 
-#if not defined(__USE_NCURSES__)
+#if !defined(__USE_NCURSES__)
 
 
 //  ------------------------------------------------------------------
@@ -569,7 +569,7 @@ chtype gvid_tcpr(vchar chr) {
 //  ------------------------------------------------------------------
 //  Print character and attribute at specfied location
 
-#if (defined(__MSDOS__) or defined(__UNIX__)) and not defined(__USE_NCURSES__)
+#if (defined(__MSDOS__) || defined(__UNIX__)) && !defined(__USE_NCURSES__)
 inline void _vputw(int row, int col, word chat) {
 
   _farpokew(_dos_ds, gdmaptr(col, row), chat);
@@ -738,7 +738,7 @@ void vputc(int row, int col, int atr, vchar chr) {
     cpu.genint(0x10);
   }
 
-  #elif defined(__OS2__) or defined(__WIN32__)
+  #elif defined(__OS2__) || defined(__WIN32__)
 
   vputw(row, col, vcatch(chr, atr));
 
@@ -854,7 +854,7 @@ void vputs(int row, int col, int atr, const char* str) {
 //  ------------------------------------------------------------------
 //  Print string with attribute at specfied location
 
-#if (defined(__MSDOS__) or defined(__UNIX__)) and not defined(__USE_NCURSES__)
+#if (defined(__MSDOS__) || defined(__UNIX__)) && !defined(__USE_NCURSES__)
 static void _vputns(int row, int col, int atr, const char* str, uint width) {
 
   char fillchar = ' ';
@@ -967,7 +967,7 @@ void vputns(int row, int col, int atr, const char* str, uint width) {
 //  ------------------------------------------------------------------
 //  Print horizontal line of character and attribute
 
-#if (defined(__MSDOS__) or defined(__UNIX__)) and not defined(__USE_NCURSES__)
+#if (defined(__MSDOS__) || defined(__UNIX__)) && !defined(__USE_NCURSES__)
 void _vputx(int row, int col, int atr, char chr, uint len) {
 
   gdma p = gdmaptr(col, row);
@@ -1040,7 +1040,7 @@ void vputx(int row, int col, int atr, vchar chr, uint len) {
 //  ------------------------------------------------------------------
 //  Print vertical line of character and attribute
 
-#if (defined(__MSDOS__) or defined(__UNIX__)) and not defined(__USE_NCURSES__)
+#if (defined(__MSDOS__) || defined(__UNIX__)) && !defined(__USE_NCURSES__)
 inline void _vputy(int row, int col, int atr, char chr, uint len) {
 
   gdma p = gdmaptr(col, row);
@@ -1130,7 +1130,7 @@ void vputy(int row, int col, int atr, vchar chr, uint len) {
 //  ------------------------------------------------------------------
 //  Get character and attribute at cursor position
 
-#if (defined(__MSDOS__) or defined(__UNIX__)) and not defined(__USE_NCURSES__)
+#if (defined(__MSDOS__) || defined(__UNIX__)) && !defined(__USE_NCURSES__)
 inline word _vgetw(int row, int col) {
 
   return _farpeekw(_dos_ds, gdmaptr(col, row));
@@ -1203,7 +1203,7 @@ vatch vgetw(int row, int col) {
 
 void vgetc(int row, int col, int* atr, vchar* chr) {
 
-  if((row < 0) || (row > gvid->numrows-1) || (col < 0) || (col > gvid->numcols-1)) {
+  if((row < 0) or (row > gvid->numrows-1) or (col < 0) or (col > gvid->numcols-1)) {
     *chr = ' ';
     *atr = 0;
   }
@@ -1219,7 +1219,7 @@ void vgetc(int row, int col, int* atr, vchar* chr) {
 //  ------------------------------------------------------------------
 //  Scroll screen area
 
-#if (defined(__MSDOS__) or defined(__UNIX__)) and not defined(__USE_NCURSES__)
+#if (defined(__MSDOS__) || defined(__UNIX__)) && !defined(__USE_NCURSES__)
 static void _vscroll(int srow, int scol, int erow, int ecol, int atr, int lines) {
 
   word empty = (atr << 8) | ' ';
@@ -1461,7 +1461,7 @@ void vclrscr() {
 //  ------------------------------------------------------------------
 //  Clears the screen using given attribute and homes the cursor
 
-#if (defined(__MSDOS__) or defined(__UNIX__)) and not defined(__USE_NCURSES__)
+#if (defined(__MSDOS__) || defined(__UNIX__)) && !defined(__USE_NCURSES__)
 static void _vclrscr(int atr) {
 
   int len = gvid->numrows * gvid->numcols;
@@ -1529,7 +1529,7 @@ void vclrscr(int atr) {
 //  ------------------------------------------------------------------
 //  Saves the current screen and returns pointer to buffer
 
-#if (defined(__MSDOS__) or defined(__UNIX__)) and not defined(__USE_NCURSES__)
+#if (defined(__MSDOS__) || defined(__UNIX__)) && !defined(__USE_NCURSES__)
 static void _vsave(word* buf, int len1, int srow, int scol, int erow) {
 
   const int len2 = len1*sizeof(word);
@@ -1645,7 +1645,7 @@ vsavebuf* vsave(int srow, int scol, int erow, int ecol) {
 //  ------------------------------------------------------------------
 //  Redraws a previously saved screen
 
-#if (defined(__MSDOS__) or defined(__UNIX__)) and not defined(__USE_NCURSES__)
+#if (defined(__MSDOS__) || defined(__UNIX__)) && !defined(__USE_NCURSES__)
 static void _vredraw(word* buf, int len1, int srow, int scol, int erow) {
 
   const int len2 = len1*sizeof(word);
@@ -1972,7 +1972,7 @@ void vcursmall() {
 //          14 - solid block
 //  ------------------------------------------------------------------
 
-#if not defined(__USE_NCURSES__)
+#if !defined(__USE_NCURSES__)
 
 char* __box_table[] = {
 
@@ -2069,7 +2069,7 @@ chtype _box_table(int type, int c) {
 
 //  ------------------------------------------------------------------
 
-#if defined(__UNIX__) and not defined(__USE_NCURSES__)
+#if defined(__UNIX__) && !defined(__USE_NCURSES__)
 void gvid_boxcvt(char* s) {
 
   while(*s) {

@@ -40,7 +40,7 @@ void JamArea::lock() {
 
   GFTRK("JamArea::lock");
 
-  if(NOT data->islocked AND WideCanLock) {
+  if(not data->islocked and WideCanLock) {
 
     long _tries = 0;
 
@@ -121,7 +121,7 @@ void JamArea::add_subfield(JamHdr& __hdr, byte*& __subfield, word __loid, word _
 void JamArea::save_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
 
   int _was_locked = data->islocked;
-  if(NOT _was_locked)
+  if(not _was_locked)
     lock();
 
   // Reset header
@@ -138,7 +138,7 @@ void JamArea::save_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
 
   // Get message text size
   char* _txtcpy = NULL;
-  if(__msg->txt AND (__mode & GMSG_TXT)) {
+  if(__msg->txt and (__mode & GMSG_TXT)) {
 
     // Work on a copy of the original msg text
     _txtcpy = throw_strdup(__msg->txt);
@@ -368,7 +368,7 @@ void JamArea::save_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
 
     // Delete msg if requested
     if(__mode & GMSG_DELETE) {
-      if(NOT was_deleted)
+      if(not was_deleted)
         data->hdrinfo.activemsgs--;
       __hdr.attribute |= JAMATTR_DELETED;
       _idx.usercrc = 0xFFFFFFFFL;
@@ -447,7 +447,7 @@ void JamArea::save_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
     scan();
   }
 
-  if(NOT _was_locked) {
+  if(not _was_locked) {
     lseekset(data->fhjhr, 0);
     write(data->fhjhr, &data->hdrinfo, sizeof(JamHdrInfo));
     unlock();

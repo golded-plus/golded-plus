@@ -82,7 +82,7 @@ int GMTsk::os2() {
   #if defined(__OS2__)
   detected = GMTSK_OS2;
   name = "OS/2";
-  #elif not defined(__GNUC__)
+  #elif !defined(__GNUC__)
   if(_osmajor >= 10) {
     detected = GMTSK_OS2;
     name = "OS/2";
@@ -115,7 +115,7 @@ int GMTsk::win32() {
 
 int GMTsk::windows() {
 
-  #if defined(__MSDOS__) and not defined(__DJGPP__)
+  #if defined(__MSDOS__) && !defined(__DJGPP__)
   i86 cpu;
   cpu.ax(0x352F);
   cpu.genint(0x21);
@@ -136,7 +136,7 @@ int GMTsk::windows() {
 
 int GMTsk::desqview() {
 
-  #if defined(__MSDOS__) and not defined(__DJGPP__)
+  #if defined(__MSDOS__) && !defined(__DJGPP__)
   i86 cpu;
   cpu.cx(0x4445);
   cpu.dx(0x5351);
@@ -157,7 +157,7 @@ int GMTsk::desqview() {
 
 int GMTsk::dosint28() {
 
-  #if defined(__MSDOS__) and not defined(__DJGPP__)
+  #if defined(__MSDOS__) && !defined(__DJGPP__)
   detected = GMTSK_DOS;
   name = "DOS";
   #endif
@@ -191,7 +191,7 @@ void GMTsk::timeslice() {
       Sleep(5);
       break;
     #endif
-    #if defined(__MSDOS__) or defined(__OS2__)
+    #if defined(__MSDOS__) || defined(__OS2__)
     case GMTSK_OS2:
       #if defined(__OS2__)
       DosSleep(5);

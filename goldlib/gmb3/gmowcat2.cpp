@@ -88,7 +88,7 @@ void WCatArea::raw_scan(int __keep_index, int __scanpm) {
   }
 
   // Open WildCat! files for scanning unless they are already open
-  if(NOT isopen) {
+  if(not isopen) {
 
     data->idx = NULL;
     data->base.recsize = 0;
@@ -131,13 +131,13 @@ void WCatArea::raw_scan(int __keep_index, int __scanpm) {
 
       _active++;
       _msgno = (_ixptr++)->msgno;
-      if(NOT _firstmsgno)
+      if(not _firstmsgno)
         _firstmsgno = _msgno;
       if(__keep_index)
         *_msgndxptr++ = _msgno;
 
       // Get the lastread
-      if((_msgno >= _lastread) AND (_lastread_reln == 0)) {
+      if((_msgno >= _lastread) and (_lastread_reln == 0)) {
         _lastreadfound = _msgno;
         _lastread_reln = (uint)(_active - (_msgno != _lastread ? 1 : 0));
       }
@@ -147,7 +147,7 @@ void WCatArea::raw_scan(int __keep_index, int __scanpm) {
     }
 
     // If the exact lastread was not found
-    if(_active AND (_lastreadfound != _lastread)) {
+    if(_active and (_lastreadfound != _lastread)) {
 
       // Higher than highest or lower than lowest?
       if(_lastread > _lastmsgno)
@@ -168,7 +168,7 @@ void WCatArea::raw_scan(int __keep_index, int __scanpm) {
   }
 
   // Free index buffer if just counting
-  if(NOT __keep_index OR __scanpm)
+  if(not __keep_index or __scanpm)
     throw_release(data->idx);
 
   if(_was_data == NULL) {

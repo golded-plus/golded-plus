@@ -97,7 +97,7 @@ void PcbWideOpen() {
 
   GFTRK("PcbWideOpen");
 
-  if(NOT pcbwide->isopen) {
+  if(not pcbwide->isopen) {
 
     pcbwide->fhusr = PcbWideTestOpen(pcbwide->users);
     pcbwide->fhinf = PcbWideTestOpen(pcbwide->usersinf);
@@ -201,7 +201,7 @@ void PcbArea::raw_open() {
 
   GFTRK("PcbRawOpen");
 
-  if(NOT just_scanning)
+  if(not just_scanning)
     data->fhmsg = test_open(path());
   data->fhidx = test_open(AddPath(path(), ".idx"));
 
@@ -217,8 +217,8 @@ void PcbArea::raw_scan(int __keep_index, int __scanpm) {
 
   // Open the msgbase if it wasn't already
   int _was_open = isopen;
-  if(NOT _was_open) {
-    if(NOT __keep_index)
+  if(not _was_open) {
+    if(not __keep_index)
       just_scanning = true;
     isopen++;
     data_open();
@@ -227,7 +227,7 @@ void PcbArea::raw_scan(int __keep_index, int __scanpm) {
   }
 
   int _was_wideopen = wide->isopen;
-  if(NOT _was_wideopen)
+  if(not _was_wideopen)
     PcbWideOpen();
 
   // Load the base header
@@ -272,11 +272,11 @@ void PcbArea::raw_scan(int __keep_index, int __scanpm) {
     if(_idxptr->offset > 0) {
       _active++;
       _lastmsgno = _idxptr->num;
-      if(NOT _firstmsgno)
+      if(not _firstmsgno)
         _firstmsgno = _lastmsgno;
       if(__keep_index)
         *_msgndxptr++ = _lastmsgno;
-      if((_lastmsgno >= _lastread) AND (_lastread_reln == 0)) {
+      if((_lastmsgno >= _lastread) and (_lastread_reln == 0)) {
         _lastreadfound = _lastmsgno;
         _lastread_reln = (uint)(_active - (_lastmsgno != _lastread ? 1 : 0));
       }
@@ -285,7 +285,7 @@ void PcbArea::raw_scan(int __keep_index, int __scanpm) {
   }
 
   // If the exact lastread was not found
-  if(_active AND (_lastreadfound != _lastread)) {
+  if(_active and (_lastreadfound != _lastread)) {
 
     // Higher than highest or lower than lowest?
     if(_lastread > _lastmsgno)
@@ -338,11 +338,11 @@ void PcbArea::raw_scan(int __keep_index, int __scanpm) {
   // Free the .IDX buffer
   throw_free(_idxbuf);
 
-  if(NOT _was_wideopen)
+  if(not _was_wideopen)
     PcbWideClose();
 
   // Close the msgbase again if we opened it in here
-  if(NOT _was_open) {
+  if(not _was_open) {
     raw_close();
     data_close();
     isopen--;

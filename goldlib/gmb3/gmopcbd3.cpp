@@ -55,10 +55,10 @@ int PcbArea::load_message(int __mode, gmsg* __msg, PcbHdr& __hdr) {
 
   // Convert attributes
   __msg->pcboard.status = __hdr.status;
-  if(NOT islocal())
+  if(not islocal())
     __msg->attr.uns(__hdr.date[5] != '\xC4');
-  __msg->attr.pvt(__hdr.status == '*' OR __hdr.status == '+');
-  __msg->attr.rcv(__hdr.status == '+' OR __hdr.status == '-' OR __hdr.status == '`' OR __hdr.status == '^' OR __hdr.status == '#');
+  __msg->attr.pvt((__hdr.status == '*') or (__hdr.status == '+'));
+  __msg->attr.rcv((__hdr.status == '+') or (__hdr.status == '-') or (__hdr.status == '`') or (__hdr.status == '^') or (__hdr.status == '#'));
   __msg->attr.del(__hdr.activestatus == 226);
   __msg->pcboard.exthdrflags = __hdr.exthdrflags;
 
@@ -104,7 +104,7 @@ int PcbArea::load_message(int __mode, gmsg* __msg, PcbHdr& __hdr) {
   // Read the message text, trim spaces and translate PCB linefeeds
   read(data->fhmsg, _tmptxt, _msgsize);
   strtrim(_tmptxt);
-  if(NOT wide->foreign)
+  if(not wide->foreign)
     strchg(_tmptxt, 0xE3, 0x0D);
 
   //int _line = 0;
@@ -138,7 +138,7 @@ int PcbArea::load_message(int __mode, gmsg* __msg, PcbHdr& __hdr) {
           // Get address and attribute from FidoPCB
           if(isnet()) {
             _line++;
-            if((_line == 1) AND (*_begline == '(' /*)*/)) {
+            if((_line == 1) and (*_begline == '(' /*)*/)) {
               Addr _addr;
               _addr.ResetFast();
               char* _ptr = _begline + 1;
@@ -148,7 +148,7 @@ int PcbArea::load_message(int __mode, gmsg* __msg, PcbHdr& __hdr) {
                 _ptr += 5;
               }
               _addr.set(strskip_wht(_ptr));
-              if(NOT _incoming AND strieql(__msg->by, WideUsername[0])) {
+              if(not _incoming and strieql(__msg->by, WideUsername[0])) {
                 __msg->dest = _addr;
                 __msg->odest = _addr;
               }
@@ -157,7 +157,7 @@ int PcbArea::load_message(int __mode, gmsg* __msg, PcbHdr& __hdr) {
                 __msg->oorig = _addr;
               }
             }
-            else if((_line == 2) AND (*_begline == '(' /*)*/)) {
+            else if((_line == 2) and (*_begline == '(' /*)*/)) {
               _src[-1] = NUL;
               if(striinc("HOLD", _begline))
                 __msg->attr.hld1();
@@ -184,7 +184,7 @@ int PcbArea::load_message(int __mode, gmsg* __msg, PcbHdr& __hdr) {
   if(*_eto)
     strxcpy(__msg->to, _eto, sizeof(__msg->to));
 
-  if(isnet() AND NOT isemail()) {
+  if(isnet() and not isemail()) {
     char* ptr = strchr(__msg->by, '@');
     if(ptr) {
       *ptr++ = NUL;
@@ -226,7 +226,7 @@ int PcbArea::load_message(int __mode, gmsg* __msg, PcbHdr& __hdr) {
 
   throw_free(_tmptxt);
 
-  if(NOT(__mode & GMSG_TXT))
+  if(not (__mode & GMSG_TXT))
     throw_release(__msg->txt);
 
   GFTRK(NULL);

@@ -71,15 +71,15 @@ int SquishArea::load_message(int __mode, gmsg* __msg, SqshHdr& __hdr) {
       read(_fhsqd, _src, (uint)_frm.ctlsize);
 
       // Convert Squish control info to true kludges
-      while(*_src AND (*_src == CTRL_A) AND _src[1]) {
+      while(*_src and (*_src == CTRL_A) and _src[1]) {
 
         // Copy the kludge char unless it's the AREA: line
-        if(NOT ((*(dword*)(_src+1) == CHR4_AREA) AND strneql(_src+1, "AREA:", 5)))
+        if(not ((*(dword*)(_src+1) == CHR4_AREA) and strneql(_src+1, "AREA:", 5)))
           *_dest++ = *_src;
         _src++;
 
         // Copy the rest of the kludge and add a CR termination
-        while((*_src != CTRL_A) AND *_src)
+        while((*_src != CTRL_A) and *_src)
           *_dest++ = *_src++;
         *_dest++ = CR;
       }
@@ -156,7 +156,7 @@ int SquishArea::load_message(int __mode, gmsg* __msg, SqshHdr& __hdr) {
   __msg->attr.lok(__hdr.attr & MSGLOK);
 
   if(isnet()) {
-    __msg->attr.uns(__msg->attr.loc() AND NOT __msg->attr.snt());
+    __msg->attr.uns(__msg->attr.loc() and not __msg->attr.snt());
     if(wide->direct and __msg->attr.hld() and __msg->attr.cra()) {
       // Translate hld+cra to dir attribute
       __msg->attr.dir1();
@@ -165,7 +165,7 @@ int SquishArea::load_message(int __mode, gmsg* __msg, SqshHdr& __hdr) {
     }
   }
   else if(isecho())
-    __msg->attr.uns(__msg->attr.loc() AND ((__hdr.attr & MSGSCANNED) ? 0 : 1));
+    __msg->attr.uns(__msg->attr.loc() and ((__hdr.attr & MSGSCANNED) ? 0 : 1));
   else
     __msg->attr.uns0();
 

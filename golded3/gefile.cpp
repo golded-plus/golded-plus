@@ -528,7 +528,7 @@ void CreateFileMsgs(int mode, GMsg* msg) {
         );
       }
       sprintf(subj, "%s%s%s%s%s ", fspec[x].delsent ? "^" : "", fspec[x].path, fspec[x].fblk ? (fspec[x].fblk[m].name ? fspec[x].fblk[m].name : "") : "", *fspec[x].password ? " " : "", fspec[x].password);
-#if not defined(__UNIX__)
+#if !defined(__UNIX__)
       strupr(subj);
 #endif
 

@@ -93,7 +93,7 @@ void SquishArea::raw_scan(int __keep_index, int __scanpm) {
   }
 
   // Open Squish files for scanning unless they are already open
-  if(NOT isopen) {
+  if(not isopen) {
 
     data->idx = NULL;
     data->base.totalmsgs = 0;
@@ -108,7 +108,7 @@ void SquishArea::raw_scan(int __keep_index, int __scanpm) {
       // If there appear to be only one record, experience shows that
       // there may in fact be zero!  So check the *.SQD base record for
       // the exact number of msgs in this case or if requested.
-      if((data->base.totalmsgs == 1) OR (wide->squishscan == SQS_API)) {
+      if((data->base.totalmsgs == 1) or (wide->squishscan == SQS_API)) {
 
         // Open, read and close data file
         data->fhsqd = ::sopen(AddPath(path(), ".sqd"), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
@@ -157,9 +157,9 @@ void SquishArea::raw_scan(int __keep_index, int __scanpm) {
         *_msgndxptr++ = _msgno;
 
       // Check for premature end of index (free frames)
-      if((_msgno <= _lastmsgno) OR (_msgno == 0xFFFFFFFFL)) {
+      if((_msgno <= _lastmsgno) or (_msgno == 0xFFFFFFFFL)) {
         _active--;
-        if((_msgno == _lastmsgno) AND _active == 1) {
+        if((_msgno == _lastmsgno) and (_active == 1)) {
           _lastread_reln = 0;
           _active = 0;
         }
@@ -167,7 +167,7 @@ void SquishArea::raw_scan(int __keep_index, int __scanpm) {
       }
 
       // Get the lastread
-      if((_msgno >= _lastread) AND (_lastread_reln == 0)) {
+      if((_msgno >= _lastread) and (_lastread_reln == 0)) {
         _lastreadfound = _msgno;
         _lastread_reln = _active - (_msgno != _lastread ? 1 : 0);
       }
@@ -177,7 +177,7 @@ void SquishArea::raw_scan(int __keep_index, int __scanpm) {
     }
 
     // If the exact lastread was not found
-    if(_active AND (_lastreadfound != _lastread)) {
+    if(_active and (_lastreadfound != _lastread)) {
 
       // Higher than highest or lower than lowest?
       if(_lastread > _lastmsgno)

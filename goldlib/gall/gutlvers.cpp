@@ -44,7 +44,7 @@ char* ggetosstring(void) {
 
   if(*osstring == NUL) {
 
-    #if defined(__UNIX__) or defined(__DJGPP__) or defined(__EMX__)
+    #if defined(__UNIX__) || defined(__DJGPP__) || defined(__EMX__)
 
     struct utsname info;
 

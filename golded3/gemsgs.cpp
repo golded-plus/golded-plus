@@ -100,6 +100,7 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
   MakeAttrStr(attr, sizeof(attr), &msg->attr);
 
   const char *xmailer = get_informative_string();
+  const char *osver = ggetosstring();
 
   time_t t = time(NULL);
   struct tm* written_tm = localtime(&t);
@@ -363,6 +364,8 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
         if(tokenxchg(dst, "@longpid", __gver_longpid__))
           continue;
         if(tokenxchg(dst, "@widepid", xmailer))
+          continue;
+        if(tokenxchg(dst, "@osver", osver))
           continue;
         if(tokenxchg(dst, "@osslash", __gver_platform__))
           continue;

@@ -89,7 +89,7 @@ void FidoArea::raw_scan(bool __scanpm) {
     while(1) {
 
       // Set lastread pointer
-      if((*_msgnoptr >= _lastread) AND (_lastread_reln == 0)) {
+      if((*_msgnoptr >= _lastread) and (_lastread_reln == 0)) {
         _lastreadfound = *_msgnoptr;
         _lastread_reln = _count - (*_msgnoptr != _lastread ? 1 : 0);
         break;
@@ -101,7 +101,7 @@ void FidoArea::raw_scan(bool __scanpm) {
   }
 
   // If the exact lastread was not found
-  if(_active AND (_lastreadfound != _lastread)) {
+  if(_active and (_lastreadfound != _lastread)) {
 
     // Higher than highest or lower than lowest?
     if(_lastread > _lastmsgno)
@@ -112,7 +112,7 @@ void FidoArea::raw_scan(bool __scanpm) {
 
   // Read highwater mark
   data->highwatermark = 0;
-  if(isecho() AND wide->fidohwmarks) {
+  if(isecho() and wide->fidohwmarks) {
     _fh = test_open(AddPath(path(), "1.msg"), O_RDONLY|O_BINARY, WideSharemode);
     if(_fh != -1) {
       read(_fh, &_hdr, sizeof(FidoHdr));

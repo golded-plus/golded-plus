@@ -172,7 +172,7 @@ inline void i86::genint(int intno) {
 }
 
 
-#if defined(__WATCOMC__) and defined(__386__)
+#if defined(__WATCOMC__) && defined(__386__)
 inline int __dpmi_allocate_dos_memory(long len, int &buf) {
 
   i86 cpu;
@@ -203,7 +203,7 @@ inline void __dpmi_free_dos_memory(int buffer) {
 //  ------------------------------------------------------------------
 //  A more portable version of MK_FP()
 
-#if defined(__WATCOMC__) and defined(__386__)
+#if defined(__WATCOMC__) && defined(__386__)
 
 #define gmkfp(s,o) ((s << 4) + o)
 

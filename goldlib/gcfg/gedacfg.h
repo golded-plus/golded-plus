@@ -283,7 +283,7 @@ protected:
 #ifndef GCFG_NOQECHO
   void ReadQEchoFile(char* file, char* options, char* origin);
 #endif
-#if not defined(GCFG_NOSQSH) or not defined(GCFG_NOPARTOSS)
+#if !defined(GCFG_NOSQSH) || !defined(GCFG_NOPARTOSS)
   void ReadSquishFile(char* path, char* file, char* options, char* origin, int group);
 #endif
 #ifndef GCFG_NOTIMED
@@ -412,7 +412,7 @@ public:
 #ifndef GCFG_NORA
   void ReadRemoteAccess(char* tag);
 #endif
-#if not defined(GCFG_NOSQSH) or not defined(GCFG_NOPARTOSS)
+#if !defined(GCFG_NOSQSH) || !defined(GCFG_NOPARTOSS)
   void ReadSquish(char* tag);
 #endif
 #ifndef GCFG_NOSBBS

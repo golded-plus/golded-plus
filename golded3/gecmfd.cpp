@@ -120,7 +120,7 @@ void Area::DeleteMsg(GMsg* msg, int direction) {
     if(isnet() and isfido())
       TouchNetscan(false);
 
-    if(not issmb() and not (isjam() and not CFG->switches.get(jamharddelete))) {
+    if(not issmb() and not iswildcat() and not (isjam() and not CFG->switches.get(jamharddelete))) {
       // Remove message from internal table
       Msgn.Del(msg->msgno);
     }

@@ -127,7 +127,7 @@ CmdKey DefaultKeyset[] = {
   { Key_C_U     , KK_EditUnDelete         , KT_E },
   { Key_A_BS    , KK_EditUndo             , KT_E },
   { Key_A_Z     , KK_EditZapQuoteBelow    , KT_E },
-#if not defined(__UNIX__) or defined(__USE_NCURSES__)
+#if !defined(__UNIX__) || defined(__USE_NCURSES__)
   { Key_C_Ins   , KK_EditCopy             , KT_E },
   { Key_S_Del   , KK_EditCut              , KT_E },
   { Key_C_Del   , KK_EditDelete           , KT_E },
@@ -366,7 +366,7 @@ tglobalkey globalkeys[] = {
   { CRC_HEADERTOGGLESCANNED    , KK_HeaderToggleScanned  , KT_H }, // 0x0459
   { CRC_READTOGGLEHIDDEN       , KK_ReadToggleHidden     , KT_R }, // 0x04CE
   { CRC_EDITIMPORTTEXT         , KK_EditImportText       , KT_E }, // 0x0586
-#if not defined(__UNIX__) or defined(__USE_NCURSES__)
+#if !defined(__UNIX__) || defined(__USE_NCURSES__)
   { CRC_K_SEND                 , Key_S_End               ,    0 }, // 0x0590
 #endif
   { CRC_READGOTOPREVMSG        , KK_ReadGotoPrevMsg      , KT_R }, // 0x06D9
@@ -413,7 +413,7 @@ tglobalkey globalkeys[] = {
   { CRC_AREAABORT              , KK_AreaAbort            , KT_A }, // 0x1E02
   { CRC_READTOGGLEMARK         , KK_ReadToggleMark       , KT_R }, // 0x1E64
   { CRC_READFIDORENUMBER       , KK_ReadFidoRenumber     , KT_R }, // 0x1E7C
-#if not defined(__UNIX__) or defined(__USE_NCURSES__)
+#if !defined(__UNIX__) || defined(__USE_NCURSES__)
   { CRC_K_SDEL                 , Key_S_Del               ,    0 }, // 0x1EB9
 #endif
   { CRC_EDITCOPY               , KK_EditCopy             , KT_E }, // 0x1F77
@@ -491,7 +491,7 @@ tglobalkey globalkeys[] = {
   { CRC_K_AZ                   , Key_A_Z                 ,    0 }, // 0x405A
   { CRC_K_ADEL                 , Key_A_Del               ,    0 }, // 0x40C0
   { CRC_NODEMACRO              , KK_NodeMacro            , KT_N }, // 0x4129
-#if not defined(__UNIX__) or defined(__USE_NCURSES__)
+#if !defined(__UNIX__) || defined(__USE_NCURSES__)
   { CRC_K_SUP                  , Key_S_Up                ,    0 }, // 0x4151
 #endif
   { CRC_AREAGOTOFIRST          , KK_AreaGotoFirst        , KT_A }, // 0x41CB
@@ -552,7 +552,7 @@ tglobalkey globalkeys[] = {
   { CRC_EDITEXPORTTEXT         , KK_EditExportText       , KT_E }, // 0x5AED
   { CRC_EDITLOOKUPORIG         , KK_EditLookupOrig       , KT_E }, // 0x5AFB
   { CRC_AREAHEAT               , KK_AreaHeat             , KT_A }, // 0x5B15
-#if not defined(__UNIX__) or defined(__USE_NCURSES__)
+#if !defined(__UNIX__) || defined(__USE_NCURSES__)
   { CRC_K_SRIGHT               , Key_S_Rgt               ,    0 }, // 0x5B1F
 #endif
   { CRC_READGOTONEXTAREA       , KK_ReadGotoNextArea     , KT_R }, // 0x5B23
@@ -709,12 +709,12 @@ tglobalkey globalkeys[] = {
   { CRC_READQUITNOW            , KK_ReadQuitNow          , KT_R }, // 0xAC15
   { CRC_HEADERTOGGLEUPDREQ     , KK_HeaderToggleUpdreq   , KT_H }, // 0xAC35
   { CRC_EDITDELLINE            , KK_EditDelLine          , KT_E }, // 0xACCF
-#if not defined(__UNIX__) or defined(__USE_NCURSES__)
+#if !defined(__UNIX__) || defined(__USE_NCURSES__)
   { CRC_K_SPGDN                , Key_S_PgDn              ,    0 }, // 0xAD44
 #endif
   { CRC_READSOUNDKILL          , KK_ReadSoundkill        , KT_R }, // 0xAE29
   { CRC_LISTUNDEFINE           , KK_ListUndefine         , KT_M }, // 0xAF86
-#if not defined(__UNIX__) or defined(__USE_NCURSES__)
+#if !defined(__UNIX__) || defined(__USE_NCURSES__)
   { CRC_K_SHOME                , Key_S_Home              ,    0 }, // 0xAF9D
 #endif
   { CRC_READTOGGLEQUOTE        , KK_ReadToggleQuote      , KT_R }, // 0xB293
@@ -728,7 +728,7 @@ tglobalkey globalkeys[] = {
   { CRC_K_CINS                 , Key_C_Ins               ,    0 }, // 0xBA0E
   { CRC_READGOTONEXTUNREAD     , KK_ReadGotoNextUnread   , KT_R }, // 0xBA34
   { CRC_READADDRESSBOOK        , KK_ReadAddressbook      , KT_R }, // 0xBAC1
-#if not defined(__UNIX__) or defined(__USE_NCURSES__)
+#if !defined(__UNIX__) || defined(__USE_NCURSES__)
   { CRC_K_SPGUP                , Key_S_PgUp              ,    0 }, // 0xBC5A
 #endif
   { CRC_FILEABORT              , KK_FileAbort            , KT_F }, // 0xBCED
@@ -742,13 +742,13 @@ tglobalkey globalkeys[] = {
   { CRC_READTOGGLEROT13        , KK_ReadToggleROT13      , KT_R }, // 0xC157
   { CRC_EDITTOGGLECASE         , KK_EditToggleCase       , KT_E }, // 0xC282
   { CRC_FILEGOTOLAST           , KK_FileGotoLast         , KT_F }, // 0xC40A
-#if not defined(__UNIX__) or defined(__USE_NCURSES__)
+#if !defined(__UNIX__) || defined(__USE_NCURSES__)
   { CRC_K_SINS                 , Key_S_Ins               ,    0 }, // 0xC40B
 #endif
   { CRC_AREASCANPM             , KK_AreaScanPM           , KT_A }, // 0xC4FF
   { CRC_READMSGEND             , KK_ReadMsgEnd           , KT_R }, // 0xC5AD
   { CRC_AREATOGGLE             , KK_AreaToggle           , KT_A }, // 0xC734
-#if not defined(__UNIX__) or defined(__USE_NCURSES__)
+#if !defined(__UNIX__) || defined(__USE_NCURSES__)
   { CRC_K_SLEFT                , Key_S_Lft               ,    0 }, // 0xC902
 #endif
   { CRC_HEADERTOGGLEORPHAN     , KK_HeaderToggleOrphan   , KT_H }, // 0xC98A
@@ -805,7 +805,7 @@ tglobalkey globalkeys[] = {
   { CRC_READGOTOPREVAREA       , KK_ReadGotoPrevArea     , KT_R }, // 0xEECB
   { CRC_READFINDALL            , KK_ReadFindAll          , KT_R }, // 0xEF19
   { CRC_NODEDOSSHELL           , KK_NodeDosShell         , KT_N }, // 0xF084
-#if not defined(__UNIX__) or defined(__USE_NCURSES__)
+#if !defined(__UNIX__) || defined(__USE_NCURSES__)
   { CRC_K_SDOWN                , Key_S_Dwn               ,    0 }, // 0xF0FB
 #endif
   { CRC_READCHANGEXLATIMPORT   , KK_ReadChangeXlatImport , KT_R }, // 0xF169

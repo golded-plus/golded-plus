@@ -118,13 +118,13 @@ int XbbsArea::load_message(int __mode, gmsg* __msg, XbbsHdr& __hdr) {
   // Set the unsent attribute
   #if 0
   if(isnet())
-    __msg->attr.uns((__msg->attr.loc() AND NOT __msg->attr.snt()) OR (__hdr.xflags & XFLAGS_MSGNET));
+    __msg->attr.uns((__msg->attr.loc() and not __msg->attr.snt()) or (__hdr.xflags & XFLAGS_MSGNET));
   else
     __msg->attr.uns(__hdr.xflags & XFLAGS_MSGECHO);
   #endif
 
-  if(isnet() OR isecho())
-    __msg->attr.uns(NOT(__hdr.xflags & XFLAGS_MSGSCANNED));
+  if(isnet() or isecho())
+    __msg->attr.uns(not (__hdr.xflags & XFLAGS_MSGSCANNED));
 
   __msg->adeptxbbs.iflags = __hdr.iflags;
   __msg->adeptxbbs.oflags = __hdr.oflags;

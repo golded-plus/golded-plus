@@ -69,7 +69,7 @@ int JamArea::test_open(const char* file) {
     if(fh == -1) {
 
       // Tell the world
-      if((errno != EACCES) OR (PopupLocked(++tries, false, file) == false)) {
+      if((errno != EACCES) or (PopupLocked(++tries, false, file) == false)) {
         WideLog->ErrOpen();
         raw_close();
         WideLog->printf("! A JAM msgbase file could not be opened.");
@@ -100,7 +100,7 @@ void JamArea::raw_open() {
   sprintf(file, "%s.jhr", path());  data->fhjhr = test_open(file);
   sprintf(file, "%s.jdx", path());  data->fhjdx = test_open(file);
   sprintf(file, "%s.jlr", path());  data->fhjlr = test_open(file);
-  if(NOT just_scanning) {
+  if(not just_scanning) {
     sprintf(file, "%s.jdt", path());  data->fhjdt = test_open(file);
     if(not jamwide->smapihw) {
       sprintf(file, "%s.cmhw", path()); data->fhjhw = ::sopen(file, O_RDWR|O_BINARY, WideSharemode, S_STDRW);
@@ -182,7 +182,7 @@ void JamArea::open_area() {
   }
 
   // If user was not found, init the lastread with our values
-  if(NOT founduser) {
+  if(not founduser) {
     data->lastrec.usercrc = wide->usercrc;
     data->lastrec.userid  = wide->userid;
     data->lastrec.lastread = 0;
@@ -203,8 +203,8 @@ void JamArea::raw_scan(int __keep_index, int __scanpm) {
 
   // Open the msgbase if it wasn't already
   int _was_open = isopen;
-  if(NOT _was_open) {
-    if(NOT __keep_index OR __scanpm)
+  if(not _was_open) {
+    if(not __keep_index or __scanpm)
       just_scanning = true;
     isopen++;
     data_open();
@@ -241,14 +241,14 @@ void JamArea::raw_scan(int __keep_index, int __scanpm) {
   register JamIndex* _jdxptr = _jdxbuf;
 
   // Fill message index
-  while(_msgno<_total) {
+  while(_msgno < _total) {
     if(_jdxptr->hdroffset != 0xFFFFFFFFL) {
       _active++;
-      if(NOT _firstmsgno)
+      if(not _firstmsgno)
         _firstmsgno = _msgno;
       if(__keep_index)
         *_msgndxptr++ = _msgno;
-      if((_msgno >= _lastread) AND (_lastread_reln == 0)) {
+      if((_msgno >= _lastread) and (_lastread_reln == 0)) {
         _lastreadfound = _msgno;
         _lastread_reln = (uint)(_active - (_msgno != _lastread ? 1 : 0));
       }
@@ -259,7 +259,7 @@ void JamArea::raw_scan(int __keep_index, int __scanpm) {
   }
 
   // If the exact lastread was not found
-  if(_active AND (_lastreadfound != _lastread)) {
+  if(_active and (_lastreadfound != _lastread)) {
 
     // Higher than highest or lower than lowest?
     if(_lastread > _lastmsgno)
@@ -298,8 +298,8 @@ void JamArea::raw_scan(int __keep_index, int __scanpm) {
         JamHdr hdr;
         lseekset(data->fhjhr, idx->hdroffset);
         read(data->fhjhr, &hdr, sizeof(JamHdr));
-        if(NOT (hdr.attribute & JAMATTR_READ)) {
-          if(NOT (hdr.attribute & JAMATTR_DELETED)) {
+        if(not (hdr.attribute & JAMATTR_READ)) {
+          if(not (hdr.attribute & JAMATTR_DELETED)) {
             PMrk->Append(hdr.messagenumber);
           }
         }
@@ -328,7 +328,7 @@ void JamArea::raw_scan(int __keep_index, int __scanpm) {
   throw_free(_jdxbuf);
 
   // Close the msgbase again if we opened it in here
-  if(NOT _was_open) {
+  if(not _was_open) {
     raw_close();
     data_close();
     isopen--;

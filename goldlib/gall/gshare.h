@@ -34,7 +34,7 @@
 
 //  ------------------------------------------------------------------
 
-#if not defined(__GNUC__) or defined(__DJGPP__) or defined(__EMX__) or defined(__MINGW32__)
+#if !defined(__GNUC__) || defined(__DJGPP__) || defined(__EMX__) || defined(__MINGW32__)
 #include <share.h>
 #if defined(__MINGW32__)        // SH_COMPAT doesn't work in Mingw32
 #undef SH_COMPAT

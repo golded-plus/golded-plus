@@ -106,7 +106,7 @@ const char* __gver_shortver__ = __GVER_SVER__(__GVER_MAJOR__,__GVER_MINOR__,__GV
 #define __GVER_SHORTPLATFORM__ "LNX"
 #define __GVER_SHORTLOGNAME__  "L"
 #define __GVER_CFGEXT__        ".gel"
-#elif defined(__FreeBSD__) or defined(__OpenBSD__)
+#elif defined(__FreeBSD__) || defined(__OpenBSD__)
 #define __GVER_PLATFORM__      "/BSD"
 #define __GVER_SHORTPLATFORM__ "BSD"
 #define __GVER_SHORTLOGNAME__  "B"

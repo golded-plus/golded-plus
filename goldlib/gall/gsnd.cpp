@@ -51,7 +51,7 @@ gsnd::gsnd() {
 
   #if defined(__MSDOS__)
   mpx = -1;
-  #if (defined(__WATCOMC__) and defined(__386__)) or defined(__DJGPP__)
+  #if (defined(__WATCOMC__) && defined(__386__)) || defined(__DJGPP__)
   buffer = -1;
   #else
   buffer = NULL;
@@ -98,7 +98,7 @@ int gsnd::call_api(uint al, uint bx) {
 void gsnd::free_buffer() {
 
   #if defined(__MSDOS__)
-  #if defined(__DJGPP__) or (defined(__WATCOMC__) and defined(__386__))
+  #if defined(__DJGPP__) || (defined(__WATCOMC__) && defined(__386__))
   if(buffer != -1) {
     __dpmi_free_dos_memory(buffer);
     buffer = -1;
@@ -226,7 +226,7 @@ int gsnd::open(const char* file) {
       goto try_again;
     case 0x02:
       free_buffer();
-      #if defined(__DJGPP__) or (defined(__WATCOMC__) and defined(__386__))
+      #if defined(__DJGPP__) || (defined(__WATCOMC__) && defined(__386__))
       int seg = __dpmi_allocate_dos_memory((data->buffer_length >> 4) + 1, &buffer);
       if(seg == -1)
         return -1;

@@ -140,7 +140,7 @@ void PcbInit(const char* path, int userno) {
         pcbwide->user->usershdrsize = pcbwide->usershdrsize;
         if(pcbwide->userno == -1) {
           pcbwide->user->find(_username);
-          if(NOT pcbwide->user->found) {
+          if(not pcbwide->user->found) {
             pcbwide->userno = 0;
             //WideLog->printf("* User \"%s\" not found in %sUSERS.", _username, _path);
             //pcbwide->user->add(_username);

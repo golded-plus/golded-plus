@@ -143,7 +143,7 @@ void Cleanup(void) {
     freonkey();                       // Free all onkeys (macros)
     FreePastebuf();                   // Free the internal editor cut'n'paste buffer
 
-    #if not defined(__UNIX__) and not defined(__USE_NCURSES__)
+    #if !defined(__UNIX__) && !defined(__USE_NCURSES__)
     if(CFG->screenpalette[16])
       gvid->setpalette(gvid->orig.color.palette);
 
@@ -286,13 +286,11 @@ int ShellToDos(char* command, char* message, int cls, int cursor, int pause) {
   if(CFG->screenpalette[16])
     gvid->setpalette(gvid->orig.color.palette);
 
-  #if defined(__UNIX__) and not defined(__USE_NCURSES__)
-  gkbd_tty_reset();
-  #endif
-
-  #ifdef __USE_NCURSES__
+  #if defined(__USE_NCURSES__)
   def_prog_mode();
   reset_shell_mode();
+  #elif defined(__UNIX__)
+  gkbd_tty_reset();
   #endif
 
   // Write message on screen

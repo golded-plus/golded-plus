@@ -439,7 +439,7 @@ bool gareafile::ReadAreafile(word crc, char* parameters) {
 #ifndef GCFG_NORA
     case CRC_REMOTEACCESS:  ReadRemoteAccess(parameters);  break;
 #endif
-#if not defined(GCFG_NOSQSH) or not defined(GCFG_NOPARTOSS)
+#if !defined(GCFG_NOSQSH) || !defined(GCFG_NOPARTOSS)
     case CRC_PARTOSS:
     case CRC_SQUISH:        ReadSquish(parameters);        break;
 #endif

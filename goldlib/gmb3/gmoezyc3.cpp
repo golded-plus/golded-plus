@@ -88,7 +88,7 @@ int EzycomArea::load_message(int __mode, gmsg* __msg, EzycHdr& __hdr) {
   __msg->attr.rrq(__hdr.netattr & EZYC_NETATTR_RREQ);
   __msg->attr.arq(__hdr.netattr & EZYC_NETATTR_AREQ);
   __msg->attr.rrc(__hdr.netattr & EZYC_NETATTR_RREC);
-  __msg->attr.uns(((__hdr.msgattr & EZYC_MSGATTR_NETPEND) OR (__hdr.msgattr & EZYC_MSGATTR_ECHOPEND)) ? 1 : 0);
+  __msg->attr.uns(((__hdr.msgattr & EZYC_MSGATTR_NETPEND) or (__hdr.msgattr & EZYC_MSGATTR_ECHOPEND)) ? 1 : 0);
 
   __msg->ezycom.extattr = __hdr.extattr;
   __msg->timesread = (__hdr.extattr & EZYC_EXTATTR_SEEN) ? 1 : 0;

@@ -182,7 +182,7 @@ void XbbsArea::save_message(int __mode, gmsg* __msg, XbbsHdr& __hdr) {
   __hdr.xflags |= (ushort)(__msg->attr.arc() ? XFLAGS_MSGARCHIVED : 0);
   __hdr.xflags |= (ushort)(__msg->attr.tag() ? XFLAGS_MSGTAGGED   : 0);
 
-  if(NOT (__mode & GMSG_UPDATE)) {
+  if(not (__mode & GMSG_UPDATE)) {
     if(__msg->attr.uns()) {
       __hdr.xflags &= ~(XFLAGS_MSGSCANNED|XFLAGS_MSGGSCAN|XFLAGS_MSGRSCAN);
       if(isnet())
@@ -212,7 +212,7 @@ void XbbsArea::save_message(int __mode, gmsg* __msg, XbbsHdr& __hdr) {
 
     // Write the message text
     uint _size = strlen(__msg->txt) + 1;
-    if((__mode & GMSG_NEW) OR (_size > __hdr.length))
+    if((__mode & GMSG_NEW) or (_size > __hdr.length))
       __hdr.start = filelength(data->fhtext);
     lseekset(data->fhtext, __hdr.start);
     lock_file(data->fhtext, __hdr.start, 640L*1024L);
@@ -263,14 +263,14 @@ void XbbsArea::save_message(int __mode, gmsg* __msg, XbbsHdr& __hdr) {
     unlock_file(data->fhindex, position, sizeof(XbbsIdx));
   }
 
-  if(NOT(__mode & GMSG_DELETE)) {
+  if(not (__mode & GMSG_DELETE)) {
     // Add/update personal mail record
     int _addpm = true;
     // Remove it if the msg is being received
-    if((__mode & GMSG_UPDATE) AND __msg->attr.rcv())
+    if((__mode & GMSG_UPDATE) and __msg->attr.rcv())
       _addpm = false;
     // Don't touch it if the msg was already received
-    if(NOT (_addpm AND __msg->attr.rcv())) {
+    if(not (_addpm and __msg->attr.rcv())) {
       // Only do it if the person is on this BBS
       if(wide->user->find(__msg->to))
         update_personal_mail(__msg, __hdr, _addpm);
@@ -378,7 +378,7 @@ void XbbsArea::update_personal_mail(gmsg* __msg, XbbsHdr& __hdr, int __addpm) {
   if(_pmirecs) {
     lseekset(fh, 0);
     ::write(fh, _pmilist, sizeof(XbbsPmi)*_pmirecs);
-    if(_pmiptr AND !__addpm)
+    if(_pmiptr and not __addpm)
       chsize(fh, sizeof(XbbsPmi)*_pmirecs);
     ::close(fh);
   }

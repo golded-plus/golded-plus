@@ -81,7 +81,7 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::init() {
   scn = NULL;
 
   // Open complete msgbase, create if none exists
-  if(NOT fexist(AddPath(path, __HUDSON ? "msghdr" HUDS_EXT : "msghdr" GOLD_EXT))) {
+  if(not fexist(AddPath(path, __HUDSON ? "msghdr" HUDS_EXT : "msghdr" GOLD_EXT))) {
     WideLog->printf("* Creating new msgbase at %s", path);
     raw_open(O_CREAT);
     if(filelength(fhinf) == 0) {
@@ -108,7 +108,7 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::init() {
   long _hdrsize = filelength(fhhdr)/(long)sizeof(HudsHdr);
   long _idxsize = filelength(fhidx)/(long)sizeof(HudsIdx);
   long _toisize = filelength(fhtoi)/(long)sizeof(HudsToIdx);
-  if((_hdrsize != _idxsize) OR (_hdrsize != _toisize)) {
+  if((_hdrsize != _idxsize) or (_hdrsize != _toisize)) {
     raw_close();
     HGWarnRebuild();
     WideLog->ErrIndex();
@@ -137,7 +137,7 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::init() {
       ra2usersbbs = 2;
 
     // If it matches both of them
-    if(hudsmatch AND ra2match) {
+    if(hudsmatch and ra2match) {
 
       // Check version in CONFIG.RA to make sure
       Path rapath, file;
@@ -158,7 +158,7 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::init() {
     }
 
     // If it does not match either of them
-    if(NOT hudsmatch AND NOT ra2match) {
+    if(not hudsmatch and not ra2match) {
       WideLog->ErrIndex();
       WideLog->printf("! The users.bbs file has an incorrect size.");
       WideLog->printf(": %susers.bbs, %lu bytes.", path, len);
@@ -200,7 +200,7 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::init() {
   if(userno == -1) {
     user->fh = fhusr;
     user->find(_username);
-    if(NOT user->found) {
+    if(not user->found) {
       WideLog->printf("* User \"%s\" not found in %susers%s.", _username, path, __HUDSON ? HUDS_EXT : GOLD_EXT);
       user->add(_username);
       WideLog->printf("* Now added with user number %u.", user->index);

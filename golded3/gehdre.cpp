@@ -429,7 +429,7 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view) {
 
   vcurshow();
   if(not (hedit.lookup or AA->isnet())) {
-    char date2[25] = {""};
+    char date2[25] = "";
     strsetsz(date2, view.width - CFG->disphdrdateset.pos);
     view.window.prints(3, CFG->disphdrdateset.pos, view.to_color, date2);
   }

@@ -551,7 +551,6 @@ struct MLst {
   time_t arrived;
   time_t received;
   char  goldmark;
-  bool  initialized;
 };
 
 

@@ -169,7 +169,7 @@ void XbbsInit(const char* path, int userno) {
     xbbswide->user->fh = ::sopen(AddPath(xbbswide->path, "Users"), O_RDONLY|O_BINARY, WideSharemode);
     if(xbbswide->user->fh != -1) {
       xbbswide->user->find(_username);
-      if(NOT xbbswide->user->found) {
+      if(not xbbswide->user->found) {
         xbbswide->userno = 0;
         //WideLog->printf("* User \"%s\" not found in %sUsers.", _username, xbbswide->path);
         //xbbswide->user->add(_username);

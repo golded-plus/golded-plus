@@ -117,9 +117,9 @@ int FidoArea::load_message(int __mode, gmsg* __msg, FidoHdr& __hdr) {
   __msg->attr.lok(not (st.st_mode & S_IWUSR));
 
   // Set the unsent attribute
-  if(isnet() OR (isecho() AND NOT wide->fidohwmarks))
-    __msg->attr.uns((__hdr.attr & FIDO_LOCAL) AND NOT (__hdr.attr & FIDO_SENT));
-  else if(isecho() AND wide->fidohwmarks) {
+  if(isnet() or (isecho() and not wide->fidohwmarks))
+    __msg->attr.uns((__hdr.attr & FIDO_LOCAL) and not (__hdr.attr & FIDO_SENT));
+  else if(isecho() and wide->fidohwmarks) {
     __msg->attr.uns(data->highwatermark <  __msg->msgno);
     __msg->attr.snt(data->highwatermark >= __msg->msgno);
   }

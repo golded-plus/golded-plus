@@ -164,7 +164,7 @@ int EzycomArea::raw_open() {
     int _sopen_access = data->omode | O_BINARY;
     int _sopen_permit = 0;
 
-    if(NOT fexist(ret_mess_xxx(data->ezyfile,1))) {
+    if(not fexist(ret_mess_xxx(data->ezyfile,1))) {
       _sopen_access |= O_CREAT;
       _sopen_permit = S_STDRW;
     }
@@ -193,7 +193,7 @@ int EzycomArea::raw_open() {
       break;
     }
     Path _path;
-    if(NOT is_dir(ret_mess_area(_path))) {
+    if(not is_dir(ret_mess_area(_path))) {
       mkdir(ret_mess_area(_path), S_IWUSR);
       _tryagain++;
     }
@@ -218,10 +218,10 @@ void EzycomArea::test_raw_open(int __fileline) {
 
     _isopen = raw_open();
 
-    if(NOT _isopen) {
+    if(not _isopen) {
 
       // Tell the world
-      if((errno != EACCES) OR PopupLocked(++_tries, false, data->ezyfile) == false) {
+      if((errno != EACCES) or PopupLocked(++_tries, false, data->ezyfile) == false) {
 
         // User requested to exit
         WideLog->erropen(__FILE__, __fileline);
@@ -231,7 +231,7 @@ void EzycomArea::test_raw_open(int __fileline) {
         OpenErrorExit();
       }
     }
-  } while(NOT _isopen);
+  } while(not _isopen);
 
   // Remove the popup window
   if(_tries)
@@ -266,7 +266,7 @@ void EzycomInit(const char* msgbasepath, const char* userbasepath, int userno) {
   Path _path;
   *_path = NUL;
   char* _ptr = getenv("EZY");
-  if(_ptr AND *_ptr) {
+  if(_ptr and *_ptr) {
     _ptr = strcpy(_path, _ptr);
     char* _ptr2 = strchr(_ptr, ' ');
     if(_ptr2)
@@ -275,12 +275,12 @@ void EzycomInit(const char* msgbasepath, const char* userbasepath, int userno) {
   }
   const char* _file = "";
   _ptr = getenv("TASK");
-  if(_ptr AND *_ptr) {
+  if(_ptr and *_ptr) {
     char _tmp[20];
     sprintf(_tmp, "CONFIG.%u", atoi(_ptr));
     _file = AddPath(_path, _tmp);
   }
-  if(NOT fexist(_file))
+  if(not fexist(_file))
     _file = AddPath(_path, "CONFIG.EZY");
 
   ezycomwide->ver = 102;
@@ -308,7 +308,7 @@ void EzycomInit(const char* msgbasepath, const char* userbasepath, int userno) {
       ezycomwide->user->extfh = ::sopen(AddPath(ezycomwide->userbasepath, "USERSEXT.BBS"), O_RDWR|O_CREAT|O_BINARY, WideSharemode, S_STDRW);
       if(ezycomwide->user->extfh != -1) {
         ezycomwide->user->find(_username);
-        if(NOT ezycomwide->user->found) {
+        if(not ezycomwide->user->found) {
           WideLog->printf("* User \"%s\" not found in %sUSERS.BBS.", _username, ezycomwide->userbasepath);
           ezycomwide->user->add(_username);
           WideLog->printf("* Now added with user number %u.", ezycomwide->user->index);
@@ -424,7 +424,7 @@ void EzycomArea::suspend() {
 void EzycomArea::resume() {
 
   GFTRK("EzycomResume");
-  if(NOT raw_open()) {
+  if(not raw_open()) {
     Path _path;
     WideLog->ErrOpen();
     WideLog->printf("! A Ezycom msgbase file could not be opened.");

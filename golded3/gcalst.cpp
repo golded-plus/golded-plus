@@ -34,7 +34,7 @@
 #ifndef GMB_NOEZY
 #include <gmoezyc.h>
 #endif
-#if not defined(GMB_NOHUDS) and not defined(GMB_NOGOLD)
+#if !defined(GMB_NOHUDS) && !defined(GMB_NOGOLD)
 #include <gmohuds.h>
 #endif
 #ifndef GMB_NOJAM

@@ -41,7 +41,7 @@ void WCatArea::lock() {
 
   GFTRK("WCatLock");
 
-  if(NOT data->islocked) {
+  if(not data->islocked) {
     if(WideCanLock) {
       long _tries = 0;
       while(::lock(data->fhix, 0, 1) == -1) {
@@ -70,7 +70,7 @@ void WCatArea::lock() {
 void WCatArea::unlock() {
 
   GFTRK("WCatUnlock");
-  if(WideCanLock AND data->islocked)
+  if(WideCanLock and data->islocked)
     ::unlock(data->fhix, 0, 1);
   data->islocked = false;
 
@@ -83,7 +83,7 @@ void WCatArea::unlock() {
 void WCatArea::save_message(int __mode, gmsg* __msg, WCatHdr& __hdr) {
 
   int _was_locked = data->islocked;
-  if(NOT _was_locked)
+  if(not _was_locked)
     lock();
 
   memset(&__hdr, 0, sizeof(WCatHdr));
@@ -114,21 +114,19 @@ void WCatArea::save_message(int __mode, gmsg* __msg, WCatHdr& __hdr) {
 
   strc2p(strxcpy(__hdr.subject, __msg->re, sizeof(__hdr.subject)));
   
-  if(!*__msg->wildcat.network AND (isnet() OR isecho()))
+  if(not *__msg->wildcat.network and (isnet() or isecho()))
     strcpy(__msg->wildcat.network, "FTSC");
   strc2p(strcpy(__hdr.network, __msg->wildcat.network));
 
   if(__msg->written) {
     struct tm* _tm = gmtime(&__msg->written);
-    int _year = _tm->tm_year % 100;
-    __hdr.msgdate = (word)(YMD2JDN(1900+_year, _tm->tm_mon+1, _tm->tm_mday)-1);
+    __hdr.msgdate = (word)(YMD2JDN(1900+_tm->tm_year, _tm->tm_mon+1, _tm->tm_mday)-1);
     __hdr.msgtime = (((long)_tm->tm_hour*3600L)+((long)_tm->tm_min*60L)+_tm->tm_sec)+1;
   }
 
   if(__msg->received) {
     struct tm* _tm = gmtime(&__msg->received);
-    int _year = _tm->tm_year % 100;
-    __hdr.readdate = (word)YMD2JDN(1900+_year, _tm->tm_mon+1, _tm->tm_mday);
+    __hdr.readdate = (word)YMD2JDN(1900+_tm->tm_year, _tm->tm_mon+1, _tm->tm_mday);
     __hdr.readtime = (((long)_tm->tm_hour*3600L)+((long)_tm->tm_min*60L)+_tm->tm_sec)+1;
   }
 
@@ -198,7 +196,7 @@ void WCatArea::save_message(int __mode, gmsg* __msg, WCatHdr& __hdr) {
       n++;
     }
 
-    if((__mode & GMSG_NEW) OR (_size > __hdr.msgbytes)) {
+    if((__mode & GMSG_NEW) or (_size > __hdr.msgbytes)) {
       if(_size > __hdr.msgbytes) {
         ulong _magic = MagicHeaderInactive;
         lseekset(data->fhdat, data->idx[_reln].offset);
@@ -220,7 +218,7 @@ void WCatArea::save_message(int __mode, gmsg* __msg, WCatHdr& __hdr) {
     throw_free(_txt);
   }
   
-  if(NOT _was_locked)
+  if(not _was_locked)
     unlock();
 
   GFTRK(NULL);

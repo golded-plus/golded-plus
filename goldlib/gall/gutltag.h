@@ -96,7 +96,7 @@ public:
   uint SetCount(uint n)  { tags = count = n; return count; }
 
   void  Set(uint n, ulong t)  { tag[n] = t; }
-  ulong Get(uint n)  { return (tags AND (n<tags)) ? tag[n] : TAGN_INVALID; }
+  ulong Get(uint n)  { return (tags and (n<tags)) ? tag[n] : TAGN_INVALID; }
 
   ulong& operator[](uint n)  { return tag[n]; }
   ulong& at(uint n)  { return tag[n]; }

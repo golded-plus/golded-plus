@@ -41,7 +41,7 @@ void PcbArea::lock() {
 
   GFTRK("PcbLock");
 
-  if(NOT data->islocked) {
+  if(not data->islocked) {
     if(WideCanLock) {
       long _tries = 0;
       while(::lock(data->fhmsg, 16, 6) == -1) {
@@ -78,7 +78,7 @@ void PcbArea::unlock() {
 
   GFTRK("PcbUnlock");
 
-  if(WideCanLock AND data->islocked)
+  if(WideCanLock and data->islocked)
     ::unlock(data->fhmsg, 16, 6);
   lseekset(data->fhmsg, 0);
   memset(data->base.locked, ' ', 6);
@@ -101,7 +101,7 @@ void PcbArea::save_message(int __mode, gmsg* __msg, PcbHdr& __hdr) {
 
   // Lock and refresh base
   int _was_locked = data->islocked;
-  if(NOT _was_locked)
+  if(not _was_locked)
     lock();
 
   // Reset header
@@ -145,7 +145,7 @@ void PcbArea::save_message(int __mode, gmsg* __msg, PcbHdr& __hdr) {
     }
   }
   else {
-    if(_status AND NOT _pvt)
+    if(_status and not _pvt)
       __hdr.status = _status;
     else if(_pvt)
       __hdr.status = '*';
@@ -154,19 +154,18 @@ void PcbArea::save_message(int __mode, gmsg* __msg, PcbHdr& __hdr) {
   }
   _idx.status = __hdr.status;
   __hdr.activestatus = (__mode & GMSG_DELETE) ? '\xE2' : '\xE1';
-  __hdr.echoed = ((isnet() OR isecho()) AND NOT isinternet()) ? 'E' : ' ';
+  __hdr.echoed = ((isnet() or isecho()) and not isinternet()) ? 'E' : ' ';
 
   // Convert dates and times
   char _dtbuf[9];
   struct tm* _tm = gmtime(&__msg->written);
   memcpy(__hdr.date, strftimei(_dtbuf, 9, __msg->attr.uns() ? "%d-%m-%y" : "%d-%m\xC4%y", _tm), 8);
   memcpy(__hdr.time, strftimei(_dtbuf, 6, "%H:%M", _tm), 5);
-  int _year = _tm->tm_year % 100;
-  _idx.date = (word)YMD2JDN(1900+_year, _tm->tm_mon+1, _tm->tm_mday);
+  _idx.date = (word)YMD2JDN(1900+_tm->tm_year, _tm->tm_mon+1, _tm->tm_mday);
   if(__msg->link.first()) {
     __hdr.hasreply = 'R';
     _tm = gmtime(&__msg->pcboard.reply_written);
-    _year = _tm->tm_year % 100;
+    int _year = _tm->tm_year % 100;
     __hdr.replydate = L2B((10000L*_year) + (100L*(_tm->tm_mon+1)) + _tm->tm_mday);
     memcpy(__hdr.replytime, strftimei(_dtbuf, 6, "%H:%M", _tm), 5);
   }
@@ -216,11 +215,11 @@ void PcbArea::save_message(int __mode, gmsg* __msg, PcbHdr& __hdr) {
   uint _txtlen = 0;
   if(__mode & GMSG_TXT) {
     __msg->txtlength = _txtlen = strlen(__msg->txt);
-    if((_tolen > 25) OR isnet()) {
+    if((_tolen > 25) or isnet()) {
       __msg->txtlength += sizeof(PcbExtHdr);
       __hdr.exthdrflags |= 0x01;
     }
-    if((_bylen > 25) OR isnet()) {
+    if((_bylen > 25) or isnet()) {
       __msg->txtlength += sizeof(PcbExtHdr);
       __hdr.exthdrflags |= 0x02;
     }
@@ -230,7 +229,7 @@ void PcbArea::save_message(int __mode, gmsg* __msg, PcbHdr& __hdr) {
     }
 
     // Translate msg text to PCB linefeeds if running non-foreign system
-    if(NOT wide->foreign)
+    if(not wide->foreign)
       strchg(__msg->txt, 0x0D, 0xE3);
 
     // Calculate new number of blocks
@@ -256,7 +255,7 @@ void PcbArea::save_message(int __mode, gmsg* __msg, PcbHdr& __hdr) {
     uint _txtlenwritten = 0;
 
     // Write extended headers
-    if((_tolen > 25) OR isnet()) {
+    if((_tolen > 25) or isnet()) {
       PcbExtHdr _ehdr;
       _ehdr.id = 0x40FF;
       _ehdr.colon = ':';
@@ -275,7 +274,7 @@ void PcbArea::save_message(int __mode, gmsg* __msg, PcbHdr& __hdr) {
         _txtlenwritten += sizeof(PcbExtHdr);
       }
     }
-    if((_bylen > 25) OR isnet()) {
+    if((_bylen > 25) or isnet()) {
       PcbExtHdr _ehdr;
       _ehdr.id = 0x40FF;
       _ehdr.colon = ':';
@@ -326,7 +325,7 @@ void PcbArea::save_message(int __mode, gmsg* __msg, PcbHdr& __hdr) {
       int _imm = __msg->attr.imm();
       int _cra = __msg->attr.cra();
       int _zon = __msg->attr.zon();
-      if(_hld OR _imm OR _cra OR _zon) {
+      if(_hld or _imm or _cra or _zon) {
         strcpy(_sbuf, "(" /*)*/);
         if(_hld)
           strcat(_sbuf, "HOLD,");
@@ -357,22 +356,22 @@ void PcbArea::save_message(int __mode, gmsg* __msg, PcbHdr& __hdr) {
     }
 
     // Translate back
-    if(NOT wide->foreign)
+    if(not wide->foreign)
       strchg(__msg->txt, 0xE3, 0x0D);
   }
 
-  if(NOT(__mode & GMSG_DELETE)) {
+  if(not (__mode & GMSG_DELETE)) {
     // Set the mail waiting flag
     int _status = true;
     // Reset it if the msg is being received
-    if((__mode & GMSG_UPDATE) AND __msg->attr.rcv())
+    if((__mode & GMSG_UPDATE) and __msg->attr.rcv())
       _status = false;
     // Don't touch the flag if the msg was already received
-    if(NOT (_status AND __msg->attr.rcv()))
+    if(not (_status and __msg->attr.rcv()))
       pcbwide->user->update_mail_waiting(__msg->to, board(), _status);
   }
 
-  if((__mode & GMSG_TXT) AND (__mode & GMSG_UPDATE)) {
+  if((__mode & GMSG_TXT) and (__mode & GMSG_UPDATE)) {
     __msg->msgno = oldmsgno;
     __msg->txtstart = oldtxtstart;
     __msg->txtlength = oldtxtlength;
@@ -380,7 +379,7 @@ void PcbArea::save_message(int __mode, gmsg* __msg, PcbHdr& __hdr) {
   }
 
   // Unlock and update base
-  if(NOT _was_locked)
+  if(not _was_locked)
     unlock();
 
   GFTRK(NULL);

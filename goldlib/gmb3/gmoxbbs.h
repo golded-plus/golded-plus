@@ -253,7 +253,7 @@ extern int       xbbsdatano;
 
 //  ------------------------------------------------------------------
 
-#if not defined(__OS2__)
+#if !defined(__OS2__)
 inline void XbbsArea::open() { }
 inline void XbbsArea::save_lastread() { }
 inline void XbbsArea::close() { }

@@ -80,10 +80,10 @@ int FidoArea::test_open(const char* __file, int __openmode, int __sharemode, int
     _fh = ::sopen(__file, __openmode, __sharemode, S_STDRW);
     if(_fh == -1) {
 
-      if((errno != EACCES) OR (PopupLocked(++_tries, false, __file) == false)) {
+      if((errno != EACCES) or (PopupLocked(++_tries, false, __file) == false)) {
 
         // Return instead of halting if requested
-        if(errno != EACCES AND NOT __fail) {
+        if((errno != EACCES) and not __fail) {
           GFTRK(NULL);
           return _fh;
         }
@@ -142,7 +142,7 @@ void FidoInit(const char* fidolastread, int fidohwmarks, int fidonullfix, int fi
     fidowide->user->fh = ::sopen(userfile, O_RDWR|O_CREAT|O_BINARY, WideSharemode, S_STDRW);
     if(fidowide->user->fh != -1) {
       fidowide->user->find(_username);
-      if(NOT fidowide->user->found) {
+      if(not fidowide->user->found) {
         WideLog->printf("* User \"%s\" not found in %s.", _username, userfile);
         fidowide->user->add(_username);
         WideLog->printf("* Now added with user number %u.", fidowide->user->index);

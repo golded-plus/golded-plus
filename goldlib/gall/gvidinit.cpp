@@ -32,7 +32,7 @@
 #include <gmemall.h>
 #include <gmemdbg.h>
 #include <gstrall.h>
-#if defined(__WATCOMC__) or defined(__DJGPP__)
+#if defined(__WATCOMC__) || defined(__DJGPP__)
 #include <conio.h>
 #endif
 #include <gvidall.h>
@@ -46,7 +46,7 @@
 #include <windows.h>
 #endif
 
-#if not defined(__USE_NCURSES__) and defined(__UNIX__)
+#if !defined(__USE_NCURSES__) && defined(__UNIX__)
 #include <sys/ioctl.h>
 #include <termios.h>
 #include <unistd.h>
@@ -62,7 +62,7 @@
 //  ------------------------------------------------------------------
 //  Check if Borland C++ for OS/2 1.0 header has been fixed
 
-#if defined(__OS2__) and defined(__BORLANDC__)
+#if defined(__OS2__) && defined(__BORLANDC__)
   #if __BORLANDC__ <= 0x400
     #ifndef BCOS2_BSESUB_FIXED
     #error There is a bug in the BSESUB.H header. Please fix it.
@@ -189,11 +189,11 @@ void GVid::init() {
 
   #if defined(__USE_NCURSES__)
   dmaptr = dmadir = NULL;
-  #elif defined(__WATCOMC__) and defined(__386__)
+  #elif defined(__WATCOMC__) && defined(__386__)
   dmaptr = dmadir = (gdma)(videoseg << 4);
   #elif defined(__DJGPP__)
   dmaptr = dmadir = ScreenPrimary;
-  #elif defined(__OS2__) or defined(__WIN32__)
+  #elif defined(__OS2__) || defined(__WIN32__)
   dmaptr = dmadir = NULL;
   #elif defined(__UNIX__)
   dmaptr = (gdma)throw_xcalloc((orig.screen.rows+1)*orig.screen.columns, sizeof(word));
@@ -319,7 +319,7 @@ int GVid::detectadapter() {
   #ifndef __DJGPP__
 
   // Set video segment
-  #if defined(__BORLANDC__) and defined(__DPMI32__)
+  #if defined(__BORLANDC__) && defined(__DPMI32__)
   videoseg = (word)((adapter & V_MONO) ? __SegB000 : __SegB800);
   #else
   videoseg = (word)((adapter & V_MONO) ? 0xB000 : 0xB800);
@@ -340,7 +340,7 @@ int GVid::detectadapter() {
 
     __gdvdetected = true;
 
-    #if defined(__WATCOMC__) and defined(__386__)
+    #if defined(__WATCOMC__) && defined(__386__)
       memset(&RMI, 0, sizeof(RMI));
       RMI.EAX = 0x0000FE00;
       RMI.ES = videoseg;
@@ -396,7 +396,6 @@ int GVid::detectadapter() {
                      FILE_SHARE_WRITE | FILE_SHARE_READ, NULL,
                      OPEN_EXISTING,
                      FILE_FLAG_NO_BUFFERING|FILE_FLAG_WRITE_THROUGH, NULL);
-  // gvid_hout = GetStdHandle(STD_OUTPUT_HANDLE);
 
   adapter = V_VGA;
 
@@ -762,7 +761,7 @@ void GVid::setrows(int _rows) {
   }
 
   if(adapter >= V_EGA) {
-    if(_rows == 28 and adapter >= V_VGA) {  // vga-only
+    if((_rows == 28) and (adapter >= V_VGA)) {  // vga-only
       cpu.ax(0x1202);
       cpu.bl(0x30);
       cpu.genint(0x10);
@@ -811,7 +810,7 @@ void GVid::setrows(int _rows) {
   viomodeinfo.row = (USHORT)_rows;
   VioSetMode(&viomodeinfo, 0);
 
-  #elif defined(__WIN32__) or defined(__UNIX__)
+  #elif defined(__WIN32__) || defined(__UNIX__)
 
   NW(_rows);
 
@@ -852,7 +851,7 @@ void GVid::setoverscan(int _overscan) {
   viooverscan.color = (BYTE)_overscan;
   VioSetState(&viooverscan, 0);
 
-  #elif defined(__WIN32__) or defined(__UNIX__)
+  #elif defined(__WIN32__) || defined(__UNIX__)
 
   NW(_overscan);
 
@@ -910,7 +909,7 @@ void GVid::setintensity(int _intensity) {
   viointensity.type = 0x0002;
   VioSetState(&viointensity, 0);
 
-  #elif defined(__WIN32__) or defined(__UNIX__)
+  #elif defined(__WIN32__) || defined(__UNIX__)
 
   NW(_intensity);
 
@@ -959,7 +958,7 @@ void GVid::getpalette(int* _palette) {
   for(byte n=0; n<16; n++)
     _palette[n] = pviopalstate->acolor[n];
 
-  #elif defined(__WIN32__) or defined(__UNIX__)
+  #elif defined(__WIN32__) || defined(__UNIX__)
 
   NW(_palette);
 
@@ -1004,7 +1003,7 @@ void GVid::setpalette(int* _palette) {
       pviopalstate->acolor[n] = (USHORT)_palette[n];
   VioSetState(pviopalstate, 0);
 
-  #elif defined(__WIN32__) or defined(__UNIX__)
+  #elif defined(__WIN32__) || defined(__UNIX__)
 
   NW(_palette);
 
@@ -1033,7 +1032,7 @@ void GVid::resize_screen(int columns, int rows) {
   bufwrd = (vatch*)throw_xrealloc(bufwrd, (numcols+1)*sizeof(vatch));
   bufansi = (vchar*)throw_xrealloc(bufansi, 1+(11*numcols));
 
-  #if defined(__UNIX__) and not defined(__USE_NCURSES__)
+  #if defined(__UNIX__) && !defined(__USE_NCURSES__)
   dmaptr = (gdma)throw_xrealloc(dmaptr, (rows+1)*columns*sizeof(word));
   #endif
 }

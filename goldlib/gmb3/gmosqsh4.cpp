@@ -42,7 +42,7 @@ void SquishArea::lock() {
 
   GFTRK("SquishLock");
 
-  if(NOT data->islocked) {
+  if(not data->islocked) {
     if(WideCanLock) {
       long _tries = 0;
       while(::lock(data->fhsqd, 0, 1) == -1) {
@@ -72,7 +72,7 @@ void SquishArea::unlock() {
 
   GFTRK("SquishUnlock");
 
-  if(WideCanLock AND data->islocked)
+  if(WideCanLock and data->islocked)
     ::unlock(data->fhsqd, 0, 1);
   lseekset(data->fhsqd, 0);
   write(data->fhsqd, &data->base, sizeof(SqshBase));
@@ -164,7 +164,7 @@ void SquishArea::delete_msg(uint __reln) {
   GFTRK("SquishDeleteMsg");
 
   int _was_locked = data->islocked;
-  if(NOT _was_locked)
+  if(not _was_locked)
     lock();
 
   // Setup some local variables for speed
@@ -203,7 +203,7 @@ void SquishArea::delete_msg(uint __reln) {
   if(lastread)
     lastread--;
   
-  if(NOT _was_locked)
+  if(not _was_locked)
     unlock();
 
   GFTRK(NULL);
@@ -342,10 +342,10 @@ uint SquishArea::find_msgn(ulong __tagn) {
     register SqshIdx* tag = data->idx;
     register uint tags = (uint)data->base.totalmsgs;
 
-    if(__tagn AND tags AND (__tagn > tag[tags-1].msgno))
+    if(__tagn and tags and (__tagn > tag[tags-1].msgno))
       return 0;
 
-    if(tags AND __tagn) {
+    if(tags and __tagn) {
 
       register long _mid;
       register long _left = 0;
@@ -462,7 +462,7 @@ void SquishArea::save_message(int __mode, gmsg* __msg) {
       SqshFrm _oldfrm, _newfrm;
       dword _newframe = SQFRAME_NULL;
       dword _oldframe = _idx ? _idx[_reln].offset : _base.endframe;
-      if(NOT(__mode & GMSG_NEW)) {
+      if(not (__mode & GMSG_NEW)) {
 
         // Get the original frame and see if there is still room for the msg
         read_frm(_oldframe, &_oldfrm);
@@ -477,7 +477,7 @@ void SquishArea::save_message(int __mode, gmsg* __msg) {
 
         // If there is a max msgs limit and are we writing a new
         // msg, delete msgs to (hopefully) make room for this msg
-        if(_base.maxmsgs AND (__mode & GMSG_NEW))
+        if(_base.maxmsgs and (__mode & GMSG_NEW))
           while(_base.maxmsgs <= _base.totalmsgs)
             delete_msg((uint)_base.protmsgs);
 

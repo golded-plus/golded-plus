@@ -206,7 +206,7 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::lock() {
 
   GFTRK("HudsLock");
 
-  if(NOT islocked AND WideCanLock) {
+  if(not islocked and WideCanLock) {
 
     long _tries = 0;
 
@@ -251,7 +251,7 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::unlock() {
 
   GFTRK("HudsUnlock");
 
-  if(islocked AND WideCanLock) {
+  if(islocked and WideCanLock) {
     ::unlock(fhinf, sizeof(HudsInfo)+1, 1);
     islocked = false;
   }
@@ -317,7 +317,7 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::scan() {
     if(_msgidx_ptr->msgno != (__HUDSON ? HUDS_DELETEDMSGNO : GOLD_DELETEDMSGNO)) {
 
       register int _idxboard = _msgidx_ptr->board;
-      if(_idxboard AND (_idxboard <= (__HUDSON ? HUDS_MAXBOARD : GOLD_MAXBOARD))) {
+      if(_idxboard and (_idxboard <= (__HUDSON ? HUDS_MAXBOARD : GOLD_MAXBOARD))) {
 
         _scan = scn + (_idxboard - 1);
 
@@ -326,11 +326,11 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::scan() {
         _scan->count++;
 
         // Set first message number
-        if(NOT _scan->firstmsgno)
+        if(not _scan->firstmsgno)
           _scan->firstmsgno = _scan->lastmsgno;
 
         // Set lastread pointer
-        if((_scan->lastmsgno >= _scan->lastread) AND (_scan->lastreadreln == 0)) {
+        if((_scan->lastmsgno >= _scan->lastread) and (_scan->lastreadreln == 0)) {
           _scan->lastreadfound = _scan->lastmsgno;
           _scan->lastreadreln = _scan->count - (_scan->lastmsgno != _scan->lastread ? 1 : 0);
         }
@@ -358,7 +358,7 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::scan() {
   while(_board < (__HUDSON ? HUDS_MAXBOARD : GOLD_MAXBOARD)) {
 
     // Check/fix lastreads
-    if(_scan->count AND (_scan->lastreadfound != _scan->lastread)) {
+    if(_scan->count and (_scan->lastreadfound != _scan->lastread)) {
       if(_scan->lastread > _scan->lastmsgno)
         _scan->lastreadreln = _scan->count;
       else if(_scan->lastread < _scan->firstmsgno)
@@ -403,7 +403,7 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::raw_scan(int _
   if(!wide)
     wide = (HudsWide*) (__HUDSON ? (void *)hudsonwide : (void *)goldbasewide);
 
-  if(wide->iswideopen AND NOT wide->iswidescanned)
+  if(wide->iswideopen and not wide->iswidescanned)
     wide->scan();
 
   // Get wide scan data if any
@@ -419,7 +419,7 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::raw_scan(int _
 
     // Open the msgbase if it wasn't already
     int _was_open = wide->isopen;
-    if(NOT _was_open)
+    if(not _was_open)
       wide->open();
 
     // Get the number of active msgs in the area
@@ -448,14 +448,14 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::raw_scan(int _
     while(_msgidx_count < _msgidx_total) {
 
       // Is it our board and is the msg not deleted?
-      if((_msgidx_ptr->board == _board) AND (_msgidx_ptr->msgno != (__HUDSON ? HUDS_DELETEDMSGNO : GOLD_DELETEDMSGNO))) {
+      if((_msgidx_ptr->board == _board) and (_msgidx_ptr->msgno != (__HUDSON ? HUDS_DELETEDMSGNO : GOLD_DELETEDMSGNO))) {
 
         // Get message number
         _lastmsgno = _msgidx_ptr->msgno;
         _msg_count++;
 
         // Set first message number
-        if(NOT _firstmsgno)
+        if(not _firstmsgno)
           _firstmsgno = _lastmsgno;
 
         // Transfer data to the index
@@ -463,7 +463,7 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::raw_scan(int _
           *_msgno_ptr++ = _lastmsgno;
 
         // Set lastread pointer
-        if((_lastmsgno >= _lastread) AND (_lastread_reln == 0)) {
+        if((_lastmsgno >= _lastread) and (_lastread_reln == 0)) {
           _lastreadfound = _lastmsgno;
           _lastread_reln = _msg_count - (_lastmsgno != _lastread ? 1 : 0);
         }
@@ -479,7 +479,7 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::raw_scan(int _
     }
 
     // If the exact lastread was not found
-    if(_msg_count AND (_lastreadfound != _lastread)) {
+    if(_msg_count and (_lastreadfound != _lastread)) {
 
       // Higher than highest or lower than lowest?
       if(_lastread > _lastmsgno)
@@ -514,7 +514,7 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::raw_scan(int _
     }
 
     // Close the msgbase again if we opened it in here
-    if(NOT _was_open)
+    if(not _was_open)
       wide->close();
   }
 
@@ -572,7 +572,7 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::scan_pm() {
     
   GFTRK("HudsWideScanPM");
 
-  if(NOT iswidescanned)
+  if(not iswidescanned)
     scan();
 
   ispmscanned = true;
@@ -602,7 +602,7 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::scan_pm() {
 
       // Skip msgs in invalid boards
       idxboard = idxptr->board;
-      if(NOT(idxboard AND (idxboard <= (__HUDSON ? HUDS_MAXBOARD : GOLD_MAXBOARD)))) {
+      if(not (idxboard and (idxboard <= (__HUDSON ? HUDS_MAXBOARD : GOLD_MAXBOARD)))) {
         invalidboards++;
         continue;
       }
@@ -669,7 +669,7 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::scan_area_pm()
   if(!wide)
     wide = (HudsWide*) (__HUDSON ? (void *)hudsonwide : (void *)goldbasewide);
 
-  if(wide->iswideopen AND NOT wide->ispmscanned)
+  if(wide->iswideopen and not wide->ispmscanned)
     wide->scan_pm();
 
   // Get wide scan data if any

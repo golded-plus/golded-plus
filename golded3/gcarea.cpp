@@ -207,7 +207,7 @@ void AreaList::AddNewArea(AreaCfg* aa) {
     #endif
     #ifndef GMB_NOXBBS
     case MT_ADEPTXBBS:
-      #if not defined(__OS2__)
+      #if !defined(__OS2__)
       return;
       #else
       if(*aa->path == NUL)
@@ -224,7 +224,7 @@ void AreaList::AddNewArea(AreaCfg* aa) {
     #ifndef GMB_NOJAM
     case MT_JAM:
     #endif
-    #if not defined(GMB_NOJAM) or not defined(GMB_NOSQSH)
+    #if !defined(GMB_NOJAM) || !defined(GMB_NOSQSH)
       if(*aa->path == NUL)
         return;
       MapPath(aa->path);
