@@ -231,10 +231,10 @@ void DispHeader(GMsg* msg, bool prn, FILE* fp, int width) {
   strconv(buf);
   fwrite(buf, strlen(buf), 1, fp);
 
-  // write bottom line	    
+  // write bottom line
   strcpy(stpcpy(buf, headerline), prn ? NL : "\n");
   strconv(buf);
-  fwrite(buf, strlen(buf), 1, fp);	    
+  fwrite(buf, strlen(buf), 1, fp);    
 }
 
 

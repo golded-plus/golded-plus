@@ -71,7 +71,7 @@ public:
   int         charsetlevel;     // Charset level
   int         charsetencoding;  // Charset encoding format (GCHENC_*)
 
-  int         tzutc;  		// TZUTC kludge
+  int         tzutc;            // TZUTC kludge
 
   char        tagline[80];      // Tagline for msg
   char        tearline[80];     // Tearline for msg

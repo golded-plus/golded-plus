@@ -148,7 +148,7 @@ static void InitCmdline(char* val) {
         break;
       case 'Z':
         gftrk_set_max = atoi(val);
-	if(gftrk_set_max == 0) {
+        if(gftrk_set_max == 0) {
           std::cout << "Warning: Invalid parameter for -Z option, fixed." << std::endl;
           gftrk_set_max = 1;
         }

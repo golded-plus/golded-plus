@@ -181,8 +181,8 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
           continue;
         if(tokenxchg(dst, "@omessageid", oldmsg->messageid ? oldmsg->messageid : ""))
           continue;
-	if(tokenxchg(dst, "@omsgid", *msg->replys ? msg->replys : ""))
-	  continue;
+        if(tokenxchg(dst, "@omsgid", *msg->replys ? msg->replys : ""))
+          continue;
         if(tokenxchg(dst, "@dname", strbtrim(strtmp(oldmsg->To())), 34, 3,
             (int)msg->to_me(), (int)msg->to_you(), (int)oldmsg->to_all()))
           continue;

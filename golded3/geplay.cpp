@@ -213,7 +213,7 @@ int MakeNoise(int type) {
 
       case SND_SAYBIBI:
         Beep(440, 111);
-	NoSound();
+        NoSound();
         break;
 
       case SND_TOYOU:
@@ -221,13 +221,13 @@ int MakeNoise(int type) {
           Beep(n, 18);
         for(; n>100; n-=400)
           Beep(n, 18);
-	NoSound();
+        NoSound();
         break;
 
       case SND_THEEND:
         Beep(220, 111);
         Beep(110, 167);
-	NoSound();
+        NoSound();
         break;
 
       case SND_GOTIT:
@@ -235,14 +235,14 @@ int MakeNoise(int type) {
         Beep(220, 56);
         Beep(110, 56);
         Beep(220, 111);
-	NoSound();
+        NoSound();
         break;
 
       case SND_TOOBAD:
         Beep(440, 111);
         Beep(220, 111);
         Beep(110, 167);
-	NoSound();
+        NoSound();
         break;
 
       case SND_S_O_S:
@@ -263,7 +263,7 @@ int MakeNoise(int type) {
         Beep(1000, 56);
         Sleep(111);
         Beep(1000, 56);
-	NoSound();
+        NoSound();
         break;
     }
   }
