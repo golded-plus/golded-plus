@@ -355,7 +355,7 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
             }
           }
           else {
-             memmove(dst, ptr+1, strlen(ptr+1)+1);
+            memmove(dst, dst+6, strlen(dst+6)+1);
           }
           continue;
         }

@@ -470,7 +470,7 @@ void IEclass::GoEOL() {
 
   // Move cursor to the last char on the line
   col = currline->txt.length();
-  if(currline->txt[col-1] == '\n')
+  if((currline->txt[col-1] == '\n') or ((col == (maxcol + 1)) and (currline->txt[col-1] == ' ')))
     --col;
 
   // String must not be longer than the window width
@@ -565,7 +565,7 @@ void IEclass::GoLeft() {
     if(currline->prev) {
       GoUp();
       GoEOL();
-      if(currline->txt[col] != '\n')
+      if((currline->txt[col] == '\n') or not ((col == (maxcol + 1)) and (currline->txt[col-1] == ' ')))
         col--;
     }
   }
@@ -631,7 +631,7 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, boo
     uint _wrapmargin = (_thisline->type & GLINE_QUOT) ? marginquotes : margintext;
 
     // Does this line need wrapping?
-    if(_thislen >= _wrapmargin) {
+    if((_thislen > _wrapmargin) or ((_thislen == _wrapmargin) and not (_thisline->txt[_thislen-1] == ' '))) {
 
       // Reset quote string length
       _quotelen = 0;
