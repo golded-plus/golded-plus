@@ -450,14 +450,14 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view) {
         strcpy(msg->realto, msg->to);
       strcpy(msg->iorig, from_addr.c_str());
       strcpy(msg->idest, to_addr.c_str());
-      if(*msg->realby)
+      if(*msg->realby and *msg->iorig)
         sprintf(msg->ifrom, "\"%s\" <%s>", msg->realby, msg->iorig);
       else
-        sprintf(msg->ifrom, "%s", msg->iorig);
+        strcpy(msg->ifrom, msg->iorig);
       if(*msg->realto)
-        sprintf(msg->ito, "\"%s\" %s", msg->realto, msg->idest);
+        sprintf(msg->ito, "\"%s\" <%s>", msg->realto, msg->idest);
       else
-        sprintf(msg->ito, "%s", msg->idest);
+        strcpy(msg->ito, msg->idest);
       if(msg->orig.net == 0)
         msg->orig = msg->oorig = AA->Aka().addr;
       if(msg->dest.net == 0)

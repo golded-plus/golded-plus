@@ -422,24 +422,26 @@ void DoKludges(int mode, GMsg* msg, bool attronly) {
       char to_buf[256];
       *to_buf = NUL;
 
-      if(*msg->idest or strchr(msg->to, '@')) {
-        char* ptr = *msg->idest ? msg->idest : msg->to;
-        sprintf(to_buf, "%s%sTo: %s", rfc, AA->isnewsgroup() ? "X-" : "", ptr);
-        if(not strieql(ptr, msg->realto) and *msg->realto) {
-          mime_header_encode(buf, msg->realto, msg);
-          sprintf(buf2, " (%s)", buf);
-          strcat(to_buf, buf2);
-        }
-      }
-
-      if(*to_buf and AA->isemail()) {
+      if(AA->isemail() and (*msg->ito or strchr(msg->to, '@'))) {
+        char* ptr = *msg->ito ? msg->ito : msg->to;
+        mime_header_encode(buf, ptr, msg);
+        sprintf(to_buf, "%s%sTo: %s", rfc, AA->isnewsgroup() ? "X-" : "", buf);
         line = AddKludge(line, to_buf);
         line->kludge = GKLUD_RFC;
       }
 
-      if(*msg->iorig) {
+      if(*msg->ifrom) {
+        mime_header_encode(buf2, msg->ifrom, msg);
+        sprintf(buf, "%sFrom: %s", rfc, buf2);
+        line = AddKludge(line, buf);
+        line->kludge = GKLUD_RFC;
+      }
+      else if(*msg->iorig) {
         mime_header_encode(buf2, msg->By(), msg);
-        sprintf(buf, "%sFrom: \"%s\" <%s>", rfc, buf2, msg->iorig);
+        if(*buf2)
+          sprintf(buf, "%sFrom: \"%s\" <%s>", rfc, buf2, msg->iorig);
+        else
+          sprintf(buf, "%sFrom: %s", rfc, msg->iorig);
         line = AddKludge(line, buf);
         line->kludge = GKLUD_RFC;
       }
