@@ -908,8 +908,12 @@ bool guserbase::lookup_addressbook(GMsg* msg, char* name, char* aka, bool browse
 
 void guserbase::build_pseudo(GMsg* msg, char* name, char* aka, bool direction) {
 
-  if(*msg->iaddr and isuucp(name))
-    strcpy(direction ? msg->pseudoto : msg->pseudofrom, strlword(msg->iaddr, " @."));
+  if(*msg->iaddr and isuucp(name)) {
+    if(direction)
+      strcpy(msg->pseudoto, strlword(msg->iaddr, " @."));
+    else
+      strcpy(msg->pseudofrom, strlword(msg->iorig, " @."));
+  }
   else
     strcpy(direction ? msg->pseudoto : msg->pseudofrom, strlword(name, " @."));
 
@@ -965,9 +969,9 @@ void build_pseudo(GMsg* msg, bool direction) {
   char buf[128];
 
   if(direction)
-    p.build_pseudo(msg, strbtrim(msg->To()), msg->dest.make_string(buf));
+    p.build_pseudo(msg, strbtrim(msg->To()), AA->isinternet() ? msg->iaddr : msg->dest.make_string(buf));
   else
-    p.build_pseudo(msg, strbtrim(msg->By()), msg->orig.make_string(buf), false);
+    p.build_pseudo(msg, strbtrim(msg->By()), AA->isinternet() ? msg->iorig : msg->orig.make_string(buf), false);
 }                                  
 
 
