@@ -94,8 +94,8 @@ void gareafile::ReadSynchronet(char* tag) {
         aa.setechoid(sub.code);
         aa.setdesc(sub.lname);
         aa.groupid = 0x8000 + sub.grp;
-        if(*sub.echopath)
-          MakePathname(file, sub.echopath, sub.code);
+        if(*sub.data_dir)
+          MakePathname(file, sub.data_dir, sub.code);
         else
           MakePathname(file, path, sub.code);
         aa.setpath(file);

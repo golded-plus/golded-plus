@@ -34,7 +34,7 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#ifdef _POSIX_SOURCE
+#ifndef _MSC_VER
 #include <unistd.h>
 #else
 #include <cstdlib>

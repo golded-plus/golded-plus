@@ -255,6 +255,10 @@ bool inline samekey(gkey key1, gkey key2) {
 
   if(key1 >= KK_Commands) // special key
     return false;
+  if(key1 == key2)
+    return true;
+  if((key1 > 0xFF) || (key2 > 0xFF))
+    return false;
   return (tolower(key1) == key2) or (tolower(key2) == key1);
 }
 
@@ -265,7 +269,7 @@ int IsMacro(gkey key, int type) {
 
   std::vector<Macro>::iterator m = CFG->macro.begin();
   while(m != CFG->macro.end()) {
-    if(((key == m->key) or samekey(key, m->key)) and (type == m->type))
+    if(samekey(key, m->key) and (type == m->type))
       return true;
     m++;
   }
@@ -280,7 +284,7 @@ int PlayMacro(gkey key, int type) {
 
   std::vector<Macro>::iterator m = CFG->macro.begin();
   while(m != CFG->macro.end()) {
-    if(((key == m->key) or samekey(key, m->key)) and (type == m->type)) {
+    if(samekey(key, m->key) and (type == m->type)) {
       RunMacro(&(*m));
       return true;
     }

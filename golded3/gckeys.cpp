@@ -922,7 +922,7 @@ static void SetKeybDefaults() {
   int keys = (sizeof(DefaultKeyset) / sizeof(CmdKey)) - 1;
   int k = 0;
   while(k < keys) {
-    if(tmp->key < 0xFF)
+    if(tmp->key <= 0xFF)
       tmp->key = (gkey)tolower(tmp->key);
     KeyCmdAdd(tmp->cmd, tmp->key, tmp->type);
     tmp++;

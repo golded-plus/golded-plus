@@ -55,7 +55,7 @@
 #define HAVE_FCNTL_H 1
 
 /* Define if you have the <io.h> header file.  */
-#ifndef _POSIX_SOURCE
+#ifdef _MSC_VER
 #define HAVE_IO_H
 #endif
 
@@ -72,7 +72,7 @@
 #define HAVE_SYS_TIME_H 1
 
 /* Define if you have the <unistd.h> header file.  */
-#ifdef _POSIX_SOURCE
+#ifndef _MSC_VER
 #define HAVE_UNISTD_H 1
 #endif
 
