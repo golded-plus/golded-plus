@@ -58,6 +58,8 @@
     #define __WIN32__ _WIN32
   #elif defined(__NT__)
     #define __WIN32__ __NT__
+  #elif defined(WIN32)
+    #define __WIN32__ WIN32
   #endif
 #endif
 
@@ -79,10 +81,11 @@
 #endif
 #endif
 
-#ifndef __GNUC__
+#ifdef _MSC_VER
 #define __attribute__(A)
-#define __inline__ static
+#define __inline__ __inline
 #define __extension__
+#define __MSVCRT__
 #endif
 
 //  ------------------------------------------------------------------

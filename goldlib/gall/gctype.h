@@ -43,20 +43,18 @@
 #include <ctype.h>
 #if defined(__EMX__)
 #include <sys/nls.h>
-#define tolower(a) _nls_tolower((unsigned char)(a))
-#define toupper(a) _nls_toupper((unsigned char)(a))
+__inline__ int tolower(int a) { return _nls_tolower((unsigned char)(a)); }
+__inline__ int toupper(int a) { return _nls_toupper((unsigned char)(a)); }
 #elif defined(__WIN32__)
 #ifdef __cplusplus
 extern "C" {
 #endif
 extern char tl[256], tu[256];
-__inline__ int _nls_tolower(int c) { return tl[c]; }
-__inline__ int _nls_toupper(int c) { return tu[c]; }
+__inline__ int tolower(int c) { return tl[c]; }
+__inline__ int toupper(int c) { return tu[c]; }
 #ifdef __cplusplus
 }
 #endif
-#define tolower(a) _nls_tolower((unsigned char)(a))
-#define toupper(a) _nls_toupper((unsigned char)(a))
 #endif
 
 

@@ -27,7 +27,11 @@
 #include <gdirposx.h>
 #include <gstrall.h>
 #include <gwildmat.h>
+#ifndef _MSC_VER
 #include <dirent.h>
+#else
+#include <io.h>
+#endif
 #ifndef __HAVE_DRIVES__
 #include <pwd.h>
 #endif
@@ -72,6 +76,7 @@ gposixdir::~gposixdir()
 
 //  ------------------------------------------------------------------
 
+#ifndef _MSC_VER
 void gposixdir::cd(const char *name, bool relative)
 {
 	std::string ndirname;
@@ -102,7 +107,44 @@ void gposixdir::cd(const char *name, bool relative)
 		rewind();
 	}
 }
-
+#else
+void gposixdir::cd(const char *name, bool relative)
+{
+	std::string ndirname;
+	if(!*name)
+		name = ".";
+	if(relative) {
+		dirname += "/";
+		dirname += name;
+	} else
+		dirname = name;
+	ok = maketruepath(dirname);
+	entries.clear();
+	ndirname = dirname;
+	ndirname += "/*";
+	struct _finddata_t de;
+	long d = _findfirst(ndirname.c_str(), &de);
+	if(d == -1) {
+		if(is_dir(dirname))
+			ok = true;
+		else
+			ok = false;
+	}
+	else {
+		do {
+			ndirname = de.name;
+#ifdef __HAVE_DRIVES__
+			if((ndirname != ".") && !((ndirname == "..") && streql(dirname.c_str()+1, ":/")))
+#else
+			if((ndirname != ".") && !((ndirname == "..") && (dirname == "/")))
+#endif
+				entries.push_back(ndirname);
+		} while(_findnext(d, &de) == 0);
+		_findclose(d);
+		rewind();
+	}
+}
+#endif
 
 //  ------------------------------------------------------------------
 
