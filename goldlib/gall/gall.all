@@ -140,7 +140,8 @@ gutlos2  cpp     all         bco         wco         emx
 gutlos2m cpp     all         bco         wco         emx
 gutlwin  cpp     all             bcx                             cyg
 gutlwinm cpp     all             bcx                             cyg
-gutlunix cpp     all                             lnx                 be
+gutlunix cpp     all                             lnx
+gutlbeos cpp     all                                                 be
 be_lock  c       all                                                 be
 
 ## Low-level text video
