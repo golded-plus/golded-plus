@@ -236,6 +236,7 @@ void w_infof(const char* format, ...) {
 void w_progress(int mode, int attr, long pos, long size, const char* title) {
 
   static int wh = -1;
+  static long prev_pos = 0;
 
   int prev_wh = whandle();
   if(wh != -1)
@@ -248,17 +249,23 @@ void w_progress(int mode, int attr, long pos, long size, const char* title) {
         wh = wopen_(inforow, ((MAXCOL-63)/2)-1, 3, 63, W_BINFO, C_INFOB, C_INFOW);
         set_title(title, TCENTER, C_INFOT);
         title_shadow();
+        goto force_update;
       }
     case MODE_UPDATE:
       if(wh == -1)
         goto oops;  // Oops, someone forgot to open the window..
-      wpropbar(PROP_BARGRAPH, 1, 0, -59, 1, attr, pos, size);
+      if((pos*58/size) != (prev_pos*58/size)) {
+      force_update:
+        wpropbar(PROP_BARGRAPH, 1, 0, -59, 1, attr, pos, size);
+      }
+      prev_pos = pos;
       break;
     case MODE_QUIT:
       if(wh != -1) {
         wclose();
         wunlink(wh);
         wh = -1;
+        prev_pos = 0;
       }
       break;
   }

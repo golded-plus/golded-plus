@@ -118,17 +118,26 @@ bool gclipbrd::writeclipbrd(const char* buf) {
 char* gclipbrd::read(char* buffer, int maxlen) {
 
   if(len>0) {
-    int i = MinV(len, maxlen);
+    int i = MinV(len, maxlen-1);
     char* p = strpbrk(clipdata, "\r\n");
-    if(p and (p-clipdata < i)) {
-      i = p - clipdata;
-      if(len > i and strchr("\r\n", *(p+1)) and (*p != *(p+1)))
-        ++i;
+    if(p) {
+      if(p-clipdata < i) {
+        i = p - clipdata;
+        if((len > i) and strchr("\r\n", *(p+1)) and (*p != *(p+1)))
+          ++i;
+      }
+      else
+        p = NULL;
     }
+    else
+      p = NULL;
     strxcpy(buffer, clipdata, i+1);
     char* p2 = strpbrk(buffer, "\r\n");
     if(p2) *p2 = 0;
-    if(p) strcat(buffer, "\n");
+    if(p) {
+      strcat(buffer, "\n");
+      ++i;
+    }
     len -= MinV(len, i);
     clipdata += i;
     return buffer;
