@@ -1,4 +1,4 @@
-<!doctype tei.2 public '-7//TEI//DTD TEI Tools 0.1//EN'>
+<!doctype tei.2 public '-//TEI//DTD TEI Tools 0.1//EN'>
 <!-- $Id$ -->
 <TEI.2 lang='en'>
 <!-- --------------------------------------------------------------------- -->
@@ -202,238 +202,319 @@
     <head>
       The Message Database Formats
     </head>
-    <p>
-      <list type=gloss>
-        <label>
-          <name/Opus/, <name/FTS-0001/
-        </label>
-        <item>
-          These are two variants of the same type of msgbase. It works by using
-          one physical file per message (<code/1.msg/, <code/2.msg/ etc.),
-          collecting them in a directory for each area. Depending on the
-          clustersize on the harddisk, this can be a very wasteful and slow
-          way to store messages. With a clustersize of about 512 bytes, the
-          waste may be acceptable, but the access speed can be dramatically
-          slow if there are many <code/*.msg/ files, due to the file system.
-          Cache adjustments can improve it, but there are limits.<bl>
-          In echomail areas, this format has a special quirk: The first message
-          (<code/1.msg/) is normally used to store the so-called
-          <q/highwatermark/. The highwatermark tells the echomail processor
-          where it should start scanning for new messages entered by users.
-          By deleting (zapping) the highwatermark, you can make the echomail
-          processor re-scan the whole area again. This may cause messages to
-          be sent out as <q/dupes/, so this should be used sparingly and
-          carefully, if at all!  The highwatermark can also be <q/heated/ -
-          which means that it is set to the last msg in the area. This
-          prevents the echomail processor from finding newly entered
-          unscanned msgs. Use with care.<bl>
-          The variants: The <name/Opus/ format originated in the <name/Opus/
-          <abbr/BBS/ system. It put some <name/Fido/ undocumented (?) fields to
-          use as date/time stamps. The <name/FTS-0001/ (defined in FTS-0001,
-          revision 12 and later) format uses the undocumented fields to set the
-          zone/point information for the message. To the authors knowledge, the
-          <name/Opus/ variant is the dominant, and the <name/FTS-0001/ variant
-          is doomed to oblivion. If in doubt, use the <name/Opus/ format.
-        </item>
-        <label>
-          <name/QuickBBS/, <name/RemoteAccess/, and <name/Hudson/
-        </label>
-        <item>
-          This msgbase format was invented by <name/Adam Hudson/, and was first
-          used in his <name/QuickBBS/ package. Later several other
-          <abbr/BBS/'es were cloned from <name/QuickBBS/ (like
-          <name/RemoteAccess/ and <name/SuperBBS/).<bl>
-          The format limits the total size of <code/msgtxt.bbs/ to a maximum of
-          16MB, which translates to about 16000 msgs of <q/average/ length.
-          <name/GoldED+/ automatically warns you if the limit is close to being
-          reached, and advises you to pack the msgbase.<lb>
-          The first incarnations of <name/QuickBBS/ did not support <q/sharing/
-          of the msgbase. This became more and more important in later years as
-          multitaskers and networks got cheaper. <name/RemoteAccess/ <abbr/BBS/
-          was the first to implement a useful method, and later a better method
-          was evolved (known as <name/RA/ 1.01 or <name/RA/ 1.1x), which is now
-          the standard for all modern software that supports msgbase sharing.
-          <name/GoldED+/ fully supports the new standard of course.<lb>
-          The main virtue of this format is that it is very fast to access the
-          msgbase.<lb>
-          The main disadvantage is that it can be very sensitive to disk
-          problems, and it is a common horror story that people loose their
-          entire msgbase because the disk developed bad clusters or some
-          program went berserk and messed up the msgbase files.
-        </item>
-        <label>
-          <name/Goldbase/
-        </label>
-        <item>
-          This is an enhanced version of the <name/Hudson/ format, introduced
-          in <name/QuickBBS/ 2.80 by the <name/QuickBBS/ group.<lb>
-          The <name/Goldbase/ format removes the 16MB size limit and allows up
-          to 500 message areas instead of the 200 in <name/Hudson/.
-        </item>
-        <label>
-          <name/Squish/
-        </label>
-        <item>
-          The <name/Squish/ format was invented by <name/Maximus/ <abbr/BBS/
-          author <name/Scott Dudley/ in 1991, and was first used in
-          <name/Maximus CBCS/ v2.00.<bl>
-          The use of a database for each area - instead of one file per msg,
-          or all msgs in one big database - makes this format fast, very
-          safe and resistant to disk problems. Even if something messed up a
-          <name/Squish/ area, it can almost always be fixed and recovered,
-          using the <name/SQFIX/ or <name/SQREIDX/ utilities that come with the
-          <name/Squish/ echomail processor.<lb>
-          A special feature of <name/Squish/ areas is that they can be
-          self-maintaining. You can setup a <name/Squish/ area so that it may
-          only contain a maximum of so-and-so many msgs, and then it will
-          automatically re-use the space used by old msgs when the limit is
-          reached, and so it will practically stop growing. It will still need
-          packing, but not nearly as often as a <name/Hudson/ msgbase has to.
-        </item>
-        <label>
-          <name/Ezycom/
-        </label>
-        <item>
-          <name/Ezycom/ format.
-        </item>
-        <label>
-          <name/JAM/
-        </label>
-        <item>
-          <name/JAM/ format as defined in the <name/JAM(mbp)/ revision 001.
-          Also supports <name/CrashMail/, <name/CrashEcho/, and <name/HPT/
-          highwater marks.<bl>
-          <name/GoldED+/ currently ignores revision number of header structure
-          and assumes that future revisions will remain backward compatible.
-          When creating new msgs, GoldED uses the revision 1 header
-          structure.<bl>
-          <name/GoldED+/ currently doesn't support passwords to access the
-          message base and/or indiviual messages. When creating a new
-          <name/JAM/ msgbase and/or new <name/JAM/ msgs, <name/GoldED+/ sets
-          the password to FFFFFFFFh. If you change an existing message which
-          has a password, the password is <hi/NOT/ preserved, but reset to
-          FFFFFFFFh.<bl>
-          The <name/JAM/ lastread file is designed such that is has to be
-          searched for a userid/usercrc, because one cannot assume that the
-          records are in a specific order. The <name/JAM/ <abbr/API/ searches
-          the userid field. However <name/GoldED+/ searches for the usercrc,
-          not the userid. In any case, it seems that <name/RemoteAccess/ 2.x
-          sets both the userid and usercrc to the same value.<bl>
-          <name/GoldED+/ currently doesn't support the escaping described in
-          the <name/JAM/ specs. The specs state that the current revision of
-          <name/JAM/ does not support it either, so it seems to be not great
-          loss.<bl>
-          <name/GoldED+/ does not supports the following <name/JAM/ subfields:
-          <q/Force pickup/, and <q>Msg may not be displayed to user</q> (always
-          displayed).<bl>
-          <name/GoldED+ optionally may use tricky method invented by
-          <name/Odinn/ and aprooved by the <name/JAM/ developers when deleting
-          messages. The configuration keyword
-          <ref target=JAMHARDDELETE><kw/JAMHARDDELETE/</ref> specifies which
-          method to use.
-        </item>
-        <label>
-          <name/PCBoard/
-        </label>
-        <item>
-          <name/PCBoard/ v15.x format.<lb>
-          <name/GoldED+/ is aware of <name/PCBoard/ v15.x extended headers in
-          the message text. The <gi/TO/, <gi/TO2/, <gi/FROM/, <gi/FROM2/ and
-          <gi/SUBJECT/ extended headers are directly supported and
-          <q/swallowed/ when reading a message. Other extended headers are
-          currently treated like normal message text and is therefore not
-          hidden to the reader.<lb>
-          Passwords are not supported.<lb>
-          The Private, Received, Crash and Direct attributed are supported.<lb>
-          <name/GoldED+/ reads the <code/pcboard.dat/ file to determine whether
-          to use E3h or 0Dh (<gi/CR/) as the line/paragraph termination
-          character when reading and writing message text.<lb>
-          The mail waiting flags are updated when you write to people that are
-          named in the userbase.<lb>
-          When changing a message, the new edition is saved as if it were a new
-          message, with a new message number, and then the old edition is
-          deleted. This behaviour is consistent with the way <name/PCBoard/
-          itself works when changing a message. The old edition will still
-          exist with the <gi/DEL/ attribute.
-        </item>
-        <label>
-          <name/AdeptXBBS/
-        </label>
-        <item>
-          The implementation is based on the documentation in version 1.05,
-          experimentation and questions to the authors. Thanks go to
-          <name/Frank Jacobberger for the initial testing and prodding of the
-          authors to answer <name/Odinns/ questions :-)<bl>
-          The <name/AdeptXBBS/ format does not have a quick method of finding
-          deleted messages via the index file. This means that deleted messages
-          left in the messagebase marked with the <gi/DEL/ attribute.<bl>
-          Mixing of netmail and echomail or other types of mail in the same
-          area is not directly supported. If an area is setup as both netmail
-          and echomail, <name/GoldED+/ will treat it as netmail. If an area is
-          neither netmail nor echomail, <name/GoldED+/ wil treat it as a local
-          area.<bl>
-          <name/GoldED+/ detects <name/Usenet/ (newsgroup) and <name/Internet/
-          e-mail areas in the <name/AdeptXBBS/ setup and uses them as such, but
-          it has not yet been tested if <name/GoldED+/ and <name/AdeptXBBS/ are
-          compatible in the way they store and process <name/Internet/ header
-          information.<bl>
-          The <name/AdeptXBBS/ personal mail feature (the index in the
-          <code/Personal_Mail/ directory) is supported for mails you write to
-          other users on the <abbr/BBS/. However, personal mail for you via
-          this feature or by other means is not yet supported.<bl>
-          The replylinking method used by <name/AdeptXBBS/ (whatever the method
-          is??!) is not yet supported. This means that links to other messages
-          are missing.
-        </item>
-        <label>
-          <name/WildCat!/
-        </label>
-        <item>
-          The <name/WildCat!/ 4.x format does not have a quick method of
-          finding deleted messages via the index file. This means that deleted
-          messages left in the messagebase marked with the <gi/DEL/
-          attribute.<bl>
-          WildCat features which are not supported yet:
-          <list type=simple>
-            <item/The userbase./
-            <item/The message unread chain./
-            <item/The message from/to title./
-            <item/The message network name./
-            <item/The message internal and external attach./
-          </list>
-          There is a keyword
-          <ref target=WILDCATUSERNO><kw/WILDCATUSERNO/</ref>, which works just
-          like the other <kw/>&lt;msgbase&gt;USERNO</kw> keywords. By default
-          <name/GoldED+/ will use the first record in the lastread file
-          (<code/*.lrd/), so if you are not the first person in the userbase,
-          or you are sharing the messagebase with others, you may have to
-          change this user number. The userbase is currently not supported
-          (i.e.: you can't set the number to -1 to let <name/GoldED+/ find the
-          correct user and lastread automatically).<bl>
-          <hi/Note/: The <name/WildCat!/ support is currently not very
-          well-tested, so use it with caution. Limited testing shown that
-          <name/GoldED+/ not damages the messagebases, but you should probably
-          test it on less important areas and/or make backups until it is
-          determined that it is safe.
-        </item>
-        <label>
-          <name/Synchronet/
-        </label>
-        <item>
-          <name/Synchronet/ message base as described in <name>Synchronet
-          Message Base Specification</name> version 1.21. <name/GoldED+/
-          currently linked with <name/SMBLib/ taken from the <name/Synchronet/
-          <abbr/BBS/ sources slightly adopted to the <name/GoldED+/ internal
-          definitions.<bl>
-          Just like <name/WildCat!/ format, <name/Synchronet/ format does not
-          have a quick method of finding deleted messages via the index file.
-          This means that deleted messages left in the messagebase marked with
-          the <gi/DEL/ attribute.<bl>
-          <hi/Note/: The <name/Synchronet/ support is currently not tested at
-          all.
-        </item>
-      </list>
-    </p>
+    <div2>
+      <head>
+        Opus, FTS-0001
+      </head>
+      <p>
+        These are two variants of the same type of msgbase. It works by using
+        one physical file per message (<code/1.msg/, <code/2.msg/ etc.),
+        collecting them in a directory for each area. Depending on the
+        clustersize on the harddisk, this can be a very wasteful and slow
+        way to store messages. With a clustersize of about 512 bytes, the
+        waste may be acceptable, but the access speed can be dramatically
+        slow if there are many <code/*.msg/ files, due to the file system.
+        Cache adjustments can improve it, but there are limits.
+      </p>
+      <p>
+        In echomail areas, this format has a special quirk: The first message
+        (<code/1.msg/) is normally used to store the so-called
+        <q/highwatermark/. The highwatermark tells the echomail processor
+        where it should start scanning for new messages entered by users.
+        By deleting (zapping) the highwatermark, you can make the echomail
+        processor re-scan the whole area again. This may cause messages to
+        be sent out as <q/dupes/, so this should be used sparingly and
+        carefully, if at all!  The highwatermark can also be <q/heated/ -
+        which means that it is set to the last msg in the area. This
+        prevents the echomail processor from finding newly entered
+        unscanned msgs. Use with care.
+      </p>
+      <p>
+        The variants: The <name/Opus/ format originated in the <name/Opus/
+        <abbr/BBS/ system. It put some <name/Fido/ undocumented (?) fields to
+        use as date/time stamps. The <name/FTS-0001/ (defined in FTS-0001,
+        revision 12 and later) format uses the undocumented fields to set the
+        zone/point information for the message. To the authors knowledge, the
+        <name/Opus/ variant is the dominant, and the <name/FTS-0001/ variant
+        is doomed to oblivion. If in doubt, use the <name/Opus/ format.
+      </p>
+    </div2>
+    <div2>
+      <head>
+        QuickBBS, RemoteAccess, and Hudson
+      </head>
+      <p>
+        This msgbase format was invented by <name/Adam Hudson/, and was first
+        used in his <name/QuickBBS/ package. Later several other
+        <abbr/BBS/'es were cloned from <name/QuickBBS/ (like
+        <name/RemoteAccess/ and <name/SuperBBS/).
+      </p>
+      <p>
+        The format limits the total size of <code/msgtxt.bbs/ to a maximum of
+        16MB, which translates to about 16000 msgs of <q/average/ length.
+        <name/GoldED+/ automatically warns you if the limit is close to being
+        reached, and advises you to pack the messagebase.
+      </p>
+      <p>
+        The first incarnations of <name/QuickBBS/ did not support <q/sharing/
+        of the msgbase. This became more and more important in later years as
+        multitaskers and networks got cheaper. <name/RemoteAccess/ <abbr/BBS/
+        was the first to implement a useful method, and later a better method
+        was evolved (known as <name/RA/ 1.01 or <name/RA/ 1.1x), which is now
+        the standard for all modern software that supports msgbase sharing.
+        <name/GoldED+/ fully supports the new standard of course.
+      </p>
+      <p>
+        The main virtue of this format is that it is very fast to access the
+        msgbase.
+      </p>
+      <p>
+        The main disadvantage is that it can be very sensitive to disk
+        problems, and it is a common horror story that people loose their
+        entire msgbase because the disk developed bad clusters or some
+        program went berserk and messed up the msgbase files.
+      </p>
+    </div2>
+    <div2>
+      <head>
+        Goldbase
+      </head>
+      <p>
+        This is an enhanced version of the <name/Hudson/ format, introduced
+        in <name/QuickBBS/ 2.80 by the <name/QuickBBS/ group.
+      </p>
+      <p>
+        The <name/Goldbase/ format removes the 16MB size limit and allows up
+        to 500 message areas instead of the 200 in <name/Hudson/.
+      </p>
+    </div2>
+    <div2>
+      <head>
+        Squish
+      </head>
+      <p>
+        The <name/Squish/ format was invented by <name/Maximus/ <abbr/BBS/
+        author <name/Scott Dudley/ in 1991, and was first used in
+        <name/Maximus CBCS/ v2.00.
+      </p>
+      <p>
+        The use of a database for each area - instead of one file per msg,
+        or all msgs in one big database - makes this format fast, very
+        safe and resistant to disk problems. Even if something messed up a
+        <name/Squish/ area, it can almost always be fixed and recovered,
+        using the <name/SQFIX/ or <name/SQREIDX/ utilities that come with the
+        <name/Squish/ echomail processor.
+      </p>
+      <p>
+        A special feature of <name/Squish/ areas is that they can be
+        self-maintaining. You can setup a <name/Squish/ area so that it may
+        only contain a maximum of so-and-so many msgs, and then it will
+        automatically re-use the space used by old msgs when the limit is
+        reached, and so it will practically stop growing. It will still need
+        packing, but not nearly as often as a <name/Hudson/ msgbase has to.
+      </p>
+    </div2>
+    <div2>
+      <head>
+        Ezycom
+      </head>
+      <p>
+        <name/Ezycom/ format is supported by <name/GoldED+/. Status is not
+        known.
+      </p>
+    </div2>
+    <div2>
+      <head>
+        JAM
+      </head>
+      <p>
+        <name/JAM/ format as defined in the <name/JAM(mbp)/ revision 001.
+        Also supports <name/CrashMail/, <name/CrashEcho/, and <name/HPT/
+        highwater marks.
+      </p>
+      <p>
+        <name/GoldED+/ currently ignores revision number of header structure
+        and assumes that future revisions will remain backward compatible.
+        When creating new msgs, <name/GoldED+/ uses the revision 1 header
+        structure.
+      </p>
+      <p>
+        <name/GoldED+/ currently doesn't support passwords to access the
+        message base and/or indiviual messages. When creating a new
+        <name/JAM/ msgbase and/or new <name/JAM/ msgs, <name/GoldED+/ sets
+        the password to FFFFFFFFh. If you change an existing message which
+        has a password, the password is <hi/NOT/ preserved, but reset to
+        FFFFFFFFh.
+      </p>
+      <p>
+        The <name/JAM/ lastread file is designed such that is has to be
+        searched for a userid/usercrc, because one cannot assume that the
+        records are in a specific order. The <name/JAM/ <abbr/API/ searches
+        the userid field. However <name/GoldED+/ searches for the usercrc,
+        not the userid. In any case, it seems that <name/RemoteAccess/ 2.x
+        sets both the userid and usercrc to the same value.
+      </p>
+      <p>
+        <name/GoldED+/ currently doesn't support the escaping described in
+        the <name/JAM/ specs. The specs state that the current revision of
+        <name/JAM/ does not support it either, so it seems to be not great
+        loss.
+      </p>
+      <p>
+        <name/GoldED+/ does not supports the following <name/JAM/ subfields:
+        <q/Force pickup/, and <q>Msg may not be displayed to user</q> (always
+        displayed).
+      </p>
+      <p>
+        <name/GoldED+/ optionally may use tricky method invented by
+        <name/Odinn/ and aprooved by the <name/JAM/ developers when deleting
+        messages. The configuration keyword
+        <ref target=JAMHARDDELETE><kw/JAMHARDDELETE/</ref> specifies which
+        method to use.
+      </p>
+    </div2>
+    <div2>
+      <head>
+        PCBoard
+      </head>
+      <p>
+        The supported <name/PCBoard/ messagebase corresponds to the v15.x of
+        <name/PCBoard/ <abbr/BBS/.
+      </p>
+      <p>
+        <name/GoldED+/ is aware of <name/PCBoard/ v15.x extended headers in
+        the message text. The <gi/TO/, <gi/TO2/, <gi/FROM/, <gi/FROM2/ and
+        <gi/SUBJECT/ extended headers are directly supported and
+        <q/swallowed/ when reading a message. Other extended headers are
+        currently treated like normal message text and is therefore not
+        hidden to the reader.
+      </p>
+      <p>
+        Passwords are not supported.
+      </p>
+      <p>
+        The <gi/Private/, <gi/Received/, <gi/Crash/, and <gi/Direct/ attributes
+        are supported.
+      </p>
+      <p>
+        <name/GoldED+/ reads the <code/pcboard.dat/ file to determine whether
+        to use E3h or 0Dh (<gi/CR/) as the line/paragraph termination
+        character when reading and writing message text.
+      </p>
+      <p>
+        The mail waiting flags are updated when you write to people that are
+        named in the userbase.
+      </p>
+      <p>
+        When changing a message, the new edition is saved as if it were a new
+        message, with a new message number, and then the old edition is
+        deleted. This behaviour is consistent with the way <name/PCBoard/
+        itself works when changing a message. The old edition will still
+        exist with the <gi/DEL/ attribute.
+      </p>
+    </div2>
+    <div2>
+      <head>
+        AdeptXBBS
+      </head>
+      <p>
+        The implementation is based on the documentation in version 1.05,
+        experimentation and questions to the authors. Thanks go to
+        <name/Frank Jacobberger/ for the initial testing and prodding of the
+        authors to answer <name/Odinns/ questions :-)
+      </p>
+      <p>
+        The <name/AdeptXBBS/ format does not have a quick method of finding
+        deleted messages via the index file. This means that deleted messages
+        left in the messagebase marked with the <gi/DEL/ attribute.
+      </p>
+      <p>
+        Mixing of netmail and echomail or other types of mail in the same
+        area is not directly supported. If an area is setup as both netmail
+        and echomail, <name/GoldED+/ will treat it as netmail. If an area is
+        neither netmail nor echomail, <name/GoldED+/ wil treat it as a local
+        area.
+      </p>
+      <p>
+        <name/GoldED+/ detects <name/Usenet/ (newsgroup) and <name/Internet/
+        e-mail areas in the <name/AdeptXBBS/ setup and uses them as such, but
+        it has not yet been tested if <name/GoldED+/ and <name/AdeptXBBS/ are
+        compatible in the way they store and process <name/Internet/ header
+        information.
+      </p>
+      <p>
+        The <name/AdeptXBBS/ personal mail feature (the index in the
+        <code/Personal_Mail/ directory) is supported for mails you write to
+        other users on the <abbr/BBS/. However, personal mail for you via
+        this feature or by other means is not yet supported.
+      </p>
+      <p>
+        The replylinking method used by <name/AdeptXBBS/ (whatever the method
+        is??!) is not yet supported. This means that links to other messages
+        are missing.
+      </p>
+    </div2>
+    <div2>
+      <head>
+        WildCat!
+      </head>
+      <p>
+        The <name/WildCat!/ 4.x format does not have a quick method of
+        finding deleted messages via the index file. This means that deleted
+        messages left in the messagebase marked with the <gi/DEL/
+        attribute.
+      </p>
+      <p>
+        WildCat features which are not supported yet:
+        <list type=simple>
+          <item/The userbase./
+          <item/The message unread chain./
+          <item>The message from/to title.</item>
+          <item/The message network name./
+          <item/The message internal and external attach./
+        </list>
+      </p>
+      <p>
+        There is a keyword
+        <ref target=WILDCATUSERNO><kw/WILDCATUSERNO/</ref>, which works just
+        like the other <kw/>&lt;msgbase&gt;USERNO</kw> keywords. By default
+        <name/GoldED+/ will use the first record in the lastread file
+        (<code/*.lrd/), so if you are not the first person in the userbase,
+        or you are sharing the messagebase with others, you may have to
+        change this user number. The userbase is currently not supported
+        (i.e.: you can't set the number to -1 to let <name/GoldED+/ find the
+        correct user and lastread automatically).
+      </p>
+      <p>
+        <hi/Note/: The <name/WildCat!/ support is currently not very
+        well-tested, so use it with caution. Limited testing shown that
+        <name/GoldED+/ not damages the messagebases, but you should probably
+        test it on less important areas and/or make backups until it is
+        determined that it is safe.
+      </p>
+    </div2>
+    <div2>
+      <head>
+        Synchronet
+      </head>
+      <p>
+        <name/Synchronet/ message base as described in <name>Synchronet
+        Message Base Specification</name> version 1.21. <name/GoldED+/
+        currently linked with <name/SMBLib/ taken from the <name/Synchronet/
+        <abbr/BBS/ sources slightly adopted to the <name/GoldED+/ internal
+        definitions.
+      </p>
+      <p>
+        Just like <name/WildCat!/ format, <name/Synchronet/ format does not
+        have a quick method of finding deleted messages via the index file.
+        This means that deleted messages left in the messagebase marked with
+        the <gi/DEL/ attribute.
+      </p>
+      <p>
+        <hi/Note/: The <name/Synchronet/ support is currently not tested at
+        all.
+      </p>
+    </div2>
   </div1>
 <!-- --------------------------------------------------------------------- -->
   <div1>
@@ -1024,7 +1105,7 @@ RDDT path.rpt -n2:5020/604.19 -l2:5020/604 2:5020/604.19 -p</eg>
       </list>
     </p>
     <p>
-      When the using <ref targe=AREAFILE><kw/AREAFILE/</ref> feature to read
+      When the using <ref target=AREAFILE><kw/AREAFILE/</ref> feature to read
       external area configuration from other programs, the individual
       <ref target=AREAFILE><kw/AREAFILE/</ref>'s may use specific environment
       variables to find the files. Please read the
@@ -1331,7 +1412,7 @@ ENDIF</eg>
           the <term/4D/ format <ident>zone:net/node.point</ident>. Most modern
           mailers and mail processors now supports the <term/4D/ format,
           but if you are a point, you should always consult your boss about
-          which format to use.<bl>
+          which format to use.<lb>
           The optional <ident/@domain/ part can be used to specify a
           <term/fifth/ dimension to the <term/4D/ address. It is normally not
           necessary to specify a domain. Domains are never shown in the header.
@@ -1409,28 +1490,28 @@ ADDRESS 2:236/77@fidonet      ; Node address with domain</eg>
           following criterias:
           <list type=simple>
             <item>
-              it's a <kw/ROBOTNAME/
+              It's a <ref target=ROBOTNAME><kw/ROBOTNAME/</ref>
             </item>
             <item>
-              it's a <kw/USERNAME/
+              It's a <ref target=USERNAME><kw/USERNAME/</ref>
             </item>
             <item>
-              it's the <kw/WHOTO/
+              It's the <ref target=WHOTO><kw/WHOTO/</ref>
             </item>
             <item>
-              it's the mailinglist's sender address
+              It's the mailinglist's sender address
             </item>
             <item>
-              it's an UUCP
+              It's an UUCP
             </item>
             <item>
-              it's already an email address
+              It's already an email address
             </item>
             <item>
-              address/aka is unknown
+              Address/aka is unknown
             </item>
             <item>
-              it's an <kw/ADDRESSMACRO/
+              It's an <ref target=ADDRESSMACRO><kw/ADDRESSMACRO/</ref>
             </item>
           </list>
         </item>
@@ -1544,14 +1625,9 @@ ADDRESS 2:236/77@fidonet      ; Node address with domain</eg>
           <ref target=NAMESFILE><kw/NAMESFILE/</ref> for details. However, you
           should not use the syntax with the attributes in the <code/names.fd/
           file, because <name/FrontDoor/ and <name/Maximus/ do not know this
-          syntax.
-        </item>
-        <label>
-          Bugs:
-        </label>
-        <item>
-          When used in the <name/Internet/ area, name should <hi/not/ contain
-          <q/@/ as the first character in the <ident/name/ field.
+          syntax.<lb>
+          When used in the <name/Internet/ area, <q/@/ as the first character
+          in the <ident/name/ field may be omitted.
         </item>
         <label>
           Processed by:
@@ -1578,7 +1654,7 @@ ADDRESSMACRO dn,@INTERNET/david@csource.oz.au,2:241/999]]></eg>
         </item>
       </list>
     </div2>
-    <div2>
+    <div2 id=ADEPTXBBSPATH>
       <head>
         ADEPTXBBSPATH
       </head>
@@ -1690,7 +1766,7 @@ ADDRESSMACRO dn,@INTERNET/david@csource.oz.au,2:241/999]]></eg>
         <item>
           Your network address, <name/FidoNet/-style. More than one address can
           be specified if you are member of more than one network. The keywords
-          <kw/ADDRESS/ and <ref target=AKA><kw/AKA/</ref> can be used
+          <ref target=ADDRESS><kw/ADDRESS/</ref> and <kw/AKA/ can be used
           interchangeably.
         </item>
         <label>
@@ -1705,7 +1781,7 @@ ADDRESSMACRO dn,@INTERNET/david@csource.oz.au,2:241/999]]></eg>
           the <term/4D/ format <ident>zone:net/node.point</ident>. Most modern
           mailers and mail processors now supports the <term/4D/ format,
           but if you are a point, you should always consult your boss about
-          which format to use.<bl>
+          which format to use.<lb>
           The optional <ident/@domain/ part can be used to specify a
           <term/fifth/ dimension to the <term/4D/ address. It is normally not
           necessary to specify a domain. Domains are never shown in the header.
@@ -1729,12 +1805,6 @@ ADDRESSMACRO dn,@INTERNET/david@csource.oz.au,2:241/999]]></eg>
         <item>
           <ref target=ADDRESS><kw/ADDRESS/</ref>,
           <ref target=NETNAME><kw/NETNAME/</ref>
-        </item>
-        <label>
-          Example:
-        </label>
-        <item><eg>
-AKA 2:236/77.1</eg>
         </item>
       </list>
     </div2>
@@ -1858,7 +1928,7 @@ AKAMATCH 23:      22:33/44</eg>
         </item>
       </list>
     </div2>
-    <div2>
+    <div2 id=AKAMATCHING>
       <head>
         AKAMATCHING
       </head>
@@ -1917,7 +1987,7 @@ AKAMATCH 23:      22:33/44</eg>
         </item>
       </list>
     </div2>
-    <div2>
+    <div2 id=AKAMATCHLOCAL>
       <head>
         AKAMATCHLOCAL
       </head>
@@ -1973,7 +2043,7 @@ AKAMATCH 23:      22:33/44</eg>
         </item>
       </list>
     </div2>
-    <div2>
+    <div2 id=AKAMATCHNET>
       <head>
         AKAMATCHNET
       </head>
@@ -2057,7 +2127,7 @@ AKAMATCH 23:      22:33/44</eg>
           The <ident/programname/ parameter defines name of the software which
           wants to read its configuration from <name/GoldED+/ configuration
           file. <name/GoldED+/ itself will ignore <kw/APP/ lines just like
-          <ref target=REM><kw/remark/</ref> lines.
+          <ref target=REM/remark/ lines.
         </item>
         <label>
           Processed by:
@@ -2069,7 +2139,7 @@ AKAMATCH 23:      22:33/44</eg>
           See also:
         </label>
         <item>
-          <ref target=REM><kw/Remark/</ref> chapter
+          <ref target=REM/Remark/ chapter
         </item>
         <label>
           Example:
@@ -2089,7 +2159,7 @@ APP OtherProg IRQ 5</eg>
           Synopsis:
         </label>
         <item>
-          <kw/AREA/ <ident>&lt;echoid&gt; &lt;<q>desc</q>&gt;
+          <kw/AREA/ <ident>&lt;echoid&gt; &lt;<![ CDATA ["desc"]]>&gt;
           &lt;msgbase&gt;&lsqb;type&rsqb; &lt;location&gt; &lsqb;akano&rsqb;
           &lsqb;attrs&rsqb;</ident>
         </item>
@@ -2268,21 +2338,51 @@ APP OtherProg IRQ 5</eg>
         </item>
       </list>
     </div2>
+    <div2>
+      <head>
+        AREAAUTONEXT
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREAAUTONEXT/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls where to put cursor in arealist on startup
+          and after exiting from an area you have been reading.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If enabled, <name/GoldED+/ will automatically jump to the first
+          marked area in the arealist on startup, and the next marked area
+          after exiting from an area you have been reading.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+      </list>
+    </div2>
 
 
 <!-- finished here -->
 
 
-    <div2>
-      <head>
-        AREAAUTONEXT &lt;(yes)/no&gt;
-      </head>
-      <p>
-        If enabled, <name>GoldED+</name> will automatically jump to the first
-        marked area in the arealist on startup, and the next marked area after
-        exiting from an area you have been reading.
-      </p>
-    </div2>
     <div2>
       <head>
         AREACATCHUPREAD &lt;(yes)/no&gt;
@@ -5968,7 +6068,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     editing a mail in the internal message editor.
       </p>
     </div2>
-    <div2>
+    <div2 id=JAMHARDDELETE>
       <head>
         JAMHARDDELETE &lt;yes/no&gt;
       </head>
@@ -6611,6 +6711,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
             merit and should not be used. It is provided for cosmetical
             purposes and backward compatibility only.
       -->
+      <p>dummy text</p>
     </div2>
     <div2>
       <head>
@@ -7884,7 +7985,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     Since version 2.50, a completely rewritten implementation is used.
       </p>
     </div2>
-    <div2>
+    <div2 id=SQUISHUSERNO>
       <head>
         SQUISHUSERNO &lt;index&gt;
       </head>
@@ -8645,7 +8746,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     This keyword can be used globally and in a Random System group.
       </p>
     </div2>
-    <div2>
+    <div2 id=WILDCATUSERNO>
       <head>
         WILDCATUSERNO &lt;userno&gt;
       </head>
