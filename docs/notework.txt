@@ -12,6 +12,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.4.5, May XX 2000
 ______________________________________________________________________
 
+- EditExportText now saves whole the message to file, this is more
+  predictable behaviour than before.
+
 - Fixed incorrect lines chain after insertion from file/clipboard.
 
 - Function that builds full pathname bit adjusted for non-UNIX

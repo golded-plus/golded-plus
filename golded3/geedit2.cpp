@@ -1227,8 +1227,8 @@ void IEclass::editexport(Line* __exportline, int __endat) {
       fputc('\n', _fp);
 
       while((__endat ? __exportline != currline : 1) and __exportline) {
-        fputs(__exportline->txt.c_str(), _fp);
-        if(__exportline->txt.find('\n') != __exportline->txt.npos)
+        fwrite(__exportline->txt.c_str(), 1, __exportline->txt.length(), _fp);
+        if(__exportline->txt.find('\n') == __exportline->txt.npos)
           fputc('\n', _fp);
         __exportline = __exportline->next;
       }
@@ -1270,15 +1270,12 @@ void IEclass::ExportText() {
   GFTRK("EditExportText");
 
   int endat = NO;
-  Line* exportline = Edit__pastebuf;
+  // Line* exportline = findanchor();
 
-  if(not exportline) {
-    exportline = findanchor();
-    if(exportline)
-      endat = YES;
-    else
-      exportline = findfirstline();
-  }
+  // if(exportline)
+  //  endat = YES;
+  // else
+  Line* exportline = findfirstline();
 
   editexport(exportline, endat);
 

@@ -163,9 +163,10 @@ char* mime_header_encode(char* dest, const char* source, GMsg* msg) {
         if(not inmime) {
           if(msg->charset) {
             bp = stpcpy(bp, "=?");
-            if(strneql(msg->charset, "latin-", 6)) {
+            if(strneql(msg->charset, "latin", 5)) {
               static const char *isono[] = { "15", "1", "2", "3", "4", "9", "10", "13", "14", "15" };
-              int chsno = atoi(msg->charset+6);
+              int chsno = atoi(msg->charset+5);
+	      if(chsno < 0) chsno = -chsno; // support for both latin-1 and latin1
               chsno = chsno > sizeof(isono)/sizeof(const char *) ? 0 : chsno;
               bp = strxmerge(bp, 12, "iso-8859-", isono[chsno]);
             }
