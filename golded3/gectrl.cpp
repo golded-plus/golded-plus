@@ -419,7 +419,7 @@ void DoKludges(int mode, GMsg* msg, int kludges) {
 
       const char* rfc = AA->Internetrfcbody() ? "" : "\001";
 
-      if(AA->isemail() and (*msg->ito or strchr(msg->to, '@'))) {
+      if(*msg->ito or strchr(msg->to, '@')) {
         INam _toname;
         IAdr _toaddr;
         char* ptr = *msg->ito ? msg->ito : msg->to;
