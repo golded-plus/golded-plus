@@ -167,7 +167,11 @@ bool strwild(const char* str, const char* wild) {
       if(wild[1] == NUL)
         return true;
       else {
+#ifdef _MSC_VER
         char *buf = (char *)alloca(strlen(wild));
+#else
+        __extension__ char buf[strlen(wild)];
+#endif
         strcpy(buf, wild+1);
         char* ptr = strpbrk(buf, "*?");
         if(ptr)
