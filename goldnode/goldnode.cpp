@@ -875,7 +875,7 @@ static void read_nodelists() {
     // At last, sort the nodes
     FILE *fp, *fido;
     geidxlist::iterator curr, prev;
-    map<long, dword> namepos;
+    std::map<long, dword> namepos;
 
     // Sort by name
     if(not quiet) std::cout << std::endl << "* Sorting by name " << std::flush;
@@ -1128,11 +1128,11 @@ static int do_if(char* val) {
 
 //  ------------------------------------------------------------------
 
-char* MapPath(char* map, bool reverse) {
+char* MapPath(char* fmap, bool reverse) {
 
   Path buf, cmap;
 
-  strxcpy(cmap, map, sizeof(Path));
+  strxcpy(cmap, fmap, sizeof(Path));
   if(reverse)
     strchg(cmap, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
 
@@ -1141,8 +1141,8 @@ char* MapPath(char* map, bool reverse) {
     const char* p = reverse ? i->second.c_str() : i->first.c_str();
     const char* q = reverse ? i->first.c_str() : i->second.c_str();
     if(strnieql(cmap, p, strlen(p))) {
-      strxcpy(buf, map, sizeof(Path));
-      strxmerge(map, sizeof(Path), q, buf+strlen(p), NULL);
+      strxcpy(buf, fmap, sizeof(Path));
+      strxmerge(fmap, sizeof(Path), q, buf+strlen(p), NULL);
       char sl1, sl2;
       char* ptr;
 
@@ -1152,12 +1152,12 @@ char* MapPath(char* map, bool reverse) {
       sl2 = ptr ? *ptr : NUL;
 
       if(sl1 and sl2 and (sl1 != sl2))
-        strchg(map, sl1, sl2);
+        strchg(fmap, sl1, sl2);
 
       break;
     }
   }
-  return map;
+  return fmap;
 }
 
 
@@ -1218,7 +1218,7 @@ static int parse_config(const char *__configfile, Addr& zoneaddr) {
             in_if = in_else = NO;
             cond_status = YES;
             break;
-	  default:
+          default:
             _gotcond = NO;
             break;
         }
