@@ -269,6 +269,8 @@ void GMsgList::print_line(uint idx, uint pos, bool isbar) {
   ReadMlst(idx);
   MLst* ml = mlst[idx];
 
+  update_marks(ml);
+
   int wattr_, hattr_, mattr_;
   if(isbar) {
     wattr_ = sattr;
