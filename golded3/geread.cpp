@@ -264,22 +264,24 @@ void Reader() {
             if(AA->isreadmark or AA->isreadpm) {
               GTag& tag = AA->isreadpm ? AA->PMrk : AA->Mark;
               uint mtemp = tag.Find(msg->msgno);
-              sprintf(buf2, "%s [%s%s%s]",
+              sprintf(buf2, "%s [%s%s%s%s]",
                 LNG->ReadMarked,
                 AA->Viewhidden() ? "H" : "",
                 AA->Viewkludge() ? "K" : "",
-                AA->Twitmode() == TWIT_IGNORE ? "Ti" : AA->Twitmode() == TWIT_SKIP ? "Ts" : AA->Twitmode() == TWIT_BLANK ? "Tb" : AA->Twitmode() == TWIT_KILL ? "Tk" : ""
+                AA->Twitmode() == TWIT_IGNORE ? "Ti" : AA->Twitmode() == TWIT_SKIP ? "Ts" : AA->Twitmode() == TWIT_BLANK ? "Tb" : AA->Twitmode() == TWIT_KILL ? "Tk" : "",
+                CFG->showdeleted ? "D" : ""
               );
               sprintf(buf, buf2,
                 mtemp, tag.Count(), tag.Count()-mtemp
               );
             }
             else {
-              sprintf(buf2, "%s [%s%s%s]",
+              sprintf(buf2, "%s [%s%s%s%s]",
                 LNG->ReadAll,
                 AA->Viewhidden() ? "H" : "",
                 AA->Viewkludge() ? "K" : "",
-                AA->Twitmode() == TWIT_IGNORE ? "Ti" : AA->Twitmode() == TWIT_SKIP ? "Ts" : AA->Twitmode() == TWIT_BLANK ? "Tb" : AA->Twitmode() == TWIT_KILL ? "Tk" : ""
+                AA->Twitmode() == TWIT_IGNORE ? "Ti" : AA->Twitmode() == TWIT_SKIP ? "Ts" : AA->Twitmode() == TWIT_BLANK ? "Tb" : AA->Twitmode() == TWIT_KILL ? "Tk" : "",
+                CFG->showdeleted ? "D" : ""
               );
               sprintf(buf, buf2,
                 AA->lastread(), AA->Msgn.Count(), AA->Msgn.Count()-AA->lastread()

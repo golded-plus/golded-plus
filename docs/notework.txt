@@ -12,6 +12,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ Added ShowDeleted indicator to status line.
+
 - Fixed few bugs in Undo feature.
 
 + Added support for AdeptXBBS for non-OS/2 systems.

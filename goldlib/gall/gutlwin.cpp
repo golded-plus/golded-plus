@@ -134,14 +134,18 @@ int g_init_os(int flags) {
   GetConsoleTitle(ge_win_coldtitle, sizeof(ge_win_coldtitle));
   if(WinVer.dwPlatformId == VER_PLATFORM_WIN32_NT) {
     for(i = 0; i < 256; i++) {
+#ifndef __MSVCRT__
       tu[i] = (toupper)(i);
       tl[i] = (tolower)(i);
+#endif
       if(i >= ' ') {
         CHAR chr = (CHAR)i;
         MultiByteToWideChar(CP_OEMCP, 0, &chr, 1, oem2unicode+i, 1);
       }
     }
+#ifndef __MSVCRT__
     return 0;
+#endif
   }
   // Due to Win9x doesn't have proper locale support we should rebuild
   // tolower/toupper tables
