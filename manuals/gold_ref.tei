@@ -1677,7 +1677,7 @@ ADDRESSMACRO dn,@INTERNET/david@csource.oz.au,2:241/999]]></eg>
           Parameters:
         </label>
         <item>
-          <ident/Path/ where you keep your <name/AdeptXBBS/.
+          The <ident/path/ where you keep your <name/AdeptXBBS/.
         </item>
         <label>
           Processed by:
@@ -1689,8 +1689,8 @@ ADDRESSMACRO dn,@INTERNET/david@csource.oz.au,2:241/999]]></eg>
           See also:
         </label>
         <item>
-          <ref target=ADEPTXBBSUSERNO><kw/ADEPTXBBSUSERNO/</ref>,
-          <ptr target=AREACONFIGURATION> chapter
+          <ptr target=AREACONFIGURATION> chapter,
+          <ref target=ADEPTXBBSUSERNO><kw/ADEPTXBBSUSERNO/</ref>
         </item>
       </list>
     </div2>
@@ -1737,8 +1737,8 @@ ADDRESSMACRO dn,@INTERNET/david@csource.oz.au,2:241/999]]></eg>
           See also:
         </label>
         <item>
-          <ref target=ADEPTXBBSPATH><kw/ADEPTXBBSPATH/</ref>,
           <ptr target=AREACONFIGURATION> chapter,
+          <ref target=ADEPTXBBSPATH><kw/ADEPTXBBSPATH/</ref>,
           <ref target=EZYCOMUSERNO><kw/EZYCOMUSERNO/</ref>,
           <ref target=FIDOUSERNO><kw/FIDOUSERNO/</ref>,
           <ref target=GOLDBASEUSERNO><kw/GOLDBASEUSERNO/</ref>,
@@ -3271,6 +3271,7 @@ AREAEXCL INT*.*   ; Excludes all areas beginning with INT and
           <ref target=AREAFORWARDDIRECT><kw/AREAFORWARDDIRECT/</ref>,
           <ref target=AREAFREQTO><kw/AREAFREQTO/</ref>,
           <ref target=AREAREPLYDIRECT><kw/AREAREPLYDIRECT/</ref>,
+          <ref target=ATTRIBSFRQ><kw/ATTRIBSFRQ/</ref>,
           <ref target=FRQEXT><kw/FRQEXT/</ref>,
           <ref target=FRQNODEMAP><kw/FRQNODEMAP/</ref>,
           <ref target=FRQOPTIONS><kw/FRQOPTIONS/</ref>,
@@ -3331,6 +3332,7 @@ AREAEXCL INT*.*   ; Excludes all areas beginning with INT and
           <ref target=AREAFREQDIRECT><kw/AREAFREQDIRECT/</ref>,
           <ref target=AREAREPLYTO><kw/AREAREPLYTO/</ref>,
           <ref target=AREAYOUWROTETO><kw/AREAYOUWROTETO/</ref>,
+          <ref target=ATTRIBSFRQ><kw/ATTRIBSFRQ/</ref>,
           <ref target=FRQEXT><kw/FRQEXT/</ref>,
           <ref target=FRQNODEMAP><kw/FRQNODEMAP/</ref>,
           <ref target=FRQOPTIONS><kw/FRQOPTIONS/</ref>,
@@ -4733,7 +4735,7 @@ AREARENAME LOCAL001 BBS.USERS</eg>
         <item>
           This keyword controls whether <!-- FIX ME!!! --><kw/READcommentmsg/,
           <!-- FIX ME!!! --><kw/READquotemsg/, and
-          <!-- FIX ME!!! --><kw/READcommentmsg/ functions should reply
+          <!-- FIX ME!!! --><kw/READreplymsg/ functions should reply
           to the different area bypassing area selection screen. The
           destination area is choosen as follows:
           <list type=simple>
@@ -4787,7 +4789,7 @@ AREARENAME LOCAL001 BBS.USERS</eg>
         <item>
           <!-- FIX ME!!! --><kw/READcommentmsg/,
           <!-- FIX ME!!! --><kw/READquotemsg/,
-          <!-- FIX ME!!! --><kw/READcommentmsg/,
+          <!-- FIX ME!!! --><kw/READreplymsg/,
           <ref target=AREACOPYDIRECT><kw/AREACOPYDIRECT/</ref>,
           <ref target=AREAFORWARDDIRECT><kw/AREAFORWARDDIRECT/</ref>,
           <ref target=AREAFREQDIRECT><kw/AREAFREQDIRECT/</ref>,
@@ -5280,46 +5282,161 @@ AREASEP &excl;C "Group C" C Local]]></eg>
         </item>
       </list>
     </div2>
+    <div2 id=AREAYOUWROTETO>
+      <head>
+        AREAYOUWROTETO
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREAYOUWROTETO/ <ident/&lt;echoid&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          <name/GoldED+/ automatically copies mails written by yourself to the
+          given area when saving a new mail. <name/GoldED+/ will also add an
+          <gi/AREA/ kludge so you can see from which area the mail originally
+          is copied from.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The default destination area for the mails written by you.
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          This keyword can be used globally and in a
+          <ref target=RANDOMSYSTEM>Random System</ref> group.<lb>
+          The mail will not be copied if you use
+          <!-- FIX ME!!! -->READchangemsg function.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=AREACFMREPLYTO><kw/AREACFMREPLYTO/</ref>,
+          <ref target=AREACOPYTO><kw/AREACOPYTO/</ref>,
+          <ref target=AREAFREQTO><kw/AREAFREQTO/</ref>,
+          <ref target=AREAREPLYTO><kw/AREAREPLYTO/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2>
+      <head>
+        ASKDELORIG
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/ASKDELORIG/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword allows to automatically delete mail in netmail and local
+          area after replying on it.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If enabled, you will be asked if the message you just replied to
+          should be deleted. Otherwise it is left untouched.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/NO/
+        </item>
+        <label>
+          Note:
+        </label>
+        <item>
+          This keyword is only functional in netmail and local areas.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <!-- FIX ME!!! --><kw/READcommentmsg/,
+          <!-- FIX ME!!! --><kw/READmovecommentmsg/,
+          <!-- FIX ME!!! --><kw/READmovequotemsg/,
+          <!-- FIX ME!!! --><kw/READquotemsg/,
+          <!-- FIX ME!!! --><kw/READreplymsg/,
+          <ref target=AREALISTFORMAT><kw/AREALISTFORMAT/</ref>,
+          <ref target=AREALISTECHOMAX><kw/AREALISTECHOMAX/</ref>,
+          <ref target=AREALISTTYPE><kw/AREALISTTYPE/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2 id=ATTACHPATH>
+      <head>
+        ATTACHPATH
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/ATTACHPATH/ <ident/&lt;path&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Defines the default path when selecting files for attachement.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The default <ident/path/ for the fileattach feature.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ptr target=MESSAGEATTRS> chapter,
+          <ptr target=FILESELECTION> chapter,
+          <ref target=ATTRIBSATTACH><kw/ATTRIBSATTACH/</ref>
+        </item>
+      </list>
+    </div2>
 
 
 <!-- finished here -->
 
 
-    <div2 id=AREAYOUWROTETO>
-      <head>
-        AREAYOUWROTETO &lt;echoid&gt;
-      </head>
-      <p>
-        <name>GoldED+</name> automatically copies mails written by yourself to
-        the given area when saving a new mail. <name>GoldED+</name> will also
-        add an <gi>AREA</gi> kludge so you can see from which area the mail
-        originally is copied from.
-      </p>
-      <p>
-        This keyword can be used globally and in Random System group.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        ASKDELORIG &lt;(yes)/no&gt;
-      </head>
-      <p>
-        If enabled, you will be asked if the message you just replied to should
-        be deleted. Otherwise it is left untouched.
-      </p>
-      <p>
-        This keyword is only functional in netmail and local areas.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        ATTACHPATH &lt;path&gt;
-      </head>
-      <p>
-        Defines the default &lt;path&gt; when selecting files for attachement.
-      </p>
-    </div2>
-    <div2>
+    <div2 id=ATTRIBSATTACH>
       <head>
         ATTRIBSATTACH &lt;attributes&gt;
       </head>
@@ -5362,7 +5479,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
         Defines the default attributes of messages entered in e-mail areas.
       </p>
     </div2>
-    <div2>
+    <div2 id=ATTRIBSFRQ>
       <head>
         ATTRIBSFRQ &lt;attributes&gt;
       </head>
@@ -11381,59 +11498,66 @@ will be picked randomly (hence the name "Random System"), while <name>GoldED+</n
 collects items when entering an area.
       </p>
       <p>
-Random Item Keywords:
-  AKA
-  AKAMATCHING
-  AREACOPYDIRECT
-  AREACOPYTO
-  AREAFREQDIRECT
-  AREAFREQTO
-  AREAREPLYDIRECT
-  AREAREPLYTO
-  AREAYOUWROTETO
-  ATTRIBUTES
-  CTRLINFO
-  EDITHARDTERM
-  EDITMIXCASE
-  EDITREPLYRE
-  FORCETEMPLATE
-  INPUTFILE
-  INTERNETADDRESS
-  INTERNETGATE
-  INTERNETMSGID
-  INTERNETRFCBODY
-  LOADLANGUAGE
-  MSGLISTDATE
-  MSGLISTFAST
-  MSGLISTFIRST
-  MSGLISTHEADER
-  MSGLISTWIDESUBJ
-  NETNAME
-  NICKNAME
-  ORGANIZATION
-  ORIGIN
-  OUTPUTFILE
-  PLAY
-  QUOTEBUFFILE
-  QUOTECHARS
-  QUOTESTRING
-  QUOTEWRAPHARD
-  SEARCHFOR
-  TAGLINE
-  TAGLINECHAR
-  TEARLINE
-  TEMPLATE
-  TEMPLATEMATCH
-  TWITMODE
-  USEFWD
-  USERNAME
-  USETZUTC
-  VIEWHIDDEN
-  VIEWKLUDGE
-  VIEWQUOTE
-  WHOTO
-  XLATEXPORT
-  XLATIMPORT
+        Random Item Keywords: <ptr target=AKA><kw/AKA/</ref>,
+        <ptr target=AKAMATCHING><kw/AKAMATCHING/</ref>,
+        <ptr target=AREACOPYADDID><kw/AREACOPYADDID/</ref>,
+        <ptr target=AREACOPYDIRECT><kw/AREACOPYDIRECT/</ref>,
+        <ptr target=AREACOPYTO><kw/AREACOPYTO/</ref>,
+        <ptr target=AREAFORWARDDIRECT><kw/AREAFORWARDDIRECT/</ref>,
+        <ptr target=AREAFREQDIRECT><kw/AREAFREQDIRECT/</ref>,
+        <ptr target=AREAFREQTO><kw/AREAFREQTO/</ref>,
+        <ptr target=AREAREPLYDIRECT><kw/AREAREPLYDIRECT/</ref>,
+        <ptr target=AREAREPLYTO><kw/AREAREPLYTO/</ref>,
+        <ptr target=AREAYOUWROTETO><kw/AREAYOUWROTETO/</ref>,
+        <ptr target=ATTRIBUTES><kw/ATTRIBUTES/</ref>,
+        <ptr target=CTRLINFO><kw/CTRLINFO/</ref>,
+        <ptr target=EDITHARDTERM><kw/EDITHARDTERM/</ref>,
+        <ptr target=EDITMIXCASE><kw/EDITMIXCASE/</ref>,
+        <ptr target=EDITREPLYRE><kw/EDITREPLYRE/</ref>,
+        <ptr target=FORCETEMPLATE><kw/FORCETEMPLATE/</ref>,
+        <ptr target=INPUTFILE><kw/INPUTFILE/</ref>,
+        <ptr target=INTERNETADDRESS><kw/INTERNETADDRESS/</ref>,
+        <ptr target=INTERNETGATE><kw/INTERNETGATE/</ref>,
+        <ptr target=INTERNETMSGID><kw/INTERNETMSGID/</ref>,
+        <ptr target=INTERNETRFCBODY><kw/INTERNETRFCBODY/</ref>,
+        <ptr target=LOADLANGUAGE><kw/LOADLANGUAGE/</ref>,
+        <ptr target=MEMBER><kw/MEMBER/</ref>,
+        <ptr target=MSGLISTDATE><kw/MSGLISTDATE/</ref>,
+        <ptr target=MSGLISTFAST><kw/MSGLISTFAST/</ref>,
+        <ptr target=MSGLISTFIRST><kw/MSGLISTFIRST/</ref>,
+        <ptr target=MSGLISTHEADER><kw/MSGLISTHEADER/</ref>,
+        <ptr target=MSGLISTWIDESUBJ><kw/MSGLISTWIDESUBJ/</ref>,
+        <ptr target=NICKNAME><kw/NICKNAME/</ref>,
+        <ptr target=NETNAME><kw/NETNAME/</ref>,
+        <ptr target=ORGANIZATION><kw/ORGANIZATION/</ref>,
+        <ptr target=ORIGIN><kw/ORIGIN/</ref>,
+        <ptr target=OUTPUTFILE><kw/OUTPUTFILE/</ref>,
+        <ptr target=PLAY><kw/PLAY/</ref>,
+        <ptr target=QUOTEBUFFILE><kw/QUOTEBUFFILE/</ref>,
+        <ptr target=QUOTECHARS><kw/QUOTECHARS/</ref>,
+        <ptr target=QUOTECTRL><kw/QUOTECTRL/</ref>,
+        <ptr target=QUOTESTRING><kw/QUOTESTRING/</ref>,
+        <ptr target=QUOTESTOPS><kw/QUOTESTOPS/</ref>,
+        <ptr target=QUOTEWRAPHARD><kw/QUOTEWRAPHARD/</ref>,
+        <ptr target=SEARCHFOR><kw/SEARCHFOR/</ref>,
+        <ptr target=TAGLINE><kw/TAGLINE/</ref>,
+        <ptr target=TAGLINECHAR><kw/TAGLINECHAR/</ref>,
+        <ptr target=TAGLINESUPPORT><kw/TAGLINESUPPORT/</ref>,
+        <ptr target=TEARLINE><kw/TEARLINE/</ref>,
+        <ptr target=TEMPLATE><kw/TEMPLATE/</ref>,
+        <ptr target=TEMPLATEMATCH><kw/TEMPLATEMATCH/</ref>,
+        <ptr target=TWITMODE><kw/TWITMODE/</ref>,
+        <ptr target=USEAREA><kw/USEAREA/</ref>,
+        <ptr target=USEFWD><kw/USEFWD/</ref>,
+        <ptr target=USERNAME><kw/USERNAME/</ref>,
+        <ptr target=USETZUTC><kw/USETZUTC/</ref>,
+        <ptr target=VIEWHIDDEN><kw/VIEWHIDDEN/</ref>,
+        <ptr target=VIEWKLUDGE><kw/VIEWKLUDGE/</ref>,
+        <ptr target=VIEWQUOTE><kw/VIEWQUOTE/</ref>,
+        <ptr target=WHOTO><kw/WHOTO/</ref>,
+        <ptr target=WRITETEMPLATE><kw/WRITETEMPLATE/</ref>,
+        <ptr target=XLATEXPORT><kw/XLATEXPORT/</ref>,
+        <ptr target=XLATIMPORT><kw/XLATIMPORT/</ref>.
       </p>
       <p>
 See the Configuration Keyword Reference chapter for details about each
@@ -12202,11 +12326,8 @@ done in the GOLDKEYS.CFG file, which also handles macro definition
       </p>
     <div2>
       <head>
-        Arealist commands
+        Arealist Commands
       </head>
-      <p>
-:
-      </p>
       <p>
 AREAabort               Abort the arealist.
 AREAaskexit             Exit <name>GoldED+</name>, prompt for final decision.
@@ -12236,11 +12357,8 @@ AREAzap                 Zap highwatermarks.
     </div2>
     <div2>
       <head>
-        Internal editor commands
+        Internal Editor Commands
       </head>
-      <p>
-:
-      </p>
       <p>
 EDITabort               Abort editing this message - ask first.
 EDITanchor              Set a block "anchor" on the current line.
@@ -12310,13 +12428,10 @@ EDITundelete            Undelete previously deleted lines.
 EDITzapquotebelow       Deletes quotes below.
       </p>
     </div2>
-    <div2>
+    <div2 id=FILESELECTION>
       <head>
-        File selection commands
+        File Selection Commands
       </head>
-      <p>
-:
-      </p>
       <p>
 FILEabort               Abort file selection.
 FILEaskexit             Exit <name>GoldED+</name> - ask first.
@@ -12336,11 +12451,8 @@ FILEunmarkall           Unmark all files.
     </div2>
     <div2>
       <head>
-        Message lister commands
+        Message Lister Commands
       </head>
-      <p>
-:
-      </p>
       <p>
 LISTabort               Abort message lister.
 LISTaskexit             Exit <name>GoldED+</name> - ask first.
@@ -12361,11 +12473,8 @@ LISTtogglewidesubj      Toggle between wide and short subject.
     </div2>
     <div2>
       <head>
-        Nodelist browser commands
+        Nodelist Browser Commands
       </head>
-      <p>
-:
-      </p>
       <p>
 NODEabort               Abort nodelist browsing.
 NODEaskexit             Exit <name>GoldED+</name> - ask first.
@@ -12380,11 +12489,8 @@ NODEselect              Select node.
     </div2>
     <div2>
       <head>
-        Message reader commands
+        Message Reader Commands
       </head>
-      <p>
-:
-      </p>
       <p>
 READaddressbookadd      Add current/marked mail writer(s) to
                         addressbook. Ask first.
@@ -12469,11 +12575,8 @@ READwritemsg            Write message(s) to file or printer.
     </div2>
     <div2>
       <head>
-        Key undefine commands
+        Key Undefine Commands
       </head>
-      <p>
-:
-      </p>
       <p>
 AREAundefine
 EDITundefine
