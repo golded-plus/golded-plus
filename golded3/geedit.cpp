@@ -979,6 +979,10 @@ void IEclass::insertchar(char __ch) {
       if(currline->prev and not currline->prev->txt.empty() and
          (currline->prev->txt.find('\n') == currline->prev->txt.npos) and
          not isspace(currline->prev->txt[currline->prev->txt.length()-1])) {
+        if(not batch_mode) {
+          Undo->PushItem(EDIT_UNDO_VOID);
+          batch_mode = BATCH_MODE;
+        }
         GoUp();
         GoEOL();
       }
@@ -1038,8 +1042,12 @@ void IEclass::DelChar() {
     _thisline->txt.erase(col, 1);
     batch_mode = BATCH_MODE;
   }
-  else if((col == _thislen) && _nextline) {
+  else if(col and (col == _thislen) and _nextline) {
     GFTRK(NULL);
+    if(not batch_mode) {
+      Undo->PushItem(EDIT_UNDO_VOID);
+      batch_mode = BATCH_MODE;
+    }
     GoRight();
     DelChar();
     return;
@@ -1123,6 +1131,10 @@ void IEclass::DelLeft() {
     }
 
   // Go left(/up) and delete the character there
+  if(not batch_mode) {
+    Undo->PushItem(EDIT_UNDO_VOID);
+    batch_mode = BATCH_MODE;
+  }
   GoLeft();
   DelChar();
 
@@ -1324,8 +1336,9 @@ void IEclass::DupLine() {
   GFTRK("EditDupLine");
 
   Undo->PushItem(EDIT_UNDO_VOID);
+  batch_mode = BATCH_MODE;
   
-  Line* _nextline = insertlinebelow(currline, currline->txt.c_str(), BATCH_MODE);
+  Line* _nextline = insertlinebelow(currline, currline->txt.c_str(), batch_mode);
   _nextline->type   = currline->type & ~GLINE_BLOK;
   _nextline->color  = currline->color;
   _nextline->kludge = currline->kludge;
@@ -1861,8 +1874,13 @@ void IEclass::Reflow() {
 
   // Skip empty lines
   while(isempty()) {
-    if(currline->next)
+    if(currline->next) {
+      if(not batch_mode) {
+        Undo->PushItem(EDIT_UNDO_VOID);
+        batch_mode = BATCH_MODE;
+      }
       GoDown();
+    }
     else {
       GFTRK(NULL);
       return;
@@ -1879,7 +1897,7 @@ void IEclass::Reflow() {
   const char* ptr = _qlenptr;
   while(*ptr and isspace(*ptr) and (*ptr != '\n')) ptr++;
   if(ptr != _qlenptr) {
-    Undo->PushItem(EDIT_UNDO_DEL_TEXT, currline, _qlen1, ptr-_qlenptr);
+    Undo->PushItem(EDIT_UNDO_DEL_TEXT|batch_mode, currline, _qlen1, ptr-_qlenptr);
     currline->txt.erase(_qlen1, ptr-_qlenptr);
   }
 
