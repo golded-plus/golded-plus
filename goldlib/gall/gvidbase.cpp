@@ -98,7 +98,7 @@ extern WCHAR oem2unicode[]; // defined in gutlwin.cpp
 
 inline WCHAR gvid_tcpr(vchar chr) {
 
-  return oem2unicode[chr];
+  return oem2unicode[chr & 0xff];
 }
 
 #endif

@@ -72,14 +72,14 @@ void gbmh::init(const char* pattern, bool ignorecase) {
   for(i=0; i<256; i++)
     skip[i] = patlen;
   for(i=0; i<patlen; i++) {
-    skip[pat[i]] = patlen - i - 1;
+    skip[pat[i] & 0xff] = patlen - i - 1;
     if(ignore_case)
-      skip[tolower(pat[i])] = patlen - i - 1;
+      skip[tolower((unsigned char)pat[i])] = patlen - i - 1;
   }
   char lastpatchar = pat[patlen - 1];
-  skip[lastpatchar] = INT_MAX;
+  skip[lastpatchar & 0xff] = INT_MAX;
   if(ignore_case)
-    skip[tolower(lastpatchar)] = INT_MAX;
+    skip[tolower((unsigned char)lastpatchar)] = INT_MAX;
 
   // Horspool's fixed second shift
   skip2 = patlen;
@@ -103,7 +103,7 @@ bool gbmh::find(const char* buffer) {
 
   while(1) {
 
-    while((i += skip[buffer[i]]) < 0)
+    while((i += skip[buffer[i] & 0xff]) < 0)
       ;
 
     if(i < (INT_MAX - buflen))
@@ -114,7 +114,7 @@ bool gbmh::find(const char* buffer) {
     const char* s = buffer + (i - j);
 
     if(ignore_case) {
-      while(--j >= 0 and toupper(s[j]) == pat[j])
+      while(--j >= 0 and toupper((unsigned char)s[j]) == pat[j])
         ;
     }
     else {

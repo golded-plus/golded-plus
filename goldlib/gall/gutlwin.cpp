@@ -314,7 +314,7 @@ int g_put_clip_text(const char *Data) {
             if((*Data == '\r') or (*Data == '\n') or (*Data == '\t'))
               *UData++ = *Data++; // no translation for real control chars
             else
-              *UData++ = oem2unicode[*Data++];
+              *UData++ = oem2unicode[*Data++ & 0xff];
           }
           *UData = 0;
           GlobalUnlock(hData);

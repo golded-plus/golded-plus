@@ -421,7 +421,7 @@ void Rot13(GMsg* msg) {
     if(not (line->type & (GLINE_KLUDGE|GLINE_TEAR|GLINE_ORIG))) {
       for(ptr = 0; ptr != line->txt.length(); ptr++) {
         c = line->txt[ptr];
-        line->txt[ptr] = ROT13_DECODE(c);
+        line->txt[ptr] = ROT13_DECODE(c & 0xff);
       }
     }
     line = line->next;

@@ -57,8 +57,8 @@ void uucode_engine::initialize() {
     table.ch[i] = j;
   for(i=' '+64; i<256; i++)
     table.ch[i] = -1;
-  table.ch['`'] = table.ch[' '];  // A common mutation
-  table.ch['~'] = table.ch['^'];  // Another common mutation
+  table.ch['`' & 0xff] = table.ch[' ' & 0xff];  // A common mutation
+  table.ch['~' & 0xff] = table.ch['^' & 0xff];  // Another common mutation
   table.blank = ' ';
 
   // Set up the line length table, to avoid computing lotsa * and / ...
@@ -108,7 +108,7 @@ char* uucode_engine::decode(char* outputbuffer, const char* inputbuffer) {
     while((c = *p) != 0) {
       if(table_index == 0)
         table.blank = c;
-      table.ch[c] = table_index++;
+      table.ch[c & 0xff] = table_index++;
       if(table_index >= 64) {
         defining_table = false;
         break;
@@ -119,7 +119,7 @@ char* uucode_engine::decode(char* outputbuffer, const char* inputbuffer) {
   }
 
   // Get the binary line length.
-  int n = table.ch[*buf];
+  int n = table.ch[*buf & 0xff];
   if(n > 0) {
 
     // Pad with blanks.
@@ -134,14 +134,14 @@ char* uucode_engine::decode(char* outputbuffer, const char* inputbuffer) {
     // Output a group of 3 bytes (4 input characters).
     i = buf + 1;
     while(n > 0) {
-      *(o++) = (char)((table.ch[*i] << 2) | (table.ch[i[1]] >> 4));
+      *(o++) = (char)((table.ch[*i & 0xff] << 2) | (table.ch[i[1] & 0xff] >> 4));
       n--;
       if(n) {
-        *(o++) = (char)((table.ch[i[1]] << 4) | (table.ch[i[2]] >> 2));
+        *(o++) = (char)((table.ch[i[1] & 0xff] << 4) | (table.ch[i[2] & 0xff] >> 2));
         n--;
       }
       if(n) {
-        *(o++) = (char)((table.ch[i[2]] << 6) | table.ch[i[3]]);
+        *(o++) = (char)((table.ch[i[2] & 0xff] << 6) | table.ch[i[3] & 0xff]);
         n--;
       }
       i += 4;

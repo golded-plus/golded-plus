@@ -42,26 +42,26 @@ mail_ctype::mail_ctype() {
   memset(table+'A', mail_char|mail_alpha, ('Z'-'A'+1)*sizeof(uint));
   memset(table+'a', mail_char|mail_alpha, ('z'-'a'+1)*sizeof(uint));
   memset(table+128, 0,                    128*sizeof(uint));
-  table[127]  |= mail_ctl;
-  table[0]    |= mail_delimiters;
-  table[' ']  |= mail_delimiters | mail_lwsp;
-  table[HT]   |= mail_delimiters | mail_lwsp;
-  table['(']  |= mail_delimiters | mail_special | mime_tspecial | mime_especial;
-  table[')']  |= mail_delimiters | mail_special | mime_tspecial | mime_especial;
-  table['<']  |= mail_delimiters | mail_special | mime_tspecial | mime_especial;
-  table['>']  |= mail_delimiters | mail_special | mime_tspecial | mime_especial;
-  table['@']  |= mail_delimiters | mail_special | mime_tspecial | mime_especial;
-  table[',']  |= mail_delimiters | mail_special | mime_tspecial | mime_especial;
-  table[';']  |= mail_delimiters | mail_special | mime_tspecial | mime_especial;
-  table[':']  |= mail_delimiters | mail_special | mime_tspecial | mime_especial;
-  table['\\'] |= mail_delimiters | mail_special | mime_tspecial | mime_especial;
-  table['\"'] |= mail_delimiters | mail_special | mime_tspecial | mime_especial;
-  table['[']  |= mail_delimiters | mail_special | mime_tspecial | mime_especial;
-  table[']']  |= mail_delimiters | mail_special | mime_tspecial | mime_especial;
-  table['.']  |= mail_delimiters | mail_special                 | mime_especial;
-  table['/']  |=                                  mime_tspecial | mime_especial;
-  table['?']  |=                                  mime_tspecial | mime_especial;
-  table['=']  |=                                  mime_tspecial | mime_especial;
+  table[127  & 0xff] |= mail_ctl;
+  table[0    & 0xff] |= mail_delimiters;
+  table[' '  & 0xff] |= mail_delimiters | mail_lwsp;
+  table[HT   & 0xff] |= mail_delimiters | mail_lwsp;
+  table['('  & 0xff] |= mail_delimiters | mail_special | mime_tspecial | mime_especial;
+  table[')'  & 0xff] |= mail_delimiters | mail_special | mime_tspecial | mime_especial;
+  table['<'  & 0xff] |= mail_delimiters | mail_special | mime_tspecial | mime_especial;
+  table['>'  & 0xff] |= mail_delimiters | mail_special | mime_tspecial | mime_especial;
+  table['@'  & 0xff] |= mail_delimiters | mail_special | mime_tspecial | mime_especial;
+  table[','  & 0xff] |= mail_delimiters | mail_special | mime_tspecial | mime_especial;
+  table[';'  & 0xff] |= mail_delimiters | mail_special | mime_tspecial | mime_especial;
+  table[':'  & 0xff] |= mail_delimiters | mail_special | mime_tspecial | mime_especial;
+  table['\\' & 0xff] |= mail_delimiters | mail_special | mime_tspecial | mime_especial;
+  table['\"' & 0xff] |= mail_delimiters | mail_special | mime_tspecial | mime_especial;
+  table['['  & 0xff] |= mail_delimiters | mail_special | mime_tspecial | mime_especial;
+  table[']'  & 0xff] |= mail_delimiters | mail_special | mime_tspecial | mime_especial;
+  table['.'  & 0xff] |= mail_delimiters | mail_special                 | mime_especial;
+  table['/'  & 0xff] |=                                  mime_tspecial | mime_especial;
+  table['?'  & 0xff] |=                                  mime_tspecial | mime_especial;
+  table['='  & 0xff] |=                                  mime_tspecial | mime_especial;
 }
 
 
