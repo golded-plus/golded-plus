@@ -556,6 +556,7 @@ void DoKludges(int mode, GMsg* msg, bool attronly) {
       if(*msg->ito) {
         sprintf(buf, "To: %s\r", msg->ito);
         line = AddKludge(line, buf);
+        line->kludge = GKLUD_RFC;
       }
     }
   }
