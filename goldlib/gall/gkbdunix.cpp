@@ -162,7 +162,7 @@ void gkbd_tty_reset() {
 
 int gkbd_sys_input_pending(int tsecs) {
 
-#if not defined(__BEOS__)
+#if !defined(__BEOS__)
   static fd_set read_fd_set;
   struct timeval wait;
   long usecs, secs;
