@@ -1,0 +1,71 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.\" First parameter, NAME, should be all caps
+.\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
+.\" other parameters are allowed: see man(7), man(1)
+.TH GOLDNODE 1 "September 2000"
+.\" Please adjust this date whenever revising the manpage.
+.\"
+.\" Some roff macros, for reference:
+.\" .nh        disable hyphenation
+.\" .hy        enable hyphenation
+.\" .ad l      left justify
+.\" .ad b      justify to both left and right margins
+.\" .nf        disable filling
+.\" .fi        enable filling
+.\" .br        insert line break
+.\" .sp <n>    insert n+1 empty lines
+.\" for manpage-specific macros, see man(7)
+.SH NAME
+goldnode \- GoldEd+ nodelist compiler
+.SH SYNOPSIS
+.B goldnode
+.RI [ -options "] [" configfile ]
+.SH DESCRIPTION
+This manual page documents briefly the command line parameters of
+.BR goldnode ,
+the nodelist compiler for GoldEd+.
+.\" This manual page was written for the Debian GNU/Linux distribution
+.\" because the original program does not have a manual page.
+.\" Instead, it has documention-in-progress that is copied to the
+.\" /usr/share/doc/goldedplus directory.
+.SH OPTIONS
+.TP
+.B \-?
+Show summary of options.
+.TP
+.B \-C
+Conditional compile.
+.TP
+.B \-F
+Forced compile.
+.TP
+.B \-D
+Remove duplicate nodes from index while compiling.
+.TP
+.B \-Q
+Quiet compile. No screen output improves speed.
+.TP
+.BI \-S <size>
+Set max size of a name in the index.
+.TP
+.BI \-U <file>
+Create sorted FIDOUSER.LST userlist file.
+.TP
+.I [configfile]
+The
+.I <configfile>
+is the path and filename of the GOLDED.CFG configuration file to read. If no
+filename is given, the path specified with the GOLDNODE or GOLDED
+environment variables are used.
+.SH ENVIRONMENT
+.TP
+.B GOLDNODE
+The path where GoldNODE can find a GOLDED.CFG to use.
+.SH SEE ALSO
+.BR golded (1).
+.SH AUTHOR
+GoldEd is copyright (C) 1990-1999 Odinn Sorensen
+.PP
+GoldEd+ is copyright (C) 1999-2000 Alexander S. Aganichev
+.PP
+This manual page was written by peter karlsson

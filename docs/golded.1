@@ -1,0 +1,157 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.\" First parameter, NAME, should be all caps
+.\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
+.\" other parameters are allowed: see man(7), man(1)
+.TH GOLDED 1 "September 2000"
+.\" Please adjust this date whenever revising the manpage.
+.\"
+.\" Some roff macros, for reference:
+.\" .nh        disable hyphenation
+.\" .hy        enable hyphenation
+.\" .ad l      left justify
+.\" .ad b      justify to both left and right margins
+.\" .nf        disable filling
+.\" .fi        enable filling
+.\" .br        insert line break
+.\" .sp <n>    insert n+1 empty lines
+.\" for manpage-specific macros, see man(7)
+.SH NAME
+golded \- offline message reader for Fidonet and Usenet
+.SH SYNOPSIS
+.B golded
+.RI [ -options "] [" keystacking ]
+.SH DESCRIPTION
+This manual page documents briefly the command line parameters of
+.BR GoldEd+ 
+(binary file
+.IR golded ).
+.\" This manual page was written for the Debian GNU/Linux distribution
+.\" because the original program does not have a manual page.
+.\" Instead, it has documention-in-progress that is copied to the
+.\" /usr/share/doc/goldedplus directory.
+.SH OPTIONS
+.TP
+.BR \-? " or " \-H
+Displays a help screen with all available commandline options.
+.TP
+.BI \-C <configfile>
+Specifies another configuration file than the default
+.BR GOLDED.CFG .
+.TP
+.B \-D
+Disable old configuration keywords. For backward compatibility, GoldED+
+still supports a number of old names for some configuration keywords. I
+recommend that you use
+.B \-D
+sometimes and rename the keywords that are reported as unknown.
+.TP
+.BI \-E <echoid>
+If specified, GoldED+ starts directly in the specified echo, bypassing the
+arealist screen. See the AREASTART configuration keyword for more info.
+.TP
+.B \-EXPORTSOUP
+Calls the SOUP packet export feature during the startup phase. This is the
+same as starting it from the areascan SOUP Packet->Export menu item. The
+SOUP export happens immediately after the regular startup area scanning (if
+that is enabled) and after SOUP import.
+.TP
+.B \-F
+Force recompile of most configuration files, but not all. Does not recompile
+the *.CHS files.
+.TP
+.B \-FF
+Force complete recompile of all configuration files, regardless of whether
+they are up-to-date or not. This is equivalent to deleting all the *.GE?
+files.
+.TP
+.BI \-INSTALL [=path]
+Start the quick install procedure. You should give a path to your other mail
+software if it cannot be found using environment variables or in current
+directory.
+.TP
+.B \-IMPORTSOUP
+Calls the SOUP packet import feature during the startup phase. This is the
+same as starting it from the areascan SOUP Packet->Import menu item. The
+SOUP import happens immediately after the regular startup area scanning (if
+that is enabled).
+.TP
+.B \-M
+Mute sounds. Disables all noises in GoldED+.
+.TP
+.B \-N
+No share. If used, this prevents GoldED+ from using SHARE compatible
+file-open calls, which are used by default. Works only until the SHAREMODE
+keyword is used in GOLDED.CFG. This keyword is normally not useful, but may
+be used to debug your setup or something.
+.TP
+.B \-NOSCAN
+Disable the automatic startup area scanning (if that is enabled). This is
+useful for automated SOUP import/export in a batch file. For example,
+.B -noscan -importsoup @x y
+imports SOUP then exits.
+.TP
+.B \-Q
+Quiet. Turns off verbose config compile. On by default. This could be used
+on the commandline to disable a
+-B \-V
+option in the GEDCMD environment variable.
+.TP
+.BI \-S <sortspec>
+Sort all areas according to
+-IR <sortspec> .
+See the AREALISTSORT config keyword for details.
+.TP
+.BI \-T <seconds>
+Set the timeout value. A value of zero (0) means never timeout. See the
+TIMEOUT config keyword for details.
+.TP
+.BR \-V
+Turns on verbose config compile. When used, GoldED+ will display the full
+filename of each main config file it compiles. It also displays the name of
+the detected multitasker, if any. This can be useful for debugging your
+setup, and see if GoldED+ accesses the files (especially the AREAFILE's) it
+is supposed to.
+.BR \-VV
+Same as \-V, but also displays all the active lines while compiling. This
+could be used to find the exact spot if it crashes or stops while compiling.
+.TP
+.B \-W
+If used, GoldED+ will create (and overwrite if existing) the file
+GOLDAREA.INC, which will then contain all areas in the AREADEF form, sorted
+by your AREALISTSORT specification. This is very useful for converting your
+AREAFILE's to a form you can edit with your favorite text editor and use in
+GoldED+. It is also useful if you have used the new AREADESC keyword or the
+AREAFILE EchoList reader. The GOLDAREA.INC file (created in the GOLDPATH)
+can be used by adding INCLUDE GOLDAREA.INC to your GOLDED.CFG or
+GOLDAREA.CFG. When creating the file, GoldED+ will use . if an aka is the
+same as the main aka, and leave out the optional origin if it's the same as
+the first ORIGIN in your GOLDED.CFG. This makes it easier to share the same
+GOLDAREA.INC between different setups.
+.TP
+.BR \-X ", " \-Y ", " \-Z
+Reserved for debugging purposes.
+.SH COMMANDLINE KEYSTACKING
+Any non-option characters on the commandline are stuffed into the keyboard
+buffer. See the chapter on keyboard definition and the KEYBSTACK keyword for
+more info.
+.SH ENVIRONMENT
+.TP
+.B GOLDED
+Path to the GOLDED.CFG file. It is recommended to set this variable, but
+don't forget to change it if you move your GoldED+ setup to a different
+directory!
+.TP
+.B GEDCMD
+Specifies additional commandline options. Use this if you want to specify
+options, but need to run GoldED without them (for example when renaming
+GOLDED.EXE to DBEDIT.EXE in older versions of D'Bridge). You can override
+the environment options with commandline options.
+.SH SEE ALSO
+.BR rddt (1),
+.BR goldnode (1).
+.SH AUTHOR
+GoldEd is copyright (C) 1990-1999 Odinn Sorensen
+.PP
+GoldEd+ is copyright (C) 1999-2000 Alexander S. Aganichev
+.PP
+This manual page was written by peter karlsson
