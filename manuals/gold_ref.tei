@@ -658,10 +658,12 @@ golded &lsqb;options&rsqb; &lsqb;keystacking&rsqb;</eg>
             startup area scanning (if that is enabled).
           </item>
           <label>
-            <code>-m</code>
+            <code/-m/
           </label>
           <item>
-            Mute. Disables all sounds in <name>GoldED+</name>.
+            Mute. Disables all sounds in <name/GoldED+/. The same functionality
+            provided by the <ptr ref=BEEPNOISES><kw/BEEPNOISES/</ref> keyword
+            in the configuration file.
           </item>
           <label>
             <code>-n</code>
@@ -5096,7 +5098,7 @@ AREASCAN INT*.*    ; Scan all areas beginning with INT and
           <table rows=9 cols=2>
             <row>
               <cell>
-                <ident>echoid</ident>
+                <ident/echoid/
               </cell>
               <cell>
                 Mail area identifier.
@@ -5112,7 +5114,7 @@ AREASCAN INT*.*    ; Scan all areas beginning with INT and
             </row>
             <row>
               <cell>
-                <ident>group</ident>
+                <ident/group/
               </cell>
               <cell>
                 Group ID uppercase letter (A-Z) or 0 if not in a group. Use
@@ -5121,7 +5123,7 @@ AREASCAN INT*.*    ; Scan all areas beginning with INT and
             </row>
             <row>
               <cell>
-                <ident>type</ident>
+                <ident/type/
               </cell>
               <cell>
                 <ident/Net/, <ident/Echo/, <ident/Local/, <ident/EMail/ or
@@ -5601,6 +5603,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
           <ref target=ATTRIBSNEWS><kw/ATTRIBSNEWS/</ref>,
           <ref target=ATTRIBUTES><kw/ATTRIBUTES/</ref>,
           <ref target=CONFIRMFILE><kw/CONFIRMFILE/</ref>,
+          <ref target=CONFIRMRESPONSE><kw/CONFIRMRESPONSE/</ref>,
           <ref target=RCVDISABLESCFM><kw/RCVDISABLESCFM/</ref>
         </item>
       </list>
@@ -6024,162 +6027,565 @@ AREASEP &excl;C "Group C" C Local]]></eg>
         </item>
       </list>
     </div2>
+    <div2 id=BEEPCOMMENT>
+      <head>
+        BEEPCOMMENT
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/BEEPCOMMENT/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword enables or disables noise when the cursor in the
+          internal editor is moved across a word defined with the
+          <ref target=EDITCOMMENT><kw/EDITCOMMENT/</ref> keyword.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If enabled, <name/GoldED+/ will make a noise, otherwise will not.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=BEEPFACTOR><kw/BEEPFACTOR/</ref>,
+          <ref target=BEEPLOCALMSG><kw/BEEPLOCALMSG/</ref>,
+          <ref target=BEEPNOISES><kw/BEEPNOISES/</ref>,
+          <ref target=BEEPYOURMAIL><kw/BEEPYOURMAIL/</ref>,
+          <ref target=EDITCOMMENT><kw/EDITCOMMENT/</ref>,
+          <ref target=EVENT><kw/EVENT/</ref>, <ref target=PLAY><kw/PLAY/</ref>,
+          <ref target=SOUNDPATH><kw/SOUNDPATH/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2 id=BEEPFACTOR>
+      <head>
+        BEEPFACTOR
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/BEEPFACTOR/ <ident/&lt;value&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword allows to change the noise speed made by the
+          <ref target=BEEPCOMMENT><kw/BEEPCOMMENT/</ref>,
+          <ref target=BEEPLOCALMSG><kw/BEEPLOCALMSG/</ref>,
+          <ref target=BEEPYOURMAIL><kw/BEEPYOURMAIL/</ref>,
+          <ref target=EVENT><kw/EVENT/</ref>, and
+          <ref target=PLAY><kw/PLAY/</ref> keywords.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The <ident/value/ specifies the constant to be used in noise speed
+          calculation.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/1000/
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          This keyword is valid <hi/ONLY/ in a
+          <ref target=RANDOMSYSTEM>Random System</ref> group.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=BEEPCOMMENT><kw/BEEPCOMMENT/</ref>,
+          <ref target=BEEPLOCALMSG><kw/BEEPLOCALMSG/</ref>,
+          <ref target=BEEPNOISES><kw/BEEPNOISES/</ref>,
+          <ref target=BEEPYOURMAIL><kw/BEEPYOURMAIL/</ref>,
+          <ref target=EVENT><kw/EVENT/</ref>, <ref target=PLAY><kw/PLAY/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2 id=BEEPLOCALMSG>
+      <head>
+        BEEPLOCALMSG
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/BEEPLOCALMSG/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword enables or disables noise when <name/GoldED+/ finds a
+          message with the <gi/LOC/ attribute set. This can be useful for the
+          sysop who wants to monitor the messages entered by users on his/her
+          <abbr/BBS/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If enabled, <name/GoldED+/ will make a noise, otherwise will not.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/NO/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ptr target=MESSAGEATTRS> chapter,
+          <ref target=BEEPCOMMENT><kw/BEEPCOMMENT/</ref>,
+          <ref target=BEEPFACTOR><kw/BEEPFACTOR/</ref>,
+          <ref target=BEEPNOISES><kw/BEEPNOISES/</ref>,
+          <ref target=BEEPYOURMAIL><kw/BEEPYOURMAIL/</ref>,
+          <ref target=DISPLOCALHIGH><kw/DISPLOCALHIGH/</ref>,
+          <ref target=EVENT><kw/EVENT/</ref>, <ref target=PLAY><kw/PLAY/</ref>,
+          <ref target=SOUNDPATH><kw/SOUNDPATH/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2 id=BEEPNOISES>
+      <head>
+        BEEPNOISES
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/BEEPNOISES/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This is the <hi/master switch/ for all noises in <name/GoldED+/. The
+          <code/-m/ commandline switch overrides this option.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If enabled, <name/GoldED+/ will make a noises, otherwise will keep
+          silence.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ptr target=COMMANDLINE> chapter,
+          <ref target=BEEPCOMMENT><kw/BEEPCOMMENT/</ref>,
+          <ref target=BEEPFACTOR><kw/BEEPFACTOR/</ref>,
+          <ref target=BEEPLOCALMSG><kw/BEEPLOCALMSG/</ref>,
+          <ref target=BEEPYOURMAIL><kw/BEEPYOURMAIL/</ref>,
+          <ref target=EVENT><kw/EVENT/</ref>, <ref target=PLAY><kw/PLAY/</ref>,
+          <ref target=SOUNDPATH><kw/SOUNDPATH/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2>
+      <head>
+        BEEPYOURMAIL
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/BEEPYOURMAIL/ <ident>&lt;YES/NO/ALWAYS&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword enables or disables noise when <name/GoldED+/ finds a
+          message to one of your <ref target=USERNAME><kw/USERNAME/</ref>'s.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If set to <ident/YES/, <name/GoldED+/ will make a noise if it finds
+          a non-received message. If set to <ident/ALWAYS/, <name/GoldED+/ will
+          make the noise even if it has already been marked as received.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=BEEPCOMMENT><kw/BEEPCOMMENT/</ref>,
+          <ref target=BEEPFACTOR><kw/BEEPFACTOR/</ref>,
+          <ref target=BEEPLOCALMSG><kw/BEEPLOCALMSG/</ref>,
+          <ref target=BEEPNOISES><kw/BEEPNOISES/</ref>,
+          <ref target=EVENT><kw/EVENT/</ref>, <ref target=PLAY><kw/PLAY/</ref>,
+          <ref target=SOUNDPATH><kw/SOUNDPATH/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2 id=CARBONCOPYLIST>
+      <head>
+        CARBONCOPYLIST
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/CARBONCOPYLIST/
+          <ident>&lt;KEEP/NAMES/VISIBLE/HIDDEN/REMOVE&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword specifies the format of the carbon copy list, as it will
+          look after processing. You can also change the format in the
+          <abbr/CC/ menu before processing.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The list specification items have the following meaning:
+          <table rows=5 cols=2>
+            <row>
+              <cell>
+                <ident/KEEP/
+              </cell>
+              <cell>
+                Keep the list as entered
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/NAMES/
+              </cell>
+              <cell>
+                Convert list to <q/CC: Name, Name, Name../ format
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/VISIBLE/
+              </cell>
+              <cell>
+                Convert list to <q/CC: Name Address/ format
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/HIDDEN/
+              </cell>
+              <cell>
+                Convert list to <q/^ACC: Name Address/ format
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/REMOVE/
+              </cell>
+              <cell>
+                Remove the list completely
+              </cell>
+            </row>
+          </table>
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/NAMES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <!-- FIX ME!!! -->Carbon Copy and Crossposting chapter
+        </item>
+      </list>
+    </div2>
+    <div2>
+      <head>
+        COLOR
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/COLOR/ <ident/&lt;colorspec&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Using this keyword you can define or redefine all the colors used
+          in <name/GoldED+/.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The detailed description for <kw/COLOR/ parameters provided in
+          <ptr target=COLORCONFIG> chapter.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ptr target=COLORCONFIG> chapter,
+          <ref target=COLORSET><kw/COLORSET/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2>
+      <head>
+        COLORSET
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/COLORSET/ <ident>&lt;NORMAL/INTENSE/MONO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Three color setups are built-in, and can be selected with this
+          keyword.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The <ident/NORMAL/ scheme has all black background, with bright
+          neon-like colors for the window frames. The <ident/INTENSE/ scheme
+          has all bright white background (this achieved by switching off the
+          <q/blink/ attribute, thereby enabling the use of intense (bright)
+          colors for the background (<ident/paper/) colors as well as the
+          foreground (<ident/ink/) colors). The <ident/MONO/ scheme is
+          optimized for the monochrome adapters.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          If color video adapter is detected then <ident/NORMAL/ color scheme
+          used, otherwise <ident/MONO/ scheme.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ptr target=COLORCONFIG> chapter,
+          <ref target=COLOR><kw/COLOR/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2 id=CONFIRMFILE>
+      <head>
+        CONFIRMFILE
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/CONFIRMFILE/ <ident/&lt;filename&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          <name/GoldED+/ supports the Confirmation Receipt attribute, as used
+          in FrontDoor 2.xx with the <gi/FLAGS CFM/ kludge. If <name/GoldED+/
+          finds an unreceived message to one of your
+          <ref target=USERNAME><kw/USERNAME/</ref>'s with the <gi/CFM/ (or
+          <gi/RRQ/) attribute set, it generates an automatic response message
+          from the content of the <kw/CONFIRMFILE/. In the file you can use
+          many of the template tokens to personalize the automatic message.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The <ident/filename/ specifies the name of the template file used
+          for the response message generation.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <code/golded.cfm/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ptr target=MESSAGEATTRS> chapter,
+          <ptr target=MESSAGETEMPLATE> chapter,
+          <ref target=AREACFMTO><kw/AREACFMTO/</ref>,
+          <ref target=ATTRIBSCFM><kw/ATTRIBSCFM/</ref>,
+          <ref target=CONFIRMRESPONSE><kw/CONFIRMRESPONSE/</ref>,
+          <ref target=RCVDISABLESCFM><kw/RCVDISABLESCFM/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2 id=CONFIRMRESPONSE>
+      <head>
+        CONFIRMRESPONSE
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/CONFIRMRESPONSE/ <ident>&lt;YES/NO/ASK&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          An unreceived message to you with the CFM attribute set tells
+          <name/GoldED+/ that the sender has requested a receipt that you have
+          read the message. With this keyword you tell <name/GoldED+/ what to
+          do when such a message is found.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          <ident/YES/ tells <name/GoldED+/ to always automatically generate the
+          receipt, <ident/NO/ cause to always ignore the requests, and if set
+          to <ident/ASK/ you will be prompted in each case.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/ASK/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ptr target=MESSAGEATTRS> chapter,
+          <ref target=AREACFMTO><kw/AREACFMTO/</ref>,
+          <ref target=ATTRIBSCFM><kw/ATTRIBSCFM/</ref>,
+          <ref target=CONFIRMFILE><kw/CONFIRMFILE/</ref>,
+          <ref target=CONFIRMRESPONSE><kw/CONFIRMRESPONSE/</ref>,
+          <ref target=RCVDISABLESCFM><kw/RCVDISABLESCFM/</ref>
+        </item>
+      </list>
+    </div2>
 
 
 <!-- finished here -->
 
 
-    <div2>
-      <head>
-        BEEPCOMMENT &lt;(yes)/no&gt;
-      </head>
-      <p>
-        If enabled, <name>GoldED+</name> will make a noise when the cursor in
-        the internal editor is moved across a word defined with the
-        <kw>EDITCOMMENT</kw> keyword.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        BEEPLOCALMSG &lt;yes/(no)&gt;
-      </head>
-      <p>
-        If enabled, <name>GoldED+</name> will make a noise if it finds a msg
-        with the <q>Local</q> (<gi>LOC</gi>) attributes set. This can be useful
-        for the sysop who wants to monitor the msgs entered by users on his/her
-        <abbr>BBS</abbr>.
-      </p>
-      <p>
-        A related keyword is <kw>DISPLOCALHIGH</kw>.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        BEEPNOISES &lt;(yes)/no&gt;
-      </head>
-      <p>
-        If enabled, <name>GoldED+</name> makes noises when it wants attention.
-      </p>
-      <p>
-        <hi>NOTE</hi>: This is the <q>master switch</q> for all noises in
-        <name>GoldED+</name>.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        BEEPYOURMAIL &lt;(yes)/no/always&gt;
-      </head>
-      <p>
-        If set to <ident>Yes</ident>, <name>GoldED+</name> will make a noise if
-        it finds a non-received message to one of your <kw>USERNAME</kw>'s. If
-        set to <ident>Always</ident>, <name>GoldED+</name> will make the noise
-        even if it has already been marked as received.
-      </p>
-    </div2>
-    <div2 id=CARBONCOPYLIST>
-      <head>
-        CARBONCOPYLIST &lt;listspec=Names&gt;
-      </head>
-      <p>
-        This specifies the format of the Carbon Copy list, as it will look
-        after processing. You can also change the format in the <abbr>CC</abbr>
-        menu before processing.
-      </p>
-      <p>
-        The &lt;listspec&gt; can be one of the following:
-      </p>
-      <p>
-      Keep      Keep the list as entered.
-      Names     Convert list to "CC: Name, Name, Name.." format.
-      Visible   Convert list to "CC: Name Address" format.
-      Hidden    Convert list to "^aCC: Name Address" format.
-      Remove    Remove the list completely.
-      </p>
-      <p>
-        More details can be found in the Carbon Copy and Crossposting chapter.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        COLOR &lt;colorspec&gt;
-      </head>
-      <p>
-    Using this keyword you can define or redefine all the colors used
-    in <name>GoldED+</name>. See the Color Configuration chapter for details.
-      </p>
-      <p>
-    A complete color setup consists of a quite a lot of <kw>COLOR</kw>
-    keywords, and it is normal practice to put them in a separate .CFG
-    file and use the <kw>INCLUDE</kw> keyword to let <name>GoldED+</name> read it. The COLORS
-    archive contains a number of example color/mono setups. Try them
-    out if you think the default colors stink :-)
-      </p>
-    </div2>
-    <div2>
-      <head>
-        COLORSET &lt;Normal/Intense/Mono&gt;
-      </head>
-      <p>
-  (Normal or Mono)
-      </p>
-      <p>
-    Three color setups are built-in, and can be selected with this
-    keyword.
-      </p>
-      <p>
-    The Normal set is the default when a color display adapter is
-    detected. The Normal set has all black background, with bright
-    neon-like colors for the window frames. Some hate it, some love
-    it. :-)
-      </p>
-      <p>
-    The Intense set switches off the "blink" attribute, thereby
-    enabling the use of intense (bright) colors for the background
-    ("paper") colors as well as the foreground ("ink") colors. This is
-    used in the Intense set to make a bright white background, sort of
-    like the standard Windows 3.0 setup.
-      </p>
-      <p>
-    The Mono set is the default when a monochrome adapter is detected.
-      </p>
-    </div2>
-    <div2 id=CONFIRMFILE>
-      <head>
-        CONFIRMFILE &lt;filename&gt;
-      </head>
-      <p>
-  (GOLDED.CFM)
-      </p>
-      <p>
-    <name>GoldED+</name> supports the Confirmation Receipt attribute, as used in
-    FrontDoor 2.xx with the FLAGS CFM kludge. If <name>GoldED+</name> finds an
-    unreceived message to one of your <kw>USERNAME</kw>'s with the CFM (or the
-    RRQ Return Receipt Request) attribute set, it generates an
-    automatic response message from the content of the <kw>CONFIRMFILE</kw>. In
-    the file you can use many of the template tokens to personalize
-    the automatic message. You can specify the default attributes for
-    the message with the <kw>ATTRIBSCFM</kw> keyword.
-      </p>
-      <p>
-    Template tokens are explained in the Message Template chapter.
-      </p>
-    </div2>
-    <div2 id=CONFIRMRESPONSE>
-      <head>
-        CONFIRMRESPONSE &lt;yes/no/ask&gt;
-      </head>
-      <p>
-  (ask)
-      </p>
-      <p>
-    An unreceived message to you with the CFM attribute set tells
-    <name>GoldED+</name> that the sender has requested a receipt that you have read
-    the message. With this keyword you tell <name>GoldED+</name> what to do when
-    such a message is found. Either always automatically generate the
-    receipt ("yes"), always ignore the requests ("no") or ask you in
-    each case. Older versions always generated receipts.
-      </p>
-    </div2>
     <div2>
       <head>
         COOKIEPATH &lt;path&gt;
@@ -6189,6 +6595,15 @@ AREASEP &excl;C "Group C" C Local]]></eg>
       </p>
       <p>
     Defines the default path for the @random template token.
+      </p>
+    </div2>
+    <div2>
+      <head>
+        CROSSPOST &lt;YES/NO/ASK&gt;
+      </head>
+      <p>
+- Added new keyword CROSSPOST to configure query appearence before
+  crosspossting, defaults to Ask.
       </p>
     </div2>
     <div2>
@@ -6455,7 +6870,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     list/browser windows reaches the top or bottom.
       </p>
     </div2>
-    <div2>
+    <div2 id=DISPLOCALHIGH>
       <head>
         DISPLOCALHIGH &lt;yes/no&gt;
       </head>
@@ -6713,7 +7128,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     small dot).
       </p>
     </div2>
-    <div2>
+    <div2 id=EDITCOMMENT>
       <head>
         EDITCOMMENT &lt;"word"&gt; &lt;"comment"&gt;
       </head>
@@ -9248,6 +9663,12 @@ AREASEP &excl;C "Group C" C Local]]></eg>
       </head>
       <p>
     See the EVENT keyword for a definition of the PLAY parameters.
+    You may specify <q/@/ before parameter for random noise selection.
+      </p>
+      <p>
+    Bugs: At least one <kw/EVENT/ with file should be defined in order to
+    initialize soundcard driver. Otherwise filenames specifyed for the
+    <kw/PLAY/ will be ignored.
       </p>
       <p>
     This keyword can be used globally and in a Random System group.
@@ -9671,6 +10092,11 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     RCV (received) flag set. After that RRq and CFM flags will be
     resetted. It is useful if your netmail tracker sets RCV flag
     before you actually read messages.
+          <ptr target=MESSAGEATTRS> chapter,
+          <ref target=AREACFMTO><kw/AREACFMTO/</ref>,
+          <ref target=ATTRIBSCFM><kw/ATTRIBSCFM/</ref>,
+          <ref target=CONFIRMFILE><kw/CONFIRMFILE/</ref>,
+          <ref target=CONFIRMRESPONSE><kw/CONFIRMRESPONSE/</ref>
       </p>
     </div2>
     <div2>
@@ -11170,7 +11596,6 @@ ones or remove them.
   AREASORT        AREALISTSORT
   ASSIGNTO        MEMBER
   AUTOATTACH      EDITAUTOATTACH
-  BEEPFACTOR      (removed)
   BLANKTIME       SCREENBLANKER
   BOARDNOS        (removed)
   CCATTRIB        ATTRIBSCC
@@ -12134,9 +12559,9 @@ setup similar to the one I use myself.
 <!-- --------------------------------------------------------------------- -->
     </div2>
   </div1>
-  <div1>
+  <div1 id=COLORCONFIG>
     <head>
-      Color Configuration
+      The Color Configuration
     </head>
       <p>
 Color configuration in <name>GoldED+</name> is a bit complicated, and you probably
@@ -12399,7 +12824,7 @@ configuration.
 <!-- --------------------------------------------------------------------- -->
     </div2>
   </div1>
-  <div1>
+  <div1 id=MESSAGETEMPLATE>
     <head>
       The Message Template
     </head>
