@@ -444,12 +444,22 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view) {
       to_name = tmp_to_name;
 
     if(AA->isinternet()) {
-      strcpy(msg->to, *AA->Internetgate().name ? AA->Internetgate().name : msg->idest);
+      strcpy(msg->iorig, from_addr.c_str());
+      strcpy(msg->to, to_name.c_str());
+      if(to_addr.empty() and strchr(to_name.c_str(), '@'))
+        strcpy(msg->idest, to_name.c_str());
+      else
+        strcpy(msg->idest, to_addr.c_str());
+      strcpy(msg->iaddr, msg->idest);
       strcpy(msg->realby, msg->by);
       if(not *msg->realto and not strchr(msg->to, '@'))
         strcpy(msg->realto, msg->to);
-      strcpy(msg->iorig, from_addr.c_str());
-      strcpy(msg->idest, to_addr.c_str());
+      if(*AA->Internetgate().name)
+        strcpy(msg->to, AA->Internetgate().name);
+      else if(strlen(msg->idest) > 34)
+        strcpy(msg->to, "UUCP");
+      else
+        strcpy(msg->to, msg->idest);
       if(*msg->realby and *msg->iorig)
         sprintf(msg->ifrom, "\"%s\" <%s>", msg->realby, msg->iorig);
       else
