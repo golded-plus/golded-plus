@@ -337,7 +337,7 @@ void DoKludges(int mode, GMsg* msg, int kludges) {
     }
     else {
       msg->orig.make_string(buf2, msg->odom);
-      sprintf(msg->msgids, "%s %08lx", buf2, time(NULL)+(msgcount++));        
+      sprintf(msg->msgids, "%s %08lx", buf2, time(NULL)+(msgcount++));
     }
     if(CFG->switches.get(usemsgid) and not AA->ispcboard()) {
       sprintf(buf, "\001MSGID: %s", msg->msgids);
