@@ -366,7 +366,7 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view, bool doedithdr) {
   }
   else {
     to_name = (*msg->iaddr and not *msg->igate) ? msg->iaddr : msg->to;
-    if(msg->dest.net)
+    if(msg->dest.valid())
       msg->dest.make_string(to_addr, msg->ddom);
   }
   subject = msg->re;
@@ -405,7 +405,7 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view, bool doedithdr) {
     hedit.start_id = GMsgHeaderEdit::id_to_name;
     switch(mode) {
       case MODE_REPLYCOMMENT:
-        if(not (msg->dest.net or not AA->isnet()))
+        if(not (msg->dest.valid() or not AA->isnet()))
           break;
         // else drop through ...
       case MODE_REPLY:
@@ -478,9 +478,9 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view, bool doedithdr) {
       }
       else
         strcpy(msg->ito, msg->idest);
-      if(msg->orig.net == 0)
+      if(not msg->orig.valid())
         msg->orig = msg->oorig = AA->Aka().addr;
-      if(msg->dest.net == 0)
+      if(not msg->dest.valid())
         msg->dest = msg->odest = AA->Internetgate().addr;
     }
     else {
@@ -538,8 +538,8 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view, bool doedithdr) {
       }
 
       if(to_addr.empty()) {
-        // Set destination to yourself or the Boss node
-        address = msg->orig;
+        // Set destination to yourself, the Boss node, or UUCP gate address
+        address = msg->dest.valid() ? msg->dest : msg->orig;
         address.point = 0;
         address.make_string(to_addr);
       }
