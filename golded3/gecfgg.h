@@ -287,6 +287,7 @@ public:
   uint        quotectrl;
   int         quotemargin;
   char        quotestring[10];
+  char        quotestops[41];
   bool        quotewraphard;
   int         ra2usersbbs;          // RA2;
   int         replylink;

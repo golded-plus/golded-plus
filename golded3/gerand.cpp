@@ -155,6 +155,7 @@ void Area::InitData() {
   strcpy(adat->quotechars, CFG->quotechars);
   adat->quotectrl = CFG->quotectrl;
   strcpy(adat->quotestring, CFG->quotestring);
+  strcpy(adat->quotestops, CFG->quotestops);
   adat->quotewraphard = CFG->quotewraphard;
   adat->replyre = EDIT->ReplyRe();
   if(*CFG->searchfor)
@@ -278,6 +279,8 @@ void Area::RandomizeData(int mode) {
     CFG->grp.GetItm(GRP_QUOTECHARS, adat->quotechars, sizeof(adat->quotechars));
     CFG->grp.GetItm(GRP_QUOTECTRL, adat->quotectrl);
     CFG->grp.GetItm(GRP_QUOTESTRING, adat->quotestring, sizeof(adat->quotestring));
+    CFG->grp.GetItm(GRP_QUOTESTOPS, adat->quotestops, sizeof(adat->quotestops));
+
     CFG->grp.GetItm(GRP_QUOTEWRAPHARD, adat->quotewraphard);
 
     if(CFG->grp.GetItm(GRP_PLAY, buf, sizeof(buf))) {

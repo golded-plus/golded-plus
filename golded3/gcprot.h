@@ -279,6 +279,7 @@ void CfgQuotechars       ();
 void CfgQuotemargin      ();
 void CfgQuotespacing     ();
 void CfgQuotestring      ();
+void CfgQuotestops       ();
 void CfgQuotewraphard    ();
 void CfgQwkbadmsgs       ();
 void CfgQwkconfmap       ();

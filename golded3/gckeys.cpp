@@ -700,8 +700,8 @@ tglobalkey globalkeys[] = {
   { CRC_READDECREASEMARGIN     , KK_ReadDecreaseMargin   , KT_R }, // 0xD8EA
   { CRC_LISTASKEXIT            , KK_ListAskExit          , KT_M }, // 0xD922
   { CRC_AREACATCHUP            , KK_AreaCatchUp          , KT_A }, // 0xDA5C
-  { CRC_READGOTOREPLYPREV      , KK_ReadGotoReplyPrev    , KT_R }, // 0xDBE7
   { CRC_READMOVEDIRQUOTEMSG    , KK_ReadMoveDirQuoteMsg  , KT_R }, // 0xDBC0
+  { CRC_READGOTOREPLYPREV      , KK_ReadGotoReplyPrev    , KT_R }, // 0xDBE7
   { CRC_EDITANCHOR             , KK_EditAnchor           , KT_E }, // 0xDC07
   { CRC_FILEQUITNOW            , KK_FileQuitNow          , KT_F }, // 0xDD19
   { CRC_AREAINFO               , KK_AreaInfo             , KT_A }, // 0xDE54

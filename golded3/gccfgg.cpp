@@ -647,6 +647,7 @@ CfgGed::CfgGed() {
   *printreset = 0;
   *quotechars = 0;
   strcpy(quotestring, " FL> ");
+  strcpy(quotestops, "<\"\'-");
   *searchfor = 0;
   strcpy(stylecodepunct, " !?\"$%&()+,.:;<=>@[\\]^`{|}~\n\r\t");
   *stylecodestops = 0;

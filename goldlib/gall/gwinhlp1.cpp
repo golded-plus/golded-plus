@@ -223,8 +223,10 @@ static int find_page(long startpos, int pageofs) {
       break;
     }
     if(strnieql(buf, "*P", 2)) {
-      lastpagepos=currpos;
-      currpage++;
+      if(lines != whelp.srow+1) {
+        lastpagepos=currpos;
+        currpage++;
+      }
       lines = whelp.srow;
     }
     else if(lines == whelp.erow-1) {
@@ -268,8 +270,16 @@ static void disp_cat() {
     // if end-of-file or "*E" was found, assume end-of-category
     end = strnieql(buf,"*E",2) ? YES : NO;
 
+    bool pagebreak = false;
+    if(strnieql(buf,"*P",2)) {
+      if(wrow != whelp.srow)
+        pagebreak = true;
+      else
+        continue;
+    }
+
     // if end-of-category or new-page specified
-    if((wrow > whelp.erow-1) or strnieql(buf,"*P",2) or end) {
+    if((wrow > whelp.erow-1) or pagebreak or end) {
 
       loop:               ////////////////////////////////
 

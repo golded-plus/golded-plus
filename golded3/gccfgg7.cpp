@@ -53,6 +53,24 @@ void CfgQuotestring() {
 
 //  ------------------------------------------------------------------
 
+void CfgQuotestops() {
+
+  char buf[10];
+  strxcpy(buf, StripQuotes(val), sizeof(buf));
+  if(*buf == NUL)
+    strcpy(buf, " > ");
+  else {
+    if(buf[strlen(buf)-1] != ' ')
+      strcat(buf, " ");
+  }
+  if(cfgingroup)
+    CFG->grp.AddItm(GRP_QUOTESTOPS, buf, strlen(buf)+1);
+  else
+    strcpy(CFG->quotestops, buf);
+}
+
+//  ------------------------------------------------------------------
+
 void CfgQuotewraphard() {
 
   bool flag = GetYesno(val);

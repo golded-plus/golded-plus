@@ -12,6 +12,13 @@ ______________________________________________________________________
                 Notes for GoldED+ 1.1.5, December xx 2000
 ______________________________________________________________________
 
++ Added new keyword QUOTESTOPS. If one of characters defined by this
+  keyword found before quotechar then line will be not treated as
+  quote. Defaults to "<\"'-", may be used as global keyword or in
+  random system groups.
+
+- Fixed page wrapping in help window.
+
 - Added some improvements for better charset handling.
 
 - Fixed decoding of MIME-encoded From and To fields.

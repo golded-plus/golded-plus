@@ -298,6 +298,7 @@ struct AreaData {
   char     quotechars[11];
   int      quotectrl;
   char     quotestring[10];
+  char     quotestops[41];
   bool     quotewraphard;
   GPlay    play;
   int      replyre;
@@ -551,6 +552,7 @@ public:
   const char*  Quotechars() const       { return adat->quotechars; }
         int    Quotectrl() const        { return adat->quotectrl; }
   const char*  Quotestring() const      { return adat->quotestring; }
+  const char*  Quotestops() const       { return adat->quotestops; }
         bool   Quotewraphard() const    { return adat->quotewraphard; }
   const GPlay& Play() const             { return adat->play; }
   const int    Replyre() const          { return adat->replyre; }
