@@ -40,7 +40,7 @@
         Odinn Sorensen, Dirk A. Mueller, Alexander S. Aganichev and others
       </docAuthor>
       <docDate>
-        1990-2001
+        1990-2003
       </docDate>
     </titlePage>
     <divGen type=toc>
@@ -58,15 +58,16 @@
     </p>
     <p>
       <name/GoldED+/ is run under <name/DOS/ with 32-bit <abbr/DPMI/ driver,
-      <name/Microsoft Windows/, <name>IBM OS/2</name>, <name/Linux/, and
-      <name/FreeBSD/. There should be no serious problem to compile it
-      on other <name/UNIX/-like systems running on <name/Intel/ <name/80x86/
-      architecture. Unlike the original version of <name/GoldED/,
-      <name/GoldED+/ is not supported on CPUs lower than <name/80386/.
+      <name/Microsoft Windows/, <name>IBM OS/2</name>, <name/Linux/,
+      <name/FreeBSD/, <name/QNX/, and <name/BeOS/. There should be no serious
+      problem to compile it on other <name/UNIX/-like systems running on
+      <name/Intel/ <name/80x86/ architecture. Unlike the original version of
+      <name/GoldED/, <name/GoldED+/ is not supported on CPUs lower than
+      <name/80386/.
     </p>
     <p>
       <name/GoldED+/ takes his history from the patch collection made by
-      <name/Alexander S. Aganichev/. A lot of code was contributed to
+      <name/Alexander Aganichev/. A lot of code was contributed to
       <name/GoldED+/ by different people around the world. At least,
       <name/GoldED+/ contains portions of code written by the core team of
       <name/GoldED/ (<name/Odinn Sorensen/, <name>Dirk A. Mueller</name>, and
@@ -356,11 +357,11 @@
       </p>
       <p>
         The <name/JAM/ lastread file is designed such that is has to be
-        searched for a userid/usercrc, because one cannot assume that the
+        searched for a user ID/CRC, because one cannot assume that the
         records are in a specific order. The <name/JAM/ <abbr/API/ searches
-        the userid field. However <name/GoldED+/ searches for the usercrc,
-        not the userid. In any case, it seems that <name/RemoteAccess/ 2.x
-        sets both the userid and usercrc to the same value.
+        the userid field. However <name/GoldED+/ searches for the user CRC,
+        not the user ID. In any case, it seems that <name/RemoteAccess/ 2.x
+        sets both the user ID and CRC to the same value.
       </p>
       <p>
         <name/GoldED+/ currently doesn't support the escaping described in
@@ -8692,40 +8693,31 @@ EDITCOMPLETION "/WfW"  "Windows for Workgroups"]]></eg>
         </item>
       </list>
     </div2>
-
-
-<!-- finished here -->
-
-
     <div2>
       <head>
-        EDITCRLFTERM &lt;yes/no&gt;
+        EDITCRLFTERM
       </head>
-      <p>
-    If enabled, all text paragraphs in your messages will be
-    terminated with a CR/LF combination. If disabled, only a single CR
-    is used. This option was created to fix a problem with an older
-    version of the Dutchie mail processor, that apparently needed the
-    CR/LF termination of kludge lines.
-      </p>
       <list type=gloss>
         <label>
           Synopsis:
         </label>
         <item>
-          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+          <kw/EDITCRLFTERM/ <ident>&lt;YES/NO&gt;</ident>
         </item>
         <label>
           Description:
         </label>
         <item>
-          This keyword controls statusline appearance in the <name/GoldED+/.
+          This keyword controls the format to be used for the paragraph line
+          termination.
         </item>
         <label>
           Parameters:
         </label>
         <item>
-          If set to <ident/NO/, the statusline at the bottom will be disabled.
+          If set to <ident/YES/, all text paragraphs in your messages will be
+          terminated with a <gi>CR/LF</gi> combination. If set to <ident/NO/,
+          only a single <gi/CR/ is used. 
         </item>
         <label>
           Default:
@@ -8734,49 +8726,45 @@ EDITCOMPLETION "/WfW"  "Windows for Workgroups"]]></eg>
           <ident/NO/
         </item>
         <label>
+          Notes:
+        </label>
+        <item>
+          This option was created to fix a problem with an older version of the
+          <name/Dutchie/ mail processor, that apparently needed the
+          <gi>CR/LF</gi> termination of kludge lines.
+        </item>
+        <label>
           Processed by:
         </label>
         <item>
           Mail reader.
         </item>
-        <label>
-          See also:
-        </label>
-        <item>
-          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
-          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
-        </item>
       </list>
     </div2>
     <div2>
       <head>
-        EDITFIELDCLEAR &lt;yes/no&gt;
+        EDITFIELDCLEAR
       </head>
-      <p>
-  (yes)
-      </p>
-      <p>
-    If enabled, the input-fields will be automatically cleared for new
-    entry, if a non-edit key is the first key pressed.
-      </p>
       <list type=gloss>
         <label>
           Synopsis:
         </label>
         <item>
-          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+          <kw/EDITFIELDCLEAR/ <ident>&lt;YES/NO&gt;</ident>
         </item>
         <label>
           Description:
         </label>
         <item>
-          This keyword controls statusline appearance in the <name/GoldED+/.
+          This keyword controls the behaviour of the input-fields, if a
+          non-edit key is the first key pressed.
         </item>
         <label>
           Parameters:
         </label>
         <item>
-          If set to <ident/NO/, the statusline at the bottom will be disabled.
+          If set to <ident/YES/, the input-fields will be automatically cleared
+          for new entry, if a non-edit key is the first key pressed.
         </item>
         <label>
           Default:
@@ -8790,15 +8778,13 @@ EDITCOMPLETION "/WfW"  "Windows for Workgroups"]]></eg>
         <item>
           Mail reader.
         </item>
-        <label>
-          See also:
-        </label>
-        <item>
-          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
-          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
-        </item>
       </list>
     </div2>
+
+
+<!-- finished here -->
+
+
     <div2>
       <head>
         EDITHARDLINE &lt;string&gt;
@@ -15041,7 +15027,6 @@ The &lt;programname&gt; can be one of the following:
       <p>
     Looks for the "XM" environment variable.
       </p>
-      <p>
 <!-- page -->
 <!-- --------------------------------------------------------------------- -->
     </div2>
@@ -15245,7 +15230,6 @@ Group *                ; This is default group
 See the example GOLDRAND.CFG in the ADVANCED archive for a real-life
 setup similar to the one I use myself.
       </p>
-      <p>
 <!-- page -->
 <!-- --------------------------------------------------------------------- -->
     </div2>
@@ -15510,7 +15494,6 @@ The following is a description of the different window parts:
 See the GEDCOL*.CFG and GEDMON*.CFG files for examples of color
 configuration.
       </p>
-      <p>
 <!-- page -->
 <!-- --------------------------------------------------------------------- -->
     </div2>
@@ -15700,7 +15683,6 @@ so write it like this instead:
 The double '@' will then be translated to a single, and token
 translation skips past the @token.
       </p>
-      <p>
 <!-- page -->
 <!-- --------------------------------------------------------------------- -->
     </div2>
@@ -15779,7 +15761,6 @@ a two-line "header".
 The usable dimensions of the help window are 60 columns by 16 lines.
 In the help file there is a model of the actual window.
       </p>
-      <p>
 <!-- page -->
 <!-- --------------------------------------------------------------------- -->
   </div1>
@@ -15913,7 +15894,6 @@ implementation and documentation is not perfect. Normally you will not
 have to worry about it. Turn it off completely if you don't understand
 it.
       </p>
-      <p>
 <!-- page -->
 <!-- --------------------------------------------------------------------- -->
     </div2>
@@ -16215,7 +16195,6 @@ keyboard definitions.
 See the Key Reference below for a list of the key symbols you can use
 in keyboard redefinition.
       </p>
-      <p>
 <!-- page -->
 <!-- --------------------------------------------------------------------- -->
     </div2>
@@ -16368,7 +16347,6 @@ systems with an extended keyboard bios. However, <name>GoldED+</name> uses a few
 tricks to make some the extended keys available on non-extended
 systems.
       </p>
-      <p>
 <!-- page -->
 <!-- --------------------------------------------------------------------- -->
   </div1>
@@ -16451,7 +16429,6 @@ All this will of course be corrected in future versions. If you find
 inconsistencies, please report them, because I may have overlooked
 them.
       </p>
-      <p>
 <!-- page -->
 <!-- --------------------------------------------------------------------- -->
     </div2>
