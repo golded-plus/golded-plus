@@ -96,13 +96,15 @@ void GKbd::Init() {
 
   #if defined(__USE_NCURSES__)
 
-  if(not curses_initialized++)
+  // Both screen and keyboard must be initialized at once
+  if(1 == (curses_initialized++)) {
     initscr();
-  raw();
-  noecho();
-  nonl();
-  intrflush(stdscr, FALSE);
-  keypad(stdscr, TRUE);
+    raw();
+    noecho();
+    nonl();
+    intrflush(stdscr, FALSE);
+    keypad(stdscr, TRUE);
+  }
 
   // WARNING: this might break with an old version of ncurses, or
   // with another implementation of curses. I'm putting it here because
@@ -292,7 +294,7 @@ GKbd::~GKbd() {
 
   #if defined(__USE_NCURSES__)
   
-  if(not --curses_initialized)
+  if(1 == (--curses_initialized))
     endwin();
   
   #elif defined(__WIN32__)

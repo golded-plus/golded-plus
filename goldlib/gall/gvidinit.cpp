@@ -134,7 +134,7 @@ GVid::~GVid() {
   #if defined(__USE_NCURSES__)
 
   attrset(A_NORMAL);
-  if(not --curses_initialized)
+  if(1 == (--curses_initialized))
     endwin();
 
   #elif defined(__UNIX__)
@@ -159,11 +159,15 @@ GVid::~GVid() {
 void GVid::init() {
 
   #if defined(__USE_NCURSES__)
-  if(not curses_initialized++)
+  // Both display and keyboard will be initialized at once
+  if(1 == (curses_initialized++)) {
     initscr();
-  noecho();
-  nonl();
-  intrflush(stdscr, FALSE);
+    raw();
+    noecho();
+    nonl();
+    intrflush(stdscr, FALSE);
+    keypad(stdscr, TRUE);
+  }
   #endif
 
   // Detect video adapter

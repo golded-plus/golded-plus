@@ -288,7 +288,7 @@ int ShellToDos(char* command, char* message, int cls, int cursor, int swap, int 
   #endif
 
   #ifdef __USE_NCURSES__
-  savetty();
+  def_prog_mode();
   reset_shell_mode();
   #endif
 
@@ -342,10 +342,10 @@ int ShellToDos(char* command, char* message, int cls, int cursor, int swap, int 
   if(status != -1)
     status = 0;
 
-  // Restore keyboard settings
+  // Restore console settings
   #ifdef __USE_NCURSES__
+  reset_prog_mode();
   clearok(stdscr, TRUE);
-  resetty();
   #else
   gkbd.Init();
   #endif

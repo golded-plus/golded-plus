@@ -2,7 +2,7 @@
 Random remarks about the ncurses support for GoldEd+
                   by Jacobo Tarrio, 2:348/105.93@fidonet <jtarrio@iname.com>
 
-This version of GoldEd+ bears the fourth public release of the ncurses
+This version of GoldEd+ bears the fifth public release of the ncurses
 implementation of its video code; it's still considered beta, so expect some
 strange behaviour while it is being completed.
 
@@ -24,6 +24,18 @@ If you find any bug not listed here, please report to Jacobo Tarrio,
 2:348/105.93@fidonet <jtarrio@iname.com> ASAP to get it fixed soon, or,
 even better, fix it yourself and send me the patch :-)
 
+=== 2000-07-09: Fifth public release
+Known bugs:
+
+* None 8-)
+
+Notes:
+
+* Changed function key management to work as expected in Debian Potato. That's
+  all I can do. I will do no more. Reason: function keys are not portable -
+  repeat - they are not portable.
+
+
 === 2000-04-19: Fourth public release
 Known bugs:
 
@@ -41,6 +53,7 @@ Notes:
   all, but that would make GoldED+ unportable, bloated and fragile, and
   neither I nor you want it, do you? Workaround: map these functions to
   regular keys.
+
 
 === 2000-02-17: Third public release
 Known bugs:
