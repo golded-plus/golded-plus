@@ -231,7 +231,7 @@ void throw_printdl(Throw* dl) {
   char buf[100];
 
   char* ptr = (char*)throw_dltoptr(dl);
-  TLOG->printf(": Ptr (%p,%u) at [%s,%u].", ptr, dl->nbytes, CleanFilename(dl->file), (uint)dl->line);
+  TLOG->printf(": Ptr (%p,%u) at [%s,%u].", ptr, (uint)dl->nbytes, CleanFilename(dl->file), (uint)dl->line);
   TLOG->printf(": %s", HexDump16(buf, ptr, dl->nbytes, HEX_DUMP2));
 
 }
