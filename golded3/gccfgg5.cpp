@@ -205,7 +205,9 @@ void CfgInternetmsgid() {
 
 void CfgInternetrfcbody() {
 
-  bool flag = GetYesno(val);
+  int flag = atoi(val);
+  if(flag == 0)
+    flag = GetYesno(val) ? 1 : 0;
   if(cfgingroup)
     CFG->grp.AddItm(GRP_INTERNETRFCBODY, flag);
   else

@@ -243,7 +243,7 @@ public:
   Node        internetgate;
   int         internetgateexp;
   bool        internetmsgid;
-  bool        internetrfcbody;
+  int         internetrfcbody;
   bool        internetviagate;
   Invalidate  invalidate;
   Path        jampath;

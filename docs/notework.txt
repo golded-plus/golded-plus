@@ -12,6 +12,13 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed old bug with ADDRESSLOOKUPFIRST when it set to the ORIGIN and
+  no valid address defined in the origin.
+
+! InternetRFCBody now could be defined to the digit, which specify the
+  number of RFC headers will be tried for detection. Only usefull
+  when you often receive messages multiple times gated by ifmail.
+
 ! Synchronized with recent Fidoconfig features. Removed -lame feature,
   slashes no longer parsed as escape sequencies in neither case.
 

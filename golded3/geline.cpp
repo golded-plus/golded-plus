@@ -1610,7 +1610,7 @@ void ScanKludges(GMsg* msg, int getvalue) {
           ptr++;
         msg->orig.reset(ptr);
       }
-      else if(msg->msgid.valid())
+      if(msg->msgid.valid())
         msg->orig = msg->msgid;
     }
 
@@ -2481,7 +2481,8 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode) {
       }
 
       // Scan msg body top for RFC headerlines
-      if(AA->Internetrfcbody()) {
+      int irfcbody = AA->Internetrfcbody();
+      if(irfcbody != 0) {
         if(msg->lin) {
           Line* linep = msg->lin;
           int headerlines = 0;
@@ -2512,7 +2513,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode) {
                     }
                   }
                 }
-                else
+                else if(--irfcbody == 0)
                   break;
               }
             }
@@ -2521,7 +2522,8 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode) {
                 linep->type |= GLINE_KLUD;
                 linep->color = C_READK;
               }
-              break;
+              if(--irfcbody == 0)
+                break;
             }
             if(linep->type & GLINE_WRAP) {
               while(linep and (linep->type & GLINE_WRAP)) {

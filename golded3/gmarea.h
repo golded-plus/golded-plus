@@ -281,7 +281,7 @@ struct AreaData {
   IAdr     internetaddress;
   Node     internetgate;
   bool     internetmsgid;
-  bool     internetrfcbody;
+  int      internetrfcbody;
   Path     loadlanguage;
   int      msglistdate;
   bool     msglistfast;
@@ -537,7 +537,7 @@ public:
   const char*  Internetaddress() const  { return adat->internetaddress; }
   const Node&  Internetgate() const     { return adat->internetgate; }
         bool   Internetmsgid() const    { return adat->internetmsgid; }
-        bool   Internetrfcbody() const  { return adat->internetrfcbody; }
+        int    Internetrfcbody() const  { return adat->internetrfcbody; }
   const char*  Loadlanguage() const     { return adat->loadlanguage; }
         int    Msglistdate() const      { return adat->msglistdate; }
         bool   Msglistfast() const      { return adat->msglistfast; }

@@ -710,7 +710,7 @@ CfgGed::CfgGed() {
   ignorecharset = false;
   intensecolors = false;
   internetmsgid = false;
-  internetrfcbody = false;
+  internetrfcbody = 0;
   internetviagate = false;
   keybmode = KEYB_POLL;
   logformat = 0;

@@ -934,7 +934,7 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
                 }
               }
             }
-            else if(*omsg->iaddr and (strlen(omsg->iaddr) < sizeof(Name))) {
+            else if(not AA->isinternet() and *omsg->iaddr and (strlen(omsg->iaddr) < sizeof(Name))) {
               if(not isuucp(msg->to))
                 strcpy(msg->realto, msg->to);
               strcpy(msg->to, omsg->iaddr);

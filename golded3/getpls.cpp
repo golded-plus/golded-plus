@@ -946,16 +946,13 @@ void ConfirmMsg() {
     }
   }
   if(not CFG->switches.get(rcvdisablescfm)) {
-    GMsg* msg = (GMsg*)throw_malloc(sizeof(GMsg));
-    memcpy(msg, reader_msg, sizeof(GMsg));
     reader_msg->attr.rrq0();
     reader_msg->attr.cfm0();
     reader_msg->attr.upd1();
-    msg->charsetlevel = LoadCharset(CFG->xlatlocalset, msg->charset);
-    DoKludges(MODE_CHANGE, reader_msg, true);
+    reader_msg->charsetlevel = LoadCharset(CFG->xlatlocalset, reader_msg->charset);
+    DoKludges(MODE_CHANGE, reader_msg, GKLUD_FLAGS);
     reader_msg->LinesToText();
     AA->SaveMsg(GMSG_UPDATE, reader_msg);
-    throw_free(msg);
   }
 }
 

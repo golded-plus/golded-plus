@@ -95,7 +95,7 @@ void GetAreaconf();
 
 char* MakeOrigin(GMsg* msg, const char* _origin);
 char* MakeTearline(GMsg* msg, char* buf);
-void DoKludges(int mode, GMsg* msg, bool attronly = false);
+void DoKludges(int mode, GMsg* msg, int kludges = 0);
 void DoTearorig(int mode, GMsg* msg);
 void GetRandom(int mode, GMsg* msg);
 char* GetRandomLine(char* __buf, size_t __bufsize, const char* __file);

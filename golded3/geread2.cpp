@@ -56,7 +56,7 @@ void ChangeAttributes() {
     AskAttributes(reader_msg);
     if(memcmp(msg, reader_msg, sizeof(GMsg))) {
       msg->charsetlevel = LoadCharset(CFG->xlatlocalset, msg->charset);
-      DoKludges(MODE_CHANGE, reader_msg, true);
+      DoKludges(MODE_CHANGE, reader_msg, GKLUD_FLAGS);
       reader_msg->LinesToText();
       AA->SaveMsg(GMSG_UPDATE, reader_msg);
     }

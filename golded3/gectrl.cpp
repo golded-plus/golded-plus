@@ -226,7 +226,7 @@ const char* get_informative_string(void) {
 
 //  ------------------------------------------------------------------
 
-void DoKludges(int mode, GMsg* msg, bool attronly) {
+void DoKludges(int mode, GMsg* msg, int kludges) {
 
   char* buf = (char*)throw_malloc(4096);
   char* buf2 = (char*)throw_malloc(1024);
@@ -240,9 +240,9 @@ void DoKludges(int mode, GMsg* msg, bool attronly) {
 
   // Strip all the kludges we insert ourselves
 
-  while(line) {
+  int stripkludges = (~kludges)&(GKLUD_RFC|GKLUD_FWD|GKLUD_INTL|GKLUD_FMPT|GKLUD_TOPT|GKLUD_FLAGS|GKLUD_AREA|GKLUD_MSGID|GKLUD_REPLY|GKLUD_PID|GKLUD_CHARSET|GKLUD_KNOWN|GKLUD_PATH|GKLUD_SEENBY);
 
-    int stripkludges = attronly ? GKLUD_FLAGS : (GKLUD_RFC|GKLUD_FWD|GKLUD_INTL|GKLUD_FMPT|GKLUD_TOPT|GKLUD_FLAGS|GKLUD_AREA|GKLUD_MSGID|GKLUD_REPLY|GKLUD_PID|GKLUD_CHARSET|GKLUD_KNOWN|(mode==MODE_FORWARD?(GKLUD_PATH|GKLUD_SEENBY):0));
+  while(line) {
 
     if(line->kludge & stripkludges) {
       bool waswrapped;
@@ -258,7 +258,7 @@ void DoKludges(int mode, GMsg* msg, bool attronly) {
 
   line = msg->lin;
 
-  if(attronly) {
+  if(kludges == GKLUD_FLAGS) {
     if(AA->isnet())
       MakeFlags(msg, &line, buf);
   }
@@ -443,6 +443,15 @@ void DoKludges(int mode, GMsg* msg, bool attronly) {
           mime_header_encode(buf2, msg->re, msg);
           strxcpy(msg->re, buf2, sizeof(ISub));
         }
+
+        if(AA->Internetrfcbody() and not AA->isnewsgroup() and line->next) {
+          const char *nline_txt = line->next->txt.c_str();
+          if(not strblank(nline_txt) and not strnieql(nline_txt, "XPost:", 6) and
+             not strnieql(nline_txt, "Copy:", 5) and not strnieql(nline_txt, "BCopy:", 6)) {
+            line = AddKludge(line, "");
+            line->kludge = GKLUD_RFC;
+          }
+        }
       }
       else {
         if(*msg->ifrom) {
@@ -577,11 +586,11 @@ void DoKludges(int mode, GMsg* msg, bool attronly) {
           line = AddKludge(line, buf);
           line->kludge = GKLUD_RFC;
         }
-      }
 
-      if(AA->Internetrfcbody() and line->next and not strblank(line->next->txt.c_str())) {
-        line = AddKludge(line, "");
-        line->kludge = GKLUD_RFC;
+        if(AA->Internetrfcbody() and line->next and not strblank(line->next->txt.c_str())) {
+          line = AddKludge(line, "");
+          line->kludge = GKLUD_RFC;
+        }
       }
     }
     else if(((mode != MODE_CHANGE) or AA->Internetrfcbody()) and AA->isnet()) {
