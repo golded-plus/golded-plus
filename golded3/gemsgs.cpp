@@ -184,6 +184,8 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
           continue;
         if(tokenxchg(dst, "@omessageid", oldmsg->messageid ? oldmsg->messageid : ""))
           continue;
+	if(tokenxchg(dst, "@omsgid", *msg->replys ? msg->replys : ""))
+	  continue;
         if(origareaisinet) {
           if(tokenxchg(dst, "@daddr", oldmsg->iaddr, 19))
             continue;
