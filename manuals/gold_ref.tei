@@ -7469,54 +7469,159 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
         </item>
       </list>
     </div2>
+    <div2 id=DISPHDRDATESET>
+      <head>
+        DISPHDRDATESET
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPHDRDATESET/ <ident/&lt;position&gt; &lt;length&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Specifies the position and length of the date field in the header
+          display.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          Specifies the <ident/position/ and <ident/length/ of the date field
+          in the header display. If a negative value is specified, that value
+          is added to the current display width.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          -20 20
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=DISPHDRNAMESET><kw/DISPHDRNAMESET/</ref>,
+          <ref target=DISPHDRNODESET><kw/DISPHDRNODESET/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2 id=DISPHDRNAMESET>
+      <head>
+        DISPHDRNAMESET
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPHDRNAMESET/ <ident/&lt;position&gt; &lt;length&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Specifies the position and length of the from/to name field in the
+          header display.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          Specifies the <ident/position/ and <ident/length/ of the from/to name
+          field in the header display. If a negative value is specified, that
+          value is added to the current display width.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          8 36
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=DISPHDRDATESET><kw/DISPHDRDATESET/</ref>,
+          <ref target=DISPHDRNODESET><kw/DISPHDRNODESET/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2 id=DISPHDRNODESET>
+      <head>
+        DISPHDRNODESET
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPHDRNODESET/ <ident/&lt;position&gt; &lt;length&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Specfies the position and length of the from/to node address field in
+          the header display.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          Specfies the <ident/position/ and <ident/length/ of the from/to node
+          address field in the header display. If a negative value is
+          specified, that value is added to the current display width.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          44 16
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          The attributes display moves along with the <kw>DISPHDRNODESET</kw>
+          values.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=DISPHDRDATESET><kw/DISPHDRDATESET/</ref>,
+          <ref target=DISPHDRNAMESET><kw/DISPHDRNAMESET/</ref>
+        </item>
+      </list>
+    </div2>
 
 
 <!-- finished here -->
 
 
-    <div2>
-      <head>
-        DISPHDRDATESET &lt;pos&gt; &lt;len&gt;
-      </head>
-      <p>
-  (-20 20)
-      </p>
-      <p>
-    Specifies the position and length of the date field in the header
-    display. If a negative value is specified, that value is added to
-    the current display width.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        DISPHDRNAMESET &lt;pos&gt; &lt;len&gt;
-      </head>
-      <p>
-  (8 36)
-      </p>
-      <p>
-    Specifies the position and length of the from/to name field in the
-    header display. If a negative value is specified, that value is
-    added to the current display width.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        DISPHDRNODESET &lt;pos&gt; &lt;len&gt;
-      </head>
-      <p>
-  (44 16)
-      </p>
-      <p>
-    Specfies the position and length of the from/to node address field
-    in the header display. If a negative value is specified, that
-    value is added to the current display width.
-      </p>
-      <p>
-    NOTE: The attributes display moves along with the <kw>DISPHDRNODESET</kw>
-    values.
-      </p>
-    </div2>
     <div2>
       <head>
         DISPLISTCURSOR &lt;top/neartop/middle/nearbottom/bottom&gt;
