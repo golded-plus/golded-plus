@@ -37,6 +37,8 @@
 
 extern GPickArealist* PickArealist;
 extern bool in_arealist;
+extern uint* areanumbers;
+extern GMsg* reader_msg;
 
 //  ------------------------------------------------------------------
 //  Clean up the screen, memory and files before exiting to DOS
@@ -47,6 +49,14 @@ void Cleanup(void) {
 
     if(CFG->switches.get(areakeeplast) and startupscan_success)
       AL.WriteGoldLast();
+
+    // Free msg data
+    if (reader_msg != NULL) {
+      ResetMsg(reader_msg);
+      throw_release(reader_msg);
+    }
+    // Free area data
+    AL.Reset();
 
     #ifndef GMB_NOXBBS
     if(AL.msgbases & MT_ADEPTXBBS)
@@ -88,9 +98,6 @@ void Cleanup(void) {
     #endif
 
     SearchExit();
-
-    // Free area data
-    AL.Reset();
 
     // Free various lists
     CFG->addressmacro.clear();
@@ -136,8 +143,10 @@ void Cleanup(void) {
       gvid->setoverscan(gvid->orig.color.overscan);
 
     wcloseall();                      // Close all windows
-    if(in_arealist)
+    if(in_arealist) {
       PickArealist->close_all();      // Unlink hidden area windows
+      throw_release(areanumbers);
+    }
     whelpundef();                     // Disengage the help system
     kbclear();                        // Clear CXL keyboard buffer
     freonkey();                       // Free all onkeys (macros)

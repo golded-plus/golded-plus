@@ -1062,6 +1062,9 @@ Area::Area(gmo_area* a) {
 
 Area::~Area() {
 
+  if(isopen())
+    Close();
+
   throw_delete(area);
 }
 

@@ -795,6 +795,8 @@ void Reader() {
 
   ResetMsg(msg);
   throw_free(msg);
+  // Invalidate reader_msg since the actual data has just been freed.
+  reader_msg = NULL;
 
   HandleGEvent(EVTT_EXIT);
 }
