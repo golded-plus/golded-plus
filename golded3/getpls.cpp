@@ -33,6 +33,7 @@
 extern GMsg* reader_msg;
 extern bool reader_gen_confirm;
 
+const int REALLOC_CACHE_SIZE = 4096;
 
 //  ------------------------------------------------------------------
 
@@ -306,6 +307,9 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
   *buf = NUL;
   msg->txt = throw_strdup(buf);
   len = size = pos = 0;
+
+  size_t oldmsg_size = oldmsg->txt ? strlen(oldmsg->txt) : REALLOC_CACHE_SIZE;
+  size_t msg_txt_realloc_cache = 0;
 
   while(fgets(buf, sizeof(buf), fp)) {
     ptr = strskip_wht(buf);
@@ -583,7 +587,13 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
                         strcat(buf, "\r");
                         len = strlen(buf);
                         size += len;
-                        msg->txt = (char*)throw_realloc(msg->txt, size+10);
+                        if(msg_txt_realloc_cache >= len) {
+                          msg_txt_realloc_cache -= len;
+                        }
+                        else {
+                          msg_txt_realloc_cache += REALLOC_CACHE_SIZE;
+                          msg->txt = (char*)throw_realloc(msg->txt, size+10+msg_txt_realloc_cache);
+                        }
                         strcpy(&(msg->txt[pos]), buf);
                         pos += len;
                       }
@@ -611,7 +621,13 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
                   strcat(buf, "\r");
                   len = strlen(buf);
                   size += len;
-                  msg->txt = (char*)throw_realloc(msg->txt, size+10);
+                  if(msg_txt_realloc_cache >= len) {
+                    msg_txt_realloc_cache -= len;
+                  }
+                  else {
+                    msg_txt_realloc_cache += REALLOC_CACHE_SIZE;
+                    msg->txt = (char*)throw_realloc(msg->txt, size+10+msg_txt_realloc_cache);
+                  }
                   strcpy(&(msg->txt[pos]), buf);
                   pos += len;
                 }
@@ -727,7 +743,13 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
                 strcat(buf, "\r");
                 len = strlen(buf);
                 size += len;
-                msg->txt = (char*)throw_realloc(msg->txt, size+10);
+                if(msg_txt_realloc_cache >= len) {
+                  msg_txt_realloc_cache -= len;
+                }
+                else {
+                  msg_txt_realloc_cache += REALLOC_CACHE_SIZE;
+                  msg->txt = (char*)throw_realloc(msg->txt, size+10+msg_txt_realloc_cache);
+                }
                 strcpy(&(msg->txt[pos]), buf);
                 pos += len;
               }
@@ -765,7 +787,13 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
                   }
                   len = strlen(buf);
                   size += len;
-                  msg->txt = (char*)throw_realloc(msg->txt, size+10);
+                  if(msg_txt_realloc_cache >= (len+1)) {
+                    msg_txt_realloc_cache -= (len+1);
+                  }
+                  else {
+                    msg_txt_realloc_cache += (size <= oldmsg_size) ? oldmsg_size : REALLOC_CACHE_SIZE;
+                    msg->txt = (char*)throw_realloc(msg->txt, size+10+msg_txt_realloc_cache);
+                  }
                   strcpy(&(msg->txt[pos]), buf);
                   pos += len;
                   if(oldmsg->line[n]->type & GLINE_HARD) {
@@ -796,7 +824,13 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
       TokenXlat(mode, buf, msg, oldmsg, origarea);
       len = strlen(buf);
       size += len;
-      msg->txt = (char*)throw_realloc(msg->txt, size+10);
+      if(msg_txt_realloc_cache >= len) {
+        msg_txt_realloc_cache -= len;
+      }
+      else {
+        msg_txt_realloc_cache += REALLOC_CACHE_SIZE;
+        msg->txt = (char*)throw_realloc(msg->txt, size+10+msg_txt_realloc_cache);
+      }
       strcpy(&(msg->txt[pos]), buf);
       pos += len;
     }
@@ -841,7 +875,13 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
           TokenXlat(mode, buf, msg, oldmsg, origarea);
           len = strlen(buf);
           size += len;
-          msg->txt = (char*)throw_realloc(msg->txt, size+10);
+          if(msg_txt_realloc_cache >= len) {
+            msg_txt_realloc_cache -= len;
+          }
+          else {
+            msg_txt_realloc_cache += REALLOC_CACHE_SIZE;
+            msg->txt = (char*)throw_realloc(msg->txt, size+10+msg_txt_realloc_cache);
+          }
           strcpy(&(msg->txt[pos]), buf);
           pos += len;
         }

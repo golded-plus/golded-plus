@@ -87,9 +87,8 @@ void SaveLines(int mode, const char* savefile, GMsg* msg, int margin, bool clip)
       while(line) {
         uint lineisctrl = line->type & (GLINE_TEAR|GLINE_ORIG|GLINE_KLUDGE);
         if(not ((mode == MODE_SAVENOCTRL) and lineisctrl)) {
-          std::string::iterator p = line->txt.begin();
-          while(p != line->txt.end()) {
-            if(mode == MODE_WRITE) {
+          if(mode == MODE_WRITE) {
+            for(std::string::iterator p = line->txt.begin(); p != line->txt.end(); p++) {
               // Replace control codes, except the ANSI escape code
               if(iscntrl(*p)) {
                 // only allow ESC in file write
@@ -98,7 +97,6 @@ void SaveLines(int mode, const char* savefile, GMsg* msg, int margin, bool clip)
                 }
               }
             }
-            p++;
           }
           const char *ptr = line->txt.c_str();
           fwrite(ptr, strlen(ptr), 1, prnfp);
