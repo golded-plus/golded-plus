@@ -957,7 +957,7 @@ static void read_nodelists() {
       if(not quiet) std::cout << ' ' << std::endl << "* Writing " << name << std::endl;
       for(fno=nodelist.begin(); fno != nodelist.end(); fno++) {
         if(*(fno->fn))
-          fprintf(fp, "%s %lu\n", CleanFilename(fno->fn), fno->ft);
+          fprintf(fp, "%s %lu\n", fno->fn, fno->ft);
       }
       fclose(fp);
     }

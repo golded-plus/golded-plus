@@ -1147,7 +1147,7 @@ void CheckNodelists() {
         char* val=buf;
         getkeyval(&key, &val);
         key = strxcpy(NODE->nodelist[NODE->nodelists].fn, strbtrim(key), sizeof(Path));
-        MakePathname(key, CFG->nodepath, key);
+        //MakePathname(key, CFG->nodepath, key);
         NODE->nodelist[NODE->nodelists].ft = atol(val);
         NODE->nodelists++;
       }
