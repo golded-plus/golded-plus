@@ -546,7 +546,7 @@ void CfgXlatlocalset() {
 
 void CfgXlatpath() {
 
-  PathCopy(CFG->xlatpath, val);
+  MapPath(PathCopy(CFG->xlatpath, val));
 }
 
 //  ------------------------------------------------------------------

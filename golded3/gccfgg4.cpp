@@ -332,7 +332,7 @@ void CfgGoldbaseuserno() {
 
 void CfgGoldhelp() {
 
-  strxcpy(CFG->helpcfg.fn, val, sizeof(Path));
+  MapPath(strxcpy(CFG->helpcfg.fn, val, sizeof(Path)));
   replaceextension(CFG->helpged, CFG->helpcfg.fn, __gver_cfgext__);
 }
 
@@ -340,20 +340,21 @@ void CfgGoldhelp() {
 
 void CfgGoldlang() {
 
-  strxcpy(CFG->langcfg, val, sizeof(Path));
+  MapPath(strxcpy(CFG->langcfg, val, sizeof(Path)));
 }
 
 //  ------------------------------------------------------------------
 
 void CfgGoldpath() {
 
-  PathCopy(CFG->goldpath, val);
+  MapPath(PathCopy(CFG->goldpath, val));
 }
 
 //  ------------------------------------------------------------------
 
 void CfgGoldxlat() {
 
+  MapPath(val);
   replaceextension(CFG->xlatged, val, __gver_cfgext__);
 }
 
