@@ -333,7 +333,7 @@ void ProcessSoupMsg(char* lbuf, GMsg* msg, int& msgs, char* areaname, int tossto
     }
 
     if(not *msg->to)
-      strcpy(msg->to, "All");
+      strcpy(msg->to, AA->Whoto());
 
     msg->lin = FirstLine(line);
 
