@@ -56,12 +56,16 @@ int AreaTypeOrder[17] = {
 //  ------------------------------------------------------------------
 //  Areagroups compare
 
-int compare_groups(int ga, int gb)
+int compare_groups(int _ga, int _gb)
 {
   char *gap, *gbp;
 
+  register int ga = _ga ? _ga : INT_MAX;
+  register int gb = _gb ? _gb : INT_MAX;
+
   if((ga > 0xff) || (gb > 0xff))
     return compare_two(ga, gb);
+
   gap = strchr(CFG->arealistgrouporder, (char)ga);
   gbp = strchr(CFG->arealistgrouporder, (char)gb);
   if(gap == NULL) {
@@ -89,8 +93,6 @@ extern "C" int AreaListCmp(const Area** __a, const Area** __b) {
   const Area* A = a;
   const Area* B = b;
   int cmp = 0;
-  int aunread;
-  int bunread;
 
   bool rev = false;
   char* ptr = AL.sortspec;
@@ -106,10 +108,14 @@ extern "C" int AreaListCmp(const Area** __a, const Area** __b) {
         A = a;  B = b;
         break;
       case 'A':
+        if(a->isseparator() or b->isseparator())
+          break;
         if((cmp = A->aka().compare(B->aka())) != 0)
           return cmp;
         break;
       case 'B':
+        if(a->isseparator() or b->isseparator())
+          break;
         if((cmp = compare_two(A->board(), B->board())) != 0)
           return cmp;
         break;
@@ -123,34 +129,35 @@ extern "C" int AreaListCmp(const Area** __a, const Area** __b) {
         break;
       case 'F':
         if(*area_maybe) {
-          if(striinc(area_maybe, A->echoid()) and not striinc(area_maybe, B->echoid()))
-            return -1;
-          if(striinc(area_maybe, B->echoid()) and not striinc(area_maybe, A->echoid()))
-            return 1;
+          register bool amay = striinc(area_maybe, A->echoid()) ? true : false;
+          register bool bmay = striinc(area_maybe, B->echoid()) ? true : false;
+
+          if((cmp = compare_two(amay, bmay)) != 0)
+            return cmp;
         }
         break;
       case 'G':
-        {
-          register int ga = A->groupid();
-          register int gb = B->groupid();
-
-          if((cmp = compare_groups(ga ? ga : INT_MAX, gb ? gb : INT_MAX)) != 0)
-            return cmp;
-          if(strpbrk(ptr+1, "tT") != NULL)
-            break;
-          if((cmp = compare_two(b->isseparator(), a->isseparator())) != 0)
-            return cmp;
-        }
+        if((cmp = compare_groups(A->groupid(), B->groupid())) != 0)
+          return cmp;
         break;
       case 'M':
-        if(A->ismarked() and not B->ismarked())
-          return -1;
-        if(B->ismarked() and not A->ismarked())
-          return 1;
+        if(a->isseparator() or b->isseparator())
+          break;
+        if((cmp = compare_two(A->ismarked(), B->ismarked())) != 0)
+          return cmp;
         break;
       case 'P':
-        if((cmp = compare_two(B->PMrk.Count()?1:0, A->PMrk.Count()?1:0)) != 0)
-          return cmp;
+        if(a->isseparator() or b->isseparator())
+          break;
+        else {
+          register int aunread = A->PMrk.Count();
+          register int bunread = B->PMrk.Count();
+
+          aunread = (rev or aunread) ? aunread : INT_MAX;
+          bunread = (rev or bunread) ? bunread : INT_MAX;
+          if((cmp = compare_two(aunread, bunread)) != 0)
+            return cmp;
+        }
         break;
       case 'O':
         if((cmp = compare_two(A->areaid(), B->areaid())) != 0)
@@ -159,40 +166,50 @@ extern "C" int AreaListCmp(const Area** __a, const Area** __b) {
       case 'T':
         if((cmp = compare_two(CFG->areatypeorder[A->type()&0xFF], CFG->areatypeorder[B->type()&0xFF])) != 0)
           return cmp;
-        if(strpbrk(ptr+1, "gG") != NULL)
-          break;
-        if((cmp = compare_two(b->isseparator(), a->isseparator())) != 0)
-          return cmp;
         break;
       case 'U':
-        aunread = A->Msgn.Count() - A->lastread();
-        bunread = B->Msgn.Count() - B->lastread();
-        if(rev)
-          cmp = compare_two(aunread, bunread);
-        else
-          cmp = compare_two(aunread ? aunread : INT_MAX, bunread ? bunread : INT_MAX);
-        if(cmp != 0)
-          return cmp;
+        if(a->isseparator() or b->isseparator())
+          break;
+        else {
+          register int aunread = A->unread;
+          register int bunread = B->unread;
+
+          aunread = (rev or aunread) ? aunread : INT_MAX;
+          bunread = (rev or bunread) ? bunread : INT_MAX;
+          if((cmp = compare_two(aunread, bunread)) != 0)
+            return cmp;
+        }
         break;
       case 'X':
-        if((cmp = compare_two(A->msgbase(), A->msgbase())) != 0)
+        if(a->isseparator() or b->isseparator())
+          break;
+        if((cmp = compare_two(A->msgbase(), B->msgbase())) != 0)
           return cmp;
         break;
       case 'Y':
-        aunread = A->Msgn.Count() - A->lastread();
-        bunread = B->Msgn.Count() - B->lastread();
-        if(aunread and not bunread)
-          return -1;
-        if(bunread and not aunread)
-          return 1;
+        if(a->isseparator() or b->isseparator())
+          break;
+        else {
+          register bool anew = A->isvalidchg and A->isunreadchg;
+          register bool bnew = B->isvalidchg and B->isunreadchg;
+
+          // New mail _first_
+          if((cmp = compare_two(bnew, anew)) != 0)
+            return cmp;
+        }
         break;
       case 'Z':
-        if((cmp = stricmp(A->path(), B->path())) != 0)
+        if(a->isseparator() or b->isseparator())
+          break;
+        else if((cmp = stricmp(A->path(), B->path())) != 0)
           return cmp;
         break;
     }
     ptr++;
   }
+
+  if(cmp == 0)
+    return compare_two(b->isseparator(), a->isseparator());
 
   return cmp;
 }

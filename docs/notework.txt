@@ -12,8 +12,14 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
-- Fixed arealist sorting so the TYUE in AREALISTSORT will not cause
-  ugly screen when AREASEP is used.
+! AREALISTSORT letters a bit changed in the way they processed:
+  P - sort by personal mail count, not by the presence
+  Y - sort by changing from last scan (the same criteria as used for
+      '*' in AREALIST screen) with ignoring unread mail count
+  Also there's a new change to the AREASEP sorting: all letters that
+  could not be applied to the AREASEP (f.e. Y) are ignored during
+  sorting and finally AREASEP winning if no explicit criteria found in
+  the AREALISTSORT specification.
 
 + Added ability to READ packed messagebases. You need to add PKD
   attribute to such echo definition and specify UNPACKER for the
@@ -35,6 +41,9 @@ ______________________________________________________________________
   Note that all changes to the messagebase will be discarded.
 
   This feature is not supported for Hudson and GoldBase messagebases.
+
+  IMPORTANT: AREADEF should contain pathname to the archive WITH
+  extension!
 
 ! AREAPATH now used as default path for all SEMAPHOREs rather than
   occasionally.
