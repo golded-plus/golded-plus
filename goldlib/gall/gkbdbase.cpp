@@ -807,7 +807,7 @@ struct kbd {
   { VK_MULTIPLY,  Key_Multi,  Key_Multi,  Key_Multi,  Key_Multi },
   { VK_ADD,       Key_Plus,   Key_Plus,   Key_Plus,   Key_Plus },
   { VK_SUBTRACT,  Key_Minus,  Key_Minus,  Key_Minus,  Key_Minus },
-  { VK_DECIMAL,   Key_Dot,    Key_Dot,    Key_C_Del,  Key_A_Del },
+  { VK_DECIMAL,   -1,         -1,         Key_C_Del,  Key_A_Del },
   { VK_DIVIDE,    Key_Sls,    Key_Sls,    Key_Sls,    Key_Sls },
   { VK_F1,        Key_F1,     Key_S_F1,   Key_C_F1,   Key_A_F1 },
   { VK_F2,        Key_F2,     Key_S_F2,   Key_C_F2,   Key_A_F2 },
@@ -828,6 +828,30 @@ struct kbd {
 
 //  ------------------------------------------------------------------
 
+bool is_oem_key(int keycode)
+{
+  switch(keycode)
+  {
+    // OEM specific keys
+    case 0x2a:
+    case 0xba: case 0xbb: case 0xbc: case 0xbd: case 0xbe:
+    case 0xbf: case 0xc0:
+    case 0xdb: case 0xdc: case 0xdd: case 0xde: case 0xdf:
+    case 0xe0: case 0xe1: case 0xe2: case 0xe3: case 0xe4:
+    case 0xe6:
+    case 0xe9: case 0xea: case 0xeb: case 0xec: case 0xed:
+    case 0xef: case 0xf0: case 0xf1: case 0xf2: case 0xf3:
+    case 0xf4: case 0xf5:
+      return true;
+
+    default:
+      return false;
+  }
+}
+
+
+//  ------------------------------------------------------------------
+
 int gkbd_nt2bios(INPUT_RECORD& inp) {
 
   int keycode = inp.Event.KeyEvent.wVirtualKeyCode;
@@ -840,8 +864,7 @@ int gkbd_nt2bios(INPUT_RECORD& inp) {
   while((keycode != k->keycode) and (k->keycode != -1))
     k++;
   if(k->keycode == -1) {  // value not in table
-    int c = ascii;
-    return c ? c : -1;
+    return ascii ? ascii : -1;
   }
 
   // Check the state of the shift keys. ALT has highest
@@ -853,12 +876,16 @@ int gkbd_nt2bios(INPUT_RECORD& inp) {
     c = k->alt;
   else if(state & (RIGHT_CTRL_PRESSED | LEFT_CTRL_PRESSED))
     c = k->ctrl;
-  else if(state & SHIFT_PRESSED)
-    c = k->shift;
+  else if(state & SHIFT_PRESSED) {
+    if(k->shift == -1)
+      c = ascii;
+    else
+      c = k->shift;
+  }
   else {
     // If it is a letter key, use the ASCII value supplied
     // by NT to take into account the CapsLock state.
-    if(isupper(keycode))
+    if(isupper(keycode) || (k->normal == -1))
       c = ascii;
     else
       c = k->normal;
@@ -866,7 +893,7 @@ int gkbd_nt2bios(INPUT_RECORD& inp) {
 
   if(c != -1)
     if(ascii and not (right_alt_same_as_left ? (state & (LEFT_ALT_PRESSED | RIGHT_ALT_PRESSED)) : (state & LEFT_ALT_PRESSED)))
-      if(!iscntrl(keycode))
+      if(isalnum(keycode))
         return ascii;
   if(ISEXT(c))
     return EXTVAL(c) << 8;
@@ -1159,7 +1186,7 @@ gkey kbxget_raw(int mode) {
     if(nread) {
       if((inp.EventType == KEY_EVENT) and inp.Event.KeyEvent.bKeyDown) {
         int kc = gkbd_nt2bios(inp);
-        if((kc != -1) or (inp.Event.KeyEvent.wVirtualKeyCode == 0xBA)) {
+        if((kc != -1) or is_oem_key(inp.Event.KeyEvent.wVirtualKeyCode)) {
           k = (gkey)kc;
           return k;
         }
@@ -1201,8 +1228,14 @@ gkey kbxget_raw(int mode) {
             break;
           }
         }
-        else
+        else {
           ReadConsoleInput(gkbd_hin, &inp, 1, &nread);
+//          if(is_oem_key(VKC) and (ascii == '\0')) {
+//            do {
+//              PeekConsoleInput(gkbd_hin, &inp, 1, &nread);
+//            } while(nread and (inp.EventType != KEY_EVENT));
+//          }
+        }
 
         switch(VKC) {
           // Not meanful keys
@@ -1245,27 +1278,11 @@ gkey kbxget_raw(int mode) {
             }
             // fall through
           default:
-            if((ascii == '\x2e') or (alt_pressed and ctrl_pressed)) {
-              k = (gkey)ascii;
-            }
-            else {
+            {
               int kc = gkbd_nt2bios(inp);
               if(kc != -1)
                 k = (gkey)kc;
             }
-            break;
-
-          // OEM specific keys
-          case 0x2a:
-          case 0xba: case 0xbb: case 0xbc: case 0xbd: case 0xbe:
-            case 0xbf: case 0xc0:
-          case 0xdb: case 0xdc: case 0xdd: case 0xde: case 0xdf:
-            case 0xe0: case 0xe1: case 0xe2: case 0xe3: case 0xe4:
-          case 0xe6:
-          case 0xe9: case 0xea: case 0xeb: case 0xec: case 0xed:
-            case 0xef: case 0xf0: case 0xf1: case 0xf2: case 0xf3:
-            case 0xf4: case 0xf5:
-            k = (gkey)ascii;
             break;
         }
         if(k != 0)
