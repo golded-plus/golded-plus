@@ -247,7 +247,7 @@ void GMsgHeaderView::Paint() {
 
   // Paint the total header in the window
   vchar borderchar[2] = { (vchar)' ', 0 };
-  *borderchar = window.boxchar_upper_horizontal_line();
+  *borderchar = _box_table(W_BHEAD, 1);
   window.printvs(0, 0, border_color|ACSET, borderchar);
   window.prints(0, 1, title_color, top1);
   window.printvs(0, strlen(top1)+1, border_color|ACSET, headerline+strlen(top1)+strlen(top2)-2);
