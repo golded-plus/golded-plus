@@ -1027,6 +1027,7 @@ UUDecodePart (FILE *datain, FILE *dataout, int *state,
     if (*state == BEGIN) {
       if ((method == UU_ENCODED || method == XX_ENCODED) &&
 	  (strncmp      (line, "begin ",       6) == 0 ||
+	   strncmp      (line, "section ",     8) == 0 ||
 	   _FP_strnicmp (line, "<pre>begin ", 11) == 0)) { /* for LYNX */
 	*state = DATA;
 	continue;
@@ -1145,7 +1146,8 @@ UUDecodePart (FILE *datain, FILE *dataout, int *state,
       }
 
       if (vflag == method) {
-	if (tf) {
+//	if (tf) {
+	if (tf || (method == UU_ENCODED || method == XX_ENCODED)) {
 	  count  = UUDecodeLine (line, oline, method);
 	  if (method == YENC_ENCODED) {
 	    if (yepartends)
@@ -1153,6 +1155,7 @@ UUDecodePart (FILE *datain, FILE *dataout, int *state,
 	    yefilecrc = crc32(yefilecrc, (unsigned char *) oline, count);
 	    yepartsize += count;
 	  }
+	  tf = 1;
 	  vlc++; lc[1]++;
 	}
 	else if (tc == 3) {
