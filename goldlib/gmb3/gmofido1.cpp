@@ -138,8 +138,7 @@ void FidoInit(const char* fidolastread, int fidohwmarks, int fidonullfix, int fi
   const char* _username = WideUsername[0];
   if(fidowide->userno == -1) {
     Path userfile;
-    strxcpy(userfile, fidowide->squishuserpath, sizeof(Path));
-    AddPath(userfile, "USER.BBS");
+    strxcpy(userfile, AddPath(fidowide->squishuserpath, "USER.BBS"), sizeof(Path));
     fidowide->user->fh = ::sopen(userfile, O_RDWR|O_CREAT|O_BINARY, WideSharemode, S_STDRW);
     if(fidowide->user->fh != -1) {
       fidowide->user->find(_username);

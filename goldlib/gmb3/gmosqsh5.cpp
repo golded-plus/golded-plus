@@ -36,8 +36,7 @@
 char* SquishArea::user_lookup(char* __lookfor) {
 
   Path userfile;
-  strxcpy(userfile, wide->userpath, sizeof(Path));
-  AddPath(userfile, "USER.BBS");
+  strxcpy(userfile, AddPath(wide->userpath, "USER.BBS"), sizeof(Path));
   wide->user->fh = ::sopen(userfile, O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
   wide->user->findwild(__lookfor, __lookfor);
   ::close(wide->user->fh);

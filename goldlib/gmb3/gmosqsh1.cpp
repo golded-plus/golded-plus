@@ -87,8 +87,7 @@ void SquishInit(const char* userpath, int userno, int direct, int recycle, int s
   throw_new(squishwide->user);
 
   Path userfile;
-  strxcpy(userfile, userpath, sizeof(Path));
-  AddPath(userfile, "USER.BBS");
+  strxcpy(userfile, AddPath(userpath, "USER.BBS"), sizeof(Path));
   const char* _username = WideUsername[0];
   if(squishwide->userno == -1) {
     squishwide->user->fh = ::sopen(userfile, O_RDWR|O_CREAT|O_BINARY, WideSharemode, S_STDRW);

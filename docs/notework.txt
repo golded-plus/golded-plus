@@ -12,7 +12,9 @@ ______________________________________________________________________
                  Notes for GoldED+ 1.1.5, March xx 2001
 ______________________________________________________________________
 
-- Soft-deleted messages now not hided from messagelist right after
+- Fixed users.bbs handling for *.msg and Squish areas.
+
+- Soft-deleted messages no longer hidden from messagelist right after
   deletion any more.
 
 + Added new switch JamSMAPIHighwater. If defined GoldED+ will handle
