@@ -3991,9 +3991,11 @@ AREALISTFORMAT "AM D C4PU4N E G "]]></eg>
           See also:
         </label>
         <item>
+          <!-- FIX ME!!! -->AREAboardnos,
           <ref target=AREALISTFORMAT><kw/AREALISTFORMAT/</ref>,
           <ref target=AREALISTECHOMAX><kw/AREALISTECHOMAX/</ref>,
-          <ref target=AREALISTTYPE><kw/AREALISTTYPE/</ref>
+          <ref target=AREALISTTYPE><kw/AREALISTTYPE/</ref>,
+          <ref target=DISPAREANO><kw/DISPAREANO/</ref>
         </item>
       </list>
     </div2>
@@ -5484,7 +5486,8 @@ AREASEP &excl;C "Group C" C Local]]></eg>
           <ref target=ATTRIBSLOCAL><kw/ATTRIBSLOCAL/</ref>,
           <ref target=ATTRIBSNET><kw/ATTRIBSNET/</ref>,
           <ref target=ATTRIBSNEWS><kw/ATTRIBSNEWS/</ref>,
-          <ref target=ATTRIBUTES><kw/ATTRIBUTES/</ref>
+          <ref target=ATTRIBUTES><kw/ATTRIBUTES/</ref>,
+          <ref target=DISPATTACHSIZE><kw/DISPATTACHSIZE/</ref>
         </item>
       </list>
     </div2>
@@ -7319,68 +7322,158 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
         </item>
       </list>
     </div2>
+    <div2 id=DISPAREANO>
+      <head>
+        DISPAREANO
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPAREANO/ <ident>&lt;YES/NO/ALWAYS&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword specifies if <name/GoldED+/ should display the area
+          number on the top line in the reader. The area number is the same as
+          that displayed in the leftmost column in the arealist. This also
+          means that the number displayed can be either the board number
+          (Hudson/Goldbase/Ezycom board) or the standard sequential number.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          When set to <ident/YES/ <name/GoldED+/ displays area number only if
+          non-zero, setting to <ident/NO/ disables display at all, and
+          <ident/ALWAYS/ forces to display the area number in any case.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=AREALISTNOS><kw/AREALISTNOS/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2 id=DISPATTACHSIZE>
+      <head>
+        DISPATTACHSIZE
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPATTACHSIZE/ <ident>&lt;BYTES/KBYTES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Controls how the size of attached files is displayed in the header.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          Either the exact <ident/BYTE/ size, the rounded <ident/KBYTE/ size,
+          or <ident/NO/ display at all.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/KBYTES/
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          If the <ident/KBYTES/ setting is chosen, the value is rounded
+          according to the following formula: kbytes = (bytes + 512) / 1024.
+          So a 600 bytes file is rounded up to <q/1k/, but a 500 bytes
+          file is rounded down to <q/0k/.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=ATTRIBSATTACH><kw/ATTRIBSATTACH/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2 id=DISPAUTONEXT>
+      <head>
+        DISPAUTONEXT
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/DISPAUTONEXT/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Controls which message will be displayed when entering an area.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If enabled, <name/GoldED+/ will automatically jump to the next
+          message when entering an area. Otherwise message under the lastread
+          pointer will be displayed.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=MSGLISTFIRST><kw/MSGLISTFIRST/</ref>
+        </item>
+      </list>
+    </div2>
 
 
 <!-- finished here -->
 
 
-    <div2>
-      <head>
-        DISPAREANO &lt;yes/no/always&gt;
-      </head>
-      <p>
-  (yes)
-      </p>
-      <p>
-    This keyword specifies if <name>GoldED+</name> should display the area number on
-    the top line in the reader.
-      </p>
-      <p>
-      Yes     Display it only if non-zero.
-      No      Never display it.
-      Always  Always display the area number.
-      </p>
-      <p>
-    The area number is the same as that displayed in the leftmost
-    column in the arealist. This also means that the number displayed
-    can be either the "real" area number (Hudson/Goldbase/Ezycom
-    board) or the standard sequential number (toggleable with Alt-B in
-    the arealist).
-      </p>
-      <p>
-    The number is displayed in square brackets to the left of the area
-    description. I am not sure that is the best place for it - things
-    are getting kinda crowded up there... Suggestions are welcome.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        DISPATTACHSIZE &lt;bytes/kbytes/no&gt;
-      </head>
-      <p>
-  (kbytes)
-      </p>
-      <p>
-    Controls how the size of attached files is displayed in the
-    header. Either the exact byte size, the rounded kbyte size, or not
-    displayed at all. If the kbytes setting is chosen, the value is
-    rounded according to the following formula: kbytes = (bytes + 512)
-    / 1024. So a 600 bytes file is rounded up to "1k", but a 500 bytes
-    file is rounded down to "0k".
-      </p>
-    </div2>
-    <div2>
-      <head>
-        DISPAUTONEXT &lt;yes/no&gt;
-      </head>
-      <p>
-  (yes)
-      </p>
-      <p>
-    If enabled, <name>GoldED+</name> will automatically jump to the next message
-    when entering an area.
-      </p>
-    </div2>
     <div2>
       <head>
         DISPHDRDATESET &lt;pos&gt; &lt;len&gt;
@@ -7545,6 +7638,8 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
       <p>
     Normally the relative numbers are best, because they reflect the
     actual number of msgs in the system.
+
+READtogglerealmsgno
       </p>
     </div2>
     <div2>
