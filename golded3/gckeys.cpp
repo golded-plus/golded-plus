@@ -427,10 +427,10 @@ tglobalkey globalkeys[] = {
   { CRC_K_CPGUP                , Key_C_PgUp              ,    0 }, // 0x2603
   { CRC_READGOTOPREVUNREAD     , KK_ReadGotoPrevUnread   , KT_R }, // 0x27EA
   { CRC_READTOGGLEREALMSGNO    , KK_ReadToggleRealMsgno  , KT_R }, // 0x2A3B
-  { CRC_ADDRESSBOOKADD         , KK_AddressbookAdd       , KT_B }, // 0x2C5C
+  { CRC_ADDRESSBOOKPACK        , KK_AddressbookPack      , KT_B }, // 0x2C5C
   { CRC_HEADERTOGGLERETRECREQ  , KK_HeaderToggleRetrecreq, KT_H }, // 0x2CF1
   { CRC_HEADERTOGGLECRASH      , KK_HeaderToggleCrash    , KT_H }, // 0x2CF9
-  { CRC_ADDRESSBOOKDELETE      , KK_AddressbookDelete    , KT_B }, // 0x2D4A
+  { CRC_ADDRESSBOOKSELECT      , KK_AddressbookSelect    , KT_B }, // 0x2D4A
   { CRC_AREADOSSHELL           , KK_AreaDosShell         , KT_A }, // 0x2DED
   { CRC_K_DOWN                 , Key_Dwn                 ,    0 }, // 0x2F6D
   { CRC_READNEWMSG             , KK_ReadNewMsg           , KT_R }, // 0x30CA
@@ -617,7 +617,7 @@ tglobalkey globalkeys[] = {
   { CRC_K_APGDN                , Key_A_PgDn              ,    0 }, // 0x6F7F
   { CRC_HEADERTOGGLEATTRWIN    , KK_HeaderToggleAttrWin  , KT_H }, // 0x6F95
   { CRC_K_HOME                 , Key_Home                ,    0 }, // 0x700B
-  { CRC_ADDRESSBOOKSELECT      , KK_AddressbookSelect    , KT_B }, // 0x70D1
+  { CRC_ADDRESSBOOKDELETE      , KK_AddressbookDelete    , KT_B }, // 0x70D1
   { CRC_EDITGOPGUP             , KK_EditGoPgUp           , KT_E }, // 0x7163
   { CRC_READMSGLINEUP          , KK_ReadMsgLineUp        , KT_R }, // 0x7238
   { CRC_EDITHEADER             , KK_EditHeader           , KT_E }, // 0x726F
@@ -836,7 +836,7 @@ tglobalkey globalkeys[] = {
   { CRC_READCHANGEORIGIN       , KK_ReadChangeOrigin     , KT_R }, // 0xFD2C
   { CRC_FILEDOSSHELL           , KK_FileDosShell         , KT_F }, // 0xFE9D
   { CRC_EDITLOOKUPDEST         , KK_EditLookupDest       , KT_E }, // 0xFEC4
-  { CRC_ADDRESSBOOKPACK        , KK_AddressbookPack      , KT_B }, // 0xFF55
+  { CRC_ADDRESSBOOKADD         , KK_AddressbookAdd       , KT_B }, // 0xFF55
   { CRC_AREAMACRO              , KK_AreaMacro            , KT_A }, // 0xFFA7
 };
 

@@ -292,10 +292,10 @@ const word CRC_READUUDECODE         = 0x4F0B;
 const word CRC_READWRITEMSG         = 0x73AC;
 
 const word CRC_ADDRESSBOOKQUIT      = 0x47C7;
-const word CRC_ADDRESSBOOKADD       = 0x2C5C;
-const word CRC_ADDRESSBOOKSELECT    = 0x70D1;
-const word CRC_ADDRESSBOOKDELETE    = 0x2D4A;
-const word CRC_ADDRESSBOOKPACK      = 0xFF55;
+const word CRC_ADDRESSBOOKADD       = 0xFF55;
+const word CRC_ADDRESSBOOKSELECT    = 0x2D4A;
+const word CRC_ADDRESSBOOKDELETE    = 0x70D1;
+const word CRC_ADDRESSBOOKPACK      = 0x2C5C;
 
 const word CRC_HEADERADDRESSBOOK    = 0x76FC;
 const word CRC_HEADERLOOKUP         = 0x64F2;

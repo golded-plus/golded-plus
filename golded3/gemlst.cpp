@@ -386,7 +386,11 @@ bool GMsgList::handle_key() {
           AA->Mark.Add(mlst[index].msgno);
         }
       }
-      goto listgotonext;
+      if(index < maximum_index)
+        cursor_down();
+      else
+        display_bar();
+      break;
 
     case KK_ListToggleBookMark:
       if(AA->bookmark == mlst[index].msgno) {

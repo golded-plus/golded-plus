@@ -39,7 +39,7 @@ int         __gver_minor__    = __GVER_MINOR__; \
 int         __gver_release__  = __GVER_RELEASE__; \
 const char* __gver_longpid__  = __GVER_PID__(,); \
 const char* __gver_shortpid__ = __GVER_PID__(,SHORT); \
-const char* __gver_ver__      = __GVER_VER__(__GVER_MAJOR__,__GVER_MINOR__,__GVER_RELEASE__);
+const char* __gver_ver__      = __GVER_VER__(__GVER_MAJOR__,__GVER_MINOR__,__GVER_RELEASE__); \
 const char* __gver_shortver__ = __GVER_SVER__(__GVER_MAJOR__,__GVER_MINOR__,__GVER_RELEASE__);
 
 

@@ -544,8 +544,8 @@ void DoKludges(int mode, GMsg* msg, bool attronly) {
       }
     }
 
-    if(AA->isnet()) {
-      if(*msg->ito and not AA->isinternet()) {
+    if((mode != MODE_CHANGE) and AA->isnet() and not AA->isinternet()) {
+      if(*msg->ito) {
         sprintf(buf, "To: %s\r", msg->ito);
         line = AddKludge(line, buf);
       }
