@@ -638,7 +638,7 @@ static int do_if(char* val) {
     return false;
     #endif
   }
-  else if(strieql(val, "386") or strieql(val, "DOS")) {
+  else if(strieql(val, "386") or strieql(val, "DOS") or strieql(val, "DPMI32")) {
     #ifdef __MSDOS__
     return true;
     #else
