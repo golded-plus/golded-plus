@@ -711,7 +711,7 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, boo
         // The line is hard-terminated.
 
         // Copy the quote string, if any, to the new line first
-        string _wrapbuf = _quotebuf;
+        std::string _wrapbuf = _quotebuf;
 
         // Copy/append the wrapped part to the new line
         _wrapbuf += _thisline->txt.substr(_wrappos);
@@ -755,7 +755,7 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, boo
         Line* _nextline = _thisline->next;
 
         // Copy the quote string, if any, to the new line first
-        string _wrapbuf = _quotebuf;
+        std::string _wrapbuf = _quotebuf;
 
         // Copy/append the wrapped part to the new line
         _wrapbuf += _thisline->txt.substr(_wrappos);
@@ -1208,7 +1208,7 @@ void IEclass::Newline() {
   int _splitpos = col;
 
   // Buffer for the second part of the split line
-  string _splitbuf;
+  std::string _splitbuf;
 
   // If the split line was quoted, get the quotestring
   // But do not get it if the cursor points to a linefeed or is
@@ -2590,7 +2590,7 @@ void UndoStack::PlayItem() {
 
           case EDIT_UNDO_TEXT: {
             text_item* text_data = last_item->data.text_ptr;
-            string *txt = &currline->txt;
+            std::string *txt = &currline->txt;
             switch(undo_action) {
               case EDIT_UNDO_DEL_TEXT:
                 txt->insert(text_data->col, text_data->text, text_data->len);

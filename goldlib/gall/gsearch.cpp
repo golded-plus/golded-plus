@@ -74,7 +74,7 @@ void gsearch::set_pattern(const char* a) {
 
 //  ------------------------------------------------------------------
 
-bool gsearch::search(const string& str) {
+bool gsearch::search(const std::string& str) {
 
   int discard_result;
   return search(str, discard_result);
@@ -83,7 +83,7 @@ bool gsearch::search(const string& str) {
 
 //  ------------------------------------------------------------------
 
-bool gsearch::search(const string& str, int& result) {
+bool gsearch::search(const std::string& str, int& result) {
 
   return search(str.c_str(), result);
 }

@@ -52,7 +52,7 @@ int ReadHelpCfg(int force) {
         CFG->helpcfg.ft = GetFiletime(AddPath(CFG->goldpath, CFG->helpcfg.fn));
 
         if(not quiet)
-          cout << "* Reading " << AddPath(CFG->goldpath, CFG->helpcfg.fn) << endl;
+          std::cout << "* Reading " << AddPath(CFG->goldpath, CFG->helpcfg.fn) << std::endl;
 
         setvbuf(ofp, NULL, _IOFBF, 8192);
 
@@ -603,7 +603,7 @@ void ReadXlatTables() {
     if(ofp) {
 
       // Compile CHARSET tables
-      vector<Map>::iterator xlt;
+      std::vector<Map>::iterator xlt;
       for(xlt = CFG->xlatcharset.begin(); xlt != CFG->xlatcharset.end(); xlt++) {
 
         // Assign table defaults
@@ -617,7 +617,7 @@ void ReadXlatTables() {
         if(ifp) {
 
           if(not quiet)
-            cout << "* Reading " << buf << endl;
+            std::cout << "* Reading " << buf << std::endl;
 
           // Read the definition file
           line = 1;
@@ -699,7 +699,7 @@ void ReadXlatTables() {
           fclose(ifp);
         }
         else
-          cout << "* XLAT table " << buf << " could not be opened." << endl;
+          std::cout << "* XLAT table " << buf << " could not be opened." << std::endl;
 
         fwrite(&ChsTable, sizeof(Chs), 1, ofp);
       }
@@ -714,7 +714,7 @@ void ReadXlatTables() {
         if(ifp) {
 
           if(not quiet)
-            cout << "* Reading " << buf << endl;
+            std::cout << "* Reading " << buf << std::endl;
 
           // Read the definition file
           line = 1;
@@ -778,7 +778,7 @@ void ReadXlatTables() {
           fclose(ifp);
         }
         else
-          cout << "* XLAT table " << buf << " could not be opened." << endl;
+          std::cout << "* XLAT table " << buf << " could not be opened." << std::endl;
 
         fwrite(&EscTable, sizeof(Esc), 1, ofp);
       }

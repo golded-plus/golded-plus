@@ -41,7 +41,7 @@ int edit_string(char* buf, int buf_size, char* title, int helpcat) {
 
   gwinput2 iform(window);
 
-  string buf2 = buf;
+  std::string buf2 = buf;
   iform.setup(C_ASKW, C_ASKW, C_ASKQ, _box_table(W_BASK, 13), true);
   iform.add_field(0, 0, 1, 59, buf2, buf_size, gwinput::cvt_none, fieldupd);
   vcurshow();
@@ -68,7 +68,7 @@ bool edit_pathname(char* buf, int buf_size, char* title, int helpcat) {
   if(not edit_string(buf, buf_size, title, helpcat))
     return false;
       
-  vector<FileAlias>::iterator z;
+  std::vector<FileAlias>::iterator z;
   for(z = CFG->filealias.begin(); z != CFG->filealias.end(); z++) {
     if(strieql(buf, z->alias)) {
       strcpy(buf, z->file);
@@ -191,8 +191,9 @@ int AkaMatchOne(const ftn_addr* mask, const ftn_addr* addr) {
 int AkaMatch(ftn_addr* match, const ftn_addr* addr) {
 
   int aka;
+  std::vector<AkaMatchG>::iterator am;
 
-  for(vector<AkaMatchG>::iterator am = CFG->akamatch.begin(), aka=0; am != CFG->akamatch.end(); am++, aka++) {
+  for(am = CFG->akamatch.begin(), aka=0; am != CFG->akamatch.end(); am++, aka++) {
     if(addr->match(am->mask)) {
       int akano = GetAkaNo(am->aka);
       if(akano != -1) {
@@ -205,7 +206,7 @@ int AkaMatch(ftn_addr* match, const ftn_addr* addr) {
   int bestaka = -1;
   int bestmatch = 0;
   int matchaka = 0;
-  vector<gaka>::iterator a;
+  std::vector<gaka>::iterator a;
 
   for(a = CFG->aka.begin(), aka = 0; a != CFG->aka.end(); aka++, a++) {
 

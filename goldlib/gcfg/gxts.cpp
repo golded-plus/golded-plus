@@ -81,7 +81,7 @@ void gareafile::ReadTosScan(char* tag) {
     if(fp) {
 
       if(not quiet)
-        cout << "* Reading " << file << endl;
+        std::cout << "* Reading " << file << std::endl;
 
       fread(buf, 5, 1, fp);
       if(streql(buf, "JoHo")) {   // Check to see that it is v1.99b or higher
@@ -115,7 +115,7 @@ void gareafile::ReadTosScan(char* tag) {
       setvbuf(fp, NULL, _IOFBF, 8192);
 
       if(not quiet)
-        cout << "* Reading " << file << endl;
+        std::cout << "* Reading " << file << std::endl;
 
       fseek(fp, 4L, SEEK_SET);  // Skip CRC32
 

@@ -53,7 +53,7 @@ void gareafile::ReadQ260(char* qbpath, char* origin, char* options) {
   if(fp) {
 
     if(not quiet)
-      cout << "* Reading " << file << endl;
+      std::cout << "* Reading " << file << std::endl;
 
     fread(cfg, sizeof(Q260CfgRecT), 1, fp);
 
@@ -141,7 +141,7 @@ void gareafile::ReadQ276(char* qbpath, char* origin, char* options) {
   if(fp) {
 
     if(not quiet)
-      cout << "* Reading " << file << endl;
+      std::cout << "* Reading " << file << std::endl;
 
     fread(cfg, sizeof(Q276CfgRecT), 1, fp);
 
@@ -157,7 +157,7 @@ void gareafile::ReadQ276(char* qbpath, char* origin, char* options) {
   if(fp) {
 
     if(not quiet)
-      cout << "* Reading " << file << endl;
+      std::cout << "* Reading " << file << std::endl;
 
     int _recs = (int)(filelength(fileno(fp)) / sizeof(Q276BrdRecT));
     int _fmt = (_recs > 200) ? GMB_GOLDBASE : GMB_HUDSON;

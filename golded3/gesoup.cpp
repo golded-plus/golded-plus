@@ -112,7 +112,7 @@ char* UnfoldLine(char* mptr) {
 int CheckMailinglists(GMsg* msg, int current) {
 
   if(AA->isemail()) {
-    vector<MailList>::iterator z;
+    std::vector<MailList>::iterator z;
     for(z = CFG->mailinglist.begin(); z != CFG->mailinglist.end(); z++)
       if(z->sender_is_pattern) {
         golded_search_manager srchmgr;
@@ -134,7 +134,7 @@ int CheckMailinglists(GMsg* msg, int current) {
 int CheckMailinglists(const char* what, int current) {
 
   if(AA->isemail()) {
-    vector<MailList>::iterator z;
+    std::vector<MailList>::iterator z;
     for(z = CFG->mailinglist.begin(); z != CFG->mailinglist.end(); z++)
       if(not z->sender_is_pattern and strieql(what, z->sender)) {
         int areano = AL.AreaEchoToNo(z->echoid);

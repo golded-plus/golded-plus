@@ -72,7 +72,7 @@ void gareafile::ReadWMail(char* tag) {
   if(fh != -1) {
 
     if(not quiet)
-      cout << "* Reading " << file << endl;
+      std::cout << "* Reading " << file << std::endl;
 
     read(fh, wmprm, sizeof(TWmailPrm));
 
@@ -127,7 +127,7 @@ void gareafile::ReadWMail(char* tag) {
   if(fh != -1) {
 
     if(not quiet)
-      cout << "* Reading " << file << endl;
+      std::cout << "* Reading " << file << std::endl;
 
     // All the echomail areas
     while(read(fh, arprm, sizeof(TAreasPrm)) == sizeof(TAreasPrm)) {

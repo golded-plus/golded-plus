@@ -45,7 +45,7 @@ extern int __gftrk_statusline;
 extern bool gmem_check_overrun;
 #endif
 
-static string keybuf;
+static std::string keybuf;
 
 static Path cmdlinecfg        = "";
        bool cmdlinedebughg    = false;
@@ -81,7 +81,7 @@ static void InitCmdline(char* val) {
         if(*val)
           strcpy(cmdlinecfg, val);
         else
-          cout << "Warning: configuration filename missed for -C option, ignored." << endl;
+          std::cout << "Warning: configuration filename missed for -C option, ignored." << std::endl;
         break;
       case 'D':
         cmdlineoldkeyw = (*val == '-') ? true : false;
@@ -149,7 +149,7 @@ static void InitCmdline(char* val) {
       case 'Z':
         gftrk_set_max = atoi(val);
 	if(gftrk_set_max == 0) {
-          cout << "Warning: Invalid parameter for -Z option, fixed." << endl;
+          std::cout << "Warning: Invalid parameter for -Z option, fixed." << std::endl;
           gftrk_set_max = 1;
         }
         break;
@@ -206,7 +206,7 @@ static void ReadEscsets() {
 
   FILE* fp;
 
-  vector<Map>::iterator x;
+  std::vector<Map>::iterator x;
   int n;
   for(n = 0, x = CFG->xlatescset.begin(); x != CFG->xlatescset.end(); x++, n++) {
     if(strieql(x->imp, "Composed")) {
@@ -487,7 +487,7 @@ void Initialize(int argc, char* argv[]) {
   char* ptr2;
   bool dbedit = false;
   bool found = false, compiled;
-  string truepathtmp;
+  std::string truepathtmp;
 
   throw_init();
   #if defined(GTHROW_LOG)
@@ -507,7 +507,7 @@ void Initialize(int argc, char* argv[]) {
   srand((unsigned)time(NULL));
 
   // Display startup banner
-  cout << __gver_longpid__ << " " << __gver_ver__ << endl;
+  std::cout << __gver_longpid__ << " " << __gver_ver__ << std::endl;
 
   // Check environment commandline
   ptr = getenv("GEDCMD");
@@ -548,33 +548,33 @@ void Initialize(int argc, char* argv[]) {
 
   // Print commandline help and exit if requested
   if(cmdlinehelp) {
-    cout <<
-       "Copyright (C) 1990-2000 Odinn Sorensen, Alexander Aganichev, Jacobo Tarrio and" << endl <<
-       "                        others" << endl <<
-       "-------------------------------------------------------------------------------" << endl <<
-       endl <<
-       "Invocation: " << argv[0] << " [-options] [keystacking]" << endl <<
-       endl <<
-       "-C<configfile>  Use a different configuration file." << endl <<
-       "-D              Disable old obsolete configuration keywords." << endl <<
-       "-E<echoid>      Start directly in the specified mail area." << endl <<
-       "-EXPORTSOUP     Export SOUP packets during startup." << endl <<
-       "-F  or  -FF     Force recompile of most (or all with -FF) configuration files." << endl <<
-       "-INSTALL[=path] Start the quick install procedure. Look in path, if given." << endl <<
-       "-IMPORTSOUP     Import SOUP packets during startup." << endl <<
-       "-M              Mute sounds. Disables all noises in GoldED+." << endl <<
-       "-N              Disable share-compatible file opens during startup." << endl <<
-       "-NOSCAN         Temporarily disable area scan during startup." << endl <<
+    std::cout <<
+       "Copyright (C) 1990-2000 Odinn Sorensen, Alexander Aganichev, Jacobo Tarrio and" << std::endl <<
+       "                        others" << std::endl <<
+       "-------------------------------------------------------------------------------" << std::endl <<
+       std::endl <<
+       "Invocation: " << argv[0] << " [-options] [keystacking]" << std::endl <<
+       std::endl <<
+       "-C<configfile>  Use a different configuration file." << std::endl <<
+       "-D              Disable old obsolete configuration keywords." << std::endl <<
+       "-E<echoid>      Start directly in the specified mail area." << std::endl <<
+       "-EXPORTSOUP     Export SOUP packets during startup." << std::endl <<
+       "-F  or  -FF     Force recompile of most (or all with -FF) configuration files." << std::endl <<
+       "-INSTALL[=path] Start the quick install procedure. Look in path, if given." << std::endl <<
+       "-IMPORTSOUP     Import SOUP packets during startup." << std::endl <<
+       "-M              Mute sounds. Disables all noises in GoldED+." << std::endl <<
+       "-N              Disable share-compatible file opens during startup." << std::endl <<
+       "-NOSCAN         Temporarily disable area scan during startup." << std::endl <<
        #if defined(GUTLOS_FUNCS) && !defined(__MSDOS__)
-       "-P              Increase program priority to run faster." << endl <<
+       "-P              Increase program priority to run faster." << std::endl <<
        #endif
-       "-S<sortspec>    Sorts all mail areas according to the sort specs." << endl <<
-       "-T<seconds>     Set a timeout value. GoldED+ will auto-exit after timeout." << endl <<
-       "-V  or  -VV     Verbose or Very verbose (-VV) config compile. Use -VV to debug." << endl <<
-       "-W              Write a GOLDAREA.INC file with AREADEF's of all mail areas." << endl <<
-       "-X,  -Y,  -Z    Reserved for debugging purposes." << endl <<
-       endl <<
-       "Any non-option parameter is stuffed into the keyboard buffer." << endl;
+       "-S<sortspec>    Sorts all mail areas according to the sort specs." << std::endl <<
+       "-T<seconds>     Set a timeout value. GoldED+ will auto-exit after timeout." << std::endl <<
+       "-V  or  -VV     Verbose or Very verbose (-VV) config compile. Use -VV to debug." << std::endl <<
+       "-W              Write a GOLDAREA.INC file with AREADEF's of all mail areas." << std::endl <<
+       "-X,  -Y,  -Z    Reserved for debugging purposes." << std::endl <<
+       std::endl <<
+       "Any non-option parameter is stuffed into the keyboard buffer." << std::endl;
 
     exit(0);
   }
@@ -642,7 +642,7 @@ void Initialize(int argc, char* argv[]) {
     InstallDetect(cmdlineinstpath);
 
   if(not fexist(CFG->goldcfg)) {
-    cout << "*** Cannot start: " << CFG->goldcfg << " not found! ***" << endl;
+    std::cout << "*** Cannot start: " << CFG->goldcfg << " not found! ***" << std::endl;
     errorlevel = EXIT_NONAME;
     exit(0);
   }
@@ -653,7 +653,7 @@ void Initialize(int argc, char* argv[]) {
   // Call install finish procedure
   if(cmdlineinstall) {
     if(InstallFinish()) {
-      cout << "*** INSTALL NOT COMPLETED ***" << endl;
+      std::cout << "*** INSTALL NOT COMPLETED ***" << std::endl;
       remove(CFG->goldcfg);
       errorlevel = EXIT_NONAME;
       exit(0);
@@ -704,12 +704,12 @@ void Initialize(int argc, char* argv[]) {
   // Report detected multitasker
   if(not quiet) {
     if(gmtsk.detected)
-      cout << "* Running under " << gmtsk.name << "." << endl;
+      std::cout << "* Running under " << gmtsk.name << "." << std::endl;
   }
 
   if(cfgerrors) {
-    cout << "* Total CFG errors found: " << cfgerrors
-         << ". Press almost any key to continue." << endl;
+    std::cout << "* Total CFG errors found: " << cfgerrors
+         << ". Press almost any key to continue." << std::endl;
     kbclear();
     waitkey();
   }
@@ -998,7 +998,7 @@ void Initialize(int argc, char* argv[]) {
   WideSharemode = CFG->sharemode;
   WideUsernames = CFG->username.size();
   WideUsername = new const char*[WideUsernames];
-  vector<Node>::iterator i;
+  std::vector<Node>::iterator i;
   int w;
   for(w = 0, i = CFG->username.begin(); w < WideUsernames; w++, i++)
     WideUsername[w] = i->name;

@@ -49,7 +49,7 @@ void gareafile::ReadMaximus3(char* mxpath, char* areafile, char* options) {
   if(fp) {
 
     if(not quiet)
-      cout << "* Reading " << areafile << endl;
+      std::cout << "* Reading " << areafile << std::endl;
 
     m_pointers* prmp = (m_pointers*)throw_calloc(1, sizeof(m_pointers));
     m_pointers& prm = *prmp;
@@ -71,7 +71,7 @@ void gareafile::ReadMaximus3(char* mxpath, char* areafile, char* options) {
       setvbuf(fp, NULL, _IOFBF, 32000);
 
       if(not quiet)
-        cout << "* Reading " << areafile << endl;
+        std::cout << "* Reading " << areafile << std::endl;
 
       long areasize = fsize(fp)-4;
 

@@ -298,7 +298,7 @@ void gareafile::ReadFMail(char* tag) {
       else if((ar_rev >= 0x0110) and (ar_rev < 0x0200))
         ReadFMail116(fp, path, file, options);
       else
-        cout << "* Error: Unknown FMail config revision " << setfill('0') << setw(4) << hex << ar_rev << "h - Skipping." << endl;
+        std::cout << "* Error: Unknown FMail config revision " << std::setfill('0') << std::setw(4) << std::hex << ar_rev << "h - Skipping." << std::endl;
     }
   }
 }

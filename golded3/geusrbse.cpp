@@ -392,7 +392,7 @@ bool guserbase::edit_entry(uint idx) {
 bool guserbase::find_entry(char* name, bool lookup) {
 
   if(not strblank(name)) {
-    string tmpaddr;
+    std::string tmpaddr;
     gusrbaseentry old_entry = entry;
     uint old_index = index;
 
@@ -757,7 +757,7 @@ void guserbase::update_addressbook(GMsg* msg, bool reverse, bool force) {
 
         // 5. It's the mailinglist's sender address
         if(AA->isemail()) {
-          vector<MailList>::iterator z;
+          std::vector<MailList>::iterator z;
           for(z = CFG->mailinglist.begin(); z != CFG->mailinglist.end(); z++)
             if(strieql(z->sender, name) or strieql(z->sender, iaddr))
               return;

@@ -882,7 +882,7 @@ void KeyCmdAdd(gkey keycmd, gkey keyval, int keytype) {
   if(keyval <= 0xFF)
     keyval |= (gkey)(scancode(keyval) << 8);
 
-  list<CmdKey>::iterator tmp = CFG->cmdkey.begin();
+  std::list<CmdKey>::iterator tmp = CFG->cmdkey.begin();
   if(CFG->switches.get(keybdefaults)) {
     while(tmp != CFG->cmdkey.end()) {
       if(tmp->type == keytype) {
@@ -975,7 +975,7 @@ int ReadKeysCfg(int force) {
     cfgname = cfgname ? cfgname+1 : cfg;
 
     if(not quiet)
-      cout << "* Reading " << cfg << endl;
+      std::cout << "* Reading " << cfg << std::endl;
 
     CFG->macro.clear();
     CFG->cmdkey.clear();
@@ -993,7 +993,7 @@ int ReadKeysCfg(int force) {
       keycmd = SwitchKeyDefs(strCrc16(strupr(ptr2)), &keytype);
       if(keycmd) {
         if(keytype) {
-          cout << "* " << cfgname << ": Invalid key \"" << ptr2 << "\" in line " << line << "." << endl;
+          std::cout << "* " << cfgname << ": Invalid key \"" << ptr2 << "\" in line " << line << "." << std::endl;
           SayBibi();
           cfgerrors++;
           continue;
@@ -1009,7 +1009,7 @@ int ReadKeysCfg(int force) {
         else if(strlen(ptr2) == 1)
           keyval = (gkey)tolower(*ptr2);  // Always convert to lowercase internally
         else {
-          cout << "* " << cfgname << ": Invalid key \"" << ptr2 << "\" in line " << line << "." << endl;
+          std::cout << "* " << cfgname << ": Invalid key \"" << ptr2 << "\" in line " << line << "." << std::endl;
           SayBibi();
           cfgerrors++;
           continue;
@@ -1046,7 +1046,7 @@ int ReadKeysCfg(int force) {
                   tmp2.buf[n++] = (gkey)keycmd;
               }
               else {
-                cout << "* " << cfgname << ": Invalid key \"" << ptr2 << "\" in line " << line << "." << endl;
+                std::cout << "* " << cfgname << ": Invalid key \"" << ptr2 << "\" in line " << line << "." << std::endl;
                 SayBibi();
                 cfgerrors++;
                 continue;
@@ -1061,7 +1061,7 @@ int ReadKeysCfg(int force) {
           CFG->macro.push_back(tmp2);
 
           // delete overlayed (non-macro) key definition
-          list<CmdKey>::iterator tmp = CFG->cmdkey.begin();
+          std::list<CmdKey>::iterator tmp = CFG->cmdkey.begin();
           while(tmp != CFG->cmdkey.end()) {
             if(tmp->type == keytype) {
               if(tmp->key == keyval) {
@@ -1076,14 +1076,14 @@ int ReadKeysCfg(int force) {
         else if(keytype)
           KeyCmdAdd(keycmd, keyval, keytype);
         else {
-          cout << "* " << cfgname << ": Invalid key \"" << ptr2 << "\" in line " << line << "." << endl;
+          std::cout << "* " << cfgname << ": Invalid key \"" << ptr2 << "\" in line " << line << "." << std::endl;
           SayBibi();
           cfgerrors++;
           continue;
         }
       }
       else {
-        cout << "* " << cfgname << ": Invalid key \"" << ptr2 << "\" in line " << line << "." << endl;
+        std::cout << "* " << cfgname << ": Invalid key \"" << ptr2 << "\" in line " << line << "." << std::endl;
         SayBibi();
         cfgerrors++;
         continue;
@@ -1100,7 +1100,7 @@ int ReadKeysCfg(int force) {
   CFG->cmdkey.sort(CmdKeyCmp);
 
   // Count keys
-  list<CmdKey>::iterator ck = CFG->cmdkey.begin();
+  std::list<CmdKey>::iterator ck = CFG->cmdkey.begin();
   while(ck != CFG->cmdkey.end()) {
     switch(ck->type) {
       case KT_A: AreaKeys++; if(AreaKeys == 1) AreaKey = ck; break;
@@ -1117,7 +1117,7 @@ int ReadKeysCfg(int force) {
   }
 
   // Assign global macros
-  vector<Macro>::iterator k;
+  std::vector<Macro>::iterator k;
   for(k=CFG->macro.begin(), n=0; k != CFG->macro.end(); k++, n++) {
     if(k->type == 0) {
       if(k->key == KK_Auto) {

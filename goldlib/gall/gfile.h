@@ -119,7 +119,7 @@ public:
   //  ANSI-style streaming buffered I/O
 
   FILE*   fopen   (const char* __path, const char* __mode, int __shflag=SH_DENYNO);
-  FILE*   fopen   (const string& __path, const char* __mode, int __shflag=SH_DENYNO);
+  FILE*   fopen   (const std::string& __path, const char* __mode, int __shflag=SH_DENYNO);
   FILE*   fdopen  (char* __mode);
   int     fclose  ();
 

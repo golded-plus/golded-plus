@@ -363,7 +363,7 @@ void CfgUsername() {
       strxcpy(tmp.name, strbtrim(val), sizeof(Name));
 
       // Check if we have it already
-      vector<Node>::iterator u;
+      std::vector<Node>::iterator u;
       for(u = CFG->username.begin(); u != CFG->username.end(); u++)
         if(strieql(tmp.name, u->name))
           return;
@@ -514,7 +514,7 @@ void CfgXlatexport() {
   else
     strcpy(CFG->xlatexport, buf);
   if(CFG->usecharset and (strieql(buf, "IBMPC") or strieql(buf, "+7_FIDO"))) {
-    cout << "* Warning: Charset " << buf << " is obsolte. Consider using CPxxx form." << endl;
+    std::cout << "* Warning: Charset " << buf << " is obsolete. Consider using CPxxx form." << std::endl;
     cfgerrors++;
   }
 }
@@ -537,7 +537,7 @@ void CfgXlatlocalset() {
 
   strupr(strxcpy(CFG->xlatlocalset, val, sizeof(CFG->xlatlocalset)));
   if(strieql(CFG->xlatlocalset, "IBMPC") or strieql(CFG->xlatlocalset, "+7_FIDO")) {
-    cout << "* Warning: Charset " << CFG->xlatlocalset << " is obsolte. Cosider using CPxxx form." << endl;
+    std::cout << "* Warning: Charset " << CFG->xlatlocalset << " is obsolete. Consider using CPxxx form." << std::endl;
     cfgerrors++;
   }
 }

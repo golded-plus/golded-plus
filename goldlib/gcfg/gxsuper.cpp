@@ -76,7 +76,7 @@ void gareafile::ReadSuperBBS(char* tag) {
   if(fp) {
 
     if(not quiet)
-      cout << "* Reading " << file << endl;
+      std::cout << "* Reading " << file << std::endl;
 
     fread(config, sizeof(ConfigRecordT), 1, fp);
     STRNP2C(config->OriginLine);
@@ -87,7 +87,7 @@ void gareafile::ReadSuperBBS(char* tag) {
     if(fp) {
 
       if(not quiet)
-        cout << "* Reading " << file << endl;
+        std::cout << "* Reading " << file << std::endl;
 
       fread(sconfig, sizeof(ExtraConfigT), 1, fp);
       fclose(fp);
@@ -103,7 +103,7 @@ void gareafile::ReadSuperBBS(char* tag) {
         if(fp) {
 
           if(not quiet)
-            cout << "* Reading " << file << endl;
+            std::cout << "* Reading " << file << std::endl;
 
           for(int n=0; n<200; n++) {
 
@@ -171,8 +171,8 @@ void gareafile::ReadSuperBBS(char* tag) {
         }
       }
       else {
-        cout << "* Error: Unsupported version of SuperBBS: " <<
-          (word)(sconfig->VersionNumber >> 8) << '.' << (word)(sconfig->VersionNumber & 0xFF) << endl;
+        std::cout << "* Error: Unsupported version of SuperBBS: " <<
+          (word)(sconfig->VersionNumber >> 8) << '.' << (word)(sconfig->VersionNumber & 0xFF) << std::endl;
       }
     }
   }

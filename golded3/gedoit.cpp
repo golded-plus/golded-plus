@@ -79,7 +79,7 @@ void SaveLines(int mode, const char* savefile, GMsg* msg, int margin, bool clip)
       while(line) {
         uint lineisctrl = line->type & (GLINE_TEAR|GLINE_ORIG|GLINE_KLUDGE);
         if(not ((mode == MODE_SAVENOCTRL) and lineisctrl)) {
-          string::iterator p = line->txt.begin();
+          std::string::iterator p = line->txt.begin();
           while(p != line->txt.end()) {
             if(mode == MODE_WRITE) {
               // Replace control codes, except the ANSI escape code

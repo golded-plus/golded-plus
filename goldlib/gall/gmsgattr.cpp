@@ -87,7 +87,7 @@ void ftn_attr::add(const ftn_attr& b) {
 //  ------------------------------------------------------------------
 //  Create string representation of an attribute set
 
-string& ftn_attr::make_string(string& s) const {
+std::string& ftn_attr::make_string(std::string& s) const {
 
   s = "";
 
@@ -138,7 +138,7 @@ string& ftn_attr::make_string(string& s) const {
 
 //  ------------------------------------------------------------------
 
-void ftn_attr::get(const string& __s) {
+void ftn_attr::get(const std::string& __s) {
 
   const char *s = __s.c_str();
   if(striinc("PVT", s))  pvt1();

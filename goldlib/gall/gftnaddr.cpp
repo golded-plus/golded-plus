@@ -91,7 +91,7 @@ char* ftn_addr::reset(const char* str, char* dom, int domsizelimit) {
 
 //  ------------------------------------------------------------------
 
-void ftn_addr::reset(const string& str) {
+void ftn_addr::reset(const std::string& str) {
 
   reset(str.c_str());
 }
@@ -99,7 +99,7 @@ void ftn_addr::reset(const string& str) {
 
 //  ------------------------------------------------------------------
 
-void ftn_addr::reset(const string& str, string& dom, int domsizelimit) {
+void ftn_addr::reset(const std::string& str, std::string& dom, int domsizelimit) {
 
   ftn_domain doms;
   reset(str.c_str(), doms, domsizelimit);
@@ -129,7 +129,7 @@ static bool ftn_getaddrpart(word& part, const char* s) {
 
 //  ------------------------------------------------------------------
 
-const char* ftn_addr::set(const string& str) {
+const char* ftn_addr::set(const std::string& str) {
 
   return set(str.c_str());
 }
@@ -137,7 +137,7 @@ const char* ftn_addr::set(const string& str) {
 
 //  ------------------------------------------------------------------
 
-const char* ftn_addr::set(const string& str, string& dom, int domsizelimit) {
+const char* ftn_addr::set(const std::string& str, std::string& dom, int domsizelimit) {
 
   ftn_domain doms;
   set(str.c_str(), doms, domsizelimit);
@@ -292,7 +292,7 @@ int ftn_addr::compare(const ftn_addr& other) const {
 
 //  ------------------------------------------------------------------
 
-string& ftn_addr::make_string(string& str) const {
+std::string& ftn_addr::make_string(std::string& str) const {
 
   char buf[200];
   make_string(buf);
@@ -303,7 +303,7 @@ string& ftn_addr::make_string(string& str) const {
 
 //  ------------------------------------------------------------------
 
-string& ftn_addr::make_string(string& str, const string& dom, int domfmt) const {
+std::string& ftn_addr::make_string(std::string& str, const std::string& dom, int domfmt) const {
 
   char buf[200];
   make_string(buf, dom.c_str(), domfmt);

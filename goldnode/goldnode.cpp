@@ -23,6 +23,7 @@
 //  GoldNODE - A nodelist compiler for GoldED.
 //  ------------------------------------------------------------------
 
+using namespace std;
 
 #include <gdbgerr.h>
 #include <list>
@@ -43,6 +44,7 @@
 #include <gutlos.h>
 #include <glog.h>
 #include <iomanip>
+#include <iostream>
 
 //#define GOLDNODE_STATS 1
 

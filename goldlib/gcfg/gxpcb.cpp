@@ -86,7 +86,7 @@ void gareafile::ReadPCBoard(char* tag) {
   if(fp.isopen()) {
 
     if(not quiet)
-      cout << "* Reading " << _file << endl;
+      std::cout << "* Reading " << _file << std::endl;
 
     int _line = 0;
 
@@ -117,7 +117,7 @@ void gareafile::ReadPCBoard(char* tag) {
       if(fp.isopen()) {
 
         if(not quiet)
-          cout << "* Reading " << _file << endl;
+          std::cout << "* Reading " << _file << std::endl;
 
         // Get configuration file version
         fp.fread(&fido_version, 2);
@@ -163,7 +163,7 @@ void gareafile::ReadPCBoard(char* tag) {
           fp.fopen(_file, "rb");
           if(fp.isopen()) {
             if(not quiet)
-              cout << "* Reading " << _file << endl;
+              std::cout << "* Reading " << _file << std::endl;
             word cfgver = 0;
             fp.fread(&cfgver, 2);
             if(cfgver == 3) {
@@ -179,7 +179,7 @@ void gareafile::ReadPCBoard(char* tag) {
           fp.fopen(_file, "rb");
           if(fp.isopen()) {
             if(not quiet)
-              cout << "* Reading " << _file << endl;
+              std::cout << "* Reading " << _file << std::endl;
             word cfgver = 0;
             fp.fread(&cfgver, 2);
             if(cfgver == 3) {
@@ -201,7 +201,7 @@ void gareafile::ReadPCBoard(char* tag) {
           fp.fopen(_file, "rb");
           if(fp.isopen()) {
             if(not quiet)
-              cout << "* Reading " << _file << endl;
+              std::cout << "* Reading " << _file << std::endl;
             word cfgver = 0;
             fp.fread(&cfgver, 2);
             if(cfgver == 3) {
@@ -249,7 +249,7 @@ void gareafile::ReadPCBoard(char* tag) {
     if(fp.isopen()) {
 
       if(not quiet)
-        cout << "* Reading " << _file << endl;
+        std::cout << "* Reading " << _file << std::endl;
 
       gfile fp2;
       _file = AddPath(_cnamespath, ".add");
@@ -257,7 +257,7 @@ void gareafile::ReadPCBoard(char* tag) {
       if(fp2.isopen()) {
 
         if(not quiet)
-          cout << "* Reading " << _file << endl;
+          std::cout << "* Reading " << _file << std::endl;
 
         word _recsize = 0;
         fp.fread(&_recsize, 2);

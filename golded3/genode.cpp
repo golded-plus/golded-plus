@@ -853,7 +853,7 @@ void Lookup(GMsg* msg, Addr* addr, char* name, int topline, char* status) {
   strcpy(tmpname, name);
 
   if(not CFG->addressmacro.empty()) {
-    vector<AddrMacro>::iterator n;
+    std::vector<AddrMacro>::iterator n;
     ptr = name;
     strcpy(buf, ptr);
     for(n=CFG->addressmacro.begin(); n != CFG->addressmacro.end(); n++) {

@@ -98,7 +98,7 @@ bool ReadGoldedCfg(int& force) {
     if(*CFG->souptosslog)
       MakePathname(CFG->souptosslog, CFG->goldpath, CFG->souptosslog);
 
-    vector<Tpl>::iterator t;
+    std::vector<Tpl>::iterator t;
     for(t = CFG->tpl.begin(); t != CFG->tpl.end(); t++)
       MakePathname(t->file, CFG->templatepath, t->file);
 
@@ -121,7 +121,7 @@ bool ReadGoldedCfg(int& force) {
     MakePathname(CFG->semaphore.exitnow,    CFG->goldpath, CFG->semaphore.exitnow);
 
     if(strieql(CFG->semaphore.exportlist, AddPath(CFG->jampath, "echomail.jam"))) {
-      cout << "* Warning: SEMAPHORE EXPORTLIST must not be the same as ECHOMAIL.JAM!" << endl;
+      std::cout << "* Warning: SEMAPHORE EXPORTLIST must not be the same as ECHOMAIL.JAM!" << std::endl;
       SayBibi();
       cfgerrors++;
     }
@@ -134,7 +134,7 @@ bool ReadGoldedCfg(int& force) {
   ReadXlatTables();
 
   // Free all mapfile name allocations
-  vector<Map>::iterator xlt;
+  std::vector<Map>::iterator xlt;
   for(xlt = CFG->xlatescset.begin(); xlt != CFG->xlatescset.end(); xlt++)
     throw_release(xlt->mapfile);
   for(xlt = CFG->xlatcharset.begin(); xlt != CFG->xlatcharset.end(); xlt++)
@@ -214,7 +214,7 @@ void WriteGoldGed() {
 
 static int EnterString(char* prompt, char* string, uint length) {
 
-  cout << prompt << endl << "> " << flush;
+  std::cout << prompt << std::endl << "> " << std::flush;
 
   *string = NUL;
   char* ptr = string;
@@ -224,18 +224,18 @@ static int EnterString(char* prompt, char* string, uint length) {
     k = kbxget();
     if(k == Key_BS) {
       if(pos) {
-        cout << "\b \b" << flush;
+        std::cout << "\b \b" << std::flush;
         pos--;
         *(--ptr) = NUL;
       }
     }
     else if(k == Key_Esc) {
-      cout << endl;
+      std::cout << std::endl;
       *string = NUL;
       return -1;
     }
     else if(k == Key_Ent) {
-      cout << endl;
+      std::cout << std::endl;
       *ptr = NUL;
       break;
     }
@@ -243,7 +243,7 @@ static int EnterString(char* prompt, char* string, uint length) {
       if(pos < length) {
         char c = (char)k;
         if(c) {
-          cout << c << flush;
+          std::cout << c << std::flush;
           *ptr++ = c;
           pos++;
         }
@@ -310,10 +310,10 @@ void InstallDetect(char* path) {
     if(fexist(cmdlinecfgbak))
       remove(cmdlinecfgbak);
     rename(CFG->goldcfg, cmdlinecfgbak);
-    cout << "WARNING: Existing config backed up to " << cmdlinecfgbak << "!!!" << endl;
+    std::cout << "WARNING: Existing config backed up to " << cmdlinecfgbak << "!!!" << std::endl;
   }
 
-  cout << "Please wait while GoldED+ is detecting your software." << endl;
+  std::cout << "Please wait while GoldED+ is detecting your software." << std::endl;
 
   FILE* fp = fopen(CFG->goldcfg, "wt");
   if(fp) {
@@ -342,7 +342,7 @@ void InstallDetect(char* path) {
       }
       if(fexist(AddPath(pth, idetect[i].configname))) {
         fprintf(fp, "AREAFILE %s %s\n", idetect[i].name, pth);
-        cout << "Found " << idetect[i].name << (ptr ? "." : " (unreliable).") << endl;
+        std::cout << "Found " << idetect[i].name << (ptr ? "." : " (unreliable).") << std::endl;
         if(streql(idetect[i].name, "Squish"))
           gotsquish = true;
         detected = true;
@@ -356,7 +356,7 @@ void InstallDetect(char* path) {
       PathCopy(pth, ptr);
     if(fexist(AddPath(pth, "im.exe")) or fexist(AddPath(pth, "intrecho.exe"))) {
       fprintf(fp, "AREAFILE InterMail %s\n", pth);
-      cout << "Found InterMail and/or InterEcho." << endl;
+      std::cout << "Found InterMail and/or InterEcho." << std::endl;
       detected = true;
     }
 
@@ -371,12 +371,12 @@ void InstallDetect(char* path) {
     }
     if(fexist(AddPath(pth, "max.prm"))) {
       fprintf(fp, "AREAFILE Maximus %s\n", pth);
-      cout << "Found Maximus." << endl;
+      std::cout << "Found Maximus." << std::endl;
       detected = true;
     }
     if(not gotsquish and fexist(AddPath(pth, "squish.cfg"))) {
       fprintf(fp, "AREAFILE Squish %s\n", pth);
-      cout << "Found Squish." << endl;
+      std::cout << "Found Squish." << std::endl;
       detected = true;
     }
 
@@ -384,7 +384,7 @@ void InstallDetect(char* path) {
     strcpy(pth, CFG->areapath);
     if(fexist(AddPath(pth, "areadesc.me2"))) {
       fprintf(fp, "AREAFILE ME2 %sareadesc.me2 %sareas.bbs\n", pth, pth);
-      cout << "Found ME2." << endl;
+      std::cout << "Found ME2." << std::endl;
       gotareasbbs = true;
       detected = true;
     }
@@ -394,13 +394,13 @@ void InstallDetect(char* path) {
       strcpy(pth, CFG->areapath);
       if(fexist(AddPath(pth, "areas.bbs"))) {
         fprintf(fp, "AREAFILE AreasBBS %sareas.bbs\n", pth);
-        cout << "Found AREAS.BBS." << endl;
+        std::cout << "Found AREAS.BBS." << std::endl;
         detected = true;
       }
     }
 
     if(not detected)
-      cout << "Sorry, could not find any supported software. Try another path." << endl;
+      std::cout << "Sorry, could not find any supported software. Try another path." << std::endl;
 
     fclose(fp);
   }

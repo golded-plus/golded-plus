@@ -87,18 +87,18 @@ void InitSound() {
 
   // Find out if there are any sound files to be played
   #ifdef GOLD_SOUNDSUPPORT
-  vector<GEvent>::iterator n;
+  std::vector<GEvent>::iterator n;
   for(n = CFG->event.begin(); n != CFG->event.end(); n++) {
     if(n->play.type == PLAY_VOC) {
       snd = new gsound;
       if(snd->is_installed()) {
         if(not quiet)
-          cout << "* Soundcard support was successfully initialized." << endl;
+          std::cout << "* Soundcard support was successfully initialized." << std::endl;
         atexit(ResetSound);
       }
       else {
         if(not quiet)
-          cout << "* Soundcard support could NOT be initialized!" << endl;
+          std::cout << "* Soundcard support could NOT be initialized!" << std::endl;
         ResetSound();
       }
       break;
@@ -179,7 +179,7 @@ int HandleGEvent(uint event) {
   }
 
   if(CFG) {
-    vector<GEvent>::iterator n;
+    std::vector<GEvent>::iterator n;
     for(n = CFG->event.begin(); n != CFG->event.end(); n++) {
       if(event == n->type) {
         switch(n->command) {

@@ -388,7 +388,7 @@ void Area::RandomizeData(int mode) {
     CFG->grp.GetItm(GRP_XLATIMPORT, adat->xlatimport, sizeof(adat->xlatimport));
   }
 
-  vector<MailList>::iterator z;
+  std::vector<MailList>::iterator z;
   for(z = CFG->mailinglist.begin(); z != CFG->mailinglist.end(); z++)
     if(strieql(echoid(), z->echoid)) {
       strcpy(adat->whoto, *z->contribution ? z->contribution : z->sender);

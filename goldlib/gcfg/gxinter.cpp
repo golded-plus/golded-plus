@@ -68,7 +68,7 @@ void gareafile::ReadInterMail(char* tag) {
     _ctl* ctl = (_ctl*)throw_calloc(1, sizeof(_ctl));
 
     if(not quiet)
-      cout << "* Reading " << _file << endl;
+      std::cout << "* Reading " << _file << std::endl;
 
     fp.fread(ctl, sizeof(_ctl));
 
@@ -135,7 +135,7 @@ void gareafile::ReadInterMail(char* tag) {
         if(fp.isopen()) {
 
           if(not quiet)
-            cout << "* Reading " << _file << endl;
+            std::cout << "* Reading " << _file << std::endl;
 
           FOLDER* _folder = (FOLDER*)throw_calloc(1, sizeof(FOLDER));
 
@@ -179,7 +179,7 @@ void gareafile::ReadInterMail(char* tag) {
         if(fp.isopen()) {
 
           if(not quiet)
-            cout << "* Reading " << _file << endl;
+            std::cout << "* Reading " << _file << std::endl;
 
           OLDFOLDER* _folder = (OLDFOLDER*)throw_calloc(1, sizeof(OLDFOLDER));
 
@@ -213,7 +213,7 @@ void gareafile::ReadInterMail(char* tag) {
       }
     }
     else {
-      cout << "* Error: InterMail revision " << setfill('0') << setw(4) << hex << ctl->sysrev << "h is not supported - Skipping." << endl;
+      std::cout << "* Error: InterMail revision " << std::setfill('0') << std::setw(4) << std::hex << ctl->sysrev << "h is not supported - Skipping." << std::endl;
     }
     throw_free(ctl);
   }

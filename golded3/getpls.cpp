@@ -41,7 +41,7 @@ bool is_user(const char* name) {
   if(strieql(name, AA->Username().name))
     return true;
   // We should check all misspells too
-  for(vector<Node>:: iterator u = CFG->username.begin(); u != CFG->username.end(); u++)
+  for(std::vector<Node>:: iterator u = CFG->username.begin(); u != CFG->username.end(); u++)
     if(strieql(name, u->name))
       return true;
   return false;
@@ -183,7 +183,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
     if(AA->Templatematch() and not (CFG->tplno or AA->isnewsgroup() or AA->isemail())) {
       if(not ((mode == MODE_NEW or mode == MODE_REPLYCOMMENT or mode == MODE_FORWARD)
               and (AA->isecho() or AA->islocal()))) {
-        vector<Tpl>::iterator tp;
+        std::vector<Tpl>::iterator tp;
         for(tp = CFG->tpl.begin(); tp != CFG->tpl.end(); tp++)
           if(tp->match.net and msg->dest.match(tp->match)) {
             strcpy(tplfile, tp->file);
@@ -680,7 +680,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
                 }
 
                 // Invalidate kludge chars
-                string& tempref = strtrim(oldmsg->line[n]->txt);
+                std::string& tempref = strtrim(oldmsg->line[n]->txt);
                 replace(tempref.begin(), tempref.end(), CTRL_A, '@');
                 quote = tempref.c_str();
 
@@ -848,14 +848,14 @@ void ChangeMsg() {
       AA->LoadMsg(reader_msg, reader_msg->msgno, CFG->dispmargin-(int)CFG->switches.get(disppagebar));
     }
 
-    for(vector<Node>:: iterator u = CFG->username.begin(); u != CFG->username.end(); u++)
+    for(std::vector<Node>:: iterator u = CFG->username.begin(); u != CFG->username.end(); u++)
       // Check FROM:
       if(reader_msg->orig.match(u->addr)) {
         if(strieql(u->name, reader_msg->By())) {
           if(u->addr.net != GFTN_ALL or reader_msg->orig.net == 0 or not AA->isnet())
             reader_keyok = NO;
           else {
-            for(vector<gaka>::iterator x = CFG->aka.begin(); x != CFG->aka.end(); x++) {
+            for(std::vector<gaka>::iterator x = CFG->aka.begin(); x != CFG->aka.end(); x++) {
               if(reader_msg->orig.match(x->addr)) {
                 reader_keyok = NO;
                 break;

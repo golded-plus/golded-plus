@@ -579,7 +579,7 @@ void DoTearorig(int mode, GMsg* msg) {
   char* ptr;
   Line* line = msg->lin;
   Line* newline;
-  string origin;
+  std::string origin;
 
   origin = AA->Origin();
 

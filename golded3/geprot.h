@@ -220,7 +220,7 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int origarea);
 void Rot13(GMsg* msg);
 void ResetMsg(GMsg* msg);
 int DoCarboncopy(GMsg* msg, GMsg** carbon);
-void DoCrosspost(GMsg* msg, vector<int> &postareas);
+void DoCrosspost(GMsg* msg, std::vector<int> &postareas);
 char* ParseInternetAddr(char* __string, char* __name, char* __addr);
 
 
@@ -392,7 +392,7 @@ void  maketitle();
 void  ProgMeter(int mode, int xx, int yy, long len, long barlen, int attr, long pos, long size);
 int   ReadCfg(const char* cfg, int ignoreunknown=false);
 void  ScanMsgTxtForAddr(GMsg* msg);
-gkey  SearchKey(gkey key, list<CmdKey>::iterator keys, int totkeys);
+gkey  SearchKey(gkey key, std::list<CmdKey>::iterator keys, int totkeys);
 int   SearchTaglist(Echo* taglist, char* tag);
 void  set_title(const char* t, int p, int a);
 void  title_shadow();

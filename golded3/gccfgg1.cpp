@@ -41,7 +41,7 @@ void CfgAddress(char* v) {
   if(not strblank(v)) {
 
     if(veryverbose)
-      cout << "  CfgAddress(" << v << ")" << endl;
+      std::cout << "  CfgAddress(" << v << ")" << std::endl;
 
     gaka aka;
     aka.domain[0] = NUL;
@@ -349,7 +349,7 @@ void CfgArealistscan() {
 
   char* _key;
   getkeyval(&_key, &val);
-  AL.ListScan.Add(pair<string, string>(StripQuotes(_key), val));
+  AL.ListScan.Add(std::pair<std::string, std::string>(StripQuotes(_key), val));
 }
 
 //  ------------------------------------------------------------------

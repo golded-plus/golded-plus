@@ -76,7 +76,7 @@ void gareafile::ReadRaEcho(char* tag) {
   }
   if(raever == 0) {
     if(not quiet)
-      cout << "* Could not determine version of RA-ECHO - skipping." << endl;
+      std::cout << "* Could not determine version of RA-ECHO - skipping." << std::endl;
     return;
   }
 
@@ -86,7 +86,7 @@ void gareafile::ReadRaEcho(char* tag) {
     setvbuf(fp, NULL, _IOFBF, 8192);
 
     if(not quiet)
-      cout << "* Reading " << file << endl;
+      std::cout << "* Reading " << file << std::endl;
 
     areano = 1;
     while(fread(&area, raever, 1, fp) == 1) {

@@ -79,7 +79,7 @@ void gareafile::ReadOpus(char* tag) {
       setvbuf(fp, NULL, _IOFBF, 8192);
 
       if(not quiet)
-        cout << "* Reading " << file << endl;
+        std::cout << "* Reading " << file << std::endl;
 
       while(fread(&msgsys, sizeof(_msgsys), 1, fp) == 1) {
 
@@ -135,7 +135,7 @@ void gareafile::ReadOpus(char* tag) {
           setvbuf(fp, NULL, _IOFBF, 8192);
 
           if(not quiet)
-            cout << "* Reading " << file << endl;
+            std::cout << "* Reading " << file << std::endl;
 
           fread(&sysdat, sizeof(_systemdat), 1, fp);
           if(*sysdat.msgpath and *sysdat.msgtitle) {

@@ -967,7 +967,7 @@ void FileRequest(GMsg* msg) {
           AA->Open();
         if(CFG->frqoptions & FREQ_FAST)
           savedirect = true;
-        vector<FrqNodeMap>::iterator fnm;
+        std::vector<FrqNodeMap>::iterator fnm;
         for(fnm = CFG->frqnodemap.begin(); fnm != CFG->frqnodemap.end(); fnm++) {
           if(fnm->from.equals(msg->orig)) {
             msg->orig = fnm->to;

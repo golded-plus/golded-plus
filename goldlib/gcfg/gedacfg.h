@@ -110,7 +110,7 @@ public:
   byte     pmscanexcl : 1;  // TRUE if listed with AREAPMSCANEXCL
   byte     pmscanincl : 1;  // TRUE if listed with AREAPMSCANINCL
 
-  int setorigin(string& origin);
+  int setorigin(std::string& origin);
 
   bool isfts1() const                { return !!(msgbase & GMB_FTS1); }
   bool isopus() const                { return !!(msgbase & GMB_OPUS); }
@@ -146,10 +146,10 @@ public:
 
   static int autoid;
 
-  Echo     echoid;    // Echo tag
-  Desc     desc;      // Area description
-  Path     path;      // Path to message area
-  string   origin;    // Origin
+  Echo          echoid;    // Echo tag
+  Desc          desc;      // Area description
+  Path          path;      // Path to message area
+  std::string   origin;    // Origin
 
   AreaCfg()   { reset(); }
   ~AreaCfg()  { }
@@ -265,7 +265,7 @@ protected:
   void ReadFMail116(FILE* fp, char* path, char* file, char* options);
 #endif
 #ifndef GCFG_NOFIDOCONF
-  bool ReadHPTLine(FILE* f, string* s, bool add=false, int state=0);
+  bool ReadHPTLine(FILE* f, std::string* s, bool add=false, int state=0);
   void ReadHPTFile(char* path, char* file, char* options, char* origin, int group);
 #endif
 #ifndef GCFG_NOIMAIL

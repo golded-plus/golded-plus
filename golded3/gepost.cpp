@@ -29,17 +29,17 @@
 
 //  ------------------------------------------------------------------
 
-vector<int> post_xparea;
+std::vector<int> post_xparea;
 uint position;
 ulong msgcount = 0;
 
 
 //  ------------------------------------------------------------------
 
-string &strtrimline(string &p) {
+std::string &strtrimline(std::string &p) {
 
   if(not p.empty()) {
-    string::iterator trail = p.end();
+    std::string::iterator trail = p.end();
     while(trail != p.begin()) {
       --trail;
       if(not strchr(" \t\r\n", *trail) and not issoftcr(*trail)) {
@@ -231,7 +231,7 @@ static bool have_origin(GMsg *msg) {
 static void MakeMsg3(int& mode, GMsg* msg) {
 
   int n;
-  vector<gaka>::iterator u;
+  std::vector<gaka>::iterator u;
 
   msg->charsetlevel = 0;
   if(*AA->Xlatexport()) {
@@ -265,7 +265,7 @@ static void MakeMsg3(int& mode, GMsg* msg) {
   msg->oorig = msg->orig;
   if(AA->isnet() and msg->orig.point) {
     for(u = CFG->aka.begin(); u != CFG->aka.end(); u++) {
-      if(not memcmp(u, &msg->orig, sizeof(Addr))) {
+      if(not memcmp(&(*u), &msg->orig, sizeof(Addr))) {
         // Use fakenet to everybody
         if(u->pointnet) {
           msg->oorig.net   = u->pointnet;  // Create fake address
@@ -280,7 +280,7 @@ static void MakeMsg3(int& mode, GMsg* msg) {
   DoKludges(mode, msg);
 
   if(cc) {
-    string temp;
+    std::string temp;
     update_statuslinef(LNG->StatusCC, msg->to, msg->dest.make_string(temp).c_str());
   }
 
@@ -369,7 +369,7 @@ static void MakeMsg3(int& mode, GMsg* msg) {
       cmsg->references = msg->references;
       AA->NewMsgno(cmsg);
       {
-        string temp;
+        std::string temp;
         update_statuslinef(LNG->StatusCC, cmsg->to, cmsg->dest.make_string(temp).c_str());
       }
 
@@ -383,7 +383,7 @@ static void MakeMsg3(int& mode, GMsg* msg) {
       cmsg->oorig = cmsg->orig;
       if(AA->isnet() and cmsg->orig.point) {
         for(u = CFG->aka.begin(); u != CFG->aka.end(); u++) {
-          if(not memcmp(u, &cmsg->orig, sizeof(Addr))) {
+          if(not memcmp(&(*u), &cmsg->orig, sizeof(Addr))) {
             // Use fakenet to everybody
             if(u->pointnet) {
               cmsg->oorig.net   = u->pointnet;  // Create fake address
@@ -482,7 +482,7 @@ static void MakeMsg2(int& mode, int& status, int& forwstat, int& topline, GMsg* 
   if(status == MODE_CHANGE or (mode == MODE_FORWARD and status == MODE_SAVE)) {
     if(mode == MODE_CHANGE) {
       if(stricmp(msg->By(), AA->Username().name)) {
-        vector<Node>::iterator x;
+        std::vector<Node>::iterator x;
         for(n = 0, x = CFG->username.begin(); x != CFG->username.end(); n++, x++) {
           if(strieql(x->name, msg->By())) {
             n = 0;

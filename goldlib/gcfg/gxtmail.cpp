@@ -51,7 +51,7 @@ void gareafile::ReadTmailFile(char* file, char* options, char* origin) {
     setvbuf(fp, NULL, _IOFBF, 8192);
 
     if(not quiet)
-      cout << "* Reading " << file << endl;
+      std::cout << "* Reading " << file << std::endl;
 
     aa.reset();
 

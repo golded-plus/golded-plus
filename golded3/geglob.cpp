@@ -58,7 +58,7 @@ int EditKeys = 0;
 int FileKeys = 0;
 int AddressbookKeys = 0;
 int HeaderKeys = 0;
-list<CmdKey>::iterator AreaKey, ReadKey, ListKey, NodeKey, EditKey, FileKey, AddressbookKey, HeaderKey;
+std::list<CmdKey>::iterator AreaKey, ReadKey, ListKey, NodeKey, EditKey, FileKey, AddressbookKey, HeaderKey;
 
 int inforow = 18;
 
@@ -263,7 +263,7 @@ bool inline samekey(gkey key1, gkey key2) {
 
 int IsMacro(gkey key, int type) {
 
-  vector<Macro>::iterator m = CFG->macro.begin();
+  std::vector<Macro>::iterator m = CFG->macro.begin();
   while(m != CFG->macro.end()) {
     if(((key == m->key) or samekey(key, m->key)) and (type == m->type))
       return true;
@@ -278,10 +278,10 @@ int IsMacro(gkey key, int type) {
 
 int PlayMacro(gkey key, int type) {
 
-  vector<Macro>::iterator m = CFG->macro.begin();
+  std::vector<Macro>::iterator m = CFG->macro.begin();
   while(m != CFG->macro.end()) {
     if(((key == m->key) or samekey(key, m->key)) and (type == m->type)) {
-      RunMacro(m);
+      RunMacro(&(*m));
       return true;
     }
     m++;

@@ -254,7 +254,7 @@ void gareafile::GetAreasBBS(char* name, char* origin, char* options) {
     setvbuf(fp, NULL, _IOFBF, 8192);
 
     if(not quiet)
-      cout << "* Reading " << areafile << endl;
+      std::cout << "* Reading " << areafile << std::endl;
 
     bool firstline = true;
 

@@ -39,7 +39,7 @@
 class gdirentry {
 
 public:
-	string name;
+	std::string name;
 	struct stat stat_info;
 	const char *dirname;
 	gdirentry();
@@ -54,7 +54,7 @@ public:
 class gposixdir {
 
 private:
-	string dirname;
+	std::string dirname;
 	gdirentry ret;
 	gstrarray entries;
 	unsigned long last_entry;

@@ -217,7 +217,7 @@ void golded_search_manager::prepare_from_string(const char* prompt, int what) {
 
 bool golded_search_manager::search(GMsg* msg, bool quick, bool shortcircuit) {
 
-  search_item* item = items.begin();
+  std::vector<search_item>::iterator item = items.begin();
   bool exit = false;
   bool and_cycle = false;
   bool or_cycle = false;
@@ -533,7 +533,7 @@ void AdvancedSearch(GMsg*, int&, int&) {
 
   iform.setup(idle_color, active_color, edit_color, _box_table(border_type, 13), true);
 
-  string buffers[9*3 + 6];
+  std::string buffers[9*3 + 6];
 
   int i = 0;
   for(int r=0; r<9; r++) {

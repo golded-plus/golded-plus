@@ -74,7 +74,7 @@ gposixdir::~gposixdir()
 
 void gposixdir::cd(const char *name, bool relative)
 {
-	string ndirname;
+	std::string ndirname;
 	if(!*name)
 		name = ".";
 	if(relative) {
@@ -115,7 +115,7 @@ const gdirentry *gposixdir::nextentry(const char *mask, bool nameonly)
 		}
 		ret.name = entries[last_entry];
 		ret.dirname = dirname.c_str();
-		string pn = ret.dirname;
+		std::string pn = ret.dirname;
 		pn += "/";
 		pn += ret.name;
 		size_t skipfrom;

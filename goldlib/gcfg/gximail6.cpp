@@ -57,7 +57,7 @@ void gareafile::ReadIMail185(char* options, char* file, char* impath) {
   if(fp) {
 
     if(not quiet)
-      cout << "* Reading " << file << endl;
+      std::cout << "* Reading " << file << std::endl;
 
     fread(CF, sizeof(im_config_type), 1, fp);
     fclose(fp);
@@ -85,7 +85,7 @@ void gareafile::ReadIMail185(char* options, char* file, char* impath) {
       setvbuf(fp, NULL, _IOFBF, 8192);
 
       if(not quiet)
-        cout << "* Reading " << file << endl;
+        std::cout << "* Reading " << file << std::endl;
 
       while(fread(&AR, sizeof(mail_area_type), 1, fp) == 1) {
 
@@ -115,7 +115,7 @@ void gareafile::ReadIMail185(char* options, char* file, char* impath) {
               if((AR.brd >= 1) and (AR.brd <= 200))
                 aa.board = AR.brd;
               else {
-                cout << "* Warning: Invalid board " << AR.brd << " (" << AR.aname << ") in IMAIL.AR - Skipping." << endl;
+                std::cout << "* Warning: Invalid board " << AR.brd << " (" << AR.aname << ") in IMAIL.AR - Skipping." << std::endl;
                 continue;
               }
               break;
@@ -218,7 +218,7 @@ void gareafile::ReadIMail(char* tag) {
         #endif
       }
     }
-    cout << "* Error: IMAIL " << imver[0] << '.' << setfill('0') << setw(2) << imver[1] << " (structure revision " << imstructver[0] << '.' << setfill('0') << setw(2) << imstructver[1] << ") is not supported - Skipping." << endl;
+    std::cout << "* Error: IMAIL " << imver[0] << '.' << std::setfill('0') << std::setw(2) << imver[1] << " (structure revision " << imstructver[0] << '.' << std::setfill('0') << std::setw(2) << imstructver[1] << ") is not supported - Skipping." << std::endl;
   }
 }
 

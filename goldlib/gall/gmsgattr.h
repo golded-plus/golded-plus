@@ -124,19 +124,19 @@ public:
 
   ftn_attr() { reset(); }
   ftn_attr(const char* s) { get(s); }
-  ftn_attr(const string& s) { get(s); }
+  ftn_attr(const std::string& s) { get(s); }
   ftn_attr(const ftn_attr& o) { operator=(o); }
 
   void reset() { attr1 = attr2 = 0; }
 
   void add(const ftn_attr& b);
-  void get(const string& s);
-  string& make_string(string& s) const;
+  void get(const std::string& s);
+  std::string& make_string(std::string& s) const;
 
   bool equals(const ftn_attr& b) const;
 
   ftn_attr& operator=(const char* s)      { get(s); return *this; }
-  ftn_attr& operator=(const string& s)   { get(s); return *this; }
+  ftn_attr& operator=(const std::string& s)   { get(s); return *this; }
   ftn_attr& operator=(const ftn_attr& o)  { attr1=o.attr1; attr2=o.attr2; return *this; }
 
   bool operator==(const ftn_attr& b) const  { return equals(b); }
@@ -485,7 +485,7 @@ typedef ftn_attr Attr;
 
 inline void AttrAdd(Attr* a, Attr* b) { a->add(*b); }
 inline void GetAttribstr(Attr* attr, const char* attrs) { attr->get(attrs); }
-inline char* MakeAttrStr(char* str, size_t maxlen, const Attr* attr) { string tmp; attr->make_string(tmp); strxcpy(str, tmp.c_str(), maxlen); return str; }
+inline char* MakeAttrStr(char* str, size_t maxlen, const Attr* attr) { std::string tmp; attr->make_string(tmp); strxcpy(str, tmp.c_str(), maxlen); return str; }
 
 
 //  ------------------------------------------------------------------

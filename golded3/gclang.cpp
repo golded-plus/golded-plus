@@ -671,7 +671,7 @@ bool ReadLangCfg(int force) {
     setvbuf(fpi, NULL, _IOFBF, 8192);
 
     if(not quiet)
-      cout << "* Reading " << cfgname << endl;
+      std::cout << "* Reading " << cfgname << std::endl;
 
     cfgname = CleanFilename(cfgname);
 
@@ -691,7 +691,7 @@ bool ReadLangCfg(int force) {
         }
         if(SwitchLanguage(strCrc16(strupr(ptr)), str)) {
           if(cmdlineoldkeyw == false) {
-            cout << "* " << cfgname << " line " << line << ": \"" << ptr << "\" is obsolete or unknown." << endl;
+            std::cout << "* " << cfgname << " line " << line << ": \"" << ptr << "\" is obsolete or unknown." << std::endl;
             SayBibi();
             cfgerrors++;
           }

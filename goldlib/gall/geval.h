@@ -66,8 +66,8 @@ public:
 
 protected:
 
-  vector<ops> ostk;
-  vector<int> vstk;
+  std::vector<ops> ostk;
+  std::vector<int> vstk;
 
   ops pop_operator();
   int pop_value();
@@ -81,14 +81,14 @@ public:
   void push_operator(ops o);
 
   int evaluate_op(ops o, int y, int x);
-  int evaluate_ops(ops* o, int* y, int* x);
+  int evaluate_ops(std::vector<ops>::iterator o, std::vector<int>::iterator y, std::vector<int>::iterator x);
 
 };
 
 
 //  ------------------------------------------------------------------
 
-inline int geval::evaluate_ops(ops* o, int* y, int* x) {
+inline int geval::evaluate_ops(std::vector<ops>::iterator o, std::vector<int>::iterator y, std::vector<int>::iterator x) {
 
   return evaluate_op(*o, *y, *x);
 }

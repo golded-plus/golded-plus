@@ -101,7 +101,7 @@ void gwinput::after() {
 
 //  ------------------------------------------------------------------
 
-void gwinput::add_field(int idnum, int wrow, int wcol, int field_width, string& dest, int dest_size, int cvt, int mode) {
+void gwinput::add_field(int idnum, int wrow, int wcol, int field_width, std::string& dest, int dest_size, int cvt, int mode) {
 
   field* fld = new field(this, idnum, wrow, wcol, field_width, dest, dest_size, cvt, mode);
   throw_new(fld);
@@ -618,7 +618,7 @@ bool gwinput::handle_key(gkey key) {
 
 //  ------------------------------------------------------------------
 
-gwinput::field::field(gwinput* iform, int idnum, int wrow, int wcol, int field_width, string& dest, int dest_size, int cvt, int mode)
+gwinput::field::field(gwinput* iform, int idnum, int wrow, int wcol, int field_width, std::string& dest, int dest_size, int cvt, int mode)
 
   : destination(dest)
 

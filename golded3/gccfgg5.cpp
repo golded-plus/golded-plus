@@ -401,7 +401,7 @@ void CfgMailtoss() {
 void CfgMappath() {
 
   char* key;
-  pair<string, string> mapentry;
+  std::pair<std::string, std::string> mapentry;
 
   getkeyval(&key, &val);
 

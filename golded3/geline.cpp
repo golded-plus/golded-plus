@@ -2743,7 +2743,7 @@ int LoadCharset(const char* imp, const char* exp, int query) {
   }
 
   // Find and load charset table
-  vector<Map>::iterator xlt;
+  std::vector<Map>::iterator xlt;
   for(n = 0, xlt = CFG->xlatcharset.begin(); xlt != CFG->xlatcharset.end(); xlt++, n++) {
     if(striinc(xlt->imp, imp) and striinc(xlt->exp, exp)) {
       // Already loaded?

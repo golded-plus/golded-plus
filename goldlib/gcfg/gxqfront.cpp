@@ -64,7 +64,7 @@ void gareafile::ReadQFront(char* tag) {
   fp = fsopen(file, "rb", sharemode);
   if(fp) {
     if(not quiet)
-      cout << "* Reading " << file << endl;
+      std::cout << "* Reading " << file << std::endl;
     fread(origin, sizeof(OriginLineRecord), 1, fp);
     for(int n=0; n<MaxOrigins; n++)
       STRNP2C(origin->OriginLine[n]);
@@ -79,7 +79,7 @@ void gareafile::ReadQFront(char* tag) {
     setvbuf(fp, NULL, _IOFBF, 8192);
 
     if(not quiet)
-      cout << "* Reading " << file << endl;
+      std::cout << "* Reading " << file << std::endl;
 
     while(fread(area, sizeof(EchoMailConferenceRecord), 1, fp) == 1) {
       if(not area->Deleted) {

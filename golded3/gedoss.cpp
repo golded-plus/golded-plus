@@ -175,11 +175,11 @@ void Cleanup(void) {
 
   int smax = MinV((int)GLOG_STORELINES, LOG.storelines);
   for(int s=0; s<smax; s++)
-    cout << LOG.storeline[s] << endl;
+    std::cout << LOG.storeline[s] << std::endl;
 
   if(CFG) {
     if(LOG.storelines > GLOG_STORELINES)
-      cout << "(See also " << CFG->logfile << ")" << endl;
+      std::cout << "(See also " << CFG->logfile << ")" << std::endl;
     if(errorlevel > EXIT_NONAME)
       MakeNoise(SND_S_O_S);
 

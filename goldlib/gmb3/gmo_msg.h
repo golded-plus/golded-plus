@@ -143,7 +143,7 @@ public:
   int   color;            // Line color
   uint  type;             // GLINE_*
   uint  kludge;           // GKLUD_*
-  string txt;             // The line text
+  std::string txt;             // The line text
   Line* prev;             // Pointer to previous line
   Line* next;             // Pointer to next line
 

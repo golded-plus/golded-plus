@@ -772,7 +772,7 @@ int ChangeUsername() {
 
   if(not CFG->username.empty()) {
     Listi = (char**)throw_calloc(CFG->username.size()+1, sizeof(char*));
-    vector<Node>::iterator i;
+    std::vector<Node>::iterator i;
     for(n = 0, i = CFG->username.begin(); i != CFG->username.end(); n++, i++) {
       i->addr.make_string(adrs);
       sprintf(buf, " %-35s %s ", i->name, adrs);
@@ -786,7 +786,7 @@ int ChangeUsername() {
     if(n != -1) {
       CFG->usernameno = n;
       AA->SetUsername(CFG->username[n]);
-      for(vector<gaka>::iterator a = CFG->aka.begin(); a != CFG->aka.end(); a++) {
+      for(std::vector<gaka>::iterator a = CFG->aka.begin(); a != CFG->aka.end(); a++) {
         if(AA->Username().addr.match(a->addr)) {
           AA->SetAka(a->addr);
           break;
@@ -818,7 +818,7 @@ int ChangeTemplate() {
 
   if(not CFG->tpl.empty()) {
     Listi = (char**)throw_calloc(CFG->tpl.size()+1, sizeof(char*));
-    vector<Tpl>::iterator t;
+    std::vector<Tpl>::iterator t;
     for(n = 0, t = CFG->tpl.begin(); t != CFG->tpl.end(); n++, t++) {
       t->match.make_string(adrs);
       sprintf(buf, " %-45s %s ", t->name, adrs);
@@ -852,7 +852,7 @@ int ChangeTemplate() {
 
 int ChangeAka() {
   int n;
-  vector<gaka>::iterator i;
+  std::vector<gaka>::iterator i;
   int startat = 0;
   char** Listi;
   char addr[100], buf[100];
@@ -900,7 +900,7 @@ int ChangeXlatImport() {
 
   if(not CFG->xlatcharset.empty()) {
     Listi = (char**)throw_calloc(CFG->xlatcharset.size()+2, sizeof(char*));
-    vector<Map>::iterator xlt;
+    std::vector<Map>::iterator xlt;
     for(xlt = CFG->xlatcharset.begin(); xlt != CFG->xlatcharset.end(); xlt++) {
       if(strieql(xlt->exp, CFG->xlatlocalset)) {
         maximport = MaxV(maximport, (int)strlen(xlt->imp));

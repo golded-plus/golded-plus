@@ -254,7 +254,7 @@ int gfile::getftime(dword* __ftime) {
 
 //  ------------------------------------------------------------------
 
-FILE* gfile::fopen(const string& __path, const char* __mode, int __shflag) {
+FILE* gfile::fopen(const std::string& __path, const char* __mode, int __shflag) {
 
   return fopen(__path.c_str(), __mode, __shflag);
 }

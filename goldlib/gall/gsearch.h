@@ -62,8 +62,8 @@ protected:
 public:
 
   // Configuration
-  string         id;
-  string         pattern;
+  std::string    id;
+  std::string    pattern;
   patterntype    type;
   bool           case_sensitive;
   bool           reverse;
@@ -90,9 +90,9 @@ public:
   // Search a string for the pattern.
   // Return true for success, false for failure.
   bool search(const char* string);
-  bool search(const string& str);
+  bool search(const std::string& str);
   bool search(const char* str, int& result);
-  bool search(const string& str, int& result);
+  bool search(const std::string& str, int& result);
 
   gsearch& operator=(const gsearch& a);
 

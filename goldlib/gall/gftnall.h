@@ -80,7 +80,7 @@ public:
   ftn_addr() : zone(0), net(0), node(0), point(0) {}
   ftn_addr(uint a);
   ftn_addr(const char* s);
-  ftn_addr(const string& s);
+  ftn_addr(const std::string& s);
   ftn_addr(const ftn_addr& a);
   ftn_addr(uint zn, uint nt, uint nd, uint pt);
 
@@ -94,21 +94,21 @@ public:
   void  set(const ftn_addr& a);
   void  set(const void* a);
   char* set(const char* str, char* dom=NULL, int domsizelimit=ftn::domain_limit);
-  const char* set(const string& str);
-  const char* set(const string& str, string& dom, int domsizelimit=ftn::domain_limit);
+  const char* set(const std::string& str);
+  const char* set(const std::string& str, std::string& dom, int domsizelimit=ftn::domain_limit);
 
   void  reset();
   void  reset_fast();
-  void  reset(const string& str);
+  void  reset(const std::string& str);
   char* reset(const char* str, char* dom=NULL, int domsizelimit=ftn::domain_limit);
-  void  reset(const string& str, string& dom, int domsizelimit=ftn::domain_limit);
+  void  reset(const std::string& str, std::string& dom, int domsizelimit=ftn::domain_limit);
 
   bool match(const ftn_addr& mask) const;
   bool equals(const ftn_addr& other) const;
   int  compare(const ftn_addr& other) const;
 
-  string& make_string(string& str) const;
-  string& make_string(string& str, const string& dom, int domfmt=ftn::domain_last) const;
+  std::string& make_string(std::string& str) const;
+  std::string& make_string(std::string& str, const std::string& dom, int domfmt=ftn::domain_last) const;
   char*    make_string(char* str, const char* dom=NULL, int domfmt=ftn::domain_last) const;
 
   bool operator==(const ftn_addr& b) const;
@@ -116,7 +116,7 @@ public:
 
   ftn_addr& operator=(int n);
   ftn_addr& operator=(const char* s);
-  ftn_addr& operator=(const string& s);
+  ftn_addr& operator=(const std::string& s);
   ftn_addr& operator=(const ftn_addr& a);
 };
 
@@ -171,7 +171,7 @@ inline ftn_addr::ftn_addr(const char* s) : zone(0), net(0), node(0), point(0) {
 
 //  ------------------------------------------------------------------
 
-inline ftn_addr::ftn_addr(const string& s) : zone(0), net(0), node(0), point(0) {
+inline ftn_addr::ftn_addr(const std::string& s) : zone(0), net(0), node(0), point(0) {
 
   reset(s);
 }
@@ -219,7 +219,7 @@ inline bool ftn_addr::operator!=(const ftn_addr& b) const { return !equals(b); }
 
 inline ftn_addr& ftn_addr::operator=(int n)              { set_all(n); return *this; }
 inline ftn_addr& ftn_addr::operator=(const char* s)      { reset(s); return *this; }
-inline ftn_addr& ftn_addr::operator=(const string& s)   { reset(s); return *this; }
+inline ftn_addr& ftn_addr::operator=(const std::string& s)   { reset(s); return *this; }
 inline ftn_addr& ftn_addr::operator=(const ftn_addr& a)  { set_fast(a); return *this; }
 
 

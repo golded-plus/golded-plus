@@ -908,7 +908,7 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
     ImportMode = MenuImportTxt.Run();
   }
 
-  string filenamebuf;
+  std::string filenamebuf;
   Path tmpfile;
   bool isPipe = NO;
   bool fileselected = false;

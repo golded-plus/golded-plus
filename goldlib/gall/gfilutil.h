@@ -129,38 +129,38 @@ struct Stamp {
 #endif
 
 FILE* fsopen(const char* path, const char* type, int shflag);
-inline FILE* fsopen(const string& path, const char* type, int shflag) { return fsopen(path.c_str(), type, shflag); }
+inline FILE* fsopen(const std::string& path, const char* type, int shflag) { return fsopen(path.c_str(), type, shflag); }
 
 int is_dir(const char* path);
-inline int is_dir(const string& path) { return is_dir(path.c_str()); }
+inline int is_dir(const std::string& path) { return is_dir(path.c_str()); }
 
 inline bool fexist(const char* filename) { return *filename ? ((access(filename, 0) == 0) and not is_dir(filename)) : false; }
-inline bool fexist(const string& filename) { return fexist(filename.c_str()); }
+inline bool fexist(const std::string& filename) { return fexist(filename.c_str()); }
 
 dword gfixstattime(time_t st_time);
 
 dword GetFiletime(const char* file);
-inline dword GetFiletime(const string& file) { return GetFiletime(file.c_str()); }
+inline dword GetFiletime(const std::string& file) { return GetFiletime(file.c_str()); }
 
 inline long FiletimeCmp(const char* file1, const char* file2) { return long(GetFiletime(file1) - GetFiletime(file2)); }
-inline long FiletimeCmp(const string& file1, const string& file2) { return FiletimeCmp(file1.c_str(), file2.c_str()); }
+inline long FiletimeCmp(const std::string& file1, const std::string& file2) { return FiletimeCmp(file1.c_str(), file2.c_str()); }
 
 long fsize(FILE* fp);
 long GetFilesize(const char* file);
 
 const char* AddPath(const char* path, const char* file);
-inline const char* AddPath(const string& path, const char* file) { return AddPath(path.c_str(), file); }
-inline const char* AddPath(const string& path, const string& file) { return AddPath(path.c_str(), file.c_str()); }
+inline const char* AddPath(const std::string& path, const char* file) { return AddPath(path.c_str(), file); }
+inline const char* AddPath(const std::string& path, const std::string& file) { return AddPath(path.c_str(), file.c_str()); }
 
 void MakePathname(char* pathname, const char* path, const char* name);
-void MakePathname(string& pathname, const string& path, const string& name);
+void MakePathname(std::string& pathname, const std::string& path, const std::string& name);
 
 char* AddBackslash(char* p);
-string& AddBackslash(string& p);
+std::string& AddBackslash(std::string& p);
 char* StripBackslash(char* p);
 
 char* PathCopy(char* dst, const char* src);
-void PathCopy(string& dst, const char* src);
+void PathCopy(std::string& dst, const char* src);
 
 void TouchFile(const char* __filename);
 
@@ -170,7 +170,7 @@ void WipeFile(const char* file, int options);
 const char* CleanFilename(const char* __file);
 
 int strschg_environ(char* s);
-int strschg_environ(string& s);
+int strschg_environ(std::string& s);
 
 char* MapPath(char* map, bool reverse = false);
 inline char* ReMapPath(char* map) { return MapPath(map, true); };
@@ -243,7 +243,7 @@ inline int chsize(int handle, long size) { return ftruncate(handle, size); }
 
 //  ------------------------------------------------------------------
 
-bool maketruepath(string &dirname);
+bool maketruepath(std::string &dirname);
 
 
 //  ------------------------------------------------------------------

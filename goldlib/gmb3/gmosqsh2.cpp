@@ -195,7 +195,7 @@ void SquishArea::raw_scan(int __keep_index, int __scanpm) {
   // Scan for personal mail
   if(__scanpm) {
     int umax = (WidePersonalmail & PM_ALLNAMES) ? WideUsernames : 1;
-    vector<dword> uhash;
+    std::vector<dword> uhash;
     for(int uh=0; uh<umax; uh++)
       uhash.push_back(strHash32(WideUsername[uh]));
     PMrk->Reset();

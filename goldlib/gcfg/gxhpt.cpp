@@ -39,9 +39,9 @@ static bool comment_char = '#';
 
 //  ------------------------------------------------------------------
 
-bool gareafile::ReadHPTLine(FILE* f, string* s, bool add, int state) {
+bool gareafile::ReadHPTLine(FILE* f, std::string* s, bool add, int state) {
 
-  string str;
+  std::string str;
   char buf[81];
 
   if(fgets(buf, 81, f) == NULL)
@@ -57,7 +57,7 @@ bool gareafile::ReadHPTLine(FILE* f, string* s, bool add, int state) {
     }
   }
 
-  string::iterator ptr = str.begin();
+  std::string::iterator ptr = str.begin();
 
   // state 0: normal state
   //       1: between ""
@@ -99,7 +99,7 @@ bool gareafile::ReadHPTLine(FILE* f, string* s, bool add, int state) {
               case ' ':
               case '\t':
                 {
-                  string::iterator i = ptr;
+                  std::string::iterator i = ptr;
                   while((i != str.end()) and isspace(*i))
                     ++i;
                   if(*i != '#')
@@ -262,11 +262,11 @@ void gareafile::ReadHPTFile(char* path, char* file, char* options, char* origin,
     setvbuf(fp, NULL, _IOFBF, 8192);
 
     if(not quiet)
-      cout << "* Reading " << file << endl;
+      std::cout << "* Reading " << file << std::endl;
 
     aa.reset();
 
-    string s;
+    std::string s;
     while(ReadHPTLine(fp, &s)) {
 
       if(not s.empty()) {
@@ -286,7 +286,7 @@ void gareafile::ReadHPTFile(char* path, char* file, char* options, char* origin,
               int ver_maj, ver_min;
               sscanf(val, "%d.%d", &ver_maj, &ver_min);
               if((ver_maj != 0) and (ver_min != 15)) {
-                cout << "* Error: Unknown fidoconfig version " << ver_maj << '.' << ver_min << " - Skipping." << endl;
+                std::cout << "* Error: Unknown fidoconfig version " << ver_maj << '.' << ver_min << " - Skipping." << std::endl;
                 throw_xfree(alptr);
                 goto skip_config;
               }

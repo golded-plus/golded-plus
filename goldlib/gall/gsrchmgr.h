@@ -120,7 +120,7 @@ public:
     areas_all
   };
 
-  vector<search_item> items;
+  std::vector<search_item> items;
 
   search_direction    direction;
   search_messages     messages;

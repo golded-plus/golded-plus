@@ -132,19 +132,19 @@ private:
       bool   bool_item;
       char   char_item;
       int    int_item;
-      string *string_item;
+      std::string *string_item;
       void   *object_item;
     } data;
 
     grp_stock(bool item) { type = TYPE_BOOL; data.bool_item = item; }
     grp_stock(char item) { type = TYPE_CHAR; data.char_item = item; }
     grp_stock(int item) { type = TYPE_INT; data.int_item = item; }
-    grp_stock(const string& item) { type = TYPE_STRING; data.string_item = new string(item); throw_new(data.string_item); }
+    grp_stock(const std::string& item) { type = TYPE_STRING; data.string_item = new std::string(item); throw_new(data.string_item); }
     grp_stock(void *item) { type = TYPE_OBJECT; data.object_item = item; }
   };
 
-  vector< pair<string, multimap<int, grp_stock> > > container;
-  vector< pair<string, multimap<int, grp_stock> > >::iterator currgrp;
+  std::vector< std::pair<std::string, std::multimap<int, grp_stock> > > container;
+  std::vector< std::pair<std::string, std::multimap<int, grp_stock> > >::iterator currgrp;
 
 public:
 
@@ -160,13 +160,13 @@ public:
   void AddItm(int __type, bool __data);
   void AddItm(int __type, char __data);
   void AddItm(int __type, int __data);
-  void AddItm(int __type, const string& __data);
+  void AddItm(int __type, const std::string& __data);
   void AddItm(int __type, void* __data, int __size);
 
   int GetItm(int __type, bool& __data, int __no=-1);
   int GetItm(int __type, char& __data, int __no=-1);
   int GetItm(int __type, int& __data, int __no=-1);
-  int GetItm(int __type, string& __data, int __no=-1);
+  int GetItm(int __type, std::string& __data, int __no=-1);
   int GetItm(int __type, void* __data, int __size, int __no=-1);
 };
 

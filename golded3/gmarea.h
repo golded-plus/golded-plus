@@ -114,15 +114,15 @@ class GAreaListScan {
 
 private:
 
-  vector< pair<string, string> > container;
-  vector< pair<string, string> >::iterator currposn;
+  std::vector< std::pair<std::string, std::string> > container;
+  std::vector< std::pair<std::string, std::string> >::iterator currposn;
 
 public:
 
   inline GAreaListScan() { currposn = container.end(); }
   inline ~GAreaListScan() {}
 
-  inline void Add(pair<string, string> p) { container.push_back(p); currposn = container.end(); }
+  inline void Add(std::pair<std::string, std::string> p) { container.push_back(p); currposn = container.end(); }
 
   inline void Reset() { container.clear(); currposn = container.end(); }
 
@@ -167,7 +167,7 @@ struct ggoldlast {
 
 class Area;
 
-typedef vector<Area *>::iterator area_iterator;
+typedef std::vector<Area *>::iterator area_iterator;
 
 class AreaList {
 
@@ -182,7 +182,7 @@ private:
 public:
 
   // Index of areas in the list
-  vector<Area *> idx;
+  std::vector<Area *> idx;
 
   // Area pointer
   area_iterator item;

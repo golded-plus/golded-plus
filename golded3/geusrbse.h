@@ -85,23 +85,23 @@ class guserbase;
 
 class addressbook_form : public gwinput2 {
 
-  string macro;
-  string name;
-  string fidoaddr;
-  string iaddr;
-  string pseudo;
-  string organisation;
-  string snail1;
-  string snail2;
-  string snail3;
-  string dataphone;
-  string voicephone;
-  string faxphone;
-  string homepage;
-  string group;
-  string comment1;
-  string comment2;
-  string comment3;
+  std::string macro;
+  std::string name;
+  std::string fidoaddr;
+  std::string iaddr;
+  std::string pseudo;
+  std::string organisation;
+  std::string snail1;
+  std::string snail2;
+  std::string snail3;
+  std::string dataphone;
+  std::string voicephone;
+  std::string faxphone;
+  std::string homepage;
+  std::string group;
+  std::string comment1;
+  std::string comment2;
+  std::string comment3;
 
   bool validate();
   void before();

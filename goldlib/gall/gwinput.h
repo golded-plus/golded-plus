@@ -59,7 +59,7 @@ public:
     int buf_pos;
     int buf_len;
 
-    string& destination;
+    std::string& destination;
 
     int id;
     int row;
@@ -71,7 +71,7 @@ public:
     field* prev;
     field* next;
 
-    field(gwinput* iform, int idnum, int wrow, int wcol, int field_width, string& dest, int dest_size, int cvt, int mode);
+    field(gwinput* iform, int idnum, int wrow, int wcol, int field_width, std::string& dest, int dest_size, int cvt, int mode);
     ~field();
 
     bool visible();
@@ -148,7 +148,7 @@ public:
 
   void setup(int i_attr, int a_attr, int e_attr, vchar fill, bool fill_acs);
 
-  void add_field(int idnum, int wrow, int wcol, int field_width, string& dest, int dest_size, int cvt=gwinput::cvt_none, int mode=gwinput::entry_conditional);
+  void add_field(int idnum, int wrow, int wcol, int field_width, std::string& dest, int dest_size, int cvt=gwinput::cvt_none, int mode=gwinput::entry_conditional);
 
   bool first(int id=0);
   bool next();

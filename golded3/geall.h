@@ -369,8 +369,8 @@ struct Tpl {
 
 class EchoRen {
 public:
-  string from;
-  string to;
+  std::string from;
+  std::string to;
   EchoRen() {}
   EchoRen(const char *_from, const char *_to) { from = _from; to = _to; }
   ~EchoRen() {}
@@ -914,7 +914,7 @@ struct Ezycom {
 //  ------------------------------------------------------------------
 
 struct Invalidate {
-  pair<string, string> origin, seenby, tearline, cc, xc, xp;
+  std::pair<std::string, std::string> origin, seenby, tearline, cc, xc, xp;
 };
 
 

@@ -815,7 +815,7 @@ int MsgIsTwit(GMsg* msg, bool& istwitto, bool& istwitsubj) {
   istwitto = istwitsubj = false;
 
   // Check for twit names
-  vector<Node>::iterator tn;
+  std::vector<Node>::iterator tn;
   for(tn = CFG->twitname.begin(); tn != CFG->twitname.end(); tn++) {
     if(msg->orig.match(tn->addr)) {
       if(*tn->name == NUL or strwild(msg->By(), tn->name)) {
@@ -875,14 +875,14 @@ int LoadMessage(GMsg* msg, int margin) {
 
     // Mark message as received, if it is for us
     if(msg->msgno and not AA->attr().hex()) {
-      for(vector<Node>::iterator n = CFG->username.begin(); n != CFG->username.end(); n++) {
+      for(std::vector<Node>::iterator n = CFG->username.begin(); n != CFG->username.end(); n++) {
         // Check TO:
         if(msg->dest.match(n->addr)) {
           if(strieql(n->name, msg->To())) {
             if(n->addr.net != GFTN_ALL or msg->dest.net == 0 or not AA->isnet())
               msg->attr.tou1();   // Set highlight mark
             else {
-              for(vector<gaka>::iterator x = CFG->aka.begin(); x != CFG->aka.end(); x++) {
+              for(std::vector<gaka>::iterator x = CFG->aka.begin(); x != CFG->aka.end(); x++) {
                 if(msg->dest.match(x->addr)) {
                   msg->attr.tou1();   // Set highlight mark
                   break;
@@ -898,7 +898,7 @@ int LoadMessage(GMsg* msg, int margin) {
             if(n->addr.net != GFTN_ALL or msg->orig.net == 0 or not AA->isnet())
               msg->attr.fmu1();   // Set highlight mark
             else {
-              for(vector<gaka>::iterator x = CFG->aka.begin(); x != CFG->aka.end(); x++) {
+              for(std::vector<gaka>::iterator x = CFG->aka.begin(); x != CFG->aka.end(); x++) {
                 if(msg->orig.match(x->addr)) {
                   msg->attr.fmu1();   // Set highlight mark
                   break;

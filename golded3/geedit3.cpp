@@ -83,7 +83,7 @@ void IEclass::Buf2Clip() {
 
   gclipbrd clipbrd;
   Line *_bufline;
-  string clipdata;
+  std::string clipdata;
 
   for(_bufline = Edit__pastebuf; _bufline; _bufline = _bufline->next)
     if(not _bufline->txt.empty()) {

@@ -198,7 +198,7 @@ public:
   void printc(int row, int col, int color, vchar ch);
   void prints(int row, int col, int color, const char* text);
   void printvs(int row, int col, int color, const vchar* text);
-  void prints(int row, int col, int color, const string& text);
+  void prints(int row, int col, int color, const std::string& text);
   void printns(int row, int col, int color, const char* text, int len, vchar fill=' ', int fill_color=-1);
 
   int printf(const char* format, ...) __attribute__ ((format (printf, 2, 3)));
@@ -562,7 +562,7 @@ inline void gwindow::printvs(int row, int col, int color, const vchar* text) {
 
 //  ------------------------------------------------------------------
 
-inline void gwindow::prints(int row, int col, int color, const string& text) {
+inline void gwindow::prints(int row, int col, int color, const std::string& text) {
 
   prints(row, col, color, text.c_str());
 }

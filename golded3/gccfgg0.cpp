@@ -694,7 +694,7 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
     inuse++;
 
     if(not quiet)
-      cout << "* Reading " << cfg << endl;
+      std::cout << "* Reading " << cfg << std::endl;
 
     // Assign file buffer
     setvbuf(fp, NULL, _IOFBF, 8192);
@@ -718,7 +718,7 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
         switch(crc) {
           case CRC_IF:
             if(in_if) {
-              cout << "* " << cfgname << ": Misplaced IF at line " << line << ". IF's cannot be nested." << endl;
+              std::cout << "* " << cfgname << ": Misplaced IF at line " << line << ". IF's cannot be nested." << std::endl;
               cfgerrors++;
             }
             in_if = true;
@@ -728,7 +728,7 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
           case CRC_ELIF:
           case CRC_ELSEIF:
             if(not in_if or in_else) {
-              cout << "* " << cfgname << ": Misplaced ELIF/ELSEIF at line " << line << "." << endl;
+              std::cout << "* " << cfgname << ": Misplaced ELIF/ELSEIF at line " << line << "." << std::endl;
               cfgerrors++;
             }
             if(if_status)
@@ -740,7 +740,7 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
             break;
           case CRC_ELSE:
             if(not in_if or in_else) {
-              cout << "* " << cfgname << ": Misplaced ELSE at line " << line << "." << endl;
+              std::cout << "* " << cfgname << ": Misplaced ELSE at line " << line << "." << std::endl;
               cfgerrors++;
             }
             in_else = true;
@@ -749,7 +749,7 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
             break;
           case CRC_ENDIF:
             if(not in_if) {
-              cout << "* " << cfgname << ": Misplaced ENDIF at line " << line << "." << endl;
+              std::cout << "* " << cfgname << ": Misplaced ENDIF at line " << line << "." << std::endl;
               cfgerrors++;
             }
             cfgignore = false;
@@ -764,7 +764,7 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
 
         // Tell the world what we found
         if(veryverbose)
-          cout << " " << (cfgignore ? '-' : '+') << setw(4) << setfill('0') << line << setfill(' ') << ": " << key << " " << val << endl;
+          std::cout << " " << (cfgignore ? '-' : '+') << std::setw(4) << std::setfill('0') << line << std::setfill(' ') << ": " << key << " " << val << std::endl;
 
         // Call switch function to act on the key
         if(not cfgignore) {
@@ -773,18 +773,18 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
               case CRC_INCLUDE:
                 strschg_environ(val);
                 if(not quiet)
-                  cout << "* Including " << val << endl;
+                  std::cout << "* Including " << val << std::endl;
                 ReadCfg(val);          // NOTE! This is a recursive call!
                 if(not quiet)
-                  cout << "* Resuming " << cfg << endl;
+                  std::cout << "* Resuming " << cfg << std::endl;
                 break;
               case CRC_AREAFILE:
                 strschg_environ(val);
                 if(not quiet)
-                  cout << "* Handling " << key << " " << val << endl;
+                  std::cout << "* Handling " << key << " " << val << std::endl;
                 AL.GetAreafile(val);
                 if(not quiet)
-                  cout << "* Resuming " << cfg << endl;
+                  std::cout << "* Resuming " << cfg << std::endl;
                 break;
               case CRC_APP:
                 // Ignore 3rd party application lines
@@ -795,7 +795,7 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
               default:
                 if(not SwitchCfg(crc, *key, val)) {
                   if(not ignoreunknown) {
-                    cout << "* " << cfgname << ": Unknown keyword \"" << key << "\" at line " << line << "." << endl;
+                    std::cout << "* " << cfgname << ": Unknown keyword \"" << key << "\" at line " << line << "." << std::endl;
                     SayBibi();
                     cfgerrors++;
                   }
@@ -836,7 +836,7 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
           ap->set_type(AT_SOUP|AT_EMAIL|AT_NET);
       }
 
-      vector<MailList>::iterator z;
+      std::vector<MailList>::iterator z;
       for(z = CFG->mailinglist.begin(); z != CFG->mailinglist.end(); z++) {
         Area* ap = AL.AreaEchoToPtr(z->echoid);
         if(ap)

@@ -101,7 +101,7 @@ extern int m_titlepos;
 extern int m_titleattr;
 
 extern int AreaKeys, ReadKeys, ListKeys, NodeKeys, EditKeys, FileKeys, AddressbookKeys, HeaderKeys;
-extern list<CmdKey>::iterator AreaKey, ReadKey, ListKey, NodeKey, EditKey, FileKey, AddressbookKey, HeaderKey;
+extern std::list<CmdKey>::iterator AreaKey, ReadKey, ListKey, NodeKey, EditKey, FileKey, AddressbookKey, HeaderKey;
 
 extern int inforow;
 

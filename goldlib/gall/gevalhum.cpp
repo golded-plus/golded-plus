@@ -26,6 +26,7 @@
 
 #include <gdefs.h>
 #include <geval.h>
+#include <iterator>
 
 
 //  ------------------------------------------------------------------
@@ -50,8 +51,8 @@ int gevalhum::evaluate() {
 
     while(ostk.size()) {
 
-      int* vptr = vstk.begin();
-      ops* optr = ostk.begin();
+      std::vector<int>::iterator vptr = vstk.begin();
+      std::vector<ops>::iterator optr = ostk.begin();
 
       while(optr < ostk.end()) {
 

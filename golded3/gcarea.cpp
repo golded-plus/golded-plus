@@ -71,7 +71,7 @@ void AreaList::SortAreaGroup(const char* options, int beginarea, int endarea) {
 
 void RenameArea(char* echoid) {
   
-  vector<EchoRen>::iterator n;
+  std::vector<EchoRen>::iterator n;
   for(n = CFG->arearename.begin(); n != CFG->arearename.end(); n++) {
     if(strieql(echoid, n->from.c_str())) {
       strxcpy(echoid, n->to.c_str(), sizeof(Echo));
@@ -149,11 +149,11 @@ void AddNewArea(AreaCfg& aa) {
 void AreaList::AddNewArea(AreaCfg* aa) {
 
   if(veryverbose) {
-    string temp;
-    cout << "  fmt=" << aa->msgbase << ", eid=\"" << aa->echoid <<
+    std::string temp;
+    std::cout << "  fmt=" << aa->msgbase << ", eid=\"" << aa->echoid <<
          "\", pth=\"" << aa->path << "\", brd=" << aa->board <<
          ", gid=" << aa->groupid << ", aka=" << aa->aka.make_string(temp);
-    cout << " " << aa->attr.make_string(temp) << endl;
+    std::cout << " " << aa->attr.make_string(temp) << std::endl;
   }
 
   Desc desc;
@@ -321,7 +321,7 @@ void AreaList::AddNewArea(AreaCfg* aa) {
   // Add aka if not found
   if(aa->aka.net) {
     bool found = false;
-    for(vector<gaka>::iterator i = CFG->aka.begin(); i != CFG->aka.end(); i++)
+    for(std::vector<gaka>::iterator i = CFG->aka.begin(); i != CFG->aka.end(); i++)
       if(aa->aka == i->addr) {
         found = true;
         break;
@@ -832,7 +832,7 @@ void AreaList::ReadEcholist(char* val) {
         tok = getkeyval;
 
       if(not quiet)
-        cout << "* Reading " << file << endl;
+        std::cout << "* Reading " << file << std::endl;
 
       while(fgets((val=buf), sizeof(buf), fp)) {
 
@@ -1018,7 +1018,7 @@ const char* AreaCfg::setpath(const char* _path) {
 //  ------------------------------------------------------------------
 //  Set area origin
 
-int AreaCfgBase::setorigin(string& _origin) {
+int AreaCfgBase::setorigin(std::string& _origin) {
 
   if(not strblank(_origin.c_str())) {
 
@@ -1076,7 +1076,7 @@ char* MapPath(char* map, bool reverse) {
   if(reverse)
     strchg(cmap, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
 
-  vector< pair<string, string> >::iterator i;
+  std::vector< std::pair<std::string, std::string> >::iterator i;
   for(i = CFG->mappath.begin(); i != CFG->mappath.end(); i++) {
     const char* p = reverse ? i->second.c_str() : i->first.c_str();
     const char* q = reverse ? i->first.c_str() : i->second.c_str();

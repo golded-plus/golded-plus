@@ -35,6 +35,7 @@
 #include <cstddef>
 #include <gdefs.h>
 #ifdef __UNIX__
+#include <unistd.h>
 #include <sys/times.h>
 #endif
 #ifdef __OS2__
@@ -129,7 +130,7 @@ inline void usleep(long duration) { Sleep(duration); }
 #endif
 
 #ifdef __UNIX__
-inline Clock gclock() { struct tms z; return Clock(times(&z)*10/CLK_TCK); }
+inline Clock gclock() { struct tms z; return Clock(times(&z)*10/sysconf(_SC_CLK_TCK)); }
 #else
 inline Clock gclock() { return Clock(clock()*10/CLK_TCK); }
 #endif

@@ -194,7 +194,7 @@ void gareafile::ReadFastecho(char* tag) {
   if(fh != -1) {
 
     if(not quiet)
-      cout << "* Reading " << file << endl;
+      std::cout << "* Reading " << file << std::endl;
 
     read(fh, &revision, sizeof(revision));
     lseek(fh, 0L, SEEK_SET);  // rewind
@@ -206,7 +206,7 @@ void gareafile::ReadFastecho(char* tag) {
     else if(revision == 6)
       ReadFastecho142(fh);
     else
-      cout << "* Error: FastEcho system file revision level " << revision << " is not supported - Skipping." << endl;
+      std::cout << "* Error: FastEcho system file revision level " << revision << " is not supported - Skipping." << std::endl;
 
     close(fh);
   }

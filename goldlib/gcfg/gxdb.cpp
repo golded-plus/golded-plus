@@ -51,14 +51,14 @@ void gareafile::ReadDB130(char* tag, char* dbpath) {
     setvbuf(fp1, NULL, _IOFBF, 8192);
 
     if(not quiet)
-      cout << "* Reading " << file1 << endl;
+      std::cout << "* Reading " << file1 << std::endl;
 
     fp2 = fsopen(file2, "rb", sharemode);
     if(fp2) {
       setvbuf(fp2, NULL, _IOFBF, 8192);
 
       if(not quiet)
-        cout << "* Reading " << file2 << endl;
+        std::cout << "* Reading " << file2 << std::endl;
 
       while(fread(&AA1, sizeof(DB130_AA1), 1, fp1) == 1) {
 
@@ -122,7 +122,7 @@ void gareafile::ReadDB1046(char* file, char* tag) {
     setvbuf(fp, NULL, _IOFBF, 8192);
 
     if(not quiet)
-      cout << "* Reading " << file << endl;
+      std::cout << "* Reading " << file << std::endl;
 
     while(fread(ADF, sizeof(DB1046_ADF), 1, fp) == 1) {
       if(ADF->allocated and strchr("QFqf", ADF->msgbase)) {
@@ -185,7 +185,7 @@ void gareafile::ReadDB1047A22(char* file, int reclen, char* tag) {
       setvbuf(fp, NULL, _IOFBF, 8192);
 
       if(not quiet)
-        cout << "* Reading " << file << endl;
+        std::cout << "* Reading " << file << std::endl;
 
       while(fread(ADF, reclen, 1, fp) == 1) {
         if(ADF->allocated and strchr("QFqf", ADF->msgbase)) {
@@ -249,7 +249,7 @@ void gareafile::ReadDB2011(char* file, int reclen, char* tag) {
       setvbuf(fp, NULL, _IOFBF, 8192);
 
       if(not quiet)
-        cout << "* Reading " << file << endl;
+        std::cout << "* Reading " << file << std::endl;
 
       while(fread(ADF, reclen, 1, fp) == 1) {
         if(ADF->allocated and strchr("QFqf", ADF->msgbase)) {
@@ -337,7 +337,7 @@ void gareafile::ReadDBridge(char* tag) {
   if(fp) {
 
     if(not quiet)
-      cout << "* Reading " << file << endl;
+      std::cout << "* Reading " << file << std::endl;
 
     // Read netmail storage method etc
     for(line=1; line <= 2; line++)

@@ -60,7 +60,7 @@ void gareafile::ReadME2(char* tag) {
         setvbuf(fp, NULL, _IOFBF, 8192);
 
         if(not quiet)
-          cout << "* Reading " << file << endl;
+          std::cout << "* Reading " << file << std::endl;
 
         while(fgets(buf, 255, fp)) {
 

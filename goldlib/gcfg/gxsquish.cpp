@@ -54,7 +54,7 @@ void gareafile::ReadSquishFile(char* path, char* file, char* options, char* orig
     setvbuf(fp, NULL, _IOFBF, 8192);
 
     if(not quiet)
-      cout << "* Reading " << file << endl;
+      std::cout << "* Reading " << file << std::endl;
 
     aa.reset();
 

@@ -168,7 +168,7 @@ void GMsgList::ReadMlst(int n) {
   }
   ml->goldmark = goldmark;
 
-  for(vector<Node>::iterator x = CFG->username.begin(); x != CFG->username.end(); x++) {
+  for(std::vector<Node>::iterator x = CFG->username.begin(); x != CFG->username.end(); x++) {
     if(strieql(msg.By(), x->name)) {
       ml->high |= MLST_HIGH_FROM;
       msg.attr.fmu1();
@@ -625,7 +625,7 @@ private:
 
   gwindow               window;
   GMsg                  msg;
-  vector<ThreadEntry>   list;
+  std::vector<ThreadEntry>   list;
   ThreadEntry           t;
   uint                  h_offset;
 
@@ -856,7 +856,7 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar) {
 
   int attr = attrw;
 
-  for(vector<Node>::iterator x = CFG->username.begin(); x != CFG->username.end(); x++)
+  for(std::vector<Node>::iterator x = CFG->username.begin(); x != CFG->username.end(); x++)
     if(strieql(msg.By(), x->name)) {
       attr = attrh;
       break;

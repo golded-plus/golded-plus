@@ -385,7 +385,7 @@ int strschg_environ(char* s) {
   if(*s == NUL)
     return 0;
 
-  string __s = s;
+  std::string __s = s;
   int rv = strschg_environ(__s);
   if(rv)
     strxcpy(s, __s.c_str(), sizeof(Path));

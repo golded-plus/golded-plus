@@ -138,7 +138,7 @@ bool set_to_address(GMsg* msg, gsetaddr* toname, gsetaddr* toaddr, gsetaddr* fro
   strcpy(buf, ptr);
 
   if(not CFG->addressmacro.empty()) {
-    vector<AddrMacro>::iterator n;
+    std::vector<AddrMacro>::iterator n;
     for(n=CFG->addressmacro.begin(); n != CFG->addressmacro.end(); n++) {
       if(strieql(buf, n->macro)) {
         ptr = strcpy(buf1, n->name);
@@ -299,7 +299,7 @@ bool GMsgHeaderEdit::validate() {
     field* ftoaddr = get_field(id_to_addr);
     field* fsubj = get_field(id_subject);
     gsetaddr toname, toaddr, fromaddr, subj;
-    string orig_toname;
+    std::string orig_toname;
 
     orig_toname = msg->to;
     toname.buf = current->buf; toname.update = false;
@@ -307,7 +307,7 @@ bool GMsgHeaderEdit::validate() {
     fromaddr.buf = ffromaddr->buf; fromaddr.update = false;
     subj.buf = fsubj->buf; subj.update = false;
 
-    string iaddr(msg->iaddr), realto(msg->realto);
+    std::string iaddr(msg->iaddr), realto(msg->realto);
 
     bool res = set_to_address(msg, &toname, &toaddr, &fromaddr, &subj, 0, LNG->SelectDestNode, lookup);
 
@@ -351,8 +351,8 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view, bool doedithdr) {
   GMsgHeaderEdit hedit(view);
   GMsg *msg = view.msg;
 
-  string from_name, to_name, subject;
-  string from_addr, to_addr, orig_from_addr;
+  std::string from_name, to_name, subject;
+  std::string from_addr, to_addr, orig_from_addr;
 
   from_name = msg->By();
   if(AA->isinternet()) {
@@ -558,9 +558,9 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view, bool doedithdr) {
       }
 
       // Try to match akas with the dest address, but only if the orig address was NOT changed
-      vector<gaka>::iterator i;
+      std::vector<gaka>::iterator i;
       for(i = CFG->aka.begin(); i != CFG->aka.end(); i++) {
-        if(memcmp(&msg->orig, i, sizeof(Addr)) == 0)
+        if(memcmp(&msg->orig, &(*i), sizeof(Addr)) == 0)
           break;  // Found one of our own akas.
       }
 

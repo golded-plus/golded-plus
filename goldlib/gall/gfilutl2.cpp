@@ -36,7 +36,7 @@
 
 //  ------------------------------------------------------------------
 
-string& AddBackslash(string& p) {
+std::string& AddBackslash(std::string& p) {
 
   for(size_t posn = 0; (posn=p.find(GOLD_WRONG_SLASH_CHR, posn)) != p.npos; posn++)
     p[posn] = GOLD_SLASH_CHR;
@@ -50,7 +50,7 @@ string& AddBackslash(string& p) {
 //  ------------------------------------------------------------------
 //  Add path to filename, if no path is set
 
-void MakePathname(string& pathname, const string& path, const string& name) {
+void MakePathname(std::string& pathname, const std::string& path, const std::string& name) {
 
   Path pn;
   MakePathname(pn, path.c_str(), name.c_str());
@@ -60,7 +60,7 @@ void MakePathname(string& pathname, const string& path, const string& name) {
 
 //  ------------------------------------------------------------------
 
-void PathCopy(string& dst, const char* src) {
+void PathCopy(std::string& dst, const char* src) {
 
   dst = src;
   strschg_environ(dst);
@@ -70,9 +70,9 @@ void PathCopy(string& dst, const char* src) {
 
 //  ------------------------------------------------------------------
 
-int strschg_environ(string& s) {
+int strschg_environ(std::string& s) {
 
-  string fnd;
+  std::string fnd;
   int replaced = 0;
   size_t posn, posn1;
 
@@ -86,7 +86,7 @@ int strschg_environ(string& s) {
 
 #ifndef __HAVE_DRIVES__
   if(not s.empty() and (s[0] == '~')) {
-    string name;
+    std::string name;
     const char *p = s.c_str()+1;
     if((s.length() != 1) and not isslash(*p)) {
       while(*p and not isslash(*p))
@@ -95,7 +95,7 @@ int strschg_environ(string& s) {
         name = getlogin();
     struct passwd *pe = getpwnam(name.c_str());
     if(pe != NULL) {
-      string dirname = pe->pw_dir;
+      std::string dirname = pe->pw_dir;
       dirname += "/";
       if(isslash(*p))
         ++p;
@@ -112,10 +112,10 @@ int strschg_environ(string& s) {
 
 //  ------------------------------------------------------------------
 
-bool maketruepath(string &dirname) {
+bool maketruepath(std::string &dirname) {
 
   bool ok = true;
-  string ndirname;
+  std::string ndirname;
   char cwd[GMAXPATH];
   getcwd(cwd, GMAXPATH);
 #ifdef __HAVE_DRIVES__

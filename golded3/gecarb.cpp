@@ -196,7 +196,7 @@ int DoCarboncopy(GMsg* msg, GMsg** carbon) {
       newline = newline->next;
     } while(newline != NULL);
 
-    string temp;
+    std::string temp;
     // Fix the CC list in the message
     if(cc and ccline) {
       switch(CFG->carboncopylist) {
@@ -235,7 +235,7 @@ int DoCarboncopy(GMsg* msg, GMsg** carbon) {
         case CC_NAMES:
           // Expand in line
           {
-            string hline = "";
+            std::string hline = "";
             int line_items = 0;
 
             if(A == AA) {
@@ -285,7 +285,7 @@ int DoCarboncopy(GMsg* msg, GMsg** carbon) {
 
 //  ------------------------------------------------------------------
 
-static bool AddXCAreas(const char* mask, bool attr, vector<int> &postareas, vector<bool> &postareas_attrs, int local_xps) {
+static bool AddXCAreas(const char* mask, bool attr, std::vector<int> &postareas, std::vector<bool> &postareas_attrs, int local_xps) {
 
   bool rv = false;
 
@@ -313,7 +313,7 @@ static bool AddXCAreas(const char* mask, bool attr, vector<int> &postareas, vect
 
 //  ------------------------------------------------------------------
 
-void DoCrosspost(GMsg* msg, vector<int> &postareas) {
+void DoCrosspost(GMsg* msg, std::vector<int> &postareas) {
 
   if(CFG->crosspost == NO)
     return;
@@ -325,7 +325,7 @@ void DoCrosspost(GMsg* msg, vector<int> &postareas) {
   int margintext;
   bool xphide;
   int local_xps = postareas.size();
-  vector<bool> postareas_attrs(local_xps);
+  std::vector<bool> postareas_attrs(local_xps);
   bool hideoriginal = false;
 
   // Insert empty line at the top first for practical purposes
@@ -425,7 +425,7 @@ void DoCrosspost(GMsg* msg, vector<int> &postareas) {
               xcline = AddLine(xcline, buf);
             }
 
-            string hline = "";
+            std::string hline = "";
             int line_items = 0;
 
             for(int i=local_xps; i < postareas.size(); i++) {

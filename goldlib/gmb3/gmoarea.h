@@ -106,7 +106,7 @@ public:
   void set_aka(ftn_addr& a)     { cfg.aka = a; }
   void set_originno(int o)      { cfg.originno = o; }
   void set_attr(Attr& a)        { cfg.attr = a; }
-  void set_origin(char* o)      { string tmp = o; cfg.setorigin(tmp); }
+  void set_origin(char* o)      { std::string tmp = o; cfg.setorigin(tmp); }
 
   void set_scan(bool s)           { cfg.scan = (byte)s; }
   void set_scanexcl(bool s)       { cfg.scanexcl = (byte)s; }

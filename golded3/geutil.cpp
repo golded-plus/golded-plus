@@ -452,9 +452,9 @@ static int KeyCmp(const gkey* a, const gkey* b) {
 
 //  ------------------------------------------------------------------
 
-gkey SearchKey(gkey key, list<CmdKey>::iterator keys, int totkeys) {
+gkey SearchKey(gkey key, std::list<CmdKey>::iterator keys, int totkeys) {
 
-  list<CmdKey>::iterator kmin;
+  std::list<CmdKey>::iterator kmin;
   int again = 0;
 
   do {

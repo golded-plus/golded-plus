@@ -23,6 +23,8 @@
 //  $Id$
 //  ------------------------------------------------------------------
 
+using namespace std;
+
 #include <clocale>
 #include <cstdio>
 #include <iostream>

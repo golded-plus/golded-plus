@@ -96,7 +96,7 @@ void gareafile::ReadCrashmail(char* tag) {
     setvbuf(fp, NULL, _IOFBF, 8192);
 
     if(not quiet)
-      cout << "* Reading " << file << endl;
+      std::cout << "* Reading " << file << std::endl;
 
     char buf[4000];
     char key[30];

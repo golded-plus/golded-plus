@@ -118,7 +118,7 @@ static void pre_exit(char** p, int numelems) {
 
 //  ------------------------------------------------------------------
 
-bool wpickfile(int srow, int scol, int erow, int ecol, int btype, int bordattr, int winattr, int barattr, bool title, string &filespec, VfvCP open, bool casesens) {
+bool wpickfile(int srow, int scol, int erow, int ecol, int btype, int bordattr, int winattr, int barattr, bool title, std::string &filespec, VfvCP open, bool casesens) {
 
   Path cwd, dir, namext, tcwd, path, spec;
 

@@ -320,7 +320,7 @@ void GotoMsgno() {
 
     gwindow iwindow(whandle());
 
-    string fbuf = buf;
+    std::string fbuf = buf;
     gwinput2 iform(iwindow);
     iform.setup(C_HEADW, C_HEADW, C_HEADI, _box_table(W_BHEAD, 13), true); 
     iform.add_field(0, wrow, 8, 5, fbuf, 20, gwinput::cvt_none, gwinput::entry_new);
@@ -524,7 +524,7 @@ int ExternUtil(GMsg* msg, int utilno) {
   strcpy(editorfile, AddPath(CFG->goldpath, EDIT->File()));
   mktemp(strcpy(tmpfile, AddPath(CFG->goldpath, "GDXXXXXX")));
 
-  vector<ExtUtil>::iterator extutil = CFG->externutil.begin();
+  std::vector<ExtUtil>::iterator extutil = CFG->externutil.begin();
 
   for(int utlno=0; extutil != CFG->externutil.end(); utlno++, extutil++) {
 
@@ -749,9 +749,9 @@ void make_pathreport(const char* reportfile) {
   gfile fp;
   fp.fopen(reportfile, "wt");
   if(fp) {
-    string path;
+    std::string path;
     ftn_addr address;
-    vector<ftn_addr> alist;
+    std::vector<ftn_addr> alist;
     GMsg* msg = (GMsg*)throw_calloc(1, sizeof(GMsg));
     w_progress(MODE_NEW, C_INFOW, 0, AA->Msgn.Count(), "Generating PATH report");
     for(int n=AA->Msgn.Count(); n>=AA->lastread(); n--) {
@@ -769,7 +769,7 @@ void make_pathreport(const char* reportfile) {
         INam buf;
         strcpy(buf, msg->By());
         strchg(buf, ' ', '_');
-        string temp;
+        std::string temp;
         fp.printf("%s  %s  ", buf, address.make_string(temp).c_str());
         path = "";
         Line* line = msg->lin;

@@ -52,7 +52,7 @@ void gareafile::ReadEzycom110(FILE* fp, char* path, char* file, char* options) {
   if(fp) {
 
     if(not quiet)
-      cout << "* Reading " << file << endl;
+      std::cout << "* Reading " << file << std::endl;
 
     fread(constant, sizeof(CONSTANTRECORD), 1, fp);
     fclose(fp);
@@ -193,7 +193,7 @@ void gareafile::ReadEzycom110(FILE* fp, char* path, char* file, char* options) {
     if(fp) {
 
       if(not quiet)
-        cout << "* Reading " << file << endl;
+        std::cout << "* Reading " << file << std::endl;
 
       int record = 1;
 
@@ -311,7 +311,7 @@ void gareafile::ReadEzycom(char* tag) {
   if(fp) {
 
     if(not quiet)
-      cout << "* Reading " << file << endl;
+      std::cout << "* Reading " << file << std::endl;
 
     char _verstr[9];
     fread(_verstr, 9, 1, fp);
@@ -320,7 +320,7 @@ void gareafile::ReadEzycom(char* tag) {
     strp2c(_verstr);
 
     if(strnicmp(_verstr, "1.02", 4) < 0) {
-      cout << "* Error: Ezycom v" << _verstr << " is not supported - Skipping." << endl;
+      std::cout << "* Error: Ezycom v" << _verstr << " is not supported - Skipping." << std::endl;
       return;
     }
     else if(strnicmp(_verstr, "1.10", 4) >= 0)

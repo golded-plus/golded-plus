@@ -346,7 +346,7 @@ void CfgEvent() {
 
   char* key;
   word x;
-  vector<GEvent>::iterator n;
+  std::vector<GEvent>::iterator n;
   GEvent tmp;
 
   x = getkeyvalcrc(&key, &val);

@@ -108,7 +108,7 @@ void gareafile::ReadWtrGteFile(char* options, FILE* fp) {
     char header[26];
     
     if(not quiet)
-      cout << "* Reading " << file << endl;
+      std::cout << "* Reading " << file << std::endl;
 
     fread(header, 26, 1, fp2);
     strp2c(header);
@@ -145,7 +145,7 @@ void gareafile::ReadWtrGteFile(char* options, FILE* fp) {
       throw_delete(ar);
     }
     else
-      cout << "* Error: WaterGate Areabase \"" << header << "\" is not supported - Skipping." << endl;
+      std::cout << "* Error: WaterGate Areabase \"" << header << "\" is not supported - Skipping." << std::endl;
 
     fclose(fp2);
   }
@@ -187,13 +187,13 @@ void gareafile::ReadWtrGte(char* tag) {
   if(fp) {
     char header[26];
     if(not quiet)
-      cout << "* Reading " << file << endl;
+      std::cout << "* Reading " << file << std::endl;
     fread(header, 26, 1, fp); strp2c(header);
     
     if(streql(header, ConfigHeader))
       ReadWtrGteFile(options, fp);
     else
-      cout << "* Error: WaterGate \"" << header << "\" is not supported - Skipping." << endl;
+      std::cout << "* Error: WaterGate \"" << header << "\" is not supported - Skipping." << std::endl;
       
     fclose(fp);
   }
