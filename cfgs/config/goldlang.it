@@ -390,6 +390,8 @@ IL_NOAKADEFINED      " Nessuna AKA definito. Premi un tasto "
 IL_NOTPLDEFINED      " Nessun template definito. Premi un tasto "
 IL_NOTHREADLIST      " Nessana catena delle repliche. Premi un tasto"
 MS_SKIPPINGTWIT      "Salto i messaggi Twit..."
+// ???
+MS_SKIPPINGDELETED   "Salto i messaggi cancello..."
 MS_KILLINGTWIT       "Cancello i messaggi Twit..."
 IL_WRITINGCFG        " Scrivo la configurazione "
 IL_COULDNOTOPEN      " Non posso aprire %s "

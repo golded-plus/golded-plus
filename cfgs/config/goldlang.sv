@@ -370,6 +370,8 @@ IL_NOAKADEFINED      " Inga adresser definierade. Tryck tangent "
 IL_NOTPLDEFINED      " Inga mallar definierade. Tryck tangent "
 IL_NOTHREADLIST      " Inget träd tillgänglig. Tryck tangent "
 MS_SKIPPINGTWIT      "Hoppar över filtrerade texter..."
+//
+MS_SKIPPINGDELETED   "Hoppar över dödas texter..."
 MS_KILLINGTWIT       "Dödar filtrerade texter..."
 IL_WRITINGCFG        " Skriver inställningar "
 IL_COULDNOTOPEN      " Kunde inte öppna %s "

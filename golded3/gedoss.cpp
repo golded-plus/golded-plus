@@ -218,7 +218,7 @@ int ShellToDos(char* command, char* message, int cls, int cursor, int pause) {
   int error = 0;
 
   #if defined(GUTLOS_FUNCS)
-  char ge_temptitle[GMAXTITLE];
+  char ge_temptitle[GMAXTITLE+1];
   #endif
 
   #ifndef __UNIX__

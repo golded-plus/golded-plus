@@ -371,6 +371,8 @@ IL_NOAKADEFINED      " Geen AKA's defined. Press key "
 IL_NOTPLDEFINED      " No templates gedefinieerd. Druk Toets "
 IL_NOTHREADLIST      " Sorry, geen berichtenserie beschikbaar. Druk Toets "
 MS_SKIPPINGTWIT      "Slaat Twit bericht over..."
+// ???
+MS_SKIPPINGDELETED   "Slaat deleted bericht over..."
 MS_KILLINGTWIT       "Delete Twit Bericht..."
 IL_WRITINGCFG        " Schrijft Configuratie weg "
 IL_COULDNOTOPEN      " Kon %s niet openen "

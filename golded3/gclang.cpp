@@ -337,6 +337,7 @@ static LangCrc LangCrcs[] = {
   { CRC_IL_NOTPLDEFINED       , NULL  , " No templates defined. Press key " },
   { CRC_IL_NOTHREADLIST       , NULL  , " Sorry, no thread available. Press key "},
   { CRC_MS_SKIPPINGTWIT       , NULL  , "Skipping Twit Message..." },
+  { CRC_MS_SKIPPINGDELETED    , NULL  , "Skipping Deleted Message..." },
   { CRC_MS_KILLINGTWIT        , NULL  , "Killing Twit Message..." },
   { CRC_IL_WRITINGCFG         , NULL  , " Writing Configuration " },
   { CRC_IL_COULDNOTOPEN       , NULL  , " Couldn't open %s " },

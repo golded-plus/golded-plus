@@ -75,7 +75,7 @@ bool gareafile::jbstrcpy(char *dest, char *src, size_t maxlen, size_t *jbc) {
 
 void gareafile::ReadCrashmailCfg(const char* file) {
 
-  FILE* fp = fsopen(file, "rb", sharemode);
+  FILE* fp = fsopen(file, "rt", sharemode);
   if(fp) {
     setvbuf(fp, NULL, _IOFBF, 8192);
 

@@ -379,6 +379,8 @@ IL_NOAKADEFINED      " Keine AKAs definiert. Taste drÅcken "
 IL_NOTPLDEFINED      " Keine Vorlagen definiert. Taste drÅcken "
 IL_NOTHREADLIST      " Schade, keine Antworten vorhanden. Taste drÅcken "
 MS_SKIPPINGTWIT      "öberspringe Twitmails.."
+// ???
+MS_SKIPPINGDELETED   "öberspringe Lîschenmails.."
 MS_KILLINGTWIT       "Lîsche Twitmails.."
 IL_WRITINGCFG        " Schreibe Konfiguration "
 IL_COULDNOTOPEN      " Kann %s nicht îffnen "

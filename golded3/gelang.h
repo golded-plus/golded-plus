@@ -324,6 +324,7 @@ struct LangGed {
   char*  NoTplDefined;       // IL_NOTPLDEFINED
   char*  NoThreadlist;       // IL_NOTHREADLIST
   char*  SkippingTwit;       // MS_SKIPPINGTWIT
+  char*  SkippingDeleted;    // MS_SKIPPINGDELETED
   char*  KillingTwit;        // MS_KILLINGTWIT
   char*  WritingCfg;         // IL_WRITINGCFG
   char*  CouldNotOpen;       // IL_COULDNOTOPEN

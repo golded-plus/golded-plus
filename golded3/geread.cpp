@@ -367,7 +367,12 @@ void Reader() {
                 }
               }
               else {
-                BodyView->Paint();
+                if(CFG->showdeleted or not msg->attr.del())
+                  BodyView->Paint();
+                else {
+                  BodyView->window.clear();
+                  BodyView->window.prints(1, 0, C_READW, LNG->SkippingDeleted);
+                }
               }
 
               if(reader_rcv_noise) {

@@ -1052,6 +1052,9 @@ int ReadKeysCfg(int force) {
             if(*ptr == '\"') {  // Start of literal string
               ptr++;
               while((*ptr != '\"') and (n < (sizeof(tmp2.buf)/sizeof(gkey)))) {
+                // allow '\"' and '\\' in config
+                if((ptr[0] == '\\') and ((ptr[1] == '\"') or (ptr[1] == '\\')))
+                  ptr++;
                 ch = *ptr++;
                 tmp2.buf[n++] = (gkey)(ch | (scancode(ch) << 8));
               }

@@ -77,9 +77,9 @@ HMODULE           ge_os2_mdmHandle = 0;
 SWCNTRL           ge_os2_swolddata;
 SWCNTRL           ge_os2_swdata;
 SZ                ge_os2_loaderr[256];
-char              ge_os2_coldtitle[GMAXTITLE] = "";
+char              ge_os2_coldtitle[GMAXTITLE+1] = "";
 HPOINTER          ge_os2_coldicon;
-char              ge_os2_title[GMAXTITLE] = "";
+char              ge_os2_title[GMAXTITLE+1] = "";
 int               ge_os2_ext_title;
 ULONG             ge_os2_oldicon;
 
@@ -290,11 +290,11 @@ void g_get_ostitle_name(char *currtitle) {
 void g_set_ostitle_name(char *title, int mode) {
 
   if(mode == 0) {
-    char fulltitle[80];
+    char fulltitle[GMAXTITLE+1];
     strcpy(fulltitle, ge_os2_title);
     if(ge_os2_ext_title) {
       int len = strlen(fulltitle);
-      if(len < GMAXTITLE-4) {
+      if(len < GMAXTITLE-3) {
         if(len)
           strcat(fulltitle, " - ");
         strxcpy(fulltitle+len+3, title, GMAXTITLE-len-3);

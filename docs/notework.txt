@@ -12,6 +12,20 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ Added escape sequences \" and \\ to the goldkeys.cfg.
+
++ A bit changed algorithm of processing soft-deleted messages, added
+  MS_SkippingDeleted keyword to the language file.
+
+! Added possibility to use double quotes within macros. You need to
+  write \" within quoted string. The backslash escapes only double
+  quotes and backslash to minimize impact on users. Please scan your
+  goldkeys.cfg for \" and \\ and change them to \\" and \\\\
+  accordingly before upgrading.
+
+- Fixed reading of Crashmail/Crashecho config when file saved as DOS
+  file.
+
 - Fixed newly introduced bug in copying/moving Opus mail.
 
 - Fixed CRC16 routine for Synchronet fields updating.

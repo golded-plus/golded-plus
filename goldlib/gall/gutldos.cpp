@@ -49,8 +49,8 @@ enum OSAPI {
 };
 
 OSAPI         winapi;
-char          ge_win_oldtitle[GMAXTITLE] = "";
-char          ge_win_title[GMAXTITLE] = "";
+char          ge_win_oldtitle[GMAXTITLE+1] = "";
+char          ge_win_title[GMAXTITLE+1] = "";
 int           ge_win_ext_title;
 
 

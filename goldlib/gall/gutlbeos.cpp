@@ -37,7 +37,7 @@
 
 //  ------------------------------------------------------------------
 
-char          ge_beos_title[GMAXTITLE] = "";
+char          ge_beos_title[GMAXTITLE+1] = "";
 int           ge_beos_ext_title;
 
 static BClipboard g_clipboard("system", true);
@@ -63,8 +63,7 @@ void g_deinit_os(void) {
 
 void g_init_title(char *tasktitle, int titlestatus) {
 
-  strncpy(ge_beos_title, tasktitle, GMAXTITLE);
-  ge_beos_title[GMAXTITLE-1] = '\0';
+  strxcpy(ge_beos_title, tasktitle, GMAXTITLE);
   ge_beos_ext_title = titlestatus;
 }
 
@@ -164,15 +163,14 @@ void g_get_ostitle_name(char* title) {
 void g_set_ostitle_name(char* title, int mode) {
 
   if(mode == 0) {
-    char fulltitle[GMAXTITLE];
+    char fulltitle[GMAXTITLE+1];
     strcpy(fulltitle, ge_beos_title);
     if(ge_beos_ext_title) {
       int len = strlen(fulltitle);
-      if(len < GMAXTITLE-4) {
+      if(len < GMAXTITLE-3) {
         if(len)
           strcat(fulltitle, " - ");
-        strncpy(fulltitle+len+3, title, GMAXTITLE-len-3);
-        fulltitle[GMAXTITLE-1] = '\0';
+        strxcpy(fulltitle+len+3, title, GMAXTITLE-len-3);
       }
     }
     g_set_ostitle(fulltitle);
