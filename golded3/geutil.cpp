@@ -284,6 +284,14 @@ void maketitle() {
 
 //  ------------------------------------------------------------------
 
+int maketitle_and_status(char *dir) {
+
+  maketitle();
+  update_statuslinef(LNG->ImportStatus, dir);
+}
+
+//  ------------------------------------------------------------------
+
 void set_title(const char* t, int p, int a) {
 
   strcpy(m_title, t);

@@ -155,7 +155,8 @@ void Container::StyleCodeHighlight(const char* text, int row, int col, bool dohi
       else if(CFG->highlighturls) {
         const char *begin;
 
-        if((begin = url_begin(ptr)) != NULL) {
+        if(((begin = url_begin(ptr)) != NULL) and
+           ((ptr == text) or (not isxalnum(ptr[-1]) and (ptr[-1] != '@')))) {
           const char *end = begin+strcspn(begin, " \t\"\'<>()[]");
 
           if(ispunct(end[-1]) and (end[-1] != '/'))

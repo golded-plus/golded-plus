@@ -287,7 +287,7 @@ void JamArea::raw_scan(int __keep_index, int __scanpm) {
     int umax = (WidePersonalmail & PM_ALLNAMES) ? WideUsernames : 1;
     dword* ucrc = (dword*)throw_calloc(umax, sizeof(dword));
     for(int uc=0; uc<umax; uc++) {
-      strlwr(strcpy(uname, WideUsername[uc]));
+      jamstrlwr(strcpy(uname, WideUsername[uc]));
       ucrc[uc] = strCrc32(uname, NO, CRC32_MASK_CCITT);
     }
     PMrk->ResetAll();

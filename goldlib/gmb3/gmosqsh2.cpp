@@ -222,8 +222,24 @@ void SquishArea::raw_scan(int __keep_index, int __scanpm) {
       for(int u=0; u<umax; u++) {
         if((idx->hash & 0x80000000LU) == 0) {
           if(idx->hash == uhash[u]) {
-            gotpm = true;
-            break;
+            // Open, read and close data file
+            if(not isopen)
+              data->fhsqd = ::sopen(AddPath(real_path(), ".sqd"), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
+            if(data->fhsqd != -1) {
+              lseekset(data->fhsqd, idx->offset + sizeof(SqshFrm));
+              // Load the message header
+              SqshHdr __hdr;
+              memset(&__hdr, 0, sizeof(SqshHdr));
+              read(data->fhsqd, &__hdr, sizeof(SqshHdr));
+              if(not isopen) {
+                ::close(data->fhsqd);
+                data->fhsqd = -1;
+              }
+              if(streql(__hdr.to, WideUsername[u])) {
+                gotpm = true;
+                break;
+              }
+            }
           }
         }
       }

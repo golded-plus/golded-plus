@@ -42,7 +42,7 @@
 //  ------------------------------------------------------------------
 
 static bool path_in_title, case_sensitive;
-static VfvCP open_function = NULL;
+static IfcpCP open_function = NULL;
 static char* cwdp;
 static char* tcwdp;
 static char* namextp;
@@ -81,18 +81,22 @@ static int compare(const char** str1, const char** str2) {
 
 static void disp_title() {
 
-  if(path_in_title) {
-    char buf[sizeof(Path)+2];
+  char buf[sizeof(Path)+2];
+
+  if(path_in_title or open_function) {
     strcpy(buf, " ");
     PathCopy(buf+1, cwdp);
     strcat(buf, namextp);
     strcat(buf, " ");
+  }
 
+  if(path_in_title) {
     wtitle(buf, TCENTER, gwin.active->battr);
   }
 
-  if(open_function)
-    (*open_function)();
+  if(open_function) {
+    (*open_function)(buf);
+  }
 }
 
 
@@ -118,7 +122,7 @@ static void pre_exit(char** p, int numelems) {
 
 //  ------------------------------------------------------------------
 
-bool wpickfile(int srow, int scol, int erow, int ecol, int btype, int bordattr, int winattr, int barattr, bool title, std::string &filespec, VfvCP open, bool casesens) {
+bool wpickfile(int srow, int scol, int erow, int ecol, int btype, int bordattr, int winattr, int barattr, bool title, std::string &filespec, IfcpCP open, bool casesens) {
 
   Path cwd, dir, namext, tcwd, path, spec;
 

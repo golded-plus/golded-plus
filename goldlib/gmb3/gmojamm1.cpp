@@ -67,7 +67,7 @@ void JamInit(const char* jampath, int harddelete, int jamsmapihw) {
 
   // Calculate CRC32 of our username for the lastreads
   INam _name;
-  strlwr(strcpy(_name, WideUsername[0]));
+  jamstrlwr(strcpy(_name, WideUsername[0]));
   jamwide->userid = jamwide->usercrc = strCrc32(_name, NO, CRC32_MASK_CCITT);
 
   // Enable replies lookahead feature
@@ -216,3 +216,15 @@ void JamArea::resume() {
 
 //  ------------------------------------------------------------------
 
+char *jamstrlwr(char *str) {
+
+  char *p = str;
+  while(*p) {
+    if((*p >= 'A') && (*p <= 'Z'))
+      *p = *p - 'A' + 'a';
+    ++p;
+  }
+  return str;
+}
+
+//  ------------------------------------------------------------------

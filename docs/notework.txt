@@ -12,6 +12,24 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed recently introduced bug with replying on gated messages in
+  echo and following change of destination name. There's still some
+  work to be done in this field.
+
+- Due to the collisions in Squish hash when personal mail scan is
+  requested, after the hash values are matched the name now compared
+  with string in To field in messagebase. This will slow down a bit
+  personal mail scan, but will produce proper detection of names (not
+  tested).
+
+- The names with NLS characters was improperly handled in JAM
+  messagebases, should work properly now (not tested).
+
+- When importing file the current filepath will be displayed at
+  statusline.
+
+- Fixed highlignting of url-like filenames.
+
 ! The changed mail will also be copied to the Areayouwroteto now. 
 
 - Fixed small bug in Maximus 3 config parser. Any more left?

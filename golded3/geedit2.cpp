@@ -962,7 +962,7 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
         update_statuslinef(LNG->ImportStatus, filenamebuf.c_str());
 
         // Start the file picker
-        fileselected = wpickfile(win_minrow, win_mincol, win_maxrow, win_maxcol, W_BMENU, C_MENUB, C_MENUW, C_MENUS, NO, filenamebuf, maketitle);
+        fileselected = wpickfile(win_minrow, win_mincol, win_maxrow, win_maxcol, W_BMENU, C_MENUB, C_MENUW, C_MENUS, NO, filenamebuf, maketitle_and_status);
       }
     }
   }

@@ -393,6 +393,7 @@ int   cmp_quotes(char* q1, char* q2);
 int   is_quote(const char* ptr);
 int   IsQuoteChar(const char* s);
 void  maketitle();
+int   maketitle_and_status(char *);
 void  ProgMeter(int mode, int xx, int yy, long len, long barlen, int attr, long pos, long size);
 int   ReadCfg(const char* cfg, int ignoreunknown=false);
 void  ScanMsgTxtForAddr(GMsg* msg);

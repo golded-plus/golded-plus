@@ -60,21 +60,27 @@ void FidoArea::raw_scan(bool __scanpm) {
   register ulong* _msgndx = Msgn->tag;
 
   gposixdir d(real_path());
-  if(WideDebug)
-    WideLog->printf("- %s/*.msg", d.fullpath());
-  const gdirentry *de;
-  while((de = d.nextentry("*.msg", true)) != NULL) {
+  if(d.ok) {
     if(WideDebug)
-      WideLog->printf("- %s", de->name.c_str());
-    register ulong _msgno = (ulong)atol(de->name.c_str());
-    if(_msgno) {
-      if((_active % FIDO_SCANBUFSIZE) == 0) {
-        _msgndx = Msgn->Resize(_active+FIDO_SCANBUFSIZE);
-        _msgnoptr = _msgndx + _active;
+      WideLog->printf("- %s/*.msg", d.fullpath());
+    const gdirentry *de;
+    while((de = d.nextentry("*.msg", true)) != NULL) {
+      if(WideDebug)
+        WideLog->printf("- %s", de->name.c_str());
+      register ulong _msgno = (ulong)atol(de->name.c_str());
+      if(_msgno) {
+        if((_active % FIDO_SCANBUFSIZE) == 0) {
+          _msgndx = Msgn->Resize(_active+FIDO_SCANBUFSIZE);
+          _msgnoptr = _msgndx + _active;
+        }
+        *_msgnoptr++ = _msgno;
+        _active++;
       }
-      *_msgnoptr++ = _msgno;
-      _active++;
     }
+  }
+  else {
+    if(WideDebug)
+      WideLog->printf("- Invalid path: %s", real_path());
   }
   
   // Sort the index

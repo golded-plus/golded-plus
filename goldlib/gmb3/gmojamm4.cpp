@@ -324,9 +324,9 @@ void JamArea::save_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
     __hdr.timesread = __msg->timesread;
     __hdr.passwordcrc = 0xFFFFFFFFL;
 
-    __hdr.msgidcrc = strCrc32(strlwr(strcpy(_buf, __msg->msgids)), NO, CRC32_MASK_CCITT);
-    __hdr.replycrc = strCrc32(strlwr(strcpy(_buf, __msg->replys)), NO, CRC32_MASK_CCITT);
-    _idx.usercrc   = strCrc32(strlwr(strcpy(_buf, __msg->to)),     NO, CRC32_MASK_CCITT);
+    __hdr.msgidcrc = strCrc32(jamstrlwr(strcpy(_buf, __msg->msgids)), NO, CRC32_MASK_CCITT);
+    __hdr.replycrc = strCrc32(jamstrlwr(strcpy(_buf, __msg->replys)), NO, CRC32_MASK_CCITT);
+    _idx.usercrc   = strCrc32(jamstrlwr(strcpy(_buf, __msg->to)),     NO, CRC32_MASK_CCITT);
 
     __hdr.datewritten   = __msg->written;
     __hdr.datereceived  = __msg->received;

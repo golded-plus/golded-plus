@@ -225,6 +225,9 @@ bool set_to_address(GMsg* msg, gsetaddr* toname, gsetaddr* toaddr, gsetaddr* fro
       return true;
     }
 
+    *msg->iaddr = NUL;
+    *msg->realto = NUL;
+
     if(lookup) {
       strcpy(buf1, toname->buf);
       strcpy(buf2, msg->to);
@@ -236,8 +239,6 @@ bool set_to_address(GMsg* msg, gsetaddr* toname, gsetaddr* toaddr, gsetaddr* fro
         strtrim(buf);
         if(*buf == NUL)
           strcpy(buf, " ");
-        *msg->iaddr = NUL;
-        *msg->realto = NUL;
 
         if(*buf) {
           Addr addr;
