@@ -47,8 +47,8 @@ LIBEXT=.a
 endif
 endif
 endif
-CFLAGS+=-s -funsigned-char $(INCS) -Wall -Wno-sign-compare -pedantic -O2# -fomit-frame-pointer
-LNKFLAGS+=-s
+CFLAGS+=-g -funsigned-char $(INCS) -Wall -Wno-sign-compare -pedantic -O2# -fomit-frame-pointer
+LNKFLAGS+=-g
 CPPFLAGS+=$(CFLAGS) -fno-exceptions -fno-rtti
 
 # comment following lines if you dislike ncurses

@@ -137,7 +137,7 @@ inline Clock gclock() { return Clock(clock()*10/CLK_TCK); }
 int str2mon(const char* ptr) __attribute__ ((const));
 int tzoffset();
 
-char* strftimei(char* s, size_t maxsize, const char* fmt, const struct tm* t) __attribute__ ((format (strftime, 3, 0)));
+char* strftimei(char* s, size_t maxsize, const char* fmt, const struct tm* t); // __attribute__ ((format (strftime, 3, 0)));
 
 FTime  TimeToFTime(time_t __time) __attribute__ ((const));
 time_t FTimeToTime(FTime* __ftime, struct tm* __tm=NULL);
