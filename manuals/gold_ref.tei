@@ -3991,7 +3991,7 @@ AREALISTFORMAT "AM D C4PU4N E G "]]></eg>
           See also:
         </label>
         <item>
-          <!-- FIX ME!!! -->AREAboardnos,
+          <!-- FIX ME!!! --><kw/AREAboardnos/,
           <ref target=AREALISTFORMAT><kw/AREALISTFORMAT/</ref>,
           <ref target=AREALISTECHOMAX><kw/AREALISTECHOMAX/</ref>,
           <ref target=AREALISTTYPE><kw/AREALISTTYPE/</ref>,
