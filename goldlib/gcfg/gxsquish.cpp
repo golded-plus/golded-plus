@@ -82,8 +82,6 @@ void gareafile::ReadSquishFile(char* path, char* file, char* options, char* orig
           case CRC_AREASBBS:
             strcpy(buf2, val);
             MakePathname(buf2, path, buf2);
-            if(striinc("/NOCHK", options) or striinc("-NOCHK", options))
-              strcat(buf2, " /NOCHK");
             ReadAreasBBS(buf2);
             break;
           case CRC_NETAREA:

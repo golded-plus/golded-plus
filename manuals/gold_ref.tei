@@ -2340,7 +2340,7 @@ APP OtherProg IRQ 5</eg>
           Default:
         </label>
         <item>
-          LONG
+          <ident/LONG/
         </item>
         <label>
           Processed by:
@@ -2605,7 +2605,7 @@ AREA:&lt;OriginalEchoID&gt;</eg>
         <item>
           <!-- FIX ME!!! --><kw/READcopymoveforward/,
           <ref target=AREACOPYADDID><kw/AREACOPYADDID/</ref>,
-          <ref target=AREACOPYTO><kw/AREACOPYTO/</ref>
+          <ref target=AREACOPYTO><kw/AREACOPYTO/</ref>,
           <ref target=AREAFORWARDDIRECT><kw/AREAFORWARDDIRECT/</ref>,
           <ref target=AREAFREQDIRECT><kw/AREAFREQDIRECT/</ref>,
           <ref target=AREAREPLYDIRECT><kw/AREAREPLYDIRECT/</ref>
@@ -2797,8 +2797,8 @@ AREA:&lt;OriginalEchoID&gt;</eg>
           <ptr target=MESSAGEATTRS> chapter,
           <ref target=AREA><kw/AREA/</ref>,
           <ref target=AREADESC><kw/AREADESC/</ref>,
-          <ref target=AREAFILE><kw/AREAFILE/</ref>,
           <ref target=AREAEXCL><kw/AREAEXCL/</ref>,
+          <ref target=AREAFILE><kw/AREAFILE/</ref>,
           <ref target=AREAINCL><kw/AREAINCL/</ref>,
           <ref target=AREAISEMAIL><kw/AREAISEMAIL/</ref>,
           <ref target=AREAISNEWS><kw/AREAISNEWS/</ref>,
@@ -2935,185 +2935,475 @@ AREA:&lt;OriginalEchoID&gt;</eg>
         </item>
       </list>
     </div2>
-
-
-<!-- finished here -->
-
-
     <div2 id=AREAEXCL>
       <head>
-        AREAEXCL &lt;echoid mask&gt;
+        AREAEXCL
       </head>
-      <p>
-        With this keyword, you can define the echoids of areas which should be
-        ignored by <name>GoldED+</name> (thereby leaving them out of the
-        arealist). This is normally used in connection with <kw>AREAFILE</kw>,
-        to exclude areas you are not interested in reading.
-        <name>DOS</name>/<name>4DOS</name>-style wildcards (* and ?) can be
-        used in the echoid mask.
-      </p>
-      <p>
-        Examples:<eg>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREAEXCL/ <ident/&lt;echoid mask&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          With this keyword, you can define the echoids of areas which should
+          be ignored by <name/GoldED+/ (thereby leaving them out of the
+          arealist). This is normally used in connection with
+          <ref target=AREAFILE><kw/AREAFILE/</ref>, to exclude areas you are
+          not interested in reading.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The <ident/&lt;echoid mask&gt;/ may contain <name>4DOS</name>-style
+          wildcards (<q/*/ and <q/?/).
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          You can use the <ref target=AREAINCL><kw/AREAINCL/</ref> keyword to
+          reinclude areas which have been excluded with <kw/AREAEXCL/.<lb>
+          This keyword must be placed before any of
+          <ref target=AREA><kw/AREA/</ref>,
+          <ref target=AREADEF><kw/AREADEF/</ref>,
+          or <ref target=AREAFILE><kw/AREAFILE/</ref> keywords.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=AREA><kw/AREA/</ref>,
+          <ref target=AREADEF><kw/AREADEF/</ref>,
+          <ref target=AREAFILE><kw/AREAFILE/</ref>,
+          <ref target=AREAINCL><kw/AREAINCL/</ref>,
+          <ref target=AREARENAME><kw/AREARENAME/</ref>
+        </item>
+        <label>
+          Example:
+        </label>
+        <item><eg>
 AREAEXCL *        ; Excludes all areas.
 AREAEXCL *INTER*  ; Excludes all areas containing INTER anywhere in the
                   ; echoid.
 AREAEXCL INT*.*   ; Excludes all areas beginning with INT and
                   ; containing a dot anywhere in the echoid.</eg>
-      </p>
-      <p>
-        You can use the <kw>AREAINCL</kw> keyword to reinclude areas which have
-        been excluded with <kw>AREAEXCL</kw>.
-      </p>
-      <p>
-        <hi>NOTE</hi> that this keyword must be placed before any of
-        <kw>AREA</kw>, <kw>AREADEF</kw> or <kw>AREAFILE</kw> keywords.
-      </p>
+        </item>
+      </list>
     </div2>
     <div2 id=AREAFILE>
       <head>
-        AREAFILE &lt;type&gt; &lsqb;path/file&rsqb; &lsqb;switches&rsqb;
+        AREAFILE
       </head>
-      <p>
-        <name>GoldED+</name> can read the area setup of many popular mailers,
-        mail processors and <abbr>BBS</abbr>'es, thereby making it much easier
-        and simpler to configure <name>GoldED+</name> for the mail areas you
-        receive, by eliminating the need to write <kw>AREA</kw> lines for all
-        or most of your areas.
-      </p>
-      <p>
-        <table rows=3 cols=2>
-          <row>
-            <cell>
-              <ident>type</ident>
-            </cell>
-            <cell>
-              Name of the program.
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident>path/file</ident>
-            </cell>
-            <cell>
-              Filename or path to the area setup files.
-            </cell>
-          </row>
-          <row>
-            <cell>
-              <ident>switches</ident>
-            </cell>
-            <cell>
-              Msgbase specific switches.
-            </cell>
-          </row>
-        </table>
-      </p>
-      <p>
-        For most programs, <name>GoldED+</name> can automatically find the path
-        or filename using environment variables. By default,
-        <name>GoldED+</name> will look for the area setup files in the
-        <kw>AREAPATH</kw>.
-      </p>
-      <p>
-        There are switches for sorting the areas, and for turning off an
-        update-check when <name>GoldED+</name> starts up.
-      </p>
-      <p>
-        <name>GoldED+</name> can handle enviroment variables correctly in paths
-        specified in connection with this keyword.
-      </p>
-      <p>
-        This keyword is explained in greater detail in the
-        <ptr target=AREACONFIGURATION> chapter.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREAFILE/ <ident>&lt;type&gt; &lsqb;path/file&rsqb;
+          &lsqb;switches&rsqb;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          <name/GoldED+/ can read the area setup of many popular mailers,
+          mail processors and <abbr/BBS/'es, thereby making it much easier
+          and simpler to configure <name/GoldED+/ for the mail areas you
+          receive, by eliminating the need to write area definition lines for
+          all or most of your areas.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          <table rows=3 cols=2>
+            <row>
+              <cell>
+                <ident/type/
+              </cell>
+              <cell>
+                Name of the program.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident>path/file</ident>
+              </cell>
+              <cell>
+                Filename or path to the area setup files.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/switches/
+              </cell>
+              <cell>
+                Areafile specific switches.
+              </cell>
+            </row>
+          </table>
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          For most programs, <name>GoldED+</name> can automatically find the
+          path or filename using environment variables. By default,
+          <name/GoldED+/ will look for the area setup files in the
+          <ref target=AREAPATH><kw/AREAPATH/</ref>.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ptr target=AREACONFIGURATION> chapter,
+          <ref target=AREA><kw/AREA/</ref>,
+          <ref target=AREADEF><kw/AREADEF/</ref>,
+          <ref target=AREAEXCL><kw/AREAEXCL/</ref>,
+          <ref target=AREAFILE><kw/AREAFILE/</ref>,
+          <ref target=AREAFILEGROUPS><kw/AREAFILEGROUPS/</ref>,
+          <ref target=AREAINCL><kw/AREAINCL/</ref>,
+          <ref target=AREAISEMAIL><kw/AREAISEMAIL/</ref>,
+          <ref target=AREAISNEWS><kw/AREAISNEWS/</ref>,
+          <ref target=AREARENAME><kw/AREARENAME/</ref>,
+          <ref target=AREAPATH><kw/AREAPATH/</ref>,
+          <ref target=AREASEP><kw/AREASEP/</ref>,
+          <ref target=ATTRIBSECHO><kw/ATTRIBSECHO/</ref>,
+          <ref target=ATTRIBSEMAIL><kw/ATTRIBSEMAIL/</ref>,
+          <ref target=ATTRIBSLOCAL><kw/ATTRIBSLOCAL/</ref>,
+          <ref target=ATTRIBSNET><kw/ATTRIBSNET/</ref>,
+          <ref target=ATTRIBSNEWS><kw/ATTRIBSNEWS/</ref>,
+          <ref target=ATTRIBUTES><kw/ATTRIBUTES/</ref>
+        </item>
+      </list>
     </div2>
     <div2>
       <head>
-        AREAFILEGROUPS &lt;(yes)/no&gt;
+        AREAFILEGROUPS
       </head>
-      <p>
-        In some <kw>AREAFILE</kw> setups, you can groups the areas using single
-        letters (A-Z) or numbers (&num;1-999). If this keyword is enabled,
-        <name>GoldED+</name> will use the area groupid instead of the area
-        echoid when gathering area specific information from the Random System.
-      </p>
-      <p>
-        See <ptr target=RANDOMSYSTEM> chapter for details.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREAFILEGROUPS/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          In some <ref target=AREAFILE><kw/AREAFILE/</ref> setups, you can
+          groups the areas using single letters (A-Z) or numbers (&num;1-999).
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If this keyword is enabled, <name>GoldED+</name> will use the area
+          groupid instead of the area echoid when gathering area specific
+          information from the <ref target=RANDOMSYSTEM>Random System</ref>
+          group.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          This have only sence if you using <ref target=RANDOMSYSTEM>Random
+          System</ref> groups.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ptr target=RANDOMSYSTEM> chapter
+        </item>
+      </list>
     </div2>
     <div2 id=AREAFORWARDDIRECT>
       <head>
         AREAFORWARDDIRECT
       </head>
-      <p></p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREAFORWARDDIRECT/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls whether forward functions should bypass area
+          selection screen. The destination area should be set with
+          <ref target=AREAREPLYTO><kw/AREAREPLYTO/</ref> keyword.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If enabled, the destination area selection list is bypassed, thereby
+          making possible a <q/seamless/ forward to the default destination
+          area.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/NO/
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          This keyword can be used globally and in a
+          <ref target=RANDOMSYSTEM>Random System</ref> group.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <!-- FIX ME!!! --><kw/READcopymoveforward/,
+          <ref target=AREACOPYDIRECT><kw/AREACOPYDIRECT/</ref>,
+          <ref target=AREAFREQDIRECT><kw/AREAFREQDIRECT/</ref>,
+          <ref target=AREAREPLYDIRECT><kw/AREAREPLYDIRECT/</ref>,
+          <ref target=AREAREPLYTO><kw/AREAREPLYTO/</ref>
+        </item>
+      </list>
     </div2>
     <div2 id=AREAFREQDIRECT>
       <head>
-        AREAFREQDIRECT &lt;yes/(no)&gt;
+        AREAFREQDIRECT
       </head>
-      <p>
-        If enabled, the destination area selection list is bypassed, thereby
-        making possible a <q>seamless</q> file request in the default
-        destination area. The destination area should be set with
-        <kw>AREAFREQTO</kw>.
-      </p>
-      <p>
-        <hi>TIP:</hi> If you (like most) only have one mailer netmail area,
-        you should enable the <kw>AREAFREQDIRECT</kw> keyword globally for
-        simpler file requests.
-      </p>
-      <p>
-        This keyword can be used globally and in a Random System group.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREAFREQDIRECT/ <ident>&lt;YES/NO&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword controls whether filerequest functions should bypass
+          area selection screen. The destination area should be set with
+          <ref target=AREAFREQTO><kw/AREAFREQTO/</ref> keyword.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          If enabled, the destination area selection list is bypassed, thereby
+          making possible a <q/seamless/ filerequest in the default
+          destination area.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/NO/
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          This keyword can be used globally and in a
+          <ref target=RANDOMSYSTEM>Random System</ref> group.<lb>
+          If you (like most) only have one mailer netmail area, you can enable
+          this feature globally for simpler file requests.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <!-- FIX ME!!! --><kw/READfilerequest/,
+          <ref target=AREACOPYDIRECT><kw/AREACOPYDIRECT/</ref>,
+          <ref target=AREAFORWARDDIRECT><kw/AREAFORWARDDIRECT/</ref>,
+          <ref target=AREAFREQTO><kw/AREAFREQTO/</ref>,
+          <ref target=AREAREPLYDIRECT><kw/AREAREPLYDIRECT/</ref>,
+          <ref target=FRQEXT><kw/FRQEXT/</ref>,
+          <ref target=FRQNODEMAP><kw/FRQNODEMAP/</ref>,
+          <ref target=FRQOPTIONS><kw/FRQOPTIONS/</ref>,
+          <ref target=FRQWAZOO><kw/FRQWAZOO/</ref>,
+          <ref target=OUTBOUND><kw/OUTBOUND/</ref>
+        </item>
+      </list>
     </div2>
     <div2 id=AREAFREQTO>
       <head>
-        AREAFREQTO &lt;echoid(first netmail area)&gt;
+        AREAFREQTO
       </head>
-      <p>
-        Sets the default area for the filerequest function. You should set
-        this to the netmail area where you normally put the filerequest
-        messages.
-      </p>
-      <p>
-        Note that if <kw>AREAFREQTO</kw> is not specified, it defaults to the
-        first netmail area found.
-      </p>
-      <p>
-        This keyword can be used globally and in a Random System group.
-      </p>
-      <p>
-        Related keywords: <ref target=AREACOPYTO><kw>AREACOPYTO</kw></ref>,
-        <ref target=AREAREPLYTO><kw>AREAREPLYTO</kw></ref>.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREAFREQTO/ <ident/&lt;echoid&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Sets the default area for the filerequest functions.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The default destination area for the filerequest functions.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          First netmail area.
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          This keyword can be used globally and in a
+          <ref target=RANDOMSYSTEM>Random System</ref> group.<lb>
+          The forward function uses the
+          <ref target=AREAREPLYTO><kw/AREAREPLYTO/</ref> area instead.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <!-- FIX ME!!! --><kw/READfilerequest/,
+          <ref target=AREACFMREPLYTO><kw/AREACFMREPLYTO/</ref>,
+          <ref target=AREACOPYTO><kw/AREACOPYTO/</ref>,
+          <ref target=AREAFREQDIRECT><kw/AREAFREQDIRECT/</ref>,
+          <ref target=AREAREPLYTO><kw/AREAREPLYTO/</ref>,
+          <ref target=AREAYOUWROTETO><kw/AREAYOUWROTETO/</ref>,
+          <ref target=FRQEXT><kw/FRQEXT/</ref>,
+          <ref target=FRQNODEMAP><kw/FRQNODEMAP/</ref>,
+          <ref target=FRQOPTIONS><kw/FRQOPTIONS/</ref>,
+          <ref target=FRQWAZOO><kw/FRQWAZOO/</ref>,
+          <ref target=OUTBOUND><kw/OUTBOUND/</ref>
+        </item>
+      </list>
     </div2>
     <div2 id=AREAINCL>
       <head>
-        AREAINCL &lt;echoid mask&gt;
+        AREAINCL
       </head>
-      <p>
-        With this keyword, you can define the echoids of areas which should be
-        reincluded by <name>GoldED+</name>, if they have been excluded with the
-        <kw>AREAEXCL</kw> keyword. <name>DOS</name>/<name>4DOS</name>-style
-        wildcards (* and ?) can be used in the echoid mask.
-      </p>
-      <p>
-        Examples:<eg>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/AREAINCL/ <ident/&lt;echoid mask&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          With this keyword, you can define the echoids of areas which should
+          be reincluded by <name/GoldED+/, if they have been excluded with the
+          <ref target=AREAEXCL><kw/AREAEXCL/</ref> keyword.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The <ident/&lt;echoid mask&gt;/ may contain <name>4DOS</name>-style
+          wildcards (<q/*/ and <q/?/).
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          You can use the <kw/AREAINCL/ keyword to reinclude areas which have
+          been excluded with <ref target=AREAEXCL><kw/AREAEXCL/</ref>.<lb>
+          This keyword must be placed before any of
+          <ref target=AREA><kw/AREA/</ref>,
+          <ref target=AREADEF><kw/AREADEF/</ref>,
+          or <ref target=AREAFILE><kw/AREAFILE/</ref> keywords.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=AREA><kw/AREA/</ref>,
+          <ref target=AREADEF><kw/AREADEF/</ref>,
+          <ref target=AREAFILE><kw/AREAFILE/</ref>,
+          <ref target=AREAEXCL><kw/AREAEXCL/</ref>,
+          <ref target=AREARENAME><kw/AREARENAME/</ref>
+        </item>
+        <label>
+          Example:
+        </label>
+        <item><eg>
 AREAINCL *        ; Includes all areas.
 AREAINCL *INTER*  ; Includes all areas containing INTER anywhere in the
                   ; echoid.
 AREAINCL INT*.*   ; Includes all areas beginning with INT and
                   ; containing a dot anywhere in the echoid.</eg>
-      </p>
-      <p>
-        You can use the <kw>AREAINCL</kw> keyword to reinclude areas which have
-        been excluded with <kw>AREAEXCL</kw>.
-      </p>
-      <p>
-        <hi>NOTE</hi> that this keyword must be placed before any of
-        <kw>AREA</kw>, <kw>AREADEF</kw> or <kw>AREAFILE</kw> keywords.
-      </p>
+        </item>
+      </list>
     </div2>
+
+
+<!-- finished here -->
+
+
     <div2 id=AREAISEMAIL>
       <head>
         AREAISEMAIL &lt;echoid&gt;
@@ -5736,7 +6026,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     Feed (12d) character after each message.
       </p>
     </div2>
-    <div2>
+    <div2 id=FRQEXT>
       <head>
         FRQEXT &lt;.ext&gt;
       </head>
@@ -5757,7 +6047,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     Example: FRQEXT .XYZ
       </p>
     </div2>
-    <div2>
+    <div2 id=FRQNODEMAP>
       <head>
         FRQNODEMAP &lt;to-node&gt; &lt;from-node&gt;
       </head>
@@ -5781,7 +6071,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     2:236/99.
       </p>
     </div2>
-    <div2>
+    <div2 id=FRQOPTIONS>
       <head>
         FRQOPTIONS &lt;options&gt;
       </head>
@@ -5827,7 +6117,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     the .REQ file and NOT also touch/create a .?LO flowfile.
       </p>
     </div2>
-    <div2>
+    <div2 id=FRQWAZOO>
       <head>
         FRQWAZOO &lt;yes/no&gt;
       </head>
@@ -7222,7 +7512,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     selected from the EDITSAVEMENU.
       </p>
     </div2>
-    <div2>
+    <div2 id=OUTBOUNDPATH>
       <head>
         OUTBOUNDPATH &lt;path&gt;
       </head>
@@ -9444,16 +9734,6 @@ keyword is:
       </p>
       <p>
 Available options:
-      </p>
-      <p>
--NoChk
-      </p>
-      <p>
-    Normally <name>GoldED+</name> will check the areafile timestamps when starting
-    up, and recompile the configuration if a file was changed. If this
-    option is given for any AREAFILE, those areafiles will not be
-    checked. This can be useful in cases like TosScan, GEcho, IMail
-    and several others which "touch" their files every time they run.
       </p>
       <p>
 -S&lt;sortspec&gt;
