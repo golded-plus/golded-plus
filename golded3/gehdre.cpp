@@ -49,14 +49,14 @@ public:
   GMsg* msg;
   bool lookup;
 
-  bool handle_other_keys(uint& key);
+  bool handle_other_keys(gkey& key);
   bool validate();
 };
 
 
 //  ------------------------------------------------------------------
 
-bool GMsgHeaderEdit::handle_other_keys(uint& key) {
+bool GMsgHeaderEdit::handle_other_keys(gkey& key) {
 
   switch(key) {
     case Key_F10:

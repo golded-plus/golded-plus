@@ -55,6 +55,10 @@
 #include <gcurses.h>
 #endif
 
+#if defined(__linux__)
+#include <sys/ioctl.h>
+#endif
+
 
 //  ------------------------------------------------------------------
 
@@ -913,6 +917,25 @@ const word numpad_keys[] = {
 
 #endif
 
+#if defined(__linux__)
+bool linux_cui_key(gkey k) {
+  switch(k) {
+    case Key_Dwn:
+    case Key_Up:
+    case Key_Lft:
+    case Key_Rgt:
+    case Key_Home:
+    case Key_Del:
+    case Key_Ins:
+    case Key_PgDn:
+    case Key_PgUp:
+    case Key_End:
+      return true;
+  }
+  return false;
+}
+#endif
+
 //  ------------------------------------------------------------------
 //  Get key stroke
 
@@ -929,7 +952,13 @@ gkey kbxget_raw(int mode) {
   if(mode == 2) {
     // We can't do much but we can at least this :-)
     k = kbxget_raw(1);
-    key = 0;
+    #ifdef __linux__
+    // Under Linux we could use TIOCLINUX fn. 6 to read shift states on console
+    // Of course it is very unportable but should produce good results :-)
+    key = 6;
+    if(ioctl(fileno(stdin), TIOCLINUX, &key) == -1)
+    #endif
+      key = 0;
     switch(k) {
       case Key_C_Brk:
         key = GCTRL;
@@ -976,15 +1005,17 @@ gkey kbxget_raw(int mode) {
       ungetch(key2);    
   }
   // Curses sequence; lookup in nice table above
-  else if(key > KEY_CODE_YES)
+  else if((key >= KEY_MIN) && (key <= KEY_MIN+sizeof(gkbd_curstable)/sizeof(int)))
     k = (gkbd_curstable[key - KEY_MIN]);
   else if(key == '\015')
     k = Key_Ent;
   else if(key == '\011')
     k = Key_Tab;
+  else if(key == '\000')
+    k = Key_Space;
   else
     k = key;
-
+ 
   if(mode == 1)
     ungetch(key);
 
@@ -1204,7 +1235,15 @@ gkey kbxget_raw(int mode) {
   #elif defined(__UNIX__)
 
   if(mode == 2) {
-    return 0;
+    int key;
+    #ifdef __linux__
+    // Under Linux we could use TIOCLINUX fn. 6 to read shift states on console
+    // Of course it is very unportable but should produce good results :-)
+    key = 6;
+    if(ioctl(fileno(stdin), TIOCLINUX, &key) == -1)
+    #endif
+      key = 0;
+    return key;
   }
   else if(mode & 0x01) {
 
@@ -1216,6 +1255,52 @@ gkey kbxget_raw(int mode) {
     k = gkbd_getmappedkey();
   }
 
+  #endif
+
+  #ifdef __linux__
+  if(linux_cui_key(k)) {
+    int shifts = kbxget_raw(2);
+    if(shifts & (LSHIFT | RSHIFT))
+      KCodScn(k) |= 0x80;
+    else if(shifts & GCTRL) {
+      switch(k) {
+        case Key_Ins:
+          k = Key_C_Ins;
+          break;
+        case Key_Del:
+          k = Key_C_Del;
+          break;
+        case Key_Dwn:
+          k = Key_C_Dwn;
+          break;
+        case Key_Up:
+          k = Key_C_Up;
+          break;
+        case Key_Lft:
+          k = Key_C_Lft;
+          break;
+        case Key_Rgt:
+          k = Key_C_Rgt;
+          break;
+        case Key_Home:
+          k = Key_C_Home;
+          break;
+        case Key_PgDn:
+          k = Key_C_PgDn;
+          break;
+        case Key_PgUp:
+          k = Key_C_PgUp;
+          break;
+        case Key_End:
+          k = Key_C_End;
+          break;
+      }
+    }
+  } else if(k == Key_BS) {
+    int shifts = kbxget_raw(2);
+    if(shifts & ALT)
+      key = Key_A_BS;
+  }
   #endif
 
   return k;

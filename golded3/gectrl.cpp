@@ -162,13 +162,19 @@ char* mime_header_encode(char* dest, const char* source, GMsg* msg) {
       if((*ptr < ' ') or (*ptr > '\x7F') or (inmime and strchr(" =?", *ptr))) {
         if(not inmime) {
           if(msg->charset) {
-            strcpy(bp, "=?");
-            bp += 2;
-            strcpy(bp, strlword(msg->charset));
-            strlwr(bp);
-            bp += strlen(bp);
-            strcpy(bp, "?Q?");
-            bp += 3;
+            bp = stpcpy(bp, "=?");
+            if(strneql(msg->charset, "latin-", 6)) {
+              static const char *isono[] = { "15", "1", "2", "3", "4", "9", "10", "13", "14", "15" };
+              int chsno = atoi(msg->charset+6);
+              chsno = chsno > sizeof(isono)/sizeof(const char *) ? 0 : chsno;
+              bp = strxmerge(bp, 12, "iso-8859-", isono[chsno]);
+            }
+            else {
+              char *pbp = bp;
+              bp = stpcpy(bp, strlword(msg->charset));
+              strlwr(pbp);
+            }
+            bp = stpcpy(bp, "?Q?");
           }
           else {
             strcpy(bp, "=?iso-8859-1?Q?");
@@ -176,7 +182,7 @@ char* mime_header_encode(char* dest, const char* source, GMsg* msg) {
           }
           inmime = true;
         }
-        sprintf(bp, "=%Xc", *ptr);
+        sprintf(bp, "=%02X", (*ptr)&0xff);
         bp += 3;
       }
       else

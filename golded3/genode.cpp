@@ -205,7 +205,7 @@ void NodelistBrowser::AfterCursor() {
   Path nlname;
   *nlname = NUL;
   if(NLP->index_name() and NLP->nodelist_name())
-    sprintf(nlname, " %s / %s ", NLP->index_name(), NLP->nodelist_name());
+    sprintf(nlname, " %s / %s ", NLP->index_name(), CleanFilename(NLP->nodelist_name()));
   else if(NLP->index_name())
     sprintf(nlname, " %s ", NLP->index_name());
   if(*nlname)
@@ -993,13 +993,13 @@ void Lookup(GMsg* msg, Addr* addr, char* name, int topline, char* status) {
   }
 
   if(topline >= 0) {
-    dolookup = NO;
+    dolookup = false;
     if(AA->isnet() and CFG->switches.get(lookupnet))
-      dolookup = YES;
+      dolookup = true;
     else if(AA->isecho() and CFG->switches.get(lookupecho))
-      dolookup = YES;
+      dolookup = true;
     else if(AA->islocal() and CFG->switches.get(lookuplocal))
-      dolookup = YES;
+      dolookup = true;
   }
 
   if(dolookup) {

@@ -1090,13 +1090,12 @@ char* MapPath(char* map, bool reverse) {
     strchg(cmap, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
 
   vector< pair<string, string> >::iterator i;
-  for(i = CFG->mappath.begin(); i < CFG->mappath.end(); i++) {
+  for(i = CFG->mappath.begin(); i != CFG->mappath.end(); i++) {
     const char* p = reverse ? i->second.c_str() : i->first.c_str();
     const char* q = reverse ? i->first.c_str() : i->second.c_str();
     if(strnieql(cmap, p, strlen(p))) {
       strxcpy(buf, map, sizeof(Path));
-      strxmerge(map, sizeof(Path), map, q, buf+strlen(p), NULL);
-
+      strxmerge(map, sizeof(Path), q, buf+strlen(p), NULL);
       char sl1, sl2;
       char* ptr;
 
@@ -1105,7 +1104,7 @@ char* MapPath(char* map, bool reverse) {
       ptr = strpbrk(q, "/\\");
       sl2 = ptr ? *ptr : NUL;
 
-      if(sl1 and sl2)
+      if(sl1 and sl2 and (sl1 != sl2))
         strchg(map, sl1, sl2);
 
       break;

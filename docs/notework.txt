@@ -16,6 +16,19 @@ ______________________________________________________________________
 
 - Fixed FREQ feature.
 
+- Fixed addressbook, nodelist browser when in edit header mode.
+
+- Fixed small cosmetic bug in nodelist window regarding to filepath.
+
+- Bit rearranged code that encodes RFC headers for latin-xx codepages.
+  Now GoldED+ automatically generates proper iso-8859-xx charset.
+  Please response if it doesn't work.
+
++ Added dirty hack for Linux console users, so now CUI interface more
+  functional there.
+
+- Fixed broken MAPPATH / MAPDRIVE keywords.
+
 ______________________________________________________________________
 
               Notes for GoldED+ 1.1.4.4, April 25 2000
