@@ -12,6 +12,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed crash on calling Externutil in empty area.
+
 - GoldED+ will now treat all unknown charsets to be equal to
   Xlatimport.
 

@@ -883,7 +883,6 @@ int MsgIsTwit(GMsg* msg, bool& istwitto, bool& istwitsubj) {
 int LoadMessage(GMsg* msg, int margin) {
 
   GFTRK("LoadMessage");
-
   if(AA->LoadMsg(msg, AA->Msgn.CvtReln(AA->lastread()), margin)) {
 
     // Mark message as received, if it is for us
