@@ -1016,7 +1016,7 @@ void ReplyMsg() {
 
   if(CurrArea == OrigArea) {
     const char *destarea = reader_msg->areakludgeid;
-    if ((destarea != NULL) and (*destarea != NUL))
+    if ((destarea == NULL) or (*destarea == NUL))
       destarea = AA->Areareplyto();
 
     if(AA->Areareplydirect() and (destarea != NULL)) {
@@ -1052,7 +1052,7 @@ void QuoteMsg(bool ignore_replyto) {
 
   if(CurrArea == OrigArea) {
     const char *destarea = reader_msg->areakludgeid;
-    if ((destarea != NULL) and (*destarea != NUL))
+    if ((destarea == NULL) or (*destarea == NUL))
       destarea = AA->Areareplyto();
 
     if(AA->Areareplydirect() and (destarea != NULL)) {
@@ -1088,7 +1088,7 @@ void CommentMsg() {
 
   if(CurrArea == OrigArea) {
     const char *destarea = reader_msg->areakludgeid;
-    if ((destarea != NULL) and (*destarea != NUL))
+    if ((destarea == NULL) or (*destarea == NUL))
       destarea = AA->Areareplyto();
 
     if(AA->Areareplydirect() and (destarea != NULL)) {
