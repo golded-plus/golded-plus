@@ -395,41 +395,31 @@ bool guserbase::edit_entry(uint idx) {
 
 bool guserbase::find_entry(char* name, bool lookup) {
 
-  gusrbaseentry ent;
-
   if(not strblank(name)) {
+    string tmpaddr;
+    gusrbaseentry old_entry = entry;
+    uint old_index = index;
+
     refresh_maximum_index();
     usrbase.lseek(sizeof(gusrbaseheader), SEEK_SET);
-    for(uint i=0; i<=maximum_index; i++) {
-      read_entry(i, &ent);
+    for(index=0; index<=maximum_index; index++) {
+      read_entry(index, &entry);
 
-      if(strieql(name, ent.name) or (lookup and strieql(name, ent.macro))) {
-        strcpy(entry.macro, ent.macro);
-        strcpy(entry.name, ent.name);
-        entry.fidoaddr = ent.fidoaddr;
-        strcpy(entry.iaddr, ent.iaddr);
-        entry.prefer_internet = ent.prefer_internet;
-        entry.is_deleted = ent.is_deleted;
-        strcpy(entry.pseudo, ent.pseudo);
-        strcpy(entry.organisation, ent.organisation);
-        strcpy(entry.snail1, ent.snail1);
-        strcpy(entry.snail2, ent.snail2);
-        strcpy(entry.snail3, ent.snail3);
-        strcpy(entry.dataphone, ent.dataphone);
-        strcpy(entry.voicephone, ent.voicephone);
-        strcpy(entry.faxphone, ent.faxphone);
-        entry.firstdate = ent.firstdate;
-        entry.lastdate = ent.lastdate;
-        entry.times = ent.times;
-        strcpy(entry.homepage, ent.homepage);
-        entry.group = ent.group;
-        strcpy(entry.comment1, ent.comment1);
-        strcpy(entry.comment2, ent.comment1);
-        strcpy(entry.comment3, ent.comment1);
-        index = i;
+      if(strieql(name, entry.name))
         return true;
+      else if(lookup) {
+        if(strieql(name, entry.macro) or streql(name, entry.iaddr))
+          return true;
+        else {
+          entry.fidoaddr.make_string(tmpaddr);
+          if (streql(name, tmpaddr.c_str()))
+            return true;
+        }
       }
     }
+
+    index = old_index;
+    entry = old_entry;
   }
 
   return false;

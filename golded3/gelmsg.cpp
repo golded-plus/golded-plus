@@ -59,8 +59,8 @@ int Area::LoadHdr(GMsg* msg, ulong msgno, bool enable_recode) {
   if(retval and enable_recode) {
     // Use default translation by default
     int table = LoadCharset(NULL, NULL, 1);
-    if (table == -1)
-      msg->charsetlevel = LoadCharset(CFG->xlatimport, CFG->xlatlocalset);
+    if((table == -1) or not CFG->ignorecharset)
+      msg->charsetlevel = LoadCharset(AA->Xlatimport(), CFG->xlatlocalset);
     else
       msg->charsetlevel = LoadCharset(CFG->xlatcharset[table].imp, CFG->xlatcharset[table].exp);
 

@@ -86,12 +86,28 @@ static bool __vcurhidden = false;
 
 #ifdef __WIN32__
 extern HANDLE gvid_hout;
+extern OSVERSIONINFO WinVer; // defined in gutlwin.cpp
+extern WCHAR oem2unicode[]; // defined in gutlwin.cpp
+
+//  ------------------------------------------------------------------
+//  Transform character < 32 into printable Unicode equivalent
+
+
+inline WCHAR gvid_tcpr(vchar chr) {
+
+  return oem2unicode[chr];
+}
+
 #endif
 
 
 //  ------------------------------------------------------------------
 
 #if defined(__MSDOS__) or defined(__UNIX__)
+
+#if defined(__MSDOS__)
+extern int __gdvdetected;
+#endif
 
 #ifndef __DJGPP__
 const unsigned short _dos_ds = 0;
@@ -345,11 +361,6 @@ void vputansi(int row, int col, word* buf, int len) {
 
 
 //  ------------------------------------------------------------------
-
-extern int __gdvdetected;
-
-
-//  ------------------------------------------------------------------
 //  Converts an attribute to monochrome equivalent
 
 int mapattr(int attr) {
@@ -494,7 +505,7 @@ static USHORT VioWrtCharStrAtt_(PCCH str, USHORT cb, USHORT row, USHORT col, PBY
 //  ------------------------------------------------------------------
 //  Compute our attributes from DOS attributes
 
-int gvid_attrcalc (int dosattr) {
+int gvid_attrcalc(int dosattr) {
 
   // DOS attrs: XRGBxrgb
   // color pair definition: 00RGBrgb, with last 3 bits negated
@@ -511,7 +522,7 @@ int gvid_attrcalc (int dosattr) {
 //  ------------------------------------------------------------------
 //  Compute DOS attributes from our attributes
 
-int gvid_dosattrcalc (int ourattr) {
+int gvid_dosattrcalc(int ourattr) {
 
   int attr = 0;
   attr = PAIR_NUMBER(ourattr);
@@ -528,18 +539,18 @@ int gvid_dosattrcalc (int ourattr) {
 //  Transform character < 32 into printable equivalent
 
 
-chtype gvid_tcpr (vchar chr) {
+chtype gvid_tcpr(vchar chr) {
 
-chtype gvid_cpr[] = {
-  (chtype)' ', (chtype)'@', (chtype)'@', (chtype)'x',
-  (chtype) ACS_DIAMOND, (chtype)'x', (chtype)'x', ACS_BULLET,
-  ACS_BULLET, ACS_BULLET, ACS_BULLET, (chtype)'x',
-  (chtype)'x', (chtype)'x', (chtype)'x', ACS_LANTERN,
-  ACS_LARROW, (chtype) ACS_RARROW, (chtype)'x', (chtype)'!',
-  (chtype)'x', (chtype)'x', ACS_S1, (chtype)'x',
-  ACS_UARROW, ACS_DARROW, ACS_LARROW, (chtype)ACS_RARROW,
-  (chtype)'x', (chtype)'x', ACS_UARROW, ACS_DARROW
-};
+  const chtype gvid_cpr[] = {
+    (chtype)' ', (chtype)'@', (chtype)'@', (chtype)'x',
+    (chtype) ACS_DIAMOND, (chtype)'x', (chtype)'x', ACS_BULLET,
+    ACS_BULLET, ACS_BULLET, ACS_BULLET, (chtype)'x',
+    (chtype)'x', (chtype)'x', (chtype)'x', ACS_LANTERN,
+    (chtype)ACS_RARROW, ACS_LARROW, (chtype)'x', (chtype)'!',
+    (chtype)'x', (chtype)'x', ACS_S1, (chtype)'x',
+    ACS_UARROW, ACS_DARROW, ACS_LARROW, (chtype)ACS_RARROW,
+    (chtype)'x', (chtype)'x', ACS_UARROW, ACS_DARROW
+  };
 
   chtype ch = chr & A_CHARTEXT;
   chtype at = chr & (~A_CHARTEXT);
@@ -587,37 +598,39 @@ void vputw(int row, int col, vatch chat) {
     cpu.dl((byte)col);
     cpu.genint(0x10);
     cpu.ah(9);
-    cpu.al((byte)(chat&0xFF));
+    cpu.al(vgchar(chat));
     cpu.bh(0);
-    cpu.bl((byte)(chat>>8));
+    cpu.bl(vgattr(chat));
     cpu.cx(1);
     cpu.genint(0x10);
   }
 
   #elif defined(__OS2__)
 
-  BYTE tmp[2];
-  tmp[0] = (BYTE)(chat & 0xFF);
-  tmp[1] = (BYTE)(chat >> 8);
-  VioWrtNCell(tmp, 1, (USHORT)row, (USHORT)col, 0);
+  VioWrtNCell(&chat, 1, (USHORT)row, (USHORT)col, 0);
 
   #elif defined(__WIN32__)
 
-  COORD coord;
-  DWORD x;
-  word atr = (word) (chat >> 8);
+  const COORD coord = {0, 0};
+  const COORD size = {1, 1};
+  SMALL_RECT rect;
 
-  coord.X = (SHORT) col;
-  coord.Y = (SHORT) row;
-  WriteConsoleOutputAttribute(gvid_hout,           &atr, 1, coord, &x);
-  WriteConsoleOutputCharacter(gvid_hout, (char* ) &chat, 1, coord, &x);
+  rect.Top = row;
+  rect.Left = col;
+  rect.Bottom = row+size.Y-1;
+  rect.Right = col+size.X-1;
+  if(WinVer.dwPlatformId == VER_PLATFORM_WIN32_NT) {
+    chat.Char.UnicodeChar = gvid_tcpr(vgchar(chat));
+    WriteConsoleOutputW(gvid_hout, &chat, size, coord, &rect);
+  }
+  else
+    WriteConsoleOutputA(gvid_hout, &chat, size, coord, &rect);
 
   #elif defined(__UNIX__)
 
-  char chr = (char)(chat & 0xFF);
-  int atr = chat >> 8;
+  char chr = vgchar(chat);
+  int atr = vgattr(chat);
   char* color = gvid_newattr(atr);
-  chat = (word)(chr | (atr << 8));
 
   gvid_cvtstr(&chat, 1);
   _vputw(row, col, chat);
@@ -669,23 +682,22 @@ void vputws(int row, int col, vatch* buf, uint len) {
 
   #elif defined(__WIN32__)
 
-  COORD coord;
-  DWORD x;
+  const COORD coord = {0, 0};
+  COORD size = {len, 1};
+  SMALL_RECT rect;
 
-  coord.X = (SHORT) col;
-  coord.Y = (SHORT) row;
-
-  char* p = (char *) buf;
-  word* q = gvid->bufwrd;
-  char* c = gvid->bufchr;
-
-  for(int i = 0; i < len; i++) {
-    *c++ =  *p++;
-    *q++ =  *p++;
+  rect.Top = row;
+  rect.Left = col;
+  rect.Bottom = row+size.Y-1;
+  rect.Right = col+size.X-1;
+  if(WinVer.dwPlatformId == VER_PLATFORM_WIN32_NT) {
+    for(int i = 0; i < len; i++) {
+      buf[i].Char.UnicodeChar = gvid_tcpr(vgchar(buf[i]));
+    }
+    WriteConsoleOutputW(gvid_hout, buf, size, coord, &rect);
   }
-
-  WriteConsoleOutputAttribute(gvid_hout, gvid->bufwrd, len, coord, &x);
-  WriteConsoleOutputCharacter(gvid_hout, gvid->bufchr, len, coord, &x);
+  else
+    WriteConsoleOutputA(gvid_hout, buf, size, coord, &rect);
 
   #elif defined(__UNIX__)
 
@@ -704,13 +716,13 @@ void vputc(int row, int col, int atr, vchar chr) {
 
   #if defined(__USE_NCURSES__)
 
-  mvaddch(row, col, gvid_tcpr(chr) | gvid_attrcalc(atr));
+  mvaddch(row, col, vcatch(gvid_tcpr(chr), atr));
   refresh();
 
   #elif defined(__MSDOS__)
 
   if(gvid->isdma()) {
-    _vputw(row, col, (word)((atr << 8) | chr));
+    _vputw(row, col, vcatch(chr, atr));
   }
   else if(gvid->isbios() or gvid->iscga()) {
     i86 cpu;
@@ -727,28 +739,15 @@ void vputc(int row, int col, int atr, vchar chr) {
     cpu.genint(0x10);
   }
 
-  #elif defined(__OS2__)
+  #elif defined(__OS2__) or defined(__WIN32__)
 
-  BYTE tmp[2];
-  tmp[0] = chr;
-  tmp[1] = (BYTE)atr;
-  VioWrtNCell(tmp, 1, (USHORT)row, (USHORT)col, 0);
-
-  #elif defined(__WIN32__)
-
-  COORD coord;
-  DWORD x;
-
-  coord.X = (SHORT) col;
-  coord.Y = (SHORT) row;
-  WriteConsoleOutputAttribute(gvid_hout, (word *) &atr, 1, coord, &x);
-  WriteConsoleOutputCharacter(gvid_hout, (char *) &chr, 1, coord, &x);
+  vputw(row, col, vcatch(chr, atr));
 
   #elif defined(__UNIX__)
 
   char* color = gvid_newattr(atr);
   gvid_cvtstr(&chr, 1);
-  _vputw(row, col, (word)((atr << 8) | chr));
+  _vputw(row, col, vcatch(chr, atr));
 
   gvid_printf("\033[%u;%uH%s%c", row+1, col+1, color, chr);
 
@@ -770,11 +769,11 @@ void vputvs(int row, int col, int atr, const vchar* str) {
     addch(gvid_tcpr(str[counter]) | attr);
   refresh();
 
-#else
+  #else
 
   vputs(row, col, atr, str);
 
-#endif
+  #endif
 }
 
 
@@ -799,7 +798,7 @@ void vputs(int row, int col, int atr, const char* str) {
     gdma p = gdmaptr(col, row);
     _farsetsel(_dos_ds);
     while(*str) {
-      _farnspokew(p, (atr << 8) | *str++);
+      _farnspokew(p, vcatch(*str++, atr));
       p += ATTRSIZE;
     }
   }
@@ -827,15 +826,12 @@ void vputs(int row, int col, int atr, const char* str) {
 
   #elif defined(__WIN32__)
 
-  COORD coord;
-  DWORD x;
-  int len = strlen(str);
+  int i;
 
-  coord.X = (SHORT) col;
-  coord.Y = (SHORT) row;
-
-  FillConsoleOutputAttribute(gvid_hout, (word) atr, len, coord, &x);
-  WriteConsoleOutputCharacter(gvid_hout, str, len, coord, &x);
+  for(i = 0; *str; i++)
+    gvid->bufwrd[i] = vcatch(*str++, atr);
+  if(i)
+    vputws(row, col, gvid->bufwrd, i);
 
   #elif defined(__UNIX__)
 
@@ -846,7 +842,7 @@ void vputs(int row, int col, int atr, const char* str) {
   gdma p = gdmaptr(col, row);
   _farsetsel(_dos_ds);
   while(*str) {
-    _farnspokew(p, (atr << 8) | *str++);
+    _farnspokew(p, vcatch(*str++, atr));
     p += ATTRSIZE;
   }
 
@@ -925,29 +921,20 @@ void vputns(int row, int col, int atr, const char* str, uint width) {
   VioWrtCharStrAtt((PCCH)str, (USHORT)minimum_of_two(len,width), (USHORT)row, (USHORT)col, (PBYTE)&atr, 0);
 
   if(width > len) {
-    BYTE tmp[2];
-    tmp[0] = fillchar;
-    tmp[1] = (BYTE)atr;
-    VioWrtNCell(tmp, (USHORT)(width-len), (USHORT)row, (USHORT)(col+len), 0);
+    vatch filler = vcatch(fillchar, atr);
+    VioWrtNCell((CHAR *)&filler, (USHORT)(width-len), (USHORT)row, (USHORT)(col+len), 0);
   }
 
   #elif defined(__WIN32__)
 
-  COORD coord;
-  DWORD x;
-  int len = minimum_of_two(strlen(str), width);
+  int i;
 
-  coord.X = (SHORT) col;
-  coord.Y = (SHORT) row;
-  FillConsoleOutputAttribute(gvid_hout, (word) atr, width, coord, &x);
-  WriteConsoleOutputCharacter(gvid_hout, str, len, coord, &x);
-
-  if(width > len) {
-    coord.X += (SHORT) len;
-    len = width - len;
-
-    FillConsoleOutputCharacter(gvid_hout, fillchar, len, coord, &x);
-  }
+  for(i = 0; (i < width) and *str; i++)
+    gvid->bufwrd[i] = vcatch(*str++, atr);
+  vatch filler = vcatch(fillchar, atr);
+  for(; i < width; i++)
+    gvid->bufwrd[i] = filler;
+  vputws(row, col, gvid->bufwrd, width);
 
   #elif defined(__UNIX__)
 
@@ -985,7 +972,7 @@ void vputns(int row, int col, int atr, const char* str, uint width) {
 void _vputx(int row, int col, int atr, char chr, uint len) {
 
   gdma p = gdmaptr(col, row);
-  word tmp = (word)((atr << 8) | chr);
+  word tmp = vcatch(chr, atr);
   _farsetsel(_dos_ds);
   for(uint n=0; n<len; n++) {
     _farnspokew(p, tmp);
@@ -1002,8 +989,7 @@ void vputx(int row, int col, int atr, vchar chr, uint len) {
 
   #if defined(__USE_NCURSES__)
 
-  int attr = gvid_attrcalc(atr);
-  mvhline(row, col, gvid_tcpr(chr) | attr, len);
+  mvhline(row, col, vcatch(gvid_tcpr(chr), atr), len);
   refresh();
   
   #elif defined(__MSDOS__)
@@ -1028,19 +1014,15 @@ void vputx(int row, int col, int atr, vchar chr, uint len) {
 
   #elif defined(__OS2__)
 
-  BYTE tmp[2];
-  tmp[0] = chr;
-  tmp[1] = (BYTE)atr;
-  VioWrtNCell(tmp, (USHORT)len, (USHORT)row, (USHORT)col, 0);
+  vatch filler = vcatch(chr, atr);
+  VioWrtNCell((CHAR *)&filler, (USHORT)len, (USHORT)row, (USHORT)col, 0);
 
   #elif defined(__WIN32__)
 
-  COORD c;
-  c.X = (SHORT)col;
-  c.Y = (SHORT)row;
-  DWORD wr;
-  FillConsoleOutputCharacter(gvid_hout,       chr, len, c, &wr);
-  FillConsoleOutputAttribute(gvid_hout, (WORD)atr, len, c, &wr);
+  vatch filler = vcatch(chr, atr);
+  for(int i = 0; i < len; i++)
+    gvid->bufwrd[i] = filler;
+  vputws(row, col, gvid->bufwrd, len);
 
   #elif defined(__UNIX__)
 
@@ -1063,7 +1045,7 @@ void vputx(int row, int col, int atr, vchar chr, uint len) {
 inline void _vputy(int row, int col, int atr, char chr, uint len) {
 
   gdma p = gdmaptr(col, row);
-  word tmp = (word)((atr<<8) | chr);
+  word tmp = vcatch(chr, atr);
   _farsetsel(_dos_ds);
   for(uint n=0; n<len; n++) {
     _farnspokew(p, tmp);
@@ -1080,8 +1062,7 @@ void vputy(int row, int col, int atr, vchar chr, uint len) {
 
   #if defined(__USE_NCURSES__)
 
-  int attr = gvid_attrcalc(atr);
-  mvvline(row, col, gvid_tcpr(chr) | attr, len);
+  mvvline(row, col, vcatch(gvid_tcpr(chr), atr), len);
   refresh();
 
   #elif defined(__MSDOS__)
@@ -1108,24 +1089,15 @@ void vputy(int row, int col, int atr, vchar chr, uint len) {
 
   #elif defined(__OS2__)
 
-  BYTE tmp[2];
-  tmp[0] = chr;
-  tmp[1] = (BYTE)atr;
+  vatch filler = vcatch(chr, atr);
   for(int n=0; n<len; n++)
-    VioWrtNCell(tmp, 1, (USHORT)row++, (USHORT)col, 0);
+    VioWrtNCell((CHAR *)&filler, 1, (USHORT)row++, (USHORT)col, 0);
 
   #elif defined(__WIN32__)
 
-  COORD coord;
-  DWORD x;
-
-  coord.X = (SHORT) col;
-
-  for(int i=0; i < len; i++) {
-    coord.Y = (SHORT) row++;
-    WriteConsoleOutputAttribute(gvid_hout, (word *) &atr, 1, coord, &x);
-    WriteConsoleOutputCharacter(gvid_hout, (char *) &chr, 1, coord, &x);
-  }
+  vatch filler = vcatch(chr, atr);
+  for(int i=0; i < len; i++)
+    vputw(row++, col, filler);
 
   #elif defined(__UNIX__)
 
@@ -1197,31 +1169,27 @@ vatch vgetw(int row, int col) {
 
   #elif defined(__OS2__)
 
-  word chat;
-  USHORT _row=(USHORT)row, _col=(USHORT)col, len=sizeof(chat);
+  vatch chat;
+  USHORT len=sizeof(chat);
 
-  #if defined(__EMX__)
-  VioReadCellStr((PCH)&chat, &len, _row, _col, 0);
-  #else
-  VioReadCellStr((CHAR*)&chat, &len, _row, _col, 0);
-  #endif
+  VioReadCellStr((CHAR *)&chat, &len, (USHORT)row, (USHORT)col, 0);
 
   return chat;
 
   #elif defined(__WIN32__)
 
-  COORD coord;
-  DWORD x;
-  word atr;
-  char chr;
+  vatch chat;
+  const COORD coord = {0, 0};
+  const COORD size = {1, 1};
+  SMALL_RECT rect;
 
-  coord.X = (SHORT) col;
-  coord.Y = (SHORT) row;
+  rect.Top = row;
+  rect.Left = col;
+  rect.Bottom = row+size.Y-1;
+  rect.Right = col+size.X-1;
+  ReadConsoleOutput(gvid_hout, &chat, size, coord, &rect);
 
-  ReadConsoleOutputAttribute(gvid_hout, &atr, 1, coord, &x);
-  ReadConsoleOutputCharacter(gvid_hout, &chr, 1, coord, &x);
-
-  return (word)((atr << 8) | chr);
+  return chat;
 
   #elif defined(__UNIX__)
 
@@ -1234,76 +1202,12 @@ vatch vgetw(int row, int col) {
 //  ------------------------------------------------------------------
 //  Get character and attribute at cursor position
 
-#if (defined(__MSDOS__) or defined(__UNIX__)) and not defined(__USE_NCURSES__)
-inline void _vgetc(int row, int col, int* atr, char* chr) {
-
-  word w = _vgetw(row, col);
-  *chr = (char)(w & 0xFF);
-  *atr = (int)(w >> 8);
-}
-#endif
-
-
-//  ------------------------------------------------------------------
-//  Get character and attribute at cursor position
-
 void vgetc(int row, int col, int* atr, vchar* chr) {
 
-  #if defined(__USE_NCURSES__)
+  vatch tmp = vgetw(row, col);
 
-  chtype charead = mvinch(row, col);
-  *chr = (charead & A_CHARTEXT);
-  *atr = gvid_dosattrcalc(charead & (A_ATTRIBUTES | A_COLOR));
-  
-  #elif defined(__MSDOS__)
-
-  if(gvid->isdma()) {
-    _vgetc(row, col, atr, chr);
-  }
-  else if(gvid->isbios() or gvid->iscga()) {
-    i86 cpu;
-    cpu.ah(2);
-    cpu.bh(0);
-    cpu.dh((byte)row);
-    cpu.dl((byte)col);
-    cpu.genint(0x10);
-    cpu.ah(8);
-    cpu.bh(0);
-    cpu.genint(0x10);
-    *chr = cpu.al();
-    *atr = cpu.ah();
-  }
-
-  #elif defined(__OS2__)
-
-  CHAR tmp[2];
-  USHORT _row=(USHORT)row, _col=(USHORT)col, len=sizeof(tmp);
-
-  #if defined(__EMX__)
-  VioReadCellStr((PCH)tmp, &len, _row, _col, 0);
-  #else
-  VioReadCellStr(tmp, &len, _row, _col, 0);
-  #endif
-
-  *chr = tmp[0];
-  *atr = tmp[1];
-
-  #elif defined(__WIN32__)
-
-  COORD coord;
-  DWORD x;
-
-  coord.X = (SHORT) col;
-  coord.Y = (SHORT) row;
-
-  ReadConsoleOutputAttribute(gvid_hout, (word* ) atr, 1, coord, &x);
-  ReadConsoleOutputCharacter(gvid_hout, (char* ) chr, 1, coord, &x);
-
-  #elif defined(__UNIX__)
-
-  _vgetc(row, col, atr, chr);
-
-  #endif
+  *chr = vgchar(tmp);
+  *atr = vgattr(tmp);
 }
 
 
@@ -1357,12 +1261,14 @@ void vscroll(int srow, int scol, int erow, int ecol, int atr, int lines) {
 
   #if defined(__USE_NCURSES__)
 
+  vatch filler = vcatch(' ', atr);
+
   // Currently implemented with vsave/vrestore
   // Does anyone know a better solution?
 
   if(lines >= 0) {
     if(lines <= 1 + erow - srow) {
-      vatch *buf = vsave(srow + lines, scol, erow, ecol);
+      vsavebuf *buf = vsave(srow + lines, scol, erow, ecol);
       vrestore(buf, srow, scol, erow - lines, ecol);
       throw_xfree(buf);
     }
@@ -1370,13 +1276,13 @@ void vscroll(int srow, int scol, int erow, int ecol, int atr, int lines) {
       lines = 1 + erow - srow;
       
     for(int counter = 0; counter < lines; counter++)
-      mvhline(1 + erow + counter - lines, scol, ' ' | gvid_attrcalc(atr), 1 + ecol - scol);
+      mvhline(1 + erow + counter - lines, scol, filler, 1 + ecol - scol);
     refresh();
   }
   else {
     lines*=-1;
     if(lines <= 1 + erow - srow) {
-      vatch *buf = vsave(srow, scol, erow - lines, ecol);
+      vsavebuf *buf = vsave(srow, scol, erow - lines, ecol);
       vrestore(buf, srow + lines, scol, erow, ecol);
       throw_xfree(buf);
     }
@@ -1384,7 +1290,7 @@ void vscroll(int srow, int scol, int erow, int ecol, int atr, int lines) {
       lines = 1 + erow - srow;
       
     for(int counter = 0; counter < lines; counter++)
-      mvhline(srow + counter, scol, ' ' | gvid_attrcalc(atr), 1 + ecol - scol);
+      mvhline(srow + counter, scol, filler, 1 + ecol - scol);
     refresh();
   }
 
@@ -1407,32 +1313,25 @@ void vscroll(int srow, int scol, int erow, int ecol, int atr, int lines) {
 
   #elif defined(__OS2__)
 
-  BYTE tmp[2];
-  tmp[0] = ' ';
-  tmp[1] = (BYTE)atr;
+  vatch filler = vcatch(' ', atr);
+
   if(lines > 0)
-    VioScrollUp((USHORT)srow, (USHORT)scol, (USHORT)erow, (USHORT)ecol, (USHORT)lines, tmp, 0);
+    VioScrollUp((USHORT)srow, (USHORT)scol, (USHORT)erow, (USHORT)ecol, (USHORT)lines, (CHAR *)&filler, 0);
   else
-    VioScrollDn((USHORT)srow, (USHORT)scol, (USHORT)erow, (USHORT)ecol, (USHORT)-lines, tmp, 0);
+    VioScrollDn((USHORT)srow, (USHORT)scol, (USHORT)erow, (USHORT)ecol, (USHORT)-lines, (CHAR *)&filler, 0);
 
   #elif defined(__WIN32__)
 
-  CHAR_INFO fill;
-  fill.Char.UnicodeChar = 0;
-  fill.Char.AsciiChar = ' ';
-  fill.Attributes = (WORD)atr;
-
   SMALL_RECT r;
+  COORD c = {scol, srow - lines};
+  vatch filler = vcatch(' ', atr);
+
   r.Left   = (SHORT)scol;
   r.Top    = (SHORT)srow;
   r.Right  = (SHORT)ecol;
   r.Bottom = (SHORT)erow;
 
-  COORD c;
-  c.X = (SHORT)scol;
-  c.Y = (SHORT)(srow - lines);
-
-  ScrollConsoleScreenBuffer(gvid_hout, &r, &r, c, &fill);
+  ScrollConsoleScreenBuffer(gvid_hout, &r, &r, c, &filler);
 
   #elif defined(__UNIX__)
 
@@ -1528,15 +1427,13 @@ void vposset(int row, int col) {
 
   #elif defined(__WIN32__)
 
-    // No need to set the cursor position if its not visible
-    // Strangely, this is a major speedup to screen-output
+  // No need to set the cursor position if its not visible
+  // Strangely, this is a major speedup to screen-output
 
-    if(__vcurhidden)
-      return;
+  if(__vcurhidden)
+    return;
 
-  COORD c;
-  c.X = (SHORT)col;
-  c.Y = (SHORT)row;
+  COORD c = {col, row};
   SetConsoleCursorPosition(gvid_hout, c);
 
   #elif defined(__UNIX__)
@@ -1552,11 +1449,7 @@ void vposset(int row, int col) {
 
 void vclrscr() {
 
-  #if defined(__USE_NCURSES__)
-  vclrscr((byte)gvid_dosattrcalc(vgetw(gvid->currow, gvid->curcol)));
-  #else
-  vclrscr((byte)(vgetw(gvid->currow, gvid->curcol) >> 8));
-  #endif
+  vclrscr(vgattr(vgetw(gvid->currow, gvid->curcol)));
 }
 
 
@@ -1582,8 +1475,9 @@ void vclrscr(int atr) {
   #if defined(__USE_NCURSES__)
 
   clearok(stdscr, TRUE);
+  vatch filler = vcatch(' ', atr);
   for(int row = 0; row < LINES; row++)
-    mvhline(row, 0, ' ' | gvid_attrcalc(atr), COLS);
+    mvhline(row, 0, filler, COLS);
   move(0, 0);
   refresh();
   
@@ -1604,16 +1498,14 @@ void vclrscr(int atr) {
 
   #elif defined(__OS2__)
 
-  BYTE tmp[2];
-  tmp[0] = ' ';
-  tmp[1] = (BYTE)atr;
-  VioScrollUp(0, 0, 0xFFFF, 0xFFFF, 0xFFFF, tmp, 0);
+  vatch filler = vcatch(' ', atr);
+  VioScrollUp(0, 0, 0xFFFF, 0xFFFF, 0xFFFF, (CHAR *)&filler, 0);
 
   #elif defined(__WIN32__)
 
-  COORD c;
-  c.X = c.Y = 0;
+  COORD c = {0, 0};
   DWORD wr, len = gvid->numrows * gvid->numcols;
+  // Filling with space seems to work for both Unicode and regular functions
   FillConsoleOutputCharacter(gvid_hout,       ' ', len, c, &wr);
   FillConsoleOutputAttribute(gvid_hout, (WORD)atr, len, c, &wr);
 
@@ -1649,41 +1541,31 @@ static void _vsave(word* buf, int len1, int srow, int scol, int erow) {
 //  ------------------------------------------------------------------
 //  Saves the current screen and returns pointer to buffer
 
-vatch* vsave(int __srow, int __scol, int __erow, int __ecol) {
+vsavebuf* vsave(int srow, int scol, int erow, int ecol) {
 
-  if(__srow == -1)  __srow = 0;
-  if(__scol == -1)  __scol = 0;
-  if(__erow == -1)  __erow = gvid->numrows-1;
-  if(__ecol == -1)  __ecol = gvid->numcols-1;
+  if(srow == -1)  srow = 0;
+  if(scol == -1)  scol = 0;
+  if(erow == -1)  erow = gvid->numrows-1;
+  if(ecol == -1)  ecol = gvid->numcols-1;
 
-  vatch* sbuf = (vatch*)throw_xcalloc((((__erow-__srow+1)*(__ecol-__scol+1))+4), sizeof(vatch));
+  vsavebuf* sbuf = (vsavebuf*)throw_xmalloc(sizeof(vsavebuf) + (erow - srow + 1) * (ecol - scol + 1) * sizeof(vatch));
 
   if(sbuf) {
 
-    vatch* buf = sbuf;
+    vatch* buf = sbuf->data;
 
-    buf[0] = (vatch)__srow;
-    buf[1] = (vatch)__scol;
-    buf[2] = (vatch)__erow;
-    buf[3] = (vatch)__ecol;
+    sbuf->top = srow;
+    sbuf->left = scol;
+    sbuf->bottom = erow;
+    sbuf->right = ecol;
 
     #if defined(__USE_NCURSES__)
-    
-    int srow = *buf++;
-    int scol = *buf++;
-    int erow = *buf++;
-    int ecol = *buf++;
     
     for(int row=srow; row<=erow; row++)
       for(int col=scol; col<=ecol; col++)
         *buf++ = mvinch(row, col);
 
     #elif defined(__MSDOS__)
-
-    int srow = *buf++;
-    int scol = *buf++;
-    int erow = *buf++;
-    int ecol = *buf++;
 
     int len1 = ecol-scol+1;
 
@@ -1711,12 +1593,7 @@ vatch* vsave(int __srow, int __scol, int __erow, int __ecol) {
 
     #elif defined(__OS2__)
 
-    USHORT srow = *buf++;
-    USHORT scol = *buf++;
-    USHORT erow = *buf++;
-    USHORT ecol = *buf++;
-
-    USHORT len1 = (USHORT)(ecol-scol+1);
+    int len1 = (int)(ecol-scol+1);
 
     #if defined(__BORLANDC__)
     PCHAR16 ptr = (PCHAR16)buf;
@@ -1725,45 +1602,29 @@ vatch* vsave(int __srow, int __scol, int __erow, int __ecol) {
     #endif
 
     USHORT len2 = (USHORT)(len1*sizeof(word));
-    for(USHORT nrow=srow; nrow<=erow; nrow++) {
+    for(int nrow=srow; nrow<=erow; nrow++) {
       VioReadCellStr(ptr, &len2, nrow, scol, 0);
       ptr += len2;
     }
 
     #elif defined(__WIN32__)
 
-    COORD coord;
-    DWORD x;
-    SHORT srow = *buf++;
-    SHORT scol = *buf++;
-    SHORT erow = *buf++;
-    SHORT ecol = *buf++;
+    const COORD coord = {0, 0};
+    COORD size = {ecol-scol+1, erow-srow+1};
+    SMALL_RECT r;
 
-    coord.X = scol;
+    // Set the source rectangle.
+    r.Top = srow;
+    r.Left = scol;
+    r.Bottom = erow;
+    r.Right = ecol;
 
-    SHORT len1 = (SHORT)(ecol-scol+1);
-    char* p = (char *) buf;
-
-    for(SHORT nrow=srow; nrow<=erow; nrow++) {
-      coord.Y = nrow;
-      ReadConsoleOutputAttribute(gvid_hout, gvid->bufwrd, len1, coord, &x);
-      ReadConsoleOutputCharacter(gvid_hout, gvid->bufchr, len1, coord, &x);
-
-      word* q = gvid->bufwrd;
-      char* c = gvid->bufchr;
-
-      for(int i = 0; i < len1; i++) {
-        *p++ =  *c++;
-        *p++ =  (byte) *q++;
-      }
-    }
+    if(WinVer.dwPlatformId == VER_PLATFORM_WIN32_NT) 
+      ReadConsoleOutputW(gvid_hout, buf, size, coord, &r);
+    else
+      ReadConsoleOutputA(gvid_hout, buf, size, coord, &r);
 
     #elif defined(__UNIX__)
-
-    int srow = *buf++;
-    int scol = *buf++;
-    int erow = *buf++;
-    int ecol = *buf++;
 
     int len1 = ecol-scol+1;
 
@@ -1796,32 +1657,29 @@ static void _vredraw(word* buf, int len1, int srow, int scol, int erow) {
 //  ------------------------------------------------------------------
 //  Redraws a previously saved screen
 
-void vredraw(vatch* buf, int __srow, int __scol, int __erow, int __ecol) {
+void vrestore(vsavebuf* sbuf, int srow, int scol, int erow, int ecol) {
 
-  if(__srow != -1)  buf[0] = (vatch)__srow;
-  if(__scol != -1)  buf[1] = (vatch)__scol;
-  if(__erow != -1)  buf[2] = (vatch)__erow;
-  if(__ecol != -1)  buf[3] = (vatch)__ecol;
+  if(srow != -1)  sbuf->top = srow;
+  if(scol != -1)  sbuf->left = scol;
+  if(erow != -1)  sbuf->bottom = erow;
+  if(ecol != -1)  sbuf->right = ecol;
 
+  srow = sbuf->top;
+  scol = sbuf->left;
+  erow = sbuf->bottom;
+  ecol = sbuf->right;
+
+  vatch *buf = sbuf->data;
+  
   #if defined(__USE_NCURSES__)
   
-  int srow = *buf++;
-  int scol = *buf++;
-  int erow = *buf++;
-  int ecol = *buf++;
-  
-    for(int row=srow; row<=erow; row++)
-      for(int col=scol; col<=ecol; col++)
-        mvaddch(row, col, *buf++);
+  for(int row=srow; row<=erow; row++)
+    for(int col=scol; col<=ecol; col++)
+      mvaddch(row, col, *buf++);
 
-    refresh();
+  refresh();
 
   #elif defined(__MSDOS__)
-
-  int srow = *buf++;
-  int scol = *buf++;
-  int erow = *buf++;
-  int ecol = *buf++;
 
   int len1 = ecol-scol+1;
 
@@ -1850,11 +1708,6 @@ void vredraw(vatch* buf, int __srow, int __scol, int __erow, int __ecol) {
 
   #elif defined(__OS2__)
 
-  USHORT srow = *buf++;
-  USHORT scol = *buf++;
-  USHORT erow = *buf++;
-  USHORT ecol = *buf++;
-
   USHORT len1 = (USHORT)(ecol-scol+1);
   USHORT len2 = (USHORT)(len1*sizeof(word));
 
@@ -1871,30 +1724,28 @@ void vredraw(vatch* buf, int __srow, int __scol, int __erow, int __ecol) {
 
   #elif defined(__WIN32__)
 
-  SHORT srow = *buf++;
-  SHORT scol = *buf++;
-  SHORT erow = *buf++;
-  SHORT ecol = *buf++;
+  const COORD coord = {0, 0};
+  COORD size = {ecol-scol+1, erow-srow+1};
+  SMALL_RECT r;
 
-  SHORT len1 = (SHORT)(ecol-scol+1);
+  // Set the source rectangle.
+  r.Top = srow;
+  r.Left = scol;
+  r.Bottom = erow;
+  r.Right = ecol;
 
-  for(SHORT nrow=srow; nrow<=erow; nrow++) {
-    vputws(nrow, scol, buf, len1);
-    buf += len1;
-  }
+  if(WinVer.dwPlatformId == VER_PLATFORM_WIN32_NT) 
+    WriteConsoleOutputW(gvid_hout, buf, size, coord, &r);
+  else
+    WriteConsoleOutputA(gvid_hout, buf, size, coord, &r);
 
   #elif defined(__UNIX__)
-
-  int srow = *buf++;
-  int scol = *buf++;
-  int erow = *buf++;
-  int ecol = *buf++;
 
   int len1 = ecol-scol+1;
 
   _vredraw(buf, len1, srow, scol, erow);
 
-  int atr = *buf >> 8;
+  int atr = vgattr(*buf);
   char* color = gvid_newattr(atr);
   gvid_printf("%s", color);
 
@@ -1904,15 +1755,6 @@ void vredraw(vatch* buf, int __srow, int __scol, int __erow, int __ecol) {
   }
 
   #endif
-}
-
-
-//  ------------------------------------------------------------------
-//  Restores a previously saved screen and frees buffer
-
-void vrestore(vatch* buf, int srow, int scol, int erow, int ecol) {
-
-  vredraw(buf, srow, scol, erow, ecol);
 }
 
 
@@ -2279,71 +2121,6 @@ void vfill(int srow, int scol, int erow, int ecol, vchar chr, int atr) {
   int width = ecol-scol+1;
   for(int crow=srow; crow<=erow; crow++)
     vputx(crow, scol, atr, chr, width);
-}
-
-
-//  ------------------------------------------------------------------
-//  Gets the character part of a character-attribute group
-
-vchar vgchar (vatch chat) {
-
-  #if defined(__USE_NCURSES__)
-    return chat & (A_CHARTEXT | A_ALTCHARSET);
-  #else
-    return chat & 0xff;
-  #endif
-}
-
-
-//  ------------------------------------------------------------------
-//  Gets the attribute part of a character-attribute group
-
-int vgattr (vatch chat) {
-
-  #if defined(__USE_NCURSES__)
-    return gvid_dosattrcalc(chat);
-  #else
-    return (chat >> 8) & 0xff;
-  #endif
-}
-
-
-//  ------------------------------------------------------------------
-//  Sets the given character in a character-attribute group
-
-vatch vschar (vatch chat, vchar chr) {
-
-  #if defined(__USE_NCURSES__)
-    return (chr&(A_CHARTEXT|A_ALTCHARSET))|(chat&~(A_CHARTEXT|A_ALTCHARSET));
-  #else
-    return (chat & 0xff00) | chr;
-  #endif
-}
-
-
-//  ------------------------------------------------------------------
-//  Sets the given attribute in a character-attribute group
-
-vatch vsattr (vatch chat, int atr) {
-
-  #if defined(__USE_NCURSES__)
-    return (chat & (A_CHARTEXT | A_ALTCHARSET)) | gvid_attrcalc(atr);
-  #else
-    return (chat & 0xff) | (atr << 8);
-  #endif
-}
-
-
-//  ------------------------------------------------------------------
-//  Compose character-attribute group from character and attribute
-
-vatch vcatch (vchar chr, int atr) {
-
-  #if defined(__USE_NCURSES__)
-    return chr | gvid_attrcalc(atr);
-  #else
-    return (chr & 0xff) | ((atr << 8) & 0xff00) ;
-  #endif
 }
 
 

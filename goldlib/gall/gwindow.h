@@ -215,7 +215,6 @@ public:
   void drag(int direction, int howmuch=1);
   void slide(int row, int col);
   void putx(int wrow, int wcol, int color, char chr, uint len);
-  void printws(int wrow, int wcol, vatch* buf, uint len);
   void print_center(int row, int color, const char* text);
 };
 

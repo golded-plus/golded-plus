@@ -289,7 +289,7 @@ extern char *alloca ();
 
 static
 #if __GNUC__ - 0 >= 2
-inline
+__inline__
 #endif
 const char *next_brace_sub __P ((const char *begin));
 static int glob_in_dir __P ((const char *pattern, const char *directory,
@@ -304,7 +304,7 @@ static int collated_compare __P ((const __ptr_t, const __ptr_t));
    this as an inline function if the compiler permits.  */
 static
 #if __GNUC__ - 0 >= 2
-inline
+__inline__
 #endif
 const char *
 next_brace_sub (begin)
@@ -386,7 +386,7 @@ glob (pattern, flags, errfunc, pglob)
 	  const char *rest;
 	  size_t rest_len;
 #ifdef __GNUC__
-	  char onealt[strlen (pattern) - 1];
+	  __extension__ char onealt[strlen (pattern) - 1];
 #else
 	  char *onealt = (char *) malloc (strlen (pattern) - 1);
 	  if (onealt == NULL)

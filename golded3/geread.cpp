@@ -927,7 +927,7 @@ int LoadMessage(GMsg* msg, int margin) {
       msg->orig_timesread = msg->timesread++;
 
       if(reader_rcv_noise > 1) {
-        GMsg* tmsg = throw_calloc(1, sizeof(GMsg));
+        GMsg* tmsg = (GMsg*) throw_calloc(1, sizeof(GMsg));
 	AA->LoadHdr(tmsg, msg->msgno, false);
 	tmsg->attr = msg->attr;
 	tmsg->orig_timesread = msg->orig_timesread;

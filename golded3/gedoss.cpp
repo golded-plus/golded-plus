@@ -176,10 +176,15 @@ void Cleanup(void) {
   int smax = MinV((int)GLOG_STORELINES, LOG.storelines);
   for(int s=0; s<smax; s++)
     cout << LOG.storeline[s] << endl;
-  if(LOG.storelines > GLOG_STORELINES)
-    cout << "(See also " << CFG->logfile << ")" << endl;
-  if(errorlevel > EXIT_NONAME)
-    MakeNoise(SND_S_O_S);
+
+  if(CFG) {
+    if(LOG.storelines > GLOG_STORELINES)
+      cout << "(See also " << CFG->logfile << ")" << endl;
+    if(errorlevel > EXIT_NONAME)
+      MakeNoise(SND_S_O_S);
+
+    CfgReset();
+  }
 
   #if defined(GUTLOS_FUNCS)
   g_deinit_os();
@@ -256,7 +261,7 @@ int ShellToDos(char* command, char* message, int cls, int cursor, int swap, int 
   #endif
 
   // Store the screen
-  vatch* scrnbuf = vsave();
+  vsavebuf* scrnbuf = vsave();
 
   // Store current drive/dir
   Path orgdir;

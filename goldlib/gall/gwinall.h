@@ -214,7 +214,7 @@ struct _wrec_t {
   _wrec_t* prev;       // pointer to previous window record
   _wrec_t* next;       // pointer to next window record
   _form_t* form;       // pointer to head form record
-  vatch*   wbuf;       // address of window's buffer
+  vsavebuf* wbuf;      // address of window's buffer
   vatch*   wsbuf;      // address of window shadow's buffer
   const char* title;   // address of window's title string
   int      whandle;    // window's handle
@@ -423,8 +423,6 @@ inline int       wclear      ()       { return wcclear(gwin.active->wattr); }
 inline void      wfillch     (vchar a) { gwin.fillch=a; }
 inline vchar     wgetc       (int wrow, int wcol) { return vgetc(gwin.active->srow+wrow+gwin.active->border,gwin.active->scol+wcol+gwin.active->border); }
 inline int       wisactiv    (int a)  { return a == gwin.active->whandle; }
-inline void      wrestore    (vatch* wbuf) { vrestore(wbuf); }
-inline vatch*    wsave       (int srow, int scol, int erow, int ecol) { return vsave(srow, scol, erow, ecol); }
 inline int       wsetesc     (int a)  { int t=gwin.esc; gwin.esc=a; return t; }
 inline void      wsetstyle   (int a)  { gwin.style = a; }
 inline int       wstyle      ()       { return gwin.style; }

@@ -86,7 +86,7 @@ bool ignore = false;
 int cfgerrors = 0;
 bool veryverbose = false;
 bool shellvid = true;
-word* oldscreen = NULL;
+vsavebuf* oldscreen = NULL;
 
 bool disablesound = false;
 
@@ -170,7 +170,7 @@ Win gold_mono1[16] = {
 //  ------------------------------------------------------------------
 //  Deallocate CFG at exit
 
-static void CfgReset(void) {
+void CfgReset(void) {
 
   throw_delete(QWK);
   throw_delete(EDIT);
@@ -187,8 +187,6 @@ static void CfgReset(void) {
 //  Assign default CFG values
 
 void CfgInit() {
-
-  atexit(CfgReset);
 
   CFG = new CfgGed;
   throw_new(CFG);

@@ -573,14 +573,16 @@ static void KludgeREPLYTO(GMsg* msg, const char* ptr) {
 
 static void KludgeFROM(GMsg* msg, const char* ptr) {
 
-  INam fromname;
-  IAdr fromaddr;
-  strxmimecpy(msg->ifrom, ptr, msg->charsetlevel, sizeof(INam));
-  ParseInternetAddr(msg->ifrom, fromname, fromaddr);
-  if(*fromaddr)
-    strcpy(msg->iorig, fromaddr);
-  if(*fromname)
-    strxcpy(msg->realby, fromname, sizeof(msg->realby));
+  INam _fromname;
+  IAdr _fromaddr;
+  char* buf = throw_strdup(ptr);
+  strxcpy(msg->ifrom, buf, sizeof(msg->ifrom));
+  ParseInternetAddr(buf, _fromname, _fromaddr);
+  throw_free(buf);
+  if(*_fromaddr)
+    strcpy(msg->iorig, _fromaddr);
+  if(*_fromname)
+    strxcpy(msg->realby, _fromname, sizeof(msg->realby));
 }
 
 
@@ -2533,13 +2535,13 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
 
       // Charset translate header fields
       if(header_recode) {
-        strxmimecpy(msg->realby, msg->realby, level, sizeof(INam));
-        strxmimecpy(msg->realto, msg->realto, level, sizeof(INam));
-        strxmimecpy(msg->by    , msg->by    , level, sizeof(INam));
-        strxmimecpy(msg->to    , msg->to    , level, sizeof(INam));
+        strxmimecpy(msg->realby, msg->realby, 0, sizeof(INam));
+        strxmimecpy(msg->realto, msg->realto, 0, sizeof(INam));
+        strxmimecpy(msg->by, msg->by, level, sizeof(INam));
+        strxmimecpy(msg->to, msg->to, level, sizeof(INam));
 
         if(not (msg->attr.frq() or msg->attr.att() or msg->attr.urq()))
-          strxmimecpy(msg->re  , msg->re    , level, sizeof(ISub), true);
+          strxmimecpy(msg->re, msg->re, level, sizeof(ISub), true);
       }
     }
   }

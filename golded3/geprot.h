@@ -149,6 +149,7 @@ void AdvancedSearch(GMsg* msg, int& topline, int& keyok);
 
 void CfgInit();
 void CfgInit2();
+void CfgReset(void);
 int PlayMacro(gkey key, int type);
 int IsMacro(gkey key, int type);
 

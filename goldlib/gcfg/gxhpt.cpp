@@ -298,11 +298,11 @@ void gareafile::ReadHPTFile(char* path, char* file, char* options, char* origin,
             aa.type = GMB_NET;
             break;
           case CRC_LOCALAREA:
+          case CRC_DUPEAREA:
+          case CRC_BADAREA:
             aa.type = GMB_LOCAL;
             break;
           case CRC_ECHOAREA:
-          case CRC_DUPEAREA:
-          case CRC_BADAREA:
             aa.type = GMB_ECHO;
             break;
         }

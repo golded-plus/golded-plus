@@ -826,6 +826,7 @@ int ChangeXlatImport() {
       CFG->ignorecharset = true;
       AA->SetXlatimport(strtok(Listi[n], " "));
     }
+    LoadCharset(AA->Xlatimport(), CFG->xlatlocalset);
     for(n=0; n<xlatimports; n++)
       throw_free(Listi[n]);
     throw_free(Listi);

@@ -137,8 +137,8 @@ int wdrag(int direction) {
   int nsrow, nscol, nerow, necol, shad_attr=-1;
   int chars_per_line, lines_per_win;
   int vert_movement, horz_movement;
-  vatch* win_image;
-  vatch* wp;
+  vsavebuf* win_image;
+  vsavebuf* wp;
   vatch* p;
   register vatch* src;
   register vatch* dest;
@@ -202,18 +202,13 @@ int wdrag(int direction) {
     return(gwin.werrno=W_ALLOCERR);
   }
 
-  // change coordinates in saved window's buffer
-  // and restore window to new coordinates
-  win_image[0] = (vatch)nsrow;
-  win_image[1] = (vatch)nscol;
-  win_image[2] = (vatch)nerow;
-  win_image[3] = (vatch)necol;
-  vrestore(win_image);
+  // restore window to new coordinates
+  vrestore(win_image, nsrow, nscol, nerow, necol);
   throw_xfree(win_image);
 
   // start buffer positions past coordinates
-  src  = gwin.active->wbuf + 4;
-  dest = wp + 4;
+  src  = gwin.active->wbuf->data;
+  dest = wp->data;
 
   if(direction==D_DOWN)
     src  += chars_per_line;
@@ -240,7 +235,7 @@ int wdrag(int direction) {
   }
 
   // erase the trail that was left-over
-  p = gwin.active->wbuf + 4;
+  p = gwin.active->wbuf->data;
   if(vert_movement) {
     if(direction==D_DOWN)
       fill_row=srow;

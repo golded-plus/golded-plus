@@ -12,10 +12,33 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.4.7, November xx 2000
 ______________________________________________________________________
 
+- Cut-n-paste Unicode clipboard under Windows NT now properly filled
+  with Unicode version of control characters with the exception of CR,
+  LF, tabulation. It's fun to copy kludges from GoldED+ to WordPad ;-)
+
+- Fixed lockout/crash on errorneous exit.
+
+- Now if there is no address defined GoldED+ will exit with error at
+  startup rather than crashes later.
+
+! Low-level screen handling routines rearranged. New implementation of
+  Win32 code included. This code should work well with Win2k raster
+  fonts without registry patching.
+
+- Fixed incorrect timeslicing in DPMI32 version.
+
+- BADAREA and DUPEAREA now "local"s rather then "echo"s for
+  fidoconfig.
+
+! Changed keyboard handling under Win32, Win9x code seems to work
+  better. Shift-Tab no longer require additional keypress of Tab.
+
++ Address typed in name field now searched in addressbook as well.
+
 - Cosmetic fix: MI_CHARSETAUTO now defaults to " Auto " (i.e. with two
   spaces around).
 
-+ Being annoyed by users who dislike read notework, added COLOR READER
+! Being annoyed by users who dislike read notework, added COLOR READER
   QUOTE1. COLOR READER QUOTE now set color for QUOTE1 and QUOTE2 as in
   old good times. If QUOTE appears before QUOTE2 you may change
   nothing in your config.

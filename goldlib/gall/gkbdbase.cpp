@@ -132,9 +132,7 @@ void GKbd::Init() {
   osversion.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
   GetVersionEx(&osversion);
   gkbd_nt = (osversion.dwPlatformId & VER_PLATFORM_WIN32_NT) ? true : false;
-  gkbd_hin = CreateFile("CONIN$", GENERIC_READ | GENERIC_WRITE,
-                         FILE_SHARE_READ | FILE_SHARE_WRITE, NULL,
-                         OPEN_EXISTING, 0, NULL);
+  gkbd_hin = GetStdHandle(STD_INPUT_HANDLE);
   GetConsoleMode(gkbd_hin, &gkbd_kbdmode);
   if(gkbd_kbdmode & KBD_TEXTMODE)
     SetConsoleMode(gkbd_hin, gkbd_kbdmode & ~KBD_TEXTMODE);
@@ -878,7 +876,7 @@ bool is_numpad_key(const INPUT_RECORD& inp) {
 
   if(not (inp.Event.KeyEvent.dwControlKeyState & ENHANCED_KEY)) {
     switch(inp.Event.KeyEvent.wVirtualKeyCode) {
-      case 0x0C:
+      case VK_CLEAR:
       case VK_PRIOR:
       case VK_NEXT:
       case VK_END:
@@ -1168,6 +1166,10 @@ gkey kbxget_raw(int mode) {
   }
   else {
 
+    DWORD &CKS = inp.Event.KeyEvent.dwControlKeyState;
+    WORD &VKC = inp.Event.KeyEvent.wVirtualKeyCode;
+    char &ascii = inp.Event.KeyEvent.uChar.AsciiChar;
+
     // Get next key
     inp.Event.KeyEvent.bKeyDown = false;
     while(1) {
@@ -1179,53 +1181,88 @@ gkey kbxget_raw(int mode) {
       }
 
       if(inp.EventType == KEY_EVENT and inp.Event.KeyEvent.bKeyDown) {
-        bool alt_pressed = (inp.Event.KeyEvent.dwControlKeyState & (LEFT_ALT_PRESSED|RIGHT_ALT_PRESSED)) ? true : false;
-        // bool right_alt_pressed = (inp.Event.KeyEvent.dwControlKeyState & RIGHT_ALT_PRESSED) ? true : false;
-        bool enhanced_key = (inp.Event.KeyEvent.dwControlKeyState & ENHANCED_KEY) ? true : false;
-        bool numpad_key = is_numpad_key(inp);
-        int vk = inp.Event.KeyEvent.wVirtualKeyCode;
-        char raw_ch = inp.Event.KeyEvent.uChar.AsciiChar;
-        int kc;
-        int test;
-        char ch;
+        bool alt_pressed = (CKS & (LEFT_ALT_PRESSED|RIGHT_ALT_PRESSED)) ? true : false;
+        bool ctrl_pressed = (CKS & (LEFT_CTRL_PRESSED|RIGHT_CTRL_PRESSED)) ? true : false;
+        bool shift_pressed = (CKS & SHIFT_PRESSED) ? true : false;
+        bool special_key = false;
 
-        if(enhanced_key and (raw_ch == 0xE0))
-          inp.Event.KeyEvent.uChar.AsciiChar = raw_ch = 0;
-        if(gkbd_nt)
-          test = (inp.Event.KeyEvent.uChar.AsciiChar and not alt_pressed and vk != -1) or (alt_pressed and vk == -1) or (alt_pressed and numpad_key);
-        else
-          test = (inp.Event.KeyEvent.uChar.AsciiChar and not alt_pressed and vk != -1) or (alt_pressed and vk == -1) or (alt_pressed and numpad_key) or (vk == 0xBA);
-        if(test) {
-          // Ascii char
-          if(gkbd_nt and not (alt_pressed and numpad_key)) {
-            ch = raw_ch;
-            ReadConsoleInput(gkbd_hin, &inp, 1, &nread);
-          }
-          else {
-            ReadConsole(gkbd_hin, &ch, 1, &nread, NULL);
-          }
+        k = 0;
+
+        if(alt_pressed)
+          special_key = is_numpad_key(inp); // Alt-<numpad key>
+        else if(isalnum(ascii) and not ctrl_pressed)          
+          special_key = not gkbd_nt; // It is alphanumeric key under Win9x
+        if(special_key) {
+          ReadConsole(gkbd_hin, &ascii, 1, &nread, NULL);
           if(alt_pressed) {
-            k = (gkey)ch;
+            k = (gkey)ascii;
             break;
           }
-          if(gkbd_nt) {
-            if(ch == '\x5E' or ch == '\x7E' or ch == '\x60' or ch == '\xF9' or ch == '\xEF')
-              inp.Event.KeyEvent.wVirtualKeyCode = (word)(ch << 8);
-          }
-          else {
-            if(ch == '\x5E' or ch == '\x7E' or ch == '\x60' or ch == '\x27' or ch == '\x2E')
-              inp.Event.KeyEvent.wVirtualKeyCode = (word)(ch << 8);
-          }
-          inp.Event.KeyEvent.uChar.AsciiChar = ch;
         }
-        else {
-          // Control keycode
+        else
           ReadConsoleInput(gkbd_hin, &inp, 1, &nread);
-        }
-        kc = gkbd_nt2bios(inp);
-        if(kc != -1) {
-          k = (gkey)kc;
-          break;
+
+        switch(VKC) {
+          // Not meanful keys
+          case VK_SHIFT:
+          case VK_CONTROL:
+          case VK_MENU:
+          case VK_CAPITAL:
+          case VK_NUMLOCK:
+          case VK_SCROLL:
+            return (gkey)k; // Return empty key
+
+          case VK_NUMPAD0:
+          case VK_NUMPAD1:
+          case VK_NUMPAD2:
+          case VK_NUMPAD3:
+          case VK_NUMPAD4:
+          case VK_NUMPAD5:
+          case VK_NUMPAD6:
+          case VK_NUMPAD7:
+          case VK_NUMPAD8:
+          case VK_NUMPAD9:
+            if(shift_pressed) {
+              WORD keytrans[10][2] = {
+                {VK_NUMPAD0, VK_INSERT},
+                {VK_NUMPAD1, VK_END},
+                {VK_NUMPAD2, VK_DOWN},
+                {VK_NUMPAD3, VK_NEXT},
+                {VK_NUMPAD4, VK_LEFT},
+                {VK_NUMPAD5, VK_CLEAR},
+                {VK_NUMPAD6, VK_RIGHT},
+                {VK_NUMPAD7, VK_HOME},
+                {VK_NUMPAD8, VK_UP},
+                {VK_NUMPAD9, VK_PRIOR},
+              };
+              for(int i = 0; i < 10; i++)
+                if(VKC == keytrans[i][0]) {
+                  VKC = keytrans[i][1];
+                  break;
+                }
+            }
+            // fall through
+          default:
+            {
+              int kc = gkbd_nt2bios(inp);
+              if(kc != -1)
+                return (gkey)kc;
+            }
+            break;
+
+          // OEM specific keys
+          case 0x2a:
+          case 0xba: case 0xbb: case 0xbc: case 0xbd: case 0xbe:
+            case 0xbf: case 0xc0:
+          case 0xdb: case 0xdc: case 0xdd: case 0xde: case 0xdf:
+            case 0xe0: case 0xe1: case 0xe2: case 0xe3: case 0xe4:
+          case 0xe6:
+          case 0xe9: case 0xea: case 0xeb: case 0xec: case 0xed:
+            case 0xef: case 0xf0: case 0xf1: case 0xf2: case 0xf3:
+            case 0xf4: case 0xf5:
+            if(ascii)
+              return (gkey)ascii;
+            break;
         }
       }
       else {

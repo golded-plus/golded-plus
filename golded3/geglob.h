@@ -133,7 +133,7 @@ extern bool ignore;
 extern int cfgerrors;
 extern bool veryverbose;
 extern bool shellvid;
-extern word* oldscreen;
+extern vsavebuf* oldscreen;
 
 extern int keysread;
 

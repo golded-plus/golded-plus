@@ -149,7 +149,7 @@ int wopen(int srow, int scol, int erow, int ecol, int btype, int battr, int watt
   }
 
   // save affected area of screen
-  vatch* wbuf = vsave(srow,scol,erow,ecol);
+  vsavebuf* wbuf = vsave(srow,scol,erow,ecol);
   if(wbuf==NULL) {
     throw_xrelease(wrec);
     gwin.werrno=W_ALLOCERR;
@@ -1003,7 +1003,7 @@ _wrec_t* wfindrec(int whandle) {
 
 int whide() {
 
-  vatch* p;
+  vsavebuf* p;
   int shattr;
   _wrec_t *temp;
 
@@ -1060,7 +1060,7 @@ int whide() {
 
 int wunhide(int whandle) {
 
-  vatch* p;
+  vsavebuf* p;
   _wrec_t* found;
 
   // check pointer to hidden window linked list ; must not be NULL
@@ -1238,7 +1238,7 @@ static GOLD_INLINE int rshadow_blocking() {
 
 static GOLD_INLINE vatch* calc_window(_wrec_t *wrec) {
 
-  return wrec->wbuf+4+((__crow-wrec->srow)*(wrec->ecol-wrec->scol+1))+(__ccol-wrec->scol);
+  return wrec->wbuf->data+((__crow-wrec->srow)*(wrec->ecol-wrec->scol+1))+(__ccol-wrec->scol);
 }
 
 
@@ -1273,7 +1273,7 @@ static void swap_contents(vatch* pfound, vatch* pcurr, int shadow) {
   temp = vgetw(__crow, __ccol);
   if(shadow&2)
     *pcurr = vschar(*pcurr, vgchar(temp));
-  chat = ((vgattr(temp) & 0x80) and shadow) ? vsattr(*pcurr, vgattr(*pcurr | 0x80)) : *pcurr;
+  chat = ((vgattr(temp) & BLINK) and shadow) ? vsattr(*pcurr, vgattr(*pcurr) | BLINK) : *pcurr;
   vputw(__crow, __ccol, chat);
 
   // let window position directly above position
@@ -1559,7 +1559,8 @@ static void update_buffers(vatch* pcurr, int shadow) {
 
   if(shadow) {
     if(__curr->next==NULL) {
-      vputc(__crow, __ccol, vgattr(*pcurr)&0x80 ? (__curr->wsattr|BLINK) : __curr->wsattr, (vchar)*pcurr);
+//      vputc(__crow, __ccol, vgattr(*pcurr) & BLINK ? (__curr->wsattr | BLINK) : __curr->wsattr, vgchar(*pcurr));
+      vputc(__crow, __ccol, __gattr & BLINK ? (__curr->wsattr | BLINK) : __curr->wsattr, *__p);
     }
     else {
       tcurr = __curr;

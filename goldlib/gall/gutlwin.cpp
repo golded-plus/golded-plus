@@ -113,6 +113,12 @@ char          tl[256] = {
   0xf8, 0xf9, 0xfa, 0xfb, 0xfc, 0xfd, 0xfe, 0xff
 };
 
+WCHAR         oem2unicode[256] = {
+  0x0000, 0x263a, 0x263b, 0x2665, 0x2666, 0x2663, 0x2660, 0x2219,
+  0x25d8, 0x25cb, 0x25d9, 0x2642, 0x2640, 0x266a, 0x266b, 0x263c,
+  0x25ba, 0x25c4, 0x2195, 0x203c, 0x00b6, 0x00a7, 0x25a0, 0x21a8,
+  0x2191, 0x2193, 0x2192, 0x2190, 0x221f, 0x2194, 0x25b2, 0x25bc
+};
 
 //  ------------------------------------------------------------------
 
@@ -129,6 +135,10 @@ int g_init_os(int flags) {
     for(i = 0; i < 256; i++) {
       tu[i] = (toupper)(i);
       tl[i] = (tolower)(i);
+      if(i >= ' ') {
+        CHAR chr = (CHAR)i;
+        MultiByteToWideChar(CP_OEMCP, 0, &chr, 1, oem2unicode+i, 1);
+      }
     }
     return 0;
   }
@@ -224,7 +234,7 @@ char* g_get_clip_text(void) {
   int Format = 0;
   int ReadType = CF_OEMTEXT;
   while((Format = EnumClipboardFormats(Format)) != 0) {
-    if(Format == CF_UNICODETEXT && WinVer.dwPlatformId == VER_PLATFORM_WIN32_NT) {
+    if((Format == CF_UNICODETEXT) and (WinVer.dwPlatformId == VER_PLATFORM_WIN32_NT)) {
       Unicode = true;
       break;
     }
@@ -287,7 +297,15 @@ int g_put_clip_text(const char *Data) {
     if(WinVer.dwPlatformId == VER_PLATFORM_WIN32_NT)
       if((hData = GlobalAlloc(GMEM_MOVEABLE | GMEM_DDESHARE, BufferSize * 2)) != NULL)
         if((GData = GlobalLock(hData)) != NULL) {
-          MultiByteToWideChar(CP_OEMCP, 0, Data, -1, (LPWSTR)GData, BufferSize);
+          WCHAR *UData = (WCHAR *)GData;
+
+          while(*Data) {
+            if((*Data == '\r') or (*Data == '\n') or (*Data == '\t'))
+              *UData++ = *Data++; // no translation for real control chars
+            else
+              *UData++ = oem2unicode[*Data++];
+          }
+          *UData = 0;
           GlobalUnlock(hData);
           SetClipboardData(CF_UNICODETEXT, (HANDLE)hData);
         }

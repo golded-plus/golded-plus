@@ -235,8 +235,8 @@ char *uuestr_otemp;
 static int 
 UUEncodeStream (FILE *outfile, FILE *infile, int encoding, long linperfile)
 {
-  unsigned char *itemp = (char *) uuestr_itemp;
-  unsigned char *otemp = (char *) uuestr_otemp;
+  unsigned char *itemp = (unsigned char *) uuestr_itemp;
+  unsigned char *otemp = (unsigned char *) uuestr_otemp;
   unsigned char *optr, *table, *tptr;
   int index, count;
   long line=0;

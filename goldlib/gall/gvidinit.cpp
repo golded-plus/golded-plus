@@ -83,13 +83,7 @@
 //  ------------------------------------------------------------------
 //  Global video data
 
-#ifdef __WIN32__
-HANDLE gvid_hout;
-#endif
-
 GVid *gvid;
-
-int __gdvdetected = false;
 
 #if defined(__USE_NCURSES__)
 
@@ -104,6 +98,14 @@ const char* gvid_acs_disable;
 
 void _vputx(int row, int col, int atr, char chr, uint len);
 void gvid_printf(const char* fmt, ...) __attribute__ ((format (printf, 1, 2)));
+
+#elif defined(__WIN32__)
+
+HANDLE gvid_hout = INVALID_HANDLE_VALUE;
+
+#elif defined(__MSDOS__)
+
+int __gdvdetected = false;
 
 #endif
 
@@ -138,12 +140,13 @@ GVid::~GVid() {
     endwin();
 
   #elif defined(__UNIX__)
+
   // "\033<"        Enter ANSI mode
   // "\033[?5l"     Normal screen
   // "\033[0m"      Normal character attributes
 
   gvid_printf("\033<\033[?5l\033[0m");
-  
+
   #endif
   #ifndef __DJGPP__
   if(dmaptr != dmadir)  throw_xfree(dmaptr);
@@ -390,12 +393,7 @@ int GVid::detectadapter() {
 
   #elif defined(__WIN32__)
 
-  gvid_hout = CreateFile("CONOUT$", GENERIC_READ | GENERIC_WRITE,
-                     FILE_SHARE_WRITE | FILE_SHARE_READ, NULL,
-                     OPEN_EXISTING,
-                     FILE_FLAG_NO_BUFFERING|FILE_FLAG_WRITE_THROUGH, NULL);
-
-  SetFileApisToOEM();
+  gvid_hout = GetStdHandle(STD_OUTPUT_HANDLE);
 
   adapter = V_VGA;
 
@@ -1014,8 +1012,8 @@ void GVid::resize_screen(int columns, int rows) {
   numcols = curr.screen.columns = columns;
   numrows = curr.screen.rows    = rows;
 
-  bufchr = (vchar*)throw_xrealloc(bufchr, numcols);
-  bufwrd = (vatch*)throw_xrealloc(bufwrd, numcols*2);
+  bufchr = (vchar*)throw_xrealloc(bufchr, numcols+1);
+  bufwrd = (vatch*)throw_xrealloc(bufwrd, (numcols+1)*sizeof(vatch));
   bufansi = (vchar*)throw_xrealloc(bufansi, 1+(11*numcols));
 
   #if defined(__UNIX__) and not defined(__USE_NCURSES__)

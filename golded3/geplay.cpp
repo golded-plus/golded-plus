@@ -42,16 +42,16 @@ gsound* snd = NULL;
 //  ------------------------------------------------------------------
 
 #if defined(__MSDOS__)
-#define Beep(A,B) { sound(A); usleep(B*CFG->beepfactor+1); }
-#define Sleep(A)  { usleep(A*CFG->beepfactor+1); }
+#define Beep(A,B) { sound(A); usleep(CFG ? B*CFG->beepfactor+1 : B*1000); }
+#define Sleep(A)  { usleep(CFG ? A*CFG->beepfactor+1 : A*1000); }
 #define NoSound() { nosound(); }
 #elif defined(__OS2__)
-#define Beep(A,B) { DosBeep(A, B*CFG->beepfactor/1000+1); }
-#define Sleep(A)  { usleep(A*CFG->beepfactor+1); }
+#define Beep(A,B) { DosBeep(A, CFG ? B*CFG->beepfactor/1000+1 : B); }
+#define Sleep(A)  { usleep(CFG ? A*CFG->beepfactor+1 : A*1000); }
 #define NoSound() { }
 #elif defined(__WIN32__)
-#define Beep(A,B) { (Beep)(A, B*CFG->beepfactor/1000+1); }
-#define Sleep(A)  { usleep(A*CFG->beepfactor+1); }
+#define Beep(A,B) { (Beep)(A, CFG ? B*CFG->beepfactor/1000+1 : B); }
+#define Sleep(A)  { usleep(CFG ? A*CFG->beepfactor+1 : A*1000); }
 #define NoSound() { }
 #else
 #define Beep(A,B) { }
@@ -93,12 +93,12 @@ void InitSound() {
       snd = new gsound;
       if(snd->is_installed()) {
         if(not quiet)
-          printf("\n* Soundcard support was successfully initialized.");
+          cout << "* Soundcard support was successfully initialized." << endl;
         atexit(ResetSound);
       }
       else {
         if(not quiet)
-          printf("\n* Soundcard support could NOT be initialized!");
+          cout << "* Soundcard support could NOT be initialized!" << endl;
         ResetSound();
       }
       break;

@@ -39,6 +39,9 @@
 #define ACS_BOARD '°'
 #define ACS_BLOCK 'Û'
 #endif
+#if defined(__WIN32__)
+#include <windows.h>
+#endif
 
 
 //  ------------------------------------------------------------------
@@ -258,6 +261,9 @@ typedef word*         gdma; // Video DMA pointer
 #if defined(__USE_NCURSES__)
 typedef chtype vchar; // Type of characters on-screen
 typedef chtype vatch; // Type of character-attribute groups
+#elif defined(__WIN32__)
+typedef char vchar;        // Type of characters on-screen
+typedef CHAR_INFO vatch;   // Type of character-attribute groups
 #else
 typedef char vchar;   // Type of characters on-screen
 typedef word vatch;   // Type of character-attribute groups
@@ -379,9 +385,12 @@ void vposset    (int row, int col);
 void vclrscr    ();
 void vclrscr    (int atr);     // Overloaded
 
-vatch* vsave    (int srow=-1, int scol=-1, int erow=-1, int ecol=-1);
-void vredraw    (vatch* buf, int srow=-1, int scol=-1, int erow=-1, int ecol=-1);
-void vrestore   (vatch* buf, int srow=-1, int scol=-1, int erow=-1, int ecol=-1);
+typedef struct _vsavebuf {
+  int top, left, right, bottom;
+  __extension__ vatch data[0];
+} vsavebuf;
+vsavebuf* vsave (int srow=-1, int scol=-1, int erow=-1, int ecol=-1);
+void vrestore   (vsavebuf* buf, int srow=-1, int scol=-1, int erow=-1, int ecol=-1);
 
 void vcurget    (int* sline, int* eline);
 void vcurset    (int sline, int eline);
@@ -396,17 +405,45 @@ void vcursmall  ();
 void vbox       (int srow, int scol, int erow, int ecol, int box, int hiattr, int loattr=-1);
 void vfill      (int srow, int scol, int erow, int ecol, vchar chr, int atr);
 
-#if not defined(__USE_NCURSES__)
-inline vchar vgetc (int row, int col) { return (vchar)(0xFF & vgetw(row, col)); }
-#else
-inline vchar vgetc (int row, int col) { return (vchar)((A_CHARTEXT|A_ALTCHARSET) & vgetw(row, col)); }
-#endif
+vchar vgetc (int row, int col);       //  Gets the character from position
+vchar vgchar (vatch chat);            //  Gets the character part of a character-attribute group
+int vgattr (vatch chat);              //  Gets the attribute part of a character-attribute group
+vatch vschar (vatch chat, vchar chr); //  Sets the given character in a character-attribute group
+vatch vsattr (vatch chat, int atr);   //  Sets the given attribute in a character-attribute group
+vatch vcatch (vchar chr, int atr);    //  Compose character-attribute group from character and attribute
 
-vchar vgchar (vatch chat);
-int vgattr (vatch chat);
-vatch vschar (vatch chat, vchar chr);
-vatch vsattr (vatch chat, int atr);
-vatch vcatch (vchar chr, int atr);
+// inline implementation of functions above
+
+inline vchar vgetc (int row, int col) { return vgchar(vgetw(row, col)); }
+
+#if defined(__USE_NCURSES__)
+
+int gvid_dosattrcalc (int ourattr);
+int gvid_attrcalc (int dosattr);
+
+inline vchar vgchar (vatch chat) { return chat & (A_CHARTEXT | A_ALTCHARSET); }
+inline int vgattr (vatch chat) { return gvid_dosattrcalc(chat & ~(A_CHARTEXT | A_ALTCHARSET)); }
+inline vatch vschar (vatch chat, vchar chr) { return (chr & (A_CHARTEXT | A_ALTCHARSET)) | (chat & ~(A_CHARTEXT | A_ALTCHARSET)); }
+inline vatch vsattr (vatch chat, int atr) { return (chat & (A_CHARTEXT | A_ALTCHARSET)) | gvid_attrcalc(atr); }
+inline vatch vcatch (vchar chr, int atr) { return chr | gvid_attrcalc(atr); }
+
+#elif defined(__WIN32__)
+
+inline vchar vgchar (vatch chat) { return chat.Char.AsciiChar; }
+inline int vgattr (vatch chat) { return chat.Attributes; }
+inline vatch vschar (vatch chat, vchar chr) { chat.Char.UnicodeChar = 0; chat.Char.AsciiChar = chr; return chat; }
+inline vatch vsattr (vatch chat, int atr) { chat.Attributes = atr; return chat; }
+inline vatch vcatch (vchar chr, int atr) { vatch chat; chat.Char.UnicodeChar = 0; chat.Char.AsciiChar = chr; chat.Attributes = atr; return chat; }
+
+#else
+
+inline vchar vgchar (vatch chat) { return chat & 0xff; }
+inline int vgattr (vatch chat) { return (chat >> 8) & 0xff; }
+inline vatch vschar (vatch chat, vchar chr) { return (chat & 0xff00) | chr; }
+inline vatch vsattr (vatch chat, int atr) { return (chat & 0xff) | (atr << 8); }
+inline vatch vcatch (vchar chr, int atr) { return (chr & 0xff) | ((atr << 8) & 0xff00); }
+
+#endif
 
 typedef void (*VidPutStrCP)(int,int,int,const char*);
 

@@ -56,7 +56,7 @@ GMTsk::GMTsk() {
   detected = GMTSK_NONE;
   name = "";
   #if defined(__DJGPP__)
-  _get_dos_version(true);
+  detected = GMTSK_DOS;
   name = "DPMI32";
   #elif defined(__UNIX__)
   detected = GMTSK_LINUX;
