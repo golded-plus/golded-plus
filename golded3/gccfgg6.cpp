@@ -110,21 +110,21 @@ void CfgNodelist() {
 
 void CfgNodepath() {
 
-  PathCopy(CFG->nodepath, val);
+  MapPath(PathCopy(CFG->nodepath, val));
 }
 
 //  ------------------------------------------------------------------
 
 void CfgNodepathfd() {
 
-  PathCopy(CFG->nodepathfd, val);
+  MapPath(PathCopy(CFG->nodepathfd, val));
 }
 
 //  ------------------------------------------------------------------
 
 void CfgNodepathv7() {
 
-  PathCopy(CFG->nodepathv7, val);
+  MapPath(PathCopy(CFG->nodepathv7, val));
 }
 
 //  ------------------------------------------------------------------
