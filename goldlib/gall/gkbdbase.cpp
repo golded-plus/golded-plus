@@ -1189,7 +1189,7 @@ gkey kbxget_raw(int mode) {
 
         if(alt_pressed)
           special_key = is_numpad_key(inp); // Alt-<numpad key>
-        else if(isalnum(ascii) and not ctrl_pressed)          
+        else if(isprint(ascii) and not ctrl_pressed)          
           special_key = not gkbd_nt; // It is alphanumeric key under Win9x
         if(special_key) {
           ReadConsole(gkbd_hin, &ascii, 1, &nread, NULL);
