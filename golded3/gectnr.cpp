@@ -29,7 +29,7 @@
 
 //  ------------------------------------------------------------------
 
-bool strncont(const char *beginword, const char *stylestopchars, int n)
+static bool strncont(const char *beginword, const char *stylestopchars, int n)
 {
   for(; (n > 0) and (*beginword != NUL); n--, beginword++) {
     if(strchr(stylestopchars, *beginword) != NULL)
@@ -41,7 +41,7 @@ bool strncont(const char *beginword, const char *stylestopchars, int n)
 
 //  ------------------------------------------------------------------
 
-bool in_ftn_domained_address(const char *ptr, const char *txt) {
+static bool in_ftn_domained_address(const char *ptr, const char *txt) {
 
   while((ptr != txt) and (not isspace(*ptr) and not isalpha(*ptr))) {
     if(isdigit(ptr[0]) and ((ptr[1] == ':') or (ptr[1] == '/')) and isdigit(ptr[2]))
@@ -49,6 +49,24 @@ bool in_ftn_domained_address(const char *ptr, const char *txt) {
     --ptr;
   }
   return false;
+}
+
+
+//  ------------------------------------------------------------------
+
+static const char *url_begin(const char *ptr) {
+
+  if(strnieql(ptr, "http://", 7))
+    return ptr+7;
+  if(strnieql(ptr, "ftp://", 6))
+    return ptr+6;
+  if(strnieql(ptr, "www.", 4))
+    return ptr+4;
+  if(strnieql(ptr, "ftp.", 4))
+    return ptr+4;
+  if(strnieql(ptr, "mailto:", 7))
+    return ptr+7;
+  return NULL;
 }
 
 
@@ -132,22 +150,23 @@ void Container::StyleCodeHighlight(const char* text, int row, int col, bool dohi
         }
       }
       else {
-        if(not strnicmp(ptr, "http://", 7) or not strnicmp(ptr, "ftp://", 6) or
-           (not strnicmp(ptr, "www.", 4) and not isspace(ptr[4])) or
-           (not strnicmp(ptr, "ftp.", 4) and not isspace(ptr[4])) or
-           not strnicmp(ptr, "mailto:", 7)) {
-          const char *end = ptr+4+strcspn(ptr+4, " \t\"\'<>()[]");
+        const char *begin;
+
+        if((begin = url_begin(ptr)) != NULL) {
+          const char *end = begin+strcspn(begin, " \t\"\'<>()[]");
 
           if(ispunct(end[-1]) and (end[-1] != '/'))
             --end;
-          strxcpy(buf, txptr, (uint)(ptr-txptr)+1);
-          prints(row, col+sclen, color, buf);
-          sclen += strlen(buf);
-          strxcpy(buf, ptr, (uint)(end-ptr)+1);
-          prints(row, col+sclen, C_READU, buf);
-          sclen += strlen(buf);
-          txptr = end;
-          ptr = end-1;
+          if(begin < end) {
+            strxcpy(buf, txptr, (uint)(ptr-txptr)+1);
+            prints(row, col+sclen, color, buf);
+            sclen += strlen(buf);
+            strxcpy(buf, ptr, (uint)(end-ptr)+1);
+            prints(row, col+sclen, C_READU, buf);
+            sclen += strlen(buf);
+            txptr = end;
+            ptr = end-1;
+          }
         }
         else if(((ptr == text) or not in_ftn_domained_address(ptr, text)) and
                 (isascii(*ptr) and not isspace(*ptr) and not ispunct(*ptr) and
@@ -165,14 +184,19 @@ void Container::StyleCodeHighlight(const char* text, int row, int col, bool dohi
             commerce_at = strpbrk(ptr, " \t:/@");
           }
           if((commerce_at != NULL) and (*commerce_at == '@')) {
-            bool dot_found = false;
+            int dots_found = 0;
             ++commerce_at;
             while((*commerce_at != NUL) and (isalnum(*commerce_at) or (*commerce_at == '.') or (*commerce_at == '-'))) {
               if(*commerce_at == '.')
-                dot_found = true;
+                ++dots_found;
               ++commerce_at;
             }
-            if(dot_found) {
+            while((commerce_at[-1] == '.') or (commerce_at[-1] == '-')) {
+              --commerce_at;
+              if(*commerce_at == '.')
+                --dots_found;
+            }
+            if(dots_found) {
               strxcpy(buf, txptr, (uint)(ptr-txptr)+1);
               prints(row, col+sclen, color, buf);
               sclen += strlen(buf);
