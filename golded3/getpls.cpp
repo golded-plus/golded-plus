@@ -24,6 +24,7 @@
 //  Template handling.
 //  ------------------------------------------------------------------
 
+#include <algorithm>
 #include <golded.h>
 
 
@@ -69,7 +70,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
   char* tptr;
   char* ptr;
   char* ptr2;
-  char* quote;
+  const char* quote;
   uint size;
   uint pos;
   uint ctrlinfo;
@@ -624,7 +625,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
               n = 0;
               *buf = NUL;
               while(oldmsg->line[n]) {
-                quote = strtrim(oldmsg->line[n]->txt).c_str();
+                strtrim(oldmsg->line[n]->txt);
                 if(oldmsg->line[n]->type & GLINE_TEAR) {
                   // Invalidate tearline
                   oldmsg->line[n]->type &= ~GLINE_TEAR;
@@ -643,7 +644,9 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
                 }
 
                 // Invalidate kludge chars
-                strchg(quote, CTRL_A, '@');
+                string& tempref = strtrim(oldmsg->line[n]->txt);
+                replace(tempref.begin(), tempref.end(), CTRL_A, '@');
+                quote = tempref.c_str();
 
                 if(is_quote(oldmsg->line[n]->txt.c_str())) {
                   quote += GetQuotestr(quote, qbuf, &len);

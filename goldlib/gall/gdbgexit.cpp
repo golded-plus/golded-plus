@@ -25,6 +25,7 @@
 //  Debugging and logging.
 //  ------------------------------------------------------------------
 
+#include <cstdlib>
 #include <gdbgerr.h>
 
 
