@@ -47,7 +47,7 @@
 #undef __GVER_PREVERSION__
 #define __GVER_PREVERSION__    ""
 #undef __GVER_POSTVERSION__
-#define __GVER_POSTVERSION__   ".6"
+#define __GVER_POSTVERSION__   ".7"
 __GVER__(1,1,4)
 
 //  ------------------------------------------------------------------
