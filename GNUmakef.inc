@@ -26,7 +26,7 @@ $(FDEPPATH)/$(TARGET)/%.d: %.cpp
 $(FDEPPATH)/$(TARGET)/%.d: %.c
 	@echo making depends for $<
 	@$(SHELL) -ec '$(CC) -c -M $(CFLAGS) $< \
-		| sed '\''s;\($*\)\$(OBJEXT)[ :]*;$(subst /,\/,$(FOBJPATH))\/\1\$(OBJEXT) $(subst /,\/,$@): ;g'\'' > $@; [-s $@ ] || rm -f $@'
+		| sed '\''s;\($*\)\$(OBJEXT)[ :]*;$(subst /,\/,$(FOBJPATH))\/\1\$(OBJEXT) $(subst /,\/,$@): ;g'\'' > $@; [ -s $@ ] || rm -f $@'
 endif
 
 $(FOBJPATH)/%$(OBJEXT): %.cpp
