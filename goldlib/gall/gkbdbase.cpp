@@ -180,7 +180,7 @@ GKbd::GKbd() {
 
   Init();
 
-  #if defined(__UNIX__) && !defined(__USE_NCURSES__)  && !defined(__BEOS__) 
+  #if defined(__UNIX__) && !defined(__USE_NCURSES__) && !defined(__BEOS__) 
 
   gkbd_keymap_init();
 
@@ -221,11 +221,11 @@ GKbd::GKbd() {
   gkbd_define_keysym("\033[5~", Key_PgUp);
   gkbd_define_keysym("\033[6~", Key_PgDn);
 
-  gkbd_define_keysym("\033[[A",  Key_F1);
-  gkbd_define_keysym("\033[[B",  Key_F2);
-  gkbd_define_keysym("\033[[C",  Key_F3);
-  gkbd_define_keysym("\033[[D",  Key_F4);
-  gkbd_define_keysym("\033[[E",  Key_F5);
+  gkbd_define_keysym("\033[[A", Key_F1);
+  gkbd_define_keysym("\033[[B", Key_F2);
+  gkbd_define_keysym("\033[[C", Key_F3);
+  gkbd_define_keysym("\033[[D", Key_F4);
+  gkbd_define_keysym("\033[[E", Key_F5);
   gkbd_define_keysym("\033[17~", Key_F6);
   gkbd_define_keysym("\033[18~", Key_F7);
   gkbd_define_keysym("\033[19~", Key_F8);
@@ -306,7 +306,7 @@ GKbd::GKbd() {
       gkbd_define_keysym(escseq, (n < 128) ? (scancode_table[n]|n) : n);
   }
 
- // gkbd_define_keysym("^@", 0); ?????????
+  // gkbd_define_keysym("^@", 0); ?????????
 
   gkbd_define_keysym("\033[A", Key_Up);
   gkbd_define_keysym("\033[B", Key_Dwn);
@@ -319,13 +319,13 @@ GKbd::GKbd() {
   gkbd_define_keysym("\033[5~", Key_PgUp);
   gkbd_define_keysym("\033[6~", Key_PgDn);
 
-//  gkbd_define_keysym("\033[3~", Key_Del);
+  // gkbd_define_keysym("\033[3~", Key_Del);
 
-  gkbd_define_keysym("\033[11~",  Key_F1);
-  gkbd_define_keysym("\033[12~",  Key_F2);
-  gkbd_define_keysym("\033[13~",  Key_F3);
-  gkbd_define_keysym("\033[14~",  Key_F4);
-  gkbd_define_keysym("\033[15~",  Key_F5);
+  gkbd_define_keysym("\033[11~", Key_F1);
+  gkbd_define_keysym("\033[12~", Key_F2);
+  gkbd_define_keysym("\033[13~", Key_F3);
+  gkbd_define_keysym("\033[14~", Key_F4);
+  gkbd_define_keysym("\033[15~", Key_F5);
   gkbd_define_keysym("\033[16~", Key_F6);
   gkbd_define_keysym("\033[17~", Key_F7);
   gkbd_define_keysym("\033[18~", Key_F8);
@@ -1508,7 +1508,7 @@ gkey kbxget_raw(int mode) {
         case Key_PgDn: k = Key_A_PgDn; break;
         case Key_PgUp: k = Key_A_PgUp; break;
         case Key_End: k = Key_A_End; break;
-       // case Key_: k=Key_A_; break;
+        // case Key_: k=Key_A_; break;
         default: break;
       }
     else if(shifts & (LSHIFT | RSHIFT))
@@ -1556,17 +1556,7 @@ gkey kbxget_raw(int mode) {
         case Key_F12: k=Key_C_F12; break;
       }
     }
-  } /*else if(k == Key_BS) {
-    // Under Linux we could use TIOCLINUX fn. 6 to read shift states on console
-    // Of course it is very unportable but should produce good results :-)
-    int shifts = 6;
-    if(ioctl(fileno(stdin), TIOCLINUX, &shifts) == -1)
-      shifts = 0;
-    if(shifts & ALT)
-      k = Key_A_BS;
-    else if(shifts & GCTRL)
-      k = Key_C_BS;
-  }*/
+  }
   #endif
 
   return k;

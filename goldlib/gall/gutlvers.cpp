@@ -52,23 +52,22 @@ char* ggetosstring(void) {
 
     struct utsname info;
 
-    if(uname(&info) != -1)
+    if(uname(&info) != -1) {
       #if defined(__EMX__)
       sprintf(osstring, "%s %s.%s %s", info.sysname, info.version, info.release, info.machine);
       #elif defined(__DJGPP__)
       sprintf(osstring, "%s %s.%s %s", info.sysname, info.release, info.version, info.machine);
       #elif defined(__BEOS__)
-      {
-      	BAppFileInfo appFileInfo;
-		version_info sys_ver = {0};
-		BFile file("/boot/beos/system/lib/libbe.so", B_READ_ONLY); 
-		appFileInfo.SetTo(&file);
-		appFileInfo.GetVersionInfo(&sys_ver, B_APP_VERSION_KIND);
-        sprintf(osstring, "%s %s %s", info.sysname, sys_ver.short_info, info.machine);
-	  }
-	  #else
+      BAppFileInfo appFileInfo;
+      version_info sys_ver = {0};
+      BFile file("/boot/beos/system/lib/libbe.so", B_READ_ONLY); 
+      appFileInfo.SetTo(&file);
+      appFileInfo.GetVersionInfo(&sys_ver, B_APP_VERSION_KIND);
+      sprintf(osstring, "%s %s %s", info.sysname, sys_ver.short_info, info.machine);
+      #else
       sprintf(osstring, "%s %s %s", info.sysname, info.release, info.machine);
       #endif
+    }
     else
       strcpy(osstring, "unknown");
 

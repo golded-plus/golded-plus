@@ -86,12 +86,11 @@ void g_increase_priority(void) {
 
 void g_set_ostitle(char* title, word dx) {
 
- NW(dx);
+  NW(dx);
 #ifndef __BEOS__
   NW(title);
 #else
-  char fmt[]={'\x1b','\x5d','\x32','\x3b', '%', 's', '\x07', 0};
-  fprintf(stdout, fmt, title);
+  printf("\x1b\x5d\x32\x3b%s\x07", title);
   fflush(stdout);
 #endif
 }

@@ -41,12 +41,6 @@
 #include <gsigunix.h>
 #include <gkbdunix.h>
 
-#ifdef __BEOS__
-//sz: some undocumented call that behaves in same manner as select ...
-extern "C" int waiton( int, fd_set *, fd_set *, fd_set *, bigtime_t);
-#endif
-
-
 //  ------------------------------------------------------------------
 
 int gkbd_stdin = -1;
@@ -186,51 +180,31 @@ int gkbd_sys_input_pending(int tsecs) {
 
   return select(gkbd_stdin+1, &read_fd_set, NULL, NULL, &wait);
 #else
-  //bigtime_t t= bigtime_t(secs) * 1000000L + usecs; 
-  ///*return*/ waiton(gkbd_stdin+1, &read_fd_set, NULL, NULL, 0/*t * 1000*/);
-  //return 0;
+  struct termios term, oterm;
+  int fd = gkbd_stdin;
+  int c = 0;
 
-  struct termios term, oterm; 
-  int fd = gkbd_stdin; 
-  int c = 0; 
+  // get the terminal settings
+  tcgetattr(fd, &oterm);
 
-  /* get the terminal settings */ 
-  tcgetattr(fd, &oterm); 
+  // get a copy of the settings, which we modify
+  memcpy(&term, &oterm, sizeof(term));
 
-  /* get a copy of the settings, which we modify */ 
-  memcpy(&term, &oterm, sizeof(term)); 
+  // put the terminal in non-canonical mode, any
+  // reads timeout after 0.1 seconds or when a
+  // single character is read
+  term.c_lflag = term.c_lflag & (!ICANON);
+  term.c_cc[VMIN] = 0;
+  term.c_cc[VTIME] = 1;
+  tcsetattr(fd, TCSANOW, &term);
 
-  /* put the terminal in non-canonical mode, any 
-     reads timeout after 0.1 seconds or when a 
-     single character is read */ 
-  term.c_lflag = term.c_lflag & (!ICANON); 
-  term.c_cc[VMIN] = 0; 
-  term.c_cc[VTIME] = 1; 
-  tcsetattr(fd, TCSANOW, &term); 
+  int bytes = -1;
+  ioctl(fd, TCWAITEVENT, &bytes);
 
-  /* get input - timeout after 0.1 seconds or 
-     when one character is read. If timed out 
-     getchar() returns -1, otherwise it returns 
-     the character */ 
-/*  c=getchar(); 
-*/
-int bytes = -1;
-ioctl(fd, TCWAITEVENT, &bytes);
+  // reset the terminal to original state
+  tcsetattr(fd, TCSANOW, &oterm);
 
-  /* reset the terminal to original state */ 
-  tcsetattr(fd, TCSANOW, &oterm); 
-
-  /* if we retrieved a character, put it back on 
-     the input stream */ 
-/*  if (c != -1) 
-    ungetc(c, stdin); 
-
-  /* return 1 if the keyboard was hit, or 0 if it 
-     was not hit */ 
-/*  return ((c!=-1)?1:0);
-*/
-return bytes;
-
+  return bytes;
 #endif
 }
 

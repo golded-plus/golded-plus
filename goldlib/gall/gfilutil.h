@@ -52,7 +52,7 @@
 //  ------------------------------------------------------------------M
 
 #if defined(__UNIX__)
-#if not defined(__BEOS__)
+#if !defined(__BEOS__)
 #define O_TEXT 0
 #define O_BINARY 0
 #endif
