@@ -457,9 +457,13 @@ static void w_brag() {
   wcenters(13, C_BRAGW, "tain conditions. See the LICENSE.TXT for more details.");
 
   wcenters(MAXROW-10, C_BRAGW, "This executable is distributed by");
-  sprintf(buf, "%s (Fido: %s) - <%s>", __gver_vendor_name__,
-                                       __gver_vendor_fido__,
-                                       __gver_vendor_email__);
+  if (*__gver_vendor_fido__)
+    sprintf(buf, "%s (Fido: %s) - <%s>", __gver_vendor_name__,
+                                         __gver_vendor_fido__,
+                                         __gver_vendor_email__);
+  else
+    sprintf(buf, "%s <%s>", __gver_vendor_name__,
+                            __gver_vendor_email__);
   wcenters(MAXROW-9, C_BRAGW, buf);
   sprintf(buf, "Compiled on %s %s", __gver_date__, __gver_time__);
   wcenters(MAXROW-8, C_BRAGW, buf);
