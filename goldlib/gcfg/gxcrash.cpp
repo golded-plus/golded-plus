@@ -111,12 +111,17 @@ void gareafile::ReadCrashmail(char* tag) {
 
     const word CRC_AKA = 0x13A4;
     const word CRC_AREA = 0x010B;
+#ifndef GCFG_NOCECHO
+    const word CRC_AREAFILE = 0xB487;
+#endif
     const word CRC_LOCALAREA = 0xAEC1;
     const word CRC_DESCRIPTION = 0x2DF1;
     const word CRC_DOMAIN = 0xFFCA;
     const word CRC_GROUP = 0x1C9B;
     const word CRC_NETMAIL = 0xE42E;
+#ifndef GCFG_NOCECHO
     const word CRC_NETMAILDIR = 0x180A;
+#endif
     const word CRC_SYSOP = 0x967F;
     const word CRC_UNCONFIRMED = 0x195E;
 
@@ -145,6 +150,10 @@ void gareafile::ReadCrashmail(char* tag) {
           jbstrcpy(domain, buf, 50, &jbcpos);
           break;
 #ifndef GCFG_NOCECHO
+        case CRC_AREAFILE:
+          jbstrcpy(tmp, buf, 100, &jbcpos);
+          ReadCrashmail(tmp);
+          break;
         case CRC_NETMAILDIR:
           if(aa.type != 0xff) {
             if(not unconfirmed)

@@ -214,6 +214,8 @@ void gareafile::ReadHPTFile(char* path, char* file, char* options, char* origin,
             break;
           case CRC_INCLUDE:
             strxcpy(buf2, val, sizeof(buf2));
+            if(strchg(buf2, '[', '%') != 0)
+              strchg(buf2, ']', '%');
             MakePathname(buf2, path, buf2);
             ReadHPTFile(path, buf2, options, origin, group);
             break;
@@ -249,6 +251,8 @@ void gareafile::ReadHPTFile(char* path, char* file, char* options, char* origin,
           // If not pass-through
           if(not strieql("Passthrough", key)) {
 
+            if(strchg(key, '[', '%') != 0)
+              strchg(key, ']', '%');
             aa.setpath(key);
             aa.msgbase = fidomsgtype;
             aa.groupid = group;
