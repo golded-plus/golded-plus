@@ -2733,7 +2733,7 @@ char *Latin2ISO(char *iso_encoding, const char *latin_encoding) {
 char *ISO2Latin(char *latin_encoding, const char *iso_encoding) {
 
   static const char *latinno[] = { NULL, "1", "2", "3", "4", NULL, NULL, NULL, NULL, "5", "6", NULL, NULL, "7", "8", "9" };
-  int chsno = atoi(iso_encoding+9);
+  int chsno = atoi(strstr(iso_encoding, "8859")+5);
   chsno = chsno > sizeof(latinno)/sizeof(const char *) ? 0 : chsno;
   if(latinno[chsno] == NULL)
     return strxmerge(latin_encoding, 12, iso_encoding, NULL);

@@ -171,7 +171,7 @@ char* mime_header_encode(char* dest, const char* source, GMsg* msg) {
         if(not inmime) {
           if(msg->charset) {
             bp = stpcpy(bp, "=?");
-            if(strneql(msg->charset, "latin", 5)) {
+            if(strnieql(msg->charset, "latin", 5)) {
               bp = Latin2ISO(bp, msg->charset);
             }
             else {
@@ -497,7 +497,7 @@ void DoKludges(int mode, GMsg* msg, bool attronly) {
       char encoding[100];
       bool isusascii = striinc("ASCII", msg->charset);
       bool isqp = not isusascii and IsQuotedPrintable(msg->charset);
-      if(strneql(msg->charset, "latin", 5))
+      if(strnieql(msg->charset, "latin", 5))
         Latin2ISO(encoding, msg->charset);
       else if(isusascii)
         strcpy(encoding, "us-ascii");

@@ -12,6 +12,10 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed bug in Latin-x to ISO-8859-x converter, now charset in
+  Internet mail should be properly specifyed as ISO rather than as
+  Latin.
+
 - When you change mail to the UUCP gate and InternetRFCBody is on
   GoldED+ WILL insert new To: line in the message, stripping old one.
 
