@@ -82,6 +82,7 @@ class gfileselect : public gwinpick {
   void print_line(uint idx, uint pos, bool isbar);
   void scroll(int where);
   bool handle_key();
+  const char *gensize(ulong size);
 
 public:
 
@@ -138,17 +139,43 @@ void gfileselect::do_delayed() {
 
 //  ------------------------------------------------------------------
 
+#define KFIX(A) (int) (((A) * 1000.0 / 1024.0) / 10)
+
+const char *gfileselect::gensize(ulong size) {
+
+  static char ret[16];
+
+  if(size >= 1048576000) {
+    size += 5242880;
+    sprintf(ret, "%3d.%02dG", (int) size/1073741824, KFIX((size%1073741824)/1024));
+  }
+  else if(size >= 1024000) {
+    size += 5120;
+    sprintf(ret, "%3d.%02dM", (int) size/1048576, KFIX((size%1048576)/1024));
+  }
+  else if(size >= 1000) {
+    size += 5;
+    sprintf(ret, "%3d.%02dk", (int) size/1024, KFIX(size%1024));
+  }
+  else
+    sprintf(ret, "%d", (int) size);
+  return ret;
+}
+
+
+//  ------------------------------------------------------------------
+
 void gfileselect::print_line(uint idx, uint pos, bool isbar) {
 
   char buf[200];
 
   FFblk& fb = fblk[idx];
 
-  sprintf(buf, "%c%-*.*s %8lu %2d-%02d-%02d %2d:%02d ",
+  sprintf(buf, "%c%-*.*s %8s %2d-%02d-%02d %2d:%02d ",
       fb.selected ? MMRK_MARK : ' ',
       MAXCOL-62, (int)MAXCOL-62,
       fb.name,
-      fb.size,
+      gensize(fb.size),
       fb.day,
       fb.month,
       fb.year % 100,
