@@ -5366,7 +5366,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
           <ident/NO/
         </item>
         <label>
-          Note:
+          Notes:
         </label>
         <item>
           This keyword is only functional in netmail and local areas.
@@ -5431,98 +5431,604 @@ AREASEP &excl;C "Group C" C Local]]></eg>
         </item>
       </list>
     </div2>
-
-
-<!-- finished here -->
-
-
     <div2 id=ATTRIBSATTACH>
       <head>
-        ATTRIBSATTACH &lt;attributes&gt;
+        ATTRIBSATTACH
       </head>
-      <p>
-        Defines the attributes that are <hi>added</hi> to the existing
-        attributes of a message when the file attach attribute is toggled on.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/ATTRIBSATTACH/ <ident/&lt;attributes&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Defines the attributes that are <hi>added</hi> to the existing
+          attributes of a message when the file attach attribute is toggled on.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          Available <ident/attributes/ are described in the
+          <ptr target=MESSAGEATTRS> chapter.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <gi/LOC/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ptr target=MESSAGEATTRS> chapter,
+          <ref target=ATTACHPATH><kw/ATTACHPATH/</ref>,
+          <ref target=ATTRIBSCC><kw/ATTRIBSCC/</ref>,
+          <ref target=ATTRIBSCFM><kw/ATTRIBSCFM/</ref>,
+          <ref target=ATTRIBSECHO><kw/ATTRIBSECHO/</ref>,
+          <ref target=ATTRIBSEMAIL><kw/ATTRIBSEMAIL/</ref>,
+          <ref target=ATTRIBSFRQ><kw/ATTRIBSFRQ/</ref>,
+          <ref target=ATTRIBSLOCAL><kw/ATTRIBSLOCAL/</ref>,
+          <ref target=ATTRIBSNET><kw/ATTRIBSNET/</ref>,
+          <ref target=ATTRIBSNEWS><kw/ATTRIBSNEWS/</ref>,
+          <ref target=ATTRIBUTES><kw/ATTRIBUTES/</ref>
+        </item>
+      </list>
     </div2>
     <div2>
       <head>
         ATTRIBSCC &lt;attributes&gt;
       </head>
-      <p>
-        Defines the default attributes of Carbon Copy messages. <abbr>CC</abbr>
-        attributes are <hi>added</hi> to the existing attributes of the
-        original message. Usually used to add the <q>Kill/Sent</q> attribute.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/ATTRIBSCC/ <ident/&lt;attributes&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Defines the default attributes of carbon copy messages. <abbr/CC/
+          attributes are <hi/added/ to the existing attributes of the
+          original message. Usually used to add the <gi>K/S</gi> attribute.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          Available <ident/attributes/ are described in the
+          <ptr target=MESSAGEATTRS> chapter.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <gi/LOC/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ptr target=MESSAGEATTRS> chapter,
+          <ref target=ADDRESSMACRO><kw/ADDRESSMACRO/</ref>,
+          <ref target=ATTRIBSATTACH><kw/ATTRIBSATTACH/</ref>,
+          <ref target=ATTRIBSCFM><kw/ATTRIBSCFM/</ref>,
+          <ref target=ATTRIBSECHO><kw/ATTRIBSECHO/</ref>,
+          <ref target=ATTRIBSEMAIL><kw/ATTRIBSEMAIL/</ref>,
+          <ref target=ATTRIBSFRQ><kw/ATTRIBSFRQ/</ref>,
+          <ref target=ATTRIBSLOCAL><kw/ATTRIBSLOCAL/</ref>,
+          <ref target=ATTRIBSNET><kw/ATTRIBSNET/</ref>,
+          <ref target=ATTRIBSNEWS><kw/ATTRIBSNEWS/</ref>,
+          <ref target=ATTRIBUTES><kw/ATTRIBUTES/</ref>,
+          <ref target=CARBONCOPYLIST><kw/CARBONCOPYLIST/</ref>
+        </item>
+      </list>
     </div2>
     <div2 id=ATTRIBSCFM>
       <head>
         ATTRIBSCFM &lt;attributes&gt;
       </head>
-      <p>
-        Defines the default attributes of the Confirmation Receipt message.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/ATTRIBSCFM/ <ident/&lt;attributes&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Defines the default attributes of the confirmation receipt message.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          Available <ident/attributes/ are described in the
+          <ptr target=MESSAGEATTRS> chapter.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <gi/LOC/
+        </item>
+        <label>
+          Notes:
+        </label>
+        <ident>
+          Suggested attribute is: <gi/RRC/.
+        </ident>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ptr target=MESSAGEATTRS> chapter,
+          <ref target=AREACFMTO><kw/AREACFMTO/</ref>,
+          <ref target=ATTRIBSATTACH><kw/ATTRIBSATTACH/</ref>,
+          <ref target=ATTRIBSCC><kw/ATTRIBSCC/</ref>,
+          <ref target=ATTRIBSECHO><kw/ATTRIBSECHO/</ref>,
+          <ref target=ATTRIBSEMAIL><kw/ATTRIBSEMAIL/</ref>,
+          <ref target=ATTRIBSFRQ><kw/ATTRIBSFRQ/</ref>,
+          <ref target=ATTRIBSLOCAL><kw/ATTRIBSLOCAL/</ref>,
+          <ref target=ATTRIBSNET><kw/ATTRIBSNET/</ref>,
+          <ref target=ATTRIBSNEWS><kw/ATTRIBSNEWS/</ref>,
+          <ref target=ATTRIBUTES><kw/ATTRIBUTES/</ref>,
+          <ref target=CONFIRMFILE><kw/CONFIRMFILE/</ref>,
+          <ref target=RCVDISABLESCFM><kw/RCVDISABLESCFM/</ref>
+        </item>
+      </list>
     </div2>
     <div2 id=ATTRIBSECHO>
       <head>
-        ATTRIBSECHO &lt;attributes&gt;
+        ATTRIBSECHO
       </head>
-      <p>
-        Defines the default attributes of messages entered in echomail areas.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/ATTRIBSECHO/ <ident/&lt;attributes&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Defines the default attributes of messages entered in echomail areas.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          Available <ident/attributes/ are described in the
+          <ptr target=MESSAGEATTRS> chapter.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <gi/LOC/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ptr target=MESSAGEATTRS> chapter,
+          <ref target=ADDRESSMACRO><kw/ADDRESSMACRO/</ref>,
+          <ref target=AREA><kw/AREA/</ref>,
+          <ref target=AREADEF><kw/AREADEF/</ref>,
+          <ref target=AREADESC><kw/AREADESC/</ref>,
+          <ref target=ATTRIBSATTACH><kw/ATTRIBSATTACH/</ref>,
+          <ref target=ATTRIBSCC><kw/ATTRIBSCC/</ref>,
+          <ref target=ATTRIBSCFM><kw/ATTRIBSCFM/</ref>,
+          <ref target=ATTRIBSEMAIL><kw/ATTRIBSEMAIL/</ref>,
+          <ref target=ATTRIBSFRQ><kw/ATTRIBSFRQ/</ref>,
+          <ref target=ATTRIBSLOCAL><kw/ATTRIBSLOCAL/</ref>,
+          <ref target=ATTRIBSNET><kw/ATTRIBSNET/</ref>,
+          <ref target=ATTRIBSNEWS><kw/ATTRIBSNEWS/</ref>,
+          <ref target=ATTRIBUTES><kw/ATTRIBUTES/</ref>,
+          <ref target=CTRLINFOECHO><kw/CTRLINFOECHO/</ref>
+        </item>
+      </list>
     </div2>
     <div2 id=ATTRIBSEMAIL>
       <head>
-        ATTRIBSEMAIL &lt;attributes&gt;
+        ATTRIBSEMAIL
       </head>
-      <p>
-        Defines the default attributes of messages entered in e-mail areas.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/ATTRIBSEMAIL/ <ident/&lt;attributes&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Defines the default attributes of messages entered in e-mail areas.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          Available <ident/attributes/ are described in the
+          <ptr target=MESSAGEATTRS> chapter.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <gi/LOC/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ptr target=MESSAGEATTRS> chapter,
+          <ref target=ADDRESSMACRO><kw/ADDRESSMACRO/</ref>,
+          <ref target=AREA><kw/AREA/</ref>,
+          <ref target=AREADEF><kw/AREADEF/</ref>,
+          <ref target=AREADESC><kw/AREADESC/</ref>,
+          <ref target=AREAISEMAIL><kw/AREAISEMAIL/</ref>,
+          <ref target=ATTRIBSATTACH><kw/ATTRIBSATTACH/</ref>,
+          <ref target=ATTRIBSCC><kw/ATTRIBSCC/</ref>,
+          <ref target=ATTRIBSCFM><kw/ATTRIBSCFM/</ref>,
+          <ref target=ATTRIBSECHO><kw/ATTRIBSECHO/</ref>,
+          <ref target=ATTRIBSFRQ><kw/ATTRIBSFRQ/</ref>,
+          <ref target=ATTRIBSLOCAL><kw/ATTRIBSLOCAL/</ref>,
+          <ref target=ATTRIBSNET><kw/ATTRIBSNET/</ref>,
+          <ref target=ATTRIBSNEWS><kw/ATTRIBSNEWS/</ref>,
+          <ref target=ATTRIBUTES><kw/ATTRIBUTES/</ref>,
+          <ref target=CTRLINFOEMAIL><kw/CTRLINFOEMAIL/</ref>
+        </item>
+      </list>
     </div2>
     <div2 id=ATTRIBSFRQ>
       <head>
-        ATTRIBSFRQ &lt;attributes&gt;
+        ATTRIBSFRQ
       </head>
-      <p>
-        Defines the attributes to use for messages generated with the file
-        request function. Suggested attributes are: <gi>PVT</gi> <gi>K/S</gi>
-        <gi>CRA</gi>. The <gi>FRQ</gi> and <gi>LOC</gi> attributes are added
-        automatically.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/ATTRIBSFRQ/ <ident/&lt;attributes&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Defines the attributes to use for messages generated with the file
+          request function.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          Available <ident/attributes/ are described in the
+          <ptr target=MESSAGEATTRS> chapter.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <gi/FRQ/ <gi/LOC/
+        </item>
+        <label>
+          Notes:
+        </label>
+        <ident>
+          Suggested attributes are: <gi/PVT/ <gi>K/S</gi> <gi/CRA/.
+        </ident>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ptr target=MESSAGEATTRS> chapter,
+          <ref target=ADDRESSMACRO><kw/ADDRESSMACRO/</ref>,
+          <ref target=AREAFREQDIRECT><kw/AREAFREQDIRECT/</ref>,
+          <ref target=AREAFREQTO><kw/AREAFREQTO/</ref>,
+          <ref target=ATTRIBSATTACH><kw/ATTRIBSATTACH/</ref>,
+          <ref target=ATTRIBSCC><kw/ATTRIBSCC/</ref>,
+          <ref target=ATTRIBSCFM><kw/ATTRIBSCFM/</ref>,
+          <ref target=ATTRIBSECHO><kw/ATTRIBSECHO/</ref>,
+          <ref target=ATTRIBSEMAIL><kw/ATTRIBSEMAIL/</ref>,
+          <ref target=ATTRIBSLOCAL><kw/ATTRIBSLOCAL/</ref>,
+          <ref target=ATTRIBSNET><kw/ATTRIBSNET/</ref>,
+          <ref target=ATTRIBSNEWS><kw/ATTRIBSNEWS/</ref>,
+          <ref target=ATTRIBUTES><kw/ATTRIBUTES/</ref>,
+          <ref target=FRQEXT><kw/FRQEXT/</ref>,
+          <ref target=FRQNODEMAP><kw/FRQNODEMAP/</ref>,
+          <ref target=FRQOPTIONS><kw/FRQOPTIONS/</ref>,
+          <ref target=FRQWAZOO><kw/FRQWAZOO/</ref>,
+          <ref target=OUTBOUNDPATH><kw/OUTBOUNDPATH/</ref>
+        </item>
+      </list>
     </div2>
     <div2 id=ATTRIBSLOCAL>
       <head>
-        ATTRIBSLOCAL &lt;attributes&gt;
+        ATTRIBSLOCAL
       </head>
-      <p>
-        Defines the default attributes of messages entered in local areas.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/ATTRIBSLOCAL/ <ident/&lt;attributes&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Defines the default attributes of messages entered in local areas.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          Available <ident/attributes/ are described in the
+          <ptr target=MESSAGEATTRS> chapter.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <gi/LOC/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ptr target=MESSAGEATTRS> chapter,
+          <ref target=ADDRESSMACRO><kw/ADDRESSMACRO/</ref>,
+          <ref target=AREA><kw/AREA/</ref>,
+          <ref target=AREADEF><kw/AREADEF/</ref>,
+          <ref target=AREADESC><kw/AREADESC/</ref>,
+          <ref target=ATTRIBSATTACH><kw/ATTRIBSATTACH/</ref>,
+          <ref target=ATTRIBSCC><kw/ATTRIBSCC/</ref>,
+          <ref target=ATTRIBSCFM><kw/ATTRIBSCFM/</ref>,
+          <ref target=ATTRIBSECHO><kw/ATTRIBSECHO/</ref>,
+          <ref target=ATTRIBSEMAIL><kw/ATTRIBSEMAIL/</ref>,
+          <ref target=ATTRIBSFRQ><kw/ATTRIBSFRQ/</ref>,
+          <ref target=ATTRIBSNET><kw/ATTRIBSNET/</ref>,
+          <ref target=ATTRIBSNEWS><kw/ATTRIBSNEWS/</ref>,
+          <ref target=ATTRIBUTES><kw/ATTRIBUTES/</ref>,
+          <ref target=CTRLINFOLOCAL><kw/CTRLINFOLOCAL/</ref>
+        </item>
+      </list>
     </div2>
     <div2 id=ATTRIBSNET>
       <head>
-        ATTRIBSNET &lt;attributes&gt;
+        ATTRIBSNET
       </head>
-      <p>
-        Defines the default attributes of messages entered in netmail areas.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/ATTRIBSNET/ <ident/&lt;attributes&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Defines the default attributes of messages entered in netmail areas.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          Available <ident/attributes/ are described in the
+          <ptr target=MESSAGEATTRS> chapter.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <gi/LOC/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ptr target=MESSAGEATTRS> chapter,
+          <ref target=ADDRESSMACRO><kw/ADDRESSMACRO/</ref>,
+          <ref target=AREA><kw/AREA/</ref>,
+          <ref target=AREADEF><kw/AREADEF/</ref>,
+          <ref target=AREADESC><kw/AREADESC/</ref>,
+          <ref target=ATTRIBSATTACH><kw/ATTRIBSATTACH/</ref>,
+          <ref target=ATTRIBSCC><kw/ATTRIBSCC/</ref>,
+          <ref target=ATTRIBSCFM><kw/ATTRIBSCFM/</ref>,
+          <ref target=ATTRIBSECHO><kw/ATTRIBSECHO/</ref>,
+          <ref target=ATTRIBSEMAIL><kw/ATTRIBSEMAIL/</ref>,
+          <ref target=ATTRIBSFRQ><kw/ATTRIBSFRQ/</ref>,
+          <ref target=ATTRIBSLOCAL><kw/ATTRIBSLOCAL/</ref>,
+          <ref target=ATTRIBSNEWS><kw/ATTRIBSNEWS/</ref>,
+          <ref target=ATTRIBUTES><kw/ATTRIBUTES/</ref>,
+          <ref target=CTRLINFONET><kw/CTRLINFONET/</ref>
+        </item>
+      </list>
     </div2>
     <div2 id=ATTRIBSNEWS>
       <head>
-        ATTRIBSNEWS &lt;attributes&gt;
+        ATTRIBSNEWS
       </head>
-      <p>
-        Defines the default attributes of messages entered in news groups.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/ATTRIBSNEWS/ <ident/&lt;attributes&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Defines the default attributes of messages entered in news groups.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          Available <ident/attributes/ are described in the
+          <ptr target=MESSAGEATTRS> chapter.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <gi/LOC/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ptr target=MESSAGEATTRS> chapter,
+          <ref target=ADDRESSMACRO><kw/ADDRESSMACRO/</ref>,
+          <ref target=AREA><kw/AREA/</ref>,
+          <ref target=AREADEF><kw/AREADEF/</ref>,
+          <ref target=AREADESC><kw/AREADESC/</ref>,
+          <ref target=ATTRIBSATTACH><kw/ATTRIBSATTACH/</ref>,
+          <ref target=ATTRIBSCC><kw/ATTRIBSCC/</ref>,
+          <ref target=ATTRIBSCFM><kw/ATTRIBSCFM/</ref>,
+          <ref target=ATTRIBSECHO><kw/ATTRIBSECHO/</ref>,
+          <ref target=ATTRIBSEMAIL><kw/ATTRIBSEMAIL/</ref>,
+          <ref target=ATTRIBSFRQ><kw/ATTRIBSFRQ/</ref>,
+          <ref target=ATTRIBSLOCAL><kw/ATTRIBSLOCAL/</ref>,
+          <ref target=ATTRIBSNET><kw/ATTRIBSNET/</ref>,
+          <ref target=ATTRIBUTES><kw/ATTRIBUTES/</ref>,
+          <ref target=CTRLINFONEWS><kw/CTRLINFONEWS/</ref>
+        </item>
+      </list>
     </div2>
     <div2 id=ATTRIBUTES>
       <head>
-        ATTRIBUTES &lt;attributes&gt;
+        ATTRIBUTES
       </head>
-      <p>
-        Defines the default attributes for area members of the current Random
-        System group.
-      </p>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/ATTRIBUTES/ <ident/&lt;attributes&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Defines the default attributes for area members of the current
+          <ref target=RANDOMSYSTEM>Random System</ref> group.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          Available <ident/attributes/ are described in the
+          <ptr target=MESSAGEATTRS> chapter.
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          This keyword is valid <hi/ONLY/ in a
+          <ref target=RANDOMSYSTEM>Random System</ref> group.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ptr target=MESSAGEATTRS> chapter,
+          <ref target=ADDRESSMACRO><kw/ADDRESSMACRO/</ref>,
+          <ref target=AREA><kw/AREA/</ref>,
+          <ref target=AREADEF><kw/AREADEF/</ref>,
+          <ref target=AREADESC><kw/AREADESC/</ref>,
+          <ref target=ATTRIBSATTACH><kw/ATTRIBSATTACH/</ref>,
+          <ref target=ATTRIBSCC><kw/ATTRIBSCC/</ref>,
+          <ref target=ATTRIBSCFM><kw/ATTRIBSCFM/</ref>,
+          <ref target=ATTRIBSECHO><kw/ATTRIBSECHO/</ref>,
+          <ref target=ATTRIBSEMAIL><kw/ATTRIBSEMAIL/</ref>,
+          <ref target=ATTRIBSFRQ><kw/ATTRIBSFRQ/</ref>,
+          <ref target=ATTRIBSLOCAL><kw/ATTRIBSLOCAL/</ref>,
+          <ref target=ATTRIBSNET><kw/ATTRIBSNET/</ref>,
+          <ref target=ATTRIBSNEWS><kw/ATTRIBSNEWS/</ref>,
+          <ref target=CTRLINFO><kw/CTRLINFO/</ref>
+        </item>
+      </list>
     </div2>
+
+
+<!-- finished here -->
+
+
     <div2>
       <head>
         BEEPCOMMENT &lt;(yes)/no&gt;
@@ -5570,7 +6076,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
         even if it has already been marked as received.
       </p>
     </div2>
-    <div2>
+    <div2 id=CARBONCOPYLIST>
       <head>
         CARBONCOPYLIST &lt;listspec=Names&gt;
       </head>
