@@ -1487,8 +1487,10 @@ void IEclass::DeleteEOL() {
 
   currline->txt.erase(col);
 
-  if(_has_linefeed)
+  if(_has_linefeed) {
+    Undo->PushItem(EDIT_UNDO_INS_CHAR|BATCH_MODE);
     currline->txt += "\n";
+  }
 
   clreol();
 
@@ -2444,7 +2446,7 @@ void UndoStack::PushItem(uint action, Line* __line, uint __col, uint __len) {
         last_item->line = __line;
         __col = last_item->col.num;
         if(__len == NO_VALUE)
-          __len = __line->txt.length() - __col + 1;
+          __len = __line->txt.length() - __col;
         throw_new(last_item->data.text_ptr = new(__len) text_item(__col, __len));
         memcpy(last_item->data.text_ptr->text, __line->txt.c_str() + __col, __len);
         break;

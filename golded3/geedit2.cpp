@@ -740,6 +740,7 @@ void IEclass::BlockPaste() {
         Line* _newline = insertlinebelow(currline, currline->txt.c_str()+col, BATCH_MODE);
         currline->txt.erase(col);
         currline->txt += _pasteline->txt;
+        Undo->PushItem(EDIT_UNDO_INS_TEXT|BATCH_MODE, currline, col, pastelen);
         setlinetype(currline);
         col = currline->txt.length();
         wrapins(&currline, &col, &row, false);
