@@ -1,8 +1,9 @@
 //////////////////////////////////////////////////////////////////////
 //
-//  GoldED 3.00 * Dutch Language Definition File
+//  GoldED+ 1.1.5 * Dutch Language Definition File
 //
 //  Translated 29-03-1999 by :  Cees Schouten; e-mail : wpp@dds.nl
+//  Additions 11-06-2002 by:    Kees Bergwerf, 2:280/1507
 //
 //  Before you start redefining the language, I suggest you print this
 //  file and keep it close for reference. Redefining can be a slow and
@@ -478,4 +479,40 @@ MI_NOCATCH           "N Niets Bijwerken / ESC "
 
 ----------------------------------------------------------------------
 
-MI_CHARSETAUTO        " Auto "
+IL_DECODE             "Decoderen"
+IL_NOMOREMATCHES      " Geen overeenkomsten meer gevonden "
+IL_PATHREPORT         " Genereren van PATH overzicht "
+IL_PEEKINFONOURLS     " Geen geldige URL's gevonden in dit bericht! "
+IL_PREPARING          "Voorbereiden"
+IL_USERWAIT           " Wacht - Zoeken in adresboek... "
+MI_ALSELECTIONS1      "Markeer gebieden met nieuwe berichten"
+MI_ALSELECTIONS2      "(ongebruikt)"
+MI_CHARSETAUTO        " Automatisch "
+MI_ENTERCMDLINE       " Programma uitvoeren "
+
+MI_XCIGNORE           "N Negeer XC's "
+MI_XCLISTFMT          "L List Format  "
+MI_XCLISTLINE         "R Regel      "
+MI_XCLISTRAW          "B Bewaren    "
+MI_XCLISTREMOVE       "V Verwijderen"
+MI_XCLISTVERBOSE      "g Vragen     "
+MI_XCPROCESS          "C Crosspostings verwerken "
+MS_CCTO               "* Kopie gestuurd aan %s"
+MS_ORIGINALLYIN       "* Oorspronkelijk in %s"
+ST_EXTERNUTIL         "Kies extern programma om uit te voeren"
+ST_PEEKURL            "Kies URL"
+ST_USERSTATUSLINE     "GoldED's adresboek - %d of %d (%d left)"
+WT_ADDRESSBOOK        " Adresboek "
+WT_ADVANCEDMARKING    " Uitgebreide kenmerken "
+WT_ADVANCEDSEARCH     " Uitgebreid zoeken "
+WT_CROSSPOST          " Kopie versturen "
+WT_EXECCMDLINE        "Programma uitvoeren"
+WT_EXTERNUTIL         "Externe programma's"
+WT_HEADEREDITHELP1    " #F10: Nodelist "
+WT_HEADEREDITHELP2    " F10: Adresboek "
+WT_PEEKURL            "Beschikbare URLs"
+WT_THREADLISTTITLE    " Onderwerpen lijst "
+WT_USERHEADERAKA      "Adres"
+WT_USERHEADERNAME     "Naam"
+WT_USERHEADERORG      "Organisatie"
+WT_XCLIST             " XC List "

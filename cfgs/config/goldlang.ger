@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////
 //
-//  GoldED 3.00 * Beispieldatei fÅr eine eingedeutschte OberflÑche
+//  GoldED+ 1.1.5 * Beispieldatei fÅr eine eingedeutschte OberflÑche
 //
 //  Bevor du diese Datei verÑnderst, schlage ich Dir vor, sie zuerst
 //  auszudrucken und als Vorlage zu verwenden. Das Umdefinieren kann
@@ -486,4 +486,41 @@ MI_NOCATCH           "N Nichts      / ESC "
 
 ----------------------------------------------------------------------
 
-MI_CHARSETAUTO        " Auto "
+IL_DECODE             " Dekodieren "
+IL_NOMOREMATCHES      " Keine weiteren öbereinstimmungen gefunden "
+IL_PATHREPORT         " Erzeuge PFAD-Bericht "
+IL_PEEKINFONOURLS     " Keine gÅltigen URLs wurden in dieser msg gefunden! "
+IL_PREPARING          " Erzeuge "
+IL_USERWAIT           " Warte - parse Adressenverzeichnis... "
+MI_ALSELECTIONS1      " Areas mit neuen Mails kennzeichnen "
+MI_ALSELECTIONS2      "(nicht verwendet)"
+MI_CHARSETAUTO        " Automatisch "
+MI_ENTERCMDLINE       " Kommandozeile eingeben "
+MI_XCIGNORE           "Ich ignoriere XC's "
+MI_XCLISTFMT          "L Formatiere Liste "
+MI_XCLISTLINE         "Z Zeile            "
+MI_XCLISTRAW          "B Behalten         "
+MI_XCLISTREMOVE       "E Entfernen        "
+MI_XCLISTVERBOSE      "D Detailliert      "
+MI_XCPROCESS          "B Bearbeite XC's   "
+MS_CCTO               "* Durchschlag an %s"
+MS_ORIGINALLYIN       "* UrsprÅnglich in %s"
+ST_EXTERNUTIL         "WÑhle auszufÅhrendes externes Hilfsprogramm"
+ST_PEEKURL            "WÑhle URL"
+ST_USERSTATUSLINE     "GoldED's Adressenverzeichnis - %d of %d (noch %d)"
+WT_ADDRESSBOOK        " Adressenverzeichnis "
+WT_ADVANCEDMARKING    " Fortgeschrittene Kennzeichnung "
+WT_ADVANCEDSEARCH     " Fortgeschrittene Suche "
+WT_CROSSPOST          " Mail auch in andere Area posten "
+WT_EXECCMDLINE        "AuszufÅhrende Kommandozeile eingeben"
+WT_EXTERNUTIL         "Externe Hilfsprogramme"
+WT_HEADEREDITHELP1    " #F10: Nodeliste "
+WT_HEADEREDITHELP2    " F10: Adressenverzeichnis "
+WT_PEEKURL            "Zur VerfÅgung stehende URLs"
+WT_THREADLISTTITLE    " Mail-Themenliste "
+WT_USERHEADERAKA      "Adresse"
+WT_USERHEADERNAME     "Name"
+WT_USERHEADERORG      "Organisation"
+WT_XCLIST             " XC-Liste "
+IL_UUEINVALIDPATH     " UngÅltige Pfadangabe fÅr die UUdekodierung - Datei wurde nicht geschrieben "
+MS_HIDINGTWIT         "Twitmail - Taste <Pos1> drÅcken, um sie zulesen."
