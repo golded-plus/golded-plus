@@ -173,7 +173,7 @@ int whline(int wsrow, int wscol, int count, int btype, int attr) {
     // see if a left junction or corner is needed
     up   = isupvert  (btype,wgetc(row-1,col));
     down = isdownvert(btype,wgetc(row+1,col));
-    if(up&&down)
+    if(up and down)
       ch=LVJ;
     else if(up)
       ch=LLC;
@@ -195,7 +195,7 @@ int whline(int wsrow, int wscol, int count, int btype, int attr) {
     // see if a middle junction is needed
     up   = isupvert  (btype,wgetc(row-1,col));
     down = isdownvert(btype,wgetc(row+1,col));
-    if(up&&down)
+    if(up and down)
       ch=MJ;
     else if(up)
       ch=LHJ;
@@ -216,7 +216,7 @@ int whline(int wsrow, int wscol, int count, int btype, int attr) {
     // see if a right junction or corner is needed
     up   = isupvert  (btype,wgetc(row-1,col));
     down = isdownvert(btype,wgetc(row+1,col));
-    if(up&&down)
+    if(up and down)
       ch=RVJ;
     else if(up)
       ch=LRC;
@@ -254,7 +254,7 @@ int wvline(int wsrow, int wscol, int count, int btype, int attr) {
     // see if a top junction or corner is needed
     left  = islefthorz (btype,wgetc(row,col-1));
     right = isrighthorz(btype,wgetc(row,col+1));
-    if(left&&right)
+    if(left and right)
       ch=UHJ;
     else if(left)
       ch=URC;
@@ -274,7 +274,7 @@ int wvline(int wsrow, int wscol, int count, int btype, int attr) {
   while(count>1) {
     left  = islefthorz (btype,wgetc(row,col-1));
     right = isrighthorz(btype,wgetc(row,col+1));
-    if(left&&right)
+    if(left and right)
       ch=MJ;
     else if(left)
       ch=RVJ;
@@ -295,7 +295,7 @@ int wvline(int wsrow, int wscol, int count, int btype, int attr) {
     // see if a bottom junction or corner is needed
     left  = islefthorz (btype,wgetc(row,col-1));
     right = isrighthorz(btype,wgetc(row,col+1));
-    if(left&&right)
+    if(left and right)
       ch=LHJ;
     else if(left)
       ch=LRC;

@@ -217,7 +217,7 @@ void g_increase_priority(void) {
 
 void g_set_ostitle(char *title) {
 
-  if(ge_os2_hsw && ge_os2_hwndframe) {
+  if(ge_os2_hsw and ge_os2_hwndframe) {
     strxcpy(ge_os2_swdata.szSwtitle, title, MAXNAMEL);
     pfnWinChangeSwitchEntry(ge_os2_hsw, &ge_os2_swdata);
     pfnWinSetWindowText(ge_os2_hwndframe, (PSZ)title);
@@ -230,7 +230,7 @@ void g_set_ostitle(char *title) {
 
 void g_set_osicon(void) {
 
-  if(ge_os2_hwndframe && ge_os2_hsw) {
+  if(ge_os2_hwndframe and ge_os2_hsw) {
     ULONG ulPicture = (ULONG) pfnWinLoadPointer(HWND_DESKTOP, 0, 1);
     if(ulPicture) {
       pfnWinSendMsg(ge_os2_hwndframe, WM_SETICON, (MPARAM) ulPicture, (MPARAM) 0);

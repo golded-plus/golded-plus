@@ -108,7 +108,7 @@ int g_init_os(int flags) {
           tolower(c) = i + 128;
       }
       for(i=128; i<256; i++) {
-        if((toupper(tolower(i)) != i) && (tolower(toupper(i)) != i))
+        if((toupper(tolower(i)) != i) and (tolower(toupper(i)) != i))
           tolower(i) = toupper(i) = i;
         if(toupper(tolower(i)) != toupper(i))
           toupper(i) = i;

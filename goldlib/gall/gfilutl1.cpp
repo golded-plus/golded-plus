@@ -278,7 +278,7 @@ FILE *fsopen(const char *path, const char *type, int shflag) {
       default:
         break;
     }
-  } while((n < 3) && (c));
+  } while((n < 3) and (c));
 
   fh = sopen(path, acc, shflag, mode);
   if(fh != -1)

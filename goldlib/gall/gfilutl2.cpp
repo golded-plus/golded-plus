@@ -164,16 +164,16 @@ bool maketruepath(std::string &dirname) {
   }  
 #else
   long inspos = -1;
-  if((dirname.length() == 2) && (dirname[1] == ':'))
+  if((dirname.length() == 2) and (dirname[1] == ':'))
     inspos = 2;
-  else if((dirname.length() < 2) || (dirname[1] != ':') || isslash(dirname[0]))
+  else if((dirname.length() < 2) or (dirname[1] != ':') or isslash(dirname[0]))
     inspos = 0;
-  else if(!isslash(dirname[2]))
+  else if(not isslash(dirname[2]))
     inspos = 2;
   if(inspos != -1) {
     char chdrive[] = " :";
     chdrive[0] = (inspos == 2) ? dirname[0] : cwd[0];
-    if(!chdir(chdrive)) {
+    if(not chdir(chdrive)) {
       char dwd[GMAXPATH];
       getcwd(dwd, GMAXPATH);
       if(isslash(dirname[0]))
@@ -192,11 +192,11 @@ bool maketruepath(std::string &dirname) {
   }
 #endif
 #else
-  if(!dirname.empty() && (dirname[0] == '~')) {
+  if(not dirname.empty() and (dirname[0] == '~')) {
     char* lname;
     const char *p = dirname.c_str()+1;
-    if((dirname.length() != 1) && !isslash(*p)) {
-      while(*p && !isslash(*p))
+    if((dirname.length() != 1) and not isslash(*p)) {
+      while(*p and not isslash(*p))
         ndirname += *p++; // get user name
     } else {
       if ((lname = getlogin()) == NULL)
@@ -215,7 +215,7 @@ bool maketruepath(std::string &dirname) {
       dirname = cwd;
       ok = false;
     }
-  } else if(!dirname.empty() && !isslash(dirname[0])) {
+  } else if(not dirname.empty() and not isslash(dirname[0])) {
     ndirname = cwd;
     ndirname += "/";
     ndirname += dirname;
@@ -234,9 +234,9 @@ bool maketruepath(std::string &dirname) {
 #endif
   size_t len = dirname.length();
 #ifdef __HAVE_DRIVES__
-  while((len > 3) && isslash(dirname[--len]))
+  while((len > 3) and isslash(dirname[--len]))
 #else
-  while((len > 1) && isslash(dirname[--len]))
+  while((len > 1) and isslash(dirname[--len]))
 #endif
     dirname.erase(len, 1);
   if(access(dirname.c_str(), R_OK)) {
@@ -259,13 +259,13 @@ bool maketruepath(std::string &dirname) {
   while((skipfrom=dirname.find("/./")) != dirname.npos)
     dirname.erase(skipfrom, 2);
   len = dirname.length();
-  if(len > 2 && !strcmp(&(dirname.c_str()[len-2]), "/."))
+  if(len > 2 and not strcmp(&(dirname.c_str()[len-2]), "/."))
     dirname.erase(len-2, 2);
   len = dirname.length();
 #ifdef __HAVE_DRIVES__
-  if((len > 3) && isslash(dirname[--len]))
+  if((len > 3) and isslash(dirname[--len]))
 #else
-  if((len > 1) && isslash(dirname[--len]))
+  if((len > 1) and isslash(dirname[--len]))
 #endif
     dirname.erase(len, 1);
   return ok;

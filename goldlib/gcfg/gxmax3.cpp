@@ -56,6 +56,7 @@ void gareafile::ReadMaximus3(char* mxpath, char* areafile, char* options) {
     fread(prmp, sizeof(m_pointers), 1, fp);
     long heapsz = fsize(fp) - prm.heap_offset;
     char* offsets = (char*)throw_calloc(1, (uint)heapsz);
+    fseek(fp, prm.heap_offset, SEEK_SET);
     fread(offsets, (uint)heapsz, 1, fp);
     fclose(fp);
 

@@ -2086,7 +2086,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode) {
                   strcpy(msg->charset, chsbuf);
                 }
               }
-              else if((kludgetype == FSC_CHARSET) || (kludgetype == FSC_CODEPAGE)) {
+              else if((kludgetype == FSC_CHARSET) or (kludgetype == FSC_CODEPAGE)) {
                 *chsbuf = NUL;
                 qpencoded = IsQuotedPrintable(ptr);
                 if(kludgetype == FSC_CODEPAGE)

@@ -30,7 +30,7 @@
 
 //  ------------------------------------------------------------------
 
-inline int isleap(unsigned yr) { return yr % 400 == 0 || (yr % 4 == 0 && yr % 100 != 0); }
+inline int isleap(unsigned yr) { return (yr % 400 == 0) or ((yr % 4 == 0) and (yr % 100 != 0)); }
 inline unsigned months_to_days(unsigned month) { return (month * 3057 - 3007) / 100; }
 inline long years_to_days(unsigned yr) { return yr * 365L + yr / 4 - yr / 100 + yr / 400; }
 

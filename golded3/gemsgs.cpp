@@ -60,7 +60,7 @@ static bool tokenxchg(char*& dst, char* tok, const char* src, int len = 0, int c
       char *p = strchr(dst+toklen, '}');
       if(p) {
         uint dstlen = p-dst-toklen-1;
-        if(use && dstlen) {
+        if(use and dstlen) {
           strxcpy (buf, dst+toklen+1, dstlen+1);
           src = buf;
         }

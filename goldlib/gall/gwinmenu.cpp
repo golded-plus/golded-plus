@@ -220,7 +220,7 @@ static void disp_item(_item_t *witem,int bar)
       // see if currently in bar region.  if so, then use
       // a space for the character. otherwise use the
       // character from the current position in the string
-      ch = (i<gwin.cmenu->textpos||i>textend)?' ':(*p++);
+      ch = ((i<gwin.cmenu->textpos) or (i>textend)) ? ' ' : (*p++);
 
       // select attribute of character to be displayed based upon if
       // selection bar was specified, if the menu item is non-selectable,
@@ -229,7 +229,7 @@ static void disp_item(_item_t *witem,int bar)
         chattr = gwin.cmenu->barattr;
       else if(witem->fmask&M_NOSEL)
         chattr = gwin.cmenu->noselattr;
-      else if((ch==witem->schar)&&!found) {
+      else if((ch==witem->schar) and not found) {
         found = YES;
         chattr = gwin.cmenu->scharattr;
       }
@@ -248,7 +248,7 @@ static void disp_item(_item_t *witem,int bar)
     wprintws(witem->wrow, wcol, (vatch*)buf, width);
 
     // display text description, if one exists
-    if(witem->desc!=NULL&&dispdesc) {
+    if((witem->desc!=NULL) and dispdesc) {
       whp = wfindrec(witem->dwhdl);
       i = (1 + whp->ecol - whp->scol) - (whp->border ? 2 : 0);
       sprintf(buf, "%-*.*s", i, i, witem->desc);
@@ -286,7 +286,7 @@ static _item_t * down_item(_item_t *curr)
         if(trow>crow) {
             tdist=abs((ccol-tcol));
             bdist=abs((ccol-bcol));
-            if((trow<brow)||((trow==brow&&tdist<bdist))) {
+            if((trow<brow) or ((trow==brow) and (tdist<bdist))) {
                 best=temp;
                 brow=trow;
                 bcol=tcol;
@@ -328,9 +328,8 @@ static _item_t * first_item(void)
 
     // search backwards through linked list, testing each item
     for(temp=best->prev;temp!=NULL;temp=temp->prev) {
-        if( (temp->wrow<best->wrow) ||
-            ( (temp->wrow==best->wrow) && (temp->wcol<best->wcol) ) )
-                best=temp;
+        if((temp->wrow<best->wrow) or ((temp->wrow==best->wrow) and (temp->wcol<best->wcol)))
+            best=temp;
     }
 
     // see if menu selection is non-selectable
@@ -376,11 +375,9 @@ static _item_t * last_item(void)
 
     // search backwards through linked list, testing each item
     for(temp=best->prev;temp!=NULL;temp=temp->prev) {
-        if( (temp->wrow>best->wrow) ||
-            ( (temp->wrow==best->wrow) &&
-                (temp->wcol>bcol) ) ) {
-                    best=temp;
-                    bcol=best->wcol;
+        if((temp->wrow>best->wrow) or ((temp->wrow==best->wrow) and (temp->wcol>bcol))) {
+            best=temp;
+            bcol=best->wcol;
         }
     }
 
@@ -456,7 +453,7 @@ static _item_t * left_item(_item_t *curr)
         tpos=(temp->wrow*wwidth) + temp->wcol;
 
         // compare position of test item with best item, current item
-        if(tpos>bpos && tpos<cpos) {
+        if((tpos>bpos) and (tpos<cpos)) {
             best=temp;
             bpos=tpos;
         }
@@ -492,7 +489,7 @@ static _item_t *mouse_on_item(_menu_t *menu,int mcrow,int mccol)
         if(mcrow==(srow+border+item->wrow)) {
             start = scol+border+item->wcol;
             end   = start+calc_bar_width(menu,item)-1;
-            if(mccol>=start&&mccol<=end) {
+            if((mccol>=start) and (mccol<=end)) {
                 found=item;
                 break;
             }
@@ -615,7 +612,7 @@ static _item_t * right_item(_item_t *curr)
         tpos=(temp->wrow*wwidth) + temp->wcol;
 
         // compare position of test item with best item, current item
-        if(tpos<bpos && tpos>cpos) {
+        if((tpos<bpos) and (tpos>cpos)) {
             best=temp;
             bpos=tpos;
         }
@@ -661,7 +658,7 @@ static _item_t * up_item(_item_t *curr)
         if(trow<crow) {
             tdist=abs(ccol-tcol);
             bdist=abs(ccol-bcol);
-            if((trow>brow)||((trow==brow&&tdist<bdist))) {
+            if((trow>brow) or ((trow==brow) and (tdist<bdist))) {
                 best=temp;
                 brow=trow;
                 bcol=tcol;
@@ -823,7 +820,7 @@ int wmenuend(int taginit, int menutype, int barwidth, int textpos, int textattr,
     int w_width, border, found;
 
     // make sure at least 1 menu item has been defined
-    if(!gwin.mlevel||gwin.mlevel>gwin.ilevel)
+    if(not gwin.mlevel or (gwin.mlevel>gwin.ilevel))
         return(gwin.werrno=W_NOITMDEF);
 
     // make sure that the specified initial tagid matches the
@@ -886,7 +883,7 @@ int wmenuget() {
     }
 
     // make sure that wmenuend() was called
-    if(gwin.mlevel||gwin.ilevel) {
+    if(gwin.mlevel or gwin.ilevel) {
         gwin.werrno=W_NOMNUEND;
         return(-1);
     }
@@ -939,14 +936,13 @@ int wmenuget() {
     citem=NULL;
     if(gwin.cmenu->menutype&M_SAVE) {
         for(citem=gwin.cmenu->item;citem!=NULL;citem=citem->prev) {
-            if((gwin.cmenu->citem==citem)&&
-               (!(citem->fmask&M_NOSEL)))
+            if((gwin.cmenu->citem==citem) and not (citem->fmask&M_NOSEL))
                 break;
         }
     }
     if(citem==NULL) {
         citem=wmenuifind(gwin.cmenu->tagcurr);
-        if((citem==NULL)||(citem->fmask&M_NOSEL)) citem=first_item();
+        if((citem==NULL) or (citem->fmask&M_NOSEL)) citem=first_item();
     }
 
     // call the current menu item's 'before'
@@ -975,7 +971,7 @@ int wmenuget() {
 
                 // if Esc checking is on, erase selection bar,
                 // free menu records and return to caller
-                if(gwin.esc||(gwin.cmenu!=gwin.menu)) {
+                if(gwin.esc or (gwin.cmenu!=gwin.menu)) {
                     ESCAPE_KEY:
                     pre_move(citem);
                     pre_exit(w,YES);
@@ -1008,7 +1004,8 @@ int wmenuget() {
                     citem=goto_item(citem,ITM_LT);
 
                 // if pull-down menu flag is set, select this item
-                if(pulldown&&citem->child!=NULL) goto ENTER;
+                if(pulldown and (citem->child!=NULL))
+                    goto ENTER;
                 break;
 
             case Key_Up:
@@ -1037,13 +1034,15 @@ int wmenuget() {
                     citem=goto_item(citem,ITM_RT);
 
                 // if pulldown flag is set, then select this item
-                if(pulldown&&citem->child!=NULL) goto ENTER;
+                if(pulldown and (citem->child!=NULL))
+                    goto ENTER;
                 break;
 
             case Key_Dwn:
 
                 // if current item has a pull-down menu, select it
-                if(citem->fmask&M_HASPD) goto ENTER;
+                if(citem->fmask&M_HASPD)
+                    goto ENTER;
 
                 // if current menu is a vertical menu, then hide
                 // selection bar and find menu item downwards
@@ -1064,7 +1063,8 @@ int wmenuget() {
 
                 // if current menu item has a pull-down menu
                 // attached, then set the pulldown flag
-                if(citem->fmask&M_HASPD) pulldown=YES;
+                if(citem->fmask&M_HASPD)
+                    pulldown=YES;
 
                 // display menu item with selection bar
                 disp_item(citem,1);
@@ -1090,7 +1090,7 @@ int wmenuget() {
                     // if an error was returned by
                     // child menu, free menu records
                     // and pass error code to caller
-                    if(menuerr==-1&&winerr!=W_ESCPRESS) {
+                    if((menuerr==-1) and (winerr!=W_ESCPRESS)) {
                         call_after(citem);
                         menuerr=winerr;
                         pre_exit(w,YES);
@@ -1134,7 +1134,7 @@ int wmenuget() {
                 // function.  if so, then move selection bar to new item
                 if(gwin.cmenu->tagcurr!=-1) {
                     item=wmenuifind(gwin.cmenu->tagcurr);
-                    if(item!=NULL&&(!(item->fmask&M_NOSEL))) {
+                    if((item!=NULL) and not (item->fmask&M_NOSEL)) {
                         pre_move(citem);
                         post_move(gwin.cmenu->citem=citem=item);
                         break;
@@ -1167,12 +1167,12 @@ int wmenuget() {
                 // if child menu returned an exit-all-menus flag,
                 // then free menu records and pass exit-all-menus
                 // flag onto caller
-                if((menuerr==M_EXITALL)||(citem->fmask&M_CLALL)) {
+                if((menuerr==M_EXITALL) or (citem->fmask&M_CLALL)) {
                     disp_item(citem,1);
                     call_after(citem);
                     if(citem->fmask&M_CLALL)
-                      if(_finaltagid == -1)
-                        _finaltagid = citem->tagid;
+                        if(_finaltagid == -1)
+                            _finaltagid = citem->tagid;
                     pre_exit(w,YES);
                     gwin.werrno=W_NOERROR;
                     return M_EXITALL;
@@ -1182,8 +1182,8 @@ int wmenuget() {
                 // child menu, or current item has close-menu
                 // specified, free menu records, and return tag
                 // identifier of current menu item
-                if(citem->child!=NULL||citem->select!=NULL)
-                    if((menuerr!=M_EXIT)&&(!(citem->fmask&M_CLOSE)))
+                if((citem->child!=NULL) or (citem->select!=NULL))
+                    if((menuerr!=M_EXIT) and (not (citem->fmask&M_CLOSE)))
                         break;
                 call_after(citem);
                 _finaltagid = citem->tagid;
@@ -1197,9 +1197,9 @@ int wmenuget() {
                 // code is zero, then it must be an extended key
                 ch=(char)xch;
                 if(!ch and gmnudropthrough) {
-                  if((xch != Key_PgDn) and (xch != Key_PgUp))
-                    kbput(xch);
-                  goto ESCAPE_KEY;
+                    if((xch != Key_PgDn) and (xch != Key_PgUp))
+                        kbput(xch);
+                    goto ESCAPE_KEY;
                 }
 
                 // scan through list of items for one that
@@ -1208,16 +1208,15 @@ int wmenuget() {
                 item=citem->next;
                 for(;;) {
                     while(item!=NULL) {
-                        if((toupper(ch)==toupper(item->schar))&&(!(item->fmask
-                          &M_NOSEL))) goto FARBREAK;
+                        if((toupper(ch)==toupper(item->schar)) and not (item->fmask&M_NOSEL))
+                            goto FARBREAK;
                         if(citem==item) {
                             valid=NO;
                             goto FARBREAK;
                         }
                         item=item->next;
                     }
-                    for(item=gwin.cmenu->item;item->prev!=NULL;
-                      item=item->prev);
+                    for(item=gwin.cmenu->item; item->prev!=NULL; item=item->prev) {}
                 }
 
                 FARBREAK:

@@ -1786,7 +1786,7 @@ int wborder(int btype) {
     return gwin.werrno=W_NOACTIVE;
 
   // check for valid box type
-  if(btype<0||btype>7)
+  if((btype<0) or (btype>7))
     return gwin.werrno=W_INVBTYPE;
 
   // see if window is to have a border

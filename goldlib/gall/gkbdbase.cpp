@@ -885,7 +885,7 @@ int gkbd_nt2bios(INPUT_RECORD& inp) {
   else {
     // If it is a letter key, use the ASCII value supplied
     // by NT to take into account the CapsLock state.
-    if(isupper(keycode) || (k->normal == -1))
+    if(isupper(keycode) or (k->normal == -1))
       c = ascii;
     else
       c = k->normal;
@@ -1037,7 +1037,7 @@ gkey kbxget_raw(int mode) {
       ungetch(key2);    
   }
   // Curses sequence; lookup in nice table above
-  else if((key >= KEY_MIN) && (key <= KEY_MIN+sizeof(gkbd_curstable)/sizeof(int)))
+  else if((key >= KEY_MIN) and (key <= KEY_MIN+sizeof(gkbd_curstable)/sizeof(int)))
     k = (gkbd_curstable[key - KEY_MIN]);
   else if(key == '\015')
     k = Key_Ent;

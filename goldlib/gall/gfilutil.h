@@ -113,7 +113,7 @@
   #define GOLD_SHELL_ENV                    "SHELL"
 #endif
 
-inline bool isslash(char c) { return (c == '\\') || (c == '/'); }
+inline bool isslash(char c) { return (c == '\\') or (c == '/'); }
 
 
 //  ------------------------------------------------------------------
