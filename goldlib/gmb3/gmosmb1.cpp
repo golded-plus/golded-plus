@@ -451,11 +451,14 @@ common:
           msg->txt = (char *)throw_realloc(msg->txt, txt_len+outlen);
           lzh_decode(inbuf, smsg.dfield[i].length - l, (uchar *)(msg->txt+txt_len-1));
           throw_xfree(inbuf);
-        } else {
+        }
+        else if(l < smsg.dfield[i].length) {
           outlen = smsg.dfield[i].length - l;
           msg->txt = (char *)throw_realloc(msg->txt, txt_len+outlen);
           fread(msg->txt+txt_len-1, smsg.dfield[i].length - l, 1, data->sdt_fp);
         }
+        else
+          outlen = 0;
         txt_len+=outlen;
         msg->txt[txt_len-1] = NUL;
         break;
