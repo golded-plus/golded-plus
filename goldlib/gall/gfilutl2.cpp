@@ -214,11 +214,15 @@ bool maketruepath(std::string &dirname) {
   }
 #endif
   size_t posn;
-  for(posn = 0; (posn=dirname.find('\\', posn)) != dirname.npos; posn++)
-    dirname[posn] = '/';
+  for(posn = 0; (posn=dirname.find(GOLD_WRONG_SLASH_CHR, posn)) != dirname.npos; posn++)
+    dirname[posn] = GOLD_SLASH_CHR;
   size_t skipfrom, skipto;
-  while((skipfrom=dirname.find("//")) != dirname.npos)
-    dirname.erase(skipfrom, 1);
+#ifdef __HAVE_DRIVES__ /* Prevent from destroying UNC names */
+  if(dirname.length() > 1) {
+    while((skipfrom=dirname.find("\\\\", 1)) != dirname.npos)
+      dirname.erase(skipfrom, 1);
+  }
+#endif
   size_t len = dirname.length();
 #ifdef __HAVE_DRIVES__
   while((len > 3) && isslash(dirname[--len]))
@@ -230,7 +234,13 @@ bool maketruepath(std::string &dirname) {
     dirname = cwd;
     ok = false;
   }
-  for(posn = 0; (posn=dirname.find('\\', posn)) != dirname.npos; posn++)
+#ifdef __HAVE_DRIVES__
+  if((dirname.length() > 2) and (dirname[0] == '\\') and (dirname[1] == '\\'))
+    posn = 2;
+  else
+#endif
+    posn = 0;
+  for(; (posn=dirname.find('\\', posn)) != dirname.npos; posn++)
     dirname[posn] = '/';
   while((skipto=dirname.find("/../")) != dirname.npos) {
     skipfrom = (skipto == 0) ? 0 : dirname.rfind('/', skipto-1);
