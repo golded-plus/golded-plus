@@ -601,7 +601,7 @@ static void MakeMsg2(int& mode, int& status, int& forwstat, int& topline, GMsg* 
             else
               line->type = 0;
             strtrimline(line->txt);
-            if(AA->isinternet()) {
+            if(AA->isinternet() or *msg->ito or *msg->ifrom) {
               // Check for signature indicator
               if(streql(line->txt.c_str(), "--")) {
                 line->txt = "-- ";
