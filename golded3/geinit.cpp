@@ -765,14 +765,12 @@ void Initialize(int argc, char* argv[]) {
   if(CFG->screenmaxcol >= 80)
     MAXCOL = CFG->screenmaxcol;
 
-  CFG->dispmargin = CFG->cfgdispmargin;
   if(CFG->dispmargin <= 0)
     CFG->dispmargin += MAXCOL;
 
   if(CFG->dispmargin > MAXCOL)
     CFG->dispmargin = MAXCOL;
 
-  CFG->quotemargin = CFG->cfgquotemargin;
   if(CFG->quotemargin <= 0)
     CFG->quotemargin += MAXCOL;
 

@@ -2207,7 +2207,7 @@ int IEclass::Start(int __mode, uint* __position, GMsg* __msg) {
   else
     margintext = CFG->dispmargin;
 
-  marginquotes = EDIT->QuoteMargin();
+  marginquotes = EDIT->QuoteMargin() + 1; // Add one for CR
   if(marginquotes > margintext)
     marginquotes = margintext;
 

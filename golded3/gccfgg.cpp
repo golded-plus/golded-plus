@@ -678,9 +678,7 @@ CfgGed::CfgGed() {
   beepfactor = 1000;
   beepyourmail = true;
   carboncopylist = CC_NAMES;
-  cfgdispmargin = NO;
   cfgeditquotemargin = 75;
-  cfgquotemargin = 70;
   confirmresponse = ASK;
   crosspost = ASK;
   crosspostlist = CC_NAMES;
@@ -692,7 +690,7 @@ CfgGed::CfgGed() {
   dispareano = true;
   dispattachsize = ATTACH_KBYTES;
   displistcursor = NO;
-  dispmargin = NO;
+  dispmargin = 0;
   dispmsgsize = DISPMSGSIZE_BYTES;
   disptabsize = 8;
   encodeemailheaders = true;

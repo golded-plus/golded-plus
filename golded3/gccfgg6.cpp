@@ -384,8 +384,7 @@ void CfgQuotectrl() {
 
 void CfgQuotemargin() {
 
-  CFG->cfgquotemargin = atoi(val);
-  CFG->quotemargin = CFG->cfgquotemargin;
+  CFG->quotemargin = atoi(val);
 }
 
 //  ------------------------------------------------------------------

@@ -128,9 +128,7 @@ public:
 
   Grp         grp;
 
-  int         cfgdispmargin;
   int         cfgeditquotemargin;
-  int         cfgquotemargin;
 
   std::list<CmdKey> cmdkey;
   std::vector<Macro> macro;

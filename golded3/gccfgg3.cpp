@@ -36,8 +36,7 @@ extern char* val;
 
 void CfgDispmargin() {
 
-  CFG->cfgdispmargin = atoi(val);
-  CFG->dispmargin = CFG->cfgdispmargin;
+  CFG->dispmargin = atoi(val);
 }
 
 //  ------------------------------------------------------------------

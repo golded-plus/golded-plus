@@ -513,7 +513,7 @@ void LoadText(GMsg* msg, const char* textfile) {
             if(*txtptr == LF)
               *txtptr = CR;
           }
-          else if((buf[0] == buf[1]) and (buf[0] == buf[2])) {
+          else if(not isspace(buf[0]) and (buf[0] == buf[1]) and (buf[0] == buf[2])) {
             if(not isspace(buf[read_len-1])) read_len += 1;
             buf[read_len-1] = CR;
             buf[read_len] = NUL;
