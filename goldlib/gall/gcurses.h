@@ -34,7 +34,7 @@
 // Even many system which mostly have C++-ready header files,
 // do not have C++-ready curses.h.
 extern "C" {
-#ifdef __FreeBSD__
+#if defined(__FreeBSD__) && (__FreeBSD__ < 4)
 #include <ncurses/ncurses.h>
 #else
 #include <curses.h>
