@@ -1,0 +1,133 @@
+
+//  ------------------------------------------------------------------
+//  The Goldware Library. Copyright (C) Odinn Sorensen.
+//  ------------------------------------------------------------------
+//  This library is free software; you can redistribute it and/or
+//  modify it under the terms of the GNU Library General Public
+//  License as published by the Free Software Foundation; either
+//  version 2 of the License, or (at your option) any later version.
+//
+//  This library is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+//  Library General Public License for more details.
+//
+//  You should have received a copy of the GNU Library General Public
+//  License along with this library; if not, write to the Free
+//  Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//  ------------------------------------------------------------------
+//  $Id$
+//  ------------------------------------------------------------------
+//  Master build file.
+//  ------------------------------------------------------------------
+
+
+// Msgbase area configuration.
+gedacfg  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+
+// AREAFILE readers.
+gxareas  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxcrash  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxdb     cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxdutch  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxezy102 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxezy110 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxfd     cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxfecho6 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxfidpcb cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxfm092  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxfm100  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxfm116  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxgecho  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxhpt    cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gximail4 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gximail5 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gximail6 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxinter  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxlora   cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxmax3   cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxme2    cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxopus   cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxpcb    cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxportal cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxprobrd cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxqfront cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxqecho  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxquick  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxra     cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxraecho cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxsquish cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxsuper  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxtimed  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxtmail  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxts     cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxwmail  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxwtr    cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxxbbs   cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxxmail  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+
+// Msgbase area configuration.
+gedacfg    h     all
+
+// AREAFILE structures.
+gs_db      h     all
+gs_ez102   h     all
+gs_ez110   h     all
+gs_fd      h     all
+gs_fech1   h     all
+gs_fech2   h     all
+gs_fech4   h     all
+gs_fech5   h     all
+gs_fech6   h     all
+gs_fm092   h     all
+gs_fm098   h     all
+gs_fm10g   h     all
+gs_fm116   h     all
+gs_ge100   h     all
+gs_ge102   h     all
+gs_ge110   h     all
+gs_ge120   h     all
+gs_im100   h     all
+gs_im120   h     all
+gs_im130   h     all
+gs_im140   h     all
+gs_im143   h     all
+gs_im150   h     all
+gs_im160   h     all
+gs_im171   h     all
+gs_im175   h     all
+gs_im185   h     all
+gs_im187   h     all
+gs_inter   h     all
+gs_lo233   h     all
+gs_lo240   h     all
+gs_max     h     all
+gs_max3    h     all
+gs_opus    h     all
+gs_pb200   h     all
+gs_pcb     h     all
+gs_pop     h     all
+gs_qbbs    h     all
+gs_qfrnt   h     all
+gs_qwk     h     all
+gs_ra      h     all
+gs_ra2     h     all
+gs_recho   h     all
+gs_sbbs    h     all
+gs_ts      h     all
+gs_wmail   h     all
+gs_wtr     h     all
+gs_xbbs    h     all
+gs_xmail   h     all
+
+// Makefiles etc.
+Makefile   .     all
+bldbcc   mak     all
+bldgnu   mak     all
+bldwcc   mak     all
+gcfg     all     all
+ChangeLog  .     all
+
+
+//  ------------------------------------------------------------------
+

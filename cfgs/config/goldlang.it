@@ -1,0 +1,501 @@
+//////////////////////////////////////////////////////////////////////
+//
+//  GoldED 3.00 * Italian Language Definition File
+//
+//  Translated 15-04-1999 (rev 1.00) by        :	Gd'A; 
+//		      			e-mail :	gda@cryogen.com 
+//
+//  Note : Alcune parole sono intraducibili e quindi ho preferito
+//  	   lasciarle invariate.
+//	   Spero di aver tempo per rimettere mano a questa traduzione
+//	   in modo da ottenere un risultato meno ridicolo! :-)
+//	   Sicuramente ho fatto molti errori di traduzione, ogni
+//	   segnalazione sara' ben gradita!			
+//
+//  Prima di iniziare la ridefinizione di questo file di linguaggio,
+//  e' consigliabile stamparlo cosi' da poterlo tenere vicino
+//  come testo di riferimento.
+//  La ridefinizione potrebbe diventare un processo lento e difficile.
+//
+//  Il formato delle linee in questo file di linguaggio e':
+//
+//      <stringid> <"stringa">
+//
+//  Ogni stringa e' prefissata da una categoria, questo per
+//  permettere una piu' facile identificazione delle 
+//  ridefinizioni. La stringa non differenzia tra maiuscolo e
+//  minuscolo.
+//
+//  Categorie identificative:
+//  --------------
+//  ST_     Linea di stato  	Lunghezza variabile.
+//  WT_     Titolo di finestra  Lunghezza variabile.
+//  MI_     Voce del menu       Lunghezza fissa, primo carattere QuickChar.
+//  IL_     Linea informativa   Lunghezza variabile.
+//  WL_     Linea di finestra   Usualmente lunghezza fissa.
+//  HD_     Linea dell'header	Usualmente lunghezza fissa.
+//  MS_     Messaggio         	Lunghezza variabile.
+//  ER_     Messaggio di errore Lunghezza variabile.
+//
+//  "Lunghezza fissa" significa che tutte le stringhe devono avere
+//  la medesima lunghezza.
+//  Effettivamente la lunghezza e' normalmente limitata solo dalla
+//  dimensione dello schermo. Nel caso dei menu, la larghezza della
+//  finestra e' sempre basata sulla lunghezza della stringa della
+//  *prima* voce.
+//
+//  Il "QuickChar", all'interno di un menu, e' il carattere che viene 
+//  mostrato come evidenziato e che e' direttamente selezionabile.
+//  Questo QuickChar e' sensibile all'uso delle maiuscole o minuscole
+//  e naturalmente deve trovare corrispondenza in una carattere che
+//  si trova all'interno della stringa.
+//
+//  Le stringhe dovrebbero sempre essere racchiuse tra la virgolette
+//  doppie o singole ("" oppure ''). Si puo' fare eccezione a questa
+//  regola se la stringa non ha bisogno di spazi in testa o alla
+//  fine.
+//
+//  Alcune stringhe contengono delle sequenze di "escape" o degli
+//  specificatori di formato cosi' come vengono utilizzati dal
+//  linguaggio di programmazione "C".
+//  Alcune espressioni provenienti da template possono essere 
+//  utilizzate in stringhe speciali.
+//
+//  Sequenze di escape: (sensibili alle maiuscole/minuscole!)
+//  -----------------------------------
+//  \n  - Fine riga (LF) (tradotto in CR+LF nei files).
+//  \r  - Ritorno carrello (CR).
+//
+//  Le sequenze di escape sono normalmente usate nelle linee
+//  per files oppure nei messaggi di output standard (DOS).
+//
+//  Specificatori di formato: (sensibili alle maiuscole/minuscole!)
+//  ------------------------------------
+//  %c  - Carattere.
+//  %s  - Stringa.
+//  %i  - Intero.
+//  %u  - Integero senza segno.
+//  %%  - Il carattere percentuale (%).
+//
+//  Se modifichi una linea che contiene uno specificatore di formato,
+//  fai attenzione che questi siano in numero ed ordine uguali a quanto
+//  specificato dall'esempio originale.
+//  Non seguire questa regola puo' causare degli errori imprevedibili.
+//
+//////////////////////////////////////////////////////////////////////
+
+
+----------------------------------------------------------------------
+-- NOMI DEI GIORNI DELLA SETTIMANA E DEI MESI
+
+// Giorni della settimana, forma breve
+MS_SWSUN             "Dom"
+MS_SWMON             "Lun"
+MS_SWTUE             "Mar"
+MS_SWWED             "Mer"
+MS_SWTHU             "Gio"
+MS_SWFRI             "Ven"
+MS_SWSAT             "Sab"
+
+// Giorni della settimana, forma lunga
+MS_LWSUNDAY          "Domenica"
+MS_LWMONDAY          "Lunedi"
+MS_LWTUESDAY         "Martedi"
+MS_LWWEDNESDAY       "Mercoledi"
+MS_LWTHURSDAY        "Giovedi"
+MS_LWFRIDAY          "Venerdi"
+MS_LWSATURDAY        "Sabato"
+
+// Mesi, forma breve
+MS_SMJAN             "Gen"
+MS_SMFEB             "Feb"
+MS_SMMAR             "Mar"
+MS_SMAPR             "Apr"
+MS_SMMAY             "Mag"
+MS_SMJUN             "Giu"
+MS_SMJUL             "Lug"
+MS_SMAUG             "Ago"
+MS_SMSEP             "Set"
+MS_SMOCT             "Ott"
+MS_SMNOV             "Nov"
+MS_SMDEC             "Dic"
+
+// Mesi, forma lunga
+MS_LMJANUARY         "Gennaio"
+MS_LMFEBRUARY        "Febbraio"
+MS_LMMARCH           "Marzo"
+MS_LMAPRIL           "Aprile"
+MS_LMMAY             "Maggio"
+MS_LMJUNE            "Giugno"
+MS_LMJULY            "Luglio"
+MS_LMAUGUST          "Agosto"
+MS_LMSEPTEMBER       "Settembre"
+MS_LMOCTOBER         "Ottobre"
+MS_LMNOVEMBER        "Novembre"
+MS_LMDECEMBER        "Dicembre"
+
+
+----------------------------------------------------------------------
+-- MISCELA DI PAROLE CHIAVE
+
+ST_IMPORTFILE        "File da importare"
+WT_IMPORTWHICHFILE   " Quale file importare? "
+WT_IMPORTPICK        " Importa "
+WT_IMPORTTXT         " Importa " 
+MI_IMPORTTXTTEXT     "T File di Testo  "
+MI_IMPORTTXTQUOTE    "Q File come Quote"
+MI_IMPORTTXTUUE      "U Binario in UUE "
+MI_IMPORTTXTMIME     "M Binario in MIME"
+MI_IMPORTTXTCLIP     "C  da  Clipboard "
+MI_IMPORTTXTXLAT     "s Usa Charset..  "
+MI_IMPORTTXTQUIT     "N Nulla / Esci   "
+ST_IMPORTSTATUS      "Importo da %s"
+ST_EXPORTFILE        "Esporta File"
+WT_EXPORTWHATFILE    " Esporto su quale file? "
+ST_EXPORTSTATUS      "Esporto su %s"
+ST_EDITSTATUS        "Edita %i,%i. %s"
+ST_SELECTFILES       "Seleziona Files"
+WL_SELECTEDFILES     "Files Selezionati   "
+WL_SELECTEDBYTES     "         Bytes      "
+WL_TOTALFILES        "Totale   Files      "
+WL_TOTALBYTES        "         Bytes      "
+WL_SCANNINGDIRECTORY "            Analizzo le directory           "
+WL_NOFILESFOUND      "           * NESSUN FILE TROVATO *          "
+ST_FILESPRESSKEY     "Premi un carattere per continuare"
+WT_AREA              "Area"
+WT_DESCRIPTION       "Descrizione"
+WT_MSGS              "Msgs"
+WT_LAST              "Ultimo"
+WT_ECHOID            "EchoID"
+ST_UNREAD            "non letti"
+WT_SCANAREAS         " Analizzo Aree "
+MI_SCANALL           "A Scan All       "
+MI_SCANALL           "A Tutte          "
+MI_SCANMARKED        "M Selezionate    "
+MI_SCANCURRENT       "C Corrente       "
+MI_SCANMATCHING      "t Corrispondenti "
+MI_SCANUNSCANNED     "U Non analizzate "
+MI_NOSCAN            "N Nessuna / ESC  "
+WT_HEATAREAS         " Seleziona Aree "
+MI_HEATALL           "A Tutte         "
+MI_HEATMARKED        "M Marcate       "
+MI_HEATCURRENT       "C Corrente      "
+MI_NOHEAT            "N Nessuna / ESC "
+WT_ZAPAREAS          " Deseleziona Aree "
+MI_ZAPALL            "A Tutte        "
+MI_ZAPMARKED         "M Marcate      "
+MI_ZAPCURRENT        "C Corrente     "
+MI_NOZAP             "N Nessuna / ESC"
+MS_DOS_SHELL         "GoldED Shell. Scrivi EXIT per ritornare."
+IL_SCANNINGAREA      " Analizzo Area:"
+IL_SEARCHINGFOR      " Cerca"
+ST_READINGMSG        "Leggo Msg %u di %u"
+ER_OUTOFMEM          "Fine della memoria!"
+MS_HEXDUMPHEAD       "Contenuto esadecimale dell'header del messaggio:"
+MS_HEXDUMPTEXT       "Contenuto esadecimale del corpo del messaggio:"
+ST_RENUMBERING       "Rinumerazione"
+ST_LOCKED            " (lockato)"
+ST_RENUMBERED        "Messaggi rinumerati - Premi un tasto"
+WL_BLANKMSG          ""
+WL_WAIT              " Stop "
+IL_GENHEXDUMP        " Genero l'Hexdump - Attendi "
+ST_PROCESSCC         "Processo le copie carbone"
+ST_STATUSCC          "CC: %s of %u:%u/%u.%u"
+ST_DESTINATIONCC     "Seleziona le destinazioni delle copie carbone"
+MS_LISTCC            "%s  %u:%u/%u.%u"
+WT_DELORIG           " Cancello l'originale? "
+MI_DELORIGYES        "Y     Si, grazie.        "
+MI_DELORIGNO         "N           No!          "
+WT_DROPMSG           " D Elimino questo messaggio? "
+MI_DROPMSGYES        "Y     Si, grazie.        "
+MI_DROPMSGNO         "N           No!          "
+WT_ZONEGATE          " Spedisco via ZoneGate? "
+MI_ZONEGATEYES       "Y     Si, grazie.        "
+MI_ZONEGATENO        "N           No!          "
+ST_QUOTEPCT          "Il tuo messaggio contiene %i%% Quotes%s"
+WT_SAVEMSG           " Salvo queste %i linee? "
+MI_YESGREAT          "Y Si, certo!            "
+MI_KICKIT            "N No, grazie..    / ESC "
+MI_CONTINUE          "C Continuo a scrivere   "
+MI_ROT13             "R Criptazione ROT13     "
+MI_ATTRS             "A Cambia gli attributi  "
+MI_ORIGS             "O Cambia l'Origin       "
+MI_VIEW              "V Visualizza messaggio  "
+ST_SELECTDESTNODE    "Seleziona il nodo di destinazione"
+WT_ATTACHFILES       " Files Attaccati "
+WT_UPDREQFILES       " Aggiorna i File richiesti "
+ST_EDITHEADER        "Modifica i dati dell'Header"
+WT_EDITING           " Modifica "
+MI_INTERNALED        "I Editor Interno  "
+MI_EXTERNALED        "E Editor Esterno  "
+MI_SAVEMESSAGE       "S Salva Messaggio "
+MI_ATTRO             "A Attributi       "
+MI_TEMPLATE          "T Template        "
+MI_ORIGIN            "O Origini         "
+MI_QUITMESSAGE       "Q Esci      / ESC "
+ST_TEMPLATES         " Template "
+WT_CHANGETEMPLATES   "Cambia il Template"
+WT_CARBONCOPY        " Copia carbone "
+MI_CCPROCESS         "P Processa CC  "
+MI_CCIGNORE          "I Ignora  CC   "
+MI_CCATTRIBS         "C Cambia Attr. "
+MI_CCLISTFMT         "L Mostra Form. "
+WT_CCLIST            " Lista CC"
+MI_CCLISTKEEP        "K Mantini    "
+MI_CCLISTNAMES       "N Solo Nomi  "
+MI_CCLISTVISIBLE     "V Visibili   "
+MI_CCLISTHIDDEN      "H Nascosti   "
+MI_CCLISTREMOVE      "R Rimuovi    "
+WT_ATTRTITLE         " Attributi "
+MI_ATTR01            " Privato             <Alt-P>   Archiviato/Spedito   <Alt-B> "
+MI_ATTR02            " Crash               <Alt-C>   Diretto              <Alt-D> "
+MI_ATTR03            " Ricevuto            <Alt-R>   Zonegate             <Alt-G> "
+MI_ATTR04            " Spedito             <Alt-S>   Hub/Host-Route       <Alt-V> "
+MI_ATTR05            " File attaccato      <Alt-A>   Immediato            <Alt-I> "
+MI_ATTR06            " In transito         <Alt-J>   Xmail                <Alt-X> "
+MI_ATTR07            " Orfano              <Alt-O>   Erase File/Sent      <Alt-E> "
+MI_ATTR08            " Kill/Sent           <Alt-K>   Trunc File/Sent      <Alt-T> "
+MI_ATTR09            " Locale              <Alt-W>   Lockato              <Alt-L> "
+MI_ATTR10            " Hold                <Alt-H>   Confirm Rcpt Request <Alt-Y> "
+MI_ATTR11            " Richiesta file      <Alt-F>   FTS1 Reserved        <Alt-1> "
+MI_ATTR12            " Return Rcpt Request <Alt-M>   QBBS Reserved, Net   <Alt-2> "
+MI_ATTR13            " Return Rcpt         <Alt-N>   QBBS Reserved, Echo  <Alt-3> "
+MI_ATTR14            " Audit Request       <Alt-Q>   Squish scanned       <Alt-4> "
+MI_ATTR15            " File Update Request <Alt-U>   Elimina tutti attrib <Alt-Z> "
+HD_FROM              " From : "
+HD_TO                " To   : "
+HD_SUBJ              " Subj : "
+HD_FILE              " File : "
+MS_EMPTYMSG          "\r"
+MS_AUTOATTACHMSG     "\r"
+MS_AUTOREQUESTMSG    "\r"
+MS_AUTOUPDREQMSG     "\r"
+WT_FILEATTACH        " File Attaccato "
+WT_FILEREQUEST       " File Richiesto "
+WT_FILEUPDREQ        " Aggiorna richiesta "
+ST_FILEATTACHING     "File Attaccato [%i/%i] a %u:%u/%u.%u"
+ST_FILEREQUESTING    "File Richiesto [%i/%i] da %u:%u/%u.%u"
+ST_FILEUPDREQING     "Aggiona Richiesta [%i/%i] da %u:%u/%u.%u"
+ST_READMARKED        "Leggi Marcati - Msg %u di %u (%u ancora)"
+ST_READALL           "Leggi Tutti - Msg %u di %u (%u ancora)"
+ST_NOQRENUM          "Questa area non puo' essere renumerata"
+MS_HIDINGTWIT        "Questo e' un Twit Message - Premi <Home> per leggerlo."
+HD_VIA               "via"
+WT_CHANGEATTRS       "Cambia gli attributi del messaggio"
+WT_HEADERTEXT        " Stringa di ricerca (Header+Testo) "
+WT_HEADERONLY        " Stringa di ricerca (Solo Header) "
+WT_NEWAREA           ">>Seleziona nuova area: "
+WT_REPLYAREA         ">>Rispondi nell'area: "
+WT_COPYAREA          ">>Copia nell'area: "
+WT_MOVEAREA          ">>Muovi nell'area: "
+WT_FORWARDAREA       ">>Sposta nell'area: "
+WT_FREQAREA          ">>Filerequest nell'area: "
+WT_FREQMENUTITLE     "File richiedibili"
+ST_FREQSTAT          "Prendi i file richiedibili"
+IL_FREQINFONOFILES   " Non ci sono file richiedibili in questo messaggio! "
+WT_COPY              " Copia "
+WT_MOVE              " Muovi "
+WT_COPYING           " Copio "
+WT_MOVING            " Muovo "
+ST_COPYINGMSG        "Copio Msg %u di %u a %s"
+ST_MOVINGMSG         "Muovo Msg %u di %u a %s"
+WT_DELETE            " Cancella "
+WT_DELETING          " Cancello "
+ST_DELETINGMSG       "Cancello Msg %u di %u"
+WT_WRITE             " Scrivi "
+WT_WRITEMSGS         " Scrivi Msg/i sul file "
+WT_WRITING           " Scrivo "
+ST_WRITINGMSG        "Srivo Msg %u di %u"
+WT_WRITINGFILE       " Scrivo Msg/i sul file %s "
+WT_WRITINGPRN        " Stampo Msg/i "
+IL_READONLYWARN      " Quest'area e' in SOLA LETTURA "
+WT_ISREADONLY        " Scrivi comunque il messaggio? "
+MI_READONLYYES       "Y       Si, grazie.      "
+MI_READONLYNO        "N           No!          "
+IL_CHANGEWARN        " Questo messaggio NON proviene da te! "
+WT_CHANGE            " Cambia questo messaggio? "
+MI_CHANGEYES         "Y       Si, grazie.      "
+MI_CHANGENO          "N           No!          "
+WT_DELETETHIS        " Cancello questo messaggio? "
+MI_DELETEYES         "Y       Si, grazie.      "
+MI_DELETENO          "N           No!          "
+MI_DELETENOASK       "D       Non chiedere..   "
+WT_GOTONEXT          " Prossima area? "
+MI_GOTONEXTYES       "Y       Si, grazie.      "
+MI_GOTONEXTNO        "N           No!          "
+MI_GOTONEXTNEW       "U Si, prossima non letta "
+WT_FORWARD           " Usa FWD kludges? "
+MI_FORWARDYES        "Y       Si, grazie.      "
+MI_FORWARDNO         "N           No!          "
+WT_MSG               "Msg"
+WT_MSGREAL           "Msg#"
+WT_FROML             "From"
+WT_TOL               "To"
+WT_SUBJL             "Subj"
+ST_MSGLISTER         "Lista - Msg %u di %u (%u ancora)"
+ST_COPYMOVEFORWARD   "Copia, Muovi or Sposta questo messaggio"
+WT_SELECTACTION      " Azione "
+MI_FORWARDMESSAGE    "F Sposta  Msg "
+MI_MOVEMESSAGE       "M Muovi   Msg "
+MI_COPYMESSAGE       "C Copia   Msg "
+MI_QUITCMF           "Q Esci  / ESC "
+ST_ARE               "messaggi sono"
+ST_IS                "messaggio è"
+ST_MARKED            "marcato"
+MI_MARKEDMSG         "M Msg marcati "
+MI_CURRENTMSG        "C Msg correnti"
+MI_QUITMSGS          "Q Esci  / ESC "
+ST_WRITEMSGSTO       "Scrivi Msg/i su File o Stampante"
+WT_WRITETO           " Scrivi a: "
+MI_DISKFILE          "D Su disco     "
+MI_PRINTER           "P Su stampante "
+MI_QUITWRITE         "Q Esci   / ESC "
+ST_MARKINGOPTIONS    "Marco messaggio"
+WT_MARKWHAT          " Quale marco? "
+MI_YOURMAIL          "Y Posta personale        "
+MI_FROMTOSUBJ        "H Header (From/To/Subj)  "
+MI_TEXTHDR           "T Testo ed header        "
+MI_THREAD            "R Catena delle repliche  "
+MI_NEWMSGS           "N Nuovi  msg/i > attuale "
+MI_OLDMSGS           "O Vecchi msg/i < attuale "
+MI_ALLMSGS           "A Tutti                  "
+MI_UNMARK            "U Deseleziona msg/i      "
+MI_RANGE             "M Msg range (bookm-curr) "
+MI_MARKSTOGGLE       "g Inverti i marcati      "
+MI_QUITMARKS         "Q Esci             / ESC "
+WT_ENTERMARKSTRING   " Stringa per marcare "
+ST_SEARCHINGMSG      "Ricerco Msg %u di %u. Marcati: %u"
+WT_USERLISTNAME      " Nome del file della lista utenti? "
+IL_GENUSERLIST       " Lista utenti...     "
+WT_FILEEXISTS        " Il file esiste! "
+MI_APPEND            "A Aggiungi alla fine      "
+MI_OVERWRITE         "O Sovrascrivi             "
+MI_QUITEXIST         "R Nuovo nome         ESC  "
+IL_WARNUNSENT        " ATTENZIONE! Questo messaggio NON è stato spedito!"
+IL_WARNLOCKED        " ATTENZIONE! Questo messaggio è in uso! "
+ST_CHANGEORIGIN      "Cambia l'origin di default"
+WT_ORIGINS           " Origini "
+ST_CHANGEUSERNAME    "Cambia il nome utente di default"
+WT_USERNAMES         " Nomi utente "
+ST_CHANGEAKA         "Cambia l'indizzo AKA di default"
+WT_AKAS              " AKA "
+WT_LOOKUP            " Ricerca: %s "
+WL_PHONE             "Telefono"
+WT_QUITGOLDED        " Esci da GoldED? "
+MI_QUITYES           "Y       Si, grazie.      "
+MI_QUITNO            "N           No!          "
+MS_EDITCMD           "Editor: %s"
+IL_NOORIGDEFINED     " Nessuna origin definita. Premi un tasto "
+IL_NOUSERDEFINED     " Nessun nome utente definito. Premi un tasto "
+IL_NOAKADEFINED      " Nessuna AKA definito. Premi un tasto "
+IL_NOTPLDEFINED      " Nessun template definito. Premi un tasto "
+IL_NOTHREADLIST      " Nessana catena delle repliche. Premi un tasto"
+MS_SKIPPINGTWIT      "Salto i messaggi Twit..."
+MS_KILLINGTWIT       "Cancello i messaggi Twit..."
+IL_WRITINGCFG        " Scrivo la configurazione "
+IL_COULDNOTOPEN      " Non posso aprire %s "
+MS_PROMPT            "Digita il comando \"EXIT\" per tornare a GoldED.\r\n"
+IL_UNFINISHEDMSG     " Ho trovato un messaggio NON finito! "
+ST_LOADUNFINISHED    "Premi un tasto per caricarlo o <ESC> per ignorarlo"
+IL_READINGECHOLIST   "Leggo i file di Echolist "
+IL_READINGADDRMACROS "Leggo le macro per gli Indirizzi"
+IL_CHECKINGNODELISTS "Controllo la Nodelist"
+ST_CROSSPOSTING      "Crossposting in %s"
+IL_TWITBLANKED       " Msg/i Twit ripuliti "
+IL_TWITSKIPPED       " Msg/i Twit saltati "
+IL_TWITIGNORESKIP    " Msg/i Twit ignorati e saltati "
+IL_TWITDISPLAYED     " Msg/i Twit visualizzati "
+IL_TWITKILLED        " Msg/i Twit cancellati "
+IL_STYLECODESNO      " Codici di stile disabilitati "
+IL_STYLECODESYES     " Codici di stile abilitati "
+IL_STYLECODESHIDE    " Codici di stile abilitati ed eliminati "
+ST_GENCFMRECEIPT     "Generazione conferma di ricevimento"
+WT_NEW               "Nuovo"
+ST_LOOKUPINFO        "Informazioni di ricerca sulla Nodelist"
+MS_DATETIMEFMT       "%d %b %y  %H:%M:%S"
+MS_DATEFMT           "%d %b %y"
+MS_TIMEFMT           "%H:%M"
+MS_CROSSPOSTEDIN     "* Crosspostato su %s"
+ST_STATUSLINEHELP    "F1 Aiuto"
+HD_OF                "of"
+MS_ROBOTMSG          "\r--- @longpid @version\r"
+ST_STATUSLINETIMEFMT "%H:%M:%S"
+WT_REPLIES           " Repliche "
+ST_SELECTREPLY       "Seleziona le repliche che vuoi vedere"
+IL_WAITOREXIT        " A questo punto devi aspettare o uscire totalmente da GoldED! "
+WT_REALLYEXIT        " Confermi uscita? "
+MI_TAGLINES          "T Cambia Tagline"
+MI_HEADEREDIT        "H Edit Header"
+MI_SCANGROUP         "G Group."
+WT_QWKPACKET         " Paccheto QWK "
+MI_SCANQWK           "Q QWK Pack.  "
+WT_SOUPPACKET        " SOUP Pack.  "
+MI_SCANSOUP          "S SOUP Pack. "
+MI_SCANIMPORT        "I Import"
+MI_SCANEXPORT        "E Esport"
+WT_SCANPM            " Ricerva PM "
+MI_TAGLINE           "g Tagline "
+WT_CONFIRM           " Permetti le richieste di avvenuta conferma? "
+MI_CONFIRMYES        "Y Si, ma la conferma "
+MI_CONFIRMNO         "N No, ignorala "
+IL_CONFIRMINFO       " Il mittente di questo messaggio ha richiesto una conferma di ricezione (CFM) "
+ST_MSG               "msg"
+ST_MSGS              "msgs"
+ST_PERSONAL          "personali"
+WT_GRP               "Grp"
+IL_FOUNDPERSONAL     " Trovati %u mail personali%s in %u aree%s "
+IL_NOPERSONAL        " Nessuna mail personale trovata "
+ST_ESCORCONTINUE     "ESC per uscire. Altro tasto: Per tentare di continuare"
+MS_SPELLCHECKER      "SpellChecker: %s"
+WT_INS               " Ins "
+MI_FILELISTFROM      "Lista file da %s"
+ST_UNREGWAIT         "Non registrato - Premi un tasto oppure attendi %ld secondi"
+ST_INITIALIZING      "Inizializzazione ..."
+ST_CHECKING          "Controllo..."
+ST_LOCKSHARECAP      "%s caratteristica di Esclusione/Condivisione"
+WT_ATTRTURNOFF       " Premi Alt-F1 per chiudere questa finestra "
+WT_TAGLINES          " Taglines "
+ST_CHANGETAGLINE     "Modifica la Tagline di default"
+IL_NOTAGLINE         " Nessuna tagline definita. Premi un tasto "
+WT_CHARSETS          " Charsets "
+ST_CHANGEXLATIMP     "Cambia il Charset di default per l'importazione"
+IL_NOXLATIMPORT      " Nessun XLATIMPORT è definito. Permi un tasto "
+WT_N_A               "n/a"
+WT_WRITTEN           "Scritto"
+WT_ARRIVED           "Arrivato"
+WT_RECEIVED          "Ricevuto"
+IL_NONODELIST        " Non sono in grado di accedere alla nodelist o alla lista file "
+IL_NODELISTMISSING   "Nodelist mancante:"
+IL_NODELISTOUTDATED  "Nodelist scaduta:"
+MS_REPLYLINKER       "Replylinker: %s"
+WT_ENTERMSGNO        " Numero del msg "
+IL_WAITUUDECODING    " Attendi - decodifica del messaggio corrente "
+IL_COMPLETEDUUDECODE " Ho completato la decodifica del msg %s "
+IL_NOTUUENCODED      " Non c'è nulla da decodificare in questo messaggio "
+IL_UUEINVALIDPATH    " Percorso non valido per la decodifica - file non scritto "
+IL_ERRORINSOUP       " Errore nel file SOUP %s "
+IL_WARNALREADYSENT   " Attenzione: Questo messaggio è già stato spedito! "
+IL_WAITLOCKED        " Attendi: %s è lockato"
+ST_RETRYORESC        "%s ritentativo (%lu). Premi ESC per uscire da GoldED."
+ST_RETRYLOCK         "Lock"
+ST_RETRYOPEN         "Apri"
+WT_TOUCHSEMAPHORE    " Indica il nome del file semaforo da aggiornare " },
+MI_WRITETOHDRNO      "H Usa Header: NO  "
+MI_WRITETOHDRYES     "H Usa Header: YES "
+MI_CLIPBOARD         "C Clipboard "
+WT_SELECTMARKS       " Seleziona marchio "
+WT_SELECTMARKSEDIT   " Edita la descrizone del marchio "
+IL_DROPMARKSINFO     " %s Messaggi sono marcati "              },
+WT_DROPMARKS         " Elimina Msg Marcati "
+MI_DROPALL           "A Elimina tutti  "
+MI_DROPMARKED        "M Elimina marc.  "
+MI_DROPCURRENT       "C Elimina corr.  "
+MI_NODROP            "N Nessuna / ESC  "
+WT_CATCHAREAS        " Raccogli aree "
+MI_CATCHALL          "A Raccogli tutte "
+MI_CATCHMARKED       "M Raccogli marc. "
+MI_CATCHCURRENT      "C Raccogli corr. "
+MI_NOCATCH           "N Nessuna / ESC  "
+
+----------------------------------------------------------------------
+

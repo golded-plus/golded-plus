@@ -1,0 +1,2543 @@
+#---------------------------------------------------------------------
+# GoldED Users Guide Manual
+# $Id$
+#---------------------------------------------------------------------
+#manualfile GOLDUSR.TXT
+#pagelength 60
+#pagewidth 80
+#leftmargin 8
+#rightmargin 2
+#---------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+           ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+
+
+                                ⁄ø     ⁄ø            ⁄ø
+                                ≥≥     ≥≥            ≥≥
+                                ≥≥     ≥≥            ≥≥
+                                ≥≥     ≥≥            ≥≥
+                  ⁄¬ƒƒ¬ø ⁄¬ƒƒ¬ø ≥≥ ⁄¬ƒƒ¥≥ ⁄¬ƒƒ¬ø ⁄¬ƒƒ¥≥
+                  ≥≥  ≥≥ ≥≥  ≥≥ ≥≥ ≥≥  ≥≥ ≥≥  ≥≥ ≥≥  ≥≥
+                  ≥≥  ≥≥ ≥≥  ≥≥ ≥≥ ≥≥  ≥≥ ≥≥  ≥≥ ≥≥  ≥≥
+                  ≥≥  ≥≥ ≥≥  ≥≥ ≥≥ ≥≥  ≥≥ ≥√ƒƒ¡Ÿ ≥≥  ≥≥
+                  ≥≥  ≥≥ ≥≥  ≥≥ ≥≥ ≥≥  ≥≥ ≥≥     ≥≥  ≥≥
+                  ≥≥  ≥≥ ≥≥  ≥≥ ≥≥ ≥≥  ≥≥ ≥≥  ⁄ø ≥≥  ≥≥
+                  ¿¡ƒƒ¥≥ ¿¡ƒƒ¡Ÿ ¿Ÿ ¿¡ƒƒ¡Ÿ ¿¡ƒƒ¡Ÿ ¿¡ƒƒ¡Ÿ
+                      ≥≥
+                      ≥≥
+              ⁄ø      ≥≥                   GoldED 3.0.0
+              ¿¡ƒƒƒƒƒƒ¡Ÿ                   ƒƒƒƒƒƒƒƒƒƒƒƒ
+
+
+           ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+
+
+
+                          Users Guide Manual
+
+
+             Program and manual written by Odinn Sorensen
+
+
+              Copyright (C) 1990-1998 by Odinn Sorensen
+
+#page
+#---------------------------------------------------------------------
+#header
+#---------------------------------------------------------------------
+#heading ______________________________________________________________________
+#heading
+#heading <center><chapter>
+#heading ______________________________________________________________________
+#heading
+#---------------------------------------------------------------------
+#footer ______________________________________________________________________
+#footer
+#footer <chapter> <right>GoldED Users Guide, Page <page>
+#---------------------------------------------------------------------
+#tocbegin
+#chapter Table of Contents
+#tocline ......................................................................
+#tocindent 4
+#tocpagenumber i
+#toc
+#tocend
+#---------------------------------------------------------------------
+#pagenumber 1
+#chapternumber 1
+#---------------------------------------------------------------------
+#chapter Notes About This Manual
+
+The organization of this manual is not so good, sorry about that.
+
+If you find spelling, grammatical or factual errors, please let me
+know.
+
+If you think the wording is bad or confusing in some parts, please
+send me your improved version of the parts.
+
+If you would like to write entirely new chapters (especially for the
+Users Guide), please do and send them to me. Screen shots may be
+included, but should be edited to fit a 70 char wide page.
+
+I have limited time and would be very grateful for any help which can
+improve the quality and usefulness of the manual.
+
+TO TRANSLATORS: This manual is produced from ASCII text files with
+special codes and compiled to the release manual using a manual
+compiler I wrote myself (gmanual). If you want to translate the GoldED
+manuals to any language, please copy the manual source, translate the
+copy and compile it using gmanual for distribution to others.
+You must also contribute your translated manual source to the
+community for futher use and improvement.
+
+NOTE: The manual source should be transformed into SGML, so we can get
+ASCII, HTML, PostScript or whatever versions. Any takers?
+
+Odinn Sorensen, The GoldED Author.
+
+#page
+#---------------------------------------------------------------------
+#chapter Legal Notes
+
+GoldED and the Goldware Utilities are covered by the GNU General
+Public License (GPL). For details see the file COPYING.
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+
+#page
+#---------------------------------------------------------------------
+#chapter Support and Development Philosophy
+
+Besides working on GoldED, I am studying to become an electrical
+engineer. For this and other reasons, I don't have much time for
+individual support, particularly not for helping beginners with setup
+problems etc. Please seek help in the support conferences on FidoNet
+or Internet or ask your friends.
+
+I will do my best to be available in the support conferences, but I
+can't guarantee replies to all questions. There may even be times when
+apparently urgent or important questions seem to be ignored. Please
+don't take this personally. It may be that I simply have no time in
+those periods. And later when I do have time, it may be several weeks
+later and I may decide to skip lightly over the hundreds of messages
+that piled up in the echoes. In that case, try to repeat your question
+regularly and eventually you should be able to get a reply from me.
+
+GoldED was a closed-source user-supported shareware program until
+november 1998, when it was transformed into an open source GPL'ed
+program with myself as primary maintainer and final judge of official
+patch acceptance. In addition to myself, there is a core team of
+developers, currently consisting only of Dirk A. Mueller, but
+hopefully soon others, which have full access to committing changes
+directly to the development CVS tree.
+
+I was very happy about every single registration I got in the past,
+because it gave me incentive to keep on working on GoldED, and
+gave me additional economical freedom - something which is important
+to anyone who studies without other economical backing. In the summer
+of 1998 I was fortunate enough to get a job (currently as part of my
+studies, but will likely continue for quite some time), which gave me
+economical independence of shareware income from GoldED. This gave me
+the opportunity to fulfill a promise I made myself long ago - that I
+would not allow GoldED to die, just because I lacked the time to
+support it properly. I would rather release the source code and let
+interested users carry it onwards at their own pace. So after careful
+examination of the variety of open source compliant licenses out
+there, I chose GPL and LGPL.
+
+Thank you for your support and understanding.
+
+Odinn Sorensen.
+
+#page
+#---------------------------------------------------------------------
+#chapter Entering Messages
+
+The process of entering a message deserves some description, because
+there are a number of steps that may be a bit hard to figure out
+directly.
+
+You start a message by using one the following commands:
+
+  Key    Command keyword     Description
+
+  Ins    READnewmsg          Start a blank new message.
+  Alt-Q  READquotemsg        Quote-reply the current msg.
+  Alt-G  READcommentmsg      Quote-reply the current msg to TO person.
+  Alt-N  READmovequotemsg    Quote-reply in another area.
+  Alt-B  READmovecommentmsg  Quote-reply in another area to TO person.
+  Alt-R  READreplymsg        Reply to current msg, but don't quote.
+
+The first thing that happens is that the header display comes to life,
+and allows you to change the names and addresses of destination and
+origination. In netmail areas, the userlist lookup feature is in
+effect for the destination name field. You move around in the header
+with the arrowkeys. Pressing <Tab> or <Enter> moves to the next field.
+Pressing <Enter> in the subject field or <Ctrl-Enter> anywhere, ends
+the header editing. Pressing <Esc> drops the message. While editing
+the header, you can use the Alt-keys to toggle message attributes.
+
+After the header editing is done, a menu appears, allowing you to
+change the message attributes, origin, template, start the internal or
+external editor or quit it.
+
+When you select to start the editor, the template is processed and
+prepared for use.
+
+Safely back from the editor, you are presented with a menu where you
+can select to save the message, drop the message, continue editing,
+view the message, change origin or ROT13 crypt it.
+
+#page
+#---------------------------------------------------------------------
+#chapter Userfile Considerations
+
+GoldED will by default always use the first entry in the userfile and
+the first lastread in the lastread file(s).
+
+In older versions GoldED would seek through the userfile for your name
+and use the lastread pointers that corresponded to the index of the
+userfile entry. This would normally work, but under some
+circumstances, GoldED might fail to find your name and therefore add
+you to the userfile. This could cause lastreads to suddenly appear to
+be reset to the first or last message in all areas.
+
+The solution of always using the first lastread is effective for
+single-user setups, but for users sharing the same msgbase using
+GoldED, each user MUST setup different user numbers if they want to
+keep their lastread pointers separate. These keywords are used to set
+the lastread pointer user number:
+
+  EZYCOMUSERNO <number>
+  FIDOUSERNO <number>
+  GOLDBASEUSERNO <number>
+  HUDSONUSERNO <number>
+  PCBOARDUSERNO <number>
+  SQUISHUSERNO <number>
+  WILDCATUSERNO <number>
+
+There is no JAMUSERNO, because the JAM format is cleverly designed
+to be independent of userfiles.
+
+The <number> defaults to 0 (zero). Set it to 1, 2, 3 etc. for each
+additional user that shares the same msgbase using GoldED.
+Alternatively, set <number> to -1 (minus one), which will tell GoldED
+to return to the old method of searching the userfiles to get the
+lastread indexes.
+
+#page
+#---------------------------------------------------------------------
+#chapter Using the Search Functions
+
+The search function is activated using the Alt-F (header and body) or
+Alt-Z (header only) keys. This will bring up a popup entry field where
+you can enter several strings, separated by the '|' search string
+separator character like this:
+
+  Odinn|GoldED
+
+By default, GoldED searches forward (next messages), but by preceeding
+the search string with a '-', the search goes backwards (previous
+messages).
+
+Besides the backward search, there are a number of other search
+command characters. Here is the complete list:
+
+  -   Search backward.
+  +   Search forward. (Just for completeness).
+  <   Search the From: field.
+  >   Search the To: field.
+  :   Search the Subj: field.
+  =   Case-sensitive search.
+  !   Reverse - Stop/mark when the search string(s) are NOT found.
+  &   Separator - Reserved for future use with logical "and" searches.
+
+By default the '<', '>' and ':' search commands are enabled, so that
+GoldED searches all header fields. However, when one of these options
+are actually used, the search is limited to those only.
+
+Examples:
+
+  <Odinn      Searches in the From: field only.
+  <>Odinn     Searches in From: and To:, but not Subj:.
+  :tagline    Search for "tagline" in the Subj: field only.
+
+The search command characters are stripped before the search is
+started. If you need to search for a string that begins with a search
+command character, you must precede it with the search string
+separator, like this:
+
+  -|++        Search for the string "++".
+
+All this also applies to the marking search function (Alt-S).
+
+#page
+#---------------------------------------------------------------------
+#chapter Using External Editors
+
+Like all message editors that allows the use of external text editors
+for writing messages, GoldED must deal with the problem of
+free-flowing text paragraphs versus hard-cr-terminated lines.
+
+Most text editors terminate *all* lines with a carriage return (CR,
+13d, 0Dh). Unless you use a fairly short right margin in the text
+editor, those lines can be very annoying to quote if the quotemargin
+is shorter. This usually results in "ragged" quotes, with a long
+quoteline alternating with a short leftover. This looks bad, and
+requires a lot of work to edit to a respectable shape.
+
+To solve this problem, GoldED treats the file from the text just as if
+text blocks doesn't have any hard-cr's in them - it "reflows" the
+text. Of course, this immediately creates another problem: If you
+include a cut from a log file, source code, table or other stuff that
+*requires* the text block to be aligned with itself. Those blocks
+would become scrambled and unreadable.
+
+GoldED recognizes a special control string, that tells the reflowing
+code to put hard-cr's on single lines or groups of lines. You define
+the string with the keyword "Hardline" in the configuration file. Here
+is an example of the use of the hardline string (in the example "<<"):
+
+  <<
+  ==== Log Cut ====
+  + 22.24.31  Event 0-@
+  - 22.24.42  Preparing outbound mail
+  = 22.58.47  RING
+  = 22.58.55  CONNECT 2400
+  + 22.59.02  Incoming call at 2400 baud
+  ==== Log Cut ====
+  <<
+
+In this example, the hardline string on the lines before and after the
+cutting tells the reflower that all those lines must the hard-cr
+terminated. The hardline string must be the only characters on the
+line, and it must be placed on the *first* position. The reflow code
+looks for <string><cr>. The hardline string works as a "toggle".
+
+The hardline string also has another use: If you put the string as the
+last characters on a line, that line will also be hard-cr terminated.
+
+Example:
+
+  Greetings...<<
+    Odinn Sorensen<<
+
+The last << in this example was not really necessary, because a blank
+line always ends the preceding line or paragraph with a hard-cr. In
+any case, the hardline string is stripped off before the message is
+saved.
+
+Some lines are by definition always hard-cr terminated, and does not
+need hardline strings. Those lines are quoted lines and control lines
+such as kludges, tearlines and originlines. In addition, three
+identical characters at the beginning of a line also terminates the
+preceding paragraph.
+
+#page
+#---------------------------------------------------------------------
+#chapter Quote Reflow
+
+When you quote a message that already contains quoted lines, those
+lines may be too long for your quotemargin. Most message editors would
+then just cut a bit off the end and put it on a line below. GoldED
+does it differently - it determines the quotestring of the line, and
+then "reflows" all the following lines with the same quotestring and
+puts the quotestring back on the reflowed lines. This usually works
+great and looks good. It can also fail miserably in some
+circumstances.
+
+The reflowing is in effect in both the message displaying and in
+quoting. If you want to observe the effects, try executing the
+READdecreasemargin or READincreasemargin commands (they don't have any
+default key assignments though).
+
+#page
+#---------------------------------------------------------------------
+#chapter Carbon Copy and Crossposting
+
+Carbon Copying
+
+Carbon copy (CC) is a way to send the same message to a number of
+people without the trouble of manually entering and copying a message
+for each of them. The CC works only in netmail or local areas. You can
+send any message, including fileattaches (in netmail) with the CC
+function.
+
+Carbon copies are created by putting the string "CC:" followed by one
+or more names or addresses, separated by commas, on one or more lines
+at the beginning of the message. The names and addresses must follow
+the same rules as when using the lookup function in the netmail
+header.
+
+Example:
+
+  CC: 16, Joergensen, #236/512
+
+If you put a "#" in front of a name or address, that node will be left
+out of the list, but will still receive a carbon copy.
+
+You can also use address macros (see the NAMESFILE keyword) instead of
+names or addresses.
+
+If you often send carbon copies to the same people, it can get a bit
+tedious to type (and remember) every time. Therefore you can also
+specify a file with the names and addresses:
+
+  CC: @TESTERS.LST
+
+Files names and addresses can be mixed on the same line. The lines in
+the file must be the same format as above. No nesting is allowed: You
+can't specify files within files.
+
+When you save the CC message, GoldED will scan the message text to
+find and process the CC: lines. When this is done, a menu will pop up
+and allow you change the format of the CC: lines, the attributes of
+the CC messages or drop the copies.
+
+When processing the CC list, GoldED will check each node in the
+nodelist and pop up the nodelist browser in case of more than one
+match or if the node was not found.
+
+
+Crossposting
+
+Crosspost is similar to Carbon Copy, except that instead of sending
+copies to a list of persons, it posts copies of a message in several
+different conferences. Typical usage is announcement of files, vital
+BBS information and other general interest info.
+
+To crosspost a message is simple - just add lines in this format:
+
+  XC: <echoid> [echoid] [..]
+
+The "XC:" must be the first three characters on the line. The <echoid>
+must be valid echoid's defined in GoldED. Example:
+
+  XC: GOLDED, NEWFILES_R23.PRO, ENET.SOFT
+
+This would produce the following output in the message:
+
+  * Crossposted in GOLDED
+  * Crossposted in NEWFILES_R23.PRO
+  * Crossposted in ENET.SOFT
+
+And post it in the conferences.
+
+Please moderate your use of this feature - it adds duplicate
+information to the mail flow, and excessive use may be frowned upon by
+cost-sensitive individuals.
+
+TIP: If you want to keep copies of your messages in a separate
+"outbox" echo, add this line to your message template(s):
+
+  xc: #@cecho, #outbox
+
+This will automatically crosspost your msg to the OUTBOX area (you
+must define or have an area with that echoid). The '#' tells GoldED
+that you don't want the crosspost to be noted in the msgs. The
+"@cecho" is a template token which is replaced with the current
+echoid.
+
+The only drawback to this tip is that there is no way to see what area
+the original msg was posted in when looking at the msgs in the OUTBOX
+area.
+
+#page
+#---------------------------------------------------------------------
+#chapter Using the Tagline Support
+
+GoldED directly supports the popular taglines, which look something
+like this in messages:
+
+  ... tagline
+  --- GoldED 2.51
+   * Origin: whatever (2:236/77)
+
+Taglines are usually one-liner jokes or wisdom or whatever. They serve
+absolutely no technical function and are considered by some to be
+waste of diskspace and modem time. In some conferences, they may even
+be forbidden by the moderator, so if you want to use this feature,
+check the conference rules first!
+
+The tagline support in GoldED is currently not very advanced. You can
+define some global taglines and manually select them from a menu, like
+you can with origins. Taglines can also be defined in random system
+groups, where they will be chosen randomly. For those with existing
+tagline collections, you can specify the filename of the tagline
+collection. Then a random tagline will be picked from the collection.
+
+Taglines in messages are detected and displayed in a different color
+(definable with COLOR READER TAGLINE).
+
+Here are the keywords for tagline support:
+
+  TAGLINE <text> or @<filename>     Defines a tagline or file
+  TAGLINECHAR <char>                Defines the tagline character
+  TAGLINESUPPORT <yes/no>           Disable internal tagline support.
+
+If you define taglines globally, GoldED automatically adds extra menu
+items to the EDITMENU and EDITSAVEMENU, to allow you to manually
+select the tagline either before entering a message or when saving it.
+
+Like for origins, it is also possible to change the default tagline by
+using the READchangetagline command. Default key assignment is Ctrl-I.
+Example for GOLDKEYS.CFG:
+
+  ^I  READchangetagline
+
+Future plans for the tagline function include: Command to "steal"
+taglines. Tagline collection file browser. Tagline "filters". Please
+note, however, that tagline features are generally low priority. So
+don't hold your breath.
+
+#page
+#---------------------------------------------------------------------
+#chapter Using the ISO 8859-1 ("Latin-1") charset
+
+This chapter describes how to setup GoldED to use the ISO 8859-1
+character set in all or selected mail areas.
+
+The ISO 8859-1 character set seems to be the preferred standard for
+accented (highbit) characters in the Internet. It is also basically
+the same character set used in MS-Windows (code page 1252) and the
+Amiga.
+
+Add the following lines to the Random System groups you want to setup
+charset translation for. They can also be used globally in the main
+configuration if you want to ISO 8859-1 to be the default character
+set for all your mail areas.
+
+  XLATIMPORT LATIN-1
+  XLATEXPORT LATIN-1
+
+XLATIMPORT/EXPORT are used to translate characters to and from the IBM
+PC 8-bit (above ASCII) character set.
+
+The following lines need to be added to the main configuration:
+
+  XLATPATH <path to the .CHS files>
+
+If your codepage is CP437 or CP865, use these two:
+
+  XLATCHARSET IBMPC     LATIN-1   IBM_ISO.CHS
+  XLATCHARSET LATIN-1   IBMPC     ISO_IBM.CHS
+
+Or if your codepage is CP850, use these three:
+
+  XLATCHARSET CP850     LATIN-1   850_ISO.CHS
+  XLATCHARSET LATIN-1   CP850     ISO_850.CHS
+  XLATLOCALSET CP850
+
+The two .CHS files must be present in the XLATPATH. You can find them
+in the XLAT archive inside the advanced setup archive.
+
+GoldED will put a kludge "^aCHRS LATIN-1 2" or "^aCHARSET LATIN-1 2"
+into your messages so that other mail readers can translate to their
+native character set if necessary.
+
+That's it.
+
+#page
+#---------------------------------------------------------------------
+#chapter Converting your highbit characters to ASCII
+
+If a conference moderator or network policy forbids the use of highbit
+characters such as your national accented letters, you must configure
+GoldED so that these characters are converted to acceptable ASCII.
+Fortunately there are at least three ways of doing this with GoldED.
+
+Let's say that you want to convert the characters íùèëõÜ (the most
+commonly used Danish national characters in codepages 865 and 850).
+
+You can convert the characters using EDITmacros by putting these lines
+in the GOLDKEYS.CFG file:
+
+  í   EDITmacro "AE"
+  ù   EDITmacro "OE"
+  è   EDITmacro "AA"
+  ë   EDITmacro "ae"
+  õ   EDITmacro "oe"
+  Ü   EDITmacro "aa"
+
+An alternative way of doing this is by using the EDITCOMPLETION
+keyword like this in GOLDED.CFG:
+
+  EDITCOMPLETION "í" "AE"
+  EDITCOMPLETION "ù" "OE"
+  EDITCOMPLETION "è" "AA"
+  EDITCOMPLETION "ë" "ae"
+  EDITCOMPLETION "õ" "oe"
+  EDITCOMPLETION "Ü" "aa"
+
+If you use one of these two methods to convert your highbit
+characters, that's it. There is no way to switch it to allow the
+highbit characters in some areas.
+
+The best method to convert characters is by using the character
+translation system and enabling it in just those areas where it is
+required. Setting this up is a bit more elaborate. When the character
+translation system is in effect, you simply enter your message using
+your national highbit characters. Then when you save the message,
+GoldED automatically converts it to ASCII.
+
+Add these lines in GOLDED.CFG:
+
+  XLATPATH <path where IBM_ASC.CHS can be found>
+  XLATCHARSET IBMPC ASCII IBM_ASC.CHS
+
+And add this line either globally in GOLDED.CFG or in specific groups
+in the random system:
+
+  XLATEXPORT ASCII
+
+The IBM_ASC.CHS file can be found in the XLAT.ZIP archive within the
+manual and advanced cfg archive.
+
+It should be noted that the IBM_ASC.CHS translation table converts
+from codepage 437 (actually 865) to ASCII. If your normal codepage is
+850, you should use the following XLATCHARSET instead:
+
+  XLATCHARSET CP850 ASCII 850_ASC.CHS
+
+You will also need this line:
+
+  XLATLOCALSET CP850
+
+The XLATLOCALSET keyword tells GoldED which codepage your computer is
+configured to use.
+
+
+#page
+#---------------------------------------------------------------------
+#chapter Encrypting Messages
+
+GoldED allows you to en/decrypt messages encoded with the ROT13
+encryption method. ROT13 is very simple: It just swaps the letters
+"A-M", "a-m" with "N-Z", "n-z" and vice-versa.
+
+ROT13 is mostly used in Internet newsgroups where it is used as a
+"spoiler warning", so that game solutions, joke punchlines and other
+stuff is not read by accident. In those networks, most message readers
+have ROT13 de/crypting capabilities.
+
+In FidoNet, not all message readers have ROT13 capability, and the
+current policy (Policy 4) states:
+
+    2.1.4  Encryption and Review of Mail
+
+    FidoNet is an amateur system. Our technology is such that the
+    privacy of messages cannot be guaranteed. As a sysop, you have the
+    right to review traffic flowing through your system, if for no
+    other reason than to ensure that the system is not being used for
+    illegal or commercial purposes. Encryption obviously makes this
+    review impossible. Therefore, encrypted and/or commercial traffic
+    that is routed without the express permission of all the links in
+    the delivery system constitutes annoying behavior.
+
+You will be able to encrypt your messages with ROT13, but you should
+not use the crypting facility of GoldED, unless your network allows
+it, and *never* in international echoes.
+
+See also the chapter about how to setup GoldED with PGP.
+
+#page
+#---------------------------------------------------------------------
+#chapter Using the UUDECODE feature
+
+GoldED contains a built-in uudecode feature. It is keycommand
+READuudecode, which defaults to Ctrl-X.
+
+The uudecoder in GoldED is based on (but heavily modified from) some
+very old ('88), but good, C source (available as UUENUUDE.ZIP on my
+system), which claims to be based on the Berkeley original.
+
+No error checking is done during the uudecode.
+
+GoldED currently cannot handle uuencoded data which is split in
+multiple sections and/or multiple messages. Only uuencoded data is
+supported, not MIME Base64 or other encodings.
+
+#page
+#---------------------------------------------------------------------
+#chapter Using the UUENCODE feature
+
+GoldED contains a built-in uuencode feature, which is available when
+importing a file in the internal editor.
+
+To uuencode a file while importing it, simply put a '#' character in
+front of the filename.
+
+Example: #WHATEVER.ZIP    - Will import as:
+
+  begin 644 WHATEVER.ZIP
+  [uuencoded data]
+  end
+
+NOTE: This is a very simple implementation of uuencode. It cannot
+split large files over several messages. The file mode number 644 is
+hard-coded and has nothing to do with the actual file mode.
+
+WARNING: Due to memory constraints, the standard 16-bit DOS version of
+GoldED is usually not able to deal with messages much larger than
+about 10-16k. You can very quickly reach that size when uuencoding
+files. For this reason, you should not use this feature unless you are
+running one of the 32-bit versions (DOS-386, OS/2 or Win32).
+
+GoldED currently only supports the uuencoding type, not MIME Base64 or
+other encodings.
+
+#page
+#---------------------------------------------------------------------
+#chapter Nodelist Browse and Lookups
+
+When you write a netmail message, you must know the name and net
+address of the recipient. Unless you have a remarkable memory, this
+information can be a bit hard to remember. Therefore GoldED supports
+several different nodelist indexes: GoldNODE (a proprietary format),
+FrontDoor, Version 7 and FIDOUSER.LST.
+
+When you enter a name or address in the header (the TO: field) and
+press <Enter>, GoldED looks in the nodelist index to find the missing
+data. You can enter the address in the name field. Names to be
+searched for must be entered last name first (because of the way the
+index is structured). If you enter a partial name or address, GoldED
+will find the closest match. Addresses can be entered in short form,
+based on the current AKA, like .3 for the address of your third Point,
+or 33 for node 33 in your net.
+
+Before the nodelist is searched, the list of address macros are first
+scanned, and if a match is found there, the information there is used
+instead.
+
+When GoldED has found a match, it looks a bit further to see if there
+are more matches. If not, the matching data is inserted in the header,
+and you can continue editing. If more than one match was found, it
+starts the nodelist browser. Here you can browse around and find the
+correct destination node. When found, you select it with <Enter>. The
+full name and address of the node you selected is then placed in the
+appropriate fields in the header. Pressing <Esc> in the browser quits
+it without inserting any node information. While in the browser, you
+can press <Tab> to switch between name and address lookup.
+
+The list of nodes in the browser is sorted differently, according to
+what you entered. If you entered a name, the list is sorted
+alphabetically by last name. If you entered an address, the list is
+sorted ascending by address.
+
+The nodelist browser can also be accessed in other ways. The keys F10
+and Shift-F10 brings up the browser at the FROM and TO names (nodes)
+respectively, to let you inspect their nodelist data. It's quite
+handy, you will wonder how you could do without it - I did :-)
+
+The nodelist lookup feature can also be used when in the internal
+editor, but an even more useful key is available there. By pressing
+Alt-L, the browser will pop up for the name or address at the editor
+cursor position!
+
+#page
+#---------------------------------------------------------------------
+#chapter User Database Lookup
+
+GoldEd has a special user database lookup feature for BBS sysops.
+
+In Hudson, Ezycom, Squish (and *.MSG, if you are using Maximus) type
+areas, GoldED can perform an additional type of name lookup, using
+wildcards.
+
+This form of lookup is triggered by using DOS/4DOS-style wildcard
+characters in the name you want to lookup. Examples:
+
+  To: Joe*    Finds any name beginning with "Joe".
+  To: *Blow   Finds any name ending with "Blow".
+  To: Od?n*   Finds "Odinn", "Oden" etc.
+
+Depending on the size of your user database and the speed of your
+computer, the lookup may take a little while.
+
+As currently implemented, this user database lookup is only good for
+simple one-shot lookups - you can't bring up a browser to pick the
+user, or see his/hers other user data.
+
+#page
+#---------------------------------------------------------------------
+#chapter Marking Messages
+
+GoldED has a message marking system, which allows flexible
+manipulation with selected messages.
+
+You can either mark messages manually one by one using the
+READtogglemark command <Space>, or use the READmarkingoptions menu
+<Alt-S>. With the marking menu, you can for example mark all messages
+in a particular thread (replychain), or all messages that match a
+certain string or a number of other criteria.
+
+When you have marked the messages, you can then Copy, Move, Delete or
+Write them. Or you can switch to reading only the marked messages.
+
+The marks stay in position until removed (unmarked) or you exit
+GoldED. Marks are kept even if you leave the current area and do
+business in another for a while.
+
+Another, more volatile, form of mark is the "bookmark". Bookmarks can
+be used for returning to a certain position after a stroll out a long
+reply chain and stuff like that. There is only one bookmark, and it is
+reset when you leave the area. Using the Find function leaves a
+bookmark at the current message.
+
+#page
+#---------------------------------------------------------------------
+#chapter The File Request Feature
+
+Often when you see a msg where new files are announced, you wish you
+could simply press a key and select files to request. Well, with
+GoldED you can!
+
+The file request function (default key Ctrl-F) will scan the current
+message and present you with a list of the requestable files it found.
+GoldED will even show the file descriptions if it can find one.
+
+You select the files by toggling marks with the Space key. A '+' will
+show in front of the selected files. The selections can be discarded
+by pressing Esc. When done with the selections, press Enter to
+continue.
+
+Now the destination area must be selected from the list. You have to
+pick a netmail area of the *.MSG type, since the Hudson and Squish
+netmail areas are currently not supported by most mailers today.
+
+After selecting the area, check that the header data (TO name etc) is
+correct. You can now go on to perhaps write a thank you note in the
+accompanying msg, or you can save (empty) your msg immediately (if you
+have the EDITMENU keyword set to Yes).
+
+At the moment you start editing the header, the filenames and
+descriptions are written to a FILES.BBS in the INBOUNDPATH. This can
+be very helpful if you are getting files for your own BBS and are
+tired of inventing or finding descriptions for all those files.. The
+fact that the FILES.BBS is written to disk before you even save you
+msg, can be used to get "free" descriptions later from the response
+msgs some mailers send back when you do a file request.
+
+There are currently a couple of limitations in the file request
+function:
+
+*   You can only request as many files as can fit in the subject line
+    of one msg.
+
+*   GoldED recognizes several different types of file announcement
+    formats, but some may not be fully supported. This means that
+    legitimate descriptions may not be found by GoldED, or that some
+    files are not recognized as requestable.
+
+*   If a msg does not conform to a known announcement format, it is
+    instead (actually it is _also_) scanned for a number of standard
+    archive extensions. These extensions are configurable with the
+    FRQEXT keyword, which comes pre-defined with many common file
+    extensions. Only one such file per line can be found by GoldED,
+    and only if it is "straight" - no spaces between name and
+    extension, and no "funny" characters in the filename. The
+    description is simply the rest of the line.
+
+#page
+#---------------------------------------------------------------------
+#chapter Using the Personal Mail Scan feature
+
+GoldED can scan for your personal mail (messages addressed to the name
+defined with the USERNAME keyword).
+
+NOTE: Personal mail scan is a very new feature in GoldED (introduced
+in 2.50.Beta4) and is likely to have plenty of rough edges, quirks and
+bugs. The current implementation is not set in stone. Please give me
+your comments on any problems or suggestions for improvements.
+
+The personal mail scan feature can be activated in two different ways:
+
+1.  Manually from the arealist using the personal mail scan menu on
+    Alt-P (keycommand AREAscanpm). The menu contains the same items
+    as the regular Alt-S scanning menu. Here you can scan all, marked,
+    current, matching or unscanned areas for personal mail.
+
+2.  Automatically using the PERSONALMAIL keyword with the Startup
+    parameter.
+
+If personal mail scan is activated from the menu in the arealist, then
+when the scan is completed, GoldED shows a window with a simple
+statistic about the personal mail (xx mails found in yy areas). The
+window will go away after a few seconds or by pressing a key.
+
+Areas with personal mail will be marked with a '+' after the message
+count in the Msgs column. In the statusline, the exact number of
+personal mails is shown for each area when you move the selection bar.
+
+To remove the personal mail mark from an area without reading the
+mail, re-scan the area with the normal area scan (Alt-S).
+
+To read personal mail, simply enter an area marked '+'. GoldED will
+automatically switch to "Read Marked" mode so that you only read the
+personal mail. When you exit the area after reading your mail, GoldED
+remembers the original lastread and sets it back where it was (this
+will only work when in Read Marked mode with personal mail).
+
+You can automatically sort areas with personal mail to the top of the
+arealist by adding the sort spec 'P' in front of your current
+AREALISTSORT string. Example: AREALISTSORT PTUE.
+
+Only messages after the lastread are scanned. The scan ignores
+messages that are marked received.
+
+The keywords AREAPMSCAN, AREAPMSCANEXCL and AREAPMSCANINCL work for
+personal mail like the AREASCAN, AREASCANEXCL and AREASCANINCL do for
+normal mail scans.
+
+The PERSONALMAIL keyword specifies options for the personal mail scan
+feature. With it you can tell GoldED to automatically scan for
+personal mail at startup and to look for mail to all your USERNAMES
+(if you have more than one spelling of your name for example).
+
+Personal mail scan is currently only implemented for the JAM, Squish,
+Hudson, Goldbase and PCBoard msgbase formats. Personal mail scan
+support for *.MSG and Ezycom will be added in a future release.
+
+#page
+#---------------------------------------------------------------------
+#chapter Using the Internet Features
+
+This chapter (which is not complete!) discusses how to use the
+Internet compatibility features in GoldED, implementation details,
+limitations etc.
+
+See also the "Using the SOUP feature" chapter.
+
+If you access Internet via a gateware running the GIGO gate program,
+you should ensure that the gate operator has the following lines in
+the GIGO HEADERS.CFG file:
+
+Allow_To:
+Allow_From:
+Allow_Newsgroups:
+Allow_Subject:
+Allow_Date:
+Allow_Message-ID:
+Allow_References:
+Allow_In-Reply-To:
+Allow_Organization:
+Allow_MIME-Version:
+Allow_Content-Type:
+Allow_Content-Transfer-Encoding:
+Allow_Sender:
+Allow_X-Newsreader:
+Allow_X-Mailreader:
+Allow_X-To:
+
+These are the Internet RFC header control lines that GoldED can put in
+your messages if you set INTERNETRFCBODY YES in your GoldED setup for
+your Internet areas.
+
+<chapter not completed yet>
+
+
+#page
+#---------------------------------------------------------------------
+#chapter Using PGP as an External Utility
+
+This chapter describes how to can install PGP as an external utility
+in the GoldED setup. The examples assume that PGP 2.3 or higher is
+installed in the directory C:\PGP.
+
+
+Add the following to your GOLDED.CFG:
+
+  --- Cut ---
+  EXTERNUTIL 1 -nokeepctrl -wipe c:\pgp\pgp.exe +force -sa @tmpfile -u
+               "@oname" -o @file
+  EXTERNUTIL 2 -nokeepctrl -wipe c:\pgp\pgp.exe +force -sta
+               +clearsig=on @tmpfile -u "@oname" -o @file
+  EXTERNUTIL 3 -nokeepctrl -wipe c:\pgp\pgp.exe +force -ea @tmpfile
+               "@dname" "@oname" -u "@oname" -o @file
+  EXTERNUTIL 4 -nokeepctrl -wipe c:\pgp\pgp.exe +force -eas @tmpfile
+               "@dname" "@oname" -u "@oname" -o @file
+  EXTERNUTIL 5 -nokeepctrl -wipe c:\pgp\pgp.exe +force @tmpfile -o
+                @file -u "@dname"
+  EXTERNUTIL 6 -noreload c:\pgp\pgp.exe +force -ka @file -u "@dname"
+  EDITSAVEMENU Yes
+  EDITSAVEUTIL 1 "S PGP Sign the msg"
+  EDITSAVEUTIL 2 "l PGP Clear-Sign the msg"
+  EDITSAVEUTIL 3 "E PGP Encrypt the msg"
+  EDITSAVEUTIL 4 "p PGP Encrypt & Sign the msg"
+  EXTERNOPTIONS -Pause
+  --- Cut ---
+
+NOTE: Some of the configuration lines were split in two due to the
+document margin. They must of course be on one line in the actual
+GOLDED.CFG.
+
+
+Add the following to your GOLDKEYS.CFG:
+
+  --- Cut ---
+  F11   ExternUtil03    ; F11       -> Encrypt message
+  F12   ExternUtil05    ; F12       -> Decrypt message
+  #F12  ExternUtil06    ; Shift-F12 -> Add public key to keyring
+  --- Cut ---
+
+You need to have KEYBEXT Yes (the default) in GOLDED.CFG if you want
+to use the F11/F12 keys. You can of course assign other keys, just
+make sure they don't clash with already defined keys.
+
+The PGP commandlines are set up for multiple recipients, the TO: name
+and your own FROM: name. Otherwise you would not be able to decrypt
+your own msgs, and that could get a bit unpractical ;-)
+
+HOW TO USE IT:
+
+To sign, clearsign or encrypt a msg, simply select the appropriate
+menu item in the save menu. Another method is described below.
+
+To decrypt an encrypted msg, Press F12 while viewing the msg in the
+reader. After decryption, you can write the msg to disk/printer, reply
+to it, copy it, etc. The decrypted text will revert as soon as you
+move away from the msg, or after you perform any operation on it. To
+make a decrypted msg permanent (saved to disk in decrypted form), use
+the Change Msg command after decryption and then save the msg
+immediately, or use the copy function if you want to keep the original
+untouched..
+
+One thing to be aware of, is that the encrypted msg text does NOT
+contain kludges if it was encrypted from the EDITSAVEMENU. If you make
+such a text permanent, you would loose the kludges. Currently the only
+way to keep kludges in the encrypted text is to encrypt it "manually"
+after saving it, using F11, Change Msg, save immediately. If you do it
+this way, you should be careful in a multitask/network environment,
+where a mail scanner could scan out the unencrypted msg before you get
+a chance to encrypt it... I plan to fix this problem in a future
+release.
+
+#page
+#---------------------------------------------------------------------
+#chapter Using the GIF Features
+
+This chapter discusses how to use the GIF features in GoldED.
+
+If the GIF kludge is found in a msg, the @gif token is filled with the
+filename from the GIF kludge. You can setup an external utility to
+view the GIF (if you have the file) like this:
+
+  (In GOLDED.CFG:)
+  EXTERNUTIL XX c:\utl\vpic.exe @gif
+
+  (In GOLDKEYS.CFG:)
+  key ExternUtilXX
+
+If the GIF kludge is found, the text "[GIF:filename]" is added in the
+lower-right corner of the header display so that you know that it is
+there without looking in the kludges.
+
+If you don't have the GIF, you can file request it by hitting Ctrl-F
+(the READfilerequest command).
+
+A note about the @gif token: It is replaced by the filename from the
+GIF kludge, if any. If a GIFPATH is defined, the path is prepended to
+the filename. A file extension is NOT added. This is so that you can
+convert the .GIF's to a smaller format with a different extension.
+
+  Example: EXTERNUTIL XX c:\utl\vpic.exe @gif.jpg
+
+You can configure GoldED so that it inserts the GIF kludge in your own
+messages. See the GIF keyword for details.
+
+NOTE: The GIF kludge is not in wide use, and there is a very real
+possibility that some people might be annoyed about "yet another
+useless kludge" which increases the size of msgs (not much, max 16
+bytes). So I recommmend that you only use it in a few echoes and
+perhaps in netmail, if at all. It might be a good idea to ask the
+moderator of an echo before starting to use it in that echo. Use the
+GIF keyword in Random System groups instead of globally. See also the
+Message Kludge Lines chapter for information about the kludge.
+
+Planned:
+
+*   A specific GIFVIEWER keyword and READgifviewer command instead of
+    having to use the external utility feature. GIFVIEWER would work
+    like EDITOR and SPELLCHECKER - there will not be a built-in
+    viewer.
+
+*   A menu to select the GIF just like origins etc.
+
+#page
+#---------------------------------------------------------------------
+#chapter Using the QWK features
+
+GoldED supports import and export of the QWK offline packet format for
+BBS conferences and Internet e-mail and newsgroups. Using this
+feature, you can use GoldED as QWK offline reader.
+
+A QWK packet consists of the files CONTROL.DAT, MESSAGES.DAT and
+possibly a number of other files. GoldED uses only the two files
+mentioned, other files are ignored.
+
+A QWK reply packet generated by GoldED consists of the file
+<BBSID>.MSG, which contains the messages that you wrote with GoldED.
+<BBSID> is the QWK BBS identification name of the BBS you use.
+
+GoldED currently doesn't support unpacking and packing of compressed
+.QWK and .REP packets. You must unpack and pack your QWK/REP packets
+manually or using a batchfile.
+
+When exporting message to QWK reply packetfiles, GoldED will
+*overwrite* any existing reply packet (<BBSID>.MSG), so you should not
+export until you are actually ready to upload your packet.
+
+After processing the CONTROL.DAT file, GoldED writes a file named
+<BBSID>.GLD in the GOLDPATH. The file is used by GoldED to store the
+relationship between conference numbers and conference names, for use
+when later replying or entering new messages. For QWK export to work,
+you must have previously imported a QWK packet so that the <BBSID>.GLD
+file is created.
+
+The QWK import/export features are currently activated from a submenu
+the arealist scan menu (Alt-S). The submenu item is only present if
+QWKIMPORTPATH and/or QWKEXPORTPATH is defined.
+
+Below are the keywords that are relevant for the QWK support as
+currently implemented:
+
+  QWKIMPORTPATH <path>
+      Path where incoming QWK packet files (CONTROL.DAT and
+      MESSAGES.DAT) can be found.
+
+  QWKEXPORTPATH <path>
+      Path where outgoing QWK reply files (BBSID.MSG) can be placed.
+
+  QWKBADMSGS <echoid>
+      Specifies the area where messages in unknown conferences are
+      put. If you get messages tossed here by accident, you must move
+      them manually to the correct area. If the badmsgs area is not
+      defined, the messages will silently disappear. Messages tossed
+      to the badmsgs area will have the control line
+      "AREA:<bbsid>_<confno>" at the top of the message.
+
+  QWKCONFMAP <bbsid> ["]<confname>["] <echoid>
+      Defines the mapping between the BBSID and conference names in
+      the QWK packets and the echoid name of the conference as
+      required by GoldED. You MUST define a mapping for every
+      conference that you subscribe to. If you don't, the messages
+      will be tossed to the area defined by QWKBADMSGS or disappear.
+      The <bbsid> is the name listed on line 5 in CONTROL.DAT after
+      the comma. The <confname> is the conference names listed on line
+      13 and on alternate lines onwards in CONTROL.DAT. If a
+      conference name contains embedded spaces, the <confname> must be
+      enclosed in double quotes, like this: "Main Board". The area
+       <echoid> must be already defined either in an AREAFILE or using
+       the AREADEF or AREA keywords.
+
+  QWKTOSSLOG <file>
+      Name of a file where GoldED puts the echoids of each area where
+      articles have been imported. The tosslog file is intended to be
+      used with a replylinker. If no path is given, it defaults to the
+      GOLDPATH.
+
+  QWKREPLYLINKER <cmd>
+      Commandline for a replylinker program to call after QWK import.
+
+  QWKOPTIONS <bbsid> <options>
+      Defines various options for the QWK support.
+
+  INTERNETRFCBODY <yes/no>
+      Enable this in areas with Internet RFC headerlines at the top of
+      messages. See the "Using the SOUP features" chapter for details.
+
+  CTRLINFO <tearline/origin/no>
+      Enables or disables tearline and/or origin in random system
+      groups.
+
+In areas where INTERNETRFCBODY is enabled, or RFC headers are present
+as FTN kludges, GoldED will convert the RFC headers Message-ID,
+References and In-Reply-To to MSGID and REPLY kludges, so that
+MSGID/REPLY replylinkers can be used instead of dumb subject linkers.
+GoldED will also get the full-length To/From/Subject lines and store
+them in the messages instead of the short 25 character QWK fields.
+Finally if the INTERNETGATE keyword is defined, GoldED will add the
+FSC-35 kludges REPLYTO and REPLYADDR in the messages.
+
+Example setup in GOLDED.CFG:
+(for Internet setup, see also the SOUP chapter).
+
+  // Basic QWK setup
+  QWKIMPORTPATH C:\QWK\
+  QWKEXPORTPATH C:\QWK\
+  QWKBADMSGS BAD_QWK
+
+  // Replylinking when using GEcho and Hudson areas:
+  QWKTOSSLOG     C:\GECHO\IMPORT.HMB
+  QWKREPLYLINKER C:\GECHO\MBUTIL Link
+
+  // Replylinking when using GEcho and JAM areas:
+  QWKTOSSLOG     C:\GECHO\IMPORT.JAM
+  QWKREPLYLINKER C:\GECHO\MBUTIL Link
+
+  // Replylinking when using Squish and Squish areas:
+  QWKTOSSLOG     C:\SQUISH\QWKTOSS.LOG
+  QWKREPLYLINKER C:\SQUISH\SQUISH LINK -fC:\SQUISH\QWKTOSS.LOG
+
+  // QWK conference mapping
+  QWKCONFMAP GOLDWARE GoldED GOLDED
+  QWKCONFMAP GOLDWARE "GoldED Beta" GOLDED.BETA
+  QWKCONFMAP GOLDWARE "BBS Users" BBS.USERS
+  QWKCONFMAP WHOKNOWS EMail EMAIL
+  QWKCONFMAP WHOKNOWS dk.chat DK.CHAT
+  QWKCONFMAP WHOKNOWS dk.test DK.TEST
+
+  // Area definitions for the QWK conferences
+  AREADEF BAD_QWK "Bad QWK msgs" 0 Echo Opus C:\QWK\CONF\BADQWK
+  AREADEF GOLDED "GoldED support" 0 Echo JAM C:\QWK\CONF\GOLDED
+  AREADEF GOLDED.BETA "GoldED beta" 0 Echo JAM C:\QWK\CONF\GOLDBETA
+  AREADEF BBS.USERS "BBS Users" 0 Echo JAM C:\QWK\CONF\BBSUSERS
+  AREADEF EMAIL "E-Mail" 0 EMail Opus C:\QWK\CONF\EMAIL
+  AREADEF DK.CHAT "dk.chat" 0 News JAM C:\QWK\CONF\DKCHAT
+  AREADEF DK.TEST "dk.test" 0 News JAM C:\QWK\CONF\DKTEST
+
+  // Group for the EMAIL area
+  GROUP EMAIL
+    CTRLINFO        NO
+    EDITHARDTERM    YES
+    TEMPLATE        INTERNET.TPL
+    INTERNETADDRESS odinn@whoknows.where
+    INTERNETMSGID   YES
+    INTERNETRFCBODY YES
+  ENDGROUP
+
+  // Group for the Internet newsgroups
+  GROUP Newsgroups:
+    MEMBER          dk.*
+    CTRLINFO        NO
+    EDITHARDTERM    YES
+    INTERNETADDRESS odinn@whoknows.where
+    INTERNETMSGID   YES
+    INTERNETRFCBODY YES
+    QUOTECHARS      ":;|"
+    TEMPLATE        INTERNET.TPL
+    WHOTO           All
+  ENDGROUP
+
+
+Planned QWK features:
+
+* Support for BlueWave and perhaps other offline packet formats.
+* Support for compressed .QWK and .REP packets.
+* Built-in replylinker.
+* Your suggestions :-)
+
+#page
+#---------------------------------------------------------------------
+#chapter Using the SOUP features
+
+GoldED supports import and export of the Internet SOUP packet format
+for e-mail and newsgroups. Using this feature, you can use GoldED as
+an offline reader for Internet. The SOUP packet format, version 1.2,
+is documented in the SOUP12.DOC document by Rhys Weatherley
+<rhys@cs.uq.oz.au>.
+
+A SOUP packet consist of a number of packet files with an extension of
+.MSG plus an AREAS file which tells where each .MSG packet belongs.
+Other files may be found in a SOUP packet, but they are not supported.
+
+A SOUP reply packet generated by GoldED consists of a GOLDMAIL.MSG
+packet file for e-mail and/or a GOLDNEWS.MSG packet file for
+newsgroups plus a REPLIES file which lists the .MSG packets.
+
+The SOUP import/export features are currently activated from a submenu
+the arealist scan menu (Alt-S). The submenu item is only present if
+SOUPIMPORTPATH and/or SOUPEXPORTPATH is defined.
+
+Below are the keywords that are relevant for the SOUP support as
+currently implemented:
+
+  SOUPIMPORTPATH <path>
+      Path where incoming SOUP packet files (AREAS and *.MSG) can be
+      found.
+
+  SOUPEXPORTPATH <path>
+      Path where outgoing SOUP reply packet files (REPLIES and
+      GOLD*.MSG) can be placed.
+
+  SOUPEMAIL <echoid>
+      Specifies the area where e-mails are placed.
+
+  SOUPBADMSGS <echoid>
+      Specifies the area where articles in unknown newsgroups are put.
+      If you get articles tossed here by accident, you must move them
+      manually to the correct area. If the badmsgs area is not
+      defined, the articles will silently disappear.
+
+  SOUPNEWSRCFILE <file>
+      Name with full path of the NEWSRC file which lists the
+      newsgroups you are connected to. GoldED uses the list to mark
+      the matching areas as newsgroups. These will then be scanned for
+      outgoing mail when starting a SOUP export.
+
+  SOUPTOSSLOG <file>
+      Name of a file where GoldED puts the echoids (newsgroup names)
+      of each area where articles have been imported. The tosslog file
+      is intended to be used with a replylinker. If no path is given,
+      it defaults to the GOLDPATH.
+
+  SOUPREPLYLINKER <cmd>
+      Commandline for a replylinker program to call after SOUP import.
+
+  INTERNETADDRESS <internet-address>
+      Specifies your Internet address. This must be the address only,
+      no name. The INTERNETADDRESS and USERNAME will be combined to a
+      standard "From: internetaddresss (username)" headerline when you
+      write e-mail or articles.
+
+  INTERNETGATE [gatename<,>]<ftn-address>
+      Specifies an FTN address which is used as the destination
+      address in the FTN message header. It is also the address used
+      in the FSC-35 REPLYTO/REPLYADDR kludges that are inserted in
+      mail and news imported from SOUP packets.
+
+  INTERNETMSGID <yes/no>
+      Specifies whether the FTN MSGID kludge should contain an RFC1036
+      compatible Message-ID or the normal FTS-9 format. Note that
+      using the RFC1036 format in MSGID breaks the FTS-9 (version 001)
+      specification, so please don't use this feature in FidoNet
+      netmail or echomail. As a safeguard, GoldED will only use the
+      RFC1036 format in areas specifically marked as e-mail or
+      newsgroups, using the SOUPEMAIL and SOUPNEWSRCFILE keywords or
+      using the Email and News area types with the AREADEF keyword,
+      even when INTERNETMSGID is set to YES globally.
+
+  INTERNETREPLY <yes/no>
+      If set to yes (the default), GoldED uses the FSC-35 reply
+      method, which puts UUCP in the to-field and a To: line at the
+      top of the message. For use with SOUP, this is ugly, so it is
+      recommended to set this keyword to NO. Note however, that due to
+      limitations of the header field editor, there is currently a
+      limit of 35 characters for the from and to headerfields.
+
+  INTERNETRFCBODY <yes/no>
+      Tells GoldED whether to look for and process RFC headerlines at
+      the top of the message body, before the first empty line. Also
+      tells GoldED to insert its own RFC headerlines at the top of the
+      message body instead of as kludge lines. This option should only be
+      used when receiving Internet mail as QWK packets where the
+      RFC headerlines are usually found at the top of the messages, or
+      when sending Internet mail via FTN packet to a gateway running
+      GIGO. GIGO does not recognize RFC header in kludges, but it does
+      recognize them at the top of the messages, if it is properly
+      configured (with lines of "Allow_Xxx:" in GIGO's HEADERS.CFG,
+      where Xxx are the RFC headerlines the gate administrator wants
+      to allow).
+  
+  MAILINGLIST <echoid> <senderaddress> [contribution address]
+      Defines one or more mailing lists. When importing e-mail from a
+      SOUP packet, GoldED will look at the Internet address in the
+      "Sender" header and if it matches one of the MAILINGLIST's, the
+      e-mail will be tossed to the defined area. Note that GoldED
+      supports only participation in, not hosting of mailing lists.
+      The contribution address is the destination Internet address for
+      mail you write to the mailing list - the address is typically
+      given to you when you subscribe to a list. If the contribution
+      address is not specified, the senderaddress is assumed.
+
+There are six different SOUP packet encoding formats. Four of those
+are supported by GoldED.
+
+  u   USENET news articles                (import only)
+  m   Unix mailbox articles               (import only)
+  M   Mailbox articles in the MMDF format (not supported)
+  b   Binary 8-bit clean mail format      (import and export)
+  B   Binary 8-bit clean news format      (import and export)
+  i   Index file only                     (not supported)
+
+The 'M' format is not yet supported. If you need support for this
+format, please let me know, and send along an example SOUP packet
+which uses the 'M' format. There are no plans to support the 'i'
+format in the near future.
+
+Articles are imported to the area matching the newsgroup name (for
+example "rec.humor.funny" is imported to an area with the echoid
+REC.HUMOR.FUNNY). E-mails are imported to the area named with the
+SOUPEMAIL keyword. If no matching area can be found, the articles are
+tossed to the area named with the SOUPBADMSGS keyword, with the
+newsgroup name in an AREA: line at the top. If no badmsgs area is
+defined, the articles will be silently thrown away.
+
+After import, the AREAS, *.MSG and *.IDX files are deleted from the
+SOUPIMPORTPATH. Be sure to keep backup copies when experimenting with
+the SOUP feature. Note that there is currently no dupe check.
+
+In the imported articles, the RFC headerlines are converted to
+kludges. The real names (if any) in the From: and To: headerlines are
+put into the message from/to header fields. If no To: line is found,
+"All" is used.
+
+When you write or reply to e-mail and articles, GoldED adds the echoid
+(newsgroup name) and message number to a file named GOLDSOUP.LST in
+the GOLDPATH. This file is used exclusively by GoldED to find outgoing
+mail when starting the SOUP export.
+
+There are three Internet specific template tokens:
+
+  @oto          Original RFC "To:" headerline.
+  @ofrom        Original RFC "From:" headerline.
+  @omessageid   Original RFC "Message-ID:" headerline.
+
+With these tokens, it is possible to create templates which look like
+one of the defacto standard attribution lines used by other
+newsreaders. See the example NEWSGRPS.TPL file for examples.
+
+In e-mail and newsgroups, the ORIGIN keyword can be used to set the
+content of the "Organization:" headerline.
+
+The Martin Junius <mj@sungate.fido.de> MSGID.DOC document is
+supported. This means that the Message-ID headerline is converted to a
+MSGID kludge and the References headerline is converted to one or more
+REPLY kludges. This makes MSGID/REPLY based replylinking possible
+using existing FTN-based utilities. The original Message-ID and
+References headerlines are preserved in the messages along with the
+MSGID/REPLY kludges.
+
+SOUP import and export is currently quite slow and a some things are
+hardcoded that should be made into options. There is a lot of room for
+improvements, but this is a nice start for those who want to read
+their Internet mail and news with their favorite program instead of
+the various SOUP offline readers out there.
+
+For people with the IBM OS/2 Internet Access Kit, I can recommend the
+"Souper" program which can make SOUP packets for offline consumption
+instead of the expensive online reading with NewsReader/2 and
+Ultimedia Mail/2. At the time of writing, the latest version was
+SOUPER12.ZIP, ftp'd from hobbes.nmsu.edu.
+
+The SOUP features SHOULD NOT be used with the GoldED DOS version. Use
+the 386 or OS/2 versions. The current implementation uses memory like
+a pig, and in any case, it is common that very large messages (>64K)
+are seen in Internet e-mail and newsgroups, and the DOS version does
+not handle very large messages well at all.
+
+It is recommended to use either the JAM or the Squish msgbase formats
+to store the Internet newsgroups. These two formats support tree-like
+replylinking. JAM supports it best, with unlimited links. Squish only
+supports up to 9 links. GoldED currently also only supports up to 9
+links, even for JAM.
+
+GoldED understands several character translation standards and
+non-standards for Internet e-mail and newsgroups. Please see the next
+chapter for details.
+
+PLEASE NOTE: GoldED can be used purely for Internet use as a SOUP
+packet reader, but there are still some FidoNet-specific keywords
+which must be setup for GoldED to operate correctly. The ADDRESS and
+INTERNETGATE keywords must be set to a FTN-compatible address. If you
+don't know or care about any such address, just use this:
+"2:236/77.999" (leave out the quotes).
+
+
+Example setup in GOLDED.CFG:
+
+  // Minimum FTN setup
+  USERNAME        Odinn Sorensen
+  ADDRESS         2:236/77
+
+  // Basic Internet setup
+  INTERNETADDRESS odinn@ibm.net
+  INTERNETGATE    2:236/77
+  INTERNETMSGID   YES
+  INTERNETREPLY   NO
+
+  // Basic SOUP setup
+  SOUPIMPORTPATH  C:\SOUP\IMPORT\
+  SOUPEXPORTPATH  C:\SOUP\EXPORT\
+  SOUPNEWSRCFILE  C:\SOUP\NEWSRC
+  SOUPEMAIL       NET_EMAIL
+  SOUPBADMSGS     BAD_NEWS
+
+  // Area definitions for e-mail and bad newsgroups
+  AREADEF NET_EMAIL "E-Mail" 0 EMail Opus C:\SOUP\NETMAIL
+  AREADEF BAD_NEWS  "Bad Newsgroups" 0 News Opus C:\SOUP\BADNEWS
+
+  // Replylinking when using GEcho and JAM areas:
+  SOUPTOSSLOG     C:\GECHO\IMPORT.JAM
+  SOUPREPLYLINKER C:\GECHO\MBUTIL Link
+
+  // Replylinking when using Squish and Squish areas:
+  SOUPTOSSLOG     C:\SQUISH\SOUPTOSS.LOG
+  SOUPREPLYLINKER C:\SQUISH\SQUISH LINK -fC:\SQUISH\SOUPTOSS.LOG
+
+  // Setup of some mailing lists
+  MAILINGLIST LIST.EMX  emx-list@eb.ele.tue.nl
+  MAILINGLIST LIST.GIGO gigo-owner@gigo.com gigo@gigo.com
+
+  // Area definitions for the mailing list areas
+  AREADEF LIST.EMX  "EMX mailing list"  0 EMail Opus C:\SOUP\EMX
+  AREADEF LIST.GIGO "GIGO mailing list" 0 EMail Opus C:\SOUP\GIGO
+
+  // Setup of character translation
+  XLATPATH        C:\GOLDED\XLAT\
+  XLATESCSET      MNEMONIC IBMPC    MNE_IBM.ESC
+  XLATCHARSET     LATIN-1  IBMPC    ISO_IBM.CHS
+  XLATCHARSET     LATIN1QP IBMPC    IQP_IBM.CHS
+  XLATCHARSET     MAC      IBMPC    MAC_IBM.CHS
+  XLATCHARSET     IBMPC    IBMPC    IBM_IBM.CHS
+  XLATCHARSET     IBMPC    LATIN-1  IBM_ISO.CHS
+  XLATCHARSET     IBMPC    LATIN1QP IBM_IQP.CHS
+  XLATCHARSET     IBMPC    MNEMONIC IBM_MNE.CHS
+
+  // Main group for Internet newsgroups
+  GROUP Newsgroups:
+    MEMBER        alt.*, comp.*, misc.* news.*
+    MEMBER        rec.*, soc.*, sci.*, talk.*
+    MEMBER        bad_news
+    EDITHARDTERM  YES
+    QUOTECHARS    ":;|"
+    TEMPLATE      INTERNET.TPL
+    WHOTO         All
+  ENDGROUP
+
+  // Main group for e-mail, mailing lists and some danish newsgroups
+  // with character translation
+  GROUP EMail:
+    MEMBER        net_email, list.*
+    MEMBER        pingnet.*, dknet.*, dk.*
+    EDITHARDTERM  YES
+    TEMPLATE      INTERNET.TPL
+    WHOTO         All
+    XLATIMPORT    LATIN-1   ; Assume ISO-8859-1 is in use
+    XLATEXPORT    LATIN1QP  ; Use MIME quoted-printable encoding
+  ; XLATEXPORT    LATIN-1   ; Use MIME 8bit encoding
+  ; XLATEXPORT    MNEMONIC  ; Use RFC1345 character mnemonics
+  ENDGROUP
+
+
+Example INTERNET.TPL:
+
+  @moved* Replying to an article in @oecho.
+  @moved
+  @changed* Changed by @cname, @cdate @ctime.
+  @changed
+  @forward* Forwarded from @oecho by @cname.
+  @forward* Originally by: @ofrom, @odate @otime.
+  @forward* Originally to: @oto.
+  @message
+  @forward
+  @new
+  @reply@ofrom wrote:
+  @reply@position
+  @comment@ofrom wrote:
+  @comment@position
+  ;@quotedIn article @omessageid, @ofrom wrote:
+  @quoted@ofrom wrote:
+  @quoted@position
+  @quotebuf
+  @quotebuf@ofrom wrote:
+  @quotebuf
+  @quote
+
+  --
+  Signature Signature Signature Signature Signature Signature
+  Signature Signature Signature Signature Signature Signature
+
+
+Planned Internet/SOUP features:
+
+* Killfile.
+* Addressbook.
+* Article cancel.
+* Improved thread navigation.
+* Built-in replylinker/threader.
+* Elimination of FTN-requirements, for pure Internet use.
+* Msgbase format designed optimally for Internet and threading.
+* Your suggestions :-)
+
+#page
+#---------------------------------------------------------------------
+#chapter Notes About Internet Character Translation
+
+Character Translation Issues:
+
+* MIME: From RFC1341/1521, charset=ISO-8859-1 and encoding
+  quoted-printable or 8bit is supported both for ingoing and outgoing
+  messages. The RFC1342/1522 header extensions are currently not
+  supported.
+
+* X-Charset and X-Char-Esc: These experimental headers are supported
+  for both ingoing and outgoing messages, using RFC1345 character
+  mnemonics and escape character ASCII 29.
+
+
+Unresolved Issues:
+
+* In e-mail (netmail) areas, the charset translation features do not
+  yet work correctly. Please avoid using non-ascii characters in
+  message headers (to/from/subject).
+
+
+Using MIME Character Translation (RFC1341/1521)
+
+  You must have these lines in your GOLDED.CFG:
+
+    XLATCHARSET IBMPC   LATIN-1   IBM_ISO.CHS
+    XLATCHARSET IBMPC   LATIN1QP  IBM_IQP.CHS
+    XLATCHARSET LATIN-1 IBMPC     ISO_IBM.CHS
+
+  The IBM_ISO.CHS, IBM_IQP.CHS and ISO_IBM.CHS files must be present in
+  the XLATPATH.
+
+  To use MIME charset ISO-8859-1 and encoding 8bit in your messages,
+  you must have these lines in the appropriate group(s):
+
+    XLATEXPORT LATIN-1
+    XLATIMPORT LATIN-1
+
+  This will add the following headers in your messages:
+
+    MIME-Version: 1.0
+    Content-Type: text/plain; charset=iso-8859-1
+    Content-Transfer-Encoding: 8bit
+
+  Note that 8bit encoded messages usually won't get through unharmed
+  in e-mail, because the SMTP protocol is 7bit. In newsgroups the
+  problem apparently isn't so bad. If you want your 8bit characters to
+  get to the destination unharmed, you should use the quoted-printable
+  encoding (see below).
+
+  To use MIME charset ISO-8859-1 and encoding quoted-printable in your
+  messages, you must have these lines in the appropriate group(s):
+
+    XLATEXPORT LATIN1QP
+    XLATIMPORT LATIN-1
+
+  This will add the following headers in your messages:
+
+    MIME-Version: 1.0
+    Content-Type: text/plain; charset=iso-8859-1
+    Content-Transfer-Encoding: quoted-printable
+
+  When quoted-printable encoding is used, 8bit characters are
+  translated to a three-character code starting with ASCII 61 ('='),
+  followed by two hexadecimal characters that together form the
+  hexadecimal value of the original character in the charset specified
+  by the Content-Type header.
+
+  Users must be aware that not all reader software recognize and
+  support the quoted-printable format. The reader software may display
+  the entire three-character code untranslated, or translate the code
+  imcompletely. If the code is untranslated, the displayed result is
+  usually not pretty.
+
+
+Using Character Mnemonics Encoding (RFC1345)
+
+  You must have these lines in your GOLDED.CFG:
+
+    XLATESCSET  MNEMONIC IBMPC    MNE_IBM.ESC
+    XLATCHARSET IBMPC    MNEMONIC IBM_MNE.CHS
+    XLATCHARSET LATIN-1  IBMPC    ISO_IBM.CHS
+
+  The MNEMONIC.ESC, IBM_MNE.CHS and ISO_IBM.CHS files must be present
+  in the XLATPATH.
+
+  To use character mnemonics in your messages, you must have these
+  lines in the appropriate group(s):
+
+    XLATEXPORT MNEMONIC
+    XLATIMPORT LATIN-1
+
+  This will add the following headers in your messages:
+
+    X-Charset: ISO_8859-1
+    X-Char-Esc: 29
+
+  When character mnemonic encoding is used, 8bit characters are
+  translated to a three-character code starting with ASCII 29,
+  followed by two characters that together form a standardized
+  mnemonic of the original 8bit character.
+
+  Users must be aware that not all reader software recognize and
+  support this encoding format. The reader software may display the
+  entire three-character code untranslated, omit only the escape
+  character or translate the code incompletely. If the code is
+  untranslated, the displayed result is usually not pretty.
+
+
+Choosing Between MIME and Character Mnemonics
+
+  The safest choice for both e-mail and newsgroups is MIME with
+  quoted-printable encoding.
+
+  MIME is a fully documented standard (see RFC1522 or the older
+  edition RFC1341) using standard headers. It is fairly widely
+  supported by (newer) reader software.
+
+  The character mnemonics are documented in RFC1345, but the "X-"
+  headers are not documented (to the authors knowledge). The existence
+  of the X-Charset/X-Char-Esc headers and the encoding method was
+  found and deduced from sending e-mails with 8bit characters back and
+  forth between different addresses and looking at the e-mail at the
+  destination. The translation of 8bit e-mails and addition of the X-
+  headers appears to be done by routing software before sending them
+  using 7bit transfer protocols like SMTP. It is unknown what, if any,
+  reader software that supports the character mnemonics.
+
+  The main disadvantage of MIME 8bit and quoted-printable is that the
+  character set is limited to the US-ASCII 7bit or ISO-8859-1 8bit
+  sets. The character mnemonics support most or all of the 16bit
+  unicode character set.
+
+#page
+#---------------------------------------------------------------------
+#chapter Sound Support in DOS - The Goldware Sound API
+
+The DOS and 386 versions of GoldED support sound via sound cards by
+calling functions in the Goldware Sound API.
+
+The Goldware Sound API is a set of functions provided by an interrupt
+service function installed on the Alternate Multiplex Interrupt (AMI)
+2Dh. For full details on the Alternate Multiplex Interrupt, please see
+Ralf Brown's Interrupt List (INTER46*.ZIP), his AMI specification
+(ALTMPX35.ZIP) and/or his AMIS library (AMISL091.ZIP).
+
+I have implemented a program loader which provides the interrupt
+service function with the Goldware Sound API. The current version of
+the program loader is named GCTVSAPI 1.00 and may be found in the
+archive GCTV100.ZIP. The current version of GCTVSAPI loads the
+Creative Labs CT-VOICE.DRV file for playing of .VOC files. Full public
+domain C++ source code and the Goldware Sound API specification is
+included in the archive.
+
+I hope that others will write program loaders or TSR's that implement
+the Goldware Sound API for other sound cards than the Sound Blasters,
+or even an implementation that does not require CT-VOICE.DRV.
+
+If you have written a Goldware Sound API implementation, please let me
+know, so that I and the reg.sites can make it available for other
+users.
+
+#page
+#---------------------------------------------------------------------
+#chapter Sound Support in the OS/2 Version
+
+To support sound in the OS/2 version, GoldED requires the MMPM/2, the
+OS/2 MultiMedia Presentation Manager to be installed.
+
+GoldED sends commands to MMPM/2 using the mciSendString API function.
+Basically it send the following commands to play a sound file:
+
+  open <filename> alias noise wait
+  seek noise to start
+  play noise
+  (do other things until playing is complete)
+  close noise wait
+
+These commands require that there is an association between the sound
+file and the appropriate sound device (typically waveaudio or
+sequencer). If you can't seem to get GoldED/2 to play your files, you
+should check in the Multimedia Setup if the Association tabs under
+Digital Audio and MIDI look correct.
+
+It works perfectly here. If GoldED/2 doesn't play your files, you have
+a setup problem somewhere. Try if entering "PLAY FILE=<soundfile>" at
+the OS/2 commandline works. The REXX program PLAY.CMD sends commands
+to MMPM/2 in almost the same way as GoldED/2.
+
+If you are trying to make GoldED/2 play .VOC files and it doesn't
+work, convert them to .WAV and try again.
+
+#page
+#---------------------------------------------------------------------
+#chapter Replacing DOS/4GW with PMODE/W in GoldED/386
+
+The standard release of GoldED/386 requires the Rational Systems
+DOS/4GW DOS extender runtime file DOS4GW.EXE. Many other programs use
+the same extender. However there is an alternative extender which can
+be used with GoldED. The alternative extender replaces a "stub" in
+GED386.EXE and eliminates the requirement of the big DOS4GW.EXE file
+as well as reducing memory requirements and increases speed.
+
+The alternative DOS extender is PMODE/W by Charles Scheffold and
+Thomas Pytel. At the time of writing, the latest version I know of is
+version 1.23, distributed in the archive PMW123.ZIP (132k), dated june
+24, 1996. By now there is probably already a newer version. Try
+checking their website at http://www.dorsai.org/~daredevi/pmw.
+
+If you want to replace DOS/4GW with PMODE/W, simply use the PMWBIND
+utility that comes with the PMODE/W archive, like this:
+
+  PMWBIND /R GED386.EXE
+
+That's it!
+
+The PMODE/W manual recommends using the PMWSETUP program to adjust
+some PMODE/W parameters in the new GED386.EXE, but in my very short
+test period it worked fine without any adjustments, at least in a DOS
+box under OS/2 Warp.
+
+So, if PMODE/W is so great, why don't I use it in the standard release
+of GoldED/386?  There are several reasons:
+
+1.  For use in commercial/shareware programs, they want USD 500. I
+    can't afford that.
+
+2.  During the beta test of GoldED 2.50 I tried to use version 1.12 of
+    PMODE/W, but it turned out there were too many problems with it. I
+    haven't checked if the newer versions are better.
+
+If you do replace DOS/4GW with PMODE/W and later experience odd
+problems, please don't report anything to me before you have tried
+going back to the standard release. You can do that by simply running
+GoldED/386 like this:
+
+  DOS4GW.EXE GED386 [whatever parameters, if any]
+
+Good luck with it!
+
+#page
+#---------------------------------------------------------------------
+#chapter The Message Database Formats
+
+GoldED supports many different message database formats. The following
+is a list of them all, with notes about their characteristics and what
+special quirks to look out for with each of them.
+
+
+Opus/FTS1 (*.MSG)
+
+    These are two variants of the same type of msgbase. It works by
+    using one physical file per message (1.MSG, 2.MSG etc.),
+    collecting them in a directory for each area. Depending on the
+    clustersize on the harddisk, this can be a very wasteful and slow
+    way to store messages. With a clustersize of about 512 bytes, the
+    waste may be acceptable, but the access speed can be dramatically
+    slow if there are many *.MSG files, due to the DOS file system.
+    Caches and BUFFERS adjustments can improve it, but there are
+    limits.
+
+    In echomail areas, this format has a special quirk: The first
+    message (1.MSG) is normally used to store the so-called
+    "highwatermark". The highwatermark tells the echomail processor
+    where it should start scanning for new messages entered by users.
+    By deleting (Zapping) the highwatermark, you can make the echomail
+    processor re-scan the whole area again. This may cause messages to
+    be sent out as "dupes", so this should be used sparingly and
+    carefully, if at all!  The highwatermark can also be "Heated" -
+    which means that it is set to the last msg in the area. This
+    prevents the echomail processor from finding newly entered
+    unscanned msgs. Use with care.
+
+    The variants: The "Opus" format originated in the Opus BBS system.
+    It put some Fido undocumented(?) fields to use as date/time
+    stamps. The "FTS1" (defined in FTS-0001, revision 12 and later)
+    format uses the undocumented fields to set the zone/point
+    information for the msg. To the authors knowledge, the Opus
+    variant is the dominant, and the FTS1 variant is doomed to
+    oblivion. If in doubt, use the Opus format.
+
+
+Hudson
+
+    This msgbase format was invented by Adam Hudson, and was first
+    used in his QuickBBS package. Later several other BBS'es were
+    cloned from QuickBBS (like RemoteAccess and SuperBBS).
+
+    The basic format is built around 7 main files:
+
+      MSGTXT.BBS    This contains the message text of all msgs in all
+                    areas.
+      MSGHDR.BBS    The headers for all the msgs in MSGTXT.BBS.
+      MSGIDX.BBS    Index to MSGHDR.BBS.
+      MSGINFO.BBS   Tells how many msgs there are in each area.
+      MSGTOIDX.BBS  Index that contains all the TO names.
+      LASTREAD.BBS  Lastreads for all areas for each user in USERS.BBS.
+      USERS.BBS     Contains a record for each user. Also the index to
+                    LASTREAD.BBS.
+
+    The format limits the total size of MSGTXT.BBS to a maximum of
+    16MB, which translates to about 16000 msgs of "average" length.
+    GoldED automatically warns you if the limit is close to being
+    reached, and advises you to pack the msgbase.
+
+    The first incarnations of QuickBBS did not support "sharing" of
+    the msgbase. This became more and more important in later years as
+    multitaskers and networks got cheaper. RemoteAccess BBS was the
+    first to implement a useful method, and later a better method was
+    evolved (known as "RA 1.01 or RA 1.1x"), which is now the standard
+    for all modern software that supports msgbase sharing. GoldED
+    fully supports the new standard of course.
+
+    The main virtue of this format is that it is very fast to access
+    the msgbase.
+
+    The main disadvantage is that it can be very sensitive to disk
+    problems, and it is a common horror story that people loose their
+    entire msgbase because the disk developed bad clusters or some
+    program went berserk and messed up the msgbase files.
+
+
+Goldbase
+
+    This is an enhanced version of the Hudson format, introduced in
+    QuickBBS 2.80 by the QuickBBS group.
+
+    The Goldbase format removes the 16MB size limit and allows up to
+    500 message areas instead of the 200 in Hudson. The filenames are
+    the same, except that the extension is .DAT instead of .BBS.
+
+
+Squish
+
+    The Squish format is relatively new. It was invented by Maximus
+    BBS author Scott Dudley in 1991, and was first used in Maximus
+    CBCS v2.00. Soon after, GoldED was among the first message editors
+    to support this new format.
+
+    Squish uses three files per area: A header/message text file
+    (*.SQD), an index file (*.SQI) and a lastread file (*.SQL). The
+    SquishMail echomail processor uses a fourth file (*.SQB) to hold a
+    dup-database.
+
+    The use of a database for each area - instead of one file per msg,
+    or all msgs in one big database - makes this format fast, very
+    safe and resistant to disk problems. Even if something messed up a
+    Squish area, it can almost always be fixed and recovered, using
+    the SQFIX or SQREIDX utilities that come with the Squish echomail
+    processor.
+
+    A special feature of Squish areas is that they can be
+    self-maintaining. You can setup a Squish area so that it may only
+    contain a maximum of so-and-so many msgs, and then it will
+    automatically re-use the space used by old msgs when the limit is
+    reached, and so it will practically stop growing. It will still
+    need packing, but not nearly as often as a Hudson msgbase has to.
+
+
+Ezycom
+
+    <to be described>
+
+
+JAM
+
+    The JAM format was invented by Joaquim Homrighausen, Andrew
+    Milner, Mats Birch and Mats Wallin.
+
+    JAM uses four files for each area: A header file (*.JHR), a
+    message text file (*.JDT), an index file (*.JDX) and a lastread
+    file (*.JLR). Most echomail processors support two additional
+    files to aid scanning out messages: NETMAIL.JAM and ECHOMAIL.JAM.
+    They are "global" files, located in the JAMPATH.
+
+    See also the chapter "JAM Implementation Notes".
+
+
+PCBoard
+
+    <to be described>
+
+    See also the chapter "PCBoard Implementation Notes".
+
+#page
+#---------------------------------------------------------------------
+#chapter JAM Implementation Notes
+
+This chapter describes details about the implementation of the JAM
+messagebase format in GoldED. Should be read in conjunction with the
+JAM specs for better understanding. A lot of technical terms will be
+used, so if you are not the technical type, just skip over it.
+
+
+General notes
+
+The first release of the JAM messagebase specifications (JAM-001,
+rev.1, dated 93-07-01) included an example implementation in the C
+language of a "JAM API".
+
+For the purpose of use in GoldED, the JAM API C implementation was
+both too complete and not complete enough. Therefore I developed my
+own specialized JAM msgbase handling code. My own code was of course
+designed be compatible with the original JAM API as well as the
+specifications, but some things are done slightly differently for
+various reasons.
+
+
+File I/O checks
+
+Reads and writes to the msgbase files are generally NOT checked for
+errors in GoldED. In contrast, the original JAM API checks everything
+and stores error values in the API, for the user to use or ignore.
+
+Full checking degrades performance a bit, adds more code to the EXE
+file, and most importantly, GoldED just doesn't have a safe way to
+recover from the detection of such errors anyway at this time.
+Assuming that your system is working well, there are no harddisk
+errors etc., this will normally not be a problem.
+
+
+Message header revisions
+
+The JAM message headers contain a field to indicate the revision
+number of the header structure.
+
+GoldED currently ignores this field and assumes that future revisions
+will remain backward compatible. When creating new msgs, GoldED uses
+the revision 1 header structure.
+
+When new revisions of the JAM specs are released, GoldED will be
+updated to handle these as quickly as possible.
+
+
+Passwords
+
+The JAM specs contain fields for passwords to access the msgbase
+and/or indiviual messages.
+
+GoldED currently doesn't support these passwords. When creating a new
+JAM msgbase and/or new JAM msgs, GoldED sets the password to
+FFFFFFFFh. If you change an existing msg which has a password, the
+password is NOT preserved, but reset to FFFFFFFFh.
+
+
+Lastreads
+
+The JAM lastread file is designed such that is has to be searched for
+a userid/usercrc, because one cannot assume that the records are in a
+specific order.
+
+The JAM API searches the userid field. However it seems more
+reasonable to search for the usercrc, because that is a value the
+program can calculate from the username without looking in other
+files. I'm not sure why the JAM API chooses to look in the userid
+field instead. GoldED searches for the usercrc, not the userid. In any
+case, it seems that RemoteAccess 2.x sets both the userid and usercrc
+to the same value.
+
+The specs state that the user's lastread record must be searched for
+both when retrieving it and storing an updated record. However, the
+JAM API seems to implemented slightly differently, because when it
+stores an updated record, it stores it at the same position as it was
+read *without* first searching for it.
+
+GoldED has been implemented to work in a similar manner. It searches
+for the user's lastread record when the msgbase is opened, and it
+assumes that it will remain in the same position as it was found,
+until the msgbase is closed.
+
+This is normally a quite reasonable assumption. The only circumstance
+where the lastread records might be re-ordered is when a msgbase
+maintentance utility cleans up or sorts, and such a utility is
+normally designed to open the msgbase files in exclusive mode, which
+it can't do when the files are already open. If it tries to re-order
+without exclusive access, the utility is badly designed and
+potentially dangerous in multitask/networking environments.
+
+
+Size limits
+
+The JAM specs allow msgbases and msgs of really huge sizes. The 16-bit
+DOS version of GoldED cannot handle the full extremes of this. The
+32-bit OS/2 and 32-bit protected mode DOS versions of GoldED can
+handle any size, only restricted by memory, disk space or unknown
+compiler or operating system limits.
+
+The internal limits for the 16-bit versions of GoldED means that they
+can only handle msgbases containing a maximum of 8191 msgs (including
+deleted msgs), and msgs a maximum of about 64k long. In theory at
+least. In practice the limits may be smaller due to lack of memory.
+
+
+ASCII 7-bit escaping
+
+GoldED currently doesn't support the escaping described in the JAM
+specs. The specs state that the current revision of JAM does not
+support it either, so I guess it's no great loss.
+
+
+Date fields
+
+GoldED currently doesn't display the DateReceived field, but it is
+updated on disk when a message is received (read) by the recipient.
+
+The DateProcessed field is set to the current date when a msg is
+writtten or changed with GoldED.
+
+All new dates are set to the system time and are not adjusted for
+timezone.
+
+
+Subfields
+
+The concept of the JAM subfields is difficult to support easily in a
+program like GoldED, which was designed to support the traditional
+fixed header formats and kludges in the msg body. Therefore the
+implementation in GoldED of the JAM subfields is not currently as
+complete as one might wish.
+
+However, it should be adequate for most purposes. I will of course do
+what I can to improve the JAM subfield support in future releases. The
+following is a list of the current limitations of the JAM subfield
+support in GoldED:
+
+*   Subfields are converted internally to the equivalent kludges for
+    easy viewing, and to make it possible to copy JAM msgs to areas
+    with other msgbase formats. Some subfields do not have equivalent
+    known kludges defined. They are converted to kludges with names I
+    have invented for the purpose. All subfields can be viewed if you
+    hit the Alt-I key to display a hexdump of the message.
+
+*   The subfields with size limits (typically 100 chars) are not
+    specifically checked for size. Since all other msgbase systems
+    have much lower limits for the fields in question, this should not
+    be a problem.
+
+*   Only one OADDRESS/DADDRESS is supported. When reading a message,
+    only the _first_ OADDRESS/DADDRESS is used.
+
+*   None of the file attach or file request subfields are supported at
+    this time. File attaches or file requests are stored in the
+    subject field in a manner similar to other msgbase formats. This
+    might not be supported by a fully JAM compliant mail processor,
+    but IMHO a mail processor should use the subject field if it finds
+    the file attach/request attributes set, but can't find any
+    subfields for them.
+
+*   If you change a JAM message which is not from you, and save it,
+    all unsupported subfields will be missing in the saved message,
+    and some supported subfields may be changed in content (like the
+    PID subfield).
+
+*   Currently unsupported message attributes:
+
+    MSG_FPU     "Force pickup"
+    MSG_NODISP  "Msg may not be displayed to user" (always displayed)
+
+
+Deleted msgs
+
+The original JAM specs has a fairly major problem when it comes to the
+specification for deleting msgs and in particular about _detecting_
+deleted msgs. The original specs do not define a fast way to detect
+deleted msgs from the index file alone.
+
+This may not be so important for a BBS or a mail processor, but it is
+absolutely vital for mail readers such as GoldED, which need a fast
+way to find out how many active msgs there are, and where the lastread
+is, and to calculate how many unread msgs there are. If GoldED had
+scan the header file to check a single bit in each header the area
+scanning would slow down dramatically, because the header file can
+easily grow to many megabytes and thousands of msgs.
+
+Fortunately there is a way out. The specs state that if the usercrc
+and header offset values in the index are both -1 (FFFFFFFFh), then
+"there is no corresponding header". Such a situation is IMHO highly
+unlikely, so I have proposed to use this to signify a deleted msg
+instead. This should be backward compatible with almost all JAM
+compatible programs, with the possible exception of msg undelete
+utilities.
+
+With the header offset set to -1 (FFFFFFFFh), there is of course no
+fast way to find the header of a deleted msg. A msg undelete utility
+would have to scan through the entire header file to locate the
+deleted header (or rather the last occurrence of it, because there can
+easily exist more than one deleted header with the same message
+number). This is IMHO a price worth paying for the performance gained
+by using by changing the specs to specify a deleted msg instead of a
+hypothetical non-existing header.
+
+When I brought up this subject in the JAMDEV echo, the developers who
+replied generally agreed that this was a good idea. At the time of
+writing, I don't know for certain that it will be changed in the
+specs, but I think so.
+
+GoldED optionally (since version 2.50.B0822) follows my proposed
+method when deleting msgs. The configuration keyword JAMHARDDELETE
+specifies which method to use. If set to Yes, my method is used. The
+default is No, but I recommend (and use myself) Yes.
+
+
+Scanning files
+
+The NETMAIL/ECHOMAIL.JAM files are written/updated when new messages
+are written or changed in JAM netmail/echomail areas. The files are
+written/updated in the JAMPATH. If you don't have a JAMPATH, it
+defaults to the HUDSONPATH. If you don't use a Hudson msgbase and
+haven't defined a HUDSONPATH, the HUDSONPATH defaults to the GOLDPATH.
+
+At the time of writing, the NETMAIL/ECHOMAIL.JAM files are not a part
+of the official JAM specs, but they are used in RA2 and most JAM
+compatible mail processors to specify the msgs that need to be
+exported from the JAM msgbase files.
+
+#page
+#---------------------------------------------------------------------
+#chapter PCBoard Implementation Notes
+
+This chapter describes details about the implementation of the PCBoard
+messagebase format in GoldED.
+
+
+Netmail
+
+GoldED 2.50 supported FidoPCB-style netmail areas, where the first and
+second line of the msg had special meaning as FidoNet address or
+attributes. This is no longer supported from version 2.51. Instead,
+the official method used by PCBoard itself is supported. This should
+be transparent to you.
+
+
+Extended Headers
+
+GoldED is aware of PCBoard v15.x extended headers in the message text.
+The TO, TO2, FROM, FROM2 and SUBJECT extended headers are directly
+supported and "swallowed" when reading a msg. Other extended headers
+are currently treated like normal message text and is therefore not
+hidden to the reader. In a later release, I plan to internally convert
+the extended headers to kludges.
+
+
+Long Names
+
+GoldED 2.51 supports the long names that are possible with PCBoard.
+You can both enter and edit them. GoldED 2.50 was limited to 35 chars.
+
+
+Password
+
+Passwords are not supported.
+
+
+Attributes
+
+The Private, Received, Crash and Direct attributed are supported.
+
+
+Double-Byte Characters (Foreign Systems)
+
+GoldED reads the PCBOARD.DAT file to determine whether to use E3h or
+0Dh (CR) as the line/paragraph termination character when reading and
+writing message text.
+
+
+Message Index
+
+Only the new v15.x .IDX files are suppported. The old .NDX files are
+not supported in any way.
+
+
+Userbase
+
+By default, the first set of lastreads is used. But if you set
+PCBOARDUSERNO to -1, GoldED searches the userbase for your name to
+find the lastread pointer set. If GoldED does not find you name, it
+will NOT add a new userbase record for you, but instead uses the first
+set of lastreads.
+
+
+Mail Waiting Flag
+
+The mail waiting flags are updated when you write to people that are
+named in the userbase.
+
+Changing a Message
+
+When changing a message, the new edition is saved as if it were a new
+message, with a new message number, and then the old edition is
+deleted. This behaviour is consistent with the way PCBoard itself
+works when changing a message. NOTE: The old edition will still be
+visible with the DEL attribute until you exit the area.
+
+#page
+#---------------------------------------------------------------------
+#chapter AdeptXBBS Implemenation Notes
+
+This chapter describes details about the implementation of the
+AdeptXBBS messagebase format in GoldED. The implementation is based on
+the documentation in version 1.05, experimentation and questions to
+the authors. Thanks go to Frank Jacobberger for the initial testing
+and prodding of the authors to answer my questions :-)
+
+The AdeptXBBS format does not have a quick method of finding deleted
+messages via the index file. This means that deleted messages will
+still be visible, but marked with the DEL attribute. When GoldED
+deletes a message, it will at first seem to be gone, but after the
+next scan, it will be back again, with the DEL attribute.
+
+Mixing of netmail and echomail or other types of mail in the same area
+is not directly supported. If an area is setup as both netmail and
+echomail, GoldED will treat it as netmail. If an area is neither
+netmail nor echomail, GoldED wil treat it as a local area.
+
+GoldED detects Usenet (newsgroup) and Internet E-Mail areas in
+the AdeptXBBS setup and uses them as such, but it has not yet been
+tested if GoldED and AdeptXBBS are compatible in the way they store
+and process Internet header information.
+
+The AdeptXBBS personal mail feature (the index in the Personal_Mail
+directory) is supported for mails you write to other users on the BBS.
+However, personal mail for you via this feature or by other means is
+not yet supported.
+
+The replylinking method used by AdeptXBBS (whatever the method is??!)
+is not yet supported. This means that links to other messages are
+missing.
+
+The AdeptXBBS messagebase format is only supported in the OS/2 version
+of GoldED, because AdeptXBBS requires HPFS. In the other versions, the
+AdeptXBBS code is not included in the EXE file and therefore doesn't
+use additional memory or EXE disk space.
+
+#page
+#---------------------------------------------------------------------
+#chapter WildCat! 4.x Implementation Notes
+
+This chapter describes details about the implementation of the
+WildCat! 4.x messagebase format in GoldED.
+
+The WildCat format does not have a quick method of finding deleted
+messages via the index file. This means that deleted messages will
+still be visible, but marked with the DEL attribute. When GoldED
+deletes a message, it will at first seem to be gone, but after the
+next scan, it will be back again, with the DEL attribute.
+
+WildCat features which are not supported yet:
+
+- The userbase.
+- The message unread chain.
+- The message from/to title.
+- The message network name.
+- The message internal and external attach.
+
+There is not yet any AREAFILE WildCat. You must define the areas by
+hand using the AREADEF keyword, like this:
+
+  AREADEF MYTEST "My Test" 0 Echo WCat <path\basename> etc.
+
+There is a keyword WILDCATUSERNO, which works just like the other
+<msgbase>USERNO keywords. By default GoldED will use the first record
+in the lastread file (*.LRD), so if you are not the first person in
+the userbase, or you are sharing the messagebase with others, you may
+have to change this user number. The userbase is currently not
+supported (ie: you can't set the number to -1 to let GoldED find the
+correct user and lastread automatically).
+
+NOTE: The WildCat support is currently not very well-tested, so use
+it with caution. In my limited testing, I have not found it to be
+damaging the messagebase, but you should probably test it on less
+important areas and/or make backups until it is determined that it
+is safe.
+
+<sorry - this chapter is not completed yet>
+
+#page
+#---------------------------------------------------------------------
+#chapter Win32 Implementation Notes
+
+A new Win32 API based console (text) mode version has been added to
+the GoldED family: GoldED/W32. It will run under Windows NT and
+Windows 95 as a textmode application. Note that the screen update
+speed and keyboard response may be slow, especially under Windows 95.
+This is because screen and keyboard access has to go through some
+fairly complex (Win32) API functions, which are designed to hide the
+underlying hardware access method and thus have a lot of overhead
+compared to direct hardware access under DOS or even the simpler API
+under OS/2.
+
+Known limitations/problems/bugs in the Win32 version:
+
+- Can't change the screen mode (like from 25 to 43/50 lines).
+- Can't change the border (overscan) color.
+- Can't switch between blinking and intense colors.
+- Can't change the palette.
+- Shelling to the OS may not work.
+- Standard beeping effects may not be working under Windows 95.
+- Possible minor keyboard quirks.
+
+On the whole, I am not very happy about the Win32 versions performance
+when running on Windows 95. However, I am certain that I can put a lot
+of blame on the poor implementation of the console mode in Windows 95.
+It runs more smoothly in Windows NT, even the old NT 3.1 that I tested
+it on in the beginning. I would like to hear from users how it runs
+under NT 4.0.
+
+Some of the limitations and problems with the Win32 version are caused
+by limitations or peculiarities in the Win32 console mode API.
+
+#page
+#---------------------------------------------------------------------
+#chapter Linux Implementation Notes
+
+There are some things you must know before trying out the Linux
+version, especially if you are used to the DOS, OS/2 or Win32
+versions:
+
+* You should be familiar with GoldED for the other operating systems
+  and know your way around at least a basic golded.cfg.
+
+* Linux is an OS with CASE-SENSITIVE file systems. GoldED now uses
+  lowercase filenames internally, because this is costumary for Unix.
+  When accessing msgbases on case-insensitive file systems such as FAT
+  or HPFS under Linux, filenames might not be lowercase on the disk.
+  If this is the case, you must rename them so that they are (and hope
+  they stay lowercase).
+
+  This will probably be the part that will give you the most grief if
+  you try to run a system with a mixture of Linux, DOS, OS/2, and/or
+  Win32 software.
+
+  IF IT DOESN'T WORK OR COREDUMPS, TRY CHECKING IF ALL FILES ARE
+  LOWERCASE, BOTH ON THE FILESYSTEM AND IN THE CONFIGURATION FILES.
+
+* The directory separator (slash) char is '/', not '\'. However,
+  GoldED automatically translates the "wrong" slash char to the
+  "right" slash char in most cases, so you probably won't notice it.
+
+* Unix has no drive letters (C: etc), and GoldED for Linux currently
+  can't map DOS-style paths to Unix-style paths. This means that 
+  AREAFILE's won't work unless paths are specifically written in
+  Unix-style.
+
+* If you want to use the same golded.cfg file for all platforms, you
+  can use the conditional statement "IF LINUX" or "IF UNIX" around
+  Linux specific parts of it, typically paths or filenames.
+
+* I recommend to start with a tiny golded.cfg (see below) with only
+  the basic setup and a few areas that you have a backup of. The
+  msgbase support of GoldED for Linux should work exactly as
+  3.00.Alpha5, which is NOT known to trash msgbases, but it's compiled
+  and built with a compiler and tools that I'm not very familiar with,
+  and there may be compiler quirks and flaws introduced in the porting
+  which may have affected otherwise working code.
+
+* Currently only the *.MSG, JAM, Squish and Hudson formats have been
+  tested, but it should work with the other formats too.
+
+* There is not yet any support for Unix-style mailboxes or news
+  spools. If you want to access those, you need to use a utility that
+  can create/unpack SOUP packets. GoldED can import/export those to
+  the msgbases that are supported (JAM or Squish is recommended for
+  this).
+
+* File attach probably does not work well (it's not been tested).
+
+* Characters with ASCII values 0-31 are currently remapped to 'x' or a
+  visually similar character before being written to the screen.
+  Characters in the range 128-159 are remapped from CP865 to Latin-1.
+  
+* The default XLATLOCALSET is LATIN-1 for the Linux version, as
+  opposed to IBMPC for the other OS'es. You should setup character
+  translation between IBMPC and LATIN-1 and use the correct XLATEXPORT
+  for each echo. See the GoldED manual for details. Most FidoNet
+  echoes assume IBMPC or another IBMPC-based sets as default if there
+  is no CHRS or CHARSET kludge. For areas where IBMPC is assumed, you
+  should set both XLATIMPORT and XLATEXPORT to IBMPC or CP850.
+
+* Screen color changes and cursor movements are made with ANSI
+  sequences. GoldED for Linux will also work in X terminals, but this
+  is not recommended because of keyboard limitations. Telnet sessions
+  should work, if they support the ANSI sequences and produce usable
+  keycodes.
+
+* Standard distributions of Linux do not define all the keys that are 
+  usually available on DOS, OS/2 and Win32. Specifically, cursor
+  movement (arrows, page, home/end) keys don't have separate keycodes
+  when combined with the shift, control or alt keys. It is possible
+  (in the keytable maps in /usr/lib/kbd/keytables) to define
+  non-standard keycodes to make Ctrl-PageUp, Alt-Left etc. work, but I
+  haven't had time to do this yet.
+
+* There may be odd quirks in the keyboard handling. Please report if
+  you find any.
+
+* The "DOS shell" probably doesn't work. Not tested.
+
+* The printing feature prints to "/dev/lp". Not tested.
+
+
+Please report only problems that are specific for the Linux version.
+General problems have already been reported to death since april '97
+and may already be fixed in the next versions.
+
+
+=== Cut, a basic golded.cfg ===
+
+username Odinn Sorensen
+address 2:236/77
+areadef netmail "Netmail" 0 net opus /usr/ftn/netmailx . (loc)
+areadef net.fidoz2 "FidoNet Z2" 0 net squish /usr/ftn/fidoz2 . (loc)
+areadef zzz.jtest1 "JAM test" 0 echo jam /usr/ftn/jtest1 . (loc)
+
+=== Cut ===
+
+#page
+#---------------------------------------------------------------------
+#chapter Thank you's, Credits and Acknowledgements
+
+*   All GoldED users, for their endless patience and support through
+    the years.
+
+*   Dirk A. Mueller has been very helpful in all kinds of ways. I just
+    can't thank him enough!
+
+*   Squish and Maximus are Copyright 1989, 1995 by Lanius Corporation
+    (Scott J. Dudley).
+
+*   JAM(mbp) - Copyright 1993 Joaquim Homrighausen, Andrew Milner,
+    Mats Birch, Mats Wallin. ALL RIGHTS RESERVED.
+
+*   Marcantonio Magnarapa made a manual compiler for the GoldED manual
+    during the 2.50.beta phase, for which I was very grateful.
+    However, I have since made my own manual compiler.
+
+*   The EXEC v3.3 swapping spawn function by Thomas Wagner is used in
+    the DOS version to minimize memory use while shelling to DOS and
+    running other programs.
+
+*   Sourcecode for doing the WaZOO .REQ thing was kindly provided by
+    Morten Baun.
+
+*   Udo van den Heuvel made the GoldPGP utility, which inspired me to
+    make GoldED do the same internally.
+
+*   Nicolai Dufva (2:236/100.28) helped with coding for the sound
+    support in the OS/2 version.
+
+*   Bob Stouts C/C++ SNIPPETS have been a source and inspiration for a
+    number of functions and classes in my Goldware library.
+
+*   The Free Software Foundation for GPL and LGPL.
+
+*   Linus Torvalds for Linux.
+
+[this list is incomplete]
+
+#---------------------------------------------------------------------
+#end
+#---------------------------------------------------------------------

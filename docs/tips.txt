@@ -1,0 +1,32 @@
+Tips and tricks
+~~~~~~~~~~~~~~~
+
+1. Don't you forgot that instalation of new version requires reading of
+   notework.txt?
+
+2. GoldED+ requires that your system environment properly configured for your
+   local rules: you should have properly configured locale (with country.sys,
+   Control Panel or LANG environment variable) and timezone info (with TZ
+   environment variable or Control Panel).
+
+3. To replace SoftCR with something on typing you should use EditSoftCRXlat
+   and DispSoftCR keywords. Starting from the version 1.1.3 you shouldn't
+   expirience significant problems with it.
+
+4. "Hi-ASCII-Char ...Macro ..." no longer works in old fashion due to
+   'Hi-ASCII-Char' considered as case-insensitive character like it always
+   was done for ASCII characters.
+
+5. GoldED+ displays stylecode chars like GoldED 2.50 by default. If you don't
+   like this behaviour then take a look at StyleCodes keyword.
+
+6. To use CUA with "KeybDefaults No" you should define it. Though various
+   #Left is not described in manual they present ;-) I'll describe it when
+   it will be implemented in Linux version.
+
+7. Having problems with HPT? According to fidoconfig specification "\"
+   initiates escape-sequence which is properly processed by GoldED+ and not
+   processed by original fidoconfig library. You may consider using of
+   '-lame' option :-)
+
+8. If you want add something to this file - feel free to contact me.

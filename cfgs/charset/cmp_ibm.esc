@@ -1,0 +1,70 @@
+; --------------------------------------------------------------------
+;   Escaped Characters Table for GoldED 2.30.
+;   Based on IBM Code Page 437 with additions for CP850 and 865.
+; --------------------------------------------------------------------
+;   Composed Characters Table, Andre van de Wijdeven (2:500/131).
+; --------------------------------------------------------------------
+IBMPC               ; Map codes to charset.
+; --------------------------------------------------------------------
+!!  \d173           ; Inverted Exclamation Mark
+'2  \d171           ; Half
+'4  \d172           ; Quarter
++-  \d241           ; Plusminus
+,C  \d128           ; C Cedilla
+,c  \d135           ; c Cedilla
+<<  \d174           ; Left Double Guillemet
+<=  \d243           ; Smaller equals
+==  \d240           ; Equivalence
+>=  \d242           ; Greater equals
+>>  \d175           ; Right Double Guillemet
+??  \d168           ; Inverted Question Mark
+A"  \d142           ; A Umlaut
+A*  \d143           ; A Ring
+AA  \d143           ; A Ring (Nordic digraph version)
+AE  \d146           ; AE Digraph
+Ct  \d155           ; Dollarcent [CP437]
+E'  \d144           ; E Acute
+Fl  \d159           ; Florin (Guilder)
+N~  \d165           ; N Tilde
+O"  \d153           ; O Umlaut
+O/  \d157           ; O Slash [CP850,865]
+OE  \d157           ; OE Digraph (O Slash) [CP850,865]
+Pd  \d156           ; Pound Sterling
+Pt  \d158           ; Pesetas
+U"  \d154           ; U Umlaut
+Yn  \d157           ; Yen [CP437]
+^2  \d253           ; To the second power
+^n  \d252           ; To the n'th power
+a"  \d132           ; a Umlaut
+a'  \d160           ; a Acute
+a*  \d134           ; a Ring
+a^  \d131           ; a Caret
+a_  \d166           ; Feminine Spanish Ordinal
+a`  \d133           ; a Grave
+aa  \d134           ; a Ring (Nordic digraph version)
+ae  \d145           ; ae Digraph
+e"  \d137           ; e Umlaut
+e'  \d130           ; e Acute
+e^  \d136           ; e Caret
+e`  \d138           ; e Grave
+i"  \d139           ; i Umlaut
+i'  \d161           ; i Acute
+i^  \d140           ; i Caret
+i`  \d141           ; i Grave
+n~  \d164           ; n Tilde
+o"  \d148           ; o Umlaut
+o'  \d162           ; o Acute
+o/  \d155           ; o Slash [CP850,865]
+o^  \d147           ; o Caret
+o_  \d167           ; Masculine Spanish Ordinal
+o`  \d149           ; o Grave
+oe  \d155           ; oe Digraph (o Slash) [CP850,865]
+pi  \d227           ; Pi (math symbol)
+ss  \d225           ; German double s (or Beta)
+u"  \d129           ; u Umlaut
+u'  \d163           ; u Acute
+u^  \d150           ; u Caret
+u`  \d151           ; u Grave
+y"  \d152           ; dotted y
+~=  \d247           ; approximate equivalence
+; --------------------------------------------------------------------

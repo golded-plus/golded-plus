@@ -1,0 +1,63 @@
+# -*- makefile -*-
+
+ifeq ($(findstring EMX, $(PATH)), EMX)
+CC=gcc
+AR=ar
+PLATFORM=emx
+SHELL=bash
+EXEEXT=.exe
+OBJEXT=.o
+LIBEXT=.a
+#CC=gcc -Zomf -Zcrtdll
+#AR=emxomfar
+#PLATFORM=emx
+#SHELL=bash
+#EXEEXT=.exe
+#OBJEXT=.obj
+#LIBEXT=.lib
+CXX=$(CC)
+else
+ifneq ($(DJGPP),)
+CC=gcc
+CXX=gpp
+AR=ar
+PLATFORM=djg
+SHELL=bash
+EXEEXT=.exe
+OBJEXT=.o
+LIBEXT=.a
+else
+ifeq ($(TERM),cygwin)
+CC=gcc -mno-cygwin
+CXX=g++ -mno-cygwin
+AR=ar
+PLATFORM=cyg
+SHELL=bash
+EXEEXT=.exe
+OBJEXT=.o
+LIBEXT=.a
+else
+CC=egcc
+CXX=g++
+AR=ar
+PLATFORM=lnx
+EXEEXT=
+OBJEXT=.o
+LIBEXT=.a
+endif
+endif
+endif
+CFLAGS+=-g -funsigned-char $(INCS) -Wall -Wno-sign-compare -pedantic -O2# -fomit-frame-pointer
+LNKFLAGS+=-g
+CPPFLAGS+=$(CFLAGS) -fno-exceptions -fno-rtti
+
+# comment following lines if you dislike ncurses
+ifeq ($(PLATFORM),lnx)
+CPPFLAGS+=-D__USE_NCURSES__
+STDLIBS+=-lncurses
+endif
+
+BIN=bin
+OBJPATH=obj
+LIBPATH=lib
+DEPPATH=dep

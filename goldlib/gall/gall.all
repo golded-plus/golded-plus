@@ -1,0 +1,164 @@
+
+##  ------------------------------------------------------------------
+##  The Goldware Library. Copyright (C) Odinn Sorensen.
+##  ------------------------------------------------------------------
+##  This program is free software; you can redistribute it and/or
+##  modify it under the terms of the GNU General Public License as
+##  published by the Free Software Foundation; either version 2 of the
+##  License, or (at your option) any later version.
+##
+##  This program is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+##  General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+##  ------------------------------------------------------------------
+##  $Id$
+##  ------------------------------------------------------------------
+##  Master build file.
+##  ------------------------------------------------------------------
+
+## CRC and hash calculation.
+gcrc16tb cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gcrc32tb cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gcrchash cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gcrckeyv cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gcrcm16  cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gcrcm32  cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gcrcs16  cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gcrcs32  cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+
+## Compression
+glzh     cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+
+## Debugging.
+gdbgerr  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gdbgexit cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gdbgtrk  cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+
+## Directory handling.
+gdirposx cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+
+## Expression evaluators.
+geval    cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gevalhum cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gevalrpn cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+
+## File handling.
+gfile    cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gfilport cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gfilutl1 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gfilutl2 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+
+## FTN address classes.
+gftnaddr cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+
+## Nodelist index access classes.
+gftnnl   cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gftnnlfd cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gftnnlfu cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gftnnlge cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gftnnlv7 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+
+## Keyboard.
+gkbdbase cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gkbdgetm cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gkbdunix cpp     all nov                         lnx
+gkbdwait cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+
+## Logfile class.
+glog     cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+
+## Misc. memory stuff.
+gmemdbg  cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gmemutil cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+
+## Mouse.
+gmoubase cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+
+## Message attributes.
+gmsgattr cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+
+## Message handling.
+ghdrmime cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+
+## GoldED printer definition strings.
+gprnutil cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+
+## UNIX signals.
+gsigunix cpp     all nov                         lnx
+
+## Sound.
+gsnd     cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gsndwrap cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+
+## Strings.
+gstrbags cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gstrctyp cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gstrmail cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gstrname cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gstrutil cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+
+## Time related.
+gtimjuld cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gtimutil cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+
+## Text searching.
+gbmh     cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gfuzzy   cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gregex   cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gwildmat cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gsearch  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gsrchmgr cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+
+## Text processing.
+gtxtpara cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+
+## BBS userbase access.
+gusrbase cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gusrezyc cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gusrgold cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gusrhuds cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gusrmax  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gusrpcb  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gusrra2  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gusrxbbs cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+
+## Miscellaneous utility.
+gutlclip cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gutlcode cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gutlgrp  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gutlmisc cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gutlmtsk cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gutltag  cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gutlvers cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+
+## OS specific utilities
+gutldos  cpp     all                                     djg
+gutlos2  cpp     all         bco         wco         emx
+gutlos2m cpp     all         bco         wco         emx
+gutlwin  cpp     all             bcx                             cyg
+gutlwinm cpp     all             bcx                             cyg
+
+## Low-level text video
+gvidbase cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gvidinit cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+
+## Text windowing.
+gwinbase cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gwindow  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gwinhlp1 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gwinhlp2 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gwininit cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gwinline cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gwinmenu cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gwinmnub cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gwinpckf cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gwinpcks cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gwinpick cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gwinput2 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+
+##  ------------------------------------------------------------------

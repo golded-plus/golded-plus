@@ -1,0 +1,73 @@
+
+Random remarks about the ncurses support for GoldEd+
+                  by Jacobo Tarrio, 2:348/102.11@fidonet <jtarrio@iname.com>
+
+This version of GoldEd+ bears the second public release of the ncurses
+implementation of its video code; it's still considered beta, so expect some
+strange behaviour while it is being completed.
+
+It is being done in order to allow any Unix clone with ncurses installed
+(and, probably, any implementation of curses) to run GoldEd+, independently
+of the character set used by the system and of the terminal type; GoldEd+
+will run fine from the console with a cyrillic character set, from a xterm
+with the iso-8859-1 character set, or from a monochrome VT-100 dumb
+terminal. It might even be possible in the near future to use GoldEd+
+compiled for DOS, Win32 or OS/2, and linked with PDCurses.
+
+This file tries to list some already known bugs along with other nasty
+"features" of the code. Expect most of these bugs to disappear and a lot of
+fresh new ones to show up in the next public release of the ncurses support
+:-) However, I do not always succeed, so old, already existing bugs are
+marked with '!', whilst new ones are marked with '*'.
+
+If you find any bug not listed here, please report to Jacobo Tarrio,
+2:348/102.11@fidonet <jtarrio@iname.com> ASAP to get it fixed soon, or,
+better, fix it yourself and send me the patch :-)
+
+=== 2000-02-25: Second public release
+Known bugs:
+
+! The splash screen looks a bit ugly :-)
+! The cursor disappears every 30 seconds when editing a message
+* Statusline displays a couple of odd characters (after GoldEd+'s name and
+  before the current time)
+* Screen may become corrupted if someone other than GoldEd+ writes on the
+  terminal
+* Messages from the program viewed before entering full-screen are not
+  displayed properly
+
+Notes:
+
+* I have "ment" the escape key affair (see below) by using some sort of
+  ncurses version detection and the so. If this misfeature (for I'm sure it
+  is going to give more trouble than good) annoys you, you can change the
+  delay after escape by modifying the "ESCDELAY = 50;" assignment at the
+  file 'goldlib/gall/gkbdbase.cpp', or by commenting it out.
+
+  Anyway, you should perhaps be able, with this default setting, to "press"
+  ALT on terminals that don't have this, by pressing ESC and the desired key
+  very quickly :-)
+
+
+=== 2000-01-25: First public release
+Known bugs:
+
+* Tab key does not work properly
+* Boxes are seen fine (at least with Latin-1) but lines are still drawn
+  with hyphens (-), plus signs (+), vertical lines (|) and the so.
+* The splash screen looks a bit ugly :-)
+* The box in the screensaver leaves traces when moving
+* The cursor disappears every 30 seconds when editing a message
+
+Notes:
+
+* When pressing the escape key, you must wait for 1 second for GoldEd+ to
+  take action. This is due to the way most terminals send function keys and
+  keypad presses; they send ESC followed by some characters, and curses
+  waits for these characters to arrive. There is a way to shorten the
+  timeout to, say, 30ms, which is suitable for a 300-baud terminal and still
+  too fast for humans to notice, but it would make GoldEd+ dependant of a
+  particular implementation of curses, and of a particular version of that
+  implementation; also, it would make GoldEd+ unusable over a network or
+  with some dumb terminals or terminal emulators; this way you can press
+  ESC followed immediately by an A to "press" ALT-A.

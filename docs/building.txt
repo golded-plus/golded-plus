@@ -1,0 +1,29 @@
+
+GoldED+ compilation how to
+by Alexander Aganichev, 2:5020/201.58 <asa@eed.miee.ru>
+
+-------------------------------------------------------------------------------
+
+To compile GoldED+ and utilities you'll need:
+
+ - GNU C++ newer than 2.8.x, gcc 2.95.2 recommended
+ - GNU make and GNU sed
+ - vi, emacs, or any other editor you like
+ - boldness ;-)
+
+First, edit GNUmakef.def for the preferrable compilation options.
+
+Now go to golded3 and áopy mygolded.__h to mygolded.h and adjust it for
+yourself (put your name, FTN address and e-mail). Goto root again.
+
+Pray.
+
+Exec 'make'. Wait. (If your version of gcc does not support strftime format
+checking you will need to manually comment __attribute__ definition on
+strftimei function in goldlib/gall/gtimall.h.)
+
+ls bin/
+
+You have to get ged{short-patform-name}, gn{short-patform-name}, and
+rddt{short-patform-name}. If so, you did it!
+

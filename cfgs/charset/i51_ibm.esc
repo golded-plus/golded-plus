@@ -1,0 +1,65 @@
+; --------------------------------------------------------------------
+;   Escaped Characters Table for GoldED 2.30.
+;   Based on IBM Code Page 437 with additions for CP850 and 865.
+; --------------------------------------------------------------------
+;   FSC-0051.003 (I51) Combined Characters, Thomas Gradin (2:200/108).
+; --------------------------------------------------------------------
+IBMPC               ; Map codes to charset.
+; --------------------------------------------------------------------
+ 0  0               ; superscript zero
+ 1  1               ; superscript one
+ 2  \xFD            ; superscript two
+ 3  3               ; superscript three
+ 4  4               ; superscript four
+ 5  5               ; superscript five
+ 6  6               ; superscript six
+ 7  7               ; superscript seven
+ 8  8               ; superscript eight
+ 9  9               ; superscript nine
+ I  I               ; I with dot
+ i  \xD5            ; dot-less i
+ n  \xFC            ; superscript n
+"U  U               ; U with double acute accent
+"u  u               ; u with double acute accent
+$P  \x9E            ; peseta sign
+$f  \x9F            ; guilder sign
+,A  A               ; A with cedilla
+,E  E               ; E with cedilla
+,S  S               ; S with cedilla
+,a  a               ; a with cedilla
+,e  e               ; e with cedilla
+,s  s               ; s with cedilla
+-<  \xF3            ; equal or less than
+-=  \xF0            ; defined as
+->  \xF2            ; equal or greater than
+-C  C               ; complement of
+-I  \xEE            ; part of lot
+-S  S               ; Polish S with dash
+-Z  Z               ; Polish Z with dash
+-s  s               ; Polish s with dash
+-z  z               ; Polish z with dash
+-~  \xF7            ; about equal
+.0  0               ; subscript zero
+.1  1               ; subscript one
+.2  2               ; subscript two
+.3  3               ; subscript three
+.4  4               ; subscript four
+.5  5               ; subscript five
+.6  6               ; subscript six
+.7  7               ; subscript seven
+.8  8               ; subscript eight
+.9  9               ; subscript nine
+.S  S               ; Polish S with dot
+.Z  Z               ; Polish Z with dot
+.s  s               ; Polish s with dot
+.z  z               ; Polish z with dot
+/L  L               ; Polish L slash
+/l  l               ; Polish l slash
+^G  G               ; G with inversed circ. accent
+^S  S               ; S with inversed circ. accent
+^g  g               ; g with inversed circ. accent
+^s  s               ; s with inversed circ. accent
+gG  \xE2            ; capital gamma
+ga  \xE0            ; alpha
+tm  tm              ; trade mark sign
+; --------------------------------------------------------------------

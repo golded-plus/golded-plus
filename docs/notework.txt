@@ -1,0 +1,2809 @@
+______________________________________________________________________
+
+                         --- === *** === ---
+
+                               GoldED+
+
+                         --- === *** === ---
+
+
+______________________________________________________________________
+
+             Notes for GoldED+ 1.1.4.3, February xx 2000
+______________________________________________________________________
+
+- Fixed incorrect timestamps on messages.
+
++ Implemented full access to Synchronet bases. Deleting implemented by
+  setting DEL attribute to the message.
+
+- Fixed bugs in origin and tagline selection menus.
+
+! A lot of GoldED+ internals was rearranged once again.
+
+- Fixed one more mistyping in TOPT/FMPT kludge fix.
+
+! Maximus 2.x is obsolete by Y2K, removed.
+
+- Fixed small bug in CC: processing.
+
+- Fixed small cosmetic bug in hexdump.
+
+______________________________________________________________________
+
+             Notes for GoldED+ 1.1.4.2, February 10 2000
+______________________________________________________________________
+
+! Alexander's charset patch replaced with the similar patch which
+  uses different mechanism: now if charset manually selected then
+  IgnoreCharset option automatically became active. To disable option
+  state you need to select "Auto" charset.
+
++ Added new .lng file keyword MI_CHARSETAUTO, defaults to "Auto".
+
+! SWAPPATH removed since it useless.
+
+! GoldED+ no longer uses most of binary configuration files. The
+  required files are: goldhelp.ge?, goldrand.ge?, and goldxlat.ge?.
+  Some of them probably will be removed soon too.
+
+! Added Synchronet message base support in read-only mode. Could be
+  defined in configuration files by using SMB (AreaDef) and Y (Area)
+  identifiers:
+
+  AREADEF SYNCHRO.TEST "" 0 Local SMB e:\ged\smb\smb\msgbase . (R/O)
+
+  Please do not try to delete messages or reply in SMB areas, this not
+  implemented yet so the result is unpredictable.
+
+- Fixed partially implemented TOPT/FMPT kludges appearance after
+  copying/moving from squish message bases.
+
+- Right side slashes now used again when calling externutils.
+
+______________________________________________________________________
+
+             Notes for GoldED+ 1.1.4.1, January 31 2000
+______________________________________________________________________
+
+- GoldED+ now correctly recognizes RFC-style Date kludge which
+  contains 4 digits year field (not 2 digits as described in RFC-822).
+
+- When moving/copying messages from squish netmail to non-squish
+  netmail TOPT and FMPT kludges now added if required.
+
+- Fixed date handling in Hudson and GoldBase message bases.
+
+! The following keywords was renamed due to an internal collision:
+
+  WT_HEADEREDITHELP1  WT_HEADEREDITHELP_1
+  WT_HEADEREDITHELP2  WT_HEADEREDITHELP_2
+
+- Fixed broken sound support in GoldED+/386.
+
+- Fixed set of bugs in fidoconfig parser (broken since moved to STL).
+
+- Fixed missed %E token in time format.
+
+- Fixed broken @cdate, @ctime macroses.
+
+- Added option "lame" to fidoconfig parser. This disables expansion of
+  backslashes as escape-sequences:
+
+  Areafile fidoconfig -lame m:\y\lame\fidoconfig\is\here
+
++ Added keyword BeepFactor, the default value is 1000. This used as
+  multiplier to sound lenght.
+
+- One more reason why GoldED+ could crashes at startup fixed.
+
++ It is now possible to remove ftn address from the addressbook by
+  cleaning field, not by entering address 0: :-)
+
+- Wrapped RFC kludges now properly processed too.
+
+! Casted voodoo spell on STL =%-) Probably GoldED+ stands bit stable
+  now.
+
+- Fixed truncation of clipboard name on slashes.
+
++ Integrated patches by Alexander Tsvyashchenko:
+
+  Added new keyword SHOWDELETED to set status of "soft"-deleted
+  messages in Jam bases. Could be switched on the fly by AreaShowDel
+  (default assignment to Alt-F8) in golded.cfg.
+
+  Added "magic" charset Auto. Now if user have choose translation
+  table manually (by Ctrl-J) GoldED+ will use selected page for
+  translation regardless of the CHRS and CHARSET kludge. If Auto
+  charset selected then GoldED+ will look at the CHARSET kludges
+  first. Please, add something like this to your config if you use
+  XLAT feature and want to use Auto feature:
+
+  XLATCHARSET AUTO CP866 rus_rus.chs
+
+______________________________________________________________________
+
+              Notes for GoldED+ 1.1.4, January 14 2000
+                      Happy Old New Year! :-)
+______________________________________________________________________
+
+- Fixed bug in environment variable extension (introduced in 1.1.3).
+
++ GermanKeyboard now also active by default for Polish locale.
+
++ Added new template keyword @widepid which is expanded to X-Mailer
+  like string.
+
+- Fixed small unsignificant bug in installation procedure which causes
+  leaving zero-sized config if install was terminated.
+
+- Fixed memory leak in geline.cpp.
+
++ Removed poor stack limitation in DPMI version.
+
+- Fixed set of small bugs in internal editor (especially in undo
+  feature). EDITUNDELETE now has same functionality as before GoldED+
+  1.1.2 been released.
+
+- Fixed two bugs which cause misterious crash in some circumstances
+  on startup.
+
++ If TaskTitle defined to empty string then GoldED+/386 will not
+  change virtual machine name.
+
++ Added %C in date macroses (short for "%a %b %e %H:%M:%S %Y"). If
+  strftime from RTL of compiler used for build your version of GoldED+
+  supports undescribed in manual macroses you may use them also but
+  remember that language support via GoldED+ internals provided only
+  for %a, %A, %b, %B, and %C.
+
+! Warning: a lot of code was rearranged once again. This may cause
+  new bugs but it simplifies further development.
+
+- Fixed some date-parsing problems.
+
++ Thanks to Jacobo Tarrio GoldED+ now have priliminary ncurses support
+  under Linux. It is probably will be easier to port (or even just
+  compile :)) GoldED+ to other x86 UNIX like OS'es.
+
+- Fixed bug which breaks creation of "To: bla-bla-bla" line using
+  information taken from addressbook in messages to be gated.
+
++ If page from GoldHelp.cfg (the data between two *P identifyers) not
+  fit to single screen it now will be splitted on the window boundary
+  automatically.
+
++ Tabulations in inserted text now properly replaced. Please note that
+  expanded lines should not exceed 2Kb boundary (I hope that's ok for
+  most users).
+
+- Repaired "Color Reader Hidden" keyword. If something still painted
+  in the regular kludge color please report.
+
++ Added new option to "Write to" menu and new keyword for goldlng.cfg
+  file associated with this option:
+
+    MI_WRITETOHDRONLY       "H Use Header: ONLY "
+
+  Now you may write only header to file/printer/clipboard if required.
+
+- Fixed nodelist index creation in GoldNode if one or more nodelist is
+  missed.
+
+______________________________________________________________________
+
+            Notes for GoldED+ 1.1.3.3, December 25 1999
+______________________________________________________________________
+
+- Fixed memory problems in screen handling of Linux and OS/2 versions.
+
+______________________________________________________________________
+
+            Notes for GoldED+ 1.1.3.2, December 18 1999
+______________________________________________________________________
+
+- Fixed bug in dir handler under Linux.
+
+- UNDO now bit properly restore screen after undone of "zap quotes
+  below" and importing file.
+
+- Fixed small bug in ZapQuotesBelow.
+
+! Hudson/Goldbase code was merged in single template. Please report
+  any new problem immediately. (For source code users: there is
+  probably no more chance to compile this code with anything except
+  GNU C)
+
+! Removed support for FastEcho < 1.42 (anyway all of them is not Y2K
+  compliant).
+
+- Fixed serious bug appeared somewhere in latest -asa's or first
+  GED+'s: if Areareplyto was defined to unexisted area or there was
+  problems with the first area definition then GoldED+ crashed while
+  saving echomail messages.
+
+- Probably completely fixed bug in handling netmail.
+
+______________________________________________________________________
+
+            Notes for GoldED+ 1.1.3.1, December 06 1999
+______________________________________________________________________
+
+- Fixed small bug in directory handling class.
+
+- Fixed bug in REPLYADDR/REPLYTO handling.
+
+- Fixed bug in ADDRESSMACRO keyword handling.
+
+- Fixed GoldNode timestamp checking.
+
+- Fixed small bug in InternetRFCBody processing (untested).
+
+- Fixed incorrect time of files in attach window (only Win32 version
+  was affected).
+
++ Added support for Crashmail II areafile:
+  Areafile Crashmail c:\where\is\config.ext
+
+______________________________________________________________________
+
+             Notes for GoldED+ 1.1.3, November 27 1999
+______________________________________________________________________
+
++ A lot of memory leaks removed from window library.
+
+! RDDT ported to STL.
+
++ Fidoconfig parser now could recognize Jam option.
+
++ GoldNode now could compile as many nodelists/userlists as you want
+  and made bit faster.
+
++ AREACOPYDIRECT no longer influence on forwarding. If you like old
+  behaviour there is new keyword AREAFORWARDDIRECT for you which could
+  be defined to Yes or No and used in Random System Group as well as
+  AREACOPYDIRECT.
+
+- CROSSPOST now defaults to Ask as promised before ;-)
+
+- Fixed creation of broken @CC kludge.
+
+! MS_LISTCC now defaults to "%s  %s", ST_STATUSCC - "CC: %s of %s".
+  Please adjust it in your goldlang.cfg if you use it.
+
+! WARNING: Some basic internal classes (filebrowser, *.msg scanning
+  code, string class, crossposting, carbon copying, addressbook) was
+  redesigned or significantly changed.
+
+- Minor fixes in editor.
+
+! SoftCR now replaced in right place ;-) I mean it is replaced on
+  saving message to base, not at the moment of entering message. So
+  probably spellcheckers could be used more safely. Also this fixes
+  problem with replacing SoftCR under Linux. SoftCR not translated
+  in Subject field of Attach, Freq and UReq messages which looks to
+  be ok. SoftCRs now properly used in Squish message base with
+  DispSoftCR turned on (they was stripped at the beginning of new
+  line regardless of this keyword option). If EditHardTerm turned OFF
+  but DispSoftCR turned ON SoftCRs no longer produced in Ezycom bases.
+  This may broke something but I don't see any reason why this should
+  fail. I should also note that this feature is works ONLY in
+  combination with DispSoftCr Yes. Russian users may copy following
+  two lines to forget about SoftCR-problem completely:
+  -- cut here --
+  DispSoftCr     Yes
+  EditSoftCrXlat H
+  -- cut here --
+
+______________________________________________________________________
+
+             Notes for GoldED+ 1.1.2, November 04 1999
+______________________________________________________________________
+
++ GoldED+ now have undo in internal editor. *BIG* thanx to Denis
+  Zavorotny (2:467/28) who implement it. Default assignment to
+  Alt-Backspace:
+
+  @Backspace EditUndo
+
+  NB! As undo stack is currently unlimited, to avoid unpredictable
+  behaviour when the top of stack reaches an item with freed line, the
+  kill-buffer (Ctrl-Y) was made unlimited also (i.e. EDITUNDELETE has
+  no effect in this version).
+
+- Fixed bug with incorrect handling of USER.BBS file.
+
+- #Del now supported in goldkeys.cfg under DOS, Win32, and OS2.
+
+- Added new keyword CROSSPOST to configure query appearence before
+  crosspossting, defaults to Ask. Possible values: Yes, No, and Ask.
+
+- Added LOCALAREA support to fidoconfig parser.
+
+- Canceling nodelist browser while lookup carbon copies to unexisted
+  address no loner produce letters to your address.
+
+______________________________________________________________________
+
+            Notes for GoldED+ 1.1.1.2, September 20 1999
+______________________________________________________________________
+
+- Fixed 'unfreed memory' error message appearence (broken in 1.1.1.1).
+
+______________________________________________________________________
+
+            Notes for GoldED+ 1.1.1.1, September 08 1999
+______________________________________________________________________
+
+- Fixed pasting from clipboard broken since 1.1.1.
+
+- Squish config parser once again uses -$ at the beginning as
+  identifier of squish format for echo. This behaviour confirmed by
+  Scott Dudley so Partoss users should use -f flag at the end if they
+  uses groups (-$g) or descriptions (-$n) for Fido-style bases.
+
+- I forgot to mention that there are new goldlang keyword added:
+
+   MS_CCTO "* Carbon copied to %s"
+
+  Thanks to Andrew again :-)
+
+______________________________________________________________________
+
+               Notes for GoldED+ 1.1.1, August 16 1999
+______________________________________________________________________
+
+- Fixed triming of spaces when pasting from clipboard.
+
+- Probably fixed appearence of AREA: kludge on crossposting / carbon
+  copying when AreaYouWroteTo used.
+
+- Fixed memory overrun in CHS table reader.
+
+! Added three new tokens that could be invalidated: cc, xc, xp. This
+  lines only invalidated when message forwarded or text inserted via
+  EDITRead menu.
+
+- Probably fixed memory overrun that appeared while invalidating.
+
+- Fixed incorrect cc: processing in Names mode ("CC: " was missed in
+  first line).
+
+- Fixed bug in USERNAME parser.
+
+- Fixed bug in crosspost hiding.
+
+- Fixed bug with missed headers in written messages.
+
+______________________________________________________________________
+
+                Notes for GoldED+ 1.0.0, July 15 1999
+______________________________________________________________________
+
+- Actually print device should be left open so I just broke printing,
+  sorry :(
+
++ Added powerful uu/xx/mime/binhex multi-messages decoder using uulib
+  from well-known uudeview by Frank Pilhofer. Please note that it
+  writes all selected messages to disk before decoding so selecting
+  whole base simultaneously is not a good idea ;-)
+
++ Fixed bug rarely appeared while uudecoding messages (caused by long
+  filepathes).
+
+- Fixed quoting that was broken in 1.1.0 version.
+
++ Added new keywords to Goldkeys.cfg: EditCopy, EditCut, EditDelete,
+  EditPaste, EditBlockPgUp, EditBlockPgDn, EditBlockHome,
+  EditBlockEnd, EditBlockUp, EditBlockDown, EditBlockLeft,
+  EditBlockRight.
+
++ Added keyword AreaCFMReplyTo to send CFM messages to particular
+  area.
+
+______________________________________________________________________
+
+                Notes for GoldED+ 1.1.0, July 07 1999
+______________________________________________________________________
+
++ Added new keyword GermanKeyboard <yes/no>, defaults to autodetect.
+  Processed only by Win32 version, ignored by others. When active
+  right Alt key will be processed as AltGr, otherwise it will have
+  same functionality as left Alt. This keyword replaces command-line
+  switch -R.
+
+! Removed support for Netname keyword since it breaks our primary FTS
+  standarts.
+
+- Kludge ROUTE actually looks like #ROUTE. Fixed.
+
++ Fixed crossposting to 5D FTN addresses.
+
+- Fixed destruction of various long wrapped kludges (mostly relies to
+  Internet kludges). Please report if there's something new broken ;-)
+
+- Fixed fix intended for long kludges wrapping problem resolving.
+
++ Added new keyword FormFeedSeparator. Switched off by default, when
+  enabled inserts Form Feed (0x0c) character between messages while
+  saving to file.
+
+- Fix bug which causes printer device left open after printing.
+
++ It is now possible to write multiple messages to clipboard.
+
+- @d*name, @dpseudo tokens now accept third parameter to specify
+  "all" name, this feature replaces previously announced feature with
+  automatic conversion Whoto to lowercase.
+
+- Fixed stupid bug in sqafix config parser which broke it completely.
+
+- Slightly changed keyboard behaviour in DOS and OS/2 versions: if
+  NUMLOCK is active then numpad keys pressed together with shift-keys
+  treated just like grey keys (without shifts). Now it is common
+  behaviour for OS/2, DOS and Win32 versions. Linux version only
+  missed... Till 1.0.2 hopefully ;-)
+
+- Fixed entering of russian letter 'p' (0xe0) in OS/2 version on
+  extended keyboards, and entering of dot from numpad in Win95.
+
+! Changed name of product to GoldED+, naming convention for archives
+  now: gpPABCCC.ext, where gp stands for GoldED Plus, P - platform ID
+  (x - DOS32, w - Win32, o - OS/2, l - Linux, s - sources, and
+  m - manual), A - major version, B - middle version (odd for stable,
+  even for unstable), CCC - minor version.
+
+- Fix in Squish config parser: according to documentation -$mXXX
+  implicitly turns on -$ switch.
+
+- Fixed endless loop when answering on message with Area kludge
+  pointed to current area.
+
+______________________________________________________________________
+
+               Notes for 3.0.1-asa10 beta3, June 30 1999
+                  (Happy Birthday, Svetik & Kira! ;-))
+______________________________________________________________________
+
+! Due to limitations of Windows 9x Title in /386 version works only if
+  GoldEd runned from DOS console application and not from within Win32
+  console application. Bit improved.
+
++ Some new language configuration keywords added:
+
+   MS_ORIGINALLYIN      "* Originally in %s"
+   WT_CROSSPOST         " Crosspost "
+   MI_XCPROCESS         "P Process XC's "
+   MI_XCIGNORE          "I Ignore  XC's "
+   MI_XCLISTFMT         "L List Format  "
+   WT_XCLIST            " XC List "
+   MI_XCLISTRAW         "K Keep       "
+   MI_XCLISTVERBOSE     "V Verbose    "
+   MI_XCLISTLINE        "L Line       "
+   MI_XCLISTREMOVE      "R Remove     "
+   WT_ADDRESSBOOK       " Addressbook "
+   WT_ADVANCEDSEARCH    " Advanced Search "
+   IL_NOMOREMATCHES     " No more matches found "
+   WT_HEADEREDITHELP1   " #F10: Nodelist "
+   WT_HEADEREDITHELP2   " F10: Addressbook "
+   WT_THREADLISTTITLE   " Message Thread List "
+   WT_ADVANCEDMARKING   " Advanced Marking "
+   ST_USERSTATUSLINE    "GoldED's Address Book - %d of %d (%d left)"
+   WT_USERHEADERNAME    "Name"
+   WT_USERHEADERORG     "Organization"
+   WT_USERHEADERAKA     "Address"
+   IL_USERWAIT          " Wait - Browsing Address Book... "
+
++ It is possible to make carbon copies directly from echo to
+  AreaReplyTo area if this area is netmail.
+
+- Added experimental support for QEcho by Eugene Sorochinsky (with JAM
+  messagebases) AreaList file. Specifying primary address by number is
+  not supported. If location is not specified then GoldEd takes
+  default value /etc/qecho/AreaList (untested).
+  AREAFILE qecho /etc/qecho-jam/AreaList
+
++ Added support for DZ echolist format:
+  AREAFILE echolist echo5020.lst -dz
+
+- Fixed small bug in sqafix arealist parser.
+
+- Fixed buggy feature of squish parser that forces area to squish
+  format as long as it parses -$ at the beginning of switch (now exact
+  token -$ should be present).
+
+- If typing over selected block in internal editor selected text will
+  be killed.
+
+- Locale now supported in djgpp and emx verions. Please note, that
+  to use locale in DOS you should have COUNTRY properly configured in
+  config.sys.
+
+! Removed support for GIF kludge.
+
+- Fixed output of attribute window if it out of screen bounds.
+
+- Removed fix of output in non-standart screen modes ;-)
+
+- Fix origin line in carbon copies.
+
+! If first lines in message begins with From: or To: such lines will
+  be parsed like an internet address.
+
+- A lot of fixes / features related to carbon copies creation: it is
+  possibe now to use addressbook and addressmacro (subject and
+  attributes not changed though) with it, if replying on internet
+  originated message it is possible now to override address, To: lines
+  in carbon copies used only when appropriate, it is now possible to
+  specify full name of addresse in internet carbon-copies (for
+  example, cc: "Alexander S. Aganichev" <asa@eed.miee.ru>).
+
+______________________________________________________________________
+
+               Notes for 3.0.1-asa10 beta2, June 21 1999
+______________________________________________________________________
+
+- Fix problem with hiding stylecodes after hexdump viewing.
+
+- Fix problem painting stylecodes while editing.
+
+- Fix incorrect behaviour of RcvDisablesCfm in some cases.
+
+- Fix EditChangeDate Always behaviour.
+
+- Fix/cleanup D'Bridge, EzyCom, FMail 0.98, GEcho prior to 1.20,
+  IMail, InterMail, LoraBBS, Maximus 3.xx, Opus, PCBoard, ProBoard,
+  Portal of Power, QuickBBS, QFront, QWK, RemoteAccess, RA-Echo,
+  SuperBBS, TosScan, WMail, XMail, and XBBS config parsers.
+
+- Fixed output in non-standart screen modes (i.e. in 72x25: GoldEd
+  sometimes outputs characters out of screen range).
+
++ Added support for ANSIPLUS clipboard under DOS (untested).
+
++ Added Title support in /386 version under Win9x.
+
++ Golded now will prompt before crossposting.
+
+! Invalidation of tearline, origins, and seen-by's also done at
+  savetime. Please note that if you don't like quotation of tearline
+  and/or origin you should use QUOTECTRL keyword and not INVALIDATE
+  keyword.
+
+- Kludge ROUTE added to default list of known kludges.
+
+! Keyword IFMAILGATES replaced with ADDRESSLOOKUPFIRST with possible
+  values MSGID and Origin.
+
++ Added keyword QUOTECTRL with possible list of values Yes, No,
+  Tearline, and Origin. Default Yes. This keyword could be used in
+  random system groups.
+
+______________________________________________________________________
+
+               Notes for 3.0.1-asa10 beta1, June 13 1999
+                    (Happy Birthday, Lubashka! ;-))
+______________________________________________________________________
+
++ Added keyword RcvDisablesCfm (default yes) that controls checking of
+  Cfm and RRq flags on mail with Rcv one.
+
+- Fix Fileattach-problem in Linux-version (filenames got uppercased)
+
++ GoldED now produces a more standard-conforming and informative
+  X-Mailer string, like i.e. "GoldED 3.0.1-dam3 (Linux 2.2.9 i586)".
+  The information is (of course) calculated at runtime rather at
+  compile time.
+
+! A '%' in the domainpart of the Message-ID (internet part) caused some
+  braindead spamfilters to activate. Therefore it is now again replaced
+  by a dot, as ever before. Note that you can configure the domain-part
+  by using INTERNETDOMAIN!
+  Most users won't care about it, however.
+
+! X-Mailer seems to be more often used than X-Mailreader. So GoldED now
+  also sets X-Mailer instead of the second one.
+
+- Don't automatically add new entries to the addressbook if
+   - name is an email address
+   - address is a MAILINGLIST sender address
+
+! Made the "Organization" coloumn a little bit smaller, so
+  address coloum is larger (useful for inet-style addresses)
+
+! Fidoconfig now parsed more properly and even properly than with
+  original library by Matthias Tichy. I don't think that someone
+  should continue using fidoconfig library due to a lot of bugs and
+  incompletions in it. On some unexplainable reasons comments in
+  fidoconfig stripped from the back, so following line broke parser:
+
+  Sysop Test line # with bug # and " features
+
+  The only supported version is 0.15 since Matthias ignore my question
+  about backward compatibility of configuration files.
+
+______________________________________________________________________
+
+                Notes for 3.0.1-asa9 SR3, June 8 1999
+                          (Win32 binary only)
+______________________________________________________________________
+
+- Fixed bug in FrontDoor config parser.
+
++ Added support for Fidoconfig (HPT).
+
+- Fixed bug in text selection when cursor wrapped at the beginning or
+  end of line.
+
+- Due to reinstalling system there are no support for sound in Mingw32
+  binary. It will return as soon as I upgrade libraries.
+
+______________________________________________________________________
+
+                Notes for 3.0.1-asa9 SR2, May 28 1999
+                      (diffs to 990518 snapshot)
+______________________________________________________________________
+
+- Fixed bug in clipboard handling in /386 version under windows.
+
+______________________________________________________________________
+
+                Notes for 3.0.1-asa9 SR1, May 28 1999
+      (binary release DOS/386g, win32, diffs to 990518 snapshot)
+______________________________________________________________________
+
+- Fixed bug with broken TZUTC.
+
+______________________________________________________________________
+
+                 Notes for 3.0.1-asa9, May 28 1999
+      (binary release DOS/386g, win32, diffs to 990518 snapshot)
+______________________________________________________________________
+
++ Multimedia now supported in Mingw32 version (requires dirty hacks in
+  standart headers. If you don't like hacks you could disable support
+  in gall/gsnd.cpp and wait for a new version of headers.
+
++ Timestamps in Mingw32 version now compatible with other versions.
+  Old timestamps now used again.
+
++ Locale now used where available, so at least Win32 version will
+  properly handle case conversion.
+
++ IfmailGates (yes/[no]) - do not use address from Origin.
+
++ TaskTitle "string" - window title (Win32 and OS/2 only).
+
++ TitleStatus ([yes]/no) - adds brief description to title.
+
++ GedHandshake ([yes]/no) - hides handshake in statusline.
+
++ UseTZUTC (yes/[no]) - activates TZUTC kludge. (NB! This keyword
+  makes TimeZoneOffset obsolete. You should also set up timezone.
+  Probably you should add TZ variable to your environment. At my
+  system (Moscow, Russia) it setted up to:
+
+  TZ=MSK-3MSD,M3.5.0/02:00,M10.5.0/03:00
+
++ AreaYouWroteTo now could be used in random groups.
+
++ Subjects now autoconverted from mime encoding.
+
++ Golded now uses system clipboard in internal editor.
+
++ If clipboard not provided by OS or not supported (DOS, OS/2 without
+  PM, UNIX'es) GoldEd use fake clipboard, so you still able to copy
+  mail from area to buffer and then insert it in your message.
+
++ Fixed crashes on viewing some messages and hexdump appeared since
+  -asa8 release.
+
++ Fixed insertion of lines sized 79-80 chars without <CR> from
+  clipboard that was broken in early -asa.
+
++ Fixed painting of wrapped kludges.
+
++ Fixed wrapping of quotes that was broken in early -asa.
+
+- Removed obsolete keywords: AREAAUTOFREQ, AREABADMSGS, AREASORT,
+  AUTOATTACH, BEEPFACTOR, BLANKTIME, BOARDNOS, CCATTRIB, CCLIST,
+  CFMATTRIB, CHANGEDATE, CHANGEPROMPT, CHARSET, CLEARKEYS, COLOUR,
+  COMMENTNOISE, COOKIEFILE, CRLFTERM, DELORIG, DISPMSGLIST,
+  DISPMSGLISTFAST, DISPSTYLECODES, ECHOATTRIB, ECHOINFO, EDITMARGIN,
+  ELIMSNOW, ESCSET, EXCLAREA, EXPORTCHARSET, EXTKEYS, FIELDCLEAR,
+  FILECHECK, FILECHECKCALL, FREETEAR, GOLDEDCFM, GOLDEDLOG, GOLDEDLST,
+  GOLDEDMSG, GOLDEDNAM, GOLDEDPRN, HARDLINE, HARDLINES, HWMARKS,
+  INCLAREA, INTERNALEDITOR, LASTREAD, LASTREADUSER, LISTWRAP,
+  LOCALATTRIB, LOCALCHARSET, LOCALHIGHLIGHT, LOCALINFO, LOCALNOISE,
+  MATCHAKA, MAXCOLS, MAXMSGSIZE, MAXROWS, MIXCASE, MULTIQBBS,
+  NETATTRIB, NETINFO, NETTEAR, NEXTAREA, NEXTMSGS, NOISEFACTOR,
+  OVERLAYEMS, OVERLAYEXT, PAGEBAR, QBBSINCRESCAN, QBBSPATH,
+  QBBSREBUILD, QBBSSCAN, QMSGPATH, REALMSGNO, REBUILD, RENAREA,
+  REPLYRE, RIGHTMARGIN, SAVEMENU, SAVETIME, SAYBIBI, SCANAREA,
+  SHADOWS, SHARE, SHOWTWITS, SPACEQUOTES, SPELLCHECKER, STACKKEYS,
+  STARTECHO, SWAPALL, SYSOP, TABSIZE, TIMESLICEDV, UNDELETELINES,
+  USEBIOS, and XPLIST.
+
++ SqaFix configuration parser added:
+
+  AreaFile EchoList -sqafix c:\fido\mail\squish\sqafix.cfg
+
++ It is possible now to use Shift-... with clipboard.
+
+______________________________________________________________________
+
+               Notes for 3.0.1-asa7 build 2, April 05 1999
+ (binary release DOS/386g, win32. diffs could be provided on request)
+______________________________________________________________________
+
+- Now UsePID actually works. It was a bad idea to save two bytes on
+  brackets ;)
+
+- Major fix to strlwr, strupr appeared in many places in DJGPP version
+  introduced in -asa7
+
+- Fixed clipboard handling in DJGPP version
+
+______________________________________________________________________
+
+                  Notes for 3.0.1-asa7, March 31 1999
+                   (binary release DOS/386g, win32)
+______________________________________________________________________
+
++ Next experiment on stylecodes.
+
+- Fixed problem with long ImportBegin and ImportEnd lines by cutting
+  to display margin.
+
++ Global Macro now supported while in edit mail header mode.
+
+- Fixed bug with missed sound support in DJGPP version
+
++ Proper charset ID now used in encoded e-mail headers
+
+- Fixed serious bug in Windows clipboard handling in Win32 version
+  introdused in -asa6
+
++ Incorporated patches by Igor Vanin:
+
+  ExternUtils did not work if compiled using Watcom C++ 10.0b for OS/2
+  because of using spawnvpe() RTL-call instead of system(). Fixed.
+
+  Added new keywords into configuration file:
+
+  USEPID <yes/no>  (default = yes)
+  If disabled, the PID kludge is not inserted in messages (for those,
+  who does not like many kludges in messages).
+
+  USECHARSET <yes/no>  (default = yes)
+  If disabled, the CHRS kludge is not inserted in messages (for those,
+  who does not like many kludges in messages).
+
+  Added/fixed system clipboard support in OS/2 version.
+  Menu commands: Import -> From clipboard, Write to -> Clipboard.
+
+  Function gposixdir::open did not work because of backslash at the
+  end of path (compiler WC/2 10.0b). Fixed (as in 3.0.0).
+
+  There were problems with cursor size in non-standard _fullscreen_
+  video modes (for example, 80x30) in OS/2 version. Fixed.
+
+______________________________________________________________________
+
+                  Notes for 3.0.1-asa6, March 22 1999
+                    (binary release DOS/386g, win32)
+______________________________________________________________________
+
+- Fixed bug in Windows clipboard handling
+
+- Fixed old bug with quoting text after long kludge.
+
++ Added keyword EncodeEMailHeaders (default Yes). If No then RFC
+  header will not be encoded with quoted-printable.
+
+- @changed in default template fixed to use @cname instead of
+  @fpseudo.
+
+- Little fix to stylecodes detection.
+
+- Little fix in origin/tearline detection.
+
++ It is possible now to use Windows 3.x / Windows 9x clipboard in
+  DOS/386g version.
+
++ @*addr now use internet addresses if required.
+
++ GoldNODE can now compile more than 65500 nodes
+  (only 32-bit versions).
+
+______________________________________________________________________
+
+                  Notes for 3.0.1-asa5, March 09 1999
+                       (binary release DOS/386g)
+______________________________________________________________________
+
+- GoldEd no longer lookups pseudonyms in addressbook if not required.
+
+- Fixed DJGPP compiled version output interface to work properly under
+  Windows NT. I don't know if it properly works under DESQView now.
+
+- Fixed small bug with importing unterminated long lines.
+
+- Little fix to stylecode-detection to skip marking of c:* c:\*.*,
+  also could be done by STYLECODESTOPS/STYLECODEPUNCT in config.
+
++ FSC-0032 compliant quote-check, except for space after '>'. Bound
+  is set to 10 chars.
+
+- Bugfix in @*pseudo handling. I've stupidly copied portion of code...
+  Sorry to all ;(
+
+- Bugfix in origin detection.
+
++ New stylecode-detection algorithm. /usr/sbin/ftpd and *.* no longer
+  will be marked. Please report any problems to <asa@eed.miee.ru> or
+  2:5020/604.19
+
++ READaddressbookadd now checks for the marked messages.
+
++ CROSSPOSTLIST now could be defined to YES to produse more compact
+  lines. Also there are little fix to missed name of current echo in
+  lists. You still be able to hide it's name if put # in front of it
+  in first line with xc:
+
+- Repaired STYLECODES keyword (gccfgg0.cpp, gdefs.h, gutlmisc.cpp).
+  Valid options are YES (show and mark), NO (show and do not mark),
+  HIDE (strip and mark).
+
++ New macroses (gemsgs.cpp):
+
+  @faddr      Current address.
+  @ffname     Current first name.
+  @flname     Current last name.
+  @fname      Current name.
+  @_faddr     Current address (fixed width: 19 chars).
+  @_fname     Current name (fixed width: 34 chars).
+
+  @f* is differ from @c* in that fact, that it's actual "From:"
+
+  @?pseudo    pseudonym (see addressbook), or @?fname, where ? is one
+              of the "dotfc".
+
++ DJGPP version now support long filenames (if provided by OS), you
+  could disable it by setting environment variable LFN to N.
+
+- small bug in USERNAME, which added an invalid aka if there was
+  a comma in the parameter.
+
+! Because of the linux paths which may start with a "/", AREAFILE
+  options parser has changed. Previously, it inofficially accepted a
+  slash as a starting charactor for an option (note this wasn't
+  documented!). Now, options may only start by an "-". Please adjust
+  your config, if you used such undocumented behaviour!
+
+  Example:
+
+  Change
+
+    AREAFILE Imail c:\im /NoChk
+
+  to
+
+    AREAFILE Imail c:\im -NoChk.
+
+- @origin, @tearline and @tagline tokens weren't replaced by random
+  lines when using them in a template file. Fixed.
+
+______________________________________________________________________
+
+                   Notes for 3.0.1, February 7 1999
+                       (binary version release)
+______________________________________________________________________
+
++ GoldNODE can now handle IF/ELSE/ENDIF conditional and INCLUDE
+  directives in configuration file.
+
++ Extended syntax of the following template tokens:
+  @oname, @ofname, @olname, @dname, @dfname, @dlname. You can now
+  add up to two replacement tokens according to the following sheme:
+
+    @oname{I}{You} wrote a mail to @dname{me}{you}:
+
+  GoldED will select the right replacement strings. You can specify
+  empty braces, like @oname{}{You} or @oname{I}{} (shorter, but
+  equivalent variant is @oname{I}). Note that the new syntax is of
+  course optional, you can use @oname like before and don't care
+  about this new feature.
+
++ Added READaddressbookadd, defaults to Ctrl-B. When using this key,
+  GoldED will add the current writer of the mail to the addressbook,
+  unless it's already known to it.
+
++ Added packing of Addressbook. Default key-assignment (which cannot
+  be changed at the moment) is ALT-P. When you call that function,
+  GoldED will remove all "soft" deleted (by pressing <DEL>) entries
+  physically on disk. With other words, there is no undo, so be care-
+  ful with it!
+
++ Addressbook now uses filesharing. That means to can work simultan-
+  eously in two different GoldED instances and editing in both the
+  addressbook.
+
++ Added new keyword NICKNAME to define a nickname for main USERNAME.
+  Keyword can be used globally and in random user groups.
+
+- GoldED/Lnx: Don't reset to 80x24 on exit (xterm only).
+
+- GoldED/Lnx: For those who had problems with the screen output,
+  those problems should be now gone. If not, please report.
+
++ Added INTERNETDOMAIN <domainstring>, default "username%domain.de",
+  which is taken from INTERNETADDRESS "username@domain.de". Here you
+  can define what domain the outgoing mails should represent in the
+  Message-ID headerline. If you don't know what I'm talking about,
+  leave it as default, simply ignore it. It's for those who want to
+  tweak GoldED to be maximum RFC1036 compatible.
+
+! Again adjusted the "message origiating" AKA guessing code. See
+  ChangeLog (as always) for details.
+
+- GoldED/W32: Due to another bug in the Windows API, GoldED cannot
+  really hide the cursor if it is in window mode. So the cursor will
+  be moved to the lower left of the screen, where it's tolerable.
+  [Odinn: This fix was not good - commented out in the release]
+
+- Fixed SOUPEXPORTMARGIN-Bug. You can now set it back to the default
+  again.
+
+- Several fixes to the W32 keyboard code, thanks to Leonid Lisovsky.
+
+- When using MAPPATH in connection with AREAFILE Squish, GoldED some-
+  times couldn't read the squish.cfg correctly. Fixed.
+
+- GoldED/W32: Fixed "Escape-key" bug under WinNT, and also some other
+  keyboard mapping problems (Leonid Lisovsky <lly@aha.ru>).
+
+! GoldED now knows the "Mailing-List" headerline. It ignores the line,
+  however.
+
+- The MSGID/REPLY crc values of SOUP imported emails was incorrectly
+  calculated. Fixed.
+
+- GoldED/Lnx: Fileattach-filenames won't be translated to upper-case
+  any more.
+
+- The fileattach-filebrowser now also works in Linux-version, thanks
+  to patches by Leonid Lisovsky <lly@aha.ru>!
+
+- There was a Y2K bug in the filebrowser fileyear display routine.
+  (Yes, is difficult to explain). Fixed.
+
+- PMSCANning in *.msg-areas didn't check the newest msg in the area.
+
+- READmarkingoptions/Mark your personal mail was broken.
+
+- Fixed small quirks in Goldnode/Lnx code.
+
+- Goldnode crashed when it was unable to read even a single NODELIST.
+
+- Goldnode/Lnx was unable to handle wildcards in NODELIST file names.
+
+- GoldED/Lnx wrote wrong REPLIES-files during soup-exporting. Fixed.
+
+- GoldED crashed while accessing the addressbook. Fixed.
+
+______________________________________________________________________
+
+               Notes for pre-3.0.0-1, December 27 1998
+                     (first open source release)
+______________________________________________________________________
+
+- Goldnode/Lnx couldn't access paths as they were converted to upper
+  case during config read. Fixed.
+
+- When SOUP importing, the mailing list feature also processed newsgroup
+  articles instead of only emails as it should.
+
+! Removed the following GOLDKEYS.CFG commands, as they're already
+  replaced by newer ones since years:
+
+      (old keyword)       (replacement)
+    READgotodownlink    READgotoreplyprev
+    READgotouplink      READgotoreplies
+        <none>          READgotoreply1st
+        <none>          READgotoreplynext
+
+  Please adjust your config files.
+
+- GoldED didn't update goldlast.lst when doing soupimport/soupexport
+  and using the -noscan cmdline parameter.
+
+- GoldED had not always read the goldlast.lst file correctly,
+  especially if the user removed one or more areas between two
+  sessions.
+
+- The advanced search feature didn't find all occurences. Previously,
+  GoldED did a "shortcircuit"-evaluation to speed up the search, that
+  means GoldED stopped scanning a mail before all branches of a
+  boolean condition were evaluated under certain conditions. Now,
+  GoldED will search a "hit" mail again completely to mark all
+  occurences of search-patterns.
+
+! Because some users complained that the popping-up "Wait" - window
+  during autosaving is irritating them too much, the window has been
+  now replaced by a small statusline message.
+
+- The following goldlang.cfg keywords were incorrectly documented:
+
+    MI_WRITETIHDRYES        "H Use Header: YES "
+    MO_NODROP               "N No Drop / ESC  "
+
+  Of course, they are in fact called:
+
+    MI_WRITETOHDRYES        "H Use Header: YES "
+    MI_NODROP               "N No Drop / ESC  "
+
+- If you used Goldnode, USERLIST statements and accessed these entries
+  in the GoldED nodelist browser, it was likely that GoldED crashed.
+  This is now finally fixed.
+
+! Raised the maximum nodelist limit to 45 lists in goldnode.
+
+- Fixed a very serious bug in GoldNode, that caused mysterious
+  crashes, misbehaviour or broken index files when compiling. This bug
+  has been existing since years in Goldnode, and is most probably the
+  cause for any misbehaviour GoldNode users reported in the past time.
+
+- When using "XC: *" or similiar commands, GoldED tried to crosspost
+  also to the area separators. Fixed.
+
+- GoldED sometimes jumped to the second marked area after startup when
+  using AREAAUTONEXT YES. Hopefully fixed all cases.
+
+- The READthreadtree didn't allow to mark more messages than one
+  screensize, because GoldED stopped to advance the cursor-position at
+  the end of the window.
+
+! Changed the "INVALIDATE Tearline" default back to the value like it
+  was in older days:
+
+    INVALIDATE Tearline "---" "-+-"
+
+  Because of a changed INVALIDATE-handling, the old default work-
+  around default setting isn't needed any longer and caused other
+  problems.
+
+! The @pseudo will now also be used in the default internal template
+  instead of @tfname.
+
+- The @pseudo-token was not always expanded correctly, i.e. when
+  quote-replying a mail without using the addressbook during
+  header-editing.
+
+- Fixed a bug in Hudson areas where GoldED set the "Snd" flag even if
+  Rcv flag was set.
+
+- Fixed '5' key if NUM LOCK was turned off.
+
+- The screen got garbled when doing a addressbook-lookup while editing
+  the header and pressing a key that changed a message attribute.
+
+- GoldED didn't set CHRS-kludge correctly if charset translation level
+  was != 2.
+
+______________________________________________________________________
+
+                    Notes for Beta5, August 16 1998
+______________________________________________________________________
+
+* The Linux version is now compiled with pgcc c++ 1.0.3a with Pentium
+  optimization (will still run on 386/486) and is statically linked.
+
+- Fixed Ctrl-J keyboard bug when running the W32 version on NT.
+
+- When using XLATIMPORT IBMPC, XLATEXPORT LATIN-1 and XLATLOCALSET
+  LATIN-1 (typical setup for GoldED/Lnx users), GoldED set a wrong
+  charset kludge when changing the header of mails. Fixed.
+
+- GoldED will no longer insert the Reply-To: headerline in News/Email
+  areas if it is the same as From: headerline.
+
+! During SOUPimport, GoldED will no longer kill mails which are from
+  INTERNETADDRESS. Instead, GoldED will now honour the k/s flag during
+  SOUPexport, which means that GoldED will delete your selfwritten
+  mails after export if you set the k/s flag.
+
+- When using the AREAcatchup key with "marked areas", GoldED did not
+  always update the display correctly. Fixed.
+
+- Fixed printing bug.
+
++ The advanced search features are now also available for marking
+  messages via the Alt-S marking menu in the reader. See the Beta4
+  notes for details on the capabilities.
+
++ Implemented better support for tossing mailing list emails to
+  different areas. The syntax of the MAILINGLIST keyword was
+  inadequate to support pattern matching, so a new keyword MAILTOSS
+  has been added, which is actually MAILINGLIST in disguise with the
+  parameters reordered and enabling the full set of pattern matching
+  as in the new advanced search feature. The syntax of the new keyword
+  is:
+
+    MAILTOSS <echoid> <contribution-address> <pattern>
+
+  Note that the contribution address is required. The pattern can be
+  written exactly as if in the prompt for the advanced search feature
+  (see notes from Beta4).
+
+  Any number of MAILTOSS lines can be given for a particular list, if
+  for some reason there is no single way to identify the list.
+
+  When determining the contribution address, the first MAILTOSS (or
+  MAILINGLIST) that matches the echoid is chosen.
+
+  MAILTOSS and MAILINGLIST can both be used at the same time and for
+  the same lists. MAILINGLIST is always the faster, because it looks
+  only at specific headerlines. MAILTOSS uses much more complex
+  pattern matching and can even match based on message body content.
+
+  Some examples:
+
+    MAILTOSS list.xircon xircon@xircon.com : "[XIRCON]"
+    (match in the subject)
+
+    MAILTOSS list.qmail djb-qmail@koobera.math.uic.edu > "djb-qmail"
+    (match in the to/cc/bcc field)
+
++ Added very limited support for the headerlines Cc: and Bcc:. They
+  are now stored internally so that they can be used for the MAILTOSS
+  feature. When matching on the To: field, Cc: and Bcc: are checked
+  too, if To: doesn't match.
+
+- If F10 was used during editing the header, GoldED did not always
+  filled the header fields with correct values.
+
+! GoldED will now jump to the first area with unread mail even at
+  startup if using AREAAUTONEXT YES.
+
+- In *.msg netmail areas, but probably at other places too, GoldED
+  showed incorrect originating akas if there were no Origin line given
+  in the msg. Fixed.
+
+! The GoldED/386 version is released in two editions, one GED386.EXE
+  compiled with Watcom and requiring DOS4GW as in versions before
+  Beta4. The other is GED386G.EXE, which is compiled with DJGPP (gcc
+  2.8.1) and requiring DPMI memory (CWSDPMI.EXE is included to provide
+  this service, as DOS4GW does it for the Watcom edition).
+
+- Fixed one cause of the unfreed allocations in geline.cpp. This
+  happened during SOUP import, if there were msgs from your
+  INTERNETADDRESS. This bug was introduced in Beta3. There may still
+  be another cause for the unfreed allocations, since many of the
+  reports did not deal with SOUP import. Please check your GOLDED.LOG
+  sometimes after starting to run Beta5, to see if these unfreed
+  allocations still occur. Don't worry too much about them, they are
+  just fairly harmless memory leaks.
+
+  NOTE: BEFORE REPORTING, PLEASE CHECK THE ECHOES FIRST AND SEE IF THE
+  PROBLEM HAS ALREADY BEEN REPORTED!
+
+- Fixed a small bug that could cause a crash during startup when using
+  the COLOR config keyword incorrectly.
+
++ It's now possible to use <F10> during editing the header, which
+  allows browsing the addressbook to select a dest name and address.
+
+- COLOR HEADER BTYPE 7 didn't work. Fixed.
+
+! Ged/Lnx: The ESCDELAY will now be only around 100ms, so you probably
+  won't notice it any more.
+
+- Fixed another "UNREG UNREG" issue.
+
+- GoldED will no longer auto-add new users to the addressbook if the
+  user's name matches one or more of the following conditions:
+
+    1) It's a USERNAME
+    2) It's a ROBOTNAME
+    3) It's the same as WHOTO
+    4) Aka/Address is unknown
+
+! There are now again built-in defaults for ROBOTNAME and FRQEXT as in
+  all previous versions.
+
+- When selecting the same addressbook-entry for editing twice, GoldED
+  showed wrong values the second time. Fixed.
+
+- Under some circumstances, GoldED jumped to the end-of-list instead
+  of just one page down when pressed PgDwn in the arealist-screen.
+  Fixed.
+
+! The "scaled down echoid feature" in the arealist-screen has been
+  removed again, until it's possible to make it configurable using
+  AREALISTFORMAT.
+
+! GoldED will now try to use a valid fido-aka taken from the origin
+  line (if existing) before using a valid fido-aka taken from the
+  msgid as the originating aka. This is experimental code, please
+  report if there are any disadvantages using this method.
+
+! If an area was excluded from pm-scanning, and the user performed a
+  pm-scan, the area will now scanned normally. Previously, GoldED
+  didn't scan the area at all.
+
+- When forwarding a mail, GoldED selected the origin-line of the
+  forwarded message as the origin line of the forwarder message.
+  Fixed.
+
+- Keyboard commands on key '5' did only work if Num lock was enabled.
+  Probably fixed.
+
+! BEEPFACTOR is now obsolete and has no function any more.
+
+- GoldED did not write GOLDED.MSG if it already existed and the user
+  selected External Editor for editing. Fixed.
+
+- GoldED/386 (DJGPP port) did always report "xxx reports error 0: no
+  error" when error-exiting. Fixed.
+
+- If ESC was pressed during adding a new addressbook entry, the cursor
+  bar disappeared and the program was no longer useable. Fixed.
+
+- If EMPTYTEARLINE YES was used, GoldED filled the tearline with
+  garbage. Fixed.
+
+- Fixed a memory overrun problem which occured under some
+  circumstances when working with *.MSG areas. It was reported in the
+  log as "Pointer error exit at [gmofido1.cpp,112]".
+
+- The addressbook was not properly portable between the Win32 and OS/2
+  versions.
+
+______________________________________________________________________
+
+                    Notes for Beta4, July 12 1998
+______________________________________________________________________
+
+! GoldED/386 is now compiled with DJGPP (GCC 2.8.1). Because of this,
+  DOS4GW.EXE is no longer necessary for GoldED/386.
+
+! In this version, there are no built-in defaults for ROBOTNAME and
+  FRQEXT. See the manual for lists that you can include in your
+  GOLDED.CFG, if you need these definitions.
+
+- Fixed a bug that could cause the "Could not find anything to
+  uudecode in this message" even for valid uuencoded content in a
+  message.
+
+- Fixed keyboard code in the Win32 version to work properly with
+  Windows 98.
+
++ Implemented advanced searching features. Currently as an extended
+  edition of the find function (alt-f, alt-z), but later a search
+  manager (similar to those seen in other programs) and other
+  improvements.
+
+  The advanced search is used in much the same way as the old find
+  function, but many more options are available and there is some
+  changes in behavior.
+
+  Highlights of the new features:
+
+  * Four different pattern matching algorithms to chose from:
+    Plain (same as always).
+    Shell-style wildcard matching (using * and ?).
+    Regex. Uses the FSF extended regular expression library.
+    Fuzzy matching. Like plain, but allows one or more mismatches.
+
+  * Logic expressions with "and", "or", "not" can be used.
+
+  * Spaces and option characters can be included in patterns.
+
+  * Exclude or include kludges, tagline, tearline, origin, signature.
+
+  -   Search backward.          Must be first character, if used.
+  +   Search forward (default). Must be first character, if used.
+  !   Logic not (match when NOT found).
+  &   Logic and (match this AND that).
+  |   Logic or (match this OR that).
+  <   Match "from" header field.
+  >   Match "to header field.
+  :   Match "subject" header field.
+  #   Match message body (but not any control lines).
+  .   Match tagline.
+  _   Match tearline.
+  *   Match origin line.
+  @   Match signature.
+  %   Match kludges/headerlines.
+  =   Match case-sensitive (defaults to not case-sensitive).
+  '   Do not match. Place after an option.
+  ^   Toggle match. Place after an option.
+  ?p  Plain search (default).
+  ?r  Regex search.
+  ?w  Wildcard search.
+  ?f  Fuzzy search with one mismatch allowed.
+  ?f2 Fuzzy search with two mismatches allowed.
+  ?f3 Fuzzy search with three mismatches allowed.
+
+  You can enclose a pattern string with double ("") or single ('')
+  quotes if you want to match a sentence with spaces or which contains
+  option characters.
+
+  The backslash is a literal-escape character. If a backslash is
+  found, the next character is treated as part of the pattern, not as
+  an option character. Use this for example to search for a sentence
+  with quotes and spaces.
+
+  Spaces are used as separation characters and are ignored, except
+  when enclosed in quotes.
+
+  The first set of option characters on a search expression line is
+  used as the "global default". The next set of option characters is
+  bound to the following pattern. A pattern is completed by the end of
+  the line or by the logic options '&' or '|'.
+
+  If none of the options '<', '>' or ':' are used in the global
+  default part, the default is to search all three.
+
+  Some examples:
+
+  To search for the authors name, allowing most common misspellings:
+    ?f1 odinn     (matches odin, odinn, oddin, odiin etc)
+
+  To search for OS/2 and Warp 4:
+    OS/2 & "Warp 4"
+
+  To search for any occurrance of Odinn or Dirk in the from-line:
+    < Odinn | Dirk
+
+  To search for zip file announcements using wildcard matching:
+    ?w "*.zip*"
+
+  To search case-sensitive for some string:
+    = "All Comes To Those Who Wait"
+
+  Some regular expression searches:
+    ?r "Warp *4"    (matches both "Warp 4" and "Warp4")
+    ?r "OS/*2" & "Warp *4"
+
+  Due to the many different matching algorithms, the search highlight
+  can no longer highlights a matching word, but will instead highlight
+  the whole line.
+
+  NOTE: A common mistake will be to forget to escape or quote-enclose
+        option characters in pattern strings. For example, what's
+        wrong with this, if you want to search for zip files:
+
+          ?w *.zip*
+
+        Nothing, but the first '*' is interpreted as if you want to
+        search in origin lines, which is not what you want.
+
+- If echoid of an area was longer than 45 chars and no description was
+  given, GoldED was unable to access the area. Fixed.
+
++ The Echoid's in the arealist screen will now be "scaled down" to
+  the maximum available width instead of just being cut off.
+
+- The WaZOO style filerequests didn't work in the Linux-version
+  because GoldED used the wrong slashes for the directories. Hopefully
+  fixed now.
+
+- FILEALIASes didn't work when using READmakepathreport.
+
+- Fixed write-to-file. When there was an existing file of the same
+  name as you wanted to write to, append did not work, but overwrote
+  instead. Because of this bug, writing several marked msgs to a file
+  did not work either.
+
+- Fixed a bug that could cause the GoldED Win32 version to crash when
+  writing to a file.
+
+- Fixed a bug that caused mis-formatted GOLDAREA.INC output.
+
++ Added AREAFILE Watergate <path>. Reads WaterGate v0.93 and newer.
+  Currently none of the imported areas have any group assigned,
+  because the group system WaterGate uses is incompatible to GoldED's.
+  Suggestions are welcome.
+
++ Added template expansion token @pseudo. It contains the nick name
+  (address book feature) of the destination user if available, else
+  @tfname.
+
+  Example:
+
+    Hello @pseudo!
+
+! GoldED will now check SEMAPHORE EXITNOW before any (re-)scanning
+  semaphores. This gives you the chance to restart GoldED first before
+  scanning the areas (for the case that a new area has arrived).
+
+- GoldED sometimes showed the wrong help category when pressing F1.
+  This is now fixed.
+
++ Added an Address Book for GoldED. It's contents is stored in a file
+  named GOLDUSER.LST in the GoldED directory. To list it's contents,
+  press ALT-F10 while reading mails. If you press Enter on an entry,
+  you can view/edit it. If you press <Ins>, you can manually add a new
+  user.
+
+  GoldED will use the aka/address you specified when writing mails.
+  [description not complete]
+
+! Changed the default keyboard layout:
+
+  Previously:
+    @F10   READtogglemarkread
+  now:
+    @F10   READuserbase
+
+- GoldED sometimes tried to enter an AREASEP area immediately after
+  startup. Fixed.
+
+! GoldED will no longer add an AREA-Kludge in crossposted mails.
+
++ Updated some menus based on ideas posted in GOLDED.BETA echo.
+
+- Fixed a bug in the Internet address parsing routines that may caused
+  crashes.
+
+- the @tmpfile had wrong file modes under GoldED/Lnx. Fixed.
+
+- Previously, it was impossible to save a mail to a file in the
+  GoldED/Lnx version. Fixed.
+
++ It's now possible to use XLATEXPORT ASCII in Email/News areas.
+  GoldED will now create appropiate headerlines.
+
++ Added a very rough mime header encoding routine.
+
+- If GoldED were run in unregistered mode, the statusbar product
+  identifier did contain one space too much under some circumstances.
+  Cosmetical bug, which is now fixed.
+
++ Added a new golded.cfg configuration keyword:
+
+    AREAYOUWROTETO <echoid>
+
+  GoldED will automatically copy mails written by you to the specified
+  area during saving the mail. GoldED will also add an AREA-Kludge so
+  you can see from where the mail originally is copied from.
+
++ Added a new golded.cfg configuration keyword:
+
+    ADDRESSBOOKADD <no/yes/always>
+
+  Setting it to ALWAYS means that GoldED will always add unknown users
+  to the addressbook. If you set the value to YES, GoldED will add
+  them only if it's a netmail/email. ADDRESSBOOKADD NO will never
+  automatically add a user.
+
+! Temporarily disabled the Zon-Attribute adding in the JAM-Messagebase
+  routines. Please report if there are now problems.
+
+- Hopefully fixed a keyboard code bug that caused detecting a "Esc"
+  keypress instead of the i.e. cursor keys. If GoldED will detect an
+  Esc now, it waits up to half an second if there is in fact a
+  different key pressed or not.
+
+- Fixed a bug that caused GoldED to hang/crash when a mail with "?=?"
+  in the subject line is read.
+
+- Fixed a bug that caused absolute paths to appear where only
+  filenames where requested in the GoldED/Lnx Version. (i.e. the
+  @file-token in connection with IMPORTBEGIN).
+
+- Fixed a small bug in search-routines that may cause crashes.
+
++ Added optional switch /G to AREAFILE Squish. You can now define a
+  default group for areas that are imported from squish.cfg by
+  configuring
+
+    AREAFILE Squish c:\squish\ /g=G
+    AREAFILE Squish c:\squish2\ /g=#103
+
+- Fixed a Test Error Exit at [geedit.cpp, 112] if the quote string got
+  longer than (EDIT)QUOTEMARGIN.
+
++ The READchangetemplate menu will now also display the matching aka
+  for every template file if defined.
+
+- If one or more AREASEP's but no mail areas where defined, GoldED
+  hung in an infinite loop after startup. Fixed.
+
+- Fixed a crash if msgbase rescanning was performed while selecting a
+  destination area for copy/move/forward.
+
+- Fixed Zap Area / Heat Area functionality.
+
+! The arealister will now automatically go one line down after
+  pressing AREAtoggle.
+
++ Advanced the AREAcatchup feature. It'll now display a menu where you
+  select whether to catch-up all areas, all marked areas or only the
+  current area (default).
+
++ Added EDITtabreverse, default to #Tab. It's simply the opposite to
+  EDITtab.
+
++ Added AREAdropmsgmarks, default to ^M. [description not complete]
+
+- If the contents of SEMAPHORE EXPORTLIST changed while GoldED was
+  running, mail could have been left unscanned in the msgbase. Fixed.
+  GoldED will now also try infinite if it can't update one of the
+  below mentioned files because of a sharing violation. This is more
+  secure than before. If you had problems with unscanned mails in the
+  msgbase with older versions, then please try this version and report
+  if it works. It should. ;-)
+
+! GoldED will now only update NET/ECHOMAIL.JAM, GOLDQWK.LST,
+  GOLDSOUP.LST or SEMAPHORE EXPORTLIST file if it's really necessary.
+  This is actually a bugfix in connection with AREAFILE IMail, but
+  also may speed up scanning with other tossers.
+
++ Added sound event EDITCOMPLETION, which happens after a completion
+  was done in the internal editor.
+
+! Since it seems that increasing the thread priority for the Win32
+  version is a mixed blessing, the default is now to NOT increase the
+  priority. Added new commandline option -P to increase the priority
+  (Win32 only).
+
+- Fixed keyboard bug in the Win32 version running under NT, where
+  Ctrl-Enter did not work.
+
+! For the SOUP feature, the filenames (AREAS, *.MSG etc.) are now
+  again uppercase, since it seems that certain programs such as UQWK
+  rely on that.
+
+- Fixed "Generate Userlist" feature.
+
+- Fixed a Test Error Exit when crossposting from and into
+  AREAREPLYDIRECT YES areas.
+
++ Added two new functions to the READthreadtree feature, currently
+  hardcoded on ^PgUp/^PgDown and <Left>/<Right>. They jump to the
+  prev/next new thread. Please make suggestions what you would also
+  like to have in the READthreadtree feature.
+
+- Under some rare circumstances, GoldED inserted a space between "---"
+  and the tearline text. Fixed.
+
+- When exporting a message from EMail/News areas, the exported header
+  wasn't correct. Fixed.
+
+- If GoldED searched for a string and found one exact matching line,
+  it didn't detect it as matching. Fixed.
+
+- Fixed several small problems in the filerequest filename detection
+  routine.
+
+- When using EDITSPELLCHECK, GoldED reset the cursor position to 1,1
+  after re-importing the file into the internal editor. Fixed.
+
+- When forwarding a msg with tagline to an area with disabled
+  TAGLINESUPPORT, GoldED inserted a random tagline. Fixed.
+
+- Fixed some minor problems in the arealist screen.
+
++ Added rough Clipboard support in W32 and OS/2-versions. I'm sorry,
+  but "pasting" from Clipboard is currently not possible in OS/2
+  version.
+
++ Added support for 80x28 mode in DOS versions. It's enabled by
+  setting SCREENSIZE 28 in GOLDED.CFG
+
+- Fixed two minor problems with INVALIDATE.
+
+- Fixed two minor Squish msgbase problems.
+
+- GoldED sometimes always showed Snt attribute in local hudsonbase
+  areas. Fixed.
+
+! GedLnx: AREAFILE filenames should be now all in lowercase.
+
+- Fixed a bug in GoldNODE if german POINTS24 format was used.
+
+- Fixed a bug if STYLECODES NO was set and ToggleStyles was used.
+
+- Fixed display of multiple Replies selection menu in Internet style
+  areas.
+
++ It's now possible to use DOS/4DOS style wildcards for crossposts,
+  i.e. "XC: GOLDED*".
+
+- GoldED showed the Internet-address of self-written mails in the
+  message lister if MSGLISTFAST YES was set in internet areas. This is
+  now fixed for new written mails.
+
+- Previously, GoldED Mime-Header-translated the real name in the mail
+  header, but the template @ofrom token contained the non-translated
+  variant. Fixed.
+
+! Mime-Header decoding will now also be done in the Replies window, in
+  the messagelist and in the threadlist.
+
+! SOUPEXPORTMARGIN will now also be used int the internal editor in
+  Internet-areas. This has been added for more WYSIWYG in the editor.
+  Note that is still recommended to set EDITHARDTERM NO if
+  Soup-Exporting is done via GoldED. If you use a third party software
+  for that job, you should set EDITHARDTERM YES for those areas.
+
+! AREACOPYADDID YES: GoldED will now insert an ^aAREA Kludge instead
+  of the old AREA: - so called "kludge". In addition it won't insert a
+  kludge if the destination is a netmail area. This is because of some
+  problems with mails containing an "AREA:" line.
+
+- When Deleting marked messages that had DEL and Loc/Uns attributes
+  set, GoldED asked for confirmation. Fixed.
+
+- Fixed two bugs in AREALISTSORT in connection with the AREASEP
+  feature. Now sortspecs like "GE" or "GTE" should work as expected.
+
+  Note: If "T" is one of the primary sortings (i.e. prior to "G"),
+
+    AREASEP X "desc" 0 Net
+
+  means that this Area-Separator is sorted in front of the first
+  Netmail area, regardless which group it has.
+
+  Otherwise, if "G" is one of the primary sortings (prior to "T"),
+
+    AREASEP Y "desc 2" 0 Echo
+
+  means that this Area-Separator is sorted in front of the first area
+  without group (Groupid = '0'). If "T" is one of the secondary
+  sorting types, the Area-Separator is sorted in front of the first
+  area with group = 0 and Type = Echo. If there's an area with group=0
+  and type=Net, the Area-Separator is sorted below that area, i.e.:
+
+    AREADEF NETMAIL "..." 0 Net [...]
+    AREASEP Y       "..." 0 Echo
+    AREADEF ECHO1   "..." 0 Echo [...]
+
++ Added AREAselectmarks. Default is ALT-R. [description not complete]
+
+- AREACOPYADDID YES/NO didn't work if globally defined.
+
+- Fixed a crash if -INSTALL was used and no AREAFILE was detected.
+
++ MAPPATH can now remap up to 127 chars long paths.
+
+- Hopefully fixed NODELISTWARN YES bug.
+
++ Added functions for deletion of left/right words in the header edit.
+  You can use them by pressing ^Backspace and ^T.
+
+- GEDLNX -? didn't work. Fixed.
+
+- Fixed some problems with the new format of GOLDLAST.LST.
+
+- GoldED did not always show the size of attached files correctly if
+  MAPPATH was used. Fixed.
+
+- If AREAPMSCAN * wasn't in golded.cfg, ALT-P, A in the
+  arealist-screen didn't work. Fixed.
+
+! The READtogglestyles-menu has been removed and replaced by a variant
+  similar to the Toggle Twits dialog.
+
+! Changed the handling of the Toggle Twits dialog. You can now browse
+  through it by pressing READtoggletwits several times. Previously,
+  after you accidently came over "Kill Twit msgs", they were killed.
+  You can now select a mode by waiting around 3 seconds of by pressing
+  Enter.
+
+- The strings for "Twit displayed " and "Twit killed" in the Toggle
+  Twits dialog were swapped. Fixed.
+
+- The arrived/received date wasn't updated during saving the mail.
+  Fixed.
+
++ EDITSOFTCRXLAT-translation is now also done in the header.
+
+- Fixed some problems in Stylecodes-detection.
+
+- There were several problems in the updated fast-filerequest feature
+  of Beta3. They're now fixed. Note if you still have problems or if
+  GoldED doesn't detect something/detects something wrong, please
+  report it!
+
+- If you were in the "attach files" dialog and tried to toggle a
+  header message attribute, the screen was garbled. Fixed it by
+  disabling editing the attributes while you're in this dialog. Note
+  that it still works during editing the header, so there should be no
+  problem.
+
++ Added a new menu to the Import File - dialog in the internal editor.
+  You can now import binary files as base64 encodings. It's now also
+  possible to select the charset the imported file has. (i.e. if you
+  import a text that was written in a Windows-application or under
+  Linux, you should select "LATIN1 -> IBMPC" translation).
+
++ GoldED will now write messages to the file "golded.txt" if you
+  entered in fact a directory.
+
+- Fixed NetName-detection in origin if a message was changed.
+
+- If you changed the attributes of a message, the MSGID was changed.
+  Fixed.
+
+- If you used a random origin/tearline/tagline, it wasn't expanded
+  under every circumstance. Fixed.
+
+- Fixed unfreed allocation at [gecmfd.cpp,304].
+
+- Fixed unfreed allocation at [gerand.cpp,163].
+
+- If you were in FromNode/DestNode Lookup (F10/#F10) and pressed ^Q,
+  Golded didn't quit. Fixed.
+
+! READthreadtree has now keyboard default '#', to be compatible to the
+  german point program "Crosspoint".
+
+- GoldED didn't detect changes to GOLDED.KEY. Fixed.
+
++ Added global switch AREACATCHUPREAD <yes/no>. Default is YES. If set
+  to NO, GoldED won't reset new messages to read if HIGHLIGHTUNREAD
+  YES is used and AREAcatchup is executed.
+
+- Fixed wrong paths in NET/ECHOMAIL.JAM in Linux-version.
+
+- Fixed GoldNODE-Index lookup in Linux-version.
+
+- Fixed Logfile-Dump of Linux-version. Previously, GoldED just
+  wrote "Linux 0.00 reports error 0: no error" ;-)
+
+- Fixed a bug in the " Exit Area? " menu.
+
+- GoldED set the ReCeiVed attribute on messages with empty to:-lines
+  if INTERNETADDRESS wasn't set.
+
+! Replaced the stylecodes - menu by a variant similiar to the
+  ToggleTwitsettings menu as requested by some users.
+
++ Added the following help categories to GOLDHELP.CFG:
+
+    1010     menu READchangexlatimport
+    2007     menu AREAdropmsgmarks
+    2008     menu AREAcatchup
+    3015     menu READgotouplink
+    3016     READreplythread lister
+    5003     menu when importing files in the internal editor
+    6000     addressbook users lister
+    6001     menu when editing an addressbook user
+
+- The LOOKUPNET NO fix was broken. Fixed.
+
+- Fixed several small bugs in the UUCP-mails handling that were
+  introduced in Beta3 and before.
+
+! Changed the STYLECODES YES code to be less restrictive. If it fails,
+  please report the error.
+
+- If INTENSECOLORS NO was set, GoldED didn't toggle on the blinking
+  attribute. Fixed.
+
+! It's now again possible to forward messages from areas that were
+  defined with AREAREPLYDIRECT YES.
+
+- Fixed a GoldED-SOS-Dump when using AREAcatchup with a Hudsonbase
+  area that contained only one (new) message.
+
+- Fixed crashes and faulty display in the arealist screen.
+
+! Removed the following GOLDLANG.CFG keywords, as they are no longer
+  used:
+
+    ST_MARKINGCHAIN
+    WL_MOVEFILEBAR
+    WL_TOGGLEFILE
+    WL_ACCEPTFILES
+    WL_SELECTALLFILES
+    WL_ABORTFILES
+    MS_FROMTWIT
+    MI_DISKFILENOHDR
+    MI_PRINTERNOHDR
+
++ Added the following GOLDLANG.CFG keywords with the given defaults:
+
+    MI_GOTONEXTNEW          "U Yes, Next Unread Area. "
+    WT_FORWARD              " Use FWD kludges? "
+    MI_FORWARDYES           "Y       Yes Please.      "
+    MI_FORWARDNO            "N           No!          "
+    IL_WARNLOCKED           " WARNING! This message is LOcKed! "
+    IL_NOTHREADLIST         " Sorry, no thread available. Press key "
+    IL_STYLECODESNO         " Stylecodes disabled "
+    IL_STYLECODESYES        " Stylecodes enabled "
+    IL_STYLECODESHIDE       " Stylecodes enabled and stripped "
+    IL_UUEINVALIDPATH
+                    " Invalid path for uudecoding - file not written "
+    IL_PATHREPORT           " Generating PATH report "
+    WT_IMPORTTXT            " Import "
+    MI_IMPORTTXTTEXT        "T File as Text   "
+    MI_IMPORTTXTQUOTE       "Q File as Quote  "
+    MI_IMPORTTXTUUE         "U Binary as UUE  "
+    MI_IMPORTTXTMIME        "M Binary as MIME "
+    MI_IMPORTTXTCLIP        "C From Clipboard "
+    MI_IMPORTTXTXLAT        "s Use Charset..  "
+    MI_IMPORTTXTQUIT        "N Nothing / Quit "
+    MS_HIDINGTWIT     "This is a Twit Message - Press <Home> to read."
+    MS_KILLINGTWIT          "Killing Twit Message..."
+    WT_SELECTMARKS          " Select Mark "
+    WT_SELECTMARKSEDIT      " Edit Mark Description "
+    MI_WRITETOHDRNO         "H Use Header: NO  "
+    MI_WRITETIHDRYES        "H Use Header: YES "
+    MI_CLIPBOARD            "C Clipboard "
+    IL_DROPMARKSINFO        "%s Messages Are Marked "
+    WT_DROPMARKS            " Drop Msg Marks "
+    MI_DROPALL              "A Drop All       "
+    MI_DROPMARKED           "M Drop Marked    "
+    MI_DROPCURRENT          "C Drop Current   "
+    MO_NODROP               "N No Drop / ESC  "
+    WT_CATCHAREAS           " Catch-Up Areas "
+    MI_CATCHALL             "A Catch All      "
+    MI_CATCHMARKED          "M Catch Marked   "
+    MI_CATCHCURRENT         "C Catch Current  "
+    MI_NOCATCH              "N No Catch / ESC "
+
+! The 16-bit DOS version was too large to compile, so to be able to
+  continue to release it at all, I had to remove some of the least
+  used msgbase formats. This means that the 16-bit DOS version no
+  longer has support for Ezycom, PCBoard, WildCat! and Goldbase. If
+  you need these msgbase formats, please use the 32-bit DOS version or
+  another platform.
+
+  Even with these msgbase formats removed, the 16-bit DOS version
+  still doesn't have much free memory to work with, and you will
+  probably experience "out of memory" often. You should seriously
+  consider switching to one of the 32-bit versions instead.
+
+______________________________________________________________________
+
+                   Notes for Beta3a, March 21 1998
+______________________________________________________________________
+
+- Fixed crash when trying to decode malformed RFC2047 encoded words.
+
+- Under some circumstances, FTN addresses could appear in the header
+  display when in an area marked as email or news. This would happen
+  in cases where there was no To: or From: header. Cosmetic.
+
+- When entering a msg in echomail or local areas, a date was shown in
+  the to-line in the header editor. Cosmetic.
+
+- Fixed a crash in the arealist when there were not enough areas to
+  fill the window.
+
+- Fixed AREAFILE Squish, which did not find Squish areas if there was
+  no "-$" on its own in NETAREA/ECHOAREA lines.
+
+- Through a horrifying mistake, the AdeptXBBS msgbase code was in fact
+  never included in Beta1, 2 and 3. Fixed. SORRY!!!!!!!!!
+
+______________________________________________________________________
+
+                    Notes for Beta3, March 17 1998
+______________________________________________________________________
+
+! The 16-bit DOS version is now compiled in the "huge" memory model.
+  This was necessary to be able to compile it at all. Unfortunately
+  this decreases performance and bloats the EXE, and you still need
+  quite a lot of free DOS memory to run it for any length of time. You
+  should be prepared that this is probably near the end of the line
+  for the 16-bit DOS versions :-(
+
+- Fixed a bug that caused problems if you were overriding an area with
+  one echoid with another with the same echoid, but a different
+  msgbase type.
+
++ Added commandline option -exportsoup. If used, GoldED exports
+  mail/news to SOUP at startup. If both -exportsoup and -importsoup is
+  used, import is performed first, then export.
+
++ Added commandline option -noscan. If used, the startup scan (if any)
+  is skipped. This is useful for automated SOUP import/export in a
+  batch file. For example "-noscan -importsoup @x y" imports SOUP then
+  exits.
+
+- Fixed a bug in the JAM-routines that garbled messages if they were
+  copied from and to JAM-areas. Some kludges (like REPLYTO, REPLYADDR
+  and many others) were removed from the subfields. This caused
+  problems with third-party utils that accessed the copied mails.
+
+- DateReceived will now be set to the current local time when a
+  self-written mail is saved the first time. If the msgbase doesn't
+  support DateReceived, DateProcessed will be set instead. This
+  prevents some problems with stupid msgbase-maintenance utils.
+
+- If a mail was copied from an non-squish-area to a squish-area, it
+  was scanned out again as a duplicate message. Fixed.
+
+- Fixed "Snd"-Attribute - detection in Hudson/Goldbase areas. If a
+  mail was copied from an Hudson/Goldbase area to another, it was
+  scanned out again as a dupe message. Fixed.
+
+- FRQWAZOO YES has been updated to handle the "dir" attribute
+  correctly.
+
+- If LOOKUPNET NO was used, it had been impossible to enter a
+  destination address in netmail areas. Fixed.
+
++ Added AREAFILE Partoss <filespec>. Note that "filespec" must be the
+  full path to and including "partoss.cfg", because AREAFILE ParToss
+  currently calls the same config reader as AREAFILE Squish.
+
++ AREAFILE Squish has been updated to interpret the following flags in
+  area definitions:
+
+    -$gX       Set group of area to 'X'. 'X' may be 'A'..'Z'.
+    -$n<desc>  Set desc of area to 'desc'. 'desc' must be enclosed by
+               '"'s if it contains spaces.
+
+  ParToss, a Squish-clone written by Serge V. Koghin (2:5030/177), can
+  handle and inserts these flags.
+
+! AREAFILE Squish <filespec> can now also handle the case when
+  <filespec> points to a file, not to a directory, i.e.
+
+    AREAFILE Squish d:\path\mysquish.cfg
+
+  The previously used syntax:
+
+    AREAFILE Squish d:\path -c=mysquish.cfg
+
+  has been removed.
+
+- Fixed shelling in the Linux version.
+
+- Fixed printing in the Linux version.
+
+- Fixed the disappearing cursor in the Linux version.
+
+- Fixed faulty right borders in the Linux version.
+
+- Fixed Tab key in the Linux version.
+
+- Fixed mangling of highbit characters in the Linux version after an
+  overlaying window was closed.
+
+- Fixed a quoting bug that caused quoted text to disappear. This
+  happened if there was a long kludge just before the normal line to
+  be quoted.
+
++ Improved speed of the Win32 version by increasing the thread
+  priority for the program.
+
++ AREAFILE IMail is now ready for v1.87. NOTE: This version of IMail
+  was not yet available at the time of writing.
+
+- Fixed some problems with Path-Mapping. It's now possible to use
+  AREAFILE IMail in connection with MAPPATH (didn't work before).
+
+! Keyword MAPDRIVE has been replaced by MAPPATH. The old keyword
+  MAPDRIVE is now obsolete, please remove it from your config!
+
+  The new syntax is: MAPPATH <filespec> <filespec>.
+
+  e.g.
+
+    MAPPATH C: J:              ; compatible to MAPDRIVE
+    MAPPATH C:\ /mnt/dos/c/    ; For GoldED/LNX AREAFILE's.
+
+- Fixed INVALIDATE handling.
+
+- Fixed ADDRESSMACRO in connection with EMail-areas. It is now
+  possible to use the following:
+
+  ADDRESSMACRO dam,dirk.mueller@rhein-neckar.de (Dirk A. Mueller),,
+
+- Fixed a small bug during header-edit if an EMail was written in a
+  netmail area. Note that is currently impossible to reply a
+  gated-EMail into an EMail-area. This will be done in a future
+  release.
+
+- Fixed a bug if a gated EMail was PGP-encrypted. Previously, the
+  To:-Line was also encrypted and was missing afterwards. This is now
+  fixed. Note that is defined behaviour that the To:-line is inserted
+  during _saving_ the mail, not before editing the text, as before.
+
+  If you need to change the destination address, you can do it in the
+  header-edit.
+
+- GoldED hung the computer if "Toggle all marks" was used and around
+  the half of all msgs were marked. Fixed.
+
++ GoldED will now store the message-marks (and Personal Mails) between
+  sessions.
+
+! Changed the format of GOLDLAST.LST. You _/should/_ delete GOLDLAST.*
+  in your GoldED-directory (if AREAKEEPLAST YES) before starting this
+  new version.
+
++ GoldED's statusline-clock won't stop any longer if a popup-warning
+  is on the screen.
+
+- During header-edit, GoldED inserted it's PID in every message.
+  Fixed.
+
+! SQUISHDIRECT YES will now strip Cra+Hld attribute during header
+  display. This may be confusing to you at first, but it is much more
+  intentional.
+
+- Fixed several "incarnations" of the charset-translation bug. GoldED
+  did not always translate correctly during crossposting, editing
+  header attributes and exporting to the quotebuffer.
+
+- Fixed a bug with "AREA:"-Kludge in netmail-areas.
+
+- It was impossible to write a mail with "@position" in the mailtext.
+  Fixed.
+
+- Fixed another charset-translation bug if READchangeattrs was used.
+
+- Fixed "unfreed allocation" at geread.cpp. This caused crashes if
+  READgotonextunread/READgotoprevunread was used multiple times.
+
+! If READnewarea is pressed in the message-list, the lastread-pointer
+  is no longer updated. This is much more intentional.
+
+- It is now possible to use the following Keyboard assignments:
+
+  Esc    LISTmacro LISTselect READnewarea
+  Esc    READmessagelist
+
+  If enabled, you can go to the message-lister by pressing ESC and can
+  jump from the messagelister directly to the arealist-screen by
+  pressing ESC _again_.
+
+! Screen output is now much faster in W32-versions. In addition, the
+  new code is smaller than the old one.
+
+- If READgotonextarea or READgotoprevarea was used, GoldED sometimes
+  assumed wrong options. Fixed.
+
++ GoldED won't ask for "Zonegating yes/no?" any longer if Cra or Hld
+  attribute is set.
+
++ Added a new menu option in the "Newarea"-Menu. Now you can go to the
+  arealist-screen by pressing <Y> or <Right>, or immediately jump to
+  the next area with new mail by pressing <Enter>.
+
++ Added support for the ^AENCLFILE kludge. This is only used in
+  JAM-Areas. However GoldED doesn't add it in new mails.
+
++ Improved the Filerequest-Feature. It should be now much more
+  reliable and it should also display the filesize of the requestable
+  files, if given in the announcement. Please tell me if GoldED
+  detects something wrong.
+
++ Added error-messages if there was an error during Shelling out.
+
++ Added a warning if a commandline > 125 chars is used for Externutils
+  in the GoldED- and GoldED/386 version.
+
+- If no area was marked in the arealist-screen, and the cursor was
+  just above a separator, AREAjump jumped on the separator. Fixed.
+
++ Added READthreadtree. There is currently no default key assignment
+  for it, please make suggestions. This feature is not yet finished,
+  please tell me if you have any ideas to improve it.
+
++ Added a menu READtogglestyles. Default assignement: CTRL-H. Toggles
+  stylecodes-options. The default is "Stripping", if STYLECODES YES is
+  used.
+
+- "USERNAME Odinn Sorensen, 2:236/77" caused GoldED to crash if no
+  other ADDRESS/AKA was given. Fixed.
+
+- Fixed SYS3175 if undefined AKA was used in AREA or AREADEF.
+
+- SQUISHSCAN API didn't work. Fixed. Note if you experience wrong
+  values in the arealist-screen after area-scanning, you should use
+  this switch. If SQUISHSCAN QUICK works under you setup, then use it,
+  as it is faster.
+
+! The memory debugging code has been re-activated. It'll work also in
+  the Linux version now. PLEASE NOTE: The debug code caused the EXE to
+  grow about 100k larger and you should expect some performance
+  decrease.
+
+- OS/2: After shelling out, CTRL-S didn't work any longer. Fixed.
+
+- W32: After shelling out, keyboard input was echoed to screen under
+  some circumstances. Fixed.
+
+! The following obsolete keywords have been removed. Please replace
+  them with the newer, valid variant if you still have them in your
+  config:
+
+      old                  new
+    BOARDNOS            AREALISTNOS
+    CHANGEPROMPT        DOSPROMPT
+    CLEARKEYS           KEYBCLEAR
+    DELORIG             ASKDELORIG
+    DISPSTYLECODES      STYLECODES
+    ELIMSNOW            SCREENELIMSNOW
+    EXTKEYS             KEYBEXT
+    HWMARKS             FIDOHWMARKS
+    LISTWRAP            DISPLISTWRAP
+    LOCALHIGHLIGHT      DISPLOCALHIGH
+    LOCALNOISE          BEEPLOCALMSG
+    MATCHAKA            AKAMATCHNET
+    NEXTAREA            AREAAUTONEXT
+    NEXTMSGS            DISPAUTONEXT
+    PAGEBAR             DISPPAGEBAR
+    REALMSGNO           DISPREALMSGNO
+    SAYBIBI             BEEPNOISES
+    SHADOWS             SCREENSHADOWS
+    SPACEQUOTES         QUOTESPACING
+    USEBIOS             SCREENUSEBIOS
+
++ GOLDED.CFG: Literal strings can now also contain string delimiters.
+  That means you can declare something like:
+
+  AREADEF GOLDED "About the message reader \"GoldED\" and tools" [...]
+
+  This will be now parsed correctly everywhere.
+
+- If a mail with "MSGID 1:234/567@OS/2-Net" was read by GoldED, it
+  showed "1:234/2" in the header and not, as it should be,
+  "1:234/567". Fixed. However, note that only alphanumeric chars are
+  allowed inside domains!
+
+! GoldED will now also look for "NODEX.SDX" if using the V7-index.
+  This has been added for greater compatibility with Fastlst 2.xx.
+
++ Added SEMAPHORE EXITNOW <filepath>. GoldED will exit immediately if
+  this semaphore file is found and it is idle in the arealist screen.
+
+- Previously, it was impossible to overlay a key with an default
+  assignment with a user-macro. This is fixed now, so there should be
+  no need for KEYBDEFAULTS NO any longer!
+
+- Fixed a reflow-bug in the internal editor; if a line with maximum
+  length was reflowed, GoldED did delete the last character.
+
+- Fixed some small problems with SOUP signatures.
+
++ Added a warning if you want to delete a message with LOK attribute
+  set.
+
+- Fixed "Mark thread" function. It will mark now all mails of the
+  current thread, not just a chain as before. However, the
+  implementation is yet quick'n'dirty.
+
+- Fixed "Nodelist out of date" warning if the browser was first
+  accessed.
+
+- Fixed several "wrong aka/akamatching" problems.
+
+! GoldED will now automatically save the arealist data to GOLDLAST.LST
+  after a semaphore-rescan has been performed. This is much more save
+  and useful.
+
+- Fixed a reflow-bug in connection with mails from "Crosspoint" users.
+
+! GoldED will no longer strip leading spaces from quotes. Before,
+  GoldED reformatted
+
+    XX>      y = x^2
+    XX>  lim x -> oo
+
+  to this:
+
+    XX>> y = x^2
+    XX>> lim x -> oo
+
+  Now, it will reformat it to the following:
+
+    XX>>     y = x^2
+    XX>> lim x -> oo
+
+  Please report if this is ok or if there are any new problems /
+  problems left.
+
++ Added "path report" feature. New Keyboard command
+  READmakepathreport, defaults to Ctrl-K. The output file can be
+  processed by a new "RDDT" (Route Diagram Drawing Tool) utility,
+  which will be available separately. [documentation not complete].
+
+- MAPDRIVE will be now also used when writing ECHOMAIL.JAM /
+  NETMAIL.JAM. This allows you again to use these files if you need
+  MAPDRIVE for reading the AREAFILEs correctly.
+
+! All global on/off switches in the GOLDED.CFG will now be parsed by a
+  general cfg reader class. There should be _no_ difference for you as
+  a user. The current implementation is just smaller and somehow
+  faster. It is the first step to a better config reader.
+
++ AREAcatchup (ALT-C in the arealist-screen) will now also set all
+  messages to "read" if HIGHLIGHTUNREAD is enabled. Note that GoldED
+  won't reset the complete msgbase but only those messages after the
+  lastread-pointer, just for speed reasons.
+
++ Added COLOR READER QUOTE2. The default is White on black. GoldED
+  shows now quotes with different "quote-levels" in different colors.
+  To disable this feature, set COLOR READER QUOTE2 to the same value
+  as COLOR READER QUOTE.
+
++ Added support for SOUP-signatures. GoldED will now detect if a
+  template contains a signature and will handle it correctly.
+
+- Fixed Shift-F10 in the header-edit.
+
+- If TWITMODE KILL was set, GoldED didn't allow to toggle the twitmode
+  in the reader. Fixed.
+
++ Added the goldlang.cfg keyword "IL_TWITKILLED". The default is
+  " Twit Msgs Killed ".
+
+- When forwarding a message, GoldED sometimes used a "random"
+  template. Fixed.
+
+- When forwarding a message and changing the Subject line, GoldED
+  replaced the template token "@subject" by the new subject instead of
+  the old one. Fixed.
+
++ It is now possible to use "replacement" tokens inside "command
+  tokens" in templates. Example:
+
+    @forward@forcesubj[FWD] @subject
+
+  If you forward a message, GoldED will now automatically insert
+  "[FWD] " in front of the old subject line.
+
+! New entered mails are now always considered as read.
+
+! The "generate userlist" functionality has been changed based on
+  ideas of Thomas Keusch (Thank you!!). GoldED will now use the aka of
+  the latest message of each user in the area (Think of situations
+  where the aka of a user has changed) and it will be now
+  case-sensitive ("MICHAEL MUELLER" and "Michael Mueller" are now two
+  different users). As a side-effect, this routine is now MUCH faster.
+  :-)
+
+! GoldED won't import SOUP messages if they are from INTERNETADDRESS
+  any longer. This is a workaround for the problem that SOUPER re-gets
+  news that are written by the user and therefore all self-written
+  news are stored twice in the messagebase.
+
+! GoldED will now update the "DateProcessed" timestamp in JAM-soup
+  email/news when exporting mails.
+
+- GoldED will now use MAPDRIVE when displaying mails with files
+  attached to it.
+
++ GoldED can use now a file as a list for crossposting. This was
+  considered as a bug, because this is already documented (?), but it
+  was in fact never implemented. ;-) The stuff has now been added.
+
+! GoldED will now insert an AREA-kludge in crossposts _if_
+  AREACOPYADDID is enabled in the individual destination area. A
+  "Youwrote" - function will be added in a later release.
+
+! GoldED will now show the INTERNETADDRESS in the header if the area
+  is a SOUP area instead of the current aka. This is only cosmetical
+  and has no effect. ;-)
+
+- Fixed a crash if subject-line is longer than 500 chars. This can
+  only happen in internet-areas, and has in fact happened with a
+  subject line of 900 chars. ;-)
+
++ Improved the keyboard code in the Win32 version to give much better
+  speed and to work better under both Win95 and NT.
+
++ Added support for the new version 4 keysystem. A version 4 key is a
+  file named GOLDED.KEY, which must be in the same directory as
+  GOLDED.CFG. The first line of a version 4 key file contains an
+  identifier and the name of the registered user. This name must be in
+  your list of USERNAME's or REGISTERNAME.
+
+- GoldED wasn't able to update the timesread-field in *.MSG areas if
+  the Lok-attribute was set. In this case it displayed "<area> is
+  locked. Wait..." forever. Fixed.
+
+- The destination-lookup invoked in the header by pressing Shift-F10
+  didn't work. It didn't take over the selected aka. Fixed. Note that
+  GoldED won`t open the browser window if there's only one entry
+  matching the current to-name.
+
+- If the user has entered a fuzzy search string in the arealist-screen
+  and invoked "Zap/Heat areas", GoldED started to behave strangely and
+  maybe stop working completely. Fixed.
+
+- If SEMAPHORE IDLETIME was used, GoldED didn't start the
+  screenblanker in the arealist-screen any longer. Now, both the
+  screenblanker and the scanning-semaphores will work again together.
+
+- GoldED did export SOUP-messages even if they have had a DEL-(JAM) or
+  Lok-flag. Fixed.
+
+- Fixed a bug that caused V7-NODEFLAGS to be wrong.
+
++ Added COLOR READER SIGNATURE. This color is used for the internet-style
+  signatures. The default is DGrey on Black.
+
+- Fixed all (?) "skipping separator" - problems in the arealist.
+
+- Fixed crash at startup if SEMAPHORE IDLETIME was used.
+
+- Fixed the "stuck template" problem.
+
+- Fixed sort order AREALISTSORT GO, when arealist separators (such as
+  AREASEP !A "A" A Local) where defined as Local, causing them to be
+  sorted after the areas in their group.
+
+- Fixed AREAFILE AdeptXBBS for the "no areas" bug and added support
+  for AdeptXBBS areas in Squish, Fido and JAM formats. OS/2 only.
+
+______________________________________________________________________
+
+                           Notes for Beta2
+______________________________________________________________________
+
+- Fixed several bugs in connection with FIDOUSERLIST that may cause
+  crashes or strange behaviour.
+
+- Fixed ADDRESSMACROs so that they work in EMail-areas again.
+
+- Fixed crash when SoupExporting and XLATEXPORT was not set to
+  MNEMONIC, LATIN1QP or LATIN1.
+
+- Fixed probably most of the AREASEP-sorting problems. If there are
+  still any left, please report them.
+
+- Fixed broken "End/Home" in the arealist-screen if first/last area
+  was a AREASEP-line. Note that the wraparound-bug (no wraparound
+  possible if first/last area is AREASEP, although DISPWRAPAROUND is
+  enabled) is not yet fixed.
+
++ During editing in the header, it is now possible to do a NL-lookup
+  by pressing SHIFT-F10. In addition, the To-Name/Addr-fields will be
+  updated if the user selected a different destination in the browser.
+
+- GoldED didn't translate MIME-codes in the header in fido (gated
+  newsgroups) echos. Fixed. Now, if MSGLISTFAST NO is set, GoldED will
+  also translate the mime-headers while viewing them in the
+  messagelister.
+
+- Fixed the multiple " UNREG" in tearline problem.
+
++ Added support for the "X-Mailing-List:" - RFC headerline. The
+  MAILINGLIST keyword will recognize it.
+
++ GoldNODE can now handle up to 30 nodelists. The previous limit was
+  20, otherwise it crashed. GoldNODE will now print an error message.
+
++ GoldNODE can now read the german POINTS24-format directly!  You can
+  now remove your 3d -> 4d converter.
+
+- Fixed some GoldNODE problems.
+
+- GoldED will now also know lines beginning with "Resent-" as valid
+  kludge lines (SOUP).
+
+- "RFC: x lines" wasn't detected as a known kludge. Fixed.
+
+- Fixed "cannot decode" if UUDECODEPATH wasn't set.
+
+! GoldED will no longer use the Autoattach-Feature if "a:" or "b:" is
+  at the beginning of the subject line.
+
+- Fixed bug that NODEV7MODEM b0 was not displayed even if correctly
+  configured.
+
++ Added support for V7+. It's automatically used if your NODEPATHV7 is
+  set correctly. If GoldED shows "xxxx / NODEX.DTP" at the bottom of
+  the browser window, the displayed information is taken from the raw
+  nodelist entry.
+
+- V7 / FD / FU - Nodelist-access will now also work under GoldED/LNX.
+
++ Added new "catch up" command in the arealist. Key command
+  AREAcatchup, default assignment Alt-C. The effect of this command is
+  to point the lastread pointer to the last message in the current
+  area.
+
+- Fixed some more bugs in the filerequest function.
+
++ Added new keyword ATTACHPATH <path>. It sets the default path for
+  fileattaches.
+
+- Fixed some bugs in filerequest function if many files were requested
+  and/or FRQOPTIONS NOWAZOOMSG wasn't used (FRQWAZOO YES).
+
++ Added new functionality to "Select Reply" window. Now unread replies
+  are marked and the cursorbar is positioned on the first unread reply
+  by default.
+
+! Previously it wasn't possible to use '^h  EDITmacro "^h"' because of
+  a bug in the internal editor. This is now fixed.
+
+- Fixed bug in the RFC822 Date: header parser, which caused a hang if
+  the header was not 100% correct. Changed the implementation to a
+  robust one and also changed the *.MSG date parser to a robust one,
+  just in case.
+
+- Added GID as a known kludge.
+
+- Fixed PCBoard crossposting bug that caused empty messages to be
+  crossposted.
+
+- The origins from AREAFILE's were ignored.
+
+- The AREAFILE Maximus reader was not working for Maximus 2.xx. Not
+  tested.
+
+- Fixed a bug that caused strange problems if GOLDED.CFG contained
+  tabs instead of spaces.
+
+- Fixed bug in the personal mail feature. If there were multiple areas
+  with personal mails, GoldED didn't always start with the first
+  unread personal mail but somewhere in between.
+
+- Fixed "Message is already sent" problems in *.MSG-areas (type=echo).
+
+- Fixed "fuzzy search" bug in the arealist-browser.
+
+- Fixed "wrong row in statusline" while editing in the internal
+  editor.
+
+- Fixed editor range check warning if browsing over the end-of-file
+  marker.
+
+- Fixed garbage at the right corner in the internal editor if
+  DISPMARGIN < 80.
+
+- Fixed garbage on screen if DISPMARGIN is bigger than allowed.
+
+! The default wildcard for the filebrowser was "*.*". Changed to "*",
+  as it should be.
+
+- AREACOPYADDID was only active if enabled in the <from>-area. Now it
+  is active for the area the mail is copied TO, as it should be. In
+  addition it does no longer inserts an AREA-kludge if the destination
+  area is a netmail-area.
+
+- Fixed wrong color "painting" in the fileattach-menu after pressing
+  Ctrl-Enter.
+
+- Fixed faulty extended keyboard detection in the DOS-versions.
+
+- Fixed wrong version in the PID.
+
+______________________________________________________________________
+
+                           Notes for Beta1
+______________________________________________________________________
+
++ Implemented a different memory debugging feature to GoldED/2. The
+  feature is enabled with the commandline option -X. When enabled,
+  GoldED switches to allocating memory directly with DosAllocMem and
+  places the data so that overruns (access beyond the end of allocated
+  memory) will cause an immediate SYS3175. If you suspect a bug,
+  please try running GoldED with this feature enabled for a while.
+  NOTE: When this feature is enabled, GoldED uses a lot more memory
+  (for example 8192 bytes per line in a msg), so be sure to have
+  plently of swapspace.
+
+- GoldED/2 crashed when trying to file attach with wildcards.
+
+- When move-replying a msg from an "AREAREPLYDIRECT YES" area to
+  another area, and the msg didn't contain an AREA: kludge, GoldED
+  crashed. If it *did* contain an AREA: kludge, the @oecho and @odesc
+  template tokens were not correct.
+
+- If a very long WT_NEWAREA language text was used and a long fuzzy
+  string was entered (such as pressing 'A' continuously), the screen
+  was garbled and GoldED crashed in some cases.
+
+- You could not enter the '^' character in the normal manner in the
+  Win32 version.
+
++ The Win32 version now sets the window titlebar text. Also added a
+  bit more orderly shutdown when ctrl-break is pressed.
+
+- Fixed bug in the internal editor. When backspacing from column one,
+  the Linux version crashed.
+
+- The Linux version did not react properly to Ctrl-Q and Ctrl-S keys.
+
++ Optimized screen access for the Linux version a bit more, and added
+  support for alternate charset, so that border lines etc. are drawn
+  using highbit characters, not ugly ascii. NOTE: If you see a lot of
+  strange characters instead of nice lines, you are most likely using
+  setfont or something else that destroys the screen mapping that
+  allows alternate charsets to work. GoldED uses basically the same
+  method for switching charsets as ncurses and slang, so you would
+  have the same problems with programs built with those libraries.
+
++ In the arealist, GoldED now automatically skips past area separator
+  lines when moving over them.
+
++ GoldED now decodes MIME (RFC2047) encoded headers (you know, the
+  ugly =?ISO-8859-1?Q?bl=ABla?= things). Note: The charset is
+  currently ignored. This is okay for most msgs. Will be done properly
+  in a later version. Encoding is not supported.
+
+- Fixed MIME quoted-printable support for SOUP export. During export,
+  the header lines were also quoted-printable encoded.
+
+- When using ALT-Z (EDITzapquotesbelow) and there were only quotes
+  below the cursor until the end of the mail (nothing else), GoldED
+  hung or crashed.
+
+- After using ALT-Z (EDITzapquotesbelow) and there was no "normal"
+  selfwritten line between the cursor-position and the end of the mail
+  but only a origin/tearline/tagline-line, GoldED displayed these
+  lines in the wrong color.
+
+- GoldED will no longer crash when importing a 1-byte SOUP message to
+  a JAM area.
+
+- When exporting news from a Squish area, GoldED forgot to set the Scn
+  attribute, so the articles afterwards appeared with the attributes
+  "Snt Uns Loc".
+
+! The FRQOPTION USEFLOFILE option is now permanently on. You can
+  remove that option from your configuration, if you have it.
+
++ Changed the MAILINGLIST feature so that it also looks at the From:
+  line instead of just the Sender: line.
+
++ GoldED now knows about the Squish "Lok" attribute with attribute
+  value 0x40000000.
+
+- When changing attributes on a msg in an area like the BAD_MSGS area,
+  the AREA: line was moved to a position where the mail processor
+  couldn't find it.
+
++ In areas marked as e-mail or newsgroups, GoldED now allows full
+  editing of both name and internet address when in the header editor.
+
++ Instead of AREAFILE TMail, you can now use AREAFILE Termail. It
+  calls the same config reader.
+
+- Fixed CARBONCOPYLIST NAMES when using a large amount of CC's (i.e.
+  taken from a file). GoldED created netmails for all cc-members, but
+  only inserted the first line of "CC: <name>, <name>, <name>,
+  <name>"-text and forgot the others.
+
+- Cutting out a large block in the internal editor caused a range
+  check error message.
+
+- GoldED crashed when copying, moving or forwarding to the same area.
+
+- Fixed crash if the description column "D" was not defined in
+  AREALISTFORMAT.
+
++ New feature: GoldED can now jump to the next or previous unread msg
+  (unread being defined as having timesread = 0). Added the new key
+  commands READgotonextunread and READgotoprevunread for this feature.
+
+  The default key assignements are:
+
+    @U     READgotonextunread    ; Like in Yuppie
+    @Left  READgotoprevunread
+    @Right READgotonextunread
+
+  This feature is very useful when using the reply-linking to read a
+  complete thread and afterwards switch to the next unread mail
+  automatically.
+
++ Added new keyword: SOUPEXPORTMARGIN <margin>. Defaults to 76. This
+  is the margin that GoldED will hard-wrap to when exporting to SOUP
+  packets. If you're getting complaints that your lines are too long,
+  you may want to set this to 70 or 60. NOTE: You should NOT enable
+  EDITHARDTERM in email and newsgroups that are exported to SOUP. If
+  you do, your messages will probably be exported with short line
+  "droppings" after the wrapping margin.
+
+- The various semaphore files are now deleted *after* performing the
+  desired action instead of before.
+
+- MAILINGLIST areas were not automatically changed to type "EMail".
+
++ GoldED now also highlight the to-field if it contains the
+  INTERNETADDRESS.
+
++ Added an end-of-message indicator line in the internal editor. It's
+  a line from left to right and has COLOR READER BORDER.
+
+- GoldED didn't write the correct entry in the .REQ file, when writing
+  the following in the subj-line of a wazoo-filerequest:
+
+    GEOA1026.ZIP $365000
+
+  The $-stuff is now saved on the same line as the filename, similiar
+  to the password - '!' functionality.
+
+- If there were a ^B (0x02) character somewhere in the message, GoldED
+  also deleted the succeeding character when saving the mail.
+
+- The current LOADLANGUAGE (global or in a group) is now reloaded
+  after posting a message. This prevents "stuck" language.
+
+- Fixed template-matching bug. It could cause a template to be falsely
+  matched when entering a new message or a comment-reply in an
+  echomail or local area.
+
++ Default colors have now been assigned to the stylecode highlighting:
+
+    COLOR STYLECODE ALL White on Black
+
+  Remember to enable the DISPSTYLECODES keyword if you want to see
+  any effect of this.
+
+- If you used CTRL-N/CTRL-P while reading messages to go directly to
+  the next area and there was a AREASEP-definition in between, GoldED
+  crashed.
+
+- In quoted-printable encoded messages, if there was an encoded TAB
+  character, it was decoded wrongly and the next character was lost.
+
+- When doing large amount of copying/moving that takes a while, GoldED
+  immediately switched the screensaver on after finishing the job.
+  Fixed.
+
++ When using "ORIGIN @path\filename.lst", GoldED now shows a pretty
+  [filename.lst] in the origin selection menu instead of the whole
+  ugly thing. This will also be done for the other menus later.
+
+- Fixed a bug that caused a certain form of dates in internet msgs to
+  be stored incorrectly during SOUP import.
+
+- Fixed wrong file permissions in the Linux version.
+
+- Fixed various bugs that caused core dumps in the Linux version.
+
+- Removed a 500 files limit in the internal editor file selector.
+
++ Updated AREAFILE TMail support to Terminate 4.00 level (should also
+  work for 5.00). Not tested much.
+
++ Added support for numeric Re's ("Re^n:") in the subject when
+  replying. This is controlled with the EDITREPLYRE keyword, which you
+  can now set to "NUMERIC" to enable the feature. Stripping of numeric
+  Re's is also supported, when EDITREPLYRE is set to NO (the default).
+
+  Example: (with EDITREPLYRE NUMERIC)
+
+    Subj: Hello.
+    Subj: Re: Hello.
+    Subj: Re^2: Hello.
+    Subj: Re^3: Hello.
+    etc.
+
++ Enabled EDITREPLYRE to work in groups as well as globally. Not
+  tested.
+
+- In newsgroups and e-mail areas, GoldED now *forces* the use of "Re:"
+  in reply subjects, regardless of the EDITREPLYRE setting. The reason
+  why it is forced in these areas, is because that is the standard for
+  internet mail/news.
+
+! The default logfile name is now GOLDED.LOG for all platforms.
+
+- Fixed the zero-bytes SOUP replies file. This happened when your
+  email/news areas were defined as local areas (to prevent being
+  scanned out by the mail processor) in, for example, Fastecho, but
+  redefined with SOUPEMAIL, AREAISEMAIL, AREAISNEWS and/or
+  SOUPNEWSRCFILE. Not tested.
+
+- Fixed crash when commandline option -N was used.
+
+- Fixed zero bytes allocation at [gmxbbs4.cpp,332].
+
+- When the Imm attribute was toggled on, the Hld attribute (if any)
+  was not cleared, and vice versa.
+
+- COLOR READER CURSOR now works again.
+
+- The menu to select origins/taglines from a file, named with
+  @filename, didn't work well if there were long lines. Additionally,
+  the CR/LF characters were not properly stripped. Not tested.
+
+- During the first nodelist lookup, the statusline said "Checking
+  nodelists ...", but the previous statusline was not recovered after
+  checking. Not tested.
+
++ Added SEMAPHORE SCANNETMAIL/PMSCANNETMAIL <file>. If GoldED finds
+  this semaphore, it will scan or pmscan all netmail areas.
+
+- Fixed -install and AREAFILE Squish for the situation when SET SQUISH
+  points to a filename. Works only partially.
+
+- With FRQOPTIONS FAST and AREAFREQDIRECT YES, GoldED did not create
+  more than one frq message when there were more files than could fit
+  in one subject.
+
+- Some bugs were introduced as a consequence of the separated msgbase
+  code: EDITMSGSIZE didn't work. DISPSOFTCR didn't work in JAM areas,
+  the -Y debugging commandline parameter didn't work in Hudson,
+  Goldbase, JAM, Squish and Fido areas. Logging of msgbase errors and
+  warnings was fatally flawed - GoldED would simply crash if such an
+  event occurred.
+
+- Fixed the annoying charset translation problem that caused erratic
+  translation of ASCII 225 (german sharp s) and other characters, when
+  in the presence of LATIN-1. Specifically, the characters were
+  translated wrongly when you entered a new message while "on" a
+  message with kludge "^aCHRS LATIN-1 2".
+
+- Fixed sound support in GoldED/2. If enabled, it caused a crash
+  (SYS3175) when attempting to play a sound, typically the startup
+  sound. Not tested.
+
++ Added support for the new Fastecho 1.46 groups 1-6.
+
++ In addressmacros and in NAMES.FD, the '@' character is now allowed
+  in the macro name.
+
+- Fixed unfree'd allocation at [geread2.cpp,242].
+
+- In the msglist, there were circumstances when double lines appeared
+  below the list of messages.
+
+- The replies window was deformed when there was many replies.
+
++ Added new color definitions for highlightning of unread and unsent
+  mail in the messagelist:
+
+  COLOR MENU UNREAD     <colors> When a msg is unread.
+  COLOR MENU UNREADHIGH <colors> Additional highlight of to/from.
+  COLOR MENU UNSENT     <colors> When a msg is unsent.
+  COLOR MENU UNSENTHIGH <colors> Additional highlight of to/from.
+
+  If a msg is both unread and unsent, the unsent colors are used.
+
+  The definition of "unread" in this case is a message where the
+  "timesread" field contains the value 0 (zero) or some kind of "seen"
+  attribute is not set. See also the description of the new
+  HIGHLIGHTUNREAD keyword.
+
+  In msgbases where there is no timesread field or "seen" attribute,
+  GoldED currently fakes it and always returns a 1 (one) in the
+  timesread field, so that msgs won't be listed as unread all the
+  time.
+
+  If the HIGHLIGHTUNREAD keyword is set to NO, the UNREAD colors are
+  deactivated.
+
+  These are the defaults:
+
+    COLOR MENU UNREAD       Green on Black
+    COLOR MENU UNREADHIGH   White on Black
+    COLOR MENU UNSENT       LGrey on Black
+    COLOR MENU UNSENTHIGH   LRed  on Black
+
++ Added new keyword HIGHLIGHTUNREAD <yes/no>. Defaults to NO. If set
+  to YES, GoldED updates (increases) the "timesread" field in each
+  message that you read. If set to NO, it doesn't touch the message.
+  The YES setting causes a slight performance decrease, because the
+  header of each message has to be read, the timesread field updated
+  and the header written back to disk. The update happens immediately
+  after the message is displayed, so you may not notice it at all. A
+  message is only updated if the timesread field contains the value 0
+  (zero).
+
+  This keyword only works in the following msgbase formats: Fido
+  (*.MSG), Hudson, Goldbase, JAM, Squish, Ezycom and AdeptXBBS. In
+  Squish and Ezycom, there is no timesread field, but I have annexed a
+  reserved message attribute (in Squish, 0x00080000, now called
+  MSGSEEN; in Ezycom, extattr 0x80) for the purpose of marking a
+  message as read at least once. The other formats (PCBoard, WildCat)
+  have no timesread field, but they have reserved fields or attributes
+  which *could* be used. Let me know if you want this.
+
+- A bug caused the area description to be used instead of the path in
+  a few situations: The GOLDAREA.INC file, the quotebuffer file,
+  PCBoard.
+
+______________________________________________________________________
+
+                The above notes are added since Alpha5
+______________________________________________________________________
+

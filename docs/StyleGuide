@@ -1,0 +1,153 @@
+______________________________________________________________________
+
+                     Goldware Source Style Guide
+                          By Odinn Sorensen
+                          14. November 1998
+
+______________________________________________________________________
+
+Please learn from this example:
+
+=== Cut ===
+//  ------------------------------------------------------------------
+//  This is an example function
+
+int function(char* d, char* s, int i, int j) {
+
+  if(not(i==2 or j<5) xor (i>5 and j<32)) {
+    switch(i) {
+      case 1:
+        printf("1\n");
+        break;
+      default:
+        printf("whatever\n");
+    }
+  }
+  else {
+    for(int n=0; n<i; n++) {
+      // copy something
+      *d++ = *s++;
+    }
+  }
+
+  switch(*s) {
+    case '\0':  printf("nul-terminated\n");           break;
+    case ' ':   printf("terminated with a space\n");  break;
+  }
+
+  return i;
+}
+
+
+//  ------------------------------------------------------------------
+=== Cut ===
+
+Lessons:
+
+* Indentation is two spaces per level. Tabs are NOT allowed!
+
+* No space between keyword/function name and left parenthesis.
+
+* Opening brace is at the end of the line.
+
+* Closing brace is lined up at the same level as the line with the
+  opening brace.
+
+* In a switch statement, 'case' is indented, and the content of a case
+  is indented further. A compact form of switch is allowed for short
+  cases - arrange it so that each case with content is on one line,
+  and place spaces so that the whole thing is neatly columnized.
+
+* C++ comment style is used.
+
+* Comment lines that separate functions are 70 chars wide.
+
+* There is one empty line between the last comment line describing a
+  function and the beginning of the function.
+
+* There are two empty lines between the closing brace for a function
+  and the following separating comment line.
+
+* At some places in expressions there are still AND,OR,NOT used. If
+  you're just editing places, replace them by and,or,not. Please do
+  not use &&,||,! etc.! We prefer readable source and do not like
+  symbols at places where we can use human readable text. Note that 
+  the lowercase variants are defined by ANSI C++ standard.  
+
+Other lessons:
+
+* Avoid using global variables.
+
+* Avoid using static variables.
+
+* Avoid using fixed length char buffers.
+
+* Use the gstring class for strings and the gvector class for
+  STL-style vectors. But DO NOT use them in any global variable,
+  unless the global variable is a pointer.
+
+* Don't use STL. Sorry :-(
+
+* Don't use MixedCase for variable, class or function names. Use
+  lowercasealltheway or lowercase_with_underscores if you must.
+
+* Use 8.3 MS-DOS filenames for source files and other files that are
+  part of the build system, at least until we have some program or
+  script that can convert from long filenames to short, or we decide
+  to drop 16-bit MS-DOS support entirely.
+
+
+The real world:
+
+GoldED and the Goldware Library has been developed over many years,
+and has gone through several code restylings over the years. This
+means that the rules above are broken in many places around the code,
+and sometimes the rules are bent a bit on purpose to make the code
+more readable or easier to debug.
+
+But try to stay close to the rules anyway.
+
+Browse the code and get a feel for the layout.
+
+
+If you are in doubt about where to place the source for new
+functionality, please place as much as possible in the library, in the
+form of generalized functions and/or classes. This way more people can
+benefit from it (since it will be LGPL, not GPL by default), and the
+functionality can be used in both the old 3.x code and the new 4.x
+code with a minimum of duplication and effort.
+
+
+When you make fixes or add functionality, please check carefully that
+your modification don't have unexpected side-effects. This is
+particularly the case with the GoldED 3.x code and gmb3, which
+unfortunatly still has a legacy base of global tangled spaghetti code.
+In fact, if you are messing with almost any aspect of the message
+related code, it is more than 50% certain that the first fix you make
+has entirely unexpected sideeffects that perhaps is not even seen
+until someone else uses a feature that you never use.
+
+
+If you have made some modifications and want to contribute them to the
+community, please use "diff -c" (context format) to generate the patch
+file.
+
+Before sending in patches to me or another member of the core
+developer team, TEST TEST TEST and TEST AGAIN. Preferrably the patch
+(or patched version) should be tested by several other users so that
+you can be reasonably sure that it's okay.
+
+
+It is very recommended to use CVS and checkout the source from the
+official Goldware CVS server (when it becomes available). It saves you
+and us for much headache when merging the patches into the main source
+and you want to update your checkout with the latest checkins to the
+official source. Get your CVS client from www.cyclic.com.
+
+
+Enjoy! :-)
+
+Odinn Sorensen
+
+______________________________________________________________________
+

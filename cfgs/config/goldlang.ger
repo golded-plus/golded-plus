@@ -1,0 +1,488 @@
+//////////////////////////////////////////////////////////////////////
+//
+//  GoldED 3.00 * Beispieldatei fÅr eine eingedeutschte OberflÑche
+//
+//  Bevor du diese Datei verÑnderst, schlage ich Dir vor, sie zuerst
+//  auszudrucken und als Vorlage zu verwenden. Das Umdefinieren kann
+//  eine langsame und schwierige Sache sein.
+//
+//  Das Zeilenformat in dieser Sprachdatei ist:
+//
+//     <stringid> <"string">
+//
+//  Jede <stringid> hat einen Kategorieprefix, um Dir mehr Infos
+//  bei deinen eigenen Redefinitionen zu geben. Gro·/Kleinschreibung
+//  ist egal.
+//
+//  Kategorieprefix:
+//  --------------
+//  ST_     Statuszeile    LÑnge variabel.
+//  WT_     Fenstertitel   LÑnge variabel.
+//  MI_     MenÅeintrag    feste LÑnge, erstes Zeichen Quickchar.
+//  IL_     Infozeile      LÑnge variabel.
+//  WL_     Fensterzeile   meist feste LÑnge.
+//  HD_     Kopfzeile      meist feste LÑnge.
+//  MS_     Infotext       LÑnge variabel.
+//  ER_     Fehlertext     LÑnge variabel.
+//
+//  "feste LÑnge" bedeutet, da· alle Zeichenketten dieselbe LÑnge haben
+//  mÅssen. Die jeweilige LÑnge ist normalerweise nur durch die
+//  Bildschirmbreite begrenzt. Bei MenÅs hÑngt die Breite von der LÑnge
+//  des *ersten* MenÅeintrags ab.
+//
+//  Ein "Quickchar" ist der hervorgehobene "Direktauswahl" Buchstabe
+//  der MenÅeintrÑge. Der Quickchar ist Gro·/KleinschreibungsabhÑngig,
+//  und mu· mit einem Buchstaben in der restlichen Zeichenkette
+//  Åbereinstimmen.
+//
+//  Die Zeichenketten mÅssen immer in "" oder '' eingebettet sein, es
+//  sei denn, es werden keine fÅhrenden/nachfolgenden Leerzeichen
+//  benîtigt.
+//
+//  Manche Zeichenketten kînnen Formatierungsangaben, wie sie in der
+//  Programmiersprache "C" verwendet werden, enthalten. Manche
+//  Templatetokens kînnen ebenfalls in speziellen Zeichenketten
+//  verwendet werden.
+//
+//  Kontrollzeichen (Gro·/KleinschreibungsabhÑngig!):
+//  -------------------------------------------------
+//  \n    - Zeilenvorschub (LF) (wird in CRLF bei Dateien umgesetzt)
+//  \r    - WagenrÅcklauf  (CR).
+//
+//  Die Kontrollzeichen werden normalerweise in Zeilen fÅr Dateien oder
+//  Standardausgaben (via DOS) benutzt.
+//
+//  Formatierungsangaben (Gro·/KleinschreibungsabhÑngig!):
+//  ------------------------------------------------------
+//  %c     - einzelnes Zeichen.
+//  %s     - Zeichenkette.
+//  %i     - eine ganzzahlige Zahl.
+//  %u     - eine vorzeichenlose, ganze Zahl.
+//  %%     - ein Prozent-Zeichen (%)
+//
+//  Wenn du eine Zeile mit Formatierunngsangaben verÑnderst, sei bitte
+//  vorsichtig und achte darauf, da· sie in der gleichen Anzahl und
+//  Reihenfolge wie in der ursprÅnglichen Form stehen. Wenn du dies
+//  nicht befolgst, kînnen unerwartete Dinge passieren (sic!).
+//
+//  ------------------------------------------------------------------
+//
+//  deutsche öbersetzung by Dirk A. Mueller, 2:2468/9909.9
+//                                 e-mail: damware@gmx.net
+//
+//  basierend auf Arbeit by Dirk Frieborg, 2:240/6231
+//
+//////////////////////////////////////////////////////////////////////
+
+
+----------------------------------------------------------------------
+-- WOCHENTAGE UND MONATE
+
+// Wochentage, kurz
+MS_SWSUN             "So"
+MS_SWMON             "Mo"
+MS_SWTUE             "Di"
+MS_SWWED             "Mi"
+MS_SWTHU             "Do"
+MS_SWFRI             "Fr"
+MS_SWSAT             "Sa"
+
+// Wochentage, lang
+MS_LWSUNDAY          "Sonntag"
+MS_LWMONDAY          "Montag"
+MS_LWTUESDAY         "Dienstag"
+MS_LWWEDNESDAY       "Mittwoch"
+MS_LWTHURSDAY        "Donnerstag"
+MS_LWFRIDAY          "Freitag"
+MS_LWSATURDAY        "Samstag"
+
+// Monate, kurz
+MS_SMJAN             "Jan"
+MS_SMFEB             "Feb"
+MS_SMMAR             "Mrz"
+MS_SMAPR             "Apr"
+MS_SMMAY             "Mai"
+MS_SMJUN             "Jun"
+MS_SMJUL             "Jul"
+MS_SMAUG             "Aug"
+MS_SMSEP             "Sep"
+MS_SMOCT             "Okt"
+MS_SMNOV             "Nov"
+MS_SMDEC             "Dez"
+
+// Monate, lang
+MS_LMJANUARY         "Januar"
+MS_LMFEBRUARY        "Februar"
+MS_LMMARCH           "MÑrz"
+MS_LMAPRIL           "April"
+MS_LMMAY             "Mai"
+MS_LMJUNE            "Juni"
+MS_LMJULY            "Juli"
+MS_LMAUGUST          "August"
+MS_LMSEPTEMBER       "September"
+MS_LMOCTOBER         "Oktober"
+MS_LMNOVEMBER        "November"
+MS_LMDECEMBER        "Dezember"
+
+
+----------------------------------------------------------------------
+-- VERSCHIEDENES
+
+ST_IMPORTFILE        "Importiere Datei"
+WT_IMPORTWHICHFILE   " Importiere welche Datei? "
+WT_IMPORTPICK        " Importiere "
+WT_IMPORTTXT         " Import "
+MI_IMPORTTXTTEXT     "T Datei als Text    "
+MI_IMPORTTXTQUOTE    "Q Datei als Quote   "
+MI_IMPORTTXTUUE      "U BinÑr als UUE     "
+MI_IMPORTTXTMIME     "M BinÑr als MIME    "
+MI_IMPORTTXTCLIP     "C Vom Clipboard     "
+MI_IMPORTTXTXLAT     "s Benutze Charset.. "
+MI_IMPORTTXTQUIT     "N Nichts / zurÅck   "
+ST_IMPORTSTATUS      "Importiere von %s"
+ST_EXPORTFILE        "Exportiere Datei"
+WT_EXPORTWHATFILE    " Exportiere nach.. "
+ST_EXPORTSTATUS      "Exportiere nach %s"
+ST_EDITSTATUS        "Editor %i,%i. %s"
+ST_SELECTFILES       "Dateiauswahl"
+WL_SELECTEDFILES     "GewÑhlte Dateien    "
+WL_SELECTEDBYTES     "         Bytes      "
+WL_TOTALFILES        "Gesamt   Dateien    "
+WL_TOTALBYTES        "         Bytes      "
+WL_SCANNINGDIRECTORY "              Lese Verzeichnis               "
+WL_NOFILESFOUND      "          * KEINE DATEIEN GEFUNDEN *         "
+ST_FILESPRESSKEY     "Beliebige Taste zum Fortsetzen"
+WT_AREA              "Area"
+WT_DESCRIPTION       "Beschreibung"
+WT_MSGS              "Msgs"
+WT_LAST              "Letzte"
+WT_ECHOID            "EchoID"
+ST_UNREAD            "ungelesen"
+WT_SCANAREAS         " Areas scannen "
+MI_SCANALL           "A Alle           "
+MI_SCANMARKED        "M Markierte      "
+MI_SCANCURRENT       "D Diese Hier     "
+MI_SCANMATCHING      "P Passende       "
+MI_SCANUNSCANNED     "U Undurchsuchte  "
+MI_NOSCAN            "N Nichts   / ESC "
+WT_HEATAREAS         " Area-Endmarke setzen "
+MI_HEATALL           "A Alle Areas    "
+MI_HEATMARKED        "M Markierte     "
+MI_HEATCURRENT       "D Diese Hier    "
+MI_NOHEAT            "N Nichts  / ESC "
+WT_ZAPAREAS          " Area-Endmarke lîschen "
+MI_ZAPALL            "A Alle Areas   "
+MI_ZAPMARKED         "M Markierte    "
+MI_ZAPCURRENT        "D Diese Hier   "
+MI_NOZAP             "N Nichts / ESC "
+MS_DOS_SHELL         "GoldED-Kommandozeile. ZurÅck mit EXIT."
+IL_SCANNINGAREA      " Scanne Area:"
+IL_SEARCHINGFOR      " Suche nach"
+ST_READINGMSG        "Lese Message %u von %u"
+ER_OUTOFMEM          "Nicht genÅgend Speicher!"
+MS_HEXDUMPHEAD       "Hexdump des Messageheaders:"
+MS_HEXDUMPTEXT       "Hexdump des Messagetextes:"
+ST_RENUMBERING       "Renumeriere"
+ST_LOCKED            " (geschÅtzt)"
+ST_RENUMBERED        "Messages renumeriert - bitte Taste drÅcken!"
+WL_BLANKMSG          ""
+WL_WAIT              " Moment... "
+IL_GENHEXDUMP        " Erzeuge Hexdump - Moment... "
+ST_PROCESSCC         "Bearbeite Carbon Copies"
+ST_STATUSCC          "CC: %s von %u:%u/%u.%u"
+ST_DESTINATIONCC     "Wer soll Kopien erhalten?"
+MS_LISTCC            "%s  %u:%u/%u.%u"
+WT_DELORIG           " Original lîschen? "
+MI_DELORIGYES        "J       Ja bitte.        "
+MI_DELORIGNO         "N         Nein!          "
+WT_DROPMSG           " Mail verwerfen? "
+MI_DROPMSGYES        "J       Ja bitte.        "
+MI_DROPMSGNO         "N         Nein!          "
+WT_ZONEGATE          " Sende via ZoneGate? "
+MI_ZONEGATEYES       "J       Ja bitte.        "
+MI_ZONEGATENO        "N         Nein!          "
+ST_QUOTEPCT          "Deine Mail enthÑlt %i%% Quotes%s"
+WT_SAVEMSG           " Speichern der %i Zeilen? "
+MI_YESGREAT          "J Ja klar - ist super!  "
+MI_KICKIT            "N Nein, weg damit / ESC "
+MI_CONTINUE          "W Weiterschreiben       "
+MI_ROT13             "R ROT13 verschlÅsseln   "
+MI_ATTRS             "A Attribute Ñndern      "
+MI_ORIGS             "O Origin Ñndern         "
+MI_VIEW              "L Nochmals Lesen        "
+ST_SELECTDESTNODE    "Ziel-Node auswÑhlen"
+WT_ATTACHFILES       " Dateien anhÑngen "
+WT_UPDREQFILES       " Datei-Updaterequest "
+ST_EDITHEADER        "Bearbeite Header"
+WT_EDITING           " Editieren "
+MI_INTERNALED        "I Interner Editor "
+MI_EXTERNALED        "E Externer Editor "
+MI_SAVEMESSAGE       "S Speichern       "
+MI_ATTRO             "A Attribute       "
+MI_TEMPLATE          "V Vorlagen        "
+MI_ORIGIN            "O Origins         "
+MI_QUITMESSAGE       "N Nichts / ESC    "
+ST_TEMPLATES         " Vorlagen "
+WT_CHANGETEMPLATES   " Standard-Vorlage Ñndern "
+WT_CARBONCOPY        " Carbon Copy "
+MI_CCPROCESS         "B Bearbeiten   "
+MI_CCIGNORE          "I Ignorieren   "
+MI_CCATTRIBS         "A Attr. Ñndern "
+MI_CCLISTFMT         "L Listenformat "
+WT_CCLIST            " CC-Liste "
+MI_CCLISTKEEP        "B Behalten   "
+MI_CCLISTNAMES       "N Nur Namen  "
+MI_CCLISTVISIBLE     "S Sichtbar   "
+MI_CCLISTHIDDEN      "U Versteckt  "
+MI_CCLISTREMOVE      "L Lîschen    "
+WT_ATTRTITLE         " Attribute "
+MI_ATTR01            " Private             <Alt-P>   Archive/Sent         <Alt-B> "
+MI_ATTR02            " Crash               <Alt-C>   Direct               <Alt-D> "
+MI_ATTR03            " Received            <Alt-R>   Zonegate             <Alt-G> "
+MI_ATTR04            " Sent                <Alt-S>   Hub/Host-Route       <Alt-V> "
+MI_ATTR05            " File Attach         <Alt-A>   Immediate            <Alt-I> "
+MI_ATTR06            " Transit             <Alt-J>   Xmail                <Alt-X> "
+MI_ATTR07            " Orphan              <Alt-O>   Erase File/Sent      <Alt-E> "
+MI_ATTR08            " Kill/Sent           <Alt-K>   Trunc File/Sent      <Alt-T> "
+MI_ATTR09            " Local               <Alt-W>   Locked               <Alt-L> "
+MI_ATTR10            " Hold                <Alt-H>   Confirm Rcpt Request <Alt-Y> "
+MI_ATTR11            " File Request        <Alt-F>   FTS1 Reserved        <Alt-1> "
+MI_ATTR12            " Return Rcpt Request <Alt-M>   QBBS Reserved, Net   <Alt-2> "
+MI_ATTR13            " Return Rcpt         <Alt-N>   QBBS Reserved, Echo  <Alt-3> "
+MI_ATTR14            " Audit Request       <Alt-Q>   Squish Scanned       <Alt-4> "
+MI_ATTR15            " File Update Request <Alt-U>   Zap all attribs      <Alt-Z> "
+HD_FROM              " Von  : "
+HD_TO                " An   : "
+HD_SUBJ              " Betr : "
+HD_FILE              " Datei: "
+MS_EMPTYMSG          "\r"
+MS_AUTOATTACHMSG     "\r"
+MS_AUTOREQUESTMSG    "\r"
+MS_AUTOUPDREQMSG     "\r"
+WT_FILEATTACH        " Datei anhÑngen "
+WT_FILEREQUEST       " Datei requesten "
+WT_FILEUPDREQ        " Datei-Updaterequest "
+ST_FILEATTACHING     "Dateiversand [%i/%i] an %u:%u/%u.%u"
+ST_FILEREQUESTING    "Dateirequest [%i/%i] bei %u:%u/%u.%u"
+ST_FILEUPDREQING     "Datei-Updaterequest [%i/%i] bei %u:%u/%u.%u"
+ST_READMARKED        "Markierte lesen - Msg %u von %u (%u Åbrig)"
+ST_READALL           "Alle lesen - Msg %u von %u (%u Åbrig)"
+ST_NOQRENUM          "Diese Area kann nicht renummeriert werden"
+HD_VIA               "via"
+WT_CHANGEATTRS       "Attribute Ñndern"
+WT_HEADERTEXT        " Suchen nach (Header+Text): "
+WT_HEADERONLY        " Suchen nach (nur Header): "
+WT_NEWAREA           ">>WÑhle Area: "
+WT_REPLYAREA         ">>Antworte in Area: "
+WT_COPYAREA          ">>Kopieren in Area: "
+WT_MOVEAREA          ">>Verschieben in Area: "
+WT_FORWARDAREA       ">>Weiterleiten in Area: "
+WT_FREQAREA          ">>Dateirequest in Area: "
+WT_FREQMENUTITLE     " Requestbare Dateien: "
+ST_FREQSTAT          "WÑhle Dateien zum Request aus"
+IL_FREQINFONOFILES   " Keine requestbaren Dateien gefunden! "
+WT_COPY              " Kopieren "
+WT_MOVE              " Verschieben "
+WT_COPYING           " Kopiere.. "
+WT_MOVING            " Verschiebe.. "
+ST_COPYINGMSG        "Kopiere Mail %u von %u nach %s"
+ST_MOVINGMSG         "Verschiebe Mail von %u nach %s"
+WT_DELETE            " Lîschen "
+WT_DELETING          " Lîsche... "
+ST_DELETINGMSG       "Lîsche Mail %u von %u"
+WT_WRITE             " Sichern "
+WT_WRITEMSGS         " Mail(s) in Datei sichern "
+WT_WRITING           " Sichere.. "
+ST_WRITINGMSG        "Sichere Mail %u von %u"
+WT_WRITINGFILE       " Sichere Mail(s) in Datei %s "
+WT_WRITINGPRN        " Drucke Mail(s) "
+IL_READONLYWARN      " Diese Area ist READ ONLY! "
+WT_ISREADONLY        " Trotzdem schreiben? "
+MI_READONLYYES       "J       Ja bitte.        "
+MI_READONLYNO        "N         Nein!          "
+IL_CHANGEWARN        " Die Mail stammt NICHT von Dir! "
+WT_CHANGE            " Trotzdem Ñndern? "
+MI_CHANGEYES         "J       Ja bitte.        "
+MI_CHANGENO          "N         Nein!          "
+WT_DELETETHIS        " Mail lîschen? "
+MI_DELETEYES         "J       Ja bitte.        "
+MI_DELETENO          "N         Nein!          "
+MI_DELETENOASK       "A  Alle! Frag' nicht...  "
+WT_GOTONEXT          " Zur nÑchsten Area? "
+MI_GOTONEXTYES       "J       Ja bitte.        "
+MI_GOTONEXTNO        "N         Nein!          "
+MI_GOTONEXTNEW       "U  zur Ungelesenen Area. "
+WT_FORWARD           " Nutze FWD-Kludges? "
+MI_FORWARDYES        "J       Ja bitte.        "
+MI_FORWARDNO         "N         Nein!          "
+WT_MSG               "Msg"
+WT_MSGREAL           "Msg#"
+WT_FROML             "Von"
+WT_TOL               "An"
+WT_SUBJL             "Betr"
+ST_MSGLISTER         "Liste - Msg. %u von %u (%u Åbrig)"
+ST_COPYMOVEFORWARD   "Kopieren, Verschieben oder Weiterleiten"
+WT_SELECTACTION      " Aktion "
+MI_FORWARDMESSAGE    "W Weiterleiten "
+MI_MOVEMESSAGE       "V Verschieben  "
+MI_COPYMESSAGE       "K Kopieren     "
+MI_QUITCMF           "N Nichts / ESC "
+ST_ARE               "Mails sind"
+ST_IS                "Mail ist"
+ST_MARKED            "markiert"
+MI_MARKEDMSG         "M Markierte    "
+MI_CURRENTMSG        "k Aktuelle     "
+MI_QUITMSGS          "N Nichts / ESC "
+ST_WRITEMSGSTO       "Mail sichern oder drucken"
+WT_WRITETO           " Schreiben: "
+MI_DISKFILE          "S Sichern        "
+MI_PRINTER           "D Drucken        "
+MI_QUITWRITE         "N Nichts   / ESC "
+ST_MARKINGOPTIONS    "Mails markieren"
+WT_MARKWHAT          " Was Markieren? "
+MI_YOURMAIL          "P Persînliche Mail       "
+MI_FROMTOSUBJ        "H Header (Von/An/Betr)   "
+MI_TEXTHDR           "T Text und Header        "
+MI_THREAD            "R Reply-Kette            "
+MI_NEWMSGS           "n nachfolgende  >aktuell "
+MI_OLDMSGS           "v vorhergehende <aktuell "
+MI_ALLMSGS           "A Alle Mails             "
+MI_UNMARK            "D Demarkiere alle Mails  "
+MI_RANGE             "B Bereich (Lesez.-akt.)  "
+MI_MARKSTOGGLE       "I Invertieren            "
+MI_QUITMARKS         "N Nichts           / ESC "
+WT_ENTERMARKSTRING   " Suchtext Eingeben "
+ST_SEARCHINGMSG      " Durchsuche Mail %u von %u. Markiert: %u"
+WT_USERLISTNAME      " Name Der Userliste? "
+IL_GENUSERLIST       " Schreibe Userliste.. "
+WT_FILEEXISTS        " Datei existiert! "
+MI_APPEND            "A Am Ende AnhÑngen       "
+MI_OVERWRITE         "ö öberschreiben          "
+MI_QUITEXIST         "N Neueingabe       / ESC "
+IL_WARNUNSENT        " ACHTUNG! Diese Mail ist NICHT versendet! "
+IL_WARNLOCKED        " ACHTUNG! Diese Mail ist LOcKt!
+ST_CHANGEORIGIN      "Standard Origin Ñndern"
+WT_ORIGINS           " Origins "
+ST_CHANGEUSERNAME    "Standard Benutzername Ñndern"
+WT_USERNAMES         " Benutzername "
+ST_CHANGEAKA         "Standard AKA Ñndern "
+WT_AKAS              " AKA's "
+WT_LOOKUP            " Suche: %s "
+WL_PHONE             "Telefon"
+WT_QUITGOLDED        " GoldED beenden? "
+MI_QUITYES           "J       Ja bitte.       "
+MI_QUITNO            "N         Nein!         "
+MS_EDITCMD           "Editor: %s"
+IL_NOORIGDEFINED     " Keine Origins definiert. Taste drÅcken "
+IL_NOUSERDEFINED     " Keine Benutzernamen definiert. Taste drÅcken "
+IL_NOAKADEFINED      " Keine AKA's definiert. Taste drÅcken "
+IL_NOTPLDEFINED      " Keine Vorlagen definiert. Taste drÅcken "
+IL_NOTHREADLIST      " Schade, keine Replies vorhanden. Taste drÅcken "
+MS_SKIPPINGTWIT      "öberspringe Twitmails.."
+MS_KILLINGTWIT       "Lîsche Twitmails.."
+IL_WRITINGCFG        " Schreibe Konfiguration "
+IL_COULDNOTOPEN      " Kann %s nicht îffnen "
+MS_PROMPT            "\"EXIT\" fÅr RÅckkehr zu GoldED.\r\n"
+IL_UNFINISHEDMSG     " Unfertige Mail gefunden! "
+ST_LOADUNFINISHED    " Taste zum Laden oder <ESC> zum öbergehen"
+IL_READINGECHOLIST   "Lese Echolist-Dateien"
+IL_READINGADDRMACROS "Lese Adress-Macros"
+IL_CHECKINGNODELISTS "PrÅfe Nodelisten"
+ST_CROSSPOSTING      "Crossposting in %s"
+IL_TWITBLANKED       " Twitmails leeren  "
+IL_TWITSKIPPED       " Twitmails Åberspringen "
+IL_TWITIGNORESKIP    " Twitmails ignorieren und Åberspringen "
+IL_TWITDISPLAYED     " Twitmails anzeigen "
+IL_TWITKILLED        " Twitmails lîschen "
+IL_STYLECODESNO         " Hervorhebung ausgeschaltet "
+IL_STYLECODESYES        " Hervorhebung eingeschaltet "
+IL_STYLECODESHIDE       " Hervorhebung ohne Begrenzer "
+ST_GENCFMRECEIPT     "Erzeuge EmpfangsbestÑtigung"
+WT_NEW               "Neu"
+ST_LOOKUPINFO        "Nodelist-Suche: "
+MS_DATETIMEFMT       "%d %b %y  %H:%M:%S"
+MS_DATEFMT           "%d %b %y"
+MS_TIMEFMT           "%H:%M"
+MS_CROSSPOSTEDIN     "* Crossposted in %s"
+ST_STATUSLINEHELP    "F1 Hilfe"
+HD_OF                "von"
+MS_ROBOTMSG          "\r--- @longpid @version\r"
+ST_STATUSLINETIMEFMT "%H:%M:%S"
+WT_REPLIES           " Replies "
+ST_SELECTREPLY       "WÑhle den zu lesenden Reply aus"
+IL_WAITOREXIT        " Hier mu·t du warten oder GoldED komplett beenden - Sorry! "
+WT_REALLYEXIT        " Wirklich beenden? "
+MI_TAGLINES          "T Tagline Ñndern"
+MI_HEADEREDIT        "H Header editieren"
+MI_SCANGROUP         "G Gruppe durchsuchen"
+WT_QWKPACKET         " QWK Paket "
+MI_SCANQWK           "Q QWK Paket"
+WT_SOUPPACKET        " SOUP Paket "
+MI_SCANSOUP          "S SOUP Paket"
+MI_SCANIMPORT        "I Import"
+MI_SCANEXPORT        "E Export"
+WT_SCANPM            " Suche persînliche Mail "
+MI_TAGLINE           "g Taglines"
+WT_CONFIRM           " Ankunft bestÑtigen? "
+MI_CONFIRMYES        "J Ja, sende BestÑtigung  "
+MI_CONFIRMNO         "N Nein, Anfrage ablehnen "
+IL_CONFIRMINFO       " Der Absender erbittet AnkunftsbestÑtigung (CFM) "
+ST_MSG               "msg"
+ST_MSGS              "msgs"
+ST_PERSONAL          "persînlich"
+WT_GRP               "Grp"
+IL_FOUNDPERSONAL     " %u persînliche Mail%s in %u Area%s gefunden "
+IL_NOPERSONAL        " Keine persînliche Mails gefunden "
+ST_ESCORCONTINUE     "ESC bricht ab. Jede andere: Versuche fortzusetzen."
+MS_SPELLCHECKER      "RechtschreibungsprÅfer: %s"
+WT_INS               " Einf "
+MI_FILELISTFROM      "Dateiliste von %s"
+ST_UNREGWAIT         "Unregistriert - Bitte Taste drÅcken oder %ld Sekunden warten"
+ST_INITIALIZING      "Initialisiere.."
+ST_CHECKING          "PrÅfe.."
+ST_LOCKSHARECAP      "%s Lock/Share-UnterstÅtzung"
+WT_ATTRTURNOFF       " Alt-F1 schlie·t dieses Fenster "
+WT_TAGLINES          " Taglines "
+ST_CHANGETAGLINE     "Standard-Tagline Ñndern"
+IL_NOTAGLINE         " Keine Taglines definiert. Taste drÅcken "
+WT_CHARSETS          " ZeichensÑtze "
+ST_CHANGEXLATIMP     "Standard-Charset fÅr Import Ñndern"
+IL_NOXLATIMPORT      " Keine XLATIMPORT's definiert. Taste drÅcken "
+WT_N_A               "nv."
+WT_WRITTEN           "Verfasst"
+WT_ARRIVED           "Angekommen"
+WT_RECEIVED          "Gelesen"
+IL_NONODELIST        " Kann Nodeliste oder Index nicht îffnen "
+IL_NODELISTMISSING   "Nodeliste fehlt:"
+IL_NODELISTOUTDATED  "Nodeliste veraltet:"
+MS_REPLYLINKER       "Replylinker: %s"
+WT_ENTERMSGNO        " Msg.-Nr eingeben: "
+IL_WAITUUDECODING    " Moment... UUdecodiere Nachricht "
+IL_COMPLETEDUUDECODE " UUdecode von %s beendet "
+IL_NOTUUENCODED      " Nichts zum UUdecodieren gefunden "
+IL_ERRORINSOUP       " Fehler in SOUP-Datei %s "
+IL_WARNALREADYSENT   " ACHTUNG: Nachricht ist bereits versendet! "
+IL_WAITLOCKED        " Moment: %s ist geschÅtzt "
+ST_RETRYORESC        "%s Wiederholung (%lu). Um GoldED zu beenden, drÅcke ESC."
+ST_RETRYLOCK         "GeschÅtzt"
+ST_RETRYOPEN         "VerfÅgbar"
+WT_TOUCHSEMAPHORE    " Name der Semaphore eingeben "
+MI_WRITETOHDRNO      "H Header:   Nein "
+MI_WRITETOHDRYES     "K Header:     Ja "
+MI_CLIPBOARD         "C Clipboard      "
+WT_SELECTMARKS       " Markierungsgruppe wÑhlen "
+WT_SELECTMARKSEDIT   " Editiere Gruppenbeschreibung "
+IL_DROPMARKSINFO     "%s Nachrichten sind markiert "
+WT_DROPMARKS         " Lîsche Markierungen in.. "
+MI_DROPALL           "A Allen Areas                "
+MI_DROPMARKED        "M Markierten Areas           "
+MI_DROPCURRENT       "D Dieser Area hier           "
+MI_NODROP            "N Nichts               / ESC "
+WT_CATCHAREAS        " Areas einholen "
+MI_CATCHALL          "A Alle              "
+MI_CATCHMARKED       "M Markierte         "
+MI_CATCHCURRENT      "D Diese hier        "
+MI_NOCATCH           "N Nichts      / ESC "
+
+----------------------------------------------------------------------
+

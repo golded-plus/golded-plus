@@ -1,0 +1,116 @@
+Hello world!
+
+This is a Beta release of GoldED for Linux.
+
+Please see the notework.txt file for release notes.
+
+There are some things you must know before trying out the Linux
+version, especially if you are used to the DOS, OS/2 or Win32
+versions:
+
+* You should be familiar with GoldED for the other operating systems
+  and know your way around at least a basic golded.cfg.
+
+* Linux is an OS with CASE-SENSITIVE file systems. GoldED now uses
+  lowercase filenames internally, because this is costumary for Unix.
+  When accessing msgbases on case-insensitive file systems such as FAT
+  or HPFS under Linux, filenames might not be lowercase on the disk.
+  If this is the case, you must rename them so that they are (and hope
+  they stay lowercase).
+
+  This will probably be the part that will give you the most grief if
+  you try to run a system with a mixture of Linux, DOS, OS/2, and/or
+  Win32 software.
+
+  IF IT DOESN'T WORK OR COREDUMPS, TRY CHECKING IF ALL FILES ARE
+  LOWERCASE, BOTH ON THE FILESYSTEM AND IN THE CONFIGURATION FILES.
+
+* The directory separator (slash) char is '/', not '\'. However,
+  GoldED automatically translates the "wrong" slash char to the
+  "right" slash char in most cases, so you probably won't notice it.
+
+* Unix has no drive letters (C: etc), so you have to map DOS-style
+  paths to Unix-style paths using the MAPPATH keyword to make
+  AREAFILE's work.
+
+* If you want to use the same golded.cfg file for all platforms, you
+  can use the conditional statement "IF LINUX" or "IF UNIX" around
+  Linux specific parts of it, typically paths or filenames.
+
+* I recommend to start with a tiny golded.cfg (see below) with only
+  the basic setup and a few areas that you have a backup of. The
+  msgbase support of GoldED for Linux should work exactly as
+  3.00.Beta3, which is NOT known to trash msgbases, but it's compiled
+  and built with a compiler and tools that I'm not very familiar with,
+  and there may be compiler quirks and flaws introduced in the porting
+  which may have affected otherwise working code.
+
+* Currently only the *.MSG, JAM, Squish and Hudson formats have been
+  tested, but it should work with the other formats too.
+
+* There is not yet any support for Unix-style mailboxes or news
+  spools. If you want to access those, you need to use a utility that
+  can create/unpack SOUP packets. GoldED can import/export those to
+  the msgbases that are supported (JAM or Squish is recommended for
+  this).
+
+* File attach may not work so well.
+
+* Sound support doesn't work. That's because Linux doesn't offer an
+  API to access the PC speaker. The .WAV file support is not yet
+  implemented.
+
+* Characters with ASCII values 0-31 are currently remapped to 'x' or a
+  visually similar character before being written to the screen.
+  
+* The default XLATLOCALSET is LATIN-1 for the Linux version, as
+  opposed to IBMPC for the other OS'es. You should setup character
+  translation between IBMPC and LATIN-1 and use the correct XLATEXPORT
+  for each echo. See the GoldED manual for details. Most FidoNet
+  echoes assume IBMPC or another IBMPC-based sets as default if there
+  is no CHRS or CHARSET kludge. For areas where IBMPC is assumed, you
+  should set both XLATIMPORT and XLATEXPORT to IBMPC or CP850.
+
+* Screen color changes and cursor movements are made with ANSI
+  sequences similar to the way ncurses and slang does it. GoldED does
+  not use ncurses or slang, but has it's own windowing library which
+  works in a similar manner. GoldED for Linux will also work in X
+  terminals, but this is not recommended because of keyboard
+  limitations. Telnet sessions should work, if they support the ANSI
+  sequences and produce usable keycodes.
+
+* Standard distributions of Linux do not define all the keys that are 
+  usually available on DOS, OS/2 and Win32. Specifically, cursor
+  movement (arrows, page, home/end) keys don't have separate keycodes
+  when combined with the shift, control or alt keys. It is possible
+  (in the keytable maps in /usr/lib/kbd/keytables) to define
+  non-standard keycodes to make Ctrl-PageUp, Alt-Left etc. work, but I
+  haven't had time to do this yet.
+
+* There may be odd quirks in the keyboard handling. Please report if
+  you find any.
+
+* The printing feature prints via a pipe to "/usr/dev/lpr".
+
+=== Cut, a basic golded.cfg ===
+
+// example minimal configuration
+username Odinn Sorensen
+address 2:236/77
+areadef netmail "Netmail" 0 net opus /usr/ftn/msg/netmailx . (pvt loc k/s)
+areadef net.fidoz2 "FidoNet Z2" 0 net squish /usr/ftn/squish/fidoz2 . (pvt loc)
+areadef zzz.jtest1 "JAM test" 0 echo jam /usr/ftn/jam/test/jtest1 . (loc)
+
+// typical character translation
+xlatpath /fileserv/com/golded/xlat/
+xlatimport ibmpc
+xlatcharset  ibmpc   latin-1 ibm_iso.chs
+xlatcharset  latin-1 ibmpc   iso_ibm.chs
+xlatcharset  latin-1 latin-1 iso_iso.chs
+xlatcharset  ibmpc   ibmpc   ibm_ibm.chs
+
+=== Cut ===
+
+Greetings,
+  Odinn Sorensen
+

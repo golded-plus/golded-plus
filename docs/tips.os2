@@ -1,0 +1,113 @@
+------------------------------------------------------------------------------
+--   Recommendations for using Golded+ and other VIO-Applications   ----------
+------------------------------------------------------------------------------
+[Falls Du an einer deutschen Version interessiert bist, melde dich und ich
+ werde es "=FCbersetzen".. ;)]
+
+The aim of this textfile is to give a suggestion on running Golded (and other
+VIO-apps) in a very useful and aesthetic way. Give it a try and after getting
+used to it you will love it that way.
+I am using the great OS/2 Warp 4 on my system and so this text is mainly
+directed to OS/2 users, but the main message should also be useful for all
+other operating systems.
+To get the mentioned programs just take a look at the end of this text.
+
+------------------------------------
+ the right size
+------------------------------------
+
+This is my batch in which Golded+ is started on my system (by using
+an hotkey assigned through PC/2 - it is really great btw to switch to tasks
+that you use often by just typing ctrl-alt-g or something similar):
+
+------------------------
+-+--[golded2.cmd]-------
+------------------------
+@echo off
+rem ** change window size to 100 columns, 50 rows.
+mode CON1 CO100,50
+
+rem ** maximize window and make the borders thinner (3 pixel).
+console -or+ -b3,3
+rem ** center the window on the desktop. simply calls 'winto.cmd hcenter top',
+rem ** where winto.cmd is a batch file which comes along with console (see
+rem ** above).
+call center
+
+cd\utils\golded
+gedemx.exe
+------------------------
+-+--[/golded2.cmd]------
+------------------------
+
+I use the 14x8-font for my VIO-windows with a graphic resolution of 1024x768.
+To set the font of textwindows in OS/2 select the system menu of a window,
+chose 'font size', change it to your needs and then 'save' it. All windows
+will now use the new size.
+
+In winto.cmd (from console) which is called by center.cmd I made the following
+settings:
+------------------------
+-+--[winto.cmd]---------
+------------------------
+[...]
+ /* modify this depending on your settings */
+ ScreenW =3D 1024 /*800*/;
+ ScreenH =3D 742  /*600*/;  /*'742' because of WarpCenter*/
+[...]
+------------------------
+-+--[/winto.cmd]--------
+------------------------
+
+With this you get a VIO-window which gives me as many informations as it could
+(100*50=3D5000 characters, 80*25=3D2000 chars) and looks as great as it could.
+
+All mentioned files can be frequested via FTN on my system at 2:2432/337
+(V34+, X75).
+
+ CONSO010.ZIP    147K 24.10.97 Console Version 0.1.0 by Andrew Pavel
+                               Zabolotny, Copyright (C) 1997 by FRIENDS
+                               software. This utility addresses a problem
+                               IBM is ignoring since first release of OS/2.
+                               The problem is, you can define the default
+                               size and position for *ALL* console win
+ Should be also on http://hobbes.nmsu.edu/pub/os2/
+
+ PC2V219C.ZIP    863K 15.11.99   PROGRAM COMMANDER/2 V2.20 for OS/2
+                               Copyright (C) by Roman Stangl November, 1999
+
+                               PC/2 is a WPS enhancement or replacement,
+                               that features a program
+                               launcher, Virtual Desktops, Hotkey support,
+                               Sliding focus, Advanced
+                               Marking, Dynamic Menu Selection, Environment
+                               Spaces, WIN95 key support,
+                               QuickSwitch and SessionBar window, Hardware
+                               Panning support, TitleBar
+                               Smarticons, Lockup and Password protection
+                               support, Scheduler, WPS
+                               extraction and a Spooler Control Window
+                               (which enables spooling even
+                               when running PC/2 as a WPS replacement).
+
+                               Running PC/2 as the WPS replacement can save
+                               about 4 MB precious RAM,
+                               even on well equipped machines you can
+                               notice decreased swapper size
+                               and activity giving you a performance boost
+                               compared to running the
+                               WPS (due to the much smaller memory
+                               requirements compared with the WPS).
+
+                               For those of you who want to know the
+                               "tricks" used in PC/2, the full
+                               source (requires long filename support) is
+                               included, however it can be
+ The authors page: http://www.geocities.com/SiliconValley/Pines/7885/PC2/
+
+
+------------------------------------
+written by daniel hahler, 20.01.2000
+ FidoNet: 2:2432/337
+ email: tq@thequod.krysius.com
+ url: http://thequod.de (german)
