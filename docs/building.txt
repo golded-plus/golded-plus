@@ -14,6 +14,10 @@ To compile GoldED+ and utilities you'll need:
 --- MINGW ONLY ---
 Please consult this howto on installing MinGW over Cygwin:
 http://www.xraylith.wisc.edu/~khan/software/gnu-win32/mno-cygwin-howto.txt
+--- gcc-2.95.3-5.tar.bz2 + mingw-runtime-1.3-2.tar.bz2 ---
+Move /usr/include/mingw to /usr/local/include/mingw, take gcc-2.95.3-xxx.tar.gz
+from www.mingw.org, copy .../lib/stdlibc++.a to /usr/local/lib/mingw, copy
+.../include/g++-3 to /usr/local/include/mingw/g++-3.
 ------ COMMON ------
 
 First, edit GNUmakef.def for the preferrable compilation options.

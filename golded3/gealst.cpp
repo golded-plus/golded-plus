@@ -166,7 +166,7 @@ extern "C" int AreaListCmp(const Area** __a, const Area** __b) {
           if(A->ismarked())
             return sepfirst?1:-1;
         }
-        else if((cmp = compare_two(A->ismarked(), B->ismarked())) != 0)
+        else if((cmp = compare_two(B->ismarked(), A->ismarked())) != 0)
           return cmp;
         break;
       case 'P':

@@ -579,8 +579,16 @@ int ExternUtil(GMsg *msg, ExtUtil *extutil) {
     int hardlines = EDIT->HardLines();
     EDIT->HardLines(false);
     LoadText(msg, editorfile);
-
     EDIT->HardLines(hardlines);
+
+    // Prepend "@CHRS: XLATLOCALSET 2\n" to force proper encoding
+    if(not AA->Viewkludge()) {
+      char *msg_txt_chrs = (char *)throw_malloc(strlen(msg->txt)+strlen(CFG->xlatlocalset)+sizeof("\001CHRS:  2\r")+16);
+      sprintf(msg_txt_chrs, "\001CHRS: %s 2\r%s", CFG->xlatlocalset, msg->txt);
+      throw_free(msg->txt);
+      msg->txt = msg_txt_chrs;
+    }
+
     // Ignore any kludge address found
     msg->TextToLines(CFG->dispmargin-(int)CFG->switches.get(disppagebar), false);
   }

@@ -1525,10 +1525,10 @@ void ScanKludges(GMsg* msg, int getvalue) {
           }
 
         // Check if it's a tearline
-	else if(not (gottear or gottag) and strneql("---", ptr, 3) and (ptr[3] == ' ' or ptr[3] == NUL)) {
+        else if(not (gottear or gottag) and strneql("---", ptr, 3) and (ptr[3] == ' ' or ptr[3] == NUL)) {
 
-	  Line* nnel = next_non_empty(line->next);
-	  if(not lineno or ((lineno-1) == originlineno) or not nnel or nnel->type & GLINE_KLUDGE) {
+          Line* nnel = next_non_empty(line->next);
+          if(not lineno or ((lineno-1) == originlineno) or not nnel or nnel->type & GLINE_KLUDGE) {
             // Found Tearline
             gottear = YES;
             tearlineno = lineno;
@@ -1536,7 +1536,7 @@ void ScanKludges(GMsg* msg, int getvalue) {
             line->color = C_READT;
             strbtrim(strcpy(msg->tearline, ptr+3));
 
-	    if(getvalue and CFG->gedhandshake) {
+            if(getvalue and CFG->gedhandshake) {
               char* tearid[] = {
                 "GoldED",
                 " GED ",
@@ -1562,18 +1562,18 @@ void ScanKludges(GMsg* msg, int getvalue) {
               }
             }
           }
-	}
+        }
 
         // Check if it's an originline
         else if(not (gotorig or gottear or gottag) and strneql(" * Origin: ", ptr, 11)) {
 
           // Found Origin line
           bool cnd = line->next != NULL;
-	  Line* nnel = next_non_empty(line->next);
-	  bool nextkl = cnd ? not nnel or nnel->type & GLINE_KLUDGE : false;
-	  nnel = cnd ? next_non_empty(line->next->next) : NULL;
-	  bool nextor = cnd ? (not nnel or nnel->type & GLINE_KLUDGE) and (line->next->txt.find(/*(*/')') != line->next->txt.npos) : false;
-	  if(not line->next or nextkl or nextor) {
+          Line* nnel = next_non_empty(line->next);
+          bool nextkl = cnd ? not nnel or nnel->type & GLINE_KLUDGE : false;
+          nnel = cnd ? next_non_empty(line->next->next) : NULL;
+          bool nextor = cnd ? (not nnel or nnel->type & GLINE_KLUDGE) and (line->next->txt.find(/*(*/')') != line->next->txt.npos) : false;
+          if(not line->next or nextkl or nextor) {
            
             gotorig = YES;
             originlineno = lineno;
@@ -1857,13 +1857,18 @@ static bool check_multipart(const char* ptr, char* boundary) {
 
 inline bool put_on_new_line(const char *ptr, const char *prev_ptr) {
 
-  if(((ptr[0] == ptr[1]) and (ptr[0] == ptr[2])) or
-     strneql(ptr, " * Origin: ", 11) or
-     strneql(ptr, "SEEN-BY:", 8) or
-     strneql(ptr, "Reply-To:", 9) or
-     strneql(ptr, "To:", 3) or
-     strneql(ptr, "From:", 5) or
-     (ptr[0] == prev_ptr[0]) and (ptr[1] == prev_ptr[1]))
+  if((*ptr == CR) or
+     (*ptr == CTRL_A) or
+     is_quote(ptr) or
+     ((ptr[0] == ptr[1]) and (ptr[0] == ptr[2])) or
+     (strneql(ptr, "-- ", 3) and (ptr[3] == CR)) or
+     strneql(ptr, " * Origin: ", 11) /*or
+     (ptr[0] == prev_ptr[0]) and (ptr[1] == prev_ptr[1])*/)
+    return true;
+  // Put RFC kludges and SEEN-BY on new line
+  while(*ptr and (isxalnum(*ptr) or (*ptr == '-')))
+    ptr++;
+  if(*ptr == ':')
     return true;
   return false;
 }
@@ -1880,7 +1885,6 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode) {
   char ch, chln = 0, dochar;
   Line* line;
   Line* nextline=NULL;
-  Line* prevline=NULL;
   char* bp;
   char* btmp=NULL;
   char* tptr;
@@ -2030,6 +2034,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode) {
         
           para = 0;
           if(*ptr == CTRL_A or inheader) {  // Found kludge/hidden line
+            para = GLINE_KLUD;
             line->type |= GLINE_HARD;
             if(getvalue and not CFG->ignorecharset) {
               tptr = ptr;
@@ -2204,11 +2209,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode) {
               if(wraps and not ((line->type & GLINE_HARD) and not (line->type & GLINE_QUOT))) {
                 if(para != GLINE_QUOT) {
                   if(quoteflag) {
-                    if(prevline and (*prevline->txt.c_str() == CTRL_A) and (prevline->type & GLINE_WRAP)) {
-                      wraps = 0;
-                      break;
-                    }
-                    if((*ptr == CR) or is_quote(ptr) or (*ptr == CTRL_A)) {
+                    if(para == GLINE_KLUD) {
                       wraps = 0;
                       break;
                     }
@@ -2502,7 +2503,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode) {
         else
           line->color = C_READW;
 
-        prevline = line;
+        Line* prevline = line;
         line = new Line();
         throw_xnew(line);
         line->prev = prevline;

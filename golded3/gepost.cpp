@@ -882,7 +882,7 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
             strcpy(msg->to, omsg->By());
             strcpy(msg->realto, omsg->realby);
             msg->dest = omsg->orig;
-            strcpy(msg->idest, *omsg->ireplyto ? omsg->ireplyto : omsg->iorig);
+            strcpy(msg->idest, *omsg->ireplyto ? omsg->ireplyto : *omsg->iorig ? omsg->iorig : omsg->iaddr);
           }
           if(not *msg->iaddr)
             strcpy(msg->iaddr, msg->idest);

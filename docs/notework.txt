@@ -12,6 +12,17 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed reverse order sorting in 'M' criteria of AREALISTSORT (broken
+  in previous snapshots).
+
+- Fixed bug with quoting if text goes right after long kludge.
+
+- Fixed invalid message encoding after calling externutil. There's
+  still a bug left if you call externutil when kludges are shown and
+  -Reload option is specifyed to externutil.
+
+- Fixed replying on gated message to internet area.
+
 - Fixed crash on long names in TwitName.
 
 - Fixed net/echomail.bss updating in Hudson/GoldBase.

@@ -58,6 +58,7 @@ void SaveLines(int mode, const char* savefile, GMsg* msg, int margin, bool clip)
   }
   int lines=0;
   if(prnfp) {
+    char *old_msg_txt = throw_strdup(msg->txt);
 #ifdef OLD_STYLE_HEADER
     if(mode == MODE_WRITE) {
       if(prnheader) {
@@ -134,6 +135,8 @@ void SaveLines(int mode, const char* savefile, GMsg* msg, int margin, bool clip)
       fclose(prnfp);
       prnfp = NULL;
     }
+    throw_release(msg->txt);
+    msg->txt = old_msg_txt;
   }
   else {
     char buf[256];
