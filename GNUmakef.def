@@ -67,10 +67,7 @@ PLATFORM=be
 EXEEXT=
 OBJEXT=.o
 LIBEXT=.a
-LNKFLAGS+=-lbe
-#uncomment the following line if you build version to be used
-#on BONE-powered systems(Dan0 etc.) This improves some operations ...
-CPPFLAGS+=-DBEOS_BONE_BUILD
+LNKFLAGS+=-lbe -ltextencoding
 else
 CAT=cat
 CC=gcc
@@ -105,6 +102,8 @@ ifeq ($(PLATFORM),lnx)
 CPPFLAGS+=#-DKOI8
 endif
 
+#uncomment the following line if you build version to be used
+#on BONE-powered systems(Dan0 etc.) This improves some operations ...
 ifeq ($(PLATFORM),be)
 CPPFLAGS+=#-DBEOS_BONE_BUILD
 endif
