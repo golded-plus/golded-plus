@@ -82,6 +82,7 @@
 #define BH_ENCODED	(4)	/* Binhex encoded   */
 #define PT_ENCODED	(5)	/* Plain-Text encoded (MIME) */
 #define QP_ENCODED	(6)	/* Quoted-Printable (MIME)   */
+#define YENC_ENCODED	(7)	/* yEnc encoded */
 
 /*
  * Option indices for GetOption / SetOption
@@ -225,7 +226,8 @@ int	UUEXPORT UUEncodeMulti		_ANSI_ARGS_((FILE *, FILE *,
 int	UUEXPORT UUEncodePartial	_ANSI_ARGS_((FILE *, FILE *,
 						     char *, int,
 						     char *, char *,
-						     int, int, long));
+						     int, int, long,
+						     unsigned long*));
 int	UUEXPORT UUEncodeToStream	_ANSI_ARGS_((FILE *, FILE *,
 						     char *, int,
 						     char *, int));

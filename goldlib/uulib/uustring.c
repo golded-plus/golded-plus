@@ -86,6 +86,10 @@ static stringmap messages[] = {
   { S_DECODE_CANCEL,    "Decode operation canceled" },
   { S_ENCODE_CANCEL,    "Encode operation canceled" },
   { S_SCAN_CANCEL,      "Scanning canceled" },
+  { S_SIZE_MISMATCH,    "%s: Decoded size (%ld) does not match expected size (%ld)" },
+  { S_PSIZE_MISMATCH,   "%s part %d: Decoded size (%ld) does not match expected size (%ld)" },
+  { S_CRC_MISMATCH,     "CRC32 mismatch in %s. Decoded file probably corrupt." },
+  { S_PCRC_MISMATCH,    "PCRC32 mismatch in %s part %d. Decoded file probably corrupt." },
 
   /* informational messages */
   { S_LOADED_PART,      "Loaded from %s: '%s' (%s): %s part %d %s %s %s" },
@@ -128,8 +132,8 @@ char *uuretcodes[] = {
  * Names of encoding types
  */
 
-char *codenames[7] = {
-  "", "UUdata", "Base64", "XXdata", "Binhex", "Text", "Text"
+char *codenames[8] = {
+  "", "UUdata", "Base64", "XXdata", "Binhex", "Text", "Text", "yEnc"
 };
 
 /*

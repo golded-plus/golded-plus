@@ -1,4 +1,4 @@
-/* extracted from Id: uustring.c,v 1.6 2001/06/06 18:21:47 fp Exp  */
+/* extracted from Id: uustring.c,v 1.8 2002/03/11 09:15:47 fp Exp  */
 #define S_NOT_OPEN_SOURCE      1
 #define S_NOT_OPEN_TARGET      2
 #define S_NOT_OPEN_FILE        3
@@ -19,16 +19,20 @@
 #define S_DECODE_CANCEL       18
 #define S_ENCODE_CANCEL       19
 #define S_SCAN_CANCEL         20
-#define S_LOADED_PART         21
-#define S_NO_DATA_FOUND       22
-#define S_NO_BIN_FILE         23
-#define S_STRIPPED_SETUID     24
-#define S_DATA_SUSPICIOUS     25
-#define S_NO_TEMP_NAME        26
-#define S_BINHEX_SIZES        27
-#define S_BINHEX_BOTH         28
-#define S_SMERGE_MERGED       29
-#define S_MIME_NO_BOUNDARY    30
-#define S_MIME_B_NOT_FOUND    31
-#define S_MIME_MULTI_DEPTH    32
-#define S_MIME_PART_MULTI     33
+#define S_SIZE_MISMATCH       21
+#define S_PSIZE_MISMATCH      22
+#define S_CRC_MISMATCH        23
+#define S_PCRC_MISMATCH       24
+#define S_LOADED_PART         25
+#define S_NO_DATA_FOUND       26
+#define S_NO_BIN_FILE         27
+#define S_STRIPPED_SETUID     28
+#define S_DATA_SUSPICIOUS     29
+#define S_NO_TEMP_NAME        30
+#define S_BINHEX_SIZES        31
+#define S_BINHEX_BOTH         32
+#define S_SMERGE_MERGED       33
+#define S_MIME_NO_BOUNDARY    34
+#define S_MIME_B_NOT_FOUND    35
+#define S_MIME_MULTI_DEPTH    36
+#define S_MIME_PART_MULTI     37

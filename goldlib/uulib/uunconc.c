@@ -49,6 +49,7 @@
 #include <errno.h>
 #endif
 
+#include <crc32.h>
 #include <uudeview.h>
 #include <uuint.h>
 #include <fptools.h>
@@ -119,6 +120,7 @@ static int uulboundary;
  */
 
 #define ACAST(s)	((int)(unsigned char)(s))
+#define isnotvalid(c)   (ACAST(c) >= 0x80)
 
 /*
  * Initialize decoding tables
@@ -297,10 +299,10 @@ UUValidData (char *ptr, int encoding, int *bhflag)
   int i=0, j, len=0, suspicious=0, flag=0;
   char *s = ptr;
 
-  if ((s == NULL) || !(iscntrl(ACAST(*s)) || isascii(ACAST(*s)))) {
-    return(0);              /* bad string */
+  if ((s == NULL) || (*s == '\0')) {
+    return 0;              /* bad string */
   }
-  
+
   while (*s && *s!='\012' && *s!='\015') {
     s++;
     len++;
@@ -319,6 +321,8 @@ UUValidData (char *ptr, int encoding, int *bhflag)
     goto _t_B64;
   case BH_ENCODED:
     goto _t_Binhex;
+  case YENC_ENCODED:
+    return YENC_ENCODED;
   }
 
  _t_Binhex:                 /* Binhex Test */
@@ -381,8 +385,7 @@ UUValidData (char *ptr, int encoding, int *bhflag)
    */
 
   while (len--) {
-    if (!(iscntrl(ACAST(*s)) || isascii(ACAST(*s))) ||
-	(B64xlat[ACAST(*s)] == -1 && *s != '=')) {
+    if (/* *s < 0 */ isnotvalid(*s) || (B64xlat[ACAST(*s)] == -1 && *s != '=')) {
       /* allow space characters at the end of the line if we are sure */
       /* that this is Base64 encoded data or the line was long enough */
       if (((i>=60 && len<=10) || encoding) && *s++==' ') {
@@ -474,8 +477,7 @@ UUValidData (char *ptr, int encoding, int *bhflag)
   }
 
   while (len--) {
-    if (!(iscntrl(ACAST(*s)) || isascii(ACAST(*s))) ||
-	UUxlat[ACAST(*s++)] < 0) {
+    if (/* *s < 0 */ isnotvalid(*s) || UUxlat[ACAST(*s++)] < 0) {
       if (encoding==UU_ENCODED) return 0;
       goto _t_XX;           /* bad code character */
     }
@@ -515,8 +517,7 @@ UUValidData (char *ptr, int encoding, int *bhflag)
     return 0;               /* bad length */
 
   while(len--) {
-    if (!(iscntrl(ACAST(*s)) || isascii(ACAST(*s))) ||
-	XXxlat[ACAST(*s++)] < 0) {
+    if(/* *s < 0 */ isnotvalid(*s) || XXxlat[ACAST(*s++)] < 0) {
       return 0;             /* bad code character */
     }
   }
@@ -709,6 +710,22 @@ UUDecodeLine (char *s, char *d, int method)
     while (BHxlat[ACAST(*s)] != -1)
       uuncdl_fulline[leftover++] = *s++;
   }
+  else if (method == YENC_ENCODED) {
+    while (*s) {
+      if (*s == '=') {
+	if (*++s != '\0') {
+	  d[count++] = (char) ((int) *s - 64 - 42);
+	  s++;
+	}
+      }
+      else if (*s == '\n' || *s == '\r') {
+	s++; /* ignore */
+      }
+      else {
+	d[count++] = (char) ((int) *s++ - 42);
+      }
+    }
+  }
 
   return count;
 }
@@ -886,10 +903,16 @@ UUDecodePart (FILE *datain, FILE *dataout, int *state,
   char *line=uugen_fnbuffer, *oline=uuncdp_oline;
   int warning=0, vlc=0, lc[2], hadct=0;
   int tc=0, tf=0, vflag, haddata=0, haddh=0;
+  long yefilesize=0, yepartends=0;
+  crc32_t yepartcrc=crc32(0L, Z_NULL, 0);
+  static crc32_t yefilecrc=0;
   static int bhflag=0;
   size_t count=0;
+  size_t yepartsize=0;
+  char *ptr;
 
   if (datain == NULL || dataout == NULL) {
+    yefilecrc = crc32(0L, Z_NULL, 0);
     bhflag = 0;
     return UURET_OK;
   }
@@ -910,27 +933,35 @@ UUDecodePart (FILE *datain, FILE *dataout, int *state,
 
   uulboundary = -1;
 
+  if (method == YENC_ENCODED) {
+    *state = BEGIN;
+  }
+
   while (!feof (datain) && *state != DONE && 
 	 (ftell(datain)<maxpos || flags&FL_TOEND || maxpos==-1 ||
 	  (!(flags&FL_PROPER) && uu_fast_scanning))) {
-    if (_FP_fgets (line, 255, datain) == NULL)
+    if (_FP_fgets (line, 299, datain) == NULL)
       break;
+
     if (ferror (datain)) {
       UUMessage (uunconc_id, __LINE__, UUMSG_ERROR,
 		 uustring (S_SOURCE_READ_ERR),
 		 strerror (uu_errno = errno));
       return UURET_IOERR;
     }
+
     if (line[0]=='\015' || line[0]=='\012') { /* Empty line? */
       if (*state == DATA &&
 	  (method == UU_ENCODED || method == XX_ENCODED))
 	*state = END;
+
       /*
        * if we had a whole block of valid lines before, we reset our
        * 'valid data' flag, tf. Without this 'if', we'd break decoding
        * files with interleaved blank lines. The value of 5 is chosen
        * quite arbitrarly.
        */
+
       if (vlc > 5)
 	tf = tc = 0;
       vlc = 0;
@@ -951,7 +982,7 @@ UUDecodePart (FILE *datain, FILE *dataout, int *state,
      * try to make sense of data
      */
 
-    line[255] = '\0'; /* For Safety of string functions */
+    line[299] = '\0'; /* For Safety of string functions */
     count     =  0;
 
     if (boundary && line[0]=='-' && line[1]=='-' &&
@@ -990,9 +1021,9 @@ UUDecodePart (FILE *datain, FILE *dataout, int *state,
     }
 
     if (*state == BEGIN) {
-      if (strncmp      (line, "begin ",       6) == 0 ||
-	  strncmp      (line, "section ",     8) == 0 ||
-	  _FP_strnicmp (line, "<pre>begin ", 11) == 0) {    /* for LYNX */
+      if ((method == UU_ENCODED || method == XX_ENCODED) &&
+	  (strncmp      (line, "begin ",       6) == 0 ||
+	   _FP_strnicmp (line, "<pre>begin ", 11) == 0)) { /* for LYNX */
 	*state = DATA;
 	continue;
       }
@@ -1004,8 +1035,36 @@ UUDecodePart (FILE *datain, FILE *dataout, int *state,
 	else
 	  continue;
       }
-      else
+      else if (method == YENC_ENCODED &&
+	       strncmp (line, "=ybegin ", 8) == 0 &&
+	       _FP_strstr (line, " name=") != NULL) {
+	*state = DATA;
+
+	if ((ptr = _FP_strstr (line, " size=")) != NULL) {
+	  ptr += 6;
+	  yefilesize = atoi (ptr);
+	}
+	else {
+	  yefilesize = -1;
+	}
+
+	if (_FP_strstr (line, " part=") != NULL) {
+	  if (_FP_fgets (line, 299, datain) == NULL) {
+	    break;
+	  }
+
+	  if ((ptr = _FP_strstr (line, " end=")) == NULL) {
+	    break;
+	  }
+       
+	  yepartends = atoi (ptr + 5);
+	}
+	tf = 1;
 	continue;
+      }
+      else {
+	continue;
+      }
       
       tc = tf = vlc = 0;
       lc[0] = lc[1] = 0;
@@ -1017,6 +1076,44 @@ UUDecodePart (FILE *datain, FILE *dataout, int *state,
 	break;
       }
     }
+
+    if (*state == DATA && method == YENC_ENCODED &&
+	strncmp (line, "=yend ", 6) == 0) {
+      if ((ptr = _FP_strstr (line, " pcrc32=")) != NULL) {
+	crc32_t pcrc32 = strtoul (ptr + 8, NULL, 16);
+	if (pcrc32 != yepartcrc) {
+	  UUMessage (uunconc_id, __LINE__, UUMSG_WARNING,
+		     uustring (S_PCRC_MISMATCH), progress.curfile, progress.partno);
+	}
+      }
+      if ((ptr = _FP_strstr (line, " crc32=")) != NULL)
+      {
+	crc32_t fcrc32 = strtoul (ptr + 7, NULL, 16);
+	if (fcrc32 != yefilecrc) {
+	  UUMessage (uunconc_id, __LINE__, UUMSG_WARNING,
+		     uustring (S_CRC_MISMATCH), progress.curfile);
+	}
+      }
+      if ((ptr = _FP_strstr (line, " size=")) != NULL)
+      {
+	size_t size = atol(ptr + 6);
+	if (size != yepartsize && yefilesize != -1) {
+	  if (size != yefilesize)
+	    UUMessage (uunconc_id, __LINE__, UUMSG_WARNING,
+		       uustring (S_PSIZE_MISMATCH), progress.curfile,
+		       progress.partno, yepartsize, size);
+	  else
+	    UUMessage (uunconc_id, __LINE__, UUMSG_WARNING,
+		       uustring (S_SIZE_MISMATCH), progress.curfile,
+		       yepartsize, size);
+	}
+      }
+      if (yepartends == 0 || yepartends >= yefilesize) {
+	*state = DONE;
+      }
+      break;
+    }
+
     if (*state == DATA || *state == END) {
       if (method==B64ENCODED && line[0]=='-' && line[1]=='-' && tc) {
 	break;
@@ -1036,9 +1133,14 @@ UUDecodePart (FILE *datain, FILE *dataout, int *state,
       }
 
       if (vflag == method) {
-	if (tf || (method == UU_ENCODED || method == XX_ENCODED)) {
+	if (tf) {
 	  count  = UUDecodeLine (line, oline, method);
-	  tf     = 1;
+	  if (method == YENC_ENCODED) {
+	    if (yepartends)
+	      yepartcrc = crc32(yepartcrc, (unsigned char *) oline, count);
+	    yefilecrc = crc32(yefilecrc, (unsigned char *) oline, count);
+	    yepartsize += count;
+	  }
 	  vlc++; lc[1]++;
 	}
 	else if (tc == 3) {
@@ -1066,6 +1168,7 @@ UUDecodePart (FILE *datain, FILE *dataout, int *state,
 	else {
 	  _FP_strncpy (save[tc++], line, 256);
 	}
+
 	if (method == UU_ENCODED)
 	  *state = (line[0] == 'M') ? DATA : END;
 	else if (method == XX_ENCODED)
@@ -1084,6 +1187,7 @@ UUDecodePart (FILE *datain, FILE *dataout, int *state,
     else if (*state != DONE) {
       return UURET_NOEND;
     }
+
     if (count) {
       if (method == BH_ENCODED) {
 	if (UUbhwrite (oline, 1, count, dataout) != count) {

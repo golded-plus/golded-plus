@@ -326,8 +326,8 @@ static headers *
 ParseHeader (headers *theheaders, char *line)
 {
   char **variable=NULL;
-  char *value, *ptr, *thenew;
-  int delimit, length;
+  char *value = NULL, *ptr, *thenew;
+  int delimit = 0, length;
 
   if (line == NULL)
     return theheaders;
@@ -417,16 +417,12 @@ ParseHeader (headers *theheaders, char *line)
       }
     }
     variable = NULL;
-    value = NULL;
-    delimit = 0;
   }
   else {
     /*
      * nothing interesting
      */
-    variable = NULL;
-    value = NULL;
-    delimit = 0;
+    return theheaders;
   }
 
   /*
@@ -527,6 +523,7 @@ ScanData (FILE *datei, char *fname, int *errcode,
   int encoding=0, dflag=0, ctline=42;
   int dontcare=0, hadnl=0;
   long preheaders=0, oldposition;
+  long yefilesize=0, yepartends=0;
   size_t dcc, bhopc;
 
   *errcode = UURET_OK;
@@ -550,12 +547,12 @@ ScanData (FILE *datei, char *fname, int *errcode,
 
   while (!feof (datei)) {
     oldposition = ftell (datei);
-    if (_FP_fgets (line, 255, datei) == NULL)
+    if (_FP_fgets (line, 299, datei) == NULL)
       break;
     if (ferror (datei))
       break;
 
-    line[255] = '\0'; /* For Safety of string functions */
+    line[299] = '\0'; /* For Safety of string functions */
 
     /*
      * Make Busy Polls
@@ -671,7 +668,9 @@ ScanData (FILE *datei, char *fname, int *errcode,
       continue;
     }
 
-    if ((strncmp (line, "end", 3) == 0) && result->uudet != BH_ENCODED) {
+    if ((strncmp (line, "end", 3) == 0) &&
+	result->uudet != BH_ENCODED &&
+	result->uudet != YENC_ENCODED) {
       if (result->uudet == B64ENCODED && result->begin)
 	result->uudet = XX_ENCODED;
 
@@ -686,20 +685,16 @@ ScanData (FILE *datei, char *fname, int *errcode,
     hadnl = 0;
 
     /*
-     * Detect a UUDeview/UUCODE-Style headers
+     * Detect a UUDeview-Style header
      */
 
-    if (_FP_strnicmp (line, "_=_ Part ", 9) == 0 ||
-	_FP_strnicmp (line, "section ", 8) == 0) {
+    if (_FP_strnicmp (line, "_=_ Part ", 9) == 0 &&
+	result->uudet != YENC_ENCODED) {
       if (result->uudet) {
 	fseek (datei, oldposition, SEEK_SET);
 	break;
       }
       result->partno = atoi (line + 8);
-      if ((ptr = _FP_stristr (line, " of ")) != NULL) {
-        int maxpno = atoi (ptr + 4);
-        if(maxpno != 0) result->maxpno = maxpno;
-      }
       if ((ptr = _FP_stristr (line, "of file ")) != NULL) {
 	ptr += 8;
 	while (isspace (*ptr)) ptr++;
@@ -726,7 +721,8 @@ ScanData (FILE *datei, char *fname, int *errcode,
      * Some reduced MIME handling. Only use if boundary == NULL. Also
      * accept the "X-Orcl-Content-Type" used by some braindead program.
      */
-    if (boundary == NULL && !ismime && !uu_more_mime) {
+    if (boundary == NULL && !ismime && !uu_more_mime &&
+	result->uudet != YENC_ENCODED) {
       if (_FP_strnicmp (line, "Content-Type", 12) == 0 ||
 	  _FP_strnicmp (line, "X-Orcl-Content-Type", 19) == 0) {
 	/*
@@ -851,6 +847,89 @@ ScanData (FILE *datei, char *fname, int *errcode,
 	fseek (datei, oldposition, SEEK_SET);
 	break;
       }
+    }
+
+    /*
+     * Detection for yEnc encoding
+     */
+
+    if (strncmp (line, "=ybegin ", 8) == 0 &&
+	_FP_strstr (line, " name=") != NULL) {
+      if ((result->begin || result->end) && !uu_more_mime) {
+	fseek (datei, oldposition, SEEK_SET);
+	break;
+      }
+
+      /*
+       * name continues to the end of the line
+       */
+      
+      _FP_free (result->filename);
+      ptr = _FP_strstr (line, " name=") + 6;
+      result->filename = _FP_strdup (ptr);
+
+      while (isspace (result->filename[strlen(result->filename)-1]))
+	result->filename[strlen(result->filename)-1] = '\0';
+
+      /*
+       * Determine size
+       */
+
+      if ((ptr = _FP_strstr (line, " size=")) != NULL) {
+	ptr += 6;
+	yefilesize = atoi (ptr);
+      }
+      else {
+	yefilesize = -1;
+      }
+
+      /*
+       * check for multipart file and read =ypart line
+       */
+
+      if ((ptr = _FP_strstr (line, " part=")) != NULL) {
+	result->partno = atoi (ptr + 6);
+
+	if (result->partno == 1) {
+	  result->begin = 1;
+	}
+
+	if (_FP_fgets (line, 255, datei) == NULL) {
+	  break;
+	}
+
+	line[255] = '\0';
+
+	if (strncmp (line, "=ypart ", 7) != 0) {
+	  break;
+	}
+
+	if ((ptr = _FP_strstr (line, " end=")) == NULL) {
+	  break;
+	}
+       
+	yepartends = atoi (ptr + 5);
+      }
+      else {
+	result->partno = 1;
+	result->begin = 1;
+      }
+
+      /*
+       * Don't want auto-detection
+       */
+
+      result->uudet = YENC_ENCODED;
+      continue;
+    }
+
+    if (strncmp (line, "=yend ", 6) == 0 &&
+	result->uudet == YENC_ENCODED) {
+      if (yepartends == 0 || yepartends >= yefilesize) {
+	result->end = 1;
+      }
+      if (!uu_more_mime)
+	break;
     }
 
     /*
@@ -1202,7 +1281,8 @@ ScanData (FILE *datei, char *fname, int *errcode,
     result->begin = result->end = 0;
 
   /* Base64 and BinHex don't have a file mode */
-  if (result->uudet == B64ENCODED || result->uudet == BH_ENCODED)
+  if (result->uudet == B64ENCODED || result->uudet == BH_ENCODED ||
+      result->uudet == YENC_ENCODED)
     result->mode  = 6*64+4*8+4;
 
   /*
@@ -1997,6 +2077,7 @@ ScanPart (FILE *datei, char *fname, int *errcode)
 	return NULL;
       }
     }
+
     /*
      * So this subpart is either plain text or something else. Check
      * the Content-Type and Content-Transfer-Encoding. If the latter
@@ -2009,10 +2090,17 @@ ScanPart (FILE *datei, char *fname, int *errcode)
      * This is done because users might `attach' a uuencoded file, which
      * would then be correctly typed as `text/plain'.
      */
+
     if (_FP_stristr (localenv.ctenc, "base64") != NULL)
       result->uudet = B64ENCODED;
-    else if (_FP_stristr (localenv.ctenc, "x-uue") != NULL)
+    else if (_FP_stristr (localenv.ctenc, "x-uue") != NULL) {
       result->uudet = UU_ENCODED;
+      result->begin = result->end = 1;
+    }
+    else if (_FP_stristr (localenv.ctenc, "x-yenc") != NULL) {
+      result->uudet = YENC_ENCODED;
+      result->begin = result->end = 1;
+    }
     else if (_FP_stristr (localenv.ctenc, "quoted-printable") != NULL)
       result->uudet = QP_ENCODED;
     else if (_FP_stristr (localenv.ctenc, "7bit") != NULL ||
@@ -2450,8 +2538,14 @@ ScanPart (FILE *datei, char *fname, int *errcode)
 	result->uudet = QP_ENCODED;
       else if (_FP_stristr (localenv.ctenc, "base64") != NULL)
 	result->uudet = B64ENCODED;
-      else if (_FP_stristr (localenv.ctenc, "x-uue") != NULL)
+      else if (_FP_stristr (localenv.ctenc, "x-uue") != NULL) {
 	result->uudet = UU_ENCODED;
+	result->begin = result->end = 1;
+      }
+      else if (_FP_stristr (localenv.ctenc, "x-yenc") != NULL) {
+	result->uudet = YENC_ENCODED;
+	result->begin = result->end = 1;
+      }
       else if (_FP_stristr (localenv.ctenc, "7bit") != NULL ||
 	       _FP_stristr (localenv.ctenc, "8bit") != NULL)
 	result->uudet = PT_ENCODED;
@@ -2610,13 +2704,13 @@ ScanPart (FILE *datei, char *fname, int *errcode)
 	result->subject = _FP_strdup (sstate.envelope.subject);
     }
     result->partno = sstate.envelope.partno;
-    if (sstate.envelope.partno == 1)
-      result->begin = 1;
     result->maxpno = sstate.envelope.numparts;
     result->flags  = FL_PARTIAL | 
       ((res==1 || uu_fast_scanning) ? FL_PROPER : 0) |
 	((uu_fast_scanning) ? FL_TOEND : 0);
     result->mimeid = _FP_strdup (sstate.envelope.mimeid);
+    if (result->partno == 1)
+      result->begin = 1;
 
     if (uu_fast_scanning)
       result->length = progress.fsize - result->startpos;
@@ -2665,11 +2759,13 @@ ScanPart (FILE *datei, char *fname, int *errcode)
    * that we've had a Content-Disposition field, and we should probably
    * decode a plain-text segment with a filename.
    */
+
   if (sstate.isfolder && sstate.ismime &&
       sstate.mimestate == MS_BODY &&
       (_FP_stristr (sstate.envelope.ctenc, "quoted-printable") != NULL ||
        _FP_stristr (sstate.envelope.ctenc, "base64")           != NULL ||
        _FP_stristr (sstate.envelope.ctenc, "x-uue")            != NULL ||
+       _FP_stristr (sstate.envelope.ctenc, "x-yenc")           != NULL ||
        _FP_stristr (sstate.envelope.ctype, "message")          != NULL ||
        sstate.envelope.fname != NULL)) {
 
@@ -2687,8 +2783,13 @@ ScanPart (FILE *datei, char *fname, int *errcode)
       result->uudet = QP_ENCODED;
     else if (_FP_stristr (sstate.envelope.ctenc, "base64") != NULL)
       result->uudet = B64ENCODED;
-    else if (_FP_stristr (sstate.envelope.ctenc, "x-uue") != NULL)
+    else if (_FP_stristr (sstate.envelope.ctenc, "x-uue") != NULL) {
       result->uudet = UU_ENCODED;
+      result->begin = result->end = 1;
+    }
+    else if (_FP_stristr (sstate.envelope.ctenc, "x-yenc") != NULL) {
+      result->uudet = YENC_ENCODED;
+    }
     else if (_FP_stristr (sstate.envelope.ctenc, "7bit") != NULL ||
 	     _FP_stristr (sstate.envelope.ctenc, "8bit") != NULL)
       result->uudet = PT_ENCODED;
@@ -2916,7 +3017,8 @@ ScanPart (FILE *datei, char *fname, int *errcode)
 	while (*ptr1 && !isspace(*ptr1))
 	  ptr1++;
 	*ptr1 = '\0';
-	
+
+	sstate.envelope.mimevers = _FP_strdup ("1.0");
 	sstate.envelope.boundary = _FP_strdup (line+2);
 	
 	/*
@@ -2954,16 +3056,23 @@ ScanPart (FILE *datei, char *fname, int *errcode)
     UUkillfread   (result);
     return NULL;
   }
+
   /*
    * produce result
    */
+
   if (result->uudet == 0 && uu_handletext) {
     result->startpos = before;	/* display headers */
     result->uudet  = PT_ENCODED;
     result->partno = 1;
   }
 
-  if (sstate.envelope.fname) {
+  if (result->uudet == YENC_ENCODED && result->filename != NULL) {
+    /*
+     * prevent replacing the filename found on the =ybegin line
+     */
+  }
+  else if (sstate.envelope.fname) {
     _FP_free (result->filename);
     if ((result->filename = _FP_strdup (sstate.envelope.fname)) == NULL)
       *errcode = UURET_NOMEM;
@@ -2977,6 +3086,7 @@ ScanPart (FILE *datei, char *fname, int *errcode)
   else {
     /* assign a filename lateron */
   }
+
   if (result->subject == NULL) {
     if (sstate.envelope.subject)
       result->subject = _FP_strdup (sstate.envelope.subject);

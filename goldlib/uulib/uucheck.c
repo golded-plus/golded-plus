@@ -846,7 +846,7 @@ UUPreProcessPart (fileread *data, int *ret)
       }
       lastvalid = 0;
     }
-    else if (lastvalid && data->uudet == lastenc && result->partno <= 0) {
+    else if (lastvalid && data->uudet == lastenc && result->partno == -1) {
       result->subfname = _FP_strdup (uucheck_lastname);
       result->partno   = ++lastpart;
 
@@ -859,7 +859,7 @@ UUPreProcessPart (fileread *data, int *ret)
     else if (data->partno != -1 && result->filename) {
       result->subfname = _FP_strdup (result->filename);
     }
-    else {
+    else { 
       /* 
        * it's got no info, it's got no begin, and we don't know anything
        * about this part. Let's forget all about it.
