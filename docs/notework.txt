@@ -12,6 +12,10 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+! The changed mail will also be copied to the Areayouwroteto now. 
+
+- Fixed small bug in Maximus 3 config parser. Any more left?
+
 - Another try to support MC clipboard.
 
 - Once again Numlock was not taken into account for Del in Win9x (not

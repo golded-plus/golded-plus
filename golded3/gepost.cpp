@@ -311,7 +311,7 @@ static void MakeMsg3(int& mode, GMsg* msg) {
     w_info(NULL);
   }
 
-  if((mode != MODE_CHANGE) && (AL.AreaEchoToNo(AA->Areayouwroteto())>=0)) {
+  if(AL.AreaEchoToNo(AA->Areayouwroteto())>=0) {
     Area* A = AL.AreaEchoToPtr(AA->Areayouwroteto());
     if(AA != A) {
       char* back = NULL;
