@@ -12,6 +12,15 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+! Ignore RRq attribute. We will process only Cfm now: RRq should be
+  processed by mailer/tosser/tracker according to the attribute
+  intension.
+
+- Convert internal codes to lowercase in Synchronet BBS parser before
+  using them as pathname.
+
+- Cosmetic fix in Goldnode: pad output with spaces. 
+
 - Previous fix on relative pathnames was incorrect. Now GoldED+
   changed to resolve problem. Seems to work properly now.
 

@@ -4439,7 +4439,7 @@ AREALISTSORT -U+TE</eg>
     </div2>
     <div2 id=AREAPATH>
       <head>
-        AREAPATH &lt;path&gt;
+        AREAPATH
       </head>
       <list type=gloss>
         <label>
@@ -8588,9 +8588,9 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           Description:
         </label>
         <item>
-          This feature allows you to define words which causes
-          <name/GoldED+/ to display a comment in the statusline, when you place
-          the cursor on the word in the internal editor.
+          This feature allows you to define words which causes <name/GoldED+/
+          to display a comment in the statusline, when you place the cursor on
+          the word in the internal editor.
         </item>
         <label>
           Parameters:
@@ -8609,6 +8609,7 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           See also:
         </label>
         <item>
+          <ref target=DISPSTATUSLINE><kw/DISPSTATUSLINE/</ref>,
           <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
           <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
         </item>
@@ -8626,56 +8627,40 @@ EDITCOMMENT "Odinn"   "That's right :-)"]]></eg>
         </item>
       </list>
     </div2>
-
-
-<!-- finished here -->
-
-
     <div2>
       <head>
-        EDITCOMPLETION &lt;"abbreviation"&gt; &lt;"completion"&gt;
+        EDITCOMPLETION
       </head>
-      <p>
-    This feature allows you to define abbreviations which will be
-    automatically expanded to full words or sentences when typed in
-    the internal editor. Examples:
-      </p>
-      <p>
-      EDITCOMPLETION "/Odin" "Odinn"
-      EDITCOMPLETION "/GED"  "GoldED"
-      EDITCOMPLETION "/V7"   "Version 7"
-      EDITCOMPLETION "/FD"   "FrontDoor"
-      EDITCOMPLETION "/WfW"  "Windows for Workgroups"
-      </p>
-      <p>
-    NOTE&excl;  The abbreviation is case-sensitive. If "XX" is defined as
-    an abbreviation, completion will NOT be triggered if "xx" is
-    typed.
-      </p>
       <list type=gloss>
         <label>
           Synopsis:
         </label>
         <item>
-          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+          <kw/EDITCOMPLETION/ <ident>&lt;<![ CDATA ["abbreviation"]]>&gt;
+          &lt;<![ CDATA ["completion"]]>&gt;</ident>
         </item>
         <label>
           Description:
         </label>
         <item>
-          This keyword controls statusline appearance in the <name/GoldED+/.
+          This keyword allows you to define abbreviations which will be
+          automatically expanded to full words or sentences when typed in
+          the internal editor.
         </item>
         <label>
           Parameters:
         </label>
         <item>
-          If set to <ident/NO/, the statusline at the bottom will be disabled.
+          The <ident/abbreviation/ defines the substring which should will be
+          automatically expanded to <ident/completion/.
         </item>
         <label>
-          Default:
+          Notes:
         </label>
         <item>
-          <ident/YES/
+          The abbreviation is case-sensitive. If <![ CDATA ["XX"]]> is defined
+          as an abbreviation, completion will <b/not/ be triggered if
+          <![ CDATA ["xx"]]> is typed.
         </item>
         <label>
           Processed by:
@@ -8687,18 +8672,32 @@ EDITCOMMENT "Odinn"   "That's right :-)"]]></eg>
           See also:
         </label>
         <item>
-          <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
-          <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
+          <!-- FIX ME!!! --><kw/Macro/,
+          <!-- FIX ME!!! --><kw/EDITmacro/,
+          <ref target=DISPSTATUSLINE><kw/DISPSTATUSLINE/</ref>,
+          <ref target=EDITCOMMENT><kw/EDITCOMMENT/</ref>
+        </item>
+        <label>
+          Example:
+        </label>
+        <item><eg><![ CDATA [
+EDITCOMPLETION "/Odin" "Odinn"
+EDITCOMPLETION "/GED"  "GoldED"
+EDITCOMPLETION "/V7"   "Version 7"
+EDITCOMPLETION "/FD"   "FrontDoor"
+EDITCOMPLETION "/WfW"  "Windows for Workgroups"]]></eg>
         </item>
       </list>
     </div2>
+
+
+<!-- finished here -->
+
+
     <div2>
       <head>
         EDITCRLFTERM &lt;yes/no&gt;
       </head>
-      <p>
-  (no)
-      </p>
       <p>
     If enabled, all text paragraphs in your messages will be
     terminated with a CR/LF combination. If disabled, only a single CR
@@ -8729,7 +8728,7 @@ EDITCOMMENT "Odinn"   "That's right :-)"]]></eg>
           Default:
         </label>
         <item>
-          <ident/YES/
+          <ident/NO/
         </item>
         <label>
           Processed by:
