@@ -698,7 +698,7 @@ CfgGed::CfgGed() {
   dispmsgsize = DISPMSGSIZE_BYTES;
   disptabsize = 8;
   encodeemailheaders = true;
-  externoptions = EXTUTIL_CLS | EXTUTIL_SWAP | EXTUTIL_CURSOR | EXTUTIL_RELOAD | EXTUTIL_PAUSEONERROR | EXTUTIL_KEEPCTRL;
+  externoptions = EXTUTIL_CLS | EXTUTIL_CURSOR | EXTUTIL_RELOAD | EXTUTIL_PAUSEONERROR | EXTUTIL_KEEPCTRL;
   ezycomuserno = 0;
   fidomsgtype = MT_OPUS;
   fidouserno = 0;

@@ -198,9 +198,7 @@ void Cleanup(void) {
 //  ------------------------------------------------------------------
 //  Multipurpose DOS shell function
 
-int ShellToDos(char* command, char* message, int cls, int cursor, int swap, int pause) {
-
-  NW(swap);
+int ShellToDos(char* command, char* message, int cls, int cursor, int pause) {
 
   int error = 0;
 

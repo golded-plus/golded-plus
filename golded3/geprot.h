@@ -115,7 +115,7 @@ void SaveLines(int mode, const char* savefile, GMsg* msg, bool clip=false);
 //  GEDOSS prototypes
 
 void Cleanup(void);
-int ShellToDos(char* command, char* message, int cls, int cursor, int swap=YES, int pause=NO);
+int ShellToDos(char* command, char* message, int cls, int cursor, int pause=NO);
 
 
 //  ------------------------------------------------------------------

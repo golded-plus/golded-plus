@@ -234,21 +234,6 @@ const int REPLYLINKLIST_FULL = 1;
 
 //  ------------------------------------------------------------------
 
-#define GSWAP_ENABLED       0x8000
-#define GSWAP_DISK          (GSWAP_ENABLED|USE_FILE)
-#define GSWAP_EMS           (GSWAP_ENABLED|USE_EMS)
-#define GSWAP_XMS           (GSWAP_ENABLED|USE_XMS)
-#define GSWAP_ALL           (GSWAP_ENABLED|USE_ALL)
-#define GSWAP_NONE          0
-#define GSWAP_EMS_FIRST     EMS_FIRST
-#define GSWAP_XMS_FIRST     XMS_FIRST
-#define GSWAP_HIDE_FILE     HIDE_FILE
-#define GSWAP_NO_PREALLOC   NO_PREALLOC
-#define GSWAP_CHECK_NET     CHECK_NET
-
-
-//  ------------------------------------------------------------------
-
 const int KEYB_BLOCK = 0;
 const int KEYB_POLL  = 1;
 
@@ -601,7 +586,6 @@ struct infoLookup {
 //  Structures and constants for external utilities
 
 const int EXTUTIL_CLS          = 0x0001;
-const int EXTUTIL_SWAP         = 0x0002;
 const int EXTUTIL_CURSOR       = 0x0004;
 const int EXTUTIL_RELOAD       = 0x0008;
 const int EXTUTIL_PAUSE        = 0x0010;

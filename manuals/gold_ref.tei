@@ -847,9 +847,7 @@ AKA     2:236/77.1    ; SysOp point.</eg>
         The optional <ident>@domain</ident> part can be used to specify a
         <term>fifth</term> dimension to the <term>4D</term> address. It is
         normally not necessary to specify a domain. Domains are never shown in
-        the header and are not put in the origin line. The only place the
-        domain is used/added by <name>GoldED+</name> is in the <gi>MSGID</gi>
-        kludge.
+        the header. See also <ref target=NETNAME><kw>NETNAME</kw></ref>
       </p>
       <p>
         Examples:<eg>
@@ -3600,9 +3598,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
       </p>
       <p>
     If you use a word processor, be sure to make it export clean ASCII
-    text files without control codes. You may also need to enable the
-    DOSSWAP keyword, if the editor or word processor requires a lot of
-    free memory to run.
+    text files without control codes.
       </p>
       <p>
       &lt;commandline&gt;   Program commandline.
@@ -3904,7 +3900,6 @@ AREASEP &excl;C "Group C" C Local]]></eg>
       -Pause            Pause for keypress before returning to <name>GoldED+</name>.
       -PauseOnError   * Pause only if utility errorlevel is nonzero.
       -Reload         * Reload the message file (@file).
-      -Swap           * Swap <name>GoldED+</name> out of memory before shelling.
       -Wipe             Wipe editorfile and temporary file after use.
       </p>
       <p>
@@ -4007,9 +4002,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
         with exactly the same content as @file.
       </p>
       <p>
-    2.  <name>GoldED+</name> clears the screen and then calls the utility after
-        swapping itself out of memory (if swapping is enabled or
-        relevant for the version).
+    2.  <name>GoldED+</name> clears the screen and then calls the utility.
       </p>
       <p>
     3.  The utility can now load and process the @file and/or
@@ -5779,25 +5772,6 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     </div2>
     <div2>
       <head>
-        OVERLAY &lt;ems/ext/disk&gt;
-      </head>
-      <p>
-  (ems)
-      </p>
-      <p>
-    This keyword controls where <name>GoldED+</name> places the overlay swap blocks.
-    <name>GoldED+</name> (the standard DOS version) uses the Borland VROOMM dynamic
-    overlays to decrease the resident executable code.
-      </p>
-      <p>
-    See the DOSSWAP keyword for a warning note&excl;
-      </p>
-      <p>
-    Ignored by the 386, W32 and OS/2 versions.
-      </p>
-    </div2>
-    <div2>
-      <head>
         PCBOARDPATH &lt;path&gt;
       </head>
       <p>
@@ -6996,24 +6970,6 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     </div2>
     <div2>
       <head>
-        SWAPPATH &lt;path&gt;
-      </head>
-      <p>
-  (defaults to TEMPPATH)
-      </p>
-      <p>
-    Defines where the swap file will be placed in case of disk
-    swapping in DOS shells. It is recommended that this points to a
-    RAM disk, if available. <name>GoldED+</name> needs 3-500k free disk space for
-    the swapfile, depending on the overlay buffer size specified with
-    the -O commandline switch.
-      </p>
-      <p>
-    This keyword is only interpreted by the DOS platform version.
-      </p>
-    </div2>
-    <div2>
-      <head>
         TAGLINE &lt;string or filename&gt;
       </head>
       <p>
@@ -7771,6 +7727,7 @@ ones or remove them.
   DISPMSGLIST     MSGLISTFIRST
   DISPMSGLISTFAST MSGLISTFAST
   DISPSTYLECODES  STYLECODES
+  DOSSWAP         (removed)
   ECHOATTRIB      ATTRIBSECHO
   ECHOINFO        CTRLINFOECHO
   EDITMARGIN      (removed)
@@ -7824,8 +7781,9 @@ ones or remove them.
   NEXTMSGS        (removed)
   NODELISTPAGEBAR (removed)
   NOISEFACTOR     (removed)
-  OVERLAYEMS      OVERLAY performs similar function
-  OVERLAYEXT      OVERLAY performs similar function
+  OVERLAY         (removed)
+  OVERLAYEMS      (removed)
+  OVERLAYEXT      (removed)
   PAGEBAR         (removed)
   QBBSINCRESCAN   (removed)
   QBBSPATH        HUDSONPATH
@@ -7852,7 +7810,7 @@ ones or remove them.
   SPELLCHECKER    EDITSPELLCHECK
   STACKKEYS       KEYBSTACK
   STARTECHO       AREASTART
-  SWAPALL         DOSSWAP
+  SWAPALL         (removed)
   SYSOP           USERNAME
   TABSIZE         DISPTABSIZE
   TAGLINEFILE     (removed)
@@ -7907,7 +7865,6 @@ Name/Address/Areas:
 Paths:
   GOLDPATH
   TEMPPATH        MUST be in GOLDED.CFG. Used only by GoldNODE.
-  SWAPPATH
       </p>
       <p>
 Nodelists:        MUST be below ADDRESS/AKA and ONLY in GOLDED.CFG&excl;

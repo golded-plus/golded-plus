@@ -1114,13 +1114,13 @@ void IEclass::GoWordRight() {
 
   GFTRK("EditGoWordRight");
 
-  if((currline->txt.length() >= col) or (currline->txt[col] == '\n')) {
+  if((col >= currline->txt.length()) or (currline->txt[col] == '\n')) {
     if(currline->next) {
       GoDown();
       col = 0;
     }
-   }
-   else {
+  }
+  else {
     size_t len = currline->txt.length();
     if(not isxalnum(currline->txt[col])) {
       while(not isxalnum(currline->txt[col]) and ((col+1) <= len))

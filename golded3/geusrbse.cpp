@@ -244,13 +244,6 @@ void addressbook_form::before() { gwinput2::before(); };
 
 bool addressbook_form::validate() {
 
-  if(current->id == id_name) {
-    if(g->find_entry(current->buf)) {
-      LoadForm();
-      reload_all();
-      go_next_field();
-    }
-  }
   return true;
 }
 

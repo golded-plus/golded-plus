@@ -372,27 +372,16 @@ static void w_back() {
 static void w_brag() {
 
   char buf[200];
-  char* logo[6];
-
-  logo[0] = throw_strdup("                   88     88            88     ");
-  logo[1] = throw_strdup("     oooooo oooooo 88 oooo88 oooooo oooo88  o  ");
-  logo[2] = throw_strdup("     88  88 88  88 88 88  88 88oo88 88  88 o8o ");
-  logo[3] = throw_strdup("     88oo88 88oo88 88 88oo88 88oooo 88oo88  8  ");
-  logo[4] = throw_strdup(" oo      88                                    ");
-  logo[5] = throw_strdup(" 88oooooo88                                    ");
 
   W_READ = wopen_(1, 2, MAXROW-4, MAXCOL-5, W_BBRAG, C_BRAGB, C_BRAGW);
   w_shadow();
 
-  wprints(0, 0, C_BRAGT|ACSET, logo[0]);
-  wprints(1, 0, C_BRAGT|ACSET, logo[1]);
-  wprints(2, 0, C_BRAGT|ACSET, logo[2]);
-  wprints(3, 0, C_BRAGT|ACSET, logo[3]);
-  wprints(4, 0, C_BRAGT|ACSET, logo[4]);
-  wprints(5, 0, C_BRAGT|ACSET, logo[5]);
-
-  for(int n=0; n<6; n++)
-    throw_free(logo[n]);
+  wprints(0, 0, C_BRAGT|ACSET, "                   88     88            88     ");
+  wprints(1, 0, C_BRAGT|ACSET, "     oooooo oooooo 88 oooo88 oooooo oooo88  o  ");
+  wprints(2, 0, C_BRAGT|ACSET, "     88  88 88  88 88 88  88 88oo88 88  88 o8o ");
+  wprints(3, 0, C_BRAGT|ACSET, "     88oo88 88oo88 88 88oo88 88oooo 88oo88  8  ");
+  wprints(4, 0, C_BRAGT|ACSET, " oo      88                                    ");
+  wprints(5, 0, C_BRAGT|ACSET, " 88oooooo88                                    ");
 
   wprints(4, 43-strlen(__gver_longpid__), C_BRAGW, __gver_longpid__);
 

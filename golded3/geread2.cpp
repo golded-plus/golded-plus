@@ -558,7 +558,6 @@ int ExternUtil(GMsg* msg, int utilno) {
       ShellToDos(cmdline, "",
         extutil->options & EXTUTIL_CLS ? LGREY|_BLACK : 0,
         extutil->options & EXTUTIL_CURSOR,
-        extutil->options & EXTUTIL_SWAP,
         pauseval
       );
 
