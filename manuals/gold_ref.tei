@@ -112,6 +112,9 @@
       <name/Andre van de Wijdeven/, <name/Robert Bashe/, <name>Kees
       Bergwerf</name>, and <name/Ferdinand Grassmann/.
     </p>
+    <p>
+      Special thanks goes to <name/Fra&#96;2k/ for helping in testing :-)
+    </p>
   </div1>
 <!-- --------------------------------------------------------------------- -->
   <div1>
@@ -3927,8 +3930,8 @@ AREALISTFORMAT "AM D C4PU4N E G "]]></eg>
           Parameters:
         </label>
         <item>
-          The only parameter is string which specifies groups order (case
-          sensitive!).
+          The only parameter is string which specifies groups order. You may
+          use #groupnumber to specify group numbers in the 1-999 range.
         </item>
         <label>
           Default:
@@ -4509,7 +4512,8 @@ AREALISTSORT -U+TE</eg>
         <item>
           The <ident/&lt;echoid mask&gt;/ may contain <name/4DOS/-style
           wildcards (<q/*/ and <q/?/). You may specify multiple masks separated
-          with commas.
+          with commas. If mask started with the &gt; (greater) character, then
+          it represent group ID.
         </item>
         <label>
           Notes:
@@ -4571,7 +4575,8 @@ AREAPMSCAN INT*.*  ; Scan all areas beginning with INT and
         <item>
           The <ident/&lt;echoid mask&gt;/ may contain <name/4DOS/-style
           wildcards (<q/*/ and <q/?/). You may specify multiple masks separated
-          with commas.
+          with commas. If mask started with the &gt; (greater) character, then
+          it represent group ID.
         </item>
         <label>
           Notes:
@@ -4627,7 +4632,8 @@ AREAPMSCAN INT*.*  ; Scan all areas beginning with INT and
         <item>
           The <ident/&lt;echoid mask&gt;/ may contain <name/4DOS/-style
           wildcards (<q/*/ and <q/?/). You may specify multiple masks separated
-          with commas.
+          with commas. If mask started with the &gt; (greater) character, then
+          it represent group ID.
         </item>
         <label>
           Processed by:
@@ -4921,7 +4927,8 @@ ENDGROUP</eg>
         <item>
           The <ident/&lt;echoid mask&gt;/ may contain <name/4DOS/-style
           wildcards (<q/*/ and <q/?/). You may specify multiple masks separated
-          with commas.
+          with commas. If mask started with the &gt; (greater) character, then
+          it represent group ID.
         </item>
         <label>
           Notes:
@@ -4983,7 +4990,8 @@ AREASCAN INT*.*    ; Scan all areas beginning with INT and
         <item>
           The <ident/&lt;echoid mask&gt;/ may contain <name/4DOS/-style
           wildcards (<q/*/ and <q/?/). You may specify multiple masks separated
-          with commas.
+          with commas. If mask started with the &gt; (greater) character, then
+          it represent group ID.
         </item>
         <label>
           Notes:
@@ -5039,7 +5047,8 @@ AREASCAN INT*.*    ; Scan all areas beginning with INT and
         <item>
           The <ident/&lt;echoid mask&gt;/ may contain <name/4DOS/-style
           wildcards (<q/*/ and <q/?/). You may specify multiple masks separated
-          with commas.
+          with commas. If mask started with the &gt; (greater) character, then
+          it represent group ID.
         </item>
         <label>
           Processed by:
@@ -5115,7 +5124,7 @@ AREASCAN INT*.*    ; Scan all areas beginning with INT and
         </label>
         <item>
           <kw/AREASEP/ <ident>&lt;echoid&gt; &lt;<![ CDATA ["desc"]]>&gt;
-          &lt;group&gt; &lt;type&gt;</ident>
+          &lt;group&gt; &lt;type&gt; &lt;aka&gt;</ident>
         </item>
         <label>
           Description:
@@ -5160,6 +5169,14 @@ AREASCAN INT*.*    ; Scan all areas beginning with INT and
               <cell>
                 <ident/Net/, <ident/Echo/, <ident/Local/, <ident/EMail/ or
                 <ident/News/.
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident>aka</ident>
+              </cell>
+              <cell>
+                Address for the area, or <q>.</q> for the main address.
               </cell>
             </row>
           </table>
