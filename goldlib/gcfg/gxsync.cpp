@@ -27,7 +27,7 @@
 #include <cstdlib>
 #include <gcrcall.h>
 #include <gstrall.h>
-#undef GCFG_NOCMAIL
+#undef GCFG_NOSYNCHRONET
 #include <gedacfg.h>
 #include <gs_sync.h>
 

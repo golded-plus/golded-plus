@@ -43,12 +43,6 @@
 #include <ctype.h>
 #if defined(__EMX__)
 #include <sys/nls.h>
-#ifdef __cplusplus
-extern "C" {
-__inline__ int tolower(int c) { return _nls_tolower((unsigned char)(c)); }
-__inline__ int toupper(int c) { return _nls_toupper((unsigned char)(c)); }
-}
-#else
 #define tolower(c) _nls_tolower((unsigned char)(c))
 #define toupper(c) _nls_toupper((unsigned char)(c))
 #endif

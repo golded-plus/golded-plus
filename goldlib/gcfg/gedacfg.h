@@ -439,7 +439,7 @@ public:
 #ifndef GCFG_NOXMAIL
   void ReadXMail(char* tag);
 #endif
-#ifndef GCFG_NOSBBS
+#ifndef GCFG_NOSYNCHRONET
   void ReadSynchronet(char* tag);
 #endif
 
