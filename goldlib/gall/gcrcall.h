@@ -37,9 +37,10 @@
 //  ------------------------------------------------------------------
 //  Declare the CRC tables
 
+extern "C" {
 extern word __crc16_table[];
 extern dword __crc32_table[];
-
+}
 
 //  ------------------------------------------------------------------
 //  Generate/update a CRC-16 or CRC-32 value
