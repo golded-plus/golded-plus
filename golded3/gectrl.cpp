@@ -163,10 +163,10 @@ char* mime_header_encode(char* dest, const char* source, GMsg* msg) {
 
     lp = s + strlen(s);
 
-    while((lp>s) and in_range((char)(*lp-1), (char)' ', (char)'\x7F'))
+    while((lp>s) and in_range(lp[-1], ' ', '\x7F'))
       lp--;
 
-    for(const char* ptr = s; *ptr and (ptr<=lp); ptr++) {
+    for(const char* ptr = s; *ptr and (ptr<lp); ptr++) {
       if(iscntrl(*ptr) or not isascii(*ptr) or (inmime and strchr(" =?", *ptr))) {
         if(not inmime) {
           if(msg->charset) {
