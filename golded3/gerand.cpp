@@ -165,6 +165,7 @@ void Area::InitData() {
   adat->taglinesupport = CFG->taglinesupport;
   strcpy(adat->tearline, CFG->tearline);
   strcpy(adat->tpl, (CFG->tplno and (CFG->tplno < CFG->tpl.size())) ? CFG->tpl[CFG->tplno].file : "");
+  strxcpy(adat->wtpl, CFG->wtpl.c_str(), sizeof(adat->wtpl));
   adat->templatematch = CFG->templatematch;
   adat->twitmode = CFG->twitmode;
   adat->usefwd = CFG->usefwd;

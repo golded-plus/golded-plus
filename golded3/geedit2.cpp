@@ -622,7 +622,7 @@ void IEclass::BlockDel(Line* anchor) {
     firstcol = blockcol;
   }
   else {
-    if(currline != anchor or blockcol > col)
+    if((currline != anchor) or (blockcol > col))
       lastcol = blockcol;
     else
       firstcol = blockcol;
@@ -635,8 +635,8 @@ void IEclass::BlockDel(Line* anchor) {
     size_t __len = firstcutline->txt.length();
     firstcutline->txt += lastcutline->txt.c_str()+lastcol;
     Undo->PushItem(EDIT_UNDO_INS_TEXT, firstcutline, __len);
-    Undo->PushItem(EDIT_UNDO_DEL_TEXT|BATCH_MODE, firstcutline, firstcol, __len);
-    firstcutline->txt.erase(firstcol, __len);
+    Undo->PushItem(EDIT_UNDO_DEL_TEXT|BATCH_MODE, firstcutline, firstcol, __len-firstcol);
+    firstcutline->txt.erase(firstcol, __len-firstcol);
   }
   else {
     Undo->PushItem(EDIT_UNDO_DEL_TEXT, firstcutline, firstcol, lastcol-firstcol);
@@ -661,13 +661,13 @@ void IEclass::BlockDel(Line* anchor) {
   // Refresh the display
   if(not RngV(row, minrow, maxrow)) {
     row = minrow;
-    wrapdel(&currline, &col, &row, YES);
+    wrapdel(&currline, &col, &row, false);
     refresh(currline, minrow);
   }
   else {
     row = MaxV(firstcutlinerow, minrow);
     Line* topline = findtopline();
-    wrapdel(&currline, &col, &row, NO);
+    wrapdel(&currline, &col, &row, false);
     refresh(topline, minrow);
   }
 
@@ -742,7 +742,7 @@ void IEclass::BlockPaste() {
         currline->txt += _pasteline->txt;
         setlinetype(currline);
         col = currline->txt.length();
-        wrapins(&currline, &col, &row, NO);
+        wrapins(&currline, &col, &row, false);
         currline = _newline;
         col = 0;
         if(row < maxrow)
@@ -753,7 +753,7 @@ void IEclass::BlockPaste() {
         currline->txt.insert(col, _pasteline->txt);
         Undo->PushItem(EDIT_UNDO_INS_TEXT|BATCH_MODE, currline, col, pastelen);
         col += pastelen;
-        wrapins(&currline, &col, &row, NO);
+        wrapins(&currline, &col, &row, false);
       }
 
       setlinetype(currline);
@@ -1146,7 +1146,7 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
             // Wrap it
             uint _tmpcol = 0;
             uint _tmprow = 0;
-            _newline = wrapins(&_newline, &_tmpcol, &_tmprow, NO);
+            _newline = wrapins(&_newline, &_tmpcol, &_tmprow, false);
           }
 
           __line = _newline;
@@ -1160,7 +1160,7 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
           // Wrap it
           uint _tmpcol = 0;
           uint _tmprow = 0;
-          __line = wrapins(&__line, &_tmpcol, &_tmprow, NO);
+          __line = wrapins(&__line, &_tmpcol, &_tmprow, false);
         }
         __line->next = saveline;
         if(saveline)

@@ -318,9 +318,9 @@ protected:
   void  statusline      ();
   void  windowclose     ();
   void  windowopen      ();
-  Line* wrapit          (Line** __currline, uint* __curr_col, uint* __curr_row, int __display=YES);
-  Line* wrapdel         (Line** __currline, uint* __curr_col, uint* __curr_row, int __display=YES);
-  Line* wrapins         (Line** __currline, uint* __curr_col, uint* __curr_row, int __display=YES);
+  Line* wrapit          (Line** __currline, uint* __curr_col, uint* __curr_row, bool __display=true);
+  Line* wrapdel         (Line** __currline, uint* __curr_col, uint* __curr_row, bool __display=true);
+  Line* wrapins         (Line** __currline, uint* __curr_col, uint* __curr_row, bool __display=true);
 
   #ifndef NDEBUG
   void  debugtest       (char* __test, int __a, int __b, char* __file, int __line, int __values);

@@ -567,6 +567,8 @@ void IEclass::GoLeft() {
     if(currline->prev) {
       GoUp();
       GoEOL();
+      if(currline->txt[col] != '\n')
+        col--;
     }
   }
   else
@@ -605,7 +607,7 @@ void IEclass::GoRight() {
 
 //  ------------------------------------------------------------------
 
-Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, int __display) {
+Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, bool __display) {
 
   _test_halt(__currline == NULL);
   _test_halt(*__currline == NULL);
@@ -667,7 +669,8 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, int
         // NOTE: Leading spaces to this word will be nulled out!
 
         // Begin at the first char outside the margin
-        _wrappos++;
+        if((_wrappos + 1) <= maxcol)
+          _wrappos++;
       }
       else {
 
@@ -903,7 +906,7 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, int
 
 //  ------------------------------------------------------------------
 
-Line* IEclass::wrapdel(Line** __currline, uint* __curr_col, uint* __curr_row, int __display) {
+Line* IEclass::wrapdel(Line** __currline, uint* __curr_col, uint* __curr_row, bool __display) {
 
   GFTRK("Editwrapdel");
 
@@ -917,7 +920,7 @@ Line* IEclass::wrapdel(Line** __currline, uint* __curr_col, uint* __curr_row, in
 
 //  ------------------------------------------------------------------
 
-Line* IEclass::wrapins(Line** __currline, uint* __curr_col, uint* __curr_row, int __display) {
+Line* IEclass::wrapins(Line** __currline, uint* __curr_col, uint* __curr_row, bool __display) {
 
   GFTRK("Editwrapins");
 
@@ -1033,13 +1036,26 @@ void IEclass::DelChar() {
 
     Undo->PushItem(EDIT_UNDO_DEL_LINE|BATCH_MODE, _nextline);
   }
+  else if((_thislen > 1) and (_thisline->txt.c_str()[_thislen-2] != '\n') and _nextline and not (_nextline->type & GLINE_QUOT)) {
+
+    _thisline->txt += _nextline->txt.c_str();
+
+    Undo->PushItem(EDIT_UNDO_CUT_TEXT|batch_mode, _thisline, _thislen-1);
+
+    // Relink this line
+    _thisline->next = _nextline->next;
+    if(_thisline->next)
+      _thisline->next->prev = _thisline;
+
+    Undo->PushItem(EDIT_UNDO_DEL_LINE|BATCH_MODE, _nextline);     
+  }
   batch_mode = BATCH_MODE;
 
   // Make sure the line type still is correct
   setlinetype(_thisline);
 
   // Rewrap this line
-  wrapdel(&currline, &col, &row);
+  wrapdel(&currline, &col, &row, false);
 
   refresh(currline, row);
 

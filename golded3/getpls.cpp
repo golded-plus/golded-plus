@@ -126,7 +126,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
     int length;
   };
 
-  tpl_token token_list[] = {
+  static const tpl_token token_list[] = {
     { CSTR_COMMA_SIZEOF_CSTR("forward")      },
     { CSTR_COMMA_SIZEOF_CSTR("changed")      },
     { CSTR_COMMA_SIZEOF_CSTR("net")          },

@@ -213,7 +213,7 @@ const byte KCRQ_CASE  = 0x0002;
 
 //  ------------------------------------------------------------------
 
-static Kludges fts_list[] = {
+static const Kludges fts_list[] = {
 
   { "AREA"                       , FTS_AREA                      , KCRQ_CASE  },
   { "INTL"                       , FTS_INTL                      , KCRQ_CASE  },
@@ -229,7 +229,7 @@ static Kludges fts_list[] = {
 
 //  ------------------------------------------------------------------
 
-static Kludges fsc_list[] = {
+static const Kludges fsc_list[] = {
 
   { "CHARSET"                    , FSC_CHARSET                   , KCRQ_CASE  },
   { "CHRC"                       , FSC_CHRC                      , KCRQ_CASE  },
@@ -261,7 +261,7 @@ static Kludges fsc_list[] = {
 
 //  ------------------------------------------------------------------
 
-static Kludges xxx_list[] = {
+static const Kludges xxx_list[] = {
 
   { "ACUPDATE"                   , XXX_ACUPDATE                  , KCRQ_CASE  },
   { "CODEPAGE"                   , XXX_CODEPAGE                  , KCRQ_CASE  },
@@ -299,7 +299,7 @@ static Kludges xxx_list[] = {
 
 //  ------------------------------------------------------------------
 
-static Kludges rfc_list[] = {
+static const Kludges rfc_list[] = {
 
   { "Also-Control"               , RFC_ALSO_CONTROL              , KCRQ_COLON },
   { "Apparently-To"              , RFC_APPARENTLY_TO             , KCRQ_COLON },
@@ -1293,7 +1293,7 @@ int HandleRFCs(GMsg* msg, Line* line, int kludgenum, const char* ptr, int getval
 
 //  ------------------------------------------------------------------
 
-int ScanCtrlList(Kludges* k, char* kludge, char endchar) {
+int ScanCtrlList(const Kludges *k, const char *kludge, char endchar) {
 
   while(*k->key) {
     if((k->req & KCRQ_CASE) ? streql(kludge, k->key) : strieql(kludge, k->key)) {
@@ -1339,29 +1339,24 @@ int ScanLine(GMsg* msg, Line* line, const char* ptr, int getvalue, int mask) {
 
   // Search for it in the known kludges list
   if(*kludge) {
-    Kludges* k;
     while(1) {
       if(mask & MASK_FTS) {
-        k = fts_list;
-        kludgenum = ScanCtrlList(k, kludge, endchar);
+        kludgenum = ScanCtrlList(fts_list, kludge, endchar);
         if(kludgenum)
           break;
       }
       if(mask & MASK_FSC) {
-        k = fsc_list;
-        kludgenum = ScanCtrlList(k, kludge, endchar);
+        kludgenum = ScanCtrlList(fsc_list, kludge, endchar);
         if(kludgenum)
           break;
       }
       if(mask & MASK_RFC) {
-        k = rfc_list;
-        kludgenum = ScanCtrlList(k, kludge, endchar);
+        kludgenum = ScanCtrlList(rfc_list, kludge, endchar);
         if(kludgenum)
           break;
       }
       if(mask & MASK_XXX) {
-        k = xxx_list;
-        kludgenum = ScanCtrlList(k, kludge, endchar);
+        kludgenum = ScanCtrlList(xxx_list, kludge, endchar);
         if(kludgenum)
           break;
       }
@@ -2131,9 +2126,8 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
           switch(*ptr) {
             case CR:
               do_cr:
-              ptr++;
               ch = CR;
-              ptr = spanfeeds(ptr);
+              ptr = spanfeeds(ptr+1);
               if(wraps and not ((line->type & GLINE_HARD) and not (line->type & GLINE_QUOT))) {
                 if(para != GLINE_QUOT) {
                   if(quoteflag) {
@@ -2333,9 +2327,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
                 }
                 else if((ptr[1] == CR) or (ptr[1] == LF)) {
                   // Skip soft line break
-                  ptr++;
-                  while((*ptr == CR) or (*ptr == LF))
-                    ptr++;
+                  ptr = spanfeeds(ptr+2);
                   break;
                 }
               }
