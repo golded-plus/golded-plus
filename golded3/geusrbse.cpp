@@ -796,8 +796,10 @@ void guserbase::update_addressbook(GMsg* msg, bool reverse, bool force) {
                   if(strieql(name, buf))
                     return;
                 }
+                else
+                  ptr = buf;
               }
-              else if(AA->isinternet()) {
+              else {
                 ptr = n->name;
               }
               ParseInternetAddr(ptr, buf1, buf2);
