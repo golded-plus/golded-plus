@@ -12,6 +12,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+! Message now saved by default in local codepage.
+
 ! Thread list optimized a bit by speed. It aslo should not crash on
   long threads now.
 

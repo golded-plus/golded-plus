@@ -426,29 +426,27 @@ char* strxmimecpy(char* dest, const char* source, int level, int size, bool dete
   strxcpy(buf, source, sizeof(buf));
   mime_header_decode(buf2, buf, charset);
 
-  if(*charset) {
-    if(detect) {
-      table = LoadCharset(NULL, NULL, 1);
-      level = LoadCharset(charset, CFG->xlatlocalset);
-      if (!level) {
-        strxcpy(charset, AA->Xlatimport(), sizeof(charset));
-        level = LoadCharset(charset, CFG->xlatlocalset);
-      }
+  if(charset[0] == NUL)
+    detect = false;
+
+  if(detect) {
+    table = LoadCharset(NULL, NULL, 1);
+    level = LoadCharset(charset, CFG->xlatlocalset);
+    if (not level) {
+      level = LoadCharset(AA->Xlatimport(), CFG->xlatlocalset);
     }
-
-    XlatStr(buf, buf2, level, CharTable);
-
-    if(detect) {
-      if(table == -1)
-        LoadCharset(CFG->xlatimport, CFG->xlatlocalset);
-      else
-        LoadCharset(CFG->xlatcharset[table].imp, CFG->xlatcharset[table].exp);
-    }
-
-    strxcpy(dest, buf, size);
   }
-  else
-    strxcpy(dest, buf2, size);
+
+  XlatStr(buf, buf2, level, CharTable);
+
+  if(detect) {
+    if(table == -1)
+      LoadCharset(CFG->xlatimport, CFG->xlatlocalset);
+    else
+      LoadCharset(CFG->xlatcharset[table].imp, CFG->xlatcharset[table].exp);
+  }
+  
+  strxcpy(dest, buf, size);
 
   return dest;
 }
@@ -1593,40 +1591,6 @@ void ScanKludges(GMsg* msg, int getvalue) {
 
   } while((line = line->prev) != NULL);
 
-  if(getvalue) {
-    for(line = msg->lin; line; line = line->next)
-      if(line->type & GLINE_KLUDGE)
-        continue;
-      else {
-        if(strnieql(line->txt.c_str(), "From:", 5)) {
-          const char* ptr = line->txt.c_str() + 5;
-          ptr = strskip_wht(ptr);
-          char* tmp = UnwrapLine(line, ptr);
-          KludgeFROM(msg, tmp ? tmp : ptr);
-          if(tmp)
-            throw_free(tmp);
-        }
-        else if(strnieql(line->txt.c_str(), "To:", 3)) {
-          const char* ptr = line->txt.c_str() + 3;
-          ptr = strskip_wht(ptr);
-          char* tmp = UnwrapLine(line, ptr);
-          KludgeTO(msg, tmp ? tmp : ptr);
-          if(tmp)
-            throw_free(tmp);
-        }
-        else if(strnieql(line->txt.c_str(), "Reply-To:", 9)) {
-          const char* ptr = line->txt.c_str() + 9;
-          ptr = strskip_wht(ptr);
-          char* tmp = UnwrapLine(line, ptr);
-          KludgeREPLY_TO(msg, tmp ? tmp : ptr);
-          if(tmp)
-            throw_free(tmp);
-        }
-        else
-          break;
-      }
-  }
-
   if(not gottag)
     *msg->tagline = NUL;
   if(not gottear)
@@ -1888,7 +1852,8 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
   char* tptr;
   char* escp;
   char* bptr;
-  char buf[256], qbuf[MAXQUOTELEN], qbuf2[MAXQUOTELEN], chsbuf[100];
+  ISub buf;
+  char qbuf[MAXQUOTELEN], qbuf2[MAXQUOTELEN], chsbuf[100];
   char* ptr;
   char* qptr;
   char* tmp=NULL;
@@ -2064,7 +2029,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
                 // Convert FSC-0051.003 to FSC-0054.003
                 strxcpy(chsbuf, "LATIN-1", sizeof(chsbuf));
                 chslev = LoadCharset(chsbuf, CFG->xlatlocalset);
-                if(!chslev) {
+                if(not chslev) {
                   strxcpy(chsbuf, AA->Xlatimport(), sizeof(chsbuf));
                   chslev = LoadCharset(chsbuf, CFG->xlatlocalset);
                 }
@@ -2083,7 +2048,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
                 // Workaround for buggy mailreaders which stores '_' in charset name
                 strchg(chsbuf,'_',' ');
                 chslev = LoadCharset(chsbuf, CFG->xlatlocalset);
-                if(!chslev) {
+                if(not chslev) {
                   strxcpy(chsbuf, AA->Xlatimport(), sizeof(chsbuf));
                   chslev = LoadCharset(chsbuf, CFG->xlatlocalset);
                 }
@@ -2111,7 +2076,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
                   if(striinc("8859", chsbuf))
                     ISO2Latin(chsbuf, chsbuf);
                   chslev = LoadCharset(chsbuf, CFG->xlatlocalset);
-                  if(!chslev) {
+                  if(not chslev) {
                     strxcpy(chsbuf, AA->Xlatimport(), sizeof(chsbuf));
                     chslev = LoadCharset(chsbuf, CFG->xlatlocalset);
                   }
@@ -2134,7 +2099,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
                   msg->charsetencoding |= GCHENC_QP;
                   strcpy(chsbuf, MakeQuotedPrintable(msg->charset));
                   chslev = LoadCharset(msg->charset, CFG->xlatlocalset);
-                  if(!chslev) {
+                  if(not chslev) {
                     strxcpy(chsbuf, AA->Xlatimport(), sizeof(chsbuf));
                     chslev = LoadCharset(chsbuf, CFG->xlatlocalset);
                   }
@@ -2151,7 +2116,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
                   else
                     strxcpy(chsbuf, ptr, sizeof(chsbuf));
                   chslev = LoadCharset(chsbuf, CFG->xlatlocalset);
-                  if(!chslev) {
+                  if(not chslev) {
                     strxcpy(chsbuf, AA->Xlatimport(), sizeof(chsbuf));
                     chslev = LoadCharset(chsbuf, CFG->xlatlocalset);
                   }
@@ -2499,6 +2464,14 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
       throw_release(linetmp);
       throw_xdelete(line);
 
+      // Charset translate header fields
+      if(header_recode) {
+        strxmimecpy(msg->by, msg->by, level, sizeof(INam), true);
+        strxmimecpy(msg->to, msg->to, level, sizeof(INam), true);
+        if(not (msg->attr.frq() or msg->attr.att() or msg->attr.urq()))
+          strxmimecpy(msg->re, msg->re, level, sizeof(ISub), true);
+      }
+
       // Scan msg body top for RFC headerlines
       if(AA->Internetrfcbody()) {
         if(msg->lin) {
@@ -2564,13 +2537,13 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
       if(header_recode) {
         strxmimecpy(msg->realby, msg->realby, 0, sizeof(INam), true);
         strxmimecpy(msg->realto, msg->realto, 0, sizeof(INam), true);
-        strxmimecpy(msg->by, msg->by, level, sizeof(INam), true);
-        strxmimecpy(msg->to, msg->to, level, sizeof(INam), true);
         strxmimecpy(msg->ifrom, msg->ifrom, 0, sizeof(INam), true);
         strxmimecpy(msg->ito, msg->ito, 0, sizeof(msg->ito), true);
 
+        strxmimecpy(msg->by, msg->by, 0, sizeof(INam), true);
+        strxmimecpy(msg->to, msg->to, 0, sizeof(INam), true);
         if(not (msg->attr.frq() or msg->attr.att() or msg->attr.urq()))
-          strxmimecpy(msg->re, msg->re, level, sizeof(ISub), true);
+          strxmimecpy(msg->re, msg->re, 0, sizeof(ISub), true);
       }
     }
   }
