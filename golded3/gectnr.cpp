@@ -122,7 +122,7 @@ void Container::StyleCodeHighlight(const char* text, int row, int col, bool dohi
         if(not strnicmp(ptr, "http://", 7) or not strnicmp(ptr, "ftp://", 6) or
            not strnicmp(ptr, "www.", 4) or not strnicmp(ptr, "ftp.", 4) or
            not strnicmp(ptr, "mailto:", 7)) {
-          const char *end = ptr+4+strcspn(ptr+4, " \t\"\'<>");
+          const char *end = ptr+4+strcspn(ptr+4, " \t\"\'<>()[]");
 
           strxcpy(buf, txptr, (uint)(ptr-txptr)+1);
           prints(row, col+sclen, color, buf);
@@ -144,7 +144,7 @@ void Container::StyleCodeHighlight(const char* text, int row, int col, bool dohi
             }
           }
           else {
-            commerce_at = strpbrk(ptr, " \t@");
+            commerce_at = strpbrk(ptr, " \t:@");
           }
           if ((commerce_at != NULL)  and (*commerce_at == '@')) {
             ++commerce_at;
