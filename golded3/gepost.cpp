@@ -623,8 +623,6 @@ static void MakeMsg2(int& mode, int& status, int& forwstat, int& topline, GMsg* 
         msg->attr.tou0();
         msg->attr.pos0();
 
-        MsgLineReIndex(msg);
-
         if(not savedirect) {
           HeaderView->Use(AA, msg);
           HeaderView->Paint();

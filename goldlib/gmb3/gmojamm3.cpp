@@ -200,7 +200,7 @@ int JamArea::load_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
 
       case JAMSUB_PID:
         sprintf(_kludges+strlen(_kludges), "\001PID: %s\r", _buf);
-        strcpy(__msg->pid, _buf);
+        strxcpy(__msg->pid, _buf, sizeof(__msg->pid));
         break;
 
       case JAMSUB_TRACE:

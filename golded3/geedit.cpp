@@ -587,9 +587,7 @@ void IEclass::GoRight() {
 
   _test_haltab(col > maxcol, col, maxcol);
 
-  char _cursorchar = currline->txt[col];
-
-  if((col == maxcol) or (_cursorchar == '\n') or (_cursorchar == NUL)) {
+  if((col == maxcol) or (col >= currline->txt.length()) or (currline->txt[col] == '\n')) {
     if(currline->next != NULL) {
       GoDown();
       col = mincol;
@@ -688,7 +686,7 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, int
         int _spacepos = _wrappos;
         while(_spacepos > 0) {
           _spacepos--;
-          if (_thisline->txt[_spacepos] != ' ')
+          if(_thisline->txt[_spacepos] != ' ')
             break;
         }
 
@@ -937,15 +935,15 @@ void IEclass::insertchar(char __ch) {
 
   GFTRK("Editinsertchar");
 
-#ifndef NDEBUG
   uint _currline_len = currline->txt.length();
+#ifndef NDEBUG
   _test_haltab(col > _currline_len, col, _currline_len);
 #endif
   // Insert or overwrite the char, replacing the block if any
   if((selecting ? (BlockCut(true), batch_mode = BATCH_MODE) : false) or
-     (currline->txt[col] == '\n') or (currline->txt[col] == NUL) or insert) {
+     (col >= _currline_len) or (currline->txt[col] == '\n') or insert) {
     Undo->PushItem(EDIT_UNDO_INS_CHAR|batch_mode);
-    if(col == currline->txt.length() and __ch != ' ' and __ch != '\n')
+    if((col == _currline_len) and (__ch != ' ') and (__ch != '\n'))
       currline->txt += ' ';
     currline->txt.insert(col, 1, __ch);
   } else {
@@ -1116,28 +1114,29 @@ void IEclass::GoWordRight() {
 
   GFTRK("EditGoWordRight");
 
-  if(currline->txt.length() == col or currline->txt[col] == '\n') {
+  if((currline->txt.length() >= col) or (currline->txt[col] == '\n')) {
     if(currline->next) {
       GoDown();
       col = 0;
     }
    }
    else {
+    size_t len = currline->txt.length();
     if(not isxalnum(currline->txt[col])) {
-      while(not isxalnum(currline->txt[col]) and ((col+1) <= currline->txt.length()))
+      while(not isxalnum(currline->txt[col]) and ((col+1) <= len))
         col++;
     }
     else {
-      while(isxalnum(currline->txt[col]) and ((col+1) <= currline->txt.length()))
+      while(isxalnum(currline->txt[col]) and ((col+1) <= len))
         col++;
-      while(not isxalnum(currline->txt[col]) and ((col+1) <= currline->txt.length()))
+      while(not isxalnum(currline->txt[col]) and ((col+1) <= len))
         col++;
     }
 
     if(currline->txt[col-1] == '\n')
        col--;
 
-    if(currline->txt.length() == col) {
+    if(len == col) {
       if(currline->next) {
         GoDown();
         col = 0;
@@ -1406,7 +1405,6 @@ void IEclass::Tab() {
     else
       break;
   } while(col % tabsz);
-
 
   GFTRK(NULL);
 }
@@ -1785,7 +1783,7 @@ void IEclass::Reflow() {
 
   // Strip leading spaces from the first line
   const char* ptr = _qlenptr;
-  while(*ptr and isspace(*ptr) and *ptr != '\n') ptr++;
+  while(*ptr and isspace(*ptr) and (*ptr != '\n')) ptr++;
   if(ptr != _qlenptr) {
     Undo->PushItem(EDIT_UNDO_DEL_TEXT, currline, _qlen1, ptr-_qlenptr);
     currline->txt.erase(_qlen1, ptr-_qlenptr);
@@ -1854,8 +1852,10 @@ void IEclass::ToUpper() {
 
   GFTRK("EditToUpper");
 
-  Undo->PushItem(EDIT_UNDO_OVR_CHAR);
-  currline->txt[col] = toupper(currline->txt[col]);
+  if(col < currline->txt.length()) {
+    Undo->PushItem(EDIT_UNDO_OVR_CHAR);
+    currline->txt[col] = toupper(currline->txt[col]);
+  }
 
   GFTRK(NULL);
 }
@@ -1867,8 +1867,10 @@ void IEclass::ToLower() {
 
   GFTRK("EditToLower");
 
-  Undo->PushItem(EDIT_UNDO_OVR_CHAR);
-  currline->txt[col] = tolower(currline->txt[col]);
+  if(col >= currline->txt.length()) {
+    Undo->PushItem(EDIT_UNDO_OVR_CHAR);
+    currline->txt[col] = tolower(currline->txt[col]);
+  }
 
   GFTRK(NULL);
 }
@@ -1880,11 +1882,13 @@ void IEclass::ToggleCase() {
 
   GFTRK("EditToggleCase");
 
-  Undo->PushItem(EDIT_UNDO_OVR_CHAR);
-  if(toupper(currline->txt[col]) == currline->txt[col])
-    currline->txt[col] = tolower(currline->txt[col]);
-  else
-    currline->txt[col] = toupper(currline->txt[col]);
+  if(col >= currline->txt.length()) {
+    Undo->PushItem(EDIT_UNDO_OVR_CHAR);
+    if(toupper(currline->txt[col]) == currline->txt[col])
+      currline->txt[col] = tolower(currline->txt[col]);
+    else
+      currline->txt[col] = toupper(currline->txt[col]);
+  }
 
   GFTRK(NULL);
 }
@@ -2143,7 +2147,7 @@ int IEclass::Start(int __mode, uint* __position, GMsg* __msg) {
   msgmode = __mode;
   currline = __msg->lin;
 
-  if(AA->isinternet() and CFG->soupexportmargin <= CFG->dispmargin)
+  if(AA->isinternet() and (CFG->soupexportmargin <= CFG->dispmargin))
     margintext = CFG->soupexportmargin;
   else
     margintext = CFG->dispmargin;
@@ -2616,14 +2620,14 @@ void UndoStack::PlayItem() {
         // we need to fit thisrow into the screen boundaries
         if(delta > 0) {
           for (row -= delta; row < minrow; row++) {
-            if (templine) // cause refresh() issue an error since templine should never be NULL
+            if(templine) // cause refresh() issue an error since templine should never be NULL
               templine = templine->next;
           }
           temprow = maxrow;
         }
         else {
           for (row -= delta; row > maxrow; row--) {
-            if (templine) // cause refresh() issue an error since templine should never be NULL
+            if(templine) // cause refresh() issue an error since templine should never be NULL
               templine = templine->prev;
           }
           temprow = minrow;
@@ -2631,13 +2635,13 @@ void UndoStack::PlayItem() {
 
         // move pointer to the top of screen so we refresh scrolled area
         while (row != minrow) {
-          if (templine) // cause refresh() issue an error since templine should never be NULL
+          if(templine) // cause refresh() issue an error since templine should never be NULL
             templine = templine->prev;
           --row;
         }
       }
       else {
-        if (delta < 0) {
+        if(delta < 0) {
           templine = topline;
           for(thisrow=0; thisrow < _prow; thisrow++)
             if(templine) // cause refresh() issue an error if thisrow != _prow

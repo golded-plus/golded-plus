@@ -508,7 +508,7 @@ void LoadText(GMsg* msg, const char* textfile) {
               *txtptr = CR;
           }
           if(*txtptr == LF) {
-            if(*(txtptr-1) != ' ' and *ptr != ' ')
+            if((*(txtptr-1) != ' ') and (*ptr != ' '))
               *txtptr++ = ' ';
           }
           else if(*txtptr != 0)

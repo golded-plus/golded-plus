@@ -872,7 +872,7 @@ void GThreadlist::GenTree(char* buf, int idx) {
   static char graph[4]="ÜÑÅ";
 #else
   static char graph_ibmpc[4]="√¿≥";
-  static char graph[]="";
+  static char graph[4]="";
 
   if(graph[0] == NUL) {
     int table = LoadCharset(NULL, NULL, 1);
