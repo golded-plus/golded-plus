@@ -386,8 +386,11 @@ void Reader() {
 
               switch(istwit) {
                 case TWIT_KILL:
-                  TwitDeleteMsg(msg);
-                  continue;
+                  if(not msg->attr.del()) {
+                    // prevent infinite loop on the last message
+                    TwitDeleteMsg(msg);
+                    continue;
+                  }
                 case TWIT_SKIP:
                   reader_keycode = ReaderGetKey();
                   break;
