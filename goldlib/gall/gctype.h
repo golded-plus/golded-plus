@@ -82,7 +82,7 @@ extern __inline__ int isxalnum(char c) {
  */
 #undef iscntrl
 # define iscntrl(c)	((c < 0x7f) ? __isctype((c), _IScntrl) : 0)
-#endif //__BEOS__
+#endif /* __BEOS__ */
 
 /*  --------------------------------------------------------------- */
 
