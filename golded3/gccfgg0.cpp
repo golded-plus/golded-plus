@@ -186,7 +186,6 @@ SwitchA:
     case CRC_AKA              :  CfgAddress          ();  break;
     case CRC_AKAMATCH         :  CfgAkamatch         ();  break;
     case CRC_AKAMATCHING      :  CfgAkamatching      ();  break;
-    case CRC_AREA             :  CfgArea             ();  break;
     case CRC_AREAAUTOID       :  CfgAreaautoid       ();  break;
     case CRC_AREACFMREPLYTO   :  CfgAreacfmreplyto   ();  break;
     case CRC_AREACOPYADDID    :  CfgAreacopyaddid    ();  break;
@@ -491,8 +490,6 @@ SwitchQ:
 SwitchR:
   switch(crc) {
     case CRC_RA2USERSBBS      :  CfgRa2usersbbs      ();  break;
-    case CRC_REGISTERKEY      :                           break;
-    case CRC_REGISTERNAME     :                           break;
     case CRC_REPLYLINK        :  CfgReplylink        ();  break;
     case CRC_REPLYLINKLIST    :  CfgReplylinklist    ();  break;
     case CRC_ROBOTNAME        :  CfgRobotname        ();  break;
@@ -509,7 +506,6 @@ SwitchS:
     case CRC_SCREENSIZE       :  CfgScreensize       ();  break;
     case CRC_SEARCHFOR        :  CfgSearchfor        ();  break;
     case CRC_SEMAPHORE        :  CfgSemaphore        ();  break;
-    case CRC_SERIALNO         :                           break;
     case CRC_SHAREMODE        :  CfgSharemode        ();  break;
     case CRC_SHOWDELETED      :  CfgShowdeleted      ();  break;
     case CRC_SOUNDPATH        :  CfgSoundpath        ();  break;
@@ -618,8 +614,18 @@ End:
   if(found)
     return true;
 
-//  if(cmdlineoldkeyw == false)
-  return false;
+  if(cmdlineoldkeyw == false)
+    return false;
+
+  switch(crc) {
+    case CRC_AREA             :  CfgArea             ();  break;
+    case CRC_REGISTERKEY      :                           break;
+    case CRC_REGISTERNAME     :                           break;
+    case CRC_SERIALNO         :                           break;
+    default                   :  return false;
+  }
+
+  return true;
 }
                
 
