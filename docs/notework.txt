@@ -12,6 +12,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.4.7, November xx 2000
 ______________________________________________________________________
 
++ Logged version name now combined with release date (for easy sorting
+  out the logs received).
+
 - It was impossible to change To: field when replying to the Internet
   gated message when lookup turned off. Fixed.
 

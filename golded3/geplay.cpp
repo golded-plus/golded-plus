@@ -43,15 +43,15 @@ gsound* snd = NULL;
 
 #if defined(__MSDOS__)
 #define Beep(A,B) { sound(A); usleep(CFG ? B*CFG->beepfactor+1 : B*1000); }
-#define Sleep(A)  { usleep(CFG ? A*CFG->beepfactor+1 : A*1000); }
+#define Sleep(A)  { usleep(CFG ? A*CFG->beepfactor/1000+1 : A); }
 #define NoSound() { nosound(); }
 #elif defined(__OS2__)
 #define Beep(A,B) { DosBeep(A, CFG ? B*CFG->beepfactor/1000+1 : B); }
-#define Sleep(A)  { usleep(CFG ? A*CFG->beepfactor+1 : A*1000); }
+#define Sleep(A)  { usleep(CFG ? A*CFG->beepfactor/1000+1 : A); }
 #define NoSound() { }
 #elif defined(__WIN32__)
 #define Beep(A,B) { (Beep)(A, CFG ? B*CFG->beepfactor/1000+1 : B); }
-#define Sleep(A)  { usleep(CFG ? A*CFG->beepfactor+1 : A*1000); }
+#define Sleep(A)  { usleep(CFG ? A*CFG->beepfactor/1000+1 : A); }
 #define NoSound() { }
 #else
 #define Beep(A,B) { }

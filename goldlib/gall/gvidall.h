@@ -183,8 +183,14 @@ struct __int10_ah1b_statebuf {
 #define _YELLOW     (YELLOW   << 4)
 #define _WHITE      (WHITE    << 4)
 
+#ifdef BLINK
 #undef BLINK
+#endif
 #define BLINK       128
+#ifdef INTENSE
+#undef INTENSE
+#endif
+#define INTENSE     8
 
 #if defined(__UNIX__) and not defined(__USE_NCURSES__)
 #define ACSET       BLINK

@@ -2369,6 +2369,8 @@ bool UndoStack::FixPushLine(Line* __line) {
 
 void UndoStack::PushItem(uint action, Line* __line, uint __col, uint __len) {
 
+  GFTRK("PushItem");
+
   if(undo_enabled) {
 
     throw_new(last_item = new UndoItem);
@@ -2425,12 +2427,16 @@ void UndoStack::PushItem(uint action, Line* __line, uint __col, uint __len) {
         last_item->line = currline;
     }    
   }
+
+  GFTRK(NULL);
 }
 
 
 //  ------------------------------------------------------------------
 
 void UndoStack::PlayItem() {
+
+  GFTRK("PlayItem");
 
   if(last_item) {
 
@@ -2452,7 +2458,7 @@ void UndoStack::PlayItem() {
 
       // Let user to see the position before performing Undo, unless it's a
       // neighbour line and the same column.
-      undo_ready = (abs(int(curr_row_num - thisrow)) < 2 and (curr_col_num == col or col+1 > currline->txt.length()));
+      undo_ready = ((abs(int(curr_row_num - thisrow)) < 2) and ((curr_col_num == col) or (col+1 > currline->txt.length())));
 
       // Move cursor up or down depending on where the undo line is,
       // then refresh window if the line is invisible.
@@ -2478,7 +2484,7 @@ void UndoStack::PlayItem() {
       } while(curr_row_num != thisrow);
     }
     else
-      undo_ready = (abs(int(curr_col_num - col)) < 2 or col+1 > currline->txt.length());
+      undo_ready = ((abs(int(curr_col_num - col)) < 2) or (col+1 > currline->txt.length()));
 
     uint _pcol = item->pcol;
     uint _prow = item->prow;
@@ -2509,7 +2515,7 @@ void UndoStack::PlayItem() {
                 currline->txt.erase(last_item->col.num,1);
                 break;
               case EDIT_UNDO_DEL_CHAR:
-                if(last_item->col.num == currline->txt.length() and last_item->data.char_int != ' ' and last_item->data.char_int != '\n')
+                if((last_item->col.num == currline->txt.length()) and (last_item->data.char_int != ' ') and (last_item->data.char_int != '\n'))
                   currline->txt += ' ';
                 currline->txt.insert(last_item->col.num, 1, last_item->data.char_int);
                 break;
@@ -2593,50 +2599,70 @@ void UndoStack::PlayItem() {
 
       } while(last_item and in_batch);
 
-      editor->refresh(currline, row);
       undo_enabled = YES;
+
       editor->getthisrow(currline);
-      uint temprow = thisrow, posrow;
+      uint temprow = row;
+      Line *templine = currline;
+      Line *topline = editor->findfirstline();
 
-      Line *templine = editor->findfirstline();
-      if(templine) {
-        for(posrow=0; posrow < _prow; posrow++)
-          if(templine->next)
-            templine = templine->next;
-        thisrow = posrow; col = _pcol;
-        currline = templine;
+      int delta = _prow-thisrow;
 
-        if(not in_range(thisrow-temprow, minrow, maxrow)) {
-          do {
-            if(thisrow > temprow) {
-              if(row > minrow)
-                temprow--, row--;
-              else {
-                editor->refresh(templine, row);
-                break;
-              }
-            }
-            else {
-              if(row < maxrow)
-                temprow++, row++;
-              else {
-                editor->refresh(templine, row = minrow);
-                break;
-              }
-            }
-          } while(temprow != thisrow);
+      if(not in_range(row+delta, minrow, maxrow)) {
+
+        // we need to fit thisrow into the screen boundaries
+        if(delta > 0) {
+          for (row -= delta; row < minrow; row++) {
+            if (templine) // cause refresh() issue an error since templine should never be NULL
+              templine = templine->next;
+          }
+          temprow = maxrow;
         }
         else {
-          row += thisrow-temprow;
-          editor->refresh(templine, row);
+          for (row -= delta; row > maxrow; row--) {
+            if (templine) // cause refresh() issue an error since templine should never be NULL
+              templine = templine->prev;
+          }
+          temprow = minrow;
+        }
+
+        // move pointer to the top of screen so we refresh scrolled area
+        while (row != minrow) {
+          if (templine) // cause refresh() issue an error since templine should never be NULL
+            templine = templine->prev;
+          --row;
         }
       }
+      else {
+        if (delta < 0) {
+          templine = topline;
+          for(thisrow=0; thisrow < _prow; thisrow++)
+            if(templine) // cause refresh() issue an error if thisrow != _prow
+              templine = templine->next;
+        }
+        temprow = row+delta;
+      }
+
+      // refresh screen
+      editor->refresh(templine, row);
+
+      // set cursor position
+      thisrow = _prow;
+      col = _pcol;
+      row = temprow;
+      // set currline according to thisrow
+      currline = topline;
+      for(thisrow=0; thisrow < _prow; thisrow++)
+        if(currline)
+          currline = currline->next;
     }
     // Move the cursor to EOL if necessary
     else if(col+1 > currline->txt.length())
       editor->GoEOL();
     undo_ready = YES;
   }
+
+  GFTRK(NULL);
 }
 
 

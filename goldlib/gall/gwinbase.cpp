@@ -110,8 +110,8 @@ int wgotoxy(int wrow, int wcol) {
   #endif
 
   // calculate effective cursor coordinates and update window record
-  int row = gwin.active->row    = gwin.active->srow + wrow + gwin.active->border;
-  int col = gwin.active->column = gwin.active->scol + wcol + gwin.active->border;
+  const int &row = gwin.active->row    = gwin.active->srow + wrow + gwin.active->border;
+  const int &col = gwin.active->column = gwin.active->scol + wcol + gwin.active->border;
 
   // set cursor location
   vposset(row,col);
@@ -162,9 +162,6 @@ int wopen(int srow, int scol, int erow, int ecol, int btype, int battr, int watt
   wrec->prev=gwin.active;
   wrec->next=NULL;
   gwin.active=wrec;
-
-  //printf("wopen(%i,%i,%i,%i,%i,%i,%i,%i,%i)" NL, srow, scol, erow, ecol, btype, battr, wattr, sbattr, loattr);
-  //getxch();
 
   // draw and fill text box on screen
   switch(gwin.style) {
@@ -290,10 +287,10 @@ int wshadow(int attr) {
     return gwin.werrno=W_NOERROR;
 
   // get window coordinates from the window's record
-  int srow = gwin.active->srow;
-  int scol = gwin.active->scol;
-  int erow = gwin.active->erow;
-  int ecol = gwin.active->ecol;
+  const int &srow = gwin.active->srow;
+  const int &scol = gwin.active->scol;
+  const int &erow = gwin.active->erow;
+  const int &ecol = gwin.active->ecol;
 
   // allocate buffer to hold shadow's contents
   vatch* wsbuf = (vatch*)throw_xmalloc((((erow-srow)*sizeof(vatch))+ecol-scol+1)*sizeof(vatch));
@@ -332,12 +329,6 @@ int wshadow(int attr) {
   // draw bottom shadow
   while(ccol<=stop) {
 
-    // read current screen character/attribute and save in shadow's buffer
-    //word chat = *q++ = vgetw(crow, ccol);
-
-    // write character back to screen using shadow's attribute
-    //vputc(crow, ccol++, attr, (char)chat);
-
     // read attribs/chars and store in buffers
     *q = vgetw(crow, ccol++);
     *wptr++ = vsattr(*q, attr);
@@ -373,10 +364,10 @@ int wshadoff() {
     return gwin.werrno=W_NOERROR;
 
   // get window coordinates from the window's record
-  int srow = gwin.active->srow;
-  int scol = gwin.active->scol;
-  int erow = gwin.active->erow;
-  int ecol = gwin.active->ecol;
+  const int &srow = gwin.active->srow;
+  const int &scol = gwin.active->scol;
+  const int &erow = gwin.active->erow;
+  const int &ecol = gwin.active->ecol;
 
   // start at upper right corner of shadow and work down
   int crow = srow+1;
@@ -415,7 +406,7 @@ int wshadoff() {
 int wscroll(int count, int direction) {
 
   // check for window border
-  int border = gwin.active->border;
+  const int &border = gwin.active->border;
 
   vscroll(
     gwin.active->srow + border,
@@ -437,7 +428,7 @@ int wscroll(int count, int direction) {
 int wscrollbox(int wsrow, int wscol, int werow, int wecol, int count, int direction) {
 
   // check for window border
-  int border = gwin.active->border;
+  const int &border = gwin.active->border;
 
   vscroll(
     gwin.active->srow+wsrow+border,
@@ -467,8 +458,8 @@ int wputc(char ch) {
   // get coordinates from window's record
   int crow = gwin.active->row;
   int ccol = gwin.active->column;
-  int scol = gwin.active->scol;
-  int border = gwin.active->border;
+  const int &scol = gwin.active->scol;
+  const int &border = gwin.active->border;
 
   // test the input character for control characters
   switch(ch) {
@@ -534,8 +525,9 @@ int wreadcur(int* wrow, int* wcol) {
   vposget(&row,&col);
 
   // calculate window cursor coordinates
-  *wrow = row - gwin.active->srow - gwin.active->border;
-  *wcol = col - gwin.active->scol - gwin.active->border;
+  const int &border = gwin.active->border;
+  *wrow = row - gwin.active->srow - border;
+  *wcol = col - gwin.active->scol - border;
 
   // return normally
   return gwin.werrno=W_NOERROR;
@@ -565,8 +557,6 @@ int wdupc(char ch, int count) {
 
 int wcclear(int attr) {
 
-  register int border;
-
   // check for active window
 
   if(!gwin.total)
@@ -574,7 +564,7 @@ int wcclear(int attr) {
 
   // check for window border
 
-  border=gwin.active->border;
+  const int &border = gwin.active->border;
 
   vfill(
     gwin.active->srow+border,
@@ -603,12 +593,13 @@ int wclreol() {
     return gwin.werrno=W_NOACTIVE;
 
   // clear to end of window's line
+  const int &column = gwin.active->column;
   vputx(
     gwin.active->row,
-    gwin.active->column,
+    column,
     gwin.active->attr,
     gwin.fillch,
-    gwin.active->ecol - gwin.active->border - gwin.active->column + 1
+    gwin.active->ecol - gwin.active->border - column + 1
   );
 
   // return normally
@@ -656,10 +647,10 @@ static const char* process_esc(const char* str) {
 
   int wrow,wcol;
 
-  int attr = gwin.active->attr;
-
   const char *p = str;
   for(; *p==ESC; p++) {
+
+    int attr = gwin.active->attr;
 
     switch(*(++p)) {
 
@@ -676,19 +667,19 @@ static const char* process_esc(const char* str) {
         break;
 
       case 'F':   // change foreground attribute
-        wtextattr((int)((*++p&7)|(attr&248)));
+        wtextattr((int)((*++p & 0x07) | (attr & ~0x07)));
         break;
 
       case 'B':   // change background attribute
-        wtextattr((int)((*++p&112)|(attr&143)));
+        wtextattr((int)((*++p & 0x70) | (attr & ~0x70)));
         break;
 
       case 'I':   // toggle intensity bit
-        wtextattr((int)((attr&8)?(attr&247):(attr|8)));
+        wtextattr((int)(attr ^ INTENSE));
         break;
 
       case 'L':   // toggle blinking bit
-        wtextattr((int)((attr&128)?(attr&127):(attr|128)));
+        wtextattr((int)(attr ^ BLINK));
         break;
 
       case 'X':   // reverse attribute
@@ -744,10 +735,10 @@ int wputs(const char* str) {
   const char* q;
 
   // get effective coordinates from window's record
-  int* crow = &(gwin.active->row);
-  int* ccol = &(gwin.active->column);
-  int scol = gwin.active->scol;
-  int border = gwin.active->border;
+  int &crow = gwin.active->row;
+  int &ccol = gwin.active->column;
+  const int &scol = gwin.active->scol;
+  const int &border = gwin.active->border;
 
   // do while not end of string
   for(q=str; *q; q++) {
@@ -755,47 +746,47 @@ int wputs(const char* str) {
     // test the input character for control characters
     switch(*q) {
       case '\n':
-        (*crow)++;
+        crow++;
       case '\r':
-        *ccol=scol+border;
+        ccol=scol+border;
         break;
       case '\b':
-        if(*ccol==(scol+border)) {
-          *ccol=gwin.active->ecol-border;
-          (*crow)--;
-          if(*crow<(gwin.active->srow+border))
-            (*crow)++;
+        if(ccol==(scol+border)) {
+          ccol=gwin.active->ecol-border;
+          crow--;
+          if(crow<(gwin.active->srow+border))
+            crow++;
         }
         else {
-          (*ccol)--;
+          ccol--;
         }
         break;
       case '\t':
-        cwcol=(*ccol)-border-scol;
-        (*ccol)+=(tabstop(cwcol,gwin.tabwidth)-cwcol);
+        cwcol=ccol-border-scol;
+        ccol+=(tabstop(cwcol,gwin.tabwidth)-cwcol);
         break;
       case ESC:
         q=process_esc(q);
         break;
       default:
-        vputc(*crow, (*ccol)++, gwin.active->attr, *q);
+        vputc(crow, ccol++, gwin.active->attr, *q);
     }
 
     // see if wrap-around is needed
-    if((*ccol) > (gwin.active->ecol-border)) {
-      *ccol=scol+border;
-      (*crow)++;
+    if(ccol > (gwin.active->ecol-border)) {
+      ccol=scol+border;
+      crow++;
     }
 
     // see if scroll is needed
-    if((*crow) > (gwin.active->erow-border)) {
+    if(crow > (gwin.active->erow-border)) {
       wscroll(1,SUP);
-      (*crow)--;
+      crow--;
     }
   }
 
   // reset cursor position
-  vposset(*crow,*ccol);
+  vposset(crow,ccol);
 
   // return normally
   return(gwin.werrno=W_NOERROR);
@@ -878,7 +869,8 @@ int wprints(int wrow, int wcol, int attr, const char* str) {
     return gwin.werrno=W_INVCOORD;
   #endif
 
-  vputs(gwin.active->srow+wrow+gwin.active->border,gwin.active->scol+wcol+gwin.active->border,attr,str);
+  const int &border = gwin.active->border;
+  vputs(gwin.active->srow+wrow+border,gwin.active->scol+wcol+border,attr,str);
   return gwin.werrno=W_NOERROR;
 }
 
@@ -898,7 +890,8 @@ int wprintvs(int wrow, int wcol, int attr, const vchar* str) {
     return gwin.werrno=W_INVCOORD;
   #endif
 
-  vputvs(gwin.active->srow+wrow+gwin.active->border,gwin.active->scol+wcol+gwin.active->border,attr,str);
+  const int &border = gwin.active->border;
+  vputvs(gwin.active->srow+wrow+border,gwin.active->scol+wcol+border,attr,str);
   return gwin.werrno=W_NOERROR;
 }
 
@@ -907,7 +900,8 @@ int wprintvs(int wrow, int wcol, int attr, const vchar* str) {
 
 int wputx(int wrow, int wcol, int attr, vchar chr, uint len) {
 
-  vputx(gwin.active->srow+wrow+gwin.active->border,gwin.active->scol+wcol+gwin.active->border,attr,chr,len);
+  const int &border = gwin.active->border;
+  vputx(gwin.active->srow+wrow+border,gwin.active->scol+wcol+border,attr,chr,len);
   return gwin.werrno=W_NOERROR;
 }
 
@@ -930,7 +924,7 @@ int wprintns(int wrow, int wcol, int attr, const char* str, uint len, vchar fill
   if(len < olen)
     *ostr = och;
   else if(len > olen)
-    retval = wputx(wrow, wcol+olen, fill_attr != -1 ? fill_attr : attr, fill, len-olen);
+    retval = wputx(wrow, wcol+olen, (fill_attr != -1) ? fill_attr : attr, fill, len-olen);
   throw_xfree(istr);
   return retval;
 }
@@ -952,7 +946,7 @@ int wprintws(int wrow, int wcol, vatch* buf, uint len) {
   #endif
 
   // see if window has border
-  int border = gwin.active->border;
+  const int &border = gwin.active->border;
 
   // calculate effective coordinates
   int row = gwin.active->srow+wrow+border;
@@ -1559,7 +1553,6 @@ static void update_buffers(vatch* pcurr, int shadow) {
 
   if(shadow) {
     if(__curr->next==NULL) {
-//      vputc(__crow, __ccol, vgattr(*pcurr) & BLINK ? (__curr->wsattr | BLINK) : __curr->wsattr, vgchar(*pcurr));
       vputc(__crow, __ccol, __gattr & BLINK ? (__curr->wsattr | BLINK) : __curr->wsattr, *__p);
     }
     else {
@@ -1806,7 +1799,7 @@ int wfill(int wsrow, int wscol, int werow, int wecol, vchar chr, int atr) {
     return gwin.werrno=W_INVCOORD;
 
   // check for window border
-  int border = gwin.active->border;
+  const int &border = gwin.active->border;
 
   // fill in specified region
   vfill(
@@ -1886,17 +1879,10 @@ void wpropbar(int mode, int xx, int yy, long len, long barlen, int attr, long po
   //  pos    = present position.
   //  size   = total size of field.
 
-  #if 0 // defined(__linux__)
-  const char _fld = ':';
-  const char _bar = '#';
-  const char _up  = '^';
-  const char _dwn = 'v';
-  #else
   const vchar _fld = ACS_BOARD;
   const vchar _bar = ACS_BLOCK;
   const vchar _up  = '\x18';
   const vchar _dwn = '\x19';
-  #endif
 
   int dir=0, x, y;
   long first, width, length;
@@ -2041,24 +2027,14 @@ int wtitle(const char* str, int tpos, int tattr) {
 
 void wscrollbar(int orientation, uint total, uint maxpos, uint pos, int sadd) {
 
-  #if 0 // defined(__linux__)
-  const char barchar        = '|';
-  const char thumbchar      = '#';
-  const char arrowupchar    = '^';
-  const char arrowdownchar  = 'v';
-  const char arrowleftchar  = '<';
-  const char arrowrightchar = '>';
-  #else
   const vchar barchar        = _box_table(gwin.active->btype, 13);
-  const vchar thumbchar      = ' '; // '\xDB';
+  const vchar thumbchar      = ACS_BLOCK;
   const vchar arrowupchar    = '\x18';
   const vchar arrowdownchar  = '\x19';
   const vchar arrowleftchar  = '\x1B';
   const vchar arrowrightchar = '\x1A';
-  #endif
 
   int attr = (gwin.active->sbattr == -1) ? gwin.active->battr : gwin.active->sbattr;
-  int thumbattr = revsattr(attr);
 
   int srow, scol;
   uint visiblelen, barlen;
@@ -2101,7 +2077,7 @@ void wscrollbar(int orientation, uint total, uint maxpos, uint pos, int sadd) {
     while(row < erow1)
       vputc(row++, scol, attr|ACSET, barchar);
     while(row < erow2)
-      vputc(row++, scol, thumbattr|ACSET, thumbchar);
+      vputc(row++, scol, attr|ACSET, thumbchar);
     while(row < erow3)
       vputc(row++, scol, attr|ACSET, barchar);
     vputc(row, scol, revsattr(attr), arrowdownchar);
@@ -2115,7 +2091,7 @@ void wscrollbar(int orientation, uint total, uint maxpos, uint pos, int sadd) {
     while(col < ecol1)
       vputc(srow, col++, attr|ACSET, barchar);
     while(col < ecol2)
-      vputc(srow, col++, thumbattr|ACSET, thumbchar);
+      vputc(srow, col++, attr|ACSET, thumbchar);
     while(col < ecol3)
       vputc(srow, col++, attr|ACSET, barchar);
     vputc(srow, col, revsattr(attr), arrowrightchar);

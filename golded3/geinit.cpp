@@ -697,7 +697,9 @@ void Initialize(int argc, char* argv[]) {
   #endif
 
   // Start the log
-  LOG.open(CFG->logfile, __gver_longpid__, __gver_shortlogname__, CFG->logformat);
+  char buf[200];
+  sprintf(buf, "%s (%s %s)", __gver_longpid__, __gver_date__, __gver_time__);
+  LOG.open(CFG->logfile, buf, __gver_shortlogname__, CFG->logformat);
 
   // Read/compile various configs
   compiled |= ReadLangCfg(cmdlineforce);
@@ -720,9 +722,8 @@ void Initialize(int argc, char* argv[]) {
   if(cfgerrors) {
     cout << "* Total CFG errors found: " << cfgerrors
          << ". Press almost any key to continue." << endl;
-    clearkeys();
     kbclear();
-    kbxget();
+    waitkey();
   }
 
   if(CFG->switches.get(keybclear)) {
@@ -799,7 +800,6 @@ void Initialize(int argc, char* argv[]) {
     // Switch to keyboard polling instead of blocking
     gkbd.polling = true;
     gkbd.tickinterval = 5;      // Tick twice per second
-    gkbd.tickvalue = gclock();  // Reset starting tick
     kbdsettickfunc(update_statuslines);
   }
 

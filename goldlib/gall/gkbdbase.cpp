@@ -157,9 +157,8 @@ GKbd::GKbd() {
   source = 0;
   polling = 0;
   tickinterval = 0;
-  tickvalue = 0;
+  tickpress = tickvalue = gclock();
   tickfunc = NULL;
-  tickpress = 0;
   inidle = 0;
   quitall = NO;
 
