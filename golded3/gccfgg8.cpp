@@ -536,7 +536,7 @@ void CfgXlatimport() {
 void CfgXlatlocalset() {
 
   strupr(strxcpy(CFG->xlatlocalset, val, sizeof(CFG->xlatlocalset)));
-  if(strieql(CFG->xlatlocalset, "IBMPC") or strieql(CFG->xlatlocalset, "+7_FIDO")) {
+  if(CFG->usecharset and (strieql(CFG->xlatlocalset, "IBMPC") or strieql(CFG->xlatlocalset, "+7_FIDO"))) {
     std::cout << "* Warning: Charset " << CFG->xlatlocalset << " is obsolete. Consider using CPxxx form." << std::endl;
     cfgerrors++;
   }
