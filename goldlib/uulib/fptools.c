@@ -487,6 +487,7 @@ _FP_fgets (char *buf, int n, FILE *stream)
   return obp;
 }
 
+#if 0
 /*
  * A replacement strerror function that just returns the error code
  */
@@ -510,3 +511,4 @@ _FP_tempnam (char *dir, char *pfx)
 {
   return _FP_strdup (tmpnam (NULL));
 }
+#endif

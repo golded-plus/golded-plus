@@ -2,7 +2,7 @@
 //  ------------------------------------------------------------------
 //  The Goldware Utilities.
 //  Copyright (C) 1990-1999 Odinn Sorensen
-//  Copyright (C) 1999-2000 Alexander S. Aganichev
+//  Copyright (C) 1999-2001 Alexander S. Aganichev
 //  ------------------------------------------------------------------
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License as
@@ -42,6 +42,7 @@
 #include <gdirposx.h>
 #include <gutlos.h>
 #include <glog.h>
+#include <iomanip>
 
 //#define GOLDNODE_STATS 1
 
@@ -129,15 +130,10 @@ nl_stat statistic;
 #endif
 
 //  ------------------------------------------------------------------
-
-#define fast_printf    if(not quiet) printf
-#define fast_putchar   if(not quiet) putchar
-
-//  ------------------------------------------------------------------
 //  Display a "twirly"
 
 #define TWIRLY_FACTOR 511
-#define ISTWIRLY(n) (((n)&TWIRLY_FACTOR)==0)
+#define ISTWIRLY(n) (not quiet and (((n)&TWIRLY_FACTOR)==0))
 
 static void twirly() {
 
@@ -145,14 +141,11 @@ static void twirly() {
 
   n = (++n)%4;
   switch(n) {
-    case 0:   fast_putchar('|');   break;
-    case 1:   fast_putchar('/');   break;
-    case 2:   fast_putchar('-');   break;
-    case 3:   fast_putchar('\\');  break;
+    case 0: cout << "|\b" << flush; break;
+    case 1: cout << "/\b" << flush; break;
+    case 2: cout << "-\b" << flush; break;
+    case 3: cout << "\\\b" << flush; break;
   }
-
-  fast_putchar('\b');
-  fflush(stdout);
 }
 
 
@@ -467,17 +460,17 @@ static char* CvtName(char* inp) {
 //  ------------------------------------------------------------------
 
 #ifdef GOLDNODE_STATS
-void calc_statistic(FILE* ofp, int* observation, float N) {
+void calc_statistic(ofstream &ofp, int* observation, float N) {
 
   int i;
   float mean = 0.0;
   float sumfrekvens = 0.0;
   float varians = 0.0;
 
-  //              12   12345   12345   123456   123456789012
-  fprintf(ofp, ".---------------------------------------------.\n");
-  fprintf(ofp, "|   x |  h(x) |  f(x) | x*f(x) | (x-m)^2*f(x) |\n");
-  fprintf(ofp, "|-----+-------+-------+--------+--------------|\n");
+  //         12   12345   12345   123456   123456789012
+  ofp << ".---------------------------------------------." << endl
+      << "|   x |  h(x) |  f(x) | x*f(x) | (x-m)^2*f(x) |" << endl
+      << "|-----+-------+-------+--------+--------------|" << endl;
 
   for(i=0; i<100; i++) {
     float x = i;
@@ -496,18 +489,18 @@ void calc_statistic(FILE* ofp, int* observation, float N) {
       float frekvens = hyppighed / N;
       float vartmp =  (x-mean)*(x-mean)*frekvens;
       varians += vartmp;
-      fprintf(ofp, "| %3i | %5i | %5.3f | %6.3f | %12.3f | \n", i, observation[i], frekvens, x*frekvens, vartmp);
+      ofp << "| " << setw(3) << i << " | " << setw(5) << observation[i] << " | " << setprecision(3) << setw(5) << frekvens << " | " << setw(6) << x*frekvens << " | " << setw(12) << vartmp << " | " << endl;
     }
   }
 
-  fprintf(ofp, "|-----+-------+-------+--------+--------------|\n");
-  fprintf(ofp, "| sum | %5.0f | %5.3f | %5.3f | %12.3f |\n", N, sumfrekvens, mean, varians);
-  fprintf(ofp, "`---------------------------------------------'\n");
-  fprintf(ofp, "\n");
-  fprintf(ofp, "Mean: %.1f\n", mean);
-  fprintf(ofp, "Variance = %.1f\n", varians);
-  fprintf(ofp, "Standard deviation = %.1f\n", sqrt(varians));
-  fprintf(ofp, "\n");
+  ofp << "|-----+-------+-------+--------+--------------|" << endl
+      << "| sum | " << setprecision(0) << setw(5) << N << " | " << setprecision(3) << setw(5) << sumfrekvens << " | " << setw(5) << mean << " | " << setw(12) << varians << " |" << endl
+      << "`---------------------------------------------'" << endl
+      << endl
+      << "Mean: " << setprecision(1) << mean << endl
+      << "Variance = " << varians << endl
+      << "Standard deviation = " << sqrt(varians) << endl
+      << endl;
 }
 #endif
 
@@ -555,7 +548,7 @@ static void read_nodelists() {
 
   nodes = 0;
 
-  fast_printf("\n* Compiling nodelists:\n");
+  if(not quiet) cout << endl << "* Compiling nodelists:" << endl;
 
   // Delete the current indexfiles so they don't take up space
   remove(addrindex.c_str());
@@ -597,7 +590,10 @@ static void read_nodelists() {
           ptr = buf+llen-1;
           while(llen and not (*ptr == '\r' or *ptr == '\n' or *ptr == '\x1A')) {
             buf[llen] = ' ';
-            fast_printf("\r* |-%-12s     Warning line %u - Invalid NUL char encountered.\n", name, line);
+            if(not quiet) {
+              int len = 16-strlen(name);
+              cout << "\r* |--" << name << setw((len > 0) ? len : 1) << " " << "Warning line " << line << " - Invalid NUL char encountered." << endl;
+            }
             llen = strlen(buf);
             ptr = buf+llen-1;
           }
@@ -688,7 +684,8 @@ static void read_nodelists() {
             }
 
             if(ISTWIRLY(no)) {
-              fast_printf("\r* \\--%-12s     Zone %-5u  Net %-5u  Nodes %6lu", name, nlst.addr.zone, nlst.addr.net, (ulong)no);
+              int len = 16-strlen(name);
+              cout << "\r* \\--" << name << setw((len > 0) ? len : 1) << " " << "Zone " << nlst.addr.zone << "\tNet " << nlst.addr.net << "\tNodes " << (ulong)no << flush;
             }
 
             bool include = true;
@@ -733,20 +730,16 @@ static void read_nodelists() {
           }
         }
 
-        fast_printf("\r* %c--%-12s   Nodes read: %6lu    Total read: %6lu", fno==nodelist.end()-1?'\\':'|', name, (ulong)no, (ulong)nodes);
-
-        if(nodes >= maxnodes) {
-          fast_printf("  (Limit reached)\n");
-        }
-        else {
-          fast_printf("         \n");
+        if(not quiet) {
+          int len = 16-strlen(name);
+          cout << "\r* " << ((fno == nodelist.end()-1) ? '\\' : '|') << "--" << name << setw((len > 0) ? len : 1) << " " << "Nodes read: " << (ulong)no << "\tTotal read: " << (ulong)nodes << ((nodes >= maxnodes) ? " (Limit reached)" : "                ") << endl;
         }
 
         fclose(lfp);
         ++realfno;
       }
       else {
-        fast_printf("Error Opening nodelist %s!\n", fno->fn);
+        if(not quiet) cout << "Error opening nodelist " << fno->fn << '!' << endl;
         *(fno->fn) = NUL;
       }
     }
@@ -754,7 +747,7 @@ static void read_nodelists() {
 
   // Compile userlists
   if(userlist.size()) {
-    fast_printf("\n* Compiling userlists:\n");
+    if(not quiet) cout << endl << "* Compiling userlists:" << endl;
   }
 
   for(fno=userlist.begin(), zno=userzone.begin(); fno != userlist.end() and nodes < maxnodes; fno++, zno++) {
@@ -819,8 +812,10 @@ static void read_nodelists() {
 
           if(include) {   // Address was okay
 
-            if(ISTWIRLY(nodes))
-              fast_printf("\r* \\--%s: %6lu", name, (ulong)nodes);
+            if(ISTWIRLY(nodes)) {
+              int len = 16-strlen(name);
+              cout << "\r* \\--" << name << setw((len > 0) ? len : 1) << " " << "Nodes: " << (ulong)nodes << flush;
+            }
 
             // Indicate userlist
             nlst.pos = (long)0xFFFFFFFFL;
@@ -839,40 +834,36 @@ static void read_nodelists() {
         }
       }
 
-      fast_printf("\r* %c--%-12s     Nodes read: %6lu    Total read: %6lu", fno==userlist.end()-1?'\\':'|', name, (ulong)no, (ulong)nodes);
-
-      if(nodes >= maxnodes) {
-        fast_printf("  (Limit reached)\n");
-      }
-      else {
-        fast_printf("         \n");
+      if(not quiet) {
+        int len = 16-strlen(name);
+        cout << "\r* " << ((fno == userlist.end()-1) ? '\\' : '|') << "--" << name << setw((len > 0) ? len : 1) << " " << "Nodes read: " << (ulong)no << "\tTotal read: " << (ulong)nodes << ((nodes >= maxnodes) ? " (Limit reached)" : "                ") << endl;
       }
 
       fclose(lfp);
     }
     else {
-      fast_printf("Error Opening Userlist %s!\n", fno->fn);
+      if(not quiet) cout << "Error opening userlist " << fno->fn << '!' << endl;
     }
   }
 
   #ifdef GOLDNODE_STATS
   if(make_stats) {
 
-    fast_printf("* Writing statistics to %s\n", statfilename);
+    if(not quiet) cout << "* Writing statistics to " << statfilename << endl;
 
-    FILE *ofp = fopen(statfilename, "wt");
-    if(ofp) {
-
-      fprintf(ofp, "Nodename size statistics:\n");
+    ofstream ofp(statfilename);
+    if(not ofp) {
+      if(not quiet) cout << "Error opening statfile " << statfilename << '!' << endl;
+    }
+    else
+      ofp << "Nodename size statistics:" << endl;
       calc_statistic(ofp, statistic.nodename, nodes);
 
-      fprintf(ofp, "\nLocation size statistics:\n");
+      ofp << endl << "Location size statistics:" << endl;
       calc_statistic(ofp, statistic.location, nodes);
 
-      fprintf(ofp, "\nSysopname size statistics:\n");
+      ofp << endl << "Sysopname size statistics:" << endl;
       calc_statistic(ofp, statistic.sysopname, nodes);
-
-      fclose(ofp);
     }
   }
   else {
@@ -883,7 +874,7 @@ static void read_nodelists() {
     map<long, dword> namepos;
 
     // Sort by name
-    fast_printf("\n* Sorting by name ");
+    if(not quiet) cout << endl << "* Sorting by name " << flush;
     nodeidx.sort(cmp_nnlsts);
 
     // Write the name-sorted .GXN
@@ -894,11 +885,11 @@ static void read_nodelists() {
       if(fidouser)
         fido = fsopen(fidouserlst, "wt", sh_mod);
       if(fido == NULL) {
-        fast_printf("\b, writing %s ", name);
+        if(not quiet) cout << "\b, writing " << name << ' ' << flush;
         fidouser = false;
       }
       else {
-        fast_printf("\b, writing %s and %s ", name, fidouserlst);
+        if(not quiet) cout << "\b, writing " << name << " and " << fidouserlst << ' ' << flush;
       }
 
       int nn = 0;
@@ -912,7 +903,7 @@ static void read_nodelists() {
           if(prev != nodeidx.end() && match_addr_mask(&curr->addr, &prev->addr)) {
             if(strieql(curr->name, prev->name)) {
               #ifdef DEBUG
-              fast_printf("* Dupe: %d:%d/%d.%d %s\n",curr->addr.zone,curr->addr.net,curr->addr.node,curr->addr.point,curr->name);
+              if(not quiet) cout << "* Dupe: " << curr->addr.zone << ':' << curr->addr.net << '/' << curr->addr.node << '.' << curr->addr.point << ' ' << curr->name << endl;
               #endif
               nodeidx.erase(curr);
               curr = prev;
@@ -936,14 +927,14 @@ static void read_nodelists() {
     }
 
     // Sort by address
-    fast_printf(" \n* Sorting by node ");
+    if(not quiet) cout << ' ' << endl << "* Sorting by node " << flush;
     nodeidx.sort(cmp_anlsts);
 
     // Write the address-sorted .GXA
     fp = fsopen(addrindex.c_str(), "wb", sh_mod);
     if(fp) {
       name = CleanFilename(addrindex.c_str());
-      fast_printf("\b, writing %s ", name);
+      if(not quiet) cout << "\b, writing " << name << ' ' << flush;
       int nn = 0;
       for(curr = nodeidx.begin(); curr != nodeidx.end(); curr++) {
         if(ISTWIRLY(nn++))
@@ -957,7 +948,7 @@ static void read_nodelists() {
     fp = fsopen(listindex.c_str(), "wt", sh_mod);
     if(fp) {
       name = CleanFilename(listindex.c_str());
-      fast_printf(" \n* Writing %s\n", name);
+      if(not quiet) cout << ' ' << endl << "* Writing " << name << endl;
       for(fno=nodelist.begin(); fno != nodelist.end(); fno++) {
         if(*(fno->fn))
           fprintf(fp, "%s %lu\n", fno->fn, fno->ft);
@@ -968,10 +959,12 @@ static void read_nodelists() {
     // Note compile time
     runtime = time(NULL) - runtime;
 
-    if(dups) {
-      fast_printf("\n* Total duplicate nodes: %6lu.\n", (ulong)dups);
+    if(not quiet) {
+      if(dups) {
+        cout << endl << "* Total duplicate nodes: " << (ulong)dups << '.' << endl;
+      }
+      cout << endl << "* Nodelist compile completed. Compile time: " << (ulong)(runtime/60) << " min, " << (ulong)(runtime%60) << " sec." << endl;
     }
-    fast_printf("\n* Nodelist compile completed. Compile time: %lu min, %lu sec.\n", (ulong)(runtime/60), (ulong)(runtime%60));
   #ifdef GOLDNODE_STATS
   }
   #endif
@@ -1044,11 +1037,13 @@ static void check_nodelists(bool force) {
     }
   }
 
-  if(compilen) {
-    fast_printf("* %u new nodelist file%s found.\n", compilen, compilen==1?"":"s");
-  }
-  else if(nodelist.size()) {
-    fast_printf("* The nodelist file%s up-to-date.\n", nodelist.size()==1?" is":"s are");
+  if(not quiet) {
+    if(compilen) {
+      cout << "* " << compilen << " new nodelist file" << ((compilen == 1) ? "" : "s") << " found." << endl;
+    }
+    else if(nodelist.size()) {
+      cout << "* The nodelist file" << ((nodelist.size() == 1) ? " is" : "s are") << " up-to-date." << endl;
+    }
   }
 
   // Check userlists
@@ -1059,11 +1054,13 @@ static void check_nodelists(bool force) {
     }
   }
 
-  if(compileu) {
-    fast_printf("* %u new userlist file%s found.\n", compileu, compileu==1?"":"s");
-  }
-  else if(userlist.size()) {
-    fast_printf("* The userlist file%s up-to-date.\n", userlist.size()==1?" is":"s are");
+  if(not quiet) {
+    if(compileu) {
+      cout << "* " << compileu << " new userlist file" << ((compileu == 1) ? "" : "s") << " found." << endl;
+    }
+    else if(userlist.size()) {
+      cout << "* The userlist file" << ((userlist.size() == 1) ? " is" : "s are") << " up-to-date." << endl;
+    }
   }
 
   if(force or compilen or compileu)
@@ -1075,8 +1072,7 @@ static void check_nodelists(bool force) {
 
 static void fatal_error(const char* what) {
 
-  fast_printf(what);
-  fast_printf("\n");
+  if(not quiet) cout << what << endl;
   exit(5);
 }
 
@@ -1169,7 +1165,7 @@ static int parse_config(const char *__configfile, Addr& zoneaddr) {
         switch(crc) {
           case CRC_IF:
             if(in_if) {
-              fast_printf("* %s: Misplaced IF at line %u. IF's cannot be nested.\n", __configfile, line);
+              if(not quiet) cout << "* " << __configfile << ": Misplaced IF at line " << line << ". IF's cannot be nested." << endl;
             }
             in_if = YES;
             cond_status = do_if(value);
@@ -1177,20 +1173,20 @@ static int parse_config(const char *__configfile, Addr& zoneaddr) {
           case CRC_ELIF:
           case CRC_ELSEIF:
             if((not in_if) or in_else) {
-              fast_printf("* %s: Misplaced ELIF/ELSEIF at line %u.\n", __configfile, line);
+              if(not quiet) cout << "* " << __configfile << ": Misplaced ELIF/ELSEIF at line " << line <<  '.' << endl;
             }
             cond_status = do_if(value);
             break;
           case CRC_ELSE:
             if((not in_if) or in_else) {
-              fast_printf("* %s: Misplaced ELSE at line %u.\n", __configfile, line);
+              if(not quiet) cout << "* " << __configfile << "Misplaced ELSE at line " << line <<  '.' << endl;
             }
             in_else = YES;
             cond_status ^= YES;
             break;
           case CRC_ENDIF:
             if(not in_if) {
-              fast_printf("* %s: Misplaced ENDIF at line %u.\n", __configfile, line);
+              if(not quiet) cout << "* " << __configfile << ": Misplaced ENDIF at line " << line << '.' << endl;
             }
             in_if = in_else = NO;
             cond_status = YES;
@@ -1283,7 +1279,7 @@ static int parse_config(const char *__configfile, Addr& zoneaddr) {
             case CRC_INCLUDE:
               strschg_environ(value);
               if(not parse_config(value,zoneaddr))     // NOTE! This is a recursive call!
-                fast_printf("* Could not read configuration file '%s' !\n",value);
+                if(not quiet) cout << "* Could not read configuration file " << value << '!' << endl;
               break;
 	  default:
               break;
@@ -1467,45 +1463,44 @@ static void run_gn(int argc, char* argv[]) {
       cfg = argv[n];
   }
 
-  fast_printf(
-    __GPID__ " " __GVER__ " Nodelist Compiler.\n"
-    "Copyright (C) 1990-1999 Odinn Sorensen\n"
-    "Copyright (C) 1999-2000 Alexander S. Aganichev\n"
-    "-------------------------------------------------------------------------------\n"
-    "\n"
-  );
+  if(not quiet) {
+    cout << __GPID__ " " __GVER__ " Nodelist Compiler." << endl
+         << "Copyright (C) 1990-1999 Odinn Sorensen" << endl
+         << "Copyright (C) 1999-2001 Alexander S. Aganichev" << endl
+         << "-------------------------------------------------------------------------------" << endl
+         << endl;
+  }
 
   if(not(force or conditional)) {
-    fast_printf(
-      "Commandline syntax: %s [-options] [configfile]\n"
-      "\n"
-      "[-options] =   -C        Conditional compile.\n"
-      "               -F        Forced compile.\n"
-      "               -D        Remove duplicate nodes from index while compiling.\n"
-      "               -Q        Quiet compile. No screen output improves speed.\n"
-      "               -S<size>  Set max size of a name in the index.\n"
-      "               -U<file>  Create sorted FIDOUSER.LST userlist file.\n"
+    if(not quiet) {
+      cout << "Commandline syntax: " << CleanFilename(argv[0]) << " [-options] [configfile]" << endl
+           << endl
+           << "[-options] =\t-C\t  Conditional compile." << endl
+           << "\t\t-F\t  Forced compile." << endl
+           << "\t\t-D\t  Remove duplicate nodes from index while compiling." << endl
+           << "\t\t-Q\t  Quiet compile. No screen output improves speed." << endl
+           << "\t\t-S<size>  Set max size of a name in the index." << endl
+           << "\t\t-U<file>  Create sorted FIDOUSER.LST userlist file." << endl
       #ifdef GOLDNODE_STATS
-      "               -T        Make statistics.\n"
+           << "\t\t-T\t  Make statistics." << endl
       #endif
-      ""
-      "[configfile] =           The path AND filename of GOLDED.CFG\n"
-      "                         configuration file to read.\n"
-      "\n",
-      CleanFilename(argv[0])
-    );
+           << endl
+           << "[configfile] =\t\t  The path AND filename of GOLDED.CFG" << endl
+           << "\t\t\t  configuration file to read." << endl
+           << endl;
+    }
   }
   else {
 
     if(force)
-      fast_printf("* Forced compile.\n");
+      if(not quiet) cout << "* Forced compile." << endl;
 
     if(read_config(cfg, argv[0])) {
       if(force or conditional)
         check_nodelists(force);
     }
     else {
-      fast_printf("\nCould not find the configuration file!\n");
+      if(not quiet) cout << endl << "Could not find the configuration file!" << endl;
     }
   }
 }

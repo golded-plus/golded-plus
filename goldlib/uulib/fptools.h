@@ -51,8 +51,10 @@ char *	TOOLEXPORT	_FP_fgets	_ANSI_ARGS_((char *, int, FILE *));
 char *	TOOLEXPORT	_FP_strpbrk	_ANSI_ARGS_((char *, char *));
 char *	TOOLEXPORT	_FP_strtok	_ANSI_ARGS_((char *, char *));
 char *	TOOLEXPORT	_FP_cutdir	_ANSI_ARGS_((char *));
+#if 0
 char *	TOOLEXPORT	_FP_strerror	_ANSI_ARGS_((int));
 char *	TOOLEXPORT	_FP_tempnam	_ANSI_ARGS_((char *, char *));
+#endif
 
 #ifdef __cplusplus
 }

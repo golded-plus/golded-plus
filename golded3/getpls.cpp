@@ -204,7 +204,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
   }
   if(strieql(tplfile, "built-in") or not fexist(tplfile) or CFG->tpl.empty()) {
     tmptpl = YES;   // Create a temporary template
-    mktemp(strcpy(tplfile, AddPath(CFG->templatepath, "GDXXXXXX")));
+    mktemp(strcpy(tplfile, AddPath(CFG->goldpath, "GDXXXXXX")));
     fp = fsopen(tplfile, "wt", CFG->sharemode);
     if(fp) {
       fputs("@header= @oecho (@caddr) @align{79}{=}\n", fp);

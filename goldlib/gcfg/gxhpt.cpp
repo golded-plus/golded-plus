@@ -148,7 +148,7 @@ void gareafile::replace_slashes(char **key) {
     if(*p == '\\') {
 
       int size = 1;
-      int chr = p[1];
+      uint chr = p[1];
 
       if(isxdigit(p[1])) {
         if(isxdigit(p[2])) {

@@ -34,7 +34,7 @@
 
 char* CvtPrnstr(char* str, char* prn) {
 
-  int value;
+  uint value;
   byte len=0;
   char buf[256];
   char* ptr=prn;
@@ -54,8 +54,8 @@ char* CvtPrnstr(char* str, char* prn) {
         break;
       case '#':
         ptr++;
-        value = atoi(ptr);
-        buf[len++] = (byte)value;
+        value = (byte)atoi(ptr);
+        buf[len++] = value;
         while(isdigit(*ptr) and *ptr)
           ptr++;
         break;

@@ -277,7 +277,7 @@ void CfgScreensize() {
   }
   else if(CFG->screensize == 0) {
     if(strnieql(val, "Mode", 4)) {
-      sscanf(val+4, " %x", &CFG->screensize);
+      sscanf(val+4, " %x", (uint *)&CFG->screensize);
       CFG->screensize <<= 8;
     }
   }

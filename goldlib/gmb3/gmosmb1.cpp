@@ -906,7 +906,7 @@ Line* SMBArea::make_dump_msg(Line*& lin, gmsg* msg, char* lng_head)
   line = AddLineF(line, "Written           : %s", buf);
   stpcpy(buf, ctime((time_t *)&smsg.hdr.when_imported.time))[-1] = NUL;
   line = AddLineF(line, "Imported          : %s", buf);
-  line = AddLineF(line, "Number            : %ld (%ld)", smsg.hdr.number, ftell(data->sid_fp) / sizeof(idxrec_t));
+  line = AddLineF(line, "Number            : %ld (%ld)", smsg.hdr.number, (long)(ftell(data->sid_fp)/sizeof(idxrec_t)));
   line = AddLineF(line, "Thread orig       : %ld", smsg.hdr.thread_orig);
   line = AddLineF(line, "Thread next       : %ld", smsg.hdr.thread_next);
   line = AddLineF(line, "Thread first      : %ld", smsg.hdr.thread_first);
