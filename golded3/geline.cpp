@@ -1592,8 +1592,6 @@ void ScanKludges(GMsg* msg, int getvalue) {
         KludgeFROM(msg, tmp ? tmp : ptr);
         if(tmp)
           throw_free(tmp);
-        if(not AA->isinternet())
-          *msg->ifrom = NUL;
       }
       else if(strnieql(line->txt.c_str(), "To:", 3)) {
         const char* ptr = line->txt.c_str() + 3;
@@ -1602,8 +1600,6 @@ void ScanKludges(GMsg* msg, int getvalue) {
         KludgeTO(msg, tmp ? tmp : ptr);
         if(tmp)
           throw_free(tmp);
-        if(not AA->isinternet())
-          *msg->ito = NUL;
       }
       else if(strnieql(line->txt.c_str(), "Reply-To:", 9)) {
         const char* ptr = line->txt.c_str() + 9;
@@ -2549,6 +2545,8 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
         strxmimecpy(msg->realto, msg->realto, 0, sizeof(INam), true);
         strxmimecpy(msg->by, msg->by, level, sizeof(INam), true);
         strxmimecpy(msg->to, msg->to, level, sizeof(INam), true);
+        strxmimecpy(msg->ifrom, msg->ifrom, 0, sizeof(INam), true);
+        strxmimecpy(msg->ito, msg->ito, 0, sizeof(msg->ito), true);
 
         if(not (msg->attr.frq() or msg->attr.att() or msg->attr.urq()))
           strxmimecpy(msg->re, msg->re, level, sizeof(ISub), true);

@@ -374,6 +374,7 @@ SwitchI:
     case CRC_INTERNETADDRESS  :  CfgInternetaddress  ();  break;
     case CRC_INTERNETDOMAIN   :  CfgInternetdomain   ();  break;
     case CRC_INTERNETGATE     :  CfgInternetgate     ();  break;
+    case CRC_INTERNETGATEEXP  :  CfgInternetgateexp  ();  break;
     case CRC_INTERNETMSGID    :  CfgInternetmsgid    ();  break;
     case CRC_INTERNETRFCBODY  :  CfgInternetrfcbody  ();  break;
     case CRC_INTERNETSERVER   :  CfgInternetserver   ();  break;

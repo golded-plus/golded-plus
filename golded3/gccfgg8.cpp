@@ -144,17 +144,17 @@ void CfgTearline() {
 
 void CfgTemplate() {
 
+  char* key;
+  getkeyval(&key, &val);
   if(cfgingroup) {
     Path buf;
-    strxcpy(buf, val, sizeof(buf));
+    strxcpy(buf, key, sizeof(buf));
     CFG->grp.AddItm(GRP_TEMPLATE, buf, strlen(buf)+1);
   }
   else {
-    char* key;
     Tpl tp;
     *tp.name = NUL;
     tp.match.reset();
-    getkeyval(&key, &val);
     strcpy(tp.file, key);
     if((*val == '\'') or (*val == '\"')) {
       getkeyval(&key, &val);

@@ -100,8 +100,6 @@ extern char m_title[];
 extern int m_titlepos;
 extern int m_titleattr;
 
-extern char* tconv;
-
 extern int AreaKeys, ReadKeys, ListKeys, NodeKeys, EditKeys, FileKeys;
 extern list<CmdKey>::iterator AreaKey, ReadKey, ListKey, NodeKey, EditKey, FileKey;
 
@@ -187,6 +185,8 @@ extern const char* __gver_date__;
 extern const char* __gver_time__;
 extern const char* __gver_longpid__;
 extern const char* __gver_shortpid__;
+extern const char* __gver_ver__;
+extern const char* __gver_shortver__;
 
 
 //  ------------------------------------------------------------------

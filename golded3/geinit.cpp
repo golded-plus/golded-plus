@@ -506,7 +506,7 @@ void Initialize(int argc, char* argv[]) {
   srand((unsigned)time(NULL));
 
   // Display startup banner
-  cout << __gver_longpid__ << endl;
+  cout << __gver_longpid__ << " " << __gver_ver__ << endl;
 
   // Check environment commandline
   ptr = getenv("GEDCMD");
@@ -685,7 +685,7 @@ void Initialize(int argc, char* argv[]) {
 
   // Start the log
   static char buf[200];
-  sprintf(buf, "%s (%s %s)", __gver_longpid__, __gver_date__, __gver_time__);
+  sprintf(buf, "%s %s (%s %s)", __gver_longpid__, __gver_ver__, __gver_date__, __gver_time__);
   LOG.open(CFG->logfile, buf, __gver_shortlogname__, CFG->logformat);
 
   // Read/compile various configs

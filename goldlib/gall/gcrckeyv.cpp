@@ -74,7 +74,7 @@ void getkeyvaleql(char** key, char** val, bool eql) {
     // Get straight keyword
     default:
       *key = p;
-      while(*p and not isspace(*p)) {
+      while(*p and not isspace(*p) and (*p != ',')) {
         if(eql and (*p == '='))
           break;
         p++;

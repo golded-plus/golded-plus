@@ -779,9 +779,9 @@ void guserbase::update_addressbook(GMsg* msg, bool reverse, bool force) {
       return;
 
     // Update address
-    if(AA->isinternet())
+    if(AA->isinternet() or (not *entry.iaddr and *iaddr))
       strxcpy(entry.iaddr, iaddr, sizeof(entry.iaddr));
-    else
+    if(not AA->isinternet() and not (AA->Internetgate().addr.valid() and (fidoaddr == AA->Internetgate().addr)))
       entry.fidoaddr = fidoaddr;
 
     lock();
@@ -824,8 +824,12 @@ bool guserbase::lookup_addressbook(GMsg* msg, char* name, char* aka, bool browse
           if(strblank(aka) and not strblank(entry.iaddr)) {
             // do UUCP addressing
             strcpy(msg->realto, entry.name);
-            strcpy(name, entry.iaddr);
+            strcpy(msg->idest, entry.iaddr);
             strcpy(msg->iaddr, entry.iaddr);
+            if(AA->Internetgate().addr.valid())
+              AA->Internetgate().addr.make_string(aka);
+            if(*AA->Internetgate().name)
+              strcpy(name, AA->Internetgate().name);
           }
         }
       }
@@ -852,9 +856,11 @@ void guserbase::build_pseudo(GMsg* msg, char* name, char* aka, bool direction) {
           return;
       }
       else {
-        Addr AKA = aka;
-        if(entry.fidoaddr != AKA)
-          return;
+        if(entry.fidoaddr.valid()) {
+          Addr AKA = aka;
+          if(entry.fidoaddr != AKA)
+            return;
+        }
       }
 
       strcpy(direction ? msg->pseudoto : msg->pseudofrom, entry.pseudo);

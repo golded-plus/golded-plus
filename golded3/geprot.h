@@ -100,7 +100,7 @@ void DoTearorig(int mode, GMsg* msg);
 void GetRandom(int mode, GMsg* msg);
 char* GetRandomLine(char* __buf, size_t __bufsize, const char* __file);
 char* HandleRandomLine(char* buf, size_t bufsize);
-char* get_informative_string(char* buf);
+const char* get_informative_string(void);
 
 
 //  ------------------------------------------------------------------
@@ -275,7 +275,9 @@ int MsgIsTwit(GMsg* msg, bool& istwitto, bool& istwitsubj);
 ulong MsgHasReplies(GMsg* msg);
 gkey ViewMessage(int istwit=NOT_TWIT);
 int LoadMessage(GMsg* msg, int margin);
+#ifdef OLD_STYLE_HEADER
 void DispHeader(GMsg* msg, bool prn, FILE* fp=NULL, int width=-1);
+#endif
 void LoadRawMsg(GMsg* msg, int margin);
 
 void make_pathreport(char* reportfile);
@@ -387,7 +389,6 @@ void  ScanMsgTxtForAddr(GMsg* msg);
 gkey  SearchKey(gkey key, list<CmdKey>::iterator keys, int totkeys);
 int   SearchTaglist(Echo* taglist, char* tag);
 void  set_title(const char* t, int p, int a);
-char* strconv(char* str, char* conv);
 void  title_shadow();
 void  update_statusline(const char* info);
 void  update_statuslinef(const char* format, ...) __attribute__ ((format (printf, 1, 2)));

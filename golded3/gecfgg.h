@@ -241,6 +241,7 @@ public:
   IAdr        internetaddress;
   char        internetdomain[96];
   Node        internetgate;
+  int         internetgateexp;
   bool        internetmsgid;
   bool        internetrfcbody;
   InetServers internetserver;

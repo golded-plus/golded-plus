@@ -10,7 +10,7 @@ else
 LIBS=$(addprefix -l,$(GLIBS))
 endif
 LIBS+=$(STDLIBS)
-FGLIBS=$(addprefix $(FLIBPATH)/lib, $(addsuffix .a, $(GLIBS)))
+FGLIBS=$(addprefix $(FLIBPATH)/lib, $(addsuffix $(LIBEXT), $(GLIBS)))
 
 $(TOP)/$(BIN)/$(SHORTTARGET)$(PLATFORM)$(EXEEXT): $(OBJS) $(FGLIBS) $(ADDS)
 	@echo -n Linking $(TARGET)...

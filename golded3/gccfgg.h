@@ -217,6 +217,7 @@ const word CRC_INTENSECOLORS    = 0x5F70;
 const word CRC_INTERNETADDRESS  = 0xA4D3;
 const word CRC_INTERNETDOMAIN   = 0x50d7;
 const word CRC_INTERNETGATE     = 0xF6C0;
+const word CRC_INTERNETGATEEXP  = 0x0797;
 const word CRC_INTERNETLOOKUP   = 0x0E22;
 const word CRC_INTERNETMSGID    = 0xC31F;
 const word CRC_INTERNETREPLY    = 0x6253;

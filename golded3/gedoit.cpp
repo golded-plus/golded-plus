@@ -61,12 +61,17 @@ void SaveLines(int mode, const char* savefile, GMsg* msg, bool clip) {
   }
   int lines=0;
   if(prnfp) {
+#ifdef OLD_STYLE_HEADER
     if(mode == MODE_WRITE) {
       if(prnheader)
         DispHeader(msg, prn, prnfp, prnmargin);
       if(prn)
         lines = 6;
     }
+#else
+    TemplateToText(((mode == MODE_WRITE) && prnheader) ? MODE_WRITEHEADER : ((prnheader & WRITE_ONLY_HEADER) ? MODE_HEADER : MODE_WRITE), msg, msg, AA->Tpl(), CurrArea);
+    msg->TextToLines(-prnmargin);
+#endif
     int n = 0;
     Line** lin = msg->line;
     if(lin and not (prnheader & WRITE_ONLY_HEADER)) {

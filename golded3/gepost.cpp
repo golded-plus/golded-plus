@@ -689,7 +689,7 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
 
   GFTRK("MakeMsg");
 
-  // Tell DispHeader not to show msg size
+  // Tell GMsgHeaderView not to show msg size
   _in_editor = YES;
 
   // Allocate some msgs
@@ -762,7 +762,7 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
         msg->inreplyto = NULL;
         msg->references = NULL;
         msg->attr.tou0();
-        msg->TextToLines(CFG->dispmargin-1, false);
+        msg->TextToLines(CFG->dispmargin-1);
         *msg->iorig = NUL;
         *msg->idest = NUL;
         *msg->ireplyto = NUL;
@@ -788,7 +788,7 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
         msg->inreplyto = NULL;
         msg->references = NULL;
         msg->attr.tou0();
-        msg->TextToLines(CFG->dispmargin-1, false);
+        msg->TextToLines(CFG->dispmargin-1);
         break;
       case MODE_NEW:
         wfill(MINROW, 0, MAXROW-2, MAXCOL-1, ' ', C_READW);
@@ -830,7 +830,7 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
         case MODE_QUOTE:
         case MODE_REPLYCOMMENT:
           omsg->attr.tou0();
-          omsg->TextToLines(-CFG->quotemargin, false);
+          omsg->TextToLines(-CFG->quotemargin);
           if(ignore_replyto)
             omsg->ireplyto[0] = NUL;
           if(omsg->attr.rot())

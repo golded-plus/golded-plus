@@ -170,6 +170,23 @@ void CfgInternetgate() {
 
 //  ------------------------------------------------------------------
 
+void CfgInternetgateexp() {
+
+  uint exp = 0;
+  char *key;
+  do {
+    getkeyval(&key, &val);
+    if(strieql(key, "Name"))
+      exp = (exp << 2) | RFCName;
+    if(strieql(key, "Address"))
+      exp = (exp << 2) | RFCAddress;
+  }
+  while(*val != NUL);
+  CFG->internetgateexp = exp;
+}
+
+//  ------------------------------------------------------------------
+
 void CfgInternetmsgid() {
 
   bool flag = GetYesno(val);

@@ -826,6 +826,7 @@ CfgGed::CfgGed() {
   else
     memcpy(color, gold_color1, sizeof(color));
   *internetgate.name = 0;
+  internetgateexp = (RFCName << 2) | RFCAddress;
   // internetgate.addr.reset();
   *internetserver.nntp.server = 0;
   *internetserver.smtp.server = 0;

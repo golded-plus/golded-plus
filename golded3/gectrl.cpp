@@ -207,13 +207,16 @@ char* mime_header_encode(char* dest, const char* source, GMsg* msg) {
 
 //  ------------------------------------------------------------------
 
-char* get_informative_string(char* buf) {
+const char* get_informative_string(void) {
 
-  sprintf(buf, "%s%s%s %s%i.%i.%i%s (%s)",
-          __gver_prename__, __gver_name__, __gver_postname__,
-          __gver_preversion__, __gver_major__, __gver_minor__,
-          __gver_release__, __gver_postversion__, ggetosstring());
-  return buf;
+  static char informative_string[356] = "";
+
+  if(informative_string[0] == NUL)
+    sprintf(informative_string, "%s%s%s %s%i.%i.%i%s (%s)",
+            __gver_prename__, __gver_name__, __gver_postname__,
+            __gver_preversion__, __gver_major__, __gver_minor__,
+            __gver_release__, __gver_postversion__, ggetosstring());
+  return informative_string;
 }
 
 
@@ -335,7 +338,7 @@ void DoKludges(int mode, GMsg* msg, bool attronly) {
     }
 
     // The PID: (Product ID code) kludge
-    strcpy(msg->pid, __gver_shortpid__);
+    strxmerge(msg->pid, sizeof(msg->pid), __gver_shortpid__, " ", __gver_ver__, NULL);
 
     if(CFG->usepid and (CFG->switches.get(emptytearline) or not (striinc(__gver_longpid__, msg->tearline)))) {
 
@@ -522,7 +525,7 @@ void DoKludges(int mode, GMsg* msg, bool attronly) {
       }
 
       if(AA->isnewsgroup() or AA->isemail()) {
-        sprintf(buf, "%sX-%s: %s", rfc, AA->isnewsgroup() ? "Newsreader" : "Mailer", get_informative_string(buf2));
+        sprintf(buf, "%sX-%s: %s", rfc, AA->isnewsgroup() ? "Newsreader" : "Mailer", get_informative_string());
         line = AddKludge(line, buf);
         line->kludge = GKLUD_RFC;
       }
@@ -535,10 +538,13 @@ void DoKludges(int mode, GMsg* msg, bool attronly) {
 
     if(AA->isnet()) {
       if(*msg->iaddr and not AA->isinternet()) {
-        if(*msg->To() and (strpbrk(msg->iaddr, "<>()\"") == NULL) and not strieql(msg->To(), *AA->Internetgate().name ? AA->Internetgate().name : "UUCP")) {
+        if(not (CFG->internetgateexp == RFCAddress) and *msg->To() and (strpbrk(msg->iaddr, "<>()\"") == NULL) and not strieql(msg->To(), *AA->Internetgate().name ? AA->Internetgate().name : "UUCP")) {
           Name name;
           strcpy(name, msg->To());
-          sprintf(buf, "To: \"%s\" <%s>\r", StripQuotes(name), msg->iaddr);
+          if(CFG->internetgateexp == ((RFCName << 2) | RFCAddress))
+            sprintf(buf, "To: \"%s\" <%s>\r", StripQuotes(name), msg->iaddr);
+          else
+            sprintf(buf, "To: %s (%s)\r", msg->iaddr, StripQuotes(name));
         }
         else
           sprintf(buf, "To: %s\r", msg->iaddr);
@@ -607,14 +613,6 @@ void DoTearorig(int mode, GMsg* msg) {
   line = LastLine(msg->lin);
   if(line == NULL)
     msg->lin = line = AddLine(NULL, "");
-#if 0
-  else {
-    ptr = line->txt.c_str();
-    if(not strblank(ptr))
-      if(not ((ptr[0] == ptr[1]) and (ptr[1] == ptr[2])))
-        line = AddLine(line, "");
-  }
-#endif
 
   // Check and fix originline
   if(*msg->origin) {

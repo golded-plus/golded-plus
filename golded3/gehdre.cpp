@@ -305,6 +305,10 @@ bool GMsgHeaderEdit::validate() {
     fromaddr.buf = ffromaddr->buf; fromaddr.update = false;
     subj.buf = fsubj->buf; subj.update = false;
 
+    INam iaddr, realto;
+    strcpy(iaddr, msg->iaddr);
+    strcpy(realto, msg->realto);
+
     bool res = set_to_address(msg, &toname, &toaddr, &fromaddr, &subj, 0, LNG->SelectDestNode, lookup);
 
     vcurshow();
@@ -313,9 +317,13 @@ bool GMsgHeaderEdit::validate() {
     strsetsz(bot2, EDIT->HdrNodeLen());
     window.prints(1, EDIT->HdrNodePos(), C_HEADW, bot2);
 
-    // once we changed name invalidate realto
-    if(not strieql(orig_toname.c_str(), toname.buf))
-      *msg->realto = NUL;
+    // once we changed name invalidate realto and internet address
+    if(not strieql(orig_toname.c_str(), toname.buf)) {
+      if(strieql(realto, msg->realto))
+        *msg->realto = NUL;
+      if(not AA->isinternet() and strieql(iaddr, msg->iaddr))
+        *msg->iaddr = NUL;
+    }
 
     if(toname.update) current->update();
     if(toaddr.update) ftoaddr->update();
@@ -442,8 +450,14 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view) {
       strcpy(msg->realto, msg->to);
       strcpy(msg->iorig, from_addr.c_str());
       strcpy(msg->idest, to_addr.c_str());
-      strcpy(msg->ifrom, msg->iorig);
-      strcpy(msg->ito, msg->idest);
+      if(*msg->by)
+        sprintf(msg->ifrom, "%s (%s)", msg->iorig, msg->by);
+      else
+        sprintf(msg->ifrom, "%s", msg->iorig);
+      if(*msg->to)
+        sprintf(msg->ito, "%s (%s)", msg->idest, msg->to);
+      else
+        sprintf(msg->ito, "%s", msg->idest);
       if(msg->orig.net == 0)
         msg->orig = msg->oorig = AA->Aka().addr;
       if(msg->dest.net == 0)
@@ -451,8 +465,9 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view) {
     }
     else {
       if(strchr(to_name.c_str(), '@')) {
-        if(*AA->Internetgate().name)
+        if(*AA->Internetgate().name) {
           strcpy(msg->iaddr, to_name.c_str());
+        }
         else {
           if(to_name.length() > 34) {
             strcpy(msg->to, "UUCP");
@@ -464,6 +479,16 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view) {
       }
       else
         strcpy(msg->to, to_name.c_str());
+
+      if(*msg->iaddr) {
+        if(*msg->To() and (strpbrk(msg->iaddr, "<>()\"") == NULL) and not strieql(msg->To(), *AA->Internetgate().name ? AA->Internetgate().name : "UUCP")) {
+          Name name;
+          strcpy(name, msg->To());
+          sprintf(msg->ito, "%s (%s)", msg->iaddr, StripQuotes(name));
+        }
+        else
+          strcpy(msg->ito, msg->iaddr);
+      }
 
       Addr address;
       address = AA->Aka().addr;

@@ -73,6 +73,8 @@ const int MODE_VIEW          = 116;
 const int MODE_WRITE         = 117;
 const int MODE_PRINT         = 118;
 const int MODE_APPEND        = 119;
+const int MODE_WRITEHEADER   = 120;
+const int MODE_HEADER        = 121;
 
 const int MODE_NEW           = 0x0100;
 const int MODE_CHANGE        = 0x0200;
@@ -1005,6 +1007,11 @@ struct FileSpec {
   FFblk* fblk;             // Filenames
 };
 
+
+//  ------------------------------------------------------------------
+
+const int RFCAddress = 1;
+const int RFCName = 2;
 
 //  ------------------------------------------------------------------
 //  Message written by/to me/you ?

@@ -50,8 +50,6 @@ char m_title[80];         // Menu title string
 int m_titlepos;           // Menu title position
 int m_titleattr;          // Menu title color
 
-char* tconv;
-
 int AreaKeys = 0;
 int ReadKeys = 0;
 int ListKeys = 0;

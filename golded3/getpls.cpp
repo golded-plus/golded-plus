@@ -114,7 +114,9 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
     TPLTOKEN_QUOTE,
     TPLTOKEN_INCLUDE,
     TPLTOKEN_MESSAGE,
-    TPLTOKEN_MODERATOR
+    TPLTOKEN_MODERATOR,
+    TPLTOKEN_WRITE,
+    TPLTOKEN_HEADER
   };
 
   #define CSTR_COMMA_SIZEOF_CSTR(s) s, (sizeof(s)-1)
@@ -150,7 +152,9 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
     { CSTR_COMMA_SIZEOF_CSTR("quote")        },
     { CSTR_COMMA_SIZEOF_CSTR("include")      },
     { CSTR_COMMA_SIZEOF_CSTR("message")      },
-    { CSTR_COMMA_SIZEOF_CSTR("moderator")    }
+    { CSTR_COMMA_SIZEOF_CSTR("moderator")    },
+    { CSTR_COMMA_SIZEOF_CSTR("write")        },
+    { CSTR_COMMA_SIZEOF_CSTR("header")       }
   };
 
   int end_token = sizeof(token_list) / sizeof(tpl_token);
@@ -197,6 +201,12 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
     mktemp(strcpy(tplfile, AddPath(CFG->templatepath, "GDXXXXXX")));
     fp = fsopen(tplfile, "wt", CFG->sharemode);
     if(fp) {
+      fputs("@header= @oecho (@caddr) @align{79}{=}\n", fp);
+      fputs("@header Msg  : @msgno of @msgs@align{44}@attr\n", fp);
+      fputs("@header From : @_oname  @_oaddr @odate @otime\n", fp);
+      fputs("@header To   : @dname\n", fp);
+      fputs("@header Subj : @subject\n", fp);
+      fputs("@header@align{79}{=}\n", fp);
       fputs("@moved* Replying to a msg in @oecho (@odesc)\n@moved\n", fp);
       fputs("@changed* Changed by @cname (@caddr), @cdate @ctime.\n@changed\n", fp);
       fputs("@forward* Forwarded from @oecho by @fname (@faddr).\n", fp);
@@ -329,6 +339,20 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
 
             case TPLTOKEN_CHANGED:
               if(mode != MODE_CHANGE)
+                goto loop_next;
+              chg = YES;
+              token = end_token;
+              break;
+
+            case TPLTOKEN_HEADER:
+              if((mode != MODE_HEADER) and (mode != MODE_WRITEHEADER))
+                goto loop_next;
+              chg = YES;
+              token = end_token;
+              break;
+
+            case TPLTOKEN_WRITE:
+              if((mode != MODE_WRITE) and (mode != MODE_WRITEHEADER))
                 goto loop_next;
               chg = YES;
               token = end_token;
@@ -682,7 +706,8 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
             continue;
 
           case TPLTOKEN_MESSAGE:
-            if(mode == MODE_FORWARD or mode == MODE_CHANGE) {
+            if((mode == MODE_FORWARD) or (mode == MODE_CHANGE) or
+               (mode == MODE_WRITEHEADER) or (mode == MODE_WRITE)) {
               n = 0;
               while(oldmsg->line[n]) {
                 if(oldmsg->line[n]->txt.c_str()) {
@@ -734,7 +759,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
         }
       }
 
-      if(mode == MODE_CHANGE)
+      if((mode == MODE_CHANGE) or (mode == MODE_WRITEHEADER) or (mode == MODE_WRITE))
         if(chg == NO)
           continue;
       if((mode == MODE_QUOTEBUF) and not quotebufline)
@@ -751,7 +776,9 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
   }
   fclose(fp);
 
-  if((mode != MODE_CHANGE) and (mode != MODE_QUOTEBUF)) {
+  if((mode != MODE_CHANGE) and (mode != MODE_QUOTEBUF) and
+     (mode != MODE_HEADER) and (mode != MODE_WRITEHEADER) and
+     (mode != MODE_WRITE) and (mode != MODE_WRITEHEADER)) {
     ctrlinfo = AA->Ctrlinfo();
     ctrlinfo |= CI_TAGL;
     if(ctrlinfo & (CI_TAGL|CI_TEAR|CI_ORIG)) {

@@ -8,7 +8,7 @@ SHELL=bash
 EXEEXT=.exe
 OBJEXT=.o
 LIBEXT=.a
-#CC=gcc -Zomf -Zcrtdll
+#CC=gcc -Zomf
 #AR=emxomfar
 #PLATFORM=emx
 #SHELL=bash
@@ -59,8 +59,8 @@ endif
 
 # force not to use coprocessor features in DOS, if you have one you may remove this
 ifeq ($(PLATFORM),djg)
-CFLAGS+=-m386 -mno-80387 -mno-fp-ret-in-387 -mno-fancy-math-387
-LNKFLAGS+=-lemu
+CFLAGS+=-m386
+LNKFLAGS+=-lwmemu
 endif
 
 BIN=bin

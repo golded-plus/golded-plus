@@ -101,18 +101,18 @@ void GMsgHeaderView::Paint() {
   headerline[width] = NUL;
 
   INam whofrom;
-  if(*msg->ifrom and *msg->realby)
+  if(not area->isecho() and *msg->ifrom and *msg->realby)
     sprintf(whofrom, "%s <%s>", msg->realby, msg->iorig);
-  else if(*msg->ifrom and *msg->iorig)
+  else if(not area->isecho() and *msg->ifrom and *msg->iorig)
     strcpy(whofrom, msg->iorig);
   else
     strcpy(whofrom, msg->By());
   strsetsz(whofrom, (area->isinternet() or *msg->ifrom) ? (namewidth+nodewidth) : namewidth);
 
   INam whoto;
-  if(*msg->ito and *msg->realto)
+  if(not area->isecho() and *msg->ito and *msg->realto)
     sprintf(whoto, "%s <%s>", msg->realto, msg->idest);
-  else if(*msg->ito and *msg->idest)
+  else if(not area->isecho() and *msg->ito and *msg->idest)
     strcpy(whoto, msg->idest);
   else
     strcpy(whoto, msg->To());
@@ -266,9 +266,9 @@ void GMsgHeaderView::Paint() {
   window.prints(3, 0, window_color, LNG->To);
   window.prints(3, CFG->disphdrnameset.pos, ((msg->foundwhere&GFIND_TO) or msg->attr.tou()) ? highlight_color : to_color, whoto);
   if(not area->isinternet()) {
-    if(not (*msg->ifrom and (*msg->realby or *msg->iorig)))
+    if(area->isecho() or not (*msg->ifrom and (*msg->realby or *msg->iorig)))
       window.prints(2, CFG->disphdrnodeset.pos, from_color, node1);
-    if(not (*msg->ito and (*msg->realto or *msg->idest)))
+    if(area->isecho() or not (*msg->ito and (*msg->realto or *msg->idest)))
       window.prints(3, CFG->disphdrnodeset.pos, to_color, node2);
   }
   window.prints(2, CFG->disphdrdateset.pos, from_color, date1);

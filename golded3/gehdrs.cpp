@@ -24,17 +24,17 @@
 //  Header display.
 //  ------------------------------------------------------------------
 
+#ifdef OLD_STYLE_HEADER
+
 #include <golded.h>
 
 
 //  ------------------------------------------------------------------
 
-char* strconv(char* str, char* conv) {
+static char* strconv(char* str) {
 
   char* s=str;
   char* p = str;
-
-  NW(conv);   // Dummy
 
   while(*str) {
     if(iscntrl(*str) and (*str != '\n') and (*str != '\r'))  // Control codes
@@ -79,39 +79,44 @@ void DispHeader(GMsg* msg, bool prn, FILE* fp, int width) {
 
   // Generate top line fields
   char buf[256];
-  char top1[200];
+  char buf1[200];
+  char buf2[200];
   strtrim(strcpy(buf, AA->desc()));
   if((CFG->dispareano == ALWAYS) or (CFG->dispareano and AA->board()))
-    sprintf(top1, " [%u] %s ", AA->board(), buf);
+    sprintf(buf1, " [%u] %s ", AA->board(), buf);
   else
-    sprintf(top1, " %s ", buf);
-  strtrim(top1);
-  strcat(top1, " (" /*)*/);
+    sprintf(buf1, " %s ", buf);
+  strtrim(buf1);
+  strcat(buf1, " (" /*)*/);
   if(AA->isinternet())
     strcpy(buf, AA->Internetaddress());
   else
     AA->Aka().addr.make_string(buf);
-  strcat(top1, buf);
-  strcat(top1, /*(*/ ") ");
+  strcat(buf1, buf);
+  strcat(buf1, /*(*/ ") ");
 
-  char top2[200];
   if(msg->areakludgeid)
-    sprintf(top2, " %s (%s) ", AA->echoid(), msg->areakludgeid);
+    sprintf(buf2, " %s (%s) ", AA->echoid(), msg->areakludgeid);
   else
-    sprintf(top2, " %s ", AA->echoid());
+    sprintf(buf2, " %s ", AA->echoid());
+
+  // Write the total header to a file
+  strcpy(stpcpy(buf, headerline), prn ? NL : "\n");
+  strncpy(buf+1, buf1, strlen(buf1));
+  strncpy(buf+width-strlen(buf2)-1, buf2, strlen(buf2));
+  strconv(buf);
+  fwrite(buf, strlen(buf), 1, fp);
 
   // Generate message attributes string
-  char bot2[200];
-  MakeAttrStr(bot2, &msg->attr);
-  int len2 = strlen(bot2);
+  MakeAttrStr(buf2, &msg->attr);
+  int len2 = strlen(buf2);
   if(len2 > width-CFG->disphdrnodeset.pos) {
     len2 = width-CFG->disphdrnodeset.pos;
-    strsetsz(bot2, len2);
+    strsetsz(buf2, len2);
   }
 
   // Generate message number and reply links string
-  char bot1[200];
-  char* ptr = bot1;
+  char* ptr = buf1;
   int list_max = msg->link.list_max();
   ulong* replies = (ulong*)throw_calloc(list_max+1, sizeof(ulong));
   ulong replyto, replynext;
@@ -139,106 +144,100 @@ void DispHeader(GMsg* msg, bool prn, FILE* fp, int width) {
       ptr += sprintf(ptr, " %s%lu", (plus++?"":"+"), replies[replyn]);
   if(replynext)
     sprintf(ptr, " *%lu", replynext);
-  int len1 = strlen(bot1)-8;
+  int len1 = strlen(buf1)-8;
   if((CFG->disphdrnameset.pos + len1) > CFG->disphdrnodeset.pos) {
     if(8 + len1 + len2 > width) {
-      strsetsz(bot1, width-len2-1);
-      strtrim(bot1);
+      strsetsz(buf1, width-len2-1);
+      strtrim(buf1);
     }
-    strcat(bot1, " ");
-    strcat(bot1, bot2);
-    *bot2 = NUL;
+    strcat(buf1, " ");
+    strcat(buf1, buf2);
+    *buf2 = NUL;
   }
   else {
-    strsetsz(bot1, namewidth+8);
-    strcat(bot1, bot2);
-    *bot2 = NUL;
+    strsetsz(buf1, namewidth+8);
+    strcat(buf1, buf2);
+    *buf2 = NUL;
   }
-  strsetsz(bot1, width);
+  strsetsz(buf1, width);
   throw_free(replies);
 
-  // Generate orig node data
-  char node1[200];
-  if(msg->orig.net)
-    msg->orig.make_string(node1);
-  else
-    *node1 = NUL;
-  strsetsz(node1, nodewidth);
+  // Write message info
+  strcpy(stpcpy(buf, buf1), buf2);
+  strtrim(buf);
+  strcat(buf, prn ? NL : "\n");
+  strconv(buf);
+  fwrite(buf, strlen(buf), 1, fp);
 
-  char date1[25] = "";
+  // Generate orig node data
+  if(msg->orig.net)
+    msg->orig.make_string(buf1);
+  else
+    *buf1 = NUL;
+  strsetsz(buf1, nodewidth);
+
   if(msg->written)
-    strftimei(date1, CFG->disphdrdateset.len, LNG->DateTimeFmt, gmtime(&msg->written));
-  strsetsz(date1, datewidth);
+    strftimei(buf2, CFG->disphdrdateset.len, LNG->DateTimeFmt, gmtime(&msg->written));
+  strsetsz(buf2, datewidth);
+
+  // write from line
+  sprintf(buf, "%s%s%s%s",
+    LNG->From, whofrom,
+    ((not (*msg->ifrom and (*msg->realby or *msg->iorig))) and not AA->isinternet()) ? buf1 : "",
+    buf2
+  );
+  strtrim(buf);
+  strcat(buf, prn ? NL : "\n");
+  strconv(buf);
+  fwrite(buf, strlen(buf), 1, fp);
 
   // Generate dest node data
-  char node2[200];
   if(msg->dest.net and AA->isnet()) {
-    msg->dest.make_string(node2);
+    msg->dest.make_string(buf2);
     if(msg->odest.net) {
       if(msg->odest.net != msg->dest.net or msg->odest.node != msg->dest.node) {
         sprintf(buf, " %s %u/%u", LNG->Via, msg->odest.net, msg->odest.node);
-        strcat(node2, buf);
+        strcat(buf2, buf);
       }
     }
   }
   else
-    *node2 = NUL;
-  strsetsz(node2, nodewidth);
+    *buf2 = NUL;
+  strsetsz(buf2, nodewidth);
 
-  char date2[25] = "";
   if(msg->arrived)
-    strftimei(date2, CFG->disphdrdateset.len, LNG->DateTimeFmt, gmtime(&msg->arrived));
-  strsetsz(date2, datewidth);
+    strftimei(buf2, CFG->disphdrdateset.len, LNG->DateTimeFmt, gmtime(&msg->arrived));
+  strsetsz(buf2, datewidth);
+
+  // write to line
+  sprintf(buf, "%s%s%s%s", LNG->To, whoto,
+    ((not (*msg->ito and (*msg->realto or *msg->idest))) and not AA->isinternet()) ? buf2 : "",
+    buf2
+  );
+  strtrim(buf);
+  strcat(buf, prn ? NL : "\n");
+  strconv(buf);
+  fwrite(buf, strlen(buf), 1, fp);
 
   // Generate subjectline
-  char subj[200], lngsubj[10];
-  strcpy(lngsubj, (msg->attr.att() or msg->attr.frq() or msg->attr.urq()) ? LNG->File : LNG->Subj);
-  strxcpy(subj, msg->re, sizeof(subj));
-  strsetsz(subj, width-strlen(lngsubj));
+  strcpy(buf2, (msg->attr.att() or msg->attr.frq() or msg->attr.urq()) ? LNG->File : LNG->Subj);
+  strxcpy(buf1, msg->re, sizeof(buf1));
+  strsetsz(buf1, width-strlen(buf2));
 
-  // Write the total header to a file
+  // write subject line
+  strcpy(stpcpy(buf, buf2), buf1);
+  strtrim(buf);
+  strcat(buf, prn ? NL : "\n");
+  strconv(buf);
+  fwrite(buf, strlen(buf), 1, fp);
+
+  // write bottom line	    
   strcpy(stpcpy(buf, headerline), prn ? NL : "\n");
-  strncpy(buf+1, top1, strlen(top1));
-  strncpy(buf+width-strlen(top2)-1, top2, strlen(top2));
-  strconv(buf, tconv);
-  fwrite(buf, strlen(buf), 1, fp);
-
-  strcpy(stpcpy(buf, bot1), bot2);
-  strtrim(buf);
-  strcat(buf, prn ? NL : "\n");
-  strconv(buf, tconv);
-  fwrite(buf, strlen(buf), 1, fp);
-
-  sprintf(buf, "%s%s%s%s",
-    LNG->From, whofrom,
-    ((not (*msg->ifrom and (*msg->realby or *msg->iorig))) and not AA->isinternet()) ? node1 : "",
-    date1
-  );
-  strtrim(buf);
-  strcat(buf, prn ? NL : "\n");
-  strconv(buf, tconv);
-  fwrite(buf, strlen(buf), 1, fp);
-
-  sprintf(buf, "%s%s%s%s", LNG->To, whoto,
-    ((not (*msg->ito and (*msg->realto or *msg->idest))) and not AA->isinternet()) ? node2 : "",
-    date2
-  );
-  strtrim(buf);
-  strcat(buf, prn ? NL : "\n");
-  strconv(buf, tconv);
-  fwrite(buf, strlen(buf), 1, fp);
-
-  strcpy(stpcpy(buf, lngsubj), subj);
-  strtrim(buf);
-  strcat(buf, prn ? NL : "\n");
-  strconv(buf, tconv);
-  fwrite(buf, strlen(buf), 1, fp);
-	    
-  strcpy(stpcpy(buf, headerline), prn ? NL : "\n");
-  strconv(buf, tconv);
+  strconv(buf);
   fwrite(buf, strlen(buf), 1, fp);	    
 }
 
 
 //  ------------------------------------------------------------------
 
+#endif

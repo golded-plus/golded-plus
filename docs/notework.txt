@@ -9,8 +9,69 @@ ______________________________________________________________________
 
 ______________________________________________________________________
 
-                Notes for GoldED+ 1.1.5, February xx 2001
+                 Notes for GoldED+ 1.1.5, March xx 2001
 ______________________________________________________________________
+
+- Fixed small bug in parser.
+
++ Added new keyword INTERNETGATEEXP to configure expansion of UUCP
+  gated e-mail into To: line:
+
+  INTERNETGATEEXP Address      // To: bob@fisher.com
+  INTERNETGATEEXP Address,Name // To: bob@fisher.com (Bob Fisher)
+  INTERNETGATEEXP Name,Address // To: "Bob Fisher" <bob@fisher.com>
+
+  Other combinations treated as "Address, Name". Default assignment
+  "Name, Address".
+
+- Addressbook now more accurate with e-mail addresses in FTN areas,
+  it no longer update FTN address with Internetgate (define it in
+  the group if it is different from default) and put Internet address
+  in corresponding field.
+
+- Template keyword now properly extracts filename within random system
+  groups.
+
++ @cfrom and @cto macroses added. Same as @ofrom and @oto but for
+  current message.
+
+! If @ofrom or @oto is about to expanding to nothing they expanded to
+  real name of person (if available).
+
+! @*addr macroses now expanded by default without domain, if you ever
+  need 5d addresses use @*addr{domain} scheme.
+
+- Fixed @ofrom, @oto recoding.
+
+! Header of message saved from Golded now defined in template, default
+  assignment (for built-in template, not for yours):
+
+  @header= @oecho (@caddr) @align{79}{=}
+  @header Msg  : @msgno of @msgs@align{44}@attr
+  @header From : @_oname  @_oaddr @odate @otime
+  @header To   : @dname
+  @header Subj : @subject
+  @header@align{79}{=}
+
+  String beyond @header used when you asked for a header. You may also
+  use @write as prefix to store something special if you asked for a
+  message body (with or without header), though have no idea when
+  @write may be useful except of changing first line of template to:
+
+  @write= @oecho (@caddr) @align{79}{=}
+
++ Added new macroses:
+
+  @msgno            current message number in messagebase
+  @msgs             number of messages in current messagebase
+  @attr             attribute string
+  @align{pos}{char} align to `pos' with `char'
+
+- Fixed bug in expanding fixed lenght macroses.
+
+- Removed useless macroses: @serialno, @os2slash.
+
++ Search speed significantly improved in Win32 version.
 
 ! Window size in Win32 version now calculated from different
   parameters, you may need to adjust screen properties before running

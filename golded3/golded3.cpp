@@ -29,15 +29,18 @@
 
 //  ------------------------------------------------------------------
 
-#define __GVER_PID__(A,B,C,SIZE) __GVER_PRE##SIZE##NAME__ __GVER_##SIZE##NAME__ __GVER_POST##SIZE##NAME__ __GVER_##SIZE##PLATFORM__ " " \
-  __GVER_PREVERSION__ #A "." #B "." #C __GVER_POSTVERSION__
+#define __GVER_PID__(A,SIZE) __GVER_PRE##SIZE##NAME__ __GVER_##SIZE##NAME__ __GVER_POST##SIZE##NAME__ __GVER_##SIZE##PLATFORM__
+#define __GVER_VER__(A,B,C) __GVER_PREVERSION__ #A "." #B "." #C __GVER_POSTVERSION__
+#define __GVER_SVER__(A,B,C) #A "." #B "." #C
 
 #define __GVER__(__GVER_MAJOR__,__GVER_MINOR__,__GVER_RELEASE__) \
 int         __gver_major__    = __GVER_MAJOR__; \
 int         __gver_minor__    = __GVER_MINOR__; \
 int         __gver_release__  = __GVER_RELEASE__; \
-const char* __gver_longpid__  = __GVER_PID__(__GVER_MAJOR__,__GVER_MINOR__,__GVER_RELEASE__,); \
-const char* __gver_shortpid__ = __GVER_PID__(__GVER_MAJOR__,__GVER_MINOR__,__GVER_RELEASE__,SHORT);
+const char* __gver_longpid__  = __GVER_PID__(,); \
+const char* __gver_shortpid__ = __GVER_PID__(,SHORT); \
+const char* __gver_ver__      = __GVER_VER__(__GVER_MAJOR__,__GVER_MINOR__,__GVER_RELEASE__);
+const char* __gver_shortver__ = __GVER_SVER__(__GVER_MAJOR__,__GVER_MINOR__,__GVER_RELEASE__);
 
 
 //  ------------------------------------------------------------------

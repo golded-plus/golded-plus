@@ -209,6 +209,7 @@ void CfgIntensecolors    ();
 void CfgInternetaddress  ();
 void CfgInternetdomain   ();
 void CfgInternetgate     ();
+void CfgInternetgateexp  ();
 void CfgInternetlookup   ();
 void CfgInternetmsgid    ();
 void CfgInternetreply    ();
