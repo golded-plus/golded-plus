@@ -445,8 +445,8 @@ char* strsrep(char* str, const char* search, const char* replace) {
 char* strtrim(char* p) {
 
   int i;
-  for(i=strlen(p)-1; (i >= 0) and ('!' > p[i]); i--) {}
-  p[i+1] = NUL;
+  for(i = strlen(p) - 1; (i >= 0) and (isspace(p[i]) or iscntrl(p[i])); i--) {}
+  p[i + 1] = NUL;
   return p;
 }
 
@@ -455,8 +455,13 @@ std::string& strtrim(std::string& p) {
 
   if(not p.empty()) {
     std::string::iterator trail = p.end();
-    while(trail != p.begin() and *(--trail) < '!') {}
-    if(*trail > ' ') trail++;
+    while(trail != p.begin()) {
+      --trail;
+      if(not isspace(*trail) and not iscntrl(*trail)) {
+        ++trail;
+        break;
+      }
+    }
     p.erase(trail, p.end());
   }
   return p;
@@ -472,7 +477,7 @@ char* strltrim(char* str) {
   char* q;
 
   p = q = str;
-  while(*p and isspace(*p))
+  while(*p and (isspace(*p) or iscntrl(*p)))
     p++;
 
   if(p != q) {
