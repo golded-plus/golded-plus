@@ -145,19 +145,24 @@ void gareafile::ReadCrashmail(char* tag) {
           break;
         case CRC_AREA:
         case CRC_NETMAIL:
-	case CRC_LOCALAREA:
+        case CRC_LOCALAREA:
           if(aa.type != 0xff) {
             if(not unconfirmed)
               AddNewArea(aa);
             aa.reset();
           }
-          aa.type = (crc16 == CRC_NETMAIL) ? GMB_NET : (crc16 == CRC_LOCALAREA) ? GMB_LOCAL : GMB_ECHO;
-          switch(aa.type) {
-            case GMB_NET:
+          switch(crc16) {
+            case CRC_NETMAIL:
+              aa.type = GMB_NET;
               aa.attr = attribsnet;
               break;
-            case GMB_ECHO:
+            case CRC_AREA:
+              aa.type = GMB_ECHO;
               aa.attr = attribsecho;
+              break;
+            case CRC_LOCALAREA:
+              aa.type = GMB_LOCAL;
+              aa.attr = attribslocal;
               break;
           }
           unconfirmed = false;

@@ -858,6 +858,8 @@ inline char uuencode_enc(int c) { return (char)(c ? (c & 077) + ' ': '`'); }
 
 void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
 
+  XlatName __oldxlatimport;
+
   GFTRK("Editimport");
 
   // Save the unfinished msg first of all
@@ -873,6 +875,9 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
     if(*AA->Inputfile() == NUL)
       AA->SetInputfile("*");
   }
+
+  strcpy(__oldxlatimport, AA->Xlatimport());
+  AA->SetXlatimport(CFG->xlatlocalset);
 
   strcpy(CFG->inputfile, AA->Inputfile());
 
@@ -1156,6 +1161,8 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
       w_info(NULL);
     }
   }
+
+  AA->SetXlatimport(__oldxlatimport);
 
   GFTRK(NULL);
 }

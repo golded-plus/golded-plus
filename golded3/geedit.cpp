@@ -1780,7 +1780,8 @@ void IEclass::Reflow() {
   const char* _qlenptr = currline->txt.c_str() + _qlen1;
 
   // Strip leading spaces from the first line
-  const char* ptr = strskip_wht(_qlenptr);
+  const char* ptr = _qlenptr;
+  while(*ptr and isspace(*ptr) and *ptr != '\n') ptr++;
   if(ptr != _qlenptr) {
     Undo->PushItem(EDIT_UNDO_DEL_TEXT, currline, _qlen1, ptr-_qlenptr);
     currline->txt.erase(_qlen1, ptr-_qlenptr);

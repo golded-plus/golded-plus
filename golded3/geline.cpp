@@ -1784,8 +1784,6 @@ static int cmp_quotes(char* q1, char* q2) {
   do {
     q1 = spanspaces(++q1);
     q2 = spanspaces(++q2);
-    if(*q2 == 0)
-      return YES;
     if(*q1 != *q2)
       return NO;
   } while(*q1 and *q2);

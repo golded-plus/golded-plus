@@ -991,6 +991,12 @@ gkey kbxget_raw(int mode) {
       k = 0x8100;
     else if(isalpha(key2))
       k = (scancode_table[key2]);
+    else if(key2 == '\010')
+      k = Key_A_BS;
+    else if(key2 == '\011')
+      k = Key_A_Tab;
+    else if(key2 == '\015')
+      k = Key_A_Ent;
     else {
       // No correct Alt-sequence; ungetch last key and return Esc
       if (mode != 1)
@@ -1305,6 +1311,8 @@ gkey kbxget_raw(int mode) {
       shifts = 0;
     if(shifts & ALT)
       k = Key_A_BS;
+    else if(shifts & GCTRL)
+      k = Key_C_BS;
   }
   #endif
 
