@@ -142,15 +142,15 @@ void FreqWaZOO(const char* files, const Addr& dest, const Attr& attr) {
 
   char m;
   if(attr.imm())
-    m = 'I';
+    m = 'i';
   else if(attr.cra())
-    m = 'C';
+    m = 'c';
   else if(attr.dir())
-    m = 'D';
+    m = 'd';
   else if(attr.hld())
-    m = 'H';
+    m = 'h';
   else
-    m = 'F';
+    m = 'f';
 
   char buf2[5];
   sprintf(buf2, ".%clo", m);
