@@ -381,7 +381,7 @@ int SMBArea::load_msg(gmsg* msg)
         sprintf(buf, "\001In-Reply-To: %s\r", (char *)smsg.hfield_dat[i]);
         goto add;
       case FIDOREPLYID:
-        sprintf(buf, "\001REPLYID: %s\r", (char *)smsg.hfield_dat[i]);
+        sprintf(buf, "\001REPLY: %s\r", (char *)smsg.hfield_dat[i]);
         goto add;
       case FIDOPID:
         sprintf(buf, "\001PID: %s\r", (char *)smsg.hfield_dat[i]);
