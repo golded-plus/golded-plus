@@ -507,7 +507,7 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view, bool doedithdr) {
       else
         strcpy(msg->to, to_name.c_str());
 
-      if(not CFG->switches.get(internetreply)) {
+      if(AA->isnet() and not CFG->switches.get(internetreply)) {
         if(*msg->iaddr and (strlen(msg->iaddr) < sizeof(Name))) {
           if(not *msg->realto)
             strcpy(msg->to, msg->realto);

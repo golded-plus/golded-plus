@@ -12,6 +12,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- InternetReply should only affect netmail areas. Fixed.
+
 - Fixed more bugs with block deletion undo.
 
 + OS/2 only: if environment variable PMWIN set to NO then GoldED+ will
