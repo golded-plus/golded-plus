@@ -35,7 +35,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+
+/* FreeBSD's malloc.h is deprecated, it drops a warning and */
+/* #includes <stdlib.h>, which is already here.             */
+#ifndef __FreeBSD__
 #include <malloc.h>
+#endif
+
 #include "lzh.h"
 
 /****************************************************************************/
@@ -582,7 +588,7 @@ short int lzh_decode_position(uchar *inbuf, long *incnt, long inlen)
 	while (j--) {
 		i = (i << 1) + lzh_getbit(inbuf,incnt,inlen);
 	}
-	return c | i & 0x3f;
+	return c | (i & 0x3f);
 }
 
 /* Compression */

@@ -12,6 +12,15 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed various types of SMB corruption, especially on changing
+  message or updating attrbutes.
+
+- Fixed crash on hex-dumping empty SMB message.
+
+- Fixed problem with non-emporting mail from SMB area.
+
+! Updated SMBLib to the recent version.
+
 + Added patch by Vladimir V. Korablin for @notforward template token.
   The line containing this token is left only when message IS NOT
   a forward. This is "@forward"'s counterpart.

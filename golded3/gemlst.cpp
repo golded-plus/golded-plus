@@ -547,7 +547,10 @@ void GMsgList::Run() {
     return;
   }
 
-  index = AA->Msgn.ToReln(reader_msg->msgno)-1;
+  if(AA->Msgn.ToReln(reader_msg->msgno) != 0)
+    index = AA->Msgn.ToReln(reader_msg->msgno)-1;
+  else
+    index = 0;
   minimum_index = 0;
   msgmark2 = AA->Msgn.ToReln(AA->bookmark);
 
@@ -977,7 +980,8 @@ void GThreadlist::BuildThreadIndex(dword msgn) {
 
 bool GThreadlist::NextThread(bool next) {
 
-  for(uint m = AA->Msgn.ToReln(reader_msg->msgno)-1;
+  uint m = AA->Msgn.ToReln(reader_msg->msgno);
+  for(m = m ? m-1 : 0;
       next ? m < AA->Msgn.Count() : m;
       next ? m++ : m--) {
 

@@ -505,7 +505,7 @@ void SMBArea::save_hdr(int mode, gmsg* msg)
   char *fbuf, *sbody, *stail;
   char buf[256];
   smbmsg_t smsg;
-  fidoaddr_t destaddr, origaddr;
+  fidoaddr_t destaddr;
 
   GFTRK("SMBSaveHdr");
 
@@ -571,8 +571,12 @@ void SMBArea::save_hdr(int mode, gmsg* msg)
   if((mode & GMSG_UPDATE) and not (mode & GMSG_TXT)) {
     if(mode & GMSG_NEW)
       smb_addmsghdr(data, &smsg, data->status.attr & SMB_HYPERALLOC);
-    else
-      smb_putmsghdr(data, &smsg);
+    else {
+      smsg.idx.time = smsg.hdr.when_imported.time;
+      smsg.idx.attr = smsg.hdr.attr;
+      smsg.offset = Msgn->ToReln(msg->msgno) - 1;
+      smb_putmsg(data, &smsg);
+    }
     smb_freemsgmem(&smsg);
     GFTRK(NULL);
     return;
@@ -600,13 +604,6 @@ void SMBArea::save_hdr(int mode, gmsg* msg)
   }
 
   ushort net = NET_FIDO;
-  origaddr.zone = msg->orig.zone;
-  origaddr.net = msg->orig.net;
-  origaddr.node = msg->orig.node;
-  origaddr.point = msg->orig.point;
-  smb_hfield(&smsg, SENDERNETTYPE, sizeof(ushort), &net);
-  smb_hfield(&smsg, SENDERNETADDR, sizeof(fidoaddr_t), &origaddr);
-
   destaddr.zone = msg->dest.zone;
   destaddr.net = msg->dest.net;
   destaddr.node = msg->dest.node;
@@ -631,12 +628,14 @@ void SMBArea::save_hdr(int mode, gmsg* msg)
 
   // calculate maximum possible size of sbody/stail
   for(l = 0, fbuf = msg->txt; *fbuf != NUL; l++, fbuf++)
-    if(l == CR)
+    if(*fbuf == CR)
       ++l;
 
+  l += 2; // reserve 2 bytes for the encoding type
+
   fbuf = msg->txt;
-  sbody = (char *)throw_malloc(SDT_BLOCK_LEN*smb_datblocks(l));
-  stail = (char *)throw_malloc(SDT_BLOCK_LEN*smb_datblocks(l));
+  sbody = (char *)throw_malloc(SDT_BLOCK_LEN*smb_datblocks(l))+2;
+  stail = (char *)throw_malloc(SDT_BLOCK_LEN*smb_datblocks(l))+2;
 
   for(l = bodylen = taillen = done = 0, cr = true; (ch = fbuf[l]) != NUL; l++) {
     if(ch == CTRL_A and cr) {
@@ -753,29 +752,57 @@ void SMBArea::save_hdr(int mode, gmsg* msg)
 
   if(smsg.hdr.offset != (ulong)-1L) {
     fseek(data->sdt_fp, smsg.hdr.offset, SEEK_SET);
-    ushort xlat = XLAT_NONE;
-    fwrite(&xlat, 2, 1, data->sdt_fp);
+    *(ushort *)(sbody-2) = XLAT_NONE;
     l = ftell(data->sdt_fp);
-    fwrite(sbody, SDT_BLOCK_LEN, smb_datblocks(bodylen), data->sdt_fp);
+    fwrite(sbody-2, SDT_BLOCK_LEN, smb_datblocks(bodylen), data->sdt_fp);
     if(taillen) {
       fseek(data->sdt_fp, l+bodylen, SEEK_SET);
-      fwrite(&xlat, 2, 1, data->sdt_fp);
-      fwrite(stail, SDT_BLOCK_LEN, smb_datblocks(taillen), data->sdt_fp);
+      *(ushort *)(stail-2) = XLAT_NONE;
+      fwrite(stail-2, SDT_BLOCK_LEN, smb_datblocks(taillen), data->sdt_fp);
     }
     fflush(data->sdt_fp);
     smb_dfield(&smsg, TEXT_BODY, bodylen+2);
     if(taillen)
       smb_dfield(&smsg, TEXT_TAIL, taillen+2);
 
+    int storage = data->status.attr & SMB_HYPERALLOC;
+
     if(mode & GMSG_NEW) {
-      smb_addmsghdr(data, &smsg, data->status.attr & SMB_HYPERALLOC);
+      smb_addmsghdr(data, &smsg, storage);
       Msgn->Append(smsg.hdr.number);
     }
-    else
-      smb_putmsghdr(data, &smsg);
+    else {
+      // Changing message... It is always bad idea since it is usually
+      // undescribed and not supported by the API
+      long l;
+
+      if(data->locked or (smb_locksmbhdr(data) == 0)) {
+        if(smb_getstatus(data) == 0) {
+          if((storage == SMB_HYPERALLOC) or (smb_open_ha(data) == 0)) {
+            smsg.hdr.length = smb_getmsghdrlen(&smsg);
+            if(storage == SMB_HYPERALLOC)
+              l = smb_hallochdr(data);
+            else if(storage == SMB_FASTALLOC)
+              l = smb_fallochdr(data, smsg.hdr.length);
+            else
+              l = smb_allochdr(data, smsg.hdr.length);
+            if(storage != SMB_HYPERALLOC)
+              smb_close_ha(data);
+            if(l!=-1L) {
+              smsg.idx.offset = data->status.header_offset+l;
+              smsg.idx.time = smsg.hdr.when_imported.time;
+              smsg.idx.attr = smsg.hdr.attr;
+              smsg.offset = Msgn->ToReln(msg->msgno) - 1;
+              smb_putmsg(data, &smsg);
+            }
+          }
+        }
+      }
+      smb_unlocksmbhdr(data);
+    }
   }
-  throw_xfree(sbody);
-  throw_xfree(stail);
+  throw_xfree(sbody-2);
+  throw_xfree(stail-2);
   smb_freemsgmem(&smsg);
 
   GFTRK(NULL);
@@ -813,7 +840,10 @@ void SMBArea::del_msg(gmsg* msg)
   }
   if(smb_getmsghdr(data, &smsg) == 0) {
     smsg.hdr.attr |= MSG_DELETE;
-    int rv = smb_putmsghdr(data, &smsg);
+    smsg.idx.time = smsg.hdr.when_imported.time;
+    smsg.idx.attr = smsg.hdr.attr;
+    smsg.offset = reln - 1L;
+    int rv = smb_putmsg(data, &smsg);
     smb_unlockmsghdr(data, &smsg);
     if(rv == 0)
       msg->attr.del1();
@@ -874,7 +904,7 @@ static char *binstr(char *buf, ushort length)
   for(i = 0; i < length; i++)
     if(buf[i] and not isprint(buf[i]))
       break;
-  if(i == length)		/* not binary */
+  if(i == length)                /* not binary */
     return buf;
 
   if(length > 42)
@@ -1045,11 +1075,14 @@ common:
           msg->txt = (char *)throw_realloc(msg->txt, txt_len+outlen);
           lzh_decode(inbuf, smsg.dfield[i].length - l, (uchar *)(msg->txt+txt_len-1));
           throw_xfree(inbuf);
-        } else {
+        }
+        else if(l < smsg.dfield[i].length) {
           outlen = smsg.dfield[i].length - l;
           msg->txt = (char *)throw_realloc(msg->txt, txt_len+outlen);
           fread(msg->txt+txt_len-1, smsg.dfield[i].length - l, 1, data->sdt_fp);
         }
+        else
+          outlen = 0;
         txt_len+=outlen;
         msg->txt[txt_len-1] = NUL;
         break;

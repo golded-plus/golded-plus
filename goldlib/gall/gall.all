@@ -31,9 +31,6 @@ gcrcm32  cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
 gcrcs16  cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
 gcrcs32  cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
 
-## Compression
-glzh     cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-
 ## Debugging.
 gdbgerr  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
 gdbgexit cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg

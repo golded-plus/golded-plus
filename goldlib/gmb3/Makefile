@@ -3,7 +3,6 @@
 TOP=../..
 TARGET=gmb3
 INCS=-I$(TOP)/goldlib/gall -I$(TOP)/goldlib/gcfg -I$(TOP)/goldlib/gmb3 -I$(TOP)/goldlib/smblib
-CFLAGS=-DGOLDEDPLUS
 
 include $(TOP)/GNUmakef.inc
 ifeq ($(PLATFORM),emx)

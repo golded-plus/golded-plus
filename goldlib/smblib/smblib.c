@@ -48,7 +48,11 @@
 #endif
 
 /* ANSI C Library headers */
-#include <malloc.h>
+
+#ifndef __FreeBSD__
+	#include <malloc.h>
+#endif
+
 #include <time.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -60,16 +64,11 @@
 
 /* SMB-specific headers */
 #include "smblib.h"
-#ifndef GOLDEDPLUS
-#include "smbwrap.h"
-#else
-#include <gfilutil.h>
-
-#define sopen(fn,access,share) (sopen)((fn),(access),(share),S_IREAD|S_IWRITE)
-#endif
+#include "genwrap.h"
+#include "filewrap.h"
 
 /* Use smb_ver() and smb_lib_ver() to obtain these values */
-#define SMBLIB_VERSION		"2.13"      /* SMB library version */
+#define SMBLIB_VERSION		"2.16"      /* SMB library version */
 #define SMB_VERSION 		0x0121		/* SMB format version */
 										/* High byte major, low byte minor */
 
@@ -93,16 +92,24 @@ int SMBCALL smb_open(smb_t* smb)
     char str[128];
 	smbhdr_t hdr;
 
+	/* Set default values, if uninitialized */
 	if(!smb->retry_time)
-		smb->retry_time=10;
+		smb->retry_time=10;		/* seconds */
+	if(!smb->retry_delay 
+		|| smb->retry_delay>(smb->retry_time*100))	/* at least ten retries */
+		smb->retry_delay=250;	/* milliseconds */
 	smb->shd_fp=smb->sdt_fp=smb->sid_fp=NULL;
+	smb->last_error[0]=0;
 	sprintf(str,"%s.shd",smb->file);
-	if((file=sopen(str,O_RDWR|O_CREAT|O_BINARY,SH_DENYNO))==-1
-		|| (smb->shd_fp=fdopen(file,"r+b"))==NULL) {
+	if((file=sopen(str,O_RDWR|O_CREAT|O_BINARY,SH_DENYNO))==-1) {
 		sprintf(smb->last_error,"%d opening %s",errno,str);
-		if(file!=-1)
-			close(file);
 		return(2); 
+	}
+
+	if((smb->shd_fp=fdopen(file,"r+b"))==NULL) {
+		sprintf(smb->last_error,"%d fdopening %s (%d)",errno,str,file);
+		close(file);
+		return(4); 
 	}
 
 	if(filelength(file)>=sizeof(smbhdr_t)) {
@@ -118,8 +125,8 @@ int SMBCALL smb_open(smb_t* smb)
 			smb_close(smb);
 			return(-10);
 		}
-		if(memcmp(hdr.id,"SMB\x1a",4)) {
-			sprintf(smb->last_error,"corrupt header id: %.4s",hdr.id);
+		if(memcmp(hdr.id,SMB_HEADER_ID,LEN_HEADER_ID)) {
+			sprintf(smb->last_error,"corrupt SMB header ID: %.*s",LEN_HEADER_ID,hdr.id);
 			smb_close(smb);
 			return(-2); 
 		}
@@ -141,25 +148,35 @@ int SMBCALL smb_open(smb_t* smb)
 	setvbuf(smb->shd_fp,smb->shd_buf,_IOFBF,SHD_BLOCK_LEN);
 
 	sprintf(str,"%s.sdt",smb->file);
-	if((file=sopen(str,O_RDWR|O_CREAT|O_BINARY,SH_DENYNO))==-1
-		|| (smb->sdt_fp=fdopen(file,"r+b"))==NULL) {
+	if((file=sopen(str,O_RDWR|O_CREAT|O_BINARY,SH_DENYNO))==-1) {
 		sprintf(smb->last_error,"%d opening %s",errno,str);
-		if(file!=-1)
-			close(file);
 		smb_close(smb);
 		return(1); 
 	}
+
+	if((smb->sdt_fp=fdopen(file,"r+b"))==NULL) {
+		sprintf(smb->last_error,"%d fdopening %s (%d)",errno,str,file);
+		close(file);
+		smb_close(smb);
+		return(5);
+	}
+
 	setvbuf(smb->sdt_fp,NULL,_IOFBF,2*1024);
 
 	sprintf(str,"%s.sid",smb->file);
-	if((file=sopen(str,O_RDWR|O_CREAT|O_BINARY,SH_DENYNO))==-1
-		|| (smb->sid_fp=fdopen(file,"r+b"))==NULL) {
+	if((file=sopen(str,O_RDWR|O_CREAT|O_BINARY,SH_DENYNO))==-1) {
 		sprintf(smb->last_error,"%d opening %s",errno,str);
-		if(file!=-1)
-			close(file);
 		smb_close(smb);
 		return(3); 
 	}
+
+	if((smb->sid_fp=fdopen(file,"r+b"))==NULL) {
+		sprintf(smb->last_error,"%d fdopening %s (%d)",errno,str,file);
+		close(file);
+		smb_close(smb);
+		return(6); 
+	}
+
 	setvbuf(smb->sid_fp,NULL,_IOFBF,2*1024);
 
 	return(0);
@@ -190,26 +207,28 @@ int SMBCALL smb_open_da(smb_t* smb)
 {
 	int 	file;
 	char	str[128];
-	ulong	start=0;
+	time_t	start=0;
 
 	sprintf(str,"%s.sda",smb->file);
 	while(1) {
 		if((file=sopen(str,O_RDWR|O_CREAT|O_BINARY,SH_DENYRW))!=-1)
 			break;
-		if(errno!=EACCES) {
+		if(errno!=EACCES && errno!=EAGAIN) {
 			sprintf(smb->last_error,"%d opening %s",errno,str);
 			return(-1);
 		}
 		if(!start)
 			start=time(NULL);
 		else
-			if(time(NULL)-start>=smb->retry_time) {
-				sprintf(smb->last_error,"timeout opening %s",str);
+			if(time(NULL)-start>=(time_t)smb->retry_time) {
+				sprintf(smb->last_error,"timeout opening %s (retry_time=%ld)"
+					,str,smb->retry_time);
 				return(-2); 
 			}
+		SLEEP(smb->retry_delay);
 	}
 	if((smb->sda_fp=fdopen(file,"r+b"))==NULL) {
-		sprintf(smb->last_error,"%d fdopening %s",errno,str);
+		sprintf(smb->last_error,"%d fdopening %s (%d)",errno,str,file);
 		close(file);
 		return(-3); 
 	}
@@ -233,26 +252,28 @@ int SMBCALL smb_open_ha(smb_t* smb)
 {
 	int 	file;
 	char	str[128];
-	ulong	start=0;
+	time_t	start=0;
 
 	sprintf(str,"%s.sha",smb->file);
 	while(1) {
 		if((file=sopen(str,O_RDWR|O_CREAT|O_BINARY,SH_DENYRW))!=-1)
 			break;
-		if(errno!=EACCES) {
+		if(errno!=EACCES && errno!=EAGAIN) {
 			sprintf(smb->last_error,"%d opening %s",errno,str);
 			return(-1);
 		}
 		if(!start)
 			start=time(NULL);
 		else
-			if(time(NULL)-start>=smb->retry_time) {
-				sprintf(smb->last_error,"timeout opening %s",str);
+			if(time(NULL)-start>=(time_t)smb->retry_time) {
+				sprintf(smb->last_error,"timeout opening %s (retry_time=%ld)"
+					,str,smb->retry_time);
 				return(-2); 
 			}
+		SLEEP(smb->retry_delay);
 	}
 	if((smb->sha_fp=fdopen(file,"r+b"))==NULL) {
-		sprintf(smb->last_error,"%d opening %s",errno,str);
+		sprintf(smb->last_error,"%d fdopening %s (%d)",errno,str,file);
 		close(file);
 		return(-3); 
 	}
@@ -285,76 +306,35 @@ void SMBCALL smb_close_ha(smb_t* smb)
 /****************************************************************************/
 int SMBCALL smb_stack(smb_t* smb, int op)
 {
-	static char stack_file[SMB_STACK_LEN][128];
-	static FILE* stack_sdt[SMB_STACK_LEN],
-				*stack_shd[SMB_STACK_LEN],
-				*stack_sid[SMB_STACK_LEN],
-				*stack_sda[SMB_STACK_LEN],
-				*stack_sha[SMB_STACK_LEN];
-	static int	stack_idx = 0;
-	char		tmp_file[128];
-	FILE		*tmp;
+	static smb_t stack[SMB_STACK_LEN];
+	static int	stack_idx;
+	smb_t		tmp_smb;
 
-	switch(op) {
-		case SMB_STACK_PUSH:
-			if(stack_idx>=SMB_STACK_LEN) {
-				sprintf(smb->last_error,"SMB stack overflow");
-				return(1);
-			}
-			if(smb->shd_fp==NULL || smb->sdt_fp==NULL || smb->sid_fp==NULL)
-				return(0);	  /* Msg base not open */
-			memcpy(stack_file[stack_idx],smb->file,128);
-			stack_sdt[stack_idx]=smb->sdt_fp;
-			stack_shd[stack_idx]=smb->shd_fp;
-			stack_sid[stack_idx]=smb->sid_fp;
-			stack_sda[stack_idx]=smb->sda_fp;
-			stack_sha[stack_idx]=smb->sha_fp;
-			stack_idx++;
-			return(0); 
-		case SMB_STACK_POP:
-			if(!stack_idx)	/* Nothing on the stack, so do nothing */
-				return(0);
-			stack_idx--;
-			memcpy(smb->file,stack_file[stack_idx],128);
-			smb->sdt_fp=stack_sdt[stack_idx];
-			smb->shd_fp=stack_shd[stack_idx];
-			smb->sid_fp=stack_sid[stack_idx];
-			smb->sda_fp=stack_sda[stack_idx];
-			smb->sha_fp=stack_sha[stack_idx];
+	if(op==SMB_STACK_PUSH) {
+		if(stack_idx>=SMB_STACK_LEN) {
+			sprintf(smb->last_error,"SMB stack overflow");
+			return(1);
+		}
+		if(smb->shd_fp==NULL || smb->sdt_fp==NULL || smb->sid_fp==NULL)
+			return(0);	  /* Msg base not open */
+		memcpy(&stack[stack_idx],smb,sizeof(smb_t));
+		stack_idx++;
+		return(0); 
+	}
+	/* pop or xchng */
+	if(!stack_idx)	/* Nothing on the stack, so do nothing */
+		return(0);
+	if(op==SMB_STACK_XCHNG) {
+		if(smb->shd_fp==NULL)
 			return(0);
-		case SMB_STACK_XCHNG:
-			if(!stack_idx)	/* Nothing on the stack, so do nothing */
-				return(0);
-			if(!smb->shd_fp)
-				return(0);
-			stack_idx--;
+		memcpy(&tmp_smb,smb,sizeof(smb_t));
+	}
 
-			memcpy(tmp_file,stack_file[stack_idx],128);
-			memcpy(stack_file[stack_idx],smb->file,128);
-			memcpy(smb->file,tmp_file,128);
-
-			tmp=stack_sdt[stack_idx];
-			stack_sdt[stack_idx]=smb->sdt_fp;
-			smb->sdt_fp=tmp;
-
-			tmp=stack_shd[stack_idx];
-			stack_shd[stack_idx]=smb->shd_fp;
-			smb->shd_fp=tmp;
-
-			tmp=stack_sid[stack_idx];
-			stack_sid[stack_idx]=smb->sid_fp;
-			smb->sid_fp=tmp;
-
-			tmp=stack_sda[stack_idx];
-			stack_sda[stack_idx]=smb->sda_fp;
-			smb->sda_fp=tmp;
-
-			tmp=stack_sha[stack_idx];
-			stack_sha[stack_idx]=smb->sha_fp;
-			smb->sha_fp=tmp;
-
-			stack_idx++;
-			return(0);
+	stack_idx--;
+	memcpy(smb,&stack[stack_idx],sizeof(smb_t));
+	if(op==SMB_STACK_XCHNG) {
+		memcpy(&stack[stack_idx],&tmp_smb,sizeof(smb_t));
+		stack_idx++;
 	}
 	return(0);
 }
@@ -366,23 +346,29 @@ int SMBCALL smb_stack(smb_t* smb, int op)
 /****************************************************************************/
 int SMBCALL smb_trunchdr(smb_t* smb)
 {
-	ulong	start=0;
+	time_t	start=0;
 
+	if(smb->shd_fp==NULL) {
+		sprintf(smb->last_error,"msgbase not open");
+		return(SMB_ERR_NOT_OPEN);
+	}
 	rewind(smb->shd_fp);
 	while(1) {
 		if(!chsize(fileno(smb->shd_fp),0L))
 			break;
-		if(errno!=EACCES) {
+		if(errno!=EACCES && errno!=EAGAIN) {
 			sprintf(smb->last_error,"%d changing header file size",errno);
 			return(-1);
 		}
 		if(!start)
 			start=time(NULL);
 		else
-			if(time(NULL)-start>=smb->retry_time) {	 /* Time-out */
-				sprintf(smb->last_error,"timeout changing header file size");
+			if(time(NULL)-start>=(time_t)smb->retry_time) {	 /* Time-out */
+				sprintf(smb->last_error,"timeout changing header file size (retry_time=%ld)"
+					,smb->retry_time);
 				return(-2); 
 			}
+		SLEEP(smb->retry_delay);
 	}
 	return(0);
 }
@@ -396,18 +382,26 @@ int SMBCALL smb_trunchdr(smb_t* smb)
 /****************************************************************************/
 int SMBCALL smb_locksmbhdr(smb_t* smb)
 {
-	ulong	start=0;
+	time_t	start=0;
 
+	if(smb->shd_fp==NULL) {
+		sprintf(smb->last_error,"msgbase not open");
+		return(SMB_ERR_NOT_OPEN);
+	}
 	while(1) {
-		if(!lock(fileno(smb->shd_fp),0L,sizeof(smbhdr_t)+sizeof(smbstatus_t)))
+		if(lock(fileno(smb->shd_fp),0L,sizeof(smbhdr_t)+sizeof(smbstatus_t))==0) {
+			smb->locked=1;	/* TRUE */
 			return(0);
+		}
 		if(!start)
 			start=time(NULL);
 		else
-			if(time(NULL)-start>=smb->retry_time) 
+			if(time(NULL)-start>=(time_t)smb->retry_time) 
 				break;						
 		/* In case we've already locked it */
-		unlock(fileno(smb->shd_fp),0L,sizeof(smbhdr_t)+sizeof(smbstatus_t)); 
+		if(unlock(fileno(smb->shd_fp),0L,sizeof(smbhdr_t)+sizeof(smbstatus_t))==0)
+			smb->locked=0;	/* FALSE */
+		SLEEP(smb->retry_delay);
 	}
 	sprintf(smb->last_error,"timeout locking header");
 	return(-1);
@@ -420,6 +414,10 @@ int SMBCALL smb_getstatus(smb_t* smb)
 {
 	int 	i;
 
+	if(smb->shd_fp==NULL) {
+		sprintf(smb->last_error,"msgbase not open");
+		return(SMB_ERR_NOT_OPEN);
+	}
 	setvbuf(smb->shd_fp,smb->shd_buf,_IONBF,SHD_BLOCK_LEN);
 	clearerr(smb->shd_fp);
 	fseek(smb->shd_fp,sizeof(smbhdr_t),SEEK_SET);
@@ -438,6 +436,10 @@ int SMBCALL smb_putstatus(smb_t* smb)
 {
 	int i;
 
+	if(smb->shd_fp==NULL) {
+		sprintf(smb->last_error,"msgbase not open");
+		return(SMB_ERR_NOT_OPEN);
+	}
 	clearerr(smb->shd_fp);
 	fseek(smb->shd_fp,sizeof(smbhdr_t),SEEK_SET);
 	i=fwrite(&(smb->status),1,sizeof(smbstatus_t),smb->shd_fp);
@@ -453,7 +455,16 @@ int SMBCALL smb_putstatus(smb_t* smb)
 /****************************************************************************/
 int SMBCALL smb_unlocksmbhdr(smb_t* smb)
 {
-	return(unlock(fileno(smb->shd_fp),0L,sizeof(smbhdr_t)+sizeof(smbstatus_t)));
+	int result;
+
+	if(smb->shd_fp==NULL) {
+		sprintf(smb->last_error,"msgbase not open");
+		return(SMB_ERR_NOT_OPEN);
+	}
+	result = unlock(fileno(smb->shd_fp),0L,sizeof(smbhdr_t)+sizeof(smbstatus_t));
+	if(result==0)
+		smb->locked=0;	/* FALSE */
+	return(result);
 }
 
 /********************************/
@@ -465,18 +476,23 @@ int SMBCALL smb_unlocksmbhdr(smb_t* smb)
 /****************************************************************************/
 int SMBCALL smb_lockmsghdr(smb_t* smb, smbmsg_t* msg)
 {
-	ulong	start=0;
+	time_t	start=0;
 
+	if(smb->shd_fp==NULL) {
+		sprintf(smb->last_error,"msgbase not open");
+		return(SMB_ERR_NOT_OPEN);
+	}
 	while(1) {
 		if(!lock(fileno(smb->shd_fp),msg->idx.offset,sizeof(msghdr_t)))
 			return(0);
 		if(!start)
 			start=time(NULL);
 		else
-			if(time(NULL)-start>=smb->retry_time) 
+			if(time(NULL)-start>=(time_t)smb->retry_time) 
 				break;
 		/* In case we've already locked it */
 		unlock(fileno(smb->shd_fp),msg->idx.offset,sizeof(msghdr_t)); 
+		SLEEP(smb->retry_delay);
 	}
 	sprintf(smb->last_error,"timeout locking header");
 	return(-1);
@@ -495,6 +511,10 @@ int SMBCALL smb_getmsgidx(smb_t* smb, smbmsg_t* msg)
 	idxrec_t idx;
 	ulong	 l,length,total,bot,top;
 
+	if(smb->sid_fp==NULL) {
+		sprintf(smb->last_error,"index not open");
+		return(SMB_ERR_NOT_OPEN);
+	}
 	clearerr(smb->sid_fp);
 	if(!msg->hdr.number) {
 		fseek(smb->sid_fp,msg->offset*sizeof(idxrec_t),SEEK_SET);
@@ -547,12 +567,34 @@ int SMBCALL smb_getmsgidx(smb_t* smb, smbmsg_t* msg)
 }
 
 /****************************************************************************/
+/* Reads the first index record in the open message base 					*/
+/****************************************************************************/
+int SMBCALL smb_getfirstidx(smb_t* smb, idxrec_t *idx)
+{
+	if(smb->sid_fp==NULL) {
+		sprintf(smb->last_error,"index not open");
+		return(SMB_ERR_NOT_OPEN);
+	}
+	clearerr(smb->sid_fp);
+	fseek(smb->sid_fp,0,SEEK_SET);
+	if(!fread(idx,sizeof(idxrec_t),1,smb->sid_fp)) {
+		sprintf(smb->last_error,"reading index");
+		return(-2);
+	}
+	return(0);
+}
+
+/****************************************************************************/
 /* Reads the last index record in the open message base 					*/
 /****************************************************************************/
 int SMBCALL smb_getlastidx(smb_t* smb, idxrec_t *idx)
 {
 	long length;
 
+	if(smb->sid_fp==NULL) {
+		sprintf(smb->last_error,"index not open");
+		return(SMB_ERR_NOT_OPEN);
+	}
 	clearerr(smb->sid_fp);
 	length=filelength(fileno(smb->sid_fp));
 	if(length<sizeof(idxrec_t)) {
@@ -615,6 +657,10 @@ int SMBCALL smb_getmsghdr(smb_t* smb, smbmsg_t* msg)
 	ulong	l,offset;
 	idxrec_t idx;
 
+	if(smb->shd_fp==NULL) {
+		sprintf(smb->last_error,"msgbase not open");
+		return(SMB_ERR_NOT_OPEN);
+	}
 	rewind(smb->shd_fp);
 	fseek(smb->shd_fp,msg->idx.offset,SEEK_SET);
 	idx=msg->idx;
@@ -626,8 +672,8 @@ int SMBCALL smb_getmsghdr(smb_t* smb, smbmsg_t* msg)
 		sprintf(smb->last_error,"reading msg header");
 		return(-1);
 	}
-	if(memcmp(msg->hdr.id,"SHD\x1a",4)) {
-		sprintf(smb->last_error,"corrupt header id: %.4s",msg->hdr.id);
+	if(memcmp(msg->hdr.id,SHD_HEADER_ID,LEN_HEADER_ID)) {
+		sprintf(smb->last_error,"corrupt message header ID: %.*s",LEN_HEADER_ID,msg->hdr.id);
 		return(-2);
 	}
 	if(msg->hdr.version<0x110) {
@@ -721,7 +767,7 @@ int SMBCALL smb_getmsghdr(smb_t* smb, smbmsg_t* msg)
 				break;
 			case SENDERNETADDR:
 				if(!msg->forwarded)
-					msg->from_net.addr=msg->hfield_dat[i];
+					msg->from_net.addr=(char *)msg->hfield_dat[i];
 				break;
 			case REPLYTO:
 				msg->replyto=(char *)msg->hfield_dat[i];
@@ -736,7 +782,7 @@ int SMBCALL smb_getmsghdr(smb_t* smb, smbmsg_t* msg)
 				msg->replyto_net.type=*(ushort *)msg->hfield_dat[i];
 				break;
 			case REPLYTONETADDR:
-				msg->replyto_net.addr=msg->hfield_dat[i];
+				msg->replyto_net.addr=(char *)msg->hfield_dat[i];
 				break;
 			case RECIPIENT:
 				msg->to=(char *)msg->hfield_dat[i];
@@ -751,11 +797,39 @@ int SMBCALL smb_getmsghdr(smb_t* smb, smbmsg_t* msg)
 				msg->to_net.type=*(ushort *)msg->hfield_dat[i];
 				break;
 			case RECIPIENTNETADDR:
-				msg->to_net.addr=msg->hfield_dat[i];
+				msg->to_net.addr=(char *)msg->hfield_dat[i];
 				break;
 			case SUBJECT:
 				msg->subj=(char *)msg->hfield_dat[i];
-				break; 
+				break;
+			case RFC822MSGID:
+				msg->id=(char *)msg->hfield_dat[i];
+				break;
+			case RFC822REPLYID:
+				msg->reply_id=(char *)msg->hfield_dat[i];
+				break;
+			case USENETPATH:
+				msg->path=(char *)msg->hfield_dat[i];
+				break;
+			case USENETNEWSGROUPS:
+				msg->newsgroups=(char *)msg->hfield_dat[i];
+				break;
+			case FIDOMSGID:
+				msg->ftn_msgid=(char *)msg->hfield_dat[i];
+				break;
+			case FIDOREPLYID:
+				msg->ftn_reply=(char *)msg->hfield_dat[i];
+				break;
+			case FIDOAREA:
+				msg->ftn_area=(char *)msg->hfield_dat[i];
+				break;
+			case FIDOPID:
+				msg->ftn_pid=(char *)msg->hfield_dat[i];
+				break;
+			case FIDOFLAGS:
+				msg->ftn_flags=(char *)msg->hfield_dat[i];
+				break;
+			
 		}
 		l+=msg->hfield[i].length; 
 	}
@@ -832,6 +906,10 @@ int SMBCALL smb_copymsgmem(smbmsg_t* msg, smbmsg_t* srcmsg)
 /****************************************************************************/
 int SMBCALL smb_unlockmsghdr(smb_t* smb, smbmsg_t* msg)
 {
+	if(smb->shd_fp==NULL) {
+		sprintf(smb->last_error,"msgbase not open");
+		return(SMB_ERR_NOT_OPEN);
+	}
 	return(unlock(fileno(smb->shd_fp),msg->idx.offset,sizeof(msghdr_t)));
 }
 
@@ -839,11 +917,11 @@ int SMBCALL smb_unlockmsghdr(smb_t* smb, smbmsg_t* msg)
 /****************************************************************************/
 /* Adds a header field to the 'msg' structure (in memory only)              */
 /****************************************************************************/
-int SMBCALL smb_hfield(smbmsg_t* msg, ushort type, ushort length, void* data)
+int SMBCALL smb_hfield(smbmsg_t* msg, ushort type, size_t length, void* data)
 {
-	hfield_t *vp;
-	void	**vpp;
-	int	i;
+	hfield_t* vp;
+	void* *vpp;
+	int i;
 
 	i=msg->total_hfields;
 	if((vp=(hfield_t *)REALLOC(msg->hfield,sizeof(hfield_t)*(i+1)))==NULL) 
@@ -868,13 +946,30 @@ int SMBCALL smb_hfield(smbmsg_t* msg, ushort type, ushort length, void* data)
 }
 
 /****************************************************************************/
+/* Searches for a specific header field (by type) and returns it			*/
+/****************************************************************************/
+void* SMBCALL smb_get_hfield(smbmsg_t* msg, ushort type, hfield_t* hfield)
+{
+	int i;
+
+	for(i=0;i<msg->total_hfields;i++)
+		if(msg->hfield[i].type == type) {
+			if(hfield != NULL)
+				hfield = &msg->hfield[i];
+			return(msg->hfield_dat[i]);
+		}
+
+	return(NULL);
+}
+
+/****************************************************************************/
 /* Adds a data field to the 'msg' structure (in memory only)                */
 /* Automatically figures out the offset into the data buffer from existing	*/
 /* dfield lengths															*/
 /****************************************************************************/
 int SMBCALL smb_dfield(smbmsg_t* msg, ushort type, ulong length)
 {
-	dfield_t *vp;
+	dfield_t* vp;
 	int i,j;
 
 	i=msg->hdr.total_dfields;
@@ -900,7 +995,7 @@ int SMBCALL smb_addcrc(smb_t* smb, ulong crc)
 	int 	file;
 	long	length;
 	ulong	l,*buf;
-	ulong	start=0;
+	time_t	start=0;
 
 	if(!smb->status.max_crcs)
 		return(0);
@@ -909,17 +1004,19 @@ int SMBCALL smb_addcrc(smb_t* smb, ulong crc)
 	while(1) {
 		if((file=sopen(str,O_RDWR|O_CREAT|O_BINARY,SH_DENYRW))!=-1)
 			break;
-		if(errno!=EACCES) {
+		if(errno!=EACCES && errno!=EAGAIN) {
 			sprintf(smb->last_error,"%d opening %s", errno, str);
 			return(-1);
 		}
 		if(!start)
 			start=time(NULL);
 		else
-			if(time(NULL)-start>=smb->retry_time) {
-				sprintf(smb->last_error,"timeout opening %s", str);
+			if(time(NULL)-start>=(time_t)smb->retry_time) {
+				sprintf(smb->last_error,"timeout opening %s (retry_time=%ld)"
+					,str,smb->retry_time);
 				return(-2); 
 			}
+		SLEEP(smb->retry_delay);
 	}
 
 	length=filelength(file);
@@ -943,6 +1040,8 @@ int SMBCALL smb_addcrc(smb_t* smb, ulong crc)
 		if(l<smb->status.max_crcs) {				/* Dupe CRC found */
 			close(file);
 			FREE(buf);
+			sprintf(smb->last_error
+				,"duplicate message detected");
 			return(1); 
 		}
 		chsize(file,0L);				/* truncate it */
@@ -958,12 +1057,14 @@ int SMBCALL smb_addcrc(smb_t* smb, ulong crc)
 		if(l<(ulong)(length/4L)) {					/* Dupe CRC found */
 			close(file);
 			FREE(buf);
+			sprintf(smb->last_error
+				,"duplicate message detected");
 			return(1); 
 		} 
 	}
 
 	lseek(file,0L,SEEK_END);
-	write(file,&crc,4); 			   /* Write to the end */
+	write(file,&crc,sizeof(crc)); 			   /* Write to the end */
 	FREE(buf);
 	close(file);
 	return(0);
@@ -974,19 +1075,24 @@ int SMBCALL smb_addcrc(smb_t* smb, ulong crc)
 /* If storage is SMB_SELFPACK, self-packing conservative allocation is used */
 /* If storage is SMB_FASTALLOC, fast allocation is used 					*/
 /* If storage is SMB_HYPERALLOC, no allocation tables are used (fastest)	*/
+/* This function will UN-lock the SMB header								*/
 /****************************************************************************/
 int SMBCALL smb_addmsghdr(smb_t* smb, smbmsg_t* msg, int storage)
 {
 	int i;
 	long l;
 
-	if(smb_locksmbhdr(smb))
+	if(!smb->locked && smb_locksmbhdr(smb))
 		return(1);
-	if(smb_getstatus(smb))
+	if(smb_getstatus(smb)) {
+		smb_unlocksmbhdr(smb);
 		return(2);
+	}
 
-	if(storage!=SMB_HYPERALLOC && (i=smb_open_ha(smb))!=0)
+	if(storage!=SMB_HYPERALLOC && (i=smb_open_ha(smb))!=0) {
+		smb_unlocksmbhdr(smb);
 		return(i);
+	}
 
 	msg->hdr.length=smb_getmsghdrlen(msg);
 	if(storage==SMB_HYPERALLOC)
@@ -995,24 +1101,24 @@ int SMBCALL smb_addmsghdr(smb_t* smb, smbmsg_t* msg, int storage)
 		l=smb_fallochdr(smb,msg->hdr.length);
 	else
 		l=smb_allochdr(smb,msg->hdr.length);
+	if(storage!=SMB_HYPERALLOC)
+		smb_close_ha(smb);
 	if(l==-1L) {
 		smb_unlocksmbhdr(smb);
-		smb_close_ha(smb);
 		return(-1); 
 	}
 
-	smb->status.last_msg++;
-	msg->idx.number=msg->hdr.number=smb->status.last_msg;
+	msg->idx.number=msg->hdr.number=smb->status.last_msg+1;
 	msg->idx.offset=smb->status.header_offset+l;
 	msg->idx.time=msg->hdr.when_imported.time;
 	msg->idx.attr=msg->hdr.attr;
 	msg->offset=smb->status.total_msgs;
-	smb->status.total_msgs++;
-	smb_putstatus(smb);
-
-	if(storage!=SMB_HYPERALLOC)
-		smb_close_ha(smb);
 	i=smb_putmsg(smb,msg);
+	if(i==0) {	/* success */
+		smb->status.last_msg++;
+		smb->status.total_msgs++;
+		smb_putstatus(smb);
+	}
 	smb_unlocksmbhdr(smb);
 	return(i);
 }
@@ -1032,13 +1138,16 @@ int SMBCALL smb_putmsg(smb_t* smb, smbmsg_t* msg)
 
 /****************************************************************************/
 /* Writes index information for 'msg'                                       */
-/* msg->idx 																 */
-/* and msg->offset must be set prior to calling to this function			 */
+/* msg->idx 																*/
+/* and msg->offset must be set prior to calling to this function			*/
 /* Returns 0 if everything ok                                               */
 /****************************************************************************/
 int SMBCALL smb_putmsgidx(smb_t* smb, smbmsg_t* msg)
 {
-
+	if(smb->sid_fp==NULL) {
+		sprintf(smb->last_error,"index not open");
+		return(SMB_ERR_NOT_OPEN);
+	}
 	clearerr(smb->sid_fp);
 	fseek(smb->sid_fp,msg->offset*sizeof(idxrec_t),SEEK_SET);
 	if(!fwrite(&msg->idx,sizeof(idxrec_t),1,smb->sid_fp)) {
@@ -1051,9 +1160,9 @@ int SMBCALL smb_putmsgidx(smb_t* smb, smbmsg_t* msg)
 
 /****************************************************************************/
 /* Writes header information for 'msg'                                      */
-/* msg->hdr.length															 */
-/* msg->idx.offset															 */
-/* and msg->offset must be set prior to calling to this function			 */
+/* msg->hdr.length															*/
+/* msg->idx.offset															*/
+/* and msg->offset must be set prior to calling to this function			*/
 /* Returns 0 if everything ok                                               */
 /****************************************************************************/
 int SMBCALL smb_putmsghdr(smb_t* smb, smbmsg_t* msg)
@@ -1061,11 +1170,25 @@ int SMBCALL smb_putmsghdr(smb_t* smb, smbmsg_t* msg)
 	ushort	i;
 	ulong	l;
 
+	if(smb->shd_fp==NULL) {
+		sprintf(smb->last_error,"msgbase not open");
+		return(SMB_ERR_NOT_OPEN);
+	}
+	if(msg->idx.offset<sizeof(smbhdr_t)+sizeof(smbstatus_t) 
+		|| msg->idx.offset<smb->status.header_offset) {
+		sprintf(smb->last_error,"invalid header offset: %ld",msg->idx.offset);
+		return(-7);
+	}
 	clearerr(smb->shd_fp);
 	if(fseek(smb->shd_fp,msg->idx.offset,SEEK_SET)) {
 		sprintf(smb->last_error,"seeking to %ld in index",msg->idx.offset);
 		return(-1);
 	}
+
+	/**********************************/
+	/* Set the message header ID here */
+	/**********************************/
+	memcpy(&msg->hdr.id,SHD_HEADER_ID,LEN_HEADER_ID);
 
 	/************************************************/
 	/* Write the fixed portion of the header record */
@@ -1120,11 +1243,15 @@ int SMBCALL smb_create(smb_t* smb)
     char        str[128];
 	smbhdr_t	hdr;
 
+	if(smb->shd_fp==NULL || smb->sdt_fp==NULL || smb->sid_fp==NULL) {
+		sprintf(smb->last_error,"msgbase not open");
+		return(SMB_ERR_NOT_OPEN);
+	}
 	if(filelength(fileno(smb->shd_fp))>=sizeof(smbhdr_t)+sizeof(smbstatus_t)
 		&& smb_locksmbhdr(smb))  /* header exists, so lock it */
 		return(1);
 	memset(&hdr,0,sizeof(smbhdr_t));
-	memcpy(hdr.id,"SMB\x1a",4);     /* <S> <M> <B> <^Z> */
+	memcpy(hdr.id,SMB_HEADER_ID,LEN_HEADER_ID);     
 	hdr.version=SMB_VERSION;
 	hdr.length=sizeof(smbhdr_t)+sizeof(smbstatus_t);
 	smb->status.last_msg=smb->status.total_msgs=0;
@@ -1191,6 +1318,10 @@ long SMBCALL smb_allocdat(smb_t* smb, ulong length, ushort headers)
     ushort  i,j;
 	ulong	l,blocks,offset=0L;
 
+	if(smb->sda_fp==NULL) {
+		sprintf(smb->last_error,"msgbase not open");
+		return(SMB_ERR_NOT_OPEN);
+	}
 	blocks=smb_datblocks(length);
 	j=0;	/* j is consecutive unused block counter */
 	fflush(smb->sda_fp);
@@ -1225,6 +1356,10 @@ long SMBCALL smb_fallocdat(smb_t* smb, ulong length, ushort headers)
 {
 	ulong	l,blocks,offset;
 
+	if(smb->sda_fp==NULL) {
+		sprintf(smb->last_error,"msgbase not open");
+		return(SMB_ERR_NOT_OPEN);
+	}
 	fflush(smb->sda_fp);
 	clearerr(smb->sda_fp);
 	blocks=smb_datblocks(length);
@@ -1249,8 +1384,12 @@ int SMBCALL smb_freemsgdat(smb_t* smb, ulong offset, ulong length
 			, ushort headers)
 {
 	int		da_opened=0;
+	int		retval=0;
 	ushort	i;
 	ulong	l,blocks;
+
+	if(smb->status.attr&SMB_HYPERALLOC)	/* do nothing */
+		return(0);
 
 	blocks=smb_datblocks(length);
 
@@ -1266,29 +1405,33 @@ int SMBCALL smb_freemsgdat(smb_t* smb, ulong offset, ulong length
 			sprintf(smb->last_error
 				,"seeking to %ld of allocation file"
 				,((offset/SDT_BLOCK_LEN)+l)*2L);
-			return(1);
+			retval=1;
+			break;
 		}
 		if(!fread(&i,2,1,smb->sda_fp)) {
 			sprintf(smb->last_error,"reading allocation bytes");
-			return(2);
+			retval=2;
+			break;
 		}
-		if(headers>i)
+		if(!headers || headers>i)
 			i=0;			/* don't want to go negative */
 		else
 			i-=headers;
 		if(fseek(smb->sda_fp,-2L,SEEK_CUR)) {
 			sprintf(smb->last_error,"seeking backwards 2 bytes in allocation file");
-			return(3);
+			retval=3;
+			break;
 		}
 		if(!fwrite(&i,2,1,smb->sda_fp)) {
 			sprintf(smb->last_error,"writing allocation bytes");
-			return(4); 
+			retval=4; 
+			break;
 		}
 	}
 	fflush(smb->sda_fp);
 	if(da_opened)
 		smb_close_da(smb);
-	return(0);
+	return(retval);
 }
 
 /****************************************************************************/
@@ -1300,6 +1443,10 @@ int SMBCALL smb_incdat(smb_t* smb, ulong offset, ulong length, ushort headers)
 	ushort	i;
 	ulong	l,blocks;
 
+	if(smb->sda_fp==NULL) {
+		sprintf(smb->last_error,"msgbase not open");
+		return(SMB_ERR_NOT_OPEN);
+	}
 	clearerr(smb->sda_fp);
 	blocks=smb_datblocks(length);
 	for(l=0;l<blocks;l++) {
@@ -1328,6 +1475,10 @@ int SMBCALL smb_freemsghdr(smb_t* smb, ulong offset, ulong length)
 	uchar	c=0;
 	ulong	l,blocks;
 
+	if(smb->sha_fp==NULL) {
+		sprintf(smb->last_error,"msgbase not open");
+		return(SMB_ERR_NOT_OPEN);
+	}
 	clearerr(smb->sha_fp);
 	blocks=smb_hdrblocks(length);
 	fseek(smb->sha_fp,offset/SHD_BLOCK_LEN,SEEK_SET);
@@ -1375,6 +1526,10 @@ long SMBCALL smb_allochdr(smb_t* smb, ulong length)
 	ushort	i;
 	ulong	l,blocks,offset=0;
 
+	if(smb->sha_fp==NULL) {
+		sprintf(smb->last_error,"msgbase not open");
+		return(SMB_ERR_NOT_OPEN);
+	}
 	blocks=smb_hdrblocks(length);
 	i=0;	/* i is consecutive unused block counter */
 	fflush(smb->sha_fp);
@@ -1411,6 +1566,10 @@ long SMBCALL smb_fallochdr(smb_t* smb, ulong length)
 	uchar	c=1;
 	ulong	l,blocks,offset;
 
+	if(smb->sha_fp==NULL) {
+		sprintf(smb->last_error,"msgbase not open");
+		return(SMB_ERR_NOT_OPEN);
+	}
 	blocks=smb_hdrblocks(length);
 	fflush(smb->sha_fp);
 	clearerr(smb->sha_fp);
@@ -1434,6 +1593,10 @@ long SMBCALL smb_hallochdr(smb_t* smb)
 {
 	ulong l;
 
+	if(smb->shd_fp==NULL) {
+		sprintf(smb->last_error,"msgbase not open");
+		return(SMB_ERR_NOT_OPEN);
+	}
 	fflush(smb->shd_fp);
 	fseek(smb->shd_fp,0L,SEEK_END);
 	l=ftell(smb->shd_fp);
@@ -1454,6 +1617,10 @@ long SMBCALL smb_hallocdat(smb_t* smb)
 {
 	long l;
 
+	if(smb->sdt_fp==NULL) {
+		sprintf(smb->last_error,"msgbase not open");
+		return(SMB_ERR_NOT_OPEN);
+	}
 	fflush(smb->sdt_fp);
 	fseek(smb->sdt_fp,0L,SEEK_END);
 	l=ftell(smb->sdt_fp);

@@ -10,12 +10,12 @@
  *																			*
  * Copyright 2000 Rob Swindell - http://www.synchro.net/copyright.html		*
  *																			*
- * This program is free software; you can redistribute it and/or			*
- * modify it under the terms of the GNU General Public License				*
+ * This library is free software; you can redistribute it and/or			*
+ * modify it under the terms of the GNU Lesser General Public License		*
  * as published by the Free Software Foundation; either version 2			*
  * of the License, or (at your option) any later version.					*
- * See the GNU General Public License for more details: gpl.txt or			*
- * http://www.fsf.org/copyleft/gpl.html										*
+ * See the GNU Lesser General Public License for more details: lgpl.txt or	*
+ * http://www.fsf.org/copyleft/lesser.html									*
  *																			*
  * Anonymous FTP access to the most recent released source is available at	*
  * ftp://vert.synchro.net, ftp://cvs.synchro.net and ftp://ftp.synchro.net	*
@@ -38,7 +38,7 @@
 #ifndef _SMBLIB_H
 #define _SMBLIB_H
 
-#include <lzh.h>
+#include "lzh.h"
 
 #ifdef SMBEXPORT
 	#undef SMBEXPORT
@@ -53,41 +53,44 @@
 	#else
 		#define SMBCALL
 	#endif
-	#ifdef SMBDLL	/* SMBLIB contained in DLL */
-		#ifdef SMB_EXPORTS
-			#define SMBEXPORT __declspec( dllexport )
-		#else
+	#if defined(SMB_IMPORTS) || defined(SMB_EXPORTS)
+		#if defined(SMB_IMPORTS)
 			#define SMBEXPORT __declspec( dllimport )
+		#else
+			#define SMBEXPORT __declspec( dllexport )
 		#endif
 	#else	/* self-contained executable */
 		#define SMBEXPORT
 	#endif
-#elif defined __unix__ || defined __GNUC__
+#elif defined(__unix__) || defined(__GNUC__)
+	#ifndef __FLAT__
+		#define __FLAT__
+	#endif
 	#define SMBCALL
 	#define SMBEXPORT
-#elif defined __FLAT__
-	#define SMBCALL
-	#define SMBEXPORT	_export
 #else
 	#define SMBCALL
 	#define SMBEXPORT
 #endif
 
-#include <smbdefs.h>
+#include "smbdefs.h"
 
 #define SMB_STACK_LEN		4			/* Max msg bases in smb_stack() 	*/
-#define SMB_STACK_POP       0           /* Pop a msg base off of smb_stack() */
+#define SMB_STACK_POP       0           /* Pop a msg base off of smb_stack()*/
 #define SMB_STACK_PUSH      1           /* Push a msg base onto smb_stack() */
-#define SMB_STACK_XCHNG     2           /* Exchange msg base w/last pushed */
+#define SMB_STACK_XCHNG     2           /* Exchange msg base w/last pushed	*/
 
-#define GETMSGTXT_TAILS 	1			/* Get message tail(s) too */
+#define GETMSGTXT_TAILS 	(1<<0)		/* Get message tail(s)				*/
+#define GETMSGTXT_NO_BODY	(1<<1)		/* Do not retrieve message body		*/
+
+#define SMB_IS_OPEN(smb)	((smb)->shd_fp!=NULL)
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 SMBEXPORT int 	SMBCALL smb_ver(void);
-SMBEXPORT char *	SMBCALL smb_lib_ver(void);
+SMBEXPORT char*	SMBCALL smb_lib_ver(void);
 SMBEXPORT int 	SMBCALL smb_open(smb_t* smb);
 SMBEXPORT void	SMBCALL smb_close(smb_t* smb);
 SMBEXPORT int 	SMBCALL smb_open_da(smb_t* smb);
@@ -102,6 +105,7 @@ SMBEXPORT int 	SMBCALL smb_getstatus(smb_t* smb);
 SMBEXPORT int 	SMBCALL smb_putstatus(smb_t* smb);
 SMBEXPORT int 	SMBCALL smb_unlocksmbhdr(smb_t* smb);
 SMBEXPORT int 	SMBCALL smb_getmsgidx(smb_t* smb, smbmsg_t* msg);
+SMBEXPORT int 	SMBCALL smb_getfirstidx(smb_t* smb, idxrec_t *idx);
 SMBEXPORT int 	SMBCALL smb_getlastidx(smb_t* smb, idxrec_t *idx);
 SMBEXPORT uint	SMBCALL smb_getmsghdrlen(smbmsg_t* msg);
 SMBEXPORT ulong	SMBCALL smb_getmsgdatlen(smbmsg_t* msg);
@@ -109,8 +113,9 @@ SMBEXPORT int 	SMBCALL smb_lockmsghdr(smb_t* smb, smbmsg_t* msg);
 SMBEXPORT int 	SMBCALL smb_getmsghdr(smb_t* smb, smbmsg_t* msg);
 SMBEXPORT int 	SMBCALL smb_unlockmsghdr(smb_t* smb, smbmsg_t* msg);
 SMBEXPORT int 	SMBCALL smb_addcrc(smb_t* smb, ulong crc);
-SMBEXPORT int 	SMBCALL smb_hfield(smbmsg_t* msg, ushort type, ushort length, void* data);
+SMBEXPORT int 	SMBCALL smb_hfield(smbmsg_t* msg, ushort type, size_t length, void* data);
 SMBEXPORT int 	SMBCALL smb_dfield(smbmsg_t* msg, ushort type, ulong length);
+SMBEXPORT void* SMBCALL smb_get_hfield(smbmsg_t* msg, ushort type, hfield_t* hfield);
 SMBEXPORT int 	SMBCALL smb_addmsghdr(smb_t* smb, smbmsg_t* msg,int storage);
 SMBEXPORT int 	SMBCALL smb_putmsg(smb_t* smb, smbmsg_t* msg);
 SMBEXPORT int 	SMBCALL smb_putmsgidx(smb_t* smb, smbmsg_t* msg);
@@ -169,6 +174,7 @@ SMBEXPORT void	SMBCALL smb_clearerr(FILE* fp);
 #pragma aux smb_putstatus		"_*"
 #pragma aux smb_unlocksmbhdr	"_*"
 #pragma aux smb_getmsgidx		"_*"
+#pragma aux smb_getfirstidx		"_*"
 #pragma aux smb_getlastidx		"_*"
 #pragma aux smb_getmsghdrlen	"_*"
 #pragma aux smb_getmsgdatlen	"_*"

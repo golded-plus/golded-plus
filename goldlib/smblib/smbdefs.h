@@ -38,42 +38,27 @@
 #ifndef _SMBDEFS_H
 #define _SMBDEFS_H
 
-#ifdef GOLDEDPLUS
-#include <gdefs.h>
-#endif
 #include <stdio.h>
 
 /**********/
 /* Macros */
 /**********/
 
+#define SMB_HEADER_ID	"SMB\x1a"		/* <S> <M> <B> <^Z> */
+#define SHD_HEADER_ID	"SHD\x1a"		/* <S> <H> <D> <^Z> */
+#define LEN_HEADER_ID	4
 
-#undef TAB
-#define TAB 				'\t'		/* Horizontal tabulation	^I */
-#undef LF
-#define LF					'\n'		/* Line feed				^J */
-#undef CR
-#define CR					'\r'		/* Carriage return			^M */
-#undef SP
-#define SP					' '			/* Space					   */
-#undef FF
-#define FF					0x0c		/* Form feed				^L */
-#undef ESC
-#define ESC 				0x1b		/* Escape					^[ */
-
-#ifndef GOLDEDPLUS
 #ifndef uchar
-	#define uchar				unsigned char
+	typedef unsigned char uchar;
 #endif
 #ifdef __GLIBC__
 	#include <sys/types.h>
 #else
 	#ifndef ushort
-	#define ushort				unsigned short
-	#define ulong				unsigned long
-	#define uint				unsigned int
+		typedef unsigned short ushort;
+		typedef unsigned long ulong;
+		typedef unsigned int uint;
 	#endif
-#endif
 #endif
 
 /****************************************************************************/
@@ -125,6 +110,8 @@
 #define SMB_HYPERALLOC		2			/* No allocation */
 
 #define SMB_EMAIL			1			/* User numbers stored in Indexes */
+
+#define SMB_ERR_NOT_OPEN	-100		/* Message base not open */
 
 										/* Time zone macros for when_t.zone */
 #define DAYLIGHT			0x8000		/* Daylight savings is active */
@@ -277,6 +264,12 @@
 #define RFC822HEADER		0xb0
 #define RFC822MSGID 		0xb1
 #define RFC822REPLYID		0xb2
+#define RFC822TO			0xb3
+#define RFC822FROM			0xb4
+#define RFC822REPLYTO		0xb5
+
+#define USENETPATH			0xc0
+#define USENETNEWSGROUPS	0xc1
 
 #define UNKNOWN 			0xf1
 #define UNKNOWNASCII		0xf2
@@ -337,14 +330,15 @@
 
 
 enum {
-     NET_NONE
-    ,NET_UNKNOWN
-    ,NET_FIDO
-    ,NET_POSTLINK
-    ,NET_QWK
-	,NET_INTERNET
-	,NET_WWIV
-	,NET_MHS
+     NET_NONE				/* Local message */
+    ,NET_UNKNOWN			/* Unknown network type */
+    ,NET_FIDO				/* FidoNet address, faddr_t format (4D) */
+    ,NET_POSTLINK			/* Imported with UTI driver */
+    ,NET_QWK				/* QWK networked messsage */
+	,NET_INTERNET			/* Internet e-mail, netnews, etc. */
+	,NET_WWIV				/* unused */
+	,NET_MHS				/* unused */
+	,NET_FIDO_ASCII			/* FidoNet address, ASCIIZ format (e.g. 5D) */
 
 /* Add new ones here */
 
@@ -382,22 +376,19 @@ enum {
 /* Typedefs */
 /************/
 
-#ifndef GOLDEDPLUS
-#ifdef __GNUC__ 
-	#define _PACK __attribute__ ((packed))
-#else
-	#define _PACK
+#if defined(_WIN32) || defined(__BORLANDC__)
+	#define PRAGMA_PACK
 #endif
 
-#ifdef _WIN32	
+#if defined(PRAGMA_PACK)
+	#define _PACK
+#else
+	#define _PACK __attribute__ ((packed))
+#endif
+
+#if defined(PRAGMA_PACK)
 #pragma pack(push)		/* Disk image structures must be packed */
 #pragma pack(1)
-#endif
-#else
-#define _PACK
-#if defined(GOLD_CANPACK)
-#pragma pack(1)
-#endif
 #endif
 
 typedef struct _PACK {		// Time with time-zone
@@ -421,7 +412,7 @@ typedef struct _PACK {		// Index record
 
 typedef struct _PACK {		// Message base header (fixed portion)
 
-    uchar   id[4];          // text or binary unique hdr ID
+    uchar   id[LEN_HEADER_ID];	// SMB<^Z>
     ushort  version;        // version number (initially 100h for 1.00)
     ushort  length;         // length including this struct
 
@@ -441,7 +432,7 @@ typedef struct _PACK {		// Message base status header
 
 typedef struct _PACK {		// Message header
 
-	uchar	id[4];			// SHD<^Z>
+	uchar	id[LEN_HEADER_ID];	// SHD<^Z>
     ushort  type;           // Message type (normally 0)
     ushort  version;        // Version of type (initially 100h for 1.00)
     ushort  length;         // Total length of fixed record + all fields
@@ -492,15 +483,8 @@ typedef struct _PACK {		// Network (type and address)
 
 	} net_t;
 
-#ifndef GOLDEDPLUS
-#ifdef _WIN32
+#if defined(PRAGMA_PACK)
 #pragma pack(pop)		/* original packing */
-#endif
-#else
-#undef _PACK
-#if defined(GOLD_CANPACK)
-#pragma pack()
-#endif
 #endif
 
 typedef struct {				// Message
@@ -513,6 +497,15 @@ typedef struct {				// Message
 				*from_ext,		// From extension
 				*replyto,		// Reply-to name
 				*replyto_ext,	// Reply-to extension */
+				*id,			// RFC822 Message-ID
+				*reply_id,		// RFC822 Reply-ID
+				*path,			// USENET Path
+				*newsgroups,	// USENET Newsgroups
+				*ftn_pid,		// FTN PID
+				*ftn_area,		// FTN AREA
+				*ftn_flags,		// FTN FLAGS
+				*ftn_msgid,		// FTN MSGID
+				*ftn_reply,		// FTN REPLY
 				*subj;			// Subject
 	ushort		to_agent,		// Type of agent message is to
 				from_agent, 	// Type of agent message is from
@@ -525,7 +518,7 @@ typedef struct {				// Message
 	void		**hfield_dat;	// Header fields (variable length portion)
 	dfield_t	*dfield;		// Data fields (fixed length portion)
 	ulong		offset; 		// Offset (number of records) into index
-	uchar		forwarded;		// Forwarded from agent to another
+	int			forwarded;		// Forwarded from agent to another
 	when_t		expiration; 	// Message will exipre on this day (if >0)
 
 	} smbmsg_t;
@@ -539,9 +532,16 @@ typedef struct {			// Message base
     FILE    *sda_fp;        // File pointer for data allocation (.sda) file
     FILE    *sha_fp;        // File pointer for header allocation (.sha) file
 	ulong	retry_time; 	// Maximum number of seconds to retry opens/locks
+	ulong	retry_delay;	// Time-slice yield (milliseconds) while retrying
 	smbstatus_t status; 	// Status header record
+	int		locked;			// SMB header is locked
 	char	shd_buf[SHD_BLOCK_LEN]; 	// File I/O buffer for header file
 	char	last_error[128];			// Last error message
+
+	/* Private member variables (not initialized by or used by smblib) */
+	uint	subnum;			// Sub-board number
+	long	msgs;			// Number of messages loaded (for user)
+	long	curmsg;			// Current message number (for user)
 
     } smb_t;
 

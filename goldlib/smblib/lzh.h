@@ -53,23 +53,19 @@
 	#else			/* self-contained executable */
 		#define LZHEXPORT
 	#endif
+#elif defined(__unix__) || defined(__GNUC__)
+	#ifndef __FLAT__
+		#define __FLAT__
+	#endif
+	#define LZHCALL
+	#define LZHEXPORT
 #else	/* !_WIN32 */
 	#define LZHCALL
 	#define LZHEXPORT
 #endif
 
-#ifdef __GNUC__
-	#ifndef __FLAT__
-		#define __FLAT__
-	#endif
-#endif
-
-#ifndef GOLDEDPLUS
 #ifndef uchar
-#define uchar unsigned char
-#endif
-#else
-#include <gdefs.h>
+	typedef unsigned char uchar;
 #endif
 
 #ifdef __cplusplus
