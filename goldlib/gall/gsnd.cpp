@@ -227,8 +227,10 @@ int gsnd::open(const char* file) {
     case 0x02:
       free_buffer();
       #if defined(__DJGPP__) or (defined(__WATCOMC__) and defined(__386__))
-      if((data->buffer_segment = __dpmi_allocate_dos_memory((data->buffer_length >> 4) + 1, &buffer)) == -1)
+      int seg = __dpmi_allocate_dos_memory((data->buffer_length >> 4) + 1, &buffer);
+      if(seg == -1)
         return -1;
+      data->buffer_segment = seg & 0xffff;
       data->buffer_offset = 0;
       #else
       buffer = (char*)farmalloc(data->buffer_length);
@@ -471,7 +473,7 @@ int gsnd::is_playing() {
   #if defined(__MSDOS__)
 
   if(file_open)
-    return (int)data->status;
+    return data->status == 0 ? false : true;
   return false;
 
   #elif defined(GUTLOS_FUNCS)

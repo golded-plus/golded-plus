@@ -64,16 +64,11 @@ struct gsapidata {
            byte dma_channel;
            word sample_rate;
   volatile word status;
-#if defined(__DJGPP__) or (defined(__WATCOMC__) and defined(__386__))
-           int buffer_segment;
-           int buffer_offset;
-#else
            word buffer_segment;
            word buffer_offset;
-#endif
            long buffer_length;
            char parameters[80];
-};
+} __attribute__((packed));
 
 
 //  ------------------------------------------------------------------
