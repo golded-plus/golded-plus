@@ -423,7 +423,7 @@ int GetQuotestr(const char* ptr, char* qbuf, uint* qlen) {
     if((*lp != NUL) and (isspace(*lp) or issoftcr(*lp)))
       x++;
 
-    for(*qlen = n = 0; (n < x) and ((*qlen) < MAXQUOTELEN); n++, ptr++) {
+    for(*qlen = n = 0; (n < x) and ((*qlen) < MAXQUOTELEN-1); n++, ptr++) {
       if((*ptr != LF) and not issoftcr(*ptr)) {
         *qbuf++ = *ptr;
         (*qlen)++;

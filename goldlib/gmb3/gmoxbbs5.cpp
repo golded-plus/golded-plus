@@ -84,7 +84,7 @@ Line* XbbsArea::make_dump_msg(Line*& lin, gmsg* msg, char* lng_head) {
   AddLineF(line, "InDate     : %u-%u-%u", hdr.indate[0]+1989, hdr.indate[1], hdr.indate[2]);
   AddLineF(line, "MsgNum     : %lu", hdr.msgnum);
   AddLineF(line, "TimesRead  : %lu", hdr.timesread);
-  AddLineF(line, "TimeRecv   : %s (%08lXh)", TimeToStr(buf, hdr.timerecv), hdr.timerecv);
+  AddLineF(line, "TimeRecv   : %s (%08lXh)", TimeToStr(buf, hdr.timerecv), (long)hdr.timerecv);
   AddLineF(line, "Length     : %lu", hdr.length);
   AddLineF(line, "Start      : %lu", hdr.start);
   AddLineF(line, "Extra1,2,3 : %lu, %lu, %lu", hdr.extra1, hdr.extra2, hdr.extra3);

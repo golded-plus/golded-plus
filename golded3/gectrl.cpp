@@ -172,15 +172,11 @@ char* mime_header_encode(char* dest, const char* source, GMsg* msg) {
           if(msg->charset) {
             bp = stpcpy(bp, "=?");
             if(strneql(msg->charset, "latin", 5)) {
-              static const char *isono[] = { "15", "1", "2", "3", "4", "9", "10", "13", "14", "15" };
-              int chsno = atoi(msg->charset+5);
-	      if(chsno < 0) chsno = -chsno; // support for both latin-1 and latin1
-              chsno = chsno > sizeof(isono)/sizeof(const char *) ? 0 : chsno;
-              bp = strxmerge(bp, 12, "iso-8859-", isono[chsno]);
+              bp = Latin2ISO(bp, msg->charset);
             }
             else {
               char *pbp = bp;
-              bp = stpcpy(bp, strlword(msg->charset));
+              bp = stpcpy(bp, IsQuotedPrintable(msg->charset) ? ExtractPlainCharset(msg->charset) : strlword(msg->charset));
               strlwr(pbp);
             }
             bp = stpcpy(bp, "?Q?");
@@ -495,17 +491,27 @@ void DoKludges(int mode, GMsg* msg, bool attronly) {
         line->kludge = GKLUD_RFC;
       }
 
-      if(striinc("LATIN-1", msg->charset) or striinc("LATIN1QP", msg->charset) or striinc("ASCII", msg->charset)) {
-        sprintf(buf, "%sMIME-Version: 1.0", rfc);
-        line = AddKludge(line, buf);
-        line->kludge = GKLUD_RFC;
-        sprintf(buf, "%sContent-Type: text/plain; charset=%s", rfc, striinc("ASCII", msg->charset) ? "us-ascii" : "iso-8859-1");
-        line = AddKludge(line, buf);
-        line->kludge = GKLUD_RFC;
-        sprintf(buf, "%sContent-Transfer-Encoding: %s", rfc, striinc("LATIN1QP", msg->charset) ? "quoted-printable" : striinc("ASCII", msg->charset) ? "7bit" : "8bit");
-        line = AddKludge(line, buf);
-        line->kludge = GKLUD_RFC;
-      }
+      sprintf(buf, "%sMIME-Version: 1.0", rfc);
+      line = AddKludge(line, buf);
+      line->kludge = GKLUD_RFC;
+      char encoding[100];
+      bool isusascii = striinc("ASCII", msg->charset);
+      bool isqp = not isusascii and IsQuotedPrintable(msg->charset);
+      if(strneql(msg->charset, "latin", 5))
+        Latin2ISO(encoding, msg->charset);
+      else if(isusascii)
+        strcpy(encoding, "us-ascii");
+      else if(isqp)
+        strcpy(encoding, ExtractPlainCharset(msg->charset));
+      else
+        strcpy(encoding, msg->charset);
+      strlwr(encoding);
+      sprintf(buf, "%sContent-Type: text/plain; charset=%s", rfc, strlword(encoding));
+      line = AddKludge(line, buf);
+      line->kludge = GKLUD_RFC;
+      sprintf(buf, "%sContent-Transfer-Encoding: %s", rfc, isqp ? "quoted-printable" : isusascii ? "7bit" : "8bit");
+      line = AddKludge(line, buf);
+      line->kludge = GKLUD_RFC;
 
       if(*to_buf and AA->isnewsgroup()) {
         line = AddKludge(line, to_buf);

@@ -12,6 +12,12 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+! A lot of improvements in charset handling added. QP postfix now
+  could be used with any charset, not only with LATIN1. Completely
+  untested!
+
+! Changed InternetRFCBody parsing algorithm. Should be quicker.
+
 ! A lot of manipulations with Internet addressing was done.
 
 ! GoldED+ now produce Internet addresses in RFC preferable form

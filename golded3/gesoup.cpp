@@ -626,14 +626,12 @@ int ExportSoupMsg(GMsg* msg, char* msgfile, gfile& fp, int ismail) {
       if(not CharTable or not striinc("MNEMONIC", CharTable->exp))
         LoadCharset(CFG->xlatlocalset, "MNEMONIC");
     }
-    else if(striinc("LATIN1QP", msg->charset)) {
+    else if(IsQuotedPrintable(msg->charset)) {
       qp = true;
-      if(not CharTable or not striinc("LATIN1QP", CharTable->exp))
-        LoadCharset(CFG->xlatlocalset, "LATIN1QP");
+      LoadCharset(CFG->xlatlocalset, ExtractPlainCharset(msg->charset));
     }
     else {
-      if(not CharTable or not striinc(msg->charset, CharTable->exp))
-        LoadCharset(CFG->xlatlocalset, msg->charset);
+      LoadCharset(CFG->xlatlocalset, msg->charset);
     }
 
     // Process kludges and write header lines

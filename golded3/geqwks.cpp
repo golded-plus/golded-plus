@@ -404,13 +404,12 @@ int ExportQwkMsg(GMsg* msg, gfile& fp, int confno, int& pktmsgno) {
     if(not striinc("MNEMONIC", CharTable->exp))
       LoadCharset(CFG->xlatlocalset, "MNEMONIC");
   }
-  else if(striinc("LATIN1QP", msg->charset)) {
-    if(not striinc("LATIN1QP", CharTable->exp))
-      LoadCharset(CFG->xlatlocalset, "LATIN1QP");
+  // ASA: Do we need it at all?
+  else if(IsQuotedPrintable(msg->charset)) {
+    LoadCharset(CFG->xlatlocalset, ExtractPlainCharset(msg->charset));
   }
-  else if(striinc("LATIN-1", msg->charset)) {
-    if(not striinc("LATIN-1", CharTable->exp))
-      LoadCharset(CFG->xlatlocalset, "LATIN-1");
+  else {
+    LoadCharset(CFG->xlatlocalset, msg->charset);
   }
 
   char qwkterm = '\xE3';

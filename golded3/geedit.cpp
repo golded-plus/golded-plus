@@ -469,7 +469,7 @@ void IEclass::GoEOL() {
 
   // Move cursor to the last char on the line
   col = currline->txt.length();
-  if((currline->txt[col-1] == '\n') or ((col == (maxcol + 1)) and (currline->txt[col-1] == ' ')))
+  if((currline->txt[col-1] == '\n') or ((col != mincol) and (currline->txt[col-1] == ' ')))
     --col;
 
   // String must not be longer than the window width
@@ -564,7 +564,6 @@ void IEclass::GoLeft() {
     if(currline->prev) {
       GoUp();
       GoEOL();
-//      if((col != mincol) and ((currline->txt[col] == '\n') or not ((col == (maxcol + 1)) and (currline->txt[col-1] == ' '))))
       if((col != mincol) and (currline->txt.c_str()[col] == NUL))
         col--;
     }

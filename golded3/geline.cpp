@@ -377,7 +377,7 @@ char* mime_header_decode(char* decoded, const char* encoded, char *charset) {
   while(*eptr) {
     if(*eptr == '=') {
       const char* mptr = mime_crack_encoded_word(eptr, cbuf, ebuf, tbuf);
-      if(mptr) { // and strieql(cbuf, "ISO-8859-1")) {
+      if(mptr) {
         if(charset) {
           strxcpy(charset, cbuf, 100);
           charset = NULL;
@@ -1881,9 +1881,8 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
   bool reflow = false, quoteflag = false;
   bool getvalue = not msg->attr.tou();
   bool quotewraphard = AA->Quotewraphard();
-  bool qpencoded = getvalue and (strieql(AA->Xlatimport(), "LATIN1QP") ? true : false);
+  bool qpencoded = getvalue and IsQuotedPrintable(AA->Xlatimport());
   bool gotmime = false;
-  bool firstemptyline = false;
   bool gotmultipart = false;
   bool inheader = false;
   char boundary[100];
@@ -2045,8 +2044,8 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
               }
               else if(kludgetype == FSC_CHARSET) {
                 *chsbuf = NUL;
-                qpencoded = striinc("LATIN1QP", ptr) ? true : false;
-                strxcpy(chsbuf, qpencoded ? "LATIN-1" : ptr, sizeof(chsbuf));
+                qpencoded = IsQuotedPrintable(ptr);
+                strxcpy(chsbuf, qpencoded ? ExtractPlainCharset(ptr) : ptr, sizeof(chsbuf));
                 // Workaround for buggy mailreaders which stores '_' in charset name
                 strchg(chsbuf,'_',' ');
                 chslev = LoadCharset(chsbuf, CFG->xlatlocalset);
@@ -2068,6 +2067,8 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
                   }
                   else
                     strxcpy(chsbuf, strrword(mime_charset+8), sizeof(chsbuf));
+                  if(striinc("8859", chsbuf))
+                    ISO2Latin(chsbuf, chsbuf);
                   chslev = LoadCharset(chsbuf, CFG->xlatlocalset);
                   if(chslev) {
                     level = msg->charsetlevel = chslev;
@@ -2077,7 +2078,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
                     strcpy(msg->charset, chsbuf);
                   gotmime = true;
                 }
-                if(check_multipart(ptr, keptr, boundary)) {
+                else if(check_multipart(ptr, keptr, boundary)) {
                   gotmultipart = true;
                   gotmime = true;
                 }
@@ -2086,20 +2087,20 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
                 if(striinc("quoted-printable", ptr)) {
                   qpencoded = true;
                   msg->charsetencoding |= GCHENC_QP;
-                  // ASA: What the stuff below for? I never saw such messages...
-                  if(striinc("LATIN-1", msg->charset)) {
-                    strcpy(chsbuf, "LATIN1QP");
-                    chslev = LoadCharset("LATIN-1", CFG->xlatlocalset);
-                    if(chslev) {
-                      level = msg->charsetlevel = chslev;
-                      strcpy(msg->charset, chsbuf);
-                    }
+                  strcpy(chsbuf, MakeQuotedPrintable(msg->charset));
+                  chslev = LoadCharset(msg->charset, CFG->xlatlocalset);
+                  if(chslev) {
+                    level = msg->charsetlevel = chslev;
+                    strcpy(msg->charset, chsbuf);
                   }
                 }
               }
               else if(kludgetype == RFC_X_CHARSET) {
                 if(not gotmime) {
-                  strcpy(chsbuf, (striinc("8859-1", ptr) or striinc("Latin1", ptr)) ? "LATIN-1" : ptr);
+                  if(striinc("8859", ptr))
+                    ISO2Latin(chsbuf, ptr);
+                  else
+                    strxcpy(chsbuf, ptr, sizeof(chsbuf));
                   chslev = LoadCharset(chsbuf, CFG->xlatlocalset);
                   if(chslev) {
                     level = msg->charsetlevel = chslev;
@@ -2434,112 +2435,6 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
         else
           line->color = C_READW;
 
-        // Scan msg body top for RFC headerlines
-        if(line->txt.empty() and not firstemptyline) {
-          firstemptyline = true;
-          if(AA->Internetrfcbody()) {
-            Line* linep = FirstLine(line);
-            int headerlines = 0;
-            while(linep) {
-              const char* tptr = linep->txt.c_str();
-              if(*tptr) {
-                if(*tptr != CTRL_A) {
-                  int kludgetype = ScanLine(msg, linep, tptr, getvalue, MASK_RFC);
-                  if(kludgetype) {
-                    tptr = strchr(tptr, ' ');
-                    if(tptr) {
-                      tptr = strskip_wht(tptr);
-                      if(kludgetype == HEADERLINE) {
-                        linep->type |= GLINE_HIDD;
-                      }
-                      else if(getvalue) {
-                        if(kludgetype == RFC_CONTENT_TYPE) {
-                          if(striinc("iso-8859-1", tptr)) {
-                            strcpy(chsbuf, "LATIN-1");
-                            chslev = LoadCharset(chsbuf, CFG->xlatlocalset);
-                            if(chslev) {
-                              level = msg->charsetlevel = chslev;
-                              strcpy(msg->charset, chsbuf);
-                            }
-                            gotmime = true;
-                          }
-                          else {
-                            const char* keptr = linep->next ? linep->next->txt.c_str() : " ";
-                            if(check_multipart(ptr, keptr, boundary)) {
-                              gotmultipart = true;
-                              gotmime = true;
-                            }
-                          }
-                        }
-                        else if(kludgetype == RFC_CONTENT_TRANSFER_ENCODING) {
-                          if(striinc("quoted-printable", tptr)) {
-                            qpencoded = true;
-                            msg->charsetencoding |= GCHENC_QP;
-                            if(striinc("LATIN-1", msg->charset)) {
-                              strcpy(chsbuf, "LATIN1QP");
-                              chslev = LoadCharset("LATIN-1", CFG->xlatlocalset);
-                              if(chslev) {
-                                level = msg->charsetlevel = chslev;
-                                strcpy(msg->charset, chsbuf);
-                              }
-                            }
-                          }
-                        }
-                        else if(kludgetype == RFC_X_CHARSET) {
-                          if(not gotmime) {
-                            strcpy(chsbuf, (striinc("8859-1", tptr) or striinc("Latin1", tptr)) ? "LATIN-1" : CFG->xlatlocalset);
-                            chslev = LoadCharset(chsbuf, CFG->xlatlocalset);
-                            if(chslev) {
-                              level = msg->charsetlevel = chslev;
-                              strcpy(msg->charset, chsbuf);
-                            }
-                          }
-                        }
-                        else if(kludgetype == RFC_X_CHAR_ESC) {
-                          if(not gotmime)
-                            msg->charsetencoding |= GCHENC_MNE;
-                        }
-                      }
-                    }
-                    headerlines++;
-                    if(linep->type == GLINE_HIDD)
-                      linep->color = C_READKH;
-                    else
-                      linep->color = C_READK;
-                    if(linep->next) {
-                      char lwsp = *linep->next->txt.c_str();
-                      while((lwsp == ' ') or (lwsp == '\t') or (linep->type & GLINE_WRAP)) {
-                        linep = linep->next;
-                        linep->type |= linep->prev->type;
-                        linep->color = linep->prev->color;
-                        if(linep->next)
-                          lwsp = *linep->next->txt.c_str();
-                        else
-                          break;
-                      }
-                    }
-                  }
-                  else
-                    break;
-                }
-              }
-              else {
-                if(headerlines) {
-                  linep->type |= GLINE_KLUD;
-                  linep->color = C_READK;
-                }
-                break;
-              }
-              if(linep->type & GLINE_WRAP) {
-                while(linep and (linep->type & GLINE_WRAP))
-                  linep = linep->next;
-              }
-              if(linep)
-                linep = linep->next;
-            }
-          }
-        }
-
         prevline = line;
         line = new Line();
         throw_xnew(line);
@@ -2550,6 +2445,64 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
 
       throw_release(linetmp);
       throw_xdelete(line);
+
+      // Scan msg body top for RFC headerlines
+      if(AA->Internetrfcbody()) {
+        if(msg->lin) {
+          Line* linep = msg->lin;
+          int headerlines = 0;
+          while(linep) {
+            if(not linep->txt.empty()) {
+              const char* tptr = linep->txt.c_str();
+              if(*tptr != CTRL_A) {
+                int kludgetype = ScanLine(msg, linep, tptr, getvalue, MASK_RFC);
+                if(kludgetype) {
+                  if(kludgetype == HEADERLINE) {
+                    linep->type |= GLINE_HIDD;
+                  }
+                  headerlines++;
+                  if(linep->type & GLINE_HIDD)
+                    linep->color = C_READKH;
+                  else
+                    linep->color = C_READK;
+                  if(linep->next) {
+                    char lwsp = *linep->next->txt.c_str();
+                    while((lwsp == ' ') or (lwsp == '\t') or (linep->type & GLINE_WRAP)) {
+                      linep = linep->next;
+                      linep->type |= linep->prev->type;
+                      linep->color = linep->prev->color;
+                      if(linep->next)
+                        lwsp = *linep->next->txt.c_str();
+                      else
+                        break;
+                    }
+                  }
+                }
+                else
+                  break;
+              }
+            }
+            else {
+              if(headerlines) {
+                linep->type |= GLINE_KLUD;
+                linep->color = C_READK;
+              }
+              break;
+            }
+            if(linep->type & GLINE_WRAP) {
+              while(linep and (linep->type & GLINE_WRAP)) {
+                linep = linep->next;
+                if(linep) {
+                  linep->type |= linep->prev->type & (GLINE_KLUD|GLINE_HIDD);
+                  linep->color = linep->prev->color;
+                }
+              }
+            }
+            if(linep)
+              linep = linep->next;
+          }
+        }
+      }
 
       // Scan for kludge-, tear- and originlines
       ScanKludges(msg, getvalue);
@@ -2696,6 +2649,70 @@ void MsgLineReIndex(GMsg* msg, int viewhidden, int viewkludge, int viewquote) {
     line = line->next;
   }
   msg->quotepct = 100-Pct(nonquotes, quotes);
+}
+
+
+//  ------------------------------------------------------------------
+
+bool IsQuotedPrintable(const char *encoding) {
+
+  if(striinc("LATIN1QP", encoding))
+    return true;
+  else {
+    const char *lencoding = strlword(encoding);
+    int len = strlen(lencoding);
+    if((len > 2) and strnieql("QP", lencoding+len-2, 2))
+      return true;
+  }
+  return false;
+}
+
+
+//  ------------------------------------------------------------------
+
+static char qpencodingbuf[100];
+
+char *MakeQuotedPrintable(const char *encoding) {
+
+  strxmerge(qpencodingbuf, sizeof(qpencodingbuf), strlword(encoding), "QP", NULL);
+  return qpencodingbuf;
+}
+
+//  ------------------------------------------------------------------
+
+char *ExtractPlainCharset(const char *encoding) {
+
+  strxcpy(qpencodingbuf, strlword(encoding), sizeof(qpencodingbuf));
+  int len = strlen(qpencodingbuf);
+  if(len > 2)
+    qpencodingbuf[len-2] = NUL;
+  return qpencodingbuf;
+}
+
+
+//  ------------------------------------------------------------------
+
+char *Latin2ISO(char *iso_encoding, const char *latin_encoding) {
+
+  static const char *isono[] = { "15", "1", "2", "3", "4", "9", "10", "13", "14", "15" };
+  int chsno = atoi(latin_encoding+5);
+  if(chsno < 0) chsno = -chsno; // support for both latin-1 and latin1
+  chsno = chsno > sizeof(isono)/sizeof(const char *) ? 0 : chsno;
+  return strxmerge(iso_encoding, 12, "iso-8859-", isono[chsno], NULL);
+}
+
+
+//  ------------------------------------------------------------------
+
+char *ISO2Latin(char *latin_encoding, const char *iso_encoding) {
+
+  static const char *latinno[] = { NULL, "1", "2", "3", "4", NULL, NULL, NULL, NULL, "5", "6", NULL, NULL, "7", "8", "9" };
+  int chsno = atoi(iso_encoding+9);
+  chsno = chsno > sizeof(latinno)/sizeof(const char *) ? 0 : chsno;
+  if(latinno[chsno] == NULL)
+    return strxmerge(latin_encoding, 12, iso_encoding, NULL);
+  else
+    return strxmerge(latin_encoding, 8, "latin-", latinno[chsno], NULL);
 }
 
 

@@ -832,8 +832,11 @@ bool guserbase::lookup_addressbook(GMsg* msg, char* name, char* aka, bool browse
         else
           strcpy(name, entry.name);
       }
-      else
+      else {
         strcpy(name, entry.name);
+        if(AA->isinternet())
+          strcpy(msg->realto, entry.name);
+      }
 
       if(not strblank(entry.pseudo))
         strcpy(msg->pseudoto, entry.pseudo);

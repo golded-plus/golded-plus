@@ -104,9 +104,9 @@ Line* JamArea::make_dump_msg(Line*& lin, gmsg* __msg, char* lng_head) {
   AddLineF(line, "ReplyTo       : %lu",    _hdr->replyto);
   AddLineF(line, "Reply1st      : %lu",    _hdr->reply1st);
   AddLineF(line, "ReplyNext     : %lu",    _hdr->replynext);
-  AddLineF(line, "DateWritten   : %s (%08lXh)", TimeToStr(buf, _hdr->datewritten), _hdr->datewritten);
-  AddLineF(line, "DateReceived  : %s (%08lXh)", TimeToStr(buf, _hdr->datereceived), _hdr->datereceived);
-  AddLineF(line, "DateProcessed : %s (%08lXh)", TimeToStr(buf, _hdr->dateprocessed), _hdr->dateprocessed);
+  AddLineF(line, "DateWritten   : %s (%08lXh)", TimeToStr(buf, _hdr->datewritten), (long)_hdr->datewritten);
+  AddLineF(line, "DateReceived  : %s (%08lXh)", TimeToStr(buf, _hdr->datereceived), (long)_hdr->datereceived);
+  AddLineF(line, "DateProcessed : %s (%08lXh)", TimeToStr(buf, _hdr->dateprocessed), (long)_hdr->dateprocessed);
   AddLineF(line, "MessageNumber : %lu",    _hdr->messagenumber);
   AddLineF(line, "Attribute     : %08lXh (%sb)", _hdr->attribute,  ltob(buf, _hdr->attribute, 0));
   AddLineF(line, "Attribute2    : %08lXh (%sb)", _hdr->attribute2, ltob(buf, _hdr->attribute2, 0));
@@ -130,7 +130,7 @@ Line* JamArea::make_dump_msg(Line*& lin, gmsg* __msg, char* lng_head) {
   line = AddLine(line, "");
   AddLineF(line, "Base Header:");
   line = AddLine(line, "");
-  AddLineF(line, "DateCreated   : %s (%08lXh)", TimeToStr(buf, _base->datecreated), _base->datecreated);
+  AddLineF(line, "DateCreated   : %s (%08lXh)", TimeToStr(buf, _base->datecreated), (long)_base->datecreated);
   AddLineF(line, "ModCounter    : %lu",    _base->modcounter);
   AddLineF(line, "ActiveMsgs    : %lu",    _base->activemsgs);
   AddLineF(line, "PasswordCRC   : %08lXh", _base->passwordcrc);
@@ -155,7 +155,7 @@ Line* JamArea::make_dump_msg(Line*& lin, gmsg* __msg, char* lng_head) {
     _subfieldpos += sizeof(JamSubFieldHdr);
     uint _datlen = (uint)_subfieldptr->datlen;
     if(_subfieldpos > _hdr->subfieldlen) {
-      AddLineF(line, "Error: SubfieldHdr at pos %u exceeds SubfieldLen (%lu)!", _subfieldpos-sizeof(JamSubFieldHdr), _hdr->subfieldlen);
+      AddLineF(line, "Error: SubfieldHdr at pos %lu exceeds SubfieldLen (%lu)!", (unsigned long)(_subfieldpos-sizeof(JamSubFieldHdr)), _hdr->subfieldlen);
       break;
     }
     if((_subfieldpos + _datlen) > _hdr->subfieldlen) {

@@ -163,6 +163,11 @@ void Initialize(int argc, char* argv[]);
 //  ------------------------------------------------------------------
 //  GELINE prototypes
 
+char *Latin2ISO(char *iso_encoding, const char *latin_encoding);
+char *ISO2Latin(char *latin_encoding, const char *iso_encoding);
+char *MakeQuotedPrintable(const char *encoding);
+char *ExtractPlainCharset(const char *encoding);
+bool  IsQuotedPrintable(const char *encoding);
 int   LoadCharset(const char* imp, const char* exp, int query = 0);
 Line* AddKludge(Line* line, char* buf, int where=DIR_BELOW);
 Line* AddLineFast(Line* line, char* text);
