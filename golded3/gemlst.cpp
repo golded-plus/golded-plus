@@ -865,6 +865,7 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar) {
       strftimei(dbuf, 20, "%d %b %y", gmtime(&dt));
     strcat(buf, dbuf);
   }
+  strcat(buf, " ");
 
   window.prints(pos, 0, isbar ? sattr : attrw, buf);
   window.prints(pos, 6, isbar ? sattr : hattr, marks);
@@ -949,13 +950,19 @@ void GThreadlist::BuildThreadIndex(dword msgn) {
   AA->LoadHdr(&msg, msgn);
 
   ulong msgno = msg.link.to();
+  ulong prevmsgno = msgn;
 
   // Search backwards
   while(AA->Msgn.ToReln(msgno)) {
 
-    if(not AA->LoadHdr(&msg, msgno))
+    if(not AA->LoadHdr(&msg, msgno)) {
       msg.link.to_set(0);
+      msgno = prevmsgno;
+      AA->LoadHdr(&msg, msgno);
+      break;
+    }
 
+    prevmsgno = msgno;
     msgno = msg.link.to();
   }
 
