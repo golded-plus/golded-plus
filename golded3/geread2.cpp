@@ -581,16 +581,31 @@ int ExternUtil(GMsg *msg, ExtUtil *extutil) {
     LoadText(msg, editorfile);
     EDIT->HardLines(hardlines);
 
-    // Prepend "@CHRS: XLATLOCALSET 2\n" to force proper encoding
-    if(not AA->Viewkludge()) {
-      char *msg_txt_chrs = (char *)throw_malloc(strlen(msg->txt)+strlen(CFG->xlatlocalset)+sizeof("\001CHRS:  2\r")+16);
-      sprintf(msg_txt_chrs, "\001CHRS: %s 2\r%s", CFG->xlatlocalset, msg->txt);
+    if(not strstr(msg->txt, "\001CHRS:") and not strstr(msg->txt, "\001CHARSET:")) {
+      // Prepend "@CHRS: XLATLOCALSET 2\n" to force proper encoding
+      const char *charset = AA->Viewkludge() ? msg->charset : CFG->xlatlocalset;
+      char *msg_txt_chrs = (char *)throw_malloc(strlen(msg->txt)+strlen(charset)+sizeof("\001CHRS:  2\r")+16);
+      sprintf(msg_txt_chrs, "\001CHRS: %s 2\r%s", charset, msg->txt);
       throw_free(msg->txt);
       msg->txt = msg_txt_chrs;
     }
 
     // Ignore any kludge address found
     msg->TextToLines(CFG->dispmargin-(int)CFG->switches.get(disppagebar), false);
+
+    if(AA->Viewkludge()) {
+      // Try to convert to the original codepage
+      char *inpcharset = msg->charset;
+      int level = LoadCharset(CFG->xlatlocalset, IsQuotedPrintable(inpcharset) ? ExtractPlainCharset(inpcharset) : inpcharset);
+      if(level) {
+        // do recode
+        char *msg_txt_chrs = (char *)throw_malloc(strlen(msg->txt)*3+16);
+        XlatStr(msg_txt_chrs, msg->txt, level, CharTable);
+        throw_free(msg->txt);
+        msg->txt = (char *)throw_realloc(msg_txt_chrs, strlen(msg_txt_chrs)+16);
+      }
+    }
+    msg->charsetlevel = LoadCharset(msg->charset, CFG->xlatlocalset);
   }
 
   if(extutil->options & EXTUTIL_WIPE)
