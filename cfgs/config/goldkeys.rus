@@ -364,7 +364,8 @@ Q           READquotemsg
 @R          READreplymsg
 F3          READreplymsg
 R           READreplymsg
-F8          READthreadtree
+F8          READthreadtree ; Просмотр дерева цепочки ответов
+; #3          READthreadtree  ; Сочетание #3 нельзя назначить вручную, но работает по умолчанию
 Tab         READtogglebookmark
 @I          READtogglehexdump
 I           READtogglehexdump
