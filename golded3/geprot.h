@@ -175,7 +175,7 @@ Line* DeleteLine(Line* line);
 Line* FirstLine(Line* line);
 Line* InsertLine(Line* newline, Line* oldline, int pos);
 Line* LastLine(Line* line);
-void  MakeLineIndex(GMsg* msg, int rmargin, bool header_recode = true);
+void  MakeLineIndex(GMsg* msg, int rmargin, bool getvalue, bool header_recode);
 void  MsgLineReIndex(GMsg* msg, int viewhidden=-1, int viewkludge=-1, int viewquote=-1);
 char* XlatStr(char* dest, const char* src, int level, Chs* chrtbl, int qpencoded=false, bool i51=false);
 char* mime_header_decode(char* decoded, const char* encoded, char* charset = NULL);
@@ -221,7 +221,7 @@ void Rot13(GMsg* msg);
 void ResetMsg(GMsg* msg);
 int DoCarboncopy(GMsg* msg, GMsg** carbon);
 void DoCrosspost(GMsg* msg, std::vector<int> &postareas);
-char* ParseInternetAddr(char* __string, char* __name, char* __addr);
+char* ParseInternetAddr(char* __string, char* __name, char* __addr, bool detect_charset = true);
 
 
 //  ------------------------------------------------------------------

@@ -827,7 +827,7 @@ void IEclass::LoadFile() {
     AA->SetXlatimport(CFG->xlatlocalset);
 
     // Index message text
-    msgptr->TextToLines(margintext-1);
+    msgptr->TextToLines(margintext-1, false);
     _line = currline = msgptr->lin;
 
     // Restore charset

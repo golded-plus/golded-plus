@@ -103,7 +103,7 @@ public:
   bool to_you() { return (you_and_I & TO_YOU); }
   bool by_you() { return (you_and_I & BY_YOU); }
 
-  void TextToLines(int __line_width, bool header_recode = true);
+  void TextToLines(int __line_width, bool getvalue = true, bool header_recode = true);
   void LinesToText();
 };
 

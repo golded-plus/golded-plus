@@ -559,6 +559,7 @@ static void KludgeREPLYADDR(GMsg* msg, const char* ptr) {
 
   INam name;
   char *buf=throw_strdup(ptr);
+  *name = NUL;
   ParseInternetAddr(buf, *msg->realby ? name : msg->realby, msg->iaddr);
   if(*name)
     strxcpy(msg->realby, name, sizeof(INam));
@@ -1782,9 +1783,9 @@ int cmp_quotes(char* q1, char* q2) {
 
 //  ------------------------------------------------------------------
 
-void GMsg::TextToLines(int __line_width, bool header_recode) {
+void GMsg::TextToLines(int __line_width, bool getvalue, bool header_recode) {
 
-  MakeLineIndex(this, __line_width, header_recode);
+  MakeLineIndex(this, __line_width, getvalue, header_recode);
 }
 
 
@@ -1832,7 +1833,7 @@ inline bool put_on_new_line(const char *ptr, const char *prev_ptr) {
 
 //  ------------------------------------------------------------------
 
-void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
+void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode) {
 
   uint idx=0;
   uint len;
@@ -1856,7 +1857,6 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
   uint qlen=0, qlen2=0;
   int wraps=0, para=0, chslev;
   bool reflow = false, quoteflag = false;
-  bool getvalue = not msg->attr.tou();
   bool quotewraphard = AA->Quotewraphard();
   bool qpencoded = getvalue and IsQuotedPrintable(AA->Xlatimport());
   bool gotmime = false;
@@ -2946,7 +2946,7 @@ Line* AddHexdump(Line*& line, void* data, size_t datalen) {
 
 //  ------------------------------------------------------------------
 
-char* ParseInternetAddr(char* __string, char* __name, char* __addr) {
+char* ParseInternetAddr(char* __string, char* __name, char* __addr, bool detect_charset) {
 
   *__name = *__addr = NUL;
   char* commaptr = NULL;
@@ -3021,7 +3021,7 @@ char* ParseInternetAddr(char* __string, char* __name, char* __addr) {
   if(not strchr(__addr, '@'))
     *__addr = NUL;
 
-  strxmimecpy(__name, __name, 0, strlen(__name)+1, true);
+  strxmimecpy(__name, __name, 0, strlen(__name)+1, detect_charset);
 
   return __name;
 }

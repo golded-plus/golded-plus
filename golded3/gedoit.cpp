@@ -70,17 +70,14 @@ void SaveLines(int mode, const char* savefile, GMsg* msg, int margin, bool clip)
     if(mode == MODE_WRITE) {
       if(AA->LoadMsg(msg, msg->msgno, margin) == false) {
         msg->txt = throw_strdup("");
-        msg->attr.tou0();
         msg->TextToLines(margin);
       }
     }
     else if((mode == MODE_SAVE) or (mode == MODE_SAVENOCTRL)) {
-      msg->attr.tou0();
       msg->TextToLines(margin);
     }
     TemplateToText(((mode == MODE_WRITE) and prnheader) ? ((prnheader & WRITE_ONLY_HEADER) ? MODE_HEADER : MODE_WRITEHEADER) : MODE_WRITE, msg, msg, AA->WTpl(), CurrArea);
-    msg->attr.tou1();
-    msg->TextToLines(margin);
+    msg->TextToLines(margin, false);
 #endif
     int n = 0;
     Line** lin = msg->line;
@@ -403,9 +400,7 @@ void QuoteBuf(GMsg* msg) {
     char openmode[4];
 
     TemplateToText(MODE_QUOTEBUF, msg, msg, AA->Tpl(), CurrArea);
-    msg->attr.tou1();
-    msg->TextToLines(-CFG->quotemargin);
-    msg->attr.tou0();
+    msg->TextToLines(-CFG->quotemargin, false);
     msg->charsetlevel = LoadCharset(CFG->xlatlocalset, CFG->xlatlocalset);
     msg->LinesToText();
 

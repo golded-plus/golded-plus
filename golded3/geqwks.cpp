@@ -233,7 +233,6 @@ int ImportQWK() {
           AA->istossed = true;
           update_statuslinef("%s: %u", AA->echoid(), imported);
 
-          msg->attr.tou0();
           msg->TextToLines(CFG->dispmargin-1);
           if(msg->messageid or msg->references or msg->inreplyto or *msg->ifrom) {
             char kbuf[256];

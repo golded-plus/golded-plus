@@ -510,10 +510,8 @@ static void MakeMsg2(int& mode, int& status, int& forwstat, int& topline, GMsg* 
         HeaderView->Use(AA, msg);
         HeaderView->Paint();
       }
-      msg->attr.tou1();  // Ignore any kludge address found
       msg->attr.pos1();
-      msg->TextToLines(CFG->dispmargin-1);
-      msg->attr.tou0();
+      msg->TextToLines(CFG->dispmargin-1, false); // Ignore any kludge address found
       msg->attr.pos0();
     }
     uint lineno = position = reader_topline+1;
@@ -623,9 +621,7 @@ static void MakeMsg2(int& mode, int& status, int& forwstat, int& topline, GMsg* 
           LoadText(msg, AddPath(CFG->goldpath, EDIT->File()));
         if(mode == MODE_FORWARD)
           msg->attr.pos1();
-        msg->attr.tou1();  // ignore any kludge address found
-        msg->TextToLines(CFG->dispmargin-1);
-        msg->attr.tou0();
+        msg->TextToLines(CFG->dispmargin-1, false); // Ignore any kludge address found
         msg->attr.pos0();
 
         if(not savedirect) {
@@ -733,7 +729,6 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
         AA->RandomizeData(mode);
       }
 
-      msg->attr.tou0();
       msg->TextToLines(CFG->dispmargin-1);
       msg->orig = AA->Aka().addr;
       msg->charsetlevel = LoadCharset(CFG->xlatlocalset, AA->Xlatexport());
@@ -766,8 +761,7 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
         msg->messageid = NULL;
         msg->inreplyto = NULL;
         msg->references = NULL;
-        msg->attr.tou0();
-        msg->TextToLines(CFG->dispmargin-1, false);
+        msg->TextToLines(CFG->dispmargin-1, true, false);
         msg->msgid.reset();
         *msg->iorig = NUL;
         *msg->idest = NUL;
@@ -793,8 +787,7 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
         msg->messageid = NULL;
         msg->inreplyto = NULL;
         msg->references = NULL;
-        msg->attr.tou0();
-        msg->TextToLines(CFG->dispmargin-1, false);
+        msg->TextToLines(CFG->dispmargin-1, true, false);
         break;
       case MODE_NEW:
         wfill(MINROW, 0, MAXROW-2, MAXCOL-1, ' ', C_READW);
@@ -837,8 +830,7 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
         case MODE_REPLYCOMMENT:
           if(CurrArea != OrigArea)
             AA->SetXlatimport(AL.AreaIdToPtr(OrigArea)->Xlatimport());
-          omsg->attr.tou0();
-          omsg->TextToLines(-CFG->quotemargin, false);
+          omsg->TextToLines(-CFG->quotemargin, true, false);
           if(ignore_replyto)
             *omsg->ireplyto = NUL;
           if(omsg->attr.rot())

@@ -90,7 +90,6 @@ int Area::LoadMsg(GMsg* msg, ulong msgno, int margin, int mode) {
       if(not (msg->attr.uns() and not msg->attr.rcv()))
         return true;
     }
-    msg->attr.tou0();
     msg->TextToLines(margin);
     return true;
   }

@@ -585,9 +585,8 @@ int ExternUtil(GMsg *msg, ExtUtil *extutil) {
       WipeFile(tmpfile, 0);
 
     EDIT->HardLines(hardlines);
-    msg->attr.tou1();   // Ignore any kludge address found
-    msg->TextToLines(CFG->dispmargin-(int)CFG->switches.get(disppagebar));
-    msg->attr.tou0();
+    // Ignore any kludge address found
+    msg->TextToLines(CFG->dispmargin-(int)CFG->switches.get(disppagebar), false);
   }
 
   return YES;
@@ -690,7 +689,7 @@ void ReadPeekURLs(GMsg* msg) {
           --end;
         if(begin < end) {
           buf[0] = ' ';
-          strxcpy(buf+1, ptr, MinV((end-ptr)+1, MAXCOL-2-2-2));
+          strxcpy(buf+1, ptr, MinV((long)((end-ptr)+1), (long)(MAXCOL-2-2-2)));
           strcat(buf, " ");
           for(i = urls.begin(); i != urls.end(); i++)
             if(strieql(*i, buf))

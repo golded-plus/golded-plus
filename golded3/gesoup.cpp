@@ -235,7 +235,7 @@ void ProcessSoupMsg(char* lbuf, GMsg* msg, int& msgs, char* areaname, int tossto
           if(MatchRFC(mptr, "From: ")) {
             INam fromname;
             IAdr fromaddr;
-            ParseInternetAddr(mptr, fromname, fromaddr);
+            ParseInternetAddr(mptr, fromname, fromaddr, false);
             strxcpy(msg->by, *fromname ? fromname : fromaddr, sizeof(msg->by));
             if(AA->Internetgate().addr.net) {
               char abuf[40];
@@ -254,7 +254,7 @@ void ProcessSoupMsg(char* lbuf, GMsg* msg, int& msgs, char* areaname, int tossto
             strxcpy(msg->ito, mptr, sizeof(msg->ito));
             INam toname;
             IAdr toaddr;
-            ParseInternetAddr(mptr, toname, toaddr);
+            ParseInternetAddr(mptr, toname, toaddr, false);
             strxcpy(msg->to, *toname ? toname : toaddr, sizeof(msg->to));
           }
           else if(MatchRFC(mptr, "X-Comment-To: ")) {
@@ -275,7 +275,7 @@ void ProcessSoupMsg(char* lbuf, GMsg* msg, int& msgs, char* areaname, int tossto
           else if(MatchRFC(mptr, "X-To: ")) {
             INam toname;
             IAdr toaddr;
-            ParseInternetAddr(mptr, toname, toaddr);
+            ParseInternetAddr(mptr, toname, toaddr, false);
             strxcpy(msg->to, *toname ? toname : toaddr, sizeof(msg->to));
           }
           else if(MatchRFC(mptr, "Subject: ")) {
@@ -310,13 +310,13 @@ void ProcessSoupMsg(char* lbuf, GMsg* msg, int& msgs, char* areaname, int tossto
           else if(MatchRFC(mptr, "Sender: ")) {
             INam sendername;
             IAdr senderaddr;
-            ParseInternetAddr(mptr, sendername, senderaddr);
+            ParseInternetAddr(mptr, sendername, senderaddr, false);
             CurrArea = CheckMailinglists(senderaddr, CurrArea);
           }
           else if(MatchRFC(mptr, "X-Mailing-List: ")) {
             INam listname;
             IAdr listaddr;
-            ParseInternetAddr(mptr, listname, listaddr);
+            ParseInternetAddr(mptr, listname, listaddr, false);
             CurrArea = CheckMailinglists(listaddr, CurrArea);
           }
 

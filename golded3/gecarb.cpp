@@ -216,6 +216,7 @@ int DoCarboncopy(GMsg* msg, GMsg** carbon) {
             if((*carbon)[n].attr.tou()) {
               sprintf(buf, "\001CC: %s %s", (*carbon)[n].To(), (*carbon)[n].dest.make_string(temp).c_str());
               ccline = AddKludge(ccline, buf);
+              (*carbon)[n].attr.tou0();
             }
           }
           break;
@@ -229,6 +230,7 @@ int DoCarboncopy(GMsg* msg, GMsg** carbon) {
             if((*carbon)[n].attr.tou()) {
               sprintf(buf, buf2, (*carbon)[n].To(), (*carbon)[n].dest.make_string(temp).c_str());
               ccline = AddLine(ccline, buf);
+              (*carbon)[n].attr.tou0();
             }
           }
           break;
@@ -242,7 +244,7 @@ int DoCarboncopy(GMsg* msg, GMsg** carbon) {
               hline += msg->To();
               ++line_items;
             }
-            for(n=0; n < cc; n++)
+            for(n=0; n < cc; n++) {
               if((*carbon)[n].attr.tou()) {
                 const char *user = (*carbon)[n].To();
                 if((hline.length() + strlen(user) + 2 > margintext) and line_items) {
@@ -255,7 +257,9 @@ int DoCarboncopy(GMsg* msg, GMsg** carbon) {
                   hline += ", ";
                 hline += user;
                 ++line_items;
+                (*carbon)[n].attr.tou0();
               }
+            }
             if(line_items) {
               sprintf(buf, LNG->CCTo, hline.c_str());
               ccline = AddLine(ccline, buf);
