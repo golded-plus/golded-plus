@@ -48,9 +48,6 @@ AR=ar
 RANLIB=ranlib
 WINDRES=windres
 PLATFORM=cyg
-ifeq ($(OSTYPE),msys)
-SHELL=bash
-endif
 EXEEXT=.exe
 OBJEXT=.o
 LIBEXT=.a
