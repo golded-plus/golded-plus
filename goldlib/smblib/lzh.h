@@ -58,6 +58,12 @@
 	#define LZHEXPORT
 #endif
 
+#ifdef __GNUC__
+	#ifndef __FLAT__
+		#define __FLAT__
+	#endif
+#endif
+
 #ifndef GOLDEDPLUS
 #ifndef uchar
 #define uchar unsigned char

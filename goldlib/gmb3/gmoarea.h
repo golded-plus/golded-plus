@@ -87,7 +87,7 @@ public:
         int   originno() const    { return cfg.originno; }
         Attr& attr()              { return cfg.attr; }
         bool  ispacked() const    { return cfg.attr.pkd(); }
-        void  packed(bool a)      { return cfg.attr.pkd(a); }
+        void  packed(bool a)      { cfg.attr.pkd(a); }
 
   bool ascan()          { return (bool)cfg.scan; }
   bool ascanexcl()      { return (bool)cfg.scanexcl; }
