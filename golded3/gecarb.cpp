@@ -241,6 +241,8 @@ int DoCarboncopy(GMsg* msg, GMsg** carbon) {
             std::string hline = "";
             int line_items = 0;
 
+            margintext -= strlen(LNG->CCTo) - 2; // - "%s"
+
             if(A == AA) {
               hline += msg->To();
               ++line_items;
