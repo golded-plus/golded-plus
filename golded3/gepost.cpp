@@ -36,6 +36,25 @@ ulong msgcount = 0;
 
 //  ------------------------------------------------------------------
 
+string &strtrimline(string &p) {
+
+  if(not p.empty()) {
+    string::iterator trail = p.end();
+    while(trail != p.begin()) {
+      --trail;
+      if(not strchr(" \t\r\n", *trail) and not issoftcr(*trail)) {
+        ++trail;
+        break;
+      }
+    }
+    p.erase(trail, p.end());
+  }
+  return p;
+}
+
+
+//  ------------------------------------------------------------------
+
 const char* get_subject_re_info(const char* s, ulong& n) {
 
   if(toupper(*s) == 'R' and tolower(s[1]) == 'e') {
@@ -549,7 +568,7 @@ static void MakeMsg2(int& mode, int& status, int& forwstat, int& topline, GMsg* 
           if(((line->type & GLINE_HIDD) and not AA->Viewhidden()) or ((line->type & GLINE_KLUD) and not AA->Viewkludge()))
             newline = line = DeleteLine(line);
           else {
-            strtrim(line->txt);
+            strtrimline(line->txt);
             if(line->type & GLINE_HARD)
               line->txt += "\n";
             else
@@ -570,13 +589,13 @@ static void MakeMsg2(int& mode, int& status, int& forwstat, int& topline, GMsg* 
         if(status != MODE_QUIT) {
           line = msg->lin;
           while(line) {
-            if(line->txt.find(LF) != line->txt.npos)
+            if(line->txt.find('\n') != line->txt.npos)
               line->type = GLINE_HARD;
             else if(line->next and (line->next->type & GLINE_QUOT))
               line->type = GLINE_HARD;
             else
               line->type = 0;
-            strtrim(line->txt);
+            strtrimline(line->txt);
             if(AA->isinternet()) {
               // Check for signature indicator
               if(streql(line->txt.c_str(), "--")) {

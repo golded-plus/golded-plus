@@ -325,7 +325,7 @@ int is_quote(const char* ptr) {
       if(spaces > 1)
         return false;
     }
-    else if((*ptr < ' ') or strchr(AA->Quotestops(), *ptr)) {
+    else if(iscntrl(*ptr) or strchr(AA->Quotestops(), *ptr)) {
       // Found a char that cannot occur in a quotestring
       return false;
     }

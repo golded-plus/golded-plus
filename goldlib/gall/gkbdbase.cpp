@@ -1154,7 +1154,7 @@ gkey kbxget_raw(int mode) {
     k = 0;
     PeekConsoleInput(gkbd_hin, &inp, 1, &nread);
     if(nread) {
-      if((inp.EventType & KEY_EVENT) and inp.Event.KeyEvent.bKeyDown) {
+      if((inp.EventType == KEY_EVENT) and inp.Event.KeyEvent.bKeyDown) {
         int kc = gkbd_nt2bios(inp);
         if((kc != -1) or (inp.Event.KeyEvent.wVirtualKeyCode == 0xBA)) {
           k = (gkey)kc;
@@ -1181,7 +1181,7 @@ gkey kbxget_raw(int mode) {
         continue;
       }
 
-      if(inp.EventType == KEY_EVENT and inp.Event.KeyEvent.bKeyDown) {
+      if((inp.EventType == KEY_EVENT) and inp.Event.KeyEvent.bKeyDown) {
         bool alt_pressed = (CKS & (LEFT_ALT_PRESSED|RIGHT_ALT_PRESSED)) ? true : false;
         bool ctrl_pressed = (CKS & (LEFT_CTRL_PRESSED|RIGHT_CTRL_PRESSED)) ? true : false;
         bool shift_pressed = (CKS & SHIFT_PRESSED) ? true : false;
@@ -1191,8 +1191,8 @@ gkey kbxget_raw(int mode) {
 
         if(alt_pressed)
           special_key = is_numpad_key(inp); // Alt-<numpad key>
-        else if(isprint(ascii) and not ctrl_pressed)          
-          special_key = not gkbd_nt; // It is alphanumeric key under Win9x
+        else if(not gkbd_nt and (ascii and not ctrl_pressed) and not (iscntrl(ascii) and shift_pressed))
+          special_key = true; // It is alphanumeric key under Win9x
         if(special_key) {
           ReadConsole(gkbd_hin, &ascii, 1, &nread, NULL);
           if(alt_pressed) {

@@ -1605,6 +1605,14 @@ void ScanKludges(GMsg* msg, int getvalue) {
         if(not AA->isinternet())
           *msg->ito = NUL;
       }
+      else if(strnieql(line->txt.c_str(), "Reply-To:", 9)) {
+        const char* ptr = line->txt.c_str() + 9;
+        ptr = strskip_wht(ptr);
+        char* tmp = UnwrapLine(line, ptr);
+        KludgeREPLYADDR(msg, tmp ? tmp : ptr);
+        if(tmp)
+          throw_free(tmp);
+      }
       else
         break;
     }

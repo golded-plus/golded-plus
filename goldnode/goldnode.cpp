@@ -67,7 +67,7 @@
 #define __GPID__ "GoldNODE+"
 #endif
 
-#define __GVER__ "1.1.4.1"         // Visible version
+#define __GVER__ "1.1.5"         // Visible version
 
 
 //  ------------------------------------------------------------------
@@ -1203,7 +1203,7 @@ static int parse_config(const char *__configfile, Addr& zoneaddr) {
         if((not _gotcond) and cond_status) {
           switch(crc) {
             case CRC_NODEPATH:
-              nodepath = value;
+              PathCopy(nodepath, value);
               break;
             case CRC_ADDRESS:
             case CRC_AKA:
@@ -1230,6 +1230,7 @@ static int parse_config(const char *__configfile, Addr& zoneaddr) {
                 ndz.point = 0;
                 ndl.ft = (dword)-1;
                 ndl.fc = NO;
+                strschg_environ(value);
                 strcpy(ndl.fn, value);
                 nodelist.push_back(ndl);
                 nodezone.push_back(ndz);
@@ -1253,6 +1254,7 @@ static int parse_config(const char *__configfile, Addr& zoneaddr) {
                 ndz.point = 0;
                 ndl.ft = (dword)-1;
                 ndl.fc = NO;
+                strschg_environ(value);
                 strcpy(ndl.fn, value);
                 userlist.push_back(ndl);
                 userzone.push_back(ndz);
@@ -1279,6 +1281,7 @@ static int parse_config(const char *__configfile, Addr& zoneaddr) {
                 sh_mod = 0;
               break;
             case CRC_INCLUDE:
+              strschg_environ(value);
               if(not parse_config(value,zoneaddr))     // NOTE! This is a recursive call!
                 fast_printf("* Could not read configuration file '%s' !\n",value);
               break;

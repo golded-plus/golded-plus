@@ -159,7 +159,7 @@ char* mime_header_encode(char* dest, const char* source, GMsg* msg) {
       lp--;
 
     for(const char* ptr = s; *ptr and (ptr<=lp); ptr++) {
-      if((*ptr < ' ') or (*ptr > '\x7F') or (inmime and strchr(" =?", *ptr))) {
+      if(iscntrl(*ptr) or not isascii(*ptr) or (inmime and strchr(" =?", *ptr))) {
         if(not inmime) {
           if(msg->charset) {
             bp = stpcpy(bp, "=?");

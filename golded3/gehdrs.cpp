@@ -37,7 +37,7 @@ char* strconv(char* str, char* conv) {
   NW(conv);   // Dummy
 
   while(*str) {
-    if((*str < ' ') and (*str != '\n') and (*str != '\r'))  // Control codes
+    if(iscntrl(*str) and (*str != '\n') and (*str != '\r'))  // Control codes
       *p++ = '.';
     else
       *p++ = *str;

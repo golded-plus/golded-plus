@@ -767,6 +767,7 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
           if(not _gotcond) {
             switch(crc) {
               case CRC_INCLUDE:
+                strschg_environ(val);
                 if(not quiet)
                   cout << "* Including " << val << endl;
                 ReadCfg(val);          // NOTE! This is a recursive call!
@@ -774,6 +775,7 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
                   cout << "* Resuming " << cfg << endl;
                 break;
               case CRC_AREAFILE:
+                strschg_environ(val);
                 if(not quiet)
                   cout << "* Handling " << key << " " << val << endl;
                 AL.GetAreafile(val);

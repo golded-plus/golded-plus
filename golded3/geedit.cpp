@@ -800,6 +800,9 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, int
         }
       }
 
+      // Was this line truncated at space?
+      bool truncated_at_space = isspace(_thisline->txt[_wrappos]);
+
       // Truncate at the wrapping location
       _thisline->txt.erase(_wrappos);
 
@@ -808,17 +811,15 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, int
 
         // Trim spaces off the end of the line
         int _trimpos = _wrappos - 1;
-        if(_thisline->txt[_trimpos] == ' ') {
-          while(_trimpos > 0 and _thisline->txt[_trimpos-1] == ' ')
+        if(isspace(_thisline->txt[_trimpos])) {
+          while(_trimpos > 0 and isspace(_thisline->txt[_trimpos-1]))
             _trimpos--;
-          if(_quotelen and _trimpos < _quotelen)
+          if(_quotelen and (_trimpos < _quotelen))
             _trimpos++;
           Undo->PushItem(EDIT_UNDO_OVR_CHAR|BATCH_MODE, _thisline, _trimpos);
-          Undo->PushItem(EDIT_UNDO_OVR_CHAR|BATCH_MODE, _thisline, _trimpos+1);
           _thisline->txt.erase(_trimpos);
         }
-        else
-          Undo->PushItem(EDIT_UNDO_OVR_CHAR|BATCH_MODE, _thisline, _wrappos);
+        Undo->PushItem((truncated_at_space?EDIT_UNDO_OVR_CHAR:EDIT_UNDO_INS_CHAR)|BATCH_MODE, _thisline, _trimpos+1);
 
         // Append a new linefeed
         _thisline->txt += "\n";
@@ -1990,7 +1991,7 @@ void IEclass::statusline() {
 
 int IEclass::handlekey(gkey __key) {
 
-  int rc = YES;
+  int rc = true;
 
   switch(__key) {
     case KK_EditBlockRight:  __key = KK_EditGoRight;   break;
@@ -2019,6 +2020,10 @@ int IEclass::handlekey(gkey __key) {
       break;
 
     default:
+      rc = PlayMacro(__key, KT_E);
+      if(rc == true)
+        return rc;
+      rc = true;
       if(selecting) {
         Line *_line;
         selecting = NO;
@@ -2113,7 +2118,8 @@ noselecting:
     case KK_EditPaste:            BlockPaste();         break;
 
     default:
-      rc = PlayMacro(__key, KT_E);
+      rc = false;
+      break;
   }
 
   if(__key != KK_EditUndo)
@@ -2402,8 +2408,7 @@ void UndoStack::PushItem(uint action, Line* __line, uint __col, uint __len) {
       case EDIT_UNDO_INS_TEXT:
       case EDIT_UNDO_WRAP_TEXT:
         last_item->line = __line;
-        throw_new(last_item->data.text_ptr = new(__len) text_item(__col, __len));
-	memcpy(last_item->data.text_ptr->text, __line->txt.c_str() + __col, __len);
+        throw_new(last_item->data.text_ptr = new text_item(__col, __len));
         break;
       case EDIT_UNDO_NEW_LINE:
         last_item->line = last_item->data.line_ptr = __line;

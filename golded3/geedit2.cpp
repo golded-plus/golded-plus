@@ -750,7 +750,7 @@ void IEclass::BlockPaste() {
         // insert into current line
         currline->txt.insert(col, _pasteline->txt);
         Undo->PushItem(EDIT_UNDO_INS_TEXT|BATCH_MODE, currline, col, pastelen);
-        col += _pasteline->txt.length();
+        col += pastelen;
         wrapins(&currline, &col, &row, NO);
       }
 

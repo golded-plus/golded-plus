@@ -78,7 +78,7 @@ void SaveLines(int mode, const char* savefile, GMsg* msg, bool clip) {
           while(p != line->txt.end()) {
             if(mode == MODE_WRITE) {
               // Replace control codes, except the ANSI escape code
-              if(*p < ' ') {
+              if(iscntrl(*p)) {
                 // only allow ESC in file write
                 if(prn or (*p != '\x1B')) {
                   *p = (*p == CTRL_A) ? '@' : '.';

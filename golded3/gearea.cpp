@@ -449,7 +449,7 @@ void GPickArealist::AreaCatchUp(uint n) {
 
   // Do not do catch up if there's active area
   if(AA->isopen())
-    return false;
+    return;
 
   GMenuAreaCatchup MenuAreaCatchup;
   GMsg* msg = (GMsg*)throw_calloc(1, sizeof(GMsg));
@@ -735,10 +735,10 @@ bool GPickArealist::handle_key() {
     default:
       if(key < KK_Macro) {
         n = toupper(key & 0xFF);
-        if((area_fuzidx < area_maxfuz) or key == Key_BS) {
+        if((area_fuzidx < area_maxfuz) or (key == Key_BS)) {
 
           // Incremental search in the echoids
-          if(not (n < ' ') or key == Key_BS) {
+          if(not iscntrl(n) or (key == Key_BS)) {
             if(n == ' ')
               n = '_';
             if(key != Key_BS)
