@@ -10,7 +10,7 @@ goldedplus (1.1.4.7-1) unstable; urgency=low
   * Merged Debianization patches with upstream sources on SourceForge.
   * Moved manual pages to the distribution archive.
 
- -- peter karlsson <peterk@debian.org>  YET UNRELEASED
+ -- peter karlsson <peterk@debian.org>  Wed, 06 Dec 2000 07:50:00 +0200
 
 goldedplus (1.1.4.6-1) unstable; urgency=low
 
