@@ -336,6 +336,7 @@ public:
   int         twitmode;             // showtwits;
   std::vector<Node> twitname;
   gstrarray   twitsubj;
+  bool        usearea;
   bool        usecharset;
   int         usefwd;
   bool        useintl;

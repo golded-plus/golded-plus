@@ -704,9 +704,17 @@ int gkbd_curstable[] = {
 int gkbd_cursgetch(int mode) {
 
   int key;
+#ifndef BUGGY_NCURSES
   nodelay(stdscr, mode);
+#else
+  wtimeout(stdscr, mode ? 0 : -1);
+#endif
   key = getch();
+#ifndef BUGGY_NCURSES
   nodelay(stdscr, FALSE);
+#else
+  wtimeout(stdscr, -1);
+#endif
 
   return key;
 }

@@ -296,7 +296,7 @@ void AreaList::AddNewArea(AreaCfg* aa) {
         // We had it already, so override with the new data
         newarea = false;
         if(strblank((*ap)->desc()))
-          strcpy(desc, aa->desc);
+          strxcpy(desc, aa->desc, sizeof(desc));
         break;
       }
     }

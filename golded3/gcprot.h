@@ -341,6 +341,7 @@ void CfgTwitmode         ();
 void CfgTwitname         ();
 void CfgTwitsubj         ();
 void CfgTwitto           ();
+void CfgUsearea          ();
 void CfgUsecharset       ();
 void CfgUseflags         ();
 void CfgUsefwd           ();

@@ -168,6 +168,7 @@ void Area::InitData() {
   strxcpy(adat->wtpl, CFG->wtpl.c_str(), sizeof(adat->wtpl));
   adat->templatematch = CFG->templatematch;
   adat->twitmode = CFG->twitmode;
+  adat->usearea = CFG->usearea;
   adat->usefwd = CFG->usefwd;
   strcpy(adat->username.name, CFG->username.empty() ? "" : CFG->username[CFG->usernameno].name);
   adat->username.addr = adat->aka.addr;
@@ -319,6 +320,7 @@ void Area::RandomizeData(int mode) {
 
     CFG->grp.GetItm(GRP_TEMPLATEMATCH, adat->templatematch);
     CFG->grp.GetItm(GRP_TWITMODE, adat->twitmode);
+    CFG->grp.GetItm(GRP_USEAREA, adat->usearea);
     CFG->grp.GetItm(GRP_USEFWD, adat->usefwd);
 
     if(CFG->grp.GetItm(GRP_USERNAME, buf, sizeof(buf))) {

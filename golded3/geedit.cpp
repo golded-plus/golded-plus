@@ -2699,18 +2699,18 @@ void UndoStack::PlayItem() {
 
         // we need to fit thisrow into the screen boundaries
         if(delta > 0) {
-          for (row -= delta; row < minrow; row++) {
+          for (row -= delta; (int)row < (int)minrow; row++) {
             if(templine) // cause refresh() issue an error since templine should never be NULL
               templine = templine->next;
           }
-          temprow = maxrow;
+          temprow = minrow;
         }
         else {
           for (row -= delta; row > maxrow; row--) {
             if(templine) // cause refresh() issue an error since templine should never be NULL
               templine = templine->prev;
           }
-          temprow = minrow;
+          temprow = maxrow;
         }
 
         // move pointer to the top of screen so we refresh scrolled area

@@ -41,7 +41,7 @@
 
 //  ------------------------------------------------------------------
 
-const int MAX_DESC =  45;        // Area descriptions
+const int MAX_DESC =  81;        // Area descriptions
 const int MAX_ECHO =  81;        // Echoids
 
 

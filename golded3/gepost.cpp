@@ -763,6 +763,7 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
         msg->references = NULL;
         msg->attr.tou0();
         msg->TextToLines(CFG->dispmargin-1, false);
+        msg->msgid.reset();
         *msg->iorig = NUL;
         *msg->idest = NUL;
         *msg->ireplyto = NUL;

@@ -41,7 +41,12 @@ bool strncont(const char *beginword, const char *stylestopchars, int n)
 
 //  ------------------------------------------------------------------
 
-inline int isstylechar(char c) { return (c == '*') or (c == '/') or (c == '_') or (c == '#'); }
+inline bool isstylechar(char c) {
+
+  if(strchr(CFG->stylecodestops, c) != NULL)
+    return false;
+  return (c == '*') or (c == '/') or (c == '_') or (c == '#');
+}
 
 void Container::StyleCodeHighlight(const char* text, int row, int col, bool dohide, int color) {
 

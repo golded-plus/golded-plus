@@ -458,9 +458,11 @@ char* strxmimecpy(char* dest, const char* source, int level, int size, bool dete
 
 static void KludgeAREA(GMsg* msg, const char* echoid) {
 
-  Area* ap = AL.AreaEchoToPtr(echoid);
-  if(ap)
-    msg->areakludgeid = ap->echoid();
+  if(AA->Usearea()) {
+    Area* ap = AL.AreaEchoToPtr(echoid);
+    if(ap)
+      msg->areakludgeid = ap->echoid();
+  }
 }
 
 
@@ -815,7 +817,8 @@ static void KludgeX_FTN_TO(GMsg* msg, const char* ptr) {
 
 static void KludgeFWDFROM(GMsg* msg, const char* ptr) {
 
-  strxcpy(msg->fwdfrom, ptr, sizeof(msg->fwdfrom));
+  if(AA->Usefwd())
+    strxcpy(msg->fwdfrom, ptr, sizeof(msg->fwdfrom));
 }
 
 
@@ -823,7 +826,8 @@ static void KludgeFWDFROM(GMsg* msg, const char* ptr) {
 
 static void KludgeFWDORIG(GMsg* msg, const char* ptr) {
 
-  msg->fwdorig.reset(ptr);
+  if(AA->Usefwd())
+    msg->fwdorig.reset(ptr);
 }
 
 
@@ -831,7 +835,8 @@ static void KludgeFWDORIG(GMsg* msg, const char* ptr) {
 
 static void KludgeFWDTO(GMsg* msg, const char* ptr) {
 
-  strxcpy(msg->fwdto, ptr, sizeof(msg->fwdto));
+  if(AA->Usefwd())
+    strxcpy(msg->fwdto, ptr, sizeof(msg->fwdto));
 }
 
 
@@ -839,7 +844,8 @@ static void KludgeFWDTO(GMsg* msg, const char* ptr) {
 
 static void KludgeFWDDEST(GMsg* msg, const char* ptr) {
 
-  msg->fwddest.reset(ptr);
+  if(AA->Usefwd())
+    msg->fwddest.reset(ptr);
 }
 
 
@@ -847,7 +853,8 @@ static void KludgeFWDDEST(GMsg* msg, const char* ptr) {
 
 static void KludgeFWDSUBJ(GMsg* msg, const char* ptr) {
 
-  strxcpy(msg->fwdsubj, ptr, sizeof(msg->fwdsubj));
+  if(AA->Usefwd())
+    strxcpy(msg->fwdsubj, ptr, sizeof(msg->fwdsubj));
 }
 
 
@@ -855,7 +862,8 @@ static void KludgeFWDSUBJ(GMsg* msg, const char* ptr) {
 
 static void KludgeFWDAREA(GMsg* msg, const char* ptr) {
 
-  strxcpy(msg->fwdarea, ptr, sizeof(msg->fwdarea));
+  if(AA->Usefwd())
+    strxcpy(msg->fwdarea, ptr, sizeof(msg->fwdarea));
 }
 
 
@@ -863,7 +871,8 @@ static void KludgeFWDAREA(GMsg* msg, const char* ptr) {
 
 static void KludgeFWDMSGID(GMsg* msg, const char* ptr) {
 
-  strxcpy(msg->fwdmsgid, ptr, sizeof(msg->fwdmsgid));
+  if(AA->Usefwd())
+    strxcpy(msg->fwdmsgid, ptr, sizeof(msg->fwdmsgid));
 }
 
 
@@ -1462,9 +1471,7 @@ void ScanKludges(GMsg* msg, int getvalue) {
         line->type |= GLINE_KLUD;
         const char* areakludgeptr = ptr+5;   // Extract echoid from kludge
         areakludgeptr = strskip_wht(areakludgeptr);
-        Area* ap = AL.AreaEchoToPtr(areakludgeptr);
-        if(ap)
-          msg->areakludgeid = ap->echoid();
+        KludgeAREA(msg, areakludgeptr);
       }
 
       if(not (line->type & GLINE_KLUD)) {

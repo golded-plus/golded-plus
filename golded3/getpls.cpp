@@ -1015,11 +1015,11 @@ void OtherAreaReplyMsg() {
 void ReplyMsg() {
 
   if(CurrArea == OrigArea) {
-    const char *destarea = AA->Areareplyto();
-    if (!*destarea)
-      destarea = reader_msg->areakludgeid;
+    const char *destarea = reader_msg->areakludgeid;
+    if ((destarea != NULL) and (*destarea != NUL))
+      destarea = AA->Areareplyto();
 
-    if(AA->Areareplydirect() and destarea) {
+    if(AA->Areareplydirect() and (destarea != NULL)) {
       int a = AL.AreaEchoToNo(destarea);
       if(a != -1) {
         CurrArea = AL.AreaNoToId(a);
@@ -1051,11 +1051,11 @@ void ReplyMsg() {
 void QuoteMsg(bool ignore_replyto) {
 
   if(CurrArea == OrigArea) {
-    const char *destarea = AA->Areareplyto();
-    if (!*destarea)
-      destarea = reader_msg->areakludgeid;
+    const char *destarea = reader_msg->areakludgeid;
+    if ((destarea != NULL) and (*destarea != NUL))
+      destarea = AA->Areareplyto();
 
-    if(AA->Areareplydirect() and destarea) {
+    if(AA->Areareplydirect() and (destarea != NULL)) {
       int a = AL.AreaEchoToNo(destarea);
       if(a != -1) {
         CurrArea = AL.AreaNoToId(a);
@@ -1087,11 +1087,11 @@ void QuoteMsg(bool ignore_replyto) {
 void CommentMsg() {
 
   if(CurrArea == OrigArea) {
-    const char *destarea = AA->Areareplyto();
-    if (!*destarea)
-      destarea = reader_msg->areakludgeid;
+    const char *destarea = reader_msg->areakludgeid;
+    if ((destarea != NULL) and (*destarea != NUL))
+      destarea = AA->Areareplyto();
 
-    if(AA->Areareplydirect() && destarea) {
+    if(AA->Areareplydirect() and (destarea != NULL)) {
       int a = AL.AreaEchoToNo(destarea);
       if(a != -1) {
         CurrArea = AL.AreaNoToId(a);

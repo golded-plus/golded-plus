@@ -25,6 +25,7 @@
 //  ------------------------------------------------------------------
 
 #include <golded.h>
+#include <gcharset.h>
 
 
 //  ------------------------------------------------------------------
@@ -732,7 +733,7 @@ void GThreadlist::GenTree(char* buf, int idx) {
 
   if(graph[0] == NUL) {
     int table = LoadCharset(NULL, NULL, 1);
-    int level = LoadCharset("IBMPC", CFG->xlatlocalset);
+    int level = LoadCharset(get_dos_charset(CFG->xlatlocalset), CFG->xlatlocalset);
     XlatStr(graph, graph_ibmpc, level, CharTable);
     if(table == -1)
       LoadCharset(CFG->xlatimport, CFG->xlatlocalset);

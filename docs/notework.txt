@@ -12,6 +12,22 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed serious bug with forwarding when ADDRESSLOOKUPFIRST set to
+  MSGID (or no Origin line available) and you call either spellchecker
+  or EditLoadFile function. The address was set to the address of
+  original mail author.
+
++ Added USEAREA keyword which may be used in Random System Groups. If
+  defined to NO then GoldED+ will not recognize AREA kludge.
+
+! If USEFWD is set to NO then GoldED+ will not recognize FWD* kludges.
+
+- You may now disable one or more stylecodes by including them in
+  STYLECODESTOPS.
+
+- Fixed hang on undo of text deletetion when text is greater than
+  screen size.
+
 - Fixed crash on calling Externutil in empty area.
 
 - GoldED+ will now treat all unknown charsets to be equal to

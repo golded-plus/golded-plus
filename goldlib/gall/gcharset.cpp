@@ -81,8 +81,10 @@ const char *get_charset(void)
   strcpy(charsetbuf, "LATIN-1");
   cp = setlocale(LC_CTYPE, "");
   if((cp != NULL) and ((cp = strchr(cp, '.')) != NULL)) {
-    if(strieql(cp, "KOI8R"))
+    if(strieql(cp, "KOI8R") or strieql(cp, "KOI8"))
       cp = "KOI8-R";
+    if(strieql(cp, "KOI8U"))
+      cp = "KOI8-U";
     strxcpy(charsetbuf, cp, sizeof(charsetbuf));
   }
 #endif
@@ -99,7 +101,9 @@ const char *get_dos_charset(const char *cpfrom)
     char *from, *to;
   } cpmap[] = {
     { "LATIN-1", "CP437" },
+    { "KOI8", "CP866" },
     { "KOI8-R", "CP866" },
+    { "KOI8-U", "CP1125" },
     { NULL, NULL }
   };
 

@@ -306,6 +306,7 @@ struct AreaData {
   Tear     tearline;
   Path     tpl;
   bool     templatematch;
+  bool     usearea;
   int      usefwd;
   Node     username;
   bool     usetzutc;
@@ -564,6 +565,7 @@ public:
   const char*  Tpl() const              { return adat->tpl; }
         bool   Templatematch() const    { return adat->templatematch; }
         int    Twitmode() const         { return adat->twitmode; }
+        bool   Usearea() const          { return adat->usearea; }
         int    Usefwd() const           { return adat->usefwd; }
   const Node&  Username() const         { return adat->username; }
         bool   Usetzutc() const         { return adat->usetzutc; }

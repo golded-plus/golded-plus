@@ -274,6 +274,17 @@ void CfgTwitsubj() {
 
 //  ------------------------------------------------------------------
 
+void CfgUsearea() {
+
+  int flag = GetYesno(val) ? true : false;
+  if(cfgingroup)
+    CFG->grp.AddItm(GRP_USEAREA, flag);
+  else
+    CFG->usearea = flag;
+}
+
+//  ------------------------------------------------------------------
+
 void CfgUsecharset() {
 
   CFG->usecharset = GetYesno(val);

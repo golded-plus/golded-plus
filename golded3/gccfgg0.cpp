@@ -555,6 +555,7 @@ SwitchT:
 
 SwitchU:
   switch(crc) {
+    case CRC_USEAREA          :  CfgUsearea          ();  break;
     case CRC_USECHARSET       :  CfgUsecharset       ();  break;
     case CRC_USEFWD           :  CfgUsefwd           ();  break;
     case CRC_USEINTL          :  CfgUseintl          ();  break;

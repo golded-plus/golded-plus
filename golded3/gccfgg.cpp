@@ -749,8 +749,9 @@ CfgGed::CfgGed() {
   templatematch = false;
   timeout = 0;
   twitmode = TWIT_BLANK;
+  usearea = true;
   usecharset = true;
-  usefwd = false;
+  usefwd = NO;
   useintl = true;
   usepid = true;
   usernameno = 0;

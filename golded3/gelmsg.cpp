@@ -90,13 +90,6 @@ int Area::LoadMsg(GMsg* msg, ulong msgno, int margin, int mode) {
       if(not (msg->attr.uns() and not msg->attr.rcv()))
         return true;
     }
-    else {
-      // We can't rely on the destination address unless we are in netmail
-      if(not AA->isnet()) {
-        msg->dest.reset_fast();
-        msg->odest.reset_fast();
-      }
-    }
     msg->attr.tou0();
     msg->TextToLines(margin);
     return true;
