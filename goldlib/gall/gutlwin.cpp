@@ -28,10 +28,11 @@
 
 #include <clocale>
 #include <cstdio>
+#include <cctype>
+#define __gctype_h // prevent gctype from being included
 #include <gstrall.h>
 #include <gmemdbg.h>
 #include <gutlos.h>
-#include <gctype.h>
 #include <windows.h>
 #ifndef __NO_MMSYSTEM
 #include <mmsystem.h>
@@ -143,8 +144,8 @@ int g_init_os(int flags) {
     setlocale(LC_CTYPE, locale);
 #endif
     for(i = 0; i < 256; i++) {
-      tu[i] = (toupper)(i);
-      tl[i] = (tolower)(i);
+      tu[i] = toupper(i);
+      tl[i] = tolower(i);
       CHAR chr = (CHAR)i;
       MultiByteToWideChar(CP_OEMCP, MB_USEGLYPHCHARS, &chr, 1, oem2unicode+i, 1);
     }
@@ -158,8 +159,8 @@ int g_init_os(int flags) {
   // tolower/toupper tables
   char src[2], dst[2], tst[2];
   for(i = 0; i < 32; i++) {
-    tu[i] = (toupper)(i);
-    tl[i] = (tolower)(i);
+    tu[i] = toupper(i);
+    tl[i] = tolower(i);
   }
   for(i = 32; i < 256; i++) {
     tu[i] = tl[i] = i;
