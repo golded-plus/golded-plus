@@ -424,6 +424,13 @@ void edit_addressbook(GMsg* msg);
 
 
 //  ------------------------------------------------------------------
+//  GEMSGID prototypes
+
+ulong getMsgId();
+ulong getClassicMsgId();
+
+
+//  ------------------------------------------------------------------
 //  SOFTCR management
  
 inline bool issoftcr(char c) {

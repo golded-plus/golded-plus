@@ -12,6 +12,34 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ Added Husky compatible MSGID generation algorithm. The following
+  keywords are added for configuration:
+
+  SeqMsgId Yes/No/Maybe
+  Yes   - Use SeqMsgId algorithm
+  No    - Do not use SeqMsgId algorithm
+  Maybe - Use SeqMsgId algorithm if SeqDir is set explicitly (default)
+
+  SeqDir pathname
+  If SeqDir not explicitly defined and SeqMsgId is set, then SEQDIR
+  environment variable will be used. Note that pathname mapping (by
+  using MapPath rules) only occurs when SeqDir defined explicitly.
+
+  SeqOutRun num[y][d][h][w][m]
+  SeqOutRun defines maximum "run-away" time for the MSGID. If not
+  defined explicitly, then SEQOUT environment variable is used. If
+  SEQOUT is also not set, then default value equals to 3 years is
+  used.
+  The num defines number in seconds if neither one of modificators
+  is in use. The following modificators can be used:  
+  y - year
+  d - day
+  h - hour
+  w - week
+  m - month (31 days)
+
+  Thanks to Alexander Reznikov for the patch.
+
 - Fixed active messages counter for JAM messagebases if message
   restored by removing DEL attribute.
 
@@ -484,8 +512,8 @@ ______________________________________________________________________
 - GoldED+ will now treat all unknown charsets to be equal to
   Xlatimport.
 
-- Fixed AreaReplyDirect operation when AreaReply is defined (Thanks to
-  Pavel Gulchouck for the patch).
+- Fixed AreaReplyDirect operation when AreaReplyTo is defined (Thanks
+  to Pavel Gulchouck for the patch).
 
 - Fixed problem with incorrect updating of timesread field when
   MSGLISTFIRST is YES.

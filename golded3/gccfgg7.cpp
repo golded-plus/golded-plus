@@ -344,6 +344,74 @@ void CfgSemaphore() {
 
 //  ------------------------------------------------------------------
 
+void CfgSeqDir() {
+
+  MapPath(PathCopy(CFG->seqdir, val));
+}
+
+//  ------------------------------------------------------------------
+
+void CfgSeqMsgId() {
+
+  CFG->seqmsgid = GetYesno(val);
+}
+
+//  ------------------------------------------------------------------
+
+void CfgSeqOutRun_Error() {
+
+  std::cout << "* Warning: Bad SeqOutrun value \'" << val << "\', ignored."<< std::endl;
+}
+
+void CfgSeqOutRun() {
+
+  char *p;
+  ulong s = 0;
+
+  if(not isdigit((int)(*val))) {
+    CfgSeqOutRun_Error();
+    return;
+  }
+
+  s = (ulong)atol(val);
+  p = val;
+  while(isdigit((int)(*p)))
+    p++;
+  if(*p == '\0') {
+    CFG->seqoutrun = s;
+    if(veryverbose)
+      std::cout << "  SeqOutRun: \'" << val << "\' --> " << CFG->seqoutrun << std::endl;
+    return;
+  }
+  if(p[1]) {
+    CfgSeqOutRun_Error();
+    return;
+  }
+  switch(tolower(*p)) {
+    case 'y':
+      s *= 365;
+    case 'd':
+      s *= 24;
+    case 'h':
+      s *= 60*60;
+      break;
+    case 'w':
+      s *= 7l*24*60*60;
+      break;
+    case 'm':
+      s *= 31l*24*60*60;
+      break;
+    default:
+      CfgSeqOutRun_Error();
+      return;
+  }
+  CFG->seqoutrun = s;
+  if(veryverbose)
+    std::cout << "  SeqOutRun: \'" << val << "\' --> " << CFG->seqoutrun << std::endl;
+}
+
+//  ------------------------------------------------------------------
+
 void CfgSharemode() {
 
   if(atoi(val))

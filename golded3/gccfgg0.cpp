@@ -511,6 +511,9 @@ SwitchS:
     case CRC_SCREENSIZE       :  CfgScreensize       ();  break;
     case CRC_SEARCHFOR        :  CfgSearchfor        ();  break;
     case CRC_SEMAPHORE        :  CfgSemaphore        ();  break;
+    case CRC_SEQDIR           :  CfgSeqDir           ();  break;
+    case CRC_SEQMSGID         :  CfgSeqMsgId         ();  break;
+    case CRC_SEQOUTRUN        :  CfgSeqOutRun        ();  break;
     case CRC_SHAREMODE        :  CfgSharemode        ();  break;
     case CRC_SHOWDELETED      :  CfgShowdeleted      ();  break;
     case CRC_SOUNDPATH        :  CfgSoundpath        ();  break;

@@ -106,6 +106,9 @@ bool ReadGoldedCfg(int& force) {
     MakePathname(CFG->outputfile, CFG->goldpath, CFG->outputfile);
     MakePathname(CFG->inputfile, CFG->goldpath, CFG->inputfile);
 
+    if(*CFG->seqdir)
+      MakePathname(CFG->seqdir, CFG->goldpath, CFG->seqdir);
+
     if(*CFG->souptosslog)
       MakePathname(CFG->souptosslog, CFG->goldpath, CFG->souptosslog);
 
@@ -327,7 +330,7 @@ void InstallDetect(char* path) {
     if(fexist(cmdlinecfgbak))
       remove(cmdlinecfgbak);
     rename(CFG->goldcfg, cmdlinecfgbak);
-    std::cout << "WARNING: Existing config backed up to " << cmdlinecfgbak << "!!!" << std::endl;
+    std::cout << "Warning: Existing config backed up to " << cmdlinecfgbak << "!!!" << std::endl;
   }
 
   std::cout << "Please wait while GoldED+ is detecting your software." << std::endl;
@@ -585,6 +588,7 @@ CfgGed::CfgGed() {
   *pathreportfile = 0;
   *pcboardpath = 0;
   *quotebuffile = 0;
+  *seqdir = 0;
   *soundpath = 0;
   *soupexportpath = 0;
   *soupimportpath = 0;
@@ -754,6 +758,8 @@ CfgGed::CfgGed() {
   screenmaxcol = 0;
   screenmaxrow = 0;
   screensize = 0;
+  seqmsgid = MAYBE;
+  seqoutrun = 0;
   sharemode = cmdlinesharemode;
   showdeleted = false;
   soupexportmargin = 76;

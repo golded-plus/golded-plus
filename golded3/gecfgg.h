@@ -303,6 +303,9 @@ public:
   int         screensize;
   INam        searchfor;
   Semaphore   semaphore;
+  Path        seqdir;
+  int         seqmsgid;
+  ulong       seqoutrun;
   int         sharemode;            // share;
   bool        showdeleted;
   Path        soundpath;

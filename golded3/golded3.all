@@ -64,6 +64,7 @@ gemlst   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be
 gemnus   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be
 gemrks   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be
 gemsgs   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be
+gemsgid  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be
 genode   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be
 geplay   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be
 gepost   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be
