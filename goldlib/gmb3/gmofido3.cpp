@@ -66,9 +66,14 @@ int FidoArea::load_message(int __mode, gmsg* __msg, FidoHdr& __hdr) {
   strxcpy(__msg->re, __hdr.re, 72);
 
   if(isopus()) {
-    __msg->orig.zone  = __msg->oorig.zone  =
-    __msg->dest.zone  = __msg->odest.zone  =
-    __msg->orig.point = __msg->oorig.point =
+    __msg->orig.zone  = __msg->oorig.zone  = 0;
+    __msg->orig.net   = __msg->oorig.net   = __hdr.orignet;
+    __msg->orig.node  = __msg->oorig.node  = __hdr.orignode;
+    __msg->orig.point = __msg->oorig.point = 0;
+
+    __msg->dest.zone  = __msg->odest.zone  = 0;
+    __msg->dest.net   = __msg->odest.net   = __hdr.destnet;
+    __msg->dest.node  = __msg->odest.node  = __hdr.destnode;
     __msg->dest.point = __msg->odest.point = 0;
 
     // Convert datetime
@@ -88,12 +93,16 @@ int FidoArea::load_message(int __mode, gmsg* __msg, FidoHdr& __hdr) {
 
     __msg->written = __msg->arrived = 0;
   }
+
   __msg->written = __msg->written ? __msg->written : FidoTimeToUnix(__hdr.datetime);
-  time_t a = time(NULL);
-  struct tm *tp = gmtime(&a);
-  tp->tm_isdst = -1;
-  time_t b = mktime(tp);
-  __msg->arrived = __msg->arrived ? __msg->arrived : a + a - b;
+
+  if(__msg->arrived == 0) {
+    time_t a = time(NULL);
+    struct tm *tp = gmtime(&a);
+    tp->tm_isdst = -1;
+    time_t b = mktime(tp);
+    __msg->arrived = a + a - b;
+  }
 
   // Transfer attributes
   __msg->attr.pvt(__hdr.attr & FIDO_PVT);
