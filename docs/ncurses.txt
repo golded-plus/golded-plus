@@ -24,7 +24,7 @@ If you find any bug not listed here, please report to Jacobo Tarrio,
 2:348/105.93@fidonet <jtarrio@iname.com> ASAP to get it fixed soon, or,
 even better, fix it yourself and send me the patch :-)
 
-=== 2000-04-18: Fourth public release
+=== 2000-04-19: Fourth public release
 Known bugs:
 
 ! Messages from the program viewed before entering full-screen are not
@@ -35,6 +35,12 @@ Notes:
 * I'm downgrading this one from bug to note: "Screen may become corrupted if
   someone other than GoldEd+ writes on the terminal". As it happens with
   other platforms too, I'm considering it no longer a ncurses-specific bug.
+* Trouble with your function keys? I'm sorry but I cannot help it. Every
+  kind of terminal manages function keys differently, so they cannot be
+  relied upon. Well, there IS a way to get function keys et.al. reliably and
+  all, but that would make GoldED+ unportable, bloated and fragile, and
+  neither I nor you want it, do you? Workaround: map these functions to
+  regular keys.
 
 === 2000-02-17: Third public release
 Known bugs:
