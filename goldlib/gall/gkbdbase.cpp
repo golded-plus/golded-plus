@@ -132,7 +132,9 @@ void GKbd::Init() {
   osversion.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
   GetVersionEx(&osversion);
   gkbd_nt = (osversion.dwPlatformId & VER_PLATFORM_WIN32_NT) ? true : false;
-  gkbd_hin = GetStdHandle(STD_INPUT_HANDLE);
+  gkbd_hin = CreateFile("CONIN$", GENERIC_READ | GENERIC_WRITE,
+                         FILE_SHARE_READ | FILE_SHARE_WRITE, NULL,
+                         OPEN_EXISTING, 0, NULL);
   GetConsoleMode(gkbd_hin, &gkbd_kbdmode);
   if(gkbd_kbdmode & KBD_TEXTMODE)
     SetConsoleMode(gkbd_hin, gkbd_kbdmode & ~KBD_TEXTMODE);

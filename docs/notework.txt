@@ -9,7 +9,22 @@ ______________________________________________________________________
 
 ______________________________________________________________________
 
-               Notes for GoldED+ 1.1.4.7, November xx 2000
+                Notes for GoldED+ 1.1.5, December xx 2000
+______________________________________________________________________
+
+- Fixed incorrect filenames displaying in /w32 version.
+
+- Fixed crash of Win32 version when output/input redirected to/from
+  file.
+
+- Fixed case sensivity in macro expansion.
+
+- Fixed insertion of extra space before Origin line if entry is taken
+  from file.
+
+______________________________________________________________________
+
+               Notes for GoldED+ 1.1.4.7, December 02 2000
 ______________________________________________________________________
 
 - It is now possible to use filepicker if there's very long filenames.

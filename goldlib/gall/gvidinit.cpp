@@ -393,7 +393,11 @@ int GVid::detectadapter() {
 
   #elif defined(__WIN32__)
 
-  gvid_hout = GetStdHandle(STD_OUTPUT_HANDLE);
+  gvid_hout = CreateFile("CONOUT$", GENERIC_READ | GENERIC_WRITE,
+                     FILE_SHARE_WRITE | FILE_SHARE_READ, NULL,
+                     OPEN_EXISTING,
+                     FILE_FLAG_NO_BUFFERING|FILE_FLAG_WRITE_THROUGH, NULL);
+  // gvid_hout = GetStdHandle(STD_OUTPUT_HANDLE);
 
   adapter = V_VGA;
 

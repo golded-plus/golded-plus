@@ -29,3 +29,7 @@ ls bin/
 
 You have to get ged{short-patform-name}, gn{short-patform-name}, and
 rddt{short-patform-name}. If so, you did it!
+
+When building in DJGPP environment you may wish to patch libc with djlocale
+patch which may be found on http://asa.i-connect.com/djlocale.zip. This patch
+intended for those who worried about NLS support.

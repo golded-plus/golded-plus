@@ -130,6 +130,7 @@ int g_init_os(int flags) {
   memset(&WinVer, 0, sizeof(OSVERSIONINFO));
   WinVer.dwOSVersionInfoSize = sizeof (OSVERSIONINFO);
   GetVersionEx(&WinVer);
+  SetFileApisToOEM();
   GetConsoleTitle(ge_win_coldtitle, sizeof(ge_win_coldtitle));
   if(WinVer.dwPlatformId == VER_PLATFORM_WIN32_NT) {
     for(i = 0; i < 256; i++) {
