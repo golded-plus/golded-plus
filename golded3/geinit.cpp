@@ -376,12 +376,12 @@ static void w_brag() {
   W_READ = wopen_(1, 2, MAXROW-4, MAXCOL-5, W_BBRAG, C_BRAGB, C_BRAGW);
   w_shadow();
 
-  wprints(0, 0, C_BRAGT|ACSET, "                   88     88            88     ");
-  wprints(1, 0, C_BRAGT|ACSET, "     oooooo oooooo 88 oooo88 oooooo oooo88  o  ");
-  wprints(2, 0, C_BRAGT|ACSET, "     88  88 88  88 88 88  88 88oo88 88  88 o8o ");
-  wprints(3, 0, C_BRAGT|ACSET, "     88oo88 88oo88 88 88oo88 88oooo 88oo88  8  ");
-  wprints(4, 0, C_BRAGT|ACSET, " oo      88                                    ");
-  wprints(5, 0, C_BRAGT|ACSET, " 88oooooo88                                    ");
+  wprints(0, 0, C_BRAGW, "                   88     88            88     ");
+  wprints(1, 0, C_BRAGW, "     oooooo oooooo 88 oooo88 oooooo oooo88  o  ");
+  wprints(2, 0, C_BRAGW, "     88  88 88  88 88 88  88 88oo88 88  88 o8o ");
+  wprints(3, 0, C_BRAGW, "     88oo88 88oo88 88 88oo88 88oooo 88oo88  8  ");
+  wprints(4, 0, C_BRAGW, " oo      88                                    ");
+  wprints(5, 0, C_BRAGW, " 88oooooo88                                    ");
 
   wprints(4, 43-strlen(__gver_longpid__), C_BRAGW, __gver_longpid__);
 
