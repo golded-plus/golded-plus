@@ -255,7 +255,7 @@ bool inline samekey(gkey key1, gkey key2) {
 
   if(key1 >= KK_Commands) // special key
     return false;
-  return (tolower(key1) == key2) or (toupper(key1) == key2);
+  return (tolower(key1) == key2) or (tolower(key2) == key1);
 }
 
 

@@ -754,6 +754,8 @@ static void read_nodelists() {
     if(not quiet) std::cout << std::endl << "* Compiling userlists:" << std::endl;
   }
 
+  pos = 0;
+
   for(fno=userlist.begin(), zno=userzone.begin(); fno != userlist.end() and nodes < maxnodes; fno++, zno++) {
 
     no = 0;
@@ -822,7 +824,7 @@ static void read_nodelists() {
             }
 
             // Indicate userlist
-            nlst.pos = (long)0xFFFFFFFFL;
+            nlst.pos = (long)0xFF000000L | (pos++);
 
             // Append to end of list
             nodeidx.push_back(nlst);

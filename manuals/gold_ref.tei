@@ -423,7 +423,7 @@
         The implementation is based on the documentation in version 1.05,
         experimentation and questions to the authors. Thanks go to
         <name/Frank Jacobberger/ for the initial testing and prodding of the
-        authors to answer <name/Odinns/ questions :-)
+        authors to answer <name/Odinns/ questions.
       </p>
       <p>
         The <name/AdeptXBBS/ format does not have a quick method of finding
@@ -524,25 +524,23 @@
       Nodelist and Userlist Support
     </head>
     <p>
-      <name>GoldED+</name> supports the <name>FrontDoor</name>,
-      <name>Version 7(+)</name> nodelist indexes as well as a plain
-      <code/fidouser.lst/. However, if you run software that doesn't use
-      any of these formats, you may want to use <name>GoldED+</name>'s own
-      nodelist index.
+      <name/GoldED+/ supports the <name/FrontDoor/, <name/Version 7(+)/
+      nodelist indexes as well as a plain <code/fidouser.lst/. However, if you
+      run software that doesn't use any of these formats, you may want to use
+      <name/GoldED+/'s own nodelist index.
     </p>
     <p>
-      In order to enable nodelist/userlist lookup and browsing,
-      <name>GoldED+</name> needs to use a set of special nodelist index files,
-      created by the <name>GoldNODE</name> nodelist compiler.
+      In order to enable nodelist/userlist lookup and browsing, <name/GoldED+/
+      needs to use a set of special nodelist index files, created by the
+      <name/GoldNODE/ nodelist compiler.
     </p>
     <p>
-      <name>GoldED+</name> normally uses and displays information from the
-      nodelist when browsing, but it doesn't really need the nodelist for
-      anything. The index files contains sufficient information for lookup and
-      browsing of names or addresses. This means that you can delete or pack
-      away the nodelists and/or userlists after compiling with
-      <name>GoldNODE</name>, if you want to save space and you don't need them
-      for anything else.
+      <name/GoldED+/ normally uses and displays information from the nodelist
+      when browsing, but it doesn't really need the nodelist for anything. The
+      index files contains sufficient information for lookup and browsing of
+      names or addresses. This means that you can delete or pack away the
+      nodelists and/or userlists after compiling with <name/GoldNODE/, if you
+      want to save space and you don't need them for anything else.
     </p>
   </div1>
   <div1>
@@ -691,11 +689,10 @@ golded -noscan -importsoup @x y</eg>
           </label>
           <item>
             Since it seems that increasing the thread priority for the
-            <name>Win32</name> version is a mixed blessing, the default is to
-            <hi>not</hi> increase the priority. From other side
-            <name>OS/2</name> version runned with reduced priority by default.
-            This option increases the priority (<name>Win32</name> and
-            <name>OS/2</name> only).
+            <name/Win32/ version is a mixed blessing, the default is to
+            <hi/not/ increase the priority. From other side <name>OS/2</name>
+            version runned with reduced priority by default. This option
+            increases the priority (<name/Win32/ and <name>OS/2</name> only).
           </item>
           <label>
             <code>-q</code>
@@ -710,7 +707,7 @@ golded -noscan -importsoup @x y</eg>
           </label>
           <item>
             Sort all areas according to <ident>sortspec</ident>. See
-            the <ref target=AREALISTSORT><kw>AREALISTSORT</kw></ref> config
+            the <ref target=AREALISTSORT><kw/AREALISTSORT/</ref> config
             keyword for details.
           </item>
           <label>
@@ -718,7 +715,7 @@ golded -noscan -importsoup @x y</eg>
           </label>
           <item>
             Set the timeout value. A value of zero (0) means never timeout.
-            See the <ref target=TIMEOUT><kw>TIMEOUT</kw></ref> config keyword
+            See the <ref target=TIMEOUT><kw/TIMEOUT/</ref> config keyword
             for details.
           </item>
           <label>
@@ -747,13 +744,13 @@ golded -noscan -importsoup @x y</eg>
             If used, <name/GoldED+/ will create (and overwrite if existing) the
             file <code/goldarea.inc/, which will then contain all areas in the
             <ref target=AREADEF><kw/AREADEF/</ref> form, sorted by your
-            <ref target=AREALISTSORT><kw>AREALISTSORT</kw></ref> specification.
+            <ref target=AREALISTSORT><kw/AREALISTSORT/</ref> specification.
             This is very useful for converting your
             <ref target=AREAFILE><kw/AREAFILE/</ref>'s to a form you can edit
             with your favorite text editor and use in <name/GoldED+/. It is
             also useful if you have used the new
-            <ref target=AREADESC><kw>AREADESC</kw></ref> keyword or the
-            <ref target=AREAFILE><kw/AREAFILE</ref>
+            <ref target=AREADESC><kw/AREADESC/</ref> keyword or the
+            <ref target=AREAFILE><kw/AREAFILE/</ref>
             <ref target=ECHOLIST><gi/EchoList/</ref> reader. The
             <code>goldarea.inc</code> file (created in the
             <ref target=GOLDPATH><kw/GOLDPATH/</ref>) can be used by adding<eg>
@@ -4236,8 +4233,7 @@ mbutil link -clean
                 <ident/S/
               </cell>
               <cell>
-                Sort separators first from this point for criterias that not
-                applicable for AREASEP.
+                Sort area separators first.
               </cell>
             </row>
             <row>
@@ -8498,6 +8494,7 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
         <item>
           <ref target=EDITCHARSPACE><kw/EDITCHARSPACE/</ref>
         </item>
+      </list>
     </div2>
     <div2 id=EDITCHARSPACE>
       <head>
@@ -8550,63 +8547,34 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
         <item>
           <ref target=EDITCHARPARA><kw/EDITCHARPARA/</ref>
         </item>
+      </list>
     </div2>
-
-
-<!-- finished here -->
-
-
     <div2 id=EDITCOMMENT>
       <head>
-        EDITCOMMENT &lt;"word"&gt; &lt;"comment"&gt;
+        EDITCOMMENT
       </head>
-      <p>
-    This feature is mostly for fun :-)
-      </p>
-      <p>
-    It allows you to define words which causes <name>GoldED+</name> to display a
-    comment in the statusline, when you place the cursor on the word
-    in the internal editor.
-      </p>
-      <p>
-    Example:
-      </p>
-      <p>
-      EDITCOMMENT ":-("     "Don't worry, be happy&excl;"
-      EDITCOMMENT ":-)"     "Are we having fun yet?"
-      EDITCOMMENT ";-)"     "Wink wink, nudge nugde..."
-      EDITCOMMENT "&excl;&excl;&excl;"     "Flame Warning&excl;"
-      EDITCOMMENT "GoldED"  "Great program, isn't it?"
-      EDITCOMMENT "Odin"    "One more 'n' please."
-      EDITCOMMENT "Odinn"   "That's right :-)"
-      </p>
-      <p>
-    Have fun with it&excl;
-      </p>
       <list type=gloss>
         <label>
           Synopsis:
         </label>
         <item>
-          <kw/DISPSTATUSLINE/ <ident>&lt;YES/NO&gt;</ident>
+          <kw/EDITCOMMENT/ <ident>&lt;<![ CDATA ["word"]]>&gt;
+          &lt;<![ CDATA ["comment"]]>&gt;</ident>
         </item>
         <label>
           Description:
         </label>
         <item>
-          This keyword controls statusline appearance in the <name/GoldED+/.
+          This feature allows you to define words which causes
+          <name/GoldED+/ to display a comment in the statusline, when you place
+          the cursor on the word in the internal editor.
         </item>
         <label>
           Parameters:
         </label>
         <item>
-          If set to <ident/NO/, the statusline at the bottom will be disabled.
-        </item>
-        <label>
-          Default:
-        </label>
-        <item>
-          <ident/YES/
+          The <ident/word/ defines the substring which should cause displaying
+          of the <ident/comment/ in the statusline.
         </item>
         <label>
           Processed by:
@@ -8621,7 +8589,25 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
           <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
         </item>
+        <label>
+          Example:
+        </label>
+        <item><eg><![ CDATA [
+EDITCOMMENT ":-("     "Don't worry, be happy!"
+EDITCOMMENT ":-)"     "Are we having fun yet?"
+EDITCOMMENT ";-)"     "Wink wink, nudge nugde..."
+EDITCOMMENT "!!!"     "Flame Warning!"
+EDITCOMMENT "GoldED"  "Great program, isn't it?"
+EDITCOMMENT "Odin"    "One more 'n' please."
+EDITCOMMENT "Odinn"   "That's right :-)"]]></eg>
+        </item>
+      </list>
     </div2>
+
+
+<!-- finished here -->
+
+
     <div2>
       <head>
         EDITCOMPLETION &lt;"abbreviation"&gt; &lt;"completion"&gt;
@@ -8681,6 +8667,7 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
           <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
         </item>
+      </list>
     </div2>
     <div2>
       <head>
@@ -8734,6 +8721,7 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
           <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
         </item>
+      </list>
     </div2>
     <div2>
       <head>
@@ -8784,6 +8772,7 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
           <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
         </item>
+      </list>
     </div2>
     <div2>
       <head>
@@ -8839,6 +8828,7 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
           <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
         </item>
+      </list>
     </div2>
     <div2>
       <head>
@@ -8891,6 +8881,7 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
           <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
         </item>
+      </list>
     </div2>
     <div2 id=EDITHARDTERM>
       <head>
@@ -8949,6 +8940,7 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
           <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
         </item>
+      </list>
     </div2>
     <div2 id=EDITHDRNAMESET>
       <head>
@@ -9026,6 +9018,7 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
           <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
         </item>
+      </list>
     </div2>
     <div2>
       <head>
@@ -9108,6 +9101,7 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
           <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
         </item>
+      </list>
     </div2>
     <div2>
       <head>
@@ -9160,6 +9154,7 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
           <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
         </item>
+      </list>
     </div2>
     <div2>
       <head>
@@ -9213,6 +9208,7 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
           <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
         </item>
+      </list>
     </div2>
     <div2 id=EDITMIXCASE>
       <head>
@@ -9273,6 +9269,7 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
           <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
         </item>
+      </list>
     </div2>
     <div2>
       <head>
@@ -9332,6 +9329,7 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
           <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
         </item>
+      </list>
     </div2>
     <div2 id=EDITORFILE>
       <head>
@@ -9386,6 +9384,7 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
           <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
         </item>
+      </list>
     </div2>
     <div2 id=EDITQUOTEMARGIN>
       <head>
@@ -9437,6 +9436,7 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
           <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
         </item>
+      </list>
     </div2>
     <div2 id=EDITREPLYRE>
       <head>
@@ -9500,6 +9500,7 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
           <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
         </item>
+      </list>
     </div2>
     <div2 id=EDITSAVEMENU>
       <head>
@@ -9553,6 +9554,7 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
           <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
         </item>
+      </list>
     </div2>
     <div2>
       <head>
@@ -9617,6 +9619,7 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
           <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
         </item>
+      </list>
     </div2>
     <div2 id=EDITSOFTCRXLAT>
       <head>
@@ -9671,6 +9674,7 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
           <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
         </item>
+      </list>
     </div2>
     <div2>
       <head>
@@ -9727,6 +9731,7 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
           <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
         </item>
+      </list>
     </div2>
     <div2>
       <head>
@@ -9777,6 +9782,7 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
           <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
         </item>
+      </list>
     </div2>
     <div2>
       <head>
@@ -9830,6 +9836,7 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
           <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
         </item>
+      </list>
     </div2>
     <div2>
       <head>
@@ -9882,6 +9889,7 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
           <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
         </item>
+      </list>
     </div2>
     <div2>
       <head>
@@ -9928,6 +9936,7 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
           <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
         </item>
+      </list>
     </div2>
     <div2 id=EVENT>
       <head>
@@ -10052,6 +10061,7 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
           <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
         </item>
+      </list>
     </div2>
     <div2 id=EXCLUDENODES>
       <head>
@@ -10104,6 +10114,7 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
           <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
         </item>
+      </list>
     </div2>
     <div2>
       <head>
@@ -10177,6 +10188,7 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
           <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
         </item>
+      </list>
     </div2>
     <div2>
       <head>
@@ -10394,6 +10406,7 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
           <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
         </item>
+      </list>
     </div2>
     <div2>
       <head>
@@ -10441,6 +10454,7 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
           <ref target=STATUSLINECLOCK><kw/STATUSLINECLOCK/</ref>,
           <ref target=STATUSLINEHELP><kw/STATUSLINEHELP/</ref>
         </item>
+      </list>
     </div2>
     <div2>
       <head>
@@ -12009,7 +12023,7 @@ CTRLINFO ORIGIN           ; Add only an origin</eg>
         NODELIST &lt;file&gt; &lsqb;zone/addr&rsqb;
       </head>
       <p>
-    Here you define the nodelists that are used by <name>GoldED+</name> and the
+    Here you define up to 255 nodelists that are used by <name>GoldED+</name> and the
     companion nodelist compiler GoldNODE. The nodelists must generally
     be in the standard "St.Louis" nodelist format, but they can also
     contain FrontDoor/Version7 style Boss/Point extensions. The

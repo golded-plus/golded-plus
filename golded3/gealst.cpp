@@ -103,14 +103,15 @@ extern "C" int AreaListCmp(const Area** __a, const Area** __b) {
     switch(*ptr) {
       case '-':
         rev = true;
-        A = b;  B = a;
+        A = b; B = a;
         break;
       case '+':
         rev = false;
-        A = a;  B = b;
+        A = a; B = b;
         break;
       case 'A':
       case 'a':
+        sepfirst = true;
         if((cmp = A->aka().compare(B->aka())) != 0)
           return cmp;
         break;
@@ -151,6 +152,7 @@ extern "C" int AreaListCmp(const Area** __a, const Area** __b) {
         break;
       case 'G':
       case 'g':
+        sepfirst = true;
         if((cmp = compare_groups(A->groupid(), B->groupid())) != 0)
           return cmp;
         break;
@@ -211,6 +213,7 @@ extern "C" int AreaListCmp(const Area** __a, const Area** __b) {
         break;
       case 'T':
       case 't':
+        sepfirst = true;
         if((cmp = compare_two(CFG->areatypeorder[A->type()&0xFF], CFG->areatypeorder[B->type()&0xFF])) != 0)
           return cmp;
         break;
@@ -292,15 +295,15 @@ extern "C" int AreaListCmp(const Area** __a, const Area** __b) {
         break;
       case 'S':
       case 's':
-        sepfirst = not rev;
+        if((cmp = compare_two(B->isseparator(), A->isseparator())) != 0)
+          return cmp;
         break;
     }
     ptr++;
   }
 
   if(cmp == 0) {
-    cmp = compare_two(b->isseparator(), a->isseparator());
-    return sepfirst?-cmp:cmp;
+    cmp = compare_two(B->isseparator(), A->isseparator());
   }
 
   return cmp;
