@@ -172,6 +172,8 @@ extern "C" int AreaListCmp(const Area** __a, const Area** __b) {
       case 'T':
         if((cmp = compare_two(CFG->areatypeorder[A->type()&0xFF], CFG->areatypeorder[B->type()&0xFF])) != 0)
           return cmp;
+        if((cmp = compare_two(b->isseparator(), a->isseparator())) != 0)
+          return cmp;
         break;
       case 'U':
         aunread = A->Msgn.Count() - A->lastread();

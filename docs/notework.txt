@@ -12,6 +12,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed arealist sorting so the TYUE in AREALISTSORT will not cause
+  ugly screen when AREASEP is used.
+
 + Added ability to READ packed messagebases. You need to add PKD
   attribute to such echo definition and specify UNPACKER for the
   extension defined. You should pack all files from the single
