@@ -32,6 +32,7 @@
 #include <gwinall.h>
 #include <gwinhelp.h>
 #include <gwinput.h>
+#include <gutlclip.h>
 
 
 //  ------------------------------------------------------------------
@@ -575,6 +576,44 @@ void gwinput::finish_form() {
 
 //  ------------------------------------------------------------------
 
+void gwinput::clear_field() {
+
+  current->clear_field();
+}
+
+
+//  ------------------------------------------------------------------
+
+void gwinput::clipboard_cut() {
+
+  current->clipboard_copy();
+  current->clear_field();
+}
+
+
+//  ------------------------------------------------------------------
+
+void gwinput::clipboard_paste() {
+
+  if(insert_mode)
+    current->clipboard_paste();
+  else {
+    current->clear_field();
+    current->clipboard_paste();
+  }
+}
+
+
+//  ------------------------------------------------------------------
+
+void gwinput::clipboard_copy() {
+
+  current->clipboard_copy();
+}
+
+
+//  ------------------------------------------------------------------
+
 bool gwinput::handle_other_keys(gkey&) {
 
   return false;
@@ -602,11 +641,24 @@ bool gwinput::handle_key(gkey key) {
     case Key_C_Home:        go_form_begin();             break;
     case Key_C_End:         go_form_end();               break;
     case Key_Ins:           toggle_insert();             break;
+    case Key_A_BS:          // fall through
     case Key_C_R:           restore_field();             break;
     case Key_C_BS:          delete_left_word();          break;
     case Key_C_T:           delete_right_word();         break;
     case Key_C_Lft:         go_left_word();              break;
     case Key_C_Rgt:         go_right_word();             break;
+#if !defined(__UNIX__) || defined(__USE_NCURSES__)
+    case Key_S_Ins:         // fall through
+#endif
+    case Key_C_V:           clipboard_paste();           break;
+#if !defined(__UNIX__) || defined(__USE_NCURSES__)
+    case Key_S_Del:         // fall through
+#endif
+    case Key_C_X:           clipboard_cut();             break;
+#if !defined(__UNIX__) || defined(__USE_NCURSES__)
+    case Key_C_Ins:         // fall through
+#endif
+    case Key_C_C:           clipboard_copy();            break;
     default:
       if(not handle_other_keys(key))
         enter_char(KCodAsc(key));
@@ -729,7 +781,6 @@ void gwinput::field::restore() {
 
   strxcpy(buf, destination.c_str(), buf_len+1);
   convert();
-  buf_end_pos = strlen(buf);
   activate();
 }
 
@@ -778,10 +829,7 @@ bool gwinput::field::adjust_mode() {
 void gwinput::field::conditional() {
 
   if(entry == gwinput::entry_conditional) {
-    pos = buf_pos = buf_left_pos = buf_end_pos = 0;
-    *buf = NUL;
-    adjust_mode();
-    draw();
+    clear_field();
   }
 }
 
@@ -1055,6 +1103,95 @@ bool gwinput::field::end() {
   draw();
   move_cursor();
   return true;
+}
+
+
+//  ------------------------------------------------------------------
+
+void gwinput::field::clear_field() {
+
+  if(entry != gwinput::entry_noedit) {
+
+    pos = buf_pos = buf_left_pos = buf_end_pos = 0;
+    *buf = NUL;
+    adjust_mode();
+    draw();
+    move_cursor();
+  }
+}
+
+
+//  ------------------------------------------------------------------
+
+void gwinput::field::clipboard_paste() {
+
+  if(entry != gwinput::entry_noedit) {
+
+    conditional();
+
+    gclipbrd clipbrd;
+
+    if(not clipbrd.openread())
+      return;
+
+    char *clpbuf = (char *)throw_malloc(buf_len + 1);
+
+    if(clipbrd.read(clpbuf, buf_len + 1)) {
+
+      size_t len = strlen(clpbuf);
+      if((len != 0) and (clpbuf[len - 1] == '\n')) {
+        clpbuf[--len] = NUL;
+
+        switch(conversion) {
+          case gwinput::cvt_lowercase:
+            strlwr(clpbuf);
+            break;
+          case gwinput::cvt_uppercase:
+            strupr(clpbuf);
+            break;
+        }
+      }
+
+      if((buf_pos == buf_end_pos) or ((buf_pos + len) >= buf_len)) {
+        strxcat(buf, clpbuf, buf_len + 1);
+        buf_end_pos = strlen(buf);
+        end();
+      }
+      else {
+        strxcat(clpbuf, buf + buf_pos, buf_len + 1);
+        buf[buf_pos] = NUL;
+        strxcat(buf, clpbuf, buf_len + 1);
+        buf_end_pos = strlen(buf);
+        for(int i = 0; i < len; i++)
+          move_right();
+      }
+
+      if(conversion == gwinput::cvt_mixedcase) {
+        struplow(buf);
+        draw();
+      }
+      else {
+        draw();
+      }
+    }
+
+    throw_free(clpbuf);
+
+    clipbrd.close();
+  }
+}
+
+
+//  ------------------------------------------------------------------
+
+void gwinput::field::clipboard_copy() {
+
+  if(entry != gwinput::entry_noedit) {
+
+    gclipbrd clipbrd;
+
+    clipbrd.writeclipbrd(buf);
+  }
 }
 
 

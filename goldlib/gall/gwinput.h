@@ -104,6 +104,11 @@ public:
 
     void move_cursor();
     void draw(int from_pos=0);
+
+    void clear_field();
+
+    void clipboard_paste();
+    void clipboard_copy();
   };
 
   field* first_field;
@@ -194,6 +199,12 @@ public:
 
   void prepare_form();
   void finish_form();
+
+  void clear_field();
+
+  void clipboard_cut();
+  void clipboard_paste();
+  void clipboard_copy();
 
   bool handle_key(gkey key);
 
