@@ -290,63 +290,63 @@ void CheckSemaphores() {
   int pmareas = 0;
   int pmails = 0;
 
-  if(fexist(CFG->semaphore.qwkimport)) {
+  if(fexist(AddPath(CFG->areapath, CFG->semaphore.qwkimport))) {
     ImportQWK();
-    remove(CFG->semaphore.qwkimport);
+    remove(AddPath(CFG->areapath, CFG->semaphore.qwkimport));
     scanned++;
   }
 
-  if(fexist(CFG->semaphore.qwkexport)) {
+  if(fexist(AddPath(CFG->areapath, CFG->semaphore.qwkexport))) {
     ExportQWK();
-    remove(CFG->semaphore.qwkexport);
+    remove(AddPath(CFG->areapath, CFG->semaphore.qwkexport));
   }
 
-  if(fexist(CFG->semaphore.soupimport)) {
+  if(fexist(AddPath(CFG->areapath, CFG->semaphore.soupimport))) {
     ImportSOUP();
-    remove(CFG->semaphore.soupimport);
+    remove(AddPath(CFG->areapath, CFG->semaphore.soupimport));
     scanned++;
   }
 
-  if(fexist(CFG->semaphore.soupexport)) {
+  if(fexist(AddPath(CFG->areapath, CFG->semaphore.soupexport))) {
     ExportSOUP();
-    remove(CFG->semaphore.soupexport);
+    remove(AddPath(CFG->areapath, CFG->semaphore.soupexport));
   }
 
-  if(fexist(CFG->semaphore.exitnow) and in_arealist) {
+  if(fexist(AddPath(CFG->areapath, CFG->semaphore.exitnow)) and in_arealist) {
     gkbd.quitall = YES;
     kbput(KK_AreaAbort);
-    remove(CFG->semaphore.exitnow);
+    remove(AddPath(CFG->areapath, CFG->semaphore.exitnow));
   }
   else {
 
-    if(fexist(CFG->semaphore.scanall)) {
+    if(fexist(AddPath(CFG->areapath, CFG->semaphore.scanall))) {
       scanned += AL.AreaScan(SCAN_ALL, 0, false, pmails, pmareas);
-      remove(CFG->semaphore.scanall);
+      remove(AddPath(CFG->areapath, CFG->semaphore.scanall));
     }
 
-    if(fexist(CFG->semaphore.scanthis)) {
-      sprintf(file, "%s -delete", CFG->semaphore.scanthis);
+    if(fexist(AddPath(CFG->areapath, CFG->semaphore.scanthis))) {
+      sprintf(file, "%s -delete", AddPath(CFG->areapath, CFG->semaphore.scanthis));
       scanned += AL.AreaScan(SCAN_LIST, 0, false, pmails, pmareas, file);
     }
 
-    if(fexist(CFG->semaphore.scannetmail)) {
+    if(fexist(AddPath(CFG->areapath, CFG->semaphore.scannetmail))) {
       scanned += AL.AreaScan(SCAN_NETMAIL, 0, false, pmails, pmareas);
-      remove(CFG->semaphore.scannetmail);
+      remove(AddPath(CFG->areapath, CFG->semaphore.scannetmail));
     }
 
-    if(fexist(CFG->semaphore.pmscanall)) {
+    if(fexist(AddPath(CFG->areapath, CFG->semaphore.pmscanall))) {
       scanned += AL.AreaScan(SCAN_ALL, 0, true, pmails, pmareas);
-      remove(CFG->semaphore.pmscanall);
+      remove(AddPath(CFG->areapath, CFG->semaphore.pmscanall));
     }
 
-    if(fexist(CFG->semaphore.pmscanthis)) {
-      sprintf(file, "%s -delete", CFG->semaphore.pmscanthis);
+    if(fexist(AddPath(CFG->areapath, CFG->semaphore.pmscanthis))) {
+      sprintf(file, "%s -delete", AddPath(CFG->areapath, CFG->semaphore.pmscanthis));
       scanned += AL.AreaScan(SCAN_LIST, 0, true, pmails, pmareas, file);
     }
 
-    if(fexist(CFG->semaphore.pmscannetmail)) {
+    if(fexist(AddPath(CFG->areapath, CFG->semaphore.pmscannetmail))) {
       scanned += AL.AreaScan(SCAN_NETMAIL, 0, true, pmails, pmareas);
-      remove(CFG->semaphore.pmscannetmail);
+      remove(AddPath(CFG->areapath, CFG->semaphore.pmscannetmail));
     }
   }
 

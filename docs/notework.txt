@@ -12,6 +12,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+! AREAPATH now used as default path for all SEMAPHOREs rather than
+  occasionally.
+
 ! Removed keyword EditMsgSize. The message will always be loaded
   completely.
 
