@@ -2472,6 +2472,7 @@ void UndoStack::PushItem(uint action, Line* __line, uint __col, uint __len) {
       case EDIT_UNDO_VOID:
       case EDIT_UNDO_INS_CHAR:
         last_item->line = __line ? __line : currline;
+        last_item->data.char_int = NUL;
         break;
       case EDIT_UNDO_DEL_CHAR:
       case EDIT_UNDO_OVR_CHAR:
@@ -2488,6 +2489,7 @@ void UndoStack::PushItem(uint action, Line* __line, uint __col, uint __len) {
         break;
       case EDIT_UNDO_CUT_TEXT:
         last_item->line = __line;
+        last_item->data.text_ptr = NULL;
         break;
       case EDIT_UNDO_INS_TEXT:
       case EDIT_UNDO_WRAP_TEXT:
@@ -2514,6 +2516,8 @@ void UndoStack::PushItem(uint action, Line* __line, uint __col, uint __len) {
         break;
       case EDIT_UNDO_POP_LINE:
         last_item->line = currline;
+        last_item->data.line_ptr = NULL;
+        break;
     }    
   }
 
@@ -2601,7 +2605,7 @@ void UndoStack::PlayItem() {
           case EDIT_UNDO_CHAR:
             switch(undo_action) {
               case EDIT_UNDO_INS_CHAR:
-                currline->txt.erase(last_item->col.num,1);
+                currline->txt.erase(last_item->col.num, 1);
                 break;
               case EDIT_UNDO_DEL_CHAR:
                 currline->txt.insert(last_item->col.num, 1, last_item->data.char_int);
