@@ -33,7 +33,7 @@
 
 char* XbbsArea::user_lookup(char* __lookfor) {
 
-  wide->user->fh = ::sopen(AddPath(wide->path, "Users"), O_RDWR|O_BINARY, WideSharemode, S_STDRW);
+  wide->user->fh = ::sopen(AddPath(wide->path, "Users"), O_RDWR|O_BINARY, WideSharemode, S_STDRD);
   if(wide->user->fh) {
     wide->user->findwild(__lookfor, __lookfor);
     ::close(wide->user->fh);

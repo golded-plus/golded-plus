@@ -90,7 +90,7 @@ void XbbsArea::raw_scan(int __keep_index, int __scanpm) {
 
   // Load the lastread
   ulong _lastread = 0;
-  int _fh = ::sopen(AddPath(path(), ".lmr"), O_RDONLY|O_BINARY, WideSharemode);
+  int _fh = ::sopen(AddPath(path(), ".lmr"), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
   if(_fh != -1) {
     lseekset(_fh, wide->userno+1, sizeof(ulong));
     read(_fh, &_lastread, sizeof(ulong));
@@ -104,7 +104,7 @@ void XbbsArea::raw_scan(int __keep_index, int __scanpm) {
     data->idx_size = 0;
 
     // Open index file
-    data->fhindex = ::sopen(AddPath(path(), ".Index"), O_RDONLY|O_BINARY, WideSharemode);
+    data->fhindex = ::sopen(AddPath(path(), ".Index"), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
     if(data->fhindex != -1) {
 
       // Allocate index buffer and read from file

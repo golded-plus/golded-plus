@@ -129,7 +129,7 @@ void XbbsArea::raw_open() {
   data->fhtext  = test_open(AddPath(path(), ".Text"));
   wide->isopen++;
   if(wide->isopen == 1)
-    wide->user->fh = ::sopen(AddPath(wide->path, "Users"), O_RDONLY|O_BINARY, WideSharemode);
+    wide->user->fh = ::sopen(AddPath(wide->path, "Users"), O_RDONLY|O_BINARY, WideSharemode, S_STDRW);
 
   GFTRK(NULL);
 }
@@ -166,7 +166,7 @@ void XbbsInit(const char* path, int userno) {
 
   const char* _username = WideUsername[0];
   if(xbbswide->userno == -1) {
-    xbbswide->user->fh = ::sopen(AddPath(xbbswide->path, "Users"), O_RDONLY|O_BINARY, WideSharemode);
+    xbbswide->user->fh = ::sopen(AddPath(xbbswide->path, "Users"), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
     if(xbbswide->user->fh != -1) {
       xbbswide->user->find(_username);
       if(not xbbswide->user->found) {
