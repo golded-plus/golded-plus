@@ -635,7 +635,7 @@ void IEclass::BlockDel(Line* anchor) {
     firstcutline->txt += lastcutline->txt.c_str()+lastcol;
   }
   else
-    firstcutline->txt.erase(firstcol, lastcol);
+    firstcutline->txt.erase(firstcol, lastcol-firstcol);
   setlinetype(firstcutline);
   firstcutline->type &= ~GLINE_BLOK;
   blockcol = -1;
