@@ -757,7 +757,7 @@ void SMBArea::save_hdr(int mode, gmsg* msg)
     l = ftell(data->sdt_fp);
     fwrite(sbody-2, SDT_BLOCK_LEN, smb_datblocks(bodylen), data->sdt_fp);
     if(taillen) {
-      fseek(data->sdt_fp, l+bodylen, SEEK_SET);
+      fseek(data->sdt_fp, l+bodylen+2, SEEK_SET);
       *(ushort *)(stail-2) = XLAT_NONE;
       fwrite(stail-2, SDT_BLOCK_LEN, smb_datblocks(taillen), data->sdt_fp);
     }
