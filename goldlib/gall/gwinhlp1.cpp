@@ -52,7 +52,7 @@
 //  ------------------------------------------------------------------
 //  Constants
 
-#define MAXXREF     30
+#define MAXXREF     50
 #define BUFSIZE     80
 #define BASETAGID   200
 
@@ -435,7 +435,7 @@ static void disp_cat() {
           *p = NUL;
           itemopen ^= 1;
           wprints(wrow, wcol, gwin.active->attr, q);
-          if(not itemopen) {
+          if((not itemopen) and (arraycnt<MAXXREF)) {
             if((catarray[arraycnt]=(char*)throw_malloc(strlen(q)+1))!=NULL) {
               strcpy(catarray[arraycnt],q);
               if(not menuopen) {
