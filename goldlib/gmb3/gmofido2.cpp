@@ -41,10 +41,17 @@ void FidoArea::raw_scan(bool __scanpm) {
   if(not _wasopen) {
     isopen++;
     if(ispacked()) {
-      const char* newpath = Unpack(path());
+      Path tmp;
+      strxcpy(tmp, path(), sizeof(Path));
+      StripBackslash(tmp);
+      const char* newpath = Unpack(tmp);
       if(newpath == NULL)
         packed(false);
-      set_real_path(newpath ? newpath : path());
+      else {
+        strcpy(tmp, newpath);
+        AddBackslash(tmp);
+      }
+      set_real_path(newpath ? tmp : path());
     }
   }
 

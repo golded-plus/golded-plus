@@ -172,10 +172,17 @@ void FidoArea::open() {
   if(isopen == 1) {
     if(ispacked()) {
       isopen--;
-      const char* newpath = Unpack(path());
+      Path tmp;
+      strxcpy(tmp, path(), sizeof(Path));
+      StripBackslash(tmp);
+      const char* newpath = Unpack(tmp);
       if(newpath == NULL)
         packed(false);
-      set_real_path(newpath ? newpath : path());
+      else {
+        strcpy(tmp, newpath);
+        AddBackslash(tmp);
+      }
+      set_real_path(newpath ? tmp : path());
       isopen++;
     }
     data_open();

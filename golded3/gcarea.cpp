@@ -286,13 +286,21 @@ void AreaList::AddNewArea(AreaCfg* aa) {
   area_iterator ap;
   for(ap = idx.begin(); ap != idx.end(); ap++) {
     ++_currarea;
-    if(not (*ap)->isseparator()) {
-      int eq_echoid  = strieql(aa->echoid, (*ap)->echoid());
+    int eq_echoid  = strieql(aa->echoid, (*ap)->echoid());
+    if(eq_echoid) {
+      newarea = false;
+      if(not (*ap)->isseparator()) {
+        if(strblank((*ap)->desc()))
+          strxcpy(desc, aa->desc, sizeof(desc));
+      }
+      break;
+    }
+    else if(not (*ap)->isseparator()) {
       int eq_path    = strieql(aa->path, (*ap)->path());
       int eq_board   = (aa->board == (*ap)->board());
       int eq_msgbase = (aa->msgbase == (*ap)->msgbase());
       int eq_isfido  = (aa->isfido() and (*ap)->isfido());
-      if(eq_echoid or (eq_path and eq_board and (eq_msgbase or eq_isfido))) {
+      if(eq_path and eq_board and (eq_msgbase or eq_isfido)) {
         // We had it already, so override with the new data
         newarea = false;
         if(strblank((*ap)->desc()))
