@@ -1211,7 +1211,7 @@ gkey kbxget_raw(int mode) {
           case VK_CAPITAL:
           case VK_NUMLOCK:
           case VK_SCROLL:
-            return (gkey)k; // Return empty key
+            break;
 
           case VK_NUMPAD0:
           case VK_NUMPAD1:
@@ -1245,12 +1245,12 @@ gkey kbxget_raw(int mode) {
             // fall through
           default:
             if(ascii == '\x2e') {
-              return (gkey)ascii;
+              k = (gkey)ascii;
             }
             else {
               int kc = gkbd_nt2bios(inp);
               if(kc != -1)
-                return (gkey)kc;
+                k = (gkey)kc;
             }
             break;
 
@@ -1264,10 +1264,11 @@ gkey kbxget_raw(int mode) {
           case 0xe9: case 0xea: case 0xeb: case 0xec: case 0xed:
             case 0xef: case 0xf0: case 0xf1: case 0xf2: case 0xf3:
             case 0xf4: case 0xf5:
-            if(ascii)
-              return (gkey)ascii;
+            k = (gkey)ascii;
             break;
         }
+        if(k != 0)
+          break;
       }
       else {
         // Discard other events

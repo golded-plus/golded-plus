@@ -572,7 +572,7 @@ void GVid::detectinfo(GVidInfo* _info) {
 
   // Get video mode and number of rows and columns
   CONSOLE_SCREEN_BUFFER_INFO csbi;
-  GetConsoleScreenBufferInfo(gvid_hout, &csbi);
+  assert(GetConsoleScreenBufferInfo(gvid_hout, &csbi) != 0);
 
   _info->screen.mode = 0;
   _info->screen.rows = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;

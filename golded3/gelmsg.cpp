@@ -65,10 +65,10 @@ int Area::LoadHdr(GMsg* msg, ulong msgno, bool enable_recode) {
       msg->charsetlevel = LoadCharset(CFG->xlatcharset[table].imp, CFG->xlatcharset[table].exp);
 
     // Charset translate header fields
-    strxmimecpy(msg->realby, msg->realby, msg->charsetlevel, sizeof(INam));
-    strxmimecpy(msg->realto, msg->realto, msg->charsetlevel, sizeof(INam));
-    strxmimecpy(msg->by    , msg->by    , msg->charsetlevel, sizeof(INam));
-    strxmimecpy(msg->to    , msg->to    , msg->charsetlevel, sizeof(INam));
+    strxmimecpy(msg->realby, msg->realby, msg->charsetlevel, sizeof(INam), true);
+    strxmimecpy(msg->realto, msg->realto, msg->charsetlevel, sizeof(INam), true);
+    strxmimecpy(msg->by    , msg->by    , msg->charsetlevel, sizeof(INam), true);
+    strxmimecpy(msg->to    , msg->to    , msg->charsetlevel, sizeof(INam), true);
 
     if(not (msg->attr.frq() or msg->attr.att() or msg->attr.urq()))
       strxmimecpy(msg->re  , msg->re    , msg->charsetlevel, sizeof(ISub), true);

@@ -494,9 +494,9 @@ const char* strlword(const char* str) {
 
   *left = NUL;
   if(*str) {
-    strcpy(buf, str);
+    strxcpy(buf, str, sizeof(buf));
     if(strtok(buf, " ") != NULL) {
-      strcpy(left, buf);
+      strxcpy(left, buf, sizeof(left));
     }
   }
   return left;
@@ -514,7 +514,7 @@ const char* strrword(const char* str) {
 
   *right = NUL;
   if(*str) {
-    strcpy(buf, str);
+    strxcpy(buf, str, sizeof(buf));
     ptr = strtok(buf, " ");
     ptr2 = ptr;
     while(ptr != NULL) {
@@ -522,7 +522,7 @@ const char* strrword(const char* str) {
       ptr = strtok(NULL, " ");
     }
     if(ptr2) {
-      strcpy(right, ptr2);
+      strxcpy(right, ptr2, sizeof(right));
     }
   }
   return right;

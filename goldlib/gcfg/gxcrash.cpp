@@ -219,8 +219,8 @@ void gareafile::ReadCrashmail(char* tag) {
       strxmerge(tmp, 100, address, "@", domain, NULL);
       CfgAddress(tmp);
     }
+    fclose(fp);
   }
-  fclose(fp);
 }
 
 

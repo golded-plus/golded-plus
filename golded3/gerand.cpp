@@ -38,6 +38,8 @@ char* GetRandomLine(char* __buf, size_t __bufsize, const char* __file) {
   FILE* fp = fsopen(AddPath(CFG->goldpath, __file), "rb", CFG->sharemode);
   if(fp) {
 
+    setvbuf(fp, NULL, _IOFBF, 32000);
+
     // Check if index exists or if it is older than the textfile
     const char* idxfile = AddPath(CFG->goldpath, indexfile);
     int idxexist = fexist(idxfile);
@@ -47,9 +49,8 @@ char* GetRandomLine(char* __buf, size_t __bufsize, const char* __file) {
 
     // Create index if one was missing
     if(not idxexist) {
-      FILE* fpi = fsopen(idxfile, "wb+", CFG->sharemode);
+      FILE* fpi = fsopen(idxfile, "wb", CFG->sharemode);
       if(fpi) {
-        setvbuf(fp, NULL, _IOFBF, 32000);
         setvbuf(fpi, NULL, _IOFBF, 16000);
         long fpos = 0;
         char buf[512];
@@ -63,6 +64,8 @@ char* GetRandomLine(char* __buf, size_t __bufsize, const char* __file) {
 
     FILE* fpi = fsopen(idxfile, "rb", CFG->sharemode);
     if(fpi) {
+
+      setvbuf(fpi, NULL, _IOFBF, 16000);
 
       // Get random line if there is at least one
       int _lines = (int)(fsize(fpi)/sizeof(long));
