@@ -61,8 +61,7 @@ bool GMsgHeaderEdit::handle_other_keys(gkey& key) {
   gkey kk;
 
   if(key < KK_Commands) {
-    key = key_tolower(key);
-    kk = SearchKey(key, HeaderKey, HeaderKeys);
+    kk = SearchKey(key_tolower(key), HeaderKey, HeaderKeys);
     if(kk)
       key = kk;
   }

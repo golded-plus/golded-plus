@@ -84,7 +84,7 @@ int g_init_os(int flags) {
     if((cpu.al() == 0xff) and (cpu.ch() > 3))
       winapi = ANSIPLUS;
   }
-  #ifdef __DJGPP__
+  #if 0 // __DJGPP__: get djlocale patch instead
   // reload internal djgpp structures for toupper/tolower
   int segment, selector;
 

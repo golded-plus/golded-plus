@@ -47,10 +47,12 @@
 extern "C" {
 #endif
 extern char tl[256], tu[256];
-inline int tolower(int c) { return tl[c]; }
-inline int toupper(int c) { return tu[c]; }
+inline int _nls_tolower(int c) { return tl[c]; }
+inline int _nls_toupper(int c) { return tu[c]; }
 #ifdef __cplusplus
 }
+#define tolower(a) _nls_tolower((unsigned char)(a))
+#define toupper(a) _nls_toupper((unsigned char)(a))
 #endif
 #endif
 
