@@ -55,10 +55,32 @@ void gareafile::ReadSynchronet(char* tag) {
 
   if(not fexist(file)) {
     AddBackslash(file);
-    strcat(file, "msgs.cnf");
+    strxcat(file, "msgs.cnf", sizeof(Path));
   }
 
-  extractdirname(path, file);
+  if(not fexist(file)) {
+    extractdirname(path, file);
+    AddBackslash(path);
+    strxmerge(file, sizeof(Path), path, "ctrl/msgs.cnf", NULL);
+  }
+
+  if(fexist(file)) {
+    Path ctrl;
+    extractdirname(ctrl, file);
+    size_t len = strlen(ctrl);
+    if((len > 0) and isslash(ctrl[len - 1])) {
+      ctrl[len - 1] = NUL;
+      extractdirname(path, ctrl);
+    }
+    else {
+      strcpy(path, ctrl);
+    }
+    AddBackslash(path);
+    strxcat(path, "data/subs/", sizeof(Path));
+  }
+  else {
+    *path = NUL;
+  }
 
   FILE* in = fsopen(file, "rb", sharemode);
   if(in) {
@@ -88,7 +110,7 @@ void gareafile::ReadSynchronet(char* tag) {
           break;
         AreaCfg aa;
         aa.reset();
-        aa.type = GMB_ECHO;
+        aa.type = (sub_misc & SUB_QNET) ? GMB_LOCAL : GMB_ECHO;
         aa.attr = attribsecho;
         aa.msgbase = GMB_SMB;
         aa.setechoid((sub.misc & SUB_FIDO) ? sub.sname : sub.code);

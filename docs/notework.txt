@@ -12,6 +12,12 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- GoldED+ should now properly prepend data/subs path to the Synchronet
+  bases, so copying of msgs.cnf to that directory should not be done
+  anymore in order to make Synchronet areafile reader working.
+
+- Fixed the warning line if SeqMsgId set to MAYBE.
+
 - GoldED+/W32 will not issue warning about too long commandline under
   NT.
 
