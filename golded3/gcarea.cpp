@@ -207,16 +207,12 @@ void AreaList::AddNewArea(AreaCfg* aa) {
     #endif
     #ifndef GMB_NOXBBS
     case MT_ADEPTXBBS:
-      #if !defined(__OS2__)
-      return;
-      #else
       if(*aa->path == NUL)
         return;
       MapPath(aa->path);
       StripBackslash(aa->path);
       strschg_environ(aa->path);
       break;
-      #endif
     #endif
     #ifndef GMB_NOSQSH
     case MT_SQUISH:

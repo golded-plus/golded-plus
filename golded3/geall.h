@@ -37,6 +37,7 @@
 
 const uint MAX_COMM =  25;        // Editor comments
 const uint MAX_FIND =  10;        // Max number of search strings
+const uint MAXQUOTELEN = 40;      // Max length of quote
 
 
 //  ------------------------------------------------------------------

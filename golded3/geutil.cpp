@@ -365,7 +365,7 @@ int is_quote(const char* ptr) {
 
 int quotecolor(const char* line) {
 
-  char buf[100];
+  char buf[MAXQUOTELEN];
   uint len;
 
   GetQuotestr(line, buf, &len);
@@ -385,52 +385,51 @@ int GetQuotestr(const char* ptr, char* qbuf, uint* qlen) {
 
   if(is_quote(ptr)) {
 
-    char* qptr;
-    const char* tmp;
     const char* lp = ptr;
     int n, x;
 
-    MoreQuotes:   // Naughty goto-point for quotestring skipping
+    for(;;) {
 
-    // Skip leading spaces
-    while(isspace(*lp) or issoftcr(*lp))
-      lp++;
-    if(IsQuoteChar(lp)) {      // Type 1 : ">xxxx>" and ">xxxx:"
-      lp++;
+      // Skip leading spaces
       while(isspace(*lp) or issoftcr(*lp))
         lp++;
-      if(is_quote(lp))
-        goto MoreQuotes;
-      if(not (IsQuoteChar(lp-1) or (*(lp-1) == ':'))) {
-        while(not IsQuoteChar(lp))
-          lp--;
+      if(IsQuoteChar(lp)) {      // Type 1 : ">xxxx>" and ">xxxx:"
         lp++;
+        while(isspace(*lp) or issoftcr(*lp))
+          lp++;
+        if(is_quote(lp))
+          continue;
+        if(not (IsQuoteChar(lp-1) or (*(lp-1) == ':'))) {
+          while(not IsQuoteChar(lp))
+            lp--;
+          lp++;
+        }
       }
-    }
-    else {                // Type 2: "xxxx>"
-      while(not (IsQuoteChar(lp) and not IsQuoteChar(lp+1)) and *lp != CR and *lp)
-        ++lp;
-      if(is_quote(lp))
-        goto MoreQuotes;
-      if(*lp)
-        lp++;
+      else {                     // Type 2: "xxxx>"
+        while(not (IsQuoteChar(lp) and not IsQuoteChar(lp+1)) and (*lp != CR) and (*lp != NUL))
+          ++lp;
+        if(is_quote(lp))
+          continue;
+        if(*lp)
+          lp++;
+      }
+
+      break;
     }
 
     // lp now points to the character after the quotestring
 
-    *qlen = (int)((dword)lp - (dword)ptr);
-    if(isspace(*lp) or issoftcr(*lp))
-      (*qlen)++;
+    x = lp - ptr;
+    if((*lp != NUL) and (isspace(*lp) or issoftcr(*lp)))
+      x++;
 
-    for(x=*qlen,n=0,tmp=ptr,qptr=qbuf; n<x and n<40; n++,tmp++) {
-      if(*tmp != LF and not issoftcr(*tmp))
-          *qptr++ = *tmp;
-        else
-          (*qlen)--;
+    for(*qlen = n = 0; (n < x) and ((*qlen) < MAXQUOTELEN); n++, ptr++) {
+      if((*ptr != LF) and not issoftcr(*ptr)) {
+        *qbuf++ = *ptr;
+        (*qlen)++;
+      }
     }
-    *qptr = NUL;
-    if(*qlen > 40)
-      *qlen = 40;
+    *qbuf = NUL;
   }
   else {
     *qbuf = NUL;

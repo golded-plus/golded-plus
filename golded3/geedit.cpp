@@ -611,7 +611,8 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, boo
   _test_halt(*__currline == NULL);
 
   uint  _quotelen;
-  char  _quotebuf[100];
+  char  _quotebuf[MAXQUOTELEN];
+  *_quotebuf = NUL;
 
   uint  _curscol = *__curr_col;
   uint  _cursrow = *__curr_row;
@@ -692,7 +693,7 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, boo
         }
 
         // Did we search all the way back to the beginning of the line?
-        if(_wrappos == 0 or _wrappos == _quotelen or _thisline->txt[_spacepos] == ' ') {
+        if((_wrappos == 0) or (_wrappos == _quotelen) or (_thisline->txt[_spacepos] == ' ')) {
 
           // Case 3: There are no spaces within the margin or we hit leading spaces
 
@@ -703,31 +704,24 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, boo
 
       // The wrapptr now points to the location to be wrapped or NUL
 
-      // Get length of the wrapped part
-      uint _wraplen = _thisline->txt.length() - _wrappos;
-
       // Is the line hard-terminated?
       if(_thisline->txt.find('\n', _wrappos) != _thisline->txt.npos) {
 
         // The line is hard-terminated.
-        //
-        // The wrapped part must be placed on a new line below.
-
-        Line* _wrapline = _lastadded = insertlinebelow(_thisline, NULL, BATCH_MODE);
 
         // Copy the quote string, if any, to the new line first
-        if(_quotelen)
-          _wrapline->txt = _quotebuf;
-        else
-          _wrapline->txt = "";
+        string _wrapbuf = _quotebuf;
 
         // Copy/append the wrapped part to the new line
-        _wrapline->txt += _thisline->txt.substr(_wrappos);
+        _wrapbuf += _thisline->txt.substr(_wrappos);
+
+        // The wrapped part must be placed on a new line below.
+        Line* _wrapline = _lastadded = insertlinebelow(_thisline, _wrapbuf.c_str(), BATCH_MODE);
 
         // Saves pointer to a line where from the wrapped part was copied, its begining
         // and length. While in Undo, appends the copied part to previous line and deletes
         // it on current, moving the rest over deleted.
-        Undo->PushItem(EDIT_UNDO_WRAP_TEXT|BATCH_MODE, _thisline, _quotelen, _wraplen);
+        Undo->PushItem(EDIT_UNDO_WRAP_TEXT|BATCH_MODE, _thisline, _quotelen, _wrapbuf.length() - _quotelen);
 
         _wrapline->type = _thisline->type;
         // Make sure the type of the line is correct
@@ -759,6 +753,12 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, boo
         // Pointer to the next line
         Line* _nextline = _thisline->next;
 
+        // Copy the quote string, if any, to the new line first
+        string _wrapbuf = _quotebuf;
+
+        // Copy/append the wrapped part to the new line
+        _wrapbuf += _thisline->txt.substr(_wrappos);
+
         // Flag to indicate if a new line was added below
         bool _line_added_below = false;
 
@@ -766,20 +766,18 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, boo
         if((_nextline == NULL) or (_nextline->type & GLINE_QUOT)) {
 
           // The wrapped part must be placed on a new line below
-          _lastadded = _nextline = insertlinebelow(_thisline, "", BATCH_MODE);
+          _lastadded = _nextline = insertlinebelow(_thisline, _wrapbuf.c_str(), BATCH_MODE);
           _line_added_below = true;
+
+          Undo->PushItem(EDIT_UNDO_WRAP_TEXT|BATCH_MODE, _thisline, _quotelen, _wrapbuf.length() - _quotelen);
         }
+        else {
 
-        // Was this line quoted?
-        if(_quotelen) {
-
-          // Copy the quote string
-          _nextline->txt.insert(0, _quotebuf, _quotelen);
+          _nextline->txt.insert(0, _wrapbuf);
+          if(_quotelen)
+            Undo->PushItem(EDIT_UNDO_INS_TEXT|BATCH_MODE, _nextline, 0, _quotelen);
+          Undo->PushItem(EDIT_UNDO_WRAP_TEXT|BATCH_MODE, _thisline, _quotelen, _wrapbuf.length() - _quotelen);
         }
-
-        _nextline->txt.insert(_quotelen, _thisline->txt.substr(_wrappos));
-
-        Undo->PushItem(EDIT_UNDO_WRAP_TEXT|BATCH_MODE, _thisline, 0, _quotelen+_wraplen);
 
         // Make sure the type of the line is correct
         setlinetype(_nextline);
@@ -858,6 +856,10 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, boo
       _wrapmargin = (_thisline->next->type & GLINE_QUOT) ? marginquotes : margintext;
       if(_thisline->next->txt.length() <= _wrapmargin)
         break;
+    }
+    else if(_thisline->type & GLINE_QUOT) {
+      Undo->PushItem(EDIT_UNDO_INS_TEXT|BATCH_MODE, _thisline, _thisline->txt.length(), 1);
+      _thisline->txt += '\n';
     }
 
     // Go to the next line
@@ -1023,8 +1025,8 @@ void IEclass::DelChar() {
     if((_nextline->type & GLINE_QUOT) and col) {
 
       // Get quote string length
-      char _dummybuf[100];
-      GetQuotestr(_nextline->txt.c_str(), _dummybuf, &_quotelen);
+      char _quotebuf[MAXQUOTELEN];
+      GetQuotestr(_nextline->txt.c_str(), _quotebuf, &_quotelen);
     }
 
     // Copy the next line's text to this line without quote string
@@ -1180,27 +1182,28 @@ void IEclass::Newline() {
   // Pointer to the split position
   int _splitpos = col;
 
+  char _quotebuf[MAXQUOTELEN];
+  *_quotebuf = NUL;
+
   // Buffer for the second part of the split line
-  char* _splitbuf = (char*)throw_malloc(EDIT_BUFLEN);
-  *_splitbuf = NUL;
+  string _splitbuf;
 
   // If the split line was quoted, get the quotestring
   // But do not get it if the cursor points to a linefeed or is
-  uint _quotelen = 0;
-  if(is_quote(currline->txt.c_str())) {
-    GetQuotestr(currline->txt.c_str(), _splitbuf, &_quotelen);
-    THROW_CHECKPTR(_splitbuf);
-  }
+  uint _quotelen;
+  GetQuotestr(currline->txt.c_str(), _quotebuf, &_quotelen);
 
   // Eliminate the quotestring if
   // - the cursor points to a linefeed or
   // - the cursor is located inside the quotestring
-  if(_quotelen and ((currline->txt.length() == col) or (currline->txt[_splitpos] == '\n') or (col < _quotelen)))
-    *_splitbuf = _quotelen = 0;
+  if(_quotelen and ((currline->txt.length() == col) or (currline->txt[_splitpos] == '\n') or (col < _quotelen))) {
+    *_quotebuf = NUL;
+    _quotelen = 0;
+  }
 
   // Append the second part to the split buffer
-  strcat(_splitbuf, currline->txt.substr(_splitpos).c_str());
-  THROW_CHECKPTR(_splitbuf);
+  _splitbuf = _quotebuf;
+  _splitbuf += currline->txt.substr(_splitpos);
 
   Undo->PushItem(EDIT_UNDO_INS_TEXT|batch_mode, currline, col, 1);
   batch_mode = BATCH_MODE;
@@ -1214,17 +1217,16 @@ void IEclass::Newline() {
   displine(currline, row);
 
   // Insert a new line below, set the line text to the split-off part
-  currline = insertlinebelow(currline, _splitbuf);
+  currline = insertlinebelow(currline, _splitbuf.c_str());
 
   //                  --v--
   // This line would be wrapped
   // This line would be
   // wrapped
 
-  Undo->PushItem(EDIT_UNDO_WRAP_TEXT|BATCH_MODE, currline->prev, _quotelen, strlen(_splitbuf) - _quotelen);
+  Undo->PushItem(EDIT_UNDO_WRAP_TEXT|BATCH_MODE, currline->prev, _quotelen, _splitbuf.length() - _quotelen);
 
   setlinetype(currline);
-  throw_free(_splitbuf);
 
   // Move down the cursor
   col = 0;
@@ -1768,9 +1770,9 @@ int IEclass::reflowok(char* __qstr) {
 
   // Stop reflow if the quotestring on the next line is not the same
   uint _qlen2;
-  char _qstr2[100];
+  char _qstr2[MAXQUOTELEN];
   GetQuotestr(currline->next->txt.c_str(), _qstr2, &_qlen2);
-  if(not strieql(__qstr, _qstr2))
+  if(not cmp_quotes(__qstr, _qstr2))
     return false;
 
   return true;
@@ -1795,7 +1797,7 @@ void IEclass::Reflow() {
 
   // Get the first quotestring
   uint _qlen1;
-  char _qstr1[100];
+  char _qstr1[MAXQUOTELEN];
   GetQuotestr(currline->txt.c_str(), _qstr1, &_qlen1);
   const char* _qlenptr = currline->txt.c_str() + _qlen1;
 
@@ -2431,7 +2433,7 @@ void UndoStack::PushItem(uint action, Line* __line, uint __col, uint __len) {
       case EDIT_UNDO_WRAP_TEXT:
         last_item->line = __line;
         if(__len == NO_VALUE)
-          __len = __line->txt.length() - __col + 1;
+          __len = __line->txt.length() - __col;
         throw_new(last_item->data.text_ptr = new text_item(__col, __len));
         break;
       case EDIT_UNDO_NEW_LINE:
@@ -2571,7 +2573,7 @@ void UndoStack::PlayItem() {
                 throw_delete(text_data);
                 break;
             }
-            editor->setlinetype(currline);
+            editor->setlinetype((undo_action == EDIT_UNDO_WRAP_TEXT) ? currline->next : currline);
             break;
           }
 

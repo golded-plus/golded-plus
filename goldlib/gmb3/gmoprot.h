@@ -120,20 +120,4 @@ void XbbsWideClose();
 
 
 //  ------------------------------------------------------------------
-//  When not in OS/2, use DUMMY AdeptXBBS functions
-
-#if !defined(__OS2__)
-
-#ifndef GMB_NOXBBS
-inline void XbbsInit(const char*, int) { }
-inline void XbbsExit() { }
-
-inline void XbbsWideOpen() { }
-inline void XbbsWideClose() { }
-#endif
-
-#endif
-
-
-//  ------------------------------------------------------------------
 

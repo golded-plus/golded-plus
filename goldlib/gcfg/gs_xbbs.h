@@ -28,6 +28,22 @@
 
 //  ------------------------------------------------------------------
 
+#ifdef __OS2__
+#define INCL_BASE
+#include <os2.h>
+#else
+typedef char CHAR;
+typedef unsigned char UCHAR;
+typedef short SHORT;
+typedef unsigned short USHORT;
+typedef long LONG;
+typedef unsigned long ULONG;
+typedef unsigned char *PSZ;
+#endif
+
+
+//  ------------------------------------------------------------------
+
 #define SMALLEST_MSG_SIZE_FOR_PACKING   384
 
 #define MAX_MSG_AREAS  10240
@@ -331,7 +347,6 @@ typedef struct _msgarea MSGAREA, *PMSGAREA;		  //JM931019
 	#define M_EMAIL      0x00010000                   /* Internet E-Mail         */
 	#define M_FIDO       0x00100000                   /* Star . msg Format       */
 	#define M_JAM        0x00200000                   /* JAM msg Format          */
-
 
 struct _filearea
 	{

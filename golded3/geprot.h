@@ -380,6 +380,7 @@ int   edit_string(char* buf, int buf_size, char* title, int helpcat);
 bool  edit_pathname(char* buf, int buf_size, char* title, int helpcat);
 int   GetAkaNo(const ftn_addr& __aka);
 int   GetQuotestr(const char* ptr, char* qbuf, uint* qlen);
+int   cmp_quotes(char* q1, char* q2);
 int   is_quote(const char* ptr);
 int   IsQuoteChar(const char* s);
 void  maketitle();

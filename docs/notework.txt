@@ -9,8 +9,12 @@ ______________________________________________________________________
 
 ______________________________________________________________________
 
-                 Notes for GoldED+ 1.1.5, April xx 2001
+               Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
+
+- Fixed few bugs in Undo feature.
+
++ Added support for AdeptXBBS for non-OS/2 systems.
 
 + Thanks to Alexey Froloff added support for CrashEcho tosser.
 
@@ -222,8 +226,6 @@ ______________________________________________________________________
 
 - Fixed EditMacro command to be able to execute commands which
   operates on selected block.
-
-- One more quirk in Undo fixed.
 
 - Fixed expansion of environment variables in GoldNode and for
   includes and areafile definition.

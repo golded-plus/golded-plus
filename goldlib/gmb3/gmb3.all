@@ -57,11 +57,11 @@ gmowcat2 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg
 gmowcat3 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg
 gmowcat4 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg
 gmowcat5 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmoxbbs1 cpp     all nov     bco         wco         emx
-gmoxbbs2 cpp     all nov     bco         wco         emx
-gmoxbbs3 cpp     all nov     bco         wco         emx
-gmoxbbs4 cpp     all nov     bco         wco         emx
-gmoxbbs5 cpp     all nov     bco         wco         emx
+gmoxbbs1 cpp     all nov     bco         wco     lnx emx djg     cyg
+gmoxbbs2 cpp     all nov     bco         wco     lnx emx djg     cyg
+gmoxbbs3 cpp     all nov     bco         wco     lnx emx djg     cyg
+gmoxbbs4 cpp     all nov     bco         wco     lnx emx djg     cyg
+gmoxbbs5 cpp     all nov     bco         wco     lnx emx djg     cyg
 
 ##  ------------------------------------------------------------------
 

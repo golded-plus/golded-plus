@@ -29,12 +29,6 @@
 #include <gstrall.h>
 #undef GCFG_NOXBBS
 #include <gedacfg.h>
-
-#ifdef __OS2__
-
-#define INCL_BASE
-#include <os2.h>
-
 #include <gs_xbbs.h>
 
 
@@ -153,15 +147,11 @@ void gareafile::ReadAdeptXbbsFile(char* path, char* file, char* options) {
   }
 }
 
-#endif
-
 
 //  ------------------------------------------------------------------
 //  Read areas from AdeptXBBS
 
 void gareafile::ReadAdeptXBBS(char* tag) {
-
-  #ifdef __OS2__
 
   char options[80];
   Path file, path, cfg;
@@ -183,12 +173,6 @@ void gareafile::ReadAdeptXBBS(char* tag) {
   CfgAdeptxbbspath(path);
 
   ReadAdeptXbbsFile(path, file, options);
-
-  #else
-
-  NW(tag);
-
-  #endif
 }
 
 

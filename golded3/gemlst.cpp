@@ -686,8 +686,20 @@ void GThreadlist::do_delayed() {
     wactiv_(mlstwh);
   }
 
-  if(CFG->switches.get(msglistviewsubj))
+  if(CFG->switches.get(msglistviewsubj)) {
+    // Reload message if not sure that just reread
+    if(not AA->Msglistheader()) {
+      t = list[index];
+
+      if(AA->Msglistfast()) {
+        AA->LoadHdr(&msg, t.msgno);
+      }
+      else {
+        AA->LoadMsg(&msg, t.msgno, CFG->dispmargin-(int)CFG->switches.get(disppagebar));
+      }
+    }
     wtitle(msg.re, TCENTER|TBOTTOM, tattr);
+  }
 
   if(CFG->switches.get(msglistpagebar))
     wscrollbar(W_VERT, maximum_index+1, maximum_index, index);
@@ -772,7 +784,12 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar) {
 
   tdlen = xlen - ((AA->Msglistdate() == MSGLISTDATE_NONE) ? 8 : 18);
 
-  AA->LoadHdr(&msg, t.msgno);
+  if(AA->Msglistfast()) {
+    AA->LoadHdr(&msg, t.msgno);
+  }
+  else {
+    AA->LoadMsg(&msg, t.msgno, CFG->dispmargin-(int)CFG->switches.get(disppagebar));
+  }
 
   if(msg.attr.uns() and not msg.attr.rcv() and not msg.attr.del()) {
     attrw = C_MENUW_UNSENT;

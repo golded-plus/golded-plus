@@ -253,34 +253,6 @@ extern int       xbbsdatano;
 
 //  ------------------------------------------------------------------
 
-#if !defined(__OS2__)
-inline void XbbsArea::open() { }
-inline void XbbsArea::save_lastread() { }
-inline void XbbsArea::close() { }
-inline void XbbsArea::suspend() { }
-inline void XbbsArea::resume() { }
-inline void XbbsArea::scan() { }
-inline void XbbsArea::scan_area() { }
-inline void XbbsArea::scan_area_pm() { }
-inline int XbbsArea::load_message(int, gmsg*, XbbsHdr&) { return false; }
-inline int XbbsArea::load_hdr(gmsg*) { return false; }
-inline int XbbsArea::load_msg(gmsg*) { return false; }
-inline void XbbsArea::lock() { }
-inline void XbbsArea::unlock() { }
-inline void XbbsArea::save_message(int, gmsg*, XbbsHdr&) { }
-inline void XbbsArea::save_hdr(int, gmsg*) { }
-inline void XbbsArea::save_msg(int, gmsg*) { }
-inline void XbbsArea::del_msg(gmsg*) { }
-inline void XbbsArea::new_msgno(gmsg*) { }
-inline char* XbbsArea::user_lookup(char*) { return NULL; }
-inline int XbbsArea::renumber() { return false; }
-inline void XbbsArea::update_timesread(gmsg*) { }
-inline Line* XbbsArea::make_dump_msg(Line*&, gmsg*, char* lng_head) { return NULL; }
-#endif
-
-
-//  ------------------------------------------------------------------
-
 #endif
 
 //  ------------------------------------------------------------------

@@ -1576,37 +1576,39 @@ void ScanKludges(GMsg* msg, int getvalue) {
 
   } while((line = line->prev) != NULL);
 
-  for(line = msg->lin; line; line = line->next)
-    if(line->type & GLINE_KLUDGE)
-      continue;
-    else {
-      if(strnieql(line->txt.c_str(), "From:", 5)) {
-        const char* ptr = line->txt.c_str() + 5;
-        ptr = strskip_wht(ptr);
-        char* tmp = UnwrapLine(line, ptr);
-        KludgeFROM(msg, tmp ? tmp : ptr);
-        if(tmp)
-          throw_free(tmp);
+  if(getvalue) {
+    for(line = msg->lin; line; line = line->next)
+      if(line->type & GLINE_KLUDGE)
+        continue;
+      else {
+        if(strnieql(line->txt.c_str(), "From:", 5)) {
+          const char* ptr = line->txt.c_str() + 5;
+          ptr = strskip_wht(ptr);
+          char* tmp = UnwrapLine(line, ptr);
+          KludgeFROM(msg, tmp ? tmp : ptr);
+          if(tmp)
+            throw_free(tmp);
+        }
+        else if(strnieql(line->txt.c_str(), "To:", 3)) {
+          const char* ptr = line->txt.c_str() + 3;
+          ptr = strskip_wht(ptr);
+          char* tmp = UnwrapLine(line, ptr);
+          KludgeTO(msg, tmp ? tmp : ptr);
+          if(tmp)
+            throw_free(tmp);
+        }
+        else if(strnieql(line->txt.c_str(), "Reply-To:", 9)) {
+          const char* ptr = line->txt.c_str() + 9;
+          ptr = strskip_wht(ptr);
+          char* tmp = UnwrapLine(line, ptr);
+          KludgeREPLY_TO(msg, tmp ? tmp : ptr);
+          if(tmp)
+            throw_free(tmp);
+        }
+        else
+          break;
       }
-      else if(strnieql(line->txt.c_str(), "To:", 3)) {
-        const char* ptr = line->txt.c_str() + 3;
-        ptr = strskip_wht(ptr);
-        char* tmp = UnwrapLine(line, ptr);
-        KludgeTO(msg, tmp ? tmp : ptr);
-        if(tmp)
-          throw_free(tmp);
-      }
-      else if(strnieql(line->txt.c_str(), "Reply-To:", 9)) {
-        const char* ptr = line->txt.c_str() + 9;
-        ptr = strskip_wht(ptr);
-        char* tmp = UnwrapLine(line, ptr);
-        KludgeREPLY_TO(msg, tmp ? tmp : ptr);
-        if(tmp)
-          throw_free(tmp);
-      }
-      else
-        break;
-    }
+  }
 
   if(not gottag)
     *msg->tagline = NUL;
@@ -1784,7 +1786,7 @@ char* XlatStr(char* dest, const char* src, int level, Chs* chrtbl, int qpencoded
 
 //  ------------------------------------------------------------------
 
-static int cmp_quotes(char* q1, char* q2) {
+int cmp_quotes(char* q1, char* q2) {
 
   q1--;
   q2--;
@@ -1866,7 +1868,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
   char* tptr;
   char* escp;
   char* bptr;
-  char buf[256], qbuf[500], qbuf2[500], chsbuf[100];
+  char buf[256], qbuf[MAXQUOTELEN], qbuf2[MAXQUOTELEN], chsbuf[100];
   char* ptr;
   char* qptr;
   char* tmp=NULL;
@@ -1954,7 +1956,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
         if(line->prev) {
           line->prev->next = line;
           if((line->prev->type & (GLINE_HARD|GLINE_WRAP|GLINE_QUOT)) == (GLINE_HARD|GLINE_WRAP)) {
-            line->prev->type ^= GLINE_HARD;
+            line->prev->type &= ~GLINE_HARD;
             line->type |= GLINE_HARD;
           }
         }
@@ -2620,8 +2622,8 @@ void MsgLineReIndex(GMsg* msg, int viewhidden, int viewkludge, int viewquote) {
   msg->lines = 0;
   line = msg->lin;
 
-  char qbuf[50];
-  char qbuf0[50];
+  char qbuf[MAXQUOTELEN];
+  char qbuf0[MAXQUOTELEN];
   uint qlen = 0;
   int qmatches = 0;
 
@@ -2646,8 +2648,7 @@ void MsgLineReIndex(GMsg* msg, int viewhidden, int viewkludge, int viewquote) {
     else if(line->type & GLINE_QUOT) {
       if(not viewquote) {
         GetQuotestr(line->txt.c_str(), qbuf, &qlen);
-        strtrim(qbuf);
-        if(not strieql(qbuf0, qbuf)) {
+        if(not cmp_quotes(qbuf0, qbuf)) {
           strcpy(qbuf0, qbuf);
           qmatches = 0;
         }

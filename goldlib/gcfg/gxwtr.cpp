@@ -187,7 +187,7 @@ void gareafile::ReadWtrGte(char* tag) {
   if(fp) {
     char header[26];
     if(not quiet)
-      printf(NL "* Reading %s", file);
+      cout << "* Reading " << file << endl;
     fread(header, 26, 1, fp); strp2c(header);
     
     if(streql(header, ConfigHeader))

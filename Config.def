@@ -1,7 +1,5 @@
 # Uncomment to disable AdeptXBBS support
-ifneq ($(findstring EMX, $(PATH)), EMX)
-CPPFLAGS+=-DGCFG_NOXBBS
-endif
+#CPPFLAGS+=-DGCFG_NOXBBS
 # Uncomment to disable CrashMail support
 #CPPFLAGS+=-DGCFG_NOCMAIL
 # Uncomment to disable CrashEcho support
