@@ -52,7 +52,6 @@ CmdKey DefaultKeyset[] = {
   { Key_Ent     , KK_AreaSelect           , KT_A },
   { Key_Rgt     , KK_AreaSelect           , KT_A },
   { Key_A_R     , KK_AreaSelectMarks      , KT_A },
-  { Key_A_F8    , KK_AreaShowDel          , KT_A },
   { Key_A_T     , KK_AreaToggle           , KT_A },
   { Key_Ins     , KK_AreaToggle           , KT_A },
   { Key_C_Z     , KK_AreaTouchNetscan     , KT_A },
@@ -184,6 +183,7 @@ CmdKey DefaultKeyset[] = {
   { Key_C_Q     , KK_NodeQuitNow          , KT_N },
   { Key_Ent     , KK_NodeSelect           , KT_N },
 
+  { Key_A_F8    , KK_AreaShowDel          , KT_R },
   { Key_C_B     , KK_ReadAddressbookAdd   , KT_R },
   { Key_X       , KK_ReadAskExit          , KT_R },
   { Key_A_X     , KK_ReadAskExit          , KT_R },
