@@ -24,14 +24,11 @@ If you find any bug not listed here, please report to Jacobo Tarrio,
 2:348/105.93@fidonet <jtarrio@iname.com> ASAP to get it fixed soon, or,
 even better, fix it yourself and send me the patch :-)
 
-=== 2000-03-05: Fourth public release
+=== 2000-04-18: Fourth public release
 Known bugs:
 
 ! Messages from the program viewed before entering full-screen are not
   displayed properly
-! The cursor grows very big every 30 seconds when editing a message
-  (possible reincarnation of a similar bug in former versions)
-* Terminal is messed up after exiting GoldED+ if shell was invoked.
 
 Notes:
 

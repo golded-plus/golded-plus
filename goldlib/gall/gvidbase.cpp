@@ -2000,11 +2000,7 @@ void vcurhide() {
 void vcurshow() {
 
   if(__vcurhidden) {
-    #if defined(__USE_NCURSES__)
-    curs_set(gvid->curr.cursor.end ? 2 : 1);
-    #else
     vcurset(gvid->curr.cursor.start, gvid->curr.cursor.end);
-    #endif
     __vcurhidden = false;
   }
 }

@@ -283,7 +283,7 @@ int ShellToDos(char* command, char* message, int cls, int cursor, int swap, int 
   if(CFG->screenpalette[16])
     gvid->setpalette(gvid->orig.color.palette);
 
-  #ifdef __UNIX__
+  #if defined(__UNIX__) and not defined(__USE_NCURSES__)
   gkbd_tty_reset();
   #endif
 
@@ -343,11 +343,11 @@ int ShellToDos(char* command, char* message, int cls, int cursor, int swap, int 
     status = 0;
 
   // Restore keyboard settings
-  gkbd.Init();
-
   #ifdef __USE_NCURSES__
   clearok(stdscr, TRUE);
   resetty();
+  #else
+  gkbd.Init();
   #endif
 
   // Pause if needed
