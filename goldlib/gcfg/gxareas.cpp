@@ -73,6 +73,21 @@ void gareafile::ReadAreasBBS(char* tag) {
           adjustpath(path+1);
           aa.setpath(path+1);
         }
+        else if((path[0] == 'P') and (path[1] == ' ')) {
+          aa.basetype = "WILDCAT";
+          adjustpath(path+2);
+          aa.setpath(path+2);
+        }
+        else if(strnieql(path, "BBS ", 4)) {
+          aa.basetype = "WILDCAT";
+          adjustpath(path+4);
+          aa.setpath(path+4);
+        }
+        else if(*path == '!') {
+          aa.basetype = "JAM";
+          adjustpath(path+1);
+          aa.setpath(path+1);
+        }
         else {
           aa.basetype = fidomsgtype;
           adjustpath(path);
