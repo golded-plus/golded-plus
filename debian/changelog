@@ -1,0 +1,35 @@
+goldedplus (1.1.4.7-1) unstable; urgency=low
+
+  * New upstream release (see upstream ChangeLog for further details):
+   - @CC kludges created at top of messages.
+   - Corrected problems with daylight savings time.
+   - Recognises tilde even better (~user/file) in paths.
+   - Recognises environmental variables (%TEMP%/file) in paths.
+   - Various bugfixes.
+  * Noted change of official homepage to SourceForge.
+  * Merged Debianization patches with upstream sources on SourceForge.
+  * Moved manual pages to the distribution archive.
+
+ -- peter karlsson <peterk@debian.org>  YET UNRELEASED
+
+goldedplus (1.1.4.6-1) unstable; urgency=low
+
+  * New upstream release (see upstream ChangeLog for further details):
+   - Recognises tilde (~) in paths.
+   - Does not uppercase names in file requests.
+   - Can import output from commands by entering filenames beginning with a
+     pipe symbol (|).
+   - Generates proper RFC headers for latin-xx codepages.
+   - Various bugfixes.
+  * Change Suggests line to suggest either crashmail (a Fidonet tosser) or
+    Uqwk (a SOUP generator).
+  * Added Build-Depends.
+  * Add manual pages based on the software documentation.
+
+ -- peter karlsson <peterk@debian.org>  Wed, 20 Sep 2000 21:04:45 +0200
+
+goldedplus (1.1.4.4-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- peter karlsson <peterk@debian.org>  Tue, 27 Jun 2000 17:35:00 +0200

@@ -1,0 +1,14 @@
+
+# Edited for Debian
+DESTDIR =
+
+BINDIR = $(DESTDIR)/usr/bin
+DOCDIR = $(DESTDIR)/usr/share/doc/goldedplus
+
+install: all
+	install -d $(BINDIR)
+	install -s bin/gedlnx  $(BINDIR)/golded
+	install -s bin/gnlnx   $(BINDIR)/goldnode
+	install -s bin/rddtlnx $(BINDIR)/rddt
+	install -d $(DOCDIR)/src
+	cp -a golded3/docs/*.* $(DOCDIR)/src
