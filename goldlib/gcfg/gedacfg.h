@@ -227,6 +227,7 @@ protected:
 #if !defined(GCFG_NOCMAIL) || !defined(GCFG_NOCECHO)
   // Crashmail II parser function
   bool jbstrcpy(char *dest, char *src, size_t maxlen, size_t *jbc);
+  void ReadCrashmailCfg(const char* file);
 #endif
 #ifndef GCFG_NOTIMED
   // Timed parser function

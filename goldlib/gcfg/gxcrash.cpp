@@ -73,23 +73,7 @@ bool gareafile::jbstrcpy(char *dest, char *src, size_t maxlen, size_t *jbc) {
 //  ------------------------------------------------------------------
 //  Read areas from Crashmail II/CrashEcho (echomail processor)
 
-void gareafile::ReadCrashmail(char* tag) {
-
-  Path file, path;
-  char options[80];
-
-  strcpy(options, tag);
-  char* ptr = strtok(tag, " \t");
-  while(ptr) {
-    if(*ptr != '-') {
-      strcpy(file, ptr);
-    }
-    ptr = strtok(NULL, " \t");
-  }
-
-  extractdirname(path, file);
-
-  CfgSquishuserpath(path);
+void gareafile::ReadCrashmailCfg(const char* file) {
 
   FILE* fp = fsopen(file, "rb", sharemode);
   if(fp) {
@@ -101,6 +85,7 @@ void gareafile::ReadCrashmail(char* tag) {
     char buf[4000];
     char key[30];
     char tmp[100], address[50], domain[50];
+    Path path;
     bool unconfirmed = true;
     size_t jbcpos;
     AreaCfg aa;
@@ -151,8 +136,8 @@ void gareafile::ReadCrashmail(char* tag) {
           break;
 #ifndef GCFG_NOCECHO
         case CRC_AREAFILE:
-          jbstrcpy(tmp, buf, 100, &jbcpos);
-          ReadCrashmail(tmp);
+          jbstrcpy(path, buf, sizeof(Path), &jbcpos);
+          ReadCrashmail(path);
           break;
         case CRC_NETMAILDIR:
           if(aa.type != 0xff) {
@@ -247,6 +232,31 @@ void gareafile::ReadCrashmail(char* tag) {
     }
     fclose(fp);
   }
+}
+
+
+//  ------------------------------------------------------------------
+//  Initialize parser
+
+void gareafile::ReadCrashmail(char* tag) {
+
+  Path file, path;
+  char options[80];
+
+  strcpy(options, tag);
+  char* ptr = strtok(tag, " \t");
+  while(ptr) {
+    if(*ptr != '-') {
+      strcpy(file, ptr);
+    }
+    ptr = strtok(NULL, " \t");
+  }
+
+  extractdirname(path, file);
+
+  CfgSquishuserpath(path);
+
+  ReadCrashmailCfg(file);
 }
 
 
