@@ -35,7 +35,7 @@
 #if !defined(UNIX) && !defined(SASC)
 #   include <io.h>
 #endif
-#if defined(UNIX) || defined(__DJGPP__) || defined(EMX)
+#if defined(UNIX) || defined(__DJGPP__) || defined(__EMX__)
 #   include <unistd.h>
 #endif 
 

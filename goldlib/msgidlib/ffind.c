@@ -43,9 +43,9 @@
 #endif
 #endif
 
-#ifdef UNIX
+/*#ifdef UNIX
 #include "patmat.h"
-#endif
+#endif*/
 
 /*
  *  FFindOpen;  Use like MSDOS "find first" function,  except be sure to
@@ -118,6 +118,7 @@ FFIND *FFindOpen(const char *filespec, unsigned short attribute)
             ff->ff_fdate = *((USHORT *) & findbuf.fdateLastWrite);
 
             strncpy(ff->ff_name, findbuf.achName, sizeof(ff->ff_name));
+            ff->ff_name[sizeof(ff->ff_name) - 1] = '\0';
         }
         else
         {
@@ -166,9 +167,10 @@ FFIND *FFindOpen(const char *filespec, unsigned short attribute)
                     if (patmat(de->d_name, ff->lastbit))
                     {
                         strncpy(ff->ff_name, de->d_name, sizeof ff->ff_name);
-			 ff->ff_fsize = -1L; /* All who wants to know it's size 
-					      * must read it by himself
-					      */
+                        ff->ff_name[sizeof(ff->ff_name) - 1] = '\0';
+			ff->ff_fsize = -1L; /* All who wants to know it's size 
+					     * must read it by himself
+					     */
                         fin = 1;
                     }
                 }
@@ -315,6 +317,7 @@ int FFindNext(FFIND * ff)
             ff->ff_fdate = *((USHORT *) & findbuf.fdateLastWrite);
             ff->ff_fsize = findbuf.cbFile;
             strncpy(ff->ff_name, findbuf.achName, sizeof(ff->ff_name));
+            ff->ff_name[sizeof(ff->ff_name) - 1] = '\0';
             rc = 0;
         }
 
@@ -337,6 +340,7 @@ int FFindNext(FFIND * ff)
                 if (patmat(de->d_name, ff->lastbit))
                 {
                     strncpy(ff->ff_name, de->d_name, sizeof ff->ff_name);
+                    ff->ff_name[sizeof(ff->ff_name) - 1] = '\0';
 		    ff->ff_fsize = -1L; /* All who wants to know it's size 
 					 * must read it by himself
 					 */
@@ -480,6 +484,7 @@ FFIND *FindInfo(const char *filespec)
             f++;
         }
         strncpy(ff->ff_name, f, sizeof(ff->ff_name));
+        ff->ff_name[sizeof(ff->ff_name) - 1] = '\0';
     }
     else
     {

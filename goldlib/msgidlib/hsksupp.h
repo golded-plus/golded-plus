@@ -12,6 +12,15 @@
 #define TRUE 1
 #endif
 
+#if defined(__EMX__)
+#if !defined(OS2)
+#define OS2 1
+#endif
+#if !defined(__FLAT__)
+#define __FLAT__ 1
+#endif
+#endif
+
 #if defined(__MINGW32__)
 /* mingw32 warnings */
 #define NONAMELESSUNION
