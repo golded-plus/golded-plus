@@ -38,7 +38,7 @@ typedef short SHORT;
 typedef unsigned short USHORT;
 typedef long LONG;
 typedef unsigned long ULONG;
-typedef unsigned char *PSZ;
+//typedef unsigned char *PSZ;
 #endif
 
 
@@ -348,6 +348,7 @@ typedef struct _msgarea MSGAREA, *PMSGAREA;		  //JM931019
 	#define M_FIDO       0x00100000                   /* Star . msg Format       */
 	#define M_JAM        0x00200000                   /* JAM msg Format          */
 
+#if 0
 struct _filearea
 	{
 	char             *name;
@@ -381,6 +382,7 @@ struct _filearea
 
 
 typedef struct _filearea FILEAREA, *PFILEAREA;	  //JM931019
+#endif
 
 /*-----------------------------------------------------------*/
 /* File area flags (areaflags)                               */
@@ -403,6 +405,7 @@ typedef struct _filearea FILEAREA, *PFILEAREA;	  //JM931019
 	#define F_NOSEARCH   0x00008000                   // copy download from CD to HD
 
 
+#if 0
 typedef struct _libarea
 	{
 	char            *name;
@@ -428,6 +431,7 @@ typedef struct _libarea
 	struct _libarea *next;
 	struct _libarea *prior;
 	} LIBAREA, *PLIBAREA;
+#endif
 
 
 /*----------------------------------------------------------*/
@@ -436,7 +440,7 @@ typedef struct _libarea
 	#define L_ANSIONLY   0x00000001                   /*                         */
 // Group structure
 
-
+#if 0
 typedef struct _GROUP
 	{
 	PSZ     Name;
@@ -470,7 +474,7 @@ typedef struct _GROUP
 	struct _GROUP *Next;
 	struct _GROUP *Prev;
 	} GROUP, *PGROUP;
-
+#endif
 
 // Group Flags
 	#define G_FLAGSOVERWRITE   0x00000001             // if not overwrite, then accumulate
@@ -480,6 +484,7 @@ typedef struct _GROUP
 ///// New File Search Info
 
 
+#if 0
 typedef struct _user_info
 	{
 	CHAR        name[36];
@@ -606,6 +611,7 @@ typedef struct _xmsg
 	ULONG   bflags;
 	ULONG   cflags;
 	} XMSG, *PXMSG;
+#endif
 
 
 /*----------------------------------------------------*/
