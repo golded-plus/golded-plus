@@ -5531,6 +5531,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
         </label>
         <item>
           <ptr target=MESSAGEATTRS> chapter,
+          <!-- FIX ME!!! -->Carbon Copy and Crossposting chapter,
           <ref target=ADDRESSMACRO><kw/ADDRESSMACRO/</ref>,
           <ref target=ATTRIBSATTACH><kw/ATTRIBSATTACH/</ref>,
           <ref target=ATTRIBSCFM><kw/ATTRIBSCFM/</ref>,
@@ -6377,7 +6378,8 @@ AREASEP &excl;C "Group C" C Local]]></eg>
           See also:
         </label>
         <item>
-          <!-- FIX ME!!! -->Carbon Copy and Crossposting chapter
+          <!-- FIX ME!!! -->Carbon Copy and Crossposting chapter,
+          <ref target=CROSSPOSTLIST><kw/CROSSPOSTLIST/</ref>
         </item>
       </list>
     </div2>
@@ -6581,164 +6583,747 @@ AREASEP &excl;C "Group C" C Local]]></eg>
         </item>
       </list>
     </div2>
+    <div2>
+      <head>
+        COOKIEPATH
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/COOKIEPATH/ <ident/&lt;path&gt;/
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Defines the default path for the <!-- FIX ME!!! --><kw/@random/
+          template token.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The default <ident/path/ for the <!-- FIX ME!!! --><kw/@random/
+          template token.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ref target=GOLDPATH><kw/GOLDPATH/</ref>
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ptr target=MESSAGETEMPLATE> chapter,
+          <ref target=GOLDPATH><kw/GOLDPATH/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2 id=CROSSPOST>
+      <head>
+        CROSSPOST
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/CROSSPOST/ <ident>&lt;YES/NO/ASK&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword configure prompt appearance when saving message which
+          contains crosspost tokens in the body.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          <ident/YES/ tells <name/GoldED+/ to always automatically process
+          crosspost tokens, <ident/NO/ cause to always ignore them, and if set
+          to <ident/ASK/ you will be prompted in each case.
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/ASK/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=CROSSPOSTLIST><kw/CROSSPOSTLIST/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2 id=CROSSPOSTLIST>
+      <head>
+        CROSSPOSTLIST
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/CROSSPOSTLIST/
+          <ident>&lt;RAW/VERBOSE/YES/NONE&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          This keyword specifies the format of the crosspost list, as it will
+          look after processing. You can also change the format in the
+          <ref target=CROSSPOST><kw/CROSSPOST/</ref> menu before processing
+          (if menu enabled).
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The list specification items have the following meaning:
+          <table rows=4 cols=2>
+            <row>
+              <cell>
+                <ident/RAW/
+              </cell>
+              <cell>
+                Keep the list as entered
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/VERBOSE/
+              </cell>
+              <cell>
+                Change the list to lines of "* Crossposted in ..."
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/YES/
+              </cell>
+              <cell>
+                Same as above, but expand echolist in line rather than in
+                column
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/NONE/
+              </cell>
+              <cell>
+                Crosspost without a list in the msgs
+              </cell>
+            </row>
+          </table>
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/VERBOSE/
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <!-- FIX ME!!! -->Carbon Copy and Crossposting chapter,
+          <ref target=CARBONCOPYLIST><kw/CARBONCOPYLIST/</ref>,
+          <ref target=CROSSPOST><kw/CROSSPOST/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2 id=CTRLINFO>
+      <head>
+        CTRLINFO
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/CTRLINFO/ <ident>&lt;YES/NO/TEARLINE,ORIGIN&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Specifies if you want a tearline and/or origin in your messages.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The tokens have the following meaning:
+          <table rows=4 cols=2>
+            <row>
+              <cell>
+                <ident/YES/
+              </cell>
+              <cell>
+                Enable both tearline and origin
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/NO/
+              </cell>
+              <cell>
+                Disable all control info
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/TEARLINE/
+              </cell>
+              <cell>
+                Enable tearline, can be used with <ident/ORIGIN/
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/ORIGIN/
+              </cell>
+              <cell>
+                Enable origin, can be used with <ident/TEARLINE/
+              </cell>
+            </row>
+          </table>
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          This keyword is valid <hi/ONLY/ in a
+          <ref target=RANDOMSYSTEM>Random System</ref> group.<lb>
+          This may be helpful for <abbr/QWK/ users, who can create a group for
+          the <attr/QWK/ areas and disable <kw/CTRLINFO/ there.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=ATTRIBUTES><kw/ATTRIBUTES/</ref>,
+          <ref target=CTRLINFOECHO><kw/CTRLINFOECHO/</ref>,
+          <ref target=CTRLINFOEMAIL><kw/CTRLINFOEMAIL/</ref>,
+          <ref target=CTRLINFOLOCAL><kw/CTRLINFOLOCAL/</ref>,
+          <ref target=CTRLINFONET><kw/CTRLINFONET/</ref>,
+          <ref target=CTRLINFONEWS><kw/CTRLINFONEWS/</ref>,
+          <ref target=ORIGIN><kw/ORIGIN/</ref>,
+          <ref target=TAGLINESUPPORT><kw/TAGLINESUPPORT/</ref>,
+          <ref target=TEARLINE><kw/TEARLINE/</ref>
+        </item>
+        <label>
+          Example:
+        </label>
+        <item><eg>
+CTRLINFO YES              ; Add both tearline and origin
+CTRLINFO TEARLINE ORIGIN  ; Same as above in other words
+CTRLINFO TEARLINE         ; Add only a tearline
+CTRLINFO ORIGIN           ; Add only an origin</eg>
+        </item>
+      </list>
+    </div2>
+    <div2 id=CTRLINFOECHO>
+      <head>
+        CTRLINFOECHO
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/CTRLINFOECHO/ <ident>&lt;YES/NO/TEARLINE,ORIGIN&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Specifies if you want a tearline and/or origin in your echomail
+          messages.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The tokens have the following meaning:
+          <table rows=4 cols=2>
+            <row>
+              <cell>
+                <ident/YES/
+              </cell>
+              <cell>
+                Enable both tearline and origin
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/NO/
+              </cell>
+              <cell>
+                Disable all control info
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/TEARLINE/
+              </cell>
+              <cell>
+                Enable tearline, can be used with <ident/ORIGIN/
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/ORIGIN/
+              </cell>
+              <cell>
+                Enable origin, can be used with <ident/TEARLINE/
+              </cell>
+            </row>
+          </table>
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/YES/
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          Changing the default may cause unpredictable behaviour with some
+          echomail processors so it is not recommended to change it.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=ATTRIBSECHO><kw/ATTRIBSECHO/</ref>,
+          <ref target=CTRLINFOECHO><kw/CTRLINFOECHO/</ref>,
+          <ref target=CTRLINFOEMAIL><kw/CTRLINFOEMAIL/</ref>,
+          <ref target=CTRLINFOLOCAL><kw/CTRLINFOLOCAL/</ref>,
+          <ref target=CTRLINFONET><kw/CTRLINFONET/</ref>,
+          <ref target=CTRLINFONEWS><kw/CTRLINFONEWS/</ref>,
+          <ref target=ORIGIN><kw/ORIGIN/</ref>,
+          <ref target=TAGLINESUPPORT><kw/TAGLINESUPPORT/</ref>,
+          <ref target=TEARLINE><kw/TEARLINE/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2 id=CTRLINFOEMAIL>
+      <head>
+        CTRLINFOEMAIL
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/CTRLINFOEMAIL/ <ident>&lt;YES/NO/TEARLINE,ORIGIN&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Specifies if you want a tearline and/or origin in your
+          <name/Internet/ e-mail messages. This is not recommended.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The tokens have the following meaning:
+          <table rows=4 cols=2>
+            <row>
+              <cell>
+                <ident/YES/
+              </cell>
+              <cell>
+                Enable both tearline and origin
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/NO/
+              </cell>
+              <cell>
+                Disable all control info
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/TEARLINE/
+              </cell>
+              <cell>
+                Enable tearline, can be used with <ident/ORIGIN/
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/ORIGIN/
+              </cell>
+              <cell>
+                Enable origin, can be used with <ident/TEARLINE/
+              </cell>
+            </row>
+          </table>
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/NO/
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          Changing the default is not recommended.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=ATTRIBSEMAIL><kw/ATTRIBSEMAIL/</ref>,
+          <ref target=CTRLINFOECHO><kw/CTRLINFOECHO/</ref>,
+          <ref target=CTRLINFOEMAIL><kw/CTRLINFOEMAIL/</ref>,
+          <ref target=CTRLINFOLOCAL><kw/CTRLINFOLOCAL/</ref>,
+          <ref target=CTRLINFONET><kw/CTRLINFONET/</ref>,
+          <ref target=CTRLINFONEWS><kw/CTRLINFONEWS/</ref>,
+          <ref target=ORIGIN><kw/ORIGIN/</ref>,
+          <ref target=TAGLINESUPPORT><kw/TAGLINESUPPORT/</ref>,
+          <ref target=TEARLINE><kw/TEARLINE/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2 id=CTRLINFOLOCAL>
+      <head>
+        CTRLINFOLOCAL
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/CTRLINFOLOCAL/ <ident>&lt;YES/NO/TEARLINE,ORIGIN&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Specifies if you want tearline and origin in your messages in
+          local areas.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The tokens have the following meaning:
+          <table rows=4 cols=2>
+            <row>
+              <cell>
+                <ident/YES/
+              </cell>
+              <cell>
+                Enable both tearline and origin
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/NO/
+              </cell>
+              <cell>
+                Disable all control info
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/TEARLINE/
+              </cell>
+              <cell>
+                Enable tearline, can be used with <ident/ORIGIN/
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/ORIGIN/
+              </cell>
+              <cell>
+                Enable origin, can be used with <ident/TEARLINE/
+              </cell>
+            </row>
+          </table>
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/NO/
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          In local areas, the tearline and origin is normally never required
+          but can be used for cosmetic purposes.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=ATTRIBSLOCAL><kw/ATTRIBSLOCAL/</ref>,
+          <ref target=CTRLINFOECHO><kw/CTRLINFOECHO/</ref>,
+          <ref target=CTRLINFOEMAIL><kw/CTRLINFOEMAIL/</ref>,
+          <ref target=CTRLINFOLOCAL><kw/CTRLINFOLOCAL/</ref>,
+          <ref target=CTRLINFONET><kw/CTRLINFONET/</ref>,
+          <ref target=CTRLINFONEWS><kw/CTRLINFONEWS/</ref>,
+          <ref target=ORIGIN><kw/ORIGIN/</ref>,
+          <ref target=TAGLINESUPPORT><kw/TAGLINESUPPORT/</ref>,
+          <ref target=TEARLINE><kw/TEARLINE/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2 id=CTRLINFONET>
+      <head>
+        CTRLINFONET
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/CTRLINFONET/ <ident>&lt;YES/NO/TEARLINE,ORIGIN&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Specifies if you want tearline and origin in your netmail messages.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The tokens have the following meaning:
+          <table rows=4 cols=2>
+            <row>
+              <cell>
+                <ident/YES/
+              </cell>
+              <cell>
+                Enable both tearline and origin
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/NO/
+              </cell>
+              <cell>
+                Disable all control info
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/TEARLINE/
+              </cell>
+              <cell>
+                Enable tearline, can be used with <ident/ORIGIN/
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/ORIGIN/
+              </cell>
+              <cell>
+                Enable origin, can be used with <ident/TEARLINE/
+              </cell>
+            </row>
+          </table>
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/TEARLINE/
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          In netmail areas, the tearline and origin is normally never required
+          but can be used for cosmetic purposes. Some robots reqire tearline
+          in the message.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=ATTRIBSECHO><kw/ATTRIBSECHO/</ref>,
+          <ref target=CTRLINFOECHO><kw/CTRLINFOECHO/</ref>,
+          <ref target=CTRLINFOEMAIL><kw/CTRLINFOEMAIL/</ref>,
+          <ref target=CTRLINFOLOCAL><kw/CTRLINFOLOCAL/</ref>,
+          <ref target=CTRLINFONET><kw/CTRLINFONET/</ref>,
+          <ref target=CTRLINFONEWS><kw/CTRLINFONEWS/</ref>,
+          <ref target=ORIGIN><kw/ORIGIN/</ref>,
+          <ref target=TAGLINESUPPORT><kw/TAGLINESUPPORT/</ref>,
+          <ref target=TEARLINE><kw/TEARLINE/</ref>
+        </item>
+      </list>
+    </div2>
+    <div2 id=CTRLINFONEWS>
+      <head>
+        CTRLINFONEWS
+      </head>
+      <list type=gloss>
+        <label>
+          Synopsis:
+        </label>
+        <item>
+          <kw/CTRLINFONEWS/ <ident>&lt;YES/NO/TEARLINE,ORIGIN&gt;</ident>
+        </item>
+        <label>
+          Description:
+        </label>
+        <item>
+          Specifies if you want a tearline and/or origin in your
+          <name/Internet/ news articles.
+        </item>
+        <label>
+          Parameters:
+        </label>
+        <item>
+          The tokens have the following meaning:
+          <table rows=4 cols=2>
+            <row>
+              <cell>
+                <ident/YES/
+              </cell>
+              <cell>
+                Enable both tearline and origin
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/NO/
+              </cell>
+              <cell>
+                Disable all control info
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/TEARLINE/
+              </cell>
+              <cell>
+                Enable tearline, can be used with <ident/ORIGIN/
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <ident/ORIGIN/
+              </cell>
+              <cell>
+                Enable origin, can be used with <ident/TEARLINE/
+              </cell>
+            </row>
+          </table>
+        </item>
+        <label>
+          Default:
+        </label>
+        <item>
+          <ident/NO/
+        </item>
+        <label>
+          Notes:
+        </label>
+        <item>
+          Changing the default is not recommended.
+        </item>
+        <label>
+          Processed by:
+        </label>
+        <item>
+          Mail reader.
+        </item>
+        <label>
+          See also:
+        </label>
+        <item>
+          <ref target=ATTRIBSECHO><kw/ATTRIBSECHO/</ref>,
+          <ref target=CTRLINFOECHO><kw/CTRLINFOECHO/</ref>,
+          <ref target=CTRLINFOEMAIL><kw/CTRLINFOEMAIL/</ref>,
+          <ref target=CTRLINFOLOCAL><kw/CTRLINFOLOCAL/</ref>,
+          <ref target=CTRLINFONET><kw/CTRLINFONET/</ref>,
+          <ref target=CTRLINFONEWS><kw/CTRLINFONEWS/</ref>,
+          <ref target=ORIGIN><kw/ORIGIN/</ref>,
+          <ref target=TAGLINESUPPORT><kw/TAGLINESUPPORT/</ref>,
+          <ref target=TEARLINE><kw/TEARLINE/</ref>
+        </item>
+      </list>
+    </div2>
 
 
 <!-- finished here -->
 
 
-    <div2>
-      <head>
-        COOKIEPATH &lt;path&gt;
-      </head>
-      <p>
-  (defaults to the GOLDPATH)
-      </p>
-      <p>
-    Defines the default path for the @random template token.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        CROSSPOST &lt;YES/NO/ASK&gt;
-      </head>
-      <p>
-- Added new keyword CROSSPOST to configure query appearence before
-  crosspossting, defaults to Ask.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        CROSSPOSTLIST &lt;listspec&gt;
-      </head>
-      <p>
-  (Verbose)
-      </p>
-      <p>
-    This specifies the format of the Crosspost list, as it will look
-    after processing.
-      </p>
-      <p>
-    The &lt;listspec&gt; can be one of the following:
-      </p>
-      <p>
-      None      Crosspost without a list in the msgs.
-      Verbose   Change the list to lines of "* Crossposted in ..."
-      Yes       Also adds "* Crossposted in ...", but expands echolist
-                in line rather than in column.
-      Raw       Keep the crosspost list as you entered it.
-      </p>
-      <p>
-    More details can be found in the Carbon Copy and Crossposting
-    chapter.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        CTRLINFO &lt;Tearline,Origin,yes/no&gt;
-      </head>
-      <p>
-    Specifies if you want a tearline and/or origin in your messages.
-      </p>
-      <p>
-    This keyword can ONLY be used in Random System groups.
-      </p>
-      <p>
-    This may be helpful for QWK users, who can now create a group for
-    the QWK areas and put "CTRLINFO No" in it.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        CTRLINFOECHO &lt;Tearline,Origin,yes/no&gt;
-      </head>
-      <p>
-  (Tearline Origin)
-      </p>
-      <p>
-    Specifies if you want a tearline and/or origin in your echomail
-    messages. They will be added by your echomail processor if you
-    disable them here.
-      </p>
-      <p>
-    Examples:
-      </p>
-      <p>
-      CTRLINFOECHO Tearline Origin  ; Add both tearline and origin.
-      CTRLINFOECHO Tearline         ; Add only a tearline.
-      CTRLINFOECHO Origin           ; Add only an origin.
-      </p>
-      <p>
-    NOTE: If you use the last example, your mail processor may get
-    confused. However, most modern mail processors *can* handle msgs
-    without a tearline.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        CTRLINFOEMAIL &lt;Tearline,Origin,yes/no&gt;
-      </head>
-      <p>
-  (No)
-      </p>
-      <p>
-    Specifies if you want a tearline and/or origin in your Internet
-    e-mail messages. This is not recommended.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        CTRLINFOLOCAL &lt;Tearline,Origin,yes/no&gt;
-      </head>
-      <p>
-  (No)
-      </p>
-      <p>
-    Specifies if you want tearline and origin in your messages in
-    local areas. In local areas, the tearline and origin is normally
-    never required but can be used for cosmetic purposes.
-      </p>
-      <p>
-    Examples:
-      </p>
-      <p>
-      CTRLINFOLOCAL Tearline Origin  ; Add both tearline and origin.
-      CTRLINFOLOCAL Tearline         ; Add only a tearline.
-      CTRLINFOLOCAL Origin           ; Add only an origin.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        CTRLINFONET &lt;Tearline,Origin,yes/no&gt;
-      </head>
-      <p>
-  (Tearline)
-      </p>
-      <p>
-    Specifies if you want tearline and origin in your netmail
-    messages. In netmail areas, the tearline and origin is normally
-    never required but can be used for cosmetic purposes.
-      </p>
-      <p>
-    Examples:
-      </p>
-      <p>
-      CTRLINFONET Tearline Origin  ; Add both tearline and origin.
-      CTRLINFONET Tearline         ; Add only a tearline.
-      CTRLINFONET Origin           ; Add only an origin.
-      </p>
-    </div2>
-    <div2>
-      <head>
-        CTRLINFONEWS &lt;Tearline,Origin,yes/no&gt;
-      </head>
-      <p>
-  (No)
-      </p>
-      <p>
-    Specifies if you want a tearline and/or origin in your Internet
-    news articles. This is not recommended.
-      </p>
-    </div2>
     <div2>
       <head>
         DISPAREANO &lt;yes/no/always&gt;
@@ -10853,7 +11438,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     (underscore).
       </p>
     </div2>
-    <div2>
+    <div2 id=TAGLINESUPPORT>
       <head>
         TAGLINESUPPORT &lt;yes/no&gt;
       </head>
