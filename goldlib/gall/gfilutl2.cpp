@@ -29,6 +29,9 @@
 #ifndef __HAVE_DRIVES__
 #include <pwd.h>
 #endif
+#ifdef __WIN32__
+#include <windows.h>
+#endif
 
 
 //  ------------------------------------------------------------------
@@ -116,6 +119,45 @@ bool maketruepath(string &dirname) {
   char cwd[GMAXPATH];
   getcwd(cwd, GMAXPATH);
 #ifdef __HAVE_DRIVES__
+#ifdef __WIN32__
+  char expanded[GMAXPATH];
+  char *k;
+  if(GetFullPathName(dirname.c_str(), GMAXPATH, expanded, &k) == 0) {
+    dirname = cwd;
+    ok = false;
+  }
+  else {
+    if(access(expanded, R_OK) == 0)
+      dirname = expanded;
+    else {
+      dirname = cwd;
+      ok = false;
+    }
+  }
+#elif defined __OS2__
+  char expanded[GMAXPATH];
+  if(_fullpath(expanded, dirname.c_str(), GMAXPATH) == 0) {
+    if(access(expanded, R_OK) == 0)
+      dirname = expanded;
+    else {
+      dirname = cwd;
+      ok = false;
+    }
+  }
+  else {
+    dirname = cwd;
+    ok = false;
+  }
+#elif defined __DJGPP__
+  char expanded[GMAXPATH];
+  _fixpath(dirname.c_str(), expanded);
+  if(access(expanded, R_OK) == 0)
+    dirname = expanded;
+  else {
+    dirname = cwd;
+    ok = false;
+  }  
+#else
   long inspos = -1;
   if((dirname.length() == 2) && (dirname[1] == ':'))
     inspos = 2;
@@ -143,6 +185,7 @@ bool maketruepath(string &dirname) {
     }
     chdir(cwd);
   }
+#endif
 #else
   if(!dirname.empty() && (dirname[0] == '~')) {
     const char *p = dirname.c_str()+1;
@@ -163,7 +206,7 @@ bool maketruepath(string &dirname) {
       dirname = cwd;
       ok = false;
     }
-        } else if(!dirname.empty() && !isslash(dirname[0])) {
+  } else if(!dirname.empty() && !isslash(dirname[0])) {
     ndirname = cwd;
     ndirname += "/";
     ndirname += dirname;

@@ -1128,6 +1128,8 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
           __line = wrapins(&__line, &_tmpcol, &_tmprow, NO);
         }
         __line->next = saveline;
+        if(saveline)
+          saveline->prev = __line;
 
         throw_free(buf);
       }
