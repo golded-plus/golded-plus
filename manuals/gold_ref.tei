@@ -40,7 +40,7 @@
         Odinn Sorensen, Dirk A. Mueller, Alexander S. Aganichev and others
       </docAuthor>
       <docDate>
-        1990-1999
+        1990-2001
       </docDate>
     </titlePage>
     <divGen type=toc>
@@ -50,20 +50,209 @@
 <!-- --------------------------------------------------------------------- -->
   <div1>
     <head>
+      Introduction
+    </head>
+    <p>
+      <name/GoldED+/ is a successor of the wellknown <name/GoldED/ mail editor
+      originally written by <name/Odinn Sorensen/.
+    </p>
+    <p>
+      <name/GoldED+/ is run under <name/DOS/ with 32-bit <abbr/DPMI/ driver,
+      <name/Microsoft Windows/, <name>IBM OS/2</name>, <name/Linux/, and
+      <name/FreeBSD/. There's should be no serious problem to compile it
+      on other <name/UNIX/-like systems running on <name/Intel/ <name/80x86/
+      architecture. Unlike the original version of <name/GoldED/,
+      <name/GoldED+/ is not supported on CPUs lower than <name/80386/.
+    </p>
+    <p>
+      <name/GoldED+/ takes his history from the patch collection made by
+      <name>Alexander S. Aganichev</name>. A lot of code was contributed to
+      <name/GoldED+/ by different people around the world. At least
+      <name/GoldED+/ contains portions of code written by the core team of
+      <name/GoldED/ (<name/Odinn Sorensen/, <name>Dirk A. Mueller</name>, and
+      <name/Leonid Lisovsky/), <name/Mike Smedley/, <name/Pavel Gulchouck/,
+      <name/Denis Zavorotny/, <name/Alexander Batalov/, <name/Eugene Roshal/,
+      <name/Igor Vanin/, <name/Alexey Froloff/, <name/Andrew Shakhmatov/,
+      <name/Roman Trunov/, <name/Alex Druinsky/, <name>Alexander
+      Tsvyashchenko</name>, <name/Pavel Tsekov/ and of course by the
+      maintainers of <name/GoldED+/ (<name/Alexander Aganichev/ and
+      <name/Jacobo Tarrio/). Some portions of code was taken from C/C++
+      snippets collected by <name/Bob Stouts/ (personal thanks goes to
+      <name/Thad Smith/, <name/Raymond Gardner/, <name/Jeff Dunlop/,
+      <name/Mark G. Mendel/, <name/Gary S. Brown/, <name/John Rex/, and
+      <name/Walter Bright/) and some other from <name/GNU/ libraries
+      (thanks goes to <name/GNU/ C library maintainers, <name/Rob Swindell/,
+      <name/Frank Pilhofer/, <name/Haruhiko Okumura/, <name>Haruyasu
+      Yoshizaki</name>, <name/SLang/ maintainers, <name/TIN/ maintainers, and
+      <name/Eric Newton/). Also, there are portions of code which are courtesy
+      of various FTN software authors: <name>Scott J. Dudley</name> and
+      <name/Lanius Corporation/, <name/Bit Bucket Software/,
+      <name/Thomas Waldmann/, <name/Peter Davies/, <name/Ron Clark/,
+      <name/Tobias Burchhardt/, <name/Andreas Klein/, <name>Folkert J.
+      Wijnstra</name>, <name/Gerard J. van der Land/, <name/Peter Stewart/ and
+      <name/InterZone Software, Inc./, <name/Marco Maccaferri/,
+      <name/Wynn Wagner III/, <name/Andrew Milner/ and <name>Continental
+      Software</name>, <name/Bjarne Maschoreck/, <name/Roger Kirchhoff/,
+      <name/Stefan Graf/, <name/Nicolai Dufva/, and <name/Morten Baun/.
+      If you feel that your name is missed here please drop an e-mail to
+      the <name/GoldED+/ maintainers.
+    </p>
+    <p>
+      We also need to thanks all that people who have contributed configuration
+      files: <name/Richard Menedetter/, <name/Peter Karlsson/,
+      <name/Daniel Hahler/, <name/Marco Van den Bovenkamp/, <name>Steve
+      Shapiro</name>, <name/Teddy Winstead/, <name/Richard Merit/,
+      <name/Thomas Kraft/, <name/Magnus Jacobsen/, <name/Lars Pehrsson/,
+      <name/Tony Van den Bogaert/, <name/Karsten Palmvig/, <name>Michael
+      Hembo</name>, <name/Thomas Endres/, <name/Nathan Moschkin/,
+      <name/Micheal Dunnagan/, <name/Joseph Carnage/, <name/Thomas Endres/,
+      <name/Niels Axelsson/, <name/Gustav Brock/, <name/Stig Jacobsen/,
+      <name/Erik Wachtmeester/, <name/Dirk Frieborg/, <name/Gd'A/, and
+      <name/Cees Schouten/.
+    </p>
+  </div1>
+<!-- --------------------------------------------------------------------- -->
+  <div1>
+    <head>
+      License Agreement and Copyright Notices
+    </head>
+    <p>
+      <name/GoldED+/ - Copyright &copy; 1990-1999 by <name/Odinn Sorensen/,
+      copyright &copy; 1999-2001 by <name/Alexander S. Aganichev/,
+      <name/Jacobo Tarrio/ and others.
+    </p>
+    <p>
+      <name/GoldED+/ and the <name/Goldware Utilities/ are covered by the
+      <name/GNU General Public License</name> (<name/GPL/), version 2.
+      For details see the file <code/COPYING/.
+    </p>
+    <p>
+      The <name/Goldware Library/ is licensed under the <name>GNU Library
+      General Public License</name> (<name/LGPL/), version 2. For the full
+      text of the license, see the file <code/COPYING.LIB/. If necessary to
+      comply with <name/GPL/, <name/the Goldware Library/ is also licensed
+      under <name/GPL/, version 2.
+    </p>
+    <p>
+      Additionally, permission is hereby specifically given to link
+      <name/GoldED+/, <name/the Goldware Utilities/ and the <name>Goldware
+      Library</name> with any software or software library that meets the
+      <name/Open Source Definition/, as given on
+      <xref type='URL'>http://www.opensource.org</xref>. This includes
+      <name/GPL/, <name/LGPL/, <name/BSD/, <name/X Consortium/,
+      <name/Artistic/, <name/MozPL/, <name/QPL/ and most derivatives of
+      <name/MozPL/.
+    </p>
+    <p>
+      The additional permission to link with <name>non-GPL/LGPL</name> software
+      may be slightly controversial. The intent is to allow developers a
+      greater freedom to create specialized versions of GoldED. Examples could
+      be a <abbr/GUI/ <name/KGoldED/ linked with <name/QT/, a <name/MozGoldED/
+      mail/news component for <name/Mozilla/ using <name/NGLayout/ for
+      displaying <abbr/HTML/, a <name/GoldED+/ with an embedded <name/Perl/
+      scripting engine or whatever. However, we cannot allow the core
+      <name/GoldED+/ or <name/Goldware Library/ to be dependent on these
+      specialized versions, so developers should take care to make their
+      specialized modifications modular and <q/stubifiable/ if necessary.
+    </p>
+    <p>
+      Parts of the <name/Goldware Library/ is derived from the source of the
+      old shareware <name/CXL/ 5.2 library by <name/Mike Smedley/, from which
+      <name/Odinn Sorensen/ bought a source license many years ago.
+      <name/Odinn/ has made very extensive modifications (for example, the
+      original was <name/DOS/ only), but much code is essentially unchanged
+      (<code/gwin*.cpp/). <name/CXL/ was taken over from <name/Mike Smedley/
+      by <name/Innovative Data Concepts/ (<name/IDC/), which renamed it
+      <name/TCXL/ and continued development along somewhat different lines,
+      which <name/Odinn/ did not agree with (or at least not easily port
+      <name/GoldED/ to). However, it seems that <name/TCXL/ never really became
+      successful. At least <name/Odinn/ could not find anything new about
+      <name/TCXL/ and <name/Innovative Data Concepts/ on the <name/Internet/
+      (as of november 15, 1998). <name/Odinn/ could not even find
+      <name/IDC/'s website, so in this day and age where any succesful business
+      has a website, <name/Odinn/ suspects that they no longer exist.
+      <name/Odinn/ even tried to find <name/Mike Smedley/, but apparently he
+      has vanished off the face of the earth, or has lost interest in
+      programming entirely. <name/Odinn/ found some postings (on
+      <name/DejaNews/) on a sports newsgroup by a <name/Mike Smedley/, but
+      he doubts that it's the same guy.
+    </p>
+    <p>
+      So, even though parts of the <name/Goldware Library/ technically are
+      still copyrighted by <name/Mike Smedley/, <name/Odinn/ see so serious
+      problems in using them. If anyone should happen to know <name>Mike
+      Smedley</name> and how to contact him, <name/Odinn Sorensen/ would very
+      much appreciate to get the information, so we can clear up this issue.
+    </p>
+    <p>
+      <name/Squish/ and <name/Maximus/ are trademarks of <name>Lanius
+      Corporation</name>.
+    </p>
+    <p>
+      <name/JAM(mbp)/ - Copyright &copy; 1993 <name/Joaquim Homrighausen/,
+      <name/Andrew Milner/, <name/Mats Birch/, <name/Mats Wallin/.
+    </p>
+    <p>
+      Products and company names listed are trademarks or trade names of their
+      respective companies.
+    </p>
+  </div1>
+<!-- --------------------------------------------------------------------- -->
+  <div1>
+    <head>
+      Nodelist and Userlist Support
+    </head>
+    <p>
+      <name>GoldED+</name> supports the <name>FrontDoor</name>,
+      <name>Version 7(+)</name> nodelist indexes as well as a plain
+      <code/fidouser.lst/. However, if you run software that doesn't use
+      any of these formats, you may want to use <name>GoldED+</name>'s own
+      nodelist index.
+    </p>
+    <p>
+      In order to enable nodelist/userlist lookup and browsing,
+      <name>GoldED+</name> needs to use a set of special nodelist index files,
+      created by the <name>GoldNODE</name> nodelist compiler.
+    </p>
+    <p>
+      <name>GoldED+</name> normally uses and displays information from the
+      nodelist when browsing, but it doesn't really need the nodelist for
+      anything. The index files contains sufficient information for lookup and
+      browsing of names or addresses. This means that you can delete or pack
+      away the nodelists and/or userlists after compiling with
+      <name>GoldNODE</name>, if you want to save space and you don't need them
+      for anything else.
+    </p>
+  </div1>
+  <div1>
+    <head>
+      Routing Diagram Drawing Tool
+    </head>
+    <p>
+      Routing diagram drawing tool intended to analyse files created by
+      pressing key defined for <!-- FIX ME!!! --> <kw>READmakepathreport</kw>
+      action. <name/RDDT/ builds routing tree and display it on the screen if
+      requested.
+    </p>
+  </div1>
+<!-- --------------------------------------------------------------------- -->
+  <div1>
+    <head>
       Commandline Reference
     </head>
     <div2>
       <head>
-        Commandline syntax
+        Mail Reader Commandline Syntax
       </head>
       <p>
-        Invocation: <code>GoldED &lsqb;options&rsqb; &lsqb;keystacking&rsqb;
-        </code>
+        Invocation:<eg>
+golded &lsqb;options&rsqb; &lsqb;keystacking&rsqb;</eg>
       </p>
       <p>
         Depending on used platform <name>GoldED+</name> could be called
         <code>geddjg</code>, <code>gedcyg</code>, <code>gedemx</code>, or
-        <code>gedlnx</code>. Available options are:
+        <code>gedlnx</code>. Available options are (all options are case
+        insensitive):
         <list type=gloss>
           <label>
             <code>-?</code>
@@ -72,24 +261,24 @@
             Displays a help screen with all available commandline options.
           </item>
           <label>
-            <code>-C&lt;configname&gt;</code>
+            <code>-c&lt;configname&gt;</code>
           </label>
           <item>
-            Specifies another configuration file than the default
-            <code>GOLDED.CFG</code>.
+            Specifies another configuration file than the default. See also
+            <ref target=GOLDED><kw/GOLDED/</ref> environment variable.
           </item>
           <label>
-            <code>-D</code>
+            <code>-d</code>
           </label>
           <item>
             Disable old configuration keywords. For backward compatibility,
             <name>GoldED+</name> still supports a number of old names for
-            some configuration keywords. I recommend that you use
-            <code>-D</code> sometimes and rename the keywords that are
+            some configuration keywords. It is recommended that you use
+            <code>-d</code> sometimes and rename the keywords that are
             reported as unknown.
           </item>
           <label>
-            <code>-E&lt;echoid&gt;</code>
+            <code>-e&lt;echoid&gt;</code>
           </label>
           <item>
             If specified, <name>GoldED+</name> starts directly in the
@@ -98,39 +287,39 @@
             keyword for more info.
           </item>
           <label>
-            <code>-EXPORTSOUP</code>
+            <code>-exportsoup</code>
           </label>
           <item>
-            Calls the <abbr>SOUP</abbr> packet export feature during the
+            Calls the <name>SOUP</name> packet export feature during the
             startup phase. This is the same as starting it from the
-            areascan <code>SOUP Packet-&gt;Export</code> menu item. The
-            <abbr>SOUP</abbr> export happens immediately after the regular
-            startup area scanning (if that is enabled) and after
-            <abbr>SOUP</abbr> import.
+            areascan <code>SOUP Packet-&gt;Export</code> menu
+            item. The <name>SOUP</name> export happens immediately after the
+            regular startup area scanning (if that is enabled) and after
+            <name>SOUP</name> import.
           </item>
           <label>
-            <code>-F</code>
+            <code>-f</code>
           </label>
           <item>
             Force recompile of most configuration files, but not all. Does not
-            recompile the <code>*.CHS</code> files.
+            recompile the <code>*.chs</code> files.
           </item>
           <label>
-            <code>-FF</code>
+            <code>-ff</code>
           </label>
           <item>
             Force complete recompile of all configuration files, regardless of
             whether they are up-to-date or not. This is equivalent to deleting
-            all the <code>*.GE?</code> files.
+            all the <code>*.ge?</code> files.
           </item>
           <label>
-            <code>-H</code>
+            <code>-h</code>
           </label>
           <item>
             Same as option <code>-?</code>.
           </item>
           <label>
-            <code>-INSTALL&lsqb;=path&rsqb;</code>
+            <code>-install&lsqb;=path&rsqb;</code>
           </label>
           <item>
             Start the quick install procedure. You should give a path to your
@@ -138,70 +327,71 @@
             variables or in current directory.
           </item>
           <label>
-            <code>-IMPORTSOUP</code>
+            <code>-importsoup</code>
           </label>
           <item>
-            Calls the <abbr>SOUP</abbr> packet import feature during the
+            Calls the <name>SOUP</name> packet import feature during the
             startup phase. This is the same as starting it from the areascan
             <code>SOUP Packet-&gt;Import</code> menu item. The
-            <abbr>SOUP</abbr> import happens immediately after the regular
+            <name>SOUP</name> import happens immediately after the regular
             startup area scanning (if that is enabled).
           </item>
           <label>
-            <code>-M</code>
+            <code>-m</code>
           </label>
           <item>
             Mute. Disables all sounds in <name>GoldED+</name>.
           </item>
           <label>
-            <code>-N</code>
+            <code>-n</code>
           </label>
           <item>
             No share. If used, this prevents <name>GoldED+</name> from using
             <code>SHARE</code> compatible file-open calls, which are used by
             default. Works only until the
             <ref target=SHAREMODE><kw>SHAREMODE</kw></ref> keyword is used in
-            <code>GOLDED.CFG</code>. This keyword is normally not useful, but
+            the configuration file. This keyword is normally not useful, but
             may be used to debug your setup or something.
           </item>
           <label>
-            <code>-NOSCAN</code>
+            <code>-noscan</code>
           </label>
           <item>
             Disable the automatic startup area scanning (if that is enabled).
             This is useful for automated <abbr>SOUP</abbr> import/export in a
-            batch file. For example, <q><code>-noscan -importsoup @x
-            y</code></q> imports <abbr>SOUP</abbr> then exits.
+            batch file. For example,<eg>
+golded -noscan -importsoup @x y</eg>
+            imports <name>SOUP</name> then exits.
           </item>
           <label>
-            <code>-P</code>
+            <code>-p</code>
           </label>
           <item>
             Since it seems that increasing the thread priority for the
-            <name>Win32</name> version is a mixed blessing, the default is now
-            to <hi>not</hi> increase the priority. From other side
+            <name>Win32</name> version is a mixed blessing, the default is to
+            <hi>not</hi> increase the priority. From other side
             <name>OS/2</name> version runned with reduced priority by default.
             This option increases the priority (<name>Win32</name> and
             <name>OS/2</name> only).
           </item>
           <label>
-            <code>-Q</code>
+            <code>-q</code>
           </label>
           <item>
             Quiet. Turns off verbose config compile. On by default. This could
-            be used on the commandline to disable a <code>-V</code> option in
-            the <code>GEDCMD</code> environment variable.
+            be used on the commandline to disable a <code>-v</code> option in
+            the <ref target=GEDCMD><kw/GEDCMD/</ref> environment variable.
           </item>
           <label>
-            <code>-S&lt;sortspec&gt;</code>
+            <code>-s&lt;sortspec&gt;</code>
           </label>
           <item>
-            Sort all areas according to <ident>&lt;sortspec&gt;</ident>. See
+            Sort all areas according to <ident>sortspec</ident>. See
             the <ref target=AREALISTSORT><kw>AREALISTSORT</kw></ref> config
             keyword for details.
           </item>
           <label>
-            <code>-T&lt;seconds&gt;</code>
+            <code>-t&lt;seconds&gt;</code>
           </label>
           <item>
             Set the timeout value. A value of zero (0) means never timeout.
@@ -209,7 +399,7 @@
             for details.
           </item>
           <label>
-            <code>-V</code>
+            <code>-v</code>
           </label>
           <item>
             Turns on verbose config compile. When used, <name>GoldED+</name>
@@ -221,183 +411,133 @@
             supposed to.
           </item>
           <label>
-            <code>-VV</code>
+            <code>-vv</code>
           </label>
           <item>
-            Same as <code>-V</code>, but also displays all the active lines
+            Same as <code>-v</code>, but also displays all the active lines
             while compiling. This could be used to find the exact spot if it
             crashes or stops while compiling.
           </item>
           <label>
-            <code>-W</code>
+            <code>-w</code>
           </label>
           <item>
-            If used, <name>GoldED+</name> will create (and overwrite if
-            existing) the file <code>GOLDAREA.INC</code>, which will then
-            contain all areas in the <kw>AREADEF</kw> form, sorted by your
-            <kw>AREALISTSORT</kw> specification. This is very useful for
-            converting your <kw>AREAFILE</kw>'s to a form you can edit with
-            your favorite text editor and use in <name>GoldED+</name>. It is
-            also useful if you have used the new <kw>AREADESC</kw> keyword or
-            the <code>AREAFILE EchoList</code> reader. The
-            <code>GOLDAREA.INC</code> file (created in the
-            <code>GOLDPATH</code>) can be used by adding <q><code>INCLUDE
-            GOLDAREA.INC</code></q> to your <code>GOLDED.CFG</code> or
-            <code>GOLDAREA.CFG</code>. When creating the file,
-            <name>GoldED+</name> will use <q>.</q> if an aka is the same as
-            the main aka, and leave out the optional origin if it's the same
-            as the first <kw>ORIGIN</kw> in your <code>GOLDED.CFG</code>.
-            This makes it easier to share the same <code>GOLDAREA.INC</code>
-            between different setups.
+            If used, <name/GoldED+/ will create (and overwrite if existing) the
+            file <code/goldarea.inc/, which will then contain all areas in the
+            <ref target=AREADEF><kw/AREADEF/</ref> form, sorted by your
+            <ref target=AREALISTSORT><kw>AREALISTSORT</kw></ref> specification.
+            This is very useful for converting your
+            <ref target=AREACONFIGURATION><kw/AREAFILE/</ref>'s to a form
+            you can edit with your favorite text editor and use in
+            <name/GoldED+/. It is also useful if you have used the new
+            <ref target=AREADESC><kw>AREADESC</kw></ref> keyword or the
+            <ref target=AREACONFIGURATION><kw/AREAFILE</ref>
+            <ref target=ECHOLIST><gi/EchoList/</ref> reader. The
+            <code>goldarea.inc</code> file (created in the
+            <ref target=GOLDPATH><kw/GOLDPATH/</ref>) can be used by adding<eg>
+INCLUDE goldarea.inc</eg>
+            to your configuration files. When creating the file, <name/GoldED+/
+            will use <q/./ if an aka is the same as the main aka, and leave out
+            the optional origin if it's the same as the first
+            <ref target=ORIGIN><kw/ORIGIN/</ref> in your configuration files.
+            This makes it easier to share the same <code/goldarea.inc/ between
+            different setups.
           </item>
           <label>
-            <code>-X</code>
-          </label>
-          <item>
-            Reserved for debugging purposes.
-          </item>
-          <label>
-            <code>-Y</code>
+            <code>-x</code>
           </label>
           <item>
             Reserved for debugging purposes.
           </item>
           <label>
-            <code>-Z</code>
+            <code>-y</code>
+          </label>
+          <item>
+            Reserved for debugging purposes.
+          </item>
+          <label>
+            <code>-z</code>
           </label>
           <item>
             Reserved for debugging purposes.
           </item>
         </list>
       </p>
-    </div2>
-    <div2>
-      <head>
-        Commandline keystacking
-      </head>
       <p>
         Any non-option characters on the commandline are stuffed into the
         keyboard buffer. See the chapter on keyboard definition and the
         <ref target=KEYBSTACK><kw>KEYBSTACK</kw></ref> keyword for more info.
       </p>
       <p>
-        Example:<eg>
-GOLDED @S A</eg>
-      </p>
-      <p>
-        Makes <name>GoldED+</name> go to the area scanning menu &lt;Alt-S&gt;,
+        For example,<eg>
+golded @S A</eg>
+        makes <name>GoldED+</name> go to the area scanning menu &lt;Alt-S&gt;,
         and select scanning of &lt;A&gt; all areas.
       </p>
       <p>
-        See the <ptr target=MACROSANDKEYSTACKING> chapter for more info.
+        See the <ptr target=MACROSANDKEYSTACKING> chapter for more info. Note,
+        that only those combinations described in the
+        <ref target=KEYBSTACK><kw>KEYBSTACK</kw></ref> chapter are allowed
+        here.
       </p>
     </div2>
-  </div1>
-<!-- --------------------------------------------------------------------- -->
-  <div1>
-    <head>
-      Environment Variables
-    </head>
-    <p>
-      These are the <name>GoldED+</name> specific environment variables:
-      <list type=gloss>
-        <label>
-          <code>GOLDED</code>
-        </label>
-        <item>
-          Path to the <code>GOLDED.CFG</code> file. It is recommended to set
-          this variable, but don't forget to change it if you move your
-          <name>GoldED+</name> setup to a different directory!
-        </item>
-        <label>
-          <code>GEDCMD</code>
-        </label>
-        <item>
-          Specifies additional commandline options. Use this if you want to
-          specify options, but need to run <name>GoldED</name> without them
-          (for example when renaming <code>GOLDED.EXE</code> to
-          <code>DBEDIT.EXE</code> in older versions of <name>D'Bridge</name>).
-          You can override the environment options with commandline options.
-        </item>
-        <label>
-          <code>GOLDNODE</code>
-        </label>
-        <item>
-          The path where <name>GoldNODE</name> can find a
-          <code>GOLDED.CFG</code> to use.
-        </item>
-      </list>
-    </p>
-    <p>
-      When the using <kw>AREAFILE</kw> feature to read external area
-      configuration from other programs, the individual <kw>AREAFILE</kw>'s
-      may use specific environment variables to find the files. Please read
-      the <ptr target=AREACONFIGURATION> chapter for specific details of each
-      supported <kw>AREAFILE</kw>.
-    </p>
-  </div1>
-<!-- --------------------------------------------------------------------- -->
-  <div1>
-    <head>
-      Batchfile Errorlevels
-    </head>
-    <p>
-      For operation in batch files, <name>GoldED+</name> has a set of
-      errorlevel values:
-      <table rows=5 cols=2>
-        <row>
-          <cell>
-            032 or higher
-          </cell>
-          <cell>
-            Error exit (check the logfile for details).
-          </cell>
-        </row>
-        <row>
-          <cell>
-            004
-          </cell>
-          <cell>
-            Echomail entered.
-          </cell>
-        </row>
-        <row>
-          <cell>
-            002
-          </cell>
-          <cell>
-            Netmail entered.
-          </cell>
-        </row>
-        <row>
-          <cell>
-            001
-          </cell>
-          <cell>
-            Local mail entered.
-          </cell>
-        </row>
-        <row>
-          <cell>
-            000
-          </cell>
-          <cell>
-            No errors. No mail entered.
-          </cell>
-        </row>
-      </table>
-    </p>
-    <p>
-      Add values together to find the combined error levels. For example, error
-      level 6 is returned if netmail and echomail (2+4) was entered.
-    </p>
-    <p>
-      Example of <code>RUNGOLD.BAT</code> or <code>RUNGOLD.CMD</code> file:<eg>
-@echo off
+    <div2>
+      <head>
+        <name/GoldED+/ Batchfile Errorlevels
+      </head>
+      <p>
+        For operation in batch files, <name>GoldED+</name> has a set of
+        errorlevel values:
+        <table rows=5 cols=2>
+          <row>
+            <cell>
+              032 or higher
+            </cell>
+            <cell>
+              Error exit (check the logfile for details).
+            </cell>
+          </row>
+          <row>
+            <cell>
+              004
+            </cell>
+            <cell>
+              Echomail entered.
+            </cell>
+          </row>
+          <row>
+            <cell>
+              002
+            </cell>
+            <cell>
+              Netmail entered.
+            </cell>
+          </row>
+          <row>
+            <cell>
+              001
+            </cell>
+            <cell>
+              Local mail entered.
+            </cell>
+          </row>
+          <row>
+            <cell>
+              000
+            </cell>
+            <cell>
+              No errors. No mail entered.
+            </cell>
+          </row>
+        </table>
+      </p>
+      <p>
+        Add values together to find the combined error levels. For example, error
+        level 6 is returned if netmail and echomail (2+4) was entered.
+      </p>
+      <p>
+        Example of <code>rungold.bat</code> file:<eg>
 golded.exe
-rem ged386.exe
-rem ged2.exe
-if errorlevel 008 goto error
 if errorlevel 007 goto e_n_l
 if errorlevel 006 goto e_n__
 if errorlevel 005 goto e___l
@@ -405,7 +545,7 @@ if errorlevel 004 goto e____
 if errorlevel 003 goto __n_l
 if errorlevel 002 goto __n__
 if errorlevel 001 goto ____l
-goto nomail
+if errorlevel 000 goto nomail
 :error
   echo GoldED+ error exit!
   goto end
@@ -435,41 +575,15 @@ goto nomail
 :end
   echo.
   echo Thank you for using GoldED+! :-)</eg>
-    </p>
-  </div1>
-<!-- --------------------------------------------------------------------- -->
-  <div1>
-    <head>
-      Nodelist and Userlist Support
-    </head>
-    <p>
-      <name>GoldED+</name> supports the <name>FrontDoor</name>,
-      <name>Version 7(+)</name> nodelist indexes as well as a plain
-      <code>FIDOUSER.LST</code>. However, if you run software that doesn't use
-      any of these formats, you may want to use <name>GoldED+</name>'s own
-      nodelist index. This chapter describes how to do that.
-    </p>
-    <p>
-      In order to enable nodelist/userlist lookup and browsing,
-      <name>GoldED+</name> needs to use a set of special nodelist index files,
-      created by the <name>GoldNODE</name> nodelist compiler.
-    </p>
-    <p>
-      <name>GoldED+</name> normally uses and displays information from the
-      nodelist when browsing, but it doesn't really need the nodelist for
-      anything. The index files contains sufficient information for lookup and
-      browsing of names or addresses. This means that you can delete or pack
-      away the nodelists and/or userlists after compiling with
-      <name>GoldNODE</name>, if you want to save space and you don't need them
-      for anything else.
-    </p>
+      </p>
+    </div2>
     <div2>
       <head>
-        GoldNODE commandline syntax
+        Nodelist Compiler Commandline Syntax
       </head>
       <p>
-        Invocation: <code>GoldNODE &lsqb;-options&rsqb;
-        &lsqb;configfile&rsqb;</code>
+        Invocation:<eg>
+goldnode &lsqb;options&rsqb; &lsqb;configfile&rsqb;</eg>
       </p>
       <p>
         Depending on used platform <name>GoldNODE</name> could be called
@@ -477,129 +591,207 @@ goto nomail
         <code>gnlnx</code>. Available options:
         <list type=gloss>
           <label>
-            <code>-C</code>
+            <code>-c</code>
           </label>
           <item>
             Conditional compile.
           </item>
           <label>
-            <code>-D</code>
+            <code>-d</code>
           </label>
           <item>
             Remove duplicate nodes from index.
           </item>
           <label>
-            <code>-F</code>
+            <code>-f</code>
           </label>
           <item>
             Forced compile.
           </item>
           <label>
-            <code>-Q</code>
+            <code>-q</code>
           </label>
           <item>
             Quite compiled. No screen output improves speed.
           </item>
           <label>
-            <code>-S&lt;size&gt;</code>
+            <code>-s&lt;size&gt;</code>
           </label>
           <item>
             Set the max size of names. Normally not used.
           </item>
           <label>
-            <code>-U&lt;file&gt;</code>
+            <code>-u&lt;file&gt;</code>
           </label>
           <item>
-            Create sorted <code>FIDOUSER.LST</code> userlist file.
+            Create sorted <code/fidouser.lst/ userlist file.
           </item>
         </list>
       </p>
       <p>
-        The &lsqb;configfile&rsqb; is the path <hi>and</hi> filename of the
-        <code>GOLDED.CFG</code> configuration file to read. If no filename is
-        given, the path specified with the <code>GOLDNODE</code> or
-        <code>GOLDED</code> environment variables are used.
+        The <ident/configfile/ is the path and filename of the configuration
+        file to read. If no filename is given and it could not be found by
+        using environment variables then current path is used.
+        See also <ref target=GOLDNODE><kw/GOLDNODE/</ref> and
+        <ref target=GOLDED><kw/GOLDED/</ref> environment variables.
       </p>
       <p>
-        The nodelist index files are named <code>GOLDNODE.GX?</code> are are
-        placed in the path pointed to by the <kw>NODEPATH</kw> keyword.
+        The nodelist index files are named <code/goldnode.gx?/ are are
+        placed in the path pointed to by the
+        <ref target=NODEPATH><kw/NODEPATH/</ref> keyword.
       </p>
       <p>
-        The <name>V7+</name> is automatically used if your <kw>NODEPATHV7</kw>
-        is set correctly. If <name>GoldED+</name> shows <q><code>xxxx /
-        NODEX.DTP</code></q> at the bottom of the browser window, the displayed
-        information is taken from the raw nodelist entry, taken from the
-        <name>V7+</name> index.
+        The <name>V7+</name> index is automatically used if your
+        <ref target=NODEPATHV7><kw/NODEPATHV7/</ref> is set correctly. If
+        <name/GoldED+/ shows<eg>
+xxxx / nodex.dtp</eg>
+        at the bottom of the browser window, the displayed information is taken
+        from the raw nodelist entry, taken from the <name>V7+</name> index.
       </p>
       <p>
-        <name>GoldNODE</name> can handle up to 45 nodelists and 10 userlists.
         <name>GoldNODE</name> can read the german <name>POINTS24</name>-format
         directly!
       </p>
       <p>
-        <hi>NOTE</hi>: If you use the <kw>EXCLUDENODES</kw> and
-        <kw>INCLUDENODES</kw> keywords, please note that the
-        &lt;addressmask&gt; does <hi>not</hi> accept <q>ALL</q> or <q>WORLD</q>
-        etc. You must use wildcard <q>*</q> instead.
+        <hi/NOTE/: If you use the
+        <ref target=EXCLUDENODES><kw/EXCLUDENODES/</ref> and
+        <ref target=INCLUDENODES><kw/INCLUDENODES/</ref> keywords, please note
+        that the <ident>addressmask<ident> does <hi>not</hi> accept <q/ALL/
+        or <q/WORLD/, etc. You must use wildcard <q/*/ instead.
+      </p>
+    </div2>
+    <div2>
+      <head>
+        Routing Diagram Drawing Tool Commandline Syntax
+      </head>
+      <p>
+        Invocation:<eg>
+rddt &lt;routefile&gt; &lsqb;options&rsqb; &lsqb;address or name&rsqb;</eg>
+      </p>
+      <p>
+        Depending on used platform <name>RDDT</name> could be called
+        <code>rddtdjg</code>, <code>rddtcyg</code>, <code>rddtemx</code>, or
+        <code>rddtlnx</code>. Available options:
+        <list type=gloss>
+          <label>
+            <code>-d</code>
+          </label>
+          <item>
+            Reserved for debugging purposes.
+          </item>
+          <label>
+            <code>-i&lt;n&gt;</code>
+          </label>
+          <item>
+            Sets indent to <ident>n</ident>.
+          </item>
+          <label>
+            <code>-l&lt;link address&gt;</code>
+          </label>
+          <item>
+            This option used to specify yours link address. Requires option
+            <code>-n</code>.
+          </item>
+          <label>
+            <code>-n&lt;address&gt;</code>
+          </label>
+          <item>
+            Use this option to specify your address.
+          </item>
+          <label>
+            <code>-p</code>
+          </label>
+          <item>
+            Decode path.
+          </item>
+        </list>
+      </p>
+      <p>
+        Example:<eg>
+RDDT path.rpt -n2:5020/604.19 -l2:5020/604 2:5020/604.19 -p</eg>
       </p>
     </div2>
   </div1>
 <!-- --------------------------------------------------------------------- -->
   <div1>
     <head>
-      Routing Diagram Drawing Tool
+      Environment Variables
     </head>
     <p>
-      Routing diagram drawing tool intended to analyse files created by
-      pressing key defined for <kw>READmakepathreport</kw> action.
-      <name>RDDT</name> builds routing tree and display it on the screen if
-      requested.
-    </p>
-    <p>
-      Invocation: <code>RDDT &lt;routefile&gt; &lsqb;-options&rsqb;
-      &lsqb;address or name&rsqb;</code>
-    </p>
-    <p>
-      Depending on used platform <name>RDDT</name> could be called
-      <code>rddtdjg</code>, <code>rddtcyg</code>, <code>rddtemx</code>, or
-      <code>rddtlnx</code>. Available options:
+      These are the <name>GoldED+</name> specific environment variables:
       <list type=gloss>
-        <label>
-          <code>-D</code>
+        <label id=GOLDED>
+          <kw/GOLDED/, <kw/GED/
         </label>
         <item>
-          Reserved for debugging purposes.
+          Path to the <code/golded.cfg/ configuration file. Note, that
+          <name/Win32/ version tries to open <code/gedw32.cfg/ first, and
+          <name>OS/2</name> version tries to open <code/ged2.cfg/ first.
+          You may specify path <hi/and/ filename of configuration file here.
+          It is recommended to set this variable, but don't forget to change it
+          if you move your <name>GoldED+</name> setup to a different directory!
         </item>
         <label>
-          <code>-I&lt;n&gt;</code>
+          <kw/GED2/
         </label>
         <item>
-          Sets indent to <ident>&lt;n&gt;</ident>.
+          Same as above, but for <name>OS/2</name> version only.
         </item>
         <label>
-          <code>-L&lt;link address&gt;</code>
+          <kw/GEDW32/
         </label>
         <item>
-          This option used to specify yours link address. Requires option
-          <code>-N</code>.
+          Same as above, but for <name/Win32/ version only.
+        </item>
+        <label id=GEDCMD>
+          <kw/GEDCMD/
+        </label>
+        <item>
+          Specifies additional commandline options. Use this if you want to
+          specify options, but need to run <name>GoldED</name> without them
+          (for example when renaming <code>GOLDED.EXE</code> to
+          <code>DBEDIT.EXE</code> in older versions of <name>D'Bridge</name>).
+          You can override the environment options with commandline options.
+        </item>
+        <label id=GOLDNODE>
+          <kw/GOLDNODE/
+        </label>
+        <item>
+          The path where <name/GoldNODE/ can find a configuration file to use.
+          See also <ref target=GOLDED><kw/GOLDED/</ref> environment variable.
         </item>
         <label>
-          <code>-N&lt;address&gt;</code>
+          <kw/MAXIMUS/, <kw/SQUISH/
         </label>
         <item>
-          Use this option to specify your address.
+          If <ref target=SQUISHUSERPATH><kw/SQUISHUSERPATH/</ref> is not
+          defined in the configuration file then value of these variables are
+          used.
         </item>
         <label>
-          <code>-P</code>
+          <kw/FD/
         </label>
         <item>
-          Decode path.
+          Path where <code/names.fd/ could be found if not explicitly defined
+          by the <ref target=NAMESFILE><kw/NAMESFILE/</ref> keyword.
+        </item>
+        <label>
+          <kw/ESCDELAY/
+        </label>
+        <item>
+          This variable is only used by <name/Linux/ and <name/FreeBSD/
+          versions compiled with <name/ncurses/ support. See <name/ncurses/
+          reference for details. If not devined then default value <q/50/ is
+          used.
         </item>
       </list>
     </p>
     <p>
-      Example:<eg>
-RDDT path.rpt -n2:5020/604.19 -l2:5020/604 2:5020/604.19 -p</eg>
+      When the using <kw>AREAFILE</kw> feature to read external area
+      configuration from other programs, the individual <kw>AREAFILE</kw>'s
+      may use specific environment variables to find the files. Please read
+      the <ptr target=AREACONFIGURATION> chapter for specific details of each
+      supported <kw>AREAFILE</kw>.
     </p>
   </div1>
 <!-- --------------------------------------------------------------------- -->
@@ -608,8 +800,8 @@ RDDT path.rpt -n2:5020/604.19 -l2:5020/604 2:5020/604.19 -p</eg>
       Configuration Control
     </head>
     <p>
-      The <code>GOLDED.CFG</code> configuration reader can be directed in
-      several ways with special keywords:
+      The configuration reader can be directed in the several ways with special
+      keywords:
     </p>
     <div2>
       <head>
@@ -707,11 +899,15 @@ ENDIF</eg>
       </head>
       <p>
         This tells the configuration file reader to ignore all subsequent lines
-        until another <kw>IGNORE</kw> keyword is encountered. Useful for
-        testing and quickly switching portions of configuration.
+        until another <kw>IGNORE</kw> or <kw/IF/ keyword is encountered. Useful
+        for testing and quickly switching portions of configuration.
       </p>
       <p>
         However it is probably more useful to use the
+        <kw>IF</kw>/<kw>ELIF</kw>/<kw>ENDIF</kw> control keywords.
+      </p>
+      <p>
+        This keyword may cause unpredicable results if used within
         <kw>IF</kw>/<kw>ELIF</kw>/<kw>ENDIF</kw> control keywords.
       </p>
     </div2>
@@ -847,7 +1043,7 @@ AKA     2:236/77.1    ; SysOp point.</eg>
         The optional <ident>@domain</ident> part can be used to specify a
         <term>fifth</term> dimension to the <term>4D</term> address. It is
         normally not necessary to specify a domain. Domains are never shown in
-        the header. See also <ref target=NETNAME><kw>NETNAME</kw></ref>
+        the header. See also <!-- ref target=NETNAME --><kw>NETNAME</kw><!-- /ref -->
       </p>
       <p>
         Examples:<eg>
@@ -1434,7 +1630,7 @@ APP OtherProg IRQ 5</eg>
         parameter.
       </p>
     </div2>
-    <div2>
+    <div2 id=AREADESC>
       <head>
         AREADESC &lt;echoid&gt; &lt;<q>desc</q>&gt; &lsqb;group&rsqb;
         &lsqb;aka&rsqb; &lsqb;(attrs)&rsqb; &lsqb;<q>origin</q>&rsqb;
@@ -2222,16 +2418,16 @@ AREALISTSORT T-U+E</eg>
         personal mail when starting <name>GoldED+</name>.
         <name>DOS</name>/<name>4DOS</name>-style wildcards (* and ?) can be
         used in the echoid mask.
-      <p>
       </p>
+      <p>
         Examples:<eg>
 AREAPMSCAN *       ; Scan all areas.
 AREAPMSCAN *INTER* ; Scan all areas containing INTER anywhere in the
                    ; echoid
 AREAPMSCAN INT*.*  ; Scan all areas beginning with INT and
                    ; containing a dot anywhere in the echoid</eg>
-      <p>
       </p>
+      <p>
         It is recommended to have an <q>AREAPMSCAN *</q> to scan all areas at
         startup. If you don't want to wait for the scan to complete, you can
         abort the scan by pressing &lt;ESC&gt; during startup.
@@ -3872,7 +4068,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     yourself nuts with a cacophony of noises...
       </p>
     </div2>
-    <div2>
+    <div2 id=EXCLUDENODES>
       <head>
         EXCLUDENODES &lt;addressmask&gt;
       </head>
@@ -4459,7 +4655,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     Specifies the lastread set used in the Goldbase message base.
       </p>
     </div2>
-    <div2>
+    <div2 id=GOLDPATH>
       <head>
         GOLDPATH &lt;path&gt;
       </head>
@@ -4617,7 +4813,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     the correct file areas.
       </p>
     </div2>
-    <div2>
+    <div2 id=INCLUDENODES>
       <head>
         INCLUDENODES &lt;addressmask&gt;
       </head>
@@ -5495,7 +5691,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     This keyword can be used globally and in Random System groups.
       </p>
     </div2>
-    <div2>
+    <div2 id=NAMESFILE>
       <head>
         NAMESFILE &lt;file&gt;
       </head>
@@ -5574,7 +5770,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     extra details will be missing.
       </p>
     </div2>
-    <div2>
+    <div2 id=NODEPATH>
       <head>
         NODEPATH &lt;path&gt;
       </head>
@@ -5601,7 +5797,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     FrontDoor uses the same nodelist index files.
       </p>
     </div2>
-    <div2>
+    <div2 id=NODEPATHV7>
       <head>
         NODEPATHV7 &lt;path&gt;
       </head>
@@ -5703,7 +5899,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     messages.
       </p>
     </div2>
-    <div2>
+    <div2 id=ORIGIN>
       <head>
         ORIGIN &lt;"string"&gt;
       </head>
@@ -6806,7 +7002,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     must have a unique SQUISHUSERNO in their GOLDED/GOLDAREA.CFG.
       </p>
     </div2>
-    <div2>
+    <div2 id=SQUISHUSERPATH>
       <head>
         SQUISHUSERPATH &lt;path&gt;&lsqb;file&rsqb;
       </head>
@@ -6908,7 +7104,7 @@ AREASEP &excl;C "Group C" C Local]]></eg>
         STYLECODEPUNCT &lt;"charlist"&gt;
       </head>
       <p>
-  (" &excl;&bsol;&quot;&dollar;%&amp;()+,.:;&lt;=&gt;@&lsqb;&bsol;&rsqb;^`&lcub;&verbar;&rcub;~")
+  (<q>&excl;&bsol;&quot;&dollar;%&amp;()+,.:;&lt;=&gt;@&lsqb;&bsol;&rsqb;^`&lcub;&verbar;&rcub;~</q>)
     </div2>
     <div2>
       <head>
@@ -6938,12 +7134,12 @@ AREASEP &excl;C "Group C" C Local]]></eg>
     adding highlights to message text. The defaults are:
       </p>
       <p>
-      STYLECODEPUNCT " &excl;&bsol;"&dollar;%&amp;()+,.:;&lt;=&gt;@&lsqb;&bsol;&rsqb;^`&lcub;&verbar;&rcub;~"
-      STYLECODESTOPS  ""
+      STYLECODEPUNCT <q>&excl;&bsol;&quot;&dollar;%&amp;()+,.:;&lt;=&gt;@&lsqb;&bsol;&rsqb;^`&lcub;&verbar;&rcub;~</q>
+      STYLECODESTOPS <q></q>
       </p>
       <p>
-    Note that the double-quote (") must have the backslash (&bsol;) in
-    front of it - the sequence (&bsol;") is translated to a single (").
+    Note that the double-quote (&quot;) must have the backslash (&bsol;) in
+    front of it - the sequence (&bsol;&quot;) is translated to a single (&quot;).
       </p>
     </div2>
     <div2>
@@ -8046,7 +8242,7 @@ The &lt;programname&gt; can be one of the following:
     Looks for the "DUTCHIE" environment variable.
       </p>
     </div2>
-    <div2>
+    <div2 id=ECHOLIST>
       <head>
         Echolist
       </head>
