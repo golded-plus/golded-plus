@@ -326,7 +326,7 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
           continue;
         if(tokenxchg(dst, "@msgs", msgs))
           continue;
-        if(tokenxchg(dst, "@cpseudo", *AA->Nickname() ? AA->Nickname() : strlword(strcpy(buf, AA->Username().name), " @")))
+        if(tokenxchg(dst, "@cpseudo", *AA->Nickname() ? AA->Nickname() : strlword(strcpy(buf, AA->Username().name), " @.")))
           continue;
         if(tokenxchg(dst, "@version", __gver_ver__))
           continue;

@@ -43,6 +43,7 @@ int reader_direction;
 int reader_rcv_noise = false;
 gkey reader_keycode;
 gkey reader_lastcode = 0;
+bool reader_msglistfirst = false;
 
 GMsgHeaderView *HeaderView;
 GMsgBodyView   *BodyView;
@@ -185,8 +186,12 @@ void Reader() {
   else {
     AL.SetActiveAreaNo(startecho);
     AA->RandomizeData();
-    if(AA->Msglistfirst())
+    if(AA->Msglistfirst()) {
+      reader_msglistfirst = true;
       kbput(KK_ReadMessageList);
+    }
+    else
+      reader_msglistfirst = false;
   }
 
   if(not reader_finished) {
@@ -261,33 +266,35 @@ void Reader() {
 
             HeaderView->Paint();
 
-            if(AA->isreadmark or AA->isreadpm) {
-              GTag& tag = AA->isreadpm ? AA->PMrk : AA->Mark;
-              uint mtemp = tag.Find(msg->msgno);
-              sprintf(buf2, "%s [%s%s%s%s]",
-                LNG->ReadMarked,
-                AA->Viewhidden() ? "H" : "",
-                AA->Viewkludge() ? "K" : "",
-                AA->Twitmode() == TWIT_IGNORE ? "Ti" : AA->Twitmode() == TWIT_SKIP ? "Ts" : AA->Twitmode() == TWIT_BLANK ? "Tb" : AA->Twitmode() == TWIT_KILL ? "Tk" : "",
-                CFG->showdeleted ? "D" : ""
-              );
-              sprintf(buf, buf2,
-                mtemp, tag.Count(), tag.Count()-mtemp
-              );
+            if(reader_msglistfirst == false) {
+              if(AA->isreadmark or AA->isreadpm) {
+                GTag& tag = AA->isreadpm ? AA->PMrk : AA->Mark;
+                uint mtemp = tag.Find(msg->msgno);
+                sprintf(buf2, "%s [%s%s%s%s]",
+                  LNG->ReadMarked,
+                  AA->Viewhidden() ? "H" : "",
+                  AA->Viewkludge() ? "K" : "",
+                  AA->Twitmode() == TWIT_IGNORE ? "Ti" : AA->Twitmode() == TWIT_SKIP ? "Ts" : AA->Twitmode() == TWIT_BLANK ? "Tb" : AA->Twitmode() == TWIT_KILL ? "Tk" : "",
+                  CFG->showdeleted ? "D" : ""
+                );
+                sprintf(buf, buf2,
+                  mtemp, tag.Count(), tag.Count()-mtemp
+                );
+              }
+              else {
+                sprintf(buf2, "%s [%s%s%s%s]",
+                  LNG->ReadAll,
+                  AA->Viewhidden() ? "H" : "",
+                  AA->Viewkludge() ? "K" : "",
+                  AA->Twitmode() == TWIT_IGNORE ? "Ti" : AA->Twitmode() == TWIT_SKIP ? "Ts" : AA->Twitmode() == TWIT_BLANK ? "Tb" : AA->Twitmode() == TWIT_KILL ? "Tk" : "",
+                  CFG->showdeleted ? "D" : ""
+                );
+                sprintf(buf, buf2,
+                  AA->lastread(), AA->Msgn.Count(), AA->Msgn.Count()-AA->lastread()
+                );
+              }
+              update_statusline(buf);
             }
-            else {
-              sprintf(buf2, "%s [%s%s%s%s]",
-                LNG->ReadAll,
-                AA->Viewhidden() ? "H" : "",
-                AA->Viewkludge() ? "K" : "",
-                AA->Twitmode() == TWIT_IGNORE ? "Ti" : AA->Twitmode() == TWIT_SKIP ? "Ts" : AA->Twitmode() == TWIT_BLANK ? "Tb" : AA->Twitmode() == TWIT_KILL ? "Tk" : "",
-                CFG->showdeleted ? "D" : ""
-              );
-              sprintf(buf, buf2,
-                AA->lastread(), AA->Msgn.Count(), AA->Msgn.Count()-AA->lastread()
-              );
-            }
-            update_statusline(buf);
 
             reader_done = false;
             reader_keyok = false;
@@ -296,95 +303,100 @@ void Reader() {
             AA->set_lastread(AA->Msgn.ToReln(msg->msgno));
             AA->UpdateAreadata();
 
-            // Determine if the message is of the "twit" type
-            istwit = MsgIsTwit(msg, istwitto, istwitsubj);
+            if(reader_msglistfirst == false) {
 
-            if(istwit)
-              HandleGEvent(EVTT_MSGISTWIT);
+              // Determine if the message is of the "twit" type
+              istwit = MsgIsTwit(msg, istwitto, istwitsubj);
 
-            if((istwit == TWIT_SKIP) or (not CFG->showdeleted and msg->attr.del())) {
-              if(reader_direction == DIR_NEXT) {
-                if(AA->lastread() < AA->Msgn.Count()) {
-                  if(gkbd.kbuf == NULL) {
-                    switch(reader_lastcode) {
-                      case KK_ReadGotoReplies:
-                      case KK_ReadGotoReply1st:
-                      case KK_ReadGotoReplyNext:
-                        if(MsgHasReplies(msg)) {
-                          kbput(KK_ReadGotoReplies);
-                        }
-                        else {
-                          SayBibi();
-                          kbput(KK_ReadGotoReplyPrev);
-                        }
-                        break;
-                      default:
-                        kbput(KK_ReadGotoNextMsg);
-                    }
-                  }
-                }
-              }
-              else {
-                if(AA->lastread() > 1) {
-                  if(gkbd.kbuf == NULL) {
-                    if(reader_lastcode == KK_ReadGotoReplyPrev) {
-                      if(AA->Msgn.ToReln(msg->link.to()))
-                        kbput(KK_ReadGotoReplyPrev);
-                      else {
-                        SayBibi();
-                        kbput(KK_ReadGotoReplies);
+              if(istwit)
+                HandleGEvent(EVTT_MSGISTWIT);
+
+              if((istwit == TWIT_SKIP) or (not CFG->showdeleted and msg->attr.del())) {
+                if(reader_direction == DIR_NEXT) {
+                  if(AA->lastread() < AA->Msgn.Count()) {
+                    if(gkbd.kbuf == NULL) {
+                      switch(reader_lastcode) {
+                        case KK_ReadGotoReplies:
+                        case KK_ReadGotoReply1st:
+                        case KK_ReadGotoReplyNext:
+                          if(MsgHasReplies(msg)) {
+                            kbput(KK_ReadGotoReplies);
+                          }
+                          else {
+                            SayBibi();
+                            kbput(KK_ReadGotoReplyPrev);
+                          }
+                          break;
+                        default:
+                          kbput(KK_ReadGotoNextMsg);
                       }
                     }
-                    else
-                      kbput(KK_ReadGotoPrevMsg);
+                  }
+                }
+                else {
+                  if(AA->lastread() > 1) {
+                    if(gkbd.kbuf == NULL) {
+                      if(reader_lastcode == KK_ReadGotoReplyPrev) {
+                        if(AA->Msgn.ToReln(msg->link.to()))
+                          kbput(KK_ReadGotoReplyPrev);
+                        else {
+                          SayBibi();
+                          kbput(KK_ReadGotoReplies);
+                        }
+                      }
+                      else
+                        kbput(KK_ReadGotoPrevMsg);
+                    }
                   }
                 }
               }
-            }
 
-            BodyView->Use(AA, msg, reader_topline);
-            if(istwit > TWIT_SHOW) {
-              BodyView->window.clear();
-              if(istwit == TWIT_SKIP)
-                BodyView->window.prints(1, 0, C_READW, LNG->SkippingTwit);
-              else if(istwit == TWIT_KILL)
-                BodyView->window.prints(1, 0, C_READW, LNG->KillingTwit);
+              BodyView->Use(AA, msg, reader_topline);
+              if(istwit > TWIT_SHOW) {
+                BodyView->window.clear();
+                if(istwit == TWIT_SKIP)
+                  BodyView->window.prints(1, 0, C_READW, LNG->SkippingTwit);
+                else if(istwit == TWIT_KILL)
+                  BodyView->window.prints(1, 0, C_READW, LNG->KillingTwit);
+                else {
+                  BodyView->window.prints(1, 0, C_READW, LNG->HidingTwit);
+                }
+              }
               else {
-                BodyView->window.prints(1, 0, C_READW, LNG->HidingTwit);
+                BodyView->Paint();
+              }
+
+              if(reader_rcv_noise) {
+                if(CFG->beepyourmail == ALWAYS)
+                  HandleGEvent(EVTT_MSGTOYOU);
+                else if(reader_rcv_noise > 1 and CFG->beepyourmail == true)
+                  HandleGEvent(EVTT_MSGTOYOU);
+                reader_rcv_noise = false;
+              }
+              else {
+                if(msg->attr.fmu())
+                  HandleGEvent(EVTT_MSGFROMYOU);
+              }
+
+              if(msg->attr.loc() and CFG->switches.get(beeplocalmsg))
+                HandleGEvent(EVTT_MSGISLOCAL);
+
+              if(AA->Msgn.Count() and CFG->switches.get(highlightunread) and (msg->orig_timesread == 0))
+                AA->UpdateTimesread(msg);
+
+              switch(istwit) {
+                case TWIT_KILL:
+                  TwitDeleteMsg(msg);
+                  continue;
+                case TWIT_SKIP:
+                  reader_keycode = ReaderGetKey();
+                  break;
+                default:
+                  reader_keycode = ViewMessage(istwit);
               }
             }
-            else {
-              BodyView->Paint();
-            }
-
-            if(reader_rcv_noise) {
-              if(CFG->beepyourmail == ALWAYS)
-                HandleGEvent(EVTT_MSGTOYOU);
-              else if(reader_rcv_noise > 1 and CFG->beepyourmail == true)
-                HandleGEvent(EVTT_MSGTOYOU);
-              reader_rcv_noise = false;
-            }
-            else {
-              if(msg->attr.fmu())
-                HandleGEvent(EVTT_MSGFROMYOU);
-            }
-
-            if(msg->attr.loc() and CFG->switches.get(beeplocalmsg))
-              HandleGEvent(EVTT_MSGISLOCAL);
-
-            if(AA->Msgn.Count() and CFG->switches.get(highlightunread) and (msg->orig_timesread == 0))
-              AA->UpdateTimesread(msg);
-
-            switch(istwit) {
-              case TWIT_KILL:
-                TwitDeleteMsg(msg);
-                continue;
-              case TWIT_SKIP:
-                reader_keycode = ReaderGetKey();
-                break;
-              default:
-                reader_keycode = ViewMessage(istwit);
-            }
+            else
+              reader_keycode = ReaderGetKey();
 
             reader_topline = BodyView->UpperLine();
 
@@ -572,6 +584,7 @@ void Reader() {
 
               case KK_ReadMessageList:
                 MessageBrowse();
+                reader_msglistfirst = false;
                 break;
 
               case KK_ReadThreadtree:
@@ -580,7 +593,7 @@ void Reader() {
 
               case KK_ReadDosShell:
                 DosShell();
-                reader_keyok = YES;
+                reader_keyok = true;
                 break;
 
               case KK_ReadFindAll:
@@ -914,42 +927,44 @@ int LoadMessage(GMsg* msg, int margin) {
           msg->attr.tou1();
       }
 
-      if(msg->attr.tou()) {
-        reader_rcv_noise = 1;
-        if(not msg->attr.rcv()) {         // Have we seen it?
-          time_t a = time(NULL);
-          struct tm *tp = gmtime(&a);
-          tp->tm_isdst = -1;
-          time_t b = mktime(tp);
-          msg->received = a + a - b;      // Get current date
-          msg->attr.rcv1();               // Mark as received
-          reader_rcv_noise++;
+      if(reader_msglistfirst == false) {
+        if(msg->attr.tou()) {
+          reader_rcv_noise = 1;
+          if(not msg->attr.rcv()) {         // Have we seen it?
+            time_t a = time(NULL);
+            struct tm *tp = gmtime(&a);
+            tp->tm_isdst = -1;
+            time_t b = mktime(tp);
+            msg->received = a + a - b;      // Get current date
+            msg->attr.rcv1();               // Mark as received
+            reader_rcv_noise++;
+          }
+          else if(not CFG->switches.get(rcvdisablescfm))
+            reader_rcv_noise++;
         }
-        else if(not CFG->switches.get(rcvdisablescfm))
-          reader_rcv_noise++;
+
+        // Touch the msg if it's the first time received
+        if(reader_rcv_noise > 1)
+          msg->attr.upd1();   // Tell SaveHdr to "touch" the time stamp of the *.MSG file
+
+        // Update the "Times Read" field
+        msg->orig_timesread = msg->timesread++;
+
+        if(reader_rcv_noise > 1) {
+          GMsg* tmsg = (GMsg*) throw_calloc(1, sizeof(GMsg));
+          AA->LoadHdr(tmsg, msg->msgno, false);
+          tmsg->attr = msg->attr;
+          tmsg->orig_timesread = msg->orig_timesread;
+          tmsg->received = msg->received;
+          AA->SaveHdr(GMSG_UPDATE, tmsg);
+          throw_free(tmsg);
+        }
+
+        msg->attr.upd0();
+
+        if((reader_rcv_noise > 1) and AA->isnet() and (msg->attr.cfm() or msg->attr.rrq()))
+          reader_gen_confirm = true;
       }
-
-      // Touch the msg if it's the first time received
-      if(reader_rcv_noise > 1)
-        msg->attr.upd1();   // Tell SaveHdr to "touch" the time stamp of the *.MSG file
-
-      // Update the "Times Read" field
-      msg->orig_timesread = msg->timesread++;
-
-      if(reader_rcv_noise > 1) {
-        GMsg* tmsg = (GMsg*) throw_calloc(1, sizeof(GMsg));
-	AA->LoadHdr(tmsg, msg->msgno, false);
-	tmsg->attr = msg->attr;
-	tmsg->orig_timesread = msg->orig_timesread;
-	tmsg->received = msg->received;
-        AA->SaveHdr(GMSG_UPDATE, tmsg);
-	throw_free(tmsg);
-      }
-
-      msg->attr.upd0();
-
-      if((reader_rcv_noise > 1) and AA->isnet() and (msg->attr.cfm() or msg->attr.rrq()))
-        reader_gen_confirm = true;
     }
   }
   else {

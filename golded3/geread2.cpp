@@ -36,6 +36,7 @@
 //  Global data from GEREAD
 
 extern GMsg* reader_msg;
+extern bool reader_msglistfirst;
 
 
 //  ------------------------------------------------------------------
@@ -485,8 +486,10 @@ void NewArea(bool jumpnext) {
     OrigArea = CurrArea;
     strcpy(stecho, AA->echoid());
     AA->RandomizeData();
-    if(AA->Msglistfirst())
+    if(AA->Msglistfirst()) {
       kbput(KK_ReadMessageList);
+      reader_msglistfirst = true;
+    }
   }
 }
 

@@ -12,6 +12,14 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed AreaReplyDirect operation when AreaReply is defined (Thanks to
+  Pavel Gulchouck for the patch).
+
+- Fixed problem with incorrect updating of timesread field when
+  MSGLISTFIRST is YES.
+
+! @pseudo creation stops at dot now as well.
+
 - Added EditDeleteSOL action: delete text to the start of line. It
   works the same way as EditDeleteEOL in terms of what we consider to
   be a line, since it deletes to the start of the line as it seen in

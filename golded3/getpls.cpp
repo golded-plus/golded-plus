@@ -273,13 +273,13 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
 
   // build @tpseudo
   if(is_user(msg->to))
-    strcpy(msg->pseudoto, *AA->Nickname() ? AA->Nickname() : strlword(msg->to, " @"));
+    strcpy(msg->pseudoto, *AA->Nickname() ? AA->Nickname() : strlword(msg->to, " @."));
   else
     *(msg->pseudoto) = NUL;
 
   // build @fpseudo
   if(is_user(msg->By()))
-    strcpy(msg->pseudofrom, *AA->Nickname() ? AA->Nickname() : strlword(msg->By(), " @"));
+    strcpy(msg->pseudofrom, *AA->Nickname() ? AA->Nickname() : strlword(msg->By(), " @."));
   else
     *(msg->pseudofrom) = NUL;
 
@@ -393,6 +393,8 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
               if(mode == MODE_FORWARD)
                 goto loop_next;
               if(AL.AreaIdToPtr(origarea)->Areareplydirect() and oldmsg->areakludgeid and strieql(oldmsg->areakludgeid, AA->echoid()))
+                goto loop_next;
+              if(AL.AreaIdToPtr(origarea)->Areareplydirect() and strieql(AL.AreaIdToPtr(origarea)->Areareplyto(), AA->echoid()))
                 goto loop_next;
               if(strieql(oldmsg->fwdarea, AA->echoid()))
                 goto loop_next;
@@ -962,16 +964,68 @@ void ConfirmMsg() {
 
 bool _allow_pick = true;
 
+void OtherAreaReplyMsg() {
+
+  if(AA->Msgn.Count()) {
+    int destarea = CurrArea;
+    if(CurrArea == OrigArea) {
+      if(*AA->Areareplyto()) {
+        int a = AL.AreaEchoToNo(AA->Areareplyto());
+        if(a != -1)
+          destarea = AL.AreaNoToId(a);
+      }
+      reader_topline = 0;
+      AA->attr().hex0();
+      const char* destinationecho = *reader_msg->fwdarea ? reader_msg->fwdarea : reader_msg->areakludgeid;
+      if(destinationecho and *destinationecho) {
+        for(uint n=0; n<AL.size(); n++) {
+          if(strieql(AL[n]->echoid(), destinationecho)) {
+            destarea = AL[n]->areaid();
+            break;
+          }
+        }
+      }
+      if(_allow_pick or not AA->Areareplydirect())
+        destarea = AreaPick(LNG->ReplyArea, 6, &destarea);
+    }
+    if(destarea != -1) {
+      int adat_viewhidden = AA->adat->viewhidden;
+      int adat_viewkludge = AA->adat->viewkludge;
+      int adat_viewquote  = AA->adat->viewquote;
+      AL.SetActiveAreaId(destarea);
+      if(CurrArea != OrigArea) {
+        AA->Open();
+        if(CurrArea != OrigArea) {
+          AA->adat->viewhidden  = adat_viewhidden;
+          AA->adat->viewkludge  = adat_viewkludge;
+          AA->adat->viewquote   = adat_viewquote;
+        }
+      }
+      ReplyMsg();
+      if(CurrArea != OrigArea) {
+        AA->Close();
+        AL.SetActiveAreaId(OrigArea);
+      }
+    }
+  }
+}
+
+//  ------------------------------------------------------------------
+
 void ReplyMsg() {
 
   if(CurrArea == OrigArea) {
-    if(AA->Areareplydirect() and reader_msg->areakludgeid) {
-      int a = AL.AreaEchoToNo(reader_msg->areakludgeid);
+    const char *destarea = AA->Areareplyto();
+    if (!*destarea)
+      destarea = reader_msg->areakludgeid;
+
+    if(AA->Areareplydirect() and destarea) {
+      int a = AL.AreaEchoToNo(destarea);
       if(a != -1) {
         CurrArea = AL.AreaNoToId(a);
         if(CurrArea != OrigArea) {
           _allow_pick = false;
-          OtherAreaQuoteMsg();
+          OtherAreaReplyMsg();
           _allow_pick = true;
           return;
         }
@@ -997,8 +1051,12 @@ void ReplyMsg() {
 void QuoteMsg(bool ignore_replyto) {
 
   if(CurrArea == OrigArea) {
-    if(AA->Areareplydirect() and reader_msg->areakludgeid) {
-      int a = AL.AreaEchoToNo(reader_msg->areakludgeid);
+    const char *destarea = AA->Areareplyto();
+    if (!*destarea)
+      destarea = reader_msg->areakludgeid;
+
+    if(AA->Areareplydirect() and destarea) {
+      int a = AL.AreaEchoToNo(destarea);
       if(a != -1) {
         CurrArea = AL.AreaNoToId(a);
         if(CurrArea != OrigArea) {
@@ -1029,8 +1087,12 @@ void QuoteMsg(bool ignore_replyto) {
 void CommentMsg() {
 
   if(CurrArea == OrigArea) {
-    if(AA->Areareplydirect() and reader_msg->areakludgeid) {
-      int a = AL.AreaEchoToNo(reader_msg->areakludgeid);
+    const char *destarea = AA->Areareplyto();
+    if (!*destarea)
+      destarea = reader_msg->areakludgeid;
+
+    if(AA->Areareplydirect() && destarea) {
+      int a = AL.AreaEchoToNo(destarea);
       if(a != -1) {
         CurrArea = AL.AreaNoToId(a);
         if(CurrArea != OrigArea) {
@@ -1112,24 +1174,26 @@ void OtherAreaCommentMsg() {
   if(AA->Msgn.Count()) {
 
     int destarea = CurrArea;
-    if(*AA->Areareplyto()) {
-      int a = AL.AreaEchoToNo(AA->Areareplyto());
-      if(a != -1)
-        destarea = AL.AreaNoToId(a);
-    }
-    reader_topline = 0;
-    AA->attr().hex0();
-    const char* destinationecho = *reader_msg->fwdarea ? reader_msg->fwdarea : reader_msg->areakludgeid;
-    if(destinationecho and *destinationecho) {
-      for(uint n=0; n<AL.size(); n++) {
-        if(strieql(AL[n]->echoid(), destinationecho)) {
-          destarea = AL[n]->areaid();
-          break;
+    if(CurrArea == OrigArea) {
+      if(*AA->Areareplyto()) {
+        int a = AL.AreaEchoToNo(AA->Areareplyto());
+        if(a != -1)
+          destarea = AL.AreaNoToId(a);
+      }
+      reader_topline = 0;
+      AA->attr().hex0();
+      const char* destinationecho = *reader_msg->fwdarea ? reader_msg->fwdarea : reader_msg->areakludgeid;
+      if(destinationecho and *destinationecho) {
+        for(uint n=0; n<AL.size(); n++) {
+          if(strieql(AL[n]->echoid(), destinationecho)) {
+            destarea = AL[n]->areaid();
+            break;
+          }
         }
       }
+      if(_allow_pick or not AA->Areareplydirect())
+        destarea = AreaPick(LNG->ReplyArea, 6, &destarea);
     }
-    if(_allow_pick or not AA->Areareplydirect())
-      destarea = AreaPick(LNG->ReplyArea, 6, &destarea);
     if(destarea != -1) {
       int adat_viewhidden = AA->adat->viewhidden;
       int adat_viewkludge = AA->adat->viewkludge;
