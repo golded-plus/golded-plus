@@ -133,10 +133,13 @@ void Container::StyleCodeHighlight(const char* text, int row, int col, bool dohi
       }
       else {
         if(not strnicmp(ptr, "http://", 7) or not strnicmp(ptr, "ftp://", 6) or
-           not strnicmp(ptr, "www.", 4) or not strnicmp(ptr, "ftp.", 4) or
+           (not strnicmp(ptr, "www.", 4) and not isspace(ptr[4])) or
+           (not strnicmp(ptr, "ftp.", 4) and not isspace(ptr[4])) or
            not strnicmp(ptr, "mailto:", 7)) {
           const char *end = ptr+4+strcspn(ptr+4, " \t\"\'<>()[]");
 
+          if(ispunct(end[-1]) and (end[-1] != '/'))
+            --end;
           strxcpy(buf, txptr, (uint)(ptr-txptr)+1);
           prints(row, col+sclen, color, buf);
           sclen += strlen(buf);
