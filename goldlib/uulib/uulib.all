@@ -1,8 +1,8 @@
-fptools  c       all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-uucheck  c       all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-uuencode c       all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-uulib    c       all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-uunconc  c       all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-uuscan   c       all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-uustring c       all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-uuutil   c       all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+fptools  c       all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+uucheck  c       all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+uuencode c       all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+uulib    c       all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+uunconc  c       all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+uuscan   c       all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+uustring c       all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+uuutil   c       all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be

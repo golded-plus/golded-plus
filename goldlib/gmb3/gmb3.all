@@ -22,45 +22,45 @@
 ##  ------------------------------------------------------------------
 
 ## Msgbase source for GoldED 3.xx
-gmoarea  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmohuds  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmoezyc1 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmoezyc2 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmoezyc3 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmoezyc4 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmoezyc5 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmofido1 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmofido2 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmofido3 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmofido4 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmofido5 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmojamm1 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmojamm2 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmojamm3 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmojamm4 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmojamm5 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmopcbd1 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmopcbd2 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmopcbd3 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmopcbd4 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmopcbd5 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmosmb1  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmosmb2  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmosqsh1 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmosqsh2 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmosqsh3 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmosqsh4 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmosqsh5 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmowcat1 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmowcat2 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmowcat3 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmowcat4 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmowcat5 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg
-gmoxbbs1 cpp     all nov     bco         wco     lnx emx djg     cyg
-gmoxbbs2 cpp     all nov     bco         wco     lnx emx djg     cyg
-gmoxbbs3 cpp     all nov     bco         wco     lnx emx djg     cyg
-gmoxbbs4 cpp     all nov     bco         wco     lnx emx djg     cyg
-gmoxbbs5 cpp     all nov     bco         wco     lnx emx djg     cyg
+gmoarea  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmohuds  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmoezyc1 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmoezyc2 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmoezyc3 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmoezyc4 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmoezyc5 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmofido1 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmofido2 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmofido3 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmofido4 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmofido5 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmojamm1 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmojamm2 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmojamm3 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmojamm4 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmojamm5 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmopcbd1 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmopcbd2 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmopcbd3 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmopcbd4 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmopcbd5 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmosmb1  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmosmb2  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmosqsh1 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmosqsh2 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmosqsh3 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmosqsh4 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmosqsh5 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmowcat1 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmowcat2 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmowcat3 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmowcat4 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmowcat5 cpp     all nov     bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmoxbbs1 cpp     all nov     bco         wco     lnx emx djg     cyg be
+gmoxbbs2 cpp     all nov     bco         wco     lnx emx djg     cyg be
+gmoxbbs3 cpp     all nov     bco         wco     lnx emx djg     cyg be
+gmoxbbs4 cpp     all nov     bco         wco     lnx emx djg     cyg be
+gmoxbbs5 cpp     all nov     bco         wco     lnx emx djg     cyg be
 
 ##  ------------------------------------------------------------------
 

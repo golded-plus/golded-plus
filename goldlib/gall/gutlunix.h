@@ -36,6 +36,9 @@
 #  define NULL_VALUE 255
 #endif
 
+#ifdef __BEOS__
+#include <net/socket.h> // defintions of FD_xx - to avoid problems with code below 
+#endif
 
 //  ------------------------------------------------------------------
 

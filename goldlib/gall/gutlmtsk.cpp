@@ -42,6 +42,9 @@
 #include <unistd.h>
 #endif
 
+#ifdef __BEOS__
+#include <OS.h> // sz: snooze() declaration ...
+#endif
 
 //  ------------------------------------------------------------------
 //  Global multitasker data
@@ -180,7 +183,11 @@ void GMTsk::timeslice() {
   switch(detected) {
     #if defined(__UNIX__)
     case GMTSK_LINUX:
-      usleep(5000);
+      #if defined(__BEOS__)
+        snooze(5000);
+      #else
+        usleep(5000);
+      #endif
       break;
     #endif
     #if defined(__WIN32__)

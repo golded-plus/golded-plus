@@ -60,6 +60,9 @@
 #include <stdio.h>
 #endif
 
+#if defined(__BEOS__)
+#include <InterfaceDefs.h>
+#endif
 
 //  ------------------------------------------------------------------
 
@@ -177,7 +180,7 @@ GKbd::GKbd() {
 
   Init();
 
-  #if defined(__UNIX__) && !defined(__USE_NCURSES__)
+  #if defined(__UNIX__) && !defined(__USE_NCURSES__)  && !defined(__BEOS__) 
 
   gkbd_keymap_init();
 
@@ -282,6 +285,58 @@ GKbd::GKbd() {
   gkbd_define_keysym("\033\x7F", Key_A_BS);
   gkbd_define_keysym("\033\x0D", Key_A_Ent);
   gkbd_define_keysym("\033\x09", Key_A_Tab);
+
+  #elif defined(__BEOS__)
+  
+  gkbd_keymap_init();
+
+  char escseq[2];
+  escseq[1] = NUL;
+  for(int n=0; n<256; n++) {
+    escseq[0] = (char)n;
+    if(n == 0x08)
+      gkbd_define_keysym(escseq, Key_BS);
+    else if(n == 0x09)
+      gkbd_define_keysym(escseq, Key_Tab);
+    else if(n == 0x0D)
+      gkbd_define_keysym(escseq, Key_Ent);
+    else if(n == 0x7F)
+      gkbd_define_keysym(escseq, Key_Del); // ?????
+    else
+      gkbd_define_keysym(escseq, (n < 128) ? (scancode_table[n]|n) : n);
+  }
+
+ // gkbd_define_keysym("^@", 0); ?????????
+
+  gkbd_define_keysym("\033[A", Key_Up);
+  gkbd_define_keysym("\033[B", Key_Dwn);
+  gkbd_define_keysym("\033[C", Key_Rgt);
+  gkbd_define_keysym("\033[D", Key_Lft);
+
+  gkbd_define_keysym("\033[1~", Key_Home);
+  gkbd_define_keysym("\033[2~", Key_Ins);
+  gkbd_define_keysym("\033[4~", Key_End);
+  gkbd_define_keysym("\033[5~", Key_PgUp);
+  gkbd_define_keysym("\033[6~", Key_PgDn);
+
+//  gkbd_define_keysym("\033[3~", Key_Del);
+
+  gkbd_define_keysym("\033[11~",  Key_F1);
+  gkbd_define_keysym("\033[12~",  Key_F2);
+  gkbd_define_keysym("\033[13~",  Key_F3);
+  gkbd_define_keysym("\033[14~",  Key_F4);
+  gkbd_define_keysym("\033[15~",  Key_F5);
+  gkbd_define_keysym("\033[16~", Key_F6);
+  gkbd_define_keysym("\033[17~", Key_F7);
+  gkbd_define_keysym("\033[18~", Key_F8);
+  gkbd_define_keysym("\033[19~", Key_F9);
+  gkbd_define_keysym("\033[20~", Key_F10);
+
+/*
+  gkbd_define_keysym("\033\x7F", Key_A_BS);
+  gkbd_define_keysym("\033\x0D", Key_A_Ent);
+  gkbd_define_keysym("\033\x09", Key_A_Tab);
+*/
 
   #endif
 }
@@ -968,6 +1023,19 @@ bool linux_cui_key(gkey k) {
 }
 #endif
 
+#if defined(__BEOS__)
+int BeOSShiftState()
+{
+  int shift = 0;
+  uint32 mods = modifiers();
+  if(mods&B_LEFT_SHIFT_KEY)  shift |= LSHIFT;
+  if(mods&B_RIGHT_SHIFT_KEY) shift |= RSHIFT;
+  if(mods&B_CONTROL_KEY)     shift |= GCTRL;
+  if(mods&B_OPTION_KEY)      shift |= ALT;
+  return shift;
+}
+#endif
+
 //  ------------------------------------------------------------------
 //  Get key stroke
 
@@ -1305,6 +1373,9 @@ gkey kbxget_raw(int mode) {
     if(ioctl(fileno(stdin), TIOCLINUX, &key) == -1)
     #endif
       key = 0;
+    #ifdef __BEOS__
+    key = BeOSShiftState();
+    #endif
     return key;
   }
   else if(mode & 0x01) {
@@ -1373,6 +1444,129 @@ gkey kbxget_raw(int mode) {
     else if(shifts & GCTRL)
       k = Key_C_BS;
   }
+  #elif __BEOS__
+  {
+    int shifts = BeOSShiftState();
+    if(shifts & (ALT))
+      switch(k){
+        case Key_0: k=Key_A_0; break;
+        case Key_1: k=Key_A_1; break;
+        case Key_2: k=Key_A_2; break;
+        case Key_3: k=Key_A_3; break;
+        case Key_4: k=Key_A_4; break;
+        case Key_5: k=Key_A_5; break;
+        case Key_6: k=Key_A_6; break;
+        case Key_7: k=Key_A_7; break;
+        case Key_8: k=Key_A_8; break;
+        case Key_9: k=Key_A_9; break;
+        case Key_A: k=Key_A_A; break;
+        case Key_B: k=Key_A_B; break;
+        case Key_C: k=Key_A_C; break;
+        case Key_D: k=Key_A_D; break;
+        case Key_E: k=Key_A_E; break;
+        case Key_F: k=Key_A_F; break;
+        case Key_G: k=Key_A_G; break;
+        case Key_H: k=Key_A_H; break;
+        case Key_I: k=Key_A_I; break;
+        case Key_J: k=Key_A_J; break;
+        case Key_K: k=Key_A_K; break;
+        case Key_L: k=Key_A_L; break;
+        case Key_M: k=Key_A_M; break;
+        case Key_N: k=Key_A_N; break;
+        case Key_O: k=Key_A_O; break;
+        case Key_P: k=Key_A_P; break;
+        case Key_Q: k=Key_A_Q; break;
+        case Key_R: k=Key_A_R; break;
+        case Key_S: k=Key_A_S; break;
+        case Key_T: k=Key_A_T; break;
+        case Key_U: k=Key_A_U; break;
+        case Key_V: k=Key_A_V; break;
+        case Key_W: k=Key_A_W; break;
+        case Key_X: k=Key_A_X; break;
+        case Key_Y: k=Key_A_Y; break;
+        case Key_Z: k=Key_A_Z; break;
+        case Key_F1: k=Key_A_F1; break;
+        case Key_F2: k=Key_A_F2; break;
+        case Key_F3: k=Key_A_F3; break;
+        case Key_F4: k=Key_A_F4; break;
+        case Key_F5: k=Key_A_F5; break;
+        case Key_F6: k=Key_A_F6; break;
+        case Key_F7: k=Key_A_F7; break;
+        case Key_F8: k=Key_A_F8; break;
+        case Key_F9: k=Key_A_F9; break;
+        case Key_F10: k=Key_A_F10; break;
+        case Key_F11: k=Key_A_F11; break;
+        case Key_F12: k=Key_A_F12; break;
+        case Key_BS:  k=Key_A_BS; break;
+        case Key_Ent: k=Key_A_Ent; break;
+        case Key_Tab: k=Key_A_Tab; break;
+        case Key_Dwn: k = Key_A_Dwn; break;
+        case Key_Up:  k = Key_A_Up;  break;
+        case Key_Lft: k = Key_A_Lft; break;
+        case Key_Rgt: k = Key_A_Rgt; break;
+        case Key_Home: k = Key_A_Home; break;
+        case Key_PgDn: k = Key_A_PgDn; break;
+        case Key_PgUp: k = Key_A_PgUp; break;
+        case Key_End: k = Key_A_End; break;
+       // case Key_: k=Key_A_; break;
+        default: break;
+      }
+    else if(shifts & (LSHIFT | RSHIFT))
+      switch(k){
+        case Key_F1: k=Key_S_F1; break;
+        case Key_F2: k=Key_S_F2; break;
+        case Key_F3: k=Key_S_F3; break;
+        case Key_F4: k=Key_S_F4; break;
+        case Key_F5: k=Key_S_F5; break;
+        case Key_F6: k=Key_S_F6; break;
+        case Key_F7: k=Key_S_F7; break;
+        case Key_F8: k=Key_S_F8; break;
+        case Key_F9: k=Key_S_F9; break;
+        case Key_F10: k=Key_S_F10; break;
+        case Key_F11: k=Key_S_F11; break;
+        case Key_F12: k=Key_S_F12; break;
+        case Key_Tab: k=Key_S_Tab; break;
+        default: KCodScn(k) |= 0x80; break;
+      }
+    else if(shifts & GCTRL) {
+      switch(k) {
+        case Key_Ent: k = Key_C_Ent; break;
+        case Key_Ins: k = Key_C_Ins; break;
+        case Key_Del: k = Key_C_Del; break;
+        case Key_Dwn: k = Key_C_Dwn; break;
+        case Key_Up:  k = Key_C_Up;  break;
+        case Key_Lft: k = Key_C_Lft; break;
+        case Key_Rgt: k = Key_C_Rgt; break;
+        case Key_Home: k = Key_C_Home; break;
+        case Key_PgDn: k = Key_C_PgDn; break;
+        case Key_PgUp: k = Key_C_PgUp; break;
+        case Key_End: k = Key_C_End; break;
+        case Key_BS: k = Key_C_BS; break;
+        case Key_F1: k=Key_C_F1; break;
+        case Key_F2: k=Key_C_F2; break;
+        case Key_F3: k=Key_C_F3; break;
+        case Key_F4: k=Key_C_F4; break;
+        case Key_F5: k=Key_C_F5; break;
+        case Key_F6: k=Key_C_F6; break;
+        case Key_F7: k=Key_C_F7; break;
+        case Key_F8: k=Key_C_F8; break;
+        case Key_F9: k=Key_C_F9; break;
+        case Key_F10: k=Key_C_F10; break;
+        case Key_F11: k=Key_C_F11; break;
+        case Key_F12: k=Key_C_F12; break;
+      }
+    }
+  } /*else if(k == Key_BS) {
+    // Under Linux we could use TIOCLINUX fn. 6 to read shift states on console
+    // Of course it is very unportable but should produce good results :-)
+    int shifts = 6;
+    if(ioctl(fileno(stdin), TIOCLINUX, &shifts) == -1)
+      shifts = 0;
+    if(shifts & ALT)
+      k = Key_A_BS;
+    else if(shifts & GCTRL)
+      k = Key_C_BS;
+  }*/
   #endif
 
   return k;

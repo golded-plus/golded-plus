@@ -23,52 +23,52 @@
 
 
 // Msgbase area configuration.
-gedacfg  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gedacfg  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
 
 // AREAFILE readers.
-gxareas  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxcrash  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxdb     cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxdutch  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxezy102 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxezy110 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxfd     cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxfecho4 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxfecho5 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxfecho6 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxfidpcb cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxfm092  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxfm100  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxfm116  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxgecho  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxhpt    cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gximail4 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gximail5 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gximail6 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxinter  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxlora   cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxmax3   cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxme2    cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxopus   cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxpcb    cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxportal cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxprobrd cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxqfront cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxqecho  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxquick  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxra     cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxraecho cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxspace  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxsquish cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxsuper  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxsync   cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxtimed  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxtmail  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxts     cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxwmail  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxwtr    cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxxbbs   cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
-gxxmail  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg
+gxareas  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxcrash  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxdb     cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxdutch  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxezy102 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxezy110 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxfd     cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxfecho4 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxfecho5 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxfecho6 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxfidpcb cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxfm092  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxfm100  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxfm116  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxgecho  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxhpt    cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gximail4 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gximail5 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gximail6 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxinter  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxlora   cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxmax3   cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxme2    cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxopus   cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxpcb    cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxportal cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxprobrd cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxqfront cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxqecho  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxquick  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxra     cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxraecho cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxspace  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxsquish cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxsuper  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxsync   cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxtimed  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxtmail  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxts     cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxwmail  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxwtr    cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxxbbs   cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gxxmail  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
 
 // Msgbase area configuration.
 gedacfg    h     all

@@ -45,6 +45,10 @@
 #include <sys/locking.h>
 #endif
 
+#if defined(__BEOS__)
+#include "be_lock.h"
+#endif
+
 
 //  ------------------------------------------------------------------
 
@@ -133,10 +137,11 @@ int unlock(int handle, long ofs, long length)
 
 //  ------------------------------------------------------------------
 
-#if defined(__UNIX__) || defined(__CYGWIN__)
+#if defined(__UNIX__) || defined(__CYGWIN__) 
 
 int lock(int handle, long offset, long length) {
 
+#ifndef __BEOS__
   struct flock fl;
   fl.l_type = F_WRLCK;
   fl.l_whence = SEEK_SET;
@@ -144,6 +149,9 @@ int lock(int handle, long offset, long length) {
   fl.l_len = length;
 
   return fcntl(handle, F_SETLK, &fl);
+#else //__BEOS__
+  return be_lock(handle);
+#endif  
 }
 
 #endif
@@ -155,6 +163,7 @@ int lock(int handle, long offset, long length) {
 
 int unlock(int handle, long offset, long length) {
 
+#ifndef __BEOS__
   struct flock fl;
   fl.l_type = F_UNLCK;
   fl.l_whence = SEEK_SET;
@@ -162,6 +171,9 @@ int unlock(int handle, long offset, long length) {
   fl.l_len = length;
 
   return fcntl(handle, F_SETLK, &fl);
+#else //__BEOS__
+  return be_unlock(handle);
+#endif //__BEOS__
 }
 
 #endif

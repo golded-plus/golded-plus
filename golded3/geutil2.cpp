@@ -115,8 +115,11 @@ bool PopupLocked(long tries, int isopen, const char* file) {
   }
 
   // Pause approx 1 second before trying again
+#ifndef __BEOS__
   usleep(1000);
-
+#else
+  sleep(1);
+#endif  
   // Try again
   return true;
 }
