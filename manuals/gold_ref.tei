@@ -59,14 +59,14 @@
     <p>
       <name/GoldED+/ is run under <name/DOS/ with 32-bit <abbr/DPMI/ driver,
       <name/Microsoft Windows/, <name>IBM OS/2</name>, <name/Linux/, and
-      <name/FreeBSD/. There's should be no serious problem to compile it
+      <name/FreeBSD/. There should be no serious problem to compile it
       on other <name/UNIX/-like systems running on <name/Intel/ <name/80x86/
       architecture. Unlike the original version of <name/GoldED/,
       <name/GoldED+/ is not supported on CPUs lower than <name/80386/.
     </p>
     <p>
       <name/GoldED+/ takes his history from the patch collection made by
-      <name>Alexander S. Aganichev</name>. A lot of code was contributed to
+      <name/Alexander S. Aganichev/. A lot of code was contributed to
       <name/GoldED+/ by different people around the world. At least,
       <name/GoldED+/ contains portions of code written by the core team of
       <name/GoldED/ (<name/Odinn Sorensen/, <name>Dirk A. Mueller</name>, and
@@ -85,17 +85,16 @@
       <name/Frank Pilhofer/, <name/Haruhiko Okumura/, <name>Haruyasu
       Yoshizaki</name>, <name/SLang/ maintainers, <name/TIN/ maintainers, and
       <name/Eric Newton/). Also, there are portions of code which are courtesy
-      of various FTN software authors: <name>Scott J. Dudley</name> and
-      <name/Lanius Corporation/, <name/Bit Bucket Software/,
-      <name/Thomas Waldmann/, <name/Peter Davies/, <name/Ron Clark/,
-      <name/Tobias Burchhardt/, <name/Andreas Klein/, <name>Folkert J.
-      Wijnstra</name>, <name/Gerard J. van der Land/, <name/Peter Stewart/ and
-      <name/InterZone Software, Inc./, <name/Marco Maccaferri/,
-      <name/Wynn Wagner III/, <name/Andrew Milner/ and <name>Continental
-      Software</name>, <name/Bjarne Maschoreck/, <name/Roger Kirchhoff/,
-      <name/Stefan Graf/, <name/Nicolai Dufva/, and <name/Morten Baun/.
-      If you feel that your name is missed here please drop an e-mail to
-      the <name/GoldED+/ maintainers.
+      of various FTN software authors: <name/Scott J. Dudley/ and <name>Lanius
+      Corporation</name>, <name/Bit Bucket Software/, <name/Thomas Waldmann/,
+      <name/Peter Davies/, <name/Ron Clark/, <name/Tobias Burchhardt/,
+      <name/Andreas Klein/, <name/Folkert J. Wijnstra/, <name>Gerard J. van der
+      Land</name>, <name/Peter Stewart/ and <name/InterZone Software, Inc./,
+      <name/Marco Maccaferri/, <name/Wynn Wagner III/, <name/Andrew Milner/ and
+      <name/Continental Software/, <name/Bjarne Maschoreck/, <name>Roger
+      Kirchhoff</name>, <name/Stefan Graf/, <name/Nicolai Dufva/, and
+      <name/Morten Baun/. If you feel that your name is missed here please drop
+      an e-mail to the <name/GoldED+/ maintainers.
     </p>
     <p>
       We also need to thanks all that people who have contributed configuration
@@ -110,8 +109,8 @@
       <name/Erik Wachtmeester/, <name/Dirk Frieborg/, <name/Gd'A/,
       <name/Cees Schouten/, <name/Andrew Voronin/, <name/Arkady Grikurov/,
       <name/Mik Karlsson/, <name/K. Simonsen/, <name/Thomas Gradin/,
-      <name/Andre van de Wijdeven/, <name/Robert Bashe/, and <name>Kees
-      Bergwerf</name>.
+      <name/Andre van de Wijdeven/, <name/Robert Bashe/, <name>Kees
+      Bergwerf</name>, and <name/Ferdinand Grassmann/.
     </p>
   </div1>
 <!-- --------------------------------------------------------------------- -->
