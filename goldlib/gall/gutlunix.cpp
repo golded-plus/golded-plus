@@ -92,7 +92,9 @@ void g_set_osicon(void) {
 
 bool g_is_clip_available(void) {
 
-  return is_dir(CLIPDIR);
+  std::string clipdir = CLIPDIR;
+  strschg_environ(clipdir);
+  return is_dir(clipdir);
 }
 
 
@@ -100,11 +102,13 @@ bool g_is_clip_available(void) {
 
 char* g_get_clip_text(void) {
 
-  size_t size = GetFilesize(CLIPFILE);
+  std::string clipfile = CLIPFILE;
+  strschg_environ(clipfile);
+  size_t size = GetFilesize(clipfile.c_str());
   char *text = (char *)throw_malloc(size+1);
   *text = NUL;
 
-  FILE *f = fopen(CLIPFILE, "rt");
+  FILE *f = fopen(clipfile.c_str(), "rt");
   if(f != NULL) {
     fread(text, 1, size, f);
     text[size] = NUL;
@@ -119,7 +123,9 @@ char* g_get_clip_text(void) {
 
 int g_put_clip_text(const char* buf) {
 
-  FILE *f = fopen(CLIPFILE, "wt");
+  std::string clipfile = CLIPFILE;
+  strschg_environ(clipfile);
+  FILE *f = fopen(clipfile.c_str(), "wt");
   if(f != NULL) {
     fwrite(buf, 1, strlen(buf), f);
     fclose(f);
