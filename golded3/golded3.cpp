@@ -82,8 +82,8 @@ const char* __gver_shortver__ = __GVER_SVER__(__GVER_MAJOR__,__GVER_MINOR__,__GV
 //  Platform specific strings.
 
 #if defined(__MSDOS__)
-#define __GVER_PLATFORM__      "/386"
-#define __GVER_SHORTPLATFORM__ "386"
+#define __GVER_PLATFORM__      "/DPMI32"
+#define __GVER_SHORTPLATFORM__ "DPMI"
 #define __GVER_SHORTLOGNAME__  "X"
 #define __GVER_CFGEXT__        ".gex"
 #elif defined(__EMX__)
