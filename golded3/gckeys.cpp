@@ -991,6 +991,12 @@ int ReadKeysCfg(int force) {
         continue;
       ptr2 = ptr;
       ptr = strskip_txt(ptr);
+      if(*ptr == NUL) {
+        std::cout << "* " << cfgname << ": Incomplete line " << line << "." << std::endl;
+        SayBibi();
+        cfgerrors++;
+        continue;
+      }
       *ptr++ = NUL;
       keycmd = SwitchKeyDefs(strCrc16(strupr(ptr2)), &keytype);
       if(keycmd) {
@@ -1020,7 +1026,9 @@ int ReadKeysCfg(int force) {
       ptr = strskip_wht(ptr);
       ptr2 = ptr;
       ptr = strskip_txt(ptr);
-      *ptr++ = 0;
+      if(*ptr != NUL) {
+        *ptr++ = NUL;
+      }
       keycmd = SwitchKeyDefs(strCrc16(strupr(ptr2)), &keytype);
       if(keycmd) {
         if((keycmd >= KK_Macro) and (keycmd <= KK_ReadMacro)) {
@@ -1035,12 +1043,16 @@ int ReadKeysCfg(int force) {
                 ch = *ptr++;
                 tmp2.buf[n++] = (gkey)(ch | (scancode(ch) << 8));
               }
-              *ptr++ = NUL;
+              if(*ptr != NUL) {
+                *ptr++ = NUL;
+              }
             }
             else {
               ptr2 = ptr;
               ptr = strskip_txt(ptr);
-              *ptr++ = NUL;
+              if(*ptr != NUL) {
+                *ptr++ = NUL;
+              }
               int tmpkt;
               keycmd = SwitchKeyDefs(strCrc16(strupr(ptr2)), &tmpkt);
               if(keycmd) {

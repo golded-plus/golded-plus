@@ -12,6 +12,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed small bug in goldkeys.cfg parser so the last line without
+  the feed was incorrectly processed.
+
 - Fixed pseudo in Internet areas.
 
 - Partially fixed ATTRIBSEMAIL and ATTRIBSNEWS operation. They still
