@@ -647,7 +647,7 @@ void GMsgBodyView::UpdateScrollbar() {
 
 //  ------------------------------------------------------------------
 
-void GMsgBodyView::prints(int wrow, int wcol, int atr, char* str) {
+void GMsgBodyView::prints(int wrow, int wcol, int atr, const char* str) {
 
   vputs(wrow, wcol, atr, str);
 }

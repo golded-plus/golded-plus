@@ -307,7 +307,7 @@ protected:
   int   isempty         (Line* __line=NULL);
   void  killkillbuf     ();
   void  killpastebuf    ();
-  void  prints          (int wrow, int wcol, int atr, char* str);
+  void  prints          (int wrow, int wcol, int atr, const char* str);
   int   reflowok        (char* __qstr);
   void  refresh         (Line* __currline, uint __row);
   void  savefile        (int __status);

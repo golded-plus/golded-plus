@@ -546,12 +546,12 @@ static void KludgePID(GMsg* msg, const char* ptr) {
 
 static void KludgeREPLYADDR(GMsg* msg, const char* ptr) {
 
-  Name name;
+  INam name;
   name[0] = NUL;
   char *buf=throw_strdup(ptr);
   ParseInternetAddr(buf, *msg->realby ? name : msg->realby, msg->iaddr);
   if(*name)
-    strxcpy(msg->realby, name, sizeof(Name));
+    strxcpy(msg->realby, name, sizeof(INam));
   throw_free(buf);
 }
 

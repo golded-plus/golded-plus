@@ -9,8 +9,11 @@ ______________________________________________________________________
 
 ______________________________________________________________________
 
-               Notes for GoldED+ 1.1.4.5, May XX 2000
+               Notes for GoldED+ 1.1.4.5, June 18 2000
 ______________________________________________________________________
+
+- Fixed some memory leaks regarding to GROUP feature, REPLYADDR
+  parsing, undo.
 
 - Fixed small bug in fidoconfig parser that brokes correct handling of
   INCLUDE keyword.

@@ -134,8 +134,9 @@ void Grp::AddItm(int __type, const string& __data) {
 
 void Grp::AddItm(int __type, void* __data, int __size) {
 
-  void *data = throw_malloc(__size);
-  memcpy(data, __data, __size);
+  void *data = throw_malloc(__size+sizeof(int));
+  *((int *)data) = __size;
+  memcpy((char *)data+sizeof(int), __data, __size);
   currgrp->second.insert(pair<int, grp_stock>(__type, data));
 }
 
@@ -252,7 +253,10 @@ int Grp::GetItm(int __type, void* __data, int __size, int __no) {
       __no = rand() % rv;
     multimap<int, grp_stock>::iterator i = currgrp->second.find(__type);
     while(__no--) i++;
-    memcpy(__data, i->second.data.object_item, __size);
+    void *data = i->second.data.object_item;
+    int local_size = *((int *)data);
+    __size = minimum_of_two (local_size, __size);
+    memcpy(__data, (char *)data+sizeof(int), __size);
   }
 
   // Return number of items of this type in the group

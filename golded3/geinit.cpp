@@ -1109,6 +1109,9 @@ void Initialize(int argc, char* argv[]) {
     remove(AddPath(CFG->areapath, "DBRIDGE.EMW"));
   }
 
+  if(CFG->loadlanguage[0])
+    LoadLanguage(CFG->loadlanguage);
+
   // Unlink windows
   wunlink(W_READ);
 

@@ -168,7 +168,7 @@ void IEclass::scrolldown(int __scol, int __srow, int __ecol, int __erow, int __l
 //  ------------------------------------------------------------------
 //  Zero-based
 
-void IEclass::prints(int wrow, int wcol, int atr, char* str) {
+void IEclass::prints(int wrow, int wcol, int atr, const char* str) {
 
   editwin.prints(wrow, wcol, atr, str);
 }
@@ -272,7 +272,8 @@ void IEclass::dispstring(const char* __string, uint __row, int attr, Line* line)
     }
   }
   else {
-    memcpy(_buf, __string, _length);
+    if(_length)
+      memcpy(_buf, __string, _length);
   }
 
   // mark selected block
@@ -2394,12 +2395,10 @@ void UndoStack::PushItem(uint action, Line* __line, uint __col, uint __len) {
         last_item->line = __line;
         break;
       case EDIT_UNDO_INS_TEXT:
-        last_item->line = __line;
-        goto save_item;
       case EDIT_UNDO_WRAP_TEXT:
-        last_item->line = __line->prev;
-      save_item:
-        throw_new(last_item->data.text_ptr = new text_item(__col, __len));
+        last_item->line = __line;
+        throw_new(last_item->data.text_ptr = new(__len) text_item(__col, __len));
+	memcpy(last_item->data.text_ptr->text, __line->txt.c_str() + __col, __len);
         break;
       case EDIT_UNDO_NEW_LINE:
         last_item->line = last_item->data.line_ptr = __line;

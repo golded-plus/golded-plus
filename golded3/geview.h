@@ -86,7 +86,7 @@ protected:
 
   void PaintLine(int row, Line *line);
   void UpdateScrollbar();
-  void prints(int wrow, int wcol, int atr, char* str);
+  void prints(int wrow, int wcol, int atr, const char* str);
 
 public:
 

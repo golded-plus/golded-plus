@@ -31,7 +31,7 @@
 
 class Container {
 
-  virtual void prints(int, int, int, char*) = 0;
+  virtual void prints(int, int, int, const char*) = 0;
 
 public:
 
