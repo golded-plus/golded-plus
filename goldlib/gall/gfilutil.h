@@ -228,6 +228,9 @@ inline int eof(int h) {
 }
 
 inline int sopen(const char* path, int access, int shflag, int mode) {
+#ifdef __UNIX__
+  shflag = 0;
+#endif
   return open(path, access|shflag, mode);
 }
 
