@@ -48,7 +48,7 @@ void ResetMsg(GMsg* msg) {
 
 //  ------------------------------------------------------------------
 
-int Area::LoadHdr(GMsg* msg, ulong msgno) {
+int Area::LoadHdr(GMsg* msg, ulong msgno, bool enable_recode) {
 
   ResetMsg(msg);
   msg->msgno = msgno;
@@ -56,7 +56,14 @@ int Area::LoadHdr(GMsg* msg, ulong msgno) {
 
   // Don't translate charsets if we don't know charset
   // Currently, it only mime-decodes, so it's okay.
-  if(retval) {
+  if(retval and enable_recode) {
+    // Use default translation by default
+    int table = LoadCharset(NULL, NULL, 1);
+    if (table == -1)
+      msg->charsetlevel = LoadCharset(CFG->xlatimport, CFG->xlatlocalset);
+    else
+      msg->charsetlevel = LoadCharset(CFG->xlatcharset[table].imp, CFG->xlatcharset[table].exp);
+
     // Charset translate header fields
     strxmimecpy(msg->realby, msg->realby, msg->charsetlevel, sizeof(INam));
     strxmimecpy(msg->realto, msg->realto, msg->charsetlevel, sizeof(INam));

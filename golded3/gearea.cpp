@@ -468,7 +468,7 @@ void GPickArealist::AreaCatchUp(uint n) {
         if(CFG->switches.get(highlightunread) and CFG->switches.get(areacatchupread)) {
           w_info(LNG->Wait);
           for(uint i=AA->lastread()+1; i <= AA->Msgn.Count(); i++) {
-            AA->LoadHdr(msg, AA->Msgn.CvtReln(i));
+            AA->LoadHdr(msg, AA->Msgn.CvtReln(i), false);
             if(msg->timesread++ == 0)
               AA->UpdateTimesread(msg);
           }

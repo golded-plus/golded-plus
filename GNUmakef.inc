@@ -56,7 +56,7 @@ $(FOBJPATH)/%.res: %.rc
 endif
 
 SOURCES=
-include bld$(PLATFORM).inc
+-include bld$(PLATFORM).inc
 ifeq ($(PLATFORM),cyg)
 OBJS=$(addprefix $(FOBJPATH)/,$(patsubst %.rc,%.o,$(patsubst %.c,%.o,$(patsubst %.cpp,%.o,$(filter %.c %.cpp %.rc,$(SOURCES))))))
 else
@@ -74,6 +74,6 @@ clean:
 
 ifeq ($(FDEPPATH)/dep,$(wildcard $(FDEPPATH)/de?))
 ifneq ($(DEPS),)
-include $(DEPS)
+-include $(DEPS)
 endif
 endif

@@ -98,7 +98,7 @@ void GKbd::Init() {
   #if defined(__USE_NCURSES__)
 
   // Both screen and keyboard must be initialized at once
-  if(1 == (curses_initialized++)) {
+  if(0 == (curses_initialized++)) {
     initscr();
     raw();
     noecho();
@@ -295,7 +295,7 @@ GKbd::~GKbd() {
 
   #if defined(__USE_NCURSES__)
   
-  if(1 == (--curses_initialized))
+  if(0 == (--curses_initialized))
     endwin();
   
   #elif defined(__WIN32__)

@@ -77,11 +77,11 @@ void Area::DeleteMsg(GMsg* msg, int direction) {
       reply1st = msg->link.first();
     }
     if(replyto) {
-      if(not LoadHdr(downlink, replyto))
+      if(not LoadHdr(downlink, replyto, false))
         downlink->link.first_set(0);
     }
     if(reply1st) {
-      if(not LoadHdr(uplink, reply1st))
+      if(not LoadHdr(uplink, reply1st, false))
         uplink->link.to_set(0);
     }
 
@@ -172,7 +172,7 @@ void Area::DelMsgs(GMsg* msg) {
         w_progress(MODE_UPDATE, C_INFOW, x+1, Mark.Count(), LNG->Deleting);
         ulong msgno = Mark[x];
         if(Msgn.ToReln(msgno)) {
-          if(LoadHdr(msg, msgno)) {
+          if(LoadHdr(msg, msgno, false)) {
             bool deletethis = false;
             if(delask) {
               if(msg->attr.uns() and not (msg->attr.rcv() or msg->attr.del())) {

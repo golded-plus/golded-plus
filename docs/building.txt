@@ -1,6 +1,6 @@
 
 GoldED+ compilation how to
-by Alexander Aganichev, 2:5020/201.58 <asa@eed.miee.ru>
+by Alexander Aganichev, 2:5020/201.58 <aaganichev@netscape.net>
 
 -------------------------------------------------------------------------------
 

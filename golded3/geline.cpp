@@ -417,7 +417,8 @@ char* mime_header_decode(char* decoded, const char* encoded, char *charset) {
 
 char* strxmimecpy(char* dest, const char* source, int level, int size, bool detect) {
 
-  char buf[500], buf2[500], charset[100];
+  ISub buf, buf2;
+  char charset[100];
   bool need_reload;
   int table = -1;
 

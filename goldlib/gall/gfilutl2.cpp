@@ -39,7 +39,7 @@
 string& AddBackslash(string& p) {
 
   for(size_t posn = 0; (posn=p.find(GOLD_WRONG_SLASH_CHR, posn)) != p.npos; posn++)
-	p[posn] = GOLD_SLASH_CHR;
+    p[posn] = GOLD_SLASH_CHR;
   if(p[p.length()-1] != GOLD_SLASH_CHR)
     p += GOLD_SLASH_STR;
 
@@ -64,6 +64,7 @@ void MakePathname(string& pathname, const string& path, const string& name) {
 void PathCopy(string& dst, const char* src) {
 
   dst = src;
+  strschg_environ(dst);
   AddBackslash(dst);
 }
 
@@ -229,7 +230,7 @@ bool maketruepath(string &dirname) {
   if(access(dirname.c_str(), R_OK)) {
     dirname = cwd;
     ok = false;
-        }
+  }
   for(posn = 0; (posn=dirname.find('\\', posn)) != dirname.npos; posn++)
     dirname[posn] = '/';
   while((skipto=dirname.find("/../")) != dirname.npos) {
@@ -240,7 +241,7 @@ bool maketruepath(string &dirname) {
   while((skipfrom=dirname.find("/./")) != dirname.npos)
     dirname.erase(skipfrom, 2);
   len = dirname.length();
-  if(len > 2 && !strcmp(&(dirname[len-2]), "/."))
+  if(len > 2 && !strcmp(&(dirname.c_str()[len-2]), "/."))
     dirname.erase(len-2, 2);
   len = dirname.length();
 #ifdef __HAVE_DRIVES__

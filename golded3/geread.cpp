@@ -928,7 +928,7 @@ int LoadMessage(GMsg* msg, int margin) {
 
       if(reader_rcv_noise > 1) {
         GMsg* tmsg = throw_calloc(1, sizeof(GMsg));
-	AA->LoadHdr(tmsg, msg->msgno);
+	AA->LoadHdr(tmsg, msg->msgno, false);
 	tmsg->attr = msg->attr;
 	tmsg->orig_timesread = msg->orig_timesread;
 	tmsg->received = msg->received;
@@ -1269,7 +1269,7 @@ void GotoPrevUnread() {
   int prev = AA->lastread();
   while(1 < prev) {
     prev--;
-    AA->LoadHdr(msg, AA->Msgn.CvtReln(prev));
+    AA->LoadHdr(msg, AA->Msgn.CvtReln(prev), false);
     if(msg->timesread == 0) {
       AA->set_lastread(prev);
       found = true;

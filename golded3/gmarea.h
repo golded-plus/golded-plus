@@ -491,7 +491,7 @@ public:
   void ScanArea();
   void ScanAreaPM();
 
-  int LoadHdr(GMsg* msg, ulong msgno);
+  int LoadHdr(GMsg* msg, ulong msgno, bool enable_recode = true);
   int LoadMsg(GMsg* msg, ulong msgno, int margin, int mode=0);
 
   void SaveHdr(int mode, GMsg* msg);

@@ -207,6 +207,7 @@ int DoCarboncopy(GMsg* msg, GMsg** carbon) {
           // Keep list as it was entered
           break;
         case CC_HIDDEN:
+          ccline = msg->lin;
           if(A == AA) {
             sprintf(buf, "\001CC: %s %s", msg->To(), msg->dest.make_string(temp).c_str());
             ccline = AddKludge(ccline, buf);

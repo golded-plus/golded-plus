@@ -29,4 +29,7 @@ Tips and tricks
    processed by original fidoconfig library. You may consider using of
    '-lame' option :-)
 
-8. If you want add something to this file - feel free to contact me.
+8. If you have a problem with incorrect recoding in message lister try
+   add "MsgListFast No" to your config.
+
+9. If you want add something to this file - feel free to contact me.

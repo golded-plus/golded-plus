@@ -223,7 +223,7 @@ static void recursive_mark(GMsg* msg, ulong msgno) {
   int i;
   gmsg_links templink;
 
-  if(AA->Msgn.ToReln(msgno) and AA->LoadHdr(msg, msgno)) {
+  if(AA->Msgn.ToReln(msgno) and AA->LoadHdr(msg, msgno, false)) {
 
     templink = msg->link;
 
@@ -263,7 +263,7 @@ void MarkMsgs_Thread(GMsg* msg) {
   while(AA->Msgn.ToReln(msgno)) {  // Search backwards
     AA->Mark.Add(msgno);
 
-    if(not AA->LoadHdr(tempmsg, msgno))
+    if(not AA->LoadHdr(tempmsg, msgno, false))
       tempmsg->link.to_set(0);
     msgno = tempmsg->link.to();
   }

@@ -650,7 +650,7 @@ static void GetLastLink(GMsg* msg, ulong& msgno) {
 
   if(uplink->link.first()) {
     while(AA->Msgn.ToReln(uplink->link.first())) {
-      if(not AA->LoadHdr(uplink, uplink->link.first()))
+      if(not AA->LoadHdr(uplink, uplink->link.first(), false))
         uplink->msgno = 0;
     }
   }
@@ -1080,7 +1080,7 @@ void MakeMsg(int mode, GMsg* omsg) {
       // If message is a reply, update the links on the original
       if(CurrArea == OrigArea and (mode == MODE_QUOTE or mode == MODE_REPLYCOMMENT or mode == MODE_REPLY)) {
         if(AA->Msgn.ToReln(reply_msgno)) {
-          if(AA->LoadHdr(reply, reply_msgno)) {
+          if(AA->LoadHdr(reply, reply_msgno, false)) {
             ulong replynext;
             bool ok2save = false;
             if(AA->issquish()) {
@@ -1103,7 +1103,7 @@ void MakeMsg(int mode, GMsg* omsg) {
                 replynext = reply->link.first();
                 do {
                   reply_msgno = replynext;
-                  if(not AA->LoadHdr(reply, reply_msgno))
+                  if(not AA->LoadHdr(reply, reply_msgno, false))
                     break;
                   replynext = reply->link.next();
                 } while(reply->link.next());

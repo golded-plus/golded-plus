@@ -134,7 +134,7 @@ GVid::~GVid() {
   #if defined(__USE_NCURSES__)
 
   attrset(A_NORMAL);
-  if(1 == (--curses_initialized))
+  if(0 == (--curses_initialized))
     endwin();
 
   #elif defined(__UNIX__)
@@ -160,7 +160,7 @@ void GVid::init() {
 
   #if defined(__USE_NCURSES__)
   // Both display and keyboard will be initialized at once
-  if(1 == (curses_initialized++)) {
+  if(0 == (curses_initialized++)) {
     initscr();
     raw();
     noecho();

@@ -12,6 +12,25 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.4.7, September 24 2000
 ______________________________________________________________________
 
+! Message header now translated with default rules in most cases. If
+  there's something wrong with it (f.e. double decoding or no decoding
+  at all) please report. Also, original message header should be
+  handled more carefully now.
+
++ Asciitilde now recognized more properly, so even ~anotheruser/file
+  should work. Also environment variables defined as %TEMP%/file
+  should be expanded in more cases. Feel free to report bug if
+  something doesn't work.
+
+- @CC kludges now created at top of message rather than in place
+  where CC: found (this feature was also silently introduced in
+  1.1.4.5 binaries for some platforms).
+
+! Added historical section to this file regarding to 3.0.1-asa8
+  release. The older release I have is -asa4 but it doesn't contains
+  notework at all :-( If anyone could recall anything about that
+  versions please let me know.
+
 - Fixed Bug #109368: Ged+ crashes if there are more than 30 links in
   the help. Now accepts up to 50, and ignores more.
 
@@ -827,6 +846,32 @@ ______________________________________________________________________
   AreaFile EchoList -sqafix c:\fido\mail\squish\sqafix.cfg
 
 + It is possible now to use Shift-... with clipboard.
+
+______________________________________________________________________
+
+                 Notes for 3.0.1-asa8, April 22 1999
+______________________________________________________________________
+
++ Added @Moderator template token that enables line only if substring
+  "moderator" found in the "From" line.
+
++ Improved handling of @_token's and extend tokens with @*pseudo
+  (lookup addressbook), @f* (current from), @*3daddr (boss address).
+
++ Incorporated Pavel Gulchouck's stream clipboard patch.
+
++ New command-line switch -R: right Alt key will work same as left.
+
+- Fixed a bug with stripping block of lines after long kludge.
+
+- Fixed stylecodes support for origin line.
+
+- Fixed national language word left, word right movement.
+
+- Areas.BBS parser now properly handles echos with exclamation mark.
+
+- Fixed ImportEnd flow while importing file without CR at end and
+  option EDITHardTerm set to NO.
 
 ______________________________________________________________________
 
