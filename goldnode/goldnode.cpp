@@ -23,7 +23,7 @@
 //  GoldNODE - A nodelist compiler for GoldED.
 //  ------------------------------------------------------------------
 
-using namespace std;
+// using namespace std;
 
 #include <gdbgerr.h>
 #include <list>
@@ -81,24 +81,25 @@ const size_t maxnodes = 262000;
 
 //  ------------------------------------------------------------------
 
-typedef vector<Addr>::iterator addr_iter;
-typedef vector<Stamp>::iterator stamp_iter;
-typedef list<_GEIdx> geidxlist;
+typedef std::vector<Addr>::iterator addr_iter;
+typedef std::vector<Stamp>::iterator stamp_iter;
+typedef std::list<_GEIdx> geidxlist;
 
 // Nodelists
-vector<Stamp> nodelist; // nodelist files,stamps,update marker
-vector<Addr> nodezone;  // nodelist zones
-vector<Stamp> userlist; // Userlist files,stamps,update marker
-vector<Addr> userzone;  // Userlist zones
+std::vector<Stamp> nodelist; // nodelist files,stamps,update marker
+std::vector<Addr> nodezone;  // nodelist zones
+std::vector<Stamp> userlist; // Userlist files,stamps,update marker
+std::vector<Addr> userzone;  // Userlist zones
+std::vector< std::pair<std::string, std::string> > mappath;
 
 // Exclude/Include nodes
-vector<Addr> excludenode;
-vector<Addr> includenode;
+std::vector<Addr> excludenode;
+std::vector<Addr> includenode;
 
 // Index files
-string  addrindex;
-string  nodeindex;
-string  listindex;
+std::string  addrindex;
+std::string  nodeindex;
+std::string  listindex;
 
 //  ------------------------------------------------------------------
 
@@ -143,10 +144,10 @@ static void twirly() {
 
   n = (++n)%4;
   switch(n) {
-    case 0: cout << "|\b" << flush; break;
-    case 1: cout << "/\b" << flush; break;
-    case 2: cout << "-\b" << flush; break;
-    case 3: cout << "\\\b" << flush; break;
+    case 0: std::cout << "|\b" << std::flush; break;
+    case 1: std::cout << "/\b" << std::flush; break;
+    case 2: std::cout << "-\b" << std::flush; break;
+    case 3: std::cout << "\\\b" << std::flush; break;
   }
 }
 
@@ -462,7 +463,7 @@ static char* CvtName(char* inp) {
 //  ------------------------------------------------------------------
 
 #ifdef GOLDNODE_STATS
-void calc_statistic(ofstream &ofp, int* observation, float N) {
+void calc_statistic(std::ofstream &ofp, int* observation, float N) {
 
   int i;
   float mean = 0.0;
@@ -470,9 +471,9 @@ void calc_statistic(ofstream &ofp, int* observation, float N) {
   float varians = 0.0;
 
   //         12   12345   12345   123456   123456789012
-  ofp << ".---------------------------------------------." << endl
-      << "|   x |  h(x) |  f(x) | x*f(x) | (x-m)^2*f(x) |" << endl
-      << "|-----+-------+-------+--------+--------------|" << endl;
+  ofp << ".---------------------------------------------." << std::endl
+      << "|   x |  h(x) |  f(x) | x*f(x) | (x-m)^2*f(x) |" << std::endl
+      << "|-----+-------+-------+--------+--------------|" << std::endl;
 
   for(i=0; i<100; i++) {
     float x = i;
@@ -491,18 +492,18 @@ void calc_statistic(ofstream &ofp, int* observation, float N) {
       float frekvens = hyppighed / N;
       float vartmp =  (x-mean)*(x-mean)*frekvens;
       varians += vartmp;
-      ofp << "| " << setw(3) << i << " | " << setw(5) << observation[i] << " | " << setprecision(3) << setw(5) << frekvens << " | " << setw(6) << x*frekvens << " | " << setw(12) << vartmp << " | " << endl;
+      ofp << "| " << std::setw(3) << i << " | " << std::setw(5) << observation[i] << " | " << std::setprecision(3) << std::setw(5) << frekvens << " | " << std::setw(6) << x*frekvens << " | " << std::setw(12) << vartmp << " | " << std::endl;
     }
   }
 
-  ofp << "|-----+-------+-------+--------+--------------|" << endl
-      << "| sum | " << setprecision(0) << setw(5) << N << " | " << setprecision(3) << setw(5) << sumfrekvens << " | " << setw(5) << mean << " | " << setw(12) << varians << " |" << endl
-      << "`---------------------------------------------'" << endl
-      << endl
-      << "Mean: " << setprecision(1) << mean << endl
-      << "Variance = " << varians << endl
-      << "Standard deviation = " << sqrt(varians) << endl
-      << endl;
+  ofp << "|-----+-------+-------+--------+--------------|" << std::endl
+      << "| sum | " << std::setprecision(0) << std::setw(5) << N << " | " << std::setprecision(3) << std::setw(5) << sumfrekvens << " | " << std::setw(5) << mean << " | " << std::setw(12) << varians << " |" << std::endl
+      << "`---------------------------------------------'" << std::endl
+      << std::endl
+      << "Mean: " << std::setprecision(1) << mean << std::endl
+      << "Variance = " << varians << std::endl
+      << "Standard deviation = " << sqrt(varians) << std::endl
+      << std::endl;
 }
 #endif
 
@@ -550,7 +551,7 @@ static void read_nodelists() {
 
   nodes = 0;
 
-  if(not quiet) cout << endl << "* Compiling nodelists:" << endl;
+  if(not quiet) std::cout << std::endl << "* Compiling nodelists:" << std::endl;
 
   // Delete the current indexfiles so they don't take up space
   remove(addrindex.c_str());
@@ -594,7 +595,7 @@ static void read_nodelists() {
             buf[llen] = ' ';
             if(not quiet) {
               int len = 16-strlen(name);
-              cout << "\r* |--" << name << setw((len > 0) ? len : 1) << " " << "Warning line " << line << " - Invalid NUL char encountered." << endl;
+              std::cout << "\r* |--" << name << std::setw((len > 0) ? len : 1) << " " << "Warning line " << line << " - Invalid NUL char encountered." << std::endl;
             }
             llen = strlen(buf);
             ptr = buf+llen-1;
@@ -687,7 +688,7 @@ static void read_nodelists() {
 
             if(ISTWIRLY(no)) {
               int len = 16-strlen(name);
-              cout << "\r* \\--" << name << setw((len > 0) ? len : 1) << " " << "Zone " << nlst.addr.zone << "\tNet " << nlst.addr.net << "\tNodes " << (ulong)no << flush;
+              std::cout << "\r* \\--" << name << std::setw((len > 0) ? len : 1) << " " << "Zone " << nlst.addr.zone << "\tNet " << nlst.addr.net << "\tNodes " << (ulong)no << std::flush;
             }
 
             bool include = true;
@@ -734,14 +735,14 @@ static void read_nodelists() {
 
         if(not quiet) {
           int len = 16-strlen(name);
-          cout << "\r* " << ((fno == nodelist.end()-1) ? '\\' : '|') << "--" << name << setw((len > 0) ? len : 1) << " " << "Nodes read: " << (ulong)no << "\tTotal read: " << (ulong)nodes << ((nodes >= maxnodes) ? " (Limit reached)" : "                ") << endl;
+          std::cout << "\r* " << ((fno == nodelist.end()-1) ? '\\' : '|') << "--" << name << std::setw((len > 0) ? len : 1) << " " << "Nodes read: " << (ulong)no << "\tTotal read: " << (ulong)nodes << ((nodes >= maxnodes) ? " (Limit reached)" : "                ") << std::endl;
         }
 
         fclose(lfp);
         ++realfno;
       }
       else {
-        if(not quiet) cout << "Error opening nodelist " << fno->fn << '!' << endl;
+        if(not quiet) std::cout << "Error opening nodelist " << fno->fn << '!' << std::endl;
         *(fno->fn) = NUL;
       }
     }
@@ -749,7 +750,7 @@ static void read_nodelists() {
 
   // Compile userlists
   if(userlist.size()) {
-    if(not quiet) cout << endl << "* Compiling userlists:" << endl;
+    if(not quiet) std::cout << std::endl << "* Compiling userlists:" << std::endl;
   }
 
   for(fno=userlist.begin(), zno=userzone.begin(); fno != userlist.end() and nodes < maxnodes; fno++, zno++) {
@@ -816,7 +817,7 @@ static void read_nodelists() {
 
             if(ISTWIRLY(nodes)) {
               int len = 16-strlen(name);
-              cout << "\r* \\--" << name << setw((len > 0) ? len : 1) << " " << "Nodes: " << (ulong)nodes << flush;
+              std::cout << "\r* \\--" << name << std::setw((len > 0) ? len : 1) << " " << "Nodes: " << (ulong)nodes << std::flush;
             }
 
             // Indicate userlist
@@ -838,33 +839,33 @@ static void read_nodelists() {
 
       if(not quiet) {
         int len = 16-strlen(name);
-        cout << "\r* " << ((fno == userlist.end()-1) ? '\\' : '|') << "--" << name << setw((len > 0) ? len : 1) << " " << "Nodes read: " << (ulong)no << "\tTotal read: " << (ulong)nodes << ((nodes >= maxnodes) ? " (Limit reached)" : "                ") << endl;
+        std::cout << "\r* " << ((fno == userlist.end()-1) ? '\\' : '|') << "--" << name << std::setw((len > 0) ? len : 1) << " " << "Nodes read: " << (ulong)no << "\tTotal read: " << (ulong)nodes << ((nodes >= maxnodes) ? " (Limit reached)" : "                ") << std::endl;
       }
 
       fclose(lfp);
     }
     else {
-      if(not quiet) cout << "Error opening userlist " << fno->fn << '!' << endl;
+      if(not quiet) std::cout << "Error opening userlist " << fno->fn << '!' << std::endl;
     }
   }
 
   #ifdef GOLDNODE_STATS
   if(make_stats) {
 
-    if(not quiet) cout << "* Writing statistics to " << statfilename << endl;
+    if(not quiet) std::cout << "* Writing statistics to " << statfilename << std::endl;
 
     ofstream ofp(statfilename);
     if(not ofp) {
-      if(not quiet) cout << "Error opening statfile " << statfilename << '!' << endl;
+      if(not quiet) std::cout << "Error opening statfile " << statfilename << '!' << std::endl;
     }
     else
-      ofp << "Nodename size statistics:" << endl;
+      ofp << "Nodename size statistics:" << std::endl;
       calc_statistic(ofp, statistic.nodename, nodes);
 
-      ofp << endl << "Location size statistics:" << endl;
+      ofp << std::endl << "Location size statistics:" << std::endl;
       calc_statistic(ofp, statistic.location, nodes);
 
-      ofp << endl << "Sysopname size statistics:" << endl;
+      ofp << std::endl << "Sysopname size statistics:" << std::endl;
       calc_statistic(ofp, statistic.sysopname, nodes);
     }
   }
@@ -876,7 +877,7 @@ static void read_nodelists() {
     map<long, dword> namepos;
 
     // Sort by name
-    if(not quiet) cout << endl << "* Sorting by name " << flush;
+    if(not quiet) std::cout << std::endl << "* Sorting by name " << std::flush;
     nodeidx.sort(cmp_nnlsts);
 
     // Write the name-sorted .GXN
@@ -887,11 +888,11 @@ static void read_nodelists() {
       if(fidouser)
         fido = fsopen(fidouserlst, "wt", sh_mod);
       if(fido == NULL) {
-        if(not quiet) cout << "\b, writing " << name << ' ' << flush;
+        if(not quiet) std::cout << "\b, writing " << name << ' ' << std::flush;
         fidouser = false;
       }
       else {
-        if(not quiet) cout << "\b, writing " << name << " and " << fidouserlst << ' ' << flush;
+        if(not quiet) std::cout << "\b, writing " << name << " and " << fidouserlst << ' ' << std::flush;
       }
 
       int nn = 0;
@@ -905,7 +906,7 @@ static void read_nodelists() {
           if(prev != nodeidx.end() && match_addr_mask(&curr->addr, &prev->addr)) {
             if(strieql(curr->name, prev->name)) {
               #ifdef DEBUG
-              if(not quiet) cout << "* Dupe: " << curr->addr.zone << ':' << curr->addr.net << '/' << curr->addr.node << '.' << curr->addr.point << ' ' << curr->name << endl;
+              if(not quiet) std::cout << "* Dupe: " << curr->addr.zone << ':' << curr->addr.net << '/' << curr->addr.node << '.' << curr->addr.point << ' ' << curr->name << std::endl;
               #endif
               nodeidx.erase(curr);
               curr = prev;
@@ -929,14 +930,14 @@ static void read_nodelists() {
     }
 
     // Sort by address
-    if(not quiet) cout << ' ' << endl << "* Sorting by node " << flush;
+    if(not quiet) std::cout << ' ' << std::endl << "* Sorting by node " << std::flush;
     nodeidx.sort(cmp_anlsts);
 
     // Write the address-sorted .GXA
     fp = fsopen(addrindex.c_str(), "wb", sh_mod);
     if(fp) {
       name = CleanFilename(addrindex.c_str());
-      if(not quiet) cout << "\b, writing " << name << ' ' << flush;
+      if(not quiet) std::cout << "\b, writing " << name << ' ' << std::flush;
       int nn = 0;
       for(curr = nodeidx.begin(); curr != nodeidx.end(); curr++) {
         if(ISTWIRLY(nn++))
@@ -950,7 +951,7 @@ static void read_nodelists() {
     fp = fsopen(listindex.c_str(), "wt", sh_mod);
     if(fp) {
       name = CleanFilename(listindex.c_str());
-      if(not quiet) cout << ' ' << endl << "* Writing " << name << endl;
+      if(not quiet) std::cout << ' ' << std::endl << "* Writing " << name << std::endl;
       for(fno=nodelist.begin(); fno != nodelist.end(); fno++) {
         if(*(fno->fn))
           fprintf(fp, "%s %lu\n", fno->fn, fno->ft);
@@ -963,9 +964,9 @@ static void read_nodelists() {
 
     if(not quiet) {
       if(dups) {
-        cout << endl << "* Total duplicate nodes: " << (ulong)dups << '.' << endl;
+        std::cout << std::endl << "* Total duplicate nodes: " << (ulong)dups << '.' << std::endl;
       }
-      cout << endl << "* Nodelist compile completed. Compile time: " << (ulong)(runtime/60) << " min, " << (ulong)(runtime%60) << " sec." << endl;
+      std::cout << std::endl << "* Nodelist compile completed. Compile time: " << (ulong)(runtime/60) << " min, " << (ulong)(runtime%60) << " sec." << std::endl;
     }
   #ifdef GOLDNODE_STATS
   }
@@ -1000,9 +1001,10 @@ static void check_nodelists(bool force) {
           if(not listdefined or (de->stat_info.st_mtime-listtime > 0)) {
             listtime = de->stat_info.st_mtime;
             listdefined = true;
-            strxmerge(nodelist[n].fn, sizeof(Path), f.fullpath(), "/", de->name.c_str(), NULL);
+            strxmerge(nodelist[n].fn, sizeof(Path), f.fullpath(), GOLD_SLASH_STR, de->name.c_str(), NULL);
           }
         }
+      strchg(nodelist[n].fn, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
     }
   }
 
@@ -1014,6 +1016,8 @@ static void check_nodelists(bool force) {
       char* val=buf;
       getkeyval(&key, &val);
       key = strxcpy(newpath, strbtrim(key), sizeof(Path));
+      MapPath(key);
+      strchg(key, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
       for(n=0; n<nodelist.size(); n++) {
         if(strieql(nodelist[n].fn, key)) {
           nodelist[n].ft = atol(val);
@@ -1041,16 +1045,16 @@ static void check_nodelists(bool force) {
 
   if(not quiet) {
     if(compilen) {
-      cout << "* " << compilen << " new nodelist file" << ((compilen == 1) ? "" : "s") << " found." << endl;
+      std::cout << "* " << compilen << " new nodelist file" << ((compilen == 1) ? "" : "s") << " found." << std::endl;
     }
     else if(nodelist.size()) {
-      cout << "* The nodelist file" << ((nodelist.size() == 1) ? " is" : "s are") << " up-to-date." << endl;
+      std::cout << "* The nodelist file" << ((nodelist.size() == 1) ? " is" : "s are") << " up-to-date." << std::endl;
     }
   }
 
   // Check userlists
   for(n=0,compileu=0; n<userlist.size(); n++) {
-    if(abs(long(GetFiletime(userlist[n].fn) - userlist[n].ft)) > 1) {
+    if(abs(long(GetFiletime(newpath) - userlist[n].ft)) > 1) {
       userlist[n].fc = YES;
       compileu++;
     }
@@ -1058,10 +1062,10 @@ static void check_nodelists(bool force) {
 
   if(not quiet) {
     if(compileu) {
-      cout << "* " << compileu << " new userlist file" << ((compileu == 1) ? "" : "s") << " found." << endl;
+      std::cout << "* " << compileu << " new userlist file" << ((compileu == 1) ? "" : "s") << " found." << std::endl;
     }
     else if(userlist.size()) {
-      cout << "* The userlist file" << ((userlist.size() == 1) ? " is" : "s are") << " up-to-date." << endl;
+      std::cout << "* The userlist file" << ((userlist.size() == 1) ? " is" : "s are") << " up-to-date." << std::endl;
     }
   }
 
@@ -1074,7 +1078,7 @@ static void check_nodelists(bool force) {
 
 static void fatal_error(const char* what) {
 
-  if(not quiet) cout << what << endl;
+  if(not quiet) std::cout << what << std::endl;
   exit(5);
 }
 
@@ -1097,14 +1101,7 @@ static int do_if(char* val) {
     return false;
     #endif
   }
-  else if(strieql(val, "386")) {
-    #if defined(__MSDOS__)
-    return true;
-    #else
-    return false;
-    #endif
-  }
-  else if(strieql(val, "DOS")) {
+  else if(strieql(val, "386") or strieql(val, "DOS") or strieql(val, "DPMI32")) {
     #ifdef __MSDOS__
     return true;
     #else
@@ -1118,21 +1115,48 @@ static int do_if(char* val) {
     return false;
     #endif
   }
-  else if(strieql(val, "INOS2")) {
-    #if defined(__OS2__)
+  else if(strieql(val, "FIREBIRD"))
     return true;
-    #elif defined(__GNUC__)
-    return false;
-    #else
-    return _osmajor >= 10;
-    #endif
-  }
-  else if(strieql(val, "FIREBIRD")) {
+  else if(strieql(val, "ASA") or strieql(val, "PLUS"))
     return true;
-  }
   else if(strieql(val, "YES") or strieql(val, "TRUE") or strieql(val, "ON"))
     return true;
-  return atoi(val) != 0;
+  return !!atoi(val);
+}
+
+
+//  ------------------------------------------------------------------
+
+char* MapPath(char* map, bool reverse) {
+
+  Path buf, cmap;
+
+  strxcpy(cmap, map, sizeof(Path));
+  if(reverse)
+    strchg(cmap, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
+
+  std::vector< std::pair<std::string, std::string> >::iterator i;
+  for(i = mappath.begin(); i != mappath.end(); i++) {
+    const char* p = reverse ? i->second.c_str() : i->first.c_str();
+    const char* q = reverse ? i->first.c_str() : i->second.c_str();
+    if(strnieql(cmap, p, strlen(p))) {
+      strxcpy(buf, map, sizeof(Path));
+      strxmerge(map, sizeof(Path), q, buf+strlen(p), NULL);
+      char sl1, sl2;
+      char* ptr;
+
+      ptr = strpbrk(p, "/\\");
+      sl1 = ptr ? *ptr : NUL;
+      ptr = strpbrk(q, "/\\");
+      sl2 = ptr ? *ptr : NUL;
+
+      if(sl1 and sl2 and (sl1 != sl2))
+        strchg(map, sl1, sl2);
+
+      break;
+    }
+  }
+  return map;
 }
 
 
@@ -1167,7 +1191,7 @@ static int parse_config(const char *__configfile, Addr& zoneaddr) {
         switch(crc) {
           case CRC_IF:
             if(in_if) {
-              if(not quiet) cout << "* " << __configfile << ": Misplaced IF at line " << line << ". IF's cannot be nested." << endl;
+              if(not quiet) std::cout << "* " << __configfile << ": Misplaced IF at line " << line << ". IF's cannot be nested." << std::endl;
             }
             in_if = YES;
             cond_status = do_if(value);
@@ -1175,20 +1199,20 @@ static int parse_config(const char *__configfile, Addr& zoneaddr) {
           case CRC_ELIF:
           case CRC_ELSEIF:
             if((not in_if) or in_else) {
-              if(not quiet) cout << "* " << __configfile << ": Misplaced ELIF/ELSEIF at line " << line <<  '.' << endl;
+              if(not quiet) std::cout << "* " << __configfile << ": Misplaced ELIF/ELSEIF at line " << line <<  '.' << std::endl;
             }
             cond_status = do_if(value);
             break;
           case CRC_ELSE:
             if((not in_if) or in_else) {
-              if(not quiet) cout << "* " << __configfile << "Misplaced ELSE at line " << line <<  '.' << endl;
+              if(not quiet) std::cout << "* " << __configfile << "Misplaced ELSE at line " << line <<  '.' << std::endl;
             }
             in_else = YES;
             cond_status ^= YES;
             break;
           case CRC_ENDIF:
             if(not in_if) {
-              if(not quiet) cout << "* " << __configfile << ": Misplaced ENDIF at line " << line << '.' << endl;
+              if(not quiet) std::cout << "* " << __configfile << ": Misplaced ENDIF at line " << line << '.' << std::endl;
             }
             in_if = in_else = NO;
             cond_status = YES;
@@ -1201,6 +1225,7 @@ static int parse_config(const char *__configfile, Addr& zoneaddr) {
         if((not _gotcond) and cond_status) {
           switch(crc) {
             case CRC_NODEPATH:
+              MapPath(value);
               PathCopy(nodepath, value);
               break;
             case CRC_ADDRESS:
@@ -1229,6 +1254,7 @@ static int parse_config(const char *__configfile, Addr& zoneaddr) {
                 ndl.ft = (dword)-1;
                 ndl.fc = NO;
                 strschg_environ(value);
+                MapPath(value);
                 strcpy(ndl.fn, value);
                 nodelist.push_back(ndl);
                 nodezone.push_back(ndz);
@@ -1253,6 +1279,7 @@ static int parse_config(const char *__configfile, Addr& zoneaddr) {
                 ndl.ft = (dword)-1;
                 ndl.fc = NO;
                 strschg_environ(value);
+                MapPath(value);
                 strcpy(ndl.fn, value);
                 userlist.push_back(ndl);
                 userzone.push_back(ndz);
@@ -1275,15 +1302,25 @@ static int parse_config(const char *__configfile, Addr& zoneaddr) {
             case CRC_SHAREMODE:
               if(atoi(value))
                 sh_mod = atoi(value);
-              else if(striinc("NO", value))
-                sh_mod = 0;
+              else
+                sh_mod = GetYesno(value) ? SH_DENYNO : SH_COMPAT;
               break;
             case CRC_INCLUDE:
               strschg_environ(value);
+              MapPath(value);
               if(not parse_config(value,zoneaddr))     // NOTE! This is a recursive call!
-                if(not quiet) cout << "* Could not read configuration file " << value << '!' << endl;
+                if(not quiet) std::cout << "* Could not read configuration file " << value << '!' << std::endl;
               break;
-	  default:
+            case CRC_MAPPATH:
+              {
+                std::pair<std::string, std::string> mapentry;
+
+                mapentry.first = value;
+                mapentry.second = value2;
+                mappath.push_back(mapentry);
+              }
+              break;
+            default:
               break;
           }
         }
@@ -1384,6 +1421,7 @@ static bool read_config(const char *cfg, const char *argv_0) {
   nodezone.clear();
   userlist.clear();
   userzone.clear();
+  mappath.clear();
   if(not parse_config(buf, zoneaddr)) {
     errorlevel = 1;
     return false;
@@ -1466,43 +1504,43 @@ static void run_gn(int argc, char* argv[]) {
   }
 
   if(not quiet) {
-    cout << __GPID__ " " __GVER__ " Nodelist Compiler." << endl
-         << "Copyright (C) 1990-1999 Odinn Sorensen" << endl
-         << "Copyright (C) 1999-2001 Alexander S. Aganichev" << endl
-         << "-------------------------------------------------------------------------------" << endl
-         << endl;
+    std::cout << __GPID__ " " __GVER__ " Nodelist Compiler." << std::endl
+         << "Copyright (C) 1990-1999 Odinn Sorensen" << std::endl
+         << "Copyright (C) 1999-2001 Alexander S. Aganichev" << std::endl
+         << "-------------------------------------------------------------------------------" << std::endl
+         << std::endl;
   }
 
   if(not(force or conditional)) {
     if(not quiet) {
-      cout << "Commandline syntax: " << CleanFilename(argv[0]) << " [-options] [configfile]" << endl
-           << endl
-           << "[-options] =\t-C\t  Conditional compile." << endl
-           << "\t\t-F\t  Forced compile." << endl
-           << "\t\t-D\t  Remove duplicate nodes from index while compiling." << endl
-           << "\t\t-Q\t  Quiet compile. No screen output improves speed." << endl
-           << "\t\t-S<size>  Set max size of a name in the index." << endl
-           << "\t\t-U<file>  Create sorted FIDOUSER.LST userlist file." << endl
+      std::cout << "Commandline syntax: " << CleanFilename(argv[0]) << " [-options] [configfile]" << std::endl
+           << std::endl
+           << "[-options] =\t-C\t  Conditional compile." << std::endl
+           << "\t\t-F\t  Forced compile." << std::endl
+           << "\t\t-D\t  Remove duplicate nodes from index while compiling." << std::endl
+           << "\t\t-Q\t  Quiet compile. No screen output improves speed." << std::endl
+           << "\t\t-S<size>  Set max size of a name in the index." << std::endl
+           << "\t\t-U<file>  Create sorted FIDOUSER.LST userlist file." << std::endl
       #ifdef GOLDNODE_STATS
-           << "\t\t-T\t  Make statistics." << endl
+           << "\t\t-T\t  Make statistics." << std::endl
       #endif
-           << endl
-           << "[configfile] =\t\t  The path AND filename of GOLDED.CFG" << endl
-           << "\t\t\t  configuration file to read." << endl
-           << endl;
+           << std::endl
+           << "[configfile] =\t\t  The path AND filename of GOLDED.CFG" << std::endl
+           << "\t\t\t  configuration file to read." << std::endl
+           << std::endl;
     }
   }
   else {
 
     if(force)
-      if(not quiet) cout << "* Forced compile." << endl;
+      if(not quiet) std::cout << "* Forced compile." << std::endl;
 
     if(read_config(cfg, argv[0])) {
       if(force or conditional)
         check_nodelists(force);
     }
     else {
-      if(not quiet) cout << endl << "Could not find the configuration file!" << endl;
+      if(not quiet) std::cout << std::endl << "Could not find the configuration file!" << std::endl;
     }
   }
 }
