@@ -1,4 +1,4 @@
-/* extracted from Id: uustring.c,v 1.1 2000/01/27 18:44:38 asa Exp  */
+/* extracted from Id: uustring.c,v 1.6 2001/06/06 18:21:47 fp Exp  */
 #define S_NOT_OPEN_SOURCE      1
 #define S_NOT_OPEN_TARGET      2
 #define S_NOT_OPEN_FILE        3

@@ -1,7 +1,7 @@
 /*
  * This file is part of uudeview, the simple and friendly multi-part multi-
- * file uudecoder  program  (c)  1994 by Frank Pilhofer. The author may be
- * contacted by his email address,          fp@informatik.uni-frankfurt.de
+ * file uudecoder  program  (c) 1994-2001 by Frank Pilhofer. The author may
+ * be contacted at fp@fpx.de
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -104,6 +104,8 @@
 #define UUOPT_PREAMB	(17)	/* handle Mime preambles/epilogues */
 #define UUOPT_TINYB64	(18)	/* detect short B64 outside of Mime */
 #define UUOPT_ENCEXT	(19)	/* extension for single-part encoded files */
+#define UUOPT_REMOVE    (20)    /* remove input files after decoding */
+#define UUOPT_MOREMIME  (21)    /* strict MIME adherence */
 
 /*
  * Code for the "action" in the progress structure
@@ -239,6 +241,19 @@ int	UUEXPORT UUE_PrepPartial	_ANSI_ARGS_((FILE *, FILE *,
 						     char *, int,
 						     int, long, long, char *,
 						     char *, char *, int));
+
+int	UUEXPORT UUE_PrepSingleExt	_ANSI_ARGS_((FILE *, FILE *,
+						     char *, int,
+						     char *, int,
+						     char *, char *,
+						     char *, char *,
+						     int));
+int	UUEXPORT UUE_PrepPartialExt	_ANSI_ARGS_((FILE *, FILE *,
+						     char *, int,
+						     char *, int,
+						     int, long, long, char *,
+						     char *, char *, char *,
+						     int));
 #ifdef __cplusplus
 }
 #endif

@@ -12,6 +12,10 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+! Updated uulib to the latest version. Few bugs fixed. Unordered
+  UU encode now should be processed more accurately than with original
+  library.
+
 - Fixed improper charset conversion when replying on message without
   charset between areas with different Xlatimport.
 

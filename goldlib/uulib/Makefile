@@ -1,7 +1,7 @@
 # -*- makefile -*-
 
 VERSION=0.5
-PATCH=13
+PATCH=15
 
 TOP=../..
 TARGET=uulib

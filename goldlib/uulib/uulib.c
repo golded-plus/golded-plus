@@ -1,7 +1,7 @@
 /*
  * This file is part of uudeview, the simple and friendly multi-part multi-
- * file uudecoder  program  (c)  1994 by Frank Pilhofer. The author may be
- * contacted by his email address,          fp@informatik.uni-frankfurt.de
+ * file uudecoder  program  (c) 1994-2001 by Frank Pilhofer. The author may
+ * be contacted at fp@fpx.de
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -72,7 +72,7 @@
 #endif
 
 /* to get open() in Windows */
-#if defined(HAVE_IO_H) && defined(__MINGW32__)
+#ifdef HAVE_IO_H
 #include <io.h>
 #endif
 
@@ -141,6 +141,8 @@ int uu_ignmode = 0;		/* ignore the original file mode            */
 int uu_handletext = 0;		/* do we want text/plain messages           */
 int uu_usepreamble = 0;		/* do we want Mime preambles/epilogues      */
 int uu_tinyb64 = 0;		/* detect short B64 outside of MIME         */
+int uu_remove_input = 0;        /* remove input files after decoding        */
+int uu_more_mime = 0;           /* strictly adhere to MIME headers          */
 
 headercount hlcount = {
   3,			        /* restarting after a MIME body             */
@@ -229,10 +231,10 @@ static allomap toallocate[] = {
   { &uucheck_lastname,   256 },	 /* from uucheck.c */
   { &uucheck_tempname,   256 },
   { &uuestr_itemp,       256 },  /* from uuencode.c:UUEncodeStream() */
-  { &uuestr_otemp,       256 },
+  { &uuestr_otemp,      1024 },
   { &uulib_msgstring,   1024 },  /* from uulib.c:UUMessage() */
-  { &uuncdl_fulline,     256 },  /* from uunconc.c:UUDecodeLine() */
-  { &uuncdp_oline,       512 },  /* from uunconc.c:UUDecodePart() */
+  { &uuncdl_fulline,     260 },  /* from uunconc.c:UUDecodeLine() */
+  { &uuncdp_oline,      1024 },  /* from uunconc.c:UUDecodePart() */
   { &uunconc_UUxlat,     256 * sizeof (int) },  /* from uunconc.c:toplevel */
   { &uunconc_UUxlen,      64 * sizeof (int) },
   { &uunconc_B64xlat,    256 * sizeof (int) },
@@ -487,6 +489,14 @@ UUGetOption (int option, int *ivalue, char *cvalue, int clength)
     _FP_strncpy (cvalue, uuencodeext, clength);
     result = 0;
     break;
+  case UUOPT_REMOVE:
+    if (ivalue) *ivalue = uu_remove_input;
+    result = uu_remove_input;
+    break;
+  case UUOPT_MOREMIME:
+    if (ivalue) *ivalue = uu_more_mime;
+    result = uu_more_mime;
+    break;
   default:
     return -1;
   }
@@ -540,6 +550,12 @@ UUSetOption (int option, int ivalue, char *cvalue)
   case UUOPT_ENCEXT:
     _FP_free (uuencodeext);
     uuencodeext = _FP_strdup (cvalue);
+    break;
+  case UUOPT_REMOVE:
+    uu_remove_input = ivalue;
+    break;
+  case UUOPT_MOREMIME:
+    uu_more_mime = ivalue;
     break;
   default:
     return UURET_ILLVAL;
@@ -733,6 +749,7 @@ UULoadFile (char *filename, char *fileid, int delflag)
     }
 
     if ((loaded->uudet == QP_ENCODED || loaded->uudet == PT_ENCODED) &&
+	(loaded->filename == NULL || *(loaded->filename) == '\0') &&
 	!uu_handletext && (loaded->flags&FL_PARTIAL)==0) {
       /*
        * Don't want text
@@ -1147,14 +1164,14 @@ int UUEXPORT
 UUCleanUp (void)
 {
   itbd *iter=ftodel, *ptr;
+  uulist *liter;
+  uufile *fiter;
   allomap *aiter;
 
-  UUkilllist (UUGlobalFileList);
-  UUGlobalFileList = NULL;
-
   /*
-   * delete input files
+   * delete temporary input files (such as the copy of stdin)
    */
+
   while (iter) {
     if (unlink (iter->fname)) {
       UUMessage (uulib_id, __LINE__, UUMSG_WARNING,
@@ -1166,7 +1183,35 @@ UUCleanUp (void)
     iter = iter->NEXT;
     _FP_free (ptr);
   }
+
   ftodel = NULL;
+
+  /*
+   * Delete input files after successful decoding
+   */
+
+  if (uu_remove_input) {
+    liter = UUGlobalFileList;
+    while (liter) {
+      if (liter->state & UUFILE_DECODED) {
+	fiter = liter->thisfile;
+	while (fiter) {
+	  if (fiter->data && fiter->data->sfname) {
+	    /*
+	     * Error code ignored. We might want to delete a file multiple
+	     * times
+	     */
+	    unlink (fiter->data->sfname);
+	  }
+	  fiter = fiter->NEXT;
+	}
+      }
+      liter = liter->NEXT;
+    }
+  }
+
+  UUkilllist (UUGlobalFileList);
+  UUGlobalFileList = NULL;
 
   _FP_free (uusavepath);
   _FP_free (uuencodeext);

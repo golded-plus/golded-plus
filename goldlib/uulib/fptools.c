@@ -1,9 +1,8 @@
 /*
  * fptools.c, some helper functions for getcgi.c and uu(en|de)view
  *
- * Distributed by the GNU General Public License. Use and be happy.
- * Read http://www.uni-frankfurt.de/~fp/Tools/Getcgi.html for more
- * information.                     fp@informatik.uni-frankfurt.de
+ * Distributed under the terms of the GNU General Public License.
+ * Use and be happy.
  */
 
 #ifdef HAVE_CONFIG_H

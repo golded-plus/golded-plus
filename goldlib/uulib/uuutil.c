@@ -1,7 +1,7 @@
 /*
  * This file is part of uudeview, the simple and friendly multi-part multi-
- * file uudecoder  program  (c)  1994 by Frank Pilhofer. The author may be
- * contacted by his email address,          fp@informatik.uni-frankfurt.de
+ * file uudecoder  program  (c) 1994-2001 by Frank Pilhofer. The author may
+ * be contacted at fp@fpx.de
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -477,9 +477,3 @@ UUSmerge (int pass)
   return flag;
 }
 
-
-/*****************************************************************************
- + Frank Pilhofer                             fp@informatik.uni-frankfurt.de +
- +---------------------------------------------------------------------------+
- | Department of Computer Sciences * University of Frankfurt / Main, Germany |
- *****************************************************************************/

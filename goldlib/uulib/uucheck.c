@@ -1,7 +1,7 @@
 /*
  * This file is part of uudeview, the simple and friendly multi-part multi-
- * file uudecoder  program  (c)  1994 by Frank Pilhofer. The author may be
- * contacted by his email address,          fp@informatik.uni-frankfurt.de
+ * file uudecoder  program  (c) 1994-2001 by Frank Pilhofer. The author may
+ * be contacted at fp@fpx.de
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,7 +13,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -847,7 +846,7 @@ UUPreProcessPart (fileread *data, int *ret)
       }
       lastvalid = 0;
     }
-    else if (lastvalid && data->uudet == lastenc) {
+    else if (lastvalid && data->uudet == lastenc && result->partno <= 0) {
       result->subfname = _FP_strdup (uucheck_lastname);
       result->partno   = ++lastpart;
 
@@ -857,7 +856,10 @@ UUPreProcessPart (fileread *data, int *ret)
       if (data->end || (data->partno && data->partno == data->maxpno))
 	lastvalid = 0;
     }
-    else { 
+    else if (data->partno != -1 && result->filename) {
+      result->subfname = _FP_strdup (result->filename);
+    }
+    else {
       /* 
        * it's got no info, it's got no begin, and we don't know anything
        * about this part. Let's forget all about it.
@@ -1460,9 +1462,3 @@ UUCheckGlobalList (void)
   return UUGlobalFileList;
 }
 
-
-/*****************************************************************************
- + Frank Pilhofer                             fp@informatik.uni-frankfurt.de +
- +---------------------------------------------------------------------------+
- | Department of Computer Sciences * University of Frankfurt / Main, Germany |
- *****************************************************************************/

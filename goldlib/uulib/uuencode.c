@@ -1,7 +1,7 @@
 /*
  * This file is part of uudeview, the simple and friendly multi-part multi-
- * file uudecoder  program  (c)  1994 by Frank Pilhofer. The author may be
- * contacted by his email address,          fp@informatik.uni-frankfurt.de
+ * file uudecoder  program  (c) 1994-2001 by Frank Pilhofer. The author may
+ * be contacted at fp@fpx.de
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -98,9 +98,9 @@ char * uuencode_id = "$Id$";
  */
 
 #ifdef EOLSTRING
-static unsigned char *eolstring = (unsigned char *) EOLSTRING;
+static char *eolstring = (char *) EOLSTRING;
 #else
-static unsigned char *eolstring = (unsigned char *) "\012";
+static char *eolstring = (char *) "\012";
 #endif
 
 /*
@@ -114,6 +114,8 @@ static unsigned char *eolstring = (unsigned char *) "\012";
 #define CTE_TYPE(y)	(((y)==B64ENCODED) ? "Base64"  : \
 			 ((y)==UU_ENCODED) ? CTE_UUENC : \
 			 ((y)==XX_ENCODED) ? CTE_XXENC : \
+                         ((y)==PT_ENCODED) ? "8bit" : \
+                         ((y)==QP_ENCODED) ? "quoted-printable" : \
 			 ((y)==BH_ENCODED) ? CTE_BINHEX : "x-oops")
 
 /*
@@ -163,7 +165,12 @@ unsigned char BHEncodeTable[64] = {
   'S', 'T', 'U', 'V', 'X', 'Y', 'Z', '[', 
   '`', 'a', 'b', 'c', 'd', 'e', 'f', 'h', 
   'i', 'j', 'k', 'l', 'm', 'p', 'q', 'r'
-};    
+};
+
+unsigned char HexEncodeTable[16] = {
+  '0', '1', '2', '3', '4', '5', '6', '7',
+  '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
+};
 
 typedef struct {
   char *extension;
@@ -191,7 +198,7 @@ static mimemap mimetable[] = {
 	{ "mpeg", "video/mpeg"       }, /* Motion Picture Expert Group */
 	{ "mpg",  "video/mpeg"       },
 	{ "mp2",  "video/mpeg"       }, /* dito, MPEG-2 encoded files  */
-	{ "mp3",  "video/mpeg"       }, /* dito, MPEG-3 encoded files  */
+	{ "mp3",  "audio/mpeg"       }, /* dito, MPEG-3 encoded files  */
 	{ "ps",   "application/postscript" }, /* Postscript Language   */
 	{ "zip",  "application/zip"  }, /* ZIP archive                 */
 	{ "doc",  "application/msword"},/* assume Microsoft Word       */
@@ -243,12 +250,161 @@ UUEncodeStream (FILE *outfile, FILE *infile, int encoding, long linperfile)
   size_t llen;
 
   if (outfile==NULL || infile==NULL ||
-      (encoding!=UU_ENCODED&&encoding!=XX_ENCODED&&encoding!=B64ENCODED)) {
+      (encoding!=UU_ENCODED&&encoding!=XX_ENCODED&&encoding!=B64ENCODED&&
+       encoding!=PT_ENCODED&&encoding!=QP_ENCODED)) {
     UUMessage (uuencode_id, __LINE__, UUMSG_ERROR,
 	       uustring (S_PARM_CHECK), "UUEncodeStream()");
     return UURET_ILLVAL;
   }
 
+  /*
+   * Special handling for plain text and quoted printable. Text is
+   * read line oriented.
+   */
+
+  if (encoding == PT_ENCODED || encoding == QP_ENCODED) {
+    while (!feof (infile) && (linperfile <= 0 || line < linperfile)) {
+      if (_FP_fgets ((char *)itemp, 255, infile) == NULL) {
+	break;
+      }
+
+      itemp[255] = '\0';
+      count = strlen ((char *)itemp);
+
+      llen = 0;
+      optr = otemp;
+
+      /*
+       * Busy Callback
+       */
+      
+      if (UUBUSYPOLL(ftell(infile)-progress.foffset,progress.fsize)) {
+	UUMessage (uuencode_id, __LINE__, UUMSG_NOTE,
+		   uustring (S_ENCODE_CANCEL));
+	return UURET_CANCEL;
+      }
+
+      if (encoding == PT_ENCODED) {
+	/*
+	 * If there is a line feed, replace by eolstring
+	 */
+	if (count > 0 && itemp[count-1] == '\n') {
+	  itemp[--count] = '\0';
+	  if (fwrite (itemp, 1, count, outfile) != count ||
+	      fwrite (eolstring, 1,
+		      strlen(eolstring), outfile) != strlen (eolstring)) {
+	    return UURET_IOERR;
+	  }
+	}
+	else {
+	  if (fwrite (itemp, 1, count, outfile) != llen) {
+	    return UURET_IOERR;
+	  }
+	}
+      }
+      else if (encoding == QP_ENCODED) {
+	for (index=0; index<count; index++) {
+	  if (llen == 0 && itemp[index] == '.') {
+	    /*
+	     * Special rule: encode '.' at the beginning of a line, so
+	     * that some mailers aren't confused.
+	     */
+	    *optr++ = '=';
+	    *optr++ = HexEncodeTable[itemp[index] >> 4];
+	    *optr++ = HexEncodeTable[itemp[index] & 0x0f];
+	    llen += 3;
+	  }
+	  else if ((itemp[index] >= 33 && itemp[index] <= 60) ||
+		   (itemp[index] >= 62 && itemp[index] <= 126) ||
+		   itemp[index] == 9 || itemp[index] == 32) {
+	    *optr++ = itemp[index];
+	    llen++;
+	  }
+	  else if (itemp[index] == '\n') {
+	    /*
+	     * If the last character before EOL was a space or tab,
+	     * we must encode it. If llen > 74, there's no space to do
+	     * that, so generate a soft line break instead.
+	     */
+
+	    if (index>0 && (itemp[index-1] == 9 || itemp[index-1] == 32)) {
+	      *(optr-1) = '=';
+	      if (llen <= 74) {
+		*optr++ = HexEncodeTable[itemp[index-1] >> 4];
+		*optr++ = HexEncodeTable[itemp[index-1] & 0x0f];
+		llen += 2;
+	      }
+	    }
+
+	    if (fwrite (otemp, 1, llen, outfile) != llen ||
+		fwrite (eolstring, 1,
+			strlen(eolstring), outfile) != strlen (eolstring)) {
+	      return UURET_IOERR;
+	    }
+
+	    /*
+	     * Fix the soft line break condition from above
+	     */
+
+	    if (index>0 && (itemp[index-1] == 9 || itemp[index-1] == 32) &&
+		*(optr-1) == '=') {
+	      otemp[0] = '=';
+	      otemp[1] = HexEncodeTable[itemp[index-1] >> 4];
+	      otemp[2] = HexEncodeTable[itemp[index-1] & 0x0f];
+
+	      if (fwrite (otemp, 1, 3, outfile) != 3 ||
+		  fwrite (eolstring, 1,
+			  strlen(eolstring), outfile) != strlen (eolstring)) {
+		return UURET_IOERR;
+	      }
+	    }
+
+	    optr = otemp;
+	    llen = 0;
+	  }
+	  else {
+	    *optr++ = '=';
+	    *optr++ = HexEncodeTable[itemp[index] >> 4];
+	    *optr++ = HexEncodeTable[itemp[index] & 0x0f];
+	    llen += 3;
+	  }
+
+	  /*
+	   * Lines must be shorter than 76 characters (not counting CRLF).
+	   * If the line grows longer than that, we must include a soft
+	   * line break.
+	   */
+
+	  if (itemp[index+1] != 0 && itemp[index+1] != '\n' &&
+	      (llen >= 75 ||
+	       (!((itemp[index+1] >= 33 && itemp[index+1] <= 60) ||
+		  (itemp[index+1] >= 62 && itemp[index+1] <= 126)) &&
+		llen >= 73))) {
+
+	    *optr++ = '=';
+	    llen++;
+	    
+	    if (fwrite (otemp, 1, llen, outfile) != llen ||
+		fwrite (eolstring, 1,
+			strlen(eolstring), outfile) != strlen (eolstring)) {
+	      return UURET_IOERR;
+	    }
+	    
+	    optr = otemp;
+	    llen = 0;
+	  }
+	}
+      }
+
+      line++;
+    }
+
+    return UURET_OK;
+  }
+
+  /*
+   * Handling for binary encodings
+   */
 
   /*
    * select charset
@@ -258,7 +414,7 @@ UUEncodeStream (FILE *outfile, FILE *infile, int encoding, long linperfile)
 
   if (table==NULL || bpl[encoding]==0) {
     UUMessage (uuencode_id, __LINE__, UUMSG_ERROR,
-	       uustring (S_PARM_CHECK), "UUEncodeStream()");
+               uustring (S_PARM_CHECK), "UUEncodeStream()");
     return UURET_ILLVAL;
   }
 
@@ -269,6 +425,7 @@ UUEncodeStream (FILE *outfile, FILE *infile, int encoding, long linperfile)
       else if (ferror (infile))
 	return UURET_IOERR;
     }
+
     optr = otemp;
     llen = 0;
 
@@ -285,65 +442,76 @@ UUEncodeStream (FILE *outfile, FILE *infile, int encoding, long linperfile)
     /*
      * for UU and XX, encode the number of bytes as first character
      */
+
     if (encoding == UU_ENCODED || encoding == XX_ENCODED) {
       *optr++ = table[count];
       llen++;
     }
 
-    for (index=0; index<=count-3; index+=3, llen+=4) {
-      *optr++ = table[itemp[index] >> 2];
-      *optr++ = table[((itemp[index  ] & 0x03) << 4) | (itemp[index+1] >> 4)];
-      *optr++ = table[((itemp[index+1] & 0x0f) << 2) | (itemp[index+2] >> 6)];
-      *optr++ = table[  itemp[index+2] & 0x3f];
+    /*
+     * Main encoding
+     */
+
+    if (encoding == UU_ENCODED || encoding == XX_ENCODED ||
+	encoding == B64ENCODED) {
+      for (index=0; index<=count-3; index+=3, llen+=4) {
+	*optr++ = table[itemp[index] >> 2];
+	*optr++ = table[((itemp[index  ] & 0x03) << 4)|(itemp[index+1] >> 4)];
+	*optr++ = table[((itemp[index+1] & 0x0f) << 2)|(itemp[index+2] >> 6)];
+	*optr++ = table[  itemp[index+2] & 0x3f];
+      }
+
+      /*
+       * Special handling for incomplete lines
+       */
+
+      if (index != count) {
+	if (encoding == B64ENCODED) {
+	  if (count - index == 2) {
+	    *optr++ = table[itemp[index] >> 2];
+	    *optr++ = table[((itemp[index  ] & 0x03) << 4) | 
+			    ((itemp[index+1] & 0xf0) >> 4)];
+	    *optr++ = table[((itemp[index+1] & 0x0f) << 2)];
+	    *optr++ = '=';
+	  }
+	  else if (count - index == 1) {
+	    *optr++ = table[ itemp[index] >> 2];
+	    *optr++ = table[(itemp[index] & 0x03) << 4];
+	    *optr++ = '=';
+	    *optr++ = '=';
+	  }
+	  llen += 4;
+	}
+        else {
+	  if (count - index == 2) {
+	    *optr++ = table[itemp[index] >> 2];
+	    *optr++ = table[((itemp[index  ] & 0x03) << 4) | 
+			    ( itemp[index+1] >> 4)];
+	    *optr++ = table[((itemp[index+1] & 0x0f) << 2)];
+	    *optr++ = table[0];
+	  }
+	  else if (count - index == 1) {
+	    *optr++ = table[ itemp[index] >> 2];
+	    *optr++ = table[(itemp[index] & 0x03) << 4];
+	    *optr++ = table[0];
+	    *optr++ = table[0];
+	  }
+	  llen += 4;
+	}
+      }
     }
 
     /*
-     * Special handling for incomplete lines
-     */
-    if (index != count) {
-      if (encoding == B64ENCODED) {
-	if (count - index == 2) {
-	  *optr++ = table[itemp[index] >> 2];
-	  *optr++ = table[((itemp[index  ] & 0x03) << 4) | 
-			  ((itemp[index+1] & 0xf0) >> 4)];
-	  *optr++ = table[((itemp[index+1] & 0x0f) << 2)];
-	  *optr++ = '=';
-	}
-	else if (count - index == 1) {
-	  *optr++ = table[ itemp[index] >> 2];
-	  *optr++ = table[(itemp[index] & 0x03) << 4];
-	  *optr++ = '=';
-	  *optr++ = '=';
-	}
-	llen += 4;
-      }
-      else {
-	if (count - index == 2) {
-	  *optr++ = table[itemp[index] >> 2];
-	  *optr++ = table[((itemp[index  ] & 0x03) << 4) | 
-			  ( itemp[index+1] >> 4)];
-	  *optr++ = table[((itemp[index+1] & 0x0f) << 2)];
-	  *optr++ = table[0];
-	}
-	else if (count - index == 1) {
-	  *optr++ = table[ itemp[index] >> 2];
-	  *optr++ = table[(itemp[index] & 0x03) << 4];
-	  *optr++ = table[0];
-	  *optr++ = table[0];
-	}
-	llen += 4;
-      }
-    }
-    /*
      * end of line
      */
-    tptr = eolstring;
+
+    tptr = (unsigned char *) eolstring;
 
     while (*tptr)
       *optr++ = *tptr++;
 
     *optr++ = '\0';
-    llen   += strlen ((char *) eolstring);
+    llen   += strlen (eolstring);
 
     if (fwrite (otemp, 1, llen, outfile) != llen)
       return UURET_IOERR;
@@ -370,7 +538,8 @@ UUEncodeMulti (FILE *outfile, FILE *infile, char *infname, int encoding,
   if (outfile==NULL || 
       (infile == NULL && infname==NULL) ||
       (outfname==NULL && infname==NULL) ||
-      (encoding!=UU_ENCODED&&encoding!=XX_ENCODED&&encoding!=B64ENCODED)) {
+      (encoding!=UU_ENCODED&&encoding!=XX_ENCODED&&encoding!=B64ENCODED&&
+       encoding!=PT_ENCODED&&encoding!=QP_ENCODED)) {
     UUMessage (uuencode_id, __LINE__, UUMSG_ERROR,
 	       uustring (S_PARM_CHECK), "UUEncodeMulti()");
     return UURET_ILLVAL;
@@ -430,6 +599,11 @@ UUEncodeMulti (FILE *outfile, FILE *infile, char *infname, int encoding,
       mimetype = miter->mimetype;
     }
   }
+
+  if (mimetype == NULL && (encoding == PT_ENCODED || encoding == QP_ENCODED)) {
+    mimetype = "text/plain";
+  }
+
   /*
    * print sub-header
    */
@@ -497,7 +671,8 @@ UUEncodePartial (FILE *outfile, FILE *infile,
 
   if ((outfname==NULL&&infname==NULL) || partno<=0 ||
       (infile == NULL&&infname==NULL) || outfile==NULL ||
-      (encoding!=UU_ENCODED&&encoding!=XX_ENCODED&&encoding!=B64ENCODED)) {
+      (encoding!=UU_ENCODED&&encoding!=XX_ENCODED&&encoding!=B64ENCODED&&
+       encoding!=PT_ENCODED&&encoding!=QP_ENCODED)) {
     UUMessage (uuencode_id, __LINE__, UUMSG_ERROR,
 	       uustring (S_PARM_CHECK), "UUEncodePartial()");
     return UURET_ILLVAL;
@@ -574,6 +749,11 @@ UUEncodePartial (FILE *outfile, FILE *infile,
 	mimetype = miter->mimetype;
       }
     }
+
+    if (mimetype == NULL && (encoding==PT_ENCODED || encoding==QP_ENCODED)) {
+      mimetype = "text/plain";
+    }
+
     /*
      * print sub-header
      */
@@ -639,10 +819,14 @@ UUEncodePartial (FILE *outfile, FILE *infile,
 	     eolstring);
     fprintf (outfile, "end%s", eolstring);
   }
+
   /*
    * empty line at end does no harm
    */
-  fprintf (outfile, "%s", eolstring);
+
+  if (encoding != PT_ENCODED && encoding != QP_ENCODED) {
+    fprintf (outfile, "%s", eolstring);
+  }
 
   if (infile==NULL) {
     if (res != UURET_OK) {
@@ -682,7 +866,8 @@ UUEncodeToStream (FILE *outfile, FILE *infile,
   if (outfile==NULL ||
       (infile == NULL&&infname==NULL) ||
       (outfname==NULL&&infname==NULL) ||
-      (encoding!=UU_ENCODED&&encoding!=XX_ENCODED&&encoding!=B64ENCODED)) {
+      (encoding!=UU_ENCODED&&encoding!=XX_ENCODED&&encoding!=B64ENCODED&&
+       encoding!=PT_ENCODED&&encoding!=QP_ENCODED)) {
     UUMessage (uuencode_id, __LINE__, UUMSG_ERROR,
 	       uustring (S_PARM_CHECK), "UUEncodeToStream()");
     return UURET_ILLVAL;
@@ -778,7 +963,8 @@ UUEncodeToFile (FILE *infile, char *infname, int encoding,
 
   if ((diskname==NULL&&infname==NULL) ||
       (outfname==NULL&&infname==NULL) || (infile==NULL&&infname==NULL) ||
-      (encoding!=UU_ENCODED&&encoding!=XX_ENCODED&&encoding!=B64ENCODED)) {
+      (encoding!=UU_ENCODED&&encoding!=XX_ENCODED&&encoding!=B64ENCODED&&
+       encoding!=PT_ENCODED&&encoding!=QP_ENCODED)) {
     UUMessage (uuencode_id, __LINE__, UUMSG_ERROR,
 	       uustring (S_PARM_CHECK), "UUEncodeToFile()");
     return UURET_ILLVAL;
@@ -1013,13 +1199,30 @@ UUE_PrepSingle (FILE *outfile, FILE *infile,
 		char *destination, char *from,
 		char *subject, int isemail)
 {
+  return UUE_PrepSingleExt (outfile, infile,
+			    infname, encoding,
+			    outfname, filemode,
+			    destination, from,
+			    subject, NULL,
+			    isemail);
+}
+
+int UUEXPORT
+UUE_PrepSingleExt (FILE *outfile, FILE *infile,
+		   char *infname, int encoding,
+		   char *outfname, int filemode,
+		   char *destination, char *from,
+		   char *subject, char *replyto,
+		   int isemail)
+{
   mimemap *miter=mimetable;
   char *subline, *oname;
   char *mimetype, *ptr;
   int res, len;
 
   if ((outfname==NULL&&infname==NULL) || (infile==NULL&&infname==NULL) ||
-      (encoding!=UU_ENCODED&&encoding!=XX_ENCODED&&encoding!=B64ENCODED)) {
+      (encoding!=UU_ENCODED&&encoding!=XX_ENCODED&&encoding!=B64ENCODED&&
+       encoding!=PT_ENCODED&&encoding!=QP_ENCODED)) {
     UUMessage (uuencode_id, __LINE__, UUMSG_ERROR,
 	       uustring (S_PARM_CHECK), "UUE_PrepSingle()");
     return UURET_ILLVAL;
@@ -1036,6 +1239,10 @@ UUE_PrepSingle (FILE *outfile, FILE *infile,
   else
     mimetype = NULL;
 
+  if (mimetype == NULL && (encoding == PT_ENCODED || encoding == QP_ENCODED)) {
+    mimetype = "text/plain";
+  }
+
   if ((subline = (char *) malloc (len)) == NULL) {
     UUMessage (uuencode_id, __LINE__, UUMSG_ERROR,
 	       uustring (S_OUT_OF_MEMORY), len);
@@ -1047,8 +1254,6 @@ UUE_PrepSingle (FILE *outfile, FILE *infile,
   else
     sprintf (subline, "[ %s ] (001/001)", oname);
 
-  fprintf (outfile, "Subject: %s%s", subline, eolstring);
-
   if (from) {
     fprintf (outfile, "From: %s%s", from, eolstring);
   }
@@ -1057,6 +1262,13 @@ UUE_PrepSingle (FILE *outfile, FILE *infile,
 	     (isemail)?"To":"Newsgroups",
 	     destination, eolstring);
   }
+
+  fprintf (outfile, "Subject: %s%s", subline, eolstring);
+
+  if (replyto) {
+    fprintf (outfile, "Reply-To: %s%s", replyto, eolstring);
+  }
+
   fprintf (outfile, "MIME-Version: 1.0%s", eolstring);
   fprintf (outfile, "Content-Type: %s; name=\"%s\"%s",
 	   (mimetype)?mimetype:"Application/Octet-Stream",
@@ -1081,6 +1293,24 @@ UUE_PrepPartial (FILE *outfile, FILE *infile,
 		 char *destination, char *from, char *subject,
 		 int isemail)
 {
+  return UUE_PrepPartialExt (outfile, infile,
+			     infname, encoding,
+			     outfname, filemode,
+			     partno, linperfile, filesize,
+			     destination,
+			     from, subject, NULL,
+			     isemail);
+}
+
+int UUEXPORT
+UUE_PrepPartialExt (FILE *outfile, FILE *infile,
+		    char *infname, int encoding,
+		    char *outfname, int filemode,
+		    int partno, long linperfile, long filesize,
+		    char *destination,
+		    char *from, char *subject, char *replyto,
+		    int isemail)
+{
   static int numparts, themode;
   static char mimeid[64];
   static FILE *theifile;
@@ -1090,7 +1320,8 @@ UUE_PrepPartial (FILE *outfile, FILE *infile,
   int res, len;
 
   if ((outfname==NULL&&infname==NULL) || (infile==NULL&&infname==NULL) ||
-      (encoding!=UU_ENCODED&&encoding!=XX_ENCODED&&encoding!=B64ENCODED)) {
+      (encoding!=UU_ENCODED&&encoding!=XX_ENCODED&&encoding!=B64ENCODED&&
+       encoding!=PT_ENCODED&&encoding!=QP_ENCODED)) {
     UUMessage (uuencode_id, __LINE__, UUMSG_ERROR,
 	       uustring (S_PARM_CHECK), "UUE_PrepPartial()");
     return UURET_ILLVAL;
@@ -1163,9 +1394,9 @@ UUE_PrepPartial (FILE *outfile, FILE *infile,
 
     if (numparts == 1) {
       if (infile==NULL) fclose (theifile);
-      return UUE_PrepSingle (outfile, infile, infname, encoding,
-			     outfname, filemode, destination,
-			     from, subject, isemail);
+      return UUE_PrepSingleExt (outfile, infile, infname, encoding,
+				outfname, filemode, destination,
+				from, subject, replyto, isemail);
     }
 
     /*
@@ -1190,16 +1421,22 @@ UUE_PrepPartial (FILE *outfile, FILE *infile,
     sprintf (subline, "[ %s ] (%03d/%03d)",
 	     oname, partno, numparts);
 
-  fprintf (outfile, "Subject: %s%s", subline, eolstring);
-
   if (from) {
     fprintf (outfile, "From: %s%s", from, eolstring);
   }
+
   if (destination) {
     fprintf (outfile, "%s: %s%s",
 	     (isemail)?"To":"Newsgroups",
 	     destination, eolstring);
   }
+
+  fprintf (outfile, "Subject: %s%s", subline, eolstring);
+
+  if (replyto) {
+    fprintf (outfile, "Reply-To: %s%s", replyto, eolstring);
+  }
+
   fprintf (outfile, "MIME-Version: 1.0%s", eolstring);
   fprintf (outfile, "Content-Type: Message/Partial; number=%d; total=%d;%s",
 	   partno, numparts, eolstring);

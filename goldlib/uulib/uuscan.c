@@ -1,7 +1,7 @@
 /*
  * This file is part of uudeview, the simple and friendly multi-part multi-
- * file uudecoder  program  (c)  1994 by Frank Pilhofer. The author may be
- * contacted by his email address,          fp@informatik.uni-frankfurt.de
+ * file uudecoder  program  (c) 1994-2001 by Frank Pilhofer. The author may
+ * be contacted at fp@fpx.de
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -125,12 +125,6 @@ char *uuscan_sdline;
 char *uuscan_sdbhds1;
 char *uuscan_sdbhds2;
 char *uuscan_spline;
-
-/*
- * If this is changed to define, some workarounds for broken files are
- * disabled
- */
-#undef MORE_MIME
 
 /*
  * Macro: print cancellation message in UUScanPart
@@ -338,32 +332,35 @@ ParseHeader (headers *theheaders, char *line)
   if (line == NULL)
     return theheaders;
 
-  value = NULL; delimit = 0;
-
   if (_FP_strnicmp (line, "From:", 5) == 0) {
     if (theheaders->from) return theheaders;
     variable = &theheaders->from;
     value    = line+5;
+    delimit  = 0;
   }
   else if (_FP_strnicmp (line, "Subject:", 8) == 0) {
     if (theheaders->subject) return theheaders;
     variable = &theheaders->subject;
     value    = line+8;
+    delimit  = 0;
   }
   else if (_FP_strnicmp (line, "To:", 3) == 0) {
     if (theheaders->rcpt) return theheaders;
     variable = &theheaders->rcpt;
     value    = line+3;
+    delimit  = 0;
   }
   else if (_FP_strnicmp (line, "Date:", 5) == 0) {
     if (theheaders->date) return theheaders;
     variable = &theheaders->date;
     value    = line+5;
+    delimit  = 0;
   }
   else if (_FP_strnicmp (line, "Mime-Version:", 13) == 0) {
     if (theheaders->mimevers) return theheaders;
     variable = &theheaders->mimevers;
     value    = line+13;
+    delimit  = 0;
   }
   else if (_FP_strnicmp (line, "Content-Type:", 13) == 0) {
     if (theheaders->ctype) return theheaders;
@@ -420,12 +417,16 @@ ParseHeader (headers *theheaders, char *line)
       }
     }
     variable = NULL;
+    value = NULL;
+    delimit = 0;
   }
   else {
     /*
      * nothing interesting
      */
     variable = NULL;
+    value = NULL;
+    delimit = 0;
   }
 
   /*
@@ -519,11 +520,13 @@ ScanData (FILE *datei, char *fname, int *errcode,
 {
   char *line=uuscan_sdline, *bhds1=uuscan_sdbhds1, *bhds2=uuscan_sdbhds2;
   static char *ptr, *p2, *p3=NULL, *bhdsp, bhl;
+  int isb64[10], isuue[10], isxxe[10], isbhx[10], iscnt;
+  int cbb64, cbuue, cbxxe, cbbhx;
   int bhflag=0, vflag, haddh=0, hadct=0;
-  int bhrpc=0, bhnf=0, c, hcount, lcount, blen;
+  int bhrpc=0, bhnf=0, c, hcount, lcount, blen=0;
   int encoding=0, dflag=0, ctline=42;
   int dontcare=0, hadnl=0;
-  long preheaders = 0, oldposition;
+  long preheaders=0, oldposition;
   size_t dcc, bhopc;
 
   *errcode = UURET_OK;
@@ -536,7 +539,14 @@ ScanData (FILE *datei, char *fname, int *errcode,
   result->startpos = ftell (datei);
   hcount = lcount  = 0;
 
-  blen = (boundary) ? strlen (boundary) : 0;
+  for (iscnt=0; iscnt<10; iscnt++) {
+    isb64[iscnt] = isuue[iscnt] = isxxe[iscnt] = isbhx[iscnt] = 0;
+  }
+
+  iscnt = 0;
+
+  if (boundary)
+    blen = strlen (boundary);
 
   while (!feof (datei)) {
     oldposition = ftell (datei);
@@ -547,20 +557,21 @@ ScanData (FILE *datei, char *fname, int *errcode,
 
     line[255] = '\0'; /* For Safety of string functions */
 
-    if (IsLineEmpty (line)) { /* line empty? */
-      hcount = 0;
-      hadnl  = 1;
-      continue;                                   /* then ignore */
-    }
-
     /*
      * Make Busy Polls
      */
+
     if (UUBUSYPOLL(ftell(datei),progress.fsize)) {
       UUMessage (uuscan_id, __LINE__, UUMSG_NOTE,
 		 uustring (S_SCAN_CANCEL));
       *errcode = UURET_CANCEL;
       break;
+    }
+
+    if (IsLineEmpty (line)) { /* line empty? */
+      hcount = 0;
+      hadnl  = 1;
+      continue;               /* then ignore */
     }
 
     if (checkheaders) {
@@ -606,6 +617,7 @@ ScanData (FILE *datei, char *fname, int *errcode,
     else {
       dontcare=0;
     }
+
     if (boundary != NULL && 
 	line[0] == '-' && line[1] == '-' &&
 	strncmp (line+2, boundary, blen) == 0) {
@@ -629,8 +641,9 @@ ScanData (FILE *datei, char *fname, int *errcode,
 
     if (strncmp      (line, "begin ",       6) == 0 ||
 	_FP_strnicmp (line, "<pre>begin ", 11) == 0) {
-      if (result->begin || result->end ||
-	  result->uudet == B64ENCODED || result->uudet == BH_ENCODED) {
+      if ((result->begin || result->end ||
+	   result->uudet == B64ENCODED ||
+	   result->uudet == BH_ENCODED) && !uu_more_mime) {
 	fseek (datei, oldposition, SEEK_SET);
 	break;
       }
@@ -673,15 +686,20 @@ ScanData (FILE *datei, char *fname, int *errcode,
     hadnl = 0;
 
     /*
-     * Detect a UUDeview-Style header
+     * Detect a UUDeview/UUCODE-Style headers
      */
 
-    if (_FP_strnicmp (line, "_=_ Part ", 9) == 0) {
+    if (_FP_strnicmp (line, "_=_ Part ", 9) == 0 ||
+	_FP_strnicmp (line, "section ", 8) == 0) {
       if (result->uudet) {
 	fseek (datei, oldposition, SEEK_SET);
 	break;
       }
       result->partno = atoi (line + 8);
+      if ((ptr = _FP_stristr (line, " of ")) != NULL) {
+        int maxpno = atoi (ptr + 4);
+        if(maxpno != 0) result->maxpno = maxpno;
+      }
       if ((ptr = _FP_stristr (line, "of file ")) != NULL) {
 	ptr += 8;
 	while (isspace (*ptr)) ptr++;
@@ -708,7 +726,7 @@ ScanData (FILE *datei, char *fname, int *errcode,
      * Some reduced MIME handling. Only use if boundary == NULL. Also
      * accept the "X-Orcl-Content-Type" used by some braindead program.
      */
-    if (boundary == NULL && !ismime) {
+    if (boundary == NULL && !ismime && !uu_more_mime) {
       if (_FP_strnicmp (line, "Content-Type", 12) == 0 ||
 	  _FP_strnicmp (line, "X-Orcl-Content-Type", 19) == 0) {
 	/*
@@ -796,7 +814,7 @@ ScanData (FILE *datei, char *fname, int *errcode,
       /* 
        * Handling for very short Base64 files.
        */
-      if (uu_tinyb64) {
+      if (uu_tinyb64 && !ismime && !uu_more_mime) {
 	if (line[0] == '-' && line[1] == '-') {
 	  if (dflag && (encoding==B64ENCODED || result->uudet==B64ENCODED)) {
 	    if (encoding==B64ENCODED && result->uudet==0 && (haddh||hadct)) {
@@ -812,32 +830,74 @@ ScanData (FILE *datei, char *fname, int *errcode,
     } /* end of reduced MIME handling */
 
     /*
+     * If we're in "freestyle" mode, have not encountered anything
+     * interesting yet, and stumble upon something that looks like
+     * a boundary, followed by a Content-* line, try to use it.
+     */
+
+    if (boundary == NULL && !ismime && !uu_more_mime && dflag <= 1 &&
+	line[0] == '-' && line[1] == '-' && strlen(line+2)>10 &&
+	(((ptr = _FP_strrstr (line+2, "--")) == NULL) ||
+	 (*(ptr+2) != '\012' && *(ptr+2) != '\015')) &&
+	_FP_strstr (line+2, "_=_") != NULL) {
+      if (_FP_fgets (line, 255, datei) == NULL) {
+	break;
+      }
+      if (_FP_strnicmp (line, "Content-", 8) == 0) {
+	/*
+	 * Okay, let's do it. This breaks out of ScanData. ScanPart will
+	 * recognize the boundary on the next call and use it.
+	 */
+	fseek (datei, oldposition, SEEK_SET);
+	break;
+      }
+    }
+
+    /*
      * if we haven't yet found anything encoded, try to find something
      */
 
-#if 0
     if (!(result->uudet)) {
-#endif
       /*
        * Netscape-Repair code is the same as in uunconc.c
        */
 
-      if ((vflag = UUValidData (line, 0, &bhflag)) == 0)
+      if ((vflag = UUValidData (line, 0, &bhflag)) == 0 && !ismime)
 	vflag = UURepairData (datei, line, 0, &bhflag);
 
       /*
-       * In a few cases, we might mistake uu or xx-encoded data for
-       * Base64, because their alphabets overlap (XX and Base64 differ
-       * in only one character) and the Base64 check is performed
-       * first. If vflag==B64 and we had a begin line, try to see if
-       * the data is consistent with XX or UU.
+       * Check data against all possible encodings
        */
-      if (vflag == B64ENCODED && result->begin) {
-	if (UUValidData (line, UU_ENCODED, &bhflag) == UU_ENCODED)
-	  vflag = UU_ENCODED;
-	else if (UUValidData (line, XX_ENCODED, &bhflag) == XX_ENCODED)
-	  vflag = XX_ENCODED;
+
+      isb64[iscnt%10] = (UUValidData (line, B64ENCODED, &bhflag)==B64ENCODED);
+      isuue[iscnt%10] = (UUValidData (line, UU_ENCODED, &bhflag)==UU_ENCODED);
+      isxxe[iscnt%10] = (UUValidData (line, XX_ENCODED, &bhflag)==XX_ENCODED);
+      isbhx[iscnt%10] = (UUValidData (line, BH_ENCODED, &bhflag)==BH_ENCODED);
+
+      /*
+       * If we've got a first valid encoded line, we get suspicious if
+       * it's shorter than, say, 40 characters.
+       */
+
+      if (vflag == B64ENCODED &&
+	  (dflag == 0 || encoding != B64ENCODED) &&
+	  strlen (line) < 40 && !result->begin && !uu_tinyb64) {
+	isb64[iscnt%10] = 0;
+	vflag = 0;
       }
+
+      if ((vflag == UU_ENCODED || vflag == XX_ENCODED) &&
+	      (dflag == 0 || encoding != vflag) &&
+	      strlen (line) < 40 && !result->begin) {
+	isuue[iscnt%10] = isxxe[iscnt%10] = 0;
+	vflag = 0;
+      }
+
+      iscnt++;
+
+      /*
+       * Ah, so we got an encoded line? How interesting!
+       */
 
       if (vflag) {
 	/*
@@ -846,6 +906,10 @@ ScanData (FILE *datei, char *fname, int *errcode,
 	 * If (vflag && !bhflag), this is the last line,
 	 */
 	if (vflag == BH_ENCODED) {
+	  if (line[0] == ':' && result->end) {
+	    fseek (datei, oldposition, SEEK_SET);
+	    break;
+	  }
 	  if (line[0] == ':')
 	    result->begin = 1;
 	  if (bhflag == 0) {
@@ -882,11 +946,43 @@ ScanData (FILE *datei, char *fname, int *errcode,
 	  else if (bhds2[0] <= 0)
 	    bhnf = 1;
 	}
+
 	/*
-	 * everything is fine after we've found three encoded lines
+	 * We accept an encoding if it has been true for four consecutive
+	 * lines. Check the is<enc> arrays to avoid mistaking one encoding
+	 * for the other. Uuencoded data is rather easily mistaken for
+	 * Base 64. If the data matches more than one encoding, we need to
+	 * scan further.
 	 */
-        if (dflag>=3 && (vflag==encoding || vflag==result->uudet)) {
-	  result->uudet = vflag;
+
+	if (iscnt > 3) {
+	  cbb64 = (isb64[(iscnt-1)%10] && isb64[(iscnt-2)%10] &&
+		   isb64[(iscnt-3)%10] && isb64[(iscnt-4)%10]);
+	  cbuue = (isuue[(iscnt-1)%10] && isuue[(iscnt-2)%10] &&
+		   isuue[(iscnt-3)%10] && isuue[(iscnt-4)%10]);
+	  cbxxe = (isxxe[(iscnt-1)%10] && isxxe[(iscnt-2)%10] &&
+		   isxxe[(iscnt-3)%10] && isxxe[(iscnt-4)%10]);
+	  cbbhx = (isbhx[(iscnt-1)%10] && isbhx[(iscnt-2)%10] &&
+		   isbhx[(iscnt-3)%10] && isbhx[(iscnt-4)%10]);
+	}
+	else {
+	  cbb64 = cbuue = cbxxe = cbbhx = 0;
+	}
+
+	if (cbb64 && !cbuue && !cbxxe && !cbbhx) {
+	  result->uudet = B64ENCODED;
+	}
+	else if (!cbb64 && cbuue && !cbxxe && !cbbhx) {
+	  result->uudet = UU_ENCODED;
+	}
+	else if (!cbb64 && !cbuue && cbxxe && !cbbhx) {
+	  result->uudet = XX_ENCODED;
+	}
+	else if (!cbb64 && !cbuue && !cbxxe && cbbhx) {
+	  result->uudet = BH_ENCODED;
+	}
+
+	if (result->uudet) {
           encoding = dflag = 0;
 
 	  /*
@@ -978,10 +1074,12 @@ ScanData (FILE *datei, char *fname, int *errcode,
 	      /* pick up ``EOF'' for BinHex files. Slow :-< */
 	      if (line[0] && strchr (line+1, ':') != NULL) {
 		result->end = 1;
+		bhflag      = 0;
 		break;
 	      }
 	    }
 	  }
+
 	  if (ferror (datei) || *errcode == UURET_CANCEL)
 	    break;
 
@@ -998,37 +1096,90 @@ ScanData (FILE *datei, char *fname, int *errcode,
 	       strncmp (line+2, boundary, blen) == 0)) {
 	    break;
 	  }
+
 	  /*
 	   * Otherwise, we wait until finding something more interesting
 	   * in the outer loop
 	   */
+
+	  continue;
 	}
-	else if (encoding == XX_ENCODED && vflag == B64ENCODED) {
-	  dflag++;
+	
+	/*
+	 * Select the encoding with the best "history"
+	 */
+
+	cbb64 = isb64[(iscnt-1)%10];
+	cbuue = isuue[(iscnt-1)%10];
+	cbxxe = isxxe[(iscnt-1)%10];
+	cbbhx = isbhx[(iscnt-1)%10];
+	dflag = 0;
+
+	if (cbb64 || cbuue || cbxxe || cbbhx) {
+	  for (dflag=2; dflag<iscnt && dflag<4; dflag++) {
+	    if ((!cbb64 || !isb64[(iscnt-dflag)%10]) &&
+		(!cbuue || !isuue[(iscnt-dflag)%10]) &&
+		(!cbxxe || !isxxe[(iscnt-dflag)%10]) &&
+		(!cbbhx || !isbhx[(iscnt-dflag)%10])) {
+	      dflag--;
+	      break;
+	    }
+	    cbb64 &= isb64[(iscnt-dflag)%10];
+	    cbuue &= isuue[(iscnt-dflag)%10];
+	    cbxxe &= isxxe[(iscnt-dflag)%10];
+	    cbbhx &= isbhx[(iscnt-dflag)%10];
+	  }
 	}
-	else if (result->uudet) {
-	  if (vflag == result->uudet)
-	    dflag++;
-	  else
-	    dflag=0;
+
+	/*
+	 * clear-cut cases
+	 */
+
+	if (cbb64 && !cbuue && !cbxxe && !cbbhx) {
+	  encoding = B64ENCODED;
 	}
-        else if (encoding != vflag) {
-          encoding = vflag;
-          dflag = 1;
-        }
-        else {
-          encoding = vflag;
-          dflag++;
-        }
+	else if (!cbb64 && cbuue && !cbxxe && !cbbhx) {
+	  encoding = UU_ENCODED;
+	}
+	else if (!cbb64 && !cbuue && cbxxe && !cbbhx) {
+	  encoding = XX_ENCODED;
+	}
+	else if (!cbb64 && !cbuue && !cbxxe && cbbhx) {
+	  encoding = BH_ENCODED;
+	}
+	else {
+	  encoding = 0;
+	}
+
+	/*
+	 * Check a few common non-clear-cut cases
+	 */
+
+	if (!encoding && cbuue && result->begin) {
+	  encoding = UU_ENCODED;
+	}
+	else if (!encoding && cbxxe && result->begin) {
+	  encoding = XX_ENCODED;
+	}
+	else if (!encoding && cbb64) {
+	  encoding = B64ENCODED;
+	}
+	else if (!encoding && cbuue) {
+	  encoding = UU_ENCODED;
+	}
+	else if (!encoding && cbxxe) {
+	  encoding = XX_ENCODED;
+	}
+	else if (!encoding && cbbhx) {
+	  encoding = BH_ENCODED;
+	}
       }
       else if (!dontcare) {
 	encoding = 0;
         dflag = 0;
 	haddh = 0;
       }
-#if 0
     } /* if (!uudet) */
-#endif
     /*
      * End of scanning loop
      */
@@ -1053,6 +1204,29 @@ ScanData (FILE *datei, char *fname, int *errcode,
   /* Base64 and BinHex don't have a file mode */
   if (result->uudet == B64ENCODED || result->uudet == BH_ENCODED)
     result->mode  = 6*64+4*8+4;
+
+  /*
+   * When strict MIME adherance is set, throw out suspicious attachments
+   */
+
+  if (uu_more_mime) {
+    /*
+     * In a MIME message, Base64 should be appropriately tagged
+     */
+
+    if (result->uudet == B64ENCODED) {
+      result->uudet = 0;
+    }
+
+    /*
+     * Do not accept incomplete UU or XX encoded messages
+     */
+
+    if ((result->uudet != 0 && result->uudet != B64ENCODED) &&
+	(!result->begin || !result->end)) {
+      result->uudet = 0;
+    }
+  }
 
   /*
    * In fast mode, this length will yield a false value. We don't care.
@@ -1096,8 +1270,8 @@ fileread *
 ScanPart (FILE *datei, char *fname, int *errcode)
 {
   int ecount, hcount, lcount;
-  int bhflag, begflag, vflag, blen = 0, res;
-  long preheaders, prevpos = 0, preenc, before;
+  int bhflag, begflag, vflag, blen=0, res;
+  long preheaders, prevpos=0, preenc, before;
   char *line=uuscan_spline;
   fileread *result;
   char *ptr1, *ptr2;
@@ -1189,6 +1363,35 @@ ScanPart (FILE *datei, char *fname, int *errcode)
     }
     line[255] = '\0';
 
+    /*
+     * Special handling for AOL folder files, which start off with a boundary.
+     * We recognize them by a valid boundary line as the first line of a file.
+     * Note that the rest of the scanning code becomes suspicious if a boun-
+     * dary does never appear in a file -- this should save us from grave
+     * false detection errors
+     */
+
+    if (!feof (datei) && line[0] == '-' && line[1] == '-' && line[2]) {
+      while (line[strlen(line)-1] == '\012' ||
+	     line[strlen(line)-1] == '\015') {
+	line[strlen(line)-1] = '\0';
+      }
+
+      sstate.ismime            = 1;
+      sstate.envelope.mimevers = _FP_strdup ("1.0");
+      sstate.envelope.boundary = _FP_strdup (line+2);
+      sstate.envelope.ctype    = _FP_strdup ("multipart/mixed");
+      sstate.mimestate         = MS_SUBPART;
+
+      *errcode = UURET_CONT;
+      _FP_free (result);
+      return NULL;
+    }
+
+    /*
+     * Normal behavior: look for a RFC 822 header
+     */
+
     while (!feof (datei) && !IsLineEmpty (line)) {
       if (IsKnownHeader (line))
 	hcount++;
@@ -1228,15 +1431,12 @@ ScanPart (FILE *datei, char *fname, int *errcode)
      * If we don't have all valid MIME headers yet, but the following
      * line is a MIME header, accept it anyway.
      */
-#ifndef MORE_MIME
-    if ((sstate.envelope.mimevers == NULL &&
-	 _FP_strnicmp (line, "Mime-Version:", 13) == 0) ||
-	(sstate.envelope.ctype == NULL &&
-	 _FP_strnicmp (line, "Content-Type:", 13) == 0) ||
-	(sstate.envelope.mimevers == NULL &&
-	 sstate.envelope.ctype    == NULL &&
-	 sstate.envelope.ctenc    == NULL &&
-	 _FP_strnicmp (line, "Content-Transfer-Encoding:", 26) == 0)) {
+
+    if (!uu_more_mime &&
+	sstate.envelope.mimevers == NULL &&
+	sstate.envelope.ctype    == NULL &&
+	sstate.envelope.ctenc    == NULL &&
+	IsKnownHeader (line)) {
       /*
        * see above
        */
@@ -1256,14 +1456,6 @@ ScanPart (FILE *datei, char *fname, int *errcode)
 	  _FP_free (result);
 	  return NULL;
 	}
-	/*
-	 * if we've read too many lines without finding headers, then
-	 * this probably isn't a mail folder after all
-	 */
-	lcount++;
-	if (lcount > WAITHEADER && hcount < hlcount.afternl)
-	  break;
-	
 	if (_FP_fgets (line, 255, datei) == NULL)
 	  break;
 	line[255] = '\0';
@@ -1282,7 +1474,7 @@ ScanPart (FILE *datei, char *fname, int *errcode)
 	prevpos = ftell (datei);
       }
     }
-#endif
+
     /*
      * A partial multipart message probably has only a Content-Type
      * header but nothing else. In this case, at least simulate a
@@ -1552,9 +1744,8 @@ ScanPart (FILE *datei, char *fname, int *errcode)
 	hcount = lcount = 0;
       }
 
-#ifndef MORE_MIME
       /* check for begin and encoded data only at outermost level */
-      if (mssdepth == 0) {
+      if (mssdepth == 0 && !uu_more_mime) {
 	if (strncmp      (line, "begin ",       6) == 0 ||
 	    _FP_strnicmp (line, "<pre>begin ", 11) == 0) {
 	  preenc  = prevpos;
@@ -1586,13 +1777,13 @@ ScanPart (FILE *datei, char *fname, int *errcode)
 	  ecount  = 0;
 	}
       }
-#endif
 
       if (!IsLineEmpty (line))
 	res++;
 
       prevpos = ftell (datei);
     }
+
     if (mssdepth > 0 &&	line[0] == '-' && line[1] == '-' &&
 	strncmp (line+2,
 		 multistack[mssdepth-1].envelope.boundary, blen) == 0) {
@@ -1820,13 +2011,24 @@ ScanPart (FILE *datei, char *fname, int *errcode)
      */
     if (_FP_stristr (localenv.ctenc, "base64") != NULL)
       result->uudet = B64ENCODED;
+    else if (_FP_stristr (localenv.ctenc, "x-uue") != NULL)
+      result->uudet = UU_ENCODED;
     else if (_FP_stristr (localenv.ctenc, "quoted-printable") != NULL)
       result->uudet = QP_ENCODED;
     else if (_FP_stristr (localenv.ctenc, "7bit") != NULL ||
 	     _FP_stristr (localenv.ctenc, "8bit") != NULL)
       result->uudet = PT_ENCODED;
-    else if (_FP_stristr (localenv.ctype, "message") != NULL)
+    else if (_FP_stristr (localenv.ctype, "multipart") != NULL ||
+	     _FP_stristr (localenv.ctype, "message")   != NULL)
       result->uudet = PT_ENCODED;
+
+    /*
+     * If we're switched to MIME-only mode, handle as text
+     */
+
+    if (uu_more_mime >= 2 && !result->uudet) {
+      result->uudet = PT_ENCODED;
+    }
 
     if (result->uudet) {
       /*
@@ -1940,16 +2142,15 @@ ScanPart (FILE *datei, char *fname, int *errcode)
 	}
       }
       /* produce result if uu_handletext is set */
-      if ((result->uudet == B64ENCODED || uu_handletext) &&
-	  (result->uudet != QP_ENCODED ||
-	   result->uudet != PT_ENCODED || lcount>0)) {
+      /* or if the file is explicitely named */
+      if (result->uudet == B64ENCODED || lcount) {
 	if (localenv.fname) {
 	  _FP_free (result->filename);
 	  if ((result->filename = _FP_strdup (localenv.fname)) == NULL)
 	    *errcode = UURET_NOMEM;
 	}
 	else if ((result->uudet==QP_ENCODED||result->uudet==PT_ENCODED) &&
-		 result->filename == NULL) {
+		 result->filename == NULL && uu_handletext) {
 	  sprintf (line, "%04d.txt", ++mimseqno);
 	  if ((result->filename = _FP_strdup (line)) == NULL)
 	    *errcode = UURET_NOMEM;
@@ -1984,13 +2185,16 @@ ScanPart (FILE *datei, char *fname, int *errcode)
       UUkillheaders (&localenv);
       return result;
     }
+
     /*
      * we're in a subpart, but the local headers don't give us any
      * clue about what's to find here. So look for encoded data by
      * ourselves.
      */
+
     if ((res = ScanData (datei, fname, errcode,
-			 sstate.envelope.boundary, 1, 0, result)) == -1) {
+			 sstate.envelope.boundary,
+			 1, 0, result)) == -1) {
       /* oops, something went wrong */
       sstate.isfolder = 0;
       sstate.ismime   = 0;
@@ -2090,16 +2294,28 @@ ScanPart (FILE *datei, char *fname, int *errcode)
 	sstate.ismime    = 0;
       }
     }
+
+    /*
+     * If this file has been nicely MIME so far, then be very suspicious
+     * if ScanData reports anything else. So do a double check, and if
+     * it doesn't hold up, handle as plain text instead.
+     */
+
+    if (strcmp (localenv.mimevers, "1.0") == 0 &&
+	_FP_stristr (localenv.ctype, "text") != NULL &&
+	sstate.ismime && sstate.mimestate == MS_SUBPART &&
+	!uu_desperate) {
+      if (result->uudet == UU_ENCODED && !(result->begin || result->end)) {
+	result->uudet = 0;
+      }
+    }
+
     /*
      * produce result
      */
-    if (result->uudet == 0 && uu_handletext) {
+
+    if (result->uudet == 0) {
       result->uudet = PT_ENCODED; /* plain text */
-    }
-    else if (result->uudet == 0) {
-      UUkillheaders (&localenv);
-      _FP_free (result);
-      return NULL;
     }
 
     if (localenv.fname) {
@@ -2108,7 +2324,7 @@ ScanPart (FILE *datei, char *fname, int *errcode)
 	*errcode = UURET_NOMEM;
     }
     else if ((result->uudet==QP_ENCODED || result->uudet==PT_ENCODED) &&
-	     result->filename==NULL) {
+	     result->filename==NULL && uu_handletext) {
       sprintf (line, "%04d.txt", ++mimseqno);
       if ((result->filename = _FP_strdup (line)) == NULL)
 	*errcode = UURET_NOMEM;
@@ -2234,9 +2450,22 @@ ScanPart (FILE *datei, char *fname, int *errcode)
 	result->uudet = QP_ENCODED;
       else if (_FP_stristr (localenv.ctenc, "base64") != NULL)
 	result->uudet = B64ENCODED;
+      else if (_FP_stristr (localenv.ctenc, "x-uue") != NULL)
+	result->uudet = UU_ENCODED;
+      else if (_FP_stristr (localenv.ctenc, "7bit") != NULL ||
+	       _FP_stristr (localenv.ctenc, "8bit") != NULL)
+	result->uudet = PT_ENCODED;
       else if (_FP_stristr (localenv.ctype, "multipart") != NULL ||
 	       _FP_stristr (localenv.ctype, "message")   != NULL)
 	result->uudet = PT_ENCODED;
+
+      /*
+       * If we're switched to MIME-only mode, handle as text
+       */
+
+      if (uu_more_mime >= 2 && !result->uudet) {
+	result->uudet = PT_ENCODED;
+      }
     }
     else {
       memset (&localenv, 0, sizeof (headers));
@@ -2262,7 +2491,6 @@ ScanPart (FILE *datei, char *fname, int *errcode)
     }
     else if (result->uudet != 0) {
       hcount = lcount = 0;
-
       prevpos = ftell (datei);
 
       if (_FP_stristr (localenv.ctype, "message") != NULL &&
@@ -2274,17 +2502,11 @@ ScanPart (FILE *datei, char *fname, int *errcode)
 	while (!feof (datei)) {
 	  if (_FP_fgets (line, 255, datei) == NULL)
 	    break;
+	  line[255] = '\0';
 	  if (!IsLineEmpty (line)) {
-	    fseek (datei, preheaders, SEEK_SET);
-	    line[255] = '\0';
 	    break;
 	  }
 	}
-	if (_FP_fgets (line, 255, datei) == NULL) {
-	  _FP_free (result);
-	  return NULL;
-	}
-	line[255] = '\0';
 
 	while (!feof (datei) && !IsLineEmpty (line)) { 
 	  if (IsKnownHeader (line))
@@ -2388,6 +2610,8 @@ ScanPart (FILE *datei, char *fname, int *errcode)
 	result->subject = _FP_strdup (sstate.envelope.subject);
     }
     result->partno = sstate.envelope.partno;
+    if (sstate.envelope.partno == 1)
+      result->begin = 1;
     result->maxpno = sstate.envelope.numparts;
     result->flags  = FL_PARTIAL | 
       ((res==1 || uu_fast_scanning) ? FL_PROPER : 0) |
@@ -2435,14 +2659,19 @@ ScanPart (FILE *datei, char *fname, int *errcode)
   }
 
   /*
-   * if this is a MIME body, honor a Content-Type different than
+   * If this is a MIME body, honor a Content-Type different than
    * text/plain or a proper Content-Transfer-Encoding.
+   * We also go in here if we have an assigned filename - this means
+   * that we've had a Content-Disposition field, and we should probably
+   * decode a plain-text segment with a filename.
    */
   if (sstate.isfolder && sstate.ismime &&
       sstate.mimestate == MS_BODY &&
       (_FP_stristr (sstate.envelope.ctenc, "quoted-printable") != NULL ||
        _FP_stristr (sstate.envelope.ctenc, "base64")           != NULL ||
-       _FP_stristr (sstate.envelope.ctype, "message")          != NULL)) {
+       _FP_stristr (sstate.envelope.ctenc, "x-uue")            != NULL ||
+       _FP_stristr (sstate.envelope.ctype, "message")          != NULL ||
+       sstate.envelope.fname != NULL)) {
 
     if (sstate.envelope.subject)
       result->subject = _FP_strdup (sstate.envelope.subject);
@@ -2458,16 +2687,32 @@ ScanPart (FILE *datei, char *fname, int *errcode)
       result->uudet = QP_ENCODED;
     else if (_FP_stristr (sstate.envelope.ctenc, "base64") != NULL)
       result->uudet = B64ENCODED;
+    else if (_FP_stristr (sstate.envelope.ctenc, "x-uue") != NULL)
+      result->uudet = UU_ENCODED;
+    else if (_FP_stristr (sstate.envelope.ctenc, "7bit") != NULL ||
+	     _FP_stristr (sstate.envelope.ctenc, "8bit") != NULL)
+      result->uudet = PT_ENCODED;
     else if (_FP_stristr (sstate.envelope.ctype, "multipart") != NULL ||
-	     _FP_stristr (sstate.envelope.ctype, "message")   != NULL)
+	     _FP_stristr (sstate.envelope.ctype, "message")   != NULL ||
+	     sstate.envelope.fname != NULL)
       result->uudet = PT_ENCODED;
 
-    prevpos = ftell (datei);
+    /*
+     * If we're switched to MIME-only mode, handle as text
+     */
+
+    if (uu_more_mime >= 2 && !result->uudet) {
+      result->uudet = PT_ENCODED;
+    }
+
+    result->startpos = prevpos = ftell (datei);
     
     /*
      * If this is Quoted-Printable or Plain Text, just try looking
      * for the next message header. If uu_fast_scanning, we know
      * there won't be more headers.
+     * If it is a "trivial" (non-embedded) message/rfc822, skip over
+     * the message header and then start looking for the next header.
      */
     if (result->uudet != 0 && uu_fast_scanning) {
       /* do nothing */
@@ -2475,8 +2720,43 @@ ScanPart (FILE *datei, char *fname, int *errcode)
     }
     else if (result->uudet != 0) {
       hcount = lcount = 0;
-
       prevpos = ftell (datei);
+
+      if (_FP_stristr (sstate.envelope.ctype, "message") != NULL &&
+	  _FP_stristr (sstate.envelope.ctype, "rfc822")  != NULL) {
+	/*
+	 * skip over empty lines and local header
+	 */
+	preheaders = ftell (datei);
+	while (!feof (datei)) {
+	  if (_FP_fgets (line, 255, datei) == NULL)
+	    break;
+	  line[255] = '\0';
+	  if (!IsLineEmpty (line)) {
+	    break;
+	  }
+	}
+
+	while (!feof (datei) && !IsLineEmpty (line)) { 
+	  if (IsKnownHeader (line))
+	    hcount++;
+	  lcount++;
+	  if (lcount > WAITHEADER && hcount < hlcount.afternl)
+	    break;
+
+	  if (_FP_fgets (line, 255, datei) == NULL)
+	    break;
+	  line[255] = '\0';
+	}
+	if (hcount < hlcount.afternl)
+	  fseek (datei, preheaders, SEEK_SET);
+	hcount = lcount = 0;
+      }
+
+      /*
+       * look for next header
+       */
+
       while (!feof (datei)) {
 	if (_FP_fgets (line, 255, datei) == NULL)
 	  break;
@@ -2592,7 +2872,6 @@ ScanPart (FILE *datei, char *fname, int *errcode)
     return result;
   }
 
-#ifndef MORE_MIME
   /*
    * Some files have reduced headers, and what should be a multipart
    * message is missing the proper Content-Type. If the first thing
@@ -2604,8 +2883,10 @@ ScanPart (FILE *datei, char *fname, int *errcode)
    * we know that sstate.envelope.boundary is NULL, or we wouldn't
    * be here!
    */
-  if (sstate.envelope.ctype == NULL ||
-      _FP_stristr (sstate.envelope.ctype, "multipart") != NULL) {
+
+  if ((sstate.envelope.ctype == NULL ||
+       _FP_stristr (sstate.envelope.ctype, "multipart") != NULL) &&
+      !uu_more_mime) {
     prevpos = ftell (datei);
     while (!feof (datei)) {
       if (_FP_fgets (line, 255, datei) == NULL) {
@@ -2650,7 +2931,6 @@ ScanPart (FILE *datei, char *fname, int *errcode)
     }
     fseek (datei, prevpos, SEEK_SET);
   }
-#endif
 
   /*
    * Hmm, we're not in a ''special'' state, so it's more or less
