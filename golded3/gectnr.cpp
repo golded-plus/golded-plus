@@ -29,12 +29,24 @@
 
 //  ------------------------------------------------------------------
 
+bool strncont(const char *beginword, const char *stylestopchars, int n)
+{
+  for(; (n > 0) and (*beginword != NUL); n--, beginword++) {
+    if(strchr(stylestopchars, *beginword) != NULL)
+      return true;
+  }
+  return false;
+}
+
+
+//  ------------------------------------------------------------------
+
 inline int isstylechar(char c) { return (c == '*') or (c == '/') or (c == '_') or (c == '#'); }
 
 void Container::StyleCodeHighlight(const char* text, int row, int col, bool dohide, int color) {
 
   uint sclen = 0;
-  char* txptr = text;
+  const char* txptr = text;
   char buf[200];
   const char* ptr = text;
   const char* stylemargins = " -|\\";    // we probably have to make a keyword for it
@@ -58,20 +70,16 @@ void Container::StyleCodeHighlight(const char* text, int row, int col, bool dohi
             ptr++;
           }
           if((bb <= 1) and (bi <= 1) and (br <= 1) and (bu <= 1) and *ptr) {
-            const char* beginword = ptr;                       //  _/*>another*/_
-            char endchar = NUL;
-            char* end = ptr;
+            const char* beginword = ptr;                 //  _/*>another*/_
+            const char* end = ptr;
             do {
               end = strpbrk(++end, punctchars);
-            } while ((end) and not isstylechar(*(end-1)));
-            if(end)
-              endchar = *end;
-            else
+            } while ((end != NULL) and not isstylechar(*(end-1)));
+            if(end == NULL)
               end = ptr+strlen(ptr);
-            *end = NUL;
-            char* endstyle = end-1;                      //  _/*another*/>_
+            const char* endstyle = end-1;                //  _/*another*/>_
             if(isstylechar(*endstyle) and not strchr(stylemargins, *beginword)) {
-              char* endword = endstyle;
+              const char* endword = endstyle;
               int eb = 0, ei = 0, eu = 0, er = 0;
               while(isstylechar(*endword)) {
                 switch(*endword) {
@@ -84,10 +92,7 @@ void Container::StyleCodeHighlight(const char* text, int row, int col, bool dohi
               }                                          //  _/*anothe>r*/_
               if(endword >= beginword and not strchr(stylemargins, *endword)) {
                 if((bb == eb) and (bi == ei) and (bu == eu) and (br == er)) {
-                  char endwordchar = *endword;
-                  *endword = NUL;
-                  char* style_stops_present = strpbrk(beginword, stylestopchars);
-                  *endword = endwordchar;
+                  bool style_stops_present = strncont(beginword, stylestopchars, endword-beginword);
                   if(not style_stops_present) {
                     int colorindex = (bb ? 1 : 0) | (bi ? 2 : 0) | (bu ? 4 : 0) | (br ? 8 : 0);
                     strxcpy(buf, txptr, (uint)(beginstyle-txptr)+1);
@@ -104,7 +109,6 @@ void Container::StyleCodeHighlight(const char* text, int row, int col, bool dohi
                 }
               }
             }
-            *end = endchar;
             ptr = end-1;
           }
         }

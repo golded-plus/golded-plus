@@ -96,7 +96,7 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
     sprintf(revbuf, "%02d%02d", str2mon(__gver_date__), atoi(&__gver_date__[4]));
 
   char attr[80];
-  MakeAttrStr(attr, &msg->attr);
+  MakeAttrStr(attr, sizeof(attr), &msg->attr);
 
   const char *xmailer = get_informative_string();
 

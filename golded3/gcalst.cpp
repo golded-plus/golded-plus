@@ -296,7 +296,7 @@ void AreaList::WriteAreaDef(const char* file) {
         strcpy(addr, ".");
       tmp = strlen(addr);
       maxaddr = MaxV(maxaddr, tmp);
-      tmp = strlen(MakeAttrStr(attr, &(*aa)->attr()));
+      tmp = strlen(MakeAttrStr(attr, sizeof(attr), &(*aa)->attr()));
       maxattr = MaxV(maxattr, tmp+2);
     }
 
@@ -371,7 +371,7 @@ void AreaList::WriteAreaDef(const char* file) {
         else
           strcpy(addr, ".");
         *attr = '(';  /*)*/
-        MakeAttrStr(attr+1, &(*aa)->attr());
+        MakeAttrStr(attr+1, sizeof(attr)-2, &(*aa)->attr());
         strcat(attr, /*(*/ ")");
         if((*aa)->originno())
           sprintf(origin, " \"%.*s\"", (int)sizeof(origin)-4, CFG->origin[(*aa)->originno()].c_str());

@@ -1141,7 +1141,7 @@ void GotoReplies() {
     uint reln = AA->Msgn.ToReln(msgn);
     if(reln) {
       if(CFG->replylinklist == REPLYLINKLIST_FULL)
-        AA->LoadMsg(rmsg, msgn, CFG->dispmargin-(int)CFG->switches.get(disppagebar));
+        AA->LoadMsg(rmsg, msgn, CFG->dispmargin-(int)CFG->switches.get(disppagebar), GMSG_COPY); // do quick load
       else
         AA->LoadHdr(rmsg, msgn);
       rlist[replies].isread = ((0 == rmsg->timesread) and CFG->switches.get(highlightunread)) ? '\x10' : ' ';

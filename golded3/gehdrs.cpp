@@ -108,7 +108,7 @@ void DispHeader(GMsg* msg, bool prn, FILE* fp, int width) {
   fwrite(buf, strlen(buf), 1, fp);
 
   // Generate message attributes string
-  MakeAttrStr(buf2, &msg->attr);
+  MakeAttrStr(buf2, sizeof(buf2), &msg->attr);
   int len2 = strlen(buf2);
   if(len2 > width-CFG->disphdrnodeset.pos) {
     len2 = width-CFG->disphdrnodeset.pos;

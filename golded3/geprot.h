@@ -108,7 +108,7 @@ const char* get_informative_string(void);
 
 void CmfMsgs(GMsg* msg);
 void LoadText(GMsg* msg, const char* textfile);
-void SaveLines(int mode, const char* savefile, GMsg* msg, bool clip=false);
+void SaveLines(int mode, const char* savefile, GMsg* msg, int margin, bool clip=false);
 
 
 //  ------------------------------------------------------------------

@@ -51,7 +51,7 @@ void CfgDispmsgsize() {
   else if(strieql("KBYTES", val))
     CFG->dispmsgsize = DISPMSGSIZE_KBYTES;
   else if(strieql("LINES", val))
-    CFG->dispmsgsize = DISPMSGSIZE_KBYTES+1;
+    CFG->dispmsgsize = DISPMSGSIZE_LINES;
 }
 
 //  ------------------------------------------------------------------

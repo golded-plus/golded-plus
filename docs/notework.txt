@@ -12,6 +12,13 @@ ______________________________________________________________________
                  Notes for GoldED+ 1.1.5, March xx 2001
 ______________________________________________________________________
 
+- Fixed EDITHARDLINE keyword operation.
+
+- Fixed QUOTEWRAPHARD keyword operation.
+
+! Freed lot of stack on displaying message header. Please report
+  (cosmetic?) bugs if any.
+
 - Fixed small bug in parser.
 
 + Added new keyword INTERNETGATEEXP to configure expansion of UUCP

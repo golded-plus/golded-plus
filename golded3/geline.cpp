@@ -1962,7 +1962,10 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
           for(n=0; n<qlen; n++) {
             *(++bp) = *qptr++;
           }
-
+          if(quotewraphard) {
+            *qbuf = NUL;
+            qlen = 0;
+          }
           ptr = spanfeeds(ptr);
           line->type |= GLINE_QUOT|GLINE_HARD;
         }
@@ -2372,7 +2375,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
           else {
             wraps++;
             if(para == GLINE_QUOT)
-              reflow = quotewraphard;
+              reflow = true;
             line->type |= GLINE_WRAP;
             ptr = spanfeeds(ptr);
             if((*bp == ' ') or (isspace(*ptr) && (*ptr != LF)))
@@ -2388,10 +2391,10 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
         else
           line->type |= GLINE_HARD;
 
-        *(++bp/*+1*/) = NUL;
+        *(++bp) = NUL;
 
         // Get line length
-        uint tmplinelength = (uint)((long)bp-(long)bptr);
+        uint tmplinelength = (uint)(bp-bptr);
         if(tmplinelength > (uint)(margin + 512)) {
           LOG.ErrPointer();
           LOG.printf("! A message line length (%u bytes) exceeded an internal buffer limit of %u bytes", tmplinelength, margin+512);
@@ -2400,7 +2403,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool header_recode) {
         }
 
         // Store line
-        line->txt = linetmp+1; // .assign(linetmp+1, tmplinelength+5);
+        line->txt = linetmp+1;
         prev_ptr[0] = line->txt.empty() ? 0xFF : line->txt[0];
         prev_ptr[1] = line->txt.length() < 2 ? 0xFF : line->txt[1];
 

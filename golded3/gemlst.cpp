@@ -215,7 +215,7 @@ static void mlst_get_mlst(MLst* ml, PInf* p, int n) {
     AA->LoadHdr(msg, ml->msgno);
   }
   else {
-    AA->LoadMsg(msg, ml->msgno, CFG->dispmargin-(int)CFG->switches.get(disppagebar));
+    AA->LoadMsg(msg, ml->msgno, CFG->dispmargin-(int)CFG->switches.get(disppagebar), GMSG_COPY); // do quick load
   }
   ml->goldmark = goldmark;
 

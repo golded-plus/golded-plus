@@ -534,9 +534,9 @@ int ExternUtil(GMsg* msg, int utilno) {
       strcpy(cmdline, extutil->cmdline);
 
       int mode = (extutil->options & EXTUTIL_KEEPCTRL) ? MODE_SAVE : MODE_SAVENOCTRL;
-      SaveLines(mode, editorfile, msg);
+      SaveLines(mode, editorfile, msg, 79);
       if(striinc("@tmpfile", cmdline))
-        SaveLines(mode, tmpfile, msg);
+        SaveLines(mode, tmpfile, msg, 79);
 
       strcpy(buf, CFG->goldpath);
       strchg(buf, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
@@ -633,13 +633,13 @@ void UUDecode(GMsg* msg) {
           overwrite = false;  // Overwrite only the first time
         w_progress(MODE_UPDATE, C_INFOW, n+1, AA->Mark.Count(), LNG->Preparing);
         AA->LoadMsg(msg, AA->Mark[n], 79);
-        SaveLines(overwrite ? MODE_WRITE : MODE_APPEND, infile, msg);
+        SaveLines(overwrite ? MODE_WRITE : MODE_APPEND, infile, msg, 79);
       }
       if(AA->Mark.Count())
         w_progress(MODE_QUIT, 0, 0, 0, NULL);
     }
     else if(source == WRITE_CURRENT)
-      SaveLines(MODE_WRITE, infile, msg);
+      SaveLines(MODE_WRITE, infile, msg, 79);
 
     uulist* item;
     int i, res;

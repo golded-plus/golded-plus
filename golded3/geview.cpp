@@ -91,76 +91,56 @@ void GMsgHeaderView::Use(Area *areaptr, GMsg *msgptr) {
 
 void GMsgHeaderView::Paint() {
 
+  ISub buf;
   int namewidth = CFG->disphdrnodeset.pos - CFG->disphdrnameset.pos;
   int nodewidth = CFG->disphdrdateset.pos - CFG->disphdrnodeset.pos;
-  int datewidth = width - CFG->disphdrdateset.pos;
-
-  vchar headerline[200];
-  for(int c = 0; c < width; c++)
-    headerline[c] = _box_table(W_BHEAD, 1);
-  headerline[width] = NUL;
-
-  INam whofrom;
-  if(not area->isecho() and *msg->ifrom and *msg->realby)
-    sprintf(whofrom, "%s <%s>", msg->realby, msg->iorig);
-  else if(not area->isecho() and *msg->ifrom and *msg->iorig)
-    strcpy(whofrom, msg->iorig);
-  else
-    strcpy(whofrom, msg->By());
-  strsetsz(whofrom, (area->isinternet() or *msg->ifrom) ? (namewidth+nodewidth) : namewidth);
-
-  INam whoto;
-  if(not area->isecho() and *msg->ito and *msg->realto)
-    sprintf(whoto, "%s <%s>", msg->realto, msg->idest);
-  else if(not area->isecho() and *msg->ito and *msg->idest)
-    strcpy(whoto, msg->idest);
-  else
-    strcpy(whoto, msg->To());
-  strsetsz(whoto, (area->isinternet() or *msg->ito) ? (namewidth+nodewidth) : namewidth);
-
-  // Generate top line fields
-  ISub buf;
-  char top1[200];
-  strtrim(strcpy(buf, area->desc()));
-  if((CFG->dispareano == ALWAYS) or (CFG->dispareano and area->board()))
-    sprintf(top1, " [%u] %s ", area->board(), buf);
-  else
-    sprintf(top1, " %s ", buf);
-  strtrim(top1);
-  strcat(top1, " (" /*)*/);
-  if(area->isinternet())
-    strcpy(buf, area->Internetaddress());
-  else
-    area->Aka().addr.make_string(buf);
-  strcat(top1, buf);
-  strcat(top1, /*(*/ ") ");
-
-  char top2[200];
-  if(msg->areakludgeid)
-    sprintf(top2, " %s (%s) ", area->echoid(), msg->areakludgeid);
-  else
-    sprintf(top2, " %s ", area->echoid());
+  int datewidth = MinV(width - CFG->disphdrdateset.pos, CFG->disphdrdateset.len);
 
   #if defined(GUTLOS_FUNCS)
   g_set_ostitle_name(struplow(strtmp(area->echoid())), 0);
   #endif
 
-  // Get marks
-  int bookmark = (area->bookmark == msg->msgno);
-  int markmark = (area->Mark.Count() ? (area->Mark.Find(msg->msgno) ? 1 : 0) : NO);
+  // Generate top line fields
+  char buf1[16];
+  if((CFG->dispareano == ALWAYS) or (CFG->dispareano and area->board()))
+    sprintf(buf1, "[%u] ", area->board());
+  else
+    *buf1 = NUL;
+
+  __extension__ char top[width+1];
+  strxmerge(top, width+1, " ", buf1, strtrim(strtmp(area->desc())), " (",
+            area->isinternet() ? area->Internetaddress() : area->Aka().addr.make_string(buf),
+            ") ", NULL);
+
+  int desclen = strlen(top);
+
+  window.printc(0, 0, border_color|ACSET, _box_table(W_BHEAD, 1));
+  window.prints(0, 1, title_color, top);
+
+  if(msg->areakludgeid)
+    strxmerge(top, width+1, " ", area->echoid(), " (", msg->areakludgeid, ") ", NULL);
+  else
+    strxmerge(top, width+1, " ", area->echoid(), " ", NULL);
+
+  int taglen = strlen(top);
+
+  if((width - (desclen + taglen + 2)) > 0)
+    window.fill(0, desclen+1, 0, width-(taglen+1)-1, _box_table(W_BHEAD, 1), border_color|ACSET);
+
+  window.prints(0, width-taglen-1, title_color, top);
+  window.printc(0, width-1, border_color|ACSET, _box_table(W_BHEAD, 1));
 
   // Generate message attributes string
-  char bot2[200];
-  MakeAttrStr(bot2, &msg->attr);
-  int len2 = strlen(bot2);
-  if(len2 > width-CFG->disphdrnodeset.pos) {
-    len2 = width-CFG->disphdrnodeset.pos;
-    strsetsz(bot2, len2);
+  bool attrsgenerated = false;
+  MakeAttrStr(buf, width-CFG->disphdrnodeset.pos, &msg->attr);
+  if(*buf) {
+    attrsgenerated = true;
+    strsetsz(buf, width-CFG->disphdrnodeset.pos);
+    window.prints(1, CFG->disphdrnodeset.pos, window_color, buf);
   }
 
   // Generate message number and reply links string
-  char bot1[200];
-  char* ptr = bot1;
+  char* ptr = buf;
   int list_max = msg->link.list_max();
   ulong* replies = (ulong*)throw_calloc(list_max+1, sizeof(ulong));
   ulong replyto, replynext;
@@ -183,98 +163,106 @@ void GMsgHeaderView::Paint() {
   }
   if(replyto)
     ptr += sprintf(ptr, " -%lu", replyto);
-  for(int replyn=0,plus=0; replyn<list_max+1; replyn++)
+  for(int replyn=0,plus=0; (replyn<(list_max+1)) and (not attrsgenerated or ((ptr-buf)<CFG->disphdrnodeset.pos)); replyn++)
     if(replies[replyn])
       ptr += sprintf(ptr, " %s%lu", (plus++?"":"+"), replies[replyn]);
-  if(replynext)
+  if(replynext and (not attrsgenerated or ((ptr-buf)<CFG->disphdrnodeset.pos)))
     sprintf(ptr, " *%lu", replynext);
-  int len1 = strlen(bot1) - 8;
-  if((CFG->disphdrnameset.pos + len1) > CFG->disphdrnodeset.pos) {
-    if(8 + len1 + len2 > width) {
-      strsetsz(bot1, width-len2-1);
-      strtrim(bot1);
-    }
-    strcat(bot1, " ");
-    strcat(bot1, bot2);
-    *bot2 = NUL;
-  }
-  else {
-    strsetsz(bot1, namewidth+8);
-    strcat(bot1, bot2);
-    *bot2 = NUL;
-  }
-  strsetsz(bot1, width);
   throw_free(replies);
 
-  // Generate orig node data
-  char node1[200];
-  if(msg->orig.net)
-    msg->orig.make_string(node1);
-  else
-    *node1 = NUL;
-  strsetsz(node1, nodewidth);
+  strsetsz(buf, attrsgenerated ? CFG->disphdrnodeset.pos : width);
+  window.prints(1, 0, window_color, buf);
 
-  char date1[25] = "";
-  if(msg->written)
-    strftimei(date1, CFG->disphdrdateset.len, LNG->DateTimeFmt, gmtime(&msg->written));
-  strsetsz(date1, datewidth);
+  // Get marks
+  if(area->bookmark == msg->msgno)
+    window.prints(1, 5, highlight_color, "\x11");
+  if(area->Mark.Count() and area->Mark.Find(msg->msgno))
+    window.prints(1, 7, highlight_color, "\x10");
+
+  // Generate from info
+  bool nodegenerated = false;
+  if(not area->isinternet()) {
+    if(area->isecho() or not (*msg->ifrom and (*msg->realby or *msg->iorig))) {
+      // Generate orig node data
+      if(msg->orig.net)
+        msg->orig.make_string(buf);
+      else
+        *buf = NUL;
+      nodegenerated = true;
+      strsetsz(buf, nodewidth);
+      window.prints(2, CFG->disphdrnodeset.pos, from_color, buf);
+    }
+  }
+
+  if(not area->isecho() and *msg->ifrom and *msg->realby)
+    strxmerge(buf, (namewidth+nodewidth), msg->realby, " <", msg->iorig, ">", NULL);
+  else if(not area->isecho() and *msg->ifrom and *msg->iorig)
+    strxcpy(buf, msg->iorig, (namewidth+nodewidth));
+  else
+    strxcpy(buf, msg->By(), (namewidth+nodewidth));
+  strsetsz(buf, nodegenerated ? namewidth : (namewidth+nodewidth));
+
+  window.prints(2, 0, window_color, LNG->From);
+  window.prints(2, CFG->disphdrnameset.pos, ((msg->foundwhere&GFIND_FROM) or msg->attr.fmu() or (msg->attr.loc() and CFG->switches.get(displocalhigh))) ? highlight_color : from_color, buf);
+
+  if(datewidth > 0) {
+    if(msg->written)
+      strftimei(buf, datewidth, LNG->DateTimeFmt, gmtime(&msg->written));
+    else
+      *buf = NUL;
+    strsetsz(buf, datewidth);
+    window.prints(2, CFG->disphdrdateset.pos, from_color, buf);
+  }
 
   // Generate dest node data
-  char node2[200];
-  if(msg->dest.net and area->isnet()) {
-    msg->dest.make_string(node2);
-    if(msg->odest.net) {
-      if(msg->odest.net != msg->dest.net or msg->odest.node != msg->dest.node) {
-        sprintf(buf, " %s %u/%u", LNG->Via, msg->odest.net, msg->odest.node);
-        strcat(node2, buf);
+  nodegenerated = false;
+  if(not area->isinternet()) {
+    if(area->isecho() or not (*msg->ito and (*msg->realto or *msg->idest))) {
+      if(msg->dest.net and area->isnet()) {
+        msg->dest.make_string(buf);
+        if(msg->odest.net) {
+          if((msg->odest.net != msg->dest.net) or (msg->odest.node != msg->dest.node)) {
+            sprintf(buf+strlen(buf), " %s %u/%u", LNG->Via, msg->odest.net, msg->odest.node);
+          }
+        }
+        nodegenerated = true;
+        strsetsz(buf, nodewidth);
+        window.prints(3, CFG->disphdrnodeset.pos, to_color, buf);
       }
     }
   }
-  else
-    *node2 = NUL;
-  strsetsz(node2, nodewidth);
 
-  char date2[25] = "";
-  if(msg->arrived)
-    strftimei(date2, CFG->disphdrdateset.len, LNG->DateTimeFmt, gmtime(&msg->arrived));
-  strsetsz(date2, datewidth);
+  if(not area->isecho() and *msg->ito and *msg->realto)
+    strxmerge(buf, (namewidth+nodewidth), msg->realto, " <", msg->idest, ">", NULL);
+  else if(not area->isecho() and *msg->ito and *msg->idest)
+    strxcpy(buf, msg->idest, (namewidth+nodewidth));
+  else
+    strxcpy(buf, msg->To(), (namewidth+nodewidth));
+  strsetsz(buf, nodegenerated ? namewidth : (namewidth+nodewidth));
+
+  window.prints(3, 0, window_color, LNG->To);
+  window.prints(3, CFG->disphdrnameset.pos, ((msg->foundwhere&GFIND_TO) or msg->attr.tou()) ? highlight_color : to_color, buf);
+
+  if(datewidth > 0) {
+    if(msg->arrived)
+      strftimei(buf, datewidth, LNG->DateTimeFmt, gmtime(&msg->arrived));
+    else
+      *buf = NUL;
+    strsetsz(buf, datewidth);
+    window.prints(3, CFG->disphdrdateset.pos, to_color, buf);
+  }
 
   // Generate subjectline
-  char subj[200], lngsubj[10];
-  strcpy(lngsubj, (msg->attr.att() or msg->attr.frq() or msg->attr.urq()) ? LNG->File : LNG->Subj);
-  strxcpy(subj, msg->re, sizeof(subj));
-  strsetsz(subj, width-strlen(lngsubj));
+  strxcpy(buf, (msg->attr.att() or msg->attr.frq() or msg->attr.urq()) ? LNG->File : LNG->Subj, 10);
+  int lngsubjlen = strlen(buf);
+  window.prints(4, 0, window_color, buf);
 
-  // Paint the total header in the window
-  vchar borderchar[2] = { (vchar)' ', 0 };
-  *borderchar = _box_table(W_BHEAD, 1);
-  window.printvs(0, 0, border_color|ACSET, borderchar);
-  window.prints(0, 1, title_color, top1);
-  window.printvs(0, strlen(top1)+1, border_color|ACSET, headerline+strlen(top1)+strlen(top2)-2);
-  window.prints(0, width-strlen(top2)-1, title_color, top2);
-  window.printvs(0, width-1, border_color|ACSET, borderchar);
-  window.printvs(5, 0, border_color|ACSET, headerline);
-  window.prints(1, 0, window_color, bot1);
-  if(bookmark)
-    window.prints(1, 5, highlight_color, "\x11");
-  if(markmark)
-    window.prints(1, 7, highlight_color, "\x10");
-  if(*bot2)
-    window.prints(1, CFG->disphdrnodeset.pos, window_color, bot2);
-  window.prints(2, 0, window_color, LNG->From);
-  window.prints(2, CFG->disphdrnameset.pos, ((msg->foundwhere&GFIND_FROM) or msg->attr.fmu() or (msg->attr.loc() and CFG->switches.get(displocalhigh))) ? highlight_color : from_color, whofrom);
-  window.prints(3, 0, window_color, LNG->To);
-  window.prints(3, CFG->disphdrnameset.pos, ((msg->foundwhere&GFIND_TO) or msg->attr.tou()) ? highlight_color : to_color, whoto);
-  if(not area->isinternet()) {
-    if(area->isecho() or not (*msg->ifrom and (*msg->realby or *msg->iorig)))
-      window.prints(2, CFG->disphdrnodeset.pos, from_color, node1);
-    if(area->isecho() or not (*msg->ito and (*msg->realto or *msg->idest)))
-      window.prints(3, CFG->disphdrnodeset.pos, to_color, node2);
-  }
-  window.prints(2, CFG->disphdrdateset.pos, from_color, date1);
-  window.prints(3, CFG->disphdrdateset.pos, to_color, date2);
-  window.prints(4, 0, window_color, lngsubj);
-  window.prints(4, strlen(lngsubj), (msg->foundwhere&GFIND_SUBJECT) ? highlight_color : subject_color, subj);
+  strxcpy(buf, msg->re, width-lngsubjlen);
+  strsetsz(buf, width-lngsubjlen);
+  window.prints(4, lngsubjlen, (msg->foundwhere&GFIND_SUBJECT) ? highlight_color : subject_color, buf);
+
+  // Generate bottom line
+  window.fill(5, 0, 5, width-1, _box_table(W_BHEAD, 1), border_color|ACSET);
 
   // Calculate attach file sizes
   if(msg->attr.att()) {
@@ -292,18 +280,18 @@ void GMsgHeaderView::Paint() {
           sprintf(buf2, "%s%s", CFG->inboundpath, ptr);
         long sz = GetFilesize(MapPath(buf2));
         if(sz == -1)
-          sprintf(subj, " %s ", LNG->n_a);
+          sprintf(buf1, " %s ", LNG->n_a);
         else {
           switch(CFG->dispattachsize) {
             case ATTACH_BYTES:
-              sprintf(subj, " %li ", sz);
+              sprintf(buf1, " %li ", sz);
               break;
             case ATTACH_KBYTES:
-              sprintf(subj, " %lik ", (sz+512L)/1024L);
+              sprintf(buf1, " %lik ", (sz+512L)/1024L);
               break;
           }
         }
-        window.prints(5, begpos+int(ptr-buf)-1, title_color, subj);
+        window.prints(5, begpos+int(ptr-buf)-1, title_color, buf1);
         ptr = strtok(NULL, " ");
       }
     }
@@ -313,19 +301,19 @@ void GMsgHeaderView::Paint() {
     uint len = strlen(msg->txt);
     switch(CFG->dispmsgsize) {
       case DISPMSGSIZE_BYTES:
-        sprintf(subj, "%u", len);
+        sprintf(buf1, "%u", len);
         break;
       case DISPMSGSIZE_KBYTES:
-        sprintf(subj, "%uk", (len+512)/1024);
+        sprintf(buf1, "%uk", (len+512)/1024);
         break;
-      case DISPMSGSIZE_KBYTES+1:
-        sprintf(subj, "%u", msg->lines);
+      case DISPMSGSIZE_LINES:
+        sprintf(buf1, "%u", msg->lines);
         break;
       default:
-        *subj = NUL;
+        *buf1 = NUL;
     }
-    if(*subj)
-      window.prints(5, 1, title_color, subj);
+    if(*buf1)
+      window.prints(5, 1, title_color, buf1);
   }
 }
 

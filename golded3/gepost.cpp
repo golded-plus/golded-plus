@@ -526,7 +526,7 @@ static void MakeMsg2(int& mode, int& status, int& forwstat, int& topline, GMsg* 
       line = line->next;
     }
     if(*EDIT->External() and not EDIT->Internal()) {
-      SaveLines(MODE_SAVE, AddPath(CFG->goldpath, EDIT->File()), msg);
+      SaveLines(MODE_NEW, AddPath(CFG->goldpath, EDIT->File()), msg, 79);
     }
     int loop = 0;
     w_info(NULL);

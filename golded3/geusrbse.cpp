@@ -754,12 +754,16 @@ void guserbase::update_addressbook(GMsg* msg, bool reverse, bool force) {
               return;
         }
 
-        // 6. If it is already an email address
+        // 6. It's a UUCP name
+        if(strieql("UUCP", name) or (*AA->Internetgate().name and strieql(AA->Internetgate().name, name)))
+          return;
+
+        // 7. If it is already an email address
         if(AA->isemail() and strchr(name, '@'))
           return;
 
 
-        // 7. User listed in nodelist
+        // 8. User listed in nodelist
         const char *nlname = lookup_nodelist(&fidoaddr);
         if(nlname and strieql(nlname, name))
           return;
@@ -845,7 +849,10 @@ bool guserbase::lookup_addressbook(GMsg* msg, char* name, char* aka, bool browse
 
 void guserbase::build_pseudo(GMsg* msg, char* name, char* aka, bool direction) {
 
-  strcpy(direction ? msg->pseudoto : msg->pseudofrom, strlword(name, " @"));
+  if(*msg->iaddr and strieql("UUCP", name) or (*AA->Internetgate().name and strieql(AA->Internetgate().name, name)))
+    strcpy(direction ? msg->pseudoto : msg->pseudofrom, strlword(msg->iaddr, " @"));
+  else
+    strcpy(direction ? msg->pseudoto : msg->pseudofrom, strlword(name, " @"));
 
   if(find_entry(name, true) and not entry.is_deleted) {
 
@@ -864,7 +871,6 @@ void guserbase::build_pseudo(GMsg* msg, char* name, char* aka, bool direction) {
       }
 
       strcpy(direction ? msg->pseudoto : msg->pseudofrom, entry.pseudo);
-
     }
   }
 }

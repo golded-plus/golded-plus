@@ -313,7 +313,7 @@ bool GMsgHeaderEdit::validate() {
 
     vcurshow();
     char bot2[200];
-    MakeAttrStr(bot2, &msg->attr);
+    MakeAttrStr(bot2, sizeof(bot2), &msg->attr);
     strsetsz(bot2, EDIT->HdrNodeLen());
     window.prints(1, EDIT->HdrNodePos(), C_HEADW, bot2);
 

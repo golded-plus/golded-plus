@@ -203,7 +203,10 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
     if(fp) {
       fputs("@header= @oecho (@caddr) @align{79}{=}\n", fp);
       fputs("@header Msg  : @msgno of @msgs@align{44}@attr\n", fp);
-      fputs("@header From : @_oname  @_oaddr @odate @otime\n", fp);
+      if(AA->isinternet())
+        fputs("@header From : @ofrom@align{64}@odate @otime\n", fp);
+      else
+        fputs("@header From : @oname@align{44}@oaddr@align{64}@odate @otime\n", fp);
       fputs("@header To   : @dname\n", fp);
       fputs("@header Subj : @subject\n", fp);
       fputs("@header@align{79}{=}\n", fp);
@@ -759,7 +762,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
         }
       }
 
-      if((mode == MODE_CHANGE) or (mode == MODE_WRITEHEADER) or (mode == MODE_WRITE))
+      if((mode == MODE_CHANGE) or (mode == MODE_WRITEHEADER) or (mode == MODE_WRITE) or (mode == MODE_HEADER))
         if(chg == NO)
           continue;
       if((mode == MODE_QUOTEBUF) and not quotebufline)

@@ -37,7 +37,7 @@ GMsg* MenuMsgPtr;
 void DispHeadAttrs(GMsg* msg) {
 
   char atrs[200];
-  MakeAttrStr(atrs, &msg->attr);
+  MakeAttrStr(atrs, sizeof(atrs), &msg->attr);
   strsetsz(atrs, MAXCOL-CFG->disphdrnodeset.pos);
 
   HeaderView->window.prints(1, CFG->disphdrnodeset.pos, HeaderView->window_color, atrs);

@@ -1204,10 +1204,16 @@ vatch vgetw(int row, int col) {
 
 void vgetc(int row, int col, int* atr, vchar* chr) {
 
-  vatch tmp = vgetw(row, col);
+  if((row < 0) || (row > gvid->numrows-1) || (col < 0) || (col > gvid->numcols-1)) {
+    *chr = ' ';
+    *atr = 0;
+  }
+  else {
+    vatch tmp = vgetw(row, col);
 
-  *chr = vgchar(tmp);
-  *atr = vgattr(tmp);
+    *chr = vgchar(tmp);
+    *atr = vgattr(tmp);
+  }
 }
 
 

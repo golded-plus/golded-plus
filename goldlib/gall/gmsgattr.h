@@ -33,6 +33,7 @@
 
 #include <string>
 #include <gdefs.h>
+#include <gstrall.h>
 
 
 //  ------------------------------------------------------------------
@@ -484,7 +485,7 @@ typedef ftn_attr Attr;
 
 inline void AttrAdd(Attr* a, Attr* b) { a->add(*b); }
 inline void GetAttribstr(Attr* attr, const char* attrs) { attr->get(attrs); }
-inline char* MakeAttrStr(char* str, const Attr* attr) { string tmp; attr->make_string(tmp); strcpy(str, tmp.c_str()); return str; }
+inline char* MakeAttrStr(char* str, size_t maxlen, const Attr* attr) { string tmp; attr->make_string(tmp); strxcpy(str, tmp.c_str(), maxlen); return str; }
 
 
 //  ------------------------------------------------------------------

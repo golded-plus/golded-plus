@@ -30,21 +30,18 @@
 //  ------------------------------------------------------------------
 
 static FILE* prnfp;
-static int prnmargin;
 static int prnheader;
 
 
 //  ------------------------------------------------------------------
 
-void SaveLines(int mode, const char* savefile, GMsg* msg, bool clip) {
+void SaveLines(int mode, const char* savefile, GMsg* msg, int margin, bool clip) {
 
   int prn=NO;
   char fnam[GMAXPATH];
   char* prnacc;
 
-  if(mode == MODE_SAVE or mode == MODE_SAVENOCTRL)
-    prnacc = "wt";
-  else if(mode == MODE_APPEND) {
+  if(mode == MODE_APPEND) {
     prnacc = "at";
     mode = MODE_WRITE;
   }
@@ -63,18 +60,19 @@ void SaveLines(int mode, const char* savefile, GMsg* msg, bool clip) {
   if(prnfp) {
 #ifdef OLD_STYLE_HEADER
     if(mode == MODE_WRITE) {
-      if(prnheader)
-        DispHeader(msg, prn, prnfp, prnmargin);
-      if(prn)
-        lines = 6;
+      if(prnheader) {
+        DispHeader(msg, prn, prnfp, margin);
+        if(prn)
+          lines = 6;
+      }
     }
 #else
-    TemplateToText(((mode == MODE_WRITE) && prnheader) ? MODE_WRITEHEADER : ((prnheader & WRITE_ONLY_HEADER) ? MODE_HEADER : MODE_WRITE), msg, msg, AA->Tpl(), CurrArea);
-    msg->TextToLines(-prnmargin);
+    TemplateToText(((mode == MODE_WRITE) and prnheader) ? ((prnheader & WRITE_ONLY_HEADER) ? MODE_HEADER : MODE_WRITEHEADER) : MODE_WRITE, msg, msg, AA->Tpl(), CurrArea);
+    msg->TextToLines(-margin);
 #endif
     int n = 0;
     Line** lin = msg->line;
-    if(lin and not (prnheader & WRITE_ONLY_HEADER)) {
+    if(lin) {
       Line* line = lin[n];
       while(line) {
         uint lineisctrl = line->type & (GLINE_TEAR|GLINE_ORIG|GLINE_KLUDGE);
@@ -141,6 +139,8 @@ void SaveLines(int mode, const char* savefile, GMsg* msg, bool clip) {
 //  ------------------------------------------------------------------
 
 static void WriteMsgs(GMsg* msg) {
+
+  int prnmargin;
 
   if(AA->Msgn.Tags() == 0)
     return;
@@ -222,10 +222,10 @@ static void WriteMsgs(GMsg* msg) {
           AA->LoadMsg(msg, AA->Mark[n], prnmargin);
           if(target & WRITE_PRINTER) {
             if(prnfp)
-              SaveLines(MODE_WRITE, "\001PRN", msg);
+              SaveLines(MODE_WRITE, "\001PRN", msg, prnmargin);
           }
           else {
-            SaveLines(overwrite ? MODE_WRITE : MODE_APPEND, AA->Outputfile(), msg, (target & WRITE_CLIPBRD) ? true : false);
+            SaveLines(overwrite ? MODE_WRITE : MODE_APPEND, AA->Outputfile(), msg, prnmargin, (target & WRITE_CLIPBRD) ? true : false);
           }
         }
         if(prnfp)
@@ -277,7 +277,7 @@ static void WriteMsgs(GMsg* msg) {
               sprintf(buf, LNG->WritingFile, AA->Outputfile());
               w_info(buf);
               AA->LoadMsg(msg, msg->msgno, prnmargin);
-              SaveLines(overwrite ? MODE_WRITE : MODE_APPEND, AA->Outputfile(), msg);
+              SaveLines(overwrite ? MODE_WRITE : MODE_APPEND, AA->Outputfile(), msg, prnmargin);
               w_info(NULL);
             }
           } while(overwrite == -1);
@@ -292,7 +292,7 @@ static void WriteMsgs(GMsg* msg) {
           #endif
           if(prnfp) {
             fwrite(CFG->printinit+1, CFG->printinit[0], 1, prnfp);
-            SaveLines(MODE_WRITE, "\001PRN", msg);
+            SaveLines(MODE_WRITE, "\001PRN", msg, prnmargin);
             fwrite(CFG->printreset+1, CFG->printreset[0], 1, prnfp);
           }
           w_info(NULL);
@@ -303,7 +303,7 @@ static void WriteMsgs(GMsg* msg) {
           mktemp(strcpy(fname, AddPath(CFG->goldpath, "GDXXXXXX")));
 
           AA->LoadMsg(msg, msg->msgno, prnmargin);
-          SaveLines(MODE_WRITE, fname, msg, true);
+          SaveLines(MODE_WRITE, fname, msg, prnmargin, true);
 
           gclipbrd clipbrd;
           gfile fp;

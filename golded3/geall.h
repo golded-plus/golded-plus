@@ -222,6 +222,7 @@ const int BLANK_SLIDEWIN = 1;
 
 const int DISPMSGSIZE_BYTES  = 1;
 const int DISPMSGSIZE_KBYTES = 2;
+const int DISPMSGSIZE_LINES = 3;
 
 
 //  ------------------------------------------------------------------

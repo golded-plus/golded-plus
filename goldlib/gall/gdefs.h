@@ -38,10 +38,13 @@
 //  ------------------------------------------------------------------
 //  Define portability and shorthand notation
 
+// GCC after 2.95.x have "and", "not", and "or" predefined
+#if __GNUC__ < 2 || (__GNUC__ == 2 && __GNUC_MINOR__ < 96)
 #ifndef and
 #define not      !
 #define and      &&
 #define or       ||
+#endif
 #endif
 
 #ifndef true
