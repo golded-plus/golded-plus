@@ -213,6 +213,7 @@ void MakePathname(char* pathname, const char* path, const char* name) {
 
   Path tmpname;
   strcpy(tmpname, name);
+  strschg_environ(tmpname);
 
   if(strblank(tmpname)) {
     *pathname = NUL;
