@@ -230,7 +230,8 @@ void gareafile::ReadCrashmailCfg(const char* file) {
       if(not unconfirmed) {
         AddNewArea(aa);
       }
-    } else if(address[0]) {
+    }
+    if(address[0]) {
       strxmerge(tmp, 100, address, "@", domain, NULL);
       CfgAddress(tmp);
     }

@@ -12,6 +12,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed small bug in the Crahmail/Crashecho parser when the last
+  address may left unread.
+
 - Fixed various types of SMB corruption, especially on changing
   message or updating attrbutes.
 
