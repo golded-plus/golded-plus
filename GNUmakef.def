@@ -8,6 +8,18 @@ MINGW=true
 endif
 endif
 
+ifdef MINGW
+CAT=cat
+CC=gcc -mno-cygwin
+CXX=g++ -mno-cygwin
+AR=ar
+RANLIB=ranlib
+WINDRES=windres
+PLATFORM=cyg
+EXEEXT=.exe
+OBJEXT=.o
+LIBEXT=.a
+else
 ifeq ($(findstring EMX, $(PATH)), EMX)
 CAT=cat
 CC=gcc
@@ -36,18 +48,6 @@ AR=ar
 RANLIB=ranlib
 PLATFORM=djg
 SHELL=bash
-EXEEXT=.exe
-OBJEXT=.o
-LIBEXT=.a
-else
-ifdef MINGW
-CAT=cat
-CC=gcc -mno-cygwin
-CXX=g++ -mno-cygwin
-AR=ar
-RANLIB=ranlib
-WINDRES=windres
-PLATFORM=cyg
 EXEEXT=.exe
 OBJEXT=.o
 LIBEXT=.a

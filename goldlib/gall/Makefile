@@ -11,10 +11,10 @@ endif
 TOP=../..
 TARGET=gall
 INCS=-I$(TOP)/goldlib/gall
-ifeq ($(findstring EMX, $(PATH)), EMX)
+ifdef MINGW
 INCS+=-I$(TOP)/goldlib/glibc
 else
-ifdef MINGW
+ifeq ($(findstring EMX, $(PATH)), EMX)
 INCS+=-I$(TOP)/goldlib/glibc
 endif
 endif
