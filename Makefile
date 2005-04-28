@@ -2,7 +2,7 @@
 
 include GNUmakef.def
 
-.PHONY: all clean distclean dirs sourcelists deps
+.PHONY: all clean distclean dirs sourcelists deps docs
 
 LIBS=gall gcfg gmb3 glibc uulib smblib msgidlib
 EXECUTABLES=golded3 goldnode rddt
@@ -10,6 +10,7 @@ EXECUTABLES=golded3 goldnode rddt
 all: sourcelists
 	@$(SHELL) -ec 'for i in $(foreach dir,$(LIBS),goldlib/$(dir)); do cd $$i; $(MAKE) all; cd ../..; done'
 	@$(SHELL) -ec 'for i in $(EXECUTABLES); do cd $$i; $(MAKE) all; cd ..; done'
+	@echo To build HTML man pages run "make docs".
 
 clean:
 	@$(SHELL) -ec 'for i in $(foreach dir,$(LIBS),goldlib/$(dir)); do cd $$i; $(MAKE) clean; cd ../..; done'
@@ -25,3 +26,8 @@ sourcelists: dirs
 	@$(SHELL) -ec 'for i in $(foreach dir,$(LIBS),goldlib/$(dir)); do cd $$i; $(MAKE) sourcelist; cd ../..; done'
 	@$(SHELL) -ec 'for i in $(EXECUTABLES); do cd $$i; $(MAKE) sourcelist; cd ..; done'
 	@echo -n >$(OBJPATH)/$(PLATFORM)/source.lst
+
+docs:
+ifdef MINGW
+	@cd $@ ; $(MAKE) all ; cd ..
+endif
