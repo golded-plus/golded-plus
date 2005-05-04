@@ -1,0 +1,69 @@
+850_850.chs   Charset conversion table from CP850 to CP850 (no conversion)
+850_asc.chs   Charset conversion table from CP850 to ASCII
+850_iqp.chs   Charset conversion table from CP850 to LATIN1QP
+850_iso.chs   Charset conversion table from CP850 to LATIN-1
+865_iso.chs   Charset conversion table from CP865 to LATIN-1
+866_koi.chs   Charset conversion table from cp866 to koi8-r
+866_kou.chs   Charset conversion table from cp866 to koi8-u
+866_ukr.chs   Charset conversion table from CP866 to CP1125
+866_win.chs   Charset conversion table from cp866 to cp1251
+can_asc.chs   Charset conversion table from CANADIAN to ASCII
+can_ibm.chs   Charset conversion table from CANADIAN to IBMPC
+dut_asc.chs   Charset conversion table from DUTCH to ASCII
+dut_ibm.chs   Charset conversion table from DUTCH to IBMPC
+fin_asc.chs   Charset conversion table from FINNISH to ASCII
+fin_ibm.chs   Charset conversion table from FINNISH to IBMPC
+frn_asc.chs   Charset conversion table from FRENCH to ASCII
+frn_ibm.chs   Charset conversion table from FRENCH to IBMPC
+ger_asc.chs   Charset conversion table from GERMAN to ASCII
+ger_ibm.chs   Charset conversion table from GERMAN to IBMPC
+i1m_ibm.chs   Charset conversion table from LATIN1MAC to IBMPC
+ibm_asc.chs   Charset conversion table from IBMPC to ASCII
+ibm_cmp.chs   Charset conversion table from IBMPC to COMPOSED
+ibm_i51.chs   Charset conversion table from IBMPC to I51
+ibm_ibm.chs   Charset conversion table from IBMPC to IBMPC (no conversion)
+ibm_iqp.chs   Charset conversion table from IBMPC to LATIN1QP
+ibm_iso.chs   Charset conversion table from IBMPC to LATIN-1
+ibm_mac.chs   Charset conversion table from IBMPC to MAC
+ibm_mne.chs   Charset conversion table from IBMPC to MNEMONIC
+ibm_swe.chs   Charset conversion table from IBMPC to SWEDISH
+ibm_vt1.chs   Charset conversion table from IBMPC to VT100
+iqp_850.chs   Charset conversion table from LATIN1QP to CP850
+iqp_ibm.chs   Charset conversion table from LATIN1QP to IBMPC
+iso_850.chs   Charset conversion table from LATIN-1 to CP850
+iso_asc.chs   Charset conversion table from LATIN-1 to ASCII
+iso_ibm.chs   Charset conversion table from LATIN-1 to IBMPC
+iso_iso.chs   Charset conversion table from LATIN-1 to LATIN-1 (no conversion)
+iso_mac.chs   Charset conversion table from Latin-1 to MAC
+iso_vt1.chs   Charset conversion table from Latin-1 to VT100
+ita_asc.chs   Charset conversion table from ITALIAN to ASCII
+itl_ibm.chs   Charset conversion table from ITALIAN to IBMPC
+koi_866.chs   Charset conversion table from koi8-r to cp866
+kou_866.chs   Charset conversion table from koi8-u to cp866
+kou_ukr.chs   Charset conversion table from koi8-u to cp1125
+mac_850.chs   Charset conversion table from MAC to CP850
+mac_asc.chs   Charset conversion table from MAC to ASCII
+mac_ibm.chs   Charset conversion table from MAC to IBMPC
+mac_iso.chs   Charset conversion table from MAC to LATIN-1
+mac_vt1.chs   Charset conversion table from MAC to VT100
+nor_asc.chs   Charset conversion table from NORWEG to ASCII
+nor_ibm.chs   Charset conversion table from NORWEG to IBMPC
+prt_asc.chs   Charset conversion table from PORTU to ASCII
+prt_ibm.chs   Charset conversion table from PORTU to IBMPC
+spn_asc.chs   Charset conversion table from SPANISH to ASCII
+spn_ibm.chs   Charset conversion table from SPANISH to IBMPC
+swe_asc.chs   Charset conversion table from SWEDISH to ASCII
+swe_ibm.chs   Charset conversion table from SWEDISH to IBMPC
+swi_asc.chs   Charset conversion table from SWISS to ASCII
+swi_ibm.chs   Charset conversion table from SWISS to IBMPC
+uk__asc.chs   Charset conversion table from UK to ASCII
+uk__ibm.chs   Charset conversion table from UK to IBMPC
+ukr_866.chs   Charset conversion table from CP1125 to CP866
+ukr_koi.chs   Charset conversion table from cp1125 to koi8-r
+ukr_kou.chs   Charset conversion table from cp1125 to koi8-u
+ukr_ukr.chs   Charset conversion table from CP1125 to CP1125 (no conversion)
+win_866.chs   Charset conversion table from cp1251 to cp866
+cmp_ibm.esc IBMPC charset Escaped Characters Table: Composed Characters Table, Andre van de Wijdeven (2:500/131).
+i51_ibm.esc IBMPC charset Escaped Characters Table: FSC-0051.003 (I51) Combined Characters, Thomas Gradin (2:200/108).
+mne_850.esc CP850 charset Escaped Characters Table
+mne_ibm.esc CP865 (IBMPC) charset Escaped Characters Table
