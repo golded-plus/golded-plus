@@ -1,161 +1,142 @@
+; $Id$
 ;
 ; This file is a charset conversion module in text form.
 ;
-; This module Converts Macintosh extended characters to IBM CP850 characters.
+; Created by Laurent Jumet.
 ;
-; Format: ID, version, level,
-;         from charset, to charset,
-;         128 entries: first & second byte
-;	  "END"
-; Lines beginning with a ";" or a ";" after the entries are comments
+0
+0
 ;
-; Unknown characters are mapped to the "?" character.
+2
+mac-roman	; from charset
+cp850	; to charset
 ;
-; cedilla = ,   ; dieresis = ..       ; acute = '
-; grave = `     ; circumflex = ^      ; ring = o
-; tilde = ~     ; caron = v 
-; All of these are above the character, apart from the cedilla which is below.
-;
-; \ is the escape character: \0 means decimal zero,
-; \dnnn where nnn is a decimal number is the ordinal value of the character
-; \xnn where nn is a hexadecimal number
-; e.g.: \d32 is the ASCII space character
-; Two \\ is the character "\" itself.
-;
-0		; ID number
-0		; version number
-;
-2		; level number
-;
-MAC		; from set
-CP850           ; to set
-;
-\0 \x8E         ; 128 80 latin capital letter a with diaeresis
-\0 \x8F         ; 129 81 latin capital letter a with ring above
-\0 \x80         ; 130 82 latin capital letter c with cedilla
-\0 \x90         ; 131 83 latin capital letter e with acute
-\0 \xA5         ; 132 84 latin capital letter n with tilde
-\0 \x94         ; 133 85 latin capital letter o with diaeresis
-\0 \x9A         ; 134 86 latin capital letter u with diaeresis
-\0 \xA0         ; 135 87 latin small letter a with acute
-\0 \x85         ; 136 88 latin small letter a with grave
-\0 \x83         ; 137 89 latin small letter a with circumflex
-\0 \x84         ; 138 8A latin small letter a with diaeresis
-\0 \xC6         ; 139 8B latin small letter a with tilde
-\0 \x86         ; 140 8C latin small letter a with ring above
-\0 \x87         ; 141 8D latin small letter c with cedilla
-\0 \x82         ; 142 8E latin small letter e with acute
-\0 \x8A         ; 143 8F latin small letter e with grave
-\0 \x88         ; 144 90 latin small letter e with circumflex
-\0 \x89         ; 145 91 latin small letter e with diaeresis
-\0 \xA1         ; 146 92 latin small letter i with acute
-\0 \x8D         ; 147 93 latin small letter i with grave
-\0 \x8C         ; 148 94 latin small letter i with circumflex
-\0 \x8B         ; 149 95 latin small letter i with diaeresis
-\0 \xA4         ; 150 96 latin small letter n with tilde
-\0 \xA2         ; 151 97 latin small letter o with acute
-\0 \x95         ; 152 98 latin small letter o with grave
-\0 \x96         ; 153 99 latin small letter o with circumflex
-\0 \x94         ; 154 9A latin small letter o with diaeresis
-\0 \xE4         ; 155 9B latin small letter o with tilde
-\0 \xA3         ; 156 9C latin small letter u with acute
-\0 \x97         ; 157 9D latin small letter u with grave
-\0 \x96         ; 158 9E latin small letter u with circumflex
-\0 \x81         ; 159 9F latin small letter u with diaeresis
-\0 +            ; 160 A0 dagger
-\0 \xF8         ; 161 A1 degree sign
-\0 \x9B         ; 162 A2 cent sign
-\0 \x9C         ; 163 A3 pound sign
-\0 \x15         ; 164 A4 section sign
-\0 \xFE         ; 165 A5 bullet operator
-\0 \x14         ; 166 A6 pilcrow sign
-\0 \xE1         ; 167 A7 latin small letter sharp s (german)
-\0 \xA9         ; 168 A8 registered sign
-\0 \xB8         ; 169 A9 copyright sign
-t m             ; 170 AA trade mark sign
-\0 \xEF         ; 171 AB acute accent
-\0 \xF9         ; 172 AC diaeresis
-< >             ; 173 AD not equal to
-\0 \x92         ; 174 AE latin capital letter ae
-\0 \x9D         ; 175 AF latin capital letter o with stroke
-\0 \xEC         ; 176 B0 infinity
-\0 \xF1         ; 177 B1 plus-minus sign
-\0 \xF3         ; 178 B2 less-than or equal to
-\0 \xF2         ; 179 B3 greater-than or equal to
-\0 \x9D         ; 180 B4 yen sign
-\0 \xE6         ; 181 B5 micro sign
-\0 \xEB         ; 182 B6 partial differential
-\0 \xE4         ; 183 B7 n-ary summation
-\0 x            ; 184 B8 n-ary product
-\0 \xE3         ; 185 B9 greek small letter pi
-I n             ; 186 BA integral
-\0 \xA6         ; 187 BB feminine ordinal indicator
-\0 \xA7         ; 188 BC masculine ordinal indicator
-\0 \xEA         ; 189 BD greek capital letter omega
-\0 \x91         ; 190 BE latin small letter ae
-\0 \x9b         ; 191 BF latin small letter o with stroke
-\0 \xA8         ; 192 C0 inverted question mark
-\0 \xAD         ; 193 C1 inverted exclamation mark
-\0 \xAA         ; 194 C2 not sign
-\0 \xFB         ; 195 C3 square root
-\0 \x9F         ; 196 C4 dutch guilder sign (ibm437 159)
-\0 \xF7         ; 197 C5 almost equal to
-\0 \x7F         ; 198 C6 greek capital letter delta
-\0 \xAF         ; 199 C7 left-pointing double angle quotation mark
-\0 \xAE         ; 200 C8 right-pointing double angle quotation mark
-. .             ; 201 C9 midline horizontal ellipsis
-\0 \d32         ; 202 CA no-break space
-\0 \xB7         ; 203 CB latin capital letter a with grave
-\0 \xC7         ; 204 CC latin capital letter a with tilde
-\0 \xE5         ; 205 CD latin capital letter o with tilde
-O E             ; 206 CE latin capital ligature oe
-o e             ; 207 CF latin small ligature oe
-\0 \xFA         ; 208 D0 em dash
-\0 -            ; 209 D1 en dash
-\0 "            ; 210 D2 left double quotation mark
-\0 "            ; 211 D3 right double quotation mark
-\0 `            ; 212 D4 left single quotation mark
-\0 '            ; 213 D5 right single quotation mark
-\0 \xF6         ; 214 D6 division sign
-\0 \x04         ; 215 D7 black diamond
-\0 \x98         ; 216 D8 latin small letter y with diaeresis
-\0 \x98         ; 217 D9 latin capital letter y with diaeresis
-\0 /            ; 218 DA fraction slash
-C u             ; 219 DB currency sign
-\0 <            ; 220 DC single left-pointing angle quotation mark
-\0 >            ; 221 DD single right-pointing angle quotation mark
-f i             ; 222 DE latin small ligature fi
-f l             ; 223 DF latin small ligature fl
-+ +             ; 224 E0 double dagger
-\0 .            ; 225 E1 middle dot
-\0 '            ; 226 E2 single low-9 quotation mark
-\0 "            ; 227 E3 double low-9 quotation mark
-% .             ; 228 E4 per mille sign
-\0 \xB6         ; 229 E5 latin capital letter a with circumflex
-\0 \xD2         ; 230 E6 latin capital letter e with circumflex
-\0 \xB5         ; 231 E7 latin capital letter a with acute
-\0 \xD3         ; 232 E8 latin capital letter e with diaeresis
-\0 \xD4         ; 233 E9 latin capital letter e with grave
-\0 \xD6         ; 234 EA latin capital letter i with acute
-\0 \xD7         ; 235 EB latin capital letter i with circumflex
-\0 \xD8         ; 236 EC latin capital letter i with diaeresis
-\0 \xDE         ; 237 ED latin capital letter i with grave
-\0 \xE0         ; 238 EE latin capital letter o with acute
-\0 \xE2         ; 239 EF latin capital letter o with circumflex
-\x1 ?           ; 240 F0 ???
-\0 \xE3         ; 241 F1 latin capital letter o with grave
-\0 \xE9         ; 242 F2 latin capital letter u with acute
-\0 \xEA         ; 243 F3 latin capital letter u with circumflex
-\0 \xEB         ; 244 F4 latin capital letter u with grave
-\0 i            ; 245 F5 latin small letter i dotless
-\x1 ?           ; 246 F6 ???
-\x1 ?           ; 247 F7 ???
-\0 \xEE         ; 248 F8 overline
-\0 u            ; 249 F9 breve
-\0 \xFA         ; 250 FA dot above
-\0 o            ; 251 FB ring above
-\0 ,            ; 252 FC cedilla
-\0 "            ; 253 FD double acute accent
-\0 \xF7         ; 254 FE ogonek
-\0 v            ; 255 FF caron
+\0 \x8e	; LATIN CAPITAL LETTER A WITH DIAERESIS
+\0 \x8f	; LATIN CAPITAL LETTER A WITH RING ABOVE
+\0 \x80	; LATIN CAPITAL LETTER C WITH CEDILLA
+\0 \x90	; LATIN CAPITAL LETTER E WITH ACUTE
+\0 \xa5	; LATIN CAPITAL LETTER N WITH TILDE
+\0 \x99	; LATIN CAPITAL LETTER O WITH DIAERESIS
+\0 \x9a	; LATIN CAPITAL LETTER U WITH DIAERESIS
+\0 \xa0	; LATIN SMALL LETTER A WITH ACUTE
+\0 \x85	; LATIN SMALL LETTER A WITH GRAVE
+\0 \x83	; LATIN SMALL LETTER A WITH CIRCUMFLEX
+\0 \x84	; LATIN SMALL LETTER A WITH DIAERESIS
+\0 \xc6	; LATIN SMALL LETTER A WITH TILDE
+\0 \x86	; LATIN SMALL LETTER A WITH RING ABOVE
+\0 \x87	; LATIN SMALL LETTER C WITH CEDILLA
+\0 \x82	; LATIN SMALL LETTER E WITH ACUTE
+\0 \x8a	; LATIN SMALL LETTER E WITH GRAVE
+\0 \x88	; LATIN SMALL LETTER E WITH CIRCUMFLEX
+\0 \x89	; LATIN SMALL LETTER E WITH DIAERESIS
+\0 \xa1	; LATIN SMALL LETTER I WITH ACUTE
+\0 \x8d	; LATIN SMALL LETTER I WITH GRAVE
+\0 \x8c	; LATIN SMALL LETTER I WITH CIRCUMFLEX
+\0 \x8b	; LATIN SMALL LETTER I WITH DIAERESIS
+\0 \xa4	; LATIN SMALL LETTER N WITH TILDE
+\0 \xa2	; LATIN SMALL LETTER O WITH ACUTE
+\0 \x95	; LATIN SMALL LETTER O WITH GRAVE
+\0 \x93	; LATIN SMALL LETTER O WITH CIRCUMFLEX
+\0 \x94	; LATIN SMALL LETTER O WITH DIAERESIS
+\0 \xe4	; LATIN SMALL LETTER O WITH TILDE
+\0 \xa3	; LATIN SMALL LETTER U WITH ACUTE
+\0 \x97	; LATIN SMALL LETTER U WITH GRAVE
+\0 \x96	; LATIN SMALL LETTER U WITH CIRCUMFLEX
+\0 \x81	; LATIN SMALL LETTER U WITH DIAERESIS
+\0 ?	; (DAGGER)
+\0 \xf8	; DEGREE SIGN
+\0 \xbd	; CENT SIGN
+\0 \x9c	; POUND SIGN
+\0 \xf5	; SECTION SIGN
+\0 ?	; (BULLET)
+\0 \xf4	; PILCROW SIGN
+\0 \xe1	; LATIN SMALL LETTER SHARP S
+\0 \xa9	; REGISTERED SIGN
+\0 \xb8	; COPYRIGHT SIGN
+\x54 \x4d	; LATIN CAPITAL LETTER T + LATIN CAPITAL LETTER M
+\0 \xef	; ACUTE ACCENT
+\0 \xf9	; DIAERESIS
+\x21 \x3d	; EXCLAMATION MARK + EQUALS SIGN
+\0 \x92	; LATIN CAPITAL LETTER AE
+\0 \x9d	; LATIN CAPITAL LETTER O WITH STROKE
+\0 ?	; (INFINITY)
+\0 \xf1	; PLUS-MINUS SIGN
+\0 ?	; (LESS-THAN OR EQUAL TO)
+\x3e \x3d	; GREATER-THAN SIGN + EQUALS SIGN
+\0 \xbe	; YEN SIGN
+\0 \xe6	; MICRO SIGN
+\0 ?	; (PARTIAL DIFFERENTIAL)
+\0 ?	; (N-ARY SUMMATION)
+\0 ?	; (N-ARY PRODUCT)
+\0 ?	; (GREEK SMALL LETTER PI)
+\0 ?	; (INTEGRAL)
+\0 \xa6	; FEMININE ORDINAL INDICATOR
+\0 \xa7	; MASCULINE ORDINAL INDICATOR
+\0 ?	; (OHM SIGN)
+\0 \x91	; LATIN SMALL LETTER AE
+\0 \x9b	; LATIN SMALL LETTER O WITH STROKE
+\0 \xa8	; INVERTED QUESTION MARK
+\0 \xad	; INVERTED EXCLAMATION MARK
+\0 \xaa	; NOT SIGN
+\0 ?	; (SQUARE ROOT)
+\0 \x9f	; LATIN SMALL LETTER F WITH HOOK
+\x7e \x3d	; TILDE + EQUALS SIGN
+\0 ?	; (INCREMENT)
+\0 \xae	; LEFT-POINTING DOUBLE ANGLE QUOTATION MARK
+\0 \xaf	; RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK
+\x2e \x2e \x2e	; FULL STOP + FULL STOP + FULL STOP
+\0 \xff	; NO-BREAK SPACE
+\0 \xb7	; LATIN CAPITAL LETTER A WITH GRAVE
+\0 \xc7	; LATIN CAPITAL LETTER A WITH TILDE
+\0 \xe5	; LATIN CAPITAL LETTER O WITH TILDE
+\x6f \x65	; LATIN SMALL LETTER O + LATIN SMALL LETTER E
+\x4f \x45	; LATIN CAPITAL LETTER O + LATIN CAPITAL LETTER E
+\0 ?	; (EN DASH)
+\0 ?	; (EM DASH)
+\0 \x22	; QUOTATION MARK
+\0 \x22	; QUOTATION MARK
+\0 \x27	; APOSTROPHE
+\0 \x27	; APOSTROPHE
+\0 \xf6	; DIVISION SIGN
+\0 ?	; (LOZENGE)
+\0 \x98	; LATIN SMALL LETTER Y WITH DIAERESIS
+\x59 \x65	; LATIN CAPITAL LETTER Y + LATIN SMALL LETTER E
+\0 ?	; (FRACTION SLASH)
+\0 \xcf	; CURRENCY SIGN
+\0 ?	; (SINGLE LEFT-POINTING ANGLE QUOTATION MARK)
+\0 ?	; (SINGLE RIGHT-POINTING ANGLE QUOTATION MARK)
+\x66 \x69	; LATIN SMALL LETTER F + LATIN SMALL LETTER I
+\x66 \x6c	; LATIN SMALL LETTER F + LATIN SMALL LETTER L
+\0 ?	; (DOUBLE DAGGER)
+\0 \xfa	; MIDDLE DOT
+\0 \x2c	; COMMA
+\x2c \x2c	; COMMA + COMMA
+\0 ?	; (PER MILLE SIGN)
+\0 \xb6	; LATIN CAPITAL LETTER A WITH CIRCUMFLEX
+\0 \xd2	; LATIN CAPITAL LETTER E WITH CIRCUMFLEX
+\0 \xb5	; LATIN CAPITAL LETTER A WITH ACUTE
+\0 \xd3	; LATIN CAPITAL LETTER E WITH DIAERESIS
+\0 \xd4	; LATIN CAPITAL LETTER E WITH GRAVE
+\0 \xd6	; LATIN CAPITAL LETTER I WITH ACUTE
+\0 \xd7	; LATIN CAPITAL LETTER I WITH CIRCUMFLEX
+\0 \xd8	; LATIN CAPITAL LETTER I WITH DIAERESIS
+\0 \xde	; LATIN CAPITAL LETTER I WITH GRAVE
+\0 \xe0	; LATIN CAPITAL LETTER O WITH ACUTE
+\0 \xe2	; LATIN CAPITAL LETTER O WITH CIRCUMFLEX
+\0 ?	; (BLACK HEART SUIT)
+\0 \xe3	; LATIN CAPITAL LETTER O WITH GRAVE
+\0 \xe9	; LATIN CAPITAL LETTER U WITH ACUTE
+\0 \xea	; LATIN CAPITAL LETTER U WITH CIRCUMFLEX
+\0 \xeb	; LATIN CAPITAL LETTER U WITH GRAVE
+\0 \xd5	; LATIN SMALL LETTER DOTLESS I
+\0 ?	; (MODIFIER LETTER CIRCUMFLEX ACCENT)
+\0 ?	; (SMALL TILDE)
+\0 \xee	; MACRON
+\0 ?	; (BREVE)
+\0 ?	; (DOT ABOVE)
+\0 ?	; (RING ABOVE)
+\0 \xf7	; CEDILLA
+\0 ?	; (DOUBLE ACUTE ACCENT)
+\0 ?	; (OGONEK)
+\0 ?	; (CARON)
 END

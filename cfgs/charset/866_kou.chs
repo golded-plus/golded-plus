@@ -1,3 +1,4 @@
+; $Id$
 ;
 ; This file is a charset conversion module in text form.
 ; KOI8-U by Oleksandr Liutyi 2:463/811@FidoNet 11:463/11@NeonNet

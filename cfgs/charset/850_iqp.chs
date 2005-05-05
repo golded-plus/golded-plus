@@ -1,3 +1,4 @@
+; $Id$
 ;
 ; This file is a charset conversion module in text form.
 ; Build on FEB 2003 by Laurent Jumet <laurent.jumet@advalvas.be>

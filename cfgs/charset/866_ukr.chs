@@ -1,3 +1,4 @@
+; $Id$
 ;
 ; %Id: rus_ukr.chs,v 0.2 1999/07/28 porokh Exp $
 ;                  v 0.3 2003/01/20 Liutyi

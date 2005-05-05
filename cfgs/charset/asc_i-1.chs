@@ -1,0 +1,142 @@
+; $Id$
+;
+; This file is a charset conversion module in text form.
+;
+; Created by Laurent Jumet.
+;
+0
+0
+;
+2
+us-ascii	; from charset
+iso8859-1	; to charset
+;
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+\0 ?	; not defined
+END
