@@ -191,7 +191,7 @@ int strschg_environ(char* s);
 int strschg_environ(std::string& s);
 
 char* MapPath(char* map, bool reverse = false);
-inline char* ReMapPath(char* map) { return MapPath(map, true); };
+inline char* ReMapPath(char* map) { return MapPath(map, true); }
 
 inline long lseekset(int fh, long offset) { return lseek(fh, offset, SEEK_SET); }
 inline long lseekset(int fh, long record, long recordsize) { return lseek(fh, record*recordsize, SEEK_SET); }
