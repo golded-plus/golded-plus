@@ -43,7 +43,7 @@ else
 ifneq ($(DJGPP),)
 CAT=command.com /c type
 CC=gcc
-CXX=gpp
+CXX=gxx
 AR=ar
 RANLIB=ranlib
 PLATFORM=djg
