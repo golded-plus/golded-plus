@@ -1828,6 +1828,8 @@ void vcurset(int sline, int eline) {
 
   if(eline)
     vposset(gvid->currow, gvid->curcol);
+  else  /* Move cursor to bottom right corner (workaround of the win9x console bug) */
+    vposset(gvid->numrows-1, gvid->numcols-1);
 
   cci.dwSize = (eline and sline) ? sline : 100;
   cci.bVisible = eline ? true : false;
