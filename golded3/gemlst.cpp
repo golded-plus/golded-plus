@@ -1029,7 +1029,7 @@ bool GThreadlist::NextThread(bool next) {
 
   uint m = AA->Msgn.ToReln(reader_msg->msgno);
   for(m = m ? m-1 : 0;
-      next ? m < AA->Msgn.Count() : m;
+      next ? m < AA->Msgn.Count() : m!=-1;
       next ? m++ : m--) {
 
     dword msgn = AA->Msgn[m];
