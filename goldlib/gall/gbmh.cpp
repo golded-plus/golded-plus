@@ -64,8 +64,14 @@ void gbmh::init(const char* pattern, bool ignorecase) {
 
   // Copy pattern
   strcpy(pat, pattern);
-  if(ignore_case)
+  if(ignore_case) {
+#ifndef _MSC_VER
     strupr(pat);
+#else /* strupr() is wrong on windows 9x (patch from Ianos Gnatiuc 2:469/335.155) */
+    for(char *ptr = pat; *ptr; ptr++)
+      *ptr = toupper(*ptr);
+#endif
+  }
 
   // initialize skip array
   int i;
