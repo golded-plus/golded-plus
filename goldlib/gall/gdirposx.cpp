@@ -121,7 +121,9 @@ void gposixdir::cd(const char *name, bool relative)
 	ok = maketruepath(dirname);
 	entries.clear();
 	ndirname = dirname;
-	ndirname += "/*";
+	if (ndirname[ndirname.size()-1] != '/')
+		ndirname += "/";
+	ndirname += "*";
 	struct _finddata_t de;
 	long d = _findfirst(ndirname.c_str(), &de);
 	if(d == -1) {
