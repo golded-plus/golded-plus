@@ -1766,8 +1766,10 @@ void IEclass::savefile(int __status) {
   GFTRK("Editsavefile");
 
   // Turn off cursor and put up a wait window
+#if defined(__USE_NCURSES__) || !defined(__WIN32__)  /* Fix after bugfix w9x console bug in gvidbase.cpp */
   int wascursoron = not vcurhidden();
   cursoroff();
+#endif
 
   strcpy(statbak, information);
   update_statusline(LNG->Wait+1);
@@ -1812,8 +1814,10 @@ void IEclass::savefile(int __status) {
 
   update_statusline(statbak);
 
+#if defined(__USE_NCURSES__) || !defined(__WIN32__)  /* Fix after bugfix w9x console bug in gvidbase.cpp */
   if(wascursoron)
     cursoron();
+#endif
 
   GFTRK(NULL);
 }
