@@ -357,7 +357,7 @@ void gfileselect::run(GMsg* cmsg) {
 
   run_picker();
 
-};
+}
 
 
 

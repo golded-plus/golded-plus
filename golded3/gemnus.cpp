@@ -408,7 +408,7 @@ int GMenuImportTxt::Run() {
   vcurshow();
 
   return finaltag - TAG_TEXT;
-};
+}
 
 
 //  ------------------------------------------------------------------

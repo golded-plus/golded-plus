@@ -531,7 +531,7 @@ void SelMaskPick::Run() {
   if(not aborted)
     AL.mask = (byte)index;
 
-};
+}
 
 
 void AreaList::Select_Mask() {

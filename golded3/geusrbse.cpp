@@ -235,9 +235,9 @@ void guserbase::print_line(uint idx, uint pos, bool isbar) {
 //  ------------------------------------------------------------------
 
 addressbook_form::~addressbook_form() { }
-addressbook_form::addressbook_form(gwindow& w) : gwinput2(w) { };
-void addressbook_form::after() { gwinput2::after(); };
-void addressbook_form::before() { gwinput2::before(); };
+addressbook_form::addressbook_form(gwindow& w) : gwinput2(w) { }
+void addressbook_form::after() { gwinput2::after(); }
+void addressbook_form::before() { gwinput2::before(); }
 
 
 //  ------------------------------------------------------------------
