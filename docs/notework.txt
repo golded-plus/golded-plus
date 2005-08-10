@@ -12,6 +12,10 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed gcc 4.x build (thanks to Max Alekseyev).
+
+- Fixed compiler warnings (thanks to Max Alekseyev).
+
 - Fixed bug with Win9x win32 console (hide cursor).
 
 - Fixed directory seek for Win9x.
