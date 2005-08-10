@@ -118,13 +118,8 @@ typedef int (*StdCmpCP)(const void*, const void*);
 template <class T> inline bool in_range(T a, T b, T c)   { return (a >= b) and (a <= c); }
 template <class T> inline    T absolute(T a)             { return a < 0 ? -a : a; }
 template <class T> inline  int compare_two(T a, T b)     { return a < b ? -1 : a > b ? 1 : 0; }
-#ifdef __GNUC__
-template <class T> inline    T minimum_of_two(T a, T b)  { return __extension__ (a <? b); }
-template <class T> inline    T maximum_of_two(T a, T b)  { return __extension__ (a >? b); }
-#else
 template <class T> inline    T minimum_of_two(T a, T b)  { return (a < b) ? a : b; }
 template <class T> inline    T maximum_of_two(T a, T b)  { return (a > b) ? a : b; }
-#endif
 template <class T> inline  int zero_or_one(T e)          { return e ? 1 : 0; }
 template <class T> inline bool make_bool(T a)            { return a ? true : false; }
 
