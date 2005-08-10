@@ -2929,7 +2929,7 @@ Line* LastLine(Line* line) {
 
 //  ------------------------------------------------------------------
 
-Line* AddLine(Line* line, char* buf, int where) {
+Line* AddLine(Line* line, const char* buf, int where) {
 
   Line* newline = new Line(buf);
   throw_xnew(newline);
@@ -2942,7 +2942,7 @@ Line* AddLine(Line* line, char* buf, int where) {
 
 //  ------------------------------------------------------------------
 
-Line* AddLine(Line* line, char* buf) {
+Line* AddLine(Line* line, const char* buf) {
 
   return AddLine(line, buf, DIR_BELOW);
 }

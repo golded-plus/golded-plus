@@ -171,7 +171,7 @@ public:
 //  ------------------------------------------------------------------
 
 Line* AddLineF(Line*& line, const char* format, ...) __attribute__ ((format (printf, 2, 3)));
-Line* AddLine(Line* line, char* buf);
+Line* AddLine(Line* line, const char* buf);
 Line* AddHexdump(Line*& line, void* data, size_t datalen);
 
 
