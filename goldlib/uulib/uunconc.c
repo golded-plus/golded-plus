@@ -1146,7 +1146,7 @@ UUDecodePart (FILE *datain, FILE *dataout, int *state,
       }
 
       if (vflag == method) {
-//	if (tf) {
+/*	if (tf) { */
 	if (tf || (method == UU_ENCODED || method == XX_ENCODED)) {
 	  count  = UUDecodeLine (line, oline, method);
 	  if (method == YENC_ENCODED) {
