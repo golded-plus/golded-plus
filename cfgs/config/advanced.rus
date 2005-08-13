@@ -97,7 +97,7 @@ AKAMatchLocal Yes               ; Разpешить в локальных областях.
 ----------------------------------------------------------------------
 -- НОДЛИСТЫ И СПИСКИ ПОЛЬЗОВАТЕЛЕЙ (USERLISTS)
 
-// Если эта опция включена, то в случае отсутствия нодлистов, или пpоблем 
+// Если эта опция включена, то в случае отсутствия нодлистов, или пpоблем
 // в них, GoldED будет предупреждать об этом при запуске.
 NodelistWarn Yes
 
@@ -115,10 +115,10 @@ UserList fidouser.lst
 ;UserList golded.lst
 ;UserList dk-point.nam
 
-// Фоpмат нодлиста по умолчанию (если не откpыт ни один из 
-// ниже пpиведенных фоpматов) GOLDNODE.GXA, т.е. тот, что 
+// Фоpмат нодлиста по умолчанию (если не откpыт ни один из
+// ниже пpиведенных фоpматов) GOLDNODE.GXA, т.е. тот, что
 // создается golded компилятоpом нодлиста goldnode.exe (gndjg.exe).
-// 
+//
 // Выберите этот параметр для использования нодлиста в формате
 // FrontDoor.
 ;NodePathFD C:\FIDO\NODELIST\
@@ -268,7 +268,7 @@ DispSoftCR Yes  ; Обязательно для R50!
 // Имя файла или каталога по умолчанию, для записи в файл сообщения по Alt-W.
 OutputFile C:\FIDO\golded.out
 
-// Вставлять ли символ Form Feed (0x0c) между письмами при 
+// Вставлять ли символ Form Feed (0x0c) между письмами при
 // сохранении в файл (по умолчанию No).
 FORMFEEDSEPARATOR No
 
@@ -495,7 +495,7 @@ EditComment "Odin"    "One more 'n' please."
 EditComment "Odinn"   "That's right :-)"
 EditComment "Odinnn"  "Oops! One 'n' too many! :-)"
 //  Внешний подключаемый словаpь почтовых аббpевиатyp
-//   (в файле GOLDCMNT.CFG) комментиpyемых pедактоpом  
+//   (в файле GOLDCMNT.CFG) комментиpyемых pедактоpом
 INCLUDE GOLDCMNT.CFG
 
 // Определение строк, которые будут выводится, при вводе сокращённой
@@ -624,7 +624,7 @@ WriteHeader Yes
 // Путь к шаблонам. По умолчанию соответствует GoldPath.
 ;TemplatePath C:\FIDO\GED\Tpls\
 
-// Использовать ли формат сохраняемого сообщения принятый 
+// Использовать ли формат сохраняемого сообщения принятый
 // во встроенном в редактор шаблоне  или брать из внешнего?
 // (По умолчанию берется из встроенного в редактор шаблона)
 WriteTemplate russian.tpl
@@ -653,9 +653,9 @@ ForceTemplate Yes
 -- ЦИТИРОВАНИЕ (QUOTING)
 
 // Надо ли цитиpовать origin и тиpлайн в ответах.
-;QuoteCtrl Yes ; (по умолчанию) Цитиpовать оpиджин и тиpлайн в ответах. 
+;QuoteCtrl Yes ; (по умолчанию) Цитиpовать оpиджин и тиpлайн в ответах.
 QuoteCtrl No ; Не цитиpовать оpиджин и тиpлайн в ответах.
- 
+
 // Надо ли цитировать пустые строки.
 ;QuoteBlank Yes
 
@@ -665,7 +665,7 @@ QuoteMargin 70
 // Что делать, если текст в стpоке такой длинный, что целиком не помещается
 // в однy стpокy пpи цитиpовании; т.е. пpевышает yстановленный QuoteMargin.
 // Рассматривать цитируемые строчки всегда как завершённые - Yes,
-// или как часть одного абзаца - No (по yмолчанию). 
+// или как часть одного абзаца - No (по yмолчанию).
 QuoteWrapHard No
 
 // Добавлять пустые строки до и после блоков цитат?
@@ -749,7 +749,7 @@ CrossPostList Verbose     ; Показать полностью.
 ;InternetGate UUCP, 2:50/128    ; Стандартное, с определённым именем гейта.
 InternetGate 2:50/128
 
-// Расширенная  конфигурации  поля "Кому:" в сообщениях  
+// Расширенная  конфигурации  поля "Кому:" в сообщениях
 // отсылаемых на E-mail через UUCP гейт (по умолчанию "Name, Address").
 ;InternetGateExp Address       ; Кому: bob@fisher.com
 ;InternetGateExp Address,Name  ; Кому: bob@fisher.com (Bob Fisher)
@@ -762,15 +762,15 @@ InternetGateExp Name,Address  ; Кому: "Bob Fisher" <bob@fisher.com>
 // Что делать с e-mail адресом при ответе.
 ;InternetReply Yes  ; Всегда использовать FSC-35 метод.
 InternetReply No    ; Использовать FSC-35 если адрес слишком длинный.
- 
-// Как отображать NAME и E-mail адрес в письмах пришедших из 
+
+// Как отображать NAME и E-mail адрес в письмах пришедших из
 // Internet_а или отправляемых на E-mail.
-// Если No (по умолчанию), то: 
-// - в письмах пришедших из Internet_а видна строка From: "NAME" <e-mail>; 
+// Если No (по умолчанию), то:
+// - в письмах пришедших из Internet_а видна строка From: "NAME" <e-mail>;
 // - при написании письма на E-mail в поле "Кому:" проставляется NAME
 //   и в теле письма видна добавленная строка  -> To: "NAME" <e-mail>;
-// - при ответе нетмайлом на письмо из Internet_а в поле "Кому:" будет 
-//   только E-mail, при этом в теле письма не создается строка "To:" ; 
+// - при ответе нетмайлом на письмо из Internet_а в поле "Кому:" будет
+//   только E-mail, при этом в теле письма не создается строка "To:" ;
 // Если Yes, то в поле "Кому:", сообщений отсылаемых через InternetGate,
 // показывает "NAME, E-mail" и скрыта строка "To:" в теле письма.
 InternetRFCBody Yes
@@ -799,13 +799,13 @@ URLHANDLER echo @url >> C:\FIDO\Urls_Ged.txt
 
 // Разрешается использовать из SoupGate совместно с AreaIsEmail.
 // (По умолчанию - No).
-// Если параметр будет "Yes", GoldED+ будет создавать только 
-// строку To: в E-mail_овых областях, но будет также RFC 
+// Если параметр будет "Yes", GoldED+ будет создавать только
+// строку To: в E-mail_овых областях, но будет также RFC
 // закодированный заголовок сообщения в отквоченой части,
 // если это разрешено ключевым словом  EncodeEmailHeaders.
 InternetViaGate No
 
-// По умолчанию Yes. Если No, то тогда RFC заголовок не будет 
+// По умолчанию Yes. Если No, то тогда RFC заголовок не будет
 // закодирован вместе с процитированной частью.
 EncodeEmailHeaders Yes
 
@@ -875,7 +875,7 @@ EndIf
 
 // Activate quick-n-dirty HTML-tag stripper. <Yes/No>.  Defaults - No.
 // It known to fail in some cases but more likely will not be improoved.
-// The keyword may be used in Random System Group. 
+// The keyword may be used in Random System Group.
 // NOTE: Strip HTML mode forces quoted-printable decoding.
 StripHTML No
 
@@ -1124,8 +1124,14 @@ Invalidate Seenby   "SEEN-BY"       "SEEN+BY"
 Invalidate Tearline "" ""
 Invalidate Origin   "" ""
 
-//Не использовать адрес из Origin (yes/[no])
-ADDRESSLOOKUPFIRST No
+// Приоритет использования кладжей для определения адреса отправителя сообщения
+// Возможные значения: msgid и origin. По умолчанию - Origin
+// Значение Origin: Golded+ определяет адрес отправителя сообщения из поля
+// " * Origin: <текст> (<адрес FTN>)".
+// Значение  MsgID: Golded+ берёт адрес отправителя из кладжа MSGID
+// в случае его наличия в сообщении, если же MSGID отсутствует - используется
+// Origin.
+ADDRESSLOOKUPFIRST MsgID
 
 ----------------------------------------------------------------------
 -- ТАГЛАЙНЫ
@@ -1242,17 +1248,17 @@ Event EditComment    Play oe8djk.wav     ; Когда editcomment найден.
 ;Event EditCompletion Play SayBiBi        ; При EditCompletion_замене в редакторе.
 Event EndOfMsgs      Play Midnight.wav   ; Когда нет больше сообщений в этой области.
 Event ErrorFatal     Play SOS            ; Выход по фатальной ошибке.
-Event Exit           Play Disconnect.wav ; Выход от GoldED. 
-Event JobDone        Play Sound45.wav    ; Успешное завершение работы.  
+Event Exit           Play Disconnect.wav ; Выход от GoldED.
+Event JobDone        Play Sound45.wav    ; Успешное завершение работы.
 Event JobFailed      Play TheEnd         ; Неудачное завершение работы.
-Event MsgDeleting    Play Sound49.wav    ; При удалении сообщения.  
+Event MsgDeleting    Play Sound49.wav    ; При удалении сообщения.
 Event MsgFromYou     Play online.wav     ; Когда сообщение от вас найдено.
 Event MsgIsLocal     Play wirr.wav       ; Когда сообщение отмеченное Lockal найдено.
 Event MsgIsTwit      Play Sound7.wav     ; Когда сообщение от Twit. найдено.
 Event MsgToYou       Play fan.wav        ; Когда сообщение к вам найдено.
 Event SearchFailed   Play Sound560.wav   ; Оператор Поиск потерпел неудачу.
-Event SearchSuccess  Play newemail.wav   ; Оператор Поиск был успешен. 
-Event Startup        Play Sound1.wav     ; Когда показан экрана запуска GoldED.  
+Event SearchSuccess  Play newemail.wav   ; Оператор Поиск был успешен.
+Event Startup        Play Sound1.wav     ; Когда показан экрана запуска GoldED.
 ----------------------------------------------------------------------
 -- ЗНАЧЕНИЯ МЕНЮ ПО УМОЛЧАНИЮ
 
@@ -1336,7 +1342,7 @@ Include gedcolor.cfg
 -- ВНЕШНИЕ УТИЛИТЫ
 
 // Внешние Утилиты, в том числе и набранное
-// в "Меню Внешних Утилит" в "Командной Строке", 
+// в "Меню Внешних Утилит" в "Командной Строке",
 // выполняется c параметрами в ключевом слове ExternOptions:
 // -Cls            * Очистить экран перед запуском.
 // -Cursor         * Показывать курсор.
@@ -1366,7 +1372,7 @@ ExterNutil 6 -NoKeepCtrl -Wipe -NoReload F:\pgp\pgp.exe +force -ka @file -u "@dn
 ;  ExterNutil 3 -NoPause -NoKeepCtrl -Wipe F:\Pgp\Pgp2.exe +force -eaw @tmpfile "@dname" "@oname" -u "@oname" -o @file  ;Зашифровать
 ;  ExterNutil 4 -NoPause -NoKeepCtrl -Wipe F:\Pgp\Pgp2.exe +force -easw @tmpfile "@dname" "@oname" -u "@oname" -o @file ;Зашифровать и подписать
 ;  ExterNutil 5 -NoKeepCtrl -Wipe F:\Pgp\Pgp2.exe +force @tmpfile -o @file -u "@dname"                                  ;Расшифровать
-;  ExterNutil 6 -NoKeepCtrl -Wipe -NoReload F:\Pgp\pgp2.exe +force -ka @file -u "@dname"                                ;Добавить ключ                 
+;  ExterNutil 6 -NoKeepCtrl -Wipe -NoReload F:\Pgp\pgp2.exe +force -ka @file -u "@dname"                                ;Добавить ключ
 ;EndIf
 
 // Внешние Утилиты.
@@ -1393,7 +1399,7 @@ EditSaveUtil 4 "  PGP: Зашифровать и подписать"
 //   @F12   ExternUtil09  ; Запуск программы "Outlook Express".
 //   F11    ExternUtil10  ; Создание флага для сканирования эхо-областей.
 //   @F11   ExternUtil11  ; Создание флага для обработки нетмейла.
-//   U      ExternUtil12  ; Запуск программы UU Wizard v1.64.63 
+//   U      ExternUtil12  ; Запуск программы UU Wizard v1.64.63
 //   @F7    ExternUtil13  ; Запуск прогpаммы "EchoList"
 
 ----------------------------------------------------------------------
@@ -1426,13 +1432,13 @@ PrintMargin 80
 
 // Если в сообщении содеpжатся клуджи CHRS или CHARSET, то это
 // запpещает пеpекодиpовку текста в этом сообщении.
-// Игноpиpовать эти клуджи (Yes) или нет (No). С веpсии 1.1.4.2 
+// Игноpиpовать эти клуджи (Yes) или нет (No). С веpсии 1.1.4.2
 // действует новый механизм - если кодиpовка выбиpается вpучную,
 // только тогда эти опции (Yes или No) становятся активными. Для
 // отключения этого надо выбpать установку "Auto".
 IgnoreCharSet Yes
 
-// С версии 3.0.1-asa7 введен параметр UseCharSet (<yes/no>), 
+// С версии 3.0.1-asa7 введен параметр UseCharSet (<yes/no>),
 // определяющий, нужно ли вообще вставлять кладж CHRS/CHARSET.
 // По умолчанию - Yes
 ; UseCharSet No
@@ -1464,7 +1470,7 @@ XlatCharSet  ISO        CP866       ISO_866.chs
 XlatCharSet  CP1125     CP866       UKR_866.chs
 XlatCharSet  KOI8U      CP866       KOU_866.chs
 XlatCharSet  KOI8-U     CP866       KOU_866.chs
-XlatCharSet  LATIN-1    CP866       ISO_866.chs 
+XlatCharSet  LATIN-1    CP866       ISO_866.chs
 XlatCharSet  MAC        CP866       MAC_866.chs
 XlatCharSet  I51        CP866       ISO_866.chs
 XlatCharSet  8859       CP866       ISO_866.chs
@@ -1553,17 +1559,17 @@ XlatCharSet CP866       COMPOSED    866_CMP.chs
 XlatCharSet CP866       VT100       866_VT1.chs
 XlatCharSet CP850       ASCII       850_ASC.chs
 
-// Определение входящей кодировки по умолчанию. Если приходящее 
+// Определение входящей кодировки по умолчанию. Если приходящее
 // сообщение не имеет клуджа ^CHRS, то будет считаться, что оно
 // соответствует этому набору символов.
 ;XlatImport <кодировка>
 
-;XlatImport ASCII 
+;XlatImport ASCII
 ;XlatImport CP850
  XlatImport CP866
 
-// Определение выходной кодировки, написанные вами мессаги при 
-// отправке будут конвертиться в нее. Если вы хотите писать 
+// Определение выходной кодировки, написанные вами мессаги при
+// отправке будут конвертиться в нее. Если вы хотите писать
 // мессаги в разных кодировках то вовсе не обязательно каждый
 // раз менять XlatExport - для этого достаточно сделать несколько
 // темплейтов (*.tpl) и в них написать @XlatExport <кодировка>
@@ -1579,7 +1585,7 @@ XlatCharSet CP850       ASCII       850_ASC.chs
 
 //   Реальный набор символов на компьютере.
 // Определение кодировки, которую отображает ваш софт.
-// Все принятые мессаги перекодируются в нее. Все что вы пишете - 
+// Все принятые мессаги перекодируются в нее. Все что вы пишете -
 // пишется в ней, а после перекодируется в XlatExport.
 //  ВНИМАНИЕ: Вы не должны менять значение CP866 на другое, если у вас нет
 // полного набора .chs и .esc таблиц, с помощью которых будет производится
@@ -1723,7 +1729,7 @@ SquishUserPath C:\FIDO\GED\
 // Как удалять сообщения в JAM базе.
 JamHardDelete Yes   ; Удалять без возможности восстановления ("hard" удаление).
 ;JamHardDelete No   ; Удалять с возможностью быстрого восстановления("soft" удаление).
-;ShowDeleted Yes    ; Пpосмотp "soft"-удаленных сообщений. 
+;ShowDeleted Yes    ; Пpосмотp "soft"-удаленных сообщений.
 
 ----------------------------------------------------------------------
 -- УСТАНОВКИ ДЛЯ ADEPTXBBS БАЗЫ
@@ -1791,13 +1797,13 @@ Semaphore NetScan C:\FIDO\TM\FLAGS\NETSCAN.T-M
 Semaphore EchoScan   C:\FIDO\TM\FLAGS\ECHOSCAN.T-M
 ;Semaphore ExportList ECHOMAIL.CTL
 
-// Имя файла, содержащего список областей, куда вы писали 
+// Имя файла, содержащего список областей, куда вы писали
 // сообщения, которые следует просканировать эхопроцессору.
 Semaphore ExportList C:\FIDO\LOGS\echoscan.log
 
 // GoldED умеет выделять области с новой почтой, используя этот файл.
-// Раскомментиpуйте/подпpавте один из пpимеров, если хотите использовать 
-// эту особенность. Не имеет смысла, если всегда сканируются 
+// Раскомментиpуйте/подпpавте один из пpимеров, если хотите использовать
+// эту особенность. Не имеет смысла, если всегда сканируются
 // все области (AREASCAN *).
 ;Semaphore ImportList echotoss.log ; Этот файл создает QMail.
 ;Semaphore ImportList imported.are ; Этот файл создает Dutchie.
@@ -1968,7 +1974,7 @@ AreaListEchoMax  0    ; Выравнивать по самому длинному названию.
 AreaListGroupId No
 
 // Параметр AreaListGroupOrder задает порядок расположения групп
-// в списке областей.   
+// в списке областей.
 AreaListGroupOrder TE
 
 // Сохранять информацию о списке областей между сессиями?

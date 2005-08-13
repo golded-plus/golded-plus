@@ -12,6 +12,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fix russian documentation
+
 - Fixed gcc 4.x build (thanks to Max Alekseyev).
 
 - Fixed compiler warnings (thanks to Max Alekseyev).
@@ -150,7 +152,7 @@ ______________________________________________________________________
   SEQOUT is also not set, then default value equals to 3 years is
   used.
   The num defines number in seconds if neither one of modificators
-  is in use. The following modificators can be used:  
+  is in use. The following modificators can be used:
   y - year
   d - day
   h - hour
@@ -169,7 +171,7 @@ ______________________________________________________________________
 - Convert internal codes to lowercase in Synchronet BBS parser before
   using them as pathname.
 
-- Cosmetic fix in Goldnode: pad output with spaces. 
+- Cosmetic fix in Goldnode: pad output with spaces.
 
 - Previous fix on relative pathnames was incorrect. Now GoldED+
   changed to resolve problem. Seems to work properly now.
@@ -225,7 +227,7 @@ ______________________________________________________________________
 
 - Fixed highlignting of url-like filenames.
 
-! The changed mail will also be copied to the Areayouwroteto now. 
+! The changed mail will also be copied to the Areayouwroteto now.
 
 - Fixed small bug in Maximus 3 config parser. Any more left?
 
@@ -902,7 +904,7 @@ ______________________________________________________________________
 
   "-----BEGIN PGP "
 
-  in first line of message rather than 
+  in first line of message rather than
 
   "-----BEGIN PGP MESSAGE-----"
 
