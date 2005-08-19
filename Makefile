@@ -31,3 +31,6 @@ docs:
 ifdef MINGW
 	@cd $@ ; $(MAKE) all ; cd ..
 endif
+
+strip:
+	cd $(OBJPATH)/$(PLATFORM)/ ; strip $(EXECUTABLES)
