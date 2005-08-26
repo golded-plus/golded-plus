@@ -24,6 +24,9 @@
 //  Arealist functions.
 //  ------------------------------------------------------------------
 
+#if defined(__MINGW32__) || defined(_MSC_VER)
+#include <malloc.h>
+#endif
 #include <algorithm>
 #include <golded.h>
 
@@ -84,7 +87,7 @@ int compare_groups(int _ga, int _gb)
     else
       g++;
   }
-    
+
   if(gap == NULL) {
     if(gbp != NULL)
       return 1;
@@ -471,7 +474,11 @@ void SelMaskPick::close() {
 
 void SelMaskPick::print_line(uint idx, uint pos, bool isbar) {
 
-  __extension__ char buf[DESC_LEN+3];
+#if defined(__WIN32__)
+  char *buf = (char*)alloca(DESC_LEN+3);
+#else
+   __extension__ char buf[DESC_LEN+3];
+#endif
 
   *buf = ' '; strxcpy(buf+1, AL.alistselections[idx], DESC_LEN);
   window.printns(pos, 0, isbar ? sattr : wattr, buf, xlen);

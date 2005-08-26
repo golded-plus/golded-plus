@@ -218,7 +218,11 @@ void gareafile::ReadIMail(char* tag) {
         #endif
       }
     }
-    std::cout << "* Error: IMAIL " << imver[0] << '.' << std::setfill('0') << std::setw(2) << imver[1] << " (structure revision " << imstructver[0] << '.' << std::setfill('0') << std::setw(2) << imstructver[1] << ") is not supported - Skipping." << std::endl;
+    char buff[78];
+    sprintf(buff, "* Error: IMAIL %c.%02c (structure revision %c.%02c) is not supported - Skipping.\n", imver[0], imver[1], imstructver[0], imstructver[1]);
+    std::cout << buff;
+
+//    std::cout << "* Error: IMAIL " << imver[0] << '.' << std::setfill('0') << std::setw(2) << imver[1] << " (structure revision " << imstructver[0] << '.' << std::setfill('0') << std::setw(2) << imstructver[1] << ") is not supported - Skipping." << std::endl;
   }
 }
 

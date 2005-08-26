@@ -37,7 +37,7 @@
 #endif
 #if defined(UNIX) || defined(__DJGPP__) || defined(__EMX__)
 #   include <unistd.h>
-#endif 
+#endif
 
 #if defined(UNIX)
 #define stricmp strcasecmp

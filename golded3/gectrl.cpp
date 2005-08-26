@@ -163,7 +163,7 @@ char* mime_header_encode(char* dest, const char* source, GMsg* msg) {
 
     lp = s + strlen(s);
 
-    while((lp>s) and in_range(lp[-1], ' ', '\x7F'))
+    while((lp>s) and in_range(char(lp[-1]), char(' '), char('\x7F')))
       lp--;
 
     for(const char* ptr = s; *ptr and (ptr<lp); ptr++) {
@@ -231,7 +231,7 @@ void DoKludges(int mode, GMsg* msg, int kludges) {
   char* buf = (char*)throw_malloc(4096);
   char* buf2 = (char*)throw_malloc(1024);
   Line* line;
-  
+
   // Insert empty line at the top for practical purposes
 
   line = new Line();
@@ -747,7 +747,7 @@ void DoTearorig(int mode, GMsg* msg) {
     else
       line = line->next;
   }
-  
+
   // Make sure there is a blank line at the bottom, just before the tearline
   // Unless the line is a tagline (..., ___ etc).
   line = LastLine(msg->lin);

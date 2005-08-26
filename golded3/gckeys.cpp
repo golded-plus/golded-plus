@@ -350,11 +350,11 @@ CmdKey DefaultKeyset[] = {
   { Key_A_1     , KK_HeaderToggleReserved , KT_H },
   { Key_A_P     , KK_HeaderTogglePvt      , KT_H },
   { Key_A_S     , KK_HeaderToggleSent     , KT_H },
-  
+
   { 0xFFFF      , 0xFFFF                  , 0xFF }
 };
 
-                                          
+
 //  ------------------------------------------------------------------
 
 // must be sorted by crc_token
@@ -889,7 +889,7 @@ static gkey SwitchKeyDefs(word crc, int* type) {
       *type = globalkeys[middle].keytype;
       return globalkeys[middle].keyval;
     }
-      
+
   } while(left <= right);
 
   return 0;
@@ -964,7 +964,8 @@ static void SetKeybDefaults() {
 
 //  ------------------------------------------------------------------
 
-bool CmdKeyCmp(CmdKey a, CmdKey b) {
+//bool CmdKeyCmp(CmdKey a, CmdKey b) {
+bool operator<(CmdKey &a, CmdKey &b) {
 
   int cmp = CmpV(a.type, b.type);
   if(cmp != 0)
@@ -1126,7 +1127,8 @@ int ReadKeysCfg(int force) {
     SetKeybDefaults();
 
   // Prepare keyboard and macro tables for binary searching
-  CFG->cmdkey.sort(CmdKeyCmp);
+//  CFG->cmdkey.sort(CmdKeyCmp);
+  CFG->cmdkey.sort();
 
   // Count keys
   std::list<CmdKey>::iterator ck = CFG->cmdkey.begin();
@@ -1162,7 +1164,7 @@ int ReadKeysCfg(int force) {
       }
     }
   }
-  
+
   return true;
 }
 

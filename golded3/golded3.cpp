@@ -29,18 +29,19 @@
 
 //  ------------------------------------------------------------------
 
-#define __GVER_PID__(A,SIZE) __GVER_PRE##SIZE##NAME__ __GVER_##SIZE##NAME__ __GVER_POST##SIZE##NAME__ __GVER_##SIZE##PLATFORM__
+#define __GVER_LONGPID__  __GVER_PRENAME__ __GVER_NAME__ __GVER_POSTNAME__ __GVER_PLATFORM__
+#define __GVER_SHORTPID__ __GVER_PRESHORTNAME__ __GVER_SHORTNAME__ __GVER_POSTSHORTNAME__ __GVER_SHORTPLATFORM__
 #define __GVER_VER__(A,B,C) __GVER_PREVERSION__ #A "." #B "." #C __GVER_POSTVERSION__
 #define __GVER_SVER__(A,B,C) #A "." #B "." #C
 
 #define __GVER__(__GVER_MAJOR__,__GVER_MINOR__,__GVER_RELEASE__) \
-int         __gver_major__    = __GVER_MAJOR__; \
-int         __gver_minor__    = __GVER_MINOR__; \
-int         __gver_release__  = __GVER_RELEASE__; \
-const char* __gver_longpid__  = __GVER_PID__(,); \
-const char* __gver_shortpid__ = __GVER_PID__(,SHORT); \
-const char* __gver_ver__      = __GVER_VER__(__GVER_MAJOR__,__GVER_MINOR__,__GVER_RELEASE__); \
-const char* __gver_shortver__ = __GVER_SVER__(__GVER_MAJOR__,__GVER_MINOR__,__GVER_RELEASE__);
+  int         __gver_major__    = __GVER_MAJOR__; \
+  int         __gver_minor__    = __GVER_MINOR__; \
+  int         __gver_release__  = __GVER_RELEASE__; \
+  const char* __gver_longpid__  = __GVER_LONGPID__; \
+  const char* __gver_shortpid__ = __GVER_SHORTPID__; \
+  const char* __gver_ver__      = __GVER_VER__(__GVER_MAJOR__,__GVER_MINOR__,__GVER_RELEASE__); \
+  const char* __gver_shortver__ = __GVER_SVER__(__GVER_MAJOR__,__GVER_MINOR__,__GVER_RELEASE__);
 
 
 //  ------------------------------------------------------------------
@@ -97,7 +98,13 @@ const char* __gver_shortver__ = __GVER_SVER__(__GVER_MAJOR__,__GVER_MINOR__,__GV
 #define __GVER_SHORTLOGNAME__  "2"
 #define __GVER_CFGEXT__        ".geo"
 #elif defined(__WIN32__)
+#if defined(_MSC_VER)
+#define __GVER_PLATFORM__      "/W32-MSVC"
+#elif defined(__MINGW32__)
+#define __GVER_PLATFORM__      "/W32-MINGW"
+#else
 #define __GVER_PLATFORM__      "/W32"
+#endif
 #define __GVER_SHORTPLATFORM__ "W32"
 #define __GVER_SHORTLOGNAME__  "W"
 #define __GVER_CFGEXT__        ".gew"
@@ -106,7 +113,7 @@ const char* __gver_shortver__ = __GVER_SVER__(__GVER_MAJOR__,__GVER_MINOR__,__GV
 #define __GVER_SHORTPLATFORM__ "LNX"
 #define __GVER_SHORTLOGNAME__  "L"
 #define __GVER_CFGEXT__        ".gel"
-#elif defined(__FreeBSD__) || defined(__OpenBSD__)
+#elif defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__)
 #define __GVER_PLATFORM__      "/BSD"
 #define __GVER_SHORTPLATFORM__ "BSD"
 #define __GVER_SHORTLOGNAME__  "B"

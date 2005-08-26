@@ -31,7 +31,9 @@
 
 
 //  ------------------------------------------------------------------
-
+#if defined(_MSC_VER)
+#pragma warning(disable: 4200)
+#endif
 #include <gdefs.h>
 #if defined(__USE_NCURSES__)
 #include <gcurses.h>

@@ -42,6 +42,11 @@
 #include <dos.h>
 #endif
 #endif
+#if defined(_MSC_VER)
+#include <direct.h>
+#include <sys/stat.h>
+#endif
+
 #include "hsksupp.h"
 #include "ffind.h"
 

@@ -24,6 +24,10 @@
 //  The Internal Editor (IE), part 2.
 //  ------------------------------------------------------------------
 
+#if defined(__MINGW32__) || defined(_MSC_VER)
+#include <malloc.h>
+#endif
+
 #include <golded.h>
 #include <geedit.h>
 #include <gutlcode.h>
@@ -274,7 +278,7 @@ void IEclass::DelRtWord() {
     GFTRK(NULL);
     return;
   }
-  
+
   int _ptr, _ptr2;
   _ptr = _ptr2 = col;
 
@@ -391,7 +395,7 @@ void IEclass::GoBotLine() {
 
   Line *_oldcurrline = currline;
   int  _oldrow = row;
-  
+
   while((row < maxrow) and currline->next) {
     currline = currline->next;
     thisrow++;
@@ -569,7 +573,7 @@ void IEclass::BlockCopy() {
 
       // Continue with the next line
       _firstcopyline = _firstcopyline->next;
-    } 
+    }
 
     selecting = NO;
     blockcol = -1;
@@ -1086,7 +1090,11 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
       else {
 
         int tabsz = CFG->disptabsize ? CFG->disptabsize : 1;
+#if defined(_MSC_VER) || defined(__MINGW32__)
+        char *spaces = (char*)alloca(tabsz+1);
+#else
         __extension__ char spaces[tabsz+1];
+#endif
         memset(spaces, ' ', tabsz);
         spaces[tabsz] = NUL;
         int level = LoadCharset(AA->Xlatimport(), CFG->xlatlocalset);

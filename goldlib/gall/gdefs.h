@@ -28,12 +28,28 @@
 #ifndef __goldall_h
 #define __goldall_h
 
-
 //  ------------------------------------------------------------------
 
 #include <cstddef>
 #include <gcmpall.h>
 
+//  ------------------------------------------------------------------
+// Disable some MS Visual C warnings
+
+#if defined(_MSC_VER)
+//
+// C4786: 'identifier' : identifier was truncated to 'number'
+//        characters in the debug information
+//
+// C4800: 'type' : forcing value to bool 'true' or 'false'
+//        (performance warning)
+//
+// C4065: switch statement contains 'default' but no 'case' labels
+//
+// C4200: nonstandard extension used : zero-sized array in struct/union
+//
+#pragma warning(disable: 4200 4786 4800 4065)
+#endif
 
 //  ------------------------------------------------------------------
 //  Define portability and shorthand notation

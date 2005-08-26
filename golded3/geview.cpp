@@ -24,9 +24,12 @@
 //  Message viewer class implementation.
 //  ------------------------------------------------------------------
 
+#if defined(_MSC_VER) || defined(__MINGW32__)
+  #include <malloc.h>
+#endif
+
 #include <golded.h>
 #include <gutlos.h>
-
 
 //  ------------------------------------------------------------------
 
@@ -86,7 +89,7 @@ void GMsgHeaderView::Use(Area *areaptr, GMsg *msgptr) {
   msg = msgptr;
 }
 
- 
+
 //  ------------------------------------------------------------------
 
 void GMsgHeaderView::Paint() {
@@ -107,7 +110,11 @@ void GMsgHeaderView::Paint() {
   else
     *buf1 = NUL;
 
+#if defined(_MSC_VER) || defined(__MINGW32__)
+  char *top = (char*)alloca(width+1);
+#else
   __extension__ char top[width+1];
+#endif
   strxmerge(top, width+1, " ", buf1, strtrim(strtmp(area->desc())), " (",
             area->isinternet() ? area->Internetaddress() : area->Aka().addr.make_string(buf),
             ") ", NULL);
@@ -413,7 +420,7 @@ void GMsgBodyView::Use(Area *areaptr, GMsg *msgptr, int startline) {
   window.set_scrollbar_color(scrollbar_visible ? scrollbar_color : -1);
 }
 
- 
+
 //  ------------------------------------------------------------------
 
 void GMsgBodyView::PaintLine(int row, Line *line) {
@@ -452,7 +459,7 @@ void GMsgBodyView::PaintLine(int row, Line *line) {
 void GMsgBodyView::Paint() {
 
   window.activate_quick();
-  
+
   Line* dummy_index = NULL;
   Line** line_index = msg->line ? (msg->line + upperline) : &dummy_index;
 
@@ -474,7 +481,7 @@ int GMsgBodyView::Top(int redraw) {
     Paint();
     return true;
   }
-  
+
   return false;
 }
 
@@ -482,7 +489,7 @@ int GMsgBodyView::Top(int redraw) {
 //  ------------------------------------------------------------------
 
 int GMsgBodyView::Bottom() {
-  
+
   if(msg->lines > height) {
     if(msg->lines <= height) {
       can_pagedown = true;
@@ -496,7 +503,7 @@ int GMsgBodyView::Bottom() {
     Paint();
     return true;
   }
-  
+
   return false;
 }
 
@@ -516,7 +523,7 @@ int GMsgBodyView::PageUp() {
       return true;
     }
   }
-  
+
   return false;
 }
 
@@ -537,7 +544,7 @@ int GMsgBodyView::PageDown() {
       }
     }
   }
-  
+
   return false;
 }
 
@@ -545,7 +552,7 @@ int GMsgBodyView::PageDown() {
 //  ------------------------------------------------------------------
 
 int GMsgBodyView::LineUp() {
-  
+
   if(msg->lines > height) {
     if(upperline) {
       window.scroll_down();
@@ -596,10 +603,10 @@ int GMsgBodyView::LineDown() {
 //  ------------------------------------------------------------------
 
 int GMsgBodyView::Continue() {
-  
+
   if(can_pagedown)
     return PageDown();
-  
+
   return false;
 }
 
@@ -615,7 +622,7 @@ int GMsgBodyView::ThumbTrack(int pos) {
 //  ------------------------------------------------------------------
 
 int GMsgBodyView::ThumbPosition(int pos) {
-  
+
   upperline = pos;
   lowerline = upperline + height - 1;
   can_pagedown = lowerline < (msg->lines-1);

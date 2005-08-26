@@ -419,8 +419,8 @@ void GPickArealist::print_line(uint idx, uint pos, bool isbar) {
 
     int sep_pos = (desc_pos != -1) ? desc_pos : echoid_pos;
 
-    for(int c = 0; c < sep_pos; c++)
-      vbuf[c] = _box_table(btype, 1);
+    {for(int c = 0; c < sep_pos; c++)
+      vbuf[c] = _box_table(btype, 1);}
     vbuf[sep_pos] = NUL;
     wprintvs(pos, 0, battr|ACSET, vbuf);
     wprints(pos, sep_pos, tattr, area->desc());
@@ -428,8 +428,8 @@ void GPickArealist::print_line(uint idx, uint pos, bool isbar) {
     int l = strlen(area->desc());
     int n = MAXCOL-2-sep_pos-l;
 
-    for(int c = 0; c < n; c++)
-      vbuf[c] = _box_table(btype,1);
+    {for(int c = 0; c < n; c++)
+      vbuf[c] = _box_table(btype,1);}
     vbuf[n] = NUL;
     wprintvs(pos, sep_pos+l, battr|ACSET, vbuf);
   }

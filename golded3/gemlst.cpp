@@ -24,11 +24,14 @@
 //  Message lister.
 //  ------------------------------------------------------------------
 
+#if defined(_MSC_VER) || defined(__MINGW32__)
+  #include <malloc.h>
+#endif
+
 #include <golded.h>
 #include <gcharset.h>
 #include <iostream>
 #include <iomanip>
-
 
 //  ------------------------------------------------------------------
 
@@ -210,7 +213,7 @@ void GMsgList::ReadMlst(int n) {
 //  ------------------------------------------------------------------
 
 void GMsgList::do_delayed() {
-  
+
   // Update header and statusline
   if(AA->Msglistheader()) {
     ReadMlst(index);
@@ -733,7 +736,7 @@ void GThreadlist::update_title() {
 //  ------------------------------------------------------------------
 
 void GThreadlist::do_delayed() {
-  
+
   // Update header and statusline
   if(AA->Msglistheader()) {
     AA->LoadMsg(&msg, list[index].msgno, CFG->dispmargin-(int)CFG->switches.get(disppagebar));
@@ -839,7 +842,11 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar) {
 
   char buf[256];
   ulong maxlev = (window.width()+h_offset+1)/2;
+#if defined(_MSC_VER) || defined(__MINGW32__)
+  char *buf2 = (char*)alloca(maxlev*2+2);
+#else
   __extension__ char buf2[maxlev*2+2];
+#endif
   int attrh, attrw;
   uint tdlen;
 
@@ -868,11 +875,11 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar) {
   }
 
   GenTree(buf2, idx, maxlev);
-  
+
   #if defined(__UNIX__) && !defined(__USE_NCURSES__)
   gvid_boxcvt(buf2);
   #endif
-  
+
   char marks[3];
 
   strcpy(marks, "  ");

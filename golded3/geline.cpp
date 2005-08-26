@@ -24,12 +24,15 @@
 //  Conversion of a raw message to a linked list of lines.
 //  ------------------------------------------------------------------
 
+#if defined(_MSC_VER) || defined(__MINGW32__)
+  #include <malloc.h>
+#endif
+
 #include <cstdarg>
 #include <golded.h>
 #include <gstrmail.h>
 #include <gutlcode.h>
 #include <ghdrmime.h>
-
 
 //  ------------------------------------------------------------------
 
@@ -1388,7 +1391,11 @@ int ScanLine(GMsg* msg, Line* line, const char* ptr, int getvalue, int mask) {
     ptr++;
   char endchar = *ptr;
 
+#if defined(_MSC_VER) || defined(__MINGW32__)
+  char *kludge = (char*)alloca(ptr-kludge1+1);
+#else
   __extension__ char kludge[ptr-kludge1+1];
+#endif
   strxcpy(kludge, kludge1, ptr-kludge1+1);
 
   // Search for it in the known kludges list
@@ -1585,7 +1592,7 @@ void ScanKludges(GMsg* msg, int getvalue) {
           nnel = cnd ? next_non_empty(line->next->next) : NULL;
           bool nextor = cnd ? (not nnel or nnel->type & GLINE_KLUDGE) and (line->next->txt.find(/*(*/')') != line->next->txt.npos) : false;
           if(not line->next or nextkl or nextor) {
-           
+
             gotorig = YES;
             originlineno = lineno;
             line->type |= GLINE_ORIG;
@@ -1647,11 +1654,11 @@ void ScanKludges(GMsg* msg, int getvalue) {
 
   if(getvalue) {
     // This is the new code (experimental)
-    // It looks for an Origin before taking MSGID 
+    // It looks for an Origin before taking MSGID
     // Trust msg->orig if valid and we're in netmail area.
     // (msg->orig is already merged with INTL/FMPT/TOPT)
 
-    if(not (AA->isnet() and msg->orig.valid())) { 
+    if(not (AA->isnet() and msg->orig.valid())) {
       if(CFG->addresslookupfirst and msg->msgid.valid())
         msg->orig = msg->msgid;
       else if((ptr = strrchr(msg->origin, '(' /*)*/ )) != NULL) {
@@ -2030,7 +2037,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode) {
         // Get type of line
 
         if(wraps == 0) {
-        
+
           if(gotmultipart) {
             if(*ptr == '-' and ptr[1] == '-') {
               gstrarray::iterator ib;
@@ -2043,10 +2050,10 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode) {
             else if(*ptr == '\n' or *ptr == '\r')
               inheader = false;
           }
-          
+
           if(inheader and (*ptr != '-'))
             line->type |= GLINE_HIDD;
-        
+
           para = 0;
           if(*ptr == CTRL_A or inheader) {  // Found kludge/hidden line
             para = GLINE_KLUD;
@@ -3019,7 +3026,7 @@ char* ParseInternetAddr(char* __string, char* __name, char* __addr, bool detect_
 
   *__name = *__addr = NUL;
   char* commaptr = NULL;
-  
+
   if(strchr(__string, ',')) {
     bool inquotes = false;
     commaptr = __string;

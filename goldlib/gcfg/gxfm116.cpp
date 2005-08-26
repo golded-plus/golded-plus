@@ -153,7 +153,7 @@ void gareafile::ReadFMail116(FILE* fp, char* path, char* file, char* options) {
     aa.setdesc("FMail Personal Mail");
     aa.setautoid("ECHO_PERSONAL");
     AddNewArea(aa);
-  }        
+  }
 
   headerType hdr;
 
@@ -232,7 +232,7 @@ void gareafile::ReadFMail116(FILE* fp, char* path, char* file, char* options) {
 
     fclose(fp);
   }
-  
+
   throw_delete(cfg);
 }
 
@@ -278,7 +278,7 @@ void gareafile::ReadFMail(char* tag) {
     rewind(fp);
 
     uint fmver = (_rev.vmajor << 8) | _rev.vminor;
-    
+
     if(fmver < 94)
       ReadFMail092(fp, path, file, options);
     else {
@@ -297,8 +297,12 @@ void gareafile::ReadFMail(char* tag) {
         ReadFMail098(fp, path, file, options);
       else if((ar_rev >= 0x0110) and (ar_rev < 0x0200))
         ReadFMail116(fp, path, file, options);
-      else
-        std::cout << "* Error: Unknown FMail config revision " << std::setfill('0') << std::setw(4) << std::hex << ar_rev << "h - Skipping." << std::endl;
+      else {
+        char buff[56+sizeof(uint)*2];
+        sprintf(buff, "* Error: Unknown FMail config revision %04Xh - Skipping.\n", ar_rev);
+        std::cout << buff;
+//        std::cout << "* Error: Unknown FMail config revision " << std::setfill('0') << std::setw(4) << std::hex << ar_rev << "h - Skipping." << std::endl;
+      }
     }
   }
 }

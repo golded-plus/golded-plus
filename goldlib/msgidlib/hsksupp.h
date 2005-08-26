@@ -46,6 +46,17 @@
 #define O_BINARY 0
 #endif
 
+#if defined(_MSC_VER)
+#  define sleep(x)    Sleep(1000L*(x))
+#endif
+
+#  ifndef S_ISDIR
+#    define S_ISDIR(m) (((m) & S_IFMT) == S_IFDIR)
+#  endif
+#  ifndef S_ISREG
+#    define S_ISREG(m) (((m) & S_IFMT) == S_IFREG)
+#  endif
+
 /* fexists.c */
 int fexist(const char *filename);
 long fsize(const char *filename);

@@ -24,6 +24,10 @@
 //  File handling.
 //  ------------------------------------------------------------------
 
+#if defined(__MINGW32__) || defined(_MSC_VER)
+#include <malloc.h>
+#endif
+
 #include <fcntl.h>
 #include <golded.h>
 #include <gwildmat.h>
@@ -773,7 +777,11 @@ void FileRequest(GMsg* msg) {
           else
             ptr1 = ptr2;
           ptr2 = strskip_txt(ptr1);
+#if defined(_MSC_VER)
+          char *tmpbuf = (char*)alloca(ptr2-ptr1+1);
+#else
           __extension__ char tmpbuf[ptr2-ptr1+1];
+#endif
           strxcpy(tmpbuf, ptr1, ptr2-ptr1+1);
           frqgetfile(file, desc, filesize, tmpbuf);
           *desc = NUL;  // Description never comes before filename
@@ -811,7 +819,11 @@ void FileRequest(GMsg* msg) {
             if(txtptr[16] == '/' and txtptr[19] == '/' and txtptr[24] == '(' /*)*/) {
               ptr1 = strskip_wht(txtptr);
               ptr2 = strskip_txt(ptr1);
+#if defined(_MSC_VER)
+              char *tmpbuf = (char*)alloca(ptr2-ptr1+1);
+#else
               __extension__ char tmpbuf[ptr2-ptr1+1];
+#endif
               strxcpy(tmpbuf, ptr1, ptr2-ptr1+1);
               frqgetfile(file, desc, filesize, tmpbuf);
               *desc = NUL;  // Description never comes before filename
@@ -943,7 +955,11 @@ void FileRequest(GMsg* msg) {
             msg->attr.frq1();
             ptr = freqfile[n]+1;      //  01234567890123456
             ptr2 = strskip_txt(ptr);
+#if defined(_MSC_VER)
+            char *tmpbuf = (char*)alloca(ptr2-ptr+1);
+#else
             __extension__ char tmpbuf[ptr2-ptr+1];
+#endif
             strxcpy(tmpbuf, ptr, ptr2-ptr+1);
             ptr2 = strskip_wht(ptr2);
             if((strlen(msg->re) + strlen(tmpbuf)) < sizeof(ISub)) {  // We can only fill one subject line in this version...
@@ -962,7 +978,11 @@ void FileRequest(GMsg* msg) {
           msg->attr.frq1();
           ptr = freqfile[crsr]+1;      //  01234567890123456
           ptr2 = strskip_txt(ptr);
+#if defined(_MSC_VER)
+          char *tmpbuf = (char*)alloca(ptr2-ptr+1);
+#else
           __extension__ char tmpbuf[ptr2-ptr+1];
+#endif
           strxcpy(tmpbuf, ptr, ptr2-ptr+1);
           ptr2 = strskip_wht(ptr2);
           if((strlen(msg->re) + strlen(tmpbuf)) < sizeof(ISub)) {  // We can only fill one subject line in this version...

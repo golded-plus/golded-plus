@@ -136,6 +136,7 @@ public:
   text_item(uint __col, uint __len) : col(__col), len(__len) { }
   void* operator new(size_t size, uint text_len = 0) { return malloc(sizeof(text_item) + size + text_len); }
   void operator delete(void* ptr) { free(ptr); }
+  void operator delete(void* ptr, uint) { free(ptr); }
 };
 
 //  ----------------------------------------------------------------
@@ -159,20 +160,20 @@ struct col_rec {
 class UndoItem {
 
   static UndoItem** last_item;
-  
+
   friend class UndoStack;
-  
+
 public:
 
   UndoItem*  prev;
-  
+
   Line*      line;     // Cursor line
   col_rec    col;      // Cursor column
   uint       pcol;     // After undo move cursor to pcol, prow
   uint       prow;     //
   uint       action;   // Undo action
   data_rec   data;     // Undo data
-  
+
   UndoItem()  { this->prev = *last_item; }
   ~UndoItem() { *last_item = this->prev; }
 };
@@ -194,7 +195,7 @@ class UndoStack {
   uint&      thisrow;
   Line*&     currline;
   bool&      undo_ready;
-  
+
 public:
 
   UndoItem*  last_item;
@@ -335,7 +336,7 @@ public:
 
   IEclass(int __scol, int __ecol, int __srow, int __erow, int __border);
   ~IEclass();
-  
+
 
   //  ----------------------------------------------------------------
   //  Function to start the editor

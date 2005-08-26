@@ -1,6 +1,14 @@
 /* config.h.  Generated automatically by configure.  */
 /* config.h.in.  Generated automatically from configure.in by autoheader.  */
 
+/* if not defined by make */
+#if !defined(VERSION)
+#define VERSION "0.5"
+#endif
+#if !defined(PATCH)
+#define PATCH   "15"
+#endif
+
 /* Define to `unsigned' if <sys/types.h> doesn't define.  */
 /* #undef size_t */
 
@@ -8,7 +16,9 @@
 #define STDC_HEADERS 1
 
 /* Define if you can safely include both <sys/time.h> and <time.h>.  */
+#ifndef _MSC_VER
 #define TIME_WITH_SYS_TIME 1
+#endif
 
 /*
  * If your system is kinda special
@@ -26,12 +36,12 @@
 /*
  * how to declare functions that are exported from the UU library
  */
-#define UUEXPORT 
+#define UUEXPORT
 
 /*
  * how to declare functions that are exported from the fptools library
  */
-#define TOOLEXPORT 
+#define TOOLEXPORT
 
 /*
  * define if your compiler supports function prototypes
@@ -69,7 +79,9 @@
 /* #undef HAVE_STDARG_H */
 
 /* Define if you have the <sys/time.h> header file.  */
+#ifndef _MSC_VER
 #define HAVE_SYS_TIME_H 1
+#endif
 
 /* Define if you have the <unistd.h> header file.  */
 #ifndef _MSC_VER

@@ -24,6 +24,10 @@
 //  OS/2 clipboard to/from edit paste buffer.
 //  ------------------------------------------------------------------
 
+#if defined(__MINGW32__) || defined(_MSC_VER)
+#include <malloc.h>
+#endif
+
 #include <golded.h>
 #include <geedit.h>
 #include <gutlclip.h>
@@ -36,7 +40,11 @@ void IEclass::Clip2Buf() {
     return;
 
   int tabsz = CFG->disptabsize ? CFG->disptabsize : 1;
+#if defined(__MINGW32__) || defined(_MSC_VER)
+  char *spaces = (char*)alloca(tabsz+1);
+#else
   __extension__ char spaces[tabsz+1];
+#endif
   memset(spaces, ' ', tabsz);
   spaces[tabsz] = NUL;
 
@@ -46,7 +54,7 @@ void IEclass::Clip2Buf() {
   Line *__line = NULL;
 
   Undo->undo_enabled = NO;
-  
+
   // Read paragraphs
   while(clipbrd.read(buf, EDIT_PARABUFLEN-6)) {
 

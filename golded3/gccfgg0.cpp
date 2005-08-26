@@ -637,7 +637,7 @@ End:
 
   return true;
 }
-               
+
 
 //  ------------------------------------------------------------------
 
@@ -783,7 +783,15 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
 
         // Tell the world what we found
         if(veryverbose)
-          std::cout << " " << (cfgignore ? '-' : '+') << std::setw(4) << std::setfill('0') << line << std::setfill(' ') << ": " << key << " " << val << std::endl;
+        {
+#if defined(_MSC_VER)
+            char buff[256];
+            sprintf(buff, " %c %04d: %s %s\n", cfgignore ? '-' : '+', line, key, val);
+            std::cout << buff;
+#else
+           std::cout << " " << (cfgignore ? '-' : '+') << std::setw(4) << std::setfill('0') << line << std::setfill(' ') << ": " << key << " " << val << std::endl;
+#endif
+        }
 
         // Call switch function to act on the key
         if(not cfgignore) {

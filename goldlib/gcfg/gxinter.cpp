@@ -216,7 +216,9 @@ void gareafile::ReadInterMail(char* tag) {
       }
     }
     else {
-      std::cout << "* Error: InterMail revision " << std::setfill('0') << std::setw(4) << std::hex << ctl->sysrev << "h is not supported - Skipping." << std::endl;
+      char buff[62+sizeof(ctl->sysrev)*2];
+      sprintf(buff, "* Error: InterMail revision %04Xh is not supported - Skipping.\n", ctl->sysrev);
+      std::cout << buff;
     }
     throw_free(ctl);
   }

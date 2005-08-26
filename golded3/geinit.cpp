@@ -447,7 +447,7 @@ static bool ExistCfg(char* path, char* file) {
 static bool FindCfg(char* path) {
 
   bool found = false;
-  
+
   if(!is_dir(path)) {
     if(fexist(path))
       return true;
@@ -702,8 +702,8 @@ void Initialize(int argc, char* argv[]) {
 
   // Read/compile various configs
   compiled |= ReadLangCfg(cmdlineforce);
-  compiled |= ReadKeysCfg(cmdlineforce);
-  compiled |= ReadHelpCfg(cmdlineforce);
+  compiled |= bool(ReadKeysCfg(cmdlineforce));
+  compiled |= bool(ReadHelpCfg(cmdlineforce));
 
   // Initialize sound system
   InitSound();
