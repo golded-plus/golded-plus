@@ -554,7 +554,7 @@ struct _ovride {
 #define MA_SHARED   (MA_ECHO | MA_CONF)
 
 
-typedef struct _msgarea {
+struct _msgarea {
 
   word cbArea;          /* Length of THIS INDIVIDUAL RECORD                0*/
   word num_override;    /* Number of overrides following this record       2*/

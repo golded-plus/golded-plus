@@ -34,7 +34,7 @@
 
 //  ------------------------------------------------------------------
 
-static bool comment_char = '#';
+static char comment_char = '#';
 
 //  ------------------------------------------------------------------
 
@@ -91,7 +91,7 @@ bool gareafile::ReadHPTLine(FILE* f, std::string* s, bool add, int state) {
   else
     *s = p;
 
-  return true;  
+  return true;
 }
 
 
@@ -285,7 +285,7 @@ void gareafile::ReadHPTFile(char* path, char* file, char* origin, int group) {
               else {
 
                 char *opt = key + 1;
-    
+
                 if(strieql(opt, "p") or strieql(opt, "$m")
                    or strieql(opt, "lr") or strieql(opt, "lw")
                    or strieql(opt, "dupeCheck") or strieql(opt, "dupehistory")
@@ -293,11 +293,11 @@ void gareafile::ReadHPTFile(char* path, char* file, char* origin, int group) {
                    or strieql(opt, "l") or strieql(opt, "fperm")
                    or strieql(opt, "fowner") or strnieql(opt, "sbadd(", 6)
                    or strnieql(opt, "sbign(", 6)) {
-    
+
                   gettok(&key, &val);
                 }
                 else if(strieql(opt, "a")) {
-    
+
                   gettok(&key, &val);
                   CfgAddress(key);
                   aa.aka.set(key);
@@ -313,16 +313,16 @@ void gareafile::ReadHPTFile(char* path, char* file, char* origin, int group) {
                         or strieql(opt, "$") or strieql(opt, "0")) {
                 }
                 else if(strieql(opt, "g")) {
-    
+
                   gettok(&key, &val);
-    
+
                   if(isdigit(*key))
                     aa.groupid = 0x8000+atoi(key);
                   else if(isalpha(*key))
                     aa.groupid = toupper(*key);
                 }
                 else if (strieql(opt, "d")) {
-    
+
                   gettok(&key, &val);
                   aa.setdesc(key);
                 }
@@ -335,7 +335,7 @@ void gareafile::ReadHPTFile(char* path, char* file, char* origin, int group) {
 
               gettok(&key, &val);
             }
-                                
+
             aa.setorigin(origin);
 
             switch(aa.type) {
