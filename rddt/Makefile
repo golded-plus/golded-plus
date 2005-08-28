@@ -11,7 +11,7 @@ endif
 TOP=..
 SHORTTARGET=rddt
 TARGET=rddt
-INCS=-I$(TOP)/goldlib/gall
+INCS=-I$(TOP)/goldlib/gall -I$(TOP)/golded3
 ifeq ($(findstring EMX, $(PATH)), EMX)
 STDLIBS=-lstdcpp
 else
@@ -21,6 +21,7 @@ endif
 endif
 GLIBS=gall
 CLEANS=
+ADDS+=$(TOP)/$(OBJPATH)/$(PLATFORM)/golded3/golded3$(OBJEXT)
 
 include $(TOP)/GNUmakef.inc
 include $(TOP)/GNUmakef.prg

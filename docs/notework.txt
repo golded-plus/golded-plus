@@ -12,7 +12,7 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
-! Microsoft Visual Studio build (use gedwin.mak as makefile)
+! Microsoft Visual Studio build (use golded.mak as makefile)
 
 - Fix russian documentation
 

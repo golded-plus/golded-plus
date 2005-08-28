@@ -21,6 +21,7 @@ endif
 endif
 GLIBS=gall
 CLEANS=
+ADDS+=$(TOP)/$(OBJPATH)/$(PLATFORM)/golded3/golded3$(OBJEXT)
 
 include $(TOP)/GNUmakef.inc
 include $(TOP)/GNUmakef.prg
