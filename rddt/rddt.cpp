@@ -3,6 +3,7 @@
 //  Route Diagram Drawing Tool.
 //  Copyright (C) 1999 Odinn Sorensen
 //  Copyright (C) 1999-2001 Alexander S. Aganichev
+//  Copyright (C) 2005 Stas Degteff
 //  ------------------------------------------------------------------
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License as
@@ -23,7 +24,6 @@
 //  $Id$
 //  ------------------------------------------------------------------
 
-using namespace std;
 
 #include <clocale>
 #include <cstdio>
@@ -31,9 +31,14 @@ using namespace std;
 #include <iomanip>
 #include <fstream>
 #include <list>
+
+using namespace std;
+
 #include <gstrall.h>
 #include <gstrarr.h>
 #include <gftnall.h>
+#include <golded3.h>
+
 
 int debug = false;
 
@@ -196,7 +201,7 @@ void nodetree::prepare(ftn_addr& previous, ftn_addr& current, int depth) {
 
 //  ------------------------------------------------------------------
 
-bool compare_nodes(node& a, node& b) {
+bool _compare_nodes(const node& a, const node& b) {
 
   int cmp = compare_two(a.order ? 0 : 1, b.order ? 0 : 1);
   if(cmp)
@@ -207,6 +212,14 @@ bool compare_nodes(node& a, node& b) {
   return (a.address.compare(b.address) < 0);
 }
 
+#if defined(_MSC_VER)
+
+inline bool operator<(const node& A,const node& B){ return _compare_nodes(A,B); }
+
+#define compare_nodes
+#else
+#define compare_nodes _compare_nodes
+#endif
 
 //  ------------------------------------------------------------------
 
@@ -321,13 +334,14 @@ int main(int argc, char** argv) {
   // set locale
   setlocale(LC_CTYPE, "");
 
+  cout << "Route Diagram Drawing Tool v." << __gver_shortver__ << __gver_platform__ << __gver_postversion__;
 #ifdef KOI8
-  cout << "Route Diagram Drawing Tool 1.1.1 (koi8)" << endl
-#else
-  cout << "Route Diagram Drawing Tool 1.1.1" << endl
+  cout << " (koi8)"
 #endif
+  cout << endl
        << "Copyright (C) 1999 Odinn Sorensen" << endl
        << "Copyright (C) 1999-2001 Alexander S. Aganichev" << endl
+       << "Copyright (C) 2005 Stas Degteff & Golded+ team" << endl
        << "----------------------------------------------------------------------" << endl
        << endl;
 
