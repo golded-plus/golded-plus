@@ -553,7 +553,6 @@ LINK32_OBJS= \
     "$(INTDIR)\geinit.obj" \
     "$(INTDIR)\geline.obj" \
     "$(INTDIR)\gelmsg.obj" \
-    "$(INTDIR)\gemain.obj" \
     "$(INTDIR)\gemenu.obj" \
     "$(INTDIR)\gemlst.obj" \
     "$(INTDIR)\gemnus.obj" \
@@ -576,10 +575,11 @@ LINK32_OBJS= \
     "$(INTDIR)\geutil2.obj" \
     "$(INTDIR)\geview.obj" \
     "$(INTDIR)\gmarea.obj" \
+    "$(INTDIR)\golded3.obj" \
     "$(INTDIR)\gedcyg.res"
 
 GOLDED_OBJS= \
-    "$(INTDIR)\golded3.obj"
+    "$(INTDIR)\gemain.obj"
 
 GOLDNODE_OBJS= \
     "$(INTDIR)\goldnode.obj"
@@ -1373,7 +1373,6 @@ BSC32_SBRS= \
     "$(INTDIR)\geinit.sbr" \
     "$(INTDIR)\geline.sbr" \
     "$(INTDIR)\gelmsg.sbr" \
-    "$(INTDIR)\gemain.sbr" \
     "$(INTDIR)\gemenu.sbr" \
     "$(INTDIR)\gemlst.sbr" \
     "$(INTDIR)\gemnus.sbr" \
@@ -1395,10 +1394,11 @@ BSC32_SBRS= \
     "$(INTDIR)\geutil.sbr" \
     "$(INTDIR)\geutil2.sbr" \
     "$(INTDIR)\geview.sbr" \
-    "$(INTDIR)\gmarea.sbr"
+    "$(INTDIR)\gmarea.sbr" \
+    "$(INTDIR)\golded3.sbr"
 
 GOLDED_SBRS= \
-    "$(INTDIR)\golded3.sbr"
+    "$(INTDIR)\gemain.sbr"
 
 GOLDNODE_SBRS= \
     "$(INTDIR)\goldnode.sbr"
@@ -1639,7 +1639,6 @@ LINK32_OBJS= \
     "$(INTDIR)\geinit.obj" \
     "$(INTDIR)\geline.obj" \
     "$(INTDIR)\gelmsg.obj" \
-    "$(INTDIR)\gemain.obj" \
     "$(INTDIR)\gemenu.obj" \
     "$(INTDIR)\gemlst.obj" \
     "$(INTDIR)\gemnus.obj" \
@@ -1662,10 +1661,11 @@ LINK32_OBJS= \
     "$(INTDIR)\geutil2.obj" \
     "$(INTDIR)\geview.obj" \
     "$(INTDIR)\gmarea.obj" \
+    "$(INTDIR)\golded3.obj" \
     "$(INTDIR)\gedcyg.res"
 
 GOLDED_OBJS= \
-    "$(INTDIR)\golded3.obj"
+    "$(INTDIR)\gemain.obj"
 
 GOLDNODE_OBJS= \
     "$(INTDIR)\goldnode.obj"
