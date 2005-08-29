@@ -541,7 +541,7 @@ static bool SwitchLanguage(word crc, char* str) {
     }
     return 0;
   } else
-    return -1;
+    return bool(-1);
 }
 
 
@@ -577,7 +577,7 @@ void LangInit() {
 
   LNG = (LangGed*)throw_calloc(1, sizeof(LangGed));
   LNG->Outofmem = throw_strdup("Out of memory!");
-  
+
   // Init LangCrc pointers to LNG
   char** lptr = (char**)LNG;
   for(LangCrc* lngptr = LangCrcs; lngptr->crc != CRC_LAST_CRC; lngptr++, lptr++)
@@ -698,7 +698,7 @@ bool ReadLangCfg(int force) {
   char buf[1024];
   LangCrc* lngptr;
   int line = 0;
-  
+
   // Read the GOLDLANG.CFG if there is one
   const char* cfgname = AddPath(CFG->goldpath, CFG->langcfg);
   fpi = fsopen(cfgname, "rt", CFG->sharemode);
@@ -748,7 +748,7 @@ bool ReadLangCfg(int force) {
   }
 
   AssignDateNames();
-  
+
   return true;
 }
 

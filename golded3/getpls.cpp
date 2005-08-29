@@ -24,6 +24,12 @@
 //  Template handling.
 //  ------------------------------------------------------------------
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+    /* C4786: 'identifier' : identifier was truncated to 'number'
+          characters in the debug information
+    */
+  #pragma warning(disable: 4786)
+#endif
 #include <algorithm>
 #include <golded.h>
 
