@@ -225,7 +225,7 @@ UUBrokenByNetscape (char *string)
  * Try to repair a Netscape-corrupted line of data.
  * This must only be called on corrupted lines, since non-Netscape
  * data may even _get_ corrupted by this procedure.
- * 
+ *
  * Some checks are included multiply to speed up the procedure. For
  * example: (*p1!='<' || strnicmp(p1,"</a>",4)). If the first expression
  * becomes true, the costly function isn't called :-)
@@ -265,7 +265,7 @@ UUNetscapeCollapse (char *string)
   while (*p1) {
     if (*p1 == '<') {
       if ((_FP_strnicmp (p1, "<ahref=", 7) == 0 ||
-	   _FP_strnicmp (p1, "<a href=",8) == 0) && 
+	   _FP_strnicmp (p1, "<a href=",8) == 0) &&
 	  (_FP_strstr (p1, "</a>") != 0 || _FP_strstr (p1, "</A>") != 0)) {
 	while (*p1 && *p1!='>')        p1++;
 	if (*p1=='\0' || *(p1+1)!='<') return 0;
@@ -635,20 +635,20 @@ UUDecodeLine (char *s, char *d, int method)
 
       if(i-- > 0)
 	d[count++] = c;
-      
+
       cc <<= 4;
       c    = table[ACAST(*s++)];
       cc  |= (c >> 2);
-      
+
       if(i-- > 0)
 	d[count++] = cc;
-      
+
       c <<= 6;
       c |= table[ACAST(*s++)];
-      
+
       if(i-- > 0)
 	d[count++] = c;
-      
+
       j -= 4;
     }
   }
@@ -748,7 +748,7 @@ UUDecodeQP (FILE *datain, FILE *dataout, int *state,
 
   uulboundary = -1;
 
-  while (!feof (datain) && 
+  while (!feof (datain) &&
 	 (ftell(datain)<maxpos || flags&FL_TOEND ||
 	  (!(flags&FL_PROPER) && uu_fast_scanning))) {
     if (_FP_fgets (line, 255, datain) == NULL)
@@ -822,7 +822,7 @@ UUDecodeQP (FILE *datain, FILE *dataout, int *state,
      * encapsulation line is conceptually attached to the boundary.
      * So if the part ends here, don't print a line break"
      */
-    if (val && (!feof (datain) && 
+    if (val && (!feof (datain) &&
 		(ftell(datain)<maxpos || flags&FL_TOEND ||
 		 (!(flags&FL_PROPER) && uu_fast_scanning))))
       fprintf (dataout, "%s\n", p1);
@@ -845,7 +845,7 @@ UUDecodePT (FILE *datain, FILE *dataout, int *state,
 
   uulboundary = -1;
 
-  while (!feof (datain) && 
+  while (!feof (datain) &&
 	 (ftell(datain)<maxpos || flags&FL_TOEND ||
 	  (!(flags&FL_PROPER) && uu_fast_scanning))) {
     if (_FP_fgets (line, 255, datain) == NULL)
@@ -941,7 +941,7 @@ UUDecodePart (FILE *datain, FILE *dataout, int *state,
     *state = BEGIN;
   }
 
-  while (!feof (datain) && *state != DONE && 
+  while (!feof (datain) && *state != DONE &&
 	 (ftell(datain)<maxpos || flags&FL_TOEND || maxpos==-1 ||
 	  (!(flags&FL_PROPER) && uu_fast_scanning))) {
     if (_FP_fgets (line, 299, datain) == NULL)
@@ -971,7 +971,7 @@ UUDecodePart (FILE *datain, FILE *dataout, int *state,
       vlc = 0;
       continue;
     }
-    
+
     /*
      * Busy Polls
      */
@@ -1061,7 +1061,7 @@ UUDecodePart (FILE *datain, FILE *dataout, int *state,
 	  if ((ptr = _FP_strstr (line, " end=")) == NULL) {
 	    break;
 	  }
-       
+
 	  yepartends = atoi (ptr + 5);
 	}
 	tf = 1;
@@ -1070,7 +1070,7 @@ UUDecodePart (FILE *datain, FILE *dataout, int *state,
       else {
 	continue;
       }
-      
+
       tc = tf = vlc = 0;
       lc[0] = lc[1] = 0;
     }
@@ -1111,7 +1111,7 @@ UUDecodePart (FILE *datain, FILE *dataout, int *state,
       {
 	size_t size = atol(ptr + 6);
 	if (size != yepartsize && yefilesize != -1) {
-	  if (size != yefilesize)
+	  if (size != (size_t)yefilesize)
 	    UUMessage (uunconc_id, __LINE__, UUMSG_WARNING,
 		       uustring (S_PSIZE_MISMATCH), progress.curfile,
 		       progress.partno, yepartsize, size);
@@ -1226,7 +1226,7 @@ UUDecodePart (FILE *datain, FILE *dataout, int *state,
   if (*state  == DONE ||
       (*state == DATA && method == B64ENCODED &&
        vflag == B64ENCODED && (flags&FL_PROPER || haddh))) {
-    for (tf=0; tf<tc; tf++) 
+    for (tf=0; tf<tc; tf++)
       count += UUDecodeLine (save[tf], oline + count, method);
     if (count) {
       if (method == BH_ENCODED) {
@@ -1345,7 +1345,7 @@ UUDecode (uulist *data)
     progress.numparts = (iter->partno)?iter->partno:1;
     iter = iter->NEXT;
   }
-  
+
   /*
    * let's rock!
    */
@@ -1411,7 +1411,7 @@ UUDecode (uulist *data)
     iter = iter->NEXT;
   }
 
-  if (state == DATA && 
+  if (state == DATA &&
       (data->uudet == B64ENCODED || data->uudet == QP_ENCODED ||
        data->uudet == PT_ENCODED))
     state = DONE; /* assume we're done */
