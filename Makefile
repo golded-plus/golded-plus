@@ -33,4 +33,4 @@ ifdef MINGW
 endif
 
 strip:
-	cd $(OBJPATH)/$(PLATFORM)/ ; strip $(EXECUTABLES)
+	cd $(BIN)/ ; strip *
