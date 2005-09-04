@@ -78,26 +78,9 @@ CPP_PROJ=/nologo /MD /W3 /GX /O1 /I ".\golded3" /I ".\goldlib\gall" /I ".\goldli
    $(CPP_PROJ) $<
 <<
 
-.c{$(INTDIR)}.sbr::
-   $(CPP) @<<
-   $(CPP_PROJ) $<
-<<
-
-.cpp{$(INTDIR)}.sbr::
-   $(CPP) @<<
-   $(CPP_PROJ) $<
-<<
-
-.cxx{$(INTDIR)}.sbr::
-   $(CPP) @<<
-   $(CPP_PROJ) $<
-<<
 
 RSC=rc.exe
 RSC_PROJ= /fo"$(INTDIR)\gedcyg.res" /d "NDEBUG"
-#BSC32=bscmake.exe
-#BSC32_FLAGS=/nologo /o"$(OUTDIR)\golded.bsc"
-#BSC32_SBRS= \
 
 LINK32_FLAGS=winmm.lib user32.lib /nologo /subsystem:console /incremental:no /machine:I386
 LINK32_OBJS= \
@@ -374,29 +357,24 @@ SOURCE="$(InputPath)"
 OUTDIR=.\Debug
 INTDIR=.\Debug
 
-ALL : "$(OUTDIR)\gedwind.exe" "$(OUTDIR)\gedwind.bsc" "$(OUTDIR)\rddtwind.exe" "$(OUTDIR)\rddtwind.bsc" "$(OUTDIR)\gnwind.exe" "$(OUTDIR)\gnwind.bsc"
+ALL : "$(OUTDIR)\gedwind.exe" "$(OUTDIR)\rddtwind.exe" "$(OUTDIR)\gnwind.exe"
 
 CLEAN :
     -@erase "$(INTDIR)\*.obj"
-    -@erase "$(INTDIR)\*.sbr"
     -@erase "$(INTDIR)\*.idb"
     -@erase "$(INTDIR)\*.pdb"
-    -@erase "$(OUTDIR)\*.bsc"
     -@erase "$(OUTDIR)\*.ilk"
 
 distclean:
     -@erase "$(OUTDIR)\gedwind.exe"
-    -@erase "$(OUTDIR)\gedwind.bsc"
     -@erase "$(OUTDIR)\gnwind.exe"
-    -@erase "$(OUTDIR)\gnwind.bsc"
     -@erase "$(OUTDIR)\rddtwind.exe"
-    -@erase "$(OUTDIR)\rddtwind.bsc"
 
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
-CPP_PROJ=/nologo /MDd /W3 /Gm /GX /ZI /Od /I "C:\Progra~1\Micros~2\VC98\Include\\" /I ".\golded3" /I ".\goldlib\gall" /I ".\goldlib\gcfg" /I ".\goldlib\glibc" /I ".\goldlib\gmb3" /I ".\goldlib\msgidlib" /I ".\goldlib\smblib" /I ".\goldlib\uulib" /D "_DEBUG" /D "WIN32" /D "_CONSOLE" /D "HAVE_CONFIG_H" /FR"$(INTDIR)\\" /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /J /FD /GZ /c
+CPP_PROJ=/nologo /MDd /W3 /Gm /GX /ZI /Od /I "C:\Progra~1\Micros~2\VC98\Include\\" /I ".\golded3" /I ".\goldlib\gall" /I ".\goldlib\gcfg" /I ".\goldlib\glibc" /I ".\goldlib\gmb3" /I ".\goldlib\msgidlib" /I ".\goldlib\smblib" /I ".\goldlib\uulib" /D "_DEBUG" /D "WIN32" /D "_CONSOLE" /D "HAVE_CONFIG_H" /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /J /FD /GZ /c
 
 .c{$(INTDIR)}.obj::
    $(CPP) @<<
@@ -413,288 +391,9 @@ CPP_PROJ=/nologo /MDd /W3 /Gm /GX /ZI /Od /I "C:\Progra~1\Micros~2\VC98\Include\
    $(CPP_PROJ) $<
 <<
 
-.c{$(INTDIR)}.sbr::
-   $(CPP) @<<
-   $(CPP_PROJ) $<
-<<
-
-.cpp{$(INTDIR)}.sbr::
-   $(CPP) @<<
-   $(CPP_PROJ) $<
-<<
-
-.cxx{$(INTDIR)}.sbr::
-   $(CPP) @<<
-   $(CPP_PROJ) $<
-<<
 
 RSC=rc.exe
 RSC_PROJ= /fo"$(INTDIR)\gedcyg.res" /d "_DEBUG"
-BSC32=bscmake.exe
-BSC32_FLAGS=/nologo
-BSC32_SBRS= \
-    "$(INTDIR)\gbmh.sbr" \
-    "$(INTDIR)\gcharset.sbr" \
-    "$(INTDIR)\gcrc16tb.sbr" \
-    "$(INTDIR)\gcrc32tb.sbr" \
-    "$(INTDIR)\gcrchash.sbr" \
-    "$(INTDIR)\gcrckeyv.sbr" \
-    "$(INTDIR)\gcrcm16.sbr" \
-    "$(INTDIR)\gcrcm32.sbr" \
-    "$(INTDIR)\gcrcs16.sbr" \
-    "$(INTDIR)\gcrcs32.sbr" \
-    "$(INTDIR)\gdbgerr.sbr" \
-    "$(INTDIR)\gdbgtrk.sbr" \
-    "$(INTDIR)\gdirposx.sbr" \
-    "$(INTDIR)\geval.sbr" \
-    "$(INTDIR)\gevalhum.sbr" \
-    "$(INTDIR)\gevalrpn.sbr" \
-    "$(INTDIR)\gfile.sbr" \
-    "$(INTDIR)\gfilport.sbr" \
-    "$(INTDIR)\gfilutl1.sbr" \
-    "$(INTDIR)\gfilutl2.sbr" \
-    "$(INTDIR)\gftnaddr.sbr" \
-    "$(INTDIR)\gftnnl.sbr" \
-    "$(INTDIR)\gftnnlfd.sbr" \
-    "$(INTDIR)\gftnnlfu.sbr" \
-    "$(INTDIR)\gftnnlge.sbr" \
-    "$(INTDIR)\gftnnlv7.sbr" \
-    "$(INTDIR)\gfuzzy.sbr" \
-    "$(INTDIR)\ghdrmime.sbr" \
-    "$(INTDIR)\gkbdbase.sbr" \
-    "$(INTDIR)\gkbdgetm.sbr" \
-    "$(INTDIR)\gkbdwait.sbr" \
-    "$(INTDIR)\glog.sbr" \
-    "$(INTDIR)\gmemdbg.sbr" \
-    "$(INTDIR)\gmemutil.sbr" \
-    "$(INTDIR)\gmoubase.sbr" \
-    "$(INTDIR)\gmsgattr.sbr" \
-    "$(INTDIR)\gprnutil.sbr" \
-    "$(INTDIR)\gregex.sbr" \
-    "$(INTDIR)\gsearch.sbr" \
-    "$(INTDIR)\gsnd.sbr" \
-    "$(INTDIR)\gsndwrap.sbr" \
-    "$(INTDIR)\gsrchmgr.sbr" \
-    "$(INTDIR)\gstrbags.sbr" \
-    "$(INTDIR)\gstrctyp.sbr" \
-    "$(INTDIR)\gstrmail.sbr" \
-    "$(INTDIR)\gstrname.sbr" \
-    "$(INTDIR)\gstrutil.sbr" \
-    "$(INTDIR)\gtimjuld.sbr" \
-    "$(INTDIR)\gtimutil.sbr" \
-    "$(INTDIR)\gtxtpara.sbr" \
-    "$(INTDIR)\gusrbase.sbr" \
-    "$(INTDIR)\gusrezyc.sbr" \
-    "$(INTDIR)\gusrgold.sbr" \
-    "$(INTDIR)\gusrhuds.sbr" \
-    "$(INTDIR)\gusrmax.sbr" \
-    "$(INTDIR)\gusrpcb.sbr" \
-    "$(INTDIR)\gusrra2.sbr" \
-    "$(INTDIR)\gusrxbbs.sbr" \
-    "$(INTDIR)\gutlclip.sbr" \
-    "$(INTDIR)\gutlcode.sbr" \
-    "$(INTDIR)\gutlgrp.sbr" \
-    "$(INTDIR)\gutlmisc.sbr" \
-    "$(INTDIR)\gutlmtsk.sbr" \
-    "$(INTDIR)\gutltag.sbr" \
-    "$(INTDIR)\gutlvers.sbr" \
-    "$(INTDIR)\gutlwin.sbr" \
-    "$(INTDIR)\gutlwinm.sbr" \
-    "$(INTDIR)\gvidbase.sbr" \
-    "$(INTDIR)\gvidinit.sbr" \
-    "$(INTDIR)\gwildmat.sbr" \
-    "$(INTDIR)\gwinbase.sbr" \
-    "$(INTDIR)\gwindow.sbr" \
-    "$(INTDIR)\gwinhlp1.sbr" \
-    "$(INTDIR)\gwinhlp2.sbr" \
-    "$(INTDIR)\gwininit.sbr" \
-    "$(INTDIR)\gwinline.sbr" \
-    "$(INTDIR)\gwinmenu.sbr" \
-    "$(INTDIR)\gwinmnub.sbr" \
-    "$(INTDIR)\gwinpckf.sbr" \
-    "$(INTDIR)\gwinpcks.sbr" \
-    "$(INTDIR)\gwinpick.sbr" \
-    "$(INTDIR)\gwinput2.sbr" \
-    "$(INTDIR)\gedacfg.sbr" \
-    "$(INTDIR)\gxareas.sbr" \
-    "$(INTDIR)\gxcrash.sbr" \
-    "$(INTDIR)\gxdb.sbr" \
-    "$(INTDIR)\gxdutch.sbr" \
-    "$(INTDIR)\gxezy102.sbr" \
-    "$(INTDIR)\gxezy110.sbr" \
-    "$(INTDIR)\gxfd.sbr" \
-    "$(INTDIR)\gxfecho4.sbr" \
-    "$(INTDIR)\gxfecho5.sbr" \
-    "$(INTDIR)\gxfecho6.sbr" \
-    "$(INTDIR)\gxfidpcb.sbr" \
-    "$(INTDIR)\gxfm092.sbr" \
-    "$(INTDIR)\gxfm100.sbr" \
-    "$(INTDIR)\gxfm116.sbr" \
-    "$(INTDIR)\gxgecho.sbr" \
-    "$(INTDIR)\gxhpt.sbr" \
-    "$(INTDIR)\gximail4.sbr" \
-    "$(INTDIR)\gximail5.sbr" \
-    "$(INTDIR)\gximail6.sbr" \
-    "$(INTDIR)\gxinter.sbr" \
-    "$(INTDIR)\gxlora.sbr" \
-    "$(INTDIR)\gxmax3.sbr" \
-    "$(INTDIR)\gxme2.sbr" \
-    "$(INTDIR)\gxopus.sbr" \
-    "$(INTDIR)\gxpcb.sbr" \
-    "$(INTDIR)\gxportal.sbr" \
-    "$(INTDIR)\gxprobrd.sbr" \
-    "$(INTDIR)\gxqecho.sbr" \
-    "$(INTDIR)\gxqfront.sbr" \
-    "$(INTDIR)\gxquick.sbr" \
-    "$(INTDIR)\gxra.sbr" \
-    "$(INTDIR)\gxraecho.sbr" \
-    "$(INTDIR)\gxspace.sbr" \
-    "$(INTDIR)\gxsquish.sbr" \
-    "$(INTDIR)\gxsuper.sbr" \
-    "$(INTDIR)\gxsync.sbr" \
-    "$(INTDIR)\gxtimed.sbr" \
-    "$(INTDIR)\gxtmail.sbr" \
-    "$(INTDIR)\gxts.sbr" \
-    "$(INTDIR)\gxwmail.sbr" \
-    "$(INTDIR)\gxwtr.sbr" \
-    "$(INTDIR)\gxxbbs.sbr" \
-    "$(INTDIR)\gxxmail.sbr" \
-    "$(INTDIR)\regex.sbr" \
-    "$(INTDIR)\gmoarea.sbr" \
-    "$(INTDIR)\gmoezyc1.sbr" \
-    "$(INTDIR)\gmoezyc2.sbr" \
-    "$(INTDIR)\gmoezyc3.sbr" \
-    "$(INTDIR)\gmoezyc4.sbr" \
-    "$(INTDIR)\gmoezyc5.sbr" \
-    "$(INTDIR)\gmofido1.sbr" \
-    "$(INTDIR)\gmofido2.sbr" \
-    "$(INTDIR)\gmofido3.sbr" \
-    "$(INTDIR)\gmofido4.sbr" \
-    "$(INTDIR)\gmofido5.sbr" \
-    "$(INTDIR)\gmohuds.sbr" \
-    "$(INTDIR)\gmojamm1.sbr" \
-    "$(INTDIR)\gmojamm2.sbr" \
-    "$(INTDIR)\gmojamm3.sbr" \
-    "$(INTDIR)\gmojamm4.sbr" \
-    "$(INTDIR)\gmojamm5.sbr" \
-    "$(INTDIR)\gmopcbd1.sbr" \
-    "$(INTDIR)\gmopcbd2.sbr" \
-    "$(INTDIR)\gmopcbd3.sbr" \
-    "$(INTDIR)\gmopcbd4.sbr" \
-    "$(INTDIR)\gmopcbd5.sbr" \
-    "$(INTDIR)\gmosmb1.sbr" \
-    "$(INTDIR)\gmosmb2.sbr" \
-    "$(INTDIR)\gmosqsh1.sbr" \
-    "$(INTDIR)\gmosqsh2.sbr" \
-    "$(INTDIR)\gmosqsh3.sbr" \
-    "$(INTDIR)\gmosqsh4.sbr" \
-    "$(INTDIR)\gmosqsh5.sbr" \
-    "$(INTDIR)\gmowcat1.sbr" \
-    "$(INTDIR)\gmowcat2.sbr" \
-    "$(INTDIR)\gmowcat3.sbr" \
-    "$(INTDIR)\gmowcat4.sbr" \
-    "$(INTDIR)\gmowcat5.sbr" \
-    "$(INTDIR)\gmoxbbs1.sbr" \
-    "$(INTDIR)\gmoxbbs2.sbr" \
-    "$(INTDIR)\gmoxbbs3.sbr" \
-    "$(INTDIR)\gmoxbbs4.sbr" \
-    "$(INTDIR)\gmoxbbs5.sbr" \
-    "$(INTDIR)\fexist.sbr" \
-    "$(INTDIR)\ffind.sbr" \
-    "$(INTDIR)\genmsgid.sbr" \
-    "$(INTDIR)\patmat.sbr" \
-    "$(INTDIR)\lzh.sbr" \
-    "$(INTDIR)\smblib.sbr" \
-    "$(INTDIR)\fptools.sbr" \
-    "$(INTDIR)\uucheck.sbr" \
-    "$(INTDIR)\uuencode.sbr" \
-    "$(INTDIR)\uulib.sbr" \
-    "$(INTDIR)\uunconc.sbr" \
-    "$(INTDIR)\uuscan.sbr" \
-    "$(INTDIR)\uustring.sbr" \
-    "$(INTDIR)\uuutil.sbr" \
-    "$(INTDIR)\gcalst.sbr" \
-    "$(INTDIR)\gcarea.sbr" \
-    "$(INTDIR)\gccfgg.sbr" \
-    "$(INTDIR)\gccfgg0.sbr" \
-    "$(INTDIR)\gccfgg1.sbr" \
-    "$(INTDIR)\gccfgg2.sbr" \
-    "$(INTDIR)\gccfgg3.sbr" \
-    "$(INTDIR)\gccfgg4.sbr" \
-    "$(INTDIR)\gccfgg5.sbr" \
-    "$(INTDIR)\gccfgg6.sbr" \
-    "$(INTDIR)\gccfgg7.sbr" \
-    "$(INTDIR)\gccfgg8.sbr" \
-    "$(INTDIR)\gckeys.sbr" \
-    "$(INTDIR)\gclang.sbr" \
-    "$(INTDIR)\gcmisc.sbr" \
-    "$(INTDIR)\gealst.sbr" \
-    "$(INTDIR)\gearea.sbr" \
-    "$(INTDIR)\gecarb.sbr" \
-    "$(INTDIR)\gecmfd.sbr" \
-    "$(INTDIR)\gectnr.sbr" \
-    "$(INTDIR)\gectrl.sbr" \
-    "$(INTDIR)\gedoit.sbr" \
-    "$(INTDIR)\gedoss.sbr" \
-    "$(INTDIR)\geedit.sbr" \
-    "$(INTDIR)\geedit2.sbr" \
-    "$(INTDIR)\geedit3.sbr" \
-    "$(INTDIR)\gefile.sbr" \
-    "$(INTDIR)\gefind.sbr" \
-    "$(INTDIR)\geglob.sbr" \
-    "$(INTDIR)\gehdre.sbr" \
-    "$(INTDIR)\gehdrs.sbr" \
-    "$(INTDIR)\gehtml.sbr" \
-    "$(INTDIR)\geinit.sbr" \
-    "$(INTDIR)\geline.sbr" \
-    "$(INTDIR)\gelmsg.sbr" \
-    "$(INTDIR)\gemenu.sbr" \
-    "$(INTDIR)\gemlst.sbr" \
-    "$(INTDIR)\gemnus.sbr" \
-    "$(INTDIR)\gemrks.sbr" \
-    "$(INTDIR)\gemsgid.sbr" \
-    "$(INTDIR)\gemsgs.sbr" \
-    "$(INTDIR)\genode.sbr" \
-    "$(INTDIR)\geplay.sbr" \
-    "$(INTDIR)\gepost.sbr" \
-    "$(INTDIR)\geqwks.sbr" \
-    "$(INTDIR)\gerand.sbr" \
-    "$(INTDIR)\geread.sbr" \
-    "$(INTDIR)\geread2.sbr" \
-    "$(INTDIR)\gescan.sbr" \
-    "$(INTDIR)\gesoup.sbr" \
-    "$(INTDIR)\gesrch.sbr" \
-    "$(INTDIR)\getpls.sbr" \
-    "$(INTDIR)\geusrbse.sbr" \
-    "$(INTDIR)\geutil.sbr" \
-    "$(INTDIR)\geutil2.sbr" \
-    "$(INTDIR)\geview.sbr" \
-    "$(INTDIR)\gmarea.sbr" \
-    "$(INTDIR)\golded3.sbr"
-
-GOLDED_SBRS= \
-    "$(INTDIR)\gemain.sbr"
-
-GOLDNODE_SBRS= \
-    "$(INTDIR)\goldnode.sbr"
-
-RDDT_SBRS= \
-    "$(INTDIR)\rddt.sbr"
-
-"$(OUTDIR)\gedwind.bsc" : "$(OUTDIR)" $(BSC32_SBRS) $(GOLDED_SBRS)
-    $(BSC32) @<<
-  $(BSC32_FLAGS)  /o"$(OUTDIR)\gedwind.bsc" $(BSC32_SBRS) $(GOLDED_SBRS)
-<<
-
-"$(OUTDIR)\gnwind.bsc" : "$(OUTDIR)" $(BSC32_SBRS) $(GOLDNODE_SBRS)
-    $(BSC32) @<<
-  $(BSC32_FLAGS) /o"$(OUTDIR)\gnwind.bsc" $(BSC32_SBRS) $(GOLDNODE_SBRS)
-<<
-
-"$(OUTDIR)\rddtwind.bsc" : "$(OUTDIR)" $(BSC32_SBRS) $(RDDT_SBRS)
-    $(BSC32) @<<
-  $(BSC32_FLAGS) /o"$(OUTDIR)\rddtwind.bsc" $(BSC32_SBRS) $(RDDT_SBRS)
-<<
 
 LINK32_FLAGS=winmm.lib user32.lib /nologo /subsystem:console /incremental:yes /debug /machine:I386 /pdbtype:sept
 LINK32_OBJS= \
@@ -992,7 +691,7 @@ SOURCE=.\golded3\gcalst.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gcalst.obj"  "$(INTDIR)\gcalst.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gcalst.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1010,7 +709,7 @@ SOURCE=.\golded3\gcarea.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gcarea.obj"  "$(INTDIR)\gcarea.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gcarea.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1028,7 +727,7 @@ SOURCE=.\golded3\gccfgg.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gccfgg.obj"  "$(INTDIR)\gccfgg.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gccfgg.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1046,7 +745,7 @@ SOURCE=.\golded3\gccfgg0.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gccfgg0.obj" "$(INTDIR)\gccfgg0.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gccfgg0.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1064,7 +763,7 @@ SOURCE=.\golded3\gccfgg1.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gccfgg1.obj" "$(INTDIR)\gccfgg1.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gccfgg1.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1082,7 +781,7 @@ SOURCE=.\golded3\gccfgg2.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gccfgg2.obj" "$(INTDIR)\gccfgg2.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gccfgg2.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1100,7 +799,7 @@ SOURCE=.\golded3\gccfgg3.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gccfgg3.obj" "$(INTDIR)\gccfgg3.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gccfgg3.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1118,7 +817,7 @@ SOURCE=.\golded3\gccfgg4.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gccfgg4.obj" "$(INTDIR)\gccfgg4.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gccfgg4.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1136,7 +835,7 @@ SOURCE=.\golded3\gccfgg5.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gccfgg5.obj" "$(INTDIR)\gccfgg5.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gccfgg5.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1154,7 +853,7 @@ SOURCE=.\golded3\gccfgg6.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gccfgg6.obj" "$(INTDIR)\gccfgg6.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gccfgg6.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1172,7 +871,7 @@ SOURCE=.\golded3\gccfgg7.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gccfgg7.obj" "$(INTDIR)\gccfgg7.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gccfgg7.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1190,7 +889,7 @@ SOURCE=.\golded3\gccfgg8.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gccfgg8.obj" "$(INTDIR)\gccfgg8.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gccfgg8.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1208,7 +907,7 @@ SOURCE=.\golded3\gckeys.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gckeys.obj"  "$(INTDIR)\gckeys.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gckeys.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1226,7 +925,7 @@ SOURCE=.\golded3\gclang.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gclang.obj"  "$(INTDIR)\gclang.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gclang.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1244,7 +943,7 @@ SOURCE=.\golded3\gcmisc.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gcmisc.obj"  "$(INTDIR)\gcmisc.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gcmisc.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1262,7 +961,7 @@ SOURCE=.\golded3\gealst.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gealst.obj"  "$(INTDIR)\gealst.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gealst.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1280,7 +979,7 @@ SOURCE=.\golded3\gearea.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gearea.obj"  "$(INTDIR)\gearea.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gearea.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1298,7 +997,7 @@ SOURCE=.\golded3\gecarb.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gecarb.obj"  "$(INTDIR)\gecarb.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gecarb.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1316,7 +1015,7 @@ SOURCE=.\golded3\gecmfd.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gecmfd.obj"  "$(INTDIR)\gecmfd.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gecmfd.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1334,7 +1033,7 @@ SOURCE=.\golded3\gectnr.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gectnr.obj"  "$(INTDIR)\gectnr.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gectnr.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1352,7 +1051,7 @@ SOURCE=.\golded3\gectrl.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gectrl.obj"  "$(INTDIR)\gectrl.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gectrl.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1370,7 +1069,7 @@ SOURCE=.\golded3\gedoit.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gedoit.obj"  "$(INTDIR)\gedoit.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gedoit.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1388,7 +1087,7 @@ SOURCE=.\golded3\gedoss.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gedoss.obj"  "$(INTDIR)\gedoss.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gedoss.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1406,7 +1105,7 @@ SOURCE=.\golded3\geedit.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\geedit.obj"  "$(INTDIR)\geedit.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\geedit.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1424,7 +1123,7 @@ SOURCE=.\golded3\geedit2.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\geedit2.obj" "$(INTDIR)\geedit2.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\geedit2.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1442,7 +1141,7 @@ SOURCE=.\golded3\geedit3.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\geedit3.obj" "$(INTDIR)\geedit3.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\geedit3.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1460,7 +1159,7 @@ SOURCE=.\golded3\gefile.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gefile.obj"  "$(INTDIR)\gefile.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gefile.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1478,7 +1177,7 @@ SOURCE=.\golded3\gefind.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gefind.obj"  "$(INTDIR)\gefind.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gefind.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1496,7 +1195,7 @@ SOURCE=.\golded3\geglob.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\geglob.obj"  "$(INTDIR)\geglob.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\geglob.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1514,7 +1213,7 @@ SOURCE=.\golded3\gehdre.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gehdre.obj"  "$(INTDIR)\gehdre.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gehdre.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1532,7 +1231,7 @@ SOURCE=.\golded3\gehdrs.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gehdrs.obj"  "$(INTDIR)\gehdrs.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gehdrs.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1550,7 +1249,7 @@ SOURCE=.\golded3\gehtml.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gehtml.obj"  "$(INTDIR)\gehtml.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gehtml.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1568,7 +1267,7 @@ SOURCE=.\golded3\geinit.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\geinit.obj"  "$(INTDIR)\geinit.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\geinit.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1586,7 +1285,7 @@ SOURCE=.\golded3\geline.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\geline.obj"  "$(INTDIR)\geline.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\geline.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1604,7 +1303,7 @@ SOURCE=.\golded3\gelmsg.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gelmsg.obj"  "$(INTDIR)\gelmsg.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gelmsg.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1622,7 +1321,7 @@ SOURCE=.\golded3\gemain.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gemain.obj"  "$(INTDIR)\gemain.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gemain.obj"  : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1640,7 +1339,7 @@ SOURCE=.\golded3\gemenu.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gemenu.obj"  "$(INTDIR)\gemenu.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gemenu.obj"   : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1658,7 +1357,7 @@ SOURCE=.\golded3\gemlst.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gemlst.obj"  "$(INTDIR)\gemlst.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gemlst.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1676,7 +1375,7 @@ SOURCE=.\golded3\gemnus.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gemnus.obj"  "$(INTDIR)\gemnus.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gemnus.obj"  : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1694,7 +1393,7 @@ SOURCE=.\golded3\gemrks.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gemrks.obj"  "$(INTDIR)\gemrks.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gemrks.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1712,7 +1411,7 @@ SOURCE=.\golded3\gemsgid.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gemsgid.obj" "$(INTDIR)\gemsgid.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gemsgid.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1730,7 +1429,7 @@ SOURCE=.\golded3\gemsgs.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gemsgs.obj"  "$(INTDIR)\gemsgs.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gemsgs.obj" : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1748,7 +1447,7 @@ SOURCE=.\golded3\genode.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\genode.obj"  "$(INTDIR)\genode.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\genode.obj"  : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1766,7 +1465,7 @@ SOURCE=.\golded3\geplay.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\geplay.obj"  "$(INTDIR)\geplay.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\geplay.obj"  : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -1784,7 +1483,7 @@ SOURCE=.\golded3\gepost.cpp
 !ELSEIF  "$(CFG)" == "Debug"
 
 
-"$(INTDIR)\gepost.obj"  "$(INTDIR)\gepost.sbr" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gepost.obj"  : $(SOURCE) "$(INTDIR)"
     $(CPP) $(CPP_PROJ) $(SOURCE)
 
 
