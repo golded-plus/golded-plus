@@ -336,7 +336,7 @@ int main(int argc, char** argv) {
 
   cout << "Route Diagram Drawing Tool v." << __gver_shortver__ << __gver_platform__ << __gver_postversion__;
 #ifdef KOI8
-  cout << " (koi8)"
+  cout << " (koi8)";
 #endif
   cout << endl
        << "Copyright (C) 1999 Odinn Sorensen" << endl
