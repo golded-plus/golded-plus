@@ -273,7 +273,7 @@ int ShellToDos(char* command, char* message, int cls, int cursor, int pause) {
       envn++;
     }
     #endif
-  } 
+  }
   #endif
 
   // Store the screen
@@ -311,6 +311,8 @@ int ShellToDos(char* command, char* message, int cls, int cursor, int pause) {
   gkbd_tty_reset();
   #endif
 
+  // Return cursor into 1st column
+  puts("");
   // Write message on screen
   if(*message)
     puts(message);
@@ -322,7 +324,7 @@ int ShellToDos(char* command, char* message, int cls, int cursor, int pause) {
     vcurset(gvid->orig.cursor.start, gvid->orig.cursor.end);
     vcurshow();
   }
-  
+
   HandleGEvent(EVTT_BREAKLOOP);
 
   // Shell return value
@@ -407,7 +409,7 @@ int ShellToDos(char* command, char* message, int cls, int cursor, int pause) {
   // Set palette if changes were specified
   if(CFG->screenpalette[16])
     gvid->setpalette(CFG->screenpalette);
-  
+
   // Restore prompt
   #ifndef __UNIX__
   if(CFG->switches.get(dosprompt)) {
