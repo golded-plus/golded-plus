@@ -51,7 +51,6 @@ ALL : "$(OUTDIR)\gedwin.exe" "$(OUTDIR)\rddtwin.exe" "$(OUTDIR)\gnwin.exe"
 
 CLEAN :
     -@erase "$(INTDIR)\*.obj"
-    -@erase "$(INTDIR)\vc60.idb"
 
 distclean:
     -@erase "$(OUTDIR)\gedwin.exe"
