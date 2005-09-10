@@ -10,6 +10,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fix man pages.
+
 - Fix subshell start message output (bugreport from Semen Panevin).
 
 ! Microsoft Visual Studio build (use golded.mak as makefile).
@@ -25,6 +27,12 @@ ______________________________________________________________________
 - Fixed directory seek for Win9x.
 
 - Fixed pattern match for MS Visual C biuld.
+
+- MinGW support updates.
+
+- many config examples changes.
+
+- several fixes to prevent buffer overflow.
 
 + Added escape sequences \" and \\ to the goldkeys.cfg.
 
@@ -682,7 +690,7 @@ ______________________________________________________________________
 
 + Implemented FSP-0013 support. You may notice warnings about obsolete
   codepages in your config, please fix them. If you use XLATEXPORT to
-  obsolte codepage and this is required on some reason you may prevent
+  obsolete codepage and this is required on some reason you may prevent
   error by setting USECHARSET to No.
 
 + GoldED+ now tries to set up correct values for XLATLOCALSET,
