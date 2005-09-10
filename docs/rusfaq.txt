@@ -1,6 +1,7 @@
 This file mostly duplicates tips.txt but also answers on some russian specific
 questions. The codepage used is cp866. Please read this before asking for
 assistance!
+File data: Mon Jun  9 05:47:37 2003
 >==============================================================================
 
                 F.A.Q. по использованию GoldED+ в картинках (tm)
