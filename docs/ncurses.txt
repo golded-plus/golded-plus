@@ -1,3 +1,4 @@
+Sun Jul  9 00:19:23 2000
 
 Random remarks about the ncurses support for GoldEd+
                   by Jacobo Tarrio, 2:348/105.93@fidonet <jtarrio@iname.com>

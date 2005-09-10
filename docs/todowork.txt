@@ -1,7 +1,7 @@
 ______________________________________________________________________
 
-This file is not up to date, some wishes still in my netmail/email
-folders.
+This file is not up to date, some wishes still in developer's personal
+mail.
 ______________________________________________________________________
 
 GoldED+ plans. As always there's no any guarantee of feature
@@ -16,7 +16,6 @@ To do:
 * AreaYouWroteTo should be able to store copy of mail after change.
 * Optionally add complete set of fidonet kludges to AreaIsEmail.
 * E-mail/news signature support (or it already present? :))
-* SMTP support.
 * Refresh message header after calling externutil.
 * Try to save position in message after printing, changing xlat table,
   etc.
@@ -43,10 +42,10 @@ ______________________________________________________________________
 To fix:
 
 * UUdecoder not 100% reliable: any volunteers for uulib maintaining?
-* Need some workarounds on -install feature under Linux (UNIX).
+* Need some workarounds on -install feature under UNIX-like OS.
 * Win32 (only when runned under Win9x) version does not support case
   insensitive search of regexp's for high part of ASCII table. That's
-  a limitation of Microsoft CRTL, I can't do anything easy for that
+  a limitation of Microsoft C RTL, I can't do anything easy for that
   but probably someday I provide a huge patch (I wonder if Microsoft
   accept patches? =))...
 ______________________________________________________________________
@@ -56,6 +55,7 @@ Known wishes that not currently planned (any volunteers?):
 * Interactive Twit-list edition.
 * Pass areaname, message number, etc. to external utility.
 * Hide empty areas / areas without new messages from arealist.
+* SMTP support.
 * NNTP support.
 * Forward multiple messages.
 * Peeking up message from area while in edit mode.
@@ -65,5 +65,5 @@ Known wishes that not currently planned (any volunteers?):
 * Trashcan for mail.
 * Selection of codepage for outgoing message.
 * Ability to change directory in attach picker.
-* Any of your suggestion may be placed here ;-)
+*** Any of your suggestion may be placed here ;-)
 ______________________________________________________________________

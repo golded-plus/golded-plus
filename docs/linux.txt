@@ -1,3 +1,5 @@
+Fri Feb 25 10:15:07 2000
+
 Hello world!
 
 This is a Beta release of GoldED for Linux.
@@ -62,7 +64,7 @@ versions:
 
 * Characters with ASCII values 0-31 are currently remapped to 'x' or a
   visually similar character before being written to the screen.
-  
+
 * The default XLATLOCALSET is LATIN-1 for the Linux version, as
   opposed to IBMPC for the other OS'es. You should setup character
   translation between IBMPC and LATIN-1 and use the correct XLATEXPORT
@@ -79,7 +81,7 @@ versions:
   limitations. Telnet sessions should work, if they support the ANSI
   sequences and produce usable keycodes.
 
-* Standard distributions of Linux do not define all the keys that are 
+* Standard distributions of Linux do not define all the keys that are
   usually available on DOS, OS/2 and Win32. Specifically, cursor
   movement (arrows, page, home/end) keys don't have separate keycodes
   when combined with the shift, control or alt keys. It is possible
@@ -113,4 +115,3 @@ xlatcharset  ibmpc   ibmpc   ibm_ibm.chs
 
 Greetings,
   Odinn Sorensen
-

@@ -5,16 +5,16 @@ ______________________________________________________________________
                                GoldED+
 
                          --- === *** === ---
-
-
 ______________________________________________________________________
 
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
-! Microsoft Visual Studio build (use golded.mak as makefile)
+- Fix subshell start message output (bugreport from Semen Panevin).
 
-- Fix russian documentation
+! Microsoft Visual Studio build (use golded.mak as makefile).
+
+- Fix russian documentation.
 
 - Fixed gcc 4.x build (thanks to Max Alekseyev).
 

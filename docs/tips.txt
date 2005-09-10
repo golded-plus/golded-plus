@@ -1,5 +1,6 @@
 Tips and tricks
 ~~~~~~~~~~~~~~~
+Tue Dec 18 2001
 
 1. Don't you forgot that instalation of new version requires reading of
    notework.txt?
