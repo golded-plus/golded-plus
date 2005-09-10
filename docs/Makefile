@@ -6,7 +6,7 @@ HTMLS= golded.html goldnode.html rddt.html
 TXTS=  golded.txt goldnode.txt rddt.txt
 
 
-all: html-doc
+all: html-doc txt-doc
 
 html: html-doc
 html-doc: $(HTMLS)
