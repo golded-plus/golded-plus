@@ -346,7 +346,7 @@ int main(int argc, char** argv) {
        << endl;
 
   if(argc < 2) {
-    cout << "Syntax: RDDT <routefile> [address or name]" << endl;
+    cout << "Syntax: RDDT <routefile> [options] [address or name]" << endl;
     return 1;
   }
 
@@ -382,6 +382,8 @@ int main(int argc, char** argv) {
         case 'i':
           atree.indent = atoi(argp + 2);
           break;
+        default:
+          cerr << "Illegal option '" << argp << "', ignored" << endl;
       }
     }
     else
