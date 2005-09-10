@@ -3,6 +3,7 @@
 //  The Goldware Utilities.
 //  Copyright (C) 1990-1999 Odinn Sorensen
 //  Copyright (C) 1999-2001 Alexander S. Aganichev
+//  Copyright (C) 2005 Stas Degteff
 //  ------------------------------------------------------------------
 //  This program is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU General Public License as
@@ -367,7 +368,7 @@ static char* make_addr_str(char* str, Addr* addr, char* domain) {
 //  ------------------------------------------------------------------
 //  Compare two nodes by name/address/file/pos
 
-static bool cmp_nnlsts(_GEIdx A, _GEIdx B) {
+static bool cmp_nnlsts(const _GEIdx A, const _GEIdx B) {
 
   int cmp;
 
@@ -390,7 +391,7 @@ static bool cmp_nnlsts(_GEIdx A, _GEIdx B) {
 //  ------------------------------------------------------------------
 //  Compare two nodes by address/name/file/pos
 
-static bool cmp_anlsts(_GEIdx A, _GEIdx B) {
+static bool cmp_anlsts(const _GEIdx A, const _GEIdx B) {
 
   int cmp;
 
@@ -1355,7 +1356,7 @@ static bool ExistCfg(char* path, char* file) {
 static bool FindCfg(char* path) {
 
   bool found = false;
-  
+
   if(!is_dir(path)) {
     if(fexist(path))
       return true;
