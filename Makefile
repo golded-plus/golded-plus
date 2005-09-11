@@ -28,9 +28,7 @@ sourcelists: dirs
 	@echo -n >$(OBJPATH)/$(PLATFORM)/source.lst
 
 docs:
-ifdef MINGW
 	@cd $@ ; $(MAKE) all ; cd ..
-endif
 
 strip:
 	cd $(BIN)/ ; strip *
