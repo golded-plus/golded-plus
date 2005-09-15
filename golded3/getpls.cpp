@@ -24,6 +24,10 @@
 //  Template handling.
 //  ------------------------------------------------------------------
 
+#if defined(__MINGW32__) || defined(_MSC_VER)
+#include <malloc.h>
+#endif
+
 #if defined(_MSC_VER) && defined(_DEBUG)
     /* C4786: 'identifier' : identifier was truncated to 'number'
           characters in the debug information
@@ -83,7 +87,12 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
   uint ctrlinfo;
   char textfile[GMAXPATH];
   char indexfile[GMAXPATH];
-  char buf[256];
+#if defined(__MINGW32__) || defined(_MSC_VER)
+  size_t sizeofbuf = CFG->quotemargin + 256;
+  char *buf = (char*)alloca(sizeofbuf);
+#else
+  __extension__ char buf[CFG->quotemargin + 256];
+#endif
   char initials[10];
   char quotestr[100];
   char qbuf[100];
@@ -317,7 +326,11 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
   size_t oldmsg_size = oldmsg->txt ? strlen(oldmsg->txt) : REALLOC_CACHE_SIZE;
   size_t msg_txt_realloc_cache = 0;
 
+#if defined(__MINGW32__) || defined(_MSC_VER)
+  while(fgets(buf, sizeofbuf, fp)) {
+#else
   while(fgets(buf, sizeof(buf), fp)) {
+#endif
     ptr = strskip_wht(buf);
     if(*ptr != ';') {
       bool chg = false;
