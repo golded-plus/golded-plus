@@ -134,6 +134,8 @@ struct nl_stat {
 nl_stat statistic;
 #endif
 
+char* _MapPath(char* map, bool reverse = false);
+
 //  ------------------------------------------------------------------
 //  Display a "twirly"
 
@@ -368,7 +370,7 @@ static char* make_addr_str(char* str, Addr* addr, char* domain) {
 //  ------------------------------------------------------------------
 //  Compare two nodes by name/address/file/pos
 
-static bool cmp_nnlsts(const _GEIdx A, const _GEIdx B) {
+static bool cmp_nnlsts(const _GEIdx &A, const _GEIdx &B) {
 
   int cmp;
 
@@ -391,7 +393,7 @@ static bool cmp_nnlsts(const _GEIdx A, const _GEIdx B) {
 //  ------------------------------------------------------------------
 //  Compare two nodes by address/name/file/pos
 
-static bool cmp_anlsts(const _GEIdx A, const _GEIdx B) {
+static bool cmp_anlsts(const _GEIdx &A, const _GEIdx &B) {
 
   int cmp;
 
@@ -411,6 +413,17 @@ static bool cmp_anlsts(const _GEIdx A, const _GEIdx B) {
 }
 
 
+//  ------------------------------------------------------------------
+#if defined(_MSC_VER)
+enum{ sort_by_address=0, sort_by_name } static sort_type;
+bool operator<(const _GEIdx &A, const _GEIdx &B)
+{
+  if (sort_type==sort_by_address)
+    return cmp_anlsts(A, B);
+  else
+    return cmp_nnlsts(A, B);
+}
+#endif
 //  ------------------------------------------------------------------
 
 static char* CvtName(char* inp) {
@@ -882,7 +895,12 @@ static void read_nodelists() {
 
     // Sort by name
     if(not quiet) std::cout << std::endl << "* Sorting by name " << std::flush;
+#if defined(_MSC_VER)
+    sort_type = sort_by_name;
+    nodeidx.sort();
+#else
     nodeidx.sort(cmp_nnlsts);
+#endif
 
     // Write the name-sorted .GXN
     fp = fsopen(nodeindex.c_str(), "wb", sh_mod);
@@ -935,7 +953,12 @@ static void read_nodelists() {
 
     // Sort by address
     if(not quiet) std::cout << ' ' << std::endl << "* Sorting by node " << std::flush;
+#if defined(_MSC_VER)
+    sort_type = sort_by_address;
+    nodeidx.sort();
+#else
     nodeidx.sort(cmp_anlsts);
+#endif
 
     // Write the address-sorted .GXA
     fp = fsopen(addrindex.c_str(), "wb", sh_mod);
@@ -1020,7 +1043,7 @@ static void check_nodelists(bool force) {
       char* val=buf;
       getkeyval(&key, &val);
       key = strxcpy(newpath, strbtrim(key), sizeof(Path));
-      MapPath(key);
+      _MapPath(key);
       strchg(key, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
       for(n=0; n<nodelist.size(); n++) {
         if(strieql(nodelist[n].fn, key)) {
@@ -1131,7 +1154,7 @@ static int do_if(char* val) {
 
 //  ------------------------------------------------------------------
 
-char* MapPath(char* fmap, bool reverse) {
+char* _MapPath(char* fmap, bool reverse) {
 
   Path buf, cmap;
 
@@ -1229,7 +1252,7 @@ static int parse_config(const char *__configfile, Addr& zoneaddr) {
         if((not _gotcond) and cond_status) {
           switch(crc) {
             case CRC_NODEPATH:
-              MapPath(value);
+              _MapPath(value);
               PathCopy(nodepath, value);
               break;
             case CRC_ADDRESS:
@@ -1258,7 +1281,7 @@ static int parse_config(const char *__configfile, Addr& zoneaddr) {
                 ndl.ft = (dword)-1;
                 ndl.fc = NO;
                 strschg_environ(value);
-                MapPath(value);
+                _MapPath(value);
                 strcpy(ndl.fn, value);
                 nodelist.push_back(ndl);
                 nodezone.push_back(ndz);
@@ -1283,7 +1306,7 @@ static int parse_config(const char *__configfile, Addr& zoneaddr) {
                 ndl.ft = (dword)-1;
                 ndl.fc = NO;
                 strschg_environ(value);
-                MapPath(value);
+                _MapPath(value);
                 strcpy(ndl.fn, value);
                 userlist.push_back(ndl);
                 userzone.push_back(ndz);
@@ -1311,7 +1334,7 @@ static int parse_config(const char *__configfile, Addr& zoneaddr) {
               break;
             case CRC_INCLUDE:
               strschg_environ(value);
-              MapPath(value);
+              _MapPath(value);
               if(not parse_config(value,zoneaddr))     // NOTE! This is a recursive call!
                 if(not quiet) std::cout << "* Could not read configuration file " << value << '!' << std::endl;
               break;
@@ -1508,43 +1531,39 @@ static void run_gn(int argc, char* argv[]) {
   }
 
   if(not quiet) {
-    std::cout << __GPID__ " " __GVER__ " Nodelist Compiler." << std::endl
-         << "Copyright (C) 1990-1999 Odinn Sorensen" << std::endl
-         << "Copyright (C) 1999-2001 Alexander S. Aganichev" << std::endl
-         << "-------------------------------------------------------------------------------" << std::endl
-         << std::endl;
+    std::cout << __GPID__ " " __GVER__ " Nodelist Compiler.\n"
+         << "Copyright (C) 1990-1999 Odinn Sorensen\n"
+         << "Copyright (C) 1999-2001 Alexander S. Aganichev\n"
+         << "-------------------------------------------------------------------------------\n\n";
   }
 
   if(not(force or conditional)) {
     if(not quiet) {
-      std::cout << "Commandline syntax: " << CleanFilename(argv[0]) << " [-options] [configfile]" << std::endl
-           << std::endl
-           << "[-options] =\t-C\t  Conditional compile." << std::endl
-           << "\t\t-F\t  Forced compile." << std::endl
-           << "\t\t-D\t  Remove duplicate nodes from index while compiling." << std::endl
-           << "\t\t-Q\t  Quiet compile. No screen output improves speed." << std::endl
-           << "\t\t-S<size>  Set max size of a name in the index." << std::endl
-           << "\t\t-U<file>  Create sorted FIDOUSER.LST userlist file." << std::endl
+      std::cout << "Commandline syntax: " << CleanFilename(argv[0]) << " [-options] [configfile]\n"
+           << "\n[-options] =\t-C\t  Conditional compile.\n"
+           << "\t\t-F\t  Forced compile.\n"
+           << "\t\t-D\t  Remove duplicate nodes from index while compiling.\n"
+           << "\t\t-Q\t  Quiet compile. No screen output improves speed.\n"
+           << "\t\t-S<size>  Set max size of a name in the index.\n"
+           << "\t\t-U<file>  Create sorted FIDOUSER.LST userlist file.\n"
       #ifdef GOLDNODE_STATS
-           << "\t\t-T\t  Make statistics." << std::endl
+           << "\t\t-T\t  Make statistics.\n"
       #endif
-           << std::endl
-           << "[configfile] =\t\t  The path AND filename of GOLDED.CFG" << std::endl
-           << "\t\t\t  configuration file to read." << std::endl
-           << std::endl;
+           << "\n[configfile] =\t\t  The path AND filename of GOLDED.CFG\n"
+           << "\t\t\t  configuration file to read.\n\n";
     }
   }
   else {
 
     if(force)
-      if(not quiet) std::cout << "* Forced compile." << std::endl;
+      if(not quiet) std::cout << "* Forced compile.\n";
 
     if(read_config(cfg, argv[0])) {
       if(force or conditional)
         check_nodelists(force);
     }
     else {
-      if(not quiet) std::cout << std::endl << "Could not find the configuration file!" << std::endl;
+      if(not quiet) std::cout << "\nCould not find the configuration file!\n";
     }
   }
 }
