@@ -81,7 +81,7 @@ static void InitCmdline(char* val) {
         if(*val)
           strcpy(cmdlinecfg, val);
         else
-          std::cout << "Warning: configuration filename missed for -C option, ignored." << std::endl;
+          std::cout << "Warning: configuration filename missed for -C option, ignored.\n";
         break;
       case 'D':
         cmdlineoldkeyw = (*val == '-') ? true : false;
@@ -149,7 +149,7 @@ static void InitCmdline(char* val) {
       case 'Z':
         gftrk_set_max = atoi(val);
         if(gftrk_set_max == 0) {
-          std::cout << "Warning: Invalid parameter for -Z option, fixed." << std::endl;
+          std::cout << "Warning: Invalid parameter for -Z option, fixed.\n";
           gftrk_set_max = 1;
         }
         break;
@@ -518,7 +518,7 @@ void Initialize(int argc, char* argv[]) {
   srand((unsigned)time(NULL));
 
   // Display startup banner
-  std::cout << __gver_longpid__ << " " << __gver_ver__ << std::endl;
+  std::cout << __gver_longpid__ << " " << __gver_ver__ << "\n";
 
   // Check environment commandline
   ptr = getenv("GEDCMD");
@@ -560,32 +560,32 @@ void Initialize(int argc, char* argv[]) {
   // Print commandline help and exit if requested
   if(cmdlinehelp) {
     std::cout <<
-       "Copyright (C) 1990-2000 Odinn Sorensen, Alexander Aganichev, Jacobo Tarrio and" << std::endl <<
-       "                        others" << std::endl <<
-       "-------------------------------------------------------------------------------" << std::endl <<
-       std::endl <<
-       "Invocation: " << argv[0] << " [-options] [keystacking]" << std::endl <<
-       std::endl <<
-       "-C<configfile>  Use a different configuration file." << std::endl <<
-       "-D              Disable old obsolete configuration keywords." << std::endl <<
-       "-E<echoid>      Start directly in the specified mail area." << std::endl <<
-       "-EXPORTSOUP     Export SOUP packets during startup." << std::endl <<
-       "-F  or  -FF     Force recompile of most (or all with -FF) configuration files." << std::endl <<
-       "-INSTALL[=path] Start the quick install procedure. Look in path, if given." << std::endl <<
-       "-IMPORTSOUP     Import SOUP packets during startup." << std::endl <<
-       "-M              Mute sounds. Disables all noises in GoldED+." << std::endl <<
-       "-N              Disable share-compatible file opens during startup." << std::endl <<
-       "-NOSCAN         Temporarily disable area scan during startup." << std::endl <<
+       "Copyright (C) 1990-2005 Odinn Sorensen, Alexander Aganichev, Jacobo Tarrio,\n"
+       "                        Stas Degteff and others\n"
+       "-------------------------------------------------------------------------------\n"
+       "\n"
+       "Invocation: " << argv[0] << " [-options] [keystacking]\n"
+       "\n"
+       "-C<configfile>  Use a different configuration file.\n"
+       "-D              Disable old obsolete configuration keywords.\n"
+       "-E<echoid>      Start directly in the specified mail area.\n"
+       "-EXPORTSOUP     Export SOUP packets during startup.\n"
+       "-F  or  -FF     Force recompile of most (or all with -FF) configuration files.\n"
+       "-INSTALL[=path] Start the quick install procedure. Look in path, if given.\n"
+       "-IMPORTSOUP     Import SOUP packets during startup.\n"
+       "-M              Mute sounds. Disables all noises in GoldED+.\n"
+       "-N              Disable share-compatible file opens during startup.\n"
+       "-NOSCAN         Temporarily disable area scan during startup.\n"
        #if defined(GUTLOS_FUNCS) && !defined(__MSDOS__)
-       "-P              Increase program priority to run faster." << std::endl <<
+       "-P              Increase program priority to run faster.\n"
        #endif
-       "-S<sortspec>    Sorts all mail areas according to the sort specs." << std::endl <<
-       "-T<seconds>     Set a timeout value. GoldED+ will auto-exit after timeout." << std::endl <<
-       "-V  or  -VV     Verbose or Very verbose (-VV) config compile. Use -VV to debug." << std::endl <<
-       "-W              Write a GOLDAREA.INC file with AREADEF's of all mail areas." << std::endl <<
-       "-X,  -Y,  -Z    Reserved for debugging purposes." << std::endl <<
-       std::endl <<
-       "Any non-option parameter is stuffed into the keyboard buffer." << std::endl;
+       "-S<sortspec>    Sorts all mail areas according to the sort specs.\n"
+       "-T<seconds>     Set a timeout value. GoldED+ will auto-exit after timeout.\n"
+       "-V  or  -VV     Verbose or Very verbose (-VV) config compile. Use -VV to debug.\n"
+       "-W              Write a GOLDAREA.INC file with AREADEF's of all mail areas.\n"
+       "-X,  -Y,  -Z    Reserved for debugging purposes.\n"
+       "\n"
+       "Any non-option parameter is stuffed into the keyboard buffer.\n" ;
 
     exit(0);
   }
@@ -653,7 +653,7 @@ void Initialize(int argc, char* argv[]) {
     InstallDetect(cmdlineinstpath);
 
   if(not fexist(CFG->goldcfg)) {
-    std::cout << "*** Cannot start: " << CFG->goldcfg << " not found! ***" << std::endl;
+    std::cout << "*** Cannot start: " << CFG->goldcfg << " not found! ***\n";
     errorlevel = EXIT_NONAME;
     exit(0);
   }
@@ -664,7 +664,7 @@ void Initialize(int argc, char* argv[]) {
   // Call install finish procedure
   if(cmdlineinstall) {
     if(InstallFinish()) {
-      std::cout << "*** INSTALL NOT COMPLETED ***" << std::endl;
+      std::cout << "*** INSTALL NOT COMPLETED ***\n";
       remove(CFG->goldcfg);
       errorlevel = EXIT_NONAME;
       exit(0);
@@ -715,12 +715,12 @@ void Initialize(int argc, char* argv[]) {
   // Report detected multitasker
   if(not quiet) {
     if(gmtsk.detected)
-      std::cout << "* Running under " << gmtsk.name << "." << std::endl;
+      std::cout << "* Running under " << gmtsk.name << ".\n";
   }
 
   if(cfgerrors) {
     std::cout << "* Total CFG errors found: " << cfgerrors
-         << ". Press almost any key to continue." << std::endl;
+         << ". Press almost any key to continue.\n";
     kbclear();
     waitkey();
   }
