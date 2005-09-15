@@ -190,7 +190,7 @@ const char* CleanFilename(const char* __file);
 int strschg_environ(char* s);
 int strschg_environ(std::string& s);
 
-char* MapPath(char* map, bool reverse = false);
+char* MapPath(char* map, bool reverse = false); // gcarea.cpp
 inline char* ReMapPath(char* map) { return MapPath(map, true); }
 
 inline long lseekset(int fh, long offset) { return lseek(fh, offset, SEEK_SET); }
