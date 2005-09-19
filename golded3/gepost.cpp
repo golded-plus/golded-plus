@@ -874,6 +874,10 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
             // ... but only if we did NOT change aka manually
             if(AA->Aka().addr.equals(AA->aka())) {
               Addr aka_addr = AA->Aka().addr;
+              if (CFG->akamatchfromto)
+                aka_addr = omsg->dest;
+              else
+                aka_addr = AA->Aka().addr;
               AkaMatch(&aka_addr, &omsg->orig);
               AA->SetAka(aka_addr);
             }

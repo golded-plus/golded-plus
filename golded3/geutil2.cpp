@@ -67,7 +67,7 @@ bool edit_pathname(char* buf, int buf_size, char* title, int helpcat) {
 
   if(not edit_string(buf, buf_size, title, helpcat))
     return false;
-      
+
   std::vector<FileAlias>::iterator z;
   for(z = CFG->filealias.begin(); z != CFG->filealias.end(); z++) {
     if(strieql(buf, z->alias)) {
@@ -119,7 +119,7 @@ bool PopupLocked(long tries, int isopen, const char* file) {
   usleep(1000);
 #else
   sleep(1);
-#endif  
+#endif
   // Try again
   return true;
 }
@@ -214,7 +214,12 @@ int AkaMatch(ftn_addr* match, const ftn_addr* addr) {
   for(a = CFG->aka.begin(), aka = 0; a != CFG->aka.end(); aka++, a++) {
 
     if(match->equals(a->addr))
-      matchaka = aka;
+    {
+        if (CFG->akamatchfromto)
+            return aka;
+        else
+            matchaka = aka;
+    }
 
     // Ignore fakenet addresses
     if(a->addr.net != a->pointnet) {
