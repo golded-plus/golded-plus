@@ -54,26 +54,15 @@
 #include <math.h>
 #endif
 
+#include <golded3.h>
 
 //  ------------------------------------------------------------------
 //  Config versions
 
-#if defined(__OS2__)
-#define __GPID__ "GoldNode+/2"
-#elif defined(__WIN32__)
-#define __GPID__ "GoldNode+/W32"
-#elif defined(__MSDOS__)
-#define __GPID__ "GoldNode+/386"
-#elif defined(__linux__)
-#define __GPID__ "GoldNODE+/LNX"
-#elif defined(__FreeBSD__) || defined(__OpenBSD__)
-#define __GPID__ "GoldNODE+/BSD"
-#else
-#define __GPID__ "GoldNODE+"
-#endif
-
-#define __GVER__ "1.1.5"         // Visible version
-
+#define __GVER_NAME__ "GoldNode+"
+#define __GVER_SHORTNAME__ "GN"
+#define __gver_name__ __GVER_NAME__
+#define __gver_shortname__ __GVER_SHORTNAME__
 
 //  ------------------------------------------------------------------
 // 32-bit versions
@@ -1531,9 +1520,10 @@ static void run_gn(int argc, char* argv[]) {
   }
 
   if(not quiet) {
-    std::cout << __GPID__ " " __GVER__ " Nodelist Compiler.\n"
+    std::cout << __gver_name__ << " Nodelist Compiler v." << __gver_shortver__ << __gver_platform__ << __gver_postversion__ << ".\n"
          << "Copyright (C) 1990-1999 Odinn Sorensen\n"
          << "Copyright (C) 1999-2001 Alexander S. Aganichev\n"
+         << "Copyright (C) 2005 Stas Degteff & Golded+ team\n"
          << "-------------------------------------------------------------------------------\n\n";
   }
 
