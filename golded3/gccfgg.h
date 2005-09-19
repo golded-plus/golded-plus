@@ -36,6 +36,7 @@ const word CRC_ADEPTXBBSUSERNO  = 0x0E98;
 const word CRC_AKA              = 0x13A4;
 const word CRC_AKAMATCH         = 0xF237;
 const word CRC_AKAMATCHECHO     = 0xF0C1;
+const word CRC_AKAMATCHFROMTO   = 0xD8B9;
 const word CRC_AKAMATCHING      = 0x869A;
 const word CRC_AKAMATCHLOCAL    = 0x4AC4;
 const word CRC_AKAMATCHNET      = 0xFD6E;

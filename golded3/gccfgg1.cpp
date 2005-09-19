@@ -83,12 +83,12 @@ void CfgAddresslookupfirst(){
   else
     CFG->addresslookupfirst = NO;
 }
- 
+
 //  ------------------------------------------------------------------
 
 void CfgAddressmacro(char* v)  { val = v; CfgAddressmacro(); }
 void CfgAddressmacro() {
-            
+
   AddrMacro tmp;
   tmp.attr.reset();
   int subjwasquoted = NO;
@@ -175,6 +175,12 @@ void CfgAkamatch() {
 
 //  ------------------------------------------------------------------
 
+void CfgAkamatchfromto() {
+  CFG->akamatchfromto = (0 != GetYesno(val));
+}
+
+//  ------------------------------------------------------------------
+
 void CfgAkamatching() {
 
   if(cfgingroup) {
@@ -203,7 +209,7 @@ void CfgAreaautoid() {
 }
 
 //  ------------------------------------------------------------------
-  
+
 void CfgAreacfmreplyto() {
 
   strxcpy(CFG->areacfmreplyto, val, sizeof(Echo));
@@ -400,7 +406,7 @@ void CfgAreapmscanincl() {
 //  ------------------------------------------------------------------
 
 void CfgAreareadonly() {
-  
+
   if(strieql(val, "Soft"))
     CFG->areareadonly = READONLY_SOFT;
   else if(strieql(val, "Hard"))

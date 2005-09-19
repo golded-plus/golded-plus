@@ -39,6 +39,7 @@ void CfgAdeptxbbspath    ();
 void CfgAdeptxbbsuserno  ();
 void CfgAkamatch         ();
 void CfgAkamatchecho     ();
+void CfgAkamatchfromto   ();
 void CfgAkamatching      ();
 void CfgAkamatchlocal    ();
 void CfgAkamatchnet      ();

@@ -140,6 +140,7 @@ public:
   int         adeptxbbsuserno;
   std::vector<gaka> aka;
   std::vector<AkaMatchG> akamatch;
+  bool        akamatchfromto;
   int         areaautoid;
   Echo        areacfmreplyto;
   bool        areacopydirect;
@@ -448,7 +449,7 @@ protected:
     int hardline;
     int spellchecker;
   } cfg;
-  
+
   // -----------------------------------------------------------------
   // String bag
 

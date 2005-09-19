@@ -10,6 +10,12 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ New AKA matching feature: match for "From" field then (if not matched)
+  match for "To" field. New config token AKAMATCHFROMTO (yes/no).
+  (Patch from Ianos Gnatiuc 2:5030/830.17)
+
+- MS Visual C build now contains Goldnode+ (patch from Ianos Gnatiuc).
+
 - Fix man pages.
 
 - Fix subshell start message output (bugreport from Semen Panevin).

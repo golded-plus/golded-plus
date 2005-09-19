@@ -190,6 +190,7 @@ SwitchA:
     case CRC_ADEPTXBBSUSERNO  :  CfgAdeptxbbsuserno  ();  break;
     case CRC_AKA              :  CfgAddress          ();  break;
     case CRC_AKAMATCH         :  CfgAkamatch         ();  break;
+    case CRC_AKAMATCHFROMTO   :  CfgAkamatchfromto   ();  break;
     case CRC_AKAMATCHING      :  CfgAkamatching      ();  break;
     case CRC_AREAAUTOID       :  CfgAreaautoid       ();  break;
     case CRC_AREACFMREPLYTO   :  CfgAreacfmreplyto   ();  break;
