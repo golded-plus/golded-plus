@@ -84,6 +84,7 @@ GPickArealist::GPickArealist() {
   pmscan   = false;
 
   area_fuzidx = 0;
+  replylinkfloat = CFG->replylinkfloat;
 
 }
 

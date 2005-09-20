@@ -56,6 +56,10 @@ protected:
 
   gkey key;
   bool keyok;
+  uint new_hoffset;
+  uint h_offset;
+  bool replylinkfloat;  // in derived classes set this with CFG->replylinkfloat
+                        // before call display_page() and run_picker()
 
   void cursor_up();
   void cursor_down();

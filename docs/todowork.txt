@@ -43,11 +43,6 @@ To fix:
 
 * UUdecoder not 100% reliable: any volunteers for uulib maintaining?
 * Need some workarounds on -install feature under UNIX-like OS.
-* Win32 (only when runned under Win9x) version does not support case
-  insensitive search of regexp's for high part of ASCII table. That's
-  a limitation of Microsoft C RTL, I can't do anything easy for that
-  but probably someday I provide a huge patch (I wonder if Microsoft
-  accept patches? =))...
 ______________________________________________________________________
 
 Known wishes that not currently planned (any volunteers?):

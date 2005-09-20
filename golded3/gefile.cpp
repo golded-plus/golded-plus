@@ -98,6 +98,7 @@ public:
 
 void gfileselect::open() {
 
+  replylinkfloat = CFG->replylinkfloat;
   display_page();
 
 }

@@ -178,6 +178,13 @@ void CfgReplylink() {
 
 //  ------------------------------------------------------------------
 
+void CfgReplylinkfloat()
+{
+  CFG->replylinkfloat = (0 != GetYesno(val));
+}
+
+//  ------------------------------------------------------------------
+
 void CfgReplylinklist() {
 
   if(strieql(val, "Fast"))
@@ -186,6 +193,12 @@ void CfgReplylinklist() {
     CFG->replylinklist = REPLYLINKLIST_FULL;
 }
 
+//  ------------------------------------------------------------------
+
+void CfgReplylinkshowalways()
+{
+  CFG->replylinkshowalways = (0 != GetYesno(val));
+}
 //  ------------------------------------------------------------------
 
 void CfgRobotname(const char* v)  {
@@ -287,7 +300,7 @@ void CfgScreensize() {
 //  ------------------------------------------------------------------
 
 void CfgSearchfor() {
-  
+
   INam buf;
   strxcpy(buf, StripQuotes(val), sizeof(buf));
   if(cfgingroup)
@@ -444,7 +457,7 @@ void CfgSoupbadmsgs() {
 //  ------------------------------------------------------------------
 
 void CfgSoupemail() {
-  
+
   strupr(strxcpy(CFG->soupemail, val, sizeof(Echo)));
 }
 

@@ -385,8 +385,8 @@ public:
   bool    isscanned   : 1;    // TRUE if scanned
   bool    ispmscanned : 1;    // TRUE if pmscanned
   bool    istossed    : 1;    // TRUE if msgs were tossed to this area
-  
-  
+
+
   //  ----------------------------------------------------------------
   //  Access config data
 

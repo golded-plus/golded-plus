@@ -540,6 +540,8 @@ void SelMaskPick::Run() {
 
   index = position = AL.mask;
 
+  replylinkfloat = CFG->replylinkfloat;
+
   run_picker();
 
   if(not aborted)

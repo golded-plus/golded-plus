@@ -497,7 +497,9 @@ SwitchR:
   switch(crc) {
     case CRC_RA2USERSBBS      :  CfgRa2usersbbs      ();  break;
     case CRC_REPLYLINK        :  CfgReplylink        ();  break;
+    case CRC_REPLYLINKFLOAT   :  CfgReplylinkfloat   ();  break;
     case CRC_REPLYLINKLIST    :  CfgReplylinklist    ();  break;
+    case CRC_REPLYLINKSHOWALWAYS:CfgReplylinkshowalways();break;
     case CRC_ROBOTNAME        :  CfgRobotname        ();  break;
     default                   :  found = false;
   }

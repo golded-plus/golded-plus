@@ -38,6 +38,7 @@ guserbase::guserbase() {
   long tries = 0;
 
   strcpy(fname, AddPath(CFG->goldpath, CFG->golduser));
+  replylinkfloat = CFG->replylinkfloat;
 
   do {
     usrbase.open(fname, O_RDWR|O_CREAT|O_BINARY, SH_DENYNO, S_STDRW);
@@ -506,7 +507,7 @@ bool guserbase::read_entry(uint idx, gusrbaseentry *ent) {
     clear_entry(ent);
     return false;
   }
-  else {                  
+  else {
     usrbase.lseek(idx*sizeof(gusrbaseentry)+sizeof(gusrbaseheader), SEEK_SET);
     usrbase.read(ent->macro, sizeof(ent->macro));
     usrbase.read(ent->name, sizeof(ent->name));
@@ -600,7 +601,7 @@ void guserbase::update_screen(bool force) {
     need_update = false;
   }
 }
-                                   
+
 
 //  ------------------------------------------------------------------
 
@@ -634,7 +635,7 @@ bool guserbase::handle_key() {
           write_entry(nidx);
           index = nidx;
         }
-        unlock();  
+        unlock();
         center(CFG->displistcursor);
       }
       break;
@@ -719,7 +720,7 @@ bool guserbase::run(GMsg* msg, bool selectonly) {
 
 void guserbase::update_addressbook(GMsg* msg, bool reverse, bool force) {
 
-  Addr fidoaddr; 
+  Addr fidoaddr;
   IAdr iaddr;
   INam name;
 
@@ -960,7 +961,7 @@ bool lookup_addressbook(GMsg* msg, char* name, char* aka, bool browser) {
   return result;
 }
 
- 
+
 //  ------------------------------------------------------------------
 
 void build_pseudo(GMsg* msg, bool direction) {
@@ -972,7 +973,7 @@ void build_pseudo(GMsg* msg, bool direction) {
     p.build_pseudo(msg, strbtrim(msg->To()), AA->isinternet() ? msg->iaddr : msg->dest.make_string(buf));
   else
     p.build_pseudo(msg, strbtrim(msg->By()), AA->isinternet() ? msg->iorig : msg->orig.make_string(buf), false);
-}                                  
+}
 
 
 //  ------------------------------------------------------------------

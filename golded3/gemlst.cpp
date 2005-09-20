@@ -97,6 +97,7 @@ public:
     memset(&msg, 0, sizeof(GMsg));
     mlst = NULL;
     maximum_index = AA->Msgn.Count()-1;
+    replylinkfloat = CFG->replylinkfloat;
   };
   ~GMsgList() {
     ResetMsg(&msg);
@@ -684,7 +685,6 @@ private:
   GMsg                  msg;
   std::vector<ThreadEntry>   list;
   ThreadEntry           t;
-  uint                  h_offset;
 
   void BuildThreadIndex(dword msgno);
   void recursive_build(ulong msgn, ulong rn, ulong level);
@@ -702,7 +702,7 @@ public:
 
   void Run();
 
-  GThreadlist() { memset(&msg, 0, sizeof(GMsg)); };
+  GThreadlist() { memset(&msg, 0, sizeof(GMsg)); replylinkfloat = CFG->replylinkfloat; };
   ~GThreadlist() { ResetMsg(&msg); };
 };
 
@@ -930,6 +930,17 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar) {
       break;
     }
 
+  if (CFG->replylinkfloat && isbar)
+  {
+    int l1 = strlen(buf2);
+    int l2 = strlen(msg.By());
+
+    if ((l1 + l2) > tdlen)
+      new_hoffset = (l1 + l2)-tdlen+1;
+    else
+      new_hoffset = 0;
+  }
+
   if((strlen(buf2) > h_offset) and (strlen(&buf2[h_offset]) < tdlen)) {
     strxcpy(buf, msg.By(), tdlen - strlen(&buf2[h_offset]));
     window.prints(pos, 8+strlen(&buf2[h_offset]), isbar ? sattr : attr, buf);
@@ -1022,6 +1033,7 @@ void GThreadlist::BuildThreadIndex(dword msgn) {
   maximum_position = MinV((uint) list.size() - 1, (uint) ylen - 1);
   index            = 0;
   h_offset         = 0;
+  new_hoffset      = 0;
 
   for(uint i = 0; i<list.size(); i++) {
     if(list[i].msgno == msgn)
@@ -1087,7 +1099,7 @@ bool GThreadlist::handle_key() {
     case KK_ListGotoPrev:
     case KK_ListGotoNext:
       NextThread((key == KK_ListGotoNext));
-      if(list.size() <= 1)
+      if (!CFG->replylinkshowalways && (list.size() <= 1))
         return false;
       center(CFG->displistcursor);
       break;
@@ -1194,7 +1206,7 @@ void GThreadlist::Run() {
 
   BuildThreadIndex(reader_msg->msgno);
 
-  if(list.size() > 1)
+  if(CFG->replylinkshowalways || (list.size() > 1))
     run_picker();
   else {
     w_info(LNG->NoThreadlist);

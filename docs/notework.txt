@@ -10,6 +10,11 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ New reply-linking features: show floating reply link threads and show
+  messages without replies in replylinking threads view. New config file
+  tokens: REPLYLINKFLOAT (yes/no), REPLYLINKSHOWALWAYS (yes/no).
+  (Patch from Ianos Gnatiuc 2:5030/830.17)
+
 + New AKA matching feature: match for "From" field then (if not matched)
   match for "To" field. New config token AKAMATCHFROMTO (yes/no).
   (Patch from Ianos Gnatiuc 2:5030/830.17)

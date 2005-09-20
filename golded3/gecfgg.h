@@ -294,7 +294,9 @@ public:
   bool        quotewraphard;
   int         ra2usersbbs;          // RA2;
   int         replylink;
+  bool        replylinkfloat;
   int         replylinklist;
+  bool        replylinkshowalways;
   gstrarray   robotname;
   int         screenblanker;        // blanktime;
   int         screenblankertype;

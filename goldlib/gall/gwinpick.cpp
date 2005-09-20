@@ -49,6 +49,8 @@ gwinpick::gwinpick() {
   maximum_index = minimum_index = maximum_position = index = position = 0;
   aborted = listwrap = false;
   direction = 0;
+  replylinkfloat = 0;
+
 }
 
 
@@ -150,7 +152,7 @@ void gwinpick::cursor_pagedown() {
   while(not is_selectable(max_index))   --max_index;
 
   uint max_position = max_index - index + position;
-   
+
   if(position < max_position) {
     if(index == max_index) {
       if(maximum_position < maximum_index) {
@@ -312,6 +314,18 @@ void gwinpick::display_page() {
   register uint m = maximum_index-index;
 
   uint n;
+
+  if (replylinkfloat)
+  {
+    if (h_offset == new_hoffset)
+    {
+      for (n=0; n<=maximum_position and n<=m; n++)
+        if (position == n)
+          print_line(index+n, n, true);
+    }
+
+    h_offset = new_hoffset;
+  }
 
   for(n=0; n<=maximum_position and n<=m; n++)
     print_line(index+n, n, (position == n));
@@ -485,6 +499,9 @@ int gwinpick::run_picker() {
     #endif
 
     keyok = default_handle_key();
+
+    if (replylinkfloat && (h_offset != new_hoffset))
+      display_page();
 
   } while(keyok);
 

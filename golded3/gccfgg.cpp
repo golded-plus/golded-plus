@@ -753,7 +753,9 @@ CfgGed::CfgGed() {
   quotewraphard = false;
   ra2usersbbs = 0;
   replylink = REPLYLINK_DIRECT;
+  replylinkfloat = true;
   replylinklist = 0;
+  replylinkshowalways = true;
   screenblanker = 180;
   screenblankertype = BLANK_SLIDEWIN;
   screenmaxcol = 0;
