@@ -54,6 +54,14 @@ int Area::LoadHdr(GMsg* msg, ulong msgno, bool enable_recode) {
   msg->msgno = msgno;
   int retval = area->load_hdr(msg);
 
+  if (isecho())
+  {
+    if (CFG->akamatchfromto && msg->dest.invalid())
+      msg->dest = Aka().addr;
+    else if (CFG->akamatchfromto == ALWAYS)
+      msg->dest = Aka().addr;
+  }
+
   // Don't translate charsets if we don't know charset
   // Currently, it only mime-decodes, so it's okay.
   if(retval and enable_recode) {
@@ -84,6 +92,15 @@ int Area::LoadMsg(GMsg* msg, ulong msgno, int margin, int mode) {
   ResetMsg(msg);
   msg->msgno = msgno;
   if(msgno and area->load_msg(msg)) {
+
+    if (isecho())
+    {
+      if (CFG->akamatchfromto && msg->dest.invalid())
+        msg->dest = Aka().addr;
+      else if (CFG->akamatchfromto == ALWAYS)
+        msg->dest = Aka().addr;
+    }
+
     if(mode & (GMSG_COPY|GMSG_MOVE)) {
       if(not ((mode & GMSG_MOVE) and (mode & GMSG_UNS_NOT_RCV)))
         return true;

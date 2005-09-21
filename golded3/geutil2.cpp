@@ -27,6 +27,8 @@
 #include <golded.h>
 #include <gwinput.h>
 
+extern bool akamatchreply;
+
 
 //  ------------------------------------------------------------------
 
@@ -215,7 +217,7 @@ int AkaMatch(ftn_addr* match, const ftn_addr* addr) {
 
     if(match->equals(a->addr))
     {
-        if (CFG->akamatchfromto)
+        if (CFG->akamatchfromto && akamatchreply)
             return aka;
         else
             matchaka = aka;

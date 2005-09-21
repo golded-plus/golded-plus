@@ -176,7 +176,7 @@ void CfgAkamatch() {
 //  ------------------------------------------------------------------
 
 void CfgAkamatchfromto() {
-  CFG->akamatchfromto = (0 != GetYesno(val));
+  CFG->akamatchfromto = GetYesno(val);
 }
 
 //  ------------------------------------------------------------------

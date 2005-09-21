@@ -30,6 +30,7 @@
 //  ------------------------------------------------------------------
 
 static std::vector<int> post_xparea;
+bool akamatchreply = false;
 
 
 //  ------------------------------------------------------------------
@@ -873,11 +874,36 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
           if(AA->Akamatching()) {
             // ... but only if we did NOT change aka manually
             if(AA->Aka().addr.equals(AA->aka())) {
+
               Addr aka_addr = AA->Aka().addr;
+
               if (CFG->akamatchfromto)
+              {
+                bool useto = true;
+                std::vector<gaka>::iterator a;
+
+                for (a = CFG->aka.begin(); useto && (a != CFG->aka.end()); a++)
+                {
+                  if(omsg->orig.equals(a->addr))
+                    useto = false;
+                }
+
+                if (useto)
+                {
+                  for (a = CFG->aka.begin(); a != CFG->aka.end(); a++)
+                    if(omsg->dest.equals(a->addr))
+                    {
+                      akamatchreply = true;
+                      break;
+                    }
+                }
+              }
+
+              if (CFG->akamatchfromto && akamatchreply)
                 aka_addr = omsg->dest;
               else
                 aka_addr = AA->Aka().addr;
+
               AkaMatch(&aka_addr, &omsg->orig);
               AA->SetAka(aka_addr);
             }
@@ -1208,6 +1234,7 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
 
   // Restore original aka
   AA->SetAka(origaka);
+  akamatchreply = false;
 
   ResetMsg(omsg);
   ResetMsg(cmpmsg);

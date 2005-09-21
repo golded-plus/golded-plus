@@ -140,7 +140,7 @@ public:
   int         adeptxbbsuserno;
   std::vector<gaka> aka;
   std::vector<AkaMatchG> akamatch;
-  bool        akamatchfromto;
+  int         akamatchfromto;
   int         areaautoid;
   Echo        areacfmreplyto;
   bool        areacopydirect;
