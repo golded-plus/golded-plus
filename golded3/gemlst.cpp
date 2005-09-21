@@ -841,7 +841,7 @@ void GThreadlist::GenTree(char* buf, int idx, ulong maxlev) {
 void GThreadlist::print_line(uint idx, uint pos, bool isbar) {
 
   char buf[256];
-  ulong maxlev = (window.width()+h_offset+1)/2;
+  ulong maxlev = (100*window.width()+h_offset+1)/2;
 #if defined(_MSC_VER) || defined(__MINGW32__)
   char *buf2 = (char*)alloca(maxlev*2+2);
 #else
