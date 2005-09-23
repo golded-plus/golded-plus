@@ -1,4 +1,7 @@
+# $Id$
 # Microsoft Visual Studio 6 makefile.
+# (c) Ianos Gnatiuc 2:5030/830.17
+#
 # Usage:
 #
 # NMAKE /f "golded.mak" CFG="Release"
@@ -14,21 +17,6 @@ CFG=Release
 !MESSAGE No configuration specified. Defaulting to "Release".
 !ENDIF
 
-!IF "$(CFG)" != "Release" && "$(CFG)" != "Debug"
-!MESSAGE Invalid configuration "$(CFG)" specified.
-!MESSAGE You can specify a configuration when running NMAKE
-!MESSAGE by defining the macro CFG on the command line. For example:
-!MESSAGE
-!MESSAGE NMAKE /f "golded.mak" CFG="Debug"
-!MESSAGE
-!MESSAGE Possible choices for configuration are:
-!MESSAGE
-!MESSAGE "Release" (based on "Win32 (x86) Console Application")
-!MESSAGE "Debug" (based on "Win32 (x86) Console Application")
-!MESSAGE
-!ERROR An invalid configuration is specified.
-!ENDIF
-
 !IF "$(OS)" == "Windows_NT"
 NULL=
 !ELSE
@@ -36,1616 +24,431 @@ NULL=nul
 !ENDIF
 
 CPP=@cl.exe
-CPP=@cl.exe /I "C:\Program Files\Microsoft Visual Studio\VC98\Include"
-
-LINK32=link.exe
-LINK32=link.exe /LIBPATH:"C:\Program Files\Microsoft Visual Studio\VC98\Lib"
-
+RSC=rc.exe
+LINK=@link.exe
 
 !IF  "$(CFG)" == "Release"
-
-OUTDIR=.\Release
-INTDIR=.\Release
-
-ALL : "$(OUTDIR)\gedwin.exe" "$(OUTDIR)\rddtwin.exe" "$(OUTDIR)\gnwin.exe"
-
-CLEAN :
-    -@erase "$(INTDIR)\*.obj"
-
-distclean:
-    -@erase "$(OUTDIR)\gedwin.exe"
-    -@erase "$(OUTDIR)\gnwin.exe"
-    -@erase "$(OUTDIR)\rddtwin.exe"
-
-"$(OUTDIR)" :
-    if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
-
-CPP_PROJ=/nologo /MD /W3 /GX /O1 /I ".\golded3" /I ".\goldlib\gall" /I ".\goldlib\gcfg" /I ".\goldlib\glibc" /I ".\goldlib\gmb3" /I ".\goldlib\msgidlib" /I ".\goldlib\smblib" /I ".\goldlib\uulib" /D "NDEBUG" /D "WIN32" /D "_CONSOLE" /D "HAVE_CONFIG_H" /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /J /FD /c
-
-.c{$(INTDIR)}.obj::
-   $(CPP) @<<
-   $(CPP_PROJ) $<
-<<
-
-.cpp{$(INTDIR)}.obj::
-   $(CPP) @<<
-   $(CPP_PROJ) $<
-<<
-
-.cxx{$(INTDIR)}.obj::
-   $(CPP) @<<
-   $(CPP_PROJ) $<
-<<
-
-
-RSC=rc.exe
-RSC_PROJ= /i "golded3" /fo"$(INTDIR)\gedcyg.res" /d "NDEBUG"
-
-LINK32_FLAGS=winmm.lib user32.lib /nologo /subsystem:console /incremental:no /machine:I386
-LINK32_OBJS= \
-    "$(INTDIR)\gbmh.obj" \
-    "$(INTDIR)\gcharset.obj" \
-    "$(INTDIR)\gcrc16tb.obj" \
-    "$(INTDIR)\gcrc32tb.obj" \
-    "$(INTDIR)\gcrchash.obj" \
-    "$(INTDIR)\gcrckeyv.obj" \
-    "$(INTDIR)\gcrcm16.obj" \
-    "$(INTDIR)\gcrcm32.obj" \
-    "$(INTDIR)\gcrcs16.obj" \
-    "$(INTDIR)\gcrcs32.obj" \
-    "$(INTDIR)\gdbgerr.obj" \
-    "$(INTDIR)\gdbgtrk.obj" \
-    "$(INTDIR)\gdirposx.obj" \
-    "$(INTDIR)\geval.obj" \
-    "$(INTDIR)\gevalhum.obj" \
-    "$(INTDIR)\gevalrpn.obj" \
-    "$(INTDIR)\gfile.obj" \
-    "$(INTDIR)\gfilport.obj" \
-    "$(INTDIR)\gfilutl1.obj" \
-    "$(INTDIR)\gfilutl2.obj" \
-    "$(INTDIR)\gftnaddr.obj" \
-    "$(INTDIR)\gftnnl.obj" \
-    "$(INTDIR)\gftnnlfd.obj" \
-    "$(INTDIR)\gftnnlfu.obj" \
-    "$(INTDIR)\gftnnlge.obj" \
-    "$(INTDIR)\gftnnlv7.obj" \
-    "$(INTDIR)\gfuzzy.obj" \
-    "$(INTDIR)\ghdrmime.obj" \
-    "$(INTDIR)\gkbdbase.obj" \
-    "$(INTDIR)\gkbdgetm.obj" \
-    "$(INTDIR)\gkbdwait.obj" \
-    "$(INTDIR)\glog.obj" \
-    "$(INTDIR)\gmemdbg.obj" \
-    "$(INTDIR)\gmemutil.obj" \
-    "$(INTDIR)\gmoubase.obj" \
-    "$(INTDIR)\gmsgattr.obj" \
-    "$(INTDIR)\gprnutil.obj" \
-    "$(INTDIR)\gregex.obj" \
-    "$(INTDIR)\gsearch.obj" \
-    "$(INTDIR)\gsnd.obj" \
-    "$(INTDIR)\gsndwrap.obj" \
-    "$(INTDIR)\gsrchmgr.obj" \
-    "$(INTDIR)\gstrbags.obj" \
-    "$(INTDIR)\gstrctyp.obj" \
-    "$(INTDIR)\gstrmail.obj" \
-    "$(INTDIR)\gstrname.obj" \
-    "$(INTDIR)\gstrutil.obj" \
-    "$(INTDIR)\gtimjuld.obj" \
-    "$(INTDIR)\gtimutil.obj" \
-    "$(INTDIR)\gtxtpara.obj" \
-    "$(INTDIR)\gusrbase.obj" \
-    "$(INTDIR)\gusrezyc.obj" \
-    "$(INTDIR)\gusrgold.obj" \
-    "$(INTDIR)\gusrhuds.obj" \
-    "$(INTDIR)\gusrmax.obj" \
-    "$(INTDIR)\gusrpcb.obj" \
-    "$(INTDIR)\gusrra2.obj" \
-    "$(INTDIR)\gusrxbbs.obj" \
-    "$(INTDIR)\gutlclip.obj" \
-    "$(INTDIR)\gutlcode.obj" \
-    "$(INTDIR)\gutlgrp.obj" \
-    "$(INTDIR)\gutlmisc.obj" \
-    "$(INTDIR)\gutlmtsk.obj" \
-    "$(INTDIR)\gutltag.obj" \
-    "$(INTDIR)\gutlvers.obj" \
-    "$(INTDIR)\gutlwin.obj" \
-    "$(INTDIR)\gutlwinm.obj" \
-    "$(INTDIR)\gvidbase.obj" \
-    "$(INTDIR)\gvidinit.obj" \
-    "$(INTDIR)\gwildmat.obj" \
-    "$(INTDIR)\gwinbase.obj" \
-    "$(INTDIR)\gwindow.obj" \
-    "$(INTDIR)\gwinhlp1.obj" \
-    "$(INTDIR)\gwinhlp2.obj" \
-    "$(INTDIR)\gwininit.obj" \
-    "$(INTDIR)\gwinline.obj" \
-    "$(INTDIR)\gwinmenu.obj" \
-    "$(INTDIR)\gwinmnub.obj" \
-    "$(INTDIR)\gwinpckf.obj" \
-    "$(INTDIR)\gwinpcks.obj" \
-    "$(INTDIR)\gwinpick.obj" \
-    "$(INTDIR)\gwinput2.obj" \
-    "$(INTDIR)\gedacfg.obj" \
-    "$(INTDIR)\gxareas.obj" \
-    "$(INTDIR)\gxcrash.obj" \
-    "$(INTDIR)\gxdb.obj" \
-    "$(INTDIR)\gxdutch.obj" \
-    "$(INTDIR)\gxezy102.obj" \
-    "$(INTDIR)\gxezy110.obj" \
-    "$(INTDIR)\gxfd.obj" \
-    "$(INTDIR)\gxfecho4.obj" \
-    "$(INTDIR)\gxfecho5.obj" \
-    "$(INTDIR)\gxfecho6.obj" \
-    "$(INTDIR)\gxfidpcb.obj" \
-    "$(INTDIR)\gxfm092.obj" \
-    "$(INTDIR)\gxfm100.obj" \
-    "$(INTDIR)\gxfm116.obj" \
-    "$(INTDIR)\gxgecho.obj" \
-    "$(INTDIR)\gxhpt.obj" \
-    "$(INTDIR)\gximail4.obj" \
-    "$(INTDIR)\gximail5.obj" \
-    "$(INTDIR)\gximail6.obj" \
-    "$(INTDIR)\gxinter.obj" \
-    "$(INTDIR)\gxlora.obj" \
-    "$(INTDIR)\gxmax3.obj" \
-    "$(INTDIR)\gxme2.obj" \
-    "$(INTDIR)\gxopus.obj" \
-    "$(INTDIR)\gxpcb.obj" \
-    "$(INTDIR)\gxportal.obj" \
-    "$(INTDIR)\gxprobrd.obj" \
-    "$(INTDIR)\gxqecho.obj" \
-    "$(INTDIR)\gxqfront.obj" \
-    "$(INTDIR)\gxquick.obj" \
-    "$(INTDIR)\gxra.obj" \
-    "$(INTDIR)\gxraecho.obj" \
-    "$(INTDIR)\gxspace.obj" \
-    "$(INTDIR)\gxsquish.obj" \
-    "$(INTDIR)\gxsuper.obj" \
-    "$(INTDIR)\gxsync.obj" \
-    "$(INTDIR)\gxtimed.obj" \
-    "$(INTDIR)\gxtmail.obj" \
-    "$(INTDIR)\gxts.obj" \
-    "$(INTDIR)\gxwmail.obj" \
-    "$(INTDIR)\gxwtr.obj" \
-    "$(INTDIR)\gxxbbs.obj" \
-    "$(INTDIR)\gxxmail.obj" \
-    "$(INTDIR)\regex.obj" \
-    "$(INTDIR)\gmoarea.obj" \
-    "$(INTDIR)\gmoezyc1.obj" \
-    "$(INTDIR)\gmoezyc2.obj" \
-    "$(INTDIR)\gmoezyc3.obj" \
-    "$(INTDIR)\gmoezyc4.obj" \
-    "$(INTDIR)\gmoezyc5.obj" \
-    "$(INTDIR)\gmofido1.obj" \
-    "$(INTDIR)\gmofido2.obj" \
-    "$(INTDIR)\gmofido3.obj" \
-    "$(INTDIR)\gmofido4.obj" \
-    "$(INTDIR)\gmofido5.obj" \
-    "$(INTDIR)\gmohuds.obj" \
-    "$(INTDIR)\gmojamm1.obj" \
-    "$(INTDIR)\gmojamm2.obj" \
-    "$(INTDIR)\gmojamm3.obj" \
-    "$(INTDIR)\gmojamm4.obj" \
-    "$(INTDIR)\gmojamm5.obj" \
-    "$(INTDIR)\gmopcbd1.obj" \
-    "$(INTDIR)\gmopcbd2.obj" \
-    "$(INTDIR)\gmopcbd3.obj" \
-    "$(INTDIR)\gmopcbd4.obj" \
-    "$(INTDIR)\gmopcbd5.obj" \
-    "$(INTDIR)\gmosmb1.obj" \
-    "$(INTDIR)\gmosmb2.obj" \
-    "$(INTDIR)\gmosqsh1.obj" \
-    "$(INTDIR)\gmosqsh2.obj" \
-    "$(INTDIR)\gmosqsh3.obj" \
-    "$(INTDIR)\gmosqsh4.obj" \
-    "$(INTDIR)\gmosqsh5.obj" \
-    "$(INTDIR)\gmowcat1.obj" \
-    "$(INTDIR)\gmowcat2.obj" \
-    "$(INTDIR)\gmowcat3.obj" \
-    "$(INTDIR)\gmowcat4.obj" \
-    "$(INTDIR)\gmowcat5.obj" \
-    "$(INTDIR)\gmoxbbs1.obj" \
-    "$(INTDIR)\gmoxbbs2.obj" \
-    "$(INTDIR)\gmoxbbs3.obj" \
-    "$(INTDIR)\gmoxbbs4.obj" \
-    "$(INTDIR)\gmoxbbs5.obj" \
-    "$(INTDIR)\fexist.obj" \
-    "$(INTDIR)\ffind.obj" \
-    "$(INTDIR)\genmsgid.obj" \
-    "$(INTDIR)\patmat.obj" \
-    "$(INTDIR)\lzh.obj" \
-    "$(INTDIR)\smblib.obj" \
-    "$(INTDIR)\fptools.obj" \
-    "$(INTDIR)\uucheck.obj" \
-    "$(INTDIR)\uuencode.obj" \
-    "$(INTDIR)\uulib.obj" \
-    "$(INTDIR)\uunconc.obj" \
-    "$(INTDIR)\uuscan.obj" \
-    "$(INTDIR)\uustring.obj" \
-    "$(INTDIR)\uuutil.obj" \
-    "$(INTDIR)\gcalst.obj" \
-    "$(INTDIR)\gcarea.obj" \
-    "$(INTDIR)\gccfgg.obj" \
-    "$(INTDIR)\gccfgg0.obj" \
-    "$(INTDIR)\gccfgg1.obj" \
-    "$(INTDIR)\gccfgg2.obj" \
-    "$(INTDIR)\gccfgg3.obj" \
-    "$(INTDIR)\gccfgg4.obj" \
-    "$(INTDIR)\gccfgg5.obj" \
-    "$(INTDIR)\gccfgg6.obj" \
-    "$(INTDIR)\gccfgg7.obj" \
-    "$(INTDIR)\gccfgg8.obj" \
-    "$(INTDIR)\gckeys.obj" \
-    "$(INTDIR)\gclang.obj" \
-    "$(INTDIR)\gcmisc.obj" \
-    "$(INTDIR)\gealst.obj" \
-    "$(INTDIR)\gearea.obj" \
-    "$(INTDIR)\gecarb.obj" \
-    "$(INTDIR)\gecmfd.obj" \
-    "$(INTDIR)\gectnr.obj" \
-    "$(INTDIR)\gectrl.obj" \
-    "$(INTDIR)\gedoit.obj" \
-    "$(INTDIR)\gedoss.obj" \
-    "$(INTDIR)\geedit.obj" \
-    "$(INTDIR)\geedit2.obj" \
-    "$(INTDIR)\geedit3.obj" \
-    "$(INTDIR)\gefile.obj" \
-    "$(INTDIR)\gefind.obj" \
-    "$(INTDIR)\geglob.obj" \
-    "$(INTDIR)\gehdre.obj" \
-    "$(INTDIR)\gehdrs.obj" \
-    "$(INTDIR)\gehtml.obj" \
-    "$(INTDIR)\geinit.obj" \
-    "$(INTDIR)\geline.obj" \
-    "$(INTDIR)\gelmsg.obj" \
-    "$(INTDIR)\gemenu.obj" \
-    "$(INTDIR)\gemlst.obj" \
-    "$(INTDIR)\gemnus.obj" \
-    "$(INTDIR)\gemrks.obj" \
-    "$(INTDIR)\gemsgid.obj" \
-    "$(INTDIR)\gemsgs.obj" \
-    "$(INTDIR)\genode.obj" \
-    "$(INTDIR)\geplay.obj" \
-    "$(INTDIR)\gepost.obj" \
-    "$(INTDIR)\geqwks.obj" \
-    "$(INTDIR)\gerand.obj" \
-    "$(INTDIR)\geread.obj" \
-    "$(INTDIR)\geread2.obj" \
-    "$(INTDIR)\gescan.obj" \
-    "$(INTDIR)\gesoup.obj" \
-    "$(INTDIR)\gesrch.obj" \
-    "$(INTDIR)\getpls.obj" \
-    "$(INTDIR)\geusrbse.obj" \
-    "$(INTDIR)\geutil.obj" \
-    "$(INTDIR)\geutil2.obj" \
-    "$(INTDIR)\geview.obj" \
-    "$(INTDIR)\gmarea.obj" \
-    "$(INTDIR)\golded3.obj" \
-    "$(INTDIR)\gedcyg.res"
-
-GOLDED_OBJS= \
-    "$(INTDIR)\gemain.obj"
-
-GOLDNODE_OBJS= \
-    "$(INTDIR)\goldnode.obj"
-
-RDDT_OBJS= \
-    "$(INTDIR)\rddt.obj"
-
-
-"$(OUTDIR)\gedwin.exe" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS) $(GOLDED_OBJS)
-    $(LINK32) @<<
-  $(LINK32_FLAGS) /pdb:"$(OUTDIR)\gedwin.pdb" /out:"$(OUTDIR)\gedwin.exe" $(LINK32_OBJS) $(GOLDED_OBJS)
-<<
-
-"$(OUTDIR)\gnwin.exe" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS) $(GOLDNODE_OBJS)
-    $(LINK32) @<<
-  $(LINK32_FLAGS) /pdb:"$(OUTDIR)\gnwin.pdb" /out:"$(OUTDIR)\gnwin.exe" $(LINK32_OBJS) $(GOLDNODE_OBJS)
-<<
-
-"$(OUTDIR)\rddtwin.exe" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS) $(RDDT_OBJS)
-    $(LINK32) @<<
-  $(LINK32_FLAGS) /pdb:"$(OUTDIR)\rddtwin.pdb" /out:"$(OUTDIR)\rddtwin.exe" $(LINK32_OBJS) $(RDDT_OBJS)
-<<
-
-SOURCE="$(InputPath)"
-
-
+OBJ_DIR=Release
+BIN_DIR=$(OBJ_DIR)\bin
 !ELSEIF  "$(CFG)" == "Debug"
-
-OUTDIR=.\Debug
-INTDIR=.\Debug
-
-ALL : "$(OUTDIR)\gedwind.exe" "$(OUTDIR)\rddtwind.exe" "$(OUTDIR)\gnwind.exe"
-
-CLEAN :
-    -@erase "$(INTDIR)\*.obj"
-    -@erase "$(INTDIR)\*.idb"
-    -@erase "$(INTDIR)\*.pdb"
-    -@erase "$(OUTDIR)\*.ilk"
-
-distclean:
-    -@erase "$(OUTDIR)\gedwind.exe"
-    -@erase "$(OUTDIR)\gnwind.exe"
-    -@erase "$(OUTDIR)\rddtwind.exe"
-
-
-"$(OUTDIR)" :
-    if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
-
-CPP_PROJ=/nologo /MDd /W3 /Gm /GX /ZI /Od /I "C:\Progra~1\Micros~2\VC98\Include\\" /I ".\golded3" /I ".\goldlib\gall" /I ".\goldlib\gcfg" /I ".\goldlib\glibc" /I ".\goldlib\gmb3" /I ".\goldlib\msgidlib" /I ".\goldlib\smblib" /I ".\goldlib\uulib" /D "_DEBUG" /D "WIN32" /D "_CONSOLE" /D "HAVE_CONFIG_H" /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /J /FD /GZ /c
-
-.c{$(INTDIR)}.obj::
-   $(CPP) @<<
-   $(CPP_PROJ) $<
-<<
-
-.cpp{$(INTDIR)}.obj::
-   $(CPP) @<<
-   $(CPP_PROJ) $<
-<<
-
-.cxx{$(INTDIR)}.obj::
-   $(CPP) @<<
-   $(CPP_PROJ) $<
-<<
-
-
-RSC=rc.exe
-RSC_PROJ= /i "golded3" /fo"$(INTDIR)\gedcyg.res" /d "_DEBUG"
-
-LINK32_FLAGS=winmm.lib user32.lib /nologo /subsystem:console /incremental:yes /debug /machine:I386 /pdbtype:sept
-LINK32_OBJS= \
-    "$(INTDIR)\gbmh.obj" \
-    "$(INTDIR)\gcharset.obj" \
-    "$(INTDIR)\gcrc16tb.obj" \
-    "$(INTDIR)\gcrc32tb.obj" \
-    "$(INTDIR)\gcrchash.obj" \
-    "$(INTDIR)\gcrckeyv.obj" \
-    "$(INTDIR)\gcrcm16.obj" \
-    "$(INTDIR)\gcrcm32.obj" \
-    "$(INTDIR)\gcrcs16.obj" \
-    "$(INTDIR)\gcrcs32.obj" \
-    "$(INTDIR)\gdbgerr.obj" \
-    "$(INTDIR)\gdbgtrk.obj" \
-    "$(INTDIR)\gdirposx.obj" \
-    "$(INTDIR)\geval.obj" \
-    "$(INTDIR)\gevalhum.obj" \
-    "$(INTDIR)\gevalrpn.obj" \
-    "$(INTDIR)\gfile.obj" \
-    "$(INTDIR)\gfilport.obj" \
-    "$(INTDIR)\gfilutl1.obj" \
-    "$(INTDIR)\gfilutl2.obj" \
-    "$(INTDIR)\gftnaddr.obj" \
-    "$(INTDIR)\gftnnl.obj" \
-    "$(INTDIR)\gftnnlfd.obj" \
-    "$(INTDIR)\gftnnlfu.obj" \
-    "$(INTDIR)\gftnnlge.obj" \
-    "$(INTDIR)\gftnnlv7.obj" \
-    "$(INTDIR)\gfuzzy.obj" \
-    "$(INTDIR)\ghdrmime.obj" \
-    "$(INTDIR)\gkbdbase.obj" \
-    "$(INTDIR)\gkbdgetm.obj" \
-    "$(INTDIR)\gkbdwait.obj" \
-    "$(INTDIR)\glog.obj" \
-    "$(INTDIR)\gmemdbg.obj" \
-    "$(INTDIR)\gmemutil.obj" \
-    "$(INTDIR)\gmoubase.obj" \
-    "$(INTDIR)\gmsgattr.obj" \
-    "$(INTDIR)\gprnutil.obj" \
-    "$(INTDIR)\gregex.obj" \
-    "$(INTDIR)\gsearch.obj" \
-    "$(INTDIR)\gsnd.obj" \
-    "$(INTDIR)\gsndwrap.obj" \
-    "$(INTDIR)\gsrchmgr.obj" \
-    "$(INTDIR)\gstrbags.obj" \
-    "$(INTDIR)\gstrctyp.obj" \
-    "$(INTDIR)\gstrmail.obj" \
-    "$(INTDIR)\gstrname.obj" \
-    "$(INTDIR)\gstrutil.obj" \
-    "$(INTDIR)\gtimjuld.obj" \
-    "$(INTDIR)\gtimutil.obj" \
-    "$(INTDIR)\gtxtpara.obj" \
-    "$(INTDIR)\gusrbase.obj" \
-    "$(INTDIR)\gusrezyc.obj" \
-    "$(INTDIR)\gusrgold.obj" \
-    "$(INTDIR)\gusrhuds.obj" \
-    "$(INTDIR)\gusrmax.obj" \
-    "$(INTDIR)\gusrpcb.obj" \
-    "$(INTDIR)\gusrra2.obj" \
-    "$(INTDIR)\gusrxbbs.obj" \
-    "$(INTDIR)\gutlclip.obj" \
-    "$(INTDIR)\gutlcode.obj" \
-    "$(INTDIR)\gutlgrp.obj" \
-    "$(INTDIR)\gutlmisc.obj" \
-    "$(INTDIR)\gutlmtsk.obj" \
-    "$(INTDIR)\gutltag.obj" \
-    "$(INTDIR)\gutlvers.obj" \
-    "$(INTDIR)\gutlwin.obj" \
-    "$(INTDIR)\gutlwinm.obj" \
-    "$(INTDIR)\gvidbase.obj" \
-    "$(INTDIR)\gvidinit.obj" \
-    "$(INTDIR)\gwildmat.obj" \
-    "$(INTDIR)\gwinbase.obj" \
-    "$(INTDIR)\gwindow.obj" \
-    "$(INTDIR)\gwinhlp1.obj" \
-    "$(INTDIR)\gwinhlp2.obj" \
-    "$(INTDIR)\gwininit.obj" \
-    "$(INTDIR)\gwinline.obj" \
-    "$(INTDIR)\gwinmenu.obj" \
-    "$(INTDIR)\gwinmnub.obj" \
-    "$(INTDIR)\gwinpckf.obj" \
-    "$(INTDIR)\gwinpcks.obj" \
-    "$(INTDIR)\gwinpick.obj" \
-    "$(INTDIR)\gwinput2.obj" \
-    "$(INTDIR)\gedacfg.obj" \
-    "$(INTDIR)\gxareas.obj" \
-    "$(INTDIR)\gxcrash.obj" \
-    "$(INTDIR)\gxdb.obj" \
-    "$(INTDIR)\gxdutch.obj" \
-    "$(INTDIR)\gxezy102.obj" \
-    "$(INTDIR)\gxezy110.obj" \
-    "$(INTDIR)\gxfd.obj" \
-    "$(INTDIR)\gxfecho4.obj" \
-    "$(INTDIR)\gxfecho5.obj" \
-    "$(INTDIR)\gxfecho6.obj" \
-    "$(INTDIR)\gxfidpcb.obj" \
-    "$(INTDIR)\gxfm092.obj" \
-    "$(INTDIR)\gxfm100.obj" \
-    "$(INTDIR)\gxfm116.obj" \
-    "$(INTDIR)\gxgecho.obj" \
-    "$(INTDIR)\gxhpt.obj" \
-    "$(INTDIR)\gximail4.obj" \
-    "$(INTDIR)\gximail5.obj" \
-    "$(INTDIR)\gximail6.obj" \
-    "$(INTDIR)\gxinter.obj" \
-    "$(INTDIR)\gxlora.obj" \
-    "$(INTDIR)\gxmax3.obj" \
-    "$(INTDIR)\gxme2.obj" \
-    "$(INTDIR)\gxopus.obj" \
-    "$(INTDIR)\gxpcb.obj" \
-    "$(INTDIR)\gxportal.obj" \
-    "$(INTDIR)\gxprobrd.obj" \
-    "$(INTDIR)\gxqecho.obj" \
-    "$(INTDIR)\gxqfront.obj" \
-    "$(INTDIR)\gxquick.obj" \
-    "$(INTDIR)\gxra.obj" \
-    "$(INTDIR)\gxraecho.obj" \
-    "$(INTDIR)\gxspace.obj" \
-    "$(INTDIR)\gxsquish.obj" \
-    "$(INTDIR)\gxsuper.obj" \
-    "$(INTDIR)\gxsync.obj" \
-    "$(INTDIR)\gxtimed.obj" \
-    "$(INTDIR)\gxtmail.obj" \
-    "$(INTDIR)\gxts.obj" \
-    "$(INTDIR)\gxwmail.obj" \
-    "$(INTDIR)\gxwtr.obj" \
-    "$(INTDIR)\gxxbbs.obj" \
-    "$(INTDIR)\gxxmail.obj" \
-    "$(INTDIR)\regex.obj" \
-    "$(INTDIR)\gmoarea.obj" \
-    "$(INTDIR)\gmoezyc1.obj" \
-    "$(INTDIR)\gmoezyc2.obj" \
-    "$(INTDIR)\gmoezyc3.obj" \
-    "$(INTDIR)\gmoezyc4.obj" \
-    "$(INTDIR)\gmoezyc5.obj" \
-    "$(INTDIR)\gmofido1.obj" \
-    "$(INTDIR)\gmofido2.obj" \
-    "$(INTDIR)\gmofido3.obj" \
-    "$(INTDIR)\gmofido4.obj" \
-    "$(INTDIR)\gmofido5.obj" \
-    "$(INTDIR)\gmohuds.obj" \
-    "$(INTDIR)\gmojamm1.obj" \
-    "$(INTDIR)\gmojamm2.obj" \
-    "$(INTDIR)\gmojamm3.obj" \
-    "$(INTDIR)\gmojamm4.obj" \
-    "$(INTDIR)\gmojamm5.obj" \
-    "$(INTDIR)\gmopcbd1.obj" \
-    "$(INTDIR)\gmopcbd2.obj" \
-    "$(INTDIR)\gmopcbd3.obj" \
-    "$(INTDIR)\gmopcbd4.obj" \
-    "$(INTDIR)\gmopcbd5.obj" \
-    "$(INTDIR)\gmosmb1.obj" \
-    "$(INTDIR)\gmosmb2.obj" \
-    "$(INTDIR)\gmosqsh1.obj" \
-    "$(INTDIR)\gmosqsh2.obj" \
-    "$(INTDIR)\gmosqsh3.obj" \
-    "$(INTDIR)\gmosqsh4.obj" \
-    "$(INTDIR)\gmosqsh5.obj" \
-    "$(INTDIR)\gmowcat1.obj" \
-    "$(INTDIR)\gmowcat2.obj" \
-    "$(INTDIR)\gmowcat3.obj" \
-    "$(INTDIR)\gmowcat4.obj" \
-    "$(INTDIR)\gmowcat5.obj" \
-    "$(INTDIR)\gmoxbbs1.obj" \
-    "$(INTDIR)\gmoxbbs2.obj" \
-    "$(INTDIR)\gmoxbbs3.obj" \
-    "$(INTDIR)\gmoxbbs4.obj" \
-    "$(INTDIR)\gmoxbbs5.obj" \
-    "$(INTDIR)\fexist.obj" \
-    "$(INTDIR)\ffind.obj" \
-    "$(INTDIR)\genmsgid.obj" \
-    "$(INTDIR)\patmat.obj" \
-    "$(INTDIR)\lzh.obj" \
-    "$(INTDIR)\smblib.obj" \
-    "$(INTDIR)\fptools.obj" \
-    "$(INTDIR)\uucheck.obj" \
-    "$(INTDIR)\uuencode.obj" \
-    "$(INTDIR)\uulib.obj" \
-    "$(INTDIR)\uunconc.obj" \
-    "$(INTDIR)\uuscan.obj" \
-    "$(INTDIR)\uustring.obj" \
-    "$(INTDIR)\uuutil.obj" \
-    "$(INTDIR)\gcalst.obj" \
-    "$(INTDIR)\gcarea.obj" \
-    "$(INTDIR)\gccfgg.obj" \
-    "$(INTDIR)\gccfgg0.obj" \
-    "$(INTDIR)\gccfgg1.obj" \
-    "$(INTDIR)\gccfgg2.obj" \
-    "$(INTDIR)\gccfgg3.obj" \
-    "$(INTDIR)\gccfgg4.obj" \
-    "$(INTDIR)\gccfgg5.obj" \
-    "$(INTDIR)\gccfgg6.obj" \
-    "$(INTDIR)\gccfgg7.obj" \
-    "$(INTDIR)\gccfgg8.obj" \
-    "$(INTDIR)\gckeys.obj" \
-    "$(INTDIR)\gclang.obj" \
-    "$(INTDIR)\gcmisc.obj" \
-    "$(INTDIR)\gealst.obj" \
-    "$(INTDIR)\gearea.obj" \
-    "$(INTDIR)\gecarb.obj" \
-    "$(INTDIR)\gecmfd.obj" \
-    "$(INTDIR)\gectnr.obj" \
-    "$(INTDIR)\gectrl.obj" \
-    "$(INTDIR)\gedoit.obj" \
-    "$(INTDIR)\gedoss.obj" \
-    "$(INTDIR)\geedit.obj" \
-    "$(INTDIR)\geedit2.obj" \
-    "$(INTDIR)\geedit3.obj" \
-    "$(INTDIR)\gefile.obj" \
-    "$(INTDIR)\gefind.obj" \
-    "$(INTDIR)\geglob.obj" \
-    "$(INTDIR)\gehdre.obj" \
-    "$(INTDIR)\gehdrs.obj" \
-    "$(INTDIR)\gehtml.obj" \
-    "$(INTDIR)\geinit.obj" \
-    "$(INTDIR)\geline.obj" \
-    "$(INTDIR)\gelmsg.obj" \
-    "$(INTDIR)\gemenu.obj" \
-    "$(INTDIR)\gemlst.obj" \
-    "$(INTDIR)\gemnus.obj" \
-    "$(INTDIR)\gemrks.obj" \
-    "$(INTDIR)\gemsgid.obj" \
-    "$(INTDIR)\gemsgs.obj" \
-    "$(INTDIR)\genode.obj" \
-    "$(INTDIR)\geplay.obj" \
-    "$(INTDIR)\gepost.obj" \
-    "$(INTDIR)\geqwks.obj" \
-    "$(INTDIR)\gerand.obj" \
-    "$(INTDIR)\geread.obj" \
-    "$(INTDIR)\geread2.obj" \
-    "$(INTDIR)\gescan.obj" \
-    "$(INTDIR)\gesoup.obj" \
-    "$(INTDIR)\gesrch.obj" \
-    "$(INTDIR)\getpls.obj" \
-    "$(INTDIR)\geusrbse.obj" \
-    "$(INTDIR)\geutil.obj" \
-    "$(INTDIR)\geutil2.obj" \
-    "$(INTDIR)\geview.obj" \
-    "$(INTDIR)\gmarea.obj" \
-    "$(INTDIR)\golded3.obj" \
-    "$(INTDIR)\gedcyg.res"
-
-GOLDED_OBJS= \
-    "$(INTDIR)\gemain.obj"
-
-GOLDNODE_OBJS= \
-    "$(INTDIR)\goldnode.obj"
-
-RDDT_OBJS= \
-    "$(INTDIR)\rddt.obj"
-
-
-"$(OUTDIR)\gedwind.exe" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS) $(GOLDED_OBJS)
-    $(LINK32) @<<
-  $(LINK32_FLAGS) /pdb:"$(OUTDIR)\gedwind.pdb" /out:"$(OUTDIR)\gedwind.exe" $(LINK32_OBJS) $(GOLDED_OBJS)
-<<
-
-"$(OUTDIR)\gnwind.exe" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS) $(GOLDNODE_OBJS)
-    $(LINK32) @<<
-  $(LINK32_FLAGS) /pdb:"$(OUTDIR)\gnwind.pdb" /out:"$(OUTDIR)\gnwind.exe" $(LINK32_OBJS) $(GOLDNODE_OBJS)
-<<
-
-"$(OUTDIR)\rddtwind.exe" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS) $(RDDT_OBJS)
-    $(LINK32) @<<
-  $(LINK32_FLAGS) /pdb:"$(OUTDIR)\rddtwind.pdb" /out:"$(OUTDIR)\rddtwind.exe" $(LINK32_OBJS) $(RDDT_OBJS)
-<<
-
-
-SOURCE="$(InputPath)"
-
-
+OBJ_DIR=Debug
+BIN_DIR=$(OBJ_DIR)\bin
 !ENDIF
 
+
+LNK_OBJS= \
+    $(OBJ_DIR)\gedcyg.res \
+    $(OBJ_DIR)\gbmh.obj \
+    $(OBJ_DIR)\gcharset.obj \
+    $(OBJ_DIR)\gcrc16tb.obj \
+    $(OBJ_DIR)\gcrc32tb.obj \
+    $(OBJ_DIR)\gcrchash.obj \
+    $(OBJ_DIR)\gcrckeyv.obj \
+    $(OBJ_DIR)\gcrcm16.obj \
+    $(OBJ_DIR)\gcrcm32.obj \
+    $(OBJ_DIR)\gcrcs16.obj \
+    $(OBJ_DIR)\gcrcs32.obj \
+    $(OBJ_DIR)\gdbgerr.obj \
+    $(OBJ_DIR)\gdbgtrk.obj \
+    $(OBJ_DIR)\gdirposx.obj \
+    $(OBJ_DIR)\geval.obj \
+    $(OBJ_DIR)\gevalhum.obj \
+    $(OBJ_DIR)\gevalrpn.obj \
+    $(OBJ_DIR)\gfile.obj \
+    $(OBJ_DIR)\gfilport.obj \
+    $(OBJ_DIR)\gfilutl1.obj \
+    $(OBJ_DIR)\gfilutl2.obj \
+    $(OBJ_DIR)\gftnaddr.obj \
+    $(OBJ_DIR)\gftnnl.obj \
+    $(OBJ_DIR)\gftnnlfd.obj \
+    $(OBJ_DIR)\gftnnlfu.obj \
+    $(OBJ_DIR)\gftnnlge.obj \
+    $(OBJ_DIR)\gftnnlv7.obj \
+    $(OBJ_DIR)\gfuzzy.obj \
+    $(OBJ_DIR)\ghdrmime.obj \
+    $(OBJ_DIR)\gkbdbase.obj \
+    $(OBJ_DIR)\gkbdgetm.obj \
+    $(OBJ_DIR)\gkbdwait.obj \
+    $(OBJ_DIR)\glog.obj \
+    $(OBJ_DIR)\gmemdbg.obj \
+    $(OBJ_DIR)\gmemutil.obj \
+    $(OBJ_DIR)\gmoubase.obj \
+    $(OBJ_DIR)\gmsgattr.obj \
+    $(OBJ_DIR)\gprnutil.obj \
+    $(OBJ_DIR)\gregex.obj \
+    $(OBJ_DIR)\gsearch.obj \
+    $(OBJ_DIR)\gsnd.obj \
+    $(OBJ_DIR)\gsndwrap.obj \
+    $(OBJ_DIR)\gsrchmgr.obj \
+    $(OBJ_DIR)\gstrbags.obj \
+    $(OBJ_DIR)\gstrctyp.obj \
+    $(OBJ_DIR)\gstrmail.obj \
+    $(OBJ_DIR)\gstrname.obj \
+    $(OBJ_DIR)\gstrutil.obj \
+    $(OBJ_DIR)\gtimjuld.obj \
+    $(OBJ_DIR)\gtimutil.obj \
+    $(OBJ_DIR)\gtxtpara.obj \
+    $(OBJ_DIR)\gusrbase.obj \
+    $(OBJ_DIR)\gusrezyc.obj \
+    $(OBJ_DIR)\gusrgold.obj \
+    $(OBJ_DIR)\gusrhuds.obj \
+    $(OBJ_DIR)\gusrmax.obj \
+    $(OBJ_DIR)\gusrpcb.obj \
+    $(OBJ_DIR)\gusrra2.obj \
+    $(OBJ_DIR)\gusrxbbs.obj \
+    $(OBJ_DIR)\gutlclip.obj \
+    $(OBJ_DIR)\gutlcode.obj \
+    $(OBJ_DIR)\gutlgrp.obj \
+    $(OBJ_DIR)\gutlmisc.obj \
+    $(OBJ_DIR)\gutlmtsk.obj \
+    $(OBJ_DIR)\gutltag.obj \
+    $(OBJ_DIR)\gutlvers.obj \
+    $(OBJ_DIR)\gutlwin.obj \
+    $(OBJ_DIR)\gutlwinm.obj \
+    $(OBJ_DIR)\gvidbase.obj \
+    $(OBJ_DIR)\gvidinit.obj \
+    $(OBJ_DIR)\gwildmat.obj \
+    $(OBJ_DIR)\gwinbase.obj \
+    $(OBJ_DIR)\gwindow.obj \
+    $(OBJ_DIR)\gwinhlp1.obj \
+    $(OBJ_DIR)\gwinhlp2.obj \
+    $(OBJ_DIR)\gwininit.obj \
+    $(OBJ_DIR)\gwinline.obj \
+    $(OBJ_DIR)\gwinmenu.obj \
+    $(OBJ_DIR)\gwinmnub.obj \
+    $(OBJ_DIR)\gwinpckf.obj \
+    $(OBJ_DIR)\gwinpcks.obj \
+    $(OBJ_DIR)\gwinpick.obj \
+    $(OBJ_DIR)\gwinput2.obj \
+    $(OBJ_DIR)\gedacfg.obj \
+    $(OBJ_DIR)\gxareas.obj \
+    $(OBJ_DIR)\gxcrash.obj \
+    $(OBJ_DIR)\gxdb.obj \
+    $(OBJ_DIR)\gxdutch.obj \
+    $(OBJ_DIR)\gxezy102.obj \
+    $(OBJ_DIR)\gxezy110.obj \
+    $(OBJ_DIR)\gxfd.obj \
+    $(OBJ_DIR)\gxfecho4.obj \
+    $(OBJ_DIR)\gxfecho5.obj \
+    $(OBJ_DIR)\gxfecho6.obj \
+    $(OBJ_DIR)\gxfidpcb.obj \
+    $(OBJ_DIR)\gxfm092.obj \
+    $(OBJ_DIR)\gxfm100.obj \
+    $(OBJ_DIR)\gxfm116.obj \
+    $(OBJ_DIR)\gxgecho.obj \
+    $(OBJ_DIR)\gxhpt.obj \
+    $(OBJ_DIR)\gximail4.obj \
+    $(OBJ_DIR)\gximail5.obj \
+    $(OBJ_DIR)\gximail6.obj \
+    $(OBJ_DIR)\gxinter.obj \
+    $(OBJ_DIR)\gxlora.obj \
+    $(OBJ_DIR)\gxmax3.obj \
+    $(OBJ_DIR)\gxme2.obj \
+    $(OBJ_DIR)\gxopus.obj \
+    $(OBJ_DIR)\gxpcb.obj \
+    $(OBJ_DIR)\gxportal.obj \
+    $(OBJ_DIR)\gxprobrd.obj \
+    $(OBJ_DIR)\gxqecho.obj \
+    $(OBJ_DIR)\gxqfront.obj \
+    $(OBJ_DIR)\gxquick.obj \
+    $(OBJ_DIR)\gxra.obj \
+    $(OBJ_DIR)\gxraecho.obj \
+    $(OBJ_DIR)\gxspace.obj \
+    $(OBJ_DIR)\gxsquish.obj \
+    $(OBJ_DIR)\gxsuper.obj \
+    $(OBJ_DIR)\gxsync.obj \
+    $(OBJ_DIR)\gxtimed.obj \
+    $(OBJ_DIR)\gxtmail.obj \
+    $(OBJ_DIR)\gxts.obj \
+    $(OBJ_DIR)\gxwmail.obj \
+    $(OBJ_DIR)\gxwtr.obj \
+    $(OBJ_DIR)\gxxbbs.obj \
+    $(OBJ_DIR)\gxxmail.obj \
+    $(OBJ_DIR)\regex.obj \
+    $(OBJ_DIR)\gmoarea.obj \
+    $(OBJ_DIR)\gmoezyc1.obj \
+    $(OBJ_DIR)\gmoezyc2.obj \
+    $(OBJ_DIR)\gmoezyc3.obj \
+    $(OBJ_DIR)\gmoezyc4.obj \
+    $(OBJ_DIR)\gmoezyc5.obj \
+    $(OBJ_DIR)\gmofido1.obj \
+    $(OBJ_DIR)\gmofido2.obj \
+    $(OBJ_DIR)\gmofido3.obj \
+    $(OBJ_DIR)\gmofido4.obj \
+    $(OBJ_DIR)\gmofido5.obj \
+    $(OBJ_DIR)\gmohuds.obj \
+    $(OBJ_DIR)\gmojamm1.obj \
+    $(OBJ_DIR)\gmojamm2.obj \
+    $(OBJ_DIR)\gmojamm3.obj \
+    $(OBJ_DIR)\gmojamm4.obj \
+    $(OBJ_DIR)\gmojamm5.obj \
+    $(OBJ_DIR)\gmopcbd1.obj \
+    $(OBJ_DIR)\gmopcbd2.obj \
+    $(OBJ_DIR)\gmopcbd3.obj \
+    $(OBJ_DIR)\gmopcbd4.obj \
+    $(OBJ_DIR)\gmopcbd5.obj \
+    $(OBJ_DIR)\gmosmb1.obj \
+    $(OBJ_DIR)\gmosmb2.obj \
+    $(OBJ_DIR)\gmosqsh1.obj \
+    $(OBJ_DIR)\gmosqsh2.obj \
+    $(OBJ_DIR)\gmosqsh3.obj \
+    $(OBJ_DIR)\gmosqsh4.obj \
+    $(OBJ_DIR)\gmosqsh5.obj \
+    $(OBJ_DIR)\gmowcat1.obj \
+    $(OBJ_DIR)\gmowcat2.obj \
+    $(OBJ_DIR)\gmowcat3.obj \
+    $(OBJ_DIR)\gmowcat4.obj \
+    $(OBJ_DIR)\gmowcat5.obj \
+    $(OBJ_DIR)\gmoxbbs1.obj \
+    $(OBJ_DIR)\gmoxbbs2.obj \
+    $(OBJ_DIR)\gmoxbbs3.obj \
+    $(OBJ_DIR)\gmoxbbs4.obj \
+    $(OBJ_DIR)\gmoxbbs5.obj \
+    $(OBJ_DIR)\fexist.obj \
+    $(OBJ_DIR)\ffind.obj \
+    $(OBJ_DIR)\genmsgid.obj \
+    $(OBJ_DIR)\patmat.obj \
+    $(OBJ_DIR)\lzh.obj \
+    $(OBJ_DIR)\smblib.obj \
+    $(OBJ_DIR)\fptools.obj \
+    $(OBJ_DIR)\uucheck.obj \
+    $(OBJ_DIR)\uuencode.obj \
+    $(OBJ_DIR)\uulib.obj \
+    $(OBJ_DIR)\uunconc.obj \
+    $(OBJ_DIR)\uuscan.obj \
+    $(OBJ_DIR)\uustring.obj \
+    $(OBJ_DIR)\uuutil.obj \
+    $(OBJ_DIR)\gcalst.obj \
+    $(OBJ_DIR)\gcarea.obj \
+    $(OBJ_DIR)\gccfgg.obj \
+    $(OBJ_DIR)\gccfgg0.obj \
+    $(OBJ_DIR)\gccfgg1.obj \
+    $(OBJ_DIR)\gccfgg2.obj \
+    $(OBJ_DIR)\gccfgg3.obj \
+    $(OBJ_DIR)\gccfgg4.obj \
+    $(OBJ_DIR)\gccfgg5.obj \
+    $(OBJ_DIR)\gccfgg6.obj \
+    $(OBJ_DIR)\gccfgg7.obj \
+    $(OBJ_DIR)\gccfgg8.obj \
+    $(OBJ_DIR)\gckeys.obj \
+    $(OBJ_DIR)\gclang.obj \
+    $(OBJ_DIR)\gcmisc.obj \
+    $(OBJ_DIR)\gealst.obj \
+    $(OBJ_DIR)\gearea.obj \
+    $(OBJ_DIR)\gecarb.obj \
+    $(OBJ_DIR)\gecmfd.obj \
+    $(OBJ_DIR)\gectnr.obj \
+    $(OBJ_DIR)\gectrl.obj \
+    $(OBJ_DIR)\gedoit.obj \
+    $(OBJ_DIR)\gedoss.obj \
+    $(OBJ_DIR)\geedit.obj \
+    $(OBJ_DIR)\geedit2.obj \
+    $(OBJ_DIR)\geedit3.obj \
+    $(OBJ_DIR)\gefile.obj \
+    $(OBJ_DIR)\gefind.obj \
+    $(OBJ_DIR)\geglob.obj \
+    $(OBJ_DIR)\gehdre.obj \
+    $(OBJ_DIR)\gehdrs.obj \
+    $(OBJ_DIR)\gehtml.obj \
+    $(OBJ_DIR)\geinit.obj \
+    $(OBJ_DIR)\geline.obj \
+    $(OBJ_DIR)\gelmsg.obj \
+    $(OBJ_DIR)\gemenu.obj \
+    $(OBJ_DIR)\gemlst.obj \
+    $(OBJ_DIR)\gemnus.obj \
+    $(OBJ_DIR)\gemrks.obj \
+    $(OBJ_DIR)\gemsgid.obj \
+    $(OBJ_DIR)\gemsgs.obj \
+    $(OBJ_DIR)\genode.obj \
+    $(OBJ_DIR)\geplay.obj \
+    $(OBJ_DIR)\gepost.obj \
+    $(OBJ_DIR)\geqwks.obj \
+    $(OBJ_DIR)\gerand.obj \
+    $(OBJ_DIR)\geread.obj \
+    $(OBJ_DIR)\geread2.obj \
+    $(OBJ_DIR)\gescan.obj \
+    $(OBJ_DIR)\gesoup.obj \
+    $(OBJ_DIR)\gesrch.obj \
+    $(OBJ_DIR)\getpls.obj \
+    $(OBJ_DIR)\geusrbse.obj \
+    $(OBJ_DIR)\geutil.obj \
+    $(OBJ_DIR)\geutil2.obj \
+    $(OBJ_DIR)\geview.obj \
+    $(OBJ_DIR)\gmarea.obj \
+    $(OBJ_DIR)\golded3.obj
+
+GOLDED_OBJS=$(OBJ_DIR)\gemain.obj
+RDDT_OBJS=$(OBJ_DIR)\rddt.obj
+GOLDNODE_OBJS=$(OBJ_DIR)\goldnode.obj
+
+ALL_OBJS=$(LNK_OBJS) $(GOLDED_OBJS) $(RDDT_OBJS) $(GOLDNODE_OBJS)
+
+CPP_FLAGS=/nologo /c /J /W3 /Gi /GX /FD /Igolded3 /Igoldlib\gall /Igoldlib\gcfg /Igoldlib\glibc /Igoldlib\gmb3 /Igoldlib\msgidlib /Igoldlib\smblib /Igoldlib\uulib /DWIN32 /D_CONSOLE /DHAVE_CONFIG_H /Fo$(OBJ_DIR)\\ /Fd$(OBJ_DIR)\\ /I "C:\Program Files\Microsoft Visual Studio\VC98\Include"
+RSC_FLAGS=/igolded3 /fo$(OBJ_DIR)\gedcyg.res
+LNK_FLAGS=winmm.lib user32.lib /nologo /subsystem:console /machine:I386 /LIBPATH:"C:\Program Files\Microsoft Visual Studio\VC98\Lib"
+
+!IF  "$(CFG)" == "Release"
+CPP_PROJ=$(CPP_FLAGS) /MD /O1 /DNDEBUG
+RSC_PROJ=$(RSC_FLAGS) /dNDEBUG
+LNK_PROJ=$(LNK_FLAGS) /incremental:no
+!ELSEIF  "$(CFG)" == "Debug"
+CPP_PROJ=$(CPP_FLAGS) /MDd /Gm /ZI /GZ /Od /D_DEBUG
+RSC_PROJ=$(RSC_FLAGS) /d_DEBUG
+LNK_PROJ=$(LNK_FLAGS) /incremental:yes /debug /pdbtype:sept
+!ENDIF
 
 !IF "$(NO_EXTERNAL_DEPS)" != "1"
 !IF EXISTS("golded.dep")
 !INCLUDE "golded.dep"
 !ELSE
-!MESSAGE Warning: cannot find "golded.dep"
+#!MESSAGE Warning: cannot find "golded.dep"
 !ENDIF
 !ENDIF
 
-
-!IF "$(CFG)" == "Release" || "$(CFG)" == "Debug"
-
-SOURCE=.\golded3\gcalst.cpp
-"$(INTDIR)\gcalst.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gcarea.cpp
-"$(INTDIR)\gcarea.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gccfgg.cpp
-"$(INTDIR)\gccfgg.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gccfgg0.cpp
-"$(INTDIR)\gccfgg0.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gccfgg1.cpp
-"$(INTDIR)\gccfgg1.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gccfgg2.cpp
-"$(INTDIR)\gccfgg2.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gccfgg3.cpp
-"$(INTDIR)\gccfgg3.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gccfgg4.cpp
-"$(INTDIR)\gccfgg4.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gccfgg5.cpp
-"$(INTDIR)\gccfgg5.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gccfgg6.cpp
-"$(INTDIR)\gccfgg6.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gccfgg7.cpp
-"$(INTDIR)\gccfgg7.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gccfgg8.cpp
-"$(INTDIR)\gccfgg8.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gckeys.cpp
-"$(INTDIR)\gckeys.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gclang.cpp
-"$(INTDIR)\gclang.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gcmisc.cpp
-"$(INTDIR)\gcmisc.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gealst.cpp
-"$(INTDIR)\gealst.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gearea.cpp
-"$(INTDIR)\gearea.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gecarb.cpp
-"$(INTDIR)\gecarb.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gecmfd.cpp
-"$(INTDIR)\gecmfd.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gectnr.cpp
-"$(INTDIR)\gectnr.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gectrl.cpp
-"$(INTDIR)\gectrl.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gedoit.cpp
-"$(INTDIR)\gedoit.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gedoss.cpp
-"$(INTDIR)\gedoss.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\geedit.cpp
-"$(INTDIR)\geedit.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\geedit2.cpp
-"$(INTDIR)\geedit2.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\geedit3.cpp
-"$(INTDIR)\geedit3.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gefile.cpp
-"$(INTDIR)\gefile.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gefind.cpp
-"$(INTDIR)\gefind.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\geglob.cpp
-"$(INTDIR)\geglob.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gehdre.cpp
-"$(INTDIR)\gehdre.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gehdrs.cpp
-"$(INTDIR)\gehdrs.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gehtml.cpp
-"$(INTDIR)\gehtml.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\geinit.cpp
-"$(INTDIR)\geinit.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\geline.cpp
-"$(INTDIR)\geline.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gelmsg.cpp
-"$(INTDIR)\gelmsg.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gemain.cpp
-"$(INTDIR)\gemain.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gemenu.cpp
-"$(INTDIR)\gemenu.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gemlst.cpp
-"$(INTDIR)\gemlst.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gemnus.cpp
-"$(INTDIR)\gemnus.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gemrks.cpp
-"$(INTDIR)\gemrks.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gemsgid.cpp
-"$(INTDIR)\gemsgid.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gemsgs.cpp
-"$(INTDIR)\gemsgs.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\genode.cpp
-"$(INTDIR)\genode.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\geplay.cpp
-"$(INTDIR)\geplay.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gepost.cpp
-"$(INTDIR)\gepost.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\geqwks.cpp
-"$(INTDIR)\geqwks.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gerand.cpp
-"$(INTDIR)\gerand.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\geread.cpp
-"$(INTDIR)\geread.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\geread2.cpp
-"$(INTDIR)\geread2.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gescan.cpp
-"$(INTDIR)\gescan.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gesoup.cpp
-"$(INTDIR)\gesoup.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gesrch.cpp
-"$(INTDIR)\gesrch.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\getpls.cpp
-"$(INTDIR)\getpls.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\geusrbse.cpp
-"$(INTDIR)\geusrbse.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\geutil.cpp
-"$(INTDIR)\geutil.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\geutil2.cpp
-"$(INTDIR)\geutil2.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\geview.cpp
-"$(INTDIR)\geview.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gmarea.cpp
-"$(INTDIR)\gmarea.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\golded3.cpp
-"$(INTDIR)\golded3.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gbmh.cpp
-"$(INTDIR)\gbmh.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gcharset.cpp
-"$(INTDIR)\gcharset.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gcrc16tb.cpp
-"$(INTDIR)\gcrc16tb.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gcrc32tb.cpp
-"$(INTDIR)\gcrc32tb.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gcrchash.cpp
-"$(INTDIR)\gcrchash.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gcrckeyv.cpp
-"$(INTDIR)\gcrckeyv.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gcrcm16.cpp
-"$(INTDIR)\gcrcm16.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gcrcm32.cpp
-"$(INTDIR)\gcrcm32.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gcrcs16.cpp
-"$(INTDIR)\gcrcs16.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gcrcs32.cpp
-"$(INTDIR)\gcrcs32.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gdbgerr.cpp
-"$(INTDIR)\gdbgerr.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gdbgtrk.cpp
-"$(INTDIR)\gdbgtrk.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gdirposx.cpp
-"$(INTDIR)\gdirposx.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\geval.cpp
-"$(INTDIR)\geval.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gevalhum.cpp
-"$(INTDIR)\gevalhum.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gevalrpn.cpp
-"$(INTDIR)\gevalrpn.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gfile.cpp
-"$(INTDIR)\gfile.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gfilport.cpp
-"$(INTDIR)\gfilport.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gfilutl1.cpp
-"$(INTDIR)\gfilutl1.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gfilutl2.cpp
-"$(INTDIR)\gfilutl2.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gftnaddr.cpp
-"$(INTDIR)\gftnaddr.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gftnnl.cpp
-"$(INTDIR)\gftnnl.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gftnnlfd.cpp
-"$(INTDIR)\gftnnlfd.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gftnnlfu.cpp
-"$(INTDIR)\gftnnlfu.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gftnnlge.cpp
-"$(INTDIR)\gftnnlge.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gftnnlv7.cpp
-"$(INTDIR)\gftnnlv7.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gfuzzy.cpp
-"$(INTDIR)\gfuzzy.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\ghdrmime.cpp
-"$(INTDIR)\ghdrmime.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gkbdbase.cpp
-"$(INTDIR)\gkbdbase.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gkbdgetm.cpp
-"$(INTDIR)\gkbdgetm.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gkbdwait.cpp
-"$(INTDIR)\gkbdwait.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\glog.cpp
-"$(INTDIR)\glog.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gmemdbg.cpp
-"$(INTDIR)\gmemdbg.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gmemutil.cpp
-"$(INTDIR)\gmemutil.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gmoubase.cpp
-"$(INTDIR)\gmoubase.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gmsgattr.cpp
-"$(INTDIR)\gmsgattr.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gprnutil.cpp
-"$(INTDIR)\gprnutil.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gregex.cpp
-"$(INTDIR)\gregex.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gsearch.cpp
-"$(INTDIR)\gsearch.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gsnd.cpp
-"$(INTDIR)\gsnd.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gsndwrap.cpp
-"$(INTDIR)\gsndwrap.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gsrchmgr.cpp
-"$(INTDIR)\gsrchmgr.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gstrbags.cpp
-"$(INTDIR)\gstrbags.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gstrctyp.cpp
-"$(INTDIR)\gstrctyp.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gstrmail.cpp
-"$(INTDIR)\gstrmail.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gstrname.cpp
-"$(INTDIR)\gstrname.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gstrutil.cpp
-"$(INTDIR)\gstrutil.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gtimjuld.cpp
-"$(INTDIR)\gtimjuld.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gtimutil.cpp
-"$(INTDIR)\gtimutil.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gtxtpara.cpp
-"$(INTDIR)\gtxtpara.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gusrbase.cpp
-"$(INTDIR)\gusrbase.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gusrezyc.cpp
-"$(INTDIR)\gusrezyc.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gusrgold.cpp
-"$(INTDIR)\gusrgold.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gusrhuds.cpp
-"$(INTDIR)\gusrhuds.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gusrmax.cpp
-"$(INTDIR)\gusrmax.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gusrpcb.cpp
-"$(INTDIR)\gusrpcb.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gusrra2.cpp
-"$(INTDIR)\gusrra2.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gusrxbbs.cpp
-"$(INTDIR)\gusrxbbs.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gutlclip.cpp
-"$(INTDIR)\gutlclip.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gutlcode.cpp
-"$(INTDIR)\gutlcode.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gutlgrp.cpp
-"$(INTDIR)\gutlgrp.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gutlmisc.cpp
-"$(INTDIR)\gutlmisc.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gutlmtsk.cpp
-"$(INTDIR)\gutlmtsk.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gutltag.cpp
-"$(INTDIR)\gutltag.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gutlvers.cpp
-"$(INTDIR)\gutlvers.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gutlwin.cpp
-"$(INTDIR)\gutlwin.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gutlwinm.cpp
-"$(INTDIR)\gutlwinm.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gvidbase.cpp
-"$(INTDIR)\gvidbase.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gvidinit.cpp
-"$(INTDIR)\gvidinit.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gwildmat.cpp
-"$(INTDIR)\gwildmat.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gwinbase.cpp
-"$(INTDIR)\gwinbase.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gwindow.cpp
-"$(INTDIR)\gwindow.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gwinhlp1.cpp
-"$(INTDIR)\gwinhlp1.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gwinhlp2.cpp
-"$(INTDIR)\gwinhlp2.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gwininit.cpp
-"$(INTDIR)\gwininit.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gwinline.cpp
-"$(INTDIR)\gwinline.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gwinmenu.cpp
-"$(INTDIR)\gwinmenu.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gwinmnub.cpp
-"$(INTDIR)\gwinmnub.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gwinpckf.cpp
-"$(INTDIR)\gwinpckf.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gwinpcks.cpp
-"$(INTDIR)\gwinpcks.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gwinpick.cpp
-"$(INTDIR)\gwinpick.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gall\gwinput2.cpp
-"$(INTDIR)\gwinput2.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gedacfg.cpp
-"$(INTDIR)\gedacfg.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxareas.cpp
-"$(INTDIR)\gxareas.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxcrash.cpp
-"$(INTDIR)\gxcrash.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxdb.cpp
-"$(INTDIR)\gxdb.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxdutch.cpp
-"$(INTDIR)\gxdutch.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxezy102.cpp
-"$(INTDIR)\gxezy102.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxezy110.cpp
-"$(INTDIR)\gxezy110.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxfd.cpp
-"$(INTDIR)\gxfd.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxfecho4.cpp
-"$(INTDIR)\gxfecho4.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxfecho5.cpp
-"$(INTDIR)\gxfecho5.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxfecho6.cpp
-"$(INTDIR)\gxfecho6.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxfidpcb.cpp
-"$(INTDIR)\gxfidpcb.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxfm092.cpp
-"$(INTDIR)\gxfm092.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxfm100.cpp
-"$(INTDIR)\gxfm100.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxfm116.cpp
-"$(INTDIR)\gxfm116.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxgecho.cpp
-"$(INTDIR)\gxgecho.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxhpt.cpp
-"$(INTDIR)\gxhpt.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gximail4.cpp
-"$(INTDIR)\gximail4.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gximail5.cpp
-"$(INTDIR)\gximail5.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gximail6.cpp
-"$(INTDIR)\gximail6.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxinter.cpp
-"$(INTDIR)\gxinter.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxlora.cpp
-"$(INTDIR)\gxlora.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxmax3.cpp
-"$(INTDIR)\gxmax3.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxme2.cpp
-"$(INTDIR)\gxme2.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxopus.cpp
-"$(INTDIR)\gxopus.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxpcb.cpp
-"$(INTDIR)\gxpcb.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxportal.cpp
-"$(INTDIR)\gxportal.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxprobrd.cpp
-"$(INTDIR)\gxprobrd.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxqecho.cpp
-"$(INTDIR)\gxqecho.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxqfront.cpp
-"$(INTDIR)\gxqfront.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxquick.cpp
-"$(INTDIR)\gxquick.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxra.cpp
-"$(INTDIR)\gxra.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxraecho.cpp
-"$(INTDIR)\gxraecho.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxspace.cpp
-"$(INTDIR)\gxspace.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxsquish.cpp
-"$(INTDIR)\gxsquish.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxsuper.cpp
-"$(INTDIR)\gxsuper.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxsync.cpp
-"$(INTDIR)\gxsync.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxtimed.cpp
-"$(INTDIR)\gxtimed.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxtmail.cpp
-"$(INTDIR)\gxtmail.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxts.cpp
-"$(INTDIR)\gxts.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxwmail.cpp
-"$(INTDIR)\gxwmail.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxwtr.cpp
-"$(INTDIR)\gxwtr.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxxbbs.cpp
-"$(INTDIR)\gxxbbs.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gcfg\gxxmail.cpp
-"$(INTDIR)\gxxmail.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\glibc\regex.c
-"$(INTDIR)\regex.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmoarea.cpp
-"$(INTDIR)\gmoarea.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmoezyc1.cpp
-"$(INTDIR)\gmoezyc1.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmoezyc2.cpp
-"$(INTDIR)\gmoezyc2.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmoezyc3.cpp
-"$(INTDIR)\gmoezyc3.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmoezyc4.cpp
-"$(INTDIR)\gmoezyc4.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmoezyc5.cpp
-"$(INTDIR)\gmoezyc5.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmofido1.cpp
-"$(INTDIR)\gmofido1.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmofido2.cpp
-"$(INTDIR)\gmofido2.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmofido3.cpp
-"$(INTDIR)\gmofido3.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmofido4.cpp
-"$(INTDIR)\gmofido4.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmofido5.cpp
-"$(INTDIR)\gmofido5.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmohuds.cpp
-"$(INTDIR)\gmohuds.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmojamm1.cpp
-"$(INTDIR)\gmojamm1.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmojamm2.cpp
-"$(INTDIR)\gmojamm2.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmojamm3.cpp
-"$(INTDIR)\gmojamm3.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmojamm4.cpp
-"$(INTDIR)\gmojamm4.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmojamm5.cpp
-"$(INTDIR)\gmojamm5.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmopcbd1.cpp
-"$(INTDIR)\gmopcbd1.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmopcbd2.cpp
-"$(INTDIR)\gmopcbd2.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmopcbd3.cpp
-"$(INTDIR)\gmopcbd3.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmopcbd4.cpp
-"$(INTDIR)\gmopcbd4.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmopcbd5.cpp
-"$(INTDIR)\gmopcbd5.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmosmb1.cpp
-"$(INTDIR)\gmosmb1.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmosmb2.cpp
-"$(INTDIR)\gmosmb2.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmosqsh1.cpp
-"$(INTDIR)\gmosqsh1.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmosqsh2.cpp
-"$(INTDIR)\gmosqsh2.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmosqsh3.cpp
-"$(INTDIR)\gmosqsh3.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmosqsh4.cpp
-"$(INTDIR)\gmosqsh4.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmosqsh5.cpp
-"$(INTDIR)\gmosqsh5.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmowcat1.cpp
-"$(INTDIR)\gmowcat1.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmowcat2.cpp
-"$(INTDIR)\gmowcat2.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmowcat3.cpp
-"$(INTDIR)\gmowcat3.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmowcat4.cpp
-"$(INTDIR)\gmowcat4.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmowcat5.cpp
-"$(INTDIR)\gmowcat5.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmoxbbs1.cpp
-"$(INTDIR)\gmoxbbs1.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmoxbbs2.cpp
-"$(INTDIR)\gmoxbbs2.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmoxbbs3.cpp
-"$(INTDIR)\gmoxbbs3.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmoxbbs4.cpp
-"$(INTDIR)\gmoxbbs4.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\gmb3\gmoxbbs5.cpp
-"$(INTDIR)\gmoxbbs5.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\msgidlib\fexist.c
-"$(INTDIR)\fexist.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\msgidlib\ffind.c
-"$(INTDIR)\ffind.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\msgidlib\genmsgid.c
-"$(INTDIR)\genmsgid.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\msgidlib\patmat.c
-"$(INTDIR)\patmat.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\smblib\lzh.c
-"$(INTDIR)\lzh.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\smblib\smblib.c
-"$(INTDIR)\smblib.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\uulib\fptools.c
-"$(INTDIR)\fptools.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\uulib\uucheck.c
-"$(INTDIR)\uucheck.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\uulib\uuencode.c
-"$(INTDIR)\uuencode.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\uulib\uulib.c
-"$(INTDIR)\uulib.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\uulib\uunconc.c
-"$(INTDIR)\uunconc.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\uulib\uuscan.c
-"$(INTDIR)\uuscan.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\uulib\uustring.c
-"$(INTDIR)\uustring.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldlib\uulib\uuutil.c
-"$(INTDIR)\uuutil.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\golded3\gedcyg.rc
-"$(INTDIR)\gedcyg.res" : $(SOURCE) "$(INTDIR)"
-    $(RSC) $(RSC_PROJ) $(SOURCE)
-
-SOURCE=.\rddt\rddt.cpp
-"$(INTDIR)\rddt.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-SOURCE=.\goldnode\goldnode.cpp
-"$(INTDIR)\goldnode.obj" : $(SOURCE) "$(INTDIR)"
-    $(CPP) $(CPP_PROJ) $(SOURCE)
-
-!ENDIF
-
+all: $(BIN_DIR) $(DEF_FILE) $(LNK_OBJS) $(BIN_DIR)\gedwin.exe $(BIN_DIR)\rddtwin.exe $(BIN_DIR)\gnwin.exe
+
+clean:
+    -@erase $(OBJ_DIR)\*.obj
+    -@erase $(OBJ_DIR)\*.res
+
+distclean:
+    -@erase $(BIN_DIR)\gedwin.exe
+    -@erase $(BIN_DIR)\gedwin.pdb
+    -@erase $(BIN_DIR)\rddtwin.exe
+    -@erase $(BIN_DIR)\rddtwin.pdb
+    -@erase $(BIN_DIR)\gnwin.exe
+    -@erase $(BIN_DIR)\gnwin.pdb
+
+$(BIN_DIR): $(OBJ_DIR)
+    @if not exist $@ mkdir $@
+
+$(OBJ_DIR):
+    @if not exist $@ mkdir $@
+
+$(BIN_DIR)\gedwin.exe: $(GOLDED_OBJS)
+    $(LINK) $(LNK_PROJ) /pdb:$(BIN_DIR)\gedwin.pdb /out:$(BIN_DIR)\gedwin.exe $(LNK_OBJS) $(GOLDED_OBJS)
+
+$(BIN_DIR)\rddtwin.exe: $(RDDT_OBJS)
+    $(LINK) $(LNK_PROJ) /pdb:$(BIN_DIR)\rddtwin.pdb /out:$(BIN_DIR)\rddtwin.exe $(LNK_OBJS) $(RDDT_OBJS)
+
+$(BIN_DIR)\gnwin.exe: $(GOLDNODE_OBJS)
+    $(LINK) $(LNK_PROJ) /pdb:$(BIN_DIR)\gnwin.pdb /out:$(BIN_DIR)\gnwin.exe $(LNK_OBJS) $(GOLDNODE_OBJS)
+
+
+$(ALL_OBJS):
+
+
+#
+# RS rules
+#
+
+{golded3}.rc{$(OBJ_DIR)}.res:
+    $(RSC) $(RSC_PROJ) $<
+
+#
+# CPP rules
+#
+
+{golded3}.cpp{$(OBJ_DIR)}.obj:
+    $(CPP) @<<
+    $(CPP_PROJ) $<
+<<
+
+{rddt}.cpp{$(OBJ_DIR)}.obj:
+    $(CPP) @<<
+    $(CPP_PROJ) $<
+<<
+
+{goldnode}.cpp{$(OBJ_DIR)}.obj:
+    $(CPP) @<<
+    $(CPP_PROJ) $<
+<<
+
+{goldlib\gall}.cpp{$(OBJ_DIR)}.obj:
+    $(CPP) @<<
+    $(CPP_PROJ) $<
+<<
+
+{goldlib\gcfg}.cpp{$(OBJ_DIR)}.obj:
+    $(CPP) @<<
+    $(CPP_PROJ) $<
+<<
+
+{goldlib\glibc}.cpp{$(OBJ_DIR)}.obj:
+    $(CPP) @<<
+    $(CPP_PROJ) $<
+<<
+
+{goldlib\gmb3}.cpp{$(OBJ_DIR)}.obj:
+    $(CPP) @<<
+    $(CPP_PROJ) $<
+<<
+
+{goldlib\msgidlib}.cpp{$(OBJ_DIR)}.obj:
+    $(CPP) @<<
+    $(CPP_PROJ) $<
+<<
+
+{goldlib\smblib}.cpp{$(OBJ_DIR)}.obj:
+    $(CPP) @<<
+    $(CPP_PROJ) $<
+<<
+
+{goldlib\uulib}.cpp{$(OBJ_DIR)}.obj:
+    $(CPP) @<<
+    $(CPP_PROJ) $<
+<<
+
+#
+# C rules
+#
+
+{golded3}.c{$(OBJ_DIR)}.obj:
+    $(CPP) @<<
+    $(CPP_PROJ) $<
+<<
+
+{rddt}.c{$(OBJ_DIR)}.obj:
+    $(CPP) @<<
+    $(CPP_PROJ) $<
+<<
+
+{goldnode}.c{$(OBJ_DIR)}.obj:
+    $(CPP) @<<
+    $(CPP_PROJ) $<
+<<
+
+{goldlib\gall}.c{$(OBJ_DIR)}.obj:
+    $(CPP) @<<
+    $(CPP_PROJ) $<
+<<
+
+{goldlib\gcfg}.c{$(OBJ_DIR)}.obj:
+    $(CPP) @<<
+    $(CPP_PROJ) $<
+<<
+
+{goldlib\glibc}.c{$(OBJ_DIR)}.obj:
+    $(CPP) @<<
+    $(CPP_PROJ) $<
+<<
+
+{goldlib\gmb3}.c{$(OBJ_DIR)}.obj:
+    $(CPP) @<<
+    $(CPP_PROJ) $<
+<<
+
+{goldlib\msgidlib}.c{$(OBJ_DIR)}.obj:
+    $(CPP) @<<
+    $(CPP_PROJ) $<
+<<
+
+{goldlib\smblib}.c{$(OBJ_DIR)}.obj:
+    $(CPP) @<<
+    $(CPP_PROJ) $<
+<<
+
+{goldlib\uulib}.c{$(OBJ_DIR)}.obj:
+    $(CPP) @<<
+    $(CPP_PROJ) $<
+<<
