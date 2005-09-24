@@ -97,7 +97,6 @@ public:
     memset(&msg, 0, sizeof(GMsg));
     mlst = NULL;
     maximum_index = AA->Msgn.Count()-1;
-    replylinkfloat = CFG->replylinkfloat;
   };
   ~GMsgList() {
     ResetMsg(&msg);

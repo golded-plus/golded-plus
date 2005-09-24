@@ -38,7 +38,6 @@ guserbase::guserbase() {
   long tries = 0;
 
   strcpy(fname, AddPath(CFG->goldpath, CFG->golduser));
-  replylinkfloat = CFG->replylinkfloat;
 
   do {
     usrbase.open(fname, O_RDWR|O_CREAT|O_BINARY, SH_DENYNO, S_STDRW);
