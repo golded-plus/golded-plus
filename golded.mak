@@ -297,14 +297,6 @@ RSC_PROJ=$(RSC_FLAGS) /d_DEBUG
 LNK_PROJ=$(LNK_FLAGS) /incremental:yes /debug /pdbtype:sept
 !ENDIF
 
-!IF "$(NO_EXTERNAL_DEPS)" != "1"
-!IF EXISTS("golded.dep")
-!INCLUDE "golded.dep"
-!ELSE
-#!MESSAGE Warning: cannot find "golded.dep"
-!ENDIF
-!ENDIF
-
 all: $(BIN_DIR) $(DEF_FILE) $(LNK_OBJS) $(BIN_DIR)\gedwin.exe $(BIN_DIR)\rddtwin.exe $(BIN_DIR)\gnwin.exe
 
 clean:
