@@ -312,7 +312,7 @@ int ShellToDos(char* command, char* message, int cls, int cursor, int pause) {
   #endif
 
   // Return cursor into 1st column
-  puts("");
+  if(cls) puts("");
   // Write message on screen
   if(*message)
     puts(message);
