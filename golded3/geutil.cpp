@@ -63,12 +63,11 @@ void update_statuslines() {
     else if(CFG->statuslinehelp)
       sprintf(help, "%s   ", LNG->StatusLineHelp);
     else
-      sprintf(help, "%s%s%s%s%c%s%i.%i.%i%s   ",
+      sprintf(help, "%s%s%s%s %s%i.%i.%i%s   ",
         __gver_prename__,
         __gver_name__,
         __gver_postname__,
         __gver_platform__,
-        goldmark,
         __gver_preversion__,
         __gver_major__,
         __gver_minor__,
@@ -79,7 +78,7 @@ void update_statuslines() {
     int help_len = strlen(help);
     int clk_len = strlen(clkinfo);
     int len = MAXCOL-help_len-clk_len-2;
-    sprintf(buf, " %s%-*.*s%s ", help, len, len, information, clkinfo);
+    sprintf(buf, "%c%s%-*.*s%s ", goldmark, help, len, len, information, clkinfo);
 
     char *begin = buf;
     char *obegin = old_status_line;
