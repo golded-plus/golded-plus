@@ -12,12 +12,12 @@ ______________________________________________________________________
 
 + New reply-linking features: show floating reply link threads and show
   messages without replies in replylinking threads view. New config file
-  tokens: REPLYLINKFLOAT (yes/no), REPLYLINKSHOWALWAYS (yes/no).
+  tokens: REPLYLINKFLOAT (yes/no), REPLYLINKSHOWALWAYS (Yes/No).
   (Patch from Ianos Gnatiuc 2:5030/830.17)
 
 + New AKA matching feature: match for "From" field then (if not matched)
-  match for "To" field. New config token AKAMATCHFROMTO (yes/no).
-  (Patch from Ianos Gnatiuc 2:5030/830.17)
+  match for "To" field. New config token AKAMATCHFROMTO (Yes/No/Always).
+  (Patches from Ianos Gnatiuc 2:5030/830.17)
 
 - MS Visual C build now contains Goldnode+ (patch from Ianos Gnatiuc).
 
