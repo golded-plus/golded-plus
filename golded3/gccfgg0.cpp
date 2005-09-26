@@ -276,6 +276,7 @@ SwitchD:
     case CRC_DISPAREANO       :  CfgDispareano       ();  break;
     case CRC_DISPATTACHSIZE   :  CfgDispattachsize   ();  break;
     case CRC_DISPHDRDATESET   :  CfgDisphdrdateset   ();  break;
+    case CRC_DISPHDRLOCATION  :  CfgDisphdrlocation  ();  break;
     case CRC_DISPHDRNAMESET   :  CfgDisphdrnameset   ();  break;
     case CRC_DISPHDRNODESET   :  CfgDisphdrnodeset   ();  break;
     case CRC_DISPLISTCURSOR   :  CfgDisplistcursor   ();  break;

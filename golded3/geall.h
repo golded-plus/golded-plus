@@ -194,6 +194,8 @@ const int CS_MONO     = 2;
 const int LOOK_DEST = 0;
 const int LOOK_ORIG = 1;
 const int LOOK_NAME = 2;
+const int LOOK_CITY1 = 3;
+const int LOOK_CITY2 = 4;
 
 
 //  ------------------------------------------------------------------

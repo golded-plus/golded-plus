@@ -449,6 +449,13 @@ void CfgDisphdrdateset() {
 
 //  ------------------------------------------------------------------
 
+void CfgDisphdrlocation()
+{
+  CFG->disphdrlocation = (0 != GetYesno(val));
+}
+
+//  ------------------------------------------------------------------
+
 void CfgDisphdrnameset() {
 
   char* key;

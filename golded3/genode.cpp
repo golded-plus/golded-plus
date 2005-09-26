@@ -1005,15 +1005,35 @@ void Lookup(GMsg* msg, Addr* addr, char* name, int topline, char* status) {
       else
         NLP->find(matchaddr);
 
-      found = (exactmatch and NLP->found()) ? true : false;
-      if(found) {
+      found = (NLP->found() && (exactmatch || topline == -100));
+
+      if (found && (topline != -100))
+      {
         NLP->push_state();
         if(NLP->next())
           if(NLP->found())
             found = false;
         NLP->pop_state();
       }
+      else if (!found && matchaddr.point && (topline == -100))
+      {
+        matchaddr.point = 0;
+        NLP->find(matchaddr);
+        found = NLP->found();
+      }
+
       entry = NLP->entry();
+
+      if (topline == -100)
+      {
+        if (found)
+          strcpy(name, entry.location);
+        else 
+          strcpy(name, "");
+
+        NLP_close();
+        return;
+      }
 
       if(not found or (topline < 0)) {
         strcpy(buf, information);
@@ -1058,6 +1078,71 @@ void Lookup(GMsg* msg, Addr* addr, char* name, int topline, char* status) {
       }
     }
   }
+}
+
+
+//  ------------------------------------------------------------------
+
+struct location_item
+{
+  Addr addr;
+  std::string loc;
+
+  location_item(Addr &a) { addr = a; }
+
+  bool operator<(Addr &other) { return (addr.compare(other) < 0); }
+  bool operator==(Addr &other) { return addr.equals(other); }
+};
+
+void LookupNodeLocation(GMsg* msg, std::string &location, int what)
+{
+  static std::vector<location_item> cash;
+
+  Subj statuslinebak;
+  strcpy(statuslinebak, information);
+
+  vcurhide();
+  w_info(LNG->Wait);
+
+  Addr addr;
+  switch (what)
+  {
+    case LOOK_CITY2:
+      addr = msg->dest;
+      break;
+    case LOOK_CITY1:
+      addr = msg->orig;
+      break;
+  }
+
+  if (addr.zone == 0)
+    addr.zone = AA->Aka().addr.zone;
+
+  std::vector<location_item>::iterator it = cash.begin();
+  std::vector<location_item>::iterator end = cash.end();
+
+  while ((it != end) && (*it < addr)) it++;
+
+  if ((it != end) && (*it == addr))
+    location = it->loc;
+  else
+  {
+    char buf[256];
+    location_item item(addr);
+
+    addr.make_string(buf);
+    Lookup(msg, &addr, buf, -100, LNG->LookupInfo);
+
+    if (addr.invalid())
+      buf[0] = NUL;
+
+    item.loc = location = buf;
+    cash.insert(it, item);
+  }
+
+  update_statusline(statuslinebak);
+
+  w_info(NULL);
 }
 
 

@@ -200,6 +200,7 @@ public:
   int         ctrlinfonews;
   int         dispareano;
   int         dispattachsize;
+  bool        disphdrlocation;
   PosLen      disphdrdateset;
   PosLen      disphdrnameset;
   PosLen      disphdrnodeset;

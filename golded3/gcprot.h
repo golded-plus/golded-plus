@@ -122,6 +122,7 @@ void CfgDispareano       ();
 void CfgDispattachsize   ();
 void CfgDispautonext     ();
 void CfgDisphdrdateset   ();
+void CfgDisphdrlocation  ();
 void CfgDisphdrnameset   ();
 void CfgDisphdrnodeset   ();
 void CfgDisplistcursor   ();

@@ -235,6 +235,7 @@ bool Lookup2(Addr& addr, char* name, int topline, const char* status);
 
 const char *lookup_nodelist(ftn_addr* addr);
 
+void LookupNodeLocation(GMsg* msg, std::string &location, int what);
 void LookupNode(GMsg* msg, const char* name, int what);
 void CheckNodelists();
 

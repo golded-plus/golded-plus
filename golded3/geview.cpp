@@ -322,6 +322,27 @@ void GMsgHeaderView::Paint() {
     if(*buf1)
       window.prints(5, 1, title_color, buf1);
   }
+
+  if (CFG->disphdrlocation && !_in_editor)
+  {
+    std::string loc;
+    LookupNodeLocation(msg, loc, LOOK_CITY1);
+    if (loc.length()) loc = " " + loc;
+
+    if (AA->isnet())
+    {
+      std::string loc2;
+      LookupNodeLocation(msg, loc2, LOOK_CITY2);
+      if (loc.length()) loc += " | " + loc2;
+    }
+
+    if (loc.length())
+    {
+      loc += " ";
+      int pos = window.width() - loc.length() - 1;
+      window.prints(5, pos, window_color, loc.c_str());
+    }
+  }
 }
 
 

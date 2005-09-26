@@ -711,6 +711,7 @@ CfgGed::CfgGed() {
   ctrlinfonews = 0;
   dispareano = true;
   dispattachsize = ATTACH_KBYTES;
+  disphdrlocation = false;
   displistcursor = NO;
   dispmargin = 0;
   dispmsgsize = DISPMSGSIZE_BYTES;
