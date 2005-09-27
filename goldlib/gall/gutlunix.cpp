@@ -34,9 +34,11 @@
 
 
 //  ------------------------------------------------------------------
+//  Midnight Commander's clipboard support
 
-#define CLIPDIR  "~/.cedit"
-#define CLIPFILE "~/.cedit/cooledit.clip"
+#define CLIPDIR  "~/.mc/cedit/"
+#define CLIPDIR_OLD  "~/.cedit/"
+#define CLIPFILE "cooledit.clip"
 
 //  ------------------------------------------------------------------
 
@@ -90,10 +92,17 @@ void g_set_osicon(void) {
 //  ------------------------------------------------------------------
 
 bool g_is_clip_available(void) {
+  bool rc;
 
   std::string clipdir = CLIPDIR;
   strschg_environ(clipdir);
-  return is_dir(clipdir);
+  rc = is_dir(clipdir);
+  if( !rc ) {
+    std::string clipdir = CLIPDIR_OLD;
+    strschg_environ(clipdir);
+    rc = is_dir(clipdir);
+  }
+  return rc;
 }
 
 
@@ -101,7 +110,8 @@ bool g_is_clip_available(void) {
 
 char* g_get_clip_text(void) {
 
-  std::string clipfile = CLIPFILE;
+  std::string clipfile = clipdir
+  clipfile += CLIPFILE;
   strschg_environ(clipfile);
   size_t size = GetFilesize(clipfile.c_str());
 
@@ -127,7 +137,8 @@ char* g_get_clip_text(void) {
 
 int g_put_clip_text(const char* buf) {
 
-  std::string clipfile = CLIPFILE;
+  std::string clipfile = clipdir;
+  clipfile += CLIPFILE;
   strschg_environ(clipfile);
   FILE *f = fopen(clipfile.c_str(), "wt");
   if(f != NULL) {
