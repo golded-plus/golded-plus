@@ -10,6 +10,13 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ New internal editor keys to stylecode insertions:
+  ^N EditSCodeNormal
+  ^B EditSCodeBold        (*bold*)
+  ^I EditSCodeItalic      (/italic/)
+  ^L EditSCodeUnderline   (_underline_)
+  ^R EditSCodeReverse     (#reverse#)
+  (Patch from Ianos Gnatiuc 2:5030/830.17)
 
 + New config file token: AKAMatchManually (yes/no). If set to "yes" then manual
   selection of the AKA is forced.

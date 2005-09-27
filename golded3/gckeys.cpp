@@ -141,6 +141,11 @@ CmdKey DefaultKeyset[] = {
   { Key_S_Lft   , KK_EditBlockLeft        , KT_E },
   { Key_S_Rgt   , KK_EditBlockRight       , KT_E },
 #endif
+  { Key_C_N     , KK_EditSCodeNormal      , KT_E },
+  { Key_C_B     , KK_EditSCodeBold        , KT_E },
+  { Key_C_I     , KK_EditSCodeItalic      , KT_E },
+  { Key_C_L     , KK_EditSCodeUnderline   , KT_E },
+  { Key_C_R     , KK_EditSCodeReverse     , KT_E },
 
   { Key_Esc     , KK_FileAbort            , KT_F },
   { Key_A_X     , KK_FileAskExit          , KT_F },
@@ -521,6 +526,7 @@ tglobalkey globalkeys[] = {
   { CRC_HEADERTOGGLELOCAL      , KK_HeaderToggleLocal    , KT_H }, // 0x47A1
   { CRC_ADDRESSBOOKQUIT        , KK_AddressbookQuit      , KT_B }, // 0x47C7
   { CRC_READCHANGEATTRS        , KK_ReadChangeAttrs      , KT_R }, // 0x47F8
+  { CRC_EDITSCODEITALIC        , KK_EditSCodeItalic      , KT_E }, // 0x487F
   { CRC_READSEARCH             , KK_ReadSearch           , KT_R }, // 0x48EF
   { CRC_READMSGPGDN            , KK_ReadMsgPgDn          , KT_R }, // 0x4908
   { CRC_READSTRIPHTML          , KK_ReadStripHTML        , KT_R }, // 0x499A
@@ -615,6 +621,7 @@ tglobalkey globalkeys[] = {
   { CRC_HEADERLOOKUP           , KK_HeaderLookup         , KT_H }, // 0x64F2
   { CRC_AREAGOTOPREV           , KK_AreaGotoPrev         , KT_A }, // 0x6534
   { CRC_EDITDELLEFT            , KK_EditDelLeft          , KT_E }, // 0x6552
+  { CRC_EDITSCODEBOLD          , KK_EditSCodeBold        , KT_E }, // 0x657D
   { CRC_EDITSAVEMSG            , KK_EditSaveMsg          , KT_E }, // 0x660C
   { CRC_K_CGMUL                , Key_C_StrG              ,    0 }, // 0x66CA
   { CRC_NODESELECT             , KK_NodeSelect           , KT_N }, // 0x6A64
@@ -736,6 +743,7 @@ tglobalkey globalkeys[] = {
 #if !defined(__UNIX__) || defined(__USE_NCURSES__)
   { CRC_K_SHOME                , Key_S_Home              ,    0 }, // 0xAF9D
 #endif
+  { CRC_EDITSCODEUNDERLINE     , KK_EditSCodeUnderline   , KT_E }, // 0xB1D9
   { CRC_READTOGGLEQUOTE        , KK_ReadToggleQuote      , KT_R }, // 0xB293
   { CRC_EDITUNDO               , KK_EditUndo             , KT_E }, // 0xB295
   { CRC_READDIRQUOTEMSG        , KK_ReadDirQuoteMsg      , KT_R }, // 0xB351
@@ -808,6 +816,7 @@ tglobalkey globalkeys[] = {
   { CRC_EDITSPELLCHECK         , KK_EditSpellCheck       , KT_E }, // 0xE167
   { CRC_AREASCAN               , KK_AreaScan             , KT_A }, // 0xE440
   { CRC_EDITGOWORDLEFT         , KK_EditGoWordLeft       , KT_E }, // 0xE48C
+  { CRC_EDITSCODENORMAL        , KK_EditSCodeNormal      , KT_E }, // 0xE4CE
   { CRC_READMOVECOMMENTMSG     , KK_ReadMoveCommentMsg   , KT_R }, // 0xE4E7
   { CRC_READGOTOREPLY1ST       , KK_ReadGotoReply1st     , KT_R }, // 0xE54F
   { CRC_READTOGGLEHEXDUMP      , KK_ReadToggleHexdump    , KT_R }, // 0xE6D5
@@ -845,6 +854,7 @@ tglobalkey globalkeys[] = {
   { CRC_READCHANGEMSG          , KK_ReadChangeMsg        , KT_R }, // 0xF99F
   { CRC_K_ABSPACE              , Key_A_BS                ,    0 }, // 0xF9D7
   { CRC_EDITCUT                , KK_EditCut              , KT_E }, // 0xFAE6
+  { CRC_EDITSCODEREVERSE       , KK_EditSCodeReverse     , KT_E }, // 0xFC0E
   { CRC_K_CF9                  , Key_C_F9                ,    0 }, // 0xFD02
   { CRC_K_CF8                  , Key_C_F8                ,    0 }, // 0xFD03
   { CRC_K_CF3                  , Key_C_F3                ,    0 }, // 0xFD08

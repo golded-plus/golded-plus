@@ -174,6 +174,11 @@ const gkey KK_EditBlockPgUp        = 0xFF02;
 const gkey KK_EditDelete           = 0xFF03;
 const gkey KK_EditUndo             = 0xFF04;
 const gkey KK_EditDeleteSOL        = 0xFF05;
+const gkey KK_EditSCodeNormal      = 0xFF08;
+const gkey KK_EditSCodeBold        = 0xFF09;
+const gkey KK_EditSCodeItalic      = 0xFF0A;
+const gkey KK_EditSCodeUnderline   = 0xFF0B;
+const gkey KK_EditSCodeReverse     = 0xFF0C;
 
 const gkey KK_FileAbort            = 0xFF10;
 const gkey KK_FileAskExit          = 0xFF11;

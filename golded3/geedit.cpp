@@ -2027,6 +2027,86 @@ void IEclass::ToggleCase() {
 
 //  ------------------------------------------------------------------
 
+void IEclass::SCodeChange(gkey key)
+{
+  GFTRK("EditSCodeChange");
+
+  char _ch = ' ';
+  switch (key)
+  {
+  case KK_EditSCodeBold:      _ch = '*';  break;
+  case KK_EditSCodeUnderline: _ch = '_';  break;
+  case KK_EditSCodeItalic:    _ch = '/';  break;
+  case KK_EditSCodeReverse:   _ch = '#';  break;
+  }
+
+  if (strchr(CFG->stylecodepunct, currline->txt[col]))
+  {
+    if (col && !strchr(CFG->stylecodepunct, currline->txt[col-1]))
+      GoLeft();
+    else if (!strchr(CFG->stylecodepunct, currline->txt[col+1]))
+      GoRight();
+    else
+    {
+      if (isspace(currline->txt[col]) && (key != KK_EditSCodeNormal))
+      {
+        if ((col > 0) && !isspace(currline->txt[col-1]))
+          insertchar(' ');
+
+        insertchar(_ch);
+        insertchar(_ch);
+        GoLeft();
+      }
+
+      GFTRK(NULL);
+      return;
+    }
+  }
+
+  uint beg = col;
+  uint end = col;
+
+  while ((beg > 0) && !strchr(CFG->stylecodepunct, currline->txt[beg-1]))
+    beg--;
+  while (!strchr(CFG->stylecodepunct, currline->txt[end+1]))
+    end++;
+
+  bool replace = false;
+  char c1 = currline->txt[beg];
+  char c2 = currline->txt[end];
+
+  if ((_ch == c1) && (c1 == c2))
+  {
+    GFTRK(NULL);
+    return;
+  }
+
+  if ((_ch != c1) && (c1 == c2) && 
+      ((c1 == '*') || (c1 == '/') || (c1 == '_') || (c1 == '#')))
+    replace = true;
+
+
+  while ((col > 0) && !strchr(CFG->stylecodepunct, currline->txt[col-1]))
+    GoLeft();
+
+  if (replace) DelChar();
+  if (_ch != ' ') insertchar(_ch);
+
+  while (!strchr(CFG->stylecodepunct, currline->txt[col+1])) 
+    GoRight();
+
+  if (replace) DelChar();
+  else         GoRight();
+  if (_ch != ' ') insertchar(_ch);
+
+  GoLeft();
+
+  GFTRK(NULL);
+}
+
+
+//  ------------------------------------------------------------------
+
 void IEclass::LookupCursor() {
 
   GFTRK("EditLookupCursor");
@@ -2249,6 +2329,11 @@ noselecting:
     case KK_EditUnDelete:         UnDelete();           break;
     case KK_EditUndo:             Undo->PlayItem();     break;
     case KK_EditZapQuoteBelow:    ZapQuoteBelow();      break;
+    case KK_EditSCodeNormal:
+    case KK_EditSCodeBold:
+    case KK_EditSCodeItalic:
+    case KK_EditSCodeUnderline:
+    case KK_EditSCodeReverse:     SCodeChange(__key);   break;
 
     // Block functions
     case KK_EditAnchor:           BlockAnchor();        break;

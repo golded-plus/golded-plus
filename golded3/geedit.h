@@ -399,6 +399,7 @@ public:
   void SpellCheck     ();
   void Tab            ();
   void ToggleCase     ();
+  void SCodeChange(gkey key);
   void ToggleInsert   ();
   void ToLower        ();
   void ToUpper        ();
