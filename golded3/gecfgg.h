@@ -141,6 +141,7 @@ public:
   std::vector<gaka> aka;
   std::vector<AkaMatchG> akamatch;
   int         akamatchfromto;
+  bool        akamatchmanually;
   int         areaautoid;
   Echo        areacfmreplyto;
   bool        areacopydirect;

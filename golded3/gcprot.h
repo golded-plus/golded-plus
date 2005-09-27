@@ -42,6 +42,7 @@ void CfgAkamatchecho     ();
 void CfgAkamatchfromto   ();
 void CfgAkamatching      ();
 void CfgAkamatchlocal    ();
+void CfgAkamatchmanually ();
 void CfgAkamatchnet      ();
 void CfgArea             ();
 void CfgAreaautoid       ();

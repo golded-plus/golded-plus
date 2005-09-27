@@ -191,6 +191,13 @@ void CfgAkamatching() {
 
 //  ------------------------------------------------------------------
 
+void CfgAkamatchmanually()
+{
+  CFG->akamatchmanually = (0 != GetYesno(val));
+}
+
+//  ------------------------------------------------------------------
+
 void CfgArea() {
 
   AL.GetArea(val);

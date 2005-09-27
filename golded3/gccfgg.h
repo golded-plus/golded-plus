@@ -39,6 +39,7 @@ const word CRC_AKAMATCHECHO     = 0xF0C1;
 const word CRC_AKAMATCHFROMTO   = 0xD8B9;
 const word CRC_AKAMATCHING      = 0x869A;
 const word CRC_AKAMATCHLOCAL    = 0x4AC4;
+const word CRC_AKAMATCHMANUALLY = 0x9F9C;
 const word CRC_AKAMATCHNET      = 0xFD6E;
 const word CRC_AREA             = 0x010B;
 const word CRC_AREAAUTOID       = 0x365D;

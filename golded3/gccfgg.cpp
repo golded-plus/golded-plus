@@ -687,6 +687,7 @@ CfgGed::CfgGed() {
   addressbookadd = YES;
   addresslookupfirst = false;
   akamatchfromto = NO;
+  akamatchmanually = false;
   areaautoid = AUTOID_LONG;
   areacopydirect = false;
   areacopyaddid = false;

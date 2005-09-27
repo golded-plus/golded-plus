@@ -10,11 +10,15 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+
++ New config file token: AKAMatchManually (yes/no). If set to "yes" then manual
+  selection of the AKA is forced.
+  (Patch from Ianos Gnatiuc 2:5030/830.17)
+
 + New macros in message template for echomail messages:
-  @echopath - path to echoarea base (fill pathname like specified in config),
+  @echopath - path to echoarea base (full pathname like specified in config),
   @echoname - echoarea name (areatag),
   @echotype - echoarea base type (OPUS, JAM, Squish, PCBoard, ...).
-  (Patch from Ianos Gnatiuc 2:5030/830.17)
 
 + Golded+/lnx: Adopt clipboard usage to newest versions of Midnight Commander.
 

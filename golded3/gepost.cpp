@@ -907,6 +907,8 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
               AkaMatch(&aka_addr, &omsg->orig);
               AA->SetAka(aka_addr);
             }
+
+            if (CFG->akamatchmanually) ChangeAka();
           }
 
           if((mode == MODE_REPLYCOMMENT) and not omsg->fwdorig.net) {
