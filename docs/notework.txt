@@ -10,7 +10,13 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
-+ Golded+/lnx: Adopt clipboard to newest versions of Midnight Commander.
++ New macros in message template for echomail messages:
+  @echopath - path to echoarea base (fill pathname like specified in config),
+  @echoname - echoarea name (areatag),
+  @echotype - echoarea base type (OPUS, JAM, Squish, PCBoard, ...).
+  (Patch from Ianos Gnatiuc 2:5030/830.17)
+
++ Golded+/lnx: Adopt clipboard usage to newest versions of Midnight Commander.
 
 + Display originator's city in delimiter line between header and message body.
   New config file token: DISPHDRLOCATION (yes/no).

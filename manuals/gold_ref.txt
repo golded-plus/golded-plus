@@ -51,7 +51,7 @@
                            Reference Manual
 
 
-                    Program and manual written by 
+                    Program and manual written by
               Odinn Sorensen, Dirk A. Mueller and others
 
 
@@ -388,9 +388,9 @@ Available options:
 The following options are only interpreted by DOS real mode version:
 
   -M<nodes>     Compile max <nodes> nodes (maximum is 65500).
-  -ND           Enable DISK usage. 
-  -NE           Disable EMS usage. 
-  -NX           Disable XMS usage. 
+  -ND           Enable DISK usage.
+  -NE           Disable EMS usage.
+  -NX           Disable XMS usage.
 
 The [configfile] is the path AND filename of the GOLDED.CFG
 configuration file to read. If no filename is given, the path
@@ -2215,7 +2215,7 @@ Here is the complete keyword list:
     This lets you limit the size of loaded msgs. GoldED currently
     cannot handle msgs larger than 64k in the DOS version (all other
     platforms do not have this limit). This keyword ensures that the
-    system will not get confused and possibly crash or exit, if a 
+    system will not get confused and possibly crash or exit, if a
     message was encountered that was larger than 64k.
 
 
@@ -2682,10 +2682,10 @@ Here is the complete keyword list:
     using plain ASCII case-insensitive sort. Each line in the list is
     expected to be 60 characters plus a CR and a LF, or in other words
     records of 62 bytes each. If the list is produced by a nodelist
-    compiler, everything should be okay, but be careful if you have 
+    compiler, everything should be okay, but be careful if you have
     edited the file manually. Note that a FIDOUSER.LST file only
-    supports a name lookup (to get the address). 
-    
+    supports a name lookup (to get the address).
+
 
 FIDOUSERNO <userno>  (0)
 
@@ -2812,7 +2812,7 @@ Here is the complete keyword list:
 
 
 GERMANKEYBOARD <yes/no>  (autodetect)
- 
+
     This option is meanful for w32 version only. Due to right Alt key
     required to enter some native characters in german version of
     Windows it could be defined to yes for this.
@@ -2953,7 +2953,7 @@ Here is the complete keyword list:
     the files during importing them into the internal editor.
 
     NOTE: This is a very simple implementation of encoders. It cannot
-    split large files over several messages. The file mode number 644 
+    split large files over several messages. The file mode number 644
     is hard-coded and has nothing to do with the actual file mode.
 
     This keyword can be used globally and in Random System groups.
@@ -3554,7 +3554,7 @@ Here is the complete keyword list:
 
     Defines the nick name (pseudo) for the current USERNAME. Can be
     used globally and in random system groups.
-    
+
 
 NODELIST <file> [zone/addr]
 
@@ -4045,7 +4045,7 @@ Here is the complete keyword list:
 
 
 RCVDISABLESCFM <yes/no>  (yes)
- 
+
     If this keyword defined to "no" then GoldEd will recognize RRq
     (receipt request) and/or CFM (confirmation) flag on messages with
     RCV (received) flag set. After that RRq and CFM flags will be
@@ -6057,6 +6057,11 @@ The following is a list of the tokens available:
 @dlname     Destination last name.
 @dname      Destination name.
 @dpseudo    Destination pseudonym (see addressbook), or @dfname.
+@echopath   path to echoarea base (fill pathname like specified in config),
+            this token is valid for echoareas only.
+@echoname   echoarea name (areatag), this token is valid for echoareas only.
+@echotype   echoarea base type (OPUS, JAM, Squish, PCBoard, ...), this token
+            is valid for echoareas only.
 @f3daddr    Current from 3D (boss) address.
 @faddr      Current from address.
 @ffname     Current from first name.

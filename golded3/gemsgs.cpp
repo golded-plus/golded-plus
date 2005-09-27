@@ -385,6 +385,41 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
         if(tokenxchg(dst, "@origin",
           HandleRandomLine(strxcpy(buf, AA->Origin(), sizeof(buf)), sizeof(buf))))
           continue;
+
+        if (strnieql(dst, "@echo", 5))
+        {
+          if (tokenxchg(dst, "@echotype", AA->basetype()))
+            continue;
+
+          char echopath[GMAXPATH];
+          char echoname[GMAXPATH];
+
+          strcpy(echopath, AA->path());
+          echoname[0] = NUL;
+
+          size_t slashpos;
+          size_t pathlen = strlen(echopath);
+
+          for (slashpos = pathlen-1; slashpos < pathlen; slashpos--)
+            if (isslash(echopath[slashpos])) break;
+
+          if (slashpos < pathlen)
+          {
+            strcpy(echoname, &echopath[slashpos+1]);
+            echopath[slashpos+1] = NUL;
+          }
+          else
+          {
+            strcpy(echoname, echopath);
+            echopath[0] = NUL;
+          }
+
+          if (tokenxchg(dst, "@echopath", echopath))
+            continue;
+          if (tokenxchg(dst, "@echoname", echoname))
+            continue;
+        }
+
         dst++;
       }
     }
