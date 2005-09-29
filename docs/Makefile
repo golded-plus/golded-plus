@@ -6,7 +6,7 @@ HTMLS= golded.html goldnode.html rddt.html
 TXTS=  golded.txt goldnode.txt rddt.txt
 
 
-all: html-doc txt-doc
+all: html-doc txt-doc tokentpl.txt tokencfg.txt
 
 html: html-doc
 html-doc: $(HTMLS)
@@ -23,3 +23,15 @@ txt-doc:  $(TXTS)
 
 clean:
 	-rm $(HTMLS) $(TXTS)
+
+tokentpl.txt: ../golded3/gemsgs.cpp
+	echo '* Golded+ template file and externutil comand line tokens list.' > $@
+	echo '* $$Id$$' >> $@
+	echo '==========================================================================' >> $@
+	grep tokenxchg $< | sed -e '/^static bool tokenxchg/d' -e 's/^.*"\(@\w*\)".*$$/\1/' | sort -u >> $@
+
+tokencfg.txt: ../golded3/gccfgg.h
+	@echo '* Golded+ config file tokens list.' > $@
+	@echo '* $$Id$$' >> $@
+	@echo '==========================================================================' >> $@
+	grep CRC_ $< | sed -e '/CRC_LAST_CRC/d' -e 's/^.* CRC_\(\w*\).*$$/\1/' | sort -u >> $@
