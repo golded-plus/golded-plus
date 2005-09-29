@@ -2040,17 +2040,20 @@ void IEclass::SCodeChange(gkey key)
   case KK_EditSCodeReverse:   _ch = '#';  break;
   }
 
-  if (strchr(CFG->stylecodepunct, currline->txt[col]))
+  const char *cltxt = currline->txt.c_str();
+  const char *punct = CFG->stylecodepunct;
+
+  if (isspace(cltxt[col]) || strchr(punct, cltxt[col]))
   {
-    if (col && !strchr(CFG->stylecodepunct, currline->txt[col-1]))
+    if (col && !isspace(cltxt[col-1]) && !strchr(punct, cltxt[col-1]))
       GoLeft();
-    else if (!strchr(CFG->stylecodepunct, currline->txt[col+1]))
+    else if (!isspace(cltxt[col+1]) && !strchr(punct, cltxt[col+1]))
       GoRight();
     else
     {
-      if (isspace(currline->txt[col]) && (key != KK_EditSCodeNormal))
+      if (isspace(cltxt[col]) && (key != KK_EditSCodeNormal))
       {
-        if ((col > 0) && !isspace(currline->txt[col-1]))
+        if (col && !isspace(cltxt[col-1]))
           insertchar(' ');
 
         insertchar(_ch);
@@ -2066,14 +2069,14 @@ void IEclass::SCodeChange(gkey key)
   uint beg = col;
   uint end = col;
 
-  while ((beg > 0) && !strchr(CFG->stylecodepunct, currline->txt[beg-1]))
+  while (beg && !isspace(cltxt[beg-1]) && !strchr(punct, cltxt[beg-1]))
     beg--;
-  while (!strchr(CFG->stylecodepunct, currline->txt[end+1]))
+  while (!isspace(cltxt[end+1]) && !strchr(punct, cltxt[end+1]))
     end++;
 
   bool replace = false;
-  char c1 = currline->txt[beg];
-  char c2 = currline->txt[end];
+  char c1 = cltxt[beg];
+  char c2 = cltxt[end];
 
   if ((_ch == c1) && (c1 == c2))
   {
@@ -2086,13 +2089,14 @@ void IEclass::SCodeChange(gkey key)
     replace = true;
 
 
-  while ((col > 0) && !strchr(CFG->stylecodepunct, currline->txt[col-1]))
+  while (col && !isspace(cltxt[col-1]) && !strchr(punct, cltxt[col-1]))
     GoLeft();
 
   if (replace) DelChar();
   if (_ch != ' ') insertchar(_ch);
 
-  while (!strchr(CFG->stylecodepunct, currline->txt[col+1])) 
+  cltxt = currline->txt.c_str();
+  while (!isspace(cltxt[col+1]) && !strchr(punct, cltxt[col+1])) 
     GoRight();
 
   if (replace) DelChar();
