@@ -22,10 +22,11 @@ ______________________________________________________________________
   selection of the AKA is forced.
   (Patch from Ianos Gnatiuc 2:5030/830.17)
 
-+ New macros in message template for echomail messages:
++ New macros in externutil command line and message template for echomail
+  messages:
   @echopath - path to echoarea base (full pathname like specified in config),
-  @echoname - echoarea name (areatag),
-  @echotype - echoarea base type (OPUS, JAM, Squish, PCBoard, ...).
+  @echoname - echoarea file name without path,
+  @echotype - echoarea base type (OPUS, JAM, Squish, Hudson, PCBoard, ...).
 
 + Golded+/lnx: Adopt clipboard usage to newest versions of Midnight Commander.
 
