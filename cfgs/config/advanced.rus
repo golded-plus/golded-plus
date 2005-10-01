@@ -98,7 +98,7 @@ AKAMatchFromTo No               ; Выбирать AKA только на основании поля From
                                 ; выбирать AKA на основании поля To.
 ;AKAMatchFromTo Always           ; Использовать AKA по умолчанию для арии, вместо AKA из поля To
 
-// После всех правил автоматического подбора АКА, будет предложено 
+// После всех правил автоматического подбора АКА, будет предложено
 // выбрать другой/скорректировать АКА из списка. (по умолчанию: No)
 AKAMatchManually No
 ;AKAMatchManually Yes
@@ -1490,6 +1490,8 @@ XlatEscSet  MNEMONIC    CP850       MNE_850.esc
 // Определение таблиц перекодировки.
 ;XlatCharSet <откуда>   <куда>    <имя таблицы.chs>
 
+include charsets.cfg
+
 // Основные таблицы импорта (8-bit -> 8-bit)
 XlatCharSet  AUTO       CP866       866_866.chs
 XlatCharSet  KOI8R      CP866       K8R_866.chs
@@ -1625,6 +1627,8 @@ XlatCharSet CP850       ASCII       850_ASC.chs
 ;XlatLocalSet CP850
 ;XlatLocalSet KOI8-U
 ;XlatLocalSet CP1125
+;XlatLocalSet CP1251
+;XlatLocalSet KOI8-R
  XlatLocalSet CP866
 
 ----------------------------------------------------------------------
