@@ -25,13 +25,15 @@ clean:
 	-rm $(HTMLS) $(TXTS)
 
 tokentpl.txt: ../golded3/gemsgs.cpp
-	echo '* Golded+ template file and externutil comand line tokens list.' > $@
-	echo '* $$Id$$' >> $@
+	echo '* Golded+ macroses list.' > $@
+	echo '* These macroses may be used in:' > $@
+	echo '* template file, externutil command line, tearline and tagline.' > $@
+	echo '* \$$Id$$' >> $@
 	echo '==========================================================================' >> $@
 	grep tokenxchg $< | sed -e '/^static bool tokenxchg/d' -e 's/^.*"\(@\w*\)".*$$/\1/' | sort -u >> $@
 
 tokencfg.txt: ../golded3/gccfgg.h
 	@echo '* Golded+ config file tokens list.' > $@
-	@echo '* $$Id$$' >> $@
+	@echo '* \$$Id$$' >> $@
 	@echo '==========================================================================' >> $@
 	grep CRC_ $< | sed -e '/CRC_LAST_CRC/d' -e 's/^.* CRC_\(\w*\).*$$/\1/' | sort -u >> $@
