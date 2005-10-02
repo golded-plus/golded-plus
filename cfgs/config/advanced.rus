@@ -1498,6 +1498,7 @@ XlatEscSet  MNEMONIC    CP850       MNE_850.esc
 
 include charsets.cfg
 
+// Исключения из описанного в файле charsets.cfg
 // Основные таблицы импорта (8-bit -> 8-bit)
 XlatCharSet  AUTO       CP866       866_866.chs
 XlatCharSet  KOI8R      CP866       K8R_866.chs
