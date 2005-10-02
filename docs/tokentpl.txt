@@ -1,5 +1,6 @@
-* Golded+ template file and externutil comand line tokens list.
-*$Id$
+* Golded+ macroses list.
+* These macroses may be used in:
+* template file, externutil command line, tearline and tagline.
 ==========================================================================
 @attr
 @c3daddr
