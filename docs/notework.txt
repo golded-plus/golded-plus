@@ -10,9 +10,11 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
-+ Config collection changes:
-  - Add the script to Generate xlatcharset directives for the config
-  - Extract XLATCHARSET directives from main config into separate file
++ Add CHS tables and XLATCHARSET lines for the double recoded russian text.
+
++ Add the script to Generate xlatcharset directives for the config
+
+- Extract XLATCHARSET directives from main config into separate file
 
 + New internal editor keys to stylecode insertions:
   ^N EditSCodeNormal
