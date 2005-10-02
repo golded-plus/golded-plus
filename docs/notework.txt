@@ -10,6 +10,10 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ New color config file item: "COLOR HEADER LOCATION". This is used for define
+  colors of the originate node location information (see DISPHDRLOCATION and
+  LOCATIONALIAS).
+
 + New config file token: LocationAlias. Used to display national city names
   in bottom delimeter of the message header.
 
