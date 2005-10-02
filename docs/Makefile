@@ -26,8 +26,8 @@ clean:
 
 tokentpl.txt: ../golded3/gemsgs.cpp
 	echo '* Golded+ macroses list.' > $@
-	echo '* These macroses may be used in:' > $@
-	echo '* template file, externutil command line, tearline and tagline.' > $@
+	echo '* These macroses may be used in:' >> $@
+	echo '* template file, externutil command line, tearline and tagline.' >> $@
 	echo '==========================================================================' >> $@
 	grep tokenxchg $< | sed -e '/^static bool tokenxchg/d' -e 's/^.*"\(@\w*\)".*$$/\1/' | sort -u >> $@
 
