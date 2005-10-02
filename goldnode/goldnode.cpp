@@ -74,7 +74,48 @@ const size_t maxnodes = 262000;
 
 typedef std::vector<Addr>::iterator addr_iter;
 typedef std::vector<Stamp>::iterator stamp_iter;
+
+#if (_MSC_VER == 1200)
+class _geidxlist : public std::list<_GEIdx>
+{
+public:
+  void sort()
+  {
+    if (2 <= size())
+    {
+      const size_t _MAXN = 15;
+      _Myt _X(allocator), _A[_MAXN + 1];
+      size_t _N = 0;
+
+      while (!empty())
+      {
+        _X.splice(_X.begin(), *this, begin());
+        size_t _I;
+
+        for (_I = 0; _I < _N && !_A[_I].empty(); ++_I)
+        {
+          _A[_I].merge(_X);
+          _A[_I].swap(_X);
+        }
+
+        if (_I == _MAXN) _A[_I].merge(_X);
+        else
+        {
+          _A[_I].swap(_X);
+          if (_I == _N) ++_N;
+        }
+      }
+
+      for (int _NN = _N; _NN >= 0; _NN--)
+        merge(_A[_NN]);
+    }
+  }
+};
+
+typedef _geidxlist geidxlist;
+#else
 typedef std::list<_GEIdx> geidxlist;
+#endif
 
 // Nodelists
 std::vector<Stamp> nodelist; // nodelist files,stamps,update marker
