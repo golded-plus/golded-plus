@@ -1136,7 +1136,22 @@ void LookupNodeLocation(GMsg* msg, std::string &location, int what)
     if (addr.invalid())
       buf[0] = NUL;
 
-    item.loc = location = buf;
+    std::string city = buf;
+    GStrBag2 &strbag = CFG->locationalias;
+
+    if (strbag.First())
+    {
+      do
+      {
+        const char* str = strbag.Current1();
+        size_t pos = city.find(str);
+        if (pos != city.npos)
+          city.replace(pos, strlen(str), strbag.Current2());
+      }
+      while (strbag.Next());
+    }
+
+    item.loc = location = city;
     cash.insert(it, item);
   }
 

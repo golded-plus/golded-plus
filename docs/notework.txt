@@ -10,6 +10,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ New config file token: LocationAlias. Used to display national city names
+  in bottom delimeter of the message header.
+
 - Fix MS Visual C 6.0 library bug in vector::sort(). GoldNode+/MSVC sort
   nodelist correctly with nodes quantity > 32767 now.
   (Patch from Ianos Gnatiuc 2:5030/830.17)

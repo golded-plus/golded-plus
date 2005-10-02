@@ -1,5 +1,4 @@
 * Golded+ config file tokens list.
-*$Id$
 ==========================================================================
 ADDRESS
 ADDRESSBOOKADD
@@ -216,8 +215,8 @@ KEYBMODE
 KEYBSTACK
 KLUDGE
 KLUDGECHRS
-LAST_CRC
 LOADLANGUAGE
+LOCATIONALIAS
 LOGFILE
 LOGFORMAT
 LOGLEVEL

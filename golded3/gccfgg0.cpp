@@ -410,6 +410,7 @@ SwitchK:
 SwitchL:
   switch(crc) {
     case CRC_LOADLANGUAGE     :  CfgLoadlanguage     ();  break;
+    case CRC_LOCATIONALIAS    :  CfgLocationalias    ();  break;
     case CRC_LOGFILE          :  CfgLogfile          ();  break;
     case CRC_LOGFORMAT        :  CfgLogformat        ();  break;
     default                   :  found = false;

@@ -320,6 +320,17 @@ void CfgLoadlanguage() {
 
 //  ------------------------------------------------------------------
 
+void CfgLocationalias()
+{
+  char* key;
+  getkeyval(&key, &val);
+  StripQuotes(key);
+  StripQuotes(val);
+  CFG->locationalias.Add(key, val);
+}
+
+//  ------------------------------------------------------------------
+
 void CfgLogfile() {
 
   strcpy(CFG->logfile, val);

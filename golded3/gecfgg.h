@@ -254,6 +254,7 @@ public:
   char        keybstack[80];        // keybuf[80];
   gstrarray   kludge;
   Path        loadlanguage;
+  GStrBag2    locationalias;
   Path        logfile;              // goldedlog;
   int         logformat;
   std::vector<MailList> mailinglist;

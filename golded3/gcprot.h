@@ -228,6 +228,7 @@ void CfgKeybstack        ();
 void CfgKludge           ();
 void CfgKludgechrs       ();
 void CfgLoadlanguage     ();
+void CfgLocationalias    ();
 void CfgLogfile          ();
 void CfgLogformat        ();
 void CfgLookupecho       ();
