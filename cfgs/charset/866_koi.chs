@@ -2,11 +2,28 @@
 ;
 ; This file is a charset conversion module in text form.
 ;
-0
-0
-2
-cp866	; from charset
-koi8-r	; to charset
+; This module converts russian codepages 866 to KOI8-R.
+;
+; Format: ID, version, level,
+;         from charset, to charset,
+;         128 entries: first & second byte
+;	  "END"
+; Lines beginning with a ";" or a ";" after the entries are comments
+;
+; Unkown characters are mapped to the "?" character.
+;
+; \ is the escape character: \0 means decimal zero,
+; \dnnn where nnn is a decimal number is the ordinal value of the character
+; \xnn where nn is a hexadecimal number
+; e.g.: \d32 is the ASCII space character
+; Two \\ is the character "\" itself.
+;
+0       ; ID number
+0       ; version number
+;
+2       ; level number
+CP866	; from charset
+KOI8-R	; to charset
 ;
 \0 \xe1	; CYRILLIC CAPITAL LETTER A
 \0 \xe2	; CYRILLIC CAPITAL LETTER BE

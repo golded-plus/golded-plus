@@ -8,6 +8,20 @@
 ; From: Cyrillic DOS (Alt_Codes aka CP866) encoding
 ;   To: Ukrainian RUSCII (RST 2018-91 aka CP1125) encoding
 ;
+; Format: ID, version, level,
+;         from charset, to charset,
+;         128 entries: first & second byte
+;	  "END"
+; Lines beginning with a ";" or a ";" after the entries are comments
+;
+; Unkown characters are mapped to the "?" character.
+;
+; \ is the escape character: \0 means decimal zero,
+; \dnnn where nnn is a decimal number is the ordinal value of the character
+; \xnn where nn is a hexadecimal number
+; e.g.: \d32 is the ASCII space character
+; Two \\ is the character "\" itself.
+;
 0               ; ID number
 1               ; version number
 ;
