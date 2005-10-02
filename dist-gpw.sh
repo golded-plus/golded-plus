@@ -14,16 +14,16 @@ files="${files} docs/rddt.html docs/rddt.txt docs/readme.txt"
 files="${files} docs/rusfaq.txt docs/tips.txt docs/todowork.txt"
 files="${files} docs/tokencfg.txt docs/tokentpl.txt"
 
-printf 'GoldED+1.1.5  [Win32 binaries]\n\r'  >bin/File_ID.Diz
-printf '[Compiled using  MinGW/Cygwin]\n\r' >>bin/File_ID.Diz
-printf 'Snapshot (development version)\n\r' >>bin/File_ID.Diz
-printf 'This is  unstable release  and\n\r' >>bin/File_ID.Diz
-printf 'it should be used for testing.\n\r' >>bin/File_ID.Diz
-printf '------------------------------\n\r' >>bin/File_ID.Diz
-printf 'GoldED+ is a  successor of the\n\r' >>bin/File_ID.Diz
-printf 'wellknown  GoldED mail editor.\n\r' >>bin/File_ID.Diz
-printf '------------------------------\n\r' >>bin/File_ID.Diz
-printf '*golded-plus.sourceforge.net* \n\r' >>bin/File_ID.Diz
+printf 'GoldED+1.1.5  [Win32 binaries]\r\n'  >bin/File_ID.Diz
+printf '[Compiled using  MinGW/Cygwin]\r\n' >>bin/File_ID.Diz
+printf 'Snapshot (development version)\r\n' >>bin/File_ID.Diz
+printf 'This is  unstable release  and\r\n' >>bin/File_ID.Diz
+printf 'it should be used for testing.\r\n' >>bin/File_ID.Diz
+printf '------------------------------\r\n' >>bin/File_ID.Diz
+printf 'GoldED+ is a  successor of the\r\n' >>bin/File_ID.Diz
+printf 'wellknown  GoldED mail editor.\r\n' >>bin/File_ID.Diz
+printf '------------------------------\r\n' >>bin/File_ID.Diz
+printf '*golded-plus.sourceforge.net* \r\n' >>bin/File_ID.Diz
 
 make
 make strip

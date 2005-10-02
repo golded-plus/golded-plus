@@ -14,16 +14,16 @@ files="${files} docs/rusfaq.txt docs/tips.txt docs/todowork.txt"
 files="${files} docs/tokencfg.txt docs/tokentpl.txt"
 
 
-printf 'GoldED+1.1.5  [Win32 binaries]\n\r'  >Release/bin/File_ID.Diz
-printf '[Compiled using MS Visual C++]\n\r' >>Release/bin/File_ID.Diz
-printf 'Snapshot (development version)\n\r' >>Release/bin/File_ID.Diz
-printf 'This is  unstable release  and\n\r' >>Release/bin/File_ID.Diz
-printf 'it should be  used for testing\n\r' >>Release/bin/File_ID.Diz
-printf '------------------------------\n\r' >>Release/bin/File_ID.Diz
-printf 'GoldED+  is a successor of the\n\r' >>Release/bin/File_ID.Diz
-printf 'wellknown  GoldED mail editor.\n\r' >>Release/bin/File_ID.Diz
-printf '------------------------------\n\r' >>Release/bin/File_ID.Diz
-printf ' *http://golded-plus.sf.net*  \n\r' >>Release/bin/File_ID.Diz
+printf 'GoldED+1.1.5  [Win32 binaries]\r\n'  >Release/bin/File_ID.Diz
+printf '[Compiled using MS Visual C++]\r\n' >>Release/bin/File_ID.Diz
+printf 'Snapshot (development version)\r\n' >>Release/bin/File_ID.Diz
+printf 'This is  unstable release  and\r\n' >>Release/bin/File_ID.Diz
+printf 'it should be  used for testing\r\n' >>Release/bin/File_ID.Diz
+printf '------------------------------\r\n' >>Release/bin/File_ID.Diz
+printf 'GoldED+  is a successor of the\r\n' >>Release/bin/File_ID.Diz
+printf 'wellknown  GoldED mail editor.\r\n' >>Release/bin/File_ID.Diz
+printf '------------------------------\r\n' >>Release/bin/File_ID.Diz
+printf ' *http://golded-plus.sf.net*  \r\n' >>Release/bin/File_ID.Diz
 
 make docs
 zip -9DXj ${name} Release/bin/File_ID.Diz $files
