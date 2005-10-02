@@ -11,10 +11,11 @@ ______________________________________________________________________
 ______________________________________________________________________
 
 + Add CHS tables and XLATCHARSET lines for the double recoded russian text.
+  (Tables by Eugene Palenock 2:5020/2065.468@FidoNet.)
 
 + Add the script to Generate xlatcharset directives for the config
 
-- Extract XLATCHARSET directives from main config into separate file
+- Extract XLATCHARSET directives from main config example into separate file
 
 + New internal editor keys to stylecode insertions:
   ^N EditSCodeNormal
