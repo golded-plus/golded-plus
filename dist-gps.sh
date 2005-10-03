@@ -14,6 +14,7 @@ cd .. ; tar -jcf ${name} \
 	--exclude golded+/Release \
 	--exclude golded+/*.bat \
 	--exclude golded+/*.cmd \
+	--exclude 'bld*.inc' \
 	--exclude '*.diff' \
 	--exclude '*.tar.gz' \
 	--exclude '*.tgz' \
