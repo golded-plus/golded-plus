@@ -25,4 +25,7 @@ cd .. ; tar -jcf ${name} \
 	--exclude '*.rar' \
 	--exclude '*.zip' \
 	--exclude '*.7z' \
+	--exclude '*.exe' \
+	--exclude '*.a' \
+	--exclude '*.o' \
 	golded+
