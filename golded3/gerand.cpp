@@ -140,6 +140,8 @@ void Area::InitData() {
   adat->edithardterm = EDIT->HardTerm();
   adat->editmixcase = EDIT->MixCase();
   adat->forcetemplate = CFG->forcetemplate;
+  adat->hidestylies = CFG->hidestylies;
+  adat->usestylies = CFG->usestylies;
   strcpy(adat->inputfile, CFG->inputfile);
   strcpy(adat->internetaddress, CFG->internetaddress);
   memcpy(&adat->internetgate, &CFG->internetgate, sizeof(Node));
@@ -292,6 +294,8 @@ void Area::RandomizeData(int mode) {
     CFG->grp.GetItm(GRP_EDITMIXCASE, adat->editmixcase);
     CFG->grp.GetItm(GRP_EDITREPLYRE, adat->replyre);
     CFG->grp.GetItm(GRP_FORCETEMPLATE, adat->forcetemplate);
+    CFG->grp.GetItm(GRP_HIDESTYLIES, adat->hidestylies);
+    CFG->grp.GetItm(GRP_USESTYLIES, adat->usestylies);
     CFG->grp.GetItm(GRP_INPUTFILE, adat->inputfile, sizeof(adat->inputfile));
     CFG->grp.GetItm(GRP_INTERNETADDRESS, adat->internetaddress, sizeof(adat->internetaddress));
     CFG->grp.GetItm(GRP_INTERNETGATE, &adat->internetgate, sizeof(Node));

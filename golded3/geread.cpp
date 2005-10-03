@@ -491,24 +491,24 @@ void Reader() {
                 break;
 
               case KK_ReadStylesNone:
-                if(CFG->usestylies or CFG->hidestylies)
-                  CFG->usestylies = CFG->hidestylies = false;
+                if (AA->adat->usestylies or AA->adat->hidestylies)
+                  AA->adat->usestylies = AA->adat->hidestylies = false;
                 else
                   reader_keyok = true;
                 break;
 
               case KK_ReadStylesShow:
-                if(not CFG->usestylies or CFG->hidestylies) {
-                  CFG->usestylies = true;
-                  CFG->hidestylies = false;
+                if (not AA->adat->usestylies or AA->adat->hidestylies) {
+                  AA->adat->usestylies = true;
+                  AA->adat->hidestylies = false;
                 }
                 else
                   reader_keyok = true;
                 break;
 
               case KK_ReadStylesStrip:
-                if(not CFG->usestylies or not CFG->hidestylies)
-                  CFG->usestylies = CFG->hidestylies = true;
+                if (not AA->adat->usestylies or not AA->adat->hidestylies)
+                  AA->adat->usestylies = AA->adat->hidestylies = true;
                 else
                   reader_keyok = true;
                 break;

@@ -88,13 +88,22 @@ void CfgStylecodepunct() {
 
 void CfgStylecodes() {
 
-  if(strieql(val, "HIDE")) {
-    CFG->hidestylies = true;
-    CFG->usestylies = true;
+  bool flag1 = false, flag2;
+
+  if (strieql(val, "HIDE"))
+    flag1 = flag2 = true;
+  else 
+    flag2 = GetYesno(val);
+
+  if (cfgingroup)
+  {
+    CFG->grp.AddItm(GRP_HIDESTYLIES, flag1);
+    CFG->grp.AddItm(GRP_USESTYLIES, flag2);
   }
-  else {
-    CFG->hidestylies = false;
-    CFG->usestylies = GetYesno(val);
+  else
+  {
+    CFG->hidestylies = flag1;
+    CFG->usestylies = flag2;
   }
 }
 

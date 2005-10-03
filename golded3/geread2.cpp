@@ -253,7 +253,7 @@ void ToggleTwits() {
 void ToggleStyles() {
 
   gkey k;
-  int setting = CFG->usestylies + CFG->hidestylies*2;
+  int setting = AA->adat->usestylies + AA->adat->hidestylies*2;
 
   do {
     switch(setting) {
@@ -267,8 +267,8 @@ void ToggleStyles() {
   w_info(NULL);
 
   if(k != Key_Esc) {
-    CFG->usestylies = (setting & 1) ? true : false;
-    CFG->hidestylies = (setting & 2) ? true : false;
+    AA->adat->usestylies = (setting & 1) ? true : false;
+    AA->adat->hidestylies = (setting & 2) ? true : false;
   }
 }
 

@@ -464,10 +464,10 @@ void GMsgBodyView::PaintLine(int row, Line *line) {
   if(not SearchHighlight(line, vrow, visible_width, highlight_color)) {
     if(line->type & GLINE_ORIG and strneql(line->txt.c_str(), " * Origin: ", 11)) {
       vputs(vrow, 0, color, " * Origin: ");
-      StyleCodeHighlight(line->txt.c_str()+11, vrow, 11, not AA->attr().hex() and CFG->hidestylies, color);
+      StyleCodeHighlight(line->txt.c_str()+11, vrow, 11, not AA->attr().hex() and AA->adat->hidestylies, color);
     }
     else
-      StyleCodeHighlight(line->txt.c_str(), vrow, 0, not AA->attr().hex() and CFG->hidestylies, color);
+      StyleCodeHighlight(line->txt.c_str(), vrow, 0, not AA->attr().hex() and AA->adat->hidestylies, color);
     int tlen = strlen(line->txt.c_str());
     vputns(vrow, tlen, color, "", visible_width-tlen);
   }

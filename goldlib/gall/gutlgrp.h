@@ -61,6 +61,8 @@ enum {
   GRP_EDITMIXCASE,
   GRP_EDITREPLYRE,
   GRP_FORCETEMPLATE,
+  GRP_HIDESTYLIES,
+  GRP_USESTYLIES,
   GRP_INPUTFILE,
   GRP_INTERNETADDRESS,
   GRP_INTERNETGATE,
@@ -128,7 +130,7 @@ private:
       TYPE_INT,
       TYPE_STRING,
       TYPE_OBJECT
-	};
+    };
 
     int type;
     union {

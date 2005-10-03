@@ -91,7 +91,7 @@ void Container::StyleCodeHighlight(const char* text, int row, int col, bool dohi
   char* punctchars = CFG->stylecodepunct;
   char* stylestopchars = CFG->stylecodestops;
   char prevchar = ' ';
-  bool usestylies = dohide or CFG->usestylies;
+  bool usestylies = dohide or AA->adat->usestylies;
 
   if(usestylies or CFG->highlighturls) {
     while(*ptr) {

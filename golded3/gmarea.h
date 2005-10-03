@@ -278,6 +278,8 @@ struct AreaData {
   bool     edithardterm;
   bool     editmixcase;
   bool     forcetemplate;
+  bool     hidestylies;
+  bool     usestylies;
   IAdr     internetaddress;
   Node     internetgate;
   bool     internetmsgid;
