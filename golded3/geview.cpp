@@ -39,6 +39,7 @@ GMsgHeaderView::GMsgHeaderView() {
   at_row = at_column = width = height = 0;
   border_type = gwindow::bordertype_none;
   window_color = from_color = to_color = subject_color = BLUE|_LGREY;
+  location_color = BLUE|_LGREY;
   title_color = highlight_color = RED|_LGREY;
   border_color = YELLOW|_LGREY;
 }
@@ -340,7 +341,7 @@ void GMsgHeaderView::Paint() {
     {
       loc += " ";
       int pos = window.width() - loc.length() - 1;
-      window.prints(5, pos, window_color, loc.c_str());
+      window.prints(5, pos, location_color, loc.c_str());
     }
   }
 }

@@ -58,6 +58,7 @@ public:
   int from_color;
   int to_color;
   int subject_color;
+  int location_color;
 
   void Use(Area *areaptr, GMsg *msgptr);
 

@@ -136,6 +136,7 @@ const word CRC_WINDOW            = 0xCEFE;
 const word CRC_FROM              = 0x9290;
 const word CRC_TO                = 0x544F;
 const word CRC_SUBJECT           = 0xF861;
+const word CRC_LOCATION          = 0x9E67;
 const word CRC_KLUDGE            = 0xA600;
 const word CRC_HIDDEN            = 0xE465;
 const word CRC_TAGLINE           = 0xC328;
@@ -496,6 +497,9 @@ void GetColors(char* value) {
       break;
     case CRC_SUBJECT:
       wptr->_Subject = attr;
+      break;
+    case CRC_LOCATION:
+      wptr->_Location = attr;
       break;
     case CRC_KLUDGE:
       wptr->_Kludge = attr;

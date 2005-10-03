@@ -650,6 +650,7 @@ struct SaveUtil {
 #define _Highlight c[4]
 #define _Noselect  c[5]
 #define _Kludge    c[5]
+#define _Location  c[5]
 #define _Tearline  c[6]
 #define _Edit      c[6]
 #define _Block     c[7]
@@ -733,6 +734,7 @@ struct SaveUtil {
 #define C_HEADBY  GC_HEAD_._From
 #define C_HEADTO  GC_HEAD_._To
 #define C_HEADRE  GC_HEAD_._Subject
+#define C_HEADLOC GC_HEAD_._Location
 
 #define C_ASKW    GC_ASK__._Window
 #define C_ASKB    GC_ASK__._Border

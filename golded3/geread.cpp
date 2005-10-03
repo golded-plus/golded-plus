@@ -207,6 +207,7 @@ void Reader() {
     HeaderView->from_color      = C_HEADBY;
     HeaderView->to_color        = C_HEADTO;
     HeaderView->subject_color   = C_HEADRE;
+    HeaderView->location_color  = C_HEADLOC;
     HeaderView->Create();
 
     BodyView->at_row          = 6;

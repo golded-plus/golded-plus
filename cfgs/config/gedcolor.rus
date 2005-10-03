@@ -109,6 +109,7 @@
 ;         HEADER FROM         Header From field.
 ;         HEADER TO           Header To field.
 ;         HEADER SUBJECT      Header Subject field.
+;         HEADER LOCATION     Header location field.
 ;       
 ;    The FROM/TO/SUBJECT colors supplement the HEADER WINDOW color. Note
 ;    that WINDOW will also set the FROM/TO/SUBJECT colors, so remember to
@@ -265,6 +266,7 @@ COLOR HEADER HIGHLIGHT  Yellow   on Blue
 COLOR HEADER INPUT      Black    on Red
 COLOR HEADER TITLE      LGreen   on Blue
 COLOR HEADER WINDOW     LGrey    on Blue
+COLOR HEADER LOCATION   LGrey    on Black
 
 // ==== Хелп вызываемый по F1 ====
 
