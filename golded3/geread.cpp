@@ -236,7 +236,8 @@ void Reader() {
         AA->Play().Play();
 
       // Jump to next message. Go to personal mail if any.
-      if(AA->PMrk.Tags()) {
+      if (CFG->disppmfirst && AA->PMrk.Tags())
+      {
         AA->SetBookmark(AA->lastread());
         AA->isreadpm = false;
         ToggleMarkRead();

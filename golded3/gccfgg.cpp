@@ -716,6 +716,7 @@ CfgGed::CfgGed() {
   displistcursor = NO;
   dispmargin = 0;
   dispmsgsize = DISPMSGSIZE_BYTES;
+  disppmfirst = true;
   disptabsize = 8;
   encodeemailheaders = true;
   externoptions = EXTUTIL_CLS | EXTUTIL_CURSOR | EXTUTIL_RELOAD | EXTUTIL_PAUSEONERROR | EXTUTIL_KEEPCTRL;

@@ -132,6 +132,7 @@ const word CRC_DISPLOCALHIGH    = 0x1D8B;
 const word CRC_DISPMARGIN       = 0xC0EC;
 const word CRC_DISPMSGSIZE      = 0xB0E2;
 const word CRC_DISPPAGEBAR      = 0x60A4;
+const word CRC_DISPPMFIRST      = 0x5DFC;
 const word CRC_DISPREALMSGNO    = 0xE30F;
 const word CRC_DISPREPLIESMODE  = 0x0099;
 const word CRC_DISPSOFTCR       = 0x85E9;

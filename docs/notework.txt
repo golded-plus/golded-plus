@@ -10,6 +10,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ Added DISPPMFIRST (yes/no) config file token that enable/disable
+  displaying first the personal mail in areas.
+
 + Stylecodes now may be used in random system groups.
 
 + New color config file item: "COLOR HEADER LOCATION". This is used for define

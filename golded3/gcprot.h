@@ -132,6 +132,7 @@ void CfgDisplocalhigh    ();
 void CfgDispmargin       ();
 void CfgDispmsgsize      ();
 void CfgDisppagebar      ();
+void CfgDisppmfirst      ();
 void CfgDisprealmsgno    ();
 void CfgDispsoftcr       ();
 void CfgDispstatusline   ();

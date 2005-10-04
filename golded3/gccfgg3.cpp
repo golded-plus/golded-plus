@@ -62,6 +62,13 @@ void CfgDispareano() {
 
 //  ------------------------------------------------------------------
 
+void CfgDisppmfirst() {
+
+  CFG->disppmfirst = GetYesno(val);
+}
+
+//  ------------------------------------------------------------------
+
 void CfgDisptabsize() {
 
   CFG->disptabsize = atoi(val);

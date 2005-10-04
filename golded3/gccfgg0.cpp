@@ -283,6 +283,7 @@ SwitchD:
     case CRC_DISPLISTCURSOR   :  CfgDisplistcursor   ();  break;
     case CRC_DISPMARGIN       :  CfgDispmargin       ();  break;
     case CRC_DISPMSGSIZE      :  CfgDispmsgsize      ();  break;
+    case CRC_DISPPMFIRST      :  CfgDisppmfirst      ();  break;
     case CRC_DISPTABSIZE      :  CfgDisptabsize      ();  break;
     default                   :  found = false;
   }

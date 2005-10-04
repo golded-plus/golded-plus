@@ -207,6 +207,7 @@ public:
   PosLen      disphdrnodeset;
   int         displistcursor;
   int         dispmargin;           // rightmargin;
+  bool        disppmfirst;
   int         dispmsgsize;
   uint        disptabsize;          // tabsize;
   bool        encodeemailheaders;

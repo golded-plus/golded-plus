@@ -388,7 +388,8 @@ void PrevArea() {
   AA->Open();
   AA->RandomizeData();
   AA->SetBookmark(AA->lastread());
-  if(AA->PMrk.Tags()) {
+  if (CFG->disppmfirst && AA->PMrk.Tags())
+  {
     AA->isreadpm = false;
     ToggleMarkRead();
   }
@@ -419,11 +420,11 @@ void NextArea() {
   AA->Open();
   AA->RandomizeData();
   AA->SetBookmark(AA->lastread());
-  if(AA->PMrk.Tags()) {
+  if (CFG->disppmfirst && AA->PMrk.Tags())
+  {
     AA->isreadpm = false;
     ToggleMarkRead();
   }
-
 }
 
 
