@@ -28,7 +28,7 @@
 #include <malloc.h>
 #endif
 
-#if defined(_MSC_VER) && defined(_DEBUG)
+#if defined(_MSC_VER)
     /* C4786: 'identifier' : identifier was truncated to 'number'
           characters in the debug information
     */
