@@ -10,6 +10,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ Added EditSoftCrxLat (yes/no) config file token that enable/disable 
+  usage of EditSoftCrxLat. May be used in random system groups.
+
 + Added DISPPMFIRST (yes/no) config file token that enable/disable
   displaying first the personal mail in areas.
 

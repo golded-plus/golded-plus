@@ -787,6 +787,7 @@ CfgGed::CfgGed() {
   useintl = true;
   usepid = true;
   usernameno = 0;
+  usesoftcrxlat = true;
   usestylies = true;
   usetzutc = false;
   viewhidden = false;

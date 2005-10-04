@@ -382,6 +382,7 @@ const word CRC_USEPID           = 0x2F68;
 const word CRC_USERLIST         = 0xE81A;
 const word CRC_USERLISTFILE     = 0xB749;
 const word CRC_USERNAME         = 0x1161;
+const word CRC_USESOFTCRXLAT    = 0x4285;
 const word CRC_USETZUTC         = 0x27C5;
 const word CRC_UUDECODEPATH     = 0x82A2;
 const word CRC_VIEWHIDDEN       = 0x021D;

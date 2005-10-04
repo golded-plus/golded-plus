@@ -364,6 +364,7 @@ void CfgUsepid           ();
 void CfgUserlist         ();
 void CfgUserlistfile     ();
 void CfgUsername         ();
+void CfgUsesoftcrxlat    ();
 void CfgUsetzutc         ();
 void CfgUudecodepath     ();
 void CfgViewhidden       ();

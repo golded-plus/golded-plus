@@ -577,6 +577,7 @@ SwitchU:
     case CRC_USERLIST         :  CfgUserlist         ();  break;
     case CRC_USERLISTFILE     :  CfgUserlistfile     ();  break;
     case CRC_USERNAME         :  CfgUsername         ();  break;
+    case CRC_USESOFTCRXLAT    :  CfgUsesoftcrxlat    ();  break;
     case CRC_USETZUTC         :  CfgUsetzutc         ();  break;
     case CRC_UUDECODEPATH     :  CfgUudecodepath     ();  break;
     default                   :  found = false;

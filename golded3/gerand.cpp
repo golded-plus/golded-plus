@@ -178,6 +178,7 @@ void Area::InitData() {
   adat->usefwd = CFG->usefwd;
   strcpy(adat->username.name, CFG->username.empty() ? "" : CFG->username[CFG->usernameno].name);
   adat->username.addr = adat->aka.addr;
+  adat->usesoftcrxlat = CFG->usesoftcrxlat;
   adat->usetzutc = CFG->usetzutc;
   adat->viewhidden = CFG->viewhidden;
   adat->viewkludge = CFG->viewkludge;
@@ -405,6 +406,7 @@ void Area::RandomizeData(int mode) {
       SetAka(tmp);
     }
 
+    CFG->grp.GetItm(GRP_USESOFTCRXLAT, adat->usesoftcrxlat);
     CFG->grp.GetItm(GRP_USETZUTC, adat->usetzutc);
 
     if(not mode) {

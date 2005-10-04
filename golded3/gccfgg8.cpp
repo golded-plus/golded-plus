@@ -442,6 +442,17 @@ void CfgUsername() {
 
 //  ------------------------------------------------------------------
 
+void CfgUsesoftcrxlat()
+{
+  bool flag = GetYesno(val);
+  if (cfgingroup)
+    CFG->grp.AddItm(GRP_USESOFTCRXLAT, flag);
+  else
+    CFG->usesoftcrxlat = flag;
+}
+
+//  ------------------------------------------------------------------
+
 void CfgUsetzutc() {
 
   bool flag = GetYesno(val);

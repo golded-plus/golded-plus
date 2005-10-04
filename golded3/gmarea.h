@@ -311,6 +311,7 @@ struct AreaData {
   bool     usearea;
   int      usefwd;
   Node     username;
+  bool     usesoftcrxlat;
   bool     usetzutc;
   IAdr     whoto;
   Path     wtpl;

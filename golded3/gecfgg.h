@@ -358,6 +358,7 @@ public:
   Path        userlistfile;         // goldedlst;
   std::vector<Node> username;
   int         usernameno;
+  bool        usesoftcrxlat;
   bool        usestylies;
   bool        usetzutc;
   Path        uudecodepath;

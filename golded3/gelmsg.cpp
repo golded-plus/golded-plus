@@ -119,7 +119,8 @@ int Area::LoadMsg(GMsg* msg, ulong msgno, int margin, int mode) {
 void Area::SaveHdr(int mode, GMsg* msg) {
 
   // Translate softcr to configured char
-  if(EDIT->SoftCrXlat()) {
+  if (adat->usesoftcrxlat && EDIT->SoftCrXlat())
+  {
     strchg(msg->by, SOFTCR, EDIT->SoftCrXlat());
     strchg(msg->to, SOFTCR, EDIT->SoftCrXlat());
     strchg(msg->realby, SOFTCR, EDIT->SoftCrXlat());

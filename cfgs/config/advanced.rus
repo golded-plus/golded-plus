@@ -577,6 +577,10 @@ EditUnDelete 50
 // символ ASCII 141 на другой.
 EditSoftCrxLat H   ; Обязательно для R50!
 
+// EditSoftCrxLat может быть отключено глобально или в группах.
+;UseSoftCrxLat No
+UseSoftCrxLat Yes
+
 // Ширина поля вывода для редактирования цитируемых строк.
 EditQuoteMargin 75
 
@@ -2298,6 +2302,7 @@ EndGroup
 // TwitMode
 // UseFwd
 // UserName
+// UseSoftCrxLat
 // ViewHidden
 // ViewKludge
 // ViewQuote
