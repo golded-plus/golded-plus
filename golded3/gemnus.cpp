@@ -216,7 +216,7 @@ static void PressY() { if(gkbd.kbuf == NULL) kbput(*LNG->GotoNextYes); }
 static void PressN() { if(gkbd.kbuf == NULL) kbput(*LNG->GotoNextNo);  }
 
 int GMenuNewarea::Run() {
-                                    
+
   enum { TAG_NO=100, TAG_YES, TAG_JUMP };
 
   HandleGEvent(EVTT_ENDOFMSGS);
@@ -229,8 +229,8 @@ int GMenuNewarea::Run() {
     _temp = AA->Mark.Find(AA->Msgn.CvtReln(AA->lastread()));
 
   if(_temp <= 1) {
-    _yeskey = Key_Rgt;
-    _nokey  = Key_Lft;
+    _yeskey = Key_Lft;
+    _nokey  = Key_Rgt;
   }
 
   AskInit(6, 0, LNG->GotoNext, H_AskNextArea);
@@ -239,8 +239,7 @@ int GMenuNewarea::Run() {
     Item(TAG_YES,  LNG->GotoNextYes, M_CLOSE, PressY, _yeskey);
     Item(TAG_NO,   LNG->GotoNextNo,  M_CLOSE, PressN, _nokey);
     Item(TAG_JUMP, LNG->GotoNextNew);
-    SetTag(TAG_YES);
-    // Dirk: YES must be default for backward comp. Make it configurable.
+    SetTag(CFG->menunextarea + TAG_NO);
   End();
 
   Start();
@@ -249,8 +248,10 @@ int GMenuNewarea::Run() {
   if(finaltag != -1 and finaltag != TAG_JUMP)
     getxch();
 
-  if(finaltag == -1)
+  if (finaltag == -1)
     finaltag = TAG_NO;
+  else if ((finaltag != overtag) && (finaltag == TAG_YES))
+    finaltag = overtag;
 
   return (int) (finaltag - TAG_NO);
 }

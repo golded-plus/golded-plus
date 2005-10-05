@@ -426,6 +426,16 @@ void CfgMenumarked() {
 
 //  ------------------------------------------------------------------
 
+void CfgMenunextarea()
+{
+  if (strieql(val, "Unread"))
+    CFG->menunextarea = ALWAYS;
+  else 
+    CFG->menunextarea = GetYesno(val);
+}
+
+//  ------------------------------------------------------------------
+
 void CfgMsglistdate() {
 
   int flag;

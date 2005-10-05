@@ -253,6 +253,7 @@ const word CRC_MAPPATH          = 0x74E6;
 const word CRC_MEMBER           = 0xF703;
 const word CRC_MENUDROPMSG      = 0x9645;
 const word CRC_MENUMARKED       = 0x7198;
+const word CRC_MENUNEXTAREA     = 0x82B4;
 const word CRC_MOUSE            = 0x1B1B;
 const word CRC_MSGLISTDATE      = 0xBFF5;
 const word CRC_MSGLISTFAST      = 0xDE86;

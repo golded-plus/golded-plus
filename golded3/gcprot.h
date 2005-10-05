@@ -242,6 +242,7 @@ void CfgMappath          ();
 void CfgMember           ();
 void CfgMenudropmsg      ();
 void CfgMenumarked       ();
+void CfgMenunextarea     ();
 void CfgMouse            ();
 void CfgMsglistdate      ();
 void CfgMsglistfast      ();

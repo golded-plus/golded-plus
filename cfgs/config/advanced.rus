@@ -1316,6 +1316,9 @@ AskDelOrig Yes
 // Возможные варианты: Marked, Current, Previous или Default.
 ;MenuMarked Default
 
+// Установка позиции курсора для меню "Goto Next Area?". (Yes)
+// Возможные варианты: No, Yes, Unread.
+;MenuNextArea No
 
 ----------------------------------------------------------------------
 -- НАСТРОЙКА ПАРАМЕТРОВ ЭКРАНА

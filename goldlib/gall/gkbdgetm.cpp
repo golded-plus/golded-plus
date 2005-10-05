@@ -304,6 +304,7 @@ gkey getxch(int __tick) {
         if(gwin.menu) {
           _item_t* item = find_hotkey(gwin.menu,k);
           if(item) {
+            gwin.menu->hotkey = true;
             kbd_call_func(item->select);
             #ifdef GOLD_MOUSE
             if(gkbd.inmenu and gmou.FreeCursor())

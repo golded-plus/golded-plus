@@ -740,6 +740,7 @@ CfgGed::CfgGed() {
   keybmode = KEYB_POLL;
   logformat = 0;
   menumarked = MODE_DONT;
+  menunextarea = YES;
   msglistdate = MSGLISTDATE_WRITTEN;
   msglistfast = true;
   msglistfirst = false;

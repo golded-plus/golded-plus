@@ -44,6 +44,7 @@
 
 //  ------------------------------------------------------------------
 
+int _overtagid;
 int _finaltagid;
 
 int gmnudropthrough = NO;
@@ -873,8 +874,11 @@ int wmenuget() {
     char ch;
     static int _depth = 0;
 
-    if(_depth == 0)
+    if (_depth == 0)
+    {
+      _overtagid = -1;
       _finaltagid = -1;
+    }
 
     // make sure we have a defined menu
     if(gwin.cmenu==NULL) {
@@ -958,6 +962,7 @@ int wmenuget() {
         gwin.help=citem->help;
 
         // read mouse/keyboard for keypress, then test the keypress
+        gwin.menu->hotkey = false;
         gkbd.inmenu=true;
         xch = read_mouse(citem);
         citem=gwin.cmenu->citem;
@@ -965,6 +970,9 @@ int wmenuget() {
           xch = getxch();
         }
         gkbd.inmenu=false;
+
+        _overtagid = citem->tagid;
+
         switch(xch) {
 
             case Key_Esc:
@@ -1208,8 +1216,11 @@ int wmenuget() {
                 item=citem->next;
                 for(;;) {
                     while(item!=NULL) {
-                        if((toupper(ch)==toupper(item->schar)) and not (item->fmask&M_NOSEL))
-                            goto FARBREAK;
+                        if ((toupper(ch)==toupper(item->schar)) && !(item->fmask & M_NOSEL))
+                        {
+                          if (!gwin.menu->hotkey) _overtagid = item->tagid;
+                          goto FARBREAK;
+                        }
                         if(citem==item) {
                             valid=NO;
                             goto FARBREAK;

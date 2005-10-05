@@ -157,6 +157,7 @@ struct _menu_t {
   int       titleattr;  // attribute of menu title
   int       shadattr;   // shadow attribute or -1 if no shadow
   int       items;      // number of items in menu
+  bool      hotkey;
 };
 
 

@@ -75,6 +75,7 @@ protected:
   int  itemmask;
 
   int  escape;
+  int  overtag;
   int  finaltag;
   int  status;
 

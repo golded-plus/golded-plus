@@ -261,6 +261,7 @@ public:
   std::vector<MailList> mailinglist;
   std::vector< std::pair<std::string, std::string> > mappath;
   int         menumarked;
+  int         menunextarea;
   int         msglistdate;
   bool        msglistfast;
   bool        msglistfirst;

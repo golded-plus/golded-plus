@@ -425,6 +425,7 @@ SwitchM:
     case CRC_MAPPATH          :  CfgMappath          ();  break;
     case CRC_MEMBER           :  CfgMember           ();  break;
     case CRC_MENUMARKED       :  CfgMenumarked       ();  break;
+    case CRC_MENUNEXTAREA     :  CfgMenunextarea     ();  break;
     case CRC_MSGLISTDATE      :  CfgMsglistdate      ();  break;
     case CRC_MSGLISTFAST      :  CfgMsglistfast      ();  break;
     case CRC_MSGLISTFIRST     :  CfgMsglistfirst     ();  break;

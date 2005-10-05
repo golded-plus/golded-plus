@@ -203,6 +203,7 @@ void GMnu::End() {
 
 //  ------------------------------------------------------------------
 
+extern int _overtagid;
 extern int _finaltagid;
 
 void GMnu::Start() {
@@ -210,6 +211,7 @@ void GMnu::Start() {
   int _prev_escape = wsetesc(escape);
   wmenuget();
   finaltag = _finaltagid;
+  overtag = _overtagid;
   wsetesc(_prev_escape);
 }
 
