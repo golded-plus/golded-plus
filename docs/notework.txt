@@ -13,7 +13,7 @@ ______________________________________________________________________
 + Added MenuNextArea (yes/no/unread) config file token that set default
   for cursor on "Goto Next Area?" menu.
 
-+ Added EditSoftCrxLat (yes/no) config file token that enable/disable
++ Added UseSoftCrxLat (yes/no) config file token that enable/disable
   usage of EditSoftCrxLat. May be used in random system groups.
 
 + Added DISPPMFIRST (yes/no) config file token that enable/disable
