@@ -40,6 +40,242 @@
 #include <AppFileInfo.h>
 #endif
 
+
+//  ------------------------------------------------------------------
+
+#define _MAX_VNAME_LEN  13
+#define _MAX_MNAME_LEN  30
+
+
+//  ------------------------------------------------------------------
+
+struct gcpu_info
+{
+  char v_name[_MAX_VNAME_LEN];  // vendor name
+  char m_name[_MAX_MNAME_LEN];  // model name
+  int  family;
+  int  model;
+  int  stepping;
+};
+
+
+//  ------------------------------------------------------------------
+
+static bool HaveCPUID()
+{
+//  TO_PORT_TAG: CPUID
+#if defined(_MSC_VER)
+  __try
+  {
+    __asm
+    {
+      xor eax, eax
+      cpuid
+    }
+  }
+  __except(EXCEPTION_EXECUTE_HANDLER)
+  {
+    return false;
+  }
+  
+  return true;
+#else
+  return false;
+#endif
+}
+
+
+//  ------------------------------------------------------------------
+
+static void cpuname(int family, int model, const char *v_name, char *m_name)
+{
+  if (!strcmp("AuthenticAMD", v_name))
+  {
+    switch (family)
+    {
+    case 4:
+      strcpy(m_name, "AMD_486");
+      break;
+
+    case 5:
+      switch (model)
+      {
+      case 0:
+      case 1:
+      case 2:
+      case 3:
+        strcpy(m_name, "AMD_K5");
+        break;
+      case 6:
+      case 7:
+        strcpy(m_name, "AMD_K6");
+        break;
+      case 8:
+        strcpy(m_name, "AMD_K6-2");
+        break;
+      case 9:
+      case 10:
+      case 11:
+      case 12:
+      case 13:
+      case 14:
+      case 15:
+        strcpy(m_name, "AMD_K6-3");
+        break;
+      default:
+        sprintf(m_name, "AMD_F%dM%d", family, model);
+      }
+      break;
+
+    case 6:
+      strcpy(m_name, "AMD_K7");
+      break;
+
+    case 15:
+      strcpy(m_name, "AMD_K8");
+      break;
+
+    default:
+      sprintf(m_name, "AMD_F%dM%d", family, model);
+    }
+  }
+  else if (!strcmp("GenuineIntel", v_name))
+  {
+    switch (family)
+    {
+    case 4:
+      switch (model)
+      {
+      case 0:
+      case 1:
+        strcpy(m_name, "i486DX");
+        break;
+      case 2:
+        strcpy(m_name, "i486SX");
+        break;
+      case 3:
+        strcpy(m_name, "i486DX2");
+        break;
+      case 4:
+        strcpy(m_name, "i486SL");
+        break;
+      case 5:
+        strcpy(m_name, "i486SX2");
+        break;
+      case 7:
+        strcpy(m_name, "i486DX2E");
+        break;
+      case 8:
+        strcpy(m_name, "i486DX4");
+        break;
+      default:
+        sprintf(m_name, "iF%dM%d", family, model);
+      }
+      break;
+
+    case 5:
+      switch (model)
+      {
+      case 1:
+      case 2:
+      case 3:
+        strcpy(m_name, "iPentium");
+        break;
+      case 4:
+        strcpy(m_name, "iP-MMX");
+        break;
+      default:
+        sprintf(m_name, "iF%dM%d", family, model);
+      }
+      break;
+
+    case 6:
+      switch (model)
+      {
+      case 1:
+        strcpy(m_name, "iP-Pro");
+        break;
+      case 3:
+      case 5:
+        strcpy(m_name, "iP-II");
+        break;
+      case 6:
+        strcpy(m_name, "iCeleron");
+        break;
+      case 7:
+      case 8:
+      case 11:
+        strcpy(m_name, "iP-III");
+        break;
+      default:
+        sprintf(m_name, "iF%dM%d", family, model);
+      }
+      break;
+
+      case 15:
+        strcpy(m_name, "iP-4");
+        break;
+
+      default:
+        sprintf(m_name, "iF%dM%d", family, model);
+    }
+  }
+  else if (!strcmp("CyrixInstead", v_name))
+    sprintf(m_name, "CyrF%dM%d", family, model);
+  else if (!strcmp("CentaurHauls", v_name))
+    sprintf(m_name, "CenF%dM%d", family, model);
+  else
+    sprintf(m_name, "%3sF%dM%d", v_name, family, model);
+}
+
+
+//  ------------------------------------------------------------------
+
+void gcpuid(gcpu_info *pinfo)
+{
+  union
+  {
+    char buff[_MAX_VNAME_LEN];
+    struct
+    {
+      DWORD dw0;
+      DWORD dw1;
+      DWORD dw2;
+    };
+  } vendor;
+
+  DWORD standard = 0;
+  vendor.buff[_MAX_VNAME_LEN-1] = 0;
+
+//  TO_PORT_TAG: CPUID
+#if defined(_MSC_VER)
+  __asm
+  {
+    // get the vendor string
+    xor eax, eax
+    cpuid
+    mov vendor.dw0, ebx
+    mov vendor.dw1, edx
+    mov vendor.dw2, ecx
+
+    // get the standard bits
+    mov eax, 1
+    cpuid
+    mov standard, eax
+  }
+#else
+  strcpy(vendor.buff, "UNKNOUN_CPU!");
+#endif
+
+  pinfo->family = (standard >> 8) & 0xF;  // retriving family
+  pinfo->model = (standard >> 4) & 0xF;   // retriving model
+  pinfo->stepping = standard & 0xF;       // retriving stepping
+
+  strncpy(pinfo->v_name, vendor.buff, _MAX_VNAME_LEN);
+  cpuname(pinfo->family, pinfo->model, pinfo->v_name, pinfo->m_name);
+}
+
+
 //  ------------------------------------------------------------------
 
 char* ggetosstring(void) {
@@ -76,7 +312,7 @@ char* ggetosstring(void) {
     OSVERSIONINFO info;
     SYSTEM_INFO si;
     char ostype[16];
-    char processor[16];
+    char processor[_MAX_MNAME_LEN];
 
     GetSystemInfo(&si);
     info.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
@@ -95,12 +331,19 @@ char* ggetosstring(void) {
       switch(*((WORD*)&si)) {
         case PROCESSOR_ARCHITECTURE_INTEL:
           {
-            int cpu;
-
-            if(info.dwPlatformId == VER_PLATFORM_WIN32_NT)
-              cpu = si.wProcessorLevel;
-            else {
-              switch(si.dwProcessorType) {
+            if (HaveCPUID())
+            {
+              gcpu_info pinfo;
+              gcpuid(&pinfo);
+              strcpy(processor, pinfo.m_name);
+            }
+            else
+            {
+              int cpu;
+              if(info.dwPlatformId == VER_PLATFORM_WIN32_NT)
+                cpu = si.wProcessorLevel;
+              else {
+                switch(si.dwProcessorType) {
                 case PROCESSOR_INTEL_386:
                   cpu = 3;
                   break;
@@ -110,9 +353,10 @@ char* ggetosstring(void) {
                 default:
                   cpu = 5;
                   break;
+                }
               }
+              sprintf(processor, "i%d86", cpu);
             }
-            sprintf(processor, "i%d86", cpu);
           }
           break;
         case PROCESSOR_ARCHITECTURE_MIPS:

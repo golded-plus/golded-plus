@@ -10,6 +10,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ Win32-MSVC version: processor name will be used instead of "x86" in
+  @widepid and @osver macros.
+
 + EditToggleCase, EditToUpper and EditToLower keys will work on selected text.
 
 + Added MenuNextArea (yes/no/unread) config file token that set default
