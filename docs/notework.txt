@@ -10,6 +10,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ EditToggleCase, EditToUpper and EditToLower keys will work on selected text.
+
 + Added MenuNextArea (yes/no/unread) config file token that set default
   for cursor on "Goto Next Area?" menu.
 

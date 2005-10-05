@@ -399,6 +399,7 @@ public:
   void SpellCheck     ();
   void Tab            ();
   void ToggleCase     ();
+  void ToggleCaseBlock(gkey key);
   void SCodeChange(gkey key);
   void ToggleInsert   ();
   void ToLower        ();
@@ -406,6 +407,8 @@ public:
   void UnDelete       (bool before=true);
   void ZapQuoteBelow  ();
 
+private:
+  void ToggleCaseChar(gkey key, std::string::iterator it, Line *ln, int n);
 
   //  ----------------------------------------------------------------
 };

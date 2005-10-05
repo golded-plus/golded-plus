@@ -2027,6 +2027,133 @@ void IEclass::ToggleCase() {
 
 //  ------------------------------------------------------------------
 
+void IEclass::ToggleCaseChar(gkey key,
+                             std::string::iterator it,
+                             Line *ln, int n)
+{
+  int oldchar = *it;
+  int newchar = *it;
+
+  switch (key)
+  {
+  case KK_EditToLower:
+    newchar = tolower(*it);
+    break;
+
+  case KK_EditToUpper:
+    newchar = toupper(*it);
+    break;
+
+  case KK_EditToggleCase:
+    if (toupper(*it) == oldchar)
+      newchar = tolower(*it);
+    else
+      newchar = toupper(*it);
+    break;
+  }
+
+  if (newchar != oldchar)
+  {
+    currline = ln; pcol = col = n; getthisrow(currline); prow = thisrow;
+    Undo->PushItem(EDIT_UNDO_OVR_CHAR);
+    *it = newchar;
+  }
+}
+
+
+//  ------------------------------------------------------------------
+
+void IEclass::ToggleCaseBlock(gkey key)
+{
+  GFTRK("EditToggleCaseBlock");
+
+  // Find the anchor, if any
+  Line* _anchor = findanchor();
+
+  // Did we find the anchor?
+  if (_anchor)
+  {
+    Line* oldline = currline;
+    int   oldcol = col;
+
+    Line* _firstline = currline;
+    Line* _lastline  = currline;
+    int   firstcol = col, lastcol = col;
+
+    // Search below to find the anchor line
+    while (_lastline->next and (_lastline != _anchor))
+      _lastline = _lastline->next;
+
+    // Was the anchor line above or on the current line?
+    if (_lastline != _anchor)
+    {
+      // The last copy line is the current line
+      _lastline = currline;
+
+      // Search above to find the anchor line
+      while (_firstline->prev and (_firstline != _anchor))
+        _firstline = _firstline->prev;
+      firstcol = blockcol;
+    }
+    else
+    {
+      if (currline != _anchor or blockcol > col)
+        lastcol = blockcol;
+      else
+        firstcol = blockcol;
+    }
+
+    // The _firstline and _lastline pointers
+    // are now pointing where they should
+
+    int n;
+    Line* ln = _firstline;
+    std::string::iterator it1, it2;
+
+    if (ln == _lastline)
+    {
+      it1 = ln->txt.begin() + firstcol;
+      it2 = ln->txt.begin() + lastcol;
+      for (n = firstcol; it1 < it2; it1++, n++)
+        ToggleCaseChar(key, it1, ln, n);
+    }
+    else
+    {
+      it1 = ln->txt.begin() + firstcol;
+      it2 = ln->txt.end();
+      for (n = firstcol; it1 < it2; it1++, n++)
+        ToggleCaseChar(key, it1, ln, n);
+
+      for (ln = ln->next; ln != _lastline; ln = ln->next)
+      {
+        it1 = ln->txt.begin();
+        it2 = ln->txt.end();
+        for (n = 0; it1 < it2; it1++, n++)
+          ToggleCaseChar(key, it1, ln, n);
+      }
+
+      it1 = ln->txt.begin();
+      it2 = ln->txt.begin() + lastcol;
+      for (n = 0; it1 < it2; it1++, n++)
+        ToggleCaseChar(key, it1, ln, n);
+    }
+
+    currline = oldline;
+    pcol = col = oldcol;
+    getthisrow(currline);
+    prow = thisrow;
+  }
+
+  // Refresh display
+  Line* _topline = findtopline();
+  refresh(_topline, minrow);
+
+  GFTRK(NULL);
+}
+
+
+//  ------------------------------------------------------------------
+
 void IEclass::SCodeChange(gkey key)
 {
   GFTRK("EditSCodeChange");
@@ -2241,6 +2368,15 @@ int IEclass::handlekey(gkey __key) {
       }
       goto noselecting;
       break;
+
+    case KK_EditToLower:
+    case KK_EditToUpper:
+    case KK_EditToggleCase:
+      if (!selecting)  goto noselecting;
+
+      ToggleCaseBlock(__key);
+      undo_ready = NO;
+      return rc;
 
     default:
       rc = PlayMacro(__key, KT_E);
