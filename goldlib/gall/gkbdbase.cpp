@@ -1046,6 +1046,7 @@ gkey kbxget_raw(int mode) {
 //         =2 - return Shifts key status
   gkey k;
 
+//  TO_PORT_TAG: kbxget_raw(3)
   #if defined(__USE_NCURSES__)
 
   int key;
@@ -1242,8 +1243,12 @@ gkey kbxget_raw(int mode) {
 
   INPUT_RECORD inp;
   DWORD nread;
+  static gkey KeyCtrlState = 0;
 
-  if(mode == 2) {
+  if (mode == 3) {
+    return KeyCtrlState;
+  }
+  else if(mode == 2) {
     return 0;
   }
   else if(mode & 0x01) {
@@ -1559,6 +1564,10 @@ gkey kbxget_raw(int mode) {
   }
   #endif
 
+//  TO_PORT_TAG: kbxget_raw(3)
+#if defined(__WIN32__)
+  KeyCtrlState = (gkey)inp.Event.KeyEvent.dwControlKeyState;
+#endif
   return k;
 }
 

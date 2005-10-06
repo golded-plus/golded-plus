@@ -33,6 +33,8 @@
 #include <golded.h>
 #include <geedit.h>
 
+gkey kbxget_raw(int mode);
+
 
 //  ------------------------------------------------------------------
 //  Globals
@@ -1205,7 +1207,7 @@ void IEclass::GoWordRight() {
   if((col >= currline->txt.length()) or (currline->txt[col] == '\n')) {
     if(currline->next) {
       GoDown();
-      col = 0;
+      col = mincol;
     }
   }
   else {
@@ -1232,10 +1234,10 @@ void IEclass::GoWordRight() {
       else
         col--;
     }
-
-    if(blockcol != -1)
-      displine(currline, row);
   }
+
+  if (blockcol != -1)
+    displine(currline, row);
 
   GFTRK(NULL);
 }
@@ -2349,6 +2351,9 @@ int IEclass::handlekey(gkey __key) {
     case KK_EditBlockPgDn:   __key = KK_EditGoPgDn;    break;
     case KK_EditBlockPgUp:   __key = KK_EditGoPgUp;    break;
 
+    case KK_EditBlockWordRight: __key = KK_EditGoWordRight; break;
+    case KK_EditBlockWordLeft:  __key = KK_EditGoWordLeft;  break;
+
     case KK_EditCopy:
     case KK_EditCut:
     case KK_EditDelete:      goto noselecting;
@@ -2588,9 +2593,14 @@ int IEclass::Start(int __mode, uint* __position, GMsg* __msg) {
       vcurlarge();
 
     gkey _ch;
+    gkey keystatus = 0;
 
     do {
       _ch = getxchtick();
+//  TO_PORT_TAG: kbxget_raw(3)
+#if defined(__WIN32__)
+      keystatus = kbxget_raw(3);
+#endif
 
       if(EDIT->AutoSave()) {
         time_t _thistime = time(NULL);
@@ -2611,6 +2621,32 @@ int IEclass::Start(int __mode, uint* __position, GMsg* __msg) {
     gkey _kk = SearchKey(_ch, EditKey, EditKeys);
     if(_kk) {
       _ch = _kk;
+
+//  TO_PORT_TAG: kbxget_raw(3)
+#if defined(__WIN32__)
+      if (keystatus & SHIFT_PRESSED)
+#else
+      if (0)
+#endif
+      {
+        switch(_ch)
+        {
+        case KK_EditGoUp:         _ch = KK_EditBlockUp;         break;
+        case KK_EditGoDown:       _ch = KK_EditBlockDown;       break;
+        case KK_EditGoLeft:       _ch = KK_EditBlockLeft;       break;
+        case KK_EditGoWordLeft:   _ch = KK_EditBlockWordLeft;   break;
+        case KK_EditGoRight:      _ch = KK_EditBlockRight;      break;
+        case KK_EditGoWordRight:  _ch = KK_EditBlockWordRight;  break;
+        case KK_EditGoBegLine:
+        case KK_EditGoTopMsg:     _ch = KK_EditBlockHome;       break;
+        case KK_EditGoEOL:
+        case KK_EditGoBotMsg:     _ch = KK_EditBlockEnd;        break;
+        case KK_EditGoPgUp:
+        case KK_EditGoTopLine:    _ch = KK_EditBlockPgUp;       break;
+        case KK_EditGoPgDn:
+        case KK_EditGoBotLine:    _ch = KK_EditBlockPgDn;       break;
+        }
+      }
     }
     else {
       ismacro = IsMacro(_ch, KT_E);
