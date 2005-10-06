@@ -10,6 +10,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+! Added Microsoft Developer Studio 6.0 Workspace and GoldEd Project files
+  (use golded.dsw to open workspace)
+
 + TwitName and TwitSubj now may be used in random system groups.
 
 + Win32-MSVC version: processor name will be used instead of "x86" in
