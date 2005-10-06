@@ -342,6 +342,7 @@ const gkey KK_ReadShowHTML         = 0xFFBB;
 const gkey KK_ReadToggleHTML       = 0xFFBC;
 const gkey KK_ReadShowQuote        = 0xFFBD;
 const gkey KK_ReadHideQuote        = 0xFFBE;
+const gkey KK_ReadFindNext         = 0xFFBF;
 
 const gkey KK_HeaderAddressbook    = 0xFFC0;
 const gkey KK_HeaderLookup         = 0xFFC1;

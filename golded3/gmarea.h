@@ -345,7 +345,9 @@ class Area {
 
 private:
 
-  word        marks;            // storing 16 different marks
+  bool findfirst;
+  uint findtype;  //1 - FindAll, 2 - FindHdr
+  word marks;     // storing 16 different marks
 
   friend class AreaList;
 
@@ -381,6 +383,11 @@ public:
   ulong   lastreadentry() const;  // Lastread message number at entry to area
 
   void    set_lastread(uint lr);
+
+  void    set_findfirst(bool ff) { findfirst = ff; }
+  void    set_findtype(uint ft)  { findtype = ft;  }
+  bool    get_findfirst() { return findfirst; }
+  uint    get_findtype()  { return findtype;  }
 
   bool    isopen() { return area->isopen; }
 

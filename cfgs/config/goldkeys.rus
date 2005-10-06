@@ -316,6 +316,7 @@ F           READfindall
 Z           READfindheader
 @Z          READfindheader
 F6          READfindheader
+^F6         READfindnext
 #Tab        READgotobookmark
 BackSpace   READgotobookmark
 -           READgotoreplyprev

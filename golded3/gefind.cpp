@@ -40,12 +40,19 @@ void FindAll(GMsg* msg, int& topline, int& keyok) {
   if(AA->Msgn.Count()) {
     topline = 0;
     AA->attr().hex0();
-    strcpy(CFG->searchfor, AA->Searchfor());
-    if(edit_string(CFG->searchfor, sizeof(INam), LNG->HeaderText, H_FindString)) {
-      AA->SetSearchfor(CFG->searchfor);
-      if(FindString(msg, AA->Searchfor(), GFIND_HDRTXT))
-        keyok = true;
+
+    if (AA->get_findfirst())
+    {
+      strcpy(CFG->searchfor, AA->Searchfor());
+      if(edit_string(CFG->searchfor, sizeof(INam), LNG->HeaderText, H_FindString)) {
+        AA->SetSearchfor(CFG->searchfor);
+        if(FindString(msg, AA->Searchfor(), GFIND_HDRTXT))
+          keyok = true;
+        AA->set_findfirst(false);
+      }
     }
+    else if(FindString(msg, AA->Searchfor(), GFIND_HDRTXT))
+      keyok = true;
   }
 }
 
@@ -57,12 +64,19 @@ void FindHdr(GMsg* msg, int& topline, int& keyok) {
   if(AA->Msgn.Count()) {
     topline = 0;
     AA->attr().hex0();
-    strcpy(CFG->searchfor, AA->Searchfor());
-    if(edit_string(CFG->searchfor, sizeof(INam), LNG->HeaderOnly, H_FindString)) {
-      AA->SetSearchfor(CFG->searchfor);
-      if(FindString(msg, AA->Searchfor(), GFIND_HDR))
-        keyok = true;
+
+    if (AA->get_findfirst())
+    {
+      strcpy(CFG->searchfor, AA->Searchfor());
+      if(edit_string(CFG->searchfor, sizeof(INam), LNG->HeaderOnly, H_FindString)) {
+        AA->SetSearchfor(CFG->searchfor);
+        if(FindString(msg, AA->Searchfor(), GFIND_HDR))
+          keyok = true;
+        AA->set_findfirst(false);
+      }
     }
+    else if(FindString(msg, AA->Searchfor(), GFIND_HDR))
+      keyok = true;
   }
 }
 
@@ -102,15 +116,17 @@ bool FindString(GMsg* msg, const char* prompt, int what) {
     update_statuslinef(LNG->ReadingMsg, AA->lastread(), AA->Msgn.Count());
     w_progress(MODE_UPDATE, C_INFOW, AA->lastread(), AA->Msgn.Count(), LNG->AdvancedSearch);
 
+    bool success = false;
     if(AA->LoadMsg(msg, AA->Msgn.CvtReln(AA->lastread()), margin)) {
 
-      bool success;
       // If hit, search again current mail without shortcircuit evaluation
       success = srchmgr.search(msg, false, true);
       if(success)
         srchmgr.search(msg, false, false);
 
-      if((srchmgr.reverse ? not success : success) and (lastfound != msg->msgno)) {
+      if(((srchmgr.reverse ? !success : success) && (lastfound != msg->msgno))
+         || (success && AA->get_findfirst()))
+      {
         bool istwitto, istwitsubj;
         if(MsgIsTwit(msg, istwitto, istwitsubj) != TWIT_SKIP) {
           HandleGEvent(EVTT_SEARCHSUCCESS);

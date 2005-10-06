@@ -223,6 +223,7 @@ CmdKey DefaultKeyset[] = {
   { Key_Z       , KK_ReadFindHeader       , KT_R },
   { Key_A_Z     , KK_ReadFindHeader       , KT_R },
   { Key_F6      , KK_ReadFindHeader       , KT_R },
+  { Key_C_F6    , KK_ReadFindNext         , KT_R },
   { Key_S_Tab   , KK_ReadGotoBookMark     , KT_R },
   { Key_BS      , KK_ReadGotoBookMark     , KT_R },
   { Key_Lsr     , KK_ReadGotoFirstMsg     , KT_R },
@@ -654,6 +655,7 @@ tglobalkey globalkeys[] = {
   { CRC_K_CEND                 , Key_C_End               ,    0 }, // 0x7B95
   { CRC_READSTYLESSHOW         , KK_ReadStylesShow       , KT_R }, // 0x7D0D
   { CRC_K_APGUP                , Key_A_PgUp              ,    0 }, // 0x7E61
+  { CRC_READFINDNEXT           , KK_ReadFindNext         , KT_R }, // 0x8082
   { CRC_EDITQUITNOW            , KK_EditQuitNow          , KT_E }, // 0x80BA
   { CRC_LISTMARKINGOPTIONS     , KK_ListMarkingOptions   , KT_M }, // 0x8138
   { CRC_EDITZAPQUOTEBELOW      , KK_EditZapQuoteBelow    , KT_E }, // 0x814F

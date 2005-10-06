@@ -986,6 +986,7 @@ Area::Area(gmo_area* a) {
   isscanned = false;
   ispmscanned = false;
   istossed = false;
+  findfirst = true;
 }
 
 
