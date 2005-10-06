@@ -10,6 +10,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ TwitName and TwitSubj now may be used in random system groups.
+
 + Win32-MSVC version: processor name will be used instead of "x86" in
   @widepid and @osver macros.
 

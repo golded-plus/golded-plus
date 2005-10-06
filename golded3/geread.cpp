@@ -1055,7 +1055,8 @@ int MsgIsTwit(GMsg* msg, bool& istwitto, bool& istwitsubj) {
 
   // Check for twit names
   std::vector<Node>::iterator tn;
-  for(tn = CFG->twitname.begin(); tn != CFG->twitname.end(); tn++) {
+  for(tn = AA->adat->twitname.begin(); tn != AA->adat->twitname.end(); tn++)
+  {
     if(msg->orig.match(tn->addr)) {
       if(*tn->name == NUL or strwild(msg->By(), tn->name)) {
         istwit = true;
@@ -1076,7 +1077,8 @@ int MsgIsTwit(GMsg* msg, bool& istwitto, bool& istwitsubj) {
   // Check for twit subjects
   if(not istwit) {
     gstrarray::iterator n;
-    for(n = CFG->twitsubj.begin(); n != CFG->twitsubj.end(); n++) {
+    for(n = AA->adat->twitsubj.begin(); n != AA->adat->twitsubj.end(); n++)
+    {
       if(striinc(n->c_str(), msg->re)) {
         istwitsubj = true;
         istwit = true;

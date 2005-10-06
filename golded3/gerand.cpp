@@ -174,6 +174,9 @@ void Area::InitData() {
   strxcpy(adat->wtpl, CFG->wtpl.c_str(), sizeof(adat->wtpl));
   adat->templatematch = CFG->templatematch;
   adat->twitmode = CFG->twitmode;
+  adat->inittwit = true;
+  adat->twitname = CFG->twitname;
+  adat->twitsubj = CFG->twitsubj;
   adat->usearea = CFG->usearea;
   adat->usefwd = CFG->usefwd;
   strcpy(adat->username.name, CFG->username.empty() ? "" : CFG->username[CFG->usernameno].name);
@@ -360,6 +363,29 @@ void Area::RandomizeData(int mode) {
 
     CFG->grp.GetItm(GRP_TEMPLATEMATCH, adat->templatematch);
     CFG->grp.GetItm(GRP_TWITMODE, adat->twitmode);
+
+    if (adat->inittwit)
+    {
+      Node node;
+      std::string subj;
+
+      int i, nr = CFG->grp.GetItm(GRP_TWITNAME, &node, sizeof(node));
+      for (i = 0; i < nr; i++)
+      {
+        CFG->grp.GetItm(GRP_TWITNAME, &node, sizeof(node), i);
+        adat->twitname.push_back(node);
+      }
+
+      nr = CFG->grp.GetItm(GRP_TWITSUBJ, subj);
+      for (i = 0; i < nr; i++)
+      {
+        CFG->grp.GetItm(GRP_TWITSUBJ, subj, i);
+        adat->twitsubj.push_back(subj);
+      }
+
+      adat->inittwit = false;
+    }
+
     CFG->grp.GetItm(GRP_USEAREA, adat->usearea);
     CFG->grp.GetItm(GRP_USEFWD, adat->usefwd);
 

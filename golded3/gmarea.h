@@ -323,6 +323,9 @@ struct AreaData {
   Path   outputfile;
   INam   searchfor;
   int    twitmode;
+  bool   inittwit;
+  std::vector<Node> twitname;
+  gstrarray         twitsubj;
   bool   viewhidden;
   bool   viewkludge;
   bool   viewquote;

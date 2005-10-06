@@ -282,14 +282,23 @@ void CfgTwitname() {
     }
   }
   strxcpy(tn.name, val, sizeof(tn.name));
-  CFG->twitname.push_back(tn);
+
+  if(cfgingroup)
+    CFG->grp.AddItm(GRP_TWITNAME, &tn, sizeof(tn));
+  else
+    CFG->twitname.push_back(tn);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgTwitsubj() {
+void CfgTwitsubj()
+{
+  std::string str = StripQuotes(val);
 
-  CFG->twitsubj.push_back(StripQuotes(val));
+  if(cfgingroup)
+    CFG->grp.AddItm(GRP_TWITSUBJ, str);
+  else
+    CFG->twitsubj.push_back(str);
 }
 
 //  ------------------------------------------------------------------
