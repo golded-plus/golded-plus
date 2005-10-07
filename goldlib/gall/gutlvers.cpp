@@ -51,8 +51,8 @@
 
 struct gcpu_info
 {
-  char v_name[_MAX_VNAME_LEN];  // vendor name
-  char m_name[_MAX_MNAME_LEN];  // model name
+  char v_name[_MAX_VNAME_LEN+1];  // vendor name
+  char m_name[_MAX_MNAME_LEN+1];  // model name
   int  family;
   int  model;
   int  stepping;
