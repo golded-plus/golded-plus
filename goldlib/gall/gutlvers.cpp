@@ -241,7 +241,7 @@ void gcpuid(gcpu_info *pinfo)
       DWORD dw0;
       DWORD dw1;
       DWORD dw2;
-    };
+    } dw;
   } vendor;
 
   DWORD standard = 0;
