@@ -350,12 +350,26 @@ char* ggetosstring(void) {
                 case PROCESSOR_INTEL_486:
                   cpu = 4;
                   break;
-                default:
+                case PROCESSOR_INTEL_PENTIUM:
                   cpu = 5;
+                case PROCESSOR_INTEL_IA64:
+                  cpu = 64;
+                default:
+                  cpu = 6;
                   break;
                 }
               }
-              sprintf(processor, "i%d86", cpu);
+              switch(cpu) {
+              case 15:
+                sprintf(processor, "i786");
+                break;
+              case 64:
+                sprintf(processor, "IA64");
+                break;
+              default:
+                if( cpu>9 ) cpu= cpu%10+int(cpu/10)+1;
+                sprintf(processor, "i%d86", cpu);
+              }
             }
           }
           break;
