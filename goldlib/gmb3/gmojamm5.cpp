@@ -97,48 +97,48 @@ Line* JamArea::make_dump_msg(Line*& lin, gmsg* __msg, char* lng_head) {
   AddLineF(line, "Signature     : %s",     _hdr->signature);
   AddLineF(line, "Revision      : %u",     _hdr->revision);
   AddLineF(line, "ReservedWord  : %u",     _hdr->reservedword);
-  AddLineF(line, "SubfieldLen   : %lu",    _hdr->subfieldlen);
-  AddLineF(line, "TimesRead     : %lu",    _hdr->timesread);
-  AddLineF(line, "MSGIDcrc      : %08lXh", _hdr->msgidcrc);
-  AddLineF(line, "REPLYcrc      : %08lXh", _hdr->replycrc);
-  AddLineF(line, "ReplyTo       : %lu",    _hdr->replyto);
-  AddLineF(line, "Reply1st      : %lu",    _hdr->reply1st);
-  AddLineF(line, "ReplyNext     : %lu",    _hdr->replynext);
-  AddLineF(line, "DateWritten   : %s (%08lXh)", TimeToStr(buf, _hdr->datewritten), (long)_hdr->datewritten);
-  AddLineF(line, "DateReceived  : %s (%08lXh)", TimeToStr(buf, _hdr->datereceived), (long)_hdr->datereceived);
-  AddLineF(line, "DateProcessed : %s (%08lXh)", TimeToStr(buf, _hdr->dateprocessed), (long)_hdr->dateprocessed);
-  AddLineF(line, "MessageNumber : %lu",    _hdr->messagenumber);
-  AddLineF(line, "Attribute     : %08lXh (%sb)", _hdr->attribute,  ltob(buf, _hdr->attribute, 0));
-  AddLineF(line, "Attribute2    : %08lXh (%sb)", _hdr->attribute2, ltob(buf, _hdr->attribute2, 0));
-  AddLineF(line, "Offset        : %lu",    _hdr->offset);
-  AddLineF(line, "TxtLen        : %lu",    _hdr->txtlen);
-  AddLineF(line, "PasswordCRC   : %08lXh", _hdr->passwordcrc);
-  AddLineF(line, "Cost          : %lu",    _hdr->cost);
+  AddLineF(line, "SubfieldLen   : %u",    _hdr->subfieldlen);
+  AddLineF(line, "TimesRead     : %u",    _hdr->timesread);
+  AddLineF(line, "MSGIDcrc      : %08Xh", _hdr->msgidcrc);
+  AddLineF(line, "REPLYcrc      : %08Xh", _hdr->replycrc);
+  AddLineF(line, "ReplyTo       : %u",    _hdr->replyto);
+  AddLineF(line, "Reply1st      : %u",    _hdr->reply1st);
+  AddLineF(line, "ReplyNext     : %u",    _hdr->replynext);
+  AddLineF(line, "DateWritten   : %s (%08Xh)", TimeToStr(buf, _hdr->datewritten), (int32_t)_hdr->datewritten);
+  AddLineF(line, "DateReceived  : %s (%08Xh)", TimeToStr(buf, _hdr->datereceived), (int32_t)_hdr->datereceived);
+  AddLineF(line, "DateProcessed : %s (%08Xh)", TimeToStr(buf, _hdr->dateprocessed), (int32_t)_hdr->dateprocessed);
+  AddLineF(line, "MessageNumber : %u",    _hdr->messagenumber);
+  AddLineF(line, "Attribute     : %08Xh (%sb)", _hdr->attribute,  ltob(buf, _hdr->attribute, 0));
+  AddLineF(line, "Attribute2    : %08Xh (%sb)", _hdr->attribute2, ltob(buf, _hdr->attribute2, 0));
+  AddLineF(line, "Offset        : %u",    _hdr->offset);
+  AddLineF(line, "TxtLen        : %u",    _hdr->txtlen);
+  AddLineF(line, "PasswordCRC   : %08Xh", _hdr->passwordcrc);
+  AddLineF(line, "Cost          : %u",    _hdr->cost);
   line = AddLine(line, "");
   AddLineF(line, "Index Record:");
   line = AddLine(line, "");
-  AddLineF(line, "UserCrc       : %08lXh", _idx.usercrc);
-  AddLineF(line, "HeaderOffset  : %08lXh (%lu)", _idx.hdroffset, _idx.hdroffset);
+  AddLineF(line, "UserCrc       : %08Xh", _idx.usercrc);
+  AddLineF(line, "HeaderOffset  : %08Xh (%u)", _idx.hdroffset, _idx.hdroffset);
   line = AddLine(line, "");
   AddLineF(line, "Lastread Record:");
   line = AddLine(line, "");
-  AddLineF(line, "Index         : %lu",    data->lastpos);
-  AddLineF(line, "UserCrc       : %08lXh", data->lastrec.usercrc);
-  AddLineF(line, "UserId        : %08lXh", data->lastrec.userid);
-  AddLineF(line, "Lastread      : %lu",    data->lastrec.lastread);
-  AddLineF(line, "Highread      : %lu",    data->lastrec.highread);
+  AddLineF(line, "Index         : %u",    data->lastpos);
+  AddLineF(line, "UserCrc       : %08Xh", data->lastrec.usercrc);
+  AddLineF(line, "UserId        : %08Xh", data->lastrec.userid);
+  AddLineF(line, "Lastread      : %u",    data->lastrec.lastread);
+  AddLineF(line, "Highread      : %u",    data->lastrec.highread);
   line = AddLine(line, "");
   AddLineF(line, "Base Header:");
   line = AddLine(line, "");
-  AddLineF(line, "DateCreated   : %s (%08lXh)", TimeToStr(buf, _base->datecreated), (long)_base->datecreated);
-  AddLineF(line, "ModCounter    : %lu",    _base->modcounter);
-  AddLineF(line, "ActiveMsgs    : %lu",    _base->activemsgs);
-  AddLineF(line, "PasswordCRC   : %08lXh", _base->passwordcrc);
-  AddLineF(line, "BaseMsgNum    : %lu",    _base->basemsgnum);
+  AddLineF(line, "DateCreated   : %s (%08Xh)", TimeToStr(buf, _base->datecreated), (int32_t)_base->datecreated);
+  AddLineF(line, "ModCounter    : %u",    _base->modcounter);
+  AddLineF(line, "ActiveMsgs    : %u",    _base->activemsgs);
+  AddLineF(line, "PasswordCRC   : %08Xh", _base->passwordcrc);
+  AddLineF(line, "BaseMsgNum    : %u",    _base->basemsgnum);
   if(jamwide->smapihw)
-    AddLineF(line, "HighWaterMark : %lu",    _base->highwatermark);
+    AddLineF(line, "HighWaterMark : %u",    _base->highwatermark);
   else if(data->highwater != -1)
-    AddLineF(line, "HighWaterMark : %lu",    data->highwater);
+    AddLineF(line, "HighWaterMark : %u",    data->highwater);
   else
     AddLineF(line, "HighWaterMark : unknown");
   line = AddLine(line, "");
@@ -155,12 +155,12 @@ Line* JamArea::make_dump_msg(Line*& lin, gmsg* __msg, char* lng_head) {
     _subfieldpos += sizeof(JamSubFieldHdr);
     uint _datlen = (uint)_subfieldptr->datlen;
     if(_subfieldpos > _hdr->subfieldlen) {
-      AddLineF(line, "Error: SubfieldHdr at pos %lu exceeds SubfieldLen (%lu)!", (unsigned long)(_subfieldpos-sizeof(JamSubFieldHdr)), _hdr->subfieldlen);
+      AddLineF(line, "Error: SubfieldHdr at pos %u exceeds SubfieldLen (%u)!", (uint)(_subfieldpos-sizeof(JamSubFieldHdr)), _hdr->subfieldlen);
       break;
     }
     if((_subfieldpos + _datlen) > _hdr->subfieldlen) {
       _datlen = (uint)(_hdr->subfieldlen - _subfieldpos);
-      AddLineF(line, "Error: SubfieldData at pos %u is too long (%u)!  Cut to %u.", _subfieldpos, (uint)_subfieldptr->datlen, _datlen);
+      AddLineF(line, "Error: SubfieldData at pos %u is too int32_t (%u)!  Cut to %u.", _subfieldpos, (uint)_subfieldptr->datlen, _datlen);
     }
     AddLineF(line, "%05u [%3u]: \"%-*.*s\"",
       _subfieldptr->loid, _datlen,

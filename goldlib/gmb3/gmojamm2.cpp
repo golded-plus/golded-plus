@@ -142,7 +142,7 @@ void JamArea::open_area() {
 
   if(not jamwide->smapihw and (data->fhjhw != -1)) {
     lseek(data->fhjhw, 0, SEEK_SET);
-    read(data->fhjhw, &data->highwater, sizeof(long));
+    read(data->fhjhw, &data->highwater, sizeof(int32_t));
   }
   else
     data->highwater = -1;
@@ -221,7 +221,7 @@ void JamArea::raw_scan(int __keep_index, int __scanpm) {
   }
 
   // Get some sizes
-  long _jdxlen = filelength(data->fhjdx);
+  int32_t _jdxlen = filelength(data->fhjdx);
   uint _jdxsize  = (uint)_jdxlen;
   uint _jdxtotal = _jdxsize / sizeof(JamIndex);
 
@@ -237,16 +237,16 @@ void JamArea::raw_scan(int __keep_index, int __scanpm) {
   read(data->fhjdx, _jdxbuf, _jdxsize);
 
   // Variables for the loop
-  register uint _active = 0;
-  register ulong _firstmsgno = 0;
-  register ulong _lastmsgno = 0;
-  register ulong _lastreadfound = 0;
-  register ulong _msgno = data->hdrinfo.basemsgnum;
-  register ulong _total = data->hdrinfo.basemsgnum + _jdxtotal;
-  register ulong _lastread = data->lastrec.lastread;
-  register uint _lastread_reln = 0;
-  register ulong* _msgndxptr = Msgn->tag;
-  register JamIndex* _jdxptr = _jdxbuf;
+  uint _active = 0;
+  uint _firstmsgno = 0;
+  uint _lastmsgno = 0;
+  uint _lastreadfound = 0;
+  uint _msgno = data->hdrinfo.basemsgnum;
+  uint _total = data->hdrinfo.basemsgnum + _jdxtotal;
+  uint _lastread = data->lastrec.lastread;
+  uint _lastread_reln = 0;
+  uint32_t* _msgndxptr = Msgn->tag;
+  JamIndex* _jdxptr = _jdxbuf;
 
   // Fill message index
   while(_msgno < _total) {
@@ -291,9 +291,9 @@ void JamArea::raw_scan(int __keep_index, int __scanpm) {
       ucrc[uc] = strCrc32(uname, NO, CRC32_MASK_CCITT);
     }
     PMrk->ResetAll();
-    register uint n = lastread + 1;
-    register uint cnt = Msgn->Count();
-    register int gotpm = false;
+    uint n = lastread + 1;
+    uint cnt = Msgn->Count();
+    int gotpm = false;
     while(n <= cnt) {
       JamIndex* idx = _jdxbuf + (uint)(Msgn->at(n-1) - data->hdrinfo.basemsgnum);
       for(int u=0; u<umax; u++) {
@@ -319,7 +319,7 @@ void JamArea::raw_scan(int __keep_index, int __scanpm) {
   }
 
   if(WideDebug) {
-    WideLog->printf("- %s: t:%u, l:%u, fm:%lu, hm:%lu, lr:%lu, u:%lu, pm:%i",
+    WideLog->printf("- %s: t:%u, l:%u, fm:%u, hm:%u, lr:%u, u:%u, pm:%i",
       echoid(),
       Msgn->Count(),
       lastread,

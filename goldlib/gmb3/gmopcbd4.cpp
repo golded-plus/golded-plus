@@ -109,9 +109,9 @@ void PcbArea::save_message(int __mode, gmsg* __msg, PcbHdr& __hdr) {
 
   // Find msgno and index offset
   PcbIdx _idx;
-  ulong oldmsgno = __msg->msgno;
-  long oldtxtstart = __msg->txtstart;
-  long oldtxtlength = __msg->txtlength;
+  uint32_t oldmsgno = __msg->msgno;
+  int32_t oldtxtstart = __msg->txtstart;
+  int32_t oldtxtlength = __msg->txtlength;
   if(__mode & GMSG_TXT) {
     if(data->base.lowmsgno == 0)
       data->base.lowmsgno = 1;
@@ -120,7 +120,7 @@ void PcbArea::save_message(int __mode, gmsg* __msg, PcbHdr& __hdr) {
     __msg->msgno = data->base.highmsgno;
     Msgn->Append(__msg->msgno);
   }
-  long _idxoffset = (__msg->msgno-data->base.lowmsgno)*(long)sizeof(PcbIdx);
+  int32_t _idxoffset = (__msg->msgno-data->base.lowmsgno)*sizeof(PcbIdx);
   __hdr.blocks = (byte)__msg->txtblocks;
   _idx.num = __msg->msgno;
   _idx.reserved[0] = _idx.reserved[1] = _idx.reserved[2] = 0;

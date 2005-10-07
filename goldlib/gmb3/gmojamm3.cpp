@@ -57,7 +57,7 @@ int JamArea::load_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
   read(data->fhjhr, &__hdr, sizeof(JamHdr));
 
   if(strncmp(__hdr.signature, "JAM", 4) != 0) {
-    WideLog->printf("! Invalid signature found in %s (msgno %ld).", path(), __msg->msgno);
+    WideLog->printf("! Invalid signature found in %s (msgno %d).", path(), __msg->msgno);
     WideLog->printf(": Info: Your msgbase is corrupted.");
     WideLog->printf("+ Advice: Run a msgbase index rebuild/recover utility.");
 
@@ -315,7 +315,7 @@ int JamArea::load_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
   // Get reply numbers in chain
   if(wide->lookreplies and __msg->link.first()) {
     int r = 0;
-    ulong m = __msg->link.first();
+    uint32_t m = __msg->link.first();
     while(m and (r < __msg->link.list_max())) {
       JamHdr _rhdr;
       memset(&_rhdr, 0, sizeof(JamHdr));
@@ -336,7 +336,7 @@ int JamArea::load_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
     uint _kludgelen1 = strlen(_kludges);
     uint _kludgelen2 = strlen(_kludges2);
     uint _kludgelen = _kludgelen1 + _kludgelen2;
-    ulong _msgsize = __hdr.txtlen;
+    uint32_t _msgsize = __hdr.txtlen;
 
     // Allocate memory for the message text
     __msg->txt = (char*)throw_realloc(_kludges, (uint)(_msgsize+_kludgelen+256));

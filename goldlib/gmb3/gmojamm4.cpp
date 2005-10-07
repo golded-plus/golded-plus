@@ -76,7 +76,7 @@ void JamArea::lock() {
     }
     if(data->fhjhw != -1) {
       lseek(data->fhjhw, 0, SEEK_SET);
-      read(data->fhjhw, &data->highwater, sizeof(long));
+      read(data->fhjhw, &data->highwater, sizeof(int32_t));
     }
     else
       data->highwater = -1;
@@ -105,9 +105,9 @@ void JamArea::unlock() {
 
 //  ------------------------------------------------------------------
 
-void JamArea::add_subfield(JamHdr& __hdr, byte*& __subfield, word __loid, word __hiid, char* __data, ulong __maxlen) {
+void JamArea::add_subfield(JamHdr& __hdr, byte*& __subfield, word __loid, word __hiid, char* __data, uint32_t __maxlen) {
 
-  ulong _datlen = strlen(__data);
+  uint32_t _datlen = strlen(__data);
   __subfield = (byte*)throw_realloc(__subfield, (uint)__hdr.subfieldlen+sizeof(JamSubFieldHdr)+_datlen);
   JamSubField* _subfieldptr = (JamSubField*)(__subfield + (uint)__hdr.subfieldlen);
   _subfieldptr->loid = __loid;
@@ -223,7 +223,7 @@ void JamArea::save_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
       if(_pdptr->control > CTRL_KLUDGE) {
         uint _offset = 0;
         word _loid = 0;
-        ulong _maxlen = 0;
+        uint32_t _maxlen = 0;
         switch(_pdptr->control) {
           case CTRL_INTL:
           case CTRL_FMPT:
@@ -442,7 +442,7 @@ void JamArea::save_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
       if(data->highwater >= __msg->msgno) {
         data->highwater = __msg->msgno - 1;
         lseek(data->fhjhw, 0, SEEK_SET);
-        write(data->fhjhw, &data->highwater, sizeof(long));
+        write(data->fhjhw, &data->highwater, sizeof(int32_t));
       }
     }
   }

@@ -114,7 +114,7 @@ struct FidoHdr {
 //  ------------------------------------------------------------------
 
 struct FidoData {
-  ulong highwatermark;
+  uint32_t highwatermark;
 };
 
 
@@ -144,7 +144,7 @@ protected:
   void data_open();
   void data_close();
 
-  char* build_msgname(char* __buf, ulong __msgno);
+  char* build_msgname(char* __buf, uint32_t __msgno);
   int test_open(const char* __file, int __openmode, int __sharemode, int __fail=NO);
   void raw_scan(bool __scanpm);
   int load_message(int __mode, gmsg* __msg, FidoHdr& __hdr);

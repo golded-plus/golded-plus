@@ -252,7 +252,7 @@ int SMBArea::load_hdr(gmsg* __msg, smbmsg_t *smsg)
 
   smbmsg_t local_smsg, *smsgp;
   smsgp = smsg ? smsg : &local_smsg;
-  ulong reln = Msgn->ToReln(__msg->msgno);
+  uint32_t reln = Msgn->ToReln(__msg->msgno);
   if(reln == 0) {
     GFTRK(NULL);
     return false;
@@ -348,13 +348,13 @@ int SMBArea::load_msg(gmsg* msg)
   smbmsg_t smsg;
   ushort xlat;
   uchar *inbuf;
-  long outlen;
+  int32_t outlen;
   char buf[512];
   int i;
   bool lzh;
   bool tail = true;
-  ulong l;
-  ulong txt_len = 1;
+  uint32_t l;
+  uint32_t txt_len = 1;
 
   GFTRK("SMBLoadMsg");
 
@@ -448,7 +448,7 @@ common:
         if(lzh) {
           inbuf = (uchar *)throw_xmalloc(smsg.dfield[i].length);
           fread(inbuf, smsg.dfield[i].length - l, 1, data->sdt_fp);
-          outlen = *(long *)inbuf;
+          outlen = *(int32_t *)inbuf;
           msg->txt = (char *)throw_realloc(msg->txt, txt_len+outlen);
           lzh_decode(inbuf, smsg.dfield[i].length - l, (uchar *)(msg->txt+txt_len-1));
           throw_xfree(inbuf);
@@ -502,7 +502,7 @@ void SMBArea::save_hdr(int mode, gmsg* msg)
   int rv;
   char ch;
   bool done, cr;
-  ulong l, m, bodylen, taillen, crc;
+  uint32_t l, m, bodylen, taillen, crc;
   char *fbuf, *sbody, *stail;
   char buf[256];
   smbmsg_t smsg;
@@ -513,7 +513,7 @@ void SMBArea::save_hdr(int mode, gmsg* msg)
   smb_getstatus(data);
   memset(&smsg, 0, sizeof(smbmsg_t));
   if(not (mode & GMSG_NEW)) {
-    ulong reln = Msgn->ToReln(msg->msgno);
+    uint32_t reln = Msgn->ToReln(msg->msgno);
     if(reln == 0) {
       GFTRK(NULL);
       return;
@@ -745,13 +745,13 @@ void SMBArea::save_hdr(int mode, gmsg* msg)
       smb_close_da(data);
     }
     else
-      smsg.hdr.offset = (ulong)-1L;
+      smsg.hdr.offset = (uint32_t)-1L;
   }
   else {
     smsg.hdr.offset = smb_hallocdat(data);
   }
 
-  if(smsg.hdr.offset != (ulong)-1L) {
+  if(smsg.hdr.offset != (uint32_t)-1L) {
     fseek(data->sdt_fp, smsg.hdr.offset, SEEK_SET);
     *(ushort *)(sbody-2) = XLAT_NONE;
     l = ftell(data->sdt_fp);
@@ -775,7 +775,7 @@ void SMBArea::save_hdr(int mode, gmsg* msg)
     else {
       // Changing message... It is always bad idea since it is usually
       // undescribed and not supported by the API
-      long l;
+      int32_t l;
 
       if(data->locked or (smb_locksmbhdr(data) == 0)) {
         if(smb_getstatus(data) == 0) {
@@ -829,7 +829,7 @@ void SMBArea::del_msg(gmsg* msg)
   GFTRK("SMBDelMsg");
 
   smbmsg_t smsg;
-  ulong reln = Msgn->ToReln(msg->msgno);
+  uint32_t reln = Msgn->ToReln(msg->msgno);
   if(reln == 0) {
     GFTRK(NULL);
     return;
@@ -966,18 +966,18 @@ Line* SMBArea::make_dump_msg(Line*& lin, gmsg* msg, char* lng_head)
   line = AddLineF(line, "Version           : %04Xh", smsg.hdr.version);
   line = AddLineF(line, "Length            : %u", smsg.hdr.length);
   line = AddLineF(line, "Attr              : %04Xh", smsg.hdr.attr);
-  line = AddLineF(line, "AUXAttr           : %04lXh", smsg.hdr.auxattr);
-  line = AddLineF(line, "NetAttr           : %04lXh", smsg.hdr.netattr);
+  line = AddLineF(line, "AUXAttr           : %04Xh", smsg.hdr.auxattr);
+  line = AddLineF(line, "NetAttr           : %04Xh", smsg.hdr.netattr);
   stpcpy(buf, ctime((time_t *)&smsg.hdr.when_written.time))[-1] = NUL;
   line = AddLineF(line, "Written           : %s", buf);
   stpcpy(buf, ctime((time_t *)&smsg.hdr.when_imported.time))[-1] = NUL;
   line = AddLineF(line, "Imported          : %s", buf);
-  line = AddLineF(line, "Number            : %ld (%ld)", smsg.hdr.number, (long)(ftell(data->sid_fp)/sizeof(idxrec_t)));
-  line = AddLineF(line, "Thread orig       : %ld", smsg.hdr.thread_orig);
-  line = AddLineF(line, "Thread next       : %ld", smsg.hdr.thread_next);
-  line = AddLineF(line, "Thread first      : %ld", smsg.hdr.thread_first);
+  line = AddLineF(line, "Number            : %d (%d)", smsg.hdr.number, (int32_t)(ftell(data->sid_fp)/sizeof(idxrec_t)));
+  line = AddLineF(line, "Thread orig       : %d", smsg.hdr.thread_orig);
+  line = AddLineF(line, "Thread next       : %d", smsg.hdr.thread_next);
+  line = AddLineF(line, "Thread first      : %d", smsg.hdr.thread_first);
   line = AddLineF(line, "Reserved          : %s", HexDump16(buf, (const char*)smsg.hdr.reserved, 16, "%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X"));
-  line = AddLineF(line, "Offset            : %06lXh", smsg.hdr.offset);
+  line = AddLineF(line, "Offset            : %06Xh", smsg.hdr.offset);
   line = AddLineF(line, "Total dfields     : %u", smsg.hdr.total_dfields);
 
   if(smsg.from_net.type) {
@@ -1005,8 +1005,8 @@ Line* SMBArea::make_dump_msg(Line*& lin, gmsg* msg, char* lng_head)
 
   for (i = 0; i < smsg.hdr.total_dfields; i++) {
     line = AddLineF(line, "dfield[%02u].type   : %02X", i, smsg.dfield[i].type);
-    line = AddLineF(line, "dfield[%02u].offset : %lu", i, smsg.dfield[i].offset);
-    line = AddLineF(line, "dfield[%02u].length : %lu", i, smsg.dfield[i].length);
+    line = AddLineF(line, "dfield[%02u].offset : %u", i, smsg.dfield[i].offset);
+    line = AddLineF(line, "dfield[%02u].length : %u", i, smsg.dfield[i].length);
   }
 
   line = AddLine(line, "");
@@ -1038,11 +1038,11 @@ Line* SMBArea::make_dump_msg(Line*& lin, gmsg* msg, char* lng_head)
 
   ushort xlat;
   uchar *inbuf;
-  long outlen;
+  int32_t outlen;
   bool lzh;
   bool tail = true;
-  ulong l;
-  ulong txt_len = 1;
+  uint32_t l;
+  uint32_t txt_len = 1;
 
   msg->txt = throw_strdup("");
 
@@ -1073,7 +1073,7 @@ common:
         if(lzh) {
           inbuf = (uchar *)throw_xmalloc(smsg.dfield[i].length);
           fread(inbuf, smsg.dfield[i].length - l, 1, data->sdt_fp);
-          outlen = *(long *)inbuf;
+          outlen = *(int32_t *)inbuf;
           msg->txt = (char *)throw_realloc(msg->txt, txt_len+outlen);
           lzh_decode(inbuf, smsg.dfield[i].length - l, (uchar *)(msg->txt+txt_len-1));
           throw_xfree(inbuf);

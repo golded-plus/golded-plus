@@ -55,7 +55,7 @@ void EzycomArea::raw_scan(int __keep_index) {
   int _fh = ::sopen(AddPath(wide->userbasepath, "LASTCOMB.BBS"), O_RDONLY|O_BINARY, SH_DENYNO, S_STDRD);
   if(_fh != -1) {
     word _lastread;
-    lseekset(_fh, (long)wide->userno * ((long)wide->maxmess / 16) * (long)sizeof(EzycLast) +
+    lseekset(_fh, wide->userno * (wide->maxmess / 16) * sizeof(EzycLast) +
       (((board() - 1) / 16) * sizeof(EzycLast) + sizeof(word)) +
       (board()-1) % 16 * sizeof(word)
     );
@@ -63,13 +63,13 @@ void EzycomArea::raw_scan(int __keep_index) {
     if(_lastread)
       _lastread--;
 
-    register uint _active = Msgn->Count();
-    register uint _count = 1;
-    register ulong* _msgnoptr = Msgn->tag;
-    register uint _lastread_reln = 0;
-    register ulong _firstmsgno = 0;
-    register ulong _lastmsgno = 0;
-    register ulong _lastreadfound = 0;
+    uint _active = Msgn->Count();
+    uint _count = 1;
+    uint32_t* _msgnoptr = Msgn->tag;
+    uint _lastread_reln = 0;
+    uint _firstmsgno = 0;
+    uint _lastmsgno = 0;
+    uint _lastreadfound = 0;
 
     if(_active) {
 

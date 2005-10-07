@@ -32,6 +32,7 @@
 
 #include <cstddef>
 #include <gcmpall.h>
+#include <stdint.h>
 
 //  ------------------------------------------------------------------
 // Disable some MS Visual C warnings
@@ -106,13 +107,16 @@ typedef unsigned char   uchar;
 typedef unsigned short ushort;
 typedef unsigned int     uint;
 typedef unsigned long   ulong;
-typedef unsigned char    byte;
-typedef   signed char   sbyte;
-typedef unsigned short   word;
-typedef   signed short  sword;
-typedef unsigned long   dword;
-typedef   signed long  sdword;
 
+typedef unsigned char  bit;
+typedef uint8_t    byte;
+typedef  int8_t   sbyte;
+typedef uint16_t   word;
+typedef  int16_t  sword;
+typedef uint32_t  dword;
+typedef  int32_t sdword;
+
+typedef uint32_t time32_t;   /* 32-bit time_t type */
 
 //  ------------------------------------------------------------------
 //  Common function-pointer types

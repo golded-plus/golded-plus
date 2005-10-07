@@ -116,7 +116,7 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::save_message(i
   msgn_t _hdridx;
   if(__mode & GMSG_NEW) {
     __msg->msgno = wide->msginfo.high + 1;
-    _hdridx = (msgn_t)(filelength(wide->fhhdr)/(long)sizeof(HudsHdr));
+    _hdridx = (msgn_t)(filelength(wide->fhhdr)/sizeof(HudsHdr));
   }
   else {
     _hdridx = get_hdr_idx(__msg, __FILE__, __LINE__);
@@ -181,7 +181,7 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::save_message(i
 
     // If the msg is new or the text is too large to fit
     uint _txtlen = strlen(__msg->txt)+1;
-    if((__mode & GMSG_NEW) or (_txtlen > ((long)__msg->txtlength*255L)))
+    if((__mode & GMSG_NEW) or (_txtlen > __msg->txtlength*255L))
       __hdr.startrec = (msgn_t)(filelength(wide->fhtxt)/256L);
 
     // Calculate the number of text records to write
@@ -190,7 +190,7 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::save_message(i
     __hdr.numrecs = (word)(_fullrecs + (_extrarec ? 1 : 0));
 
     // Seek to the text write position
-    lseek(wide->fhtxt, (long)__hdr.startrec*256L, SEEK_SET);
+    lseek(wide->fhtxt, __hdr.startrec*256L, SEEK_SET);
 
     // Write the message text
     register uint _count = 0;
@@ -213,22 +213,22 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::save_message(i
   }
 
   // Write to MSGHDR.BBS/DAT
-  lseek(wide->fhhdr, (long)_hdridx*(long)sizeof(HudsHdr), SEEK_SET);
+  lseek(wide->fhhdr, _hdridx*sizeof(HudsHdr), SEEK_SET);
   write(wide->fhhdr, &__hdr, sizeof(HudsHdr));
 
   // Write to MSGIDX.BBS/DAT
   if(__mode & GMSG_NEW) {
     wide->msgidxsize += sizeof(HudsIdx);
-    wide->msgidxptr = (HudsIdx*)throw_realloc(wide->msgidxptr, (uint)(wide->msgidxsize+sizeof(HudsIdx)));
+    wide->msgidxptr = (HudsIdx*)throw_realloc(wide->msgidxptr, wide->msgidxsize+sizeof(HudsIdx));
   }
   HudsIdx* _idxp = wide->msgidxptr + (uint)_hdridx;
   _idxp->board = __hdr.board;
   _idxp->msgno = (msgn_t)((__mode & GMSG_DELETE) ? (__HUDSON ? HUDS_DELETEDMSGNO : GOLD_DELETEDMSGNO) : __hdr.msgno);
-  lseek(wide->fhidx, (long)_hdridx*(long)sizeof(HudsIdx), SEEK_SET);
+  lseek(wide->fhidx, _hdridx*sizeof(HudsIdx), SEEK_SET);
   write(wide->fhidx, _idxp, sizeof(HudsIdx));
 
   // Write to MSGTOIDX.BBS/DAT
-  lseek(wide->fhtoi, (long)_hdridx*(long)sizeof(HudsToIdx), SEEK_SET);
+  lseek(wide->fhtoi, _hdridx*sizeof(HudsToIdx), SEEK_SET);
   if(__mode & GMSG_DELETE)
     write(wide->fhtoi, "\xB* Deleted *\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0", sizeof(HudsToIdx));
   else if(__hdr.msgattr & HUDS_RECEIVED)
@@ -357,14 +357,14 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::update_timesre
   lock();
 
   msgn_t hdridx = get_hdr_idx(msg, __FILE__, __LINE__);
-  ::lseekset(wide->fhhdr, (long)hdridx*(long)sizeof(HudsHdr));
+  ::lseekset(wide->fhhdr, hdridx*sizeof(HudsHdr));
 
   HudsHdr hdr;
   ::read(wide->fhhdr, &hdr, sizeof(HudsHdr));
 
   hdr.timesread = (word)msg->timesread;
 
-  ::lseekset(wide->fhhdr, (long)hdridx*(long)sizeof(HudsHdr));
+  ::lseekset(wide->fhhdr, hdridx*sizeof(HudsHdr));
   ::write(wide->fhhdr, &hdr, sizeof(HudsHdr));
 
   unlock();

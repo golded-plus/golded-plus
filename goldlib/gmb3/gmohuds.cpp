@@ -90,7 +90,7 @@ void GoldExit() {
 
 //  ------------------------------------------------------------------
 
-void HudsInit(const char* path, const char* syspath, int userno, long sizewarn, int ra2usersbbs) {
+void HudsInit(const char* path, const char* syspath, int userno, int32_t sizewarn, int ra2usersbbs) {
 
   // Initialize msgbase-wide data
   hudsonwide = (HudsWide*)throw_calloc(1, sizeof(HudsWide));
@@ -105,7 +105,7 @@ void HudsInit(const char* path, const char* syspath, int userno, long sizewarn, 
 
 //  ------------------------------------------------------------------
 
-void GoldInit(const char* path, const char* syspath, int userno, long sizewarn, int ra2usersbbs) {
+void GoldInit(const char* path, const char* syspath, int userno, int32_t sizewarn, int ra2usersbbs) {
 
   // Initialize msgbase-wide data
   goldbasewide = (GoldWide*)throw_calloc(1, sizeof(GoldWide));

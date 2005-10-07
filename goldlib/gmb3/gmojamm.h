@@ -127,18 +127,18 @@
 #define JAMSUB_REPLYID_LEN                       100
 #define JAMSUB_SUBJECT_LEN                       100
 #define JAMSUB_PID_LEN                            40
-#define JAMSUB_TRACE_LEN               ((ulong)(-1))
-#define JAMSUB_ENCLOSEDFILE_LEN        ((ulong)(-1))
-#define JAMSUB_ENCLOSEDFILEWALIAS_LEN  ((ulong)(-1))
-#define JAMSUB_ENCLOSEDFREQ_LEN        ((ulong)(-1))
-#define JAMSUB_ENCLOSEDFILEWCARD_LEN   ((ulong)(-1))
-#define JAMSUB_ENCLOSEDINDIRECFILE_LEN ((ulong)(-1))
-#define JAMSUB_EMBINDAT_LEN            ((ulong)(-1))
+#define JAMSUB_TRACE_LEN               ((uint32_t)(-1))
+#define JAMSUB_ENCLOSEDFILE_LEN        ((uint32_t)(-1))
+#define JAMSUB_ENCLOSEDFILEWALIAS_LEN  ((uint32_t)(-1))
+#define JAMSUB_ENCLOSEDFREQ_LEN        ((uint32_t)(-1))
+#define JAMSUB_ENCLOSEDFILEWCARD_LEN   ((uint32_t)(-1))
+#define JAMSUB_ENCLOSEDINDIRECFILE_LEN ((uint32_t)(-1))
+#define JAMSUB_EMBINDAT_LEN            ((uint32_t)(-1))
 #define JAMSUB_FTSKLUDGE_LEN                     255
-#define JAMSUB_SEENBY2D_LEN            ((ulong)(-1))
-#define JAMSUB_PATH2D_LEN              ((ulong)(-1))
-#define JAMSUB_FLAGS_LEN               ((ulong)(-1))
-#define JAMSUB_TZUTCINFO_LEN           ((ulong)(-1))
+#define JAMSUB_SEENBY2D_LEN            ((uint32_t)(-1))
+#define JAMSUB_PATH2D_LEN              ((uint32_t)(-1))
+#define JAMSUB_FLAGS_LEN               ((uint32_t)(-1))
+#define JAMSUB_TZUTCINFO_LEN           ((uint32_t)(-1))
 
 
 //  ------------------------------------------------------------------
@@ -147,12 +147,12 @@
 struct JamHdrInfo {
 
   char    signature[4];     // <J><A><M> followed by <NUL>
-  time_t  datecreated;      // Creation date
-  ulong   modcounter;       // Update counter
-  ulong   activemsgs;       // Number of active (not deleted) msgs
-  ulong   passwordcrc;      // CRC-32 of password to access
-  ulong   basemsgnum;       // Lowest message number in index file
-  ulong   highwatermark;    // Number of the last msg scanned
+  time32_t  datecreated;      // Creation date
+  uint32_t   modcounter;       // Update counter
+  uint32_t   activemsgs;       // Number of active (not deleted) msgs
+  uint32_t   passwordcrc;      // CRC-32 of password to access
+  uint32_t   basemsgnum;       // Lowest message number in index file
+  uint32_t   highwatermark;    // Number of the last msg scanned
   byte    reserved[996];    // Reserved space
 };
 
@@ -165,23 +165,23 @@ struct JamHdr {
   char    signature[4];   // <J><A><M> followed by <NUL>
   word    revision;       // Revision level of header
   word    reservedword;   // Reserved for future use
-  ulong   subfieldlen;    // Length of subfields
-  ulong   timesread;      // Number of times message read
-  ulong   msgidcrc;       // CRC-32 of MSGID line
-  ulong   replycrc;       // CRC-32 of REPLY line
-  ulong   replyto;        // This msg is a reply to..
-  ulong   reply1st;       // First reply to this msg
-  ulong   replynext;      // Next msg in reply chain
-  time_t  datewritten;    // When msg was written
-  time_t  datereceived;   // When msg was read by recipient
-  time_t  dateprocessed;  // When msg was processed by tosser/scanner
-  ulong   messagenumber;  // Message number (1-based)
-  ulong   attribute;      // Msg attribute, see "Msg Attributes"
-  ulong   attribute2;     // Reserved for future use
-  ulong   offset;         // Offset of text in ????????.JDT file
-  ulong   txtlen;         // Length of message text
-  ulong   passwordcrc;    // CRC-32 of password to access message
-  ulong   cost;           // Cost of message
+  uint32_t   subfieldlen;    // Length of subfields
+  uint32_t   timesread;      // Number of times message read
+  uint32_t   msgidcrc;       // CRC-32 of MSGID line
+  uint32_t   replycrc;       // CRC-32 of REPLY line
+  uint32_t   replyto;        // This msg is a reply to..
+  uint32_t   reply1st;       // First reply to this msg
+  uint32_t   replynext;      // Next msg in reply chain
+  time32_t  datewritten;    // When msg was written
+  time32_t  datereceived;   // When msg was read by recipient
+  time32_t  dateprocessed;  // When msg was processed by tosser/scanner
+  uint32_t   messagenumber;  // Message number (1-based)
+  uint32_t   attribute;      // Msg attribute, see "Msg Attributes"
+  uint32_t   attribute2;     // Reserved for future use
+  uint32_t   offset;         // Offset of text in ????????.JDT file
+  uint32_t   txtlen;         // Length of message text
+  uint32_t   passwordcrc;    // CRC-32 of password to access message
+  uint32_t   cost;           // Cost of message
 };
 
 
@@ -192,7 +192,7 @@ struct JamSubFieldHdr {
 
   word  loid;       // Field ID, 0-65535
   word  hiid;       // Reserved for future use
-  ulong datlen;     // Length of buffer that follows
+  uint32_t datlen;     // Length of buffer that follows
 };
 
 
@@ -203,7 +203,7 @@ struct JamSubField {
 
   word  loid;         // Field ID, 0-65535
   word  hiid;         // Reserved for future use
-  ulong datlen;       // Length of buffer that follows
+  uint32_t datlen;       // Length of buffer that follows
   char  buffer[101];  // DATLEN bytes of data
 };
 
@@ -214,7 +214,7 @@ struct JamSubField {
 struct JamIndex {
 
   dword  usercrc;    // CRC-32 of destination username
-  ulong  hdroffset;  // Offset of header in .JHR file
+  uint32_t  hdroffset;  // Offset of header in .JHR file
 };
 
 
@@ -247,8 +247,8 @@ struct JamData {
   int fhjhw;             // highwater if available
   int islocked;          // Area is locked?
   int timesposted;
-  long lastpos;          // Lastread position
-  long highwater;
+  int32_t lastpos;          // Lastread position
+  int32_t highwater;
   JamLast lastrec;       // .JLR Lastread record
   JamHdrInfo hdrinfo;    // .JHR Header info record
 };
@@ -293,7 +293,7 @@ protected:
 
   int load_message(int __mode, gmsg* __msg, JamHdr& __hdr);
 
-  void add_subfield(JamHdr& __hdr, byte*& __subfield, word __loid, word __hiid, char* __data, ulong maxlen);
+  void add_subfield(JamHdr& __hdr, byte*& __subfield, word __loid, word __hiid, char* __data, uint32_t maxlen);
 
   void save_message(int __mode, gmsg* __msg, JamHdr& __hdr);
 

@@ -153,7 +153,7 @@ void GMsgHeaderView::Paint() {
   ulong* replies = (ulong*)throw_calloc(list_max+1, sizeof(ulong));
   ulong replyto, replynext;
   if(CFG->switches.get(disprealmsgno)) {
-    ptr += sprintf(ptr, " %-5.5s: #%lu [%u]", LNG->Msg, msg->msgno, area->Msgn.Count()+(msg->attr.nwm() ? 1 : 0));
+    ptr += sprintf(ptr, " %-5.5s: #%u [%u]", LNG->Msg, msg->msgno, area->Msgn.Count()+(msg->attr.nwm() ? 1 : 0));
     replyto = msg->link.to();
     replies[0] = msg->link.first();
     replynext = msg->link.next();

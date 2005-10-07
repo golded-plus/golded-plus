@@ -152,7 +152,7 @@ void SquishArea::add_to_free_chain(dword __delframe, SqshFrm* __delfrm) {
 
   // Write the deleted frame
   __delfrm->type = SQFRAME_FREE;
-  //WideLog->printf("- Deleted frame 0x%08lX of length %lu.", __delframe, __delfrm->length);
+  //WideLog->printf("- Deleted frame 0x%08X of length %u.", __delframe, __delfrm->length);
   write_frm(__delframe, __delfrm);
 }
 
@@ -282,7 +282,7 @@ uint CopyToBuf(char* p, char* out, char** end) {
 
 char* CopyToControlBuf(char* txt, char** newtext, uint* length) {
 
-  // Figure out how long the control info is
+  // Figure out how int32_t the control info is
   uint ctlsize = CopyToBuf(txt, NULL, NULL);
 
   // Allocate memory for it
@@ -328,14 +328,14 @@ void SquishArea::excess_frm(dword __lastframe, dword __newframe, SqshFrm* __newf
     write_frm(_exframe, &_exfrm);
     SqshFrm _tmpfrm;
     upd_frm_prev(_exfrm.next, &_tmpfrm, _exframe);
-    //WideLog->printf("- Created excess free frame 0x%08lX of length %lu.", _exframe, _exfrm.length);
+    //WideLog->printf("- Created excess free frame 0x%08X of length %u.", _exframe, _exfrm.length);
   }
 }
 
 
 //  ------------------------------------------------------------------
 
-uint SquishArea::find_msgn(ulong __tagn) {
+uint SquishArea::find_msgn(uint32_t __tagn) {
 
   if(data->idx) {
 
@@ -347,9 +347,9 @@ uint SquishArea::find_msgn(ulong __tagn) {
 
     if(tags and __tagn) {
 
-      register long _mid;
-      register long _left = 0;
-      register long _right = tags;
+      register int32_t _mid;
+      register int32_t _left = 0;
+      register int32_t _right = tags;
 
       do {
         _mid = (_left+_right)/2;
@@ -483,26 +483,26 @@ void SquishArea::save_message(int __mode, gmsg* __msg) {
 
         // Locate a free frame, if possible
         _newframe = _base.firstfreeframe;
-        //WideLog->printf("- Looking for a frame of at least length %lu.", _totsize);
+        //WideLog->printf("- Looking for a frame of at least length %u.", _totsize);
         while(1) {
 
           // At end of free frames?
           if(_newframe == SQFRAME_NULL) {
             _newframe = _base.endframe;
             init_frm(&_newfrm);
-            //WideLog->printf("- Allocated new frame 0x%08lX of length %lu.", _newframe, _totsize);
+            //WideLog->printf("- Allocated new frame 0x%08X of length %u.", _newframe, _totsize);
             break;
           }
 
           // Is this frame large enough in itself?
           read_frm(_newframe, &_newfrm);
-          //WideLog->printf("- Found free frame 0x%08lX of length %lu.", _newframe, _newfrm.length);
+          //WideLog->printf("- Found free frame 0x%08X of length %u.", _newframe, _newfrm.length);
           if(_newfrm.length >= _totsize) {
 
             // Create excess frame if possible
             if(wide->recycle == SQUISHRECYCLE_YES) {
               excess_frm(_newframe, _newframe, &_newfrm, _totsize);
-              //WideLog->printf("- Frame was large enough (%lu bytes wasted).", _newfrm.length - _totsize);
+              //WideLog->printf("- Frame was large enough (%u bytes wasted).", _newfrm.length - _totsize);
             }
             break;
           }
@@ -514,7 +514,7 @@ void SquishArea::save_message(int __mode, gmsg* __msg) {
               SqshFrm _lastfrm;
               read_frm(_newfrm.next, &_lastfrm);
               _newfrm.length += _lastfrm.length + sizeof(SqshFrm);
-              //WideLog->printf("- Merged frames 0x%08lX and 0x%08lX. New length: %lu.", _newframe, _newfrm.next, _newfrm.length);
+              //WideLog->printf("- Merged frames 0x%08X and 0x%08X. New length: %u.", _newframe, _newfrm.next, _newfrm.length);
               _lastframe = _newfrm.next;
               _newfrm.next = _lastfrm.next;
             }
@@ -525,7 +525,7 @@ void SquishArea::save_message(int __mode, gmsg* __msg) {
               // Create excess frame if possible
               if(wide->recycle == SQUISHRECYCLE_YES) {
                 excess_frm(_lastframe, _newframe, &_newfrm, _totsize);
-                //WideLog->printf("- Merged frame was large enough (%lu bytes wasted).", _newfrm.length - _totsize);
+                //WideLog->printf("- Merged frame was large enough (%u bytes wasted).", _newfrm.length - _totsize);
               }
 
               // If one of the frames in our chain was the last free frame,
@@ -544,7 +544,7 @@ void SquishArea::save_message(int __mode, gmsg* __msg) {
         }
 
         // If this was the first frame (ie. the first one pointed to by
-        // firstfreeframe, which means that the first frame found was long
+        // firstfreeframe, which means that the first frame found was int32_t
         // enough to hold the message), then set the free pointer to the
         // start of the new free chain.
         if(_newframe == _base.firstfreeframe)

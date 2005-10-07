@@ -57,10 +57,10 @@ typedef char PcbName[25+1];
 
 struct PcbBase {
 
-  long  highmsgno;                // High Message Number       (0 to 16,700,000)
-  long  lowmsgno;                 // Low Message Number        (0 to 16,700,000)
-  long  active;                   // Number of Active Messages (0 to 32,767)
-  long  callers;                  // Number of System Callers (Main Message Base Only)
+  int32_t  highmsgno;                // High Message Number       (0 to 16,700,000)
+  int32_t  lowmsgno;                 // Low Message Number        (0 to 16,700,000)
+  int32_t  active;                   // Number of Active Messages (0 to 32,767)
+  int32_t  callers;                  // Number of System Callers (Main Message Base Only)
   char  locked[6];                // The "LOCKED" field for pre-14.2 systems (see note 1)
   byte  reserved[106];            // Reserved for future use
 };
@@ -72,13 +72,13 @@ struct PcbBase {
 struct PcbHdr {
 
   char  status;                   // Message Status Flag (see note 2)
-  long  msgno;                    // Message Number   (0 to 16,700,000)
-  long  refno;                    // Reference Number (0 to 16,700,000)
+  int32_t  msgno;                    // Message Number   (0 to 16,700,000)
+  int32_t  refno;                    // Reference Number (0 to 16,700,000)
   byte  blocks;                   // Number of 128 Byte Blocks in Message (see note 3)
   char  date[8];                  // Date of Message Entry (in "mm-dd-yy" format)
   char  time[5];                  // Time of Message Entry (in "hh:mm" format)
   char  destname[25];             // Name of the User to whom the Message is Addressed
-  long  replydate;                // Date of the Reply Message (in yymmdd format)
+  int32_t  replydate;                // Date of the Reply Message (in yymmdd format)
   char  replytime[5];             // Time of the Reply Message (in "hh:mm" format)
   char  hasreply;                 // The Letter "R" if the Message has a Reply
   char  origname[25];             // Name of the User who wrote the Message
@@ -111,8 +111,8 @@ struct PcbExtHdr {
 
 struct PcbIdx {
 
-  long     offset;                // Offset (0 if none, >0 if active, <0 if killed)
-  long     num;                   // Message Number
+  int32_t     offset;                // Offset (0 if none, >0 if active, <0 if killed)
+  int32_t     num;                   // Message Number
   char     to[25];                // TO Name
   char     from[25];              // FROM Name
   char     status;                // Status Character (from Message Header)
@@ -152,10 +152,10 @@ struct PcbWide {
   int            numareas;
   PcbUsers       usersrec;
   PcbUsersInfHdr usershdr;
-  long           usershdrsize;
-  long*          lastread;
-  long           confbytelen;
-  long           extconflen;
+  int32_t           usershdrsize;
+  int32_t*          lastread;
+  int32_t           confbytelen;
+  int32_t           extconflen;
   int            foreign;
   const char*    path;
 };

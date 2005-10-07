@@ -81,10 +81,10 @@ Line* EzycomArea::make_dump_msg(Line*& lin, gmsg* msg, char* lng_head) {
   AddLineF(line, "MsgAttr  : %02Xh (%sb)", _hdr.msgattr, ltob(buf, _hdr.msgattr, 8));
   AddLineF(line, "NetAttr  : %02Xh (%sb)", _hdr.netattr, ltob(buf, _hdr.netattr, 8));
   AddLineF(line, "ExtAttr  : %02Xh (%sb)", _hdr.extattr, ltob(buf, _hdr.extattr, 8));
-  AddLineF(line, "PostDate : %s (%08lXh)", FTimeToStr(buf, _hdr.posttimedate), *(dword*)&_hdr.posttimedate);
-  AddLineF(line, "RecvDate : %s (%08lXh)", FTimeToStr(buf, _hdr.recvtimedate), *(dword*)&_hdr.recvtimedate);
-  AddLineF(line, "StartPos : %lu", _hdr.startposition);
-  AddLineF(line, "MsgLength: %lu", _hdr.messagelength);
+  AddLineF(line, "PostDate : %s (%08Xh)", FTimeToStr(buf, _hdr.posttimedate), *(dword*)&_hdr.posttimedate);
+  AddLineF(line, "RecvDate : %s (%08Xh)", FTimeToStr(buf, _hdr.recvtimedate), *(dword*)&_hdr.recvtimedate);
+  AddLineF(line, "StartPos : %u", _hdr.startposition);
+  AddLineF(line, "MsgLength: %u", _hdr.messagelength);
   AddLineF(line, "UserRecno: %u (%s)", wide->userno, WideUsername[0]);
   line = AddLine(line, "");
   AddLineF(line, lng_head);

@@ -123,7 +123,7 @@ extern const char* gmonths[];
 //  ------------------------------------------------------------------
 //  Prototypes
 
-#ifdef __WIN32__
+#if defined(__WIN32__) && MAXINT > 0x0FFFFFFF  // 64-bit
 extern struct tm dummy_struct_tm;
 inline struct tm* ggmtime(time_t* arg) {
   struct tm* a = gmtime(arg);
@@ -172,6 +172,10 @@ char* TimeToStr(char* buf, time_t t);
 long YMD2JDN(unsigned yr, unsigned mo, unsigned day) __attribute__ ((const));
 void JDN2YMD(long scalar, unsigned *yr, unsigned *mo, unsigned *day);
 
+inline struct tm *gmtime(const time32_t *timep) {
+    const time_t temp(*timep);
+    return gmtime(&temp);
+}
 
 //  ------------------------------------------------------------------
 

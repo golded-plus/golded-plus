@@ -173,12 +173,6 @@ enum ARCmailExt { ARCDigits = 0, ARCHex, ARCAlpha };
 /********************************************************/
 /* Types                                                */
 /********************************************************/
-#if 1
-typedef unsigned char bit;
-typedef unsigned char byte;
-typedef unsigned short word;     /* normal int = 16 bit */
-typedef unsigned long dword;
-#endif
 
 enum ARCers { ARC_Unknown = -1, ARC_SeaArc, ARC_PkArc, ARC_Pak,
               ARC_ArcPlus, ARC_Zoo, ARC_PkZip, ARC_Lha, ARC_Arj,

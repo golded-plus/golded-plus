@@ -49,8 +49,8 @@
 //  ------------------------------------------------------------------
 //  WildCat! 4.0 Magic Numbers
 
-const long MagicHeaderActive   = 0x001A1A1BL;
-const long MagicHeaderInactive = 0x011A1A1BL;
+const uint32_t MagicHeaderActive   = 0x001A1A1Bu;
+const uint32_t MagicHeaderInactive = 0x011A1A1Bu;
 
 
 //  ------------------------------------------------------------------
@@ -94,20 +94,20 @@ const word mfSent        = 0x0800;
 //  WildCat! 4.0 Message Header
 
 struct WCatHdr {
-  long  magicnumber;
+  uint32_t  magicnumber;
   word  msgno;
   char  from[71];
   char  fromtitle[11];
-  long  fromuserid;
+  int32_t  fromuserid;
   char  to[71];
   char  totitle[11];
-  long  touserid;
+  int32_t  touserid;
   char  subject[71];
   char  network[9];
   word  msgdate;
-  long  msgtime;
+  int32_t  msgtime;
   word  readdate;
-  long  readtime;
+  int32_t  readtime;
   word  mflags;
   word  reference;
   Addr  origaddr;
@@ -118,7 +118,7 @@ struct WCatHdr {
   word  prevunread;
   word  nextunread;
   word  fidoflags;
-  long  cost;
+  int32_t  cost;
   byte  reserved[20];
 };
 
@@ -138,7 +138,7 @@ struct WCatBase {
 
 struct WCatIdx {
   word msgno;
-  long offset;
+  int32_t offset;
 };
 
 

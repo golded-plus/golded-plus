@@ -111,8 +111,8 @@ void EzycomArea::save_message(int __mode, gmsg* __msg, EzycHdr& __hdr) {
   __hdr.posttimedate = TimeToFTime(__msg->written);
   __hdr.recvtimedate = TimeToFTime(__msg->arrived);
 
-  SwapWord32((long*)&__hdr.posttimedate);
-  SwapWord32((long*)&__hdr.recvtimedate);
+  SwapWord32((uint32_t*)&__hdr.posttimedate);
+  SwapWord32((uint32_t*)&__hdr.recvtimedate);
 
   strc2p(strxcpy(__hdr.whoto,   __msg->to, sizeof(__hdr.whoto)));
   strc2p(strxcpy(__hdr.whofrom, __msg->by, sizeof(__hdr.whofrom)));

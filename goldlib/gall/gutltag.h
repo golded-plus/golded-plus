@@ -37,10 +37,10 @@
 //  ------------------------------------------------------------------
 //  Constants
 
-const ulong TAGN_INVALID = 0;
+const uint32_t TAGN_INVALID = 0;
 const uint RELN_INVALID = 0;
 
-const ulong TAGN_MAX = ((ulong)-1);
+const uint32_t TAGN_MAX = ((uint32_t)-1);
 const uint RELN_MAX = ((uint)-1);
 
 const int TAGN_CLOSEST = true;
@@ -57,7 +57,7 @@ public:
   //  ----------------------------------------------------------------
   //  Internal data
 
-  ulong* tag;               // tag array
+  uint32_t* tag;               // tag array
   uint  tags;               // tags in array
   uint  count;              // fake tags count
   uint  allocated;          // actual allocated tags
@@ -75,31 +75,31 @@ public:
   void  Reset();
   void  ResetAll()  { Reset(); count = 0; }
 
-  ulong* Resize(uint __tags);
+  uint32_t* Resize(uint __tags);
 
-  ulong* Append(ulong __tagn);
-  ulong* Add(ulong __tagn);
-  uint Del(ulong __tagn);
+  uint32_t* Append(uint32_t __tagn);
+  uint32_t* Add(uint32_t __tagn);
+  uint Del(uint32_t __tagn);
   uint DelReln(uint __reln);
-  uint DelResize(ulong __tagn);
+  uint DelResize(uint32_t __tagn);
   void  Sort();
   void  ElimDups();
 
-  ulong CvtReln(uint __reln);
-  uint ToReln(ulong __tagn);
-  uint ToReln(ulong __tagn, int __closest);
+  uint32_t CvtReln(uint __reln);
+  uint ToReln(uint32_t __tagn);
+  uint ToReln(uint32_t __tagn, int __closest);
 
-  uint Find(ulong __tagn)  { return ToReln(__tagn); }
+  uint Find(uint32_t __tagn)  { return ToReln(__tagn); }
 
   uint Tags() const { return tags; }
   uint Count() const { return count; }
   uint SetCount(uint n)  { tags = count = n; return count; }
 
-  void  Set(uint n, ulong t)  { tag[n] = t; }
-  ulong Get(uint n)  { return (tags and (n<tags)) ? tag[n] : TAGN_INVALID; }
+  void  Set(uint n, uint32_t t)  { tag[n] = t; }
+  uint32_t Get(uint n)  { return (tags and (n<tags)) ? tag[n] : TAGN_INVALID; }
 
-  ulong& operator[](uint n)  { return tag[n]; }
-  ulong& at(uint n)  { return tag[n]; }
+  uint32_t& operator[](uint n)  { return tag[n]; }
+  uint32_t& at(uint n)  { return tag[n]; }
 
   void Load(gfile& fp);
   void Save(gfile& fp);

@@ -55,9 +55,9 @@ void FidoArea::raw_scan(bool __scanpm) {
     }
   }
 
-  register uint _active = 0;
-  register ulong* _msgnoptr = NULL;
-  register ulong* _msgndx = Msgn->tag;
+  uint _active = 0;
+  uint32_t* _msgnoptr = NULL;
+  uint32_t* _msgndx = Msgn->tag;
 
   gposixdir d(real_path());
   if(d.ok) {
@@ -67,7 +67,7 @@ void FidoArea::raw_scan(bool __scanpm) {
     while((de = d.nextentry("*.msg", true)) != NULL) {
       if(WideDebug)
         WideLog->printf("- %s", de->name.c_str());
-      register ulong _msgno = (ulong)atol(de->name.c_str());
+      uint _msgno = (uint)atol(de->name.c_str());
       if(_msgno) {
         if((_active % FIDO_SCANBUFSIZE) == 0) {
           _msgndx = Msgn->Resize(_active+FIDO_SCANBUFSIZE);
@@ -98,11 +98,11 @@ void FidoArea::raw_scan(bool __scanpm) {
 
   _msgnoptr = _msgndx;
 
-  register uint _count = 1;
-  register uint _lastread_reln = 0;
-  register ulong _firstmsgno = 0;
-  register ulong _lastmsgno = 0;
-  register ulong _lastreadfound = 0;
+  uint _count = 1;
+  uint _lastread_reln = 0;
+  uint _firstmsgno = 0;
+  uint _lastmsgno = 0;
+  uint _lastreadfound = 0;
   FidoHdr _hdr;
 
   if(_active) {
@@ -160,7 +160,7 @@ void FidoArea::raw_scan(bool __scanpm) {
     for(uint i = lastread+1; i<=Msgn->Count(); i++) {
       // Build message filename
       Path _msgfile;
-      ulong msgno = Msgn->CvtReln(i);
+      uint msgno = Msgn->CvtReln(i);
       build_msgname(_msgfile, msgno);
 
       // Open the message file
@@ -187,7 +187,7 @@ void FidoArea::raw_scan(bool __scanpm) {
   }
   
   if(WideDebug) {
-    WideLog->printf("- %s: t:%u, l:%u, fm:%lu, hm:%lu, lr:%u, u:%u, pm: %i",
+    WideLog->printf("- %s: t:%u, l:%u, fm:%u, hm:%u, lr:%u, u:%u, pm: %i",
       echoid(),
       Msgn->Count(),
       lastread,

@@ -105,17 +105,17 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::init() {
     HudsSizewarn();
 
   // Check for mismatch between the header and the index files
-  long _hdrsize = filelength(fhhdr)/(long)sizeof(HudsHdr);
-  long _idxsize = filelength(fhidx)/(long)sizeof(HudsIdx);
-  long _toisize = filelength(fhtoi)/(long)sizeof(HudsToIdx);
+  uint _hdrsize = filelength(fhhdr)/sizeof(HudsHdr);
+  uint _idxsize = filelength(fhidx)/sizeof(HudsIdx);
+  uint _toisize = filelength(fhtoi)/sizeof(HudsToIdx);
   if((_hdrsize != _idxsize) or (_hdrsize != _toisize)) {
     raw_close();
     HGWarnRebuild();
     WideLog->ErrIndex();
     WideLog->printf("! The %s msgbase files do not have the same number of records.", __HUDSON ? HUDS_NAME : GOLD_NAME);
-    WideLog->printf(": %smsghdr%s   (%lu records).", path, __HUDSON ? HUDS_EXT : GOLD_EXT, _hdrsize);
-    WideLog->printf(": %smsgidx%s   (%lu records).", path, __HUDSON ? HUDS_EXT : GOLD_EXT, _idxsize);
-    WideLog->printf(": %smsgtoidx%s (%lu records).", path, __HUDSON ? HUDS_EXT : GOLD_EXT, _toisize);
+    WideLog->printf(": %smsghdr%s   (%u records).", path, __HUDSON ? HUDS_EXT : GOLD_EXT, _hdrsize);
+    WideLog->printf(": %smsgidx%s   (%u records).", path, __HUDSON ? HUDS_EXT : GOLD_EXT, _idxsize);
+    WideLog->printf(": %smsgtoidx%s (%u records).", path, __HUDSON ? HUDS_EXT : GOLD_EXT, _toisize);
     WideLog->printf("+ Advice: You need to run a msgbase index rebuild utility.");
     IndexErrorExit();
   }
@@ -124,7 +124,7 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::init() {
   if(__HUDSON and (ra2usersbbs == 0)) {
 
     // Get size of USERS.BBS
-    long len = filelength(fhusr);
+    int len = filelength(fhusr);
 
     // Does size match Hudson format?
     int hudsmatch = (len % sizeof(HudsUsers)) == 0;
@@ -161,9 +161,9 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::init() {
     if(not hudsmatch and not ra2match) {
       WideLog->ErrIndex();
       WideLog->printf("! The users.bbs file has an incorrect size.");
-      WideLog->printf(": %susers.bbs, %lu bytes.", path, len);
-      WideLog->printf(": Should be %lu bytes if it's in RA2 format.", (len/(long)sizeof(RA2Users))*(long)sizeof(RA2Users));
-      WideLog->printf(": Should be %lu bytes if it's in Hudson format.", (len/(long)sizeof(HudsUsers))*(long)sizeof(HudsUsers));
+      WideLog->printf(": %susers.bbs, %u bytes.", path, len);
+      WideLog->printf(": Should be %u bytes if it's in RA2 format.", (uint)((len/sizeof(RA2Users))*sizeof(RA2Users)));
+      WideLog->printf(": Should be %u bytes if it's in Hudson format.", (uint)((len/sizeof(HudsUsers))*sizeof(HudsUsers)));
       if(ra2usersbbs)
         WideLog->printf(": It appears to be in %s format.", (ra2usersbbs == 2) ? "RA2" : "Hudson");
       WideLog->printf("+ Advice: Run a userbase packing utility.");
@@ -237,7 +237,7 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::save_lastread(
 
   // Update lastread record
   msgn_t _lastread = lastrec[board-1] = msgno;
-  lseekset(fhlrd, (long)userno*(long)sizeof(HudsLast));
+  lseekset(fhlrd, userno*sizeof(HudsLast));
   write(fhlrd, lastrec, sizeof(HudsLast));
 
   // Update user record

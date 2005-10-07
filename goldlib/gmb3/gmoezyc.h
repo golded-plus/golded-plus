@@ -93,8 +93,8 @@ struct EzycHdr {
   word    replyto;
   word    reply1st;
 
-  ulong   startposition;
-  ulong   messagelength;
+  uint32_t   startposition;
+  uint32_t   messagelength;
 
   Addr    destnet;
   Addr    orignet;

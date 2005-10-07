@@ -55,7 +55,7 @@ void XbbsArea::unlock() {
 
 //  ------------------------------------------------------------------
 
-void XbbsArea::lock_file(int handle, long position, long length) {
+void XbbsArea::lock_file(int handle, int32_t position, int32_t length) {
 
   GFTRK("XbbsLockFile");
 
@@ -89,7 +89,7 @@ void XbbsArea::lock_file(int handle, long position, long length) {
 
 //  ------------------------------------------------------------------
 
-void XbbsArea::unlock_file(int handle, long position, long length) {
+void XbbsArea::unlock_file(int handle, int32_t position, int32_t length) {
 
   GFTRK("XbbsUnlockFile");
 
@@ -222,7 +222,7 @@ void XbbsArea::save_message(int __mode, gmsg* __msg, XbbsHdr& __hdr) {
   }
 
   // Write header record
-  long position = (__msg->msgno-1L)*(long)sizeof(XbbsHdr);
+  int32_t position = (__msg->msgno-1L)*sizeof(XbbsHdr);
   lseekset(data->fhdata, position);
   lock_file(data->fhdata, position, sizeof(XbbsHdr));
   write(data->fhdata, &__hdr, sizeof(XbbsHdr));
@@ -256,7 +256,7 @@ void XbbsArea::save_message(int __mode, gmsg* __msg, XbbsHdr& __hdr) {
       }
     }
     memcpy(data->idx+__msg->msgno-1, &idx, sizeof(XbbsIdx));
-    position = (__msg->msgno-1L)*(long)sizeof(XbbsIdx);
+    position = (__msg->msgno-1L)*sizeof(XbbsIdx);
     lseekset(data->fhindex, position);
     lock_file(data->fhindex, position, sizeof(XbbsIdx));
     write(data->fhindex, &idx, sizeof(XbbsIdx));
@@ -399,7 +399,7 @@ void XbbsArea::update_timesread(gmsg* msg) {
 
   XbbsHdr hdr;
 
-  long position = (Msgn->ToReln(msg->msgno)-1)*(long)sizeof(XbbsHdr);
+  int32_t position = (Msgn->ToReln(msg->msgno)-1)*sizeof(XbbsHdr);
 
   ::lseekset(data->fhdata, position);
   ::read(data->fhdata, &hdr, sizeof(XbbsHdr));

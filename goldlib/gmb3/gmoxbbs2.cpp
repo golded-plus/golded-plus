@@ -35,7 +35,7 @@ void XbbsArea::refresh() {
 
   GFTRK("XbbsRefresh");
 
-  long indexnum = filelength(data->fhindex) / (long)sizeof(XbbsIdx);
+  int32_t indexnum = filelength(data->fhindex) / sizeof(XbbsIdx);
 
   // Are there any msgs?
   if(indexnum) {
@@ -76,11 +76,11 @@ void XbbsArea::raw_scan(int __keep_index, int __scanpm) {
   }
 
   // Load the lastread
-  ulong _lastread = 0;
+  uint32_t _lastread = 0;
   int _fh = ::sopen(AddPath(real_path(), ".lmr"), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
   if(_fh != -1) {
-    lseekset(_fh, wide->userno+1, sizeof(ulong));
-    read(_fh, &_lastread, sizeof(ulong));
+    lseekset(_fh, wide->userno+1, sizeof(uint32_t));
+    read(_fh, &_lastread, sizeof(uint32_t));
     ::close(_fh);
   }
 
@@ -107,9 +107,9 @@ void XbbsArea::raw_scan(int __keep_index, int __scanpm) {
     isopen--;
   }
 
-  register uint _active = 0;
-  register uint _lastread_reln = 0;
-  register ulong _lastreadfound = 0;
+  uint _active = 0;
+  uint _lastread_reln = 0;
+  uint _lastreadfound = 0;
 
   if(data->idx_size) {
 
@@ -118,11 +118,11 @@ void XbbsArea::raw_scan(int __keep_index, int __scanpm) {
       Msgn->Resize(data->idx_size);
 
     // Variables for the loop
-    register ulong _msgno;
-    register ulong* _msgndxptr = Msgn->tag;
-    register dword  _totalmsgs = data->idx_size;
-    register ulong _firstmsgno = _totalmsgs ? 1 : 0;
-    register ulong _lastmsgno = 0;
+    uint _msgno;
+    uint32_t* _msgndxptr = Msgn->tag;
+    uint  _totalmsgs = data->idx_size;
+    uint _firstmsgno = _totalmsgs ? 1 : 0;
+    uint _lastmsgno = 0;
 
     // Fill message index
     while(_active < _totalmsgs) {

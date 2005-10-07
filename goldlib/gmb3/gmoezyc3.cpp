@@ -69,8 +69,8 @@ int EzycomArea::load_message(int __mode, gmsg* __msg, EzycHdr& __hdr) {
   __msg->dest.point = __msg->odest.point = __hdr.destnet.point;
 
   // Convert date and time
-  SwapWord32((long*)&__hdr.posttimedate);
-  SwapWord32((long*)&__hdr.recvtimedate);
+  SwapWord32((uint32_t*)&__hdr.posttimedate);
+  SwapWord32((uint32_t*)&__hdr.recvtimedate);
   __msg->written = FTimeToTime(&__hdr.posttimedate);
   __msg->arrived = FTimeToTime(&__hdr.recvtimedate);
 

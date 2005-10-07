@@ -146,14 +146,14 @@ void SquishArea::raw_scan(int __keep_index, int __scanpm) {
     isopen--;
   }
 
-  register ulong _msgno;
-  register SqshIdx* _sqiptr = data->idx;
-  register dword  _totalmsgs = data->base.totalmsgs;
-  register ulong _firstmsgno = _totalmsgs ? _sqiptr->msgno : 0;
-  register ulong _lastmsgno = 0;
-  register uint _active = 0;
-  register uint _lastread_reln = 0;
-  register ulong _lastreadfound = 0;
+  uint _msgno;
+  SqshIdx* _sqiptr = data->idx;
+  dword  _totalmsgs = data->base.totalmsgs;
+  uint _firstmsgno = _totalmsgs ? _sqiptr->msgno : 0;
+  uint _lastmsgno = 0;
+  uint _active = 0;
+  uint _lastread_reln = 0;
+  uint _lastreadfound = 0;
 
   if(data->base.totalmsgs) {
 
@@ -161,7 +161,7 @@ void SquishArea::raw_scan(int __keep_index, int __scanpm) {
     if(__keep_index)
       Msgn->Resize((uint)data->base.totalmsgs);
 
-    register ulong* _msgndxptr = Msgn->tag;
+    uint32_t* _msgndxptr = Msgn->tag;
 
     // Fill message index
     while(_active < _totalmsgs) {
@@ -252,7 +252,7 @@ void SquishArea::raw_scan(int __keep_index, int __scanpm) {
   }
 
   if(WideDebug) {
-    WideLog->printf("- %s: t:%u, l:%u, fm:%lu, hm:%lu, lr:%lu, u:%u, pm:%i",
+    WideLog->printf("- %s: t:%u, l:%u, fm:%u, hm:%u, lr:%u, u:%u, pm:%i",
       echoid(),
       Msgn->Count(),
       lastread,

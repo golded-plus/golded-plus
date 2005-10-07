@@ -259,7 +259,7 @@ static char* fast_parse_addr(char* str, Addr* addr) {
   point = strchr(str, '.');
   domain = strchr(str, '@');
   if(domain and point)
-    if((dword)point > (dword)domain)
+    if((ulong)point > (ulong)domain)
       point = NULL;
 
   if(space)
@@ -304,7 +304,7 @@ static char* parse_address(char* str, Addr* addr, Addr* mainaka) {
     char* point = strchr(str, '.');
     domain = strchr(str, '@');
     if(domain and point)
-      if((dword)point > (dword)domain)
+      if((ulong)point > (ulong)domain)
         point = NULL;
 
     if(net) {
@@ -1011,7 +1011,7 @@ static void read_nodelists() {
       if(not quiet) std::cout << ' ' << std::endl << "* Writing " << name << std::endl;
       for(fno=nodelist.begin(); fno != nodelist.end(); fno++) {
         if(*(fno->fn))
-          fprintf(fp, "%s %lu\n", fno->fn, fno->ft);
+          fprintf(fp, "%s %u\n", fno->fn, fno->ft);
       }
       fclose(fp);
     }

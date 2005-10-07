@@ -296,18 +296,18 @@ void Area::SaveMsg(int mode, GMsg* msg) {
         Path p;
 
         sprintf(file, "%s%smail.jam", CFG->jampath, isecho() ? "echo" : "net");
-        sprintf(line, "%s %lu", ReMapPath(strcpy(p, path())), msg->msgno);
+        sprintf(line, "%s %u", ReMapPath(strcpy(p, path())), msg->msgno);
         WriteNoDupes(file, line);
       }
       if(isqwk()) {
         strcpy(file, AddPath(CFG->goldpath, "goldqwk.lst"));
-        sprintf(line, "%s %lu", echoid(), msg->msgno);
+        sprintf(line, "%s %u", echoid(), msg->msgno);
         WriteNoDupes(file, line);
 
       }
       else if(isinternet()) {
         strcpy(file, AddPath(CFG->goldpath, "goldsoup.lst"));
-        sprintf(line, "%s %lu", echoid(), msg->msgno);
+        sprintf(line, "%s %u", echoid(), msg->msgno);
         WriteNoDupes(file, line);
       }
       else {

@@ -45,22 +45,22 @@ void SMBArea::raw_scan(bool keep_index, bool scanpm)
     }
     data_open();
   }
-  ulong firstmsgno = 0;
-  ulong lastmsgno = 0;
+  uint32_t firstmsgno = 0;
+  uint32_t lastmsgno = 0;
   Msgn->Reset();
   PMrk->Reset();
   if(isopen or smb_open(data) == 0) {
     if(smb_locksmbhdr(data) == 0) {
       int res = smb_getstatus(data);
       smb_unlocksmbhdr(data);
-      ulong total_msgs = 0;
+      uint32_t total_msgs = 0;
       if(res == 0) {
         total_msgs = data->status.total_msgs;
         lastmsgno = data->status.last_msg;
         if(keep_index or scanpm) {
           smbmsg_t msg;
           int umax = (WidePersonalmail & PM_ALLNAMES) ? WideUsernames : 1;
-          ulong l = 1;
+          uint32_t l = 1;
           rewind(data->sid_fp);
           while(l <= total_msgs) {
             if(not fread(&msg.idx, 1, sizeof(idxrec_t), data->sid_fp))
@@ -101,7 +101,7 @@ void SMBArea::raw_scan(bool keep_index, bool scanpm)
     }
   }
   if(WideDebug) {
-    WideLog->printf("- %s: t:%u, l:%u, fm:%lu, hm:%lu, lr:%u, u:%u, pm: %i",
+    WideLog->printf("- %s: t:%u, l:%u, fm:%u, hm:%u, lr:%u, u:%u, pm: %i",
       echoid(),
       Msgn->Count(),
       0,

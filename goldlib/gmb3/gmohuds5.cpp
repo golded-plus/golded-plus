@@ -76,24 +76,24 @@ Line* _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::make_dump_msg
   AddLineF(line, "DateTime  : %8.8s %5.5s", _hdr.date, _hdr.time);
   AddLineF(line, "OrigAddr  : %u:%u/%u", _hdr.origzone, _hdr.orignet, _hdr.orignode);
   AddLineF(line, "DestAddr  : %u:%u/%u", _hdr.destzone, _hdr.destnet, _hdr.destnode);
-  AddLineF(line, "Reply     : %lu", (ulong)_hdr.replyto);
-  AddLineF(line, "See       : %lu", (ulong)_hdr.reply1st);
+  AddLineF(line, "Reply     : %u", (uint32_t)_hdr.replyto);
+  AddLineF(line, "See       : %u", (uint32_t)_hdr.reply1st);
   AddLineF(line, "TimesRead : %u", _hdr.timesread);
   AddLineF(line, "Cost      : %u", _hdr.cost);
   AddLineF(line, "MsgAttr   : %02Xh (%sb)", _hdr.msgattr, ltob(buf, _hdr.msgattr, 8));
   AddLineF(line, "NetAttr   : %02Xh (%sb)", _hdr.netattr, ltob(buf, _hdr.netattr, 8));
-  AddLineF(line, "Msgno     : %lu", (long)_hdr.msgno);
+  AddLineF(line, "Msgno     : %u", (int32_t)_hdr.msgno);
   AddLineF(line, "Board     : %u", _hdr.board);
-  AddLineF(line, "StartRec  : %lu", (long)_hdr.startrec);
-  AddLineF(line, "NumRecs   : %lu", (long)_hdr.numrecs);
+  AddLineF(line, "StartRec  : %u", (int32_t)_hdr.startrec);
+  AddLineF(line, "NumRecs   : %u", (int32_t)_hdr.numrecs);
   AddLineF(line, "UserRecno : %u (%s)", wide->userno, WideUsername[0]);
   line = AddLine(line, "");
   AddLineF(line, "Dump of msginfo%s:", __HUDSON ? HUDS_EXT : GOLD_EXT);
   line = AddLine(line, "");
-  AddLineF(line, "Total Active  : %lu (%lXh)", (ulong)wide->msginfo.total, (ulong)wide->msginfo.total);
-  AddLineF(line, "Low/High Msgno: %lu (%lXh)  %lu (%lXh)",
-    (ulong)wide->msginfo.low,   (ulong)wide->msginfo.low,
-    (ulong)wide->msginfo.high,  (ulong)wide->msginfo.high
+  AddLineF(line, "Total Active  : %u (%Xh)", (uint32_t)wide->msginfo.total, (uint32_t)wide->msginfo.total);
+  AddLineF(line, "Low/High Msgno: %u (%Xh)  %u (%Xh)",
+    (uint32_t)wide->msginfo.low,   (uint32_t)wide->msginfo.low,
+    (uint32_t)wide->msginfo.high,  (uint32_t)wide->msginfo.high
   );
   for(int brd=0; brd<(__HUDSON ? HUDS_MAXBOARD : GOLD_MAXBOARD); brd+=10) {
     AddLineF(line, "Board %03u-%03u : %5u %5u %5u %5u %5u %5u %5u %5u %5u %5u",
@@ -107,10 +107,10 @@ Line* _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::make_dump_msg
   AddLineF(line, "Dump of lastread%s:", __HUDSON ? HUDS_EXT : GOLD_EXT);
   line = AddLine(line, "");
   for(int lrd=0; lrd<(__HUDSON ? HUDS_MAXBOARD : GOLD_MAXBOARD); lrd+=5) {
-    AddLineF(line, "Board %03u-%03u : %10lu %10lu %10lu %10lu %10lu",
-      lrd+1,  lrd+5,  (ulong)wide->lastrec[lrd+0],
-      (ulong)wide->lastrec[lrd+1],  (ulong)wide->lastrec[lrd+2],
-      (ulong)wide->lastrec[lrd+3],  (ulong)wide->lastrec[lrd+4]
+    AddLineF(line, "Board %03u-%03u : %10u %10u %10u %10u %10u",
+      lrd+1,  lrd+5,  (uint32_t)wide->lastrec[lrd+0],
+      (uint32_t)wide->lastrec[lrd+1],  (uint32_t)wide->lastrec[lrd+2],
+      (uint32_t)wide->lastrec[lrd+3],  (uint32_t)wide->lastrec[lrd+4]
     );
   }
   line = AddLine(line, "");

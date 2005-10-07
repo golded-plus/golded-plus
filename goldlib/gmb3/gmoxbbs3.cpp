@@ -44,7 +44,7 @@ int XbbsArea::load_message(int __mode, gmsg* __msg, XbbsHdr& __hdr) {
 
   // Load the message header
   memset(&__hdr, 0, sizeof(XbbsHdr));
-  lseekset(_fhdata, (long)(_reln-1)*(long)sizeof(XbbsHdr));
+  lseekset(_fhdata, (_reln-1)*sizeof(XbbsHdr));
   read(_fhdata, &__hdr, sizeof(XbbsHdr));
 
   // Convert header

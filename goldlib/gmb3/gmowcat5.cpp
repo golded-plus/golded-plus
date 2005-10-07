@@ -67,18 +67,18 @@ Line* WCatArea::make_dump_msg(Line*& lin, gmsg* msg, char* lng_head) {
   AddLineF(line, "------------------------------------------------------------------------------");
   line = AddLine(line, "");
   AddLineF(line, "Path       : %s", real_path());
-  AddLineF(line, "MagicNumber: %08lXh", _hdr.magicnumber);
+  AddLineF(line, "MagicNumber: %08Xh", _hdr.magicnumber);
   AddLineF(line, "MsgNumber  : %u", _hdr.msgno);
   AddLineF(line, "Orig       : %s", STRNP2C(_hdr.from));
   AddLineF(line, "OrigTitle  : %s", STRNP2C(_hdr.fromtitle));
-  AddLineF(line, "OrigUserID : %li", _hdr.fromuserid);
+  AddLineF(line, "OrigUserID : %i", _hdr.fromuserid);
   AddLineF(line, "Dest       : %s", STRNP2C(_hdr.to));
   AddLineF(line, "DestTitle  : %s", STRNP2C(_hdr.totitle));
-  AddLineF(line, "DestUserID : %li", _hdr.touserid);
+  AddLineF(line, "DestUserID : %i", _hdr.touserid);
   AddLineF(line, "Subject    : %s", STRNP2C(_hdr.subject));
   AddLineF(line, "Network    : %s", STRNP2C(_hdr.network));
-  AddLineF(line, "MsgTime    : %s (%u, %li)", strftimei(buf, 100, "%d %b %y  %H:%M:%S", gmtime(&msg->written)), _hdr.msgdate, _hdr.msgtime);
-  AddLineF(line, "ReadTime   : %s (%u, %li)", strftimei(buf, 100, "%d %b %y  %H:%M:%S", gmtime(&msg->received)), _hdr.readdate, _hdr.readtime);
+  AddLineF(line, "MsgTime    : %s (%u, %i)", strftimei(buf, 100, "%d %b %y  %H:%M:%S", gmtime(&msg->written)), _hdr.msgdate, _hdr.msgtime);
+  AddLineF(line, "ReadTime   : %s (%u, %i)", strftimei(buf, 100, "%d %b %y  %H:%M:%S", gmtime(&msg->received)), _hdr.readdate, _hdr.readtime);
   AddLineF(line, "mFlags     : %u (%04Xh)", _hdr.mflags, _hdr.mflags);
   AddLineF(line, "Reference  : %u", _hdr.reference);
   AddLineF(line, "FidoFrom   : %u:%u/%u.%u", _hdr.origaddr.zone, _hdr.origaddr.net, _hdr.origaddr.node, _hdr.origaddr.point);
@@ -89,7 +89,7 @@ Line* WCatArea::make_dump_msg(Line*& lin, gmsg* msg, char* lng_head) {
   AddLineF(line, "PrevUnread : %u", _hdr.prevunread);
   AddLineF(line, "NextUnread : %u", _hdr.nextunread);
   AddLineF(line, "FidoFlags  : %u (%04Xh)", _hdr.fidoflags, _hdr.fidoflags);
-  AddLineF(line, "Cost       : %li", _hdr.cost);
+  AddLineF(line, "Cost       : %i", _hdr.cost);
   AddLineF(line, "Reserved   : %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X",
     _hdr.reserved[0], _hdr.reserved[1], _hdr.reserved[2],
     _hdr.reserved[3], _hdr.reserved[4], _hdr.reserved[5],

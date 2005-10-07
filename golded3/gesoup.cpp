@@ -79,7 +79,7 @@ char* CvtMessageIDtoMSGID(const char* mptr, char* msgidbuf, const char* echoid, 
     }
     if(spaces)
       *bptr++ = '\"';
-    sprintf(bptr, " %08lx", crc32);
+    sprintf(bptr, " %08x", crc32);
   }
 
   return msgidbuf;

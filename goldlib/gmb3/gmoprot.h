@@ -45,7 +45,7 @@ void FidoRenumberProgress(const char* s);
 
 //  ------------------------------------------------------------------
 
-void GoldInit(const char* path, const char* syspath, int userno, long sizewarn=0, int ra2usersbbs=0);
+void GoldInit(const char* path, const char* syspath, int userno, int32_t sizewarn=0, int ra2usersbbs=0);
 void GoldExit();
 
 void GoldWideOpen();
@@ -54,7 +54,7 @@ void GoldWideClose();
 
 //  ------------------------------------------------------------------
 
-void HudsInit(const char* path, const char* syspath, int userno, long sizewarn, int ra2usersbbs);
+void HudsInit(const char* path, const char* syspath, int userno, int32_t sizewarn, int ra2usersbbs);
 void HudsExit();
 void HudsSizewarn();
 

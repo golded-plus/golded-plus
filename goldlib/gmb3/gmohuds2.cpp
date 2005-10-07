@@ -155,7 +155,7 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::refresh() {
   read(fhinf, &msginfo, sizeof(HudsInfo));
 
   // Load LASTREAD.BBS/DAT
-  lseek(fhlrd, (long)userno*(long)sizeof(HudsLast), SEEK_SET);
+  lseek(fhlrd, userno*sizeof(HudsLast), SEEK_SET);
   read(fhlrd, lastrec, sizeof(HudsLast));
 
   GFTRK(NULL);
@@ -366,7 +366,7 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::scan() {
     }
 
     if(WideDebug) {
-      WideLog->printf("- b:%u: t:%u, l:%u, fm:%lu, hm:%lu, lr:%lu, u:%u",
+      WideLog->printf("- b:%u: t:%u, l:%u, fm:%u, hm:%u, lr:%u, u:%u",
         _board,
         _scan->count,
         _scan->lastreadreln,
@@ -439,12 +439,12 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::raw_scan(int _
       Msgn->Resize(_active);
 
     // Index pointers
-    register ulong* _msgno_ptr = Msgn->tag;
+    uint32_t* _msgno_ptr = Msgn->tag;
 
     // Fill index
-    register ulong _firstmsgno = 0;
-    register ulong _lastmsgno = 0;
-    register ulong _lastreadfound = 0;
+    uint _firstmsgno = 0;
+    uint _lastmsgno = 0;
+    uint _lastreadfound = 0;
     while(_msgidx_count < _msgidx_total) {
 
       // Is it our board and is the msg not deleted?
@@ -502,13 +502,13 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::raw_scan(int _
     lastreadentry = _lastreadfound;
 
     if(WideDebug) {
-      WideLog->printf("- b:%u: t:%u, l:%u, fm:%lu, hm:%lu, lr:%lu, u:%u",
+      WideLog->printf("- b:%u: t:%u, l:%u, fm:%u, hm:%u, lr:%u, u:%u",
         board(),
         Msgn->Count(),
         lastread,
         _firstmsgno,
         _lastmsgno,
-        (ulong)_lastread,
+        _lastread,
         wide->userno
       );
     }
@@ -701,7 +701,7 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::scan_area_pm()
     lastreadentry = _scan->lastreadfound;
 
     if(WideDebug) {
-      WideLog->printf("- b:%u: t:%u, l:%u, fm:%lu, hm:%lu, lr:%lu, u:%u, pm:%i",
+      WideLog->printf("- b:%u: t:%u, l:%u, fm:%u, hm:%u, lr:%u, u:%u, pm:%i",
         _board,
         _scan->count,
         _scan->lastreadreln,

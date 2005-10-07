@@ -59,9 +59,9 @@ void FidoArea::data_close() {
 
 //  ------------------------------------------------------------------
 
-char* FidoArea::build_msgname(char* __buf, ulong __msgno) {
+char* FidoArea::build_msgname(char* __buf, uint32_t __msgno) {
 
-  sprintf(__buf, "%s%lu.msg", real_path(), __msgno);
+  sprintf(__buf, "%s%u.msg", real_path(), __msgno);
   return __buf;
 }
 

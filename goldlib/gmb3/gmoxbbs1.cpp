@@ -224,9 +224,9 @@ void XbbsArea::save_lastread() {
 
   int _fh = ::sopen(AddPath(real_path(), ".lmr"), O_RDWR|O_CREAT|O_BINARY, WideSharemode, S_STDRW);
   if(_fh != -1) {
-    ulong _lastread = Msgn->CvtReln(lastread);
-    lseekset(_fh, wide->userno+1, sizeof(ulong));
-    write(_fh, &_lastread, sizeof(ulong));
+    uint32_t _lastread = Msgn->CvtReln(lastread);
+    lseekset(_fh, wide->userno+1, sizeof(uint32_t));
+    write(_fh, &_lastread, sizeof(uint32_t));
     ::close(_fh);
   }
 

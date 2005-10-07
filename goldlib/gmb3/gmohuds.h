@@ -173,11 +173,11 @@ typedef word GoldLast[GOLD_MAXBOARD] __attribute__((packed));
 struct HudsScan {  
   uint count;
   uint active;
-  ulong lastread;
+  uint32_t lastread;
   uint lastreadreln;
-  ulong lastreadfound;
-  ulong firstmsgno;
-  ulong lastmsgno;
+  uint32_t lastreadfound;
+  uint32_t firstmsgno;
+  uint32_t lastmsgno;
   uint pmcount;
 };
 
@@ -211,7 +211,7 @@ struct _HudsWide {
   int      isopen;
   int      islocked;
   int      timesposted;
-  long     msgidxsize;
+  int32_t     msgidxsize;
   HudsIdx* msgidxptr;
   HudsInfo msginfo;
   last_t   lastrec;
@@ -225,7 +225,7 @@ struct _HudsWide {
   int      iswidescanned;
   const char* path;
   const char* syspath;
-  long sizewarn;
+  int32_t sizewarn;
   int  ra2usersbbs;
 
   void init();
@@ -333,9 +333,9 @@ public:
 
 // <class msgn_t, class rec_t, class attr_t, class board_t, class last_t, bool __HUDSON>
 typedef _HudsWide<word, word, byte, byte, HudsLast, true> HudsWide;
-typedef _HudsWide<dword, long, word, word, GoldLast, false> GoldWide;
+typedef _HudsWide<dword, int32_t, word, word, GoldLast, false> GoldWide;
 typedef _HudsArea<word, word, byte, byte, HudsLast, true> HudsArea;
-typedef _HudsArea<dword, long, word, word, GoldLast, false> GoldArea;
+typedef _HudsArea<dword, int32_t, word, word, GoldLast, false> GoldArea;
 
 
 //  ------------------------------------------------------------------

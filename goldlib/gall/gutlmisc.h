@@ -48,7 +48,7 @@ inline int atox(const char* s) { return (int)atoulx(s); }
 char* ltob(char* dst, ulong value, int fill=32);
 
 int GetYesno(const char* value);
-int Pct(dword x, dword y);
+int Pct(ulong x, ulong y);
 int tabstop(int col, int tabwidth);
 
 char* ggetosstring();
@@ -57,7 +57,7 @@ char* ggetosstring();
 dword B2L(dword b);
 dword L2B(dword l);
 
-inline void SwapWord32(long* dw) { *dw = (long)(((dword)(*dw) << 16) | ((dword)(*dw) >> 16)); }
+inline void SwapWord32(uint32_t* dw) { *dw = ((*dw) << 16) | ((*dw) >> 16); }
 
 
 //  ------------------------------------------------------------------

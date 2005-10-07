@@ -10,6 +10,7 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+! Golded+ now may be compiled on 64bit platforms.
 
 + Fix P4 and IA64 cpu detection.
 

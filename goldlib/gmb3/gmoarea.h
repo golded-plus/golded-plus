@@ -70,7 +70,7 @@ public:
   GTag*   PMrk;               // Personal mail marks
 
   uint    lastread;           // Number of last message read
-  ulong   lastreadentry;      // Lastread message number at entry to area
+  uint32_t   lastreadentry;      // Lastread message number at entry to area
 
   int     isopen;             // NONZERO if open
 

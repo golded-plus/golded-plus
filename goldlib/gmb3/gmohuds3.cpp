@@ -37,7 +37,7 @@ msgn_t _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::get_hdr_idx(
   msgn_t _total = (msgn_t)(wide->msgidxsize/sizeof(HudsIdx));
   HudsIdx* _msgidx_ptr = wide->msgidxptr;
 
-  register ulong _msgno = __msg->msgno;
+  uint32_t _msgno = __msg->msgno;
   if(_msgidx_ptr) {
     while(_count <= _total) {
       if(_msgno == _msgidx_ptr->msgno) {
@@ -50,27 +50,27 @@ msgn_t _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::get_hdr_idx(
   }
 
   // Report error
-  ulong _lmsgno = lastread ? Msgn->at(lastread-1) : Msgn->at(0);
-  ulong _lread = wide->lastrec[board()-1];
-  ulong _active = wide->msginfo.active[board()-1];
+  uint32_t _lmsgno = lastread ? Msgn->at(lastread-1) : Msgn->at(0);
+  uint32_t _lread = wide->lastrec[board()-1];
+  uint32_t _active = wide->msginfo.active[board()-1];
   WideLog->errindex(__file__, __line__);
   WideLog->printf("! Failed to locate a msgno in an internal %s index.", __HUDSON ? HUDS_NAME : GOLD_NAME);
-  WideLog->printf(": Msgno %lu (%lXh) in board %u (%s,%u,%u).", _msgno, _msgno, board(), echoid(), Msgn->Count(), lastread);
-  WideLog->printf(": First Msgno       : %lu (%lXh).", Msgn->at(0), Msgn->at(0));
-  WideLog->printf(": Msgno at lastread : %lu (%lXh).", _lmsgno, _lmsgno);
-  WideLog->printf(": Real lastread msg : %lu (%lXh).", _lread, _lread);
-  WideLog->printf(": Real active msgs  : %lu (%lXh).", _active, _active);
+  WideLog->printf(": Msgno %u (%Xh) in board %u (%s,%u,%u).", _msgno, _msgno, board(), echoid(), Msgn->Count(), lastread);
+  WideLog->printf(": First Msgno       : %u (%Xh).", Msgn->at(0), Msgn->at(0));
+  WideLog->printf(": Msgno at lastread : %u (%Xh).", _lmsgno, _lmsgno);
+  WideLog->printf(": Real lastread msg : %u (%Xh).", _lread, _lread);
+  WideLog->printf(": Real active msgs  : %u (%Xh).", _active, _active);
   if(Msgn->Count() > 2) {
     _lmsgno = Msgn->at(Msgn->Count()-3);
-    WideLog->printf(": Highest-2 msgno   : %lu (%lXh).", _lmsgno, _lmsgno);
+    WideLog->printf(": Highest-2 msgno   : %u (%Xh).", _lmsgno, _lmsgno);
   }
   if(Msgn->Count() > 1) {
     _lmsgno = Msgn->at(Msgn->Count()-2);
-    WideLog->printf(": Highest-1 msgno   : %lu (%lXh).", _lmsgno, _lmsgno);
+    WideLog->printf(": Highest-1 msgno   : %u (%Xh).", _lmsgno, _lmsgno);
   }
   if(Msgn->Count()) {
     _lmsgno = Msgn->at(Msgn->Count()-1);
-    WideLog->printf(": Highest msgno     : %lu (%lXh).", _lmsgno, _lmsgno);
+    WideLog->printf(": Highest msgno     : %u (%Xh).", _lmsgno, _lmsgno);
   }
   if(_msgno == 0xEEEEEEEEL) {
     WideLog->printf("+ Info: This indicates a serious bug.");
@@ -97,7 +97,7 @@ int _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::load_message(in
 
   // Read header
   msgn_t _hdridx = get_hdr_idx(__msg, __FILE__, __LINE__);
-  lseek(wide->fhhdr, (long)_hdridx*(long)sizeof(HudsHdr), SEEK_SET);
+  lseek(wide->fhhdr, (int32_t)_hdridx*(int32_t)sizeof(HudsHdr), SEEK_SET);
   read(wide->fhhdr, &__hdr, sizeof(HudsHdr));
 
   __msg->msgno = __hdr.msgno;
@@ -174,7 +174,7 @@ int _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::load_message(in
     if(_numrecs) {
 
       // Seek to, and read the raw text
-      lseek(wide->fhtxt, (long)__hdr.startrec*256L, SEEK_SET);
+      lseek(wide->fhtxt, (int32_t)__hdr.startrec*256L, SEEK_SET);
       read(wide->fhtxt, __msg->txt, _numrecs*256);
 
       // Set up loop variables

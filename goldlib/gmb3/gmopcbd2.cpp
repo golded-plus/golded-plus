@@ -105,7 +105,7 @@ void PcbWideOpen() {
     pcbwide->user->fhinf = pcbwide->fhinf;
 
     // Read lastreads from USERS file
-    lseekset(pcbwide->fhusr, (long)pcbwide->userno*(long)sizeof(PcbUsers));
+    lseekset(pcbwide->fhusr, pcbwide->userno*sizeof(PcbUsers));
     read(pcbwide->fhusr, &pcbwide->usersrec, sizeof(PcbUsers));
     int _maxlr = MinV(pcbwide->numareas, 40);
     for(int n=0; n<_maxlr; n++)
@@ -113,13 +113,13 @@ void PcbWideOpen() {
 
     // Read lastreads from USERS.INF file
     if(pcbwide->extconflen) {
-      long _offset = (pcbwide->usersrec.usersinfrec-1)*pcbwide->usershdr.totalrecsize;
+      int32_t _offset = (pcbwide->usersrec.usersinfrec-1)*pcbwide->usershdr.totalrecsize;
       _offset +=     pcbwide->usershdrsize;
       _offset +=     pcbwide->usershdr.sizeofrec;
       _offset += 2 * pcbwide->confbytelen;
       _offset += 3 * pcbwide->extconflen;
       lseekset(pcbwide->fhinf, _offset);
-      read(pcbwide->fhinf, pcbwide->lastread+40, (pcbwide->numareas-40)*sizeof(long));
+      read(pcbwide->fhinf, pcbwide->lastread+40, (pcbwide->numareas-40)*sizeof(int32_t));
     }
 
     pcbwide->isopen = true;
@@ -246,7 +246,7 @@ void PcbArea::raw_scan(int __keep_index, int __scanpm) {
   }
   
   // Get some sizes
-  long _idxlen = filelength(data->fhidx);
+  uint _idxlen = filelength(data->fhidx);
   uint _idxsize  = (uint)_idxlen;
   uint _idxtotal = _idxsize / sizeof(PcbIdx);
 
@@ -262,15 +262,15 @@ void PcbArea::raw_scan(int __keep_index, int __scanpm) {
   read(data->fhidx, _idxbuf, _idxsize);
 
   // Variables for the loop
-  register uint _active = 0;
-  register ulong _firstmsgno = 0;
-  register ulong _lastmsgno = 0;
-  register ulong _lastreadfound = 0;
-  register ulong _totalmsgs = _idxtotal;
-  register ulong _lastread = wide->lastread[board()];
-  register uint _lastread_reln = 0;
-  register ulong* _msgndxptr = Msgn->tag;
-  register PcbIdx* _idxptr = _idxbuf;
+  uint _active = 0;
+  uint _firstmsgno = 0;
+  uint _lastmsgno = 0;
+  uint _lastreadfound = 0;
+  uint _totalmsgs = _idxtotal;
+  uint _lastread = wide->lastread[board()];
+  uint _lastread_reln = 0;
+  uint32_t* _msgndxptr = Msgn->tag;
+  PcbIdx* _idxptr = _idxbuf;
 
   // Fill message index
   register uint n = 0;

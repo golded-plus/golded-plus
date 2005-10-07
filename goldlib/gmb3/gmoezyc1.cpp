@@ -364,7 +364,7 @@ void EzycomArea::save_lastread() {
   int _fh = test_open(AddPath(wide->userbasepath, "LASTCOMB.BBS"), O_RDWR|O_CREAT|O_BINARY, SH_DENYNO);
   if(_fh != -1) {
     word _lastread = (word)(Msgn->CvtReln(lastread)+1);
-    lseekset(_fh, (long)wide->userno * ((long)wide->maxmess / 16) * (long)sizeof(EzycLast) +
+    lseekset(_fh, wide->userno * (wide->maxmess / 16) * sizeof(EzycLast) +
       (((board() - 1) / 16) * sizeof(EzycLast) + sizeof(word)) +
       (board()-1) % 16 * sizeof(word)
     );

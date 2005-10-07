@@ -41,7 +41,7 @@ int PcbArea::load_message(int __mode, gmsg* __msg, PcbHdr& __hdr) {
 
   // Read index record for msg
   PcbIdx _idx;
-  lseekset(data->fhidx, (__msg->msgno-data->base.lowmsgno)*(long)sizeof(PcbIdx));
+  lseekset(data->fhidx, (__msg->msgno-data->base.lowmsgno)*sizeof(PcbIdx));
   read(data->fhidx, &_idx, sizeof(PcbIdx));
   __msg->txtstart = _idx.offset;
 

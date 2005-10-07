@@ -748,7 +748,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
                       ptr--;
                     }
                   }
-                  x = (int)((dword)ptr-(dword)qbuf);
+                  x = (int)((long)ptr-(long)qbuf);
                   sprintf(buf, "%*.*s%*.*s>%s %s",
                     y, y, quotestr, x, x, qbuf, qbuf+x, quote
                   );

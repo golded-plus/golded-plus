@@ -178,8 +178,8 @@ const word SQFRAME_FREE   = 1;
 
 struct SqshFrm {
   dword  id;               // Must always equal SQFRAMEID
-  long  next;             // Offset of next frame
-  long  prev;             // Offset of previous frame
+  int32_t  next;             // Offset of next frame
+  int32_t  prev;             // Offset of previous frame
   dword  length;           // Length of this frame
   dword  totsize;          // Length of data in frame (hdr+ctl+txt)
   dword  ctlsize;          // Length of control info
@@ -192,7 +192,7 @@ struct SqshFrm {
 //  Structure of index file .SQI
 
 struct SqshIdx {
-  long  offset;           // Offset of frame in .SQD
+  int32_t  offset;           // Offset of frame in .SQD
   dword  msgno;            // Message number
   dword  hash;             // Hash value of TO: name
 };
@@ -281,7 +281,7 @@ protected:
   void delete_msg(uint __reln);
   void init_frm(SqshFrm* __frm);
   void excess_frm(dword __lastframe, dword __newframe, SqshFrm* __newfrm, dword __totsize);
-  uint find_msgn(ulong __tagn);
+  uint find_msgn(uint32_t __tagn);
   void save_message(int __mode, gmsg* __msg);
 
 public:

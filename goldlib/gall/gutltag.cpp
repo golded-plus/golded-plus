@@ -66,7 +66,7 @@ void GTag::Reset() {
 //  Resize tag array.
 //  Returns NULL if realloc failed.
 
-ulong* GTag::Resize(uint __tags) {
+uint32_t* GTag::Resize(uint __tags) {
 
   register uint newsize = 0;
 
@@ -78,7 +78,7 @@ ulong* GTag::Resize(uint __tags) {
   }
 
   if(newsize) {
-    tag = (ulong*)throw_realloc(tag, newsize*sizeof(ulong));
+    tag = (uint32_t*)throw_realloc(tag, newsize*sizeof(uint32_t));
     allocated = newsize;
   }
 
@@ -91,7 +91,7 @@ ulong* GTag::Resize(uint __tags) {
 //  Appends a new tag number to the end of the tag array.
 //  NOTE - Does not check for duplicates or correct sequence!
 
-ulong* GTag::Append(ulong __tagn) {
+uint32_t* GTag::Append(uint32_t __tagn) {
 
   Resize(tags+1);
   tag[tags-1] = __tagn;
@@ -125,7 +125,7 @@ ulong* GTag::Append(ulong __tagn) {
 //
 //  Dry test result: Works!
 
-ulong* GTag::Add(ulong __tagn) {
+uint32_t* GTag::Add(uint32_t __tagn) {
 
   // Find closest tag number
   uint _reln = ToReln(__tagn, TAGN_CLOSEST);
@@ -147,7 +147,7 @@ ulong* GTag::Add(ulong __tagn) {
       _reln--;
 
     // Move data to make room for the new tag number
-    memmove(tag+_reln+1, tag+_reln, (tags-_reln-1)*sizeof(ulong));
+    memmove(tag+_reln+1, tag+_reln, (tags-_reln-1)*sizeof(uint32_t));
 
     // Copy the new tag number to the insert position
     tag[_reln] = __tagn;
@@ -162,7 +162,7 @@ ulong* GTag::Add(ulong __tagn) {
 //  Returns the relative tag number or RELN_INVALID if missing.
 //  NOTE - Does not resize the array.
 
-uint GTag::Del(ulong __tagn) {
+uint GTag::Del(uint32_t __tagn) {
 
   return DelReln(ToReln(__tagn));
 }
@@ -173,7 +173,7 @@ uint GTag::Del(ulong __tagn) {
 uint GTag::DelReln(uint __reln) {
 
   if(__reln) {
-    memmove(tag+__reln-1, tag+__reln, (tags-__reln)*sizeof(ulong));
+    memmove(tag+__reln-1, tag+__reln, (tags-__reln)*sizeof(uint32_t));
     count--;
     tags--;
   }
@@ -183,7 +183,7 @@ uint GTag::DelReln(uint __reln) {
 
 //  ------------------------------------------------------------------
 
-uint GTag::DelResize(ulong __tagn) {
+uint GTag::DelResize(uint32_t __tagn) {
 
   uint _reln = Del(__tagn);
   Resize(tags);
@@ -193,7 +193,7 @@ uint GTag::DelResize(ulong __tagn) {
 
 //  ------------------------------------------------------------------
 
-static int TagnCmp(const ulong* __a, const ulong* __b) {
+static int TagnCmp(const uint32_t* __a, const uint32_t* __b) {
 
   return CmpV(*__a, *__b);
 }
@@ -203,7 +203,7 @@ static int TagnCmp(const ulong* __a, const ulong* __b) {
 
 void GTag::Sort() {
 
-  qsort(tag, tags, sizeof(ulong), (StdCmpCP)TagnCmp);
+  qsort(tag, tags, sizeof(uint32_t), (StdCmpCP)TagnCmp);
 }
 
 //  ------------------------------------------------------------------
@@ -212,10 +212,10 @@ void GTag::ElimDups() {
 
   if(tags > 1) {
     uint _before = tags;
-    ulong _last = tag[0];
+    uint32_t _last = tag[0];
     for(uint n=1; n<tags; n++) {
       if(_last == tag[n]) {
-        memmove(&tag[n-1], &tag[n], (tags-n)*sizeof(ulong));
+        memmove(&tag[n-1], &tag[n], (tags-n)*sizeof(uint32_t));
         tags--;
         n--;
       }
@@ -231,7 +231,7 @@ void GTag::ElimDups() {
 //  Return the tag number corresponding to a relative tag number.
 //  Returns TAGN_INVALID, if the requested number did not exist.
 
-ulong GTag::CvtReln(uint __reln) {
+uint32_t GTag::CvtReln(uint __reln) {
 
   if(tag and __reln and (__reln <= tags))
     return tag[__reln-1];
@@ -246,7 +246,7 @@ ulong GTag::CvtReln(uint __reln) {
 //  If __closest is true, the closest smaller tag number is returned.
 //  If no tags exist at all, RELN_INVALID is returned.
 
-uint GTag::ToReln(ulong __tagn, int __closest) {
+uint GTag::ToReln(uint32_t __tagn, int __closest) {
 
   uint _lastreln = RELN_INVALID;
 
@@ -258,9 +258,9 @@ uint GTag::ToReln(ulong __tagn, int __closest) {
 
     if(tags and __tagn) {
 
-      register long _mid;
-      register long _left = 0;
-      register long _right = tags;
+      int _mid;
+      int _left = 0;
+      int _right = tags;
 
       do {
         _mid = (_left+_right)/2;
@@ -285,7 +285,7 @@ uint GTag::ToReln(ulong __tagn, int __closest) {
 
 //  ------------------------------------------------------------------
 
-uint GTag::ToReln(ulong __tagn) {
+uint GTag::ToReln(uint32_t __tagn) {
 
   return ToReln(__tagn, TAGN_EXACT);
 }
@@ -301,7 +301,7 @@ void GTag::Load(gfile& fp) {
   count = (uint) val;
   if(count) {
     Resize(count);
-    fp.fread(tag, sizeof(ulong), count);
+    fp.fread(tag, sizeof(uint32_t), count);
   }
 }
 
@@ -316,7 +316,7 @@ void GTag::Save(gfile& fp) {
   fp.fwrite(&val, sizeof(dword));
 
   if(tag and count)
-    fp.fwrite(tag, sizeof(ulong), count);
+    fp.fwrite(tag, sizeof(uint32_t), count);
 }
 
 

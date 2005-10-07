@@ -115,12 +115,12 @@ void PcbInit(const char* path, int userno) {
     if(_recsize) {
       PcbConf* _cnames = (PcbConf*)throw_calloc(1, _recsize);
       int _rec = 0;
-      pcbwide->numareas = (int)((fp.filelength()-2)/(long)_recsize);
+      pcbwide->numareas = (int)((fp.filelength()-2)/_recsize);
       pcbwide->confbytelen = (pcbwide->numareas/8) + ((pcbwide->numareas%8) != 0 ? 1 : 0);
       if(pcbwide->confbytelen < 5)
         pcbwide->confbytelen = 5;
       pcbwide->extconflen = pcbwide->confbytelen - 5;
-      pcbwide->lastread = (long*)throw_calloc(pcbwide->numareas, sizeof(long));
+      pcbwide->lastread = (int32_t*)throw_calloc(pcbwide->numareas, sizeof(int32_t));
       while(fp.fread(_cnames, _recsize) == 1) {
         PcbAdjustArea((uint)_rec, _cnames->msgfile);
         _rec++;
@@ -208,16 +208,16 @@ void PcbArea::save_lastread() {
   dword tmplr = Msgn->CvtReln(lastread);
   if(board() < 40) {
     // Write lastreads to USERS file
-    lseekset(wide->fhusr, (long)wide->userno*(long)sizeof(PcbUsers));
+    lseekset(wide->fhusr, wide->userno*sizeof(PcbUsers));
     read(wide->fhusr, &wide->usersrec, sizeof(PcbUsers));
     wide->usersrec.lastmsgread[board()] = L2B(tmplr);
-    lseekset(wide->fhusr, (long)wide->userno*(long)sizeof(PcbUsers));
+    lseekset(wide->fhusr, wide->userno*sizeof(PcbUsers));
     write(wide->fhusr, &wide->usersrec, sizeof(PcbUsers));
   }
   else {
     // Write lastreads to USERS.INF file
     if(wide->extconflen) {
-      long _offset = (wide->usersrec.usersinfrec-1)*wide->usershdr.totalrecsize;
+      int32_t _offset = (wide->usersrec.usersinfrec-1)*wide->usershdr.totalrecsize;
       _offset +=     wide->usershdrsize;
       _offset +=     wide->usershdr.sizeofrec;
       _offset += 2 * wide->confbytelen;

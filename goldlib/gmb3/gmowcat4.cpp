@@ -121,13 +121,13 @@ void WCatArea::save_message(int __mode, gmsg* __msg, WCatHdr& __hdr) {
   if(__msg->written) {
     struct tm* _tm = gmtime(&__msg->written);
     __hdr.msgdate = (word)(YMD2JDN(1900+_tm->tm_year, _tm->tm_mon+1, _tm->tm_mday)-1);
-    __hdr.msgtime = (((long)_tm->tm_hour*3600L)+((long)_tm->tm_min*60L)+_tm->tm_sec)+1;
+    __hdr.msgtime = ((_tm->tm_hour*3600L)+(_tm->tm_min*60L)+_tm->tm_sec)+1;
   }
 
   if(__msg->received) {
     struct tm* _tm = gmtime(&__msg->received);
     __hdr.readdate = (word)YMD2JDN(1900+_tm->tm_year, _tm->tm_mon+1, _tm->tm_mday);
-    __hdr.readtime = (((long)_tm->tm_hour*3600L)+((long)_tm->tm_min*60L)+_tm->tm_sec)+1;
+    __hdr.readtime = ((_tm->tm_hour*3600L)+(_tm->tm_min*60L)+_tm->tm_sec)+1;
   }
 
   __hdr.mflags |= (word)(__msg->attr.pvt() ? mfPrivate     : 0);
@@ -180,7 +180,7 @@ void WCatArea::save_message(int __mode, gmsg* __msg, WCatHdr& __hdr) {
 
   char* _txt = NULL;
   uint _reln = Msgn->ToReln(__msg->msgno)-1;
-  long _datstart = data->idx[_reln].offset;
+  int32_t _datstart = data->idx[_reln].offset;
 
   if(__mode & GMSG_TXT) {
 
@@ -198,14 +198,14 @@ void WCatArea::save_message(int __mode, gmsg* __msg, WCatHdr& __hdr) {
 
     if((__mode & GMSG_NEW) or (_size > __hdr.msgbytes)) {
       if(_size > __hdr.msgbytes) {
-        ulong _magic = MagicHeaderInactive;
+        uint32_t _magic = MagicHeaderInactive;
         lseekset(data->fhdat, data->idx[_reln].offset);
         write(data->fhdat, &_magic, 4);
       }
       _datstart = filelength(data->fhdat);
       data->idx[_reln].msgno = __hdr.msgno;
       data->idx[_reln].offset = _datstart;
-      lseekset(data->fhix, sizeof(WCatBase)+((long)_reln*sizeof(WCatIdx)));
+      lseekset(data->fhix, sizeof(WCatBase)+(_reln*sizeof(WCatIdx)));
       write(data->fhix, &data->idx[_reln], sizeof(WCatIdx));
     }
     __hdr.msgbytes = _size;

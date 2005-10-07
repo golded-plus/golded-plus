@@ -85,7 +85,7 @@ int WCatArea::load_message(int __mode, gmsg* __msg, WCatHdr& __hdr) {
   
   // Convert date and time
   struct tm _tm;
-  long _time;
+  int32_t _time;
   unsigned _year, _month, _day, _hour, _minute, _second;
 
   __msg->written = __msg->arrived = __msg->received = 0;
@@ -95,7 +95,7 @@ int WCatArea::load_message(int __mode, gmsg* __msg, WCatHdr& __hdr) {
     _time = __hdr.msgtime-1;
     _hour = (unsigned)(_time / 3600L);
     _minute = (unsigned)((_time % 3600L) / 60L);
-    _second = (unsigned)(_time - (((long)_hour*3600L)+(long)_minute*60L));
+    _second = (unsigned)(_time - ((_hour*3600L)+_minute*60L));
     _tm.tm_year  = _year - 1900;
     _tm.tm_mon   = _month - 1;
     _tm.tm_mday  = _day;
@@ -115,7 +115,7 @@ int WCatArea::load_message(int __mode, gmsg* __msg, WCatHdr& __hdr) {
     _time = __hdr.readtime-1;
     _hour = (unsigned)(_time / 3600L);
     _minute = (unsigned)((_time % 3600L) / 60L);
-    _second = (unsigned)(_time - (((long)_hour*3600L)+(long)_minute*60L));
+    _second = (unsigned)(_time - ((_hour*3600L)+_minute*60L));
     _tm.tm_year  = _year - 1900;
     _tm.tm_mon   = _month - 1;
     _tm.tm_mday  = _day;

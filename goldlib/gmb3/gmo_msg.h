@@ -183,10 +183,10 @@ private:
 
   enum { list_limit = 29 };
 
-  ulong reply_to;
-  ulong reply_first;
-  ulong reply_list[list_limit];
-  ulong reply_next;
+  uint32_t reply_to;
+  uint32_t reply_first;
+  uint32_t reply_list[list_limit];
+  uint32_t reply_next;
 
 public:
 
@@ -198,15 +198,15 @@ public:
 
   int list_max() const          { return list_limit; }
   
-  void to_set(ulong m)          { reply_to = m; }
-  void first_set(ulong m)       { reply_first = m; }
-  void list_set(int n, ulong m) { reply_list[n] = m; }
-  void next_set(ulong m)        { reply_next = m; }
+  void to_set(uint32_t m)          { reply_to = m; }
+  void first_set(uint32_t m)       { reply_first = m; }
+  void list_set(int n, uint32_t m) { reply_list[n] = m; }
+  void next_set(uint32_t m)        { reply_next = m; }
   
-  ulong to() const              { return reply_to; }
-  ulong first() const           { return reply_first; }
-  ulong list(int n) const       { return reply_list[n]; }
-  ulong next() const            { return reply_next; }
+  uint32_t to() const              { return reply_to; }
+  uint32_t first() const           { return reply_first; }
+  uint32_t list(int n) const       { return reply_list[n]; }
+  uint32_t next() const            { return reply_next; }
 
 };
 
@@ -215,7 +215,7 @@ public:
 
 struct gmsg_jam_fields {
 
-  long subfieldlen;   // Size of subfields
+  int32_t subfieldlen;   // Size of subfields
 };
 
 
@@ -226,7 +226,7 @@ struct gmsg_pcboard_fields {
   char status;          // Msg header status byte
   byte exthdrflags;     // Msg extended header flags
   char password[13];    // Password needed to read the message
-  time_t reply_written;   // Timestamp of the original
+  time32_t reply_written;   // Timestamp of the original
 };
 
 
@@ -235,14 +235,14 @@ struct gmsg_pcboard_fields {
 struct gmsg_wildcat_fields {
 
   char  from_title[11];
-  long  from_userid;
+  int32_t  from_userid;
   char  to_title[11];
-  long  to_userid;
+  int32_t  to_userid;
   char  network[9];
   char  internal_attach[13];
   char  external_attach[13];
-  ulong next_unread;
-  ulong prev_unread;
+  uint32_t next_unread;
+  uint32_t prev_unread;
   char  reserved[20];
 };
 
@@ -251,8 +251,8 @@ struct gmsg_wildcat_fields {
 
 struct gmsg_adeptxbbs_fields {
 
-  ulong iflags;       // Internet related flags
-  ulong oflags;       // Other network related flags
+  uint32_t iflags;       // Internet related flags
+  uint32_t oflags;       // Other network related flags
 };
 
 
@@ -273,7 +273,7 @@ public:
 
   uint        board;            // Board number (if applicable)
 
-  ulong       msgno;            // Message number
+  uint32_t       msgno;            // Message number
   gmsg_links  link;             // Message reply links
 
   ftn_addr    oorig;            // Original origination address
@@ -288,9 +288,9 @@ public:
   INam        to;               // Who to
   ISub        re;               // Subject
 
-  time_t      written;          // Timestamp
-  time_t      arrived;          // Timestamp
-  time_t      received;         // Timestamp
+  time32_t      written;          // Timestamp
+  time32_t      arrived;          // Timestamp
+  time32_t      received;         // Timestamp
 
   Attr        attr;             // Message attributes
   uint        cost;             // Cost of msg if Netmail
@@ -302,8 +302,8 @@ public:
 
   char        pid[80];          // PID kludge string
 
-  long        txtstart;         // Text starting position or record
-  long        txtlength;        // Text length or number of records
+  int32_t        txtstart;         // Text starting position or record
+  int32_t        txtlength;        // Text length or number of records
   uint        txtblocks;        // Number of msg text blocks
 
   char*       txt;              // Message text

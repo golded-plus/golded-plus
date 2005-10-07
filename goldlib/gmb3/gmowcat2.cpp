@@ -51,7 +51,7 @@ void WCatArea::refresh() {
     }
   }
 
-  long ixnum = (filelength(data->fhix)-(long)sizeof(WCatBase)) / (long)sizeof(WCatIdx);
+  int32_t ixnum = (filelength(data->fhix)-sizeof(WCatBase)) / sizeof(WCatIdx);
 
   // Are there any msgs?
   if(ixnum) {
@@ -123,9 +123,9 @@ void WCatArea::raw_scan(int __keep_index, int __scanpm) {
     isopen--;
   }
 
-  register uint _active = 0;
-  register uint _lastread_reln = 0;
-  register ulong _lastreadfound = 0;
+  uint _active = 0;
+  uint _lastread_reln = 0;
+  uint _lastreadfound = 0;
 
   if(data->base.active) {
 
@@ -134,12 +134,12 @@ void WCatArea::raw_scan(int __keep_index, int __scanpm) {
       Msgn->Resize((uint)data->base.active);
 
     // Variables for the loop
-    register ulong _msgno;
-    register ulong* _msgndxptr = Msgn->tag;
-    register WCatIdx* _ixptr = data->idx;
-    register dword  _totalmsgs = data->base.active;
-    register ulong _firstmsgno = _totalmsgs ? _ixptr->msgno : 0;
-    register ulong _lastmsgno = 0;
+    uint _msgno;
+    uint32_t* _msgndxptr = Msgn->tag;
+    WCatIdx* _ixptr = data->idx;
+    uint  _totalmsgs = data->base.active;
+    uint _firstmsgno = _totalmsgs ? _ixptr->msgno : 0;
+    uint _lastmsgno = 0;
 
     // Fill message index
     while(_active < _totalmsgs) {

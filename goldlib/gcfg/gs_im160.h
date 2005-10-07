@@ -51,10 +51,6 @@
 #define STRUCT_MIN_VERSION    01
 #define IM_PRD_CODE           0x4B
 
-//  Data type definitions
-
-typedef unsigned char bit;
-
 //  Internal limits
 
 #define MAXAKAS              16       /* Max # of addresses */

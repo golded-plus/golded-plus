@@ -38,7 +38,7 @@ extern int _use_fwd;
 
 void Area::DeleteMsg(GMsg* msg, int direction) {
 
-  ulong replyto=0, reply1st=0, lread;
+  uint32_t replyto=0, reply1st=0, lread;
 
   GMsg* uplink = (GMsg*)throw_calloc(1, sizeof(GMsg));
   GMsg* downlink = (GMsg*)throw_calloc(1, sizeof(GMsg));
@@ -173,7 +173,7 @@ void Area::DelMsgs(GMsg* msg) {
         }
         update_statuslinef(LNG->DeletingMsg, x+1, Mark.Count());
         w_progress(MODE_UPDATE, C_INFOW, x+1, Mark.Count(), LNG->Deleting);
-        ulong msgno = Mark[x];
+        uint msgno = Mark[x];
         if(Msgn.ToReln(msgno)) {
           if(LoadHdr(msg, msgno, false)) {
             bool deletethis = false;
@@ -399,8 +399,8 @@ void CmfMsgs(GMsg* msg) {
   // Setup some variables for the loop
   Area* AAorig = AA;
   const char* echoid = AAdest->echoid();
-  ulong loadmsgno = msg->msgno;
-  ulong* mrkp = AA->Mark.tag;
+  uint loadmsgno = msg->msgno;
+  uint32_t* mrkp = AA->Mark.tag;
   int  mrks = AA->Mark.Count();
   int  mrk = 0;
 
@@ -422,7 +422,7 @@ void CmfMsgs(GMsg* msg) {
     }
 
     int mode = 0;
-    ulong msgno = 0;
+    uint msgno = 0;
     if(AA->LoadMsg(msg, loadmsgno, CFG->dispmargin-(int)CFG->switches.get(disppagebar), loadmode)) {
 
       // Handle unsent msgs
@@ -591,7 +591,7 @@ void CmfMsgs(GMsg* msg) {
 
 void CopyMoveForward() {
 
-  ulong lastread = reader_msg->msgno;
+  uint lastread = reader_msg->msgno;
 
   AA->set_lastread(AA->Msgn.ToReln(lastread, AA->lastread()));
 

@@ -98,7 +98,7 @@ void __gftrk_track(const char* text) {
         if(__gftrk_statusline)
           update_statusline(text);
         if(cmdlinedebughg)
-          LOG.printf("- %08lu  %*s%s", __gftrk_ptr->tick, __gftrk_ptr->indent*2, "", __gftrk_ptr->text);
+          LOG.printf("- %08u  %*s%s", __gftrk_ptr->tick, __gftrk_ptr->indent*2, "", __gftrk_ptr->text);
       }
       __gftrk_curr = (++__gftrk_curr) % __gftrk_max;
     }
@@ -128,7 +128,7 @@ void __gftrk_log() {
           LOG.printf("! Function track dump follows:");
           _first = false;
         }
-        LOG.printf("- %08lu  %*s%s", _ptr->tick, _ptr->indent*2, "", _ptr->text);
+        LOG.printf("- %08u  %*s%s", _ptr->tick, _ptr->indent*2, "", _ptr->text);
       }
       _count++;
       _curr--;

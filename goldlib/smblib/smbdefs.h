@@ -39,6 +39,7 @@
 #define _SMBDEFS_H
 
 #include <stdio.h>
+#include <gdefs.h>
 
 /**********/
 /* Macros */
@@ -47,19 +48,6 @@
 #define SMB_HEADER_ID	"SMB\x1a"		/* <S> <M> <B> <^Z> */
 #define SHD_HEADER_ID	"SHD\x1a"		/* <S> <H> <D> <^Z> */
 #define LEN_HEADER_ID	4
-
-#ifndef uchar
-	typedef unsigned char uchar;
-#endif
-#ifdef __GLIBC__
-	#include <sys/types.h>
-#else
-	#ifndef ushort
-		typedef unsigned short ushort;
-		typedef unsigned long ulong;
-		typedef unsigned int uint;
-	#endif
-#endif
 
 /****************************************************************************/
 /* Memory allocation macros for various compilers and environments			*/
@@ -397,7 +385,7 @@ enum {
 
 typedef struct _PACK {		// Time with time-zone
 
-	ulong	time;			// Local time (unix format)
+	uint32_t time;			// Local time (unix format)
 	short	zone;			// Time zone
 
 	} when_t;
@@ -408,9 +396,9 @@ typedef struct _PACK {		// Index record
 	ushort	from;			// 16-bit CRC of sender name (lower case)
 	ushort	subj;			// 16-bit CRC of subject (lower case, w/o RE:)
 	ushort	attr;			// attributes (read, permanent, etc.)
-	ulong	offset; 		// offset into header file
-	ulong	number; 		// number of message (1 based)
-	ulong	time;			// time/date message was imported/posted
+	uint32_t	offset; 		// offset into header file
+	uint32_t	number; 		// number of message (1 based)
+	uint32_t	time;			// time/date message was imported/posted
 
 	} idxrec_t;
 
@@ -424,11 +412,11 @@ typedef struct _PACK {		// Message base header (fixed portion)
 
 typedef struct _PACK {		// Message base status header
 
-	ulong	last_msg;		// last message number
-	ulong	total_msgs; 	// total messages
-	ulong	header_offset;	// byte offset to first header record
-	ulong	max_crcs;		// Maximum number of CRCs to keep in history
-    ulong   max_msgs;       // Maximum number of message to keep in sub
+	uint32_t	last_msg;		// last message number
+	uint32_t	total_msgs; 	// total messages
+	uint32_t	header_offset;	// byte offset to first header record
+	uint32_t	max_crcs;		// Maximum number of CRCs to keep in history
+    uint32_t   max_msgs;       // Maximum number of message to keep in sub
     ushort  max_age;        // Maximum age of message to keep in sub (in days)
 	ushort	attr;			// Attributes for this message base (SMB_HYPER,etc)
 
@@ -441,17 +429,17 @@ typedef struct _PACK {		// Message header
     ushort  version;        // Version of type (initially 100h for 1.00)
     ushort  length;         // Total length of fixed record + all fields
 	ushort	attr;			// Attributes (bit field) (duped in SID)
-	ulong	auxattr;		// Auxillary attributes (bit field)
-    ulong   netattr;        // Network attributes
+	uint32_t	auxattr;		// Auxillary attributes (bit field)
+    uint32_t   netattr;        // Network attributes
 	when_t	when_written;	// Time message was written (unix format)
 	when_t	when_imported;	// Time message was imported
-    ulong   number;         // Message number
-    ulong   thread_orig;    // Original message number in thread
-    ulong   thread_next;    // Next message in thread
-    ulong   thread_first;   // First reply to this message
+    uint32_t   number;         // Message number
+    uint32_t   thread_orig;    // Original message number in thread
+    uint32_t   thread_next;    // Next message in thread
+    uint32_t   thread_first;   // First reply to this message
 	ushort	delivery_attempts;	// Delivery attempt counter
 	uchar	reserved[14];	// Reserved for future use
-    ulong   offset;         // Offset for buffer into data file (0 or mod 256)
+    uint32_t   offset;         // Offset for buffer into data file (0 or mod 256)
 	ushort	total_dfields;	// Total number of data fields
 
 	} msghdr_t;
@@ -459,8 +447,8 @@ typedef struct _PACK {		// Message header
 typedef struct _PACK {		// Data field
 
 	ushort	type;			// Type of data field
-    ulong   offset;         // Offset into buffer 
-    ulong   length;         // Length of data field
+    uint32_t   offset;         // Offset into buffer 
+    uint32_t   length;         // Length of data field
 
     } dfield_t;
 
@@ -525,7 +513,7 @@ typedef struct {				// Message
 	hfield_t	*hfield;		// Header fields (fixed length portion)
 	void		**hfield_dat;	// Header fields (variable length portion)
 	dfield_t	*dfield;		// Data fields (fixed length portion)
-	ulong		offset; 		// Offset (number of records) into index
+	uint32_t		offset; 		// Offset (number of records) into index
 	int			forwarded;		// Forwarded from agent to another
 	when_t		expiration; 	// Message will exipre on this day (if >0)
 
@@ -539,8 +527,8 @@ typedef struct {			// Message base
     FILE    *sid_fp;        // File pointer for index (.sid) file
     FILE    *sda_fp;        // File pointer for data allocation (.sda) file
     FILE    *sha_fp;        // File pointer for header allocation (.sha) file
-	ulong	retry_time; 	// Maximum number of seconds to retry opens/locks
-	ulong	retry_delay;	// Time-slice yield (milliseconds) while retrying
+	uint32_t	retry_time; 	// Maximum number of seconds to retry opens/locks
+	uint32_t	retry_delay;	// Time-slice yield (milliseconds) while retrying
 	smbstatus_t status; 	// Status header record
 	int		locked;			// SMB header is locked
 	char	shd_buf[SHD_BLOCK_LEN]; 	// File I/O buffer for header file

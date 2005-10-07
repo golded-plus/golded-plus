@@ -62,21 +62,21 @@ int FidoArea::renumber() {
 
   // In echo or local, start with 2.MSG so we don't conflict
   // with highwater marks, unless there is already a 1.MSG
-  ulong _msgno1st = 1;
+  uint _msgno1st = 1;
   if(not isnet() and (Msgn->at(0) != 1))
     _msgno1st++;
 
   // Renumber *.MSG files
   register uint _count = 0;
-  register ulong _msgno = _msgno1st;
+  register uint _msgno = _msgno1st;
   while(_count < Msgn->Count()) {
 
     // Only renumber a msg if different
     if(_msgno != Msgn->at(_count)) {
 
       Path _oldname, _newname;
-      sprintf(_oldname, "%s%lu.msg", real_path(), Msgn->at(_count));
-      sprintf(_newname, "%s%lu.msg", real_path(), _msgno);
+      sprintf(_oldname, "%s%u.msg", real_path(), Msgn->at(_count));
+      sprintf(_newname, "%s%u.msg", real_path(), _msgno);
 
       // Get the file attribute of the message
       struct stat st;
@@ -88,7 +88,7 @@ int FidoArea::renumber() {
       // Show progress
       char buf[100];
       sprintf(buf,
-        "%s: %lu.msg -> %lu.msg%s",
+        "%s: %u.msg -> %u.msg%s",
         "Renumbering",
         Msgn->at(_count),
         _msgno,
@@ -152,7 +152,7 @@ Line* FidoArea::make_dump_msg(Line*& lin, gmsg* msg, char* lng_head) {
   AddLine (NULL, "Hexdump of Fido/Opus-style message header and text");
   AddLineF(line, "------------------------------------------------------------------------------");
   line = AddLine(line, "");
-  AddLineF(line, "File     : %s%lu.msg", real_path(), msg->msgno);
+  AddLineF(line, "File     : %s%u.msg", real_path(), msg->msgno);
   AddLineF(line, "From     : %-35.35s", _hdr.by);
   AddLineF(line, "To       : %-35.35s", _hdr.to);
   AddLineF(line, "Subject  : %-72.72s", _hdr.re);
@@ -167,10 +167,10 @@ Line* FidoArea::make_dump_msg(Line*& lin, gmsg* msg, char* lng_head) {
     AddLineF(line, "DestAddr : %u:%u/%u.%u", _hdr.ftsc.destzone, _hdr.destnet, _hdr.destnode, _hdr.ftsc.destpoint);
   AddLineF(line, "Reply    : %u  See : %u", _hdr.replyto, _hdr.reply1st);
   AddLineF(line, "TimesRead: %u  Cost: %u", _hdr.timesread, _hdr.cost);
-  AddLineF(line, "Attr     : %u (%04X)", *(word*)&_hdr.attr, *(word*)&_hdr.attr);
+  AddLineF(line, "Attr     : %u (%04X)", _hdr.attr, _hdr.attr);
   if(isopus()) {
-    AddLineF(line, "Written  : %s (%08lXh)", FTimeToStr(buf, _hdr.opus.written), *(dword*)&_hdr.opus.written);
-    AddLineF(line, "Arrived  : %s (%08lXh)", FTimeToStr(buf, _hdr.opus.arrived), *(dword*)&_hdr.opus.arrived);
+    AddLineF(line, "Written  : %s (%08Xh)", FTimeToStr(buf, _hdr.opus.written), *(uint*)&_hdr.opus.written);
+    AddLineF(line, "Arrived  : %s (%08Xh)", FTimeToStr(buf, _hdr.opus.arrived), *(uint*)&_hdr.opus.arrived);
   }
   AddLineF(line, "UserRecno: %u (%s)", wide->userno, WideUsername[0]);
   line = AddLine(line, "");
