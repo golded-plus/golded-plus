@@ -13,6 +13,8 @@ files="${files} docs/rddt.html docs/rddt.txt docs/readme.txt"
 files="${files} docs/rusfaq.txt docs/tips.txt docs/todowork.txt"
 files="${files} docs/tokencfg.txt docs/tokentpl.txt"
 
+nmake /f golded.mak CFG="Release" clean
+nmake /f golded.mak CFG="Release"
 
 printf 'GoldED+1.1.5  [Win32 binaries]\r\n'  >Release/bin/File_ID.Diz
 printf '[Compiled using MS Visual C++]\r\n' >>Release/bin/File_ID.Diz
