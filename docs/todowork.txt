@@ -37,6 +37,7 @@ To do:
 * Message text preprocessing with externutil.
 * Add *.* to attach path if not specified.
 * Marking messages with reply in lister.
+* Macro-tokens (@token like externutil parameters) in TaskTitle
 ______________________________________________________________________
 
 To fix:
