@@ -32,7 +32,11 @@
 
 #include <cstddef>
 #include <gcmpall.h>
+#ifdef _MSC_VER
+#include <windows.h>
+#else
 #include <stdint.h>
+#endif
 
 //  ------------------------------------------------------------------
 // Disable some MS Visual C warnings
@@ -109,6 +113,16 @@ typedef unsigned int     uint;
 typedef unsigned long   ulong;
 
 typedef unsigned char  bit;
+
+#ifdef _MSC_VER
+typedef uchar      uint8_t;
+typedef schar       int8_t;
+typedef ushort    uint16_t;
+typedef short      int16_t;
+typedef  INT       int32_t;
+typedef UINT      uint32_t;
+#endif
+
 typedef uint8_t    byte;
 typedef  int8_t   sbyte;
 typedef uint16_t   word;

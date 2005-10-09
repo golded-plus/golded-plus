@@ -39,7 +39,34 @@
 #define _SMBDEFS_H
 
 #include <stdio.h>
-#include <gdefs.h>
+
+#ifndef __goldall_h
+#ifdef _MSC_VER
+#include <windows.h>
+
+typedef UCHAR      uint8_t;
+typedef signed char int8_t;
+typedef WORD      uint16_t;
+typedef short      int16_t;
+typedef  INT       int32_t;
+typedef UINT      uint32_t;
+
+#else
+#include <stdint.h>
+#endif
+
+typedef unsigned int uint;
+typedef signed int   sint;
+typedef unsigned bit;
+typedef uint8_t byte;
+typedef int8_t sbyte;
+typedef uint16_t word;
+typedef int16_t sword;
+typedef uint32_t dword;
+typedef int32_t sdword;
+typedef uint16_t ushort;
+typedef int16_t  sshort;
+#endif
 
 /**********/
 /* Macros */
@@ -447,7 +474,7 @@ typedef struct _PACK {		// Message header
 typedef struct _PACK {		// Data field
 
 	ushort	type;			// Type of data field
-    uint32_t   offset;         // Offset into buffer 
+    uint32_t   offset;         // Offset into buffer
     uint32_t   length;         // Length of data field
 
     } dfield_t;

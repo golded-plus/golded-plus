@@ -77,7 +77,7 @@ static bool HaveCPUID()
   {
     return false;
   }
-  
+
   return true;
 #else
   return false;
@@ -254,9 +254,9 @@ void gcpuid(gcpu_info *pinfo)
     // get the vendor string
     xor eax, eax
     cpuid
-    mov vendor.dw0, ebx
-    mov vendor.dw1, edx
-    mov vendor.dw2, ecx
+    mov vendor.dw.dw0, ebx
+    mov vendor.dw.dw1, edx
+    mov vendor.dw.dw2, ecx
 
     // get the standard bits
     mov eax, 1
@@ -296,7 +296,7 @@ char* ggetosstring(void) {
       #elif defined(__BEOS__)
       BAppFileInfo appFileInfo;
       version_info sys_ver = {0};
-      BFile file("/boot/beos/system/lib/libbe.so", B_READ_ONLY); 
+      BFile file("/boot/beos/system/lib/libbe.so", B_READ_ONLY);
       appFileInfo.SetTo(&file);
       appFileInfo.GetVersionInfo(&sys_ver, B_APP_VERSION_KIND);
       sprintf(osstring, "%s %s %s", info.sysname, sys_ver.short_info, info.machine);
@@ -352,8 +352,8 @@ char* ggetosstring(void) {
                   break;
                 case PROCESSOR_INTEL_PENTIUM:
                   cpu = 5;
-                case PROCESSOR_INTEL_IA64:
-                  cpu = 64;
+                case 15:   /* Pentium 4 */
+                  cpu = 7;
                 default:
                   cpu = 6;
                   break;
@@ -363,15 +363,15 @@ char* ggetosstring(void) {
               case 15:
                 sprintf(processor, "i786");
                 break;
-              case 64:
-                sprintf(processor, "IA64");
-                break;
               default:
                 if( cpu>9 ) cpu= cpu%10+int(cpu/10)+1;
                 sprintf(processor, "i%d86", cpu);
               }
             }
           }
+          break;
+        case PROCESSOR_ARCHITECTURE_IA64:
+          sprintf(processor, "IA64-%d", si.wProcessorLevel);
           break;
         case PROCESSOR_ARCHITECTURE_MIPS:
           sprintf(processor, "mips%d000", si.wProcessorLevel);

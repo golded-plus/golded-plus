@@ -3,7 +3,19 @@
 #ifndef __TYPEDEFS_H__
 #define __TYPEDEFS_H__
 
+#ifdef _MSC_VER
+#include <windows.h>
+
+typedef UCHAR      uint8_t;
+typedef signed char int8_t;
+typedef WORD      uint16_t;
+typedef short      int16_t;
+typedef  INT       int32_t;
+typedef UINT      uint32_t;
+
+#else
 #include <stdint.h>
+#endif
 
 typedef unsigned bit;
 
