@@ -302,6 +302,7 @@ all: $(BIN_DIR) $(DEF_FILE) $(LNK_OBJS) $(BIN_DIR)\gedwin.exe $(BIN_DIR)\rddtwin
 clean:
     -@erase $(OBJ_DIR)\*.obj
     -@erase $(OBJ_DIR)\*.res
+    -@erase $(OBJ_DIR)\vc??.idb
 
 distclean:
     -@erase $(BIN_DIR)\gedwin.exe
@@ -310,6 +311,7 @@ distclean:
     -@erase $(BIN_DIR)\rddtwin.pdb
     -@erase $(BIN_DIR)\gnwin.exe
     -@erase $(BIN_DIR)\gnwin.pdb
+    -@erase $(BIN_DIR)\File_ID.Diz
 
 $(BIN_DIR): $(OBJ_DIR)
     @if not exist $@ mkdir $@
