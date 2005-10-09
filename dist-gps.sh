@@ -12,8 +12,10 @@ cd .. ; tar -jcf ${name} \
 	--exclude golded+/lib \
 	--exclude golded+/bin \
 	--exclude golded+/Release \
-	--exclude golded+/*.bat \
-	--exclude golded+/*.cmd \
+	--exclude 'golded+/*.bat' \
+	--exclude 'golded+/*.BAT' \
+	--exclude 'golded+/*.cmd' \
+	--exclude 'golded+/*.CMD' \
 	--exclude '*.orig' \
 	--exclude 'bld*.inc' \
 	--exclude '*.diff' \

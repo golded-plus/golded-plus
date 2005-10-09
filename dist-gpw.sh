@@ -4,7 +4,7 @@
 # of the Golded+.
 
 
-name=gpw32-115-`date +%Y%m%d`.zip
+name=../gpw32-115-`date +%Y%m%d`.zip
 
 files="bin/gedcyg.exe bin/gncyg.exe bin/rddtcyg.exe"
 files="${files} docs/copying docs/copying.lib"

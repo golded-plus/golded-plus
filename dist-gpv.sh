@@ -3,7 +3,7 @@
 # Create a archive 'gpwin-*.zip' (gpvYMMDD.zip) with Win32 (MS Visual C)
 # builg of the Golded+.
 
-name=gpwin-115-`date +%Y%m%d`.zip
+name=../gpwin-115-`date +%Y%m%d`.zip
 
 files="Release/bin/gedwin.exe Release/bin/gnwin.exe Release/bin/rddtwin.exe"
 files="${files} docs/copying docs/copying.lib"

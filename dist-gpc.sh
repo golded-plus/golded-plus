@@ -2,7 +2,7 @@
 
 # Create a archive 'gpc*.zip' with configuration files examples.
 
-name=gpc115-`date +%Y%m%d`.zip
+name=../gpc115-`date +%Y%m%d`.zip
 dir=cfgs
 
 if [ -f ${name} ] ; then rm $name ; fi
