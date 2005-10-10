@@ -238,13 +238,13 @@ void gcpuid(gcpu_info *pinfo)
     char buff[_MAX_VNAME_LEN];
     struct
     {
-      DWORD dw0;
-      DWORD dw1;
-      DWORD dw2;
+      dword dw0;
+      dword dw1;
+      dword dw2;
     } dw;
   } vendor;
 
-  DWORD standard = 0;
+  dword standard = 0;
   vendor.buff[_MAX_VNAME_LEN-1] = 0;
 
 //  TO_PORT_TAG: CPUID
