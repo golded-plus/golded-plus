@@ -340,10 +340,15 @@ char* ggetosstring(void) {
             else
             {
               int cpu;
-              if(info.dwPlatformId == VER_PLATFORM_WIN32_NT)
+              if( (info.dwPlatformId == VER_PLATFORM_WIN32_NT &&
+                   info.dwMajorVersion > 3)
+#ifdef VER_PLATFORM_WIN32_CE
+                  || info.dwPlatformId == VER_PLATFORM_WIN32_CE
+#endif
+                )
                 cpu = si.wProcessorLevel;
               else {
-                switch(si.dwProcessorType) {
+                switch(si.dwProcessorType) { /* Windows NT 3.5 and earlier */
                 case PROCESSOR_INTEL_386:
                   cpu = 3;
                   break;
@@ -352,19 +357,22 @@ char* ggetosstring(void) {
                   break;
                 case PROCESSOR_INTEL_PENTIUM:
                   cpu = 5;
-                case 15:   /* Pentium 4 */
-                  cpu = 7;
-                default:
+                  break;
+                case 6:   /* Pentium Pro or Pentim II */
                   cpu = 6;
+                case 15:   /* Pentium 4 */
+                  cpu = 8;
+                default:
+                  cpu = 7;
                   break;
                 }
               }
               switch(cpu) {
               case 15:
-                sprintf(processor, "i786");
+                sprintf(processor, "i886");
                 break;
               default:
-                if( cpu>9 ) cpu= cpu%10+int(cpu/10)+1;
+                if( cpu>9 ) cpu= cpu%10+int(cpu/10)+2;
                 sprintf(processor, "i%d86", cpu);
               }
             }
@@ -373,39 +381,65 @@ char* ggetosstring(void) {
         case PROCESSOR_ARCHITECTURE_IA64:
           sprintf(processor, "IA64-%d", si.wProcessorLevel);
           break;
+#ifdef PROCESSOR_ARCHITECTURE_AMD64
+        case PROCESSOR_ARCHITECTURE_AMD64:
+          sprintf(processor, "AMD64-%d", si.wProcessorLevel);
+          break;
+#endif
         case PROCESSOR_ARCHITECTURE_MIPS:
-          sprintf(processor, "mips%d000", si.wProcessorLevel);
+          /* si.wProcessorLevel is of the form 00xx, where xx is an 8-bit
+             implementation number (bits 8-15 of the PRId register). */
+          sprintf(processor, "MIPS R%u000", si.wProcessorLevel);
           break;
         case PROCESSOR_ARCHITECTURE_ALPHA:
-          sprintf(processor, "alpha%d", si.wProcessorLevel);
+          /* si.wProcessorLevel is of the form xxxx, where xxxx is a 16-bit
+             processor version number (the low-order 16 bits of a version
+             number from the firmware). */
+          sprintf(processor, "Alpha%d", si.wProcessorLevel);
+          break;
+        case PROCESSOR_ARCHITECTURE_ALPHA64:
+          sprintf(processor, "Alpha%d", si.wProcessorLevel);
           break;
         case PROCESSOR_ARCHITECTURE_PPC:
+          /* si.wProcessorLevel is of the form xxxx, where xxxx is a 16-bit
+             processor version number (the high-order 16 bits of the Processor
+             Version Register). */
           switch(si.wProcessorLevel) {
             case 1:
-              strcpy(processor, "ppc601");
+              strcpy(processor, "PPC601");
               break;
             case 3:
-              strcpy(processor, "ppc603");
+              strcpy(processor, "PPC603");
               break;
             case 4:
-              strcpy(processor, "ppc604");
+              strcpy(processor, "PPC604");
               break;
             case 6:
-              strcpy(processor, "ppc603+");
+              strcpy(processor, "PPC603+");
               break;
             case 9:
-              strcpy(processor, "ppc604+");
+              strcpy(processor, "PPC604+");
               break;
             case 20:
-              strcpy(processor, "ppc620");
+              strcpy(processor, "PPC620");
               break;
             default:
-              strcpy(processor, "ppcXXX");
+              sprintf(processor, "PPC l%u", si.wProcessorLevel);
               break;
           }
           break;
+#ifdef PROCESSOR_ARCHITECTURE_SHX
+        case PROCESSOR_ARCHITECTURE_SHX:
+          sprintf(processor, "SH-%d", si.wProcessorLevel);
+          break;
+#endif
+#ifdef PROCESSOR_ARCHITECTURE_ARM
+        case PROCESSOR_ARCHITECTURE_ARM:
+          sprintf(processor, "ARM-%d", si.wProcessorLevel);
+          break;
+#endif
         default:
-          strcpy(processor, "unknown");
+          strcpy(processor, "CPU-unknown");
           break;
       }
       if(info.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS)
@@ -420,7 +454,7 @@ char* ggetosstring(void) {
         sprintf(osstring, "%s %ld.%ld.%ld %s", ostype,info.dwMajorVersion, info.dwMinorVersion, info.dwBuildNumber, processor);
     }
     else
-      strcpy(osstring, "unknown");
+      strcpy(osstring, "Win32-unknown");
 
     #else
 
