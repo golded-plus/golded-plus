@@ -26,8 +26,9 @@
 
 #include <gstrall.h>
 #include <gwildmat.h>
-#ifdef _MSC_VER
-#include <malloc.h>
+
+#if defined(__USE_ALLOCA__)
+  #include <malloc.h>
 #endif
 
 
@@ -45,9 +46,9 @@
 **
 **  Special thanks to Lars Mathiesen <thorinn@diku.dk> for the ABORT code.
 **  This can greatly speed up failing wildcard patterns.  For example:
-**	pattern: -*-*-*-*-*-*-12-*-*-*-m-*-*-*
-**	text 1:	 -adobe-courier-bold-o-normal--12-120-75-75-m-70-iso8859-1
-**	text 2:	 -adobe-courier-bold-o-normal--12-120-75-75-X-70-iso8859-1
+**  pattern: -*-*-*-*-*-*-12-*-*-*-m-*-*-*
+**  text 1:  -adobe-courier-bold-o-normal--12-120-75-75-m-70-iso8859-1
+**  text 2:  -adobe-courier-bold-o-normal--12-120-75-75-X-70-iso8859-1
 **  Text 1 matches with 51 calls, while text 2 fails with 54 calls.  Without
 **  the ABORT code, it takes 22310 calls to fail.  Ugh.  The following
 **  explanation is from Lars:
@@ -167,7 +168,7 @@ bool strwild(const char* str, const char* wild) {
       if(wild[1] == NUL)
         return true;
       else {
-#ifdef _MSC_VER
+#if defined(__USE_ALLOCA__)
         char *buf = (char *)alloca(strlen(wild));
 #else
         __extension__ char buf[strlen(wild)];

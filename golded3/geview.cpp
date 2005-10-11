@@ -24,12 +24,13 @@
 //  Message viewer class implementation.
 //  ------------------------------------------------------------------
 
-#if defined(_MSC_VER) || defined(__MINGW32__)
+#include <golded.h>
+#include <gutlos.h>
+
+#if defined(__USE_ALLOCA__)
   #include <malloc.h>
 #endif
 
-#include <golded.h>
-#include <gutlos.h>
 
 //  ------------------------------------------------------------------
 
@@ -111,7 +112,7 @@ void GMsgHeaderView::Paint() {
   else
     *buf1 = NUL;
 
-#if defined(_MSC_VER) || defined(__MINGW32__)
+#if defined(__USE_ALLOCA__)
   char *top = (char*)alloca(width+1);
 #else
   __extension__ char top[width+1];

@@ -24,12 +24,12 @@
 //  Header edit.
 //  ------------------------------------------------------------------
 
-#if defined(__MINGW32__) || defined(_MSC_VER)
-#include <malloc.h>
-#endif
-
 #include <golded.h>
 #include <gwinput.h>
+
+#if defined(__USE_ALLOCA__)
+#include <malloc.h>
+#endif
 
 
 //  ------------------------------------------------------------------
@@ -322,7 +322,7 @@ bool GMsgHeaderEdit::validate() {
     bool res = set_to_address(msg, &toname, &toaddr, &fromaddr, &subj, 0, LNG->SelectDestNode, lookup);
 
     vcurshow();
-#if defined(_MSC_VER) || defined(__MINGW32__)
+#if defined(__USE_ALLOCA__)
     size_t bot2size = EDIT->HdrNodeLen()+1;
     char *bot2 = (char*)alloca(bot2size);
     MakeAttrStr(bot2, bot2size, &msg->attr);

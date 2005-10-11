@@ -24,14 +24,14 @@
 //  The Internal Editor (IE), part 2.
 //  ------------------------------------------------------------------
 
-#if defined(__MINGW32__) || defined(_MSC_VER)
-#include <malloc.h>
-#endif
-
 #include <golded.h>
 #include <geedit.h>
 #include <gutlcode.h>
 #include <gutlclip.h>
+
+#if defined(__USE_ALLOCA__)
+#include <malloc.h>
+#endif
 
 
 //  ------------------------------------------------------------------
@@ -1090,7 +1090,7 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
       else {
 
         int tabsz = CFG->disptabsize ? CFG->disptabsize : 1;
-#if defined(_MSC_VER) || defined(__MINGW32__)
+#if defined(__USE_ALLOCA__)
         char *spaces = (char*)alloca(tabsz+1);
 #else
         __extension__ char spaces[tabsz+1];

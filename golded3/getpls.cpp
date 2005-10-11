@@ -24,10 +24,6 @@
 //  Template handling.
 //  ------------------------------------------------------------------
 
-#if defined(__MINGW32__) || defined(_MSC_VER)
-#include <malloc.h>
-#endif
-
 #if defined(_MSC_VER)
     /* C4786: 'identifier' : identifier was truncated to 'number'
           characters in the debug information
@@ -36,6 +32,10 @@
 #endif
 #include <algorithm>
 #include <golded.h>
+
+#if defined(__USE_ALLOCA__)
+#include <malloc.h>
+#endif
 
 
 //  ------------------------------------------------------------------
@@ -87,7 +87,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
   uint ctrlinfo;
   char textfile[GMAXPATH];
   char indexfile[GMAXPATH];
-#if defined(__MINGW32__) || defined(_MSC_VER)
+#if defined(__USE_ALLOCA__)
   size_t sizeofbuf = CFG->quotemargin + 256;
   char *buf = (char*)alloca(sizeofbuf);
 #else

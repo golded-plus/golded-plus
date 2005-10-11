@@ -24,14 +24,14 @@
 //  File handling.
 //  ------------------------------------------------------------------
 
-#if defined(__MINGW32__) || defined(_MSC_VER)
-#include <malloc.h>
-#endif
-
 #include <fcntl.h>
 #include <golded.h>
 #include <gwildmat.h>
 #include <gdirposx.h>
+
+#if defined(__USE_ALLOCA__)
+#include <malloc.h>
+#endif
 
 
 //  ------------------------------------------------------------------
@@ -777,7 +777,7 @@ void FileRequest(GMsg* msg) {
           else
             ptr1 = ptr2;
           ptr2 = strskip_txt(ptr1);
-#if defined(_MSC_VER)
+#if defined(__USE_ALLOCA__)
           char *tmpbuf = (char*)alloca(ptr2-ptr1+1);
 #else
           __extension__ char tmpbuf[ptr2-ptr1+1];
@@ -819,7 +819,7 @@ void FileRequest(GMsg* msg) {
             if(txtptr[16] == '/' and txtptr[19] == '/' and txtptr[24] == '(' /*)*/) {
               ptr1 = strskip_wht(txtptr);
               ptr2 = strskip_txt(ptr1);
-#if defined(_MSC_VER)
+#if defined(__USE_ALLOCA__)
               char *tmpbuf = (char*)alloca(ptr2-ptr1+1);
 #else
               __extension__ char tmpbuf[ptr2-ptr1+1];
@@ -955,7 +955,7 @@ void FileRequest(GMsg* msg) {
             msg->attr.frq1();
             ptr = freqfile[n]+1;      //  01234567890123456
             ptr2 = strskip_txt(ptr);
-#if defined(_MSC_VER)
+#if defined(__USE_ALLOCA__)
             char *tmpbuf = (char*)alloca(ptr2-ptr+1);
 #else
             __extension__ char tmpbuf[ptr2-ptr+1];
@@ -978,7 +978,7 @@ void FileRequest(GMsg* msg) {
           msg->attr.frq1();
           ptr = freqfile[crsr]+1;      //  01234567890123456
           ptr2 = strskip_txt(ptr);
-#if defined(_MSC_VER)
+#if defined(__USE_ALLOCA__)
           char *tmpbuf = (char*)alloca(ptr2-ptr+1);
 #else
           __extension__ char tmpbuf[ptr2-ptr+1];

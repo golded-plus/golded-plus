@@ -24,13 +24,14 @@
 //  Misc. msg handling.
 //  ------------------------------------------------------------------
 
-#if defined(_MSC_VER) || defined(__MINGW32__)
-  #include <malloc.h>
-#endif
-
 #include <cstdarg>
 #include <golded.h>
 #include <gtimall.h>
+
+#if defined(__USE_ALLOCA__)
+  #include <malloc.h>
+#endif
+
 
 //  ------------------------------------------------------------------
 
@@ -488,7 +489,7 @@ void LoadText(GMsg* msg, const char* textfile) {
     buf = (char*)throw_malloc(PBUFSIZE);
 
     int tabsz = CFG->disptabsize ? CFG->disptabsize : 1;
-#if defined(_MSC_VER) || defined(__MINGW32__)
+#if defined(__USE_ALLOCA__)
     char *spaces = (char*)alloca(tabsz+1);
 #else
     __extension__ char spaces[tabsz+1];

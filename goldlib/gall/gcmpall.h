@@ -110,6 +110,9 @@
 #define __HAVE_DRIVES__
 #endif
 
+#if defined(_MSC_VER) || defined(__MINGW32__)
+#define __USE_ALLOCA__
+#endif
 
 /*  --------------------------------------------------------------- */
 /*  System-wide constants                                           */

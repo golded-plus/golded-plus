@@ -24,15 +24,16 @@
 //  Conversion of a raw message to a linked list of lines.
 //  ------------------------------------------------------------------
 
-#if defined(_MSC_VER) || defined(__MINGW32__)
-  #include <malloc.h>
-#endif
-
 #include <cstdarg>
 #include <golded.h>
 #include <gstrmail.h>
 #include <gutlcode.h>
 #include <ghdrmime.h>
+
+#if defined(__USE_ALLOCA__)
+  #include <malloc.h>
+#endif
+
 
 //  ------------------------------------------------------------------
 
@@ -1391,7 +1392,7 @@ int ScanLine(GMsg* msg, Line* line, const char* ptr, int getvalue, int mask) {
     ptr++;
   char endchar = *ptr;
 
-#if defined(_MSC_VER) || defined(__MINGW32__)
+#if defined(__USE_ALLOCA__)
   char *kludge = (char*)alloca(ptr-kludge1+1);
 #else
   __extension__ char kludge[ptr-kludge1+1];

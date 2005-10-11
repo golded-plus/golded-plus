@@ -24,14 +24,15 @@
 //  Message lister.
 //  ------------------------------------------------------------------
 
-#if defined(_MSC_VER) || defined(__MINGW32__)
-  #include <malloc.h>
-#endif
-
 #include <golded.h>
 #include <gcharset.h>
 #include <iostream>
 #include <iomanip>
+
+#if defined(__USE_ALLOCA__)
+  #include <malloc.h>
+#endif
+
 
 //  ------------------------------------------------------------------
 
@@ -841,7 +842,7 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar) {
 
   char buf[256];
   ulong maxlev = (100*window.width()+h_offset+1)/2;
-#if defined(_MSC_VER) || defined(__MINGW32__)
+#if defined(__USE_ALLOCA__)
   char *buf2 = (char*)alloca(maxlev*2+2);
 #else
   __extension__ char buf2[maxlev*2+2];

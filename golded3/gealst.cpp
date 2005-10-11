@@ -24,10 +24,6 @@
 //  Arealist functions.
 //  ------------------------------------------------------------------
 
-#if defined(__MINGW32__) || defined(_MSC_VER)
-#include <malloc.h>
-#endif
-
 #if defined(_MSC_VER)
     /* C4786: 'identifier' : identifier was truncated to 'number'
           characters in the debug information
@@ -36,6 +32,10 @@
 #endif
 #include <algorithm>
 #include <golded.h>
+
+#if defined(__USE_ALLOCA__)
+#include <malloc.h>
+#endif
 
 
 //  ------------------------------------------------------------------
@@ -481,7 +481,7 @@ void SelMaskPick::close() {
 
 void SelMaskPick::print_line(uint idx, uint pos, bool isbar) {
 
-#if defined(__WIN32__)
+#if defined(__USE_ALLOCA__)
   char *buf = (char*)alloca(DESC_LEN+3);
 #else
    __extension__ char buf[DESC_LEN+3];

@@ -24,13 +24,14 @@
 //  OS/2 clipboard to/from edit paste buffer.
 //  ------------------------------------------------------------------
 
-#if defined(__MINGW32__) || defined(_MSC_VER)
-#include <malloc.h>
-#endif
-
 #include <golded.h>
 #include <geedit.h>
 #include <gutlclip.h>
+
+#if defined(__USE_ALLOCA__)
+#include <malloc.h>
+#endif
+
 
 void IEclass::Clip2Buf() {
 
@@ -40,7 +41,7 @@ void IEclass::Clip2Buf() {
     return;
 
   int tabsz = CFG->disptabsize ? CFG->disptabsize : 1;
-#if defined(__MINGW32__) || defined(_MSC_VER)
+#if defined(__USE_ALLOCA__)
   char *spaces = (char*)alloca(tabsz+1);
 #else
   __extension__ char spaces[tabsz+1];
