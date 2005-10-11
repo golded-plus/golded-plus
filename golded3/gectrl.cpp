@@ -216,10 +216,11 @@ const char* get_informative_string(void) {
   static char informative_string[356] = "";
 
   if(informative_string[0] == NUL)
-    sprintf(informative_string, "%s%s%s %s%i.%i.%i%s (%s)",
+    sprintf(informative_string, "%s%s%s%s %s%i.%i.%i%s (%s)",
             __gver_prename__, __gver_name__, __gver_postname__,
-            __gver_preversion__, __gver_major__, __gver_minor__,
-            __gver_release__, __gver_postversion__, ggetosstring());
+            __gver_platform__, __gver_preversion__, __gver_major__,
+            __gver_minor__, __gver_release__, __gver_postversion__,
+            ggetosstring());
   return informative_string;
 }
 
