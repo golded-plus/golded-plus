@@ -57,7 +57,7 @@ typedef UINT      uint32_t;
 
 typedef unsigned int uint;
 typedef signed int   sint;
-typedef unsigned bit;
+typedef unsigned char bit;
 typedef uint8_t byte;
 typedef int8_t sbyte;
 typedef uint16_t word;

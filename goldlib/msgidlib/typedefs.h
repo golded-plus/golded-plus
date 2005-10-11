@@ -17,7 +17,7 @@ typedef UINT      uint32_t;
 #include <stdint.h>
 #endif
 
-typedef unsigned bit;
+typedef unsigned char bit;
 
 typedef uint8_t byte;
 
