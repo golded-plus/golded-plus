@@ -228,7 +228,8 @@ int GMenuNewarea::Run() {
   if(AA->isreadmark)
     _temp = AA->Mark.Find(AA->Msgn.CvtReln(AA->lastread()));
 
-  if(_temp <= 1) {
+  if ((_temp <= 1) && (AA->Msgn.Count() > 1))
+  {
     _yeskey = Key_Lft;
     _nokey  = Key_Rgt;
   }
