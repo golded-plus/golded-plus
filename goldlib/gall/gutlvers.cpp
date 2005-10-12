@@ -448,6 +448,7 @@ char* ggetosstring(void) {
         char _tmp[128];
         strcpy(_tmp, info.szCSDVersion);
         strchg(_tmp, ' ', '_');
+        strisrep(_tmp, "Service_Pack_", "SP");
         sprintf(osstring, "%s %ld.%ld.%ld-%s %s", ostype, info.dwMajorVersion, info.dwMinorVersion, info.dwBuildNumber, _tmp, processor);
       }
       else

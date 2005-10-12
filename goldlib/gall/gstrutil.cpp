@@ -176,7 +176,7 @@ char* strins(const char* instr, char* str, int st_pos) {
 //  ------------------------------------------------------------------
 //  String search and replace, case insensitive
 
-static char* strisrep(char* str, const char* search, const char* replace) {
+char* strisrep(char* str, const char* search, const char* replace) {
 
   char* p;
 

@@ -63,6 +63,7 @@ char* stridela(const char* substr, char* str);
 int strnicmpw(const char* str1, const char* str2, int len);
 const char* striinc(const char* str1, const char* str2);
 char* strins(const char* instr, char* str, int st_pos);
+char* strisrep(char* str, const char* search, const char* replace);
 char* strischg(char* str, const char* find, const char* replace);
 char* strrjust(char* str);
 char* strschg(char* str, const char* find, const char* replace);
