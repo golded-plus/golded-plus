@@ -30,6 +30,10 @@
 #include <gftnnlge.h>
 #include <gftnnlv7.h>
 
+#if defined(__USE_ALLOCA__)
+  #include <malloc.h>
+#endif
+
 
 //  ------------------------------------------------------------------
 
@@ -1141,12 +1145,19 @@ void LookupNodeLocation(GMsg* msg, std::string &location, int what)
 
     if (strbag.First())
     {
+#if defined(__USE_ALLOCA__)
+      char *city_upr = (char*)alloca(city.length()+1);
+#else
+      __extension__ char city_upr[city.length()+1];
+#endif
+      strcpy(city_upr, city.c_str());
+      strupr(city_upr);
+
       do
       {
         const char* str = strbag.Current1();
-        size_t pos = city.find(str);
-        if (pos != city.npos)
-          city.replace(pos, strlen(str), strbag.Current2());
+        const char* ptr = strstr(city_upr, str);
+        if (ptr) city.replace(ptr-city_upr, strlen(str), strbag.Current2());
       }
       while (strbag.Next());
     }

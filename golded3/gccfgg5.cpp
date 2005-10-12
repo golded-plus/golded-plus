@@ -326,7 +326,7 @@ void CfgLocationalias()
   getkeyval(&key, &val);
   StripQuotes(key);
   StripQuotes(val);
-  CFG->locationalias.Add(key, val);
+  CFG->locationalias.Add(strupr(key), val);
 }
 
 //  ------------------------------------------------------------------
