@@ -256,6 +256,7 @@ public:
   gstrarray   kludge;
   Path        loadlanguage;
   GStrBag2    locationalias;
+  std::string locationdelimiter;
   Path        logfile;              // goldedlog;
   int         logformat;
   std::vector<MailList> mailinglist;

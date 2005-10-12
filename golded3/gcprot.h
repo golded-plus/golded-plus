@@ -230,6 +230,7 @@ void CfgKludge           ();
 void CfgKludgechrs       ();
 void CfgLoadlanguage     ();
 void CfgLocationalias    ();
+void CfgLocationdelimiter();
 void CfgLogfile          ();
 void CfgLogformat        ();
 void CfgLookupecho       ();

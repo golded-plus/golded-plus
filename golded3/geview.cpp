@@ -335,7 +335,7 @@ void GMsgHeaderView::Paint() {
     {
       std::string loc2;
       LookupNodeLocation(msg, loc2, LOOK_CITY2);
-      if (loc.length()) loc += " | " + loc2;
+      if (loc.length()) loc += CFG->locationdelimiter + loc2;
     }
 
     if (loc.length())

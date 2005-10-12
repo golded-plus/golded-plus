@@ -240,6 +240,7 @@ const word CRC_KLUDGE           = 0xA600;
 const word CRC_KLUDGECHRS       = 0x0EEF;
 const word CRC_LOADLANGUAGE     = 0x9F1B;
 const word CRC_LOCATIONALIAS    = 0x1B5F;
+const word CRC_LOCATIONDELIMITER= 0x5083;
 const word CRC_LOGFILE          = 0x8ACE;
 const word CRC_LOGFORMAT        = 0x9E51;
 const word CRC_LOGLEVEL         = 0xCF59;

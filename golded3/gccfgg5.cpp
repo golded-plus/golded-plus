@@ -331,6 +331,14 @@ void CfgLocationalias()
 
 //  ------------------------------------------------------------------
 
+void CfgLocationdelimiter()
+{
+  StripQuotes(val);
+  CFG->locationdelimiter = val;
+}
+
+//  ------------------------------------------------------------------
+
 void CfgLogfile() {
 
   strcpy(CFG->logfile, val);

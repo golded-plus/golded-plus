@@ -739,6 +739,7 @@ CfgGed::CfgGed() {
   internetviagate = false;
   keybmode = KEYB_POLL;
   logformat = 0;
+  locationdelimiter = " \x1A ";
   menumarked = MODE_DONT;
   menunextarea = YES;
   msglistdate = MSGLISTDATE_WRITTEN;
