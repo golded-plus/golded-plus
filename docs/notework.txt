@@ -10,6 +10,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+! Added gnwin and rddtwin project files in MSVC6 workspace.
+
 + Added LocationDelimiter "delim" config file token that separate
   city names in netmail areas.
 
