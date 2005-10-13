@@ -79,6 +79,8 @@ static bool HaveCPUID()
   }
 
   return true;
+#elif defined(__GNUC__)
+  return true;
 #else
   return false;
 #endif
@@ -225,7 +227,7 @@ static void cpuname(int family, int model, const char *v_name, char *m_name)
   else if (!strcmp("CentaurHauls", v_name))
     sprintf(m_name, "CenF%dM%d", family, model);
   else
-    sprintf(m_name, "%3sF%dM%d", v_name, family, model);
+    sprintf(m_name, "CPU %3sF%dM%d", v_name, family, model);
 }
 
 
@@ -262,6 +264,39 @@ void gcpuid(gcpu_info *pinfo)
     mov eax, 1
     cpuid
     mov standard, eax
+  }
+#elif defined(__GNUC__)
+
+  {
+//    dword _cpu,_cpu_id=0, _cpu_high;
+//    dword CPU_ID asm("_cpu_id") =0;
+//    char CPU_VENDOR[sizeof(dword)*3+1] asm("_cpu_vendor");
+//    char _cpu_feature[20];
+//
+//    memset(CPU_VENDOR,0,sizeof(CPU_VENDOR));
+//    memset(_cpu_feature,0,sizeof(_cpu_feature));
+
+    asm (
+      "xor %%eax, %%eax \n\t"
+      "cpuid \n\t"
+      "movl %%ebx, %0      \n\t"
+      "movl %%edx, %1      \n\t"
+      "movl %%ecx, %2"
+      : "=m" (vendor.dw.dw0), "=m" (vendor.dw.dw1), "=m" (vendor.dw.dw2)
+      :
+      : "eax", "ebx", "ecx", "edx"
+    );
+
+    asm (
+      "movl $1, %%eax \n\t"
+      "cpuid \n\t"
+      "movl %%eax,%0 "
+      : "=g" (standard)
+      :
+      : "eax"
+    );
+//    strncpy(vendor.buff,(const char*)CPU_VENDOR,_MAX_VNAME_LEN);
+//    standard = CPU_ID;
   }
 #else
   strcpy(vendor.buff, "UNKNOUN_CPU!");
