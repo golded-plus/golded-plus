@@ -1156,8 +1156,13 @@ void LookupNodeLocation(GMsg* msg, std::string &location, int what)
       do
       {
         const char* str = strbag.Current1();
-        const char* ptr = strstr(city_upr, str);
-        if (ptr) city.replace(ptr-city_upr, strlen(str), strbag.Current2());
+        char* ptr = strstr(city_upr, str);
+        if (ptr)
+        {
+          size_t len = strlen(str);
+          city.replace(ptr-city_upr, len, strbag.Current2());
+          memset(ptr, -1, len);
+        }
       }
       while (strbag.Next());
     }
