@@ -14,7 +14,7 @@ ______________________________________________________________________
 
 - Fix "Goto Next Area?" menu hotkeys (bugreport from Semen Panevin).
 
-+ CPUID support for GNU C builds.
++ x86 CPUID support for GNU C builds (used in @widepid and @osver).
 
 ! GNwin and RDDTwin project files is added into MSVC6 workspace.
 
