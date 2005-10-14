@@ -244,7 +244,7 @@ static int find_page(long startpos, int pageofs) {
 
 static void disp_cat() {
 
-  int newpage, page, wrow, wcol, end, menuopen, itemopen;
+  int page, wrow, wcol, end, menuopen, itemopen;
   long startpos;
   _menu_t *curr;
   char* p;
@@ -300,16 +300,11 @@ static void disp_cat() {
       wmessage(" ESC ",BT_BORD,1,whelp.winattr);
 
       // if one or more cross reference menu items were specified
-      if(arraycnt) {
-
-        // depending on whether there are previous
-        // or next pages, define the PgUp/PgDn keys
-        if(page)
-          setonkey(Key_PgUp,esc_pgup,0);
-        if(not end)
-          setonkey(Key_PgDn,esc_pgdn,0);
-
-        // define the Esc key
+      if (arraycnt)
+      {
+        // define the PgUp/PgDn/Esc keys
+        setonkey(Key_PgUp,esc_pgup,0);
+        setonkey(Key_PgDn,esc_pgdn,0);
         setonkey(Key_Esc,esc_esc,0);
 
         // end the menu and process it
@@ -319,10 +314,8 @@ static void disp_cat() {
         gmnudropthrough = NO;
 
         // free the keys that were defined
-        if(page)
-          setonkey(Key_PgUp,NULL,0);
-        if(not end)
-          setonkey(Key_PgDn,NULL,0);
+        setonkey(Key_PgUp,NULL,0);
+        setonkey(Key_PgDn,NULL,0);
         setonkey(Key_Esc,NULL,0);
 
         // turn off the menuopen flag and restore menu info
@@ -378,10 +371,8 @@ static void disp_cat() {
 
           // find previous page, clear help window,
           // and set position to upper left corner
-          newpage = find_page(startpos,page-1);
-          if(newpage==page)
-            break;
-          page=newpage;
+          page = find_page(startpos, page + (page ? -1 : 0));
+
           wrow=0;
           wclear();
           kbclear();
@@ -391,10 +382,8 @@ static void disp_cat() {
 
           // find next page, clear help window, and
           // set position to upper left corner
-          newpage = find_page(startpos,page+1);
-          if(newpage==page)
-            break;
-          page=newpage;
+          page = find_page(startpos, page + (end ? 0 : 1));
+
           wrow=0;
           wclear();
           kbclear();

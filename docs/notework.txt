@@ -10,6 +10,10 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fix PgUp/PgDn keys in help window (bugreport from Semen Panevin).
+
+- Fix "Goto Next Area?" menu hotkeys (bugreport from Semen Panevin).
+
 + CPUID support for GNU C builds.
 
 ! GNwin and RDDTwin project files is added into MSVC6 workspace.
