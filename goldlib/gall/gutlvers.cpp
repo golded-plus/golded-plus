@@ -49,19 +49,7 @@
 
 //  ------------------------------------------------------------------
 
-struct gcpu_info
-{
-  char v_name[_MAX_VNAME_LEN+1];  // vendor name
-  char m_name[_MAX_MNAME_LEN+1];  // model name
-  unsigned family;
-  unsigned model;
-  unsigned stepping;
-};
-
-
-//  ------------------------------------------------------------------
-
-static bool HaveCPUID()
+inline static bool HaveCPUID()
 {
 //  TO_PORT_TAG: CPUID
 #if defined(_MSC_VER)
@@ -240,59 +228,67 @@ static void cpuname(int family, int model, const char *v_name, char *m_name)
 
 //  ------------------------------------------------------------------
 
-void gcpuid(gcpu_info *pinfo)
+char *gcpuid(char *_cpuname)
 {
 
-  static struct {   /* used in asm code in gcpuid() */
-    unsigned cpu;           /* x86, where x=cpu */
-    unsigned cpu_high;      /* highest CPUID capability */
-    char     vendor[3*sizeof(dword)+1]; /* CPU vendor string 12 bytes, 13th byte is zero */
-    char     family;        /* CPU stepping number, 4 bits */
-    char     model;         /* CPU model number, 4 bits */
-    char     stepping;      /* CPU stepping value, 4 bits */
+  static struct scpuid_t{
+    dword         cpu;           /* x86, where x=cpu */
+    dword         cpu_high;      /* highest CPUID capability */
+#if defined(_MSC_VER)
+    union
+    {
+      char vendor[_MAX_VNAME_LEN+1];
+      struct
+      {
+        dword dw0;
+        dword dw1;
+        dword dw2;
+      } dw;
+    };
+#else
+    char          vendor[3*sizeof(dword)+1]; /* CPU vendor string 12 bytes, 13th byte is zero */
+#endif
+    unsigned char family;        /* CPU stepping number, 4 bits */
+    unsigned char model;         /* CPU model number, 4 bits */
+    unsigned char stepping;      /* CPU stepping value, 4 bits */
   //  unsigned cpu_id;        /* stepping ID, 12 bits: 0x0FMS */
   //  unsigned features;      /* CPU features info */
-  }scpuid;   /* ISO C: static variabled is initialised with 0 */
+  }scpuid;
 
+//  memset( &scpuid, 0, sizeof(scpuid) );
 
 //  TO_PORT_TAG: CPUID
 #if defined(_MSC_VER)
 
-  union
-  {
-    char buff[_MAX_VNAME_LEN];
-    struct
-    {
-      dword dw0;
-      dword dw1;
-      dword dw2;
-    } dw;
-  } vendor;
+  scpuid.vendor[_MAX_VNAME_LEN] = 0;
 
-  dword standard = 0;
-  vendor.buff[_MAX_VNAME_LEN-1] = 0;
+#undef and
 
   __asm
   {
     // get the vendor string
     xor eax, eax
     cpuid
-    mov vendor.dw.dw0, ebx
-    mov vendor.dw.dw1, edx
-    mov vendor.dw.dw2, ecx
+//    mov scpuid.cpu_high, eax
+    mov scpuid.dw.dw0, ebx
+    mov scpuid.dw.dw1, edx
+    mov scpuid.dw.dw2, ecx
 
-    // get the standard bits
+    // get the CPU family, model, stepping, features bits
     mov eax, 1
     cpuid
-    mov standard, eax
+//   mov scpuid.features, edx
+    mov bx, ax
+    and ax, 0x0F0F // 3855          // 0x0F0F
+    mov scpuid.stepping, al
+    mov scpuid.family, ah
+    shr bl, 4
+    mov scpuid.model,bl
   }
 
-  pinfo->family = (standard >> 8) & 0xF;  // extracts family
-  pinfo->model = (standard >> 4) & 0xF;   // extracts model
-  pinfo->stepping = standard & 0xF;       // extracts stepping
+#define and &&
 
-  strncpy(pinfo->v_name, vendor.buff, _MAX_VNAME_LEN);
-  cpuname(pinfo->family, pinfo->model, pinfo->v_name, pinfo->m_name);
+  cpuname( scpuid.family, scpuid.model, scpuid.vendor, _cpuname);
 
 #elif defined(__GNUC__)
 
@@ -330,7 +326,7 @@ void gcpuid(gcpu_info *pinfo)
 
     "nexgen:"
       "popfl\n\t"
-      "movl	$12,%0\n\t"             /* CPU NX586 */
+      "movl	$5,%0\n\t"              /* CPU NX586 */
       "movl	$0x4778654e,%1\n\t"     /* store vendor string */
       "movl	$0x72446e65,%1+4\n\t"   /* "NexGenDriven"      */
       "movl	$0x6e657669,%1+8\n\t"
@@ -436,13 +432,13 @@ void gcpuid(gcpu_info *pinfo)
        "eax", "ebx", "ecx", "edx", "esp"
   );
 
-  cpuname(scpuid.family, scpuid.model, scpuid.vendor, pinfo->m_name);
+  cpuname(scpuid.family, scpuid.model, scpuid.vendor, _cpuname);
 
 #else
-  strcpy(vendor.buff, "UNKNOUN_CPU!");
-  cpuname(0, 0, "UNKNOUN_CPU!", pinfo->m_name);
+  cpuname(0, 0, "UNKNOWN ", _cpuname);
 #endif
 
+  return _cpuname;
 }
 
 
@@ -503,9 +499,7 @@ char* ggetosstring(void) {
           {
             if (HaveCPUID())
             {
-              gcpu_info pinfo;
-              gcpuid(&pinfo);
-              strcpy(processor, pinfo.m_name);
+              gcpuid(processor);
             }
             else
             {
