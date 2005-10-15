@@ -10,9 +10,11 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
-- Fix PgUp/PgDn keys in help window (bugreport from Semen Panevin).
+- Fixed buffer overflow bug in LocationAlias matching.
 
-- Fix "Goto Next Area?" menu hotkeys (bugreport from Semen Panevin).
+- Fixed PgUp/PgDn keys in help window (bugreport from Semen Panevin).
+
+- Fixed "Goto Next Area?" menu hotkeys (bugreport from Semen Panevin).
 
 + x86 CPUID support for GNU C builds (used in @widepid and @osver).
 

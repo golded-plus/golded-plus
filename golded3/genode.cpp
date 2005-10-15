@@ -30,10 +30,6 @@
 #include <gftnnlge.h>
 #include <gftnnlv7.h>
 
-#if defined(__USE_ALLOCA__)
-  #include <malloc.h>
-#endif
-
 
 //  ------------------------------------------------------------------
 
@@ -1145,11 +1141,7 @@ void LookupNodeLocation(GMsg* msg, std::string &location, int what)
 
     if (strbag.First())
     {
-#if defined(__USE_ALLOCA__)
-      char *city_upr = (char*)alloca(city.length()+1);
-#else
-      __extension__ char city_upr[city.length()+1];
-#endif
+      char *city_upr = (char*)throw_malloc(city.length()+1);
       strcpy(city_upr, city.c_str());
       strupr(city_upr);
 
@@ -1161,10 +1153,14 @@ void LookupNodeLocation(GMsg* msg, std::string &location, int what)
         {
           size_t len = strlen(str);
           city.replace(ptr-city_upr, len, strbag.Current2());
-          memset(ptr, -1, len);
+          city_upr = (char*)throw_realloc(city_upr, city.length()+1);
+          strcpy(city_upr, city.c_str());
+          strupr(city_upr);
         }
       }
       while (strbag.Next());
+
+      free(city_upr);
     }
 
     item.loc = location = city;
