@@ -43,7 +43,7 @@
 
 //  ------------------------------------------------------------------
 
-#define _MAX_VNAME_LEN  13
+#define _MAX_VNAME_LEN  12
 #define _MAX_MNAME_LEN  30
 
 
@@ -53,9 +53,9 @@ struct gcpu_info
 {
   char v_name[_MAX_VNAME_LEN+1];  // vendor name
   char m_name[_MAX_MNAME_LEN+1];  // model name
-  int  family;
-  int  model;
-  int  stepping;
+  unsigned family;
+  unsigned model;
+  unsigned stepping;
 };
 
 
@@ -209,6 +209,9 @@ static void cpuname(int family, int model, const char *v_name, char *m_name)
       case 11:
         strcpy(m_name, "iP-III");
         break;
+      case 13:
+        strcpy(m_name, "iCentrino");
+        break;
       default:
         sprintf(m_name, "iF%dM%d", family, model);
       }
@@ -226,8 +229,12 @@ static void cpuname(int family, int model, const char *v_name, char *m_name)
     sprintf(m_name, "CyrF%dM%d", family, model);
   else if (!strcmp("CentaurHauls", v_name))
     sprintf(m_name, "CenF%dM%d", family, model);
-  else
-    sprintf(m_name, "CPU %3sF%dM%d", v_name, family, model);
+  else {
+    if ( family==0 && model==0  )
+      sprintf(m_name, "CPU %s", v_name);
+    else
+      sprintf(m_name, "CPU %3s-F%dM%d", v_name, family, model);
+  }
 }
 
 
@@ -235,6 +242,22 @@ static void cpuname(int family, int model, const char *v_name, char *m_name)
 
 void gcpuid(gcpu_info *pinfo)
 {
+
+  static struct {   /* used in asm code in gcpuid() */
+    unsigned cpu;           /* x86, where x=cpu */
+    unsigned cpu_high;      /* highest CPUID capability */
+    char     vendor[3*sizeof(dword)+1]; /* CPU vendor string 12 bytes, 13th byte is zero */
+    char     family;        /* CPU stepping number, 4 bits */
+    char     model;         /* CPU model number, 4 bits */
+    char     stepping;      /* CPU stepping value, 4 bits */
+  //  unsigned cpu_id;        /* stepping ID, 12 bits: 0x0FMS */
+  //  unsigned features;      /* CPU features info */
+  }scpuid;   /* ISO C: static variabled is initialised with 0 */
+
+
+//  TO_PORT_TAG: CPUID
+#if defined(_MSC_VER)
+
   union
   {
     char buff[_MAX_VNAME_LEN];
@@ -249,8 +272,6 @@ void gcpuid(gcpu_info *pinfo)
   dword standard = 0;
   vendor.buff[_MAX_VNAME_LEN-1] = 0;
 
-//  TO_PORT_TAG: CPUID
-#if defined(_MSC_VER)
   __asm
   {
     // get the vendor string
@@ -265,49 +286,163 @@ void gcpuid(gcpu_info *pinfo)
     cpuid
     mov standard, eax
   }
-#elif defined(__GNUC__)
 
-  {
-//    dword _cpu,_cpu_id=0, _cpu_high;
-//    dword CPU_ID asm("_cpu_id") =0;
-//    char CPU_VENDOR[sizeof(dword)*3+1] asm("_cpu_vendor");
-//    char _cpu_feature[20];
-//
-//    memset(CPU_VENDOR,0,sizeof(CPU_VENDOR));
-//    memset(_cpu_feature,0,sizeof(_cpu_feature));
-
-    asm (
-      "xor %%eax, %%eax \n\t"
-      "cpuid \n\t"
-      "movl %%ebx, %0      \n\t"
-      "movl %%edx, %1      \n\t"
-      "movl %%ecx, %2"
-      : "=m" (vendor.dw.dw0), "=m" (vendor.dw.dw1), "=m" (vendor.dw.dw2)
-      :
-      : "eax", "ebx", "ecx", "edx"
-    );
-
-    asm (
-      "movl $1, %%eax \n\t"
-      "cpuid \n\t"
-      "movl %%eax,%0 "
-      : "=g" (standard)
-      :
-      : "eax"
-    );
-//    strncpy(vendor.buff,(const char*)CPU_VENDOR,_MAX_VNAME_LEN);
-//    standard = CPU_ID;
-  }
-#else
-  strcpy(vendor.buff, "UNKNOUN_CPU!");
-#endif
-
-  pinfo->family = (standard >> 8) & 0xF;  // retriving family
-  pinfo->model = (standard >> 4) & 0xF;   // retriving model
-  pinfo->stepping = standard & 0xF;       // retriving stepping
+  pinfo->family = (standard >> 8) & 0xF;  // extracts family
+  pinfo->model = (standard >> 4) & 0xF;   // extracts model
+  pinfo->stepping = standard & 0xF;       // extracts stepping
 
   strncpy(pinfo->v_name, vendor.buff, _MAX_VNAME_LEN);
   cpuname(pinfo->family, pinfo->model, pinfo->v_name, pinfo->m_name);
+
+#elif defined(__GNUC__)
+
+  asm(  /* assembler code is based on code of FreeBSD kernel sources */
+        /* uses AT&T assembler notation */
+
+    /* Step 1. Try to toggle alignment check flag; does not exist on 386. */
+      "pushfl\n\t"
+      "popl	%%eax\n\t"
+      "movl	%%eax,%%ecx\n\t"
+      "orl	$0x00040000,%%eax\n\t"   /* sets a alignment check flag */
+      "pushl	%%eax\n\t"
+      "popfl\n\t"
+      "pushfl\n\t"
+      "popl	%%eax\n\t"
+      "xorl	%%ecx,%%eax\n\t"
+      "andl	$0x00040000,%%eax\n\t"   /* test alignment check flag */
+      "pushl	%%ecx\n\t"
+      "popfl\n\t"
+
+      "testl	%%eax,%%eax\n\t"         /* alignment check flag is set? */
+      "jnz	try486\n\t"
+
+      /* NexGen CPU does not have aligment check flag. */
+      "pushfl\n\t"
+      "movl	$0x5555, %%eax\n\t"
+      "xorl	%%edx, %%edx\n\t"
+      "movl	$2, %%ecx\n\t"
+      "clc\n\t"
+      "divl	%%ecx\n\t"
+      "jz	nexgen\n\t"
+      "popfl\n\t"
+      "movl	$3,%0\n\t"              /* CPU 386 */
+      "jmp	end\n"
+
+    "nexgen:"
+      "popfl\n\t"
+      "movl	$12,%0\n\t"             /* CPU NX586 */
+      "movl	$0x4778654e,%1\n\t"     /* store vendor string */
+      "movl	$0x72446e65,%1+4\n\t"   /* "NexGenDriven"      */
+      "movl	$0x6e657669,%1+8\n\t"
+//      "movl	$0,%1+12\n\t"           // vendor is zero-filled already
+      "jmp	end\n"
+
+    /* Step2. Try to toggle identification flag; does not exist on early 486s.*/
+    "try486:"
+      "pushfl\n\t"
+      "popl	%%eax\n\t"
+      "movl	%%eax,%%ecx\n\t"
+      "xorl	$0x00200000,%%eax\n\t" /* sets a identification bit */
+      "pushl	%%eax\n\t"
+      "popfl\n\t"
+      "pushfl\n\t"
+      "popl	%%eax\n\t"
+      "xorl	%%ecx,%%eax\n\t"
+      "andl	$0x00200000,%%eax\n\t"  /* test identification bit */
+      "pushl	%%ecx\n\t"
+      "popfl\n\t"
+
+      "testl	%%eax,%%eax\n\t"        /* if identification flag is set then cpuid CPU's command may be used */
+      "jnz	trycpuid\n\t"
+      "movl	$4,%0\n\t"              /* CPU 486 */
+
+      /*
+       * Check Cyrix CPU
+       * Cyrix CPUs do not change the undefined flags following
+       * execution of the divide instruction which divides 5 by 2.
+       *
+       * Note: CPUID is enabled on M2, so it passes another way.
+       */
+      "pushfl\n\t"
+      "movl	$0x5555, %%eax\n\t"
+      "xorl	%%edx, %%edx\n\t"
+      "movl	$2, %%ecx\n\t"
+      "clc\n\t"
+      "divl	%%ecx\n\t"
+      "jnc	trycyrix\n\t"
+      "popfl\n\t"
+      "jmp	end\n"                  /* You may use Intel CPU */
+
+    "trycyrix:"
+      "popfl\n\t"
+      /*
+       * IBM Bluelighting CPU also doesn't change the undefined flags.
+       * Because IBM doesn't disclose the information for Bluelighting
+       * CPU, we couldn't distinguish it from Cyrix's (including IBM
+       * brand of Cyrix CPUs).
+       */
+      "movl	$0x69727943,%1\n\t"     /* store vendor string */
+      "movl	$0x736e4978,%1+4\n\t"   /* "CyrixInstead"      */
+      "movl	$0x64616574,%1+8\n\t"
+      "jmp	end\n"
+
+    /* Step 3. Use the `cpuid' instruction. */
+    "trycpuid:"
+      "xorl	%%eax,%%eax\n\t"
+      ".byte	0x0f,0xa2\n\t"		/* cpuid 0 */
+      "movl	%%eax,%2\n\t"		/* "cpuid 1" capability */
+      "movl	%%ebx,%1\n\t"		/* store vendor string */
+      "movl	%%edx,%1+4\n\t"
+      "movl	%%ecx,%1+8\n\t"
+//      "movb	$0,%1+12\n\t"   // vendor is zero-filled already
+
+      "andl     %%eax,%%eax\n\t"        /* "cpuid 1" is allowed? (eax==1?) */
+      "jz       i586\n\t"               /* no, skip "cpuid 1"  */
+
+      "movl	$1,%%eax\n\t"
+      ".byte	0x0f,0xa2\n\t"		// cpuid 1
+//      "movl	%%eax,%6\n\t"		// store cpu_id
+//      "movl	%%edx,%7\n\t"		// store cpu_feature
+
+      "movb	%%al,%%bl\n\t"
+      "shrb	$4,%%bl\n\t"		// extract CPU model
+      "movb	%%bl,%4\n\t"		// store model
+
+      "andl	$0x0F0F,%%eax\n\t"      // extract CPU family type and stepping
+      "movb	%%al,%5\n\t"		// store stepping
+      "movb	%%ah,%3\n\t"		// store family
+      "cmpb	$5,%%ah\n\t"
+      "jae	i586\n\t"
+
+      /* less than Pentium; must be 486 */
+      "movl	$4,%0\n\t"    /* CPU 486 */
+      "jmp	end\n"
+    "i586:\n\t"  /* Pentium and greater. Store family type into CPU type var */
+      "movb	%%ah,%0\n"
+    "end:\n\t"
+      "nop\n\t"
+
+     : /* output */
+        "=m" (scpuid.cpu)         /* %0 */
+       ,"=m" (scpuid.vendor)      /* %1 */
+       ,"=m" (scpuid.cpu_high)    /* %2 */
+       ,"=m" (scpuid.family)      /* %3 */
+       ,"=m" (scpuid.model)       /* %4 */
+       ,"=m" (scpuid.stepping)    /* %5 */
+//       ,"=m" (scpuid.cpu_id)      /* %6 */
+//       ,"=m" (scpuid.features)    /* %7 */
+     : /* no input */
+     : /* modified registers */
+       "eax", "ebx", "ecx", "edx", "esp"
+  );
+
+  cpuname(scpuid.family, scpuid.model, scpuid.vendor, pinfo->m_name);
+
+#else
+  strcpy(vendor.buff, "UNKNOUN_CPU!");
+  cpuname(0, 0, "UNKNOUN_CPU!", pinfo->m_name);
+#endif
+
 }
 
 
