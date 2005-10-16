@@ -198,7 +198,7 @@ static void cpuname(int family, int model, const char *v_name, char *m_name)
         strcpy(m_name, "iP-III");
         break;
       case 13:
-        strcpy(m_name, "iCentrino");
+        strcpy(m_name, "iP-M");  // Pentium M "Centrino" (Pentium Mobile)
         break;
       default:
         sprintf(m_name, "iF%dM%d", family, model);
