@@ -1160,7 +1160,7 @@ void LookupNodeLocation(GMsg* msg, std::string &location, int what)
       }
       while (strbag.Next());
 
-      free(city_upr);
+      throw_free(city_upr);
     }
 
     item.loc = location = city;
