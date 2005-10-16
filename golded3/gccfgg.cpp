@@ -756,6 +756,7 @@ CfgGed::CfgGed() {
   quotectrl = CI_TEAR|CI_ORIG;
   quotemargin = 70;
   quotewraphard = false;
+  quoteusenewai = true;
   ra2usersbbs = 0;
   replylink = REPLYLINK_DIRECT;
   replylinkfloat = true;

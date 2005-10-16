@@ -300,6 +300,7 @@ const word CRC_QUOTESPACING     = 0xB403;
 const word CRC_QUOTESTRING      = 0xE44F;
 const word CRC_QUOTESTOPS       = 0xD2E4;
 const word CRC_QUOTEWRAPHARD    = 0x6BD4;
+const word CRC_QUOTEUSENEWAI    = 0xCFF0;
 const word CRC_QWKBADMSGS       = 0x0C2D;
 const word CRC_QWKCONFMAP       = 0xEAE1;
 const word CRC_QWKEXPORTPATH    = 0xB3AB;

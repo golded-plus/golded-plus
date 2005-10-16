@@ -488,6 +488,7 @@ SwitchQ:
     case CRC_QUOTESTRING      :  CfgQuotestring      ();  break;
     case CRC_QUOTESTOPS       :  CfgQuotestops       ();  break;
     case CRC_QUOTEWRAPHARD    :  CfgQuotewraphard    ();  break;
+    case CRC_QUOTEUSENEWAI    :  CfgQuoteusenewai    ();  break;
     case CRC_QWKBADMSGS       :  CfgQwkbadmsgs       ();  break;
     case CRC_QWKCONFMAP       :  CfgQwkconfmap       ();  break;
     case CRC_QWKEXPORTPATH    :  CfgQwkexportpath    ();  break;

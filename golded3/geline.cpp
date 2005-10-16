@@ -2212,7 +2212,8 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode) {
               ptr = tptr;
             }
           }
-          else if(is_quote(ptr)) {
+          else if(is_quote(ptr) && is_quote2(line, ptr))
+          {
             para = GLINE_QUOT;
             line->type |= GLINE_QUOT|GLINE_HARD;
             GetQuotestr(ptr, qbuf, &qlen);

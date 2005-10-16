@@ -373,6 +373,82 @@ int is_quote(const char* ptr) {
 
 //  ------------------------------------------------------------------
 
+bool is_quote2(const Line* line, const char* ptr)
+{
+  if (!CFG->quoteusenewai) return true;
+
+  char *head = (char *)ptr;
+
+  // search first '>' before CR, NUL or any other quote character
+  for (bool found = false; !found; ptr++)
+  {
+    if (*ptr == '>')
+      found = true;
+    else
+    {
+      if (IsQuoteChar(ptr) || (*ptr == CR) || !*ptr)
+        return true;
+    }
+  }
+
+  // line is double quoted?
+  if (is_quote(ptr))
+    return true;
+
+  // if "SPACE*[a-zA-Z]{0, 3}>"
+  for (ptr--; isspace(*head); head++);
+
+  int nr = 0;
+  for (char *tmp = head; tmp < ptr; tmp++)
+  {
+    char ch = toupper(*tmp);
+    if ((ch >= 'A') && (ch <= 'Z'))
+      nr++;
+  }
+
+  if ((nr < 4) && (nr == (ptr-head)))
+    return true;
+
+  // take a look at previous lines
+  for (Line *ln = line->prev; ln; ln = ln->prev)
+  {
+    // previous line is quoted?
+    if (ln->isquote())
+      return true;
+    // or begin of paragraph?
+    if ((ln->txt.length() == 0) ||
+        (ln->txt[0] == LF) ||
+        (ln->txt[0] == CR))
+      return true;
+    // or kludge?
+    if (ln->txt[0] == CTRL_A)
+      return true;
+
+    // found begin of citation?
+    char *begin = strrchr(ln->txt.c_str(), '<');
+    if (begin)
+    {
+      // found both '<' and '>'?
+      if (strchr(begin, '>'))
+        return true;
+
+      for (Line *ln2 = ln->next; ln2 != line; ln2 = ln2->next)
+      {
+        // found both '<' and '>'?
+        if (strchr(ln2->txt.c_str(), '>'))
+          return true;
+      }
+
+      return false;   // don't quote current line
+    }
+  }
+
+  return true;
+}
+
+
+//  ------------------------------------------------------------------
+
 int quotecolor(const char* line) {
 
   char buf[MAXQUOTELEN];

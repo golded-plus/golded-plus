@@ -10,6 +10,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ New config file token: QuoteUseNewAI No/Yes. It will try to solve
+  false quoting when '<' and '>' characters is used.
+
 - Fixed buffer overflow bug in LocationAlias matching.
 
 - Fixed PgUp/PgDn keys in help window (bugreport from Semen Panevin).

@@ -298,6 +298,7 @@ public:
   char        quotestring[10];
   char        quotestops[41];
   bool        quotewraphard;
+  bool        quoteusenewai;
   int         ra2usersbbs;          // RA2;
   int         replylink;
   bool        replylinkfloat;

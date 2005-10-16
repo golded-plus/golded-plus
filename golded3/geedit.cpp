@@ -101,7 +101,16 @@ void IEclass::setlinetype(Line* __line) {
   _test_halt(__line == NULL);
 
   __line->type &= ~(GLINE_ALL|GLINE_TEAR|GLINE_ORIG|GLINE_TAGL);
-  __line->type |= is_quote(__line->txt.c_str()) ? GLINE_QUOT : (__line->txt[0] == CTRL_A) ? GLINE_HIDD : 0;
+
+  if (is_quote(__line->txt.c_str()) &&
+      is_quote2(__line, __line->txt.c_str()))
+  {
+    __line->type |= GLINE_QUOT;
+  }
+  else if (__line->txt[0] == CTRL_A)
+  {
+    __line->type |= GLINE_HIDD;
+  }
 }
 
 
@@ -660,6 +669,7 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, boo
     // Length of this line
     uint _thislen = _thisline->txt.length();
 
+    setlinetype(_thisline);
     uint _wrapmargin = (_thisline->type & GLINE_QUOT) ? marginquotes : margintext;
 
     // Does this line need wrapping?

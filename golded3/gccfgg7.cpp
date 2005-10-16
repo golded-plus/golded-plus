@@ -82,6 +82,13 @@ void CfgQuotewraphard() {
 
 //  ------------------------------------------------------------------
 
+void CfgQuoteusenewai()
+{
+  CFG->quoteusenewai = 0 != GetYesno(val);
+}
+
+//  ------------------------------------------------------------------
+
 void CfgQwkbadmsgs() {
 
   QWK->BadMsgs(val);
