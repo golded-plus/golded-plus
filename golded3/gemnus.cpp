@@ -221,14 +221,10 @@ int GMenuNewarea::Run() {
 
   HandleGEvent(EVTT_ENDOFMSGS);
 
-  uint _temp = AA->lastread();
   gkey _yeskey = Key_Rgt;
-  gkey _nokey = Key_Lft;
+  gkey _nokey  = Key_Lft;
 
-  if(AA->isreadmark)
-    _temp = AA->Mark.Find(AA->Msgn.CvtReln(AA->lastread()));
-
-  if ((_temp <= 1) && (AA->Msgn.Count() > 1))
+  if (reader_direction == DIR_PREV)
   {
     _yeskey = Key_Lft;
     _nokey  = Key_Rgt;
