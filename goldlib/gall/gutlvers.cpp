@@ -253,16 +253,10 @@ char *gcpuid(char *_cpuname)
     unsigned char stepping;      /* CPU stepping value, 4 bits */
   //  unsigned cpu_id;        /* stepping ID, 12 bits: 0x0FMS */
   //  unsigned features;      /* CPU features info */
-  }scpuid;
+  }scpuid;   /* ISO C: static variabled is initialised with 0 */
 
-//  memset( &scpuid, 0, sizeof(scpuid) );
-
-//  TO_PORT_TAG: CPUID
 #if defined(_MSC_VER)
-
-  scpuid.vendor[_MAX_VNAME_LEN] = 0;
-
-#undef and
+#undef and   // and is defined as &&, this is conflicted with assembler instruction "and"
 
   __asm
   {
@@ -432,7 +426,7 @@ char *gcpuid(char *_cpuname)
        "eax", "ebx", "ecx", "edx", "esp"
   );
 
-  cpuname(scpuid.family, scpuid.model, scpuid.vendor, _cpuname);
+  cpuname(scpuid.family?scpuid.family:scpuid.cpu, scpuid.model, scpuid.vendor, _cpuname);
 
 #else
   #if defined(MSDOS) || defined(DOS) || defined(__MSDOS__) || defined(_DOS) \
