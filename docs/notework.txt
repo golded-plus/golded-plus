@@ -10,6 +10,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- GoldEd can fall because of invalid time in message.
+  (bugreport from Alexander Kolyada)
+
 + New config file token: QuoteUseNewAI No/Yes. It will try to solve
   false quoting when '<' and '>' characters is used.
 

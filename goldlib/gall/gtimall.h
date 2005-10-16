@@ -172,9 +172,12 @@ char* TimeToStr(char* buf, time_t t);
 long YMD2JDN(unsigned yr, unsigned mo, unsigned day) __attribute__ ((const));
 void JDN2YMD(long scalar, unsigned *yr, unsigned *mo, unsigned *day);
 
-inline struct tm *gmtime(const time32_t *timep) {
-    const time_t temp(*timep);
-    return gmtime(&temp);
+inline struct tm *gmtime(const time32_t *timep)
+{
+  const time_t zero(0);
+  const time_t temp(*timep);
+  struct tm *time = gmtime(&temp);
+  return time ? time : gmtime(&zero);
 }
 
 //  ------------------------------------------------------------------
