@@ -206,7 +206,7 @@ static void cpuname(int family, int model, const char *v_name, char *m_name)
       break;
 
       case 15:
-        strcpy(m_name, "iP-4");
+        strcpy(m_name, "iP-IV");
         break;
 
       default:
