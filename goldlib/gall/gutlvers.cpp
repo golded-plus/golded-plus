@@ -169,10 +169,10 @@ static void cpuname(int family, int model, const char *v_name, char *m_name)
       case 1:
       case 2:
       case 3:
-        strcpy(m_name, "iPentium");
+        strcpy(m_name, "iP54C");
         break;
       case 4:
-        strcpy(m_name, "iP-MMX");
+        strcpy(m_name, "iP55C");
         break;
       default:
         sprintf(m_name, "iF%dM%d", family, model);
