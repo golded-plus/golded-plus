@@ -435,7 +435,13 @@ char *gcpuid(char *_cpuname)
   cpuname(scpuid.family, scpuid.model, scpuid.vendor, _cpuname);
 
 #else
-  cpuname(0, 0, "UNKNOWN ", _cpuname);
+  #if defined(MSDOS) || defined(DOS) || defined(__MSDOS__) || defined(_DOS) \
+   || defined(WIN32) || defined(__WIN32__) || defined(_WIN) || defined(WINNT) \
+   || defined(__OS2__) || defined(OS2)
+    cpuname(0, 0, "x86", _cpuname);
+  #else
+    cpuname(0, 0, "UNKNOWN", _cpuname);
+  #endif
 #endif
 
   return _cpuname;
@@ -450,24 +456,31 @@ char* ggetosstring(void) {
 
   if(*osstring == NUL) {
 
+    char processor[_MAX_MNAME_LEN] = "";
+
     #if defined(__UNIX__) || defined(__DJGPP__) || defined(__EMX__)
 
     struct utsname info;
 
     if(uname(&info) != -1) {
+      if(strcmp(info.machine,"i386"))
+        strcpy(processor,info.machine);
+      else
+        gcpuid(processor);
+
       #if defined(__EMX__)
-      sprintf(osstring, "%s %s.%s %s", info.sysname, info.version, info.release, info.machine);
+      sprintf(osstring, "%s %s.%s %s", info.sysname, info.version, info.release, processor);
       #elif defined(__DJGPP__)
-      sprintf(osstring, "%s %s.%s %s", info.sysname, info.release, info.version, info.machine);
+      sprintf(osstring, "%s %s.%s %s", info.sysname, info.release, info.version, processor);
       #elif defined(__BEOS__)
       BAppFileInfo appFileInfo;
       version_info sys_ver = {0};
       BFile file("/boot/beos/system/lib/libbe.so", B_READ_ONLY);
       appFileInfo.SetTo(&file);
       appFileInfo.GetVersionInfo(&sys_ver, B_APP_VERSION_KIND);
-      sprintf(osstring, "%s %s %s", info.sysname, sys_ver.short_info, info.machine);
+      sprintf(osstring, "%s %s %s", info.sysname, sys_ver.short_info, processor);
       #else
-      sprintf(osstring, "%s %s %s", info.sysname, info.release, info.machine);
+      sprintf(osstring, "%s %s %s", info.sysname, info.release, processor);
       #endif
     }
     else
@@ -478,7 +491,6 @@ char* ggetosstring(void) {
     OSVERSIONINFO info;
     SYSTEM_INFO si;
     char ostype[16];
-    char processor[_MAX_MNAME_LEN];
 
     GetSystemInfo(&si);
     info.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
@@ -623,13 +635,13 @@ char* ggetosstring(void) {
 
     #else
 
-    #if defined(__MSDOS__)
-    const char* osname = "DOS";
-    #elif defined(__OS2__)
-    const char* osname = "OS/2";
-    #endif
+      #if defined(__MSDOS__)
+      const char* osname = "DOS";
+      #elif defined(__OS2__)
+      const char* osname = "OS/2";
+      #endif
 
-    sprintf(osstring, "%s %d.%02d ix86", osname, _osmajor, _osminor);
+      sprintf(osstring, "%s %d.%02d %s", osname, _osmajor, _osminor, gcpuid(processor));
 
     #endif
   }
