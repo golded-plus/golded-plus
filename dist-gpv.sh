@@ -3,7 +3,10 @@
 # Create a archive 'gpwin-*.zip' (gpvYMMDD.zip) with Win32 (MS Visual C)
 # builg of the Golded+.
 
-name=../gpwin-115-`date +%Y%m%d`.zip
+date=`date +%Y%m%d`
+name=../gpwin-115-${date}.zip
+
+sed -i.orig -e "s/\#define __GVER_POSTVERSION__ .*/\#define __GVER_POSTVERSION__   \"-b${date}\"/" golded3/mygolded.h
 
 files="Release/bin/gedwin.exe Release/bin/gnwin.exe Release/bin/rddtwin.exe"
 files="${files} docs/copying docs/copying.lib"

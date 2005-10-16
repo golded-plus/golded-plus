@@ -3,8 +3,10 @@
 # Create a archive 'gpw32-*.zip' (gpwYMMDD.zip) with Win32 (MinGW) build
 # of the Golded+.
 
+date=`date +%Y%m%d`
+name=../gpw32-115-${date}.zip
 
-name=../gpw32-115-`date +%Y%m%d`.zip
+sed -i.orig -e "s/\#define __GVER_POSTVERSION__ .*/\#define __GVER_POSTVERSION__   \"-b${date}\"/" golded3/mygolded.h
 
 files="bin/gedcyg.exe bin/gncyg.exe bin/rddtcyg.exe"
 files="${files} docs/copying docs/copying.lib"
@@ -25,6 +27,7 @@ printf 'wellknown  GoldED mail editor.\r\n' >>bin/File_ID.Diz
 printf '------------------------------\r\n' >>bin/File_ID.Diz
 printf '*golded-plus.sourceforge.net* \r\n' >>bin/File_ID.Diz
 
+make clean
 make
 make strip
 make docs
