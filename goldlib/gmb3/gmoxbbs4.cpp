@@ -135,13 +135,13 @@ void XbbsArea::save_message(int __mode, gmsg* __msg, XbbsHdr& __hdr) {
   strxcpy(__hdr.to,   __msg->to, sizeof(__hdr.to));
   strxcpy(__hdr.subj, __msg->re, sizeof(__hdr.subj));
 
-  struct tm* _tm = gmtime(&__msg->written);
+  struct tm* _tm = ggmtime(&__msg->written);
   sprintf(__hdr.date, "%02d %3s %02d  %02d:%02d:%02d",
     _tm->tm_mday, gmonths[_tm->tm_mon+1], _tm->tm_year % 100,
     _tm->tm_hour, _tm->tm_min, _tm->tm_sec
   );
   if(__msg->arrived)
-    _tm = gmtime(&__msg->arrived);
+    _tm = ggmtime(&__msg->arrived);
   __hdr.indate[0] = (byte)(_tm->tm_year - 89);
   __hdr.indate[1] = (byte)(_tm->tm_mon + 1);
   __hdr.indate[2] = (byte)(_tm->tm_mday);

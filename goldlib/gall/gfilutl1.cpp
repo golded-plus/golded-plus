@@ -99,9 +99,9 @@ long GetFilesize(const char* file) {
 dword gfixstattime(time_t st_time) {
 
   #if (defined(__MINGW32__) && !defined(__MSVCRT__)) || defined(__CYGWIN__)
-  struct tm &f = *gmtime(&st_time);
+  struct tm &f = *ggmtime(&st_time);
   #else
-  struct tm &f = *localtime(&st_time);
+  struct tm &f = *glocaltime(&st_time);
   #endif
   FFTime t;
   t.ft_year  = f.tm_year - 80;

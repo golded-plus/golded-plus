@@ -344,10 +344,10 @@ bool guserbase::edit_entry(uint idx) {
   char dbuf[16];
   time_t dt = entry.firstdate;
   if(dt)
-    window.prints(13, 13, wattr, strftimei(dbuf, 16, "%d %b %y", gmtime(&dt)));
+    window.prints(13, 13, wattr, strftimei(dbuf, 16, "%d %b %y", ggmtime(&dt)));
   dt = entry.lastdate;
   if(dt)
-    window.prints(13, 38, wattr, strftimei(dbuf, 16, "%d %b %y", gmtime(&dt)));
+    window.prints(13, 38, wattr, strftimei(dbuf, 16, "%d %b %y", ggmtime(&dt)));
 
   sprintf(dbuf, "%8ld", entry.times);
   window.prints(13, width-11, wattr, dbuf);
@@ -428,7 +428,7 @@ void guserbase::write_entry(uint idx, bool updateit) {
 
   if(updateit and not entry.is_deleted) {
     time_t a = time(NULL);
-    struct tm *tp = gmtime(&a);
+    struct tm *tp = ggmtime(&a);
     tp->tm_isdst = -1;
     time_t b = mktime(tp);
     entry.lastdate = a + a - b;

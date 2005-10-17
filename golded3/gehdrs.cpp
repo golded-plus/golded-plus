@@ -177,7 +177,7 @@ void DispHeader(GMsg* msg, bool prn, FILE* fp, int width) {
   strsetsz(buf1, nodewidth);
 
   if(msg->written)
-    strftimei(buf2, CFG->disphdrdateset.len, LNG->DateTimeFmt, gmtime(&msg->written));
+    strftimei(buf2, CFG->disphdrdateset.len, LNG->DateTimeFmt, ggmtime(&msg->written));
   strsetsz(buf2, datewidth);
 
   // write from line
@@ -206,7 +206,7 @@ void DispHeader(GMsg* msg, bool prn, FILE* fp, int width) {
   strsetsz(buf2, nodewidth);
 
   if(msg->arrived)
-    strftimei(buf2, CFG->disphdrdateset.len, LNG->DateTimeFmt, gmtime(&msg->arrived));
+    strftimei(buf2, CFG->disphdrdateset.len, LNG->DateTimeFmt, ggmtime(&msg->arrived));
   strsetsz(buf2, datewidth);
 
   // write to line

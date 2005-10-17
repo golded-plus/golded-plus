@@ -55,7 +55,7 @@ void update_statuslines() {
 
     if(CFG->switches.get(statuslineclock)) {
       time_t t = time(NULL);
-      sprintf(clkinfo, "   %s", strftimei(help, 40, LNG->StatusLineTimeFmt, localtime(&t)));
+      sprintf(clkinfo, "   %s", strftimei(help, 40, LNG->StatusLineTimeFmt, glocaltime(&t)));
     }
 
     if(CFG->statuslinehelp == -1)

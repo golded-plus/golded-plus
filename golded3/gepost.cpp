@@ -244,7 +244,7 @@ static void MakeMsg3(int& mode, GMsg* msg) {
   // Do Timefields
   if(msg->attr.fmu()) {
     time_t a = time(NULL);
-    struct tm *tp = gmtime(&a);
+    struct tm *tp = ggmtime(&a);
     tp->tm_isdst = -1;
     time_t b = mktime(tp);
     a += a - b;
@@ -825,7 +825,7 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
       }
       if(dochgdate) {
         time_t a = time(NULL);
-        struct tm *tp = gmtime(&a);
+        struct tm *tp = ggmtime(&a);
         tp->tm_isdst = -1;
         time_t b = mktime(tp);
         a += a - b;

@@ -123,19 +123,39 @@ extern const char* gmonths[];
 //  ------------------------------------------------------------------
 //  Prototypes
 
-#if defined(__WIN32__) && MAXINT > 0x0FFFFFFF  // 64-bit
-extern struct tm dummy_struct_tm;
-inline struct tm* ggmtime(time_t* arg) {
-  struct tm* a = gmtime(arg);
-  return (a != NULL) ? a : &dummy_struct_tm;
-}
-inline struct tm* glocaltime(time_t* arg) {
-  struct tm* a = localtime(arg);
-  return (a != NULL) ? a : &dummy_struct_tm;
-}
-#define gmtime(arg)    ggmtime(arg)
-#define localtime(arg) glocaltime(arg)
+inline struct tm *ggmtime(const time_t *timep)
+{
+#if defined(__WIN32__)
+  const time_t zero(0);
+  struct tm *time = gmtime(timep);
+  return time ? time : gmtime(&zero);
+#else
+  return gmtime(&timep);
 #endif
+}
+
+inline struct tm* glocaltime(const time_t *timep)
+{
+#if defined(__WIN32__)
+  const time_t zero(0);
+  struct tm *time = localtime(timep);
+  return time ? time : localtime(&zero);
+#else
+  return localtime(timep);
+#endif
+}
+
+inline struct tm* ggmtime(const time32_t *timep)
+{
+  const time_t temp(*timep);
+  return glocaltime(&temp);
+}
+
+inline struct tm* glocaltime(const time32_t *timep)
+{
+  const time_t temp(*timep);
+  return glocaltime(&temp);
+}
 
 #if defined(__OS2__)
 inline void usleep(long duration) { DosSleep(duration); }
@@ -172,13 +192,6 @@ char* TimeToStr(char* buf, time_t t);
 long YMD2JDN(unsigned yr, unsigned mo, unsigned day) __attribute__ ((const));
 void JDN2YMD(long scalar, unsigned *yr, unsigned *mo, unsigned *day);
 
-inline struct tm *gmtime(const time32_t *timep)
-{
-  const time_t zero(0);
-  const time_t temp(*timep);
-  struct tm *time = gmtime(&temp);
-  return time ? time : gmtime(&zero);
-}
 
 //  ------------------------------------------------------------------
 

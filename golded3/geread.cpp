@@ -1175,7 +1175,7 @@ int LoadMessage(GMsg* msg, int margin) {
           reader_rcv_noise = 1;
           if(not msg->attr.rcv()) {         // Have we seen it?
             time_t a = time(NULL);
-            struct tm *tp = gmtime(&a);
+            struct tm *tp = ggmtime(&a);
             tp->tm_isdst = -1;
             time_t b = mktime(tp);
             msg->received = a + a - b;      // Get current date
@@ -1419,7 +1419,7 @@ void GotoReplies() {
           sprintf(rlist[replies].addr, " (%s) ", buf);
       }
       maxaddr = MaxV(maxaddr, (uint)strlen(rlist[replies].addr));
-      strftimei(rlist[replies].written, CFG->disphdrdateset.len, LNG->DateTimeFmt, gmtime(&rmsg->written));
+      strftimei(rlist[replies].written, CFG->disphdrdateset.len, LNG->DateTimeFmt, ggmtime(&rmsg->written));
       maxwritten = MaxV(maxwritten, (uint)strlen(rlist[replies].written));
       rlist[replies].reln = reln;
       replies++;

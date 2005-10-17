@@ -321,7 +321,7 @@ void GMsgList::print_line(uint idx, uint pos, bool isbar) {
     case MSGLISTDATE_RECEIVED:  dt = ml->received;  break;
   }
   if(dt)
-    strftimei(dbuf, 20, "%d %b %y", gmtime(&dt));
+    strftimei(dbuf, 20, "%d %b %y", ggmtime(&dt));
   if(AA->Msglistdate())
     strsetsz(dbuf, 10);
   else
@@ -909,7 +909,7 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar) {
     }
 
     if(dt)
-      strftimei(dbuf, 20, "%d %b %y", gmtime(&dt));
+      strftimei(dbuf, 20, "%d %b %y", ggmtime(&dt));
     strcat(buf, dbuf);
   }
   strcat(buf, " ");

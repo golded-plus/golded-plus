@@ -45,13 +45,6 @@
 
 //  ------------------------------------------------------------------
 
-#ifdef __WIN32__
-struct tm dummy_struct_tm = { 0, 0, 0, 1, 0, 70, 0, 0, -1 };
-#endif
-
-
-//  ------------------------------------------------------------------
-
 const char* gmonths[] = {
   "ERR",
   "Jan", "Feb", "Mar",
@@ -68,7 +61,7 @@ const char* gmonths[] = {
 int tzoffset() {
 
   time_t t1 = time(NULL);
-  struct tm *tp = gmtime(&t1);
+  struct tm *tp = ggmtime(&t1);
   tp->tm_isdst=-1;
   time_t t2 = mktime(tp);
   int dt = (int)(t1 - t2);
@@ -358,7 +351,7 @@ time_t FTimeToTime(FTime* __ftime, struct tm* __tm) {
         __tm->tm_isdst = -1;
 
         time_t a = mktime(__tm);
-        struct tm *tp = gmtime(&a);
+        struct tm *tp = ggmtime(&a);
         tp->tm_isdst = -1;
         time_t b = mktime(tp);
         _time = a + a - b;
@@ -382,7 +375,7 @@ FTime TimeToFTime(time_t __time) {
 
   if(__time) {
 
-    struct tm* _tmp = gmtime(&__time);
+    struct tm* _tmp = ggmtime(&__time);
     _ft.ft_year  = (word)(_tmp->tm_year - 80);
     _ft.ft_month = (word)(_tmp->tm_mon + 1);
     _ft.ft_day   = (word)(_tmp->tm_mday);
@@ -449,7 +442,7 @@ time_t FidoTimeToUnix(char* ptr) {
     t.tm_sec   = second;
     t.tm_isdst = -1;
     time_t a = mktime(&t);
-    struct tm *tp = gmtime(&a);
+    struct tm *tp = ggmtime(&a);
     tp->tm_isdst = -1;
     time_t b = mktime(tp);
     return a + a - b;
@@ -462,7 +455,7 @@ time_t FidoTimeToUnix(char* ptr) {
 
 char* TimeToStr(char* buf, time_t t) {
 
-  return strftimei(buf, 20, "%Y-%m-%d %H:%M:%S", gmtime(&t));
+  return strftimei(buf, 20, "%Y-%m-%d %H:%M:%S", ggmtime(&t));
 }
 
 

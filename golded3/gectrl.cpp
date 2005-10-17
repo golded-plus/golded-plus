@@ -575,7 +575,7 @@ void DoKludges(int mode, GMsg* msg, int kludges) {
           line->kludge = GKLUD_RFC;
         }
 
-        struct tm* tm = gmtime(&msg->written);
+        struct tm* tm = ggmtime(&msg->written);
         sprintf(buf, "%sDate: %s, %02d %s %04d %02d:%02d:%02d", rfc,
           __gsweekday[tm->tm_wday],
           tm->tm_mday, __gsmonth[tm->tm_mon], 1900+tm->tm_year,

@@ -127,7 +127,7 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::save_message(i
   __hdr.replyto = (msgn_t)__msg->link.to();
   __hdr.reply1st = (msgn_t)__msg->link.first();
 
-  struct tm* _tmp = gmtime(&__msg->written);
+  struct tm* _tmp = ggmtime(&__msg->written);
   strc2p(strftimei(__hdr.date, 9, "%m-%d-%y", _tmp));
   strc2p(strftimei(__hdr.time, 6, "%H:%M", _tmp));
 

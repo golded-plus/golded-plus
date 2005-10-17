@@ -80,7 +80,7 @@ int PcbArea::load_message(int __mode, gmsg* __msg, PcbHdr& __hdr) {
   _tm.tm_sec   = 0;
   _tm.tm_isdst = -1;
   time_t a = mktime(&_tm);
-  struct tm *tp = gmtime(&a);
+  struct tm *tp = ggmtime(&a);
   tp->tm_isdst = -1;
   time_t b = mktime(tp);
   __msg->written = a + a - b;

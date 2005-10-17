@@ -268,7 +268,7 @@ void ScreenBlankIdle() {
   char blankmsg1[80];
   char blankmsg2[80];
   time_t t = time(NULL);
-  sprintf(blankmsg1, " %s %s %s ", __gver_longpid__, __gver_ver__, strftimei(blankmsg2, 40, LNG->StatusLineTimeFmt, localtime(&t)));
+  sprintf(blankmsg1, " %s %s %s ", __gver_longpid__, __gver_ver__, strftimei(blankmsg2, 40, LNG->StatusLineTimeFmt, glocaltime(&t)));
   sprintf(blankmsg2, " %s ", LNG->BlankMsg);
   if(strblank(blankmsg2)) {
     *blankmsg2 = NUL;

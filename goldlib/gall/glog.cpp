@@ -109,7 +109,7 @@ void glog::printf(const char* format, ...) {
   char logbuf[256];
 
   secs_now = time(NULL);
-  time_now = localtime(&secs_now);
+  time_now = glocaltime(&secs_now);
 
   lineswritten++;
 

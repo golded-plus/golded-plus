@@ -172,7 +172,7 @@ void ProcessSoupMsg(char* lbuf, GMsg* msg, int& msgs, char* areaname, int tossto
     msg->orig = msg->oorig = CFG->internetgate.addr.valid() ? CFG->internetgate.addr : AA->aka();
     msg->dest = msg->odest = AA->aka();
     time_t a = time(NULL);
-    struct tm *tp = gmtime(&a);
+    struct tm *tp = ggmtime(&a);
     tp->tm_isdst = -1;
     time_t b = mktime(tp);
     msg->arrived = a + a - b;
@@ -698,7 +698,7 @@ int ExportSoupMsg(GMsg* msg, char* msgfile, gfile& fp, int ismail) {
     msg->attr.scn1();
     msg->attr.uns0();
     time_t a = time(NULL);
-    struct tm *tp = gmtime(&a);
+    struct tm *tp = ggmtime(&a);
     tp->tm_isdst = -1;
     time_t b = mktime(tp);
     msg->arrived = a + a - b;

@@ -73,7 +73,7 @@ int XbbsArea::load_message(int __mode, gmsg* __msg, XbbsHdr& __hdr) {
     t.tm_hour = t.tm_min = t.tm_sec = 0;
     t.tm_isdst = -1;
     time_t a = mktime(&t);
-    struct tm *tp = gmtime(&a);
+    struct tm *tp = ggmtime(&a);
     tp->tm_isdst = -1;
     time_t b = mktime(tp);
     __msg->arrived = a + a - b;

@@ -107,14 +107,14 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
   const char *osver = ggetosstring();
 
   time_t t = time(NULL);
-  struct tm* written_tm = localtime(&t);
+  struct tm* written_tm = glocaltime(&t);
   char cdate[80];
   strftimei(cdate, 80, LNG->DateFmt, written_tm);
   char ctime[80];
   strftimei(ctime, 80, LNG->TimeFmt, written_tm);
   char cdtime[80];
   strftimei(cdtime, 80, LNG->DateTimeFmt, written_tm);
-  written_tm = gmtime(&oldmsg->written);
+  written_tm = ggmtime(&oldmsg->written);
   char odate[80];
   strftimei(odate, 80, LNG->DateFmt, written_tm);
   char otime[80];

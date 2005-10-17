@@ -209,12 +209,12 @@ int ImportQWK() {
           _tm.tm_sec   = 0;
           _tm.tm_isdst = -1;
           time_t a = mktime(&_tm);
-          struct tm *tp = gmtime(&a);
+          struct tm *tp = ggmtime(&a);
           tp->tm_isdst = -1;
           time_t b = mktime(tp);
           msg->written = a + a - b;
           a = time(NULL);
-          tp = gmtime(&a);
+          tp = ggmtime(&a);
           tp->tm_isdst = -1;
           b = mktime(tp);
           msg->arrived = a + a - b;
@@ -369,7 +369,7 @@ int ExportQwkMsg(GMsg* msg, gfile& fp, int confno, int& pktmsgno) {
   hdr.status = msg->attr.pvt() ? '*' : ' ';
   sprintf(buf, "%u", confno);
   memcpy(hdr.msgno, buf, strlen(buf));
-  struct tm* _tm = gmtime(&msg->written);
+  struct tm* _tm = ggmtime(&msg->written);
   int _year = _tm->tm_year % 100;
   sprintf(buf, "%02d-%02d-%02d", _tm->tm_mon+1, _tm->tm_mday, _year);
   memcpy(hdr.date, buf, 8);

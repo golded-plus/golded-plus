@@ -10,6 +10,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- All gmtime and localtime calls was rewritten to internal defined functions.
+
 - GoldEd can fall because of invalid time in message.
   (bugreport from Alexander Kolyada)
 
