@@ -110,7 +110,7 @@ bool g_is_clip_available(void) {
 
 char* g_get_clip_text(void) {
 
-  std::string clipfile = clipdir
+  std::string clipfile = CLIPDIR;
   clipfile += CLIPFILE;
   strschg_environ(clipfile);
   size_t size = GetFilesize(clipfile.c_str());
@@ -137,7 +137,7 @@ char* g_get_clip_text(void) {
 
 int g_put_clip_text(const char* buf) {
 
-  std::string clipfile = clipdir;
+  std::string clipfile = CLIPDIR;
   clipfile += CLIPFILE;
   strschg_environ(clipfile);
   FILE *f = fopen(clipfile.c_str(), "wt");
