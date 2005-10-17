@@ -148,7 +148,7 @@ inline struct tm* glocaltime(const time_t *timep)
 inline struct tm* ggmtime(const time32_t *timep)
 {
   const time_t temp(*timep);
-  return glocaltime(&temp);
+  return ggmtime(&temp);
 }
 
 inline struct tm* glocaltime(const time32_t *timep)
