@@ -106,31 +106,36 @@
 //  ------------------------------------------------------------------
 //  Supplements for the built-in types
 
-typedef   signed char   schar;
-typedef unsigned char   uchar;
-typedef unsigned short ushort;
-typedef unsigned int     uint;
-typedef unsigned long   ulong;
-
-typedef unsigned char  bit;
-
 #ifdef _MSC_VER
-typedef uchar      uint8_t;
-typedef schar       int8_t;
-typedef ushort    uint16_t;
-typedef short      int16_t;
-typedef  INT       int32_t;
-typedef UINT      uint32_t;
+typedef   signed char   int8_t;
+typedef unsigned char  uint8_t;
+typedef   signed short  int16_t;
+typedef unsigned short uint16_t;
+typedef   signed long   int32_t;
+typedef unsigned long  uint32_t;
 #endif
 
-typedef uint8_t    byte;
-typedef  int8_t   sbyte;
-typedef uint16_t   word;
-typedef  int16_t  sword;
-typedef uint32_t  dword;
-typedef  int32_t sdword;
+typedef   signed int sint;
+typedef unsigned int uint;
 
-typedef uint32_t time32_t;   /* 32-bit time_t type */
+typedef uint8_t   bit;
+
+typedef  int8_t   sbyte;
+typedef uint8_t   byte;
+typedef  int8_t   schar;
+typedef uint8_t   uchar;
+
+typedef  int16_t  sword;
+typedef uint16_t  word;
+typedef  int16_t  sshort;
+typedef uint16_t  ushort;
+
+typedef  int32_t  sdword;
+typedef uint32_t  dword;
+typedef  int32_t  slong;
+typedef uint32_t  ulong;
+
+typedef uint32_t  time32_t;   /* 32-bit time_t type */
 
 //  ------------------------------------------------------------------
 //  Common function-pointer types

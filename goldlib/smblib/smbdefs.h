@@ -44,29 +44,34 @@
 #ifdef _MSC_VER
 #include <windows.h>
 
-typedef UCHAR      uint8_t;
-typedef signed char int8_t;
-typedef WORD      uint16_t;
-typedef short      int16_t;
-typedef  INT       int32_t;
-typedef UINT      uint32_t;
+typedef   signed char   int8_t;
+typedef unsigned char  uint8_t;
+typedef   signed short  int16_t;
+typedef unsigned short uint16_t;
+typedef   signed long   int32_t;
+typedef unsigned long  uint32_t;
 
 #else
 #include <stdint.h>
-#endif
+#endif  //#ifdef _MSC_VER
 
+typedef   signed int sint;
 typedef unsigned int uint;
-typedef signed int   sint;
-typedef unsigned char bit;
-typedef uint8_t byte;
-typedef int8_t sbyte;
-typedef uint16_t word;
-typedef int16_t sword;
-typedef uint32_t dword;
-typedef int32_t sdword;
-typedef uint16_t ushort;
-typedef int16_t  sshort;
-#endif
+
+typedef uint8_t   bit;
+
+typedef  int8_t   sbyte;
+typedef uint8_t   byte;
+
+typedef  int16_t  sword;
+typedef uint16_t  word;
+typedef  int16_t  sshort;
+typedef uint16_t  ushort;
+
+typedef  int32_t  sdword;
+typedef uint32_t  dword;
+
+#endif  //#ifndef __goldall_h
 
 /**********/
 /* Macros */
