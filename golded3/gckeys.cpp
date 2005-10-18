@@ -223,7 +223,7 @@ CmdKey DefaultKeyset[] = {
   { Key_Z       , KK_ReadFindHeader       , KT_R },
   { Key_A_Z     , KK_ReadFindHeader       , KT_R },
   { Key_F6      , KK_ReadFindHeader       , KT_R },
-  { Key_C_F6    , KK_ReadFindNext         , KT_R },
+  { Key_A_F6    , KK_ReadFindNext         , KT_R },
   { Key_S_Tab   , KK_ReadGotoBookMark     , KT_R },
   { Key_BS      , KK_ReadGotoBookMark     , KT_R },
   { Key_Lsr     , KK_ReadGotoFirstMsg     , KT_R },
