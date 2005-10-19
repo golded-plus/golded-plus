@@ -113,12 +113,6 @@ typedef   signed short  int16_t;
 typedef unsigned short uint16_t;
 typedef   signed long   int32_t;
 typedef unsigned long  uint32_t;
-#endif
-
-typedef   signed int sint;
-typedef unsigned int uint;
-
-typedef uint8_t   bit;
 
 typedef  int8_t   sbyte;
 typedef uint8_t   byte;
@@ -134,6 +128,12 @@ typedef  int32_t  sdword;
 typedef uint32_t  dword;
 typedef  int32_t  slong;
 typedef uint32_t  ulong;
+#endif
+
+typedef uint8_t   bit;
+
+typedef   signed int sint;
+typedef unsigned int uint;
 
 typedef uint32_t  time32_t;   /* 32-bit time_t type */
 
