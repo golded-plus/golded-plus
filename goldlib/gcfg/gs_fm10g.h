@@ -64,14 +64,14 @@ typedef struct {
 #define DATATYPE_AE    0x0402
 
 typedef struct {
-  char   versionString[32]; // Always starts with 'FMail'
-  word   revNumber;         // Is now 0x0100
-  word   dataType;          // See #defines above
-  word   headerSize;
-  sdword creationDate;
-  sdword lastModified;
-  word   totalRecords;
-  word   recordSize;
+  char    versionString[32];  // Always starts with 'FMail'
+  word    revNumber;          // Is now 0x0100
+  word    dataType;           // See #defines above
+  word    headerSize;
+  int32_t creationDate;
+  int32_t lastModified;
+  word    totalRecords;
+  word    recordSize;
 } headerType;
 
 
@@ -223,7 +223,7 @@ typedef struct {
 typedef struct {
   char            versionMajor;
   char            versionMinor;
-  sdword          creationDate;
+  int32_t         creationDate;
   dword           key;
   dword           reservedKey;
   dword           relKey1;

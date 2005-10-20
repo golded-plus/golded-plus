@@ -137,9 +137,7 @@ typedef uint16_t  word;
 typedef  int16_t  sshort;
 typedef uint16_t  ushort;
 
-typedef  int32_t  sdword;
 typedef uint32_t  dword;
-typedef  int32_t  slong;
 typedef uint32_t  ulong;
 #endif  //#ifdef _MSC_VER
 

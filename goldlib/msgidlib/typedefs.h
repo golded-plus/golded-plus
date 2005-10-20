@@ -41,7 +41,6 @@ typedef uint16_t  word;
 typedef  int16_t  sshort;
 typedef uint16_t  ushort;
 
-typedef  int32_t  sdword;
 typedef uint32_t  dword;
 
 #endif  //#ifndef __goldall_h

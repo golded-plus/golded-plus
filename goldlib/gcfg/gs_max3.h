@@ -583,7 +583,7 @@ struct _msgarea {
   word killskip;        /* Exempt the first X msgs from this processing   50*/
   zstr barricade;       /* Barricade file                                 52*/
   zstr barricademenu;   /* Apply barricade priv while using this menu     54*/
-  sdword cbPrior;       /* Seek offset from start of this area to get back56*
+  int32_t cbPrior;      /* Seek offset from start of this area to get back56*
                          * to prior area.                                   */
   zstr attachpath;      /* Reserved for future use                        58*/
   dword rsvd4;                                                          /*60*/

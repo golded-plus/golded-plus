@@ -65,14 +65,14 @@ typedef struct {
 #define DATATYPE_AE    0x0402 // area file for echo mail
 
 typedef struct {
-  char   versionString[32]; // Always starts with 'FMail'
-  word   revNumber;         // Is now 0x0100
-  word   dataType;          // See #defines above
-  word   headerSize;
-  sdword creationDate;
-  sdword lastModified;
-  word   totalRecords;
-  word   recordSize;
+  char    versionString[32];  // Always starts with 'FMail'
+  word    revNumber;          // Is now 0x0100
+  word    dataType;           // See #defines above
+  word    headerSize;
+  int32_t creationDate;
+  int32_t lastModified;
+  word    totalRecords;
+  word    recordSize;
 } headerType;
 
 
@@ -225,7 +225,7 @@ typedef struct {
 typedef struct {
   byte            versionMajor;
   byte            versionMinor;
-  sdword          creationDate;
+  int32_t         creationDate;
   dword           key;
   dword           reservedKey;
   dword           relKey1;
@@ -416,7 +416,7 @@ typedef struct {
 typedef struct {
 
   word            signature; // contains "AE" for echo areas in FMAIL.AR and
-			      // "AD" for default settings in FMAIL.ARD
+                  // "AD" for default settings in FMAIL.ARD
   word            writeLevel;
   areaNameType    areaName;
   char            comment[COMMENT_LEN];
