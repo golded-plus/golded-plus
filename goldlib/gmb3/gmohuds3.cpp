@@ -134,10 +134,10 @@ int _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::load_message(in
   _tm.tm_min   = _minute;
   _tm.tm_sec   = 0;
   _tm.tm_isdst = -1;
-  time_t a = mktime(&_tm);
+  time32_t a    = gmktime(&_tm);
   struct tm *tp = ggmtime(&a);
-  tp->tm_isdst = -1;
-  time_t b = mktime(tp);
+  tp->tm_isdst  = -1;
+  time32_t b    = gmktime(tp);
   __msg->written = a + a - b;
   __msg->arrived = 0;
 

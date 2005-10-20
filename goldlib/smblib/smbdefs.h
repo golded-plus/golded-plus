@@ -82,6 +82,7 @@ typedef  int16_t  sshort;
 typedef uint16_t  ushort;
 
 typedef uint32_t  dword;
+typedef uint32_t  time32_t;   /* 32-bit time_t type */
 
 #endif  //#ifndef __goldall_h
 

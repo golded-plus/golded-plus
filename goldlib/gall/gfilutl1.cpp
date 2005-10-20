@@ -96,7 +96,7 @@ long GetFilesize(const char* file) {
 //  ------------------------------------------------------------------
 //  Convert time returned with stat to FFTime
 
-dword gfixstattime(time_t st_time) {
+dword gfixstattime(time32_t st_time) {
 
   #if (defined(__MINGW32__) && !defined(__MSVCRT__)) || defined(__CYGWIN__)
   struct tm &f = *ggmtime(&st_time);

@@ -324,13 +324,13 @@ int SMBArea::load_hdr(gmsg* __msg, smbmsg_t *smsg)
   __msg->attr.cfm(smsgp->hdr.auxattr & MSG_CONFIRMREQ);
   __msg->attr.tfs(smsgp->hdr.auxattr & MSG_TRUNCFILE);
 
-  time_t a = smsgp->hdr.when_written.time;
+  time32_t a    = smsgp->hdr.when_written.time;
   struct tm *tp = ggmtime(&a);
-  tp->tm_isdst = -1;
-  time_t b = mktime(tp);
+  tp->tm_isdst  = -1;
+  time32_t b    = gmktime(tp);
   __msg->written = a + a - b;
   a = smsgp->hdr.when_imported.time;
-  b = mktime(ggmtime(&a));
+  b = gmktime(ggmtime(&a));
   __msg->arrived = a + a - b;
   __msg->received = 0;
 
@@ -538,9 +538,9 @@ void SMBArea::save_hdr(int mode, gmsg* msg)
     smsg.hdr.version = smb_ver();
     struct tm *tp = ggmtime(&msg->written);
     tp->tm_isdst = -1;
-    smsg.hdr.when_written.time = mktime(tp);
+    smsg.hdr.when_written.time = gmktime(tp);
   }
-  smsg.hdr.when_imported.time = time(NULL);
+  smsg.hdr.when_imported.time = gtime(NULL);
 
   // Transfer attributes
   if(msg->attr.pvt()) smsg.hdr.attr |= MSG_PRIVATE;
@@ -968,9 +968,9 @@ Line* SMBArea::make_dump_msg(Line*& lin, gmsg* msg, char* lng_head)
   line = AddLineF(line, "Attr              : %04Xh", smsg.hdr.attr);
   line = AddLineF(line, "AUXAttr           : %04Xh", smsg.hdr.auxattr);
   line = AddLineF(line, "NetAttr           : %04Xh", smsg.hdr.netattr);
-  stpcpy(buf, ctime((time_t *)&smsg.hdr.when_written.time))[-1] = NUL;
+  stpcpy(buf, gctime(&smsg.hdr.when_written.time))[-1] = NUL;
   line = AddLineF(line, "Written           : %s", buf);
-  stpcpy(buf, ctime((time_t *)&smsg.hdr.when_imported.time))[-1] = NUL;
+  stpcpy(buf, gctime(&smsg.hdr.when_imported.time))[-1] = NUL;
   line = AddLineF(line, "Imported          : %s", buf);
   line = AddLineF(line, "Number            : %d (%d)", smsg.hdr.number, (int32_t)(ftell(data->sid_fp)/sizeof(idxrec_t)));
   line = AddLineF(line, "Thread orig       : %d", smsg.hdr.thread_orig);

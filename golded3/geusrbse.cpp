@@ -342,7 +342,7 @@ bool guserbase::edit_entry(uint idx) {
   window.prints(13, 53, wattr, "Times Used:");
 
   char dbuf[16];
-  time_t dt = entry.firstdate;
+  time32_t dt = entry.firstdate;
   if(dt)
     window.prints(13, 13, wattr, strftimei(dbuf, 16, "%d %b %y", ggmtime(&dt)));
   dt = entry.lastdate;
@@ -427,10 +427,10 @@ bool guserbase::find_entry(char* name, bool lookup) {
 void guserbase::write_entry(uint idx, bool updateit) {
 
   if(updateit and not entry.is_deleted) {
-    time_t a = time(NULL);
+    time32_t a    = gtime(NULL);
     struct tm *tp = ggmtime(&a);
-    tp->tm_isdst = -1;
-    time_t b = mktime(tp);
+    tp->tm_isdst  = -1;
+    time32_t b    = gmktime(tp);
     entry.lastdate = a + a - b;
     if(not entry.firstdate)
       entry.firstdate = entry.lastdate;

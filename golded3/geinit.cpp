@@ -515,7 +515,7 @@ void Initialize(int argc, char* argv[]) {
   #if defined(GUTLOS_FUNCS)
   g_init_os(1);
   #endif
-  srand((unsigned)time(NULL));
+  srand(gtime(NULL));
 
   // Display startup banner
   std::cout << __gver_longpid__ << " " << __gver_ver__ << "\n";

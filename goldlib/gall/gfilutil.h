@@ -155,7 +155,7 @@ inline int is_dir(const std::string& path) { return is_dir(path.c_str()); }
 inline bool fexist(const char* filename) { return *filename ? ((access(filename, R_OK) == 0) and not is_dir(filename)) : false; }
 inline bool fexist(const std::string& filename) { return fexist(filename.c_str()); }
 
-dword gfixstattime(time_t st_time);
+dword gfixstattime(time32_t st_time);
 
 dword GetFiletime(const char* file);
 inline dword GetFiletime(const std::string& file) { return GetFiletime(file.c_str()); }

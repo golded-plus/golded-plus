@@ -505,10 +505,10 @@ typedef struct _user_info
 	USHORT      computer_type;
 	ULONG       userid;
 	USHORT      pointid;
-	time_t      initial_logon;
-	time_t      expires;
-	time_t      last_logon;
-	time_t      logon_today;
+	time32_t    initial_logon;
+	time32_t    expires;
+	time32_t    last_logon;
+	time32_t    logon_today;
 	USHORT      birthyear;
 	UCHAR       birthmonth;
 	UCHAR       birthday;
@@ -551,8 +551,8 @@ typedef struct _user_info
 	SHORT       CallsToday;
 	LONG        TotalMinsEver;
 	LONG        NetmailDebits;
-	time_t      LastPWChange;
-	time_t      LastListedNewFiles;					 //JM940822
+	time32_t    LastPWChange;
+	time32_t    LastListedNewFiles;					 //JM940822
 	ULONG       FileKCredit;
 	CHAR        UnixId[8];
 	CHAR        Country[24];
@@ -591,7 +591,7 @@ typedef struct _xmsg
 	CHAR    indate[4];									 /* import date  (YMD(null))                     */
 	ULONG   msgnum;
 	ULONG   timesread;
-	time_t  timerecv;
+	time32_t timerecv;
 	ULONG   length;										 /* Length of message */
 	LONG    start;											 /* Starting postition in text file              */
 	ULONG   OrigMsg;

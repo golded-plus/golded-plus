@@ -34,7 +34,7 @@ static ulong msgcount = 0;
 
 ulong getClassicMsgId() {
 
-  return time(NULL)+(msgcount++);
+  return gtime(NULL)+(msgcount++);
 }
 
 //  ------------------------------------------------------------------

@@ -36,7 +36,7 @@
 
 struct tm* glog::time_now;
 int        glog::count = 0;
-time_t     glog::secs_now;
+time32_t   glog::secs_now;
 char       glog::timebuf[20];
 
 
@@ -108,7 +108,7 @@ void glog::printf(const char* format, ...) {
   char buf[256];
   char logbuf[256];
 
-  secs_now = time(NULL);
+  secs_now = gtime(NULL);
   time_now = glocaltime(&secs_now);
 
   lineswritten++;

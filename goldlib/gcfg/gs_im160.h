@@ -300,9 +300,9 @@ struct areas_record_type {
   byte         days;                       /* days to keep messages */
   word         msgs;                       /* num messages to keep */
   struct im_stats stats;                   /* statistics */
-  time_t       creation;                   /* date/time of statistic start */
-  time_t       update;                     /* last update by midnight update */
-  time_t       marked;                     /* used by kill dead */
+  time32_t     creation;                   /* date/time of statistic start */
+  time32_t     update;                     /* last update by midnight update */
+  time32_t     marked;                     /* used by kill dead */
   byte         kill_dead;                  /* kill echos without traffic */
   word         read_sec;                   /* Security level for read access */
   word         write_sec;                  /* Security level for write access */

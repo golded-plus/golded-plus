@@ -314,7 +314,7 @@ void GMsgList::print_line(uint idx, uint pos, bool isbar) {
   char nbuf[33], dbuf[20];
   strcpy(dbuf, LNG->n_a);
 
-  time_t dt = 0;
+  time32_t dt = 0;
   switch(AA->Msglistdate()) {
     case MSGLISTDATE_WRITTEN:   dt = ml->written;   break;
     case MSGLISTDATE_ARRIVED:   dt = ml->arrived;   break;
@@ -896,7 +896,7 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar) {
 
   if(AA->Msglistdate() != MSGLISTDATE_NONE) {
     char dbuf[11];
-    time_t dt = 0;
+    time32_t dt = 0;
 
     memset(dbuf, ' ', 10);
     dbuf[10] = NUL;

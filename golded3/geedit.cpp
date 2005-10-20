@@ -2581,7 +2581,7 @@ int IEclass::Start(int __mode, uint* __position, GMsg* __msg) {
   gotorowcol(mincol, minrow);
   dispins();
 
-  time_t _lasttime = time(NULL);
+  time32_t _lasttime = gtime(NULL);
 
   while(not done) {
 
@@ -2613,7 +2613,7 @@ int IEclass::Start(int __mode, uint* __position, GMsg* __msg) {
 #endif
 
       if(EDIT->AutoSave()) {
-        time_t _thistime = time(NULL);
+        time32_t _thistime = gtime(NULL);
         if(_thistime >= (_lasttime+EDIT->AutoSave())) {
           _lasttime = _thistime;
           SaveFile();

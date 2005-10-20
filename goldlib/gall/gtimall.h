@@ -123,39 +123,53 @@ extern const char* gmonths[];
 //  ------------------------------------------------------------------
 //  Prototypes
 
-inline struct tm *ggmtime(const time_t *timep)
+inline struct tm *ggmtime(const time32_t *timep)
 {
+  const time_t temp(*timep);
 #if defined(__WIN32__)
   const time_t zero(0);
-  struct tm *time = gmtime(timep);
+  struct tm *time = gmtime(&temp);
   return time ? time : gmtime(&zero);
 #else
-  return gmtime(&timep);
+  return gmtime(&temp);
 #endif
 }
 
-inline struct tm* glocaltime(const time_t *timep)
+inline struct tm *glocaltime(const time32_t *timep)
 {
+  const time_t temp(*timep);
 #if defined(__WIN32__)
   const time_t zero(0);
-  struct tm *time = localtime(timep);
+  struct tm *time = localtime(&temp);
   return time ? time : localtime(&zero);
 #else
-  return localtime(timep);
+  return localtime(&temp);
 #endif
 }
 
-inline struct tm* ggmtime(const time32_t *timep)
+inline char *gctime(const time32_t *timep)
 {
   const time_t temp(*timep);
-  return ggmtime(&temp);
+#if defined(__WIN32__)
+  const time_t zero(0);
+  char *time = ctime(&temp);
+  return time ? time : ctime(&zero);
+#else
+  return ctime(&temp);
+#endif
 }
 
-inline struct tm* glocaltime(const time32_t *timep)
+inline time32_t gtime(time32_t *timep)
 {
-  const time_t temp(*timep);
-  return glocaltime(&temp);
+  time32_t temp = (time32_t)time(NULL);
+  return timep ? *timep = temp : temp;
 }
+
+inline time32_t gmktime(struct tm *timep)
+{
+  return (time32_t)mktime(timep);
+}
+
 
 #if defined(__OS2__)
 inline void usleep(long duration) { DosSleep(duration); }
@@ -178,13 +192,13 @@ int tzoffset();
 
 char* strftimei(char* s, size_t maxsize, const char* fmt, const struct tm* t); // __attribute__ ((format (strftime, 3, 0)));
 
-FTime  TimeToFTime(time_t __time) __attribute__ ((const));
-time_t FTimeToTime(FTime* __ftime, struct tm* __tm=NULL);
+FTime    TimeToFTime(time32_t __time) __attribute__ ((const));
+time32_t FTimeToTime(FTime* __ftime, struct tm* __tm=NULL);
 
-time_t FidoTimeToUnix(char* __fidotime);
+time32_t FidoTimeToUnix(char* __fidotime);
 
 char* FTimeToStr(char* buf, FTime &t);
-char* TimeToStr(char* buf, time_t t);
+char* TimeToStr(char* buf, time32_t t);
 
 
 //  ------------------------------------------------------------------

@@ -60,10 +60,10 @@ const char* gmonths[] = {
 
 int tzoffset() {
 
-  time_t t1 = time(NULL);
+  time32_t t1   = gtime(NULL);
   struct tm *tp = ggmtime(&t1);
-  tp->tm_isdst=-1;
-  time_t t2 = mktime(tp);
+  tp->tm_isdst  = -1;
+  time32_t t2   = gmktime(tp);
   int dt = (int)(t1 - t2);
   return (dt / 3600) * 100 + (dt % 3600) / 60;
 }
@@ -329,7 +329,7 @@ int str2mon(const char* ptr) {
 
 //  ------------------------------------------------------------------
 
-time_t FTimeToTime(FTime* __ftime, struct tm* __tm) {
+time32_t FTimeToTime(FTime* __ftime, struct tm* __tm) {
 
   struct tm _tm;
   ulong _time = 0;
@@ -350,10 +350,10 @@ time_t FTimeToTime(FTime* __ftime, struct tm* __tm) {
         __tm->tm_sec   = __ftime->ft_tsec * 2;
         __tm->tm_isdst = -1;
 
-        time_t a = mktime(__tm);
+        time32_t a    = gmktime(__tm);
         struct tm *tp = ggmtime(&a);
-        tp->tm_isdst = -1;
-        time_t b = mktime(tp);
+        tp->tm_isdst  = -1;
+        time32_t b    = gmktime(tp);
         _time = a + a - b;
 
         if(_time == (ulong)0xFFFFFFFFL)
@@ -368,7 +368,7 @@ time_t FTimeToTime(FTime* __ftime, struct tm* __tm) {
 
 //  ------------------------------------------------------------------
 
-FTime TimeToFTime(time_t __time) {
+FTime TimeToFTime(time32_t __time) {
 
   FTime _ft;
   memset(&_ft, 0, sizeof(FTime));
@@ -390,7 +390,7 @@ FTime TimeToFTime(time_t __time) {
 
 //  ------------------------------------------------------------------
 
-time_t FidoTimeToUnix(char* ptr) {
+time32_t FidoTimeToUnix(char* ptr) {
 
   bool date_ok = false;
   int year=0, month=0, day=0;
@@ -441,10 +441,10 @@ time_t FidoTimeToUnix(char* ptr) {
     t.tm_min   = minute;
     t.tm_sec   = second;
     t.tm_isdst = -1;
-    time_t a = mktime(&t);
+    time32_t a    = gmktime(&t);
     struct tm *tp = ggmtime(&a);
-    tp->tm_isdst = -1;
-    time_t b = mktime(tp);
+    tp->tm_isdst  = -1;
+    time32_t b    = gmktime(tp);
     return a + a - b;
   }
   return (ulong)-1;
@@ -453,7 +453,7 @@ time_t FidoTimeToUnix(char* ptr) {
 
 //  ------------------------------------------------------------------
 
-char* TimeToStr(char* buf, time_t t) {
+char* TimeToStr(char* buf, time32_t t) {
 
   return strftimei(buf, 20, "%Y-%m-%d %H:%M:%S", ggmtime(&t));
 }

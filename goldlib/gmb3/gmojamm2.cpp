@@ -152,10 +152,10 @@ void JamArea::open_area() {
 
     // Initialize header info
     memcpy(data->hdrinfo.signature, JAM_SIGNATURE, 4);
-    time_t a = time(NULL);
+    time32_t a    = gtime(NULL);
     struct tm *tp = ggmtime(&a);
-    tp->tm_isdst = -1;
-    time_t b = mktime(tp);
+    tp->tm_isdst  = -1;
+    time32_t b    = gmktime(tp);
     data->hdrinfo.datecreated = a + a - b;
     data->hdrinfo.passwordcrc = 0xFFFFFFFFL;
     data->hdrinfo.basemsgnum  = 1;

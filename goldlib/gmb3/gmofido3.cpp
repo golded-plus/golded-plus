@@ -97,10 +97,10 @@ int FidoArea::load_message(int __mode, gmsg* __msg, FidoHdr& __hdr) {
   __msg->written = __msg->written ? __msg->written : FidoTimeToUnix(__hdr.datetime);
 
   if(__msg->arrived == 0) {
-    time_t a = time(NULL);
+    time32_t a    = gtime(NULL);
     struct tm *tp = ggmtime(&a);
-    tp->tm_isdst = -1;
-    time_t b = mktime(tp);
+    tp->tm_isdst  = -1;
+    time32_t b    = gmktime(tp);
     __msg->arrived = a + a - b;
   }
 

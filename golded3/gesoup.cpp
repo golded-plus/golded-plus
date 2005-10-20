@@ -171,11 +171,11 @@ void ProcessSoupMsg(char* lbuf, GMsg* msg, int& msgs, char* areaname, int tossto
 
     msg->orig = msg->oorig = CFG->internetgate.addr.valid() ? CFG->internetgate.addr : AA->aka();
     msg->dest = msg->odest = AA->aka();
-    time_t a = time(NULL);
+    time32_t a    = gtime(NULL);
     struct tm *tp = ggmtime(&a);
-    tp->tm_isdst = -1;
-    time_t b = mktime(tp);
-    msg->arrived = a + a - b;
+    tp->tm_isdst  = -1;
+    time32_t b    = gmktime(tp);
+    msg->arrived  = a + a - b;
 
     Line* line = NULL;
     Line* fline = NULL;
@@ -697,11 +697,11 @@ int ExportSoupMsg(GMsg* msg, char* msgfile, gfile& fp, int ismail) {
     msg->attr.snt1();
     msg->attr.scn1();
     msg->attr.uns0();
-    time_t a = time(NULL);
+    time32_t a    = gtime(NULL);
     struct tm *tp = ggmtime(&a);
-    tp->tm_isdst = -1;
-    time_t b = mktime(tp);
-    msg->arrived = a + a - b;
+    tp->tm_isdst  = -1;
+    time32_t b    = gmktime(tp);
+    msg->arrived  = a + a - b;
     AA->SaveHdr(GMSG_UPDATE, msg);
     if(msg->attr.k_s())
       AA->DeleteMsg(msg, DIR_NEXT);

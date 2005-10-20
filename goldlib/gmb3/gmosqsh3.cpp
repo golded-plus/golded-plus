@@ -128,7 +128,7 @@ int SquishArea::load_message(int __mode, gmsg* __msg, SqshHdr& __hdr) {
   __msg->dest.point = __msg->odest.point = __hdr.dest.point;
   
   // Convert date and time
-  time_t _written = FTimeToTime(&__hdr.date_written);
+  time32_t _written = FTimeToTime(&__hdr.date_written);
   __msg->written = _written ? _written : FidoTimeToUnix(__hdr.ftsc_date);
   __msg->arrived = FTimeToTime(&__hdr.date_arrived);
 

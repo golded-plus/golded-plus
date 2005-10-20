@@ -550,17 +550,17 @@ enum {
 //  The Message Browser
 
 struct MLst {
-  ulong msgno;
-  byte  high;
-  char  num[8];
-  char  marks[3];
-  char  by[sizeof(Name)+20];
-  char  to[sizeof(Name)+20];
-  Subj  re;
-  time_t written;
-  time_t arrived;
-  time_t received;
-  char  goldmark;
+  ulong     msgno;
+  byte      high;
+  char      num[8];
+  char      marks[3];
+  char      by[sizeof(Name)+20];
+  char      to[sizeof(Name)+20];
+  Subj      re;
+  time32_t  written;
+  time32_t  arrived;
+  time32_t  received;
+  char      goldmark;
 };
 
 

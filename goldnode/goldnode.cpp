@@ -143,7 +143,7 @@ const word _TEST  = 777;
 
 static std::string nodepath;                // Path to the nodelist files
 
-static time_t runtime = 0;
+static time32_t runtime = 0;
 static int    sh_mod = SH_DENYWR;
 static bool   fidouser = false;
 static Path   fidouserlst;
@@ -1017,7 +1017,7 @@ static void read_nodelists() {
     }
 
     // Note compile time
-    runtime = time(NULL) - runtime;
+    runtime = gtime(NULL) - runtime;
 
     if(not quiet) {
       if(dups) {
@@ -1051,7 +1051,7 @@ static void check_nodelists(bool force) {
       strcpy(ext, ".*");
       gposixdir f(newpath);
       const gdirentry *de;
-      time_t listtime = 0;
+      time32_t listtime = 0;
       bool listdefined = false;
       while((de = f.nextentry(buf)) != NULL)
         if(atoi(de->name.c_str()+extpos)) {

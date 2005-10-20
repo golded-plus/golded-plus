@@ -797,11 +797,11 @@ void KludgeDATE(GMsg* msg, const char* ptr) {
     t.tm_min   = minute;
     t.tm_sec   = second;
     t.tm_isdst = -1;
-    time_t a = mktime(&t);
+    time32_t a    = gmktime(&t);
     struct tm *tp = ggmtime(&a);
-    tp->tm_isdst = -1;
-    time_t b = mktime(tp);
-    msg->written = a + a - b;
+    tp->tm_isdst  = -1;
+    time32_t b    = gmktime(tp);
+    msg->written  = a + a - b;
   }
 }
 

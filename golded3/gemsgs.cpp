@@ -106,7 +106,7 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
   const char *xmailer = get_informative_string();
   const char *osver = ggetosstring();
 
-  time_t t = time(NULL);
+  time32_t t = gtime(NULL);
   struct tm* written_tm = glocaltime(&t);
   char cdate[80];
   strftimei(cdate, 80, LNG->DateFmt, written_tm);
