@@ -54,7 +54,7 @@ void gareafile::ReadFastecho142(int fh) {
   OriginLines* origin = (OriginLines*)throw_calloc(cfg->OriginCnt, sizeof(OriginLines));
 
   // Process extended headers
-  ulong offset = 0;
+  uint32_t offset = 0;
   while(offset < cfg->offset) {
     ExtensionHeader ehdr;
     read(fh, &ehdr, sizeof(ExtensionHeader));

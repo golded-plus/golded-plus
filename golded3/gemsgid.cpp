@@ -28,20 +28,20 @@
 #include <genmsgid.h>
 //  ------------------------------------------------------------------
 
-static ulong msgcount = 0;
+static uint32_t msgcount = 0;
 
 //  ------------------------------------------------------------------
 
-ulong getClassicMsgId() {
+uint32_t getClassicMsgId() {
 
   return gtime(NULL)+(msgcount++);
 }
 
 //  ------------------------------------------------------------------
 
-ulong getMsgId() {
+uint32_t getMsgId() {
 
-  ulong id;
+  uint32_t id;
   char *err;
 
   if((CFG->seqmsgid == YES) or ((CFG->seqmsgid == MAYBE) and (*CFG->seqdir != NUL))) {

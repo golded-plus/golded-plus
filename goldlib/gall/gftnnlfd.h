@@ -73,9 +73,9 @@ struct _FDCtl {
 //  ------------------------------------------------------------------
 //  Masks for the nlofs member
 
-const ulong IN_FDNODE  = 0x01000000UL;  // Data in FDNODE.FD
-const ulong IN_FDNET   = 0x10000000UL;  // Data in FDNET.PVT
-const ulong IN_FDPOINT = 0x20000000UL;  // Data in FDPOINT.PVT
+const uint32_t IN_FDNODE  = 0x01000000UL;  // Data in FDNODE.FD
+const uint32_t IN_FDNET   = 0x10000000UL;  // Data in FDNET.PVT
+const uint32_t IN_FDPOINT = 0x20000000UL;  // Data in FDPOINT.PVT
 
 
 //  ------------------------------------------------------------------

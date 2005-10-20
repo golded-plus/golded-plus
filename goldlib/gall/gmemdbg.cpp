@@ -104,17 +104,17 @@ struct ThrowIndex {
 //  ------------------------------------------------------------------
 //  Internal vars
 
-int     throw_inited = 0;
-int     throw_count;
-ulong   throw_allocations = 0;
-Throw   throw_alloclist;
-int     throw_max_count = 0;
-Throw** throw_index = NULL;
-int     throw_index_size = 0;
-int     throw_index_free = 0;
-int     throw_last_free = -1;
-ulong   throw_index_cache_hits = 0;
-int     throw_overhead = sizeof(Throw) - 1;
+int      throw_inited = 0;
+int      throw_count;
+uint32_t throw_allocations = 0;
+Throw    throw_alloclist;
+int      throw_max_count = 0;
+Throw**  throw_index = NULL;
+int      throw_index_size = 0;
+int      throw_index_free = 0;
+int      throw_last_free = -1;
+uint32_t throw_index_cache_hits = 0;
+int      throw_overhead = sizeof(Throw) - 1;
 
 #define throw_index_init_size 1000
 #define throw_index_increment 100
@@ -193,7 +193,7 @@ Throw* throw_find_overrun(Throw* pointer) {
   long last_diff = LONG_MAX;
   Throw** i = throw_index;
   for(int n=0; n<throw_index_size; n++,i++) {
-    long diff = (ulong)*i - (ulong)pointer;
+    long diff = (uint32_t)*i - (uint32_t)pointer;
     if((diff > 0) and (diff < last_diff)) {
       last_candidate = *i;
       last_diff = diff;
@@ -211,7 +211,7 @@ Throw* throw_find_underrun(Throw* pointer) {
   long last_diff = LONG_MAX;
   Throw** i = throw_index;
   for(int n=0; n<throw_index_size; n++,i++) {
-    long diff = (ulong)pointer - (ulong)*i;
+    long diff = (uint32_t)pointer - (uint32_t)*i;
     if((diff > 0) and (diff < last_diff)) {
       last_candidate = *i;
       last_diff = diff;

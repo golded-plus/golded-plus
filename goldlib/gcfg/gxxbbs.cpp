@@ -48,7 +48,7 @@ void gareafile::ReadAdeptXbbsFile(char* path, char* file, char* options) {
   const word CRC_USENET    = 0xD087;
 
   AreaCfg aa;
-  ulong flags;
+  uint32_t flags;
   char buf[512];
   char name[256];
   char usenet[256];

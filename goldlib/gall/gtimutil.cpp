@@ -332,7 +332,7 @@ int str2mon(const char* ptr) {
 time32_t FTimeToTime(FTime* __ftime, struct tm* __tm) {
 
   struct tm _tm;
-  ulong _time = 0;
+  uint32_t _time = 0;
 
   if(__tm == NULL)
     __tm = &_tm;
@@ -356,7 +356,7 @@ time32_t FTimeToTime(FTime* __ftime, struct tm* __tm) {
         time32_t b    = gmktime(tp);
         _time = a + a - b;
 
-        if(_time == (ulong)0xFFFFFFFFL)
+        if(_time == (uint32_t)0xFFFFFFFFL)
           _time = 0;
       }
     }
@@ -447,7 +447,7 @@ time32_t FidoTimeToUnix(char* ptr) {
     time32_t b    = gmktime(tp);
     return a + a - b;
   }
-  return (ulong)-1;
+  return (uint32_t)-1;
 }
 
 

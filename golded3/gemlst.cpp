@@ -418,7 +418,7 @@ bool GMsgList::handle_key() {
 
     case KK_ListMark:
       {
-        ulong temp = AA->Mark.Find(mlst[index]->msgno);
+        uint32_t temp = AA->Mark.Find(mlst[index]->msgno);
         if(not temp) {
           AA->Mark.Add(mlst[index]->msgno);
           update_marks(mlst[index]);
@@ -432,7 +432,7 @@ bool GMsgList::handle_key() {
 
     case KK_ListUnmark:
       {
-        ulong temp = AA->Mark.Find(mlst[index]->msgno);
+        uint32_t temp = AA->Mark.Find(mlst[index]->msgno);
         if(temp) {
           AA->Mark.DelReln(temp);
           update_marks(mlst[index]);
@@ -446,7 +446,7 @@ bool GMsgList::handle_key() {
 
     case KK_ListToggleMark:
       {
-        ulong temp = AA->Mark.Find(mlst[index]->msgno);
+        uint32_t temp = AA->Mark.Find(mlst[index]->msgno);
         if(temp) {
           AA->Mark.DelReln(temp);
         }
@@ -667,12 +667,12 @@ void MessageBrowse() {
 class ThreadEntry {
 
 public:
-  ulong msgno;
-  ulong replyto;
-  ulong reply1st;
-  ulong replynext;
-  ulong replytoindex;
-  ulong level;
+  uint32_t msgno;
+  uint32_t replyto;
+  uint32_t reply1st;
+  uint32_t replynext;
+  uint32_t replytoindex;
+  uint32_t level;
 };
 
 #define MAX_LEVEL 20
@@ -687,8 +687,8 @@ private:
   ThreadEntry           t;
 
   void BuildThreadIndex(dword msgno);
-  void recursive_build(ulong msgn, ulong rn, ulong level);
-  void GenTree(char* buf2, int idx, ulong maxlev);
+  void recursive_build(uint32_t msgn, uint32_t rn, uint32_t level);
+  void GenTree(char* buf2, int idx, uint32_t maxlev);
   void update_title();
   bool NextThread(bool next);
 
@@ -790,7 +790,7 @@ void GThreadlist::close() {
 
 //  ------------------------------------------------------------------
 
-void GThreadlist::GenTree(char* buf, int idx, ulong maxlev) {
+void GThreadlist::GenTree(char* buf, int idx, uint32_t maxlev) {
 
 #ifdef KOI8
   static char graph[4]="†„";
@@ -841,7 +841,7 @@ void GThreadlist::GenTree(char* buf, int idx, ulong maxlev) {
 void GThreadlist::print_line(uint idx, uint pos, bool isbar) {
 
   char buf[256];
-  ulong maxlev = (100*window.width()+h_offset+1)/2;
+  uint32_t maxlev = (100*window.width()+h_offset+1)/2;
 #if defined(__USE_ALLOCA__)
   char *buf2 = (char*)alloca(maxlev*2+2);
 #else
@@ -950,9 +950,9 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar) {
 
 //  ------------------------------------------------------------------
 
-void GThreadlist::recursive_build(ulong msgn, ulong rn, ulong level) {
+void GThreadlist::recursive_build(uint32_t msgn, uint32_t rn, uint32_t level) {
 
-  ulong oldmsgno = msg.msgno;
+  uint32_t oldmsgno = msg.msgno;
 
   if(AA->Msgn.ToReln(msgn) and AA->LoadHdr(&msg, msgn)) {
 
@@ -1007,8 +1007,8 @@ void GThreadlist::BuildThreadIndex(dword msgn) {
 
   AA->LoadHdr(&msg, msgn);
 
-  ulong msgno = msg.link.to();
-  ulong prevmsgno = msgn;
+  uint32_t msgno = msg.link.to();
+  uint32_t prevmsgno = msgn;
 
   // Search backwards
   while(AA->Msgn.ToReln(msgno)) {
@@ -1136,7 +1136,7 @@ bool GThreadlist::handle_key() {
 
     case KK_ListToggleMark:
     {
-      ulong temp = AA->Mark.Find(list[index].msgno);
+      uint32_t temp = AA->Mark.Find(list[index].msgno);
       if(temp) {
         AA->Mark.DelReln(temp);
       }

@@ -1045,7 +1045,7 @@ void Reader() {
 //  ------------------------------------------------------------------
 //  Determine if the message has replies
 
-ulong MsgHasReplies(GMsg* msg) {
+uint32_t MsgHasReplies(GMsg* msg) {
 
   if(msg->link.first())
     return msg->link.first();
@@ -1277,7 +1277,7 @@ void ToggleMarkRead() {
 void GotoBookMark() {
 
   if(AA->bookmark) {
-    ulong temp = reader_msg->msgno;
+    uint32_t temp = reader_msg->msgno;
     AA->set_lastread(AA->Msgn.ToReln(AA->bookmark));
     AA->bookmark = temp;
   }
@@ -1397,7 +1397,7 @@ void GotoReplies() {
   ReplySel* rlist = (ReplySel*)throw_calloc(list_max+3, sizeof(ReplySel));
 
   for(int n=0; n<list_max+2; n++) {
-    ulong msgn = n ? ((n!=list_max+1) ? msg->link.list(n-1) : msg->link.next()) : msg->link.first();
+    uint32_t msgn = n ? ((n!=list_max+1) ? msg->link.list(n-1) : msg->link.next()) : msg->link.first();
     uint reln = AA->Msgn.ToReln(msgn);
     if(reln) {
       if(CFG->replylinklist == REPLYLINKLIST_FULL)
@@ -1408,7 +1408,7 @@ void GotoReplies() {
       if((cursorbar == -1) and (0 == rmsg->timesread) and (CFG->switches.get(highlightunread)))
         cursorbar = replies;
       rlist[replies].msgno[0] = (n==list_max+1) ? '*' : '+';
-      ulong msgno = CFG->switches.get(disprealmsgno) ? msgn : reln;
+      uint32_t msgno = CFG->switches.get(disprealmsgno) ? msgn : reln;
       sprintf(rlist[replies].msgno+1, "%lu", msgno);
       maxmsgno = MaxV(maxmsgno, (uint)strlen(rlist[replies].msgno+1));
       strcpy(rlist[replies].name, rmsg->by);

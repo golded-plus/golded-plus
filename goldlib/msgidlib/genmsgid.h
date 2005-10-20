@@ -5,9 +5,9 @@
 extern "C" {
 #endif
 
-ulong GenMsgId(char *seqdir, ulong max_outrun);
-ulong GenMsgIdEx(char *seqdir, ulong max_outrun, ulong (*altGenMsgId)(void), char **errstr);
-ulong oldGenMsgId(void);
+uint32_t GenMsgId(char *seqdir, uint32_t max_outrun);
+uint32_t GenMsgIdEx(char *seqdir, uint32_t max_outrun, uint32_t (*altGenMsgId)(void), char **errstr);
+uint32_t oldGenMsgId(void);
 
 #ifdef __cplusplus
 }

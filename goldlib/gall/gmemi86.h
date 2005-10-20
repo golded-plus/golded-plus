@@ -112,41 +112,41 @@ public:
   inline uint flags() { return r.w.flags; }
   #endif
 
-  inline void al(ulong b)    { r.h.al = (byte)b; }
-  inline void ah(ulong b)    { r.h.ah = (byte)b; }
-  inline void bl(ulong b)    { r.h.bl = (byte)b; }
-  inline void bh(ulong b)    { r.h.bh = (byte)b; }
-  inline void cl(ulong b)    { r.h.cl = (byte)b; }
-  inline void ch(ulong b)    { r.h.ch = (byte)b; }
-  inline void dl(ulong b)    { r.h.dl = (byte)b; }
-  inline void dh(ulong b)    { r.h.dh = (byte)b; }
+  inline void al(uint32_t b)    { r.h.al = (byte)b; }
+  inline void ah(uint32_t b)    { r.h.ah = (byte)b; }
+  inline void bl(uint32_t b)    { r.h.bl = (byte)b; }
+  inline void bh(uint32_t b)    { r.h.bh = (byte)b; }
+  inline void cl(uint32_t b)    { r.h.cl = (byte)b; }
+  inline void ch(uint32_t b)    { r.h.ch = (byte)b; }
+  inline void dl(uint32_t b)    { r.h.dl = (byte)b; }
+  inline void dh(uint32_t b)    { r.h.dh = (byte)b; }
   #ifdef __DJGPP__
-  inline void ax(ulong w)    { r.x.ax = (word)w; }
-  inline void bx(ulong w)    { r.x.bx = (word)w; }
-  inline void cx(ulong w)    { r.x.cx = (word)w; }
-  inline void dx(ulong w)    { r.x.dx = (word)w; }
-  inline void bp(ulong w)    { r.x.bp = (word)w; }
-  inline void si(ulong w)    { r.x.si = (word)w; }
-  inline void di(ulong w)    { r.x.di = (word)w; }
-  inline void ds(ulong w)    { r.x.ds = (word)w; }
-  inline void es(ulong w)    { r.x.es = (word)w; }
-  inline void flags(ulong w) { r.x.flags = (word)w; }
+  inline void ax(uint32_t w)    { r.x.ax = (word)w; }
+  inline void bx(uint32_t w)    { r.x.bx = (word)w; }
+  inline void cx(uint32_t w)    { r.x.cx = (word)w; }
+  inline void dx(uint32_t w)    { r.x.dx = (word)w; }
+  inline void bp(uint32_t w)    { r.x.bp = (word)w; }
+  inline void si(uint32_t w)    { r.x.si = (word)w; }
+  inline void di(uint32_t w)    { r.x.di = (word)w; }
+  inline void ds(uint32_t w)    { r.x.ds = (word)w; }
+  inline void es(uint32_t w)    { r.x.es = (word)w; }
+  inline void flags(uint32_t w) { r.x.flags = (word)w; }
   #else
-  inline void ax(ulong w)    { r.w.ax = (word)w; }
-  inline void bx(ulong w)    { r.w.bx = (word)w; }
-  inline void cx(ulong w)    { r.w.cx = (word)w; }
-  inline void dx(ulong w)    { r.w.dx = (word)w; }
-  inline void bp(ulong w)    { r.w.bp = (word)w; }
-  inline void si(ulong w)    { r.w.si = (word)w; }
-  inline void di(ulong w)    { r.w.di = (word)w; }
+  inline void ax(uint32_t w)    { r.w.ax = (word)w; }
+  inline void bx(uint32_t w)    { r.w.bx = (word)w; }
+  inline void cx(uint32_t w)    { r.w.cx = (word)w; }
+  inline void dx(uint32_t w)    { r.w.dx = (word)w; }
+  inline void bp(uint32_t w)    { r.w.bp = (word)w; }
+  inline void si(uint32_t w)    { r.w.si = (word)w; }
+  inline void di(uint32_t w)    { r.w.di = (word)w; }
   #if defined(__BORLANDC__)
-  inline void ds(ulong w)    { sr.w.ds = (word)w; }
-  inline void es(ulong w)    { sr.w.es = (word)w; }
+  inline void ds(uint32_t w)    { sr.w.ds = (word)w; }
+  inline void es(uint32_t w)    { sr.w.es = (word)w; }
   #else
-  inline void ds(ulong w)    { r.w.ds = (word)w; }
-  inline void es(ulong w)    { r.w.es = (word)w; }
+  inline void ds(uint32_t w)    { r.w.ds = (word)w; }
+  inline void es(uint32_t w)    { r.w.es = (word)w; }
   #endif
-  inline void flags(ulong w) { r.w.flags = (word)w; }
+  inline void flags(uint32_t w) { r.w.flags = (word)w; }
   #endif
 
   void genint(int intno);

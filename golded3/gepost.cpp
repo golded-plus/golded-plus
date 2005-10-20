@@ -54,7 +54,7 @@ std::string &strtrimline(std::string &p) {
 
 //  ------------------------------------------------------------------
 
-const char* get_subject_re_info(const char* s, ulong& n) {
+const char* get_subject_re_info(const char* s, uint32_t& n) {
 
   if(toupper(*s) == 'R' and tolower(s[1]) == 'e') {
 
@@ -67,7 +67,7 @@ const char* get_subject_re_info(const char* s, ulong& n) {
       while(isdigit(*d))
         d++;
       if(*d == ':') {
-        n = (ulong)atol(s + 3);
+        n = (uint32_t)atol(s + 3);
         return d + 1;
       }
     }
@@ -332,7 +332,7 @@ static void MakeMsg3(int& mode, GMsg* msg) {
       }
       AA->Close();
       A->Open();
-      ulong oldmsgno = msg->msgno;
+      uint32_t oldmsgno = msg->msgno;
       A->NewMsgno(msg);
       A->SaveMsg(GMSG_NEW|GMSG_NOLSTUPD, msg);
       A->Close();
@@ -670,7 +670,7 @@ static void MakeMsg2(int& mode, int& status, int& forwstat, int& topline, GMsg* 
 
 //  ------------------------------------------------------------------
 
-static void GetLastLink(GMsg* msg, ulong& msgno) {
+static void GetLastLink(GMsg* msg, uint32_t& msgno) {
 
   GMsg* uplink = (GMsg*)throw_calloc(1, sizeof(GMsg));
 
@@ -705,7 +705,7 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
   GMsg* msg = (GMsg*)throw_calloc(1, sizeof(GMsg));
   GMsg* reply = (GMsg*)throw_calloc(1, sizeof(GMsg));
   GMsg* cmpmsg = (GMsg*)throw_calloc(1, sizeof(GMsg));
-  ulong reply_msgno = 0;
+  uint32_t reply_msgno = 0;
 
   // Keep copy of original aka for later restoration
   Addr origaka = AL.AreaIdToPtr(OrigArea)->aka();
@@ -929,7 +929,7 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
 
           if(AA->Replyre() or AA->isinternet()) {
 
-            ulong number;
+            uint32_t number;
             const char* r = get_subject_re_info(msg->re, number);
             if(r) {
               if(AA->Replyre() == REPLYRE_NUMERIC and not AA->isinternet()) {
@@ -945,7 +945,7 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
           }
           else {
             char* r;
-            ulong number;
+            uint32_t number;
             char* ptr = msg->re;
             do {
               r = (char*)get_subject_re_info(ptr, number);
@@ -1140,7 +1140,7 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
       if(CurrArea == OrigArea and (mode == MODE_QUOTE or mode == MODE_REPLYCOMMENT or mode == MODE_REPLY)) {
         if(AA->Msgn.ToReln(reply_msgno)) {
           if(AA->LoadHdr(reply, reply_msgno, false)) {
-            ulong replynext;
+            uint32_t replynext;
             bool ok2save = false;
             if(streql(AA->basetype(), "SQUISH")) {
               if(reply->link.first()) {

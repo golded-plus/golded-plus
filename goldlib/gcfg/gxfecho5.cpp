@@ -56,7 +56,7 @@ void gareafile::ReadFastecho141(int fh) {
     aka[c].main = cfg->oldakas[c].main;
 
   // Process extended headers
-  ulong offset = 0;
+  uint32_t offset = 0;
   while(offset < cfg->offset) {
     ExtensionHeader ehdr;
     read(fh, &ehdr, sizeof(ExtensionHeader));

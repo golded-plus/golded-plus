@@ -85,7 +85,7 @@ int HudsonUser::read() {
 
 //  ------------------------------------------------------------------
 
-ulong HudsonUser::lastread() {
+uint32_t HudsonUser::lastread() {
 
   seekread();
   return record->highmsgread;
@@ -94,7 +94,7 @@ ulong HudsonUser::lastread() {
 
 //  ------------------------------------------------------------------
 
-void HudsonUser::lastread(ulong __lastread) {
+void HudsonUser::lastread(uint32_t __lastread) {
   
   seekread();
   record->highmsgread = (word)__lastread;

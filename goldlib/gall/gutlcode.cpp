@@ -193,7 +193,7 @@ char* base64_engine::decode(char* outputbuffer, const char* inputbuffer) {
   const char* i = inputbuffer;
 
   int shift = 0;
-  ulong accum = 0;
+  uint32_t accum = 0;
   while(*i) {
     char c = *i;
     uint value = (uint)-1;

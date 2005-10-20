@@ -151,8 +151,8 @@ void GMsgHeaderView::Paint() {
   // Generate message number and reply links string
   char* ptr = buf;
   int list_max = msg->link.list_max();
-  ulong* replies = (ulong*)throw_calloc(list_max+1, sizeof(ulong));
-  ulong replyto, replynext;
+  uint32_t* replies = (uint32_t*)throw_calloc(list_max+1, sizeof(uint32_t));
+  uint32_t replyto, replynext;
   if(CFG->switches.get(disprealmsgno)) {
     ptr += sprintf(ptr, " %-5.5s: #%u [%u]", LNG->Msg, msg->msgno, area->Msgn.Count()+(msg->attr.nwm() ? 1 : 0));
     replyto = msg->link.to();

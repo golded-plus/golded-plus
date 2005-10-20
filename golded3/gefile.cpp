@@ -86,7 +86,7 @@ class gfileselect : public gwinpick {
   void print_line(uint idx, uint pos, bool isbar);
   void scroll(int where);
   bool handle_key();
-  const char *gensize(ulong size);
+  const char *gensize(uint32_t size);
 
 public:
 
@@ -145,7 +145,7 @@ void gfileselect::do_delayed() {
 
 #define KFIX(A) (int) (((A) * 1000.0 / 1024.0) / 10)
 
-const char *gfileselect::gensize(ulong size) {
+const char *gfileselect::gensize(uint32_t size) {
 
   static char ret[16];
 

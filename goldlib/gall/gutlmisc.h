@@ -39,16 +39,16 @@
 //  ------------------------------------------------------------------
 //  Prototypes
 
-ulong atoulx(const char* s);
+uint32_t atoulx(const char* s);
 
 inline word atow(const char* p) { return (word)atoi(p); }
 inline int xtoi(char c)  { return isdigit(c) ? (c - '0') : (toupper(c) - ('A' - 10)); }
 inline int atox(const char* s) { return (int)atoulx(s); }
 
-char* ltob(char* dst, ulong value, int fill=32);
+char* ltob(char* dst, uint32_t value, int fill=32);
 
 int GetYesno(const char* value);
-int Pct(ulong x, ulong y);
+int Pct(uint32_t x, uint32_t y);
 int tabstop(int col, int tabwidth);
 
 char* ggetosstring();

@@ -281,7 +281,7 @@ int ExportQWK();
 
 char* GetCurrQuotebuf(char* quotebuf);
 int MsgIsTwit(GMsg* msg, bool& istwitto, bool& istwitsubj);
-ulong MsgHasReplies(GMsg* msg);
+uint32_t MsgHasReplies(GMsg* msg);
 gkey ViewMessage(int istwit=NOT_TWIT);
 int LoadMessage(GMsg* msg, int margin);
 #ifdef OLD_STYLE_HEADER
@@ -430,8 +430,8 @@ void edit_addressbook(GMsg* msg);
 //  ------------------------------------------------------------------
 //  GEMSGID prototypes
 
-ulong getMsgId();
-ulong getClassicMsgId();
+uint32_t getMsgId();
+uint32_t getClassicMsgId();
 
 
 //  ------------------------------------------------------------------

@@ -39,88 +39,88 @@
 //  ------------------------------------------------------------------
 //  Internal GoldED message attributes
 
-const ulong GATTR_PVT = 0x00000001UL;  // private
-const ulong GATTR_CRA = 0x00000002UL;  // crash
-const ulong GATTR_RCV = 0x00000004UL;  // received
-const ulong GATTR_SNT = 0x00000008UL;  // sent
+const uint32_t GATTR_PVT = 0x00000001UL;  // private
+const uint32_t GATTR_CRA = 0x00000002UL;  // crash
+const uint32_t GATTR_RCV = 0x00000004UL;  // received
+const uint32_t GATTR_SNT = 0x00000008UL;  // sent
 
-const ulong GATTR_ATT = 0x00000010UL;  // file attach
-const ulong GATTR_TRS = 0x00000020UL;  // transit
-const ulong GATTR_ORP = 0x00000040UL;  // orphaned
-const ulong GATTR_K_S = 0x00000080UL;  // kill msg when sent
+const uint32_t GATTR_ATT = 0x00000010UL;  // file attach
+const uint32_t GATTR_TRS = 0x00000020UL;  // transit
+const uint32_t GATTR_ORP = 0x00000040UL;  // orphaned
+const uint32_t GATTR_K_S = 0x00000080UL;  // kill msg when sent
 
-const ulong GATTR_LOC = 0x00000100UL;  // local
-const ulong GATTR_HLD = 0x00000200UL;  // hold
-const ulong GATTR_RSV = 0x00000400UL;  // FTS-1 reserved
-const ulong GATTR_FRQ = 0x00000800UL;  // file request
+const uint32_t GATTR_LOC = 0x00000100UL;  // local
+const uint32_t GATTR_HLD = 0x00000200UL;  // hold
+const uint32_t GATTR_RSV = 0x00000400UL;  // FTS-1 reserved
+const uint32_t GATTR_FRQ = 0x00000800UL;  // file request
 
-const ulong GATTR_RRQ = 0x00001000UL;  // return receipt request
-const ulong GATTR_RRC = 0x00002000UL;  // return receipt
-const ulong GATTR_ARQ = 0x00004000UL;  // audit request
-const ulong GATTR_URQ = 0x00008000UL;  // file update request
+const uint32_t GATTR_RRQ = 0x00001000UL;  // return receipt request
+const uint32_t GATTR_RRC = 0x00002000UL;  // return receipt
+const uint32_t GATTR_ARQ = 0x00004000UL;  // audit request
+const uint32_t GATTR_URQ = 0x00008000UL;  // file update request
 
-const ulong GATTR_GRP = 0x00010000UL;  // group msg (hudson)
-const ulong GATTR_IMM = 0x00020000UL;  // immediate
-const ulong GATTR_DIR = 0x00040000UL;  // direct
-const ulong GATTR_TFS = 0x00080000UL;  // truncate file when sent
+const uint32_t GATTR_GRP = 0x00010000UL;  // group msg (hudson)
+const uint32_t GATTR_IMM = 0x00020000UL;  // immediate
+const uint32_t GATTR_DIR = 0x00040000UL;  // direct
+const uint32_t GATTR_TFS = 0x00080000UL;  // truncate file when sent
 
-const ulong GATTR_KFS = 0x00100000UL;  // kill file when sent
-const ulong GATTR_LOK = 0x00200000UL;  // locked
-const ulong GATTR_A_S = 0x00400000UL;  // archive msg when sent
-const ulong GATTR_ZON = 0x00800000UL;  // send through zone gate
+const uint32_t GATTR_KFS = 0x00100000UL;  // kill file when sent
+const uint32_t GATTR_LOK = 0x00200000UL;  // locked
+const uint32_t GATTR_A_S = 0x00400000UL;  // archive msg when sent
+const uint32_t GATTR_ZON = 0x00800000UL;  // send through zone gate
 
-const ulong GATTR_HUB = 0x01000000UL;  // host- or hub route
-const ulong GATTR_XMA = 0x02000000UL;  // xmail: alternate form of compressed mail attached
-const ulong GATTR_CFM = 0x04000000UL;  // confirmation receipt requested
-const ulong GATTR_HIR = 0x08000000UL;  // fax: hi-resolution image
+const uint32_t GATTR_HUB = 0x01000000UL;  // host- or hub route
+const uint32_t GATTR_XMA = 0x02000000UL;  // xmail: alternate form of compressed mail attached
+const uint32_t GATTR_CFM = 0x04000000UL;  // confirmation receipt requested
+const uint32_t GATTR_HIR = 0x08000000UL;  // fax: hi-resolution image
 
-const ulong GATTR_COV = 0x10000000UL;  // fax: cover sheet
-const ulong GATTR_SIG = 0x20000000UL;  // fax: signature
-const ulong GATTR_LET = 0x40000000UL;  // fax: letterhead
-const ulong GATTR_UNS = 0x80000000UL;  // unsent - not scanned (internal)
+const uint32_t GATTR_COV = 0x10000000UL;  // fax: cover sheet
+const uint32_t GATTR_SIG = 0x20000000UL;  // fax: signature
+const uint32_t GATTR_LET = 0x40000000UL;  // fax: letterhead
+const uint32_t GATTR_UNS = 0x80000000UL;  // unsent - not scanned (internal)
 
-const ulong GATTR_DEL = 0x00000001UL;  // deleted
-const ulong GATTR_NWM = 0x00000002UL;  // new message (internal)
-const ulong GATTR_ROT = 0x00000004UL;  // rot-13 encoded (internal)
-const ulong GATTR_HEX = 0x00000008UL;  // hexdump (internal)
+const uint32_t GATTR_DEL = 0x00000001UL;  // deleted
+const uint32_t GATTR_NWM = 0x00000002UL;  // new message (internal)
+const uint32_t GATTR_ROT = 0x00000004UL;  // rot-13 encoded (internal)
+const uint32_t GATTR_HEX = 0x00000008UL;  // hexdump (internal)
 
-const ulong GATTR_UPD = 0x00000010UL;  // update *.msg time stamp (internal)
-const ulong GATTR_TOU = 0x00000020UL;  // to-you (internal)
-const ulong GATTR_FMU = 0x00000040UL;  // from-you (internal)
-const ulong GATTR_SCN = 0x00000080UL;  // scanned (squish)
+const uint32_t GATTR_UPD = 0x00000010UL;  // update *.msg time stamp (internal)
+const uint32_t GATTR_TOU = 0x00000020UL;  // to-you (internal)
+const uint32_t GATTR_FMU = 0x00000040UL;  // from-you (internal)
+const uint32_t GATTR_SCN = 0x00000080UL;  // scanned (squish)
 
-const ulong GATTR_POS = 0x00000100UL;  // set line position (internal)
-const ulong GATTR_R_O = 0x00000200UL;  // area read-only
-const ulong GATTR_NOK = 0x00000400UL;  // (not used)
-const ulong GATTR_FAX = 0x00000800UL;  // file attached is a fax image
+const uint32_t GATTR_POS = 0x00000100UL;  // set line position (internal)
+const uint32_t GATTR_R_O = 0x00000200UL;  // area read-only
+const uint32_t GATTR_NOK = 0x00000400UL;  // (not used)
+const uint32_t GATTR_FAX = 0x00000800UL;  // file attached is a fax image
 
-const ulong GATTR_PRN = 0x00001000UL;  // message is printed (squish)
-const ulong GATTR_ANO = 0x00002000UL;  // anonymous
-const ulong GATTR_UME = 0x00004000UL;  // unmoved echo message (adeptxbbs)
-const ulong GATTR_UMN = 0x00008000UL;  // unmoved net message (adeptxbbs)
+const uint32_t GATTR_PRN = 0x00001000UL;  // message is printed (squish)
+const uint32_t GATTR_ANO = 0x00002000UL;  // anonymous
+const uint32_t GATTR_UME = 0x00004000UL;  // unmoved echo message (adeptxbbs)
+const uint32_t GATTR_UMN = 0x00008000UL;  // unmoved net message (adeptxbbs)
 
-const ulong GATTR_FSC = 0x00010000UL;  // fidonet scanned (adeptxbbs)
-const ulong GATTR_GSC = 0x00020000UL;  // groupmail scanned (adeptxbbs)
-const ulong GATTR_RSC = 0x00040000UL;  // rfc822 scanned (adeptxbbs)
-const ulong GATTR_TRT = 0x00080000UL;  // treated: soft cr's & lf's removed (adeptxbbs)
+const uint32_t GATTR_FSC = 0x00010000UL;  // fidonet scanned (adeptxbbs)
+const uint32_t GATTR_GSC = 0x00020000UL;  // groupmail scanned (adeptxbbs)
+const uint32_t GATTR_RSC = 0x00040000UL;  // rfc822 scanned (adeptxbbs)
+const uint32_t GATTR_TRT = 0x00080000UL;  // treated: soft cr's & lf's removed (adeptxbbs)
 
-const ulong GATTR_LZS = 0x00100000UL;  // msg is lzss compressed (adeptxbbs)
-const ulong GATTR_ARC = 0x00200000UL;  // message is stored (adeptxbbs)
-const ulong GATTR_TAG = 0x00400000UL;  // tagged: used by offline readers (adeptxbbs & wildcat)
-const ulong GATTR_RAB = 0x00800000UL;  // receivable (wildcat)
+const uint32_t GATTR_LZS = 0x00100000UL;  // msg is lzss compressed (adeptxbbs)
+const uint32_t GATTR_ARC = 0x00200000UL;  // message is stored (adeptxbbs)
+const uint32_t GATTR_TAG = 0x00400000UL;  // tagged: used by offline readers (adeptxbbs & wildcat)
+const uint32_t GATTR_RAB = 0x00800000UL;  // receivable (wildcat)
 
-const ulong GATTR_CAR = 0x01000000UL;  // carboned (wildcat)
-const ulong GATTR_FWD = 0x02000000UL;  // forwarded (wildcat)
-const ulong GATTR_EFL = 0x04000000UL;  // echoflag (wildcat)
-const ulong GATTR_HRP = 0x08000000UL;  // has replies (wildcat)
+const uint32_t GATTR_CAR = 0x01000000UL;  // carboned (wildcat)
+const uint32_t GATTR_FWD = 0x02000000UL;  // forwarded (wildcat)
+const uint32_t GATTR_EFL = 0x04000000UL;  // echoflag (wildcat)
+const uint32_t GATTR_HRP = 0x08000000UL;  // has replies (wildcat)
 
-const ulong GATTR_PKD = 0x10000000UL;  // Archived
+const uint32_t GATTR_PKD = 0x10000000UL;  // Archived
 
 class ftn_attr {
 
 protected:
 
-  ulong attr1, attr2;
+  uint32_t attr1, attr2;
 
 public:
 
@@ -225,82 +225,82 @@ public:
 
   //  ----------------------------------------------------------------
 
-  void pvt(ulong x)  { if(x) attr1 |= GATTR_PVT; else attr1 &= ~GATTR_PVT; }
-  void cra(ulong x)  { if(x) attr1 |= GATTR_CRA; else attr1 &= ~GATTR_CRA; }
-  void rcv(ulong x)  { if(x) attr1 |= GATTR_RCV; else attr1 &= ~GATTR_RCV; }
-  void snt(ulong x)  { if(x) attr1 |= GATTR_SNT; else attr1 &= ~GATTR_SNT; }
+  void pvt(uint32_t x)  { if(x) attr1 |= GATTR_PVT; else attr1 &= ~GATTR_PVT; }
+  void cra(uint32_t x)  { if(x) attr1 |= GATTR_CRA; else attr1 &= ~GATTR_CRA; }
+  void rcv(uint32_t x)  { if(x) attr1 |= GATTR_RCV; else attr1 &= ~GATTR_RCV; }
+  void snt(uint32_t x)  { if(x) attr1 |= GATTR_SNT; else attr1 &= ~GATTR_SNT; }
 
-  void att(ulong x)  { if(x) attr1 |= GATTR_ATT; else attr1 &= ~GATTR_ATT; }
-  void trs(ulong x)  { if(x) attr1 |= GATTR_TRS; else attr1 &= ~GATTR_TRS; }
-  void orp(ulong x)  { if(x) attr1 |= GATTR_ORP; else attr1 &= ~GATTR_ORP; }
-  void k_s(ulong x)  { if(x) attr1 |= GATTR_K_S; else attr1 &= ~GATTR_K_S; }
+  void att(uint32_t x)  { if(x) attr1 |= GATTR_ATT; else attr1 &= ~GATTR_ATT; }
+  void trs(uint32_t x)  { if(x) attr1 |= GATTR_TRS; else attr1 &= ~GATTR_TRS; }
+  void orp(uint32_t x)  { if(x) attr1 |= GATTR_ORP; else attr1 &= ~GATTR_ORP; }
+  void k_s(uint32_t x)  { if(x) attr1 |= GATTR_K_S; else attr1 &= ~GATTR_K_S; }
 
-  void loc(ulong x)  { if(x) attr1 |= GATTR_LOC; else attr1 &= ~GATTR_LOC; }
-  void hld(ulong x)  { if(x) attr1 |= GATTR_HLD; else attr1 &= ~GATTR_HLD; }
-  void rsv(ulong x)  { if(x) attr1 |= GATTR_RSV; else attr1 &= ~GATTR_RSV; }
-  void frq(ulong x)  { if(x) attr1 |= GATTR_FRQ; else attr1 &= ~GATTR_FRQ; }
+  void loc(uint32_t x)  { if(x) attr1 |= GATTR_LOC; else attr1 &= ~GATTR_LOC; }
+  void hld(uint32_t x)  { if(x) attr1 |= GATTR_HLD; else attr1 &= ~GATTR_HLD; }
+  void rsv(uint32_t x)  { if(x) attr1 |= GATTR_RSV; else attr1 &= ~GATTR_RSV; }
+  void frq(uint32_t x)  { if(x) attr1 |= GATTR_FRQ; else attr1 &= ~GATTR_FRQ; }
 
-  void rrq(ulong x)  { if(x) attr1 |= GATTR_RRQ; else attr1 &= ~GATTR_RRQ; }
-  void rrc(ulong x)  { if(x) attr1 |= GATTR_RRC; else attr1 &= ~GATTR_RRC; }
-  void arq(ulong x)  { if(x) attr1 |= GATTR_ARQ; else attr1 &= ~GATTR_ARQ; }
-  void urq(ulong x)  { if(x) attr1 |= GATTR_URQ; else attr1 &= ~GATTR_URQ; }
+  void rrq(uint32_t x)  { if(x) attr1 |= GATTR_RRQ; else attr1 &= ~GATTR_RRQ; }
+  void rrc(uint32_t x)  { if(x) attr1 |= GATTR_RRC; else attr1 &= ~GATTR_RRC; }
+  void arq(uint32_t x)  { if(x) attr1 |= GATTR_ARQ; else attr1 &= ~GATTR_ARQ; }
+  void urq(uint32_t x)  { if(x) attr1 |= GATTR_URQ; else attr1 &= ~GATTR_URQ; }
 
-  void grp(ulong x)  { if(x) attr1 |= GATTR_GRP; else attr1 &= ~GATTR_GRP; }
-  void imm(ulong x)  { if(x) attr1 |= GATTR_IMM; else attr1 &= ~GATTR_IMM; }
-  void dir(ulong x)  { if(x) attr1 |= GATTR_DIR; else attr1 &= ~GATTR_DIR; }
-  void tfs(ulong x)  { if(x) attr1 |= GATTR_TFS; else attr1 &= ~GATTR_TFS; }
+  void grp(uint32_t x)  { if(x) attr1 |= GATTR_GRP; else attr1 &= ~GATTR_GRP; }
+  void imm(uint32_t x)  { if(x) attr1 |= GATTR_IMM; else attr1 &= ~GATTR_IMM; }
+  void dir(uint32_t x)  { if(x) attr1 |= GATTR_DIR; else attr1 &= ~GATTR_DIR; }
+  void tfs(uint32_t x)  { if(x) attr1 |= GATTR_TFS; else attr1 &= ~GATTR_TFS; }
 
-  void kfs(ulong x)  { if(x) attr1 |= GATTR_KFS; else attr1 &= ~GATTR_KFS; }
-  void lok(ulong x)  { if(x) attr1 |= GATTR_LOK; else attr1 &= ~GATTR_LOK; }
-  void a_s(ulong x)  { if(x) attr1 |= GATTR_A_S; else attr1 &= ~GATTR_A_S; }
-  void zon(ulong x)  { if(x) attr1 |= GATTR_ZON; else attr1 &= ~GATTR_ZON; }
+  void kfs(uint32_t x)  { if(x) attr1 |= GATTR_KFS; else attr1 &= ~GATTR_KFS; }
+  void lok(uint32_t x)  { if(x) attr1 |= GATTR_LOK; else attr1 &= ~GATTR_LOK; }
+  void a_s(uint32_t x)  { if(x) attr1 |= GATTR_A_S; else attr1 &= ~GATTR_A_S; }
+  void zon(uint32_t x)  { if(x) attr1 |= GATTR_ZON; else attr1 &= ~GATTR_ZON; }
 
-  void hub(ulong x)  { if(x) attr1 |= GATTR_HUB; else attr1 &= ~GATTR_HUB; }
-  void xma(ulong x)  { if(x) attr1 |= GATTR_XMA; else attr1 &= ~GATTR_XMA; }
-  void cfm(ulong x)  { if(x) attr1 |= GATTR_CFM; else attr1 &= ~GATTR_CFM; }
-  void hir(ulong x)  { if(x) attr1 |= GATTR_HIR; else attr1 &= ~GATTR_HIR; }
+  void hub(uint32_t x)  { if(x) attr1 |= GATTR_HUB; else attr1 &= ~GATTR_HUB; }
+  void xma(uint32_t x)  { if(x) attr1 |= GATTR_XMA; else attr1 &= ~GATTR_XMA; }
+  void cfm(uint32_t x)  { if(x) attr1 |= GATTR_CFM; else attr1 &= ~GATTR_CFM; }
+  void hir(uint32_t x)  { if(x) attr1 |= GATTR_HIR; else attr1 &= ~GATTR_HIR; }
 
-  void cov(ulong x)  { if(x) attr1 |= GATTR_COV; else attr1 &= ~GATTR_COV; }
-  void sig(ulong x)  { if(x) attr1 |= GATTR_SIG; else attr1 &= ~GATTR_SIG; }
-  void let(ulong x)  { if(x) attr1 |= GATTR_LET; else attr1 &= ~GATTR_LET; }
-  void uns(ulong x)  { if(x) attr1 |= GATTR_UNS; else attr1 &= ~GATTR_UNS; }
+  void cov(uint32_t x)  { if(x) attr1 |= GATTR_COV; else attr1 &= ~GATTR_COV; }
+  void sig(uint32_t x)  { if(x) attr1 |= GATTR_SIG; else attr1 &= ~GATTR_SIG; }
+  void let(uint32_t x)  { if(x) attr1 |= GATTR_LET; else attr1 &= ~GATTR_LET; }
+  void uns(uint32_t x)  { if(x) attr1 |= GATTR_UNS; else attr1 &= ~GATTR_UNS; }
 
-  void del(ulong x)  { if(x) attr2 |= GATTR_DEL; else attr2 &= ~GATTR_DEL; }
-  void nwm(ulong x)  { if(x) attr2 |= GATTR_NWM; else attr2 &= ~GATTR_NWM; }
-  void rot(ulong x)  { if(x) attr2 |= GATTR_ROT; else attr2 &= ~GATTR_ROT; }
-  void hex(ulong x)  { if(x) attr2 |= GATTR_HEX; else attr2 &= ~GATTR_HEX; }
+  void del(uint32_t x)  { if(x) attr2 |= GATTR_DEL; else attr2 &= ~GATTR_DEL; }
+  void nwm(uint32_t x)  { if(x) attr2 |= GATTR_NWM; else attr2 &= ~GATTR_NWM; }
+  void rot(uint32_t x)  { if(x) attr2 |= GATTR_ROT; else attr2 &= ~GATTR_ROT; }
+  void hex(uint32_t x)  { if(x) attr2 |= GATTR_HEX; else attr2 &= ~GATTR_HEX; }
 
-  void upd(ulong x)  { if(x) attr2 |= GATTR_UPD; else attr2 &= ~GATTR_UPD; }
-  void tou(ulong x)  { if(x) attr2 |= GATTR_TOU; else attr2 &= ~GATTR_TOU; }
-  void fmu(ulong x)  { if(x) attr2 |= GATTR_FMU; else attr2 &= ~GATTR_FMU; }
-  void scn(ulong x)  { if(x) attr2 |= GATTR_SCN; else attr2 &= ~GATTR_SCN; }
+  void upd(uint32_t x)  { if(x) attr2 |= GATTR_UPD; else attr2 &= ~GATTR_UPD; }
+  void tou(uint32_t x)  { if(x) attr2 |= GATTR_TOU; else attr2 &= ~GATTR_TOU; }
+  void fmu(uint32_t x)  { if(x) attr2 |= GATTR_FMU; else attr2 &= ~GATTR_FMU; }
+  void scn(uint32_t x)  { if(x) attr2 |= GATTR_SCN; else attr2 &= ~GATTR_SCN; }
 
-  void pos(ulong x)  { if(x) attr2 |= GATTR_POS; else attr2 &= ~GATTR_POS; }
-  void r_o(ulong x)  { if(x) attr2 |= GATTR_R_O; else attr2 &= ~GATTR_R_O; }
-  void nok(ulong x)  { if(x) attr2 |= GATTR_NOK; else attr2 &= ~GATTR_NOK; }
-  void fax(ulong x)  { if(x) attr2 |= GATTR_FAX; else attr2 &= ~GATTR_FAX; }
+  void pos(uint32_t x)  { if(x) attr2 |= GATTR_POS; else attr2 &= ~GATTR_POS; }
+  void r_o(uint32_t x)  { if(x) attr2 |= GATTR_R_O; else attr2 &= ~GATTR_R_O; }
+  void nok(uint32_t x)  { if(x) attr2 |= GATTR_NOK; else attr2 &= ~GATTR_NOK; }
+  void fax(uint32_t x)  { if(x) attr2 |= GATTR_FAX; else attr2 &= ~GATTR_FAX; }
 
-  void prn(ulong x)  { if(x) attr2 |= GATTR_PRN; else attr2 &= ~GATTR_PRN; }
-  void ano(ulong x)  { if(x) attr2 |= GATTR_ANO; else attr2 &= ~GATTR_ANO; }
-  void ume(ulong x)  { if(x) attr2 |= GATTR_UME; else attr2 &= ~GATTR_UME; }
-  void umn(ulong x)  { if(x) attr2 |= GATTR_UMN; else attr2 &= ~GATTR_UMN; }
+  void prn(uint32_t x)  { if(x) attr2 |= GATTR_PRN; else attr2 &= ~GATTR_PRN; }
+  void ano(uint32_t x)  { if(x) attr2 |= GATTR_ANO; else attr2 &= ~GATTR_ANO; }
+  void ume(uint32_t x)  { if(x) attr2 |= GATTR_UME; else attr2 &= ~GATTR_UME; }
+  void umn(uint32_t x)  { if(x) attr2 |= GATTR_UMN; else attr2 &= ~GATTR_UMN; }
 
-  void fsc(ulong x)  { if(x) attr2 |= GATTR_FSC; else attr2 &= ~GATTR_FSC; }
-  void gsc(ulong x)  { if(x) attr2 |= GATTR_GSC; else attr2 &= ~GATTR_GSC; }
-  void rsc(ulong x)  { if(x) attr2 |= GATTR_RSC; else attr2 &= ~GATTR_RSC; }
-  void trt(ulong x)  { if(x) attr2 |= GATTR_TRT; else attr2 &= ~GATTR_TRT; }
+  void fsc(uint32_t x)  { if(x) attr2 |= GATTR_FSC; else attr2 &= ~GATTR_FSC; }
+  void gsc(uint32_t x)  { if(x) attr2 |= GATTR_GSC; else attr2 &= ~GATTR_GSC; }
+  void rsc(uint32_t x)  { if(x) attr2 |= GATTR_RSC; else attr2 &= ~GATTR_RSC; }
+  void trt(uint32_t x)  { if(x) attr2 |= GATTR_TRT; else attr2 &= ~GATTR_TRT; }
 
-  void lzs(ulong x)  { if(x) attr2 |= GATTR_LZS; else attr2 &= ~GATTR_LZS; }
-  void arc(ulong x)  { if(x) attr2 |= GATTR_ARC; else attr2 &= ~GATTR_ARC; }
-  void tag(ulong x)  { if(x) attr2 |= GATTR_TAG; else attr2 &= ~GATTR_TAG; }
-  void rab(ulong x)  { if(x) attr2 |= GATTR_RAB; else attr2 &= ~GATTR_RAB; }
+  void lzs(uint32_t x)  { if(x) attr2 |= GATTR_LZS; else attr2 &= ~GATTR_LZS; }
+  void arc(uint32_t x)  { if(x) attr2 |= GATTR_ARC; else attr2 &= ~GATTR_ARC; }
+  void tag(uint32_t x)  { if(x) attr2 |= GATTR_TAG; else attr2 &= ~GATTR_TAG; }
+  void rab(uint32_t x)  { if(x) attr2 |= GATTR_RAB; else attr2 &= ~GATTR_RAB; }
 
-  void car(ulong x)  { if(x) attr2 |= GATTR_CAR; else attr2 &= ~GATTR_CAR; }
-  void fwd(ulong x)  { if(x) attr2 |= GATTR_FWD; else attr2 &= ~GATTR_FWD; }
-  void efl(ulong x)  { if(x) attr2 |= GATTR_EFL; else attr2 &= ~GATTR_EFL; }
-  void hrp(ulong x)  { if(x) attr2 |= GATTR_HRP; else attr2 &= ~GATTR_HRP; }
+  void car(uint32_t x)  { if(x) attr2 |= GATTR_CAR; else attr2 &= ~GATTR_CAR; }
+  void fwd(uint32_t x)  { if(x) attr2 |= GATTR_FWD; else attr2 &= ~GATTR_FWD; }
+  void efl(uint32_t x)  { if(x) attr2 |= GATTR_EFL; else attr2 &= ~GATTR_EFL; }
+  void hrp(uint32_t x)  { if(x) attr2 |= GATTR_HRP; else attr2 &= ~GATTR_HRP; }
 
-  void pkd(ulong x)  { if(x) attr2 |= GATTR_PKD; else attr2 &= ~GATTR_PKD; }
+  void pkd(uint32_t x)  { if(x) attr2 |= GATTR_PKD; else attr2 &= ~GATTR_PKD; }
 
   //  -------------------------------------------------------------
 

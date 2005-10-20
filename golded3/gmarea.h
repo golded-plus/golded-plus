@@ -375,12 +375,12 @@ public:
   GTag    PMrk;               // Personal mail marks
   GTag    Expo;               // Messages to be exported
 
-  ulong   bookmark;           // Current bookmark message number
+  uint32_t bookmark;          // Current bookmark message number
 
   uint    unread;             // Number of unread messages at last scan
 
-  uint    lastread() const;       // Number of last message read
-  ulong   lastreadentry() const;  // Lastread message number at entry to area
+  uint     lastread() const;        // Number of last message read
+  uint32_t lastreadentry() const;   // Lastread message number at entry to area
 
   void    set_lastread(uint lr);
 
@@ -508,8 +508,8 @@ public:
   void ScanArea();
   void ScanAreaPM();
 
-  int LoadHdr(GMsg* msg, ulong msgno, bool enable_recode = true);
-  int LoadMsg(GMsg* msg, ulong msgno, int margin, int mode=0);
+  int LoadHdr(GMsg* msg, uint32_t msgno, bool enable_recode = true);
+  int LoadMsg(GMsg* msg, uint32_t msgno, int margin, int mode=0);
 
   void SaveHdr(int mode, GMsg* msg);
   void SaveMsg(int mode, GMsg* msg);
@@ -634,8 +634,8 @@ inline int Area::isinternet() const  { return area->isinternet(); }
 inline int Area::isqwk() const       { return area->isqwk(); }
 inline int Area::issoup() const      { return area->issoup(); }
 
-inline uint  Area::lastread() const { return area->lastread; }
-inline ulong Area::lastreadentry() const { return area->lastreadentry; }
+inline uint     Area::lastread() const { return area->lastread; }
+inline uint32_t Area::lastreadentry() const { return area->lastreadentry; }
 inline void  Area::set_lastread(uint lr) { area->lastread = lr; }
 
 inline void Area::SetBookmark(uint __relno)  { bookmark = Msgn.CvtReln(__relno); /*Book.Add(bookmark);*/ }

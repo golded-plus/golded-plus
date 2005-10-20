@@ -105,13 +105,13 @@ typedef struct {                // Message sub board info
          read_ar[LEN_ARSTR+1],  // Read requirements
          post_ar[LEN_ARSTR+1],  // Post requirements
          op_ar[LEN_ARSTR+1];    // Operator requirements
-  ulong  misc;                  // Miscellaneous flags
+  uint32_t misc;                // Miscellaneous flags
   char   tagline[81],           // Optional QWK net tag line
          origline[51],          // Optional EchoMail origin line
          echomail_sem[LEN_DIR+1], // EchoMail semaphore for this sub
          echopath[LEN_DIR+1];   // EchoMail path
   ftn_addr faddr;               // FidoNet address
-  ulong  maxmsgs,               // Max number of messages allowed
+  uint32_t maxmsgs,             // Max number of messages allowed
          maxcrcs;               // Max number of CRCs to keep
   ushort maxage,                // Max age of messages (in days)
          ptridx;                // Index into pointer file

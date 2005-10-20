@@ -315,7 +315,7 @@ public:
   Semaphore   semaphore;
   Path        seqdir;
   int         seqmsgid;
-  ulong       seqoutrun;
+  uint32_t    seqoutrun;
   int         sharemode;            // share;
   bool        showdeleted;
   Path        soundpath;

@@ -70,11 +70,11 @@ public:
   //  ----------------------------------------------------------------
   //  Virtual functions
 
-  virtual void  founduser();
-  virtual void  inctimesposted(int __times);
-  virtual ulong lastread();
-  virtual void  lastread(ulong __lastread);
-  virtual void  recinit(const char* __name);
+  virtual void     founduser();
+  virtual void     inctimesposted(int __times);
+  virtual uint32_t lastread();
+  virtual void     lastread(uint32_t __lastread);
+  virtual void     recinit(const char* __name);
 
 
   //  ----------------------------------------------------------------

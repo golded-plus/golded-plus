@@ -95,7 +95,7 @@ int RA2User::read() {
 
 //  ------------------------------------------------------------------
 
-ulong RA2User::lastread() {
+uint32_t RA2User::lastread() {
 
   seekread();
   return record->lastread;
@@ -104,7 +104,7 @@ ulong RA2User::lastread() {
 
 //  ------------------------------------------------------------------
 
-void RA2User::lastread(ulong __lastread) {
+void RA2User::lastread(uint32_t __lastread) {
   
   seekread();
   record->lastread = (long)__lastread;

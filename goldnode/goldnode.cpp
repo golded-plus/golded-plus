@@ -259,7 +259,7 @@ static char* fast_parse_addr(char* str, Addr* addr) {
   point = strchr(str, '.');
   domain = strchr(str, '@');
   if(domain and point)
-    if((ulong)point > (ulong)domain)
+    if((uint32_t)point > (uint32_t)domain)
       point = NULL;
 
   if(space)
@@ -304,7 +304,7 @@ static char* parse_address(char* str, Addr* addr, Addr* mainaka) {
     char* point = strchr(str, '.');
     domain = strchr(str, '@');
     if(domain and point)
-      if((ulong)point > (ulong)domain)
+      if((uint32_t)point > (uint32_t)domain)
         point = NULL;
 
     if(net) {
@@ -733,7 +733,7 @@ static void read_nodelists() {
 
             if(ISTWIRLY(no)) {
               int len = 16-strlen(name);
-              std::cout << "\r* \\--" << name << std::setw((len > 0) ? len : 1) << " " << "Zone " << nlst.addr.zone << "   \tNet " << nlst.addr.net << "   \tNodes " << (ulong)no << "        " << std::flush;
+              std::cout << "\r* \\--" << name << std::setw((len > 0) ? len : 1) << " " << "Zone " << nlst.addr.zone << "   \tNet " << nlst.addr.net << "   \tNodes " << (uint32_t)no << "        " << std::flush;
             }
 
             bool include = true;
@@ -780,7 +780,7 @@ static void read_nodelists() {
 
         if(not quiet) {
           int len = 16-strlen(name);
-          std::cout << "\r* " << ((fno == nodelist.end()-1) ? '\\' : '|') << "--" << name << std::setw((len > 0) ? len : 1) << " " << "Nodes read: " << (ulong)no << "\tTotal read: " << (ulong)nodes << ((nodes >= maxnodes) ? " (Limit reached)" : "                ") << std::endl;
+          std::cout << "\r* " << ((fno == nodelist.end()-1) ? '\\' : '|') << "--" << name << std::setw((len > 0) ? len : 1) << " " << "Nodes read: " << (uint32_t)no << "\tTotal read: " << (uint32_t)nodes << ((nodes >= maxnodes) ? " (Limit reached)" : "                ") << std::endl;
         }
 
         fclose(lfp);
@@ -864,7 +864,7 @@ static void read_nodelists() {
 
             if(ISTWIRLY(nodes)) {
               int len = 16-strlen(name);
-              std::cout << "\r* \\--" << name << std::setw((len > 0) ? len : 1) << " " << "Nodes: " << (ulong)nodes << "        " << std::flush;
+              std::cout << "\r* \\--" << name << std::setw((len > 0) ? len : 1) << " " << "Nodes: " << (uint32_t)nodes << "        " << std::flush;
             }
 
             // Indicate userlist
@@ -886,7 +886,7 @@ static void read_nodelists() {
 
       if(not quiet) {
         int len = 16-strlen(name);
-        std::cout << "\r* " << ((fno == userlist.end()-1) ? '\\' : '|') << "--" << name << std::setw((len > 0) ? len : 1) << " " << "Nodes read: " << (ulong)no << "\tTotal read: " << (ulong)nodes << ((nodes >= maxnodes) ? " (Limit reached)" : "                ") << std::endl;
+        std::cout << "\r* " << ((fno == userlist.end()-1) ? '\\' : '|') << "--" << name << std::setw((len > 0) ? len : 1) << " " << "Nodes read: " << (uint32_t)no << "\tTotal read: " << (uint32_t)nodes << ((nodes >= maxnodes) ? " (Limit reached)" : "                ") << std::endl;
       }
 
       fclose(lfp);
@@ -1021,9 +1021,9 @@ static void read_nodelists() {
 
     if(not quiet) {
       if(dups) {
-        std::cout << std::endl << "* Total duplicate nodes: " << (ulong)dups << '.' << std::endl;
+        std::cout << std::endl << "* Total duplicate nodes: " << (uint32_t)dups << '.' << std::endl;
       }
-      std::cout << std::endl << "* Nodelist compile completed. Compile time: " << (ulong)(runtime/60) << " min, " << (ulong)(runtime%60) << " sec." << std::endl;
+      std::cout << std::endl << "* Nodelist compile completed. Compile time: " << (uint32_t)(runtime/60) << " min, " << (uint32_t)(runtime%60) << " sec." << std::endl;
     }
   #ifdef GOLDNODE_STATS
   }

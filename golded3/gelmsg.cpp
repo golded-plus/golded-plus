@@ -48,7 +48,7 @@ void ResetMsg(GMsg* msg) {
 
 //  ------------------------------------------------------------------
 
-int Area::LoadHdr(GMsg* msg, ulong msgno, bool enable_recode) {
+int Area::LoadHdr(GMsg* msg, uint32_t msgno, bool enable_recode) {
 
   ResetMsg(msg);
   msg->msgno = msgno;
@@ -87,7 +87,7 @@ int Area::LoadHdr(GMsg* msg, ulong msgno, bool enable_recode) {
 
 //  ------------------------------------------------------------------
 
-int Area::LoadMsg(GMsg* msg, ulong msgno, int margin, int mode) {
+int Area::LoadMsg(GMsg* msg, uint32_t msgno, int margin, int mode) {
 
   ResetMsg(msg);
   msg->msgno = msgno;

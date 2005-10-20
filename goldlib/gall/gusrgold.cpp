@@ -85,7 +85,7 @@ int GoldbaseUser::read() {
 
 //  ------------------------------------------------------------------
 
-ulong GoldbaseUser::lastread() {
+uint32_t GoldbaseUser::lastread() {
 
   seekread();
   return record->highmsgread;
@@ -94,7 +94,7 @@ ulong GoldbaseUser::lastread() {
 
 //  ------------------------------------------------------------------
 
-void GoldbaseUser::lastread(ulong __lastread) {
+void GoldbaseUser::lastread(uint32_t __lastread) {
   
   seekread();
   record->highmsgread = (long)__lastread;

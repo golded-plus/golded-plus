@@ -74,12 +74,12 @@ int GetYesno(const char* value) {
 //  ------------------------------------------------------------------
 //  Calculates a percentage
 
-int Pct(ulong x, ulong y) {
+int Pct(uint32_t x, uint32_t y) {
 
   if(x) {
 
-    ulong p = (((x-y)*100)/x);
-    ulong r = (((x-y)*100)%x);
+    uint32_t p = (((x-y)*100)/x);
+    uint32_t r = (((x-y)*100)%x);
 
     if(((r*10)/x)>4)
       p++;
@@ -104,9 +104,9 @@ int tabstop(int column, int tabwidth) {
 //  ------------------------------------------------------------------
 //  Convert hex string to integer
 
-ulong atoulx(const char* s) {
+uint32_t atoulx(const char* s) {
 
-  ulong retval = 0;
+  uint32_t retval = 0;
 
   s = strskip_wht(s);
 
@@ -122,7 +122,7 @@ ulong atoulx(const char* s) {
 
 //  ------------------------------------------------------------------
 
-char* ltob(char* dst, ulong value, int fill) {
+char* ltob(char* dst, uint32_t value, int fill) {
 
   char* p = dst;
 

@@ -386,14 +386,14 @@ void CfgSeqOutRun_Error() {
 void CfgSeqOutRun() {
 
   char *p;
-  ulong s = 0;
+  uint32_t s = 0;
 
   if(not isdigit((int)(*val))) {
     CfgSeqOutRun_Error();
     return;
   }
 
-  s = (ulong)atol(val);
+  s = (uint32_t)atol(val);
   p = val;
   while(isdigit((int)(*p)))
     p++;

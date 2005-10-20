@@ -138,7 +138,6 @@ typedef  int16_t  sshort;
 typedef uint16_t  ushort;
 
 typedef uint32_t  dword;
-typedef uint32_t  ulong;
 #endif  //#ifdef _MSC_VER
 
 typedef uint8_t   bit;

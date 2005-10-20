@@ -59,9 +59,9 @@ struct gusrbaseentry {
  char   voicephone[40];
  char   faxphone[40];
 
- ulong  firstdate;
- ulong  lastdate;
- ulong  times;
+ uint32_t firstdate;
+ uint32_t lastdate;
+ uint32_t times;
 
  char   homepage[128];
  byte   group;

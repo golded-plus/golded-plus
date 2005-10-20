@@ -56,9 +56,6 @@ The combined boards are stored in 25 bytes (200 bits). One bit per message
 area.
 */
 
-//typedef unsigned short uint;
-//typedef unsigned long ulong;
-//typedef unsigned char byte;
 typedef unsigned long accessflags;
 typedef unsigned char combinedboards[125];
 typedef unsigned char pb_bool;
@@ -104,9 +101,9 @@ struct UsersPbBBS
    uint         expLevel;
    accessflags  expFlagsOn;
    accessflags  expFlagsOff;
-   ulong        uFlags;
+   uint32_t     uFlags;
    combinedboards mailCheckBoards;
-   ulong        totalTimeUsed;
+   uint32_t     totalTimeUsed;
    uint         qwkMaxMsgsPerArea;
    uint         qwkMaxMsgs;
    byte         qwkArchiver;
@@ -452,8 +449,8 @@ struct MODEM_PRO
 struct BinLog
   {
     Date     date;
-    pb_Time     timeIn;
-    pb_Time     timeOut;
+    pb_Time  timeIn;
+    pb_Time  timeOut;
     char     name[36];
     char     city[26];
     char     country[26];
@@ -463,7 +460,7 @@ struct BinLog
     long     kbUp;
     uint     yells;
     uint     level;
-    ulong    uflags;
+    uint32_t uflags;
     char     extra[81];
   };
 

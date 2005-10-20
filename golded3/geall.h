@@ -550,7 +550,7 @@ enum {
 //  The Message Browser
 
 struct MLst {
-  ulong     msgno;
+  uint32_t  msgno;
   byte      high;
   char      num[8];
   char      marks[3];

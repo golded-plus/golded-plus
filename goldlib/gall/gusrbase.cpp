@@ -72,7 +72,7 @@ void GUser::inctimesposted(int) {
 
 //  ------------------------------------------------------------------
 
-ulong GUser::lastread() {
+uint32_t GUser::lastread() {
 
   // No action
   return 0;
@@ -81,7 +81,7 @@ ulong GUser::lastread() {
 
 //  ------------------------------------------------------------------
 
-void GUser::lastread(ulong) {
+void GUser::lastread(uint32_t) {
 
   // No action
 }

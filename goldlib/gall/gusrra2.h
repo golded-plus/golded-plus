@@ -142,10 +142,10 @@ public:
   int  isvalid();
   int  read();
 
-  void  inctimesposted(int __times);
-  ulong lastread();
-  void  lastread(ulong __lastread);
-  void  recinit(const char* __name);
+  void     inctimesposted(int __times);
+  uint32_t lastread();
+  void     lastread(uint32_t __lastread);
+  void     recinit(const char* __name);
 
   void  add(const char* __name);
 };

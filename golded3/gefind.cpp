@@ -95,7 +95,7 @@ bool FindString(GMsg* msg, const char* prompt, int what) {
 
   GFTRK("FindString");
 
-  static ulong lastfound = 0;
+  static uint32_t lastfound = 0;
   bool result = false;
   bool breakloop = true;
 
@@ -107,7 +107,7 @@ bool FindString(GMsg* msg, const char* prompt, int what) {
   lastfound = AA->Msgn.CvtReln(AA->lastread());
   w_progress(MODE_NEW, C_INFOW, AA->lastread(), AA->Msgn.Count(), LNG->AdvancedSearch);
 
-  ulong tmpmsgno;
+  uint32_t tmpmsgno;
 
   int margin = CFG->dispmargin-(int)CFG->switches.get(disppagebar);
 

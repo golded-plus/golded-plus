@@ -41,7 +41,7 @@ int NextMarkedmsg(int direction, GMsg* msg) {
 
   if(tag.Count()) {
     uint n;
-    ulong msgno = 0;
+    uint32_t msgno = 0;
     if(direction == DIR_NEXT) {
       if(msg->msgno != tag[tag.Count()-1]) {
         for(n=0; n<tag.Count(); n++) {
@@ -124,7 +124,7 @@ void MarkMsgs_Toggle() {
 void MarkMsgs_All() {
 
   AA->Mark.Resize(AA->Msgn.Count());
-  memcpy(AA->Mark.tag, AA->Msgn.tag, AA->Msgn.Count()*sizeof(ulong));
+  memcpy(AA->Mark.tag, AA->Msgn.tag, AA->Msgn.Count()*sizeof(uint32_t));
 }
 
 
@@ -134,7 +134,7 @@ void MarkMsgs_New() {
 
   uint oldmarks = AA->Mark.Count();
   AA->Mark.Resize(AA->Mark.Count()+(AA->Msgn.Count() - AA->lastread()));
-  memcpy(AA->Mark.tag+oldmarks, AA->Msgn.tag+AA->lastread(), (AA->Msgn.Count()-AA->lastread())*sizeof(ulong));
+  memcpy(AA->Mark.tag+oldmarks, AA->Msgn.tag+AA->lastread(), (AA->Msgn.Count()-AA->lastread())*sizeof(uint32_t));
   AA->Mark.Sort();
   AA->Mark.ElimDups();
 }
@@ -146,7 +146,7 @@ void MarkMsgs_Old() {
 
   uint oldmarks = AA->Mark.Count();
   AA->Mark.Resize(AA->Mark.Count() + (AA->lastread() - 1));
-  memcpy(AA->Mark.tag+oldmarks, AA->Msgn.tag, (AA->lastread()-1)*sizeof(ulong));
+  memcpy(AA->Mark.tag+oldmarks, AA->Msgn.tag, (AA->lastread()-1)*sizeof(uint32_t));
   AA->Mark.Sort();
   AA->Mark.ElimDups();
 }
@@ -218,7 +218,7 @@ void MarkMsgs_Txt(int item, char* markstring) {
 
 //  ------------------------------------------------------------------
 
-static void recursive_mark(GMsg* msg, ulong msgno) {
+static void recursive_mark(GMsg* msg, uint32_t msgno) {
 
   int i;
   gmsg_links templink;
@@ -259,7 +259,7 @@ void MarkMsgs_Thread(GMsg* msg) {
 
   AA->Mark.Add(msg->msgno);
 
-  ulong msgno = msg->link.to();
+  uint32_t msgno = msg->link.to();
   while(AA->Msgn.ToReln(msgno)) {  // Search backwards
     AA->Mark.Add(msgno);
 
