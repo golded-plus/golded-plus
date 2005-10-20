@@ -6,13 +6,26 @@
 #ifndef __goldall_h
 #ifdef _MSC_VER
 #include <windows.h>
+#include <limits.h>
 
-typedef   signed char   int8_t;
-typedef unsigned char  uint8_t;
-typedef   signed short  int16_t;
-typedef unsigned short uint16_t;
-typedef   signed long   int32_t;
-typedef unsigned long  uint32_t;
+#if (UCHAR_MAX == 0xFF)
+typedef   signed char    int8_t;
+typedef unsigned char   uint8_t;
+#else
+#error Don't know how to define 8 bit integers
+#endif
+#if (USHRT_MAX == 0xFFFF)
+typedef   signed short   int16_t;
+typedef unsigned short  uint16_t;
+#else
+#error Don't know how to define 16 bit integers
+#endif
+#if (UINT_MAX == 0xFFFFFFFF)
+typedef   signed int     int32_t;
+typedef unsigned int    uint32_t;
+#else
+#error Don't know how to define 32 bit integers
+#endif
 
 #else
 #include <stdint.h>
