@@ -101,14 +101,14 @@ void XbbsArea::unlock_file(int handle, int32_t position, int32_t length) {
 
 //  ------------------------------------------------------------------
 
-ushort XbbsCheckSum(char* str) {
+uint16_t XbbsCheckSum(char* str) {
 
-  ushort checksum = 0;
+  uint16_t checksum = 0;
 
   while(*str) {
-    checksum ^= (ushort)toupper(*str++);
+    checksum ^= (uint16_t)toupper(*str++);
     if(checksum & 1)
-      checksum = (ushort)((checksum >> 1) ^ 0xA000);
+      checksum = (uint16_t)((checksum >> 1) ^ 0xA000);
     else
       checksum >>= 1;
   }
@@ -152,35 +152,35 @@ void XbbsArea::save_message(int __mode, gmsg* __msg, XbbsHdr& __hdr) {
   __hdr.timerecv = __msg->received;
   __hdr.origaddr = __msg->oorig;
   __hdr.destaddr = __msg->odest;
-  __hdr.cost = (ushort)__msg->cost;
+  __hdr.cost = (uint16_t)__msg->cost;
 
   // Transfer attributes
-  __hdr.fflags |= (ushort)(__msg->attr.pvt() ? FFLAGS_MSGPRIVATE  : 0);
-  __hdr.fflags |= (ushort)(__msg->attr.cra() ? FFLAGS_MSGCRASH    : 0);
-  __hdr.fflags |= (ushort)(__msg->attr.rcv() ? FFLAGS_MSGREAD     : 0);
-  __hdr.fflags |= (ushort)(__msg->attr.snt() ? FFLAGS_MSGSENT     : 0);
-  __hdr.fflags |= (ushort)(__msg->attr.att() ? FFLAGS_MSGFILE     : 0);
-  __hdr.fflags |= (ushort)(__msg->attr.trs() ? FFLAGS_MSGFWD      : 0);
-  __hdr.fflags |= (ushort)(__msg->attr.orp() ? FFLAGS_MSGORPHAN   : 0);
-  __hdr.fflags |= (ushort)(__msg->attr.k_s() ? FFLAGS_MSGKILL     : 0);
-  __hdr.fflags |= (ushort)(__msg->attr.loc() ? FFLAGS_MSGLOCAL    : 0);
-  __hdr.fflags |= (ushort)(__msg->attr.rsv() ? FFLAGS_MSGXX2      : 0);
-  __hdr.fflags |= (ushort)(__msg->attr.frq() ? FFLAGS_MSGFRQ      : 0);
-  __hdr.fflags |= (ushort)(__msg->attr.rrq() ? FFLAGS_MSGRRQ      : 0);
-  __hdr.fflags |= (ushort)(__msg->attr.rrc() ? FFLAGS_MSGCPT      : 0);
-  __hdr.fflags |= (ushort)(__msg->attr.arq() ? FFLAGS_MSGARQ      : 0);
-  __hdr.fflags |= (ushort)(__msg->attr.urq() ? FFLAGS_MSGURQ      : 0);
+  __hdr.fflags |= (uint16_t)(__msg->attr.pvt() ? FFLAGS_MSGPRIVATE  : 0);
+  __hdr.fflags |= (uint16_t)(__msg->attr.cra() ? FFLAGS_MSGCRASH    : 0);
+  __hdr.fflags |= (uint16_t)(__msg->attr.rcv() ? FFLAGS_MSGREAD     : 0);
+  __hdr.fflags |= (uint16_t)(__msg->attr.snt() ? FFLAGS_MSGSENT     : 0);
+  __hdr.fflags |= (uint16_t)(__msg->attr.att() ? FFLAGS_MSGFILE     : 0);
+  __hdr.fflags |= (uint16_t)(__msg->attr.trs() ? FFLAGS_MSGFWD      : 0);
+  __hdr.fflags |= (uint16_t)(__msg->attr.orp() ? FFLAGS_MSGORPHAN   : 0);
+  __hdr.fflags |= (uint16_t)(__msg->attr.k_s() ? FFLAGS_MSGKILL     : 0);
+  __hdr.fflags |= (uint16_t)(__msg->attr.loc() ? FFLAGS_MSGLOCAL    : 0);
+  __hdr.fflags |= (uint16_t)(__msg->attr.rsv() ? FFLAGS_MSGXX2      : 0);
+  __hdr.fflags |= (uint16_t)(__msg->attr.frq() ? FFLAGS_MSGFRQ      : 0);
+  __hdr.fflags |= (uint16_t)(__msg->attr.rrq() ? FFLAGS_MSGRRQ      : 0);
+  __hdr.fflags |= (uint16_t)(__msg->attr.rrc() ? FFLAGS_MSGCPT      : 0);
+  __hdr.fflags |= (uint16_t)(__msg->attr.arq() ? FFLAGS_MSGARQ      : 0);
+  __hdr.fflags |= (uint16_t)(__msg->attr.urq() ? FFLAGS_MSGURQ      : 0);
 
-  __hdr.xflags |= (ushort)(__msg->attr.del() ? XFLAGS_MSGDELETED  : 0);
-  __hdr.xflags |= (ushort)(__msg->attr.ano() ? XFLAGS_MSGANON     : 0);
-  __hdr.xflags |= (ushort)(__msg->attr.fsc() ? XFLAGS_MSGSCANNED  : 0);
-  __hdr.xflags |= (ushort)(__msg->attr.lok() ? XFLAGS_MSGKEEP     : 0);
-  __hdr.xflags |= (ushort)(__msg->attr.trt() ? XFLAGS_MSGTREATED  : 0);
-  __hdr.xflags |= (ushort)(__msg->attr.lzs() ? XFLAGS_MSGPACKED   : 0);
-  __hdr.xflags |= (ushort)(__msg->attr.gsc() ? XFLAGS_MSGGSCAN    : 0);
-  __hdr.xflags |= (ushort)(__msg->attr.rsc() ? XFLAGS_MSGRSCAN    : 0);
-  __hdr.xflags |= (ushort)(__msg->attr.arc() ? XFLAGS_MSGARCHIVED : 0);
-  __hdr.xflags |= (ushort)(__msg->attr.tag() ? XFLAGS_MSGTAGGED   : 0);
+  __hdr.xflags |= (uint16_t)(__msg->attr.del() ? XFLAGS_MSGDELETED  : 0);
+  __hdr.xflags |= (uint16_t)(__msg->attr.ano() ? XFLAGS_MSGANON     : 0);
+  __hdr.xflags |= (uint16_t)(__msg->attr.fsc() ? XFLAGS_MSGSCANNED  : 0);
+  __hdr.xflags |= (uint16_t)(__msg->attr.lok() ? XFLAGS_MSGKEEP     : 0);
+  __hdr.xflags |= (uint16_t)(__msg->attr.trt() ? XFLAGS_MSGTREATED  : 0);
+  __hdr.xflags |= (uint16_t)(__msg->attr.lzs() ? XFLAGS_MSGPACKED   : 0);
+  __hdr.xflags |= (uint16_t)(__msg->attr.gsc() ? XFLAGS_MSGGSCAN    : 0);
+  __hdr.xflags |= (uint16_t)(__msg->attr.rsc() ? XFLAGS_MSGRSCAN    : 0);
+  __hdr.xflags |= (uint16_t)(__msg->attr.arc() ? XFLAGS_MSGARCHIVED : 0);
+  __hdr.xflags |= (uint16_t)(__msg->attr.tag() ? XFLAGS_MSGTAGGED   : 0);
 
   if(not (__mode & GMSG_UPDATE)) {
     if(__msg->attr.uns()) {

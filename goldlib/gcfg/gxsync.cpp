@@ -39,7 +39,7 @@ void gareafile::ReadSynchronet(char* tag) {
 
   Path file, path;
   char options[80];
-  ushort shrt, i;
+  uint16_t shrt, i;
   grp_t grp;
   sub_t sub;
 
@@ -98,13 +98,13 @@ void gareafile::ReadSynchronet(char* tag) {
     // unused (0xff)					512
     fseek(in, 1034, SEEK_CUR);
 
-    if(fread(&shrt, sizeof(ushort), 1, in) == 1) {
+    if(fread(&shrt, sizeof(uint16_t), 1, in) == 1) {
       for(i = 0; i < shrt; i++) {
         if(fread(&grp, sizeof(grp_t), 1, in) != 1)
           break;
       }
     }
-    if(fread(&shrt, sizeof(ushort), 1, in) == 1) {
+    if(fread(&shrt, sizeof(uint16_t), 1, in) == 1) {
       for(i = 0; i < shrt; i++) {
         if(fread(&sub, sizeof(sub_t), 1, in) != 1)
           break;

@@ -208,11 +208,11 @@ struct m_pointers {
 
   /* Miscellanious system information */
 
-  byte  video;          /* Mode for local video display              */
-  byte  log_mode;       /* What style of logging to use              */
-  word  max_baud;       /* fastest speed we can use                  */
-  sbyte multitasker;    /* flag for DoubleDos (see below)            */
-  byte  nlver;          /* Which nodelist version we use (NLVER_XXX) */
+  byte    video;        /* Mode for local video display              */
+  byte    log_mode;     /* What style of logging to use              */
+  word    max_baud;     /* fastest speed we can use                  */
+  int8_t  multitasker;  /* flag for DoubleDos (see below)            */
+  byte    nlver;        /* Which nodelist version we use (NLVER_XXX) */
 
   int16_t min_ulist;    /* OBSOLETE!  Only used for compatibility    */
   int16_t max_ulist;    /* with Maximus 2.x!                         */

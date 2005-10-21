@@ -141,7 +141,7 @@ int ftn_version7_nodelist_index::namecmp() const {
   int n = 1;
   int d;
   while(1) {
-    d = tolower((uchar)*a) - tolower((uchar)*b);
+    d = tolower((uint8_t)*a) - tolower((uint8_t)*b);
     if((d != 0) or (*a == NUL) or (*b == NUL))
       break;
     a++;

@@ -346,8 +346,8 @@ int SMBArea::load_hdr(gmsg* __msg, smbmsg_t *smsg)
 int SMBArea::load_msg(gmsg* msg)
 {
   smbmsg_t smsg;
-  ushort xlat;
-  uchar *inbuf;
+  uint16_t xlat;
+  uint8_t  *inbuf;
   int32_t outlen;
   char buf[512];
   int i;
@@ -446,11 +446,11 @@ common:
         if(xlat != XLAT_NONE) /* no other translations currently supported */
           continue;
         if(lzh) {
-          inbuf = (uchar *)throw_xmalloc(smsg.dfield[i].length);
+          inbuf = (uint8_t *)throw_xmalloc(smsg.dfield[i].length);
           fread(inbuf, smsg.dfield[i].length - l, 1, data->sdt_fp);
           outlen = *(int32_t *)inbuf;
           msg->txt = (char *)throw_realloc(msg->txt, txt_len+outlen);
-          lzh_decode(inbuf, smsg.dfield[i].length - l, (uchar *)(msg->txt+txt_len-1));
+          lzh_decode(inbuf, smsg.dfield[i].length - l, (uint8_t *)(msg->txt+txt_len-1));
           throw_xfree(inbuf);
         }
         else if(l < smsg.dfield[i].length) {
@@ -604,12 +604,12 @@ void SMBArea::save_hdr(int mode, gmsg* msg)
     smsg.hfield_dat = NULL;
   }
 
-  ushort net = NET_FIDO;
+  uint16_t net = NET_FIDO;
   destaddr.zone = msg->dest.zone;
   destaddr.net = msg->dest.net;
   destaddr.node = msg->dest.node;
   destaddr.point = msg->dest.point;
-  smb_hfield(&smsg, RECIPIENTNETTYPE, sizeof(ushort), &net);
+  smb_hfield(&smsg, RECIPIENTNETTYPE, sizeof(uint16_t), &net);
   smb_hfield(&smsg, RECIPIENTNETADDR, sizeof(fidoaddr_t), &destaddr);
 
   smb_hfield(&smsg, SENDER, strlen(msg->by), msg->by);
@@ -753,12 +753,12 @@ void SMBArea::save_hdr(int mode, gmsg* msg)
 
   if(smsg.hdr.offset != (uint32_t)-1L) {
     fseek(data->sdt_fp, smsg.hdr.offset, SEEK_SET);
-    *(ushort *)(sbody-2) = XLAT_NONE;
+    *(uint16_t *)(sbody-2) = XLAT_NONE;
     l = ftell(data->sdt_fp);
     fwrite(sbody-2, SDT_BLOCK_LEN, smb_datblocks(bodylen), data->sdt_fp);
     if(taillen) {
       fseek(data->sdt_fp, l+bodylen+2, SEEK_SET);
-      *(ushort *)(stail-2) = XLAT_NONE;
+      *(uint16_t *)(stail-2) = XLAT_NONE;
       fwrite(stail-2, SDT_BLOCK_LEN, smb_datblocks(taillen), data->sdt_fp);
     }
     fflush(data->sdt_fp);
@@ -895,7 +895,7 @@ void SMBArea::update_timesread(gmsg* msg)
 
 //  ------------------------------------------------------------------
 
-static char *binstr(char *buf, ushort length)
+static char *binstr(char *buf, uint16_t length)
 {
   static char str[128];
   char tmp[128];
@@ -1036,9 +1036,9 @@ Line* SMBArea::make_dump_msg(Line*& lin, gmsg* msg, char* lng_head)
   HexDump16(buf+7, _ptr, sizeof(msghdr_t)%16, HEX_DUMP2);
   line = AddLine(line, buf);
 
-  ushort xlat;
-  uchar *inbuf;
-  int32_t outlen;
+  uint16_t xlat;
+  uint8_t  *inbuf;
+  int32_t  outlen;
   bool lzh;
   bool tail = true;
   uint32_t l;
@@ -1071,11 +1071,11 @@ common:
         if(xlat != XLAT_NONE) /* no other translations currently supported */
           continue;
         if(lzh) {
-          inbuf = (uchar *)throw_xmalloc(smsg.dfield[i].length);
+          inbuf = (uint8_t *)throw_xmalloc(smsg.dfield[i].length);
           fread(inbuf, smsg.dfield[i].length - l, 1, data->sdt_fp);
           outlen = *(int32_t *)inbuf;
           msg->txt = (char *)throw_realloc(msg->txt, txt_len+outlen);
-          lzh_decode(inbuf, smsg.dfield[i].length - l, (uchar *)(msg->txt+txt_len-1));
+          lzh_decode(inbuf, smsg.dfield[i].length - l, (uint8_t *)(msg->txt+txt_len-1));
           throw_xfree(inbuf);
         }
         else if(l < smsg.dfield[i].length) {

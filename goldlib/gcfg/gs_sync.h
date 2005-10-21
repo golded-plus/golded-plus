@@ -88,23 +88,23 @@ const int SUB_HYPER = (1L<<27);   // Hyper allocation
 //  ------------------------------------------------------------------
 
 typedef struct {                // Message group info
-  char   lname[LEN_GLNAME+1],   // Short name
-         sname[LEN_GSNAME+1];   // Long name
-  uchar  ar[LEN_ARSTR+1],       // Access requirements
-         unused[96];            // unused
+  char    lname[LEN_GLNAME+1],  // Short name
+          sname[LEN_GSNAME+1];  // Long name
+  uint8_t ar[LEN_ARSTR+1],      // Access requirements
+          unused[96];           // unused
 } grp_t;
 
 typedef struct {                // Message sub board info
-  ushort grp;                   // Which group this sub belongs to
+  uint16_t grp;                 // Which group this sub belongs to
   char   lname[LEN_SLNAME+1],   // Long name - used for listing
          sname[LEN_SSNAME+1],   // Short name - used for prompts
          qwkname[LEN_SQWKNAME+1], // QWK name
          code[9],               // Eight character code
          data_dir[LEN_DIR+1];   // Data file directory
-  uchar  ar[LEN_ARSTR+1],       // Access requirements
-         read_ar[LEN_ARSTR+1],  // Read requirements
-         post_ar[LEN_ARSTR+1],  // Post requirements
-         op_ar[LEN_ARSTR+1];    // Operator requirements
+  uint8_t ar[LEN_ARSTR+1],      // Access requirements
+          read_ar[LEN_ARSTR+1], // Read requirements
+          post_ar[LEN_ARSTR+1], // Post requirements
+          op_ar[LEN_ARSTR+1];   // Operator requirements
   uint32_t misc;                // Miscellaneous flags
   char   tagline[81],           // Optional QWK net tag line
          origline[51],          // Optional EchoMail origin line
@@ -112,12 +112,12 @@ typedef struct {                // Message sub board info
          echopath[LEN_DIR+1];   // EchoMail path
   ftn_addr faddr;               // FidoNet address
   uint32_t maxmsgs,             // Max number of messages allowed
-         maxcrcs;               // Max number of CRCs to keep
-  ushort maxage,                // Max age of messages (in days)
-         ptridx;                // Index into pointer file
-  uchar  mod_ar[LEN_ARSTR+1];   // Moderated user requirements
-  ushort qwkconf;               // QWK configuration
-  uchar  unused[53];            // unused
+           maxcrcs;             // Max number of CRCs to keep
+  uint16_t maxage,              // Max age of messages (in days)
+           ptridx;              // Index into pointer file
+  uint8_t  mod_ar[LEN_ARSTR+1]; // Moderated user requirements
+  uint16_t qwkconf;             // QWK configuration
+  uint8_t  unused[53];          // unused
 } sub_t;
 
 //  ------------------------------------------------------------------

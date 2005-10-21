@@ -87,11 +87,11 @@ struct PcbUsers {
 
 struct PcbUsersInfHdr {
 
-  ushort version;                  // PCBoard Version Number
-  ushort numofconf;                // Number of EXTENDED Conferences Allocated in File
-  ushort sizeofrec;                // Size of the 'static' PCBoard User Record
+  uint16_t version;               // PCBoard Version Number
+  uint16_t numofconf;             // Number of EXTENDED Conferences Allocated in File
+  uint16_t sizeofrec;             // Size of the 'static' PCBoard User Record
   long  sizeofconf;               // Total Size of PCBoard Conference Information
-  ushort numofapps;                // Number of Third Party Apps adding onto the record
+  uint16_t numofapps;             // Number of Third Party Apps adding onto the record
   long  totalrecsize;             // Total Record Size (PCB and all TPA components)
 };
 
@@ -102,9 +102,9 @@ struct PcbUsersInfHdr {
 struct PcbUsersInfApp {
 
   char  name[15];                 // Name of Application (NULL terminated)
-  ushort version;                  // Version Number
-  ushort sizeofrec;                // Size of Application Record information (0-65535)
-  ushort sizeofconfrec;            // Size of Conference Record information (0-65535)
+  uint16_t version;               // Version Number
+  uint16_t sizeofrec;             // Size of Application Record information (0-65535)
+  uint16_t sizeofconfrec;         // Size of Conference Record information (0-65535)
   char  keyword[9];               // Keyword to execute Application (NULL terminated)
   long  offset;                   // Offset in User Record where TPA record begins
 };

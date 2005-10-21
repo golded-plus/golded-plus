@@ -291,7 +291,7 @@ void gareafile::ReadFMail(char* tag) {
         fclose(fpar);
       }
 
-      uint ar_rev = (ushort)ar.revNumber;
+      uint32_t ar_rev = (uint16_t)ar.revNumber;
 
       if((ar_rev >= 0x0100) and (ar_rev < 0x0110))
         ReadFMail098(fp, path, file, options);

@@ -127,13 +127,8 @@ typedef unsigned int    uint32_t;
 #error Don't know how to define 32 bit integers
 #endif
 
-typedef  int8_t   sbyte;
 typedef uint8_t   byte;
-typedef uint8_t   uchar;
-
 typedef uint16_t  word;
-typedef uint16_t  ushort;
-
 typedef uint32_t  dword;
 #endif  //#ifdef _MSC_VER
 

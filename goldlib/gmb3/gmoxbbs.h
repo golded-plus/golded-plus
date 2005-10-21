@@ -96,27 +96,27 @@
 struct XbbsHdr {
   char    majorversion; // Minor revision number of this message style
   char    minorversion; // Minor revision number of this message style
-  ushort  structlen;    // The length of this data structure
+  uint16_t  structlen;  // The length of this data structure
   char    from[60];     // Who the message is from
   char    to[60];       // Who the message is to
   char    subj[70];     // The subject of the message
   char    date[35];     // Date the message was written
   char    indate[4];    // Import date
-  uint32_t   msgnum;       // Current message number
-  uint32_t   timesread;    // Number of times the message has been read
-  time32_t  timerecv;     // Time user received this message
-  uint32_t   length;       // Length of message stored in .Text Data file
-  int32_t    start;        // Pointer to starting byte in .Text Data file
-  uint32_t   extra1;       // Extra space  // Was going to be for reply
-  uint32_t   extra2;       // Extra space  // linking instead came up with
-  uint32_t   extra3;       // Extra space  // a better method
-  Addr    origaddr;     // Messages origin
-  Addr    destaddr;     // Messages destination
-  ushort  cost;         // Cost to send this message
-  ushort  fflags;       // Fidonet related flags
-  ushort  xflags;       // XBBS related flags
-  uint32_t   iflags;       // Internet related flags
-  uint32_t   oflags;       // Other network related flags
+  uint32_t  msgnum;     // Current message number
+  uint32_t  timesread;  // Number of times the message has been read
+  time32_t  timerecv;   // Time user received this message
+  uint32_t  length;     // Length of message stored in .Text Data file
+  int32_t   start;      // Pointer to starting byte in .Text Data file
+  uint32_t  extra1;     // Extra space  // Was going to be for reply
+  uint32_t  extra2;     // Extra space  // linking instead came up with
+  uint32_t  extra3;     // Extra space  // a better method
+  Addr      origaddr;   // Messages origin
+  Addr      destaddr;   // Messages destination
+  uint16_t  cost;       // Cost to send this message
+  uint16_t  fflags;     // Fidonet related flags
+  uint16_t  xflags;     // XBBS related flags
+  uint32_t  iflags;     // Internet related flags
+  uint32_t  oflags;     // Other network related flags
 };
 
 
@@ -124,13 +124,13 @@ struct XbbsHdr {
 //  AdeptXBBS Message Index (*.Index)
 
 struct XbbsIdx {
-  ushort  to;             // Checksum of the to field
-  ushort  from;           // Checksum of the from field
-  ushort  subj;           // Checksum of the subject field
-  uint32_t   msgidcrc;       // MSGID 32-bit CRC of address field (starting value 0xFFFFFFFF)
-  uint32_t   msgidserialno;  // MSGID Serial number field
-  uint32_t   replycrc;       // REPLY 32-bit CRC of address field (starting value 0xFFFFFFFF)
-  uint32_t   replyserialno;  // REPLY Serial number field
+  uint16_t  to;             // Checksum of the to field
+  uint16_t  from;           // Checksum of the from field
+  uint16_t  subj;           // Checksum of the subject field
+  uint32_t  msgidcrc;       // MSGID 32-bit CRC of address field (starting value 0xFFFFFFFF)
+  uint32_t  msgidserialno;  // MSGID Serial number field
+  uint32_t  replycrc;       // REPLY 32-bit CRC of address field (starting value 0xFFFFFFFF)
+  uint32_t  replyserialno;  // REPLY Serial number field
 };
 
 
