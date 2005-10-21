@@ -68,7 +68,6 @@ typedef unsigned int    uint32_t;
 #include <stdint.h>
 #endif  //#ifdef _MSC_VER
 
-typedef   signed int sint;
 typedef unsigned int uint;
 
 typedef uint8_t   bit;
@@ -76,9 +75,7 @@ typedef uint8_t   bit;
 typedef  int8_t   sbyte;
 typedef uint8_t   byte;
 
-typedef  int16_t  sword;
 typedef uint16_t  word;
-typedef  int16_t  sshort;
 typedef uint16_t  ushort;
 
 typedef uint32_t  dword;

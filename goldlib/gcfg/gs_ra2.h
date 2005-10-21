@@ -43,12 +43,12 @@
 //
 //  ------------------------------------------------------------------
 
-typedef unsigned char   Boolean;
-typedef char            Char;
-typedef unsigned char   Byte;
-typedef unsigned short  Word;
-typedef signed short    Integer;
-typedef signed long     LongInt;
+typedef char      Char;
+typedef uint8_t   Byte;
+typedef uint8_t   Boolean;
+typedef  int16_t  Integer;
+typedef uint16_t  Word;
+typedef  int32_t  LongInt;
 
 typedef Byte       FlagType[4];
 typedef Char       ra_Time[6];

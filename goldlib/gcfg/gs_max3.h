@@ -165,7 +165,7 @@ typedef word OFS;
 // OBSOLETE!  Only used for compatibility purposes
 
 struct   cl_rec {
-  sword    priv;
+  int16_t  priv;
   word     max_time;      // max cume time per day
   word     max_call;      // max time for one call
   word     max_dl;        // max dl kbytes per day
@@ -199,12 +199,12 @@ struct m_pointers {
 
 // DATA
 
-  byte  id;             /* Always equal to 'M'               STABLE  */
-  byte  version;        /* for safety                        STABLE  */
-  word  heap_offset;    /* OFFSET OF BEGINNING OF HEAP!      STABLE  */
-  byte  task_num;       /* for multi-tasking systems         STABLE  */
-  sword com_port;       /* Com1=0, Com2=1, etc               STABLE  */
-  byte  noise_ok;       /* If yell noise is currently on     STABLE  */
+  byte    id;           /* Always equal to 'M'               STABLE  */
+  byte    version;      /* for safety                        STABLE  */
+  word    heap_offset;  /* OFFSET OF BEGINNING OF HEAP!      STABLE  */
+  byte    task_num;     /* for multi-tasking systems         STABLE  */
+  int16_t com_port;     /* Com1=0, Com2=1, etc               STABLE  */
+  byte    noise_ok;     /* If yell noise is currently on     STABLE  */
 
   /* Miscellanious system information */
 
@@ -214,8 +214,8 @@ struct m_pointers {
   sbyte multitasker;    /* flag for DoubleDos (see below)            */
   byte  nlver;          /* Which nodelist version we use (NLVER_XXX) */
 
-  sword min_ulist;      /* OBSOLETE!  Only used for compatibility    */
-  sword max_ulist;      /* with Maximus 2.x!                         */
+  int16_t min_ulist;    /* OBSOLETE!  Only used for compatibility    */
+  int16_t max_ulist;    /* with Maximus 2.x!                         */
 
   /* Information about errorlevels */
 
@@ -226,8 +226,8 @@ struct m_pointers {
 
   /* Modem information */
 
-  sword carrier_mask;
-  sword handshake_mask;
+  int16_t carrier_mask;
+  int16_t handshake_mask;
 
   /* Log-on information */
 
@@ -250,7 +250,7 @@ struct m_pointers {
   word  speed_rip;      /* min baud for rip graphics                 */
   byte  rsvd1[2];       /* used to be high_msgarea, begin_msgarea    */
   word unlisted_priv;   /* Priv needed to send to unlisted node      */
-  sword unlisted_cost;  /* Charge to send to unlisted node           */
+  int16_t unlisted_cost;  /* Charge to send to unlisted node           */
 
   word mc_reply_priv;   /* Priv to reply to msg with mailchecker     */
   word mc_kill_priv;    /* Priv to kill msg with mailchecker         */
@@ -258,7 +258,7 @@ struct m_pointers {
 
   /* Information about file areas */
 
-  sword date_style;     /* Used for FILES.BBS display                */
+  int16_t date_style;   /* Used for FILES.BBS display                */
   word rsvd20;          /* Reserved (used to be dlall_priv)          */
   word rsvd21;          /* Reserved (used to be ulbbs_priv)          */
   dword k_free;         /* The number of disk space (in K) which     *
@@ -280,7 +280,7 @@ struct m_pointers {
 
   /* Flags for external protocols */
 
-  sword protoexit;              /* Errorlevel for protocol exit      */
+  int16_t protoexit;            /* Errorlevel for protocol exit      */
   char  protoflag[MAX_EXTERNP];
 
   /* General-purpose bit-flags  (See FLAGx_xxx definitions above.) */
