@@ -392,17 +392,17 @@ int gfile::setvbuf(char* __buf, int __type, size_t __size) {
 #ifdef __GOLDWARE_HAS_BOOL
 gfile& gfile::operator>> (bool& i)             { fread(&i, sizeof(bool)); return *this; }
 #endif
-gfile& gfile::operator>> (unsigned char& i)    { fread(&i, sizeof(unsigned char)); return *this; }
-gfile& gfile::operator>> (unsigned short& i)   { fread(&i, sizeof(unsigned short)); return *this; }
-gfile& gfile::operator>> (unsigned int& i)     { unsigned int ii; fread(&ii, sizeof(unsigned int)); i = ii; return *this; }
+gfile& gfile::operator>> (uint8_t& i)          { fread(&i, sizeof(uint8_t)); return *this; }
+gfile& gfile::operator>> (uint16_t& i)         { fread(&i, sizeof(uint16_t)); return *this; }
+gfile& gfile::operator>> (uint32_t& i)         { fread(&i, sizeof(uint32_t)); return *this; }
 gfile& gfile::operator>> (unsigned long& i)    { fread(&i, sizeof(unsigned long)); return *this; }
 
 #ifdef __GOLDWARE_HAS_BOOL
 gfile& gfile::operator<< (bool o)             { fwrite(&o, sizeof(o)); return *this; }
 #endif
-gfile& gfile::operator<< (unsigned char o)    { fwrite(&o, sizeof(o)); return *this; }
-gfile& gfile::operator<< (unsigned short o)   { fwrite(&o, sizeof(o)); return *this; }
-gfile& gfile::operator<< (unsigned int o)     { fwrite(&o, sizeof(o)); return *this; }
+gfile& gfile::operator<< (uint8_t o)          { fwrite(&o, sizeof(o)); return *this; }
+gfile& gfile::operator<< (uint16_t o)         { fwrite(&o, sizeof(o)); return *this; }
+gfile& gfile::operator<< (uint32_t o)         { fwrite(&o, sizeof(o)); return *this; }
 gfile& gfile::operator<< (unsigned long o)    { fwrite(&o, sizeof(o)); return *this; }
 
 

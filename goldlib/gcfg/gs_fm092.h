@@ -134,8 +134,8 @@ typedef struct {
   char            versionMajor;
   char            versionMinor;
   long            creationDate;
-  unsigned long   key;
-  unsigned long   reservedKey;
+  uint32_t        key;
+  uint32_t        reservedKey;
   char            sysopNameOld[32];
   akaListType     akaList;
   nodeFakeType    reservedAka[16-MAX_AKAS];

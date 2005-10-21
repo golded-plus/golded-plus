@@ -152,22 +152,22 @@ struct dom {
 };
 
 struct im_stats {
-  unsigned long  th_day_nr;                   /* nr this day */
-  unsigned long  la_day_nr;                   /* nr last day */
-  unsigned long  th_week_nr;                  /* nr this week */
-  unsigned long  la_week_nr;                  /* nr last week */
-  unsigned long  th_month_nr;                 /* nr this month */
-  unsigned long  la_month_nr;                 /* nr last month */
-  unsigned long  th_year_nr;                  /* nr this year */
-  unsigned long  la_year_nr;                  /* nr last year */
-  unsigned long  th_day_size;                 /* amount this day */
-  unsigned long  la_day_size;                 /* amount last day */
-  unsigned long  th_week_size;                /* amount this week */
-  unsigned long  la_week_size;                /* amount last week */
-  unsigned long  th_month_size;               /* amount this month */
-  unsigned long  la_month_size;               /* amount last month */
-  unsigned long  th_year_size;                /* amount this year */
-  unsigned long  la_year_size;                /* amount last year */
+  uint32_t  th_day_nr;      /* nr this day */
+  uint32_t  la_day_nr;      /* nr last day */
+  uint32_t  th_week_nr;     /* nr this week */
+  uint32_t  la_week_nr;     /* nr last week */
+  uint32_t  th_month_nr;    /* nr this month */
+  uint32_t  la_month_nr;    /* nr last month */
+  uint32_t  th_year_nr;     /* nr this year */
+  uint32_t  la_year_nr;     /* nr last year */
+  uint32_t  th_day_size;    /* amount this day */
+  uint32_t  la_day_size;    /* amount last day */
+  uint32_t  th_week_size;   /* amount this week */
+  uint32_t  la_week_size;   /* amount last week */
+  uint32_t  th_month_size;  /* amount this month */
+  uint32_t  la_month_size;  /* amount last month */
+  uint32_t  th_year_size;   /* amount this year */
+  uint32_t  la_year_size;   /* amount last year */
 };
 
 
@@ -247,7 +247,7 @@ struct im_config_type {
   byte           unlink_req;                    /* Unlink areas without dlink */
   byte           keep_alnk_req;                 /* keep arealink request */
   byte           rsvd7;                         /* reserved */
-  unsigned long  max_dupes;                     /* max dupes kept in dbase */
+  uint32_t       max_dupes;                     /* max dupes kept in dbase */
   word           max_files_per_dir;             /* max. nr files when autocreate */
   byte           deadlink_days;                 /* nr of days for a dealink req */
   byte           rsvd8;                         /* reserved */
@@ -266,8 +266,8 @@ struct im_config_type {
   char           echojam[MAXPATH];              /* path to ECHOMAIL.JAM */
   char           before_toss_ii[MAXPATH];       /* call before proc. the PKTs */
   char           userbase[MAXPATH];             /* path to the userbase */
-  unsigned long  stoptossmsgs;                  /* stop tossing after xxxxx msgs */
-  unsigned long  stoptossnetmsgs;               /* stop tossing after xxxxx net */
+  uint32_t       stoptossmsgs;                  /* stop tossing after xxxxx msgs */
+  uint32_t       stoptossnetmsgs;               /* stop tossing after xxxxx net */
                                                 /* msgs within a PKT or at all */
   char           ignorelist[MAXPATH];           /* list of areas to suppress */
   char           db_queue[MAXPATH];             /* D'Bridge queue directory */

@@ -833,14 +833,14 @@ struct _common_data {
       long crmin;          /* Total minutes given to user ..................*/
       long dbmin;          /* Total minutes used  to user ..................*/
 
-      char u_section[16];		/* String for user current section          */
-      char ulikes[16];     /* String of user interest keywords .............*/
-      long  fudate;        /* First time user called system in seconds      */
-      unsigned long  caller_id;   /* Unique ID for this user. fudate        */
-      unsigned long  Section;		/* What "section" of the bbs the user is in.    */
-      word  menu_mode;     /* What menu the user was at last ...............*/
-      word  TwoBits;  		/* More user configuration flags                */
-      word  After_Externs;		/* Any special flags from external?         */
+      char u_section[16];   /* String for user current section          */
+      char ulikes[16];      /* String of user interest keywords .............*/
+      int32_t  fudate;      /* First time user called system in seconds      */
+      uint32_t caller_id;   /* Unique ID for this user. fudate        */
+      uint32_t Section;     /* What "section" of the bbs the user is in.    */
+      word  menu_mode;      /* What menu the user was at last ...............*/
+      word  TwoBits;        /* More user configuration flags                */
+      word  After_Externs;  /* Any special flags from external?         */
       byte  msecs;     /* Number of message areas in User sections defined  */
       byte  fsecs;     /* Number of file areas in User sections defined     */
 
@@ -849,14 +849,14 @@ struct _common_data {
       word lastmsg[MAXLREAD];       /* All the last message read stuff .....*/
 #else
 /* New for Opus 1.20 */
-       char    Address[32];		/* User's address                        */
-       char    My_Ans[64];		    /* Reply to prm.My_Question              */
-       char    Strfill[32];		/* Filler for more strings               */
-       char    bday_mon;   		/* User's birthday/month                 */
-       char    bday_day;   		/* User's birthday/day                   */
-       short     bday_year;               /* User's birthday/year                  */
-       unsigned long    messages_read;		/* Total number of messages read */
-       long    messages_sent;		/* Number of messages entered by user    */
+       char    Address[32];   /* User's address                        */
+       char    My_Ans[64];    /* Reply to prm.My_Question              */
+       char    Strfill[32];   /* Filler for more strings               */
+       char    bday_mon;      /* User's birthday/month                 */
+       char    bday_day;      /* User's birthday/day                   */
+       short   bday_year;     /* User's birthday/year                  */
+       uint32_t messages_read;  /* Total number of messages read */
+       int32_t  messages_sent;  /* Number of messages entered by user    */
 
        word     my_section[MAX_USEC];		/* This is just a block of area  */
                                      		/* numbers in the user's Section */
@@ -873,7 +873,7 @@ struct _common_data {
        byte    User_DMacro[16];		/* Default User's keyboard Macro       */
        byte    Sysop_Comment[80];		/* Anything you want to say about 'em  */
 #endif
-      unsigned long OPUS_id;
+      uint32_t OPUS_id;
 
                            /* The next 7 sets of id and inf data are for    */
                            /* external programs to use for auxialliary inf. */
@@ -1413,17 +1413,17 @@ struct  _ascan {		/* structure of address for echoScanning */
 /* LMR is used in LREAD.DAT to store the user's last message read counter   */
 /*--------------------------------------------------------------------------*/
 struct  _lmr {
-    unsigned long    user_id;
-    word    high_msg;
-    word    last_msg;
+    uint32_t  user_id;
+    word      high_msg;
+    word      last_msg;
 };
 
 /*--------------------------------------------------------------------------*/
 /* LF is used to store the last time a user has accessed each area          */
 /*--------------------------------------------------------------------------*/
 struct  _lf {
-    unsigned long    user_id;
-    unsigned long    last_timestamp;
+    uint32_t  user_id;
+    uint32_t  last_timestamp;
 }; 
 
 /*--------------------------------------------------------------------------*/

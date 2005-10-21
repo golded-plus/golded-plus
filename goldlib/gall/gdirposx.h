@@ -57,7 +57,7 @@ private:
 	std::string dirname;
 	gdirentry ret;
 	gstrarray entries;
-	unsigned long last_entry;
+	uint32_t last_entry;
 
 public:
 	bool ok;

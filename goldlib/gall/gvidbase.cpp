@@ -80,7 +80,7 @@
 
 static bool __vcurhidden = false;
 #if defined(__UNIX__) || defined(__USE_NCURSES__)
-static unsigned long gvid_boxcvtc(char);
+static uint32_t gvid_boxcvtc(char);
 #endif
 
 #if !defined(__USE_NCURSES__)
@@ -2094,7 +2094,7 @@ void gvid_boxcvt(char* s) {
     *s++ = (char)gvid_boxcvtc(*s);
 }
 
-static unsigned long gvid_boxcvtc(char c) {
+static uint32_t gvid_boxcvtc(char c) {
     switch(c) {
 #if 0
       case 'Ú': return _box_table(8, 0);

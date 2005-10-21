@@ -153,28 +153,28 @@ public:
   #ifdef __GOLDWARE_HAS_BOOL
   gfile& operator>> (bool& i);
   #endif
-  gfile& operator>> (unsigned char& i);
-  gfile& operator>> (unsigned short& i);
-  gfile& operator>> (unsigned int& i);
+  gfile& operator>> (uint8_t& i);
+  gfile& operator>> (uint16_t& i);
+  gfile& operator>> (uint32_t& i);
   gfile& operator>> (unsigned long& i);
-  gfile& operator>> (char& i)        { return operator>>((unsigned char&)i); }
-  gfile& operator>> (signed char& i) { return operator>>((unsigned char&)i); }
-  gfile& operator>> (short& i)       { return operator>>((unsigned short&)i); }
-  gfile& operator>> (int& i)         { return operator>>((unsigned int&)i); }
-  gfile& operator>> (long& i)        { return operator>>((unsigned long&)i); }
+  gfile& operator>> (char& i)     { return operator>>((uint8_t&)i); }
+  gfile& operator>> (int8_t& i)   { return operator>>((uint8_t&)i); }
+  gfile& operator>> (int16_t& i)  { return operator>>((uint16_t&)i); }
+  gfile& operator>> (int32_t& i)  { return operator>>((uint32_t&)i); }
+  gfile& operator>> (long& i)     { return operator>>((unsigned long&)i); }
 
   #ifdef __GOLDWARE_HAS_BOOL
   gfile& operator<< (bool o);
   #endif
-  gfile& operator<< (unsigned char o);
-  gfile& operator<< (unsigned short o);
-  gfile& operator<< (unsigned int o);
+  gfile& operator<< (uint8_t o);
+  gfile& operator<< (uint16_t o);
+  gfile& operator<< (uint32_t o);
   gfile& operator<< (unsigned long o);
-  gfile& operator<< (char o)        { return operator<<((unsigned char)o); }
-  gfile& operator<< (signed char o) { return operator<<((unsigned char)o); }
-  gfile& operator<< (short o)       { return operator<<((unsigned short)o); }
-  gfile& operator<< (int o)         { return operator<<((unsigned int)o); }
-  gfile& operator<< (long o)        { return operator<<((unsigned long)o); }
+  gfile& operator<< (char o)      { return operator<<((uint8_t )o); }
+  gfile& operator<< (int8_t  o)   { return operator<<((uint8_t )o); }
+  gfile& operator<< (int16_t  o)  { return operator<<((uint16_t)o); }
+  gfile& operator<< (int32_t o)   { return operator<<((uint32_t)o); }
+  gfile& operator<< (long o)      { return operator<<((unsigned long)o); }
 
 };
 

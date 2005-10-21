@@ -144,6 +144,10 @@ typedef unsigned int uint;
 typedef uint32_t  time32_t;   /* 32-bit time_t type */
 
 //  ------------------------------------------------------------------
+
+#ifdef __cplusplus
+
+//  ------------------------------------------------------------------
 //  Common function-pointer types
 
 typedef void (*VfvCP)();
@@ -205,6 +209,9 @@ template <class T> inline bool make_bool(T a)            { return a ? true : fal
 #define MinV minimum_of_two
 #define MaxV maximum_of_two
 
+//  ------------------------------------------------------------------
+
+#endif  //#ifdef __cplusplus
 
 //  ------------------------------------------------------------------
 

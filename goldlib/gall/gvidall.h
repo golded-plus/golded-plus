@@ -256,9 +256,9 @@ struct GVidInfo {
 //  ------------------------------------------------------------------
 
 #ifdef __DJGPP__
-typedef unsigned long gdma; // Video DMA linear address
+typedef uint32_t gdma; // Video DMA linear address
 #else
-typedef word*         gdma; // Video DMA pointer
+typedef word*    gdma; // Video DMA pointer
 #endif
 
 //  ------------------------------------------------------------------

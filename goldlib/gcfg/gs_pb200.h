@@ -56,12 +56,12 @@ The combined boards are stored in 25 bytes (200 bits). One bit per message
 area.
 */
 
-typedef unsigned long accessflags;
-typedef unsigned char combinedboards[125];
-typedef unsigned char pb_bool;
-typedef unsigned char pb_Time[3];
-typedef unsigned char Date[3];
-typedef unsigned char TimeFrame[7][6];
+typedef uint32_t accessflags;
+typedef uint8_t  combinedboards[125];
+typedef uint8_t  pb_bool;
+typedef uint8_t  pb_Time[3];
+typedef uint8_t  Date[3];
+typedef uint8_t  TimeFrame[7][6];
 
 /*
 컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴
