@@ -659,11 +659,11 @@ uint32_t SMBCALL smb_getmsgdatlen(smbmsg_t* msg)
 /****************************************************************************/
 int SMBCALL smb_getmsghdr(smb_t* smb, smbmsg_t* msg)
 {
-    hfield_t *vp;
-    void    **vpp;
-    ushort  i;
-    uint32_t    l,offset;
-    idxrec_t idx;
+    hfield_t  *vp;
+    void      **vpp;
+    uint16_t  i;
+    uint32_t  l, offset;
+    idxrec_t  idx;
 
     if(smb->shd_fp==NULL) {
         sprintf(smb->last_error,"msgbase not open");
@@ -763,7 +763,7 @@ int SMBCALL smb_getmsghdr(smb_t* smb, smbmsg_t* msg)
                 break;
             case SENDERAGENT:
                 if(!msg->forwarded)
-                    msg->from_agent=*(ushort *)msg->hfield_dat[i];
+                    msg->from_agent=*(uint16_t *)msg->hfield_dat[i];
                 break;
             case SENDEREXT:
                 if(!msg->forwarded)
@@ -771,7 +771,7 @@ int SMBCALL smb_getmsghdr(smb_t* smb, smbmsg_t* msg)
                 break;
             case SENDERNETTYPE:
                 if(!msg->forwarded)
-                    msg->from_net.type=*(ushort *)msg->hfield_dat[i];
+                    msg->from_net.type=*(uint16_t *)msg->hfield_dat[i];
                 break;
             case SENDERNETADDR:
                 if(!msg->forwarded)
@@ -784,10 +784,10 @@ int SMBCALL smb_getmsghdr(smb_t* smb, smbmsg_t* msg)
                 msg->replyto_ext=(char *)msg->hfield_dat[i];
                 break;
             case REPLYTOAGENT:
-                msg->replyto_agent=*(ushort *)msg->hfield_dat[i];
+                msg->replyto_agent=*(uint16_t *)msg->hfield_dat[i];
                 break;
             case REPLYTONETTYPE:
-                msg->replyto_net.type=*(ushort *)msg->hfield_dat[i];
+                msg->replyto_net.type=*(uint16_t *)msg->hfield_dat[i];
                 break;
             case REPLYTONETADDR:
                 msg->replyto_net.addr=(char *)msg->hfield_dat[i];
@@ -799,10 +799,10 @@ int SMBCALL smb_getmsghdr(smb_t* smb, smbmsg_t* msg)
                 msg->to_ext=(char *)msg->hfield_dat[i];
                 break;
             case RECIPIENTAGENT:
-                msg->to_agent=*(ushort *)msg->hfield_dat[i];
+                msg->to_agent=*(uint16_t *)msg->hfield_dat[i];
                 break;
             case RECIPIENTNETTYPE:
-                msg->to_net.type=*(ushort *)msg->hfield_dat[i];
+                msg->to_net.type=*(uint16_t *)msg->hfield_dat[i];
                 break;
             case RECIPIENTNETADDR:
                 msg->to_net.addr=(char *)msg->hfield_dat[i];
@@ -855,7 +855,7 @@ int SMBCALL smb_getmsghdr(smb_t* smb, smbmsg_t* msg)
 /****************************************************************************/
 void SMBCALL smb_freemsgmem(smbmsg_t* msg)
 {
-    ushort  i;
+    uint16_t  i;
 
     if(msg->dfield) {
         FREE(msg->dfield);
@@ -925,7 +925,7 @@ int SMBCALL smb_unlockmsghdr(smb_t* smb, smbmsg_t* msg)
 /****************************************************************************/
 /* Adds a header field to the 'msg' structure (in memory only)              */
 /****************************************************************************/
-int SMBCALL smb_hfield(smbmsg_t* msg, ushort type, size_t length, void* data)
+int SMBCALL smb_hfield(smbmsg_t* msg, uint16_t type, size_t length, void* data)
 {
     hfield_t* vp;
     void* *vpp;
@@ -956,7 +956,7 @@ int SMBCALL smb_hfield(smbmsg_t* msg, ushort type, size_t length, void* data)
 /****************************************************************************/
 /* Searches for a specific header field (by type) and returns it            */
 /****************************************************************************/
-void* SMBCALL smb_get_hfield(smbmsg_t* msg, ushort type, hfield_t* hfield)
+void* SMBCALL smb_get_hfield(smbmsg_t* msg, uint16_t type, hfield_t* hfield)
 {
     int i;
 
@@ -975,7 +975,7 @@ void* SMBCALL smb_get_hfield(smbmsg_t* msg, ushort type, hfield_t* hfield)
 /* Automatically figures out the offset into the data buffer from existing  */
 /* dfield lengths                                                           */
 /****************************************************************************/
-int SMBCALL smb_dfield(smbmsg_t* msg, ushort type, uint32_t length)
+int SMBCALL smb_dfield(smbmsg_t* msg, uint16_t type, uint32_t length)
 {
     dfield_t* vp;
     int i,j;
@@ -1175,8 +1175,8 @@ int SMBCALL smb_putmsgidx(smb_t* smb, smbmsg_t* msg)
 /****************************************************************************/
 int SMBCALL smb_putmsghdr(smb_t* smb, smbmsg_t* msg)
 {
-    ushort  i;
-    uint32_t    l;
+    uint16_t  i;
+    uint32_t  l;
 
     if(smb->shd_fp==NULL) {
         sprintf(smb->last_error,"msgbase not open");
@@ -1321,10 +1321,10 @@ uint32_t SMBCALL smb_hdrblocks(uint32_t length)
 /* smb_close_da() should be called after                                    */
 /* Returns negative on error                                                */
 /****************************************************************************/
-int32_t SMBCALL smb_allocdat(smb_t* smb, uint32_t length, ushort headers)
+int32_t SMBCALL smb_allocdat(smb_t* smb, uint32_t length, uint16_t headers)
 {
-    ushort  i,j;
-    uint32_t    l,blocks,offset=0L;
+    uint16_t  i, j;
+    uint32_t  l, blocks, offset = 0;
 
     if(smb->sda_fp==NULL) {
         sprintf(smb->last_error,"msgbase not open");
@@ -1360,7 +1360,7 @@ int32_t SMBCALL smb_allocdat(smb_t* smb, uint32_t length, ushort headers)
 /* Allocates space for data, but doesn't search for unused blocks           */
 /* Returns negative on error                                                */
 /****************************************************************************/
-int32_t SMBCALL smb_fallocdat(smb_t* smb, uint32_t length, ushort headers)
+int32_t SMBCALL smb_fallocdat(smb_t* smb, uint32_t length, uint16_t headers)
 {
     uint32_t    l,blocks,offset;
 
@@ -1388,13 +1388,12 @@ int32_t SMBCALL smb_fallocdat(smb_t* smb, uint32_t length, ushort headers)
 /* De-allocates space for data                                              */
 /* Returns non-zero on error                                                */
 /****************************************************************************/
-int SMBCALL smb_freemsgdat(smb_t* smb, uint32_t offset, uint32_t length
-            , ushort headers)
+int SMBCALL smb_freemsgdat(smb_t* smb, uint32_t offset, uint32_t length, uint16_t headers)
 {
-    int     da_opened=0;
-    int     retval=0;
-    ushort  i;
-    uint32_t    l,blocks;
+    int       da_opened = 0;
+    int       retval = 0;
+    uint16_t  i;
+    uint32_t  l, blocks;
 
     if(smb->status.attr&SMB_HYPERALLOC) /* do nothing */
         return(0);
@@ -1446,10 +1445,10 @@ int SMBCALL smb_freemsgdat(smb_t* smb, uint32_t offset, uint32_t length
 /* Adds to data allocation records for blocks starting at 'offset'          */
 /* Returns non-zero on error                                                */
 /****************************************************************************/
-int SMBCALL smb_incdat(smb_t* smb, uint32_t offset, uint32_t length, ushort headers)
+int SMBCALL smb_incdat(smb_t* smb, uint32_t offset, uint32_t length, uint16_t headers)
 {
-    ushort  i;
-    uint32_t    l,blocks;
+    uint16_t  i;
+    uint32_t  l, blocks;
 
     if(smb->sda_fp==NULL) {
         sprintf(smb->last_error,"msgbase not open");
@@ -1480,7 +1479,7 @@ int SMBCALL smb_incdat(smb_t* smb, uint32_t offset, uint32_t length, ushort head
 /****************************************************************************/
 int SMBCALL smb_freemsghdr(smb_t* smb, uint32_t offset, uint32_t length)
 {
-    uchar   c=0;
+    uint8_t c = 0;
     uint32_t    l,blocks;
 
     if(smb->sha_fp==NULL) {
@@ -1504,8 +1503,8 @@ int SMBCALL smb_freemsghdr(smb_t* smb, uint32_t offset, uint32_t length)
 /****************************************************************************/
 int SMBCALL smb_freemsg(smb_t* smb, smbmsg_t* msg)
 {
-    int     i;
-    ushort  x;
+    int       i;
+    uint16_t  x;
 
     if(smb->status.attr&SMB_HYPERALLOC)  /* Nothing to do */
         return(0);
@@ -1530,9 +1529,9 @@ int SMBCALL smb_freemsg(smb_t* smb, smbmsg_t* msg)
 /****************************************************************************/
 int32_t SMBCALL smb_allochdr(smb_t* smb, uint32_t length)
 {
-    uchar   c;
-    ushort  i;
-    uint32_t    l,blocks,offset=0;
+    uint8_t   c;
+    uint16_t  i;
+    uint32_t  l, blocks, offset = 0;
 
     if(smb->sha_fp==NULL) {
         sprintf(smb->last_error,"msgbase not open");
@@ -1571,7 +1570,7 @@ int32_t SMBCALL smb_allochdr(smb_t* smb, uint32_t length)
 /****************************************************************************/
 int32_t SMBCALL smb_fallochdr(smb_t* smb, uint32_t length)
 {
-    uchar   c=1;
+    uint8_t c = 1;
     uint32_t    l,blocks,offset;
 
     if(smb->sha_fp==NULL) {

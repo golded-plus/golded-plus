@@ -386,93 +386,93 @@ enum {
 
 typedef struct _PACK {      // Time with time-zone
 
-    uint32_t time;          // Local time (unix format)
-    short   zone;           // Time zone
+    uint32_t  time;         // Local time (unix format)
+    int16_t   zone;         // Time zone
 
     } when_t;
 
 typedef struct _PACK {      // Index record
 
-    ushort  to;             // 16-bit CRC of recipient name (lower case)
-    ushort  from;           // 16-bit CRC of sender name (lower case)
-    ushort  subj;           // 16-bit CRC of subject (lower case, w/o RE:)
-    ushort  attr;           // attributes (read, permanent, etc.)
-    uint32_t    offset;         // offset into header file
-    uint32_t    number;         // number of message (1 based)
-    uint32_t    time;           // time/date message was imported/posted
+    uint16_t  to;           // 16-bit CRC of recipient name (lower case)
+    uint16_t  from;         // 16-bit CRC of sender name (lower case)
+    uint16_t  subj;         // 16-bit CRC of subject (lower case, w/o RE:)
+    uint16_t  attr;         // attributes (read, permanent, etc.)
+    uint32_t  offset;       // offset into header file
+    uint32_t  number;       // number of message (1 based)
+    uint32_t  time;         // time/date message was imported/posted
 
     } idxrec_t;
 
 typedef struct _PACK {      // Message base header (fixed portion)
 
-    uchar   id[LEN_HEADER_ID];  // SMB<^Z>
-    ushort  version;        // version number (initially 100h for 1.00)
-    ushort  length;         // length including this struct
+    uint8_t   id[LEN_HEADER_ID];  // SMB<^Z>
+    uint16_t  version;      // version number (initially 100h for 1.00)
+    uint16_t  length;       // length including this struct
 
     } smbhdr_t;
 
 typedef struct _PACK {      // Message base status header
 
-    uint32_t    last_msg;       // last message number
-    uint32_t    total_msgs;     // total messages
-    uint32_t    header_offset;  // byte offset to first header record
-    uint32_t    max_crcs;       // Maximum number of CRCs to keep in history
-    uint32_t   max_msgs;       // Maximum number of message to keep in sub
-    ushort  max_age;        // Maximum age of message to keep in sub (in days)
-    ushort  attr;           // Attributes for this message base (SMB_HYPER,etc)
+    uint32_t  last_msg;     // last message number
+    uint32_t  total_msgs;   // total messages
+    uint32_t  header_offset;// byte offset to first header record
+    uint32_t  max_crcs;     // Maximum number of CRCs to keep in history
+    uint32_t  max_msgs;     // Maximum number of message to keep in sub
+    uint16_t  max_age;      // Maximum age of message to keep in sub (in days)
+    uint16_t  attr;         // Attributes for this message base (SMB_HYPER,etc)
 
     } smbstatus_t;
 
 typedef struct _PACK {      // Message header
 
-    uchar   id[LEN_HEADER_ID];  // SHD<^Z>
-    ushort  type;           // Message type (normally 0)
-    ushort  version;        // Version of type (initially 100h for 1.00)
-    ushort  length;         // Total length of fixed record + all fields
-    ushort  attr;           // Attributes (bit field) (duped in SID)
-    uint32_t    auxattr;        // Auxillary attributes (bit field)
-    uint32_t   netattr;        // Network attributes
-    when_t  when_written;   // Time message was written (unix format)
-    when_t  when_imported;  // Time message was imported
-    uint32_t   number;         // Message number
-    uint32_t   thread_orig;    // Original message number in thread
-    uint32_t   thread_next;    // Next message in thread
-    uint32_t   thread_first;   // First reply to this message
-    ushort  delivery_attempts;  // Delivery attempt counter
-    uchar   reserved[14];   // Reserved for future use
-    uint32_t   offset;         // Offset for buffer into data file (0 or mod 256)
-    ushort  total_dfields;  // Total number of data fields
+    uint8_t   id[LEN_HEADER_ID];  // SHD<^Z>
+    uint16_t  type;           // Message type (normally 0)
+    uint16_t  version;        // Version of type (initially 100h for 1.00)
+    uint16_t  length;         // Total length of fixed record + all fields
+    uint16_t  attr;           // Attributes (bit field) (duped in SID)
+    uint32_t  auxattr;        // Auxillary attributes (bit field)
+    uint32_t  netattr;        // Network attributes
+    when_t    when_written;   // Time message was written (unix format)
+    when_t    when_imported;  // Time message was imported
+    uint32_t  number;         // Message number
+    uint32_t  thread_orig;    // Original message number in thread
+    uint32_t  thread_next;    // Next message in thread
+    uint32_t  thread_first;   // First reply to this message
+    uint16_t  delivery_attempts;  // Delivery attempt counter
+    uint8_t   reserved[14];   // Reserved for future use
+    uint32_t  offset;         // Offset for buffer into data file (0 or mod 256)
+    uint16_t  total_dfields;  // Total number of data fields
 
     } msghdr_t;
 
 typedef struct _PACK {      // Data field
 
-    ushort  type;           // Type of data field
-    uint32_t   offset;         // Offset into buffer
-    uint32_t   length;         // Length of data field
+    uint16_t  type;         // Type of data field
+    uint32_t  offset;       // Offset into buffer
+    uint32_t  length;       // Length of data field
 
     } dfield_t;
 
 typedef struct _PACK {      // Header field
 
-    ushort  type;
-    ushort  length;         // Length of buffer
+    uint16_t  type;
+    uint16_t  length;       // Length of buffer
 
     } hfield_t;
 
 typedef struct _PACK {      // FidoNet address (zone:net/node.point)
 
-    ushort  zone;
-    ushort  net;
-    ushort  node;
-    ushort  point;
+    uint16_t  zone;
+    uint16_t  net;
+    uint16_t  node;
+    uint16_t  point;
 
     } fidoaddr_t;
 
 typedef struct _PACK {      // Network (type and address)
 
-    ushort  type;
-    void    *addr;
+    uint16_t  type;
+    void      *addr;
 
     } net_t;
 
@@ -504,13 +504,13 @@ typedef struct {                // Message
                 *ftn_msgid,     // FTN MSGID
                 *ftn_reply,     // FTN REPLY
                 *subj;          // Subject
-    ushort      to_agent,       // Type of agent message is to
+    uint16_t    to_agent,       // Type of agent message is to
                 from_agent,     // Type of agent message is from
                 replyto_agent;  // Type of agent replies should be sent to
     net_t       to_net,         // Destination network type and address
                 from_net,       // Origin network address
                 replyto_net;    // Network type and address for replies
-    ushort      total_hfields;  // Total number of header fields
+    uint16_t    total_hfields;  // Total number of header fields
     hfield_t    *hfield;        // Header fields (fixed length portion)
     void        **hfield_dat;   // Header fields (variable length portion)
     dfield_t    *dfield;        // Data fields (fixed length portion)
@@ -528,17 +528,17 @@ typedef struct {            // Message base
     FILE    *sid_fp;        // File pointer for index (.sid) file
     FILE    *sda_fp;        // File pointer for data allocation (.sda) file
     FILE    *sha_fp;        // File pointer for header allocation (.sha) file
-    uint32_t    retry_time;     // Maximum number of seconds to retry opens/locks
-    uint32_t    retry_delay;    // Time-slice yield (milliseconds) while retrying
+    uint32_t    retry_time; // Maximum number of seconds to retry opens/locks
+    uint32_t    retry_delay;// Time-slice yield (milliseconds) while retrying
     smbstatus_t status;     // Status header record
     int     locked;         // SMB header is locked
-    char    shd_buf[SHD_BLOCK_LEN];     // File I/O buffer for header file
-    char    last_error[128];            // Last error message
+    char    shd_buf[SHD_BLOCK_LEN]; // File I/O buffer for header file
+    char    last_error[128];        // Last error message
 
     /* Private member variables (not initialized by or used by smblib) */
-    uint    subnum;         // Sub-board number
-    long    msgs;           // Number of messages loaded (for user)
-    long    curmsg;         // Current message number (for user)
+    uint32_t  subnum;       // Sub-board number
+    uint32_t  msgs;         // Number of messages loaded (for user)
+    uint32_t  curmsg;       // Current message number (for user)
 
     } smb_t;
 
