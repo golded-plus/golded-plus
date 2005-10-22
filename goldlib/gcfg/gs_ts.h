@@ -54,21 +54,21 @@
 typedef struct {
   char  echoname[51];   /* Echomail conference name */
   char  path[51];       /* Path, if .MSG format otherwise NUL'ed */
-  bit   seenbys  : 1;   /* 1 = Import Seen-By 0 = No Seen-By   */
-  bit   security : 1;   /* 1 = Security On    0 = Security Off */
-  bit   passthru : 1;   /* 1 = Passthru       0 = Not Passthru */
-  bit   visible  : 1;   /* 1 = Visible        0 = Not visible  */
-  bit   deleted  : 1;   /* 1 = Deleted        0 = In Use       */
-  bit   cpp      : 1;   /* 1 = CPP On         0 = CPP Off      */
-  bit   tiny     : 1;   /* 1 = Tiny           0 = Not Tiny     */
-  bit   Private  : 1;   /* 1 = Private        0 = Not Private  */
+  bits  seenbys  : 1;   /* 1 = Import Seen-By 0 = No Seen-By   */
+  bits  security : 1;   /* 1 = Security On    0 = Security Off */
+  bits  passthru : 1;   /* 1 = Passthru       0 = Not Passthru */
+  bits  visible  : 1;   /* 1 = Visible        0 = Not visible  */
+  bits  deleted  : 1;   /* 1 = Deleted        0 = In Use       */
+  bits  cpp      : 1;   /* 1 = CPP On         0 = CPP Off      */
+  bits  tiny     : 1;   /* 1 = Tiny           0 = Not Tiny     */
+  bits  Private  : 1;   /* 1 = Private        0 = Not Private  */
   byte  originno;       /* FrontDoor origin number? Seems to follow origno */
   ftn_addr feeders[60];    /* List of feeds. Sorted descending, NUL-padded */
   char  fill2[4];       /* Unknown */
   byte  groupid;        /* Group-relation. (A-Z, uppercase) */
   byte  board;          /* Board number, if QBBS format - otherwise zero */
-  bit   akano  : 4;     /* Index in FD.SYS - Aka number */
-  bit   origno : 4;     /* Index in FD.SYS - Origin number */
+  bits  akano  : 4;     /* Index in FD.SYS - Aka number */
+  bits  origno : 4;     /* Index in FD.SYS - Origin number */
   char  fill3;          /* Unknown */
   short  maxmsgs;        /* Max msgs in area (max 20000) */
   short  dayskeep;       /* Day to keep before deleting (max 365) */

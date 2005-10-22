@@ -121,11 +121,11 @@
 //  Structs used in IMAIL Configuration files
 
 struct eaddress {                   /* used in Area Manager ... */
-  ftn_addr        dstn;                     /* node number */
-  bit             exp_only:1;               /* export only flag */
-  bit             imp_only:1;               /* import only flag */
-  bit             paused:1;                 /* echo mail paused */
-  bit             rsvd1:5;                  /* reserved */
+  ftn_addr  dstn;                   /* node number */
+  bits      exp_only:1;             /* export only flag */
+  bits      imp_only:1;             /* import only flag */
+  bits      paused:1;               /* echo mail paused */
+  bits      rsvd1:5;                /* reserved */
 };
 
 struct fwd_link {                   /* used for forward request nodes ... */
@@ -193,29 +193,29 @@ struct im_config_type {
   char         maint_help[IMAXFILE+IMAXEXT];    /* Alnk Remote Maint. Helptext */
   char         rsvd2[IMAXFILE+IMAXEXT];         /* reserved */
   char         dflt_origin[MAXORIGIN];        /* default origin line */
-  bit          rtnrecpt:1;                    /* True if to send rtn recpt */
-  bit          del_empty_msg:1;               /* delete empty netmails (TOSS) */
-  bit          ARCmail06:1;                   /* ARCmail 0.6 compatibility */
-  bit          use_crc_names:1;               /* use crc-names for auto-areas */
-  bit          rsvd3:1;                       /* reserved */
-  bit          multi_tasking:1;               /* true if multi-tasking */
-  bit          ignore_unknown:1;              /* ALNK ignores unknown systems */
-  bit          singleextract:1;               /* extract 1 bundle at a time */
-  bit          trunc_sent:1;                  /* 1 = Trunc 0 = Delete */
-  bit          keep_alnk_answ:1;              /* keep arealink answer */
-  bit          prod_names:1;                  /* use the FTSC product list */
-  bit          swap_ems:1;                    /* swap to EMS */
-  bit          swap_ext:1;                    /* swap to extended memory */
-  bit          forward_everything:1;          /* forward req. not in fwd-lists */
-  bit          direct_video:1;                /* use direct screen writing */
-  bit          rsvd4:1;                       /* reserved */
-  bit          compr_after_pkt:1;             /* compress after each PKT? */
-  bit          delete_bases:1;                /* when removing an area, */
+  bits         rtnrecpt:1;                    /* True if to send rtn recpt */
+  bits         del_empty_msg:1;               /* delete empty netmails (TOSS) */
+  bits         ARCmail06:1;                   /* ARCmail 0.6 compatibility */
+  bits         use_crc_names:1;               /* use crc-names for auto-areas */
+  bits         rsvd3:1;                       /* reserved */
+  bits         multi_tasking:1;               /* true if multi-tasking */
+  bits         ignore_unknown:1;              /* ALNK ignores unknown systems */
+  bits         singleextract:1;               /* extract 1 bundle at a time */
+  bits         trunc_sent:1;                  /* 1 = Trunc 0 = Delete */
+  bits         keep_alnk_answ:1;              /* keep arealink answer */
+  bits         prod_names:1;                  /* use the FTSC product list */
+  bits         swap_ems:1;                    /* swap to EMS */
+  bits         swap_ext:1;                    /* swap to extended memory */
+  bits         forward_everything:1;          /* forward req. not in fwd-lists */
+  bits         direct_video:1;                /* use direct screen writing */
+  bits         rsvd4:1;                       /* reserved */
+  bits         compr_after_pkt:1;             /* compress after each PKT? */
+  bits         delete_bases:1;                /* when removing an area, */
                                               /* delete also squish/msg-base */
-  bit          rsvd5:1;                       /* reserved */
-  bit          use_imcomp:1;                  /* call IMCOMP in case of tight */
+  bits         rsvd5:1;                       /* reserved */
+  bits         use_imcomp:1;                  /* call IMCOMP in case of tight */
                                               /* diskspace or abort at once */
-  bit          rsvd6:4;                       /* reserved */
+  bits         rsvd6:4;                       /* reserved */
   long         last_run;                      /* last maintenance run */
   word         rsvd7;                         /* reserved */
   byte         rsvd8;                         /* reserved */
@@ -274,28 +274,28 @@ struct areas_record_type {
   byte         msg_base_type;              /* message base type */
   byte         brd;                        /* board number */
   char         msg_path[IMAXPATH];          /* MSG/Squish path */
-  bit          active:1;                   /* flag area active */
-  bit          zone_gate:1;                /* Zone-gate stripping */
-  bit          tiny_seen:1;                /* tiny seen-by flag */
-  bit          secure:1;                   /* secure flag */
-  bit          import_seen:1;              /* import seen-by into base */
-  bit          deleted:1;                  /* flag deleted area */
-  bit          auto_added:1;               /* flag auto-added record */
-  bit          mandatory:1;                /* area is mandatory */
-  bit          read_only:1;                /* area is read only */
-  bit          unlinked:1;                 /* area has been unlinked */
-  bit          ulnk_req:1;                 /* perform unlinked requests? */
-  bit          hidden:1;                   /* area is hidden */
-  bit          to_link:1;                  /* should by processed by LINK */
-  bit          check_dup:1;                /* check for dupes in this area? */
-  bit          no_pause:1;                 /* %PAUSE not allowed in this echo? */
-  bit          hide_seen:1;                /* Hide seens when importing */
-  bit          manual:1;                   /* No changes via Arealink */
-  bit          fwdreq_pending:1;           /* Requested but yet not arrived */
-  bit          sqkillfly:1;                /* Squish 'Kill on the fly' */
-  bit          dupe_msgid:1;               /* Dupecheck on MSGID only? */
-  bit          deadlink_req:1;             /* Deadlink request has been sent */
-  bit          rsvd:2;                     /* reserved */
+  bits         active:1;                   /* flag area active */
+  bits         zone_gate:1;                /* Zone-gate stripping */
+  bits         tiny_seen:1;                /* tiny seen-by flag */
+  bits         secure:1;                   /* secure flag */
+  bits         import_seen:1;              /* import seen-by into base */
+  bits         deleted:1;                  /* flag deleted area */
+  bits         auto_added:1;               /* flag auto-added record */
+  bits         mandatory:1;                /* area is mandatory */
+  bits         read_only:1;                /* area is read only */
+  bits         unlinked:1;                 /* area has been unlinked */
+  bits         ulnk_req:1;                 /* perform unlinked requests? */
+  bits         hidden:1;                   /* area is hidden */
+  bits         to_link:1;                  /* should by processed by LINK */
+  bits         check_dup:1;                /* check for dupes in this area? */
+  bits         no_pause:1;                 /* %PAUSE not allowed in this echo? */
+  bits         hide_seen:1;                /* Hide seens when importing */
+  bits         manual:1;                   /* No changes via Arealink */
+  bits         fwdreq_pending:1;           /* Requested but yet not arrived */
+  bits         sqkillfly:1;                /* Squish 'Kill on the fly' */
+  bits         dupe_msgid:1;               /* Dupecheck on MSGID only? */
+  bits         deadlink_req:1;             /* Deadlink request has been sent */
+  bits         rsvd:2;                     /* reserved */
   byte         user_bits;                  /* 8 user-available bits */
   byte         days;                       /* days to keep messages */
   word         msgs;                       /* num messages to keep */

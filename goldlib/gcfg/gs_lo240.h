@@ -38,8 +38,6 @@
 
 //  ------------------------------------------------------------------
 
-typedef unsigned char  bits;
-
 #define MAXFLAGS   4
 
 #define SIZEOF_MSGAREA    512

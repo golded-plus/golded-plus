@@ -129,10 +129,9 @@ typedef uint16_t  word;
 typedef uint32_t  dword;
 #endif  //#ifdef _MSC_VER
 
-typedef uint8_t   bit;
-
 typedef unsigned int uint;
 
+typedef uint8_t   bits;
 typedef uint32_t  time32_t;   /* 32-bit time_t type */
 
 //  ------------------------------------------------------------------

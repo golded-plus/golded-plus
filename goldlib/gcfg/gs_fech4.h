@@ -304,27 +304,27 @@ typedef struct
  short messages;
  struct
  {
-  bit  origin : 3;
-  bit  group  : 5;              /* 0 ... MAX_GROUPS-1   */
-  bit  type   : 3;
-  bit  umlaut : 1;
-  bit  aka    : 4;              /* 0 ... MAX_AKAS-1     */
+  bits  origin : 3;
+  bits  group  : 5;             /* 0 ... MAX_GROUPS-1   */
+  bits  type   : 3;
+  bits  umlaut : 1;
+  bits  aka    : 4;             /* 0 ... MAX_AKAS-1     */
  } flags;
  short days;
  word conference;               /* 0 ... 991            */
  word read_sec,write_sec;
  struct
  {
-  bit  autoadded  : 1;
-  bit  tinyseen   : 1;
-  bit  cpd        : 1;
-  bit  passive    : 1;
-  bit  keepseen   : 1;
-  bit  mandatory  : 1;
-  bit  keepsysop  : 1;
-  bit  killread   : 1;
-  bit  disablepsv : 1;
-  bit  resv       : 7;
+  bits  autoadded  : 1;
+  bits  tinyseen   : 1;
+  bits  cpd        : 1;
+  bits  passive    : 1;
+  bits  keepseen   : 1;
+  bits  mandatory  : 1;
+  bits  keepsysop  : 1;
+  bits  killread   : 1;
+  bits  disablepsv : 1;
+  bits  resv       : 7;
  } advflags;
  char path[_MAXPATH];
  char desc[42];
@@ -375,14 +375,14 @@ typedef struct
  word nodenr;
  struct
  {
-  bit  sendto  : 3;
-  bit  newgroup: 5;
-  bit  valid   : 1;
-  bit  uncond  : 1;
-  bit  addplus : 1;
-  bit  addtear : 1;
-  bit  format  : 3;
-  bit  active  : 1;
+  bits  sendto  : 3;
+  bits  newgroup: 5;
+  bits  valid   : 1;
+  bits  uncond  : 1;
+  bits  addplus : 1;
+  bits  addtear : 1;
+  bits  format  : 3;
+  bits  active  : 1;
  } flags;
  char file[_MAXPATH];
  dword groups;
