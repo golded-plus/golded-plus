@@ -77,8 +77,8 @@ struct ffind
 {
     /* this is the public area of the struct */
     char ff_attrib;
-    unsigned short ff_ftime;
-    unsigned short ff_fdate;
+    uint16_t ff_ftime;
+    uint16_t ff_fdate;
     long ff_fsize;
     char ff_name[256];
 
@@ -95,7 +95,7 @@ struct ffind
 #if defined(__386__) || defined(__FLAT__)
     unsigned long hdir;   /* directory handle from DosFindFirst */
 #else
-    unsigned short hdir;  /* directory handle from DosFindFirst */
+    uint16_t hdir;  /* directory handle from DosFindFirst */
 #endif
 
 #elif defined(UNIX)
@@ -124,7 +124,7 @@ struct ffind
  * prevent name clashes with the Win32 API
  */
 
-FFIND *FFindOpen(const char *filespec, unsigned short attribute);
+FFIND *FFindOpen(const char *filespec, uint16_t attribute);
 FFIND *FFindInfo(const char *filespec);
 int FFindNext(FFIND * ff);
 void FFindClose(FFIND * ff);

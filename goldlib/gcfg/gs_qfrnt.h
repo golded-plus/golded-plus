@@ -34,13 +34,6 @@
 #pragma pack(1)
 #endif
 
-//  ------------------------------------------------------------------
-//  Typedefs
-
-typedef unsigned char   _boolean;
-typedef unsigned char   byte;
-typedef unsigned short  word;
-
 
 //  ------------------------------------------------------------------
 //  Constants
@@ -76,7 +69,7 @@ struct OriginLineRecord {
 
 struct EchoMailConferenceRecord {
 
-  _boolean PassThru;
+  bool    PassThru;
 
   word    ConfNum;
   word    ConfTag;
@@ -86,19 +79,19 @@ struct EchoMailConferenceRecord {
 
   word    AreaLevel;
 
-  _boolean CheckForDupes;
-  _boolean ImportSeenByLines;
-  _boolean ImportPathLines;
-  _boolean KeepPrivate;
+  bool    CheckForDupes;
+  bool    ImportSeenByLines;
+  bool    ImportPathLines;
+  bool    KeepPrivate;
 
-  _boolean Deleted;
+  bool    Deleted;
 
   byte    OriginLine;
   byte    Group;
 
-  _boolean ScanPrivate;
-  _boolean Mandatory;
-  _boolean ForcePrivate;
+  bool    ScanPrivate;
+  bool    Mandatory;
+  bool    ForcePrivate;
 
   byte    Extra[45];
 };

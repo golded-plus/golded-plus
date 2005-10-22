@@ -37,6 +37,8 @@ extern "C" {
 # include <stddef.h>
 #endif
 
+#include <gdefs.h>
+
 /* The following two types have to be signed and unsigned integer type
    wide enough to hold a value of a pointer.  For most ANSI compilers
    ptrdiff_t and size_t should be likely OK.  Still size of these two

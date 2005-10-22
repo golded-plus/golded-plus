@@ -66,7 +66,7 @@ typedef char AskType;         // 0=yes, 1=no, 2=ask
 typedef char MsgType;         // 0=localmail, 1=netmail, 2=echomail, 3=passthru, 4=waitthru, 5=allmail
 typedef char MsgKindsType;    // 0=public, 1=private, 2=private or public
 typedef char UserString[36];
-typedef unsigned char EzFlagType[4];
+typedef uint8_t EzFlagType[4];
 
 
 //  ------------------------------------------------------------------

@@ -98,9 +98,9 @@ int g_init_os(int flags) {
     cpu.di(0);
     cpu.genint(0x21);
     if(not (cpu.flags() & 1) and (cpu.cx() == 5)) {
-      unsigned int table = _farpeekw(selector, 3) * 16 + _farpeekw(selector, 1);
+      uint32_t table = _farpeekw(selector, 3) * 16 + _farpeekw(selector, 1);
       int i, size = _farpeekw(_dos_ds, table);
-      movedata(_dos_ds, table + 2, _my_ds(), (unsigned int)&(toupper(128)), size);
+      movedata(_dos_ds, table + 2, _my_ds(), (uint32_t)&(toupper(128)), size);
       // let's build lowercase table from uppercase...
       for(i = 0; i < size; i++) {
         int c = toupper(i + 128);

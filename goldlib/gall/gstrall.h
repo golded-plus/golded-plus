@@ -41,8 +41,8 @@
 
 #if defined(__EMX__)
 #include <sys/nls.h>
-#define strupr(s) (char *)_nls_strupr((unsigned char *)(s))
-#define strlwr(s) (char *)_nls_strlwr((unsigned char *)(s))
+#define strupr(s) (char *)_nls_strupr((uint8_t *)(s))
+#define strlwr(s) (char *)_nls_strlwr((uint8_t *)(s))
 #elif defined(__GNUC__)
 #if defined(__QNXNTO__)
 #include <strings.h>

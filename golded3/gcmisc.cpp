@@ -618,7 +618,7 @@ void ReadXlatTables() {
         memset(&ChsTable, 0, sizeof(Chs));
         for(n=0; n<256; n++) {
           ChsTable.t[n][0] = 1;
-          ChsTable.t[n][1] = (unsigned char)n;  // The character
+          ChsTable.t[n][1] = (uint8_t)n;  // The character
         }
         strcpy(buf, AddPath(CFG->xlatpath, xlt->mapfile));
         ifp = fsopen(buf, "rb", CFG->sharemode);
@@ -677,13 +677,13 @@ void ReadXlatTables() {
                         ptr = strskip_txt(ptr);
                         break;
                       case 'd':
-                        y = (unsigned char)atoi(ptr+1);
+                        y = (uint8_t)atoi(ptr+1);
                         ChsTable.t[ch][++x] = (byte)y;
                         ChsTable.t[ch][0] = (byte)x;
                         ptr = strskip_txt(ptr);
                         break;
                       case 'x':
-                        y = (unsigned char)atox(ptr+1);
+                        y = (uint8_t)atox(ptr+1);
                         ChsTable.t[ch][++x] = (byte)y;
                         ChsTable.t[ch][0] = (byte)x;
                         ptr = strskip_txt(ptr);
@@ -757,11 +757,11 @@ void ReadXlatTables() {
                         ptr = strskip_txt(ptr);
                         break;
                       case 'd':
-                        EscTable.t[n][x++] = (unsigned char)atoi(ptr+1);
+                        EscTable.t[n][x++] = (uint8_t)atoi(ptr+1);
                         ptr = strskip_txt(ptr);
                         break;
                       case 'x':
-                        EscTable.t[n][x++] = (unsigned char)atox(ptr+1);
+                        EscTable.t[n][x++] = (uint8_t)atox(ptr+1);
                         ptr = strskip_txt(ptr);
                         break;
                       case '0':

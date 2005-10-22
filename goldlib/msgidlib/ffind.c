@@ -55,7 +55,7 @@
  *  Returns: NULL == File not found.
  */
 
-FFIND *FFindOpen(const char *filespec, unsigned short attribute)
+FFIND *FFindOpen(const char *filespec, uint16_t attribute)
 {
     FFIND *ff;
 

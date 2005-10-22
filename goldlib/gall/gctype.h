@@ -41,8 +41,8 @@
 #include <ctype.h>
 #if defined(__EMX__)
 #include <sys/nls.h>
-#define tolower(c) _nls_tolower((unsigned char)(c))
-#define toupper(c) _nls_toupper((unsigned char)(c))
+#define tolower(c) _nls_tolower((uint8_t)(c))
+#define toupper(c) _nls_toupper((uint8_t)(c))
 #elif defined(__WIN32__)
 #ifdef __cplusplus
 extern "C" {
@@ -52,8 +52,8 @@ __inline__ int toupper(int c) { return tu[c]; }
 }
 #else
 extern char tl[256], tu[256];
-#define tolower(c) tl[(int)(unsigned char)(c)]
-#define toupper(c) tu[(int)(unsigned char)(c)]
+#define tolower(c) tl[(int)(uint8_t)(c)]
+#define toupper(c) tu[(int)(uint8_t)(c)]
 #endif
 #endif
 

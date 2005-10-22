@@ -256,9 +256,9 @@ char *gcpuid(char *_cpuname)
 #else
     char          vendor[3*sizeof(dword)+1]; /* CPU vendor string 12 bytes, 13th byte is zero */
 #endif
-    unsigned char family;        /* CPU stepping number, 4 bits */
-    unsigned char model;         /* CPU model number, 4 bits */
-    unsigned char stepping;      /* CPU stepping value, 4 bits */
+    uint8_t family;        /* CPU stepping number, 4 bits */
+    uint8_t model;         /* CPU model number, 4 bits */
+    uint8_t stepping;      /* CPU stepping value, 4 bits */
   //  unsigned cpu_id;        /* stepping ID, 12 bits: 0x0FMS */
   //  unsigned features;      /* CPU features info */
   }scpuid;   /* ISO C: static variabled is initialised with 0 */

@@ -141,8 +141,8 @@ typedef struct {
 /*--------------------------------------------------------------------------*/
 struct _stamp
    begin
-      unsigned short date;
-      unsigned short time;
+      uint16_t date;
+      uint16_t time;
    end;
 
 

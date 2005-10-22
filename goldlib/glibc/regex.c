@@ -4275,9 +4275,9 @@ re_match_2_internal (bufp, string1, size1, string2, size2, pos, regs, stop)
 	case charset_not:
 	  {
 	    register unsigned char c;
-	    boolean not = (re_opcode_t) *(p - 1) == charset_not;
+	    boolean not_bool = (re_opcode_t) *(p - 1) == charset_not;
 
-            DEBUG_PRINT2 ("EXECUTING charset%s.\n", not ? "_not" : "");
+            DEBUG_PRINT2 ("EXECUTING charset%s.\n", not_bool ? "_not" : "");
 
 	    PREFETCH ();
 	    c = TRANSLATE (*d); /* The character to match.  */
@@ -4286,11 +4286,11 @@ re_match_2_internal (bufp, string1, size1, string2, size2, pos, regs, stop)
                bit list is a full 32 bytes long.  */
 	    if (c < (unsigned) (*p * BYTEWIDTH)
 		&& p[1 + c / BYTEWIDTH] & (1 << (c % BYTEWIDTH)))
-	      not = !not;
+	      not_bool = !not_bool;
 
 	    p += 1 + *p;
 
-	    if (!not) goto fail;
+	    if (!not_bool) goto fail;
 
 	    SET_REGS_MATCHED ();
             d++;
@@ -4759,15 +4759,15 @@ re_match_2_internal (bufp, string1, size1, string2, size2, pos, regs, stop)
 		else if ((re_opcode_t) p1[3] == charset
 			 || (re_opcode_t) p1[3] == charset_not)
 		  {
-		    int not = (re_opcode_t) p1[3] == charset_not;
+		    int not_int = (re_opcode_t) p1[3] == charset_not;
 
 		    if (c < (unsigned char) (p1[4] * BYTEWIDTH)
 			&& p1[5 + c / BYTEWIDTH] & (1 << (c % BYTEWIDTH)))
-		      not = !not;
+		      not_int = !not_int;
 
                     /* `not' is equal to 1 if c would match, which means
                         that we can't change to pop_failure_jump.  */
-		    if (!not)
+		    if (!not_int)
                       {
   		        p[-3] = (unsigned char) pop_failure_jump;
                         DEBUG_PRINT1 ("  No match => pop_failure_jump.\n");

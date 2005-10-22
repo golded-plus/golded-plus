@@ -212,7 +212,7 @@ inline void __dpmi_free_dos_memory(int buffer) {
 #include <sys/nearptr.h>
 #include <crt0.h>
 
-inline void *gmkfp(unsigned short seg, unsigned short ofs) {
+inline void *gmkfp(uint16_t seg, uint16_t ofs) {
   if(not (_crt0_startup_flags & _CRT0_FLAG_NEARPTR))
     if(not __djgpp_nearptr_enable())
       return (void *)0;

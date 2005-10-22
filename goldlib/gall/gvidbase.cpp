@@ -113,14 +113,14 @@ extern int __gdvdetected;
 #endif
 
 #ifndef __DJGPP__
-const unsigned short _dos_ds = 0;
+const uint16_t _dos_ds = 0;
 
-inline unsigned short _my_ds(void) {
+inline uint16_t _my_ds(void) {
 
   return 0;
 }
 
-inline void _farpokew(unsigned short s, gdma ptr, word chat) {
+inline void _farpokew(uint16_t s, gdma ptr, word chat) {
 
   NW(s);
   *ptr = chat;
@@ -131,7 +131,7 @@ inline void _farnspokew(gdma ptr, word chat) {
   *ptr = chat;
 }
 
-inline word _farpeekw(unsigned short s, gdma ptr) {
+inline word _farpeekw(uint16_t s, gdma ptr) {
 
   NW(s);
   return *ptr;
@@ -142,7 +142,7 @@ inline void _farnspokeb(byte *ptr, byte chr) {
   *ptr = chr;
 }
 
-inline void _farsetsel(unsigned short s) {
+inline void _farsetsel(uint16_t s) {
 
   NW(s);
 }
@@ -154,7 +154,7 @@ const int ATTRSIZE = sizeof(word);
 const int ATTRSIZE = 1;
 #endif
 
-inline void gdmacpy(unsigned short seg_d, gdma sel_d, unsigned short seg_s, gdma sel_s, int len) {
+inline void gdmacpy(uint16_t seg_d, gdma sel_d, uint16_t seg_s, gdma sel_s, int len) {
 
   #ifdef __DJGPP__
   movedata(seg_s, sel_s, seg_d, sel_d, len);
