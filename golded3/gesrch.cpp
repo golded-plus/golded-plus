@@ -359,7 +359,7 @@ bool golded_search_manager::search(GMsg* msg, bool quick, bool shortcircuit) {
             logic.push_operator(geval::logic_or);
         }
       }
-      return (bool)logic.evaluate();
+      return make_bool(logic.evaluate());
     }
   }
 

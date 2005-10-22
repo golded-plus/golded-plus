@@ -234,7 +234,7 @@ void CfgFilealias() {
 
 void CfgForcetemplate() {
 
-  bool flag = GetYesno(val);
+  bool flag = make_bool(GetYesno(val));
   if(cfgingroup)
     CFG->grp.AddItm(GRP_FORCETEMPLATE, flag);
   else
@@ -291,7 +291,7 @@ void CfgFrqoptions() {
 
 void CfgGedhandshake() {
 
-  CFG->gedhandshake = GetYesno(val);
+  CFG->gedhandshake = make_bool(GetYesno(val));
 }
   
 //  ------------------------------------------------------------------

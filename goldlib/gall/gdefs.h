@@ -47,14 +47,11 @@
 // C4786: 'identifier' : identifier was truncated to 'number'
 //        characters in the debug information
 //
-// C4800: 'type' : forcing value to bool 'true' or 'false'
-//        (performance warning)
-//
 // C4065: switch statement contains 'default' but no 'case' labels
 //
 // C4200: nonstandard extension used : zero-sized array in struct/union
 //
-#pragma warning(disable: 4200 4786 4800 4065)
+#pragma warning(disable: 4200 4786 4065)
 #endif
 
 //  ------------------------------------------------------------------
@@ -165,7 +162,7 @@ template <class T> inline  int compare_two(T a, T b)     { return a < b ? -1 : a
 template <class T> inline    T minimum_of_two(T a, T b)  { return (a < b) ? a : b; }
 template <class T> inline    T maximum_of_two(T a, T b)  { return (a > b) ? a : b; }
 template <class T> inline  int zero_or_one(T e)          { return e ? 1 : 0; }
-template <class T> inline bool make_bool(T a)            { return a ? true : false; }
+template <class T> inline bool make_bool(T a)            { return a != 0; }
 
 
 //  ------------------------------------------------------------------

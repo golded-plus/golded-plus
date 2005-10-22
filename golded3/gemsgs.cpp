@@ -39,7 +39,6 @@ static bool tokenxchg(char*& dst, char* tok, const char* src, int len = 0, int c
 
   uint toklen = strlen(tok);
   char buf[100];
-  bool use;
 
   if(*dst != *tok)
     return false;
@@ -59,7 +58,7 @@ static bool tokenxchg(char*& dst, char* tok, const char* src, int len = 0, int c
   va_list a;
   va_start(a, cnt);
   for(int i = 0; i < cnt; i ++) {
-    use = va_arg(a, int);
+    bool use = make_bool(va_arg(a, int));
     if(dst[toklen] == '{') {
       char *p = strchr(dst+toklen, '}');
       if(p) {
@@ -123,8 +122,8 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
   strftimei(odtime, 80, LNG->DateTimeFmt, written_tm);
 
   const char* origareaid = AL.AreaIdToPtr(__origarea)->echoid();
-  bool origareaisinet = AL.AreaIdToPtr(__origarea)->isinternet();
-  bool currareaisinet = AA->isinternet();
+  bool origareaisinet = make_bool(AL.AreaIdToPtr(__origarea)->isinternet());
+  bool currareaisinet = make_bool(AA->isinternet());
   char* modereptr = oldmsg->re;
 
   char msgno[16];

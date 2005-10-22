@@ -1038,7 +1038,7 @@ void Lookup(GMsg* msg, Addr* addr, char* name, int topline, char* status) {
       if(not found or (topline < 0)) {
         strcpy(buf, information);
         update_statusline(status);
-        found = browse_nodelist(msg, tmpname, abs(topline));
+        found = make_bool(browse_nodelist(msg, tmpname, abs(topline)));
         update_statusline(buf);
       }
     }

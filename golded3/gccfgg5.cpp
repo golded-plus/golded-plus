@@ -79,7 +79,7 @@ void CfgHudsonuserno() {
 
 void CfgIgnorecharset() {
 
-  CFG->ignorecharset = GetYesno(val);
+  CFG->ignorecharset = make_bool(GetYesno(val));
 }
 
 //  ------------------------------------------------------------------
@@ -126,7 +126,7 @@ void CfgInputfile() {
 
 void CfgIntensecolors() {
 
-  CFG->intensecolors = GetYesno(val);
+  CFG->intensecolors = make_bool(GetYesno(val));
   if(CFG->intensecolors)
     memcpy(CFG->color, gold_color2, sizeof(CFG->color));
 }
@@ -194,7 +194,7 @@ void CfgInternetgateexp() {
 
 void CfgInternetmsgid() {
 
-  bool flag = GetYesno(val);
+  bool flag = make_bool(GetYesno(val));
   if(cfgingroup)
     CFG->grp.AddItm(GRP_INTERNETMSGID, flag);
   else
@@ -465,7 +465,7 @@ void CfgMsglistdate() {
 
 void CfgMsglistfast() {
 
-  bool flag = GetYesno(val);
+  bool flag = make_bool(GetYesno(val));
   if(cfgingroup)
     CFG->grp.AddItm(GRP_MSGLISTFAST, flag);
   else

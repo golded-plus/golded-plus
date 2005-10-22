@@ -396,7 +396,7 @@ bool GMsgList::handle_key() {
     case KK_ListAskExit:
       {
         GMenuQuit MenuQuit;
-        aborted = gkbd.quitall = (MenuQuit.Run());
+        aborted = gkbd.quitall = make_bool(MenuQuit.Run());
         if(gkbd.quitall) {
           AA->bookmark = AA->Msgn.CvtReln(msgmark2);
           return false;
@@ -1117,7 +1117,7 @@ bool GThreadlist::handle_key() {
     case KK_ListAskExit:
       {
         GMenuQuit MenuQuit;
-        aborted = gkbd.quitall = (MenuQuit.Run());
+        aborted = gkbd.quitall = make_bool(MenuQuit.Run());
         if(gkbd.quitall)
           return false;
       }

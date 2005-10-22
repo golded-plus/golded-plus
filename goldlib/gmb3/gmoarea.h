@@ -86,7 +86,7 @@ public:
   const ftn_addr& aka() const     { return cfg.aka; }
         int   originno() const    { return cfg.originno; }
         Attr& attr()              { return cfg.attr; }
-        bool  ispacked() const    { return cfg.attr.pkd(); }
+        bool  ispacked() const    { return make_bool(cfg.attr.pkd()); }
         void  packed(bool a)      { cfg.attr.pkd(a); }
 
   bool ascan()          { return (bool)cfg.scan; }

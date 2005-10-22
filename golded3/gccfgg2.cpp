@@ -37,7 +37,7 @@ extern char* val;
 
 void CfgAreareplydirect() {
 
-  bool flag = GetYesno(val);
+  bool flag = make_bool(GetYesno(val));
   if(cfgingroup)
     CFG->grp.AddItm(GRP_AREAREPLYDIRECT, flag);
   else
@@ -451,7 +451,7 @@ void CfgDisphdrdateset() {
 
 void CfgDisphdrlocation()
 {
-  CFG->disphdrlocation = (0 != GetYesno(val));
+  CFG->disphdrlocation = make_bool(GetYesno(val));
 }
 
 //  ------------------------------------------------------------------

@@ -68,7 +68,7 @@ void CfgStatuslinehelp() {
 
 void CfgStripHTML() {
 
-  bool flag = GetYesno(val);
+  bool flag = make_bool(GetYesno(val));
   if(cfgingroup)
     CFG->grp.AddItm(GRP_STRIPHTML, flag);
   else
@@ -93,7 +93,7 @@ void CfgStylecodes() {
   if (strieql(val, "HIDE"))
     flag1 = flag2 = true;
   else 
-    flag2 = GetYesno(val);
+    flag2 = make_bool(GetYesno(val));
 
   if (cfgingroup)
   {
@@ -143,7 +143,7 @@ void CfgTaglinechar() {
 
 void CfgTaglinesupport() {
 
-  bool flag = GetYesno(val);
+  bool flag = make_bool(GetYesno(val));
   if(cfgingroup)
     CFG->grp.AddItm(GRP_TAGLINESUPPORT, flag);
   else
@@ -204,7 +204,7 @@ void CfgTemplate() {
 
 void CfgTemplatematch() {
 
-  bool flag = GetYesno(val);
+  bool flag = make_bool(GetYesno(val));
   if(cfgingroup)
     CFG->grp.AddItm(GRP_TEMPLATEMATCH, flag);
   else
@@ -237,7 +237,7 @@ void CfgTimeout() {
 
 void CfgTitlestatus(){
 
-  CFG->titlestatus = GetYesno(val);
+  CFG->titlestatus = make_bool(GetYesno(val));
 }
 
 //  ------------------------------------------------------------------
@@ -341,7 +341,7 @@ void CfgUrlhandler() {
 
 void CfgUsearea() {
 
-  int flag = GetYesno(val) ? true : false;
+  bool flag = make_bool(GetYesno(val));
   if(cfgingroup)
     CFG->grp.AddItm(GRP_USEAREA, flag);
   else
@@ -352,7 +352,7 @@ void CfgUsearea() {
 
 void CfgUsecharset() {
 
-  CFG->usecharset = GetYesno(val);
+  CFG->usecharset = make_bool(GetYesno(val));
 }
 
 //  ------------------------------------------------------------------
@@ -370,14 +370,14 @@ void CfgUsefwd() {
 
 void CfgUseintl() {
 
-  CFG->useintl = GetYesno(val);
+  CFG->useintl = make_bool(GetYesno(val));
 }
 
 //  ------------------------------------------------------------------
 
 void CfgUsepid() {
 
-  CFG->usepid = GetYesno(val);
+  CFG->usepid = make_bool(GetYesno(val));
 }
 
 //  ------------------------------------------------------------------
@@ -453,7 +453,7 @@ void CfgUsername() {
 
 void CfgUsesoftcrxlat()
 {
-  bool flag = GetYesno(val);
+  bool flag = make_bool(GetYesno(val));
   if (cfgingroup)
     CFG->grp.AddItm(GRP_USESOFTCRXLAT, flag);
   else
@@ -464,7 +464,7 @@ void CfgUsesoftcrxlat()
 
 void CfgUsetzutc() {
 
-  bool flag = GetYesno(val);
+  bool flag = make_bool(GetYesno(val));
   if(cfgingroup)
     CFG->grp.AddItm(GRP_USETZUTC, flag);
   else
@@ -482,7 +482,7 @@ void CfgUudecodepath() {
 
 void CfgViewhidden() {
 
-  bool flag = GetYesno(val);
+  bool flag = make_bool(GetYesno(val));
   if(cfgingroup)
     CFG->grp.AddItm(GRP_VIEWHIDDEN, flag);
   else
@@ -493,7 +493,7 @@ void CfgViewhidden() {
 
 void CfgViewkludge() {
 
-  bool flag = GetYesno(val);
+  bool flag = make_bool(GetYesno(val));
   if(cfgingroup)
     CFG->grp.AddItm(GRP_VIEWKLUDGE, flag);
   else
@@ -504,7 +504,7 @@ void CfgViewkludge() {
 
 void CfgViewquote() {
 
-  bool flag = GetYesno(val);
+  bool flag = make_bool(GetYesno(val));
   if(cfgingroup)
     CFG->grp.AddItm(GRP_VIEWQUOTE, flag);
   else

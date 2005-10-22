@@ -587,7 +587,7 @@ int ExternUtil(GMsg *msg, ExtUtil *extutil) {
       }
     }
 
-    int hardlines = EDIT->HardLines();
+    bool hardlines = EDIT->HardLines();
     EDIT->HardLines(false);
     LoadText(msg, editorfile);
     EDIT->HardLines(hardlines);

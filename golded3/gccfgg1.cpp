@@ -184,7 +184,7 @@ void CfgAkamatchfromto() {
 void CfgAkamatching() {
 
   if(cfgingroup) {
-    bool flag = GetYesno(val);
+    bool flag = make_bool(GetYesno(val));
     CFG->grp.AddItm(GRP_AKAMATCHING, flag);
   }
 }
@@ -193,7 +193,7 @@ void CfgAkamatching() {
 
 void CfgAkamatchmanually()
 {
-  CFG->akamatchmanually = (0 != GetYesno(val));
+  CFG->akamatchmanually = make_bool(GetYesno(val));
 }
 
 //  ------------------------------------------------------------------
@@ -226,7 +226,7 @@ void CfgAreacfmreplyto() {
 
 void CfgAreacopydirect() {
 
-  bool flag = GetYesno(val);
+  bool flag = make_bool(GetYesno(val));
   if(cfgingroup)
     CFG->grp.AddItm(GRP_AREACOPYDIRECT, flag);
   else
@@ -249,7 +249,7 @@ void CfgAreacopyto() {
 
 void CfgAreacopyaddid() {
 
-  bool flag = GetYesno(val);
+  bool flag = make_bool(GetYesno(val));
   if(cfgingroup)
     CFG->grp.AddItm(GRP_AREACOPYADDID, flag);
   else
@@ -282,7 +282,7 @@ void CfgAreaexcl() {
 
 void CfgAreaforwarddirect() {
 
-  bool flag = GetYesno(val);
+  bool flag = make_bool(GetYesno(val));
   if(cfgingroup)
     CFG->grp.AddItm(GRP_AREAFORWARDDIRECT, flag);
   else
@@ -293,7 +293,7 @@ void CfgAreaforwarddirect() {
 
 void CfgAreafreqdirect() {
 
-  bool flag = GetYesno(val);
+  bool flag = make_bool(GetYesno(val));
   if(cfgingroup)
     CFG->grp.AddItm(GRP_AREAFREQDIRECT, flag);
   else

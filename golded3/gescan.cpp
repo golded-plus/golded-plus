@@ -44,11 +44,11 @@ void Area::UpdateAreadata() {
       unread = _unread;
       isvalidchg = true;
     }
-    isunreadchg = (bool)(unread != _unread);
+    isunreadchg = (unread != _unread);
     unread = _unread;
     word oldmask = AL.mask;
     AL.mask = 0;
-    set_marked(_unread);
+    set_marked(make_bool(_unread));
     AL.mask = oldmask;
   }
 }

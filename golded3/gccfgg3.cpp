@@ -64,7 +64,7 @@ void CfgDispareano() {
 
 void CfgDisppmfirst() {
 
-  CFG->disppmfirst = GetYesno(val);
+  CFG->disppmfirst = make_bool(GetYesno(val));
 }
 
 //  ------------------------------------------------------------------
@@ -78,7 +78,7 @@ void CfgDisptabsize() {
 
 void CfgEditautoattach() {
 
-  EDIT->AutoAttach(GetYesno(val));
+  EDIT->AutoAttach(make_bool(GetYesno(val)));
 }
 
 //  ------------------------------------------------------------------
@@ -139,14 +139,14 @@ void CfgEditcompletion() {
 
 void CfgEditcrlfterm() {
 
-  EDIT->CrLfTerm(GetYesno(val));
+  EDIT->CrLfTerm(make_bool(GetYesno(val)));
 }
 
 //  ------------------------------------------------------------------
 
 void CfgEditfieldclear() {
 
-  EDIT->FieldClear(GetYesno(val));
+  EDIT->FieldClear(make_bool(GetYesno(val)));
 }
 
 //  ------------------------------------------------------------------
@@ -160,14 +160,14 @@ void CfgEdithardline() {
 
 void CfgEdithardlines() {
 
-  EDIT->HardLines(GetYesno(val));
+  EDIT->HardLines(make_bool(GetYesno(val)));
 }
 
 //  ------------------------------------------------------------------
 
 void CfgEdithardterm() {
 
-  bool flag = GetYesno(val);
+  bool flag = make_bool(GetYesno(val));
   if(cfgingroup)
     CFG->grp.AddItm(GRP_EDITHARDTERM, flag);
   else
@@ -198,7 +198,7 @@ void CfgEdithdrnodeset() {
 
 void CfgEditheaderattrs() {
 
-  EDIT->HeaderAttrs(GetYesno(val));
+  EDIT->HeaderAttrs(make_bool(GetYesno(val)));
 }
 
 //  ------------------------------------------------------------------
@@ -228,21 +228,21 @@ void CfgEditheaderfirst() {
 
 void CfgEditinternal() {
 
-  EDIT->Internal(GetYesno(val));
+  EDIT->Internal(make_bool(GetYesno(val)));
 }
 
 //  ------------------------------------------------------------------
 
 void CfgEditmenu() {
 
-  EDIT->Menu(GetYesno(val));
+  EDIT->Menu(make_bool(GetYesno(val)));
 }
 
 //  ------------------------------------------------------------------
 
 void CfgEditmixcase() {
 
-  bool flag = GetYesno(val);
+  bool flag = make_bool(GetYesno(val));
   if(cfgingroup)
     CFG->grp.AddItm(GRP_EDITMIXCASE, flag);
   else
@@ -290,7 +290,7 @@ void CfgEditreplyre() {
 
 void CfgEditsavemenu() {
 
-  EDIT->SaveMenu(GetYesno(val));
+  EDIT->SaveMenu(make_bool(GetYesno(val)));
 }
 
 //  ------------------------------------------------------------------
@@ -328,7 +328,7 @@ void CfgEditundelete() {
   
 void CfgEncodeemailheaders() {
 
-  CFG->encodeemailheaders = GetYesno(val);
+  CFG->encodeemailheaders = make_bool(GetYesno(val));
 }
 
 //  ------------------------------------------------------------------

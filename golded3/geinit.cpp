@@ -702,8 +702,8 @@ void Initialize(int argc, char* argv[]) {
 
   // Read/compile various configs
   compiled |= ReadLangCfg(cmdlineforce);
-  compiled |= bool(ReadKeysCfg(cmdlineforce));
-  compiled |= bool(ReadHelpCfg(cmdlineforce));
+  compiled |= make_bool(ReadKeysCfg(cmdlineforce));
+  compiled |= make_bool(ReadHelpCfg(cmdlineforce));
 
   // Initialize sound system
   InitSound();

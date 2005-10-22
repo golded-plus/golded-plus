@@ -615,7 +615,7 @@ void DoKludges(int mode, GMsg* msg, int kludges) {
         line = AddKludge(line, buf);
         line->kludge = GKLUD_RFC;
         char encoding[100];
-        bool isusascii = striinc("ASCII", msg->charset);
+        bool isusascii = make_bool(striinc("ASCII", msg->charset));
         bool isqp = not isusascii and IsQuotedPrintable(msg->charset);
         if(strnieql(msg->charset, "latin", 5))
           Latin2ISO(encoding, msg->charset);

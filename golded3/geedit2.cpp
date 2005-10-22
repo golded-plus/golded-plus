@@ -1428,7 +1428,7 @@ void IEclass::AskExit() {
 
   cursoroff();
   GMenuQuit MenuQuit;
-  gkbd.quitall = MenuQuit.Run();
+  gkbd.quitall = make_bool(MenuQuit.Run());
   if(gkbd.quitall) {
     GMenuDropmsg MenuDropmsg;
     if(MenuDropmsg.Run())

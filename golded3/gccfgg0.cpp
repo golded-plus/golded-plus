@@ -130,7 +130,7 @@ bool gswitches::handle(word crc, const char* value) {
       left  = middle + 1;
     }
     else {
-      cfg[middle] = GetYesno(value);
+      cfg[middle] = make_bool(GetYesno(value));
       return true;
     }
   } while(left <= right);

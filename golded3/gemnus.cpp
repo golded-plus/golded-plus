@@ -868,7 +868,7 @@ int GMenuEditHeader::Run(int mode, GMsg* msg) {
 
     update_statusline(LNG->EditHeader);
 
-    _tag = EditHeaderinfo(mode, *HeaderView, doedithdr);
+    _tag = EditHeaderinfo(mode, *HeaderView, make_bool(doedithdr));
     if((_tag == W_ESCPRESS) or gkbd.quitall)
       break;
 

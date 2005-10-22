@@ -37,7 +37,7 @@ extern char* val;
 
 void CfgMsglistfirst() {
 
-  bool flag = GetYesno(val);
+  bool flag = make_bool(GetYesno(val));
   if(cfgingroup)
     CFG->grp.AddItm(GRP_MSGLISTFIRST, flag);
   else
@@ -48,7 +48,7 @@ void CfgMsglistfirst() {
 
 void CfgMsglistheader() {
 
-  bool flag = GetYesno(val);
+  bool flag = make_bool(GetYesno(val));
   if(cfgingroup)
     CFG->grp.AddItm(GRP_MSGLISTHEADER, flag);
   else
@@ -59,7 +59,7 @@ void CfgMsglistheader() {
 
 void CfgMsglistwidesubj() {
 
-  bool flag = GetYesno(val);
+  bool flag = make_bool(GetYesno(val));
   if(cfgingroup)
     CFG->grp.AddItm(GRP_MSGLISTWIDESUBJ, flag);
   else

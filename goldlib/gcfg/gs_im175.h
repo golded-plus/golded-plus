@@ -52,10 +52,6 @@
 #define IM_PRD_CODE           0x4B
 #define BETA
 
-//  Data type definitions
-
-typedef unsigned char bit;
-
 //  Internal limits
 
 #define MAXAKAS              50       /* Max # of addresses */

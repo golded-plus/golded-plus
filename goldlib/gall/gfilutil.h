@@ -72,11 +72,11 @@
 #endif
 
 #ifndef S_ISDIR
-#define S_ISDIR(st_mode) ((st_mode)&_S_IFDIR)
+#define S_ISDIR(st_mode) (make_bool((st_mode)&_S_IFDIR))
 #endif
 
 #ifndef S_ISREG
-#define S_ISREG(st_mode) ((st_mode)&_S_IFREG)
+#define S_ISREG(st_mode) (make_bool((st_mode)&_S_IFREG))
 #endif
 
 #ifndef R_OK

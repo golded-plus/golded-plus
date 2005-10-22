@@ -1062,9 +1062,9 @@ void OtherAreaReplyMsg() {
         destarea = AreaPick(LNG->ReplyArea, 6, &destarea);
     }
     if(destarea != -1) {
-      int adat_viewhidden = AA->Viewhidden();
-      int adat_viewkludge = AA->Viewkludge();
-      int adat_viewquote  = AA->Viewquote();
+      bool adat_viewhidden = AA->Viewhidden();
+      bool adat_viewkludge = AA->Viewkludge();
+      bool adat_viewquote  = AA->Viewquote();
       AL.SetActiveAreaId(destarea);
       if(CurrArea != OrigArea) {
         AA->Open();
@@ -1218,9 +1218,9 @@ void OtherAreaQuoteMsg(bool ignore_replyto) {
         destarea = AreaPick(LNG->ReplyArea, 6, &destarea);
     }
     if(destarea != -1) {
-      int adat_viewhidden = AA->Viewhidden();
-      int adat_viewkludge = AA->Viewkludge();
-      int adat_viewquote  = AA->Viewquote();
+      bool adat_viewhidden = AA->Viewhidden();
+      bool adat_viewkludge = AA->Viewkludge();
+      bool adat_viewquote  = AA->Viewquote();
       AL.SetActiveAreaId(destarea);
       if(CurrArea != OrigArea) {
         AA->Open();
@@ -1268,9 +1268,9 @@ void OtherAreaCommentMsg() {
         destarea = AreaPick(LNG->ReplyArea, 6, &destarea);
     }
     if(destarea != -1) {
-      int adat_viewhidden = AA->Viewhidden();
-      int adat_viewkludge = AA->Viewkludge();
-      int adat_viewquote  = AA->Viewquote();
+      bool adat_viewhidden = AA->Viewhidden();
+      bool adat_viewkludge = AA->Viewkludge();
+      bool adat_viewquote  = AA->Viewquote();
       AL.SetActiveAreaId(destarea);
       if(CurrArea != OrigArea) {
         AA->Open();

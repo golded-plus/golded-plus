@@ -97,11 +97,11 @@ public:
   char* By() { return *realby ? realby : by; }
   char* To() { return *realto ? realto : to; }
 
-  bool to_me()  { return (you_and_I & TO_ME); }
-  bool to_all() { return (you_and_I & TO_ALL); }
-  bool by_me()  { return (you_and_I & BY_ME); }
-  bool to_you() { return (you_and_I & TO_YOU); }
-  bool by_you() { return (you_and_I & BY_YOU); }
+  bool to_me()  { return make_bool(you_and_I & TO_ME ); }
+  bool to_all() { return make_bool(you_and_I & TO_ALL); }
+  bool by_me()  { return make_bool(you_and_I & BY_ME ); }
+  bool to_you() { return make_bool(you_and_I & TO_YOU); }
+  bool by_you() { return make_bool(you_and_I & BY_YOU); }
 
   void TextToLines(int __line_width, bool getvalue = true, bool header_recode = true);
   void LinesToText();
@@ -389,7 +389,7 @@ public:
   bool    get_findfirst() { return findfirst; }
   uint    get_findtype()  { return findtype;  }
 
-  bool    isopen() { return area->isopen; }
+  bool    isopen() { return make_bool(area->isopen); }
 
   bool    isunreadchg : 1;    // TRUE if unread was changed since last scan
   bool    isreadmark  : 1;    // TRUE if in read marked mode

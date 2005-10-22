@@ -617,9 +617,9 @@ static void MakeMsg2(int& mode, int& status, int& forwstat, int& topline, GMsg* 
           LoadText(msg, AddPath(CFG->goldpath, EDIT->File()));
         if(mode == MODE_FORWARD)
           msg->attr.pos1();
-        int adat_viewhidden = AA->Viewhidden();
-        int adat_viewkludge = AA->Viewkludge();
-        int adat_viewquote  = AA->Viewquote();
+        bool adat_viewhidden = AA->Viewhidden();
+        bool adat_viewkludge = AA->Viewkludge();
+        bool adat_viewquote  = AA->Viewquote();
         bool adat_striphtml = AA->StripHTML();
         AA->adat->viewhidden = true;
         AA->adat->viewkludge = true;
@@ -752,9 +752,9 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
       post_xparea.pop_back();
     }
 
-    int status = MODE_SAVE;
-    int hardlines = EDIT->HardLines();
-    int topline = 0;
+    int  status = MODE_SAVE;
+    bool hardlines = EDIT->HardLines();
+    int  topline = 0;
     fspecs = specfiles = 0;
     fspec = (FileSpec*)throw_realloc(fspec, sizeof(FileSpec));
     memset(fspec, 0, sizeof(FileSpec));

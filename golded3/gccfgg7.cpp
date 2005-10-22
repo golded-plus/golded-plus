@@ -73,7 +73,7 @@ void CfgQuotestops() {
 
 void CfgQuotewraphard() {
 
-  bool flag = GetYesno(val);
+  bool flag = make_bool(GetYesno(val));
   if(cfgingroup)
     CFG->grp.AddItm(GRP_QUOTEWRAPHARD, flag);
   else
@@ -84,7 +84,7 @@ void CfgQuotewraphard() {
 
 void CfgQuoteusenewai()
 {
-  CFG->quoteusenewai = 0 != GetYesno(val);
+  CFG->quoteusenewai = make_bool(GetYesno(val));
 }
 
 //  ------------------------------------------------------------------
@@ -187,7 +187,7 @@ void CfgReplylink() {
 
 void CfgReplylinkfloat()
 {
-  CFG->replylinkfloat = (0 != GetYesno(val));
+  CFG->replylinkfloat = make_bool(GetYesno(val));
 }
 
 //  ------------------------------------------------------------------
@@ -204,7 +204,7 @@ void CfgReplylinklist() {
 
 void CfgReplylinkshowalways()
 {
-  CFG->replylinkshowalways = (0 != GetYesno(val));
+  CFG->replylinkshowalways = make_bool(GetYesno(val));
 }
 //  ------------------------------------------------------------------
 
@@ -444,7 +444,7 @@ void CfgSharemode() {
 
 void CfgShowdeleted() {
 
-  CFG->showdeleted = GetYesno(val);
+  CFG->showdeleted = make_bool(GetYesno(val));
 }
 
 //  ------------------------------------------------------------------

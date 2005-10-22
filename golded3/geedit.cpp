@@ -839,7 +839,7 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, boo
       }
 
       // Was this line truncated at space?
-      bool truncated_at_space = isspace(_thisline->txt[_wrappos]);
+      bool truncated_at_space = make_bool(isspace(_thisline->txt[_wrappos]));
 
       // Truncate at the wrapping location
       _thisline->txt.erase(_wrappos);
@@ -2930,7 +2930,7 @@ void UndoStack::PlayItem() {
 
         uint undo_type = last_item->action & EDIT_UNDO_TYPE;
         uint undo_action = last_item->action & EDIT_UNDO_ACTION;
-        in_batch = last_item->action & BATCH_MODE;
+        in_batch = make_bool(last_item->action & BATCH_MODE);
         currline = last_item->line;
 
         if(last_item->action & PREV_LINE) {
