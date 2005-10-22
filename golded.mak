@@ -23,9 +23,9 @@ NULL=
 NULL=nul
 !ENDIF
 
-CPP=@cl.exe
+CPP=@cl.exe /IC:\PROGRA~1\MICROS~2\VC98\INCLUDE
 RSC=rc.exe
-LINK=@link.exe
+LINK=@link.exe /LIBPATH:C:\PROGRA~1\MICROS~2\VC98\LIB
 
 !IF  "$(CFG)" == "Release"
 OBJ_DIR=Release

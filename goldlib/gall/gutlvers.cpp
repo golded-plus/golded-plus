@@ -292,7 +292,7 @@ char *gcpuid(char *_cpuname)
 
   cpuname( scpuid.family, scpuid.model, scpuid.vendor, _cpuname);
 
-#elif defined(__GNUC__)
+#elif defined(__GNUC__) && defined(__i386__)
 
   asm(  /* assembler code is based on code of FreeBSD kernel sources */
         /* uses AT&T assembler notation */
