@@ -208,9 +208,10 @@ static void cpuname(int family, int model, const char *v_name, char *m_name)
     case 15:
       switch (model)
       {
-      case 2:  // 15-2-7, 15-4-1
+/*      case 2:  // 15-2-7, 15-4-1
         strcpy(m_name, "iXeon");
         break;
+*/
       default:
         strcpy(m_name, "iP-IV");
         break;
