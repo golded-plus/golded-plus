@@ -197,7 +197,7 @@ typedef struct {
   byte     audio_end_hour;
   byte     audio_end_minute;
 
-  /* ---	Minimum cost to process undialable */
+  /* ---    Minimum cost to process undialable */
 
   word     min_undial_cost;
 

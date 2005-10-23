@@ -91,11 +91,11 @@ void gareafile::ReadSynchronet(char* tag) {
       std::cout << "* Reading " << file << std::endl;
 
     // Skip header:
-    // max_qwkmsgs					4
-    // mail_maxcrcs					4
-    // mail_maxage					2
-    // unused (NULL)					512
-    // unused (0xff)					512
+    // max_qwkmsgs                  4
+    // mail_maxcrcs                 4
+    // mail_maxage                  2
+    // unused (NULL)                    512
+    // unused (0xff)                    512
     fseek(in, 1034, SEEK_CUR);
 
     if(fread(&shrt, sizeof(uint16_t), 1, in) == 1) {

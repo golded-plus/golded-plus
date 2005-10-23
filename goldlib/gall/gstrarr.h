@@ -45,15 +45,15 @@ typedef std::vector<std::string> gstrarray;
 //  ------------------------------------------------------------------
 
 inline void tokenize(gstrarray& array, const char* str, const char* delim = NULL) {
-	if(delim == NULL)
-		delim = ", \t";
-	char* tmp = throw_xstrdup(str);
-	char* token = strtok(tmp, delim);
-	while(token) {
-		array.push_back(token);
-		token = strtok(NULL, delim);
-	}
-	throw_xfree(tmp);
+    if(delim == NULL)
+        delim = ", \t";
+    char* tmp = throw_xstrdup(str);
+    char* token = strtok(tmp, delim);
+    while(token) {
+        array.push_back(token);
+        token = strtok(NULL, delim);
+    }
+    throw_xfree(tmp);
 }
 
 

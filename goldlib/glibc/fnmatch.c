@@ -22,7 +22,7 @@
 
 /* Enable GNU extensions in fnmatch.h.  */
 #ifndef _GNU_SOURCE
-# define _GNU_SOURCE	1
+# define _GNU_SOURCE    1
 #endif
 
 #include <errno.h>
@@ -107,12 +107,12 @@
 # else
 #  define CHAR_CLASS_MAX_LENGTH  6 /* Namely, `xdigit'.  */
 
-#  define IS_CHAR_CLASS(string)						      \
-   (STREQ (string, "alpha") || STREQ (string, "upper")			      \
-    || STREQ (string, "lower") || STREQ (string, "digit")		      \
-    || STREQ (string, "alnum") || STREQ (string, "xdigit")		      \
-    || STREQ (string, "space") || STREQ (string, "print")		      \
-    || STREQ (string, "punct") || STREQ (string, "graph")		      \
+#  define IS_CHAR_CLASS(string)                           \
+   (STREQ (string, "alpha") || STREQ (string, "upper")                \
+    || STREQ (string, "lower") || STREQ (string, "digit")             \
+    || STREQ (string, "alnum") || STREQ (string, "xdigit")            \
+    || STREQ (string, "space") || STREQ (string, "print")             \
+    || STREQ (string, "punct") || STREQ (string, "graph")             \
     || STREQ (string, "cntrl") || STREQ (string, "blank"))
 # endif
 
@@ -150,222 +150,222 @@ fnmatch (pattern, string, flags)
       c = FOLD (c);
 
       switch (c)
-	{
-	case '?':
-	  if (*n == '\0')
-	    return FNM_NOMATCH;
-	  else if ((flags & FNM_FILE_NAME) && *n == '/')
-	    return FNM_NOMATCH;
-	  else if ((flags & FNM_PERIOD) && *n == '.' &&
-		   (n == string || ((flags & FNM_FILE_NAME) && n[-1] == '/')))
-	    return FNM_NOMATCH;
-	  break;
+    {
+    case '?':
+      if (*n == '\0')
+        return FNM_NOMATCH;
+      else if ((flags & FNM_FILE_NAME) && *n == '/')
+        return FNM_NOMATCH;
+      else if ((flags & FNM_PERIOD) && *n == '.' &&
+           (n == string || ((flags & FNM_FILE_NAME) && n[-1] == '/')))
+        return FNM_NOMATCH;
+      break;
 
-	case '\\':
-	  if (!(flags & FNM_NOESCAPE))
-	    {
-	      c = *p++;
-	      if (c == '\0')
-		/* Trailing \ loses.  */
-		return FNM_NOMATCH;
-	      c = FOLD (c);
-	    }
-	  if (FOLD (*n) != c)
-	    return FNM_NOMATCH;
-	  break;
+    case '\\':
+      if (!(flags & FNM_NOESCAPE))
+        {
+          c = *p++;
+          if (c == '\0')
+        /* Trailing \ loses.  */
+        return FNM_NOMATCH;
+          c = FOLD (c);
+        }
+      if (FOLD (*n) != c)
+        return FNM_NOMATCH;
+      break;
 
-	case '*':
-	  if ((flags & FNM_PERIOD) && *n == '.' &&
-	      (n == string || ((flags & FNM_FILE_NAME) && n[-1] == '/')))
-	    return FNM_NOMATCH;
+    case '*':
+      if ((flags & FNM_PERIOD) && *n == '.' &&
+          (n == string || ((flags & FNM_FILE_NAME) && n[-1] == '/')))
+        return FNM_NOMATCH;
 
-	  for (c = *p++; c == '?' || c == '*'; c = *p++)
-	    {
-	      if ((flags & FNM_FILE_NAME) && *n == '/')
-		/* A slash does not match a wildcard under FNM_FILE_NAME.  */
-		return FNM_NOMATCH;
-	      else if (c == '?')
-		{
-		  /* A ? needs to match one character.  */
-		  if (*n == '\0')
-		    /* There isn't another character; no match.  */
-		    return FNM_NOMATCH;
-		  else
-		    /* One character of the string is consumed in matching
-		       this ? wildcard, so *??? won't match if there are
-		       less than three characters.  */
-		    ++n;
-		}
-	    }
+      for (c = *p++; c == '?' || c == '*'; c = *p++)
+        {
+          if ((flags & FNM_FILE_NAME) && *n == '/')
+        /* A slash does not match a wildcard under FNM_FILE_NAME.  */
+        return FNM_NOMATCH;
+          else if (c == '?')
+        {
+          /* A ? needs to match one character.  */
+          if (*n == '\0')
+            /* There isn't another character; no match.  */
+            return FNM_NOMATCH;
+          else
+            /* One character of the string is consumed in matching
+               this ? wildcard, so *??? won't match if there are
+               less than three characters.  */
+            ++n;
+        }
+        }
 
-	  if (c == '\0')
-	    return 0;
+      if (c == '\0')
+        return 0;
 
-	  {
-	    char c1 = (!(flags & FNM_NOESCAPE) && c == '\\') ? *p : c;
-	    c1 = FOLD (c1);
-	    for (--p; *n != '\0'; ++n)
-	      if ((c == '[' || FOLD (*n) == c1) &&
-		  fnmatch (p, n, flags & ~FNM_PERIOD) == 0)
-		return 0;
-	    return FNM_NOMATCH;
-	  }
+      {
+        char c1 = (!(flags & FNM_NOESCAPE) && c == '\\') ? *p : c;
+        c1 = FOLD (c1);
+        for (--p; *n != '\0'; ++n)
+          if ((c == '[' || FOLD (*n) == c1) &&
+          fnmatch (p, n, flags & ~FNM_PERIOD) == 0)
+        return 0;
+        return FNM_NOMATCH;
+      }
 
-	case '[':
-	  {
-	    /* Nonzero if the sense of the character class is inverted.  */
-	    static int posixly_correct;
-	    register int not;
-	    char cold;
+    case '[':
+      {
+        /* Nonzero if the sense of the character class is inverted.  */
+        static int posixly_correct;
+        register int not;
+        char cold;
 
-	    if (posixly_correct == 0)
-	      posixly_correct = getenv ("POSIXLY_CORRECT") != NULL ? 1 : -1;
+        if (posixly_correct == 0)
+          posixly_correct = getenv ("POSIXLY_CORRECT") != NULL ? 1 : -1;
 
-	    if (*n == '\0')
-	      return FNM_NOMATCH;
+        if (*n == '\0')
+          return FNM_NOMATCH;
 
-	    if (*n == '.' && (flags & FNM_PERIOD) &&
-		(n == string || ((flags & FNM_FILE_NAME) && n[-1] == '/')))
-	      return FNM_NOMATCH;
+        if (*n == '.' && (flags & FNM_PERIOD) &&
+        (n == string || ((flags & FNM_FILE_NAME) && n[-1] == '/')))
+          return FNM_NOMATCH;
 
-	    if (*n == '/' && (flags & FNM_FILE_NAME))
-	      /* `/' cannot be matched.  */
-	      return FNM_NOMATCH;
+        if (*n == '/' && (flags & FNM_FILE_NAME))
+          /* `/' cannot be matched.  */
+          return FNM_NOMATCH;
 
-	    not = (*p == '!' || (posixly_correct < 0 && *p == '^'));
-	    if (not)
-	      ++p;
+        not = (*p == '!' || (posixly_correct < 0 && *p == '^'));
+        if (not)
+          ++p;
 
-	    c = *p++;
-	    for (;;)
-	      {
-		int fn = FOLD (*n);
+        c = *p++;
+        for (;;)
+          {
+        int fn = FOLD (*n);
 
-		if (!(flags & FNM_NOESCAPE) && c == '\\')
-		  {
-		    if (*p == '\0')
-		      return FNM_NOMATCH;
-		    c = FOLD (*p++);
+        if (!(flags & FNM_NOESCAPE) && c == '\\')
+          {
+            if (*p == '\0')
+              return FNM_NOMATCH;
+            c = FOLD (*p++);
 
-		    if (c == fn)
-		      goto matched;
-		  }
-		else if (c == '[' && *p == ':')
-		  {
-		    /* Leave room for the null.  */
-		    char str[CHAR_CLASS_MAX_LENGTH + 1];
-		    size_t c1 = 0;
+            if (c == fn)
+              goto matched;
+          }
+        else if (c == '[' && *p == ':')
+          {
+            /* Leave room for the null.  */
+            char str[CHAR_CLASS_MAX_LENGTH + 1];
+            size_t c1 = 0;
 # if defined _LIBC || (defined HAVE_WCTYPE_H && defined HAVE_WCHAR_H)
-		    wctype_t wt;
+            wctype_t wt;
 # endif
 
-		    for (;;)
-		      {
-			if (c1 == CHAR_CLASS_MAX_LENGTH)
-			  /* The name is too long and therefore the pattern
-			     is ill-formed.  */
-			  return FNM_NOMATCH;
+            for (;;)
+              {
+            if (c1 == CHAR_CLASS_MAX_LENGTH)
+              /* The name is too long and therefore the pattern
+                 is ill-formed.  */
+              return FNM_NOMATCH;
 
-			c = *++p;
-			if (c == ':' && p[1] == ']')
-			  {
-			    p += 2;
-			    break;
-			  }
-			str[c1++] = 'c';
-		      }
-		    str[c1] = '\0';
+            c = *++p;
+            if (c == ':' && p[1] == ']')
+              {
+                p += 2;
+                break;
+              }
+            str[c1++] = 'c';
+              }
+            str[c1] = '\0';
 
 # if defined _LIBC || (defined HAVE_WCTYPE_H && defined HAVE_WCHAR_H)
-		    wt = IS_CHAR_CLASS (str);
-		    if (wt == 0)
-		      /* Invalid character class name.  */
-		      return FNM_NOMATCH;
+            wt = IS_CHAR_CLASS (str);
+            if (wt == 0)
+              /* Invalid character class name.  */
+              return FNM_NOMATCH;
 
-		    if (__iswctype (__btowc (*n), wt))
-		      goto matched;
+            if (__iswctype (__btowc (*n), wt))
+              goto matched;
 # else
-		    if ((STREQ (str, "alnum") && ISALNUM (*n))
-			|| (STREQ (str, "alpha") && ISALPHA (*n))
-			|| (STREQ (str, "blank") && ISBLANK (*n))
-			|| (STREQ (str, "cntrl") && ISCNTRL (*n))
-			|| (STREQ (str, "digit") && ISDIGIT (*n))
-			|| (STREQ (str, "graph") && ISGRAPH (*n))
-			|| (STREQ (str, "lower") && ISLOWER (*n))
-			|| (STREQ (str, "print") && ISPRINT (*n))
-			|| (STREQ (str, "punct") && ISPUNCT (*n))
-			|| (STREQ (str, "space") && ISSPACE (*n))
-			|| (STREQ (str, "upper") && ISUPPER (*n))
-			|| (STREQ (str, "xdigit") && ISXDIGIT (*n)))
-		      goto matched;
+            if ((STREQ (str, "alnum") && ISALNUM (*n))
+            || (STREQ (str, "alpha") && ISALPHA (*n))
+            || (STREQ (str, "blank") && ISBLANK (*n))
+            || (STREQ (str, "cntrl") && ISCNTRL (*n))
+            || (STREQ (str, "digit") && ISDIGIT (*n))
+            || (STREQ (str, "graph") && ISGRAPH (*n))
+            || (STREQ (str, "lower") && ISLOWER (*n))
+            || (STREQ (str, "print") && ISPRINT (*n))
+            || (STREQ (str, "punct") && ISPUNCT (*n))
+            || (STREQ (str, "space") && ISSPACE (*n))
+            || (STREQ (str, "upper") && ISUPPER (*n))
+            || (STREQ (str, "xdigit") && ISXDIGIT (*n)))
+              goto matched;
 # endif
-		  }
-		else if (c == '\0')
-		  /* [ (unterminated) loses.  */
-		  return FNM_NOMATCH;
-		else if (FOLD (c) == fn)
-		  goto matched;
+          }
+        else if (c == '\0')
+          /* [ (unterminated) loses.  */
+          return FNM_NOMATCH;
+        else if (FOLD (c) == fn)
+          goto matched;
 
-		cold = c;
-		c = *p++;
+        cold = c;
+        c = *p++;
 
-		if (c == '-' && *p != ']')
-		  {
-		    /* It is a range.  */
-		    char cend = *p++;
-		    if (!(flags & FNM_NOESCAPE) && cend == '\\')
-		      cend = *p++;
-		    if (cend == '\0')
-		      return FNM_NOMATCH;
+        if (c == '-' && *p != ']')
+          {
+            /* It is a range.  */
+            char cend = *p++;
+            if (!(flags & FNM_NOESCAPE) && cend == '\\')
+              cend = *p++;
+            if (cend == '\0')
+              return FNM_NOMATCH;
 
-		    if (cold <= fn && fn <= FOLD (cend))
-		      goto matched;
+            if (cold <= fn && fn <= FOLD (cend))
+              goto matched;
 
-		    c = *p++;
-		  }
-		if (c == ']')
-		  break;
-	      }
+            c = *p++;
+          }
+        if (c == ']')
+          break;
+          }
 
-	    if (!not)
-	      return FNM_NOMATCH;
-	    break;
+        if (!not)
+          return FNM_NOMATCH;
+        break;
 
-	  matched:
-	    /* Skip the rest of the [...] that already matched.  */
-	    while (c != ']')
-	      {
-		if (c == '\0')
-		  /* [... (unterminated) loses.  */
-		  return FNM_NOMATCH;
+      matched:
+        /* Skip the rest of the [...] that already matched.  */
+        while (c != ']')
+          {
+        if (c == '\0')
+          /* [... (unterminated) loses.  */
+          return FNM_NOMATCH;
 
-		c = *p++;
-		if (!(flags & FNM_NOESCAPE) && c == '\\')
-		  {
-		    if (*p == '\0')
-		      return FNM_NOMATCH;
-		    /* XXX 1003.2d11 is unclear if this is right.  */
-		    ++p;
-		  }
-		else if (c == '[' && *p == ':')
-		  {
-		    do
-		      if (*++p == '\0')
-			return FNM_NOMATCH;
-		    while (*p != ':' || p[1] == ']');
-		    p += 2;
-		    c = *p;
-		  }
-	      }
-	    if (not)
-	      return FNM_NOMATCH;
-	  }
-	  break;
+        c = *p++;
+        if (!(flags & FNM_NOESCAPE) && c == '\\')
+          {
+            if (*p == '\0')
+              return FNM_NOMATCH;
+            /* XXX 1003.2d11 is unclear if this is right.  */
+            ++p;
+          }
+        else if (c == '[' && *p == ':')
+          {
+            do
+              if (*++p == '\0')
+            return FNM_NOMATCH;
+            while (*p != ':' || p[1] == ']');
+            p += 2;
+            c = *p;
+          }
+          }
+        if (not)
+          return FNM_NOMATCH;
+      }
+      break;
 
-	default:
-	  if (c != FOLD (*n))
-	    return FNM_NOMATCH;
-	}
+    default:
+      if (c != FOLD (*n))
+        return FNM_NOMATCH;
+    }
 
       ++n;
     }
@@ -382,4 +382,4 @@ fnmatch (pattern, string, flags)
 # undef FOLD
 }
 
-#endif	/* _LIBC or not __GNU_LIBRARY__.  */
+#endif  /* _LIBC or not __GNU_LIBRARY__.  */

@@ -81,7 +81,7 @@ const uint GLINE_POSI = 0x0100;
 const uint GLINE_HIGH = 0x0200;
 const uint GLINE_TAGL = 0x0400;
 const uint GLINE_SIGN = 0x0800;
-const uint GLINE_NOAL = 0x1000;	 // text is not allocated
+const uint GLINE_NOAL = 0x1000;  // text is not allocated
 
 const uint GLINE_KLUDGE = GLINE_HIDD | GLINE_KLUD;
 const uint GLINE_ALL    = GLINE_HIDD | GLINE_KLUD | GLINE_QUOT;

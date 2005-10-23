@@ -76,8 +76,8 @@ static char *knownexts[] = {
  * forward declarations of local functions
  */
 
-static int	UUSMPKnownExt		_ANSI_ARGS_((char *filename));
-static uulist *	UU_smparts_r		_ANSI_ARGS_((uulist *, int));
+static int  UUSMPKnownExt       _ANSI_ARGS_((char *filename));
+static uulist * UU_smparts_r        _ANSI_ARGS_((uulist *, int));
 
 /*
  * mallocable areas
@@ -129,9 +129,9 @@ UUkilllist (uulist *data)
   while (data) {
     if (data->binfile != NULL)
       if (unlink (data->binfile))
-	UUMessage (uuutil_id, __LINE__, UUMSG_WARNING,
-		   uustring (S_TMP_NOT_REMOVED),
-		   data->binfile, strerror (errno));
+    UUMessage (uuutil_id, __LINE__, UUMSG_WARNING,
+           uustring (S_TMP_NOT_REMOVED),
+           data->binfile, strerror (errno));
 
     _FP_free   (data->filename);
     _FP_free   (data->subfname);
@@ -219,7 +219,7 @@ UUSMPKnownExt (char *filename)
 
 int
 UUbhdecomp (char *in, char *out, char *last, int *rpc, 
-	    size_t inc, size_t max, size_t *opc)
+        size_t inc, size_t max, size_t *opc)
 {
   size_t count, used=0, dummy;
   char marker = '\220' /* '\x90' */;
@@ -257,18 +257,18 @@ UUbhdecomp (char *in, char *out, char *last, int *rpc,
     if (*in == marker) {
       used++; in++;
       if (used == inc) {
-	*rpc = -256;
-	return used;
+    *rpc = -256;
+    return used;
       }
       *rpc = (int) (unsigned char) *in++; used++;
 
       if (*rpc == 0) {
-	*last = *out++ = marker;
-	max--; *opc+=1;
-	continue;
+    *last = *out++ = marker;
+    max--; *opc+=1;
+    continue;
       }
       else
-	*rpc -= 1;
+    *rpc -= 1;
 
       count = (max > (size_t) *rpc) ? (size_t) *rpc : max;
       memset (out, *last, count);
@@ -307,7 +307,7 @@ UUbhwrite (char *ptr, size_t sel, size_t nel, FILE *file)
 
   while (nel || (rpc != 0 && rpc != -256)) {
     count = UUbhdecomp (ptr, tmpstring, &lc, &rpc,
-			nel, 256, &opc);
+            nel, 256, &opc);
     if (fwrite (tmpstring, 1, opc, file) != opc)
       return 0;
     if (ferror (file))
@@ -337,7 +337,7 @@ UU_smparts_r (uulist *addit, int pass)
       continue;
     }
     if ((iter->begin && addit->begin) || (iter->end && addit->end) ||
-	(iter->uudet != addit->uudet)) {
+    (iter->uudet != addit->uudet)) {
       iter = iter->NEXT;
       continue;
     }
@@ -355,8 +355,8 @@ UU_smparts_r (uulist *addit, int pass)
 
     while (temp) {
       if (!(temp->data->uudet)) {
-	temp = temp->NEXT;
-	continue;
+    temp = temp->NEXT;
+    continue;
       }
 
       while (fiter && fiter->partno < temp->partno) {
@@ -368,7 +368,7 @@ UU_smparts_r (uulist *addit, int pass)
         break;
       }
       else {
-	flag   = 1;
+    flag   = 1;
         count += ((dest)  ? temp->partno - dest->partno - 1 : 0) +
                  ((fiter) ? fiter->partno - temp->partno - 1 : 0);
       }
@@ -398,33 +398,33 @@ UU_smparts_r (uulist *addit, int pass)
       flag = 0;
 
       if (fiter->partno == iter->thisfile->partno ||
-	  (dest->NEXT != NULL && fiter->partno == dest->NEXT->partno)) {
-	temp           = fiter->NEXT;
-	fiter->NEXT    = NULL;
+      (dest->NEXT != NULL && fiter->partno == dest->NEXT->partno)) {
+    temp           = fiter->NEXT;
+    fiter->NEXT    = NULL;
 
-	UUkillfile (fiter);
+    UUkillfile (fiter);
 
-	addit->thisfile= temp;
-	fiter          = temp;
-	continue;
+    addit->thisfile= temp;
+    fiter          = temp;
+    continue;
       }
       if (fiter->partno < iter->thisfile->partno) {
-	temp           = fiter->NEXT;
-	fiter->NEXT    = iter->thisfile;
-	iter->thisfile = fiter;
-	dest           = fiter;
-	addit->thisfile= temp;
-	fiter          = temp;
+    temp           = fiter->NEXT;
+    fiter->NEXT    = iter->thisfile;
+    iter->thisfile = fiter;
+    dest           = fiter;
+    addit->thisfile= temp;
+    fiter          = temp;
       }
       else if (dest->NEXT == NULL || fiter->partno < dest->NEXT->partno) {
-	temp           = fiter->NEXT;
-	fiter->NEXT    = dest->NEXT;
-	dest->NEXT     = fiter;
-	addit->thisfile= temp;
-	fiter          = temp;
+    temp           = fiter->NEXT;
+    fiter->NEXT    = dest->NEXT;
+    dest->NEXT     = fiter;
+    addit->thisfile= temp;
+    fiter          = temp;
       }
       else {
-	dest = dest->NEXT;
+    dest = dest->NEXT;
       }
     }
     break;
@@ -446,9 +446,9 @@ UUSmerge (int pass)
     }
     if ((res = UU_smparts_r (iter, pass)) != NULL) {
       UUMessage (uuutil_id, __LINE__, UUMSG_MESSAGE,
-		 uustring (S_SMERGE_MERGED),
-		 (iter->subfname) ? iter->subfname : "",
-		 (res->subfname)  ? res->subfname  : "", pass);
+         uustring (S_SMERGE_MERGED),
+         (iter->subfname) ? iter->subfname : "",
+         (res->subfname)  ? res->subfname  : "", pass);
  
       temp       = iter->NEXT;
       iter->NEXT = NULL;
@@ -457,12 +457,12 @@ UUSmerge (int pass)
       flag++;
 
       if (last == NULL) {
-	UUGlobalFileList = temp;
-	iter             = temp;
+    UUGlobalFileList = temp;
+    iter             = temp;
       }
       else {
-	last->NEXT       = temp;
-	iter             = temp;
+    last->NEXT       = temp;
+    iter             = temp;
       }
 
       continue;

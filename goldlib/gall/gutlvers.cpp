@@ -299,60 +299,60 @@ char *gcpuid(char *_cpuname)
 
     /* Step 1. Try to toggle alignment check flag; does not exist on 386. */
       "pushfl\n\t"
-      "popl	%%eax\n\t"
-      "movl	%%eax,%%ecx\n\t"
-      "orl	$0x00040000,%%eax\n\t"   /* sets a alignment check flag */
-      "pushl	%%eax\n\t"
+      "popl %%eax\n\t"
+      "movl %%eax,%%ecx\n\t"
+      "orl  $0x00040000,%%eax\n\t"   /* sets a alignment check flag */
+      "pushl    %%eax\n\t"
       "popfl\n\t"
       "pushfl\n\t"
-      "popl	%%eax\n\t"
-      "xorl	%%ecx,%%eax\n\t"
-      "andl	$0x00040000,%%eax\n\t"   /* test alignment check flag */
-      "pushl	%%ecx\n\t"
+      "popl %%eax\n\t"
+      "xorl %%ecx,%%eax\n\t"
+      "andl $0x00040000,%%eax\n\t"   /* test alignment check flag */
+      "pushl    %%ecx\n\t"
       "popfl\n\t"
 
-      "testl	%%eax,%%eax\n\t"         /* alignment check flag is set? */
-      "jnz	try486\n\t"
+      "testl    %%eax,%%eax\n\t"         /* alignment check flag is set? */
+      "jnz  try486\n\t"
 
       /* NexGen CPU does not have aligment check flag. */
       "pushfl\n\t"
-      "movl	$0x5555, %%eax\n\t"
-      "xorl	%%edx, %%edx\n\t"
-      "movl	$2, %%ecx\n\t"
+      "movl $0x5555, %%eax\n\t"
+      "xorl %%edx, %%edx\n\t"
+      "movl $2, %%ecx\n\t"
       "clc\n\t"
-      "divl	%%ecx\n\t"
-      "jz	nexgen\n\t"
+      "divl %%ecx\n\t"
+      "jz   nexgen\n\t"
       "popfl\n\t"
-      "movl	$3,%0\n\t"              /* CPU 386 */
-      "jmp	end\n"
+      "movl $3,%0\n\t"              /* CPU 386 */
+      "jmp  end\n"
 
     "nexgen:"
       "popfl\n\t"
-      "movl	$5,%0\n\t"              /* CPU NX586 */
-      "movl	$0x4778654e,%1\n\t"     /* store vendor string */
-      "movl	$0x72446e65,%1+4\n\t"   /* "NexGenDriven"      */
-      "movl	$0x6e657669,%1+8\n\t"
-//      "movl	$0,%1+12\n\t"           // vendor is zero-filled already
-      "jmp	end\n"
+      "movl $5,%0\n\t"              /* CPU NX586 */
+      "movl $0x4778654e,%1\n\t"     /* store vendor string */
+      "movl $0x72446e65,%1+4\n\t"   /* "NexGenDriven"      */
+      "movl $0x6e657669,%1+8\n\t"
+//      "movl   $0,%1+12\n\t"           // vendor is zero-filled already
+      "jmp  end\n"
 
     /* Step2. Try to toggle identification flag; does not exist on early 486s.*/
     "try486:"
       "pushfl\n\t"
-      "popl	%%eax\n\t"
-      "movl	%%eax,%%ecx\n\t"
-      "xorl	$0x00200000,%%eax\n\t" /* sets a identification bit */
-      "pushl	%%eax\n\t"
+      "popl %%eax\n\t"
+      "movl %%eax,%%ecx\n\t"
+      "xorl $0x00200000,%%eax\n\t" /* sets a identification bit */
+      "pushl    %%eax\n\t"
       "popfl\n\t"
       "pushfl\n\t"
-      "popl	%%eax\n\t"
-      "xorl	%%ecx,%%eax\n\t"
-      "andl	$0x00200000,%%eax\n\t"  /* test identification bit */
-      "pushl	%%ecx\n\t"
+      "popl %%eax\n\t"
+      "xorl %%ecx,%%eax\n\t"
+      "andl $0x00200000,%%eax\n\t"  /* test identification bit */
+      "pushl    %%ecx\n\t"
       "popfl\n\t"
 
-      "testl	%%eax,%%eax\n\t"        /* if identification flag is set then cpuid CPU's command may be used */
-      "jnz	trycpuid\n\t"
-      "movl	$4,%0\n\t"              /* CPU 486 */
+      "testl    %%eax,%%eax\n\t"        /* if identification flag is set then cpuid CPU's command may be used */
+      "jnz  trycpuid\n\t"
+      "movl $4,%0\n\t"              /* CPU 486 */
 
       /*
        * Check Cyrix CPU
@@ -362,14 +362,14 @@ char *gcpuid(char *_cpuname)
        * Note: CPUID is enabled on M2, so it passes another way.
        */
       "pushfl\n\t"
-      "movl	$0x5555, %%eax\n\t"
-      "xorl	%%edx, %%edx\n\t"
-      "movl	$2, %%ecx\n\t"
+      "movl $0x5555, %%eax\n\t"
+      "xorl %%edx, %%edx\n\t"
+      "movl $2, %%ecx\n\t"
       "clc\n\t"
-      "divl	%%ecx\n\t"
-      "jnc	trycyrix\n\t"
+      "divl %%ecx\n\t"
+      "jnc  trycyrix\n\t"
       "popfl\n\t"
-      "jmp	end\n"                  /* You may use Intel CPU */
+      "jmp  end\n"                  /* You may use Intel CPU */
 
     "trycyrix:"
       "popfl\n\t"
@@ -379,44 +379,44 @@ char *gcpuid(char *_cpuname)
        * CPU, we couldn't distinguish it from Cyrix's (including IBM
        * brand of Cyrix CPUs).
        */
-      "movl	$0x69727943,%1\n\t"     /* store vendor string */
-      "movl	$0x736e4978,%1+4\n\t"   /* "CyrixInstead"      */
-      "movl	$0x64616574,%1+8\n\t"
-      "jmp	end\n"
+      "movl $0x69727943,%1\n\t"     /* store vendor string */
+      "movl $0x736e4978,%1+4\n\t"   /* "CyrixInstead"      */
+      "movl $0x64616574,%1+8\n\t"
+      "jmp  end\n"
 
     /* Step 3. Use the `cpuid' instruction. */
     "trycpuid:"
-      "xorl	%%eax,%%eax\n\t"
-      ".byte	0x0f,0xa2\n\t"		/* cpuid 0 */
-      "movl	%%eax,%2\n\t"		/* "cpuid 1" capability */
-      "movl	%%ebx,%1\n\t"		/* store vendor string */
-      "movl	%%edx,%1+4\n\t"
-      "movl	%%ecx,%1+8\n\t"
-//      "movb	$0,%1+12\n\t"   // vendor is zero-filled already
+      "xorl %%eax,%%eax\n\t"
+      ".byte    0x0f,0xa2\n\t"      /* cpuid 0 */
+      "movl %%eax,%2\n\t"       /* "cpuid 1" capability */
+      "movl %%ebx,%1\n\t"       /* store vendor string */
+      "movl %%edx,%1+4\n\t"
+      "movl %%ecx,%1+8\n\t"
+//      "movb   $0,%1+12\n\t"   // vendor is zero-filled already
 
       "andl     %%eax,%%eax\n\t"        /* "cpuid 1" is allowed? (eax==1?) */
       "jz       i586\n\t"               /* no, skip "cpuid 1"  */
 
-      "movl	$1,%%eax\n\t"
-      ".byte	0x0f,0xa2\n\t"		// cpuid 1
-//      "movl	%%eax,%6\n\t"		// store cpu_id
-//      "movl	%%edx,%7\n\t"		// store cpu_feature
+      "movl $1,%%eax\n\t"
+      ".byte    0x0f,0xa2\n\t"      // cpuid 1
+//      "movl   %%eax,%6\n\t"       // store cpu_id
+//      "movl   %%edx,%7\n\t"       // store cpu_feature
 
-      "movb	%%al,%%bl\n\t"
-      "shrb	$4,%%bl\n\t"		// extract CPU model
-      "movb	%%bl,%4\n\t"		// store model
+      "movb %%al,%%bl\n\t"
+      "shrb $4,%%bl\n\t"        // extract CPU model
+      "movb %%bl,%4\n\t"        // store model
 
-      "andl	$0x0F0F,%%eax\n\t"      // extract CPU family type and stepping
-      "movb	%%al,%5\n\t"		// store stepping
-      "movb	%%ah,%3\n\t"		// store family
-      "cmpb	$5,%%ah\n\t"
-      "jae	i586\n\t"
+      "andl $0x0F0F,%%eax\n\t"      // extract CPU family type and stepping
+      "movb %%al,%5\n\t"        // store stepping
+      "movb %%ah,%3\n\t"        // store family
+      "cmpb $5,%%ah\n\t"
+      "jae  i586\n\t"
 
       /* less than Pentium; must be 486 */
-      "movl	$4,%0\n\t"    /* CPU 486 */
-      "jmp	end\n"
+      "movl $4,%0\n\t"    /* CPU 486 */
+      "jmp  end\n"
     "i586:\n\t"  /* Pentium and greater. Store family type into CPU type var */
-      "movb	%%ah,%0\n"
+      "movb %%ah,%0\n"
     "end:\n\t"
       "nop\n\t"
 

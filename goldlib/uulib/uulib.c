@@ -86,7 +86,7 @@ char * uulib_id = "$Id$";
 #ifdef SYSTEM_WINDLL
 BOOL _export WINAPI
 DllEntryPoint (HINSTANCE hInstance, DWORD seginfo,
-	       LPVOID lpCmdLine)
+           LPVOID lpCmdLine)
 {
   /* Don't do anything, so just return true */
   return TRUE;
@@ -128,24 +128,24 @@ void *uu_FFCBArg   = NULL;
  * Global variables
  */
 
-int uu_fast_scanning = 0;	/* assumes at most 1 part per file          */
-int uu_bracket_policy = 0;	/* gives part numbers in [] higher priority */
-int uu_verbose = 1;		/* enables/disables messages&notes          */
-int uu_desperate = 0;		/* desperate mode                           */
-int uu_ignreply = 0;		/* ignore replies                           */
-int uu_debug = 0;		/* debugging mode (print __FILE__/__LINE__) */
-int uu_errno = 0;		/* the errno that caused this UURET_IOERR   */
-int uu_dumbness = 0;		/* switch off the program's intelligence    */
-int uu_overwrite = 1;		/* whether it's ok to overwrite ex. files   */
-int uu_ignmode = 0;		/* ignore the original file mode            */
-int uu_handletext = 0;		/* do we want text/plain messages           */
-int uu_usepreamble = 0;		/* do we want Mime preambles/epilogues      */
-int uu_tinyb64 = 0;		/* detect short B64 outside of MIME         */
+int uu_fast_scanning = 0;   /* assumes at most 1 part per file          */
+int uu_bracket_policy = 0;  /* gives part numbers in [] higher priority */
+int uu_verbose = 1;     /* enables/disables messages&notes          */
+int uu_desperate = 0;       /* desperate mode                           */
+int uu_ignreply = 0;        /* ignore replies                           */
+int uu_debug = 0;       /* debugging mode (print __FILE__/__LINE__) */
+int uu_errno = 0;       /* the errno that caused this UURET_IOERR   */
+int uu_dumbness = 0;        /* switch off the program's intelligence    */
+int uu_overwrite = 1;       /* whether it's ok to overwrite ex. files   */
+int uu_ignmode = 0;     /* ignore the original file mode            */
+int uu_handletext = 0;      /* do we want text/plain messages           */
+int uu_usepreamble = 0;     /* do we want Mime preambles/epilogues      */
+int uu_tinyb64 = 0;     /* detect short B64 outside of MIME         */
 int uu_remove_input = 0;        /* remove input files after decoding        */
 int uu_more_mime = 0;           /* strictly adhere to MIME headers          */
 
 headercount hlcount = {
-  3,			        /* restarting after a MIME body             */
+  3,                    /* restarting after a MIME body             */
   2,                            /* after useful data in freestyle mode      */
   1                             /* after useful data and an empty line      */
 };
@@ -186,9 +186,9 @@ uulist *UUGlobalFileList = NULL;
  * time values for BusyCallback. msecs is MILLIsecs here
  */
 
-static long uu_busy_msecs = 0;	/* call callback function each msecs */
-static long uu_last_secs  = 0;	/* secs  of last call to callback */
-static long uu_last_usecs = 0;	/* usecs of last call to callback */
+static long uu_busy_msecs = 0;  /* call callback function each msecs */
+static long uu_last_secs  = 0;  /* secs  of last call to callback */
+static long uu_last_usecs = 0;  /* usecs of last call to callback */
 
 /*
  * progress information
@@ -228,7 +228,7 @@ typedef struct {
 static allomap toallocate[] = {
   { &uugen_fnbuffer,    1024 },  /* generic filename buffer */
   { &uugen_inbuffer,    1024 },  /* generic input data buffer */
-  { &uucheck_lastname,   256 },	 /* from uucheck.c */
+  { &uucheck_lastname,   256 },  /* from uucheck.c */
   { &uucheck_tempname,   256 },
   { &uuestr_itemp,       256 },  /* from uuencode.c:UUEncodeStream() */
   { &uuestr_otemp,      1024 },
@@ -392,7 +392,7 @@ UUInitialize (void)
        * areas (uulib_msgstring) in UUMessage()
        */
       for (aiter=toallocate; aiter->ptr; aiter++) {
-	_FP_free (*(aiter->ptr));
+    _FP_free (*(aiter->ptr));
       }
       return UURET_NOMEM;
     }
@@ -575,7 +575,7 @@ UUstrerror (int code)
 
 int UUEXPORT
 UUSetMsgCallback (void *opaque,
-		  void (*func) _ANSI_ARGS_((void *, char *, int)))
+          void (*func) _ANSI_ARGS_((void *, char *, int)))
 {
   uu_MsgCallback = func;
   uu_MsgCBArg    = opaque;
@@ -585,8 +585,8 @@ UUSetMsgCallback (void *opaque,
 
 int UUEXPORT
 UUSetBusyCallback (void *opaque,
-		   int (*func) _ANSI_ARGS_((void *, uuprogress *)),
-		   long msecs)
+           int (*func) _ANSI_ARGS_((void *, uuprogress *)),
+           long msecs)
 {
   uu_BusyCallback = func;
   uu_BusyCBArg    = opaque;
@@ -597,7 +597,7 @@ UUSetBusyCallback (void *opaque,
 
 int UUEXPORT
 UUSetFileCallback (void *opaque,
-		   int (*func) _ANSI_ARGS_((void *, char *, char *, int)))
+           int (*func) _ANSI_ARGS_((void *, char *, char *, int)))
 {
   uu_FileCallback = func;
   uu_FileCBArg    = opaque;
@@ -607,7 +607,7 @@ UUSetFileCallback (void *opaque,
 
 int UUEXPORT
 UUSetFNameFilter (void *opaque,
-		  char * (*func) _ANSI_ARGS_((void *, char *)))
+          char * (*func) _ANSI_ARGS_((void *, char *)))
 {
   uu_FNameFilter = func;
   uu_FFCBArg     = opaque;
@@ -664,15 +664,15 @@ UULoadFile (char *filename, char *fileid, int delflag)
 
   if ((datei = fopen (filename, "rb")) == NULL) {
     UUMessage (uulib_id, __LINE__, UUMSG_ERROR,
-	       uustring (S_NOT_OPEN_SOURCE),
-	       filename, strerror (uu_errno = errno));
+           uustring (S_NOT_OPEN_SOURCE),
+           filename, strerror (uu_errno = errno));
     return UURET_IOERR;
   }
 
   if (fstat (fileno(datei), &finfo) == -1) {
     UUMessage (uulib_id, __LINE__, UUMSG_ERROR,
-	       uustring (S_NOT_STAT_FILE),
-	       filename, strerror (uu_errno = errno));
+           uustring (S_NOT_STAT_FILE),
+           filename, strerror (uu_errno = errno));
     fclose (datei);
     return UURET_IOERR;
   }
@@ -684,11 +684,11 @@ UULoadFile (char *filename, char *fileid, int delflag)
   if (delflag && fileid==NULL) {
     if ((killem = (itbd *) malloc (sizeof (itbd))) == NULL) {
       UUMessage (uulib_id, __LINE__, UUMSG_WARNING,
-		 uustring (S_OUT_OF_MEMORY), sizeof (itbd));
+         uustring (S_OUT_OF_MEMORY), sizeof (itbd));
     }
     else if ((killem->fname = _FP_strdup (filename)) == NULL) {
       UUMessage (uulib_id, __LINE__, UUMSG_WARNING,
-		 uustring (S_OUT_OF_MEMORY), strlen(filename)+1);
+         uustring (S_OUT_OF_MEMORY), strlen(filename)+1);
       _FP_free (killem);
     }
     else {
@@ -704,9 +704,9 @@ UULoadFile (char *filename, char *fileid, int delflag)
   progress.percent  = 0;
   progress.foffset  = 0;
   _FP_strncpy (progress.curfile,
-	       (strlen(filename)>255)?
-	       (filename+strlen(filename)-255):filename,
-	       256);
+           (strlen(filename)>255)?
+           (filename+strlen(filename)-255):filename,
+           256);
   progress.action   = UUACT_SCANNING;
 
   if (fileid == NULL)
@@ -724,24 +724,24 @@ UULoadFile (char *filename, char *fileid, int delflag)
 
     if ((loaded = ScanPart (datei, fileid, &sr)) == NULL) {
       if (sr != UURET_NODATA && sr != UURET_OK && sr != UURET_CONT) {
-	UUkillfread (loaded);
-	if (sr != UURET_CANCEL) {
-	  UUMessage (uulib_id, __LINE__, UUMSG_ERROR,
-		     uustring (S_READ_ERROR), filename,
-		     strerror (uu_errno));
-	}
-	UUCheckGlobalList ();
-	progress.action = 0;
-	fclose (datei);
-	return sr;
+    UUkillfread (loaded);
+    if (sr != UURET_CANCEL) {
+      UUMessage (uulib_id, __LINE__, UUMSG_ERROR,
+             uustring (S_READ_ERROR), filename,
+             strerror (uu_errno));
+    }
+    UUCheckGlobalList ();
+    progress.action = 0;
+    fclose (datei);
+    return sr;
       }
       continue;
     }
 
     if (ferror (datei)) {
       UUMessage (uulib_id, __LINE__, UUMSG_ERROR,
-		 uustring (S_READ_ERROR), filename,
-		 strerror (uu_errno = errno));
+         uustring (S_READ_ERROR), filename,
+         strerror (uu_errno = errno));
       UUCheckGlobalList ();
       progress.action = 0;
       fclose (datei);
@@ -749,8 +749,8 @@ UULoadFile (char *filename, char *fileid, int delflag)
     }
 
     if ((loaded->uudet == QP_ENCODED || loaded->uudet == PT_ENCODED) &&
-	(loaded->filename == NULL || *(loaded->filename) == '\0') &&
-	!uu_handletext && (loaded->flags&FL_PARTIAL)==0) {
+    (loaded->filename == NULL || *(loaded->filename) == '\0') &&
+    !uu_handletext && (loaded->flags&FL_PARTIAL)==0) {
       /*
        * Don't want text
        */
@@ -759,9 +759,9 @@ UULoadFile (char *filename, char *fileid, int delflag)
     }
 
     if ((loaded->subject == NULL || *(loaded->subject) == '\0') &&
-	(loaded->mimeid  == NULL || *(loaded->mimeid)  == '\0') &&
-	(loaded->filename== NULL || *(loaded->filename)== '\0') &&
-	(loaded->uudet   == 0)) {
+    (loaded->mimeid  == NULL || *(loaded->mimeid)  == '\0') &&
+    (loaded->filename== NULL || *(loaded->filename)== '\0') &&
+    (loaded->uudet   == 0)) {
       /*
        * no useful data here
        */
@@ -775,9 +775,9 @@ UULoadFile (char *filename, char *fileid, int delflag)
        * no useful data found
        */
       if (res != UURET_NODATA) {
-	UUMessage (uulib_id, __LINE__, UUMSG_ERROR,
-		   uustring (S_READ_ERROR), filename,
-		   (res==UURET_IOERR)?strerror(uu_errno):UUstrerror(res));
+    UUMessage (uulib_id, __LINE__, UUMSG_ERROR,
+           uustring (S_READ_ERROR), filename,
+           (res==UURET_IOERR)?strerror(uu_errno):UUstrerror(res));
       }
       UUkillfread (loaded);
       if (uu_fast_scanning && sr != UURET_CONT) break;
@@ -785,19 +785,19 @@ UULoadFile (char *filename, char *fileid, int delflag)
     }
 
     if ((loaded->subject && *(loaded->subject)) ||
-	(loaded->mimeid  && *(loaded->mimeid))  ||
-	(loaded->filename&& *(loaded->filename))||
-	(loaded->uudet)) {
+    (loaded->mimeid  && *(loaded->mimeid))  ||
+    (loaded->filename&& *(loaded->filename))||
+    (loaded->uudet)) {
       UUMessage (uulib_id, __LINE__, UUMSG_MESSAGE,
-		 uustring (S_LOADED_PART),
-		 filename,
-		 (loaded->subject)  ? loaded->subject  : "",
-		 (fload->subfname)  ? fload->subfname  : "",
-		 (loaded->filename) ? loaded->filename : "",
-		 fload->partno,
-		 (loaded->begin)    ? "begin" : "",
-		 (loaded->end)      ? "end"   : "",
-		 codenames[loaded->uudet]);
+         uustring (S_LOADED_PART),
+         filename,
+         (loaded->subject)  ? loaded->subject  : "",
+         (fload->subfname)  ? fload->subfname  : "",
+         (loaded->filename) ? loaded->filename : "",
+         fload->partno,
+         (loaded->begin)    ? "begin" : "",
+         (loaded->end)      ? "end"   : "",
+         codenames[loaded->uudet]);
     }
 
     if ((res = UUInsertPartToList (fload))) {
@@ -807,13 +807,13 @@ UULoadFile (char *filename, char *fileid, int delflag)
       UUkillfile (fload);
 
       if (res != UURET_NODATA) {
-	UUCheckGlobalList ();
-	progress.action = 0;
-	fclose (datei);
-	return res;
+    UUCheckGlobalList ();
+    progress.action = 0;
+    fclose (datei);
+    return res;
       }
       if (uu_fast_scanning && sr != UURET_CONT)
-	break;
+    break;
 
       continue;
     }
@@ -833,7 +833,7 @@ UULoadFile (char *filename, char *fileid, int delflag)
 
   if (!uu_fast_scanning && count==0) {
     UUMessage (uulib_id, __LINE__, UUMSG_NOTE,
-	       uustring (S_NO_DATA_FOUND), filename);
+           uustring (S_NO_DATA_FOUND), filename);
   }
 
   progress.action = 0;
@@ -873,14 +873,14 @@ UUDecodeFile (uulist *thefile, char *destname)
 
   if (thefile->binfile == NULL) {
     UUMessage (uulib_id, __LINE__, UUMSG_ERROR,
-	       uustring (S_NO_BIN_FILE));
+           uustring (S_NO_BIN_FILE));
     return UURET_IOERR;
   }
 
   if ((source = fopen (thefile->binfile, "rb")) == NULL) {
     UUMessage (uulib_id, __LINE__, UUMSG_ERROR,
-	       uustring (S_NOT_OPEN_FILE),
-	       thefile->binfile, strerror (uu_errno = errno));
+           uustring (S_NOT_OPEN_FILE),
+           thefile->binfile, strerror (uu_errno = errno));
     return UURET_IOERR;
   }
 
@@ -890,8 +890,8 @@ UUDecodeFile (uulist *thefile, char *destname)
 
   if ((thefile->mode & 0777) != thefile->mode) {
     UUMessage (uulib_id, __LINE__, UUMSG_NOTE,
-	       uustring (S_STRIPPED_SETUID),
-	       destname, (int)thefile->mode);
+           uustring (S_STRIPPED_SETUID),
+           destname, (int)thefile->mode);
     thefile->mode &= 0777;
   }
 
@@ -910,9 +910,9 @@ UUDecodeFile (uulist *thefile, char *destname)
     strcpy (uugen_fnbuffer, destname);
   else {
     sprintf (uugen_fnbuffer, "%s%s",
-	     (uusavepath)?uusavepath:"",
-	     UUFNameFilter ((thefile->filename)?
-			    thefile->filename:"unknown.xxx"));
+         (uusavepath)?uusavepath:"",
+         UUFNameFilter ((thefile->filename)?
+                thefile->filename:"unknown.xxx"));
   }
 
   /*
@@ -922,7 +922,7 @@ UUDecodeFile (uulist *thefile, char *destname)
   if (!uu_overwrite) {
     if (stat (uugen_fnbuffer, &finfo) == 0) {
       UUMessage (uulib_id, __LINE__, UUMSG_ERROR,
-		 uustring (S_TARGET_EXISTS), uugen_fnbuffer);
+         uustring (S_TARGET_EXISTS), uugen_fnbuffer);
       fclose (source);
       return UURET_EXISTS;
     }
@@ -930,17 +930,17 @@ UUDecodeFile (uulist *thefile, char *destname)
 
   if (fstat (fileno(source), &finfo) == -1) {
     UUMessage (uulib_id, __LINE__, UUMSG_ERROR,
-	       uustring (S_NOT_STAT_FILE),
-	       thefile->binfile, strerror (uu_errno = errno));
+           uustring (S_NOT_STAT_FILE),
+           thefile->binfile, strerror (uu_errno = errno));
     fclose (source);
     return UURET_IOERR;
   }
 
   progress.action   = 0;
   _FP_strncpy (progress.curfile,
-	       (strlen(uugen_fnbuffer)>255)?
-	       (uugen_fnbuffer+strlen(uugen_fnbuffer)-255):uugen_fnbuffer,
-	       256);
+           (strlen(uugen_fnbuffer)>255)?
+           (uugen_fnbuffer+strlen(uugen_fnbuffer)-255):uugen_fnbuffer,
+           256);
   progress.partno   = 0;
   progress.numparts = 1;
   progress.fsize    = (long) ((finfo.st_size)?finfo.st_size:-1);
@@ -953,8 +953,8 @@ UUDecodeFile (uulist *thefile, char *destname)
                       (uu_ignmode)?0666:thefile->mode)) == -1) {
     progress.action = 0;
     UUMessage (uulib_id, __LINE__, UUMSG_ERROR,
-	       uustring (S_NOT_OPEN_TARGET),
-	       uugen_fnbuffer, strerror (uu_errno = errno));
+           uustring (S_NOT_OPEN_TARGET),
+           uugen_fnbuffer, strerror (uu_errno = errno));
     fclose (source);
     return UURET_IOERR;
   }
@@ -962,8 +962,8 @@ UUDecodeFile (uulist *thefile, char *destname)
   if ((target = fdopen (fildes, "wb")) == NULL) {
     progress.action = 0;
     UUMessage (uulib_id, __LINE__, UUMSG_ERROR,
-	       uustring (S_IO_ERR_TARGET),
-	       uugen_fnbuffer, strerror (uu_errno = errno));
+           uustring (S_IO_ERR_TARGET),
+           uugen_fnbuffer, strerror (uu_errno = errno));
     fclose (source);
     close  (fildes);
     return UURET_IOERR;
@@ -973,7 +973,7 @@ UUDecodeFile (uulist *thefile, char *destname)
 
     if (UUBUSYPOLL(ftell(source),progress.fsize)) {
       UUMessage (uulib_id, __LINE__, UUMSG_NOTE,
-		 uustring (S_DECODE_CANCEL));
+         uustring (S_DECODE_CANCEL));
       fclose (source);
       fclose (target);
       unlink (uugen_fnbuffer);
@@ -985,8 +985,8 @@ UUDecodeFile (uulist *thefile, char *destname)
     if (ferror (source) || (bytes == 0 && !feof (source))) {
       progress.action = 0;
       UUMessage (uulib_id, __LINE__, UUMSG_ERROR,
-		 uustring (S_READ_ERROR),
-		 thefile->binfile, strerror (uu_errno = errno));
+         uustring (S_READ_ERROR),
+         thefile->binfile, strerror (uu_errno = errno));
       fclose (source);
       fclose (target);
       unlink (uugen_fnbuffer);
@@ -995,8 +995,8 @@ UUDecodeFile (uulist *thefile, char *destname)
     if (fwrite (uugen_inbuffer, 1, bytes, target) != bytes) {
       progress.action = 0;
       UUMessage (uulib_id, __LINE__, UUMSG_ERROR,
-		 uustring (S_WR_ERR_TARGET),
-		 uugen_fnbuffer, strerror (uu_errno = errno));
+         uustring (S_WR_ERR_TARGET),
+         uugen_fnbuffer, strerror (uu_errno = errno));
       fclose (source);
       fclose (target);
       unlink (uugen_fnbuffer);
@@ -1013,9 +1013,9 @@ UUDecodeFile (uulist *thefile, char *destname)
 
   if (unlink (thefile->binfile)) {
     UUMessage (uulib_id, __LINE__, UUMSG_WARNING,
-	       uustring (S_TMP_NOT_REMOVED),
-	       thefile->binfile,
-	       strerror (uu_errno = errno));
+           uustring (S_TMP_NOT_REMOVED),
+           thefile->binfile,
+           strerror (uu_errno = errno));
   }
   _FP_free (thefile->binfile);
   thefile->binfile = NULL;
@@ -1033,7 +1033,7 @@ UUDecodeFile (uulist *thefile, char *destname)
 
 int UUEXPORT
 UUInfoFile (uulist *thefile, void *opaque,
-	    int (*func) _ANSI_ARGS_((void *, char *)))
+        int (*func) _ANSI_ARGS_((void *, char *)))
 {
   int errflag=0, res, bhflag=0, dd;
   long maxpos;
@@ -1045,25 +1045,25 @@ UUInfoFile (uulist *thefile, void *opaque,
 
   if (uu_FileCallback) {
     if ((res = (*uu_FileCallback) (uu_FileCBArg,
-				   thefile->thisfile->data->sfname,
-				   uugen_fnbuffer,
-				   1)) != UURET_OK)
+                   thefile->thisfile->data->sfname,
+                   uugen_fnbuffer,
+                   1)) != UURET_OK)
       return res;
     if ((inpfile = fopen (uugen_fnbuffer, "rb")) == NULL) {
       (*uu_FileCallback) (uu_FileCBArg, thefile->thisfile->data->sfname,
-			  uugen_fnbuffer, 0);
+              uugen_fnbuffer, 0);
       UUMessage (uulib_id, __LINE__, UUMSG_ERROR,
-		 uustring (S_NOT_OPEN_FILE), uugen_fnbuffer,
-		 strerror (uu_errno = errno));
+         uustring (S_NOT_OPEN_FILE), uugen_fnbuffer,
+         strerror (uu_errno = errno));
       return UURET_IOERR;
     }
   }
   else {
     if ((inpfile = fopen (thefile->thisfile->data->sfname, "rb")) == NULL) {
       UUMessage (uulib_id, __LINE__, UUMSG_ERROR,
-		 uustring (S_NOT_OPEN_FILE),
-		 thefile->thisfile->data->sfname,
-		 strerror (uu_errno=errno));
+         uustring (S_NOT_OPEN_FILE),
+         thefile->thisfile->data->sfname,
+         strerror (uu_errno=errno));
       return UURET_IOERR;
     }
     _FP_strncpy (uugen_fnbuffer, thefile->thisfile->data->sfname, 1024);
@@ -1077,7 +1077,7 @@ UUInfoFile (uulist *thefile, void *opaque,
   maxpos = thefile->thisfile->data->startpos + thefile->thisfile->data->length;
 
   while (!feof (inpfile) &&
-	 (uu_fast_scanning || ftell(inpfile) < maxpos)) {
+     (uu_fast_scanning || ftell(inpfile) < maxpos)) {
     if (_FP_fgets (uugen_inbuffer, 511, inpfile) == NULL)
       break;
     uugen_inbuffer[511] = '\0';
@@ -1092,10 +1092,10 @@ UUInfoFile (uulist *thefile, void *opaque,
     else if (thefile->uudet == BH_ENCODED && bhflag)
       break;
     else if ((thefile->uudet == UU_ENCODED || thefile->uudet == XX_ENCODED) &&
-	     strncmp (uugen_inbuffer, "begin ", 6) == 0)
+         strncmp (uugen_inbuffer, "begin ", 6) == 0)
       break;
     else if (thefile->uudet == YENC_ENCODED &&
-	     strncmp (uugen_inbuffer, "=ybegin ", 8) == 0)
+         strncmp (uugen_inbuffer, "=ybegin ", 8) == 0)
       break;
 
     if ((*func) (opaque, uugen_inbuffer))
@@ -1104,8 +1104,8 @@ UUInfoFile (uulist *thefile, void *opaque,
 
   if (ferror (inpfile)) {
     UUMessage (uulib_id, __LINE__, UUMSG_ERROR,
-	       uustring (S_READ_ERROR),
-	       uugen_fnbuffer, strerror (uu_errno = errno));
+           uustring (S_READ_ERROR),
+           uugen_fnbuffer, strerror (uu_errno = errno));
     errflag = 1;
   }
 
@@ -1113,15 +1113,15 @@ UUInfoFile (uulist *thefile, void *opaque,
 
   if (uu_FileCallback)
     (*uu_FileCallback) (uu_FileCBArg,
-			thefile->thisfile->data->sfname,
-			uugen_fnbuffer, 0);
+            thefile->thisfile->data->sfname,
+            uugen_fnbuffer, 0);
 
   if (errflag)
     return UURET_IOERR;
 
   return UURET_OK;
 }
-	
+    
 int UUEXPORT
 UURenameFile (uulist *thefile, char *newname)
 {
@@ -1134,8 +1134,8 @@ UURenameFile (uulist *thefile, char *newname)
 
   if ((thefile->filename = _FP_strdup (newname)) == NULL) {
     UUMessage (uulib_id, __LINE__, UUMSG_ERROR,
-	       uustring (S_NOT_RENAME),
-	       oldname, newname);
+           uustring (S_NOT_RENAME),
+           oldname, newname);
     thefile->filename = oldname;
     return UURET_NOMEM;
   }
@@ -1152,9 +1152,9 @@ UURemoveTemp (uulist *thefile)
   if (thefile->binfile) {
     if (unlink (thefile->binfile)) {
       UUMessage (uulib_id, __LINE__, UUMSG_WARNING,
-		 uustring (S_TMP_NOT_REMOVED),
-		 thefile->binfile,
-		 strerror (uu_errno = errno));
+         uustring (S_TMP_NOT_REMOVED),
+         thefile->binfile,
+         strerror (uu_errno = errno));
     }
     _FP_free (thefile->binfile);
     thefile->binfile = NULL;
@@ -1178,8 +1178,8 @@ UUCleanUp (void)
   while (iter) {
     if (unlink (iter->fname)) {
       UUMessage (uulib_id, __LINE__, UUMSG_WARNING,
-		 uustring (S_TMP_NOT_REMOVED),
-		 iter->fname, strerror (uu_errno = errno));
+         uustring (S_TMP_NOT_REMOVED),
+         iter->fname, strerror (uu_errno = errno));
     }
     _FP_free (iter->fname);
     ptr  = iter;
@@ -1197,17 +1197,17 @@ UUCleanUp (void)
     liter = UUGlobalFileList;
     while (liter) {
       if (liter->state & UUFILE_DECODED) {
-	fiter = liter->thisfile;
-	while (fiter) {
-	  if (fiter->data && fiter->data->sfname) {
-	    /*
-	     * Error code ignored. We might want to delete a file multiple
-	     * times
-	     */
-	    unlink (fiter->data->sfname);
-	  }
-	  fiter = fiter->NEXT;
-	}
+    fiter = liter->thisfile;
+    while (fiter) {
+      if (fiter->data && fiter->data->sfname) {
+        /*
+         * Error code ignored. We might want to delete a file multiple
+         * times
+         */
+        unlink (fiter->data->sfname);
+      }
+      fiter = fiter->NEXT;
+    }
       }
       liter = liter->NEXT;
     }

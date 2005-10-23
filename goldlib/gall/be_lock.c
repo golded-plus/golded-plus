@@ -54,7 +54,7 @@ status_t beos_unlock(int file_handle)
   port_id pid = 0;
   status_t status = look_for_port(file_handle, false, &pid);
   if(status == B_BUSY)
-  	status = delete_port(pid);
+    status = delete_port(pid);
   return status;
 }
 

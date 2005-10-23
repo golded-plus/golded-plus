@@ -39,13 +39,13 @@
 class gdirentry {
 
 public:
-	std::string name;
-	struct stat stat_info;
-	const char *dirname;
-	gdirentry();
-	~gdirentry();
-	bool is_directory() const { return S_ISDIR(stat_info.st_mode); }
-	bool is_file() const { return S_ISREG(stat_info.st_mode); }
+    std::string name;
+    struct stat stat_info;
+    const char *dirname;
+    gdirentry();
+    ~gdirentry();
+    bool is_directory() const { return S_ISDIR(stat_info.st_mode); }
+    bool is_file() const { return S_ISREG(stat_info.st_mode); }
 };
 
 
@@ -54,20 +54,20 @@ public:
 class gposixdir {
 
 private:
-	std::string dirname;
-	gdirentry ret;
-	gstrarray entries;
-	uint32_t last_entry;
+    std::string dirname;
+    gdirentry ret;
+    gstrarray entries;
+    uint32_t last_entry;
 
 public:
-	bool ok;
-	gposixdir();
-	gposixdir(const char *name);
-	~gposixdir();
-	void cd(const char *name, bool relative=false);
-	inline void rewind() { last_entry = 0; }
-	const gdirentry *nextentry(const char *mask=NULL, bool nameonly=false);
-	inline const char *fullpath() { return dirname.c_str(); }
+    bool ok;
+    gposixdir();
+    gposixdir(const char *name);
+    ~gposixdir();
+    void cd(const char *name, bool relative=false);
+    inline void rewind() { last_entry = 0; }
+    const gdirentry *nextentry(const char *mask=NULL, bool nameonly=false);
+    inline const char *fullpath() { return dirname.c_str(); }
 };
 
 

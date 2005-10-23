@@ -139,11 +139,11 @@ FFIND *FFindOpen(const char *filespec, uint16_t attribute)
             strcpy(ff->lastbit, filespec);
         }
         else if (p == filespec)
-	{
-	    strcpy(ff->firstbit, "/");
-	    strcpy(ff->lastbit, filespec+1);
-	}
-	else
+    {
+        strcpy(ff->firstbit, "/");
+        strcpy(ff->lastbit, filespec+1);
+    }
+    else
         {
             memcpy(ff->firstbit, filespec, p - filespec);
             ff->firstbit[p - filespec] = '\0';
@@ -168,9 +168,9 @@ FFIND *FFindOpen(const char *filespec, uint16_t attribute)
                     {
                         strncpy(ff->ff_name, de->d_name, sizeof ff->ff_name);
                         ff->ff_name[sizeof(ff->ff_name) - 1] = '\0';
-			ff->ff_fsize = -1L; /* All who wants to know it's size 
-					     * must read it by himself
-					     */
+            ff->ff_fsize = -1L; /* All who wants to know it's size 
+                         * must read it by himself
+                         */
                         fin = 1;
                     }
                 }
@@ -341,10 +341,10 @@ int FFindNext(FFIND * ff)
                 {
                     strncpy(ff->ff_name, de->d_name, sizeof ff->ff_name);
                     ff->ff_name[sizeof(ff->ff_name) - 1] = '\0';
-		    ff->ff_fsize = -1L; /* All who wants to know it's size 
-					 * must read it by himself
-					 */
-		    fin = 1;
+            ff->ff_fsize = -1L; /* All who wants to know it's size 
+                     * must read it by himself
+                     */
+            fin = 1;
                     rc = 0;
                 }
             }

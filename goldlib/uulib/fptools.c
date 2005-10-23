@@ -56,7 +56,7 @@
 #ifdef SYSTEM_WINDLL
 BOOL _export WINAPI
 DllEntryPoint (HINSTANCE hInstance, DWORD seginfo,
-	       LPVOID lpCmdLine)
+           LPVOID lpCmdLine)
 {
   /* Don't do anything, so just return true */
   return TRUE;
@@ -187,8 +187,8 @@ _FP_strstr (char *str1, char *str2)
 
   while (*(ptr1=str1)) {
     for (ptr2=str2;
-	 *ptr1 && *ptr2 && *ptr1==*ptr2;
-	 ptr1++, ptr2++)
+     *ptr1 && *ptr2 && *ptr1==*ptr2;
+     ptr1++, ptr2++)
       /* empty loop */ ;
 
     if (*ptr2 == '\0')
@@ -211,7 +211,7 @@ _FP_strpbrk (char *str, char *accept)
   for (; *str; str++)
     for (ptr=accept; *ptr; ptr++)
       if (*str == *ptr)
-	return str;
+    return str;
 
   return NULL;
 }
@@ -237,10 +237,10 @@ _FP_strtok (char *str1, char *str2)
       return NULL;
   }
 
-  while (*optr && strchr (str2, *optr))	/* look for beginning of token */
+  while (*optr && strchr (str2, *optr)) /* look for beginning of token */
     optr++;
 
-  if (*optr == '\0')			/* no token found */
+  if (*optr == '\0')            /* no token found */
     return NULL;
 
   ptr = optr;
@@ -269,8 +269,8 @@ _FP_stristr (char *str1, char *str2)
 
   while (*(ptr1=str1)) {
     for (ptr2=str2;
-	 *ptr1 && *ptr2 && tolower(*ptr1)==tolower(*ptr2);
-	 ptr1++, ptr2++)
+     *ptr1 && *ptr2 && tolower(*ptr1)==tolower(*ptr2);
+     ptr1++, ptr2++)
       /* empty loop */ ;
 
     if (*ptr2 == '\0')
@@ -371,9 +371,9 @@ _FP_strmatch (char *string, char *pattern)
     }
     else if (*p2 == '*') {
       if (*++p2 == '\0')
-	return 1;
+    return 1;
       while (*p1 && *p1 != *p2)
-	p1++;
+    p1++;
     }
     else if (*p1 == *p2) {
       p1++; p2++;
@@ -447,12 +447,12 @@ _FP_fgets (char *buf, int n, FILE *stream)
   while (--n) {
     if ((c = fgetc (stream)) == EOF) {
       if (ferror (stream))
-	return NULL;
+    return NULL;
       else {
-	if (obp == buf)
-	  return NULL;
-	*buf = '\0';
-	return obp;
+    if (obp == buf)
+      return NULL;
+    *buf = '\0';
+    return obp;
       }
     }
     if (c == '\015') { /* CR */
@@ -462,8 +462,8 @@ _FP_fgets (char *buf, int n, FILE *stream)
        * to the manual page
        */
       if ((c = fgetc (stream)) != '\012')
-	if (!feof (stream))
-	  ungetc (c, stream);
+    if (!feof (stream))
+      ungetc (c, stream);
       *buf++ = '\012';
       *buf   = '\0';
       return obp;

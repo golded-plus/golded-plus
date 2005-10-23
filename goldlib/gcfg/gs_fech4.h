@@ -48,25 +48,25 @@
 /* CONFIG.flags                                         */
 /********************************************************/
 #define RETEAR                  0x00000001l
-#define AUTOCREATE		0x00000002l
-#define KILLEMPTY		0x00000004l
-#define KILLDUPES		0x00000008l
-#define FRONTDOOR		0x00000010l
-#define DBRIDGE         	0x00000020l
-#define BINKLEY         	0x00000040l
-#define INTERMAIL		0x00000080l
+#define AUTOCREATE      0x00000002l
+#define KILLEMPTY       0x00000004l
+#define KILLDUPES       0x00000008l
+#define FRONTDOOR       0x00000010l
+#define DBRIDGE             0x00000020l
+#define BINKLEY             0x00000040l
+#define INTERMAIL       0x00000080l
 //#define SWAP_XMS                0x00000100l
 //#define SWAP_EMS                0x00000200l
 //#define SWAP_DISK               0x00000400l
 #define PURGE_PROCESSDATE       0x00008000l
 #define MAILER_RESCAN           0x00010000l
-#define EXCLUDE_USERS		0x00020000l
-#define EXCLUDE_SYSOPS		0x00040000l
-#define CHECK_DESTINATION	0x00080000l
+#define EXCLUDE_USERS       0x00020000l
+#define EXCLUDE_SYSOPS      0x00040000l
+#define CHECK_DESTINATION   0x00080000l
 #define UPDATE_BBS_CONFIG       0x00100000l
 #define KILL_GRUNGED_DATE       0x00200000l
 #define NOT_BUFFER_EMS          0x00400000l
-#define KEEP_NETMAILS		0x00800000l
+#define KEEP_NETMAILS       0x00800000l
 #define NOT_UPDATE_MAILER       0x01000000l
 #define NOT_CHECK_SEMAPHORES    0x02000000l
 #define CREATE_SEMAPHORES       0x04000000l
@@ -83,14 +83,14 @@ enum BBSSoft { NoBBSSoft = 0, RemoteAccess111, QuickBBS,
 /* CONFIG.CC.what                                       */
 /********************************************************/
 #define FROM            1
-#define TO		2
-#define SUBJECT		3
+#define TO      2
+#define SUBJECT     3
 
 /********************************************************/
 /* CONFIG.QuietLevel                                    */
 /********************************************************/
 #define QUIET_PACK      0x0001
-#define QUIET_UNPACK	0x0002
+#define QUIET_UNPACK    0x0002
 #define QUIET_EXTERN    0x0004
 
 /********************************************************/
@@ -108,13 +108,13 @@ enum ARCmailExt { ARCDigits = 0, ARCHex, ARCAlpha };
 /********************************************************/
 /* CONFIG.AreaFixFlags                                  */
 /********************************************************/
-#define ALLOWRESCAN	0x0001
-#define KEEPREQUEST	0x0002
-#define KEEPRECEIPT	0x0004
-#define ALLOWREMOTE	0x0008
-#define DETAILEDLIST	0x0010
-#define ALLOWPASSWORD	0x0020
-#define ALLOWPKTPWD  	0x0040
+#define ALLOWRESCAN 0x0001
+#define KEEPREQUEST 0x0002
+#define KEEPRECEIPT 0x0004
+#define ALLOWREMOTE 0x0008
+#define DETAILEDLIST    0x0010
+#define ALLOWPASSWORD   0x0020
+#define ALLOWPKTPWD     0x0040
 
 /********************************************************/
 /* Area.board (1-200 = QBBS)                            */
@@ -126,10 +126,10 @@ enum ARCmailExt { ARCDigits = 0, ARCHex, ARCAlpha };
 /* Area.flags.type                                      */
 /********************************************************/
 #define QBBS            0
-#define FIDO		1
-#define SQUISH		2
+#define FIDO        1
+#define SQUISH      2
 #define JAM             3
-#define PT_BOARD	7
+#define PT_BOARD    7
 
 /********************************************************/
 /* Area.type                                            */
@@ -138,26 +138,26 @@ enum ARCmailExt { ARCDigits = 0, ARCHex, ARCAlpha };
 #define AREA_NETMAIL         1
 #define AREA_LOCAL           2
 #define AREA_BADMAILBOARD    3
-#define AREA_DUPEBOARD	     4
+#define AREA_DUPEBOARD       4
 
 /********************************************************/
 /* Node.flags                                           */
 /********************************************************/
 #define DDDD            0x0001
-#define TOSSCAN		0x0002
-#define DIRECT		0x0004
-#define	CRASH		0x0008
-#define UMLAUT_NET	0x0010
+#define TOSSCAN     0x0002
+#define DIRECT      0x0004
+#define CRASH       0x0008
+#define UMLAUT_NET  0x0010
 #define ALLOW_AF_REMOTE 0x0020
 #define RESCANDISABLED  0x0040
-#define	HOLD 		0x0080
-#define ARCMAIL060	0x0200
-#define PASSIVE		0x0400
+#define HOLD        0x0080
+#define ARCMAIL060  0x0200
+#define PASSIVE     0x0400
 #define ALLOWAREACREATE 0x0800
 #define PACKER          0xF000
 
 #define PACKS(x) (int)(((x)&PACKER)>>12)        /* Index of used Packer   */
-						/* 0xf = .PKT, don't pack */
+                        /* 0xf = .PKT, don't pack */
 
 /********************************************************/
 /* Node.advflags                                        */
@@ -166,7 +166,7 @@ enum ARCmailExt { ARCDigits = 0, ARCHex, ARCAlpha };
 #define NOT_NOTIFY      0x0002
 #define NOT_HELP        0x0004
 #define NOATTACH        0x0008
-#define NET_HOLD	0x0010
+#define NET_HOLD    0x0010
 #define NET_CRASH       0x0020
 #define NET_DIRECT      0x0040
 
@@ -215,7 +215,7 @@ typedef struct CONFIGURATION4
  {
   char tag[4];
   char name[_MAXPATH-2];
-  char list[2];				/* List prefix character */
+  char list[2];             /* List prefix character */
  } Packer[8];
  struct
  {
@@ -271,7 +271,7 @@ typedef struct CONFIGURATION4
  char TempInBound[_MAXPATH];
  char resv2[832];
  dword offset;                        /* This is the offset from the current
-					 file-pointer to the 1st Node        */
+                     file-pointer to the 1st Node        */
 } CONFIG4;
 
 /* To directly access the 'Nodes' and/or 'Areas' while bypassing the */
@@ -289,9 +289,9 @@ typedef struct
  char newgroup;                 /* Default group for new areas           */
  Address routes[15];            /* netmail routing                       */
  byte areas[124];               /* Bit-field with 992 bits, Byte 0/Bit 7 */
-				/* is conference 0, etc.                 */
+                /* is conference 0, etc.                 */
  dword groups;                  /* Bit-field, Byte 0/Bit 7 = 'A' etc.    */
-				/* false means group is active           */
+                /* false means group is active           */
  char areafixpw[9];
  byte advflags;
 } FeNode4;
@@ -427,7 +427,7 @@ typedef struct
 #define EH_QBBS_MSG     0x0101
 #define EH_SBBS_MSG     0x0102
 #define EH_PB122_MSG    0x0103
-#define EH_TAG_MSG     	0x0104
+#define EH_TAG_MSG      0x0104
 #define EH_RA200_MSG    0x0105  /* See BBS package's documentation */
 #define EH_PB130_MSG    0x0106  /* for details                     */
 

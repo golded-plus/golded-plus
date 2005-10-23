@@ -40,10 +40,10 @@
 #undef SH_COMPAT
 #endif
 #elif !defined(SH_DENYNO)
-#define	SH_DENYRW	0x10	// Deny read/write
-#define	SH_DENYWR	0x20	// Deny write
-#define	SH_DENYRD	0x30	// Deny read
-#define	SH_DENYNO	0x40	// Deny nothing
+#define SH_DENYRW   0x10    // Deny read/write
+#define SH_DENYWR   0x20    // Deny write
+#define SH_DENYRD   0x30    // Deny read
+#define SH_DENYNO   0x40    // Deny nothing
 #endif
 
 #ifndef SH_COMPAT

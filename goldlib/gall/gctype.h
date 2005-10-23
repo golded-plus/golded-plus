@@ -81,7 +81,7 @@ extern __inline__ int isxalnum(char c) {
  * It's also not possible to use setlocale() to change it's behaviour. =-(
  */
 #undef iscntrl
-# define iscntrl(c)	((c < 0x7f) ? __isctype((c), _IScntrl) : 0)
+# define iscntrl(c) ((c < 0x7f) ? __isctype((c), _IScntrl) : 0)
 #endif /* __BEOS__ */
 
 /*  --------------------------------------------------------------- */

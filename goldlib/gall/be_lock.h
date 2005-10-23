@@ -32,14 +32,14 @@ can be used for any purposes in any form without any warranties.
  sprintf(name, "FidoLock:%08X:%08X", stat_info.st_dev, stat_info.st_ino);
 
  3) Look for existing port with this name:
- 	   
+       
  pid = find_port(name);
  if(pid == B_NAME_NOT_FOUND)
  {
  
    4) Create such port.
       
-	pid = create_port(1, name);
+    pid = create_port(1, name);
 
  }
  else

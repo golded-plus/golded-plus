@@ -124,7 +124,7 @@ char *uuretcodes[] = {
   "Unexpected End of File",
   "Unsupported function",
   "File exists",
-  "Continue -- no error",	/* only to be seen internally */
+  "Continue -- no error",   /* only to be seen internally */
   "Operation Canceled"
 };
 
@@ -162,8 +162,8 @@ uustring (int codeno)
   }
 
   UUMessage (uustring_id, __LINE__, UUMSG_ERROR,
-	     "Could not retrieve string no %d",
-	     codeno);
+         "Could not retrieve string no %d",
+         codeno);
 
   return faileddef;
 }

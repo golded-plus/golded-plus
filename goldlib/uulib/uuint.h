@@ -27,9 +27,9 @@
 
 #ifndef _ANSI_ARGS_
 #ifdef PROTOTYPES
-#define _ANSI_ARGS_(c)	c
+#define _ANSI_ARGS_(c)  c
 #else
-#define _ANSI_ARGS_(c)	()
+#define _ANSI_ARGS_(c)  ()
 #endif
 #endif
 
@@ -37,24 +37,24 @@
  * Busy Polls will be made after processing ... lines
  */
 
-#define BUSY_LINE_TICKS		50
+#define BUSY_LINE_TICKS     50
 
 /*
  * States of MIME scanner
  */
 
-#define MS_HEADERS	1	/* still inside of headers      */
-#define MS_BODY		2	/* body of `simple' messages    */
-#define MS_PREAMBLE	3	/* preamble of Multipart/Mixed  */
-#define MS_SUBPART	4	/* within one of the Multiparts */
-#define MS_EPILOGUE	5	/* epilogue of Multipart/Mixed  */
+#define MS_HEADERS  1   /* still inside of headers      */
+#define MS_BODY     2   /* body of `simple' messages    */
+#define MS_PREAMBLE 3   /* preamble of Multipart/Mixed  */
+#define MS_SUBPART  4   /* within one of the Multiparts */
+#define MS_EPILOGUE 5   /* epilogue of Multipart/Mixed  */
 
 /*
  * Number of subsequent encoded lines we require to believe this
  * is valid data.
  */
 
-#define ELC_COUNT	4
+#define ELC_COUNT   4
 
 /*
  * Flags a part may have. FL_PROPER means that we are sure about the file's
@@ -62,11 +62,11 @@
  * coding.
  */
 
-#define FL_NONE		0	/* no flag, just plain normal   */
-#define FL_SINGLE	1	/* standalone MSG, do not mix   */
-#define FL_PARTIAL	2	/* from Message/Partial         */
-#define FL_PROPER	4	/* proper MIME part             */
-#define FL_TOEND	8	/* part continues to EOF        */
+#define FL_NONE     0   /* no flag, just plain normal   */
+#define FL_SINGLE   1   /* standalone MSG, do not mix   */
+#define FL_PARTIAL  2   /* from Message/Partial         */
+#define FL_PROPER   4   /* proper MIME part             */
+#define FL_TOEND    8   /* part continues to EOF        */
 
 /*
  * Auxiliary macro: compute the percentage of a against b.
@@ -75,8 +75,8 @@
  * by zero for b<100 and the result doesn't become larger than 100%
  */
 
-#define UUPERCENT(a,b)	((int) ((unsigned long)(a) / \
-				(((unsigned long)(b)/100)+1)))
+#define UUPERCENT(a,b)  ((int) ((unsigned long)(a) / \
+                (((unsigned long)(b)/100)+1)))
      
 /*
  * Make the Busy Callback easier. The macro returns true if the BusyCallback
@@ -93,9 +93,9 @@ extern unsigned long uuyctr;
  */
 
 typedef struct {
-  int restart;		/* restarting after a MIME body (not subpart) */
-  int afterdata;	/* after we had useful data in freestyle mode */
-  int afternl;		/* after an empty line in freestyle mode      */
+  int restart;      /* restarting after a MIME body (not subpart) */
+  int afterdata;    /* after we had useful data in freestyle mode */
+  int afternl;      /* after an empty line in freestyle mode      */
 } headercount;
 
 extern headercount hlcount;
@@ -107,18 +107,18 @@ extern headercount hlcount;
  */
 
 typedef struct _headers {
-  char *from;		/* From:                                          */
-  char *subject;	/* Subject:                                       */
-  char *rcpt;		/* To:                                            */
-  char *date;		/* Date:                                          */
-  char *mimevers;	/* MIME-Version:                                  */
-  char *ctype;		/* Content-Type:                                  */
-  char *ctenc;		/* Content-Transfer-Encoding:                     */
-  char *fname;		/* Potential Filename from Content-Type Parameter */
-  char *boundary;	/* MIME-Boundary from Content-Type Parameter      */
-  char *mimeid;		/* MIME-Id for Message/Partial                    */
-  int partno;		/* part number for Message/Partial                */
-  int numparts;		/* number of parts for Message/Partial            */
+  char *from;       /* From:                                          */
+  char *subject;    /* Subject:                                       */
+  char *rcpt;       /* To:                                            */
+  char *date;       /* Date:                                          */
+  char *mimevers;   /* MIME-Version:                                  */
+  char *ctype;      /* Content-Type:                                  */
+  char *ctenc;      /* Content-Transfer-Encoding:                     */
+  char *fname;      /* Potential Filename from Content-Type Parameter */
+  char *boundary;   /* MIME-Boundary from Content-Type Parameter      */
+  char *mimeid;     /* MIME-Id for Message/Partial                    */
+  int partno;       /* part number for Message/Partial                */
+  int numparts;     /* number of parts for Message/Partial            */
 } headers;
 
 /*
@@ -126,12 +126,12 @@ typedef struct _headers {
  */
 
 typedef struct _scanstate {
-  int isfolder;		/* if we think this is a valid email folder       */
-  int ismime;		/* if we are within a valid MIME message          */
-  int mimestate;	/* state of MIME scanner                          */
-  int mimeenc;		/* encoding of this MIME file                     */
-  char *source;		/* source filename                                */
-  headers envelope;	/* mail envelope headers                          */
+  int isfolder;     /* if we think this is a valid email folder       */
+  int ismime;       /* if we are within a valid MIME message          */
+  int mimestate;    /* state of MIME scanner                          */
+  int mimeenc;      /* encoding of this MIME file                     */
+  char *source;     /* source filename                                */
+  headers envelope; /* mail envelope headers                          */
 } scanstate;
 
 /*
@@ -145,23 +145,23 @@ typedef struct _scanstate {
  **/
 
 typedef struct _fileread {
-  char *subject;	/* Whole subject line */
-  char *filename;	/* Only filled in if begin detected */
-  char *origin;		/* Whole 'From:' line */
-  char *mimeid;		/* the ID for Mime-encoded files */
-  char *mimetype;	/* Content-Type */
-  short mode;		/* Mode of File (from 'begin') */
-  int   begin;		/* begin detected */
-  int   end;		/* end detected */
-  int   flags;		/* associated flags */
+  char *subject;    /* Whole subject line */
+  char *filename;   /* Only filled in if begin detected */
+  char *origin;     /* Whole 'From:' line */
+  char *mimeid;     /* the ID for Mime-encoded files */
+  char *mimetype;   /* Content-Type */
+  short mode;       /* Mode of File (from 'begin') */
+  int   begin;      /* begin detected */
+  int   end;        /* end detected */
+  int   flags;      /* associated flags */
 
-  short uudet;		/* valid encoded data. value indicates encoding */
-  short partno;		/* Mime-files have a part number within */
-  short maxpno;		/* ... plus the total number of parts   */
+  short uudet;      /* valid encoded data. value indicates encoding */
+  short partno;     /* Mime-files have a part number within */
+  short maxpno;     /* ... plus the total number of parts   */
 
-  char *sfname;		/* Associated source file */
-  long startpos;	/* ftell() position where data starts */
-  long length;		/* length of data */
+  char *sfname;     /* Associated source file */
+  long startpos;    /* ftell() position where data starts */
+  long length;      /* length of data */
 } fileread;
 
 /*
@@ -275,64 +275,64 @@ extern char * (*uu_FNameFilter)  _ANSI_ARGS_((void *, char *));
  */
 
 #if defined(STDC_HEADERS) || defined(HAVE_STDARG_H)
-int		UUMessage		_ANSI_ARGS_((char *, int,
-						     int, char *, ...));
+int     UUMessage       _ANSI_ARGS_((char *, int,
+                             int, char *, ...));
 #else
-int		UUMessage		();
+int     UUMessage       ();
 #endif
-int		UUBusyPoll		_ANSI_ARGS_((void));
+int     UUBusyPoll      _ANSI_ARGS_((void));
 
 /*
  * Functions from uucheck.c
  */
 
-uufile *	UUPreProcessPart	_ANSI_ARGS_((fileread *, int *));
-int 		UUInsertPartToList	_ANSI_ARGS_((uufile *));
-uulist *	UUCheckGlobalList	_ANSI_ARGS_((void));
+uufile *    UUPreProcessPart    _ANSI_ARGS_((fileread *, int *));
+int         UUInsertPartToList  _ANSI_ARGS_((uufile *));
+uulist *    UUCheckGlobalList   _ANSI_ARGS_((void));
 
 /*
  * Functions from uuutil.c
  */
 
-void 		UUkillfread 		_ANSI_ARGS_((fileread *));
-void	 	UUkillfile 		_ANSI_ARGS_((uufile *));
-void 		UUkilllist 		_ANSI_ARGS_((uulist *));
-void 		UUkillheaders 		_ANSI_ARGS_((headers *));
+void        UUkillfread         _ANSI_ARGS_((fileread *));
+void        UUkillfile      _ANSI_ARGS_((uufile *));
+void        UUkilllist      _ANSI_ARGS_((uulist *));
+void        UUkillheaders       _ANSI_ARGS_((headers *));
 
-fileread *	ScanPart 		_ANSI_ARGS_((FILE *, char *, int *));
+fileread *  ScanPart        _ANSI_ARGS_((FILE *, char *, int *));
 
-int		UUbhdecomp		_ANSI_ARGS_((char *, char *,
-						     char *, int *,
-						     size_t, size_t, 
-						     size_t *));
-size_t		UUbhwrite		_ANSI_ARGS_((char *, size_t, size_t,
-						     FILE *));
+int     UUbhdecomp      _ANSI_ARGS_((char *, char *,
+                             char *, int *,
+                             size_t, size_t, 
+                             size_t *));
+size_t      UUbhwrite       _ANSI_ARGS_((char *, size_t, size_t,
+                             FILE *));
 
 /*
  * Functions from uunconc.c
  */
 
-int		UURepairData		_ANSI_ARGS_((FILE *, char *,
-						     int, int *));
+int     UURepairData        _ANSI_ARGS_((FILE *, char *,
+                             int, int *));
 
-void 		UUInitConc		_ANSI_ARGS_((void));
-int 		UUValidData		_ANSI_ARGS_((char *, int, int *));
-size_t 		UUDecodeLine		_ANSI_ARGS_((char *, char *, int));
-int		UUDecodePart		_ANSI_ARGS_((FILE *, FILE *, int *,
-						     long, int, int, char *));
-int 		UUDecode 		_ANSI_ARGS_((uulist *));
+void        UUInitConc      _ANSI_ARGS_((void));
+int         UUValidData     _ANSI_ARGS_((char *, int, int *));
+size_t      UUDecodeLine        _ANSI_ARGS_((char *, char *, int));
+int     UUDecodePart        _ANSI_ARGS_((FILE *, FILE *, int *,
+                             long, int, int, char *));
+int         UUDecode        _ANSI_ARGS_((uulist *));
 
 /*
  * Message retrieval from uustring.c
  */
 
-char *		uustring		_ANSI_ARGS_((int));
+char *      uustring        _ANSI_ARGS_((int));
 
 /*
  * From uuscan.c
  */
 
-int		UUScanHeader		_ANSI_ARGS_((FILE *, headers *));
+int     UUScanHeader        _ANSI_ARGS_((FILE *, headers *));
 
 #ifdef __cplusplus
 }

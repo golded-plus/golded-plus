@@ -398,8 +398,8 @@ struct _PRM
          word  matrix_mask;
 
          word  MinNetBaud;     /* minimum baud rate for remote netmail      */
-         byte   exit_mailer;		/* Exit when mailer is running        */
-         byte   num_crashes;		/* Number of tries when sending crash */
+         byte   exit_mailer;        /* Exit when mailer is running        */
+         byte   num_crashes;        /* Number of tries when sending crash */
 
          struct class_rec Class[MAXCLASS];
          struct _FOSREGS FosRegs[10];
@@ -420,30 +420,30 @@ struct _PRM
          byte sylno;           /* Def Sysop Language no.  (0-5)             */
          byte uslno;           /* Def User Language no.   (0-5)             */
          byte relog_exit;      /* Exit after -o relog                       */
-         word Scrn_Size;		/* Local monitor's size, high byte = len    */
+         word Scrn_Size;        /* Local monitor's size, high byte = len    */
 
 /* New for version 18 */
 
-         word default_expire_days;    	/* Number of days before new users  */
-         word default_expire_mins;    	/* Number of days before new users  */
-         long default_keys;		/* New user's default keys                  */
-         long default_section; 	/* New user's default section               */
-         word   Point_Net;		/* My point net                             */
-         word   Boss_Node;		/* My point net                             */
-         byte   NoPwd_Priv;		/* Priv if you want to allow users without password */
-         byte   Local_Exit;		/* Exit after local messages                */
-         byte   Upload_Exit;		/* Exit after an upload for checking  */
-         byte   ExtMail_Exit;		/* Exit for externmail                */
-         byte   Max_Echo;		/* Longest echomail message to handle 3-60k */
-         byte   WhoPriv;		/* Priv to see who uploaded a file           */
+         word default_expire_days;      /* Number of days before new users  */
+         word default_expire_mins;      /* Number of days before new users  */
+         long default_keys;     /* New user's default keys                  */
+         long default_section;  /* New user's default section               */
+         word   Point_Net;      /* My point net                             */
+         word   Boss_Node;      /* My point net                             */
+         byte   NoPwd_Priv;     /* Priv if you want to allow users without password */
+         byte   Local_Exit;     /* Exit after local messages                */
+         byte   Upload_Exit;        /* Exit after an upload for checking  */
+         byte   ExtMail_Exit;       /* Exit for externmail                */
+         byte   Max_Echo;       /* Longest echomail message to handle 3-60k */
+         byte   WhoPriv;        /* Priv to see who uploaded a file           */
 
-         ADDR   GUUCP;		/* Where to send gated UUCP messages             */
+         ADDR   GUUCP;      /* Where to send gated UUCP messages             */
          long   making_section;
-         byte   ListSysop;		/* Privilege neeeded to see sysops in net list */
-         byte   rawpriv;		/* Privilege needed to see/download files not listed */
-         byte   uucp_priv;		/* Privilege needed to turn off uucp addresses */
-         byte   Flags3;		/* More flags.                               */
-         byte   Mail_Exit;		/* Exit after mail connect                   */
+         byte   ListSysop;      /* Privilege neeeded to see sysops in net list */
+         byte   rawpriv;        /* Privilege needed to see/download files not listed */
+         byte   uucp_priv;      /* Privilege needed to turn off uucp addresses */
+         byte   Flags3;     /* More flags.                               */
+         byte   Mail_Exit;      /* Exit after mail connect                   */
          byte   byte_fill;
            
          word   PRM_FILL3[18];  
@@ -533,39 +533,39 @@ struct _PRM
          OFS   xtexpd;         /* Expired due-to-Time used OEC BBS          */
          OFS   lang[12];       /* 12 Language File Root Name pointers       */
       
-         OFS   badpath; 		/* Path for unrecognized echo names         */
+         OFS   badpath;         /* Path for unrecognized echo names         */
 /*--------------------------------------------------------------------------*/
 /* New for version 18                                                       */
 /*--------------------------------------------------------------------------*/
-         OFS   ConfHelp;		/* Help file for newuser configure          */
-         OFS   Mainmenu;		/* ASCII menu at MAIN                       */
-         OFS   Confmenu;		/* ASCII menu at Config                     */
-         OFS   Sectmenu;		/* ASCII menu at Section menu               */
-         OFS   Sysopmenu;		/* ASCII menu at Sysop menu                 */
+         OFS   ConfHelp;        /* Help file for newuser configure          */
+         OFS   Mainmenu;        /* ASCII menu at MAIN                       */
+         OFS   Confmenu;        /* ASCII menu at Config                     */
+         OFS   Sectmenu;        /* ASCII menu at Section menu               */
+         OFS   Sysopmenu;       /* ASCII menu at Sysop menu                 */
          OFS   Echotoss;       /* Where to find EchoToss.Log               */
          OFS   MDM_Answer;     /* String to force autoanswer               */
-         OFS   BAD_PWD;		/* File shown to users who've forgottent thiers */
+         OFS   BAD_PWD;     /* File shown to users who've forgottent thiers */
          OFS   charset;         /* File that contains character translation tables */
-         OFS   DL_Log;		    /* Who's downloaded what                    */
-         OFS   UL_Log;		    /* Who uploaded what                        */
-         OFS   Name_Filter;	/* Old USERNAME.TXT                         */
-         OFS   Bad_Name;		/* What to show user if filter catches them */
-         OFS   CUSTOM1_menu;	/* What to show before CUSTOM1 menu         */
-         OFS   CUSTOM2_menu;	/* What to show before CUSTOM2 menu         */
-         OFS   CUSTOM3_menu;	/* What to show before CUSTOM3 menu         */
-         OFS   CUSTOM4_menu;	/* What to show before CUSTOM4 menu         */
-         OFS   CUSTOM5_menu;	/* What to show before CUSTOM5 menu         */
-         OFS   CUSTOM6_menu;	/* What to show before CUSTOM6 menu         */
-         OFS   EXT_mail_string;		/* What we see when UUCP is coming    */
-         OFS   MaybeNew;		/* File shown if didn't find user name       */
-         OFS   Histmenu;		/* ASCII menu at History                     */
-         OFS   My_Question;		/* Sysop configured question             */
-         OFS   HLP_make;		/* How to make a section                     */
-         OFS   MDM_FDial[4];		/* Special dialing instructions          */
-         OFS   Yell;		/* Yell OEC                                      */
-         OFS   HLP_Macro;		/* Help for macro menu                       */
-         OFS   UUCP_list;		/* Address list for UUCP                     */
-         OFS   HLP_IChat;		/* Interline chat help                       */
+         OFS   DL_Log;          /* Who's downloaded what                    */
+         OFS   UL_Log;          /* Who uploaded what                        */
+         OFS   Name_Filter; /* Old USERNAME.TXT                         */
+         OFS   Bad_Name;        /* What to show user if filter catches them */
+         OFS   CUSTOM1_menu;    /* What to show before CUSTOM1 menu         */
+         OFS   CUSTOM2_menu;    /* What to show before CUSTOM2 menu         */
+         OFS   CUSTOM3_menu;    /* What to show before CUSTOM3 menu         */
+         OFS   CUSTOM4_menu;    /* What to show before CUSTOM4 menu         */
+         OFS   CUSTOM5_menu;    /* What to show before CUSTOM5 menu         */
+         OFS   CUSTOM6_menu;    /* What to show before CUSTOM6 menu         */
+         OFS   EXT_mail_string;     /* What we see when UUCP is coming    */
+         OFS   MaybeNew;        /* File shown if didn't find user name       */
+         OFS   Histmenu;        /* ASCII menu at History                     */
+         OFS   My_Question;     /* Sysop configured question             */
+         OFS   HLP_make;        /* How to make a section                     */
+         OFS   MDM_FDial[4];        /* Special dialing instructions          */
+         OFS   Yell;        /* Yell OEC                                      */
+         OFS   HLP_Macro;       /* Help for macro menu                       */
+         OFS   UUCP_list;       /* Address list for UUCP                     */
+         OFS   HLP_IChat;       /* Interline chat help                       */
          OFS   protocols[MAX_EXTERN]; /* external file protocol programs    */
 
 /*v18*/  OFS   OFS_Filler[7];  
@@ -586,13 +586,13 @@ struct _PRM
          char  buf[CTLSIZE];
    end;
 
-#define ASK_PHONE       0x01		/* Used with xuflags                  */
-#define ASK_ALIAS       0x02		/* Used with xuflags                  */
-#define ASK_REAL        0x04		/* Used with xuflags                  */
-#define ASK_CITY        0x08		/* Used with xuflags                  */
-#define CAN_ALIAS       0x10		/* Allow ALIAS' in some situations    */
-#define ASK_BDAY        0x20		/* Ask user for birthday              */
-#define ASK_ADDRESS     0x40		/* Ask user for street address        */
+#define ASK_PHONE       0x01        /* Used with xuflags                  */
+#define ASK_ALIAS       0x02        /* Used with xuflags                  */
+#define ASK_REAL        0x04        /* Used with xuflags                  */
+#define ASK_CITY        0x08        /* Used with xuflags                  */
+#define CAN_ALIAS       0x10        /* Allow ALIAS' in some situations    */
+#define ASK_BDAY        0x20        /* Ask user for birthday              */
+#define ASK_ADDRESS     0x40        /* Ask user for street address        */
 
          /* Means no privilege level is set and/or applicable At LOGON,     */
          /* for example, it means system is for PRE-REGISTERED users only.  */
@@ -603,8 +603,8 @@ struct _common_data {
    char  Opus[16];        /* "OPUS-CBCS 1.20"                               */
    long  QuotePosition;   /* Quote file position                            */
    long  CallerCount;     /* Number of callers                              */
-   long  Caller_ID;		  /* ID of current newest user                      */
-   long  MSG_ID;		  /* Last used MSGID                                */
+   long  Caller_ID;       /* ID of current newest user                      */
+   long  MSG_ID;          /* Last used MSGID                                */
    word  FILLER[15];      /* RESERVED - do not use                          */
    word  MAX_task;        /* Highest task number                            */
 };
@@ -642,15 +642,15 @@ struct _common_data {
 
 #define     MATRIX_CHANGED  0x0001    /* Changed matrix area. Scan          */
 #define     LOCAL_CHANGED   0x0002    /* Changed Local area.                */
-#define     GOT_BUNDLE      0x0100		/* Received a PKT file              */
-#define     GOT_ARCMAIL     0x0200		/* Received an archived file        */
-#define     GOT_REQUESTS    0x0400		/* Got file requests to handle      */
-#define     GOT_ECHOMAIL    0x1000		/* Received Echomail                */
+#define     GOT_BUNDLE      0x0100      /* Received a PKT file              */
+#define     GOT_ARCMAIL     0x0200      /* Received an archived file        */
+#define     GOT_REQUESTS    0x0400      /* Got file requests to handle      */
+#define     GOT_ECHOMAIL    0x1000      /* Received Echomail                */
 
 /*--------------------------------------------------------------------------*/
 /* INTERLINE FLAGS                                                          */
 /*--------------------------------------------------------------------------*/
-#define     CAN_CHAT    0x01		/* Multiline systems can do chats     */
+#define     CAN_CHAT    0x01        /* Multiline systems can do chats     */
 
 // END OF SUB-INCLUDE PRM18.H ////////////////////////////////////////////////////
 
@@ -678,7 +678,7 @@ struct _common_data {
 #define STEADY     0x02    /* never change baud rate              0000 0010 */
 #define ECHOSCAN   0x04    /* automatically scan echo's           0000 0100 */
 #define ECHO_GUARD 0x08    /* no toss un-pwd echo arc             0000 1000 */
-#define LEAVE_ESCN 0x10	   /* Leave echotoss.log after Scanning   0001 0000 */
+#define LEAVE_ESCN 0x10    /* Leave echotoss.log after Scanning   0001 0000 */
 #define DO_MSGID   0x20    /* Put MSGID lines into echomail       0010 0000 */
 #define F_NOCRASH  0x40    /* Don't accept crash mail             0100 0000 */
 #define F_UNPK     0x80    /* Unpack incomming arcmail            1000 0000 */
@@ -700,11 +700,11 @@ struct _common_data {
 /*--------------------------------------------------------------------------*/
 /* FLAGS 3                                                                  */
 /*--------------------------------------------------------------------------*/
-#define F3STEADY   0x01		/* Can do ARQ steady. &B2                    */
-#define F3GMENU    0x02		/* Will let users do graphics menus          */
-#define F3LOGOFF   0x04		/* Collect logoff messages                   */
-#define F3NOALIAS  0x08		/* Don't put alias' in SEEN-BY               */
-#define F3HINAMES  0x10		/* Allow users with hi-bit names             */
+#define F3STEADY   0x01     /* Can do ARQ steady. &B2                    */
+#define F3GMENU    0x02     /* Will let users do graphics menus          */
+#define F3LOGOFF   0x04     /* Collect logoff messages                   */
+#define F3NOALIAS  0x08     /* Don't put alias' in SEEN-BY               */
+#define F3HINAMES  0x10     /* Allow users with hi-bit names             */
 
 /*--------------------------------------------------------------------------*/
 /* FWDflags (bits to control IN TRANSIT messages)                           */
@@ -713,9 +713,9 @@ struct _common_data {
 #define FWD_PWD    0x02    /* IN TRANSIT by pwd only              0000 0010 */
 #define FWD_TONET  0x04    /* Accept IN TRANSIT only to my net    0000 0100 */
 #define FWD_NOBITS 0x08    /* No IN TRANSIT if extended bits used 0000 1000 */
-#define FWD_HOST   0x10		/* Send mail to host if can't find.          */
-#define VERSION6   0x40	/* Use Version 6 nodelist                        */
-#define IMAPOINT   0x80	/* This is a point                              */
+#define FWD_HOST   0x10     /* Send mail to host if can't find.          */
+#define VERSION6   0x40 /* Use Version 6 nodelist                        */
+#define IMAPOINT   0x80 /* This is a point                              */
 
 /*--------------------------------------------------------------------------*/
 /* LOG FLAGS                                                                */
@@ -731,7 +731,7 @@ struct _common_data {
 #define M_SNOOP    0x01    /* sysop display on                    0000 0001 */
 #define MOUSE      0x02    /* sysop mouse on                      0000 0010 */
 #define M_BRKCLEAR 0x04    /* Use BREAK to clear outbound buffer  0000 0100 */
-#define SLOW_MODEM 0x08		/* Slow modem and fast computer                 */
+#define SLOW_MODEM 0x08     /* Slow modem and fast computer                 */
 
 /*--------------------------------------------------------------------------*/
 /* STYLE FLAGS                                                              */
@@ -739,11 +739,11 @@ struct _common_data {
 #define SF_PATH    0x01    /* use path, not Dir.Bbs               0000 0001 */
 #define SF_KILL    0x02    /* Kill rec'd pvt messages             0000 0010 */
 #define SF_ASKKILL 0x04    /* ASK about killing msgs              0000 0100 */
-#define SF_EUROPE  0x08		/* European date strings */
-#define SF_TIME    0x10	/* Show time remaining on menu         0001 0000 */
-#define SF_NOFLAG  0x20	/* Don't allow user config at logon    0010 0000 */
-#define SF_HANDHOLD 0x40	/* Track user's errors and add help    0100 0000 */
-#define SF_NOHIGH  0x80	/* Track user's errors and add help    0100 0000 */
+#define SF_EUROPE  0x08     /* European date strings */
+#define SF_TIME    0x10 /* Show time remaining on menu         0001 0000 */
+#define SF_NOFLAG  0x20 /* Don't allow user config at logon    0010 0000 */
+#define SF_HANDHOLD 0x40    /* Track user's errors and add help    0100 0000 */
+#define SF_NOHIGH  0x80 /* Track user's errors and add help    0100 0000 */
 
 
 #define SET_FLAG(x,y)    ((x)|=(y))
@@ -770,7 +770,7 @@ struct _common_data {
 /*   THE USER DATABASE                                                      */
 /*--------------------------------------------------------------------------*/
 
-#define    MAX_USEC    80		/* Maximum number of areas in "user" section */
+#define    MAX_USEC    80       /* Maximum number of areas in "user" section */
 
    struct   _usr
    {
@@ -858,20 +858,20 @@ struct _common_data {
        uint32_t messages_read;  /* Total number of messages read */
        int32_t  messages_sent;  /* Number of messages entered by user    */
 
-       word     my_section[MAX_USEC];		/* This is just a block of area  */
-                                     		/* numbers in the user's Section */
-                                     		/* Message areas are first, then */
-                                      		/* file areas. The first file    */
-                                     		/* area is at my_section[msecs]  */
+       word     my_section[MAX_USEC];       /* This is just a block of area  */
+                                            /* numbers in the user's Section */
+                                            /* Message areas are first, then */
+                                            /* file areas. The first file    */
+                                            /* area is at my_section[msecs]  */
 
-       word    big_fill[40];		/* Fill out to 512 bytes                 */
-       word    Opus_Flags;		/* Stores Opus temporary configuration */
+       word    big_fill[40];        /* Fill out to 512 bytes                 */
+       word    Opus_Flags;      /* Stores Opus temporary configuration */
        byte    byte_fill;
-       byte    Default_Protocol;		/* Default transfer protocol           */
-       byte    User_MMacro[16];		/* Message User's keyboard Macro       */
-       byte    User_FMacro[16];		/* File User's keyboard Macro          */
-       byte    User_DMacro[16];		/* Default User's keyboard Macro       */
-       byte    Sysop_Comment[80];		/* Anything you want to say about 'em  */
+       byte    Default_Protocol;        /* Default transfer protocol           */
+       byte    User_MMacro[16];     /* Message User's keyboard Macro       */
+       byte    User_FMacro[16];     /* File User's keyboard Macro          */
+       byte    User_DMacro[16];     /* Default User's keyboard Macro       */
+       byte    Sysop_Comment[80];       /* Anything you want to say about 'em  */
 #endif
       uint32_t OPUS_id;
 
@@ -917,10 +917,10 @@ struct _common_data {
 #define  HOTKEYS     0x0001 /* Wants HotKeys at all help levels             */
 #define  QMENU       0x0002 /* Wants to return to last menu instead of MAIN */
 #define  ASKGRAPH    0x0004 /* Wants to be asked about graphics every logon */
-#define  ASCIIMENU   0x0008		/* Wants long tedious graphics menus        */
-#define  SHOW_TIME   0x0010		/* Show time remaining at prompts        */
-#define  BLOCKCHAT   0x4000		/* User doesn't want to be sociable.     */
-#define  INCRITAREA  0x8000		/* Opus is in critical area              */
+#define  ASCIIMENU   0x0008     /* Wants long tedious graphics menus        */
+#define  SHOW_TIME   0x0010     /* Show time remaining at prompts        */
+#define  BLOCKCHAT   0x4000     /* User doesn't want to be sociable.     */
+#define  INCRITAREA  0x8000     /* Opus is in critical area              */
 
 
 /*--------------------------------------------------------------------------*/
@@ -944,11 +944,11 @@ struct _common_data {
 /*--------------------------------------------------------------------------*/
 /* Flags for After_Externs                                                  */
 /*--------------------------------------------------------------------------*/
-#define NEW_ECHOS   0x0001		/* New Echomail entered by user             */
-#define NEW_MATRIX  0x0002		/* New Matrix entered by user               */
-#define NEW_LOCAL   0x0004		/* New Local mail entered by user           */
-#define UPLOADED    0x0008		/* User uploaded something                  */
-#define DUP_UPLOAD  0x0010		/* User uploaded a duplicate file           */
+#define NEW_ECHOS   0x0001      /* New Echomail entered by user             */
+#define NEW_MATRIX  0x0002      /* New Matrix entered by user               */
+#define NEW_LOCAL   0x0004      /* New Local mail entered by user           */
+#define UPLOADED    0x0008      /* User uploaded something                  */
+#define DUP_UPLOAD  0x0010      /* User uploaded a duplicate file           */
 
 /*--------------------------------------------------------------------------*/
 /* LASTUSER.BBS file structure                                              */
@@ -1251,64 +1251,64 @@ struct   _Hello
 
 struct  _filesys {
 
-    char    Area_Name[32]; 		/* Area's primary name */
+    char    Area_Name[32];      /* Area's primary name */
 
-    word    Area_Number;		/* area number */
-    word    Area_Menu;		/* which menu? */
+    word    Area_Number;        /* area number */
+    word    Area_Menu;      /* which menu? */
     word    Total_Size;
 
-    byte    Area_Priv;		/* Area Privilege */
-    byte    Down_Priv;		/* Download Privilege */
+    byte    Area_Priv;      /* Area Privilege */
+    byte    Down_Priv;      /* Download Privilege */
 
     byte    Up_Priv;
-    byte    Priv_Up;		/* Uploads from users with Priv>= Priv_Up */
-    byte    Ratio_Priv;		/* Privilege where u/d ratios start */
+    byte    Priv_Up;        /* Uploads from users with Priv>= Priv_Up */
+    byte    Ratio_Priv;     /* Privilege where u/d ratios start */
     byte    New_Priv;
     
     byte    fill_byte1[2];
 /* 48 */
-    word    Attrib;		/* Area Attribute */
-    word    Status;		/* Area Status, extended Attribute? */
+    word    Attrib;     /* Area Attribute */
+    word    Status;     /* Area Status, extended Attribute? */
 
-	long    Start_Pos;		/* start of Area in sysfile.dat */
+    long    Start_Pos;      /* start of Area in sysfile.dat */
 /* 56 */
-    long    Area_Lock;		/* Area Lock */
+    long    Area_Lock;      /* Area Lock */
 
     long    Up_Lock;
 
-    long    Down_Lock;		/* edit Lock */
+    long    Down_Lock;      /* edit Lock */
 
-    long    Priv_Key;		/* Private Key path */
+    long    Priv_Key;       /* Private Key path */
 
 /* 72 */
-    long    Section;		/* edit Lock */
+    long    Section;        /* edit Lock */
 
     long    fill_long[2];
 
-	byte	Title_Len;		/* length of Title */
-    byte    Prefiles_Len;	/* files shown at Area access like Areainfo */
+    byte    Title_Len;      /* length of Title */
+    byte    Prefiles_Len;   /* files shown at Area access like Areainfo */
 
-	byte    Downpath_Len;		/* length of path */
-	byte    Uppath_Len;		/* length of path */
+    byte    Downpath_Len;       /* length of path */
+    byte    Uppath_Len;     /* length of path */
 /* 88 */
-    byte    Barricade_Len;		/* Barricade length if used */
+    byte    Barricade_Len;      /* Barricade length if used */
     byte    Rules_Len;
 
-    byte    Privkey_Len;		/* Uploads from users with "key" go here */
-    byte    PrivUp_Len;		/* Private Upload path */
-    byte    Menu_Len;		/* file name for this area's ascii menu */
-    byte    Vol_Len;		/* Length of volume name */
-    byte    Help_Len;		/* Length of help name for this area */
+    byte    Privkey_Len;        /* Uploads from users with "key" go here */
+    byte    PrivUp_Len;     /* Private Upload path */
+    byte    Menu_Len;       /* file name for this area's ascii menu */
+    byte    Vol_Len;        /* Length of volume name */
+    byte    Help_Len;       /* Length of help name for this area */
 
-    byte    fill_byte2[5];		/* more filler */
+    byte    fill_byte2[5];      /* more filler */
 /* 100 */
-    word    Other_Len;		/* external programs use this number bytes */
+    word    Other_Len;      /* external programs use this number bytes */
 
-    word    Def_Upload;		/* Area number for default uploads */
-    word    Priv_Upload;		/* Area number for Priv uploads */
-    word    Key_Upload;		/* Area number for Lock uploads */
+    word    Def_Upload;     /* Area number for default uploads */
+    word    Priv_Upload;        /* Area number for Priv uploads */
+    word    Key_Upload;     /* Area number for Lock uploads */
 
-    word    fill_word[10];		/* more filler to 128 bytes*/
+    word    fill_word[10];      /* more filler to 128 bytes*/
 };
 
 /*  Title */
@@ -1332,31 +1332,31 @@ struct  _filesys {
 
 struct  _msgsys {
 
-    char    Area_Name[32]; 		/* Area's primary name */
-    char    Echo_Name[32];		/* Area's echo name */
-    word    Area_Number;		/* Area number */
-    word    Area_Menu;		/* which menu? */
-    word    Total_Size;		/* Total size of this Area in SYSMSG.DAT */
+    char    Area_Name[32];      /* Area's primary name */
+    char    Echo_Name[32];      /* Area's echo name */
+    word    Area_Number;        /* Area number */
+    word    Area_Menu;      /* which menu? */
+    word    Total_Size;     /* Total size of this Area in SYSMSG.DAT */
 
-    byte    Area_Priv;		/* Area Privilege */
-    byte    Edit_Priv;		/* Edit Privilege */
-    byte    Private_Priv;		/* Privilege to read Private messages*/
+    byte    Area_Priv;      /* Area Privilege */
+    byte    Edit_Priv;      /* Edit Privilege */
+    byte    Private_Priv;       /* Privilege to read Private messages*/
     byte    Upload_Priv;
     byte    fill_0[3];
-    byte    Translate;		/* Which character set to use 1, 2.... */
+    byte    Translate;      /* Which character set to use 1, 2.... */
 /* 80 */
-    long    Area_Lock;		/* Area Lock */
-    long    Edit_Lock;		/* Edit Lock */
+    long    Area_Lock;      /* Area Lock */
+    long    Edit_Lock;      /* Edit Lock */
 
-    long    Private_Lock;		/* Lock to read Private messages*/
+    long    Private_Lock;       /* Lock to read Private messages*/
     long    Upload_Lock;
 
-    word    Attrib;		/* Area Attribute */
-    word    Status;		/* Area Status, extended Attribute? */
+    word    Attrib;     /* Area Attribute */
+    word    Status;     /* Area Status, extended Attribute? */
 
-	long    Start_Pos;		/* start of Area in sysmsg.dat */
+    long    Start_Pos;      /* start of Area in sysmsg.dat */
     long    Section;
-    byte    Max_Lines;		/* Maximum number of lines in messages */
+    byte    Max_Lines;      /* Maximum number of lines in messages */
     byte    fill_1[3];
 /* 112 */
 
@@ -1365,21 +1365,21 @@ struct  _msgsys {
     word    Node;
     word    Point;
 
-	byte    Path_Len;		/* length of Path */
-	byte	Title_Len;		/* length of Title */
+    byte    Path_Len;       /* length of Path */
+    byte    Title_Len;      /* length of Title */
 
-    byte    Barricade_Len;		/* Barricade length if used */
-    byte    Origin_Len;		/* non-default Origin line */
+    byte    Barricade_Len;      /* Barricade length if used */
+    byte    Origin_Len;     /* non-default Origin line */
 
-    byte    Domain_Len;		/* Domain (if used) length */
-    byte    Menu_Len;		/* file name for this area's ascii menu */
-    byte    Vol_Len;		/* Length of volume name */
-    byte    Help_Len;		/* Length of help name for this area */
+    byte    Domain_Len;     /* Domain (if used) length */
+    byte    Menu_Len;       /* file name for this area's ascii menu */
+    byte    Vol_Len;        /* Length of volume name */
+    byte    Help_Len;       /* Length of help name for this area */
 /* 144 */
 
-	byte    Scan_Len;		/* number of boards that Area is Scanned to */
-    byte    Scan_Pos;		/* where Opus is in the Scan right now */
-    word    Other_Len;		/* external programs use this number bytes */
+    byte    Scan_Len;       /* number of boards that Area is Scanned to */
+    byte    Scan_Pos;       /* where Opus is in the Scan right now */
+    word    Other_Len;      /* external programs use this number bytes */
     word    Extern_Flags;
     word    word_fill[5];
 /* 160 */
@@ -1388,7 +1388,7 @@ struct  _msgsys {
 /*--------------------------------------------------------------------------*/
 /* Then some strings/structures follow as needed                            */
 /*--------------------------------------------------------------------------*/
-	 /* Path string  */
+     /* Path string  */
     /* Title string */
     /* Barricade string */
     /* Origin string */
@@ -1404,7 +1404,7 @@ struct  _msgsys {
 /*--------------------------------------------------------------------------*/
 
 
-struct  _ascan {		/* structure of address for echoScanning */
+struct  _ascan {        /* structure of address for echoScanning */
     word    Net;
     word    Node;
 };
@@ -1430,8 +1430,8 @@ struct  _lf {
 /* File Area attributes (limit or describe the behavior of an area)         */
 /*--------------------------------------------------------------------------*/
 
-#define    F_DUPE  0x0001		/* Allow duplicate uploads in this area      */
-#define    F_FREE  0x0002		/* Downloads from this area area all 0K      */
+#define    F_DUPE  0x0001       /* Allow duplicate uploads in this area      */
+#define    F_FREE  0x0002       /* Downloads from this area area all 0K      */
 
 
 /*--------------------------------------------------------------------------*/
@@ -1443,9 +1443,9 @@ struct  _lf {
 #define  NOPRIVATE 0x08    /* OPUS: Disallow private messages               */
 #define  ANON_OK   0x10    /* OPUS: Enable anonymous messages               */
 #define  _ECHOMAIL  0x20    /* OPUS: Set=Echomail Clear=Not Echomail         */
-#define  USEALIAS  0x40	   /* OPUS: Use user's alias in this area if.....   */
+#define  USEALIAS  0x40    /* OPUS: Use user's alias in this area if.....   */
 //#define  PASSTHROUGH   0x80     /* OPUS: Allow high-bit characters in echo area  */
-#define  INBOUND   0x0100		/* Inbound Only area */
+#define  INBOUND   0x0100       /* Inbound Only area */
 
 
 /*--------------------------------------------------------------------------*/
@@ -1456,22 +1456,22 @@ struct  _lf {
 /* programs MAY have conflicting uses.                                      */
 /*--------------------------------------------------------------------------*/
 
-#define RENUMBER   0x0001 		/* This area gets renumbered                 */
-#define MAILCHECK	0x0002		/* The mail check program will do this area  */
-#define RESERVED2	0x0004   	/* Reserved for Opus-defined flags           */
-#define RESERVED3	0x0008   	/* Reserved for Opus-defined flags           */
-#define RESERVED4	0x0010   	/* Reserved for Opus-defined flags           */
-#define RESERVED5	0x0020   	/* Reserved for Opus-defined flags           */
-#define RESERVED6	0x0040   	/* Reserved for Opus-defined flags           */
-#define RESERVED7	0x0080   	/* Reserved for Opus-defined flags           */
-#define EXTERN1	0x0100   	/* Undefined! Meaning varies for each program*/
-#define EXTERN2	0x0200   	/* Undefined! Meaning varies for each program*/
-#define EXTERN3	0x0400   	/* Undefined! Meaning varies for each program*/
-#define EXTERN4	0x0800   	/* Undefined! Meaning varies for each program*/
-#define EXTERN5	0x1000   	/* Undefined! Meaning varies for each program*/
-#define EXTERN6	0x2000   	/* Undefined! Meaning varies for each program*/
-#define EXTERN7	0x4000   	/* Undefined! Meaning varies for each program*/
-#define EXTERN8	0x8000   	/* Undefined! Meaning varies for each program*/
+#define RENUMBER   0x0001       /* This area gets renumbered                 */
+#define MAILCHECK   0x0002      /* The mail check program will do this area  */
+#define RESERVED2   0x0004      /* Reserved for Opus-defined flags           */
+#define RESERVED3   0x0008      /* Reserved for Opus-defined flags           */
+#define RESERVED4   0x0010      /* Reserved for Opus-defined flags           */
+#define RESERVED5   0x0020      /* Reserved for Opus-defined flags           */
+#define RESERVED6   0x0040      /* Reserved for Opus-defined flags           */
+#define RESERVED7   0x0080      /* Reserved for Opus-defined flags           */
+#define EXTERN1 0x0100      /* Undefined! Meaning varies for each program*/
+#define EXTERN2 0x0200      /* Undefined! Meaning varies for each program*/
+#define EXTERN3 0x0400      /* Undefined! Meaning varies for each program*/
+#define EXTERN4 0x0800      /* Undefined! Meaning varies for each program*/
+#define EXTERN5 0x1000      /* Undefined! Meaning varies for each program*/
+#define EXTERN6 0x2000      /* Undefined! Meaning varies for each program*/
+#define EXTERN7 0x4000      /* Undefined! Meaning varies for each program*/
+#define EXTERN8 0x8000      /* Undefined! Meaning varies for each program*/
 
 
 //  ------------------------------------------------------------------
