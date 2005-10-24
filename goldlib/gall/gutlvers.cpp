@@ -84,7 +84,24 @@ static void cpuname(int family, int model, const char *v_name, char *m_name)
     switch (family)
     {
     case 4:
-      strcpy(m_name, "AMD_486");
+      switch (model)
+      {
+      case 3:
+      case 7:
+        strcpy(m_name, "AMD486DX2");
+        break;
+      case 8:
+      case 9:
+        strcpy(m_name, "AMD486DX4");
+        break;
+      case 14:
+      case 15:
+        strcpy(m_name, "AMD5x86");
+        break;
+      default:
+        sprintf(m_name, "AMD486_M%d", model);
+
+      }
       break;
 
     case 5:
@@ -107,10 +124,12 @@ static void cpuname(int family, int model, const char *v_name, char *m_name)
       case 10:
       case 11:
       case 12:
+        strcpy(m_name, "AMD_K6-3");
+        break;
       case 13:
       case 14:
       case 15:
-        strcpy(m_name, "AMD_K6-3");
+        strcpy(m_name, "AMD_K6-3+");
         break;
       default:
         sprintf(m_name, "AMD_F%dM%d", family, model);
@@ -118,11 +137,23 @@ static void cpuname(int family, int model, const char *v_name, char *m_name)
       break;
 
     case 6:
-      strcpy(m_name, "AMD_K7");
+      switch (model)
+      {
+      case 1:
+      case 2:
+      case 4:
+        strcpy(m_name, "AMD_Athlon");
+        break;
+      case 3:
+        strcpy(m_name, "AMD_Duron");
+        break;
+      default:
+      sprintf(m_name, "AMD_K7_M%u", model);
+      }
       break;
 
     case 15:
-      strcpy(m_name, "AMD_K8");
+      strcpy(m_name, "AMD64");
       break;
 
     default:
@@ -150,7 +181,7 @@ static void cpuname(int family, int model, const char *v_name, char *m_name)
         strcpy(m_name, "i486SL");
         break;
       case 5:
-        strcpy(m_name, "i486SX2");
+        strcpy(m_name, "i486SX2O");
         break;
       case 7:
         strcpy(m_name, "i486DX2E");
@@ -159,7 +190,7 @@ static void cpuname(int family, int model, const char *v_name, char *m_name)
         strcpy(m_name, "i486DX4");
         break;
       default:
-        sprintf(m_name, "iF%dM%d", family, model);
+        sprintf(m_name, "i486_M%d", model);
       }
       break;
 
@@ -167,9 +198,13 @@ static void cpuname(int family, int model, const char *v_name, char *m_name)
       switch (model)
       {
       case 1:
+        strcpy(m_name, "iP");
+        break;
       case 2:
-      case 3:
         strcpy(m_name, "iP54C");
+        break;
+      case 3:
+        strcpy(m_name, "iP_OverDrive");
         break;
       case 4:
         strcpy(m_name, "iP55C");
@@ -227,10 +262,22 @@ static void cpuname(int family, int model, const char *v_name, char *m_name)
   else if (!strcmp("CentaurHauls", v_name))
     sprintf(m_name, "CenF%dM%d", family, model);
   else {
-    if ( family==0 && model==0  )
-      sprintf(m_name, "CPU %s", v_name);
-    else
+    if (model) {
       sprintf(m_name, "CPU %3s-F%dM%d", v_name, family, model);
+    }else{
+      switch (family)
+      {
+      case 0:
+        sprintf(m_name, "CPU %s", v_name);
+        break;
+      case 3:
+      case 4:
+        sprintf(m_name, "%s-%u86", v_name, family);
+        break;
+      default:
+        sprintf(m_name, "CPU %3s-F%dM%d", v_name, family, model);
+      }
+    }
   }
 }
 
