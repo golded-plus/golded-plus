@@ -665,12 +665,22 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
                   ptr++;
                 if(*ptr == '@')
                   break;
-                if(*ptr) {
-                  initials[y++] = *ptr;
-                  if(y == 9)
+
+                if (*ptr)
+                {
+                  if (y == 0)
+                  {
+                    initials[y++] = *ptr++;
+                    if (*ptr) initials[y++] = *ptr++;
+                  }
+                  else if (y == 2)
+                    initials[y-1] = *ptr++;
+                  else if (y == 9)
                     break;
-                  ptr++;
+                  else
+                    initials[y++] = *ptr++;
                 }
+
                 while(IsInitial(*ptr) and *ptr)
                   ptr++;
               }
