@@ -284,7 +284,7 @@ void MarkMsgs_Thread(GMsg* msg, bool markasread)
     else if (markasread && !tempmsg->timesread)
     {
       tempmsg->timesread++;
-      AA->UpdateTimesread(msg);
+      AA->UpdateTimesread(tempmsg);
     }
 
     msgno = tempmsg->link.to();
