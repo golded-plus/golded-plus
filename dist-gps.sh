@@ -16,6 +16,7 @@ cd .. ; tar -jcf ${name} \
 	--exclude 'golded+/*.BAT' \
 	--exclude 'golded+/*.cmd' \
 	--exclude 'golded+/*.CMD' \
+	--exclude '.#*' \
 	--exclude '*.orig' \
 	--exclude 'bld*.inc' \
 	--exclude '*.diff' \
