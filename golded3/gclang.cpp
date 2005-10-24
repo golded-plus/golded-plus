@@ -302,6 +302,7 @@ static LangCrc LangCrcs[] = {
   { CRC_MI_FROMTOSUBJ         , NULL  , "H Header (From/To/Subj)  " },
   { CRC_MI_TEXTHDR            , NULL  , "T Text and header        " },
   { CRC_MI_THREAD             , NULL  , "R Reply thread           " },
+  { CRC_MI_ASREAD             , NULL  , "s Mark thread as read    " },
   { CRC_MI_NEWMSGS            , NULL  , "N New msgs      >current " },
   { CRC_MI_OLDMSGS            , NULL  , "O Old msgs      <current " },
   { CRC_MI_ALLMSGS            , NULL  , "A All msgs               " },

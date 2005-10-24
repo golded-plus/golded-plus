@@ -218,8 +218,8 @@ void MarkMsgs_Txt(int item, char* markstring) {
 
 //  ------------------------------------------------------------------
 
-static void recursive_mark(GMsg* msg, uint32_t msgno) {
-
+static void recursive_mark(GMsg* msg, uint32_t msgno, bool markasread)
+{
   int i;
   gmsg_links templink;
 
@@ -227,21 +227,29 @@ static void recursive_mark(GMsg* msg, uint32_t msgno) {
 
     templink = msg->link;
 
-    if(templink.first())
-      AA->Mark.Add(templink.first());
+    if (!markasread)
+    {
+      if(templink.first())
+        AA->Mark.Add(templink.first());
 
-    for(i = 0; i < templink.list_max(); i++) {
-      if(templink.list(i)) {
-        AA->Mark.Add(templink.list(i));
+      for(i = 0; i < templink.list_max(); i++)
+      {
+        if(templink.list(i))
+          AA->Mark.Add(templink.list(i));
       }
+    }
+    else if (!msg->timesread)
+    {
+      msg->timesread++;
+      AA->UpdateTimesread(msg);
     }
 
     if(templink.first())
-      recursive_mark(msg, templink.first());
+      recursive_mark(msg, templink.first(), markasread);
 
     for(i = 0; i < templink.list_max(); i++) {
       if(templink.list(i)) {
-        recursive_mark(msg, templink.list(i));
+        recursive_mark(msg, templink.list(i), markasread);
       }
     }
   }
@@ -250,25 +258,39 @@ static void recursive_mark(GMsg* msg, uint32_t msgno) {
 
 //  ------------------------------------------------------------------
 
-void MarkMsgs_Thread(GMsg* msg) {
-
+void MarkMsgs_Thread(GMsg* msg, bool markasread)
+{
   GMsg* tempmsg = (GMsg*)throw_calloc(1, sizeof(GMsg));
   tempmsg->msgno = msg->msgno;
 
   w_info(LNG->Wait);
 
-  AA->Mark.Add(msg->msgno);
+  if (!markasread)
+    AA->Mark.Add(msg->msgno);
+  else if (!msg->timesread)
+  {
+    msg->timesread++;
+    AA->UpdateTimesread(msg);
+  }
 
   uint32_t msgno = msg->link.to();
-  while(AA->Msgn.ToReln(msgno)) {  // Search backwards
-    AA->Mark.Add(msgno);
+  while(AA->Msgn.ToReln(msgno))   // Search backwards
+  {
+    if (!markasread)
+      AA->Mark.Add(msgno);
 
     if(not AA->LoadHdr(tempmsg, msgno, false))
       tempmsg->link.to_set(0);
+    else if (markasread && !tempmsg->timesread)
+    {
+      tempmsg->timesread++;
+      AA->UpdateTimesread(msg);
+    }
+
     msgno = tempmsg->link.to();
   }
 
-  recursive_mark(tempmsg, tempmsg->msgno);
+  recursive_mark(tempmsg, tempmsg->msgno, markasread);
 
   w_info(NULL);
 
@@ -336,7 +358,8 @@ void MarkMsgs(GMsg* msg) {
 
     // ---------------------------------------------------------------
     case TAG_MARKTHREAD:
-      MarkMsgs_Thread(msg);
+    case TAG_MARKASREAD:
+      MarkMsgs_Thread(msg, item == TAG_MARKASREAD);
       break;
   }
 

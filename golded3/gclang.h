@@ -300,6 +300,7 @@ const word CRC_MI_YOURMAIL          = 0x1143;
 const word CRC_MI_FROMTOSUBJ        = 0x52FC;
 const word CRC_MI_TEXTHDR           = 0x1564;
 const word CRC_MI_THREAD            = 0x5FE1;
+const word CRC_MI_ASREAD            = 0x4B91;
 const word CRC_MI_NEWMSGS           = 0x6211;
 const word CRC_MI_OLDMSGS           = 0x2104;
 const word CRC_MI_ALLMSGS           = 0x470D;

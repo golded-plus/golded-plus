@@ -423,6 +423,7 @@ int GMenuMarkMsgs::Run() {
     Item(TAG_MARKHEADER,   LNG->FromToSubj);
     Item(TAG_MARKTXTHDR,   LNG->TextHdr);
     Item(TAG_MARKTHREAD,   LNG->Thread);
+    Item(TAG_MARKASREAD,   LNG->AsRead);
     Item(TAG_MARKNEWMSGS,  LNG->NewMsgs);
     Item(TAG_MARKOLDMSGS,  LNG->OldMsgs);
     Item(TAG_MARKALLMSGS,  LNG->AllMsgs);

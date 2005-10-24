@@ -289,6 +289,7 @@ struct LangGed {
   char*  FromToSubj;         // MI_FROMTOSUBJ
   char*  TextHdr;            // MI_TEXTHDR
   char*  Thread;             // MI_THREAD
+  char*  AsRead;             // MI_ASREAD
   char*  NewMsgs;            // MI_NEWMSGS
   char*  OldMsgs;            // MI_OLDMSGS
   char*  AllMsgs;            // MI_ALLMSGS
