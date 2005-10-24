@@ -131,7 +131,7 @@ inline struct tm *ggmtime(const time32_t *timep)
   struct tm *time = gmtime(&temp);
   return time ? time : gmtime(&zero);
 #else
-  return gmtime(temp);
+  return gmtime(&temp);
 #endif
 }
 
