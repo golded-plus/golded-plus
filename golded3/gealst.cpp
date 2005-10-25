@@ -170,8 +170,8 @@ extern "C" int AreaListCmp(const Area** __a, const Area** __b) {
       case 'F':
       case 'f':
         if(*area_maybe) {
-          register bool amay = striinc(area_maybe, A->echoid()) ? true : false;
-          register bool bmay = striinc(area_maybe, B->echoid()) ? true : false;
+          bool amay = make_bool(striinc(area_maybe, A->echoid()));
+          bool bmay = make_bool(striinc(area_maybe, B->echoid()));
 
           if((cmp = compare_two(bmay, amay)) != 0)
             return cmp;

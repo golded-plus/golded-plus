@@ -165,7 +165,7 @@ void GMnu::SetTag(int tag) {
 
 void GMnu::Begin(int type) {
 
-  int was_horz = (stack[depth].type&M_HORZ) ? true : false;
+  bool was_horz = make_bool(stack[depth].type & M_HORZ);
   depth++;
   stack[depth].tag = -1;
   stack[depth].type = type | M_SAVE;

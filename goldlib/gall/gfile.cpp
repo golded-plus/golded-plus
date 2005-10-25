@@ -96,7 +96,7 @@ int gfile::okay() {
 
 //  ------------------------------------------------------------------
 
-int gfile::isopen() {
+bool gfile::isopen() {
 
   if((fh != -1) or (fp != NULL))
     return true;

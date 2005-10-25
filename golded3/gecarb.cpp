@@ -142,7 +142,7 @@ int DoCarboncopy(GMsg* msg, GMsg** carbon) {
             HeaderView->Use(AA, msg);
             HeaderView->Paint();
             GMenuCarbon MenuCarbon;
-            ignorecc = MenuCarbon.Run(msg) ? false : true;
+            ignorecc = make_bool_not(MenuCarbon.Run(msg));
             if(ignorecc)                    // Do not process carbon copies
               break;
             if(newline)
@@ -362,7 +362,7 @@ void DoCrosspost(GMsg* msg, std::vector<int> &postareas) {
         if(not ignorexc and (strnieql(ptr, "XC:", 3) or strnieql(ptr, "XP:", 3))) {
           if(ask) {
             GMenuCross MenuCross;
-            ignorexc = (CFG->crosspost != ASK) or MenuCross.Run(msg) ? false : true;
+            ignorexc = make_bool_not((CFG->crosspost != ASK) or MenuCross.Run(msg));
             if(ignorexc)                // Do not process crossposting
               break;
             if(newline)

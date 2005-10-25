@@ -819,7 +819,7 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
       // Set msg date and time
       bool dochgdate = true;
       if(mode == MODE_CHANGE) {
-        dochgdate = EDIT->ChangeDate() ? true : false;
+        dochgdate = make_bool(EDIT->ChangeDate());
         if((EDIT->ChangeDate() == YES) and not msg->attr.fmu())
           dochgdate = false;
       }

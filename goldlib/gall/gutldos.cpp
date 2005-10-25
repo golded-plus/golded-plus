@@ -191,7 +191,7 @@ void g_set_osicon(void) {
 
 bool g_is_clip_available(void) {
 
-  return (winapi == NOAPI) ? false : true;
+  return make_bool_not(winapi == NOAPI);
 }
 
 

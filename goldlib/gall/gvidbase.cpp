@@ -1832,7 +1832,7 @@ void vcurset(int sline, int eline) {
     vposset(gvid->numrows-1, gvid->numcols-1);
 
   cci.dwSize = (eline and sline) ? sline : 100;
-  cci.bVisible = eline ? true : false;
+  cci.bVisible = make_bool(eline);
 
   SetConsoleCursorInfo(gvid_hout, &cci);
 

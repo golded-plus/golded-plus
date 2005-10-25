@@ -156,7 +156,7 @@ public:
   FidoArea() { wide = NULL; data = NULL; }
   virtual ~FidoArea() {}
 
-  virtual bool havearrivedstamp() const { return isopus() ? true : false; }
+  virtual bool havearrivedstamp() const { return isopus(); }
   virtual bool havereceivedstamp() const { return false; }
 
   //  ----------------------------------------------------------------

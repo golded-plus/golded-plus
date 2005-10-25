@@ -178,7 +178,7 @@ int is_dir(const char* path) {
 
   struct stat st;
   if(stat(tmp, &st) == 0)
-    return (st.st_mode & S_IFDIR) ? true : false;
+    return make_bool(st.st_mode & S_IFDIR);
   return false;
 }
 

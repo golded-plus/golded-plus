@@ -267,8 +267,8 @@ void ToggleStyles() {
   w_info(NULL);
 
   if(k != Key_Esc) {
-    AA->adat->usestylies = (setting & 1) ? true : false;
-    AA->adat->hidestylies = (setting & 2) ? true : false;
+    AA->adat->usestylies = make_bool(setting & 1);
+    AA->adat->hidestylies = make_bool(setting & 2);
   }
 }
 

@@ -182,7 +182,7 @@ bool gfuzzy::findnext() {
     }
   }
 
-  return start ? true : false;
+  return make_bool(start);
 }
 
 

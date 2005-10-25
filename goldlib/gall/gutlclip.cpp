@@ -102,11 +102,11 @@ bool gclipbrd::writeclipbrd(const char* buf) {
     if(fake_clipboard)
       throw_free(fake_clipboard);
     fake_clipboard = throw_strdup(buf);
-    return (fake_clipboard != NULL) ? true : false;
+    return (fake_clipboard != NULL);
   }
 
   #if defined(GUTLOS_FUNCS)
-  return (g_put_clip_text(buf) == 0) ? true : false;
+  return (g_put_clip_text(buf) == 0);
   #else
   return false;
   #endif

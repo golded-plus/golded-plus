@@ -99,7 +99,7 @@ int gwildmatch::match_internal(const char* text, const char* pattern, bool ignor
         }
         return -1;
       case '[':
-        reverse = p[1] == '^' ? true : false;
+        reverse = (p[1] == '^');
         if(reverse)           // Inverted character class
           p++;
         matched = false;

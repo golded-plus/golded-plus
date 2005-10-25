@@ -84,7 +84,7 @@ static void InitCmdline(char* val) {
           std::cout << "Warning: configuration filename missed for -C option, ignored.\n";
         break;
       case 'D':
-        cmdlineoldkeyw = (*val == '-') ? true : false;
+        cmdlineoldkeyw = (*val == '-');
         break;
       case 'E':
         if(strieql(key, "EXPORTSOUP"))
@@ -93,7 +93,7 @@ static void InitCmdline(char* val) {
           strxcpy(stecho, val, sizeof(stecho));
         break;
       case 'F':
-        cmdlineforce = (*val == '-') ? false : true;
+        cmdlineforce = make_bool_not(*val == '-');
         if(toupper(key[1]) == 'F')
           cmdlineforce++;
         break;
@@ -112,7 +112,7 @@ static void InitCmdline(char* val) {
           cmdlineimportsoup = true;
         break;
       case 'M':
-        disablesound = (*val == '-') ? false : true;
+        disablesound = make_bool_not(*val == '-');
         break;
       case 'N':
         if(strieql(key, "NOSCAN"))
@@ -121,7 +121,7 @@ static void InitCmdline(char* val) {
           cmdlinesharemode = SH_COMPAT;
         break;
       case 'P':
-        cmdlinepriority = (*val == '-') ? false : true;
+        cmdlinepriority = make_bool_not(*val == '-');
         break;
       case 'Q':
         quiet = true;
@@ -134,17 +134,17 @@ static void InitCmdline(char* val) {
         break;
       case 'V':
         quiet = false;
-        veryverbose = (toupper(key[1]) == 'V') ? true : false;
+        veryverbose = (toupper(key[1]) == 'V');
         break;
       case 'W':
-        cmdlinewriteareas = (*val == '-') ? false : true;
+        cmdlinewriteareas = make_bool_not(*val == '-');
         break;
       case 'Y':
-        cmdlinedebughg = (*val == '-') ? false : true;
+        cmdlinedebughg = make_bool_not(*val == '-');
         break;
       #if defined(GFTRK_ENABLE)
       case 'X':
-        __gftrk_statusline = (*val == '-') ? false : true;
+        __gftrk_statusline = make_bool_not(*val == '-');
         break;
       case 'Z':
         gftrk_set_max = atoi(val);

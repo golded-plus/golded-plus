@@ -135,7 +135,7 @@ public:
   void HideCursor();
   void ShowCursor();
 
-  int Hidden() { return hidden ? true : false; }
+  int Hidden() { return make_bool(hidden); }
 
   int Enabled() { return level > GMOU_LEVEL_NONE; }
 

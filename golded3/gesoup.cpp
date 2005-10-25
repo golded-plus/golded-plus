@@ -61,7 +61,7 @@ char* CvtMessageIDtoMSGID(const char* mptr, char* msgidbuf, const char* echoid, 
   }
   else {
 
-    bool spaces = strchr(mptr, ' ') ? true : false;
+    bool spaces = make_bool(strchr(mptr, ' '));
 
     dword crc32 = CRC32_MASK_CCITT;
     crc32 = strCrc32(mptr, NO, crc32);

@@ -205,7 +205,7 @@ void gareafile::ReadSpaceNtm(const char* file) {
           ParseSpaceArea(val, aa);
           break;
         case CRC_AUTOEXPORT:
-          exportarea = GetYesno(val) ? true : false;
+          exportarea = make_bool(GetYesno(val));
           break;
         case CRC_ENDNETMAIL:
           if(exportarea and (aa.basetype[0] != '\0'))

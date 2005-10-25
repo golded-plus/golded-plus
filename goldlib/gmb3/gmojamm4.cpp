@@ -300,7 +300,7 @@ void JamArea::save_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
       lseekset(data->fhjhr, _idx.hdroffset);
       JamHdr oldhdr;
       read(data->fhjhr, &oldhdr, sizeof(JamHdr));
-      was_deleted = oldhdr.attribute & JAMATTR_DELETED ? true : false;
+      was_deleted = make_bool(oldhdr.attribute & JAMATTR_DELETED);
       if(oldhdr.subfieldlen != __hdr.subfieldlen) {
         oldhdr.attribute |= JAMATTR_DELETED;
         oldhdr.txtlen = 0;

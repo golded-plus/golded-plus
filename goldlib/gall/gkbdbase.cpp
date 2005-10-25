@@ -134,7 +134,7 @@ void GKbd::Init() {
   OSVERSIONINFO osversion;
   osversion.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
   GetVersionEx(&osversion);
-  gkbd_nt = (osversion.dwPlatformId & VER_PLATFORM_WIN32_NT) ? true : false;
+  gkbd_nt = make_bool(osversion.dwPlatformId & VER_PLATFORM_WIN32_NT);
   gkbd_hin = CreateFile("CONIN$", GENERIC_READ | GENERIC_WRITE,
                          FILE_SHARE_READ | FILE_SHARE_WRITE, NULL,
                          OPEN_EXISTING, 0, NULL);
@@ -1283,9 +1283,9 @@ gkey kbxget_raw(int mode) {
       }
 
       if((inp.EventType == KEY_EVENT) and inp.Event.KeyEvent.bKeyDown) {
-        bool alt_pressed = (CKS & (LEFT_ALT_PRESSED|RIGHT_ALT_PRESSED)) ? true : false;
-        bool ctrl_pressed = (CKS & (LEFT_CTRL_PRESSED|RIGHT_CTRL_PRESSED)) ? true : false;
-        bool shift_pressed = (CKS & SHIFT_PRESSED) ? true : false;
+        bool alt_pressed = make_bool(CKS & (LEFT_ALT_PRESSED|RIGHT_ALT_PRESSED));
+        bool ctrl_pressed = make_bool(CKS & (LEFT_CTRL_PRESSED|RIGHT_CTRL_PRESSED));
+        bool shift_pressed = make_bool(CKS & SHIFT_PRESSED);
         bool special_key = false;
 
         k = 0;

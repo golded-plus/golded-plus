@@ -249,7 +249,7 @@ void DoKludges(int mode, GMsg* msg, int kludges) {
     if(line->kludge & kludges) {
       bool waswrapped;
       do {
-        waswrapped = (line->type & GLINE_WRAP) ? true : false;
+        waswrapped = make_bool(line->type & GLINE_WRAP);
         line = DeleteLine(line);
       } while(line and waswrapped);
     }

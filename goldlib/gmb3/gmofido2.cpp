@@ -228,7 +228,7 @@ void FidoArea::scan_area() {
 
   GFTRK("FidoArea::scan_area");
 
-  bool was_open = data ? true : false;
+  bool was_open = make_bool(data);
   if(not was_open)
     data_open();
   raw_scan(false);
@@ -245,7 +245,7 @@ void FidoArea::scan_area_pm() {
 
   GFTRK("FidoArea::scan_area_pm");
 
-  bool was_open = data ? true : false;
+  bool was_open = make_bool(data);
   if(not was_open)
     data_open();
   raw_scan(true);

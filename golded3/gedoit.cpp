@@ -235,7 +235,7 @@ static void WriteMsgs(GMsg* msg) {
               SaveLines(MODE_WRITE, "\001PRN", msg, prnmargin);
           }
           else {
-            SaveLines(overwrite ? MODE_WRITE : MODE_APPEND, AA->Outputfile(), msg, prnmargin, (target & WRITE_CLIPBRD) ? true : false);
+            SaveLines(overwrite ? MODE_WRITE : MODE_APPEND, AA->Outputfile(), msg, prnmargin, make_bool(target & WRITE_CLIPBRD));
           }
         }
         if(prnfp)

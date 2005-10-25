@@ -48,17 +48,17 @@
 
 static GOLD_INLINE int _wchkrow(int wrow) {
 
-  return ((wrow<0) or (wrow>((gwin.active->erow-gwin.active->border)-(gwin.active->srow+gwin.active->border)))) ? true : false;
+  return ((wrow<0) or (wrow>((gwin.active->erow-gwin.active->border)-(gwin.active->srow+gwin.active->border))));
 }
 
 static GOLD_INLINE int _wchkcol(int wcol) {
 
-  return ((wcol<0) or (wcol>((gwin.active->ecol-gwin.active->border)-(gwin.active->scol+gwin.active->border)))) ? true : false;
+  return ((wcol<0) or (wcol>((gwin.active->ecol-gwin.active->border)-(gwin.active->scol+gwin.active->border))));
 }
 
 static GOLD_INLINE int _wchkcoord(int wrow, int wcol) {
 
-  return (_wchkrow(wrow) or _wchkcol(wcol)) ? true : false;
+  return (_wchkrow(wrow) or _wchkcol(wcol));
 }
 
 
@@ -94,7 +94,7 @@ int wchkcoord(int wrow, int wcol) {
 
 int wchkbox(int wsrow, int wscol, int werow, int wecol) {
 
-  return (_wchkcoord(wsrow,wscol) or _wchkcoord(werow,wecol) or (wsrow>werow) or (wscol>wecol)) ? true : false;
+  return (_wchkcoord(wsrow,wscol) or _wchkcoord(werow,wecol) or (wsrow>werow) or (wscol>wecol));
 }
 
 

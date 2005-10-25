@@ -1435,7 +1435,7 @@ static bool read_config(const char *cfg, const char *argv_0) {
   Addr zoneaddr;
   Path buf;
 
-  bool found = (*cfg != NUL) ? true : false;
+  bool found = (*cfg != NUL);
   if(not found) {
     // Look for configfilename in the environment
     const char *ptr = getenv("GOLDNODE");

@@ -474,7 +474,7 @@ int gsnd::is_playing() {
   #if defined(__MSDOS__)
 
   if(file_open)
-    return data->status == 0 ? false : true;
+    return make_bool_not(data->status == 0);
   return false;
 
   #elif defined(GUTLOS_FUNCS)

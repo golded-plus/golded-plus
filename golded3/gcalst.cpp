@@ -224,10 +224,10 @@ void AreaList::ReadGoldLast() {
           (*ap)->Msgn.count  = entry.msgncount;
           (*ap)->unread      = entry.unread;
           (*ap)->marks       = entry.marks;
-          (*ap)->isscanned   = (entry.flags & 1) ? true : false;
-          (*ap)->isvalidchg  = (entry.flags & 2) ? true : false;
+          (*ap)->isscanned   = make_bool(entry.flags & 1);
+          (*ap)->isvalidchg  = make_bool(entry.flags & 2);
           (*ap)->UpdateAreadata();
-          (*ap)->isunreadchg = (entry.flags & 4) ? true : false;
+          (*ap)->isunreadchg = make_bool(entry.flags & 4);
 
           (*ap)->Mark.Load(fp);
           (*ap)->PMrk.Load(fp);

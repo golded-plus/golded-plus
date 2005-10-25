@@ -71,7 +71,7 @@ bool gregex::compile(const char* pattern, int cflags) {
     throw_new(preg);
   }
 
-  return regcomp(preg, pattern, cflgs) ? true : false;
+  return make_bool(regcomp(preg, pattern, cflgs));
 }
 
 

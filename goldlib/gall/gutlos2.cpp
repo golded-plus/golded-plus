@@ -254,7 +254,7 @@ void g_set_osicon(void) {
 
 bool g_is_clip_available(void) {
 
-  return (ge_os2_hab) ? true : false;
+  return make_bool(ge_os2_hab);
 }
 
 

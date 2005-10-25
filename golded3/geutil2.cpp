@@ -59,7 +59,7 @@ int edit_string(char* buf, int buf_size, char* title, int helpcat) {
   while(len and ('!' > buf2[--len]))
     buf2.erase(len, 1);
   strcpy(buf, buf2.c_str());
-  return *buf ? true : false;
+  return make_bool(*buf);
 }
 
 

@@ -64,7 +64,7 @@ public:
   //  Handy utility functions
 
   int okay();    // Returns non-zero if no errors were detected
-  int isopen();  // true if the file is open
+  bool isopen();  // true if the file is open
 
 
   //  --------------------------------------------------------------
@@ -78,7 +78,7 @@ public:
 
   ~gfile();             // Destructor (closes file)
 
-  operator bool() { return isopen() ? true : false; }
+  operator bool() { return isopen(); }
 
 
   //  --------------------------------------------------------------

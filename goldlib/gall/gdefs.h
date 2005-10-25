@@ -162,7 +162,8 @@ template <class T> inline  int compare_two(T a, T b)     { return a < b ? -1 : a
 template <class T> inline    T minimum_of_two(T a, T b)  { return (a < b) ? a : b; }
 template <class T> inline    T maximum_of_two(T a, T b)  { return (a > b) ? a : b; }
 template <class T> inline  int zero_or_one(T e)          { return e ? 1 : 0; }
-template <class T> inline bool make_bool(T a)            { return a != 0; }
+template <class T> inline bool make_bool(T a)            { return !!a; }
+template <class T> inline bool make_bool_not(T a)        { return !a; }
 
 
 //  ------------------------------------------------------------------

@@ -337,7 +337,7 @@ bool golded_search_manager::search(GMsg* msg, bool quick, bool shortcircuit) {
 
     // Perform short-circuit logic analysis
     if(shortcircuit) {
-      exit = found ? true : false;
+      exit = make_bool(found);
       if(item == items.end()-1)
         return exit;
     }

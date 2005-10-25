@@ -1127,7 +1127,7 @@ void IEclass::DelChar() {
   setlinetype(_thisline);
 
   // Rewrap this line
-  bool display = (row > maxrow / 2) ? false : true;
+  bool display = make_bool_not(row > maxrow / 2);
   wrapdel(&currline, &col, &row, display);
   if(display) {
     refresh(currline, row);
@@ -1553,7 +1553,7 @@ void IEclass::DeleteEOL() {
 
   GFTRK("EditDeleteEOL");
 
-  bool _has_linefeed = (currline->txt.find('\n') != currline->txt.npos) ? true : false;
+  bool _has_linefeed = (currline->txt.find('\n') != currline->txt.npos);
  
   Undo->PushItem(EDIT_UNDO_DEL_TEXT, currline);
 
@@ -3014,7 +3014,7 @@ void UndoStack::PlayItem() {
                 currline = thisline;
                 break;
               case EDIT_UNDO_PUSH_LINE:
-                editor->UnDelete((last_item->action & LAST_LINE) ? false : true);
+                editor->UnDelete(make_bool_not(last_item->action & LAST_LINE));
                 break;
               case EDIT_UNDO_POP_LINE:
                 editor->DelLine();

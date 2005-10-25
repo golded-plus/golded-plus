@@ -418,9 +418,9 @@ public:
   bool pmscan()         { return area->pmscan(); }
   bool pmscanexcl()     { return area->pmscanexcl(); }
   bool pmscanincl()     { return area->pmscanincl(); }
-  bool ismarked() const { return (marks & (1<<AL.mask)) ? true : false; }
+  bool ismarked() const { return make_bool(marks & (1<<AL.mask)); }
 
-  bool isnewmail() const { return (isvalidchg and isunreadchg) ? true : false; }
+  bool isnewmail() const { return (isvalidchg and isunreadchg); }
 
   const char* echoid() const      { return area->echoid(); }
   const char* desc() const        { return area->desc(); }

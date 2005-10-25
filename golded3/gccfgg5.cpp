@@ -38,7 +38,7 @@ extern char* val;
 
 void CfgHighlighturls() {
 
-  CFG->highlighturls = GetYesno(val) ? true : false;
+  CFG->highlighturls = make_bool(GetYesno(val));
 }
 
 //  ------------------------------------------------------------------
@@ -218,7 +218,7 @@ void CfgInternetrfcbody() {
 
 void CfgInternetviagate() {
 
-  CFG->internetviagate = GetYesno(val) ? true : false;
+  CFG->internetviagate = make_bool(GetYesno(val));
 }
 
 //  ------------------------------------------------------------------
