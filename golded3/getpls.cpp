@@ -222,51 +222,51 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
   if(strieql(tplfile, "built-in") or not fexist(tplfile) or CFG->tpl.empty()) {
     tmptpl = YES;   // Create a temporary template
     mktemp(strcpy(tplfile, AddPath(CFG->temppath, "GDXXXXXX")));
-    fp = fsopen(tplfile, "wt", CFG->sharemode);
-    if(fp) {
-      fputs("@header= @oecho (@caddr) @align{79}{=}\n", fp);
-      fputs("@header Msg  : @msgno of @msgs@align{44}@attr\n", fp);
+
+    if ((fp = fsopen(tplfile, "wt", CFG->sharemode)) != NULL)
+    {
+      fputs("@header= @oecho (@caddr) @align{79}{=}\n"
+            "@header Msg  : @msgno of @msgs@align{44}@attr\n", fp);
 
       if (AA->isinternet())
       {
-        fputs("@header From : @ofrom@align{60}@odtime\n", fp);
-        fputs("@header To   : @oto\n", fp);
-      }
-      else if (AA->isnet())
-      {
-        fputs("@header From : @oname@align{44}@oaddr@align{60}@odtime\n", fp);
-        fputs("@header To   : @dname@align{44}@daddr\n", fp);
+        fputs("@header From : @ofrom@align{60}@odtime\n"
+              "@header To   : @oto\n", fp);
       }
       else
       {
         fputs("@header From : @oname@align{44}@oaddr@align{60}@odtime\n", fp);
-        fputs("@header To   : @dname\n", fp);
+
+        if (AA->isnet())
+          fputs("@header To   : @dname@align{44}@daddr\n", fp);
+        else
+          fputs("@header To   : @dname\n", fp);
       }
 
-      fputs("@header Subj : @subject\n", fp);
-      fputs("@header@align{79}{=}\n", fp);
-      fputs("@moved* Replying to a msg in @oecho (@odesc)\n@moved\n", fp);
-      fputs("@changed* Changed by @cname (@caddr), @cdate @ctime.\n@changed\n", fp);
-      fputs("@forward* Forwarded from @oecho by @fname (@faddr).\n", fp);
-      fputs("@forward* Originally by: @oname (@oaddr), @odate @otime.\n", fp);
-      fputs("@forward* Originally to: @dname{}{}{all}.\n", fp);
-      fputs("@forward\n", fp);
-      fputs("@message\n", fp);
-      fputs("@forward\n", fp);
-      fputs("Hello @pseudo{}{}{everybody}.\n", fp);
-      fputs("@new\n", fp);
-      fputs("@position\n", fp);
-      fputs("@replyReplying to a msg dated @odate @otime, from @oname{me}{you} to @dname{me}{you}{all}.\n", fp);
-      fputs("@reply@position\n", fp);
-      fputs("@quoted@odate @otime, @oname{I}{you} wrote to @dname{me}{you}{all}:\n", fp);
-      fputs("@quoted@position\n", fp);
-      fputs("@comment@odate @otime, @oname{I}{you} wrote to @dname{me}{you}{all}:\n", fp);
-      fputs("@comment@position\n", fp);
-      fputs("@quotebuf\n", fp);
-      fputs("@quotebuf@odate @otime, @oname{I}{you} wrote to @dname{me}{you}{all}:\n", fp);
-      fputs("@quotebuf\n", fp);
-      fputs("@quote\n\n", fp);
-      fputs("@cfname\n\n", fp);
+      fputs("@header Subj : @subject\n"
+            "@header@align{79}{=}\n"
+            "@moved* Replying to a msg in @oecho (@odesc)\n@moved\n"
+            "@changed* Changed by @cname (@caddr), @cdate @ctime.\n@changed\n"
+            "@forward* Forwarded from @oecho by @fname (@faddr).\n"
+            "@forward* Originally by: @oname (@oaddr), @odate @otime.\n"
+            "@forward* Originally to: @dname{}{}{all}.\n"
+            "@forward\n"
+            "@message\n"
+            "@forward\n"
+            "Hello @pseudo{}{}{everybody}.\n"
+            "@new\n"
+            "@position\n"
+            "@replyReplying to a msg dated @odate @otime, from @oname{me}{you} to @dname{me}{you}{all}.\n"
+            "@reply@position\n"
+            "@quoted@odate @otime, @oname{I}{you} wrote to @dname{me}{you}{all}:\n"
+            "@quoted@position\n"
+            "@comment@odate @otime, @oname{I}{you} wrote to @dname{me}{you}{all}:\n"
+            "@comment@position\n"
+            "@quotebuf\n"
+            "@quotebuf@odate @otime, @oname{I}{you} wrote to @dname{me}{you}{all}:\n"
+            "@quotebuf\n"
+            "@quote\n\n"
+            "@cfname\n\n", fp);
       fclose(fp);
     }
   }
