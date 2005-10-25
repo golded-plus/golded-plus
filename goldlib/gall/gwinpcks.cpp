@@ -35,6 +35,8 @@
 #include <gtimall.h>
 #include <gwinall.h>
 
+extern char m_title[];
+
 
 //  ------------------------------------------------------------------
 
@@ -414,8 +416,10 @@ int wpickstr(int srow, int scol, int erow, int ecol, int btype, int bordattr, in
   // go through input array and determine the longest
   // string, and count the number of elements in the array
 
-  for(i=maxlen=0; strarr[i]!=NULL; i++)
-    if((j=strlen(strarr[i]))>maxlen)
+  maxlen = strlen(m_title);
+
+  for (i = 0; strarr[i] != NULL; i++)
+    if ((j = strlen(strarr[i])) > maxlen)
       maxlen = j;
 
   r.maxstrlen = maxlen;
