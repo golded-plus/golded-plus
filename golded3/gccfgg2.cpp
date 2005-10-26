@@ -451,7 +451,12 @@ void CfgDisphdrdateset() {
 
 void CfgDisphdrlocation()
 {
-  CFG->disphdrlocation = make_bool(GetYesno(val));
+  if (strieql("RIGHT", val))
+    CFG->disphdrlocation = TRIGHT;
+  else if (strieql("CENTER", val))
+    CFG->disphdrlocation = TCENTER;
+  else
+    CFG->disphdrlocation = GetYesno(val) ? TRIGHT : NO;
 }
 
 //  ------------------------------------------------------------------
