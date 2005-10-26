@@ -420,6 +420,54 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
             continue;
         }
 
+        char *ptr1, *ptr2;
+        if (strnieql(dst, "@pad{", 5) && 
+            ((ptr1 = strstr(dst+5, "}{")) != NULL) &&
+            ((ptr1-dst-5) > 2) &&
+            ((ptr2 = strchr(ptr1+2, '}')) != NULL)
+           )
+        {
+          char buff[1024];
+          char token[1024];
+          char fill  = dst[5];
+          char align = toupper(dst[6]);
+          int  size  = atoi(dst+7);
+
+          if (strchr("CLR", align))
+          {
+            memcpy(token, dst, ptr2-dst+1);
+            memcpy(buff, ptr1+2, ptr2-ptr1-2);
+            token[ptr2-dst+1] = buff[ptr2-ptr1-2] = 0;
+
+            TokenXlat(mode, buff, msg, oldmsg, __origarea);
+            buff[size] = 0;
+
+            size_t length = strlen(buff);
+            if (length != size)
+            {
+              size_t diff = size - length;
+              switch (align)
+              {
+                case 'C':
+                  memmove(&buff[diff/2], buff, length);
+                  memset(buff, fill, diff/2);
+                  memset(&buff[diff/2+length], fill, diff-diff/2);
+                  break;
+                case 'L':
+                  memset(&buff[length], fill, diff);
+                  break;
+                case 'R':
+                  memmove(&buff[diff], buff, length);
+                  memset(buff, fill, diff);
+                  break;
+              }
+            }
+
+            if (tokenxchg(dst, token, buff))
+              continue;
+          }
+        }
+
         dst++;
       }
     }
