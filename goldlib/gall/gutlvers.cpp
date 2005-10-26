@@ -259,9 +259,16 @@ static void cpuname(int family, int model, const char *v_name, char *m_name)
   }
   else if (!strcmp("CyrixInstead", v_name))
     sprintf(m_name, "CyrF%dM%d", family, model);
-  else if (!strcmp("CentaurHauls", v_name))
-    sprintf(m_name, "CenF%dM%d", family, model);
-  else {
+  else if (!strcmp("CentaurHauls", v_name)) {
+    switch (family)
+    {
+      case 6:
+        sprintf(m_name, "VIA_C3_686", family, model);
+        break;
+      default:
+      sprintf(m_name, "VIA F%dM%d", family, model);
+    }
+  }else{
     if (model) {
       sprintf(m_name, "CPU %3s-F%dM%d", v_name, family, model);
     }else{
