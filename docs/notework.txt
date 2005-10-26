@@ -10,6 +10,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Help window will not close on pressing undefined keys.
+
 + DispHdrLocation settings changed to No/Yes/Right/Center. Right == Yes.
 
 + Added new macros: @pad{FAN}{T}

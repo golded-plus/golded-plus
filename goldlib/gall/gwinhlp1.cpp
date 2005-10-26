@@ -279,10 +279,8 @@ static void disp_cat() {
     }
 
     // if end-of-category or new-page specified
-    if((wrow > whelp.erow-1) or pagebreak or end) {
-
-      loop:               ////////////////////////////////
-
+    if((wrow > whelp.erow-1) or pagebreak or end)
+    {
       const char* _help = " Help ";
       char _title[80];
       sprintf(_title, " %s ", recd.category);
@@ -365,50 +363,29 @@ static void disp_cat() {
         gkbd.inmenu = false;
       }
 
-      switch(kbch) {
-
-        case Key_PgUp:
-
-          // find previous page, clear help window,
-          // and set position to upper left corner
-          page = find_page(startpos, page + (page ? -1 : 0));
-
-          wrow=0;
-          wclear();
-          kbclear();
-          continue;
-
-        case Key_PgDn:
-
-          // find next page, clear help window, and
-          // set position to upper left corner
-          page = find_page(startpos, page + (end ? 0 : 1));
-
-          wrow=0;
-          wclear();
-          kbclear();
-          continue;
-
-        case -1:        // Aborted links
-        case Key_Esc:
-
-          // clear any PgUp or PgDn keystrokes that
-          // may be lurking in CXL's keystroke
-          // buffer, and return to caller.
-          kbclear();
-          return;
-
-        default:
-          if(kbch) {
-            kbclear();
-            kbput(kbch);
-            return;
-          }
+      if ((kbch == -1) || (kbch == Key_Esc))
+      {
+        // clear any PgUp or PgDn keystrokes that
+        // may be lurking in CXL's keystroke
+        // buffer, and return to caller.
+        kbclear();
+        return;
       }
+      else
+      {
+        if (kbch == Key_PgUp)
+          page -= (page ? 1 : 0);   // find previous page
+        else if (kbch == Key_PgDn)
+          page += (end  ? 0 : 1);   // find next page
 
-      // a goto statement is used here so the continue
-      // statement above falls out to the right loop
-      goto loop;
+        // clear help window, and set position to upper left corner
+        page = find_page(startpos, page);
+
+        wrow=0;
+        wclear();
+        kbclear();
+        continue;
+      }
     }
 
     // search for cross reference categories on current line.
