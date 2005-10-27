@@ -280,8 +280,8 @@ static void cpuname(int family, int model, const char *v_name, char *m_name)
   {
     switch (family)
     {
-      case 6:
-        sprintf(m_name, "VIA_C3_686", family, model);
+      case 6:  //  VIA C3 Nehemiah = F6M9; VIA C3 Samuel 2 = F6M7
+        sprintf(m_name, "VIA_C3", family, model);
         break;
       default:
       sprintf(m_name, "VIA F%dM%d", family, model);
