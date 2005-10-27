@@ -257,9 +257,27 @@ static void cpuname(int family, int model, const char *v_name, char *m_name)
         sprintf(m_name, "iF%dM%d", family, model);
     }
   }
+  else if (!strcmp("GenuineTMx86", v_name))
+  {
+    switch (family)
+    {
+      case 15:
+        switch(model){
+          case 2:       // Transmeta Efficeon(tm) Processor TM8000
+            sprintf(m_name, "TM8000", family, model);
+            break;
+          default:
+            sprintf(m_name, "TM F%dM%d", family, model);
+        }
+        break;
+      default:
+      sprintf(m_name, "TM F%dM%d", family, model);
+    }
+  }
   else if (!strcmp("CyrixInstead", v_name))
     sprintf(m_name, "CyrF%dM%d", family, model);
-  else if (!strcmp("CentaurHauls", v_name)) {
+  else if (!strcmp("CentaurHauls", v_name))
+  {
     switch (family)
     {
       case 6:
@@ -268,7 +286,9 @@ static void cpuname(int family, int model, const char *v_name, char *m_name)
       default:
       sprintf(m_name, "VIA F%dM%d", family, model);
     }
-  }else{
+  }
+  else
+  {
     if (model) {
       sprintf(m_name, "CPU %3s-F%dM%d", v_name, family, model);
     }else{
