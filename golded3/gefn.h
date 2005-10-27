@@ -48,4 +48,8 @@
 #define GOLDAREA_INC "goldarea.inc"
 #endif
 
+#ifndef GOLDED_MSG
+#define GOLDED_MSG "golded.msg"
+#endif
+
 #endif /* __GEFN_H__ */

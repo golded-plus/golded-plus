@@ -540,7 +540,7 @@ GoldedCfgEdit::GoldedCfgEdit() {
   UnDelete(50);
 
   str.push_back(""); cfg.external = str.size()-1;
-  str.push_back("golded.msg"); cfg.file = str.size()-1;
+  str.push_back(GOLDED_MSG); cfg.file = str.size()-1;
   str.push_back("<<"); cfg.hardline = str.size()-1;
   str.push_back(""); cfg.spellchecker = str.size()-1;
 }
