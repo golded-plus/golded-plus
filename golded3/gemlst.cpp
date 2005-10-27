@@ -326,7 +326,7 @@ void GMsgList::print_line(uint idx, uint pos, bool isbar) {
     strsetsz(dbuf, 10);
   else
     *dbuf = NUL;
-  sprintf(nbuf, "%5lu", CFG->switches.get(disprealmsgno) ? ml->msgno : AA->Msgn.ToReln(ml->msgno));
+  sprintf(nbuf, "%5lu", long(CFG->switches.get(disprealmsgno) ? ml->msgno : AA->Msgn.ToReln(ml->msgno)));
   sprintf(buf, "%-5.5s%s%-*.*s %-*.*s%s%-*.*s %s",
     nbuf, ml->marks,
     bysiz, bysiz, ml->by,
@@ -892,7 +892,7 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar) {
       marks[1] = MMRK_MARK;
   }
 
-  sprintf(buf, "%6lu  %*c", CFG->switches.get(disprealmsgno) ? t.msgno : AA->Msgn.ToReln(t.msgno), tdlen, ' ');
+  sprintf(buf, "%6lu  %*c", long(CFG->switches.get(disprealmsgno) ? t.msgno : AA->Msgn.ToReln(t.msgno)), tdlen, ' ');
 
   if(AA->Msglistdate() != MSGLISTDATE_NONE) {
     char dbuf[11];
