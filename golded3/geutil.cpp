@@ -373,7 +373,7 @@ int is_quote(const char* ptr) {
 
 //  ------------------------------------------------------------------
 
-bool is_quote2(const Line* line, const char* ptr)
+bool is_quote2(Line* line, const char* ptr)
 {
   if (!CFG->quoteusenewai) return true;
 
@@ -410,6 +410,7 @@ bool is_quote2(const Line* line, const char* ptr)
     return true;
 
   // take a look at previous lines
+  Line *paragraph = NULL;
   for (Line *ln = line->prev; ln; ln = ln->prev)
   {
     // previous line is quoted?
@@ -419,7 +420,14 @@ bool is_quote2(const Line* line, const char* ptr)
     if ((ln->txt.length() == 0) ||
         (ln->txt[0] == LF) ||
         (ln->txt[0] == CR))
-      return true;
+    {
+      if (paragraph) return true;
+      else
+      {
+        paragraph = ln;
+        continue;
+      }
+    }
     // or kludge?
     if (ln->txt[0] == CTRL_A)
       return true;
@@ -439,6 +447,8 @@ bool is_quote2(const Line* line, const char* ptr)
           return true;
       }
 
+      // hide false paragraph
+      if (paragraph) paragraph->type |= GLINE_TXTH;
       return false;   // don't quote current line
     }
   }

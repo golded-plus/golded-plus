@@ -393,7 +393,7 @@ int   GetAkaNo(const ftn_addr& __aka);
 int   GetQuotestr(const char* ptr, char* qbuf, uint* qlen);
 int   cmp_quotes(char* q1, char* q2);
 int   is_quote(const char* ptr);
-bool  is_quote2(const Line* line, const char* ptr);
+bool  is_quote2(Line* line, const char* ptr);
 int   IsQuoteChar(const char* s);
 void  maketitle();
 int   maketitle_and_status(char *);

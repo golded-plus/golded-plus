@@ -2702,6 +2702,12 @@ void MsgLineReIndex(GMsg* msg, int viewhidden, int viewkludge, int viewquote) {
         continue;
       }
     }
+    else if (line->type & GLINE_TXTH)
+    {
+      *qbuf0 = NUL;
+      qmatches = 0;
+      continue;
+    }
     else if(line->type & GLINE_QUOT) {
       if(not viewquote) {
         GetQuotestr(line->txt.c_str(), qbuf, &qlen);
