@@ -455,13 +455,6 @@ static bool FindCfg(char* path) {
       return false;
   }
   AddBackslash(path);
-#if 0
-  #if defined(__OS2__)
-  found = ExistCfg(path, "ged2.cfg");
-  #elif defined(__WIN32__)
-  found = ExistCfg(path, "gedw32.cfg");
-  #endif
-#endif
   #ifdef GEDCFG2
   found = ExistCfg(path, GEDCFG2);
   #endif
@@ -637,14 +630,14 @@ void Initialize(int argc, char* argv[]) {
       found = FindCfg(cmdlinecfg);
     }
 
-    // Get it where the the .EXE file is
+    // Get it where the the binary file is
     if(not found) {
       extractdirname(cmdlinecfg, argv[0]);
       found = FindCfg(cmdlinecfg);
 
       // If we still could not find config name...
       if(not found)
-        strcat(cmdlinecfg, "golded.cfg");
+        strcat(cmdlinecfg, GEDCFG);
     }
   }
   extractdirname(CFG->goldpath, cmdlinecfg);

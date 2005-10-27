@@ -551,7 +551,7 @@ GoldedCfgEdit::GoldedCfgEdit() {
 CfgGed::CfgGed() {
 
   // pathes
-  strcpy(goldcfg, "golded.cfg");
+  strcpy(goldcfg, GEDCFG);
   strcpy(helpcfg.fn, "goldhelp.cfg"); helpcfg.ft = 0;
   replaceextension(helpged, helpcfg.fn, __gver_cfgext__);
   strcpy(keyscfg, "goldkeys.cfg");
