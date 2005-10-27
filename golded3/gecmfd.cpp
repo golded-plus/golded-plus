@@ -312,6 +312,10 @@ void CmfMsgs(GMsg* msg) {
       GFTRK("ForwardMsgs");
       pickstr = LNG->ForwardArea;
       break;
+    case MODE_UPDATE:
+      GFTRK("ToggleSent");
+      loadmode |= GMSG_UPDATE;
+      break;
   }
 
   // Do with current or marked msgs?
@@ -325,6 +329,49 @@ void CmfMsgs(GMsg* msg) {
         return;
       }
     }
+  }
+
+  if (cmf == MODE_UPDATE)
+  {
+    w_info(LNG->Wait);
+
+    uint32_t loadmsgno = msg->msgno;
+    uint32_t mrks = AA->Mark.Count();
+    uint32_t *mrkp = AA->Mark.tag;
+    uint32_t mrk = 0;
+
+    do
+    {
+      if (do_mode == MODE_MARKED)
+        loadmsgno = mrkp[mrk];
+
+      mrk++;
+
+      if (AA->LoadHdr(msg, loadmsgno, false))
+      {
+        msg->attr.sntX();
+        if (msg->attr.snt())
+        {
+          msg->attr.uns0();
+          msg->attr.scn1();
+        }
+        else
+        {
+          msg->attr.uns1();
+          msg->attr.scn0();
+          msg->attr.loc1();
+        }
+
+        AA->SaveHdr(GMSG_UPDATE, msg);
+      }
+    }
+    while (mrk < mrks);
+
+    AA->Mark.ResetAll();
+
+    w_info(NULL);
+    GFTRK(NULL);
+    return;
   }
 
   // Pick the destination area

@@ -284,6 +284,7 @@ static LangCrc LangCrcs[] = {
   { CRC_MI_FORWARDMESSAGE     , NULL  , "F Forward Msg " },
   { CRC_MI_MOVEMESSAGE        , NULL  , "M Move    Msg " },
   { CRC_MI_COPYMESSAGE        , NULL  , "C Copy    Msg " },
+  { CRC_MI_TOGGLESENT         , NULL  , "T Toggle sent " },
   { CRC_MI_QUITCMF            , NULL  , "Q Quit  / ESC " },
   { CRC_ST_ARE                , NULL  , "messages are" },
   { CRC_ST_IS                 , NULL  , "message is" },

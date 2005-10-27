@@ -258,7 +258,7 @@ int GMenuNewarea::Run() {
 
 int GMenuCMF::Run() {
 
-  enum { TAG_COPY=100, TAG_MOVE, TAG_FORWARD, TAG_QUIT };
+  enum { TAG_COPY=100, TAG_MOVE, TAG_FORWARD, TAG_TOGGLESENT, TAG_QUIT };
 
   static int _prevtag = TAG_FORWARD;
 
@@ -267,10 +267,11 @@ int GMenuCMF::Run() {
   AskInit(6, 0, LNG->SelectAction, H_CopyMoveForward);
 
   Begin();
-    Item(TAG_FORWARD, LNG->ForwardMessage);
-    Item(TAG_MOVE,    LNG->MoveMessage);
-    Item(TAG_COPY,    LNG->CopyMessage);
-    Item(TAG_QUIT,    LNG->QuitCMF);
+    Item(TAG_FORWARD,     LNG->ForwardMessage);
+    Item(TAG_MOVE,        LNG->MoveMessage);
+    Item(TAG_COPY,        LNG->CopyMessage);
+    Item(TAG_TOGGLESENT,  LNG->ToggleSent);
+    Item(TAG_QUIT,        LNG->QuitCMF);
     SetTag(_prevtag);
   End();
 
@@ -281,6 +282,7 @@ int GMenuCMF::Run() {
     case TAG_FORWARD:   return MODE_FORWARD;
     case TAG_MOVE:      return MODE_MOVE;
     case TAG_COPY:      return MODE_COPY;
+    case TAG_TOGGLESENT:return MODE_UPDATE;
   }
   _prevtag = TAG_FORWARD;
   return -1;

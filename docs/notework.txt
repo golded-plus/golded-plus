@@ -10,6 +10,12 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ New menu item "Toggle sent" added to "Action" menu that will toggle
+  sent/unsent state for current or marked messages.
+
++ Added new keyword for the language configuration file
+  MI_TOGGLESENT "T Toggle sent "
+
 ! New locations of config file for unix-like OS: ~/.golded/, ~/ and
   /usr/local/etc/.
 

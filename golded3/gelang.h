@@ -271,6 +271,7 @@ struct LangGed {
   char*  ForwardMessage;     // MI_FORWARDMESSAGE
   char*  MoveMessage;        // MI_MOVEMESSAGE
   char*  CopyMessage;        // MI_COPYMESSAGE
+  char*  ToggleSent;         // MI_TOGGLESENT
   char*  QuitCMF;            // MI_QUITCMF
   char*  are;                // ST_ARE
   char*  is;                 // ST_IS
