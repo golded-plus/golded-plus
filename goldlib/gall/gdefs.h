@@ -36,6 +36,7 @@
 #ifdef _MSC_VER
 #include <windows.h>
 #include <limits.h>
+#elif defined(__DJGPP__)
 #else
 #include <stdint.h>
 #endif
@@ -125,6 +126,16 @@ typedef unsigned int    uint32_t;
 #error Dont know how to define 32 bit integers
 #endif
 #endif  //#ifdef _MSC_VER
+
+#ifdef __DJGPP__
+typedef unsigned char  uint8_t;
+typedef unsigned short uint16_t;
+typedef unsigned int   uint32_t;
+
+typedef   signed char   int8_t;
+typedef   signed short  int16_t;
+typedef   signed int    int32_t;
+#endif
 
 typedef uint8_t   byte;
 typedef uint16_t  word;
