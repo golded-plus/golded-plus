@@ -363,7 +363,7 @@ static void disp_cat() {
         gkbd.inmenu = false;
       }
 
-      if ((kbch == -1) || (kbch == Key_Esc))
+      if ((kbch == word(-1)) || (kbch == Key_Esc))
       {
         // clear any PgUp or PgDn keystrokes that
         // may be lurking in CXL's keystroke
@@ -473,7 +473,7 @@ static void help_handler() {
   // open help window
   if(not wopen(whelp.srow, whelp.scol, whelp.erow, whelp.ecol, whelp.btype, whelp.winattr, whelp.winattr))
     return;
-    
+
   // display window title if specified
   if(whelp.title)
     wtitle("[ Help ]",TCENTER,whelp.winattr);
