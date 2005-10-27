@@ -28,6 +28,20 @@
 #ifndef __GEFN_H__
 #define __GEFN_H__
 
+#ifndef GEDCFG
+  #define GEDCFG "golded.cfg"
+#endif /* GEDCFG */
 
-#endif
+#ifndef GEDCFG2
 
+  #if defined(__OS2__)
+  #define GEDCFG2 "ged2.cfg"
+  #elif defined(__WIN32__)
+  #define GEDCFG2 "gedw32.cfg"
+  #elif defined(__DOS__) || defined(__MSDOS__)
+  #define GEDCFG2 "geddos.cfg"
+  #endif
+
+#endif /* GEDCFG2 */
+
+#endif /* __GEFN_H__ */

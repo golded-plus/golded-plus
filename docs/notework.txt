@@ -10,6 +10,10 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ Compile-time defines to specify config file name: GEDCFG (default is
+  "golded.cfg") and GEDCFG2 (default is platform-depended: "gedw32.cfg",
+  "ged2.cfg", "geddos.cfg" or nothing).
+
 - Help window will not close on pressing undefined keys.
 
 + DispHdrLocation settings changed to No/Yes/Right/Center. Right == Yes.

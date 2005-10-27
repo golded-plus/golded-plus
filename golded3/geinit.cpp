@@ -455,13 +455,19 @@ static bool FindCfg(char* path) {
       return false;
   }
   AddBackslash(path);
+#if 0
   #if defined(__OS2__)
   found = ExistCfg(path, "ged2.cfg");
   #elif defined(__WIN32__)
   found = ExistCfg(path, "gedw32.cfg");
   #endif
+#endif
+  #ifdef GEDCFG2
+  found = ExistCfg(path, GEDCFG2);
+  #endif
+
   if(not found)
-    found = ExistCfg(path, "golded.cfg");
+    found = ExistCfg(path, GEDCFG);
   return found;
 }
 
