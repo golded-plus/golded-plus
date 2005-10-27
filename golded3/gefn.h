@@ -96,4 +96,22 @@
 #define FIDOLASTREAD "lastread"
 #endif
 
+#ifndef CFGUSERPATH1
+#ifdef __UNIX__
+#define CFGUSERPATH1 "~/.golded/"
+#endif
+#endif
+
+#ifndef CFGUSERPATH2
+#ifdef __UNIX__
+#define CFGUSERPATH2 "~/"
+#endif
+#endif
+
+#ifndef CFGPATH
+#ifdef __UNIX__
+#define CFGPATH "/usr/local/etc/"
+#endif
+#endif
+
 #endif /* __GEFN_H__ */
