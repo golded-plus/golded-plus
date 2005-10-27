@@ -1,31 +1,47 @@
 # -*- makefile -*-
 
+ifndef PLATFORM
+
 ifeq ($(TERM),cygwin)
 MINGW=true
+PLATFORM=cyg
 else
 ifeq ($(OSTYPE),msys)
 MINGW=true
+PLATFORM=cyg
 endif
 endif
 
-ifdef MINGW
+ifeq ($(findstring EMX, $(PATH)), EMX)
+PLATFORM=emx
+endif
+
+ifneq ($(DJGPP),)     # DJGPP build (enviroment variable 'DJGPP' is defined)
+PLATFORM=djg
+endif
+
+ifeq ($(OSTYPE),beos) # BeOS build
+PLATFORM=be
+endif
+
+endif  # ifndef PLATFORM
+
+ifeq ($(PLATFORM),cyg)
 CAT=cat
 CC=gcc -mno-cygwin
 CXX=g++ -mno-cygwin
 AR=ar
 RANLIB=ranlib
 WINDRES=windres
-PLATFORM=cyg
 EXEEXT=.exe
 OBJEXT=.o
 LIBEXT=.a
 else
-ifeq ($(findstring EMX, $(PATH)), EMX)
+ifeq ($(PLATFORM),emx)
 CAT=cat
 CC=gcc
 AR=ar
 RANLIB=ar s
-PLATFORM=emx
 SHELL=bash
 EXEEXT=.exe
 OBJEXT=.o
@@ -40,30 +56,28 @@ LIBEXT=.a
 #LIBEXT=.lib
 CXX=$(CC)
 else
-ifneq ($(DJGPP),)
+ifeq ($(PLATFORM),djg)
 CAT=command.com /c type
 CC=gcc
 CXX=gxx
 AR=ar
 RANLIB=ranlib
-PLATFORM=djg
-SHELL=shdos16.exe
+SHELL=sh
 EXEEXT=.exe
 OBJEXT=.o
 LIBEXT=.a
 else
-ifeq ($(OSTYPE),beos) # BeOS build
+ifeq ($(PLATFORM),be)
 CAT=cat
 CC=gcc
 CXX=g++
 AR=ar
 RANLIB=ranlib
-PLATFORM=be
 EXEEXT=
 OBJEXT=.o
 LIBEXT=.a
 LNKFLAGS+=-lbe -ltextencoding
-else
+else                   # Linux, *BSD or another unix-like OS
 CAT=cat
 CC=gcc
 CXX=g++
