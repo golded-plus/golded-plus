@@ -539,11 +539,11 @@ char* ggetosstring(void) {
 
     struct utsname info;
 
+    gcpuid(processor);
+
     if(uname(&info) != -1) {
-      if(strcmp(info.machine,"i386"))
+      if(!processor[0])
         strcpy(processor,info.machine);
-      else
-        gcpuid(processor);
 
       #if defined(__EMX__)
       sprintf(osstring, "%s %s.%s %s", info.sysname, info.version, info.release, processor);
