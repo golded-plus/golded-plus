@@ -44,4 +44,8 @@
 
 #endif /* GEDCFG2 */
 
+#ifndef GOLDAREA_INC
+#define GOLDAREA_INC "goldarea.inc"
+#endif
+
 #endif /* __GEFN_H__ */

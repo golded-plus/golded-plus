@@ -892,7 +892,7 @@ void Initialize(int argc, char* argv[]) {
 
   // Write GOLDAREA.INC if told
   if(cmdlinewriteareas)
-    AL.WriteAreaDef(AddPath(CFG->goldpath, "goldarea.inc"));
+    AL.WriteAreaDef(AddPath(CFG->goldpath, GOLDAREA_INC));
 
   // Get the global max length of echoids (for the arealist)
   extern int arealistnumgrps;
