@@ -837,7 +837,7 @@ void Initialize(int argc, char* argv[]) {
   if(CFG->cmdkey.empty()) {
     LOG.ErrConfig();
     LOG.printf("! There do not seem to be any command keys defined.");
-    LOG.printf("+ Advice: Check your key setup in goldkeys.cfg.");
+    LOG.printf("+ Advice: Check your key setup in " GOLDKEYS_CFG );
     ConfigErrorExit();
   }
 

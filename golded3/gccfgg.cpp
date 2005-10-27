@@ -552,18 +552,18 @@ CfgGed::CfgGed() {
 
   // pathes
   strcpy(goldcfg, GEDCFG);
-  strcpy(helpcfg.fn, "goldhelp.cfg"); helpcfg.ft = 0;
+  strcpy(helpcfg.fn, GOLDHELP_CFG); helpcfg.ft = 0;
   replaceextension(helpged, helpcfg.fn, __gver_cfgext__);
-  strcpy(keyscfg, "goldkeys.cfg");
-  strcpy(langcfg, "goldlang.cfg");
-  strcpy(goldlast, "goldlast.lst");
-  strcpy(golduser, "golduser.lst");
-  strcpy(confirmfile, "golded.cfm");
-  strxmerge(xlatged, sizeof(xlatged), "goldxlat", __gver_cfgext__, NULL);
-  strcpy(fidolastread, "lastread");
-  strcpy(logfile, "golded.log");
-  strcpy(namesfile, "names.fd");
-  strcpy(userlistfile, "golded.lst");
+  strcpy(keyscfg, GOLDKEYS_CFG);
+  strcpy(langcfg, GOLDLANG_CFG);
+  strcpy(goldlast, GOLDLAST_LST);
+  strcpy(golduser, GOLDUSER_LST);
+  strcpy(confirmfile, GOLDED_CFM);
+  strxmerge(xlatged, sizeof(xlatged), GOLDXLAT, __gver_cfgext__, NULL);
+  strcpy(fidolastread, FIDOLASTREAD);
+  strcpy(logfile, GOLDED_LOG);
+  strcpy(namesfile, NAMES_FD);
+  strcpy(userlistfile, GOLDED_LST);
   *adeptxbbspath = 0;
   *areapath = 0;
   *attachpath = 0;

@@ -52,4 +52,48 @@
 #define GOLDED_MSG "golded.msg"
 #endif
 
+#ifndef GOLDHELP_CFG
+#define GOLDHELP_CFG "goldhelp.cfg"
+#endif
+
+#ifndef GOLDKEYS_CFG
+#define GOLDKEYS_CFG "goldkeys.cfg"
+#endif
+
+#ifndef GOLDLANG_CFG
+#define GOLDLANG_CFG "goldlang.cfg"
+#endif
+
+#ifndef GOLDLAST_LST
+#define GOLDLAST_LST "goldlast.lst"
+#endif
+
+#ifndef GOLDUSER_LST
+#define GOLDUSER_LST "golduser.lst"
+#endif
+
+#ifndef GOLDED_CFM
+#define GOLDED_CFM "golded.cfm"
+#endif
+
+#ifndef GOLDXLAT
+#define GOLDXLAT "goldxlat"
+#endif
+
+#ifndef GOLDED_LOG
+#define GOLDED_LOG "golded.log"
+#endif
+
+#ifndef NAMES_FD
+#define NAMES_FD "names.fd"
+#endif
+
+#ifndef GOLDED_LST
+#define GOLDED_LST "golded.lst"
+#endif
+
+#ifndef FIDOLASTREAD
+#define FIDOLASTREAD "lastread"
+#endif
+
 #endif /* __GEFN_H__ */
