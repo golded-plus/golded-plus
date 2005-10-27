@@ -171,12 +171,12 @@ void GMsgHeaderView::Paint() {
       replies[replyn] = area->Msgn.ToReln(msg->link.list(replyn-1));
   }
   if(replyto)
-    ptr += sprintf(ptr, " -%lu", replyto);
+    ptr += sprintf(ptr, " -%lu", long(replyto));
   for(int replyn=0,plus=0; (replyn<(list_max+1)) and (not attrsgenerated or ((ptr-buf)<CFG->disphdrnodeset.pos)); replyn++)
     if(replies[replyn])
-      ptr += sprintf(ptr, " %s%lu", (plus++?"":"+"), replies[replyn]);
+      ptr += sprintf(ptr, " %s%lu", plus++?"":"+", long(replies[replyn]));
   if(replynext and (not attrsgenerated or ((ptr-buf)<CFG->disphdrnodeset.pos)))
-    sprintf(ptr, " *%lu", replynext);
+    sprintf(ptr, " *%lu", long(replynext));
   throw_free(replies);
 
   strsetsz(buf, attrsgenerated ? CFG->disphdrnodeset.pos : width);

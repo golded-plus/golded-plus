@@ -68,7 +68,7 @@ void ChangeAttributes() {
 //  ------------------------------------------------------------------
 
 void DecMargin() {
-  
+
   if(CFG->dispmargin > (MAXCOL/3))
     CFG->dispmargin--;
   else {
@@ -309,12 +309,12 @@ void GotoMsgno() {
         replies[replyn] = AA->Msgn.ToReln(reader_msg->link.list(replyn-1));
     }
     if(replyto)
-      ptr += sprintf(ptr, " -%lu", replyto);
+      ptr += sprintf(ptr, " -%lu", long(replyto));
     for(int replyn=0,plus=0; replyn<list_max+1; replyn++)
       if(replies[replyn])
-        ptr += sprintf(ptr, " %s%lu", (plus++?"":"+"), replies[replyn]);
+        ptr += sprintf(ptr, " %s%lu", (plus++?"":"+"), long(replies[replyn]));
     if(replynext)
-      sprintf(ptr, " *%lu", replynext);
+      sprintf(ptr, " *%lu", long(replynext));
 
     if(inhdr) {
       HeaderView->window.activate_quick();
@@ -333,7 +333,7 @@ void GotoMsgno() {
 
     std::string fbuf = buf;
     gwinput2 iform(iwindow);
-    iform.setup(C_HEADW, C_HEADW, C_HEADI, _box_table(W_BHEAD, 13), true); 
+    iform.setup(C_HEADW, C_HEADW, C_HEADI, _box_table(W_BHEAD, 13), true);
     iform.add_field(0, wrow, 8, 5, fbuf, 20, gwinput::cvt_none, gwinput::entry_new);
     vcurshow();
     iform.run(H_InputMsgno);
@@ -451,7 +451,7 @@ void ExitAsk() {
 //  ------------------------------------------------------------------
 
 void NewArea(bool jumpnext) {
-  
+
   AA->attr().hex0();
   if(AA->isopen())
     AA->Close();
@@ -775,7 +775,7 @@ void ReadPeekURLs(GMsg* msg) {
       if(CFG->urlhandler.options & EXTUTIL_PAUSE)
         pauseval = 1;
 
-      ShellToDos(cmdline, "", 
+      ShellToDos(cmdline, "",
         CFG->urlhandler.options & EXTUTIL_CLS ? LGREY|_BLACK : 0,
         CFG->urlhandler.options & EXTUTIL_CURSOR,
         pauseval
