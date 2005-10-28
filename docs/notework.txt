@@ -10,6 +10,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ Menu Action->Forward will work on marked messages.
+
 + Improved false quote detection.
 
 + New menu item "Toggle sent" added to "Action" menu that will toggle

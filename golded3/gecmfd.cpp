@@ -311,6 +311,9 @@ void CmfMsgs(GMsg* msg) {
     case MODE_FORWARD:
       GFTRK("ForwardMsgs");
       pickstr = LNG->ForwardArea;
+      markstr = " Forward ";
+      progstr = " Forwarding ";
+      statstr = "Forwarding Msg %u of %u to %s";
       break;
     case MODE_UPDATE:
       GFTRK("ToggleSent");
@@ -320,14 +323,14 @@ void CmfMsgs(GMsg* msg) {
 
   // Do with current or marked msgs?
   int do_mode = MODE_CURRENT;
-  if(cmf != MODE_FORWARD) {
-    if(AA->Mark.Count()) {
-      GMenuDomarks MenuDomarks;
-      do_mode = MenuDomarks.Run(markstr);
-      if(do_mode == MODE_DONT) {
-        GFTRK(NULL);
-        return;
-      }
+  if (AA->Mark.Count())
+  {
+    GMenuDomarks MenuDomarks;
+    do_mode = MenuDomarks.Run(markstr);
+    if (do_mode == MODE_DONT)
+    {
+      GFTRK(NULL);
+      return;
     }
   }
 
@@ -413,22 +416,14 @@ void CmfMsgs(GMsg* msg) {
   }
 
   // Handle a forward
-  if(cmf == MODE_FORWARD) {
+  if (cmf == MODE_FORWARD)
+  {
     _use_fwd = orig_adat->usefwd;
-    if(_use_fwd == ASK) {
+    if (_use_fwd == ASK)
+    {
       GMenuForward MenuForward;
       _use_fwd = MenuForward.Run();
     }
-    if(CurrArea != OrigArea)
-      AA->Open();
-    MakeMsg(MODE_FORWARD, msg);
-    if(CurrArea != OrigArea)
-      AA->Close();
-    AL.SetActiveAreaId(OrigArea);
-    throw_free(AA->adat);
-    AA->adat = orig_adat;
-    GFTRK(NULL);
-    return;
   }
 
   // Popup wait window
@@ -501,6 +496,10 @@ void CmfMsgs(GMsg* msg) {
       // Switch to destination area
       AA = AAdest;
 
+      if (cmf == MODE_FORWARD)
+        MakeMsg(MODE_FORWARD, msg);
+      else
+      {
       // Change things in the header to match the destination area
       msg->attr.del0();   // Allows deleted msgs to be undeleted
       msg->board = AA->board();
@@ -584,6 +583,8 @@ void CmfMsgs(GMsg* msg) {
       // Save the new msg to the destination area
       msgno = msg->msgno;
       AA->SaveMsg(GMSG_NEW|GMSG_NOLSTUPD, msg);
+
+      } //if (cmf == MODE_FORWARD)
 
       // Switch back to original area
       AA = AAorig;
