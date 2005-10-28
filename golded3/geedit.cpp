@@ -1959,6 +1959,7 @@ void IEclass::Reflow() {
   // Go to the next line
   displine(currline,row);
   GoDown();
+  col = mincol;
 
   GFTRK(NULL);
 }
