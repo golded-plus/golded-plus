@@ -755,7 +755,9 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
                 std::replace(tempref.begin(), tempref.end(), CTRL_A, '@');
                 quote = tempref.c_str();
 
-                if(is_quote(oldmsg->line[n]->txt.c_str())) {
+//                if(is_quote(oldmsg->line[n]->txt.c_str())) {
+                if (oldmsg->line[n]->type & GLINE_QUOT)
+                {
                   quote += GetQuotestr(quote, qbuf, &len);
                   strbtrim(qbuf);
                   ptr = qbuf;

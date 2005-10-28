@@ -339,11 +339,20 @@ int is_quote(const char* ptr) {
     return false;
 
   // Check for userdefined quotechars after first whitespace
-  if(IsQuoteChar(ptr)) 
+  if(IsQuoteChar(ptr))
     return true;
 
   endptr = ptr + 11; // match 10 chars after whitespaces
 
+  while (*ptr && !IsQuoteChar(ptr) &&
+         !iscntrl(*ptr) &&
+         !strchr(AA->Quotestops(), *ptr) &&
+         !isspace(*ptr)) ptr++;
+
+  if ((ptr < endptr) && IsQuoteChar(ptr))
+    return true;
+
+/*
   int spaces = 0;
   while((ptr < endptr) and *ptr) {
 
@@ -366,6 +375,7 @@ int is_quote(const char* ptr) {
     }
     ptr++;
   }
+*/
 
   return false;
 }
@@ -483,7 +493,7 @@ int GetQuotestr(const char* ptr, char* qbuf, uint* qlen) {
 
     const char* lp = ptr;
     int n, x;
-
+/*
     for(;;) {
 
       // Skip leading spaces
@@ -512,6 +522,11 @@ int GetQuotestr(const char* ptr, char* qbuf, uint* qlen) {
 
       break;
     }
+*/
+
+    while (isspace(*lp) or issoftcr(*lp)) lp++;
+    while (!IsQuoteChar(lp)) lp++;
+    while (IsQuoteChar(lp)) lp++;
 
     // lp now points to the character after the quotestring
 
