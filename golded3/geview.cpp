@@ -100,6 +100,7 @@ void GMsgHeaderView::Paint() {
   int namewidth = CFG->disphdrnodeset.pos - CFG->disphdrnameset.pos;
   int nodewidth = CFG->disphdrdateset.pos - CFG->disphdrnodeset.pos;
   int datewidth = MinV(width - CFG->disphdrdateset.pos, CFG->disphdrdateset.len);
+  int colorname = -1;
 
   #if defined(GUTLOS_FUNCS)
   g_set_ostitle_name(struplow(strtmp(area->echoid())), 0);
@@ -191,7 +192,10 @@ void GMsgHeaderView::Paint() {
   // Generate from info
   bool nodegenerated = false;
   if(not area->isinternet()) {
-    if(area->isecho() or not (*msg->ifrom and (*msg->realby or *msg->iorig))) {
+    if(area->isecho() or not (*msg->ifrom and (*msg->realby or *msg->iorig)))
+    {
+      colorname = GetColorName(msg->orig);
+
       // Generate orig node data
       if(msg->orig.net)
         msg->orig.make_string(buf);
@@ -209,10 +213,14 @@ void GMsgHeaderView::Paint() {
     strxcpy(buf, msg->iorig, (namewidth+nodewidth));
   else
     strxcpy(buf, msg->By(), (namewidth+nodewidth));
+
+  if (colorname == -1) colorname = GetColorName(buf);
   strsetsz(buf, nodegenerated ? namewidth : (namewidth+nodewidth));
 
   window.prints(2, 0, window_color, LNG->From);
-  window.prints(2, CFG->disphdrnameset.pos, ((msg->foundwhere&GFIND_FROM) or msg->attr.fmu() or (msg->attr.loc() and CFG->switches.get(displocalhigh))) ? highlight_color : from_color, buf);
+  int color = ((msg->foundwhere&GFIND_FROM) or msg->attr.fmu() or (msg->attr.loc() and CFG->switches.get(displocalhigh))) ? highlight_color : from_color;
+  window.prints(2, CFG->disphdrnameset.pos, (colorname != -1) ? colorname : color, buf);
+  colorname = -1;
 
   if(datewidth > 0) {
     if(msg->written)
@@ -226,7 +234,10 @@ void GMsgHeaderView::Paint() {
   // Generate dest node data
   nodegenerated = false;
   if(not area->isinternet()) {
-    if(not (*msg->ito and (*msg->realto or *msg->idest))) {
+    if(not (*msg->ito and (*msg->realto or *msg->idest)))
+    {
+      if (area->isnet()) colorname = GetColorName(msg->dest);
+
       if(msg->dest.net and area->isnet()) {
         msg->dest.make_string(buf);
         if(msg->odest.net) {
@@ -247,10 +258,13 @@ void GMsgHeaderView::Paint() {
     strxcpy(buf, msg->idest, (namewidth+nodewidth));
   else
     strxcpy(buf, msg->To(), (namewidth+nodewidth));
+
+  if (colorname == -1) colorname = GetColorName(buf);
   strsetsz(buf, nodegenerated ? namewidth : (namewidth+nodewidth));
 
   window.prints(3, 0, window_color, LNG->To);
-  window.prints(3, CFG->disphdrnameset.pos, ((msg->foundwhere&GFIND_TO) or msg->attr.tou()) ? highlight_color : to_color, buf);
+  color = ((msg->foundwhere&GFIND_TO) or msg->attr.tou()) ? highlight_color : to_color;
+  window.prints(3, CFG->disphdrnameset.pos, (colorname != -1) ? colorname : color , buf);
 
   if(datewidth > 0) {
     if(msg->arrived)

@@ -562,6 +562,8 @@ struct MLst {
   time32_t  arrived;
   time32_t  received;
   char      goldmark;
+  int       colorby;
+  int       colorto;
 };
 
 

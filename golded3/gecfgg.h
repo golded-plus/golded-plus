@@ -189,6 +189,7 @@ public:
   int         beepyourmail;
   int         carboncopylist;       // cclist;
   Win         color[16];
+  std::vector< std::pair<Node, int> > colorname;
   Path        confirmfile;          // goldedcfm;
   int         confirmresponse;
   Path        cookiepath;

@@ -108,6 +108,7 @@ void Cleanup(void) {
     CFG->addressmacro.clear();
     CFG->aka.clear();
     CFG->akamatch.clear();
+    CFG->colorname.clear();
     CFG->event.clear();
     CFG->externutil.clear();
     CFG->filealias.clear();

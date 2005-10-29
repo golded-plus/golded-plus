@@ -416,6 +416,8 @@ char* strtmp(const char* str);
 int   quotecolor(const char* line);
 void  doinvalidate(char* text, const char* find, const char* replace, bool is_tearline = false);
 bool find(const std::vector<const char *> &vec, const char *str);
+int GetColorName(Addr &addr);
+int GetColorName(char *name);
 
 
 //  ------------------------------------------------------------------

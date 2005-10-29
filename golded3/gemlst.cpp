@@ -208,6 +208,11 @@ void GMsgList::ReadMlst(int n) {
   strcpy(ml->by, msg.By());
   strcpy(ml->to, msg.To());
   strcpy(ml->re, msg.re);
+
+  ml->colorby = GetColorName(msg.orig);
+  if (ml->colorby == -1) ml->colorby = GetColorName(ml->by);
+  ml->colorto = AA->isnet() ? GetColorName(msg.dest) : -1;
+  if (ml->colorto == -1) ml->colorto = GetColorName(ml->to);
 }
 
 
@@ -338,12 +343,21 @@ void GMsgList::print_line(uint idx, uint pos, bool isbar) {
 
   window.prints(pos, 0, wattr_, buf);
 
-  if(ml->high & (MLST_HIGH_BOOK|MLST_HIGH_MARK))
+  if (ml->high & (MLST_HIGH_BOOK|MLST_HIGH_MARK))
     window.prints(pos, 5, mattr_, ml->marks);
-  if(ml->high & MLST_HIGH_FROM)
-    window.printns(pos, bycol, hattr_, ml->by, bysiz);
-  if((ml->high & MLST_HIGH_TO) and not AA->Msglistwidesubj())
-    window.printns(pos, tocol, hattr_, ml->to, tosiz);
+
+  if ((ml->high & MLST_HIGH_FROM) || (ml->colorby != -1))
+  {
+    int color = ((ml->colorby != -1) && !isbar) ? ml->colorby : hattr_;
+    window.printns(pos, bycol, color, ml->by, bysiz);
+  }
+
+  if (((ml->high & MLST_HIGH_TO) || (ml->colorto != -1)) && 
+      !AA->Msglistwidesubj())
+  {
+    int color = ((ml->colorto != -1) && !isbar) ? ml->colorto : hattr_;
+    window.printns(pos, tocol, color, ml->to, tosiz);
+  }
 
   goldmark = ml->goldmark;
 }
@@ -929,6 +943,13 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar) {
       attr = attrh;
       break;
     }
+
+  if (!isbar)
+  {
+    int colorname = GetColorName(msg.orig);
+    if (colorname == -1) colorname = GetColorName(msg.By());
+    if (colorname != -1) attr = colorname;
+  }
 
   if (CFG->replylinkfloat && isbar)
   {

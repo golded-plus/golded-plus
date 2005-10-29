@@ -260,6 +260,42 @@ void CfgColor() {
 
 //  ------------------------------------------------------------------
 
+void CfgColorname()
+{
+  char* ptr = strrchr(val, ' ');
+  if (!ptr) return;
+  ptr = strskip_wht(ptr);
+
+  Node cn;
+  int color = atoi(ptr);
+
+  // color was given
+  *ptr = NUL;
+  strbtrim(val);
+
+  ptr = strrchr(val, ' ');
+  if (!ptr) ptr = val;
+  ptr = strskip_wht(ptr);
+
+  if (isdigit(*ptr))
+  {
+    cn.addr.set(ptr);
+
+    if (cn.addr.net)
+    {
+      // Address was given
+      *ptr = NUL;
+      strbtrim(val);
+    }
+  }
+
+  strxcpy(cn.name, val, sizeof(cn.name));
+
+  CFG->colorname.push_back(std::pair<Node, int>(cn, color));
+}
+
+//  ------------------------------------------------------------------
+
 void CfgColorset() {
 
   if(strieql(val, "Normal")) {

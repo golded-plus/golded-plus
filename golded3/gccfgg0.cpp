@@ -256,6 +256,7 @@ SwitchC:
   switch(crc) {
     case CRC_CARBONCOPYLIST   :  CfgCarboncopylist   ();  break;
     case CRC_COLOR            :  CfgColor            ();  break;
+    case CRC_COLORNAME        :  CfgColorname        ();  break;
     case CRC_COLORSET         :  CfgColorset         ();  break;
     case CRC_CONFIRMFILE      :  CfgConfirmfile      ();  break;
     case CRC_CONFIRMRESPONSE  :  CfgConfirmresponse  ();  break;

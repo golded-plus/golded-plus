@@ -106,6 +106,7 @@ const word CRC_BEEPNOISES       = 0x84D5;
 const word CRC_BEEPYOURMAIL     = 0x0F72;
 const word CRC_CARBONCOPYLIST   = 0x8290;
 const word CRC_COLOR            = 0x9F15;
+const word CRC_COLORNAME        = 0x8181;
 const word CRC_COLORSET         = 0x874C;
 const word CRC_CONFIRMFILE      = 0x1963;
 const word CRC_CONFIRMRESPONSE  = 0x3D82;
