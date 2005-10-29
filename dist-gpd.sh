@@ -1,5 +1,5 @@
 #!/bin/sh
-
+# $Id$
 # Create a archive 'gpd-*.zip' (gpdYMMDD.zip) with DOS/DPMI (DJGPP) build
 # of the Golded+.
 
@@ -33,9 +33,9 @@ echo 'should be used for testing purpose'  >>${file_id}
 echo '----------------------------------'  >>${file_id}
 echo 'http://golded-plus.sourceforge.net'  >>${file_id}
 
-#make PLATFORM=djg clean
-#make PLATFORM=djg
-#make PLATFORM=djg strip
+make PLATFORM=djg clean
+make PLATFORM=djg
+make PLATFORM=djg strip
 #make docs
 #zip -9DXj ${name} ${file_id} $files
 #7za a -tzip ${name} ${file_id} $files
