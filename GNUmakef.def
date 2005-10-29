@@ -118,8 +118,14 @@ endif
 
 # force not to use coprocessor features in DOS, if you have one you may remove this
 ifeq ($(PLATFORM),djg)
-CFLAGS+=-mcpu=i386
-STDLIBS+=-llocal -lwmemu
+#CFLAGS+=-mcpu=i386  # GCC v2.x.x
+CFLAGS+=-march=i386 #-mtune=i686 # GCC v3.x.x
+STDLIBS+=-llocal
+endif
+
+# force not to use coprocessor features in DOS, if you have one you may remove this
+ifeq ($(PLATFORM),djg)
+STDLIBS+=# -lwmemu
 endif
 
 BIN=bin
