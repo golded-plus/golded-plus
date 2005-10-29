@@ -32,4 +32,4 @@ docs:
 	@cd $@ ; $(MAKE) all ; cd ..
 
 strip:
-	cd $(BIN)/ ; strip *
+	cd $(BIN)/ ; strip *$(PLATFORM)$(EXEEXT)
