@@ -149,6 +149,15 @@ void Area::DelMsgs(GMsg* msg) {
 
   GFTRK("DelMsgs");
 
+  int areano = AL.AreaEchoToNo(CFG->arearecyclebin);
+  int currno = AL.AreaIdToNo(CurrArea);
+  if ((areano != currno) && (areano >= 0))
+  {
+    CopyMoveForward(true);
+    GFTRK(NULL);
+    return;
+  }
+
   uint n, x;
   int topline=0;
   bool delask=true, dellocked=false;
@@ -272,14 +281,20 @@ void Area::DelMsg() {
 
 //  ------------------------------------------------------------------
 
-void CmfMsgs(GMsg* msg) {
-
+void CmfMsgs(GMsg* msg, bool torecycle)
+{
   // Select action
-  GMenuCMF MenuCMF;
-  int cmf = MenuCMF.Run();
-  if(cmf == -1)
-    return;
-  
+  int cmf;
+
+  if (torecycle) cmf = MODE_MOVE;
+  else
+  {
+    GMenuCMF MenuCMF;
+    cmf = MenuCMF.Run();
+    if(cmf == -1)
+      return;
+  }
+
   // Set language strings
   char* pickstr = NULL;
   char* markstr = NULL;
@@ -301,11 +316,24 @@ void CmfMsgs(GMsg* msg) {
         if(not MenuReadonly.Run())
           return;
       }
-      GFTRK("MoveMsgs");
-      pickstr = LNG->MoveArea;
-      markstr = LNG->Move;
-      progstr = LNG->Moving;
-      statstr = LNG->MovingMsg;
+
+      if (torecycle)
+      {
+        GFTRK("DeleteMsgs");
+        pickstr = ">>Delete To Area: ";
+        markstr = " Delete ";
+        progstr = " Deleting ";
+        statstr = "Deleting Msg %u of %u to %s";
+      }
+      else
+      {
+        GFTRK("MoveMsgs");
+        pickstr = LNG->MoveArea;
+        markstr = LNG->Move;
+        progstr = LNG->Moving;
+        statstr = LNG->MovingMsg;
+      }
+
       loadmode |= GMSG_MOVE;
       break;
     case MODE_FORWARD:
@@ -379,14 +407,22 @@ void CmfMsgs(GMsg* msg) {
 
   // Pick the destination area
   int destarea = CurrArea;
-  const char* cmfptr = cmf == MODE_FORWARD ? AA->Areareplyto() : AA->Areacopyto();
+  const char* cmfptr;
+
+  if (torecycle)
+    cmfptr = CFG->arearecyclebin;
+  else
+    cmfptr = cmf == MODE_FORWARD ? AA->Areareplyto() : AA->Areacopyto();
+
   if(*cmfptr) {
     int a = AL.AreaEchoToNo(cmfptr);
     if(a != -1)
       destarea = AL.AreaNoToId(a);
   }
-  if(cmf == MODE_FORWARD ? not AA->Areaforwarddirect() : not AA->Areacopydirect())
+
+  if (torecycle || (cmf == MODE_FORWARD ? not AA->Areaforwarddirect() : not AA->Areacopydirect()))
     destarea = AreaPick(pickstr, 6, &destarea);
+
   if(destarea == -1) {
     GFTRK(NULL);
     return;
@@ -637,15 +673,15 @@ void CmfMsgs(GMsg* msg) {
 
 //  ------------------------------------------------------------------
 
-void CopyMoveForward() {
-
+void CopyMoveForward(bool torecycle)
+{
   uint lastread = reader_msg->msgno;
 
   AA->set_lastread(AA->Msgn.ToReln(lastread, AA->lastread()));
 
   AA->attr().hex0();
   if(AA->Msgn.Count())
-    CmfMsgs(reader_msg);
+    CmfMsgs(reader_msg, torecycle);
 
   AA->set_lastread(AA->Msgn.ToReln(lastread, AA->lastread()));
 }

@@ -218,6 +218,7 @@ SwitchA:
     case CRC_AREAPMSCANEXCL   :  CfgAreapmscanexcl   ();  break;
     case CRC_AREAPMSCANINCL   :  CfgAreapmscanincl   ();  break;
     case CRC_AREAREADONLY     :  CfgAreareadonly     ();  break;
+    case CRC_AREARECYCLEBIN   :  CfgArearecyclebin   ();  break;
     case CRC_AREARENAME       :  CfgArearename       ();  break;
     case CRC_AREAREPLYDIRECT  :  CfgAreareplydirect  ();  break;
     case CRC_AREAREPLYTO      :  CfgAreareplyto      ();  break;

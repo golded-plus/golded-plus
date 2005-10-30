@@ -75,6 +75,7 @@ const word CRC_AREAPMSCAN       = 0xE19D;
 const word CRC_AREAPMSCANEXCL   = 0xA2BE;
 const word CRC_AREAPMSCANINCL   = 0x9524;
 const word CRC_AREAREADONLY     = 0xE4F3;
+const word CRC_AREARECYCLEBIN   = 0xDCB4;
 const word CRC_AREARENAME       = 0xFC32;
 const word CRC_AREAREPLYDIRECT  = 0x7570;
 const word CRC_AREAREPLYTO      = 0x7157;

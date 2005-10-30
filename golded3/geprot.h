@@ -109,7 +109,7 @@ char* mime_header_encode(char* dest, const char* source, GMsg* msg);
 //  ------------------------------------------------------------------
 //  GEDOIT prototypes
 
-void CmfMsgs(GMsg* msg);
+void CmfMsgs(GMsg* msg, bool torecycle);
 void LoadText(GMsg* msg, const char* textfile);
 void SaveLines(int mode, const char* savefile, GMsg* msg, int margin, bool clip=false);
 
@@ -303,7 +303,7 @@ void ChangeAttributes();
 void ChangeMsg();
 void CommentMsg();
 void ConfirmMsg();
-void CopyMoveForward();
+void CopyMoveForward(bool torecycle = false);
 void DecMargin();
 void DosShell();
 void ExitAsk();

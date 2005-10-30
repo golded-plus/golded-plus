@@ -422,6 +422,13 @@ void CfgAreareadonly() {
 
 //  ------------------------------------------------------------------
 
+void CfgArearecyclebin()
+{
+  strupr(strxcpy(CFG->arearecyclebin, val, sizeof(Echo)));
+}
+
+//  ------------------------------------------------------------------
+
 void CfgArearename() {
 
   char* key;

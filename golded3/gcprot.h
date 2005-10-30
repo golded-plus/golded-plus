@@ -76,6 +76,7 @@ void CfgAreapmscan       ();
 void CfgAreapmscanexcl   ();
 void CfgAreapmscanincl   ();
 void CfgAreareadonly     ();
+void CfgArearecyclebin   ();
 void CfgArearename       ();
 void CfgAreareplydirect  ();
 void CfgAreareplyto      ();

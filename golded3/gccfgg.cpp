@@ -642,6 +642,7 @@ CfgGed::CfgGed() {
   *areacfmreplyto = 0;
   *areacopyto = 0;
   *areafreqto = 0;
+  *arearecyclebin = 0;
   *areareplyto = 0;
   *areastart = 0;
   *areayouwroteto = 0;
