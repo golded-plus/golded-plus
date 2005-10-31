@@ -41,19 +41,19 @@
 #include <ctype.h>
 #if defined(__EMX__)
 #include <sys/nls.h>
-#define tolower(c) _nls_tolower((uint8_t)(c))
-#define toupper(c) _nls_toupper((uint8_t)(c))
+#define g_tolower(c) _nls_tolower((uint8_t)(c))
+#define g_toupper(c) _nls_toupper((uint8_t)(c))
 #elif defined(__WIN32__)
 #ifdef __cplusplus
 extern "C" {
 extern char tl[256], tu[256];
-__inline__ int tolower(int c) { return tl[c]; }
-__inline__ int toupper(int c) { return tu[c]; }
+__inline__ int g_tolower(int c) { return tl[c]; }
+__inline__ int g_toupper(int c) { return tu[c]; }
 }
 #else
 extern char tl[256], tu[256];
-#define tolower(c) tl[(int)(uint8_t)(c)]
-#define toupper(c) tu[(int)(uint8_t)(c)]
+#define g_tolower(c) tl[(int)(uint8_t)(c)]
+#define g_toupper(c) tu[(int)(uint8_t)(c)]
 #endif
 #endif
 
@@ -64,14 +64,47 @@ extern char tl[256], tu[256];
  * they don't match they treated as characters
  */
 
+#if defined(__WIN32__)
+
 #ifdef __cplusplus
 extern "C" {
-#endif
-extern __inline__ int isxalnum(char c) {
-  return isascii(c) ? isalnum(c) : (c != tolower(c)) || (c != toupper(c));
+__inline__ int g_islower(int c)
+{
+  return isascii(c) ? islower(c) : (c == g_tolower(c)) && (c != g_toupper(c));
 }
+
+__inline__ int g_isupper(int c)
+{
+  return isascii(c) ? isupper(c) : (c != g_tolower(c)) && (c == g_toupper(c));
+}
+
+__inline__ int g_isalpha(int c)
+{
+  return isascii(c) ? isalpha(c) : (c != g_tolower(c)) || (c != g_toupper(c));
+}
+}
+#else
+#define g_islower(c) (isascii(c) ? islower(c) : ((c) == g_tolower(c)) && ((c) != g_toupper(c)))
+#define g_isupper(c) (isascii(c) ? isupper(c) : ((c) != g_tolower(c)) && ((c) == g_toupper(c)))
+#define g_isalpha(c) (isascii(c) ? isalpha(c) : ((c) != g_tolower(c)) || ((c) != g_toupper(c)))
+#endif  //#ifdef __cplusplus
+
+#else
+#define g_islower islower
+#define g_isupper isupper
+#define g_isalpha isalpha
+#endif  //#if defined(__WIN32__)
+
+
 #ifdef __cplusplus
+extern "C" {
+__inline__ int isxalnum(int c)
+{
+  return isascii(c) ? isalnum(c) : (c != g_tolower(c)) || (c != g_toupper(c));
 }
+}
+#else
+#define isxalnum(c) (isascii(c) ? isalnum(c) : ((c) != g_tolower(c)) || ((c) != g_toupper(c)))
 #endif
 
 #ifdef __BEOS__

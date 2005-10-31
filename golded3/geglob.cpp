@@ -259,7 +259,7 @@ bool inline samekey(gkey key1, gkey key2) {
     return true;
   if((key1 > 0xFF) or (key2 > 0xFF))
     return false;
-  return (tolower(key1) == key2) or (tolower(key2) == key1);
+  return (g_tolower(key1) == key2) or (g_tolower(key2) == key1);
 }
 
 

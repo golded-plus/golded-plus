@@ -105,7 +105,7 @@ int gwildmatch::match_internal(const char* text, const char* pattern, bool ignor
         matched = false;
         if(p[1] == ']' or p[1] == '-') {
           if(ignorecase) {
-            if(tolower(*++p) == tolower(*text))
+            if(g_tolower(*++p) == g_tolower(*text))
               matched = true;
           }
           else {
@@ -116,7 +116,7 @@ int gwildmatch::match_internal(const char* text, const char* pattern, bool ignor
         for(last = *p; *++p and *p != ']'; last = *p) {
           // This next line requires a good C compiler
           if(ignorecase) {
-            if(*p == '-' and p[1] != ']' ? tolower(*text) <= tolower(*++p) and tolower(*text) >= tolower(last) : tolower(*text) == tolower(*p))
+            if(*p == '-' and p[1] != ']' ? g_tolower(*text) <= g_tolower(*++p) and g_tolower(*text) >= g_tolower(last) : g_tolower(*text) == g_tolower(*p))
               matched = true;
           }
           else {
@@ -133,7 +133,7 @@ int gwildmatch::match_internal(const char* text, const char* pattern, bool ignor
         // FALLTHROUGH
       default:
         if(ignorecase) {
-          if(tolower(*text) != tolower(*p))
+          if(g_tolower(*text) != g_tolower(*p))
             return false;
         }
         else {
@@ -186,7 +186,7 @@ bool strwild(const char* str, const char* wild) {
           break;
       }
     }
-    else if(toupper(*str) == toupper(*wild) or *wild == '?') {
+    else if(g_toupper(*str) == g_toupper(*wild) or *wild == '?') {
       wild++;
       str++;
     }

@@ -137,7 +137,7 @@ void CfgNodev7flags() {
   char* flagstring = t.First(val);
   char* flagvals = t.Next();
   uint flagval;
-  if(tolower(*flagvals) == 'b')
+  if(g_tolower(*flagvals) == 'b')
     flagval = atoi(flagvals+1);
   else {
     flagval = atoi(flagvals);
@@ -168,7 +168,7 @@ void CfgNodev7modem() {
   char* modemstring = t.First(val);
   char* modemvals = t.Next();
   int modemval;
-  if(tolower(*modemvals) == 'b')
+  if(g_tolower(*modemvals) == 'b')
     modemval = atoi(modemvals+1);
   else {
     modemval = atoi(modemvals);

@@ -56,7 +56,7 @@ std::string &strtrimline(std::string &p) {
 
 const char* get_subject_re_info(const char* s, uint32_t& n) {
 
-  if(toupper(*s) == 'R' and tolower(s[1]) == 'e') {
+  if(g_toupper(*s) == 'R' and g_tolower(s[1]) == 'e') {
 
     if(s[2] == ':') {
       n = 1;
@@ -99,7 +99,7 @@ void CheckSubject(GMsg* msg, char* subj) {
           #ifdef __UNIX__
           if((*ptr == '/') and not strchr(ptr, ':')) { /* } */
           #else
-          if((in_range((char)tolower(*ptr), (char)'c', (char)'z') and (ptr[1] == ':')) or ((*ptr == '\\') and (ptr[1] == '\\'))) {
+          if((in_range((char)g_tolower(*ptr), (char)'c', (char)'z') and (ptr[1] == ':')) or ((*ptr == '\\') and (ptr[1] == '\\'))) {
           #endif
             // Autoattach
             msg->attr.att1();

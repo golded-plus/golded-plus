@@ -32,7 +32,6 @@
  **/
 
 #include <stdio.h>
-#include <ctype.h>
 
 #ifdef STDC_HEADERS
 #include <stdlib.h>
@@ -48,6 +47,8 @@
 #include <memory.h>
 #endif
 
+#include <gdefs.h>
+#include <gctype.h>
 #include <uudeview.h>
 #include <uuint.h>
 #include <fptools.h>
@@ -165,7 +166,7 @@ UUGetFileName (char *subject, char *ptonum, char *ptonend)
     count = length = alflag = 0;
     while (iter[count] && 
        (isalnum (iter[count]) || strchr (uufnchars, iter[count])!=NULL)) {
-      if (isalpha (iter[count]))
+      if (g_isalpha(iter[count]))
     alflag++;
       count++;
     }
@@ -224,14 +225,14 @@ UUGetFileName (char *subject, char *ptonum, char *ptonend)
       
       if (_FP_strnicmp (ptr, "ftp", 3) == 0) {
     /* hey, that's an ftp address */
-    while (isalpha (*ptr) || isdigit (*ptr) || *ptr == '.')
+    while (g_isalpha(*ptr) || isdigit (*ptr) || *ptr == '.')
       ptr++;
     continue;
       }
       
       while ((isalnum(*iter)||strchr(uufnchars, *iter)!=NULL||
           *iter=='/') && *iter && iter != ptonum && *iter != '.') {
-    if (isalpha (*iter))
+    if (g_isalpha(*iter))
       alflag = 1;
     
     count++; iter++;
@@ -253,7 +254,7 @@ UUGetFileName (char *subject, char *ptonum, char *ptonend)
       if (_FP_strnicmp (iter, "edu", 3) == 0 || 
       _FP_strnicmp (iter, "gov", 3) == 0) {
     /* hey, that's an ftp address */
-    while (isalpha (*iter) || isdigit (*iter) || *iter == '.')
+    while (g_isalpha(*iter) || isdigit (*iter) || *iter == '.')
       iter++;
     ptr    = iter;
     length = 0;
@@ -310,7 +311,7 @@ UUGetFileName (char *subject, char *ptonum, char *ptonend)
   if (length == 0) { /* No filename found, use subject line for ident */
     ptr = subject;
 
-    while (*ptr && !isalpha (*ptr))
+    while (*ptr && !g_isalpha(*ptr))
       ptr++;
 
     while ((isalnum(ptr[length])||strchr(uufnchars,ptr[length])!=NULL||
@@ -541,7 +542,7 @@ UUGetPartNo (char *subject, char **where, char **whend)
       if (isdigit(*(iter-1))) {
     while (iter>subject && isdigit (*(iter-1)))
       iter--;
-    if (!isdigit (*iter) && !isalpha (*iter) && *iter != '.')
+    if (!isdigit (*iter) && !g_isalpha(*iter) && *iter != '.')
       iter++;
     ptr = iter;
 
@@ -595,7 +596,7 @@ UUGetPartNo (char *subject, char **where, char **whend)
     ptr   = subject;
  
     while (count > 0) {
-      if (!isdigit(ptr[count])||isalpha(ptr[count+1])||ptr[count+1] == '.') {
+      if (!isdigit(ptr[count])||g_isalpha(ptr[count+1])||ptr[count+1] == '.') {
     count--;
     continue;
       }
@@ -604,7 +605,7 @@ UUGetPartNo (char *subject, char **where, char **whend)
       while (count >= 0 && isdigit (ptr[count])) {
     count--; length++;
       }
-      if (count>=0 && ((isalpha (ptr[count]) && 
+      if (count>=0 && ((g_isalpha(ptr[count]) && 
             (ptr[count] != 's' || ptr[count+1] != 't') &&
             (ptr[count] != 'n' || ptr[count+1] != 'd')) || 
                ptr[count] == '/' || ptr[count] == '.' || 

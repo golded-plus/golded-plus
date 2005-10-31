@@ -940,7 +940,7 @@ int gkbd_nt2bios(INPUT_RECORD& inp) {
   else {
     // If it is a letter key, use the ASCII value supplied
     // by NT to take into account the CapsLock state.
-    if(isupper(keycode) or (k->normal == -1))
+    if(g_isupper(keycode) or (k->normal == -1))
       c = ascii;
     else
       c = k->normal;
@@ -1087,7 +1087,7 @@ gkey kbxget_raw(int mode) {
       k = 0x7800 + ((key2 - '1') << 8);
     else if(key2 == '0')
       k = 0x8100;
-    else if(isalpha(key2))
+    else if(g_isalpha(key2))
       k = (scancode_table[key2]);
     else if(key2 == '\010')
       k = Key_A_BS;
@@ -1807,8 +1807,8 @@ int setonkey(gkey keycode, VfvCP func, gkey pass) {
 gkey key_tolower(gkey __keycode) {
 
   byte &ascii = KCodAsc(__keycode);
-  if(isupper(ascii))
-    ascii = tolower(ascii);
+  if(g_isupper(ascii))
+    ascii = g_tolower(ascii);
   return __keycode;
 }
 

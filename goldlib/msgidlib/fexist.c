@@ -90,7 +90,7 @@ int direxist(const char *directory)
 
     /* Root directory of any drive always exists! */
 
-    if ((isalpha((int)tempstr[0]) && tempstr[1] == ':' && (tempstr[2] == '\\' || tempstr[2] == '/') &&
+    if ((g_isalpha((int)tempstr[0]) && tempstr[1] == ':' && (tempstr[2] == '\\' || tempstr[2] == '/') &&
       !tempstr[3]) || eqstr(tempstr, "\\")) {
         free(tempstr);
         return TRUE;
@@ -186,7 +186,7 @@ int direxist(const char *directory)
 
     /* Root directory of any drive always exists! */
 
-    if ((isalpha(tempstr[0]) && tempstr[1] == ':' && ((tempstr[2] == '\0') || ((tempstr[2] == '\\' ||
+    if ((g_isalpha(tempstr[0]) && tempstr[1] == ':' && ((tempstr[2] == '\0') || ((tempstr[2] == '\\' ||
       tempstr[2] == '/') && tempstr[3] == '\0'))) || eqstri(tempstr, "\\"))
     {
         ret = TRUE;
@@ -244,7 +244,7 @@ int _fast direxist(const char *directory)
 
     /* Root directory of any drive always exists! */
 
-    if ((isalpha((int)tempstr[0]) && tempstr[1] == ':' && (tempstr[2] == '\\' || tempstr[2] == '/') &&
+    if ((g_isalpha((int)tempstr[0]) && tempstr[1] == ':' && (tempstr[2] == '\\' || tempstr[2] == '/') &&
       !tempstr[3]) || eqstr(tempstr, "\\"))
     {
         free(tempstr);

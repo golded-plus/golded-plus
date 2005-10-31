@@ -318,8 +318,8 @@ void gareafile::ReadHPTFile(char* path, char* file, char* origin, int group) {
 
                   if(isdigit(*key))
                     aa.groupid = 0x8000+atoi(key);
-                  else if(isalpha(*key))
-                    aa.groupid = toupper(*key);
+                  else if(g_isalpha(*key))
+                    aa.groupid = g_toupper(*key);
                 }
                 else if (strieql(opt, "d")) {
 
@@ -395,13 +395,13 @@ void gareafile::ReadHPT(char* tag) {
     if(*ptr != '-')
       strcpy(file, ptr);
     else {
-      if(toupper(*(++ptr)) == 'G') {
+      if(g_toupper(*(++ptr)) == 'G') {
         if(*(++ptr) == '=')
           ptr++;
         if(*ptr == '#')
           defaultgroup = (word)(atoi(ptr+1)+0x8000u);
         else
-          defaultgroup = (word)(isupper(*ptr) ? *ptr : 0);
+          defaultgroup = (word)(g_isupper(*ptr) ? *ptr : 0);
       }
     }
     ptr = strtok(NULL, " \t");

@@ -37,7 +37,7 @@ static char touplow(char* str, char* pos, char ch) {
   char i;
 
   if(pos == str)
-    return toupper(ch);
+    return g_toupper(ch);
 
   switch(*(pos-1)) {                  // check previous character
     case ' ':                         // see if it is a separator
@@ -46,10 +46,10 @@ static char touplow(char* str, char* pos, char ch) {
     case ',':
     case '.':
     case '/':
-      i = (char)toupper(ch);          // if it is, convert to upper
+      i = (char)g_toupper(ch);        // if it is, convert to upper
       break;
     default:
-      i = (char)tolower(ch);          // otherwise, convert to lower
+      i = (char)g_tolower(ch);        // otherwise, convert to lower
       break;
   }
 

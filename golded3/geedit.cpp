@@ -1998,7 +1998,7 @@ void IEclass::ToUpper() {
 
   if(col < currline->txt.length()) {
     Undo->PushItem(EDIT_UNDO_OVR_CHAR);
-    currline->txt[col] = toupper(currline->txt[col]);
+    currline->txt[col] = g_toupper(currline->txt[col]);
   }
 
   GFTRK(NULL);
@@ -2013,7 +2013,7 @@ void IEclass::ToLower() {
 
   if(col < currline->txt.length()) {
     Undo->PushItem(EDIT_UNDO_OVR_CHAR);
-    currline->txt[col] = tolower(currline->txt[col]);
+    currline->txt[col] = g_tolower(currline->txt[col]);
   }
 
   GFTRK(NULL);
@@ -2028,10 +2028,10 @@ void IEclass::ToggleCase() {
 
   if(col < currline->txt.length()) {
     Undo->PushItem(EDIT_UNDO_OVR_CHAR);
-    if(toupper(currline->txt[col]) == currline->txt[col])
-      currline->txt[col] = tolower(currline->txt[col]);
+    if(g_toupper(currline->txt[col]) == currline->txt[col])
+      currline->txt[col] = g_tolower(currline->txt[col]);
     else
-      currline->txt[col] = toupper(currline->txt[col]);
+      currline->txt[col] = g_toupper(currline->txt[col]);
   }
 
   GFTRK(NULL);
@@ -2050,18 +2050,18 @@ void IEclass::ToggleCaseChar(gkey key,
   switch (key)
   {
   case KK_EditToLower:
-    newchar = tolower(*it);
+    newchar = g_tolower(*it);
     break;
 
   case KK_EditToUpper:
-    newchar = toupper(*it);
+    newchar = g_toupper(*it);
     break;
 
   case KK_EditToggleCase:
-    if (toupper(*it) == oldchar)
-      newchar = tolower(*it);
+    if (g_toupper(*it) == oldchar)
+      newchar = g_tolower(*it);
     else
-      newchar = toupper(*it);
+      newchar = g_toupper(*it);
     break;
   }
 

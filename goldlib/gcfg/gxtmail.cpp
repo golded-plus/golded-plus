@@ -130,7 +130,7 @@ void gareafile::ReadTmail(char* tag) {
       AddBackslash(strcpy(path, ptr));
     }
     else {
-      if(toupper(*(++ptr)) == 'C') {
+      if(g_toupper(*(++ptr)) == 'C') {
         if(*(++ptr) == ':')
           ptr++;
         strcpy(tmailcfg, ptr);

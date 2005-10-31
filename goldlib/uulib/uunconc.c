@@ -36,7 +36,6 @@
 #endif
 
 #include <stdio.h>
-#include <ctype.h>
 
 #ifdef STDC_HEADERS
 #include <stdlib.h>
@@ -52,6 +51,8 @@
 #include <errno.h>
 #endif
 
+#include <gdefs.h>
+#include <gctype.h>
 #include <crc32.h>
 #include <uudeview.h>
 #include <uuint.h>
@@ -465,7 +466,7 @@ UUValidData (char *ptr, int encoding, int *bhflag)
     goto _t_XX;             /* bad length */
   }
 
-  if (len != j || islower (*ptr)) {
+  if (len != j || g_islower (*ptr)) {
     /*
      * if we are not in a 'uuencoded' state, don't allow the line to have
      * space characters at all. if we know we _are_ decoding uuencoded
@@ -788,8 +789,8 @@ UUDecodeQP (FILE *datain, FILE *dataout, int *state,
       p1  = ++p2;
 
       if (isxdigit (*p2) && isxdigit (*(p2+1))) {
-    val  = ((isdigit(*p2))    ?  (*p2-'0')   : (tolower(*p2)-'a'+10)) << 4;
-    val |= ((isdigit(*(p2+1)))?(*(p2+1)-'0') : (tolower(*(p2+1))-'a'+10));
+    val  = ((isdigit(*p2))    ?  (*p2-'0')   : (g_tolower(*p2)-'a'+10)) << 4;
+    val |= ((isdigit(*(p2+1)))?(*(p2+1)-'0') : (g_tolower(*(p2+1))-'a'+10));
 
     fputc (val, dataout);
     p2 += 2;

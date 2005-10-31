@@ -197,7 +197,7 @@ int PcbArea::load_message(int __mode, gmsg* __msg, PcbHdr& __hdr) {
         while(*ptr2) {
           if(*ptr2 == '+') {
             // get flags
-            switch(toupper(*(++ptr2))) {
+            switch(g_toupper(*(++ptr2))) {
               case 'C': __msg->attr.cra1(); break;
               case 'D': __msg->attr.dir1(); break;
             }

@@ -430,7 +430,7 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
           char buff[1024];
           char token[1024];
           char fill  = dst[5];
-          char align = toupper(dst[6]);
+          char align = g_toupper(dst[6]);
           int  size  = atoi(dst+7);
 
           if (strchr("CLR", align))

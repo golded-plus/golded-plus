@@ -63,7 +63,7 @@ bool is_user(const char* name) {
 
 inline int IsInitial(char c) {
 
-  return isalpha(c) or (c > 127);
+  return g_isalpha(c) or (c > 127);
 }
 
 

@@ -39,7 +39,7 @@ word memCrc16(const void* _m, long l, bool __case, word mask) {
 
   if(__case) {
     for(n=0; n<l; n++)
-      crc = updCrc16(toupper(*m++), crc);
+      crc = updCrc16(g_toupper(*m++), crc);
   }
   else {
     for(n=0; n<l; n++)

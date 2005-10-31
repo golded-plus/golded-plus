@@ -75,16 +75,16 @@
 # define ISGRAPH(c) (ISASCII (c) && isprint (c) && !isspace (c))
 #endif
 
-#define ISPRINT(c) (ISASCII (c) && isprint (c))
-#define ISDIGIT(c) (ISASCII (c) && isdigit (c))
-#define ISALNUM(c) (ISASCII (c) && isalnum (c))
-#define ISALPHA(c) (ISASCII (c) && isalpha (c))
-#define ISCNTRL(c) (ISASCII (c) && iscntrl (c))
-#define ISLOWER(c) (ISASCII (c) && islower (c))
-#define ISPUNCT(c) (ISASCII (c) && ispunct (c))
-#define ISSPACE(c) (ISASCII (c) && isspace (c))
-#define ISUPPER(c) (ISASCII (c) && isupper (c))
-#define ISXDIGIT(c) (ISASCII (c) && isxdigit (c))
+#define ISPRINT(c)  (ISASCII (c) && isprint   (c))
+#define ISDIGIT(c)  (ISASCII (c) && isdigit   (c))
+#define ISALNUM(c)  (ISASCII (c) && isxalnum  (c))
+#define ISALPHA(c)  (ISASCII (c) && g_isalpha (c))
+#define ISCNTRL(c)  (ISASCII (c) && iscntrl   (c))
+#define ISLOWER(c)  (ISASCII (c) && g_islower (c))
+#define ISPUNCT(c)  (ISASCII (c) && ispunct   (c))
+#define ISSPACE(c)  (ISASCII (c) && isspace   (c))
+#define ISUPPER(c)  (ISASCII (c) && g_isupper (c))
+#define ISXDIGIT(c) (ISASCII (c) && isxdigit  (c))
 
 # define STREQ(s1, s2) ((strcmp (s1, s2) == 0))
 
@@ -140,9 +140,9 @@ fnmatch (pattern, string, flags)
 
 /* Note that this evaluates C many times.  */
 # ifdef _LIBC
-#  define FOLD(c) ((flags & FNM_CASEFOLD) ? tolower (c) : (c))
+#  define FOLD(c) ((flags & FNM_CASEFOLD) ? g_tolower (c) : (c))
 # else
-#  define FOLD(c) ((flags & FNM_CASEFOLD) && ISUPPER (c) ? tolower (c) : (c))
+#  define FOLD(c) ((flags & FNM_CASEFOLD) && ISUPPER (c) ? g_tolower (c) : (c))
 # endif
 
   while ((c = *p++) != '\0')

@@ -42,7 +42,7 @@ int getgroup(const char *key)
   if(*key == '#')
     return atoi(key+1)+0x8000u;
   else
-    return (isupper(*key) ? *key : 0);
+    return (g_isupper(*key) ? *key : 0);
 }
 
 

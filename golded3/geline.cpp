@@ -756,7 +756,7 @@ void KludgeDATE(GMsg* msg, const char* ptr) {
     if(isdigit(*ptr)) {
       day = atoi(ptr);
       ptr = strskip_wht(strskip_txt(ptr));
-      if(isalpha(*ptr)) {
+      if(g_isalpha(*ptr)) {
         month = str2mon(ptr);
         if(month) {
           ptr = strskip_wht(strskip_txt(ptr));
@@ -1383,7 +1383,7 @@ int ScanLine(GMsg* msg, Line* line, const char* ptr, int getvalue, int mask) {
   // Skip past "RFC" string, if any
   if(strnieql(kludge1, "RFC", 3) and (kludge1[3] != ':')) {
     kludge1 += 3;
-    if(not isalpha(*kludge1))
+    if(not g_isalpha(*kludge1))
       kludge1++;
   }
 
@@ -1696,8 +1696,8 @@ void  Latin2Local(char *str)
       byte left = i ? str[i-1] : 0;
       byte right = str[i+1];
 
-      if (((left >= 0x80) && (toupper(left) != tolower(left))) ||
-          ((right >= 0x80) && (toupper(right) != tolower(right))))
+      if (((left >= 0x80) && (g_toupper(left) != g_tolower(left))) ||
+          ((right >= 0x80) && (g_toupper(right) != g_tolower(right))))
       {
         str[i] = xch;
 
@@ -2101,7 +2101,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode) {
               char* kludge = ptr + (*ptr == CTRL_A ? 1 : 0);
               if(strnieql(kludge, "RFC", 3)) {
                 kludge += 3;
-                if(not isalpha(*kludge))
+                if(not g_isalpha(*kludge))
                   kludge++;
               }
               while((*ptr != ' ') and (*ptr != ':') and *ptr)

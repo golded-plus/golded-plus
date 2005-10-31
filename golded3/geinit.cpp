@@ -76,7 +76,7 @@ static void InitCmdline(char* val) {
     trueval = val;
     if(*val == NUL)
       val = key+1;
-    switch(toupper(*key)) {
+    switch(g_toupper(*key)) {
       case 'C':                   // Use another Configfile
         if(*val)
           strcpy(cmdlinecfg, val);
@@ -94,7 +94,7 @@ static void InitCmdline(char* val) {
         break;
       case 'F':
         cmdlineforce = make_bool_not(*val == '-');
-        if(toupper(key[1]) == 'F')
+        if(g_toupper(key[1]) == 'F')
           cmdlineforce++;
         break;
       case '?':
@@ -134,7 +134,7 @@ static void InitCmdline(char* val) {
         break;
       case 'V':
         quiet = false;
-        veryverbose = (toupper(key[1]) == 'V');
+        veryverbose = (g_toupper(key[1]) == 'V');
         break;
       case 'W':
         cmdlinewriteareas = make_bool_not(*val == '-');
@@ -318,7 +318,7 @@ static void kbputstr(const char* buf) {
         break;
       case '~':
       case '^':
-        xkey = (gkey)(toupper(buf[++n]) - '@');
+        xkey = (gkey)(g_toupper(buf[++n]) - '@');
         if(xkey)
           kbput(xkey);
         break;
@@ -974,13 +974,13 @@ void Initialize(int argc, char* argv[]) {
     int pos = 0;
     char* p = CFG->arealistformat;
     while(*p) {
-      char c = (char)toupper(*p);
+      char c = (char)g_toupper(*p);
       char d = *(++p);
       int w = atoi(p);
       while(isdigit(*p))
         p++;
       if(pass == 1) {
-        if(isalpha(c)) {
+        if(g_isalpha(c)) {
           switch(c) {
             case 'A':  area_found = true;     if(isdigit(d)) area_width = w;     break;
             case 'M':  marked_found = true;   if(isdigit(d)) marked_width = w;   break;

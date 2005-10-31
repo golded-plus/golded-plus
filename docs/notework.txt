@@ -10,6 +10,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Case insensitive regexp should work on Win9x now.
+
 + New config file token LatinToLocal.
   Used to translate latin A-Za-z to local charset if one of neighbours
   is from local charset too.

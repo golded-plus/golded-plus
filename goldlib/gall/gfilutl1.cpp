@@ -168,7 +168,7 @@ int is_dir(const char* path) {
 
   // Check if it's a root path (X:\)
   #if defined(__HAVE_DRIVES__)
-  if(isalpha(path[0]) and (path[1] == ':') and isslash(path[2]) and (path[3] == NUL))
+  if(g_isalpha(path[0]) and (path[1] == ':') and isslash(path[2]) and (path[3] == NUL))
     return true;  // The root is a directory
   #endif
 
@@ -226,7 +226,7 @@ void MakePathname(char* pathname, const char* path, const char* name) {
     have_path = true;
   #if defined(__HAVE_DRIVES__)
   // Check if it's a root path (X:\)
-  else if(isalpha(tmpname[0]) and (tmpname[1] == ':') and isslash(tmpname[2]))
+  else if(g_isalpha(tmpname[0]) and (tmpname[1] == ':') and isslash(tmpname[2]))
     have_path = true;  // The root is a directory
   #endif
 
@@ -416,7 +416,7 @@ int gchdir(const char* dir) {
     _chdrive(*dir);
     #else
     uint drives;
-    _dos_setdrive(toupper(*dir)-'@', &drives);
+    _dos_setdrive(g_toupper(*dir)-'@', &drives);
     #endif
   }
   #endif

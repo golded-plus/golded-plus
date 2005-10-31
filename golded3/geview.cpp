@@ -297,7 +297,7 @@ void GMsgHeaderView::Paint() {
       while(ptr) {
         if(*ptr == '^')
           ptr++;
-        if((isalpha(*ptr) and (ptr[1] == ':')) or (ptr[0] == '\\') or (ptr[0] == '/'))
+        if((g_isalpha(*ptr) and (ptr[1] == ':')) or (ptr[0] == '\\') or (ptr[0] == '/'))
           strcpy(buf2, ptr);
         else
           sprintf(buf2, "%s%s", CFG->inboundpath, ptr);

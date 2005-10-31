@@ -1216,7 +1216,7 @@ int wmenuget() {
                 item=citem->next;
                 for(;;) {
                     while(item!=NULL) {
-                        if ((toupper(ch)==toupper(item->schar)) && !(item->fmask & M_NOSEL))
+                        if ((g_toupper(ch)==g_toupper(item->schar)) && !(item->fmask & M_NOSEL))
                         {
                           if (!gwin.menu->hotkey) _overtagid = item->tagid;
                           goto FARBREAK;

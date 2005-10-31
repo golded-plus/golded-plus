@@ -243,16 +243,16 @@ init_syntax_once ()
 #endif
 
 #undef ISPRINT
-#define ISPRINT(c) (ISASCII (c) && isprint (c))
-#define ISDIGIT(c) (ISASCII (c) && isdigit (c))
-#define ISALNUM(c) (ISASCII (c) && isalnum (c))
-#define ISALPHA(c) (ISASCII (c) && isalpha (c))
-#define ISCNTRL(c) (ISASCII (c) && iscntrl (c))
-#define ISLOWER(c) (ISASCII (c) && islower (c))
-#define ISPUNCT(c) (ISASCII (c) && ispunct (c))
-#define ISSPACE(c) (ISASCII (c) && isspace (c))
-#define ISUPPER(c) (ISASCII (c) && isupper (c))
-#define ISXDIGIT(c) (ISASCII (c) && isxdigit (c))
+#define ISPRINT(c)  (ISASCII (c) && isprint   (c))
+#define ISDIGIT(c)  (ISASCII (c) && isdigit   (c))
+#define ISALNUM(c)  (ISASCII (c) && isxalnum  (c))
+#define ISALPHA(c)  (ISASCII (c) && g_isalpha (c))
+#define ISCNTRL(c)  (ISASCII (c) && iscntrl   (c))
+#define ISLOWER(c)  (ISASCII (c) && g_islower (c))
+#define ISPUNCT(c)  (ISASCII (c) && ispunct   (c))
+#define ISSPACE(c)  (ISASCII (c) && isspace   (c))
+#define ISUPPER(c)  (ISASCII (c) && g_isupper (c))
+#define ISXDIGIT(c) (ISASCII (c) && isxdigit  (c))
 
 #ifndef NULL
 # define NULL (void *)0
@@ -5631,7 +5631,7 @@ regcomp (preg, pattern, cflags)
 
       /* Map uppercase characters to corresponding lowercase ones.  */
       for (i = 0; i < CHAR_SET_SIZE; i++)
-        preg->translate[i] = ISUPPER (i) ? tolower (i) : i;
+        preg->translate[i] = ISUPPER (i) ? g_tolower (i) : i;
     }
   else
     preg->translate = NULL;

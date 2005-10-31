@@ -74,7 +74,7 @@ const char* search_item_set(search_item& item, const char* s) {
       case '=':  search_item_option(item.case_sensitive, s);   break;
       case '?':
         s++;
-        switch(tolower(*s)) {
+        switch(g_tolower(*s)) {
           case 'r':  item.type = gsearch::regex;     break;
           case 'w':  item.type = gsearch::wildcard;  break;
           case 'p':  item.type = gsearch::plain;     break;

@@ -122,7 +122,7 @@ void gareafile::ReadTosScan(char* tag) {
       while(fread(areafile, sizeof(TS_Areafile), 1, fp) == 1) {
         if(not (areafile->deleted or areafile->passthru) and not strblank(areafile->echoname) and (areafile->board ? areafile->board < 201 : 1)) {
           aa.reset();
-          aa.groupid = (char)toupper(areafile->groupid);
+          aa.groupid = (char)g_toupper(areafile->groupid);
           aa.aka = shared->aka[areafile->akano];
           aa.type = GMB_ECHO;
           aa.attr = attribsecho;

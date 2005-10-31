@@ -140,7 +140,7 @@ bool gfuzzy::findnext() {
         if(casing)
           charmatch = pattern[i] == text[textloc];
         else
-          charmatch = toupper(pattern[i]) == toupper(text[textloc]);
+          charmatch = g_toupper(pattern[i]) == g_toupper(text[textloc]);
         int a = ldiff[i] + (charmatch ? 0 : 1);
         int b = ldiff[i+1] + 1;
         int c = rdiff[i] + 1;

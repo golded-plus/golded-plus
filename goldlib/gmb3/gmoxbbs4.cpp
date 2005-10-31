@@ -106,7 +106,7 @@ uint16_t XbbsCheckSum(char* str) {
   uint16_t checksum = 0;
 
   while(*str) {
-    checksum ^= (uint16_t)toupper(*str++);
+    checksum ^= (uint16_t)g_toupper(*str++);
     if(checksum & 1)
       checksum = (uint16_t)((checksum >> 1) ^ 0xA000);
     else

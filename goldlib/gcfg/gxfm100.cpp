@@ -185,7 +185,7 @@ void gareafile::ReadFMail098(FILE* fp, char* path, char* file, char* options) {
             grp >>= 1;
           }
 
-          //aa.groupid = (char)toupper((char)ar->group);
+          //aa.groupid = (char)g_toupper((char)ar->group);
           aa.aka = cfg->akaList[ar->address].nodeNum;
           if(ar->options.local) {
             aa.type = GMB_LOCAL;

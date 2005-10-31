@@ -149,7 +149,7 @@ int SwitchCfg(word crc, char k, char* v) {
     return true;
 
   // Switch the first letter of the keyword
-  switch(toupper(k)) {
+  switch(g_toupper(k)) {
     case 'A': goto SwitchA;
     case 'B': goto SwitchB;
     case 'C': goto SwitchC;
@@ -742,7 +742,7 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
 
       val = strskip_wht(val);
 
-      if(isalpha(*val)) {
+      if(g_isalpha(*val)) {
 
         // Extract key and val
         crc = getkeyvalcrc(&key, &val);

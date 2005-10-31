@@ -474,7 +474,7 @@ void AreaList::GetArea(char* def) {
     StripQuotes(desc);              // Copy description, stripping quotes ("")
     aa.setdesc(desc);
 
-    switch(toupper(*base)) {        // Store area info
+    switch(g_toupper(*base)) {        // Store area info
 
       case '-':
         aa.basetype = "SEPARATOR";
@@ -859,7 +859,7 @@ void AreaList::ReadEcholist(char* val) {
             continue;
         }
         else if(is_dz) {
-          if(not isalpha(*val) and (*val != ','))
+          if(not g_isalpha(*val) and (*val != ','))
             continue;
           tok(&key, &val);
         }
@@ -877,7 +877,7 @@ void AreaList::ReadEcholist(char* val) {
             }
             for(area_iterator ap = idx.begin(); ap != idx.end(); ap++) {
               if(strieql(key, (*ap)->echoid())) {
-                (*ap)->set_groupid(toupper(*grp));
+                (*ap)->set_groupid(g_toupper(*grp));
                 if(desc)
                   (*ap)->set_desc(desc);
                 break;

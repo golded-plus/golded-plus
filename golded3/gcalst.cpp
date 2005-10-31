@@ -281,7 +281,7 @@ void AreaList::WriteAreaDef(const char* file) {
       maxpath = MaxV(maxpath, tmp);
       if((*aa)->groupid() & 0x8000u)
         sprintf(groupid, "#%u", (*aa)->groupid()&0x7FFF);
-      else if(isupper((*aa)->groupid()))
+      else if(g_isupper((*aa)->groupid()))
         *groupid = (char)(*aa)->groupid(), groupid[1] = NUL;
       else
         *groupid = '0', groupid[1] = NUL;
@@ -301,7 +301,7 @@ void AreaList::WriteAreaDef(const char* file) {
       sprintf(desc, "\"%s\"", (*aa)->desc());
       if((*aa)->groupid() & 0x8000u)
         sprintf(groupid, "#%u", (*aa)->groupid()&0x7FFF);
-      else if(isupper((*aa)->groupid()))
+      else if(g_isupper((*aa)->groupid()))
         *groupid = (char)(*aa)->groupid(), groupid[1] = NUL;
       else
         *groupid = '0', groupid[1] = NUL;

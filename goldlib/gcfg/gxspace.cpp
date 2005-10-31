@@ -141,8 +141,8 @@ void gareafile::ReadSpaceAr(const char* file) {
         case CRC_GROUP:
           if(isdigit(*val))
             aa.groupid = 0x8000+atoi(val);
-          else if(isalpha(*val))
-            aa.groupid = toupper(*val);
+          else if(g_isalpha(*val))
+            aa.groupid = g_toupper(*val);
           break;
         case CRC_ENDAREA:
           if(aa.basetype[0] != '\0')

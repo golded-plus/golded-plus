@@ -174,7 +174,7 @@ void EzycomArea::save_message(int __mode, gmsg* __msg, EzycHdr& __hdr) {
   _msgfast.whoto = CRC32_MASK_CCITT;
   char* _ptr = __msg->to;
   while(*_ptr) {
-    _msgfast.whoto = updCrc32((char)toupper(*_ptr), _msgfast.whoto);
+    _msgfast.whoto = updCrc32((char)g_toupper(*_ptr), _msgfast.whoto);
     _ptr++;
   }
   _fh = test_open(AddPath(wide->msgbasepath, "MSGFAST.BBS"), O_WRONLY|O_CREAT|O_BINARY, SH_DENYWR);

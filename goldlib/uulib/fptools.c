@@ -34,7 +34,6 @@
  */
 
 #include <stdio.h>
-#include <ctype.h>
 
 #ifdef STDC_HEADERS
 #include <stdlib.h>
@@ -50,6 +49,8 @@
 #include <memory.h>
 #endif
 
+#include <gdefs.h>
+#include <gctype.h>
 #include <fptools.h>
 
 #if 0
@@ -147,12 +148,12 @@ _FP_stricmp (char *str1, char *str2)
     return -1;
 
   while (*str1) {
-    if (tolower(*str1) != tolower(*str2))
+    if (g_tolower(*str1) != g_tolower(*str2))
       break;
     str1++;
     str2++;
   }
-  return (tolower (*str1) - tolower (*str2));
+  return (g_tolower (*str1) - g_tolower (*str2));
 }
 
 int TOOLEXPORT
@@ -162,13 +163,13 @@ _FP_strnicmp (char *str1, char *str2, int count)
     return -1;
 
   while (*str1 && count) {
-    if (tolower(*str1) != tolower(*str2))
+    if (g_tolower(*str1) != g_tolower(*str2))
       break;
     str1++;
     str2++;
     count--;
   }
-  return count ? (tolower (*str1) - tolower (*str2)) : 0;
+  return count ? (g_tolower (*str1) - g_tolower (*str2)) : 0;
 }
 
 /*
@@ -269,7 +270,7 @@ _FP_stristr (char *str1, char *str2)
 
   while (*(ptr1=str1)) {
     for (ptr2=str2;
-     *ptr1 && *ptr2 && tolower(*ptr1)==tolower(*ptr2);
+     *ptr1 && *ptr2 && g_tolower(*ptr1)==g_tolower(*ptr2);
      ptr1++, ptr2++)
       /* empty loop */ ;
 
@@ -332,7 +333,7 @@ _FP_stoupper (char *input)
     return NULL;
 
   while (*iter) {
-    *iter = toupper (*iter);
+    *iter = g_toupper (*iter);
     iter++;
   }
   return input;
@@ -347,7 +348,7 @@ _FP_stolower (char *input)
     return NULL;
 
   while (*iter) {
-    *iter = tolower (*iter);
+    *iter = g_tolower (*iter);
     iter++;
   }
   return input;

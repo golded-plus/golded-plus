@@ -658,7 +658,7 @@ void LoadLanguage(const char* file) {
     while(fgets((ptr=buf), sizeof(buf), fp)) {
       line++;
       ptr = strskip_wht(ptr);
-      if(isalpha(*ptr)) {
+      if(g_isalpha(*ptr)) {
         str = ptr;
         strtrim(str);
         str = strskip_txt(str);
@@ -715,7 +715,7 @@ bool ReadLangCfg(int force) {
     while(fgets((ptr=buf), sizeof(buf), fpi)) {
       line++;
       ptr = strskip_wht(ptr);
-      if(isalpha(*ptr)) {
+      if(g_isalpha(*ptr)) {
         str = ptr;
         strtrim(str);
         str = strskip_txt(str);

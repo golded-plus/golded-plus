@@ -283,9 +283,9 @@ int str2mon(const char* ptr) {
 
   int mon;
 
-  switch(toupper(*ptr)) {
+  switch(g_toupper(*ptr)) {
     case 'A':
-      if(toupper(ptr[1]) == 'P')
+      if(g_toupper(ptr[1]) == 'P')
         mon = 4;
       else
         mon = 8;
@@ -297,15 +297,15 @@ int str2mon(const char* ptr) {
       mon = 2;
       break;
     case 'J':
-      if(toupper(ptr[1]) == 'A')
+      if(g_toupper(ptr[1]) == 'A')
         mon = 1;
-      else if(toupper(ptr[2]) == 'L')
+      else if(g_toupper(ptr[2]) == 'L')
         mon = 7;
       else
         mon = 6;
       break;
     case 'M':
-      if(toupper(ptr[2]) == 'R')
+      if(g_toupper(ptr[2]) == 'R')
         mon = 3;
       else
         mon = 5;
@@ -405,7 +405,7 @@ time32_t FidoTimeToUnix(char* ptr) {
     if(isdigit(*ptr)) {
       day = atoi(ptr);
       ptr = strskip_wht(strskip_txt(ptr));
-      if(isalpha(*ptr)) {
+      if(g_isalpha(*ptr)) {
         month = str2mon(ptr);
         if(month) {
           ptr = strskip_wht(strskip_txt(ptr));

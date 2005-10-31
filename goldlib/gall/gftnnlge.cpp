@@ -172,7 +172,7 @@ int ftn_golded_nodelist_index::namecmp() const {
   int n = 1;
   int d;
   while(1) {
-    d = tolower(*a) - tolower(*b);
+    d = g_tolower(*a) - g_tolower(*b);
     if((d != 0) or (*a == NUL) or (*b == NUL))
       break;
     a++;

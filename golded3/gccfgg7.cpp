@@ -407,7 +407,7 @@ void CfgSeqOutRun() {
     CfgSeqOutRun_Error();
     return;
   }
-  switch(tolower(*p)) {
+  switch(g_tolower(*p)) {
     case 'y':
       s *= 365;
     case 'd':

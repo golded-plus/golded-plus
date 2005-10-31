@@ -220,8 +220,8 @@ void gareafile::ReadCrashmailCfg(const char* file) {
           if(jbstrcpy(tmp, buf, 100, &jbcpos)) {
             if(isdigit(tmp[0]))
               aa.groupid = 0x8000+atoi(tmp);
-            else if(isalpha(tmp[0]))
-              aa.groupid = toupper(tmp[0]);
+            else if(g_isalpha(tmp[0]))
+              aa.groupid = g_toupper(tmp[0]);
           }
           break;
       }

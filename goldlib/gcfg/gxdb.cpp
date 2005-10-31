@@ -66,7 +66,7 @@ void gareafile::ReadDB130(char* tag, char* dbpath) {
 
         if(AA1.allocated and strchr("QFqf", AA2.msgbase)) {
           aa.reset();
-          switch(toupper(AA2.msgbase)) {
+          switch(g_toupper(AA2.msgbase)) {
             case 'Q':
               aa.basetype = "HUDSON";
               aa.board = AA2.board;
@@ -76,7 +76,7 @@ void gareafile::ReadDB130(char* tag, char* dbpath) {
               aa.setpath(STRNP2C(AA2.path));
               break;
           }
-          switch(toupper(AA2.kind)) {
+          switch(g_toupper(AA2.kind)) {
             case 'N':
               aa.type = GMB_NET;
               aa.attr = attribsnet;
@@ -127,7 +127,7 @@ void gareafile::ReadDB1046(char* file, char* tag) {
     while(fread(ADF, sizeof(DB1046_ADF), 1, fp) == 1) {
       if(ADF->allocated and strchr("QFqf", ADF->msgbase)) {
         aa.reset();
-        switch(toupper(ADF->msgbase)) {
+        switch(g_toupper(ADF->msgbase)) {
           case 'Q':
             aa.basetype = "HUDSON";
             aa.board = ADF->board;
@@ -137,7 +137,7 @@ void gareafile::ReadDB1046(char* file, char* tag) {
             aa.setpath(STRNP2C(ADF->path));
             break;
         }
-        switch(toupper(ADF->kind)) {
+        switch(g_toupper(ADF->kind)) {
           case 'N':
             aa.type = GMB_NET;
             aa.attr = attribsnet;
@@ -190,7 +190,7 @@ void gareafile::ReadDB1047A22(char* file, int reclen, char* tag) {
       while(fread(ADF, reclen, 1, fp) == 1) {
         if(ADF->allocated and strchr("QFqf", ADF->msgbase)) {
           aa.reset();
-          switch(toupper(ADF->msgbase)) {
+          switch(g_toupper(ADF->msgbase)) {
             case 'Q':
               aa.basetype = "HUDSON";
               aa.board = ADF->board;
@@ -200,7 +200,7 @@ void gareafile::ReadDB1047A22(char* file, int reclen, char* tag) {
               aa.setpath(STRNP2C(ADF->path));
               break;
           }
-          switch(toupper(ADF->kind)) {
+          switch(g_toupper(ADF->kind)) {
             case 'N':
               aa.type = GMB_NET;
               aa.attr = attribsnet;
@@ -254,7 +254,7 @@ void gareafile::ReadDB2011(char* file, int reclen, char* tag) {
       while(fread(ADF, reclen, 1, fp) == 1) {
         if(ADF->allocated and strchr("QFqf", ADF->msgbase)) {
           aa.reset();
-          switch(toupper(ADF->msgbase)) {
+          switch(g_toupper(ADF->msgbase)) {
             case 'Q':
               if(ADF->board < 1 or ADF->board > 200)
                 continue;   // Bad area number
@@ -266,7 +266,7 @@ void gareafile::ReadDB2011(char* file, int reclen, char* tag) {
               aa.setpath(STRNP2C(ADF->path));
               break;
           }
-          switch(toupper(ADF->kind)) {
+          switch(g_toupper(ADF->kind)) {
             case 'N':
               aa.type = GMB_NET;
               aa.attr = attribsnet;
@@ -342,7 +342,7 @@ void gareafile::ReadDBridge(char* tag) {
     // Read netmail storage method etc
     for(line=1; line <= 2; line++)
       fgets(buf, 255, fp);
-    type = (char)toupper(*buf);
+    type = (char)g_toupper(*buf);
 
     // Fido-style netmail path
     line++;

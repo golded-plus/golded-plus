@@ -43,7 +43,7 @@ static bool strncont(const char *beginword, const char *stylestopchars, int n)
 
 static bool in_ftn_domained_address(const char *ptr, const char *txt) {
 
-  while((ptr != txt) and (not isspace(*ptr) and not isalpha(*ptr))) {
+  while((ptr != txt) and (not isspace(*ptr) and not g_isalpha(*ptr))) {
     if(isdigit(ptr[0]) and ((ptr[1] == ':') or (ptr[1] == '/')) and isdigit(ptr[2]))
       return true;
     --ptr;

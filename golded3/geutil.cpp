@@ -411,7 +411,7 @@ bool is_quote2(Line* line, const char* ptr)
   int nr = 0;
   for (char *tmp = head; tmp < ptr; tmp++)
   {
-    char ch = toupper(*tmp);
+    char ch = g_toupper(*tmp);
     if ((ch >= 'A') && (ch <= 'Z'))
       nr++;
   }

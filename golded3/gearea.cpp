@@ -193,7 +193,7 @@ void GPickArealist::dispbuf(char* buf, int areano) {
       if(groupid_width > 2)
         sprintf(groupidbuf, "%u", area->groupid()&0x7FFF);
     }
-    else if(isupper(area->groupid()))
+    else if(g_isupper(area->groupid()))
       sprintf(groupidbuf, "%c", (char)area->groupid());
   }
   int groupidwidth = strlen(groupidbuf);
@@ -748,7 +748,7 @@ bool GPickArealist::handle_key() {
 
     default:
       if(key < KK_Macro) {
-        n = toupper(key & 0xFF);
+        n = g_toupper(key & 0xFF);
         if((area_fuzidx < area_maxfuz) or (key == Key_BS)) {
 
           // Incremental search in the echoids

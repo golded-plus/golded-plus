@@ -64,9 +64,6 @@ int    g_put_clip_text(const char *cd);
 void   g_get_ostitle_name(char *);
 void   g_set_ostitle_name(char *, int);
 
-char   g_tolower(char);
-char   g_toupper(char);
-
 #ifdef __cplusplus
 }
 #endif

@@ -38,7 +38,7 @@ word strCrc16(const char* s, bool __case, word mask) {
 
   if(__case) {
     while(*s)
-      crc = updCrc16(toupper(*s++), crc);
+      crc = updCrc16(g_toupper(*s++), crc);
   }
   else {
     while(*s)
@@ -58,7 +58,7 @@ word strCrc16c(const char* s, bool __case, word mask) {
 
   if(__case) {
     while(*s)
-      crc = updCrc16c(toupper(*s++), crc);
+      crc = updCrc16c(g_toupper(*s++), crc);
   }
   else {
     while(*s)

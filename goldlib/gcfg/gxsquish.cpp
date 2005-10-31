@@ -118,13 +118,13 @@ void gareafile::ReadSquishFile(char* path, char* file, char* options, char* orig
               if(strnieql(p, "-$", 2)) {
                 aa.basetype = "SQUISH";
                 p += 2;
-                if((tolower(*p) == 'g') and isalpha(p[1])) {
+                if((g_tolower(*p) == 'g') and g_isalpha(p[1])) {
                   if(isdigit(p[1]))
                     aa.groupid = 0x8000+atoi(p+1);
-                  else if(isalpha(p[1]))
-                    aa.groupid = toupper(p[1]);
+                  else if(g_isalpha(p[1]))
+                    aa.groupid = g_toupper(p[1]);
                 }
-                else if(tolower(*p) == 'n') {
+                else if(g_tolower(*p) == 'n') {
                   key = ++p;
                   getkeyval(&key, &p);
                   aa.setdesc(key);
@@ -190,13 +190,13 @@ void gareafile::ReadSquish(char* tag) {
       }
     }
     else {
-      if(toupper(*(++ptr)) == 'G') {
+      if(g_toupper(*(++ptr)) == 'G') {
         if(*(++ptr) == '=')
           ptr++;
         if(*ptr == '#')
           defaultgroup = (word)(atoi(ptr+1)+0x8000u);
         else
-          defaultgroup = (word)(isupper(*ptr) ? *ptr : 0);
+          defaultgroup = (word)(g_isupper(*ptr) ? *ptr : 0);
       }
     }
     ptr = strtok(NULL, " \t");

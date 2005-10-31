@@ -52,8 +52,8 @@ void gareafile::ReadQEchoFile(char* file, char* options, char* origin) {
 
       if(isdigit(*ptr))
         aa.groupid = 0x8000+atoi(ptr);
-      else if(isalpha(*ptr))
-        aa.groupid = toupper(*ptr);
+      else if(g_isalpha(*ptr))
+        aa.groupid = g_toupper(*ptr);
 
       if((ptr = strtok(NULL, " \t")) != NULL) {
         if(*ptr == '*') {

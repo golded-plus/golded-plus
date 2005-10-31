@@ -38,7 +38,7 @@ dword strCrc32(const char* s, bool __case, dword mask) {
 
   if(__case) {
     while(*s)
-      crc = updCrc32(toupper(*s++), crc);
+      crc = updCrc32(g_toupper(*s++), crc);
   }
   else {
     while(*s)

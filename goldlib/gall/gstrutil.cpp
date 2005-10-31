@@ -127,7 +127,7 @@ int strnicmpw(const char* str1, const char* str2, int len) {
     else if(str1[n] == '*')
       return 0;
     // Compare chars
-    else if((cmp = compare_two(toupper(str1[n]), toupper(str2[n]))) != 0)
+    else if((cmp = compare_two(g_toupper(str1[n]), g_toupper(str2[n]))) != 0)
       return cmp;
   }
 
@@ -605,7 +605,7 @@ char* strupr(char* s) {
 
   char* p = s;
   while(*p) {
-    *p = toupper(*p);
+    *p = g_toupper(*p);
     p++;
   }
   return s;
@@ -615,7 +615,7 @@ char* strlwr(char* s) {
 
   char* p = s;
   while(*p) {
-    *p = tolower(*p);
+    *p = g_tolower(*p);
     p++;
   }
   return s;

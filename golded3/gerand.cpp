@@ -199,7 +199,7 @@ void Area::InitData() {
     if(groupid() & 0x8000u)
       sprintf(_groupid, "#%u", groupid() & 0x7FFF);
     else {
-      _groupid[0] = (char)(isalpha(groupid()) ? groupid() : NUL);
+      _groupid[0] = (char)(g_isalpha(groupid()) ? groupid() : NUL);
       _groupid[1] = NUL;
     }
   }
@@ -244,7 +244,7 @@ void Area::RandomizeData(int mode) {
     if(groupid() & 0x8000u)
       sprintf(_groupid, "#%u", groupid() & 0x7FFF);
     else {
-      _groupid[0] = (char)(isalpha(groupid()) ? groupid() : NUL);
+      _groupid[0] = (char)(g_isalpha(groupid()) ? groupid() : NUL);
       _groupid[1] = NUL;
     }
   }

@@ -46,7 +46,7 @@ dword strHash32(const char* s, bool __case) {
 
   while(*p) {
 
-    hash = (hash << 4) + (__case ? tolower(*p) : *p);
+    hash = (hash << 4) + (__case ? g_tolower(*p) : *p);
 
     g = hash & 0xF0000000UL;
     if(g) {

@@ -38,7 +38,7 @@ int GetYesno(const char* value) {
   if(isdigit(*value))
     return atoi(value);
 
-  switch(toupper(*value)) {
+  switch(g_toupper(*value)) {
 
     case NUL:   // Blank
     case 'T':   // True
@@ -50,15 +50,15 @@ int GetYesno(const char* value) {
       return NO;
 
     case 'O':   // On or Off
-      if(toupper(value[1]) == 'N')
+      if(g_toupper(value[1]) == 'N')
         return YES;
       else
         return NO;
 
     case 'A':   // Always, Ask or Auto
-      if(toupper(value[1]) == 'L')
+      if(g_toupper(value[1]) == 'L')
         return ALWAYS;
-      else if(toupper(value[1]) == 'S')
+      else if(g_toupper(value[1]) == 'S')
         return ASK;
       else
         return GAUTO;

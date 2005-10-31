@@ -137,7 +137,7 @@ void gareafile::ReadIMail160(char* options, char* file, char* impath) {
           if(AR.o_addr)
             aa.aka = CAST(ftn_addr, CF->aka[AR.o_addr-1]);
 
-          aa.groupid = (char)toupper(AR.group);
+          aa.groupid = (char)g_toupper(AR.group);
 
           aa.setdesc(AR.comment);
           aa.setechoid(AR.aname);

@@ -1053,10 +1053,10 @@ bool gwinput::field::overwrite_char(char ch) {
 
     switch(conversion) {
       case gwinput::cvt_lowercase:
-        ch = (char)tolower(ch);
+        ch = (char)g_tolower(ch);
         break;
       case gwinput::cvt_uppercase:
-        ch = (char)toupper(ch);
+        ch = (char)g_toupper(ch);
         break;
     }
 

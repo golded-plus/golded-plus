@@ -69,7 +69,7 @@ void gbmh::init(const char* pattern, bool ignorecase) {
     strupr(pat);
 #else /* strupr() is wrong on windows 9x (patch from Ianos Gnatiuc 2:469/335.155) */
     for(char *ptr = pat; *ptr; ptr++)
-      *ptr = toupper(*ptr);
+      *ptr = g_toupper(*ptr);
 #endif
   }
 
@@ -80,12 +80,12 @@ void gbmh::init(const char* pattern, bool ignorecase) {
   for(i=0; i<patlen; i++) {
     skip[pat[i] & 0xff] = patlen - i - 1;
     if(ignore_case)
-      skip[tolower((uint8_t)pat[i])] = patlen - i - 1;
+      skip[g_tolower((uint8_t)pat[i])] = patlen - i - 1;
   }
   char lastpatchar = pat[patlen - 1];
   skip[lastpatchar & 0xff] = INT_MAX;
   if(ignore_case)
-    skip[tolower((uint8_t)lastpatchar)] = INT_MAX;
+    skip[g_tolower((uint8_t)lastpatchar)] = INT_MAX;
 
   // Horspool's fixed second shift
   skip2 = patlen;
@@ -120,7 +120,7 @@ bool gbmh::find(const char* buffer) {
     const char* s = buffer + (i - j);
 
     if(ignore_case) {
-      while(--j >= 0 and toupper((uint8_t)s[j]) == pat[j])
+      while(--j >= 0 and g_toupper((uint8_t)s[j]) == pat[j])
         ;
     }
     else {

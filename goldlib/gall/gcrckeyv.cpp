@@ -145,7 +145,7 @@ word getkeyvalcrc(char** key, char** val) {
 
   // Calculate CRC16 of keyword
   while(*p)
-    c = updCrc16((byte)toupper(*p++), c);
+    c = updCrc16((byte)g_toupper(*p++), c);
 
   // Return keyword CRC
   return c;

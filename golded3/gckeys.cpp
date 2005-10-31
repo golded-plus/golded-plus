@@ -966,7 +966,7 @@ static void SetKeybDefaults() {
   int k = 0;
   while(k < keys) {
     if(tmp->key <= 0xFF)
-      tmp->key = (gkey)tolower(tmp->key);
+      tmp->key = (gkey)g_tolower(tmp->key);
     KeyCmdAdd(tmp->cmd, tmp->key, tmp->type);
     tmp++;
     k++;
@@ -1037,7 +1037,7 @@ int ReadKeysCfg(int force) {
         keyval = (gkey)_keyval;
       }
       else if(strlen(ptr2) == 1)
-        keyval = (gkey)tolower(*ptr2);  // Always convert to lowercase internally
+        keyval = (gkey)g_tolower(*ptr2);  // Always convert to lowercase internally
       else {
         keycmd = SwitchKeyDefs(strCrc16(strupr(ptr2)), &keytype);
         if(not keycmd or keytype) {
