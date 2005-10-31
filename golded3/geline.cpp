@@ -1682,6 +1682,51 @@ void ScanKludges(GMsg* msg, int getvalue) {
 
 //  ------------------------------------------------------------------
 
+void  Latin2Local(char *str)
+{
+  if (!CFG->latin2local) return;
+  for (size_t i = 0; str[i]; i++)
+  {
+    byte chr = str[i];
+    byte xch = CFG->latintolocal[chr];
+
+    if (xch && (xch != chr))
+    {
+      byte left = i ? str[i-1] : 0;
+      byte right = str[i+1];
+
+      if (((left >= 0x80) && (toupper(left) != tolower(left))) ||
+          ((right >= 0x80) && (toupper(right) != tolower(right))))
+      {
+        str[i] = xch;
+
+        for (size_t j = i-1; j < i; j--)
+        {
+          chr = str[j];
+          xch = CFG->latintolocal[chr];
+
+          if (xch && (xch != chr))
+          {
+            left = j ? str[j-1] : 0;
+            right = str[j+1];
+
+            if (((left >= 0x80) && (toupper(left) != tolower(left))) ||
+                ((right >= 0x80) && (toupper(right) != tolower(right))))
+            {
+              str[j] = xch;
+            }
+            else
+              break;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+//  ------------------------------------------------------------------
+
 char* XlatStr(char* dest, const char* src, int level, Chs* chrtbl, int qpencoded, bool i51) {
 
   if(not chrtbl)

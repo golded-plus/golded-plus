@@ -240,6 +240,7 @@ const word CRC_KEYBMODE         = 0xE8F2;
 const word CRC_KEYBSTACK        = 0x5F23;
 const word CRC_KLUDGE           = 0xA600;
 const word CRC_KLUDGECHRS       = 0x0EEF;
+const word CRC_LATINTOLOCAL     = 0x9397;
 const word CRC_LOADLANGUAGE     = 0x9F1B;
 const word CRC_LOCATIONALIAS    = 0x1B5F;
 const word CRC_LOCATIONDELIMITER= 0x5083;

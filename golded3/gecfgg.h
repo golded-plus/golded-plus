@@ -256,6 +256,8 @@ public:
   int         keybmode;
   char        keybstack[80];        // keybuf[80];
   gstrarray   kludge;
+  bool        latin2local;
+  char        latintolocal[256];
   Path        loadlanguage;
   GStrBag2    locationalias;
   std::string locationdelimiter;

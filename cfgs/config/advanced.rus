@@ -1669,6 +1669,13 @@ XlatCharSet CP850       ASCII       850_ASC.chs
 ;XlatLocalSet KOI8-R
  XlatLocalSet CP866
 
+// Этот кейворд позволяет делать обратную замену латинских букв на русские.
+// Замена будет делаться только тех латинских букв, что имеют по соседству
+// буквы локальной кодировки.
+//           ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
+;LatinToLocal ABCDEFGНIJKLMNOPQRSTUVWXYZabcdefghijklmnoрqrstuvwxуz  ;cp866 - H,p,y
+
+
 ----------------------------------------------------------------------
 -- АТРИБУТЫ СООБЩЕНИЙ
 

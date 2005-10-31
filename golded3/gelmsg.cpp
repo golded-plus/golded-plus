@@ -107,6 +107,15 @@ int Area::LoadMsg(GMsg* msg, uint32_t msgno, int margin, int mode) {
       if(not (msg->attr.uns() and not msg->attr.rcv()))
         return true;
     }
+
+    if (!mode && !AA->attr().hex())
+    {
+      Latin2Local(msg->by);
+      Latin2Local(msg->to);
+      Latin2Local(msg->re);
+      Latin2Local(msg->txt);
+    }
+
     msg->TextToLines(margin);
     return true;
   }

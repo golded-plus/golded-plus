@@ -412,6 +412,7 @@ SwitchK:
 
 SwitchL:
   switch(crc) {
+    case CRC_LATINTOLOCAL     :  CfgLatintolocal     ();  break;
     case CRC_LOADLANGUAGE     :  CfgLoadlanguage     ();  break;
     case CRC_LOCATIONALIAS    :  CfgLocationalias    ();  break;
     case CRC_LOCATIONDELIMITER:  CfgLocationdelimiter();  break;

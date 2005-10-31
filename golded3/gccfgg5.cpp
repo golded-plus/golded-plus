@@ -308,6 +308,20 @@ void CfgKludge() {
 
 //  ------------------------------------------------------------------
 
+void CfgLatintolocal()
+{
+  memset(CFG->latintolocal, 0, sizeof(CFG->latintolocal));
+  CFG->latin2local = true;
+
+  char *ptr = val, chr;
+  for (chr = 'A'; chr <= 'Z'; chr++, ptr++)
+    CFG->latintolocal[chr] = *ptr;
+  for (chr = 'a'; chr <= 'z'; chr++, ptr++)
+    CFG->latintolocal[chr] = *ptr;
+}
+
+//  ------------------------------------------------------------------
+
 void CfgLoadlanguage() {
 
   Path buf;

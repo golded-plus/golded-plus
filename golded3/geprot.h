@@ -180,6 +180,7 @@ Line* InsertLine(Line* newline, Line* oldline, int pos);
 Line* LastLine(Line* line);
 void  MakeLineIndex(GMsg* msg, int rmargin, bool getvalue, bool header_recode);
 void  MsgLineReIndex(GMsg* msg, int viewhidden=-1, int viewkludge=-1, int viewquote=-1);
+void  Latin2Local(char *str);
 char* XlatStr(char* dest, const char* src, int level, Chs* chrtbl, int qpencoded=false, bool i51=false);
 char* mime_header_decode(char* decoded, const char* encoded, char* charset = NULL);
 char* strxmimecpy(char* dest, const char* source, int level, int size, bool detect = false);

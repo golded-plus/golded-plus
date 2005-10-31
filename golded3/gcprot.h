@@ -229,6 +229,7 @@ void CfgKeybmode         ();
 void CfgKeybstack        ();
 void CfgKludge           ();
 void CfgKludgechrs       ();
+void CfgLatintolocal     ();
 void CfgLoadlanguage     ();
 void CfgLocationalias    ();
 void CfgLocationdelimiter();

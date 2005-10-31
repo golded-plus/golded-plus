@@ -739,6 +739,7 @@ CfgGed::CfgGed() {
   internetrfcbody = 0;
   internetviagate = false;
   keybmode = KEYB_POLL;
+  latin2local = false;
   logformat = 0;
   locationdelimiter = " \x1A ";
   menumarked = MODE_DONT;
