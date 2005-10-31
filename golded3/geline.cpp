@@ -1706,18 +1706,9 @@ void  Latin2Local(char *str)
           xch = CFG->latintolocal[chr];
 
           if (xch && (xch != chr))
-          {
-            left = j ? str[j-1] : 0;
-            right = str[j+1];
-
-            if (((left >= 0x80) && (toupper(left) != tolower(left))) ||
-                ((right >= 0x80) && (toupper(right) != tolower(right))))
-            {
-              str[j] = xch;
-            }
-            else
-              break;
-          }
+            str[j] = xch;
+          else
+            break;
         }
       }
     }
