@@ -108,15 +108,20 @@ int Area::LoadMsg(GMsg* msg, uint32_t msgno, int margin, int mode) {
         return true;
     }
 
+    msg->TextToLines(margin);
+
     if (!mode && !AA->attr().hex())
     {
       Latin2Local(msg->by);
       Latin2Local(msg->to);
-      Latin2Local(msg->re);
-      Latin2Local(msg->txt);
+
+      if (!msg->attr.frq() && !msg->attr.att() && !msg->attr.urq())
+        Latin2Local(msg->re);
+
+      for (Line *ln = msg->lin; ln; ln = ln->next)
+        Latin2Local(ln->txt.begin());
     }
 
-    msg->TextToLines(margin);
     return true;
   }
   return false;

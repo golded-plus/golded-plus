@@ -1684,7 +1684,8 @@ void ScanKludges(GMsg* msg, int getvalue) {
 
 void  Latin2Local(char *str)
 {
-  if (!CFG->latin2local) return;
+  if (!CFG->latin2local || !str) return;
+
   for (size_t i = 0; str[i]; i++)
   {
     byte chr = str[i];
