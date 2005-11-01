@@ -2026,12 +2026,15 @@ void IEclass::ToggleCase() {
 
   GFTRK("EditToggleCase");
 
-  if(col < currline->txt.length()) {
+  if (col < currline->txt.length())
+  {
     Undo->PushItem(EDIT_UNDO_OVR_CHAR);
-    if(g_toupper(currline->txt[col]) == currline->txt[col])
-      currline->txt[col] = g_tolower(currline->txt[col]);
+
+    char chr = currline->txt[col];
+    if (g_isupper(chr))
+      currline->txt[col] = g_tolower(chr);
     else
-      currline->txt[col] = g_toupper(currline->txt[col]);
+      currline->txt[col] = g_toupper(chr);
   }
 
   GFTRK(NULL);
@@ -2045,23 +2048,23 @@ void IEclass::ToggleCaseChar(gkey key,
                              Line *ln, int n)
 {
   int oldchar = *it;
-  int newchar = *it;
+  int newchar;
 
   switch (key)
   {
   case KK_EditToLower:
-    newchar = g_tolower(*it);
+    newchar = g_tolower(oldchar);
     break;
 
   case KK_EditToUpper:
-    newchar = g_toupper(*it);
+    newchar = g_toupper(oldchar);
     break;
 
   case KK_EditToggleCase:
-    if (g_toupper(*it) == oldchar)
-      newchar = g_tolower(*it);
+    if (g_isupper(oldchar))
+      newchar = g_tolower(oldchar);
     else
-      newchar = g_toupper(*it);
+      newchar = g_toupper(oldchar);
     break;
   }
 

@@ -29,6 +29,28 @@
 
 
 //  ------------------------------------------------------------------
+
+int g_islower(int c)
+{
+  return isascii(c) ? islower(c) : (c == g_tolower(c)) && (c != g_toupper(c));
+}
+
+int g_isupper(int c)
+{
+  return isascii(c) ? isupper(c) : (c != g_tolower(c)) && (c == g_toupper(c));
+}
+
+int g_isalpha(int c)
+{
+  return isascii(c) ? isalpha(c) : (c != g_tolower(c)) || (c != g_toupper(c));
+}
+
+int isxalnum(int c)
+{
+  return isascii(c) ? isalnum(c) : (c != g_tolower(c)) || (c != g_toupper(c));
+}
+
+//  ------------------------------------------------------------------
 //  Converts a character to upper or lower case depending on the
 //  previous character in the string
 

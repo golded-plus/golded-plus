@@ -1696,8 +1696,8 @@ void  Latin2Local(char *str)
       byte left = i ? str[i-1] : 0;
       byte right = str[i+1];
 
-      if (((left >= 0x80) && (g_toupper(left) != g_tolower(left))) ||
-          ((right >= 0x80) && (g_toupper(right) != g_tolower(right))))
+      if (((left  >= 0x80) && g_isalpha(left )) ||
+          ((right >= 0x80) && g_isalpha(right)))
       {
         str[i] = xch;
 

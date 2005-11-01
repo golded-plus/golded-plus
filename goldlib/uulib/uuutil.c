@@ -30,7 +30,6 @@
 #endif
 
 #include <stdio.h>
-#include <ctype.h>
 
 #ifdef STDC_HEADERS
 #include <stdlib.h>

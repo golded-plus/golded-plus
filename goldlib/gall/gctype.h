@@ -64,47 +64,24 @@ extern char tl[256], tu[256];
  * they don't match they treated as characters
  */
 
-#if defined(__WIN32__)
-
 #ifdef __cplusplus
 extern "C" {
-__inline__ int g_islower(int c)
-{
-  return isascii(c) ? islower(c) : (c == g_tolower(c)) && (c != g_toupper(c));
-}
+#endif
 
-__inline__ int g_isupper(int c)
-{
-  return isascii(c) ? isupper(c) : (c != g_tolower(c)) && (c == g_toupper(c));
-}
-
-__inline__ int g_isalpha(int c)
-{
-  return isascii(c) ? isalpha(c) : (c != g_tolower(c)) || (c != g_toupper(c));
-}
-}
-#else
-#define g_islower(c) (isascii(c) ? islower(c) : ((c) == g_tolower(c)) && ((c) != g_toupper(c)))
-#define g_isupper(c) (isascii(c) ? isupper(c) : ((c) != g_tolower(c)) && ((c) == g_toupper(c)))
-#define g_isalpha(c) (isascii(c) ? isalpha(c) : ((c) != g_tolower(c)) || ((c) != g_toupper(c)))
-#endif  //#ifdef __cplusplus
-
+#if defined(__WIN32__)
+int g_islower(int c);
+int g_isupper(int c);
+int g_isalpha(int c);
 #else
 #define g_islower islower
 #define g_isupper isupper
 #define g_isalpha isalpha
-#endif  //#if defined(__WIN32__)
+#endif
 
+int isxalnum(int c);
 
 #ifdef __cplusplus
-extern "C" {
-__inline__ int isxalnum(int c)
-{
-  return isascii(c) ? isalnum(c) : (c != g_tolower(c)) || (c != g_toupper(c));
 }
-}
-#else
-#define isxalnum(c) (isascii(c) ? isalnum(c) : ((c) != g_tolower(c)) || ((c) != g_toupper(c)))
 #endif
 
 #ifdef __BEOS__
@@ -113,7 +90,7 @@ __inline__ int isxalnum(int c)
  * This is a real disaster for cyrillic users ...
  * It's also not possible to use setlocale() to change it's behaviour. =-(
  */
-#undef iscntrl
+# undef iscntrl
 # define iscntrl(c) ((c < 0x7f) ? __isctype((c), _IScntrl) : 0)
 #endif /* __BEOS__ */
 

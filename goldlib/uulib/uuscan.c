@@ -33,7 +33,6 @@
 #endif
 
 #include <stdio.h>
-#include <ctype.h>
 
 #ifdef STDC_HEADERS
 #include <stdlib.h>
@@ -52,6 +51,8 @@
 #include <errno.h>
 #endif
 
+#include <gdefs.h>
+#include <gctype.h>
 #include <uudeview.h>
 #include <uuint.h>
 #include <fptools.h>
