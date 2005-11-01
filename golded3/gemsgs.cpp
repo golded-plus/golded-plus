@@ -386,7 +386,7 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
           HandleRandomLine(strxcpy(buf, AA->Origin(), sizeof(buf)), sizeof(buf))))
           continue;
 
-        if (strnieql(dst, "@echo", 5))
+        if (strnieql(dst, "@area", 5))
         {
           if (tokenxchg(dst, "@areatype", AA->basetype()))
             continue;
