@@ -1,13 +1,26 @@
 
 GoldED+ compilation howto
-by Alexander Aganichev, 2:5020/201.58 <aaganichev@yandex.ru>
+
+-------------------------------------------------------------------------------
+Table of contents
+
+1. Build Golded+ binaries using GNU C.
+2. Build Golded+/Win32 binaries using Microsoft Visual C.
+3. Build Golded+ distribution packages.
 
 -------------------------------------------------------------------------------
 
+1. Build Golded+ binaries using GNU C.
+
 To compile GoldED+ and utilities you'll need:
 
- - GNU C/C++ newer than 2.8.x, gcc 2.95.3 or gcc 3.x.x are recommended
+ - GNU C/C++ at least 2.95.4, gcc 3.x.x are recommended
+ - binutils: ar, ranlib, strip
  - GNU make, GNU sed and GNU grep
+ - shell ans file utilities: cat, mkdir, echo, rm, [ AKA test (If it's is
+   internal commands of your shell, then these utilities don't needs.)
+ - (optional) GNU Groff - if you wants to make html or txt documentation
+   instead man pages
  - vi, emacs, or any other editor you like
  - beer or bear on your choice ;-)
 
@@ -21,13 +34,19 @@ from www.mingw.org, copy .../lib/stdlibc++.a to /usr/local/lib/mingw, copy
 ------ COMMON ------
 
 ---- DJGPP ONLY ----
+Visits to http://www.delorie.com/djgpp/ and download following packages: djdev,
+bash, binutils, fileutils, gcc, gpp, grep, make, sed, Sh-utils, ntlfn, Groff.
+Install these packages and run bash.
+------ COMMON ------
+
+First, edit GNUmakef.def for the preferrable compilation options.
+
+---- DJGPP ONLY ----
 When building in DJGPP environment you may wish to use liblocal which may be
 found on http://aaganichev.narod.ru/djgpp/llocl02b.zip. This provides basic
 locale support via country.sys driver. Otherwise just comment -llocal in
 GNUmakef.def.
 ------ COMMON ------
-
-First, edit GNUmakef.def for the preferrable compilation options.
 
 Now go to golded3 and copy mygolded.__h to mygolded.h and adjust it for
 yourself (put your name, FTN address and e-mail). Goto root again.
@@ -40,3 +59,34 @@ ls bin/
 
 You have to get ged{short-patform-name}, gn{short-patform-name}, and
 rddt{short-patform-name}. If so, you did it!
+
+
+2. Build Golded+/Win32 binaries using Microsoft Visual C.
+
+To compile GoldED+ and utilities you'll need Visual Studio 6.0 with Service
+Pack 5 or Visual Studio .NET.
+
+First, propetly install a following Visual Studio's components:
+- Visual C/C++ compiler;
+- Nmake utility.
+
+Next, copy golded3\mygolded.__h to golded3\mygolded.h and edit last to adjust
+it for yourself (put your name, FTN address and e-mail).
+
+Last, run foolowing command:
+nmake /f golded.mak CFG="Release"
+and make some home work :) until compulation ends.
+
+Locate following files in Release\bin sub-directory: gedwin.exe, gnwin.exe and rddtwin.exe.
+If true - then you have Golded+/W32-MSVC :).
+
+
+3. Build Golded+ distribution packages.
+
+If you want to make binary package of Golded+ then you may call one of gp*.sh
+shell scripts:
+- dist-gps.sh to produce full sources package;
+- dist-gpc.sh to produce config files package;
+- dist-gpd.sh to produce dos binaries package;
+- dist-gpv.sh to produce Win32 (MS Visual C) binaries package;
+- dist-gpw.sh to produce Win32 (MINGW32) binaries package.
