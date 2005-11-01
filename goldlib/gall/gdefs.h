@@ -1,34 +1,36 @@
-//  This may look like C code, but it is really -*- C++ -*-
+/*  This include file is used in C and C++ sources.
+    Don't use C++ specific code here please.
+*/
+/*
+  ------------------------------------------------------------------
+  The Goldware Library
+  Copyright (C) 1990-1999 Odinn Sorensen
+  Copyright (C) 1999-2000 Alexander S. Aganichev
+  ------------------------------------------------------------------
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Library General Public
+  License as published by the Free Software Foundation; either
+  version 2 of the License, or (at your option) any later version.
 
-//  ------------------------------------------------------------------
-//  The Goldware Library
-//  Copyright (C) 1990-1999 Odinn Sorensen
-//  Copyright (C) 1999-2000 Alexander S. Aganichev
-//  ------------------------------------------------------------------
-//  This library is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Library General Public
-//  License as published by the Free Software Foundation; either
-//  version 2 of the License, or (at your option) any later version.
-//
-//  This library is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Library General Public License for more details.
-//
-//  You should have received a copy of the GNU Library General Public
-//  License along with this program; if not, write to the Free
-//  Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-//  MA 02111-1307, USA
-//  ------------------------------------------------------------------
-//  $Id$
-//  ------------------------------------------------------------------
-//  Basic definitions and types.
-//  ------------------------------------------------------------------
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Library General Public License for more details.
 
+  You should have received a copy of the GNU Library General Public
+  License along with this program; if not, write to the Free
+  Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+  MA 02111-1307, USA
+  ------------------------------------------------------------------
+  $Id$
+  ------------------------------------------------------------------
+  Basic definitions and types.
+  ------------------------------------------------------------------
+*/
 #ifndef __goldall_h
 #define __goldall_h
 
-//  ------------------------------------------------------------------
+/*  ------------------------------------------------------------------ */
 #ifdef __cplusplus
 #include <cstddef>
 #endif
@@ -41,25 +43,25 @@
 #include <stdint.h>
 #endif
 
-//  ------------------------------------------------------------------
-// Disable some MS Visual C warnings
+/*  ------------------------------------------------------------------
+// Disable some MS Visual C warnings */
 
 #if defined(_MSC_VER)
-//
+/*
 // C4786: 'identifier' : identifier was truncated to 'number'
 //        characters in the debug information
 //
 // C4065: switch statement contains 'default' but no 'case' labels
 //
 // C4200: nonstandard extension used : zero-sized array in struct/union
-//
+*/
 #pragma warning(disable: 4200 4786 4065)
 #endif
 
-//  ------------------------------------------------------------------
-//  Define portability and shorthand notation
+/*  ------------------------------------------------------------------
+//  Define portability and shorthand notation */
 
-// GCC after 2.95.x have "and", "not", and "or" predefined
+/* GCC after 2.95.x have "and", "not", and "or" predefined */
 #if __GNUC__ < 2 || (__GNUC__ == 2 && __GNUC_MINOR__ < 96)
 #ifndef and
 #define not      !
@@ -96,15 +98,15 @@
 #endif
 
 
-//  ------------------------------------------------------------------
-//  Special character constants
+/*  ------------------------------------------------------------------
+//  Special character constants */
 
-#define CTRL_A '\x01'   // FidoNet kludge line char
-#define SOFTCR '\x8D'   // "Soft" carriage-return
+#define CTRL_A '\x01'   /* FidoNet kludge line char  */
+#define SOFTCR '\x8D'   /* "Soft" carriage-return    */
 
 
-//  ------------------------------------------------------------------
-//  Supplements for the built-in types
+/*  ------------------------------------------------------------------
+//  Supplements for the built-in types   */
 
 #ifdef _MSC_VER
 #if (UCHAR_MAX == 0xFF)
@@ -146,26 +148,26 @@ typedef unsigned int uint;
 typedef uint8_t   bits;
 typedef uint32_t  time32_t;   /* 32-bit time_t type */
 
-//  ------------------------------------------------------------------
+/*  ------------------------------------------------------------------  */
 
 #ifdef __cplusplus
 
-//  ------------------------------------------------------------------
-//  Common function-pointer types
+/*  ------------------------------------------------------------------   */
+/*  Common function-pointer types                                        */
 
 typedef void (*VfvCP)();
 typedef int (*IfvCP)();
 typedef int (*IfcpCP)(char*);
 
 
-//  ------------------------------------------------------------------
-//  Function pointer for stdlib qsort(), bsearch() compare functions
+/*  ------------------------------------------------------------------   */
+/*  Function pointer for stdlib qsort(), bsearch() compare functions     */
 
 typedef int (*StdCmpCP)(const void*, const void*);
 
 
-//  ------------------------------------------------------------------
-//  Utility templates
+/*  ------------------------------------------------------------------   */
+/*  Utility templates                                                    */
 
 template <class T> inline bool in_range(T a, T b, T c)   { return (a >= b) and (a <= c); }
 template <class T> inline    T absolute(T a)             { return a < 0 ? -a : a; }
@@ -177,7 +179,7 @@ template <class T> inline bool make_bool(T a)            { return !!a; }
 template <class T> inline bool make_bool_not(T a)        { return !a; }
 
 
-//  ------------------------------------------------------------------
+/*  ------------------------------------------------------------------
 //  Handy macro for safe casting.           Public domain by Bob Stout
 //  ------------------------------------------------------------------
 //
@@ -193,19 +195,19 @@ template <class T> inline bool make_bool_not(T a)        { return !a; }
 //  longvar = (long)my_union;         // Illegal cast
 //  longvar = CAST(long, my_union);   // Legal cast
 //
-//  ------------------------------------------------------------------
+//  ------------------------------------------------------------------ */
 
 #define CAST(new_type,old_object) (*((new_type *)&(old_object)))
 
 
-//  ------------------------------------------------------------------
-//  Get size of structure member
+/*  ------------------------------------------------------------------ */
+//  Get size of structure member                                       */
 
 #define sizeofmember(__struct, __member)  sizeof(((__struct*)0)->__member)
 
 
-//  ------------------------------------------------------------------
-//  Legacy defines
+/*  ------------------------------------------------------------------ */
+//  Legacy defines                                                     */
 
 #define RngV in_range
 #define AbsV absolute
@@ -213,13 +215,12 @@ template <class T> inline bool make_bool_not(T a)        { return !a; }
 #define MinV minimum_of_two
 #define MaxV maximum_of_two
 
-//  ------------------------------------------------------------------
+/*  ------------------------------------------------------------------ */
 
-#endif  //#ifdef __cplusplus
+#endif  /*#ifdef __cplusplus*/
 
-//  ------------------------------------------------------------------
+/*  ------------------------------------------------------------------ */
 
 #endif
 
-//  ------------------------------------------------------------------
-
+/*  ------------------------------------------------------------------ */
