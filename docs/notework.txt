@@ -19,7 +19,7 @@ ______________________________________________________________________
 
 + New config file token LatinToLocal.
   Used to translate latin A-Za-z to local charset if one of neighbours
-  is from local charset too.
+  is from local charset too. Will work only for search.
 
 + New config file token AreaRecycleBin <area>. GoldEd will move deleted
   messages to <area>, if this token is defined.

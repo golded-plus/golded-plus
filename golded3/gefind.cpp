@@ -27,6 +27,10 @@
 #include <golded.h>
 #include <gesrch.h>
 
+#if defined(__USE_ALLOCA__)
+#include <malloc.h>
+#endif
+
 
 //  ------------------------------------------------------------------
 
@@ -117,7 +121,28 @@ bool FindString(GMsg* msg, const char* prompt, int what) {
     w_progress(MODE_UPDATE, C_INFOW, AA->lastread(), AA->Msgn.Count(), LNG->AdvancedSearch);
 
     bool success = false;
-    if(AA->LoadMsg(msg, AA->Msgn.CvtReln(AA->lastread()), margin)) {
+    if(AA->LoadMsg(msg, AA->Msgn.CvtReln(AA->lastread()), margin))
+    {
+      if (CFG->latin2local)
+      {
+        Latin2Local(msg->by);
+        Latin2Local(msg->to);
+
+        if (!msg->attr.frq() && !msg->attr.att() && !msg->attr.urq())
+          Latin2Local(msg->re);
+
+        for (Line *ln = msg->lin; ln; ln = ln->next)
+        {
+#if defined(__USE_ALLOCA__)
+          char *temp = (char *)alloca(ln->txt.length()+1);
+#else
+          __extension__ char temp[ln->txt.length()+1];
+#endif
+          strcpy(temp, ln->txt.c_str());
+          Latin2Local(temp);
+          ln->txt = temp;
+        }
+      }
 
       // If hit, search again current mail without shortcircuit evaluation
       success = srchmgr.search(msg, false, true);
