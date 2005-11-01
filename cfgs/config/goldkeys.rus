@@ -493,13 +493,23 @@ W           READwritemsg
 ;F11     EDITmacro ":-)"
 ;^F11     EDITmacro ":-("
 
-;Т   EDITmacro "AE"
+; Вставить строку "[...skipped...]" по нажатию Alt-T
+;@T             EditMacro "[...skipped...]"
+
+;Т   EDITmacro "AE"  ; немецкие умляуты
 ;Э   EDITmacro "OE"
 ;П   EDITmacro "AA"
 ;С   EDITmacro "ae"
 ;Ы   EDITmacro "oe"
 ;Ж   EDITmacro "aa"
-;H   EDITmacro "H"
+
+;Н   EDITmacro "H"   ; Устаревший способ замены русской Н, не рекомендуется!
+
+; По нажатию DEL переместить сообщение в область "корзины", см. также описание
+; области TRASHCAN в файле advanced.rus. (при этом нужно закомментировать выше
+; расположенную строку "Del         READdeletemsg")
+;
+DEL  EDITmacro READcopymoveforward "M" "TRASHCAN" Enter
 
 ;   ------------------------------------------------------------------
 ;   ВНЕШНИЕ УТИЛИТЫ

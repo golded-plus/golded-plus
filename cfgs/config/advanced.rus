@@ -2157,6 +2157,9 @@ AreaDef DUPE.MAIL "Повтоpная почта"    L Echo  Squish  C:\FIDO\SQBASE\DUPEMAIL .
 ;AreaDef EZY_TEST "Testing Ezycom"     E Echo  Ezycom  711                . (Loc) "Ezycom Test Area"
 ;AreaDef TWILIGHT "Twilight Zone"      Z Echo  PCBoard R:\Pcb\Main\Twzn7  7:77/777.7777 (Loc)
 
+// Область для "корзины", см. также пример макроса в goldkeys.cfg
+;AREADEF TRASHCAN "Корзина для удалённых сообщений" Z Local Squish M:\SQUISH\TRASHCAN . (Loc Lok)
+
 // Описание упакованной базы сообщений. Ее можно будет только читать!
 // Внимание: обязательно должно быть указано pасшиpение в имени файла
 // упакованной базы сообщений!
