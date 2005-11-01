@@ -5,7 +5,7 @@ PATCH=15
 
 TOP=../..
 TARGET=uulib
-INCS=-I$(TOP)/goldlib/uulib
+INCS=-I$(TOP)/goldlib/uulib -I$(TOP)/goldlib/gall
 CFLAGS=-DHAVE_CONFIG_H -DVERSION=\"$(VERSION)\" -DPATCH=\"$(PATCH)\"
 
 include $(TOP)/GNUmakef.inc
