@@ -331,7 +331,7 @@ void GMsgList::print_line(uint idx, uint pos, bool isbar) {
     strsetsz(dbuf, 10);
   else
     *dbuf = NUL;
-  sprintf(nbuf, "%5lu", long(CFG->switches.get(disprealmsgno) ? ml->msgno : AA->Msgn.ToReln(ml->msgno)));
+  sprintf(nbuf, "%5u", (CFG->switches.get(disprealmsgno) ? ml->msgno : AA->Msgn.ToReln(ml->msgno)));
   sprintf(buf, "%-5.5s%s%-*.*s %-*.*s%s%-*.*s %s",
     nbuf, ml->marks,
     bysiz, bysiz, ml->by,
@@ -775,13 +775,16 @@ void GThreadlist::do_delayed() {
     // Reload message if not sure that just reread
     if(not AA->Msglistheader()) {
       t = list[index];
-
+#if 1 // need to read header only
+      AA->LoadHdr(&msg, t.msgno);
+#else
       if(AA->Msglistfast()) {
         AA->LoadHdr(&msg, t.msgno);
       }
       else {
         AA->LoadMsg(&msg, t.msgno, CFG->dispmargin-(int)CFG->switches.get(disppagebar));
       }
+#endif
     }
     wtitle(msg.re, TCENTER|TBOTTOM, tattr);
   }
@@ -861,20 +864,22 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar) {
 #else
   __extension__ char buf2[maxlev*2+2];
 #endif
-  int attrh, attrw;
-  uint tdlen;
 
   t = list[idx];
+  size_t tdlen = xlen - ((AA->Msglistdate() == MSGLISTDATE_NONE) ? 8 : 18);
 
-  tdlen = xlen - ((AA->Msglistdate() == MSGLISTDATE_NONE) ? 8 : 18);
-
+#if 1 // need to read header only
+  AA->LoadHdr(&msg, t.msgno);
+#else
   if(AA->Msglistfast()) {
     AA->LoadHdr(&msg, t.msgno);
   }
   else {
     AA->LoadMsg(&msg, t.msgno, CFG->dispmargin-(int)CFG->switches.get(disppagebar));
   }
+#endif
 
+  int attrh, attrw;
   if(msg.attr.uns() and not msg.attr.rcv() and not msg.attr.del()) {
     attrw = C_MENUW_UNSENT;
     attrh = C_MENUQ_UNSENTHIGH;
@@ -906,7 +911,7 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar) {
       marks[1] = MMRK_MARK;
   }
 
-  sprintf(buf, "%6lu  %*c", long(CFG->switches.get(disprealmsgno) ? t.msgno : AA->Msgn.ToReln(t.msgno)), tdlen, ' ');
+  sprintf(buf, "%6u  %*c", (CFG->switches.get(disprealmsgno) ? t.msgno : AA->Msgn.ToReln(t.msgno)), tdlen, ' ');
 
   if(AA->Msglistdate() != MSGLISTDATE_NONE) {
     char dbuf[11];
@@ -931,7 +936,9 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar) {
   window.prints(pos, 0, isbar ? sattr : attrw, buf);
   window.prints(pos, 6, isbar ? sattr : hattr, marks);
 
-  if(strlen(buf2) > h_offset) {
+  size_t buf2len = strlen(buf2);
+  if (buf2len > h_offset)
+  {
     strxcpy(buf, &buf2[h_offset], tdlen);
     window.prints(pos, 8, isbar ? (sattr|ACSET) : (wattr|ACSET), buf);
   }
@@ -950,21 +957,22 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar) {
     if (colorname == -1) colorname = GetColorName(msg.By());
     if (colorname != -1) attr = colorname;
   }
-
-  if (CFG->replylinkfloat && isbar)
+  else if (CFG->replylinkfloat)
   {
-    int l1 = strlen(buf2);
-    int l2 = strlen(msg.By());
-
-    if ((l1 + l2) > tdlen)
-      new_hoffset = (l1 + l2)-tdlen+1;
+    size_t bylen = strlen(msg.By());
+    if ((buf2len + bylen) > tdlen)
+      new_hoffset = (buf2len + bylen)-tdlen+1;
     else
       new_hoffset = 0;
+
+    attr = sattr;
   }
 
-  if((strlen(buf2) > h_offset) and (strlen(&buf2[h_offset]) < tdlen)) {
-    strxcpy(buf, msg.By(), tdlen - strlen(&buf2[h_offset]));
-    window.prints(pos, 8+strlen(&buf2[h_offset]), isbar ? sattr : attr, buf);
+  size_t buflen = strlen(&buf2[h_offset]);
+  if (buflen < tdlen)
+  {
+    strxcpy(buf, msg.By(), tdlen - buflen);
+    window.prints(pos, 8 + buflen, attr, buf);
   }
 }
 
