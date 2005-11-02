@@ -1226,12 +1226,12 @@ void LookupNode(GMsg* msg, const char* name, int what) {
 void CheckNodelists() {
 
   // Copy of previous timestamp
-  static long oldft = 0;
+  static time32_t oldft = 0;
 
   // Get timestamp of the .GXL file
   Path file;
   strcpy(file, AddPath(CFG->nodepath, "goldnode.gxl"));
-  long ft = GetFiletime(file);
+  time32_t ft = GetFiletime(file);
 
   // Check nodelists if timestamp changed
   if(ft != oldft) {
@@ -1274,7 +1274,8 @@ void CheckNodelists() {
             waitkeyt(10000);
             w_info(NULL);
           }
-          else if(abs(long(GetFiletime(NODE->nodelist[n].fn)-NODE->nodelist[n].ft))>1) {
+          else if (GetFiletime(NODE->nodelist[n].fn) != NODE->nodelist[n].ft)
+          {
             w_infof(" %s %s ", LNG->NodelistOutdated, NODE->nodelist[n].fn);
             HandleGEvent(EVTT_ATTENTION);
             waitkeyt(10000);

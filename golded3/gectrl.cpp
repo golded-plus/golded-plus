@@ -329,7 +329,7 @@ void DoKludges(int mode, GMsg* msg, int kludges) {
         strcpy(buf, msg->iorig);
         strchg(buf, '@', '.');
       }
-      sprintf(buf2, "<GED%08lX@%s>", long(getMsgId()), buf);
+      sprintf(buf2, "<GED%08X@%s>", getMsgId(), buf);
       throw_release(msg->messageid);
       msg->messageid = throw_strdup(buf2);
       CvtMessageIDtoMSGID(buf2, buf, AA->echoid(), "MSGID");
@@ -337,7 +337,7 @@ void DoKludges(int mode, GMsg* msg, int kludges) {
     }
     else {
       msg->orig.make_string(buf2, msg->odom);
-      sprintf(msg->msgids, "%s %08lx", buf2, long(getMsgId()));
+      sprintf(msg->msgids, "%s %08x", buf2, getMsgId());
     }
     if(CFG->switches.get(usemsgid) and strcmp(AA->basetype(), "PCBOARD")) {
       sprintf(buf, "\001MSGID: %s", msg->msgids);

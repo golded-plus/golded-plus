@@ -1409,7 +1409,7 @@ void GotoReplies() {
         cursorbar = replies;
       rlist[replies].msgno[0] = (n==list_max+1) ? '*' : '+';
       uint32_t msgno = CFG->switches.get(disprealmsgno) ? msgn : reln;
-      sprintf(rlist[replies].msgno+1, "%lu", long(msgno));
+      sprintf(rlist[replies].msgno+1, "%u", msgno);
       maxmsgno = MaxV(maxmsgno, (uint)strlen(rlist[replies].msgno+1));
       strcpy(rlist[replies].name, rmsg->by);
       maxname = MaxV(maxname, (uint)strlen(rlist[replies].name));

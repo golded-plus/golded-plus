@@ -934,7 +934,7 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
             if(r) {
               if(AA->Replyre() == REPLYRE_NUMERIC and not AA->isinternet()) {
                 ISub subj;
-                sprintf(subj, "Re^%lu:%s", long(((number+1) > number) ? (number+1) : number), r);
+                sprintf(subj, "Re^%u:%s", (((number+1) > number) ? (number+1) : number), r);
                 strcpy(msg->re, subj);
               }
             }

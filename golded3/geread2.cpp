@@ -309,12 +309,12 @@ void GotoMsgno() {
         replies[replyn] = AA->Msgn.ToReln(reader_msg->link.list(replyn-1));
     }
     if(replyto)
-      ptr += sprintf(ptr, " -%lu", long(replyto));
+      ptr += sprintf(ptr, " -%u", replyto);
     for(int replyn=0,plus=0; replyn<list_max+1; replyn++)
       if(replies[replyn])
-        ptr += sprintf(ptr, " %s%lu", (plus++?"":"+"), long(replies[replyn]));
+        ptr += sprintf(ptr, " %s%u", (plus++?"":"+"), replies[replyn]);
     if(replynext)
-      sprintf(ptr, " *%lu", long(replynext));
+      sprintf(ptr, " *%u", replynext);
 
     if(inhdr) {
       HeaderView->window.activate_quick();

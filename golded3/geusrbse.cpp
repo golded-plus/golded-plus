@@ -349,7 +349,7 @@ bool guserbase::edit_entry(uint idx) {
   if(dt)
     window.prints(13, 38, wattr, strftimei(dbuf, 16, "%d %b %y", ggmtime(&dt)));
 
-  sprintf(dbuf, "%8ld", long(entry.times));
+  sprintf(dbuf, "%8u", entry.times);
   window.prints(13, width-11, wattr, dbuf);
 
   addressbook_form form(window);
