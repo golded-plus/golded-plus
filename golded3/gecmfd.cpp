@@ -149,13 +149,16 @@ void Area::DelMsgs(GMsg* msg) {
 
   GFTRK("DelMsgs");
 
-  int areano = AL.AreaEchoToNo(CFG->arearecyclebin);
-  int currno = AL.AreaIdToNo(CurrArea);
-  if ((areano != currno) && (areano >= 0))
+  if (CFG->arearecyclebin[0])
   {
-    CopyMoveForward(true);
-    GFTRK(NULL);
-    return;
+    int areano = AL.AreaEchoToNo(CFG->arearecyclebin);
+    int currno = AL.AreaIdToNo(CurrArea);
+    if ((areano != currno) && (areano >= 0))
+    {
+      CopyMoveForward(true);
+      GFTRK(NULL);
+      return;
+    }
   }
 
   uint n, x;
@@ -420,7 +423,7 @@ void CmfMsgs(GMsg* msg, bool torecycle)
       destarea = AL.AreaNoToId(a);
   }
 
-  if (torecycle || (cmf == MODE_FORWARD ? not AA->Areaforwarddirect() : not AA->Areacopydirect()))
+  if (cmf == MODE_FORWARD ? not AA->Areaforwarddirect() : not AA->Areacopydirect())
     destarea = AreaPick(pickstr, 6, &destarea);
 
   if(destarea == -1) {
