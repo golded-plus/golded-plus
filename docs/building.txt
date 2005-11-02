@@ -73,7 +73,7 @@ First, propetly install a following Visual Studio's components:
 Next, copy golded3\mygolded.__h to golded3\mygolded.h and edit last to adjust
 it for yourself (put your name, FTN address and e-mail).
 
-Last, run foolowing command:
+Last, run following command:
 nmake /f golded.mak CFG="Release"
 and make some home work :) until compulation ends.
 
