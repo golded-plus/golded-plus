@@ -1719,6 +1719,21 @@ void  Latin2Local(char *str)
 
 //  ------------------------------------------------------------------
 
+void  Latin2Local(std::string &str)
+{
+#if defined(__USE_ALLOCA__)
+  char *temp = (char *)alloca(str.length()+1);
+#else
+  __extension__ char temp[str.length()+1];
+#endif
+  strcpy(temp, str.c_str());
+  Latin2Local(temp);
+  str = temp;
+}
+
+
+//  ------------------------------------------------------------------
+
 char* XlatStr(char* dest, const char* src, int level, Chs* chrtbl, int qpencoded, bool i51) {
 
   if(not chrtbl)
