@@ -2048,7 +2048,7 @@ void IEclass::ToggleCaseChar(gkey key,
                              Line *ln, int n)
 {
   int oldchar = *it;
-  int newchar;
+  int newchar = 0;
 
   switch (key)
   {

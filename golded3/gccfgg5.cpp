@@ -315,9 +315,9 @@ void CfgLatintolocal()
 
   char *ptr = val, chr;
   for (chr = 'A'; chr <= 'Z'; chr++, ptr++)
-    CFG->latintolocal[chr] = *ptr;
+    CFG->latintolocal[int(chr)] = *ptr;
   for (chr = 'a'; chr <= 'z'; chr++, ptr++)
-    CFG->latintolocal[chr] = *ptr;
+    CFG->latintolocal[int(chr)] = *ptr;
 }
 
 //  ------------------------------------------------------------------
