@@ -702,10 +702,10 @@ char* ggetosstring(void) {
         strcpy(_tmp, info.szCSDVersion);
         strchg(_tmp, ' ', '_');
         strisrep(_tmp, "Service_Pack_", "SP");
-        sprintf(osstring, "%s %u.%u.%u-%s %s", ostype, info.dwMajorVersion, info.dwMinorVersion, info.dwBuildNumber, _tmp, processor);
+        sprintf(osstring, "%s %u.%u.%u-%s %s", ostype, unsigned(info.dwMajorVersion), unsigned(info.dwMinorVersion), unsigned(info.dwBuildNumber), _tmp, processor);
       }
       else
-        sprintf(osstring, "%s %u.%u.%u %s", ostype,info.dwMajorVersion, info.dwMinorVersion, info.dwBuildNumber, processor);
+        sprintf(osstring, "%s %u.%u.%u %s", ostype, unsigned(info.dwMajorVersion), unsigned(info.dwMinorVersion), unsigned(info.dwBuildNumber), processor);
     }
     else
       strcpy(osstring, "Win32-unknown");
