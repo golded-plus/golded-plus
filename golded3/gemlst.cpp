@@ -775,16 +775,12 @@ void GThreadlist::do_delayed() {
     // Reload message if not sure that just reread
     if(not AA->Msglistheader()) {
       t = list[index];
-#if 1 // need to read header only
-      AA->LoadHdr(&msg, t.msgno);
-#else
       if(AA->Msglistfast()) {
         AA->LoadHdr(&msg, t.msgno);
       }
       else {
         AA->LoadMsg(&msg, t.msgno, CFG->dispmargin-(int)CFG->switches.get(disppagebar));
       }
-#endif
     }
     wtitle(msg.re, TCENTER|TBOTTOM, tattr);
   }
@@ -868,16 +864,12 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar) {
   t = list[idx];
   size_t tdlen = xlen - ((AA->Msglistdate() == MSGLISTDATE_NONE) ? 8 : 18);
 
-#if 1 // need to read header only
-  AA->LoadHdr(&msg, t.msgno);
-#else
   if(AA->Msglistfast()) {
     AA->LoadHdr(&msg, t.msgno);
   }
   else {
     AA->LoadMsg(&msg, t.msgno, CFG->dispmargin-(int)CFG->switches.get(disppagebar));
   }
-#endif
 
   int attrh, attrw;
   if(msg.attr.uns() and not msg.attr.rcv() and not msg.attr.del()) {
