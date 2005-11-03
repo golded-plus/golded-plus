@@ -82,7 +82,7 @@
 #define GAUTO  3
 #define MAYBE  4
 
-#define NUL ((char)'\x00')    // Common ASCII control codes
+#define NUL ((char)'\x00')    /* Common ASCII control codes */
 #define BEL '\x07'
 #define BS  '\x08'
 #define HT  '\x09'
@@ -127,7 +127,7 @@ typedef unsigned int    uint32_t;
 #else
 #error Dont know how to define 32 bit integers
 #endif
-#endif  //#ifdef _MSC_VER
+#endif  /*#ifdef _MSC_VER */
 
 #ifdef __DJGPP__
 typedef unsigned char  uint8_t;
