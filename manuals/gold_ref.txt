@@ -6057,10 +6057,10 @@ The following is a list of the tokens available:
 @dlname     Destination last name.
 @dname      Destination name.
 @dpseudo    Destination pseudonym (see addressbook), or @dfname.
-@echopath   path to echoarea base (fill pathname like specified in config),
+@areapath   path to echoarea base (fill pathname like specified in config),
             this token is valid for echoareas only.
-@echoname   echoarea name (areatag), this token is valid for echoareas only.
-@echotype   echoarea base type (OPUS, JAM, Squish, PCBoard, ...), this token
+@areaname   echoarea name (areatag), this token is valid for echoareas only.
+@areatype   echoarea base type (OPUS, JAM, Squish, PCBoard, ...), this token
             is valid for echoareas only.
 @f3daddr    Current from 3D (boss) address.
 @faddr      Current from address.
