@@ -55,6 +55,9 @@ extern char tl[256], tu[256];
 #define g_tolower(c) tl[(int)(uint8_t)(c)]
 #define g_toupper(c) tu[(int)(uint8_t)(c)]
 #endif
+#else
+#define g_tolower(c)  tolower(c)
+#define g_toupper(c)  toupper(c)
 #endif
 
 
