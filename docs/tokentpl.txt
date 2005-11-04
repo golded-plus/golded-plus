@@ -2,6 +2,9 @@
 * These macroses may be used in:
 * template file, externutil command line, tearline and tagline.
 ==========================================================================
+@areaname
+@areapath
+@areatype
 @attr
 @c3daddr
 @caddr
@@ -24,9 +27,6 @@
 @dname
 @dpgp
 @dpseudo
-@echoname
-@echopath
-@echotype
 @f3daddr
 @faddr
 @ffname
