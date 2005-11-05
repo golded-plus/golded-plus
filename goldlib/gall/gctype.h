@@ -76,9 +76,9 @@ int g_islower(int c);
 int g_isupper(int c);
 int g_isalpha(int c);
 #else
-#define g_islower islower
-#define g_isupper isupper
-#define g_isalpha isalpha
+#define g_islower(c) islower(c)
+#define g_isupper(c) isupper(c)
+#define g_isalpha(c) isalpha(c)
 #endif
 
 int isxalnum(int c);
