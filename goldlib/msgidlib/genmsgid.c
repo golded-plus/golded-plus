@@ -85,7 +85,7 @@ dword GenMsgIdEx(char *seqdir, unsigned long max_outrun, dword (*altGenMsgId)(vo
         p = getenv("SEQOUT");
         if ( p && isdigit((int)(*p)) ) {
             max_outrun = (unsigned long)atol(p);
-            switch (g_tolower(p[strlen(p) - 1])) {
+            switch (tolower(p[strlen(p) - 1])) {
                 case 'y':   max_outrun *= 365;
                 case 'd':   max_outrun *= 24;
                 case 'h':   max_outrun *= 60*60;
