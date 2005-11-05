@@ -36,7 +36,6 @@ iso_mac.chs   Charset conversion table from Latin-1 to MAC
 iso_vt1.chs   Charset conversion table from Latin-1 to VT100
 ita_asc.chs   Charset conversion table from ITALIAN to ASCII
 itl_ibm.chs   Charset conversion table from ITALIAN to IBMPC
-koi_866.chs   Charset conversion table from koi8-r to cp866
 kou_866.chs   Charset conversion table from koi8-u to cp866
 kou_ukr.chs   Charset conversion table from koi8-u to cp1125
 mac_ibm.chs   Charset conversion table from MAC to IBMPC
@@ -288,3 +287,11 @@ mac_mac.chs Charset conversion table from mac-roman to mac-roman (no conversion)
 850_asc.chs Charset conversion table from cp850 to us-ascii
 mac_850.chs Charset conversion table from mac-roman to cp850
 mac_asc.chs Charset conversion table from mac-roman to us-ascii
+koi_866.chs Charset conversion table from koi8-r to cp866
+koi8_u8.chs Charset conversion table from KOI8-R to UTF-8
+iso1_u8.chs Charset conversion table from ISO8859-1 to UTF-8
+865_u8.chs Charset conversion table from CP865 to UTF-8
+866_u8.chs Charset conversion table from CP866 to UTF-8
+850_u8.chs Charset conversion table from CP850 to UTF-8
+437_u8.chs Charset conversion table from CP437 to UTF8
+1125_u8.chs Charset conversion table from CP1125 to UTF-8
