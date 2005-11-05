@@ -317,6 +317,7 @@ void TouchFile(const char* filename) {
 
 char* PathCopy(char* __dst, const char* __src) {
   strschg_environ(strxcpy(__dst, __src, sizeof(Path)));
+  getcwd(__dst, sizeof(Path));      // expand ~/ & etc.
   return AddBackslash(__dst);
 }
 
