@@ -142,6 +142,7 @@ static void cpuname(int family, int model, const char *v_name, char *m_name)
       case 1:
       case 2:
       case 4:
+      case 6:
         strcpy(m_name, "AMD_Athlon");
         break;
       case 3:
