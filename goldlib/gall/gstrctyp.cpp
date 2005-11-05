@@ -29,21 +29,26 @@
 
 
 //  ------------------------------------------------------------------
-
+#ifndef g_islower
 int g_islower(int c)
 {
   return isascii(c) ? islower(c) : (c == g_tolower(c)) && (c != g_toupper(c));
 }
+#endif
 
+#ifndef g_isupper
 int g_isupper(int c)
 {
   return isascii(c) ? isupper(c) : (c != g_tolower(c)) && (c == g_toupper(c));
 }
+#endif
 
+#ifndef g_isalpha
 int g_isalpha(int c)
 {
   return isascii(c) ? isalpha(c) : (c != g_tolower(c)) || (c != g_toupper(c));
 }
+#endif
 
 int isxalnum(int c)
 {
