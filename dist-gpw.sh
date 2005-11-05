@@ -3,12 +3,11 @@
 # Create a archive 'gpw32-*.zip' (gpwYMMDD.zip) with Win32 (MinGW) build
 # of the Golded+.
 
-if [ ! $OSTYPE = "cygwin" ]
+if [ ! "${TERM}" = "cygwin" ]
 then
   echo "This is not Cygwin enviroment, exit."
   exit
 fi
-
 
 date=`date +%Y%m%d`
 name=../gpw32-115-${date}.zip
