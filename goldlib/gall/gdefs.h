@@ -201,13 +201,13 @@ template <class T> inline bool make_bool_not(T a)        { return !a; }
 
 
 /*  ------------------------------------------------------------------ */
-//  Get size of structure member                                       */
+/*  Get size of structure member                                       */
 
 #define sizeofmember(__struct, __member)  sizeof(((__struct*)0)->__member)
 
 
 /*  ------------------------------------------------------------------ */
-//  Legacy defines                                                     */
+/*  Legacy defines                                                     */
 
 #define RngV in_range
 #define AbsV absolute
