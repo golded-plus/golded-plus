@@ -323,6 +323,34 @@ UserListFile fidouser.lst
 // Но в веpсиях + 1.1.x уже декодиpуются и многосекционные uue!!!
 UuDecodePath C:\FIDO\UUWREADY\UUEGOLD\
 
+// ADDRESSBOOKADD <No/Yes/Always>
+// При ответах на письма автоматически добавлять адресатов в адресную книгу.
+// Значение по умолчанию "NO"
+ADDRESSBOOKADD NO        ; No, never automatically add an user
+;ADDRESSBOOKADD YES        ; Add only if it's a netmail
+;ADDRESSBOOKADD ALWAYS    ; Yes, add them always.
+
+// OUTPUTFILE <Pathname>
+// Имя файла (можно указывать с путём), предлагаемое для сохранения письма в
+// файл при нажатии Alt-W. Значение по умолчанию не установлено.
+;OUTPUTFILE GOLDED.OUT
+
+// FILEALIAS <Alias> <Pathname>
+// Алиасы для файлов (Алиас - короткое имя, при наборе которого подставляется
+// указанный файл.)
+;FILEALIAS DKB  R:\DKBBS\DKBBS
+;FILEALIAS DKP  R:\DKPOINT\POINTS
+;FILEALIAS VOTE R:\VOTES\VOTE.LST
+
+//  LOOKUPUSERBASE <Yes/No>  (No)
+// Если разрешено, Golded+ будет искать введённое в поле имени адресата имя
+// в базе пользователей. Имя можно писать с регулярными выражениями.
+;LOOKUPUSERBASE No
+
+//  PATHREPORTFILE <Pathname>
+// Имя файла для отчёта о путях прохождения писем в эхе, который генерируется при
+// нажатии Ctrl-K.
+;PATHREPORTFILE R:\reports
 
 ----------------------------------------------------------------------
 -- КВИТАНЦИЯ О ПОЛУЧЕНИИ (CONFIRMATION RECEIPTS)
