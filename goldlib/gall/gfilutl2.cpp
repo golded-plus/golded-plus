@@ -77,7 +77,7 @@ int strschg_environ(std::string& s) {
   size_t posn, posn1;
 
   while(((posn=s.find('%')) != s.npos) and ((posn1=s.find('%', posn+1)) != s.npos)) {
-    fnd = s.substr(posn+1, posn1-1); 
+    fnd = s.substr(posn+1, posn1-1);
     const char* rep = getenv(fnd.c_str());
     rep = rep ? rep : "";
     s.replace(posn, posn1-posn+1, rep);
@@ -89,16 +89,16 @@ int strschg_environ(std::string& s) {
     std::string name;
     char* lname;
     const char *p = s.c_str()+1;
+    struct passwd *pe=NULL;
+
     if((s.length() != 1) and not isslash(*p)) {
       while(*p and not isslash(*p))
         name += *p++;
+      pe = getpwnam(name.c_str());
     }
     else {
-      if ((lname = getlogin()) == NULL)
-        lname = getenv("LOGNAME");
-      name = lname;
+      pe = getpwuid(getuid());
     }
-    struct passwd *pe = getpwnam(name.c_str());
     if(pe != NULL) {
       std::string dirname = pe->pw_dir;
       dirname += "/";
@@ -161,7 +161,7 @@ bool maketruepath(std::string &dirname) {
   else {
     dirname = cwd;
     ok = false;
-  }  
+  }
 #else
   long inspos = -1;
   if((dirname.length() == 2) and (dirname[1] == ':'))
