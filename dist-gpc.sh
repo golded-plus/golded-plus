@@ -5,7 +5,7 @@
 date=`date +%Y%m%d`
 shortdate=`echo ${date} | sed s/^...//`
 shortname=../gpc${shortdate}.zip
-name=gpc115-${date}.tar.bz2
+name=gpc115-${date}.zip
 
 dir=cfgs
 

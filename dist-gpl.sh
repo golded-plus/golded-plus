@@ -1,12 +1,12 @@
 #!/bin/sh
 
-# Create a archive 'gpw32-*.zip' (gpwYMMDD.zip) with Win32 (MinGW) build
+# Create a archive 'gpl-*.zip' (gplYMMDD.zip) with binary linux build
 # of the Golded+.
 
 date=`date +%Y%m%d`
 shortdate=`echo ${date} | sed s/^...//`
 shortname=../gpl${shortdate}.zip
-name=gpl115-${date}.tar.bz2
+name=gpl115-${date}.zip
 
 sed -i.orig -e "s/\#define __GVER_POSTVERSION__ .*/\#define __GVER_POSTVERSION__   \"-b${date}\"/" golded3/mygolded.h
 

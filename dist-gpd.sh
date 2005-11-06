@@ -1,6 +1,6 @@
 #!/bin/sh
 # $Id$
-# Create a archive 'gpd-*.zip' (gpdYMMDD.zip) with DOS/DPMI (DJGPP) build
+# Create a archive 'gpd*.zip' (gpdYMMDD.zip) with DOS/DPMI (DJGPP) build
 # of the Golded+.
 
 if [ ! "$OSTYPE" = "msdosdjgpp" ]

@@ -1,10 +1,10 @@
 #!/bin/sh
 
-# Create a archive 'gps*.tar.bz2' with all source tree
+# Create a archives 'gps*.tar.bz2' and 'gps*.tb2' with all source tree
 
 date=`date +%Y%m%d`
 shortdate=`echo ${date} | sed s/^...//`
-shortname=../gps${shortdate}.zip
+shortname=../gps${shortdate}.tb2
 name=gps115-${date}.tar.bz2
 
 cd .. ; tar -jcf ${name} \
