@@ -5,6 +5,8 @@
 
 date=`date +%Y%m%d`
 name=../gpwin-115-${date}.zip
+shortdate=`echo ${date} | sed s/^...//`
+shortname=../gpv${shortdate}.zip
 
 sed -i.orig -e "s/\#define __GVER_POSTVERSION__ .*/\#define __GVER_POSTVERSION__   \"-b${date}\"/" golded3/mygolded.h
 
@@ -32,3 +34,4 @@ printf ' *http://golded-plus.sf.net*  \r\n' >>Release/bin/File_ID.Diz
 
 make docs
 zip -9DXj ${name} Release/bin/File_ID.Diz $files
+cp ${name} ${shortname}

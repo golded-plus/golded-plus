@@ -2,7 +2,10 @@
 
 # Create a archive 'gps*.tar.bz2' with all source tree
 
-name=gps115-`date +%Y%m%d`.tar.bz2
+date=`date +%Y%m%d`
+shortdate=`echo ${date} | sed s/^...//`
+shortname=../gps${shortdate}.zip
+name=gps115-${date}.tar.bz2
 
 cd .. ; tar -jcf ${name} \
 	--exclude CVS \
@@ -34,3 +37,5 @@ cd .. ; tar -jcf ${name} \
 	--exclude '*.a' \
 	--exclude '*.o' \
 	golded+
+
+cp ${name} ${shortname}
