@@ -509,7 +509,7 @@ W           READwritemsg
 ; области TRASHCAN в файле advanced.rus. (при этом нужно закомментировать выше
 ; расположенную строку "Del         READdeletemsg")
 ;
-DEL  EDITmacro READcopymoveforward "M" "TRASHCAN" Enter
+;DEL  READmacro READcopymoveforward "M" "TRASHCAN" Enter
 
 ;   ------------------------------------------------------------------
 ;   ВНЕШНИЕ УТИЛИТЫ
