@@ -219,7 +219,12 @@ void GMsgList::ReadMlst(int n) {
 void GMsgList::do_delayed() {
 
   // Update header and statusline
-  if(AA->Msglistheader()) {
+  if(AA->Msglistheader())
+  {
+    int disphdrlocation = CFG->disphdrlocation;
+    if ((CFG->disphdrlocation & 0xFFFF) == YES)
+      CFG->disphdrlocation = NO;
+
     ReadMlst(index);
     AA->LoadMsg(&msg, mlst[index]->msgno, CFG->dispmargin-(int)CFG->switches.get(disppagebar));
     mlst[index]->goldmark = goldmark;
@@ -231,6 +236,8 @@ void GMsgList::do_delayed() {
     HeaderView->Use(AA, &msg);
     HeaderView->Paint();
     wactiv_(mlstwh);
+
+    CFG->disphdrlocation = disphdrlocation;
   }
 
   if(CFG->switches.get(msglistviewsubj)) {
@@ -750,7 +757,12 @@ void GThreadlist::update_title() {
 void GThreadlist::do_delayed() {
 
   // Update header and statusline
-  if(AA->Msglistheader()) {
+  if(AA->Msglistheader())
+  {
+    int disphdrlocation = CFG->disphdrlocation;
+    if ((CFG->disphdrlocation & 0xFFFF) == YES)
+      CFG->disphdrlocation = NO;
+
     AA->LoadMsg(&msg, list[index].msgno, CFG->dispmargin-(int)CFG->switches.get(disppagebar));
     for(std::vector<Node>::iterator x = CFG->username.begin(); x != CFG->username.end(); x++) {
       if(strieql(msg.By(), x->name)) {
@@ -767,6 +779,8 @@ void GThreadlist::do_delayed() {
     HeaderView->Use(AA, &msg);
     HeaderView->Paint();
     wactiv_(mlstwh);
+
+    CFG->disphdrlocation = disphdrlocation;
   }
 
   if(CFG->switches.get(msglistviewsubj)) {

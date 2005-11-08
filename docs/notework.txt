@@ -10,6 +10,10 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+! DispHdrLocation settings changed to <No/Yes/Always> <Right/Center>.
+  When MsgListHeader is on, location will be shown in lists only if
+  DispHdrLocation is 'Always'.
+
 + Improved ColorName matching. Case insensitive wildcard matching will be
   used for ColorName names. Also, search will be stopped on first matched
   name or address.

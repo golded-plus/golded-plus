@@ -214,14 +214,15 @@ DispAreaNo Yes         ; Показывать только если он доступен.
 ;DispPmFirst No
 DispPmFirst Yes
 
+// DISPHDRLOCATION <no/yes/always> <right/center> (no right)
 // Вывод в полоске под хедером имени города из нод- и пойнтлистов.
 // Если поинтовый адрес не найден, будет использован адрес ноды.
 // Действует только при наличии нодлиста, если один из указанных в настройке
 // нодлистов/пойнтлистов отсутствует, Golded+ будет при просмотре каждого
 // сообщения выводить информацию об отсутсвии нодлиста.
-// (Значение по умолчанию: No)
-;DispHdrLocation No/Yes/Right/Center
-DispHdrLocation Yes
+DispHdrLocation No
+;DispHdrLocation Yes
+;DispHdrLocation Always Center
 
 // Этим можно задать разделитель между городами отправителя и получателя
 // в нетмейл областях.

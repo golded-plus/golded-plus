@@ -487,12 +487,18 @@ void CfgDisphdrdateset() {
 
 void CfgDisphdrlocation()
 {
-  if (strieql("RIGHT", val))
-    CFG->disphdrlocation = TRIGHT;
-  else if (strieql("CENTER", val))
-    CFG->disphdrlocation = TCENTER;
-  else
-    CFG->disphdrlocation = GetYesno(val) ? TRIGHT : NO;
+  char* key;
+  getkeyval(&key, &val);
+
+  CFG->disphdrlocation = GetYesno(key);
+
+  if (CFG->disphdrlocation != NO)
+  {
+    if (strieql("CENTER", val))
+      CFG->disphdrlocation = CFG->disphdrlocation + (TCENTER << 16);
+    else
+      CFG->disphdrlocation = CFG->disphdrlocation + (TRIGHT << 16);
+  }
 }
 
 //  ------------------------------------------------------------------

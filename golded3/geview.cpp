@@ -350,7 +350,7 @@ void GMsgHeaderView::Paint() {
     {
       loc += " ";
       int pos = window.width() - loc.length();
-      pos = (CFG->disphdrlocation == TCENTER) ? pos/2 : pos-1;
+      pos = ((CFG->disphdrlocation >> 16) == TCENTER) ? pos/2 : pos-1;
       window.prints(5, pos, location_color, loc.c_str());
     }
   }
