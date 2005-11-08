@@ -10,6 +10,10 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ Improved ColorName matching. Case insensitive wildcard matching will be
+  used for ColorName names. Also, search will be stopped on first matched
+  name or address.
+
 - Relative path usage is fixed. Now a Real UID is used to parse "~/" always.
 
 + Several unicode charset convertion tables is included into distribution of

@@ -330,35 +330,24 @@ void ScreenBlankIdle() {
 
 //  ------------------------------------------------------------------
 
-int GetColorName(Addr &addr)
+int GetColorName(const char *name, Addr &addr, int color)
 {
-  if (addr.invalid()) return -1;
+  bool addr_valid = addr.valid();
+  bool name_valid = (name != NULL);
+
+  if (!addr_valid && !name_valid)
+    return color;
 
   std::vector< std::pair<Node, int> >::iterator it;
   for (it = CFG->colorname.begin(); it != CFG->colorname.end(); it++)
   {
-    if (addr.match(it->first.addr))
+    if (addr_valid && addr.match(it->first.addr))
+      return it->second;
+    if (name_valid && gwildmat(name, it->first.name))
       return it->second;
   }
 
-  return -1;
-}
-
-
-//  ------------------------------------------------------------------
-
-int GetColorName(char *name)
-{
-  if (!name) return -1;
-
-  std::vector< std::pair<Node, int> >::iterator it;
-  for (it = CFG->colorname.begin(); it != CFG->colorname.end(); it++)
-  {
-    if (strieql(it->first.name, name))
-      return it->second;
-  }
-
-  return -1;
+  return color;
 }
 
 

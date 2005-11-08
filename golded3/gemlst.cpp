@@ -209,10 +209,8 @@ void GMsgList::ReadMlst(int n) {
   strcpy(ml->to, msg.To());
   strcpy(ml->re, msg.re);
 
-  ml->colorby = GetColorName(msg.orig);
-  if (ml->colorby == -1) ml->colorby = GetColorName(ml->by);
-  ml->colorto = AA->isnet() ? GetColorName(msg.dest) : -1;
-  if (ml->colorto == -1) ml->colorto = GetColorName(ml->to);
+  ml->colorby = GetColorName(ml->by, msg.orig, -1);
+  ml->colorto = GetColorName(ml->to, AA->isnet() ? msg.dest : Addr(), -1);
 }
 
 
@@ -944,11 +942,7 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar) {
     }
 
   if (!isbar)
-  {
-    int colorname = GetColorName(msg.orig);
-    if (colorname == -1) colorname = GetColorName(msg.By());
-    if (colorname != -1) attr = colorname;
-  }
+    attr = GetColorName(msg.By(), msg.orig, attr);
   else if (CFG->replylinkfloat)
   {
     size_t bylen = strlen(msg.By());
