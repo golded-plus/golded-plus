@@ -300,7 +300,7 @@ static void cpuname(int family, int model, const char *v_name, char *m_name)
         break;
       case 3:
       case 4:
-        sprintf(m_name, "%s-%u86", v_name, family);
+        sprintf(m_name, "%s%s%u86", v_name, v_name[0]?"-":"", family);
         break;
       default:
         sprintf(m_name, "CPU %3s-F%dM%d", v_name, family, model);
