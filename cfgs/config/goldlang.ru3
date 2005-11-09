@@ -249,6 +249,7 @@ WT_SELECTACTION      " Выберите действие: "
 MI_FORWARDMESSAGE    "F F Переслать сообщение   "
 MI_MOVEMESSAGE       "M M Переместить сообщения "
 MI_COPYMESSAGE       "C C Копировать сообщения  "
+MI_TOGGLESENT        "T T Переключить флаг Sent "
 MI_QUITCMF           "Q Q Отмена / ESC "
 
 ST_COPYMOVEFORWARD   "Пересылка, перенос и копирование сообщений"
