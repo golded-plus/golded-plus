@@ -150,12 +150,16 @@ static void cpuname(int family, int model, const char *v_name, char *m_name)
         strcpy(m_name, "AMD_Duron");
         break;
       default:
-      sprintf(m_name, "AMD_K7_M%u", model);
+        sprintf(m_name, "AMD_K7_M%u", model);
       }
       break;
 
     case 15:
-      strcpy(m_name, "AMD64");
+      switch (model)
+      {
+      default:
+        sprintf(m_name, "AMD_K8_M%u", model);
+      }
       break;
 
     default:
@@ -266,7 +270,7 @@ static void cpuname(int family, int model, const char *v_name, char *m_name)
       case 15:
         switch(model){
           case 2:       // Transmeta Efficeon(tm) Processor TM8000
-            sprintf(m_name, "TM8000");
+            strcpy(m_name, "TM8000");
             break;
           default:
             sprintf(m_name, "TM F%dM%d", family, model);
@@ -283,7 +287,7 @@ static void cpuname(int family, int model, const char *v_name, char *m_name)
     switch (family)
     {
       case 6:  //  VIA C3 Nehemiah = F6M9; VIA C3 Samuel 2 = F6M7
-        sprintf(m_name, "VIA_C3");
+        strcpy(m_name, "VIA_C3");
         break;
       default:
       sprintf(m_name, "VIA F%dM%d", family, model);
