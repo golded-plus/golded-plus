@@ -800,6 +800,7 @@ struct kbd {
   { VK_RETURN,    Key_Ent,    Key_Ent,    Key_C_Ent,  Key_A_Ent },
   { VK_ESCAPE,    Key_Esc,    Key_Esc,    Key_Esc,    Key_A_Esc },
   { VK_SPACE,     -1,         -1,         Key_Space,  Key_Space },
+  { VK_APPS,      Key_S_F10,  -1,         -1,         -1        },
 
   { '0',          Key_0,      Key_S_0,    -1,         Key_A_0 },
   { '1',          Key_1,      Key_S_1,    -1,         Key_A_1 },

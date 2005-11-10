@@ -10,6 +10,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ Win32: Mapped APPS key to Shift+F10
+
 ! DispHdrLocation settings changed to <No/Yes/Always> <Right/Center>.
   When MsgListHeader is on, location will be shown in lists only if
   DispHdrLocation is 'Always'.
