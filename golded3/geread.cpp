@@ -1500,6 +1500,31 @@ void GotoReplyNext() {
 
   reader_direction = DIR_NEXT;
   uint gotolink = AA->Msgn.ToReln(reader_msg->link.next());
+  uint msgno = reader_msg->link.to();
+
+  if (!gotolink && AA->Msgn.ToReln(msgno))
+  {
+    GMsg* tempmsg = (GMsg*)throw_calloc(1, sizeof(GMsg));
+    AA->LoadHdr(tempmsg, msgno, false);
+
+    if (tempmsg->link.first() == reader_msg->msgno)
+      gotolink = tempmsg->link.list(0);
+    else
+    {
+      for (uint i = 0; i < (tempmsg->link.list_max()-1); i++)
+        if (tempmsg->link.list(i) == reader_msg->msgno)
+        {
+          gotolink = tempmsg->link.list(i+1);
+          break;
+        }
+    }
+
+    gotolink = AA->Msgn.ToReln(gotolink);
+
+    ResetMsg(tempmsg);
+    throw_free(tempmsg);
+  }
+
   if(gotolink)
     AA->set_lastread(gotolink);
   else {
