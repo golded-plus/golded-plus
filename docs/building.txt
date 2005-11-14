@@ -43,7 +43,9 @@ First, edit GNUmakef.def for the preferrable compilation options.
 
 ---- DJGPP ONLY ----
 When building in DJGPP environment you may wish to use liblocal which may be
-found on http://aaganichev.narod.ru/djgpp/llocl02b.zip. This provides basic
+found on DJGPP site (visits a http://www.delorie.com/djgpp/ and locate for
+llocl02b.zip) or on Alexander S. Aganichev's personal page (direct link is
+http://aaganichev.narod.ru/djgpp/llocl02b.zip). This library provides basic
 locale support via country.sys driver. Otherwise just comment -llocal in
 GNUmakef.def.
 ------ COMMON ------
