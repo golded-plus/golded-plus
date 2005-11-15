@@ -210,7 +210,12 @@ void GMsgList::ReadMlst(int n) {
   strcpy(ml->re, msg.re);
 
   ml->colorby = GetColorName(ml->by, msg.orig, -1);
-  ml->colorto = GetColorName(ml->to, AA->isnet() ? msg.dest : Addr(), -1);
+  if(AA->isnet())
+    ml->colorto = GetColorName(ml->to, msg.dest, -1);
+  else
+  { Addr a;
+    ml->colorto = GetColorName(ml->to, a, -1);
+  }
 }
 
 
@@ -357,7 +362,7 @@ void GMsgList::print_line(uint idx, uint pos, bool isbar) {
     window.printns(pos, bycol, color, ml->by, bysiz);
   }
 
-  if (((ml->high & MLST_HIGH_TO) || (ml->colorto != -1)) && 
+  if (((ml->high & MLST_HIGH_TO) || (ml->colorto != -1)) &&
       !AA->Msglistwidesubj())
   {
     int color = ((ml->colorto != -1) && !isbar) ? ml->colorto : hattr_;
