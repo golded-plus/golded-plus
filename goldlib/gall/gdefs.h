@@ -38,9 +38,9 @@
 #ifdef _MSC_VER
 #include <windows.h>
 #include <limits.h>
-#elif defined(__DJGPP__)
-#else
+#elif defined(__MINGW32__)
 #include <stdint.h>
+#else
 #endif
 
 /*  ------------------------------------------------------------------
