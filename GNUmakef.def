@@ -125,7 +125,7 @@ endif
 
 # force not to use coprocessor features in DOS, if you have one you may remove this
 ifeq ($(PLATFORM),djg)
-STDLIBS+=# -lwmemu
+STDLIBS+= -lwmemu
 endif
 
 BIN=bin
