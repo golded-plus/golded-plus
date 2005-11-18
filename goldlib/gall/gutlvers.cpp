@@ -149,6 +149,9 @@ static void cpuname(int family, int model, const char *v_name, char *m_name)
       case 7:
         strcpy(m_name, "AMD_Duron");
         break;
+      case 8:
+        strcpy(m_name, "AMD_Sempron");
+        break;
       default:
         sprintf(m_name, "AMD_K7_M%u", model);
       }
