@@ -57,21 +57,38 @@ inline void search_item_option(bool& a, const char* s) {
 
 //  ------------------------------------------------------------------
 
-const char* search_item_set(search_item& item, const char* s) {
+const char* search_item_set(search_item& item, const char* s, int what)
+{
+  bool flag = false;
 
   while(*s) {
     switch(*s) {
+      case ')':
+        search_item_option(item.where.from, s);
+        search_item_option(item.where.to, s);
+        search_item_option(item.where.subject, s);
+        flag = true;
+        break;
+      case '(':
+        search_item_option(item.where.body, s);
+        search_item_option(item.where.tagline, s);
+        search_item_option(item.where.tearline, s);
+        search_item_option(item.where.origin, s);
+        search_item_option(item.where.signature, s);
+        search_item_option(item.where.kludges, s);
+        flag = true;
+        break;
       case '!':  search_item_option(item.reverse, s);          break;
-      case '<':  search_item_option(item.where.from, s);       break;
-      case '>':  search_item_option(item.where.to, s);         break;
-      case ':':  search_item_option(item.where.subject, s);    break;
-      case '#':  search_item_option(item.where.body, s);       break;
-      case '.':  search_item_option(item.where.tagline, s);    break;
-      case '_':  search_item_option(item.where.tearline, s);   break;
-      case '*':  search_item_option(item.where.origin, s);     break;
-      case '@':  search_item_option(item.where.signature, s);  break;
-      case '%':  search_item_option(item.where.kludges, s);    break;
-      case '=':  search_item_option(item.case_sensitive, s);   break;
+      case '<':  search_item_option(item.where.from, s);       flag = true; break;
+      case '>':  search_item_option(item.where.to, s);         flag = true; break;
+      case ':':  search_item_option(item.where.subject, s);    flag = true; break;
+      case '#':  search_item_option(item.where.body, s);       flag = true; break;
+      case '.':  search_item_option(item.where.tagline, s);    flag = true; break;
+      case '_':  search_item_option(item.where.tearline, s);   flag = true; break;
+      case '*':  search_item_option(item.where.origin, s);     flag = true; break;
+      case '@':  search_item_option(item.where.signature, s);  flag = true; break;
+      case '%':  search_item_option(item.where.kludges, s);    flag = true; break;
+      case '=':  search_item_option(item.case_sensitive, s);   flag = true; break;
       case '?':
         s++;
         switch(g_tolower(*s)) {
@@ -92,9 +109,25 @@ const char* search_item_set(search_item& item, const char* s) {
       case '\'':
         break;
       default:
-        return s;
+        if (isspace(*s)) break;
+        else
+          goto lblLoopExit;
     }
     s++;
+  }
+
+lblLoopExit:
+  if (what && !flag)
+  {
+    if (what & GFIND_FROM)      item.where.from      = true;
+    if (what & GFIND_TO)        item.where.to        = true;
+    if (what & GFIND_SUBJECT)   item.where.subject   = true;
+    if (what & GFIND_BODY)      item.where.body      = true;
+    if (what & GFIND_TAGLINE)   item.where.tagline   = true;
+    if (what & GFIND_TEARLINE)  item.where.tearline  = true;
+    if (what & GFIND_ORIGIN)    item.where.origin    = true;
+    if (what & GFIND_KLUDGES)   item.where.kludges   = true;
+    if (what & GFIND_SIGNATURE) item.where.signature = true;
   }
 
   return s;
@@ -103,40 +136,39 @@ const char* search_item_set(search_item& item, const char* s) {
 
 //  ------------------------------------------------------------------
 
-void golded_search_manager::prepare_from_string(const char* prompt, int what) {
-
+void golded_search_manager::prepare_from_string(const char* prompt, int what)
+{
   // Get defaults
   reverse = false;
   direction = DIR_NEXT;
-  search_item default_item;
+
   const char* p = prompt;
 
-  if(*p == '-' or *p == '+') {
+  if (*p == '-' or *p == '+')
+  {
     direction = (*p == '-') ? DIR_PREV : DIR_NEXT;
     p++;
   }
-  p = search_item_set(default_item, p);
-  if(default_item.reverse) {
-    default_item.reverse = false;
-    reverse = true;
-  }
 
-  if(what == GFIND_HDR or what == GFIND_HDRTXT) {
-    if(not (default_item.where.from or default_item.where.to or default_item.where.subject)) {
-      default_item.where.from = true;
-      default_item.where.to = true;
-      default_item.where.subject = true;
-    }
-    if(what == GFIND_HDRTXT)
-      default_item.where.body = true;
-  }
+  search_item default_item;
+  p = search_item_set(default_item, p, what);
+
+  search_item item = default_item;
+
+  default_item.reverse         = false;
+  default_item.where.from      = false;
+  default_item.where.to        = false;
+  default_item.where.subject   = false;
+  default_item.where.body      = false;
+  default_item.where.tagline   = false;
+  default_item.where.tearline  = false;
+  default_item.where.origin    = false;
+  default_item.where.kludges   = false;
+  default_item.where.signature = false;
 
   char buf[256];
   char* b = buf;
   bool item_complete = false;
-  search_item item = default_item;
-
-  p = search_item_set(item, strskip_wht(p));
 
   do {
 
@@ -204,8 +236,9 @@ void golded_search_manager::prepare_from_string(const char* prompt, int what) {
       }
       if(*p == NUL)
         break;
+
       item = default_item;
-      p = search_item_set(item, strskip_wht(p));
+      p = search_item_set(item, strskip_wht(p), what);
       b = buf;
     }
 

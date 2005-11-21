@@ -10,6 +10,12 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ ')' and '(' chars can be used for advanced search.
+  ')' - shortcut for "<>:" (from, to, subject), and
+  '(' - for "#._*@%" (body, tagline, tearline, origin, signature, kludges)
+
+- Fixed advanced search feature.
+
 + READGoToReplyNext work on non JAM message bases
 
 + Win32: Mapped APPS key to Shift+F10
