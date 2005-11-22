@@ -129,7 +129,7 @@ typedef unsigned int    uint32_t;
 #endif
 #endif  /*#ifdef _MSC_VER */
 
-#ifdef __DJGPP__
+#if defined(__GNUC__) && !defined(__MINGW32__)
 typedef unsigned char  uint8_t;
 typedef unsigned short uint16_t;
 typedef unsigned int   uint32_t;
