@@ -209,12 +209,9 @@ void GMsgList::ReadMlst(int n) {
   strcpy(ml->to, msg.To());
   strcpy(ml->re, msg.re);
 
-  ml->colorby = GetColorName(ml->by, msg.orig, -1);
-  if(AA->isnet())
-    ml->colorto = GetColorName(ml->to, msg.dest, -1);
-  else
-  { Addr a;
-    ml->colorto = GetColorName(ml->to, a, -1);
+  { Addr zero;
+    ml->colorby = GetColorName(ml->by, msg.orig, -1);
+    ml->colorto = GetColorName(ml->to, AA->isnet() ? msg.dest : zero, -1);
   }
 }
 

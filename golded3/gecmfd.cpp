@@ -423,7 +423,7 @@ void CmfMsgs(GMsg* msg, bool torecycle)
       destarea = AL.AreaNoToId(a);
   }
 
-  if (cmf == MODE_FORWARD ? not AA->Areaforwarddirect() : not AA->Areacopydirect())
+  if (!torecycle && (cmf == MODE_FORWARD ? not AA->Areaforwarddirect() : not AA->Areacopydirect()))
     destarea = AreaPick(pickstr, 6, &destarea);
 
   if(destarea == -1) {

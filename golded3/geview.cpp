@@ -257,8 +257,8 @@ void GMsgHeaderView::Paint() {
 
   window.prints(3, 0, window_color, LNG->To);
   color = ((msg->foundwhere&GFIND_TO) or msg->attr.tou()) ? highlight_color : to_color;
-  { Addr a;
-    color = GetColorName(msg->To(), area->isnet() ? msg->dest : a, color);
+  { Addr zero;
+    color = GetColorName(msg->To(), area->isnet() ? msg->dest : zero, color);
   }
   window.prints(3, CFG->disphdrnameset.pos, color, buf);
 
