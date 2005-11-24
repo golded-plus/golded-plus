@@ -10,6 +10,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ Node address will be shown on nodelist lookup, if point address is not found.
+
 + ')' and '(' chars can be used for advanced search.
   ')' - shortcut for "<>:" (from, to, subject), and
   '(' - for "#._*@%" (body, tagline, tearline, origin, signature, kludges)

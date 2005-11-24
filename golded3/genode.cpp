@@ -1005,7 +1005,7 @@ void Lookup(GMsg* msg, Addr* addr, char* name, int topline, char* status) {
       else
         NLP->find(matchaddr);
 
-      found = (NLP->found() && (exactmatch || topline == -100));
+      found = NLP->found() && exactmatch;
 
       if (found && (topline != -100))
       {
@@ -1013,9 +1013,9 @@ void Lookup(GMsg* msg, Addr* addr, char* name, int topline, char* status) {
         if(NLP->next())
           if(NLP->found())
             found = false;
-        NLP->pop_state();
+          NLP->pop_state();
       }
-      else if (!found && matchaddr.point && (topline == -100))
+      else if (!found && matchaddr.point)
       {
         matchaddr.point = 0;
         NLP->find(matchaddr);
