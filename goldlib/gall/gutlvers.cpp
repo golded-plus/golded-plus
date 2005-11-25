@@ -160,6 +160,9 @@ static void cpuname(int family, int model, const char *v_name, char *m_name)
     case 15:
       switch (model)
       {
+      case 12:
+        strcpy(m_name, "AMD_Sempron");
+        break;
       default:
         sprintf(m_name, "AMD_K8_M%u", model);
       }
