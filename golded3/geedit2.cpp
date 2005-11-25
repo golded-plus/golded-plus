@@ -1015,9 +1015,12 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
       batch_mode = BATCH_MODE;
 
       // Add import begin text, if any
-      if(*CFG->importbegin) {
+      if (*CFG->importbegin)
+      {
         sprintf(_parabuf, "%s\n", CFG->importbegin);
         strischg(_parabuf, "@file", imp_filename);
+        TokenXlat(MODE_NEW, _parabuf, msgptr, msgptr, CurrArea);
+        _parabuf[strlen(_parabuf)-1] = '\n';
         _parabuf[margintext] = NUL;
         _parabuf[margintext-1] = '\n';
         __line = insertlinebelow(__line, _parabuf);
@@ -1189,9 +1192,12 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
       }
 
       // Add import end text, if any
-      if(*CFG->importend or *CFG->importbegin) {
+      if (*CFG->importend or *CFG->importbegin)
+      {
         sprintf(_parabuf, "%s\n", *CFG->importend ? CFG->importend : CFG->importbegin);
         strischg(_parabuf, "@file", imp_filename);
+        TokenXlat(MODE_NEW, _parabuf, msgptr, msgptr, CurrArea);
+        _parabuf[strlen(_parabuf)-1] = '\n';
         _parabuf[margintext] = NUL;
         _parabuf[margintext-1] = '\n';
         __line = insertlinebelow(__line, _parabuf);
