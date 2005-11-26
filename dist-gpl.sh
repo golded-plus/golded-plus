@@ -6,7 +6,7 @@
 date=`date +%Y%m%d`
 shortdate=`echo ${date} | sed s/^...//`
 shortname=../gpl${shortdate}.zip
-name=gpl115-${date}.zip
+name=../gpl115-${date}.zip
 
 sed -i.orig -e "s/\#define __GVER_POSTVERSION__ .*/\#define __GVER_POSTVERSION__   \"-b${date}\"/" golded3/mygolded.h
 

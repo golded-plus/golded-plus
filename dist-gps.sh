@@ -4,7 +4,7 @@
 
 date=`date +%Y%m%d`
 shortdate=`echo ${date} | sed s/^...//`
-shortname=../gps${shortdate}.tb2
+shortname=gps${shortdate}.tb2
 name=gps115-${date}.tar.bz2
 
 cd .. ; tar -jcf ${name} \
