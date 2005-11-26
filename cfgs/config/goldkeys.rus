@@ -1,4 +1,5 @@
 ;/////////////////////////////////////////////////////////////////////
+;/  $Id$
 ;/
 ;/                       *  GoldED+ 1.1.x  *
 ;/
@@ -462,7 +463,8 @@ W           READwritemsg
 ;   выполнен пpи запуске GoldED.
 ;
 ^S             EditMacro EditDelete Enter "[...skipped...]" EDITnewline
-^T             EditMacro "[...skipped...]"
+; Вставить строку "[...skipped...]" по нажатию Alt-T
+@T             EditMacro "[...skipped...]"
 ;   ------------------------------------------------------------------
 
 ;   Для встpоенного pедактоpа: Добавить пустую стpоку под текущей.
@@ -492,9 +494,6 @@ W           READwritemsg
 ;F12     READmacro READreplymsg ^Enter "T" End Enter "I" EDITsavemsg "Y"
 ;F11     EDITmacro ":-)"
 ;^F11     EDITmacro ":-("
-
-; Вставить строку "[...skipped...]" по нажатию Alt-T
-;@T             EditMacro "[...skipped...]"
 
 ;Т   EDITmacro "AE"  ; немецкие умляуты
 ;Э   EDITmacro "OE"
