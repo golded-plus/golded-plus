@@ -45,7 +45,9 @@ extern int __gftrk_statusline;
 extern bool gmem_check_overrun;
 #endif
 
-static std::string keybuf;
+extern bool gKeystacking;
+
+std::string keybuf;
 
 static Path cmdlinecfg        = "";
        bool cmdlinedebughg    = false;
@@ -749,17 +751,23 @@ void Initialize(int argc, char* argv[]) {
     waitkey();
   }
 
-  if(CFG->switches.get(keybclear)) {
+  if (CFG->switches.get(keybclear) || !keybuf.empty() || *CFG->keybstack)
+  {
     clearkeys();
     kbclear();
-    if(*CFG->keybstack)             // The config keys
-      kbputstr(CFG->keybstack);
   }
-  else if(not keybuf.empty()) {     // The commandline keys
+
+  if (not keybuf.empty())       // The commandline keys
+  {
     kbputstr(keybuf.c_str());
     keybuf.erase();
-  } else if(*CFG->keybstack)        // The config keys
+    gKeystacking = true;
+  }
+  else if (*CFG->keybstack)     // The config keys
+  {
     kbputstr(CFG->keybstack);
+    gKeystacking = true;
+  }
 
   fieldupd = EDIT->FieldClear() ? 2 : 1;
 

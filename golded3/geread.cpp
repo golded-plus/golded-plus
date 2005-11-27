@@ -186,10 +186,9 @@ void Reader() {
   else {
     AL.SetActiveAreaNo(startecho);
     AA->RandomizeData();
-    if(AA->Msglistfirst()) {
+
+    if (AA->Msglistfirst() && (kbput(KK_ReadMessageList) != -1))
       reader_msglistfirst = true;
-      kbput(KK_ReadMessageList);
-    }
     else
       reader_msglistfirst = false;
   }

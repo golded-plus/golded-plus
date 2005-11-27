@@ -1618,7 +1618,17 @@ void clearkeys() {
 //  ------------------------------------------------------------------
 //  Puts a keystroke into the CXL keyboard "buffer"
 
-int kbput(gkey xch) {
+bool gKeystacking = false;
+
+int kbput(gkey xch)
+{
+  if (gKeystacking)
+  {
+    if (gkbd.kbuf != NULL)
+      return -1;
+
+    gKeystacking = false;
+  }
 
   KBuf* kbuf;
   KBuf* temp;

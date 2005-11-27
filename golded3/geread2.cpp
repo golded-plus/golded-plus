@@ -497,10 +497,11 @@ void NewArea(bool jumpnext) {
     OrigArea = CurrArea;
     strcpy(stecho, AA->echoid());
     AA->RandomizeData();
-    if(AA->Msglistfirst()) {
-      kbput(KK_ReadMessageList);
+
+    if (AA->Msglistfirst() && (kbput(KK_ReadMessageList) != -1))
       reader_msglistfirst = true;
-    }
+    else
+      reader_msglistfirst = false;
   }
 }
 

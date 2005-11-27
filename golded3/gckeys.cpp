@@ -27,6 +27,8 @@
 #include <golded.h>
 #include <gckeys.h>
 
+extern std::string keybuf;
+
 
 //  ------------------------------------------------------------------
 
@@ -1161,19 +1163,25 @@ int ReadKeysCfg(int force) {
 
   // Assign global macros
   std::vector<Macro>::iterator k;
-  for(k=CFG->macro.begin(), n=0; k != CFG->macro.end(); k++, n++) {
-    if(k->type == 0) {
-      if(k->key == KK_Auto) {
-        // Start automacro
-        mac = k->buf;
-        while(*mac) {
-          kbput(*mac);
-          mac++;
+  for (k = CFG->macro.begin(), n = 0; k != CFG->macro.end(); k++, n++)
+  {
+    if (k->type == 0)
+    {
+      if (k->key == KK_Auto)
+      {
+        if (keybuf.empty() && !*CFG->keybstack)
+        {
+          // Start automacro
+          mac = k->buf;
+          while(*mac)
+          {
+            kbput(*mac);
+            mac++;
+          }
         }
       }
-      else {
+      else
         setonkey(k->key, PlayMacro, (gkey)(0xFFFF-n));
-      }
     }
   }
 
