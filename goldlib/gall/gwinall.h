@@ -294,7 +294,7 @@ extern GWin gwin;
 #define M_CLOSE     4   // close menu after select func
 #define M_CLALL     8   // close all menus when selected
 #define M_CLOSB    16   // close menu before select func
-
+#define M_SEPAR    (32 + M_NOSEL) // item is separator
 
 //  ------------------------------------------------------------------
 //  Menutype definitions for wmenuend()

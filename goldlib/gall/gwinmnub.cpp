@@ -273,6 +273,14 @@ void GMnu::ItemDesc(const char* text) {
 
 //  ------------------------------------------------------------------
 
+void GMnu::ItemSep()
+{
+  Item(-1, " ", M_SEPAR, NULL, 0);
+}
+
+
+//  ------------------------------------------------------------------
+
 void GMnu::ItemFuncs(VfvCP before, VfvCP after) {
 
   status = wmenuiba(before, after);

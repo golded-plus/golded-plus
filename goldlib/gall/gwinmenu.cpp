@@ -215,38 +215,57 @@ static void disp_item(_item_t *witem,int bar)
     textend = gwin.cmenu->textpos+strlen(p)-1;
     wgotoxy(witem->wrow,wcol=witem->wcol);
 
-    // display menu item including selection bar
-    for(i=0; i<width; i++) {
+    // display separators
+    if (witem->fmask & M_SEPAR)
+    {
+      const int &border = gwin.active->border;
+      const int &btype = gwin.active->btype;
+      const int &attr = gwin.active->loattr;
+      vatch line = vcatch(_box_table(btype, 1), attr);
 
-      // see if currently in bar region.  if so, then use
-      // a space for the character. otherwise use the
-      // character from the current position in the string
-      ch = ((i<gwin.cmenu->textpos) or (i>textend)) ? ' ' : (*p++);
+      if (border) *ptr++ = vcatch(_box_table(btype, 9), attr);
+      for (i = 0; i < width; i++) *ptr++ = line;
+      if (border) *ptr = vcatch(_box_table(btype, 10), attr);
 
-      // select attribute of character to be displayed based upon if
-      // selection bar was specified, if the menu item is non-selectable,
-      // if the character is a tag character, or none of the above.
-      if(bar)
-        chattr = gwin.cmenu->barattr;
-      else if(witem->fmask&M_NOSEL)
-        chattr = gwin.cmenu->noselattr;
-      else if((ch==witem->schar) and not found) {
-        found = YES;
-        chattr = gwin.cmenu->scharattr;
-      }
-      else
-        chattr = gwin.cmenu->textattr;
-
-      // display character in selected attribute
-      //wprintc(witem->wrow,wcol++,chattr,ch);
-
-      // Build menu line buffer
-
-      *ptr++ = vcatch(ch,chattr);
+      int row = gwin.active->srow + witem->wrow + border;
+      int col = gwin.active->scol + wcol;
+      vputws(row, col, (vatch*)buf, width+2);
     }
+    else
+    {
+      // display menu item including selection bar
+      for(i=0; i<width; i++) {
 
-    // Display complete buffer
-    wprintws(witem->wrow, wcol, (vatch*)buf, width);
+        // see if currently in bar region.  if so, then use
+        // a space for the character. otherwise use the
+        // character from the current position in the string
+        ch = ((i<gwin.cmenu->textpos) or (i>textend)) ? ' ' : (*p++);
+
+        // select attribute of character to be displayed based upon if
+        // selection bar was specified, if the menu item is non-selectable,
+        // if the character is a tag character, or none of the above.
+        if(bar)
+          chattr = gwin.cmenu->barattr;
+        else if(witem->fmask&M_NOSEL)
+          chattr = gwin.cmenu->noselattr;
+        else if((ch==witem->schar) and not found) {
+          found = YES;
+          chattr = gwin.cmenu->scharattr;
+        }
+        else
+          chattr = gwin.cmenu->textattr;
+
+        // display character in selected attribute
+        //wprintc(witem->wrow,wcol++,chattr,ch);
+
+        // Build menu line buffer
+
+        *ptr++ = vcatch(ch,chattr);
+      }
+
+      // Display complete buffer
+      wprintws(witem->wrow, wcol, (vatch*)buf, width);
+    }
 
     // display text description, if one exists
     if((witem->desc!=NULL) and dispdesc) {

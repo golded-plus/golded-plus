@@ -116,6 +116,7 @@ public:
   void Item(int tag, const char* text, VfvCP select, int fmask=M_CLOSE);
   void Item(int tag, const char* text, int fmask, VfvCP select, gkey hotkey=0);
   void ItemDesc(const char* text);
+  void ItemSep();
   void ItemFuncs(VfvCP before, VfvCP after);
 
   void SetNextItem(int tag);
