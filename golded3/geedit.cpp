@@ -94,6 +94,16 @@ void IEclass::debugtest(char* __test, int __a, int __b, char* __file, int __line
 
 
 //  ------------------------------------------------------------------
+
+#if defined(__GOLD_SPELL__)
+inline bool isscchar(int c)
+{
+  return isxalnum(c) || (c == '-') || (c == '\'') || (c == '.') ;
+}
+#endif
+
+
+//  ------------------------------------------------------------------
 //  Make sure line type is correct
 
 void IEclass::setlinetype(Line* __line) {
@@ -242,6 +252,207 @@ void IEclass::gotorowcol(uint __col, uint __row) {
 
 //  ------------------------------------------------------------------
 
+#if defined(__GOLD_SPELL__)
+void IEclass::dispstringsc(char *__buf, uint __beg, uint __end, uint __row, uint __col, char endchar)
+{
+  char scbuf[EDIT_BUFLEN];
+  
+  uint bbeg = __beg;
+  uint bend = __beg;
+  uint bpos = __beg;
+
+  if ((bbeg > 0) && isscchar(__buf[bbeg]) && isscchar(__buf[bbeg-1]))
+  {
+    for (; (bpos < __end) && isscchar(__buf[bpos]); bpos++);
+    bend = bpos;
+  }
+
+  while (bpos < __end)
+  {
+    for (; (bpos < __end) && !isscchar(__buf[bpos]); bpos++);
+    bend = bpos;
+
+    uint scpos = 0;
+    for (; (bpos < __end) && isscchar(__buf[bpos]); bpos++, scpos++)
+      scbuf[scpos] = __buf[bpos];
+
+    if ((scpos == 0) || ((bpos == __end) && isscchar(endchar)))
+    {
+      bend = bpos;
+      break;
+    }
+
+    scbuf[scpos] = NUL;
+    
+    if (schecker.Check(scbuf))
+      bend = bpos;
+    else
+    {
+      char savechar = __buf[bend];
+      __buf[bend] = NUL;
+      StyleCodeHighlight(__buf+bbeg, __row, __col+bbeg-__beg, false, -1);
+      __buf[bend] = savechar;
+
+      bbeg = bend; bend += scpos;
+
+      bool oldusestylies = AA->adat->usestylies;
+      bool oldhighlighturls = CFG->highlighturls;
+      AA->adat->usestylies = false;
+      CFG->highlighturls = false;
+
+      savechar = __buf[bend];
+      __buf[bend] = NUL;
+      StyleCodeHighlight(__buf+bbeg, __row, __col+bbeg-__beg, false, C_SCERROR);
+      __buf[bend] = savechar;
+
+      AA->adat->usestylies = oldusestylies;
+      CFG->highlighturls = oldhighlighturls;
+
+      bbeg = bend;
+    }
+  }
+
+  if (bbeg < bend)
+    StyleCodeHighlight(__buf+bbeg, __row, __col+bbeg-__beg, false, -1);
+}
+
+
+//  ------------------------------------------------------------------
+
+void IEclass::dispstring(Line* line, uint __row)
+{
+  GFTRK("Editdispstring");
+
+  // Get string length
+  uint _length = strlen(line->txt.c_str());
+
+  // String longer than window width?
+  _test_haltab(_length > (maxcol+1), _length, (maxcol+1));
+  _length = MinV(_length, (maxcol+1));
+
+  // Buffer for translation to visual representation
+  char _buf[EDIT_BUFLEN];
+
+  // Space-pad and nul-terminate the buffer
+  memset(_buf, ' ', maxcol+1);
+  _buf[maxcol+1] = NUL;
+
+  // Copy/translate string into buffer
+  for (uint _pos = 0; _pos < _length; _pos++)
+  {
+    char chr = line->txt[_pos];
+    switch (chr)
+    {
+      case ' ':   _buf[_pos] = EDIT->CharSpace();  break;
+      case '\n':  _buf[_pos] = EDIT->CharPara();   break;
+      default:    _buf[_pos] = chr;
+    }
+  }
+
+  int  selected = 0;
+  uint begblock = 0;
+  uint endblock = 0;
+  Line *fbline = NULL;
+  Line *lbline = NULL;
+
+  if (blockcol != -1)
+  {
+    for (Line *ln = findfirstline(); ln; ln = ln->next)
+    {
+      if (ln == currline)
+      {
+        if (selected) { lbline = ln; selected ^= 1; endblock = col; }
+        else          { fbline = ln; selected ^= 1; begblock = col; }
+      }
+
+      if (ln->type & GLINE_BLOK)
+      {
+        if (selected) { lbline = ln; selected ^= 1; endblock = blockcol; }
+        else          { fbline = ln; selected ^= 1; begblock = blockcol; }
+      }
+
+      if (ln == line) { if (ln == lbline) selected = 1; break; }
+      if (lbline) break;
+    }
+
+    if (selected)
+    {
+      if (fbline == lbline)
+      {
+        if (begblock > endblock)
+        {
+          int temp = begblock;
+          begblock = endblock;
+          endblock = temp;
+        }
+        else if (begblock == endblock)
+          begblock = endblock = 0;
+      }
+      else if (line == fbline)
+        endblock = maxcol+1;
+      else if (line == lbline)
+        begblock = 0;
+      else
+      {
+        begblock = 0;
+        endblock = maxcol+1;
+      }
+    }
+    else
+      begblock = endblock = 0;
+  }
+
+
+  if (0 < begblock)
+  {
+      char savechar = _buf[begblock];
+      _buf[begblock] = NUL;
+
+    if ((CFG->scheckerenabled == GAUTO) && schecker.IsLoaded() &&
+        !(line->type & (GLINE_TAGL|GLINE_QUOT|GLINE_KLUD|GLINE_TEAR|GLINE_ORIG|GLINE_HIDD)))
+    {
+      dispstringsc(_buf, 0, begblock, __row, mincol, savechar);
+    }
+    else
+      StyleCodeHighlight(_buf, __row, mincol, false, -1);
+
+    _buf[begblock] = savechar;
+  }
+
+  if (begblock < endblock)
+  {
+    bool oldusestylies = AA->adat->usestylies;
+    bool oldhighlighturls = CFG->highlighturls;
+    AA->adat->usestylies = false;
+    CFG->highlighturls = false;
+
+    char savechar = _buf[endblock];
+    _buf[endblock] = NUL;
+    StyleCodeHighlight(_buf+begblock, __row, mincol+begblock, false, C_READA);
+    _buf[endblock] = savechar;
+
+    AA->adat->usestylies = oldusestylies;
+    CFG->highlighturls = oldhighlighturls;
+  }
+
+  if (endblock < (maxcol+1))
+  {
+    if ((CFG->scheckerenabled == GAUTO) && schecker.IsLoaded() &&
+        !(line->type & (GLINE_TAGL|GLINE_QUOT|GLINE_KLUD|GLINE_TEAR|GLINE_ORIG|GLINE_HIDD)))
+    {
+      dispstringsc(_buf, endblock, maxcol+1, __row, mincol+endblock, 0);
+    }
+    else
+      StyleCodeHighlight(_buf+endblock, __row, mincol+endblock, false, -1);
+  }
+
+  GFTRK(NULL);
+}
+#else //#if defined(__GOLD_SPELL__)
+
+
+//  ------------------------------------------------------------------
+
 void IEclass::dispstring(const char* __string, uint __row, int attr, Line* line) {
 
   GFTRK("Editdispstring");
@@ -353,6 +564,7 @@ void IEclass::dispstring(const char* __string, uint __row, int attr, Line* line)
 
   GFTRK(NULL);
 }
+#endif  //#if defined(__GOLD_SPELL__)
 
 
 //  ------------------------------------------------------------------
@@ -392,7 +604,11 @@ void IEclass::displine(Line* __line, uint __row) {
 
   // Display line
   setcolor(__line);
+#if defined(__GOLD_SPELL__)
+  dispstring(__line, __row);
+#else
   dispstring(__line->txt.c_str(), __row, -1, __line);
+#endif
 
   GFTRK(NULL);
 }
@@ -436,6 +652,12 @@ void IEclass::refresh(Line* __currline, uint __row) {
   }
 
   // If we ran out of lines, blank the rest
+#if defined(__GOLD_SPELL__)
+  if (__row <= maxrow)
+    editwin.fill(__row, mincol, __row, maxcol, _box_table(W_BREAD, 1), C_READB|ACSET);
+  if (++__row <= maxrow)
+    editwin.fill(__row, mincol, maxrow, maxcol, ' ', C_READW);
+#else
   if(__row <= maxrow) {
     vchar vbuf[256];
     for(int c = 0; c < maxcol+1; c++)
@@ -445,6 +667,7 @@ void IEclass::refresh(Line* __currline, uint __row) {
     while(__row <= maxrow)
       dispstring("", __row++);
   }
+#endif
 
   GFTRK(NULL);
 }
@@ -1861,6 +2084,58 @@ void IEclass::SaveMsg() {
 
 //  ------------------------------------------------------------------
 
+#if defined(__GOLD_SPELL__)
+void IEclass::SCheckerMenu()
+{
+  if (!schecker.IsLoaded())
+    return;
+
+  const char *txt = currline->txt.c_str();
+  GMenuSChecker menu;
+  int finaltag;
+
+  if (!isscchar(txt[col]))
+    finaltag = menu.Run(schecker, "");
+  else
+  {
+    char buff[EDIT_BUFLEN];
+    size_t beg = col;
+    size_t end = col;
+
+    for (; (beg > 0) && isscchar(txt[beg-1]); beg--);
+    for (; isscchar(txt[end]); end++);
+    size_t len = end - beg;
+
+    memcpy(buff, &txt[beg], len);
+    buff[len] = 0;
+
+    finaltag = menu.Run(schecker, buff);
+    if (finaltag >= 0)
+    {
+      std::string &str = schecker.GetSuggest()[finaltag].second;
+      size_t len2 = str.length() - 3;
+      txt = &str.c_str()[2];
+
+      if ((buff[len-1] == '.') && (txt[len2-1] != '.')) len--;
+      if (col > (beg + len2 - 1)) col = beg + len2 - 1;
+
+      Undo->PushItem(EDIT_UNDO_DEL_TEXT, currline, beg, len);
+      currline->txt.erase(beg, len);
+
+      Undo->PushItem(EDIT_UNDO_INS_TEXT|BATCH_MODE, currline, beg, len2);
+      currline->txt.insert(beg, txt, len2);
+      wrapit(&currline, &col, &row);
+    }
+  }
+
+  if (finaltag == -2)
+    refresh(currline, row);
+}
+#endif
+
+
+//  ------------------------------------------------------------------
+
 int IEclass::isempty(Line* __line) {
 
   if(__line == NULL)
@@ -2476,6 +2751,9 @@ noselecting:
     case KK_EditReflow:           Reflow();             break;
     case KK_EditSaveFile:         SaveFile();           break;
     case KK_EditSaveMsg:          SaveMsg();            break;
+#if defined(__GOLD_SPELL__)
+    case KK_EditSCheckerMenu:     SCheckerMenu();       break;
+#endif
     case KK_EditSoundkill:        Soundkill();          break;
     case KK_EditSpellCheck:       SpellCheck();         break;
     case KK_EditTab:              Tab();                break;
@@ -2526,6 +2804,14 @@ int IEclass::Start(int __mode, uint* __position, GMsg* __msg) {
   msgptr = __msg;
   msgmode = __mode;
   currline = __msg->lin;
+
+#if defined(__GOLD_SPELL__)
+  if (CFG->scheckerenabled)
+  {
+    schecker.Init();
+    schecker.Load(CFG->scheckerdeflang, CFG->scheckeruserdic);
+  }
+#endif
 
   if(AA->isinternet() and (CFG->soupexportmargin <= CFG->dispmargin))
     margintext = CFG->soupexportmargin;

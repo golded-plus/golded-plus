@@ -519,6 +519,11 @@ SwitchR:
 
 SwitchS:
   switch(crc) {
+#if defined(__GOLD_SPELL__)
+    case CRC_SCHECKERDEFLANG  :  CfgScheckerdeflang  ();  break;
+    case CRC_SCHECKERENABLED  :  CfgScheckerenabled  ();  break;
+    case CRC_SCHECKERUSERDIC  :  CfgScheckeruserdic  ();  break;
+#endif
     case CRC_SCREENBLANKER    :  CfgScreenblanker    ();  break;
     case CRC_SCREENMAXCOL     :  CfgScreenmaxcol     ();  break;
     case CRC_SCREENMAXROW     :  CfgScreenmaxrow     ();  break;

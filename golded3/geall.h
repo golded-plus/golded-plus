@@ -638,6 +638,9 @@ struct SaveUtil {
 #define GC_CFGB_    CFG->color[11]
 #define GC_STYLE_   CFG->color[12]
 #define GC_SHAD_    CFG->color[13]
+#if defined(__GOLD_SPELL__)
+#define GC_SPELL_   CFG->color[14]
+#endif
 
 
 //  ------------------------------------------------------------------
@@ -689,6 +692,10 @@ struct SaveUtil {
 #define _ReverseBoldUnderscore        c[13]
 #define _ReverseItalicUnderscore      c[14]
 #define _ReverseBoldItalicUnderscore  c[15]
+
+#if defined(__GOLD_SPELL__)
+#define _SpellError                   c[0]
+#endif
 
 
 //  ------------------------------------------------------------------
@@ -805,6 +812,10 @@ struct SaveUtil {
 #define C_STYLERU_B GC_STYLE_._ReverseBoldUnderscore
 #define C_STYLERUI_ GC_STYLE_._ReverseItalicUnderscore
 #define C_STYLERUIB GC_STYLE_._ReverseBoldItalicUnderscore
+
+#if defined(__GOLD_SPELL__)
+#define C_SCERROR   GC_SPELL_._SpellError
+#endif
 
 
 //  ------------------------------------------------------------------

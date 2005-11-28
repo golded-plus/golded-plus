@@ -223,6 +223,14 @@ const word CRC_STYLECODES        = 0x4CB0;
 
 
 //  ------------------------------------------------------------------
+
+#if defined(__GOLD_SPELL__)
+const word CRC_SPELL             = 0xB8AE;
+const word CRC_SCERROR           = 0xAB65;
+#endif
+
+
+//  ------------------------------------------------------------------
 //  Get color value
 
 int GetColor(char* ink) {
@@ -414,6 +422,11 @@ void GetColors(char* value) {
     case CRC_STYLECODES:
       wptr = &GC_STYLE_;
       break;
+#if defined(__GOLD_SPELL__)
+    case CRC_SPELL:
+      wptr = &GC_SPELL_;
+      break;
+#endif
     default:
       return;
   }
@@ -577,6 +590,11 @@ void GetColors(char* value) {
         wptr->_ReverseBoldItalicUnderscore = attr;
       }
       break;
+#if defined(__GOLD_SPELL__)
+    case CRC_SCERROR:
+      wptr->_SpellError = attr;
+      break;
+#endif
     default:
       return;
   }

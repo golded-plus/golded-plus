@@ -222,6 +222,31 @@ void CfgRobotname() {
 
 //  ------------------------------------------------------------------
 
+#if defined(__GOLD_SPELL__)
+void CfgScheckerdeflang()
+{
+  CFG->scheckerdeflang = atoi(val);
+  if (CFG->scheckerdeflang == 0)
+    CFG->scheckerdeflang = 0xFFFF;
+}
+
+//  ------------------------------------------------------------------
+
+void CfgScheckerenabled()
+{
+  CFG->scheckerenabled = GetYesno(val);
+}
+
+//  ------------------------------------------------------------------
+
+void CfgScheckeruserdic()
+{
+  strcpy(CFG->scheckeruserdic, val);
+}
+#endif
+
+//  ------------------------------------------------------------------
+
 void CfgScreenblanker() {
 
   GTok t;

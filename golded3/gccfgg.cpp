@@ -764,6 +764,11 @@ CfgGed::CfgGed() {
   replylinkfloat = true;
   replylinklist = 0;
   replylinkshowalways = true;
+#if defined(__GOLD_SPELL__)
+  scheckerdeflang = 0xFFFF;
+  scheckerenabled = NO;
+  strcpy(scheckeruserdic, "user.dic");
+#endif
   screenblanker = 180;
   screenblankertype = BLANK_SLIDEWIN;
   screenmaxcol = 0;

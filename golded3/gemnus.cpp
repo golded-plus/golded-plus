@@ -1070,3 +1070,137 @@ int GMenuConfirm::Run() {
 
 //  ------------------------------------------------------------------
 
+#if defined(__GOLD_SPELL__)
+int GMenuSChecker::Run(CSpellChecker &schecker, const char *word)
+{
+  enum
+  {
+    TAG_ADDWORD = 100,
+    TAG_LANG    = 0x10000,
+    TAG_MORE    = 0x20000,
+    TAG_INDEX   = 0x30000
+  };
+
+  schecker.Check(word);
+  CSpellSuggestV &suggest = schecker.Suggest();
+
+  std::string title;
+  if (!*word)
+    title = " SChecker ";
+  else
+  {
+    title = " ";
+    title += word;
+    title += " ";
+  }
+
+  Init();
+  SetColor(C_ASKW, C_ASKQ, C_ASKN, C_ASKS, CFG->switches.get(screenshadows) ? C_SHADOW : -1);
+  SetTitle(title.c_str(), C_ASKT, TLEFT);
+  SetPos(6, 0, title.length()+2, 0);
+  SetBorder(W_BASK, C_ASKB);
+  SetMask(M_CLALL);
+  SetHelp(0);
+
+  Begin();
+  SetTitle("");
+
+  size_t idx;
+  size_t levels = 0;
+  size_t numrows = 7;
+
+  CSpellLangV &langs = schecker.GetLangs();
+  LIDC lidc = schecker.GetLangCode();
+
+  std::vector<std::string> langstr;
+  size_t langcount = langs.size();
+
+  for (idx = 0; idx < langcount; idx++)
+  {
+    char buff[10];
+    LIDC code = langs[idx].GetLangCode();
+
+    buff[0] = ' ';
+    buff[1] = (code == lidc) ? '\x10' : ' ';
+
+    itoa(code, &buff[2], 10);
+    strcat(buff, " ");
+
+    langstr.push_back(std::string(buff));
+  }
+
+  if (langcount)
+  {
+    Item(TAG_LANG, "L Language... ", 0);
+    numrows++;
+
+    SetPos(numrows, 1, 0, 0);
+    Begin();
+
+    for (idx = 0; idx < langcount; idx++)
+      Item(TAG_LANG+idx+1, langstr[idx].c_str());
+    
+    End();
+  }
+
+  if (*word)
+  {
+    Item(TAG_ADDWORD, "A Add Word... ");
+    numrows++;
+  }
+
+  if (suggest.size())
+  {
+    ItemSep();
+    numrows++;
+  }
+
+  for (idx = 0; idx < suggest.size(); idx++)
+  {
+    Item(TAG_INDEX + idx, suggest[idx].second.c_str());
+
+    if ((numrows == (gvid->numrows - 5)) && (idx < suggest.size()-3))
+    {
+      ItemSep();
+      Item(TAG_MORE + levels, "M More... ", 0);
+      
+      levels++;
+      numrows = levels + 6;
+
+      SetPos(numrows, levels, title.length()+2, 0);
+      BeginPullDown();
+    }
+
+    numrows++;
+  }
+
+  for (size_t n = 0; n < levels; n++)
+    End();
+
+  if (suggest.size())
+    SetTag(TAG_INDEX);
+
+  End();
+
+  vcurhide();
+  Start();
+  vcurshow();
+
+  if (finaltag == TAG_ADDWORD)
+  {
+    schecker.AddWord();
+    return -2;
+  }
+  else if ((finaltag > TAG_LANG) && (finaltag < TAG_MORE))
+  {
+    schecker.Load(langs[finaltag-TAG_LANG-1].GetLangCode(), CFG->scheckeruserdic);
+    return -2;
+  }
+
+  return (finaltag < TAG_INDEX) ? -1 : (finaltag - TAG_INDEX);
+}
+#endif
+
+
+//  ------------------------------------------------------------------
+

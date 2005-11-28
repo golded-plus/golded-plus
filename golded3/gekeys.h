@@ -181,6 +181,9 @@ const gkey KK_EditSCodeBold        = 0xFF09;
 const gkey KK_EditSCodeItalic      = 0xFF0A;
 const gkey KK_EditSCodeUnderline   = 0xFF0B;
 const gkey KK_EditSCodeReverse     = 0xFF0C;
+#if defined(__GOLD_SPELL__)
+const gkey KK_EditSCheckerMenu     = 0xFF0D;
+#endif
 
 const gkey KK_FileAbort            = 0xFF10;
 const gkey KK_FileAskExit          = 0xFF11;

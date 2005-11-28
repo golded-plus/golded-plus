@@ -304,3 +304,14 @@ public:
 
 //  ------------------------------------------------------------------
 
+#if defined(__GOLD_SPELL__)
+class GMenuSChecker : public GMnu
+{
+public:
+  int Run(CSpellChecker &schecker, const char *word);
+};
+#endif
+
+
+//  ------------------------------------------------------------------
+

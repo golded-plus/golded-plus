@@ -671,6 +671,9 @@ tglobalkey globalkeys[] = {
   { CRC_READSHOWDEL            , KK_ReadShowDel          , KT_R }, // 0x8615
   { CRC_K_ENTER                , Key_Ent                 ,    0 }, // 0x87BD
   { CRC_EDITGOTOPLINE          , KK_EditGoTopLine        , KT_E }, // 0x87C2
+#if defined(__GOLD_SPELL__)
+  { CRC_EDITSCHECKERMENU       , KK_EditSCheckerMenu     , KT_E }, // 0x881F
+#endif
   { CRC_HEADERTOGGLEARCSENT    , KK_HeaderToggleArcsent  , KT_H }, // 0x88A7
   { CRC_EDITBLOCKPGDN          , KK_EditBlockPgDn        , KT_E }, // 0x895B
   { CRC_EDITASKEXIT            , KK_EditAskExit          , KT_E }, // 0x89AF

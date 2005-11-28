@@ -309,6 +309,11 @@ public:
   int         replylinklist;
   bool        replylinkshowalways;
   gstrarray   robotname;
+#if defined(__GOLD_SPELL__)
+  word        scheckerdeflang;
+  int         scheckerenabled;
+  Path        scheckeruserdic;
+#endif
   int         screenblanker;        // blanktime;
   int         screenblankertype;
   int         screenmaxcol;         // maxcols;

@@ -78,6 +78,7 @@
 #include <gwinhelp.h>
 #include <gwinpick.h>
 #include <gedacfg.h>
+#include <gespell.h>
 
 
 //  ------------------------------------------------------------------

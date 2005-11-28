@@ -279,6 +279,12 @@ protected:
   int  blockcol;
   int  selecting;
 
+  //  ----------------------------------------------------------------
+  //  Speller.
+
+#if defined(__GOLD_SPELL__)
+  CSpellChecker schecker;
+#endif
 
   //  ----------------------------------------------------------------
   //  Internal helper functions
@@ -290,7 +296,12 @@ protected:
   int   dispchar        (vchar __ch, int attr=-1);
   void  dispins         ();
   void  displine        (Line* __line, uint __row);
+#if defined(__GOLD_SPELL__)
+  void  dispstringsc    (char *__buf, uint __beg, uint __end, uint __row, uint __col, char endchar);
+  void  dispstring      (Line* line, uint __row);
+#else
   void  dispstring      (const char* __string, uint __row, int attr=-1, Line* line=NULL);
+#endif
   int   downoneline     (uint __row);
   void  editexport      (Line* __exportline, int __endat);
   Line* findanchor      ();
@@ -395,6 +406,9 @@ public:
   void ReTab          ();
   void SaveFile       ();
   void SaveMsg        ();
+#if defined(__GOLD_SPELL__)
+  void SCheckerMenu   ();
+#endif
   void Soundkill      ();
   void SpellCheck     ();
   void Tab            ();

@@ -112,6 +112,9 @@ const word CRC_EDITQUITNOW          = 0x80BA;
 const word CRC_EDITREFLOW           = 0x13F9;
 const word CRC_EDITSAVEFILE         = 0x64A4;
 const word CRC_EDITSAVEMSG          = 0x660C;
+#if defined(__GOLD_SPELL__)
+const word CRC_EDITSCHECKERMENU     = 0x881F;
+#endif
 const word CRC_EDITSCODENORMAL      = 0xE4CE;
 const word CRC_EDITSCODEBOLD        = 0x657D;
 const word CRC_EDITSCODEITALIC      = 0x487F;

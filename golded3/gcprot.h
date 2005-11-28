@@ -306,6 +306,11 @@ void CfgReplylinklist    ();
 void CfgReplylinkshowalways();
 void CfgReplyto          ();
 void CfgRobotname        ();
+#if defined(__GOLD_SPELL__)
+void CfgScheckerdeflang  ();
+void CfgScheckerenabled  ();
+void CfgScheckeruserdic  ();
+#endif
 void CfgScreenblanker    ();
 void CfgScreenmaxcol     ();
 void CfgScreenmaxrow     ();
