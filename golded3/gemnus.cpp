@@ -1188,8 +1188,14 @@ int GMenuSChecker::Run(CSpellChecker &schecker, const char *word)
 
   if (finaltag == TAG_ADDWORD)
   {
-    schecker.AddWord();
-    return -2;
+    char buff[1024];
+    strcpy(buff, word);
+
+    if (edit_string(buff, sizeof(buff), " Edit word ", 0) && !schecker.Check(buff))
+    {
+      schecker.AddWord();
+      return -2;
+    }
   }
   else if ((finaltag > TAG_LANG) && (finaltag < TAG_MORE))
   {
