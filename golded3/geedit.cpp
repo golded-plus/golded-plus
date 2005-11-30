@@ -2129,7 +2129,18 @@ void IEclass::SCheckerMenu()
   }
 
   if (finaltag == -2)
-    refresh(currline, row);
+  {
+    Line *line = currline;
+    uint32_t _row = row;
+
+    while (line->prev && (_row > minrow))
+    {
+      line = line->prev;
+      _row--;
+    }
+
+    refresh(line, _row);
+  }
 }
 #endif
 
