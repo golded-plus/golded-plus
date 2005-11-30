@@ -400,14 +400,15 @@ void CSpellChecker::Close()
 
 //  ------------------------------------------------------------------
 
-bool CSpellChecker::Load(word lic, const char *userdic)
+bool CSpellChecker::Load(LIDC lidc, const char *userdic)
 {
   if (!IsInited()) return false;
+  if (IsLoaded() && (mLang->GetLangCode() == lidc)) return true;
 
-  std::vector<CSpellLang>::iterator it;
+  CSpellLangV::iterator it;
   for (it = mLangs.begin(); it != mLangs.end(); it++)
   {
-    if ((it->GetLangCode() == lic) && it->Load(userdic))
+    if ((it->GetLangCode() == lidc) && it->Load(userdic))
     {
       UnLoad();
       mLang = it;

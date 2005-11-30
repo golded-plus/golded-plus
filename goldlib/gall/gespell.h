@@ -199,7 +199,7 @@ public:
   bool Init();
   void Close();
 
-  bool Load(word lic, const char *userdic = NULL);
+  bool Load(LIDC lidc, const char *userdic = NULL);
   void UnLoad();
 
   bool Check(const char *text);
