@@ -10,6 +10,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed address lookup from header editor (pressing ENTER on empty To:).
+
 - Fixed keystacking conflicts:
     - KeybClear will not affect keystacking.
     - Auto Macro will not work if keystacking is used.
