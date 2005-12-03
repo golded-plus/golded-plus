@@ -10,6 +10,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed replylinkshowalways for areas with 0 messages.
+
 - Fixed address lookup from header editor (pressing ENTER on empty To:).
 
 - Fixed keystacking conflicts:

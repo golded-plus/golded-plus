@@ -1237,7 +1237,8 @@ void GThreadlist::Run() {
 
   BuildThreadIndex(reader_msg->msgno);
 
-  if(CFG->replylinkshowalways || (list.size() > 1))
+  size_t size = list.size();
+  if ((CFG->replylinkshowalways && (size > 0)) || (size > 1))
     run_picker();
   else {
     w_info(LNG->NoThreadlist);
