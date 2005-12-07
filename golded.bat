@@ -3,21 +3,23 @@ rem
 rem This is Golded's run command file example.
 rem
 rem
+SET flagpath=M:\flag
+SET fastechopath=M:\fastecho
 
-rem Command runs if netmail wrote
-SET _NET_ACT=cd.>>M:\flag\netmail.flg
+rem Flag to creates if netmail wrote
+SET _NET_FLAG=%flagpath%\netmail.flg
 
-rem Command runs if echomail wrote
-SET _ECHOACT=cd.>>M:\flag\netmail.flg
+rem Flag to creates if echomail wrote
+SET _ECHO_FLAG=%flagpath%\echomail.flg
 
-rem Command runs if localmail wrote
-SET _LOCALACT=cd.>>M:\flag\netmail.flg
+rem Flag to creates if localmail wrote
+SET _LOCAL_FLAG=%flagpath%\locmail.flg
 
 rem Command runs if messagebase is damaged
-SET _REPAIRACT=M:\fastecho\feutil check
+SET _REPAIRACT=%fastechopath%\feutil check
 
 rem Command runs if messagebase indexes is damaged
-SET _REBUILDACT=M:\fastecho\feutil index
+SET _REBUILDACT=%fastechopath%\feutil index
 
 
 M:\GOLDED\GOLDED.EXE
@@ -49,47 +51,47 @@ If ErrorLevel 001 Goto ____L
 :E_N_L
     Echo.
     Echo **** New Echo, Net and Local mail entered! ****
-    %_NET_ACT%
-    %_LOCALACT%
+    cd . >>%_NET_FLAG%
+    cd . >>%_LOCAL_FLAG%
     Goto purge
 
 :E_N__
     Echo.
     Echo **** New Echo and Netmail entered! ****
-    %_NET_ACT%
-    %_ECHOACT%
+    cd . >>%_NET_FLAG%
+    cd . >>%_ECHO_FLAG%
     Goto purge
 
 :E___L
     Echo.
     Echo **** New Echo and Local mail entered! ****
-    %_ECHOACT%
-    %_LOCALACT%
+    cd . >>%_ECHO_FLAG%
+    cd . >>%_LOCAL_FLAG%
     Goto purge
 
 :E____
     Echo.
     Echo **** New Echomail entered! ****
-    %_ECHOACT%
+    cd . >>%_ECHO_FLAG%
     Goto purge
 
 :__N_L
     Echo.
     Echo **** New Net and Local mail entered! ****
-    %_NET_ACT%
-    %_LOCALACT%
+    cd . >>%_NET_FLAG%
+    %_LOCAL_FLAG%
     Goto purge
 
 :__N__
     Echo.
     Echo **** New Netmail entered! ****
-    %_NET_ACT%
+    cd . >>%_NET_FLAG%
     Goto purge
 
 :____L
     Echo.
     Echo **** New Local mail entered! ****
-    %_LOCALACT%
+    cd . >>%_LOCAL_FLAG%
     Goto purge
 
 :_____
@@ -114,6 +116,6 @@ Echo ru. сообщения. Очистить коpзину?
 CHOICE /c:YN /T:N,05
 IF ERRORLEVEL 2 goto Start
 
-IF ERRORLEVEL 1 Goto Del M:\SQUISH\TRASHCAN\*.msg
+IF ERRORLEVEL 1 Del M:\SQUISH\TRASHCAN\*.msg
 
 :End
