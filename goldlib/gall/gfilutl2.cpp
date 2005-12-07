@@ -77,7 +77,7 @@ int strschg_environ(std::string& s) {
   size_t posn, posn1;
 
   while(((posn=s.find('%')) != s.npos) and ((posn1=s.find('%', posn+1)) != s.npos)) {
-    fnd = s.substr(posn+1, posn1-1);
+    fnd = s.substr(posn+1, posn1-1-posn);
     const char* rep = getenv(fnd.c_str());
     rep = rep ? rep : "";
     s.replace(posn, posn1-posn+1, rep);
