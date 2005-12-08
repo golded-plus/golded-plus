@@ -247,7 +247,8 @@ void gareafile::ReadFMail(char* tag) {
   Path path, file;
 
   *file = NUL;
-  strcpy(options, tag);
+  options[79] = 0;
+  strncpy(options, tag, 79);
   ptr = strtok(tag, " \t");
   while(ptr) {
     if(*ptr != '-') {

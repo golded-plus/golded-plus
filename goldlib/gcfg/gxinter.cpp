@@ -41,7 +41,8 @@ void gareafile::ReadInterMail(char* tag) {
   char options[80];
 
   *_path = NUL;
-  strcpy(options, tag);
+  options[79] = 0;
+  strncpy(options, tag, 79);
 
   char* ptr = strtok(tag, " \t");
   while(ptr) {

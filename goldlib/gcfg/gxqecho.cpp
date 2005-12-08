@@ -96,7 +96,8 @@ void gareafile::ReadQEcho(char* tag) {
 
   *origin = NUL;
   *file = NUL;
-  strcpy(options, tag);
+  options[79] = 0;
+  strncpy(options, tag, 79);
   char* ptr = strtok(tag, " \t");
   while(ptr) {
     if(*ptr != '-')

@@ -161,8 +161,9 @@ void gareafile::ReadAdeptXBBS(char* tag) {
   Path file, path, cfg;
 
   *path = NUL;
+  options[79] = 0;
   strcpy(cfg, "System\\Message_Areas");
-  strcpy(options, tag);
+  strncpy(options, tag, 79);
   char* ptr = strtok(tag, " \t");
   while(ptr) {
     if(*ptr != '-')
