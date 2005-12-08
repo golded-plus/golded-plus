@@ -6,4 +6,4 @@
 #include <gdefs.h>
 #include <gctype.h>
 
-#endif  //#ifndef __TYPEDEFS_H__
+#endif  /*#ifndef __TYPEDEFS_H__*/
