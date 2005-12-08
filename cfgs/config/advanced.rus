@@ -2116,40 +2116,81 @@ AreaReadOnly Soft     ; Предупредить.
 AreaPath C:\FIDO\SQ\
 
 // GoldED может брать настройки из многих других программ.
-;AreaFile AreasBBS      M:\Hudson\areas.bbs
-;AreaFile AdeptxBBS     R:\Adptxbbs\
-;AreaFile DBridge       R:\Db\
-;AreaFile Dutchie       R:\Dutchie\
-;AreaFile Ezycom        R:\Ezy\
-;AreaFile FastEcho      R:\Fastecho\
-;AreaFile FidoPCB       R:\Fidopcb\
-;AreaFile FMail         R:\Fmail\
-;AreaFile FrontDoor     R:\Fd\ M:\Hudson\areas.bbs
-;AreaFile GEcho         R:\Gecho\
-;AreaFile IMAIL         R:\Imail\
-;AreaFile InterMail     R:\Im\
-;AreaFile LoraBBS       R:\Lora\
-;AreaFile Maximus       R:\Max\
-;AreaFile ME2           R:\Me2\areadesc.me2 R:\Me2\areas.bbs
-;AreaFile Opus          R:\Opus\
-;AreaFile Partoss       R:\Parma\partoss.cfg
-;AreaFile PCBoard       R:\Pcb\
-;AreaFile Portal        R:\Portal\
-;AreaFile ProBoard      R:\Pb\
-;AreaFile QFront        R:\Qfront\
-;AreaFile QuickBBS      R:\Qbbs\ R:\Qbbs\areas.bbs
-;AreaFile RaEcho        R:\Raecho\
-;AreaFile RemoteAccess  R:\Ra\ R:\Ra\areas.bbs
-AreaFile Squish        C:\FIDO\SQ\squish.cfg
-AreaFile EchoList      C:\FIDO\SQ\arealist.lst
-;AreaFile SuperBBS      R:\Super\ R:\Super\areas.bbs
-;AreaFile timEd         R:\Timed\
-;AreaFile TMAIL         R:\Terminat\Tmail\
-;AreaFile TosScan       R:\Ts\
-;AreaFile WMail         R:\Wmail\
-;AreaFile WildCat       R:\Wcat\
-;AreaFile xMail         R:\Xmail\
-;AreaFile Watergate     R:\Watergate\
+;AREAFILE AdeptXBBS    R:\ADEPT\
+;AREAFILE AdeptXBBS  ; Используя путь из AREAPATH
+;AREAFILE Areas_BBS    R:\HUDSON\AREAS.BBS
+;AREAFILE AreasBBS     R:\HUDSON\AREAS.BBS         ; == AREAFILE Areas_BBS
+;AREAFILE Crashmail    R:\CRASHMAIL\crashecho.cfg
+;AREAFILE Crashecho    R:\CRASHMAIL\crashecho.cfg  ; == AREAFILE Crashmail
+;AREAFILE D_Bridge     R:\DB\                      ; == AREAFILE DBridge
+;AREAFILE DBridge      R:\DB\                      ; D'Bridge
+;AREAFILE DBridge    ; Используя путь из переменных окружения DBRIDGE или DB, либо путь из AREAPATH
+;AREAFILE Dutchie      R:\DUTCHIE\                 ; Dutchie 2.9x
+;AREAFILE Dutchie    ; Dutchie Используя путь из переменной окружения DUTCHIE, либо путь из AREAPATH
+;AREAFILE Ezycom       R:\EZY\               ; Ezycom 1.02 or 1.10
+;AREAFILE Ezycom     ; Ezycom Используя путь из переменной окружения EZY, либо путь из AREAPATH
+;AREAFILE Echolist     R:\FIDO\arealist.lst
+;AREAFILE Fastecho     R:\FASTECHO\          ; Fastecho 1.1x, 1.41 or 1.42
+;AREAFILE Fastecho   ; Fastecho Используя путь из переменной окружения FASTECHO, либо путь из AREAPATH
+;AREAFILE Fe_ABS       R:\FE\                ; == AREAFILE Fastecho
+;AREAFILE Fidoconfig   R:\FIDO\config        ; HPT конфиг
+;AREAFILE Fidoconfig ; HPT Используя имя файла из переменной окружения FIDOCONFIG
+;AREAFILE FidoPCB      R:\FIDOPCB\
+;AREAFILE FidoPCB    ; FidoPCB Используя путь из переменной окружения FIDOPCB, либо путь из AREAPATH
+;AREAFILE FMail        R:\FMAIL\
+;AREAFILE FMail      ; FMail Используя путь из переменной окружения FMAIL, либо путь из AREAPATH
+;AREAFILE FrontDoor    R:\FD\ M:\HUDSON\AREAS.BBS
+;AREAFILE FrontDoor    M:\HUDSON\AREAS.BBS   ; Используя путь из AREAPATH либо из переменной окружения FD
+;AREAFILE GEcho        R:\GECHO\
+;AREAFILE GEcho      ; GEcho Используя путь из переменной окружения GE, либо путь из AREAPATH
+;AREAFILE IMail        R:\IMAIL\
+;AREAFILE IMail      ; IMail Используя путь из переменной окружения IMAIL, либо путь из AREAPATH
+;AREAFILE InterMail    R:\IM\
+;AREAFILE InterMail  ; InterMail Используя путь из переменной окружения IM, либо путь из AREAPATH
+;AREAFILE LoraBBS      R:\LORA\               ; LoraBBS 2.33 and 2.40
+;AREAFILE LoraBBS    ; LoraBBS Используя путь из переменной окружения LORA или LORABBS, либо путь из AREAPATH
+;AREAFILE Maximus      R:\MAX\                ; Maximus 3.x
+;AREAFILE Maximus    ; Maximus Используя путь из переменной окружения MAXIMUS, либо путь из AREAPATH
+;AREAFILE ME2          R:\ME2\AREADESC.ME2 R:\ME2\AREAS.BBS
+;AREAFILE ME2          AREADESC.ME2 AREAS.BBS ; ME2 using token AREAPATH
+;AREAFILE Opus         R:\OPUS\
+;AREAFILE Opus       ; Opus Используя путь из переменной окружения OPUS, либо путь из AREAPATH
+;AREAFILE Partoss      R:\PARTOSS\                     ; == AREAFILE Squish
+;AREAFILE Pcboard      R:\PCB\
+;AREAFILE Pcboard    ; Pcboard Используя путь из переменной окружения PCBOARD, либо путь из AREAPATH
+;AREAFILE Portal       R:\PORTAL\                      ; Portal of Power
+;AREAFILE Portal     ; P'o'P Используя путь из переменной окружения POPCMDLINE и/или путь из AREAPATH
+;AREAFILE ProBoard     R:\PB\
+;AREAFILE ProBoard   ; ProBoard Используя путь из переменной окружения PB, либо путь из AREAPATH
+;AREAFILE QEcho        /usr/local/etc/qecho/AreaList ; QEcho Евгения Сорочинского
+;AREAFILE QEcho      ; Использовать конфиг /etc/qecho/AreaList
+;AREAFILE QFront       R:\QFRONT\
+;AREAFILE QFront     ; QFront Используя путь из переменной окружения QFRONT, либо путь из AREAPATH
+;AREAFILE QuickBBS     R:\QBBS\ R:\QBBS\AREAS.BBS
+;AREAFILE QuickBBS R:\QBBS\AREAS.BBS ; Используя значение AREAPATH, либо путь из переменных окружения QUICKBBS или QBBS
+;AREAFILE RaEcho       R:\RAECHO\        ; RA-ECHO 1.xx
+;AREAFILE Ra_Echo      R:\RAECHO\        ; == AREAFILE RaEcho
+;AREAFILE Ra_Echo    ; RA-ECHO Используя путь из переменной окружения RAECHO, либо путь из AREAPATH
+;AREAFILE RemoteAccess R:\RA\ R:\RA\AREAS.BBS
+;AREAFILE RemoteAccess R:\RA\AREAS.BBS   ; Используя значение AREAPATH, либо путь из переменной окружения RA
+;AREAFILE SpaceToss    R:\SPCTOSS\spctoss.ctl
+;AREAFILE Squish       R:\SQUISH\
+;AREAFILE SuperBBS     R:\SUPER\ R:\SUPER\AREAS.BBS
+;AREAFILE SuperBBS R:\SUPER\AREAS.BBS ; Используя значение AREAPATH, либо путь из переменных окружения SUPERBBS или SBBS
+;AREAFILE TerMail      R:\TERMINAT\TM\
+;AREAFILE Timed        R:\TIMED\
+;AREAFILE TMail        R:\TERMINAT\TM\                 ; == AREAFILE TerMail
+;AREAFILE TosScan      R:\TS\             ; TosScan 1.00 (and FrontDoor)
+;AREAFILE TosScan    ; TosScan Используя путь из переменной окружения FD, либо путь из AREAPATH
+;AREAFILE WaterGate    R:\WG\
+;AREAFILE WaterGate  ; WaterGate Используя путь из переменной окружения WTRGATE, либо путь из AREAPATH
+;AREAFILE WMail        R:\WMAIL\
+;AREAFILE WMail      ; WMail Используя путь из переменной окружения WMAIL, либо путь из AREAPATH
+;AREAFILE XMail        R:\XMAIL\
+;AREAFILE XMail      ; WMail Используя путь из переменной окружения XM, либо путь из AREAPATH
+;AREAFILE SBBS         R:\SBBS\                  ; Synchronet BBS с указанием каталога
+;AREAFILE SBBS         R:\SBBS\ctrl\             ; Synchronet BBS с указанием каталога конфигурации
+;AREAFILE SBBS         R:\SBBS\ctrl\msgs.cnf     ; Synchronet BBS с указанием файла конфигурации
 
 // Установка формата файла users.bbs файла Hudson базы.
 // Перекрывает AreaFile RemoteAccess, если это используется.
