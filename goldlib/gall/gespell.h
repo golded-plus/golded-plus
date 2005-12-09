@@ -167,6 +167,7 @@ public:
   LIDC GetLangCode() { return mLIDC; }
 
   bool IsLoaded() { return mLibrary != NULL; }
+  bool IsUdrOpened() { return mSIB.cUdr != 0; }
 };
 
 
@@ -210,7 +211,9 @@ public:
 
   CSpellSuggestV &GetSuggest() { return mSuggest; }
   CSpellLangV    &GetLangs()   { return mLangs; }
+
   LIDC GetLangCode() { return IsLoaded() ? mLang->GetLangCode() : 0xFFFF; }
+  bool IsUdrOpened() { return IsLoaded() ? mLang->IsUdrOpened() : false; }
 
   bool IsInited() { return mInited; }
   bool IsLoaded() { return mLang != NULL; }

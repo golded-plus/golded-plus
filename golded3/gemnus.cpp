@@ -1143,13 +1143,13 @@ int GMenuSChecker::Run(CSpellChecker &schecker, const char *word)
     End();
   }
 
-  if (*word)
+  if (*word && schecker.IsUdrOpened())
   {
     Item(TAG_ADDWORD, "A Add Word... ");
     numrows++;
   }
 
-  if (suggest.size())
+  if (suggest.size() && (numrows > 7))
   {
     ItemSep();
     numrows++;
