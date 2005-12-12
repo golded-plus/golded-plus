@@ -962,7 +962,7 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar) {
   else if (CFG->replylinkfloat)
   {
     size_t bylen = strlen(msg.By());
-    if ((buf2len + bylen) > tdlen)
+    if ((buf2len + bylen) > (tdlen - 1))
       new_hoffset = (buf2len + bylen)-tdlen+1;
     else
       new_hoffset = 0;
@@ -970,10 +970,18 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar) {
     attr = sattr;
   }
 
-  size_t buflen = strlen(&buf2[h_offset]);
+  size_t buflen = (buf2len > h_offset) ? strlen(&buf2[h_offset]) : 0;
   if (buflen < tdlen)
   {
-    strxcpy(buf, msg.By(), tdlen - buflen);
+    if (CFG->replylinkfloat && (buf2len < h_offset))
+    {
+      size_t bylen = strlen(msg.By());
+      size_t pos = (bylen < (h_offset-buf2len)) ? bylen : h_offset-buf2len;
+      strxcpy(buf, &msg.By()[pos], tdlen);
+    }
+    else
+      strxcpy(buf, msg.By(), tdlen - buflen);
+
     window.prints(pos, 8 + buflen, attr, buf);
   }
 }
