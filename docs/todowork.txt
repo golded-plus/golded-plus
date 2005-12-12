@@ -34,10 +34,13 @@ To do:
 * Add separators to Arealistformat, i.e. Arealistformat "A|E|G".
 * Entering to locked area should allow to select another area instead.
 * CODEPAGE kludge support.
+* Switching code page at message reading using information from CHRS kludge
+  (some OS only).
 * Message text preprocessing with externutil.
 * Add *.* to attach path if not specified.
 * Marking messages with reply in lister.
 * Macro-tokens (@token like externutil parameters) in TaskTitle
+* Select areas in crosspost menu.
 ______________________________________________________________________
 
 To fix:
