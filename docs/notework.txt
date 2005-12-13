@@ -10,6 +10,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ AKAMatchManually will work also for forwards and new messages in netmail
+  areas. AKAMatchNet must be on.
+
 - Win32: prevent video buffer overflow.
 
 - Fixed thread list when replylinkfloat is on (incorrect name position).
