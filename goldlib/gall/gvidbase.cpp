@@ -844,7 +844,7 @@ void vputs(int row, int col, int atr, const char* str) {
 
   int i;
 
-  for(i = 0; *str; i++)
+  for(i = 0; *str && (i < gvid->numcols); i++)
     gvid->bufwrd[i] = vcatch(*str++, atr);
   if(i)
     vputws(row, col, gvid->bufwrd, i);
@@ -945,6 +945,9 @@ void vputns(int row, int col, int atr, const char* str, uint width) {
 
   int i;
 
+  if (width > gvid->numcols)
+    width = gvid->numcols;
+
   for(i = 0; (i < width) and *str; i++)
     gvid->bufwrd[i] = vcatch(*str++, atr);
   vatch filler = vcatch(fillchar, atr);
@@ -1034,6 +1037,9 @@ void vputx(int row, int col, int atr, vchar chr, uint len) {
   VioWrtNCell((BYTE *)&filler, (USHORT)len, (USHORT)row, (USHORT)col, 0);
 
   #elif defined(__WIN32__)
+
+  if (len > gvid->numcols)
+    len = gvid->numcols;
 
   vatch filler = vcatch(chr, atr);
   for(int i = 0; i < len; i++)

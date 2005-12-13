@@ -10,6 +10,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Win32: prevent video buffer overflow.
+
 - Fixed thread list when replylinkfloat is on (incorrect name position).
 
 - Now exists all variants of the AREAFILE token in config examples.
