@@ -156,12 +156,17 @@ public:
   gfile& operator>> (uint8_t& i);
   gfile& operator>> (uint16_t& i);
   gfile& operator>> (uint32_t& i);
+  #if !defined(__CYGWIN__)
   gfile& operator>> (unsigned long& i);
+  #endif
+
   gfile& operator>> (char& i)     { return operator>>((uint8_t&)i); }
   gfile& operator>> (int8_t& i)   { return operator>>((uint8_t&)i); }
   gfile& operator>> (int16_t& i)  { return operator>>((uint16_t&)i); }
   gfile& operator>> (int32_t& i)  { return operator>>((uint32_t&)i); }
+  #if !defined(__CYGWIN__)
   gfile& operator>> (long& i)     { return operator>>((unsigned long&)i); }
+  #endif
 
   #ifdef __GOLDWARE_HAS_BOOL
   gfile& operator<< (bool o);
@@ -169,12 +174,17 @@ public:
   gfile& operator<< (uint8_t o);
   gfile& operator<< (uint16_t o);
   gfile& operator<< (uint32_t o);
+  #if !defined(__CYGWIN__)
   gfile& operator<< (unsigned long o);
+  #endif
+
   gfile& operator<< (char o)      { return operator<<((uint8_t )o); }
   gfile& operator<< (int8_t  o)   { return operator<<((uint8_t )o); }
   gfile& operator<< (int16_t  o)  { return operator<<((uint16_t)o); }
   gfile& operator<< (int32_t o)   { return operator<<((uint32_t)o); }
+  #if !defined(__CYGWIN__)
   gfile& operator<< (long o)      { return operator<<((unsigned long)o); }
+  #endif
 
 };
 
