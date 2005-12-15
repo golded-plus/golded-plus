@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-
+# $Id$
 # Generate xlatcharset directives for the config of Golded+
 # using Golded+ charset conversion modules in text form (*.chs).
 #
@@ -50,6 +50,19 @@ foreach my $f (@files) {
        elsif($count==5){
          $tochs=$1;
          printf OUT "XLATCHARSET %-12s %-12s %s\n", $fromchs, $tochs, $f;
+         if($fromchs =~ /-/) {
+           ( my $temp = $fromchs ) =~ s/-//g ;
+           printf OUT "XLATCHARSET %-12s %-12s %s\n", $temp, $tochs, $f;
+         }
+         if($tochs =~ /-/) {
+           ( my $temp = $tochs ) =~ s/-//g ;
+           printf OUT "XLATCHARSET %-12s %-12s %s\n", $fromchs, $temp, $f;
+         }
+         if( ($tochs =~ /-/) && ($fromchs =~ /-/) ) {
+           ( my $temp1 = $fromchs ) =~ s/-//g ;
+           ( my $temp2 = $tochs ) =~ s/-//g ;
+           printf OUT "XLATCHARSET %-12s %-12s %s\n", $temp1, $temp2, $f;
+         }
        }
        $count++;
      }
@@ -58,4 +71,3 @@ foreach my $f (@files) {
 }
 
 close OUT;
-
