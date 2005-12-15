@@ -79,6 +79,7 @@ const char* search_item_set(search_item& item, const char* s, int what)
         flag = true;
         break;
       case '!':  search_item_option(item.reverse, s);          break;
+      case '=':  search_item_option(item.case_sensitive, s);   break;
       case '<':  search_item_option(item.where.from, s);       flag = true; break;
       case '>':  search_item_option(item.where.to, s);         flag = true; break;
       case ':':  search_item_option(item.where.subject, s);    flag = true; break;
@@ -88,7 +89,6 @@ const char* search_item_set(search_item& item, const char* s, int what)
       case '*':  search_item_option(item.where.origin, s);     flag = true; break;
       case '@':  search_item_option(item.where.signature, s);  flag = true; break;
       case '%':  search_item_option(item.where.kludges, s);    flag = true; break;
-      case '=':  search_item_option(item.case_sensitive, s);   flag = true; break;
       case '?':
         s++;
         switch(g_tolower(*s)) {
