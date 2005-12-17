@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 # $Id$
+# xlatcfg.pl
 # Generate xlatcharset directives for the config of Golded+
 # using Golded+ charset conversion modules in text form (*.chs).
 #
@@ -36,9 +37,10 @@ HEAD
 print "Found " . ($#files+1) . " *.CHS files in $dir\n";
 
 foreach my $f (@files) {
-  if( ! open( IN, "$dir/$f" ) ){ print STDERR "Can't open file '$dir/$f': $!\n"; next; }
-  print "Proceed $dir/$f\n";
+  if( ! open( IN, "$f" ) ){ print STDERR "Can't open file '$f': $!\n"; next; }
+  print "Proceed $f\n";
   my $count=1, $fromchs, $tochs;
+  $f =~ s%.*/%%g;
   while( <IN> ) {
      next if( /^;/ ); # comment
      next if( m%^//% ); # comment
@@ -46,9 +48,9 @@ foreach my $f (@files) {
      chomp;
      next if( m%^$% ); # empty line
      if( m%^([^\s]+)% ) {
-       if($count==4){ $fromchs=$1; }
+       if($count==4){ $fromchs=uc($1); }
        elsif($count==5){
-         $tochs=$1;
+         $tochs=uc($1);
          printf OUT "XLATCHARSET %-12s %-12s %s\n", $fromchs, $tochs, $f;
          if($fromchs =~ /-/) {
            ( my $temp = $fromchs ) =~ s/-//g ;
