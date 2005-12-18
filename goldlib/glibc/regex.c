@@ -150,6 +150,9 @@ char *realloc ();
 #  endif
 # endif
 
+/* isalpha etc. are used for the character classes.  */
+#include <gctype.h>
+
 /* Define the syntax stuff for \<, \>, etc.  */
 
 /* This must be nonzero for the wordchar and notwordchar pattern
@@ -186,14 +189,17 @@ init_syntax_once ()
 
    bzero (re_syntax_table, sizeof re_syntax_table);
 
-   for (c = 'a'; c <= 'z'; c++)
+/* for (c = 'a'; c <= 'z'; c++)
      re_syntax_table[c] = Sword;
 
    for (c = 'A'; c <= 'Z'; c++)
      re_syntax_table[c] = Sword;
 
    for (c = '0'; c <= '9'; c++)
-     re_syntax_table[c] = Sword;
+     re_syntax_table[c] = Sword; */
+
+   for (c = 0; c < 256; c++)
+     re_syntax_table[c] = isxalnum(c) ? Sword : 0;
 
    re_syntax_table['_'] = Sword;
 
@@ -208,9 +214,6 @@ init_syntax_once ()
 
 /* Get the interface, including the syntax bits.  */
 #include "regex.h"
-
-/* isalpha etc. are used for the character classes.  */
-#include <gctype.h>
 
 /* Jim Meyering writes:
 
