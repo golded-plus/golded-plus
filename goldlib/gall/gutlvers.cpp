@@ -139,17 +139,20 @@ static void cpuname(int family, int model, const char *v_name, char *m_name)
     case 6:
       switch (model)
       {
+/* need full F/M/S/Rev for identification
       case 1:
       case 2:
       case 4:
       case 6:
       case 8:
-        strcpy(m_name, "AMD_Athlon");
+        strcpy(m_name, "AMD_Athlon");   // (S:0) & (S:1; Rev:80)
+        strcpy(m_name, "AMD_Sempron");  // (S:1; Rev:B0)
         break;
       case 3:
       case 7:
         strcpy(m_name, "AMD_Duron");
         break;
+*/
       default:
         sprintf(m_name, "AMD_K7_M%u", model);
       }
@@ -158,9 +161,11 @@ static void cpuname(int family, int model, const char *v_name, char *m_name)
     case 15:
       switch (model)
       {
+/* need full F/M/S/Rev for identification
       case 12:
         strcpy(m_name, "AMD_Sempron");
         break;
+*/
       default:
         sprintf(m_name, "AMD_K8_M%u", model);
       }
