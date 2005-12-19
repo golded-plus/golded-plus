@@ -11,6 +11,7 @@ ______________________________________________________________________
 
 To do:
 
+* Treat empty description as no description in Areafile parser.
 * Deleting Synchronet messages, forward reply linking.
 * Add Synchronet message base support (aim for 1.1.5).
 * AreaYouWroteTo should be able to store copy of mail after change.
