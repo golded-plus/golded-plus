@@ -2628,7 +2628,8 @@ void IEclass::statusline() {
     } while(EDIT->Comment.Next());
   }
 
-  update_statuslinef(LNG->EditStatus, 1+thisrow, 1+col, _buf);
+  uint chr = currline->txt[col];
+  update_statuslinef(LNG->EditStatus, 1+thisrow, 1+col, chr, _buf);
   if(*_buf and CFG->switches.get(beepcomment)) {
     HandleGEvent(EVTT_EDITCOMMENT);
   }

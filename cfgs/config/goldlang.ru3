@@ -462,7 +462,7 @@ WT_EXPORTWHATFILE    " В какой файл сохранить блок? "
 ST_EXPORTFILE        "Введите имя файла для сохранения блока"
 ST_EXPORTSTATUS      "Попытка записи в %s"
 
-ST_EDITSTATUS        "Строка %i, колонка %i. %s"
+ST_EDITSTATUS        "Строка %i, колонка %i (%02X). %s"
 ST_SELECTFILES       "Выберите файлы"
 
 WT_IMPORTWHICHFILE   " Введите имя файла для вставки "

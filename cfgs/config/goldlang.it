@@ -2,15 +2,15 @@
 //
 //  GoldED 3.00 * Italian Language Definition File
 //
-//  Translated 15-04-1999 (rev 1.00) by        :	Gd'A; 
-//		      			e-mail :	gda@cryogen.com 
+//  Translated 15-04-1999 (rev 1.00) by        :    Gd'A; 
+//                      e-mail :    gda@cryogen.com 
 //
 //  Note : Alcune parole sono intraducibili e quindi ho preferito
-//  	   lasciarle invariate.
-//	   Spero di aver tempo per rimettere mano a questa traduzione
-//	   in modo da ottenere un risultato meno ridicolo! :-)
-//	   Sicuramente ho fatto molti errori di traduzione, ogni
-//	   segnalazione sara' ben gradita!			
+//         lasciarle invariate.
+//     Spero di aver tempo per rimettere mano a questa traduzione
+//     in modo da ottenere un risultato meno ridicolo! :-)
+//     Sicuramente ho fatto molti errori di traduzione, ogni
+//     segnalazione sara' ben gradita!          
 //
 //  Prima di iniziare la ridefinizione di questo file di linguaggio,
 //  e' consigliabile stamparlo cosi' da poterlo tenere vicino
@@ -28,13 +28,13 @@
 //
 //  Categorie identificative:
 //  --------------
-//  ST_     Linea di stato  	Lunghezza variabile.
+//  ST_     Linea di stato      Lunghezza variabile.
 //  WT_     Titolo di finestra  Lunghezza variabile.
 //  MI_     Voce del menu       Lunghezza fissa, primo carattere QuickChar.
 //  IL_     Linea informativa   Lunghezza variabile.
 //  WL_     Linea di finestra   Usualmente lunghezza fissa.
-//  HD_     Linea dell'header	Usualmente lunghezza fissa.
-//  MS_     Messaggio         	Lunghezza variabile.
+//  HD_     Linea dell'header   Usualmente lunghezza fissa.
+//  MS_     Messaggio           Lunghezza variabile.
 //  ER_     Messaggio di errore Lunghezza variabile.
 //
 //  "Lunghezza fissa" significa che tutte le stringhe devono avere
@@ -153,7 +153,7 @@ ST_IMPORTSTATUS      "Importo da %s"
 ST_EXPORTFILE        "Esporta File"
 WT_EXPORTWHATFILE    " Esporto su quale file? "
 ST_EXPORTSTATUS      "Esporto su %s"
-ST_EDITSTATUS        "Edita %i,%i. %s"
+ST_EDITSTATUS        "Edita %i,%i (%02X). %s"
 ST_SELECTFILES       "Seleziona Files"
 WL_SELECTEDFILES     "Files Selezionati   "
 WL_SELECTEDBYTES     "         Bytes      "
