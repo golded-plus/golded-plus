@@ -50,6 +50,12 @@ locale support via country.sys driver. Otherwise just comment -llocal in
 GNUmakef.def.
 ------ COMMON ------
 
+-- unix-like ONLY --
+When building in Linux, FreeBSD or another unix-like OS if you wants use
+unicode-compatible Golded+ then build Golded+ using ncurses v.5.4 with
+libncursesw. (This issue is suggested by Dmitry Rodin 2:5020/5410@fidonet.)
+------ COMMON ------
+
 Now go to golded3 and copy mygolded.__h to mygolded.h and adjust it for
 yourself (put your name, FTN address and e-mail). Goto root again.
 
