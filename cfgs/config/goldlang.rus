@@ -140,7 +140,9 @@ ST_IMPORTSTATUS       "Вставка из %s"
 ST_EXPORTFILE         "Запись в файл"
 WT_EXPORTWHATFILE     " Введите имя файла для записи "
 ST_EXPORTSTATUS       "Запись в %s"
-ST_EDITSTATUS         "Редактирование %i,%i (%02X). %s"
+ST_EDITSTATUS         "Редактирование %i,%i (%02X). %s"	; (шестнадцатиричный код символа)
+;ST_EDITSTATUS         "Редактирование %i,%i (%3u). %s"	; (десятичный код символа)
+;ST_EDITSTATUS         "Редактирование %i,%i (%03o). %s"; (восьмиричный код символа)
 WT_ATTACHFILES        " Прицепить файлы "
 WT_UPDREQFILES        " Запрос обновления файлов "
 ST_SELECTFILES        "Выбор файлов"

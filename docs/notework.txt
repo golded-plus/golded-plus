@@ -11,7 +11,8 @@ ______________________________________________________________________
 ______________________________________________________________________
 
 + Added character code from cursor position to editor status bar.
-  NOTE: ST_EDITSTATUS changed to "Edit %i,%i (%02X). %s"
+  NOTE: ST_EDITSTATUS changed to "Edit %i,%i (%02X). %s". Add octal and
+  decimal examples into language definition files (goldlang.*).
 
 - regex: \w and \W work for all characters. Also, \b and \B should work
   correctly.
