@@ -100,7 +100,7 @@ static LangCrc LangCrcs[] = {
   { CRC_ST_EXPORTFILE         , NULL  , "Export File" },
   { CRC_WT_EXPORTWHATFILE     , NULL  , " Export to what file? " },
   { CRC_ST_EXPORTSTATUS       , NULL  , "Exporting to %s" },
-  { CRC_ST_EDITSTATUS         , NULL  , "Edit %i,%i. %s" },
+  { CRC_ST_EDITSTATUS         , NULL  , "Edit %i,%i (%02X). %s" },
   { CRC_ST_SELECTFILES        , NULL  , "Select Files" },
   { CRC_WL_SELECTEDFILES      , NULL  , "Selected Files      " },
   { CRC_WL_SELECTEDBYTES      , NULL  , "         Bytes      " },
