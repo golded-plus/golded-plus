@@ -10,6 +10,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed destination address selection for commented replays in echo areas.
+
 + Now golded+ can draw box lines. Use keyboard configuration keyword
   EditDrawLines (default: ^D) to toggle draw modes.
 

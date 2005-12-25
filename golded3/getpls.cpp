@@ -1292,6 +1292,9 @@ void OtherAreaCommentMsg() {
       bool adat_viewhidden = AA->Viewhidden();
       bool adat_viewkludge = AA->Viewkludge();
       bool adat_viewquote  = AA->Viewquote();
+
+      if (AA->isecho()) reader_msg->dest.reset();
+
       AL.SetActiveAreaId(destarea);
       if(CurrArea != OrigArea) {
         AA->Open();
