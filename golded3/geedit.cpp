@@ -2642,7 +2642,15 @@ int IEclass::handlekey(gkey __key) {
 
   int rc = true;
 
-  switch(__key) {
+  if (drawlines && 
+      (__key != KK_EditGoRight) && (__key != KK_EditGoLeft) &&
+      (__key != KK_EditGoUp) && (__key != KK_EditGoDown))
+  {
+    drawflag = true;
+  }
+
+  switch(__key)
+  {
     case KK_EditBlockRight:  __key = KK_EditGoRight;   break;
     case KK_EditBlockLeft:   __key = KK_EditGoLeft;    break;
     case KK_EditBlockUp:     __key = KK_EditGoUp;      break;
@@ -2683,6 +2691,18 @@ int IEclass::handlekey(gkey __key) {
       ToggleCaseBlock(__key);
       undo_ready = NO;
       return rc;
+
+    case KK_EditGoRight:
+    case KK_EditGoLeft:
+    case KK_EditGoUp:
+    case KK_EditGoDown:
+      if (drawlines && !selecting)
+      {
+        DrawLines(__key);
+        undo_ready = NO;
+        return rc;
+      }
+      // fall through
 
     default:
       rc = PlayMacro(__key, KT_E);
@@ -2783,6 +2803,7 @@ noselecting:
     case KK_EditSCodeItalic:
     case KK_EditSCodeUnderline:
     case KK_EditSCodeReverse:     SCodeChange(__key);   break;
+    case KK_EditDrawLines:        ToggleDrawLines();    break;
 
     // Block functions
     case KK_EditAnchor:           BlockAnchor();        break;
@@ -2969,6 +2990,7 @@ int IEclass::Start(int __mode, uint* __position, GMsg* __msg) {
 
     chartyped = false;
     if((_ch < KK_Commands) and (_ch & 0xFF) and not ismacro) {
+      drawflag = true;
       chartyped = true;
       _ch &= 0xFF;
       insertchar((char)_ch);

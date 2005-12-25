@@ -61,6 +61,8 @@ IEclass::IEclass(int __scol, int __ecol, int __srow, int __erow, int __border) {
   currline     = NULL;
   done         = NO;
   insert       = YES;
+  drawlines    = 0;
+  drawflag     = true;
   marginquotes = 0;
   margintext   = 0;
   msgmode      = 0;
@@ -1385,12 +1387,515 @@ void IEclass::dispins() {
 
 //  ------------------------------------------------------------------
 
+void IEclass::dispdl()
+{
+  GFTRK("Editdispdl");
+
+  if (drawlines)
+  {
+    const char *lng = (drawlines == 1) ? LNG->DrawSL : LNG->DrawDL;
+    HeaderView->window.prints(5, MAXCOL-12, C_HEADT, lng);
+  }
+  else {
+    vchar _lbuf[6];
+    for(int c = 0; c < 5; c++)
+      _lbuf[c] = _box_table(W_BHEAD,1);
+    _lbuf[5] = NUL;
+    HeaderView->window.printvs(5, MAXCOL-12, C_HEADB|ACSET, _lbuf);
+  }
+
+  GFTRK(NULL);
+}
+
+
+//  ------------------------------------------------------------------
+
 void IEclass::ToggleInsert() {
 
   GFTRK("EditToggleInsert");
 
   insert = not insert;
   dispins();
+
+  GFTRK(NULL);
+}
+
+
+//  ------------------------------------------------------------------
+
+void IEclass::ToggleDrawLines()
+{
+  GFTRK("EditToggleDrawLines");
+
+  switch (drawlines)
+  {
+  case 0: drawlines = 1; break;
+  case 1: drawlines = 2; break;
+  case 2: drawlines = 0; break;
+  }
+
+  dispdl();
+
+  GFTRK(NULL);
+}
+
+
+//  ------------------------------------------------------------------
+
+static void ChrToLines(char chr, byte lines[4])
+{
+  lines[0] = lines[1] = lines[2] = lines[3] = 0;
+
+  if      (chr == _box_table(0, 1))           //hs
+    lines[0] = lines[1] = 1;
+  else if (chr == _box_table(1, 1))           //hd
+    lines[0] = lines[1] = 2;
+  else if (chr == _box_table(0, 3))           //vs
+    lines[2] = lines[3] = 1;
+  else if (chr == _box_table(1, 3))           //vd
+    lines[2] = lines[3] = 2;
+
+  else if (chr == _box_table(0, 0))           //lsus
+    lines[1] = lines[3] = 1;
+  else if (chr == _box_table(1, 0))           //ldud
+    lines[1] = lines[3] = 2;
+  else if (chr == _box_table(0, 11))          //vsus
+    lines[0] = lines[1] = lines[3] = 1;
+  else if (chr == _box_table(1, 11))          //vdud
+    lines[0] = lines[1] = lines[3] = 2;
+  else if (chr == _box_table(0, 2))           //rsus
+    lines[0] = lines[3] = 1;
+  else if (chr == _box_table(1, 2))           //rdud
+    lines[0] = lines[3] = 2;
+
+  else if (chr == _box_table(0, 9))           //lshs
+    lines[1] = lines[2] = lines[3] = 1;
+  else if (chr == _box_table(1, 9))           //ldhd
+    lines[1] = lines[2] = lines[3] = 2;
+  else if (chr == _box_table(0, 8))           //vshs
+    lines[0] = lines[1] = lines[2] = lines[3] = 1;
+  else if (chr == _box_table(1, 8))           //vdhd
+    lines[0] = lines[1] = lines[2] = lines[3] = 2;
+  else if (chr == _box_table(0, 10))          //rshs
+    lines[0] = lines[2] = lines[3] = 1;
+  else if (chr == _box_table(1, 10))          //rdhd
+    lines[0] = lines[2] = lines[3] = 2;
+
+  else if (chr == _box_table(0, 5))           //lsds
+    lines[1] = lines[2] = 1;
+  else if (chr == _box_table(1, 5))           //lddd
+    lines[1] = lines[2] = 2;
+  else if (chr == _box_table(0, 12))          //vsds
+    lines[0] = lines[1] = lines[2] = 1;
+  else if (chr == _box_table(1, 12))          //vddd
+    lines[0] = lines[1] = lines[2] = 2;
+  else if (chr == _box_table(0, 7))           //rsds
+    lines[0] = lines[2] = 1;
+  else if (chr == _box_table(1, 7))           //rddd
+    lines[0] = lines[2] = 2;
+
+  else if (chr == _box_table(2, 0))           //ldus
+  { lines[1] = 1; lines[3] = 2; }
+  else if (chr == _box_table(3, 0))           //lsud
+  { lines[1] = 2; lines[3] = 1; }
+  else if (chr == _box_table(2, 11))          //vdus
+  { lines[0] = lines[1] = 1; lines[3] = 2; }
+  else if (chr == _box_table(3, 11))          //vsud
+  { lines[0] = lines[1] = 2; lines[3] = 1; }
+  else if (chr == _box_table(2, 2))           //rdus
+  { lines[0] = 1; lines[3] = 2; }
+  else if (chr == _box_table(3, 2))           //rsud
+  { lines[0] = 2; lines[3] = 1; }
+
+  else if (chr == _box_table(2, 9))           //ldhs
+  { lines[1] = 1; lines[2] = lines[3] = 2; }
+  else if (chr == _box_table(3, 9))           //lshd
+  { lines[1] = 2; lines[2] = lines[3] = 1; }
+  else if (chr == _box_table(2, 8))           //vdhs
+  { lines[0] = lines[1] = 1; lines[2] = lines[3] = 2; }
+  else if (chr == _box_table(3, 8))           //vshd
+  { lines[0] = lines[1] = 2; lines[2] = lines[3] = 1; }
+  else if (chr == _box_table(2, 10))          //rdhs
+  { lines[0] = 1; lines[2] = lines[3] = 2; }
+  else if (chr == _box_table(3, 10))          //rshd
+  { lines[0] = 2; lines[2] = lines[3] = 1; }
+
+  else if (chr == _box_table(2, 5))           //ldds
+  { lines[1] = 1; lines[2] = 2; }
+  else if (chr == _box_table(3, 5))           //lsdd
+  { lines[1] = 2; lines[2] = 1; }
+  else if (chr == _box_table(2, 12))          //vdds
+  { lines[0] = lines[1] = 1; lines[2] = 2; }
+  else if (chr == _box_table(3, 12))          //vsdd
+  { lines[0] = lines[1] = 2; lines[2] = 1; }
+  else if (chr == _box_table(2, 7))           //rdds
+  { lines[0] = 1; lines[2] = 2; }
+  else if (chr == _box_table(3, 7))           //rsdd
+  { lines[0] = 2; lines[2] = 1; }
+}
+
+
+//  ------------------------------------------------------------------
+
+static char LinesToChr(byte lines[4])
+{
+  if            (lines[0] == 0)
+  { if          (lines[1] == 0)
+    { if        (lines[2] == 0)
+      { if      (lines[3] == 1) return _box_table(0, 3);    //vs
+        if      (lines[3] == 2) return _box_table(1, 3);    //vd
+      } else if (lines[2] == 1)
+      { if      (lines[3] == 0) return _box_table(0, 3);    //vs
+        if      (lines[3] == 1) return _box_table(0, 3);    //vs
+      } else if (lines[2] == 2)
+      { if      (lines[3] == 0) return _box_table(1, 3);    //vd
+        if      (lines[3] == 2) return _box_table(1, 3);    //vd
+      }
+    } else if   (lines[1] == 1)
+    { if        (lines[2] == 0)
+      { if      (lines[3] == 0) return _box_table(0, 1);    //hs
+        if      (lines[3] == 1) return _box_table(0, 0);    //lsus
+        if      (lines[3] == 2) return _box_table(2, 0);    //ldus
+      } else if (lines[2] == 1)
+      { if      (lines[3] == 0) return _box_table(0, 5);    //lsds
+        if      (lines[3] == 1) return _box_table(0, 9);    //lshs
+      } else if (lines[2] == 2)
+      { if      (lines[3] == 0) return _box_table(2, 5);    //ldds
+        if      (lines[3] == 2) return _box_table(2, 9);    //ldhs
+      }
+    } else if   (lines[1] == 2)
+    { if        (lines[2] == 0)
+      { if      (lines[3] == 0) return _box_table(1, 1);    //hd
+        if      (lines[3] == 1) return _box_table(3, 0);    //lsud
+        if      (lines[3] == 2) return _box_table(1, 0);    //ldud
+      } else if (lines[2] == 1)
+      { if      (lines[3] == 0) return _box_table(3, 5);    //lsdd
+        if      (lines[3] == 1) return _box_table(3, 9);    //lshd
+      } else if (lines[2] == 2)
+      { if      (lines[3] == 0) return _box_table(1, 5);    //lddd
+        if      (lines[3] == 2) return _box_table(1, 9);    //ldhd
+      }
+    }
+  } else if     (lines[0] == 1)
+  { if          (lines[1] == 0)
+    { if        (lines[2] == 0)
+      { if      (lines[3] == 0) return _box_table(0, 1);    //hs
+        if      (lines[3] == 1) return _box_table(0, 2);    //rsus
+        if      (lines[3] == 2) return _box_table(2, 2);    //rdus
+      } else if (lines[2] == 1)
+      { if      (lines[3] == 0) return _box_table(0, 7);    //rsds
+        if      (lines[3] == 1) return _box_table(0, 10);   //rshs
+      } else if (lines[2] == 2)
+      { if      (lines[3] == 0) return _box_table(2, 7);    //rdds
+        if      (lines[3] == 2) return _box_table(2, 10);   //rdhs
+      }
+    } else if   (lines[1] == 1)
+    { if        (lines[2] == 0)
+      { if      (lines[3] == 0) return _box_table(0, 1);    //hs
+        if      (lines[3] == 1) return _box_table(0, 11);   //vsus
+        if      (lines[3] == 2) return _box_table(2, 11);   //vdus
+      } else if (lines[2] == 1)
+      { if      (lines[3] == 0) return _box_table(0, 12);   //vsds
+        if      (lines[3] == 1) return _box_table(0, 8);    //vshs
+      } else if (lines[2] == 2)
+      { if      (lines[3] == 0) return _box_table(2, 12);   //vdds
+        if      (lines[3] == 2) return _box_table(2, 8);    //vdhs
+      }
+    }
+  } else if     (lines[0] == 2)
+  { if          (lines[1] == 0)
+    { if        (lines[2] == 0)
+      { if      (lines[3] == 0) return _box_table(1, 1);    //hd
+        if      (lines[3] == 1) return _box_table(3, 2);    //rsud
+        if      (lines[3] == 2) return _box_table(1, 2);    //rdud
+      } else if (lines[2] == 1)
+      { if      (lines[3] == 0) return _box_table(3, 7);    //rsdd
+        if      (lines[3] == 1) return _box_table(3, 10);   //rshd
+      } else if (lines[2] == 2)
+      { if      (lines[3] == 0) return _box_table(1, 7);    //rddd
+        if      (lines[3] == 2) return _box_table(1, 10);   //rdhd
+      }
+    } else if   (lines[1] == 2)
+    { if        (lines[2] == 0)
+      { if      (lines[3] == 0) return _box_table(1, 1);   //hd
+        if      (lines[3] == 1) return _box_table(3, 11);  //vsud
+        if      (lines[3] == 2) return _box_table(1, 11);  //vdud
+      } else if (lines[2] == 1)
+      { if      (lines[3] == 0) return _box_table(3, 12);  //vsdd
+        if      (lines[3] == 1) return _box_table(3, 8);   //vshd
+      } else if (lines[2] == 2)
+      { if      (lines[3] == 0) return _box_table(1, 12);  //vddd
+        if      (lines[3] == 2) return _box_table(1, 8);   //vdhd
+      }
+    }
+  }
+
+  return 0x20;
+}
+
+
+//  ------------------------------------------------------------------
+
+void IEclass::DrawLines(gkey key)
+{
+  GFTRK("EditDrawLines");
+
+  static byte lines[4];
+  static int drawx;
+  static int drawy;
+
+  byte type1 = 1;
+  byte type2 = 1;
+
+  (drawlines == 1) ? type2 = 2 : type1 = 2;
+
+  //-------------------------
+  if (drawflag || chartyped)
+  {
+    ChrToLines(currline->txt[col], lines);
+
+    switch (key)
+    {
+    case KK_EditGoRight:
+      drawx = -1; drawy = 0;
+
+      if ((lines[0] == type1) || (!lines[0] && (lines[2] || lines[3])))
+        drawx++;
+      else if ((lines[0] == type2) || (lines[1] == type2))
+      {
+        drawx++; lines[0] = lines[1] = 0;
+      }
+
+      break;
+
+    case KK_EditGoLeft:
+      drawx = +1; drawy = 0;
+
+      if ((lines[1] == type1) || (!lines[1] && (lines[2] || lines[3])))
+        drawx--;
+      else if ((lines[0] == type2) || (lines[1] == type2))
+      {
+        drawx--; lines[0] = lines[1] = 0;
+      }
+
+      break;
+
+    case KK_EditGoDown:
+      drawx = 0; drawy = -1;
+
+      if ((lines[2] == type1) || (!lines[2] && (lines[0] || lines[1])))
+        drawy++;
+      else if ((lines[2] == type2) || (lines[3] == type2))
+      {
+        drawy++; lines[2] = lines[3] = 0;
+      }
+
+      break;
+
+    case KK_EditGoUp:
+      drawx = 0; drawy = +1;
+
+      if ((lines[3] == type1) || (!lines[3] && (lines[0] || lines[1])))
+        drawy--;
+      else if ((lines[2] == type2) || (lines[3] == type2))
+      {
+        drawy--; lines[2] = lines[3] = 0;
+      }
+
+      break;
+    }
+
+    drawflag = false;
+  }
+
+  //-------------------------
+  bool gonext = true;
+
+  switch (key)
+  {
+  case KK_EditGoRight:
+    if (col >= (maxcol-1)) { lines[1] = 0; gonext = false; }
+
+    if (!drawx && gonext)
+    {
+      drawx = -1; lines[1] = type1;
+      if (lines[0] == type2) lines[0] = 0;
+    }
+    else if (drawx == 1) drawx = -1;
+    else if (drawx == -1)
+    {
+      gonext = false;
+      drawx++; lines[0] = type1;
+      if (lines[1] == type2) lines[1] = 0;
+    }
+
+    if (gonext && drawy)
+    {
+      if (drawy == -1)
+      {
+        drawy++; lines[2] = type1;
+        lines[0] = lines[3] = 0;
+      }
+      else  //(drawy == 1)
+      {
+        drawy--; lines[3] = type1;
+        lines[0] = lines[2] = 0;
+      }
+    }
+    break;
+
+  case KK_EditGoLeft:
+    if (col <= mincol) { lines[0] = 0; gonext = false; }
+
+    if (!drawx && gonext)
+    {
+      drawx = 1; lines[0] = type1;
+      if (lines[1] == type2) lines[1] = 0;
+    }
+    else if (drawx == -1) drawx = 1;
+    else if (drawx == 1)
+    {
+      gonext = false;
+      drawx--; lines[1] = type1;
+      if (lines[0] == type2) lines[0] = 0;
+    }
+
+    if (gonext && drawy)
+    {
+      if (drawy == -1)
+      {
+        drawy++; lines[2] = type1;
+        lines[1] = lines[3] = 0;
+      }
+      else  //(drawy == 1)
+      {
+        drawy--; lines[3] = type1;
+        lines[1] = lines[2] = 0;
+      }
+    }
+    break;
+
+  case KK_EditGoDown:
+    if (!currline->next) { lines[3] = 0; gonext = false; }
+
+    if (!drawy && gonext)
+    {
+      drawy = -1; lines[3] = type1;
+      if (lines[2] == type2) lines[2] = 0;
+    }
+    else if (drawy == 1) drawy = -1;
+    else if (drawy == -1)
+    {
+      gonext = false;
+      drawy++; lines[2] = type1;
+      if (lines[3] == type2) lines[3] = 0;
+    }
+
+    if (gonext && drawx)
+    {
+      if (drawx == -1)
+      {
+        drawx++; lines[0] = type1;
+        lines[1] = lines[2] = 0;
+      }
+      else  //(drawx == 1)
+      {
+        drawx--; lines[1] = type1;
+        lines[0] = lines[2] = 0;
+      }
+    }
+    break;
+    
+  case KK_EditGoUp:
+    if (!currline->prev) { lines[2] = 0; gonext = false; }
+
+    if (!drawy && gonext)
+    {
+      drawy = 1; lines[2] = type1;
+      if (lines[3] == type2) lines[3] = 0;
+    }
+    else if (drawy == -1) drawy = 1;
+    else if (drawy == 1)
+    {
+      gonext = false;
+      drawy--; lines[3] = type1;
+      if (lines[2] == type2) lines[2] = 0;
+    }
+
+    if (gonext && drawx)
+    {
+      if (drawx == -1)
+      {
+        drawx++; lines[0] = type1;
+        lines[1] = lines[3] = 0;
+      }
+      else  //(drawx == 1)
+      {
+        drawx--; lines[1] = type1;
+        lines[0] = lines[3] = 0;
+      }
+    }
+    break;
+  }
+
+  //-------------------------
+  char new_chr = LinesToChr(lines);
+
+  if (new_chr != currline->txt[col])
+  {
+    if (col < (currline->txt.length()-1))
+    {
+      Undo->PushItem(EDIT_UNDO_OVR_CHAR);
+      currline->txt[col] = new_chr;
+    }
+    else if (col < maxcol)
+    {
+      Undo->PushItem(EDIT_UNDO_INS_CHAR);
+      currline->txt.insert(col, 1, new_chr);
+    }
+  
+    setlinetype(currline);
+    displine(currline, row);
+  }
+
+  //-------------------------
+  if (gonext)
+  {
+    switch (key)
+    {
+    case KK_EditGoRight: GoRight(); break;
+    case KK_EditGoLeft:  GoLeft();  break;
+    default:
+      (key == KK_EditGoDown) ? GoDown() : GoUp();
+      if (col < pcol)
+      {
+        size_t len = pcol - col;
+        Undo->PushItem(EDIT_UNDO_INS_TEXT|BATCH_MODE, currline, col, len);
+        currline->txt.insert(col, len, ' ');
+        GoEOL();
+      }
+      break;
+    }
+
+    gotorowcol(col, row);
+    ChrToLines(currline->txt[col], lines);
+
+    switch (key)
+    {
+    case KK_EditGoRight:
+      if ((drawx == -1) && (lines[0] == type1)) drawx++;
+      break;
+    case KK_EditGoLeft:
+      if ((drawx == +1) && (lines[1] == type1)) drawx--;
+      break;
+    case KK_EditGoDown:
+      if ((drawy == -1) && (lines[2] == type1)) drawy++;
+      break;
+    case KK_EditGoUp:
+      if ((drawy == +1) && (lines[3] == type1)) drawy--;
+      break;
+    }
+  }
 
   GFTRK(NULL);
 }

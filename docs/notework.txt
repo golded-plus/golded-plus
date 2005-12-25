@@ -10,6 +10,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ Now golded+ can draw box lines. Use keyboard configuration keyword
+  EditDrawLines (default: ^D) to toggle draw modes.
+
 + Added character code from cursor position to editor status bar.
   NOTE: ST_EDITSTATUS changed to "Edit %i,%i (%02X). %s". Add octal and
   decimal examples into language definition files (goldlang.*).

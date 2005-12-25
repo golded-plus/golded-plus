@@ -184,6 +184,7 @@ const gkey KK_EditSCodeReverse     = 0xFF0C;
 #if defined(__GOLD_SPELL__)
 const gkey KK_EditSCheckerMenu     = 0xFF0D;
 #endif
+const gkey KK_EditDrawLines        = 0xFF0E;
 
 const gkey KK_FileAbort            = 0xFF10;
 const gkey KK_FileAskExit          = 0xFF11;

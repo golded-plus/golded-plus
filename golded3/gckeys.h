@@ -81,6 +81,7 @@ const word CRC_EDITDELLINE          = 0xACCF;
 const word CRC_EDITDELLTWORD        = 0x3B67;
 const word CRC_EDITDELRTWORD        = 0x829A;
 const word CRC_EDITDOSSHELL         = 0xD6C5;
+const word CRC_EDITDRAWLINES        = 0x00E8;
 const word CRC_EDITDUPLINE          = 0x816A;
 const word CRC_EDITEXITMSG          = 0x1813;
 const word CRC_EDITEXPORTTEXT       = 0x5AED;

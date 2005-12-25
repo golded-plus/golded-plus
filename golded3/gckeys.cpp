@@ -148,6 +148,7 @@ CmdKey DefaultKeyset[] = {
   { Key_C_I     , KK_EditSCodeItalic      , KT_E },
   { Key_C_L     , KK_EditSCodeUnderline   , KT_E },
   { Key_C_R     , KK_EditSCodeReverse     , KT_E },
+  { Key_C_D     , KK_EditDrawLines        , KT_E },
 
   { Key_Esc     , KK_FileAbort            , KT_F },
   { Key_A_X     , KK_FileAskExit          , KT_F },
@@ -369,6 +370,7 @@ CmdKey DefaultKeyset[] = {
 tglobalkey globalkeys[] = {
   { CRC_READLOOKUPDEST         , KK_ReadLookupDest       , KT_R }, // 0x0023
   { CRC_FILETOGGLEMARKALL      , KK_FileToggleMarkAll    , KT_F }, // 0x0032
+  { CRC_EDITDRAWLINES          , KK_EditDrawLines        , KT_E }, // 0x00E8
   { CRC_READADDRESSBOOKADD     , KK_ReadAddressbookAdd   , KT_R }, // 0x00FA
   { CRC_LISTDOSSHELL           , KK_ListDosShell         , KT_M }, // 0x0130
   { CRC_READREADALL            , KK_ReadReadAll          , KT_R }, // 0x0146

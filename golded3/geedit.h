@@ -269,6 +269,8 @@ protected:
   Line* currline;
   int  done;
   int  insert;
+  int  drawlines;
+  int  drawflag;
   int  marginquotes;
   int  margintext;
   int  msgmode;
@@ -295,6 +297,7 @@ protected:
   void  deleteline      (bool zapquotesbelow = false);
   int   dispchar        (vchar __ch, int attr=-1);
   void  dispins         ();
+  void  dispdl          ();
   void  displine        (Line* __line, uint __row);
 #if defined(__GOLD_SPELL__)
   void  dispstringsc    (char *__buf, uint __beg, uint __end, uint __row, uint __col, char endchar);
@@ -416,6 +419,8 @@ public:
   void ToggleCaseBlock(gkey key);
   void SCodeChange(gkey key);
   void ToggleInsert   ();
+  void ToggleDrawLines();
+  void DrawLines      (gkey key);
   void ToLower        ();
   void ToUpper        ();
   void UnDelete       (bool before=true);

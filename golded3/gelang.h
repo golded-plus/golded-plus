@@ -387,6 +387,8 @@ struct LangGed {
   char*  EscOrContinue;      // ST_ESCORCONTINUE
   char*  SpellChecker;       // MS_SPELLCHECKER
   char*  Ins;                // WT_INS
+  char*  DrawSL;             // WT_DRAWSL
+  char*  DrawDL;             // WT_DRAWDL
   char*  FilelistFrom;       // MI_FILELISTFROM
   char*  Initializing;       // ST_INITIALIZING
   char*  Checking;           // ST_CHECKING

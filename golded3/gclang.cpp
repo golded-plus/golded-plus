@@ -400,6 +400,8 @@ static LangCrc LangCrcs[] = {
   { CRC_ST_ESCORCONTINUE      , NULL  , "ESC exits. Other keys: Tries to continue" },
   { CRC_MS_SPELLCHECKER       , NULL  , "SpellChecker: %s" },
   { CRC_WT_INS                , NULL  , " Ins " },
+  { CRC_WT_DRAWSL             , NULL  , " DL1 " },
+  { CRC_WT_DRAWDL             , NULL  , " DL2 " },
   { CRC_MI_FILELISTFROM       , NULL  , "Filelist from %s" },
   { CRC_ST_INITIALIZING       , NULL  , "Initializing ..." },
   { CRC_ST_CHECKING           , NULL  , "Checking" },
