@@ -385,6 +385,7 @@ void CfgWildcatuserno    ();
 void CfgWriteheader      ();
 void CfgWritetemplate    ();
 void CfgXlatcharset      ();
+void CfgXlatcharsetalias ();
 void CfgXlatescset       ();
 void CfgXlatexport       ();
 void CfgXlatimport       ();

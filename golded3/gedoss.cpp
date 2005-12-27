@@ -126,6 +126,7 @@ void Cleanup(void) {
     CFG->username.clear();
     CFG->xlatcharset.clear();
     CFG->xlatescset.clear();
+    CFG->xlatcharsetalias.clear();
     CFG->cmdkey.clear();
     CFG->macro.clear();
     CFG->unpacker.clear();

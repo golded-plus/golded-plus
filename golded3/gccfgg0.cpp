@@ -619,6 +619,7 @@ SwitchW:
 SwitchX:
   switch(crc) {
     case CRC_XLATCHARSET      :  CfgXlatcharset      ();  break;
+    case CRC_XLATCHARSETALIAS :  CfgXlatcharsetalias ();  break;
     case CRC_XLATESCSET       :  CfgXlatescset       ();  break;
     case CRC_XLATEXPORT       :  CfgXlatexport       ();  break;
     case CRC_XLATIMPORT       :  CfgXlatimport       ();  break;

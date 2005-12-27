@@ -383,6 +383,7 @@ public:
   std::string      wtpl;
   std::vector<Map> xlatcharset;
   std::vector<Map> xlatescset;
+  std::vector< std::pair<std::string, gstrarray> > xlatcharsetalias;
   char        xlatexport[17];       // exportcharset[17];
   char        xlatimport[17];       // localcharset[17];
   char        xlatlocalset[17];

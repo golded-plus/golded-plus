@@ -586,6 +586,27 @@ void CfgXlatcharset() {
 
 //  ------------------------------------------------------------------
 
+void CfgXlatcharsetalias()
+{
+  char* key;
+  getkeyval(&key, &val);
+  if (key[0] == 0) return;
+
+  std::pair<std::string, gstrarray> aliases;
+  aliases.first = key;
+
+  do 
+  {
+    aliases.second.push_back(std::string(key));
+    getkeyval(&key, &val);
+  }
+  while (key[0] != 0);
+
+  CFG->xlatcharsetalias.push_back(aliases);
+}
+
+//  ------------------------------------------------------------------
+
 void CfgXlatescset() {
 
   Map xlt;

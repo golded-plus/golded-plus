@@ -1654,6 +1654,12 @@ XlatCharSet CP866       COMPOSED    866_CMP.chs
 XlatCharSet CP866       VT100       866_VT1.chs
 XlatCharSet CP850       ASCII       850_ASC.chs
 
+// Этим можно определить алиасы для названий кодировок.
+// Работает только для таблиц импорта.
+;XLATCHARSETALIAS "charset" "alias1" "alias2"...
+;XLATCHARSETALIAS KOI8-R KOI8R
+;XLATCHARSETALIAS ISO ISO-8859-5 ISO8859-5
+
 // Определение входящей кодировки по умолчанию. Если приходящее
 // сообщение не имеет клуджа ^CHRS, то будет считаться, что оно
 // соответствует этому набору символов.

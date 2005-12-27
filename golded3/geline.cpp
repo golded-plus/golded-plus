@@ -2890,8 +2890,26 @@ int LoadCharset(const char* imp, const char* exp, int query) {
 
   // Find and load charset table
   std::vector<Map>::iterator xlt;
-  for(n = 0, xlt = CFG->xlatcharset.begin(); xlt != CFG->xlatcharset.end(); xlt++, n++) {
-    if(striinc(xlt->imp, imp) and striinc(xlt->exp, exp)) {
+  for(n = 0, xlt = CFG->xlatcharset.begin(); xlt != CFG->xlatcharset.end(); xlt++, n++)
+  {
+    if (!striinc(xlt->exp, exp)) continue;
+
+    bool imp_found = make_bool(striinc(xlt->imp, imp));
+
+    std::vector< std::pair<std::string, gstrarray> >::iterator als;
+    for (als = CFG->xlatcharsetalias.begin();
+          !imp_found && (als != CFG->xlatcharsetalias.end()); als++)
+    {
+      if (strieql(xlt->imp, als->first.c_str()))
+      {
+        for (gstrarray::iterator it = als->second.begin(); !imp_found && (it != als->second.end()); it++)
+          if (striinc(it->c_str(), imp))
+            imp_found = true;
+      }
+    }
+
+    if (imp_found)
+    {
       // Already loaded?
       if(CharTable and CharTable->level!=0 and n==current_table)
         return CharTable->level;
