@@ -1557,13 +1557,13 @@ include charsets.cfg
 // Исключения из описанного в файле charsets.cfg
 // Основные таблицы импорта (8-bit -> 8-bit)
 XlatCharSet  AUTO       CP866       866_866.chs
-XlatCharSet  KOI8R      CP866       K8R_866.chs
-XlatCharSet  KOI8-R     CP866       KOI_866.chs
-XlatCharSet  CP1251     CP866       UKR_866.chs
+;XlatCharSet  KOI8R      CP866       K8R_866.chs
+;XlatCharSet  KOI8-R     CP866       KOI_866.chs
+;XlatCharSet  CP1251     CP866       UKR_866.chs
 XlatCharSet  LATIN1QP   CP866       K8R_866.chs
 XlatCharSet  ISO        CP866       ISO_866.chs
 XlatCharSet  CP1125     CP866       UKR_866.chs
-XlatCharSet  KOI8U      CP866       KOU_866.chs
+;XlatCharSet  KOI8U      CP866       KOU_866.chs
 XlatCharSet  KOI8-U     CP866       KOU_866.chs
 XlatCharSet  LATIN-1    CP866       ISO_866.chs
 XlatCharSet  MAC        CP866       MAC_866.chs
@@ -1637,7 +1637,7 @@ XlatCharSet UK          ASCII       uk__asc.chs
 XlatCharSet CP866       CP1251      866_1251.chs
 XlatCharSet CP866       KOI8-R      866_KOI.chs
 XlatCharSet CP866       LATIN1QP    866_IQP.chs
-XlatCharSet CP866       +7_FIDO     RUS_FTN.chs
+;XlatCharSet CP866       +7_FIDO     RUS_FTN.chs
 XlatCharSet CP866       ISO         866_ISO.chs
 XlatCharSet CP866       LATIN-1     866_ISO.chs
 XlatCharSet CP866       MAC         866_MAC.chs
@@ -1659,6 +1659,12 @@ XlatCharSet CP850       ASCII       850_ASC.chs
 ;XLATCHARSETALIAS "charset" "alias1" "alias2"...
 ;XLATCHARSETALIAS KOI8-R KOI8R
 ;XLATCHARSETALIAS ISO ISO-8859-5 ISO8859-5
+// Часто встречающиеся ошибки
+XLATCHARSETALIAS CP866 CP-866 +7FIDO +7_FIDO FIDO7 FIDO_7 IBMPC
+XLATCHARSETALIAS KOI8-R KOI8R KOI KOI8 GOST
+XLATCHARSETALIAS KOI8-U KOI8U KOU KOI-U
+XLATCHARSETALIAS ISO8859-5 ISO
+XLATCHARSETALIAS CP1251 CP-1251 WIN WIN-1251 WINDOWS-1251
 
 // Определение входящей кодировки по умолчанию. Если приходящее
 // сообщение не имеет клуджа ^CHRS, то будет считаться, что оно
