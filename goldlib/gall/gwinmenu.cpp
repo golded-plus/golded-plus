@@ -41,6 +41,10 @@
 #include <gwinall.h>
 #include <gwinhelp.h>
 
+#if defined(__USE_ALLOCA__)
+  #include <malloc.h>
+#endif
+
 
 //  ------------------------------------------------------------------
 
@@ -198,10 +202,14 @@ static void close_window(int w)
 
 static void disp_item(_item_t *witem,int bar)
 {
+#if defined(__USE_ALLOCA__)
+    char *buf = (char *)alloca(sizeof(vatch)*gvid->numcols);
+#else
+    __extension__ char buf[sizeof(vatch)*gvid->numcols];
+#endif
     char ch;
     int chattr;
     _wrec_t* whp;
-    char buf[256];
     register const char* p;
     register vatch* ptr=(vatch*)buf;
     int i, textend,width,wcol,found=NO;
@@ -214,6 +222,7 @@ static void disp_item(_item_t *witem,int bar)
     width = calc_bar_width(gwin.cmenu,witem);
     textend = gwin.cmenu->textpos+strlen(p)-1;
     wgotoxy(witem->wrow,wcol=witem->wcol);
+    if (width > (gvid->numcols-2)) width = gvid->numcols - 2;
 
     // display separators
     if (witem->fmask & M_SEPAR)

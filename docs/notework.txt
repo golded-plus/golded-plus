@@ -10,6 +10,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed buffer overun for too wide menus.
+
 + Added new config file token: XlatCharSetAlias "charset" "alias1" "alias2"...
   that defines charset aliases for import tables.
 

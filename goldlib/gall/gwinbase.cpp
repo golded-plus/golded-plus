@@ -132,6 +132,9 @@ int wopen(int srow, int scol, int erow, int ecol, int btype, int battr, int watt
     return 0;
   }
 
+  if (ecol >= gvid->numcols)
+    ecol = gvid->numcols - 1;
+
   // see if window is to have a border
   int border = (btype==5) ? NO : YES;
 
