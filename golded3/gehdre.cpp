@@ -607,10 +607,19 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view, bool doedithdr) {
           if(AA->Aka().addr.equals(AA->aka())) {
 
             // Do aka matching
-            if(AA->Akamatching()) {
-              strcpy(msg->odom, CFG->aka[AkaMatch(&msg->orig, &msg->dest)].domain);
+            if(AA->Akamatching())
+            {
+              AkaMatch(&msg->orig, &msg->dest);
+              AA->SetAka(msg->orig);
             }
           }
+        }
+
+        if (AA->Akamatching())
+        {
+          if (CFG->akamatchmanually) ChangeAka();
+          msg->orig = AA->Aka().addr;
+          strcpy(msg->odom, AA->Aka().domain);
         }
       }
     }
