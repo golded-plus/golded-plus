@@ -469,6 +469,7 @@ SwitchO:
 
 SwitchP:
   switch(crc) {
+    case CRC_PATHREPORTFILE   :  CfgPathreportfile   ();  break;
     case CRC_PCBOARDPATH      :  CfgPcboardpath      ();  break;
     case CRC_PCBOARDUSERNO    :  CfgPcboarduserno    ();  break;
     case CRC_PEEKURLOPTIONS   :  CfgPeekurloptions   ();  break;
