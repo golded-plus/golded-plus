@@ -10,6 +10,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed charset level detection. Text will not be translate if level > 2.
+
 - Placed AKAMatchManually after all aka matching logic.
 
 - Fixed buffer overun for too wide menus.

@@ -140,8 +140,11 @@ char* mime_header_encode(char* dest, const char* source, GMsg* msg) {
   const char* lp;
   char* temp_src = (char*)throw_malloc(4096);
 
-  if(*msg->charset) {
-    if((msg->charsetlevel&3) and ChsTP) {
+  if(*msg->charset)
+  {
+    int level = msg->charsetlevel;
+    if (((level == 1) || (level == 2)) && ChsTP)
+    {
       char chln, *d = temp_src;
 
       for(uint len = 0; *s; s++) {

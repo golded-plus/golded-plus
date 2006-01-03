@@ -1856,7 +1856,9 @@ char* XlatStr(char* dest, const char* src, int level, Chs* chrtbl, int qpencoded
       defaultchardo:
         dochar = *sptr++;
       chardo:
-        if((level&3) and chrs) {   // Translate level 1 and 2
+        // Translate level 1 and 2
+        if (((level == 1) || (level == 2)) && chrs)
+        {
           tptr = (char*)chrs[(byte)dochar];
           clen = *tptr++;
           while(clen--)
@@ -2067,8 +2069,11 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode) {
           qptr = qbuf;
           reflow = false;
           // Insert previous quotestring
-          for(n=0; n<qlen; n++) {
-            if((level&3) and ChsTP) {   // Translate level 1 and 2
+          for(n=0; n<qlen; n++)
+          {
+            // Translate level 1 and 2
+            if (((level == 1) || (level == 2)) && ChsTP)
+            {
               tptr = (char*)ChsTP[(byte)(*qptr++)];
               chln = *tptr++;
               while(chln--) {
@@ -2510,7 +2515,9 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode) {
             defaultchardo:
               dochar = *ptr++;
             chardo:
-              if((level&3) and ChsTP) {   // Translate level 1 and 2
+              // Translate level 1 and 2
+              if (((level == 1) || (level == 2)) && ChsTP)
+              {
                 tptr = (char*)ChsTP[(byte)dochar];
                 chln = *tptr++;
                 while(chln--) {
