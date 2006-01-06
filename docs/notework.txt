@@ -19,6 +19,9 @@ ______________________________________________________________________
 + Added new config file token: XlatCharSetAlias "charset" "alias1" "alias2"...
   that defines charset aliases for import tables.
 
++ Add charset translation tables for koi7 charset: koi7-koi7 (no translation),
+  koi7<->koi8-r, koi7<->cp866.
+
 - Fixed destination address selection for commented replays in echo areas.
 
 + Now golded+ can draw box lines. Use keyboard configuration keyword
@@ -27,6 +30,8 @@ ______________________________________________________________________
 + Added character code from cursor position to editor status bar.
   NOTE: ST_EDITSTATUS changed to "Edit %i,%i (%02X). %s". Add octal and
   decimal examples into language definition files (goldlang.*).
+  WARNING: update the ST_EDITSTATUS token value in your goldlang.cfg to prevent
+  crash of Golded+
 
 - regex: \w and \W work for all characters. Also, \b and \B should work
   correctly.
