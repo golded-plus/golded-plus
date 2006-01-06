@@ -1657,14 +1657,18 @@ XlatCharSet CP850       ASCII       850_ASC.chs
 // Этим можно определить алиасы для названий кодировок.
 // Работает только для таблиц импорта.
 ;XLATCHARSETALIAS "charset" "alias1" "alias2"...
-;XLATCHARSETALIAS KOI8-R KOI8R
-;XLATCHARSETALIAS ISO ISO-8859-5 ISO8859-5
-// Часто встречающиеся ошибки
-XLATCHARSETALIAS CP866 CP-866 +7FIDO +7_FIDO FIDO7 FIDO_7 IBMPC
-XLATCHARSETALIAS KOI8-R KOI8R KOI KOI8 GOST
-XLATCHARSETALIAS KOI8-U KOI8U KOU KOI-U
-XLATCHARSETALIAS ISO8859-5 ISO
+// Часто встречающиеся ошибки и разные варианты написания
+XLATCHARSETALIAS CP437 IBMPC
+;XLATCHARSETALIAS CP866 CP-866 +7FIDO +7_FIDO FIDO7 FIDO_7 IBMPC
+XLATCHARSETALIAS CP866 CP-866 +7FIDO +7_FIDO FIDO7 FIDO_7
+XLATCHARSETALIAS KOI8-R KOI8R KOI KOI8 GOST CP20866
+XLATCHARSETALIAS KOI8-U KOI8U KOU KOI-U CP21866
+XLATCHARSETALIAS ISO8859-1 ISO-8859-1 ISO_8859-1 CP28591 ISO-1 LATIN-1
+XLATCHARSETALIAS ISO8859-5 ISO-8859-5 ISO_8859-5 CP28595 ISO-5 ISO
 XLATCHARSETALIAS CP1251 CP-1251 WIN WIN-1251 WINDOWS-1251
+XLATCHARSETALIAS CP1125 UKR
+XLATCHARSETALIAS CP10007 MAC-CYRILLIC MAC-RUSSIAN
+XLATCHARSETALIAS CP10017 MAC-UKRAINIAN
 
 // Определение входящей кодировки по умолчанию. Если приходящее
 // сообщение не имеет клуджа ^CHRS, то будет считаться, что оно
@@ -1675,12 +1679,12 @@ XLATCHARSETALIAS CP1251 CP-1251 WIN WIN-1251 WINDOWS-1251
 ;XlatImport CP850
  XlatImport CP866
 
-// Определение выходной кодировки, написанные вами мессаги при
-// отправке будут конвертиться в нее. Если вы хотите писать
-// мессаги в разных кодировках то вовсе не обязательно каждый
+// Определение выходной кодировки, написанные вами сообщения при
+// отправке будут перекодироваться в нее. Если вы хотите писать
+// сообщения в разных кодировках, то вовсе не обязательно каждый
 // раз менять XlatExport - для этого достаточно сделать несколько
 // темплейтов (*.tpl) и в них написать @XlatExport <кодировка>
-// Если вы раскомментируете строку XXххх, в ваших письмах появится клудж
+// Если вы раскомментируете строку с XXххх, в ваших письмах появится кладж
 // "^aCHRS: XXххх 2".
 ;XlatExport <кодировка>
 
@@ -1688,11 +1692,11 @@ XLATCHARSETALIAS CP1251 CP-1251 WIN WIN-1251 WINDOWS-1251
 ;XlatExport KOI8-R
 ;XlatExport CP1251
 ;XlatExport CP850
- XlatExport CP866 ; по умолчанию
+ XlatExport CP866 ; для русского FIDOnet
 
 //   Реальный набор символов на компьютере.
 // Определение кодировки, которую отображает ваш софт.
-// Все принятые мессаги перекодируются в нее. Все что вы пишете -
+// Все принятые сообщения перекодируются в нее. Все что вы пишете -
 // пишется в ней, а после перекодируется в XlatExport.
 //  ВНИМАНИЕ: Вы не должны менять значение CP866 на другое, если у вас нет
 // полного набора .chs и .esc таблиц, с помощью которых будет производится
