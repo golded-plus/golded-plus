@@ -10,6 +10,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ New russian and ukrainian charset tables (conversion from/to ISO 8859-5).
+  Add/update common used charset aliases.
+
 - Fixed charset level detection. Text will not be translate if level > 2.
 
 - Placed AKAMatchManually after all aka matching logic.
