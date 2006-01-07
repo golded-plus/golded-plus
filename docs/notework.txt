@@ -10,10 +10,12 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Win32: file attach is no more translated to upper case.
+
 + New russian and ukrainian charset tables (conversion from/to ISO 8859-5).
   Add/update common used charset aliases.
 
-- Fixed charset level detection. Text will not be translate if level > 2.
+- Fixed charset level detection. Text will not be translated if level > 2.
 
 - Placed AKAMatchManually after all aka matching logic.
 
@@ -31,10 +33,11 @@ ______________________________________________________________________
   EditDrawLines (default: ^D) to toggle draw modes.
 
 + Added character code from cursor position to editor status bar.
-  NOTE: ST_EDITSTATUS changed to "Edit %i,%i (%02X). %s". Add octal and
-  decimal examples into language definition files (goldlang.*).
-  WARNING: update the ST_EDITSTATUS token value in your goldlang.cfg to prevent
-  crash of Golded+
+  Add octal and decimal examples into language definition files (goldlang.*).
+
+  WARNING: ST_EDITSTATUS was changed to "Edit %i,%i (%02X). %s".
+           Update the ST_EDITSTATUS token value in your goldlang.cfg
+           to prevent crash of Golded+.
 
 - regex: \w and \W work for all characters. Also, \b and \B should work
   correctly.
