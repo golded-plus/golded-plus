@@ -322,6 +322,7 @@ void GotoReplies();
 void GotoReply1st();
 void GotoReplyNext();
 void GotoReplyPrev();
+void GotoThNextUnread();
 void IncMargin();
 void MakeUserList();
 void MakePathreport();

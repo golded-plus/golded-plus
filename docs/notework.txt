@@ -10,6 +10,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ New reader key READGotoThNextUnread (default: @Down) added, that will
+  cycle thorough all unread messages of current thread.
+
 - Win32: file attach is no more translated to upper case.
 
 + New russian and ukrainian charset tables (conversion from/to ISO 8859-5).

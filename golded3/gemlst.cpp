@@ -722,6 +722,7 @@ public:
   bool handle_key();                  // Handles keypress
 
   void Run();
+  bool GoNextUnread(bool reader);
 
   GThreadlist() { memset(&msg, 0, sizeof(GMsg)); replylinkfloat = CFG->replylinkfloat; };
   ~GThreadlist() { ResetMsg(&msg); };
@@ -1262,12 +1263,82 @@ void GThreadlist::Run() {
 
 //  ------------------------------------------------------------------
 
+bool GThreadlist::GoNextUnread(bool reader)
+{
+  if (reader)
+    BuildThreadIndex(reader_msg->msgno);
+
+  bool found = false;
+  size_t size = list.size();
+
+  if (size > 1)
+  {
+    size_t idx;
+    
+    for (idx = index + 1; idx < size; idx++)
+    {
+      t = list[idx];
+      AA->LoadHdr(&msg, t.msgno);
+      if (msg.timesread == 0)
+      {
+        found = true;
+        break;
+      }
+    }
+
+    if (!found)
+    {
+      for (idx = 0; idx < index; idx++)
+      {
+        t = list[idx];
+        AA->LoadHdr(&msg, t.msgno);
+        if (msg.timesread == 0)
+        {
+          found = true;
+          break;
+        }
+      }
+    }
+
+    if (found)
+    {
+      index = idx;
+
+      if (reader)
+        AA->set_lastread(AA->Msgn.ToReln(list[idx].msgno));
+    }
+  }
+
+  return found;
+}
+
+
+//  ------------------------------------------------------------------
+
 void MsgThreadlist() {
 
   GThreadlist p;
 
   p.Run();
 
+}
+
+
+//  ------------------------------------------------------------------
+
+void GotoThNextUnread()
+{
+  w_info(LNG->Wait);
+  reader_direction = DIR_NEXT;
+
+  GThreadlist p;
+  if (!p.GoNextUnread(true))
+  {
+    SayBibi();
+    reader_keyok = true;
+  }
+
+  w_info(NULL);
 }
 
 

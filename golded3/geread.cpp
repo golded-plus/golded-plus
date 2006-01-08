@@ -673,6 +673,10 @@ void Reader() {
                 GotoPrevUnread();
                 break;
 
+              case KK_ReadGotoThNextUnread:
+                GotoThNextUnread();
+                break;
+
               case KK_ReadShowHiddKlud:
                 if(not AA->Viewhidden() and not AA->Viewkludge())
                   ToggleHiddKlud();

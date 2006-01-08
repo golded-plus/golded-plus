@@ -246,6 +246,7 @@ CmdKey DefaultKeyset[] = {
   { Key_Multi   , KK_ReadGotoReplyNext    , KT_R },
   { Key_Minus   , KK_ReadGotoReplyPrev    , KT_R },
   { Key_C_Lft   , KK_ReadGotoReplyPrev    , KT_R },
+  { Key_A_Dwn   , KK_ReadGotoThNextUnread , KT_R },
   { Key_S_F10   , KK_ReadLookupDest       , KT_R },
   { Key_F10     , KK_ReadLookupOrig       , KT_R },
   { Key_C_L     , KK_ReadMakeUserlist     , KT_R },
@@ -511,6 +512,7 @@ tglobalkey globalkeys[] = {
   { CRC_K_AZ                   , Key_A_Z                 ,    0 }, // 0x405A
   { CRC_K_ADEL                 , Key_A_Del               ,    0 }, // 0x40C0
   { CRC_NODEMACRO              , KK_NodeMacro            , KT_N }, // 0x4129
+  { CRC_READGOTOTHNEXTUNREAD   , KK_ReadGotoThNextUnread , KT_R }, // 0x413E
 #if !defined(__UNIX__) || defined(__USE_NCURSES__)
   { CRC_K_SUP                  , Key_S_Up                ,    0 }, // 0x4151
 #endif

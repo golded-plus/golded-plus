@@ -338,7 +338,8 @@ Left        READgotoprevmsg
 +           READgotoreplies
 ^Right      READgotoreplies
 /           READGoToReply1st  ; Пеpеход к пеpвому ответу на это сообщение в цепочке ответов
-*           READGoToReplyNext ; Для JAM_базы ; Перейти к следующему ответу на это сообщение
+*           READGoToReplyNext ; Перейти к следующему ответу на это сообщение
+@Down       READGotoThNextUnread ; Переход к следующему непрочитанному сообщению в треде
 ^M          READmainmenu
 ^L          READmakeuserlist
 ^K          READmakepathreport
