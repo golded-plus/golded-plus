@@ -2,7 +2,7 @@
 ;
 ; This file is a charset conversion module in text form.
 ;
-; This module converts ISO_8859-1 extended characters to IBM-PC characters.
+; This module converts ISO_8859-1 extended characters to IBM-PC CP865 characters.
 ;
 ; Format: ID, version, level,
 ;         from charset, to charset,
@@ -14,7 +14,7 @@
 ;
 ; cedilla = ,   ; dieresis = ..       ; acute = '
 ; grave = `     ; circumflex = ^      ; ring = o
-; tilde = ~     ; caron = v 
+; tilde = ~     ; caron = v
 ; All of these are above the character, apart from the cedilla which is below.
 ;
 ; \ is the escape character: \0 means decimal zero,
@@ -29,7 +29,7 @@
 2               ; level number
 ;
 LATIN1QP        ; from set
-IBMPC           ; to set (actually CP865)
+CP865           ; to set (Nordic IBMPC)
 ;
 \0 \d128        ; 128 80 (missing) These codes are unused in the LATIN-1 set.
 \0 \d129        ; 129 81 (missing) For transparency, these are not mapped.

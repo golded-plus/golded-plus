@@ -14,7 +14,7 @@
 ;
 ; cedilla = ,   ; dieresis = ..       ; acute = '
 ; grave = `     ; circumflex = ^      ; ring = o
-; tilde = ~     ; caron = v 
+; tilde = ~     ; caron = v
 ; All of these are above the character, apart from the cedilla which is below.
 ;
 ; \ is the escape character: \0 means decimal zero,
@@ -28,8 +28,8 @@
 ;
 2		; level number
 ;
-IBMPC           ; from set (actually CP865)
-MNEMONIC        ; to set
+CP865           ; from set (IBMPC)
+MNEMONIC        ; to set (K. Simonsen's mnemonics)
 ;
 \d29 C ,        ; 128 80 latin capital letter c with cedilla
 \d29 u :        ; 129 81 latin small letter u with diaeresis

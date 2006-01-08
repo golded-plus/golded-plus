@@ -2,7 +2,7 @@
 ;
 ; This file is a charset conversion module in text form.
 ;
-; This module converts ISO 8859-1 extended characters to IBM CP850 characters.
+; This module converts ISO 8859-1 extended characters to CP850 characters.
 ;
 ; Format: ID, version, level,
 ;         from charset, to charset,
@@ -14,7 +14,7 @@
 ;
 ; cedilla = ,   ; dieresis = ..       ; acute = '
 ; grave = `     ; circumflex = ^      ; ring = o
-; tilde = ~     ; caron = v 
+; tilde = ~     ; caron = v
 ; All of these are above the character, apart from the cedilla which is below.
 ;
 ; \ is the escape character: \0 means decimal zero,

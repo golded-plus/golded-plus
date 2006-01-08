@@ -14,7 +14,7 @@
 ;
 ; cedilla = ,   ; dieresis = ..       ; acute = '
 ; grave = `     ; circumflex = ^      ; ring = o
-; tilde = ~     ; caron = v 
+; tilde = ~     ; caron = v
 ; All of these are above the character, apart from the cedilla which is below.
 ;
 ; \ is the escape character: \0 means decimal zero,
@@ -28,7 +28,7 @@
 ;
 2               ; level number
 ;
-LATIN-1         ; from set
+ISO 8859-1      ; from set (LATIN-1)
 CP850           ; to set
 ;
 \0 \d128        ; 128 80 (missing) These codes are unused in the LATIN-1 set.

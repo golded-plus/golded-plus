@@ -30,7 +30,7 @@
 1               ; level number
 ;
 ITALIAN         ; from set
-IBMPC           ; to set
+IBMPC           ; to set (CP437 or CP850 or CP858)
 ;
 \0 \0           ; NUL
 \0 \x1          ; SOH

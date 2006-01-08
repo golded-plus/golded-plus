@@ -14,7 +14,7 @@
 ;
 ; cedilla = ,   ; dieresis = ..       ; acute = '
 ; grave = `     ; circumflex = ^      ; ring = o
-; tilde = ~     ; caron = v 
+; tilde = ~     ; caron = v
 ; All of these are above the character, apart from the cedilla which is below.
 ;
 ; \ is the escape character: \0 means decimal zero,
@@ -28,7 +28,7 @@
 ;
 2		; level number
 ;
-IBMPC           ; from set (actually CP865)
+CP865           ; from set (IMBPC)
 MAC		; to set
 ;
 \0 \x82         ; 128 80 latin capital letter c with cedilla
