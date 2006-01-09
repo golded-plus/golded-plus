@@ -153,9 +153,9 @@ ST_IMPORTSTATUS      "Importo da %s"
 ST_EXPORTFILE        "Esporta File"
 WT_EXPORTWHATFILE    " Esporto su quale file? "
 ST_EXPORTSTATUS      "Esporto su %s"
-ST_EDITSTATUS        "Edita %i,%i (%02X). %s"	; posX, posY, hex(char), status
-;ST_EDITSTATUS        "Edita %i,%i (%3u). %s"	; posX, posY, dec(char), status
-;ST_EDITSTATUS        "Edita %i,%i (%03o). %s"	; posX, posY, oct(char), status
+ST_EDITSTATUS        "Edita %i,%i (%02X). %s"
+;ST_EDITSTATUS        "Edita %i,%i (%3u). %s"
+;ST_EDITSTATUS        "Edita %i,%i (%03o). %s"
 ST_SELECTFILES       "Seleziona Files"
 WL_SELECTEDFILES     "Files Selezionati   "
 WL_SELECTEDBYTES     "         Bytes      "

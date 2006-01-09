@@ -134,9 +134,10 @@ ST_IMPORTSTATUS      "Importeren van %s"
 ST_EXPORTFILE        "Exporteer Bestand"
 WT_EXPORTWHATFILE    " Exporteer naar welk bestand? "
 ST_EXPORTSTATUS      "Exporteren naar %s"
-ST_EDITSTATUS        "Edit %i,%i (%02X). %s"	; posX, posY, hex(char), status
-;ST_EDITSTATUS        "Edit %i,%i (%3u). %s"	; posX, posY, dec(char), status
-;ST_EDITSTATUS        "Edit %i,%i (%03o). %s"	; posX, posY, oct(char), status
+;; posX, posY, hex or dec or oct(char) , status
+ST_EDITSTATUS        "Edit %i,%i (%02X). %s"	
+;ST_EDITSTATUS        "Edit %i,%i (%3u). %s"
+;ST_EDITSTATUS        "Edit %i,%i (%03o). %s"
 ST_SELECTFILES       "Selecteer Bestanden"
 WL_SELECTEDFILES     "Geselecteerde Bestanden      "
 WL_SELECTEDBYTES     "         Bytes      "
