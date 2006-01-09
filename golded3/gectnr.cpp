@@ -68,6 +68,10 @@ const char *url_begin(const char *ptr) {
     return ptr+4;
   if(strnieql(ptr, "mailto:", 7))
     return ptr+7;
+  if(strnieql(ptr, "news:", 5))
+    return ptr+5;
+  if(strnieql(ptr, "ed2k://", 7))
+    return ptr+7;
   return NULL;
 }
 
