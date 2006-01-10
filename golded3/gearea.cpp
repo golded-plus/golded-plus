@@ -116,7 +116,7 @@ void GPickArealist::do_delayed() {
   char buf[256], tmp[200];
 
   strcpy(tmp, area->echoid());
-  update_statuslinef("%s: %u %s, %u %s, %u %s", tmp, area->Msgn.Count(), (area->Msgn.Count() == 1 ? LNG->msg : LNG->msgs), area->unread, LNG->unread, area->PMrk.Count(), LNG->personal);
+  update_statuslinef("%s: %u %s, %u %s, %u %s", "", tmp, area->Msgn.Count(), (area->Msgn.Count() == 1 ? LNG->msg : LNG->msgs), area->unread, LNG->unread, area->PMrk.Count(), LNG->personal);
 
   strcpy(stpcpy(buf, title), area_maybe);
   strsetsz(strcpy(tmp, buf), MAXCOL);
@@ -464,7 +464,7 @@ void GPickArealist::AreaCatchUp(uint n) {
         if((*AL.item)->isseparator())
           continue;
 
-        update_statuslinef("%s ...", (*AL.item)->echoid());
+        update_statuslinef("%s ...", "", (*AL.item)->echoid());
 
         AA = (*AL.item);
         AA->Open();
@@ -651,7 +651,7 @@ bool GPickArealist::handle_key() {
         if(mode != SCAN_QUIT) {
           for(AL.item = AL.idx.begin(); AL.item != AL.idx.end(); AL.item++) {
             if((mode == SCAN_MARKED and (*AL.item)->ismarked()) or mode == SCAN_ALL or (mode == SCAN_CURRENT and (*AL.item) == AL[index-1])) {
-              update_statuslinef("%s %s", 1+LNG->ScanningArea, (*AL.item)->echoid());
+              update_statuslinef("%s %s", "", 1+LNG->ScanningArea, (*AL.item)->echoid());
               (*AL.item)->SetHighwaterMark();
             }
           }
@@ -666,7 +666,7 @@ bool GPickArealist::handle_key() {
         if(mode != SCAN_QUIT) {
           for(AL.item = AL.idx.begin(); AL.item != AL.idx.end(); AL.item++) {
             if((mode == SCAN_MARKED and (*AL.item)->ismarked()) or mode == SCAN_ALL or (mode == SCAN_CURRENT and (*AL.item) == AL[index-1])) {
-              update_statuslinef("%s %s", 1+LNG->ScanningArea, (*AL.item)->echoid());
+              update_statuslinef("%s %s", "", 1+LNG->ScanningArea, (*AL.item)->echoid());
               (*AL.item)->ResetHighwaterMark();
             }
           }

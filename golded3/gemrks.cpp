@@ -195,7 +195,7 @@ void MarkMsgs_Txt(int item, char* markstring) {
       }
     }
 
-    update_statuslinef(LNG->SearchingMsg, n, AA->Msgn.Count(), marked);
+    update_statuslinef(LNG->SearchingMsg, "ST_SEARCHINGMSG", n, AA->Msgn.Count(), marked);
     w_progress(MODE_UPDATE, C_INFOW, n, AA->Msgn.Count(), NULL);
 
     if(AA->LoadMsg(msg, AA->Msgn[n-1], CFG->dispmargin-(int)CFG->switches.get(disppagebar))) {
@@ -204,7 +204,7 @@ void MarkMsgs_Txt(int item, char* markstring) {
 
       if(srchmgr.reverse ? not success : success) {
         AA->Mark.Add(msg->msgno);
-        update_statuslinef(LNG->SearchingMsg, n, AA->Msgn.Count(), ++marked);
+        update_statuslinef(LNG->SearchingMsg, "ST_SEARCHINGMSG", n, AA->Msgn.Count(), ++marked);
       }
     }
   }

@@ -132,14 +132,35 @@ void update_statusline(const char* info) {
 
 //  ------------------------------------------------------------------
 
-void update_statuslinef(const char* format, ...) {
-
+void update_statuslinef(const char *format, const char *token, ...)
+{
+  bool error = false;
   char winfobuf[350];
   va_list argptr;
-  va_start(argptr, format);
-  vsprintf(winfobuf, format, argptr);
+  va_start(argptr, token);
+
+  try
+  {
+    vsprintf(winfobuf, format, argptr);
+  }
+  catch(...)
+  {
+    if (*token)
+      sprintf(winfobuf, "ERROR: Update %s in your GOLDLANG.CFG or report to author.", token);
+    else
+      sprintf(winfobuf, "ERROR: \"%s\". Report to author.", format);
+
+    error = true;
+  }
+
   va_end(argptr);
   update_statusline(winfobuf);
+
+  if (error)
+  {
+    SayBibi();
+    waitkeyt(1000);
+  }
 }
 
 
@@ -286,7 +307,7 @@ void maketitle() {
 int maketitle_and_status(char *dir) {
 
   maketitle();
-  update_statuslinef(LNG->ImportStatus, dir);
+  update_statuslinef(LNG->ImportStatus, "ST_IMPORTSTATUS", dir);
   return 0;
 }
 

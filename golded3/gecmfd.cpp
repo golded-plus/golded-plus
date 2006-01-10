@@ -183,7 +183,7 @@ void Area::DelMsgs(GMsg* msg) {
             break;
           }
         }
-        update_statuslinef(LNG->DeletingMsg, x+1, Mark.Count());
+        update_statuslinef(LNG->DeletingMsg, "ST_DELETINGMSG", x+1, Mark.Count());
         w_progress(MODE_UPDATE, C_INFOW, x+1, Mark.Count(), LNG->Deleting);
         uint msgno = Mark[x];
         if(Msgn.ToReln(msgno)) {
@@ -303,6 +303,7 @@ void CmfMsgs(GMsg* msg, bool torecycle)
   char* markstr = NULL;
   char* progstr = NULL;
   char* statstr = NULL;
+  char* tokenstr = "";
   int loadmode = GMSG_UNS_NOT_RCV;
   switch(cmf) {
     case MODE_COPY:
@@ -311,6 +312,7 @@ void CmfMsgs(GMsg* msg, bool torecycle)
       markstr = LNG->Copy;
       progstr = LNG->Copying;
       statstr = LNG->CopyingMsg;
+      tokenstr = "ST_COPYINGMSG";
       loadmode |= GMSG_COPY;
       break;
     case MODE_MOVE:
@@ -335,6 +337,7 @@ void CmfMsgs(GMsg* msg, bool torecycle)
         markstr = LNG->Move;
         progstr = LNG->Moving;
         statstr = LNG->MovingMsg;
+        tokenstr = "ST_MOVINGMSG";
       }
 
       loadmode |= GMSG_MOVE;
@@ -498,7 +501,7 @@ void CmfMsgs(GMsg* msg, bool torecycle)
 
     // Show progress and load the marked msg
     if(do_mode == MODE_MARKED) {
-      update_statuslinef(statstr, mrk+1, mrks, echoid);
+      update_statuslinef(statstr, tokenstr, mrk+1, mrks, echoid);
       loadmsgno = *mrkp++;
     }
 

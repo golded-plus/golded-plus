@@ -243,7 +243,7 @@ int AreaList::AreaScan(int mode, uint currno, int pmscan, int& pmails, int& pmar
         }
         scanned = YES;
         if(not blanked)
-          update_statuslinef("%s %s", 1+LNG->ScanningArea, AA->echoid());
+          update_statuslinef("%s %s", "", 1+LNG->ScanningArea, AA->echoid());
         if(dopmscan and (not dopmscanexcl or dopmscanincl)) {
           AA->ScanAreaPM();
           uint count = AA->PMrk.Count();

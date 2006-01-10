@@ -408,7 +408,7 @@ int   SearchTaglist(Echo* taglist, char* tag);
 void  set_title(const char* t, int p, int a);
 void  title_shadow();
 void  update_statusline(const char* info);
-void  update_statuslinef(const char* format, ...) __attribute__ ((format (printf, 1, 2)));
+void  update_statuslinef(const char* format, const char *token, ...) __attribute__ ((format (printf, 1, 3)));
 void  update_statuslines();
 void  w_info(const char* info=NULL);
 void  w_infof(const char* format, ...) __attribute__ ((format (printf, 1, 2)));

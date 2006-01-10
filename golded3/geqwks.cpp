@@ -231,7 +231,7 @@ int ImportQWK() {
 
           imported++;
           AA->istossed = true;
-          update_statuslinef("%s: %u", AA->echoid(), imported);
+          update_statuslinef("%s: %u", "", AA->echoid(), imported);
 
           msg->TextToLines(CFG->dispmargin-1);
           if(msg->messageid or msg->references or msg->inreplyto or *msg->ifrom) {
@@ -498,7 +498,7 @@ int ExportQwkArea(int areano, gfile& fp, int confno, int& pktmsgno) {
     if(AA->LoadMsg(msg, AA->Expo[n], 80)) {
       if(msg->attr.uns()) {
         exported += ExportQwkMsg(msg, fp, confno, pktmsgno);
-        update_statuslinef("%s: %u", AA->echoid(), exported);
+        update_statuslinef("%s: %u", "", AA->echoid(), exported);
       }
     }
   }

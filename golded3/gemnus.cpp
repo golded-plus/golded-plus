@@ -303,7 +303,7 @@ int GMenuDomarks::Run(char* dowhat) {
   else if(CFG->menumarked == MODE_DONT)
     _prevtag = AA->Mark.Count() ? TAG_MARKED : TAG_CURRENT;
 
-  update_statuslinef("%i %s %s", AA->Mark.Count(), AA->Mark.Count() == 1 ? LNG->is : LNG->are, LNG->marked);
+  update_statuslinef("%i %s %s", "", AA->Mark.Count(), AA->Mark.Count() == 1 ? LNG->is : LNG->are, LNG->marked);
 
   AskInit(6, 0, dowhat, H_AskDoMarks);
 
@@ -481,7 +481,7 @@ int GMenuEditfile::Run(GMsg* __msg) {
 
   for(;;) {
 
-    update_statuslinef(LNG->Quotepct, __msg->quotepct, __msg->quotepct > 80 ? "!!!" : "");
+    update_statuslinef(LNG->Quotepct, "ST_QUOTEPCT", __msg->quotepct, __msg->quotepct > 80 ? "!!!" : "");
     
     char _title[80];
     sprintf(_title, LNG->SaveMsg, __msg->lines);

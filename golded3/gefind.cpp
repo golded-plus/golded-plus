@@ -113,7 +113,7 @@ bool FindString(GMsg* msg, const char* prompt, int what) {
 
   do {
 
-    update_statuslinef(LNG->ReadingMsg, AA->lastread(), AA->Msgn.Count());
+    update_statuslinef(LNG->ReadingMsg, "ST_READINGMSG", AA->lastread(), AA->Msgn.Count());
     w_progress(MODE_UPDATE, C_INFOW, AA->lastread(), AA->Msgn.Count(), LNG->AdvancedSearch);
 
     bool success = false;

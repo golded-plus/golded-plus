@@ -350,7 +350,7 @@ void ProcessSoupMsg(char* lbuf, GMsg* msg, int& msgs, char* areaname, int tossto
     if(lineno) {
 
       AA->istossed = true;
-      update_statuslinef("%s: %u", AA->echoid(), msgs);
+      update_statuslinef("%s: %u", "", AA->echoid(), msgs);
 
       msg->LinesToText();
       AA->SaveMsg(GMSG_NEW, msg);
@@ -731,7 +731,7 @@ int ExportSoupArea(int areano, char* msgfile, gfile& fp, int ismail) {
     if(AA->LoadMsg(msg, AA->Expo[n], CFG->soupexportmargin)) {
       if(msg->attr.uns() and not (msg->attr.del() or msg->attr.lok())) {
         exported += ExportSoupMsg(msg, msgfile, fp, ismail);
-        update_statuslinef("%s: %u", AA->echoid(), exported);
+        update_statuslinef("%s: %u", "", AA->echoid(), exported);
       }
     }
   }

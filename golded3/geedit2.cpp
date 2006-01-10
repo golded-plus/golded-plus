@@ -973,7 +973,7 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
 
         // Set selection window title and statusline
         set_title(LNG->ImportTitle, TCENTER, C_MENUT);
-        update_statuslinef(LNG->ImportStatus, filenamebuf.c_str());
+        update_statuslinef(LNG->ImportStatus, "ST_IMPORTSTATUS", filenamebuf.c_str());
 
         // Start the file picker
         fileselected = wpickfile(win_minrow, win_mincol, win_maxrow, win_maxcol, W_BMENU, C_MENUB, C_MENUW, C_MENUS, NO, filenamebuf, maketitle_and_status);
@@ -1005,7 +1005,7 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
         imp_filename = (getclip or isPipe) ? filenamebuf.c_str() : CleanFilename(filenamebuf.c_str());
       }
 
-      update_statuslinef(LNG->ImportStatus, filenamebuf.c_str());
+      update_statuslinef(LNG->ImportStatus, "ST_IMPORTSTATUS", filenamebuf.c_str());
 
       // Allocate paragraph read buffer
       char* _parabuf = (char*)throw_malloc(EDIT_PARABUFLEN);
@@ -1291,7 +1291,7 @@ void IEclass::editexport(Line* __exportline, int __endat) {
     FILE* _fp = fsopen(_filenameptr, (*Edit__exportfilename == '+') ? "at" : "wt", CFG->sharemode);
     if(_fp) {
 
-      update_statuslinef(LNG->ExportStatus, Edit__exportfilename);
+      update_statuslinef(LNG->ExportStatus, "ST_EXPORTSTATUS", Edit__exportfilename);
       fputc('\n', _fp);
 
       while((__endat ? __exportline != currline : 1) and __exportline) {

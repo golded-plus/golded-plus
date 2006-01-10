@@ -183,7 +183,7 @@ void RenumberArea() {
       TouchFile(AddPath(CFG->areapath, CFG->semaphore.netscan));
 
     // Tell user we are finished
-    update_statuslinef("%u %s", AA->Msgn.Count(), LNG->Renumbered);
+    update_statuslinef("%u %s", "", AA->Msgn.Count(), LNG->Renumbered);
     waitkeyt(5000);
   }
 }

@@ -534,18 +534,22 @@ void CreateFileMsgs(int mode, GMsg* msg) {
 
   char* LNG_File = NULL;
   char* LNG_Fileing = NULL;
+  char* tokenstr = "";
 
   if(msg->attr.att()) {
     LNG_File    = LNG->File_Attach;
     LNG_Fileing = LNG->FileAttaching;
+    tokenstr = "ST_FILEATTACHING";
   }
   else if(msg->attr.frq()) {
     LNG_File    = LNG->File_Request;
     LNG_Fileing = LNG->FileRequesting;
+    tokenstr = "ST_FILEREQUESTING";
   }
   else if(msg->attr.urq()) {
     LNG_File    = LNG->File_Updreq;
     LNG_Fileing = LNG->FileUpdreqing;
+    tokenstr = "ST_FILEUPDREQING";
   }
 
   *buf = NUL;
@@ -574,7 +578,7 @@ void CreateFileMsgs(int mode, GMsg* msg) {
     for(m=0; m<fspec[x].files; m++,n++) {
       if(specfiles > 1) {
         w_progress(MODE_UPDATE, C_INFOW, n+1, specfiles, LNG_File);
-        update_statuslinef(LNG_Fileing, n+1, specfiles,
+        update_statuslinef(LNG_Fileing, tokenstr, n+1, specfiles,
             msg->dest.zone, msg->dest.net, msg->dest.node, msg->dest.point
         );
       }

@@ -250,7 +250,7 @@ void GMsgList::do_delayed() {
   if(CFG->switches.get(msglistpagebar))
     wscrollbar(W_VERT, maximum_index+1, maximum_index, index);
 
-  update_statuslinef(LNG->MsgLister, index+1, maximum_index+1, maximum_index-index);
+  update_statuslinef(LNG->MsgLister, "ST_MSGLISTER", index+1, maximum_index+1, maximum_index-index);
 }
 
 
@@ -803,7 +803,7 @@ void GThreadlist::do_delayed() {
   if(CFG->switches.get(msglistpagebar))
     wscrollbar(W_VERT, maximum_index+1, maximum_index, index);
 
-  update_statuslinef(LNG->MsgLister, index+1, maximum_index+1, maximum_index-index);
+  update_statuslinef(LNG->MsgLister, "ST_MSGLISTER", index+1, maximum_index+1, maximum_index-index);
 }
 
 

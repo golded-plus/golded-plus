@@ -280,7 +280,7 @@ static void MakeMsg3(int& mode, GMsg* msg) {
 
   if(cc) {
     std::string temp;
-    update_statuslinef(LNG->StatusCC, msg->to, msg->dest.make_string(temp).c_str());
+    update_statuslinef(LNG->StatusCC, "ST_STATUSCC", msg->to, msg->dest.make_string(temp).c_str());
   }
 
   msg->LinesToText();
@@ -369,7 +369,7 @@ static void MakeMsg3(int& mode, GMsg* msg) {
       AA->NewMsgno(cmsg);
       {
         std::string temp;
-        update_statuslinef(LNG->StatusCC, cmsg->to, cmsg->dest.make_string(temp).c_str());
+        update_statuslinef(LNG->StatusCC, "ST_STATUSCC", cmsg->to, cmsg->dest.make_string(temp).c_str());
       }
 
       // Do aka matching
@@ -1227,7 +1227,7 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
     throw_release(fspec);
 
     if(crosspost and post_xparea.size())
-      update_statuslinef(LNG->Crossposting, AL[post_xparea.back()]->echoid());
+      update_statuslinef(LNG->Crossposting, "ST_CROSSPOSTING", AL[post_xparea.back()]->echoid());
   } while(post_xparea.size());
 
   _in_editor = NO;

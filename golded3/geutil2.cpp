@@ -100,7 +100,7 @@ bool PopupLocked(long tries, int isopen, const char* file) {
   else
     strcpy(buf, file);
   w_infof(LNG->WaitLocked, buf);
-  update_statuslinef(LNG->RetryOrESC, isopen ? LNG->RetryLock : LNG->RetryOpen , tries);
+  update_statuslinef(LNG->RetryOrESC, "ST_RETRYORESC", isopen ? LNG->RetryLock : LNG->RetryOpen , tries);
 
   // Check for keypress
   if(kbxhit()) {

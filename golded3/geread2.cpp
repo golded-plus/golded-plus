@@ -888,7 +888,7 @@ void Make_Userlist(const char* userlist) {
   if(fp) {
     w_progress(MODE_NEW, C_INFOW, 0, AA->Msgn.Count(), LNG->GenUserlist);
     for(n=AA->Msgn.Count(); n; n--) {
-      update_statuslinef(LNG->ReadingMsg, n, AA->Msgn.Count());
+      update_statuslinef(LNG->ReadingMsg, "ST_READINGMSG", n, AA->Msgn.Count());
       w_progress(MODE_UPDATE, C_INFOW, (AA->Msgn.Count()-n)+1, AA->Msgn.Count(), NULL);
       AA->LoadMsg(msg, AA->Msgn.CvtReln(n), CFG->dispmargin);
       crc = strCrc16(msg->by, false);
@@ -950,7 +950,7 @@ void make_pathreport(const char* reportfile) {
     GMsg* msg = (GMsg*)throw_calloc(1, sizeof(GMsg));
     w_progress(MODE_NEW, C_INFOW, 0, AA->Msgn.Count(), "Generating PATH report");
     for(int n=AA->Msgn.Count(); n>=AA->lastread(); n--) {
-      update_statuslinef(LNG->ReadingMsg, n, AA->Msgn.Count());
+      update_statuslinef(LNG->ReadingMsg, "ST_READINGMSG", n, AA->Msgn.Count());
       w_progress(MODE_UPDATE, C_INFOW, n, AA->Msgn.Count(), NULL);
       AA->LoadMsg(msg, AA->Msgn.CvtReln(n), CFG->dispmargin-(int)CFG->switches.get(disppagebar));
       address = msg->orig;

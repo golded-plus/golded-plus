@@ -191,7 +191,7 @@ void guserbase::close() {
 void guserbase::do_delayed() {
 
   wscrollbar(W_VERT, maximum_index+1, maximum_index, index);
-  update_statuslinef(LNG->UserStatusline, index+1, maximum_index+1, maximum_index-index);
+  update_statuslinef(LNG->UserStatusline, "ST_USERSTATUSLINE", index+1, maximum_index+1, maximum_index-index);
 }
 
 

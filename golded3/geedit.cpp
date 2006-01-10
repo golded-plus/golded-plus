@@ -2629,7 +2629,7 @@ void IEclass::statusline() {
   }
 
   uint chr = currline->txt[col];
-  update_statuslinef(LNG->EditStatus, 1+thisrow, 1+col, chr, _buf);
+  update_statuslinef(LNG->EditStatus, "ST_EDITSTATUS", 1+thisrow, 1+col, chr, _buf);
   if(*_buf and CFG->switches.get(beepcomment)) {
     HandleGEvent(EVTT_EDITCOMMENT);
   }

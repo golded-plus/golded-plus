@@ -1031,7 +1031,7 @@ void Initialize(int argc, char* argv[]) {
   update_statuslines();
 
   // Initialize the messagebases
-  update_statuslinef(LNG->LockShareCap, LNG->Checking);
+  update_statuslinef(LNG->LockShareCap, "ST_LOCKSHARECAP", LNG->Checking);
   WideLog = &LOG;
   WideDebug = cmdlinedebughg;
   WideCanLock = CFG->sharemode ? TestLockPath(CFG->temppath) : false;
@@ -1049,64 +1049,64 @@ void Initialize(int argc, char* argv[]) {
     LoadLanguage(CFG->loadlanguage);
 
   if(find(AL.basetypes, "OPUS") or find(AL.basetypes, "FTS1")) {
-    update_statuslinef("%s Fido", LNG->Checking);
+    update_statuslinef("%s Fido", "", LNG->Checking);
     FidoInit(CFG->fidolastread, CFG->switches.get(fidohwmarks), CFG->switches.get(fidonullfix), CFG->fidouserno, CFG->squishuserpath);
   }
   #ifndef GMB_NOEZY
   if(find(AL.basetypes, "EZYCOM")) {
-    update_statuslinef("%s Ezycom", LNG->Checking);
+    update_statuslinef("%s Ezycom", "", LNG->Checking);
     EzycomInit(CFG->ezycom.msgbasepath, CFG->ezycom.userbasepath, CFG->ezycomuserno);
   }
   #endif
   #ifndef GMB_NOGOLD
   if(find(AL.basetypes, "GOLDBASE")) {
-    update_statuslinef("%s Goldbase", LNG->Checking);
+    update_statuslinef("%s Goldbase", "", LNG->Checking);
     GoldInit(CFG->goldbasepath, CFG->goldbasesyspath, CFG->goldbaseuserno);
   }
   #endif
   #ifndef GMB_NOHUDS
   if(find(AL.basetypes, "HUDSON")) {
-    update_statuslinef("%s Hudson", LNG->Checking);
+    update_statuslinef("%s Hudson", "", LNG->Checking);
     HudsInit(CFG->hudsonpath, CFG->hudsonsyspath, CFG->hudsonuserno, CFG->hudsonsizewarn, CFG->ra2usersbbs);
   }
   #endif
   #ifndef GMB_NOJAM
   if(find(AL.basetypes, "JAM")) {
-    update_statuslinef("%s JAM", LNG->Checking);
+    update_statuslinef("%s JAM", "", LNG->Checking);
     JamInit(CFG->jampath, CFG->switches.get(jamharddelete), CFG->switches.get(jamsmapihw));
   }
   #endif
   #ifndef GMB_NOPCB
   if(find(AL.basetypes, "PCBOARD")) {
-    update_statuslinef("%s PCBoard", LNG->Checking);
+    update_statuslinef("%s PCBoard", "", LNG->Checking);
     PcbInit(CFG->pcboardpath, CFG->pcboarduserno);
   }
   #endif
   #ifndef GMB_NOSQSH
   if(find(AL.basetypes, "SQUISH")) {
-    update_statuslinef("%s Squish", LNG->Checking);
+    update_statuslinef("%s Squish", "", LNG->Checking);
     SquishInit(CFG->squishuserpath, CFG->squishuserno, CFG->switches.get(squishdirect), true, CFG->squishscan);
   }
   #endif
   #ifndef GMB_NOWCAT
   if(find(AL.basetypes, "WILDCAT")) {
-    update_statuslinef("%s WildCat!", LNG->Checking);
+    update_statuslinef("%s WildCat!", "", LNG->Checking);
     WCatInit(CFG->wildcatuserno);
   }
   #endif
   #ifndef GMB_NOXBBS
   if(find(AL.basetypes, "ADEPTXBBS")) {
-    update_statuslinef("%s AdeptXBBS", LNG->Checking);
+    update_statuslinef("%s AdeptXBBS", "", LNG->Checking);
     XbbsInit(CFG->adeptxbbspath, CFG->adeptxbbsuserno);
   }
   #endif
   #ifndef GMB_NOSMB
   if(find(AL.basetypes, "SMB")) {
-    update_statuslinef("%s Synchronet", LNG->Checking);
+    update_statuslinef("%s Synchronet", "", LNG->Checking);
     SMBInit();
   }
   #endif
-  update_statuslinef("...");
+  update_statuslinef("...", "");
 
   // Delete the D'Bridge "mail waiting" semaphore files
   if(dbedit) {

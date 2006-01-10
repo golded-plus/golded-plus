@@ -227,7 +227,7 @@ static void WriteMsgs(GMsg* msg) {
               break;
             }
           }
-          update_statuslinef(LNG->WritingMsg, n+1, AA->Mark.Count());
+          update_statuslinef(LNG->WritingMsg, "ST_WRITINGMSG", n+1, AA->Mark.Count());
           w_progress(MODE_UPDATE, C_INFOW, n+1, AA->Mark.Count(), LNG->Writing);
           AA->LoadMsg(msg, AA->Mark[n], prnmargin);
           if(target & WRITE_PRINTER) {
