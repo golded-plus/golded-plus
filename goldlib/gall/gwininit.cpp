@@ -83,7 +83,7 @@ GWin::~GWin() {
 //  ------------------------------------------------------------------
 //  Displays a string in centered in active window
 
-int wcenters(int wrow, int attr, const char* str) {
+int wcenters(int wrow, vattr attr, const char* str) {
 
   register int window_width, string_length;
   int start_column, border;
@@ -133,10 +133,11 @@ int wcenters(int wrow, int attr, const char* str) {
 
 int wdrag(int direction) {
 
-  int srow, scol, erow, ecol, fill_row, fill_col, i;
-  int nsrow, nscol, nerow, necol, shad_attr=-1;
-  int chars_per_line, lines_per_win;
-  int vert_movement, horz_movement;
+  int   srow, scol, erow, ecol, fill_row, fill_col, i;
+  int   nsrow, nscol, nerow, necol;
+  vattr shad_attr = DEFATTR;
+  int   chars_per_line, lines_per_win;
+  int   vert_movement, horz_movement;
   vsavebuf* win_image;
   vsavebuf* wp;
   vatch* p;
@@ -243,6 +244,7 @@ int wdrag(int direction) {
       p += (lines_per_win * chars_per_line);
       fill_row=erow;
     }
+
     vputx(fill_row, scol, vgattr(*p), vgchar(*p), ecol-scol+1);
   }
   else {
@@ -252,6 +254,7 @@ int wdrag(int direction) {
       p += chars_per_line;
       fill_col=ecol;
     }
+
     for(i=srow;i<=erow;i++,p+=chars_per_line+1)
       vputc(i, fill_col, vgattr(*p), vgchar(*p));
   }
@@ -269,8 +272,8 @@ int wdrag(int direction) {
   gwin.active->ecol   = necol;
 
   // if window has shadow, redraw it
-  if(shad_attr!=-1)
-    wshadow((int)shad_attr);
+  if(shad_attr != DEFATTR)
+    wshadow(shad_attr);
 
   // reset cursor position
   vposset(gwin.active->row,gwin.active->column);
@@ -285,7 +288,8 @@ int wdrag(int direction) {
 
 int wslide(int nsrow, int nscol) {
 
-  int shattr=-1, err=0;
+  vattr shattr = DEFATTR;
+  int   err = 0;
 
   // check for active windows
   if(!gwin.total)
@@ -312,8 +316,8 @@ int wslide(int nsrow, int nscol) {
     return gwin.werrno;
 
   // if window has shadow, redraw it
-  if(shattr!=-1)
-    wshadow((int)shattr);
+  if(shattr != DEFATTR)
+    wshadow(shattr);
 
   // return normally
   return gwin.werrno=W_NOERROR;

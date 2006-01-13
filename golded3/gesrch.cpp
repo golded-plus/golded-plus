@@ -429,9 +429,9 @@ void search_mgr_form::select(gstrarray& menu, const char* title) {
 
   GMnu m;
   m.Init();
-  m.SetColor(7, 7, 7, 112, 8);
-  m.SetTitle(title, 14);
-  m.SetBorder(0, 7);
+  m.SetColor(LGREY, LGREY, LGREY, _LGREY, DGREY);
+  m.SetTitle(title, YELLOW);
+  m.SetBorder(0, LGREY);
   m.SetPos(srow, scol);
   m.SetMask(0);
   m.Begin();
@@ -520,20 +520,20 @@ bool search_mgr_form::validate() {
 
 void AdvancedSearch(GMsg*, int&, int&) {
 
-  int patterns = 9;
-  int width = 77;
-  int height = patterns+11;
-  int widths[3] = { 55, 5, 7 };
-  int field_widths[3] = { 100, 5, 7 };
-  int border_type   = BT_SINGLE;
-  int title_color   = YELLOW | _BLUE;
-  int heading_color = YELLOW | _BLUE;
-  int window_color  = LGREY  | _BLUE;
-  int border_color  = LBLUE  | _BLUE;
-  int edit_color    = YELLOW | _BLUE;
-  int idle_color    = LGREY  | _BLUE;
-  int active_color  = WHITE  | _BLUE;
-  int shadow_color  = DGREY  | _BLACK;
+  int   patterns = 9;
+  int   width = 77;
+  int   height = patterns+11;
+  int   widths[3] = { 55, 5, 7 };
+  int   field_widths[3] = { 100, 5, 7 };
+  int   border_type   = BT_SINGLE;
+  vattr title_color   = YELLOW | _BLUE;
+  vattr heading_color = YELLOW | _BLUE;
+  vattr window_color  = LGREY  | _BLUE;
+  vattr border_color  = LBLUE  | _BLUE;
+  vattr edit_color    = YELLOW | _BLUE;
+  vattr idle_color    = LGREY  | _BLUE;
+  vattr active_color  = WHITE  | _BLUE;
+  vattr shadow_color  = DGREY  | _BLACK;
 
   widths[0] = width - 3*2 - 2 - 5 - 7 - 2;
 

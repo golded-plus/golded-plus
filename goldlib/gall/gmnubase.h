@@ -46,23 +46,23 @@ class GMnu {
 
 protected:
 
-  int  bordertype;
-  int  bordercolor;
+  int   bordertype;
+  vattr bordercolor;
 
-  int  textcolor;
-  int  quickcolor;
-  int  noselcolor;
-  int  barcolor;
-  int  shadowcolor;
+  vattr textcolor;
+  vattr quickcolor;
+  vattr noselcolor;
+  vattr barcolor;
+  vattr shadowcolor;
 
   const char*  title;
-  int  titlepos;
-  int  titlecolor;
+  int   titlepos;
+  vattr titlecolor;
 
-  int  deschdl;
-  int  descrow;
-  int  desccolumn;
-  int  desccolor;
+  int   deschdl;
+  int   descrow;
+  int   desccolumn;
+  vattr desccolor;
 
   int  helpnumber;
 
@@ -95,11 +95,11 @@ public:
 
   void Init();
 
-  void SetBorder(int type, int color);
-  void SetColor(int text, int quick, int nosel, int bar, int shadow=-1);
-  void SetTitle(const char* title, int color, int pos=TCENTER);
+  void SetBorder(int type, vattr color);
+  void SetColor(vattr text, vattr quick, vattr nosel, vattr bar, vattr shadow = DEFATTR);
+  void SetTitle(const char* title, vattr color, int pos=TCENTER);
   void SetTitle(const char* title);
-  void SetDesc(int hdl, int row, int col, int color);
+  void SetDesc(int hdl, int row, int col, vattr color);
   void SetPos(int row, int col, int width=0, int height=0);
   void SetEsc(int option);
   void SetHelp(int help);

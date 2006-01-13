@@ -46,10 +46,10 @@ public:
   const char* file;           // help file name
   int         helpptr;        // help stack pointer
   gkey        key;            // help hot key
-  int         winattr;        // help window attribute
-  int         textattr;       // help window text attribute
-  int         selattr;        // selection text attribute
-  int         barattr;        // selection bar attribute
+  vattr       winattr;        // help window attribute
+  vattr       textattr;       // help window text attribute
+  vattr       selattr;        // selection text attribute
+  vattr       barattr;        // selection bar attribute
   int         srow;           // help window start row
   int         scol;           // help window start column
   int         erow;           // help window end row
@@ -59,6 +59,27 @@ public:
   VfvCP       open;           // pointer to open function
   gfile*      fp;             // help file
   long        offset;         // help file offset
+
+  _help_t()
+  {
+    memset(help, 0, sizeof(help));
+    file = NULL;
+    helpptr = -1;
+    key = 0;
+    winattr = BLACK|_BLACK;
+    textattr = BLACK|_BLACK;
+    selattr = BLACK|_BLACK;
+    barattr = BLACK|_BLACK;
+    srow = 3;
+    scol = 8;
+    erow = 21;
+    ecol = 71;
+    btype = 0;
+    title = YES;
+    open = NULL;
+    fp = NULL;
+    offset = 0;
+  }
 };
 
 
@@ -84,7 +105,7 @@ typedef struct _hlpidx_t {
 
 int whelpcat(int cat);
 int whelpclr();
-int whelpdef(const char* file, gkey key, int winattr, int textattr, int selattr, int barattr, VfvCP open);
+int whelpdef(const char* file, gkey key, vattr winattr, vattr textattr, vattr selattr, vattr barattr, VfvCP open);
 int whelpop();
 int whelpopc();
 int whelppcat(int cat);
@@ -92,7 +113,7 @@ int whelpush();
 int whelpushc(int cat);
 int whelpwin(int srow, int scol, int erow, int ecol, int btype, int title);
 void whelpcompile(const char* helpfile, long& offset);
-inline int whelpundef() { return whelpdef(NULL,0,0,0,0,0,NULL); }
+inline int whelpundef() { return whelpdef(NULL,0,BLACK|_BLACK,BLACK|_BLACK,BLACK|_BLACK,BLACK|_BLACK,NULL); }
 
 
 //  ------------------------------------------------------------------

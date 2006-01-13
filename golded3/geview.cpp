@@ -214,7 +214,7 @@ void GMsgHeaderView::Paint() {
   strsetsz(buf, nodegenerated ? namewidth : (namewidth+nodewidth));
 
   window.prints(2, 0, window_color, LNG->From);
-  int color = ((msg->foundwhere&GFIND_FROM) or msg->attr.fmu() or (msg->attr.loc() and CFG->switches.get(displocalhigh))) ? highlight_color : from_color;
+  vattr color = ((msg->foundwhere&GFIND_FROM) or msg->attr.fmu() or (msg->attr.loc() and CFG->switches.get(displocalhigh))) ? highlight_color : from_color;
   color = GetColorName(msg->By(), msg->orig, color);
   window.prints(2, CFG->disphdrnameset.pos, color, buf);
 
@@ -451,7 +451,7 @@ void GMsgBodyView::Use(Area *areaptr, GMsg *msgptr, int startline) {
 
   scrollbar_visible = CFG->switches.get(disppagebar) ? (msg->lines > height) : false;
   visible_width = scrollbar_visible ? width-1 : width;
-  window.set_scrollbar_color(scrollbar_visible ? scrollbar_color : -1);
+  window.set_scrollbar_color(scrollbar_visible ? scrollbar_color : DEFATTR);
 }
 
 
@@ -463,7 +463,7 @@ void GMsgBodyView::PaintLine(int row, Line *line) {
   int vrow = gwin.active->srow + row;
   uint llen = line->txt.length();
 
-  int color = (line->type & GLINE_HIGH) ? highlight_color : line->color;
+  vattr color = (line->type & GLINE_HIGH) ? highlight_color : line->color;
 
   // Trim line if it longer than should be. This actually happens in very rare
   // cases, but always when hex dump displayed.
@@ -475,16 +475,16 @@ void GMsgBodyView::PaintLine(int row, Line *line) {
   // Print it
   if(not SearchHighlight(line, vrow, visible_width, highlight_color)) {
     if(line->type & GLINE_ORIG and strneql(line->txt.c_str(), " * Origin: ", 11)) {
-      vputs(vrow, 0, color, " * Origin: ");
+      prints(vrow, 0, color, " * Origin: ");
       StyleCodeHighlight(line->txt.c_str()+11, vrow, 11, not AA->attr().hex() and AA->adat->hidestylies, color);
     }
     else
       StyleCodeHighlight(line->txt.c_str(), vrow, 0, not AA->attr().hex() and AA->adat->hidestylies, color);
     int tlen = strlen(line->txt.c_str());
-    vputns(vrow, tlen, color, "", visible_width-tlen);
+    printns(vrow, tlen, color, "", visible_width-tlen);
   }
   else
-    vputns(vrow, 0, color, line->txt.c_str(), visible_width);
+    printns(vrow, 0, color, line->txt.c_str(), visible_width);
 }
 
 
@@ -676,11 +676,18 @@ void GMsgBodyView::UpdateScrollbar() {
 
 //  ------------------------------------------------------------------
 
-void GMsgBodyView::prints(int wrow, int wcol, int atr, const char* str) {
-
+void GMsgBodyView::prints(int wrow, int wcol, vattr atr, const char* str)
+{
   vputs(wrow, wcol, atr, str);
 }
 
 
 //  ------------------------------------------------------------------
 
+void GMsgBodyView::printns(int wrow, int wcol, vattr atr, const char* str, uint len)
+{
+  vputns(wrow, wcol, atr, str, len);
+}
+
+
+//  ------------------------------------------------------------------

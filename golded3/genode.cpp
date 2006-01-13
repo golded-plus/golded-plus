@@ -49,20 +49,20 @@ class NodelistBrowser {
 
 public:
 
-  int  ypos;                         // Window Starting Row
-  int  xpos;                         // Window Starting Column
-  int  ylen;                         // Window Height
-  int  xlen;                         // Window Width
-  int  btype;                        // Window Border Type
-  int  battr;                        // Window Border Color
-  int  wattr;                        // Window Color
-  int  tattr;                        // Window Title Color
-  int  sattr;                        // Window Selection Bar Color
-  int  hattr;                        // Window Highlight Color
-  int  loattr;                       // Window LoAttr Color
-  int  sbattr;                       // Window Scrollbar Color
-  char*  title;                        // Window Title
-  int  helpcat;                      // Window Help Category
+  int   ypos;                        // Window Starting Row
+  int   xpos;                        // Window Starting Column
+  int   ylen;                        // Window Height
+  int   xlen;                        // Window Width
+  int   btype;                       // Window Border Type
+  vattr battr;                       // Window Border Color
+  vattr wattr;                       // Window Color
+  vattr tattr;                       // Window Title Color
+  vattr sattr;                       // Window Selection Bar Color
+  vattr hattr;                       // Window Highlight Color
+  vattr loattr;                      // Window LoAttr Color
+  vattr sbattr;                      // Window Scrollbar Color
+  char* title;                       // Window Title
+  int   helpcat;                     // Window Help Category
 
   int pos;                           // Display Pos (1 to maxpos)
   int maxpos;                        // Display Pos

@@ -209,7 +209,7 @@ void MarkMsgs_Txt(int item, char* markstring) {
     }
   }
 
-  w_progress(MODE_QUIT, 0, 0, 0, NULL);
+  w_progress(MODE_QUIT, BLACK|_BLACK, 0, 0, NULL);
 
   ResetMsg(msg);
   throw_free(msg);

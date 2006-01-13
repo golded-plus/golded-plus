@@ -46,9 +46,9 @@ Subj information = "";
 
 Area* AA = NULL;
 
-char m_title[80];         // Menu title string
-int m_titlepos;           // Menu title position
-int m_titleattr;          // Menu title color
+char  m_title[80];      // Menu title string
+int   m_titlepos;       // Menu title position
+vattr m_titleattr;      // Menu title color
 
 int AreaKeys = 0;
 int ReadKeys = 0;

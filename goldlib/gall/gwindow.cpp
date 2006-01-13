@@ -45,7 +45,7 @@ int gwindow::printf(const char* format, ...) {
 
 //  ------------------------------------------------------------------
 
-int gwindow::printf(int color, const char* format, ...) {
+int gwindow::printf(vattr color, const char* format, ...) {
 
   char buf[255];
   va_list argptr;
@@ -75,7 +75,7 @@ int gwindow::printf(int row, int col, const char* format, ...) {
 
 //  ------------------------------------------------------------------
 
-int gwindow::printf(int row, int col, int color, const char* format, ...) {
+int gwindow::printf(int row, int col, vattr color, const char* format, ...) {
 
   va_list argptr;
   char buf[256];

@@ -85,13 +85,13 @@ public:
   uint  ylen;                                 // Window Height
   uint  xlen;                                 // Window Width
   int   btype;                                // Window Border Type
-  int   battr;                                // Window Border Color
-  int   wattr;                                // Window Color
-  int   tattr;                                // Window Title Color
-  int   sattr;                                // Window Selection Bar Color
-  int   hattr;                                // Window Highlight Color
-  int   loattr;                               // Window LoAttr Color
-  int   sbattr;                               // Window Scrollbar Color
+  vattr battr;                                // Window Border Color
+  vattr wattr;                                // Window Color
+  vattr tattr;                                // Window Title Color
+  vattr sattr;                                // Window Selection Bar Color
+  vattr hattr;                                // Window Highlight Color
+  vattr loattr;                               // Window LoAttr Color
+  vattr sbattr;                               // Window Scrollbar Color
   const char* title;                          // Window Title
   int   helpcat;                              // Window Help Category
   uint  maximum_index;                        // List Entries - 1

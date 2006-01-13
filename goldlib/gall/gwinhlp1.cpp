@@ -71,10 +71,7 @@ static char* catarray[MAXXREF];
 static int arraycnt = 0;
 static char buf[BUFSIZE+1];
 
-_help_t whelp = {
-  { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-  NULL,-1,0,0,0,0,0,3,8,21,71,0,YES,NULL,NULL,0
-};
+_help_t whelp;
 
 
 //  ------------------------------------------------------------------
@@ -306,7 +303,7 @@ static void disp_cat() {
         setonkey(Key_Esc,esc_esc,0);
 
         // end the menu and process it
-        wmenuend(BASETAGID,M_OMNI|M_NOQS,0,0,whelp.selattr,whelp.selattr,0,whelp.barattr);
+        wmenuend(BASETAGID,M_OMNI|M_NOQS,0,0,whelp.selattr,whelp.selattr,BLACK|_BLACK,whelp.barattr);
         gmnudropthrough = YES;
         kbch = i = (gkey)wmenuget();
         gmnudropthrough = NO;
@@ -560,7 +557,7 @@ static void help_handler() {
 
 //  ------------------------------------------------------------------
 
-int whelpdef(const char* file, gkey key, int winattr, int textattr, int selattr, int barattr, VfvCP open) {
+int whelpdef(const char* file, gkey key, vattr winattr, vattr textattr, vattr selattr, vattr barattr, VfvCP open) {
 
   // is help disengagement requested?  If so, un-define the help key.
   if(file==NULL) {

@@ -233,72 +233,72 @@ const word CRC_SCERROR           = 0xAB65;
 //  ------------------------------------------------------------------
 //  Get color value
 
-int GetColor(char* ink) {
-
+vattr GetColor(char* ink)
+{
   word crc;
-  int color=0;
+  vattr color = BLACK|_BLACK;
 
   crc = strCrc16(strupr(ink));
   switch(crc) {
     // Black is the default
     case CRC_BLACK:
-      color = 0;
+      color = BLACK|_BLACK;
       break;
     case CRC_BLUE:
-      color = 1;
+      color = BLUE|_BLACK;
       break;
     case CRC_GREEN:
-      color = 2;
+      color = GREEN|_BLACK;
       break;
     case CRC_CYAN:
-      color = 3;
+      color = CYAN|_BLACK;
       break;
     case CRC_RED:
-      color = 4;
+      color = RED|_BLACK;
       break;
     case CRC_MAGENTA:
-      color = 5;
+      color = MAGENTA|_BLACK;
       break;
     case CRC_BROWN:
-      color = 6;
+      color = BROWN|_BLACK;
       break;
     case CRC_LGRAY:
     case CRC_LGREY:
     case CRC_LIGHTGRAY:
     case CRC_LIGHTGREY:
-      color = 7;
+      color = LGREY|_BLACK;
       break;
     case CRC_DGRAY:
     case CRC_DGREY:
     case CRC_DARKGRAY:
     case CRC_DARKGREY:
-      color = 8;
+      color = DGREY|_BLACK;
       break;
     case CRC_LBLUE:
     case CRC_LIGHTBLUE:
-      color = 9;
+      color = LBLUE|_BLACK;
       break;
     case CRC_LGREEN:
     case CRC_LIGHTGREEN:
-      color = 10;
+      color = LGREEN|_BLACK;
       break;
     case CRC_LCYAN:
     case CRC_LIGHTCYAN:
-      color = 11;
+      color = LCYAN|_BLACK;
       break;
     case CRC_LRED:
     case CRC_LIGHTRED:
-      color = 12;
+      color = LRED|_BLACK;
       break;
     case CRC_LMAGENTA:
     case CRC_LIGHTMAGENTA:
-      color = 13;
+      color = LMAGENTA|_BLACK;
       break;
     case CRC_YELLOW:
-      color = 14;
+      color = YELLOW|_BLACK;
       break;
     case CRC_WHITE:
-      color = 15;
+      color = WHITE|_BLACK;
       break;
     case CRC_UNDERLINE:
       color = UNDERLINE;
@@ -320,7 +320,7 @@ int GetColor(char* ink) {
 //  ------------------------------------------------------------------
 //  Evaluates a color string
 
-int MakeColor(char* colors) {
+vattr MakeColor(char* colors) {
 
   static int paper=0;
   int ink=0, blink;
@@ -356,10 +356,10 @@ int MakeColor(char* colors) {
 
 void GetColors(char* value) {
 
-  word crc;
-  Win* wptr;
-  int attr;
-  char buf[256];
+  word  crc;
+  Win*  wptr;
+  vattr attr;
+  char  buf[256];
   char* win;
   char* colors;
   char* part=NULL;

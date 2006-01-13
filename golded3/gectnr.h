@@ -31,13 +31,13 @@
 
 class Container {
 
-  virtual void prints(int, int, int, const char*) = 0;
+  virtual void prints(int, int, vattr, const char*) = 0;
 
 public:
 
   virtual ~Container() { }
   
-  void StyleCodeHighlight(const char* text, int row, int col, bool dohide, int color);
+  void StyleCodeHighlight(const char* text, int row, int col, bool dohide, vattr color);
 };
 
 

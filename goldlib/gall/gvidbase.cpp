@@ -365,8 +365,8 @@ void vputansi(int row, int col, word* buf, int len) {
 //  ------------------------------------------------------------------
 //  Converts an attribute to monochrome equivalent
 
-int mapattr(int attr) {
-
+vattr mapattr(vattr attr)
+{
   switch(attr&112) {      // test for a light background
 
     case _LGREY:
@@ -391,9 +391,9 @@ int mapattr(int attr) {
 //  ------------------------------------------------------------------
 //  Reverses the attribute given
 
-int revsattr(int attr) {
-
-  return (int)(((attr>>4)&0x07)|((attr<<4)&0x70)|(attr&0x80)|(attr&0x08));
+vattr revsattr(vattr attr)
+{
+  return (vattr)(((attr>>4)&0x07)|((attr<<4)&0x70)|(attr&0x80)|(attr&0x08));
 }
 
 #if !defined(__USE_NCURSES__)
@@ -714,7 +714,7 @@ void vputws(int row, int col, vatch* buf, uint len) {
 //  ------------------------------------------------------------------
 //  Print character and attribute at specfied location
 
-void vputc(int row, int col, int atr, vchar chr) {
+void vputc(int row, int col, vattr atr, vchar chr) {
 
   #if defined(__USE_NCURSES__)
 
@@ -760,7 +760,7 @@ void vputc(int row, int col, int atr, vchar chr) {
 //  ------------------------------------------------------------------
 //  Print string with attribute at specfied location
 
-void vputvs(int row, int col, int atr, const vchar* str) {
+void vputvs(int row, int col, vattr atr, const vchar* str) {
 
   #if defined(__USE_NCURSES__)
 
@@ -782,7 +782,7 @@ void vputvs(int row, int col, int atr, const vchar* str) {
 //  ------------------------------------------------------------------
 //  Print string with attribute at specfied location
 
-void vputs_box(int row, int col, int atr, const char* str) {
+void vputs_box(int row, int col, vattr atr, const char* str) {
 #if defined(__USE_NCURSES__)
   uint counter;
   int len = strlen(str);
@@ -796,7 +796,7 @@ void vputs_box(int row, int col, int atr, const char* str) {
 #endif
 }
 
-void vputs(int row, int col, int atr, const char* str) {
+void vputs(int row, int col, vattr atr, const char* str) {
 
   #if defined(__USE_NCURSES__)
 
@@ -889,7 +889,7 @@ static void _vputns(int row, int col, int atr, const char* str, uint width) {
 //  ------------------------------------------------------------------
 //  Print string with attribute at specfied location
 
-void vputns(int row, int col, int atr, const char* str, uint width) {
+void vputns(int row, int col, vattr atr, const char* str, uint width) {
 
   char fillchar = ' ';
 
@@ -1004,7 +1004,7 @@ void _vputx(int row, int col, int atr, char chr, uint len) {
 //  ------------------------------------------------------------------
 //  Print horizontal line of character and attribute
 
-void vputx(int row, int col, int atr, vchar chr, uint len) {
+void vputx(int row, int col, vattr atr, vchar chr, uint len) {
 
   #if defined(__USE_NCURSES__)
 
@@ -1080,7 +1080,7 @@ inline void _vputy(int row, int col, int atr, char chr, uint len) {
 //  ------------------------------------------------------------------
 //  Print vertical line of character and attribute
 
-void vputy(int row, int col, int atr, vchar chr, uint len) {
+void vputy(int row, int col, vattr atr, vchar chr, uint len) {
 
   #if defined(__USE_NCURSES__)
 
@@ -1224,11 +1224,11 @@ vatch vgetw(int row, int col) {
 //  ------------------------------------------------------------------
 //  Get character and attribute at cursor position
 
-void vgetc(int row, int col, int* atr, vchar* chr) {
+void vgetc(int row, int col, vattr* atr, vchar* chr) {
 
   if((row < 0) or (row > gvid->numrows-1) or (col < 0) or (col > gvid->numcols-1)) {
     *chr = ' ';
-    *atr = 0;
+    *atr = BLACK|_BLACK;
   }
   else {
     vatch tmp = vgetw(row, col);
@@ -1285,7 +1285,7 @@ static void _vscroll(int srow, int scol, int erow, int ecol, int atr, int lines)
 //  ------------------------------------------------------------------
 //  Scroll screen area
 
-void vscroll(int srow, int scol, int erow, int ecol, int atr, int lines) {
+void vscroll(int srow, int scol, int erow, int ecol, vattr atr, int lines) {
 
   #if defined(__USE_NCURSES__)
 
@@ -1485,7 +1485,7 @@ void vclrscr() {
 //  Clears the screen using given attribute and homes the cursor
 
 #if (defined(__MSDOS__) || defined(__UNIX__)) && !defined(__USE_NCURSES__)
-static void _vclrscr(int atr) {
+static void _vclrscr(vattr atr) {
 
   int len = gvid->numrows * gvid->numcols;
 
@@ -1498,7 +1498,7 @@ static void _vclrscr(int atr) {
 //  ------------------------------------------------------------------
 //  Clears the screen using given attribute and homes the cursor
 
-void vclrscr(int atr) {
+void vclrscr(vattr atr) {
 
   #if defined(__USE_NCURSES__)
 
@@ -2147,9 +2147,9 @@ static uint32_t gvid_boxcvtc(char c) {
 //  ------------------------------------------------------------------
 //  Draws a text box on the screen
 
-void vbox(int srow, int scol, int erow, int ecol, int box, int hiattr, int loattr) {
-
-  if(loattr == -1)
+void vbox(int srow, int scol, int erow, int ecol, int box, vattr hiattr, vattr loattr)
+{
+  if (loattr == DEFATTR)
     loattr = hiattr;
   else if(loattr == -2)
     loattr = (int)((hiattr & 0x08) ? (hiattr & 0xF7) : (hiattr | 0x08));
@@ -2173,7 +2173,7 @@ void vbox(int srow, int scol, int erow, int ecol, int box, int hiattr, int loatt
 //  ------------------------------------------------------------------
 //  Fills an area of screen with a character & attribute
 
-void vfill(int srow, int scol, int erow, int ecol, vchar chr, int atr) {
+void vfill(int srow, int scol, int erow, int ecol, vchar chr, vattr atr) {
 
   int width = ecol-scol+1;
   for(int crow=srow; crow<=erow; crow++)

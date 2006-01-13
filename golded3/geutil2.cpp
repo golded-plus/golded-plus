@@ -283,9 +283,9 @@ void ScreenBlankIdle() {
   if(blanked and (whb == -1)) {
     wascurhid = vcurhidden();
     vcurhide();
-    if(C_BACKB != 0)
-      gvid->setoverscan(0);
-    whb = wopen(0,0,MAXROW-1,MAXCOL-1, 5, 7, 7);
+    if (C_BACKB != (BLACK|_BLACK))
+      gvid->setoverscan(BLACK|_BLACK);
+    whb = wopen(0,0,MAXROW-1,MAXCOL-1, 5, LGREY, LGREY);
     if(CFG->screenblankertype == BLANK_SLIDEWIN)
       whh = wopen_(ry, rx, windowheight, blankmsglen+2, W_BINFO, C_INFOB, C_INFOW);
     lastmoved = gkbd.tickvalue;
@@ -300,7 +300,7 @@ void ScreenBlankIdle() {
     wactiv_(whb);
     wclose();
     whb = -1;
-    if(C_BACKB != 0)
+    if (C_BACKB != (BLACK|_BLACK))
       gvid->setoverscan(C_BACKB);
     if(wascurhid)
       vcurhide();
@@ -330,7 +330,7 @@ void ScreenBlankIdle() {
 
 //  ------------------------------------------------------------------
 
-int GetColorName(const char *name, Addr &addr, int color)
+vattr GetColorName(const char *name, Addr &addr, vattr color)
 {
   bool addr_valid = addr.valid();
   bool name_valid = (name != NULL);
@@ -338,7 +338,7 @@ int GetColorName(const char *name, Addr &addr, int color)
   if (!addr_valid && !name_valid)
     return color;
 
-  std::vector< std::pair<Node, int> >::iterator it;
+  std::vector< std::pair<Node, vattr> >::iterator it;
   for (it = CFG->colorname.begin(); it != CFG->colorname.end(); it++)
   {
     if (addr_valid && addr.match(it->first.addr))

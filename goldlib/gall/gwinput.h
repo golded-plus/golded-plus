@@ -46,12 +46,12 @@ public:
 
     gwinput* form;
 
-    int pos;
-    int max_pos;
-    int attr;
-    bool fill_acs;
+    int   pos;
+    int   max_pos;
+    vattr attr;
+    bool  fill_acs;
     vchar fill;
-    int entry;
+    int   entry;
 
     char* buf;
     int buf_left_pos;
@@ -128,9 +128,9 @@ public:
     cvt_mixedcase
   };
 
-  int idle_attr;
-  int active_attr;
-  int edit_attr;
+  vattr idle_attr;
+  vattr active_attr;
+  vattr edit_attr;
   bool fill_acs;
 
   vchar idle_fill;
@@ -151,7 +151,7 @@ public:
   gwinput(gwindow &w);
   virtual ~gwinput();
 
-  void setup(int i_attr, int a_attr, int e_attr, vchar fill, bool fill_acs);
+  void setup(vattr i_attr, vattr a_attr, vattr e_attr, vchar fill, bool fill_acs);
 
   void add_field(int idnum, int wrow, int wcol, int field_width, std::string& dest, int dest_size, int cvt=gwinput::cvt_none, int mode=gwinput::entry_conditional);
 

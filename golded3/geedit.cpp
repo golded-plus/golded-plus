@@ -130,7 +130,7 @@ void IEclass::setlinetype(Line* __line) {
 //  ------------------------------------------------------------------
 //  Zero-based
 
-int IEclass::dispchar(vchar __ch, int attr) {
+vattr IEclass::dispchar(vchar __ch, vattr attr) {
 
   if(__ch == NUL) // possible if line empty
     __ch = ' ';
@@ -141,10 +141,10 @@ int IEclass::dispchar(vchar __ch, int attr) {
     __ch = EDIT->CharSpace();
   }
 
-  int atr;
+  vattr atr;
   vchar chr;
   editwin.getc(crow, ccol, &atr, &chr);
-  editwin.printc(crow, ccol, attr == -1 ? atr : attr, __ch);
+  editwin.printc(crow, ccol, attr == DEFATTR ? atr : attr, __ch);
   return atr;
 }
 
@@ -186,7 +186,7 @@ void IEclass::scrolldown(int __scol, int __srow, int __ecol, int __erow, int __l
 //  ------------------------------------------------------------------
 //  Zero-based
 
-void IEclass::prints(int wrow, int wcol, int atr, const char* str) {
+void IEclass::prints(int wrow, int wcol, vattr atr, const char* str) {
 
   editwin.prints(wrow, wcol, atr, str);
 }
@@ -290,7 +290,7 @@ void IEclass::dispstringsc(char *__buf, uint __beg, uint __end, uint __row, uint
     {
       char savechar = __buf[bend];
       __buf[bend] = NUL;
-      StyleCodeHighlight(__buf+bbeg, __row, __col+bbeg-__beg, false, -1);
+      StyleCodeHighlight(__buf+bbeg, __row, __col+bbeg-__beg, false, DEFATTR);
       __buf[bend] = savechar;
 
       bbeg = bend; bend += scpos;
@@ -313,7 +313,7 @@ void IEclass::dispstringsc(char *__buf, uint __beg, uint __end, uint __row, uint
   }
 
   if (bbeg < bend)
-    StyleCodeHighlight(__buf+bbeg, __row, __col+bbeg-__beg, false, -1);
+    StyleCodeHighlight(__buf+bbeg, __row, __col+bbeg-__beg, false, DEFATTR);
 }
 
 
@@ -414,7 +414,7 @@ void IEclass::dispstring(Line* line, uint __row)
       dispstringsc(_buf, 0, begblock, __row, mincol, savechar);
     }
     else
-      StyleCodeHighlight(_buf, __row, mincol, false, -1);
+      StyleCodeHighlight(_buf, __row, mincol, false, DEFATTR);
 
     _buf[begblock] = savechar;
   }
@@ -443,7 +443,7 @@ void IEclass::dispstring(Line* line, uint __row)
       dispstringsc(_buf, endblock, maxcol+1, __row, mincol+endblock, 0);
     }
     else
-      StyleCodeHighlight(_buf+endblock, __row, mincol+endblock, false, -1);
+      StyleCodeHighlight(_buf+endblock, __row, mincol+endblock, false, DEFATTR);
   }
 
   GFTRK(NULL);
@@ -2913,7 +2913,7 @@ int IEclass::Start(int __mode, uint* __position, GMsg* __msg) {
     gotorowcol(col, row);
     batch_mode = 0;
 
-    int backattr = 0;
+    vattr backattr = BLACK|_BLACK;
     if(blockcol == -1) {
       backattr = dispchar(currline->txt.c_str()[col], C_READC);
       gotorowcol(col, row);

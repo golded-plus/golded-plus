@@ -36,6 +36,7 @@
 
 #include <gftnall.h>
 #include <gtimall.h>
+#include <gvidall.h>
 #include <gmsgattr.h>
 
 
@@ -141,15 +142,15 @@ class Line {
 
 public:
 
-  int   color;            // Line color
+  vattr color;            // Line color
   uint  type;             // GLINE_*
   uint  kludge;           // GKLUD_*
   std::string txt;             // The line text
   Line* prev;             // Pointer to previous line
   Line* next;             // Pointer to next line
 
-  Line() : txt ("")     { color = type = kludge = 0; prev = next = NULL; }
-  Line(const char *str) : txt (str) { color = type = kludge = 0; prev = next = NULL; }
+  Line() : txt ("")     { color = BLACK|_BLACK; type = kludge = 0; prev = next = NULL; }
+  Line(const char *str) : txt (str) { color = BLACK|_BLACK; type = kludge = 0; prev = next = NULL; }
   ~Line()              {}
 
   int  istearline()    { return !!(type & GLINE_TEAR); }

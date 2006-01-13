@@ -167,7 +167,7 @@ void guserbase::unlock() {
 
 void guserbase::open() {
 
-  window.openxy(ypos, xpos, ylen+2, xlen+2,  btype, battr, 7);
+  window.openxy(ypos, xpos, ylen+2, xlen+2,  btype, battr, LGREY);
   cwidth = (xlen-28) / 2;
 
   window.message(LNG->UserHeaderName, TP_BORD, 3, tattr);

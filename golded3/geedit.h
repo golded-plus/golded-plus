@@ -295,7 +295,7 @@ protected:
   void  cursoroff       ();
   void  cursoron        ();
   void  deleteline      (bool zapquotesbelow = false);
-  int   dispchar        (vchar __ch, int attr=-1);
+  vattr dispchar        (vchar __ch, vattr attr = DEFATTR);
   void  dispins         ();
   void  dispdl          ();
   void  displine        (Line* __line, uint __row);
@@ -320,7 +320,7 @@ protected:
   int   isempty         (Line* __line=NULL);
   void  killkillbuf     ();
   void  killpastebuf    ();
-  void  prints          (int wrow, int wcol, int atr, const char* str);
+  void  prints          (int wrow, int wcol, vattr atr, const char* str);
   int   reflowok        (char* __qstr);
   void  refresh         (Line* __currline, uint __row);
   void  savefile        (int __status);

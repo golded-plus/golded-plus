@@ -45,20 +45,20 @@ public:
   ~GMsgHeaderView();
 
   // Window setup
-  int at_row;
-  int at_column;
-  int width;
-  int height;
-  int border_type;
-  int border_color;
-  int window_color;
-  int title_color;
+  int   at_row;
+  int   at_column;
+  int   width;
+  int   height;
+  int   border_type;
+  vattr border_color;
+  vattr window_color;
+  vattr title_color;
 
-  int highlight_color;
-  int from_color;
-  int to_color;
-  int subject_color;
-  int location_color;
+  vattr highlight_color;
+  vattr from_color;
+  vattr to_color;
+  vattr subject_color;
+  vattr location_color;
 
   void Use(Area *areaptr, GMsg *msgptr);
 
@@ -87,7 +87,8 @@ protected:
 
   void PaintLine(int row, Line *line);
   void UpdateScrollbar();
-  void prints(int wrow, int wcol, int atr, const char* str);
+  void prints(int wrow, int wcol, vattr atr, const char* str);
+  void printns(int wrow, int wcol, vattr atr, const char* str, uint len);
 
 public:
 
@@ -99,16 +100,15 @@ public:
   ~GMsgBodyView();
 
   // Window setup
-  int at_row;
-  int at_column;
-  int width;
-  int height;
-  int border_type;
-  int border_color;
-  int window_color;
-  int scrollbar_color;
-
-  int highlight_color;
+  int   at_row;
+  int   at_column;
+  int   width;
+  int   height;
+  int   border_type;
+  vattr border_color;
+  vattr window_color;
+  vattr scrollbar_color;
+  vattr highlight_color;
 
   void Use(Area *areaptr, GMsg *msgptr, int startline=0);
 

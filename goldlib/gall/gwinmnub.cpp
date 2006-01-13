@@ -34,22 +34,22 @@
 void GMnu::Init() {
 
   bordertype = 0;
-  bordercolor = 0;
+  bordercolor = BLACK|_BLACK;
 
-  textcolor = 0;
-  quickcolor = 0;
-  noselcolor = 0;
-  barcolor = 0;
-  shadowcolor = -1;
+  textcolor = BLACK|_BLACK;
+  quickcolor = BLACK|_BLACK;
+  noselcolor = BLACK|_BLACK;
+  barcolor = BLACK|_BLACK;
+  shadowcolor = DEFATTR;
 
   title = NULL;
   titlepos = TCENTER;
-  titlecolor = 0;
+  titlecolor = BLACK|_BLACK;
 
   deschdl = -1;
   descrow = 0;
   desccolumn = 0;
-  desccolor = 0;
+  desccolor = BLACK|_BLACK;
 
   helpnumber = -1;
 
@@ -70,7 +70,7 @@ void GMnu::Init() {
 
 //  ------------------------------------------------------------------
 
-void GMnu::SetBorder(int type, int color) {
+void GMnu::SetBorder(int type, vattr color) {
 
   bordertype = type;
   bordercolor = color;
@@ -79,7 +79,7 @@ void GMnu::SetBorder(int type, int color) {
 
 //  ------------------------------------------------------------------
 
-void GMnu::SetColor(int text, int quick, int nosel, int bar, int shadow) {
+void GMnu::SetColor(vattr text, vattr quick, vattr nosel, vattr bar, vattr shadow) {
 
   textcolor = text;
   quickcolor = quick;
@@ -91,7 +91,7 @@ void GMnu::SetColor(int text, int quick, int nosel, int bar, int shadow) {
 
 //  ------------------------------------------------------------------
 
-void GMnu::SetTitle(const char* text, int color, int pos) {
+void GMnu::SetTitle(const char* text, vattr color, int pos) {
 
   title = text;
   titlepos = pos;
@@ -109,7 +109,7 @@ void GMnu::SetTitle(const char* text) {
 
 //  ------------------------------------------------------------------
 
-void GMnu::SetDesc(int hdl, int row, int col, int color) {
+void GMnu::SetDesc(int hdl, int row, int col, vattr color) {
 
   deschdl = hdl;
   descrow = row;

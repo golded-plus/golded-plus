@@ -562,8 +562,8 @@ struct MLst {
   time32_t  arrived;
   time32_t  received;
   char      goldmark;
-  int       colorby;
-  int       colorto;
+  vattr     colorby;
+  vattr     colorto;
 };
 
 
@@ -877,9 +877,9 @@ struct SaveUtil {
 //  Window structure
 
 struct Win {
-  int btype;        // Border type
-  int c[16];        // Colors
-  int w;            // Window handle
+  int   btype;    // Border type
+  vattr c[16];    // Colors
+  int   w;        // Window handle
 };
 
 //  ------------------------------------------------------------------

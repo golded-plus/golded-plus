@@ -31,6 +31,7 @@
 
 
 //  ------------------------------------------------------------------
+
 #include <gdefs.h>
 #if defined(__USE_NCURSES__)
 #include <gcurses.h>
@@ -38,9 +39,95 @@
 #if defined(__WIN32__)
 #include <windows.h>
 #endif
+
 #if defined(_MSC_VER)
 #pragma warning(disable: 4200)
 #endif
+
+
+//  ------------------------------------------------------------------
+
+#ifdef BLINK
+#undef BLINK
+#endif
+#define BLINK       128
+
+#ifdef INTENSE
+#undef INTENSE
+#endif
+#define INTENSE     8
+
+#if defined(__UNIX__) && !defined(__USE_NCURSES__)
+#define ACSET       BLINK
+#else
+#define ACSET       0
+#endif
+
+
+//  ------------------------------------------------------------------
+
+#if defined(__USE_NCURSES__)
+typedef chtype vchar;     // Type of characters on-screen
+typedef int    vattr;     // Type of screen attributes
+typedef chtype vatch;     // Type of character-attribute groups
+#elif defined(__WIN32__)
+typedef char vchar;       // Type of characters on-screen
+typedef int  vattr;       // Type of screen attributes
+typedef CHAR_INFO vatch;  // Type of character-attribute groups
+#else
+typedef char vchar;       // Type of characters on-screen
+typedef int  vattr;       // Type of screen attributes
+typedef word vatch;       // Type of character-attribute groups
+#endif
+
+
+//  ------------------------------------------------------------------
+//  Attribute codes for functions that use them
+
+const vattr DEFATTR   = -1;
+
+const vattr BLACK     = 0;
+const vattr BLUE      = 1;
+const vattr GREEN     = 2;
+const vattr CYAN      = 3;
+const vattr RED       = 4;
+const vattr MAGENTA   = 5;
+const vattr BROWN     = 6;
+const vattr LGREY     = 7;
+const vattr DGREY     = 8;
+const vattr LBLUE     = 9;
+const vattr LGREEN    = 10;
+const vattr LCYAN     = 11;
+const vattr LRED      = 12;
+const vattr LMAGENTA  = 13;
+const vattr YELLOW    = 14;
+const vattr WHITE     = 15;
+
+const vattr _BLACK    = (BLACK    << 4);
+const vattr _BLUE     = (BLUE     << 4);
+const vattr _GREEN    = (GREEN    << 4);
+const vattr _CYAN     = (CYAN     << 4);
+const vattr _RED      = (RED      << 4);
+const vattr _MAGENTA  = (MAGENTA  << 4);
+const vattr _BROWN    = (BROWN    << 4);
+const vattr _LGREY    = (LGREY    << 4);
+const vattr _DGREY    = (DGREY    << 4);
+const vattr _LBLUE    = (LBLUE    << 4);
+const vattr _LGREEN   = (LGREEN   << 4);
+const vattr _LCYAN    = (LCYAN    << 4);
+const vattr _LRED     = (LRED     << 4);
+const vattr _LMAGENTA = (LMAGENTA << 4);
+const vattr _YELLOW   = (YELLOW   << 4);
+const vattr _WHITE    = (WHITE    << 4);
+
+
+//  ------------------------------------------------------------------
+//  Additional monochrome color values
+
+const vattr UNDERLINE = 1;
+const vattr NORMAL    = 7;
+const vattr HIGHLIGHT = 15;
+const vattr REVERSE   = 112;
 
 
 //  ------------------------------------------------------------------
@@ -146,68 +233,6 @@ struct __int10_ah1b_statebuf {
 
 
 //  ------------------------------------------------------------------
-//  Attribute codes for functions that use them
-
-#define BLACK       0
-#define BLUE        1
-#define GREEN       2
-#define CYAN        3
-#define RED         4
-#define MAGENTA     5
-#define BROWN       6
-#define LGREY       7
-#define DGREY       8
-#define LBLUE       9
-#define LGREEN      10
-#define LCYAN       11
-#define LRED        12
-#define LMAGENTA    13
-#define YELLOW      14
-#define WHITE       15
-
-#define _BLACK      (BLACK    << 4)
-#define _BLUE       (BLUE     << 4)
-#define _GREEN      (GREEN    << 4)
-#define _CYAN       (CYAN     << 4)
-#define _RED        (RED      << 4)
-#define _MAGENTA    (MAGENTA  << 4)
-#define _BROWN      (BROWN    << 4)
-#define _LGREY      (LGREY    << 4)
-#define _DGREY      (DGREY    << 4)
-#define _LBLUE      (LBLUE    << 4)
-#define _LGREEN     (LGREEN   << 4)
-#define _LCYAN      (LCYAN    << 4)
-#define _LRED       (LRED     << 4)
-#define _LMAGENTA   (LMAGENTA << 4)
-#define _YELLOW     (YELLOW   << 4)
-#define _WHITE      (WHITE    << 4)
-
-#ifdef BLINK
-#undef BLINK
-#endif
-#define BLINK       128
-#ifdef INTENSE
-#undef INTENSE
-#endif
-#define INTENSE     8
-
-#if defined(__UNIX__) && !defined(__USE_NCURSES__)
-#define ACSET       BLINK
-#else
-#define ACSET       0
-#endif
-
-
-//  ------------------------------------------------------------------
-//  Additional monochrome color values
-
-#define UNDERLINE   1
-#define NORMAL      7
-#define HIGHLIGHT   15
-#define REVERSE     112
-
-
-//  ------------------------------------------------------------------
 //  Border types
 
 #define BT_SINGLE     0
@@ -226,29 +251,32 @@ struct __int10_ah1b_statebuf {
 struct GVidInfo {
 
   // Screen info
-  struct {
-    int  mode;         // Video mode
-    int  rows;         // Number of rows
-    int  columns;      // Number of columns
-    int  cheight;      // Character height
-    int  cwidth;       // Character width
+  struct _screen
+  {
+    int  mode;          // Video mode
+    int  rows;          // Number of rows
+    int  columns;       // Number of columns
+    int  cheight;       // Character height
+    int  cwidth;        // Character width
   } screen;
 
   // Cursor info
-  struct {
-    int  column;       // Cursor column
-    int  row;          // Cursor row
-    int  start;        // Cursor start line
-    int  end;          // Cursor end line
-    word attr;         // Cursor attribute. Hidden if attr == 0xFFFF
+  struct _cursor
+  {
+    int  column;        // Cursor column
+    int  row;           // Cursor row
+    int  start;         // Cursor start line
+    int  end;           // Cursor end line
+    word attr;          // Cursor attribute. Hidden if attr == 0xFFFF
   } cursor;
 
   // Colors
-  struct {
-    int  textattr;     // Text attribute
-    int  overscan;     // Overscan color
-    int  intensity;    // Background color state (intense or blinking)
-    int  palette[16];  // Palette state
+  struct _color
+  {
+    vattr textattr;     // Text attribute
+    vattr overscan;     // Overscan color
+    int   intensity;    // Background color state (intense or blinking)
+    int   palette[16];  // Palette state
   } color;
 };
 
@@ -259,19 +287,6 @@ struct GVidInfo {
 typedef uint32_t gdma; // Video DMA linear address
 #else
 typedef word*    gdma; // Video DMA pointer
-#endif
-
-//  ------------------------------------------------------------------
-
-#if defined(__USE_NCURSES__)
-typedef chtype vchar; // Type of characters on-screen
-typedef chtype vatch; // Type of character-attribute groups
-#elif defined(__WIN32__)
-typedef char vchar;        // Type of characters on-screen
-typedef CHAR_INFO vatch;   // Type of character-attribute groups
-#else
-typedef char vchar;   // Type of characters on-screen
-typedef word vatch;   // Type of character-attribute groups
 #endif
 
 //  ------------------------------------------------------------------
@@ -322,7 +337,7 @@ public:
   void setmode        (int _mode);
   void setrows        (int _rows);
 
-  void setoverscan    (int _overscan);
+  void setoverscan    (vattr _overscan);
   void setintensity   (int _intensity);
 
   void getpalette     (int* _palette);
@@ -361,31 +376,31 @@ chtype _box_table(int type, int c);
 
 int setvparam  (int setting);
 
-int mapattr  (int attr);
-int revsattr (int attr);
+vattr mapattr  (vattr attr);
+vattr revsattr (vattr attr);
 
-inline int attrib(int f, int b, int i, int bl) { return (int)((b<<4)|(f)|(i<<3)|(bl<<7)); }
+inline vattr attrib(int f, int b, int i, int bl) { return (int)((b<<4)|(f)|(i<<3)|(bl<<7)); }
 
 void vputw      (int row, int col, vatch chat);
 void vputws     (int row, int col, vatch* buf, uint len);
-void vputc      (int row, int col, int atr, vchar chr);
-void vputvs     (int row, int col, int atr, const vchar* str);
-void vputs      (int row, int col, int atr, const char* str);
-void vputs_box  (int row, int col, int atr, const char* str);
-void vputns     (int row, int col, int atr, const char* str, uint len);
-void vputx      (int row, int col, int atr, vchar chr, uint len);
-void vputy      (int row, int col, int atr, vchar chr, uint len);
+void vputc      (int row, int col, vattr atr, vchar chr);
+void vputvs     (int row, int col, vattr atr, const vchar* str);
+void vputs      (int row, int col, vattr atr, const char* str);
+void vputs_box  (int row, int col, vattr atr, const char* str);
+void vputns     (int row, int col, vattr atr, const char* str, uint len);
+void vputx      (int row, int col, vattr atr, vchar chr, uint len);
+void vputy      (int row, int col, vattr atr, vchar chr, uint len);
 
 vatch vgetw     (int row, int col);
-void vgetc      (int row, int col, int* atr, vchar* chr);
+void vgetc      (int row, int col, vattr* atr, vchar* chr);
 
-void vscroll    (int srow, int scol, int erow, int ecol, int atr, int lines);
+void vscroll    (int srow, int scol, int erow, int ecol, vattr atr, int lines);
 
 void vposget    (int* row, int* col);
 void vposset    (int row, int col);
 
 void vclrscr    ();
-void vclrscr    (int atr);     // Overloaded
+void vclrscr    (vattr atr);     // Overloaded
 
 typedef struct _vsavebuf {
   int top, left, right, bottom;
@@ -404,19 +419,9 @@ bool vcurhidden ();
 void vcurlarge  ();
 void vcursmall  ();
 
-void vbox       (int srow, int scol, int erow, int ecol, int box, int hiattr, int loattr=-1);
-void vfill      (int srow, int scol, int erow, int ecol, vchar chr, int atr);
+void vbox       (int srow, int scol, int erow, int ecol, int box, vattr hiattr, vattr loattr = DEFATTR);
+void vfill      (int srow, int scol, int erow, int ecol, vchar chr, vattr atr);
 
-vchar vgetc (int row, int col);       //  Gets the character from position
-vchar vgchar (vatch chat);            //  Gets the character part of a character-attribute group
-int vgattr (vatch chat);              //  Gets the attribute part of a character-attribute group
-vatch vschar (vatch chat, vchar chr); //  Sets the given character in a character-attribute group
-vatch vsattr (vatch chat, int atr);   //  Sets the given attribute in a character-attribute group
-vatch vcatch (vchar chr, int atr);    //  Compose character-attribute group from character and attribute
-
-// inline implementation of functions above
-
-inline vchar vgetc (int row, int col) { return vgchar(vgetw(row, col)); }
 
 #if defined(__USE_NCURSES__)
 
@@ -424,28 +429,30 @@ int gvid_dosattrcalc (int ourattr);
 int gvid_attrcalc (int dosattr);
 
 inline vchar vgchar (vatch chat) { return chat & (A_CHARTEXT | A_ALTCHARSET); }
-inline int vgattr (vatch chat) { return gvid_dosattrcalc(chat & ~(A_CHARTEXT | A_ALTCHARSET)); }
+inline vattr vgattr (vatch chat) { return gvid_dosattrcalc(chat & ~(A_CHARTEXT | A_ALTCHARSET)); }
 inline vatch vschar (vatch chat, vchar chr) { return (chr & (A_CHARTEXT | A_ALTCHARSET)) | (chat & ~(A_CHARTEXT | A_ALTCHARSET)); }
-inline vatch vsattr (vatch chat, int atr) { return (chat & (A_CHARTEXT | A_ALTCHARSET)) | gvid_attrcalc(atr); }
-inline vatch vcatch (vchar chr, int atr) { return chr | gvid_attrcalc(atr); }
+inline vatch vsattr (vatch chat, vattr atr) { return (chat & (A_CHARTEXT | A_ALTCHARSET)) | gvid_attrcalc(atr); }
+inline vatch vcatch (vchar chr, vattr atr)  { return chr | gvid_attrcalc(atr); }
 
 #elif defined(__WIN32__)
 
 inline vchar vgchar (vatch chat) { return chat.Char.AsciiChar; }
-inline int vgattr (vatch chat) { return chat.Attributes; }
+inline vattr vgattr (vatch chat) { return chat.Attributes; }
 inline vatch vschar (vatch chat, vchar chr) { chat.Char.UnicodeChar = 0; chat.Char.AsciiChar = chr; return chat; }
-inline vatch vsattr (vatch chat, int atr) { chat.Attributes = atr; return chat; }
-inline vatch vcatch (vchar chr, int atr) { vatch chat; chat.Char.UnicodeChar = 0; chat.Char.AsciiChar = chr; chat.Attributes = atr; return chat; }
+inline vatch vsattr (vatch chat, vattr atr) { chat.Attributes = atr; return chat; }
+inline vatch vcatch (vchar chr, vattr atr)  { vatch chat; chat.Char.UnicodeChar = 0; chat.Char.AsciiChar = chr; chat.Attributes = atr; return chat; }
 
 #else
 
 inline vchar vgchar (vatch chat) { return chat & 0xff; }
-inline int vgattr (vatch chat) { return (chat >> 8) & 0xff; }
+inline vattr vgattr (vatch chat) { return (chat >> 8) & 0xff; }
 inline vatch vschar (vatch chat, vchar chr) { return (chat & 0xff00) | chr; }
-inline vatch vsattr (vatch chat, int atr) { return (chat & 0xff) | (atr << 8); }
-inline vatch vcatch (vchar chr, int atr) { return (chr & 0xff) | ((atr << 8) & 0xff00); }
+inline vatch vsattr (vatch chat, vattr atr) { return (chat & 0xff) | (atr << 8); }
+inline vatch vcatch (vchar chr, vattr atr)  { return (chr & 0xff) | ((atr << 8) & 0xff00); }
 
 #endif
+
+inline vchar vgetc (int row, int col) { return vgchar(vgetw(row, col)); }
 
 typedef void (*VidPutStrCP)(int,int,int,const char*);
 

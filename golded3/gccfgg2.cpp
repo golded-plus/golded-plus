@@ -267,7 +267,7 @@ void CfgColorname()
   ptr = strskip_wht(ptr);
 
   Node cn;
-  int color = atoi(ptr);
+  vattr color = atoi(ptr);
 
   // color was given
   *ptr = NUL;
@@ -291,7 +291,7 @@ void CfgColorname()
 
   strxcpy(cn.name, val, sizeof(cn.name));
 
-  CFG->colorname.push_back(std::pair<Node, int>(cn, color));
+  CFG->colorname.push_back(std::pair<Node, vattr>(cn, color));
 }
 
 //  ------------------------------------------------------------------

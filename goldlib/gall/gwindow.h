@@ -40,7 +40,7 @@
 
 //  ------------------------------------------------------------------
 
-inline void wgetc(int wrow, int wcol, int* atr, vchar* chr) {
+inline void wgetc(int wrow, int wcol, vattr* atr, vchar* chr) {
 
   vgetc(wrow+gwin.active->srow+gwin.active->border, wcol+gwin.active->scol+gwin.active->border, atr, chr);
 }
@@ -68,19 +68,19 @@ protected:
 
   int window_style;
 
-  int window_color;
+  vattr window_color;
 
-  int border_hi_color;
-  int border_lo_color;
+  vattr border_hi_color;
+  vattr border_lo_color;
 
-  int scrollbar_color;
+  vattr scrollbar_color;
 
-  int title_color;
-  int title_position;
+  vattr title_color;
+  int   title_position;
 
-  int message_color;
+  vattr message_color;
 
-  int shadow_color;
+  vattr shadow_color;
 
 public:
 
@@ -146,8 +146,8 @@ public:
   void set_window_at(int srow, int scol);
   void set_window_size(int vlen, int hlen);
 
-  void open(int srow, int scol, int erow, int ecol, int style, int bcolor, int wcolor, int sbcolor=-1, int locolor=-1);
-  void openxy(int srow, int scol, int vlen, int hlen, int style, int bcolor, int wcolor, int sbcolor=-1, int locolor=-1);
+  void open(int srow, int scol, int erow, int ecol, int style, vattr bcolor, vattr wcolor, vattr sbcolor = DEFATTR, vattr locolor = DEFATTR);
+  void openxy(int srow, int scol, int vlen, int hlen, int style, vattr bcolor, vattr wcolor, vattr sbcolor = DEFATTR, vattr locolor = DEFATTR);
   void open();
   void close();
   void unlink();
@@ -162,16 +162,16 @@ public:
   int cursor_row();
   int cursor_column();
 
-  void text_color(int color);
+  void text_color(vattr color);
 
   void move_cursor(int row, int column);
 
-  void title(const char* title, int color=-1, int position=-1);
+  void title(const char* title, vattr color = DEFATTR, int position=-1);
   void no_title();
 
-  void message(const char* text, int border, int leftofs, int color=-1);
+  void message(const char* text, int border, int leftofs, vattr color = DEFATTR);
 
-  void shadow(int color=-1);
+  void shadow(vattr color = DEFATTR);
   void no_shadow();
 
   void set_vscrollbar_range(int minpos, int maxpos, int visible, int total, int redraw);
@@ -180,7 +180,7 @@ public:
   void set_vscrollbar_pos(int pos, int redraw);
   void set_hscrollbar_pos(int pos, int redraw);
 
-  void set_scrollbar_color(int color);
+  void set_scrollbar_color(vattr color);
 
   void vscrollbar(uint total, uint maxpos, uint pos, int sadd=0);
   void hscrollbar(uint total, uint maxpos, uint pos, int sadd=0);
@@ -191,31 +191,31 @@ public:
   void scroll_box_down(int scol, int srow, int ecol, int erow, int count=1);
   void scroll_box_up(int scol, int srow, int ecol, int erow, int count=1);
 
-  void getc(int row, int col, int* atr, vchar* chr);
+  void getc(int row, int col, vattr* atr, vchar* chr);
 
   void putc(vchar ch);
   void puts(const char* text);
-  void printc(int row, int col, int color, vchar ch);
-  void prints(int row, int col, int color, const char* text);
-  void printvs(int row, int col, int color, const vchar* text);
-  void prints(int row, int col, int color, const std::string& text);
-  void printns(int row, int col, int color, const char* text, int len, vchar fill=' ', int fill_color=-1);
+  void printc(int row, int col, vattr color, vchar ch);
+  void prints(int row, int col, vattr color, const char* text);
+  void printvs(int row, int col, vattr color, const vchar* text);
+  void prints(int row, int col, vattr color, const std::string& text);
+  void printns(int row, int col, vattr color, const char* text, int len, vchar fill=' ', vattr fill_color = DEFATTR);
 
   int printf(const char* format, ...) __attribute__ ((format (printf, 2, 3)));
-  int printf(int color, const char* format, ...) __attribute__ ((format (printf, 3, 4)));
+  int printf(vattr color, const char* format, ...) __attribute__ ((format (printf, 3, 4)));
   int printf(int row, int col, const char* format, ...) __attribute__ ((format (printf, 4, 5)));
-  int printf(int row, int col, int color, const char* format, ...) __attribute__ ((format (printf, 5, 6)));
+  int printf(int row, int col, vattr color, const char* format, ...) __attribute__ ((format (printf, 5, 6)));
 
   void fill_char(vchar ch);
-  void fill(int wsrow, int wscol, int werow, int wecol, vchar ch, int color);
-  void vertical_line(int wsrow, int wscol, int count, int btype, int color);
-  void horizontal_line(int wsrow, int wscol, int count, int btype, int color);
-  void clear(int color=-1);
+  void fill(int wsrow, int wscol, int werow, int wecol, vchar ch, vattr color);
+  void vertical_line(int wsrow, int wscol, int count, int btype, vattr color);
+  void horizontal_line(int wsrow, int wscol, int count, int btype, vattr color);
+  void clear(vattr color = DEFATTR);
   void clear_eol();
   void drag(int direction, int howmuch=1);
   void slide(int row, int col);
-  void putx(int wrow, int wcol, int color, char chr, uint len);
-  void print_center(int row, int color, const char* text);
+  void putx(int wrow, int wcol, vattr color, char chr, uint len);
+  void print_center(int row, vattr color, const char* text);
 };
 
 
@@ -230,8 +230,8 @@ inline void gwindow::init() {
   window_style = 0;
   window_color = BLACK|_LGREY;
   border_hi_color = BLUE|_LGREY;
-  border_lo_color = -1;
-  scrollbar_color = -1;
+  border_lo_color = DEFATTR;
+  scrollbar_color = DEFATTR;
   title_color = BLUE|_LGREY;
   title_position = title_center;
   message_color = BLUE|_LGREY;
@@ -259,7 +259,7 @@ inline void gwindow::set_window_size(int vlen, int hlen) {
 
 //  ------------------------------------------------------------------
 
-inline void gwindow::open(int srow, int scol, int erow, int ecol, int style, int bcolor, int wcolor, int sbcolor, int locolor) {
+inline void gwindow::open(int srow, int scol, int erow, int ecol, int style, vattr bcolor, vattr wcolor, vattr sbcolor, vattr locolor) {
 
   start_row = srow;
   start_column = scol;
@@ -278,7 +278,7 @@ inline void gwindow::open(int srow, int scol, int erow, int ecol, int style, int
 
 //  ------------------------------------------------------------------
 
-inline void gwindow::openxy(int srow, int scol, int vlen, int hlen, int style, int bcolor, int wcolor, int sbcolor, int locolor) {
+inline void gwindow::openxy(int srow, int scol, int vlen, int hlen, int style, vattr bcolor, vattr wcolor, vattr sbcolor, vattr locolor) {
 
   open(srow, scol, srow+vlen-1, scol+hlen-1, style, bcolor, wcolor, sbcolor, locolor);
 }
@@ -374,7 +374,7 @@ inline int gwindow::cursor_column() {
 
 //  ------------------------------------------------------------------
 
-inline void gwindow::text_color(int color) {
+inline void gwindow::text_color(vattr color) {
 
   window_color = color;
   activate_quick();
@@ -384,7 +384,7 @@ inline void gwindow::text_color(int color) {
 
 //  ------------------------------------------------------------------
 
-inline void gwindow::set_scrollbar_color(int color) {
+inline void gwindow::set_scrollbar_color(vattr color) {
 
   wrec->sbattr = color;
   scrollbar_color = color;
@@ -402,9 +402,9 @@ inline void gwindow::move_cursor(int row, int column) {
 
 //  ------------------------------------------------------------------
 
-inline void gwindow::title(const char* title, int color, int position) {
+inline void gwindow::title(const char* title, vattr color, int position) {
 
-  if(color != -1)
+  if(color != DEFATTR)
     title_color = color;
   if(position != -1)
     title_position = position;
@@ -423,9 +423,9 @@ inline void gwindow::no_title() {
 
 //  ------------------------------------------------------------------
 
-inline void gwindow::message(const char* text, int border, int leftofs, int color) {
+inline void gwindow::message(const char* text, int border, int leftofs, vattr color) {
 
-  if(color != -1)
+  if(color != DEFATTR)
     message_color = color;
   activate_quick();
   wmessage(text, border, leftofs, message_color);
@@ -434,9 +434,9 @@ inline void gwindow::message(const char* text, int border, int leftofs, int colo
 
 //  ------------------------------------------------------------------
 
-inline void gwindow::shadow(int color) {
+inline void gwindow::shadow(vattr color) {
 
-  if(color != -1)
+  if(color != DEFATTR)
     shadow_color = color;
   activate_quick();
   wshadow(shadow_color);
@@ -508,7 +508,7 @@ inline void gwindow::scroll_box_up(int scol, int srow, int ecol, int erow, int c
 
 //  ------------------------------------------------------------------
 
-inline void gwindow::getc(int row, int col, int* atr, vchar* chr) {
+inline void gwindow::getc(int row, int col, vattr* atr, vchar* chr) {
 
   activate_quick();
   wgetc(row, col, atr, chr);
@@ -535,7 +535,7 @@ inline void gwindow::puts(const char* text) {
 
 //  ------------------------------------------------------------------
 
-inline void gwindow::printc(int row, int col, int color, vchar ch) {
+inline void gwindow::printc(int row, int col, vattr color, vchar ch) {
 
   activate_quick();
   wprintc(row, col, color, ch);
@@ -544,25 +544,25 @@ inline void gwindow::printc(int row, int col, int color, vchar ch) {
 
 //  ------------------------------------------------------------------
 
-inline void gwindow::prints(int row, int col, int color, const char* text) {
+inline void gwindow::prints(int row, int col, vattr color, const char* text) {
 
   activate_quick();
-  wprints(row, col, color == -1 ? window_color : color, text);
+  wprints(row, col, color == DEFATTR ? window_color : color, text);
 }
 
 
 //  ------------------------------------------------------------------
 
-inline void gwindow::printvs(int row, int col, int color, const vchar* text) {
+inline void gwindow::printvs(int row, int col, vattr color, const vchar* text) {
 
   activate_quick();
-  wprintvs(row, col, color == -1 ? window_color : color, text);
+  wprintvs(row, col, color == DEFATTR ? window_color : color, text);
 }
 
 
 //  ------------------------------------------------------------------
 
-inline void gwindow::prints(int row, int col, int color, const std::string& text) {
+inline void gwindow::prints(int row, int col, vattr color, const std::string& text) {
 
   prints(row, col, color, text.c_str());
 }
@@ -570,7 +570,7 @@ inline void gwindow::prints(int row, int col, int color, const std::string& text
 
 //  ------------------------------------------------------------------
 
-inline void gwindow::printns(int row, int col, int color, const char* text, int len, vchar fill, int fill_color) {
+inline void gwindow::printns(int row, int col, vattr color, const char* text, int len, vchar fill, vattr fill_color) {
 
   activate_quick();
   wprintns(row, col, color, text, len, fill, fill_color);
@@ -588,7 +588,7 @@ inline void gwindow::fill_char(vchar ch) {
 
 //  ------------------------------------------------------------------
 
-inline void gwindow::fill(int wsrow, int wscol, int werow, int wecol, vchar ch, int color) {
+inline void gwindow::fill(int wsrow, int wscol, int werow, int wecol, vchar ch, vattr color) {
 
   activate_quick();
   wfill(wsrow, wscol, werow, wecol, ch, color);
@@ -597,7 +597,7 @@ inline void gwindow::fill(int wsrow, int wscol, int werow, int wecol, vchar ch, 
 
 //  ------------------------------------------------------------------
 
-inline void gwindow::vertical_line(int wsrow, int wscol, int count, int btype, int color) {
+inline void gwindow::vertical_line(int wsrow, int wscol, int count, int btype, vattr color) {
 
   activate_quick();
   wvline(wsrow, wscol, count, btype, color);
@@ -606,7 +606,7 @@ inline void gwindow::vertical_line(int wsrow, int wscol, int count, int btype, i
 
 //  ------------------------------------------------------------------
 
-inline void gwindow::horizontal_line(int wsrow, int wscol, int count, int btype, int color) {
+inline void gwindow::horizontal_line(int wsrow, int wscol, int count, int btype, vattr color) {
 
   activate_quick();
   whline(wsrow, wscol, count, btype, color);
@@ -615,10 +615,10 @@ inline void gwindow::horizontal_line(int wsrow, int wscol, int count, int btype,
 
 //  ------------------------------------------------------------------
 
-inline void gwindow::clear(int color) {
+inline void gwindow::clear(vattr color) {
 
   activate_quick();
-  wcclear(color == -1 ? window_color : color);
+  wcclear(color == DEFATTR ? window_color : color);
 }
 
 
@@ -672,7 +672,7 @@ inline void gwindow::slide(int row, int col) {
 
 //  ------------------------------------------------------------------
 
-inline void gwindow::print_center(int row, int color, const char* text) {
+inline void gwindow::print_center(int row, vattr color, const char* text) {
 
   activate_quick();
   wcenters(row, color, text);

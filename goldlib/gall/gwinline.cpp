@@ -56,9 +56,9 @@
 
 //  ------------------------------------------------------------------
 
-static int disp_char(int wrow,int wcol,int attr,int btype,vchar ch,int direc) {
+static int disp_char(int wrow,int wcol, vattr attr,int btype,vchar ch,int direc) {
 
-  attr |= ACSET;
+  attr = attr|ACSET;
 
   // see if next to a border, if so, connect to it
   if(gwin.active->border) {
@@ -156,7 +156,7 @@ static inline int isrighthorz(int btype, vchar ch) {
 
 //  ------------------------------------------------------------------
 
-int whline(int wsrow, int wscol, int count, int btype, int attr) {
+int whline(int wsrow, int wscol, int count, int btype, vattr attr) {
 
   register int bt;
   int row,col,up,down;
@@ -237,7 +237,7 @@ int whline(int wsrow, int wscol, int count, int btype, int attr) {
 
 //  ------------------------------------------------------------------
 
-int wvline(int wsrow, int wscol, int count, int btype, int attr) {
+int wvline(int wsrow, int wscol, int count, int btype, vattr attr) {
 
   register int bt;
   int row,col,left,right;

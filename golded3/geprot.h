@@ -77,11 +77,11 @@ void LoadLanguage(const char* file);
 //  ------------------------------------------------------------------
 //  GCMISC prototypes
 
-int ReadHelpCfg(int force);
-int GetColor(char* ink);
-int MakeColor(char* colors);
-void GetColors(char* value);
-void ReadXlatTables();
+int   ReadHelpCfg(int force);
+vattr GetColor(char* ink);
+vattr MakeColor(char* colors);
+void  GetColors(char* value);
+void  ReadXlatTables();
 
 
 //  ------------------------------------------------------------------
@@ -118,7 +118,7 @@ void SaveLines(int mode, const char* savefile, GMsg* msg, int margin, bool clip=
 //  GEDOSS prototypes
 
 void Cleanup(void);
-int ShellToDos(char* command, char* message, int cls, int cursor, int pause=NO);
+int ShellToDos(char* command, char* message, vattr cls, int cursor, int pause=NO);
 
 
 //  ------------------------------------------------------------------
@@ -142,7 +142,7 @@ void FileSelect(GMsg* msg, char* title, FileSpec* fspec);
 bool FindString(GMsg* msg, const char* prompt, int what);
 void FindAll(GMsg* msg, int& topline, int& keyok);
 void FindHdr(GMsg* msg, int& topline, int& keyok);
-bool SearchHighlight(const Line* line, int row, int width, int highlight_color);
+bool SearchHighlight(const Line* line, int row, int width, vattr highlight_color);
 void SearchExit();
 void AdvancedSearch(GMsg* msg, int& topline, int& keyok);
 
@@ -405,21 +405,21 @@ int   ReadCfg(const char* cfg, int ignoreunknown=false);
 void  ScanMsgTxtForAddr(GMsg* msg);
 gkey  SearchKey(gkey key, std::list<CmdKey>::iterator keys, int totkeys);
 int   SearchTaglist(Echo* taglist, char* tag);
-void  set_title(const char* t, int p, int a);
+void  set_title(const char* t, int p, vattr a);
 void  title_shadow();
 void  update_statusline(const char* info);
 void  update_statuslinef(const char* format, const char *token, ...) __attribute__ ((format (printf, 1, 3)));
 void  update_statuslines();
 void  w_info(const char* info=NULL);
 void  w_infof(const char* format, ...) __attribute__ ((format (printf, 1, 2)));
-void  w_progress(int mode, int attr, long pos, long size, const char* title);
+void  w_progress(int mode, vattr attr, long pos, long size, const char* title);
 void  w_shadow();
 void  ZonegateIt(ftn_addr& gate, ftn_addr& orig, ftn_addr& dest);
 char* strtmp(const char* str);
-int   quotecolor(const char* line);
+vattr quotecolor(const char* line);
 void  doinvalidate(char* text, const char* find, const char* replace, bool is_tearline = false);
 bool find(const std::vector<const char *> &vec, const char *str);
-int GetColorName(const char *name, Addr &addr, int color);
+vattr GetColorName(const char *name, Addr &addr, vattr color);
 
 
 //  ------------------------------------------------------------------

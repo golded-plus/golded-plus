@@ -32,7 +32,7 @@
 void GMnuAsk::AskInit(int __row, int __col, char* __title, int __help) {
 
   Init();
-  SetColor(C_ASKW, C_ASKQ, C_ASKN, C_ASKS, CFG->switches.get(screenshadows) ? C_SHADOW : -1);
+  SetColor(C_ASKW, C_ASKQ, C_ASKN, C_ASKS, CFG->switches.get(screenshadows) ? C_SHADOW : DEFATTR);
   SetTitle(__title, C_ASKT);
   SetBorder(W_BASK, C_ASKB);
   SetPos(__row, __col);
@@ -884,7 +884,7 @@ int GMenuEditHeader::Run(int mode, GMsg* msg) {
       if(EDIT->Menu()) {
 
         Init();
-        SetColor(C_MENUW, C_MENUQ, C_MENUN, C_MENUS, CFG->switches.get(screenshadows) ? C_SHADOW : -1);
+        SetColor(C_MENUW, C_MENUQ, C_MENUN, C_MENUS, CFG->switches.get(screenshadows) ? C_SHADOW : DEFATTR);
         SetTitle(LNG->MsgOptions, C_MENUT);
         SetBorder(W_BMENU, C_MENUB);
         SetPos(6, 0);
@@ -1014,7 +1014,7 @@ int GMenuNavigate::Run() {
 
   Begin(M_HORZ);
     SetBorder(W_BASK, C_ASKB);
-    SetColor(C_ASKW, C_ASKQ, C_ASKN, C_ASKS, CFG->switches.get(screenshadows) ? C_SHADOW : -1);
+    SetColor(C_ASKW, C_ASKQ, C_ASKN, C_ASKS, CFG->switches.get(screenshadows) ? C_SHADOW : DEFATTR);
     Item(TAG_MAIN, LNG->MMMain);
     BeginPullDown();
       Item(TAG_MAIN_SHELL, LNG->MMShell);
@@ -1095,7 +1095,7 @@ int GMenuSChecker::Run(CSpellChecker &schecker, const char *word)
   }
 
   Init();
-  SetColor(C_ASKW, C_ASKQ, C_ASKN, C_ASKS, CFG->switches.get(screenshadows) ? C_SHADOW : -1);
+  SetColor(C_ASKW, C_ASKQ, C_ASKN, C_ASKS, CFG->switches.get(screenshadows) ? C_SHADOW : DEFATTR);
   SetTitle(title.c_str(), C_ASKT, TLEFT);
   SetPos(6, 0, title.length()+2, 0);
   SetBorder(W_BASK, C_ASKB);

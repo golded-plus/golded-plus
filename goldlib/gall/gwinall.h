@@ -119,7 +119,7 @@ struct _item_t {
   int       dwhdl;      // description window handle
   int       dwrow;      // description window row
   int       dwcol;      // description window column
-  int       dattr;      // description attribute
+  vattr     dattr;      // description attribute
   int       redisp;     // redisplay flag
 };
 
@@ -141,21 +141,21 @@ struct _menu_t {
   int       erow;       // ending row of menu window
   int       ecol;       // ending column of menu window
   int       btype;      // menu window border type
-  int       battr;      // menu window "hi" border attribute
-  int       loattr;     // menu window "lo" border attribute
-  int       sbattr;     // menu window scrollbar attribute
-  int       wattr;      // menu window attribute
+  vattr     battr;      // menu window "hi" border attribute
+  vattr     loattr;     // menu window "lo" border attribute
+  vattr     sbattr;     // menu window scrollbar attribute
+  vattr     wattr;      // menu window attribute
   int       menutype;   // menu type mask
   int       barwidth;   // width of menu bar or zero
   int       textpos;    // offset of text from start of bar
-  int       textattr;   // attribute of menu text
-  int       scharattr;  // attribute of selection character
-  int       noselattr;  // non-selectable text attribute
-  int       barattr;    // attribute of selection bar
+  vattr     textattr;   // attribute of menu text
+  vattr     scharattr;  // attribute of selection character
+  vattr     noselattr;  // non-selectable text attribute
+  vattr     barattr;    // attribute of selection bar
   const char* title;    // menu title string or NULL if no title
   int       titlepos;   // position of menu title (TLEFT,TCENTER,TRIGHT)
-  int       titleattr;  // attribute of menu title
-  int       shadattr;   // shadow attribute or -1 if no shadow
+  vattr     titleattr;  // attribute of menu title
+  vattr     shadattr;   // shadow attribute or -1 if no shadow
   int       items;      // number of items in menu
   bool      hotkey;
 };
@@ -226,17 +226,17 @@ struct _wrec_t {
   int      erow;       // end row of window
   int      ecol;       // end column of window
   int      btype;      // window's box type
-  int      wattr;      // window's initial text attribute
-  int      battr;      // attribute of window's border
-  int      loattr;     // attribute of window's border
-  int      sbattr;     // attribute of window's scrollbar
+  vattr    wattr;      // window's initial text attribute
+  vattr    battr;      // attribute of window's border
+  vattr    loattr;     // attribute of window's border
+  vattr    sbattr;     // attribute of window's scrollbar
   int      border;     // has border?  0 = no, 1 = yes
   int      row;        // window's current cursor row
   int      column;     // window's current cursor column
-  int      attr;       // window's current text attribute
+  vattr    attr;       // window's current text attribute
   int      tpos;       // position of window's title
-  int      tattr;      // attribute of window's title
-  int      wsattr;     // attribute of window's shadow
+  vattr    tattr;      // attribute of window's title
+  vattr    wsattr;     // attribute of window's shadow
 };                                 
 
 
@@ -345,8 +345,8 @@ int       wactiv      (int whandle);
 int       wactiv_     (int whandle);
 int       wborder     (int btype);
 int       wbox        (int wsrow, int wscol, int werow, int wecol, int btype, int attr);
-int       wcclear     (int attr);
-int       wcenters    (int wrow, int attr, const char* str);
+int       wcclear     (vattr attr);
+int       wcenters    (int wrow, vattr attr, const char* str);
 int       wchkbox     (int wsrow, int wscol, int werow, int wecol);
 int       wchkcol     (int wcol);
 int       wchkcoord   (int wrow, int wcol);
@@ -359,55 +359,55 @@ int       wcopy       (int nsrow, int nscol);
 int       wdelline    (int wrow, int direc);
 int       wdrag       (int direction);
 int       wdupc       (char ch, int count);
-int       wfill       (int wsrow, int wscol, int werow, int wecol, vchar ch, int attr);
+int       wfill       (int wsrow, int wscol, int werow, int wecol, vchar ch, vattr attr);
 _wrec_t*  wfindrec    (int whandle);
 int       wgotoxy     (int wrow, int wcol);
 int       whandle     ();
 int       whide       ();
-int       whline      (int wsrow, int wscol, int count, int btype, int attr);
-int       wmessage    (const char* str, int border, int leftofs, int attr);
+int       whline      (int wsrow, int wscol, int count, int btype, vattr attr);
+int       wmessage    (const char* str, int border, int leftofs, vattr attr);
 int       wmove       (int nsrow, int nscol);
-int       wopen       (int srow, int scol, int erow, int ecol, int btype, int battr, int wattr, int sbattr=-1, int loattr=-1);
-inline int wopen_     (int srow, int scol, int vlen, int hlen, int btype, int battr, int wattr, int sbattr=-1, int loattr=-1) { return wopen(srow, scol, srow+vlen-1, scol+hlen-1, btype, battr, wattr, sbattr, loattr); }
+int       wopen       (int srow, int scol, int erow, int ecol, int btype, vattr battr, vattr wattr, vattr sbattr = DEFATTR, vattr loattr = DEFATTR);
+inline int wopen_     (int srow, int scol, int vlen, int hlen, int btype, vattr battr, vattr wattr, vattr sbattr = DEFATTR, vattr loattr = DEFATTR) { return wopen(srow, scol, srow+vlen-1, scol+hlen-1, btype, battr, wattr, sbattr, loattr); }
 int       wperror     (const char* message);
-bool      wpickfile   (int srow, int scol, int erow, int ecol, int btype, int bordattr, int winattr, int barattr, bool title, std::string &filespec, IfcpCP open, bool casesens=false);
-int       wpickstr    (int srow, int scol, int erow, int ecol, int btype, int bordattr, int winattr, int barattr, char* strarr[], int initelem, VfvCP open);
-int       wprintc     (int wrow, int wcol, int attr, vchar ch);
+bool      wpickfile   (int srow, int scol, int erow, int ecol, int btype, vattr bordattr, vattr winattr, vattr barattr, bool title, std::string &filespec, IfcpCP open, bool casesens=false);
+int       wpickstr    (int srow, int scol, int erow, int ecol, int btype, vattr bordattr, vattr winattr, vattr barattr, char* strarr[], int initelem, VfvCP open);
+int       wprintc     (int wrow, int wcol, vattr attr, vchar ch);
 int       wprintf     (const char* format, ...) __attribute__ ((format (printf, 1, 2)));
 int       wprintaf    (int attr, const char* format, ...) __attribute__ ((format (printf, 2, 3)));
-int       wprintfs    (int wrow, int wcol, int attr, const char* format, ...) __attribute__ ((format (printf, 4, 5)));
-int       wprints     (int wrow, int wcol, int attr, const char* str);
-int       wprints_box (int wrow, int wcol, int attr, const char* str);
-int       wprintvs    (int wrow, int wcol, int attr, const vchar* str);
-int       wprintns    (int wrow, int wcol, int attr, const char* str, uint len, vchar fill=' ', int fill_attr=-1);
-int       wprintsf    (int wrow, int wcol, int attr, const char* format, const char* str);
+int       wprintfs    (int wrow, int wcol, vattr attr, const char* format, ...) __attribute__ ((format (printf, 4, 5)));
+int       wprints     (int wrow, int wcol, vattr attr, const char* str);
+int       wprints_box (int wrow, int wcol, vattr attr, const char* str);
+int       wprintvs    (int wrow, int wcol, vattr attr, const vchar* str);
+int       wprintns    (int wrow, int wcol, vattr attr, const char* str, uint len, vchar fill=' ', vattr fill_attr = DEFATTR);
+int       wprintsf    (int wrow, int wcol, vattr attr, const char* format, const char* str);
 int       wprintws    (int wrow, int wcol, vatch* buf, uint len);
-void      wpropbar    (int xx, int yy, long len, int attr, long pos, long size);
+void      wpropbar    (int xx, int yy, long len, vattr attr, long pos, long size);
 int       wputc       (vchar ch);
 int       wputs       (const char* str);
-int       wputx       (int wrow, int wcol, int attr, vchar chr, uint len);
-int       wputy       (int wrow, int wcol, int attr, vchar chr, uint len);
+int       wputx       (int wrow, int wcol, vattr attr, vchar chr, uint len);
+int       wputy       (int wrow, int wcol, vattr attr, vchar chr, uint len);
 int       wreadcur    (int* wrow, int* wcol);
 int       wscroll     (int count, int direc);
 void      wscrollbar  (int orientation, uint total, uint maxpos, uint pos, int sadd=0);
 int       wscrollbox  (int wsrow, int wscol, int werow, int wecol, int count, int direction);
 int       wshadoff    ();
-int       wshadow     (int attr);
+int       wshadow     (vattr attr);
 int       wsize       (int nerow, int necol);
 int       wslide      (int nsrow, int nscol);
-void      wtextattr   (int attr);
-int       wtitle      (const char* str, int tpos, int tattr);
+void      wtextattr   (vattr attr);
+int       wtitle      (const char* str, int tpos, vattr tattr);
 int       wunhide     (int whandle);
 int       wunlink     (int w);
-int       wvline      (int wsrow, int wscol, int count, int btype, int attr);
-int       wwprintc    (int whandle, int wrow, int wcol, int attr, const vchar chr);
-int       wwprints    (int whandle, int wrow, int wcol, int attr, const char* str);
-int       wwprintstr  (int whandle, int wrow, int wcol, int attr, const char* str);
+int       wvline      (int wsrow, int wscol, int count, int btype, vattr attr);
+int       wwprintc    (int whandle, int wrow, int wcol, vattr attr, const vchar chr);
+int       wwprints    (int whandle, int wrow, int wcol, vattr attr, const char* str);
+int       wwprintstr  (int whandle, int wrow, int wcol, vattr attr, const char* str);
 
-int       wmenubeg    (int srow, int scol, int erow, int ecol, int btype, int battr, int wattr, VfvCP open, int menutype=M_VERT);
-inline int wmenubeg_  (int srow, int scol, int vlen, int hlen, int btype, int battr, int wattr, VfvCP open, int menutype=M_VERT) { return wmenubeg(srow, scol, srow+vlen-1, scol+hlen-1, btype, battr, wattr, open, menutype); }
+int       wmenubeg    (int srow, int scol, int erow, int ecol, int btype, vattr battr, vattr wattr, VfvCP open, int menutype=M_VERT);
+inline int wmenubeg_  (int srow, int scol, int vlen, int hlen, int btype, vattr battr, vattr wattr, VfvCP open, int menutype=M_VERT) { return wmenubeg(srow, scol, srow+vlen-1, scol+hlen-1, btype, battr, wattr, open, menutype); }
 int       wmenubegc   ();
-int       wmenuend    (int taginit, int menutype, int barwidth, int textpos, int textattr, int scharattr, int noselattr, int barattr);
+int       wmenuend    (int taginit, int menutype, int barwidth, int textpos, vattr textattr, vattr scharattr, vattr noselattr, vattr barattr);
 int       wmenuget    ();
 int       wmenuiba    (VfvCP before, VfvCP after);
 int       wmenuidsab  (int tagid);
@@ -415,13 +415,13 @@ int       wmenuienab  (int tagid);
 _item_t*  wmenuifind  (int tagid);
 int       wmenuinext  (int tagid);
 int       wmenuitem   (int wrow, int wcol, const char* str, char schar, int tagid, int fmask, VfvCP select, gkey hotkey, int help);
-int       wmenuitxt   (int whdl, int wrow, int wcol, int attr, const char* str);
+int       wmenuitxt   (int whdl, int wrow, int wcol, vattr attr, const char* str);
 
 
 //  ------------------------------------------------------------------
 //  Inline functions
 
-inline void wtextattr(int attr) { gwin.active->attr = attr; }
+inline void wtextattr(vattr attr) { gwin.active->attr = attr; }
 
 inline int       wclear      ()       { return wcclear(gwin.active->wattr); }
 inline void      wfillch     (vchar a) { gwin.fillch=a; }
@@ -437,7 +437,7 @@ inline _field_t* winpfcurr   ()       { return gwin.active->form->cfield; }
 inline _menu_t*  wmenumcurr  ()       { return gwin.cmenu; }
 inline _item_t*  wmenuicurr  ()       { return wmenumcurr()->citem; }
 
-inline int       wmenutitshad(const char* title, int pos, int attr, int shadattr) { gwin.cmenu->title=title; gwin.cmenu->titlepos=pos; gwin.cmenu->titleattr=attr; gwin.cmenu->shadattr=shadattr; return W_NOERROR; }
+inline int       wmenutitshad(const char* title, int pos, vattr attr, vattr shadattr) { gwin.cmenu->title=title; gwin.cmenu->titlepos=pos; gwin.cmenu->titleattr=attr; gwin.cmenu->shadattr=shadattr; return W_NOERROR; }
 
 
 //  ------------------------------------------------------------------

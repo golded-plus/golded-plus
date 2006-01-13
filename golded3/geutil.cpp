@@ -253,7 +253,7 @@ void w_infof(const char* format, ...) {
 
 //  ------------------------------------------------------------------
 
-void w_progress(int mode, int attr, long pos, long size, const char* title) {
+void w_progress(int mode, vattr attr, long pos, long size, const char* title) {
 
   static int wh = -1;
   static long prev_pos = 0;
@@ -313,7 +313,7 @@ int maketitle_and_status(char *dir) {
 
 //  ------------------------------------------------------------------
 
-void set_title(const char* t, int p, int a) {
+void set_title(const char* t, int p, vattr a) {
 
   strcpy(m_title, t);
   m_titlepos  = p;
@@ -490,7 +490,7 @@ bool is_quote2(Line* line, const char* ptr)
 
 //  ------------------------------------------------------------------
 
-int quotecolor(const char* line) {
+vattr quotecolor(const char* line) {
 
   char buf[MAXQUOTELEN];
   uint len;

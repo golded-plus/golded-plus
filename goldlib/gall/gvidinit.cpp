@@ -439,8 +439,8 @@ int GVid::detectadapter() {
 //  ------------------------------------------------------------------
 //  Video info detect
 
-void GVid::detectinfo(GVidInfo* _info) {
-
+void GVid::detectinfo(GVidInfo* _info)
+{
   // Reset all original values
   memset(_info, 0, sizeof(GVidInfo));
 
@@ -826,7 +826,7 @@ void GVid::setrows(int _rows) {
   #endif
 
   if(origrows < _rows)
-    vfill(origrows, 0, _rows, 80, ' ', 7);
+    vfill(origrows, 0, _rows, 80, ' ', LGREY);
 
   detectinfo(&curr);
   resetcurr();
@@ -836,8 +836,8 @@ void GVid::setrows(int _rows) {
 //  ------------------------------------------------------------------
 //  Set the screen border (overscan) color
 
-void GVid::setoverscan(int _overscan) {
-
+void GVid::setoverscan(vattr _overscan)
+{
   #if defined(__USE_NCURSES__)
 
   NW (_overscan);
@@ -871,8 +871,8 @@ void GVid::setoverscan(int _overscan) {
 //  ------------------------------------------------------------------
 //  Set intensity/blinking state
 
-void GVid::setintensity(int _intensity) {
-
+void GVid::setintensity(int _intensity)
+{
   #if defined(__USE_NCURSES__)
 
   NW(_intensity);
@@ -928,8 +928,8 @@ void GVid::setintensity(int _intensity) {
 
 //  ------------------------------------------------------------------
 
-void GVid::getpalette(int* _palette) {
-
+void GVid::getpalette(int* _palette)
+{
   #if defined(__USE_NCURSES__)
 
   NW(_palette);
@@ -977,8 +977,8 @@ void GVid::getpalette(int* _palette) {
 
 //  ------------------------------------------------------------------
 
-void GVid::setpalette(int* _palette) {
-
+void GVid::setpalette(int* _palette)
+{
   #if defined(__USE_NCURSES__)
 
   NW(_palette);

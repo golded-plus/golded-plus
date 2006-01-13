@@ -85,7 +85,7 @@ inline bool isstylechar(char c) {
   return (c == '*') or (c == '/') or (c == '_') or (c == '#');
 }
 
-void Container::StyleCodeHighlight(const char* text, int row, int col, bool dohide, int color) {
+void Container::StyleCodeHighlight(const char* text, int row, int col, bool dohide, vattr color) {
 
   uint sclen = 0;
   const char* txptr = text;

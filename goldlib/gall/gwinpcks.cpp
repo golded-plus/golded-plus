@@ -47,22 +47,22 @@ int wpickstr_tag = false;
 //  define record that will hold pick window info
 
 struct r_t {
-  int  numelems;
-  int  lastelem;
-  int  curr;
-  int  first;
-  int  last;
-  int  strsperline;
-  int  strsperwin;
-  int  maxstrlen;
-  int  wwidth;
-  int  wheight;
-  int  fillspaces;
-  int  gapspaces;
-  int  xtraspaces;
-  int  winattr;
-  int  barattr;
-  int  scrollbar;
+  int   numelems;
+  int   lastelem;
+  int   curr;
+  int   first;
+  int   last;
+  int   strsperline;
+  int   strsperwin;
+  int   maxstrlen;
+  int   wwidth;
+  int   wheight;
+  int   fillspaces;
+  int   gapspaces;
+  int   xtraspaces;
+  vattr winattr;
+  vattr barattr;
+  int   scrollbar;
 };
 
 
@@ -403,7 +403,7 @@ static gkey read_mouse(char* strarr[], r_t* r) {
 
 //  ------------------------------------------------------------------
 
-int wpickstr(int srow, int scol, int erow, int ecol, int btype, int bordattr, int winattr, int barattr, char* strarr[], int initelem, VfvCP open) {
+int wpickstr(int srow, int scol, int erow, int ecol, int btype, vattr bordattr, vattr winattr, vattr barattr, char* strarr[], int initelem, VfvCP open) {
 
   int i, j, maxlen, outside;
   gkey xch;

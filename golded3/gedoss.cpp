@@ -147,7 +147,7 @@ void Cleanup(void) {
     }
 
     // Reset border color
-    if(C_BACKB != 0)
+    if (C_BACKB != (BLACK|_BLACK))
       gvid->setoverscan(gvid->orig.color.overscan);
 
     wcloseall();                      // Close all windows
@@ -215,7 +215,7 @@ void Cleanup(void) {
 //  ------------------------------------------------------------------
 //  Multipurpose DOS shell function
 
-int ShellToDos(char* command, char* message, int cls, int cursor, int pause) {
+int ShellToDos(char* command, char* message, vattr cls, int cursor, int pause) {
 
   int error = 0;
 
@@ -292,11 +292,11 @@ int ShellToDos(char* command, char* message, int cls, int cursor, int pause) {
     gvid->setmode(gvid->orig.screen.mode);
 
   // Clear screen
-  if(cls)
+  if (cls != (BLACK|_BLACK))
     vclrscr(cls);
 
   // Reset border color
-  if(C_BACKB != 0)
+  if (C_BACKB != (BLACK|_BLACK))
     gvid->setoverscan(gvid->orig.color.overscan);
 
   // Turn on the blinking attributes
@@ -314,10 +314,9 @@ int ShellToDos(char* command, char* message, int cls, int cursor, int pause) {
   #endif
 
   // Return cursor into 1st column
-  if(cls) puts("");
+  if (cls != (BLACK|_BLACK)) puts("");
   // Write message on screen
-  if(*message)
-    puts(message);
+  if(*message) puts(message);
 
   // Turn on cursor
   int yy, xx;
@@ -405,7 +404,7 @@ int ShellToDos(char* command, char* message, int cls, int cursor, int pause) {
   gvid->setintensity(CFG->intensecolors);
 
   // Restore border color
-  if(C_BACKB != 0)
+  if (C_BACKB != (BLACK|_BLACK))
     gvid->setoverscan(C_BACKB);
 
   // Set palette if changes were specified

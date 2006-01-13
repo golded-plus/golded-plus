@@ -124,7 +124,7 @@ int wgotoxy(int wrow, int wcol) {
 //  ------------------------------------------------------------------
 //  Opens a window and makes it active
 
-int wopen(int srow, int scol, int erow, int ecol, int btype, int battr, int wattr, int sbattr, int loattr) {
+int wopen(int srow, int scol, int erow, int ecol, int btype, vattr battr, vattr wattr, vattr sbattr, vattr loattr) {
 
   // check for valid box type
   if(btype<0 or btype>7) {
@@ -279,7 +279,7 @@ int wcloseall() {
 //  ------------------------------------------------------------------
 //  Gives active window a shadow
 
-int wshadow(int attr) {
+int wshadow(vattr attr) {
 
   // check for active window
   if(!gwin.total)
@@ -408,7 +408,7 @@ int wshadoff() {
   throw_xrelease(gwin.active->wsbuf);
 
   // update window's record
-  gwin.active->wsattr = 0xFF;
+  gwin.active->wsattr = WHITE|_WHITE;
 
   // return with no error
   return gwin.werrno=W_NOERROR;
@@ -427,7 +427,7 @@ int wscroll(int count, int direction) {
     gwin.active->srow + border,
     gwin.active->scol + border,
     gwin.active->erow - border,
-    gwin.active->ecol - ((border or (gwin.active->sbattr != -1)) ? 1 : 0),
+    gwin.active->ecol - ((border or (gwin.active->sbattr != DEFATTR)) ? 1 : 0),
     gwin.active->wattr,
     direction == SUP ? count : -count
   );
@@ -570,7 +570,7 @@ int wdupc(char ch, int count) {
 //  ------------------------------------------------------------------
 //  Clears the active window in specified attribute
 
-int wcclear(int attr) {
+int wcclear(vattr attr) {
 
   // check for active window
 
@@ -658,14 +658,14 @@ int wclreos() {
 //  ------------------------------------------------------------------
 //  This function will process an Escape sequence when encountered
 
-static const char* process_esc(const char* str) {
-
+static const char* process_esc(const char* str)
+{
   int wrow,wcol;
 
   const char *p = str;
   for(; *p==ESC; p++) {
 
-    int attr = gwin.active->attr;
+    vattr attr = gwin.active->attr;
 
     switch(*(++p)) {
 
@@ -811,7 +811,7 @@ int wputs(const char* str) {
 //  ------------------------------------------------------------------
 //  Displays a character inside active window
 
-int wprintc(int wrow, int wcol, int atr, vchar chr) {
+int wprintc(int wrow, int wcol, vattr atr, vchar chr) {
 
   // check for active window
   if(!gwin.total)
@@ -853,7 +853,7 @@ int wprintf(const char* format, ...) {
 //  ------------------------------------------------------------------
 //  Print a formatted string at a specific position and attribute
 
-int wprintfs(int wrow, int wcol, int attr, const char* format, ...) {
+int wprintfs(int wrow, int wcol, vattr attr, const char* format, ...) {
 
   va_list argptr;
   char buf[256];
@@ -872,7 +872,7 @@ int wprintfs(int wrow, int wcol, int attr, const char* format, ...) {
 //  ------------------------------------------------------------------
 //  Displays a string inside active window
 
-int wprints(int wrow, int wcol, int attr, const char* str) {
+int wprints(int wrow, int wcol, vattr attr, const char* str) {
 
   // check for active window
   if(!gwin.total)
@@ -889,7 +889,7 @@ int wprints(int wrow, int wcol, int attr, const char* str) {
   return gwin.werrno=W_NOERROR;
 }
 
-int wprints_box(int wrow, int wcol, int attr, const char* str) {
+int wprints_box(int wrow, int wcol, vattr attr, const char* str) {
 
   // check for active window
   if(!gwin.total)
@@ -910,7 +910,7 @@ int wprints_box(int wrow, int wcol, int attr, const char* str) {
 //  ------------------------------------------------------------------
 //  Displays a string inside active window
 
-int wprintvs(int wrow, int wcol, int attr, const vchar* str) {
+int wprintvs(int wrow, int wcol, vattr attr, const vchar* str) {
 
   // check for active window
   if(!gwin.total)
@@ -930,7 +930,7 @@ int wprintvs(int wrow, int wcol, int attr, const vchar* str) {
 
 //  ------------------------------------------------------------------
 
-int wputx(int wrow, int wcol, int attr, vchar chr, uint len) {
+int wputx(int wrow, int wcol, vattr attr, vchar chr, uint len) {
 
   const int &border = gwin.active->border;
   vputx(gwin.active->srow+wrow+border,gwin.active->scol+wcol+border,attr,chr,len);
@@ -940,7 +940,7 @@ int wputx(int wrow, int wcol, int attr, vchar chr, uint len) {
 
 //  ------------------------------------------------------------------
 
-int wputy(int wrow, int wcol, int attr, vchar chr, uint len) {
+int wputy(int wrow, int wcol, vattr attr, vchar chr, uint len) {
 
   const int &border = gwin.active->border;
   vputy(gwin.active->srow+wrow+border,gwin.active->scol+wcol+border,attr,chr,len);
@@ -951,8 +951,8 @@ int wputy(int wrow, int wcol, int attr, vchar chr, uint len) {
 //  ------------------------------------------------------------------
 //  Displays a string inside active window
 
-int wprintns(int wrow, int wcol, int attr, const char* str, uint len, vchar fill, int fill_attr) {
-
+int wprintns(int wrow, int wcol, vattr attr, const char* str, uint len, vchar fill, vattr fill_attr)
+{
   char* istr = throw_xstrdup(str);
   char* ostr = istr;
   char och = *ostr;
@@ -966,7 +966,7 @@ int wprintns(int wrow, int wcol, int attr, const char* str, uint len, vchar fill
   if(len < olen)
     *ostr = och;
   else if(len > olen)
-    retval = wputx(wrow, wcol+olen, (fill_attr != -1) ? fill_attr : attr, fill, len-olen);
+    retval = wputx(wrow, wcol+olen, (fill_attr != DEFATTR) ? fill_attr : attr, fill, len-olen);
   throw_xfree(istr);
   return retval;
 }
@@ -1039,9 +1039,9 @@ _wrec_t* wfindrec(int whandle) {
 
 int whide() {
 
-  vsavebuf* p;
-  int shattr;
-  _wrec_t *temp;
+  vsavebuf  *p;
+  vattr     shattr;
+  _wrec_t   *temp;
 
   // check for active window
   if(!gwin.total)
@@ -1057,7 +1057,7 @@ int whide() {
     gwin.active->wsattr = shattr;
   }
   else {
-    gwin.active->wsattr = -1;
+    gwin.active->wsattr = DEFATTR;
   }
 
   // restore contents of active window's buffer
@@ -1152,7 +1152,7 @@ int wunhide(int whandle) {
   gwin.total++;
 
   // if window had a shadow before hiding, give it one again
-  if(gwin.active->wsattr!=-1)
+  if(gwin.active->wsattr != DEFATTR)
     wshadow(gwin.active->wsattr);
 
   // update help category
@@ -1223,8 +1223,8 @@ int wunlink(int w) {
 //  Local variables
 
 static _wrec_t *__curr, *__found;
-static int __crow, __ccol;
-static int __gattr;
+static int    __crow, __ccol;
+static vattr  __gattr;
 static const char* __p;
 
 
@@ -1307,6 +1307,7 @@ static void swap_contents(vatch* pfound, vatch* pcurr, int shadow) {
   // shadow, reflect the character on the screen.
 
   temp = vgetw(__crow, __ccol);
+
   if(shadow&2)
     *pcurr = vschar(*pcurr, vgchar(temp));
   chat = ((vgattr(temp) & BLINK) and shadow) ? vsattr(*pcurr, vgattr(*pcurr) | BLINK) : *pcurr;
@@ -1581,8 +1582,8 @@ int wactiv_(int whandle) {
 
 static void update_buffers(vatch* pcurr, int shadow) {
 
-  _wrec_t* tcurr;
-  int tgattr;
+  _wrec_t *tcurr;
+  vattr   tgattr;
 
   // put current string character and attribute into found window's buffer
 
@@ -1620,7 +1621,7 @@ static void update_buffers(vatch* pcurr, int shadow) {
 
 //  ------------------------------------------------------------------
 
-int wwprintc(int whandle, int wrow, int wcol, int attr, const vchar chr) {
+int wwprintc(int whandle, int wrow, int wcol, vattr attr, const vchar chr) {
 
   // check for existance of active window or hidden windows
   if(!gwin.total and gwin.hidden==NULL)
@@ -1648,7 +1649,7 @@ int wwprintc(int whandle, int wrow, int wcol, int attr, const vchar chr) {
 
 //  ------------------------------------------------------------------
 
-int wwprints(int whandle, int wrow, int wcol, int attr, const char* str) {
+int wwprints(int whandle, int wrow, int wcol, vattr attr, const char* str) {
 
   // check for existance of active window or hidden windows
   if(!gwin.total and gwin.hidden==NULL)
@@ -1750,7 +1751,7 @@ int wwprints(int whandle, int wrow, int wcol, int attr, const char* str) {
 
 //  ------------------------------------------------------------------
 
-int wwprintstr(int whandle, int wrow, int wcol, int attr, const char* str) {
+int wwprintstr(int whandle, int wrow, int wcol, vattr attr, const char* str) {
 
   // check for existance of active window or hidden windows
   if(!gwin.total and gwin.hidden==NULL)
@@ -1830,7 +1831,7 @@ int wborder(int btype) {
 //  ------------------------------------------------------------------
 //  Fills a region of active window w/specified char/attribute
 
-int wfill(int wsrow, int wscol, int werow, int wecol, vchar chr, int atr) {
+int wfill(int wsrow, int wscol, int werow, int wecol, vchar chr, vattr atr) {
 
   // check for active window
   if(!gwin.total)
@@ -1878,7 +1879,7 @@ int whandle() {
 //  ------------------------------------------------------------------
 //  Displays text on window's top or bottom border
 
-int wmessage(const char* str, int border, int leftofs, int attr) {
+int wmessage(const char* str, int border, int leftofs, vattr attr) {
 
   // check for active window
   if(!gwin.total)
@@ -1912,7 +1913,7 @@ int wmessage(const char* str, int border, int leftofs, int attr) {
 //  ------------------------------------------------------------------
 //  Proportion bar
 
-void wpropbar(int xx, int yy, long len, int attr, long pos, long size) {
+void wpropbar(int xx, int yy, long len, vattr attr, long pos, long size) {
 
   //  xx, yy = start position in window.
   //  len    = length (in chars) of progress field.
@@ -1923,10 +1924,10 @@ void wpropbar(int xx, int yy, long len, int attr, long pos, long size) {
   const vchar barchar   = _box_table(gwin.active->btype, 13);
 #ifdef __UNIX__ // prefferable under xterm
   const vchar thumbchar = ' ';
-  int thumbattr         = revsattr(attr);
+  vattr thumbattr       = revsattr(attr);
 #else
   const vchar thumbchar = '\xDB';
-  int thumbattr         = attr;
+  vattr thumbattr       = attr;
 #endif
 
   long thumblen = (pos*len)/size;
@@ -1944,7 +1945,7 @@ void wpropbar(int xx, int yy, long len, int attr, long pos, long size) {
 //  ------------------------------------------------------------------
 //  Gives active window a title
 
-int wtitle(const char* str, int tpos, int tattr) {
+int wtitle(const char* str, int tpos, vattr tattr) {
 
   // check for active window
   if(!gwin.total)
@@ -2023,8 +2024,8 @@ int wtitle(const char* str, int tpos, int tattr) {
 
 void wscrollbar(int orientation, uint total, uint maxpos, uint pos, int sadd) {
 
-  int attr = (gwin.active->sbattr == -1) ? gwin.active->battr : gwin.active->sbattr;
-  int invattr                = revsattr(attr);
+  vattr attr = (gwin.active->sbattr == DEFATTR) ? gwin.active->battr : gwin.active->sbattr;
+  vattr invattr              = revsattr(attr);
 
   const vchar barchar        = _box_table(gwin.active->btype, 13);
   const vchar arrowupchar    = '\x18';
@@ -2033,10 +2034,10 @@ void wscrollbar(int orientation, uint total, uint maxpos, uint pos, int sadd) {
   const vchar arrowrightchar = '\x1A';
 #ifdef __UNIX__ // prefferable under xterm
   const vchar thumbchar      = ' ';
-  int thumbattr              = revsattr(attr);
+  vattr thumbattr            = revsattr(attr);
 #else
   const vchar thumbchar      = '\xDB';
-  int thumbattr              = attr;
+  vattr thumbattr            = attr;
 #endif
 
   if(maxpos == 0)

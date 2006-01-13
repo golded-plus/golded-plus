@@ -210,8 +210,8 @@ void GMsgList::ReadMlst(int n) {
   strcpy(ml->re, msg.re);
 
   { Addr zero;
-    ml->colorby = GetColorName(ml->by, msg.orig, -1);
-    ml->colorto = GetColorName(ml->to, AA->isnet() ? msg.dest : zero, -1);
+    ml->colorby = GetColorName(ml->by, msg.orig, DEFATTR);
+    ml->colorto = GetColorName(ml->to, AA->isnet() ? msg.dest : zero, DEFATTR);
   }
 }
 
@@ -294,7 +294,7 @@ void GMsgList::print_line(uint idx, uint pos, bool isbar) {
 
   update_marks(ml);
 
-  int wattr_, hattr_, mattr_;
+  vattr wattr_, hattr_, mattr_;
   if(isbar) {
     wattr_ = sattr;
     hattr_ = sattr;
@@ -353,16 +353,16 @@ void GMsgList::print_line(uint idx, uint pos, bool isbar) {
   if (ml->high & (MLST_HIGH_BOOK|MLST_HIGH_MARK))
     window.prints(pos, 5, mattr_, ml->marks);
 
-  if ((ml->high & MLST_HIGH_FROM) || (ml->colorby != -1))
+  if ((ml->high & MLST_HIGH_FROM) || (ml->colorby != DEFATTR))
   {
-    int color = ((ml->colorby != -1) && !isbar) ? ml->colorby : hattr_;
+    vattr color = ((ml->colorby != DEFATTR) && !isbar) ? ml->colorby : hattr_;
     window.printns(pos, bycol, color, ml->by, bysiz);
   }
 
-  if (((ml->high & MLST_HIGH_TO) || (ml->colorto != -1)) &&
+  if (((ml->high & MLST_HIGH_TO) || (ml->colorto != DEFATTR)) &&
       !AA->Msglistwidesubj())
   {
-    int color = ((ml->colorto != -1) && !isbar) ? ml->colorto : hattr_;
+    vattr color = ((ml->colorto != DEFATTR) && !isbar) ? ml->colorto : hattr_;
     window.printns(pos, tocol, color, ml->to, tosiz);
   }
 
@@ -733,7 +733,7 @@ public:
 
 void GThreadlist::open() {
 
-  window.openxy(ypos, xpos, ylen+2, xlen+2,  btype, battr, 7);
+  window.openxy(ypos, xpos, ylen+2, xlen+2,  btype, battr, LGREY);
   update_title();
 
   center(CFG->displistcursor);
@@ -886,7 +886,7 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar) {
     AA->LoadMsg(&msg, t.msgno, CFG->dispmargin-(int)CFG->switches.get(disppagebar));
   }
 
-  int attrh, attrw;
+  vattr attrh, attrw;
   if(msg.attr.uns() and not msg.attr.rcv() and not msg.attr.del()) {
     attrw = C_MENUW_UNSENT;
     attrh = C_MENUQ_UNSENTHIGH;
@@ -950,7 +950,7 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar) {
     window.prints(pos, 8, isbar ? (sattr|ACSET) : (wattr|ACSET), buf);
   }
 
-  int attr = attrw;
+  vattr attr = attrw;
 
   for(std::vector<Node>::iterator x = CFG->username.begin(); x != CFG->username.end(); x++)
     if(strieql(msg.By(), x->name)) {

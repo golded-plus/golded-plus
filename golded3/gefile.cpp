@@ -608,7 +608,7 @@ void CreateFileMsgs(int mode, GMsg* msg) {
   msg->TextToLines(CFG->dispmargin);
 
   if(specfiles > 1)
-    w_progress(MODE_QUIT, 0, 0, 0, NULL);
+    w_progress(MODE_QUIT, BLACK|_BLACK, 0, 0, NULL);
 }
 
 

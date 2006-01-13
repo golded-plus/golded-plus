@@ -262,7 +262,7 @@ static void WriteMsgs(GMsg* msg) {
 
           remove(fname);
         }
-        w_progress(MODE_QUIT, 0, 0, 0, NULL);
+        w_progress(MODE_QUIT, BLACK|_BLACK, 0, 0, NULL);
       }
       else if(source == WRITE_CURRENT) {
         if(target & WRITE_FILE) {

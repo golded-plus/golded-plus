@@ -208,7 +208,7 @@ static void disp_item(_item_t *witem,int bar)
     __extension__ char buf[sizeof(vatch)*gvid->numcols];
 #endif
     char ch;
-    int chattr;
+    vattr chattr;
     _wrec_t* whp;
     register const char* p;
     register vatch* ptr=(vatch*)buf;
@@ -229,7 +229,7 @@ static void disp_item(_item_t *witem,int bar)
     {
       const int &border = gwin.active->border;
       const int &btype = gwin.active->btype;
-      const int &attr = gwin.active->loattr;
+      const vattr &attr = gwin.active->loattr;
       vatch line = vcatch(_box_table(btype, 1), attr);
 
       if (border) *ptr++ = vcatch(_box_table(btype, 9), attr);
@@ -719,7 +719,7 @@ static _item_t * up_item(_item_t *curr)
 
 //  ------------------------------------------------------------------
 
-int wmenubeg(int srow, int scol, int erow, int ecol, int btype, int battr, int wattr, VfvCP open, int menutype) {
+int wmenubeg(int srow, int scol, int erow, int ecol, int btype, vattr battr, vattr wattr, VfvCP open, int menutype) {
 
     _menu_t* wmenu;
 
@@ -762,8 +762,8 @@ int wmenubeg(int srow, int scol, int erow, int ecol, int btype, int battr, int w
     wmenu->item=NULL;
     wmenu->title = "";
     wmenu->titlepos = -1;
-    wmenu->titleattr = 0;
-    wmenu->shadattr = -1;
+    wmenu->titleattr = BLACK|_BLACK;
+    wmenu->shadattr = DEFATTR;
     wmenu->items = 0;
 
     // increment menu level
@@ -809,7 +809,7 @@ int wmenuitem(int wrow, int wcol, const char* str, char schar, int tagid, int fm
     witem->dwhdl  = -1;
     witem->dwrow  = 0;
     witem->dwcol  = 0;
-    witem->dattr  = 0;
+    witem->dattr  = BLACK|_BLACK;
     witem->redisp = NO;
     witem->help   = help;
     witem->child  = NULL;
@@ -843,7 +843,7 @@ int wmenuitem(int wrow, int wcol, const char* str, char schar, int tagid, int fm
 
 //  ------------------------------------------------------------------
 
-int wmenuend(int taginit, int menutype, int barwidth, int textpos, int textattr, int scharattr, int noselattr, int barattr) {
+int wmenuend(int taginit, int menutype, int barwidth, int textpos, vattr textattr, vattr scharattr, vattr noselattr, vattr barattr) {
 
     _item_t* item;
     int w_width, border, found;
@@ -926,8 +926,8 @@ int wmenuget() {
         hide_mouse_cursor_mnu();
         if(!wopen(gwin.cmenu->srow,gwin.cmenu->scol,gwin.cmenu->erow,gwin.cmenu->ecol,gwin.cmenu->btype,gwin.cmenu->battr,gwin.cmenu->wattr,gwin.cmenu->sbattr,gwin.cmenu->loattr))
           return -1;
-        if(gwin.cmenu->shadattr != -1)
-          wshadow((int)gwin.cmenu->shadattr);
+        if(gwin.cmenu->shadattr != DEFATTR)
+          wshadow(gwin.cmenu->shadattr);
         if(gwin.cmenu->title and *gwin.cmenu->title)
           wtitle(gwin.cmenu->title, gwin.cmenu->titlepos, gwin.cmenu->titleattr);
         show_mouse_cursor_mnu();
@@ -1352,7 +1352,7 @@ _item_t* wmenuifind(int tagid) {
 //  ------------------------------------------------------------------
 //  Adds a text description to menu item
 
-int wmenuitxt(int whdl, int wrow, int wcol, int attr, const char* str) {
+int wmenuitxt(int whdl, int wrow, int wcol, vattr attr, const char* str) {
 
   // make sure at least 1 menu item has been defined
   if(!gwin.mlevel or gwin.mlevel>gwin.ilevel)
@@ -1363,7 +1363,7 @@ int wmenuitxt(int whdl, int wrow, int wcol, int attr, const char* str) {
   citem->dwhdl = whdl;
   citem->dwrow = wrow;
   citem->dwcol = wcol;
-  citem->dattr = (int)attr;
+  citem->dattr = attr;
   citem->desc  = str;
 
   // return normally
