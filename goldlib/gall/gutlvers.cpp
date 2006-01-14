@@ -329,6 +329,8 @@ static void cpuname(int family, int model, const char *v_name, char *m_name)
 char *gcpuid(char *_cpuname)
 {
 
+#if defined(__GNUC__) && defined(__i386__) || defined(_MSC_VER)
+
   static struct scpuid_t{
     dword         cpu;           /* x86, where x=cpu */
     dword         cpu_high;      /* highest CPUID capability */
@@ -352,6 +354,7 @@ char *gcpuid(char *_cpuname)
   //  unsigned cpu_id;        /* stepping ID, 12 bits: 0x0FMS */
   //  unsigned features;      /* CPU features info */
   }scpuid;   /* ISO C: static variabled is initialised with 0 */
+#endif
 
 #if defined(_MSC_VER)
 #undef and   // and is defined as &&, this is conflicted with assembler instruction "and"
