@@ -151,7 +151,7 @@ vattr IEclass::dispchar(vchar __ch, vattr attr) {
 
 //  ------------------------------------------------------------------
 
-void IEclass::cursoroff() { 
+void IEclass::cursoroff() {
 
   vcurhide();
 }
@@ -159,7 +159,7 @@ void IEclass::cursoroff() {
 
 //  ------------------------------------------------------------------
 
-void IEclass::cursoron() { 
+void IEclass::cursoron() {
 
   vcurshow();
 }
@@ -256,7 +256,7 @@ void IEclass::gotorowcol(uint __col, uint __row) {
 void IEclass::dispstringsc(char *__buf, uint __beg, uint __end, uint __row, uint __col, char endchar)
 {
   char scbuf[EDIT_BUFLEN];
-  
+
   uint bbeg = __beg;
   uint bend = __beg;
   uint bpos = __beg;
@@ -283,7 +283,7 @@ void IEclass::dispstringsc(char *__buf, uint __beg, uint __end, uint __row, uint
     }
 
     scbuf[scpos] = NUL;
-    
+
     if (schecker.Check(scbuf))
       bend = bpos;
     else
@@ -690,7 +690,7 @@ Line* IEclass::insertlinebelow(Line* __currline, const char* __text, long __batc
       _nextline->next->prev = _nextline;
     __currline->next = _nextline;
   }
-  
+
   Undo->PushItem(EDIT_UNDO_NEW_LINE|batch_mode|__batch_mode, _nextline);
 
   GFTRK(NULL);
@@ -944,7 +944,7 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, boo
         // Keep copy of original pointer
         int _atmargin = _wrappos;
 
-        // Search backwards until a space or the beginning of the line is found 
+        // Search backwards until a space or the beginning of the line is found
         while((_wrappos > _quotelen) and (_thisline->txt[_wrappos-1] != ' '))
           _wrappos--;
 
@@ -1342,7 +1342,7 @@ void IEclass::DelChar() {
     if(_thisline->next)
       _thisline->next->prev = _thisline;
 
-    Undo->PushItem(EDIT_UNDO_DEL_LINE|BATCH_MODE, _nextline);     
+    Undo->PushItem(EDIT_UNDO_DEL_LINE|BATCH_MODE, _nextline);
   }
   batch_mode = BATCH_MODE;
 
@@ -1406,9 +1406,9 @@ void IEclass::GoWordLeft() {
     }
   }
   else {
- 
+
     col--;
- 
+
     if(not isxalnum(currline->txt[col])) {
       while(not isxalnum(currline->txt[col]) and (col > 0))
         col--;
@@ -1508,7 +1508,7 @@ void IEclass::Newline() {
 
   Undo->PushItem(EDIT_UNDO_INS_TEXT|batch_mode, currline, col, 1);
   batch_mode = BATCH_MODE;
-  
+
   // Copy linefeed+nul to the split position
   currline->txt.erase(_splitpos);
   currline->txt += "\n";
@@ -1587,7 +1587,7 @@ void IEclass::DupLine() {
 
   Undo->PushItem(EDIT_UNDO_VOID);
   batch_mode = BATCH_MODE;
-  
+
   Line* _nextline = insertlinebelow(currline, currline->txt.c_str(), batch_mode);
   _nextline->type   = currline->type & ~GLINE_BLOK;
   _nextline->color  = currline->color;
@@ -1777,7 +1777,7 @@ void IEclass::DeleteEOL() {
   GFTRK("EditDeleteEOL");
 
   bool _has_linefeed = (currline->txt.find('\n') != currline->txt.npos);
- 
+
   Undo->PushItem(EDIT_UNDO_DEL_TEXT, currline);
 
   currline->txt.erase(col);
@@ -1826,7 +1826,7 @@ void IEclass::deleteline(bool zapquotesbelow) {
   bool done = false;
 
   do {
- 
+
     // Break if need to zap quotes, but the current line is not quote and is not empty
     if(zapquotesbelow and not ((currline->type & GLINE_QUOT) or isempty(currline)))
       break;
@@ -2513,7 +2513,7 @@ void IEclass::SCodeChange(gkey key)
     return;
   }
 
-  if ((_ch != c1) && (c1 == c2) && 
+  if ((_ch != c1) && (c1 == c2) &&
       ((c1 == '*') || (c1 == '/') || (c1 == '_') || (c1 == '#')))
     replace = true;
 
@@ -2525,7 +2525,7 @@ void IEclass::SCodeChange(gkey key)
   if (_ch != ' ') insertchar(_ch);
 
   cltxt = currline->txt.c_str();
-  while (!isspace(cltxt[col+1]) && !strchr(punct, cltxt[col+1])) 
+  while (!isspace(cltxt[col+1]) && !strchr(punct, cltxt[col+1]))
     GoRight();
 
   if (replace) DelChar();
@@ -2642,7 +2642,7 @@ int IEclass::handlekey(gkey __key) {
 
   int rc = true;
 
-  if (drawlines && 
+  if (drawlines &&
       (__key != KK_EditGoRight) && (__key != KK_EditGoLeft) &&
       (__key != KK_EditGoUp) && (__key != KK_EditGoDown))
   {
@@ -2819,7 +2819,7 @@ noselecting:
 
   if(__key != KK_EditUndo)
     undo_ready = NO;
-  
+
   return rc;
 }
 
@@ -2926,7 +2926,9 @@ int IEclass::Start(int __mode, uint* __position, GMsg* __msg) {
       vcurlarge();
 
     gkey _ch;
+#if defined(__WIN32__)
     gkey keystatus = 0;
+#endif
 
     do {
       _ch = getxchtick();
@@ -3059,7 +3061,7 @@ UndoStack::UndoStack(IEclass* this_editor) :
   minrow(editor->minrow),
   maxrow(editor->maxrow),
   thisrow(editor->thisrow),
-  currline(editor->currline), 
+  currline(editor->currline),
   undo_ready(editor->undo_ready) {
   UndoItem::last_item = &last_item;
   last_item = NULL;
@@ -3169,7 +3171,7 @@ void UndoStack::PushItem(uint action, Line* __line, uint __col, uint __len) {
         last_item->line = currline;
         last_item->data.line_ptr = NULL;
         break;
-    }    
+    }
   }
 
   GFTRK(NULL);
