@@ -87,7 +87,6 @@ int strschg_environ(std::string& s) {
 #ifndef __HAVE_DRIVES__
   if(not s.empty() and (s[0] == '~')) {
     std::string name;
-    char* lname;
     const char *p = s.c_str()+1;
     struct passwd *pe=NULL;
 
