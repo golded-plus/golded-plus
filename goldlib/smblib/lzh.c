@@ -37,7 +37,7 @@
 
 /* FreeBSD's malloc.h is deprecated, it drops a warning and */
 /* #includes <stdlib.h>, which is already here.             */
-#ifndef __FreeBSD__
+#if !defined(__FreeBSD__) && !defined(__APPLE__)
 #include <malloc.h>
 #endif
 
@@ -448,10 +448,10 @@ void lzh_reconst(void)
         for (k = j - 1; f < lzh_freq[k]; k--);
         k++;
         l = (j - k) * 2;
-        
+
         /* movmem() is Turbo-C dependent
            rewritten to memmove() by Kenji */
-        
+
         /* movmem(&lzh_freq[k], &lzh_freq[k + 1], l); */
         (void)memmove(lzh_freq+k+1,lzh_freq+k, l);
         lzh_freq[k] = f;
