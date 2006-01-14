@@ -91,6 +91,10 @@
 #define CR  '\x0D'
 #define ESC '\x1B'
 
+#ifdef __APPLE__
+#define __UNIX__
+#endif
+
 #ifdef __UNIX__
 #define NL "\r\n"
 #else
