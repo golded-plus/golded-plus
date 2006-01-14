@@ -93,7 +93,7 @@ endif
 endif
 CFLAGS+=-g -funsigned-char $(INCS) -Wall -Wno-sign-compare -pedantic -O2 -DPRAGMA_PACK # -fomit-frame-pointer
 LNKFLAGS+=-g
-CPPFLAGS+=$(CFLAGS) -fno-exceptions -fno-rtti
+CPPFLAGS+=$(CFLAGS) -fno-rtti # -fno-exceptions
 
 # comment following lines if you dislike ncurses
 # uncomment "buggy ncurses" if your build requires additional keypresses to
