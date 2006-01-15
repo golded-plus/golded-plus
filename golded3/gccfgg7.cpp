@@ -241,7 +241,7 @@ void CfgScheckerenabled()
 
 void CfgScheckeruserdic()
 {
-  strcpy(CFG->scheckeruserdic, val);
+  strcpy(CFG->scheckeruserdic, StripQuotes(val));
 }
 #endif
 
