@@ -635,7 +635,7 @@ void CmfMsgs(GMsg* msg, bool torecycle)
     // Delete original msg if moved
     if(mode == MODE_MOVE) {
       msg->msgno = msgno;
-      AA->DeleteMsg(msg, DIR_PREV);
+      AA->DeleteMsg(msg, torecycle ? reader_direction : DIR_PREV);
       AA->PMrk.Del(msg->msgno);
     }
 
@@ -660,15 +660,10 @@ void CmfMsgs(GMsg* msg, bool torecycle)
   else
     LoadCharset("N/A", "N/A");
 
-  if(do_mode == MODE_MARKED) {
+  if(do_mode == MODE_MARKED)
+  {
     if(cmf == MODE_MOVE)
       AA->Mark.ResetAll();
-  }
-  else {
-    if(cmf == MODE_MOVE) {
-      AA->Mark.Del(msg->msgno);
-      AA->PMrk.Del(msg->msgno);
-    }
   }
 
   w_info(NULL);
@@ -681,15 +676,9 @@ void CmfMsgs(GMsg* msg, bool torecycle)
 
 void CopyMoveForward(bool torecycle)
 {
-  uint lastread = reader_msg->msgno;
-
-  AA->set_lastread(AA->Msgn.ToReln(lastread, AA->lastread()));
-
   AA->attr().hex0();
   if(AA->Msgn.Count())
     CmfMsgs(reader_msg, torecycle);
-
-  AA->set_lastread(AA->Msgn.ToReln(lastread, AA->lastread()));
 }
 
 
