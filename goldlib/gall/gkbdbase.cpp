@@ -41,6 +41,7 @@
 
 #ifdef __WIN32__
 #include <windows.h>
+extern OSVERSIONINFO WinVer;
 #endif
 
 #if defined(__UNIX__) && !defined(__USE_NCURSES__)
@@ -1265,8 +1266,12 @@ gkey kbxget_raw(int mode) {
           return k;
         }
       }
-      // Discard other events
-      ReadConsoleInput(gkbd_hin, &inp, 1, &nread);
+
+      if ((inp.EventType != MOUSE_EVENT) || (WinVer.dwPlatformId == VER_PLATFORM_WIN32_NT))
+      {
+        // Discard other events
+        ReadConsoleInput(gkbd_hin, &inp, 1, &nread);
+      }
     }
   }
   else {
