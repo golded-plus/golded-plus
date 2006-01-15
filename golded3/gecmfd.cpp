@@ -471,9 +471,8 @@ void CmfMsgs(GMsg* msg, bool torecycle)
   // Popup wait window
   w_info(progstr);
 
-  // Open destination area and lock it
+  // Open destination area
   AA->Open();
-  AA->Lock();
   AA->RandomizeData();
 
   // Re-activeate original area and lock that too
@@ -643,10 +642,9 @@ void CmfMsgs(GMsg* msg, bool torecycle)
 
   kbput(Key_Tick);
 
-  // Unlock and close destination area
+  // close destination area
   AL.SetActiveAreaId(destarea);
   AA->UpdateAreadata();
-  AA->Unlock();
   AA->Close();
 
   // Return to original area and unlock it
