@@ -729,14 +729,14 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
   MakePathname(cfg, CFG->goldpath, cfg);
 
   fp = fsopen(cfg, "rt", CFG->sharemode);
-  if(fp) {
-
+  if (fp)
+  {
     cfgname = strrchr(cfg, '\\');
     cfgname = cfgname ? cfgname+1 : cfg;
     inuse++;
 
-    if(not quiet)
-      std::cout << "* Reading " << cfg << std::endl;
+    if (not quiet)
+      STD_PRINT("* Reading " << cfg << std::endl);
 
     // Assign file buffer
     setvbuf(fp, NULL, _IOFBF, 8192);
@@ -759,8 +759,9 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
         int _gotcond = true;
         switch(crc) {
           case CRC_IF:
-            if(in_if) {
-              std::cout << "* " << cfgname << ": Misplaced IF at line " << line << ". IF's cannot be nested." << std::endl;
+            if (in_if)
+            {
+              STD_PRINT("* " << cfgname << ": Misplaced IF at line " << line << ". IF's cannot be nested." << std::endl);
               cfgerrors++;
             }
             in_if = true;
@@ -769,8 +770,9 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
             break;
           case CRC_ELIF:
           case CRC_ELSEIF:
-            if(not in_if or in_else) {
-              std::cout << "* " << cfgname << ": Misplaced ELIF/ELSEIF at line " << line << "." << std::endl;
+            if (not in_if or in_else)
+            {
+              STD_PRINT("* " << cfgname << ": Misplaced ELIF/ELSEIF at line " << line << "." << std::endl);
               cfgerrors++;
             }
             if(if_status)
@@ -781,8 +783,9 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
             }
             break;
           case CRC_ELSE:
-            if(not in_if or in_else) {
-              std::cout << "* " << cfgname << ": Misplaced ELSE at line " << line << "." << std::endl;
+            if (not in_if or in_else)
+            {
+              STD_PRINT("* " << cfgname << ": Misplaced ELSE at line " << line << "." << std::endl);
               cfgerrors++;
             }
             in_else = true;
@@ -790,8 +793,9 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
             cfgignore = not if_status;
             break;
           case CRC_ENDIF:
-            if(not in_if) {
-              std::cout << "* " << cfgname << ": Misplaced ENDIF at line " << line << "." << std::endl;
+            if (not in_if)
+            {
+              STD_PRINT("* " << cfgname << ": Misplaced ENDIF at line " << line << "." << std::endl);
               cfgerrors++;
             }
             cfgignore = false;
@@ -805,15 +809,11 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
         }
 
         // Tell the world what we found
-        if(veryverbose)
+        if (veryverbose)
         {
-#if defined(_MSC_VER)
-            char buff[256];
-            sprintf(buff, " %c %04d: %s %s\n", cfgignore ? '-' : '+', line, key, val);
-            std::cout << buff;
-#else
-           std::cout << " " << (cfgignore ? '-' : '+') << std::setw(4) << std::setfill('0') << line << std::setfill(' ') << ": " << key << " " << val << std::endl;
-#endif
+           char buff[256];
+           sprintf(buff, " %c %04d: %s %s\n", cfgignore ? '-' : '+', line, key, val);
+           STD_PRINT(buff);
         }
 
         // Call switch function to act on the key
@@ -823,20 +823,28 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
               case CRC_INCLUDE:
                 strschg_environ(val);
                 MapPath(val);
-                if(not quiet)
-                  std::cout << "* Including " << val << std::endl;
+
+                if (not quiet)
+                  STD_PRINT("* Including " << val << std::endl);
+
                 ReadCfg(val);          // NOTE! This is a recursive call!
-                if(not quiet)
-                  std::cout << "* Resuming " << cfg << std::endl;
+
+                if (not quiet)
+                  STD_PRINT("* Resuming " << cfg << std::endl);
+
                 break;
               case CRC_AREAFILE:
                 strschg_environ(val);
                 MapPath(val);
-                if(not quiet)
-                  std::cout << "* Handling " << key << " " << val << std::endl;
+
+                if (not quiet)
+                  STD_PRINT("* Handling " << key << " " << val << std::endl);
+
                 AL.GetAreafile(val);
-                if(not quiet)
-                  std::cout << "* Resuming " << cfg << std::endl;
+
+                if (not quiet)
+                  STD_PRINT("* Resuming " << cfg << std::endl);
+
                 break;
               case CRC_APP:
                 // Ignore 3rd party application lines
@@ -845,9 +853,11 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
                 // Ignore remark lines
                 break;
               default:
-                if(not SwitchCfg(crc, *key, val)) {
-                  if(not ignoreunknown) {
-                    std::cout << "* " << cfgname << ": Unknown keyword \"" << key << "\" at line " << line << "." << std::endl;
+                if (not SwitchCfg(crc, *key, val))
+                {
+                  if (not ignoreunknown)
+                  {
+                    STD_PRINT("* " << cfgname << ": Unknown keyword \"" << key << "\" at line " << line << "." << std::endl);
                     SayBibi();
                     cfgerrors++;
                   }

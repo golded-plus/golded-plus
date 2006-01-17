@@ -27,6 +27,10 @@
 #include <cstring>
 #include <cstdlib>
 #include <gmemdbg.h>
+#if defined(__GOLD_GUI__)
+#include <gvidall.h>
+#include <gvidgui.h>
+#endif
 #undef GCFG_NOPROBOARD
 #include <gedacfg.h>
 #include <gs_pb200.h>
@@ -62,10 +66,10 @@ void gareafile::ReadProBoard(char* tag) {
   Config* cfg = (Config*)throw_calloc(1, sizeof(Config));
   MakePathname(file, path, "config.pro");
   fp = fsopen(file, "rb", sharemode);
-  if(fp) {
-
-    if(not quiet)
-      std::cout << "* Reading " << file << std::endl;
+  if (fp)
+  {
+    if (not quiet)
+      STD_PRINT("* Reading " << file << std::endl);
 
     fread(cfg, sizeof(Config), 1, fp);
 
@@ -78,10 +82,10 @@ void gareafile::ReadProBoard(char* tag) {
   uint akasz = (uint)GetFilesize(file);
   ftn_addr* aka = (ftn_addr*)throw_calloc(1, akasz+sizeof(ftn_addr));
   fp = fsopen(file, "rb", sharemode);
-  if(fp) {
-
-    if(not quiet)
-      std::cout << "* Reading " << file << std::endl;
+  if (fp)
+  {
+    if (not quiet)
+      STD_PRINT("* Reading " << file << std::endl);
 
     fread(aka, akasz, 1, fp);
     fclose(fp);
@@ -90,12 +94,12 @@ void gareafile::ReadProBoard(char* tag) {
   MsgAreas* area = (MsgAreas*)throw_calloc(1, sizeof(MsgAreas));
   MakePathname(file, path, "msgareas.pb");
   fp = fsopen(file, "rb", sharemode);
-  if(fp) {
-
+  if (fp)
+  {
     setvbuf(fp, NULL, _IOFBF, 8192);
 
-    if(not quiet)
-      std::cout << "* Reading " << file << std::endl;
+    if (not quiet)
+      STD_PRINT("* Reading " << file << std::endl);
 
     while(fread(area, sizeof(MsgAreas), 1, fp) == 1) {
       aa.reset();

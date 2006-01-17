@@ -27,6 +27,10 @@
 #include <cstdlib>
 #include <gstrall.h>
 #include <gmemdbg.h>
+#if defined(__GOLD_GUI__)
+#include <gvidall.h>
+#include <gvidgui.h>
+#endif
 #undef GCFG_NOFD
 #include <gedacfg.h>
 #include <gs_fd.h>
@@ -79,10 +83,10 @@ void gareafile::ReadFrontDoor(char* tag) {
     MakePathname(file, fdpath, "setup.fd");
 
   fp = fsopen(file, "rb", sharemode);
-  if(fp) {
-
-    if(not quiet)
-      std::cout << "* Reading " << file << std::endl;
+  if (fp)
+  {
+    if (not quiet)
+      STD_PRINT("* Reading " << file << std::endl);
 
     fread(buf, 5, 1, fp);
     if(streql(buf, "JoHo")) {    // Check to see that it is v1.99b or higher
@@ -117,11 +121,12 @@ void gareafile::ReadFrontDoor(char* tag) {
     MakePathname(file, fdpath, "folder.sys");
 
   fp = fsopen(file, "rb", sharemode);
-  if(fp) {
+  if (fp)
+  {
     setvbuf(fp, NULL, _IOFBF, 8192);
 
-    if(not quiet)
-      std::cout << "* Reading " << file << std::endl;
+    if (not quiet)
+      STD_PRINT("* Reading " << file << std::endl);
 
     while(fread(folder, sizeof(FD_Folder), 1, fp) == 1) {
       behave = folder->behave;

@@ -47,12 +47,13 @@ int ReadHelpCfg(int force) {
     if(ifp) {
       setvbuf(ifp, NULL, _IOFBF, 8192);
       ofp = fsopen(AddPath(CFG->goldpath, CFG->helpged), "wb", CFG->sharemode);
-      if(ofp) {
+      if (ofp)
+      {
         offset = 0L;
         CFG->helpcfg.ft = GetFiletime(AddPath(CFG->goldpath, CFG->helpcfg.fn));
 
-        if(not quiet)
-          std::cout << "* Reading " << AddPath(CFG->goldpath, CFG->helpcfg.fn) << std::endl;
+        if (not quiet)
+          STD_PRINT("* Reading " << AddPath(CFG->goldpath, CFG->helpcfg.fn) << std::endl);
 
         setvbuf(ofp, NULL, _IOFBF, 8192);
 
@@ -640,10 +641,10 @@ void ReadXlatTables() {
         }
         strcpy(buf, AddPath(CFG->xlatpath, xlt->mapfile));
         ifp = fsopen(buf, "rb", CFG->sharemode);
-        if(ifp) {
-
-          if(not quiet)
-            std::cout << "* Reading " << buf << std::endl;
+        if (ifp)
+        {
+          if (not quiet)
+            STD_PRINT("* Reading " << buf << std::endl);
 
           // Read the definition file
           line = 1;
@@ -725,7 +726,7 @@ void ReadXlatTables() {
           fclose(ifp);
         }
         else
-          std::cout << "* XLAT table " << buf << " could not be opened." << std::endl;
+          STD_PRINT("* XLAT table " << buf << " could not be opened." << std::endl);
 
         fwrite(&ChsTable, sizeof(Chs), 1, ofp);
       }
@@ -737,10 +738,10 @@ void ReadXlatTables() {
         memset(&EscTable, 0, sizeof(Esc));
         strcpy(buf, AddPath(CFG->xlatpath, xlt->mapfile));
         ifp = fsopen(buf, "rb", CFG->sharemode);
-        if(ifp) {
-
-          if(not quiet)
-            std::cout << "* Reading " << buf << std::endl;
+        if (ifp)
+        {
+          if (not quiet)
+            STD_PRINT("* Reading " << buf << std::endl);
 
           // Read the definition file
           line = 1;
@@ -804,7 +805,7 @@ void ReadXlatTables() {
           fclose(ifp);
         }
         else
-          std::cout << "* XLAT table " << buf << " could not be opened." << std::endl;
+          STD_PRINT("* XLAT table " << buf << " could not be opened." << std::endl);
 
         fwrite(&EscTable, sizeof(Esc), 1, ofp);
       }

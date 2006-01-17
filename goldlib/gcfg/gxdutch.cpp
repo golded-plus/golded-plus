@@ -26,6 +26,10 @@
 
 #include <cstdlib>
 #include <gstrall.h>
+#if defined(__GOLD_GUI__)
+#include <gvidall.h>
+#include <gvidgui.h>
+#endif
 #undef GCFG_NODUTCHIE
 #include <gedacfg.h>
 
@@ -63,11 +67,12 @@ void gareafile::ReadDutchie(char* tag) {
   MakePathname(file, dupath, "dutchie.are");
 
   fp = fsopen(file, "rb", sharemode);
-  if(fp) {
+  if (fp)
+  {
     setvbuf(fp, NULL, _IOFBF, 8192);
 
-    if(not quiet)
-      std::cout << "* Reading " << file << std::endl;
+    if (not quiet)
+      STD_PRINT("* Reading " << file << std::endl);
 
     while(fgets(buf, 255, fp)) {
 

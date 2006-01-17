@@ -27,6 +27,10 @@
 #include <cstdlib>
 #include <gcrcall.h>
 #include <gstrall.h>
+#if defined(__GOLD_GUI__)
+#include <gvidall.h>
+#include <gvidgui.h>
+#endif
 #undef GCFG_NOCMAIL
 #include <gedacfg.h>
 
@@ -76,11 +80,12 @@ bool gareafile::jbstrcpy(char *dest, char *src, size_t maxlen, size_t *jbc) {
 void gareafile::ReadCrashmailCfg(const char* file) {
 
   FILE* fp = fsopen(file, "rt", sharemode);
-  if(fp) {
+  if (fp)
+  {
     setvbuf(fp, NULL, _IOFBF, 8192);
 
-    if(not quiet)
-      std::cout << "* Reading " << file << std::endl;
+    if (not quiet)
+      STD_PRINT("* Reading " << file << std::endl);
 
     char buf[4000];
     char key[30];

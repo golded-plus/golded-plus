@@ -27,6 +27,10 @@
 #include <cstdlib>
 #include <gmemdbg.h>
 #include <gstrall.h>
+#if defined(__GOLD_GUI__)
+#include <gvidall.h>
+#include <gvidgui.h>
+#endif
 #undef GCFG_NOFMAIL
 #include <gedacfg.h>
 #include <gs_fm116.h>
@@ -298,11 +302,11 @@ void gareafile::ReadFMail(char* tag) {
         ReadFMail098(fp, path, file, options);
       else if((ar_rev >= 0x0110) and (ar_rev < 0x0200))
         ReadFMail116(fp, path, file, options);
-      else {
+      else
+      {
         char buff[56+sizeof(uint)*2];
         sprintf(buff, "* Error: Unknown FMail config revision %04Xh - Skipping.\n", ar_rev);
-        std::cout << buff;
-//        std::cout << "* Error: Unknown FMail config revision " << std::setfill('0') << std::setw(4) << std::hex << ar_rev << "h - Skipping." << std::endl;
+        STD_PRINT(buff);
       }
     }
   }

@@ -30,6 +30,10 @@
 #include <gfilutil.h>
 #include <gdirposx.h>
 #include <gwildmat.h>
+#if defined(__GOLD_GUI__)
+#include <gvidall.h>
+#include <gvidgui.h>
+#endif
 #undef GCFG_NOOPUS
 #include <gedacfg.h>
 #undef _NORMAL
@@ -75,11 +79,12 @@ void gareafile::ReadOpus(char* tag) {
     // Found Opus 1.7x config files
 
     fp = fsopen(file, "rb", sharemode);
-    if(fp) {
+    if (fp)
+    {
       setvbuf(fp, NULL, _IOFBF, 8192);
 
-      if(not quiet)
-        std::cout << "* Reading " << file << std::endl;
+      if (not quiet)
+        STD_PRINT("* Reading " << file << std::endl);
 
       while(fread(&msgsys, sizeof(_msgsys), 1, fp) == 1) {
 
@@ -131,11 +136,12 @@ void gareafile::ReadOpus(char* tag) {
 
         MakePathname(file, oppath, de->name.c_str());
         fp = fsopen(file, "rb", sharemode);
-        if(fp) {
+        if (fp)
+        {
           setvbuf(fp, NULL, _IOFBF, 8192);
 
-          if(not quiet)
-            std::cout << "* Reading " << file << std::endl;
+          if (not quiet)
+            STD_PRINT("* Reading " << file << std::endl);
 
           fread(&sysdat, sizeof(_systemdat), 1, fp);
           if(*sysdat.msgpath and *sysdat.msgtitle) {

@@ -28,6 +28,10 @@
 #include <cstdlib>
 #include <gmemdbg.h>
 #include <gfile.h>
+#if defined(__GOLD_GUI__)
+#include <gvidall.h>
+#include <gvidgui.h>
+#endif
 #undef GCFG_NOINTERMAIL
 #include <gedacfg.h>
 #include <gs_inter.h>
@@ -64,12 +68,12 @@ void gareafile::ReadInterMail(char* tag) {
 
   gfile fp;
   fp.fopen(_file, "rb");
-  if(fp.isopen()) {
-
+  if (fp.isopen())
+  {
     _ctl* ctl = (_ctl*)throw_calloc(1, sizeof(_ctl));
 
-    if(not quiet)
-      std::cout << "* Reading " << _file << std::endl;
+    if (not quiet)
+      STD_PRINT("* Reading " << _file << std::endl);
 
     fp.fread(ctl, sizeof(_ctl));
 
@@ -133,10 +137,10 @@ void gareafile::ReadInterMail(char* tag) {
 
         _file = AddPath(ctl->s.systempath, "imfolder.cfg");
         fp.fopen(_file, "rb");
-        if(fp.isopen()) {
-
-          if(not quiet)
-            std::cout << "* Reading " << _file << std::endl;
+        if (fp.isopen())
+        {
+          if (not quiet)
+            STD_PRINT("* Reading " << _file << std::endl);
 
           FOLDER* _folder = (FOLDER*)throw_calloc(1, sizeof(FOLDER));
 
@@ -177,10 +181,10 @@ void gareafile::ReadInterMail(char* tag) {
 
         _file = AddPath(ctl->s.systempath, "folder.cfg");
         fp.fopen(_file, "rb");
-        if(fp.isopen()) {
-
-          if(not quiet)
-            std::cout << "* Reading " << _file << std::endl;
+        if (fp.isopen())
+        {
+          if (not quiet)
+            STD_PRINT("* Reading " << _file << std::endl);
 
           OLDFOLDER* _folder = (OLDFOLDER*)throw_calloc(1, sizeof(OLDFOLDER));
 
@@ -216,10 +220,11 @@ void gareafile::ReadInterMail(char* tag) {
         }
       }
     }
-    else {
+    else
+    {
       char buff[62+sizeof(ctl->sysrev)*2];
       sprintf(buff, "* Error: InterMail revision %04Xh is not supported - Skipping.\n", ctl->sysrev);
-      std::cout << buff;
+      STD_PRINT(buff);
     }
     throw_free(ctl);
   }

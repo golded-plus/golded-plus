@@ -27,6 +27,10 @@
 #include <cstdlib>
 #include <gcrcall.h>
 #include <gstrall.h>
+#if defined(__GOLD_GUI__)
+#include <gvidall.h>
+#include <gvidgui.h>
+#endif
 #undef GCFG_NOSYNCHRONET
 #include <gedacfg.h>
 #include <gs_sync.h>
@@ -83,12 +87,12 @@ void gareafile::ReadSynchronet(char* tag) {
   }
 
   FILE* in = fsopen(file, "rb", sharemode);
-  if(in) {
-
+  if (in)
+  {
     setvbuf(in, NULL, _IOFBF, 8192);
 
-    if(not quiet)
-      std::cout << "* Reading " << file << std::endl;
+    if (not quiet)
+      STD_PRINT("* Reading " << file << std::endl);
 
     // Skip header:
     // max_qwkmsgs                  4

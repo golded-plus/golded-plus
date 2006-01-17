@@ -191,13 +191,15 @@ void Cleanup(void) {
   throw_xdelete(gvid);
 
   int smax = MinV((int)GLOG_STORELINES, LOG.storelines);
-  for(int s=0; s<smax; s++)
-    std::cout << LOG.storeline[s] << std::endl;
+  for (int s=0; s<smax; s++)
+    STD_PRINT(LOG.storeline[s] << std::endl);
 
-  if(CFG) {
-    if(LOG.storelines > GLOG_STORELINES)
-      std::cout << "(See also " << CFG->logfile << ")" << std::endl;
-    if(errorlevel > EXIT_NONAME)
+  if (CFG)
+  {
+    if (LOG.storelines > GLOG_STORELINES)
+      STD_PRINT("(See also " << CFG->logfile << ")" << std::endl);
+
+    if (errorlevel > EXIT_NONAME)
       MakeNoise(SND_S_O_S);
 
     CfgReset();

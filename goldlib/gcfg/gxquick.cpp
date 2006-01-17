@@ -27,6 +27,10 @@
 #include <cstdlib>
 #include <gstrall.h>
 #include <gmemdbg.h>
+#if defined(__GOLD_GUI__)
+#include <gvidall.h>
+#include <gvidgui.h>
+#endif
 #undef GCFG_NOQBBS
 #include <gedacfg.h>
 #include <gs_qbbs.h>
@@ -50,10 +54,10 @@ void gareafile::ReadQ260(char* qbpath, char* origin, char* options) {
   MakePathname(file, qbpath, "config.bbs");
 
   fp = fsopen(file, "rb", sharemode);
-  if(fp) {
-
-    if(not quiet)
-      std::cout << "* Reading " << file << std::endl;
+  if (fp)
+  {
+    if (not quiet)
+      STD_PRINT("* Reading " << file << std::endl);
 
     fread(cfg, sizeof(Q260CfgRecT), 1, fp);
 
@@ -138,10 +142,10 @@ void gareafile::ReadQ276(char* qbpath, char* origin, char* options) {
   MakePathname(file, qbpath, "quickcfg.dat");
 
   fp = fsopen(file, "rb", sharemode);
-  if(fp) {
-
-    if(not quiet)
-      std::cout << "* Reading " << file << std::endl;
+  if (fp)
+  {
+    if (not quiet)
+      STD_PRINT("* Reading " << file << std::endl);
 
     fread(cfg, sizeof(Q276CfgRecT), 1, fp);
 
@@ -154,10 +158,10 @@ void gareafile::ReadQ276(char* qbpath, char* origin, char* options) {
   MakePathname(file, qbpath, "MSGCFG.DAT");
 
   fp = fsopen(file, "rb", sharemode);
-  if(fp) {
-
-    if(not quiet)
-      std::cout << "* Reading " << file << std::endl;
+  if (fp)
+  {
+    if (not quiet)
+      STD_PRINT("* Reading " << file << std::endl);
 
     int _recs = (int)(filelength(fileno(fp)) / sizeof(Q276BrdRecT));
 //    int _fmt = (_recs > 200) ? GMB_GOLDBASE : GMB_HUDSON;

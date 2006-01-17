@@ -28,6 +28,10 @@
 #include <cstdlib>
 #include <gfilutil.h>
 #include <gmemdbg.h>
+#if defined(__GOLD_GUI__)
+#include <gvidall.h>
+#include <gvidgui.h>
+#endif
 #undef GCFG_NOFE
 #include <gedacfg.h>
 #include <gs_fech6.h>
@@ -192,10 +196,10 @@ void gareafile::ReadFastecho(char* tag) {
   }
 
   fh = sopen(file, O_RDONLY|O_BINARY, sharemode, S_STDRD);
-  if(fh != -1) {
-
-    if(not quiet)
-      std::cout << "* Reading " << file << std::endl;
+  if (fh != -1)
+  {
+    if (not quiet)
+      STD_PRINT("* Reading " << file << std::endl);
 
     read(fh, &revision, sizeof(revision));
     lseek(fh, 0L, SEEK_SET);  // rewind
@@ -207,7 +211,7 @@ void gareafile::ReadFastecho(char* tag) {
     else if(revision == 6)
       ReadFastecho142(fh);
     else
-      std::cout << "* Error: FastEcho system file revision level " << revision << " is not supported - Skipping." << std::endl;
+      STD_PRINT("* Error: FastEcho system file revision level " << revision << " is not supported - Skipping." << std::endl);
 
     close(fh);
   }

@@ -28,6 +28,10 @@
 #include <gcrcall.h>
 #include <gstrall.h>
 #include <gutlmisc.h>
+#if defined(__GOLD_GUI__)
+#include <gvidall.h>
+#include <gvidgui.h>
+#endif
 #undef GCFG_NOSPCT
 #include <gedacfg.h>
 
@@ -74,11 +78,12 @@ void gareafile::ReadSpaceAr(const char* file) {
   const word CRC_ENDAREA = 0x3E9F;
 
   FILE* fp = fsopen(file, "rb", sharemode);
-  if(fp) {
+  if (fp)
+  {
     setvbuf(fp, NULL, _IOFBF, 8192);
 
-    if(not quiet)
-      std::cout << "* Reading " << file << std::endl;
+    if (not quiet)
+      STD_PRINT("* Reading " << file << std::endl);
 
     char buf[4000];
     AreaCfg aa;
@@ -169,11 +174,12 @@ void gareafile::ReadSpaceNtm(const char* file) {
   const word CRC_ENDNETMAIL = 0xD995;
 
   FILE* fp = fsopen(file, "rb", sharemode);
-  if(fp) {
+  if (fp)
+  {
     setvbuf(fp, NULL, _IOFBF, 8192);
 
-    if(not quiet)
-      std::cout << "* Reading " << file << std::endl;
+    if (not quiet)
+      STD_PRINT("* Reading " << file << std::endl);
 
     char buf[4000];
     AreaCfg aa;
@@ -234,11 +240,12 @@ void gareafile::ReadSpaceCtl(const char* file) {
   const word CRC_AREAFILE = 0xB487;
 
   FILE* fp = fsopen(file, "rb", sharemode);
-  if(fp) {
+  if (fp)
+  {
     setvbuf(fp, NULL, _IOFBF, 8192);
 
-    if(not quiet)
-      std::cout << "* Reading " << file << std::endl;
+    if (not quiet)
+      STD_PRINT("* Reading " << file << std::endl);
 
     char buf[4000];
     AreaCfg aa;

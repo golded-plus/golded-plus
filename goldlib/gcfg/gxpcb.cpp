@@ -28,6 +28,10 @@
 #include <gmemdbg.h>
 #include <gfile.h>
 #include <gstrall.h>
+#if defined(__GOLD_GUI__)
+#include <gvidall.h>
+#include <gvidgui.h>
+#endif
 #undef GCFG_NOPCB
 #include <gedacfg.h>
 #include <gs_pcb.h>
@@ -83,10 +87,10 @@ void gareafile::ReadPCBoard(char* tag) {
   gfile fp;
   const char* _file = AddPath(_path, "pcboard.dat");
   fp.fopen(_file, "rt");
-  if(fp.isopen()) {
-
-    if(not quiet)
-      std::cout << "* Reading " << _file << std::endl;
+  if (fp.isopen())
+  {
+    if (not quiet)
+      STD_PRINT("* Reading " << _file << std::endl);
 
     int _line = 0;
 
@@ -114,10 +118,10 @@ void gareafile::ReadPCBoard(char* tag) {
     if(*_fidopath) {
       const char* _file = AddPath(_fidopath, "pcbfido.cfg");
       fp.fopen(_file, "rb");
-      if(fp.isopen()) {
-
-        if(not quiet)
-          std::cout << "* Reading " << _file << std::endl;
+      if (fp.isopen())
+      {
+        if (not quiet)
+          STD_PRINT("* Reading " << _file << std::endl);
 
         // Get configuration file version
         fp.fread(&fido_version, 2);
@@ -161,9 +165,11 @@ void gareafile::ReadPCBoard(char* tag) {
 
           _file = AddPath(_fidopath, "areas.dat");
           fp.fopen(_file, "rb");
-          if(fp.isopen()) {
-            if(not quiet)
-              std::cout << "* Reading " << _file << std::endl;
+          if (fp.isopen())
+          {
+            if (not quiet)
+              STD_PRINT("* Reading " << _file << std::endl);
+
             word cfgver = 0;
             fp.fread(&cfgver, 2);
             if(cfgver == 3) {
@@ -177,9 +183,11 @@ void gareafile::ReadPCBoard(char* tag) {
 
           _file = AddPath(_fidopath, "akas.dat");
           fp.fopen(_file, "rb");
-          if(fp.isopen()) {
-            if(not quiet)
-              std::cout << "* Reading " << _file << std::endl;
+          if (fp.isopen())
+          {
+            if (not quiet)
+              STD_PRINT("* Reading " << _file << std::endl);
+
             word cfgver = 0;
             fp.fread(&cfgver, 2);
             if(cfgver == 3) {
@@ -199,9 +207,11 @@ void gareafile::ReadPCBoard(char* tag) {
 
           _file = AddPath(_fidopath, "origins.dat");
           fp.fopen(_file, "rb");
-          if(fp.isopen()) {
-            if(not quiet)
-              std::cout << "* Reading " << _file << std::endl;
+          if (fp.isopen())
+          {
+            if (not quiet)
+              STD_PRINT("* Reading " << _file << std::endl);
+
             word cfgver = 0;
             fp.fread(&cfgver, 2);
             if(cfgver == 3) {
@@ -246,18 +256,18 @@ void gareafile::ReadPCBoard(char* tag) {
 
     _file = AddPath(_cnamespath, ".@@@");
     fp.fopen(_file, "rb");
-    if(fp.isopen()) {
-
-      if(not quiet)
-        std::cout << "* Reading " << _file << std::endl;
+    if (fp.isopen())
+    {
+      if (not quiet)
+        STD_PRINT("* Reading " << _file << std::endl);
 
       gfile fp2;
       _file = AddPath(_cnamespath, ".add");
       fp2.fopen(_file, "rb");
-      if(fp2.isopen()) {
-
-        if(not quiet)
-          std::cout << "* Reading " << _file << std::endl;
+      if (fp2.isopen())
+      {
+        if (not quiet)
+          STD_PRINT("* Reading " << _file << std::endl);
 
         word _recsize = 0;
         fp.fread(&_recsize, 2);

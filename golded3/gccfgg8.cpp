@@ -638,8 +638,10 @@ void CfgXlatexport() {
     CFG->grp.AddItm(GRP_XLATEXPORT, buf, strlen(buf)+1);
   else
     strcpy(CFG->xlatexport, buf);
-  if(CFG->usecharset and (strieql(buf, "IBMPC") or strieql(buf, "+7_FIDO"))) {
-    std::cout << "* Warning: Charset " << buf << " is obsolete. Consider using CPxxx form." << std::endl;
+
+  if (CFG->usecharset and (strieql(buf, "IBMPC") or strieql(buf, "+7_FIDO")))
+  {
+    STD_PRINT("* Warning: Charset " << buf << " is obsolete. Consider using CPxxx form." << std::endl);
     cfgerrors++;
   }
 }
@@ -661,8 +663,10 @@ void CfgXlatimport() {
 void CfgXlatlocalset() {
 
   strupr(strxcpy(CFG->xlatlocalset, val, sizeof(CFG->xlatlocalset)));
-  if(CFG->usecharset and (strieql(CFG->xlatlocalset, "IBMPC") or strieql(CFG->xlatlocalset, "+7_FIDO"))) {
-    std::cout << "* Warning: Charset " << CFG->xlatlocalset << " is obsolete. Consider using CPxxx form." << std::endl;
+
+  if (CFG->usecharset and (strieql(CFG->xlatlocalset, "IBMPC") or strieql(CFG->xlatlocalset, "+7_FIDO")))
+  {
+    STD_PRINT("* Warning: Charset " << CFG->xlatlocalset << " is obsolete. Consider using CPxxx form." << std::endl);
     cfgerrors++;
   }
 }

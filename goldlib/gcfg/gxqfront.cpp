@@ -27,6 +27,10 @@
 #include <cstdlib>
 #include <gmemdbg.h>
 #include <gstrall.h>
+#if defined(__GOLD_GUI__)
+#include <gvidall.h>
+#include <gvidgui.h>
+#endif
 #undef GCFG_NOQFRONT
 #include <gedacfg.h>
 #include <gs_qfrnt.h>
@@ -62,9 +66,11 @@ void gareafile::ReadQFront(char* tag) {
   OriginLineRecord* origin = (OriginLineRecord*)throw_calloc(1, sizeof(OriginLineRecord));
   MakePathname(file, path, "qorigin.dat");
   fp = fsopen(file, "rb", sharemode);
-  if(fp) {
-    if(not quiet)
-      std::cout << "* Reading " << file << std::endl;
+  if (fp)
+  {
+    if (not quiet)
+      STD_PRINT("* Reading " << file << std::endl);
+
     fread(origin, sizeof(OriginLineRecord), 1, fp);
     for(int n=0; n<MaxOrigins; n++)
       STRNP2C(origin->OriginLine[n]);
@@ -74,12 +80,12 @@ void gareafile::ReadQFront(char* tag) {
   EchoMailConferenceRecord* area = (EchoMailConferenceRecord*)throw_calloc(1, sizeof(EchoMailConferenceRecord));
   MakePathname(file, path, "qechos.dat");
   fp = fsopen(file, "rb", sharemode);
-  if(fp) {
-
+  if (fp)
+  {
     setvbuf(fp, NULL, _IOFBF, 8192);
 
-    if(not quiet)
-      std::cout << "* Reading " << file << std::endl;
+    if (not quiet)
+      STD_PRINT("* Reading " << file << std::endl);
 
     while(fread(area, sizeof(EchoMailConferenceRecord), 1, fp) == 1) {
       if(not area->Deleted) {

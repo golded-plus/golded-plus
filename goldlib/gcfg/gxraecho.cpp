@@ -26,6 +26,10 @@
 
 #include <cstdlib>
 #include <gstrall.h>
+#if defined(__GOLD_GUI__)
+#include <gvidall.h>
+#include <gvidgui.h>
+#endif
 #undef GCFG_NORAECHO
 #include <gedacfg.h>
 #include <gs_recho.h>
@@ -74,19 +78,21 @@ void gareafile::ReadRaEcho(char* tag) {
     else if((raesize%(long)sizeof(TRaEchoArea101)) == 0)
       raever = sizeof(TRaEchoArea101);
   }
-  if(raever == 0) {
-    if(not quiet)
-      std::cout << "* Could not determine version of RA-ECHO - skipping." << std::endl;
+  if (raever == 0)
+  {
+    if (not quiet)
+      STD_PRINT("* Could not determine version of RA-ECHO - skipping." << std::endl);
+
     return;
   }
 
   fp = fsopen(file, "rb", sharemode);
-  if(fp) {
-
+  if (fp)
+  {
     setvbuf(fp, NULL, _IOFBF, 8192);
 
-    if(not quiet)
-      std::cout << "* Reading " << file << std::endl;
+    if (not quiet)
+      STD_PRINT("* Reading " << file << std::endl);
 
     areano = 1;
     while(fread(&area, raever, 1, fp) == 1) {

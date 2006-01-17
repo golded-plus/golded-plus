@@ -28,6 +28,10 @@
 #include <gmemdbg.h>
 #include <gfile.h>
 #include <gstrall.h>
+#if defined(__GOLD_GUI__)
+#include <gvidall.h>
+#include <gvidgui.h>
+#endif
 #undef GCFG_NOLORA
 #include <gedacfg.h>
 #include <gs_lo240.h>
@@ -65,10 +69,10 @@ void gareafile::ReadLoraBBS(char* tag) {
   gfile fp;
   const char* _file = AddPath(_path, "config.dat");
   fp.fopen(_file, "rb");
-  if(fp.isopen()) {
-
-    if(not quiet)
-      std::cout << "* Reading " << _file << std::endl;
+  if (fp.isopen())
+  {
+    if (not quiet)
+      STD_PRINT("* Reading " << _file << std::endl);
 
     _configuration* cfg = (_configuration*)throw_calloc(1, sizeof(_configuration));
     fp.fread(cfg, sizeof(_configuration));
@@ -131,11 +135,12 @@ void gareafile::ReadLoraBBS(char* tag) {
 
     _file = AddPath(_path, "sysmsg.dat");
     fp.fopen(_file, "rb");
-    if(fp.isopen()) {
+    if (fp.isopen())
+    {
       fp.setvbuf(NULL, _IOFBF, 8192);
 
-      if(not quiet)
-        std::cout << "* Reading " << _file << std::endl;
+      if (not quiet)
+        STD_PRINT("* Reading " << _file << std::endl);
 
       _sysmsg* sysmsg = (_sysmsg*)throw_calloc(1, sizeof(_sysmsg));
 

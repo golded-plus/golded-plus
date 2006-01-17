@@ -27,6 +27,10 @@
 #include <cstdlib>
 #include <gstrall.h>
 #include <gmemdbg.h>
+#if defined(__GOLD_GUI__)
+#include <gvidall.h>
+#include <gvidgui.h>
+#endif
 #undef GCFG_NOSBBS
 #include <gedacfg.h>
 #include <gs_sbbs.h>
@@ -73,10 +77,10 @@ void gareafile::ReadSuperBBS(char* tag) {
 
   MakePathname(file, sbpath, "config.bbs");
   fp = fsopen(file, "rb", sharemode);
-  if(fp) {
-
-    if(not quiet)
-      std::cout << "* Reading " << file << std::endl;
+  if (fp)
+  {
+    if (not quiet)
+      STD_PRINT("* Reading " << file << std::endl);
 
     fread(config, sizeof(ConfigRecordT), 1, fp);
     STRNP2C(config->OriginLine);
@@ -84,10 +88,10 @@ void gareafile::ReadSuperBBS(char* tag) {
 
     MakePathname(file, sbpath, "sconfig.bbs");
     fp = fsopen(file, "rb", sharemode);
-    if(fp) {
-
-      if(not quiet)
-        std::cout << "* Reading " << file << std::endl;
+    if (fp)
+    {
+      if (not quiet)
+        STD_PRINT("* Reading " << file << std::endl);
 
       fread(sconfig, sizeof(ExtraConfigT), 1, fp);
       fclose(fp);
@@ -100,10 +104,10 @@ void gareafile::ReadSuperBBS(char* tag) {
 
         MakePathname(file, sbpath, "boards.bbs");
         fp = fsopen(file, "rb", sharemode);
-        if(fp) {
-
-          if(not quiet)
-            std::cout << "* Reading " << file << std::endl;
+        if (fp)
+        {
+          if (not quiet)
+            STD_PRINT("* Reading " << file << std::endl);
 
           for(int n=0; n<200; n++) {
 
@@ -170,10 +174,8 @@ void gareafile::ReadSuperBBS(char* tag) {
           fclose(fp);
         }
       }
-      else {
-        std::cout << "* Error: Unsupported version of SuperBBS: " <<
-          (word)(sconfig->VersionNumber >> 8) << '.' << (word)(sconfig->VersionNumber & 0xFF) << std::endl;
-      }
+      else
+        STD_PRINT("* Error: Unsupported version of SuperBBS: " << (word)(sconfig->VersionNumber >> 8) << '.' << (word)(sconfig->VersionNumber & 0xFF) << std::endl);
     }
   }
 

@@ -27,6 +27,10 @@
 #include <cstdlib>
 #include <gmemdbg.h>
 #include <gstrall.h>
+#if defined(__GOLD_GUI__)
+#include <gvidall.h>
+#include <gvidgui.h>
+#endif
 #undef GCFG_NORA
 #include <gedacfg.h>
 #include <gs_ra.h>
@@ -72,10 +76,10 @@ void gareafile::ReadRemoteAccess(char* tag) {
     MakePathname(file, rapath, "config.ra");
 
     fp = fsopen(file, "rb", sharemode);
-    if(fp) {
-
-      if(not quiet)
-        std::cout << "* Reading " << file << std::endl;
+    if (fp)
+    {
+      if (not quiet)
+        STD_PRINT("* Reading " << file << std::endl);
 
       fread(config, sizeof(CONFIGrecord), 1, fp);
       fclose(fp);
@@ -94,11 +98,12 @@ void gareafile::ReadRemoteAccess(char* tag) {
         strnp2cc(rapath, config->SysPath, sizeof(Path));
 
     fp = fsopen(file, "rb", sharemode);
-    if(fp) {
+    if (fp)
+    {
       setvbuf(fp, NULL, _IOFBF, 8192);
 
-      if(not quiet)
-        std::cout << "* Reading " << file << std::endl;
+      if (not quiet)
+        STD_PRINT("* Reading " << file << std::endl);
 
       if(config->VersionID >= 0x200) {
         MESSAGErecord* area = new MESSAGErecord; throw_new(area);

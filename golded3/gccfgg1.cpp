@@ -36,12 +36,12 @@ extern char* val;
 //  ------------------------------------------------------------------
 
 void CfgAddress()  { CfgAddress(val); }
-void CfgAddress(char* v) {
-
-  if(not strblank(v)) {
-
-    if(veryverbose)
-      std::cout << "  CfgAddress(" << v << ")" << std::endl;
+void CfgAddress(char* v)
+{
+  if (not strblank(v))
+  {
+    if (veryverbose)
+      STD_PRINT("  CfgAddress(" << v << ")" << std::endl);
 
     gaka aka;
     aka.domain[0] = NUL;

@@ -80,10 +80,10 @@ static void InitCmdline(char* val) {
       val = key+1;
     switch(g_toupper(*key)) {
       case 'C':                   // Use another Configfile
-        if(*val)
+        if (*val)
           strcpy(cmdlinecfg, val);
         else
-          std::cout << "Warning: configuration filename missed for -C option, ignored.\r\n";
+          STD_PRINT("Warning: configuration filename missed for -C option, ignored.\r\n");
         break;
       case 'D':
         cmdlineoldkeyw = (*val == '-');
@@ -150,8 +150,9 @@ static void InitCmdline(char* val) {
         break;
       case 'Z':
         gftrk_set_max = atoi(val);
-        if(gftrk_set_max == 0) {
-          std::cout << "Warning: Invalid parameter for -Z option, fixed.\r\n";
+        if (gftrk_set_max == 0)
+        {
+          STD_PRINT("Warning: Invalid parameter for -Z option, fixed.\r\n");
           gftrk_set_max = 1;
         }
         break;
@@ -519,7 +520,7 @@ void Initialize(int argc, char* argv[]) {
   srand(gtime(NULL));
 
   // Display startup banner
-  std::cout << __gver_longpid__ << " " << __gver_ver__ << "\r\n";
+  STD_PRINT(__gver_longpid__ << " " << __gver_ver__ << "\r\n");
 
   // Check environment commandline
   ptr = getenv("GEDCMD");
@@ -559,34 +560,34 @@ void Initialize(int argc, char* argv[]) {
   }
 
   // Print commandline help and exit if requested
-  if(cmdlinehelp) {
-    std::cout <<
-       "Copyright (C) 1990-2005 Odinn Sorensen, Alexander Aganichev, Jacobo Tarrio,\r\n"
-       "                        Stas Degteff and others\r\n"
-       "-------------------------------------------------------------------------------\r\n"
-       "\r\n"
-       "Invocation: " << argv[0] << " [-options] [keystacking]\r\n"
-       "\r\n"
-       "-C<configfile>  Use a different configuration file.\r\n"
-       "-D              Disable old obsolete configuration keywords.\r\n"
-       "-E<echoid>      Start directly in the specified mail area.\r\n"
-       "-EXPORTSOUP     Export SOUP packets during startup.\r\n"
-       "-F  or  -FF     Force recompile of most (or all with -FF) configuration files.\r\n"
-       "-INSTALL[=path] Start the quick install procedure. Look in path, if given.\r\n"
-       "-IMPORTSOUP     Import SOUP packets during startup.\r\n"
-       "-M              Mute sounds. Disables all noises in GoldED+.\r\n"
-       "-N              Disable share-compatible file opens during startup.\r\n"
-       "-NOSCAN         Temporarily disable area scan during startup.\r\n"
-       #if defined(GUTLOS_FUNCS) && !defined(__MSDOS__)
-       "-P              Increase program priority to run faster.\r\n"
-       #endif
-       "-S<sortspec>    Sorts all mail areas according to the sort specs.\r\n"
-       "-T<seconds>     Set a timeout value. GoldED+ will auto-exit after timeout.\r\n"
-       "-V  or  -VV     Verbose or Very verbose (-VV) config compile. Use -VV to debug.\r\n"
-       "-W              Write a GOLDAREA.INC file with AREADEF's of all mail areas.\r\n"
-       "-X,  -Y,  -Z    Reserved for debugging purposes.\r\n"
-       "\r\n"
-       "Any non-option parameter is stuffed into the keyboard buffer.\r\n" ;
+  if (cmdlinehelp)
+  { 
+    STD_PRINT("Copyright (C) 1990-2005 Odinn Sorensen, Alexander Aganichev, Jacobo Tarrio,\r\n");
+    STD_PRINT("                        Stas Degteff and others\r\n");
+    STD_PRINT("-------------------------------------------------------------------------------\r\n");
+    STD_PRINT("\r\n");
+    STD_PRINT("Invocation: " << argv[0] << " [-options] [keystacking]\r\n");
+    STD_PRINT("\r\n");
+    STD_PRINT("-C<configfile>  Use a different configuration file.\r\n");
+    STD_PRINT("-D              Disable old obsolete configuration keywords.\r\n");
+    STD_PRINT("-E<echoid>      Start directly in the specified mail area.\r\n");
+    STD_PRINT("-EXPORTSOUP     Export SOUP packets during startup.\r\n");
+    STD_PRINT("-F  or  -FF     Force recompile of most (or all with -FF) configuration files.\r\n");
+    STD_PRINT("-INSTALL[=path] Start the quick install procedure. Look in path, if given.\r\n");
+    STD_PRINT("-IMPORTSOUP     Import SOUP packets during startup.\r\n");
+    STD_PRINT("-M              Mute sounds. Disables all noises in GoldED+.\r\n");
+    STD_PRINT("-N              Disable share-compatible file opens during startup.\r\n");
+    STD_PRINT("-NOSCAN         Temporarily disable area scan during startup.\r\n");
+#if defined(GUTLOS_FUNCS) && !defined(__MSDOS__)
+    STD_PRINT("-P              Increase program priority to run faster.\r\n");
+#endif
+    STD_PRINT("-S<sortspec>    Sorts all mail areas according to the sort specs.\r\n");
+    STD_PRINT("-T<seconds>     Set a timeout value. GoldED+ will auto-exit after timeout.\r\n");
+    STD_PRINT("-V  or  -VV     Verbose or Very verbose (-VV) config compile. Use -VV to debug.\r\n");
+    STD_PRINT("-W              Write a GOLDAREA.INC file with AREADEF's of all mail areas.\r\n");
+    STD_PRINT("-X,  -Y,  -Z    Reserved for debugging purposes.\r\n");
+    STD_PRINT("\r\n");
+    STD_PRINT("Any non-option parameter is stuffed into the keyboard buffer.\r\n");
 
     exit(0);
   }
@@ -678,8 +679,9 @@ void Initialize(int argc, char* argv[]) {
   if(cmdlineinstall)
     InstallDetect(cmdlineinstpath);
 
-  if(not fexist(CFG->goldcfg)) {
-    std::cout << "*** Cannot start: " << CFG->goldcfg << " not found! ***\r\n";
+  if (not fexist(CFG->goldcfg))
+  {
+    STD_PRINT("*** Cannot start: " << CFG->goldcfg << " not found! ***\r\n");
     errorlevel = EXIT_NONAME;
     exit(0);
   }
@@ -688,13 +690,12 @@ void Initialize(int argc, char* argv[]) {
   compiled = ReadGoldedCfg(cmdlineforce);
 
   // Call install finish procedure
-  if(cmdlineinstall) {
-    if(InstallFinish()) {
-      std::cout << "*** INSTALL NOT COMPLETED ***\r\n";
-      remove(CFG->goldcfg);
-      errorlevel = EXIT_NONAME;
-      exit(0);
-    }
+  if (cmdlineinstall && InstallFinish())
+  {
+    STD_PRINT("*** INSTALL NOT COMPLETED ***\r\n");
+    remove(CFG->goldcfg);
+    errorlevel = EXIT_NONAME;
+    exit(0);
   }
 
   HeaderView = new GMsgHeaderView;
@@ -739,14 +740,12 @@ void Initialize(int argc, char* argv[]) {
     gkbd.extkbd = CFG->switches.get(keybext);
 
   // Report detected multitasker
-  if(not quiet) {
-    if(gmtsk.detected)
-      std::cout << "* Running under " << gmtsk.name << ".\r\n";
-  }
+  if (!quiet && gmtsk.detected)
+    STD_PRINT("* Running under " << gmtsk.name << ".\r\n");
 
-  if(cfgerrors) {
-    std::cout << "* Total CFG errors found: " << cfgerrors
-         << ". Press almost any key to continue.\r\n";
+  if (cfgerrors)
+  {
+    STD_PRINT("* Total CFG errors found: " << cfgerrors << ". Press almost any key to continue.\r\n");
     kbclear();
     waitkey();
   }

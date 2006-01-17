@@ -146,14 +146,15 @@ void AddNewArea(AreaCfg& aa) {
 //  ------------------------------------------------------------------
 //  Add or update area data
 
-void AreaList::AddNewArea(AreaCfg* aa) {
-
-  if(veryverbose) {
+void AreaList::AddNewArea(AreaCfg* aa)
+{
+  if (veryverbose)
+  {
     std::string temp;
-    std::cout << "  fmt=" << aa->basetype << ", eid=\"" << aa->echoid <<
-         "\", pth=\"" << aa->path << "\", brd=" << aa->board <<
-         ", gid=" << aa->groupid << ", aka=" << aa->aka.make_string(temp);
-    std::cout << " " << aa->attr.make_string(temp) << std::endl;
+    STD_PRINT("  fmt=" << aa->basetype << ", eid=\"" << aa->echoid);
+    STD_PRINT("\", pth=\"" << aa->path << "\", brd=" << aa->board);
+    STD_PRINT(", gid=" << aa->groupid << ", aka=" << aa->aka.make_string(temp));
+    STD_PRINT(" " << aa->attr.make_string(temp) << std::endl);
   }
 
   Desc desc;
@@ -847,8 +848,8 @@ void AreaList::ReadEcholist(char* val) {
       else
         tok = getkeyval;
 
-      if(not quiet)
-        std::cout << "* Reading " << file << std::endl;
+      if (not quiet)
+        STD_PRINT("* Reading " << file << std::endl);
 
       while(fgets((val=buf), sizeof(buf), fp)) {
 

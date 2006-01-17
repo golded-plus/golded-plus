@@ -27,6 +27,10 @@
 #include <cstdlib>
 #include <gstrall.h>
 #include <gmemdbg.h>
+#if defined(__GOLD_GUI__)
+#include <gvidall.h>
+#include <gvidgui.h>
+#endif
 #undef GCFG_NOWATERGATE
 #include <gedacfg.h>
 #include <gs_wtr.h>
@@ -104,11 +108,12 @@ void gareafile::ReadWtrGteFile(char* options, FILE* fp) {
   
   MakePathname(file, c.systemdir, "areabase.tdb");
   fp2 = fsopen(file, "rb", sharemode);
-  if(fp2) {
+  if (fp2)
+  {
     char header[26];
     
-    if(not quiet)
-      std::cout << "* Reading " << file << std::endl;
+    if (not quiet)
+      STD_PRINT("* Reading " << file << std::endl);
 
     fread(header, 26, 1, fp2);
     strp2c(header);
@@ -145,7 +150,7 @@ void gareafile::ReadWtrGteFile(char* options, FILE* fp) {
       throw_delete(ar);
     }
     else
-      std::cout << "* Error: WaterGate Areabase \"" << header << "\" is not supported - Skipping." << std::endl;
+      STD_PRINT("* Error: WaterGate Areabase \"" << header << "\" is not supported - Skipping." << std::endl);
 
     fclose(fp2);
   }
@@ -184,16 +189,18 @@ void gareafile::ReadWtrGte(char* tag) {
 
   MakePathname(file, wtrpath, "wtrcfg.tdb");
   fp = fsopen(file, "rb", sharemode);
-  if(fp) {
+  if (fp)
+  {
+    if (not quiet)
+      STD_PRINT("* Reading " << file << std::endl);
+
     char header[26];
-    if(not quiet)
-      std::cout << "* Reading " << file << std::endl;
     fread(header, 26, 1, fp); strp2c(header);
     
     if(streql(header, ConfigHeader))
       ReadWtrGteFile(options, fp);
     else
-      std::cout << "* Error: WaterGate \"" << header << "\" is not supported - Skipping." << std::endl;
+      STD_PRINT("* Error: WaterGate \"" << header << "\" is not supported - Skipping." << std::endl);
       
     fclose(fp);
   }

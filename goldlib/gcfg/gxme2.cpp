@@ -25,6 +25,10 @@
 //  ------------------------------------------------------------------
 
 #include <gstrall.h>
+#if defined(__GOLD_GUI__)
+#include <gvidall.h>
+#include <gvidgui.h>
+#endif
 #undef GCFG_NOME2
 #include <gedacfg.h>
 
@@ -56,11 +60,12 @@ void gareafile::ReadME2(char* tag) {
       MakePathname(file, areapath, file);
 
       fp = fsopen(file, "rt", sharemode);
-      if(fp) {
+      if (fp)
+      {
         setvbuf(fp, NULL, _IOFBF, 8192);
 
-        if(not quiet)
-          std::cout << "* Reading " << file << std::endl;
+        if (not quiet)
+          STD_PRINT("* Reading " << file << std::endl);
 
         while(fgets(buf, 255, fp)) {
 

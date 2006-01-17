@@ -28,6 +28,10 @@
 #include <cstdlib>
 #include <gmemdbg.h>
 #include <gstrall.h>
+#if defined(__GOLD_GUI__)
+#include <gvidall.h>
+#include <gvidgui.h>
+#endif
 #include <gedacfg.h>
 
 
@@ -329,11 +333,12 @@ void gareafile::GetAreasBBS(char* name, char* origin, char* options) {
   MakePathname(areafile, areapath, areafile);
 
   fp = fsopen(areafile, "rt", sharemode);
-  if(fp) {
+  if (fp)
+  {
     setvbuf(fp, NULL, _IOFBF, 8192);
 
-    if(not quiet)
-      std::cout << "* Reading " << areafile << std::endl;
+    if (not quiet)
+      STD_PRINT("* Reading " << areafile << std::endl);
 
     bool firstline = true;
 

@@ -27,6 +27,10 @@
 #include <cstdlib>
 #include <gstrall.h>
 #include <gmemdbg.h>
+#if defined(__GOLD_GUI__)
+#include <gvidall.h>
+#include <gvidgui.h>
+#endif
 #undef GCFG_NOTOSSCAN
 #include <gedacfg.h>
 #include <gs_fd.h>      // Structures for FrontDoor fd.sys+folder.sys / setup.fd+folder.fd
@@ -78,10 +82,10 @@ void gareafile::ReadTosScan(char* tag) {
       MakePathname(file, tspath, "fd.sys");
 
     fp = fsopen(file, "rb", sharemode);
-    if(fp) {
-
-      if(not quiet)
-        std::cout << "* Reading " << file << std::endl;
+    if (fp)
+    {
+      if (not quiet)
+        STD_PRINT("* Reading " << file << std::endl);
 
       fread(buf, 5, 1, fp);
       if(streql(buf, "JoHo")) {   // Check to see that it is v1.99b or higher
@@ -111,11 +115,12 @@ void gareafile::ReadTosScan(char* tag) {
     MakePathname(file, tspath, "areafile.fd");
 
     fp = fsopen(file, "rb", sharemode);
-    if(fp) {
+    if (fp)
+    {
       setvbuf(fp, NULL, _IOFBF, 8192);
 
-      if(not quiet)
-        std::cout << "* Reading " << file << std::endl;
+      if (not quiet)
+        STD_PRINT("* Reading " << file << std::endl);
 
       fseek(fp, 4L, SEEK_SET);  // Skip CRC32
 

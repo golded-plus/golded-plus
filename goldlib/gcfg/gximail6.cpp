@@ -31,6 +31,10 @@
 
 #include <stdlib.h>
 #include <gstrall.h>
+#if defined(__GOLD_GUI__)
+#include <gvidall.h>
+#include <gvidgui.h>
+#endif
 #undef GCFG_NOIMAIL
 #include <gedacfg.h>
 
@@ -54,10 +58,10 @@ void gareafile::ReadIMail185(char* options, char* file, char* impath) {
   CF = new im_config_type; throw_new(CF);
 
   fp = fsopen(file, "rb", sharemode);
-  if(fp) {
-
-    if(not quiet)
-      std::cout << "* Reading " << file << std::endl;
+  if (fp)
+  {
+    if (not quiet)
+      STD_PRINT("* Reading " << file << std::endl);
 
     fread(CF, sizeof(im_config_type), 1, fp);
     fclose(fp);
@@ -81,11 +85,12 @@ void gareafile::ReadIMail185(char* options, char* file, char* impath) {
     MakePathname(file, impath, "imail.ar");
 
     fp = fsopen(file, "rb", sharemode);
-    if(fp) {
+    if (fp)
+    {
       setvbuf(fp, NULL, _IOFBF, 8192);
 
-      if(not quiet)
-        std::cout << "* Reading " << file << std::endl;
+      if (not quiet)
+        STD_PRINT("* Reading " << file << std::endl);
 
       while(fread(&AR, sizeof(mail_area_type), 1, fp) == 1) {
 
@@ -112,10 +117,11 @@ void gareafile::ReadIMail185(char* options, char* file, char* impath) {
 
             case MSGTYPE_HUDSON:
               aa.basetype = "HUDSON";
-              if((AR.brd >= 1) and (AR.brd <= 200))
+              if ((AR.brd >= 1) and (AR.brd <= 200))
                 aa.board = AR.brd;
-              else {
-                std::cout << "* Warning: Invalid board " << AR.brd << " (" << AR.aname << ") in IMAIL.AR - Skipping." << std::endl;
+              else
+              {
+                STD_PRINT("* Warning: Invalid board " << AR.brd << " (" << AR.aname << ") in IMAIL.AR - Skipping." << std::endl);
                 continue;
               }
               break;
@@ -219,11 +225,9 @@ void gareafile::ReadIMail(char* tag) {
       }
     }
     char buff[78];
-    sprintf( buff, "* Error: IMAIL %u.%02u (structure revision %u.%02u) is not supported - Skipping.\n",
-             unsigned(imver[0]), unsigned(imver[1]), unsigned(imstructver[0]), unsigned(imstructver[1]) );
-    std::cout << buff;
-
-//    std::cout << "* Error: IMAIL " << imver[0] << '.' << std::setfill('0') << std::setw(2) << imver[1] << " (structure revision " << imstructver[0] << '.' << std::setfill('0') << std::setw(2) << imstructver[1] << ") is not supported - Skipping." << std::endl;
+    sprintf(buff, "* Error: IMAIL %u.%02u (structure revision %u.%02u) is not supported - Skipping.\n",
+            unsigned(imver[0]), unsigned(imver[1]), unsigned(imstructver[0]), unsigned(imstructver[1]) );
+    STD_PRINT(buff);
   }
 }
 

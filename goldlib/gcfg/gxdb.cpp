@@ -27,6 +27,10 @@
 #include <cstdlib>
 #include <gmemdbg.h>
 #include <gstrall.h>
+#if defined(__GOLD_GUI__)
+#include <gvidall.h>
+#include <gvidgui.h>
+#endif
 #undef GCFG_NODB
 #include <gedacfg.h>
 #include <gs_db.h>
@@ -47,18 +51,20 @@ void gareafile::ReadDB130(char* tag, char* dbpath) {
   MakePathname(file2, dbpath, "dbridge.aa2");
 
   fp1 = fsopen(file1, "rb", sharemode);
-  if(fp1) {
+  if (fp1)
+  {
     setvbuf(fp1, NULL, _IOFBF, 8192);
 
-    if(not quiet)
-      std::cout << "* Reading " << file1 << std::endl;
+    if (not quiet)
+      STD_PRINT("* Reading " << file1 << std::endl);
 
     fp2 = fsopen(file2, "rb", sharemode);
-    if(fp2) {
+    if (fp2)
+    {
       setvbuf(fp2, NULL, _IOFBF, 8192);
 
-      if(not quiet)
-        std::cout << "* Reading " << file2 << std::endl;
+      if (not quiet)
+        STD_PRINT("* Reading " << file2 << std::endl);
 
       while(fread(&AA1, sizeof(DB130_AA1), 1, fp1) == 1) {
 
@@ -117,12 +123,12 @@ void gareafile::ReadDB1046(char* file, char* tag) {
   DB1046_ADF* ADF = (DB1046_ADF*)throw_calloc(1, sizeof(DB1046_ADF));
 
   FILE* fp = fsopen(file, "rb", sharemode);
-  if(fp) {
-
+  if (fp)
+  {
     setvbuf(fp, NULL, _IOFBF, 8192);
 
-    if(not quiet)
-      std::cout << "* Reading " << file << std::endl;
+    if (not quiet)
+      STD_PRINT("* Reading " << file << std::endl);
 
     while(fread(ADF, sizeof(DB1046_ADF), 1, fp) == 1) {
       if(ADF->allocated and strchr("QFqf", ADF->msgbase)) {
@@ -181,11 +187,12 @@ void gareafile::ReadDB1047A22(char* file, int reclen, char* tag) {
   if(ADF) {
 
     fp = fsopen(file, "rb", sharemode);
-    if(fp) {
+    if (fp)
+    {
       setvbuf(fp, NULL, _IOFBF, 8192);
 
-      if(not quiet)
-        std::cout << "* Reading " << file << std::endl;
+      if (not quiet)
+        STD_PRINT("* Reading " << file << std::endl);
 
       while(fread(ADF, reclen, 1, fp) == 1) {
         if(ADF->allocated and strchr("QFqf", ADF->msgbase)) {
@@ -245,11 +252,12 @@ void gareafile::ReadDB2011(char* file, int reclen, char* tag) {
   if(ADF) {
 
     fp = fsopen(file, "rb", sharemode);
-    if(fp) {
+    if (fp)
+    {
       setvbuf(fp, NULL, _IOFBF, 8192);
 
-      if(not quiet)
-        std::cout << "* Reading " << file << std::endl;
+      if (not quiet)
+        STD_PRINT("* Reading " << file << std::endl);
 
       while(fread(ADF, reclen, 1, fp) == 1) {
         if(ADF->allocated and strchr("QFqf", ADF->msgbase)) {
@@ -334,10 +342,10 @@ void gareafile::ReadDBridge(char* tag) {
   MakePathname(file, dbpath, "dbridge.prm");
 
   fp = fsopen(file, "rt", sharemode);
-  if(fp) {
-
-    if(not quiet)
-      std::cout << "* Reading " << file << std::endl;
+  if (fp)
+  {
+    if (not quiet)
+      STD_PRINT("* Reading " << file << std::endl);
 
     // Read netmail storage method etc
     for(line=1; line <= 2; line++)

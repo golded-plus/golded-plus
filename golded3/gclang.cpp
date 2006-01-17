@@ -706,11 +706,12 @@ bool ReadLangCfg(int force) {
   // Read the GOLDLANG.CFG if there is one
   const char* cfgname = AddPath(CFG->goldpath, CFG->langcfg);
   fpi = fsopen(cfgname, "rt", CFG->sharemode);
-  if(fpi) {
+  if (fpi)
+  {
     setvbuf(fpi, NULL, _IOFBF, 8192);
 
-    if(not quiet)
-      std::cout << "* Reading " << cfgname << std::endl;
+    if (not quiet)
+      STD_PRINT("* Reading " << cfgname << std::endl);
 
     cfgname = CleanFilename(cfgname);
 
@@ -728,9 +729,12 @@ bool ReadLangCfg(int force) {
           strschg(str, "\\r", "\r");
           strschg(str, "\\\"", "\"");
         }
-        if(SwitchLanguage(strCrc16(strupr(ptr)), str)) {
-          if(cmdlineoldkeyw == false) {
-            std::cout << "* " << cfgname << " line " << line << ": \"" << ptr << "\" is obsolete or unknown." << std::endl;
+
+        if (SwitchLanguage(strCrc16(strupr(ptr)), str))
+        {
+          if (cmdlineoldkeyw == false)
+          {
+            STD_PRINT("* " << cfgname << " line " << line << ": \"" << ptr << "\" is obsolete or unknown." << std::endl);
             SayBibi();
             cfgerrors++;
           }

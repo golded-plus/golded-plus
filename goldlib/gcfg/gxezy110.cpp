@@ -27,6 +27,10 @@
 #include <cstdlib>
 #include <gstrall.h>
 #include <gmemdbg.h>
+#if defined(__GOLD_GUI__)
+#include <gvidall.h>
+#include <gvidgui.h>
+#endif
 #undef GCFG_NOEZY
 #include <gedacfg.h>
 #include <gs_ez110.h>
@@ -49,10 +53,10 @@ void gareafile::ReadEzycom110(FILE* fp, char* path, char* file, char* options) {
 
   MakePathname(file, path, "constant.ezy");
   fp = fsopen(file, "rb", sharemode);
-  if(fp) {
-
-    if(not quiet)
-      std::cout << "* Reading " << file << std::endl;
+  if (fp)
+  {
+    if (not quiet)
+      STD_PRINT("* Reading " << file << std::endl);
 
     fread(constant, sizeof(CONSTANTRECORD), 1, fp);
     fclose(fp);
@@ -190,10 +194,10 @@ void gareafile::ReadEzycom110(FILE* fp, char* path, char* file, char* options) {
 
     MakePathname(file, path, "MESSAGES.EZY");
     fp = fsopen(file, "rb", sharemode);
-    if(fp) {
-
-      if(not quiet)
-        std::cout << "* Reading " << file << std::endl;
+    if (fp)
+    {
+      if (not quiet)
+        STD_PRINT("* Reading " << file << std::endl);
 
       int record = 1;
 
@@ -308,10 +312,10 @@ void gareafile::ReadEzycom(char* tag) {
   if(not fexist(file))
     MakePathname(file, path, "config.ezy");
   fp = fsopen(file, "rb", sharemode);
-  if(fp) {
-
-    if(not quiet)
-      std::cout << "* Reading " << file << std::endl;
+  if (fp)
+  {
+    if (not quiet)
+      STD_PRINT("* Reading " << file << std::endl);
 
     char _verstr[9];
     fread(_verstr, 9, 1, fp);
@@ -319,8 +323,9 @@ void gareafile::ReadEzycom(char* tag) {
 
     strp2c(_verstr);
 
-    if(strnicmp(_verstr, "1.02", 4) < 0) {
-      std::cout << "* Error: Ezycom v" << _verstr << " is not supported - Skipping." << std::endl;
+    if (strnicmp(_verstr, "1.02", 4) < 0)
+    {
+      STD_PRINT("* Error: Ezycom v" << _verstr << " is not supported - Skipping." << std::endl);
       return;
     }
     else if(strnicmp(_verstr, "1.10", 4) >= 0)

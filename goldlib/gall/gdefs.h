@@ -160,6 +160,20 @@ typedef uint32_t  time32_t;   /* 32-bit time_t type */
 
 #ifdef __cplusplus
 
+
+/*  ------------------------------------------------------------------   */
+
+#if defined(__GOLD_GUI__)
+#define STD_PRINT(out) {  \
+  std::strstream str;     \
+  str << out;             \
+  GUI_Print(str);         \
+  }
+#else
+#define STD_PRINT(out) std::cout << out;
+#endif
+
+
 /*  ------------------------------------------------------------------   */
 /*  Common function-pointer types                                        */
 

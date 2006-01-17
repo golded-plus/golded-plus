@@ -40,6 +40,7 @@
 #include <gstrall.h>
 #include <csignal>
 #include <iostream>
+#include <strstream>
 #include <iomanip>
 // Wrappers for certain mostly DOS/Borland headers
 #include <gshare.h>

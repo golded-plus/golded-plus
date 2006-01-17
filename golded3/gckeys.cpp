@@ -1012,13 +1012,13 @@ int ReadKeysCfg(int force) {
 
   const char* cfg = AddPath(CFG->goldpath, CFG->keyscfg);
   ifp = fsopen(cfg, "rt", CFG->sharemode);
-  if(ifp) {
-
+  if (ifp)
+  {
     const char* cfgname = strrchr(cfg, '\\');
     cfgname = cfgname ? cfgname+1 : cfg;
 
-    if(not quiet)
-      std::cout << "* Reading " << cfg << std::endl;
+    if (not quiet)
+      STD_PRINT("* Reading " << cfg << std::endl);
 
     CFG->macro.clear();
     CFG->cmdkey.clear();
@@ -1032,8 +1032,9 @@ int ReadKeysCfg(int force) {
         continue;
       ptr2 = ptr;
       ptr = strskip_txt(ptr);
-      if(*ptr == NUL) {
-        std::cout << "* " << cfgname << ": Incomplete line " << line << "." << std::endl;
+      if (*ptr == NUL)
+      {
+        STD_PRINT("* " << cfgname << ": Incomplete line " << line << "." << std::endl);
         SayBibi();
         cfgerrors++;
         continue;
@@ -1047,10 +1048,12 @@ int ReadKeysCfg(int force) {
       }
       else if(strlen(ptr2) == 1)
         keyval = (gkey)g_tolower(*ptr2);  // Always convert to lowercase internally
-      else {
+      else
+      {
         keycmd = SwitchKeyDefs(strCrc16(strupr(ptr2)), &keytype);
-        if(not keycmd or keytype) {
-          std::cout << "* " << cfgname << ": Invalid key \"" << ptr2 << "\" in line " << line << "." << std::endl;
+        if (not keycmd or keytype)
+        {
+          STD_PRINT("* " << cfgname << ": Invalid key \"" << ptr2 << "\" in line " << line << "." << std::endl);
           SayBibi();
           cfgerrors++;
           continue;
@@ -1096,8 +1099,9 @@ int ReadKeysCfg(int force) {
                 if(n < (sizeof(tmp2.buf)/sizeof(gkey)))
                   tmp2.buf[n++] = (gkey)keycmd;
               }
-              else {
-                std::cout << "* " << cfgname << ": Invalid key \"" << ptr2 << "\" in line " << line << "." << std::endl;
+              else
+              {
+                STD_PRINT("* " << cfgname << ": Invalid key \"" << ptr2 << "\" in line " << line << "." << std::endl);
                 SayBibi();
                 cfgerrors++;
                 continue;
@@ -1126,15 +1130,17 @@ int ReadKeysCfg(int force) {
         }
         else if(keytype)
           KeyCmdAdd(keycmd, keyval, keytype);
-        else {
-          std::cout << "* " << cfgname << ": Invalid key \"" << ptr2 << "\" in line " << line << "." << std::endl;
+        else
+        {
+          STD_PRINT("* " << cfgname << ": Invalid key \"" << ptr2 << "\" in line " << line << "." << std::endl);
           SayBibi();
           cfgerrors++;
           continue;
         }
       }
-      else {
-        std::cout << "* " << cfgname << ": Invalid key \"" << ptr2 << "\" in line " << line << "." << std::endl;
+      else
+      {
+        STD_PRINT("* " << cfgname << ": Invalid key \"" << ptr2 << "\" in line " << line << "." << std::endl);
         SayBibi();
         cfgerrors++;
         continue;

@@ -28,6 +28,10 @@
 #include <gmemdbg.h>
 #include <gcrcall.h>
 #include <gstrall.h>
+#if defined(__GOLD_GUI__)
+#include <gvidall.h>
+#include <gvidgui.h>
+#endif
 #undef GCFG_NOFIDOPCB
 #include <gedacfg.h>
 
@@ -85,11 +89,12 @@ void gareafile::ReadFidoPCB(char* tag) {
   MakePathname(file, path, "fidopcb.cfg");
 
   FILE* fp = fsopen(file, "rb", sharemode);
-  if(fp) {
+  if (fp)
+  {
     setvbuf(fp, NULL, _IOFBF, 8192);
 
-    if(not quiet)
-      std::cout << "* Reading " << file << std::endl;
+    if (not quiet)
+      STD_PRINT("* Reading " << file << std::endl);
 
     int areas = 0;
     fparea* area = NULL;

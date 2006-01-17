@@ -26,6 +26,10 @@
 
 #include <gstrall.h>
 #include <gmemdbg.h>
+#if defined(__GOLD_GUI__)
+#include <gvidall.h>
+#include <gvidgui.h>
+#endif
 #undef GCFG_NOEZY
 #include <gedacfg.h>
 #include <gs_ez102.h>
@@ -48,10 +52,10 @@ void gareafile::ReadEzycom102(FILE* fp, char* path, char* file, char* options) {
 
   MakePathname(file, path, "constant.ezy");
   fp = fsopen(file, "rb", sharemode);
-  if(fp) {
-
-    if(not quiet)
-      std::cout << "* Reading " << file << std::endl;
+  if (fp)
+  {
+    if (not quiet)
+      STD_PRINT("* Reading " << file << std::endl);
 
     fread(constant, sizeof(CONSTANTRECORD), 1, fp);
     fclose(fp);
@@ -189,10 +193,10 @@ void gareafile::ReadEzycom102(FILE* fp, char* path, char* file, char* options) {
 
     MakePathname(file, path, "messages.ezy");
     fp = fsopen(file, "rb", sharemode);
-    if(fp) {
-
-      if(not quiet)
-        std::cout << "* Reading " << file << std::endl;
+    if (fp)
+    {
+      if (not quiet)
+        STD_PRINT("* Reading " << file << std::endl);
 
       int record = 1;
 

@@ -28,6 +28,10 @@
 #include <gcrcall.h>
 #include <gstrall.h>
 #include <gmemdbg.h>
+#if defined(__GOLD_GUI__)
+#include <gvidall.h>
+#include <gvidgui.h>
+#endif
 #undef GCFG_NOFIDOCONF
 #include <gedacfg.h>
 
@@ -174,11 +178,12 @@ void gareafile::ReadHPTFile(char* path, char* file, char* origin, int group) {
   Path buf2;
 
   FILE* fp = fsopen(file, "rb", sharemode);
-  if(fp) {
+  if (fp)
+  {
     setvbuf(fp, NULL, _IOFBF, 8192);
 
-    if(not quiet)
-      std::cout << "* Reading " << file << std::endl;
+    if (not quiet)
+      STD_PRINT("* Reading " << file << std::endl);
 
     aa.reset();
     aa.type = GMB_NONE;
@@ -201,8 +206,9 @@ void gareafile::ReadHPTFile(char* path, char* file, char* origin, int group) {
             {
               int ver_maj, ver_min;
               sscanf(val, "%d.%d", &ver_maj, &ver_min);
-              if((ver_maj != 0) and (ver_min != 15)) {
-                std::cout << "* Error: Unknown fidoconfig version " << ver_maj << '.' << ver_min << " - Skipping." << std::endl;
+              if ((ver_maj != 0) and (ver_min != 15))
+              {
+                STD_PRINT("* Error: Unknown fidoconfig version " << ver_maj << '.' << ver_min << " - Skipping." << std::endl);
                 throw_xfree(alptr);
                 goto skip_config;
               }

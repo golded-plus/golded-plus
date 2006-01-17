@@ -403,9 +403,9 @@ void CfgSeqMsgId() {
 
 //  ------------------------------------------------------------------
 
-void CfgSeqOutRun_Error() {
-
-  std::cout << "* Warning: Bad SeqOutrun value \'" << val << "\', ignored."<< std::endl;
+void CfgSeqOutRun_Error()
+{
+  STD_PRINT("* Warning: Bad SeqOutrun value \'" << val << "\', ignored."<< std::endl);
 }
 
 void CfgSeqOutRun() {
@@ -422,10 +422,13 @@ void CfgSeqOutRun() {
   p = val;
   while(isdigit((int)(*p)))
     p++;
-  if(*p == '\0') {
+  if(*p == '\0')
+  {
     CFG->seqoutrun = s;
-    if(veryverbose)
-      std::cout << "  SeqOutRun: \'" << val << "\' --> " << CFG->seqoutrun << std::endl;
+    
+    if (veryverbose)
+      STD_PRINT("  SeqOutRun: \'" << val << "\' --> " << CFG->seqoutrun << std::endl);
+
     return;
   }
   if(p[1]) {
@@ -451,8 +454,9 @@ void CfgSeqOutRun() {
       return;
   }
   CFG->seqoutrun = s;
-  if(veryverbose)
-    std::cout << "  SeqOutRun: \'" << val << "\' --> " << CFG->seqoutrun << std::endl;
+  
+  if (veryverbose)
+    STD_PRINT("  SeqOutRun: \'" << val << "\' --> " << CFG->seqoutrun << std::endl);
 }
 
 //  ------------------------------------------------------------------

@@ -29,6 +29,10 @@
 #include <gfilutil.h>
 #include <gmemdbg.h>
 #include <gstrall.h>
+#if defined(__GOLD_GUI__)
+#include <gvidall.h>
+#include <gvidgui.h>
+#endif
 #undef GCFG_NOMAXIMUS
 #include <gedacfg.h>
 #include <gs_max3.h>
@@ -46,10 +50,10 @@ void gareafile::ReadMaximus3(char* mxpath, char* areafile, char* options) {
   MakePathname(prmfile, mxpath, "max.prm");
 
   fp = fsopen(prmfile, "rb", sharemode);
-  if(fp) {
-
-    if(not quiet)
-      std::cout << "* Reading " << areafile << std::endl;
+  if (fp)
+  {
+    if (not quiet)
+      STD_PRINT("* Reading " << areafile << std::endl);
 
     m_pointers* prmp = (m_pointers*)throw_calloc(1, sizeof(m_pointers));
     m_pointers& prm = *prmp;
@@ -68,11 +72,12 @@ void gareafile::ReadMaximus3(char* mxpath, char* areafile, char* options) {
     MapPath(areafile);
 
     fp = fsopen(areafile, "rb", sharemode);
-    if(fp) {
+    if (fp)
+    {
       setvbuf(fp, NULL, _IOFBF, 32000);
 
-      if(not quiet)
-        std::cout << "* Reading " << areafile << std::endl;
+      if (not quiet)
+        STD_PRINT("* Reading " << areafile << std::endl);
 
       long areasize = fsize(fp)-4;
 

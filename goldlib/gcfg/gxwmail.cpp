@@ -28,6 +28,10 @@
 #include <gfilutil.h>
 #include <gstrall.h>
 #include <gmemdbg.h>
+#if defined(__GOLD_GUI__)
+#include <gvidall.h>
+#include <gvidgui.h>
+#endif
 #undef GCFG_NOWMAIL
 #include <gedacfg.h>
 #include <gs_wmail.h>
@@ -69,10 +73,10 @@ void gareafile::ReadWMail(char* tag) {
 
   sprintf(file, "%swmail.prm", path);
   fh = sopen(file, O_RDONLY|O_BINARY, sharemode, S_STDRD);
-  if(fh != -1) {
-
-    if(not quiet)
-      std::cout << "* Reading " << file << std::endl;
+  if (fh != -1)
+  {
+    if (not quiet)
+      STD_PRINT("* Reading " << file << std::endl);
 
     read(fh, wmprm, sizeof(TWmailPrm));
 
@@ -124,10 +128,10 @@ void gareafile::ReadWMail(char* tag) {
 
   sprintf(file, "%sareas.prm", path);
   fh = sopen(file, O_RDONLY|O_BINARY, sharemode, S_STDRD);
-  if(fh != -1) {
-
-    if(not quiet)
-      std::cout << "* Reading " << file << std::endl;
+  if (fh != -1)
+  {
+    if (not quiet)
+      STD_PRINT("* Reading " << file << std::endl);
 
     // All the echomail areas
     while(read(fh, arprm, sizeof(TAreasPrm)) == sizeof(TAreasPrm)) {
