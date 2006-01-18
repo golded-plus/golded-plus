@@ -128,6 +128,11 @@
 #define __GVER_SHORTPLATFORM__ "QNX"
 #define __GVER_SHORTLOGNAME__  "Q"
 #define __GVER_CFGEXT__        ".gqx"
+#elif defined(__sun__)
+#define __GVER_PLATFORM__      "/SUN"
+#define __GVER_SHORTPLATFORM__ "SUN"
+#define __GVER_SHORTLOGNAME__  "S"
+#define __GVER_CFGEXT__        ".gsu"
 #elif defined(__UNIX__)
 #define __GVER_PLATFORM__      "/UNX"
 #define __GVER_SHORTPLATFORM__ "UNX"
