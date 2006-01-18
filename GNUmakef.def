@@ -24,10 +24,16 @@ ifeq ($(OSTYPE),beos) # BeOS build
 PLATFORM=be
 endif
 
+ifeq ($(findstring solaris, $(OSTYPE)), solaris)
+PLATFORM=sun
+endif
+
 endif  # ifndef PLATFORM
 
 ifeq ($(PLATFORM),cyg)
 CAT=cat
+SED=sed
+GREP=grep
 CC=gcc -mno-cygwin
 CXX=g++ -mno-cygwin
 AR=ar
@@ -39,6 +45,8 @@ LIBEXT=.a
 else
 ifeq ($(PLATFORM),emx)
 CAT=cat
+SED=sed
+GREP=grep
 CC=gcc
 AR=ar
 RANLIB=ar s
@@ -58,6 +66,8 @@ CXX=$(CC)
 else
 ifeq ($(PLATFORM),djg)
 CAT=command.com /c type
+SED=sed
+GREP=grep
 CC=gcc
 CXX=gxx
 AR=ar
@@ -69,6 +79,8 @@ LIBEXT=.a
 else
 ifeq ($(PLATFORM),be)
 CAT=cat
+SED=sed
+GREP=grep
 CC=gcc
 CXX=g++
 AR=ar
@@ -77,8 +89,22 @@ EXEEXT=
 OBJEXT=.o
 LIBEXT=.a
 LNKFLAGS+=-lbe -ltextencoding
+else
+ifeq ($(PLATFORM),sun) # SUN Solaris
+CAT=cat
+SED=gsed
+GREP=ggrep
+CC=gcc
+CXX=g++
+AR=ar
+RANLIB=ranlib
+EXEEXT=
+OBJEXT=.o
+LIBEXT=.a
 else                   # Linux, *BSD or another unix-like OS
 CAT=cat
+SED=sed
+GREP=grep
 CC=gcc
 CXX=g++
 AR=ar
@@ -87,6 +113,8 @@ PLATFORM=lnx
 EXEEXT=
 OBJEXT=.o
 LIBEXT=.a
+endif
+endif
 endif
 endif
 endif

@@ -22,8 +22,8 @@ sourcelist: bld$(PLATFORM).inc
 
 bld$(PLATFORM).inc: $(TARGET).all
 	@echo making sourcelist
-	@grep -w $(PLATFORM) $< \
-		| sed 's;^\([[:alnum:]_]*\)[ ]*\([[:alnum:]_]*\).*;SOURCES+=\1.\2;' > $@; [ -s $@ ] || rm -f $@
+	@$(GREP) -w $(PLATFORM) $< \
+		| $(SED) 's;^\([[:alnum:]_]*\)[ ]*\([[:alnum:]_]*\).*;SOURCES+=\1.\2;' > $@; [ -s $@ ] || rm -f $@
 
 $(FOBJPATH)/%$(OBJEXT): %.cpp
 	@echo building $(basename $<)$(OBJEXT)
