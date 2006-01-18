@@ -33,6 +33,8 @@ echo 'should be used for testing purpose'  >>${file_id}
 echo '----------------------------------'  >>${file_id}
 echo 'http://golded-plus.sourceforge.net'  >>${file_id}
 
+rm bin/*djg.exe
+
 make PLATFORM=djg clean
 make PLATFORM=djg
 make PLATFORM=djg strip

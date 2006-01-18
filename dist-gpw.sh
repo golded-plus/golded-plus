@@ -35,6 +35,7 @@ printf 'wellknown  GoldED mail editor.\r\n' >>bin/File_ID.Diz
 printf '------------------------------\r\n' >>bin/File_ID.Diz
 printf '*golded-plus.sourceforge.net* \r\n' >>bin/File_ID.Diz
 
+rm bin/*cyg.exe
 make clean
 make
 make strip
