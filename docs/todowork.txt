@@ -38,10 +38,14 @@ To do:
 * Switching code page at message reading using information from CHRS kludge
   (some OS only).
 * Message text preprocessing with externutil.
-* Add *.* to attach path if not specified.
+* Add *.* (DOS-based) or * (*nix) to attach path if not specified.
 * Marking messages with reply in lister.
 * Macro-tokens (@token like externutil parameters) in TaskTitle
 * Select areas in crosspost menu.
+* Replace prinf format string with special macrovariables in goldlang.cfg
+  (prevent Golded+ crash with invalid config, improve functionality of
+  goldlang.cfg parser).
+* Big-endian platforms support.
 ______________________________________________________________________
 
 To fix:
