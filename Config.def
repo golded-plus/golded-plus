@@ -72,3 +72,5 @@
 #CPPFLAGS+=-DGCFG_NOXMAIL
 # Uncomment to disable Synchronet BBS support
 #CPPFLAGS+=-DGCFG_NOSYNCHRONET
+# Uncomment to enable MS Office spellchecker support (win32 only)
+#CPPFLAGS+=-D__GOLD_SPELL__

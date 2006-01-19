@@ -6,10 +6,19 @@
 #
 # NMAKE /f "golded.mak" CFG="Release"
 #
-# or
+# to standard build or
+#
+# NMAKE /f "golded.mak" CFG="Release" CPP_EXTRA_FLAGS=/D__GOLD_SPELL__
+#
+# to build with spellcheck feature or
 #
 # NMAKE /f "golded.mak" CFG="Debug"
 #
+# to build debug binary or
+#
+# NMAKE /f "golded.mak" CFG="Debug" CPP_EXTRA_FLAGS=/D__GOLD_SPELL__
+#
+# to build debug binary with spellcheck feature
 #
 
 !IF "$(CFG)" == ""
@@ -288,11 +297,11 @@ RSC_FLAGS=/igolded3 /fo$(OBJ_DIR)\gedcyg.res
 LNK_FLAGS=winmm.lib user32.lib /nologo /subsystem:console /machine:I386
 
 !IF  "$(CFG)" == "Release"
-CPP_PROJ=$(CPP_FLAGS) /MD /O1 /DNDEBUG
+CPP_PROJ=$(CPP_FLAGS) /MD /O1 /DNDEBUG $(CPP_EXTRA_FLAGS)
 RSC_PROJ=$(RSC_FLAGS) /dNDEBUG
 LNK_PROJ=$(LNK_FLAGS) /incremental:no
 !ELSEIF  "$(CFG)" == "Debug"
-CPP_PROJ=$(CPP_FLAGS) /MDd /Gm /ZI /GZ /Od /D_DEBUG
+CPP_PROJ=$(CPP_FLAGS) /MDd /Gm /ZI /GZ /Od /D_DEBUG $(CPP_EXTRA_FLAGS)
 RSC_PROJ=$(RSC_FLAGS) /d_DEBUG
 LNK_PROJ=$(LNK_FLAGS) /incremental:yes /debug /pdbtype:sept
 !ENDIF
