@@ -899,11 +899,11 @@ static void read_nodelists() {
   #ifdef GOLDNODE_STATS
   if(make_stats) {
 
-    if(not quiet) std::cout << "* Writing statistics to " << statfilename << std::endl;
+    if(not quiet) std::cout << "* Writing statistics to " << statfilename << NL;
 
     std::ofstream ofp(statfilename);
     if(not ofp) {
-      if(not quiet) std::cout << "Error opening statfile " << statfilename << '!' << std::endl;
+      if(not quiet) std::cout << "Error opening statfile " << statfilename << '!' << NL;
     }
     else {
       ofp << "Nodename size statistics:" << std::endl;
@@ -924,7 +924,7 @@ static void read_nodelists() {
     std::map<long, dword> namepos;
 
     // Sort by name
-    if(not quiet) std::cout << std::endl << "* Sorting by name " << std::flush;
+    if(not quiet) std::cout << NL << "* Sorting by name " << std::flush;
 #if defined(_MSC_VER)
     sort_type = sort_by_name;
     nodeidx.sort();
@@ -958,7 +958,7 @@ static void read_nodelists() {
           if(prev != nodeidx.end() && match_addr_mask(&curr->addr, &prev->addr)) {
             if(strieql(curr->name, prev->name)) {
               #ifdef DEBUG
-              if(not quiet) std::cout << "* Dupe: " << curr->addr.zone << ':' << curr->addr.net << '/' << curr->addr.node << '.' << curr->addr.point << ' ' << curr->name << std::endl;
+              if(not quiet) std::cout << "* Dupe: " << curr->addr.zone << ':' << curr->addr.net << '/' << curr->addr.node << '.' << curr->addr.point << ' ' << curr->name << NL;
               #endif
               nodeidx.erase(curr);
               curr = prev;
@@ -982,7 +982,7 @@ static void read_nodelists() {
     }
 
     // Sort by address
-    if(not quiet) std::cout << ' ' << std::endl << "* Sorting by node " << std::flush;
+    if(not quiet) std::cout << ' ' << NL "* Sorting by node " << std::flush;
 #if defined(_MSC_VER)
     sort_type = sort_by_address;
     nodeidx.sort();
@@ -1008,7 +1008,7 @@ static void read_nodelists() {
     fp = fsopen(listindex.c_str(), "wt", sh_mod);
     if(fp) {
       name = CleanFilename(listindex.c_str());
-      if(not quiet) std::cout << ' ' << std::endl << "* Writing " << name << std::endl;
+      if(not quiet) std::cout << ' ' << NL "* Writing " << name << std::endl;
       for(fno=nodelist.begin(); fno != nodelist.end(); fno++) {
         if(*(fno->fn))
           fprintf(fp, "%s %u\n", fno->fn, fno->ft);
@@ -1021,9 +1021,9 @@ static void read_nodelists() {
 
     if(not quiet) {
       if(dups) {
-        std::cout << std::endl << "* Total duplicate nodes: " << (uint32_t)dups << '.' << std::endl;
+        std::cout << NL "* Total duplicate nodes: " << (uint32_t)dups << '.' << NL;
       }
-      std::cout << std::endl << "* Nodelist compile completed. Compile time: " << (uint32_t)(runtime/60) << " min, " << (uint32_t)(runtime%60) << " sec." << std::endl;
+      std::cout << NL "* Nodelist compile completed. Compile time: " << (uint32_t)(runtime/60) << " min, " << (uint32_t)(runtime%60) << " sec." << NL;
     }
   #ifdef GOLDNODE_STATS
   }
@@ -1102,10 +1102,10 @@ static void check_nodelists(bool force) {
 
   if(not quiet) {
     if(compilen) {
-      std::cout << "* " << compilen << " new nodelist file" << ((compilen == 1) ? "" : "s") << " found." << std::endl;
+      std::cout << "* " << compilen << " new nodelist file" << ((compilen == 1) ? "" : "s") << " found." NL;
     }
     else if(nodelist.size()) {
-      std::cout << "* The nodelist file" << ((nodelist.size() == 1) ? " is" : "s are") << " up-to-date." << std::endl;
+      std::cout << "* The nodelist file" << ((nodelist.size() == 1) ? " is" : "s are") << " up-to-date." NL;
     }
   }
 
@@ -1119,10 +1119,10 @@ static void check_nodelists(bool force) {
 
   if(not quiet) {
     if(compileu) {
-      std::cout << "* " << compileu << " new userlist file" << ((compileu == 1) ? "" : "s") << " found." << std::endl;
+      std::cout << "* " << compileu << " new userlist file" << ((compileu == 1) ? "" : "s") << " found." NL;
     }
     else if(userlist.size()) {
-      std::cout << "* The userlist file" << ((userlist.size() == 1) ? " is" : "s are") << " up-to-date." << std::endl;
+      std::cout << "* The userlist file" << ((userlist.size() == 1) ? " is" : "s are") << " up-to-date." NL;
     }
   }
 
@@ -1135,7 +1135,7 @@ static void check_nodelists(bool force) {
 
 static void fatal_error(const char* what) {
 
-  if(not quiet) std::cout << what << std::endl;
+  if(not quiet) std::cout << what << NL;
   exit(5);
 }
 
@@ -1248,7 +1248,7 @@ static int parse_config(const char *__configfile, Addr& zoneaddr) {
         switch(crc) {
           case CRC_IF:
             if(in_if) {
-              if(not quiet) std::cout << "* " << __configfile << ": Misplaced IF at line " << line << ". IF's cannot be nested." << std::endl;
+              if(not quiet) std::cout << "* " << __configfile << ": Misplaced IF at line " << line << ". IF's cannot be nested." << NL;
             }
             in_if = YES;
             cond_status = do_if(value);
@@ -1256,20 +1256,20 @@ static int parse_config(const char *__configfile, Addr& zoneaddr) {
           case CRC_ELIF:
           case CRC_ELSEIF:
             if((not in_if) or in_else) {
-              if(not quiet) std::cout << "* " << __configfile << ": Misplaced ELIF/ELSEIF at line " << line <<  '.' << std::endl;
+              if(not quiet) std::cout << "* " << __configfile << ": Misplaced ELIF/ELSEIF at line " << line <<  '.' << NL;
             }
             cond_status = do_if(value);
             break;
           case CRC_ELSE:
             if((not in_if) or in_else) {
-              if(not quiet) std::cout << "* " << __configfile << "Misplaced ELSE at line " << line <<  '.' << std::endl;
+              if(not quiet) std::cout << "* " << __configfile << "Misplaced ELSE at line " << line <<  '.' << NL;
             }
             in_else = YES;
             cond_status ^= YES;
             break;
           case CRC_ENDIF:
             if(not in_if) {
-              if(not quiet) std::cout << "* " << __configfile << ": Misplaced ENDIF at line " << line << '.' << std::endl;
+              if(not quiet) std::cout << "* " << __configfile << ": Misplaced ENDIF at line " << line << '.' << NL;
             }
             in_if = in_else = NO;
             cond_status = YES;
@@ -1366,7 +1366,7 @@ static int parse_config(const char *__configfile, Addr& zoneaddr) {
               strschg_environ(value);
               _MapPath(value);
               if(not parse_config(value,zoneaddr))     // NOTE! This is a recursive call!
-                if(not quiet) std::cout << "* Could not read configuration file " << value << '!' << std::endl;
+                if(not quiet) std::cout << "* Could not read configuration file " << value << '!' << NL;
               break;
             case CRC_MAPPATH:
               {
@@ -1561,40 +1561,40 @@ static void run_gn(int argc, char* argv[]) {
   }
 
   if(not quiet) {
-    std::cout << __gver_name__ << " Nodelist Compiler v." << __gver_shortver__ << __gver_platform__ << __gver_postversion__ << ".\n"
-         << "Copyright (C) 1990-1999 Odinn Sorensen\n"
-         << "Copyright (C) 1999-2001 Alexander S. Aganichev\n"
-         << "Copyright (C) 2005 Stas Degteff & Golded+ team\n"
-         << "-------------------------------------------------------------------------------\n\n";
+    std::cout << __gver_name__ << " Nodelist Compiler v." << __gver_shortver__ << __gver_platform__ << __gver_postversion__ << "." NL
+         << "Copyright (C) 1990-1999 Odinn Sorensen" NL
+         << "Copyright (C) 1999-2001 Alexander S. Aganichev" NL
+         << "Copyright (C) 2005 Stas Degteff & Golded+ team" NL
+         << "-------------------------------------------------------------------------------\n" NL;
   }
 
   if(not(force or conditional)) {
     if(not quiet) {
-      std::cout << "Commandline syntax: " << CleanFilename(argv[0]) << " [-options] [configfile]\n"
-           << "\n[-options] =\t-C\t  Conditional compile.\n"
-           << "\t\t-F\t  Forced compile.\n"
-           << "\t\t-D\t  Remove duplicate nodes from index while compiling.\n"
-           << "\t\t-Q\t  Quiet compile. No screen output improves speed.\n"
-           << "\t\t-S<size>  Set max size of a name in the index.\n"
-           << "\t\t-U<file>  Create sorted FIDOUSER.LST userlist file.\n"
+      std::cout << "Commandline syntax: " << CleanFilename(argv[0]) << " [-options] [configfile]" NL
+           << "\n[-options] =\t-C\t  Conditional compile." NL
+           << "\t\t-F\t  Forced compile." NL
+           << "\t\t-D\t  Remove duplicate nodes from index while compiling." NL
+           << "\t\t-Q\t  Quiet compile. No screen output improves speed." NL
+           << "\t\t-S<size>  Set max size of a name in the index." NL
+           << "\t\t-U<file>  Create sorted FIDOUSER.LST userlist file." NL
       #ifdef GOLDNODE_STATS
-           << "\t\t-T\t  Make statistics.\n"
+           << "\t\t-T\t  Make statistics." NL
       #endif
-           << "\n[configfile] =\t\t  The path AND filename of GOLDED.CFG\n"
-           << "\t\t\t  configuration file to read.\n\n";
+           << "\n[configfile] =\t\t  The path AND filename of GOLDED.CFG" NL
+           << "\t\t\t  configuration file to read.\n" NL;
     }
   }
   else {
 
     if(force)
-      if(not quiet) std::cout << "* Forced compile.\n";
+      if(not quiet) std::cout << "* Forced compile." NL;
 
     if(read_config(cfg, argv[0])) {
       if(force or conditional)
         check_nodelists(force);
     }
     else {
-      if(not quiet) std::cout << "\nCould not find the configuration file!\n";
+      if(not quiet) std::cout << NL "Could not find the configuration file!" NL;
     }
   }
 }
