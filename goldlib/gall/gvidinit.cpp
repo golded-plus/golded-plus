@@ -132,7 +132,7 @@ GVid::GVid() {
 //  Video Class destructor
 
 GVid::~GVid() {
-  
+
   #if defined(__USE_NCURSES__)
 
   attrset(A_NORMAL);
@@ -445,7 +445,7 @@ void GVid::detectinfo(GVidInfo* _info)
   memset(_info, 0, sizeof(GVidInfo));
 
   #if defined(__USE_NCURSES__)
-  
+
   _info->screen.mode = 0;
   _info->screen.rows = LINES;
   _info->screen.columns = COLS;
@@ -607,7 +607,7 @@ void GVid::detectinfo(GVidInfo* _info)
   // Get cursor form
   CONSOLE_CURSOR_INFO cci;
   GetConsoleCursorInfo(gvid_hout, &cci);
-   
+
   _info->cursor.start = (int) 1;
   _info->cursor.end = cci.bVisible ? (int) 15 : 0;
   _info->cursor.attr = (word)(cci.bVisible ? 7 : 0);
@@ -689,7 +689,7 @@ void GVid::detectinfo(GVidInfo* _info)
   _info->cursor.attr = 7;
   _info->color.intensity = 1;
   _info->color.overscan = 0;
-  
+
   #endif
 
   getpalette(_info->color.palette);

@@ -85,7 +85,7 @@ typedef word vatch;       // Type of character-attribute groups
 //  Attribute codes for functions that use them
 
 const vattr DEFATTR   = -1;
-
+#ifndef MSDOS
 const vattr BLACK     = 0;
 const vattr BLUE      = 1;
 const vattr GREEN     = 2;
@@ -102,7 +102,24 @@ const vattr LRED      = 12;
 const vattr LMAGENTA  = 13;
 const vattr YELLOW    = 14;
 const vattr WHITE     = 15;
-
+#else
+#define BLACK       0
+#define BLUE        1
+#define GREEN       2
+#define CYAN        3
+#define RED         4
+#define MAGENTA     5
+#define BROWN       6
+#define LGREY       7
+#define DGREY       8
+#define LBLUE       9
+#define LGREEN      10
+#define LCYAN       11
+#define LRED        12
+#define LMAGENTA    13
+#define YELLOW      14
+#define WHITE       15
+#endif
 const vattr _BLACK    = (BLACK    << 4);
 const vattr _BLUE     = (BLUE     << 4);
 const vattr _GREEN    = (GREEN    << 4);
