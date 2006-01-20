@@ -25,6 +25,7 @@
 //  ------------------------------------------------------------------
 
 #include <cstdlib>
+#include <cerrno>
 #include <gcrcall.h>
 #include <gstrall.h>
 #include <gmemdbg.h>
@@ -379,6 +380,8 @@ void gareafile::ReadHPTFile(char* path, char* file, char* origin, int group) {
 
 skip_config:
     fclose(fp);
+  }else{
+    STD_PRINTNL(" * AREAFILE FIDOCONFIG: Can't open file '" << path << '/' << file << ": " << strerror(errno) );
   }
 }
 
