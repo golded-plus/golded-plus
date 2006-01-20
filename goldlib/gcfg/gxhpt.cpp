@@ -206,7 +206,7 @@ void gareafile::ReadHPTFile(char* path, char* file, char* origin, int group) {
             {
               int ver_maj, ver_min;
               sscanf(val, "%d.%d", &ver_maj, &ver_min);
-              if ((ver_maj != 0) and (ver_min != 15))
+              if ((ver_maj != 0) and (ver_min >= 0) and (ver_min < 15))
               {
                 STD_PRINTNL("* Error: Unknown fidoconfig version " << ver_maj << '.' << ver_min << " - Skipping.");
                 throw_xfree(alptr);
