@@ -76,7 +76,6 @@ SHELL=sh
 EXEEXT=.exe
 OBJEXT=.o
 LIBEXT=.a
-CPPFLAGS+=-Wno-deprecated
 else
 ifeq ($(PLATFORM),be)
 CAT=cat
