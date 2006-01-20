@@ -10,6 +10,11 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- If AREAFILE fidoconfig not exists or can't be opened then Golded+ is printing
+  the diagnostic message.
+
+- Fix garbage output in Linux.
+
 - Fixed marks and lastread pointers for move command.
 
 - Win9x: Fixed waiting for key pressing before area scanning.
