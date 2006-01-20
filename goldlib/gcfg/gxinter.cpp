@@ -73,7 +73,7 @@ void gareafile::ReadInterMail(char* tag) {
     _ctl* ctl = (_ctl*)throw_calloc(1, sizeof(_ctl));
 
     if (not quiet)
-      STD_PRINT("* Reading " << _file << std::endl);
+      STD_PRINTNL("* Reading " << _file);
 
     fp.fread(ctl, sizeof(_ctl));
 
@@ -140,7 +140,7 @@ void gareafile::ReadInterMail(char* tag) {
         if (fp.isopen())
         {
           if (not quiet)
-            STD_PRINT("* Reading " << _file << std::endl);
+            STD_PRINTNL("* Reading " << _file);
 
           FOLDER* _folder = (FOLDER*)throw_calloc(1, sizeof(FOLDER));
 
@@ -184,7 +184,7 @@ void gareafile::ReadInterMail(char* tag) {
         if (fp.isopen())
         {
           if (not quiet)
-            STD_PRINT("* Reading " << _file << std::endl);
+            STD_PRINTNL("* Reading " << _file);
 
           OLDFOLDER* _folder = (OLDFOLDER*)throw_calloc(1, sizeof(OLDFOLDER));
 
@@ -223,7 +223,7 @@ void gareafile::ReadInterMail(char* tag) {
     else
     {
       char buff[62+sizeof(ctl->sysrev)*2];
-      sprintf(buff, "* Error: InterMail revision %04Xh is not supported - Skipping.\n", ctl->sysrev);
+      sprintf(buff, "* Error: InterMail revision %04Xh is not supported - Skipping." NL, ctl->sysrev);
       STD_PRINT(buff);
     }
     throw_free(ctl);

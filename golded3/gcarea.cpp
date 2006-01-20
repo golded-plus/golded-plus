@@ -154,7 +154,7 @@ void AreaList::AddNewArea(AreaCfg* aa)
     STD_PRINT("  fmt=" << aa->basetype << ", eid=\"" << aa->echoid);
     STD_PRINT("\", pth=\"" << aa->path << "\", brd=" << aa->board);
     STD_PRINT(", gid=" << aa->groupid << ", aka=" << aa->aka.make_string(temp));
-    STD_PRINT(" " << aa->attr.make_string(temp) << std::endl);
+    STD_PRINTNL(" " << aa->attr.make_string(temp));
   }
 
   Desc desc;
@@ -849,7 +849,7 @@ void AreaList::ReadEcholist(char* val) {
         tok = getkeyval;
 
       if (not quiet)
-        STD_PRINT("* Reading " << file << std::endl);
+        STD_PRINTNL("* Reading " << file);
 
       while(fgets((val=buf), sizeof(buf), fp)) {
 

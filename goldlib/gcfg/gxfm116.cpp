@@ -305,7 +305,7 @@ void gareafile::ReadFMail(char* tag) {
       else
       {
         char buff[56+sizeof(uint)*2];
-        sprintf(buff, "* Error: Unknown FMail config revision %04Xh - Skipping.\n", ar_rev);
+        sprintf(buff, "* Error: Unknown FMail config revision %04Xh - Skipping." NL, ar_rev);
         STD_PRINT(buff);
       }
     }

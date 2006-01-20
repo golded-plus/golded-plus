@@ -55,7 +55,7 @@ void gareafile::ReadEzycom102(FILE* fp, char* path, char* file, char* options) {
   if (fp)
   {
     if (not quiet)
-      STD_PRINT("* Reading " << file << std::endl);
+      STD_PRINTNL("* Reading " << file);
 
     fread(constant, sizeof(CONSTANTRECORD), 1, fp);
     fclose(fp);
@@ -196,7 +196,7 @@ void gareafile::ReadEzycom102(FILE* fp, char* path, char* file, char* options) {
     if (fp)
     {
       if (not quiet)
-        STD_PRINT("* Reading " << file << std::endl);
+        STD_PRINTNL("* Reading " << file);
 
       int record = 1;
 

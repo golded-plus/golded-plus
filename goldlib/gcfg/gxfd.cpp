@@ -86,7 +86,7 @@ void gareafile::ReadFrontDoor(char* tag) {
   if (fp)
   {
     if (not quiet)
-      STD_PRINT("* Reading " << file << std::endl);
+      STD_PRINTNL("* Reading " << file);
 
     fread(buf, 5, 1, fp);
     if(streql(buf, "JoHo")) {    // Check to see that it is v1.99b or higher
@@ -126,7 +126,7 @@ void gareafile::ReadFrontDoor(char* tag) {
     setvbuf(fp, NULL, _IOFBF, 8192);
 
     if (not quiet)
-      STD_PRINT("* Reading " << file << std::endl);
+      STD_PRINTNL("* Reading " << file);
 
     while(fread(folder, sizeof(FD_Folder), 1, fp) == 1) {
       behave = folder->behave;

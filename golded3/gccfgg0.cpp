@@ -736,7 +736,7 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
     inuse++;
 
     if (not quiet)
-      STD_PRINT("* Reading " << cfg << std::endl);
+      STD_PRINTNL("* Reading " << cfg);
 
     // Assign file buffer
     setvbuf(fp, NULL, _IOFBF, 8192);
@@ -761,7 +761,7 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
           case CRC_IF:
             if (in_if)
             {
-              STD_PRINT("* " << cfgname << ": Misplaced IF at line " << line << ". IF's cannot be nested." << std::endl);
+              STD_PRINTNL("* " << cfgname << ": Misplaced IF at line " << line << ". IF's cannot be nested.");
               cfgerrors++;
             }
             in_if = true;
@@ -772,7 +772,7 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
           case CRC_ELSEIF:
             if (not in_if or in_else)
             {
-              STD_PRINT("* " << cfgname << ": Misplaced ELIF/ELSEIF at line " << line << "." << std::endl);
+              STD_PRINTNL("* " << cfgname << ": Misplaced ELIF/ELSEIF at line " << line << ".");
               cfgerrors++;
             }
             if(if_status)
@@ -785,7 +785,7 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
           case CRC_ELSE:
             if (not in_if or in_else)
             {
-              STD_PRINT("* " << cfgname << ": Misplaced ELSE at line " << line << "." << std::endl);
+              STD_PRINTNL("* " << cfgname << ": Misplaced ELSE at line " << line << ".");
               cfgerrors++;
             }
             in_else = true;
@@ -795,7 +795,7 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
           case CRC_ENDIF:
             if (not in_if)
             {
-              STD_PRINT("* " << cfgname << ": Misplaced ENDIF at line " << line << "." << std::endl);
+              STD_PRINTNL("* " << cfgname << ": Misplaced ENDIF at line " << line << ".");
               cfgerrors++;
             }
             cfgignore = false;
@@ -825,12 +825,12 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
                 MapPath(val);
 
                 if (not quiet)
-                  STD_PRINT("* Including " << val << std::endl);
+                  STD_PRINTNL("* Including " << val);
 
                 ReadCfg(val);          // NOTE! This is a recursive call!
 
                 if (not quiet)
-                  STD_PRINT("* Resuming " << cfg << std::endl);
+                  STD_PRINTNL("* Resuming " << cfg);
 
                 break;
               case CRC_AREAFILE:
@@ -838,12 +838,12 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
                 MapPath(val);
 
                 if (not quiet)
-                  STD_PRINT("* Handling " << key << " " << val << std::endl);
+                  STD_PRINTNL("* Handling " << key << " " << val);
 
                 AL.GetAreafile(val);
 
                 if (not quiet)
-                  STD_PRINT("* Resuming " << cfg << std::endl);
+                  STD_PRINTNL("* Resuming " << cfg);
 
                 break;
               case CRC_APP:
@@ -857,7 +857,7 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
                 {
                   if (not ignoreunknown)
                   {
-                    STD_PRINT("* " << cfgname << ": Unknown keyword \"" << key << "\" at line " << line << "." << std::endl);
+                    STD_PRINTNL("* " << cfgname << ": Unknown keyword \"" << key << "\" at line " << line << ".");
                     SayBibi();
                     cfgerrors++;
                   }

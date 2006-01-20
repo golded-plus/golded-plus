@@ -69,7 +69,7 @@ void gareafile::ReadProBoard(char* tag) {
   if (fp)
   {
     if (not quiet)
-      STD_PRINT("* Reading " << file << std::endl);
+      STD_PRINTNL("* Reading " << file);
 
     fread(cfg, sizeof(Config), 1, fp);
 
@@ -85,7 +85,7 @@ void gareafile::ReadProBoard(char* tag) {
   if (fp)
   {
     if (not quiet)
-      STD_PRINT("* Reading " << file << std::endl);
+      STD_PRINTNL("* Reading " << file);
 
     fread(aka, akasz, 1, fp);
     fclose(fp);
@@ -99,7 +99,7 @@ void gareafile::ReadProBoard(char* tag) {
     setvbuf(fp, NULL, _IOFBF, 8192);
 
     if (not quiet)
-      STD_PRINT("* Reading " << file << std::endl);
+      STD_PRINTNL("* Reading " << file);
 
     while(fread(area, sizeof(MsgAreas), 1, fp) == 1) {
       aa.reset();

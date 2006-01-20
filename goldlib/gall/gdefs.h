@@ -169,8 +169,14 @@ typedef uint32_t  time32_t;   /* 32-bit time_t type */
   str << out;             \
   GUI_Print(str);         \
   }
+#define STD_PRINTNL(out) {  \
+  std::strstream str;       \
+  str << out << NL;         \
+  GUI_Print(str);           \
+  }
 #else
 #define STD_PRINT(out) std::cout << out;
+#define STD_PRINTNL(out) std::cout << out << NL;
 #endif
 
 

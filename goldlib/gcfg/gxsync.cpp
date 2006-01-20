@@ -92,7 +92,7 @@ void gareafile::ReadSynchronet(char* tag) {
     setvbuf(in, NULL, _IOFBF, 8192);
 
     if (not quiet)
-      STD_PRINT("* Reading " << file << std::endl);
+      STD_PRINTNL("* Reading " << file);
 
     // Skip header:
     // max_qwkmsgs                  4

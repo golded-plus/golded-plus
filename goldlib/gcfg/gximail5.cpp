@@ -61,7 +61,7 @@ void gareafile::ReadIMail170(char* options, char* file, char* impath) {
   if (fp)
   {
     if (not quiet)
-      STD_PRINT("* Reading " << file << std::endl);
+      STD_PRINTNL("* Reading " << file);
 
     fread(CF, sizeof(im_config_type), 1, fp);
     fclose(fp);
@@ -90,7 +90,7 @@ void gareafile::ReadIMail170(char* options, char* file, char* impath) {
       setvbuf(fp, NULL, _IOFBF, 8192);
 
       if (not quiet)
-        STD_PRINT("* Reading " << file << std::endl);
+        STD_PRINTNL("* Reading " << file);
 
       while(fread(&AR, sizeof(areas_record_type), 1, fp) == 1) {
 
@@ -121,7 +121,7 @@ void gareafile::ReadIMail170(char* options, char* file, char* impath) {
                 aa.board = AR.brd;
               else
               {
-                STD_PRINT("* Warning: Invalid board " << AR.brd << " (" << AR.aname << ") in IMAIL.AR - Skipping." << std::endl);
+                STD_PRINTNL("* Warning: Invalid board " << AR.brd << " (" << AR.aname << ") in IMAIL.AR - Skipping.");
                 continue;
               }
               break;

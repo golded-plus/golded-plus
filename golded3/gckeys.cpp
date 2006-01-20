@@ -1018,7 +1018,7 @@ int ReadKeysCfg(int force) {
     cfgname = cfgname ? cfgname+1 : cfg;
 
     if (not quiet)
-      STD_PRINT("* Reading " << cfg << std::endl);
+      STD_PRINTNL("* Reading " << cfg);
 
     CFG->macro.clear();
     CFG->cmdkey.clear();
@@ -1034,7 +1034,7 @@ int ReadKeysCfg(int force) {
       ptr = strskip_txt(ptr);
       if (*ptr == NUL)
       {
-        STD_PRINT("* " << cfgname << ": Incomplete line " << line << "." << std::endl);
+        STD_PRINTNL("* " << cfgname << ": Incomplete line " << line << ".");
         SayBibi();
         cfgerrors++;
         continue;
@@ -1053,7 +1053,7 @@ int ReadKeysCfg(int force) {
         keycmd = SwitchKeyDefs(strCrc16(strupr(ptr2)), &keytype);
         if (not keycmd or keytype)
         {
-          STD_PRINT("* " << cfgname << ": Invalid key \"" << ptr2 << "\" in line " << line << "." << std::endl);
+          STD_PRINTNL("* " << cfgname << ": Invalid key \"" << ptr2 << "\" in line " << line << ".");
           SayBibi();
           cfgerrors++;
           continue;
@@ -1101,7 +1101,7 @@ int ReadKeysCfg(int force) {
               }
               else
               {
-                STD_PRINT("* " << cfgname << ": Invalid key \"" << ptr2 << "\" in line " << line << "." << std::endl);
+                STD_PRINTNL("* " << cfgname << ": Invalid key \"" << ptr2 << "\" in line " << line << ".");
                 SayBibi();
                 cfgerrors++;
                 continue;
@@ -1132,7 +1132,7 @@ int ReadKeysCfg(int force) {
           KeyCmdAdd(keycmd, keyval, keytype);
         else
         {
-          STD_PRINT("* " << cfgname << ": Invalid key \"" << ptr2 << "\" in line " << line << "." << std::endl);
+          STD_PRINTNL("* " << cfgname << ": Invalid key \"" << ptr2 << "\" in line " << line << ".");
           SayBibi();
           cfgerrors++;
           continue;
@@ -1140,7 +1140,7 @@ int ReadKeysCfg(int force) {
       }
       else
       {
-        STD_PRINT("* " << cfgname << ": Invalid key \"" << ptr2 << "\" in line " << line << "." << std::endl);
+        STD_PRINTNL("* " << cfgname << ": Invalid key \"" << ptr2 << "\" in line " << line << ".");
         SayBibi();
         cfgerrors++;
         continue;

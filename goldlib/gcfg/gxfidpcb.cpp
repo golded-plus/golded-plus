@@ -94,7 +94,7 @@ void gareafile::ReadFidoPCB(char* tag) {
     setvbuf(fp, NULL, _IOFBF, 8192);
 
     if (not quiet)
-      STD_PRINT("* Reading " << file << std::endl);
+      STD_PRINTNL("* Reading " << file);
 
     int areas = 0;
     fparea* area = NULL;

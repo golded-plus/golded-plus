@@ -85,7 +85,7 @@ void gareafile::ReadCrashmailCfg(const char* file) {
     setvbuf(fp, NULL, _IOFBF, 8192);
 
     if (not quiet)
-      STD_PRINT("* Reading " << file << std::endl);
+      STD_PRINTNL("* Reading " << file);
 
     char buf[4000];
     char key[30];

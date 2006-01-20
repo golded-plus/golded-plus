@@ -69,7 +69,7 @@ void gareafile::ReadQFront(char* tag) {
   if (fp)
   {
     if (not quiet)
-      STD_PRINT("* Reading " << file << std::endl);
+      STD_PRINTNL("* Reading " << file);
 
     fread(origin, sizeof(OriginLineRecord), 1, fp);
     for(int n=0; n<MaxOrigins; n++)
@@ -85,7 +85,7 @@ void gareafile::ReadQFront(char* tag) {
     setvbuf(fp, NULL, _IOFBF, 8192);
 
     if (not quiet)
-      STD_PRINT("* Reading " << file << std::endl);
+      STD_PRINTNL("* Reading " << file);
 
     while(fread(area, sizeof(EchoMailConferenceRecord), 1, fp) == 1) {
       if(not area->Deleted) {

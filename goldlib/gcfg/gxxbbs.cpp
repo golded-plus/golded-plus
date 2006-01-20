@@ -64,7 +64,7 @@ void gareafile::ReadAdeptXbbsFile(char* path, char* file, char* options) {
     setvbuf(fp, NULL, _IOFBF, 8192);
 
     if (not quiet)
-      STD_PRINT("* Reading " << file << std::endl);
+      STD_PRINTNL("* Reading " << file);
 
     aa.reset();
 

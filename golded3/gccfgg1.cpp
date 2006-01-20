@@ -41,7 +41,7 @@ void CfgAddress(char* v)
   if (not strblank(v))
   {
     if (veryverbose)
-      STD_PRINT("  CfgAddress(" << v << ")" << std::endl);
+      STD_PRINTNL("  CfgAddress(" << v << ")");
 
     gaka aka;
     aka.domain[0] = NUL;

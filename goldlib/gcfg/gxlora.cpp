@@ -72,7 +72,7 @@ void gareafile::ReadLoraBBS(char* tag) {
   if (fp.isopen())
   {
     if (not quiet)
-      STD_PRINT("* Reading " << _file << std::endl);
+      STD_PRINTNL("* Reading " << _file);
 
     _configuration* cfg = (_configuration*)throw_calloc(1, sizeof(_configuration));
     fp.fread(cfg, sizeof(_configuration));
@@ -140,7 +140,7 @@ void gareafile::ReadLoraBBS(char* tag) {
       fp.setvbuf(NULL, _IOFBF, 8192);
 
       if (not quiet)
-        STD_PRINT("* Reading " << _file << std::endl);
+        STD_PRINTNL("* Reading " << _file);
 
       _sysmsg* sysmsg = (_sysmsg*)throw_calloc(1, sizeof(_sysmsg));
 

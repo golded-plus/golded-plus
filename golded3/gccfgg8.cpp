@@ -641,7 +641,7 @@ void CfgXlatexport() {
 
   if (CFG->usecharset and (strieql(buf, "IBMPC") or strieql(buf, "+7_FIDO")))
   {
-    STD_PRINT("* Warning: Charset " << buf << " is obsolete. Consider using CPxxx form." << std::endl);
+    STD_PRINTNL("* Warning: Charset " << buf << " is obsolete. Consider using CPxxx form.");
     cfgerrors++;
   }
 }
@@ -666,7 +666,7 @@ void CfgXlatlocalset() {
 
   if (CFG->usecharset and (strieql(CFG->xlatlocalset, "IBMPC") or strieql(CFG->xlatlocalset, "+7_FIDO")))
   {
-    STD_PRINT("* Warning: Charset " << CFG->xlatlocalset << " is obsolete. Consider using CPxxx form." << std::endl);
+    STD_PRINTNL("* Warning: Charset " << CFG->xlatlocalset << " is obsolete. Consider using CPxxx form.");
     cfgerrors++;
   }
 }

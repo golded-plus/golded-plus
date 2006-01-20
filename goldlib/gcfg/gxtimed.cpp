@@ -79,7 +79,7 @@ void gareafile::ReadTimedFile(char* path, char* file, char* options, char* origi
     setvbuf(fp, NULL, _IOFBF, 8192);
 
     if (not quiet)
-      STD_PRINT("* Reading " << file << std::endl);
+      STD_PRINTNL("* Reading " << file);
 
     aa.reset();
 

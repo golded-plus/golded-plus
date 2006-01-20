@@ -53,7 +53,7 @@ int ReadHelpCfg(int force) {
         CFG->helpcfg.ft = GetFiletime(AddPath(CFG->goldpath, CFG->helpcfg.fn));
 
         if (not quiet)
-          STD_PRINT("* Reading " << AddPath(CFG->goldpath, CFG->helpcfg.fn) << std::endl);
+          STD_PRINTNL("* Reading " << AddPath(CFG->goldpath, CFG->helpcfg.fn));
 
         setvbuf(ofp, NULL, _IOFBF, 8192);
 
@@ -644,7 +644,7 @@ void ReadXlatTables() {
         if (ifp)
         {
           if (not quiet)
-            STD_PRINT("* Reading " << buf << std::endl);
+            STD_PRINTNL("* Reading " << buf);
 
           // Read the definition file
           line = 1;
@@ -726,7 +726,7 @@ void ReadXlatTables() {
           fclose(ifp);
         }
         else
-          STD_PRINT("* XLAT table " << buf << " could not be opened." << std::endl);
+          STD_PRINTNL("* XLAT table " << buf << " could not be opened.");
 
         fwrite(&ChsTable, sizeof(Chs), 1, ofp);
       }
@@ -741,7 +741,7 @@ void ReadXlatTables() {
         if (ifp)
         {
           if (not quiet)
-            STD_PRINT("* Reading " << buf << std::endl);
+            STD_PRINTNL("* Reading " << buf);
 
           // Read the definition file
           line = 1;
@@ -805,7 +805,7 @@ void ReadXlatTables() {
           fclose(ifp);
         }
         else
-          STD_PRINT("* XLAT table " << buf << " could not be opened." << std::endl);
+          STD_PRINTNL("* XLAT table " << buf << " could not be opened.");
 
         fwrite(&EscTable, sizeof(Esc), 1, ofp);
       }

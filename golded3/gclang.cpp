@@ -711,7 +711,7 @@ bool ReadLangCfg(int force) {
     setvbuf(fpi, NULL, _IOFBF, 8192);
 
     if (not quiet)
-      STD_PRINT("* Reading " << cfgname << std::endl);
+      STD_PRINTNL("* Reading " << cfgname);
 
     cfgname = CleanFilename(cfgname);
 
@@ -734,7 +734,7 @@ bool ReadLangCfg(int force) {
         {
           if (cmdlineoldkeyw == false)
           {
-            STD_PRINT("* " << cfgname << " line " << line << ": \"" << ptr << "\" is obsolete or unknown." << std::endl);
+            STD_PRINTNL("* " << cfgname << " line " << line << ": \"" << ptr << "\" is obsolete or unknown.");
             SayBibi();
             cfgerrors++;
           }

@@ -79,7 +79,7 @@ void gareafile::ReadRemoteAccess(char* tag) {
     if (fp)
     {
       if (not quiet)
-        STD_PRINT("* Reading " << file << std::endl);
+        STD_PRINTNL("* Reading " << file);
 
       fread(config, sizeof(CONFIGrecord), 1, fp);
       fclose(fp);
@@ -103,7 +103,7 @@ void gareafile::ReadRemoteAccess(char* tag) {
       setvbuf(fp, NULL, _IOFBF, 8192);
 
       if (not quiet)
-        STD_PRINT("* Reading " << file << std::endl);
+        STD_PRINTNL("* Reading " << file);
 
       if(config->VersionID >= 0x200) {
         MESSAGErecord* area = new MESSAGErecord; throw_new(area);

@@ -136,7 +136,7 @@ bool ReadGoldedCfg(int& force) {
 
     if (strieql(CFG->semaphore.exportlist, AddPath(CFG->jampath, "echomail.jam")))
     {
-      STD_PRINT("* Warning: SEMAPHORE EXPORTLIST must not be the same as ECHOMAIL.JAM!" << std::endl);
+      STD_PRINTNL("* Warning: SEMAPHORE EXPORTLIST must not be the same as ECHOMAIL.JAM!");
       SayBibi();
       cfgerrors++;
     }
@@ -236,7 +236,7 @@ void WriteGoldGed() {
 #if !defined(__GOLD_GUI__)
 static int EnterString(char* prompt, char* string, uint length)
 {
-  STD_PRINT(prompt << std::endl << "> " << std::flush);
+  STD_PRINT(prompt << NL << "> " << std::flush);
 
   *string = NUL;
   char* ptr = string;
@@ -252,12 +252,12 @@ static int EnterString(char* prompt, char* string, uint length)
       }
     }
     else if(k == Key_Esc) {
-      STD_PRINT(std::endl);
+      STD_PRINT(NL);
       *string = NUL;
       return -1;
     }
     else if(k == Key_Ent) {
-      STD_PRINT(std::endl);
+      STD_PRINT(NL);
       *ptr = NUL;
       break;
     }
@@ -332,10 +332,10 @@ void InstallDetect(char* path) {
     if(fexist(cmdlinecfgbak))
       remove(cmdlinecfgbak);
     rename(CFG->goldcfg, cmdlinecfgbak);
-    STD_PRINT("Warning: Existing config backed up to " << cmdlinecfgbak << "!!!" << std::endl);
+    STD_PRINTNL("Warning: Existing config backed up to " << cmdlinecfgbak << "!!!");
   }
 
-  STD_PRINT("Please wait while GoldED+ is detecting your software." << std::endl);
+  STD_PRINTNL("Please wait while GoldED+ is detecting your software.");
 
   FILE* fp = fopen(CFG->goldcfg, "wt");
   if(fp) {
@@ -364,7 +364,7 @@ void InstallDetect(char* path) {
       }
       if(fexist(AddPath(pth, idetect[i].configname))) {
         fprintf(fp, "AREAFILE %s %s\n", idetect[i].name, pth);
-        STD_PRINT("Found " << idetect[i].name << (ptr ? "." : " (unreliable).") << std::endl);
+        STD_PRINTNL("Found " << idetect[i].name << (ptr ? "." : " (unreliable)."));
         if(streql(idetect[i].name, "Squish"))
           gotsquish = true;
         detected = true;
@@ -378,7 +378,7 @@ void InstallDetect(char* path) {
       PathCopy(pth, ptr);
     if(fexist(AddPath(pth, "im.exe")) or fexist(AddPath(pth, "intrecho.exe"))) {
       fprintf(fp, "AREAFILE InterMail %s\n", pth);
-      STD_PRINT("Found InterMail and/or InterEcho." << std::endl);
+      STD_PRINTNL("Found InterMail and/or InterEcho.");
       detected = true;
     }
 
@@ -393,12 +393,12 @@ void InstallDetect(char* path) {
     }
     if(fexist(AddPath(pth, "max.prm"))) {
       fprintf(fp, "AREAFILE Maximus %s\n", pth);
-      STD_PRINT("Found Maximus." << std::endl);
+      STD_PRINTNL("Found Maximus.");
       detected = true;
     }
     if(not gotsquish and fexist(AddPath(pth, "squish.cfg"))) {
       fprintf(fp, "AREAFILE Squish %s\n", pth);
-      STD_PRINT("Found Squish." << std::endl);
+      STD_PRINTNL("Found Squish.");
       detected = true;
     }
 
@@ -406,7 +406,7 @@ void InstallDetect(char* path) {
     strcpy(pth, CFG->areapath);
     if(fexist(AddPath(pth, "areadesc.me2"))) {
       fprintf(fp, "AREAFILE ME2 %sareadesc.me2 %sareas.bbs\n", pth, pth);
-      STD_PRINT("Found ME2." << std::endl);
+      STD_PRINTNL("Found ME2.");
       gotareasbbs = true;
       detected = true;
     }
@@ -416,13 +416,13 @@ void InstallDetect(char* path) {
       strcpy(pth, CFG->areapath);
       if(fexist(AddPath(pth, "areas.bbs"))) {
         fprintf(fp, "AREAFILE AreasBBS %sareas.bbs\n", pth);
-        STD_PRINT("Found AREAS.BBS." << std::endl);
+        STD_PRINTNL("Found AREAS.BBS.");
         detected = true;
       }
     }
 
     if(not detected)
-      STD_PRINT("Sorry, could not find any supported software. Try another path." << std::endl);
+      STD_PRINTNL("Sorry, could not find any supported software. Try another path.");
 
     fclose(fp);
   }

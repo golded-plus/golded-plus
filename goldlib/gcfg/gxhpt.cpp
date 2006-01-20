@@ -183,7 +183,7 @@ void gareafile::ReadHPTFile(char* path, char* file, char* origin, int group) {
     setvbuf(fp, NULL, _IOFBF, 8192);
 
     if (not quiet)
-      STD_PRINT("* Reading " << file << std::endl);
+      STD_PRINTNL("* Reading " << file);
 
     aa.reset();
     aa.type = GMB_NONE;
@@ -208,7 +208,7 @@ void gareafile::ReadHPTFile(char* path, char* file, char* origin, int group) {
               sscanf(val, "%d.%d", &ver_maj, &ver_min);
               if ((ver_maj != 0) and (ver_min != 15))
               {
-                STD_PRINT("* Error: Unknown fidoconfig version " << ver_maj << '.' << ver_min << " - Skipping." << std::endl);
+                STD_PRINTNL("* Error: Unknown fidoconfig version " << ver_maj << '.' << ver_min << " - Skipping.");
                 throw_xfree(alptr);
                 goto skip_config;
               }

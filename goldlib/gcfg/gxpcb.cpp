@@ -90,7 +90,7 @@ void gareafile::ReadPCBoard(char* tag) {
   if (fp.isopen())
   {
     if (not quiet)
-      STD_PRINT("* Reading " << _file << std::endl);
+      STD_PRINTNL("* Reading " << _file);
 
     int _line = 0;
 
@@ -121,7 +121,7 @@ void gareafile::ReadPCBoard(char* tag) {
       if (fp.isopen())
       {
         if (not quiet)
-          STD_PRINT("* Reading " << _file << std::endl);
+          STD_PRINTNL("* Reading " << _file);
 
         // Get configuration file version
         fp.fread(&fido_version, 2);
@@ -168,7 +168,7 @@ void gareafile::ReadPCBoard(char* tag) {
           if (fp.isopen())
           {
             if (not quiet)
-              STD_PRINT("* Reading " << _file << std::endl);
+              STD_PRINTNL("* Reading " << _file);
 
             word cfgver = 0;
             fp.fread(&cfgver, 2);
@@ -186,7 +186,7 @@ void gareafile::ReadPCBoard(char* tag) {
           if (fp.isopen())
           {
             if (not quiet)
-              STD_PRINT("* Reading " << _file << std::endl);
+              STD_PRINTNL("* Reading " << _file);
 
             word cfgver = 0;
             fp.fread(&cfgver, 2);
@@ -210,7 +210,7 @@ void gareafile::ReadPCBoard(char* tag) {
           if (fp.isopen())
           {
             if (not quiet)
-              STD_PRINT("* Reading " << _file << std::endl);
+              STD_PRINTNL("* Reading " << _file);
 
             word cfgver = 0;
             fp.fread(&cfgver, 2);
@@ -259,7 +259,7 @@ void gareafile::ReadPCBoard(char* tag) {
     if (fp.isopen())
     {
       if (not quiet)
-        STD_PRINT("* Reading " << _file << std::endl);
+        STD_PRINTNL("* Reading " << _file);
 
       gfile fp2;
       _file = AddPath(_cnamespath, ".add");
@@ -267,7 +267,7 @@ void gareafile::ReadPCBoard(char* tag) {
       if (fp2.isopen())
       {
         if (not quiet)
-          STD_PRINT("* Reading " << _file << std::endl);
+          STD_PRINTNL("* Reading " << _file);
 
         word _recsize = 0;
         fp.fread(&_recsize, 2);

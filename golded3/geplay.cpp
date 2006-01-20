@@ -96,13 +96,13 @@ void InitSound() {
       if (snd->is_installed())
       {
         if (not quiet)
-          STD_PRINT("* Soundcard support was successfully initialized." << std::endl);
+          STD_PRINTNL("* Soundcard support was successfully initialized.");
         atexit(ResetSound);
       }
       else
       {
         if (not quiet)
-          STD_PRINT("* Soundcard support could NOT be initialized!" << std::endl);
+          STD_PRINTNL("* Soundcard support could NOT be initialized!");
         ResetSound();
       }
       break;

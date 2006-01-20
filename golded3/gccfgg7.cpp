@@ -405,7 +405,7 @@ void CfgSeqMsgId() {
 
 void CfgSeqOutRun_Error()
 {
-  STD_PRINT("* Warning: Bad SeqOutrun value \'" << val << "\', ignored."<< std::endl);
+  STD_PRINTNL("* Warning: Bad SeqOutrun value \'" << val << "\', ignored.");
 }
 
 void CfgSeqOutRun() {
@@ -427,7 +427,7 @@ void CfgSeqOutRun() {
     CFG->seqoutrun = s;
     
     if (veryverbose)
-      STD_PRINT("  SeqOutRun: \'" << val << "\' --> " << CFG->seqoutrun << std::endl);
+      STD_PRINTNL("  SeqOutRun: \'" << val << "\' --> " << CFG->seqoutrun);
 
     return;
   }
@@ -456,7 +456,7 @@ void CfgSeqOutRun() {
   CFG->seqoutrun = s;
   
   if (veryverbose)
-    STD_PRINT("  SeqOutRun: \'" << val << "\' --> " << CFG->seqoutrun << std::endl);
+    STD_PRINTNL("  SeqOutRun: \'" << val << "\' --> " << CFG->seqoutrun);
 }
 
 //  ------------------------------------------------------------------

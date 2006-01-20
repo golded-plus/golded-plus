@@ -86,7 +86,7 @@ void gareafile::ReadxMailFile(char* file, char* options) {
     setvbuf(fp, NULL, _IOFBF, 8192);
 
     if (not quiet)
-      STD_PRINT("* Reading " << file << std::endl);
+      STD_PRINTNL("* Reading " << file);
 
     aa.reset();
 
@@ -171,7 +171,7 @@ void gareafile::ReadXMail(char* tag) {
     setvbuf(fp, NULL, _IOFBF, 8192);
 
     if (not quiet)
-      STD_PRINT("* Reading " << file << std::endl);
+      STD_PRINTNL("* Reading " << file);
 
     areano = 1;
     while(fread(&area, sizeof(EchoAreaRec), 1, fp) == 1) {

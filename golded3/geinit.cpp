@@ -83,7 +83,7 @@ static void InitCmdline(char* val) {
         if (*val)
           strcpy(cmdlinecfg, val);
         else
-          STD_PRINT("Warning: configuration filename missed for -C option, ignored.\r\n");
+          STD_PRINTNL("Warning: configuration filename missed for -C option, ignored.");
         break;
       case 'D':
         cmdlineoldkeyw = (*val == '-');
@@ -152,7 +152,7 @@ static void InitCmdline(char* val) {
         gftrk_set_max = atoi(val);
         if (gftrk_set_max == 0)
         {
-          STD_PRINT("Warning: Invalid parameter for -Z option, fixed.\r\n");
+          STD_PRINTNL("Warning: Invalid parameter for -Z option, fixed.");
           gftrk_set_max = 1;
         }
         break;
@@ -520,7 +520,7 @@ void Initialize(int argc, char* argv[]) {
   srand(gtime(NULL));
 
   // Display startup banner
-  STD_PRINT(__gver_longpid__ << " " << __gver_ver__ << "\r\n");
+  STD_PRINTNL(__gver_longpid__ << " " << __gver_ver__ );
 
   // Check environment commandline
   ptr = getenv("GEDCMD");
@@ -562,32 +562,32 @@ void Initialize(int argc, char* argv[]) {
   // Print commandline help and exit if requested
   if (cmdlinehelp)
   { 
-    STD_PRINT("Copyright (C) 1990-2005 Odinn Sorensen, Alexander Aganichev, Jacobo Tarrio,\r\n");
-    STD_PRINT("                        Stas Degteff and others\r\n");
-    STD_PRINT("-------------------------------------------------------------------------------\r\n");
-    STD_PRINT("\r\n");
-    STD_PRINT("Invocation: " << argv[0] << " [-options] [keystacking]\r\n");
-    STD_PRINT("\r\n");
-    STD_PRINT("-C<configfile>  Use a different configuration file.\r\n");
-    STD_PRINT("-D              Disable old obsolete configuration keywords.\r\n");
-    STD_PRINT("-E<echoid>      Start directly in the specified mail area.\r\n");
-    STD_PRINT("-EXPORTSOUP     Export SOUP packets during startup.\r\n");
-    STD_PRINT("-F  or  -FF     Force recompile of most (or all with -FF) configuration files.\r\n");
-    STD_PRINT("-INSTALL[=path] Start the quick install procedure. Look in path, if given.\r\n");
-    STD_PRINT("-IMPORTSOUP     Import SOUP packets during startup.\r\n");
-    STD_PRINT("-M              Mute sounds. Disables all noises in GoldED+.\r\n");
-    STD_PRINT("-N              Disable share-compatible file opens during startup.\r\n");
-    STD_PRINT("-NOSCAN         Temporarily disable area scan during startup.\r\n");
+    STD_PRINTNL("Copyright (C) 1990-2005 Odinn Sorensen, Alexander Aganichev, Jacobo Tarrio,");
+    STD_PRINTNL("                        Stas Degteff and others");
+    STD_PRINTNL("-------------------------------------------------------------------------------");
+    STD_PRINTNL("");
+    STD_PRINTNL("Invocation: " << argv[0] << " [-options] [keystacking]");
+    STD_PRINTNL("");
+    STD_PRINTNL("-C<configfile>  Use a different configuration file.");
+    STD_PRINTNL("-D              Disable old obsolete configuration keywords.");
+    STD_PRINTNL("-E<echoid>      Start directly in the specified mail area.");
+    STD_PRINTNL("-EXPORTSOUP     Export SOUP packets during startup.");
+    STD_PRINTNL("-F  or  -FF     Force recompile of most (or all with -FF) configuration files.");
+    STD_PRINTNL("-INSTALL[=path] Start the quick install procedure. Look in path, if given.");
+    STD_PRINTNL("-IMPORTSOUP     Import SOUP packets during startup.");
+    STD_PRINTNL("-M              Mute sounds. Disables all noises in GoldED+.");
+    STD_PRINTNL("-N              Disable share-compatible file opens during startup.");
+    STD_PRINTNL("-NOSCAN         Temporarily disable area scan during startup.");
 #if defined(GUTLOS_FUNCS) && !defined(__MSDOS__)
-    STD_PRINT("-P              Increase program priority to run faster.\r\n");
+    STD_PRINTNL("-P              Increase program priority to run faster.");
 #endif
-    STD_PRINT("-S<sortspec>    Sorts all mail areas according to the sort specs.\r\n");
-    STD_PRINT("-T<seconds>     Set a timeout value. GoldED+ will auto-exit after timeout.\r\n");
-    STD_PRINT("-V  or  -VV     Verbose or Very verbose (-VV) config compile. Use -VV to debug.\r\n");
-    STD_PRINT("-W              Write a GOLDAREA.INC file with AREADEF's of all mail areas.\r\n");
-    STD_PRINT("-X,  -Y,  -Z    Reserved for debugging purposes.\r\n");
-    STD_PRINT("\r\n");
-    STD_PRINT("Any non-option parameter is stuffed into the keyboard buffer.\r\n");
+    STD_PRINTNL("-S<sortspec>    Sorts all mail areas according to the sort specs.");
+    STD_PRINTNL("-T<seconds>     Set a timeout value. GoldED+ will auto-exit after timeout.");
+    STD_PRINTNL("-V  or  -VV     Verbose or Very verbose (-VV) config compile. Use -VV to debug.");
+    STD_PRINTNL("-W              Write a GOLDAREA.INC file with AREADEF's of all mail areas.");
+    STD_PRINTNL("-X,  -Y,  -Z    Reserved for debugging purposes.");
+    STD_PRINTNL("");
+    STD_PRINTNL("Any non-option parameter is stuffed into the keyboard buffer.");
 
     exit(0);
   }
@@ -681,7 +681,7 @@ void Initialize(int argc, char* argv[]) {
 
   if (not fexist(CFG->goldcfg))
   {
-    STD_PRINT("*** Cannot start: " << CFG->goldcfg << " not found! ***\r\n");
+    STD_PRINTNL("*** Cannot start: " << CFG->goldcfg << " not found! ***");
     errorlevel = EXIT_NONAME;
     exit(0);
   }
@@ -692,7 +692,7 @@ void Initialize(int argc, char* argv[]) {
   // Call install finish procedure
   if (cmdlineinstall && InstallFinish())
   {
-    STD_PRINT("*** INSTALL NOT COMPLETED ***\r\n");
+    STD_PRINTNL("*** INSTALL NOT COMPLETED ***");
     remove(CFG->goldcfg);
     errorlevel = EXIT_NONAME;
     exit(0);
@@ -741,11 +741,11 @@ void Initialize(int argc, char* argv[]) {
 
   // Report detected multitasker
   if (!quiet && gmtsk.detected)
-    STD_PRINT("* Running under " << gmtsk.name << ".\r\n");
+    STD_PRINTNL("* Running under " << gmtsk.name << ".");
 
   if (cfgerrors)
   {
-    STD_PRINT("* Total CFG errors found: " << cfgerrors << ". Press almost any key to continue.\r\n");
+    STD_PRINTNL("* Total CFG errors found: " << cfgerrors << ". Press almost any key to continue.");
     kbclear();
     waitkey();
   }

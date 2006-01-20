@@ -72,7 +72,7 @@ void gareafile::ReadDutchie(char* tag) {
     setvbuf(fp, NULL, _IOFBF, 8192);
 
     if (not quiet)
-      STD_PRINT("* Reading " << file << std::endl);
+      STD_PRINTNL("* Reading " << file);
 
     while(fgets(buf, 255, fp)) {
 

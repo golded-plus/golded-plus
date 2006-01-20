@@ -91,7 +91,7 @@ void gareafile::ReadGEcho(char* tag) {
     if (fp)
     {
       if (not quiet)
-        STD_PRINT("* Reading " << file << std::endl);
+        STD_PRINTNL("* Reading " << file);
 
       fread(&sysrev, sizeof(word), 1, fp);
       rewind(fp);
@@ -116,9 +116,9 @@ void gareafile::ReadGEcho(char* tag) {
           _fidomsgtype = (gesetup->extraoptions & OPUSDATES) ? "OPUS" : "FTS1";
           if((streql(_fidomsgtype, "FTS1")) and (streql(fidomsgtype, "OPUS")))
           {
-            STD_PRINT("* Warning - FTS-1 format is used for *.MSG. For better compatibility set this" << std::endl);
-            STD_PRINT("* in GSETUP: Miscellanous->GEcho Options->MSG compatibilty = Opus (not Fido)." << std::endl);
-            STD_PRINT("* To disable this warning, set FIDOMSGTYPE FTS1 in your GoldED setup." << std::endl);
+            STD_PRINTNL("* Warning - FTS-1 format is used for *.MSG. For better compatibility set this");
+            STD_PRINTNL("* in GSETUP: Miscellanous->GEcho Options->MSG compatibilty = Opus (not Fido).");
+            STD_PRINTNL("* To disable this warning, set FIDOMSGTYPE FTS1 in your GoldED setup.");
           }
         }
 
@@ -341,7 +341,7 @@ void gareafile::ReadGEcho(char* tag) {
           setvbuf(fp, NULL, _IOFBF, 8192);
 
           if (not quiet)
-            STD_PRINT("* Reading " << file << std::endl);
+            STD_PRINTNL("* Reading " << file);
 
           fread(&ahdr, sizeof(AREAFILE_HDR), 1, fp);
           uint arearecsize = (ahdr.maxconnections * sizeof(CONNECTION)) + ahdr.recsize;
@@ -442,7 +442,7 @@ void gareafile::ReadGEcho(char* tag) {
         }
       }
       else
-        STD_PRINT("* Error: GEcho system file revision level " << sysrev << " is not supported - Skipping." << std::endl);
+        STD_PRINTNL("* Error: GEcho system file revision level " << sysrev << " is not supported - Skipping.");
     }
     throw_free(gesetup);
   }
