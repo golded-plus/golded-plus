@@ -1228,7 +1228,7 @@ void vgetc(int row, int col, vattr* atr, vchar* chr) {
 
   if((row < 0) or (row > gvid->numrows-1) or (col < 0) or (col > gvid->numcols-1)) {
     *chr = ' ';
-    *atr = BLACK|_BLACK;
+    *atr = BLACK_|_BLACK;
   }
   else {
     vatch tmp = vgetw(row, col);

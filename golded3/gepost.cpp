@@ -540,7 +540,7 @@ static void MakeMsg2(int& mode, int& status, int& forwstat, int& topline, GMsg* 
         strischg(buf, "@file", buf2);
         long ftbefore = GetFiletime(AddPath(CFG->goldpath, EDIT->File()));
         sprintf(buf2, LNG->EditCmd, buf);
-        ShellToDos(buf, buf2, LGREY|_BLACK, YES);
+        ShellToDos(buf, buf2, LGREY_|_BLACK, YES);
         long ftafter = GetFiletime(AddPath(CFG->goldpath, EDIT->File()));
         if(status != MODE_SAVE) {
           status = MODE_SAVE;

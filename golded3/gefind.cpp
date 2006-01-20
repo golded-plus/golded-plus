@@ -181,7 +181,7 @@ bool FindString(GMsg* msg, const char* prompt, int what) {
     AA->set_lastread(last);
   }
 
-  w_progress(MODE_QUIT, BLACK|_BLACK, 0, 0, NULL);
+  w_progress(MODE_QUIT, BLACK_|_BLACK, 0, 0, NULL);
 
   if(breakloop)
   HandleGEvent(EVTT_BREAKLOOP);

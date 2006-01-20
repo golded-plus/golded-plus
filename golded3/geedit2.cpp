@@ -949,7 +949,7 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
       isPipe = YES;
       mktemp(strxcpy(tmpfile, AddPath(CFG->temppath, "GIXXXXXX"), sizeof(Path)));
       strxmerge(cmdline, sizeof(Path), filenamebuf.c_str()+1, " > ", tmpfile, NULL);
-      ShellToDos(cmdline, "", BLACK|_BLACK, NO);
+      ShellToDos(cmdline, "", BLACK_|_BLACK, NO);
       filenamebuf = tmpfile;
       fileselected = true;
     } else {
@@ -1324,7 +1324,7 @@ void IEclass::SpellCheck() {
   strchg(_buf2, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
   strischg(_buf, "@file", _buf2);
   sprintf(_buf2, LNG->SpellChecker, _buf);
-  ShellToDos(_buf, _buf2, LGREY|_BLACK, YES);
+  ShellToDos(_buf, _buf2, LGREY_|_BLACK, YES);
   LoadFile();
 
   GFTRK(NULL);
@@ -1357,7 +1357,7 @@ void IEclass::DosShell() {
 
   GFTRK("EditDosShell");
 
-  ShellToDos(getenv(GOLD_SHELL_ENV), LNG->DOS_Shell, LGREY|_BLACK, YES);
+  ShellToDos(getenv(GOLD_SHELL_ENV), LNG->DOS_Shell, LGREY_|_BLACK, YES);
   cursoron();
   cursoroff();
 

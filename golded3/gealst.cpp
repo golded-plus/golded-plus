@@ -467,7 +467,7 @@ public:
 
 void SelMaskPick::open() {
 
-  window.openxy(ypos, xpos, ylen+2, xlen+2, btype, battr, LGREY);
+  window.openxy(ypos, xpos, ylen+2, xlen+2, btype, battr, LGREY_|_BLACK);
   window.title(title, tattr);
   window.shadow(C_SHADOW);
   update();

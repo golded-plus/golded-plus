@@ -41,7 +41,7 @@ gwinput::gwinput(gwindow &w) : window(w) {
 
   first_field = current = NULL;
   fill_acs = false;
-  idle_attr = active_attr = edit_attr = LGREY;
+  idle_attr = active_attr = edit_attr = LGREY_|_BLACK;
   idle_fill = active_fill = edit_fill = ' ';
   insert_mode = true;
   done = dropped = false;

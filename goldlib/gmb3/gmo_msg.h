@@ -149,8 +149,8 @@ public:
   Line* prev;             // Pointer to previous line
   Line* next;             // Pointer to next line
 
-  Line() : txt ("")     { color = BLACK|_BLACK; type = kludge = 0; prev = next = NULL; }
-  Line(const char *str) : txt (str) { color = BLACK|_BLACK; type = kludge = 0; prev = next = NULL; }
+  Line() : txt ("")     { color = BLACK_|_BLACK; type = kludge = 0; prev = next = NULL; }
+  Line(const char *str) : txt (str) { color = BLACK_|_BLACK; type = kludge = 0; prev = next = NULL; }
   ~Line()              {}
 
   int  istearline()    { return !!(type & GLINE_TEAR); }

@@ -408,7 +408,7 @@ int wshadoff() {
   throw_xrelease(gwin.active->wsbuf);
 
   // update window's record
-  gwin.active->wsattr = WHITE|_WHITE;
+  gwin.active->wsattr = WHITE_|_WHITE;
 
   // return with no error
   return gwin.werrno=W_NOERROR;

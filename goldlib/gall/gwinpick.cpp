@@ -44,7 +44,7 @@ gwinpick::gwinpick() {
   keyok = false;
   ypos = xpos = ylen = xlen = 0;
   btype = 0;
-  battr = wattr = tattr = sattr = hattr = loattr = sbattr = BLACK|_BLACK;
+  battr = wattr = tattr = sattr = hattr = loattr = sbattr = BLACK_|_BLACK;
   title = NULL;
   helpcat = 0;
   maximum_index = minimum_index = maximum_position = index = position = 0;

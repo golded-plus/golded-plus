@@ -826,7 +826,7 @@ void GVid::setrows(int _rows) {
   #endif
 
   if(origrows < _rows)
-    vfill(origrows, 0, _rows, 80, ' ', LGREY);
+    vfill(origrows, 0, _rows, 80, ' ', LGREY_|_BLACK);
 
   detectinfo(&curr);
   resetcurr();

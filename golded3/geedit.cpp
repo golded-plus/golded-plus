@@ -2913,7 +2913,7 @@ int IEclass::Start(int __mode, uint* __position, GMsg* __msg) {
     gotorowcol(col, row);
     batch_mode = 0;
 
-    vattr backattr = BLACK|_BLACK;
+    vattr backattr = BLACK_|_BLACK;
     if(blockcol == -1) {
       backattr = dispchar(currline->txt.c_str()[col], C_READC);
       gotorowcol(col, row);

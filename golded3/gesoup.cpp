@@ -591,7 +591,7 @@ int ImportSOUP() {
 
       if(importedmsgs and *CFG->soupreplylinker) {
         sprintf(buf, LNG->Replylinker, CFG->soupreplylinker);
-        ShellToDos(CFG->soupreplylinker, buf, LGREY|_BLACK, YES);
+        ShellToDos(CFG->soupreplylinker, buf, LGREY_|_BLACK, YES);
       }
     }
   }

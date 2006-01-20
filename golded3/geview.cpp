@@ -39,10 +39,10 @@ GMsgHeaderView::GMsgHeaderView() {
   alive = false;
   at_row = at_column = width = height = 0;
   border_type = gwindow::bordertype_none;
-  window_color = from_color = to_color = subject_color = BLUE|_LGREY;
-  location_color = BLUE|_LGREY;
-  title_color = highlight_color = RED|_LGREY;
-  border_color = YELLOW|_LGREY;
+  window_color = from_color = to_color = subject_color = BLUE_|_LGREY;
+  location_color = BLUE_|_LGREY;
+  title_color = highlight_color = RED_|_LGREY;
+  border_color = YELLOW_|_LGREY;
 }
 
 
@@ -367,10 +367,10 @@ GMsgBodyView::GMsgBodyView() {
   scrollbar_visible = false;
   at_row = at_column = width = height = visible_width = 0;
   border_type = gwindow::bordertype_none;
-  window_color = BLACK|_LGREY;
-  highlight_color = WHITE|_RED;
-  scrollbar_color = DGREY|_LGREY;
-  border_color = YELLOW|_LGREY;
+  window_color = BLACK_|_LGREY;
+  highlight_color = WHITE_|_RED;
+  scrollbar_color = DGREY_|_LGREY;
+  border_color = YELLOW_|_LGREY;
 }
 
 

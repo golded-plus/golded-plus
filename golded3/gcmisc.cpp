@@ -237,69 +237,69 @@ const word CRC_SCERROR           = 0xAB65;
 vattr GetColor(char* ink)
 {
   word crc;
-  vattr color = BLACK|_BLACK;
+  vattr color = BLACK_|_BLACK;
 
   crc = strCrc16(strupr(ink));
   switch(crc) {
     // Black is the default
     case CRC_BLACK:
-      color = BLACK|_BLACK;
+      color = BLACK_|_BLACK;
       break;
     case CRC_BLUE:
-      color = BLUE|_BLACK;
+      color = BLUE_|_BLACK;
       break;
     case CRC_GREEN:
-      color = GREEN|_BLACK;
+      color = GREEN_|_BLACK;
       break;
     case CRC_CYAN:
-      color = CYAN|_BLACK;
+      color = CYAN_|_BLACK;
       break;
     case CRC_RED:
-      color = RED|_BLACK;
+      color = RED_|_BLACK;
       break;
     case CRC_MAGENTA:
-      color = MAGENTA|_BLACK;
+      color = MAGENTA_|_BLACK;
       break;
     case CRC_BROWN:
-      color = BROWN|_BLACK;
+      color = BROWN_|_BLACK;
       break;
     case CRC_LGRAY:
     case CRC_LGREY:
     case CRC_LIGHTGRAY:
     case CRC_LIGHTGREY:
-      color = LGREY|_BLACK;
+      color = LGREY_|_BLACK;
       break;
     case CRC_DGRAY:
     case CRC_DGREY:
     case CRC_DARKGRAY:
     case CRC_DARKGREY:
-      color = DGREY|_BLACK;
+      color = DGREY_|_BLACK;
       break;
     case CRC_LBLUE:
     case CRC_LIGHTBLUE:
-      color = LBLUE|_BLACK;
+      color = LBLUE_|_BLACK;
       break;
     case CRC_LGREEN:
     case CRC_LIGHTGREEN:
-      color = LGREEN|_BLACK;
+      color = LGREEN_|_BLACK;
       break;
     case CRC_LCYAN:
     case CRC_LIGHTCYAN:
-      color = LCYAN|_BLACK;
+      color = LCYAN_|_BLACK;
       break;
     case CRC_LRED:
     case CRC_LIGHTRED:
-      color = LRED|_BLACK;
+      color = LRED_|_BLACK;
       break;
     case CRC_LMAGENTA:
     case CRC_LIGHTMAGENTA:
-      color = LMAGENTA|_BLACK;
+      color = LMAGENTA_|_BLACK;
       break;
     case CRC_YELLOW:
-      color = YELLOW|_BLACK;
+      color = YELLOW_|_BLACK;
       break;
     case CRC_WHITE:
-      color = WHITE|_BLACK;
+      color = WHITE_|_BLACK;
       break;
     case CRC_UNDERLINE:
       color = UNDERLINE;

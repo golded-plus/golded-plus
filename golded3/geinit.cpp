@@ -785,7 +785,7 @@ void Initialize(int argc, char* argv[]) {
 
   gvid->setintensity(CFG->intensecolors);
 
-  if (C_BACKB != (BLACK|_BLACK))
+  if (C_BACKB != (BLACK_|_BLACK))
     gvid->setoverscan(C_BACKB);
 
   vcurhide();

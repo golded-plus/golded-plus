@@ -34,22 +34,22 @@
 void GMnu::Init() {
 
   bordertype = 0;
-  bordercolor = BLACK|_BLACK;
+  bordercolor = BLACK_|_BLACK;
 
-  textcolor = BLACK|_BLACK;
-  quickcolor = BLACK|_BLACK;
-  noselcolor = BLACK|_BLACK;
-  barcolor = BLACK|_BLACK;
+  textcolor = BLACK_|_BLACK;
+  quickcolor = BLACK_|_BLACK;
+  noselcolor = BLACK_|_BLACK;
+  barcolor = BLACK_|_BLACK;
   shadowcolor = DEFATTR;
 
   title = NULL;
   titlepos = TCENTER;
-  titlecolor = BLACK|_BLACK;
+  titlecolor = BLACK_|_BLACK;
 
   deschdl = -1;
   descrow = 0;
   desccolumn = 0;
-  desccolor = BLACK|_BLACK;
+  desccolor = BLACK_|_BLACK;
 
   helpnumber = -1;
 

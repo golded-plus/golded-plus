@@ -135,7 +135,7 @@ static void show_mouse_cursor_mnu(void) {
   #ifdef GOLD_MOUSE
   if(gmou.FreeCursor()) {
     gmou.ShowCursor();
-    gmou.SetCursor(0,0xFFFF,((LGREY|_LGREY)<<8));
+    gmou.SetCursor(0,0xFFFF,((LGREY_|_LGREY)<<8));
   }
   #endif
 }
@@ -762,7 +762,7 @@ int wmenubeg(int srow, int scol, int erow, int ecol, int btype, vattr battr, vat
     wmenu->item=NULL;
     wmenu->title = "";
     wmenu->titlepos = -1;
-    wmenu->titleattr = BLACK|_BLACK;
+    wmenu->titleattr = BLACK_|_BLACK;
     wmenu->shadattr = DEFATTR;
     wmenu->items = 0;
 
@@ -809,7 +809,7 @@ int wmenuitem(int wrow, int wcol, const char* str, char schar, int tagid, int fm
     witem->dwhdl  = -1;
     witem->dwrow  = 0;
     witem->dwcol  = 0;
-    witem->dattr  = BLACK|_BLACK;
+    witem->dattr  = BLACK_|_BLACK;
     witem->redisp = NO;
     witem->help   = help;
     witem->child  = NULL;

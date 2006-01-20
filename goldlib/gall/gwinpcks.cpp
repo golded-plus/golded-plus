@@ -75,7 +75,7 @@ static void show_mouse_cursor_pck() {
   #ifdef GOLD_MOUSE
   if(gmou.FreeCursor()) {
     gmou.ShowCursor();
-    gmou.SetCursor(0,0xFFFF,((LGREY|_LGREY)<<8));
+    gmou.SetCursor(0,0xFFFF,((LGREY_|_LGREY)<<8));
   }
   #endif
 }

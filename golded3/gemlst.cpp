@@ -733,7 +733,7 @@ public:
 
 void GThreadlist::open() {
 
-  window.openxy(ypos, xpos, ylen+2, xlen+2,  btype, battr, LGREY);
+  window.openxy(ypos, xpos, ylen+2, xlen+2,  btype, battr, LGREY_|_BLACK);
   update_title();
 
   center(CFG->displistcursor);

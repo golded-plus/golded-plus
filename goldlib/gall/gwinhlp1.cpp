@@ -303,7 +303,7 @@ static void disp_cat() {
         setonkey(Key_Esc,esc_esc,0);
 
         // end the menu and process it
-        wmenuend(BASETAGID,M_OMNI|M_NOQS,0,0,whelp.selattr,whelp.selattr,BLACK|_BLACK,whelp.barattr);
+        wmenuend(BASETAGID,M_OMNI|M_NOQS,0,0,whelp.selattr,whelp.selattr,BLACK_|_BLACK,whelp.barattr);
         gmnudropthrough = YES;
         kbch = i = (gkey)wmenuget();
         gmnudropthrough = NO;

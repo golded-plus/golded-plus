@@ -85,57 +85,40 @@ typedef word vatch;       // Type of character-attribute groups
 //  Attribute codes for functions that use them
 
 const vattr DEFATTR   = -1;
-#ifndef MSDOS
-const vattr BLACK     = 0;
-const vattr BLUE      = 1;
-const vattr GREEN     = 2;
-const vattr CYAN      = 3;
-const vattr RED       = 4;
-const vattr MAGENTA   = 5;
-const vattr BROWN     = 6;
-const vattr LGREY     = 7;
-const vattr DGREY     = 8;
-const vattr LBLUE     = 9;
-const vattr LGREEN    = 10;
-const vattr LCYAN     = 11;
-const vattr LRED      = 12;
-const vattr LMAGENTA  = 13;
-const vattr YELLOW    = 14;
-const vattr WHITE     = 15;
-#else
-#define BLACK       0
-#define BLUE        1
-#define GREEN       2
-#define CYAN        3
-#define RED         4
-#define MAGENTA     5
-#define BROWN       6
-#define LGREY       7
-#define DGREY       8
-#define LBLUE       9
-#define LGREEN      10
-#define LCYAN       11
-#define LRED        12
-#define LMAGENTA    13
-#define YELLOW      14
-#define WHITE       15
-#endif
-const vattr _BLACK    = (BLACK    << 4);
-const vattr _BLUE     = (BLUE     << 4);
-const vattr _GREEN    = (GREEN    << 4);
-const vattr _CYAN     = (CYAN     << 4);
-const vattr _RED      = (RED      << 4);
-const vattr _MAGENTA  = (MAGENTA  << 4);
-const vattr _BROWN    = (BROWN    << 4);
-const vattr _LGREY    = (LGREY    << 4);
-const vattr _DGREY    = (DGREY    << 4);
-const vattr _LBLUE    = (LBLUE    << 4);
-const vattr _LGREEN   = (LGREEN   << 4);
-const vattr _LCYAN    = (LCYAN    << 4);
-const vattr _LRED     = (LRED     << 4);
-const vattr _LMAGENTA = (LMAGENTA << 4);
-const vattr _YELLOW   = (YELLOW   << 4);
-const vattr _WHITE    = (WHITE    << 4);
+
+const vattr BLACK_    = 0;
+const vattr BLUE_     = 1;
+const vattr GREEN_    = 2;
+const vattr CYAN_     = 3;
+const vattr RED_      = 4;
+const vattr MAGENTA_  = 5;
+const vattr BROWN_    = 6;
+const vattr LGREY_    = 7;
+const vattr DGREY_    = 8;
+const vattr LBLUE_    = 9;
+const vattr LGREEN_   = 10;
+const vattr LCYAN_    = 11;
+const vattr LRED_     = 12;
+const vattr LMAGENTA_ = 13;
+const vattr YELLOW_   = 14;
+const vattr WHITE_    = 15;
+
+const vattr _BLACK    = (BLACK_   << 4);
+const vattr _BLUE     = (BLUE_    << 4);
+const vattr _GREEN    = (GREEN_   << 4);
+const vattr _CYAN     = (CYAN_    << 4);
+const vattr _RED      = (RED_     << 4);
+const vattr _MAGENTA  = (MAGENTA_ << 4);
+const vattr _BROWN    = (BROWN_   << 4);
+const vattr _LGREY    = (LGREY_   << 4);
+const vattr _DGREY    = (DGREY_   << 4);
+const vattr _LBLUE    = (LBLUE_   << 4);
+const vattr _LGREEN   = (LGREEN_  << 4);
+const vattr _LCYAN    = (LCYAN_   << 4);
+const vattr _LRED     = (LRED_    << 4);
+const vattr _LMAGENTA = (LMAGENTA_<< 4);
+const vattr _YELLOW   = (YELLOW_  << 4);
+const vattr _WHITE    = (WHITE_   << 4);
 
 
 //  ------------------------------------------------------------------

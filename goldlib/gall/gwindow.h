@@ -228,14 +228,14 @@ inline void gwindow::init() {
   end_row = gvid->curr.screen.rows - 1;
   end_column = gvid->curr.screen.columns - 1;
   window_style = 0;
-  window_color = BLACK|_LGREY;
-  border_hi_color = BLUE|_LGREY;
+  window_color = BLACK_|_LGREY;
+  border_hi_color = BLUE_|_LGREY;
   border_lo_color = DEFATTR;
   scrollbar_color = DEFATTR;
-  title_color = BLUE|_LGREY;
+  title_color = BLUE_|_LGREY;
   title_position = title_center;
-  message_color = BLUE|_LGREY;
-  shadow_color = DGREY|_BLACK;
+  message_color = BLUE_|_LGREY;
+  shadow_color = DGREY_|_BLACK;
 }
 
 

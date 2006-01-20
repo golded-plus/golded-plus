@@ -337,7 +337,7 @@ int ImportQWK() {
     if(imported and *QWK->ReplyLinker()) {
       char buf[256];
       sprintf(buf, LNG->Replylinker, QWK->ReplyLinker());
-      ShellToDos(QWK->ReplyLinker(), buf, LGREY|_BLACK, YES);
+      ShellToDos(QWK->ReplyLinker(), buf, LGREY_|_BLACK, YES);
     }
   }
 

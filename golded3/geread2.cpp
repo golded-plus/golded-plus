@@ -510,7 +510,7 @@ void NewArea(bool jumpnext) {
 
 void DosShell() {
 
-  ShellToDos(getenv(GOLD_SHELL_ENV), LNG->DOS_Shell, LGREY|_BLACK, YES);
+  ShellToDos(getenv(GOLD_SHELL_ENV), LNG->DOS_Shell, LGREY_|_BLACK, YES);
 }
 
 
@@ -567,7 +567,7 @@ int ExternUtil(GMsg *msg, ExtUtil *extutil) {
     pauseval = 1;
 
   ShellToDos(cmdline, "",
-    extutil->options & EXTUTIL_CLS ? LGREY|_BLACK : BLACK|_BLACK,
+    extutil->options & EXTUTIL_CLS ? LGREY_|_BLACK : BLACK_|_BLACK,
     extutil->options & EXTUTIL_CURSOR,
     pauseval
   );
@@ -777,7 +777,7 @@ void ReadPeekURLs(GMsg* msg) {
         pauseval = 1;
 
       ShellToDos(cmdline, "",
-        CFG->urlhandler.options & EXTUTIL_CLS ? LGREY|_BLACK : BLACK|_BLACK,
+        CFG->urlhandler.options & EXTUTIL_CLS ? LGREY_|_BLACK : BLACK_|_BLACK,
         CFG->urlhandler.options & EXTUTIL_CURSOR,
         pauseval
       );
@@ -827,7 +827,7 @@ void UUDecode(GMsg* msg) {
         SaveLines(overwrite ? MODE_WRITE : MODE_APPEND, infile, msg, 79);
       }
       if(AA->Mark.Count())
-        w_progress(MODE_QUIT, BLACK|_BLACK, 0, 0, NULL);
+        w_progress(MODE_QUIT, BLACK_|_BLACK, 0, 0, NULL);
     }
     else if(source == WRITE_CURRENT) {
       AA->LoadMsg(msg, msg->msgno, 79);
@@ -903,7 +903,7 @@ void Make_Userlist(const char* userlist) {
       }
     }
     throw_free(crclist);
-    w_progress(MODE_QUIT, BLACK|_BLACK, 0, 0, NULL);
+    w_progress(MODE_QUIT, BLACK_|_BLACK, 0, 0, NULL);
     fclose(fp);
   }
 
@@ -982,7 +982,7 @@ void make_pathreport(const char* reportfile) {
         fp.printf("%s\n", path.c_str());
       }
     }
-    w_progress(MODE_QUIT, BLACK|_BLACK, 0, 0, NULL);
+    w_progress(MODE_QUIT, BLACK_|_BLACK, 0, 0, NULL);
     fp.fclose();
     ResetMsg(msg);
     throw_free(msg);

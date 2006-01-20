@@ -192,7 +192,7 @@ void Area::DelMsgs(GMsg* msg) {
             if(delask) {
               if(msg->attr.uns() and not (msg->attr.rcv() or msg->attr.del())) {
                 AA->LoadMsg(msg, msgno, CFG->dispmargin-(int)CFG->switches.get(disppagebar));
-                w_progress(MODE_QUIT, BLACK|_BLACK, 0, 0, NULL);
+                w_progress(MODE_QUIT, BLACK_|_BLACK, 0, 0, NULL);
                 HeaderView->Use(AA, msg);
                 HeaderView->Paint();
                 BodyView->Use(AA, msg, topline);
@@ -213,7 +213,7 @@ void Area::DelMsgs(GMsg* msg) {
             }
             if(msg->attr.lok() and not dellocked and not deletethis) {
               AA->LoadMsg(msg, msgno, CFG->dispmargin-(int)CFG->switches.get(disppagebar));
-              w_progress(MODE_QUIT, BLACK|_BLACK, 0, 0, NULL);
+              w_progress(MODE_QUIT, BLACK_|_BLACK, 0, 0, NULL);
               HeaderView->Use(AA, msg);
               HeaderView->Paint();
               BodyView->Use(AA, msg, topline);
@@ -238,7 +238,7 @@ void Area::DelMsgs(GMsg* msg) {
         isreadmark = false;
         Mark.ResetAll();
       }
-      w_progress(MODE_QUIT, BLACK|_BLACK, 0, 0, NULL);
+      w_progress(MODE_QUIT, BLACK_|_BLACK, 0, 0, NULL);
     }
   }
   if(n == 0) {

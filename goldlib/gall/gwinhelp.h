@@ -66,10 +66,10 @@ public:
     file = NULL;
     helpptr = -1;
     key = 0;
-    winattr = BLACK|_BLACK;
-    textattr = BLACK|_BLACK;
-    selattr = BLACK|_BLACK;
-    barattr = BLACK|_BLACK;
+    winattr = BLACK_|_BLACK;
+    textattr = BLACK_|_BLACK;
+    selattr = BLACK_|_BLACK;
+    barattr = BLACK_|_BLACK;
     srow = 3;
     scol = 8;
     erow = 21;
@@ -113,7 +113,7 @@ int whelpush();
 int whelpushc(int cat);
 int whelpwin(int srow, int scol, int erow, int ecol, int btype, int title);
 void whelpcompile(const char* helpfile, long& offset);
-inline int whelpundef() { return whelpdef(NULL,0,BLACK|_BLACK,BLACK|_BLACK,BLACK|_BLACK,BLACK|_BLACK,NULL); }
+inline int whelpundef() { return whelpdef(NULL,0,BLACK_|_BLACK,BLACK_|_BLACK,BLACK_|_BLACK,BLACK_|_BLACK,NULL); }
 
 
 //  ------------------------------------------------------------------

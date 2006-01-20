@@ -147,7 +147,7 @@ void Cleanup(void) {
     }
 
     // Reset border color
-    if (C_BACKB != (BLACK|_BLACK))
+    if (C_BACKB != (BLACK_|_BLACK))
       gvid->setoverscan(gvid->orig.color.overscan);
 
     wcloseall();                      // Close all windows
@@ -294,11 +294,11 @@ int ShellToDos(char* command, char* message, vattr cls, int cursor, int pause) {
     gvid->setmode(gvid->orig.screen.mode);
 
   // Clear screen
-  if (cls != (BLACK|_BLACK))
+  if (cls != (BLACK_|_BLACK))
     vclrscr(cls);
 
   // Reset border color
-  if (C_BACKB != (BLACK|_BLACK))
+  if (C_BACKB != (BLACK_|_BLACK))
     gvid->setoverscan(gvid->orig.color.overscan);
 
   // Turn on the blinking attributes
@@ -316,7 +316,7 @@ int ShellToDos(char* command, char* message, vattr cls, int cursor, int pause) {
   #endif
 
   // Return cursor into 1st column
-  if (cls != (BLACK|_BLACK)) puts("");
+  if (cls != (BLACK_|_BLACK)) puts("");
   // Write message on screen
   if(*message) puts(message);
 
@@ -406,7 +406,7 @@ int ShellToDos(char* command, char* message, vattr cls, int cursor, int pause) {
   gvid->setintensity(CFG->intensecolors);
 
   // Restore border color
-  if (C_BACKB != (BLACK|_BLACK))
+  if (C_BACKB != (BLACK_|_BLACK))
     gvid->setoverscan(C_BACKB);
 
   // Set palette if changes were specified
@@ -515,7 +515,7 @@ const char* Unpack(const char* archive) {
     getcwd(orgdir, sizeof(Path));
     gchdir(newdir);
     // Now unpack it
-    ShellToDos(cmdline, "", LGREY|_BLACK, 0, -1);
+    ShellToDos(cmdline, "", LGREY_|_BLACK, 0, -1);
     // Restore current directory
     gchdir(orgdir);
     strxcpy(newname, AddPath(AddBackslash(newdir), filename), sizeof(Path));

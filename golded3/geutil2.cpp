@@ -283,9 +283,9 @@ void ScreenBlankIdle() {
   if(blanked and (whb == -1)) {
     wascurhid = vcurhidden();
     vcurhide();
-    if (C_BACKB != (BLACK|_BLACK))
-      gvid->setoverscan(BLACK|_BLACK);
-    whb = wopen(0,0,MAXROW-1,MAXCOL-1, 5, LGREY, LGREY);
+    if (C_BACKB != (BLACK_|_BLACK))
+      gvid->setoverscan(BLACK_|_BLACK);
+    whb = wopen(0,0,MAXROW-1,MAXCOL-1, 5, LGREY_|_BLACK, LGREY_|_BLACK);
     if(CFG->screenblankertype == BLANK_SLIDEWIN)
       whh = wopen_(ry, rx, windowheight, blankmsglen+2, W_BINFO, C_INFOB, C_INFOW);
     lastmoved = gkbd.tickvalue;
@@ -300,7 +300,7 @@ void ScreenBlankIdle() {
     wactiv_(whb);
     wclose();
     whb = -1;
-    if (C_BACKB != (BLACK|_BLACK))
+    if (C_BACKB != (BLACK_|_BLACK))
       gvid->setoverscan(C_BACKB);
     if(wascurhid)
       vcurhide();
