@@ -63,6 +63,7 @@ LNK_OBJS= \
     $(OBJ_DIR)\geval.obj \
     $(OBJ_DIR)\gevalhum.obj \
     $(OBJ_DIR)\gevalrpn.obj \
+    $(OBJ_DIR)\gespell.obj \
     $(OBJ_DIR)\gfile.obj \
     $(OBJ_DIR)\gfilport.obj \
     $(OBJ_DIR)\gfilutl1.obj \
@@ -294,7 +295,7 @@ ALL_OBJS=$(LNK_OBJS) $(GOLDED_OBJS) $(RDDT_OBJS) $(GOLDNODE_OBJS)
 
 CPP_FLAGS=/nologo /c /J /W3 /Gi /EHac /FD /Igolded3 /Igoldlib\gall /Igoldlib\gcfg /Igoldlib\glibc /Igoldlib\gmb3 /Igoldlib\msgidlib /Igoldlib\smblib /Igoldlib\uulib /DWIN32 /D_CONSOLE /DHAVE_CONFIG_H /Fo$(OBJ_DIR)\\ /Fd$(OBJ_DIR)\\
 RSC_FLAGS=/igolded3 /fo$(OBJ_DIR)\gedcyg.res
-LNK_FLAGS=winmm.lib user32.lib /nologo /subsystem:console /machine:I386
+LNK_FLAGS=advapi32.lib winmm.lib user32.lib /nologo /subsystem:console /machine:I386
 
 !IF  "$(CFG)" == "Release"
 CPP_PROJ=$(CPP_FLAGS) /MD /O1 /DNDEBUG $(CPP_EXTRA_FLAGS)
