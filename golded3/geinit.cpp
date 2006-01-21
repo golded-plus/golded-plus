@@ -152,7 +152,7 @@ static void InitCmdline(char* val) {
         gftrk_set_max = atoi(val);
         if (gftrk_set_max == 0)
         {
-          STD_PRINTNL("Warning: Invalid parameter for -Z option, fixed.");
+          STD_PRINTNL("Warning: Invalid parameter for -Z option, set to 1");
           gftrk_set_max = 1;
         }
         break;
@@ -571,22 +571,27 @@ void Initialize(int argc, char* argv[]) {
     STD_PRINTNL("");
     STD_PRINTNL("-C<configfile>  Use a different configuration file.");
     STD_PRINTNL("-D              Disable old obsolete configuration keywords.");
+    STD_PRINTNL("-E=<echoid>");
     STD_PRINTNL("-E<echoid>      Start directly in the specified mail area.");
     STD_PRINTNL("-EXPORTSOUP     Export SOUP packets during startup.");
     STD_PRINTNL("-F  or  -FF     Force recompile of most (or all with -FF) configuration files.");
+    STD_PRINTNL("-H              Command line help (this message).");
     STD_PRINTNL("-INSTALL[=path] Start the quick install procedure. Look in path, if given.");
     STD_PRINTNL("-IMPORTSOUP     Import SOUP packets during startup.");
     STD_PRINTNL("-M              Mute sounds. Disables all noises in GoldED+.");
     STD_PRINTNL("-N              Disable share-compatible file opens during startup.");
     STD_PRINTNL("-NOSCAN         Temporarily disable area scan during startup.");
 #if defined(GUTLOS_FUNCS) && !defined(__MSDOS__)
-    STD_PRINTNL("-P              Increase program priority to run faster.");
+    STD_PRINTNL("-P              Increase/decrease program priority to run faster/slower.");
 #endif
+    STD_PRINTNL("-Q              Don't print information messages at config load time (Quiet mode).");
     STD_PRINTNL("-S<sortspec>    Sorts all mail areas according to the sort specs.");
     STD_PRINTNL("-T<seconds>     Set a timeout value. GoldED+ will auto-exit after timeout.");
     STD_PRINTNL("-V  or  -VV     Verbose or Very verbose (-VV) config compile. Use -VV to debug.");
     STD_PRINTNL("-W              Write a GOLDAREA.INC file with AREADEF's of all mail areas.");
-    STD_PRINTNL("-X,  -Y,  -Z    Reserved for debugging purposes.");
+    STD_PRINTNL("-X              Debug messages in status line.");
+    STD_PRINTNL("-Y              Debug log: function calls trace.");
+    STD_PRINTNL("-Z<level>       Debug log with level <level>, default is level 1.");
     STD_PRINTNL("");
     STD_PRINTNL("Any non-option parameter is stuffed into the keyboard buffer.");
 
