@@ -10,6 +10,22 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+! Search config file sequence (*nix):
+   command line option "-C",
+   enviroment variable "GOLDED" (filename),
+   file ${GOLDED}/golded.conf,
+   file ${GOLDED}/golded.cfg,
+   enviroment variable "GED" (filename),
+   file ${GED}/golded.conf,
+   file ${GED}/golded.cfg,
+   file ~/.golded,
+   file ~/.golded/golded.conf,
+   file ~/.golded/golded.cfg,
+   file ~/golded.conf,
+   file ~/golded.cfg,
+   file /usr/local/etc/golded.conf,
+   file /usr/local/etc/golded.cfg.
+
 - If AREAFILE fidoconfig not exists or can't be opened then Golded+ is printing
   the diagnostic message.
 

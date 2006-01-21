@@ -458,6 +458,7 @@ static bool FindCfg(char* path) {
       return false;
   }
   AddBackslash(path);
+
   #ifdef GEDCFG2
   found = ExistCfg(path, GEDCFG2);
   #endif
@@ -561,7 +562,7 @@ void Initialize(int argc, char* argv[]) {
 
   // Print commandline help and exit if requested
   if (cmdlinehelp)
-  { 
+  {
     STD_PRINTNL("Copyright (C) 1990-2005 Odinn Sorensen, Alexander Aganichev, Jacobo Tarrio,");
     STD_PRINTNL("                        Stas Degteff and others");
     STD_PRINTNL("-------------------------------------------------------------------------------");
@@ -631,7 +632,7 @@ void Initialize(int argc, char* argv[]) {
     // Get it in user directory (step 1)
     if(not found) {
       strxcpy(cmdlinecfg, CFGUSERPATH1, sizeof(cmdlinecfg));
-      getcwd(cmdlinecfg, sizeof(cmdlinecfg));
+      strschg_environ(cmdlinecfg);
       found = FindCfg(cmdlinecfg);
     }
     #endif
@@ -639,7 +640,7 @@ void Initialize(int argc, char* argv[]) {
     // Get it in user directory (step 2)
     if(not found) {
       strxcpy(cmdlinecfg, CFGUSERPATH2, sizeof(cmdlinecfg));
-      getcwd(cmdlinecfg, sizeof(cmdlinecfg));
+      strschg_environ(cmdlinecfg);
       found = FindCfg(cmdlinecfg);
     }
     #endif
@@ -647,7 +648,7 @@ void Initialize(int argc, char* argv[]) {
     // Get it in system config directory
     if(not found) {
       strxcpy(cmdlinecfg, CFGPATH, sizeof(cmdlinecfg));
-      getcwd(cmdlinecfg, sizeof(cmdlinecfg));
+      strschg_environ(cmdlinecfg);
       found = FindCfg(cmdlinecfg);
     }
     #endif

@@ -40,6 +40,8 @@
   #define GEDCFG2 "gedw32.cfg"
   #elif defined(__DOS__) || defined(__MSDOS__)
   #define GEDCFG2 "geddos.cfg"
+  #elif defined(__UNIX__)
+  #define GEDCFG2 "golded.conf"
   #endif
 
 #endif /* GEDCFG2 */
@@ -98,7 +100,7 @@
 
 #ifndef CFGUSERPATH1
 #ifdef __UNIX__
-#define CFGUSERPATH1 "~/.golded/"
+#define CFGUSERPATH1 "~/.golded"
 #endif
 #endif
 
