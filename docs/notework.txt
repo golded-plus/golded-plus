@@ -12,9 +12,16 @@ ______________________________________________________________________
 
 = Snapshot for the January 21, 2006.
 
++ MS Office Spell checker feature is included into default MS Visual C build
+
 ! Spell checking using MS Office DLL (Win32 only). Disable external
   spell check program if new spell checker is enabled. See -DGCFG_NOSPELLDLL
   (/DGCFG_NOSPELLDLL) compiler option.
+  Config files tokens:
+    SCHECKERDEFLANG  (golded.cfg) default language to spell check;
+    SCHECKERENABLED  (golded.cfg) enable/disable spell checker;
+    SCHECKERUSERDIC  (golded.cfg) user dictionnary file;
+    EDITSCHECKERMENU (goldkeys.cfg) Key binding for Spell checker menu call;
 
 ! Search config file sequence (*nix):
    command line option "-C",
