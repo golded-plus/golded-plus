@@ -10,6 +10,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+= Snapshot for the January 21, 2006.
+
 ! Spell checking using MS Office DLL (Win32 only). Disable external
   spell check program if new spell checker is enabled. See -DGCFG_NOSPELLDLL
   (/DGCFG_NOSPELLDLL) compiler option.
@@ -33,7 +35,7 @@ ______________________________________________________________________
 - If AREAFILE fidoconfig not exists or can't be opened then Golded+ is printing
   the diagnostic message.
 
-- Fix garbage output in Linux.
+- Fix start messages output for *NIX (CR/LF problem).
 
 - Fixed marks and lastread pointers for move command.
 
