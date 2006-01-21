@@ -124,7 +124,7 @@ inline char* strskip_wht(char* p) { while(*p and isspace(*p)) p++; return p; }
 inline const char* strskip_digits(const char* p) { return p+strspn(p, "0123456789"); }
 inline char* strskip_digits(char* p) { return p+strspn(p, "0123456789"); }
 
-#if defined(_MSC_VER) || (defined(__GNUC__) && !defined(__DJGPP__)) || defined(__WATCOMC__)
+#if defined(_MSC_VER) || (defined(__GNUC__) && defined(__WIN32__)) || defined(__WATCOMC__)
 inline char * stpcpy(char* dest, const char* src) {
   while ((*dest++ = *src++) != NUL) {}
   return --dest;
