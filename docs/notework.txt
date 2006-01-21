@@ -10,6 +10,10 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+! Spell checking using MS Office DLL (Win32 only). Disable external
+  spell check program if new spell checker is enabled. See -DGCFG_NOSPELLDLL
+  (/DGCFG_NOSPELLDLL) compiler option.
+
 ! Search config file sequence (*nix):
    command line option "-C",
    enviroment variable "GOLDED" (filename),

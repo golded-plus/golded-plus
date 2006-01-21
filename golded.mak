@@ -8,17 +8,17 @@
 #
 # to standard build or
 #
-# NMAKE /f "golded.mak" CFG="Release" CPP_EXTRA_FLAGS=/D__GOLD_SPELL__
+# NMAKE /f "golded.mak" CFG="Release" CPP_EXTRA_FLAGS=/DGCFG_NOSPELLDLL
 #
-# to build with spellcheck feature or
+# to build without MS Office spellcheck feature or
 #
 # NMAKE /f "golded.mak" CFG="Debug"
 #
 # to build debug binary or
 #
-# NMAKE /f "golded.mak" CFG="Debug" CPP_EXTRA_FLAGS=/D__GOLD_SPELL__
+# NMAKE /f "golded.mak" CFG="Debug" CPP_EXTRA_FLAGS=/DGCFG_NOSPELLDLL
 #
-# to build debug binary with spellcheck feature
+# to build debug binary without MS Office spellcheck feature
 #
 
 !IF "$(CFG)" == ""
