@@ -165,7 +165,9 @@ void CfgEditreplyre      ();
 void CfgEditsavemenu     ();
 void CfgEditsaveutil     ();
 void CfgEditsoftcrxlat   ();
+#if defined(GCFG_NOSPELLDLL)
 void CfgEditspellcheck   ();
+#endif
 void CfgEditundelete     ();
 void CfgEmptytearline    ();
 void CfgEncodeemailheaders();
@@ -306,7 +308,7 @@ void CfgReplylinklist    ();
 void CfgReplylinkshowalways();
 void CfgReplyto          ();
 void CfgRobotname        ();
-#if defined(__GOLD_SPELL__)
+#if !defined(GCFG_NOSPELLDLL)
 void CfgScheckerdeflang  ();
 void CfgScheckerenabled  ();
 void CfgScheckeruserdic  ();

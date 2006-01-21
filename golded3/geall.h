@@ -546,7 +546,7 @@ enum {
   TAG_MARKQUIT
 };
 
-   
+
 //  ------------------------------------------------------------------
 //  The Message Browser
 
@@ -638,7 +638,7 @@ struct SaveUtil {
 #define GC_CFGB_    CFG->color[11]
 #define GC_STYLE_   CFG->color[12]
 #define GC_SHAD_    CFG->color[13]
-#if defined(__GOLD_SPELL__)
+#if !defined(GCFG_NOSPELLDLL)
 #define GC_SPELL_   CFG->color[14]
 #endif
 
@@ -693,7 +693,7 @@ struct SaveUtil {
 #define _ReverseItalicUnderscore      c[14]
 #define _ReverseBoldItalicUnderscore  c[15]
 
-#if defined(__GOLD_SPELL__)
+#if !defined(GCFG_NOSPELLDLL)
 #define _SpellError                   c[0]
 #endif
 
@@ -813,7 +813,7 @@ struct SaveUtil {
 #define C_STYLERUI_ GC_STYLE_._ReverseItalicUnderscore
 #define C_STYLERUIB GC_STYLE_._ReverseBoldItalicUnderscore
 
-#if defined(__GOLD_SPELL__)
+#if !defined(GCFG_NOSPELLDLL)
 #define C_SCERROR   GC_SPELL_._SpellError
 #endif
 

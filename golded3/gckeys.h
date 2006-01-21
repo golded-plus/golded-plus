@@ -113,7 +113,7 @@ const word CRC_EDITQUITNOW          = 0x80BA;
 const word CRC_EDITREFLOW           = 0x13F9;
 const word CRC_EDITSAVEFILE         = 0x64A4;
 const word CRC_EDITSAVEMSG          = 0x660C;
-#if defined(__GOLD_SPELL__)
+#if !defined(GCFG_NOSPELLDLL)
 const word CRC_EDITSCHECKERMENU     = 0x881F;
 #endif
 const word CRC_EDITSCODENORMAL      = 0xE4CE;
@@ -122,7 +122,9 @@ const word CRC_EDITSCODEITALIC      = 0x487F;
 const word CRC_EDITSCODEUNDERLINE   = 0xB1D9;
 const word CRC_EDITSCODEREVERSE     = 0xFC0E;
 const word CRC_EDITSOUNDKILL        = 0xA9A7;
+#if defined(GCFG_NOSPELLDLL)
 const word CRC_EDITSPELLCHECK       = 0xE167;
+#endif
 const word CRC_EDITTAB              = 0x8C26;
 const word CRC_EDITTABREVERSE       = 0xF5B6;
 const word CRC_EDITTOGGLECASE       = 0xC282;

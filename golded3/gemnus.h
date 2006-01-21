@@ -304,7 +304,7 @@ public:
 
 //  ------------------------------------------------------------------
 
-#if defined(__GOLD_SPELL__)
+#if !defined(GCFG_NOSPELLDLL)
 class GMenuSChecker : public GMnu
 {
 public:

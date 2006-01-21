@@ -547,7 +547,7 @@ bool gareafile::ReadAreafile(word crc, char* parameters) {
 #ifndef GCFG_NOXMAIL
     case CRC_XMAIL:         ReadXMail(parameters);         break;
 #endif
-#ifndef GCFG_NOXMAIL
+#ifndef GCFG_NOSYNCHRONET
     case CRC_SBBS:          ReadSynchronet(parameters);    break;
 #endif
     default:                return false;

@@ -101,6 +101,11 @@
 #define NL "\n"
 #endif
 
+/*  ------------------------------------------------------------------
+//  Spellchecker using dynamic library load */
+#if !defined(GCFG_NOSPELLDLL) && !defined(__WIN32__)
+#undef GCFG_NOSPELLDLL
+#endif
 
 /*  ------------------------------------------------------------------
 //  Special character constants */

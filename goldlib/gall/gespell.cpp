@@ -24,7 +24,7 @@
 //  SpellChecker functions.
 //  ------------------------------------------------------------------
 
-#if defined(__GOLD_SPELL__)
+#if !defined(GCFG_NOSPELLDLL)
 
 #if defined(_MSC_VER)
     /* C4786: 'identifier' : identifier was truncated to 'number'
@@ -127,7 +127,7 @@ const dword SC_SO_FindExtraSpaces         = 0x0080; // CSAPI to flag extra space
 const dword SC_SO_FindSpacesBeforePunc    = 0x0100; // CSAPI to flag space preceeding certain punc
 const dword SC_SO_FindSpacesAfterPunc     = 0x0200; // CSAPI to flag space after certain punc
 const dword SC_SO_RateSuggestions         = 0x0400;
-  // All suggestions returned should be given some scaled value 
+  // All suggestions returned should be given some scaled value
   // corresponding to liklihood of being correct alternative.
   // Scale is 1..255, 255 most likely correction and 1 least likely
 const dword SC_SO_FindInitialNumerals     = 0x0800; // Flag words starting with number(s)
@@ -139,7 +139,7 @@ const dword SC_SO_UseAllOpenUdr           = 0x4000;
   // or all opened udr's with mdr's opened after this option is set.
   // This option does not allow exclusion dicts to be edited. (HM only)
 const dword SC_SO_SwapMdr                 = 0x8000;
-  // Keep the most recent 2 mdr's around. swap between them instead of actually 
+  // Keep the most recent 2 mdr's around. swap between them instead of actually
   // closing and reopening mdr's. (HM only)
 const dword SC_SO_SglStepSugg             = 0x10000;
   // Break after each suggestion task for faster return of control to the
@@ -466,7 +466,7 @@ CSpellSuggestV &CSpellChecker::Suggest()
     {
       more = true;
 
-      if (!mLang->SpellSuggest(mText, more = true)) 
+      if (!mLang->SpellSuggest(mText, more = true))
         return mSuggest;
       else
       {
@@ -494,6 +494,6 @@ CSpellSuggestV &CSpellChecker::Suggest()
 
 //  ------------------------------------------------------------------
 
-#endif  // #if defined(__GOLD_SPELL__)
+#endif  // #if !defined(GCFG_NOSPELLDLL)
 
 //  ------------------------------------------------------------------

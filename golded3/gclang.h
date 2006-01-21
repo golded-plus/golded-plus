@@ -401,7 +401,9 @@ const word CRC_WT_GRP               = 0xD2EA;
 const word CRC_IL_FOUNDPERSONAL     = 0xA039;
 const word CRC_IL_NOPERSONAL        = 0x2813;
 const word CRC_ST_ESCORCONTINUE     = 0x4800;
+#if defined(GCFG_NOSPELLDLL)
 const word CRC_MS_SPELLCHECKER      = 0x69B4;
+#endif
 const word CRC_WT_INS               = 0x2F27;
 const word CRC_WT_DRAWSL            = 0x264D;
 const word CRC_WT_DRAWDL            = 0x314D;

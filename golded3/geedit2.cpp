@@ -1311,6 +1311,7 @@ void IEclass::editexport(Line* __exportline, int __endat) {
 
 //  ------------------------------------------------------------------
 
+#if defined(GCFG_NOSPELLDLL)
 void IEclass::SpellCheck() {
 
   GFTRK("EditSpellCheck");
@@ -1329,6 +1330,7 @@ void IEclass::SpellCheck() {
 
   GFTRK(NULL);
 }
+#endif
 
 
 //  ------------------------------------------------------------------
@@ -1805,7 +1807,7 @@ void IEclass::DrawLines(gkey key)
       }
     }
     break;
-    
+
   case KK_EditGoUp:
     if (!currline->prev) { lines[2] = 0; gonext = false; }
 
@@ -1853,7 +1855,7 @@ void IEclass::DrawLines(gkey key)
       Undo->PushItem(EDIT_UNDO_INS_CHAR);
       currline->txt.insert(col, 1, new_chr);
     }
-  
+
     setlinetype(currline);
     displine(currline, row);
   }

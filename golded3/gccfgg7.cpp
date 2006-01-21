@@ -222,7 +222,7 @@ void CfgRobotname() {
 
 //  ------------------------------------------------------------------
 
-#if defined(__GOLD_SPELL__)
+#if !defined(GCFG_NOSPELLDLL)
 void CfgScheckerdeflang()
 {
   CFG->scheckerdeflang = atoi(val);
@@ -425,7 +425,7 @@ void CfgSeqOutRun() {
   if(*p == '\0')
   {
     CFG->seqoutrun = s;
-    
+
     if (veryverbose)
       STD_PRINTNL("  SeqOutRun: \'" << val << "\' --> " << CFG->seqoutrun);
 
@@ -454,7 +454,7 @@ void CfgSeqOutRun() {
       return;
   }
   CFG->seqoutrun = s;
-  
+
   if (veryverbose)
     STD_PRINTNL("  SeqOutRun: \'" << val << "\' --> " << CFG->seqoutrun);
 }

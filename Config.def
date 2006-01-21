@@ -1,3 +1,6 @@
+#
+# Defines to exclude some code from Golded+ binary.
+#
 # Uncomment to disable AdeptXBBS support
 #CPPFLAGS+=-DGCFG_NOXBBS
 # Uncomment to disable CrashMail support
@@ -72,5 +75,5 @@
 #CPPFLAGS+=-DGCFG_NOXMAIL
 # Uncomment to disable Synchronet BBS support
 #CPPFLAGS+=-DGCFG_NOSYNCHRONET
-# Uncomment to enable MS Office spellchecker support (win32 only)
-#CPPFLAGS+=-D__GOLD_SPELL__
+# Uncomment to disable MS Office spellchecker support (win32 only)
+CPPFLAGS+=-DGCFG_NOSPELLDLL

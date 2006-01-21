@@ -95,7 +95,7 @@ void IEclass::debugtest(char* __test, int __a, int __b, char* __file, int __line
 
 //  ------------------------------------------------------------------
 
-#if defined(__GOLD_SPELL__)
+#if !defined(GCFG_NOSPELLDLL)
 inline bool isscchar(int c)
 {
   return isxalnum(c) || (c == '-') || (c == '\'') || (c == '.') ;
@@ -252,7 +252,7 @@ void IEclass::gotorowcol(uint __col, uint __row) {
 
 //  ------------------------------------------------------------------
 
-#if defined(__GOLD_SPELL__)
+#if !defined(GCFG_NOSPELLDLL)
 void IEclass::dispstringsc(char *__buf, uint __beg, uint __end, uint __row, uint __col, char endchar)
 {
   char scbuf[EDIT_BUFLEN];
@@ -448,7 +448,7 @@ void IEclass::dispstring(Line* line, uint __row)
 
   GFTRK(NULL);
 }
-#else //#if defined(__GOLD_SPELL__)
+#else // #if !defined(GCFG_NOSPELLDLL)
 
 
 //  ------------------------------------------------------------------
@@ -564,7 +564,7 @@ void IEclass::dispstring(const char* __string, uint __row, int attr, Line* line)
 
   GFTRK(NULL);
 }
-#endif  //#if defined(__GOLD_SPELL__)
+#endif  // #if !defined(GCFG_NOSPELLDLL)
 
 
 //  ------------------------------------------------------------------
@@ -604,7 +604,7 @@ void IEclass::displine(Line* __line, uint __row) {
 
   // Display line
   setcolor(__line);
-#if defined(__GOLD_SPELL__)
+#if !defined(GCFG_NOSPELLDLL)
   dispstring(__line, __row);
 #else
   dispstring(__line->txt.c_str(), __row, -1, __line);
@@ -652,7 +652,7 @@ void IEclass::refresh(Line* __currline, uint __row) {
   }
 
   // If we ran out of lines, blank the rest
-#if defined(__GOLD_SPELL__)
+#if !defined(GCFG_NOSPELLDLL)
   if (__row <= maxrow)
     editwin.fill(__row, mincol, __row, maxcol, _box_table(W_BREAD, 1), C_READB|ACSET);
   if (++__row <= maxrow)
@@ -2084,7 +2084,7 @@ void IEclass::SaveMsg() {
 
 //  ------------------------------------------------------------------
 
-#if defined(__GOLD_SPELL__)
+#if !defined(GCFG_NOSPELLDLL)
 void IEclass::SCheckerMenu()
 {
   if (!schecker.IsLoaded())
@@ -2783,11 +2783,13 @@ noselecting:
     case KK_EditReflow:           Reflow();             break;
     case KK_EditSaveFile:         SaveFile();           break;
     case KK_EditSaveMsg:          SaveMsg();            break;
-#if defined(__GOLD_SPELL__)
+#if !defined(GCFG_NOSPELLDLL)
     case KK_EditSCheckerMenu:     SCheckerMenu();       break;
 #endif
     case KK_EditSoundkill:        Soundkill();          break;
+#if defined(GCFG_NOSPELLDLL)
     case KK_EditSpellCheck:       SpellCheck();         break;
+#endif
     case KK_EditTab:              Tab();                break;
     case KK_EditTabReverse:       ReTab();              break;
     case KK_EditToggleCase:       ToggleCase();         break;
@@ -2838,7 +2840,7 @@ int IEclass::Start(int __mode, uint* __position, GMsg* __msg) {
   msgmode = __mode;
   currline = __msg->lin;
 
-#if defined(__GOLD_SPELL__)
+#if !defined(GCFG_NOSPELLDLL)
   if (CFG->scheckerenabled)
   {
     schecker.Init();

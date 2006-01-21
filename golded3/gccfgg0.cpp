@@ -321,7 +321,9 @@ SwitchE:
     case CRC_EDITSAVEMENU     :  CfgEditsavemenu     ();  break;
     case CRC_EDITSAVEUTIL     :  CfgEditsaveutil     ();  break;
     case CRC_EDITSOFTCRXLAT   :  CfgEditsoftcrxlat   ();  break;
+#if defined(GCFG_NOSPELLDLL)
     case CRC_EDITSPELLCHECK   :  CfgEditspellcheck   ();  break;
+#endif
     case CRC_EDITUNDELETE     :  CfgEditundelete     ();  break;
     case CRC_ENDGROUP         :  CfgEndgroup         ();  break;
     case CRC_ENCODEEMAILHEADERS: CfgEncodeemailheaders(); break;
@@ -520,7 +522,7 @@ SwitchR:
 
 SwitchS:
   switch(crc) {
-#if defined(__GOLD_SPELL__)
+#if !defined(GCFG_NOSPELLDLL)
     case CRC_SCHECKERDEFLANG  :  CfgScheckerdeflang  ();  break;
     case CRC_SCHECKERENABLED  :  CfgScheckerenabled  ();  break;
     case CRC_SCHECKERUSERDIC  :  CfgScheckeruserdic  ();  break;

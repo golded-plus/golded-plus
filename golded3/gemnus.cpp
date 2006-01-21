@@ -44,7 +44,7 @@ void GMnuAsk::AskInit(int __row, int __col, char* __title, int __help) {
 //  ------------------------------------------------------------------
 
 int GMnuYesNo::YesNo(int __row, int __col, char* __title, char* __yes, char* __no, int __help, int __yesno) {
-  
+
   enum { TAG_ASKYES=100, TAG_ASKNO };
 
   HandleGEvent(EVTT_ASKYESNO);
@@ -292,7 +292,7 @@ int GMenuCMF::Run() {
 //  ------------------------------------------------------------------
 
 int GMenuDomarks::Run(char* dowhat) {
-                                    
+
   enum { TAG_MARKED=100, TAG_CURRENT, TAG_QUIT };
 
   static int _prevtag = TAG_CURRENT;
@@ -414,7 +414,7 @@ int GMenuImportTxt::Run() {
 //  ------------------------------------------------------------------
 
 int GMenuMarkMsgs::Run() {
-                                    
+
   static int _prevtag = TAG_MARKYOURMAIL;
 
   update_statusline(LNG->MarkingOptions);
@@ -482,7 +482,7 @@ int GMenuEditfile::Run(GMsg* __msg) {
   for(;;) {
 
     update_statuslinef(LNG->Quotepct, "ST_QUOTEPCT", __msg->quotepct, __msg->quotepct > 80 ? "!!!" : "");
-    
+
     char _title[80];
     sprintf(_title, LNG->SaveMsg, __msg->lines);
     AskInit(6, 0, _title, H_SaveMsg);
@@ -953,7 +953,7 @@ int GMenuEditHeader::Run(int mode, GMsg* msg) {
 
   HeaderView->Use(AA, msg);
   HeaderView->Paint();
-  
+
   if(not gkbd.quitall) {
     switch(_tag) {
       case W_ESCPRESS:
@@ -1070,7 +1070,7 @@ int GMenuConfirm::Run() {
 
 //  ------------------------------------------------------------------
 
-#if defined(__GOLD_SPELL__)
+#if !defined(GCFG_NOSPELLDLL)
 int GMenuSChecker::Run(CSpellChecker &schecker, const char *word)
 {
   enum
@@ -1139,7 +1139,7 @@ int GMenuSChecker::Run(CSpellChecker &schecker, const char *word)
 
     for (idx = 0; idx < langcount; idx++)
       Item(TAG_LANG+idx+1, langstr[idx].c_str());
-    
+
     End();
   }
 
@@ -1163,7 +1163,7 @@ int GMenuSChecker::Run(CSpellChecker &schecker, const char *word)
     {
       ItemSep();
       Item(TAG_MORE + levels, "M More... ", 0);
-      
+
       levels++;
       numrows = levels + 6;
 

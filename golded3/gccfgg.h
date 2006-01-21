@@ -167,7 +167,9 @@ const word CRC_EDITREPLYRE      = 0x5D23;
 const word CRC_EDITSAVEMENU     = 0x7BC2;
 const word CRC_EDITSAVEUTIL     = 0xF411;
 const word CRC_EDITSOFTCRXLAT   = 0xA49A;
+#if defined(GCFG_NOSPELLDLL)
 const word CRC_EDITSPELLCHECK   = 0xE167;
+#endif
 const word CRC_EDITUNDELETE     = 0x4C34;
 const word CRC_EMPTYTEARLINE    = 0x8D0A;
 const word CRC_ENCODEEMAILHEADERS=0xA843;
@@ -320,7 +322,7 @@ const word CRC_REPLYLINKFLOAT   = 0xA3EC;
 const word CRC_REPLYLINKLIST    = 0x104F;
 const word CRC_REPLYLINKSHOWALWAYS = 0x2BCD;
 const word CRC_ROBOTNAME        = 0x7393;
-#if defined(__GOLD_SPELL__)
+#if !defined(GCFG_NOSPELLDLL)
 const word CRC_SCHECKERDEFLANG  = 0xBBEB;
 const word CRC_SCHECKERENABLED  = 0x7394;
 const word CRC_SCHECKERUSERDIC  = 0x0753;

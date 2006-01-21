@@ -545,7 +545,9 @@ GoldedCfgEdit::GoldedCfgEdit() {
   str.push_back(""); cfg.external = str.size()-1;
   str.push_back(GOLDED_MSG); cfg.file = str.size()-1;
   str.push_back("<<"); cfg.hardline = str.size()-1;
+#if defined(GCFG_NOSPELLDLL)
   str.push_back(""); cfg.spellchecker = str.size()-1;
+#endif
 }
 
 
@@ -767,7 +769,7 @@ CfgGed::CfgGed() {
   replylinkfloat = true;
   replylinklist = 0;
   replylinkshowalways = true;
-#if defined(__GOLD_SPELL__)
+#if !defined(GCFG_NOSPELLDLL)
   scheckerdeflang = 0xFFFF;
   scheckerenabled = NO;
   strcpy(scheckeruserdic, "user.dic");
