@@ -611,7 +611,7 @@ EditUnDelete 50
 
 // При вставке во встроенном редакторе из файла, GoldED может подменять
 // символ ASCII 141 на другой.
-EditSoftCrxLat H   ; Обязательно для R50!
+EditSoftCrxLat H   ; Желательно для R50!
 
 // EditSoftCrxLat может быть отключено глобально или в группах.
 ;UseSoftCrxLat No
