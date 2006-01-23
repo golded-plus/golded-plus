@@ -129,10 +129,18 @@
 #define __GVER_SHORTLOGNAME__  "Q"
 #define __GVER_CFGEXT__        ".gqx"
 #elif defined(__sun__)
-#define __GVER_PLATFORM__      "/SUN"
-#define __GVER_SHORTPLATFORM__ "SUN"
-#define __GVER_SHORTLOGNAME__  "S"
-#define __GVER_CFGEXT__        ".gsu"
+  #if defined(__i386__)
+    #define __GVER_PLATFORM__      "/SunX86"
+    #define __GVER_CFGEXT__        ".ges"
+  #elif defined(__sparc__)
+    #define __GVER_PLATFORM__      "/SunSparc"
+    #define __GVER_CFGEXT__        ".gsu"
+  #else
+    #define __GVER_PLATFORM__      "/Sun"
+    #define __GVER_CFGEXT__        ".gsu"
+  #endif
+  #define __GVER_SHORTPLATFORM__ "SUN"
+  #define __GVER_SHORTLOGNAME__  "S"
 #elif defined(__UNIX__)
 #define __GVER_PLATFORM__      "/UNX"
 #define __GVER_SHORTPLATFORM__ "UNX"
