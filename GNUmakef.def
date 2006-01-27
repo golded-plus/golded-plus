@@ -104,8 +104,8 @@ LIBEXT=.a
 CFLAGS+=-D__SUNOS__ -D__UNIX__ -DUNIX
 else                   # Linux, *BSD or another unix-like OS
 CAT=cat
-SED=gsed
-GREP=ggrep
+SED=sed
+GREP=grep
 CC=gcc
 CXX=g++
 AR=ar
