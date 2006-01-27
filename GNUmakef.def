@@ -101,10 +101,11 @@ RANLIB=ranlib
 EXEEXT=
 OBJEXT=.o
 LIBEXT=.a
+CFLAGS+=-D__SUNOS__ -D__UNIX__ -DUNIX
 else                   # Linux, *BSD or another unix-like OS
 CAT=cat
-SED=sed
-GREP=grep
+SED=gsed
+GREP=ggrep
 CC=gcc
 CXX=g++
 AR=ar
@@ -129,6 +130,11 @@ CPPFLAGS+=$(CFLAGS) -fno-rtti # -fno-exceptions
 ifeq ($(PLATFORM),lnx)
 CPPFLAGS+=-D__USE_NCURSES__ #-DBUGGY_NCURSES
 STDLIBS+=-lncurses
+endif
+
+ifeq ($(PLATFORM),sun)
+CPPFLAGS+=-D__USE_NCURSES__
+STDLIBS+=-L/opt/csw/lib -lncurses
 endif
 
 # uncomment the next line for better koi-8 support. do not do it for

@@ -22,117 +22,117 @@
 ##  ------------------------------------------------------------------
 
 ## CRC and hash calculation.
-gcrc16tb cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gcrc32tb cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gcrchash cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gcrckeyv cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gcrcm16  cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gcrcm32  cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gcrcs16  cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gcrcs32  cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gcrc16tb cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gcrc32tb cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gcrchash cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gcrckeyv cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gcrcm16  cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gcrcm32  cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gcrcs16  cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gcrcs32  cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
 
 ## Debugging.
-gdbgerr  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gdbgexit cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gdbgtrk  cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gdbgerr  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gdbgexit cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gdbgtrk  cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
 
 ## Directory handling.
-gdirposx cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gdirposx cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
 
 ## Expression evaluators.
-geval    cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gevalhum cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gevalrpn cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+geval    cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gevalhum cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gevalrpn cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
 
 ## File handling.
-gfile    cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gfilport cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gfilutl1 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gfilutl2 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gfile    cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gfilport cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gfilutl1 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gfilutl2 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
 
 ## FTN address classes.
-gftnaddr cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gftnaddr cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
 
 ## Nodelist index access classes.
-gftnnl   cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gftnnlfd cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gftnnlfu cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gftnnlge cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gftnnlv7 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gftnnl   cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gftnnlfd cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gftnnlfu cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gftnnlge cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gftnnlv7 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
 
 ## Keyboard.
-gkbdbase cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gkbdgetm cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gkbdunix cpp     all nov                         lnx                be
-gkbdwait cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gkbdbase cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gkbdgetm cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gkbdunix cpp     all nov                         lnx                 be sun
+gkbdwait cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
 
 ## Logfile class.
-glog     cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+glog     cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
 
 ## Misc. memory stuff.
-gmemdbg  cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gmemutil cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmemdbg  cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gmemutil cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
 
 ## Mouse.
-gmoubase cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmoubase cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
 
 ## Message attributes.
-gmsgattr cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gmsgattr cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
 
 ## Message handling.
-ghdrmime cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+ghdrmime cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
 
 ## GoldED printer definition strings.
-gprnutil cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gprnutil cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
 
 ## UNIX signals.
-gsigunix cpp     all nov                         lnx                 be
+gsigunix cpp     all nov                         lnx                 be sun
 
 ## Sound.
-gsnd     cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gsndwrap cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gsnd     cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gsndwrap cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
 
 ## Strings.
-gstrbags cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gstrctyp cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gstrmail cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gstrname cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gstrutil cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gstrbags cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gstrctyp cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gstrmail cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gstrname cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gstrutil cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
 
 ## Time related.
-gtimjuld cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gtimutil cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gtimjuld cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gtimutil cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
 
 ## Text searching.
-gbmh     cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gfuzzy   cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gregex   cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gwildmat cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gsearch  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gsrchmgr cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gbmh     cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gfuzzy   cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gregex   cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gwildmat cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gsearch  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gsrchmgr cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
 
 ## Text processing.
-gtxtpara cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gtxtpara cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
 
 ## BBS userbase access.
-gusrbase cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gusrezyc cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gusrgold cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gusrhuds cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gusrmax  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gusrpcb  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gusrra2  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gusrxbbs cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gusrbase cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gusrezyc cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gusrgold cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gusrhuds cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gusrmax  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gusrpcb  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gusrra2  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gusrxbbs cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
 
 ## Miscellaneous utility.
-gutlclip cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gutlcode cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gutlgrp  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gutlmisc cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gutlmtsk cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gutltag  cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gutlvers cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gcharset cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gutlclip cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gutlcode cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gutlgrp  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gutlmisc cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gutlmtsk cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gutltag  cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gutlvers cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gcharset cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
 
 ## OS specific utilities
 gutldos  cpp     all                                     djg
@@ -140,27 +140,27 @@ gutlos2  cpp     all         bco         wco         emx
 gutlos2m cpp     all         bco         wco         emx
 gutlwin  cpp     all             bcx                             cyg
 gutlwinm cpp     all             bcx                             cyg
-gutlunix cpp     all                             lnx
+gutlunix cpp     all                             lnx                    sun
 gutlbeos cpp     all                                                 be
 be_lock  c       all                                                 be
 gespell  cpp     all                                             cyg
 
 ## Low-level text video
-gvidbase cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gvidinit cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gvidbase cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gvidinit cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
 
 ## Text windowing.
-gwinbase cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gwindow  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gwinhlp1 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gwinhlp2 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gwininit cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gwinline cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gwinmenu cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gwinmnub cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gwinpckf cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gwinpcks cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gwinpick cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
-gwinput2 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be
+gwinbase cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gwindow  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gwinhlp1 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gwinhlp2 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gwininit cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gwinline cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gwinmenu cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gwinmnub cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gwinpckf cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gwinpcks cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gwinpick cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+gwinput2 cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
 
 ##  ------------------------------------------------------------------
