@@ -236,7 +236,7 @@ void WriteGoldGed() {
 #if !defined(__GOLD_GUI__)
 static int EnterString(char* prompt, char* string, uint length)
 {
-  STD_PRINT(prompt << NL << "> " << std::flush);
+  STD_PRINT("\r" << prompt << NL << "> " << std::flush);
 
   *string = NUL;
   char* ptr = string;
