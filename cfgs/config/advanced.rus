@@ -1637,7 +1637,8 @@ XlatCharSet UK          ASCII       uk__asc.chs
 
 // Основные таблицы экспорта (8-bit -> 8-bit)
 XlatCharSet CP866       CP1251      866_1251.chs
-XlatCharSet CP866       KOI8-R      866_KOI.chs
+XlatCharSet CP866       KOI8-R      866_KOI.chs   ; Стандартная таблица
+;XlatCharSet CP866       KOI8-R      866_koiX.chs ; Замена псевдографики на ASCII7
 XlatCharSet CP866       LATIN1QP    866_IQP.chs
 ;XlatCharSet CP866       +7_FIDO     RUS_FTN.chs
 XlatCharSet CP866       ISO         866_ISO.chs
