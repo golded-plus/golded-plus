@@ -42,6 +42,7 @@ WINDRES=windres
 EXEEXT=.exe
 OBJEXT=.o
 LIBEXT=.a
+CFLAGS+=-funsigned-char
 else
 ifeq ($(PLATFORM),emx)
 CAT=cat
@@ -63,6 +64,7 @@ LIBEXT=.a
 #OBJEXT=.obj
 #LIBEXT=.lib
 CXX=$(CC)
+CFLAGS+=-funsigned-char
 else
 ifeq ($(PLATFORM),djg)
 CAT=command.com /c type
@@ -76,6 +78,7 @@ SHELL=sh
 EXEEXT=.exe
 OBJEXT=.o
 LIBEXT=.a
+CFLAGS+=-funsigned-char
 else
 ifeq ($(PLATFORM),be)
 CAT=cat
@@ -88,6 +91,7 @@ RANLIB=ranlib
 EXEEXT=
 OBJEXT=.o
 LIBEXT=.a
+CFLAGS+=-funsigned-char
 LNKFLAGS+=-lbe -ltextencoding
 else
 ifeq ($(PLATFORM),sun) # SUN Solaris
@@ -101,7 +105,7 @@ RANLIB=ranlib
 EXEEXT=
 OBJEXT=.o
 LIBEXT=.a
-CFLAGS+=-D__SUNOS__ -D__UNIX__ -DUNIX
+CFLAGS+=-fsigned-char -D__SUNOS__ -D__UNIX__ -DUNIX
 else                   # Linux, *BSD or another unix-like OS
 CAT=cat
 SED=sed
@@ -114,12 +118,13 @@ PLATFORM=lnx
 EXEEXT=
 OBJEXT=.o
 LIBEXT=.a
+CFLAGS+=-funsigned-char
 endif
 endif
 endif
 endif
 endif
-CFLAGS+=-g -funsigned-char $(INCS) -Wall -Wno-sign-compare -pedantic -O2 -DPRAGMA_PACK # -fomit-frame-pointer
+CFLAGS+=-g $(INCS) -Wall -Wno-sign-compare -pedantic -O2 -DPRAGMA_PACK # -fomit-frame-pointer
 LNKFLAGS+=-g
 CPPFLAGS+=$(CFLAGS) -fno-rtti # -fno-exceptions
 
