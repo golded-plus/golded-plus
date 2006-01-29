@@ -1349,17 +1349,12 @@ void IEclass::DelChar() {
   // Make sure the line type still is correct
   setlinetype(_thisline);
 
-  // Rewrap this line
-  bool display = make_bool_not(row > maxrow / 2);
-  wrapdel(&currline, &col, &row, display);
-  if(display) {
+  wrapdel(&currline, &col, &row, false);
+
+  if (((row-1) == minrow) && currline->prev)
+    refresh(currline->prev, minrow);
+  else
     refresh(currline, row);
-  }
-  else {
-    // Refresh the display
-    Line* _topline = findtopline();
-    refresh(_topline, minrow);
-  }
 
   GFTRK(NULL);
 }
