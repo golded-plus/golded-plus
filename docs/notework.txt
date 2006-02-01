@@ -10,6 +10,10 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+= Snapshot for the February 01, 2006.
+
++ SUN Solaris/x86 package by Stanislav Mekhanoshin.
+
 = Snapshot for the January 21, 2006.
 
 + MS Office Spell checker feature is included into default MS Visual C build
@@ -21,7 +25,7 @@ ______________________________________________________________________
     SCHECKERDEFLANG  (golded.cfg) default language to spell check;
     SCHECKERENABLED  (golded.cfg) enable/disable spell checker;
     SCHECKERUSERDIC  (golded.cfg) user dictionnary file;
-    EDITSCHECKERMENU (goldkeys.cfg) Key binding for Spell checker menu call;
+    EDITSCHECKERMENU (goldkeys.cfg) Key binding for Spell checker menu call.
 
 ! Search config file sequence (*nix):
    command line option "-C",
