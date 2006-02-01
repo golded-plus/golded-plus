@@ -161,7 +161,9 @@ public:
   #endif
 
   gfile& operator>> (char& i)     { return operator>>((uint8_t&)i); }
+#if !defined(__SUNOS__)
   gfile& operator>> (int8_t& i)   { return operator>>((uint8_t&)i); }
+#endif
   gfile& operator>> (int16_t& i)  { return operator>>((uint16_t&)i); }
   gfile& operator>> (int32_t& i)  { return operator>>((uint32_t&)i); }
   #if !defined(__CYGWIN__)
@@ -179,7 +181,9 @@ public:
   #endif
 
   gfile& operator<< (char o)      { return operator<<((uint8_t )o); }
+#if !defined(__SUNOS__)
   gfile& operator<< (int8_t  o)   { return operator<<((uint8_t )o); }
+#endif
   gfile& operator<< (int16_t  o)  { return operator<<((uint16_t)o); }
   gfile& operator<< (int32_t o)   { return operator<<((uint32_t)o); }
   #if !defined(__CYGWIN__)

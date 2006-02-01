@@ -144,7 +144,9 @@ typedef unsigned short uint16_t;
 typedef unsigned int   uint32_t;
 
 #if !defined(__APPLE__)
+#if !defined(__SUNOS__)
 typedef   signed char   int8_t;
+#endif
 typedef   signed short  int16_t;
 typedef   signed int    int32_t;
 #endif
