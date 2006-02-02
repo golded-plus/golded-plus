@@ -4,8 +4,8 @@
 # with binary SunOS x86 build installable package
 
 pkgdir=bin/pkg
-vendor=`grep "#define __GVER_VENDOR_NAME__" golded3/mygolded.h | sed -e "s/#define __GVER_VENDOR_NAME__ //" -e "s/\"//g"`
-email=`grep "#define __GVER_VENDOR_EMAIL__" golded3/mygolded.h | sed -e "s/#define __GVER_VENDOR_EMAIL__ //" -e "s/\"//g"`
+vendor=`sed -n -e "/^#define __GVER_VENDOR_NAME__/s/#define __GVER_VENDOR_NAME__ \"\(.*\)\"/\1/p" golded3/mygolded.h`
+email=`sed -n -e "/^#define __GVER_VENDOR_EMAIL__/s/#define __GVER_VENDOR_EMAIL__ \"\(.*\)\"/\1/p" golded3/mygolded.h`
 date=`date +%Y%m%d`
 name=bin/gpsunx86-115-${date}.zip
 pkgname=golded-plus-x86-115-${date}.pkg
@@ -27,7 +27,9 @@ printf '*golded-plus.sourceforge.net* \r\n' >>bin/File_ID.Diz
 gmake PLATFORM=sun clean
 gmake PLATFORM=sun
 gmake PLATFORM=sun strip
-gmake docs
+cd docs
+gmake tokentpl.txt tokencfg.txt
+cd ..
 
 # creating package
 if [ -d "$pkgdir" ] ; then rm -rf $pkgdir ; fi
@@ -57,6 +59,7 @@ echo 'BASEDIR="/opt/csw"' >> $pkgdir/pkginfo
 echo "EMAIL=\"$email\"" >> $pkgdir/pkginfo
 echo "VENDOR=\"http://golded-plus.sourceforge.net/ packaged by $vendor\"" >> $pkgdir/pkginfo
 echo 'HOTLINE="http://golded-plus.sourceforge.net"' >> $pkgdir/pkginfo
+echo 'MAXINST="1"' >> $pkgdir/pkginfo
 cd $pkgdir
 pkgmk -o -d . -f ./Prototype -r ../..
 echo 1|pkgtrans -s . ../$pkgname
