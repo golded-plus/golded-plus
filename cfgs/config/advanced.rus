@@ -2339,6 +2339,8 @@ AreaFileGroups Yes
 ;  Member            GOLDED*, INTERCOOK, MUSIC, 4DOS, ENET.SOFT,
 ;  Member            ENET.SYSOP, FDECHO, RA_UTIL, REGCON.EUR, OS2*
 ;  LoadLanguage      GEDLNGUS.CFG
+;  DispSoftCR        No
+;  UseSoftCRXlat     No
 ;  WhoTo             All
 ;EndGroup
 
