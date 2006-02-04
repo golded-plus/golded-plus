@@ -361,7 +361,7 @@ static LangCrc LangCrcs[] = {
   { CRC_ST_GENCFMRECEIPT      , NULL  , "Generating Confirmation Receipt" },
   { CRC_WT_NEW                , NULL  , "New" },
   { CRC_ST_LOOKUPINFO         , NULL  , "Nodelist Lookup Information" },
-  { CRC_MS_DATETIMEFMT        , NULL  , "%d %b %y  %H:%M:%S" },
+  { CRC_MS_DATETIMEFMT        , NULL  , "%d %b %y %H:%M:%S" },
   { CRC_MS_DATEFMT            , NULL  , "%d %b %y" },
   { CRC_MS_TIMEFMT            , NULL  , "%H:%M" },
   { CRC_MS_ORIGINALLYIN       , NULL  , "* Originally in %s" },

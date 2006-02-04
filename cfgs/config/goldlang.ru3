@@ -550,7 +550,7 @@ IL_WARNUNSENT        " …„“…†„……! β® α®®΅ι¥­¨¥ ¥ι¥ … ’€‚‹…! "
 ;          %y ƒ®¤ ΅¥§ αβ®«¥β¨ο (00-99).
 ;          %Y ƒ®¤ α® αβ®«¥β¨¥¬.
 ;          %% ‘¨¬Ά®« '%'.
-MS_DATETIMEFMT       "%a %d %b %y  %H:%M:%S"
+MS_DATETIMEFMT       "%a %d %b %y %H:%M:%S"
 MS_DATEFMT           "%A %d %B %Y"
 MS_TIMEFMT           "%H:%M:%S"
 ST_STATUSLINETIMEFMT "%H:%M:%S"

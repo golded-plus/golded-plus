@@ -855,8 +855,8 @@ CfgGed::CfgGed() {
   switches.set(rcvdisablescfm, true);
 
   // screen configuration
-  disphdrdateset.len = 20;
-  disphdrdateset.pos = -20;
+  disphdrdateset.len = 19;
+  disphdrdateset.pos = -19;
   disphdrnameset.len = 36;
   disphdrnameset.pos = 8;
   disphdrnodeset.len = 16;
