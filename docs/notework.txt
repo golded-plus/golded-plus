@@ -10,6 +10,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ Charset translation tables to convert between CP866 and CP850 is created.
+
 = Snapshot for the February 01, 2006.
 
 + SUN Solaris/x86 package by Stanislav Mekhanoshin.
