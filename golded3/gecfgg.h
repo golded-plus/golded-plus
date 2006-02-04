@@ -28,7 +28,8 @@
 
 
 //  ------------------------------------------------------------------
-
+//  en_gswitches{} enumeration elements shoulds be complemented with
+//  globalbool[] array elements (see gccfgg0.cpp).
 enum en_gswitches {
   internetlookup,
   kludgechrs,

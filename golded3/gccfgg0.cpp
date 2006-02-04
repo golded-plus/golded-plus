@@ -41,7 +41,9 @@ struct tglobalbool {
   word crc_token;
 };
 
-// it must be sorted by value
+//  globalbool[] array elements shoulds be complemented with
+//  en_gswitches{} enumeration elements (see gecfgg.h).
+//  globalbool[] array must be sorted by value
 tglobalbool globalbool[gswitches_last] = {
   { CRC_INTERNETLOOKUP           }, // 0x0E22;
   { CRC_KLUDGECHRS               }, // 0x0EEF;
