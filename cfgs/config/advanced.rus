@@ -289,7 +289,8 @@ ViewQuote Yes   ; Показывать всё.
 ;ViewQuote No   ; Показывать только первые строки каждого параграфа.
 
 // Выводить мягкий перевод строки (ASCII 141) как любой другой символ.
-DispSoftCR Yes  ; Обязательно для R50!
+// Используйте этот параметр в группах.
+;DispSoftCR <No/Yes> (Yes)
 
 // Строка, подставляемая по умолчанию в строку критерия поиска.
 ;SearchFor ["]<string|string|..>["]
@@ -613,9 +614,9 @@ EditUnDelete 50
 // символ ASCII 141 на другой.
 EditSoftCrxLat H   ; Желательно для R50!
 
-// EditSoftCrxLat может быть отключено глобально или в группах.
-;UseSoftCrxLat No
-UseSoftCrxLat Yes
+// Этим параметром можно включить или выключить EditSoftCrxLat.
+// Используйте этот параметр в группах.
+;UseSoftCrxLat <No/Yes> (No)
 
 // Ширина поля вывода для редактирования цитируемых строк.
 EditQuoteMargin 75
@@ -2402,6 +2403,7 @@ EndGroup
 // AreaFreqTo
 // AreaReplyDirect
 // AreaReplyTo
+// DispSoftCR
 // Attributes
 // EditHardTerm
 // EditReplyRe

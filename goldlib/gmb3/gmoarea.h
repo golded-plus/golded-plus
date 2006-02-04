@@ -267,7 +267,7 @@ extern int          WideCanLock;
 extern const char** WideUsername;
 extern int          WideUsernames;
 extern uint         WideSharemode;
-extern int          WideDispsoftcr;
+extern bool         WideDispsoftcr;
 extern int          WidePersonalmail;
 
 

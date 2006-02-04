@@ -59,7 +59,6 @@ enum en_gswitches {
   msglistpagebar,
   beepnoises,
   screenshadows,
-  dispsoftcr,
   emptytearline,
   menudropmsg,
   beeplocalmsg,
@@ -211,6 +210,7 @@ public:
   int         dispmargin;           // rightmargin;
   bool        disppmfirst;
   int         dispmsgsize;
+  bool        dispsoftcr;
   uint        disptabsize;          // tabsize;
   bool        encodeemailheaders;
   std::vector<GEvent> event;

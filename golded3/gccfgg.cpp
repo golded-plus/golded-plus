@@ -723,6 +723,7 @@ CfgGed::CfgGed() {
   dispmargin = 0;
   dispmsgsize = DISPMSGSIZE_BYTES;
   disppmfirst = true;
+  dispsoftcr = true;
   disptabsize = 8;
   encodeemailheaders = true;
   externoptions = EXTUTIL_CLS | EXTUTIL_CURSOR | EXTUTIL_RELOAD | EXTUTIL_PAUSEONERROR | EXTUTIL_KEEPCTRL;
@@ -802,7 +803,7 @@ CfgGed::CfgGed() {
   useintl = true;
   usepid = true;
   usernameno = 0;
-  usesoftcrxlat = true;
+  usesoftcrxlat = false;
   usestylies = true;
   usetzutc = false;
   viewhidden = false;

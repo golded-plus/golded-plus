@@ -69,6 +69,18 @@ void CfgDisppmfirst() {
 
 //  ------------------------------------------------------------------
 
+void CfgDispsoftcr()
+{
+  bool flag = make_bool(GetYesno(val));
+
+  if (cfgingroup)
+    CFG->grp.AddItm(GRP_DISPSOFTCR, flag);
+  else
+    CFG->dispsoftcr = flag;
+}
+
+//  ------------------------------------------------------------------
+
 void CfgDisptabsize() {
 
   CFG->disptabsize = atoi(val);

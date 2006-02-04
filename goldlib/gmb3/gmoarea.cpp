@@ -35,7 +35,7 @@ int          WideCanLock = true;
 const char** WideUsername = NULL;
 int          WideUsernames = 0;
 uint         WideSharemode = SH_DENYNO;
-int          WideDispsoftcr = false;
+bool         WideDispsoftcr = true;
 int          WidePersonalmail = 0;
 
 

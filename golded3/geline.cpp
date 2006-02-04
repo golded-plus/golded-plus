@@ -1809,7 +1809,8 @@ char* XlatStr(char* dest, const char* src, int level, Chs* chrtbl, int qpencoded
 
       case SOFTCR:
         translated = false;
-        if(CompTable and not CFG->switches.get(dispsoftcr)) {
+        if (CompTable and not WideDispsoftcr)
+        {
           if(sptr > src) {
             if(not (isspace(*(sptr-1)) or isspace(*(sptr+1)))) {
               for(n=0; n<CompTable->size; n++) {
@@ -1836,7 +1837,7 @@ char* XlatStr(char* dest, const char* src, int level, Chs* chrtbl, int qpencoded
             }
           }
         }
-        else if(CFG->switches.get(dispsoftcr))
+        else if (WideDispsoftcr)
           goto defaultchardo;
         if(not translated)
           *dptr++ = *sptr++;
@@ -2419,7 +2420,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode) {
               ptr++;
               break;
             case SOFTCR:
-              if(CFG->switches.get(dispsoftcr))
+              if (WideDispsoftcr)
                 goto defaultchardo;
               else {
                 if(CompTable) {
@@ -2931,7 +2932,8 @@ int LoadCharset(const char* imp, const char* exp, int query) {
         current_table = n;
 
         // Disable softcr translation unless DISPSOFTCR is enabled
-        if(not CFG->switches.get(dispsoftcr)) {
+        if (not WideDispsoftcr)
+        {
           char* tptr = (char*)ChsTP[SOFTCR];
           *tptr++ = 1;
           *tptr = SOFTCR;

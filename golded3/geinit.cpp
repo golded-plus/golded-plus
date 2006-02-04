@@ -1048,7 +1048,6 @@ void Initialize(int argc, char* argv[]) {
   for(w = 0, i = CFG->username.begin(); w < WideUsernames; w++, i++)
     WideUsername[w] = i->name;
   WidePersonalmail = CFG->personalmail;
-  WideDispsoftcr = CFG->switches.get(dispsoftcr);
 
   if(CFG->loadlanguage[0])
     LoadLanguage(CFG->loadlanguage);

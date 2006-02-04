@@ -441,13 +441,15 @@ uint32_t getClassicMsgId();
 //  ------------------------------------------------------------------
 //  SOFTCR management
  
-inline bool issoftcr(char c) {
-  return (c == SOFTCR) and not CFG->switches.get(dispsoftcr);
+inline bool issoftcr(char c)
+{
+  return (c == SOFTCR) and not WideDispsoftcr;
 }
 
 
-inline char *spanspaces(const char *str) {
-  if(CFG->switches.get(dispsoftcr))
+inline char *spanspaces(const char *str)
+{
+  if (WideDispsoftcr)
     while(isspace(*str) and (*str != CR))
       str++;
   else
@@ -457,8 +459,9 @@ inline char *spanspaces(const char *str) {
 }
 
 
-inline char *spanfeeds(const char *str) {
-  if(CFG->switches.get(dispsoftcr))
+inline char *spanfeeds(const char *str)
+{
+  if (WideDispsoftcr)
     while(*str == LF)
       str++;
   else

@@ -10,6 +10,12 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+! Changed keywords global defaults:
+    DispSoftCR Yes
+    UseSoftCrxLat No
+
++ DispSoftCR now may be used in random system groups.
+
 + Charset translation tables to convert between CP866 and CP850 is created.
 
 = Snapshot for the February 01, 2006.

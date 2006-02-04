@@ -137,6 +137,7 @@ void Area::InitData() {
     adat->ctrlinfo = CFG->ctrlinfoecho;
   else
     adat->ctrlinfo = CFG->ctrlinfolocal;
+  WideDispsoftcr = adat->dispsoftcr = CFG->dispsoftcr;
   adat->edithardterm = EDIT->HardTerm();
   adat->editmixcase = EDIT->MixCase();
   adat->forcetemplate = CFG->forcetemplate;
@@ -294,6 +295,8 @@ void Area::RandomizeData(int mode) {
     CFG->grp.GetItm(GRP_AREAREPLYTO, adat->areareplyto, sizeof(adat->areareplyto));
     CFG->grp.GetItm(GRP_AREAYOUWROTETO, adat->areayouwroteto, sizeof(adat->areayouwroteto));
     CFG->grp.GetItm(GRP_CTRLINFO, adat->ctrlinfo);
+    CFG->grp.GetItm(GRP_DISPSOFTCR, adat->dispsoftcr);
+    WideDispsoftcr = adat->dispsoftcr;
     CFG->grp.GetItm(GRP_EDITHARDTERM, adat->edithardterm);
     CFG->grp.GetItm(GRP_EDITMIXCASE, adat->editmixcase);
     CFG->grp.GetItm(GRP_EDITREPLYRE, adat->replyre);

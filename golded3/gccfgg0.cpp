@@ -72,7 +72,6 @@ tglobalbool globalbool[gswitches_last] = {
   { CRC_MSGLISTPAGEBAR           }, // 0x8041;
   { CRC_BEEPNOISES               }, // 0x84D5;
   { CRC_SCREENSHADOWS            }, // 0x8543;
-  { CRC_DISPSOFTCR               }, // 0x85E9;
   { CRC_EMPTYTEARLINE            }, // 0x8D0A;
   { CRC_MENUDROPMSG              }, // 0x9645;
   { CRC_BEEPLOCALMSG             }, // 0x984C;
@@ -288,6 +287,7 @@ SwitchD:
     case CRC_DISPMARGIN       :  CfgDispmargin       ();  break;
     case CRC_DISPMSGSIZE      :  CfgDispmsgsize      ();  break;
     case CRC_DISPPMFIRST      :  CfgDisppmfirst      ();  break;
+    case CRC_DISPSOFTCR       :  CfgDispsoftcr       ();  break;
     case CRC_DISPTABSIZE      :  CfgDisptabsize      ();  break;
     default                   :  found = false;
   }

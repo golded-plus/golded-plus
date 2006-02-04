@@ -275,6 +275,7 @@ struct AreaData {
   Echo     areareplyto;
   Echo     areayouwroteto;
   int      ctrlinfo;
+  bool     dispsoftcr;
   bool     edithardterm;
   bool     editmixcase;
   bool     forcetemplate;

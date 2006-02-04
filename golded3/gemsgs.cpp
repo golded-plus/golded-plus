@@ -742,8 +742,9 @@ void GMsg::LinesToText() {
           if((*(_bptr-1) != ' ') and (*_line->next->txt.c_str() != ' '))
             if(_softterm or not _hardterm)
               *_bptr++ = ' ';
-          if(not _hardterm) {
-            if(_softterm and not CFG->switches.get(dispsoftcr))
+          if (not _hardterm)
+          {
+            if (_softterm and not WideDispsoftcr)
               *_bptr++ = SOFTCR;
             _hterm = false;
           }
