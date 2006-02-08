@@ -46,6 +46,8 @@ To do:
   (prevent Golded+ crash with invalid config, improve functionality of
   goldlang.cfg parser).
 * Big-endian platforms support.
+* Insert from pipe in internal editor.
+* Create directory three for output file if not exists.
 ______________________________________________________________________
 
 To fix:
