@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /Gi /GX /O1 /Ob2 /I ".\golded3" /I ".\goldlib\gall" /I ".\goldlib\gcfg" /I ".\goldlib\glibc" /I ".\goldlib\gmb3" /I ".\goldlib\msgidlib" /I ".\goldlib\smblib" /I ".\goldlib\uulib" /D "NDEBUG" /D "WIN32" /D "_CONSOLE" /D "HAVE_CONFIG_H" /J /FD /c
+# ADD CPP /nologo /MD /W3 /Gi /GX /O1 /Ob2 /I ".\golded3" /I ".\goldlib\gall" /I ".\goldlib\gcfg" /I ".\goldlib\glibc" /I ".\goldlib\gmb3" /I ".\goldlib\msgidlib" /I ".\goldlib\smblib" /I ".\goldlib\uulib" /D "NDEBUG" /D "WIN32" /D "_CONSOLE" /D "HAVE_CONFIG_H" /D "__INCLUDE_NEW_KEYWORDS__" /D "__GOLD_SPELL__" /J /FD /c
 # SUBTRACT CPP /Fr
 # ADD BASE RSC /l 0x419 /d "NDEBUG"
 # ADD RSC /l 0x419 /d "NDEBUG"
@@ -52,7 +52,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /machine:I386
-# ADD LINK32 winmm.lib user32.lib /nologo /subsystem:console /machine:I386 /out:"Release/gedwin.exe"
+# ADD LINK32 winmm.lib user32.lib advapi32.lib /nologo /subsystem:console /machine:I386 /out:"Release/gedwin.exe"
 # SUBTRACT LINK32 /debug
 
 !ELSEIF  "$(CFG)" == "golded - Win32 Debug"
@@ -69,7 +69,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /GZ /c
-# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I ".\golded3" /I ".\goldlib\gall" /I ".\goldlib\gcfg" /I ".\goldlib\glibc" /I ".\goldlib\gmb3" /I ".\goldlib\msgidlib" /I ".\goldlib\smblib" /I ".\goldlib\uulib" /D "_DEBUG" /D "WIN32" /D "_CONSOLE" /D "HAVE_CONFIG_H" /J /FD /GZ /c
+# ADD CPP /nologo /MDd /W3 /Gi /GX /Od /I ".\golded3" /I ".\goldlib\gall" /I ".\goldlib\gcfg" /I ".\goldlib\glibc" /I ".\goldlib\gmb3" /I ".\goldlib\msgidlib" /I ".\goldlib\smblib" /I ".\goldlib\uulib" /D "_DEBUG" /D "WIN32" /D "_CONSOLE" /D "HAVE_CONFIG_H" /D "__INCLUDE_NEW_KEYWORDS__" /D "__GOLD_SPELL__" /J /FD /GZ /c
 # SUBTRACT CPP /Fr
 # ADD BASE RSC /l 0x419 /d "_DEBUG"
 # ADD RSC /l 0x409 /d "_DEBUG"
@@ -78,7 +78,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 winmm.lib user32.lib /nologo /subsystem:console /debug /machine:I386 /out:"Debug/gedwin.exe" /pdbtype:sept
+# ADD LINK32 winmm.lib user32.lib advapi32.lib /nologo /subsystem:console /debug /machine:I386 /out:"Debug/gedwin.exe" /pdbtype:sept
 
 !ELSEIF  "$(CFG)" == "golded - Win32 DRelease"
 
@@ -96,7 +96,7 @@ LINK32=link.exe
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /Zi /O1 /I ".\golded3" /I ".\goldlib\gall" /I ".\goldlib\gcfg" /I ".\goldlib\glibc" /I ".\goldlib\gmb3" /I ".\goldlib\msgidlib" /I ".\goldlib\smblib" /I ".\goldlib\uulib" /D "NDEBUG" /D "WIN32" /D "_CONSOLE" /D "HAVE_CONFIG_H" /J /FD /c
 # SUBTRACT BASE CPP /Fr
-# ADD CPP /nologo /MD /W3 /Gm /Gi /GX /Zi /O1 /I ".\golded3" /I ".\goldlib\gall" /I ".\goldlib\gcfg" /I ".\goldlib\glibc" /I ".\goldlib\gmb3" /I ".\goldlib\msgidlib" /I ".\goldlib\smblib" /I ".\goldlib\uulib" /D "NDEBUG" /D "WIN32" /D "_CONSOLE" /D "HAVE_CONFIG_H" /Fr /J /FD /c
+# ADD CPP /nologo /MD /W3 /Gi /GX /O1 /I ".\golded3" /I ".\goldlib\gall" /I ".\goldlib\gcfg" /I ".\goldlib\glibc" /I ".\goldlib\gmb3" /I ".\goldlib\msgidlib" /I ".\goldlib\smblib" /I ".\goldlib\uulib" /D "NDEBUG" /D "WIN32" /D "_CONSOLE" /D "HAVE_CONFIG_H" /D "__INCLUDE_NEW_KEYWORDS__" /D "__GOLD_SPELL__" /Fr /J /FD /c
 # ADD BASE RSC /l 0x419 /d "NDEBUG"
 # ADD RSC /l 0x419 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -104,7 +104,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 winmm.lib user32.lib /nologo /subsystem:console /debug /machine:I386 /out:"Release/gedwin.exe" /pdbtype:sept
-# ADD LINK32 winmm.lib user32.lib /nologo /subsystem:console /debug /machine:I386 /out:"DRelease/gedwin.exe" /pdbtype:sept
+# ADD LINK32 winmm.lib user32.lib advapi32.lib /nologo /subsystem:console /debug /machine:I386 /out:"DRelease/gedwin.exe" /pdbtype:sept
 
 !ENDIF 
 
@@ -468,6 +468,10 @@ SOURCE=.\goldlib\gall\gdbgtrk.cpp
 # Begin Source File
 
 SOURCE=.\goldlib\gall\gdirposx.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\goldlib\gall\gespell.cpp
 # End Source File
 # Begin Source File
 
@@ -1612,6 +1616,10 @@ SOURCE=.\goldlib\gall\gdefs.h
 # Begin Source File
 
 SOURCE=.\goldlib\gall\gdirposx.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\goldlib\gall\gespell.h
 # End Source File
 # Begin Source File
 
