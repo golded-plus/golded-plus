@@ -468,6 +468,44 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
           }
         }
 
+        if (strnieql(dst, "@pipe{`", 7))
+        {
+          char *argbeg = dst+7;
+          char *argend = strstr(argbeg, "`}");
+
+          char token[1024];
+          size_t tlen = argend-dst+2;
+
+          memcpy(token, dst, tlen);
+          *argend = token[tlen] = 0;
+
+          FILE *pipe_in;
+          std::string pipe_buff;
+
+          if ((pipe_in = _popen(argbeg, "rt")) != NULL )
+          {
+            char buffer[1024];
+            while (!feof(pipe_in))
+            {
+              if (fgets(buffer, sizeof(buffer), pipe_in) != NULL)
+                pipe_buff += buffer;
+            }
+
+            _pclose(pipe_in);
+          }
+
+          *argend = '`';
+
+          for (size_t i = 0; i < pipe_buff.length(); i++)
+          {
+            if (pipe_buff[i] == LF)
+              pipe_buff[i] = CR;
+          }
+
+          if (tokenxchg(dst, token, pipe_buff.c_str()))
+            continue;
+        }
+
         dst++;
       }
     }
