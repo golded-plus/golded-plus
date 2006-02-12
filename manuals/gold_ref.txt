@@ -6213,15 +6213,15 @@ In the help file there is a model of the actual window.
 GoldED implements several different proposals for character
 translation in imported and exported messages:
 
-FSC-0050  "Charset Identifier" by Thomas Sundblom.
+FSC-0050  "Charset Identifier" by Thomas Sundblom (obsoleted).
 FSC-0051  "I51" by Thomas Gradin.
-FSC-0054  "CHARSET proposal" by Duncan McNutt.
+FSC-0054  "CHARSET proposal" by Duncan McNutt (obsoleted).
 No FSC    "Composed Characters" by Andre van de Wijdeven.
+FSP-1013  "Character set definition in Fidonet messages" by Peter Karlsson
 
-FSC-0050 is currently known to be implemented in the OPMED 3.xx
-message editor, and in Opus 1.7x. It uses the same identifier as
-FSC-0054 (a ^aCHARSET kludge), but is a lot simpler (but not
-necessarily better).
+FSC-0050 and FSP-1013 (a ^aCHRS kludge) is implemented in many FTN message
+editors.
+FSC-0054 (a ^aCHARSET kludge) is don't wide-spread.
 
 The "I51" and "CHARSET" proposals are in the process of being merged
 to one proposal, which should combine the advantages of both. They are
@@ -6281,9 +6281,10 @@ files belong to what import and export set. You can define more than
 one import and export set for each file.
 
 The keyword XLATIMPORT defines which charset you have on your own
-machine - this would normally be "IBMPC". It can be useful to change
-this (using the Random System) in areas where another character set
-than IBMPC is the dominant (like Amiga or MacIntosh, whatever).
+machine - this would normally be your system code page. It can be useful
+to change this (using the Random System) in areas where another character
+set is the dominant (for example: use CP866 for russian echoareas and CP850
+for european echoareas).
 
 The keyword XLATEXPORT defines the charset your messages should be
 exported to, if any.
