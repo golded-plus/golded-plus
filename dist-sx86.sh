@@ -12,6 +12,9 @@ pkgname=golded-plus-x86-115-${date}.pkg
 
 echo Build a Golded+/sunX86 binary package:  ${name} (${pkgname})
 
+if [ ! -f golded3/mygolded.h ]; then
+  cp golded3/mygolded.__h golded3/mygolded.h
+fi
 gsed -i.orig -e "s/\#define __GVER_POSTVERSION__ .*/\#define __GVER_POSTVERSION__   \"-b${date}\"/" golded3/mygolded.h
 
 printf "GoldED+1.1.5 [`uname` `uname -i` pkg]\r\n"  >bin/File_ID.Diz

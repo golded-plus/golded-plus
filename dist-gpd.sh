@@ -17,6 +17,9 @@ file_id=bin/File_ID.Diz
 
 echo Build a Golded+/DPMI binary package:  ${name} and ${shortname}
 
+if [ ! -f golded3/mygolded.h ]; then
+  cp golded3/mygolded.__h golded3/mygolded.h
+fi
 sed -i.orig -e "s/\#define __GVER_POSTVERSION__ .*/\#define __GVER_POSTVERSION__   \"-b${date}\"/" golded3/mygolded.h
 
 files="bin/geddjg.exe bin/gndjg.exe bin/rddtdjg.exe"
