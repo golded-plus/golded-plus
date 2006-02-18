@@ -10,7 +10,7 @@ date=`date +%Y%m%d`
 name=bin/gpsunx86-115-${date}.zip
 pkgname=golded-plus-x86-115-${date}.pkg
 
-echo Build a Golded+/sunX86 binary package:  ${name} (${pkgname})
+echo Build a Golded+/sunX86 binary package:  ${name} \(${pkgname}\)
 
 if [ ! -f golded3/mygolded.h ]; then
   cp golded3/mygolded.__h golded3/mygolded.h
