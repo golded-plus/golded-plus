@@ -24,14 +24,11 @@ To compile GoldED+ and utilities you'll need:
  - vi, emacs, or any other editor you like
  - beer or bear on your choice ;-)
 
----- MINGW ONLY ----
-Please consult this howto on installing MinGW over Cygwin:
-http://www.xraylith.wisc.edu/~khan/software/gnu-win32/mno-cygwin-howto.txt
---- gcc-2.95.3-5.tar.bz2 + mingw-runtime-1.3-2.tar.bz2 ---
-Move /usr/include/mingw to /usr/local/include/mingw, take gcc-2.95.3-xxx.tar.gz
-from www.mingw.org, copy .../lib/stdlibc++.a to /usr/local/lib/mingw, copy
-.../include/g++-3 to /usr/local/include/mingw/g++-3.
------- COMMON ------
+---- MINGW OVER CYGWIN ONLY ----
+Visits to http://www.cygwin.org/, download setup.exe and install Cygwin with
+following packages: bash, binutils, fileutils, gcc, gpp, grep, make, sed,
+sh-utils.
+----------- COMMON -------------
 
 ---- DJGPP ONLY ----
 Visits to http://www.delorie.com/djgpp/ and download following packages: djdev,
@@ -98,3 +95,4 @@ shell scripts:
 - dist-gpd.sh to produce dos binaries package;
 - dist-gpv.sh to produce Win32 (MS Visual C) binaries package;
 - dist-gpw.sh to produce Win32 (MINGW32) binaries package.
+The InfoZIP archiver or TAR and BZip2 is required.
