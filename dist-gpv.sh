@@ -8,6 +8,8 @@ name=../gpwin-115-${date}.zip
 shortdate=`echo ${date} | sed s/^...//`
 shortname=../gpv${shortdate}.zip
 
+echo Build a Golded+/w32mvc binary package:  ${name} and ${shortname}
+
 sed -i.orig -e "s/\#define __GVER_POSTVERSION__ .*/\#define __GVER_POSTVERSION__   \"-b${date}\"/" golded3/mygolded.h
 
 files="Release/bin/gedwin.exe Release/bin/gnwin.exe Release/bin/rddtwin.exe"

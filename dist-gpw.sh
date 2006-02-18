@@ -14,6 +14,8 @@ shortdate=`echo ${date} | sed s/^...//`
 name=../gpw32-115-${date}.zip
 shortname=../gpw${shortdate}.zip
 
+echo Build a Golded+/w32mingw binary package:  ${name} and ${shortname}
+
 sed -i.orig -e "s/\#define __GVER_POSTVERSION__ .*/\#define __GVER_POSTVERSION__   \"-b${date}\"/" golded3/mygolded.h
 
 files="bin/gedcyg.exe bin/gncyg.exe bin/rddtcyg.exe"

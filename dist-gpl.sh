@@ -8,6 +8,8 @@ shortdate=`echo ${date} | sed s/^...//`
 shortname=../gpl${shortdate}.zip
 name=../gpl115-${date}.zip
 
+echo Build a Golded+/lnx binary package:  ${name} and ${shortname}
+
 sed -i.orig -e "s/\#define __GVER_POSTVERSION__ .*/\#define __GVER_POSTVERSION__   \"-b${date}\"/" golded3/mygolded.h
 
 files="bin/gedlnx bin/gnlnx bin/rddtlnx"
