@@ -181,7 +181,7 @@ GKbd::GKbd() {
 
   Init();
 
-  #if defined(__UNIX__) && !defined(__USE_NCURSES__) && !defined(__BEOS__) 
+  #if defined(__UNIX__) && !defined(__USE_NCURSES__) && !defined(__BEOS__)
 
   gkbd_keymap_init();
 
@@ -288,7 +288,7 @@ GKbd::GKbd() {
   gkbd_define_keysym("\033\x09", Key_A_Tab);
 
   #elif defined(__BEOS__)
-  
+
   gkbd_keymap_init();
 
   char escseq[2];
@@ -349,17 +349,17 @@ GKbd::GKbd() {
 GKbd::~GKbd() {
 
   #if defined(__USE_NCURSES__)
-  
+
   if(0 == (--curses_initialized))
     endwin();
-  
+
   #elif defined(__WIN32__)
-  
+
   if(gkbd_kbdmode & KBD_TEXTMODE)
     SetConsoleMode(gkbd_hin, gkbd_kbdmode);
-  
+
   #elif defined(__UNIX__)
-  
+
   gkbd_keymap_reset();
   gkbd_tty_reset();
 
@@ -1072,7 +1072,7 @@ gkey kbxget_raw(int mode) {
     }
     return key;
   }
-  
+
   // Get keystroke
   key = gkbd_cursgetch(mode);
   if(key == ERR)
@@ -1105,7 +1105,7 @@ gkey kbxget_raw(int mode) {
     }
 
     if((key2 != ERR) and (mode == 1))
-      ungetch(key2);    
+      ungetch(key2);
   }
   // Curses sequence; lookup in nice table above
   else if((key >= KEY_MIN) and (key <= KEY_MIN+sizeof(gkbd_curstable)/sizeof(int)))
@@ -1118,7 +1118,7 @@ gkey kbxget_raw(int mode) {
     k = Key_Space;
   else
     k = key;
- 
+
   if(mode == 1)
     ungetch(key);
 
@@ -1377,7 +1377,7 @@ gkey kbxget_raw(int mode) {
 
   if(mode == 2) {
     int key;
-    #ifdef __linux__
+    #if defined(__linux__)
     // Under Linux we could use TIOCLINUX fn. 6 to read shift states on console
     // Of course it is very unportable but should produce good results :-)
     key = 6;

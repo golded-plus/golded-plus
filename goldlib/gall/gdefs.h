@@ -101,6 +101,13 @@
 #define NL "\n"
 #endif
 
+/*  ----------------------------------------------------------------*/
+
+#if defined(_MSC_VER)
+#define popen(f,m) _popen(f,m)
+#define pclose(fh) _pclose(fh)
+#endif
+
 /*  ------------------------------------------------------------------
 //  Spellchecker using dynamic library load */
 #if !defined(GCFG_NOSPELLDLL) && !defined(__WIN32__)

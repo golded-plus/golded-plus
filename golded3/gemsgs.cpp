@@ -482,7 +482,7 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
           FILE *pipe_in;
           std::string pipe_buff;
 
-          if ((pipe_in = _popen(argbeg, "rt")) != NULL )
+          if ((pipe_in = popen(argbeg, "rt")) != NULL )
           {
             char buffer[1024];
             while (!feof(pipe_in))
@@ -491,7 +491,7 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
                 pipe_buff += buffer;
             }
 
-            _pclose(pipe_in);
+            pclose(pipe_in);
           }
 
           *argend = '`';
