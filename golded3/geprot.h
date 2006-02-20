@@ -118,7 +118,7 @@ void SaveLines(int mode, const char* savefile, GMsg* msg, int margin, bool clip=
 //  GEDOSS prototypes
 
 void Cleanup(void);
-int ShellToDos(char* command, char* message, vattr cls, int cursor, int pause=NO);
+int ShellToDos(const char* command, char* message, vattr cls, int cursor, int pause=NO);
 
 
 //  ------------------------------------------------------------------
@@ -221,7 +221,11 @@ int NextMarkedmsg(int direction, GMsg* msg);
 //  ------------------------------------------------------------------
 //  GEMSGS prototypes
 
-char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int origarea);
+void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int origarea);
+void TokenXlat(int mode, char *&input, size_t size, bool resize, GMsg* msg, GMsg* oldmsg, int origarea);
+inline void TokenXlat(int mode, char *input, size_t size, GMsg* msg, GMsg* oldmsg, int origarea)
+{ TokenXlat(mode, input, size, false, msg, oldmsg, origarea); }
+
 void Rot13(GMsg* msg);
 void ResetMsg(GMsg* msg);
 int DoCarboncopy(GMsg* msg, GMsg** carbon);

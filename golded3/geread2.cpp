@@ -538,15 +538,15 @@ int ExternUtil(GMsg *msg, ExtUtil *extutil) {
   Path editorfile, tmpfile, buf;
   strxcpy(editorfile, AddPath(CFG->goldpath, EDIT->File()), sizeof(Path));
 
-  char cmdline[1024];
-  strxcpy(cmdline, extutil->cmdline, sizeof(cmdline));
+  std::string cmdline = extutil->cmdline;
 
   int mode = (extutil->options & EXTUTIL_KEEPCTRL) ? MODE_SAVE : MODE_SAVENOCTRL;
   SaveLines(mode, editorfile, msg, 79);
   strcpy(buf, editorfile);
   strchg(buf, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
   strischg(cmdline, "@file", buf);
-  if(striinc("@tmpfile", cmdline)) {
+  if(striinc("@tmpfile", cmdline) != cmdline.end())
+  {
     mktemp(strcpy(tmpfile, AddPath(CFG->temppath, "GDXXXXXX")));
     SaveLines(mode, tmpfile, msg, 79);
     strcpy(buf, tmpfile);
@@ -566,7 +566,7 @@ int ExternUtil(GMsg *msg, ExtUtil *extutil) {
   if(extutil->options & EXTUTIL_PAUSE)
     pauseval = 1;
 
-  ShellToDos(cmdline, "",
+  ShellToDos(cmdline.c_str(), "",
     extutil->options & EXTUTIL_CLS ? LGREY_|_BLACK : BLACK_|_BLACK,
     extutil->options & EXTUTIL_CURSOR,
     pauseval
@@ -761,8 +761,7 @@ void ReadPeekURLs(GMsg* msg) {
     whelpop();
 
     if(n != -1) {
-      char cmdline[1024];
-      strxcpy(cmdline, CFG->urlhandler.cmdline, sizeof(cmdline));
+      std::string cmdline = CFG->urlhandler.cmdline;
       strxmerge(buf, sizeof(buf), "\"", strtrim(strltrim(Listi[n])), "\"", NULL);
       strischg(cmdline, "@url", buf);
       strxcpy(buf, CFG->goldpath, sizeof(buf));
@@ -776,7 +775,7 @@ void ReadPeekURLs(GMsg* msg) {
       if(CFG->urlhandler.options & EXTUTIL_PAUSE)
         pauseval = 1;
 
-      ShellToDos(cmdline, "",
+      ShellToDos(cmdline.c_str(), "",
         CFG->urlhandler.options & EXTUTIL_CLS ? LGREY_|_BLACK : BLACK_|_BLACK,
         CFG->urlhandler.options & EXTUTIL_CURSOR,
         pauseval

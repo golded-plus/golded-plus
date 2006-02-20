@@ -217,7 +217,7 @@ void Cleanup(void) {
 //  ------------------------------------------------------------------
 //  Multipurpose DOS shell function
 
-int ShellToDos(char* command, char* message, vattr cls, int cursor, int pause) {
+int ShellToDos(const char* command, char* message, vattr cls, int cursor, int pause) {
 
   int error = 0;
 

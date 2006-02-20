@@ -1097,7 +1097,8 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
             forwstat = YES;
         }
         else {
-          if(confirm) {
+          if (confirm)
+          {
             throw_release(msg->txt);
             FILE* fp = fsopen(AddPath(CFG->goldpath, CFG->confirmfile), "rt", CFG->sharemode);
             if(fp) {
@@ -1106,7 +1107,7 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
             }
             if(msg->txt == NULL)
               msg->txt = throw_strdup("\r\rConfirmation Receipt\r\r");
-            TokenXlat(mode, msg->txt, msg, omsg, CurrArea);
+            TokenXlat(mode, msg->txt, strlen(msg->txt)+1, true, msg, omsg, CurrArea);
           }
           else
             CreateFileAddr(msg);

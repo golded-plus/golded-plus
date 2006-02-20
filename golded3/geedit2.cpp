@@ -1021,7 +1021,7 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
       {
         sprintf(_parabuf, "%s\n", CFG->importbegin);
         strischg(_parabuf, "@file", imp_filename);
-        TokenXlat(MODE_NEW, _parabuf, msgptr, msgptr, CurrArea);
+        TokenXlat(MODE_NEW, _parabuf, EDIT_PARABUFLEN, true, msgptr, msgptr, CurrArea);
         _parabuf[strlen(_parabuf)-1] = '\n';
         _parabuf[margintext] = NUL;
         _parabuf[margintext-1] = '\n';
@@ -1198,7 +1198,7 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
       {
         sprintf(_parabuf, "%s\n", *CFG->importend ? CFG->importend : CFG->importbegin);
         strischg(_parabuf, "@file", imp_filename);
-        TokenXlat(MODE_NEW, _parabuf, msgptr, msgptr, CurrArea);
+        TokenXlat(MODE_NEW, _parabuf, EDIT_PARABUFLEN, true, msgptr, msgptr, CurrArea);
         _parabuf[strlen(_parabuf)-1] = '\n';
         _parabuf[margintext] = NUL;
         _parabuf[margintext-1] = '\n';

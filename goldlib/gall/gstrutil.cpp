@@ -151,6 +151,22 @@ const char* striinc(const char* str1, const char* str2) {
 
 
 //  ------------------------------------------------------------------
+//  Determines if string1 is included in string2
+
+std::string::iterator striinc(const char* str1, std::string &str2)
+{
+  int max = strlen(str1);
+
+  std::string::iterator it;
+  for (it = str2.begin(); it != str2.end(); it++)
+    if (!strnicmp(str1, it, max))
+      return it;
+
+  return str2.end();    // string1 not found in string2
+}
+
+
+//  ------------------------------------------------------------------
 //  Inserts one string into another
 
 char* strins(const char* instr, char* str, int st_pos) {
@@ -208,6 +224,27 @@ char* strischg(char* str, const char* find, const char* replace) {
   if(count)
     return str;
   return NULL;
+}
+
+
+//  ------------------------------------------------------------------
+//  Changes all occurrences of one string to another
+
+void strischg(std::string &str, const char* find, const char* replace)
+{
+  int lenf = strlen(find);
+  int lenr = strlen(replace);
+
+  std::string::iterator it;
+  for (it = str.begin(); it != str.end(); it++)
+  {
+    if (strnieql(find, it, lenf))
+    {
+      size_t idx = it - str.begin();
+      str.replace(it, it+lenf, replace, lenr);
+      it = str.begin() + idx + lenr - 1;
+    }
+  }
 }
 
 

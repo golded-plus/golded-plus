@@ -87,12 +87,8 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
   uint ctrlinfo;
   char textfile[GMAXPATH];
   char indexfile[GMAXPATH];
-#if defined(__USE_ALLOCA__)
   size_t sizeofbuf = CFG->quotemargin + 256;
-  char *buf = (char*)alloca(sizeofbuf);
-#else
-  __extension__ char buf[CFG->quotemargin + 256];
-#endif
+  char *buf = (char*)throw_malloc(sizeofbuf);
   char initials[10];
   char quotestr[100];
   char qbuf[100];
@@ -193,7 +189,8 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
       EDIT->HardLines(false);
       msg->txt = (char*)throw_realloc(msg->txt, 256);
       strcpy(msg->txt, LNG->RobotMsg);
-      TokenXlat(mode, msg->txt, msg, oldmsg, origarea);
+      TokenXlat(mode, msg->txt, strlen(msg->txt)+1, true, msg, oldmsg, origarea);
+      throw_free(buf);
       return 0;
     }
   }
@@ -339,11 +336,8 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
   size_t oldmsg_size = oldmsg->txt ? strlen(oldmsg->txt) : REALLOC_CACHE_SIZE;
   size_t msg_txt_realloc_cache = 0;
 
-#if defined(__MINGW32__) || defined(_MSC_VER)
-  while(fgets(buf, sizeofbuf, fp)) {
-#else
-  while(fgets(buf, sizeof(buf), fp)) {
-#endif
+  while(fgets(buf, sizeofbuf, fp))
+  {
     ptr = strskip_wht(buf);
     if(*ptr != ';') {
       bool chg = false;
@@ -487,7 +481,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
       } while(*ptr and (token>=end_token));
 
       if(token < end_token) {
-        TokenXlat(mode, buf, msg, oldmsg, origarea);
+        TokenXlat(mode, buf, sizeofbuf, true, msg, oldmsg, origarea);
 
         switch(token) {
 
@@ -616,7 +610,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
                       if(*buf) {
                         if(*buf == '+' and buf[1] == NUL)
                           *buf = ' ';
-                        TokenXlat(mode, buf, msg, oldmsg, origarea);
+                        TokenXlat(mode, buf, sizeofbuf, true, msg, oldmsg, origarea);
                         strtrim(buf);
                         strcat(buf, "\r");
                         len = strlen(buf);
@@ -650,7 +644,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
               tfp = fsopen(textfile, "rt", CFG->sharemode);
               if(tfp) {
                 while(fgets(buf, 255, tfp)) {
-                  TokenXlat(mode, buf, msg, oldmsg, origarea);
+                  TokenXlat(mode, buf, sizeofbuf, true, msg, oldmsg, origarea);
                   strtrim(buf);
                   strcat(buf, "\r");
                   len = strlen(buf);
@@ -867,7 +861,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
         continue;
       if((mode == MODE_QUOTEBUF) and not quotebufline)
         continue;
-      TokenXlat(mode, buf, msg, oldmsg, origarea);
+      TokenXlat(mode, buf, sizeofbuf, true, msg, oldmsg, origarea);
       len = strlen(buf);
       size += len;
       if(msg_txt_realloc_cache >= len) {
@@ -918,7 +912,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
         strtrim(buf);
         if(*buf) {
           strcat(buf, "\n");
-          TokenXlat(mode, buf, msg, oldmsg, origarea);
+          TokenXlat(mode, buf, sizeofbuf, true, msg, oldmsg, origarea);
           len = strlen(buf);
           size += len;
           if(msg_txt_realloc_cache >= len) {
@@ -939,6 +933,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
   if(tmptpl)
     remove(tplfile);
 
+  throw_free(buf);
   return disphdr;
 }
 

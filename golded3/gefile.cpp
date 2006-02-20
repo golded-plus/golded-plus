@@ -478,10 +478,11 @@ void FileSelect(GMsg* msg, char* title, FileSpec* fspec) {
 
 //  ------------------------------------------------------------------
 
-void CreateFileAddr(GMsg* msg) {
-
+void CreateFileAddr(GMsg* msg)
+{
   // Create message
-  char* _txt;
+  std::string _txt;
+
   if(msg->attr.att())
     _txt = LNG->AutoAttachMsg;
   else if(msg->attr.frq())
@@ -490,9 +491,11 @@ void CreateFileAddr(GMsg* msg) {
     _txt = LNG->AutoUpdreqMsg;
   else
     _txt = LNG->EmptyMsg;
-  msg->txt = (char*)throw_realloc(msg->txt, strlen(_txt)+256);
-  strcpy(msg->txt, _txt);
-  TokenXlat(MODE_NEW, msg->txt, msg, msg, CurrArea);
+
+  TokenXlat(MODE_NEW, _txt, msg, msg, CurrArea);
+
+  msg->txt = (char*)throw_realloc(msg->txt, _txt.length()+1);
+  strcpy(msg->txt, _txt.c_str());
 }
 
 

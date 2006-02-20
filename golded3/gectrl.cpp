@@ -720,14 +720,15 @@ void DoTearorig(int mode, GMsg* msg) {
 
   origin = AA->Origin();
 
-  if(AA->Taglinesupport()) {
+  if (AA->Taglinesupport())
+  {
     if(*msg->tagline == '@')
       GetRandomLine(msg->tagline, sizeof(msg->tagline), msg->tagline+1);
-    TokenXlat(mode, msg->tagline, msg, msg, CurrArea);
+    TokenXlat(mode, msg->tagline, sizeof(msg->tagline), msg, msg, CurrArea);
     strbtrim(msg->tagline);
   }
 
-  TokenXlat(mode, msg->tearline, msg, msg, CurrArea);
+  TokenXlat(mode, msg->tearline, sizeof(msg->tearline), msg, msg, CurrArea);
 
   ctrlinfo = AA->Ctrlinfo();
 
@@ -775,9 +776,9 @@ void DoTearorig(int mode, GMsg* msg) {
   }
   MakeOrigin(msg, origin.c_str());
 
-  TokenXlat(mode, msg->tagline, msg, msg, CurrArea);
-  TokenXlat(mode, msg->tearline, msg, msg, CurrArea);
-  TokenXlat(mode, msg->origin, msg, msg, CurrArea);
+  TokenXlat(mode, msg->tagline, sizeof(msg->tagline), msg, msg, CurrArea);
+  TokenXlat(mode, msg->tearline, sizeof(msg->tearline), msg, msg, CurrArea);
+  TokenXlat(mode, msg->origin, sizeof(msg->origin), msg, msg, CurrArea);
 
   // Add the tagline, tearline and origin as defined
   if(AA->Taglinesupport() and *msg->tagline) {

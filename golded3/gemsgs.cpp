@@ -35,68 +35,74 @@
 
 //  ------------------------------------------------------------------
 
-static bool tokenxchg(char*& dst, char* tok, const char* src, int len = 0, int cnt = 0, ...) {
+static bool tokenxchg(std::string &input, std::string::iterator &pos,
+                      const char* tok, const char* src,
+                      size_t len = 0, size_t cnt = 0, ...)
+{
+  size_t toklen = strlen(tok);
 
-  uint toklen = strlen(tok);
-  char buf[100];
+  if (strnieql(pos, tok, toklen))
+  {
+    std::string str = src;
+    std::string::iterator tokend = pos+toklen;
 
-  if(*dst != *tok)
-    return false;
-  if(not strnieql(dst, tok, toklen)) {
-    if(len and *dst and (*(dst+1) == '_') and *(dst+2)) {
-      if(not strnieql(dst+2, tok+1, toklen-1))
-        return false;
-      else
-        toklen++;
-    }
-    else
-      return false;
-  }
-  else
-    len = 0;
+    if (cnt)
+    {
+      va_list a;
+      va_start(a, cnt);
 
-  va_list a;
-  va_start(a, cnt);
-  for(int i = 0; i < cnt; i ++) {
-    bool use = make_bool(va_arg(a, int));
-    if(dst[toklen] == '{') {
-      char *p = strchr(dst+toklen, '}');
-      if(p) {
-        uint dstlen = p-dst-toklen-1;
-        if(use and dstlen) {
-          strxcpy (buf, dst+toklen+1, dstlen+1);
-          src = buf;
+      for (int i = 0; i < cnt; i++)
+      {
+        std::string::iterator beg = tokend;
+        if (*beg++ != '{') break;
+
+        std::string::iterator end;
+        for (end = beg; end != input.end(); end++)
+        {
+          if (*end == '}')
+          {
+            if (va_arg(a, int))
+              str = input.substr(beg-input.begin(), end-beg);
+
+            end++;
+            break;
+          }
         }
-        toklen = p-dst+1;
-      }
-    }
-  }
-  va_end(a);
 
-  uint sl = strlen(src);
-  uint srclen = (len == 0) ? sl : len;
-  memmove(dst+srclen, dst+toklen, strlen(dst+toklen)+1);
-  memset(dst, ' ', srclen);
-  memcpy(dst, src, ((len != 0) and (len < sl)) ? len : sl);
-  dst += srclen;
-  return true;
+        tokend = end;
+      }
+
+      va_end(a);
+    }
+
+    size_t strlen = str.length();
+    if (!len || (len > strlen)) len = strlen;
+
+    size_t idx = pos - input.begin();
+    input.replace(pos, tokend, str.c_str(), len);
+    pos = input.begin() + idx;
+
+    return true;
+  }
+
+  return false;
 }
 
 
 //  ------------------------------------------------------------------
 
-inline bool domain_requested(const char *str, size_t pos) {
-
-  if(str[1] == '_') pos++;
+inline bool domain_requested(std::string::iterator str, size_t pos)
+{
+  if (*(str+1) == '_') pos++;
   return strnieql(str+pos, "{domain}", 8);
 }
 
 //  ------------------------------------------------------------------
 
-char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) {
-
+void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int __origarea)
+{
   static char revbuf[5] = "";
-  if(revbuf[0] == NUL)
+  if (revbuf[0] == NUL)
     sprintf(revbuf, "%02d%02d", str2mon(__gver_date__), atoi(&__gver_date__[4]));
 
   char attr[80];
@@ -132,357 +138,396 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
   char msgs[16];
   sprintf(msgs, "%u", AA->Msgn.Count() + (msg->attr.nwm() ? 1 : 0));
 
-  if((mode == MODE_QUOTE) or (mode == MODE_REPLYCOMMENT) or (mode == MODE_REPLY)) {
-    if(AL.AreaIdToPtr(__origarea)->Areareplydirect() and oldmsg->areakludgeid)
+  if ((mode == MODE_QUOTE) or (mode == MODE_REPLYCOMMENT) or (mode == MODE_REPLY))
+  {
+    if (AL.AreaIdToPtr(__origarea)->Areareplydirect() and oldmsg->areakludgeid)
       origareaid = oldmsg->areakludgeid;
   }
-  else if(mode != MODE_FORWARD)
+  else if (mode != MODE_FORWARD)
     modereptr = msg->re;
 
   char buf[100];
-  char* dst = input;
 
-  while(*dst) {
-    while((*dst != '@') and (*dst != LF) and *dst)
-      dst++;
-    if(*dst == LF)
-      *dst++ = CR;
-    else if(*dst == '@') {
-      if(dst[1] == '@') {
-        memmove(dst, dst+1, strlen(dst+1)+1);
-        dst++;
+  std::string::iterator dst;
+  for (dst = input.begin(); dst != input.end(); )
+  {
+    if (*dst == LF) *dst = CR;
+    else if (*dst != '@') ;
+    else if (*(dst+1) == '@') input.erase(dst);
+    else
+    {
+      if (tokenxchg(input, dst, "@cecho", AA->echoid()))
+        continue;
+
+      if (tokenxchg(input, dst, "@cdesc", AA->desc()))
+        continue;
+
+      if (tokenxchg(input, dst, "@oecho", origareaid))
+        continue;
+
+      if (tokenxchg(input, dst, "@odesc", AL.AreaEchoToPtr(origareaid)->desc()))
+        continue;
+
+      if (tokenxchg(input, dst, "@oname", strbtrim(strtmp(oldmsg->By())), 34, 2,
+         (int)msg->by_me(), (int)msg->by_you()))
+        continue;
+
+      if (tokenxchg(input, dst, "@ofname", strlword(oldmsg->By()), 0, 2,
+         (int)msg->by_me(), (int)msg->by_you()))
+        continue;
+
+      if (tokenxchg(input, dst, "@olname", strrword(oldmsg->By()), 0, 2,
+         (int)msg->by_me(), (int)msg->by_you()))
+        continue;
+
+      if (tokenxchg(input, dst, "@odate", odate))
+        continue;
+
+      if (tokenxchg(input, dst, "@otime", otime))
+        continue;
+
+      if (tokenxchg(input, dst, "@odtime", odtime))
+        continue;
+
+      if (tokenxchg(input, dst, "@otzoffset", (oldmsg->tzutc == -32767) ? "" : (sprintf(buf, " %+05d", oldmsg->tzutc), buf)))
+        continue;
+
+      if (tokenxchg(input, dst, "@ofrom", oldmsg->ifrom))
+        continue;
+
+      if (tokenxchg(input, dst, "@oto", oldmsg->ito))
+        continue;
+
+      if (tokenxchg(input, dst, "@omessageid", oldmsg->messageid ? oldmsg->messageid : ""))
+        continue;
+
+      if (tokenxchg(input, dst, "@omsgid", *msg->replys ? msg->replys : ""))
+        continue;
+
+      if (tokenxchg(input, dst, "@dname", strbtrim(strtmp(oldmsg->To())), 34, 3,
+         (int)msg->to_me(), (int)msg->to_you(), (int)oldmsg->to_all()))
+        continue;
+
+      if (tokenxchg(input, dst, "@dpgp", *msg->iaddr ? msg->iaddr : msg->To()))
+        continue;
+
+      if (tokenxchg(input, dst, "@dfname", strlword(oldmsg->To()), 0, 3,
+         (int)msg->to_me(), (int)msg->to_you(), (int)oldmsg->to_all()))
+        continue;
+
+      if (tokenxchg(input, dst, "@dlname", strrword(oldmsg->To()), 0, 3,
+         (int)msg->to_me(), (int)msg->to_you(), (int)oldmsg->to_all()))
+        continue;
+
+      if (origareaisinet)
+      {
+        if (tokenxchg(input, dst, "@oaddr", oldmsg->iorig, 19, 1, 0))
+          continue;
+
+        if (tokenxchg(input, dst, "@daddr", oldmsg->iaddr, 19, 1, 0))
+          continue;
       }
-      else {
-        if(tokenxchg(dst, "@cecho", AA->echoid()))
-          continue;
-        if(tokenxchg(dst, "@cdesc", AA->desc()))
-          continue;
-        if(tokenxchg(dst, "@oecho", origareaid))
-          continue;
-        if(tokenxchg(dst, "@odesc", AL.AreaEchoToPtr(origareaid)->desc()))
-          continue;
-        if(tokenxchg(dst, "@oname", strbtrim(strtmp(oldmsg->By())), 34, 2,
-            (int)msg->by_me(), (int)msg->by_you()))
-          continue;
-        if(tokenxchg(dst, "@ofname", strlword(oldmsg->By()), 0, 2,
-            (int)msg->by_me(), (int)msg->by_you()))
-          continue;
-        if(tokenxchg(dst, "@olname", strrword(oldmsg->By()), 0, 2,
-            (int)msg->by_me(), (int)msg->by_you()))
-          continue;
-        if(tokenxchg(dst, "@odate", odate))
-          continue;
-        if(tokenxchg(dst, "@otime", otime))
-          continue;
-        if(tokenxchg(dst, "@odtime", odtime))
-          continue;
-        if(tokenxchg(dst, "@otzoffset", (oldmsg->tzutc == -32767) ? "" : (sprintf(buf, " %+05d", oldmsg->tzutc), buf)))
-          continue;
-        if(tokenxchg(dst, "@ofrom", oldmsg->ifrom))
-          continue;
-        if(tokenxchg(dst, "@oto", oldmsg->ito))
-          continue;
-        if(tokenxchg(dst, "@omessageid", oldmsg->messageid ? oldmsg->messageid : ""))
-          continue;
-        if(tokenxchg(dst, "@omsgid", *msg->replys ? msg->replys : ""))
-          continue;
-        if(tokenxchg(dst, "@dname", strbtrim(strtmp(oldmsg->To())), 34, 3,
-            (int)msg->to_me(), (int)msg->to_you(), (int)oldmsg->to_all()))
-          continue;
-        if(tokenxchg(dst, "@dpgp", *msg->iaddr ? msg->iaddr : msg->To()))
-          continue;
-        if(tokenxchg(dst, "@dfname", strlword(oldmsg->To()), 0, 3,
-            (int)msg->to_me(), (int)msg->to_you(), (int)oldmsg->to_all()))
-          continue;
-        if(tokenxchg(dst, "@dlname", strrword(oldmsg->To()), 0, 3,
-            (int)msg->to_me(), (int)msg->to_you(), (int)oldmsg->to_all()))
-          continue;
-        if(origareaisinet) {
-          if(tokenxchg(dst, "@oaddr", oldmsg->iorig, 19, 1, 0))
-            continue;
-          if(tokenxchg(dst, "@daddr", oldmsg->iaddr, 19, 1, 0))
-            continue;
-        }
-        if(currareaisinet) {
-          if(tokenxchg(dst, "@caddr", AA->Internetaddress(), 19, 1, 0))
-            continue;
-          if(tokenxchg(dst, "@faddr", msg->iorig, 19, 1, 0))
-            continue;
-          if(tokenxchg(dst, "@taddr", msg->iaddr, 19, 1, 0))
-            continue;
-        }
-        if((not origareaisinet or not currareaisinet) and (strlen(dst) >= 6)) {
-          bool dr = domain_requested(dst, 6);
-          if(not origareaisinet) {
-            if(tokenxchg(dst, "@oaddr", oldmsg->orig.make_string(buf, dr ? oldmsg->odom : NULL), 19, 1, 0))
-              continue;
-            if(strnieql(dst, "@o3daddr", 8)) {
-              ftn_addr boss = oldmsg->orig;
-              boss.point = 0;
-              tokenxchg(dst, "@o3daddr", boss.make_string(buf, domain_requested(dst, 8) ? oldmsg->odom : NULL), 19, 1, 0);
-              continue;
-            }
-            if(tokenxchg(dst, "@daddr", oldmsg->dest.make_string(buf, dr ? oldmsg->ddom : NULL), 19, 1, 0))
-              continue;
-            if(strnieql(dst, "@d3daddr", 8)) {
-              ftn_addr boss = oldmsg->dest;
-              boss.point = 0;
-              tokenxchg(dst, "@d3daddr", boss.make_string(buf, domain_requested(dst, 8) ? oldmsg->ddom : NULL), 19, 1, 0);
-              continue;
-            }
-          }
-          if(not currareaisinet) {
-            const gaka &caka=AA->Aka();
-            if(tokenxchg(dst, "@caddr", caka.addr.make_string(buf, dr ? caka.domain : NULL), 19, 1, 0))
-              continue;
-            if(strnieql(dst, "@c3daddr", 8)) {
-              ftn_addr boss = caka.addr;
-              boss.point = 0;
-              tokenxchg(dst, "@c3daddr", boss.make_string(buf, domain_requested(dst, 8) ? caka.domain : NULL), 19, 1, 0);
-              continue;
-            }
-            if(tokenxchg(dst, "@taddr", msg->dest.make_string(buf, dr ? msg->ddom : NULL), 19, 1, 0))
-              continue;
-            if(strnieql(dst, "@t3daddr", 8)) {
-              ftn_addr boss = msg->dest;
-              boss.point = 0;
-              tokenxchg(dst, "@t3daddr", boss.make_string(buf, domain_requested(dst, 8) ? msg->ddom : NULL), 19, 1, 0);
-              continue;
-            }
-            if(tokenxchg(dst, "@faddr", msg->orig.make_string(buf, dr ? msg->odom : NULL), 19, 1, 0))
-              continue;
-            if(strnieql(dst, "@f3daddr", 8)) {
-              ftn_addr boss = msg->orig;
-              boss.point = 0;
-              tokenxchg(dst, "@f3daddr", boss.make_string(buf, domain_requested(dst, 8) ? msg->odom : NULL), 19, 1, 0);
-              continue;
-            }
-          }
-        }
-        if(tokenxchg(dst, "@tname", strbtrim(strtmp(msg->To())), 34, 3,
-            (int)false, (int)false, (int)msg->to_all()))
-          continue;
-        if(tokenxchg(dst, "@tfname", strlword(msg->To()), 0, 3,
-            (int)false, (int)false, (int)msg->to_all()))
-          continue;
-        if(tokenxchg(dst, "@tlname", strrword(msg->To()), 0, 3,
-            (int)false, (int)false, (int)msg->to_all()))
-          continue;
-        if(tokenxchg(dst, "@cname", AA->Username().name, 34))
-          continue;
-        if(tokenxchg(dst, "@cfname", strlword(strcpy(buf, AA->Username().name))))
-          continue;
-        if(tokenxchg(dst, "@clname", strrword(strcpy(buf, AA->Username().name))))
-          continue;
-        if(tokenxchg(dst, "@cfrom", msg->ifrom))
-          continue;
-        if(tokenxchg(dst, "@cto", msg->ito))
-          continue;
-        if(tokenxchg(dst, "@cdate", cdate))
-          continue;
-        if(tokenxchg(dst, "@ctime", ctime))
-          continue;
-        if(tokenxchg(dst, "@cdtime", cdtime))
-          continue;
-        if(tokenxchg(dst, "@ctzoffset", AA->Usetzutc() ? (sprintf(buf, " %+05d", tzoffset()), buf) : ""))
-          continue;
-        if(tokenxchg(dst, "@fname", strbtrim(strtmp(msg->By())), 34))
-          continue;
-        if(tokenxchg(dst, "@fpgp", *msg->iorig ? msg->iorig : msg->By()))
-          continue;
-        if(tokenxchg(dst, "@ffname", strlword(msg->By())))
-          continue;
-        if(tokenxchg(dst, "@flname", strrword(msg->By())))
-          continue;
-        if(strnieql(dst, "@dpseudo", 8)) {
-          if(*(oldmsg->pseudoto) == NUL)
-            build_pseudo(oldmsg);
-          tokenxchg(dst, "@dpseudo", oldmsg->pseudoto, 0, 3, (int)msg->to_me(), (int)msg->to_you(), (int)oldmsg->to_all());
-          continue;
-        }
-        if(strnieql(dst, "@opseudo", 8)) {
-          if(*(oldmsg->pseudofrom) == NUL)
-            build_pseudo(oldmsg, false);
-          tokenxchg(dst, "@opseudo", oldmsg->pseudofrom, 0, 2, (int)msg->by_me(), (int)msg->by_you());
-          continue;
-        }
-        if(strnieql(dst, "@tpseudo", 8)) {
-          if(*(msg->pseudoto) == NUL)
-            build_pseudo(msg);
-          tokenxchg(dst, "@tpseudo", msg->pseudoto, 0, 3, (int)false, (int)false, (int)msg->to_all());
-          continue;
-        }
-        // Same as above (just for backward compatibility)
-        if(strnieql(dst, "@pseudo", 7)) {
-          if(*(msg->pseudoto) == NUL)
-            build_pseudo(msg);
-          tokenxchg(dst, "@pseudo", msg->pseudoto, 0, 3, (int)false, (int)false, (int)msg->to_all());
-          continue;
-        }
-        if(strnieql(dst, "@fpseudo", 8)) {
-          if(*(msg->pseudofrom) == NUL)
-            build_pseudo(msg, false);
-          tokenxchg(dst, "@fpseudo", msg->pseudofrom);
-          continue;
-        }
-        if(tokenxchg(dst, "@msgno", msgno))
-          continue;
-        if(tokenxchg(dst, "@msgs", msgs))
-          continue;
-        if(tokenxchg(dst, "@cpseudo", *AA->Nickname() ? AA->Nickname() : strlword(strcpy(buf, AA->Username().name), " @.")))
-          continue;
-        if(tokenxchg(dst, "@version", __gver_ver__))
-          continue;
-        if(tokenxchg(dst, "@ver", __gver_shortver__))
-          continue;
-        if(tokenxchg(dst, "@rev", revbuf))
-          continue;
-        if(strnieql(dst, "@align{", 6)) {
-          char *ptr = strchr(dst, '}');
-          if(ptr) {
-            int size = atoi(dst+7) - (dst-input);
-            if(size > 0) {
-              char filler = ' ';
-              if((ptr[1] == '{') and (ptr[3] == '}')) {
-                filler = ptr[2];
-                ptr += 3;
-              }
-              memmove(dst+size, ptr+1, strlen(ptr+1)+1);
-              memset(dst, filler, size);
-              dst += size;
-            }
-            else {
-              if ((ptr[1] == '{') and (ptr[3] == '}'))
-                ptr += 3;
-              memmove(dst, ptr+1, strlen(ptr+1)+1);
-            }
-          }
-          else {
-            memmove(dst, dst+6, strlen(dst+6)+1);
-          }
-          continue;
-        }
-        if(tokenxchg(dst, "@pid", __gver_shortpid__))
-          continue;
-        if(tokenxchg(dst, "@longpid", __gver_longpid__))
-          continue;
-        if(tokenxchg(dst, "@widepid", xmailer))
-          continue;
-        if(tokenxchg(dst, "@osver", osver))
-          continue;
-        if(tokenxchg(dst, "@osslash", __gver_platform__))
-          continue;
-        if(tokenxchg(dst, "@subject", modereptr))
-          continue;
-        if(tokenxchg(dst, "@attr", attr))
-          continue;
-        if(tokenxchg(dst, "@tagline",
-          HandleRandomLine(strxcpy(buf, AA->Tagline(), sizeof(buf)), sizeof(buf))))
-          continue;
-        if(tokenxchg(dst, "@tearline",
-          HandleRandomLine(strxcpy(buf, AA->Tearline(), sizeof(buf)), sizeof(buf))))
-          continue;
-        if(tokenxchg(dst, "@origin",
-          HandleRandomLine(strxcpy(buf, AA->Origin(), sizeof(buf)), sizeof(buf))))
+
+      if (currareaisinet)
+      {
+        if (tokenxchg(input, dst, "@caddr", AA->Internetaddress(), 19, 1, 0))
           continue;
 
-        if (strnieql(dst, "@area", 5))
+        if (tokenxchg(input, dst, "@faddr", msg->iorig, 19, 1, 0))
+          continue;
+
+        if (tokenxchg(input, dst, "@taddr", msg->iaddr, 19, 1, 0))
+          continue;
+      }
+
+      if ((not origareaisinet or not currareaisinet) and (strlen(dst) >= 6))
+      {
+        bool dr = domain_requested(dst, 6);
+        if (not origareaisinet)
         {
-          if (tokenxchg(dst, "@areatype", AA->basetype()))
+          if (tokenxchg(input, dst, "@oaddr", oldmsg->orig.make_string(buf, dr ? oldmsg->odom : NULL), 19, 1, 0))
             continue;
 
-          char areapath[GMAXPATH];
-          char areaname[GMAXPATH];
-
-          strcpy(areapath, AA->path());
-          areaname[0] = NUL;
-
-          size_t slashpos;
-          size_t pathlen = strlen(areapath);
-
-          for (slashpos = pathlen-1; slashpos < pathlen; slashpos--)
-            if (isslash(areapath[slashpos])) break;
-
-          if (slashpos < pathlen)
+          if (strnieql(dst, "@o3daddr", 8))
           {
-            strcpy(areaname, &areapath[slashpos+1]);
-            areapath[slashpos+1] = NUL;
-          }
-          else
-          {
-            strcpy(areaname, areapath);
-            areapath[0] = NUL;
+            ftn_addr boss = oldmsg->orig;
+            boss.point = 0;
+            tokenxchg(input, dst, "@o3daddr", boss.make_string(buf, domain_requested(dst, 8) ? oldmsg->odom : NULL), 19, 1, 0);
+            continue;
           }
 
-          if (tokenxchg(dst, "@areapath", areapath))
+          if (tokenxchg(input, dst, "@daddr", oldmsg->dest.make_string(buf, dr ? oldmsg->ddom : NULL), 19, 1, 0))
             continue;
-          if (tokenxchg(dst, "@areaname", areaname))
-            continue;
-        }
 
-        char *ptr1, *ptr2;
-        if (strnieql(dst, "@pad{", 5) &&
-            ((ptr1 = strstr(dst+5, "}{")) != NULL) &&
-            ((ptr1-dst-5) > 2) &&
-            ((ptr2 = strchr(ptr1+2, '}')) != NULL)
-           )
-        {
-          char buff[1024];
-          char token[1024];
-          char fill  = dst[5];
-          char align = g_toupper(dst[6]);
-          int  size  = atoi(dst+7);
-
-          if (strchr("CLR", align))
+          if (strnieql(dst, "@d3daddr", 8))
           {
-            memcpy(token, dst, ptr2-dst+1);
-            memcpy(buff, ptr1+2, ptr2-ptr1-2);
-            token[ptr2-dst+1] = buff[ptr2-ptr1-2] = 0;
-
-            TokenXlat(mode, buff, msg, oldmsg, __origarea);
-            buff[size] = 0;
-
-            size_t length = strlen(buff);
-            if (length != size)
-            {
-              size_t diff = size - length;
-              switch (align)
-              {
-                case 'C':
-                  memmove(&buff[diff/2], buff, length);
-                  memset(buff, fill, diff/2);
-                  memset(&buff[diff/2+length], fill, diff-diff/2);
-                  break;
-                case 'L':
-                  memset(&buff[length], fill, diff);
-                  break;
-                case 'R':
-                  memmove(&buff[diff], buff, length);
-                  memset(buff, fill, diff);
-                  break;
-              }
-            }
-
-            if (tokenxchg(dst, token, buff))
-              continue;
+            ftn_addr boss = oldmsg->dest;
+            boss.point = 0;
+            tokenxchg(input, dst, "@d3daddr", boss.make_string(buf, domain_requested(dst, 8) ? oldmsg->ddom : NULL), 19, 1, 0);
+            continue;
           }
         }
 
-        if (strnieql(dst, "@pipe{`", 7))
+        if (not currareaisinet)
         {
-          char *argbeg = dst+7;
-          char *argend = strstr(argbeg, "`}");
+          const gaka &caka=AA->Aka();
+          if (tokenxchg(input, dst, "@caddr", caka.addr.make_string(buf, dr ? caka.domain : NULL), 19, 1, 0))
+            continue;
 
-          char token[1024];
-          size_t tlen = argend-dst+2;
+          if (strnieql(dst, "@c3daddr", 8))
+          {
+            ftn_addr boss = caka.addr;
+            boss.point = 0;
+            tokenxchg(input, dst, "@c3daddr", boss.make_string(buf, domain_requested(dst, 8) ? caka.domain : NULL), 19, 1, 0);
+            continue;
+          }
 
-          memcpy(token, dst, tlen);
-          *argend = token[tlen] = 0;
+          if (tokenxchg(input, dst, "@taddr", msg->dest.make_string(buf, dr ? msg->ddom : NULL), 19, 1, 0))
+            continue;
+
+          if (strnieql(dst, "@t3daddr", 8))
+          {
+            ftn_addr boss = msg->dest;
+            boss.point = 0;
+            tokenxchg(input, dst, "@t3daddr", boss.make_string(buf, domain_requested(dst, 8) ? msg->ddom : NULL), 19, 1, 0);
+            continue;
+          }
+
+          if (tokenxchg(input, dst, "@faddr", msg->orig.make_string(buf, dr ? msg->odom : NULL), 19, 1, 0))
+            continue;
+
+          if (strnieql(dst, "@f3daddr", 8))
+          {
+            ftn_addr boss = msg->orig;
+            boss.point = 0;
+            tokenxchg(input, dst, "@f3daddr", boss.make_string(buf, domain_requested(dst, 8) ? msg->odom : NULL), 19, 1, 0);
+            continue;
+          }
+        }
+      }
+
+      if (tokenxchg(input, dst, "@tname", strbtrim(strtmp(msg->To())), 34, 3,
+         (int)false, (int)false, (int)msg->to_all()))
+        continue;
+
+      if (tokenxchg(input, dst, "@tfname", strlword(msg->To()), 0, 3,
+         (int)false, (int)false, (int)msg->to_all()))
+        continue;
+
+      if (tokenxchg(input, dst, "@tlname", strrword(msg->To()), 0, 3,
+         (int)false, (int)false, (int)msg->to_all()))
+        continue;
+
+      if (tokenxchg(input, dst, "@cname", AA->Username().name, 34))
+        continue;
+
+      if (tokenxchg(input, dst, "@cfname", strlword(strcpy(buf, AA->Username().name))))
+        continue;
+
+      if (tokenxchg(input, dst, "@clname", strrword(strcpy(buf, AA->Username().name))))
+        continue;
+
+      if (tokenxchg(input, dst, "@cfrom", msg->ifrom))
+        continue;
+
+      if (tokenxchg(input, dst, "@cto", msg->ito))
+        continue;
+
+      if (tokenxchg(input, dst, "@cdate", cdate))
+        continue;
+
+      if (tokenxchg(input, dst, "@ctime", ctime))
+        continue;
+
+      if (tokenxchg(input, dst, "@cdtime", cdtime))
+        continue;
+
+      if (tokenxchg(input, dst, "@ctzoffset", AA->Usetzutc() ? (sprintf(buf, " %+05d", tzoffset()), buf) : ""))
+        continue;
+
+      if (tokenxchg(input, dst, "@fname", strbtrim(strtmp(msg->By())), 34))
+        continue;
+
+      if (tokenxchg(input, dst, "@fpgp", *msg->iorig ? msg->iorig : msg->By()))
+        continue;
+
+      if (tokenxchg(input, dst, "@ffname", strlword(msg->By())))
+        continue;
+
+      if (tokenxchg(input, dst, "@flname", strrword(msg->By())))
+        continue;
+
+      if (strnieql(dst, "@dpseudo", 8))
+      {
+        if (*(oldmsg->pseudoto) == NUL)
+          build_pseudo(oldmsg);
+        tokenxchg(input, dst, "@dpseudo", oldmsg->pseudoto, 0, 3, (int)msg->to_me(), (int)msg->to_you(), (int)oldmsg->to_all());
+        continue;
+      }
+
+      if (strnieql(dst, "@opseudo", 8))
+      {
+        if (*(oldmsg->pseudofrom) == NUL)
+          build_pseudo(oldmsg, false);
+        tokenxchg(input, dst, "@opseudo", oldmsg->pseudofrom, 0, 2, (int)msg->by_me(), (int)msg->by_you());
+        continue;
+      }
+
+      if (strnieql(dst, "@tpseudo", 8))
+      {
+        if (*(msg->pseudoto) == NUL)
+          build_pseudo(msg);
+        tokenxchg(input, dst, "@tpseudo", msg->pseudoto, 0, 3, (int)false, (int)false, (int)msg->to_all());
+        continue;
+      }
+
+      // Same as above (just for backward compatibility)
+      if (strnieql(dst, "@pseudo", 7))
+      {
+        if (*(msg->pseudoto) == NUL)
+          build_pseudo(msg);
+        tokenxchg(input, dst, "@pseudo", msg->pseudoto, 0, 3, (int)false, (int)false, (int)msg->to_all());
+        continue;
+      }
+
+      if (strnieql(dst, "@fpseudo", 8))
+      {
+        if (*(msg->pseudofrom) == NUL)
+          build_pseudo(msg, false);
+        tokenxchg(input, dst, "@fpseudo", msg->pseudofrom);
+        continue;
+      }
+
+      if (tokenxchg(input, dst, "@msgno", msgno))
+        continue;
+
+      if (tokenxchg(input, dst, "@msgs", msgs))
+        continue;
+
+      if (tokenxchg(input, dst, "@cpseudo", *AA->Nickname() ? AA->Nickname() : strlword(strcpy(buf, AA->Username().name), " @.")))
+        continue;
+
+      if (tokenxchg(input, dst, "@version", __gver_ver__))
+        continue;
+
+      if (tokenxchg(input, dst, "@ver", __gver_shortver__))
+        continue;
+
+      if (tokenxchg(input, dst, "@rev", revbuf))
+        continue;
+
+      if (tokenxchg(input, dst, "@pid", __gver_shortpid__))
+        continue;
+
+      if (tokenxchg(input, dst, "@longpid", __gver_longpid__))
+        continue;
+
+      if (tokenxchg(input, dst, "@widepid", xmailer))
+        continue;
+
+      if (tokenxchg(input, dst, "@osver", osver))
+        continue;
+
+      if (tokenxchg(input, dst, "@osslash", __gver_platform__))
+        continue;
+
+      if (tokenxchg(input, dst, "@subject", modereptr))
+        continue;
+
+      if (tokenxchg(input, dst, "@attr", attr))
+        continue;
+
+      if (tokenxchg(input, dst, "@tagline",
+        HandleRandomLine(strxcpy(buf, AA->Tagline(), sizeof(buf)), sizeof(buf))))
+        continue;
+
+      if (tokenxchg(input, dst, "@tearline",
+        HandleRandomLine(strxcpy(buf, AA->Tearline(), sizeof(buf)), sizeof(buf))))
+        continue;
+
+      if (tokenxchg(input, dst, "@origin",
+        HandleRandomLine(strxcpy(buf, AA->Origin(), sizeof(buf)), sizeof(buf))))
+        continue;
+
+      if (strnieql(dst, "@area", 5))
+      {
+        if (tokenxchg(input, dst, "@areatype", AA->basetype()))
+          continue;
+
+        char areapath[GMAXPATH];
+        char areaname[GMAXPATH];
+
+        strcpy(areapath, AA->path());
+        areaname[0] = NUL;
+
+        size_t slashpos;
+        size_t pathlen = strlen(areapath);
+
+        for (slashpos = pathlen-1; slashpos < pathlen; slashpos--)
+          if (isslash(areapath[slashpos])) break;
+
+        if (slashpos < pathlen)
+        {
+          strcpy(areaname, &areapath[slashpos+1]);
+          areapath[slashpos+1] = NUL;
+        }
+        else
+        {
+          strcpy(areaname, areapath);
+          areapath[0] = NUL;
+        }
+
+        if (tokenxchg(input, dst, "@areapath", areapath))
+          continue;
+
+        if (tokenxchg(input, dst, "@areaname", areaname))
+          continue;
+      }
+
+      if (strnieql(dst, "@align{", 7))
+      {
+        std::string::iterator ptr = dst+7;
+        while ((*ptr != '}') && (ptr != input.end())) ptr++;
+
+        if (*ptr != '}')
+          tokenxchg(input, dst, "@align", "");
+        else
+        {
+          int size = atoi(dst+7) - (dst-input.begin());
+          if (size < 0) size = 0;
+
+          char filler = ' ';
+          if ((*(ptr+1) == '{') && (*(ptr+3) == '}'))
+          {
+            ptr += 2;
+            filler = *ptr;
+          }
+
+          std::string fill(size, filler);
+          tokenxchg(input, dst, "@align", fill.c_str(), 0, 2, (int)false, (int)false);
+          dst += size;
+        }
+
+        continue;
+      }
+
+      if (strnieql(dst, "@pipe{", 6))
+      {
+        std::string::iterator pbeg = dst+6;
+        std::string::iterator pend = pbeg;
+        while ((*pend != '}') && (pend != input.end()))
+          pend++;
+
+        if (*pend != '}')
+          tokenxchg(input, dst, "@pipe", "");
+        else
+        {
+          std::string param = input.substr(pbeg-input.begin(), pend-pbeg);
 
           FILE *pipe_in;
           std::string pipe_buff;
 
-          if ((pipe_in = popen(argbeg, "rt")) != NULL )
+          if ((pipe_in = popen(param.c_str(), "rt")) != NULL )
           {
             char buffer[1024];
             while (!feof(pipe_in))
@@ -494,24 +539,114 @@ char* TokenXlat(int mode, char* input, GMsg* msg, GMsg* oldmsg, int __origarea) 
             pclose(pipe_in);
           }
 
-          *argend = '`';
-
           for (size_t i = 0; i < pipe_buff.length(); i++)
           {
             if (pipe_buff[i] == LF)
               pipe_buff[i] = CR;
           }
 
-          if (tokenxchg(dst, token, pipe_buff.c_str()))
+          if (tokenxchg(input, dst, "@pipe", pipe_buff.c_str(), 0, 1, (int)false))
             continue;
         }
+      }
 
-        dst++;
+      if (strnieql(dst, "@pad{", 5))
+      {
+        std::string::iterator pbeg = dst+5;
+        std::string::iterator pend = pbeg;
+        while ((*pend != '}') && (pend != input.end()))
+          pend++;
+
+        if ((*pend != '}') || ((pend-pbeg) < 3))
+          tokenxchg(input, dst, "@pad", "");
+        else
+        {
+          pend++;
+
+          char fill = *pbeg;
+          char align = toupper(*(pbeg+1));
+          int padsize = atoi(pbeg+2);
+
+          if (padsize < 0) padsize = 0;
+
+          std::string text;
+          if (*pend == '{')
+          {
+            std::string buff = input.substr(pend-input.begin());
+            TokenXlat(mode, buff, msg, oldmsg, __origarea);
+
+            size_t idx1 = dst - input.begin();
+            size_t idx2 = pend - dst;
+            input.replace(pend, input.end(), buff);
+            dst = input.begin() + idx1;
+            pend = pbeg = dst + idx2 + 1;
+
+            while ((*pend != '}') && (pend != input.end()))
+              pend++;
+
+            text = input.substr(pbeg-input.begin(), pend-pbeg);
+          }
+
+          size_t tlen = text.length();
+          if (tlen != padsize)
+          {
+            int diff = padsize - tlen;
+            switch (align)
+            {
+            case 'L':
+              if (diff > 0)
+                text.insert(text.end(), diff, fill);
+              else
+                text.erase(padsize);
+              break;
+            case 'R':
+              if (diff > 0)
+                text.insert(text.begin(), diff, fill);
+              else
+                text = text.substr(-diff);
+              break;
+            default:
+              if (diff > 0)
+              {
+                text.insert(text.begin(), diff/2, fill);
+                text.insert(text.end(), diff-diff/2, fill);
+              }
+              else
+              {
+                text = text.substr((-diff)/2);
+                text.erase(padsize);
+              }
+              break;
+            }
+          }
+
+          if (tokenxchg(input, dst, "@pad", text.c_str(), 0, 2, (int)false, (int)false))
+            continue;
+        }
       }
     }
+
+    dst++;
+  }
+}
+
+
+//  ------------------------------------------------------------------
+
+void TokenXlat(int mode, char *&input, size_t size, bool resize, GMsg* msg, GMsg* oldmsg, int origarea)
+{
+  std::string buff = input;
+  TokenXlat(mode, buff, msg, oldmsg, origarea);
+
+  if (resize)
+  {
+    size_t newsize = buff.length() + 1;
+    if (size < newsize)
+      input = (char*)throw_realloc(input, size = newsize);
   }
 
-  return input;
+  strncpy(input, buff.c_str(), size);
+  input[size-1] = 0;
 }
 
 

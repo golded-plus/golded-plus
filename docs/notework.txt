@@ -10,6 +10,14 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ Macro @pad is recursive now.
+  Example: @pad{=C79}{ @oname{I}{You} }
+
+! Changed macro @pipe{`command`} to @pipe{command}
+
+- All buffers used with TokenXlat function now are of variable size.
+  This may prevent some buffer overflow bugs.
+
 = Snapshot for the February 18, 2006.
 
 + Added new macro: @pipe{`command`}, that inserts command's stdout in
