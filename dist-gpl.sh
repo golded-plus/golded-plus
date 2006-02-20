@@ -15,8 +15,8 @@ if [ ! -f golded3/mygolded.h ]; then
 fi
 sed -i.orig -e "s/\#define __GVER_POSTVERSION__ .*/\#define __GVER_POSTVERSION__   \"-b${date}\"/" golded3/mygolded.h
 
-files="bin/gedlnx bin/gnlnx bin/rddtlnx"
-files="${files} docs/copying docs/copying.lib"
+bines="bin/gedlnx bin/gnlnx bin/rddtlnx"
+files="${bines} docs/copying docs/copying.lib"
 files="${files} docs/golded.html docs/golded.txt docs/goldnode.html"
 files="${files} docs/goldnode.txt docs/license.txt docs/notework.txt"
 files="${files} docs/rddt.html docs/rddt.txt docs/readme.txt"
@@ -37,5 +37,10 @@ make PLATFORM=lnx clean
 make PLATFORM=lnx
 make PLATFORM=lnx strip
 make docs
+
+for i in ${bines} ; do
+  if [ ! -f ${i} ] ; then echo "File ${i} not exists, stop!"; exit 1 ; done
+done
+
 zip -9DXj ${name} bin/File_ID.Diz $files
 cp ${name} ${shortname}

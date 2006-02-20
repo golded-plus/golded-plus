@@ -36,6 +36,10 @@ cd docs
 gmake tokentpl.txt tokencfg.txt
 cd ..
 
+for i in bin/gedsun bin/gnsun bin/rddtsun ; do
+  if [ ! -f ${i} ] ; then echo "File ${i} not exists, stop!"; exit 1 ; done
+done
+
 # creating package
 if [ -d "$pkgdir" ] ; then rm -rf $pkgdir ; fi
 mkdir $pkgdir
