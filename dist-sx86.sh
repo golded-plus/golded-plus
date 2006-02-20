@@ -14,6 +14,8 @@ echo Build a Golded+/sunX86 binary package:  ${name} \(${pkgname}\)
 
 if [ ! -f golded3/mygolded.h ]; then
   cp golded3/mygolded.__h golded3/mygolded.h
+  echo "golded3/mygolded.h is created now. Please edit this file"
+  exit 1
 fi
 gsed -i.orig -e "s/\#define __GVER_POSTVERSION__ .*/\#define __GVER_POSTVERSION__   \"-b${date}\"/" golded3/mygolded.h
 
