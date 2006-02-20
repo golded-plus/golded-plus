@@ -49,7 +49,7 @@ make strip
 make docs
 
 for i in ${bines} ; do
-  if [ ! -f ${i} ] ; then echo "File ${i} not exists, stop!"; exit 1 ; done
+  if [ ! -f ${i} ] ; then echo "File ${i} not exists, stop!"; exit 1 ; fi
 done
 
 zip -9DXj ${name} bin/File_ID.Diz $files
