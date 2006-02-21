@@ -452,22 +452,29 @@ static bool FindCfg(char* path) {
   bool found = false;
 
   if(!is_dir(path)) {
-    if(fexist(path))
+    if(veryverbose) STD_PRINT("Try config file \"" << path << "\"... ");
+    if(fexist(path)) {
+      if(veryverbose) STD_PRINTNL("File found!");
       return true;
-    else
+    } else {
+      if(veryverbose) STD_PRINTNL("file not found.");
       return false;
-  }
+    }
+  }else if(veryverbose) STD_PRINTNL("Try config dir \"" << path << "\":");
   AddBackslash(path);
 
   #ifdef GEDCFG2
   found = ExistCfg(path, GEDCFG2);
+  if(veryverbose) STD_PRINTNL( "Try config file \"" << path << (GEDCFG2) <<
+                             "\"... " << (found?("Found!"):("not found.")) );
   #endif
 
   if(not found)
     found = ExistCfg(path, GEDCFG);
+  if(veryverbose) STD_PRINTNL( "Try config file \"" << path << (GEDCFG) <<
+                             "\"... " << (found?("Found!"):("not found.")) );
   return found;
 }
-
 
 //  ------------------------------------------------------------------
 
