@@ -100,7 +100,7 @@
 
 #ifndef CFGUSERPATH1
 #ifdef __UNIX__
-#define CFGUSERPATH1 "~/.golded"
+#define CFGUSERPATH1 "~/.golded/" /* Trailing slash: this is directory */
 #endif
 #endif
 
