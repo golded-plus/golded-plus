@@ -242,6 +242,17 @@ void CfgTitlestatus(){
 
 //  ------------------------------------------------------------------
 
+void CfgTranslate()
+{
+  char* key;
+  getkeyval(&key, &val);
+  StripQuotes(key);
+  StripQuotes(val);
+  CFG->translate.Add(strupr(key), val);
+}
+
+//  ------------------------------------------------------------------
+
 void CfgTwitmode() {
 
   int tmp = TWIT_SHOW;

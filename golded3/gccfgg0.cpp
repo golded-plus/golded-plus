@@ -576,6 +576,7 @@ SwitchT:
     case CRC_TEMPPATH         :  CfgTemppath         ();  break;
     case CRC_TIMEOUT          :  CfgTimeout          ();  break;
     case CRC_TITLESTATUS      :  CfgTitlestatus      ();  break;
+    case CRC_TRANSLATE        :  CfgTranslate        ();  break;
     case CRC_TWITMODE         :  CfgTwitmode         ();  break;
     case CRC_TWITNAME         :  CfgTwitname         ();  break;
     case CRC_TWITSUBJ         :  CfgTwitsubj         ();  break;

@@ -10,6 +10,13 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ New config file token: Translate "text" "translation". Used together
+  with @tr{text} macro to translate some parts of template.
+
++ Added new macro: @tr{text}, that can be used to translate texts in
+  templates. It is recursive. Look also at Translate keyword.
+  Example: @tr{ @oname{I}{You} }
+
 + Macro @pad is recursive now.
   Example: @pad{=C79}{ @oname{I}{You} }
 

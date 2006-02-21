@@ -379,6 +379,7 @@ const word CRC_TIMEOUTSAVEMSG   = 0xF644;
 const word CRC_TIMESLICE        = 0x3EFF;
 const word CRC_TIMESREAD        = 0xDD0E;
 const word CRC_TITLESTATUS      = 0x5ABA;
+const word CRC_TRANSLATE        = 0xE4E5;
 const word CRC_TWITMODE         = 0x9DC8;
 const word CRC_TWITNAME         = 0x2055;
 const word CRC_TWITSUBJ         = 0x08C0;

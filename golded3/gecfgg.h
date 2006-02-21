@@ -352,6 +352,7 @@ public:
   char        tasktitle[60];
   Tear        tearline;
   bool        titlestatus;
+  GStrBag2    translate;
   std::vector<Tpl> tpl;
   int         tplno;
   bool        templatematch;

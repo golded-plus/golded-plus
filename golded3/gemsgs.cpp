@@ -91,6 +91,36 @@ static bool tokenxchg(std::string &input, std::string::iterator &pos,
 
 //  ------------------------------------------------------------------
 
+static void translate(std::string &text)
+{
+  GStrBag2 &strbag = CFG->translate;
+
+  if (strbag.First())
+  {
+    do
+    {
+      const char* str1 = strbag.Current1();
+      size_t s1len = strlen(str1);
+      
+      std::string::iterator pos;
+      for (pos = text.begin(); (*pos != '}') && (pos != text.end()); pos++)
+      {
+        if (strnieql(pos, str1, s1len))
+        {
+          const char* str2 = strbag.Current2();
+          size_t idx = pos - text.begin();
+          text.replace(pos, pos+s1len, str2, strlen(str2));
+          pos = text.begin() + idx;
+        }
+      }
+    }
+    while (strbag.Next());
+  }
+}
+
+
+//  ------------------------------------------------------------------
+
 inline bool domain_requested(std::string::iterator str, size_t pos)
 {
   if (*(str+1) == '_') pos++;
@@ -623,6 +653,20 @@ void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int __orig
           if (tokenxchg(input, dst, "@pad", text.c_str(), 0, 2, (int)false, (int)false))
             continue;
         }
+      }
+
+      if (strnieql(dst, "@tr{", 4))
+      {
+        std::string buff = input.substr(dst+3-input.begin());
+        TokenXlat(mode, buff, msg, oldmsg, __origarea);
+        translate(buff);
+
+        size_t idx = dst - input.begin();
+        input.replace(dst+3, input.end(), buff);
+        dst = input.begin() + idx;
+
+        if (tokenxchg(input, dst, "@tr", "", 0, 1, (int)true))
+          continue;
       }
     }
 
