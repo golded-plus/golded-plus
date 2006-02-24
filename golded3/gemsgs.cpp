@@ -35,13 +35,21 @@
 
 //  ------------------------------------------------------------------
 
+inline const char *it2str(std::string &str, std::string::iterator it)
+{
+  return &(str.c_str()[it-str.begin()]);
+}
+
+
+//  ------------------------------------------------------------------
+
 static bool tokenxchg(std::string &input, std::string::iterator &pos,
                       const char* tok, const char* src,
                       size_t len = 0, size_t cnt = 0, ...)
 {
   size_t toklen = strlen(tok);
 
-  if (strnieql(pos, tok, toklen))
+  if (strnieql(it2str(input, pos), tok, toklen))
   {
     std::string str = src;
     std::string::iterator tokend = pos+toklen;
@@ -101,17 +109,21 @@ static void translate(std::string &text)
     {
       const char* str1 = strbag.Current1();
       size_t s1len = strlen(str1);
-      
-      std::string::iterator pos;
-      for (pos = text.begin(); (*pos != '}') && (pos != text.end()); pos++)
+      size_t length = text.length();
+
+      for (size_t pos = 0; (pos < length) && (text[pos] != '}'); )
       {
-        if (strnieql(pos, str1, s1len))
+        if (strnieql(&(text.c_str()[pos]), str1, s1len))
         {
           const char* str2 = strbag.Current2();
-          size_t idx = pos - text.begin();
-          text.replace(pos, pos+s1len, str2, strlen(str2));
-          pos = text.begin() + idx;
+          size_t s2len = strlen(str2);
+
+          text.replace(pos, s1len, str2, s2len);
+          pos += s2len;
+          length = text.length();
         }
+        else
+          pos++;
       }
     }
     while (strbag.Next());
@@ -121,9 +133,9 @@ static void translate(std::string &text)
 
 //  ------------------------------------------------------------------
 
-inline bool domain_requested(std::string::iterator str, size_t pos)
+inline bool domain_requested(const char *str, size_t pos)
 {
-  if (*(str+1) == '_') pos++;
+  if (str[1] == '_') pos++;
   return strnieql(str+pos, "{domain}", 8);
 }
 
@@ -270,30 +282,30 @@ void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int __orig
           continue;
       }
 
-      if ((not origareaisinet or not currareaisinet) and (strlen(dst) >= 6))
+      if ((not origareaisinet or not currareaisinet) and (strlen(it2str(input, dst)) >= 6))
       {
-        bool dr = domain_requested(dst, 6);
+        bool dr = domain_requested(it2str(input, dst), 6);
         if (not origareaisinet)
         {
           if (tokenxchg(input, dst, "@oaddr", oldmsg->orig.make_string(buf, dr ? oldmsg->odom : NULL), 19, 1, 0))
             continue;
 
-          if (strnieql(dst, "@o3daddr", 8))
+          if (strnieql(it2str(input, dst), "@o3daddr", 8))
           {
             ftn_addr boss = oldmsg->orig;
             boss.point = 0;
-            tokenxchg(input, dst, "@o3daddr", boss.make_string(buf, domain_requested(dst, 8) ? oldmsg->odom : NULL), 19, 1, 0);
+            tokenxchg(input, dst, "@o3daddr", boss.make_string(buf, domain_requested(it2str(input, dst), 8) ? oldmsg->odom : NULL), 19, 1, 0);
             continue;
           }
 
           if (tokenxchg(input, dst, "@daddr", oldmsg->dest.make_string(buf, dr ? oldmsg->ddom : NULL), 19, 1, 0))
             continue;
 
-          if (strnieql(dst, "@d3daddr", 8))
+          if (strnieql(it2str(input, dst), "@d3daddr", 8))
           {
             ftn_addr boss = oldmsg->dest;
             boss.point = 0;
-            tokenxchg(input, dst, "@d3daddr", boss.make_string(buf, domain_requested(dst, 8) ? oldmsg->ddom : NULL), 19, 1, 0);
+            tokenxchg(input, dst, "@d3daddr", boss.make_string(buf, domain_requested(it2str(input, dst), 8) ? oldmsg->ddom : NULL), 19, 1, 0);
             continue;
           }
         }
@@ -304,33 +316,33 @@ void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int __orig
           if (tokenxchg(input, dst, "@caddr", caka.addr.make_string(buf, dr ? caka.domain : NULL), 19, 1, 0))
             continue;
 
-          if (strnieql(dst, "@c3daddr", 8))
+          if (strnieql(it2str(input, dst), "@c3daddr", 8))
           {
             ftn_addr boss = caka.addr;
             boss.point = 0;
-            tokenxchg(input, dst, "@c3daddr", boss.make_string(buf, domain_requested(dst, 8) ? caka.domain : NULL), 19, 1, 0);
+            tokenxchg(input, dst, "@c3daddr", boss.make_string(buf, domain_requested(it2str(input, dst), 8) ? caka.domain : NULL), 19, 1, 0);
             continue;
           }
 
           if (tokenxchg(input, dst, "@taddr", msg->dest.make_string(buf, dr ? msg->ddom : NULL), 19, 1, 0))
             continue;
 
-          if (strnieql(dst, "@t3daddr", 8))
+          if (strnieql(it2str(input, dst), "@t3daddr", 8))
           {
             ftn_addr boss = msg->dest;
             boss.point = 0;
-            tokenxchg(input, dst, "@t3daddr", boss.make_string(buf, domain_requested(dst, 8) ? msg->ddom : NULL), 19, 1, 0);
+            tokenxchg(input, dst, "@t3daddr", boss.make_string(buf, domain_requested(it2str(input, dst), 8) ? msg->ddom : NULL), 19, 1, 0);
             continue;
           }
 
           if (tokenxchg(input, dst, "@faddr", msg->orig.make_string(buf, dr ? msg->odom : NULL), 19, 1, 0))
             continue;
 
-          if (strnieql(dst, "@f3daddr", 8))
+          if (strnieql(it2str(input, dst), "@f3daddr", 8))
           {
             ftn_addr boss = msg->orig;
             boss.point = 0;
-            tokenxchg(input, dst, "@f3daddr", boss.make_string(buf, domain_requested(dst, 8) ? msg->odom : NULL), 19, 1, 0);
+            tokenxchg(input, dst, "@f3daddr", boss.make_string(buf, domain_requested(it2str(input, dst), 8) ? msg->odom : NULL), 19, 1, 0);
             continue;
           }
         }
@@ -387,7 +399,7 @@ void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int __orig
       if (tokenxchg(input, dst, "@flname", strrword(msg->By())))
         continue;
 
-      if (strnieql(dst, "@dpseudo", 8))
+      if (strnieql(it2str(input, dst), "@dpseudo", 8))
       {
         if (*(oldmsg->pseudoto) == NUL)
           build_pseudo(oldmsg);
@@ -395,7 +407,7 @@ void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int __orig
         continue;
       }
 
-      if (strnieql(dst, "@opseudo", 8))
+      if (strnieql(it2str(input, dst), "@opseudo", 8))
       {
         if (*(oldmsg->pseudofrom) == NUL)
           build_pseudo(oldmsg, false);
@@ -403,7 +415,7 @@ void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int __orig
         continue;
       }
 
-      if (strnieql(dst, "@tpseudo", 8))
+      if (strnieql(it2str(input, dst), "@tpseudo", 8))
       {
         if (*(msg->pseudoto) == NUL)
           build_pseudo(msg);
@@ -412,7 +424,7 @@ void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int __orig
       }
 
       // Same as above (just for backward compatibility)
-      if (strnieql(dst, "@pseudo", 7))
+      if (strnieql(it2str(input, dst), "@pseudo", 7))
       {
         if (*(msg->pseudoto) == NUL)
           build_pseudo(msg);
@@ -420,7 +432,7 @@ void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int __orig
         continue;
       }
 
-      if (strnieql(dst, "@fpseudo", 8))
+      if (strnieql(it2str(input, dst), "@fpseudo", 8))
       {
         if (*(msg->pseudofrom) == NUL)
           build_pseudo(msg, false);
@@ -479,7 +491,7 @@ void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int __orig
         HandleRandomLine(strxcpy(buf, AA->Origin(), sizeof(buf)), sizeof(buf))))
         continue;
 
-      if (strnieql(dst, "@area", 5))
+      if (strnieql(it2str(input, dst), "@area", 5))
       {
         if (tokenxchg(input, dst, "@areatype", AA->basetype()))
           continue;
@@ -514,7 +526,7 @@ void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int __orig
           continue;
       }
 
-      if (strnieql(dst, "@align{", 7))
+      if (strnieql(it2str(input, dst), "@align{", 7))
       {
         std::string::iterator ptr = dst+7;
         while ((*ptr != '}') && (ptr != input.end())) ptr++;
@@ -523,7 +535,7 @@ void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int __orig
           tokenxchg(input, dst, "@align", "");
         else
         {
-          int size = atoi(dst+7) - (dst-input.begin());
+          int size = atoi(it2str(input, dst)+7) - (dst-input.begin());
           if (size < 0) size = 0;
 
           char filler = ' ';
@@ -541,7 +553,7 @@ void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int __orig
         continue;
       }
 
-      if (strnieql(dst, "@pipe{", 6))
+      if (strnieql(it2str(input, dst), "@pipe{", 6))
       {
         std::string::iterator pbeg = dst+6;
         std::string::iterator pend = pbeg;
@@ -580,7 +592,7 @@ void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int __orig
         }
       }
 
-      if (strnieql(dst, "@pad{", 5))
+      if (strnieql(it2str(input, dst), "@pad{", 5))
       {
         std::string::iterator pbeg = dst+5;
         std::string::iterator pend = pbeg;
@@ -595,7 +607,7 @@ void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int __orig
 
           char fill = *pbeg;
           char align = toupper(*(pbeg+1));
-          int padsize = atoi(pbeg+2);
+          int padsize = atoi(it2str(input, pbeg)+2);
 
           if (padsize < 0) padsize = 0;
 
@@ -655,7 +667,7 @@ void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int __orig
         }
       }
 
-      if (strnieql(dst, "@tr{", 4))
+      if (strnieql(it2str(input, dst), "@tr{", 4))
       {
         std::string buff = input.substr(dst+3-input.begin());
         TokenXlat(mode, buff, msg, oldmsg, __origarea);

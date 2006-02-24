@@ -62,7 +62,6 @@ int strchg(char* str, char oldch, char newch);
 char* stridela(const char* substr, char* str);
 int strnicmpw(const char* str1, const char* str2, int len);
 const char* striinc(const char* str1, const char* str2);
-std::string::iterator striinc(const char* str1, std::string &str2);
 char* strins(const char* instr, char* str, int st_pos);
 char* strisrep(char* str, const char* search, const char* replace);
 char* strischg(char* str, const char* find, const char* replace);

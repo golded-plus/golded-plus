@@ -545,7 +545,7 @@ int ExternUtil(GMsg *msg, ExtUtil *extutil) {
   strcpy(buf, editorfile);
   strchg(buf, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
   strischg(cmdline, "@file", buf);
-  if(striinc("@tmpfile", cmdline) != cmdline.end())
+  if(striinc("@tmpfile", cmdline.c_str()))
   {
     mktemp(strcpy(tmpfile, AddPath(CFG->temppath, "GDXXXXXX")));
     SaveLines(mode, tmpfile, msg, 79);
