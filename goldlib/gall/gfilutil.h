@@ -83,15 +83,6 @@
 #define R_OK 0
 #endif
 
-
-//  ------------------------------------------------------------------
-
-#if defined(_MSC_VER)
-#define popen(f,m) _popen(f,m)
-#define pclose(fh) _pclose(fh)
-#endif
-
-
 //  ------------------------------------------------------------------
 
 #define GMAXPATH (FILENAME_MAX+1) /* ANSI C */
