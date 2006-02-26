@@ -1191,6 +1191,19 @@ bool GThreadlist::handle_key() {
       break;
     }
 
+    case KK_ListToggleBookMark:
+      if (AA->bookmark == list[index].msgno)
+      {
+        AA->bookmark = 0;
+        display_bar();
+      }
+      else
+      {
+        AA->bookmark = list[index].msgno;
+        update();
+      }
+      break;
+
     case KK_ListDosShell:
       DosShell();
       break;
