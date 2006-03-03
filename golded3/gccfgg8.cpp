@@ -292,7 +292,8 @@ void CfgTwitname() {
       strbtrim(val);
     }
   }
-  strxcpy(tn.name, val, sizeof(tn.name));
+
+  strxcpy(tn.name, StripQuotes(val), sizeof(tn.name));
 
   if(cfgingroup)
     CFG->grp.AddItm(GRP_TWITNAME, &tn, sizeof(tn));

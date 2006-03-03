@@ -10,6 +10,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Strip quotes in TwitName.
+
 + LISTtogglebookmark key works in thread list.
 
 + New config file token: Translate "text" "translation". Used together
