@@ -107,7 +107,7 @@
 #define GCFG_NO_MSSPELL
 #endif
 
-#if !defined(GCFG_NO_MSSPELL) || !defined(GCFG_NO_MYSPELL)
+#if !(defined(GCFG_NO_MSSPELL) && defined(GCFG_NO_MYSPELL))
 #define GCFG_SPELL_INCLUDED
 #endif
 
