@@ -685,6 +685,26 @@ EditHeaderFirst Yes             ; Всегда
 WriteHeader Yes
 
 ----------------------------------------------------------------------
+-- ПРОВЕРКА ОРФОГРАФИИ
+
+IF SPELL
+
+SCheckerEnabled No              ; выключить
+;SCheckerEnabled Auto            ; проверять во время набора
+
+;SCheckerDefLang 1049            ; MSSPELL, Русский
+;SCheckerDefLang 1033            ; MSSPELL, Английский
+;SCheckerDefLang ru_RU           ; MYSPELL, Русский
+;SCheckerDefLang en_US           ; MYSPELL, Английский
+
+;SCheckerUserDic "user.dic"      ; используется только для MSSPELL
+;SCheckerDicPath "dictionaries"  ; используется только для MYSPELL
+
+;COLOR SCHECKER ERROR White on Black
+
+ENDIF
+
+----------------------------------------------------------------------
 -- ШАБЛОНЫ (MESSAGE TEMPLATES)
 
 // Путь к шаблонам. По умолчанию соответствует GoldPath.

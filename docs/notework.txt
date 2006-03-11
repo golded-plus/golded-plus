@@ -10,6 +10,13 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ Added support for MySpell spell checker.
+    - SCheckerEnabled <No/Auto>
+    - SCheckerDefLang <LangID>
+    - SCheckerUserDic "user.dic" (used by MSSPELL only)
+    - SCheckerDicPath "dicpath"  (used by MYSPELL only)
+    - Color SChecker Error
+
 - Strip quotes in TwitName.
 
 + LISTtogglebookmark key works in thread list.
