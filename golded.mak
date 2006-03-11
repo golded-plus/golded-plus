@@ -14,7 +14,9 @@
 
 
 # Uncomment to disable MS Office spellchecker support (win32 only)
-# CPP_EXTRA_FLAGS=$(CPP_EXTRA_FLAGS) /DGCFG_NOSPELLDLL
+# CPP_EXTRA_FLAGS=$(CPP_EXTRA_FLAGS) /DDGCFG_NO_MSSPELL
+# Uncomment to disable MySpell spellchecker support
+# CPP_EXTRA_FLAGS=$(CPP_EXTRA_FLAGS) /DGCFG_NO_MYSPELL
 
 
 # Comment to disable keyword AreaRecycleBin
@@ -381,7 +383,14 @@ LNK_OBJS= \
     $(OBJ_DIR)\geutil2.obj \
     $(OBJ_DIR)\geview.obj \
     $(OBJ_DIR)\gmarea.obj \
-    $(OBJ_DIR)\golded3.obj
+    $(OBJ_DIR)\golded3.obj \
+    $(OBJ_DIR)\myspell.obj \
+    $(OBJ_DIR)\suggestmgr.obj \
+    $(OBJ_DIR)\hashmgr.obj \
+    $(OBJ_DIR)\dictmgr.obj \
+    $(OBJ_DIR)\csutil.obj \
+    $(OBJ_DIR)\affixmgr.obj \
+    $(OBJ_DIR)\affentry.obj
 
 GOLDED_OBJS=$(OBJ_DIR)\gemain.obj
 RDDT_OBJS=$(OBJ_DIR)\rddt.obj
@@ -389,7 +398,7 @@ GOLDNODE_OBJS=$(OBJ_DIR)\goldnode.obj
 
 ALL_OBJS=$(LNK_OBJS) $(GOLDED_OBJS) $(RDDT_OBJS) $(GOLDNODE_OBJS)
 
-CPP_FLAGS=/nologo /c /J /W3 /Gi /EHac /FD /Igolded3 /Igoldlib\gall /Igoldlib\gcfg /Igoldlib\glibc /Igoldlib\gmb3 /Igoldlib\msgidlib /Igoldlib\smblib /Igoldlib\uulib /DWIN32 /D_CONSOLE /DHAVE_CONFIG_H /Fo$(OBJ_DIR)\\ /Fd$(OBJ_DIR)\\
+CPP_FLAGS=/nologo /c /J /W3 /Gi /EHac /FD /Igolded3 /Igoldlib\gall /Igoldlib\gcfg /Igoldlib\glibc /Igoldlib\gmb3 /Igoldlib\msgidlib /Igoldlib\smblib /Igoldlib\uulib /Igoldlib\myspell /DWIN32 /D_CONSOLE /DHAVE_CONFIG_H /Fo$(OBJ_DIR)\\ /Fd$(OBJ_DIR)\\
 RSC_FLAGS=/igolded3 /fo$(OBJ_DIR)\gedcyg.res
 LNK_FLAGS=advapi32.lib winmm.lib user32.lib /nologo /subsystem:console /machine:I386
 
@@ -495,6 +504,11 @@ $(ALL_OBJS):
 <<
 
 {goldlib\uulib}.cpp{$(OBJ_DIR)}.obj:
+    $(CPP) @<<
+    $(CPP_PROJ) $<
+<<
+
+{goldlib\myspell}.cxx{$(OBJ_DIR)}.obj:
     $(CPP) @<<
     $(CPP_PROJ) $<
 <<
