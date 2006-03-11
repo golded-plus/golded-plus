@@ -4,7 +4,7 @@ include GNUmakef.def
 
 .PHONY: all clean distclean dirs sourcelists deps docs
 
-LIBS=gall gcfg gmb3 glibc uulib smblib msgidlib
+LIBS=gall gcfg gmb3 glibc uulib smblib msgidlib myspell
 EXECUTABLES=golded3 goldnode rddt
 
 all: sourcelists

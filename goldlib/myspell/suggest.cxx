@@ -5,7 +5,7 @@
 #include <cstring>
 #include <cstdio>
 
-#include "suggestmgr.hxx"
+#include "suggest.hxx"
 
 #if !defined(_MSC_VER)
 using namespace std;
@@ -14,11 +14,11 @@ using namespace std;
 extern char * mystrdup(const char *);
 
 
-SuggestMgr::SuggestMgr(const char * tryme, int maxn, 
+SuggestMgr::SuggestMgr(const char * tryme, int maxn,
                        AffixMgr * aptr)
 {
 
-  // register affix manager and check in string of chars to 
+  // register affix manager and check in string of chars to
   // try when building candidate suggestions
   pAMgr = aptr;
   ctry = mystrdup(tryme);
@@ -47,7 +47,7 @@ SuggestMgr::~SuggestMgr()
 
 int SuggestMgr::suggest(char** wlst, int ns, const char * word)
 {
-    
+
     int nsug = ns;
 
     // perhaps we made chose the wrong char from a related set
@@ -69,7 +69,7 @@ int SuggestMgr::suggest(char** wlst, int ns, const char * word)
     // did we add a char that should not be there
     if ((nsug < maxSug) && (nsug > -1))
       nsug = extrachar(wlst, word, nsug);
-   
+
     // did we just hit the wrong key in place of a good char
     if ((nsug < maxSug) && (nsug > -1))
       nsug = badchar(wlst, word, nsug);
@@ -98,7 +98,7 @@ int SuggestMgr::mapchars(char** wlst, const char * word, int ns)
 }
 
 
-int SuggestMgr::map_related(const char * word, int i, char** wlst, int ns, const mapentry* maptable, int nummap) 
+int SuggestMgr::map_related(const char * word, int i, char** wlst, int ns, const mapentry* maptable, int nummap)
 {
   char c = *(word + i);
   if (c == 0) {
@@ -113,7 +113,7 @@ int SuggestMgr::map_related(const char * word, int i, char** wlst, int ns, const
 	  }
       }
       return ns;
-  } 
+  }
   int in_map = 0;
   for (int j = 0; j < nummap; j++) {
     if (strchr(maptable[j].set,c) != 0) {
@@ -212,7 +212,7 @@ int SuggestMgr::badchar(char ** wlst, const char * word, int ns)
 }
 
 
-// error is word has an extra letter it does not need 
+// error is word has an extra letter it does not need
 int SuggestMgr::extrachar(char** wlst, const char * word, int ns)
 {
    char	   candidate[MAXSWL];
@@ -234,7 +234,7 @@ int SuggestMgr::extrachar(char** wlst, const char * word, int ns)
             wlst[ns] = mystrdup(candidate);
             if (wlst[ns] == NULL) return -1;
             ns++;
-         } else return ns; 
+         } else return ns;
        }
        *r++ = *p++;
    }
@@ -265,7 +265,7 @@ int SuggestMgr::forgotchar(char ** wlst, const char * word, int ns)
                 wlst[ns] = mystrdup(candidate);
                 if (wlst[ns] == NULL) return -1;
                 ns++;
-            } else return ns; 
+            } else return ns;
          }
       }
       *q++ = *p++;
@@ -389,7 +389,7 @@ int SuggestMgr::ngsuggest(char** wlst, char * word, HashMgr* pHMgr)
 	  lp = j;
           lval = scores[j];
 	}
-    }  
+    }
   }
 
   // find minimum threshhold for a passable suggestion
@@ -443,9 +443,9 @@ int SuggestMgr::ngsuggest(char** wlst, char * word, HashMgr* pHMgr)
                        lval = gscore[j];
 	            }
 	      } else {
-                 free (glst[k].word);  
+                 free (glst[k].word);
               }
-	   }            
+	   }
 	}
       }
   }
@@ -453,14 +453,14 @@ int SuggestMgr::ngsuggest(char** wlst, char * word, HashMgr* pHMgr)
 
   // now we are done generating guesses
   // sort in order of decreasing score and copy over
-  
+
   bubblesort(&guess[0], &gscore[0], MAX_GUESS);
   int ns = 0;
   for (i=0; i < MAX_GUESS; i++) {
     if (guess[i]) {
       int unique = 1;
       for (j=i+1; j < MAX_GUESS; j++)
-	if (guess[j]) 
+	if (guess[j])
 	    if (!strcmp(guess[i], guess[j])) unique = 0;
       if (unique) {
          wlst[ns++] = guess[i];
@@ -480,7 +480,7 @@ int SuggestMgr::ngsuggest(char** wlst, char * word, HashMgr* pHMgr)
 int SuggestMgr::check(const char * word, int len)
 {
   struct hentry * rv=NULL;
-  if (pAMgr) { 
+  if (pAMgr) {
     rv = pAMgr->lookup(word);
     if (rv == NULL) rv = pAMgr->affix_check(word,len);
   }

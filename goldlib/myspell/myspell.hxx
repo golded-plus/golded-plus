@@ -1,6 +1,6 @@
 #include "hashmgr.hxx"
 #include "affixmgr.hxx"
-#include "suggestmgr.hxx"
+#include "suggest.hxx"
 #include "csutil.hxx"
 
 #define NOCAP   0

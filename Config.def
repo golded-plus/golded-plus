@@ -76,4 +76,6 @@
 # Uncomment to disable Synchronet BBS support
 #CPPFLAGS+=-DGCFG_NOSYNCHRONET
 # Uncomment to disable MS Office spellchecker support (win32 only)
-CPPFLAGS+=-DGCFG_NOSPELLDLL
+CPPFLAGS+=-DGCFG_NO_MSSPELL
+# Uncomment to disable MySpell spellchecker support (multiplatform)
+CPPFLAGS+=-DGCFG_NO_MYSPELL
