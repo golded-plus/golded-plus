@@ -101,18 +101,23 @@
 #define NL "\n"
 #endif
 
-/*  ----------------------------------------------------------------*/
+/*  ------------------------------------------------------------------
+//  Spellchecker */
+#if !defined(__WIN32__) && !defined(GCFG_NO_MSSPELL)
+#define GCFG_NO_MSSPELL
+#endif
 
+#if !defined(GCFG_NO_MSSPELL) && !defined(GCFG_NO_MYSPELL)
+#define GCFG_SPELL_INCLUDED
+#endif
+
+
+/*  ------------------------------------------------------------------ */
 #if defined(_MSC_VER)
 #define popen(f,m) _popen(f,m)
 #define pclose(fh) _pclose(fh)
 #endif
 
-/*  ------------------------------------------------------------------
-//  Spellchecker using dynamic library load */
-#if !defined(GCFG_NOSPELLDLL) && !defined(__WIN32__)
-#undef GCFG_NOSPELLDLL
-#endif
 
 /*  ------------------------------------------------------------------
 //  Special character constants */

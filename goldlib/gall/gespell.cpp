@@ -24,8 +24,6 @@
 //  SpellChecker functions.
 //  ------------------------------------------------------------------
 
-#if !defined(GCFG_NOSPELLDLL)
-
 #if defined(_MSC_VER)
     /* C4786: 'identifier' : identifier was truncated to 'number'
           characters in the debug information
@@ -35,13 +33,38 @@
 
 #include <vector>
 
+#include <gdirposx.h>
 #include <gstrall.h>
+#include <myspell.hxx>
 #include <gespell.h>
+
+typedef char XlatName[17];
+typedef byte ChsTab[4];
+
+struct Chs
+{
+  long   id;
+  int    version;
+  int    level;
+  XlatName imp;   // From Charset
+  XlatName exp;   // To Charset
+  ChsTab t[256];  // The Translation Table
+};
+
+int   LoadCharset(const char* imp, const char* exp, int query = 0);
+char* XlatStr(char* dest, const char* src, int level, Chs* chrtbl, int qpencoded=false, bool i51=false);
+
+extern Chs* CharTable;
 
 
 //  ------------------------------------------------------------------
 
-#if defined(__WIN32__)
+#if defined(GCFG_SPELL_INCLUDED)
+
+
+//  ------------------------------------------------------------------
+
+#if !defined(GCFG_NO_MSSPELL)
 
 
 //  ------------------------------------------------------------------
@@ -49,7 +72,6 @@
 #define CHECK_ERROR(jump)     if (error != ERROR_SUCCESS) goto jump
 #define CHECK_NULL(ptr, jump) if (ptr == NULL) goto jump
 #define CHECK_SEC(jump)       if ((sec & 0xFF) != SC_SEC_NoErrors) goto jump
-
 
 //  ------------------------------------------------------------------
 
@@ -163,7 +185,7 @@ const dword SC_SO_RussianIO                   = 0x20000000;
 
 //  ------------------------------------------------------------------
 
-bool CSpellLang::Init(HKEY hKey, const char *name)
+bool CMSSpellLang::Init(HKEY hKey, const char *name)
 {
   bool result = false;
   int  error;
@@ -175,8 +197,13 @@ bool CSpellLang::Init(HKEY hKey, const char *name)
   unsigned long dsize = sizeof(dictionary);
 
   mLIDC  = atoi(name);
+  strcpy(mLangCode, name);
 
-  error = RegOpenKeyEx(hKey, name, 0, KEY_READ, &hKeyLang);
+  char name2[1024];
+  strcpy(name2, name);
+  strcat(name2, "\\Normal");
+
+  error = RegOpenKeyEx(hKey, name2, 0, KEY_READ, &hKeyLang);
   CHECK_ERROR(cleanup0);
 
   error = RegQueryValueEx(hKeyLang, "Engine", NULL, NULL, engine, &esize);
@@ -198,7 +225,7 @@ cleanup0:
 
 //  ------------------------------------------------------------------
 
-bool CSpellLang::Load(const char *userdic)
+bool CMSSpellLang::Load(const char *codeset, const char *userdic)
 {
   bool result = false;
 
@@ -267,18 +294,27 @@ cleanup1:
   FreeLibrary(mLibrary);
   mLibrary = NULL;
 cleanup0:
+  if (result)
+  {
+    BuildRTable(codeset);
+    mIsMdrLoaded = (mSIB.cMdr != 0);
+    mIsUdrLoaded = (mSIB.cUdr != 0);
+  }
   return result;
 }
 
 
 //  ------------------------------------------------------------------
 
-void CSpellLang::UnLoad()
+void CMSSpellLang::UnLoad()
 {
   if (!mLibrary) return;
 
   if (mSIB.cUdr) mSpellCloseUdr(mSLID, mUDR, TRUE);
   if (mSIB.cMdr) mSpellCloseMdr(mSLID, &mMDRS);
+  if (mToDicTable) delete mToDicTable;
+  if (mToLocTable) delete mToLocTable;
+  mToDicTable = mToLocTable = NULL;
 
   FreeLibrary(mLibrary);
   mLibrary = NULL;
@@ -287,9 +323,74 @@ void CSpellLang::UnLoad()
 
 //  ------------------------------------------------------------------
 
-bool CSpellLang::SpellCheck(const char *text)
+void CMSSpellLang::BuildRTable(const char *codeset)
 {
-  if (!IsLoaded()) return true;
+  char codeset2[20];
+  sprintf(codeset2, "CP%i", GetACP());
+
+  LoadCharset(codeset, codeset2);
+  mToDicTable = new Chs;
+  memset(mToDicTable, 0, sizeof(Chs));
+  *mToDicTable = CharTable ? *CharTable : *mToDicTable;
+
+  LoadCharset(codeset2, codeset);
+  mToLocTable = new Chs;
+  memset(mToLocTable, 0, sizeof(Chs));
+  *mToLocTable = CharTable ? *CharTable : *mToLocTable;
+}
+
+
+//  ------------------------------------------------------------------
+
+void CMSSpellLang::RecodeText(const char *srcText, char *dstText, bool flag)
+{
+  if (flag)
+    XlatStr(dstText, srcText, mToDicTable->level, mToDicTable);
+  else
+    XlatStr(dstText, srcText, mToLocTable->level, mToLocTable);
+}
+
+
+//  ------------------------------------------------------------------
+
+void CMSSpellLang::BuildSuggest(const char *text, CSpellSuggestV &suggest)
+{
+  if (!SpellSuggest(text, false)) return;
+
+  bool flag = true;
+  bool more = false;
+
+  for (int idx = 0; idx < mSRB.cChrMac; idx++)
+  {
+    if (mSZ[idx] == 0) { idx++; flag = true; }
+
+    if (flag && mSZ[idx])
+    {
+      flag = false;
+      RecodeText(&mSZ[idx], &mSZ[idx], false);
+      suggest.push_back(std::pair<byte, std::string>(0, "  " + std::string(&mSZ[idx]) + char(' ')));
+    }
+    else if (!more && !mSZ[idx])
+    {
+      more = true;
+
+      if (!SpellSuggest(text, more = true))
+        return;
+      else
+      {
+        flag = true;
+        idx = -1;
+      }
+    }
+  }
+}
+
+
+//  ------------------------------------------------------------------
+
+bool CMSSpellLang::SpellCheck(const char *text)
+{
+  if (!IsMdrLoaded()) return true;
 
   mSIB.wSpellState = 0;
   mSIB.lrgChr = (char*)text;
@@ -309,9 +410,9 @@ bool CSpellLang::SpellCheck(const char *text)
 
 //  ------------------------------------------------------------------
 
-bool CSpellLang::SpellSuggest(const char *text, bool more)
+bool CMSSpellLang::SpellSuggest(const char *text, bool more)
 {
-  if (!IsLoaded()) return false;
+  if (!IsMdrLoaded()) return false;
 
   mSIB.wSpellState = 0;
   mSIB.lrgChr = (char*)text;
@@ -331,11 +432,143 @@ bool CSpellLang::SpellSuggest(const char *text, bool more)
 
 //  ------------------------------------------------------------------
 
-bool CSpellLang::AddWord(const char *text)
+bool CMSSpellLang::AddWord(const char *text)
 {
-  if (!IsLoaded()) return false;
+  if (!IsMdrLoaded()) return false;
   SEC error = mSpellAddUdr(mSLID, mUDR, (char*)text);
   return (error & 0xFF) == 0;
+}
+
+
+//  ------------------------------------------------------------------
+
+#endif  //#if !defined(GCFG_NO_MSSPELL)
+
+
+//  ------------------------------------------------------------------
+
+#if !defined(GCFG_NO_MYSPELL)
+
+
+//  ------------------------------------------------------------------
+
+bool CMYSpellLang::Init(const gdirentry *entry)
+{
+  gposixdir dir(entry->dirname);
+  
+  std::string affname = entry->name.substr(0, entry->name.length()-4);
+  strcpy(mLangCode, affname.c_str());
+
+  const gdirentry *entry2 = dir.nextentry((affname+".aff").c_str(), true);
+  if (entry2)
+  {
+    strcpy(mEngine, entry2->dirname);
+    strcat(mEngine, "/");
+    strcat(mEngine, entry2->name.c_str());
+    strcpy(mDictionary, entry->dirname);
+    strcat(mDictionary, "/");
+    strcat(mDictionary, entry->name.c_str());
+
+    return true;
+  }
+
+  return false;
+}
+
+
+//  ------------------------------------------------------------------
+
+bool CMYSpellLang::Load(const char *codeset, const char *)
+{
+  mMSpell = new MySpell(mEngine, mDictionary);
+
+  if (mMSpell)
+  {
+    BuildRTable(codeset);
+    return (mIsMdrLoaded = true);
+  }
+
+  return false;
+}
+
+
+//  ------------------------------------------------------------------
+
+void CMYSpellLang::UnLoad()
+{
+  if (!mMSpell) return;
+  delete mMSpell;
+  mMSpell = NULL;
+  if (mToDicTable) delete mToDicTable;
+  if (mToLocTable) delete mToLocTable;
+  mToDicTable = mToLocTable = NULL;
+}
+
+
+//  ------------------------------------------------------------------
+
+void CMYSpellLang::BuildRTable(const char *codeset)
+{
+  LoadCharset(codeset, mMSpell->get_dic_encoding());
+  mToDicTable = new Chs;
+  memset(mToDicTable, 0, sizeof(Chs));
+  *mToDicTable = CharTable ? *CharTable : *mToDicTable;
+
+  LoadCharset(mMSpell->get_dic_encoding(), codeset);
+  mToLocTable = new Chs;
+  memset(mToLocTable, 0, sizeof(Chs));
+  *mToLocTable = CharTable ? *CharTable : *mToLocTable;
+}
+
+
+//  ------------------------------------------------------------------
+
+void CMYSpellLang::RecodeText(const char *srcText, char *dstText, bool flag)
+{
+  if (flag)
+    XlatStr(dstText, srcText, mToDicTable->level, mToDicTable);
+  else
+    XlatStr(dstText, srcText, mToLocTable->level, mToLocTable);
+}
+
+
+//  ------------------------------------------------------------------
+
+void CMYSpellLang::BuildSuggest(const char *text, CSpellSuggestV &suggest)
+{
+  char ** wlst = NULL;
+  int ns = mMSpell->suggest(&wlst, text);
+
+  for (int i=0; i < ns; i++)
+  {
+    char buff[1024];
+    RecodeText(wlst[i], buff, false);
+    suggest.push_back(std::pair<byte, std::string>(0, "  " + std::string(buff) + char(' ')));
+    free(wlst[i]);
+  }
+
+  free(wlst);
+}
+
+
+//  ------------------------------------------------------------------
+
+bool CMYSpellLang::SpellCheck(const char *text)
+{
+  if (!IsMdrLoaded()) return true;
+
+  if (mMSpell->spell(text))
+    return true;
+
+  return false;
+}
+
+
+//  ------------------------------------------------------------------
+
+bool CMYSpellLang::SpellSuggest(const char *text, bool more)
+{
+  return false;
 }
 
 
@@ -348,10 +581,18 @@ CSpellChecker::CSpellChecker()
   mText[0] = 0;
 }
 
+
 //  ------------------------------------------------------------------
 
-bool CSpellChecker::Init()
+#endif  //#if !defined(GCFG_NO_MYSPELL)
+
+
+//  ------------------------------------------------------------------
+
+bool CSpellChecker::Init(const char *codeset, const char *dicPath)
 {
+#if !defined(GCFG_NO_MSSPELL)
+
   int  error;
   unsigned long index = 0;
 
@@ -372,8 +613,12 @@ bool CSpellChecker::Init()
     error = RegEnumKeyEx(hKeySpelling, index, name, &nsize, NULL, NULL, NULL, NULL);
     if (error == ERROR_SUCCESS)
     {
-      strcat(name, "\\Normal");
-      AddLanguage(hKeySpelling, name);
+      CMSSpellLang *lang = new CMSSpellLang;
+      if (lang->Init(hKeySpelling, name))
+        mLangs.push_back(lang);
+      else
+        delete lang;
+
       index++;
     }
   }
@@ -383,6 +628,27 @@ bool CSpellChecker::Init()
 cleanup1:
   RegCloseKey(hKeyPTools);
 cleanup0:
+
+#endif  //#if !defined(GCFG_NO_MSSPELL)
+
+#if !defined(GCFG_NO_MYSPELL)
+
+  gposixdir d(dicPath);
+  const gdirentry *de;
+
+  while ((de = d.nextentry("*.dic", true)) != NULL)
+  {
+    CMYSpellLang *lang = new CMYSpellLang;
+    if (lang->Init(de))
+      mLangs.push_back(lang);
+    else
+      delete lang;
+  }
+
+#endif  //#if !defined(GCFG_NO_MSSPELL)
+
+  strcpy(mXlatLocalset, codeset);
+
   return mInited = (mLangs.size() > 0);
 }
 
@@ -400,18 +666,19 @@ void CSpellChecker::Close()
 
 //  ------------------------------------------------------------------
 
-bool CSpellChecker::Load(LIDC lidc, const char *userdic)
+bool CSpellChecker::Load(const char *langId, const char *userDic)
 {
+
   if (!IsInited()) return false;
-  if (IsLoaded() && (mLang->GetLangCode() == lidc)) return true;
+  if (IsLoaded() && streql(mLang->GetLangCode(), langId)) return true;
 
   CSpellLangV::iterator it;
   for (it = mLangs.begin(); it != mLangs.end(); it++)
   {
-    if ((it->GetLangCode() == lidc) && it->Load(userdic))
+    if (streql((*it)->GetLangCode(), langId) && (*it)->Load(mXlatLocalset, userDic))
     {
       UnLoad();
-      mLang = it;
+      mLang = *it;
       break;
     }
   }
@@ -436,7 +703,7 @@ bool CSpellChecker::Check(const char *text)
 {
   if (!IsLoaded()) return true;
 
-  OemToChar(text, mText);
+  mLang->RecodeText(text, mText, true);
   return mLang->SpellCheck(mText);
 }
 
@@ -447,34 +714,8 @@ CSpellSuggestV &CSpellChecker::Suggest()
 {
   mSuggest.clear();
   if (!IsLoaded()) return mSuggest;
-  if (!mLang->SpellSuggest(mText, false)) return mSuggest;
 
-  bool flag = true;
-  bool more = false;
-
-  for (int idx = 0; idx < mLang->mSRB.cChrMac; idx++)
-  {
-    if (mLang->mSZ[idx] == 0) { idx++; flag = true; }
-
-    if (flag && mLang->mSZ[idx])
-    {
-      flag = false;
-      CharToOem(&mLang->mSZ[idx], &mLang->mSZ[idx]);
-      mSuggest.push_back(std::pair<byte, std::string>(0, "  " + std::string(&mLang->mSZ[idx]) + char(' ')));
-    }
-    else if (!more && !mLang->mSZ[idx])
-    {
-      more = true;
-
-      if (!mLang->SpellSuggest(mText, more = true))
-        return mSuggest;
-      else
-      {
-        flag = true;
-        idx = -1;
-      }
-    }
-  }
+  mLang->BuildSuggest(mText, mSuggest);
 
   return mSuggest;
 }
@@ -489,11 +730,6 @@ CSpellSuggestV &CSpellChecker::Suggest()
 
 //  ------------------------------------------------------------------
 
-#endif  // #if defined(__WIN32__)
-
-
-//  ------------------------------------------------------------------
-
-#endif  // #if !defined(GCFG_NOSPELLDLL)
+#endif  //#if defined(GCFG_SPELL_INCLUDED)
 
 //  ------------------------------------------------------------------

@@ -324,12 +324,11 @@ void CfgEditsoftcrxlat() {
 
 //  ------------------------------------------------------------------
 
-#if defined(GCFG_NOSPELLDLL)
 void CfgEditspellcheck() {
 
   EDIT->SpellChecker(val);
 }
-#endif
+
 //  ------------------------------------------------------------------
 
 void CfgEditundelete() {

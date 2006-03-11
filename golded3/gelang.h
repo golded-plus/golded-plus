@@ -385,9 +385,7 @@ struct LangGed {
   char*  FoundPersonal;      // IL_FOUNDPERSONAL
   char*  NoPersonal;         // IL_NOPERSONAL
   char*  EscOrContinue;      // ST_ESCORCONTINUE
-#if defined(GCFG_NOSPELLDLL)
   char*  SpellChecker;       // MS_SPELLCHECKER
-#endif
   char*  Ins;                // WT_INS
   char*  DrawSL;             // WT_DRAWSL
   char*  DrawDL;             // WT_DRAWDL

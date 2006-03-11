@@ -310,10 +310,11 @@ public:
   int         replylinklist;
   bool        replylinkshowalways;
   gstrarray   robotname;
-#if !defined(GCFG_NOSPELLDLL)
-  word        scheckerdeflang;
+#if defined(GCFG_SPELL_INCLUDED)
   int         scheckerenabled;
+  char        scheckerdeflang[100];
   Path        scheckeruserdic;
+  Path        scheckerdicpath;
 #endif
   int         screenblanker;        // blanktime;
   int         screenblankertype;
@@ -469,9 +470,7 @@ protected:
     int external;
     int file;
     int hardline;
-#if defined(GCFG_NOSPELLDLL)
     int spellchecker;
-#endif
   } cfg;
 
   // -----------------------------------------------------------------
@@ -522,9 +521,7 @@ public:
   int ReplyRe()                  { return cfg.replyre; }
   bool SaveMenu()                { return cfg.savemenu; }
   char SoftCrXlat()              { return cfg.softcrxlat; }
-#if defined(GCFG_NOSPELLDLL)
   const char* SpellChecker()     { return str[cfg.spellchecker].c_str(); }
-#endif
   int UnDelete()                 { return cfg.undelete; }
 
   // -----------------------------------------------------------------
@@ -555,9 +552,7 @@ public:
   void ReplyRe(int s)            { cfg.replyre = s; }
   void SaveMenu(bool s)          { cfg.savemenu = s; }
   void SoftCrXlat(char s)        { cfg.softcrxlat = s; }
-#if defined(GCFG_NOSPELLDLL)
   void SpellChecker(char* s)     { str[cfg.spellchecker] = s; }
-#endif
   void UnDelete(int s)           { cfg.undelete = s; }
 };
 

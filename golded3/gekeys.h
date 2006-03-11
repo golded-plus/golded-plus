@@ -169,9 +169,7 @@ const gkey KK_EditReflow           = 0xFEEE;
 const gkey KK_EditSaveFile         = 0xFEEF;
 const gkey KK_EditSaveMsg          = 0xFEF0;
 const gkey KK_EditSoundkill        = 0xFEF1;
-#if defined(GCFG_NOSPELLDLL)
 const gkey KK_EditSpellCheck       = 0xFEF2;
-#endif
 const gkey KK_EditTab              = 0xFEF3;
 const gkey KK_EditTabReverse       = 0xFEF4;
 const gkey KK_EditToggleCase       = 0xFEF5;
@@ -198,7 +196,7 @@ const gkey KK_EditSCodeBold        = 0xFF09;
 const gkey KK_EditSCodeItalic      = 0xFF0A;
 const gkey KK_EditSCodeUnderline   = 0xFF0B;
 const gkey KK_EditSCodeReverse     = 0xFF0C;
-#if !defined(GCFG_NOSPELLDLL)
+#if defined(GCFG_SPELL_INCLUDED)
 const gkey KK_EditSCheckerMenu     = 0xFF0D;
 #endif
 const gkey KK_EditDrawLines        = 0xFF0E;

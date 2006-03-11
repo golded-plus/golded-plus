@@ -323,9 +323,7 @@ SwitchE:
     case CRC_EDITSAVEMENU     :  CfgEditsavemenu     ();  break;
     case CRC_EDITSAVEUTIL     :  CfgEditsaveutil     ();  break;
     case CRC_EDITSOFTCRXLAT   :  CfgEditsoftcrxlat   ();  break;
-#if defined(GCFG_NOSPELLDLL)
     case CRC_EDITSPELLCHECK   :  CfgEditspellcheck   ();  break;
-#endif
     case CRC_EDITUNDELETE     :  CfgEditundelete     ();  break;
     case CRC_ENDGROUP         :  CfgEndgroup         ();  break;
     case CRC_ENCODEEMAILHEADERS: CfgEncodeemailheaders(); break;
@@ -523,11 +521,13 @@ SwitchR:
   goto End;
 
 SwitchS:
-  switch(crc) {
-#if !defined(GCFG_NOSPELLDLL)
-    case CRC_SCHECKERDEFLANG  :  CfgScheckerdeflang  ();  break;
+  switch(crc)
+  {
+#if defined(GCFG_SPELL_INCLUDED)
     case CRC_SCHECKERENABLED  :  CfgScheckerenabled  ();  break;
+    case CRC_SCHECKERDEFLANG  :  CfgScheckerdeflang  ();  break;
     case CRC_SCHECKERUSERDIC  :  CfgScheckeruserdic  ();  break;
+    case CRC_SCHECKERDICPATH  :  CfgScheckerdicpath  ();  break;
 #endif
     case CRC_SCREENBLANKER    :  CfgScreenblanker    ();  break;
     case CRC_SCREENMAXCOL     :  CfgScreenmaxcol     ();  break;
@@ -694,6 +694,14 @@ static int do_if(char* val) {
   }
   else if(strieql(val, "LINUX") or strieql(val, "UNIX")) {
     #ifdef __UNIX__
+    return true;
+    #else
+    return false;
+    #endif
+  }
+  else if (strieql(val, "SPELL"))
+  {
+    #ifdef GCFG_SPELL_INCLUDED
     return true;
     #else
     return false;

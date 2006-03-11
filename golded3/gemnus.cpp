@@ -1070,7 +1070,7 @@ int GMenuConfirm::Run() {
 
 //  ------------------------------------------------------------------
 
-#if !defined(GCFG_NOSPELLDLL)
+#if defined(GCFG_SPELL_INCLUDED)
 int GMenuSChecker::Run(CSpellChecker &schecker, const char *word)
 {
   enum
@@ -1110,23 +1110,20 @@ int GMenuSChecker::Run(CSpellChecker &schecker, const char *word)
   size_t numrows = 7;
 
   CSpellLangV &langs = schecker.GetLangs();
-  LIDC lidc = schecker.GetLangCode();
+  const char *lcode = schecker.GetLangCode();
 
   std::vector<std::string> langstr;
   size_t langcount = langs.size();
 
   for (idx = 0; idx < langcount; idx++)
   {
-    char buff[10];
-    LIDC code = langs[idx].GetLangCode();
+    const char *code = langs[idx]->GetLangCode();
 
-    buff[0] = ' ';
-    buff[1] = (code == lidc) ? '\x10' : ' ';
+    std::string buff = " ";
+    buff += streql(lcode, code) ? '\x10' : ' ';
+    buff += code; buff += ' ';
 
-    itoa(code, &buff[2], 10);
-    strcat(buff, " ");
-
-    langstr.push_back(std::string(buff));
+    langstr.push_back(buff);
   }
 
   if (langcount)
@@ -1143,7 +1140,7 @@ int GMenuSChecker::Run(CSpellChecker &schecker, const char *word)
     End();
   }
 
-  if (*word && schecker.IsUdrOpened())
+  if (*word && schecker.IsUdrLoaded())
   {
     Item(TAG_ADDWORD, "A Add Word... ");
     numrows++;
@@ -1199,7 +1196,7 @@ int GMenuSChecker::Run(CSpellChecker &schecker, const char *word)
   }
   else if ((finaltag > TAG_LANG) && (finaltag < TAG_MORE))
   {
-    schecker.Load(langs[finaltag-TAG_LANG-1].GetLangCode(), CFG->scheckeruserdic);
+    schecker.Load(langs[finaltag-TAG_LANG-1]->GetLangCode(), CFG->scheckeruserdic);
     return -2;
   }
 

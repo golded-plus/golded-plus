@@ -165,9 +165,7 @@ void CfgEditreplyre      ();
 void CfgEditsavemenu     ();
 void CfgEditsaveutil     ();
 void CfgEditsoftcrxlat   ();
-#if defined(GCFG_NOSPELLDLL)
 void CfgEditspellcheck   ();
-#endif
 void CfgEditundelete     ();
 void CfgEmptytearline    ();
 void CfgEncodeemailheaders();
@@ -308,10 +306,11 @@ void CfgReplylinklist    ();
 void CfgReplylinkshowalways();
 void CfgReplyto          ();
 void CfgRobotname        ();
-#if !defined(GCFG_NOSPELLDLL)
-void CfgScheckerdeflang  ();
+#if defined(GCFG_SPELL_INCLUDED)
 void CfgScheckerenabled  ();
+void CfgScheckerdeflang  ();
 void CfgScheckeruserdic  ();
+void CfgScheckerdicpath  ();
 #endif
 void CfgScreenblanker    ();
 void CfgScreenmaxcol     ();

@@ -30,15 +30,65 @@
 
 //  ------------------------------------------------------------------
 
-#if !defined(GCFG_NOSPELLDLL)
+#if defined(GCFG_SPELL_INCLUDED)
 
-
-//  ------------------------------------------------------------------
-
-#if defined(__WIN32__)
+#if defined (__WIN32__)
 #include <windows.h>
+#endif
+
 
 //  ------------------------------------------------------------------
+
+typedef std::vector< std::pair<byte, std::string> > CSpellSuggestV;
+struct Chs;
+
+class CSpellLang
+{
+  friend class CSpellChecker;
+
+protected:
+  bool mIsMdrLoaded;
+  bool mIsUdrLoaded;
+  char mLangCode[100];
+
+  char mEngine[_MAX_PATH];
+  char mDictionary[_MAX_PATH];
+
+  Chs  *mToDicTable;
+  Chs  *mToLocTable;
+
+public:
+  CSpellLang()
+  {
+    mIsMdrLoaded = mIsUdrLoaded = false;
+    mToDicTable = mToLocTable = NULL;
+  }
+
+  virtual ~CSpellLang() {}
+
+  void Close() { UnLoad(); }
+
+  virtual bool Load(const char *codeset, const char *userdic) = 0;
+  virtual void UnLoad() = 0;
+
+  virtual void BuildRTable(const char *codeset) = 0;
+  virtual void RecodeText(const char *srcText, char *dstText, bool flag) = 0;
+
+  virtual void BuildSuggest(const char *text, CSpellSuggestV &suggest) = 0;
+
+  virtual bool SpellCheck(const char *text) = 0;
+  virtual bool SpellSuggest(const char *text, bool more) = 0;
+  virtual bool AddWord(const char *text) = 0;
+
+  bool IsMdrLoaded() { return mIsMdrLoaded; }
+  bool IsUdrLoaded() { return mIsUdrLoaded; }
+  const char *GetLangCode() { return mLangCode; }
+};
+
+
+//  ------------------------------------------------------------------
+
+#if !defined(GCFG_NO_MSSPELL)
 
 typedef uint32_t MDR;   // Main Dictionary Reference
 typedef uint32_t UDR;   // User Dictionary Reference
@@ -113,7 +163,10 @@ typedef SEC (*SpellGetSizeUdr_fn  ) (SLID, UDR, word*);
 typedef SEC (*SpellGetListUdr_fn  ) (SLID, UDR, word, SRB*);
 typedef SEC (*SpellVerifyMdr_fn   ) (char*, LIDC, LIDC*);
 
-class CSpellLang
+
+//  ------------------------------------------------------------------
+
+class CMSSpellLang: public CSpellLang
 {
   friend class CSpellChecker;
 
@@ -127,9 +180,6 @@ private:
 
   char mSZ[1024];
   byte mRate[1024];
-
-  char mEngine[_MAX_PATH];
-  char mDictionary[_MAX_PATH];
 
   HINSTANCE mLibrary;
 
@@ -151,56 +201,86 @@ private:
   SpellVerifyMdr_fn     mSpellVerifyMdr;
 
 public:
-  CSpellLang() { mLibrary = NULL; }
-  ~CSpellLang() { Close(); }
+  CMSSpellLang() { mLibrary = NULL; }
+  ~CMSSpellLang() { Close(); }
 
   bool Init(HKEY hKey, const char *name);
-  void Close() { UnLoad(); }
 
-  bool Load(const char *userdic);
-  void UnLoad();
+  virtual bool Load(const char *codeset, const char *userdic);
+  virtual void UnLoad();
 
-  bool SpellCheck(const char *text);
-  bool SpellSuggest(const char *text, bool more);
-  bool AddWord(const char *text);
+  virtual void BuildRTable(const char *codeset);
+  virtual void RecodeText(const char *srcText, char *dstText, bool flag);
 
-  LIDC GetLangCode() { return mLIDC; }
+  virtual void BuildSuggest(const char *text, CSpellSuggestV &suggest);
 
-  bool IsLoaded() { return mLibrary != NULL; }
-  bool IsUdrOpened() { return mSIB.cUdr != 0; }
+  virtual bool SpellCheck(const char *text);
+  virtual bool SpellSuggest(const char *text, bool more);
+  virtual bool AddWord(const char *text);
 };
 
+#endif  //#if !defined(GCFG_NO_MSSPELL)
 
-typedef std::vector< std::pair<byte, std::string> > CSpellSuggestV;
-typedef std::vector<CSpellLang> CSpellLangV;
+#if !defined(GCFG_NO_MYSPELL)
+class gdirentry;
+class MySpell;
+
+class CMYSpellLang: public CSpellLang
+{
+  friend class CSpellChecker;
+
+private:
+  MySpell *mMSpell;
+
+public:
+  CMYSpellLang() { mMSpell = NULL; }
+  ~CMYSpellLang() { Close(); }
+
+  bool Init(const gdirentry *entry);
+
+  virtual bool Load(const char *codeset, const char *);
+  virtual void UnLoad();
+
+  virtual void BuildRTable(const char *codeset);
+  virtual void RecodeText(const char *srcText, char *dstText, bool flag);
+
+  virtual void BuildSuggest(const char *text, CSpellSuggestV &suggest);
+
+  virtual bool SpellCheck(const char *text);
+  virtual bool SpellSuggest(const char *text, bool more);
+  virtual bool AddWord(const char *) { return false; }
+};
+
+#endif  //#if !defined(GCFG_NO_MYSPELL)
+
+
+typedef std::vector<CSpellLang*> CSpellLangV;
 
 class CSpellChecker
 {
 private:
+  int mDicType;
+
   bool mInited;
   char mText[1024];
+
+  char mXlatLocalset[256];
 
   CSpellLang     *mLang;
   CSpellLangV    mLangs;
   CSpellSuggestV mSuggest;
 
 private:
-  void AddLanguage(HKEY hKey, const char *name)
-  {
-    CSpellLang lang;
-
-    if (lang.Init(hKey, name))
-      mLangs.push_back(lang);
-  }
+  void MSAddLanguage(HKEY hKey, const char *name);
 
 public:
   CSpellChecker();
   ~CSpellChecker() { Close(); }
 
-  bool Init();
+  bool Init(const char *codeset, const char *dicPath);
   void Close();
 
-  bool Load(LIDC lidc, const char *userdic = NULL);
+  bool Load(const char *langId, const char *userDic);
   void UnLoad();
 
   bool Check(const char *text);
@@ -212,8 +292,8 @@ public:
   CSpellSuggestV &GetSuggest() { return mSuggest; }
   CSpellLangV    &GetLangs()   { return mLangs; }
 
-  LIDC GetLangCode() { return IsLoaded() ? mLang->GetLangCode() : 0xFFFF; }
-  bool IsUdrOpened() { return IsLoaded() ? mLang->IsUdrOpened() : false; }
+  const char *GetLangCode() { return IsLoaded() ? mLang->GetLangCode() : "?*N/A*?"; }
+  bool IsUdrLoaded() { return IsLoaded() ? mLang->IsUdrLoaded() : false; }
 
   bool IsInited() { return mInited; }
   bool IsLoaded() { return mLang != NULL; }
@@ -222,12 +302,7 @@ public:
 
 //  ------------------------------------------------------------------
 
-#endif  //#if defined(__WIN32__)
-
-
-//  ------------------------------------------------------------------
-
-#endif  //#if !defined(GCFG_NOSPELLDLL)
+#endif  //#if defined(GCFG_SPELL_INCLUDED)
 
 
 //  ------------------------------------------------------------------

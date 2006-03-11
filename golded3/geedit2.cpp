@@ -1311,9 +1311,8 @@ void IEclass::editexport(Line* __exportline, int __endat) {
 
 //  ------------------------------------------------------------------
 
-#if defined(GCFG_NOSPELLDLL)
-void IEclass::SpellCheck() {
-
+void IEclass::SpellCheck()
+{
   GFTRK("EditSpellCheck");
 
   char _buf[EDIT_BUFLEN];
@@ -1330,7 +1329,6 @@ void IEclass::SpellCheck() {
 
   GFTRK(NULL);
 }
-#endif
 
 
 //  ------------------------------------------------------------------

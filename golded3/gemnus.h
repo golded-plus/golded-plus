@@ -304,7 +304,7 @@ public:
 
 //  ------------------------------------------------------------------
 
-#if !defined(GCFG_NOSPELLDLL)
+#if defined(GCFG_SPELL_INCLUDED)
 class GMenuSChecker : public GMnu
 {
 public:

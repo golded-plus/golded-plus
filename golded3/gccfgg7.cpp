@@ -222,19 +222,17 @@ void CfgRobotname() {
 
 //  ------------------------------------------------------------------
 
-#if !defined(GCFG_NOSPELLDLL)
-void CfgScheckerdeflang()
+#if defined(GCFG_SPELL_INCLUDED)
+void CfgScheckerenabled()
 {
-  CFG->scheckerdeflang = atoi(val);
-  if (CFG->scheckerdeflang == 0)
-    CFG->scheckerdeflang = 0xFFFF;
+  CFG->scheckerenabled = GetYesno(val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgScheckerenabled()
+void CfgScheckerdeflang()
 {
-  CFG->scheckerenabled = GetYesno(val);
+  strcpy(CFG->scheckerdeflang, val);
 }
 
 //  ------------------------------------------------------------------
@@ -243,7 +241,14 @@ void CfgScheckeruserdic()
 {
   strcpy(CFG->scheckeruserdic, StripQuotes(val));
 }
-#endif
+
+//  ------------------------------------------------------------------
+
+void CfgScheckerdicpath()
+{
+  strcpy(CFG->scheckerdicpath, StripQuotes(val));
+}
+#endif  //#if defined(GCFG_SPELL_INCLUDED)
 
 //  ------------------------------------------------------------------
 

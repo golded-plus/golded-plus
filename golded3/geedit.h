@@ -284,7 +284,7 @@ protected:
   //  ----------------------------------------------------------------
   //  Speller (DLL)
 
-#if !defined(GCFG_NOSPELLDLL)
+#if defined(GCFG_SPELL_INCLUDED)
   CSpellChecker schecker;
 #endif
 
@@ -299,7 +299,7 @@ protected:
   void  dispins         ();
   void  dispdl          ();
   void  displine        (Line* __line, uint __row);
-#if !defined(GCFG_NOSPELLDLL)
+#if defined(GCFG_SPELL_INCLUDED)
   void  dispstringsc    (char *__buf, uint __beg, uint __end, uint __row, uint __col, char endchar);
   void  dispstring      (Line* line, uint __row);
 #else
@@ -409,14 +409,12 @@ public:
   void ReTab          ();
   void SaveFile       ();
   void SaveMsg        ();
-#if !defined(GCFG_NOSPELLDLL)
+#if defined(GCFG_SPELL_INCLUDED)
   void SCheckerMenu   ();
 #endif
   void Soundkill      ();
-#if defined(GCFG_NOSPELLDLL)
   // External spell check tool
   void SpellCheck     ();
-#endif
   void Tab            ();
   void ToggleCase     ();
   void ToggleCaseBlock(gkey key);
