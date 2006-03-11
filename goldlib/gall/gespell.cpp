@@ -574,17 +574,17 @@ bool CMYSpellLang::SpellSuggest(const char *text, bool more)
 
 //  ------------------------------------------------------------------
 
+#endif  //#if !defined(GCFG_NO_MYSPELL)
+
+
+//  ------------------------------------------------------------------
+
 CSpellChecker::CSpellChecker()
 {
   mInited = false;
   mLang = NULL;
   mText[0] = 0;
 }
-
-
-//  ------------------------------------------------------------------
-
-#endif  //#if !defined(GCFG_NO_MYSPELL)
 
 
 //  ------------------------------------------------------------------
@@ -723,9 +723,11 @@ CSpellSuggestV &CSpellChecker::Suggest()
 
 //  ------------------------------------------------------------------
 
+#if !defined(GCFG_NO_MSSPELL)
 #undef CHECK_ERROR
 #undef CHECK_NULL
 #undef CHECK_SEC
+#endif
 
 
 //  ------------------------------------------------------------------

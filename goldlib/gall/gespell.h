@@ -221,7 +221,9 @@ public:
 
 #endif  //#if !defined(GCFG_NO_MSSPELL)
 
+
 #if !defined(GCFG_NO_MYSPELL)
+
 class gdirentry;
 class MySpell;
 
@@ -259,8 +261,6 @@ typedef std::vector<CSpellLang*> CSpellLangV;
 class CSpellChecker
 {
 private:
-  int mDicType;
-
   bool mInited;
   char mText[1024];
 
@@ -269,9 +269,6 @@ private:
   CSpellLang     *mLang;
   CSpellLangV    mLangs;
   CSpellSuggestV mSuggest;
-
-private:
-  void MSAddLanguage(HKEY hKey, const char *name);
 
 public:
   CSpellChecker();
