@@ -154,6 +154,7 @@ Ins         EditToggleInsert
 ^L          EditSCodeUnderline ; Выбрать режим подчеркнутого шрифта
 ^R          EditSCodeReverse   ; Выбрать режим инвертированного шрифта
 ^D          EditDrawLines      ; Переключить в режим рисования рамок
+;#F10        EDITSCheckerMenu   ; Открыть меню spellchecker-а
 
 ;   ------------------------------------------------------------------
 ;   КОМАHДЫ ВЫБОРА ФАЙЛОВ

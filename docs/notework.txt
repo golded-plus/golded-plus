@@ -19,6 +19,8 @@ ______________________________________________________________________
     - SCheckerUserDic "user.dic" (used by MSSPELL only)
     - SCheckerDicPath "dicpath"  (used by MYSPELL only)
     - Color SChecker Error
+    - EDITSCheckerMenu editor key. No default key assigned.
+
   Dictionnaries may be downloaded from Openoffice.org site (wizits a URL
   http://lingucomponent.openoffice.org/spell_dic.html).
   On win32 spellchecker "auto" order is: first MS spell checker, then Myspell
