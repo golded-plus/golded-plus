@@ -8,7 +8,7 @@ using namespace std;
 #endif
 
 // strip strings into token based on single char delimiter
-// acts like strsep() but only uses a delim char and not 
+// acts like strsep() but only uses a delim char and not
 // a delim string
 
 char * mystrsep(char ** stringp, const char delim)
@@ -20,7 +20,7 @@ char * mystrsep(char ** stringp, const char delim)
      char * dp = (char *)memchr(mp,(int)((unsigned char)delim),n);
      if (dp) {
         *stringp = dp+1;
-        int nc = (int)((unsigned long)dp - (unsigned long)mp); 
+        int nc = (int)((unsigned long)dp - (unsigned long)mp);
         rv = (char *) malloc(nc+1);
         memcpy(rv,mp,nc);
         *(rv+nc) = '\0';
@@ -73,7 +73,7 @@ char * myrevstrdup(const char * s)
          *q = '\0';
        }
     }
-    return d; 
+    return d;
 }
 
 
@@ -89,11 +89,11 @@ int isSubset(const char * s1, const char * s2)
 
 
 
-// convert null terminated string to all caps using encoding 
+// convert null terminated string to all caps using encoding
 void enmkallcap(char * d, const char * p, const char * encoding)
 {
   struct cs_info * csconv = get_current_cs(encoding);
-  while (*p != '\0') { 
+  while (*p != '\0') {
     *d++ = csconv[((unsigned char) *p)].cupper;
     p++;
   }
@@ -105,7 +105,7 @@ void enmkallcap(char * d, const char * p, const char * encoding)
 void enmkallsmall(char * d, const char * p, const char * encoding)
 {
   struct cs_info * csconv = get_current_cs(encoding);
-  while (*p != '\0') { 
+  while (*p != '\0') {
     *d++ = csconv[((unsigned char) *p)].clower;
     p++;
   }
@@ -122,10 +122,10 @@ void enmkinitcap(char * d, const char * p, const char * encoding)
 }
 
 
-// convert null terminated string to all caps 
+// convert null terminated string to all caps
 void mkallcap(char * p, const struct cs_info * csconv)
 {
-  while (*p != '\0') { 
+  while (*p != '\0') {
     *p = csconv[((unsigned char) *p)].cupper;
     p++;
   }
@@ -135,7 +135,7 @@ void mkallcap(char * p, const struct cs_info * csconv)
 // convert null terminated string to all little
 void mkallsmall(char * p, const struct cs_info * csconv)
 {
-  while (*p != '\0') { 
+  while (*p != '\0') {
     *p = csconv[((unsigned char) *p)].clower;
     p++;
   }
@@ -151,7 +151,7 @@ void mkinitcap(char * p, const struct cs_info * csconv)
 
 
 
-// these are simple character mappings for the 
+// these are simple character mappings for the
 // encodings supported
 // supplying isupper, tolower, and toupper
 
@@ -3813,7 +3813,7 @@ struct cs_info * get_current_cs(const char * es) {
     }
   }
   return ccs;
-};
+}
 
 
 
@@ -3846,5 +3846,4 @@ const char * get_default_enc(const char * lang) {
     }
   }
   return NULL;
-};
-
+}
