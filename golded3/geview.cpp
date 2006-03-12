@@ -220,7 +220,7 @@ void GMsgHeaderView::Paint() {
 
   if(datewidth > 0) {
     if(msg->written)
-      strftimei(buf, datewidth, LNG->DateTimeFmt, ggmtime(&msg->written));
+      strftimei(buf, datewidth+1, LNG->DateTimeFmt, ggmtime(&msg->written));
     else
       *buf = NUL;
     strsetsz(buf, datewidth);
@@ -264,7 +264,7 @@ void GMsgHeaderView::Paint() {
 
   if(datewidth > 0) {
     if(msg->arrived)
-      strftimei(buf, datewidth, LNG->DateTimeFmt, ggmtime(&msg->arrived));
+      strftimei(buf, datewidth+1, LNG->DateTimeFmt, ggmtime(&msg->arrived));
     else
       *buf = NUL;
     strsetsz(buf, datewidth);
