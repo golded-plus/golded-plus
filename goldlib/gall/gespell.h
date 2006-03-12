@@ -51,8 +51,8 @@ protected:
   bool mIsUdrLoaded;
   char mLangCode[100];
 
-  char mEngine[_MAX_PATH];
-  char mDictionary[_MAX_PATH];
+  char mEngine[PATH_MAX];
+  char mDictionary[PATH_MAX];
 
   Chs  *mToDicTable;
   Chs  *mToLocTable;

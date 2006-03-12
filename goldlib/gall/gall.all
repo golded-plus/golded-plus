@@ -143,7 +143,7 @@ gutlwinm cpp     all             bcx                             cyg
 gutlunix cpp     all                             lnx                    sun
 gutlbeos cpp     all                                                 be
 be_lock  c       all                                                 be
-gespell  cpp     all                                             cyg
+gespell  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
 
 ## Low-level text video
 gvidbase cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
