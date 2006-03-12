@@ -2,7 +2,7 @@
 #define _AFFIXMGR_HXX_
 
 #include "atypes.hxx"
-#include "baseaffix.hxx"
+#include "baseaffi.hxx"
 #include "hashmgr.hxx"
 #include <cstdio>
 
@@ -26,13 +26,13 @@ class AffixMgr
 
 
 public:
- 
+
   AffixMgr(const char * affpath, HashMgr * ptr);
   ~AffixMgr();
   struct hentry *     affix_check(const char * word, int len);
   struct hentry *     prefix_check(const char * word, int len);
   struct hentry *     suffix_check(const char * word, int len, int sfxopts, AffEntry* ppfx);
-  int                 expand_rootword(struct guessword * wlst, int maxn, 
+  int                 expand_rootword(struct guessword * wlst, int maxn,
                              const char * ts, int wl, const char * ap, int al);
   struct hentry *     compound_check(const char * word, int len, char compound_flag);
   struct hentry *     lookup(const char * word);
@@ -44,7 +44,7 @@ public:
   char *              get_try_string();
   char *              get_compound();
   bool                get_nosplitsugs();
-             
+
 private:
   int  parse_file(const char * affpath);
   int  parse_try(char * line);

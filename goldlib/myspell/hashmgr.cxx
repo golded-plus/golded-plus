@@ -1,4 +1,4 @@
-#include "license.readme"
+#include "license.rea"
 
 #if !defined(_MSC_VER)
 #include <unistd.h>
@@ -104,14 +104,14 @@ int HashMgr::add_word(const char * word, int wl, const char * aff, int al)
        hp->alen = al;
        hp->word = mystrdup(word);
        hp->astr = mystrdup(aff);
-       hp->next = NULL;      
-       while (dp->next != NULL) dp=dp->next; 
+       hp->next = NULL;
+       while (dp->next != NULL) dp=dp->next;
        dp->next = hp;
        if ((wl) && (hp->word == NULL)) return 1;
        if ((al) && (hp->astr == NULL)) return 1;
     }
     return 0;
-}     
+}
 
 
 
@@ -159,7 +159,7 @@ int HashMgr::load_tables(const char * tpath)
   if (! fgets(ts, MAXDELEN-1,rawdict)) return 2;
   mychomp(ts);
   tablesize = atoi(ts);
-  if (!tablesize) return 4; 
+  if (!tablesize) return 4;
   tablesize = tablesize + 5;
   if ((tablesize %2) == 0) tablesize++;
 
@@ -186,7 +186,7 @@ int HashMgr::load_tables(const char * tpath)
     wl = strlen(ts);
 
     // add the word and its index
-    if (add_word(ts,wl,ap,al)) 
+    if (add_word(ts,wl,ap,al))
       return 5;;
 
   }

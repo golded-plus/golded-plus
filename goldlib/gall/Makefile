@@ -19,6 +19,11 @@ INCS+=-I$(TOP)/goldlib/glibc
 endif
 endif
 
+include $(TOP)/Config.def
+ifneq ($(findstring GCFG_NO_MYSPELL, $(CPPFLAGS)), GCFG_NO_MYSPELL)
+INCS+=-I$(TOP)/goldlib/myspell
+endif
+
 include $(TOP)/GNUmakef.inc
 
 ifeq ($(PLATFORM),emx)

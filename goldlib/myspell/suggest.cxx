@@ -1,4 +1,4 @@
-#include "license.readme"
+#include "license.rea"
 
 #include <cstdlib>
 #include <cctype>

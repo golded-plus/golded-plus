@@ -16,7 +16,7 @@ FOBJPATH=$(TOP)/$(OBJPATH)/$(PLATFORM)/$(TARGET)
 FDEPPATH=$(TOP)/$(OBJPATH)/$(PLATFORM)/$(TARGET)
 FLIBPATH=$(TOP)/$(LIBPATH)/$(PLATFORM)
 
-.SUFFIXES: .c .cpp .all .rc
+.SUFFIXES: .c .cpp .all .rc .cxx
 
 sourcelist: bld$(PLATFORM).inc
 
@@ -32,6 +32,14 @@ $(FOBJPATH)/%$(OBJEXT): %.cpp
 		echo -n $(FOBJPATH)/>$(FDEPPATH)/$(patsubst %.cpp,%.d,$<) &&		\
 		$(CAT) $(patsubst %.cpp,%.d,$<)>>$(FDEPPATH)/$(patsubst %.cpp,%.d,$<) &&\
 		rm $(patsubst %.cpp,%.d,$<) || true"
+
+$(FOBJPATH)/%$(OBJEXT): %.cxx
+	@echo building $(basename $<)$(OBJEXT)
+	$(CXX) -c -MD $(CPPFLAGS) -o $@ $<
+	@$(SHELL) -c "[ -s $(patsubst %.cxx,%.d,$<) ] &&					\
+		echo -n $(FOBJPATH)/>$(FDEPPATH)/$(patsubst %.cxx,%.d,$<) &&		\
+		$(CAT) $(patsubst %.cxx,%.d,$<)>>$(FDEPPATH)/$(patsubst %.cxx,%.d,$<) &&\
+		rm $(patsubst %.cxx,%.d,$<) || true"
 
 $(FOBJPATH)/%$(OBJEXT): %.c
 	@echo building $(basename $<)$(OBJEXT)
@@ -59,12 +67,12 @@ include bld$(PLATFORM).inc
 endif
 
 ifeq ($(PLATFORM),cyg)
-OBJS=$(addprefix $(FOBJPATH)/,$(patsubst %.rc,%$(OBJEXT),$(patsubst %.c,%$(OBJEXT),$(patsubst %.cpp,%$(OBJEXT),$(filter %.c %.cpp %.rc,$(SOURCES))))))
+OBJS=$(addprefix $(FOBJPATH)/,$(patsubst %.rc,%$(OBJEXT),$(patsubst %.c,%$(OBJEXT),$(patsubst %.cpp,%$(OBJEXT),$(patsubst %.cxx,%$(OBJEXT),$(filter %.c %.cpp %.cxx %.rc,$(SOURCES)))))))
 else
 ifeq ($(PLATFORM),emx)
-OBJS=$(addprefix $(FOBJPATH)/,$(patsubst %.rc,%.res,$(patsubst %.c,%$(OBJEXT),$(patsubst %.cpp,%$(OBJEXT),$(filter %.c %.cpp %.rc,$(SOURCES))))))
+OBJS=$(addprefix $(FOBJPATH)/,$(patsubst %.rc,%.res,$(patsubst %.c,%$(OBJEXT),$(patsubst %.cpp,%$(OBJEXT),$(patsubst %.cxx,%$(OBJEXT),$(filter %.c %.cpp %.cxx %.rc,$(SOURCES)))))))
 else
-OBJS=$(addprefix $(FOBJPATH)/,$(patsubst %.c,%$(OBJEXT),$(patsubst %.cpp,%$(OBJEXT),$(filter %.c %.cpp %.rc,$(SOURCES)))))
+OBJS=$(addprefix $(FOBJPATH)/,$(patsubst %.c,%$(OBJEXT),$(patsubst %.cpp,%$(OBJEXT),$(patsubst %.cxx,%$(OBJEXT),$(filter %.c %.cpp %.cxx %.rc,$(SOURCES))))))
 endif
 endif
 DEPS = $(wildcard $(FDEPPATH)/*.d)

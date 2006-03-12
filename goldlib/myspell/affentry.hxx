@@ -2,7 +2,7 @@
 #define _AFFIX_HXX_
 
 #include "atypes.hxx"
-#include "baseaffix.hxx"
+#include "baseaffi.hxx"
 #include "affixmgr.hxx"
 
 
@@ -26,7 +26,7 @@ public:
 
   inline bool          allowCross() { return ((xpflg & XPRODUCT) != 0); }
   inline unsigned char getFlag()   { return achar;   }
-  inline const char *  getKey()    { return appnd;  } 
+  inline const char *  getKey()    { return appnd;  }
   char *               add(const char * word, int len);
 
   inline PfxEntry *    getNext()   { return next;   }
@@ -60,12 +60,12 @@ public:
   SfxEntry(AffixMgr* pmgr, affentry* dp );
   ~SfxEntry();
 
-  struct hentry *   check(const char * word, int len, int optflags, 
+  struct hentry *   check(const char * word, int len, int optflags,
                                                        AffEntry* ppfx);
 
   inline bool          allowCross() { return ((xpflg & XPRODUCT) != 0); }
   inline unsigned char getFlag()   { return achar;   }
-  inline const char *  getKey()    { return rappnd; } 
+  inline const char *  getKey()    { return rappnd; }
   char *               add(const char * word, int len);
 
   inline SfxEntry *    getNext()   { return next;   }

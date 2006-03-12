@@ -1,4 +1,4 @@
-#include "license.readme"
+#include "license.rea"
 
 
 #include <cctype>
@@ -21,7 +21,7 @@ PfxEntry::PfxEntry(AffixMgr* pmgr, affentry* dp)
   pmyMgr = pmgr;
 
   // set up its intial values
-  achar = dp->achar;         // char flag 
+  achar = dp->achar;         // char flag
   strip = dp->strip;         // string to strip
   appnd = dp->appnd;         // string to append
   stripl = dp->stripl;       // length of strip string
@@ -43,7 +43,7 @@ PfxEntry::~PfxEntry()
     if (strip)free(strip);
     pmyMgr = NULL;
     appnd = NULL;
-    strip = NULL;    
+    strip = NULL;
 }
 
 
@@ -67,19 +67,19 @@ char * PfxEntry::add(const char * word, int len)
               if (appndl) {
 	          strcpy(tword,appnd);
                   tlen += appndl;
-               } 
+               }
                char * pp = tword + tlen;
                strcpy(pp, (word + stripl));
                return mystrdup(tword);
 	    }
      }
-     return NULL;    
+     return NULL;
 }
 
 
 
 
-// check if this prefix entry matches 
+// check if this prefix entry matches
 struct hentry * PfxEntry::check(const char * word, int len)
 {
     int			cond;	// condition number being examined
@@ -123,8 +123,8 @@ struct hentry * PfxEntry::check(const char * word, int len)
 		   if (TESTAFF(he->astr, achar, he->alen)) return he;
 		}
 
-		// prefix matched but no root word was found 
-                // if XPRODUCT is allowed, try again but now 
+		// prefix matched but no root word was found
+                // if XPRODUCT is allowed, try again but now
                 // ross checked combined with a suffix
 
 		if (xpflg & XPRODUCT) {
@@ -144,7 +144,7 @@ SfxEntry::SfxEntry(AffixMgr * pmgr, affentry* dp)
   pmyMgr = pmgr;
 
   // set up its intial values
-  achar = dp->achar;         // char flag 
+  achar = dp->achar;         // char flag
   strip = dp->strip;         // string to strip
   appnd = dp->appnd;         // string to append
   stripl = dp->stripl;       // length of strip string
@@ -167,7 +167,7 @@ SfxEntry::~SfxEntry()
     if (strip) free(strip);
     pmyMgr = NULL;
     appnd = NULL;
-    strip = NULL;    
+    strip = NULL;
 }
 
 
@@ -205,10 +205,10 @@ char * SfxEntry::add(const char * word, int len)
 
 
 
-// see if this suffix is present in the word 
+// see if this suffix is present in the word
 struct hentry * SfxEntry::check(const char * word, int len, int optflags, AffEntry* ppfx)
 {
-    int	                tmpl;		 // length of tmpword 
+    int	                tmpl;		 // length of tmpword
     int			cond;		 // condition beng examined
     struct hentry *     he;              // hash entry pointer
     unsigned char *	cp;
@@ -257,10 +257,10 @@ struct hentry * SfxEntry::check(const char * word, int len, int optflags, AffEnt
 
 	    if (cond < 0) {
 	        if ((he = pmyMgr->lookup(tmpword)) != NULL) {
-                     if (TESTAFF(he->astr, achar , he->alen) && 
-                           ((optflags & XPRODUCT) == 0 || 
+                     if (TESTAFF(he->astr, achar , he->alen) &&
+                           ((optflags & XPRODUCT) == 0 ||
                            TESTAFF(he->astr, ep->getFlag(), he->alen))) return he;
-	        }  
+	        }
 	    }
     }
     return NULL;
@@ -274,12 +274,12 @@ struct hentry * SfxEntry::check(const char * word, int len, int optflags, AffEnt
 Appendix:  Understanding Affix Code
 
 
-An affix is either a  prefix or a suffix attached to root words to make 
+An affix is either a  prefix or a suffix attached to root words to make
 other words.
 
 Basically a Prefix or a Suffix is set of AffEntry objects
-which store information about the prefix or suffix along 
-with supporting routines to check if a word has a particular 
+which store information about the prefix or suffix along
+with supporting routines to check if a word has a particular
 prefix or suffix or a combination.
 
 The structure affentry is defined as follows:
@@ -292,15 +292,15 @@ struct affentry
    short  stripl;         // length of the strip string
    short  appndl;         // length of the affix string
    short  numconds;       // the number of conditions that must be met
-   short  xpflg;          // flag: XPRODUCT- combine both prefix and suffix 
+   short  xpflg;          // flag: XPRODUCT- combine both prefix and suffix
    char   conds[SETSIZE]; // array which encodes the conditions to be met
 };
 
 
-Here is a suffix borrowed from the en_US.aff file.  This file 
+Here is a suffix borrowed from the en_US.aff file.  This file
 is whitespace delimited.
 
-SFX D Y 4 
+SFX D Y 4
 SFX D   0     e          d
 SFX D   y     ied        [^aeiou]y
 SFX D   0     ed         [^ey]
@@ -318,7 +318,7 @@ Field
 4     4   - indicates that sequence of 4 affentry structures are needed to
                properly store the affix information
 
-The remaining lines describe the unique information for the 4 SfxEntry 
+The remaining lines describe the unique information for the 4 SfxEntry
 objects that make up this affix.  Each line can be interpreted
 as follows: (note fields 1 and 2 are as a check against line 1 info)
 
@@ -333,57 +333,57 @@ Field
                     can be applied
 
 Field 5 is interesting.  Since this is a suffix, field 5 tells us that
-there are 2 conditions that must be met.  The first condition is that 
-the next to the last character in the word must *NOT* be any of the 
+there are 2 conditions that must be met.  The first condition is that
+the next to the last character in the word must *NOT* be any of the
 following "a", "e", "i", "o" or "u".  The second condition is that
 the last character of the word must end in "y".
 
-So how can we encode this information concisely and be able to 
+So how can we encode this information concisely and be able to
 test for both conditions in a fast manner?  The answer is found
-but studying the wonderful ispell code of Geoff Kuenning, et.al. 
+but studying the wonderful ispell code of Geoff Kuenning, et.al.
 (now available under a normal BSD license).
 
 If we set up a conds array of 256 bytes indexed (0 to 255) and access it
 using a character (cast to an unsigned char) of a string, we have 8 bits
 of information we can store about that character.  Specifically we
-could use each bit to say if that character is allowed in any of the 
+could use each bit to say if that character is allowed in any of the
 last (or first for prefixes) 8 characters of the word.
 
-Basically, each character at one end of the word (up to the number 
-of conditions) is used to index into the conds array and the resulting 
-value found there says whether the that character is valid for a 
-specific character position in the word.  
+Basically, each character at one end of the word (up to the number
+of conditions) is used to index into the conds array and the resulting
+value found there says whether the that character is valid for a
+specific character position in the word.
 
-For prefixes, it does this by setting bit 0 if that char is valid 
-in the first position, bit 1 if valid in the second position, and so on. 
+For prefixes, it does this by setting bit 0 if that char is valid
+in the first position, bit 1 if valid in the second position, and so on.
 
 If a bit is not set, then that char is not valid for that postion in the
 word.
 
-If working with suffixes bit 0 is used for the character closest 
-to the front, bit 1 for the next character towards the end, ..., 
-with bit numconds-1 representing the last char at the end of the string. 
+If working with suffixes bit 0 is used for the character closest
+to the front, bit 1 for the next character towards the end, ...,
+with bit numconds-1 representing the last char at the end of the string.
 
-Note: since entries in the conds[] are 8 bits, only 8 conditions 
+Note: since entries in the conds[] are 8 bits, only 8 conditions
 (read that only 8 character positions) can be examined at one
 end of a word (the beginning for prefixes and the end for suffixes.
 
-So to make this clearer, lets encode the conds array values for the 
+So to make this clearer, lets encode the conds array values for the
 first two affentries for the suffix D described earlier.
 
 
-  For the first affentry:    
+  For the first affentry:
      numconds = 1             (only examine the last character)
 
      conds['e'] =  (1 << 0)   (the word must end in an E)
      all others are all 0
 
   For the second affentry:
-     numconds = 2             (only examine the last two characters)     
+     numconds = 2             (only examine the last two characters)
 
      conds[X] = conds[X] | (1 << 0)     (aeiou are not allowed)
          where X is all characters *but* a, e, i, o, or u
-         
+
 
      conds['y'] = (1 << 1)     (the last char must be a y)
      all other bits for all other entries in the conds array are zero

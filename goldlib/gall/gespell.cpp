@@ -35,7 +35,9 @@
 
 #include <gdirposx.h>
 #include <gstrall.h>
+#if !defined(GCFG_NO_MYSPELL)
 #include <myspell.hxx>
+#endif
 #include <gespell.h>
 
 typedef char XlatName[17];
@@ -455,7 +457,7 @@ bool CMSSpellLang::AddWord(const char *text)
 bool CMYSpellLang::Init(const gdirentry *entry)
 {
   gposixdir dir(entry->dirname);
-  
+
   std::string affname = entry->name.substr(0, entry->name.length()-4);
   strcpy(mLangCode, affname.c_str());
 

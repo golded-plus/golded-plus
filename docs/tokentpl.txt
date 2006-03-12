@@ -3,6 +3,7 @@
 * These macroses may be used in:
 * template file, externutil command line, tearline and tagline.
 ==========================================================================
+@align
 @areaname
 @areapath
 @areatype
@@ -57,7 +58,9 @@
 @otime
 @oto
 @otzoffset
+@pad
 @pid
+@pipe
 @pseudo
 @rev
 @subject
@@ -69,6 +72,7 @@
 @tlname
 @tname
 @tpseudo
+@tr
 @ver
 @version
 @widepid
