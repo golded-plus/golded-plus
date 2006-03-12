@@ -34,6 +34,10 @@
 
 #if defined (__WIN32__)
 #include <windows.h>
+
+#ifndef PATH_MAX
+#define PATH_MAX _MAX_PATH
+#endif
 #endif
 
 
@@ -72,12 +76,11 @@ public:
   virtual void UnLoad() = 0;
 
   virtual void BuildRTable(const char *codeset) = 0;
-  virtual void RecodeText(const char *srcText, char *dstText, bool flag) = 0;
+  void RecodeText(const char *srcText, char *dstText, bool flag);
 
   virtual void BuildSuggest(const char *text, CSpellSuggestV &suggest) = 0;
 
   virtual bool SpellCheck(const char *text) = 0;
-  virtual bool SpellSuggest(const char *text, bool more) = 0;
   virtual bool AddWord(const char *text) = 0;
 
   bool IsMdrLoaded() { return mIsMdrLoaded; }
@@ -200,6 +203,9 @@ private:
   SpellGetListUdr_fn    mSpellGetListUdr;
   SpellVerifyMdr_fn     mSpellVerifyMdr;
 
+private:
+  bool SpellSuggest(const char *text, bool more);
+
 public:
   CMSSpellLang() { mLibrary = NULL; }
   ~CMSSpellLang() { Close(); }
@@ -210,12 +216,10 @@ public:
   virtual void UnLoad();
 
   virtual void BuildRTable(const char *codeset);
-  virtual void RecodeText(const char *srcText, char *dstText, bool flag);
 
   virtual void BuildSuggest(const char *text, CSpellSuggestV &suggest);
 
   virtual bool SpellCheck(const char *text);
-  virtual bool SpellSuggest(const char *text, bool more);
   virtual bool AddWord(const char *text);
 };
 
@@ -244,12 +248,10 @@ public:
   virtual void UnLoad();
 
   virtual void BuildRTable(const char *codeset);
-  virtual void RecodeText(const char *srcText, char *dstText, bool flag);
 
   virtual void BuildSuggest(const char *text, CSpellSuggestV &suggest);
 
   virtual bool SpellCheck(const char *text);
-  virtual bool SpellSuggest(const char *text, bool more);
   virtual bool AddWord(const char *) { return false; }
 };
 

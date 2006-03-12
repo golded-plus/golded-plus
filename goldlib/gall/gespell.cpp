@@ -344,17 +344,6 @@ void CMSSpellLang::BuildRTable(const char *codeset)
 
 //  ------------------------------------------------------------------
 
-void CMSSpellLang::RecodeText(const char *srcText, char *dstText, bool flag)
-{
-  if (flag)
-    XlatStr(dstText, srcText, mToDicTable->level, mToDicTable);
-  else
-    XlatStr(dstText, srcText, mToLocTable->level, mToLocTable);
-}
-
-
-//  ------------------------------------------------------------------
-
 void CMSSpellLang::BuildSuggest(const char *text, CSpellSuggestV &suggest)
 {
   if (!SpellSuggest(text, false)) return;
@@ -525,17 +514,6 @@ void CMYSpellLang::BuildRTable(const char *codeset)
 
 //  ------------------------------------------------------------------
 
-void CMYSpellLang::RecodeText(const char *srcText, char *dstText, bool flag)
-{
-  if (flag)
-    XlatStr(dstText, srcText, mToDicTable->level, mToDicTable);
-  else
-    XlatStr(dstText, srcText, mToLocTable->level, mToLocTable);
-}
-
-
-//  ------------------------------------------------------------------
-
 void CMYSpellLang::BuildSuggest(const char *text, CSpellSuggestV &suggest)
 {
   char ** wlst = NULL;
@@ -568,15 +546,18 @@ bool CMYSpellLang::SpellCheck(const char *text)
 
 //  ------------------------------------------------------------------
 
-bool CMYSpellLang::SpellSuggest(const char *text, bool more)
-{
-  return false;
-}
+#endif  //#if !defined(GCFG_NO_MYSPELL)
 
 
 //  ------------------------------------------------------------------
 
-#endif  //#if !defined(GCFG_NO_MYSPELL)
+void CSpellLang::RecodeText(const char *srcText, char *dstText, bool flag)
+{
+  if (flag)
+    XlatStr(dstText, srcText, mToDicTable->level, mToDicTable);
+  else
+    XlatStr(dstText, srcText, mToLocTable->level, mToLocTable);
+}
 
 
 //  ------------------------------------------------------------------
