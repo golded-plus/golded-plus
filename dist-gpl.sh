@@ -25,14 +25,14 @@ files="${files} docs/rddt.html docs/rddt.txt docs/readme.txt"
 files="${files} docs/rusfaq.txt docs/tips.txt docs/todowork.txt"
 files="${files} docs/tokencfg.txt docs/tokentpl.txt"
 
-printf 'GoldED+1.1.5 [`uname` binaries]\r\n'  >bin/File_ID.Diz
+printf "GoldED+1.1.5 [`uname` binaries]\r\n"  >bin/File_ID.Diz
 printf 'Snapshot (development version)\r\n' >>bin/File_ID.Diz
 printf 'This is  unstable release  and\r\n' >>bin/File_ID.Diz
 printf 'it should be used for testing.\r\n' >>bin/File_ID.Diz
-printf '------------------------------\r\n' >>bin/File_ID.Diz
+printf -- '------------------------------\r\n' >>bin/File_ID.Diz
 printf 'GoldED+ is a  successor of the\r\n' >>bin/File_ID.Diz
 printf 'wellknown  GoldED mail editor.\r\n' >>bin/File_ID.Diz
-printf '------------------------------\r\n' >>bin/File_ID.Diz
+printf -- '------------------------------\r\n' >>bin/File_ID.Diz
 printf '*golded-plus.sourceforge.net* \r\n' >>bin/File_ID.Diz
 
 make PLATFORM=lnx clean
