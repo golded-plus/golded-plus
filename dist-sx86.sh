@@ -19,6 +19,8 @@ if [ ! -f golded3/mygolded.h ]; then
 fi
 gsed -i.orig -e "s/\#define __GVER_POSTVERSION__ .*/\#define __GVER_POSTVERSION__   \"-b${date}\"/" golded3/mygolded.h
 
+if [ ! -d "bin" ] ; then mkdir bin; fi
+
 printf "GoldED+1.1.5 [`uname` `uname -i` pkg]\r\n"  >bin/File_ID.Diz
 printf 'Snapshot (development version)\r\n' >>bin/File_ID.Diz
 printf 'This is  unstable release  and\r\n' >>bin/File_ID.Diz
