@@ -10,6 +10,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+! Changed compiler defines for spell checker feature. Spell checker feature
+  compiles by default. See Config.def.
+
 + Added support for MySpell spell checker.
     - SCheckerEnabled <No/Auto>
     - SCheckerDefLang <LangID>
