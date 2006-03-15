@@ -663,7 +663,11 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
                (mode == MODE_QUOTEBUF)) {
               y = 0;
               ptr = strskip_wht(oldmsg->By());
-              while(*ptr) {
+
+              bool flag = false;
+
+              while(*ptr)
+              {
                 while(not IsInitial(*ptr) and (*ptr != '@') and *ptr)
                   ptr++;
                 if(*ptr == '@')
@@ -674,10 +678,17 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
                   if (y == 0)
                   {
                     initials[y++] = *ptr++;
-                    if (*ptr) initials[y++] = *ptr++;
+
+                    if (IsInitial(*ptr))
+                      initials[y++] = *ptr++;
+                    else
+                      flag = true;
                   }
-                  else if (y == 2)
+                  else if ((y == 2) && !flag)
+                  {
                     initials[y-1] = *ptr++;
+                    flag = true;
+                  }
                   else if (y == 9)
                     break;
                   else
