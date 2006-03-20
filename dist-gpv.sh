@@ -25,6 +25,7 @@ files="${files} docs/rddt.html docs/rddt.txt docs/readme.txt"
 files="${files} docs/rusfaq.txt docs/tips.txt docs/todowork.txt"
 files="${files} docs/tokencfg.txt docs/tokentpl.txt"
 
+rm ${bines}
 nmake /f golded.mak CFG="Release" clean
 nmake /f golded.mak CFG="Release"
 
