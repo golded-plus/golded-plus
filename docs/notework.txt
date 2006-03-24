@@ -10,6 +10,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- GoldEd will not use charset import table if its level is greater than
+  level of CHRS kludge.
+
 - Fixed QuoteString middle name initials.
 
 - Fix truncation of date&time in header view.

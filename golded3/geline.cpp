@@ -2883,10 +2883,49 @@ char *ISO2Latin(char *latin_encoding, const char *iso_encoding) {
 
 //  ------------------------------------------------------------------
 
+static bool CheckLevel(const char* imp, const char* imp2, int n, int &current_table)
+{
+  const char *ptr = striinc(imp2, imp);
+  ptr += strlen(imp2);
+  strskip_wht(ptr);
+
+  int level = atoi(ptr);
+
+  if (CharTable && (n == current_table) && (level <= CharTable->level))
+    return true;
+
+  FILE* fp = fsopen(AddPath(CFG->goldpath, CFG->xlatged), "rb", CFG->sharemode);
+
+  if (fp)
+  {
+    if (!CharTable) CharTable = (Chs*)throw_calloc(1, sizeof(Chs));
+    fseek(fp, ((long)n*(long)sizeof(Chs)), SEEK_SET);
+    fread(CharTable, sizeof(Chs), 1, fp);
+    fclose(fp);
+
+    ChsTP = CharTable->t;
+    current_table = n;
+
+    // Disable softcr translation unless DISPSOFTCR is enabled
+    if (not WideDispsoftcr)
+    {
+      char* tptr = (char*)ChsTP[SOFTCR];
+      *tptr++ = 1;
+      *tptr = SOFTCR;
+    }
+
+    if (level <= CharTable->level) return true;
+  }
+
+  return false;
+}
+
+
+//  ------------------------------------------------------------------
+
 int LoadCharset(const char* imp, const char* exp, int query) {
 
   static int current_table = -1;
-  FILE* fp;
   int n;
 
   switch(query) {
@@ -2903,6 +2942,7 @@ int LoadCharset(const char* imp, const char* exp, int query) {
     if (!striinc(xlt->exp, exp)) continue;
 
     bool imp_found = make_bool(striinc(xlt->imp, imp));
+    if (imp_found) imp_found = CheckLevel(imp, xlt->imp, n, current_table);
 
     std::vector< std::pair<std::string, gstrarray> >::iterator als;
     for (als = CFG->xlatcharsetalias.begin();
@@ -2912,35 +2952,11 @@ int LoadCharset(const char* imp, const char* exp, int query) {
       {
         for (gstrarray::iterator it = als->second.begin(); !imp_found && (it != als->second.end()); it++)
           if (striinc(it->c_str(), imp))
-            imp_found = true;
+            imp_found = CheckLevel(imp, it->c_str(), n, current_table);
       }
     }
 
-    if (imp_found)
-    {
-      // Already loaded?
-      if(CharTable and CharTable->level!=0 and n==current_table)
-        return CharTable->level;
-      fp = fsopen(AddPath(CFG->goldpath, CFG->xlatged), "rb", CFG->sharemode);
-      if(fp) {
-        if(not CharTable)
-          CharTable = (Chs*)throw_calloc(1, sizeof(Chs));
-        fseek(fp, ((long)n*(long)sizeof(Chs)), SEEK_SET);
-        fread(CharTable, sizeof(Chs), 1, fp);
-        fclose(fp);
-        ChsTP = CharTable->t;
-        current_table = n;
-
-        // Disable softcr translation unless DISPSOFTCR is enabled
-        if (not WideDispsoftcr)
-        {
-          char* tptr = (char*)ChsTP[SOFTCR];
-          *tptr++ = 1;
-          *tptr = SOFTCR;
-        }
-        return CharTable->level;
-      }
-    }
+    if (imp_found) return CharTable->level;
   }
 
   // No matching table found
