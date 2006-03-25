@@ -444,6 +444,7 @@ void CmfMsgs(GMsg* msg, bool torecycle)
   Area* AAdest = AA;
 
   AA->RandomizeData();
+  if (torecycle) AA->adat->areacopyaddid = true;
 
   // Is it readonly?
   if(AA->attr().r_o()) {
