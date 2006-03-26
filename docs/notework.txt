@@ -10,9 +10,11 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Set default color for spell checker to white on black.
+
 = Snapshot for the March 26, 2006.
 
-- GoldEd will not use charset import table if its level is greater than
+- GoldEd will not use charset import table if its level is less than
   level of CHRS kludge.
 
 - Fixed QuoteString middle name initials.
