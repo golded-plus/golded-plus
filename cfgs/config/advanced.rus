@@ -691,26 +691,6 @@ EditHeaderFirst Yes             ; Всегда
 WriteHeader Yes
 
 ----------------------------------------------------------------------
--- ПРОВЕРКА ОРФОГРАФИИ
-
-IF SPELL
-
-SCheckerEnabled No              ; выключить
-;SCheckerEnabled Auto            ; проверять во время набора
-
-;SCheckerDefLang 1049            ; MSSPELL, Русский
-;SCheckerDefLang 1033            ; MSSPELL, Английский
-;SCheckerDefLang ru_RU           ; MYSPELL, Русский
-;SCheckerDefLang en_US           ; MYSPELL, Английский
-
-;SCheckerUserDic "user.dic"      ; используется только для MSSPELL
-;SCheckerDicPath "dictionaries"  ; используется только для MYSPELL
-
-;COLOR SCHECKER ERROR White on Black
-
-ENDIF
-
-----------------------------------------------------------------------
 -- ШАБЛОНЫ (MESSAGE TEMPLATES)
 
 // Путь к шаблонам. По умолчанию соответствует GoldPath.
@@ -1459,6 +1439,28 @@ Include gedcolor.cfg
 // Этим можно назначить особый цвет для некоторых имен и/или адресов.
 // Color должен быть целое число.
 ;ColorName John Doe 7:654/321.* 15
+
+----------------------------------------------------------------------
+-- ПРОВЕРКА ОРФОГРАФИИ
+
+IF SPELL
+
+SCheckerEnabled No              ; выключить
+;SCheckerEnabled Auto            ; проверять во время набора
+
+;SCheckerDefLang 1049            ; MSSPELL, Русский
+;SCheckerDefLang 1033            ; MSSPELL, Английский
+;SCheckerDefLang ru_RU           ; MYSPELL, Русский
+;SCheckerDefLang en_US           ; MYSPELL, Английский
+
+// используется только для MSSPELL
+;SCheckerUserDic "user.dic"
+// используется только для MYSPELL
+;SCheckerDicPath "path\to\dictionaries"
+
+;COLOR SCHECKER ERROR White on Black
+
+ENDIF
 
 ----------------------------------------------------------------------
 -- ВНЕШНИЕ УТИЛИТЫ
