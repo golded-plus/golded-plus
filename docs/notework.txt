@@ -10,6 +10,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Win32: Fixed addition of new words to MS Spell user dictionary.
+
 - Set default color for spell checker to white on black.
 
 = Snapshot for the March 26, 2006.

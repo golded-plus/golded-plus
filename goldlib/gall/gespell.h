@@ -68,10 +68,6 @@ public:
     mToDicTable = mToLocTable = NULL;
   }
 
-  virtual ~CSpellLang() {}
-
-  void Close() { UnLoad(); }
-
   virtual bool Load(const char *codeset, const char *userdic) = 0;
   virtual void UnLoad() = 0;
 
@@ -208,7 +204,6 @@ private:
 
 public:
   CMSSpellLang() { mLibrary = NULL; }
-  ~CMSSpellLang() { Close(); }
 
   bool Init(HKEY hKey, const char *name);
 
@@ -240,7 +235,6 @@ private:
 
 public:
   CMYSpellLang() { mMSpell = NULL; }
-  ~CMYSpellLang() { Close(); }
 
   bool Init(const gdirentry *entry);
 

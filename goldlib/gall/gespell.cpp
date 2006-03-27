@@ -641,9 +641,9 @@ cleanup0:
 void CSpellChecker::Close()
 {
   if (!IsInited()) return;
+  UnLoad();
   mLangs.clear();
   mInited = false;
-  mLang = NULL;
 }
 
 
