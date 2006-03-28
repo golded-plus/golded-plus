@@ -384,9 +384,11 @@ $Date$
      старше 10 версии, можно не устанавливать весь MS Office, а взять комплект
      для пользователей The Bat!: http://www.nobat.ru/files/spellset.exe.
      Код MySpell вкомпилирован в Golded+ и требуются только словари, например,
-     от OpenOffice: http://lingucomponent.openoffice.org/spell_dic.html.
-     Недостаток MySpell - невозможность задать собственный (пользовательский)
-     словарь. Преимущество - высокая скорость работы и кроссплатформенность.
+     от OpenOffice: http://lingucomponent.openoffice.org/spell_dic.html или
+     ftp://scon155.phys.msu.su/pub/russian/ispell/myspell/.
+     Недостаток реализации MySpell в golded+ - невозможность задать собственный
+     (пользовательский) словарь. Преимущество - высокая скорость работы и
+     кроссплатформенность.
      Настройки словаря для MS Spell (win32):
        - golded.cfg:
        SCheckerDefLang 1049       ;MSSpell, код русского языка в Microsoft.
