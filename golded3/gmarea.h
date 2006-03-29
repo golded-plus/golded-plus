@@ -134,8 +134,8 @@ public:
   inline const char* MenuText() { return currposn != container.end() ? currposn->first.c_str() : ""; }
   inline const char* File()     { return currposn != container.end() ? currposn->second.c_str() : ""; }
 
-  inline const char* MenuText(int i) { return i < container.size() ? container[i].first.c_str() : ""; }
-  inline const char* File(int i)     { return i < container.size() ? container[i].second.c_str() : ""; }
+  inline const char* MenuText(unsigned i) { return i < container.size() ? container[i].first.c_str() : ""; }
+  inline const char* File(unsigned i)     { return i < container.size() ? container[i].second.c_str() : ""; }
 };
 
 
@@ -196,7 +196,7 @@ public:
   // Additional items to the area scan menu
   GAreaListScan ListScan;
 
-  void Set_Mask(word value = 1) { mask = value; }
+//  void Set_Mask(word value = 1) { mask = value; }
   void Select_Mask(void);
 
   // Con/destructor
