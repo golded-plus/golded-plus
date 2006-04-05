@@ -10,6 +10,16 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ Improved false quote handling.
+
+! Box lines drawing keys was changed from EditGo* to EditBlock*.
+
++ SCheckerDefLang now may be used in random system groups.
+
++ Win32: MS Spell language ID is in human readable form now.
+
+- Win32: MS Spell dictionary charset is identified in the proper way.
+
 - Win32: Fixed addition of new words to MS Spell user dictionary.
 
 - Set default color for spell checker to white on black.
@@ -4394,4 +4404,3 @@ ______________________________________________________________________
 
                 The above notes are added since Alpha5
 ______________________________________________________________________
-
