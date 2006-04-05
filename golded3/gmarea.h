@@ -303,6 +303,9 @@ struct AreaData {
   bool     quotewraphard;
   GPlay    play;
   int      replyre;
+#if defined(GCFG_SPELL_INCLUDED)
+  char     scheckerdeflang[100];
+#endif
   char     tagline[76];
   char     taglinechar;
   bool     taglinesupport;

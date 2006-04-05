@@ -2642,11 +2642,26 @@ int IEclass::handlekey(gkey __key) {
 
   int rc = true;
 
-  if (drawlines &&
-      (__key != KK_EditGoRight) && (__key != KK_EditGoLeft) &&
-      (__key != KK_EditGoUp) && (__key != KK_EditGoDown))
+  if (drawlines)
   {
-    drawflag = true;
+    switch (__key)
+    {
+    case KK_EditBlockRight:
+    case KK_EditBlockLeft:
+    case KK_EditBlockUp:
+    case KK_EditBlockDown:
+      DrawLines(__key);
+    case KK_EditBlockHome:
+    case KK_EditBlockEnd:
+    case KK_EditBlockPgDn:
+    case KK_EditBlockPgUp:
+    case KK_EditBlockWordRight:
+    case KK_EditBlockWordLeft:
+      undo_ready = NO;
+      return rc;
+    default:
+      drawflag = true;
+    }
   }
 
   switch(__key)
@@ -2691,18 +2706,6 @@ int IEclass::handlekey(gkey __key) {
       ToggleCaseBlock(__key);
       undo_ready = NO;
       return rc;
-
-    case KK_EditGoRight:
-    case KK_EditGoLeft:
-    case KK_EditGoUp:
-    case KK_EditGoDown:
-      if (drawlines && !selecting)
-      {
-        DrawLines(__key);
-        undo_ready = NO;
-        return rc;
-      }
-      // fall through
 
     default:
       rc = PlayMacro(__key, KT_E);
@@ -2842,7 +2845,7 @@ int IEclass::Start(int __mode, uint* __position, GMsg* __msg) {
   if (CFG->scheckerenabled)
   {
     schecker.Init(CFG->xlatlocalset, CFG->scheckerdicpath);
-    schecker.Load(CFG->scheckerdeflang, CFG->scheckeruserdic);
+    schecker.Load(AA->adat->scheckerdeflang, CFG->scheckeruserdic);
   }
 #endif
 

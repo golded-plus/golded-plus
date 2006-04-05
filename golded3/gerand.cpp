@@ -165,6 +165,9 @@ void Area::InitData() {
   strcpy(adat->quotestops, CFG->quotestops);
   adat->quotewraphard = CFG->quotewraphard;
   adat->replyre = EDIT->ReplyRe();
+#if defined(GCFG_SPELL_INCLUDED)
+  strcpy(adat->scheckerdeflang, CFG->scheckerdeflang);
+#endif
   if(*CFG->searchfor)
     strcpy(adat->searchfor, CFG->searchfor);
   strcpy(adat->tagline, CFG->tagline.empty() ? "" : CFG->tagline[CFG->taglineno].c_str());
@@ -336,6 +339,11 @@ void Area::RandomizeData(int mode) {
         GetRandomLine(buf, sizeof(buf), buf+1);
       FileToGPlay(&adat->play, buf);
     }
+
+#if defined(GCFG_SPELL_INCLUDED)
+    if (CFG->grp.GetItm(GRP_SCHECKERDEFLANG, buf, sizeof(buf)))
+      strxcpy(adat->scheckerdeflang, buf, sizeof(adat->scheckerdeflang));
+#endif
 
     CFG->grp.GetItm(GRP_SEARCHFOR, adat->searchfor, sizeof(adat->searchfor));
 

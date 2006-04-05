@@ -2456,6 +2456,7 @@ EndGroup
 // QuoteBufFile
 // QuoteChars
 // QuoteString
+// SCheckerDefLang
 // SearchFor
 // StyleCodes
 // Tagline

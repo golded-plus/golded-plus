@@ -232,7 +232,10 @@ void CfgScheckerenabled()
 
 void CfgScheckerdeflang()
 {
-  strcpy(CFG->scheckerdeflang, val);
+  if(cfgingroup)
+    CFG->grp.AddItm(GRP_SCHECKERDEFLANG, val, strlen(val)+1);
+  else
+    strcpy(CFG->scheckerdeflang, val);
 }
 
 //  ------------------------------------------------------------------
