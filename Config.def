@@ -79,3 +79,5 @@
 #CPPFLAGS+=-DGCFG_NO_MSSPELL
 # Uncomment to disable MySpell spellchecker support (multiplatform)
 #CPPFLAGS+=-DGCFG_NO_MYSPELL
+# Comment to disable AreaRecycleBin keyword and feature
+CPPFLAGS+=-D__INCLUDE_NEW_KEYWORDS__
