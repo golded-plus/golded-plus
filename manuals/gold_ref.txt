@@ -4317,7 +4317,7 @@ Here is the complete keyword list:
     key in the specified number of seconds. The semaphores are only
     checked when the arealist screen is active. If a semaphore file is
     found, the file is deleted and then the action is performed. If no
-    path is given for the files, the GOLDPATH is assumed.
+    path is given for the files, the AREAPATH is assumed.
 
     Example:
 
