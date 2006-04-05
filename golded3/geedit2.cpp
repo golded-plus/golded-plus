@@ -1656,7 +1656,7 @@ void IEclass::DrawLines(gkey key)
 
     switch (key)
     {
-    case KK_EditGoRight:
+    case KK_EditBlockRight:
       drawx = -1; drawy = 0;
 
       if ((lines[0] == type1) || (!lines[0] && (lines[2] || lines[3])))
@@ -1668,7 +1668,7 @@ void IEclass::DrawLines(gkey key)
 
       break;
 
-    case KK_EditGoLeft:
+    case KK_EditBlockLeft:
       drawx = +1; drawy = 0;
 
       if ((lines[1] == type1) || (!lines[1] && (lines[2] || lines[3])))
@@ -1680,7 +1680,7 @@ void IEclass::DrawLines(gkey key)
 
       break;
 
-    case KK_EditGoDown:
+    case KK_EditBlockDown:
       drawx = 0; drawy = -1;
 
       if ((lines[2] == type1) || (!lines[2] && (lines[0] || lines[1])))
@@ -1692,7 +1692,7 @@ void IEclass::DrawLines(gkey key)
 
       break;
 
-    case KK_EditGoUp:
+    case KK_EditBlockUp:
       drawx = 0; drawy = +1;
 
       if ((lines[3] == type1) || (!lines[3] && (lines[0] || lines[1])))
@@ -1713,7 +1713,7 @@ void IEclass::DrawLines(gkey key)
 
   switch (key)
   {
-  case KK_EditGoRight:
+  case KK_EditBlockRight:
     if (col >= (maxcol-1)) { lines[1] = 0; gonext = false; }
 
     if (!drawx && gonext)
@@ -1744,7 +1744,7 @@ void IEclass::DrawLines(gkey key)
     }
     break;
 
-  case KK_EditGoLeft:
+  case KK_EditBlockLeft:
     if (col <= mincol) { lines[0] = 0; gonext = false; }
 
     if (!drawx && gonext)
@@ -1775,7 +1775,7 @@ void IEclass::DrawLines(gkey key)
     }
     break;
 
-  case KK_EditGoDown:
+  case KK_EditBlockDown:
     if (!currline->next) { lines[3] = 0; gonext = false; }
 
     if (!drawy && gonext)
@@ -1806,7 +1806,7 @@ void IEclass::DrawLines(gkey key)
     }
     break;
 
-  case KK_EditGoUp:
+  case KK_EditBlockUp:
     if (!currline->prev) { lines[2] = 0; gonext = false; }
 
     if (!drawy && gonext)
@@ -1863,10 +1863,10 @@ void IEclass::DrawLines(gkey key)
   {
     switch (key)
     {
-    case KK_EditGoRight: GoRight(); break;
-    case KK_EditGoLeft:  GoLeft();  break;
+    case KK_EditBlockRight: GoRight(); break;
+    case KK_EditBlockLeft:  GoLeft();  break;
     default:
-      (key == KK_EditGoDown) ? GoDown() : GoUp();
+      (key == KK_EditBlockDown) ? GoDown() : GoUp();
       if (col < pcol)
       {
         size_t len = pcol - col;
@@ -1882,16 +1882,16 @@ void IEclass::DrawLines(gkey key)
 
     switch (key)
     {
-    case KK_EditGoRight:
+    case KK_EditBlockRight:
       if ((drawx == -1) && (lines[0] == type1)) drawx++;
       break;
-    case KK_EditGoLeft:
+    case KK_EditBlockLeft:
       if ((drawx == +1) && (lines[1] == type1)) drawx--;
       break;
-    case KK_EditGoDown:
+    case KK_EditBlockDown:
       if ((drawy == -1) && (lines[2] == type1)) drawy++;
       break;
-    case KK_EditGoUp:
+    case KK_EditBlockUp:
       if ((drawy == +1) && (lines[3] == type1)) drawy--;
       break;
     }
