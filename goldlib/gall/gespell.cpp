@@ -328,17 +328,18 @@ void CMSSpellLang::UnLoad()
 void CMSSpellLang::BuildRTable(const char *codeset)
 {
   char codeset2[20];
-  sprintf(codeset2, "CP%i", GetACP());
+  strcpy(codeset2, "CP");
+  GetLocaleInfo(mLIDC, LOCALE_IDEFAULTANSICODEPAGE, &codeset2[2], sizeof(codeset2)-2);
 
   LoadCharset(codeset, codeset2);
   mToDicTable = new Chs;
   memset(mToDicTable, 0, sizeof(Chs));
-  *mToDicTable = CharTable ? *CharTable : *mToDicTable;
+  if (CharTable ) *mToDicTable = *CharTable;
 
   LoadCharset(codeset2, codeset);
   mToLocTable = new Chs;
   memset(mToLocTable, 0, sizeof(Chs));
-  *mToLocTable = CharTable ? *CharTable : *mToLocTable;
+  if (CharTable ) *mToLocTable = *CharTable;
 }
 
 
@@ -408,6 +409,8 @@ bool CMSSpellLang::SpellSuggest(const char *text, bool more)
   mSIB.wSpellState = 0;
   mSIB.lrgChr = (char*)text;
   mSIB.cChr = strlen(text);
+
+  memset(mSZ, 0, sizeof(mSZ));
 
   mSRB.cChr = sizeof(mSZ);
   mSRB.cbRate = sizeof(mRate);
@@ -503,12 +506,12 @@ void CMYSpellLang::BuildRTable(const char *codeset)
   LoadCharset(codeset, mMSpell->get_dic_encoding());
   mToDicTable = new Chs;
   memset(mToDicTable, 0, sizeof(Chs));
-  *mToDicTable = CharTable ? *CharTable : *mToDicTable;
+  if (CharTable ) *mToDicTable = *CharTable;
 
   LoadCharset(mMSpell->get_dic_encoding(), codeset);
   mToLocTable = new Chs;
   memset(mToLocTable, 0, sizeof(Chs));
-  *mToLocTable = CharTable ? *CharTable : *mToLocTable;
+  if (CharTable ) *mToLocTable = *CharTable;
 }
 
 

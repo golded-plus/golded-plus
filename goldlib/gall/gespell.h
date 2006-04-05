@@ -40,6 +40,10 @@
 #endif
 #endif
 
+const uint SCHECKET_TYPE_UNKNOWN = 0;
+const uint SCHECKET_TYPE_MSSPELL = 1;
+const uint SCHECKET_TYPE_MYSPELL = 2;
+
 
 //  ------------------------------------------------------------------
 
@@ -51,6 +55,8 @@ class CSpellLang
   friend class CSpellChecker;
 
 protected:
+  uint mSpellType;
+
   bool mIsMdrLoaded;
   bool mIsUdrLoaded;
   char mLangCode[100];
@@ -64,6 +70,7 @@ protected:
 public:
   CSpellLang()
   {
+    mSpellType = SCHECKET_TYPE_UNKNOWN;
     mIsMdrLoaded = mIsUdrLoaded = false;
     mToDicTable = mToLocTable = NULL;
   }
@@ -81,7 +88,9 @@ public:
 
   bool IsMdrLoaded() { return mIsMdrLoaded; }
   bool IsUdrLoaded() { return mIsUdrLoaded; }
+
   const char *GetLangCode() { return mLangCode; }
+  uint GetSpellType() { return mSpellType; }
 };
 
 
@@ -203,7 +212,11 @@ private:
   bool SpellSuggest(const char *text, bool more);
 
 public:
-  CMSSpellLang() { mLibrary = NULL; }
+  CMSSpellLang()
+  {
+    mLibrary = NULL;
+    mSpellType = SCHECKET_TYPE_MSSPELL;
+  }
 
   bool Init(HKEY hKey, const char *name);
 
@@ -234,7 +247,11 @@ private:
   MySpell *mMSpell;
 
 public:
-  CMYSpellLang() { mMSpell = NULL; }
+  CMYSpellLang()
+  {
+    mMSpell = NULL;
+    mSpellType = SCHECKET_TYPE_MYSPELL;
+  }
 
   bool Init(const gdirentry *entry);
 

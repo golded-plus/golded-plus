@@ -1117,12 +1117,35 @@ int GMenuSChecker::Run(CSpellChecker &schecker, const char *word)
 
   for (idx = 0; idx < langcount; idx++)
   {
+    uint type = langs[idx]->GetSpellType();
     const char *code = langs[idx]->GetLangCode();
 
-    std::string buff = " ";
+    std::string buff = "  ";
     buff += streql(lcode, code) ? '\x10' : ' ';
-    buff += code; buff += ' ';
 
+#if !(defined(GCFG_NO_MSSPELL) || defined(GCFG_NO_MYSPELL))
+    if (type == SCHECKET_TYPE_MSSPELL)
+      buff += " MS ";
+    else if (type == SCHECKET_TYPE_MYSPELL)
+      buff += " MY ";
+    else
+      buff += " ?? ";
+#endif
+
+#if !defined(GCFG_NO_MYSPELL)
+    if (type == SCHECKET_TYPE_MSSPELL)
+    {
+      char langANSI[100];
+      char langOEM[100];
+      GetLocaleInfo(atoi(code), LOCALE_SLANGUAGE, langANSI, sizeof(langANSI));
+      CharToOem(langANSI, langOEM);
+      buff += langOEM;
+    }
+    else
+#endif
+      buff += code;
+
+    buff += ' ';
     langstr.push_back(buff);
   }
 
