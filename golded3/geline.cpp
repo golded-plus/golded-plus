@@ -2094,6 +2094,8 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode) {
         }
 
         // Get type of line
+        int isq_flag1 = 0;
+        bool isq_flag2 = false;
 
         if(wraps == 0) {
 
@@ -2270,11 +2272,42 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode) {
               ptr = tptr;
             }
           }
-          else if(is_quote(ptr) && is_quote2(line, ptr))
+          else if ((isq_flag1 = is_quote(ptr)) &&
+                   (isq_flag2 = is_quote2(line, ptr)))
           {
             para = GLINE_QUOT;
             line->type |= GLINE_QUOT|GLINE_HARD;
             GetQuotestr(ptr, qbuf, &qlen);
+          }
+        }
+
+        if (CFG->quoteusenewai && isq_flag1 && !isq_flag2)
+        {
+          uint bad_qlen;
+          char bad_qbuf[MAXQUOTELEN];
+          char *bad_ptr;
+
+          GetQuotestr(bad_ptr = ptr, bad_qbuf, &bad_qlen);
+
+          while (true)
+          {
+            for (; *bad_ptr && (*bad_ptr != CR); bad_ptr++);
+            if (!*bad_ptr) break;
+
+            char *bad_head = bad_ptr;
+
+            bad_ptr++;
+            if (*bad_ptr == LF) bad_ptr++;
+
+            if (strneql(bad_qbuf, bad_ptr, bad_qlen))
+            {
+              *bad_head = ' ';
+
+              memmove(bad_head+1, bad_ptr+bad_qlen, strlen(bad_ptr));
+              bad_ptr = bad_head;
+            }
+            else
+              break;
           }
         }
 
@@ -3251,4 +3284,3 @@ void InvalidateControlInfo(GMsg* msg) {
 
 
 //  ------------------------------------------------------------------
-
