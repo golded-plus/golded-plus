@@ -15,7 +15,7 @@
 
 # Uncomment to disable MS Office spellchecker support
 # CPP_EXTRA_FLAGS=$(CPP_EXTRA_FLAGS) /DGCFG_NO_MSSPELL
-# Uncomment to disable MySpell spellchecker support
+# Uncomment to disable HunSpell spellchecker support
 # CPP_EXTRA_FLAGS=$(CPP_EXTRA_FLAGS) /DGCFG_NO_MYSPELL
 
 
@@ -384,13 +384,13 @@ LNK_OBJS= \
     $(OBJ_DIR)\geview.obj \
     $(OBJ_DIR)\gmarea.obj \
     $(OBJ_DIR)\golded3.obj \
-    $(OBJ_DIR)\myspell.obj \
-    $(OBJ_DIR)\suggest.obj \
-    $(OBJ_DIR)\hashmgr.obj \
-    $(OBJ_DIR)\dictmgr.obj \
-    $(OBJ_DIR)\csutil.obj \
+    $(OBJ_DIR)\affentry.obj \
     $(OBJ_DIR)\affixmgr.obj \
-    $(OBJ_DIR)\affentry.obj
+    $(OBJ_DIR)\csutil.obj \
+    $(OBJ_DIR)\dictmgr.obj \
+    $(OBJ_DIR)\hashmgr.obj \
+    $(OBJ_DIR)\hunspell.obj \
+    $(OBJ_DIR)\suggmgr.obj
 
 GOLDED_OBJS=$(OBJ_DIR)\gemain.obj
 RDDT_OBJS=$(OBJ_DIR)\rddt.obj

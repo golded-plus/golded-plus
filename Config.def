@@ -77,7 +77,7 @@
 #CPPFLAGS+=-DGCFG_NOSYNCHRONET
 # Uncomment to disable MS Office spellchecker support (win32 only)
 #CPPFLAGS+=-DGCFG_NO_MSSPELL
-# Uncomment to disable MySpell spellchecker support (multiplatform)
+# Uncomment to disable HunSpell spellchecker support (multiplatform)
 #CPPFLAGS+=-DGCFG_NO_MYSPELL
 # Comment to disable AreaRecycleBin keyword and feature
 CPPFLAGS+=-D__INCLUDE_NEW_KEYWORDS__

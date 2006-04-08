@@ -237,14 +237,14 @@ public:
 #if !defined(GCFG_NO_MYSPELL)
 
 class gdirentry;
-class MySpell;
+class Hunspell;
 
 class CMYSpellLang: public CSpellLang
 {
   friend class CSpellChecker;
 
 private:
-  MySpell *mMSpell;
+  Hunspell *mMSpell;
 
 public:
   CMYSpellLang()
@@ -263,7 +263,7 @@ public:
   virtual void BuildSuggest(const char *text, CSpellSuggestV &suggest);
 
   virtual bool SpellCheck(const char *text);
-  virtual bool AddWord(const char *) { return false; }
+  virtual bool AddWord(const char *);
 };
 
 #endif  //#if !defined(GCFG_NO_MYSPELL)

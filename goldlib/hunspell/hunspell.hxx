@@ -10,7 +10,7 @@
 #define HUHCAP  3
 #define HUHINITCAP  4
 
-#define MAXSUGGESTION 15
+#define MAXSUGGESTION 100
 #define MAXSHARPS 5
 
 #ifdef W32

@@ -36,7 +36,7 @@
 #include <gdirposx.h>
 #include <gstrall.h>
 #if !defined(GCFG_NO_MYSPELL)
-#include <myspell.hxx>
+#include <hunspell.hxx>
 #endif
 #include <gespell.h>
 
@@ -474,7 +474,7 @@ bool CMYSpellLang::Init(const gdirentry *entry)
 
 bool CMYSpellLang::Load(const char *codeset, const char *)
 {
-  mMSpell = new MySpell(mEngine, mDictionary);
+  mMSpell = new Hunspell(mEngine, mDictionary);
 
   if (mMSpell)
   {
@@ -543,6 +543,14 @@ bool CMYSpellLang::SpellCheck(const char *text)
   if (mMSpell->spell(text))
     return true;
 
+  return false;
+}
+
+
+//  ------------------------------------------------------------------
+
+bool CMYSpellLang::AddWord(const char *text)
+{
   return false;
 }
 
