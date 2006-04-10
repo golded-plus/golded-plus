@@ -21,7 +21,7 @@ endif
 
 include $(TOP)/Config.def
 ifneq ($(findstring GCFG_NO_MYSPELL, $(CPPFLAGS)), GCFG_NO_MYSPELL)
-INCS+=-I$(TOP)/goldlib/myspell
+INCS+=-I$(TOP)/goldlib/hunspell
 endif
 
 include $(TOP)/GNUmakef.inc
