@@ -10,3 +10,4 @@ dictmgr  cxx     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
 hashmgr  cxx     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
 hunspell cxx     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
 suggmgr  cxx     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+utf_info cxx     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
