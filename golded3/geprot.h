@@ -186,7 +186,10 @@ char* XlatStr(char* dest, const char* src, int level, Chs* chrtbl, int qpencoded
 char* mime_header_decode(char* decoded, const char* encoded, char* charset = NULL);
 char* strxmimecpy(char* dest, const char* source, int level, int size, bool detect = false);
 void InvalidateControlInfo(GMsg *msg);
-    
+#ifdef HAS_ICONV
+void IconvClear(void);
+#endif
+
 
 //  ------------------------------------------------------------------
 //  GEMENU prototypes
@@ -444,7 +447,7 @@ uint32_t getClassicMsgId();
 
 //  ------------------------------------------------------------------
 //  SOFTCR management
- 
+
 inline bool issoftcr(char c)
 {
   return (c == SOFTCR) and not WideDispsoftcr;

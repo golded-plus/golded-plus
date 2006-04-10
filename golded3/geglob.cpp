@@ -81,6 +81,10 @@ EscTab* I51TP = NULL;
 EscTab* MNETP = NULL;
 ChsTab* ChsTP = NULL;
 
+#ifdef HAS_ICONV
+iconv_t iconv_cd = (iconv_t)(-1);
+#endif
+
 bool quiet = true;
 bool ignore = false;
 int cfgerrors = 0;

@@ -35,6 +35,10 @@
 
 //  ------------------------------------------------------------------
 
+#ifdef HAS_ICONV
+  #include <iconv.h>
+#endif
+
 extern glog LOG;
 
 extern gareafile* AFILE;
@@ -127,6 +131,10 @@ extern EscTab* CompTP;
 extern EscTab* I51TP;
 extern EscTab* MNETP;
 extern ChsTab* ChsTP;
+
+#ifdef HAS_ICONV
+extern iconv_t iconv_cd;
+#endif
 
 //extern char gversion[];
 

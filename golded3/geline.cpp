@@ -34,6 +34,10 @@
   #include <malloc.h>
 #endif
 
+#ifdef HAS_ICONV
+  #include <iconv.h>
+#endif
+
 
 //  ------------------------------------------------------------------
 
@@ -1731,12 +1735,29 @@ void  Latin2Local(std::string &str)
   str = temp;
 }
 
+//  ------------------------------------------------------------------
+
+#ifdef HAS_ICONV
+void IconvClear(void){
+  if( iconv_cd!=(iconv_t)(-1) ){
+    iconv_close(iconv_cd);
+    iconv_cd = (iconv_t)(-1);
+  }
+}
+#endif
 
 //  ------------------------------------------------------------------
 
 char* XlatStr(char* dest, const char* src, int level, Chs* chrtbl, int qpencoded, bool i51) {
 
-  if(not chrtbl)
+  if( src==NULL )
+    return dest;
+
+  if( not chrtbl
+#ifdef HAS_ICONV
+      && iconv_cd==(iconv_t)(-1)
+#endif
+    )
     return stpcpy(dest, src);
 
   uint n;
@@ -1749,6 +1770,12 @@ char* XlatStr(char* dest, const char* src, int level, Chs* chrtbl, int qpencoded
   char dochar;
   ChsTab* chrs = chrtbl ? chrtbl->t : (ChsTab*)NULL;
 
+#ifdef HAS_ICONV
+  size_t iconvrc=-1;
+  if( iconv_cd!=(iconv_t)(-1) ){
+    iconvrc=iconv( iconv_cd, NULL, NULL, NULL, NULL ); // init iconv
+  }
+#endif
   while(*sptr) {
     switch(*sptr) {
       case 0x02:
@@ -1858,6 +1885,31 @@ char* XlatStr(char* dest, const char* src, int level, Chs* chrtbl, int qpencoded
         dochar = *sptr++;
       chardo:
         // Translate level 1 and 2
+        #ifdef HAS_ICONV
+        if( iconv_cd!=(iconv_t)(-1) ){
+          unsigned srcleft=1;
+          unsigned dstleft=3;
+          char* tsptr = &dochar;
+
+          iconvrc=iconv( iconv_cd, &tsptr, &srcleft, &dptr, &dstleft );
+          if( iconvrc==((size_t)-1) ){
+            switch( errno ){
+              case EINVAL:
+                LOG.printf("An incomplete multibyte sequence has been encountered before:");
+                LOG.printf("%s",sptr);
+              case EILSEQ:
+                LOG.printf("An invalid multibyte sequence has been encountered in the input before:");
+                LOG.printf("%s",sptr);
+              case E2BIG:
+                LOG.printf("There is not sufficient destination size before '%s'", sptr);
+              default:
+                LOG.printf("Unknown error %u in iconv() before %s", errno, sptr);
+            }
+          }
+        }
+        else
+        #endif
+
         if (((level == 1) || (level == 2)) && chrs)
         {
           tptr = (char*)chrs[(byte)dochar];
@@ -2967,6 +3019,16 @@ int LoadCharset(const char* imp, const char* exp, int query) {
     default:
       break;
   }
+
+#ifdef HAS_ICONV
+  if( iconv_cd != (iconv_t)(-1) )
+    iconv_close(iconv_cd);
+  iconv_cd = iconv_open(imp,exp);
+  if(iconv_cd != (iconv_t)(-1) )
+    LOG.printf("iconv is initialised to convert from %s to %s", imp, exp);
+  else
+    LOG.printf("Can't initialise iconv to convert from %s to %s", imp, exp);
+#endif
 
   // Find and load charset table
   std::vector<Map>::iterator xlt;

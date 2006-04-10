@@ -1041,6 +1041,10 @@ void Reader() {
   // Invalidate reader_msg since the actual data has just been freed.
   reader_msg = NULL;
 
+  #ifdef HAS_ICONV
+    IconvClear();
+  #endif
+
   HandleGEvent(EVTT_EXIT);
 }
 
