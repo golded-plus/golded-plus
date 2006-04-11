@@ -1117,7 +1117,9 @@ int GMenuSChecker::Run(CSpellChecker &schecker, const char *word)
 
   for (idx = 0; idx < langcount; idx++)
   {
+#if defined(__WIN32__) && !defined(GCFG_NO_MYSPELL)
     uint type = langs[idx]->GetSpellType();
+#endif
     const char *code = langs[idx]->GetLangCode();
 
     std::string buff = "  ";
@@ -1132,7 +1134,7 @@ int GMenuSChecker::Run(CSpellChecker &schecker, const char *word)
       buff += " ?? ";
 #endif
 
-#if !defined(GCFG_NO_MYSPELL)
+#if defined(__WIN32__) && !defined(GCFG_NO_MYSPELL)
     if (type == SCHECKET_TYPE_MSSPELL)
     {
       char langANSI[100];
