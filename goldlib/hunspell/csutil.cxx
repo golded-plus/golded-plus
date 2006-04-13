@@ -4911,15 +4911,15 @@ struct cs_info * get_current_cs(const char * es) {
     }
   }
   return ccs;
-};
+}
 
 struct unicode_info * get_utf_cs() {
   return utf_lst;
-};
+}
 
 int get_utf_cs_len() {
   return UTF_LST_LEN;
-};
+}
 
 struct lang_map lang2enc[] = {
 {"az", "UTF-8", LANG_az},
@@ -4957,7 +4957,7 @@ const char * get_default_enc(const char * lang) {
     }
   }
   return NULL;
-};
+}
 
 int get_lang_num(const char * lang) {
   int n = sizeof(lang2enc) / sizeof(lang2enc[0]);
@@ -4967,4 +4967,4 @@ int get_lang_num(const char * lang) {
     }
   }
   return LANG_xx;
-};
+}
