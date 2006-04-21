@@ -154,20 +154,20 @@ void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int __orig
   const char *osver = ggetosstring();
 
   time32_t t = gtime(NULL);
-  struct tm* written_tm = glocaltime(&t);
+  struct tm written_tm; glocaltime(&written_tm, &t);
   char cdate[80];
-  strftimei(cdate, 80, LNG->DateFmt, written_tm);
+  strftimei(cdate, 80, LNG->DateFmt, &written_tm);
   char ctime[80];
-  strftimei(ctime, 80, LNG->TimeFmt, written_tm);
+  strftimei(ctime, 80, LNG->TimeFmt, &written_tm);
   char cdtime[80];
-  strftimei(cdtime, 80, LNG->DateTimeFmt, written_tm);
-  written_tm = ggmtime(&oldmsg->written);
+  strftimei(cdtime, 80, LNG->DateTimeFmt, &written_tm);
+  ggmtime(&written_tm, &oldmsg->written);
   char odate[80];
-  strftimei(odate, 80, LNG->DateFmt, written_tm);
+  strftimei(odate, 80, LNG->DateFmt, &written_tm);
   char otime[80];
-  strftimei(otime, 80, LNG->TimeFmt, written_tm);
+  strftimei(otime, 80, LNG->TimeFmt, &written_tm);
   char odtime[80];
-  strftimei(odtime, 80, LNG->DateTimeFmt, written_tm);
+  strftimei(odtime, 80, LNG->DateTimeFmt, &written_tm);
 
   const char* origareaid = AL.AreaIdToPtr(__origarea)->echoid();
   bool origareaisinet = make_bool(AL.AreaIdToPtr(__origarea)->isinternet());

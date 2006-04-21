@@ -208,15 +208,15 @@ int ImportQWK() {
           _tm.tm_min   = _minute;
           _tm.tm_sec   = 0;
           _tm.tm_isdst = -1;
-          time32_t a    = gmktime(&_tm);
-          struct tm *tp = ggmtime(&a);
-          tp->tm_isdst  = -1;
-          time32_t b    = gmktime(tp);
-          msg->written  = a + a - b;
+          time32_t a   = gmktime(&_tm);
+          struct tm tp; ggmtime(&tp, &a);
+          tp.tm_isdst  = -1;
+          time32_t b   = gmktime(&tp);
+          msg->written = a + a - b;
           a = gtime(NULL);
-          tp = ggmtime(&a);
-          tp->tm_isdst = -1;
-          b = gmktime(tp);
+          ggmtime(&tp, &a);
+          tp.tm_isdst  = -1;
+          b = gmktime(&tp);
           msg->arrived = a + a - b;
 
           // Read message text
@@ -369,11 +369,11 @@ int ExportQwkMsg(GMsg* msg, gfile& fp, int confno, int& pktmsgno) {
   hdr.status = msg->attr.pvt() ? '*' : ' ';
   sprintf(buf, "%u", confno);
   memcpy(hdr.msgno, buf, strlen(buf));
-  struct tm* _tm = ggmtime(&msg->written);
-  int _year = _tm->tm_year % 100;
-  sprintf(buf, "%02d-%02d-%02d", _tm->tm_mon+1, _tm->tm_mday, _year);
+  struct tm _tm; ggmtime(&_tm, &msg->written);
+  int _year = _tm.tm_year % 100;
+  sprintf(buf, "%02d-%02d-%02d", _tm.tm_mon+1, _tm.tm_mday, _year);
   memcpy(hdr.date, buf, 8);
-  sprintf(buf, "%02d:%02d", _tm->tm_hour, _tm->tm_min);
+  sprintf(buf, "%02d:%02d", _tm.tm_hour, _tm.tm_min);
   memcpy(hdr.time, buf, 5);
   strxcpy(buf, msg->to, tolen+1);
   if(not QWK->MixCaseAllowed())

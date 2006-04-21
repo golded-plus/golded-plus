@@ -176,8 +176,12 @@ void DispHeader(GMsg* msg, bool prn, FILE* fp, int width) {
     *buf1 = NUL;
   strsetsz(buf1, nodewidth);
 
-  if(msg->written)
-    strftimei(buf2, CFG->disphdrdateset.len, LNG->DateTimeFmt, ggmtime(&msg->written));
+  if (msg->written)
+  {
+    struct tm tm; ggmtime(&tm, &msg->written);
+    strftimei(buf2, CFG->disphdrdateset.len, LNG->DateTimeFmt, &tm);
+  }
+
   strsetsz(buf2, datewidth);
 
   // write from line
@@ -205,8 +209,12 @@ void DispHeader(GMsg* msg, bool prn, FILE* fp, int width) {
     *buf2 = NUL;
   strsetsz(buf2, nodewidth);
 
-  if(msg->arrived)
-    strftimei(buf2, CFG->disphdrdateset.len, LNG->DateTimeFmt, ggmtime(&msg->arrived));
+  if (msg->arrived)
+  {
+    struct tm tm; ggmtime(&tm, &msg->arrived);
+    strftimei(buf2, CFG->disphdrdateset.len, LNG->DateTimeFmt, &tm);
+  }
+
   strsetsz(buf2, datewidth);
 
   // write to line

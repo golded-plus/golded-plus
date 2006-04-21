@@ -148,14 +148,14 @@ void JamArea::open_area() {
     data->highwater = -1;
 
   // Is the signature invalid?
-  if(memcmp(data->hdrinfo.signature, JAM_SIGNATURE, 4)) {
-
+  if (memcmp(data->hdrinfo.signature, JAM_SIGNATURE, 4))
+  {
     // Initialize header info
     memcpy(data->hdrinfo.signature, JAM_SIGNATURE, 4);
-    time32_t a    = gtime(NULL);
-    struct tm *tp = ggmtime(&a);
-    tp->tm_isdst  = -1;
-    time32_t b    = gmktime(tp);
+    time32_t a  = gtime(NULL);
+    struct tm tp; ggmtime(&tp, &a);
+    tp.tm_isdst = -1;
+    time32_t b  = gmktime(&tp);
     data->hdrinfo.datecreated = a + a - b;
     data->hdrinfo.passwordcrc = 0xFFFFFFFFL;
     data->hdrinfo.basemsgnum  = 1;

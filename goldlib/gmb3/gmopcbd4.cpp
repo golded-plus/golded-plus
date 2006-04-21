@@ -158,18 +158,22 @@ void PcbArea::save_message(int __mode, gmsg* __msg, PcbHdr& __hdr) {
 
   // Convert dates and times
   char _dtbuf[9];
-  struct tm* _tm = ggmtime(&__msg->written);
-  memcpy(__hdr.date, strftimei(_dtbuf, 9, __msg->attr.uns() ? "%d-%m-%y" : "%d-%m\xC4%y", _tm), 8);
-  memcpy(__hdr.time, strftimei(_dtbuf, 6, "%H:%M", _tm), 5);
-  _idx.date = (word)YMD2JDN(1900+_tm->tm_year, _tm->tm_mon+1, _tm->tm_mday);
-  if(__msg->link.first()) {
+  struct tm _tm; ggmtime(&_tm, &__msg->written);
+  memcpy(__hdr.date, strftimei(_dtbuf, 9, __msg->attr.uns() ? "%d-%m-%y" : "%d-%m\xC4%y", &_tm), 8);
+  memcpy(__hdr.time, strftimei(_dtbuf, 6, "%H:%M", &_tm), 5);
+  
+  _idx.date = (word)YMD2JDN(1900+_tm.tm_year, _tm.tm_mon+1, _tm.tm_mday);
+
+  if (__msg->link.first())
+  {
     __hdr.hasreply = 'R';
-    _tm = ggmtime(&__msg->pcboard.reply_written);
-    int _year = _tm->tm_year % 100;
-    __hdr.replydate = L2B((10000L*_year) + (100L*(_tm->tm_mon+1)) + _tm->tm_mday);
-    memcpy(__hdr.replytime, strftimei(_dtbuf, 6, "%H:%M", _tm), 5);
+    ggmtime(&_tm, &__msg->pcboard.reply_written);
+    int _year = _tm.tm_year % 100;
+    __hdr.replydate = L2B((10000L*_year) + (100L*(_tm.tm_mon+1)) + _tm.tm_mday);
+    memcpy(__hdr.replytime, strftimei(_dtbuf, 6, "%H:%M", &_tm), 5);
   }
-  else {
+  else
+  {
     __hdr.hasreply = ' ';
     __hdr.replydate = L2B(0);
     memcpy(__hdr.replytime, "     ", 5);

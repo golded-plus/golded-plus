@@ -31,6 +31,8 @@
 #define __goldall_h
 
 /*  ------------------------------------------------------------------ */
+#include <tchar.h>
+
 #ifdef __cplusplus
 #include <cstddef>
 #endif
@@ -42,6 +44,11 @@
 #include <stdint.h>
 #else
 #endif
+
+#if !defined(ARRAYSIZE)
+#define ARRAYSIZE(A)  sizeof(A)/sizeof((A)[0])
+#endif
+
 
 /*  ------------------------------------------------------------------
 // Disable some MS Visual C warnings */

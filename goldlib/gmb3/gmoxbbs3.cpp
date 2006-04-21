@@ -65,17 +65,19 @@ int XbbsArea::load_message(int __mode, gmsg* __msg, XbbsHdr& __hdr) {
   
   __msg->written = FidoTimeToUnix(__hdr.date);
   __msg->received = __hdr.timerecv;
-  if(__hdr.indate[2]) {
+  
+  if(__hdr.indate[2])
+  {
     struct tm t;
-    t.tm_year = __hdr.indate[0]+89;
-    t.tm_mon = __hdr.indate[1]-1;
-    t.tm_mday = __hdr.indate[2];
-    t.tm_hour = t.tm_min = t.tm_sec = 0;
-    t.tm_isdst = -1;
-    time32_t a    = gmktime(&t);
-    struct tm *tp = ggmtime(&a);
-    tp->tm_isdst  = -1;
-    time32_t b    = gmktime(tp);
+    t.tm_year   = __hdr.indate[0]+89;
+    t.tm_mon    = __hdr.indate[1]-1;
+    t.tm_mday   = __hdr.indate[2];
+    t.tm_hour   = t.tm_min = t.tm_sec = 0;
+    t.tm_isdst  = -1;
+    time32_t a  = gmktime(&t);
+    struct tm tp; ggmtime(&tp, &a);
+    tp.tm_isdst = -1;
+    time32_t b  = gmktime(&tp);
     __msg->arrived = a + a - b;
   }
 

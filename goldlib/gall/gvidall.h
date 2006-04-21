@@ -439,8 +439,8 @@ inline vatch vcatch (vchar chr, vattr atr)  { return chr | gvid_attrcalc(atr); }
 inline vchar vgchar (vatch chat) { return chat.Char.AsciiChar; }
 inline vattr vgattr (vatch chat) { return chat.Attributes; }
 inline vatch vschar (vatch chat, vchar chr) { chat.Char.UnicodeChar = 0; chat.Char.AsciiChar = chr; return chat; }
-inline vatch vsattr (vatch chat, vattr atr) { chat.Attributes = atr; return chat; }
-inline vatch vcatch (vchar chr, vattr atr)  { vatch chat; chat.Char.UnicodeChar = 0; chat.Char.AsciiChar = chr; chat.Attributes = atr; return chat; }
+inline vatch vsattr (vatch chat, vattr atr) { chat.Attributes = WORD(atr); return chat; }
+inline vatch vcatch (vchar chr, vattr atr)  { vatch chat; chat.Char.UnicodeChar = 0; chat.Char.AsciiChar = chr; chat.Attributes = WORD(atr); return chat; }
 
 #else
 

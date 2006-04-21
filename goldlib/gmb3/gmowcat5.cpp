@@ -77,8 +77,10 @@ Line* WCatArea::make_dump_msg(Line*& lin, gmsg* msg, char* lng_head) {
   AddLineF(line, "DestUserID : %i", _hdr.touserid);
   AddLineF(line, "Subject    : %s", STRNP2C(_hdr.subject));
   AddLineF(line, "Network    : %s", STRNP2C(_hdr.network));
-  AddLineF(line, "MsgTime    : %s (%u, %i)", strftimei(buf, 100, "%d %b %y  %H:%M:%S", ggmtime(&msg->written)), _hdr.msgdate, _hdr.msgtime);
-  AddLineF(line, "ReadTime   : %s (%u, %i)", strftimei(buf, 100, "%d %b %y  %H:%M:%S", ggmtime(&msg->received)), _hdr.readdate, _hdr.readtime);
+  struct tm _tm; ggmtime(&_tm, &msg->written);
+  AddLineF(line, "MsgTime    : %s (%u, %i)", strftimei(buf, 100, "%d %b %y  %H:%M:%S", &_tm), _hdr.msgdate, _hdr.msgtime);
+  ggmtime(&_tm, &msg->received);
+  AddLineF(line, "ReadTime   : %s (%u, %i)", strftimei(buf, 100, "%d %b %y  %H:%M:%S", &_tm), _hdr.readdate, _hdr.readtime);
   AddLineF(line, "mFlags     : %u (%04Xh)", _hdr.mflags, _hdr.mflags);
   AddLineF(line, "Reference  : %u", _hdr.reference);
   AddLineF(line, "FidoFrom   : %u:%u/%u.%u", _hdr.origaddr.zone, _hdr.origaddr.net, _hdr.origaddr.node, _hdr.origaddr.point);

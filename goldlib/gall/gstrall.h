@@ -82,7 +82,7 @@ char* longdotstr(char* str, long num);                    // Convert a long to a
 char* StripQuotes(char* str);
 
 // Safe versions of strcpy, strcat, sequencial strcat...
-char* strxcpy(char* d, const char* s, int n);
+TCHAR *strxcpy(TCHAR *d, const TCHAR *s, size_t n);
 char* strxcat(char *dest, const char *src, size_t max);
 char* strxmerge(char *dest, size_t max, ...);
 
@@ -105,10 +105,10 @@ char* strunrevname(char* unreversedname, const char* name);
 
 inline char* strbtrim(char* st) { return strtrim(strltrim(st)); }
 
-inline bool streql(const char* str1, const char* str2)          { return not strcmp(str1,str2); }
-inline bool strieql(const char* str1, const char* str2)          { return not stricmp(str1,str2); }
-inline bool strneql(const char* str1, const char* str2, int n)  { return not strncmp(str1,str2,n); }
-inline bool strnieql(const char* str1, const char* str2, int n)  { return not strnicmp(str1,str2,n); }
+inline bool streql  (const TCHAR *str1, const TCHAR *str2)        { return (0 == _tcscmp  (str1, str2));    }
+inline bool strieql (const TCHAR *str1, const TCHAR *str2)        { return (0 == _tcsicmp (str1, str2));    }
+inline bool strneql (const TCHAR *str1, const TCHAR *str2, int n) { return (0 == _tcsncmp (str1, str2, n)); }
+inline bool strnieql(const TCHAR *str1, const TCHAR *str2, int n) { return (0 == _tcsnicmp(str1, str2, n)); }
 
 inline const char* strskip_to(const char* p, char* s) { return p+strcspn(p, s); }
 inline char* strskip_to(char* p, char* s) { return p+strcspn(p, s); }
@@ -142,20 +142,26 @@ char* strcvtc(char* s);
 //  ------------------------------------------------------------------
 //  String tokenizer class
 
-class GTok {
-
+class GTok
+{
 protected:
-
-  const char* separator;
-  char* token;
+  const TCHAR *separator;
+  TCHAR *token;
+#if defined(_tcstok_s)
+  TCHAR *next_token;
+#endif
 
 public:
+  GTok(TCHAR *sep = NULL);
 
-  GTok(char* sep=NULL);
-
-  char* First(char* buf)  { token = strtok(buf,  separator); return token; }
-  char* Next()            { token = strtok(NULL, separator); return token; }
-  char* Token()           { return token; }
+#if defined(_tcstok_s)
+  TCHAR *First(TCHAR *buf) { token = _tcstok_s(buf,  separator, &next_token); return token; }
+  TCHAR *Next()            { token = _tcstok_s(NULL, separator, &next_token); return token; }
+#else
+  TCHAR *First(TCHAR *buf) { token = _tcstok(buf,  separator); return token; }
+  TCHAR *Next()            { token = _tcstok(NULL, separator); return token; }
+#endif
+  TCHAR *Token()           { return token; }
 };
 
 

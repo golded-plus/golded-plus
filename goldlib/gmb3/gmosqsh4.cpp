@@ -437,11 +437,12 @@ void SquishArea::save_message(int __mode, gmsg* __msg) {
 
     __hdr.date_written = TimeToFTime(__msg->written);
     __hdr.date_arrived = TimeToFTime(__msg->arrived);
-    struct tm* _tm = ggmtime(&__msg->written);
+
+    struct tm _tm; ggmtime(&_tm, &__msg->written);
     sprintf(__hdr.ftsc_date, "%02d %3s %02d  %02d:%02d:%02d",
-      _tm->tm_mday, gmonths[_tm->tm_mon+1], _tm->tm_year % 100,
-      _tm->tm_hour, _tm->tm_min, _tm->tm_sec
-    );
+        _tm.tm_mday, gmonths[_tm.tm_mon + 1], _tm.tm_year % 100,
+        _tm.tm_hour, _tm.tm_min, _tm.tm_sec
+      );
 
     // Setup some local variables for speed
     int _fhsqd = data->fhsqd;

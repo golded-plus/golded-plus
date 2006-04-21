@@ -326,16 +326,17 @@ const int REPLYRE_NUMERIC = 2;
 //  ------------------------------------------------------------------
 //  Name typedefs
 
-typedef char Name[36];
+typedef TCHAR Name[36];
 
 
 //  ------------------------------------------------------------------
 //  Combined name/address structure
 
-struct Node {
+struct Node
+{
   Name name;
   Addr addr;
-  Node& operator=(const Node& a) { strcpy(name, a.name); addr=a.addr; return *this; }
+  Node &operator=(const Node &a) { strxcpy(name, a.name, ARRAYSIZE(name)); addr=a.addr; return *this; }
 };
 
 

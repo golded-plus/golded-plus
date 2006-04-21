@@ -599,7 +599,7 @@ public:
 
         int    NextMsglistdate()              { adat->msglistdate++; if(adat->msglistdate > MSGLISTDATE_RECEIVED) adat->msglistdate = MSGLISTDATE_NONE; return adat->msglistdate; }
   const ftn_aka& SetAka(const ftn_addr& a)    { adat->aka.addr = a; return adat->aka; }
-  const char*  SetInputfile(const char* i)    { return strcpy(adat->inputfile, i); }
+  const TCHAR *SetInputfile(const TCHAR *i)   { return strxcpy(adat->inputfile, i, ARRAYSIZE(adat->inputfile)); }
         int    SetMsglistdate(int m)          { adat->msglistdate = m; return adat->msglistdate; }
   const char*  SetOrigin(const char* o)       { return strxcpy(adat->origin, o, sizeof(adat->origin)); }
   const char*  SetOutputfile(const char* o)   { return strxcpy(adat->outputfile, o, sizeof(adat->outputfile)); }
@@ -608,8 +608,8 @@ public:
   const char*  SetTpl(const char* t)          { return strxcpy(adat->tpl, t, sizeof(adat->tpl)); }
         int    SetTwitmode(int m)             { adat->twitmode = m; return adat->twitmode; }
   const Node&  SetUsername(const Node& n)     { adat->username = n; return adat->username; }
-  const char*  SetXlatexport(const char* x)   { return strcpy(adat->xlatexport, x); }
-  const char*  SetXlatimport(const char* x)   { return strcpy(adat->xlatimport, x); }
+  const TCHAR *SetXlatexport(const TCHAR *x)  { return strxcpy(adat->xlatexport, x, ARRAYSIZE(adat->xlatexport)); }
+  const TCHAR *SetXlatimport(const TCHAR *x)  { return strxcpy(adat->xlatimport, x, ARRAYSIZE(adat->xlatimport)); }
         int    ToggleMsglistwidesubj()        { adat->msglistwidesubj = not adat->msglistwidesubj; return adat->msglistwidesubj; }
         int    ToggleViewhidden()             { adat->viewhidden = not adat->viewhidden; return adat->viewhidden; }
         int    ToggleViewkludge()             { adat->viewkludge = not adat->viewkludge; return adat->viewkludge; }

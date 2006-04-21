@@ -792,7 +792,8 @@ void KludgeDATE(GMsg* msg, const char* ptr) {
     }
   }
 
-  if(date_ok) {
+  if (date_ok)
+  {
     struct tm t;
     t.tm_year  = (year < 80) ? (year+100) : (year > 1900) ? (year-1900) : year;
     t.tm_mon   = month - 1;
@@ -801,11 +802,11 @@ void KludgeDATE(GMsg* msg, const char* ptr) {
     t.tm_min   = minute;
     t.tm_sec   = second;
     t.tm_isdst = -1;
-    time32_t a    = gmktime(&t);
-    struct tm *tp = ggmtime(&a);
-    tp->tm_isdst  = -1;
-    time32_t b    = gmktime(tp);
-    msg->written  = a + a - b;
+    time32_t a = gmktime(&t);
+    struct tm tp; ggmtime(&tp, &a);
+    tp.tm_isdst = -1;
+    time32_t b = gmktime(&tp);
+    msg->written = a + a - b;
   }
 }
 

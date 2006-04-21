@@ -44,16 +44,28 @@ typedef std::vector<std::string> gstrarray;
 
 //  ------------------------------------------------------------------
 
-inline void tokenize(gstrarray& array, const char* str, const char* delim = NULL) {
-    if(delim == NULL)
-        delim = ", \t";
-    char* tmp = throw_xstrdup(str);
-    char* token = strtok(tmp, delim);
-    while(token) {
-        array.push_back(token);
-        token = strtok(NULL, delim);
-    }
-    throw_xfree(tmp);
+inline void tokenize(gstrarray &array, const TCHAR* str, const TCHAR *delim = NULL)
+{
+  if (delim == NULL) delim = ", \t";
+  TCHAR *tmp = throw_xstrdup(str);
+#if defined(_tcstok_s)
+  TCHAR *next_token;
+  TCHAR *token = _tcstok_s(tmp, delim, &next_token);
+#else
+  TCHAR *token = _tcstok(tmp, delim);
+#endif
+
+  while (NULL != token)
+  {
+    array.push_back(token);
+#if defined(_tcstok_s)
+    token = _tcstok_s(NULL, delim, &next_token);
+#else
+    token = _tcstok(NULL, delim);
+#endif
+  }
+
+  throw_xfree(tmp);
 }
 
 

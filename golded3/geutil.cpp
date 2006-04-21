@@ -53,9 +53,11 @@ void update_statuslines() {
     *clkinfo = NUL;
     *help = NUL;
 
-    if(CFG->switches.get(statuslineclock)) {
+    if(CFG->switches.get(statuslineclock))
+    {
       time32_t t = gtime(NULL);
-      sprintf(clkinfo, "   %s", strftimei(help, 40, LNG->StatusLineTimeFmt, glocaltime(&t)));
+      struct tm tm; glocaltime(&tm, &t);
+      sprintf(clkinfo, "   %s", strftimei(help, 40, LNG->StatusLineTimeFmt, &tm));
     }
 
     if(CFG->statuslinehelp == -1)
@@ -464,7 +466,7 @@ bool is_quote2(Line* line, const char* ptr)
       return true;
 
     // found begin of citation?
-    char *begin = strrchr(ln->txt.c_str(), '<');
+    const char *begin = strrchr(ln->txt.c_str(), '<');
     if (begin)
     {
       // found both '<' and '>'?

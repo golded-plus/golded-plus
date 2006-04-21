@@ -58,12 +58,12 @@ const char* gmonths[] = {
 //  ------------------------------------------------------------------
 //  Returns current timezone offset based on TZ environment variable.
 
-int tzoffset() {
-
-  time32_t t1   = gtime(NULL);
-  struct tm *tp = ggmtime(&t1);
-  tp->tm_isdst  = -1;
-  time32_t t2   = gmktime(tp);
+int tzoffset()
+{
+  time32_t t1 = gtime(NULL);
+  struct tm tp; ggmtime(&tp, &t1);
+  tp.tm_isdst = -1;
+  time32_t t2 = gmktime(&tp);
   int dt = (int)(t1 - t2);
   return (dt / 3600) * 100 + (dt % 3600) / 60;
 }
@@ -350,10 +350,10 @@ time32_t FTimeToTime(FTime* __ftime, struct tm* __tm) {
         __tm->tm_sec   = __ftime->ft_tsec * 2;
         __tm->tm_isdst = -1;
 
-        time32_t a    = gmktime(__tm);
-        struct tm *tp = ggmtime(&a);
-        tp->tm_isdst  = -1;
-        time32_t b    = gmktime(tp);
+        time32_t a  = gmktime(__tm);
+        struct tm tp; ggmtime(&tp, &a);
+        tp.tm_isdst = -1;
+        time32_t b  = gmktime(&tp);
         _time = a + a - b;
 
         if(_time == (uint32_t)0xFFFFFFFFL)
@@ -373,15 +373,15 @@ FTime TimeToFTime(time32_t __time) {
   FTime _ft;
   memset(&_ft, 0, sizeof(FTime));
 
-  if(__time) {
-
-    struct tm* _tmp = ggmtime(&__time);
-    _ft.ft_year  = (word)(_tmp->tm_year - 80);
-    _ft.ft_month = (word)(_tmp->tm_mon + 1);
-    _ft.ft_day   = (word)(_tmp->tm_mday);
-    _ft.ft_hour  = (word)(_tmp->tm_hour);
-    _ft.ft_min   = (word)(_tmp->tm_min);
-    _ft.ft_tsec  = (word)(_tmp->tm_sec / 2);
+  if (__time)
+  {
+    struct tm _tmp; ggmtime(&_tmp, &__time);
+    _ft.ft_year  = (word)(_tmp.tm_year - 80);
+    _ft.ft_month = (word)(_tmp.tm_mon + 1);
+    _ft.ft_day   = (word)(_tmp.tm_mday);
+    _ft.ft_hour  = (word)(_tmp.tm_hour);
+    _ft.ft_min   = (word)(_tmp.tm_min);
+    _ft.ft_tsec  = (word)(_tmp.tm_sec / 2);
   }
 
   return _ft;
@@ -441,10 +441,10 @@ time32_t FidoTimeToUnix(char* ptr) {
     t.tm_min   = minute;
     t.tm_sec   = second;
     t.tm_isdst = -1;
-    time32_t a    = gmktime(&t);
-    struct tm *tp = ggmtime(&a);
-    tp->tm_isdst  = -1;
-    time32_t b    = gmktime(tp);
+    time32_t a  = gmktime(&t);
+    struct tm tp; ggmtime(&tp, &a);
+    tp.tm_isdst = -1;
+    time32_t b  = gmktime(&tp);
     return a + a - b;
   }
   return (uint32_t)-1;
@@ -453,9 +453,10 @@ time32_t FidoTimeToUnix(char* ptr) {
 
 //  ------------------------------------------------------------------
 
-char* TimeToStr(char* buf, time32_t t) {
-
-  return strftimei(buf, 20, "%Y-%m-%d %H:%M:%S", ggmtime(&t));
+char* TimeToStr(char* buf, time32_t t)
+{
+  struct tm tm; ggmtime(&tm, &t);
+  return strftimei(buf, 20, "%Y-%m-%d %H:%M:%S", &tm);
 }
 
 

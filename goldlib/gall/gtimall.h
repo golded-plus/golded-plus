@@ -45,7 +45,9 @@
 #ifdef __WIN32__
 #include <windows.h>
 #endif
-
+#if defined(_MSC_VER) && (_MSC_VER >= 1400)
+#include <time.h>
+#endif
 
 //  ------------------------------------------------------------------
 
@@ -123,39 +125,69 @@ extern const char* gmonths[];
 //  ------------------------------------------------------------------
 //  Prototypes
 
-inline struct tm *ggmtime(const time32_t *timep)
+inline void ggmtime(struct tm *_tm, const time32_t *timep)
 {
   const time_t temp(*timep);
-#if defined(__WIN32__)
-  const time_t zero(0);
+#if defined(_MSC_VER) && (_MSC_VER >= 1400)
+  if (0 != gmtime_s(_tm, &temp))
+  {
+    const time_t zero(0);
+    gmtime_s(_tm, &zero);
+  }
+#else
   struct tm *time = gmtime(&temp);
-  return time ? time : gmtime(&zero);
-#else
-  return gmtime(&temp);
+#if defined(__WIN32__)
+  if (NULL == time)
+  {
+    const time_t zero(0);
+    time = gmtime(&zero);
+  }
+#endif
+  *_tm = *time;
 #endif
 }
 
-inline struct tm *glocaltime(const time32_t *timep)
+inline void glocaltime(struct tm *_tm, const time32_t *timep)
 {
   const time_t temp(*timep);
-#if defined(__WIN32__)
-  const time_t zero(0);
+#if defined(_MSC_VER) && (_MSC_VER >= 1400)
+  if (0 != localtime_s(_tm, &temp))
+  {
+    const time_t zero(0);
+    localtime_s(_tm, &zero);
+  }
+#else
   struct tm *time = localtime(&temp);
-  return time ? time : localtime(&zero);
-#else
-  return localtime(&temp);
+#if defined(__WIN32__)
+  if (NULL == time)
+  {
+    const time_t zero(0);
+    time = localtime(&zero);
+  }
+#endif
+  *_tm = *time;
 #endif
 }
 
-inline char *gctime(const time32_t *timep)
+inline void gctime(TCHAR *buffer, size_t sizeInChars, const time32_t *timep)
 {
   const time_t temp(*timep);
-#if defined(__WIN32__)
-  const time_t zero(0);
-  char *time = ctime(&temp);
-  return time ? time : ctime(&zero);
+#if defined(_MSC_VER) && (_MSC_VER >= 1400)
+  if (0 != _tctime_s(buffer, sizeInChars, &temp))
+  {
+    const time_t zero(0);
+    _tctime_s(buffer, sizeInChars, &zero);
+  }
 #else
-  return ctime(&temp);
+  const char *time = _tctime(&temp);
+#if defined(__WIN32__)
+  if (NULL == time)
+  {
+    const time_t zero(0);
+    time = _tctime(&zero);
+  }
+#endif
+  strxcpy(buffer, time, sizeInChars);
 #endif
 }
 

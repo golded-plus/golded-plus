@@ -492,8 +492,8 @@ typedef ftn_attr Attr;
 //  ------------------------------------------------------------------
 
 inline void AttrAdd(Attr* a, Attr* b) { a->add(*b); }
-inline void GetAttribstr(Attr* attr, const char* attrs) { attr->get(attrs); }
-inline char* MakeAttrStr(char* str, size_t maxlen, const Attr* attr) { std::string tmp; attr->make_string(tmp); strxcpy(str, tmp.c_str(), maxlen); return str; }
+inline void GetAttribstr(Attr* attr, const TCHAR *attrs) { attr->get(attrs); }
+inline TCHAR *MakeAttrStr(TCHAR *str, size_t maxlen, const Attr *attr) { std::string tmp; attr->make_string(tmp); strxcpy(str, tmp.c_str(), maxlen); return str; }
 
 
 //  ------------------------------------------------------------------

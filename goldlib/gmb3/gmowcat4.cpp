@@ -118,16 +118,18 @@ void WCatArea::save_message(int __mode, gmsg* __msg, WCatHdr& __hdr) {
     strcpy(__msg->wildcat.network, "FTSC");
   strc2p(strcpy(__hdr.network, __msg->wildcat.network));
 
-  if(__msg->written) {
-    struct tm* _tm = ggmtime(&__msg->written);
-    __hdr.msgdate = (word)(YMD2JDN(1900+_tm->tm_year, _tm->tm_mon+1, _tm->tm_mday)-1);
-    __hdr.msgtime = ((_tm->tm_hour*3600L)+(_tm->tm_min*60L)+_tm->tm_sec)+1;
+  if (__msg->written)
+  {
+    struct tm _tm; ggmtime(&_tm, &__msg->written);
+    __hdr.msgdate = (word)(YMD2JDN(1900+_tm.tm_year, _tm.tm_mon+1, _tm.tm_mday)-1);
+    __hdr.msgtime = ((_tm.tm_hour*3600L)+(_tm.tm_min*60L)+_tm.tm_sec)+1;
   }
 
-  if(__msg->received) {
-    struct tm* _tm = ggmtime(&__msg->received);
-    __hdr.readdate = (word)YMD2JDN(1900+_tm->tm_year, _tm->tm_mon+1, _tm->tm_mday);
-    __hdr.readtime = ((_tm->tm_hour*3600L)+(_tm->tm_min*60L)+_tm->tm_sec)+1;
+  if (__msg->received)
+  {
+    struct tm _tm; ggmtime(&_tm, &__msg->received);
+    __hdr.readdate = (word)YMD2JDN(1900+_tm.tm_year, _tm.tm_mon+1, _tm.tm_mday);
+    __hdr.readtime = ((_tm.tm_hour*3600L)+(_tm.tm_min*60L)+_tm.tm_sec)+1;
   }
 
   __hdr.mflags |= (word)(__msg->attr.pvt() ? mfPrivate     : 0);

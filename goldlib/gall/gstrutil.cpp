@@ -562,14 +562,19 @@ const char* strrword(const char* str, const char *separator) {
 
 //  ------------------------------------------------------------------
 
-char* strxcpy(char* d, const char* s, int n) {
-
-  if(n) {
-    strncpy(d, s, n-1);
+TCHAR *strxcpy(TCHAR *d, const TCHAR *s, size_t n)
+{
+#if defined(_tcsncpy_s)
+  _tcsncpy_s(d, n, s, _TRUNCATE);
+#else
+  if (n)
+  {
+    _tcsncpy(d, s, n-1);
     d[n-1] = NUL;
   }
   else
     *d = NUL;
+#endif
   return d;
 }
 

@@ -218,11 +218,16 @@ void GMsgHeaderView::Paint() {
   color = GetColorName(msg->By(), msg->orig, color);
   window.prints(2, CFG->disphdrnameset.pos, color, buf);
 
-  if(datewidth > 0) {
-    if(msg->written)
-      strftimei(buf, datewidth+1, LNG->DateTimeFmt, ggmtime(&msg->written));
+  if (datewidth > 0)
+  {
+    if (msg->written)
+    {
+      struct tm tm; ggmtime(&tm, &msg->written);
+      strftimei(buf, datewidth+1, LNG->DateTimeFmt, &tm);
+    }
     else
       *buf = NUL;
+
     strsetsz(buf, datewidth);
     window.prints(2, CFG->disphdrdateset.pos, from_color, buf);
   }
@@ -262,11 +267,16 @@ void GMsgHeaderView::Paint() {
   }
   window.prints(3, CFG->disphdrnameset.pos, color, buf);
 
-  if(datewidth > 0) {
-    if(msg->arrived)
-      strftimei(buf, datewidth+1, LNG->DateTimeFmt, ggmtime(&msg->arrived));
+  if (datewidth > 0)
+  {
+    if (msg->arrived)
+    {
+      struct tm tm; ggmtime(&tm, &msg->arrived);
+      strftimei(buf, datewidth+1, LNG->DateTimeFmt, &tm);
+    }
     else
       *buf = NUL;
+
     strsetsz(buf, datewidth);
     window.prints(3, CFG->disphdrdateset.pos, to_color, buf);
   }

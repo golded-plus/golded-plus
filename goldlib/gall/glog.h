@@ -60,7 +60,7 @@ private:
   gfile fp;
 
   static int        count;
-  static struct tm* time_now;
+  static struct tm  time_now;
   static time32_t   secs_now;
   static char       timebuf[20];
 

@@ -103,10 +103,10 @@ int WCatArea::load_message(int __mode, gmsg* __msg, WCatHdr& __hdr) {
     _tm.tm_min   = _minute;
     _tm.tm_sec   = _second;
     _tm.tm_isdst = -1;
-    time32_t a    = gmktime(&_tm);
-    struct tm *tp = ggmtime(&a);
-    tp->tm_isdst  = -1;
-    time32_t b    = gmktime(tp);
+    time32_t a   = gmktime(&_tm);
+    struct tm tp; ggmtime(&tp, &a);
+    tp.tm_isdst  = -1;
+    time32_t b   = gmktime(&tp);
     __msg->written = a + a - b;
   }
 
@@ -123,10 +123,10 @@ int WCatArea::load_message(int __mode, gmsg* __msg, WCatHdr& __hdr) {
     _tm.tm_min   = _minute;
     _tm.tm_sec   = _second;
     _tm.tm_isdst = -1;
-    time32_t a    = gmktime(&_tm);
-    struct tm *tp = ggmtime(&a);
-    tp->tm_isdst  = -1;
-    time32_t b    = gmktime(tp);
+    time32_t a   = gmktime(&_tm);
+    struct tm tp; ggmtime(&tp, &a);
+    tp.tm_isdst  = -1;
+    time32_t b   = gmktime(&tp);
     __msg->received = a + a - b;
   }
 

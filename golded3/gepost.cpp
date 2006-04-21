@@ -243,10 +243,10 @@ static void MakeMsg3(int& mode, GMsg* msg) {
 
   // Do Timefields
   if(msg->attr.fmu()) {
-    time32_t a    = gtime(NULL);
-    struct tm *tp = ggmtime(&a);
-    tp->tm_isdst  = -1;
-    time32_t b    = gmktime(tp);
+    time32_t a  = gtime(NULL);
+    struct tm tp; ggmtime(&tp, &a);
+    tp.tm_isdst = -1;
+    time32_t b  = gmktime(&tp);
     a += a - b;
     if(AA->havereceivedstamp())
       msg->received = a;
@@ -824,10 +824,10 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
           dochgdate = false;
       }
       if(dochgdate) {
-        time32_t a    = gtime(NULL);
-        struct tm *tp = ggmtime(&a);
-        tp->tm_isdst  = -1;
-        time32_t b    = gmktime(tp);
+        time32_t a  = gtime(NULL);
+        struct tm tp; ggmtime(&tp, &a);
+        tp.tm_isdst = -1;
+        time32_t b  = gmktime(&tp);
         a += a - b;
         msg->received = msg->arrived = msg->written = a;
       }

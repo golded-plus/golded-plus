@@ -96,12 +96,12 @@ long GetFilesize(const char* file) {
 //  ------------------------------------------------------------------
 //  Convert time returned with stat to FFTime
 
-dword gfixstattime(time32_t st_time) {
-
+dword gfixstattime(time32_t st_time)
+{
   #if (defined(__MINGW32__) && !defined(__MSVCRT__)) || defined(__CYGWIN__)
-  struct tm &f = *ggmtime(&st_time);
+  struct tm f; ggmtime(&f, &st_time);
   #else
-  struct tm &f = *glocaltime(&st_time);
+  struct tm f; glocaltime(&f, &st_time);
   #endif
   FFTime t;
   t.ft_year  = f.tm_year - 80;
@@ -164,8 +164,8 @@ long fsize(FILE* fp) {
 //  ------------------------------------------------------------------
 //  Check if a pathname is a directory
 
-int is_dir(const char* path) {
-
+bool is_dir(const TCHAR *path)
+{
   // Check if it's a root path (X:\)
   #if defined(__HAVE_DRIVES__)
   if(g_isalpha(path[0]) and (path[1] == ':') and isslash(path[2]) and (path[3] == NUL))

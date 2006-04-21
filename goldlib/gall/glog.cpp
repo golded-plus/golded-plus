@@ -34,10 +34,10 @@
 
 //  ------------------------------------------------------------------
 
-struct tm* glog::time_now;
-int        glog::count = 0;
-time32_t   glog::secs_now;
-char       glog::timebuf[20];
+struct tm glog::time_now;
+int       glog::count = 0;
+time32_t  glog::secs_now;
+char      glog::timebuf[20];
 
 
 //  ------------------------------------------------------------------
@@ -109,7 +109,7 @@ void glog::printf(const char* format, ...) {
   char logbuf[256];
 
   secs_now = gtime(NULL);
-  time_now = glocaltime(&secs_now);
+  glocaltime(&time_now, &secs_now);
 
   lineswritten++;
 
@@ -118,23 +118,23 @@ void glog::printf(const char* format, ...) {
     switch(logtype) {
 
       case GLOG_FD:
-        sprintf(logbuf, "\n----------  %s, %s\n", strftimei(timebuf, 20, "%a %d %b %y", time_now), progname);
+        sprintf(logbuf, "\n----------  %s, %s\n", strftimei(timebuf, 20, "%a %d %b %y", &time_now), progname);
         break;
 
       case GLOG_MAX:
-        sprintf(logbuf, "\n+ %s %4.4s Begin, %s\n", strftimei(timebuf, 20, "%d %b %H:%M:%S", time_now), shortprogname, progname);
+        sprintf(logbuf, "\n+ %s %4.4s Begin, %s\n", strftimei(timebuf, 20, "%d %b %H:%M:%S", &time_now), shortprogname, progname);
         break;
 
       case GLOG_BINK:
-        sprintf(logbuf, "\n> %s %4.4s %s\n", strftimei(timebuf, 20, "%d-%b %H:%M:%S", time_now), shortprogname, progname);
+        sprintf(logbuf, "\n> %s %4.4s %s\n", strftimei(timebuf, 20, "%d-%b %H:%M:%S", &time_now), shortprogname, progname);
         break;
 
       case GLOG_QBBS:
-        sprintf(logbuf, "\n%s  **************************************************\n%s  %s\n", strftimei(timebuf, 20, "%d-%b-%y %H:%M", time_now), timebuf, progname);
+        sprintf(logbuf, "\n%s  **************************************************\n%s  %s\n", strftimei(timebuf, 20, "%d-%b-%y %H:%M", &time_now), timebuf, progname);
         break;
 
       case GLOG_DB:
-        sprintf(logbuf, "\n%s  %s\n", strftimei(timebuf, 20, "%m/%d/%y %H:%M", time_now), progname);
+        sprintf(logbuf, "\n%s  %s\n", strftimei(timebuf, 20, "%m/%d/%y %H:%M", &time_now), progname);
         break;
     }
 
@@ -153,23 +153,23 @@ void glog::printf(const char* format, ...) {
   switch(logtype) {
 
     case GLOG_FD:
-      sprintf(logbuf, "%c %s  %s", *buf, strftimei(timebuf, 10, "%H:%M:%S", time_now), buf+2);
+      sprintf(logbuf, "%c %s  %s", *buf, strftimei(timebuf, 10, "%H:%M:%S", &time_now), buf+2);
       break;
 
     case GLOG_MAX:
-      sprintf(logbuf, "%c %s %4.4s %s", *buf, strftimei(timebuf, 20, "%d %b %H:%M:%S", time_now), shortprogname, buf+2);
+      sprintf(logbuf, "%c %s %4.4s %s", *buf, strftimei(timebuf, 20, "%d %b %H:%M:%S", &time_now), shortprogname, buf+2);
       break;
 
     case GLOG_BINK:
-      sprintf(logbuf, "%c %s %4.4s %s", *buf, strftimei(timebuf, 20, "%d-%b %H:%M:%S", time_now), shortprogname, buf+2);
+      sprintf(logbuf, "%c %s %4.4s %s", *buf, strftimei(timebuf, 20, "%d-%b %H:%M:%S", &time_now), shortprogname, buf+2);
       break;
 
     case GLOG_QBBS:
-      sprintf(logbuf, "%s  %s", strftimei(timebuf, 20, "%d-%b-%y %H:%M", time_now), buf+2);
+      sprintf(logbuf, "%s  %s", strftimei(timebuf, 20, "%d-%b-%y %H:%M", &time_now), buf+2);
       break;
 
     case GLOG_DB:
-      sprintf(logbuf, "%s  %s", strftimei(timebuf, 20, "%m/%d/%y %H:%M", time_now), buf+2);
+      sprintf(logbuf, "%s  %s", strftimei(timebuf, 20, "%m/%d/%y %H:%M", &time_now), buf+2);
       break;
   }
   if(fp.isopen()) {

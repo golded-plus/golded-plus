@@ -1572,7 +1572,7 @@ gkey kbxget_raw(int mode) {
 
 //  TO_PORT_TAG: kbxget_raw(3)
 #if defined(__WIN32__)
-  KeyCtrlState = (gkey)inp.Event.KeyEvent.dwControlKeyState;
+  KeyCtrlState = (gkey)(inp.Event.KeyEvent.dwControlKeyState & 0xFFFF);
 #endif
   return k;
 }
