@@ -28,6 +28,8 @@
 #include <gtimall.h>
 #include <gstrall.h>
 #include <gfilutil.h>
+#include <gfile.h>
+
 #if defined(__MINGW32__) || defined(_MSC_VER)
 #include <sys/utime.h>
 #else
@@ -96,7 +98,7 @@ long GetFilesize(const char* file) {
 //  ------------------------------------------------------------------
 //  Convert time returned with stat to FFTime
 
-dword gfixstattime(time32_t st_time)
+time32_t gfixstattime(time32_t st_time)
 {
   #if (defined(__MINGW32__) && !defined(__MSVCRT__)) || defined(__CYGWIN__)
   struct tm f; ggmtime(&f, &st_time);
@@ -138,7 +140,7 @@ dword gfixstattime(time32_t st_time)
 //  ------------------------------------------------------------------
 //  Get timestamp of file
 
-dword GetFiletime(const char* file) {
+time32_t GetFiletime(const char* file) {
 
   struct stat st;
   if(stat(file, &st) == 0) {
@@ -301,11 +303,14 @@ FILE *fsopen(const char *path, const char *type, int shflag) {
 
 //  ------------------------------------------------------------------
 
-void TouchFile(const char* filename) {
-
-  if(not fexist(filename))
-    close(open(filename, O_WRONLY|O_CREAT|O_TRUNC, S_STDRW));
-  else {
+void TouchFile(const TCHAR *filename)
+{
+  if (not fexist(filename))
+  {
+    gfile fh(filename, O_WRONLY|O_CREAT|O_TRUNC);
+  }
+  else
+  {
     struct utimbuf ut;
     ut.actime = ut.modtime = time(NULL);
     utime(filename, &ut);

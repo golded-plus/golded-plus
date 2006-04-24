@@ -131,20 +131,22 @@ static int find_cat_name(const char* cat) {
   int found=NO;
 
   // Reset file pointer.
-  whelp.fp->fseekset(whelp.offset);
+  whelp.fp->FseekSet(whelp.offset);
 
   // Check for "*I" marker.
-  whelp.fp->fgets(buf, BUFSIZE);
-  if(strnieql(buf,"*I",2)) {
-
+  whelp.fp->Fgets(buf, BUFSIZE);
+  if (strnieql(buf,"*I",2))
+  {
     // Search index for help category entry.  If found,
     // then advance file pointer to specified position.
-    for(;;) {
-      whelp.fp->fread(&recd,sizeof(Hlpr));
+    for(;;)
+    {
+      whelp.fp->Fread(&recd,sizeof(Hlpr));
       if(recd.offset==-1L)
         break;
-      if(strieql(recd.category,cat)) {
-        whelp.fp->fseekset(whelp.offset + recd.offset);
+      if (strieql(recd.category,cat))
+      {
+        whelp.fp->FseekSet(whelp.offset + recd.offset);
         found=YES;
         break;
       }
@@ -166,20 +168,22 @@ static int find_cat_number(int cat) {
   int found=NO;
 
   // Reset file pointer.
-  whelp.fp->fseekset(whelp.offset);
+  whelp.fp->FseekSet(whelp.offset);
 
   // Check for "*I" marker.
-  whelp.fp->fgets(buf, BUFSIZE);
-  if(strnieql(buf,"*I",2)) {
-
+  whelp.fp->Fgets(buf, BUFSIZE);
+  if (strnieql(buf,"*I",2))
+  {
     // Search index for help category entry.  If found,
     // then advance file pointer to specified position.
-    for(;;) {
-      whelp.fp->fread(&recd,sizeof(Hlpr));
-      if(recd.offset==-1L)
+    for (;;)
+    {
+      whelp.fp->Fread(&recd,sizeof(Hlpr));
+      if (recd.offset==-1L)
         break;
-      if(recd.help==cat) {
-        whelp.fp->fseekset(whelp.offset + recd.offset);
+      if (recd.help==cat)
+      {
+        whelp.fp->FseekSet(whelp.offset + recd.offset);
         found=YES;
         break;
       }
@@ -205,18 +209,21 @@ static int find_page(long startpos, int pageofs) {
   int lines = whelp.srow;
 
   lastpagepos = currpos = startpos;
-  whelp.fp->fseekset(startpos);
+  whelp.fp->FseekSet(startpos);
 
-  while(currpage < pageofs) {
-    whelp.fp->fgets(buf, BUFSIZE);
-    if(not whelp.fp->okay()) {
-      whelp.fp->fseekset(lastpagepos);
+  while (currpage < pageofs)
+  {
+    whelp.fp->Fgets(buf, BUFSIZE);
+    if (not whelp.fp->okay())
+    {
+      whelp.fp->FseekSet(lastpagepos);
       break;
     }
     lines++;
-    currpos=whelp.fp->ftell();
-    if(strnieql(buf, "*E", 2)) {
-      whelp.fp->fseekset(lastpagepos);
+    currpos=whelp.fp->Ftell();
+    if (strnieql(buf, "*E", 2))
+    {
+      whelp.fp->FseekSet(lastpagepos);
       break;
     }
     if(strnieql(buf, "*P", 2)) {
@@ -252,7 +259,7 @@ static void disp_cat() {
   page = wrow = wcol = end = menuopen = itemopen = 0;
 
   // save current info
-  startpos = whelp.fp->ftell();
+  startpos = whelp.fp->Ftell();
   curr     = gwin.cmenu;
 
   // set text attribute
@@ -261,7 +268,7 @@ static void disp_cat() {
   for(;;) {
 
     // read next line from help file into buffer
-    whelp.fp->fgets(buf,BUFSIZE);
+    whelp.fp->Fgets(buf,BUFSIZE);
     strtrim(buf);
 
     // if end-of-file or "*E" was found, assume end-of-category
@@ -326,10 +333,10 @@ static void disp_cat() {
           // try to find selected category, if found set
           // file pointer to it, otherwise reset file
           // pointer back to previous help category
-          if(find_cat_name(catarray[i]))
-            startpos=whelp.fp->ftell();
+          if (find_cat_name(catarray[i]))
+            startpos = whelp.fp->Ftell();
           else
-            whelp.fp->fseekset(startpos);
+            whelp.fp->FseekSet(startpos);
 
           // clear help window and set
           // position to upper left corner
@@ -501,11 +508,13 @@ static void help_handler() {
   }
   else {
 
-    if(not whelp.fp) {
+    if (not whelp.fp)
+    {
       whelpclosefile = true;
       whelp.fp = new gfile;  throw_new(whelp.fp);
-      whelp.fp->fopen(whelp.file,"rb");
-      if(not whelp.fp->isopen()) {
+      whelp.fp->Fopen(whelp.file,"rb");
+      if (!whelp.fp->isopen())
+      {
         wtextattr(whelp.textattr);
         wputs("\nHelp file not found:  ");
         wputs(whelp.file);
@@ -514,9 +523,9 @@ static void help_handler() {
       }
     }
 
-    if(whelp.fp->isopen()) {
-
-      whelp.fp->fseekset(whelp.offset);
+    if (whelp.fp->isopen())
+    {
+      whelp.fp->FseekSet(whelp.offset);
 
       // find help category in help file
       found=find_cat_number(cat);
@@ -526,8 +535,9 @@ static void help_handler() {
         disp_cat();
     }
 
-    if(whelpclosefile) {
-      whelp.fp->fclose();
+    if (whelpclosefile)
+    {
+      whelp.fp->Fclose();
       delete whelp.fp;
       whelp.fp = NULL;
     }

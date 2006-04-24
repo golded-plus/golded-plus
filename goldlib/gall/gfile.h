@@ -43,8 +43,8 @@
 //  ------------------------------------------------------------------
 //  Stream/Unix-style file I/O class
 
-class gfile {
-
+class gfile
+{
 public:
 
   //  ----------------------------------------------------------------
@@ -63,8 +63,9 @@ public:
   //  --------------------------------------------------------------
   //  Handy utility functions
 
-  int okay();    // Returns non-zero if no errors were detected
+  int okay() { return (0 == status); }
   bool isopen();  // true if the file is open
+  operator bool() { return isopen(); }
 
 
   //  --------------------------------------------------------------
@@ -78,8 +79,6 @@ public:
 
   ~gfile();             // Destructor (closes file)
 
-  operator bool() { return isopen(); }
-
 
   //  --------------------------------------------------------------
   //  Set file handle or stream pointer
@@ -91,73 +90,73 @@ public:
   //  --------------------------------------------------------------
   //  UNIX-style raw I/O
 
-  int     open        (const char* __path, int __access, int __shflag=SH_DENYNO, int __mode=S_IREAD|S_IWRITE);
-  int     open        (const char* __path, int __access, char* __fmode, int __shflag=SH_DENYNO, int __mode=S_IREAD|S_IWRITE);
-  int     close       ();
+  int     Open        (const char* __path, int __access, int __shflag=SH_DENYNO, int __mode=S_IREAD|S_IWRITE);
+  int     Open        (const char* __path, int __access, const char* __fmode, int __shflag=SH_DENYNO, int __mode=S_IREAD|S_IWRITE);
+  int     Close       ();
 
-  int     read        (void* __ptr, size_t __len);
-  int     write       (void* __ptr, size_t __len);
+  int     Read        (void* __ptr, size_t __len);
+  int     Write       (void* __ptr, size_t __len);
 
-  long    tell        ();
-  long    lseek       (long __offset, int __direction);
-  long    lseek       (long __record, long __recordsize, int __direction);
-  long    lseekset    (long __record, long __recordsize=1);
+  long    Tell        ();
+  long    Lseek       (long __offset, int __direction);
+  long    Lseek       (long __record, long __recordsize, int __direction) { return Lseek(__record*__recordsize, __direction); }
+  long    LseekSet    (long __record, long __recordsize = 1) { return Lseek(__record*__recordsize, SEEK_SET); }
 
-  long    filelength  ();
+  long    FileLength  ();
 
-  int     chsize      (long __size);
+  int     ChSize      (long __size);
 
-  int     lock        (long __offset, long __len);
-  int     unlock      (long __offset, long __len);
+  int     Lock        (long __offset, long __len);
+  int     Unlock      (long __offset, long __len);
 
-  int     getftime    (dword* __ftime);
+  int     GetFTime    (dword* __ftime);
 
 
   //  --------------------------------------------------------------
   //  ANSI-style streaming buffered I/O
 
-  FILE*   fopen   (const char* __path, const char* __mode, int __shflag=SH_DENYNO);
-  FILE*   fopen   (const std::string& __path, const char* __mode, int __shflag=SH_DENYNO);
-  FILE*   fdopen  (char* __mode);
-  int     fclose  ();
+  FILE*   Fopen   (const char* __path, const char* __mode, int __shflag=SH_DENYNO);
+  FILE*   Fopen   (const std::string& __path, const char* __mode, int __shflag=SH_DENYNO) { return Fopen(__path.c_str(), __mode, __shflag); }
+  FILE*   Fdopen  (const char* __mode);
+  int     Fclose  ();
 
-  size_t  fread   (void* __ptr, size_t __size, size_t __items=1);
-  size_t  fwrite  (const void* __ptr, size_t __size, size_t __items=1);
+  size_t  Fread   (void* __ptr, size_t __size, size_t __items=1);
+  size_t  Fwrite  (const void* __ptr, size_t __size, size_t __items=1);
 
-  int     fgetc   ();
-  int     fputc   (int __ch);
+  int     Fgetc   ();
+  int     Fputc   (int __ch);
 
-  char*   fgets   (char* __str, size_t __len);
-  int     fputs   (const char* __str);
+  char*   Fgets   (char* __str, size_t __len);
+  int     Fputs   (const char* __str);
 
-  int     printf  (const char* __format, ...) __attribute__ ((format (printf, 2, 3)));
+  int     Printf  (const char* __format, ...) __attribute__ ((format (printf, 2, 3)));
 
-  int     fflush  ();
+  int     Fflush  ();
 
-  long    ftell   ();
-  int     fseek   (long __offset, int __direction);
-  int     fseek   (long __record, long __recordsize, int __direction);
-  int     fseekset(long __record, long __recordsize=1);
+  long    Ftell   ();
+  int     Fseek   (long __offset, int __direction);
+  int     Fseek   (long __record, long __recordsize, int __direction) { return Fseek(__record*__recordsize, __direction); }
+  int     FseekSet(long __record, long __recordsize = 1) { return Fseek(__record*__recordsize, SEEK_SET); }
 
-  void    rewind  ();
+  void    Rewind  () { rewind(fp); }
 
-  int     setvbuf (char* __buf=NULL, int __type=_IOFBF, size_t __size=8192);
-  int     setvbuf (size_t __size) { return setvbuf(NULL, _IOFBF, __size); }
+  int     SetvBuf (char* __buf=NULL, int __type=_IOFBF, size_t __size=8192);
+  int     SetvBuf (size_t __size) { return SetvBuf(NULL, _IOFBF, __size); }
 
-  int     feof_   ();
-  int     ferror_ ();
+  int     feof_   () { return feof(fp); }
+  int     ferror_ () { return ferror(fp); }
 
 
   //  ----------------------------------------------------------------
 
   #ifdef __GOLDWARE_HAS_BOOL
-  gfile& operator>> (bool& i);
+  gfile& operator>> (bool& i)     { Fread(&i, sizeof(bool)); return *this; }
   #endif
-  gfile& operator>> (uint8_t& i);
-  gfile& operator>> (uint16_t& i);
-  gfile& operator>> (uint32_t& i);
+  gfile& operator>> (uint8_t& i)  { Fread(&i, sizeof(uint8_t)); return *this; }
+  gfile& operator>> (uint16_t& i) { Fread(&i, sizeof(uint16_t)); return *this; }
+  gfile& operator>> (uint32_t& i) { Fread(&i, sizeof(uint32_t)); return *this; }
   #if !defined(__CYGWIN__)
-  gfile& operator>> (unsigned long& i);
+  gfile& operator>> (unsigned long& i) { Fread(&i, sizeof(unsigned long)); return *this; }
   #endif
 
   gfile& operator>> (char& i)     { return operator>>((uint8_t&)i); }
@@ -171,13 +170,13 @@ public:
   #endif
 
   #ifdef __GOLDWARE_HAS_BOOL
-  gfile& operator<< (bool o);
+  gfile& operator<< (bool o)      { Fwrite(&o, sizeof(o)); return *this; }
   #endif
-  gfile& operator<< (uint8_t o);
-  gfile& operator<< (uint16_t o);
-  gfile& operator<< (uint32_t o);
+  gfile& operator<< (uint8_t o)   { Fwrite(&o, sizeof(o)); return *this; }
+  gfile& operator<< (uint16_t o)  { Fwrite(&o, sizeof(o)); return *this; }
+  gfile& operator<< (uint32_t o)  { Fwrite(&o, sizeof(o)); return *this; }
   #if !defined(__CYGWIN__)
-  gfile& operator<< (unsigned long o);
+  gfile& operator<< (unsigned long o) { Fwrite(&o, sizeof(o)); return *this; }
   #endif
 
   gfile& operator<< (char o)      { return operator<<((uint8_t )o); }
@@ -189,68 +188,7 @@ public:
   #if !defined(__CYGWIN__)
   gfile& operator<< (long o)      { return operator<<((unsigned long)o); }
   #endif
-
 };
-
-
-//  ------------------------------------------------------------------
-//  Inline implementations
-
-
-//  ------------------------------------------------------------------
-
-inline long gfile::lseek(long __record, long __recordsize, int __direction) {
-
-  return lseek(__record*__recordsize, __direction);
-}
-
-
-//  ------------------------------------------------------------------
-
-inline long gfile::lseekset(long __record, long __recordsize) {
-
-  return lseek(__record*__recordsize, SEEK_SET);
-}
-
-
-//  ------------------------------------------------------------------
-
-inline int gfile::ferror_() {
-
-  return ferror(fp);
-}
-
-
-//  ------------------------------------------------------------------
-
-inline int gfile::fseek(long __record, long __recordsize, int __direction) {
-
-  return fseek(__record*__recordsize, __direction);
-}
-
-
-//  ------------------------------------------------------------------
-
-inline int gfile::fseekset(long __record, long __recordsize) {
-
-  return fseek(__record*__recordsize, SEEK_SET);
-}
-
-
-//  ------------------------------------------------------------------
-
-inline void gfile::rewind() {
-
-  ::rewind(fp);
-}
-
-
-//  ------------------------------------------------------------------
-
-inline int gfile::feof_() {
-
-  return feof(fp);
-}
 
 
 //  ------------------------------------------------------------------

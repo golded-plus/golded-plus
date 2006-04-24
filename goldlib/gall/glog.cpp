@@ -62,17 +62,18 @@ glog::~glog() {
 
 //  ------------------------------------------------------------------
 
-int glog::open(const char* filename, const char* name, const char* shortname, int type, uint bufsz, int shflag) {
-
-  fp.fopen(filename, "at", shflag);
-  if(fp.status) {
+int glog::open(const char* filename, const char* name, const char* shortname, int type, uint bufsz, int shflag)
+{
+  fp.Fopen(filename, "at", shflag);
+  if (fp.status)
+  {
     status = fp.status;
     return status;
   }
 
   count++;
   bufsize = bufsz;
-  fp.setvbuf(NULL, bufsize ? _IOFBF : _IONBF, bufsize);
+  fp.SetvBuf(NULL, bufsize ? _IOFBF : _IONBF, bufsize);
 
   init(name, shortname, type);
 
@@ -82,9 +83,9 @@ int glog::open(const char* filename, const char* name, const char* shortname, in
 
 //  ------------------------------------------------------------------
 
-void glog::close() {
-
-  fp.fclose();
+void glog::close()
+{
+  fp.Fclose();
   count--;
 }
 
@@ -138,8 +139,8 @@ void glog::printf(const char* format, ...) {
         break;
     }
 
-    if(fp.isopen())
-      fp.printf("%s", logbuf);
+    if (fp.isopen())
+      fp.Printf("%s", logbuf);
   }
 
   *buf = NUL;
@@ -172,9 +173,10 @@ void glog::printf(const char* format, ...) {
       sprintf(logbuf, "%s  %s", strftimei(timebuf, 20, "%m/%d/%y %H:%M", &time_now), buf+2);
       break;
   }
-  if(fp.isopen()) {
-    fp.printf("%s\n", logbuf);
-    fp.fflush();
+  if (fp.isopen())
+  {
+    fp.Printf("%s\n", logbuf);
+    fp.Fflush();
   }
   if(storelines != -1) {
     if(storelines < GLOG_STORELINES)

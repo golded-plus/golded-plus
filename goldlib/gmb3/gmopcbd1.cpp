@@ -80,16 +80,16 @@ void PcbInit(const char* path, int userno) {
   *_cnamespath = NUL;
 
   // Open PCBOARD.DAT
-  gfile fp;
   const char* _file = AddPath(_path, "PCBOARD.DAT");
-  fp.fopen(_file, "rt", WideSharemode);
-  if(fp.isopen()) {
-
+  gfile fp(_file, "rt", WideSharemode);
+  if (fp.isopen())
+  {
     // Get some paths/filenames
     int _line = 0;
     char _buf[256];
-    fp.setvbuf(NULL, _IOFBF, 8192);
-    while(fp.fgets(_buf, sizeof(_buf))) {
+    fp.SetvBuf(NULL, _IOFBF, 8192);
+    while (fp.Fgets(_buf, sizeof(_buf)))
+    {
       _line++;
       if(_line == 28)
         strxcpy(pcbwide->usersidxpath, strbtrim(_buf), sizeof(Path));
@@ -102,32 +102,34 @@ void PcbInit(const char* path, int userno) {
       else if(_line == 208)
         pcbwide->foreign = atoi(_buf);
     }
-    fp.fclose();
+    fp.Fclose();
 
     // Open CNAMES.@@@
     _file = AddPath(_cnamespath, ".@@@");
-    fp.fopen(_file, "rb", WideSharemode);
+    fp.Fopen(_file, "rb", WideSharemode);
 
     // Get board numbers for lastread indexing in the userfiles
     word _recsize = 0;
-    fp.setvbuf(NULL, _IOFBF, 8192);
-    fp.fread(&_recsize, 2);
-    if(_recsize) {
+    fp.SetvBuf(NULL, _IOFBF, 8192);
+    fp.Fread(&_recsize, 2);
+    if (_recsize)
+    {
       PcbConf* _cnames = (PcbConf*)throw_calloc(1, _recsize);
       int _rec = 0;
-      pcbwide->numareas = (int)((fp.filelength()-2)/_recsize);
+      pcbwide->numareas = (int)((fp.FileLength()-2)/_recsize);
       pcbwide->confbytelen = (pcbwide->numareas/8) + ((pcbwide->numareas%8) != 0 ? 1 : 0);
       if(pcbwide->confbytelen < 5)
         pcbwide->confbytelen = 5;
       pcbwide->extconflen = pcbwide->confbytelen - 5;
       pcbwide->lastread = (int32_t*)throw_calloc(pcbwide->numareas, sizeof(int32_t));
-      while(fp.fread(_cnames, _recsize) == 1) {
+      while (fp.Fread(_cnames, _recsize) == 1)
+      {
         PcbAdjustArea((uint)_rec, _cnames->msgfile);
         _rec++;
       }
       throw_free(_cnames);
     }
-    fp.fclose();
+    fp.Fclose();
 
     const char* _username = WideUsername[0];
     pcbwide->user->fh = ::sopen(AddPath(_path, pcbwide->users), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);

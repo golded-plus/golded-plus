@@ -115,17 +115,20 @@ int AreaList::AreaScan(int mode, uint currno, int pmscan, int& pmails, int& pmar
   int groupid = -1;
 
   // Load scan list into a string bag
-  if(mode == SCAN_LIST) {
-    gfile fp;
+  if (mode == SCAN_LIST)
+  {
     Path tmp;
     strcpy(tmp, file ? file : ListScan.File());
     char* listfile;
     char* option=tmp;
     getkeyval(&listfile, &option);
-    fp.fopen(AddPath(CFG->goldpath, listfile), "rt");
-    if(fp.isopen()) {
+    gfile fp(AddPath(CFG->goldpath, listfile), "rt");
+    
+    if (fp.isopen())
+    {
       char buf[512];
-      while(fp.fgets(buf, sizeof(buf))) {
+      while (fp.Fgets(buf, sizeof(buf)))
+      {
         strbtrim(buf);
         char* val = strtok(buf, ", \t");
         while(val) {
@@ -133,8 +136,8 @@ int AreaList::AreaScan(int mode, uint currno, int pmscan, int& pmails, int& pmar
           val = strtok(NULL, ", \t");
         }
       }
-      fp.fclose();
-      if(((*option == '-') or (*option == '/')) and strieql(option+1, "delete"))
+      fp.Fclose();
+      if (((*option == '-') or (*option == '/')) and strieql(option+1, "delete"))
         remove(listfile);
     }
   }

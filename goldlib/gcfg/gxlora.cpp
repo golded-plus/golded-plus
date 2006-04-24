@@ -66,17 +66,16 @@ void gareafile::ReadLoraBBS(char* tag) {
   if(*_path == NUL)
     strcpy(_path, areapath);
 
-  gfile fp;
   const char* _file = AddPath(_path, "config.dat");
-  fp.fopen(_file, "rb");
+  gfile fp(_file, "rb");
   if (fp.isopen())
   {
     if (not quiet)
       STD_PRINTNL("* Reading " << _file);
 
     _configuration* cfg = (_configuration*)throw_calloc(1, sizeof(_configuration));
-    fp.fread(cfg, sizeof(_configuration));
-    fp.fclose();
+    fp.Fread(cfg, sizeof(_configuration));
+    fp.Fclose();
 
     //CfgUsername(cfg->sysop);
 
@@ -134,18 +133,18 @@ void gareafile::ReadLoraBBS(char* tag) {
     }
 
     _file = AddPath(_path, "sysmsg.dat");
-    fp.fopen(_file, "rb");
+    fp.Fopen(_file, "rb");
     if (fp.isopen())
     {
-      fp.setvbuf(NULL, _IOFBF, 8192);
+      fp.SetvBuf(NULL, _IOFBF, 8192);
 
       if (not quiet)
         STD_PRINTNL("* Reading " << _file);
 
       _sysmsg* sysmsg = (_sysmsg*)throw_calloc(1, sizeof(_sysmsg));
 
-      while(fp.fread(sysmsg, sizeof(_sysmsg)) == 1) {
-
+      while (fp.Fread(sysmsg, sizeof(_sysmsg)) == 1)
+      {
         if(sysmsg->passthrough)
           continue;
 
@@ -196,7 +195,7 @@ void gareafile::ReadLoraBBS(char* tag) {
         AddNewArea(aa);
       }
       throw_free(sysmsg);
-      fp.fclose();
+      fp.Fclose();
     }
     throw_free(cfg);
   }

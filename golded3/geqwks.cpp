@@ -34,25 +34,27 @@ static void ReadGldFile() {
 
   if(QWK->FoundBBS()) {
 
-    gfile fp;
     Path gldfile;
 
     QWK->ResetConfNo();
 
     sprintf(gldfile, "%s%s.GLD", CFG->goldpath, QWK->BbsID());
-    fp.fopen(gldfile, "rt");
-    if(fp.isopen()) {
+    gfile fp(gldfile, "rt");
+
+    if (fp.isopen())
+    {
       char* key;
       char* val;
       char buf[256];
-      while(fp.fgets(buf, sizeof(buf))) {
+      while (fp.Fgets(buf, sizeof(buf)))
+      {
         val = strtrim(buf);
         getkeyval(&key, &val);
         strtrim(StripQuotes(val));
         if(QWK->FindEcho(val))
           QWK->ConfNo(atoi(key));
       }
-      fp.fclose();
+      fp.Fclose();
     }
   }
 }
@@ -65,7 +67,6 @@ int ImportQWK() {
   if(not *QWK->ImportPath())
     return 0;
 
-  gfile fp;
   gfile fpb;   // For BBSID.GLD
   Path file;
   Path gldfile;
@@ -73,22 +74,24 @@ int ImportQWK() {
 
   // Parse the control file
   strcpy(file, AddPath(QWK->ImportPath(), "CONTROL.DAT"));
-  fp.fopen(file, "rt");
-  if(fp.isopen()) {
+  gfile fp(file, "rt");
+  if (fp.isopen())
+  {
     char buf[256];
     int line = 0;
     int confno = 0;
     int confcnt = 0;
     int confnos = 0;
-    while(fp.fgets(buf, sizeof(buf))) {
-
+    while (fp.Fgets(buf, sizeof(buf)))
+    {
       line++;
       strtrim(buf);
 
       if((line >= 12) and (confcnt < confnos)) {
-        if(line % 2) {
-          if(fpb.isopen())
-            fpb.printf("%u \"%s\"\n", confno, buf);
+        if(line % 2)
+        {
+          if (fpb.isopen())
+            fpb.Printf("%u \"%s\"\n", confno, buf);
           confcnt++;
         }
         else
@@ -99,15 +102,15 @@ int ImportQWK() {
         if(ptr) {
           strxcpy(bbsid, strskip_wht(ptr+1), 9);
           sprintf(gldfile, "%s%s.GLD", CFG->goldpath, bbsid);
-          fpb.fopen(gldfile, "wt");
+          fpb.Fopen(gldfile, "wt");
         }
       }
       else if(line == 11)
         confnos = atoi(buf) + 1;
     }
-    if(fpb.isopen())
-      fpb.fclose();
-    fp.fclose();
+
+    fpb.Fclose();
+    fp.Fclose();
     remove(file);
   }
 
@@ -122,11 +125,11 @@ int ImportQWK() {
   OrigArea = CurrArea = -1;
 
   strcpy(file, AddPath(QWK->ImportPath(), "MESSAGES.DAT"));
-  fp.fopen(file, "rb");
-  if(fp.isopen()) {
-
+  fp.Fopen(file, "rb");
+  if (fp.isopen())
+  {
     // Skip past product info header
-    fp.fseekset(sizeof(QWKHdr));
+    fp.FseekSet(sizeof(QWKHdr));
 
     QWKHdr hdr;
 
@@ -141,7 +144,7 @@ int ImportQWK() {
       ResetMsg(msg);
 
       memset(&hdr, 0, sizeof(QWKHdr));
-      more = 1 == fp.fread(&hdr, sizeof(QWKHdr));
+      more = 1 == fp.Fread(&hdr, sizeof(QWKHdr));
       if(more) {
 
         char blocks[7];
@@ -167,9 +170,10 @@ int ImportQWK() {
               CurrArea = AL.AreaNoToId(areano);
               tosstobadmsgs = true;
             }
-            else {
+            else
+            {
               tosstobadmsgs = -1;
-              fp.fseek(msglen, SEEK_CUR);
+              fp.Fseek(msglen, SEEK_CUR);
             }
           }
         }
@@ -225,7 +229,7 @@ int ImportQWK() {
             sprintf(msg->txt, "AREA:%s_%u\r", bbsid, hdr.confno);
             txtptr += strlen(msg->txt);
           }
-          fp.fread(txtptr, msglen);
+          fp.Fread(txtptr, msglen);
           strtrim(txtptr);
           strchg(txtptr, 0xE3, 0x0D);
 
@@ -315,22 +319,24 @@ int ImportQWK() {
     ResetMsg(msg);
     throw_free(msg);
 
-    fp.fclose();
+    fp.Fclose();
     remove(file);
 
-    if(*QWK->TossLog()) {
-      fp.fopen(QWK->TossLog(), "at");
-      if(fp.isopen()) {
+    if (*QWK->TossLog())
+    {
+      fp.Fopen(QWK->TossLog(), "at");
+      if (fp.isopen())
+      {
         uint na = 0;
         while(na < AL.size()) {
           if(AL[na]->istossed) {
             AL[na]->istossed = false;
             AL[na]->isunreadchg = true;
-            fp.printf("%s\n", AL[na]->echoid());
+            fp.Printf("%s\n", AL[na]->echoid());
           }
           na++;
         }
-        fp.fclose();
+        fp.Fclose();
       }
     }
 
@@ -389,7 +395,7 @@ int ExportQwkMsg(GMsg* msg, gfile& fp, int confno, int& pktmsgno) {
   hdr.pktmsgno = (word)++pktmsgno;
 
   // Write preliminary header
-  fp.fwrite(&hdr, sizeof(QWKHdr));
+  fp.Fwrite(&hdr, sizeof(QWKHdr));
 
   // Write body
   int level = 0;
@@ -418,9 +424,10 @@ int ExportQwkMsg(GMsg* msg, gfile& fp, int confno, int& pktmsgno) {
   while(line) {
     if(line->type & GLINE_KLUDGE) {
       if(AA->isinternet()) {
-        if((line->kludge == GKLUD_RFC) or (line->kludge == 0)) {
+        if ((line->kludge == GKLUD_RFC) or (line->kludge == 0))
+        {
           XlatStr(mbuf, line->txt.c_str(), level, CharTable);
-          msglen += fp.printf("%s%c", mbuf, qwkterm);
+          msglen += fp.Printf("%s%c", mbuf, qwkterm);
         }
         else if(line->type & GLINE_WRAP) {
           while(line->next and (line->type & GLINE_WRAP))
@@ -428,9 +435,10 @@ int ExportQwkMsg(GMsg* msg, gfile& fp, int confno, int& pktmsgno) {
         }
       }
       else {
-        if((line->type & GLINE_KLUDGE) and QWK->KludgesAllowed()) {
+        if ((line->type & GLINE_KLUDGE) and QWK->KludgesAllowed())
+        {
           XlatStr(mbuf, line->txt.c_str(), level, CharTable);
-          msglen += fp.printf("%s%c", mbuf, qwkterm);
+          msglen += fp.Printf("%s%c", mbuf, qwkterm);
         }
       }
     }
@@ -438,16 +446,16 @@ int ExportQwkMsg(GMsg* msg, gfile& fp, int confno, int& pktmsgno) {
   }
 
   // Write blank line after header lines
-  if(AA->Internetrfcbody()) {
-    msglen += fp.printf("%c", qwkterm);
-  }
+  if (AA->Internetrfcbody())
+    msglen += fp.Printf("%c", qwkterm);
 
   // Write all message lines
   line = msg->lin;
   while(line) {
-    if(not (line->type & GLINE_KLUDGE)) {
+    if (not (line->type & GLINE_KLUDGE))
+    {
       XlatStr(mbuf, line->txt.c_str(), level, CharTable);
-      msglen += fp.printf("%s%c", mbuf, qwkterm);
+      msglen += fp.Printf("%s%c", mbuf, qwkterm);
     }
     line = line->next;
   }
@@ -459,16 +467,17 @@ int ExportQwkMsg(GMsg* msg, gfile& fp, int confno, int& pktmsgno) {
   memcpy(hdr.blocks, buf, strlen(buf));
 
   // Write padding spaces at the end if necessary
-  if(endlen) {
+  if (endlen)
+  {
     char padding[128];
     memset(padding, ' ', 128);
-    fp.fwrite(padding, 128-endlen);
+    fp.Fwrite(padding, 128-endlen);
   }
 
   // Re-write the header
-  fp.fseek(-(blocks*128), SEEK_CUR);
-  fp.fwrite(&hdr, sizeof(QWKHdr));
-  fp.fseek((blocks-1)*128, SEEK_CUR);
+  fp.Fseek(-(blocks*128), SEEK_CUR);
+  fp.Fwrite(&hdr, sizeof(QWKHdr));
+  fp.Fseek((blocks-1)*128, SEEK_CUR);
 
   // Mark msg as sent
   msg->attr.snt1();
@@ -529,10 +538,12 @@ int ExportQWK() {
 
   // Get the scan list
   strcpy(scanfile, AddPath(CFG->goldpath, "GOLDQWK.LST"));
-  fp.fopen(scanfile, "rt");
-  if(fp.isopen()) {
+  fp.Fopen(scanfile, "rt");
+  if (fp.isopen())
+  {
     char buf[256];
-    while(fp.fgets(buf, sizeof(buf))) {
+    while (fp.Fgets(buf, sizeof(buf)))
+    {
       char* ptr = strchr(buf, ' ');
       if(ptr) {
         *ptr++ = NUL;
@@ -541,7 +552,7 @@ int ExportQWK() {
           AL[a]->Expo.Add(atol(ptr));
       }
     }
-    fp.fclose();
+    fp.Fclose();
   }
 
   // Export from the QWK areas
@@ -550,14 +561,16 @@ int ExportQWK() {
       ReadGldFile();
       Path replyfile;
       int pktmsgno = 0;
-      if(QWK->FirstConf()) {
+      if (QWK->FirstConf())
+      {
         sprintf(replyfile, "%s%s.MSG", QWK->ExportPath(), QWK->BbsID());
-        fp.fopen(replyfile, "wb");
-        if(fp.isopen()) {
+        fp.Fopen(replyfile, "wb");
+        if (fp.isopen())
+        {
           char firstrec[128];
           memset(firstrec, ' ', 128);
           memcpy(firstrec, QWK->BbsID(), strlen(QWK->BbsID()));
-          fp.fwrite(firstrec, 128);
+          fp.Fwrite(firstrec, 128);
           pktmsgno = 0;
         }
         do {
@@ -568,8 +581,9 @@ int ExportQWK() {
           }
         } while(QWK->NextConf());
       }
-      if(fp.isopen()) {
-        fp.fclose();
+      if (fp.isopen())
+      {
+        fp.Fclose();
         if(pktmsgno == 0)
           remove(replyfile);
       }

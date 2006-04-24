@@ -3272,7 +3272,7 @@ char* ParseInternetAddr(char* __string, char* __name, char* __addr, bool detect_
     char* begaddr = endchar;
     if(*endchar == '<') {
       begaddr++;
-      endchar--;
+      if (endchar > __string) endchar--;
     }
     __string = strskip_wht(__string);
     strbtrim(strxcpy(__name, __string, MinV((size_t)(endchar-__string)+1, (size_t)sizeof(INam))));

@@ -66,8 +66,7 @@ void gareafile::ReadInterMail(char* tag) {
 
   const char* _file = AddPath(_path, "fd.sys");
 
-  gfile fp;
-  fp.fopen(_file, "rb");
+  gfile fp(_file, "rb");
   if (fp.isopen())
   {
     _ctl* ctl = (_ctl*)throw_calloc(1, sizeof(_ctl));
@@ -75,11 +74,11 @@ void gareafile::ReadInterMail(char* tag) {
     if (not quiet)
       STD_PRINTNL("* Reading " << _file);
 
-    fp.fread(ctl, sizeof(_ctl));
+    fp.Fread(ctl, sizeof(_ctl));
 
-    if(not memcmp(ctl->fingerprint, "JoHo", 5) and (ctl->sysrev == IM_THISREV)) {
-
-      fp.fclose();
+    if (not memcmp(ctl->fingerprint, "JoHo", 5) and (ctl->sysrev == IM_THISREV))
+    {
+      fp.Fclose();
 
       CfgHudsonpath(ctl->e.qbase);
 
@@ -136,7 +135,7 @@ void gareafile::ReadInterMail(char* tag) {
       if(fexist(_file)) {
 
         _file = AddPath(ctl->s.systempath, "imfolder.cfg");
-        fp.fopen(_file, "rb");
+        fp.Fopen(_file, "rb");
         if (fp.isopen())
         {
           if (not quiet)
@@ -144,8 +143,8 @@ void gareafile::ReadInterMail(char* tag) {
 
           FOLDER* _folder = (FOLDER*)throw_calloc(1, sizeof(FOLDER));
 
-          while(fp.fread(_folder, sizeof(FOLDER)) == 1) {
-
+          while (fp.Fread(_folder, sizeof(FOLDER)) == 1)
+          {
             aa.reset();
             switch(_folder->ftype) {
               case F_MSG:     aa.basetype = "OPUS";     break;
@@ -174,13 +173,13 @@ void gareafile::ReadInterMail(char* tag) {
             }
           }
           throw_free(_folder);
-          fp.fclose();
+          fp.Fclose();
         }
       }
-      else {
-
+      else
+      {
         _file = AddPath(ctl->s.systempath, "folder.cfg");
-        fp.fopen(_file, "rb");
+        fp.Fopen(_file, "rb");
         if (fp.isopen())
         {
           if (not quiet)
@@ -188,7 +187,8 @@ void gareafile::ReadInterMail(char* tag) {
 
           OLDFOLDER* _folder = (OLDFOLDER*)throw_calloc(1, sizeof(OLDFOLDER));
 
-          while(fp.fread(_folder, sizeof(OLDFOLDER)) == 1) {
+          while (fp.Fread(_folder, sizeof(OLDFOLDER)) == 1)
+          {
             long _behave = _folder->behave;
             if(not (DELETED & _behave)) {
 
@@ -216,7 +216,7 @@ void gareafile::ReadInterMail(char* tag) {
             }
           }
           throw_free(_folder);
-          fp.fclose();
+          fp.Fclose();
         }
       }
     }

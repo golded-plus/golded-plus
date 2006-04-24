@@ -84,9 +84,8 @@ void gareafile::ReadPCBoard(char* tag) {
 
   CfgPcboardpath(_path);
 
-  gfile fp;
   const char* _file = AddPath(_path, "pcboard.dat");
-  fp.fopen(_file, "rt");
+  gfile fp(_file, "rt");
   if (fp.isopen())
   {
     if (not quiet)
@@ -95,7 +94,8 @@ void gareafile::ReadPCBoard(char* tag) {
     int _line = 0;
 
     char _buf[256];
-    while(fp.fgets(_buf, sizeof(_buf))) {
+    while (fp.Fgets(_buf, sizeof(_buf)))
+    {
       _line++;
       switch(_line) {
         case 28:  // Location of User INDEX Files
@@ -113,44 +113,45 @@ void gareafile::ReadPCBoard(char* tag) {
       }
     }
 
-    fp.fclose();
+    fp.Fclose();
 
-    if(*_fidopath) {
+    if (*_fidopath)
+    {
       const char* _file = AddPath(_fidopath, "pcbfido.cfg");
-      fp.fopen(_file, "rb");
+      fp.Fopen(_file, "rb");
       if (fp.isopen())
       {
         if (not quiet)
           STD_PRINTNL("* Reading " << _file);
 
         // Get configuration file version
-        fp.fread(&fido_version, 2);
+        fp.Fread(&fido_version, 2);
 
         if(fido_version == 2) {
 
           word numrecs = 0;
 
           // Get areas
-          fp.fread(&numrecs, 2);
+          fp.Fread(&numrecs, 2);
           numareas = numrecs;
           areap = (PcbFidoArea*)throw_calloc(1+numrecs, sizeof(PcbFidoArea));
-          fp.fread(areap, sizeof(PcbFidoArea), numrecs);
+          fp.Fread(areap, sizeof(PcbFidoArea), numrecs);
 
           // Skip archivers
-          fp.fseek(sizeof(PcbFidoArchivers), SEEK_CUR);
+          fp.Fseek(sizeof(PcbFidoArchivers), SEEK_CUR);
 
           // Get directories
           dirp = (PcbFidoDirectories*)throw_calloc(1, sizeof(PcbFidoDirectories));
-          fp.fread(dirp, sizeof(PcbFidoDirectories));
+          fp.Fread(dirp, sizeof(PcbFidoDirectories));
 
           // Skip EMSI profile
-          fp.fseek(sizeof(PcbFidoEmsiData), SEEK_CUR);
+          fp.Fseek(sizeof(PcbFidoEmsiData), SEEK_CUR);
 
           // Get akas
-          fp.fread(&numrecs, 2);
+          fp.Fread(&numrecs, 2);
           akanumrecs = numrecs;
           akap = (PcbFidoAddress*)throw_calloc(1+numrecs, sizeof(PcbFidoAddress));
-          fp.fread(akap, sizeof(PcbFidoAddress), numrecs);
+          fp.Fread(akap, sizeof(PcbFidoAddress), numrecs);
           int akano = 0;
           while(akano < numrecs) {
             CfgAddress(akap[akano].nodestr);
@@ -160,41 +161,43 @@ void gareafile::ReadPCBoard(char* tag) {
         else if(fido_version == 3) {
 
           dir3 = (PcbDirectories*)throw_calloc(1, sizeof(PcbDirectories));
-          fp.fread(dir3, sizeof(PcbDirectories));
-          fp.fclose();
+          fp.Fread(dir3, sizeof(PcbDirectories));
+          fp.Fclose();
 
           _file = AddPath(_fidopath, "areas.dat");
-          fp.fopen(_file, "rb");
+          fp.Fopen(_file, "rb");
           if (fp.isopen())
           {
             if (not quiet)
               STD_PRINTNL("* Reading " << _file);
 
             word cfgver = 0;
-            fp.fread(&cfgver, 2);
-            if(cfgver == 3) {
-              word numrecs = (word)(fp.filelength() / sizeof(PcbAreasDat));
+            fp.Fread(&cfgver, 2);
+            if (cfgver == 3)
+            {
+              word numrecs = (word)(fp.FileLength() / sizeof(PcbAreasDat));
               area3 = (PcbAreasDat*)throw_calloc(1+numrecs, sizeof(PcbAreasDat));
-              fp.fread(area3, sizeof(PcbAreasDat), numrecs);
+              fp.Fread(area3, sizeof(PcbAreasDat), numrecs);
               numareas = numrecs;
             }
-            fp.fclose();
+            fp.Fclose();
           }
 
           _file = AddPath(_fidopath, "akas.dat");
-          fp.fopen(_file, "rb");
+          fp.Fopen(_file, "rb");
           if (fp.isopen())
           {
             if (not quiet)
               STD_PRINTNL("* Reading " << _file);
 
             word cfgver = 0;
-            fp.fread(&cfgver, 2);
-            if(cfgver == 3) {
-              word numrecs = (word)(fp.filelength() / sizeof(PcbAkasDat));
+            fp.Fread(&cfgver, 2);
+            if (cfgver == 3)
+            {
+              word numrecs = (word)(fp.FileLength() / sizeof(PcbAkasDat));
               akanumrecs = numrecs;
               aka3 = (PcbAkasDat*)throw_calloc(1+numrecs, sizeof(PcbAkasDat));
-              fp.fread(aka3, sizeof(PcbAkasDat), numrecs);
+              fp.Fread(aka3, sizeof(PcbAkasDat), numrecs);
               int akano = 0;
               while(akano < numrecs) {
                 char abuf[40];
@@ -202,28 +205,29 @@ void gareafile::ReadPCBoard(char* tag) {
                 akano++;
               }
             }
-            fp.fclose();
+            fp.Fclose();
           }
 
           _file = AddPath(_fidopath, "origins.dat");
-          fp.fopen(_file, "rb");
+          fp.Fopen(_file, "rb");
           if (fp.isopen())
           {
             if (not quiet)
               STD_PRINTNL("* Reading " << _file);
 
             word cfgver = 0;
-            fp.fread(&cfgver, 2);
-            if(cfgver == 3) {
-              word numrecs = (word)(fp.filelength() / sizeof(PcbOriginsDat));
+            fp.Fread(&cfgver, 2);
+            if (cfgver == 3)
+            {
+              word numrecs = (word)(fp.FileLength() / sizeof(PcbOriginsDat));
               origin3 = (PcbOriginsDat*)throw_calloc(1+numrecs, sizeof(PcbOriginsDat));
-              fp.fread(origin3, sizeof(PcbOriginsDat), numrecs);
+              fp.Fread(origin3, sizeof(PcbOriginsDat), numrecs);
             }
-            fp.fclose();
+            fp.Fclose();
           }
         }
 
-        fp.fclose();
+        fp.Fclose();
       }
 
       Path netmailpath;
@@ -255,7 +259,7 @@ void gareafile::ReadPCBoard(char* tag) {
     }
 
     _file = AddPath(_cnamespath, ".@@@");
-    fp.fopen(_file, "rb");
+    fp.Fopen(_file, "rb");
     if (fp.isopen())
     {
       if (not quiet)
@@ -263,21 +267,23 @@ void gareafile::ReadPCBoard(char* tag) {
 
       gfile fp2;
       _file = AddPath(_cnamespath, ".add");
-      fp2.fopen(_file, "rb");
+      fp2.Fopen(_file, "rb");
       if (fp2.isopen())
       {
         if (not quiet)
           STD_PRINTNL("* Reading " << _file);
 
         word _recsize = 0;
-        fp.fread(&_recsize, 2);
+        fp.Fread(&_recsize, 2);
 
         int confno = 0;
         PcbConf* _cnames = (PcbConf*)throw_calloc(1, _recsize);
         PcbAddConf* _cnamesadd = (PcbAddConf*)throw_calloc(1, sizeof(PcbAddConf));
-        while(fp.fread(_cnames, _recsize) == 1) {
-          fp2.fread(_cnamesadd, sizeof(PcbAddConf));
-          if(*_cnames->name and *_cnames->msgfile) {
+        while (fp.Fread(_cnames, _recsize) == 1)
+        {
+          fp2.Fread(_cnamesadd, sizeof(PcbAddConf));
+          if (*_cnames->name and *_cnames->msgfile)
+          {
             aa.reset();
             aa.basetype = "PCBOARD";
             switch(_cnamesadd->conftype) {
@@ -351,10 +357,10 @@ void gareafile::ReadPCBoard(char* tag) {
         throw_free(_cnamesadd);
         throw_free(_cnames);
 
-        fp2.fclose();
+        fp2.Fclose();
       }
 
-      fp.fclose();
+      fp.Fclose();
     }
   }
 

@@ -293,30 +293,29 @@ uint GTag::ToReln(uint32_t __tagn) {
 
 //  ------------------------------------------------------------------
 
-void GTag::Load(gfile& fp) {
-
+void GTag::Load(gfile& fp)
+{
   dword val;
 
-  fp.fread(&val, sizeof(dword));
+  fp.Fread(&val, sizeof(dword));
   count = (uint) val;
-  if(count) {
+  if (count)
+  {
     Resize(count);
-    fp.fread(tag, sizeof(uint32_t), count);
+    fp.Fread(tag, sizeof(uint32_t), count);
   }
 }
 
 
 //  ------------------------------------------------------------------
 
-void GTag::Save(gfile& fp) {
+void GTag::Save(gfile& fp)
+{
+  dword val = (dword) count;
+  fp.Fwrite(&val, sizeof(dword));
 
-  dword val;
-
-  val = (dword) count;
-  fp.fwrite(&val, sizeof(dword));
-
-  if(tag and count)
-    fp.fwrite(tag, sizeof(uint32_t), count);
+  if (tag and count)
+    fp.Fwrite(tag, sizeof(uint32_t), count);
 }
 
 

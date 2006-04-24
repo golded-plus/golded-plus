@@ -575,15 +575,16 @@ int ExternUtil(GMsg *msg, ExtUtil *extutil) {
   if(extutil->options & EXTUTIL_RELOAD) {
 
     if(not (extutil->options & EXTUTIL_KEEPCTRL)) {
-      if(*msg->tearline or *msg->origin) {
-        gfile fp;
-        fp.fopen(editorfile, "at");
-        if(fp.isopen()) {
-          if(*msg->tearline)
-            fp.printf("--- %s\n", msg->tearline);
-          if(*msg->origin)
-            fp.printf(" * Origin: %s\n", msg->origin);
-          fp.fclose();
+      if (*msg->tearline or *msg->origin)
+      {
+        gfile fp(editorfile, "at");
+        if (fp.isopen())
+        {
+          if (*msg->tearline)
+            fp.Printf("--- %s\n", msg->tearline);
+          if (*msg->origin)
+            fp.Printf(" * Origin: %s\n", msg->origin);
+          fp.Fclose();
         }
       }
     }
@@ -938,11 +939,11 @@ void TouchSemaphore() {
 
 //  ------------------------------------------------------------------
 
-void make_pathreport(const char* reportfile) {
-
-  gfile fp;
-  fp.fopen(reportfile, "wt");
-  if(fp) {
+void make_pathreport(const char* reportfile)
+{
+  gfile fp(reportfile, "wt");
+  if (fp.isopen())
+  {
     std::string path;
     ftn_addr address;
     std::vector<ftn_addr> alist;
@@ -964,7 +965,7 @@ void make_pathreport(const char* reportfile) {
         strcpy(buf, msg->By());
         strchg(buf, ' ', '_');
         std::string temp;
-        fp.printf("%s  %s  ", buf, address.make_string(temp).c_str());
+        fp.Printf("%s  %s  ", buf, address.make_string(temp).c_str());
         path = "";
         Line* line = msg->lin;
         while(line) {
@@ -978,11 +979,11 @@ void make_pathreport(const char* reportfile) {
           for(int i=0; i<links.size(); i++)
             address = links[i];
         }
-        fp.printf("%s\n", path.c_str());
+        fp.Printf("%s\n", path.c_str());
       }
     }
     w_progress(MODE_QUIT, BLACK_|_BLACK, 0, 0, NULL);
-    fp.fclose();
+    fp.Fclose();
     ResetMsg(msg);
     throw_free(msg);
   }

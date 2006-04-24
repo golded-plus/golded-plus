@@ -678,7 +678,7 @@ int wpickstr(int srow, int scol, int erow, int ecol, int btype, vattr bordattr, 
         // position for the item that begins with the same ASCII
         // character as the keypress.  If not found after current
         // position, search from the beginning for a match
-        ch = (char)g_toupper((char)xch);
+        ch = (char)g_toupper(char(xch & 0xFF));
         if(!ch)
           break;
         for(i=r.curr+1; i<r.numelems; i++)

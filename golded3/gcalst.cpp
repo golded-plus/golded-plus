@@ -144,21 +144,20 @@ Area* AreaList::NewArea(const char *basetype) {
 //  ------------------------------------------------------------------
 //  Write lastreads for the next session
 
-void AreaList::WriteGoldLast() {
-
+void AreaList::WriteGoldLast()
+{
   word GOLDLAST_VER = CUR_GOLDLAST_VER;
-  gfile fp;
   ggoldlast entry;
   Path lst;
 
   strcpy(lst, AddPath(CFG->goldpath, CFG->goldlast));
 
-  fp.fopen(lst, "wb", CFG->sharemode);
-  if(fp.isopen()) {
-
-    fp.setvbuf(NULL, _IOFBF, 8192);
-    fp.fwrite(&GOLDLAST_VER, sizeof(word));
-    fp.fwrite(AL.alistselections, sizeof(AL.alistselections));
+  gfile fp(lst, "wb", CFG->sharemode);
+  if (fp.isopen())
+  {
+    fp.SetvBuf(NULL, _IOFBF, 8192);
+    fp.Fwrite(&GOLDLAST_VER, sizeof(word));
+    fp.Fwrite(AL.alistselections, sizeof(AL.alistselections));
 
     for(area_iterator ap = idx.begin(); ap != idx.end(); ap++) {
 
@@ -178,7 +177,7 @@ void AreaList::WriteGoldLast() {
         if((*ap)->isunreadchg)
           entry.flags |= 4;
 
-        fp.fwrite(&entry, sizeof(entry));
+        fp.Fwrite(&entry, sizeof(entry));
 
         // Write variable length extensions
         (*ap)->Mark.Save(fp);
@@ -186,7 +185,7 @@ void AreaList::WriteGoldLast() {
       }
     }
 
-    fp.fclose();
+    fp.Fclose();
   }
 }
 
@@ -194,27 +193,27 @@ void AreaList::WriteGoldLast() {
 //  ------------------------------------------------------------------
 //  Read the lastreads from the last session
 
-void AreaList::ReadGoldLast() {
-
+void AreaList::ReadGoldLast()
+{
   word GOLDLAST_VER;
-  gfile fp;
   ggoldlast entry;
   
-  fp.fopen(AddPath(CFG->goldpath, CFG->goldlast), "rb", CFG->sharemode);
-  if(fp.isopen()) {
+  gfile fp(AddPath(CFG->goldpath, CFG->goldlast), "rb", CFG->sharemode);
+  if (fp.isopen())
+  {
+    fp.SetvBuf(NULL, _IOFBF, 8192);
+    fp.Fread(&GOLDLAST_VER, sizeof(word));
 
-    fp.setvbuf(NULL, _IOFBF, 8192);
-    fp.fread(&GOLDLAST_VER, sizeof(word));
-
-    if(GOLDLAST_VER != CUR_GOLDLAST_VER) {
-      fp.close();
+    if (GOLDLAST_VER != CUR_GOLDLAST_VER)
+    {
+      fp.Fclose();
       return;
     }
 
-    fp.fread(AL.alistselections, sizeof(AL.alistselections));
+    fp.Fread(AL.alistselections, sizeof(AL.alistselections));
 
-    while(fp.fread(&entry, sizeof(entry))) {
-
+    while (fp.Fread(&entry, sizeof(entry)))
+    {
       bool found = false;
       
       for(area_iterator ap = idx.begin(); ap != idx.end(); ap++) {
@@ -237,17 +236,18 @@ void AreaList::ReadGoldLast() {
         }
       }
       
-      if(not found) {
+      if (not found)
+      {
         // skip stored message marks
         dword dw;
-        fp.fread(&dw, sizeof(dword));
-        fp.fseek(dw*sizeof(dword), SEEK_CUR);
-        fp.fread(&dw, sizeof(dword));
-        fp.fseek(dw*sizeof(dword), SEEK_CUR);
+        fp.Fread(&dw, sizeof(dword));
+        fp.Fseek(dw*sizeof(dword), SEEK_CUR);
+        fp.Fread(&dw, sizeof(dword));
+        fp.Fseek(dw*sizeof(dword), SEEK_CUR);
       }
     }
 
-    fp.fclose();
+    fp.Fclose();
   }
 }
 

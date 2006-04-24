@@ -384,16 +384,16 @@ int ImportSOUP() {
     const int MBUF_SIZE = 65535;
     const int LBUF_SIZE = 65535;
 
-    gfile fpa;   // For AREAS file
     gfile fpm;   // For *.MSG files
 
     int importedmsgs = 0;
 
     Path areasfile;
     strcpy(areasfile, AddPath(CFG->soupimportpath, "AREAS"));
-    fpa.fopen(areasfile, "rt");
-    if(fpa.isopen()) {
+    gfile fpa(areasfile, "rt");
 
+    if (fpa.isopen())
+    {
       char buf[2048];
 
       LoadCharset("N/A", "N/A");
@@ -403,8 +403,8 @@ int ImportSOUP() {
 
       GMsg* msg = (GMsg*)throw_calloc(1, sizeof(GMsg));
 
-      while(fpa.fgets(buf, sizeof(buf))) {
-
+      while (fpa.Fgets(buf, sizeof(buf)))
+      {
         char* delim = "\t\n";
         char* prefix   = strtok(buf,  delim);
         char* areaname = strtok(NULL, delim);
@@ -457,9 +457,9 @@ int ImportSOUP() {
           AL.SetActiveAreaNo(areano);
           OrigArea = CurrArea;
 
-          fpm.fopen(msgfile, "rb");
-          if(fpm.isopen()) {
-
+          fpm.Fopen(msgfile, "rb");
+          if (fpm.isopen())
+          {
             imported++;
 
             int msgs = 0;
@@ -477,16 +477,16 @@ int ImportSOUP() {
               // Get binary formats
 
               dword msglen = 0;
-              while(fpm.fread(&msglen, 4) == 1) {
-
+              while (fpm.Fread(&msglen, 4) == 1)
+              {
                 msglen = swapendian(msglen);
                 uint msglensz = (uint)msglen;
                 if(msglen != msglensz)
                   msglensz--;
                 msg->txt = (char*)throw_calloc(1, msglensz+1);
-                fpm.fread(msg->txt, msglensz);
-                if(msglen != msglensz)
-                  fpm.fseek(msglen-msglensz, SEEK_CUR);
+                fpm.Fread(msg->txt, msglensz);
+                if (msglen != msglensz)
+                  fpm.Fseek(msglen-msglensz, SEEK_CUR);
                 ProcessSoupMsg(lbuf, msg, msgs, areaname, tosstobadmsgs);
               }
             }
@@ -494,8 +494,8 @@ int ImportSOUP() {
 
               // Get non-binary formats
 
-              while(fpm.fgets(mbuf, MBUF_SIZE)) {
-
+              while (fpm.Fgets(mbuf, MBUF_SIZE))
+              {
                 if(msgfmt == 'u') {
                   if(strneql(mbuf, "#! rnews ", 9)) {
                     dword msglen = atol(mbuf+9);
@@ -503,9 +503,9 @@ int ImportSOUP() {
                     if(msglen != msglensz)
                       msglensz--;
                     msg->txt = (char*)throw_calloc(1, msglensz+1);
-                    fpm.fread(msg->txt, msglensz);
-                    if(msglen != msglensz)
-                      fpm.fseek(msglen-msglensz, SEEK_CUR);
+                    fpm.Fread(msg->txt, msglensz);
+                    if (msglen != msglensz)
+                      fpm.Fseek(msglen-msglensz, SEEK_CUR);
                     ProcessSoupMsg(lbuf, msg, msgs, areaname, tosstobadmsgs);
                   }
                   else {
@@ -553,10 +553,9 @@ int ImportSOUP() {
             AA->Unlock();
             AA->Close();
 
-            if(msgs)
-              importedmsgs += msgs;
+            if (msgs) importedmsgs += msgs;
 
-            fpm.fclose();
+            fpm.Fclose();
           }
         }
 
@@ -571,23 +570,22 @@ int ImportSOUP() {
       throw_free(lbuf);
       throw_free(mbuf);
 
-      fpa.fclose();
+      fpa.Fclose();
       remove(areasfile);
 
-      if(*CFG->souptosslog)
-        fpa.fopen(CFG->souptosslog, "at");
+      if (*CFG->souptosslog)
+        fpa.Fopen(CFG->souptosslog, "at");
 
       for(uint na = 0; na < AL.size(); na++) {
         if(AL[na]->istossed) {
           AL[na]->istossed = false;
           AL[na]->isunreadchg = true;
-          if(fpa.isopen())
-            fpa.printf("%s\n", AL[na]->echoid());
+          if (fpa.isopen())
+            fpa.Printf("%s\n", AL[na]->echoid());
         }
       }
 
-      if(fpa.isopen())
-        fpa.fclose();
+      fpa.Fclose();
 
       if(importedmsgs and *CFG->soupreplylinker) {
         sprintf(buf, LNG->Replylinker, CFG->soupreplylinker);
@@ -609,14 +607,15 @@ int ExportSoupMsg(GMsg* msg, char* msgfile, gfile& fp, int ismail) {
 
   NW(ismail);
 
-  if(not fp.isopen()) {
-    fp.open(AddPath(CFG->soupexportpath, msgfile), O_RDWR|O_CREAT|O_BINARY, "rb+");
-    if(fp.isopen())
-      fp.fseek(0, SEEK_END);
+  if (not fp.isopen())
+  {
+    fp.Open(AddPath(CFG->soupexportpath, msgfile), O_RDWR|O_CREAT|O_BINARY, "rb+");
+    if (fp.isopen())
+      fp.Fseek(0, SEEK_END);
   }
 
-  if(fp.isopen()) {
-
+  if (fp.isopen())
+  {
     int level = 0;
     if(CharTable)
       level = CharTable->level ? CharTable->level : 2;
@@ -625,7 +624,7 @@ int ExportSoupMsg(GMsg* msg, char* msgfile, gfile& fp, int ismail) {
 
     // Write placeholder for message length
     dword msglen = 0xFFFFFFFFL;
-    fp.fwrite(&msglen, 4);
+    fp.Fwrite(&msglen, 4);
     msglen = 0;
 
     bool qp = false;
@@ -648,7 +647,7 @@ int ExportSoupMsg(GMsg* msg, char* msgfile, gfile& fp, int ismail) {
         if((line->kludge == GKLUD_RFC) or (line->kludge == 0)) {
           const char *ltxt = line->txt.c_str();
           XlatStr(mbuf, (*ltxt == CTRL_A) ? (ltxt + 1) : ltxt, level, CharTable);
-          msglen += fp.printf("%s%s", mbuf, (line->type & GLINE_WRAP) ? "" : "\n");
+          msglen += fp.Printf("%s%s", mbuf, (line->type & GLINE_WRAP) ? "" : "\n");
         }
         else if(line->type & GLINE_WRAP) {
           while(line->next and (line->type & GLINE_WRAP))
@@ -659,7 +658,7 @@ int ExportSoupMsg(GMsg* msg, char* msgfile, gfile& fp, int ismail) {
     }
 
     // Write blank line after header lines
-    msglen += fp.printf("\n");
+    msglen += fp.Printf("\n");
 
     // Write all message lines
     line = msg->lin;
@@ -680,19 +679,19 @@ int ExportSoupMsg(GMsg* msg, char* msgfile, gfile& fp, int ismail) {
             else if(*(mptr-1) == '=')
               mptr--;
             int mlen = (int)(mptr - mbeg);
-            msglen += fp.printf("%*.*s=\n", mlen, mlen, mbeg);
+            msglen += fp.Printf("%*.*s=\n", mlen, mlen, mbeg);
           } while(strlen(mptr) > 76);
         }
-        msglen += fp.printf("%s\n", mptr);
+        msglen += fp.Printf("%s\n", mptr);
       }
       line = line->next;
     }
 
     // Re-write the correct message length
-    fp.fseek(-(msglen+4), SEEK_CUR);
+    fp.Fseek(-(msglen+4), SEEK_CUR);
     dword be_msglen = swapendian(msglen);
-    fp.fwrite(&be_msglen, 4);
-    fp.fseek(msglen, SEEK_CUR);
+    fp.Fwrite(&be_msglen, 4);
+    fp.Fseek(msglen, SEEK_CUR);
 
     msg->attr.snt1();
     msg->attr.scn1();
@@ -762,10 +761,12 @@ int ExportSOUP() {
 
     // Get the scan list
     strcpy(scanfile, AddPath(CFG->goldpath, "goldsoup.lst"));
-    fp.fopen(scanfile, "rt");
-    if(fp.isopen()) {
+    fp.Fopen(scanfile, "rt");
+    if (fp.isopen())
+    {
       char buf[256];
-      while(fp.fgets(buf, sizeof(buf))) {
+      while (fp.Fgets(buf, sizeof(buf)))
+      {
         char* ptr = strchr(buf, ' ');
         if(ptr) {
           *ptr++ = NUL;
@@ -774,7 +775,7 @@ int ExportSOUP() {
             AL[a]->Expo.Add(atol(ptr));
         }
       }
-      fp.fclose();
+      fp.Fclose();
     }
 
     // Export from the e-mail and newsgroup areas
@@ -787,29 +788,29 @@ int ExportSOUP() {
     }
 
     // Close any open SOUP files
-    if(mfp.isopen())
-      mfp.fclose();
-    if(nfp.isopen())
-      nfp.fclose();
+    mfp.Fclose();
+    nfp.Fclose();
 
     // Update the REPLIES file
-    fp.open(AddPath(CFG->soupexportpath, "REPLIES"), O_RDWR|O_CREAT|O_BINARY, "rb+");
-    if(fp.isopen()) {
+    fp.Open(AddPath(CFG->soupexportpath, "REPLIES"), O_RDWR|O_CREAT|O_BINARY, "rb+");
+    if (fp.isopen())
+    {
       char buf[512];
       int hasmail = false;
       int hasnews = false;
-      while(fp.fgets(buf, sizeof(buf))) {
+      while (fp.Fgets(buf, sizeof(buf)))
+      {
         strtok(buf, "\t\n");
         if(strieql(buf, "GOLDMAIL"))
           hasmail = true;
         else if(strieql(buf, "GOLDNEWS"))
           hasnews = true;
       }
-      if(mailexported and not hasmail)
-        fp.printf("GOLDMAIL\tmail\tbn\n");
-      if(newsexported and not hasnews)
-        fp.printf("GOLDNEWS\tnews\tBn\n");
-      fp.fclose();
+      if (mailexported and not hasmail)
+        fp.Printf("GOLDMAIL\tmail\tbn\n");
+      if (newsexported and not hasnews)
+        fp.Printf("GOLDNEWS\tnews\tBn\n");
+      fp.Fclose();
     }
 
     // Delete the scanfile

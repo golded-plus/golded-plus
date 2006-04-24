@@ -159,10 +159,10 @@ inline bool fexist(const TCHAR *filename) { return *filename ? (0 == (_taccess(f
 #endif
 inline bool fexist(const std::string& filename) { return fexist(filename.c_str()); }
 
-dword gfixstattime(time32_t st_time);
+time32_t gfixstattime(time32_t st_time);
 
-dword GetFiletime(const char* file);
-inline dword GetFiletime(const std::string& file) { return GetFiletime(file.c_str()); }
+time32_t GetFiletime(const char* file);
+inline time32_t GetFiletime(const std::string& file) { return GetFiletime(file.c_str()); }
 
 inline long FiletimeCmp(const char* file1, const char* file2) { return long(GetFiletime(file1) - GetFiletime(file2)); }
 inline long FiletimeCmp(const std::string& file1, const std::string& file2) { return FiletimeCmp(file1.c_str(), file2.c_str()); }
@@ -184,7 +184,7 @@ char* StripBackslash(char* p);
 char* PathCopy(char* dst, const char* src);
 void PathCopy(std::string& dst, const char* src);
 
-void TouchFile(const char* __filename);
+void TouchFile(const TCHAR *filename);
 
 int TestLockPath(const char* __path);
 void WipeFile(const char* file, int options);

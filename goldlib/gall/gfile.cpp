@@ -29,11 +29,56 @@
 #include <cstdarg>
 #include <gfile.h>
 
+#if defined(_MSC_VER) /*&& (_MSC_VER >= 1400)*/
+
+#define g_sopen(fn, of, sh, pm)     _tsopen(fn, of, sh, pm)
+#define g_close(fh)                 _close(fh)
+#define g_read(fh, buf, cnt)        _read(fh, buf, cnt)
+#define g_write(fh, buf, cnt)       _write(fh, buf, cnt)
+#define g_tell(fh)                  _tell(fh)
+#define g_lseek(fh, off, org)       _lseek(fh, off, org)
+#define g_filelength(fh)            _filelength(fh)
+#define g_chsize(fh, size)          _chsize(fh, size)
+
+#define g_fsopen(fn, of, sh)        _tfsopen(fn, of, sh)
+#define g_fdopen(fp, of)            _tfdopen(fp, of)
+#define g_fileno(fp)                _fileno(fp)
+
+#else
+
+#define g_sopen(fn, of, sh, pm)     sopen(fn, of, sh, pm)
+#define g_close(fh)                 close(fh)
+#define g_read(fh, buf, cnt)        read(fh, buf, cnt)
+#define g_write(fh, buf, cnt)       write(fh, buf, cnt)
+#define g_tell(fh)                  tell(fh)
+#define g_lseek(fh, off, org)       lseek(fh, off, org)
+#define g_filelength(fh)            filelength(fh)
+#define g_chsize(fh, size)          chsize(fh, size)
+
+#define g_fsopen(fn, of, sh)        fsopen(fn, of, sh)
+#define g_fdopen(fp, of)            fdopen(fp, of)
+#define g_fileno(fp)                fileno(fp)
+
+#endif
+
+#define g_lock(fh, off, len)        lock(fh, off, len)
+#define g_unlock(fh, off, len)      unlock(fh, off, len)
+
+#define g_fclose(fp)                fclose(fp)
+#define g_fread(buf, rsz, cnt, fp)  fread(buf, rsz, cnt, fp)
+#define g_fwrite(buf, rsz, cnt, fp) fwrite(buf, rsz, cnt, fp)
+#define g_fgetc(fp)                 fgetc(fp)
+#define g_fputc(c, fp)              fputc(c, fp)
+#define g_fgets(str, cnt, fp)       fgets(str, cnt, fp)
+#define g_fputs(str, fp)            fputs(str, fp)
+#define g_fflush(fp)                fflush(fp)
+#define g_ftell(fp)                 ftell(fp)
+
 
 //  ------------------------------------------------------------------
 
-gfile::gfile() {
-
+gfile::gfile()
+{
   fh = -1;
   fp = NULL;
   status = EBADF;
@@ -42,8 +87,8 @@ gfile::gfile() {
 
 //  ------------------------------------------------------------------
 
-gfile::gfile(int __fh) {
-
+gfile::gfile(int __fh)
+{
   fh = __fh;
   fp = NULL;
   status = 0;
@@ -52,8 +97,8 @@ gfile::gfile(int __fh) {
 
 //  ------------------------------------------------------------------
 
-gfile::gfile(FILE* __fp) {
-
+gfile::gfile(FILE* __fp)
+{
   fh = -1;
   fp = __fp;
   status = 0;
@@ -62,51 +107,42 @@ gfile::gfile(FILE* __fp) {
 
 //  ------------------------------------------------------------------
 
-gfile::gfile(const char* __path, int __access, int __shflag, int __mode) {
-
-  open(__path, __access, __shflag, __mode);
-}
-
-
-//  ------------------------------------------------------------------
-
-gfile::gfile(const char* __path, const char* __mode, int __shflag) {
-
-  fopen(__path, __mode, __shflag);
-}
-
-
-//  ------------------------------------------------------------------
-
-gfile::~gfile() {
-
-  if(fp != NULL)
-    fclose();
-  if(fh != -1)
-    close();
-}
-
-
-//  ------------------------------------------------------------------
-
-int gfile::okay() {
-
-  return !status;
+gfile::gfile(const char* __path, int __access, int __shflag, int __mode)
+{
+  fh = -1;
+  fp = NULL;
+  Open(__path, __access, __shflag, __mode);
 }
 
 //  ------------------------------------------------------------------
 
-bool gfile::isopen() {
+gfile::gfile(const char* __path, const char* __mode, int __shflag)
+{
+  fh = -1;
+  fp = NULL;
+  Fopen(__path, __mode, __shflag);
+}
 
-  if((fh != -1) or (fp != NULL))
-    return true;
+//  ------------------------------------------------------------------
+
+gfile::~gfile()
+{
+  if (fp != NULL) Fclose();
+  if (fh != -1) Close();
+}
+
+//  ------------------------------------------------------------------
+
+bool gfile::isopen()
+{
+  if ((fh != -1) or (fp != NULL)) return true;
   return false;
 }
 
 //  ------------------------------------------------------------------
 
-int gfile::setfh(int __fh) {
-
+int gfile::setfh(int __fh)
+{
   fh = __fh;
   status = 0;
   return fh;
@@ -114,8 +150,8 @@ int gfile::setfh(int __fh) {
 
 //  ------------------------------------------------------------------
 
-FILE* gfile::setfp(FILE* __fp) {
-
+FILE* gfile::setfp(FILE* __fp)
+{
   fp = __fp;
   status = 0;
   return fp;
@@ -123,31 +159,35 @@ FILE* gfile::setfp(FILE* __fp) {
 
 //  ------------------------------------------------------------------
 
-int gfile::open(const char* __path, int __access, int __shflag, int __mode) {
-
-  fh = ::sopen(__path, __access, __shflag, __mode);
+int gfile::Open(const char* __path, int __access, int __shflag, int __mode)
+{
+#if defined(_tsopen_s)
+  status = _tsopen_s(&fh, __path, __access, __shflag, __mode);
+  return fh;
+#else
+  fh = g_sopen(__path, __access, __shflag, __mode);
   status = (fh == -1) ? errno : 0;
   return fh;
+#endif
 }
 
 
 //  ------------------------------------------------------------------
 
-int gfile::open(const char* __path, int __access, char* __fmode, int __shflag, int __mode) {
-
-  open(__path, __access, __shflag, __mode);
-  fdopen(__fmode);
+int gfile::Open(const char* __path, int __access, const char* __fmode, int __shflag, int __mode)
+{
+  Open(__path, __access, __shflag, __mode);
+  Fdopen(__fmode);
   return fh;
 }
 
 //  ------------------------------------------------------------------
 
-int gfile::close() {
+int gfile::Close()
+{
+  if (fp) return Fclose();
 
-  if(fp)
-    return fclose();
-
-  int _ret = ::close(fh);
+  int _ret = g_close(fh);
   status = _ret ? errno : 0;
   fh = -1;
   return _ret;
@@ -155,223 +195,214 @@ int gfile::close() {
 
 //  ------------------------------------------------------------------
 
-int gfile::read(void* __ptr, size_t __len) {
-
-  int _ret = ::read(fh, __ptr, (unsigned)__len);
+int gfile::Read(void* __ptr, size_t __len)
+{
+  int _ret = g_read(fh, __ptr, unsigned(__len));
   status = (_ret == -1) ? errno : 0;
   return _ret;
 }
 
 //  ------------------------------------------------------------------
 
-int gfile::write(void* __ptr, size_t __len) {
-
-  int _ret = ::write(fh, __ptr, (unsigned)__len);
+int gfile::Write(void* __ptr, size_t __len)
+{
+  int _ret = g_write(fh, __ptr, unsigned(__len));
   status = (_ret == -1) ? errno : 0;
   return _ret;
 }
 
 //  ------------------------------------------------------------------
 
-long gfile::tell() {
-
-  long _ret = ::tell(fh);
+long gfile::Tell()
+{
+  long _ret = g_tell(fh);
   status = (_ret == -1) ? errno : 0;
   return _ret;
 }
 
 //  ------------------------------------------------------------------
 
-long gfile::lseek(long __offset, int __direction) {
-
-  long _ret = ::lseek(fh, __offset, __direction);
+long gfile::Lseek(long __offset, int __direction)
+{
+  long _ret = g_lseek(fh, __offset, __direction);
   status = (_ret == -1) ? errno : 0;
   return _ret;
 }
 
 //  ------------------------------------------------------------------
 
-long gfile::filelength() {
-
-  long _ret = ::filelength(fh);
+long gfile::FileLength()
+{
+  long _ret = g_filelength(fh);
   status = (_ret == -1) ? errno : 0;
   return _ret;
 }
 
 //  ------------------------------------------------------------------
 
-int gfile::chsize(long __size) {
-
-  int _ret = ::chsize(fh, __size);
+int gfile::ChSize(long __size)
+{
+  int _ret = g_chsize(fh, __size);
   status = _ret ? errno : 0;
   return _ret;
 }
 
 //  ------------------------------------------------------------------
 
-int gfile::lock(long __offset, long __len) {
-
-  int _ret = ::lock(fh, __offset, __len);
+int gfile::Lock(long __offset, long __len)
+{
+  int _ret = g_lock(fh, __offset, __len);
   status = _ret ? errno : 0;
   return _ret;
 }
 
 //  ------------------------------------------------------------------
 
-int gfile::unlock(long __offset, long __len) {
-
-  int _ret = ::unlock(fh, __offset, __len);
+int gfile::Unlock(long __offset, long __len)
+{
+  int _ret = g_unlock(fh, __offset, __len);
   status = _ret ? errno : 0;
   return _ret;
 }
 
 //  ------------------------------------------------------------------
 
-int gfile::getftime(dword* __ftime) {
-
+int gfile::GetFTime(time32_t *__ftime)
+{
   struct stat s;
-  if(fp)
-    fflush();
-  int rv = fstat (fh, &s);
+  if (fp) Fflush();
+  int rv = fstat(fh, &s);
   status = (rv) ? errno : 0;
-  if(rv == 0)
-    *__ftime = gfixstattime(s.st_mtime);
-  else
-    __ftime = 0;
+  if (rv == 0) *__ftime = gfixstattime(time32_t(s.st_mtime));
+  else __ftime = 0;
   return rv;
-}                                            
-
-
-//  ------------------------------------------------------------------
-
-FILE* gfile::fopen(const std::string& __path, const char* __mode, int __shflag) {
-
-  return fopen(__path.c_str(), __mode, __shflag);
 }
 
 
 //  ------------------------------------------------------------------
 
-FILE* gfile::fopen(const char* __path, const char* __mode, int __shflag) {
-
-  fp = ::fsopen(__path, __mode, __shflag);
+FILE* gfile::Fopen(const char* __path, const char* __mode, int __shflag)
+{
+  fp = g_fsopen(__path, __mode, __shflag);
   status = (fp == NULL) ? errno : 0;
-  if(fp)
-    fh = fileno(fp);
+  if (fp) fh = g_fileno(fp);
   return fp;
 }
 
+
 //  ------------------------------------------------------------------
 
-FILE* gfile::fdopen(char* __mode) {
-
-  fp = ::fdopen(fh, __mode);
+FILE* gfile::Fdopen(const char* __mode)
+{
+  fp = g_fdopen(fh, __mode);
   status = fp ? 0 : errno;
-  if(fp)
-    fh = fileno(fp);
+  if (fp) fh = g_fileno(fp);
   return fp;
 }
 
+
 //  ------------------------------------------------------------------
 
-int gfile::fclose() {
-
+int gfile::Fclose()
+{
   int _ret = 0;
-  if(fp)
-    _ret = ::fclose(fp);
+  if (fp) _ret = g_fclose(fp);
   status = _ret ? errno : 0;
-  fp = NULL;
-  fh = -1;
+  fp = NULL; fh = -1;
   return _ret;
 }
 
 //  ------------------------------------------------------------------
 
-size_t gfile::fread(void* __ptr, size_t __size, size_t __items) {
-
-  size_t _ret = ::fread(__ptr, __size, __items, fp);
+size_t gfile::Fread(void* __ptr, size_t __size, size_t __items)
+{
+  size_t _ret = g_fread(__ptr, __size, __items, fp);
   status = ferror_() ? errno : 0;
   return _ret;
 }
 
+
 //  ------------------------------------------------------------------
 
-size_t gfile::fwrite(const void* __ptr, size_t __size, size_t __items) {
-
-  size_t _ret = ::fwrite(__ptr, __size, __items, fp);
+size_t gfile::Fwrite(const void* __ptr, size_t __size, size_t __items)
+{
+  size_t _ret = g_fwrite(__ptr, __size, __items, fp);
   status = (_ret < __items) ? errno : 0;
   return _ret;
 }
 
+
 //  ------------------------------------------------------------------
 
-int gfile::fgetc() {
+int gfile::Fgetc()
+{
+  int _ret = g_fgetc(fp);
+  status = ferror_() ? errno : 0;
+  return _ret;
+}
 
-  int _ret = ::fgetc(fp);
+
+//  ------------------------------------------------------------------
+
+int gfile::Fputc(int __ch)
+{
+  int _ret = g_fputc(__ch, fp);
   status = ferror_() ? errno : 0;
   return _ret;
 }
 
 //  ------------------------------------------------------------------
 
-int gfile::fputc(int __ch) {
-
-  int _ret = ::fputc(__ch, fp);
-  status = ferror_() ? errno : 0;
-  return _ret;
-}
-
-//  ------------------------------------------------------------------
-
-char* gfile::fgets(char* __str, size_t __len) {
-
-  char* _ret = ::fgets(__str, __len, fp);
+char* gfile::Fgets(char* __str, size_t __len)
+{
+  char* _ret = g_fgets(__str, int(__len), fp);
   status = (_ret == NULL) ? errno : 0;
   return _ret;
 }
 
 //  ------------------------------------------------------------------
 
-int gfile::fputs(const char* __str) {
-
-  int _ret = ::fputs(__str, fp);
+int gfile::Fputs(const char* __str)
+{
+  int _ret = g_fputs(__str, fp);
   status = (_ret == EOF) ? errno : 0;
   return _ret;
 }
 
+
 //  ------------------------------------------------------------------
 
-int gfile::printf(const char* __format, ...) {
-
+int gfile::Printf(const char* __format, ...)
+{
   va_list _argptr;
   va_start(_argptr, __format);
-  int _outcount = ::vfprintf(fp, __format, _argptr);
+  int _outcount = vfprintf(fp, __format, _argptr);
   va_end(_argptr);
   return _outcount;
 }
 
 //  ------------------------------------------------------------------
 
-int gfile::fflush() {
-
-  int _ret = ::fflush(fp);
+int gfile::Fflush()
+{
+  int _ret = g_fflush(fp);
   status = _ret ? errno : 0;
   return _ret;
 }
 
 //  ------------------------------------------------------------------
 
-long gfile::ftell() {
-
-  long _ret = ::ftell(fp);
+long gfile::Ftell()
+{
+  long _ret = g_ftell(fp);
   status = (_ret == -1) ? errno : 0;
   return _ret;
 }
 
 //  ------------------------------------------------------------------
 
-int gfile::fseek(long __offset, int __direction) {
-
+int gfile::Fseek(long __offset, int __direction)
+{
   int _ret = ::fseek(fp, __offset, __direction);
   status = _ret ? errno : 0;
   return _ret;
@@ -379,31 +410,12 @@ int gfile::fseek(long __offset, int __direction) {
 
 //  ------------------------------------------------------------------
 
-int gfile::setvbuf(char* __buf, int __type, size_t __size) {
-
+int gfile::SetvBuf(char* __buf, int __type, size_t __size)
+{
   int _ret = ::setvbuf(fp, __buf, __type, __size);
   status = _ret ? errno : 0;
   return _ret;
 }
-
-
-//  ------------------------------------------------------------------
-
-#ifdef __GOLDWARE_HAS_BOOL
-gfile& gfile::operator>> (bool& i)             { fread(&i, sizeof(bool)); return *this; }
-#endif
-gfile& gfile::operator>> (uint8_t& i)          { fread(&i, sizeof(uint8_t)); return *this; }
-gfile& gfile::operator>> (uint16_t& i)         { fread(&i, sizeof(uint16_t)); return *this; }
-gfile& gfile::operator>> (uint32_t& i)         { fread(&i, sizeof(uint32_t)); return *this; }
-gfile& gfile::operator>> (unsigned long& i)    { fread(&i, sizeof(unsigned long)); return *this; }
-
-#ifdef __GOLDWARE_HAS_BOOL
-gfile& gfile::operator<< (bool o)             { fwrite(&o, sizeof(o)); return *this; }
-#endif
-gfile& gfile::operator<< (uint8_t o)          { fwrite(&o, sizeof(o)); return *this; }
-gfile& gfile::operator<< (uint16_t o)         { fwrite(&o, sizeof(o)); return *this; }
-gfile& gfile::operator<< (uint32_t o)         { fwrite(&o, sizeof(o)); return *this; }
-gfile& gfile::operator<< (unsigned long o)    { fwrite(&o, sizeof(o)); return *this; }
 
 
 //  ------------------------------------------------------------------

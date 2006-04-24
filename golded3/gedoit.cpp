@@ -244,20 +244,20 @@ static void WriteMsgs(GMsg* msg) {
           AA->SetOutputfile(ofname);
 
           gclipbrd clipbrd;
-          gfile fp;
+          gfile fp(fname, "rb");
 
-          if(fp.fopen(fname, "rb")) {
-
-            long len = fp.filelength();
+          if (fp.isopen())
+          {
+            long len = fp.FileLength();
             char* buf = (char*) throw_malloc(len+1);
             buf[len] = NUL;
-            fp.fread(buf, 1, len);
+            fp.Fread(buf, len);
 
             clipbrd.writeclipbrd(buf);
 
             throw_free(buf);
 
-            fp.close();
+            fp.Fclose();
           }
 
           remove(fname);
@@ -316,20 +316,20 @@ static void WriteMsgs(GMsg* msg) {
           SaveLines(MODE_WRITE, fname, msg, prnmargin, true);
 
           gclipbrd clipbrd;
-          gfile fp;
+          gfile fp(fname, "rb");
 
-          if(fp.fopen(fname, "rb")) {
-
-            long len = fp.filelength();
+          if (fp.isopen())
+          {
+            long len = fp.FileLength();
             char* buf = (char*) throw_malloc(len+1);
             buf[len] = NUL;
-            fp.fread(buf, 1, len);
+            fp.Fread(buf, len);
 
             clipbrd.writeclipbrd(buf);
 
             throw_free(buf);
 
-            fp.close();
+            fp.Fclose();
           }
 
           remove(fname);

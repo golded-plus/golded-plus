@@ -39,9 +39,11 @@ guserbase::guserbase() {
 
   strcpy(fname, AddPath(CFG->goldpath, CFG->golduser));
 
-  do {
-    usrbase.open(fname, O_RDWR|O_CREAT|O_BINARY, SH_DENYNO, S_STDRW);
-    if(not usrbase) {
+  do
+  {
+    usrbase.Open(fname, O_RDWR|O_CREAT|O_BINARY, SH_DENYNO, S_STDRW);
+    if (!usrbase.isopen())
+    {
       if((errno != EACCES) or (not PopupLocked(++tries, false, fname))) {
         WideLog->ErrOpen();
         WideLog->printf("! Addressbook cannot be opened.");
@@ -50,13 +52,14 @@ guserbase::guserbase() {
         OpenErrorExit();
       }
     }
-  } while(not usrbase);
+  }
+  while(!usrbase.isopen());
 
   if(tries)
     PopupLocked(0, 0, NULL);
 
-  if((uint) usrbase.filelength() < sizeof(gusrbaseheader) + sizeof(gusrbaseentry)) {
-
+  if (uint(usrbase.FileLength()) < sizeof(gusrbaseheader) + sizeof(gusrbaseentry))
+  {
     header.version = 0;
 
     strcpy(entry.macro, "_asa_");
@@ -84,8 +87,8 @@ guserbase::guserbase() {
     entry.comment2[0] = NUL;
     entry.comment3[0] = NUL;
 
-    usrbase.lseek(0, SEEK_SET);
-    usrbase.write(&header.version, sizeof(header.version));
+    usrbase.LseekSet(0);
+    usrbase.Write(&header.version, sizeof(header.version));
     write_entry(0);
   }
 
@@ -100,7 +103,7 @@ guserbase::guserbase() {
 
 guserbase::~guserbase() {
 
-  usrbase.close();
+  usrbase.Close();
 }
 
 
@@ -109,21 +112,25 @@ guserbase::~guserbase() {
 void guserbase::refresh_maximum_index() {
 
   // Are we doing it for the first time?
-  if(not read_time) {
-    usrbase.getftime(&read_time);
+  if (not read_time)
+  {
+    usrbase.GetFTime(&read_time);
     need_update = true;
   }
-  else {
+  else
+  {
     dword tmp;
-    usrbase.getftime(&tmp);
-    if(read_time != tmp) {
+    usrbase.GetFTime(&tmp);
+    if (read_time != tmp)
+    {
       read_time = tmp;
       need_update = true;
     }
   }
-  if(need_update)
-    maximum_index = (usrbase.filelength()-sizeof(gusrbaseheader)) / sizeof(gusrbaseentry) - 1;
-  if(index > maximum_index)
+  if (need_update)
+    maximum_index = (uint(usrbase.FileLength()) - sizeof(gusrbaseheader)) / sizeof(gusrbaseentry) - 1;
+
+  if (index > maximum_index)
     index = maximum_index;
 }
 
@@ -136,9 +143,11 @@ void guserbase::lock() {
 
     long tries = 0;
 
-    do {
-      usrbase.lock(0, 1);
-      if(not usrbase.okay()) {
+    do
+    {
+      usrbase.Lock(0, 1);
+      if (!usrbase.okay())
+      {
         if(not PopupLocked(++tries, false, fname)) {
           WideLog->ErrLock();
           WideLog->printf("! GoldED's Addressbook could not be locked.");
@@ -147,7 +156,9 @@ void guserbase::lock() {
           LockErrorExit();
         }
       }
-    } while(not usrbase.okay());
+    }
+    while(!usrbase.okay());
+
     if(tries)
       PopupLocked(0, 0, NULL);
   }
@@ -156,10 +167,10 @@ void guserbase::lock() {
 
 //  ------------------------------------------------------------------
 
-void guserbase::unlock() {
-
-  if(WideCanLock)
-    usrbase.unlock(0, 1);
+void guserbase::unlock()
+{
+  if (WideCanLock)
+    usrbase.Unlock(0, 1);
 }
 
 
@@ -405,8 +416,9 @@ bool guserbase::find_entry(char* name, bool lookup) {
     uint old_index = index;
 
     refresh_maximum_index();
-    usrbase.lseek(sizeof(gusrbaseheader), SEEK_SET);
-    for(index=0; index<=maximum_index; index++) {
+    usrbase.LseekSet(sizeof(gusrbaseheader));
+    for (index=0; index<=maximum_index; index++)
+    {
       read_entry(index, &entry);
 
       if(strieql(name, entry.name))
@@ -446,35 +458,33 @@ void guserbase::write_entry(uint idx, bool updateit) {
     entry.times++;
   }
 
-  usrbase.lseek(sizeof(gusrbaseheader) + sizeof(gusrbaseentry)*(idx+1)-1, SEEK_SET);
+  usrbase.LseekSet(sizeof(gusrbaseheader) + sizeof(gusrbaseentry)*(idx+1)-1);
   char z = 0;
-  usrbase.write(&z, 1); // adjust entry size first...
-  usrbase.lseek(sizeof(gusrbaseheader) + sizeof(gusrbaseentry)*idx, SEEK_SET);
-  usrbase.write(entry.macro, sizeof(entry.macro));
-  usrbase.write(entry.name, sizeof(entry.name));
-  usrbase.write(&entry.fidoaddr.zone, sizeof(entry.fidoaddr.zone));
-  usrbase.write(&entry.fidoaddr.net, sizeof(entry.fidoaddr.net));
-  usrbase.write(&entry.fidoaddr.node, sizeof(entry.fidoaddr.node));
-  usrbase.write(&entry.fidoaddr.point, sizeof(entry.fidoaddr.point));
-  usrbase.write(entry.iaddr, sizeof(entry.iaddr));
-  usrbase.write(&entry.prefer_internet, sizeof(entry.prefer_internet));
-  usrbase.write(&entry.is_deleted, sizeof(entry.is_deleted));
-  usrbase.write(entry.pseudo, sizeof(entry.pseudo));
-  usrbase.write(entry.organisation, sizeof(entry.organisation));
-  usrbase.write(entry.snail1, sizeof(entry.snail1));
-  usrbase.write(entry.snail2, sizeof(entry.snail2));
-  usrbase.write(entry.snail3, sizeof(entry.snail3));
-  usrbase.write(entry.dataphone, sizeof(entry.dataphone));
-  usrbase.write(entry.voicephone, sizeof(entry.voicephone));
-  usrbase.write(entry.faxphone, sizeof(entry.faxphone));
-  usrbase.write(&entry.firstdate, sizeof(entry.firstdate));
-  usrbase.write(&entry.lastdate, sizeof(entry.lastdate));
-  usrbase.write(&entry.times, sizeof(entry.times));
-  usrbase.write(entry.homepage, sizeof(entry.homepage));
-  usrbase.write(&entry.group, sizeof(entry.group));
-  usrbase.write(entry.comment1, sizeof(entry.comment1));
-  usrbase.write(entry.comment2, sizeof(entry.comment1));
-  usrbase.write(entry.comment3, sizeof(entry.comment1));
+  usrbase.Write(&z, 1); // adjust entry size first...
+  usrbase.LseekSet(sizeof(gusrbaseheader) + sizeof(gusrbaseentry)*idx);
+  usrbase.Write(entry.macro, sizeof(entry.macro));
+  usrbase.Write(entry.name, sizeof(entry.name));
+  usrbase.Write(&entry.fidoaddr.zone, sizeof(entry.fidoaddr.zone));
+  usrbase.Write(&entry.fidoaddr.net, sizeof(entry.fidoaddr.net));
+  usrbase.Write(&entry.fidoaddr.node, sizeof(entry.fidoaddr.node));
+  usrbase.Write(&entry.fidoaddr.point, sizeof(entry.fidoaddr.point));
+  usrbase.Write(entry.iaddr, sizeof(entry.iaddr));
+  usrbase.Write(&entry.prefer_internet, sizeof(entry.prefer_internet));
+  usrbase.Write(&entry.is_deleted, sizeof(entry.is_deleted));
+  usrbase.Write(entry.organisation, sizeof(entry.organisation));
+  usrbase.Write(entry.snail1, sizeof(entry.snail1));
+  usrbase.Write(entry.snail2, sizeof(entry.snail2));
+  usrbase.Write(entry.snail3, sizeof(entry.snail3));
+  usrbase.Write(entry.voicephone, sizeof(entry.voicephone));
+  usrbase.Write(entry.faxphone, sizeof(entry.faxphone));
+  usrbase.Write(&entry.firstdate, sizeof(entry.firstdate));
+  usrbase.Write(&entry.lastdate, sizeof(entry.lastdate));
+  usrbase.Write(&entry.times, sizeof(entry.times));
+  usrbase.Write(entry.homepage, sizeof(entry.homepage));
+  usrbase.Write(&entry.group, sizeof(entry.group));
+  usrbase.Write(entry.comment1, sizeof(entry.comment1));
+  usrbase.Write(entry.comment2, sizeof(entry.comment1));
+  usrbase.Write(entry.comment3, sizeof(entry.comment1));
 }
 
 //  ------------------------------------------------------------------
@@ -514,33 +524,34 @@ bool guserbase::read_entry(uint idx, gusrbaseentry *ent) {
     clear_entry(ent);
     return false;
   }
-  else {
-    usrbase.lseek(idx*sizeof(gusrbaseentry)+sizeof(gusrbaseheader), SEEK_SET);
-    usrbase.read(ent->macro, sizeof(ent->macro));
-    usrbase.read(ent->name, sizeof(ent->name));
-    usrbase.read(&ent->fidoaddr.zone, sizeof(ent->fidoaddr.zone));
-    usrbase.read(&ent->fidoaddr.net, sizeof(ent->fidoaddr.net));
-    usrbase.read(&ent->fidoaddr.node, sizeof(ent->fidoaddr.node));
-    usrbase.read(&ent->fidoaddr.point, sizeof(ent->fidoaddr.point));
-    usrbase.read(ent->iaddr, sizeof(ent->iaddr));
-    usrbase.read(&ent->prefer_internet, sizeof(ent->prefer_internet));
-    usrbase.read(&ent->is_deleted, sizeof(ent->is_deleted));
-    usrbase.read(ent->pseudo, sizeof(ent->pseudo));
-    usrbase.read(ent->organisation, sizeof(ent->organisation));
-    usrbase.read(ent->snail1, sizeof(ent->snail1));
-    usrbase.read(ent->snail2, sizeof(ent->snail2));
-    usrbase.read(ent->snail3, sizeof(ent->snail3));
-    usrbase.read(ent->dataphone, sizeof(ent->dataphone));
-    usrbase.read(ent->voicephone, sizeof(ent->voicephone));
-    usrbase.read(ent->faxphone, sizeof(ent->faxphone));
-    usrbase.read(&ent->firstdate, sizeof(ent->firstdate));
-    usrbase.read(&ent->lastdate, sizeof(ent->lastdate));
-    usrbase.read(&ent->times, sizeof(ent->times));
-    usrbase.read(ent->homepage, sizeof(ent->homepage));
-    usrbase.read(&ent->group, sizeof(ent->group));
-    usrbase.read(ent->comment1, sizeof(ent->comment1));
-    usrbase.read(ent->comment2, sizeof(ent->comment1));
-    usrbase.read(ent->comment3, sizeof(ent->comment1));
+  else
+  {
+    usrbase.LseekSet(idx*sizeof(gusrbaseentry)+sizeof(gusrbaseheader));
+    usrbase.Read(ent->macro, sizeof(ent->macro));
+    usrbase.Read(ent->name, sizeof(ent->name));
+    usrbase.Read(&ent->fidoaddr.zone, sizeof(ent->fidoaddr.zone));
+    usrbase.Read(&ent->fidoaddr.net, sizeof(ent->fidoaddr.net));
+    usrbase.Read(&ent->fidoaddr.node, sizeof(ent->fidoaddr.node));
+    usrbase.Read(&ent->fidoaddr.point, sizeof(ent->fidoaddr.point));
+    usrbase.Read(ent->iaddr, sizeof(ent->iaddr));
+    usrbase.Read(&ent->prefer_internet, sizeof(ent->prefer_internet));
+    usrbase.Read(&ent->is_deleted, sizeof(ent->is_deleted));
+    usrbase.Read(ent->pseudo, sizeof(ent->pseudo));
+    usrbase.Read(ent->organisation, sizeof(ent->organisation));
+    usrbase.Read(ent->snail1, sizeof(ent->snail1));
+    usrbase.Read(ent->snail2, sizeof(ent->snail2));
+    usrbase.Read(ent->snail3, sizeof(ent->snail3));
+    usrbase.Read(ent->dataphone, sizeof(ent->dataphone));
+    usrbase.Read(ent->voicephone, sizeof(ent->voicephone));
+    usrbase.Read(ent->faxphone, sizeof(ent->faxphone));
+    usrbase.Read(&ent->firstdate, sizeof(ent->firstdate));
+    usrbase.Read(&ent->lastdate, sizeof(ent->lastdate));
+    usrbase.Read(&ent->times, sizeof(ent->times));
+    usrbase.Read(ent->homepage, sizeof(ent->homepage));
+    usrbase.Read(&ent->group, sizeof(ent->group));
+    usrbase.Read(ent->comment1, sizeof(ent->comment1));
+    usrbase.Read(ent->comment2, sizeof(ent->comment1));
+    usrbase.Read(ent->comment3, sizeof(ent->comment1));
     return true;
   }
 }
@@ -570,14 +581,15 @@ void guserbase::pack_addressbook() {
   // zap
   maximum_index = nidx;
   // At least one record should present
-  if(maximum_index)
-    --maximum_index;
-  usrbase.chsize((maximum_index + 1) * sizeof(gusrbaseentry) + sizeof(gusrbaseheader));
-  usrbase.close();
+  if (maximum_index) --maximum_index;
+  usrbase.ChSize((maximum_index + 1) * sizeof(gusrbaseentry) + sizeof(gusrbaseheader));
+  usrbase.Close();
 
-  do {
-    usrbase.open(fname, O_RDWR|O_CREAT|O_BINARY, SH_DENYNO, S_STDRW);
-    if(not usrbase) {
+  do
+  {
+    usrbase.Open(fname, O_RDWR|O_CREAT|O_BINARY, SH_DENYNO, S_STDRW);
+    if (!usrbase.isopen())
+    {
       if((errno != EACCES) or (not PopupLocked(++tries, false, fname))) {
         WideLog->ErrOpen();
         WideLog->printf("! GoldED's Addressbook cannot be opened.");
@@ -586,7 +598,8 @@ void guserbase::pack_addressbook() {
         OpenErrorExit();
       }
     }
-  } while(not usrbase);
+  }
+  while(!usrbase.isopen());
 
   if(tries)
     PopupLocked(0, 0, NULL);

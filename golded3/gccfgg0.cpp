@@ -886,14 +886,15 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
     inuse--;
 
     // When the final cfg is compiled
-    if(inuse == 0) {
-
+    if (inuse == 0)
+    {
       // Mark all areas listed in the NEWSRC file as newsgroups
-      gfile gfp;
-      gfp.fopen(CFG->soupnewsrcfile, "rt");
-      if(gfp.isopen()) {
+      gfile gfp(CFG->soupnewsrcfile, "rt");
+      if (gfp.isopen())
+      {
         char buf2[512];
-        while(gfp.fgets(buf2, sizeof(buf2))) {
+        while (gfp.Fgets(buf2, sizeof(buf2)))
+        {
           char* ptr = strpbrk(buf2, ":! ");
           if(ptr) {
             *ptr = NUL;
@@ -902,7 +903,7 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
               ap->set_type(ap->isnet() ? GMB_SOUP|GMB_EMAIL|GMB_NET : GMB_SOUP|GMB_NEWSGROUP|GMB_ECHO);
           }
         }
-        gfp.fclose();
+        gfp.Fclose();
       }
 
       if(*CFG->soupemail) {

@@ -1231,8 +1231,9 @@ int wmenuget() {
 
                 // separate ASCII code from keypress code, if ASCII
                 // code is zero, then it must be an extended key
-                ch=(char)xch;
-                if(!ch and gmnudropthrough) {
+                ch = char(xch & 0xFF);
+                if (!ch and gmnudropthrough)
+                {
                     if((xch != Key_PgDn) and (xch != Key_PgUp))
                         kbput(xch);
                     goto ESCAPE_KEY;

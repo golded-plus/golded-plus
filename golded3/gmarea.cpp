@@ -54,9 +54,10 @@ void WriteNoDupes(const char* file, const char* line) {
   long tries = 0;
 
   do {
-    fp.fopen(file, "at+", SH_DENYRW);
+    fp.Fopen(file, "at+", SH_DENYRW);
 
-    if(not fp.isopen()) {
+    if (!fp.isopen())
+    {
       if((errno != EACCES) or (PopupLocked(++tries, false, file) == false)) {
         LOG.ErrOpen();
         LOG.printf("! A semaphore file could not be opened.");
@@ -65,24 +66,27 @@ void WriteNoDupes(const char* file, const char* line) {
         OpenErrorExit();
       }
     }
-  } while(not fp.isopen());
+  }
+  while(!fp.isopen());
 
-  if(tries)
+  if (tries)
     PopupLocked(0, 0, NULL);
 
-  fp.fseek(0, SEEK_SET);
-  while(fp.fgets(buf, sizeof(buf))) {
+  fp.FseekSet(0);
+  while (fp.Fgets(buf, sizeof(buf)))
+  {
     if(strieql(strtrim(buf), line)) {
       found = true;
       break;
     }
   }
 
-  if(not found) {
-    fp.fseek(0, SEEK_END);
-    fp.printf("%s\n", line);
+  if (not found)
+  {
+    fp.Fseek(0, SEEK_END);
+    fp.Printf("%s\n", line);
   }
-  fp.fclose();
+  fp.Fclose();
 }
 
 
