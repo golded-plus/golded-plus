@@ -646,18 +646,19 @@ void AssignDateNames() {
 //  ------------------------------------------------------------------
 //  Load a GoldED language file
 
-void LoadLanguage(const char* file) {
-
-  FILE* fp;
+void LoadLanguage(const char* file)
+{
   char* ptr;
   char* str;
   int line = 0;
   char buf[256];
 
-  fp = fsopen(AddPath(CFG->goldpath, file), "rt", CFG->sharemode);
-  if(fp) {
-    setvbuf(fp, NULL, _IOFBF, 8192);
-    while(fgets((ptr=buf), sizeof(buf), fp)) {
+  gfile fp(AddPath(CFG->goldpath, file), "rt", CFG->sharemode);
+  if (fp.isopen())
+  {
+    fp.SetvBuf(NULL, _IOFBF, 8192);
+    while (fp.Fgets((ptr=buf), sizeof(buf)))
+    {
       line++;
       ptr = strskip_wht(ptr);
       if(g_isalpha(*ptr)) {
@@ -682,7 +683,6 @@ void LoadLanguage(const char* file) {
         }
       }
     }
-    fclose(fp);
 
     // Assign weekday/month names
     AssignDateNames();
@@ -693,9 +693,8 @@ void LoadLanguage(const char* file) {
 //  ------------------------------------------------------------------
 //  Read the main language definition file
 
-bool ReadLangCfg(int force) {
-
-  FILE *fpi;
+bool ReadLangCfg(int force)
+{
   char* ptr;
   char* str;
   long size;
@@ -705,17 +704,19 @@ bool ReadLangCfg(int force) {
 
   // Read the GOLDLANG.CFG if there is one
   const char* cfgname = AddPath(CFG->goldpath, CFG->langcfg);
-  fpi = fsopen(cfgname, "rt", CFG->sharemode);
-  if (fpi)
+
+  gfile fpi(cfgname, "rt", CFG->sharemode);
+  if (fpi.isopen())
   {
-    setvbuf(fpi, NULL, _IOFBF, 8192);
+    fpi.SetvBuf(NULL, _IOFBF, 8192);
 
     if (not quiet)
       STD_PRINTNL("* Reading " << cfgname);
 
     cfgname = CleanFilename(cfgname);
 
-    while(fgets((ptr=buf), sizeof(buf), fpi)) {
+    while (fpi.Fgets((ptr=buf), sizeof(buf)))
+    {
       line++;
       ptr = strskip_wht(ptr);
       if(g_isalpha(*ptr)) {
@@ -741,7 +742,6 @@ bool ReadLangCfg(int force) {
         }
       }
     }
-    fclose(fpi);
   }
 
   // Fill in the defaults if there are "holes"

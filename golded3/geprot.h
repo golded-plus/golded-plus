@@ -293,9 +293,6 @@ int MsgIsTwit(GMsg* msg, bool& istwitto, bool& istwitsubj);
 uint32_t MsgHasReplies(GMsg* msg);
 gkey ViewMessage(int istwit=NOT_TWIT);
 int LoadMessage(GMsg* msg, int margin);
-#ifdef OLD_STYLE_HEADER
-void DispHeader(GMsg* msg, bool prn, FILE* fp=NULL, int width=-1);
-#endif
 void LoadRawMsg(GMsg* msg, int margin);
 
 void make_pathreport(char* reportfile);

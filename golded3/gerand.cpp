@@ -29,8 +29,8 @@
 
 //  ------------------------------------------------------------------
 
-char* GetRandomLine(char* __buf, size_t __bufsize, const char* file) {
-  
+char* GetRandomLine(char* __buf, size_t __bufsize, const char* file)
+{
   Path indexfile;
   Path __file;
 
@@ -39,10 +39,10 @@ char* GetRandomLine(char* __buf, size_t __bufsize, const char* file) {
 
   replaceextension(indexfile, __file, ".sdx");
 
-  FILE* fp = fsopen(AddPath(CFG->goldpath, __file), "rb", CFG->sharemode);
-  if(fp) {
-
-    setvbuf(fp, NULL, _IOFBF, 32000);
+  gfile fp(AddPath(CFG->goldpath, __file), "rb", CFG->sharemode);
+  if (fp.isopen())
+  {
+    fp.SetvBuf(NULL, _IOFBF, 32000);
 
     // Check if index exists or if it is older than the textfile
     const char* idxfile = AddPath(CFG->goldpath, indexfile);
@@ -52,45 +52,45 @@ char* GetRandomLine(char* __buf, size_t __bufsize, const char* file) {
         idxexist = false;
 
     // Create index if one was missing
-    if(not idxexist) {
-      FILE* fpi = fsopen(idxfile, "wb", CFG->sharemode);
-      if(fpi) {
-        setvbuf(fpi, NULL, _IOFBF, 16000);
+    if (not idxexist)
+    {
+      gfile fpi(idxfile, "wb", CFG->sharemode);
+      if (fpi.isopen())
+      {
+        fpi.SetvBuf(NULL, _IOFBF, 16000);
         long fpos = 0;
         char buf[512];
-        while(fgets(buf, sizeof(buf), fp)) {
-          fwrite(&fpos, sizeof(long), 1, fpi);
+        while (fp.Fgets(buf, sizeof(buf)))
+        {
+          fpi.Fwrite(&fpos, sizeof(long));
           fpos += strlen(buf);
         }
-        fclose(fpi);
       }
     }
 
-    FILE* fpi = fsopen(idxfile, "rb", CFG->sharemode);
-    if(fpi) {
-
-      setvbuf(fpi, NULL, _IOFBF, 16000);
+    gfile fpi(idxfile, "rb", CFG->sharemode);
+    if (fpi.isopen())
+    {
+      fpi.SetvBuf(NULL, _IOFBF, 16000);
 
       // Get random line if there is at least one
-      int _lines = (int)(fsize(fpi)/sizeof(long));
+      int _lines = (int)(fpi.FileLength()/sizeof(long));
       if(_lines > 0) {
 
         // Select a random line
         long _offset = 0;
         long _ourline = rand() % _lines;
-        fseek(fpi, _ourline*(long)sizeof(long), SEEK_SET);
-        fread(&_offset, sizeof(long), 1, fpi);
+        fpi.FseekSet(_ourline, (long)sizeof(long));
+        fpi.Fread(&_offset, sizeof(long));
 
         // Get it
         char buf[512];
-        fseek(fp, _offset, SEEK_SET);
-        fgets(buf, sizeof(buf), fp);
+        fp.FseekSet(_offset);
+        fp.Fgets(buf, sizeof(buf));
         StripQuotes(strbtrim(buf));
         strxcpy(__buf, buf, __bufsize);
       }
-      fclose(fpi);
     }
-    fclose(fp);
   }
 
   return __buf;

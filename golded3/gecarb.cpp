@@ -167,15 +167,15 @@ int DoCarboncopy(GMsg* msg, GMsg** carbon) {
             else
               cchide = false;
 
-            if(*ptr == '@') {
-              FILE* fp = fsopen(AddPath(CFG->goldpath, ++ptr), "rt", CFG->sharemode);
-              if(fp) {
+            if (*ptr == '@')
+            {
+              gfile fp(AddPath(CFG->goldpath, ++ptr), "rt", CFG->sharemode);
+              if (fp.isopen())
+              {
                 gstrarray fc;
 
-                while(fgets(buf, sizeof(buf), fp))
+                while (fp.Fgets(buf, sizeof(buf)))
                   tokenize(fc, buf, ",\n");
-
-                fclose(fp);
 
                 for(int j = 0; j < fc.size(); j++)
                   if(fc[j][0] != '@')  // we don't like nesting!
@@ -386,15 +386,15 @@ void DoCrosspost(GMsg* msg, std::vector<int> &postareas) {
             else
               xphide = false;
 
-            if(*ptr == '@') {
-              FILE* fp = fsopen(AddPath(CFG->goldpath, ++ptr), "rt", CFG->sharemode);
-              if(fp) {
+            if (*ptr == '@')
+            {
+              gfile fp(AddPath(CFG->goldpath, ++ptr), "rt", CFG->sharemode);
+              if (fp.isopen())
+              {
                 gstrarray fc;
 
-                while(fgets(buf, sizeof(buf), fp))
+                while (fp.Fgets(buf, sizeof(buf)))
                   tokenize(fc, buf, ", \n");
-
-                fclose(fp);
 
                 for(int j = 0; j < fc.size(); j++)
                   if(fc[j][0] != '@')  // we don't like nesting!

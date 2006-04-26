@@ -2012,16 +2012,17 @@ void IEclass::savefile(int __status) {
   // Open the save file
   const char* editorfile = AddPath(CFG->goldpath, EDIT->File());
   remove(editorfile);
-  FILE* _fp = fsopen(editorfile, "wb", CFG->sharemode);
-  if(_fp) {
-
+  gfile _fp(editorfile, "wb", CFG->sharemode);
+  if (_fp)
+  {
     // Find the first line
     Line* _saveline = findfirstline();
 
     // First save the "unfinished" identifier
-    if(__status == MODE_UPDATE) {
-      fputs(unfinished, _fp);
-      fputs("\r\n", _fp);
+    if (__status == MODE_UPDATE)
+    {
+      _fp.Fputs(unfinished);
+      _fp.Fputs("\r\n");
     }
 
     // Save as whole paragraphs
@@ -2037,14 +2038,11 @@ void IEclass::savefile(int __status) {
         strcpy(_lfptr, "\r\n");
 
       // Save the line
-      fputs(_buf, _fp);
+      _fp.Fputs(_buf);
 
       // Continue with the next line
       _saveline = _saveline->next;
     }
-
-    // Close save file and remove wait window
-    fclose(_fp);
   }
 
   update_statusline(statbak);
@@ -2864,12 +2862,15 @@ int IEclass::Start(int __mode, uint* __position, GMsg* __msg) {
   }
 
   // Check if there is an unfinished backup message
-  FILE* _fp = fsopen(AddPath(CFG->goldpath, EDIT->File()), "rt", CFG->sharemode);
-  if(_fp) {
+  gfile _fp(AddPath(CFG->goldpath, EDIT->File()), "rt", CFG->sharemode);
+  if (_fp)
+  {
     char _buf[EDIT_BUFLEN];
-    fgets(_buf, sizeof(_buf), _fp);
-    fclose(_fp);
-    if(striinc(unfinished, _buf)) {
+    _fp.Fgets(_buf, sizeof(_buf));
+    _fp.Fclose();
+
+    if (striinc(unfinished, _buf))
+    {
       w_info(LNG->UnfinishedMsg);
       update_statusline(LNG->LoadUnfinished);
       HandleGEvent(EVTT_ATTENTION);

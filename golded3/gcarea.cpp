@@ -807,9 +807,8 @@ void getdztoken(char** key, char** val) {
 
 //  ------------------------------------------------------------------
 
-void AreaList::ReadEcholist(char* val) {
-
-  FILE* fp;
+void AreaList::ReadEcholist(char* val)
+{
   char* key;
   Path file;
   char buf[256], options[80];
@@ -836,11 +835,11 @@ void AreaList::ReadEcholist(char* val) {
     strcpy(file, key);
   }
 
-  if(*file) {
-
-    fp = fsopen(file, "rt", CFG->sharemode);
-    if(fp) {
-
+  if (*file)
+  {
+    gfile fp(file, "rt", CFG->sharemode);
+    if (fp.isopen())
+    {
       void (*tok)(char**, char**);
 
       if(is_dz)
@@ -851,8 +850,8 @@ void AreaList::ReadEcholist(char* val) {
       if (not quiet)
         STD_PRINTNL("* Reading " << file);
 
-      while(fgets((val=buf), sizeof(buf), fp)) {
-
+      while (fp.Fgets((val=buf), sizeof(buf)))
+      {
         // Get echoid
         if(is_sqafix) {
           tok(&key, &val);
@@ -900,8 +899,6 @@ void AreaList::ReadEcholist(char* val) {
           }
         }
       }
-
-      fclose(fp);
     }
   }
 }

@@ -31,6 +31,9 @@
 
 #if defined(_MSC_VER) /*&& (_MSC_VER >= 1400)*/
 
+#define g_popen(comm, mode)         _tpopen(comm, mode)
+#define g_pclose(fp)                _pclose(fp)
+
 #define g_sopen(fn, of, sh, pm)     _tsopen(fn, of, sh, pm)
 #define g_close(fh)                 _close(fh)
 #define g_read(fh, buf, cnt)        _read(fh, buf, cnt)
@@ -45,6 +48,9 @@
 #define g_fileno(fp)                _fileno(fp)
 
 #else
+
+#define g_popen(comm, mode)         popen(comm, mode)
+#define g_pclose(fp)                pclose(fp)
 
 #define g_sopen(fn, of, sh, pm)     sopen(fn, of, sh, pm)
 #define g_close(fh)                 close(fh)
@@ -86,24 +92,24 @@ gfile::gfile()
 
 
 //  ------------------------------------------------------------------
-
+/*
 gfile::gfile(int __fh)
 {
   fh = __fh;
   fp = NULL;
   status = 0;
 }
-
+*/
 
 //  ------------------------------------------------------------------
-
+/*
 gfile::gfile(FILE* __fp)
 {
   fh = -1;
   fp = __fp;
   status = 0;
 }
-
+*/
 
 //  ------------------------------------------------------------------
 
@@ -292,6 +298,17 @@ FILE* gfile::Fopen(const char* __path, const char* __mode, int __shflag)
 
 //  ------------------------------------------------------------------
 
+FILE* gfile::Popen(const char* __path, const char* __mode)
+{
+  fp = g_popen(__path, __mode);
+  status = (fp == NULL) ? errno : 0;
+  if (fp) fh = g_fileno(fp);
+  return fp;
+}
+
+
+//  ------------------------------------------------------------------
+
 FILE* gfile::Fdopen(const char* __mode)
 {
   fp = g_fdopen(fh, __mode);
@@ -307,6 +324,18 @@ int gfile::Fclose()
 {
   int _ret = 0;
   if (fp) _ret = g_fclose(fp);
+  status = _ret ? errno : 0;
+  fp = NULL; fh = -1;
+  return _ret;
+}
+
+
+//  ------------------------------------------------------------------
+
+int gfile::Pclose()
+{
+  int _ret = 0;
+  if (fp) _ret = g_pclose(fp);
   status = _ret ? errno : 0;
   fp = NULL; fh = -1;
   return _ret;

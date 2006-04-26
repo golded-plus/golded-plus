@@ -72,8 +72,8 @@ public:
   //  Constructors and destructor
 
   gfile();              // Bare constructor
-  gfile(int __fh);      // Construct from Unix file handle
-  gfile(FILE* __fp);    // Construct from ANSI stream pointer
+//  gfile(int __fh);      // Construct from Unix file handle
+//  gfile(FILE* __fp);    // Construct from ANSI stream pointer
   gfile(const char* __path, int __access, int __shflag=SH_DENYNO, int __mode=S_IREAD|S_IWRITE);
   gfile(const char* __path, const char* __mode, int __shflag=SH_DENYNO);
 
@@ -119,6 +119,10 @@ public:
   FILE*   Fopen   (const std::string& __path, const char* __mode, int __shflag=SH_DENYNO) { return Fopen(__path.c_str(), __mode, __shflag); }
   FILE*   Fdopen  (const char* __mode);
   int     Fclose  ();
+
+  FILE*   Popen   (const char* __path, const char* __mode);
+  FILE*   Popen   (const std::string& __path, const char* __mode) { return Popen(__path.c_str(), __mode); }
+  int     Pclose  ();
 
   size_t  Fread   (void* __ptr, size_t __size, size_t __items=1);
   size_t  Fwrite  (const void* __ptr, size_t __size, size_t __items=1);

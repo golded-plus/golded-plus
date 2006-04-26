@@ -32,15 +32,14 @@
 
 static void ReadGldFile() {
 
-  if(QWK->FoundBBS()) {
-
+  if (QWK->FoundBBS())
+  {
     Path gldfile;
-
+    
     QWK->ResetConfNo();
-
     sprintf(gldfile, "%s%s.GLD", CFG->goldpath, QWK->BbsID());
+    
     gfile fp(gldfile, "rt");
-
     if (fp.isopen())
     {
       char* key;
@@ -54,7 +53,6 @@ static void ReadGldFile() {
         if(QWK->FindEcho(val))
           QWK->ConfNo(atoi(key));
       }
-      fp.Fclose();
     }
   }
 }
@@ -336,7 +334,6 @@ int ImportQWK() {
           }
           na++;
         }
-        fp.Fclose();
       }
     }
 

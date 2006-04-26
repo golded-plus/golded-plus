@@ -798,9 +798,9 @@ void IEclass::LoadFile() {
   GFTRK("EditLoadFile");
 
   // Open the file to load
-  FILE* _fp = fsopen(AddPath(CFG->goldpath, EDIT->File()), "rb", CFG->sharemode);
-  if(_fp) {
-
+  gfile _fp(AddPath(CFG->goldpath, EDIT->File()), "rb", CFG->sharemode);
+  if (_fp)
+  {
     XlatName __oldxlatimport;
 
     // Pop up a wait window
@@ -824,17 +824,17 @@ void IEclass::LoadFile() {
     currline = msgptr->lin = NULL;
 
     // Allocate space for new message text
-    msgptr->txt = (char*)throw_calloc(1, (uint)(fsize(_fp)+256));
+    msgptr->txt = (char*)throw_calloc(1, (uint)(_fp.FileLength()+256));
 
     // Eat the backup marking line
     char _buf[EDIT_BUFLEN];
-    fgets(_buf, sizeof(_buf), _fp);
-    if(not striinc(unfinished, _buf))
-      rewind(_fp);
+    _fp.Fgets(_buf, sizeof(_buf));
+    if (not striinc(unfinished, _buf))
+      _fp.Rewind();
 
     // Load the file and close it
-    fread(msgptr->txt, 1, (uint)fsize(_fp), _fp);
-    fclose(_fp);
+    _fp.Fread(msgptr->txt, (uint)_fp.FileLength());
+    _fp.Fclose();
 
     // Save current charset
     strcpy(__oldxlatimport, AA->Xlatimport());
@@ -981,18 +981,18 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
     }
   }
 
-  if(fileselected or getclip) {
-
+  if (fileselected or getclip)
+  {
     // Open the file/clipboard
-    FILE* fp = NULL;
+    gfile fp;
     gclipbrd clipbrd;
 
     if(getclip)
       filenamebuf = CLIP_NAME;
 
     if(getclip ? clipbrd.openread() :
-       (fp = fsopen(filenamebuf.c_str(), binary ? "rb" : "rt", CFG->sharemode))!=NULL) {
-
+       (fp.Fopen(filenamebuf.c_str(), binary ? "rb" : "rt", CFG->sharemode))!=NULL)
+    {
       if (isPipe)
         filenamebuf = AA->Inputfile();
 
@@ -1037,14 +1037,15 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
         __line = insertlinebelow(__line, _parabuf);
         setlinetype(__line);
 
-        while(1) {
+        while (true)
+        {
           char ibuf[80];
           char* iptr = ibuf;
           char* optr = _parabuf;
-          int n = fread(ibuf, 1, 45, fp);
-          if(n < 45)
-            memset(ibuf+n, 0, 45-n);
+          int n = fp.Fread(ibuf, 45);
+          if (n < 45) memset(ibuf+n, 0, 45-n);
           *optr++ = uuencode_enc(n);
+
           for(int i=0; i<n; i+=3,iptr+=3) {
             *optr++ = uuencode_enc(*iptr >> 2);
             *optr++ = uuencode_enc(((*iptr << 4) & 060) | ((iptr[1] >> 4) & 017));
@@ -1079,10 +1080,11 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
         __line = insertlinebelow(__line, _parabuf);
         setlinetype(__line);
 
-        for(;;) {
+        while (true)
+        {
           char ibuf[80];
           char* optr = _parabuf;
-          int n = fread(ibuf, 1, 54, fp);
+          int n = fp.Fread(ibuf, 54);
           optr = b64.encode(optr, ibuf, n);
           *optr++ = '\n';
           *optr = NUL;
@@ -1109,8 +1111,8 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
         __line->next = NULL;
 
         // Read paragraphs
-        while(getclip ? clipbrd.read(_parabuf, EDIT_PARABUFLEN-7) : fgets(_parabuf, EDIT_PARABUFLEN-7, fp)) {
-
+        while (getclip ? clipbrd.read(_parabuf, EDIT_PARABUFLEN-7) : fp.Fgets(_parabuf, EDIT_PARABUFLEN-7))
+        {
           XlatStr(buf, _parabuf, level, CharTable);
 
           // Insert a quotestring if asked
@@ -1208,10 +1210,10 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
 
       throw_free(_parabuf);
 
-      if(getclip)
+      if (getclip)
         clipbrd.close();
       else
-        fclose(fp);
+        fp.Fclose();
     }
     else {
       w_infof(LNG->CouldNotOpen, filenamebuf.c_str());
@@ -1279,8 +1281,8 @@ void IEclass::editexport(Line* __exportline, int __endat) {
 
   update_statusline(LNG->ExportFile);
 
-  if(edit_string(Edit__exportfilename, sizeof(Path), LNG->ExportWhatFile, H_ExportFile)) {
-
+  if (edit_string(Edit__exportfilename, sizeof(Path), LNG->ExportWhatFile, H_ExportFile))
+  {
     // Pointer to export filename
     char* _filenameptr = Edit__exportfilename;
 
@@ -1288,20 +1290,19 @@ void IEclass::editexport(Line* __exportline, int __endat) {
     if(*_filenameptr == '+')
       _filenameptr++;
 
-    FILE* _fp = fsopen(_filenameptr, (*Edit__exportfilename == '+') ? "at" : "wt", CFG->sharemode);
-    if(_fp) {
-
+    gfile _fp(_filenameptr, (*Edit__exportfilename == '+') ? "at" : "wt", CFG->sharemode);
+    if (_fp.isopen())
+    {
       update_statuslinef(LNG->ExportStatus, "ST_EXPORTSTATUS", Edit__exportfilename);
-      fputc('\n', _fp);
+      _fp.Fputc('\n');
 
-      while((__endat ? __exportline != currline : 1) and __exportline) {
-        fwrite(__exportline->txt.c_str(), 1, __exportline->txt.length(), _fp);
-        if(__exportline->txt.find('\n') == __exportline->txt.npos)
-          fputc('\n', _fp);
+      while ((__endat ? __exportline != currline : 1) and __exportline)
+      {
+        _fp.Fwrite(__exportline->txt.c_str(), __exportline->txt.length());
+        if (__exportline->txt.find('\n') == __exportline->txt.npos)
+          _fp.Fputc('\n');
         __exportline = __exportline->next;
       }
-
-      fclose(_fp);
     }
   }
 

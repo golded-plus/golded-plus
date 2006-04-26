@@ -184,8 +184,6 @@ void AreaList::WriteGoldLast()
         (*ap)->PMrk.Save(fp);
       }
     }
-
-    fp.Fclose();
   }
 }
 
@@ -205,10 +203,7 @@ void AreaList::ReadGoldLast()
     fp.Fread(&GOLDLAST_VER, sizeof(word));
 
     if (GOLDLAST_VER != CUR_GOLDLAST_VER)
-    {
-      fp.Fclose();
       return;
-    }
 
     fp.Fread(AL.alistselections, sizeof(AL.alistselections));
 
@@ -246,8 +241,6 @@ void AreaList::ReadGoldLast()
         fp.Fseek(dw*sizeof(dword), SEEK_CUR);
       }
     }
-
-    fp.Fclose();
   }
 }
 
@@ -255,18 +248,17 @@ void AreaList::ReadGoldLast()
 //  ------------------------------------------------------------------
 //  Write all areas to GOLDAREA.INC in AREADEF format
 
-void AreaList::WriteAreaDef(const char* file) {
-
+void AreaList::WriteAreaDef(const char* file)
+{
   int tmp;
-  FILE* fp;
   Path path;
   char groupid[10], echoid[sizeof(Echo)+2];
   int maxechoid=0, maxdesc=0, maxgroupid=0, maxpath=0, maxaddr=0, maxattr=0;
   char desc[sizeof(Desc)+2], type[6], msgbase[9], addr[40], attr[150], origin[163];
 
-  fp = fsopen(file, "wt", CFG->sharemode);
-  if(fp) {
-
+  gfile fp(file, "wt", CFG->sharemode);
+  if (fp.isopen())
+  {
     area_iterator aa;
     for(aa = idx.begin(); aa != idx.end(); aa++) {
       tmp = strlen((*aa)->echoid());
@@ -325,8 +317,9 @@ void AreaList::WriteAreaDef(const char* file) {
         sprintf(echoid, "\"%s\"", (*aa)->echoid());
       else
         strcpy(echoid, (*aa)->echoid());
-      if((*aa)->isseparator()) {
-        fprintf(fp, "AREASEP %-*s %-*s %*s %s\n",
+      if ((*aa)->isseparator())
+      {
+        fp.Printf("AREASEP %-*s %-*s %*s %s\n",
           maxechoid,  echoid,
           maxdesc,    desc,
           maxgroupid, groupid,
@@ -349,7 +342,7 @@ void AreaList::WriteAreaDef(const char* file) {
           sprintf(origin, " \"%.*s\"", (int)sizeof(origin)-4, CFG->origin[(*aa)->originno()].c_str());
         else
           *origin = NUL;
-        fprintf(fp, "AREADEF %-*s %-*s %*s %s %s %-*s %-*s %-*s%s\n",
+        fp.Printf("AREADEF %-*s %-*s %*s %s %s %-*s %-*s %-*s%s\n",
           maxechoid,  echoid,
           maxdesc,    desc,
           maxgroupid, groupid,
@@ -362,8 +355,6 @@ void AreaList::WriteAreaDef(const char* file) {
         );
       }
     }
-
-    fclose(fp);
   }
 }
 

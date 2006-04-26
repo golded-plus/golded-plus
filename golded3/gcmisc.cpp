@@ -34,20 +34,19 @@ int ReadHelpCfg(int force) {
   char* ptr;
   long  offset;
   char  buf[1024];
-  FILE* ifp;
-  FILE* ofp;
   Hlpr* HlpL;
   int   count;
   int   counter;
   int   comment;
 
-  if((force > 1) or (FiletimeCmp(CFG->helpcfg.fn, CFG->helpged) > 0)) {
-
-    ifp = fsopen(AddPath(CFG->goldpath, CFG->helpcfg.fn), "rb", CFG->sharemode);
-    if(ifp) {
-      setvbuf(ifp, NULL, _IOFBF, 8192);
-      ofp = fsopen(AddPath(CFG->goldpath, CFG->helpged), "wb", CFG->sharemode);
-      if (ofp)
+  if ((force > 1) or (FiletimeCmp(CFG->helpcfg.fn, CFG->helpged) > 0))
+  {
+    gfile ifp(AddPath(CFG->goldpath, CFG->helpcfg.fn), "rb", CFG->sharemode);
+    if (ifp.isopen())
+    {
+      ifp.SetvBuf(NULL, _IOFBF, 8192);
+      gfile ofp(AddPath(CFG->goldpath, CFG->helpged), "wb", CFG->sharemode);
+      if (ofp.isopen())
       {
         offset = 0L;
         CFG->helpcfg.ft = GetFiletime(AddPath(CFG->goldpath, CFG->helpcfg.fn));
@@ -55,27 +54,29 @@ int ReadHelpCfg(int force) {
         if (not quiet)
           STD_PRINTNL("* Reading " << AddPath(CFG->goldpath, CFG->helpcfg.fn));
 
-        setvbuf(ofp, NULL, _IOFBF, 8192);
+        ofp.SetvBuf(NULL, _IOFBF, 8192);
 
         count = 0;
-        rewind(ifp);
+        ifp.Rewind();
 
-        while(fgets(buf, sizeof(buf), ifp)) {
+        while (ifp.Fgets(buf, sizeof(buf)))
+        {
           if(strnieql(buf, "*B ", 3))
             count++;
         }
 
         HlpL = (Hlpr*)throw_calloc(count+2, sizeof(Hlpr));
 
-        rewind(ifp);
-        fputs("*I\r\n", ofp);
-        fwrite(HlpL, count+1, sizeof(Hlpr), ofp);
-        fputs("\r\n\r\n", ofp);
+        ifp.Rewind();
+        ofp.Fputs("*I\r\n");
+        ofp.Fwrite(HlpL, count+1, sizeof(Hlpr));
+        ofp.Fputs("\r\n\r\n");
         offset += 4 + ((count+1)*sizeof(Hlpr)) + 4;
 
         counter = 0;
         comment = YES;
-        while(fgets(buf, sizeof(buf), ifp)) {
+        while (ifp.Fgets(buf, sizeof(buf)))
+        {
           if(strnieql(buf, "*B ", 3)) {
             comment = NO;
             HlpL[counter].help = atow(buf+3);
@@ -84,8 +85,9 @@ int ReadHelpCfg(int force) {
             HlpL[counter].offset = offset + strlen(buf);
             counter++;
           }
-          if(not comment) {
-            fputs(buf, ofp);
+          if (not comment)
+          {
+            ofp.Fputs(buf);
             offset += strlen(buf);
           }
           if(strnieql(buf, "*E", 2))
@@ -93,15 +95,12 @@ int ReadHelpCfg(int force) {
         }
         HlpL[counter].offset = -1L;
 
-        fseek(ofp, 0L, SEEK_SET);
-        fputs("*I\r\n", ofp);
-        fwrite(HlpL, count+1, sizeof(Hlpr), ofp);
+        ofp.FseekSet(0);
+        ofp.Fputs("*I\r\n");
+        ofp.Fwrite(HlpL, count+1, sizeof(Hlpr));
 
         throw_free(HlpL);
-        fclose(ofp);
       }
-
-      fclose(ifp);
     }
   }
 
@@ -818,21 +817,25 @@ void ReadXlatTables() {
 
 //  ------------------------------------------------------------------
 
-void CookieIndex(char* textfile, char* indexfile) {
-
-  FILE* ifp = fsopen(textfile, "rb", CFG->sharemode);
-  if(ifp) {
-    setvbuf(ifp, NULL, _IOFBF, 32000);
-    FILE* ofp = fsopen(indexfile, "wb", CFG->sharemode);
-    if(ofp) {
-      setvbuf(ofp, NULL, _IOFBF, 16000);
+void CookieIndex(char* textfile, char* indexfile)
+{
+  gfile ifp(textfile, "rb", CFG->sharemode);
+  if (ifp.isopen())
+  {
+    ifp.SetvBuf(NULL, _IOFBF, 32000);
+    gfile ofp(indexfile, "wb", CFG->sharemode);
+    if (ofp)
+    {
+      ofp.SetvBuf(NULL, _IOFBF, 16000);
       char buf[256];
       long fpos = 0;
       long tpos = 0;
       bool was_blank = false;
-      while(fgets(buf, sizeof(buf), ifp)) {
-        if(strblank(buf)) {
-          fwrite(&fpos, sizeof(long), 1, ofp);
+      while (ifp.Fgets(buf, sizeof(buf)))
+      {
+        if (strblank(buf))
+        {
+          ofp.Fwrite(&fpos, sizeof(long));
           fpos = tpos + strlen(buf);
           was_blank = true;
         }
@@ -841,11 +844,9 @@ void CookieIndex(char* textfile, char* indexfile) {
         }
         tpos += strlen(buf);
       }
-      if(not was_blank)
-        fwrite(&fpos, sizeof(long), 1, ofp);
-      fclose(ofp);
+      if (not was_blank)
+        ofp.Fwrite(&fpos, sizeof(long));
     }
-    fclose(ifp);
   }
 }
 

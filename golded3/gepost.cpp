@@ -1100,13 +1100,14 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
           if (confirm)
           {
             throw_release(msg->txt);
-            FILE* fp = fsopen(AddPath(CFG->goldpath, CFG->confirmfile), "rt", CFG->sharemode);
-            if(fp) {
+            gfile fp(AddPath(CFG->goldpath, CFG->confirmfile), "rt", CFG->sharemode);
+
+            if (fp.isopen())
               LoadText(msg, AddPath(CFG->goldpath, CFG->confirmfile));
-              fclose(fp);
-            }
-            if(msg->txt == NULL)
+
+            if (msg->txt == NULL)
               msg->txt = throw_strdup("\r\rConfirmation Receipt\r\r");
+
             TokenXlat(mode, msg->txt, strlen(msg->txt)+1, true, msg, omsg, CurrArea);
           }
           else

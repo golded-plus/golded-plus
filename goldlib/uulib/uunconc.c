@@ -642,13 +642,13 @@ UUDecodeLine (char *s, char *d, int method)
       cc  |= (c >> 2);
 
       if(i-- > 0)
-    d[count++] = cc;
+    d[count++] = (char)(cc & 0xFF);
 
       c <<= 6;
       c |= table[ACAST(*s++)];
 
       if(i-- > 0)
-    d[count++] = c;
+    d[count++] = (char)(c & 0xFF);
 
       j -= 4;
     }

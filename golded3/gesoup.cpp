@@ -554,8 +554,6 @@ int ImportSOUP() {
             AA->Close();
 
             if (msgs) importedmsgs += msgs;
-
-            fpm.Fclose();
           }
         }
 

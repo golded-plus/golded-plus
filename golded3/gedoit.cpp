@@ -29,7 +29,7 @@
 
 //  ------------------------------------------------------------------
 
-static FILE* prnfp;
+static gfile prnfp;
 static int prnheader;
 
 
@@ -51,13 +51,15 @@ void SaveLines(int mode, const char* savefile, GMsg* msg, int margin, bool clip)
   strcpy(fnam, "PRN");
   if(mode == MODE_WRITE and streql(savefile, "\001PRN"))
     prn = YES;
-  else {
+  else
+  {
     strcpy(fnam, savefile);
     strschg_environ(fnam);
-    prnfp = fsopen(fnam, prnacc, CFG->sharemode);
+    prnfp.Fopen(fnam, prnacc, CFG->sharemode);
   }
   int lines=0;
-  if(prnfp) {
+  if (prnfp.isopen())
+  {
     char *old_msg_txt = throw_strdup(msg->txt);
 #ifdef OLD_STYLE_HEADER
     if(mode == MODE_WRITE) {
@@ -99,40 +101,42 @@ void SaveLines(int mode, const char* savefile, GMsg* msg, int margin, bool clip)
             }
           }
           const char *ptr = line->txt.c_str();
-          fwrite(ptr, strlen(ptr), 1, prnfp);
-          if(mode == MODE_NEW) {
+          prnfp.Fwrite(ptr, strlen(ptr));
+          if (mode == MODE_NEW)
+          {
             if(EDIT->HardLines()) {
               if(line->type & GLINE_HARD) {
-                if(not ((line->type & (GLINE_TEAR|GLINE_ORIG|GLINE_KLUDGE|GLINE_QUOT)) or strblank(ptr))) {
-                  fwrite(EDIT->HardLine(), strlen(EDIT->HardLine()), 1, prnfp);
+                if (not ((line->type & (GLINE_TEAR|GLINE_ORIG|GLINE_KLUDGE|GLINE_QUOT)) or strblank(ptr)))
+                {
+                  prnfp.Fwrite(EDIT->HardLine(), strlen(EDIT->HardLine()));
                 }
               }
             }
           }
-          fwrite(prn ? NL : "\n", prn ? sizeof(NL) : 1, 1, prnfp);
-          if(prn) {
+          prnfp.Fwrite(prn ? NL : "\n", prn ? sizeof(NL) : 1);
+          if (prn)
+          {
             lines++;
-            if(lines%CFG->printlength == 0 and CFG->switches.get(printformfeed)) {
-              fwrite("\f", 1, 1, prnfp);
-            }
+            if (lines%CFG->printlength == 0 and CFG->switches.get(printformfeed))
+              prnfp.Fwrite("\f", 1);
           }
         }
         line = lin[++n];
       }
     }
     // Add an empty line and formfeed at the bottom
-    if(mode == MODE_WRITE) {
-      fwrite(prn ? NL : "\n", prn ? sizeof(NL) : 1, 1, prnfp);
-    }
+    if (mode == MODE_WRITE)
+      prnfp.Fwrite(prn ? NL : "\n", prn ? sizeof(NL) : 1);
+
     // Add formfeed if requested
-    if((prn and CFG->switches.get(printformfeed)) or
-       (not prn and not clip and CFG->switches.get(formfeedseparator))) {
-      fwrite("\f", 1, 1, prnfp);
+    if ((prn and CFG->switches.get(printformfeed)) or
+       (not prn and not clip and CFG->switches.get(formfeedseparator)))
+    {
+      prnfp.Fwrite("\f", 1);
     }
-    if(not prn) {
-      fclose(prnfp);
-      prnfp = NULL;
-    }
+
+    prnfp.Fclose();
+
     throw_release(msg->txt);
     msg->txt = old_msg_txt;
   }
@@ -161,8 +165,6 @@ static void WriteMsgs(GMsg* msg) {
   char fname[GMAXPATH], ofname[GMAXPATH];
 
   int overwrite = NO;
-
-  prnfp = NULL;
 
   GMenuDomarks MenuDomarks;
   int source = AA->Mark.Count() ? MenuDomarks.Run(LNG->Write) : WRITE_CURRENT;
@@ -203,12 +205,12 @@ static void WriteMsgs(GMsg* msg) {
         }
         else if(target & WRITE_PRINTER) {
           #ifdef __UNIX__
-          prnfp = popen(CFG->printdevice, "w");
+          prnfp.Popen(CFG->printdevice, "w");
           #else
-          prnfp = fsopen(CFG->printdevice, "wt", CFG->sharemode);
+          prnfp.Fopen(CFG->printdevice, "wt", CFG->sharemode);
           #endif
-          if(prnfp)
-            fwrite(CFG->printinit+1, CFG->printinit[0], 1, prnfp);
+          if (prnfp.isopen())
+            prnfp.Fwrite(CFG->printinit+1, CFG->printinit[0]);
         }
         else if(target & WRITE_CLIPBRD) {
           overwrite = YES;
@@ -238,9 +240,10 @@ static void WriteMsgs(GMsg* msg) {
             SaveLines(overwrite ? MODE_WRITE : MODE_APPEND, AA->Outputfile(), msg, prnmargin, make_bool(target & WRITE_CLIPBRD));
           }
         }
-        if(prnfp)
-          fwrite(CFG->printreset+1, CFG->printreset[0], 1, prnfp);
-        if(target & WRITE_CLIPBRD) {
+        if (prnfp.isopen())
+          prnfp.Fwrite(CFG->printreset+1, CFG->printreset[0]);
+        if (target & WRITE_CLIPBRD)
+        {
           AA->SetOutputfile(ofname);
 
           gclipbrd clipbrd;
@@ -296,14 +299,15 @@ static void WriteMsgs(GMsg* msg) {
           w_info(LNG->WritingPRN);
           AA->LoadMsg(msg, msg->msgno, prnmargin);
           #ifdef __UNIX__
-          prnfp = popen(CFG->printdevice, "w");
+          prnfp.Popen(CFG->printdevice, "w");
           #else
-          prnfp = fsopen(CFG->printdevice, "wt", CFG->sharemode);
+          prnfp.Fopen(CFG->printdevice, "wt", CFG->sharemode);
           #endif
-          if(prnfp) {
-            fwrite(CFG->printinit+1, CFG->printinit[0], 1, prnfp);
+          if (prnfp.isopen())
+          {
+            prnfp.Fwrite(CFG->printinit+1, CFG->printinit[0]);
             SaveLines(MODE_WRITE, "\001PRN", msg, prnmargin);
-            fwrite(CFG->printreset+1, CFG->printreset[0], 1, prnfp);
+            prnfp.Fwrite(CFG->printreset+1, CFG->printreset[0]);
           }
           w_info(NULL);
         }
@@ -343,14 +347,11 @@ Finish:
 
   w_info(NULL);
 
-  if(prnfp) {
-    #ifdef __UNIX__
-    pclose(prnfp);
-    #else
-    fclose(prnfp);
-    #endif
-    prnfp = NULL;
-  }
+  #ifdef __UNIX__
+  prnfp.Pclose();
+  #else
+  prnfp.Fclose();
+  #endif
 
   GFTRK(NULL);
 }
@@ -439,13 +440,13 @@ void QuoteBuf(GMsg* msg) {
         break;
     }
 
-    if(*openmode) {
-
-      FILE* fp = fsopen(quotebuf, openmode, CFG->sharemode);
-      if(fp) {
+    if (*openmode)
+    {
+      gfile fp(quotebuf, openmode, CFG->sharemode);
+      if (fp.isopen())
+      {
         strchg(msg->txt, 0x0D, 0x0A);
-        fputs(msg->txt, fp);
-        fclose(fp);
+        fp.Fputs(msg->txt);
       }
 
       HandleGEvent(EVTT_JOBDONE);

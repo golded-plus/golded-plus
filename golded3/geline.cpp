@@ -2980,15 +2980,13 @@ static bool CheckLevel(const char* imp, const char* imp2, int n, int &current_ta
   if (CharTable && (n == current_table) && (level <= CharTable->level))
     return true;
 
-  FILE* fp = fsopen(AddPath(CFG->goldpath, CFG->xlatged), "rb", CFG->sharemode);
-
-  if (fp)
+  gfile fp(AddPath(CFG->goldpath, CFG->xlatged), "rb", CFG->sharemode);
+  if (fp.isopen())
   {
     if (!CharTable) CharTable = (Chs*)throw_calloc(1, sizeof(Chs));
-    fseek(fp, ((long)n*(long)sizeof(Chs)), SEEK_SET);
-    fread(CharTable, sizeof(Chs), 1, fp);
-    fclose(fp);
-
+    fp.FseekSet(n, sizeof(Chs));
+    fp.Fread(CharTable, sizeof(Chs));
+  
     ChsTP = CharTable->t;
     current_table = n;
 

@@ -604,25 +604,28 @@ void AskAttributes(GMsg* __msg) {
 
 //  ------------------------------------------------------------------
 
-int SelectFromFile(const char* file, char* selection, const char* title, const char* nolines) {
-
+int SelectFromFile(const char* file, char* selection, const char* title, const char* nolines)
+{
   char buf[256];
   int n;
   bool retval=false;
   char** Listi;
   int lines = 0;
 
-  FILE* fp = fsopen(AddPath(CFG->goldpath, file), "rt", CFG->sharemode);
-  if(fp) {
-    while(fgets(buf, sizeof(buf), fp))
+  gfile fp(AddPath(CFG->goldpath, file), "rt", CFG->sharemode);
+  if (fp.isopen())
+  {
+    while (fp.Fgets(buf, sizeof(buf)))
       lines++;
   }
 
-  if(lines) {
+  if (lines)
+  {
     Listi = (char**)throw_calloc(lines+1, sizeof(char*));
-    rewind(fp);
-    for(n=0; n<lines; n++) {
-      fgets(buf, sizeof(buf)-2, fp);
+    fp.Rewind();
+    for (n = 0; n < lines; n++)
+    {
+      fp.Fgets(buf, sizeof(buf)-2);
       strtrim(buf);
       strins(" ", buf, 0);
       strcat(buf, " ");
@@ -648,9 +651,6 @@ int SelectFromFile(const char* file, char* selection, const char* title, const c
     waitkeyt(10000);
     w_info(NULL);
   }
-
-  if(fp)
-    fclose(fp);
 
   return retval;
 }

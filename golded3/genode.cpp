@@ -1247,13 +1247,14 @@ void CheckNodelists() {
 
     update_statusline(LNG->CheckingNodelists);
 
-    FILE* fp = fsopen(file, "rt", CFG->sharemode);
-    if(fp) {
-
+    gfile fp(file, "rt", CFG->sharemode);
+    if (fp)
+    {
       // Read the list index
       char buf[256];
       NODE->nodelists = 0;
-      while(fgets(buf, sizeof(buf), fp)) {
+      while (fp.Fgets(buf, sizeof(buf)))
+      {
         NODE->nodelist = (Stamp*)throw_realloc(NODE->nodelist, (NODE->nodelists+1)*sizeof(Stamp));
         char* key;
         char* val=buf;
@@ -1263,7 +1264,7 @@ void CheckNodelists() {
         NODE->nodelist[NODE->nodelists].ft = atol(val);
         NODE->nodelists++;
       }
-      fclose(fp);
+      fp.Fclose();
 
       // Check the files
       if(CFG->switches.get(nodelistwarn)) {

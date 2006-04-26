@@ -323,8 +323,8 @@ struct AF_entry idetect[] = {
 };
 
 
-void InstallDetect(char* path) {
-
+void InstallDetect(char* path)
+{
   // Create GOLDED.BAK file if there is an existing GOLDED.CFG
   if(fexist(CFG->goldcfg)) {
     Path cmdlinecfgbak;
@@ -337,12 +337,13 @@ void InstallDetect(char* path) {
 
   STD_PRINTNL("Please wait while GoldED+ is detecting your software.");
 
-  FILE* fp = fopen(CFG->goldcfg, "wt");
-  if(fp) {
-
-    if(*path) {
+  gfile fp(CFG->goldcfg, "wt");
+  if (fp.isopen())
+  {
+    if (*path)
+    {
       MapPath(PathCopy(CFG->areapath, path));
-      fprintf(fp, "AREAPATH %s\n", path);
+      fp.Printf("AREAPATH %s\n", path);
     }
 
     Path pth;
@@ -362,8 +363,9 @@ void InstallDetect(char* path) {
         if(ptr)
           *ptr = NUL;
       }
-      if(fexist(AddPath(pth, idetect[i].configname))) {
-        fprintf(fp, "AREAFILE %s %s\n", idetect[i].name, pth);
+      if (fexist(AddPath(pth, idetect[i].configname)))
+      {
+        fp.Printf("AREAFILE %s %s\n", idetect[i].name, pth);
         STD_PRINTNL("Found " << idetect[i].name << (ptr ? "." : " (unreliable)."));
         if(streql(idetect[i].name, "Squish"))
           gotsquish = true;
@@ -376,8 +378,9 @@ void InstallDetect(char* path) {
     ptr = getenv("IM");
     if(ptr)
       PathCopy(pth, ptr);
-    if(fexist(AddPath(pth, "im.exe")) or fexist(AddPath(pth, "intrecho.exe"))) {
-      fprintf(fp, "AREAFILE InterMail %s\n", pth);
+    if (fexist(AddPath(pth, "im.exe")) or fexist(AddPath(pth, "intrecho.exe")))
+    {
+      fp.Printf("AREAFILE InterMail %s\n", pth);
       STD_PRINTNL("Found InterMail and/or InterEcho.");
       detected = true;
     }
@@ -391,21 +394,24 @@ void InstallDetect(char* path) {
       else
         extractdirname(pth, pth);
     }
-    if(fexist(AddPath(pth, "max.prm"))) {
-      fprintf(fp, "AREAFILE Maximus %s\n", pth);
+    if (fexist(AddPath(pth, "max.prm")))
+    {
+      fp.Printf("AREAFILE Maximus %s\n", pth);
       STD_PRINTNL("Found Maximus.");
       detected = true;
     }
-    if(not gotsquish and fexist(AddPath(pth, "squish.cfg"))) {
-      fprintf(fp, "AREAFILE Squish %s\n", pth);
+    if (not gotsquish and fexist(AddPath(pth, "squish.cfg")))
+    {
+      fp.Printf("AREAFILE Squish %s\n", pth);
       STD_PRINTNL("Found Squish.");
       detected = true;
     }
 
     // Detect ME2
     strcpy(pth, CFG->areapath);
-    if(fexist(AddPath(pth, "areadesc.me2"))) {
-      fprintf(fp, "AREAFILE ME2 %sareadesc.me2 %sareas.bbs\n", pth, pth);
+    if (fexist(AddPath(pth, "areadesc.me2")))
+    {
+      fp.Printf("AREAFILE ME2 %sareadesc.me2 %sareas.bbs\n", pth, pth);
       STD_PRINTNL("Found ME2.");
       gotareasbbs = true;
       detected = true;
@@ -414,8 +420,9 @@ void InstallDetect(char* path) {
     // Detect AREAS.BBS
     if(not gotareasbbs) {
       strcpy(pth, CFG->areapath);
-      if(fexist(AddPath(pth, "areas.bbs"))) {
-        fprintf(fp, "AREAFILE AreasBBS %sareas.bbs\n", pth);
+      if (fexist(AddPath(pth, "areas.bbs")))
+      {
+        fp.Printf("AREAFILE AreasBBS %sareas.bbs\n", pth);
         STD_PRINTNL("Found AREAS.BBS.");
         detected = true;
       }
@@ -423,37 +430,37 @@ void InstallDetect(char* path) {
 
     if(not detected)
       STD_PRINTNL("Sorry, could not find any supported software. Try another path.");
-
-    fclose(fp);
   }
 }
 
 
 //  ------------------------------------------------------------------
 
-int InstallFinish() {
-
-  FILE* fp = fopen(CFG->goldcfg, "at");
-  if(fp) {
-
+int InstallFinish()
+{
+  gfile fp(CFG->goldcfg, "at");
+  if (fp.isopen())
+  {
     char buf[77];
 
     // Check what we have
-
-    if(CFG->username.empty()) {
-      if(EnterString("Please enter your name:", buf, sizeof(buf)))
-        goto install_terminated;
-      fprintf(fp, "USERNAME %s\n", buf);
+    if (CFG->username.empty())
+    {
+      if (EnterString("Please enter your name:", buf, sizeof(buf)))
+        return -1;
+      fp.Printf("USERNAME %s\n", buf);
       CfgUsername(buf);
     }
-    if(CFG->aka.empty()) {
-      if(EnterString("Please enter your FidoNet address:", buf, sizeof(buf)))
-        goto install_terminated;
-      fprintf(fp, "ADDRESS %s\n", buf);
+    if (CFG->aka.empty())
+    {
+      if (EnterString("Please enter your FidoNet address:", buf, sizeof(buf)))
+        return -1;
+      fp.Printf("ADDRESS %s\n", buf);
       CfgAddress(buf);
     }
-    if(AL.basetypes.empty()) {
-      if(EnterString("Please enter the path to your *.msg netmail area:", buf, sizeof(buf)))
+    if (AL.basetypes.empty())
+    {
+      if (EnterString("Please enter the path to your *.msg netmail area:", buf, sizeof(buf)))
         return -1;
       AreaCfg aa;
       aa.reset();
@@ -464,54 +471,53 @@ int InstallFinish() {
       aa.setpath(buf);
       aa.attr = CFG->attribsnet;
       AL.AddNewArea(&aa);
-      fprintf(fp, "AREADEF %s \"%s\" 0 Net %s %s\n", aa.desc, aa.echoid, aa.basetype, buf);
-      if(EnterString("Please enter the path *and* filename of your areas.bbs file:", buf, sizeof(buf)))
-        goto install_terminated;
-      fprintf(fp, "AREAFILE AreasBBS %s\n", buf);
+      fp.Printf("AREADEF %s \"%s\" 0 Net %s %s\n", aa.desc, aa.echoid, aa.basetype, buf);
+      if (EnterString("Please enter the path *and* filename of your areas.bbs file:", buf, sizeof(buf)))
+        return -1;
+      fp.Printf("AREAFILE AreasBBS %s\n", buf);
       char buf2[200]="AreasBBS ";
       strcat(buf2, buf);
       AL.GetAreafile(buf2);
     }
     #ifndef GMB_NOHUDS
-    if(find(AL.basetypes, "HUDSON") and (*CFG->hudsonpath == NUL)) {
-      if(EnterString("Please enter the path to your Hudson msgbase files:", buf, sizeof(buf)))
-        goto install_terminated;
-      fprintf(fp, "HUDSONPATH %s\n", buf);
+    if (find(AL.basetypes, "HUDSON") and (*CFG->hudsonpath == NUL))
+    {
+      if (EnterString("Please enter the path to your Hudson msgbase files:", buf, sizeof(buf)))
+        return -1;
+      fp.Printf("HUDSONPATH %s\n", buf);
       PathCopy(CFG->hudsonpath, buf);
     }
     #endif
     #ifndef GMB_NOGOLD
-    if(find(AL.basetypes, "GOLDBASE") and (*CFG->goldbasepath == NUL)) {
-      if(EnterString("Please enter the path to your Goldbase msgbase files:", buf, sizeof(buf)))
-        goto install_terminated;
-      fprintf(fp, "GOLDBASEPATH %s\n", buf);
+    if (find(AL.basetypes, "GOLDBASE") and (*CFG->goldbasepath == NUL))
+    {
+      if (EnterString("Please enter the path to your Goldbase msgbase files:", buf, sizeof(buf)))
+        return -1;
+      fp.Printf("GOLDBASEPATH %s\n", buf);
       PathCopy(CFG->goldbasepath, buf);
     }
     #endif
     #ifndef GMB_NOJAM
-    if(find(AL.basetypes, "JAM") and (*CFG->jampath == NUL)) {
-      if(EnterString("Please enter the path where net/echomail.jam can be placed:", buf, sizeof(buf)))
-        goto install_terminated;
-      fprintf(fp, "JAMPATH %s\n", buf);
+    if (find(AL.basetypes, "JAM") and (*CFG->jampath == NUL))
+    {
+      if (EnterString("Please enter the path where net/echomail.jam can be placed:", buf, sizeof(buf)))
+        return -1;
+      fp.Printf("JAMPATH %s\n", buf);
       PathCopy(CFG->jampath, buf);
     }
     #endif
     #ifndef GMB_NOPCB
-    if(find(AL.basetypes, "PCBOARD") and (*CFG->pcboardpath == NUL)) {
-      if(EnterString("Please enter the path to PCBoard:", buf, sizeof(buf)))
-        goto install_terminated;
-      fprintf(fp, "PCBOARDPATH %s\n", buf);
+    if (find(AL.basetypes, "PCBOARD") and (*CFG->pcboardpath == NUL))
+    {
+      if (EnterString("Please enter the path to PCBoard:", buf, sizeof(buf)))
+        return -1;
+      fp.Printf("PCBOARDPATH %s\n", buf);
       PathCopy(CFG->pcboardpath, buf);
     }
     #endif
 
-    fclose(fp);
     return 0;
   }
-
-install_terminated:
-  fclose(fp);
-  return -1;
 }
 #endif
 

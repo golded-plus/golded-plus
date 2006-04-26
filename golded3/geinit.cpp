@@ -173,25 +173,27 @@ static void ReadEcholists() {
   Echo* echoin = (Echo*)throw_calloc(1, sizeof(Echo));
 
   // Read the import taglist
-  FILE* fp = fsopen(AddPath(CFG->areapath, CFG->semaphore.importlist), "rt", CFG->sharemode);
-
-  if(fp) {
+  gfile fp(AddPath(CFG->areapath, CFG->semaphore.importlist), "rt", CFG->sharemode);
+  if (fp.isopen())
+  {
     char buf[256];
     int echonums = 0;
     update_statusline(LNG->ReadingEcholist);
-    while(fgets(buf, sizeof(buf), fp)) {
+    while (fp.Fgets(buf, sizeof(buf)))
+    {
       if(not strblank(buf)) {
         echonums++;
         echoin = (Echo*)throw_realloc(echoin, (echonums+2)*sizeof(Echo));
         strcpy(echoin[echonums-1], strtrim(strsetsz(buf, sizeof(Echo)-1)));
       }
     }
+
     *echoin[echonums] = 0;   // Mark end
-    fclose(fp);
   }
 
   // Mark the areas from the import taglist
-  for(uint n=0; n<AL.size(); n++) {
+  for (uint n = 0; n < AL.size(); n++)
+  {
     char buf[256];
     strcpy(buf, AL[n]->echoid());
     int x = SearchTaglist(echoin, buf);
@@ -205,41 +207,33 @@ static void ReadEcholists() {
 
 //  ------------------------------------------------------------------
 
-static void ReadEscsets() {
+static void ReadEscsets()
+{
+  std::vector<Map>::iterator x = CFG->xlatescset.begin();
+  for (int n = 0; x != CFG->xlatescset.end(); x++, n++)
+  {
+    gfile fp(AddPath(CFG->goldpath, CFG->xlatged), "rb", CFG->sharemode);
+    if (fp.isopen())
+    {
+      fp.FseekSet(((long)CFG->xlatcharset.size()*(long)sizeof(Chs)) + ((long)n*(long)sizeof(Esc)));
 
-  FILE* fp;
-
-  std::vector<Map>::iterator x;
-  int n;
-  for(n = 0, x = CFG->xlatescset.begin(); x != CFG->xlatescset.end(); x++, n++) {
-    if(strieql(x->imp, "Composed")) {
-      fp = fsopen(AddPath(CFG->goldpath, CFG->xlatged), "rb", CFG->sharemode);
-      if(fp) {
+      if (strieql(x->imp, "Composed"))
+      {
         CompTable = (Esc*)throw_realloc(CompTable, sizeof(Esc));
-        fseek(fp, ((long)CFG->xlatcharset.size()*(long)sizeof(Chs)) + ((long)n*(long)sizeof(Esc)), SEEK_SET);
-        fread(CompTable, sizeof(Esc), 1, fp);
+        fp.Fread(CompTable, sizeof(Esc));
         CompTP = CompTable->t;
-        fclose(fp);
       }
-    }
-    else if(strieql(x->imp, "I51")) {
-      fp = fsopen(AddPath(CFG->goldpath, CFG->xlatged), "rb", CFG->sharemode);
-      if(fp) {
+      else if (strieql(x->imp, "I51"))
+      {
         I51Table = (Esc*)throw_realloc(I51Table, sizeof(Esc));
-        fseek(fp, ((long)CFG->xlatcharset.size()*(long)sizeof(Chs)) + ((long)n*(long)sizeof(Esc)), SEEK_SET);
-        fread(I51Table, sizeof(Esc), 1, fp);
+        fp.Fread(I51Table, sizeof(Esc));
         I51TP = I51Table->t;
-        fclose(fp);
       }
-    }
-    else if(strieql(x->imp, "MNEMONIC")) {
-      fp = fsopen(AddPath(CFG->goldpath, CFG->xlatged), "rb", CFG->sharemode);
-      if(fp) {
+      else if (strieql(x->imp, "MNEMONIC"))
+      {
         MNETable = (Esc*)throw_realloc(MNETable, sizeof(Esc));
-        fseek(fp, ((long)CFG->xlatcharset.size()*(long)sizeof(Chs)) + ((long)n*(long)sizeof(Esc)), SEEK_SET);
-        fread(MNETable, sizeof(Esc), 1, fp);
+        fp.Fread(MNETable, sizeof(Esc));
         MNETP = MNETable->t;
-        fclose(fp);
       }
     }
   }
@@ -248,9 +242,8 @@ static void ReadEscsets() {
 
 //  ------------------------------------------------------------------
 
-static void ReadAddrMacros() {
-
-  FILE* fp;
+static void ReadAddrMacros()
+{
   char* ptr;
   char buf[256], path[GMAXPATH];
 
@@ -262,16 +255,15 @@ static void ReadAddrMacros() {
 
   MakePathname(CFG->namesfile, path, CFG->namesfile);
 
-  if(fexist(CFG->namesfile)) {
-    fp = fsopen(CFG->namesfile, "rt", CFG->sharemode);
-    if(fp) {
-      update_statusline(LNG->ReadingAddrMacros);
-      while(fgets(buf, sizeof(buf), fp)) {
-        strbtrim(buf);
-        if(*buf != ';' and *buf)
-          CfgAddressmacro(buf);
-      }
-      fclose(fp);
+  gfile fp(CFG->namesfile, "rt", CFG->sharemode);
+  if (fp.isopen())
+  {
+    update_statusline(LNG->ReadingAddrMacros);
+    while (fp.Fgets(buf, sizeof(buf)))
+    {
+      strbtrim(buf);
+      if(*buf != ';' and *buf)
+        CfgAddressmacro(buf);
     }
   }
 }

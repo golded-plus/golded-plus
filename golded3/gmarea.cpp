@@ -86,7 +86,6 @@ void WriteNoDupes(const char* file, const char* line) {
     fp.Fseek(0, SEEK_END);
     fp.Printf("%s\n", line);
   }
-  fp.Fclose();
 }
 
 
@@ -136,10 +135,11 @@ void FreqWaZOO(const char* files, const Addr& dest, const Attr& attr) {
     i++;
   }
 
-  FILE* fcs = fopen(tmp, "at");
-  if(fcs) {
-    fprintf(fcs, "%s\n", buf);
-    fclose(fcs);
+  gfile fcs(tmp, "at");
+  if (fcs.isopen())
+  {
+    fcs.Printf("%s\n", buf);
+    fcs.Fclose();
   }
 
   strcpy(tmp, filename);

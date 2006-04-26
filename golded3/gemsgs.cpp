@@ -566,19 +566,19 @@ void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int __orig
         {
           std::string param = input.substr(pbeg-input.begin(), pend-pbeg);
 
-          FILE *pipe_in;
+          gfile pipe_in;
           std::string pipe_buff;
 
-          if ((pipe_in = popen(param.c_str(), "rt")) != NULL )
+          if ((pipe_in.Popen(param, "rt")) != NULL )
           {
             char buffer[1024];
-            while (!feof(pipe_in))
+            while (!pipe_in.feof_())
             {
-              if (fgets(buffer, sizeof(buffer), pipe_in) != NULL)
+              if (pipe_in.Fgets(buffer, sizeof(buffer)) != NULL)
                 pipe_buff += buffer;
             }
 
-            pclose(pipe_in);
+            pipe_in.Pclose();
           }
 
           for (size_t i = 0; i < pipe_buff.length(); i++)
@@ -746,9 +746,8 @@ void Rot13(GMsg* msg) {
 
 //  ------------------------------------------------------------------
 
-void LoadText(GMsg* msg, const char* textfile) {
-
-  FILE* fp;
+void LoadText(GMsg* msg, const char* textfile)
+{
   uint size;
   char* buf;
   char* ptr;
@@ -756,9 +755,9 @@ void LoadText(GMsg* msg, const char* textfile) {
   int hardcr = NO, hardlen;
   char hardline[20];
 
-  fp = fsopen(textfile, "rt", CFG->sharemode);
-  if(fp) {
-
+  gfile fp(textfile, "rt", CFG->sharemode);
+  if (fp.isopen())
+  {
     #define PBUFSIZE 4096   // Allow a 4k long paragraph
 
     size_t buf_len = PBUFSIZE;
@@ -773,7 +772,7 @@ void LoadText(GMsg* msg, const char* textfile) {
     memset(spaces, ' ', tabsz);
     spaces[tabsz] = NUL;
 
-    uint tlen = (uint)(fsize(fp)+512);
+    uint tlen = (uint)(fp.FileLength()+512);
     msg->txt = txtptr = (char*)throw_realloc(msg->txt, tlen);
     memset(msg->txt, NUL, tlen);
 
@@ -785,8 +784,8 @@ void LoadText(GMsg* msg, const char* textfile) {
     hardlen = strlen(hardline);
     *txtptr = NUL;
 
-    while(fgets(buf, PBUFSIZE-1, fp)) {
-
+    while (fp.Fgets(buf, PBUFSIZE-1))
+    {
       if(EDIT->HardLines() and strneql(buf, hardline, hardlen)) {
         hardcr = not hardcr;
         if(*txtptr == LF)
@@ -891,7 +890,6 @@ void LoadText(GMsg* msg, const char* textfile) {
     if(*txtptr != CR)
       *(++txtptr) = CR;
     *(++txtptr) = NUL;
-    fclose(fp);
     throw_free(buf);
   }
 }

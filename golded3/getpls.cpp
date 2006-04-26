@@ -69,15 +69,13 @@ inline int IsInitial(char c) {
 
 //  ------------------------------------------------------------------
 
-int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origarea) {
-
-  FILE* fp;
+int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origarea)
+{
   long fpos;
   Path tplfile;
   int n;
   int x;
-  FILE *tfp;
-  FILE *ifp;
+  gfile fp;
   char* tptr;
   char* ptr;
   char* ptr2;
@@ -220,56 +218,58 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
     tmptpl = YES;   // Create a temporary template
     mktemp(strcpy(tplfile, AddPath(CFG->temppath, "GDXXXXXX")));
 
-    if ((fp = fsopen(tplfile, "wt", CFG->sharemode)) != NULL)
+    fp.Fopen(tplfile, "wt", CFG->sharemode);
+    if (fp.isopen())
     {
-      fputs("@header= @oecho (@caddr) @align{79}{=}\n"
-            "@header Msg  : @msgno of @msgs@align{44}@attr\n", fp);
+      fp.Fputs("@header= @oecho (@caddr) @align{79}{=}\n"
+               "@header Msg  : @msgno of @msgs@align{44}@attr\n");
 
       if (AA->isinternet())
       {
-        fputs("@header From : @ofrom@align{60}@odtime\n"
-              "@header To   : @oto\n", fp);
+        fp.Fputs("@header From : @ofrom@align{60}@odtime\n"
+                 "@header To   : @oto\n");
       }
       else
       {
-        fputs("@header From : @oname@align{44}@oaddr@align{60}@odtime\n", fp);
+        fp.Fputs("@header From : @oname@align{44}@oaddr@align{60}@odtime\n");
 
         if (AA->isnet())
-          fputs("@header To   : @dname@align{44}@daddr\n", fp);
+          fp.Fputs("@header To   : @dname@align{44}@daddr\n");
         else
-          fputs("@header To   : @dname\n", fp);
+          fp.Fputs("@header To   : @dname\n");
       }
 
-      fputs("@header Subj : @subject\n"
-            "@header@align{79}{=}\n"
-            "@moved* Replying to a msg in @oecho (@odesc)\n@moved\n"
-            "@changed* Changed by @cname (@caddr), @cdate @ctime.\n@changed\n"
-            "@forward* Forwarded from @oecho by @fname (@faddr).\n"
-            "@forward* Originally by: @oname (@oaddr), @odate @otime.\n"
-            "@forward* Originally to: @dname{}{}{all}.\n"
-            "@forward\n"
-            "@message\n"
-            "@forward\n"
-            "Hello @pseudo{}{}{everybody}.\n"
-            "@new\n"
-            "@position\n"
-            "@replyReplying to a msg dated @odate @otime, from @oname{me}{you} to @dname{me}{you}{all}.\n"
-            "@reply@position\n"
-            "@quoted@odate @otime, @oname{I}{you} wrote to @dname{me}{you}{all}:\n"
-            "@quoted@position\n"
-            "@comment@odate @otime, @oname{I}{you} wrote to @dname{me}{you}{all}:\n"
-            "@comment@position\n"
-            "@quotebuf\n"
-            "@quotebuf@odate @otime, @oname{I}{you} wrote to @dname{me}{you}{all}:\n"
-            "@quotebuf\n"
-            "@quote\n\n"
-            "@cfname\n\n", fp);
-      fclose(fp);
+      fp.Fputs("@header Subj : @subject\n"
+               "@header@align{79}{=}\n"
+               "@moved* Replying to a msg in @oecho (@odesc)\n@moved\n"
+               "@changed* Changed by @cname (@caddr), @cdate @ctime.\n@changed\n"
+               "@forward* Forwarded from @oecho by @fname (@faddr).\n"
+               "@forward* Originally by: @oname (@oaddr), @odate @otime.\n"
+               "@forward* Originally to: @dname{}{}{all}.\n"
+               "@forward\n"
+               "@message\n"
+               "@forward\n"
+               "Hello @pseudo{}{}{everybody}.\n"
+               "@new\n"
+               "@position\n"
+               "@replyReplying to a msg dated @odate @otime, from @oname{me}{you} to @dname{me}{you}{all}.\n"
+               "@reply@position\n"
+               "@quoted@odate @otime, @oname{I}{you} wrote to @dname{me}{you}{all}:\n"
+               "@quoted@position\n"
+               "@comment@odate @otime, @oname{I}{you} wrote to @dname{me}{you}{all}:\n"
+               "@comment@position\n"
+               "@quotebuf\n"
+               "@quotebuf@odate @otime, @oname{I}{you} wrote to @dname{me}{you}{all}:\n"
+               "@quotebuf\n"
+               "@quote\n\n"
+               "@cfname\n\n");
+      fp.Fclose();
     }
   }
 
-  fp = fsopen(tplfile, "rt", CFG->sharemode);
-  if(fp == NULL) {
+  fp.Fopen(tplfile, "rt", CFG->sharemode);
+  if (!fp.isopen())
+  {
     LOG.ErrOpen();
     LOG.printf("! A template file could not be opened.");
     LOG.printf(": %s", tplfile);
@@ -332,7 +332,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
   size_t oldmsg_size = oldmsg->txt ? strlen(oldmsg->txt) : REALLOC_CACHE_SIZE;
   size_t msg_txt_realloc_cache = 0;
 
-  while(fgets(buf, sizeofbuf, fp))
+  while (fp.Fgets(buf, sizeofbuf))
   {
     ptr = strskip_wht(buf);
     if(*ptr != ';') {
@@ -589,17 +589,21 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
                 CookieIndex(textfile, indexfile);
 
               // Get a random cookie
-              tfp = fsopen(textfile, "rt", CFG->sharemode);
-              if(tfp) {
-                ifp = fsopen(indexfile, "rb", CFG->sharemode);
-                if(ifp) {
-                  fseek(ifp, 0L, SEEK_END);
-                  int idxs = (int)(ftell(ifp)/sizeof(long));
-                  if(idxs) {
-                    fseek(ifp, (long)(rand()%idxs)*sizeof(long), SEEK_SET);
-                    fread(&fpos, sizeof(long), 1, ifp);
-                    fseek(tfp, fpos, SEEK_SET);
-                    while(fgets(buf, 255, tfp)) {
+              gfile tfp(textfile, "rt", CFG->sharemode);
+              if (tfp.isopen())
+              {
+                gfile ifp(indexfile, "rb", CFG->sharemode);
+                if (ifp.isopen())
+                {
+                  ifp.Fseek(0L, SEEK_END);
+                  int idxs = (int)(ifp.Ftell()/sizeof(long));
+                  if (idxs)
+                  {
+                    ifp.FseekSet((long)(rand()%idxs), sizeof(long));
+                    ifp.Fread(&fpos, sizeof(long));
+                    tfp.FseekSet(fpos);
+                    while (tfp.Fgets(buf, 255))
+                    {
                       strtrim(buf);
                       if(*buf) {
                         if(*buf == '+' and buf[1] == NUL)
@@ -623,21 +627,22 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
                         break;
                     }
                   }
-                  fclose(ifp);
                 }
-                fclose(tfp);
               }
             }
             continue;
 
           case TPLTOKEN_INCLUDE:
-            if(mode != MODE_QUOTEBUF) {
+            if(mode != MODE_QUOTEBUF)
+            {
               strbtrim(ptr);
               strcpy(textfile, ptr);
               MakePathname(textfile, CFG->templatepath, textfile);
-              tfp = fsopen(textfile, "rt", CFG->sharemode);
-              if(tfp) {
-                while(fgets(buf, 255, tfp)) {
+              gfile tfp(textfile, "rt", CFG->sharemode);
+              if (tfp.isopen())
+              {
+                while (tfp.Fgets(buf, 255))
+                {
                   TokenXlat(mode, buf, sizeofbuf, true, msg, oldmsg, origarea);
                   strtrim(buf);
                   strcat(buf, "\r");
@@ -653,7 +658,6 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
                   strcpy(&(msg->txt[pos]), buf);
                   pos += len;
                 }
-                fclose(tfp);
               }
             }
             continue;
@@ -882,7 +886,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
     loop_next:
     ;
   }
-  fclose(fp);
+  fp.Fclose();
 
   if((mode != MODE_CHANGE) and (mode != MODE_QUOTEBUF) and
      (mode != MODE_HEADER) and (mode != MODE_WRITEHEADER) and

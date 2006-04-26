@@ -720,11 +720,10 @@ static int do_if(char* val) {
 //  ------------------------------------------------------------------
 //  Compile a GoldED text config file
 
-int ReadCfg(const char* cfgfile, int ignoreunknown) {
-
+int ReadCfg(const char* cfgfile, int ignoreunknown)
+{
   const word CRC_APP      = 0x08B5;
 
-  FILE* fp;
   Path cfg;
   char buf[1024];
   static int inuse = 0;
@@ -741,8 +740,8 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
   strcpy(cfg, cfgfile);
   MakePathname(cfg, CFG->goldpath, cfg);
 
-  fp = fsopen(cfg, "rt", CFG->sharemode);
-  if (fp)
+  gfile fp(cfg, "rt", CFG->sharemode);
+  if (fp.isopen())
   {
     cfgname = strrchr(cfg, '\\');
     cfgname = cfgname ? cfgname+1 : cfg;
@@ -752,11 +751,11 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
       STD_PRINTNL("* Reading " << cfg);
 
     // Assign file buffer
-    setvbuf(fp, NULL, _IOFBF, 8192);
+    fp.SetvBuf(NULL, _IOFBF, 8192);
 
     // Read each line
-    while(fgets((val=buf), sizeof(buf), fp)) {
-
+    while (fp.Fgets((val=buf), sizeof(buf)))
+    {
       line++;
 
       // Replace TABs with SPACEs
@@ -882,7 +881,7 @@ int ReadCfg(const char* cfgfile, int ignoreunknown) {
     }
 
     // Close and return all OK
-    fclose(fp);
+    fp.Fclose();
     inuse--;
 
     // When the final cfg is compiled

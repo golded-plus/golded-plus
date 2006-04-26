@@ -516,12 +516,13 @@ void DosShell() {
 
 //  ------------------------------------------------------------------
 
-void TouchNetscan(int popup) {
-
-  FILE* fp = fsopen(AddPath(CFG->areapath, CFG->semaphore.netscan), "wb", CFG->sharemode);
-  if(fp) {
-    fclose(fp);
-    if(popup) {
+void TouchNetscan(int popup)
+{
+  gfile fp(AddPath(CFG->areapath, CFG->semaphore.netscan), "wb", CFG->sharemode);
+  if (fp.isopen())
+  {
+    if (popup)
+    {
       w_infof(" %s ", CFG->semaphore.netscan);
       HandleGEvent(EVTT_JOBDONE);
       waitkeyt(10000);
@@ -584,7 +585,6 @@ int ExternUtil(GMsg *msg, ExtUtil *extutil) {
             fp.Printf("--- %s\n", msg->tearline);
           if (*msg->origin)
             fp.Printf(" * Origin: %s\n", msg->origin);
-          fp.Fclose();
         }
       }
     }
@@ -873,9 +873,8 @@ void UUDecode(GMsg* msg) {
 
 //  ------------------------------------------------------------------
 
-void Make_Userlist(const char* userlist) {
-
-  FILE* fp;
+void Make_Userlist(const char* userlist)
+{
   word* crclist;
   word crc, crcs=0;
   uint n, x;
@@ -884,8 +883,9 @@ void Make_Userlist(const char* userlist) {
   GMsg* msg = (GMsg*)throw_calloc(1, sizeof(GMsg));
 
   crclist = (word*)throw_calloc(AA->Msgn.Count()+1, sizeof(word));
-  fp = fsopen(userlist, "ab", CFG->sharemode);
-  if(fp) {
+  gfile fp(userlist, "ab", CFG->sharemode);
+  if (fp.isopen())
+  {
     w_progress(MODE_NEW, C_INFOW, 0, AA->Msgn.Count(), LNG->GenUserlist);
     for(n=AA->Msgn.Count(); n; n--) {
       update_statuslinef(LNG->ReadingMsg, "ST_READINGMSG", n, AA->Msgn.Count());
@@ -895,16 +895,16 @@ void Make_Userlist(const char* userlist) {
       for(x=0; x<crcs; x++)
         if(crclist[x] == crc)
           break;  // We have already used it
-      if(x >= crcs) {
+      if (x >= crcs)
+      {
         crclist[crcs++] = crc;
         strrevname(userline, msg->by);
         msg->orig.make_string(adrs);
-        fprintf(fp, "%-36.36s%24.24s\r\n", userline, adrs);
+        fp.Printf("%-36.36s%24.24s\r\n", userline, adrs);
       }
     }
     throw_free(crclist);
     w_progress(MODE_QUIT, BLACK_|_BLACK, 0, 0, NULL);
-    fclose(fp);
   }
 
   ResetMsg(msg);
@@ -983,7 +983,6 @@ void make_pathreport(const char* reportfile)
       }
     }
     w_progress(MODE_QUIT, BLACK_|_BLACK, 0, 0, NULL);
-    fp.Fclose();
     ResetMsg(msg);
     throw_free(msg);
   }
