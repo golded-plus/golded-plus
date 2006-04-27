@@ -3022,7 +3022,7 @@ int LoadCharset(const char* imp, const char* exp, int query) {
 #ifdef HAS_ICONV
   if( iconv_cd != (iconv_t)(-1) )
     iconv_close(iconv_cd);
-  iconv_cd = iconv_open(imp,exp);
+  iconv_cd = iconv_open(exp, imp);
   if(iconv_cd != (iconv_t)(-1) )
     LOG.printf("iconv is initialised to convert from %s to %s", imp, exp);
   else
