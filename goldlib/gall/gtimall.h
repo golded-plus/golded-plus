@@ -49,6 +49,8 @@
 #include <time.h>
 #endif
 
+#include "gstrall.h"
+
 //  ------------------------------------------------------------------
 
 typedef long Clock;
