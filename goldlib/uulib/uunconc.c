@@ -665,19 +665,19 @@ UUDecodeLine (char *s, char *d, int method)
       if ((z3 = B64xlat[ACAST(*(s+2))]) == -1) break;
       if ((z4 = B64xlat[ACAST(*(s+3))]) == -1) break;
 
-      d[count++] = (z1 << 2) | (z2 >> 4);
-      d[count++] = (z2 << 4) | (z3 >> 2);
-      d[count++] = (z3 << 6) | (z4);
+      d[count++] = (char)(((z1 << 2) | (z2 >> 4)) & 0xFF);
+      d[count++] = (char)(((z2 << 4) | (z3 >> 2)) & 0xFF);
+      d[count++] = (char)(((z3 << 6) | (z4)) & 0xFF);
 
       s += 4;
     }
     if (z1 != -1 && z2 != -1 && *(s+2) == '=') {
-      d[count++] = (z1 << 2) | (z2 >> 4);
+      d[count++] = (char)(((z1 << 2) | (z2 >> 4)) & 0xFF);
       s+=2;
     }
     else if (z1 != -1 && z2 != -1 && z3 != -1 && *(s+3) == '=') {
-      d[count++] = (z1 << 2) | (z2 >> 4);
-      d[count++] = (z2 << 4) | (z3 >> 2);
+      d[count++] = (char)(((z1 << 2) | (z2 >> 4)) & 0xFF);
+      d[count++] = (char)(((z2 << 4) | (z3 >> 2)) & 0xFF);
       s+=3;
     }
     while (B64xlat[ACAST(*s)] != -1)
@@ -697,19 +697,19 @@ UUDecodeLine (char *s, char *d, int method)
       if ((z3 = BHxlat[ACAST(*(s+2))]) == -1) break;
       if ((z4 = BHxlat[ACAST(*(s+3))]) == -1) break;
 
-      d[count++] = (z1 << 2) | (z2 >> 4);
-      d[count++] = (z2 << 4) | (z3 >> 2);
-      d[count++] = (z3 << 6) | (z4);
+      d[count++] = (char)(((z1 << 2) | (z2 >> 4)) & 0xFF);
+      d[count++] = (char)(((z2 << 4) | (z3 >> 2)) & 0xFF);
+      d[count++] = (char)(((z3 << 6) | (z4)) & 0xFF);
 
       s += 4;
     }
     if (z1 != -1 && z2 != -1 && *(s+2) == ':') {
-      d[count++] = (z1 << 2) | (z2 >> 4);
+      d[count++] = (char)(((z1 << 2) | (z2 >> 4)) & 0xFF);
       s+=2;
     }
     else if (z1 != -1 && z2 != -1 && z3 != -1 && *(s+3) == ':') {
-      d[count++] = (z1 << 2) | (z2 >> 4);
-      d[count++] = (z2 << 4) | (z3 >> 2);
+      d[count++] = (char)(((z1 << 2) | (z2 >> 4)) & 0xFF);
+      d[count++] = (char)(((z2 << 4) | (z3 >> 2)) & 0xFF);
       s+=3;
     }
     while (BHxlat[ACAST(*s)] != -1)

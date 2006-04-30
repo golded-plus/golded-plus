@@ -1042,7 +1042,7 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
           char ibuf[80];
           char* iptr = ibuf;
           char* optr = _parabuf;
-          int n = fp.Fread(ibuf, 45);
+          int n = fp.Fread(ibuf, 1, 45);
           if (n < 45) memset(ibuf+n, 0, 45-n);
           *optr++ = uuencode_enc(n);
 
@@ -1084,7 +1084,7 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
         {
           char ibuf[80];
           char* optr = _parabuf;
-          int n = fp.Fread(ibuf, 54);
+          int n = fp.Fread(ibuf, 1, 54);
           optr = b64.encode(optr, ibuf, n);
           *optr++ = '\n';
           *optr = NUL;
