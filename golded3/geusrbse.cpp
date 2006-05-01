@@ -444,114 +444,47 @@ bool guserbase::find_entry(char* name, bool lookup) {
 
 //  ------------------------------------------------------------------
 
-void guserbase::write_entry(uint idx, bool updateit) {
-
-  if(updateit and not entry.is_deleted) {
+void guserbase::write_entry(uint idx, bool updateit)
+{
+  if (updateit and not entry.is_deleted)
+  {
     time32_t a  = gtime(NULL);
     struct tm tp; ggmtime(&tp, &a);
     tp.tm_isdst = -1;
     time32_t b  = gmktime(&tp);
     entry.lastdate = a + a - b;
+
     if(not entry.firstdate)
       entry.firstdate = entry.lastdate;
 
     entry.times++;
   }
 
-  usrbase.LseekSet(sizeof(gusrbaseheader) + sizeof(gusrbaseentry)*(idx+1)-1);
-  char z = 0;
-  usrbase.Write(&z, 1); // adjust entry size first...
   usrbase.LseekSet(sizeof(gusrbaseheader) + sizeof(gusrbaseentry)*idx);
-  usrbase.Write(entry.macro, sizeof(entry.macro));
-  usrbase.Write(entry.name, sizeof(entry.name));
-  usrbase.Write(&entry.fidoaddr.zone, sizeof(entry.fidoaddr.zone));
-  usrbase.Write(&entry.fidoaddr.net, sizeof(entry.fidoaddr.net));
-  usrbase.Write(&entry.fidoaddr.node, sizeof(entry.fidoaddr.node));
-  usrbase.Write(&entry.fidoaddr.point, sizeof(entry.fidoaddr.point));
-  usrbase.Write(entry.iaddr, sizeof(entry.iaddr));
-  usrbase.Write(&entry.prefer_internet, sizeof(entry.prefer_internet));
-  usrbase.Write(&entry.is_deleted, sizeof(entry.is_deleted));
-  usrbase.Write(entry.organisation, sizeof(entry.organisation));
-  usrbase.Write(entry.snail1, sizeof(entry.snail1));
-  usrbase.Write(entry.snail2, sizeof(entry.snail2));
-  usrbase.Write(entry.snail3, sizeof(entry.snail3));
-  usrbase.Write(entry.voicephone, sizeof(entry.voicephone));
-  usrbase.Write(entry.faxphone, sizeof(entry.faxphone));
-  usrbase.Write(&entry.firstdate, sizeof(entry.firstdate));
-  usrbase.Write(&entry.lastdate, sizeof(entry.lastdate));
-  usrbase.Write(&entry.times, sizeof(entry.times));
-  usrbase.Write(entry.homepage, sizeof(entry.homepage));
-  usrbase.Write(&entry.group, sizeof(entry.group));
-  usrbase.Write(entry.comment1, sizeof(entry.comment1));
-  usrbase.Write(entry.comment2, sizeof(entry.comment1));
-  usrbase.Write(entry.comment3, sizeof(entry.comment1));
+  usrbase.Write(&entry, sizeof(gusrbaseentry));
 }
 
 //  ------------------------------------------------------------------
 
-void guserbase::clear_entry(gusrbaseentry *ent) {
-
-  ent->macro[0] = NUL;
-  ent->name[0] = NUL;
-  ent->fidoaddr.reset();
-  ent->iaddr[0] = NUL;
-  ent->prefer_internet = NO;
-  ent->is_deleted = NO;
-  ent->pseudo[0] = NUL;
-  ent->organisation[0] = NUL;
-  ent->snail1[0] = NUL;
-  ent->snail2[0] = NUL;
-  ent->snail3[0] = NUL;
-  ent->dataphone[0] = NUL;
-  ent->voicephone[0] = NUL;
-  ent->faxphone[0] = NUL;
-  ent->firstdate = ent->lastdate = ent->times = 0;
-  ent->homepage[0] = NUL;
-  ent->group = 0;
-  ent->comment1[0] = NUL;
-  ent->comment2[0] = NUL;
-  ent->comment3[0] = NUL;
+void guserbase::clear_entry(gusrbaseentry *ent)
+{
+  memset(ent, 0, sizeof(gusrbaseentry));
 }
 
 //  ------------------------------------------------------------------
 
-bool guserbase::read_entry(uint idx, gusrbaseentry *ent) {
-
-  if(ent == NULL)
-    ent = &entry;
+bool guserbase::read_entry(uint idx, gusrbaseentry *ent)
+{
+  if (ent == NULL) ent = &entry;
   refresh_maximum_index();
-  if(idx > maximum_index) {
-    clear_entry(ent);
+
+  if (idx > maximum_index)
     return false;
-  }
   else
   {
-    usrbase.LseekSet(idx*sizeof(gusrbaseentry)+sizeof(gusrbaseheader));
-    usrbase.Read(ent->macro, sizeof(ent->macro));
-    usrbase.Read(ent->name, sizeof(ent->name));
-    usrbase.Read(&ent->fidoaddr.zone, sizeof(ent->fidoaddr.zone));
-    usrbase.Read(&ent->fidoaddr.net, sizeof(ent->fidoaddr.net));
-    usrbase.Read(&ent->fidoaddr.node, sizeof(ent->fidoaddr.node));
-    usrbase.Read(&ent->fidoaddr.point, sizeof(ent->fidoaddr.point));
-    usrbase.Read(ent->iaddr, sizeof(ent->iaddr));
-    usrbase.Read(&ent->prefer_internet, sizeof(ent->prefer_internet));
-    usrbase.Read(&ent->is_deleted, sizeof(ent->is_deleted));
-    usrbase.Read(ent->pseudo, sizeof(ent->pseudo));
-    usrbase.Read(ent->organisation, sizeof(ent->organisation));
-    usrbase.Read(ent->snail1, sizeof(ent->snail1));
-    usrbase.Read(ent->snail2, sizeof(ent->snail2));
-    usrbase.Read(ent->snail3, sizeof(ent->snail3));
-    usrbase.Read(ent->dataphone, sizeof(ent->dataphone));
-    usrbase.Read(ent->voicephone, sizeof(ent->voicephone));
-    usrbase.Read(ent->faxphone, sizeof(ent->faxphone));
-    usrbase.Read(&ent->firstdate, sizeof(ent->firstdate));
-    usrbase.Read(&ent->lastdate, sizeof(ent->lastdate));
-    usrbase.Read(&ent->times, sizeof(ent->times));
-    usrbase.Read(ent->homepage, sizeof(ent->homepage));
-    usrbase.Read(&ent->group, sizeof(ent->group));
-    usrbase.Read(ent->comment1, sizeof(ent->comment1));
-    usrbase.Read(ent->comment2, sizeof(ent->comment1));
-    usrbase.Read(ent->comment3, sizeof(ent->comment1));
+    usrbase.LseekSet(sizeof(gusrbaseheader) + sizeof(gusrbaseentry)*idx);
+    usrbase.Read(ent, sizeof(gusrbaseentry));
+
     return true;
   }
 }
