@@ -436,13 +436,6 @@ void edit_addressbook(GMsg* msg);
 
 
 //  ------------------------------------------------------------------
-//  GEMSGID prototypes
-
-uint32_t getMsgId();
-uint32_t getClassicMsgId();
-
-
-//  ------------------------------------------------------------------
 //  SOFTCR management
 
 inline bool issoftcr(char c)

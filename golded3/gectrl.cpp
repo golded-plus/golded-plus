@@ -37,6 +37,19 @@ int _use_fwd = true;
 
 //  ------------------------------------------------------------------
 
+static uint32_t msgcount = 0;
+
+
+//  ------------------------------------------------------------------
+
+static uint32_t getMsgId()
+{
+  return gtime(NULL)+(msgcount++);
+}
+
+
+//  ------------------------------------------------------------------
+
 bool isuucp(const char *name) {
 
   return strieql("UUCP", name) or (*AA->Internetgate().name and strieql(AA->Internetgate().name, name));
