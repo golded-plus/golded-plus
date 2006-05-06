@@ -74,7 +74,7 @@ public:
   gfile();              // Bare constructor
 //  gfile(int __fh);      // Construct from Unix file handle
 //  gfile(FILE* __fp);    // Construct from ANSI stream pointer
-  gfile(const char* __path, int __access, int __shflag=SH_DENYNO, int __mode=S_IREAD|S_IWRITE);
+  gfile(const char* __path, int __access, int __shflag=SH_DENYNO, int __mode=S_STDRW);
   gfile(const char* __path, const char* __mode, int __shflag=SH_DENYNO);
 
   ~gfile();             // Destructor (closes file)
@@ -90,8 +90,8 @@ public:
   //  --------------------------------------------------------------
   //  UNIX-style raw I/O
 
-  int     Open        (const char* __path, int __access, int __shflag=SH_DENYNO, int __mode=S_IREAD|S_IWRITE);
-  int     Open        (const char* __path, int __access, const char* __fmode, int __shflag=SH_DENYNO, int __mode=S_IREAD|S_IWRITE);
+  int     Open        (const char* __path, int __access, int __shflag=SH_DENYNO, int __mode=S_STDRW);
+  int     Open        (const char* __path, int __access, const char* __fmode, int __shflag=SH_DENYNO, int __mode=S_STDRW);
   int     Close       ();
 
   int     Read        (void* __ptr, size_t __len);

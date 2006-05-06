@@ -613,41 +613,42 @@ static int CmpEsc(const char* a, const char* b) {
 //  ------------------------------------------------------------------
 //  Read the translation tables
 
-void ReadXlatTables() {
-
-  if(not CFG->xlatcharset.empty() or not CFG->xlatescset.empty()) {
-
+void ReadXlatTables()
+{
+  if (not CFG->xlatcharset.empty() or not CFG->xlatescset.empty())
+  {
     Esc EscTable;
     Chs ChsTable;
     char buf[256];
     char* ptr;
     char* ptr2;
-    FILE *ifp, *ofp;
     int line, n, x, y, ch=0;
 
-    ofp = fsopen(AddPath(CFG->goldpath, CFG->xlatged), "wb", CFG->sharemode);
-    if(ofp) {
-
+    gfile ofp(AddPath(CFG->goldpath, CFG->xlatged), "wb", CFG->sharemode);
+    if (ofp.isopen())
+    {
       // Compile CHARSET tables
       std::vector<Map>::iterator xlt;
-      for(xlt = CFG->xlatcharset.begin(); xlt != CFG->xlatcharset.end(); xlt++) {
-
+      for (xlt = CFG->xlatcharset.begin(); xlt != CFG->xlatcharset.end(); xlt++)
+      {
         // Assign table defaults
         memset(&ChsTable, 0, sizeof(Chs));
         for(n=0; n<256; n++) {
           ChsTable.t[n][0] = 1;
           ChsTable.t[n][1] = (uint8_t)n;  // The character
         }
+        
         strcpy(buf, AddPath(CFG->xlatpath, xlt->mapfile));
-        ifp = fsopen(buf, "rb", CFG->sharemode);
-        if (ifp)
+        gfile ifp(buf, "rb", CFG->sharemode);
+        if (ifp.isopen())
         {
           if (not quiet)
             STD_PRINTNL("* Reading " << buf);
 
           // Read the definition file
           line = 1;
-          while(fgets(buf, sizeof(buf), ifp)) {
+          while (ifp.Fgets(buf, sizeof(buf)))
+          {
             ptr = buf;
             if(*ptr != ';' and not strblank(ptr)) {
               if((ptr2 = strchr(ptr+2, ';')) != NULL)
@@ -722,29 +723,29 @@ void ReadXlatTables() {
               line++;
             }
           }
-          fclose(ifp);
         }
         else
           STD_PRINTNL("* XLAT table " << buf << " could not be opened.");
 
-        fwrite(&ChsTable, sizeof(Chs), 1, ofp);
+        ofp.Fwrite(&ChsTable, sizeof(Chs));
       }
 
       // Compile ESCSET tables
-      for(xlt = CFG->xlatescset.begin(); xlt != CFG->xlatescset.end(); xlt++) {
-
+      for (xlt = CFG->xlatescset.begin(); xlt != CFG->xlatescset.end(); xlt++)
+      {
         // Assign defaults
         memset(&EscTable, 0, sizeof(Esc));
         strcpy(buf, AddPath(CFG->xlatpath, xlt->mapfile));
-        ifp = fsopen(buf, "rb", CFG->sharemode);
-        if (ifp)
+        gfile ifp(buf, "rb", CFG->sharemode);
+        if (ifp.isopen())
         {
           if (not quiet)
             STD_PRINTNL("* Reading " << buf);
 
           // Read the definition file
           line = 1;
-          while(fgets(buf, sizeof(buf), ifp)) {
+          while (ifp.Fgets(buf, sizeof(buf)))
+          {
             ptr = buf;
             if(*ptr != ';' and not strblank(ptr)) {
               if((ptr2 = strchr(ptr+2, ';')) != NULL)
@@ -800,16 +801,12 @@ void ReadXlatTables() {
           }
 
           qsort(EscTable.t, EscTable.size, 5, (StdCmpCP)CmpEsc);
-
-          fclose(ifp);
         }
         else
           STD_PRINTNL("* XLAT table " << buf << " could not be opened.");
 
-        fwrite(&EscTable, sizeof(Esc), 1, ofp);
+        ofp.Fwrite(&EscTable, sizeof(Esc));
       }
-
-      fclose(ofp);
     }
   }
 }

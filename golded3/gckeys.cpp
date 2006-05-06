@@ -997,11 +997,10 @@ bool operator<(CmdKey &a, CmdKey &b) {
 
 //  ------------------------------------------------------------------
 
-int ReadKeysCfg(int force) {
-
+int ReadKeysCfg(int force)
+{
   byte ch;
   gkey* mac;
-  FILE *ifp;
   char* ptr;
   char* ptr2;
   int keytype;
@@ -1011,8 +1010,8 @@ int ReadKeysCfg(int force) {
   uint line=0;
 
   const char* cfg = AddPath(CFG->goldpath, CFG->keyscfg);
-  ifp = fsopen(cfg, "rt", CFG->sharemode);
-  if (ifp)
+  gfile ifp(cfg, "rt", CFG->sharemode);
+  if (ifp.isopen())
   {
     const char* cfgname = strrchr(cfg, '\\');
     cfgname = cfgname ? cfgname+1 : cfg;
@@ -1025,7 +1024,8 @@ int ReadKeysCfg(int force) {
     if(CFG->switches.get(keybdefaults))
       SetKeybDefaults();
 
-    while(fgets(buf, sizeof(buf), ifp)) {
+    while (ifp.Fgets(buf, sizeof(buf)))
+    {
       line++;
       ptr = strskip_wht(buf);
       if(*ptr == ';' or strblank(ptr))
@@ -1146,7 +1146,7 @@ int ReadKeysCfg(int force) {
         continue;
       }
     }
-    fclose(ifp);
+    ifp.Fclose();
   }
 
   // Setup default keyset when no keys are defined

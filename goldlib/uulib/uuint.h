@@ -25,14 +25,6 @@
  * $Id$
  */
 
-#ifndef _ANSI_ARGS_
-#ifdef PROTOTYPES
-#define _ANSI_ARGS_(c)  c
-#else
-#define _ANSI_ARGS_(c)  ()
-#endif
-#endif
-
 /*
  * Busy Polls will be made after processing ... lines
  */
@@ -260,14 +252,10 @@ extern char *uunconc_UUxlat, *uunconc_UUxlen;
 extern char *uunconc_B64xlat, *uunconc_XXxlat;
 extern char *uunconc_BHxlat, *uunconc_save;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-extern void   (*uu_MsgCallback)  _ANSI_ARGS_((void *, char *, int));
-extern int    (*uu_BusyCallback) _ANSI_ARGS_((void *, uuprogress *));
-extern int    (*uu_FileCallback) _ANSI_ARGS_((void *, char *, char *, int));
-extern char * (*uu_FNameFilter)  _ANSI_ARGS_((void *, char *));
+extern void   (*uu_MsgCallback)  (void *, char *, int);
+extern int    (*uu_BusyCallback) (void *, uuprogress *);
+extern int    (*uu_FileCallback) (void *, char *, char *, int);
+extern char * (*uu_FNameFilter)  (void *, char *);
 
 /*
  * Functions from uulib.c that aren't defined in <uudeview.h>
@@ -275,66 +263,57 @@ extern char * (*uu_FNameFilter)  _ANSI_ARGS_((void *, char *));
  */
 
 #if defined(STDC_HEADERS) || defined(HAVE_STDARG_H)
-int     UUMessage       _ANSI_ARGS_((char *, int,
-                             int, char *, ...));
+int     UUMessage       (char *, int, int, char *, ...);
 #else
 int     UUMessage       ();
 #endif
-int     UUBusyPoll      _ANSI_ARGS_((void));
+int     UUBusyPoll      (void);
 
 /*
  * Functions from uucheck.c
  */
 
-uufile *    UUPreProcessPart    _ANSI_ARGS_((fileread *, int *));
-int         UUInsertPartToList  _ANSI_ARGS_((uufile *));
-uulist *    UUCheckGlobalList   _ANSI_ARGS_((void));
+uufile *    UUPreProcessPart    (fileread *, int *);
+int         UUInsertPartToList  (uufile *);
+uulist *    UUCheckGlobalList   (void);
 
 /*
  * Functions from uuutil.c
  */
 
-void        UUkillfread         _ANSI_ARGS_((fileread *));
-void        UUkillfile      _ANSI_ARGS_((uufile *));
-void        UUkilllist      _ANSI_ARGS_((uulist *));
-void        UUkillheaders       _ANSI_ARGS_((headers *));
+void        UUkillfread         (fileread *);
+void        UUkillfile          (uufile *);
+void        UUkilllist          (uulist *);
+void        UUkillheaders       (headers *);
 
-fileread *  ScanPart        _ANSI_ARGS_((FILE *, char *, int *));
-
-int     UUbhdecomp      _ANSI_ARGS_((char *, char *,
-                             char *, int *,
-                             size_t, size_t, 
-                             size_t *));
-size_t      UUbhwrite       _ANSI_ARGS_((char *, size_t, size_t,
-                             FILE *));
+fileread *  ScanPart  (FILE *, char *, int *);
+int     UUbhdecomp    (char *, char *, char *, int *,
+                       size_t, size_t, size_t *);
+size_t  UUbhwrite     (char *, size_t, size_t, FILE *);
 
 /*
  * Functions from uunconc.c
  */
 
-int     UURepairData        _ANSI_ARGS_((FILE *, char *,
-                             int, int *));
+int     UURepairData  (FILE *, char *, int, int *);
 
-void        UUInitConc      _ANSI_ARGS_((void));
-int         UUValidData     _ANSI_ARGS_((char *, int, int *));
-size_t      UUDecodeLine        _ANSI_ARGS_((char *, char *, int));
-int     UUDecodePart        _ANSI_ARGS_((FILE *, FILE *, int *,
-                             long, int, int, char *));
-int         UUDecode        _ANSI_ARGS_((uulist *));
+void    UUInitConc    (void);
+int     UUValidData   (char *, int, int *);
+size_t  UUDecodeLine  (char *, char *, int);
+int     UUDecodePart  (FILE *, FILE *, int *, long, int, int, char *);
+int     UUDecode      (uulist *);
 
 /*
  * Message retrieval from uustring.c
  */
 
-char *      uustring        _ANSI_ARGS_((int));
+char *  uustring      (int);
 
 /*
  * From uuscan.c
  */
 
-int     UUScanHeader        _ANSI_ARGS_((FILE *, headers *));
+int     UUScanHeader  (FILE *, headers *);
 
-#ifdef __cplusplus
-}
-#endif
+
 #endif

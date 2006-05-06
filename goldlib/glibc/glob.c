@@ -286,7 +286,7 @@ extern char *alloca ();
 # undef GLOB_PERIOD
 #endif
 #include <glob.h>
-
+
 static
 #if __GNUC__ - 0 >= 2
 __inline__

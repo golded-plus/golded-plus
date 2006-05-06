@@ -37,10 +37,8 @@
 //  ------------------------------------------------------------------
 //  Declare the CRC tables
 
-extern "C" {
 extern word __crc16_table[];
 extern dword __crc32_table[];
-}
 
 //  ------------------------------------------------------------------
 //  Generate/update a CRC-16 or CRC-32 value
@@ -76,6 +74,10 @@ dword strHash32(const char* s,        bool nocase=true);
 
 word  memCrc16(const void* m, long l, bool nocase=true, word mask=CRC16_MASK_NORMAL);
 dword memCrc32(const void* m, long l, bool nocase=true, dword mask=CRC32_MASK_NORMAL);
+inline dword memCrc32(dword crc, const void* m, long l, bool nocase=true, dword mask=CRC32_MASK_NORMAL)
+{
+  return memCrc32(m, l, nocase, crc ^ mask) ^ mask;
+}
 
 //  ------------------------------------------------------------------
 //  Get keyword/value pairs and crc
@@ -90,4 +92,3 @@ word getkeyvalcrc(char** key, char** val);
 #endif
 
 //  ------------------------------------------------------------------
-
