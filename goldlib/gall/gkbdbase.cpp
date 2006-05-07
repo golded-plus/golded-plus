@@ -801,7 +801,7 @@ struct kbd {
   { VK_RETURN,    Key_Ent,    Key_Ent,    Key_C_Ent,  Key_A_Ent },
   { VK_ESCAPE,    Key_Esc,    Key_Esc,    Key_Esc,    Key_A_Esc },
   { VK_SPACE,     -1,         -1,         Key_Space,  Key_Space },
-  { VK_APPS,      Key_S_F10,  -1,         -1,         -1        },
+  { VK_APPS,      Key_S_F10,  Key_S_F10,  Key_S_F10,  -1        },
 
   { '0',          Key_0,      Key_S_0,    -1,         Key_A_0 },
   { '1',          Key_1,      Key_S_1,    -1,         Key_A_1 },
@@ -933,27 +933,30 @@ int gkbd_nt2bios(INPUT_RECORD& inp) {
     c = k->alt;
   else if(state & (RIGHT_CTRL_PRESSED | LEFT_CTRL_PRESSED))
     c = k->ctrl;
-  else if(state & SHIFT_PRESSED) {
-    if(k->shift == -1)
-      c = ascii;
+  else if(state & SHIFT_PRESSED)
+  {
+    if (k->shift == -1)
+      c = ascii ? ascii : -1;
     else
       c = k->shift;
   }
   else {
     // If it is a letter key, use the ASCII value supplied
     // by NT to take into account the CapsLock state.
-    if(g_isupper(keycode) or (k->normal == -1))
-      c = ascii;
+    if (g_isupper(keycode) or (k->normal == -1))
+      c = ascii ? ascii : -1;
     else
       c = k->normal;
   }
 
-  if(c != -1)
-    if(ascii and not (right_alt_same_as_left ? (state & (LEFT_ALT_PRESSED | RIGHT_ALT_PRESSED)) : (state & LEFT_ALT_PRESSED)))
-      if(isalnum(keycode))
+  if (c != -1)
+  {
+    if (ascii and not (right_alt_same_as_left ? (state & (LEFT_ALT_PRESSED | RIGHT_ALT_PRESSED)) : (state & LEFT_ALT_PRESSED)))
+      if (isalnum(keycode))
         return (ascii == ' ') ? Key_Space : ascii;
-  if(ISEXT(c))
-    return EXTVAL(c) << 8;
+    if (ISEXT(c))
+      return EXTVAL(c) << 8;
+  }
 
   return c;
 }

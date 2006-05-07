@@ -10,6 +10,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed keyboard deadlock on win32.
+
 + Improved false quote handling.
 
 ! Box lines drawing keys was changed from EditGo* to EditBlock*.
