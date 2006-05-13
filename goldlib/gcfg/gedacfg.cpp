@@ -318,9 +318,8 @@ int EchoListClass::GetEcho(int n, char** echoid, char** path, char** desc) {
 //  ------------------------------------------------------------------
 //  Read AREAS.BBS (any flavor!) and store echoid, path and desc.
 
-void gareafile::GetAreasBBS(char* name, char* origin, char* options) {
-
-  FILE* fp;
+void gareafile::GetAreasBBS(char* name, char* origin, char* options)
+{
   char buf[256];
   Path areafile;
   char* ptr;
@@ -332,17 +331,18 @@ void gareafile::GetAreasBBS(char* name, char* origin, char* options) {
   strcpy(areafile, name);
   MakePathname(areafile, areapath, areafile);
 
-  fp = fsopen(areafile, "rt", sharemode);
-  if (fp)
+  gfile fp(areafile, "rt", sharemode);
+  if (fp.isopen())
   {
-    setvbuf(fp, NULL, _IOFBF, 8192);
+    fp.SetvBuf(NULL, _IOFBF, 8192);
 
     if (not quiet)
       STD_PRINTNL("* Reading " << areafile);
 
     bool firstline = true;
 
-    while(fgets(buf, 255, fp)) {
+    while (fp.Fgets(buf, 255))
+    {
       ptr = strskip_wht(buf);
       if(*ptr != ';' and *ptr != '%' and *ptr != '-' and *ptr != '#' and *ptr != '@' and strnicmp(ptr, "P ", 2) and strnicmp(ptr, "PASSTHRU", 8) and *ptr) {
 
@@ -383,7 +383,6 @@ void gareafile::GetAreasBBS(char* name, char* origin, char* options) {
         }
       }
     }
-    fclose(fp);
   }
 }
 

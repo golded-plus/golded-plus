@@ -93,7 +93,7 @@ struct lang_map {
 
 struct cs_info * get_current_cs(const char * es);
 
-struct unicode_info * get_utf_cs();
+struct unicode_info * get_utf_cs(bool what = true);
 
 int get_utf_cs_len();
 

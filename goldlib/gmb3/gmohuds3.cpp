@@ -97,8 +97,8 @@ int _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::load_message(in
 
   // Read header
   msgn_t _hdridx = get_hdr_idx(__msg, __FILE__, __LINE__);
-  lseek(wide->fhhdr, (int32_t)_hdridx*(int32_t)sizeof(HudsHdr), SEEK_SET);
-  read(wide->fhhdr, &__hdr, sizeof(HudsHdr));
+  wide->fhhdr.LseekSet((int32_t)_hdridx*(int32_t)sizeof(HudsHdr));
+  wide->fhhdr.Read(&__hdr, sizeof(HudsHdr));
 
   __msg->msgno = __hdr.msgno;
   __msg->link.to_set(__hdr.replyto);
@@ -174,8 +174,8 @@ int _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::load_message(in
     if(_numrecs) {
 
       // Seek to, and read the raw text
-      lseek(wide->fhtxt, (int32_t)__hdr.startrec*256L, SEEK_SET);
-      read(wide->fhtxt, __msg->txt, _numrecs*256);
+      wide->fhtxt.LseekSet((int32_t)__hdr.startrec*256L);
+      wide->fhtxt.Read(__msg->txt, _numrecs*256);
 
       // Set up loop variables
       char* _src = __msg->txt;

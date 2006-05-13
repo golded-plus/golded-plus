@@ -2013,7 +2013,7 @@ void IEclass::savefile(int __status) {
   const char* editorfile = AddPath(CFG->goldpath, EDIT->File());
   remove(editorfile);
   gfile _fp(editorfile, "wb", CFG->sharemode);
-  if (_fp)
+  if (_fp.isopen())
   {
     // Find the first line
     Line* _saveline = findfirstline();
@@ -2863,7 +2863,7 @@ int IEclass::Start(int __mode, uint* __position, GMsg* __msg) {
 
   // Check if there is an unfinished backup message
   gfile _fp(AddPath(CFG->goldpath, EDIT->File()), "rt", CFG->sharemode);
-  if (_fp)
+  if (_fp.isopen())
   {
     char _buf[EDIT_BUFLEN];
     _fp.Fgets(_buf, sizeof(_buf));

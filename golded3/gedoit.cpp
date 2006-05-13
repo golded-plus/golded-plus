@@ -232,8 +232,9 @@ static void WriteMsgs(GMsg* msg) {
           update_statuslinef(LNG->WritingMsg, "ST_WRITINGMSG", n+1, AA->Mark.Count());
           w_progress(MODE_UPDATE, C_INFOW, n+1, AA->Mark.Count(), LNG->Writing);
           AA->LoadMsg(msg, AA->Mark[n], prnmargin);
-          if(target & WRITE_PRINTER) {
-            if(prnfp)
+          if (target & WRITE_PRINTER)
+          {
+            if (prnfp.isopen())
               SaveLines(MODE_WRITE, "\001PRN", msg, prnmargin);
           }
           else {

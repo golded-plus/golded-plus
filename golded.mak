@@ -312,10 +312,6 @@ LNK_OBJS= \
     $(OBJ_DIR)\gmoxbbs3.obj \
     $(OBJ_DIR)\gmoxbbs4.obj \
     $(OBJ_DIR)\gmoxbbs5.obj \
-    $(OBJ_DIR)\fexist.obj \
-    $(OBJ_DIR)\ffind.obj \
-    $(OBJ_DIR)\genmsgid.obj \
-    $(OBJ_DIR)\patmat.obj \
     $(OBJ_DIR)\lzh.obj \
     $(OBJ_DIR)\smblib.obj \
     $(OBJ_DIR)\fptools.obj \
@@ -356,7 +352,6 @@ LNK_OBJS= \
     $(OBJ_DIR)\gefind.obj \
     $(OBJ_DIR)\geglob.obj \
     $(OBJ_DIR)\gehdre.obj \
-    $(OBJ_DIR)\gehdrs.obj \
     $(OBJ_DIR)\gehtml.obj \
     $(OBJ_DIR)\geinit.obj \
     $(OBJ_DIR)\geline.obj \
@@ -365,7 +360,6 @@ LNK_OBJS= \
     $(OBJ_DIR)\gemlst.obj \
     $(OBJ_DIR)\gemnus.obj \
     $(OBJ_DIR)\gemrks.obj \
-    $(OBJ_DIR)\gemsgid.obj \
     $(OBJ_DIR)\gemsgs.obj \
     $(OBJ_DIR)\genode.obj \
     $(OBJ_DIR)\geplay.obj \
@@ -398,14 +392,14 @@ GOLDNODE_OBJS=$(OBJ_DIR)\goldnode.obj
 
 ALL_OBJS=$(LNK_OBJS) $(GOLDED_OBJS) $(RDDT_OBJS) $(GOLDNODE_OBJS)
 
-CPP_FLAGS=/nologo /c /J /W3 /Gi /EHac /FD /Igolded3 /Igoldlib\gall /Igoldlib\gcfg /Igoldlib\glibc /Igoldlib\gmb3 /Igoldlib\msgidlib /Igoldlib\smblib /Igoldlib\uulib /Igoldlib\myspell /DWIN32 /D_CONSOLE /DHAVE_CONFIG_H /Fo$(OBJ_DIR)\\ /Fd$(OBJ_DIR)\\
+CPP_FLAGS=/nologo /c /J /W3 /Gi /EHac /FD /Igolded3 /Igoldlib\gall /Igoldlib\gcfg /Igoldlib\glibc /Igoldlib\gmb3 /Igoldlib\msgidlib /Igoldlib\smblib /Igoldlib\uulib /Igoldlib\hunspell /DWIN32 /D_CONSOLE /DHAVE_CONFIG_H /Fo$(OBJ_DIR)\\ /Fd$(OBJ_DIR)\\
 RSC_FLAGS=/igolded3 /fo$(OBJ_DIR)\gedcyg.res
 LNK_FLAGS=advapi32.lib winmm.lib user32.lib /nologo /subsystem:console /machine:I386
 
 !IF  "$(CFG)" == "Release"
-CPP_PROJ=$(CPP_FLAGS) /MD /O1 /DNDEBUG $(CPP_EXTRA_FLAGS)
+CPP_PROJ=$(CPP_FLAGS) /Gy /MD /O1 /DNDEBUG $(CPP_EXTRA_FLAGS)
 RSC_PROJ=$(RSC_FLAGS) /dNDEBUG
-LNK_PROJ=$(LNK_FLAGS) /incremental:no
+LNK_PROJ=$(LNK_FLAGS) /incremental:no /OPT:REF,ICF,NOWIN98
 !ELSEIF  "$(CFG)" == "Debug"
 CPP_PROJ=$(CPP_FLAGS) /MDd /Gm /ZI /GZ /Od /D_DEBUG $(CPP_EXTRA_FLAGS)
 RSC_PROJ=$(RSC_FLAGS) /d_DEBUG
@@ -508,7 +502,7 @@ $(ALL_OBJS):
     $(CPP_PROJ) $<
 <<
 
-{goldlib\myspell}.cxx{$(OBJ_DIR)}.obj:
+{goldlib\hunspell}.cxx{$(OBJ_DIR)}.obj:
     $(CPP) @<<
     $(CPP_PROJ) $<
 <<

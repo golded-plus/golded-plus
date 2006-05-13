@@ -23,8 +23,12 @@
 //  ------------------------------------------------------------------
 //  The main GoldED configuration structure.
 //  ------------------------------------------------------------------
+#ifndef __GECFGG__H
+#define __GECFGG__H
 
 #include <list>
+#include <gmo_msg.h>
+#include <geall.h>
 
 
 //  ------------------------------------------------------------------
@@ -106,6 +110,88 @@ public:
 private:
 
   bool cfg[gswitches_last];
+};
+
+
+//  ------------------------------------------------------------------
+
+struct Win {
+  int   btype;    // Border type
+  vattr c[16];    // Colors
+  int   w;        // Window handle
+};
+
+
+//  ------------------------------------------------------------------
+//  Combined name/address structure
+
+struct Node
+{
+  Name name;
+  Addr addr;
+  Node &operator=(const Node &a) { strxcpy(name, a.name, ARRAYSIZE(name)); addr=a.addr; return *this; }
+};
+
+
+//  ------------------------------------------------------------------
+//  Filename aliases
+
+struct FileAlias {
+  char alias[9];
+  Path file;
+  FileAlias& operator=(const FileAlias& a) {
+    strxcpy(alias, a.alias, sizeof(alias));
+    strxcpy(file, a.file, sizeof(Path));
+    return *this;
+  }
+};
+
+
+//  ------------------------------------------------------------------
+//  Template typedefs
+
+struct Tpl {
+  Path file;
+  Desc name;
+  Addr match;
+};
+
+
+//  ------------------------------------------------------------------
+//  Address macro record
+
+struct AddrMacro {
+  char macro[20];
+  IAdr name;
+  Addr addr;
+  Subj subj;
+  Attr attr;
+};
+
+
+//  ------------------------------------------------------------------
+
+struct AkaMatchG {
+  Addr mask;
+  Addr aka;
+};
+
+
+//  ------------------------------------------------------------------
+
+struct MailList {
+  Echo echoid;
+  IAdr sender;
+  IAdr contribution;
+  bool sender_is_pattern;
+};
+
+
+//  ------------------------------------------------------------------
+
+struct FrqNodeMap {
+  Addr from;
+  Addr to;
 };
 
 
@@ -559,3 +645,4 @@ public:
 
 //  ------------------------------------------------------------------
 
+#endif

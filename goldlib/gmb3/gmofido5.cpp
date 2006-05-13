@@ -33,13 +33,13 @@
 
 //  ------------------------------------------------------------------
 
-char* FidoArea::user_lookup(char* __lookfor) {
-
+char* FidoArea::user_lookup(char* __lookfor)
+{
   Path userfile;
   strxcpy(userfile, AddPath(fidowide->squishuserpath, "USER.BBS"), sizeof(Path));
-  wide->user->fh = ::sopen(userfile, O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
+  wide->user->gufh = ::sopen(userfile, O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
   wide->user->findwild(__lookfor, __lookfor);
-  ::close(wide->user->fh);
+  ::close(wide->user->gufh);
 
   if(wide->user->found)
     return __lookfor;

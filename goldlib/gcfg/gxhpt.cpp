@@ -43,20 +43,21 @@ static char comment_char = '#';
 
 //  ------------------------------------------------------------------
 
-bool gareafile::ReadHPTLine(FILE* f, std::string* s, bool add, int state) {
-
+bool gareafile::ReadHPTLine(gfile &f, std::string* s, bool add, int state)
+{
   std::string str;
   char buf[81];
 
-  if(fgets(buf, 81, f) == NULL)
-    return false; // eof
+  if (!f.Fgets(buf, 81)) return false; // eof
 
   str = buf;
 
-  if(buf[strlen(buf)-1] != '\n') {
-    while(fgets(buf, 81, f) != NULL) {
+  if (buf[strlen(buf)-1] != '\n')
+  {
+    while (f.Fgets(buf, 81))
+    {
       str += buf;
-      if(buf[strlen(buf)-1] == '\n')
+      if (buf[strlen(buf)-1] == '\n')
         break;
     }
   }
@@ -178,10 +179,10 @@ void gareafile::ReadHPTFile(char* path, char* file, char* origin, int group) {
   AreaCfg aa;
   Path buf2;
 
-  FILE* fp = fsopen(file, "rb", sharemode);
-  if (fp)
+  gfile fp(file, "rb", sharemode);
+  if (fp.isopen())
   {
-    setvbuf(fp, NULL, _IOFBF, 8192);
+    fp.SetvBuf(NULL, _IOFBF, 8192);
 
     if (not quiet)
       STD_PRINTNL("* Reading " << file);
@@ -192,8 +193,8 @@ void gareafile::ReadHPTFile(char* path, char* file, char* origin, int group) {
     aa.groupid = group;
 
     std::string s;
-    while(ReadHPTLine(fp, &s)) {
-
+    while (ReadHPTLine(fp, &s))
+    {
       if(not s.empty()) {
 
         char *alptr = throw_xstrdup(s.c_str());
@@ -378,9 +379,10 @@ void gareafile::ReadHPTFile(char* path, char* file, char* origin, int group) {
       }
     }
 
-skip_config:
-    fclose(fp);
-  }else{
+skip_config:;
+  }
+  else
+  {
     STD_PRINTNL(" * AREAFILE FIDOCONFIG: Can't open file '" << path << '/' << file << ": " << strerror(errno) );
   }
 }

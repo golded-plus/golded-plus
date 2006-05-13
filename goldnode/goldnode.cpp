@@ -577,10 +577,10 @@ inline void index_line(char* p, char* ptrs[5]) {
 //  ------------------------------------------------------------------
 //  Read the nodelists and userlists
 
-static void read_nodelists() {
-
+static void read_nodelists()
+{
+  gfile lfp;
   long pos;
-  FILE* lfp;
   char* ptr;
   _GEIdx nlst;
   Addr nlstz;
@@ -605,12 +605,12 @@ static void read_nodelists() {
   // Compile nodelists
   for(realfno=0, fno=nodelist.begin(), zno=nodezone.begin(); fno != nodelist.end(); fno++, zno++) {
 
-    if(nodes < maxnodes) {
-
-      lfp = fsopen(fno->fn, "rb", sh_mod);
-      if(lfp) {
-
-        setvbuf(lfp, NULL, _IOFBF, 32000);
+    if (nodes < maxnodes)
+    {
+      lfp.Fopen(fno->fn, "rb", sh_mod);
+      if (lfp.isopen())
+      {
+        lfp.SetvBuf(NULL, _IOFBF, 32000);
         fno->ft = GetFiletime(fno->fn);
 
         // Initialize for each nodelist file
@@ -623,7 +623,8 @@ static void read_nodelists() {
         name = CleanFilename(fno->fn);
 
         // Read all nodes
-        while(fgets(buf, sizeof(buf), lfp)) {
+        while (lfp.Fgets(buf, sizeof(buf)))
+        {
           line++;
 
           // Break out if eof-marker is found
@@ -783,7 +784,7 @@ static void read_nodelists() {
           std::cout << "\r* " << ((fno == nodelist.end()-1) ? '\\' : '|') << "--" << name << std::setw((len > 0) ? len : 1) << " " << "Nodes read: " << (uint32_t)no << "\tTotal read: " << (uint32_t)nodes << ((nodes >= maxnodes) ? " (Limit reached)" : "                ") << std::endl;
         }
 
-        fclose(lfp);
+        lfp.Fclose();
         ++realfno;
       }
       else {
@@ -804,17 +805,17 @@ static void read_nodelists() {
 
     no = 0;
 
-    lfp = fsopen(fno->fn, "rt", sh_mod);
-    if(lfp) {
-
-      setvbuf(lfp, NULL, _IOFBF, 32000);
+    lfp.Fopen(fno->fn, "rt", sh_mod);
+    if (lfp.isopen())
+    {
+      lfp.SetvBuf(NULL, _IOFBF, 32000);
 
       name = CleanFilename(fno->fn);
 
-      if(nodes < maxnodes) {
-
-        while(fgets(buf, sizeof(buf), lfp)) {
-
+      if (nodes < maxnodes)
+      {
+        while (lfp.Fgets(buf, sizeof(buf)))
+        {
           // Get node data
           strbtrim(buf);
           ptr = buf + strlen(buf) - 1;
@@ -889,7 +890,7 @@ static void read_nodelists() {
         std::cout << "\r* " << ((fno == userlist.end()-1) ? '\\' : '|') << "--" << name << std::setw((len > 0) ? len : 1) << " " << "Nodes read: " << (uint32_t)no << "\tTotal read: " << (uint32_t)nodes << ((nodes >= maxnodes) ? " (Limit reached)" : "                ") << std::endl;
       }
 
-      fclose(lfp);
+      lfp.Fclose();
     }
     else {
       if(not quiet) std::cout << "Error opening userlist " << fno->fn << '!' << std::endl;
@@ -919,7 +920,6 @@ static void read_nodelists() {
   else {
   #endif
     // At last, sort the nodes
-    FILE *fp, *fido;
     geidxlist::iterator curr, prev;
     std::map<long, dword> namepos;
 
@@ -931,15 +931,17 @@ static void read_nodelists() {
 #else
     nodeidx.sort(cmp_nnlsts);
 #endif
-
     // Write the name-sorted .GXN
-    fp = fsopen(nodeindex.c_str(), "wb", sh_mod);
-    if(fp) {
+    gfile fp(nodeindex.c_str(), "wb", sh_mod);
+    if (fp.isopen())
+    {
       name = CleanFilename(nodeindex.c_str());
-      fido = NULL;
-      if(fidouser)
-        fido = fsopen(fidouserlst, "wt", sh_mod);
-      if(fido == NULL) {
+
+      gfile fido;
+      if (fidouser) fido.Fopen(fidouserlst, "wt", sh_mod);
+      
+      if (!fido.isopen())
+      {
         if(not quiet) std::cout << "\b, writing " << name << ' ' << std::flush;
         fidouser = false;
       }
@@ -966,19 +968,20 @@ static void read_nodelists() {
               continue;
             }
           }
-          fwrite(&(*curr), sizeof(_GEIdx), 1, fp);
+          fp.Fwrite(&(*curr), sizeof(_GEIdx));
         }
         else
-          fwrite(&(*curr), sizeof(_GEIdx), 1, fp);
+          fp.Fwrite(&(*curr), sizeof(_GEIdx));
+
         namepos[curr->pos] = nodenum++;
-        if(fidouser) {
+        if (fidouser)
+        {
           char buf[256];
-          fprintf(fido, "%-36.36s%24.24s\n", curr->name, make_addr_str(buf, &curr->addr, ""));
+          fido.Printf("%-36.36s%24.24s\n", curr->name, make_addr_str(buf, &curr->addr, ""));
         }
       }
-      if(fido)
-        fclose(fido);
-      fclose(fp);
+
+      fp.Fclose();
     }
 
     // Sort by address
@@ -991,29 +994,33 @@ static void read_nodelists() {
 #endif
 
     // Write the address-sorted .GXA
-    fp = fsopen(addrindex.c_str(), "wb", sh_mod);
-    if(fp) {
+    fp.Fopen(addrindex.c_str(), "wb", sh_mod);
+    if (fp.isopen())
+    {
       name = CleanFilename(addrindex.c_str());
       if(not quiet) std::cout << "\b, writing " << name << ' ' << std::flush;
       int nn = 0;
       for(curr = nodeidx.begin(); curr != nodeidx.end(); curr++) {
         if(ISTWIRLY(nn++))
           twirly();
-        fwrite(&namepos[curr->pos], sizeof(dword), 1, fp);
+        fp.Fwrite(&namepos[curr->pos], sizeof(dword));
       }
-      fclose(fp);
+      fp.Fclose();
     }
 
     // Write the list index in .GXL
-    fp = fsopen(listindex.c_str(), "wt", sh_mod);
-    if(fp) {
+    fp.Fopen(listindex.c_str(), "wt", sh_mod);
+    if (fp.isopen())
+    {
       name = CleanFilename(listindex.c_str());
-      if(not quiet) std::cout << ' ' << NL "* Writing " << name << std::endl;
-      for(fno=nodelist.begin(); fno != nodelist.end(); fno++) {
-        if(*(fno->fn))
-          fprintf(fp, "%s %u\n", fno->fn, fno->ft);
+      if (not quiet) std::cout << ' ' << NL "* Writing " << name << std::endl;
+      for (fno=nodelist.begin(); fno != nodelist.end(); fno++)
+      {
+        if (*(fno->fn))
+          fp.Printf("%s %u\n", fno->fn, fno->ft);
       }
-      fclose(fp);
+
+      fp.Fclose();
     }
 
     // Note compile time
@@ -1033,9 +1040,8 @@ static void read_nodelists() {
 
 //  ------------------------------------------------------------------
 
-static void check_nodelists(bool force) {
-
-  FILE *fp;
+static void check_nodelists(bool force)
+{
   uint n;
   int compilen, compileu;
   static Path buf, newpath;
@@ -1066,9 +1072,11 @@ static void check_nodelists(bool force) {
   }
 
   // Get timestamps from .GXL file
-  fp = fsopen(listindex.c_str(), "rt", sh_mod);
-  if(fp) {
-    while(fgets(buf, sizeof(buf), fp)) {
+  gfile fp(listindex.c_str(), "rt", sh_mod);
+  if (fp.isopen())
+  {
+    while (fp.Fgets(buf, sizeof(buf)))
+    {
       char* key;
       char* val=buf;
       getkeyval(&key, &val);
@@ -1088,7 +1096,7 @@ static void check_nodelists(bool force) {
         }
       }
     }
-    fclose(fp);
+    fp.Fclose();
   } else
     perror("error opening .gxl file");
 
@@ -1172,6 +1180,14 @@ static int do_if(char* val) {
     return false;
     #endif
   }
+  else if (strieql(val, "SPELL"))
+  {
+    #ifdef GCFG_SPELL_INCLUDED
+    return true;
+    #else
+    return false;
+    #endif
+  }
   else if(strieql(val, "FIREBIRD"))
     return true;
   else if(strieql(val, "ASA") or strieql(val, "PLUS"))
@@ -1200,7 +1216,7 @@ char* _MapPath(char* fmap, bool reverse) {
       strxcpy(buf, fmap, sizeof(Path));
       strxmerge(fmap, sizeof(Path), q, buf+strlen(p), NULL);
       char sl1, sl2;
-      char* ptr;
+      const char* ptr;
 
       ptr = strpbrk(p, "/\\");
       sl1 = ptr ? *ptr : NUL;
@@ -1219,9 +1235,8 @@ char* _MapPath(char* fmap, bool reverse) {
 
 //  ------------------------------------------------------------------
 
-static int parse_config(const char *__configfile, Addr& zoneaddr) {
-
-  FILE* fp;
+static int parse_config(const char *__configfile, Addr& zoneaddr)
+{
   char buf[512];
   char* ptr;
   char* key;
@@ -1233,9 +1248,11 @@ static int parse_config(const char *__configfile, Addr& zoneaddr) {
   static int in_else = NO;
   static int cond_status = YES;
 
-  fp = fsopen(__configfile, "rt", sh_mod);
-  if(fp) {
-    while(fgets((ptr=buf), sizeof(buf), fp)) {
+  gfile fp(__configfile, "rt", sh_mod);
+  if (fp.isopen())
+  {
+    while (fp.Fgets((ptr=buf), sizeof(buf)))
+    {
       line++;
       // Replace TABs with SPACEs
       ptr = strskip_wht(ptr);
@@ -1384,7 +1401,6 @@ static int parse_config(const char *__configfile, Addr& zoneaddr) {
       }
     }
 
-    fclose(fp);
     return(YES);
   }
   else {

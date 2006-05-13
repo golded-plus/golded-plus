@@ -65,7 +65,7 @@ public:
 
   int okay() { return (0 == status); }
   bool isopen();  // true if the file is open
-  operator bool() { return isopen(); }
+//  operator bool() { return isopen(); }
 
 
   //  --------------------------------------------------------------

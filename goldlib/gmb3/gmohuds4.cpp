@@ -29,25 +29,27 @@
 //  ------------------------------------------------------------------
 
 template <class msgn_t, class rec_t, class attr_t, class board_t, class last_t, bool __HUDSON>
-void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::update_netecho(char* __name, msgn_t __hdridx, int __delete) {
-
+void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::update_netecho(char* __name, msgn_t __hdridx, int __delete)
+{
   GFTRK("HudsUpdateNetEcho");
 
   Path name;
   strcpy(name, AddPath(syspath, __name));
-  int _fh = test_open(name, O_CREAT);
+
+  gfile _fh;
+  test_open(_fh, name, O_CREAT);
 
   // Get size of the file
-  uint _total = (uint)(filelength(_fh)/sizeof(msgn_t));
+  uint _total = (uint)(_fh.FileLength()/sizeof(msgn_t));
 
   // Allocate memory for the scanning index
   msgn_t* _scanidx = (msgn_t*)throw_calloc(_total+5, sizeof(msgn_t));
 
   // Read the scanning index
-  read(_fh, _scanidx, _total*sizeof(msgn_t));
+  _fh.Read(_scanidx, _total*sizeof(msgn_t));
 
   // Close the file
-  ::close(_fh);
+  _fh.Close();
 
   // Search for the specified header index
   uint _pos = 0;
@@ -85,10 +87,11 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::update_netecho
   }
 
   // Write the changed scanning file from scratch
-  if(_total) {
-    _fh = test_open(__name, O_CREAT|O_TRUNC);
-    write(_fh, _scanidx, _total*sizeof(msgn_t));
-    ::close(_fh);
+  if (_total)
+  {
+    test_open(_fh, __name, O_CREAT|O_TRUNC);
+    _fh.Write(_scanidx, _total*sizeof(msgn_t));
+    _fh.Close();
   }
   else {
     // If the last header index was removed, delete the file
@@ -114,9 +117,10 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::save_message(i
 
   // Find header index
   msgn_t _hdridx;
-  if(__mode & GMSG_NEW) {
+  if (__mode & GMSG_NEW)
+  {
     __msg->msgno = wide->msginfo.high + 1;
-    _hdridx = (msgn_t)(filelength(wide->fhhdr)/sizeof(HudsHdr));
+    _hdridx = (msgn_t)(wide->fhhdr.FileLength()/sizeof(HudsHdr));
   }
   else {
     _hdridx = get_hdr_idx(__msg, __FILE__, __LINE__);
@@ -182,7 +186,7 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::save_message(i
     // If the msg is new or the text is too large to fit
     uint _txtlen = strlen(__msg->txt)+1;
     if((__mode & GMSG_NEW) or (_txtlen > __msg->txtlength*255L))
-      __hdr.startrec = (msgn_t)(filelength(wide->fhtxt)/256L);
+      __hdr.startrec = (msgn_t)(wide->fhtxt.FileLength()/256L);
 
     // Calculate the number of text records to write
     register uint _fullrecs = _txtlen / 255;
@@ -190,7 +194,7 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::save_message(i
     __hdr.numrecs = (word)(_fullrecs + (_extrarec ? 1 : 0));
 
     // Seek to the text write position
-    lseek(wide->fhtxt, __hdr.startrec*256L, SEEK_SET);
+    wide->fhtxt.LseekSet(__hdr.startrec*256L);
 
     // Write the message text
     register uint _count = 0;
@@ -198,23 +202,25 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::save_message(i
     char _txtbuf[256];
     char* _txtptr = _txtbuf + 1;
     *_txtbuf = 255;
-    while(_count < _fullrecs) {
+    while (_count < _fullrecs)
+    {
       memcpy(_txtptr, _txt, 255);
-      write(wide->fhtxt, _txtbuf, 256);
+      wide->fhtxt.Write(_txtbuf, 256);
       _txt += 255;
       _count++;
     }
-    if(_extrarec) {
+    if (_extrarec)
+    {
       *_txtbuf = _extrarec;
       memset(_txtptr, 0, 255);
       memcpy(_txtptr, _txt, _extrarec);
-      write(wide->fhtxt, _txtbuf, 256);
+      wide->fhtxt.Write(_txtbuf, 256);
     }
   }
 
   // Write to MSGHDR.BBS/DAT
-  lseek(wide->fhhdr, _hdridx*sizeof(HudsHdr), SEEK_SET);
-  write(wide->fhhdr, &__hdr, sizeof(HudsHdr));
+  wide->fhhdr.LseekSet(_hdridx*sizeof(HudsHdr));
+  wide->fhhdr.Write(&__hdr, sizeof(HudsHdr));
 
   // Write to MSGIDX.BBS/DAT
   if(__mode & GMSG_NEW) {
@@ -224,17 +230,17 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::save_message(i
   HudsIdx* _idxp = wide->msgidxptr + (uint)_hdridx;
   _idxp->board = __hdr.board;
   _idxp->msgno = (msgn_t)((__mode & GMSG_DELETE) ? (__HUDSON ? HUDS_DELETEDMSGNO : GOLD_DELETEDMSGNO) : __hdr.msgno);
-  lseek(wide->fhidx, _hdridx*sizeof(HudsIdx), SEEK_SET);
-  write(wide->fhidx, _idxp, sizeof(HudsIdx));
+  wide->fhidx.LseekSet(_hdridx*sizeof(HudsIdx));
+  wide->fhidx.Write(_idxp, sizeof(HudsIdx));
 
   // Write to MSGTOIDX.BBS/DAT
-  lseek(wide->fhtoi, _hdridx*sizeof(HudsToIdx), SEEK_SET);
-  if(__mode & GMSG_DELETE)
-    write(wide->fhtoi, "\xB* Deleted *\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0", sizeof(HudsToIdx));
+  wide->fhtoi.LseekSet(_hdridx*sizeof(HudsToIdx));
+  if (__mode & GMSG_DELETE)
+    wide->fhtoi.Write("\xB* Deleted *\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0", sizeof(HudsToIdx));
   else if(__hdr.msgattr & HUDS_RECEIVED)
-    write(wide->fhtoi, "\xC* Received *\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0", sizeof(HudsToIdx));
+    wide->fhtoi.Write("\xC* Received *\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0", sizeof(HudsToIdx));
   else
-    write(wide->fhtoi, __hdr.to, sizeof(HudsToIdx));
+    wide->fhtoi.Write(__hdr.to, sizeof(HudsToIdx));
 
   // Write to MSGINFO.BBS/DAT
   if(__mode & GMSG_DELETE) {
@@ -272,8 +278,8 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::save_message(i
     if(__hdr.msgno > wide->msginfo.high)
       wide->msginfo.high = __hdr.msgno;
   }
-  lseek(wide->fhinf, 0, SEEK_SET);
-  write(wide->fhinf, &wide->msginfo, sizeof(HudsInfo));
+  wide->fhinf.LseekSet(0);
+  wide->fhinf.Write(&wide->msginfo, sizeof(HudsInfo));
 
   // Update scanning files
   if((__hdr.msgattr & HUDS_NETTRANS) or (__mode & GMSG_DELETE))
@@ -357,15 +363,15 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::update_timesre
   lock();
 
   msgn_t hdridx = get_hdr_idx(msg, __FILE__, __LINE__);
-  ::lseekset(wide->fhhdr, hdridx*sizeof(HudsHdr));
+  wide->fhhdr.LseekSet(hdridx*sizeof(HudsHdr));
 
   HudsHdr hdr;
-  ::read(wide->fhhdr, &hdr, sizeof(HudsHdr));
+  wide->fhhdr.Read(&hdr, sizeof(HudsHdr));
 
   hdr.timesread = (word)msg->timesread;
 
-  ::lseekset(wide->fhhdr, hdridx*sizeof(HudsHdr));
-  ::write(wide->fhhdr, &hdr, sizeof(HudsHdr));
+  wide->fhhdr.LseekSet(hdridx*sizeof(HudsHdr));
+  wide->fhhdr.Write(&hdr, sizeof(HudsHdr));
 
   unlock();
 

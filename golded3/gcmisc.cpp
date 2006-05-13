@@ -821,7 +821,7 @@ void CookieIndex(char* textfile, char* indexfile)
   {
     ifp.SetvBuf(NULL, _IOFBF, 32000);
     gfile ofp(indexfile, "wb", CFG->sharemode);
-    if (ofp)
+    if (ofp.isopen())
     {
       ofp.SetvBuf(NULL, _IOFBF, 16000);
       char buf[256];

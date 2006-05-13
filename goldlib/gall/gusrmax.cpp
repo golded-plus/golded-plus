@@ -65,14 +65,17 @@ int MaximusUser::isvalid() {
 
 //  ------------------------------------------------------------------
 
-int MaximusUser::read() {
-
-  if(fh != -1) {
-    if(firstread) {
+int MaximusUser::read()
+{
+  if (gufh != -1)
+  {
+    if (firstread)
+    {
       firstread = false;
-      if(filelength(fh) >= 180) {
-        ::read(fh, record, recsize);
-        lseek(fh, -(long)recsize, SEEK_CUR);
+      if (filelength(gufh) >= 180)
+      {
+        ::read(gufh, record, recsize);
+        lseek(gufh, -(long)recsize, SEEK_CUR);
         uint _tmp = record->struct_len ? record->struct_len*20 : 180;
         if(_tmp != recsize) {
           recsize = _tmp;
@@ -83,8 +86,9 @@ int MaximusUser::read() {
         }
       }
     }
-    ::read(fh, record, recsize);
-    if(isvalid()) {
+    ::read(gufh, record, recsize);
+    if (isvalid())
+    {
       index = record->lastread_ptr;
       maxindex = maximum_of_two(index, maxindex);
       return true;

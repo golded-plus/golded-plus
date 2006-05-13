@@ -69,11 +69,11 @@ int GoldbaseUser::isvalid() {
 
 //  ------------------------------------------------------------------
 
-int GoldbaseUser::read() {
-
-  if(fh != -1) {
-
-    ::read(fh, record, sizeof(GoldUsers));
+int GoldbaseUser::read()
+{
+  if (gufh != -1)
+  {
+    ::read(gufh, record, sizeof(GoldUsers));
     STRNP2C(record->name);
 
     return isvalid();

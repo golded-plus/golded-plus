@@ -31,6 +31,7 @@
 //  ------------------------------------------------------------------
 
 #include <vector>
+#include <gecfgg.h>
 #include <gmoarea.h>
 
 

@@ -37,8 +37,8 @@
 
 //  ------------------------------------------------------------------
 
-void gareafile::ReadEzycom102(FILE* fp, char* path, char* file, char* options) {
-
+void gareafile::ReadEzycom102(gfile &fp, char* path, char* file, char* options)
+{
   int n;
   AreaCfg aa;
   char abuf[40];
@@ -47,18 +47,18 @@ void gareafile::ReadEzycom102(FILE* fp, char* path, char* file, char* options) {
   CONSTANTRECORD* constant = new CONSTANTRECORD; throw_new(constant);
   MESSAGERECORD* messages = new MESSAGERECORD; throw_new(messages);
 
-  fread(config, sizeof(CONFIGRECORD), 1, fp);
-  fclose(fp);
+  fp.Fread(config, sizeof(CONFIGRECORD));
+  fp.Fclose();
 
   MakePathname(file, path, "constant.ezy");
-  fp = fsopen(file, "rb", sharemode);
-  if (fp)
+  fp.Fopen(file, "rb", sharemode);
+  if (fp.isopen())
   {
     if (not quiet)
       STD_PRINTNL("* Reading " << file);
 
-    fread(constant, sizeof(CONSTANTRECORD), 1, fp);
-    fclose(fp);
+    fp.Fread(constant, sizeof(CONSTANTRECORD));
+    fp.Fclose();
 
     STRNP2C(config->defaultorigin);
     STRNP2C(config->userbasepath);
@@ -192,16 +192,16 @@ void gareafile::ReadEzycom102(FILE* fp, char* path, char* file, char* options) {
     }
 
     MakePathname(file, path, "messages.ezy");
-    fp = fsopen(file, "rb", sharemode);
-    if (fp)
+    fp.Fopen(file, "rb", sharemode);
+    if (fp.isopen())
     {
       if (not quiet)
         STD_PRINTNL("* Reading " << file);
 
       int record = 1;
 
-      while(fread(messages, sizeof(MESSAGERECORD), 1, fp) == 1) {
-
+      while (fp.Fread(messages, sizeof(MESSAGERECORD)))
+      {
         if(record <= constant->maxmess) {
 
           if(*messages->name) {
@@ -266,7 +266,8 @@ void gareafile::ReadEzycom102(FILE* fp, char* path, char* file, char* options) {
 
         record++;
       }
-      fclose(fp);
+
+      fp.Fclose();
     }
   }
 

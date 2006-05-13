@@ -138,6 +138,11 @@ inline char * stpcpy(char* dest, const char* src) {
 
 char* strcvtc(char* s);
 
+//  ------------------------------------------------------------------
+
+#define PRINTF_DECLARE_BUFFER(b) b, ARRAYSIZE(b), __FILE__, __LINE__
+int gsprintf(TCHAR* buffer, size_t sizeOfBuffer, const TCHAR* __file, int __line, const TCHAR* format, ...);
+
 
 //  ------------------------------------------------------------------
 //  String tokenizer class

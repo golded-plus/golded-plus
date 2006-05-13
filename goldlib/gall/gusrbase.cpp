@@ -32,9 +32,9 @@
 
 //  ------------------------------------------------------------------
 
-GUser::GUser() {
-
-  fh      = -1;
+GUser::GUser()
+{
+  gufh    = -1;
   found   = false;
   index   = 0;
   name    = NULL;
@@ -98,11 +98,12 @@ void GUser::recinit(const char* __name) {
 
 //  ------------------------------------------------------------------
 
-int GUser::moveto(uint __rec) {
-
-  if(fh != -1) {
+int GUser::moveto(uint __rec)
+{
+  if (gufh != -1)
+  {
     if(__rec <= records) {
-      lseek(fh, (long)__rec*(long)recsize, SEEK_SET);
+      lseek(gufh, (long)__rec*(long)recsize, SEEK_SET);
       recno = __rec;
       return true;
     }
@@ -130,22 +131,24 @@ int GUser::prev() {
 
 //  ------------------------------------------------------------------
 
-void GUser::seekread() {
-
-  if(fh != -1) {
-    lseek(fh, (long)recno*(long)recsize, SEEK_SET);
-    ::read(fh, recptr, recsize);
+void GUser::seekread()
+{
+  if (gufh != -1)
+  {
+    lseek(gufh, (long)recno*(long)recsize, SEEK_SET);
+    ::read(gufh, recptr, recsize);
   }
 }
 
                       
 //  ------------------------------------------------------------------
 
-void GUser::seekwrite() {
-
-  if(fh != -1) {
-    lseek(fh, (long)recno*(long)recsize, SEEK_SET);
-    ::write(fh, recptr, recsize);
+void GUser::seekwrite()
+{
+  if (gufh != -1)
+  {
+    lseek(gufh, (long)recno*(long)recsize, SEEK_SET);
+    ::write(gufh, recptr, recsize);
   }
 }
 
@@ -160,13 +163,13 @@ int GUser::find(const char* __name, char* __result, int __wildcards) {
   found = false;
 
   // If userfile is open
-  if(fh != -1) {
-
+  if (gufh != -1)
+  {
     // Rewind file to start
-    lseek(fh, 0, SEEK_SET);
+    lseek(gufh, 0, SEEK_SET);
 
     // Get number of records in the userfile
-    records = (uint)(filelength(fh)/recsize);
+    records = (uint)(filelength(gufh)/recsize);
 
     // Searching loop
     for(recno=0; recno<records; recno++) {

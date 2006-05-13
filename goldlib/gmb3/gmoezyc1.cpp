@@ -302,9 +302,11 @@ void EzycomInit(const char* msgbasepath, const char* userbasepath, int userno) {
 
   const char* _username = WideUsername[0];
   ezycomwide->user->ver = ezycomwide->ver;
-  if(ezycomwide->userno == -1) {
-    ezycomwide->user->fh = ::sopen(AddPath(ezycomwide->userbasepath, "USERS.BBS"), O_RDWR|O_CREAT|O_BINARY, WideSharemode, S_STDRW);
-    if(ezycomwide->user->fh != -1) {
+  if (ezycomwide->userno == -1)
+  {
+    ezycomwide->user->gufh = ::sopen(AddPath(ezycomwide->userbasepath, "USERS.BBS"), O_RDWR|O_CREAT|O_BINARY, WideSharemode, S_STDRW);
+    if (ezycomwide->user->gufh != -1)
+    {
       ezycomwide->user->extfh = ::sopen(AddPath(ezycomwide->userbasepath, "USERSEXT.BBS"), O_RDWR|O_CREAT|O_BINARY, WideSharemode, S_STDRW);
       if(ezycomwide->user->extfh != -1) {
         ezycomwide->user->find(_username);
@@ -315,7 +317,7 @@ void EzycomInit(const char* msgbasepath, const char* userbasepath, int userno) {
         }
         close(ezycomwide->user->extfh);
       }
-      close(ezycomwide->user->fh);
+      close(ezycomwide->user->gufh);
     }
     ezycomwide->userno = ezycomwide->user->index;
   }

@@ -132,8 +132,9 @@ void PcbInit(const char* path, int userno) {
     fp.Fclose();
 
     const char* _username = WideUsername[0];
-    pcbwide->user->fh = ::sopen(AddPath(_path, pcbwide->users), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
-    if(pcbwide->user->fh != -1) {
+    pcbwide->user->gufh = ::sopen(AddPath(_path, pcbwide->users), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
+    if (pcbwide->user->gufh != -1)
+    {
       pcbwide->user->fhinf = ::sopen(AddPath(_path, pcbwide->usersinf), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
       if(pcbwide->user->fhinf != -1) {
         ::read(pcbwide->user->fhinf, &pcbwide->usershdr, sizeof(PcbUsersInfHdr));
@@ -151,7 +152,7 @@ void PcbInit(const char* path, int userno) {
         }
         close(pcbwide->user->fhinf);
       }
-      close(pcbwide->user->fh);
+      close(pcbwide->user->gufh);
     }
     pcbwide->userno = pcbwide->user->index;
   }

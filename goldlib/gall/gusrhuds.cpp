@@ -69,11 +69,11 @@ int HudsonUser::isvalid() {
 
 //  ------------------------------------------------------------------
 
-int HudsonUser::read() {
-
-  if(fh != -1) {
-
-    ::read(fh, record, sizeof(HudsUsers));
+int HudsonUser::read()
+{
+  if (gufh != -1)
+  {
+    ::read(gufh, record, sizeof(HudsUsers));
     STRNP2C(record->name);
 
     return isvalid();

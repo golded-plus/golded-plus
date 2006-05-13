@@ -39,38 +39,38 @@
 //  ------------------------------------------------------------------
 //  Read D'Bridge 1.30
 
-void gareafile::ReadDB130(char* tag, char* dbpath) {
-
+void gareafile::ReadDB130(char* /*tag*/, char* dbpath)
+{
   AreaCfg aa;
   DB130_AA1 AA1;
   DB130_AA2 AA2;
-  FILE *fp1, *fp2;
   Path file1, file2;
 
   MakePathname(file1, dbpath, "dbridge.aa1");
   MakePathname(file2, dbpath, "dbridge.aa2");
 
-  fp1 = fsopen(file1, "rb", sharemode);
-  if (fp1)
+  gfile fp1(file1, "rb", sharemode);
+  if (fp1.isopen())
   {
-    setvbuf(fp1, NULL, _IOFBF, 8192);
+    fp1.SetvBuf(NULL, _IOFBF, 8192);
 
     if (not quiet)
       STD_PRINTNL("* Reading " << file1);
 
-    fp2 = fsopen(file2, "rb", sharemode);
-    if (fp2)
+    gfile fp2(file2, "rb", sharemode);
+    if (fp2.isopen())
     {
-      setvbuf(fp2, NULL, _IOFBF, 8192);
+      fp2.SetvBuf(NULL, _IOFBF, 8192);
 
       if (not quiet)
         STD_PRINTNL("* Reading " << file2);
 
-      while(fread(&AA1, sizeof(DB130_AA1), 1, fp1) == 1) {
+      while (fp1.Fread(&AA1, sizeof(DB130_AA1)))
+      {
+        fp2.Fread(&AA2, sizeof(DB130_AA2));
 
-        fread(&AA2, sizeof(DB130_AA2), 1, fp2);
-
-        if(AA1.allocated and strchr("QFqf", AA2.msgbase)) {
+        if (AA1.allocated and strchr("QFqf", AA2.msgbase))
+        {
           aa.reset();
           switch(g_toupper(AA2.msgbase)) {
             case 'Q':
@@ -105,11 +105,7 @@ void gareafile::ReadDB130(char* tag, char* dbpath) {
           AddNewArea(aa);
         }
       }
-
-      fclose(fp2);
     }
-
-    fclose(fp1);
   }
 }
 
@@ -117,20 +113,21 @@ void gareafile::ReadDB130(char* tag, char* dbpath) {
 //  ------------------------------------------------------------------
 //  Read D'Bridge B1046
 
-void gareafile::ReadDB1046(char* file, char* tag) {
-
+void gareafile::ReadDB1046(char* file, char* /*tag*/)
+{
   AreaCfg aa;
   DB1046_ADF* ADF = (DB1046_ADF*)throw_calloc(1, sizeof(DB1046_ADF));
 
-  FILE* fp = fsopen(file, "rb", sharemode);
-  if (fp)
+  gfile fp(file, "rb", sharemode);
+  if (fp.isopen())
   {
-    setvbuf(fp, NULL, _IOFBF, 8192);
+    fp.SetvBuf(NULL, _IOFBF, 8192);
 
     if (not quiet)
       STD_PRINTNL("* Reading " << file);
 
-    while(fread(ADF, sizeof(DB1046_ADF), 1, fp) == 1) {
+    while (fp.Fread(ADF, sizeof(DB1046_ADF)))
+    {
       if(ADF->allocated and strchr("QFqf", ADF->msgbase)) {
         aa.reset();
         switch(g_toupper(ADF->msgbase)) {
@@ -166,8 +163,6 @@ void gareafile::ReadDB1046(char* file, char* tag) {
         AddNewArea(aa);
       }
     }
-
-    fclose(fp);
   }
 
   throw_free(ADF);
@@ -177,25 +172,25 @@ void gareafile::ReadDB1046(char* file, char* tag) {
 //  ------------------------------------------------------------------
 //  Read D'Bridge B1047.A22 and B1047.A27+
 
-void gareafile::ReadDB1047A22(char* file, int reclen, char* tag) {
-
+void gareafile::ReadDB1047A22(char* file, int reclen, char* /*tag*/)
+{
   AreaCfg aa;
-  FILE* fp;
-  DB1047A22_ADF* ADF;
+  DB1047A22_ADF* ADF = (DB1047A22_ADF *)throw_malloc(reclen);
 
-  ADF = (DB1047A22_ADF *)throw_malloc(reclen);
-  if(ADF) {
-
-    fp = fsopen(file, "rb", sharemode);
-    if (fp)
+  if (ADF)
+  {
+    gfile fp(file, "rb", sharemode);
+    if (fp.isopen())
     {
-      setvbuf(fp, NULL, _IOFBF, 8192);
+      fp.SetvBuf(NULL, _IOFBF, 8192);
 
       if (not quiet)
         STD_PRINTNL("* Reading " << file);
 
-      while(fread(ADF, reclen, 1, fp) == 1) {
-        if(ADF->allocated and strchr("QFqf", ADF->msgbase)) {
+      while (fp.Fread(ADF, reclen))
+      {
+        if (ADF->allocated and strchr("QFqf", ADF->msgbase))
+        {
           aa.reset();
           switch(g_toupper(ADF->msgbase)) {
             case 'Q':
@@ -230,8 +225,6 @@ void gareafile::ReadDB1047A22(char* file, int reclen, char* tag) {
           AddNewArea(aa);
         }
       }
-
-      fclose(fp);
     }
 
     throw_free(ADF);
@@ -242,25 +235,25 @@ void gareafile::ReadDB1047A22(char* file, int reclen, char* tag) {
 //  ------------------------------------------------------------------
 //  Read D'Bridge B2011
 
-void gareafile::ReadDB2011(char* file, int reclen, char* tag) {
-
+void gareafile::ReadDB2011(char* file, int reclen, char* /*tag*/)
+{
   AreaCfg aa;
-  FILE* fp;
-  DB2011_ADF* ADF;
+  DB2011_ADF* ADF = (DB2011_ADF *)throw_malloc(reclen);
 
-  ADF = (DB2011_ADF *)throw_malloc(reclen);
-  if(ADF) {
-
-    fp = fsopen(file, "rb", sharemode);
-    if (fp)
+  if (ADF)
+  {
+    gfile fp(file, "rb", sharemode);
+    if (fp.isopen())
     {
-      setvbuf(fp, NULL, _IOFBF, 8192);
+      fp.SetvBuf(NULL, _IOFBF, 8192);
 
       if (not quiet)
         STD_PRINTNL("* Reading " << file);
 
-      while(fread(ADF, reclen, 1, fp) == 1) {
-        if(ADF->allocated and strchr("QFqf", ADF->msgbase)) {
+      while (fp.Fread(ADF, reclen))
+      {
+        if (ADF->allocated and strchr("QFqf", ADF->msgbase))
+        {
           aa.reset();
           switch(g_toupper(ADF->msgbase)) {
             case 'Q':
@@ -297,8 +290,6 @@ void gareafile::ReadDB2011(char* file, int reclen, char* tag) {
           AddNewArea(aa);
         }
       }
-
-      fclose(fp);
     }
 
     throw_free(ADF);
@@ -309,10 +300,9 @@ void gareafile::ReadDB2011(char* file, int reclen, char* tag) {
 //  ------------------------------------------------------------------
 //  Read D'Bridge areas, various versions...
 
-void gareafile::ReadDBridge(char* tag) {
-
+void gareafile::ReadDBridge(char* tag)
+{
   AreaCfg aa;
-  FILE* fp;
   char* ptr;
   int line;
   char buf[256], type, options[80];
@@ -341,50 +331,50 @@ void gareafile::ReadDBridge(char* tag) {
 
   MakePathname(file, dbpath, "dbridge.prm");
 
-  fp = fsopen(file, "rt", sharemode);
-  if (fp)
+  gfile fp(file, "rt", sharemode);
+  if (fp.isopen())
   {
     if (not quiet)
       STD_PRINTNL("* Reading " << file);
 
     // Read netmail storage method etc
-    for(line=1; line <= 2; line++)
-      fgets(buf, 255, fp);
+    for (line = 1; line <= 2; line++)
+      fp.Fgets(buf, 255);
     type = (char)g_toupper(*buf);
 
     // Fido-style netmail path
     line++;
-    fgets(buf, 255, fp);
+    fp.Fgets(buf, 255);
     strtrim(buf);
     strcpy(netpath, buf);
 
     // BADECHO area
     for(; line <= 8; line++)
-      fgets(buf, 255, fp);
+      fp.Fgets(buf, 255);
     strtrim(buf);
     strcpy(badecho, buf);
 
     // Hudson path
     for(; line <= 11; line++)
-      fgets(buf, 255, fp);
+      fp.Fgets(buf, 255);
     strtrim(buf);
     CfgHudsonpath(buf);
 
     // Primary address
     for(; line <= 15; line++)
-      fgets(buf, 255, fp);
+      fp.Fgets(buf, 255);
     strtrim(buf);
     CfgAddress(buf);
 
     // Username
     for(; line <= 17; line++)
-      fgets(buf, 255, fp);
+      fp.Fgets(buf, 255);
     strtrim(buf);
     //CfgUsername(buf);
 
     // Hudson netmail board
     for(; line <= 20; line++)   // NOTE: was 17 in older versions
-      fgets(buf, 255, fp);
+      fp.Fgets(buf, 255);
 
     // Address/misc field
     if(type == 'F' or type == 'Q') {
@@ -417,7 +407,7 @@ void gareafile::ReadDBridge(char* tag) {
       AddNewArea(aa);
     }
 
-    fclose(fp);
+    fp.Fclose();
   }
 
   // Read the areafile from the correct version

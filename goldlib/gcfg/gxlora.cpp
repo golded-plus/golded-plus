@@ -26,7 +26,6 @@
 
 #include <cstdlib>
 #include <gmemdbg.h>
-#include <gfile.h>
 #include <gstrall.h>
 #if defined(__GOLD_GUI__)
 #include <gvidall.h>

@@ -34,14 +34,14 @@
 
 //  ------------------------------------------------------------------
 
-void gareafile::ReadFMail098(FILE* fp, char* path, char* file, char* options) {
-
+void gareafile::ReadFMail098(gfile &fp, char* path, char* file, char* options)
+{
   AreaCfg aa;
 
   configType* cfg = new configType; throw_new(cfg);
 
-  fread(cfg, sizeof(configType), 1, fp);
-  fclose(fp);
+  fp.Fread(cfg, sizeof(configType));
+  fp.Fclose();
 
   // Get Hudson msgbase path
   CfgHudsonpath(cfg->bbsPath);
@@ -161,18 +161,17 @@ void gareafile::ReadFMail098(FILE* fp, char* path, char* file, char* options) {
 
   MakePathname(file, path, "fmail.ar");
 
-  fp = fsopen(file, "rb", sharemode);
-  if(fp) {
-
-
-    fread(&hdr, sizeof(headerType), 1, fp);
-    fseek(fp, hdr.headerSize, SEEK_SET);
+  fp.Fopen(file, "rb", sharemode);
+  if (fp.isopen())
+  {
+    fp.Fread(&hdr, sizeof(headerType));
+    fp.FseekSet(hdr.headerSize);
 
     ar = (rawEchoType*)throw_calloc(1, hdr.recordSize);
-    if(ar) {
-
-      while(fread(ar, hdr.recordSize, 1, fp) == 1) {
-
+    if (ar)
+    {
+      while (fp.Fread(ar, hdr.recordSize))
+      {
         if(ar->options.active) {
 
           aa.reset();
@@ -226,7 +225,7 @@ void gareafile::ReadFMail098(FILE* fp, char* path, char* file, char* options) {
 
     throw_free(ar);
 
-    fclose(fp);
+    fp.Fclose();
   }
 
   throw_delete(cfg);

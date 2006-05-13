@@ -33,14 +33,14 @@
 
 //  ------------------------------------------------------------------
 
-void gareafile::ReadFMail092(FILE* fp, char* path, char* file, char* options) {
-
+void gareafile::ReadFMail092(gfile &fp, char* path, char* file, char* options)
+{
   AreaCfg aa;
 
   configType* cfg = new configType; throw_new(cfg);
 
-  fread(cfg, sizeof(configType), 1, fp);
-  fclose(fp);
+  fp.Fread(cfg, sizeof(configType));
+  fp.Fclose();
 
   // Get Hudson msgbase path
   CfgHudsonpath(cfg->bbsPath);
@@ -159,11 +159,11 @@ void gareafile::ReadFMail092(FILE* fp, char* path, char* file, char* options) {
 
   MakePathname(file, path, "fmail.ar");
 
-  fp = fsopen(file, "rb", sharemode);
-  if(fp) {
-
-    while(fread(ar, sizeof(rawEchoType), 1, fp) == 1) {
-
+  fp.Fopen(file, "rb", sharemode);
+  if (fp.isopen())
+  {
+    while (fp.Fread(ar, sizeof(rawEchoType)))
+    {
       if(ar->options.active and ar->board and ar->board < 201) {
 
         aa.reset();
@@ -197,7 +197,7 @@ void gareafile::ReadFMail092(FILE* fp, char* path, char* file, char* options) {
       }
     }
 
-    fclose(fp);
+    fp.Fclose();
   }
 
   throw_delete(ar);

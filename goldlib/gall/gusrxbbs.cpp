@@ -58,10 +58,11 @@ int XbbsUser::isvalid() {
 
 //  ------------------------------------------------------------------
 
-int XbbsUser::read() {
-
-  if(fh != -1) {
-    ::read(fh, record, sizeof(XbbsUsers));
+int XbbsUser::read()
+{
+  if (gufh != -1)
+  {
+    ::read(gufh, record, sizeof(XbbsUsers));
     return isvalid();
   }
 

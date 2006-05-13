@@ -33,28 +33,11 @@
 
 #include <iostream>
 #include <iomanip>
-#include <gftnall.h>
-#include <gfilutil.h>
 #include <string>
+#include <gftnall.h>
+#include <gfile.h>
 #include <gmsgattr.h>
-
-
-//  ------------------------------------------------------------------
-
-const int MAX_DESC =  81;        // Area descriptions
-const int MAX_ECHO =  81;        // Echoids
-
-
-//  ------------------------------------------------------------------
-//  Echoid typedefs
-
-typedef char Echo[MAX_ECHO];
-
-
-//  ------------------------------------------------------------------
-//  Description typedefs
-
-typedef char Desc[MAX_DESC];
+#include <geall.h>
 
 
 //  ------------------------------------------------------------------
@@ -221,8 +204,8 @@ protected:
   void ReadDB2011(char* file, int reclen, char* tag);
 #endif
 #ifndef GCFG_NOEZY
-  void ReadEzycom102(FILE* fp, char* path, char* file, char* options);
-  void ReadEzycom110(FILE* fp, char* path, char* file, char* options);
+  void ReadEzycom102(gfile &fp, char* path, char* file, char* options);
+  void ReadEzycom110(gfile &fp, char* path, char* file, char* options);
 #endif
 #ifndef GCFG_NOFE
   void ReadFastecho11x(int fh);
@@ -230,13 +213,13 @@ protected:
   void ReadFastecho142(int fh);
 #endif
 #ifndef GCFG_NOFMAIL
-  void ReadFMail092(FILE* fp, char* path, char* file, char* options);
-  void ReadFMail098(FILE* fp, char* path, char* file, char* options);
-  void ReadFMail116(FILE* fp, char* path, char* file, char* options);
+  void ReadFMail092(gfile &fp, char* path, char* file, char* options);
+  void ReadFMail098(gfile &fp, char* path, char* file, char* options);
+  void ReadFMail116(gfile &fp, char* path, char* file, char* options);
 #endif
 #ifndef GCFG_NOFIDOCONF
   AreaCfg echoareadefaults;
-  bool ReadHPTLine(FILE* f, std::string* s, bool add=false, int state=0);
+  bool ReadHPTLine(gfile &f, std::string* s, bool add=false, int state=0);
   void ReadHPTFile(char* path, char* file, char* origin, int group);
 #endif
 #ifndef GCFG_NOIMAIL
@@ -270,7 +253,7 @@ protected:
   void ReadTmailFile(char* file, char* options, char* origin);
 #endif
 #ifndef GCFG_NOWATERGATE
-  void ReadWtrGteFile(char* options, FILE* fp);
+  void ReadWtrGteFile(char* options, gfile &fp);
 #endif
 #ifndef GCFG_NOXBBS
   void ReadAdeptXbbsFile(char* path, char* file, char* options);

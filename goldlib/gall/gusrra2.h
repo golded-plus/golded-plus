@@ -125,12 +125,12 @@ struct RA2UsersXi {
 //  ------------------------------------------------------------------
 //  RemoteAccess 2.x userfile class
 
-class RA2User : public GUser {
-
+class RA2User : public GUser
+{
 public:
 
-  int xifh;
-  int idxfh;
+  gfile* xifh;
+  gfile* idxfh;
 
   RA2Users*    record;
   RA2UsersXi*  xirec;

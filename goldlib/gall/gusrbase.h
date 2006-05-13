@@ -43,7 +43,7 @@ public:
   //  ----------------------------------------------------------------
   //  Variables
 
-  int   fh;           // File handle
+  int   gufh;         // File handle
   int   found;        // User found
   uint  index;        // User index number
   char* name;         // Pointer to name in user record

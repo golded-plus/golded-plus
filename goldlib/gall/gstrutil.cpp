@@ -28,6 +28,10 @@
 #include <cstdio>
 #include <stdarg.h>
 #include <gstrall.h>
+#include <glog.h>
+#include <gdbgerr.h>
+
+extern glog LOG;
 
 
 //  ------------------------------------------------------------------
@@ -614,6 +618,41 @@ char *strxmerge(char *dest, size_t max, ...)
   va_end(a);
   *dest = NUL;
   return dest;
+}
+
+
+//  ------------------------------------------------------------------
+
+int gsprintf(TCHAR* buffer, size_t sizeOfBuffer, const TCHAR* __file, int __line, const TCHAR* format, ...)
+{
+  int ret = -1;
+  va_list argptr;
+  va_start(argptr, format);
+
+  if (sizeOfBuffer)
+  {
+#ifdef _vstprintf_s
+    ret = _vstprintf_s(buffer, sizeOfBuffer, format, argptr);
+    if (ret < 0)
+#else
+    buffer[sizeOfBuffer-1] = 0;
+    ret = _vsntprintf(buffer, sizeOfBuffer, format, argptr);
+    if ((ret < 0) || buffer[sizeOfBuffer-1])
+#endif
+    {
+      LOG.errpointer(__file, __line);
+      LOG.printf("! Buffer overflow or parameter is NULL.");
+      MemoryErrorExit();
+    }
+  }
+  else
+  {
+    LOG.errpointer(__file, __line);
+    LOG.printf("! Buffer size is 0.");
+    MemoryErrorExit();
+  }
+
+  return ret;
 }
 
 

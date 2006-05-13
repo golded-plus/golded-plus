@@ -61,10 +61,11 @@ int PcbUser::isvalid() {
 
 //  ------------------------------------------------------------------
 
-int PcbUser::read() {
-
-  if(fh != -1) {
-    ::read(fh, record, sizeof(PcbUsers));
+int PcbUser::read()
+{
+  if (gufh != -1)
+  {
+    ::read(gufh, record, sizeof(PcbUsers));
     return isvalid();
   }
 

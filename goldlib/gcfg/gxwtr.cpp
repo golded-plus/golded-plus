@@ -53,12 +53,12 @@ const char *gareafile::gettype(const char *msgtype, const byte wtrtype) {
 //  ------------------------------------------------------------------
 //  Read WaterGate v0.93
 
-void gareafile::ReadWtrGteFile(char* options, FILE* fp) {
-
+void gareafile::ReadWtrGteFile(char* options, gfile &fp)
+{
   AreaCfg aa;
   ConfigRecord* _tmp = new ConfigRecord; throw_new(_tmp);
   ConfigRecord& c = *_tmp;
-  fread(&c, sizeof(ConfigRecord), 1, fp);
+  fp.Fread(&c, sizeof(ConfigRecord));
 
   strp2c(c.systemdir);
   CfgJampath(c.systemdir);
@@ -161,9 +161,8 @@ void gareafile::ReadWtrGteFile(char* options, FILE* fp) {
 
 //  ------------------------------------------------------------------
 
-void gareafile::ReadWtrGte(char* tag) {
-
-  FILE* fp;
+void gareafile::ReadWtrGte(char* tag)
+{
   char* ptr;
   char options[80];
   Path wtrpath, file;
@@ -188,21 +187,20 @@ void gareafile::ReadWtrGte(char* tag) {
     strcpy(wtrpath, areapath);
 
   MakePathname(file, wtrpath, "wtrcfg.tdb");
-  fp = fsopen(file, "rb", sharemode);
-  if (fp)
+  gfile fp(file, "rb", sharemode);
+  if (fp.isopen())
   {
     if (not quiet)
       STD_PRINTNL("* Reading " << file);
 
     char header[26];
-    fread(header, 26, 1, fp); strp2c(header);
+    fp.Fread(header, 26);
+    strp2c(header);
     
     if(streql(header, ConfigHeader))
       ReadWtrGteFile(options, fp);
     else
       STD_PRINTNL("* Error: WaterGate \"" << header << "\" is not supported - Skipping.");
-      
-    fclose(fp);
   }
 }
 

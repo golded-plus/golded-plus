@@ -38,14 +38,14 @@
 
 //  ------------------------------------------------------------------
 
-void gareafile::ReadFMail116(FILE* fp, char* path, char* file, char* options) {
-
+void gareafile::ReadFMail116(gfile &fp, char* path, char* file, char* options)
+{
   AreaCfg aa;
 
   configType* cfg = new configType; throw_new(cfg);
 
-  fread(cfg, sizeof(configType), 1, fp);
-  fclose(fp);
+  fp.Fread(cfg, sizeof(configType));
+  fp.Fclose();
 
   // Get Hudson msgbase path
   CfgHudsonpath(cfg->bbsPath);
@@ -165,22 +165,21 @@ void gareafile::ReadFMail116(FILE* fp, char* path, char* file, char* options) {
 
   MakePathname(file, path, "fmail.ar");
 
-  fp = fsopen(file, "rb", sharemode);
-  if(fp) {
-
-
-    fread(&hdr, sizeof(headerType), 1, fp);
+  fp.Fopen(file, "rb", sharemode);
+  if (fp.isopen())
+  {
+    fp.Fread(&hdr, sizeof(headerType));
 
     uint headerSize = hdr.headerSize;
     uint recordSize = hdr.recordSize;
 
-    fseek(fp, headerSize, SEEK_SET);
+    fp.FseekSet(headerSize);
 
     ar = (rawEchoType116*)throw_calloc(1, recordSize);
-    if(ar) {
-
-      while(fread(ar, recordSize, 1, fp) == 1) {
-
+    if (ar)
+    {
+      while(fp.Fread(ar, recordSize))
+      {
         if(ar->options.active) {
 
           aa.reset();
@@ -234,7 +233,7 @@ void gareafile::ReadFMail116(FILE* fp, char* path, char* file, char* options) {
 
     throw_free(ar);
 
-    fclose(fp);
+    fp.Fclose();
   }
 
   throw_delete(cfg);
@@ -243,10 +242,9 @@ void gareafile::ReadFMail116(FILE* fp, char* path, char* file, char* options) {
 
 //  ------------------------------------------------------------------
 
-void gareafile::ReadFMail(char* tag) {
-
+void gareafile::ReadFMail(char* tag)
+{
   char* ptr;
-  FILE* fp;
   char options[80];
   Path path, file;
 
@@ -271,16 +269,16 @@ void gareafile::ReadFMail(char* tag) {
 
   MakePathname(file, path, "fmail.cfg");
 
-  fp = fsopen(file, "rb", sharemode);
-  if(fp) {
-
+  gfile fp(file, "rb", sharemode);
+  if (fp.isopen())
+  {
     struct {
       byte vmajor;
       byte vminor;
     } _rev;
 
-    fread(&_rev, sizeof(_rev), 1, fp);
-    rewind(fp);
+    fp.Fread(&_rev, sizeof(_rev));
+    fp.Rewind();
 
     uint fmver = (_rev.vmajor << 8) | _rev.vminor;
 

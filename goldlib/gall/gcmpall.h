@@ -28,9 +28,11 @@
 
 
 /*  --------------------------------------------------------------- */
+/*  Check if type "char" is unsigned or signed                      */
 
-#define GOLD_CANPACK
-#define NW(x) x=x
+#if '\x80' < 0
+#error Goldware Library requires -funsigned-char to operate properly
+#endif
 
 
 /*  --------------------------------------------------------------- */
@@ -90,17 +92,6 @@
 #define __inline__ __inline
 #define __extension__
 #define __MSVCRT__
-/* C4786: 'identifier' : identifier was truncated to 'number' characters
-   in the debug information
-*/
-#pragma warning(disable: 4786)
-#endif
-
-/*  --------------------------------------------------------------- */
-/*  Check if type "char" is unsigned or signed                      */
-
-#if '\x80' < 0
-#error Goldware Library requires -funsigned-char to operate properly
 #endif
 
 
@@ -126,4 +117,11 @@
 
 
 /*  --------------------------------------------------------------- */
+
+#define GOLD_CANPACK
+#define NW(x) x=x
+
+
+/*  --------------------------------------------------------------- */
+
 #endif

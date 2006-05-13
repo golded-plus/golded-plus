@@ -32,12 +32,13 @@
 
 //  ------------------------------------------------------------------
 
-char* EzycomArea::user_lookup(char* __lookfor) {
-
-  wide->user->fh = ::sopen(AddPath(wide->userbasepath, "USERS.BBS"), O_RDWR|O_BINARY, WideSharemode, S_STDRW);
-  if(wide->user->fh) {
+char* EzycomArea::user_lookup(char* __lookfor)
+{
+  wide->user->gufh = ::sopen(AddPath(wide->userbasepath, "USERS.BBS"), O_RDWR|O_BINARY, WideSharemode, S_STDRW);
+  if (wide->user->gufh)
+  {
     wide->user->findwild(__lookfor, __lookfor);
-    ::close(wide->user->fh);
+    ::close(wide->user->gufh);
   }
 
   if(wide->user->found)

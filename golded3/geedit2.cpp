@@ -799,7 +799,7 @@ void IEclass::LoadFile() {
 
   // Open the file to load
   gfile _fp(AddPath(CFG->goldpath, EDIT->File()), "rb", CFG->sharemode);
-  if (_fp)
+  if (_fp.isopen())
   {
     XlatName __oldxlatimport;
 

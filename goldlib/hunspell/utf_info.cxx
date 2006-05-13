@@ -1,6 +1,10 @@
 #include "csutil.hxx"
 /* fields: Unicode letter, toupper, tolower */
-struct unicode_info utf_lst[] = {
+
+struct unicode_info * get_utf_cs(bool what)
+{
+static struct unicode_info utf_lst[] =
+{
 { 0x0041, 0x0041, 0x0061 },
 { 0x0042, 0x0042, 0x0062 },
 { 0x0043, 0x0043, 0x0063 },
@@ -8504,3 +8508,6 @@ struct unicode_info utf_lst[] = {
 { 0xFFDB, 0xFFDB, 0xFFDB },
 { 0xFFDC, 0xFFDC, 0xFFDC }
 };
+
+return what ? utf_lst : (unicode_info*)(sizeof(utf_lst) / sizeof(unicode_info));
+}

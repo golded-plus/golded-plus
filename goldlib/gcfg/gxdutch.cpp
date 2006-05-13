@@ -37,10 +37,9 @@
 //  ------------------------------------------------------------------
 //  Read Dutchie DUTCHIE.ARE
 
-void gareafile::ReadDutchie(char* tag) {
-
+void gareafile::ReadDutchie(char* tag)
+{
   AreaCfg aa;
-  FILE* fp;
   char* ptr;
   char* ptr2;
   Path dupath, file;
@@ -66,16 +65,16 @@ void gareafile::ReadDutchie(char* tag) {
 
   MakePathname(file, dupath, "dutchie.are");
 
-  fp = fsopen(file, "rb", sharemode);
-  if (fp)
+  gfile fp(file, "rb", sharemode);
+  if (fp.isopen())
   {
-    setvbuf(fp, NULL, _IOFBF, 8192);
+    fp.SetvBuf(NULL, _IOFBF, 8192);
 
     if (not quiet)
       STD_PRINTNL("* Reading " << file);
 
-    while(fgets(buf, 255, fp)) {
-
+    while (fp.Fgets(buf, 255))
+    {
       ptr = strbtrim(buf);
       if(*ptr != ';' and *ptr != '-' and strnicmp(ptr, "PASSTHRU", 8) and *ptr != '\x1A' and *ptr) {
 
@@ -96,8 +95,6 @@ void gareafile::ReadDutchie(char* tag) {
         AddNewArea(aa);
       }
     }
-
-    fclose(fp);
   }
 }
 

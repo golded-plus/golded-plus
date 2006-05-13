@@ -89,16 +89,18 @@ void SquishInit(const char* userpath, int userno, int direct, int recycle, int s
   Path userfile;
   strxcpy(userfile, AddPath(userpath, "USER.BBS"), sizeof(Path));
   const char* _username = WideUsername[0];
-  if(squishwide->userno == -1) {
-    squishwide->user->fh = ::sopen(userfile, O_RDWR|O_CREAT|O_BINARY, WideSharemode, S_STDRW);
-    if(squishwide->user->fh != -1) {
+  if (squishwide->userno == -1)
+  {
+    squishwide->user->gufh = ::sopen(userfile, O_RDWR|O_CREAT|O_BINARY, WideSharemode, S_STDRW);
+    if (squishwide->user->gufh != -1)
+    {
       squishwide->user->find(_username);
       if(not squishwide->user->found) {
         WideLog->printf("* User \"%s\" not found in %s.", _username, userfile);
         squishwide->user->add(_username);
         WideLog->printf("* Now added with user number %u.", squishwide->user->index);
       }
-      close(squishwide->user->fh);
+      close(squishwide->user->gufh);
     }
     squishwide->userno = squishwide->user->index;
   }

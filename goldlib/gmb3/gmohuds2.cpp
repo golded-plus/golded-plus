@@ -29,17 +29,17 @@
 //  ------------------------------------------------------------------
 
 template <class msgn_t, class rec_t, class attr_t, class board_t, class last_t, bool __HUDSON>
-void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::raw_close() {
-
+void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::raw_close()
+{
   GFTRK("HudsRawClose");
 
-  if(fhtxt != -1)  ::close(fhtxt);  fhtxt = -1;
-  if(fhhdr != -1)  ::close(fhhdr);  fhhdr = -1;
-  if(fhidx != -1)  ::close(fhidx);  fhidx = -1;
-  if(fhinf != -1)  ::close(fhinf);  fhinf = -1;
-  if(fhlrd != -1)  ::close(fhlrd);  fhlrd = -1;
-  if(fhtoi != -1)  ::close(fhtoi);  fhtoi = -1;
-  if(fhusr != -1)  ::close(fhusr);  fhusr = -1;
+  fhtxt.Close();
+  fhhdr.Close();
+  fhidx.Close();
+  fhinf.Close();
+  fhlrd.Close();
+  fhtoi.Close();
+  fhusr.Close();
 
   GFTRK(NULL);
 }
@@ -48,25 +48,26 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::raw_close() {
 //  ------------------------------------------------------------------
 
 template <class msgn_t, class rec_t, class attr_t, class board_t, class last_t, bool __HUDSON>
-int _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::test_open(char* __file, int __oaccess) {
-  
+void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::test_open(gfile &__file, char* __fname, int __oaccess)
+{
   GFTRK("HudsTestOpen");
 
-  int _fh;
   long _tries = 0;
-
   __oaccess |= O_RDWR|O_BINARY;
 
-  do {
-
+  do
+  {
     Path _testfn;
-    strcpy(_testfn, AddPath(path, __file));
+    strcpy(_testfn, AddPath(path, __fname));
     int _omode = (__oaccess & O_CREAT) ? S_STDRW : S_STDRD;
-    _fh = ::sopen(_testfn, __oaccess, WideSharemode, _omode);
-    if(_fh == -1) {
 
-      if(errno == ENOENT) {
-        if(_tries == 0) {
+    __file.Open(_testfn, __oaccess, WideSharemode, _omode);
+    if (!__file.isopen())
+    {
+      if (errno == ENOENT)
+      {
+        if (_tries == 0)
+        {
           __oaccess |= O_CREAT;
           _tries++;
           continue;
@@ -74,12 +75,12 @@ int _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::test_open(char*
       }
 
       // Request the other program to unlock
-      if(errno != ENOENT)
+      if (errno != ENOENT)
         TouchFile(AddPath(path, "mbunlock.now"));
 
       // Tell the world
-      if(PopupLocked(++_tries, false, _testfn) == false) {
-
+      if (PopupLocked(++_tries, false, _testfn) == false)
+      {
         // User requested to exit
         WideLog->ErrOpen();
         raw_close();
@@ -89,15 +90,14 @@ int _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::test_open(char*
         OpenErrorExit();
       }
     }
-  } while(_fh == -1);
+  }
+  while (!__file.isopen());
 
   // Remove the popup window
-  if(_tries)
+  if (_tries)
     PopupLocked(0, 0, NULL);
 
   GFTRK(NULL);
-
-  return _fh;
 }
 
 
@@ -108,14 +108,15 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::raw_open(int _
 
   GFTRK("HudsRawOpen");
 
-  fhidx = test_open(__HUDSON ? "msgidx" HUDS_EXT : "msgidx" GOLD_EXT, __oaccess);
-  fhinf = test_open(__HUDSON ? "msginfo" HUDS_EXT : "msginfo" GOLD_EXT, __oaccess);
-  fhlrd = test_open(__HUDSON ? "lastread" HUDS_EXT : "lastread" GOLD_EXT, __oaccess);
-  fhtoi = test_open(__HUDSON ? "msgtoidx" HUDS_EXT : "msgtoidx" GOLD_EXT, __oaccess);
-  if(__all) {
-    fhhdr = test_open(__HUDSON ? "msghdr" HUDS_EXT : "msghdr" GOLD_EXT, __oaccess);
-    fhtxt = test_open(__HUDSON ? "msgtxt" HUDS_EXT : "msgtxt" GOLD_EXT, __oaccess);
-    fhusr = test_open(__HUDSON ? "users" HUDS_EXT : "users" GOLD_EXT, __oaccess);
+  test_open(fhidx, __HUDSON ? "msgidx" HUDS_EXT : "msgidx" GOLD_EXT, __oaccess);
+  test_open(fhinf, __HUDSON ? "msginfo" HUDS_EXT : "msginfo" GOLD_EXT, __oaccess);
+  test_open(fhlrd, __HUDSON ? "lastread" HUDS_EXT : "lastread" GOLD_EXT, __oaccess);
+  test_open(fhtoi, __HUDSON ? "msgtoidx" HUDS_EXT : "msgtoidx" GOLD_EXT, __oaccess);
+  if (__all)
+  {
+    test_open(fhhdr, __HUDSON ? "msghdr" HUDS_EXT : "msghdr" GOLD_EXT, __oaccess);
+    test_open(fhtxt, __HUDSON ? "msgtxt" HUDS_EXT : "msgtxt" GOLD_EXT, __oaccess);
+    test_open(fhusr, __HUDSON ? "users" HUDS_EXT : "users" GOLD_EXT, __oaccess);
   }
 
   GFTRK(NULL);
@@ -143,20 +144,20 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::refresh() {
   GFTRK("HudsRefresh");
 
   // (Re)Allocate memory to hold the complete MSGIDX.BBS/DAT
-  msgidxsize = filelength(fhidx);
+  msgidxsize = fhidx.FileLength();
   msgidxptr = (HudsIdx*)throw_realloc(msgidxptr, (uint)(msgidxsize+sizeof(HudsIdx)));
 
   // Load MSGIDX.BBS/DAT
-  lseek(fhidx, 0, SEEK_SET);
-  read(fhidx, msgidxptr, (uint)msgidxsize);
+  fhidx.LseekSet(0);
+  fhidx.Read(msgidxptr, (uint)msgidxsize);
 
   // Load MSGINFO.BBS/DAT
-  lseek(fhinf, 0, SEEK_SET);
-  read(fhinf, &msginfo, sizeof(HudsInfo));
+  fhinf.LseekSet(0);
+  fhinf.Read(&msginfo, sizeof(HudsInfo));
 
   // Load LASTREAD.BBS/DAT
-  lseek(fhlrd, userno*sizeof(HudsLast), SEEK_SET);
-  read(fhlrd, lastrec, sizeof(HudsLast));
+  fhlrd.LseekSet(userno*sizeof(HudsLast));
+  fhlrd.Read(lastrec, sizeof(HudsLast));
 
   GFTRK(NULL);
 }
@@ -211,8 +212,8 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::lock() {
     long _tries = 0;
 
     // Try to get the lock
-    while(::lock(fhinf, sizeof(HudsInfo)+1, 1) == -1) {
-
+    while (fhinf.Lock(sizeof(HudsInfo)+1, 1) == -1)
+    {
       // Tell the world
       if(PopupLocked(++_tries, true, AddPath(path, __HUDSON ? "msginfo" HUDS_EXT : "msginfo" GOLD_EXT)) == false) {
 
@@ -251,8 +252,9 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::unlock() {
 
   GFTRK("HudsUnlock");
 
-  if(islocked and WideCanLock) {
-    ::unlock(fhinf, sizeof(HudsInfo)+1, 1);
+  if (islocked and WideCanLock)
+  {
+    fhinf.Unlock(sizeof(HudsInfo)+1, 1);
     islocked = false;
   }
 
@@ -578,7 +580,7 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::scan_pm() {
   ispmscanned = true;
 
   HudsToIdx* toidxbuf = (HudsToIdx*)throw_calloc(TOIDXBUFSZ, sizeof(HudsToIdx));
-  uint totrecs = (uint)(filelength(fhtoi) / sizeof(HudsToIdx));
+  uint totrecs = (uint)(fhtoi.FileLength() / sizeof(HudsToIdx));
   HudsIdx* idxptr = msgidxptr;
   throw_release(pmscan);
   pmscantotal = 0;
@@ -592,7 +594,7 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::scan_pm() {
     rec = 0;
     gotpm = false;
     getrecs = MinV(TOIDXBUFSZ, totrecs);
-    read(fhtoi, toidxbuf, getrecs*sizeof(HudsToIdx));
+    fhtoi.Read(toidxbuf, getrecs*sizeof(HudsToIdx));
 
     for(toidx=toidxbuf; rec<getrecs; idxptr++,toidx++,rec++) {
 

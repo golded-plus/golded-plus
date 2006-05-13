@@ -1248,7 +1248,7 @@ void CheckNodelists() {
     update_statusline(LNG->CheckingNodelists);
 
     gfile fp(file, "rt", CFG->sharemode);
-    if (fp)
+    if (fp.isopen())
     {
       // Read the list index
       char buf[256];

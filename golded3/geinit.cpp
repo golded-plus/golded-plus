@@ -395,7 +395,7 @@ static void w_brag() {
   wprints(5, 12, C_BRAGW, "http://golded-plus.sourceforge.net");
 
   wprints(0, 48, C_BRAGW, " GoldED+  Message Editor ");
-  sprintf(buf, " Copyright (C) 1990-%s ",__gver_date__+7);
+  gsprintf(PRINTF_DECLARE_BUFFER(buf), " Copyright (C) 1990-%s ",__gver_date__+7);
   wprints(1, 48, C_BRAGW, buf);
   wprints(2, 48, C_BRAGW, "    by Odinn Sorensen,  ");
   wprints(3, 48, C_BRAGW, "   Alexander Aganichev, ");

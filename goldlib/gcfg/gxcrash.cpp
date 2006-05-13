@@ -77,12 +77,12 @@ bool gareafile::jbstrcpy(char *dest, char *src, size_t maxlen, size_t *jbc) {
 //  ------------------------------------------------------------------
 //  Read areas from Crashmail II/CrashEcho (echomail processor)
 
-void gareafile::ReadCrashmailCfg(const char* file) {
-
-  FILE* fp = fsopen(file, "rt", sharemode);
-  if (fp)
+void gareafile::ReadCrashmailCfg(const char* file)
+{
+  gfile fp(file, "rt", sharemode);
+  if (fp.isopen())
   {
-    setvbuf(fp, NULL, _IOFBF, 8192);
+    fp.SetvBuf(NULL, _IOFBF, 8192);
 
     if (not quiet)
       STD_PRINTNL("* Reading " << file);
@@ -121,7 +121,8 @@ void gareafile::ReadCrashmailCfg(const char* file) {
 
     word crc16;
 
-    while(fgets(buf, 4000, fp) != NULL) {
+    while (fp.Fgets(buf, 4000))
+    {
       jbcpos=0;
       jbstrcpy(key, buf, 30, &jbcpos);
       switch(crc16 = strCrc16(key)) {
@@ -240,7 +241,6 @@ void gareafile::ReadCrashmailCfg(const char* file) {
       strxmerge(tmp, 100, address, "@", domain, NULL);
       CfgAddress(tmp);
     }
-    fclose(fp);
   }
 }
 

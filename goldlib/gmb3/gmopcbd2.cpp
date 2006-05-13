@@ -101,7 +101,7 @@ void PcbWideOpen() {
 
     pcbwide->fhusr = PcbWideTestOpen(pcbwide->users);
     pcbwide->fhinf = PcbWideTestOpen(pcbwide->usersinf);
-    pcbwide->user->fh = pcbwide->fhusr;
+    pcbwide->user->gufh = pcbwide->fhusr;
     pcbwide->user->fhinf = pcbwide->fhinf;
 
     // Read lastreads from USERS file

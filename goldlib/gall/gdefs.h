@@ -31,18 +31,17 @@
 #define __goldall_h
 
 /*  ------------------------------------------------------------------ */
-#include <tchar.h>
-
-#ifdef __cplusplus
-#include <cstddef>
-#endif
 #include <gcmpall.h>
+
+#include <tchar.h>
+#ifdef __cplusplus
+# include <cstddef>
+#endif
 #ifdef _MSC_VER
-#include <windows.h>
-#include <limits.h>
+# include <windows.h>
+# include <limits.h>
 #elif defined(__MINGW32__) || defined(__CYGWIN__)
-#include <stdint.h>
-#else
+# include <stdint.h>
 #endif
 
 #if !defined(ARRAYSIZE)

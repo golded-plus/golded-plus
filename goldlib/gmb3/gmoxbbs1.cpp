@@ -64,11 +64,14 @@ void XbbsArea::raw_close() {
   if(data->fhindex != -1)  ::close(data->fhindex);  data->fhindex = -1;
   if(data->fhtext != -1)   ::close(data->fhtext);   data->fhtext = -1;
 
-  if(wide->isopen) {
-    if(wide->isopen == 1) {
-      if(wide->user->fh != -1) {
-        ::close(wide->user->fh);
-        wide->user->fh= -1;
+  if (wide->isopen)
+  {
+    if (wide->isopen == 1)
+    {
+      if (wide->user->gufh != -1)
+      {
+        ::close(wide->user->gufh);
+        wide->user->gufh = -1;
       }
     }
     wide->isopen--;
@@ -128,8 +131,8 @@ void XbbsArea::raw_open() {
   data->fhindex = test_open(AddPath(real_path(), ".Index"));
   data->fhtext  = test_open(AddPath(real_path(), ".Text"));
   wide->isopen++;
-  if(wide->isopen == 1)
-    wide->user->fh = ::sopen(AddPath(wide->path, "Users"), O_RDONLY|O_BINARY, WideSharemode, S_STDRW);
+  if (wide->isopen == 1)
+    wide->user->gufh = ::sopen(AddPath(wide->path, "Users"), O_RDONLY|O_BINARY, WideSharemode, S_STDRW);
 
   GFTRK(NULL);
 }
@@ -159,15 +162,17 @@ void XbbsInit(const char* path, int userno) {
   xbbswide->user = new XbbsUser;
   throw_new(xbbswide->user);
 
-  xbbswide->user->fh = -1;
+  xbbswide->user->gufh = -1;
   xbbswide->fhpmi = -1;
   xbbswide->pmi = NULL;
   xbbswide->isopen = 0;
 
   const char* _username = WideUsername[0];
-  if(xbbswide->userno == -1) {
-    xbbswide->user->fh = ::sopen(AddPath(xbbswide->path, "Users"), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
-    if(xbbswide->user->fh != -1) {
+  if (xbbswide->userno == -1)
+  {
+    xbbswide->user->gufh = ::sopen(AddPath(xbbswide->path, "Users"), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
+    if (xbbswide->user->gufh != -1)
+    {
       xbbswide->user->find(_username);
       if(not xbbswide->user->found) {
         xbbswide->userno = 0;
@@ -175,7 +180,7 @@ void XbbsInit(const char* path, int userno) {
         //xbbswide->user->add(_username);
         //WideLog->printf("* Now added with user number %u.", xbbswide->user->index);
       }
-      close(xbbswide->user->fh);
+      close(xbbswide->user->gufh);
     }
     xbbswide->userno = xbbswide->user->index;
   }

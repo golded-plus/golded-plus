@@ -24,7 +24,7 @@
 //  RemoteAccess 2.x userfile class implementation.
 //  ------------------------------------------------------------------
 
-#include <gfilutil.h>
+#include <gfile.h>
 #include <gcrcall.h>
 #include <gmemdbg.h>
 #include <gstrall.h>
@@ -33,11 +33,10 @@
 
 //  ------------------------------------------------------------------
 
-RA2User::RA2User() {
+RA2User::RA2User()
+{
+  xifh = idxfh = 0;
 
-  xifh = -1;
-  idxfh = -1;
-  
   recsize = sizeof(RA2Users);
 
   record = new RA2Users;     throw_new(record);
@@ -79,11 +78,11 @@ int RA2User::isvalid() {
 
 //  ------------------------------------------------------------------
 
-int RA2User::read() {
-
-  if(fh != -1) {
-
-    ::read(fh, record, sizeof(RA2Users));
+int RA2User::read()
+{
+  if (gufh != -1)
+  {
+    ::read(gufh, record, sizeof(RA2Users));
     STRNP2C(record->name);
 
     return isvalid();
@@ -129,22 +128,22 @@ void RA2User::add(const char* __name) {
 
   GUser::add(__name);
 
-  if(idxfh != -1) {
-
+  if (idxfh && idxfh->isopen())
+  {
     char _namebuf[36];
     strupr(strcpy(_namebuf, __name));
     idxrec->namecrc32 = idxrec->handlecrc32 = strCrc32(_namebuf, NO, CRC32_MASK_CCITT);
 
-    lseek(idxfh, (long)recno*(long)sizeof(RA2UsersIdx), SEEK_SET);
-    ::write(idxfh, idxrec, sizeof(RA2UsersIdx));
+    idxfh->LseekSet((long)recno*(long)sizeof(RA2UsersIdx));
+    idxfh->Write(idxrec, sizeof(RA2UsersIdx));
   }
 
-  if(xifh != -1) {
-
+  if (xifh && xifh->isopen())
+  {
     memset(xirec, 0, sizeof(RA2UsersXi));
 
-    lseek(xifh, (long)recno*(long)sizeof(RA2UsersXi), SEEK_SET);
-    ::write(xifh, xirec, sizeof(RA2UsersXi));
+    xifh->LseekSet((long)recno*(long)sizeof(RA2UsersXi));
+    xifh->Write(xirec, sizeof(RA2UsersXi));
   }
 }
 

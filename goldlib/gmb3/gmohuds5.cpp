@@ -29,9 +29,9 @@
 //  ------------------------------------------------------------------
 
 template <class msgn_t, class rec_t, class attr_t, class board_t, class last_t, bool __HUDSON>
-char* _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::user_lookup(char* __lookfor) {
-
-  wide->user->fh = wide->fhusr;
+char* _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::user_lookup(char* __lookfor)
+{
+  wide->user->gufh = wide->fhusr.fh;
   wide->user->findwild(__lookfor, __lookfor);
 
   if(wide->user->found)

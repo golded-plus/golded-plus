@@ -139,15 +139,16 @@ void FidoInit(const char* fidolastread, int fidohwmarks, int fidonullfix, int fi
   if(fidowide->userno == -1) {
     Path userfile;
     strxcpy(userfile, AddPath(fidowide->squishuserpath, "USER.BBS"), sizeof(Path));
-    fidowide->user->fh = ::sopen(userfile, O_RDWR|O_CREAT|O_BINARY, WideSharemode, S_STDRW);
-    if(fidowide->user->fh != -1) {
+    fidowide->user->gufh = ::sopen(userfile, O_RDWR|O_CREAT|O_BINARY, WideSharemode, S_STDRW);
+    if (fidowide->user->gufh != -1)
+    {
       fidowide->user->find(_username);
       if(not fidowide->user->found) {
         WideLog->printf("* User \"%s\" not found in %s.", _username, userfile);
         fidowide->user->add(_username);
         WideLog->printf("* Now added with user number %u.", fidowide->user->index);
       }
-      ::close(fidowide->user->fh);
+      ::close(fidowide->user->gufh);
     }
     fidowide->userno = fidowide->user->index;
   }

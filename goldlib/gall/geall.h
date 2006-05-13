@@ -23,6 +23,10 @@
 //  ------------------------------------------------------------------
 //  Definition of system-wide sizes and structures.
 //  ------------------------------------------------------------------
+#ifndef __GEALL__H
+#define __GEALL__H
+
+#include <gdefs.h>
 
 
 //  ------------------------------------------------------------------
@@ -324,20 +328,15 @@ const int REPLYRE_NUMERIC = 2;
 
 
 //  ------------------------------------------------------------------
-//  Name typedefs
 
-typedef TCHAR Name[36];
+const int MAX_DESC =  81;        // Area descriptions
+const int MAX_ECHO =  81;        // Echoids
 
 
 //  ------------------------------------------------------------------
-//  Combined name/address structure
+//  Name typedefs
 
-struct Node
-{
-  Name name;
-  Addr addr;
-  Node &operator=(const Node &a) { strxcpy(name, a.name, ARRAYSIZE(name)); addr=a.addr; return *this; }
-};
+typedef TCHAR Name[36];
 
 
 //  ------------------------------------------------------------------
@@ -365,13 +364,15 @@ typedef char XlatName[17];
 
 
 //  ------------------------------------------------------------------
-//  Template typedefs
+//  Echoid typedefs
 
-struct Tpl {
-  Path file;
-  Desc name;
-  Addr match;
-};
+typedef char Echo[MAX_ECHO];
+
+
+//  ------------------------------------------------------------------
+//  Description typedefs
+
+typedef char Desc[MAX_DESC];
 
 
 //  ------------------------------------------------------------------
@@ -385,32 +386,6 @@ public:
   EchoRen(const char *_from, const char *_to) { from = _from; to = _to; }
   ~EchoRen() {}
   EchoRen& operator=(const EchoRen& a) { from = a.from; to = a.to; return *this; }
-};
-
-
-//  ------------------------------------------------------------------
-//  Filename aliases
-
-struct FileAlias {
-  char alias[9];
-  Path file;
-  FileAlias& operator=(const FileAlias& a) {
-    strxcpy(alias, a.alias, sizeof(alias));
-    strxcpy(file, a.file, sizeof(Path));
-    return *this;
-  }
-};
-
-
-//  ------------------------------------------------------------------
-//  Address macro record
-
-struct AddrMacro {
-  char macro[20];
-  IAdr name;
-  Addr addr;
-  Subj subj;
-  Attr attr;
 };
 
 
@@ -545,26 +520,6 @@ enum {
   TAG_MARKRANGE,
   TAG_MARKTOGGLE,
   TAG_MARKQUIT
-};
-
-
-//  ------------------------------------------------------------------
-//  The Message Browser
-
-struct MLst {
-  uint32_t  msgno;
-  byte      high;
-  char      num[8];
-  char      marks[3];
-  char      by[sizeof(Name)+20];
-  char      to[sizeof(Name)+20];
-  Subj      re;
-  time32_t  written;
-  time32_t  arrived;
-  time32_t  received;
-  char      goldmark;
-  vattr     colorby;
-  vattr     colorto;
 };
 
 
@@ -873,16 +828,6 @@ struct SaveUtil {
 #define W_BCFG    GC_CFG_.btype
 #define W_BCFGB   GC_CFGB_.btype
 
-
-//  ------------------------------------------------------------------
-//  Window structure
-
-struct Win {
-  int   btype;    // Border type
-  vattr c[16];    // Colors
-  int   w;        // Window handle
-};
-
 //  ------------------------------------------------------------------
 //  Charset translation table structure
 
@@ -971,32 +916,6 @@ struct Semaphore {
 
 //  ------------------------------------------------------------------
 
-struct AkaMatchG {
-  Addr mask;
-  Addr aka;
-};
-
-
-//  ------------------------------------------------------------------
-
-struct MailList {
-  Echo echoid;
-  IAdr sender;
-  IAdr contribution;
-  bool sender_is_pattern;
-};
-
-
-//  ------------------------------------------------------------------
-
-struct FrqNodeMap {
-  Addr from;
-  Addr to;
-};
-
-
-//  ------------------------------------------------------------------
-
 typedef char BarList[45];
 
 struct FFblk {
@@ -1042,14 +961,5 @@ const uint TO_ALL  = 16;
 
 
 //  ------------------------------------------------------------------
-//  Include various GoldED structures
 
-#include <gehelp.h>
-#include <gekeys.h>
-#include <gelang.h>
-#include <gmarea.h>
-#include <gecfgg.h>
-
-
-//  ------------------------------------------------------------------
-
+#endif

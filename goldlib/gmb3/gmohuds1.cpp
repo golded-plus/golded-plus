@@ -66,12 +66,9 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::init() {
 
   GFTRK("HudsInit");
 
-  if(WideDebug)
+  if (WideDebug)
     WideLog->printf("- Begin init for %s.", path);
 
-  fhusr = -1;
-  fhtxt = fhhdr = fhidx = -1;
-  fhinf = fhlrd = fhtoi = -1;
   isopen = 0;
   islocked = false;
   timesposted = 0;
@@ -81,16 +78,20 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::init() {
   scn = NULL;
 
   // Open complete msgbase, create if none exists
-  if(not fexist(AddPath(path, __HUDSON ? "msghdr" HUDS_EXT : "msghdr" GOLD_EXT))) {
+  if (not fexist(AddPath(path, __HUDSON ? "msghdr" HUDS_EXT : "msghdr" GOLD_EXT)))
+  {
     WideLog->printf("* Creating new msgbase at %s", path);
     raw_open(O_CREAT);
-    if(filelength(fhinf) == 0) {
+
+    if (fhinf.FileLength() == 0)
+    {
       memset(&msginfo, 0, sizeof(HudsInfo));
-      write(fhinf, &msginfo, sizeof(HudsInfo));
+      fhinf.Write(&msginfo, sizeof(HudsInfo));
     }
-    if(filelength(fhlrd) == 0) {
+    if (fhlrd.FileLength() == 0)
+    {
       memset(lastrec, 0, sizeof(HudsLast));
-      write(fhlrd, lastrec, sizeof(HudsLast));
+      fhlrd.Write(lastrec, sizeof(HudsLast));
     }
   }
   else {
@@ -101,14 +102,15 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::init() {
   lock();
 
   // Check if MSGTXT.BBS is approaching dangerous size
-  if(__HUDSON and (filelength(fhtxt) > sizewarn))
+  if (__HUDSON and (fhtxt.FileLength() > sizewarn))
     HudsSizewarn();
 
   // Check for mismatch between the header and the index files
-  uint _hdrsize = filelength(fhhdr)/sizeof(HudsHdr);
-  uint _idxsize = filelength(fhidx)/sizeof(HudsIdx);
-  uint _toisize = filelength(fhtoi)/sizeof(HudsToIdx);
-  if((_hdrsize != _idxsize) or (_hdrsize != _toisize)) {
+  uint _hdrsize = fhhdr.FileLength()/sizeof(HudsHdr);
+  uint _idxsize = fhidx.FileLength()/sizeof(HudsIdx);
+  uint _toisize = fhtoi.FileLength()/sizeof(HudsToIdx);
+  if ((_hdrsize != _idxsize) or (_hdrsize != _toisize))
+  {
     raw_close();
     HGWarnRebuild();
     WideLog->ErrIndex();
@@ -124,7 +126,7 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::init() {
   if(__HUDSON and (ra2usersbbs == 0)) {
 
     // Get size of USERS.BBS
-    int len = filelength(fhusr);
+    int len = fhusr.FileLength();
 
     // Does size match Hudson format?
     int hudsmatch = (len % sizeof(HudsUsers)) == 0;
@@ -137,23 +139,23 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::init() {
       ra2usersbbs = 2;
 
     // If it matches both of them
-    if(hudsmatch and ra2match) {
-
+    if (hudsmatch and ra2match)
+    {
       // Check version in CONFIG.RA to make sure
       Path rapath, file;
       char* ptr = getenv("RA");
-      if(ptr)
-        AddBackslash(strcpy(rapath, ptr));
+      if (ptr) AddBackslash(strcpy(rapath, ptr));
       MakePathname(file, rapath, "messages.ra");
-      int fh = ::sopen(file, O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
-      if(fh != -1) {
+
+      gfile fh(file, O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
+      if (fh.isopen())
+      {
         word VersionID = 0;
-        read(fh, &VersionID, sizeof(word));
-        if(VersionID >= 0x200)
+        fh.Read(&VersionID, sizeof(word));
+        if (VersionID >= 0x200)
           ra2usersbbs = 2;
         else
           ra2usersbbs = 1;
-        ::close(fh);
       }
     }
 
@@ -171,10 +173,11 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::init() {
     }
   }
 
-  if(__HUDSON) {
-    fhuix = fhuxi = -1;
-    if(ra2usersbbs == 2) {
-      if(WideDebug)
+  if (__HUDSON)
+  {
+    if (ra2usersbbs == 2)
+    {
+      if (WideDebug)
         WideLog->printf("- Using a RA2 format userbase.");
       user = new RA2User;
     }
@@ -189,16 +192,20 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::init() {
   throw_new(user);
 
   // Open RA2 files
-  if(__HUDSON and (ra2usersbbs == 2)) {
+  if (__HUDSON and (ra2usersbbs == 2))
+  {
     RA2User* _user2 = (RA2User*)user;
-    _user2->idxfh = fhuix = test_open("usersidx.bbs", O_CREAT);
-    _user2->xifh = fhuxi = test_open("usersxi.bbs", O_CREAT);
+    test_open(fhuix, "usersidx.bbs", O_CREAT);
+    test_open(fhuxi, "usersxi.bbs", O_CREAT);
+    _user2->idxfh = &fhuix;
+    _user2->xifh = &fhuxi;
   }
 
   // Find user
   const char* _username = WideUsername[0];
-  if(userno == -1) {
-    user->fh = fhusr;
+  if (userno == -1)
+  {
+    user->gufh = fhusr.fh;
     user->find(_username);
     if(not user->found) {
       WideLog->printf("* User \"%s\" not found in %susers%s.", _username, path, __HUDSON ? HUDS_EXT : GOLD_EXT);
@@ -212,9 +219,10 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::init() {
     WideLog->printf("- Using user record number %u.", userno);
 
   // Close RA2 files
-  if(__HUDSON and (ra2usersbbs == 2)) {
-    ::close(fhuix);
-    ::close(fhuxi);
+  if (__HUDSON and (ra2usersbbs == 2))
+  {
+    fhuix.Close();
+    fhuxi.Close();
   }
 
   // Unlock and close
@@ -237,15 +245,16 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::save_lastread(
 
   // Update lastread record
   msgn_t _lastread = lastrec[board-1] = msgno;
-  lseekset(fhlrd, userno*sizeof(HudsLast));
-  write(fhlrd, lastrec, sizeof(HudsLast));
+  fhlrd.LseekSet(userno*sizeof(HudsLast));
+  fhlrd.Write(lastrec, sizeof(HudsLast));
 
   // Update user record
-  user->fh = fhusr;
+  user->gufh = fhusr.fh;
   user->moveto(userno);
-  if(user->lastread() < _lastread)
+  if (user->lastread() < _lastread)
     user->lastread(_lastread);
-  if(timesposted) {
+  if (timesposted)
+  {
     user->inctimesposted(timesposted);
     timesposted = 0;
   }

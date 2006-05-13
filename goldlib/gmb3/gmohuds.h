@@ -199,15 +199,15 @@ struct _HudsWide {
 #pragma pack()
 #endif
 
-  int      fhtxt;
-  int      fhhdr;
-  int      fhidx;
-  int      fhinf;
-  int      fhlrd;
-  int      fhtoi;
-  int      fhusr;
-  int      fhuix;
-  int      fhuxi;
+  gfile    fhtxt;
+  gfile    fhhdr;
+  gfile    fhidx;
+  gfile    fhinf;
+  gfile    fhlrd;
+  gfile    fhtoi;
+  gfile    fhusr;
+  gfile    fhuix;
+  gfile    fhuxi;
   int      isopen;
   int      islocked;
   int      timesposted;
@@ -246,7 +246,7 @@ struct _HudsWide {
 
   void update_netecho(char* __name, msgn_t __hdridx, int __delete);
 
-  int test_open(char* __file, int __oaccess);
+  void test_open(gfile &__file, char* __fname, int __oaccess);
   void raw_open(int __oaccess=0, int __all=true);
   void raw_close();
   void refresh();

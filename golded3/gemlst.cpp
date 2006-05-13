@@ -74,7 +74,24 @@ inline void mlst_with_date(int with_date) {
 
 //  ------------------------------------------------------------------
 
-class GMsgList : public gwinpick {
+class GMsgList : public gwinpick
+{
+  struct MLst
+  {
+    uint32_t  msgno;
+    byte      high;
+    char      num[8];
+    char      marks[3];
+    char      by[sizeof(Name)+20];
+    char      to[sizeof(Name)+20];
+    Subj      re;
+    time32_t  written;
+    time32_t  arrived;
+    time32_t  received;
+    char      goldmark;
+    vattr     colorby;
+    vattr     colorto;
+  };
 
   gwindow        window;
   GMsg           msg;

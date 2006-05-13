@@ -95,11 +95,11 @@ int EzycomUser::isvalid() {
 
 //  ------------------------------------------------------------------
 
-int EzycomUser::read() {
-
-  if(fh != -1) {
-
-    ::read(fh, record, sizeof(EzycUsers));
+int EzycomUser::read()
+{
+  if (gufh != -1)
+  {
+    ::read(gufh, record, sizeof(EzycUsers));
     STRNP2C(record->name);
 
     return isvalid();
