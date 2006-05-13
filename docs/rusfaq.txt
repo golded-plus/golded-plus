@@ -120,7 +120,9 @@ $Date$
      собирать?
 *A:* Родина GoldED+ находится на http://golded-plus.sourceforge.net. Там же вы
      можете найти список мирроров и взять исходники. Другой вариант этого же
-     источника: http://sourceforge.net/projects/golded-plus. За самыми
+     источника: http://sourceforge.net/projects/golded-plus. Те же файлы
+     распространяются по файлэхе AFTNGED, её архивы можно найти на FREQ'ах и
+     FTP серверах узлов, например ftp://bym.comex.ru/AFTNGED. За самыми
      актуальными исходниками нужно обращаться к анонимному CVS по URL
      :pserver:anonymous@cvs.sourceforge.net:/cvsroot/golded-plus модуль golded+
      (инструкции на http://sourceforge.net/projects/golded-plus, страница CVS).
@@ -385,10 +387,16 @@ $Date$
      для пользователей The Bat!: http://www.nobat.ru/files/spellset.exe.
      Код MySpell вкомпилирован в Golded+ и требуются только словари, например,
      от OpenOffice: http://lingucomponent.openoffice.org/spell_dic.html или
-     ftp://scon155.phys.msu.su/pub/russian/ispell/myspell/.
+     ftp://ftp.services.openoffice.org/pub/OpenOffice.org/contrib/dictionaries,
+     ftp://scon155.phys.msu.su/pub/russian/ispell/myspell/ или от FarSpell:
+     http://bookmania.com.ru/farspell. (У FARSpell есть универсальный словарь:
+     русский "е" + "ё" http://bookmania.com.ru/farspell/farspell-ru.7z)
+     Также Янош Гнатюк подготовил словарь, в котором буквы е и ё эквивалентны
+     и присутствуют цифры: http://gedwin.narod.ru/ru_RU_e_yo.7z либо
+     http://prdownloads.sourceforge.net/golded-plus/ru_RUyoe.zip?download
      Недостаток реализации MySpell в golded+ - невозможность задать собственный
-     (пользовательский) словарь. Преимущество - высокая скорость работы и
-     кроссплатформенность.
+     (пользовательский) словарь (но несложно отредактировать основной).
+     Преимущество - высокая скорость работы и кроссплатформенность.
      Настройки словаря для MS Spell (win32):
        - golded.cfg:
        SCheckerDefLang 1049       ;MSSpell, код русского языка в Microsoft.
@@ -406,7 +414,7 @@ $Date$
 
      Для работы MySpell с русскими словарями от OpenOffice.org нужно подключить
      таблицы перекодировки CP866 <-> KOI8-R (CP866 - в том написании, как
-     указано в параметре localcharset, KOI8-R - как в используемом *.aff).
+     указано в параметре xlatlocalset, KOI8-R - как в используемом *.aff).
      В комплекте конфигов Golded+ все нужные таблицы есть. Вот строки для
      golded.cfg:
 
