@@ -2986,7 +2986,7 @@ static bool CheckLevel(const char* imp, const char* imp2, int n, int &current_ta
     if (!CharTable) CharTable = (Chs*)throw_calloc(1, sizeof(Chs));
     fp.FseekSet(n, sizeof(Chs));
     fp.Fread(CharTable, sizeof(Chs));
-  
+
     ChsTP = CharTable->t;
     current_table = n;
 

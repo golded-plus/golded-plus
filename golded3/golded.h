@@ -40,7 +40,9 @@
 #include <gstrall.h>
 #include <csignal>
 #include <iostream>
-#include <sstream>
+#if __GNUC__ +0 > 2
+  #include <sstream>
+#endif
 #include <iomanip>
 // Wrappers for certain mostly DOS/Borland headers
 #include <gshare.h>
