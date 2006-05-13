@@ -572,8 +572,6 @@ INCLUDE GOLDCMNT.CFG
 EditCompletion "/GE" "GoldED"
 EditCompletion "/FD" "FrontDoor"
 EditCompletion "/V7" "Version 7"
-EditCompletion "Н"   "H"
-// где пеpвая Н pусская, а втоpая H латинская
 
 // Какими символами разрывать параграфы текста и отквоченные строки.
 ;EditCrlFTerm Yes   ; С 'CR' и 'LF'.
@@ -616,13 +614,20 @@ EditReplyRe Yes     ; Добавить "Re:" если там нет ни одного.
 // Сколько строк хранить в буфере удаления (undelete buffer).
 EditUnDelete 50
 
-// При вставке во встроенном редакторе из файла, GoldED может подменять
-// символ ASCII 141 на другой.
-EditSoftCrxLat H   ; Желательно для R50!
+// EditSoftCrxLat <символ>
+// Задаёт символ для замены символа soft-CR (шестнадцатиричный код 0x8D,
+// десятичный 141, русская буква "H" в кодировке CP866). Чтобы не производить
+// замену, можно указать русскую Н. При вставке во встроенном редакторе из
+// файла GoldED также будет подменять символ Soft-CR на указанный.
+// Не забудьте указать "UseSoftCrxLat YES"!
+EditSoftCrxLat H   ; Желательно для R50
 
-// Этим параметром можно включить или выключить EditSoftCrxLat.
+// UseSoftCrxLat <No/Yes> (No)
+// Этим параметром можно включить или выключить использование EditSoftCrxLat.
 // Используйте этот параметр в группах.
-;UseSoftCrxLat <No/Yes> (No)
+// Будьте внимательны: если EditSoftCrxLat отсутствует и UseSoftCrXlat включен,
+// введенная буква H пропадёт при сохранении сообщения.
+;UseSoftCrxLat YES
 
 // Ширина поля вывода для редактирования цитируемых строк.
 EditQuoteMargin 75
@@ -1060,6 +1065,8 @@ TimeOutSaveMsg No      ; Оставить его как "незаконченное" в golded.msg.
 
 // Список может быть быстрым и медленным.
 // Медленный режим позволяет использовать больше информации из каждого письма.
+// В быстром режиме Golded+ не производит перекодировку заголовков в списке
+// и некоторые строки могут быть нечитаемы.
 MsgListFast No
 
 // При входе в арию начинать со списка сообщений.
@@ -1443,20 +1450,48 @@ Include gedcolor.cfg
 ----------------------------------------------------------------------
 -- ПРОВЕРКА ОРФОГРАФИИ
 
+// SCheckerEnabled <No/Auto>
+// Отключение или включение проверки орфографии. По умолчанию выключено.
+
+// SCheckerDefLang <lang code>
+// Язык по умолчанию.
+// Для Microsoft Spellchecker указывается цифровой код языка (американский
+// английский - 1033, русский - 1049, остальные смотрите в документации
+// Microsoft).
+// Для MySpell указывается название словаря, регистрозависимое (имя файла без
+// суффикса .dic или .aff).
+
+// SCheckerUserDic <MS Spell user dictionnary filename>
+// Имя файла пользовательского словаря, используется только в Microsoft
+// Spellchecker, игноригуется в MySpell.
+
+// SCheckerDicPath <MySpell dictionaries directory>
+// Каталог со словарями MySpell, игноригуется в Microsoft Spellchecker.
+
+// COLOR SCHECKER ERROR <color>
+// Цвет выделения ошибок при проверке орфографии. Должно располагаться после
+// директивы INTENSECOLORS.
+// Значение по умолчанию: White on Black (белые буквы на чёрном фоне).
+
 IF SPELL
 
 SCheckerEnabled No              ; выключить
 ;SCheckerEnabled Auto            ; проверять во время набора
 
 ;SCheckerDefLang 1049            ; MSSPELL, Русский
-;SCheckerDefLang 1033            ; MSSPELL, Английский
-;SCheckerDefLang ru_RU           ; MYSPELL, Русский
-;SCheckerDefLang en_US           ; MYSPELL, Английский
+;SCheckerDefLang 1033            ; MSSPELL, Английский (американский диалект)
+;SCheckerDefLang ru_RU_yo        ; MYSPELL, Русский с буквой ё и аббревиатурами
+;SCheckerDefLang ru_RU_ye        ; MYSPELL, Русский с буквой е и словоформами
+;SCheckerDefLang ru_RU           ; MYSPELL, Русский с аббревиатурами
+;SCheckerDefLang en_US           ; MYSPELL, Английский (американский диалект)
 
 // используется только для MSSPELL
 ;SCheckerUserDic "user.dic"
 // используется только для MYSPELL
-;SCheckerDicPath "path\to\dictionaries"
+//  windows с установленным openoffice
+;SCheckerDicPath "C:\Program Files\OpenOffice.org 2.0\share\dict\ooo\"
+//  linux, BSD, ...
+;SCheckerDicPath /usr/share/myspell/dicts
 
 ;COLOR SCHECKER ERROR White on Black
 
@@ -1914,7 +1949,7 @@ JamHardDelete Yes   ; Удалять без возможности восстановления ("hard" удаление).
 ;QBBSREBUILD Yes
 
 // Имена файлов QBBS почты с индексами отсылаемых файлов.
-// Hе изменяйте их!
+// Hе изменяйте их! По умолчанию используется путь AREAPATH
 // Требуется режим Keybmode Poll
 ;SEMAPHORE QNETSCAN     NETMAIL.BBS     ; QBBS netmail индексы отсылки.
 ;SEMAPHORE QECHOSCAN    ECHOMAIL.BBS    ; QBBS echomail индексы отсылки.
