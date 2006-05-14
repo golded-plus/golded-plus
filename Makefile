@@ -5,7 +5,7 @@ include Config.def
 
 .PHONY: all clean distclean dirs sourcelists deps docs
 
-LIBS=gall gcfg gmb3 glibc uulib smblib msgidlib
+LIBS=gall gcfg gmb3 glibc uulib smblib
 ifneq ($(findstring GCFG_NO_MYSPELL, $(CPPFLAGS)), GCFG_NO_MYSPELL)
 LIBS+=hunspell
 endif

@@ -95,7 +95,7 @@ public:
   int     Close       ();
 
   int     Read        (void* __ptr, size_t __len);
-  int     Write       (void* __ptr, size_t __len);
+  int     Write       (const void* __ptr, size_t __len);
 
   long    Tell        ();
   long    Lseek       (long __offset, int __direction);

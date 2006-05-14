@@ -210,7 +210,7 @@ int gfile::Read(void* __ptr, size_t __len)
 
 //  ------------------------------------------------------------------
 
-int gfile::Write(void* __ptr, size_t __len)
+int gfile::Write(const void* __ptr, size_t __len)
 {
   int _ret = g_write(fh, __ptr, unsigned(__len));
   status = (_ret == -1) ? errno : 0;

@@ -31,8 +31,6 @@
 //  ------------------------------------------------------------------
 //  Various global data
 
-glog LOG;
-
 gareafile* AFILE = NULL;
 CfgGed* CFG = NULL;
 LangGed* LNG = NULL;
@@ -309,4 +307,3 @@ int PlayMacro(gkey key, int type) {
 
 
 //  ------------------------------------------------------------------
-

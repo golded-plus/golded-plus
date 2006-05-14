@@ -13,11 +13,11 @@ TOP=..
 include $(TOP)/Config.def
 SHORTTARGET=ged
 TARGET=golded3
-GLIBS=gmb3 gall gcfg uulib smblib msgidlib
+GLIBS=gmb3 gall gcfg uulib smblib
 ifneq ($(findstring GCFG_NO_MYSPELL, $(CPPFLAGS)), GCFG_NO_MYSPELL)
 GLIBS+=hunspell
 endif
-INCS=-I. -I$(TOP)/goldlib/gall -I$(TOP)/goldlib/gcfg -I$(TOP)/goldlib/gmb3 -I$(TOP)/goldlib/uulib -I$(TOP)/goldlib/smblib -I$(TOP)/goldlib/msgidlib
+INCS=-I. -I$(TOP)/goldlib/gall -I$(TOP)/goldlib/gcfg -I$(TOP)/goldlib/gmb3 -I$(TOP)/goldlib/uulib -I$(TOP)/goldlib/smblib
 
 ifeq ($(findstring EMX, $(PATH)), EMX)
 STDLIBS=-los2me -lstdcpp

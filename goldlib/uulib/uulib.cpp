@@ -903,11 +903,11 @@ UUDecodeFile (uulist *thefile, char *destname)
 
   if (destname)
     strcpy (uugen_fnbuffer, destname);
-  else {
-    sprintf (uugen_fnbuffer, "%s%s",
-         (uusavepath)?uusavepath:"",
-         UUFNameFilter ((thefile->filename)?
-                thefile->filename:"unknown.xxx"));
+  else
+  {
+    char unknownfn[] = "unknown.xxx";
+    sprintf(uugen_fnbuffer, "%s%s", (uusavepath) ? uusavepath : "",
+            UUFNameFilter(thefile->filename ? thefile->filename : unknownfn));
   }
 
   /*
@@ -1115,7 +1115,7 @@ UUInfoFile (uulist *thefile, void *opaque, int (*func)(void *, char *))
 
   return UURET_OK;
 }
-    
+
 int UUEXPORT
 UURenameFile (uulist *thefile, char *newname)
 {
@@ -1239,4 +1239,3 @@ UUCleanUp (void)
 
   return UURET_OK;
 }
-

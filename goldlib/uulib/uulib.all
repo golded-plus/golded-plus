@@ -1,8 +1,8 @@
-fptools  c       all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
-uucheck  c       all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
-uuencode c       all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
-uulib    c       all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
-uunconc  c       all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
-uuscan   c       all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
-uustring c       all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
-uuutil   c       all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+fptools  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+uucheck  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+uuencode cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+uulib    cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+uunconc  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+uuscan   cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+uustring cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+uuutil   cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun

@@ -392,7 +392,7 @@ GOLDNODE_OBJS=$(OBJ_DIR)\goldnode.obj
 
 ALL_OBJS=$(LNK_OBJS) $(GOLDED_OBJS) $(RDDT_OBJS) $(GOLDNODE_OBJS)
 
-CPP_FLAGS=/nologo /c /J /W3 /Gi /EHac /FD /Igolded3 /Igoldlib\gall /Igoldlib\gcfg /Igoldlib\glibc /Igoldlib\gmb3 /Igoldlib\msgidlib /Igoldlib\smblib /Igoldlib\uulib /Igoldlib\hunspell /DWIN32 /D_CONSOLE /DHAVE_CONFIG_H /Fo$(OBJ_DIR)\\ /Fd$(OBJ_DIR)\\
+CPP_FLAGS=/nologo /c /J /W3 /Gi /EHac /FD /Igolded3 /Igoldlib\gall /Igoldlib\gcfg /Igoldlib\glibc /Igoldlib\gmb3 /Igoldlib\smblib /Igoldlib\uulib /Igoldlib\hunspell /DWIN32 /D_CONSOLE /DHAVE_CONFIG_H /Fo$(OBJ_DIR)\\ /Fd$(OBJ_DIR)\\
 RSC_FLAGS=/igolded3 /fo$(OBJ_DIR)\gedcyg.res
 LNK_FLAGS=advapi32.lib winmm.lib user32.lib /nologo /subsystem:console /machine:I386
 
@@ -487,11 +487,6 @@ $(ALL_OBJS):
     $(CPP_PROJ) $<
 <<
 
-{goldlib\msgidlib}.cpp{$(OBJ_DIR)}.obj:
-    $(CPP) @<<
-    $(CPP_PROJ) $<
-<<
-
 {goldlib\smblib}.cpp{$(OBJ_DIR)}.obj:
     $(CPP) @<<
     $(CPP_PROJ) $<
@@ -542,11 +537,6 @@ $(ALL_OBJS):
 <<
 
 {goldlib\gmb3}.c{$(OBJ_DIR)}.obj:
-    $(CPP) @<<
-    $(CPP_PROJ) $<
-<<
-
-{goldlib\msgidlib}.c{$(OBJ_DIR)}.obj:
     $(CPP) @<<
     $(CPP_PROJ) $<
 <<
