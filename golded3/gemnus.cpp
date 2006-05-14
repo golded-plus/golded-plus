@@ -26,7 +26,6 @@
 
 #include <golded.h>
 
-
 //  ------------------------------------------------------------------
 
 void GMnuAsk::AskInit(int __row, int __col, char* __title, int __help) {

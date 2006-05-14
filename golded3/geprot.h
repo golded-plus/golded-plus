@@ -25,9 +25,10 @@
 //  ------------------------------------------------------------------
 
 
-#ifndef __GEHDRS_H
-#define __GEHDRS_H
+#ifndef __GEPROT_H
+#define __GEPROT_H
 
+#include "gekeys.h"
 
 //  ------------------------------------------------------------------
 //  GCAREA prototypes

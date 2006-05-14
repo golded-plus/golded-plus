@@ -33,7 +33,6 @@
   #include <malloc.h>
 #endif
 
-
 //  ------------------------------------------------------------------
 
 extern GMsg* reader_msg;
@@ -1313,7 +1312,7 @@ bool GThreadlist::GoNextUnread(bool reader)
   if (size > 1)
   {
     size_t idx;
-    
+
     for (idx = index + 1; idx < size; idx++)
     {
       t = list[idx];

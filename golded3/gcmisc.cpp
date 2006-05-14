@@ -26,7 +26,6 @@
 
 #include <golded.h>
 
-
 //  ------------------------------------------------------------------
 
 int ReadHelpCfg(int force) {
@@ -637,7 +636,7 @@ void ReadXlatTables()
           ChsTable.t[n][0] = 1;
           ChsTable.t[n][1] = (uint8_t)n;  // The character
         }
-        
+
         strcpy(buf, AddPath(CFG->xlatpath, xlt->mapfile));
         gfile ifp(buf, "rb", CFG->sharemode);
         if (ifp.isopen())

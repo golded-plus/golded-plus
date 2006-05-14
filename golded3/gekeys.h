@@ -44,6 +44,9 @@
 //
 //  ------------------------------------------------------------------
 
+#ifndef __GEKEYS_H
+#define __GEKEYS_H
+
 const gkey KK_Auto                 = 0xFD00;
 const gkey KK_Macro                = 0xFE00;
 const gkey KK_AreaMacro            = 0xFE01;
@@ -470,3 +473,4 @@ struct tglobalkey {
 
 //  ------------------------------------------------------------------
 
+#endif

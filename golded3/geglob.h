@@ -30,14 +30,16 @@
 #ifndef __GEGLOB_H
 #define __GEGLOB_H
 
+#ifdef HAS_ICONV
+  #include <iconv.h>
+#endif
+
+#include "gelang.h"
+
 //  Golded+ version information --------------------------------------
 #include "golded3.h"
 
 //  ------------------------------------------------------------------
-
-#ifdef HAS_ICONV
-  #include <iconv.h>
-#endif
 
 extern glog LOG;
 

@@ -23,6 +23,8 @@
 //  ------------------------------------------------------------------
 //  The Internal Editor (IE).
 //  ------------------------------------------------------------------
+#ifndef __GEEDIT_H
+#define __GEEDIT_H
 
 #ifdef __GNUG__
 #pragma interface "geedit.h"
@@ -441,3 +443,4 @@ inline void IEclass::killpastebuf() { Edit__killpastebuf(); }
 
 //  ------------------------------------------------------------------
 
+#endif

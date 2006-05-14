@@ -518,6 +518,7 @@ int InstallFinish()
 
     return 0;
   }
+  return 0;
 }
 #endif
 

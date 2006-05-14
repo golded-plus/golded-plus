@@ -29,7 +29,7 @@
 #include <list>
 #include <gmo_msg.h>
 #include <geall.h>
-
+#include "gekeys.h"
 
 //  ------------------------------------------------------------------
 //  en_gswitches{} enumeration elements shoulds be complemented with

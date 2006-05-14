@@ -28,6 +28,7 @@
 #include <fcntl.h>
 #include <golded.h>
 #include <gmoprot.h>
+#include "geglob.h"
 
 // FTS-0001 is FTS so leave it anyway :-)
 #include <gmofido.h>
@@ -195,7 +196,7 @@ void AreaList::ReadGoldLast()
 {
   word GOLDLAST_VER;
   ggoldlast entry;
-  
+
   gfile fp(AddPath(CFG->goldpath, CFG->goldlast), "rb", CFG->sharemode);
   if (fp.isopen())
   {
@@ -210,7 +211,7 @@ void AreaList::ReadGoldLast()
     while (fp.Fread(&entry, sizeof(entry)))
     {
       bool found = false;
-      
+
       for(area_iterator ap = idx.begin(); ap != idx.end(); ap++) {
         if(strCrc32((*ap)->echoid(), false) == entry.crcechoid) {
 
@@ -225,12 +226,12 @@ void AreaList::ReadGoldLast()
 
           (*ap)->Mark.Load(fp);
           (*ap)->PMrk.Load(fp);
-          
+
           found = true;
           break;
         }
       }
-      
+
       if (not found)
       {
         // skip stored message marks

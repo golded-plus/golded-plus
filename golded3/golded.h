@@ -95,6 +95,7 @@
 #include <geprot.h>
 #include <gemnus.h>
 #include <gefn.h>
+#include "gehelp.h"
 
 
 //  ------------------------------------------------------------------
