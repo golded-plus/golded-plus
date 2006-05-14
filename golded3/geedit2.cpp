@@ -1324,7 +1324,7 @@ void IEclass::SpellCheck()
   strcpy(_buf2, AddPath(CFG->goldpath, EDIT->File()));
   strchg(_buf2, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
   strischg(_buf, "@file", _buf2);
-  sprintf(_buf2, LNG->SpellChecker, _buf);
+  gsprintf(PRINTF_DECLARE_BUFFER(_buf2), LNG->SpellChecker, _buf);
   ShellToDos(_buf, _buf2, LGREY_|_BLACK, YES);
   LoadFile();
 

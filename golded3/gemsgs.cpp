@@ -145,7 +145,7 @@ void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int __orig
 {
   static char revbuf[5] = "";
   if (revbuf[0] == NUL)
-    sprintf(revbuf, "%02d%02d", str2mon(__gver_date__), atoi(&__gver_date__[4]));
+    gsprintf(PRINTF_DECLARE_BUFFER(revbuf), "%02d%02d", str2mon(__gver_date__), atoi(&__gver_date__[4]));
 
   char attr[80];
   MakeAttrStr(attr, sizeof(attr), &msg->attr);
@@ -175,10 +175,10 @@ void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int __orig
   char* modereptr = oldmsg->re;
 
   char msgno[16];
-  sprintf(msgno, "%u", msg->attr.nwm() ? AA->Msgn.Count() + 1 : AA->Msgn.ToReln(msg->msgno));
+  gsprintf(PRINTF_DECLARE_BUFFER(msgno), "%u", msg->attr.nwm() ? AA->Msgn.Count() + 1 : AA->Msgn.ToReln(msg->msgno));
 
   char msgs[16];
-  sprintf(msgs, "%u", AA->Msgn.Count() + (msg->attr.nwm() ? 1 : 0));
+  gsprintf(PRINTF_DECLARE_BUFFER(msgs), "%u", AA->Msgn.Count() + (msg->attr.nwm() ? 1 : 0));
 
   if ((mode == MODE_QUOTE) or (mode == MODE_REPLYCOMMENT) or (mode == MODE_REPLY))
   {
@@ -231,7 +231,7 @@ void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int __orig
       if (tokenxchg(input, dst, "@odtime", odtime))
         continue;
 
-      if (tokenxchg(input, dst, "@otzoffset", (oldmsg->tzutc == -32767) ? "" : (sprintf(buf, " %+05d", oldmsg->tzutc), buf)))
+      if (tokenxchg(input, dst, "@otzoffset", (oldmsg->tzutc == -32767) ? "" : (gsprintf(PRINTF_DECLARE_BUFFER(buf), " %+05d", oldmsg->tzutc), buf)))
         continue;
 
       if (tokenxchg(input, dst, "@ofrom", oldmsg->ifrom))
@@ -384,7 +384,7 @@ void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int __orig
       if (tokenxchg(input, dst, "@cdtime", cdtime))
         continue;
 
-      if (tokenxchg(input, dst, "@ctzoffset", AA->Usetzutc() ? (sprintf(buf, " %+05d", tzoffset()), buf) : ""))
+      if (tokenxchg(input, dst, "@ctzoffset", AA->Usetzutc() ? (gsprintf(PRINTF_DECLARE_BUFFER(buf), " %+05d", tzoffset()), buf) : ""))
         continue;
 
       if (tokenxchg(input, dst, "@fname", strbtrim(strtmp(msg->By())), 34))

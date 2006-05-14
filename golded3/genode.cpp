@@ -176,22 +176,22 @@ void NodelistBrowser::AfterCursor() {
 
   ftn_nodelist_entry* entryp = entries + (pos - 1);
 
-  sprintf(line1, " %s%s%s%s%s%s ",
+  gsprintf(PRINTF_DECLARE_BUFFER(line1), " %s%s%s%s%s%s ",
     entryp->name,
     (*entryp->system ? ", " : ""), entryp->system,
     (*entryp->status ? " <" : ""), entryp->status,
     (*entryp->status ? ">" : "")
   );
-  sprintf(buf, "%s %s", LNG->Phone, *entryp->phone ? entryp->phone : "-Unpublished-");
+  gsprintf(PRINTF_DECLARE_BUFFER(buf), "%s %s", LNG->Phone, *entryp->phone ? entryp->phone : "-Unpublished-");
   strrjust(strsetsz(buf, MAXCOL-strlen(line1)-1));
   strcat(line1, buf);
   strcat(line1, " ");
 
-  sprintf(line2, " %s%s%s",
+  gsprintf(PRINTF_DECLARE_BUFFER(line2), " %s%s%s",
     entryp->location,
     (*entryp->location ? ", " : ""), entryp->address
   );
-  sprintf(buf, "%s%s%s%s",
+  gsprintf(PRINTF_DECLARE_BUFFER(buf), "%s%s%s%s",
     entryp->baud,
     (*entryp->baud ? " Bps" : ""),
     ((*entryp->baud and *entryp->flags) ? ", " : ""), entryp->flags
@@ -204,20 +204,21 @@ void NodelistBrowser::AfterCursor() {
 
   Path nlname;
   *nlname = NUL;
-  if(NLP->index_name() and NLP->nodelist_name())
-    sprintf(nlname, " %s / %s ", NLP->index_name(), CleanFilename(NLP->nodelist_name()));
-  else if(NLP->index_name())
-    sprintf(nlname, " %s ", NLP->index_name());
-  if(*nlname)
+  if (NLP->index_name() and NLP->nodelist_name())
+    gsprintf(PRINTF_DECLARE_BUFFER(nlname), " %s / %s ", NLP->index_name(), CleanFilename(NLP->nodelist_name()));
+  else if (NLP->index_name())
+    gsprintf(PRINTF_DECLARE_BUFFER(nlname), " %s ", NLP->index_name());
+  
+  if (*nlname)
     listwin.title(nlname, tattr, TCENTER|TBOTTOM);
 }
 
 
 //  ------------------------------------------------------------------
 
-void NodelistBrowser::InitDisplay() {
-
-  sprintf(titlet, LNG->Lookup, user_maybe);
+void NodelistBrowser::InitDisplay()
+{
+  gsprintf(PRINTF_DECLARE_BUFFER(titlet), LNG->Lookup, user_maybe);
   listwin.title(titlet, tattr, TCENTER);
 
   Center();
@@ -722,7 +723,7 @@ int NodelistBrowser::DoKey(gkey& keycode) {
             else if(user_fuzidx)
               user_maybe[--user_fuzidx] = 0;
             user_maybe[user_fuzidx] = 0;
-            sprintf(titlet, LNG->Lookup, user_maybe);
+            gsprintf(PRINTF_DECLARE_BUFFER(titlet), LNG->Lookup, user_maybe);
             listwin.title(titlet, tattr, TCENTER);
           }
         }

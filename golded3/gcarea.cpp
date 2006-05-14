@@ -174,25 +174,28 @@ void AreaList::AddNewArea(AreaCfg* aa)
     strschg_environ(aa->path);
   }
   #ifndef GMB_NOHUDS
-  else if(streql(aa->basetype, "HUDSON")) {
-    if((aa->board < 1) or (aa->board > 200))  // Ignore areas with invalid numbers
+  else if (streql(aa->basetype, "HUDSON"))
+  {
+    if ((aa->board < 1) or (aa->board > 200))  // Ignore areas with invalid numbers
       return;
-    sprintf(aa->path, "%u", aa->board);
+    gsprintf(PRINTF_DECLARE_BUFFER(aa->path), "%u", aa->board);
   }
   #endif
   #ifndef GMB_NOGOLD
-  else if(streql(aa->basetype, "GOLDBASE")) {
-    if((aa->board < 1) or (aa->board > 500))  // Ignore areas with invalid numbers
+  else if (streql(aa->basetype, "GOLDBASE"))
+  {
+    if ((aa->board < 1) or (aa->board > 500))  // Ignore areas with invalid numbers
       return;
-    sprintf(aa->path, "%u", aa->board);
+    gsprintf(PRINTF_DECLARE_BUFFER(aa->path), "%u", aa->board);
   }
   #endif
   #ifndef GMB_NOEZY
-  else if(streql(aa->basetype, "EZYCOM")) {
+  else if (streql(aa->basetype, "EZYCOM"))
+  {
     // Ignore areas with invalid numbers
-    if((aa->board < 1) or (aa->board > 1536))
+    if ((aa->board < 1) or (aa->board > 1536))
       return;
-    sprintf(aa->path, "%u", aa->board);
+    gsprintf(PRINTF_DECLARE_BUFFER(aa->path), "%u", aa->board);
   }
   #endif
   #ifndef GMB_NOWCAT

@@ -483,7 +483,7 @@ int GMenuEditfile::Run(GMsg* __msg) {
     update_statuslinef(LNG->Quotepct, "ST_QUOTEPCT", __msg->quotepct, __msg->quotepct > 80 ? "!!!" : "");
 
     char _title[80];
-    sprintf(_title, LNG->SaveMsg, __msg->lines);
+    gsprintf(PRINTF_DECLARE_BUFFER(_title), LNG->SaveMsg, __msg->lines);
     AskInit(6, 0, _title, H_SaveMsg);
 
     Begin();
@@ -538,9 +538,11 @@ int GMenuEditfile::Run(GMsg* __msg) {
             GetRandomLine(_buf, sizeof(_buf), _buf+1);
           strcpy(__msg->tagline, _buf);
           Line* _line = __msg->lin;
-          while(_line) {
-            if(_line->type & GLINE_TAGL) {
-              sprintf(_buf, "%c%c%c %s ", AA->Taglinechar(), AA->Taglinechar(), AA->Taglinechar(), __msg->tagline);
+          while (_line)
+          {
+            if (_line->type & GLINE_TAGL)
+            {
+              gsprintf(PRINTF_DECLARE_BUFFER(_buf), "%c%c%c %s ", AA->Taglinechar(), AA->Taglinechar(), AA->Taglinechar(), __msg->tagline);
               strtrim(_buf);
               _line->txt = _buf;
               break;
@@ -560,9 +562,11 @@ int GMenuEditfile::Run(GMsg* __msg) {
             GetRandomLine(_buf, sizeof(_buf), _buf+1);
           MakeOrigin(__msg, _buf);
           Line* _line = __msg->lin;
-          while(_line) {
-            if(_line->type & GLINE_ORIG) {
-              sprintf(_buf, " * Origin: %s ", __msg->origin);
+          while (_line)
+          {
+            if (_line->type & GLINE_ORIG)
+            {
+              gsprintf(PRINTF_DECLARE_BUFFER(_buf), " * Origin: %s ", __msg->origin);
               strtrim(_buf);
               _line->txt = _buf;
               break;
@@ -1230,4 +1234,3 @@ int GMenuSChecker::Run(CSpellChecker &schecker, const char *word)
 
 
 //  ------------------------------------------------------------------
-

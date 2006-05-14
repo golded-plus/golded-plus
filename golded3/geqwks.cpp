@@ -37,7 +37,7 @@ static void ReadGldFile() {
     Path gldfile;
     
     QWK->ResetConfNo();
-    sprintf(gldfile, "%s%s.GLD", CFG->goldpath, QWK->BbsID());
+    gsprintf(PRINTF_DECLARE_BUFFER(gldfile), "%s%s.GLD", CFG->goldpath, QWK->BbsID());
     
     gfile fp(gldfile, "rt");
     if (fp.isopen())
@@ -97,9 +97,10 @@ int ImportQWK() {
       }
       else if(line == 5) {
         char* ptr = strchr(buf, ',');
-        if(ptr) {
+        if (ptr)
+        {
           strxcpy(bbsid, strskip_wht(ptr+1), 9);
-          sprintf(gldfile, "%s%s.GLD", CFG->goldpath, bbsid);
+          gsprintf(PRINTF_DECLARE_BUFFER(gldfile), "%s%s.GLD", CFG->goldpath, bbsid);
           fpb.Fopen(gldfile, "wt");
         }
       }
@@ -243,9 +244,11 @@ int ImportQWK() {
               INam _fromname;
               IAdr _fromaddr;
               ParseInternetAddr(msg->ifrom, _fromname, _fromaddr);
-              if(AA->Internetgate().addr.valid()) {
+              if (AA->Internetgate().addr.valid())
+              {
                 char abuf[40];
-                sprintf(kbuf, "\x1""REPLYTO %s %s\r""\x1""REPLYADDR %s\r",
+                gsprintf(PRINTF_DECLARE_BUFFER(kbuf),
+                  "\x1""REPLYTO %s %s\r""\x1""REPLYADDR %s\r",
                   AA->Internetgate().addr.make_string(abuf),
                   *AA->Internetgate().name ? AA->Internetgate().name : "UUCP",
                   _fromaddr
@@ -337,9 +340,10 @@ int ImportQWK() {
       }
     }
 
-    if(imported and *QWK->ReplyLinker()) {
+    if (imported and *QWK->ReplyLinker())
+    {
       char buf[256];
-      sprintf(buf, LNG->Replylinker, QWK->ReplyLinker());
+      gsprintf(PRINTF_DECLARE_BUFFER(buf), LNG->Replylinker, QWK->ReplyLinker());
       ShellToDos(QWK->ReplyLinker(), buf, LGREY_|_BLACK, YES);
     }
   }
@@ -357,8 +361,8 @@ int ExportQwkMsg(GMsg* msg, gfile& fp, int confno, int& pktmsgno) {
 
   // Prepare for Return Receipt Request
   char msg__re[26];
-  if(QWK->ReceiptAllowed() and msg->attr.rrq())
-    sprintf(msg__re, "RRR%-22.22s", msg->re);
+  if (QWK->ReceiptAllowed() and msg->attr.rrq())
+    gsprintf(PRINTF_DECLARE_BUFFER(msg__re), "RRR%-22.22s", msg->re);
   else
     strxcpy(msg__re, msg->re, 26);
 
@@ -370,13 +374,13 @@ int ExportQwkMsg(GMsg* msg, gfile& fp, int confno, int& pktmsgno) {
   int relen = strlen(msg__re);  relen = MinV(25,relen);
   memset(&hdr, ' ', sizeof(QWKHdr));
   hdr.status = msg->attr.pvt() ? '*' : ' ';
-  sprintf(buf, "%u", confno);
+  gsprintf(PRINTF_DECLARE_BUFFER(buf), "%u", confno);
   memcpy(hdr.msgno, buf, strlen(buf));
   struct tm _tm; ggmtime(&_tm, &msg->written);
   int _year = _tm.tm_year % 100;
-  sprintf(buf, "%02d-%02d-%02d", _tm.tm_mon+1, _tm.tm_mday, _year);
+  gsprintf(PRINTF_DECLARE_BUFFER(buf), "%02d-%02d-%02d", _tm.tm_mon+1, _tm.tm_mday, _year);
   memcpy(hdr.date, buf, 8);
-  sprintf(buf, "%02d:%02d", _tm.tm_hour, _tm.tm_min);
+  gsprintf(PRINTF_DECLARE_BUFFER(buf), "%02d:%02d", _tm.tm_hour, _tm.tm_min);
   memcpy(hdr.time, buf, 5);
   strxcpy(buf, msg->to, tolen+1);
   if(not QWK->MixCaseAllowed())
@@ -460,7 +464,7 @@ int ExportQwkMsg(GMsg* msg, gfile& fp, int confno, int& pktmsgno) {
   // Calculate blocks
   uint endlen = msglen % 128;
   uint blocks = 1+(msglen/128)+(endlen?1:0);
-  sprintf(buf, "%u", blocks);
+  gsprintf(PRINTF_DECLARE_BUFFER(buf), "%u", blocks);
   memcpy(hdr.blocks, buf, strlen(buf));
 
   // Write padding spaces at the end if necessary
@@ -560,7 +564,7 @@ int ExportQWK() {
       int pktmsgno = 0;
       if (QWK->FirstConf())
       {
-        sprintf(replyfile, "%s%s.MSG", QWK->ExportPath(), QWK->BbsID());
+        gsprintf(PRINTF_DECLARE_BUFFER(replyfile), "%s%s.MSG", QWK->ExportPath(), QWK->BbsID());
         fp.Fopen(replyfile, "wb");
         if (fp.isopen())
         {

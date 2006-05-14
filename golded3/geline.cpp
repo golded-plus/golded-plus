@@ -637,12 +637,13 @@ static void KludgeBCC(GMsg* msg, const char* ptr) {
         IAdr buf2;
         mime_header_encode(buf2, _toname, msg);
         char quot[2] = "\"";
-        if((buf2[0] == '\"') or (strpbrk(buf2, " \t") == NULL))
+        if ((buf2[0] == '\"') or (strpbrk(buf2, " \t") == NULL))
           quot[0] = NUL;
-        sprintf(buf, "%s%s%s <%s>", quot, buf2, quot, _toaddr);
+        gsprintf(PRINTF_DECLARE_BUFFER(buf), "%s%s%s <%s>", quot, buf2, quot, _toaddr);
       }
       else
-        sprintf(buf, "%s", _toaddr);
+        gsprintf(PRINTF_DECLARE_BUFFER(buf), "%s", _toaddr);
+
       strxcat(msg->ibcc, buf, sizeof(msg->ibcc));
     }
   }
@@ -668,12 +669,13 @@ static void KludgeCC(GMsg* msg, const char* ptr) {
         IAdr buf2;
         mime_header_encode(buf2, _toname, msg);
         char quot[2] = "\"";
-        if((buf[0] == '\"') or (strpbrk(buf2, " \t") == NULL))
+        if ((buf[0] == '\"') or (strpbrk(buf2, " \t") == NULL))
           quot[0] = NUL;
-        sprintf(buf, "%s%s%s <%s>", quot, buf2, quot, _toaddr);
+        gsprintf(PRINTF_DECLARE_BUFFER(buf), "%s%s%s <%s>", quot, buf2, quot, _toaddr);
       }
       else
-        sprintf(buf, "%s", _toaddr);
+        gsprintf(PRINTF_DECLARE_BUFFER(buf), "%s", _toaddr);
+
       strxcat(msg->icc, buf, sizeof(msg->icc));
     }
   }
@@ -2069,8 +2071,9 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode) {
       uint _size = strlen(msg->txt);
       if(streql(AA->basetype(), "OPUS") or streql(AA->basetype(), "FTS1"))
         idxadjust = 190;
-      for(idx=0; idx < _size; ptr+=16,idx+=16) {
-        sprintf(buf, "%04X   ", idx+idxadjust);
+      for (idx=0; idx < _size; ptr+=16,idx+=16)
+      {
+        gsprintf(PRINTF_DECLARE_BUFFER(buf), "%04X   ", idx+idxadjust);
         HexDump16(buf+7, ptr, MinV((int)(_size-idx), 16), HEX_DUMP2);
         line = AddLine(line, buf);
       }
@@ -3203,10 +3206,10 @@ Line* AddHexdump(Line*& line, void* data, size_t datalen) {
   uint pos = 0;
   char* ptr = (char*)data;
 
-  while(pos < datalen) {
-
+  while (pos < datalen)
+  {
     uint dataleft = datalen - pos;
-    sprintf(buf, "%04X   ", pos);
+    gsprintf(PRINTF_DECLARE_BUFFER(buf), "%04X   ", pos);
     HexDump16(buf+7, ptr, (dataleft < 16) ? dataleft : 16, HEX_DUMP2);
     line = AddLine(line, buf);
     ptr += 16;

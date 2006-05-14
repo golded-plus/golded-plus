@@ -772,9 +772,10 @@ int ChangeUsername() {
   if(not CFG->username.empty()) {
     Listi = (char**)throw_calloc(CFG->username.size()+1, sizeof(char*));
     std::vector<Node>::iterator i;
-    for(n = 0, i = CFG->username.begin(); i != CFG->username.end(); n++, i++) {
+    for (n = 0, i = CFG->username.begin(); i != CFG->username.end(); n++, i++)
+    {
       i->addr.make_string(adrs);
-      sprintf(buf, " %-35s %s ", i->name, adrs);
+      gsprintf(PRINTF_DECLARE_BUFFER(buf), " %-35s %s ", i->name, adrs);
       Listi[n] = throw_strdup(buf);
     }
     n = MinV(n, (MAXROW-10));
@@ -818,9 +819,10 @@ int ChangeTemplate() {
   if(not CFG->tpl.empty()) {
     Listi = (char**)throw_calloc(CFG->tpl.size()+1, sizeof(char*));
     std::vector<Tpl>::iterator t;
-    for(n = 0, t = CFG->tpl.begin(); t != CFG->tpl.end(); n++, t++) {
+    for (n = 0, t = CFG->tpl.begin(); t != CFG->tpl.end(); n++, t++)
+    {
       t->match.make_string(adrs);
-      sprintf(buf, " %-45s %s ", t->name, adrs);
+      gsprintf(PRINTF_DECLARE_BUFFER(buf), " %-45s %s ", t->name, adrs);
       Listi[n] = throw_strdup(buf);
     }
     n = MinV(n, (MAXROW-10));
@@ -858,9 +860,10 @@ int ChangeAka() {
 
   if(CFG->aka.size() > 1) {
     Listi = (char**)throw_calloc(CFG->aka.size()+1, sizeof(char*));
-    for(i = CFG->aka.begin(), n=0; i != CFG->aka.end(); n++, i++) {
+    for (i = CFG->aka.begin(), n=0; i != CFG->aka.end(); n++, i++)
+    {
       i->addr.make_string(addr, i->domain);
-      sprintf(buf, " %s ", addr);
+      gsprintf(PRINTF_DECLARE_BUFFER(buf), " %s ", addr);
       Listi[n] = throw_strdup(buf);
       if(AA->Aka().addr.equals(i->addr))
         startat = n;
@@ -911,12 +914,12 @@ int ChangeXlatImport() {
     }
     Listi[0] = throw_strdup(LNG->CharsetAuto);
     xlatimports = 1;
-    for(xlt = CFG->xlatcharset.begin(); xlt != CFG->xlatcharset.end(); xlt++) {
-      if(strieql(xlt->exp, CFG->xlatlocalset)) {
-        sprintf(buf, " %*.*s -> %-*.*s ",
-          maximport, maximport, xlt->imp,
-          maxexport, maxexport, xlt->exp
-        );
+    for (xlt = CFG->xlatcharset.begin(); xlt != CFG->xlatcharset.end(); xlt++)
+    {
+      if (strieql(xlt->exp, CFG->xlatlocalset))
+      {
+        gsprintf(PRINTF_DECLARE_BUFFER(buf), " %*.*s -> %-*.*s ",
+          maximport, maximport, xlt->imp, maxexport, maxexport, xlt->exp);
         Listi[xlatimports++] = throw_strdup(buf);
       }
     }
@@ -948,4 +951,3 @@ int ChangeXlatImport() {
 
 
 //  ------------------------------------------------------------------
-

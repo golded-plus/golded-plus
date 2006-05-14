@@ -672,8 +672,11 @@ void ReadXlatTables()
                     strcpy(ChsTable.imp, strbtrim(ptr));
                     break;
                   case 5:
-                    if(ChsTable.level)
-                      sprintf(ChsTable.exp, "%s %d", strbtrim(ptr), ChsTable.level);
+                    if (ChsTable.level)
+                    {
+                      gsprintf(PRINTF_DECLARE_BUFFER(ChsTable.exp), "%s %d",
+                               strbtrim(ptr), ChsTable.level);
+                    }
                     else
                       strcpy(ChsTable.exp, strbtrim(ptr));
                     break;
@@ -848,4 +851,3 @@ void CookieIndex(char* textfile, char* indexfile)
 
 
 //  ------------------------------------------------------------------
-

@@ -476,19 +476,21 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view, bool doedithdr) {
         strcpy(msg->to, "UUCP");
       else
         strcpy(msg->to, msg->idest);
-      if(*msg->realby and *msg->iorig) {
+      if (*msg->realby and *msg->iorig)
+      {
         char quot[2] = "\"";
-        if((msg->realby[0] == '\"') or (strpbrk(msg->realby, " \t") == NULL))
+        if ((msg->realby[0] == '\"') or (strpbrk(msg->realby, " \t") == NULL))
           quot[0] = NUL;
-        sprintf(msg->ifrom, "%s%s%s <%s>", quot, msg->realby, quot, msg->iorig);
+        gsprintf(PRINTF_DECLARE_BUFFER(msg->ifrom), "%s%s%s <%s>", quot, msg->realby, quot, msg->iorig);
       }
       else
         strcpy(msg->ifrom, msg->iorig);
-      if(*msg->realto) {
+      if (*msg->realto)
+      {
         char quot[2] = "\"";
-        if((msg->realto[0] == '\"') or (strpbrk(msg->realto, " \t") == NULL))
+        if ((msg->realto[0] == '\"') or (strpbrk(msg->realto, " \t") == NULL))
           quot[0] = NUL;
-        sprintf(msg->ito, "%s%s%s <%s>", quot, msg->realto, quot, msg->idest);
+        gsprintf(PRINTF_DECLARE_BUFFER(msg->ito), "%s%s%s <%s>", quot, msg->realto, quot, msg->idest);
       }
       else
         strcpy(msg->ito, msg->idest);
@@ -531,14 +533,15 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view, bool doedithdr) {
           Name name;
           strcpy(name, msg->To());
           StripQuotes(name);
-          if(CFG->internetgateexp == ((RFCName << 2) | RFCAddress)) {
+          if (CFG->internetgateexp == ((RFCName << 2) | RFCAddress))
+          {
             char quot[2] = "\"";
-            if((name[0] == '\"') or (strpbrk(name, " \t") == NULL))
+            if ((name[0] == '\"') or (strpbrk(name, " \t") == NULL))
               quot[0] = NUL;
-            sprintf(msg->ito, "%s%s%s <%s>", quot, name, quot, msg->iaddr);
+            gsprintf(PRINTF_DECLARE_BUFFER(msg->ito), "%s%s%s <%s>", quot, name, quot, msg->iaddr);
           }
           else
-            sprintf(msg->ito, "%s (%s)", msg->iaddr, name);
+            gsprintf(PRINTF_DECLARE_BUFFER(msg->ito), "%s (%s)", msg->iaddr, name);
         }
         else
           strcpy(msg->ito, msg->iaddr);

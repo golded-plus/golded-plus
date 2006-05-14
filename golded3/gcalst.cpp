@@ -272,9 +272,9 @@ void AreaList::WriteAreaDef(const char* file)
       if(strchr((*aa)->path(), ' '))
         tmp += 2;
       maxpath = MaxV(maxpath, tmp);
-      if((*aa)->groupid() & 0x8000u)
-        sprintf(groupid, "#%u", (*aa)->groupid()&0x7FFF);
-      else if(g_isupper((*aa)->groupid()))
+      if ((*aa)->groupid() & 0x8000u)
+        gsprintf(PRINTF_DECLARE_BUFFER(groupid), "#%u", (*aa)->groupid()&0x7FFF);
+      else if (g_isupper((*aa)->groupid()))
         *groupid = (char)(*aa)->groupid(), groupid[1] = NUL;
       else
         *groupid = '0', groupid[1] = NUL;
@@ -290,11 +290,12 @@ void AreaList::WriteAreaDef(const char* file)
       maxattr = MaxV(maxattr, tmp+2);
     }
 
-    for(aa = idx.begin(); aa != idx.end(); aa++) {
-      sprintf(desc, "\"%s\"", (*aa)->desc());
-      if((*aa)->groupid() & 0x8000u)
-        sprintf(groupid, "#%u", (*aa)->groupid()&0x7FFF);
-      else if(g_isupper((*aa)->groupid()))
+    for (aa = idx.begin(); aa != idx.end(); aa++)
+    {
+      gsprintf(PRINTF_DECLARE_BUFFER(desc), "\"%s\"", (*aa)->desc());
+      if ((*aa)->groupid() & 0x8000u)
+        gsprintf(PRINTF_DECLARE_BUFFER(groupid), "#%u", (*aa)->groupid()&0x7FFF);
+      else if (g_isupper((*aa)->groupid()))
         *groupid = (char)(*aa)->groupid(), groupid[1] = NUL;
       else
         *groupid = '0', groupid[1] = NUL;
@@ -314,8 +315,8 @@ void AreaList::WriteAreaDef(const char* file)
       else
       #endif
         strxcpy(msgbase, (*aa)->basetype(), sizeof(msgbase));
-      if(strchr((*aa)->echoid(), ' '))
-        sprintf(echoid, "\"%s\"", (*aa)->echoid());
+      if (strchr((*aa)->echoid(), ' '))
+        gsprintf(PRINTF_DECLARE_BUFFER(echoid), "\"%s\"", (*aa)->echoid());
       else
         strcpy(echoid, (*aa)->echoid());
       if ((*aa)->isseparator())
@@ -327,9 +328,10 @@ void AreaList::WriteAreaDef(const char* file)
           strtrim(type)
         );
       }
-      else {
-        if(strchr((*aa)->path(), ' '))
-          sprintf(path, "\"%s\"", (*aa)->path());
+      else
+      {
+        if (strchr((*aa)->path(), ' '))
+          gsprintf(PRINTF_DECLARE_BUFFER(path), "\"%s\"", (*aa)->path());
         else
           strcpy(path, (*aa)->path());
         if(memcmp(&(*aa)->aka(), &CFG->aka[0], sizeof(Addr)))
@@ -339,8 +341,8 @@ void AreaList::WriteAreaDef(const char* file)
         *attr = '(';  /*)*/
         MakeAttrStr(attr+1, sizeof(attr)-2, &(*aa)->attr());
         strcat(attr, /*(*/ ")");
-        if((*aa)->originno())
-          sprintf(origin, " \"%.*s\"", (int)sizeof(origin)-4, CFG->origin[(*aa)->originno()].c_str());
+        if ((*aa)->originno())
+          gsprintf(PRINTF_DECLARE_BUFFER(origin), " \"%.*s\"", (int)sizeof(origin)-4, CFG->origin[(*aa)->originno()].c_str());
         else
           *origin = NUL;
         fp.Printf("AREADEF %-*s %-*s %*s %s %s %-*s %-*s %-*s%s\n",
@@ -404,4 +406,3 @@ void PcbAdjustArea(uint rec, const char* msgfile) {
 
 
 //  ------------------------------------------------------------------
-

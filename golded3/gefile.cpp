@@ -125,14 +125,14 @@ void gfileselect::do_delayed() {
   char buf[200];
   char tmp[80];
 
-  sprintf(buf, "%s %10s", LNG->SelectedFiles, longdotstr(tmp, selfiles));
+  gsprintf(PRINTF_DECLARE_BUFFER(buf), "%s %10s", LNG->SelectedFiles, longdotstr(tmp, selfiles));
   wprints(ylen-4, MAXCOL-34, wattr, buf);
-  sprintf(buf, "%s %10s", LNG->SelectedBytes, longdotstr(tmp, selbytes));
+  gsprintf(PRINTF_DECLARE_BUFFER(buf), "%s %10s", LNG->SelectedBytes, longdotstr(tmp, selbytes));
   wprints(ylen-3, MAXCOL-34, wattr, buf);
 
-  sprintf(buf, "%s %10s", LNG->TotalFiles, longdotstr(tmp, totfiles));
+  gsprintf(PRINTF_DECLARE_BUFFER(buf), "%s %10s", LNG->TotalFiles, longdotstr(tmp, totfiles));
   wprints(ylen-2, MAXCOL-34, wattr, buf);
-  sprintf(buf, "%s %10s", LNG->TotalBytes, longdotstr(tmp, totbytes));
+  gsprintf(PRINTF_DECLARE_BUFFER(buf), "%s %10s", LNG->TotalBytes, longdotstr(tmp, totbytes));
   wprints(ylen-1, MAXCOL-34, wattr, buf);
 
   if(CFG->switches.get(filelistpagebar))
@@ -149,20 +149,24 @@ const char *gfileselect::gensize(uint32_t size) {
 
   static char ret[16];
 
-  if(size >= 1048576000) {
+  if (size >= 1048576000)
+  {
     size += 5242880;
-    sprintf(ret, "%3d.%02dG", (int) size/1073741824, KFIX((size%1073741824)/1024));
+    gsprintf(PRINTF_DECLARE_BUFFER(ret), "%3d.%02dG", (int) size/1073741824, KFIX((size%1073741824)/1024));
   }
-  else if(size >= 1024000) {
+  else if (size >= 1024000)
+  {
     size += 5120;
-    sprintf(ret, "%3d.%02dM", (int) size/1048576, KFIX((size%1048576)/1024));
+    gsprintf(PRINTF_DECLARE_BUFFER(ret), "%3d.%02dM", (int) size/1048576, KFIX((size%1048576)/1024));
   }
-  else if(size >= 1000) {
+  else if (size >= 1000)
+  {
     size += 5;
-    sprintf(ret, "%3d.%02dk", (int) size/1024, KFIX(size%1024));
+    gsprintf(PRINTF_DECLARE_BUFFER(ret), "%3d.%02dk", (int) size/1024, KFIX(size%1024));
   }
   else
-    sprintf(ret, "%d", (int) size);
+    gsprintf(PRINTF_DECLARE_BUFFER(ret), "%d", (int) size);
+
   return ret;
 }
 
@@ -175,7 +179,7 @@ void gfileselect::print_line(uint idx, uint pos, bool isbar) {
 
   FFblk& fb = fblk[idx];
 
-  sprintf(buf, "%c%-*.*s %8s %2d-%02d-%02d %2d:%02d ",
+  gsprintf(PRINTF_DECLARE_BUFFER(buf), "%c%-*.*s %8s %2d-%02d-%02d %2d:%02d ",
       fb.selected ? MMRK_MARK : ' ',
       MAXCOL-62, (int)MAXCOL-62,
       fb.name,
@@ -402,7 +406,7 @@ void FileSelect(GMsg* msg, char* title, FileSpec* fspec) {
     wvline(0, MAXCOL-36, MAX_POS+1, W_BMENU, C_MENUB);
     whline(MAX_POS-4, MAXCOL-36, 36, W_BMENU, C_MENUB);
 
-    sprintf(buf, " %s ", strtrim(fbuf));
+    gsprintf(PRINTF_DECLARE_BUFFER(buf), " %s ", strtrim(fbuf));
     wmessage(buf, TP_BORD, 1, C_MENUT);
     wmessage(title, TP_BORD, MAXCOL-34, C_MENUT);
 
@@ -585,7 +589,8 @@ void CreateFileMsgs(int mode, GMsg* msg) {
             msg->dest.zone, msg->dest.net, msg->dest.node, msg->dest.point
         );
       }
-      sprintf(subj, "%s%s%s%s%s ", fspec[x].delsent ? "^" : "", fspec[x].path, fspec[x].fblk ? (fspec[x].fblk[m].name ? fspec[x].fblk[m].name : "") : "", *fspec[x].password ? " " : "", fspec[x].password);
+
+      gsprintf(PRINTF_DECLARE_BUFFER(subj), "%s%s%s%s%s ", fspec[x].delsent ? "^" : "", fspec[x].path, fspec[x].fblk ? (fspec[x].fblk[m].name ? fspec[x].fblk[m].name : "") : "", *fspec[x].password ? " " : "", fspec[x].password);
 #if !defined(__UNIX__) && !defined(__WIN32__)
       strupr(subj);
 #endif
@@ -887,11 +892,11 @@ void FileRequest(GMsg* msg) {
       }
 
       // Do we have a complete announcement?
-      if(*file and *desc) {
-
+      if (*file and *desc)
+      {
         // Yes, so add it to the list
         freqfile = (char**)throw_realloc(freqfile, (freqfiles+3)*sizeof(char*));
-        sprintf(buf, " %-12s %8s %s", file, filesize, desc);
+        gsprintf(PRINTF_DECLARE_BUFFER(buf), " %-12s %8s %s", file, filesize, desc);
         strsetsz(buf, 76);
         freqfile[freqfiles] = throw_strdup(buf);
         *desc = *file = *filesize = NUL;
@@ -910,11 +915,12 @@ void FileRequest(GMsg* msg) {
     }
 
     // Add the filelist
-    if(not (CFG->frqoptions & FREQ_NOFILES)) {
+    if (not (CFG->frqoptions & FREQ_NOFILES))
+    {
       strcpy(file, "FILES");
-      sprintf(desc, LNG->FilelistFrom, msg->By());
+      gsprintf(PRINTF_DECLARE_BUFFER(desc), LNG->FilelistFrom, msg->By());
       freqfile = (char**)throw_realloc(freqfile, (freqfiles+3)*sizeof(char*));
-      sprintf(buf, " %-12.12s          %-52.52s ", file, desc);
+      gsprintf(PRINTF_DECLARE_BUFFER(buf), " %-12.12s          %-52.52s ", file, desc);
       freqfile[freqfiles] = throw_strdup(buf);
       *desc = *file = NUL;
       freqfiles++;
@@ -972,8 +978,9 @@ void FileRequest(GMsg* msg) {
             if((strlen(msg->re) + strlen(tmpbuf)) < sizeof(ISub)) {  // We can only fill one subject line in this version...
               strcat(msg->re, tmpbuf);
               strcat(msg->re, " ");
-              if(fh != -1) {
-                sprintf(buf, "%-12s %s\n", tmpbuf, ptr2);
+              if (fh != -1)
+              {
+                gsprintf(PRINTF_DECLARE_BUFFER(buf), "%-12s %s\n", tmpbuf, ptr2);
                 write(fh, buf, strlen(buf));
               }
               freqs++;
@@ -995,8 +1002,9 @@ void FileRequest(GMsg* msg) {
           if((strlen(msg->re) + strlen(tmpbuf)) < sizeof(ISub)) {  // We can only fill one subject line in this version...
             strcat(msg->re, tmpbuf);
             strcat(msg->re, " ");
-            if(fh != -1) {
-              sprintf(buf, "%-12s %s\n", tmpbuf, ptr2);
+            if (fh != -1)
+            {
+              gsprintf(PRINTF_DECLARE_BUFFER(buf), "%-12s %s\n", tmpbuf, ptr2);
               write(fh, buf, strlen(buf));
             }
             freqs++;

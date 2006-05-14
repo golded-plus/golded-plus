@@ -686,8 +686,8 @@ CfgGed::CfgGed() {
   *searchfor = 0;
   strcpy(stylecodepunct, " !?\"$%&()+,.:;<=>@[\\]^`{|}~\n\r\t");
   *stylecodestops = 0;
-  sprintf(tasktitle, "%s%s%s%s", __gver_prename__, __gver_name__,
-    __gver_postname__, __gver_platform__);
+  gsprintf(PRINTF_DECLARE_BUFFER(tasktitle), "%s%s%s%s", __gver_prename__,
+    __gver_name__, __gver_postname__, __gver_platform__);
   strcpy(tearline, "@longpid @version");
   strcpy(whoto, "All");
   strcpy(xlatlocalset, get_charset());

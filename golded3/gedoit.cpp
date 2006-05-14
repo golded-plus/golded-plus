@@ -140,9 +140,10 @@ void SaveLines(int mode, const char* savefile, GMsg* msg, int margin, bool clip)
     throw_release(msg->txt);
     msg->txt = old_msg_txt;
   }
-  else {
+  else
+  {
     char buf[256];
-    sprintf(buf, LNG->CouldNotOpen, fnam);
+    gsprintf(PRINTF_DECLARE_BUFFER(buf), LNG->CouldNotOpen, fnam);
     w_info(buf);
     waitkeyt(10000);
     w_info(NULL);
@@ -288,7 +289,7 @@ static void WriteMsgs(GMsg* msg) {
                     continue;
                 }
               }
-              sprintf(buf, LNG->WritingFile, AA->Outputfile());
+              gsprintf(PRINTF_DECLARE_BUFFER(buf), LNG->WritingFile, AA->Outputfile());
               w_info(buf);
               AA->LoadMsg(msg, msg->msgno, prnmargin);
               SaveLines(overwrite ? MODE_WRITE : MODE_APPEND, AA->Outputfile(), msg, prnmargin);

@@ -188,22 +188,27 @@ void CheckSubject(GMsg* msg, char* subj) {
     }
 
     // Generate the (first) processed subject line
-    if(specfiles) {
+    if (specfiles)
+    {
       ISub buf;
       *buf = NUL;
-      for(int x=0,n=0; x<fspecs; x++) {
-        for(int m=0; m<fspec[x].files; m++) {
+      for (int x = 0,n = 0; x < fspecs; x++)
+      {
+        for (int m = 0; m<fspec[x].files; m++)
+        {
           ISub subject;
-          sprintf(subject, "%s%s%s%s%s ", fspec[x].delsent ? "^" : "", ReMapPath(fspec[x].path), fspec[x].fblk ? (fspec[x].fblk[m].name ? fspec[x].fblk[m].name : "") : "", *fspec[x].password ? " " : "", fspec[x].password);
-          if((strlen(buf) + strlen(subject)) > 71) {
+          gsprintf(PRINTF_DECLARE_BUFFER(subject), "%s%s%s%s%s ", fspec[x].delsent ? "^" : "", ReMapPath(fspec[x].path), fspec[x].fblk ? (fspec[x].fblk[m].name ? fspec[x].fblk[m].name : "") : "", *fspec[x].password ? " " : "", fspec[x].password);
+          
+          if ((strlen(buf) + strlen(subject)) > 71)
+          {
             n++;
             break;
           }
           else
             strcat(buf, subject);
         }
-        if(n)
-          break;
+
+        if (n) break;
       }
       strtrim(strcpy(subj, buf));
     }
@@ -233,12 +238,13 @@ static void MakeMsg3(int& mode, GMsg* msg) {
   std::vector<gaka>::iterator u;
 
   msg->charsetlevel = 0;
-  if(*AA->Xlatexport()) {
+  if (*AA->Xlatexport())
+  {
     msg->charsetlevel = LoadCharset(CFG->xlatlocalset, AA->Xlatexport());
-    if(msg->charsetlevel)
-      sprintf(msg->charset, "%s %d", AA->Xlatexport(), msg->charsetlevel);
+    if (msg->charsetlevel)
+      gsprintf(PRINTF_DECLARE_BUFFER(msg->charset), "%s %d", AA->Xlatexport(), msg->charsetlevel);
     else
-      sprintf(msg->charset, "%s 2", CFG->xlatlocalset);
+      gsprintf(PRINTF_DECLARE_BUFFER(msg->charset), "%s 2", CFG->xlatlocalset);
   }
 
   // Do Timefields
@@ -531,15 +537,16 @@ static void MakeMsg2(int& mode, int& status, int& forwstat, int& topline, GMsg* 
       }
       if(mode == MODE_FORWARD)
         status = MODE_SAVE;
-      if(*EDIT->External() and forwstat == NO and not EDIT->Internal()) {
+      if (*EDIT->External() and forwstat == NO and not EDIT->Internal())
+      {
         strcpy(buf, EDIT->External());
-        sprintf(buf2, "%u", position);
+        gsprintf(PRINTF_DECLARE_BUFFER(buf2), "%u", position);
         strischg(buf, "@line", buf2);
         strcpy(buf2, AddPath(CFG->goldpath, EDIT->File()));
         strchg(buf2, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
         strischg(buf, "@file", buf2);
         long ftbefore = GetFiletime(AddPath(CFG->goldpath, EDIT->File()));
-        sprintf(buf2, LNG->EditCmd, buf);
+        gsprintf(PRINTF_DECLARE_BUFFER(buf2), LNG->EditCmd, buf);
         ShellToDos(buf, buf2, LGREY_|_BLACK, YES);
         long ftafter = GetFiletime(AddPath(CFG->goldpath, EDIT->File()));
         if(status != MODE_SAVE) {
@@ -740,10 +747,10 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
       msg->TextToLines(CFG->dispmargin-1);
       msg->orig = AA->Aka().addr;
       msg->charsetlevel = LoadCharset(CFG->xlatlocalset, AA->Xlatexport());
-      if(msg->charsetlevel)
-        sprintf(msg->charset, "%s %d", AA->Xlatexport(), msg->charsetlevel);
+      if (msg->charsetlevel)
+        gsprintf(PRINTF_DECLARE_BUFFER(msg->charset), "%s %d", AA->Xlatexport(), msg->charsetlevel);
       else
-        sprintf(msg->charset, "%s 2", CFG->xlatlocalset);
+        gsprintf(PRINTF_DECLARE_BUFFER(msg->charset), "%s 2", CFG->xlatlocalset);
       strcpy(msg->odom, CFG->aka[AkaMatch(&msg->orig, &AA->Aka().addr)].domain);
       if(AA->isecho() or have_origin(msg))
         DoTearorig(mode, msg);
@@ -929,10 +936,12 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
 
             uint32_t number;
             const char* r = get_subject_re_info(msg->re, number);
-            if(r) {
-              if(AA->Replyre() == REPLYRE_NUMERIC and not AA->isinternet()) {
+            if (r)
+            {
+              if (AA->Replyre() == REPLYRE_NUMERIC and not AA->isinternet())
+              {
                 ISub subj;
-                sprintf(subj, "Re^%u:%s", (((number+1) > number) ? (number+1) : number), r);
+                gsprintf(PRINTF_DECLARE_BUFFER(subj), "Re^%u:%s", (((number+1) > number) ? (number+1) : number), r);
                 strcpy(msg->re, subj);
               }
             }

@@ -824,7 +824,7 @@ int ReadCfg(const char* cfgfile, int ignoreunknown)
         if (veryverbose)
         {
            char buff[256];
-           sprintf(buff, " %c %04d: %s %s\n", cfgignore ? '-' : '+', line, key, val);
+           gsprintf(PRINTF_DECLARE_BUFFER(buff), " %c %04d: %s %s\n", cfgignore ? '-' : '+', line, key, val);
            STD_PRINT(buff);
         }
 

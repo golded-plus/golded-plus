@@ -267,10 +267,12 @@ int ShellToDos(const char* command, char* message, vattr cls, int cursor, int pa
     }
     #else
     int envn = 0;
-    while(environ[envn] and *environ[envn]) {
-      if(strnieql(environ[envn], "PROMPT=", 7)) {
+    while (environ[envn] and *environ[envn])
+    {
+      if (strnieql(environ[envn], "PROMPT=", 7))
+      {
         strcpy(oldprompt, environ[envn]);
-        sprintf(prompt, "PROMPT=%s%s", LNG->Prompt, *oldprompt ? oldprompt+7 : "");
+        gsprintf(PRINTF_DECLARE_BUFFER(prompt), "PROMPT=%s%s", LNG->Prompt, *oldprompt ? oldprompt+7 : "");
         environ[envn] = prompt;
         break;
       }

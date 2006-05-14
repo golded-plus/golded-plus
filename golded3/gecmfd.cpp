@@ -581,10 +581,11 @@ void CmfMsgs(GMsg* msg, bool torecycle)
       if(need_netmail_kludges) {
         char buf[256] = "";
 
-        if(not strstr(msg->txt, "\001INTL"))
+        if (not strstr(msg->txt, "\001INTL"))
           // The INTL kludge for zone crossing
-          if(CFG->useintl and (CFG->useintl == YES or (msg->dest.zone != msg->orig.zone))) {
-            sprintf(buf, "\001INTL %u:%u/%u %u:%u/%u%c",
+          if (CFG->useintl and (CFG->useintl == YES or (msg->dest.zone != msg->orig.zone)))
+          {
+            gsprintf(PRINTF_DECLARE_BUFFER(buf), "\001INTL %u:%u/%u %u:%u/%u%c",
               msg->dest.zone ? msg->dest.zone : AA->Aka().addr.zone,
               msg->dest.net, msg->dest.node,
               msg->orig.zone ? msg->orig.zone : AA->Aka().addr.zone,

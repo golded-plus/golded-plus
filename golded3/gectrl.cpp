@@ -73,7 +73,7 @@ char* MakeOrigin(GMsg* msg, const char* orig) {
   if(*origin == '@')
     GetRandomLine(origin, sizeof(origin), origin+1);
 
-  sprintf(msg->origin, "%.*s (%s)", (int)(79 - 11 - 2 - strlen(buf) - 1), origin, buf);
+  gsprintf(PRINTF_DECLARE_BUFFER(msg->origin), "%.*s (%s)", (int)(79 - 11 - 2 - strlen(buf) - 1), origin, buf);
   return msg->origin;
 }
 
@@ -231,12 +231,16 @@ const char* get_informative_string(void) {
 
   static char informative_string[356] = "";
 
-  if(informative_string[0] == NUL)
-    sprintf(informative_string, "%s%s%s%s %s%i.%i.%i%s (%s)",
+  if (informative_string[0] == NUL)
+  {
+    gsprintf(PRINTF_DECLARE_BUFFER(informative_string),
+            "%s%s%s%s %s%i.%i.%i%s (%s)",
             __gver_prename__, __gver_name__, __gver_postname__,
             __gver_platform__, __gver_preversion__, __gver_major__,
             __gver_minor__, __gver_release__, __gver_postversion__,
             ggetosstring());
+  }
+
   return informative_string;
 }
 
@@ -351,9 +355,10 @@ void DoKludges(int mode, GMsg* msg, int kludges) {
       CvtMessageIDtoMSGID(buf2, buf, AA->echoid(), "MSGID");
       strcpy(msg->msgids, buf+8);
     }
-    else {
+    else
+    {
       msg->orig.make_string(buf2, msg->odom);
-      sprintf(msg->msgids, "%s %08x", buf2, getMsgId());
+      gsprintf(PRINTF_DECLARE_BUFFER(msg->msgids), "%s %08x", buf2, getMsgId());
     }
     if(CFG->switches.get(usemsgid) and strcmp(AA->basetype(), "PCBOARD")) {
       sprintf(buf, "\001MSGID: %s", msg->msgids);
@@ -796,8 +801,9 @@ void DoTearorig(int mode, GMsg* msg) {
   TokenXlat(mode, msg->origin, sizeof(msg->origin), msg, msg, CurrArea);
 
   // Add the tagline, tearline and origin as defined
-  if(AA->Taglinesupport() and *msg->tagline) {
-    sprintf(buf, "%c%c%c %s", AA->Taglinechar(), AA->Taglinechar(), AA->Taglinechar(), msg->tagline);
+  if (AA->Taglinesupport() and *msg->tagline)
+  {
+    gsprintf(PRINTF_DECLARE_BUFFER(buf), "%c%c%c %s", AA->Taglinechar(), AA->Taglinechar(), AA->Taglinechar(), msg->tagline);
     strtrim(buf);
     line = AddLine(line, buf);
     line->type |= GLINE_TAGL;
@@ -806,8 +812,9 @@ void DoTearorig(int mode, GMsg* msg) {
     line = AddLine(line, MakeTearline(msg, buf));
     line->type |= GLINE_TEAR;
   }
-  if(ctrlinfo & CI_ORIG) {
-    sprintf(buf, " * Origin: %s", msg->origin);
+  if (ctrlinfo & CI_ORIG)
+  {
+    gsprintf(PRINTF_DECLARE_BUFFER(buf), " * Origin: %s", msg->origin);
     line = AddLine(line, buf);
     line->type |= GLINE_ORIG;
   }

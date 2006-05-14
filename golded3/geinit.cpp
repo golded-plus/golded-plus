@@ -405,7 +405,7 @@ static void w_brag() {
   whline(6, 0, MAXCOL-5, W_BBRAG, C_BRAGB);
   wvline(0, 47, 7, W_BBRAG, C_BRAGB);
 
-  sprintf(buf, "---*-*-*** %s ***-*-*---", __gver_releasename__);
+  gsprintf(PRINTF_DECLARE_BUFFER(buf), "---*-*-*** %s ***-*-*---", __gver_releasename__);
   wcenters(8, C_BRAGW, buf);
 
   wcenters(10, C_BRAGW, "This program is free software; it is licensed under the");
@@ -415,14 +415,18 @@ static void w_brag() {
 
   wcenters(MAXROW-10, C_BRAGW, "This executable is distributed by");
   if (*__gver_vendor_fido__)
-    sprintf(buf, "%s (Fido: %s) - <%s>", __gver_vendor_name__,
-                                         __gver_vendor_fido__,
-                                         __gver_vendor_email__);
+  {
+    gsprintf(PRINTF_DECLARE_BUFFER(buf), "%s (Fido: %s) - <%s>",
+      __gver_vendor_name__, __gver_vendor_fido__, __gver_vendor_email__);
+  }
   else
-    sprintf(buf, "%s <%s>", __gver_vendor_name__,
-                            __gver_vendor_email__);
+  {
+    gsprintf(PRINTF_DECLARE_BUFFER(buf), "%s <%s>",
+      __gver_vendor_name__, __gver_vendor_email__);
+  }
+
   wcenters(MAXROW-9, C_BRAGW, buf);
-  sprintf(buf, "Compiled on %s %s", __gver_date__, __gver_time__);
+  gsprintf(PRINTF_DECLARE_BUFFER(buf), "Compiled on %s %s", __gver_date__, __gver_time__);
   wcenters(MAXROW-8, C_BRAGW, buf);
 }
 
@@ -729,7 +733,7 @@ void Initialize(int argc, char* argv[]) {
 
   // Start the log
   static char buf[200];
-  sprintf(buf, "%s %s (%s %s)", __gver_longpid__, __gver_ver__, __gver_date__, __gver_time__);
+  gsprintf(PRINTF_DECLARE_BUFFER(buf), "%s %s (%s %s)", __gver_longpid__, __gver_ver__, __gver_date__, __gver_time__);
   LOG.open(CFG->logfile, buf, __gver_shortlogname__, CFG->logformat);
 
   // Read/compile various configs

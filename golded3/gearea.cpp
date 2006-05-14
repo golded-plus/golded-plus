@@ -152,7 +152,7 @@ void GPickArealist::dispbuf(char* buf, int areano) {
   buf[MAXCOL-2] = NUL;
 
   char areabuf[33];
-  sprintf(areabuf, "%u", CFG->switches.get(arealistnos) ? area->board() : areanumbers[areano]);
+  gsprintf(PRINTF_DECLARE_BUFFER(areabuf), "%u", CFG->switches.get(arealistnos) ? area->board() : areanumbers[areano]);
   int areawidth = strlen(areabuf);
 
   char markedbuf[2] = { " " };
@@ -163,8 +163,8 @@ void GPickArealist::dispbuf(char* buf, int areano) {
   int descwidth = strlen(strcpy(descbuf, area->desc()));
 
   char countbuf[33];
-  if(area->isscanned)
-    sprintf(countbuf, "%u", (uint)area->Msgn.Count());
+  if (area->isscanned)
+    gsprintf(PRINTF_DECLARE_BUFFER(countbuf), "%u", (uint)area->Msgn.Count());
   else
     strcpy(countbuf,  "-");
   int countwidth = strlen(countbuf);
@@ -174,8 +174,8 @@ void GPickArealist::dispbuf(char* buf, int areano) {
   int pmarkwidth = 1;
 
   char unreadbuf[33];
-  if(area->isscanned)
-    sprintf(unreadbuf, "%u", (uint)((CFG->arealisttype == AL_TOTNEW) ? area->unread : area->lastread()));
+  if (area->isscanned)
+    gsprintf(PRINTF_DECLARE_BUFFER(unreadbuf), "%u", (uint)((CFG->arealisttype == AL_TOTNEW) ? area->unread : area->lastread()));
   else
     strcpy(unreadbuf, "-");
   int unreadwidth = strlen(unreadbuf);
@@ -188,13 +188,15 @@ void GPickArealist::dispbuf(char* buf, int areano) {
   int echoidwidth = strlen(strcpy(echoidbuf, area->echoid()));
 
   char groupidbuf[10] = { "" };
-  if(groupid_width) {
-    if(area->groupid() & 0x8000u) {
-      if(groupid_width > 2)
-        sprintf(groupidbuf, "%u", area->groupid()&0x7FFF);
+  if (groupid_width)
+  {
+    if (area->groupid() & 0x8000u)
+    {
+      if (groupid_width > 2)
+        gsprintf(PRINTF_DECLARE_BUFFER(groupidbuf), "%u", area->groupid()&0x7FFF);
     }
-    else if(g_isupper(area->groupid()))
-      sprintf(groupidbuf, "%c", (char)area->groupid());
+    else if (g_isupper(area->groupid()))
+      gsprintf(PRINTF_DECLARE_BUFFER(groupidbuf), "%c", (char)area->groupid());
   }
   int groupidwidth = strlen(groupidbuf);
 
@@ -501,7 +503,7 @@ void GPickArealist::AreaDropMsgMarks(uint n) {
     nummarks += (*AL.item)->Mark.Count();
 
   char buf[256];
-  sprintf(buf, LNG->DropMarksInfo, longdotstr(nummarks));
+  gsprintf(PRINTF_DECLARE_BUFFER(buf), LNG->DropMarksInfo, longdotstr(nummarks));
 
   w_info(buf);
   int mode = MenuAreaDropMarks.Run();

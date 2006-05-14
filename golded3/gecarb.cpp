@@ -209,27 +209,33 @@ int DoCarboncopy(GMsg* msg, GMsg** carbon) {
           break;
         case CC_HIDDEN:
           ccline = msg->lin;
-          if(A == AA) {
-            sprintf(buf, "\001CC: %s %s", msg->To(), msg->dest.make_string(temp).c_str());
+          if (A == AA)
+          {
+            gsprintf(PRINTF_DECLARE_BUFFER(buf), "\001CC: %s %s", msg->To(), msg->dest.make_string(temp).c_str());
             ccline = AddKludge(ccline, buf);
           }
-          for(n=0; n<cc; n++) {
-            if((*carbon)[n].attr.tou()) {
-              sprintf(buf, "\001CC: %s %s", (*carbon)[n].To(), (*carbon)[n].dest.make_string(temp).c_str());
+          for (n=0; n<cc; n++)
+          {
+            if ((*carbon)[n].attr.tou())
+            {
+              gsprintf(PRINTF_DECLARE_BUFFER(buf), "\001CC: %s %s", (*carbon)[n].To(), (*carbon)[n].dest.make_string(temp).c_str());
               ccline = AddKludge(ccline, buf);
               (*carbon)[n].attr.tou0();
             }
           }
           break;
         case CC_VISIBLE:
-          sprintf(buf2, LNG->CCTo, LNG->ListCC);
-          if(A == AA) {
-            sprintf(buf, buf2, msg->To(), msg->dest.make_string(temp).c_str());
+          gsprintf(PRINTF_DECLARE_BUFFER(buf2), LNG->CCTo, LNG->ListCC);
+          if (A == AA)
+          {
+            gsprintf(PRINTF_DECLARE_BUFFER(buf), buf2, msg->To(), msg->dest.make_string(temp).c_str());
             ccline = AddLine(ccline, buf);
           }
-          for(n=0; n<cc; n++) {
-            if((*carbon)[n].attr.tou()) {
-              sprintf(buf, buf2, (*carbon)[n].To(), (*carbon)[n].dest.make_string(temp).c_str());
+          for (n = 0; n < cc; n++)
+          {
+            if ((*carbon)[n].attr.tou())
+            {
+              gsprintf(PRINTF_DECLARE_BUFFER(buf), buf2, (*carbon)[n].To(), (*carbon)[n].dest.make_string(temp).c_str());
               ccline = AddLine(ccline, buf);
               (*carbon)[n].attr.tou0();
             }
@@ -247,24 +253,28 @@ int DoCarboncopy(GMsg* msg, GMsg** carbon) {
               hline += msg->To();
               ++line_items;
             }
-            for(n=0; n < cc; n++) {
-              if((*carbon)[n].attr.tou()) {
+            for (n = 0; n < cc; n++)
+            {
+              if ((*carbon)[n].attr.tou())
+              {
                 const char *user = (*carbon)[n].To();
-                if((hline.length() + strlen(user) + 2 > margintext) and line_items) {
-                  sprintf(buf, LNG->CCTo, hline.c_str());
+                if ((hline.length() + strlen(user) + 2 > margintext) and line_items)
+                {
+                  gsprintf(PRINTF_DECLARE_BUFFER(buf), LNG->CCTo, hline.c_str());
                   ccline = AddLine(ccline, buf);
                   line_items = 0;
                   hline = "";
                 }
-                if(line_items != 0)
+                if (line_items != 0)
                   hline += ", ";
                 hline += user;
                 ++line_items;
                 (*carbon)[n].attr.tou0();
               }
             }
-            if(line_items) {
-              sprintf(buf, LNG->CCTo, hline.c_str());
+            if (line_items)
+            {
+              gsprintf(PRINTF_DECLARE_BUFFER(buf), LNG->CCTo, hline.c_str());
               ccline = AddLine(ccline, buf);
             }
           }
@@ -427,8 +437,9 @@ void DoCrosspost(GMsg* msg, std::vector<int> &postareas) {
         case CC_VISIBLE:
           // Expand in line
           {
-            if(not hideoriginal) {
-              sprintf(buf, LNG->Originallyin, AA->echoid());
+            if (not hideoriginal)
+            {
+              gsprintf(PRINTF_DECLARE_BUFFER(buf), LNG->Originallyin, AA->echoid());
               xcline = AddLine(xcline, buf);
             }
 
@@ -439,8 +450,9 @@ void DoCrosspost(GMsg* msg, std::vector<int> &postareas) {
               const char *echoid = AL[postareas[i]]->echoid();
               if(postareas_attrs[i] or strieql(AA->echoid(), echoid))
                 continue;
-              if((hline.length() + strlen(echoid) + 2 > margintext) and line_items) {
-                sprintf(buf, LNG->Crosspostedin, hline.c_str());
+              if ((hline.length() + strlen(echoid) + 2 > margintext) and line_items)
+              {
+                gsprintf(PRINTF_DECLARE_BUFFER(buf), LNG->Crosspostedin, hline.c_str());
                 xcline = AddLine(xcline, buf);
                 line_items = 0;
                 hline = "";
@@ -450,24 +462,27 @@ void DoCrosspost(GMsg* msg, std::vector<int> &postareas) {
               hline += echoid;
               ++line_items;
             }
-            if(line_items) {
-              sprintf(buf, LNG->Crosspostedin, hline.c_str());
+            if (line_items)
+            {
+              gsprintf(PRINTF_DECLARE_BUFFER(buf), LNG->Crosspostedin, hline.c_str());
               xcline = AddLine(xcline, buf);
             }
           }
           break;
         case CC_NAMES:
           // Expand in column
-          if(not hideoriginal) {
-            sprintf(buf, LNG->Originallyin, AA->echoid());
+          if (not hideoriginal)
+          {
+            gsprintf(PRINTF_DECLARE_BUFFER(buf), LNG->Originallyin, AA->echoid());
             xcline = AddLine(xcline, buf);
           }
 
-          for(int i=local_xps; i < postareas.size(); i++) {
+          for (int i = local_xps; i < postareas.size(); i++)
+          {
             const char *echoid = AL[postareas[i]]->echoid();
-            if(postareas_attrs[i] or strieql(AA->echoid(), echoid))
+            if (postareas_attrs[i] or strieql(AA->echoid(), echoid))
               continue;
-            sprintf(buf, LNG->Crosspostedin, echoid);
+            gsprintf(PRINTF_DECLARE_BUFFER(buf), LNG->Crosspostedin, echoid);
             xcline = AddLine(xcline, buf);
           }
           break;

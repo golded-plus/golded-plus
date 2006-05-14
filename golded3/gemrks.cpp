@@ -344,7 +344,7 @@ void MarkMsgs(GMsg* msg) {
 
     // ---------------------------------------------------------------
     case TAG_MARKYOURMAIL:
-      sprintf(markstring, "\"%s\"", AA->Username().name);
+      gsprintf(PRINTF_DECLARE_BUFFER(markstring), "\"%s\"", AA->Username().name);
       // Drop through!
 
     // ---------------------------------------------------------------
