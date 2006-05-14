@@ -29,20 +29,11 @@
 
 
 //  ------------------------------------------------------------------
-//  Compiler dependencies
-
-#include <gcmpall.h>
-
-
-//  ------------------------------------------------------------------
 //  Standard library headers
 
-#include <gstrall.h>
 #include <csignal>
 #include <iostream>
-#if __GNUC__ +0 > 2
-  #include <sstream>
-#endif
+#include <sstream>
 #include <iomanip>
 // Wrappers for certain mostly DOS/Borland headers
 #include <gshare.h>
@@ -52,6 +43,7 @@
 //  Goldware Library headers
 
 #include <gdefs.h>
+#include <gstrall.h>
 #include <gcrcall.h>
 #include <gdbgerr.h>
 #include <gmemdbg.h>
@@ -80,14 +72,17 @@
 #include <gwinall.h>
 #include <gwinhelp.h>
 #include <gwinpick.h>
-#include <gedacfg.h>
 #include <gespell.h>
 
 
 //  ------------------------------------------------------------------
 //  GoldED specific headers
+#include <gehelp.h>
+#include <gekeys.h>
+#include <gelang.h>
+#include <gmarea.h>
+#include <gecfgg.h>
 
-#include <geall.h>
 #include <geqwks.h>
 #include <gectnr.h>
 #include <geview.h>
