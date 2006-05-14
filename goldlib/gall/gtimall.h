@@ -181,7 +181,7 @@ inline void gctime(TCHAR *buffer, size_t sizeInChars, const time32_t *timep)
     _tctime_s(buffer, sizeInChars, &zero);
   }
 #else
-  const char *time = _tctime(&temp);
+  const char *time = ctime(&temp);
 #if defined(__WIN32__)
   if (NULL == time)
   {

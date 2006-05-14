@@ -573,7 +573,7 @@ TCHAR *strxcpy(TCHAR *d, const TCHAR *s, size_t n)
 #else
   if (n)
   {
-    _tcsncpy(d, s, n-1);
+    strncpy(d, s, n-1);
     d[n-1] = NUL;
   }
   else
@@ -636,7 +636,11 @@ int gsprintf(TCHAR* buffer, size_t sizeOfBuffer, const TCHAR* __file, int __line
     if (ret < 0)
 #else
     buffer[sizeOfBuffer-1] = 0;
-    ret = _vsntprintf(buffer, sizeOfBuffer, format, argptr);
+    #if defined( G_HAS_VSNPRINTF )
+    ret = _vsnprintf(buffer, sizeOfBuffer, format, argptr);
+    #else
+    ret = vsprintf(buffer, format, argptr);
+    #endif
     if ((ret < 0) || buffer[sizeOfBuffer-1])
 #endif
     {

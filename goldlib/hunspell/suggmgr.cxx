@@ -13,11 +13,11 @@ using namespace std;
 #endif
 
 
-SuggestMgr::SuggestMgr(const char * tryme, int maxn, 
+SuggestMgr::SuggestMgr(const char * tryme, int maxn,
                        AffixMgr * aptr)
 {
 
-  // register affix manager and check in string of chars to 
+  // register affix manager and check in string of chars to
   // try when building candidate suggestions
   pAMgr = aptr;
 
@@ -44,9 +44,9 @@ SuggestMgr::SuggestMgr(const char * tryme, int maxn,
         complexprefixes = pAMgr->get_complexprefixes();
   }
 
-  if (tryme) {  
+  if (tryme) {
     if (utf8) {
-        w_char t[MAXSWL];    
+        w_char t[MAXSWL];
         ctryl = u8_u16(t, MAXSWL, tryme);
         ctry_utf = (w_char *) malloc(ctryl * sizeof(w_char));
         memcpy(ctry_utf, t, ctryl * sizeof(w_char));
@@ -77,9 +77,9 @@ SuggestMgr::~SuggestMgr()
 int SuggestMgr::suggest(char*** slst, const char * w, int nsug)
 {
     int nocompoundtwowords = 0;
-    char ** wlst;    
+    char ** wlst;
     w_char word_utf[MAXSWL];
-    int wl;
+    int wl=0;
 
   char w2[MAXWORDUTF8LEN];
   const char * word = w;
@@ -90,7 +90,7 @@ int SuggestMgr::suggest(char*** slst, const char * w, int nsug)
     if (utf8) reverseword_utf(w2); else reverseword(w2);
     word = w2;
   }
-    
+
     if (*slst) {
 	wlst = *slst;
     } else {
@@ -98,7 +98,7 @@ int SuggestMgr::suggest(char*** slst, const char * w, int nsug)
 	if (wlst == NULL) return -1;
         for (int i = 0; i < maxSug; i++) wlst[i] = NULL;
     }
-    
+
     if (utf8) {
         wl = u8_u16(word_utf, MAXSWL, word);
     }
@@ -201,7 +201,7 @@ int SuggestMgr::suggest_auto(char*** slst, const char * w, int nsug)
     if ((nsug < maxSug) && (nsug > -1) && check_forbidden(word, strlen(word))) {
     		nsug = twowords(wlst, word, nsug, cpdsuggest);
 	}
-    
+
     } // repeating ``for'' statement compounding support
 
     if (nsug < 0) {
@@ -221,7 +221,7 @@ int SuggestMgr::mapchars(char** wlst, const char * word, int ns, int cpdsuggest)
 {
   time_t timelimit;
   int timer;
-  
+
   int wl = strlen(word);
   if (wl < 2 || ! pAMgr) return ns;
 
@@ -242,13 +242,13 @@ int SuggestMgr::mapchars(char** wlst, const char * word, int ns, int cpdsuggest)
 int SuggestMgr::map_related(const char * word, int i, char** wlst, int ns,
     const mapentry* maptable, int nummap, int * timer, time_t * timelimit)
 {
-  char c = *(word + i);  
+  char c = *(word + i);
   if (c == 0) {
       int cwrd = 1;
       int wl;
       for (int m=0; m < ns; m++)
 	  if (strcmp(word,wlst[m]) == 0) cwrd = 0;
-      if ((cwrd) && (wl = strlen(word)) && (check(word, wl, 0, timer, timelimit) || 
+      if ((cwrd) && (wl = strlen(word)) && (check(word, wl, 0, timer, timelimit) ||
         check(word, wl, 1, timer, timelimit))) {
 	  if (ns < maxSug) {
 	      wlst[ns] = mystrdup(word);
@@ -257,7 +257,7 @@ int SuggestMgr::map_related(const char * word, int i, char** wlst, int ns,
 	  }
       }
       return ns;
-  } 
+  }
   int in_map = 0;
   for (int j = 0; j < nummap; j++) {
     if (strchr(maptable[j].set,c) != 0) {
@@ -279,7 +279,7 @@ int SuggestMgr::map_related(const char * word, int i, char** wlst, int ns,
 }
 
 int SuggestMgr::map_related_utf(w_char * word, int len, int i, char** wlst, int ns,
-    const mapentry* maptable, int nummap, int * timer, time_t * timelimit) 
+    const mapentry* maptable, int nummap, int * timer, time_t * timelimit)
 {
   if (i == len) {
       int cwrd = 1;
@@ -288,7 +288,7 @@ int SuggestMgr::map_related_utf(w_char * word, int len, int i, char** wlst, int 
       u16_u8(s, MAXSWUTF8L, word, len);
       for (int m=0; m < ns; m++)
 	  if (strcmp(s,wlst[m]) == 0) cwrd = 0;
-      if ((cwrd) && (wl = strlen(s)) && (check(s, wl, 0, timer, timelimit) || 
+      if ((cwrd) && (wl = strlen(s)) && (check(s, wl, 0, timer, timelimit) ||
             check(s, wl, 1, timer, timelimit))) {
 	  if (ns < maxSug) {
 	      wlst[ns] = mystrdup(s);
@@ -297,7 +297,7 @@ int SuggestMgr::map_related_utf(w_char * word, int len, int i, char** wlst, int 
 	  }
       }
       return ns;
-  } 
+  }
   int in_map = 0;
   unsigned short c = *((unsigned short *) word + i);
   for (int j = 0; j < nummap; j++) {
@@ -449,7 +449,7 @@ int SuggestMgr::badchar_utf(char ** wlst, const w_char * word, int wl, int ns, i
   int cwrd;
   time_t timelimit = time(NULL);
   int timer = MINTIMER;
-  
+
   memcpy(candidate_utf, word, wl * sizeof(w_char));
 
   // swap out each char one by one and try all the tryme
@@ -477,7 +477,7 @@ int SuggestMgr::badchar_utf(char ** wlst, const w_char * word, int wl, int ns, i
   return ns;
 }
 
-// error is word has an extra letter it does not need 
+// error is word has an extra letter it does not need
 int SuggestMgr::extrachar_utf(char** wlst, const w_char * word, int wl, int ns, int cpdsuggest)
 {
    char	   candidate[MAXSWUTF8L];
@@ -493,7 +493,7 @@ int SuggestMgr::extrachar_utf(char** wlst, const w_char * word, int wl, int ns, 
    memcpy(candidate_utf, word + 1, (wl - 1) * sizeof(w_char));
    for (p = word, r = candidate_utf;  p < word + wl;  ) {
        cwrd = 1;
-       u16_u8(candidate, MAXSWUTF8L, candidate_utf, wl - 1);       
+       u16_u8(candidate, MAXSWUTF8L, candidate_utf, wl - 1);
        for (int k=0; k < ns; k++)
 	 if (strcmp(candidate,wlst[k]) == 0) cwrd = 0;
        if ((cwrd) && check(candidate, strlen(candidate), cpdsuggest, NULL, NULL)) {
@@ -501,14 +501,14 @@ int SuggestMgr::extrachar_utf(char** wlst, const w_char * word, int wl, int ns, 
             wlst[ns] = mystrdup(candidate);
             if (wlst[ns] == NULL) return -1;
             ns++;
-         } else return ns; 
+         } else return ns;
        }
        *r++ = *p++;
    }
    return ns;
 }
 
-// error is word has an extra letter it does not need 
+// error is word has an extra letter it does not need
 int SuggestMgr::extrachar(char** wlst, const char * word, int ns, int cpdsuggest)
 {
    char	   candidate[MAXSWUTF8L];
@@ -530,7 +530,7 @@ int SuggestMgr::extrachar(char** wlst, const char * word, int ns, int cpdsuggest
             wlst[ns] = mystrdup(candidate);
             if (wlst[ns] == NULL) return -1;
             ns++;
-         } else return ns; 
+         } else return ns;
        }
        *r++ = *p++;
    }
@@ -563,7 +563,7 @@ int SuggestMgr::forgotchar(char ** wlst, const char * word, int ns, int cpdsugge
                 wlst[ns] = mystrdup(candidate);
                 if (wlst[ns] == NULL) return -1;
                 ns++;
-            } else return ns; 
+            } else return ns;
          }
          if (!timelimit) return ns;
       }
@@ -612,7 +612,7 @@ int SuggestMgr::forgotchar_utf(char ** wlst, const w_char * word, int wl, int ns
                 wlst[ns] = mystrdup(candidate);
                 if (wlst[ns] == NULL) return -1;
                 ns++;
-            } else return ns; 
+            } else return ns;
          }
          if (!timelimit) return ns;
        }
@@ -648,7 +648,7 @@ int SuggestMgr::twowords(char ** wlst, const char * word, int ns, int cpdsuggest
 
     int wl=strlen(word);
     if (wl < 3) return ns;
-    
+
     if (pAMgr->get_langnum() == LANG_hu) forbidden = check_forbidden(word, wl);
 
     strcpy(candidate + 1, word);
@@ -797,13 +797,13 @@ int SuggestMgr::ngsuggest(char** wlst, char * w, HashMgr* pHMgr)
   int col = -1;
   while ((hp = pHMgr->walk_hashtable(col, hp))) {
     // check forbidden words
-    if ((hp->astr) && (pAMgr) && 
+    if ((hp->astr) && (pAMgr) &&
        (TESTAFF(hp->astr, pAMgr->get_forbiddenword(), hp->alen) ||
           TESTAFF(hp->astr, pAMgr->get_nosuggest(), hp->alen) ||
           TESTAFF(hp->astr, pAMgr->get_onlyincompound(), hp->alen))) continue;
     sc = ngram(3, word, hp->word, NGRAM_LONGER_WORSE);
     if (sc > scores[lp]) {
-      scores[lp] = sc;  
+      scores[lp] = sc;
       roots[lp] = hp;
       int lval = sc;
       for (j=0; j < MAX_ROOTS; j++)
@@ -811,7 +811,7 @@ int SuggestMgr::ngsuggest(char** wlst, char * w, HashMgr* pHMgr)
 	  lp = j;
           lval = scores[j];
 	}
-    }  
+    }
   }
 
   // find minimum threshhold for a passable suggestion
@@ -868,7 +868,7 @@ int SuggestMgr::ngsuggest(char** wlst, char * w, HashMgr* pHMgr)
 	               lp = j;
                        lval = gscore[j];
 	            }
-	      } else free (glst[k].word);  
+	      } else free (glst[k].word);
 	   } else free(glst[k].word);
 	}
       }
@@ -877,7 +877,7 @@ int SuggestMgr::ngsuggest(char** wlst, char * w, HashMgr* pHMgr)
 
   // now we are done generating guesses
   // sort in order of decreasing score
-  
+
   bubblesort(&guess[0], &gscore[0], MAX_GUESS);
 
   // weight suggestions with a similarity index, based on
@@ -907,7 +907,7 @@ int SuggestMgr::ngsuggest(char** wlst, char * w, HashMgr* pHMgr)
             gscore[i] += 2000;
             break;
         }
-        
+
         // heuristic weigthing of ngram scores
         gscore[i] +=
           // length of longest common subsequent minus lenght difference
@@ -935,7 +935,7 @@ int SuggestMgr::ngsuggest(char** wlst, char * w, HashMgr* pHMgr)
         if (gscore[i] > 1000) same = 1;
         for (j=0; j < ns; j++)
           // don't suggest previous suggestions or a previous suggestion with prefixes or affixes
-          if (strstr(guess[i], wlst[j]) || 
+          if (strstr(guess[i], wlst[j]) ||
             // check forbidden words
             !check(guess[i], strlen(guess[i]), 0, NULL, NULL)) unique = 0;
         if (unique) wlst[ns++] = guess[i]; else free(guess[i]);
@@ -957,7 +957,7 @@ int SuggestMgr::check(const char * word, int len, int cpdsuggest, int * timer, t
 {
   struct hentry * rv=NULL;
   int nosuffix = 0;
-  
+
   // check time limit
   if (timer) {
     (*timer)--;
@@ -969,8 +969,8 @@ int SuggestMgr::check(const char * word, int len, int cpdsuggest, int * timer, t
       *timer = MAXPLUSTIMER;
     }
   }
-  
-  if (pAMgr) { 
+
+  if (pAMgr) {
     if (cpdsuggest==1) {
       if (pAMgr->get_compound()) {
 	rv = pAMgr->compound_check(word,len,0,0,0,0,NULL,0,NULL,NULL,1);
@@ -987,7 +987,7 @@ int SuggestMgr::check(const char * word, int len, int cpdsuggest, int * timer, t
         if (rv->astr && (TESTAFF(rv->astr,pAMgr->get_pseudoroot(),rv->alen) ||
             TESTAFF(rv->astr,pAMgr->get_onlyincompound(),rv->alen))) rv = NULL;
     } else rv = pAMgr->prefix_check(word, len, 0); // only prefix, and prefix + suffix XXX
-    
+
     if (rv) {
 	nosuffix=1;
     } else {
@@ -1004,9 +1004,9 @@ int SuggestMgr::check(const char * word, int len, int cpdsuggest, int * timer, t
       || TESTAFF(rv->astr,pAMgr->get_nosuggest(),rv->alen) ||
       TESTAFF(rv->astr,pAMgr->get_onlyincompound(),rv->alen))) return 0;
 
-    if (rv) { // XXX obsolote    
-      if ((pAMgr->get_compoundflag()) && 
-          TESTAFF(rv->astr, pAMgr->get_compoundflag(), rv->alen)) return 2 + nosuffix; 
+    if (rv) { // XXX obsolote
+      if ((pAMgr->get_compoundflag()) &&
+          TESTAFF(rv->astr, pAMgr->get_compoundflag(), rv->alen)) return 2 + nosuffix;
       return 1;
     }
   }
@@ -1017,7 +1017,7 @@ int SuggestMgr::check_forbidden(const char * word, int len)
 {
   struct hentry * rv = NULL;
 
-  if (pAMgr) { 
+  if (pAMgr) {
     rv = pAMgr->lookup(word);
     if (rv && rv->astr && (TESTAFF(rv->astr,pAMgr->get_pseudoroot(),rv->alen) ||
         TESTAFF(rv->astr,pAMgr->get_onlyincompound(),rv->alen))) rv = NULL;
@@ -1033,7 +1033,7 @@ int SuggestMgr::check_forbidden(const char * word, int len)
 int SuggestMgr::suggest_stems(char*** slst, const char * w, int nsug)
 {
     char buf[MAXSWUTF8L];
-    char ** wlst;    
+    char ** wlst;
     int prevnsug = nsug;
 
   char w2[MAXWORDUTF8LEN];
@@ -1054,7 +1054,7 @@ int SuggestMgr::suggest_stems(char*** slst, const char * w, int nsug)
     }
     // perhaps there are a fix stem in the dictionary
     if ((nsug < maxSug) && (nsug > -1)) {
-    
+
     nsug = fixstems(wlst, word, nsug);
     if (nsug == prevnsug) {
 	char * s = mystrdup(word);
@@ -1080,7 +1080,7 @@ int SuggestMgr::suggest_stems(char*** slst, const char * w, int nsug)
 	free(s);
     }
     }
-    
+
     if (nsug < 0) {
        for (int i=0;i<maxSug; i++)
 	 if (wlst[i] != NULL) free(wlst[i]);
@@ -1110,12 +1110,12 @@ int SuggestMgr::fixstems(char ** wlst, const char * word, int ns)
     int cmpdstemnum;
     int cmpdstem[MAXCOMPOUND];
 
-    if (pAMgr) { 
+    if (pAMgr) {
 	rv = pAMgr->lookup(word);
 	if (rv) {
 	    dicstem = 0;
 	} else {
-	    // try stripping off affixes 
+	    // try stripping off affixes
 	    rv = pAMgr->affix_check(word, wl);
 
 	    // else try check compound word
@@ -1139,7 +1139,7 @@ int SuggestMgr::fixstems(char ** wlst, const char * word, int ns)
 	    }
 
 	    // XXX obsolote, will be a general solution for stemming
-	    if ((prefix) && (strncmp(prefix, "leg", 3)==0)) prefix[0] = '\0'; // (HU)	    
+	    if ((prefix) && (strncmp(prefix, "leg", 3)==0)) prefix[0] = '\0'; // (HU)	
 	}
 
     }
@@ -1147,10 +1147,10 @@ int SuggestMgr::fixstems(char ** wlst, const char * word, int ns)
 
 
     if ((rv) && (ns < maxSug)) {
-    
+
 	// check fixstem flag and not_valid_stem flag
 	// first word
-	if ((ns < maxSug) && (dicstem < 2)) { 
+	if ((ns < maxSug) && (dicstem < 2)) {
 	    strcpy(buf, prefix);
 	    if ((dicstem > 0) && pAMgr->get_derived()) {
 		// XXX obsolote
@@ -1162,7 +1162,7 @@ int SuggestMgr::fixstems(char ** wlst, const char * word, int ns)
 		} else {
 			// special stem in affix description
 			const char * wordchars = pAMgr->get_wordchars();
-			if (rv->description && 
+			if (rv->description &&
 			   (strchr(wordchars, *(rv->description)))) {
 			   char * desc = (rv->description) + 1;
 			   while (strchr(wordchars, *desc)) desc++;
@@ -1190,7 +1190,7 @@ int SuggestMgr::fixstems(char ** wlst, const char * word, int ns)
 		} else {
 			// special stem in affix description
 			const char * wordchars = pAMgr->get_wordchars();
-			if (rv->description && 
+			if (rv->description &&
 			   (strchr(wordchars, *(rv->description)))) {
 			   char * desc = (rv->description) + 1;
 			   while (strchr(wordchars, *desc)) desc++;
@@ -1243,19 +1243,19 @@ while (rv) {
 		
 		rv = rv2;
 		
-            } else return ns; 
+            } else return ns;
 	} else {
 	    strcpy(fix, "__");
 	    strcat(fix, rv->word);
 	    rv = NULL;
 	    rv2 = pAMgr->lookup(fix);
-	    if ((rv2) && (rv2->astr) && (ns < maxSug)) 
-	    if ((rv2) && (rv2->astr) && (ns < maxSug)) 
+	    if ((rv2) && (rv2->astr) && (ns < maxSug))
+	    if ((rv2) && (rv2->astr) && (ns < maxSug))
 	      if (0) {
 		char buf2[MAXSWUTF8L];
 
 		strcpy(buf2, prefix);
-                
+
                 if (*(rv2->astr) == '-') {
                     strcat(buf2, "");
                 } else {
@@ -1325,7 +1325,7 @@ return ns;
 // suggest possible stems
 int SuggestMgr::suggest_pos_stems(char*** slst, const char * w, int nsug)
 {
-    char ** wlst;    
+    char ** wlst;
 
     struct hentry * rv = NULL;
 
@@ -1386,12 +1386,12 @@ char * SuggestMgr::suggest_morph(const char * w)
   }
 
     rv = pAMgr->lookup(word);
-    
+
     while (rv) {
         if ((!rv->astr) || !(TESTAFF(rv->astr, pAMgr->get_forbiddenword(), rv->alen) ||
             TESTAFF(rv->astr, pAMgr->get_pseudoroot(), rv->alen) ||
             TESTAFF(rv->astr,pAMgr->get_onlyincompound(),rv->alen))) {
-            if (rv->description && ((!rv->astr) || 
+            if (rv->description && ((!rv->astr) ||
                 !TESTAFF(rv->astr, pAMgr->get_lemma_present(), rv->alen)))
                     strcat(result, word);
             if (rv->description) strcat(result, rv->description);
@@ -1399,7 +1399,7 @@ char * SuggestMgr::suggest_morph(const char * w)
         }
         rv = rv->next_homonym;
     }
-    
+
     st = pAMgr->affix_check_morph(word,strlen(word));
     if (st) {
         strcat(result, st);
@@ -1409,7 +1409,7 @@ char * SuggestMgr::suggest_morph(const char * w)
     if (pAMgr->get_compound() && (*result == '\0'))
         pAMgr->compound_check_morph(word, strlen(word),
 		     0, 0, 100, 0,NULL, 0, &r, NULL);
-    
+
     return (*result) ? mystrdup(line_uniq(delete_zeros(result))) : NULL;
 }
 
@@ -1425,7 +1425,7 @@ char * SuggestMgr::suggest_morph_for_spelling_error(const char * word)
         free(wlst[maxSug - 1]);
     }
 	if (wlst) free(wlst);
-	return p;    
+	return p;
 }
 
 
@@ -1468,7 +1468,7 @@ int SuggestMgr::ngram(int n, char * s1, const char * s2, int uselen)
       nscore = nscore + ns;
       if (ns < 2) break;
     }
-  } else {  
+  } else {
     char t[MAXSWUTF8L];
     l1 = strlen(s1);
     l2 = strlen(s2);

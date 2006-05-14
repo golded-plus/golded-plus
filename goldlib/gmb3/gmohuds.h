@@ -157,8 +157,16 @@ struct HudsToIdx {
 
 //  ------------------------------------------------------------------
 
-typedef word HudsLast[HUDS_MAXBOARD] __attribute__((packed));
-typedef word GoldLast[GOLD_MAXBOARD] __attribute__((packed));
+typedef word HudsLast[HUDS_MAXBOARD]
+#ifndef __DJGPP__
+ __attribute__((packed))
+#endif
+;
+typedef word GoldLast[GOLD_MAXBOARD]
+#ifndef __DJGPP__
+ __attribute__((packed))
+#endif
+;
 
 
 //  ------------------------------------------------------------------
@@ -170,7 +178,7 @@ typedef word GoldLast[GOLD_MAXBOARD] __attribute__((packed));
 
 //  ------------------------------------------------------------------
 
-struct HudsScan {  
+struct HudsScan {
   uint count;
   uint active;
   uint32_t lastread;
@@ -286,7 +294,7 @@ protected:
 
   int load_message(int __mode, gmsg* __msg, HudsHdr& __hdr);
   void save_message(int __mode, gmsg* __msg, HudsHdr& __hdr);
-  
+
 public:
 
   _HudsArea() { wide = NULL; }
@@ -297,7 +305,7 @@ public:
 
   //  ----------------------------------------------------------------
   //  Messagebase member functions
-  
+
   void open();
   void close();
 

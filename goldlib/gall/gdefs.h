@@ -27,13 +27,18 @@
   Basic definitions and types.
   ------------------------------------------------------------------
 */
-#ifndef __goldall_h
-#define __goldall_h
+#ifndef __gdefs_h
+#define __gdefs_h
 
 /*  ------------------------------------------------------------------ */
 #include <gcmpall.h>
 
+#ifdef __WIN32__
 #include <tchar.h>
+#define G_HAS_VSNPRINTF
+#else
+typedef char TCHAR;
+#endif
 #ifdef __cplusplus
 # include <cstddef>
 #endif

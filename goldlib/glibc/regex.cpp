@@ -193,7 +193,7 @@ init_syntax_once ()
   for (c = 0; c < 256; c++)
     re_syntax_table[c] = isxalnum(c) ? Sword : 0;
 
-  re_syntax_table['_'] = Sword;
+  re_syntax_table[int('_')] = Sword;
 
   done = 1;
 }

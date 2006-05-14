@@ -52,7 +52,7 @@ inline void tokenize(gstrarray &array, const TCHAR* str, const TCHAR *delim = NU
   TCHAR *next_token;
   TCHAR *token = _tcstok_s(tmp, delim, &next_token);
 #else
-  TCHAR *token = _tcstok(tmp, delim);
+  TCHAR *token = strtok(tmp, delim);
 #endif
 
   while (NULL != token)
@@ -61,7 +61,7 @@ inline void tokenize(gstrarray &array, const TCHAR* str, const TCHAR *delim = NU
 #if defined(_tcstok_s)
     token = _tcstok_s(NULL, delim, &next_token);
 #else
-    token = _tcstok(NULL, delim);
+    token = strtok(NULL, delim);
 #endif
   }
 

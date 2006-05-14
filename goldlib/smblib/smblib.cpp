@@ -72,6 +72,9 @@
 #define SMB_VERSION         0x0121      /* SMB format version */
                                         /* High byte major, low byte minor */
 
+#define U_MODE 777 /* permitions for the new files (real: U_MODE XOR UMASK) */
+                   /* This is required for sopen(,,,) */
+
 #ifndef __gtimall_h
 time32_t gtime(time32_t *timep)
 {
@@ -109,7 +112,7 @@ int SMBCALL smb_open(smb_t* smb)
     smb->shd_fp=smb->sdt_fp=smb->sid_fp=NULL;
     smb->last_error[0]=0;
     sprintf(str,"%s.shd",smb->file);
-    if((file=sopen(str,O_RDWR|O_CREAT|O_BINARY,SH_DENYNO))==-1) {
+    if((file=sopen(str,O_RDWR|O_CREAT|O_BINARY,SH_DENYNO,U_MODE))==-1) {
         sprintf(smb->last_error,"%d opening %s",errno,str);
         return(2);
     }
@@ -156,7 +159,7 @@ int SMBCALL smb_open(smb_t* smb)
     setvbuf(smb->shd_fp,smb->shd_buf,_IOFBF,SHD_BLOCK_LEN);
 
     sprintf(str,"%s.sdt",smb->file);
-    if((file=sopen(str,O_RDWR|O_CREAT|O_BINARY,SH_DENYNO))==-1) {
+    if((file=sopen(str,O_RDWR|O_CREAT|O_BINARY,SH_DENYNO,U_MODE))==-1) {
         sprintf(smb->last_error,"%d opening %s",errno,str);
         smb_close(smb);
         return(1);
@@ -172,7 +175,7 @@ int SMBCALL smb_open(smb_t* smb)
     setvbuf(smb->sdt_fp,NULL,_IOFBF,2*1024);
 
     sprintf(str,"%s.sid",smb->file);
-    if((file=sopen(str,O_RDWR|O_CREAT|O_BINARY,SH_DENYNO))==-1) {
+    if((file=sopen(str,O_RDWR|O_CREAT|O_BINARY,SH_DENYNO,U_MODE))==-1) {
         sprintf(smb->last_error,"%d opening %s",errno,str);
         smb_close(smb);
         return(3);
@@ -219,7 +222,7 @@ int SMBCALL smb_open_da(smb_t* smb)
 
     sprintf(str,"%s.sda",smb->file);
     while(1) {
-        if((file=sopen(str,O_RDWR|O_CREAT|O_BINARY,SH_DENYRW))!=-1)
+        if((file=sopen(str,O_RDWR|O_CREAT|O_BINARY,SH_DENYRW,U_MODE))!=-1)
             break;
         if(errno!=EACCES && errno!=EAGAIN) {
             sprintf(smb->last_error,"%d opening %s",errno,str);
@@ -264,7 +267,7 @@ int SMBCALL smb_open_ha(smb_t* smb)
 
     sprintf(str,"%s.sha",smb->file);
     while(1) {
-        if((file=sopen(str,O_RDWR|O_CREAT|O_BINARY,SH_DENYRW))!=-1)
+        if((file=sopen(str,O_RDWR|O_CREAT|O_BINARY,SH_DENYRW,U_MODE))!=-1)
             break;
         if(errno!=EACCES && errno!=EAGAIN) {
             sprintf(smb->last_error,"%d opening %s",errno,str);
@@ -1010,7 +1013,7 @@ int SMBCALL smb_addcrc(smb_t* smb, uint32_t crc)
 
     sprintf(str,"%s.sch",smb->file);
     while(1) {
-        if((file=sopen(str,O_RDWR|O_CREAT|O_BINARY,SH_DENYRW))!=-1)
+        if((file=sopen(str,O_RDWR|O_CREAT|O_BINARY,SH_DENYRW,U_MODE))!=-1)
             break;
         if(errno!=EACCES && errno!=EAGAIN) {
             sprintf(smb->last_error,"%d opening %s", errno, str);
