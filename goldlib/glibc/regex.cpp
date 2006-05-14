@@ -200,7 +200,7 @@ init_syntax_once ()
 
 # endif /* not SYNTAX_TABLE */
 
-# define SYNTAX(c) re_syntax_table[c]
+# define SYNTAX(c) re_syntax_table[c & 0xFF]
 
 #endif /* not emacs */
 

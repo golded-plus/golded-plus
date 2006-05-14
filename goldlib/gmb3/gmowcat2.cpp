@@ -62,7 +62,7 @@ void WCatArea::refresh() {
     read(data->fhix, data->idx, (uint)(ixnum*sizeof(WCatIdx)));
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -191,7 +191,7 @@ void WCatArea::raw_scan(int __keep_index, int __scanpm) {
     wide = NULL;
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -203,7 +203,7 @@ void WCatArea::scan() {
 
   raw_scan(true);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -215,7 +215,7 @@ void WCatArea::scan_area() {
 
   raw_scan(false);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -228,7 +228,7 @@ void WCatArea::scan_area_pm() {
   raw_scan(true, true);
   Msgn->Reset();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 

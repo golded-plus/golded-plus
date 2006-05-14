@@ -119,7 +119,7 @@ void SMBArea::raw_scan(bool keep_index, bool scanpm)
     }
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 

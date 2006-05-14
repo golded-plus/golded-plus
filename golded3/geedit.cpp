@@ -206,7 +206,7 @@ Line* IEclass::findfirstline() {
   while(_firstline->prev)
     _firstline = _firstline->prev;
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   return _firstline;
 }
@@ -227,7 +227,7 @@ void IEclass::getthisrow(Line* __currline) {
     thisrow++;
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -246,7 +246,7 @@ void IEclass::gotorowcol(uint __col, uint __row) {
   ccol = __col;
   crow = __row;
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -446,7 +446,7 @@ void IEclass::dispstring(Line* line, uint __row)
       StyleCodeHighlight(_buf+endblock, __row, mincol+endblock, false, DEFATTR);
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 #else // #if defined(GCFG_SPELL_INCLUDED)
 
@@ -562,7 +562,7 @@ void IEclass::dispstring(const char* __string, uint __row, int attr, Line* line)
   else
     StyleCodeHighlight(_buf, __row, mincol, false, attr);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 #endif  // #if defined(GCFG_SPELL_INCLUDED)
 
@@ -610,7 +610,7 @@ void IEclass::displine(Line* __line, uint __row) {
   dispstring(__line->txt.c_str(), __row, -1, __line);
 #endif
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -630,7 +630,7 @@ void IEclass::clreol(int __col, int __row) {
   if((uint)__col <= maxcol)
     editwin.fill(__row, __col, __row, maxcol, ' ', C_READW);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -669,7 +669,7 @@ void IEclass::refresh(Line* __currline, uint __row) {
   }
 #endif
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -693,7 +693,7 @@ Line* IEclass::insertlinebelow(Line* __currline, const char* __text, long __batc
 
   Undo->PushItem(EDIT_UNDO_NEW_LINE|batch_mode|__batch_mode, _nextline);
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   return _nextline;
 }
@@ -717,7 +717,7 @@ int IEclass::downoneline(uint __row) {
 
   gotorowcol(mincol, __row);
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   return __row;
 }
@@ -740,7 +740,7 @@ void IEclass::GoEOL() {
   if(blockcol != -1)
     displine(currline, row);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -775,7 +775,7 @@ void IEclass::GoUp() {
       GoEOL();
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -810,7 +810,7 @@ void IEclass::GoDown() {
       GoEOL();
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -836,7 +836,7 @@ void IEclass::GoLeft() {
   if(blockcol != -1)
     displine(currline, row);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -860,7 +860,7 @@ void IEclass::GoRight() {
   if(blockcol != -1)
     displine(currline, row);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1175,7 +1175,7 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, boo
   *__curr_row = _cursrow;
   *__curr_col = _curscol;
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   return _lastadded;
 }
@@ -1189,7 +1189,7 @@ Line* IEclass::wrapdel(Line** __currline, uint* __curr_col, uint* __curr_row, bo
 
   Line *tmp = wrapit(__currline, __curr_col, __curr_row, __display);
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   return tmp;
 }
@@ -1203,7 +1203,7 @@ Line* IEclass::wrapins(Line** __currline, uint* __curr_col, uint* __curr_row, bo
 
   Line *tmp = wrapit(__currline, __curr_col, __curr_row, __display);
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   return tmp;
 }
@@ -1270,7 +1270,7 @@ void IEclass::insertchar(char __ch) {
 
   gotorowcol(col, row);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1291,7 +1291,7 @@ void IEclass::DelChar() {
     batch_mode = BATCH_MODE;
   }
   else if(col and (col == _thislen) and _nextline) {
-    GFTRK(NULL);
+    GFTRK(0);
     if(not batch_mode) {
       Undo->PushItem(EDIT_UNDO_VOID);
       batch_mode = BATCH_MODE;
@@ -1361,7 +1361,7 @@ void IEclass::DelChar() {
     refresh(_topline, minrow);
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1374,7 +1374,7 @@ void IEclass::DelLeft() {
   // Cannot backspace from the first column on the first line in the msg
   if(currline->prev == NULL)
     if(col == mincol) {
-      GFTRK(NULL);
+      GFTRK(0);
       return;
     }
 
@@ -1389,7 +1389,7 @@ void IEclass::DelLeft() {
   GoLeft();
   DelChar();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1427,7 +1427,7 @@ void IEclass::GoWordLeft() {
       displine(currline, row);
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1472,7 +1472,7 @@ void IEclass::GoWordRight() {
   if (blockcol != -1)
     displine(currline, row);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1555,7 +1555,7 @@ void IEclass::Newline() {
   wrapdel(&currline, &col, &row, true);
   refresh(currline, row);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1575,7 +1575,7 @@ void IEclass::CopyAboveChar() {
   }
   insertchar(_ch);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1595,7 +1595,7 @@ void IEclass::DupLine() {
   refresh(currline, row);
   GoDown();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1663,7 +1663,7 @@ void IEclass::GoPgUp() {
   if(col+1 > currline->txt.length())
     GoEOL();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1721,7 +1721,7 @@ void IEclass::GoPgDn() {
   if(col+1 > currline->txt.length())
     GoEOL();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1743,7 +1743,7 @@ void IEclass::Tab() {
       break;
   } while(col % tabsz);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1766,7 +1766,7 @@ void IEclass::ReTab() {
       GoLeft();
   } while(col % tabsz);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1789,7 +1789,7 @@ void IEclass::DeleteEOL() {
 
   clreol();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1800,7 +1800,7 @@ void IEclass::DeleteSOL() {
   GFTRK("EditDeleteSOL");
 
   if(col == 0) {
-    GFTRK(NULL);
+    GFTRK(0);
     return;
   }
 
@@ -1813,7 +1813,7 @@ void IEclass::DeleteSOL() {
 
   wrapdel(&currline, &col, &row);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1896,7 +1896,7 @@ void IEclass::deleteline(bool zapquotesbelow) {
   // Refresh display from cursor row
   refresh(currline, row);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1946,7 +1946,7 @@ void IEclass::UnDelete(bool before) {
       refresh(currline, row);
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1968,7 +1968,7 @@ void IEclass::ZapQuoteBelow() {
     item_to_fix->line = currline;
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1986,7 +1986,7 @@ Line* IEclass::findtopline() {
     _toprow--;
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   return _topline;
 }
@@ -2052,7 +2052,7 @@ void IEclass::savefile(int __status) {
     cursoron();
 #endif
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -2064,7 +2064,7 @@ void IEclass::SaveFile() {
 
   savefile(MODE_UPDATE);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -2076,7 +2076,7 @@ void IEclass::SaveMsg() {
 
   done = MODE_SAVE;
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -2197,7 +2197,7 @@ void IEclass::Reflow() {
       GoDown();
     }
     else {
-      GFTRK(NULL);
+      GFTRK(0);
       return;
     }
   }
@@ -2245,7 +2245,7 @@ void IEclass::Reflow() {
   GoDown();
   col = mincol;
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -2257,7 +2257,7 @@ void IEclass::ExitMsg() {
 
   done = MODE_QUIT;
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -2270,7 +2270,7 @@ void IEclass::DelLine() {
   cursoroff();
   deleteline();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -2285,7 +2285,7 @@ void IEclass::ToUpper() {
     currline->txt[col] = g_toupper(currline->txt[col]);
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -2300,7 +2300,7 @@ void IEclass::ToLower() {
     currline->txt[col] = g_tolower(currline->txt[col]);
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -2321,7 +2321,7 @@ void IEclass::ToggleCase() {
       currline->txt[col] = g_toupper(chr);
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -2448,7 +2448,7 @@ void IEclass::ToggleCaseBlock(gkey key)
   Line* _topline = findtopline();
   refresh(_topline, minrow);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -2488,7 +2488,7 @@ void IEclass::SCodeChange(gkey key)
         GoLeft();
       }
 
-      GFTRK(NULL);
+      GFTRK(0);
       return;
     }
   }
@@ -2507,7 +2507,7 @@ void IEclass::SCodeChange(gkey key)
 
   if ((_ch == c1) && (c1 == c2))
   {
-    GFTRK(NULL);
+    GFTRK(0);
     return;
   }
 
@@ -2532,7 +2532,7 @@ void IEclass::SCodeChange(gkey key)
 
   GoLeft();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -2544,7 +2544,7 @@ void IEclass::LookupCursor() {
 
   LookupNode(msgptr, currline->txt.c_str()+col, LOOK_NAME);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -2556,7 +2556,7 @@ void IEclass::LookupDest() {
 
   LookupNode(msgptr, "", LOOK_DEST);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -2568,7 +2568,7 @@ void IEclass::LookupOrig() {
 
   LookupNode(msgptr, "", LOOK_ORIG);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -3047,7 +3047,7 @@ int IEclass::Start(int __mode, uint* __position, GMsg* __msg) {
 
   *__position = 1 + thisrow;
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   return done;
 }
@@ -3178,7 +3178,7 @@ void UndoStack::PushItem(uint action, Line* __line, uint __col, uint __len) {
     }
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -3422,7 +3422,7 @@ void UndoStack::PlayItem() {
     undo_ready = YES;
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 

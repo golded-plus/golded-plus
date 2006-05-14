@@ -1249,7 +1249,7 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
 
   LoadLanguage(AA->Loadlanguage());
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 

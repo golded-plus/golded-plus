@@ -61,7 +61,7 @@ void WCatArea::lock() {
     data->islocked = true;
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -74,7 +74,7 @@ void WCatArea::unlock() {
     ::unlock(data->fhix, 0, 1);
   data->islocked = false;
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -223,7 +223,7 @@ void WCatArea::save_message(int __mode, gmsg* __msg, WCatHdr& __hdr) {
   if(not _was_locked)
     unlock();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -268,7 +268,7 @@ void WCatArea::new_msgno(gmsg* __msg) {
 
   __msg->msgno = data->base.nextmsgno;
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 

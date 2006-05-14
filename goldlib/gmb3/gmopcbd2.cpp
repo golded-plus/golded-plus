@@ -85,7 +85,7 @@ int PcbWideTestOpen(char* __file) {
   if(_tries)
     PopupLocked(0, 0, NULL);
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   return _fh;
 }
@@ -125,7 +125,7 @@ void PcbWideOpen() {
     pcbwide->isopen = true;
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -141,7 +141,7 @@ void PcbWideClose() {
     pcbwide->isopen = false;
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -154,7 +154,7 @@ void PcbArea::raw_close() {
   if(data->fhidx != -1)  ::close(data->fhidx);  data->fhidx = -1;
   if(data->fhmsg != -1)  ::close(data->fhmsg);  data->fhmsg = -1;
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -189,7 +189,7 @@ int PcbArea::test_open(const char* __file) {
   if(_tries)
     PopupLocked(0, 0, NULL);
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   return _fh;
 }
@@ -205,7 +205,7 @@ void PcbArea::raw_open() {
     data->fhmsg = test_open(real_path());
   data->fhidx = test_open(AddPath(real_path(), ".idx"));
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -357,7 +357,7 @@ void PcbArea::raw_scan(int __keep_index, int __scanpm) {
     isopen--;
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -369,7 +369,7 @@ void PcbArea::scan() {
 
   raw_scan(true);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -381,7 +381,7 @@ void PcbArea::scan_area() {
 
   raw_scan(false);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -394,7 +394,7 @@ void PcbArea::scan_area_pm() {
   raw_scan(true, true);
   Msgn->Reset();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 

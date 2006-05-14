@@ -192,7 +192,7 @@ bool FindString(GMsg* msg, const char* prompt, int what) {
     w_info(NULL);
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
   return result;
 }
 

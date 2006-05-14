@@ -84,7 +84,7 @@ int JamArea::test_open(const char* file) {
   if(tries)
     PopupLocked(0, 0, NULL);
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   return fh;
 }
@@ -107,7 +107,7 @@ void JamArea::raw_open() {
     }
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -123,7 +123,7 @@ void JamArea::raw_close() {
   if(data->fhjhr != -1) { ::close(data->fhjhr);  data->fhjhr = -1; }
   if(data->fhjhw != -1) { ::close(data->fhjhw);  data->fhjhw = -1; }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -193,7 +193,7 @@ void JamArea::open_area() {
 
   data->timesposted = 0;
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -344,7 +344,7 @@ void JamArea::raw_scan(int __keep_index, int __scanpm) {
     isopen--;
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -356,7 +356,7 @@ void JamArea::scan() {
 
   raw_scan(true);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -368,7 +368,7 @@ void JamArea::scan_area() {
 
   raw_scan(false);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -381,7 +381,7 @@ void JamArea::scan_area_pm() {
   raw_scan(true, true);
   Msgn->Reset();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 

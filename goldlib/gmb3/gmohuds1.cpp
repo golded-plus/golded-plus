@@ -232,7 +232,7 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::init() {
   if(WideDebug)
     WideLog->printf("- End init for %s.", path);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -259,7 +259,7 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::save_lastread(
     timesposted = 0;
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -299,7 +299,7 @@ error:
   TestErrorExit();
 
 done:
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -347,7 +347,7 @@ error:
 done:
   data_close();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -361,7 +361,7 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::suspend() {
   wide->save_lastread((board_t)board(), (msgn_t)Msgn->CvtReln(lastread));
   wide->raw_close();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -374,7 +374,7 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::resume() {
 
   wide->raw_open();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 

@@ -45,7 +45,7 @@ int SquishArea::load_message(int __mode, gmsg* __msg, SqshHdr& __hdr) {
   uint _reln = Msgn->ToReln(__msg->msgno);
 
   if(_reln == 0) {
-    GFTRK(NULL);
+    GFTRK(0);
     return false;
   }
 
@@ -169,7 +169,7 @@ int SquishArea::load_message(int __mode, gmsg* __msg, SqshHdr& __hdr) {
   else
     __msg->attr.uns0();
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   return true;
 }

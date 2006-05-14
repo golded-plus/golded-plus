@@ -41,7 +41,7 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::raw_close()
   fhtoi.Close();
   fhusr.Close();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -97,7 +97,7 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::test_open(gfil
   if (_tries)
     PopupLocked(0, 0, NULL);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -119,7 +119,7 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::raw_open(int _
     test_open(fhusr, __HUDSON ? "users" HUDS_EXT : "users" GOLD_EXT, __oaccess);
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -132,7 +132,7 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::raw_open_scan(
 
   raw_open(0, false);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -159,7 +159,7 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::refresh() {
   fhlrd.LseekSet(userno*sizeof(HudsLast));
   fhlrd.Read(lastrec, sizeof(HudsLast));
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -177,7 +177,7 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::open() {
   raw_open_scan();
   lock();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -196,7 +196,7 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::close() {
   iswideopen = false;
   isopen = 0;
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -241,7 +241,7 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::lock() {
   // Refresh msgbase data
   refresh();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -258,7 +258,7 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::unlock() {
     islocked = false;
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -391,7 +391,7 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::scan() {
     _scan++;
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -520,7 +520,7 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::raw_scan(int _
       wide->close();
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -533,7 +533,7 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::scan() {
 
   raw_scan(true);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -546,7 +546,7 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::scan_area() {
 
   raw_scan(false);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -655,7 +655,7 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::scan_pm() {
     WideLog->printf("+ Advice: Run a msgbase index rebuild/recover utility.");
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -721,7 +721,7 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::scan_area_pm()
       WideLog->printf("- Oops!  Fell into empty bracket.");
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 

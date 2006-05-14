@@ -363,7 +363,7 @@ void MarkMsgs(GMsg* msg) {
       break;
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 

@@ -128,7 +128,7 @@ Line* _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::make_dump_msg
   HexDump16(buf+7, _ptr, sizeof(HudsHdr)%16, HEX_DUMP2);
   line = AddLine(line, buf);
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   return line;
 }

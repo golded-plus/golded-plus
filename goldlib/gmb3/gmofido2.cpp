@@ -206,7 +206,7 @@ void FidoArea::raw_scan(bool __scanpm) {
     isopen--;
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -218,7 +218,7 @@ void FidoArea::scan() {
 
   scan_area();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -235,7 +235,7 @@ void FidoArea::scan_area() {
   if(not was_open)
     data_close();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -252,7 +252,7 @@ void FidoArea::scan_area_pm() {
   if(not was_open)
     data_close();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 

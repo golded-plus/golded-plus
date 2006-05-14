@@ -1071,7 +1071,7 @@ void FileRequest(GMsg* msg) {
   reader_topline = oldtopline;
   reader_keyok = YES;
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 

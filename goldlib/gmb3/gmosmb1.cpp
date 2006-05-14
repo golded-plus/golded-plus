@@ -144,7 +144,7 @@ void SMBArea::open() {
     scan();
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -173,7 +173,7 @@ void SMBArea::close()
     TestErrorExit();
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -254,18 +254,18 @@ int SMBArea::load_hdr(gmsg* __msg, smbmsg_t *smsg)
   smsgp = smsg ? smsg : &local_smsg;
   uint32_t reln = Msgn->ToReln(__msg->msgno);
   if(reln == 0) {
-    GFTRK(NULL);
+    GFTRK(0);
     return false;
   }
   fseek(data->sid_fp, (reln - 1L) * sizeof(idxrec_t), SEEK_SET);
   if(not fread(&smsgp->idx, 1, sizeof(idxrec_t), data->sid_fp) or (smb_lockmsghdr(data, smsgp) != 0)) {
-    GFTRK(NULL);
+    GFTRK(0);
     return false;
   }
   int rv = smb_getmsghdr(data, smsgp);
   smb_unlockmsghdr(data, smsgp);
   if(rv != 0) {
-    GFTRK(NULL);
+    GFTRK(0);
     return false;
   }
   __msg->link.to_set(smsgp->hdr.thread_orig);
@@ -337,7 +337,7 @@ int SMBArea::load_hdr(gmsg* __msg, smbmsg_t *smsg)
 
   if(not smsg)
     smb_freemsgmem(smsgp);
-  GFTRK(NULL);
+  GFTRK(0);
   return true;
 }
 
@@ -360,7 +360,7 @@ int SMBArea::load_msg(gmsg* msg)
   GFTRK("SMBLoadMsg");
 
   if(not load_hdr(msg, &smsg)) {
-    GFTRK(NULL);
+    GFTRK(0);
     return false;
   }
 
@@ -491,7 +491,7 @@ add2:
 
   smb_freemsgmem(&smsg);
 
-  GFTRK(NULL);
+  GFTRK(0);
   return true;
 }
 
@@ -516,18 +516,18 @@ void SMBArea::save_hdr(int mode, gmsg* msg)
   if(not (mode & GMSG_NEW)) {
     uint32_t reln = Msgn->ToReln(msg->msgno);
     if(reln == 0) {
-      GFTRK(NULL);
+      GFTRK(0);
       return;
     }
     fseek(data->sid_fp, (reln - 1L) * sizeof(idxrec_t), SEEK_SET);
     if(not fread(&smsg.idx, 1, sizeof(idxrec_t), data->sid_fp) or (smb_lockmsghdr(data, &smsg) != 0)) {
-      GFTRK(NULL);
+      GFTRK(0);
       return;
     }
     int rv = smb_getmsghdr(data, &smsg);
     smb_unlockmsghdr(data, &smsg);
     if(rv != 0) {
-      GFTRK(NULL);
+      GFTRK(0);
       return;
     }
     smsg.hdr.attr = 0;
@@ -581,7 +581,7 @@ void SMBArea::save_hdr(int mode, gmsg* msg)
       smb_putmsg(data, &smsg);
     }
     smb_freemsgmem(&smsg);
-    GFTRK(NULL);
+    GFTRK(0);
     return;
   }
 
@@ -808,7 +808,7 @@ void SMBArea::save_hdr(int mode, gmsg* msg)
   throw_xfree(stail-2);
   smb_freemsgmem(&smsg);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -820,7 +820,7 @@ void SMBArea::save_msg(int mode, gmsg* msg)
 
   save_hdr(mode | GMSG_HDRTXT, msg);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -833,12 +833,12 @@ void SMBArea::del_msg(gmsg* msg)
   smbmsg_t smsg;
   uint32_t reln = Msgn->ToReln(msg->msgno);
   if(reln == 0) {
-    GFTRK(NULL);
+    GFTRK(0);
     return;
   }
   fseek(data->sid_fp, (reln - 1L) * sizeof(idxrec_t), SEEK_SET);
   if(not fread(&smsg.idx, 1, sizeof(idxrec_t), data->sid_fp) or (smb_lockmsghdr(data, &smsg) != 0)) {
-    GFTRK(NULL);
+    GFTRK(0);
     return;
   }
   if(smb_getmsghdr(data, &smsg) == 0) {
@@ -855,7 +855,7 @@ void SMBArea::del_msg(gmsg* msg)
     smb_unlockmsghdr(data, &smsg);
   smb_freemsgmem(&smsg);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -957,7 +957,7 @@ Line* SMBArea::make_dump_msg(Line*& lin, gmsg* msg, char* lng_head)
 
   if(not load_hdr(msg, &smsg)) {
     line = AddLine(line, "Error loading header");
-    GFTRK(NULL);
+    GFTRK(0);
     return line;
   }
 
@@ -1094,7 +1094,7 @@ common:
 
   smb_freemsgmem(&smsg);
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   return line;
 }

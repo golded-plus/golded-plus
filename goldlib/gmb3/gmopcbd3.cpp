@@ -226,7 +226,7 @@ int PcbArea::load_message(int __mode, gmsg* __msg, PcbHdr& __hdr) {
   if(not (__mode & GMSG_TXT))
     throw_release(__msg->txt);
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   return true;
 }

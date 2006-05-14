@@ -156,7 +156,7 @@ void Area::DelMsgs(GMsg* msg) {
     if ((areano != currno) && (areano >= 0))
     {
       CopyMoveForward(true);
-      GFTRK(NULL);
+      GFTRK(0);
       return;
     }
   }
@@ -253,7 +253,7 @@ void Area::DelMsgs(GMsg* msg) {
 
   HandleGEvent(EVTT_BREAKLOOP);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -269,7 +269,7 @@ void TwitDeleteMsg(GMsg* msg) {
   AA->DeleteMsg(msg, reader_direction);
   HandleGEvent(EVTT_BREAKLOOP);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -363,7 +363,7 @@ void CmfMsgs(GMsg* msg, bool torecycle)
     do_mode = MenuDomarks.Run(markstr);
     if (do_mode == MODE_DONT)
     {
-      GFTRK(NULL);
+      GFTRK(0);
       return;
     }
   }
@@ -407,7 +407,7 @@ void CmfMsgs(GMsg* msg, bool torecycle)
     AA->Mark.ResetAll();
 
     w_info(NULL);
-    GFTRK(NULL);
+    GFTRK(0);
     return;
   }
 
@@ -430,7 +430,7 @@ void CmfMsgs(GMsg* msg, bool torecycle)
     destarea = AreaPick(pickstr, 6, &destarea);
 
   if(destarea == -1) {
-    GFTRK(NULL);
+    GFTRK(0);
     return;
   }
 
@@ -453,7 +453,7 @@ void CmfMsgs(GMsg* msg, bool torecycle)
       AL.SetActiveAreaId(OrigArea);
       throw_free(AA->adat);
       AA->adat = orig_adat;
-      GFTRK(NULL);
+      GFTRK(0);
       return;
     }
   }
@@ -667,7 +667,7 @@ void CmfMsgs(GMsg* msg, bool torecycle)
 
   w_info(NULL);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 

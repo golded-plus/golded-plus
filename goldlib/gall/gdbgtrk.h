@@ -56,8 +56,10 @@ extern GFTrk* __gftrk_list;
 //  ------------------------------------------------------------------
 
 #if defined(GFTRK_ENABLE)
-#ifdef __GNUC__
+#if defined(__GNUC__)
 #define GFTRK(t)  if(__gftrk) __gftrk_track(t ? __PRETTY_FUNCTION__ : t);
+#elif defined(_MSC_VER) && defined(__FUNCSIG__)
+#define GFTRK(t)  if(__gftrk) __gftrk_track(t ? __FUNCSIG__ : t);
 #else
 #define GFTRK(t)  if(__gftrk) __gftrk_track(t);
 #endif

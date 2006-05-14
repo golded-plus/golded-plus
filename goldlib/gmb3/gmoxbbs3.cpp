@@ -145,7 +145,7 @@ int XbbsArea::load_message(int __mode, gmsg* __msg, XbbsHdr& __hdr) {
     read(data->fhtext, __msg->txt, _txtlen);
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   // Success
   return true;

@@ -67,7 +67,7 @@ void SquishArea::refresh() {
     read(data->fhsqi, data->idx, (uint)(data->base.totalmsgs*sizeof(SqshIdx)));
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -273,7 +273,7 @@ void SquishArea::raw_scan(int __keep_index, int __scanpm) {
     wide = NULL;
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -285,7 +285,7 @@ void SquishArea::scan() {
 
   raw_scan(true);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -297,7 +297,7 @@ void SquishArea::scan_area() {
 
   raw_scan(false);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -310,7 +310,7 @@ void SquishArea::scan_area_pm() {
   raw_scan(true, true);
   Msgn->Reset();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 

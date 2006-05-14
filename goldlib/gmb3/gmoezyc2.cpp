@@ -119,7 +119,7 @@ void EzycomArea::raw_scan(int __keep_index) {
     isopen--;
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -131,7 +131,7 @@ void EzycomArea::scan() {
 
   raw_scan(true);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -143,7 +143,7 @@ void EzycomArea::scan_area() {
 
   raw_scan(false);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -155,7 +155,7 @@ void EzycomArea::scan_area_pm() {
 
   scan_area();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 

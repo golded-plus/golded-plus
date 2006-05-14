@@ -354,7 +354,7 @@ Finish:
   prnfp.Fclose();
   #endif
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 

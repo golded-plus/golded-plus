@@ -83,7 +83,7 @@ void XbbsArea::lock_file(int handle, int32_t position, int32_t length) {
   if(tries)
     PopupLocked(0, 0, NULL);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -95,7 +95,7 @@ void XbbsArea::unlock_file(int handle, int32_t position, int32_t length) {
 
   ::unlock(handle, position, length);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -278,7 +278,7 @@ void XbbsArea::save_message(int __mode, gmsg* __msg, XbbsHdr& __hdr) {
     }
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -323,7 +323,7 @@ void XbbsArea::new_msgno(gmsg* __msg) {
 
   __msg->msgno = data->idx_size + 1;
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -412,7 +412,7 @@ void XbbsArea::update_timesread(gmsg* msg) {
   ::write(data->fhdata, &hdr, sizeof(XbbsHdr));
   unlock_file(data->fhdata, position, sizeof(XbbsHdr));
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 

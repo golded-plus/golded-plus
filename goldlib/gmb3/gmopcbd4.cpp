@@ -68,7 +68,7 @@ void PcbArea::lock() {
     data->islocked = true;
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -91,7 +91,7 @@ void PcbArea::unlock() {
   data->base.active    = B2L(data->base.active);
   data->islocked = false;
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -386,7 +386,7 @@ void PcbArea::save_message(int __mode, gmsg* __msg, PcbHdr& __hdr) {
   if(not _was_locked)
     unlock();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -431,7 +431,7 @@ void PcbArea::new_msgno(gmsg* msg) {
 
   msg->msgno = data->base.highmsgno + 1;
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 

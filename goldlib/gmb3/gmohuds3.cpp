@@ -41,7 +41,7 @@ msgn_t _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::get_hdr_idx(
   if(_msgidx_ptr) {
     while(_count <= _total) {
       if(_msgno == _msgidx_ptr->msgno) {
-        GFTRK(NULL);
+        GFTRK(0);
         return _count;
       }
       _msgidx_ptr++;
@@ -79,7 +79,7 @@ msgn_t _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::get_hdr_idx(
   WideLog->printf("+ Advice: Restart or run a msgbase index rebuild utility.");
   IndexErrorExit();
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   return (msgn_t)(__HUDSON ? HUDS_DELETEDMSGNO : GOLD_DELETEDMSGNO);
 }
@@ -91,7 +91,7 @@ template <class msgn_t, class rec_t, class attr_t, class board_t, class last_t, 
 int _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::load_message(int __mode, gmsg* __msg, HudsHdr& __hdr) {
 
   if(__msg->msgno == 0) {
-    GFTRK(NULL);
+    GFTRK(0);
     return false;
   }
 
@@ -201,7 +201,7 @@ int _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::load_message(in
     }
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   return true;
 }

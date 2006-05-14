@@ -73,7 +73,7 @@ void JamInit(const char* jampath, int harddelete, int jamsmapihw) {
   // Enable replies lookahead feature
   jamwide->lookreplies = true;
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -106,7 +106,7 @@ void JamArea::open() {
     scan();
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -151,7 +151,7 @@ void JamArea::save_lastread() {
   // Unlock area
   unlock();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -185,7 +185,7 @@ void JamArea::close() {
     TestErrorExit();
   }
   
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -198,7 +198,7 @@ void JamArea::suspend() {
   save_lastread();
   raw_close();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -210,7 +210,7 @@ void JamArea::resume() {
 
   raw_open();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 

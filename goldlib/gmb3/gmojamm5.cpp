@@ -185,7 +185,7 @@ Line* JamArea::make_dump_msg(Line*& lin, gmsg* __msg, char* lng_head) {
   throw_free(_hdr);
   throw_free(_base);
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   return line;
 }

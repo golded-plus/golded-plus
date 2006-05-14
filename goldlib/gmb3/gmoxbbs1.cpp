@@ -77,7 +77,7 @@ void XbbsArea::raw_close() {
     wide->isopen--;
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -115,7 +115,7 @@ int XbbsArea::test_open(const char* __file, int sharemode) {
   if(_tries)
     PopupLocked(0, 0, NULL);
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   return _fh;
 }
@@ -134,7 +134,7 @@ void XbbsArea::raw_open() {
   if (wide->isopen == 1)
     wide->user->gufh = ::sopen(AddPath(wide->path, "Users"), O_RDONLY|O_BINARY, WideSharemode, S_STDRW);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -217,7 +217,7 @@ void XbbsArea::open() {
     scan();
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -235,7 +235,7 @@ void XbbsArea::save_lastread() {
     ::close(_fh);
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -267,7 +267,7 @@ void XbbsArea::close() {
     TestErrorExit();
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -279,7 +279,7 @@ void XbbsArea::suspend() {
 
   save_lastread();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -289,7 +289,7 @@ void XbbsArea::resume() {
 
   GFTRK("XbbsResume");
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 

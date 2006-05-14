@@ -101,7 +101,7 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::update_netecho
   // Free the memory
   throw_free(_scanidx);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -300,7 +300,7 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::save_message(i
   if(not _was_locked)
     unlock();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -349,7 +349,7 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::new_msgno(gmsg
 
   __msg->msgno = wide->msginfo.high + 1;
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -375,7 +375,7 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::update_timesre
 
   unlock();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 

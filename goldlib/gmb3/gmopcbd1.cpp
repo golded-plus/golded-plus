@@ -198,7 +198,7 @@ void PcbArea::open() {
     scan();
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -231,7 +231,7 @@ void PcbArea::save_lastread() {
     }
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -263,7 +263,7 @@ void PcbArea::close() {
     TestErrorExit();
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -277,7 +277,7 @@ void PcbArea::suspend() {
   raw_close();
   PcbWideClose();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -290,7 +290,7 @@ void PcbArea::resume() {
   PcbWideOpen();
   raw_open();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 

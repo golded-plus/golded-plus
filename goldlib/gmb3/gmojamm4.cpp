@@ -84,7 +84,7 @@ void JamArea::lock() {
   else
     data->highwater = -1;
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -99,7 +99,7 @@ void JamArea::unlock() {
     data->islocked = false;
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -456,7 +456,7 @@ void JamArea::save_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
     unlock();
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -501,7 +501,7 @@ void JamArea::new_msgno(gmsg* __msg) {
 
   __msg->msgno = data->hdrinfo.basemsgnum + (filelength(data->fhjdx)/sizeof(JamIndex));
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -533,7 +533,7 @@ void JamArea::update_timesread(gmsg* msg) {
 
   unlock();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 

@@ -187,7 +187,7 @@ int WCatArea::load_message(int __mode, gmsg* __msg, WCatHdr& __hdr) {
     }
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   // Success
   return true;

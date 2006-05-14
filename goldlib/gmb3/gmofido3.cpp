@@ -43,7 +43,7 @@ int FidoArea::load_message(int __mode, gmsg* __msg, FidoHdr& __hdr) {
   // Open the message file
   int _fh = test_open(_msgfile, O_RDONLY|O_BINARY, WideSharemode);
   if(_fh == -1) {
-    GFTRK(NULL);
+    GFTRK(0);
     return false;
   }
 
@@ -164,7 +164,7 @@ int FidoArea::load_message(int __mode, gmsg* __msg, FidoHdr& __hdr) {
   // Close the message file
   ::close(_fh);
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   // Success
   return true;

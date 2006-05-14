@@ -153,7 +153,7 @@ Line* SquishArea::make_dump_msg(Line*& lin, gmsg* msg, char* lng_head) {
   HexDump16(buf+7, _ptr, sizeof(SqshHdr)%16, HEX_DUMP2);
   line = AddLine(line, buf);
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   return line;
 }

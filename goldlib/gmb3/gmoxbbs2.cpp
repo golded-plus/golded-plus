@@ -48,7 +48,7 @@ void XbbsArea::refresh() {
 
   data->idx_size = (uint)indexnum;
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -174,7 +174,7 @@ void XbbsArea::raw_scan(int __keep_index, int __scanpm) {
     wide = NULL;
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -186,7 +186,7 @@ void XbbsArea::scan() {
 
   raw_scan(true);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -198,7 +198,7 @@ void XbbsArea::scan_area() {
 
   raw_scan(false);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -211,7 +211,7 @@ void XbbsArea::scan_area_pm() {
   raw_scan(true, true);
   Msgn->Reset();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 

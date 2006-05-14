@@ -166,7 +166,7 @@ Line* PcbArea::make_dump_msg(Line*& lin, gmsg* __msg, char* lng_head) {
 
   throw_free(dumplr);
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   return line;
 }

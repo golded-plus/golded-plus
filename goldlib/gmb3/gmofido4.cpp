@@ -42,7 +42,7 @@ void FidoArea::lock() {
 
   GFTRK("FidoLock");
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -52,7 +52,7 @@ void FidoArea::unlock() {
 
   GFTRK("FidoUnlock");
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -94,7 +94,7 @@ void FidoArea::save_message(int __mode, gmsg* __msg, FidoHdr& __hdr) {
       chmod(_msgfile, S_STDRW);
       remove(_msgfile);
     }
-    GFTRK(NULL);
+    GFTRK(0);
     return;
   }
 
@@ -207,7 +207,7 @@ void FidoArea::save_message(int __mode, gmsg* __msg, FidoHdr& __hdr) {
     Msgn->Append(__msg->msgno);
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -256,7 +256,7 @@ void FidoArea::new_msgno(gmsg* __msg) {
     __msg->msgno = Msgn->CvtReln(Msgn->Count()) + (++n);
   } while(fexist(build_msgname(_buf, __msg->msgno)));
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -295,7 +295,7 @@ void FidoArea::update_timesread(gmsg* msg) {
   if(readonly)
     chmod(filename,S_STDRD);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 

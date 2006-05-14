@@ -47,7 +47,7 @@ int JamArea::load_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
   read(data->fhjdx, &_idx, sizeof(JamIndex));
 
   if(_idx.hdroffset == 0xFFFFFFFFL) {
-    GFTRK(NULL);
+    GFTRK(0);
     return false;
   }
 
@@ -61,7 +61,7 @@ int JamArea::load_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
     WideLog->printf(": Info: Your msgbase is corrupted.");
     WideLog->printf("+ Advice: Run a msgbase index rebuild/recover utility.");
 
-    GFTRK(NULL);
+    GFTRK(0);
     return false;
   }
 
@@ -368,7 +368,7 @@ int JamArea::load_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
 
   throw_free(_kludges2);
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   return true;
 }

@@ -63,7 +63,7 @@ void WCatArea::raw_close() {
   if(data->fhix != -1)   ::close(data->fhix);   data->fhix = -1;
   if(data->fhdat != -1)  ::close(data->fhdat);  data->fhdat = -1;
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -99,7 +99,7 @@ int WCatArea::test_open(const char* __file) {
   if(_tries)
     PopupLocked(0, 0, NULL);
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   return _fh;
 }
@@ -114,7 +114,7 @@ void WCatArea::raw_open() {
   data->fhix  = test_open(AddPath(real_path(), ".ix"));
   data->fhdat = test_open(AddPath(real_path(), ".dat"));
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -168,7 +168,7 @@ void WCatArea::open() {
     scan();
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -186,7 +186,7 @@ void WCatArea::save_lastread() {
     ::close(_fh);
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -218,7 +218,7 @@ void WCatArea::close() {
     TestErrorExit();
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -230,7 +230,7 @@ void WCatArea::suspend() {
 
   save_lastread();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -242,7 +242,7 @@ void WCatArea::resume() {
 
 
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 

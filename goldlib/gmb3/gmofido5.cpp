@@ -131,7 +131,7 @@ int FidoArea::renumber() {
   for(_count=0; _count<Msgn->Count(); _count++)
     Msgn->at(_count) = _count + _msgno1st;
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   return true;
 }
@@ -188,7 +188,7 @@ Line* FidoArea::make_dump_msg(Line*& lin, gmsg* msg, char* lng_head) {
   HexDump16(buf+7, _ptr, 14, HEX_DUMP2);
   line = AddLine(line, buf);
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   return line;
 }

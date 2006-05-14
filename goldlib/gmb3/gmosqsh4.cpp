@@ -62,7 +62,7 @@ void SquishArea::lock() {
     data->islocked = true;
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -81,7 +81,7 @@ void SquishArea::unlock() {
   chsize(data->fhsqi, data->base.totalmsgs*sizeof(SqshIdx));
   data->islocked = false;
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -206,7 +206,7 @@ void SquishArea::delete_msg(uint __reln) {
   if(not _was_locked)
     unlock();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -643,7 +643,7 @@ void SquishArea::save_message(int __mode, gmsg* __msg) {
   if(not _was_locked)
     unlock();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -675,7 +675,7 @@ void SquishArea::del_msg(gmsg* __msg) {
 
   delete_msg(Msgn->ToReln(__msg->msgno)-1);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -710,7 +710,7 @@ void SquishArea::update_timesread(gmsg* msg) {
 
   unlock();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 

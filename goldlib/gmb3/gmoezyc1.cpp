@@ -109,7 +109,7 @@ void EzycomArea::raw_close() {
   if(data->omode == O_WRONLY)
     remove(AddPath(wide->msgbasepath, "EZYMSG.NOW"));
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -145,7 +145,7 @@ int EzycomArea::test_open(const char* __file, int __mode, int __share) {
   if(_tries)
     PopupLocked(0, 0, NULL);
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   return _fh;
 }
@@ -183,7 +183,7 @@ int EzycomArea::raw_open() {
           write(data->fhnow, &_sema, 1);  // Write some dummy data
         }
 
-        GFTRK(NULL);
+        GFTRK(0);
         return true;
       }
     }
@@ -199,7 +199,7 @@ int EzycomArea::raw_open() {
     }
   } while(_tryagain == 1);
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   return false;
 }
@@ -237,7 +237,7 @@ void EzycomArea::test_raw_open(int __fileline) {
   if(_tries)
     PopupLocked(0, 0, NULL);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -353,7 +353,7 @@ void EzycomArea::open() {
     scan();
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -384,7 +384,7 @@ void EzycomArea::save_lastread() {
     }
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -415,7 +415,7 @@ void EzycomArea::close() {
     TestErrorExit();
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -428,7 +428,7 @@ void EzycomArea::suspend() {
   save_lastread();
   raw_close();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -446,7 +446,7 @@ void EzycomArea::resume() {
     OpenErrorExit();
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 

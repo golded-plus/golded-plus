@@ -116,7 +116,7 @@ void SquishArea::raw_close() {
   if(data->fhsqi != -1)  ::close(data->fhsqi);  data->fhsqi = -1;
   if(data->fhsqd != -1)  ::close(data->fhsqd);  data->fhsqd = -1;
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -152,7 +152,7 @@ int SquishArea::test_open(const char* __file) {
   if(_tries)
     PopupLocked(0, 0, NULL);
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   return _fh;
 }
@@ -167,7 +167,7 @@ void SquishArea::raw_open() {
   data->fhsqd = test_open(AddPath(real_path(), ".sqd"));
   data->fhsqi = test_open(AddPath(real_path(), ".sqi"));
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -202,7 +202,7 @@ void SquishArea::open() {
     scan();
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -220,7 +220,7 @@ void SquishArea::save_lastread() {
     ::close(_fh);
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -252,7 +252,7 @@ void SquishArea::close() {
     TestErrorExit();
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -265,7 +265,7 @@ void SquishArea::suspend() {
   save_lastread();
   raw_close();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -277,7 +277,7 @@ void SquishArea::resume() {
 
   raw_open();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 

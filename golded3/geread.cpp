@@ -1221,7 +1221,7 @@ int LoadMessage(GMsg* msg, int margin) {
     msg->txt = throw_strdup("");
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
   return true;
 }
 

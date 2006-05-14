@@ -84,7 +84,7 @@ int FidoArea::test_open(const char* __file, int __openmode, int __sharemode, int
 
         // Return instead of halting if requested
         if((errno != EACCES) and not __fail) {
-          GFTRK(NULL);
+          GFTRK(0);
           return _fh;
         }
 
@@ -102,7 +102,7 @@ int FidoArea::test_open(const char* __file, int __openmode, int __sharemode, int
   if(_tries)
     PopupLocked(0, 0, NULL);
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   return _fh;
 }
@@ -190,7 +190,7 @@ void FidoArea::open() {
     scan();
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -208,7 +208,7 @@ void FidoArea::save_lastread() {
     ::close(_fh);
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -238,7 +238,7 @@ void FidoArea::close() {
     TestErrorExit();
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -250,7 +250,7 @@ void FidoArea::suspend() {
 
   save_lastread();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -260,7 +260,7 @@ void FidoArea::resume() {
 
   GFTRK("FidoResume");
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 

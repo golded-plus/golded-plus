@@ -186,7 +186,7 @@ void IEclass::ClearDeleteBuf() {
   killkillbuf();
   HandleGEvent(EVTT_JOBDONE);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -199,7 +199,7 @@ void IEclass::ClearPasteBuf() {
   killpastebuf();
   HandleGEvent(EVTT_JOBDONE);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -214,7 +214,7 @@ void IEclass::GoBegLine() {
   if(blockcol != -1)
     displine(currline, row);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -226,7 +226,7 @@ void IEclass::DelLtWord() {
 
   if(col == 0) {
     DelLeft();
-    GFTRK(NULL);
+    GFTRK(0);
     return;
   }
 
@@ -254,7 +254,7 @@ void IEclass::DelLtWord() {
   }
   else {
     DelLeft();
-    GFTRK(NULL);
+    GFTRK(0);
     return;
   }
 
@@ -265,7 +265,7 @@ void IEclass::DelLtWord() {
 
   wrapdel(&currline, &col, &row);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -277,7 +277,7 @@ void IEclass::DelRtWord() {
 
   if((currline->txt.length() == col+1) or (currline->txt[col+1] == '\n')) {
     DelChar();
-    GFTRK(NULL);
+    GFTRK(0);
     return;
   }
 
@@ -301,7 +301,7 @@ void IEclass::DelRtWord() {
   }
   else {
     DelChar();
-    GFTRK(NULL);
+    GFTRK(0);
     return;
   }
 
@@ -310,7 +310,7 @@ void IEclass::DelRtWord() {
 
   wrapdel(&currline, &col, &row);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -326,7 +326,7 @@ void IEclass::GoTopMsg() {
   thisrow = 0;
   refresh(currline, minrow);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -362,7 +362,7 @@ void IEclass::GoBotMsg() {
   // Refresh the display
   refresh(_topline, minrow);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -385,7 +385,7 @@ void IEclass::GoTopLine() {
   if(blockcol != -1)
     refresh(currline, minrow);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -409,7 +409,7 @@ void IEclass::GoBotLine() {
   if(blockcol != -1)
     refresh(_oldcurrline, _oldrow);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -426,7 +426,7 @@ Line* IEclass::findanchor() {
   while(not (_anchor->type & GLINE_BLOK) and _anchor->next)
     _anchor = _anchor->next;
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   // Return pointer to the anchor line or NULL if no anchor was found
   return (_anchor->type & GLINE_BLOK) ? _anchor : (Line*)NULL;
@@ -485,7 +485,7 @@ void IEclass::BlockAnchor() {
 
   displine(currline, row);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -590,7 +590,7 @@ void IEclass::BlockCopy() {
   }
   killpastebuf();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -691,7 +691,7 @@ void IEclass::BlockDel(Line* anchor) {
 
   selecting = NO;
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -719,7 +719,7 @@ void IEclass::BlockCut(bool just_delete) {
   else
     killpastebuf();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -787,7 +787,7 @@ void IEclass::BlockPaste() {
     refresh(_topline, minrow);
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -880,7 +880,7 @@ void IEclass::LoadFile() {
     throw_new(Undo = new UndoStack(this));
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1227,7 +1227,7 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
 
   AA->SetXlatimport(__oldxlatimport);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1242,7 +1242,7 @@ void IEclass::imptxt(char* __filename, bool imptxt) {
   refresh(currline, row);
   col = mincol;
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1254,7 +1254,7 @@ void IEclass::ImportText() {
 
   imptxt(NULL);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1269,7 +1269,7 @@ void IEclass::ImportQuotebuf() {
   GetCurrQuotebuf(_quotebuf);
   imptxt(_quotebuf, true);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1306,7 +1306,7 @@ void IEclass::editexport(Line* __exportline, int __endat) {
     }
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1328,7 +1328,7 @@ void IEclass::SpellCheck()
   ShellToDos(_buf, _buf2, LGREY_|_BLACK, YES);
   LoadFile();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1348,7 +1348,7 @@ void IEclass::ExportText() {
 
   editexport(exportline, endat);
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1362,7 +1362,7 @@ void IEclass::DosShell() {
   cursoron();
   cursoroff();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1382,7 +1382,7 @@ void IEclass::dispins() {
     HeaderView->window.printvs(5, MAXCOL-6, C_HEADB|ACSET, _lbuf);
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1405,7 +1405,7 @@ void IEclass::dispdl()
     HeaderView->window.printvs(5, MAXCOL-12, C_HEADB|ACSET, _lbuf);
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1418,7 +1418,7 @@ void IEclass::ToggleInsert() {
   insert = not insert;
   dispins();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1437,7 +1437,7 @@ void IEclass::ToggleDrawLines()
 
   dispdl();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1898,7 +1898,7 @@ void IEclass::DrawLines(gkey key)
     }
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1912,7 +1912,7 @@ void IEclass::Header() {
   EditHeaderinfo(msgmode, *HeaderView);
   windowopen();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1928,7 +1928,7 @@ void IEclass::Abort() {
     done = MODE_QUIT;
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1949,7 +1949,7 @@ void IEclass::AskExit() {
       done = MODE_SAVE;
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -1963,7 +1963,7 @@ void IEclass::QuitNow() {
   done = CFG->switches.get(timeoutsavemsg) ? MODE_SAVE : MODE_QUIT;
   gkbd.quitall = YES;
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 

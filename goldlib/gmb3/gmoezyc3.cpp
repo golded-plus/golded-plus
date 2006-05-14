@@ -100,7 +100,7 @@ int EzycomArea::load_message(int __mode, gmsg* __msg, EzycHdr& __hdr) {
     read(data->fhtxt, __msg->txt, (uint)__hdr.messagelength);
   }
 
-  GFTRK(NULL);
+  GFTRK(0);
 
   return true;
 }

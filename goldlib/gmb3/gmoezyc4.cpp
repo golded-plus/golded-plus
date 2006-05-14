@@ -44,7 +44,7 @@ void EzycomArea::lock() {
   test_raw_open(__LINE__);
   data->islocked = true;
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -60,7 +60,7 @@ void EzycomArea::unlock() {
   test_raw_open(__LINE__);
   data->islocked = false;
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -241,7 +241,7 @@ void EzycomArea::save_message(int __mode, gmsg* __msg, EzycHdr& __hdr) {
   if(not _was_locked)
     unlock();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -286,7 +286,7 @@ void EzycomArea::new_msgno(gmsg* __msg) {
 
   __msg->msgno = (filelength(data->fhhdr) / sizeof(EzycHdr)) + 1;
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
@@ -309,7 +309,7 @@ void EzycomArea::update_timesread(gmsg* msg) {
 
   unlock();
 
-  GFTRK(NULL);
+  GFTRK(0);
 }
 
 
