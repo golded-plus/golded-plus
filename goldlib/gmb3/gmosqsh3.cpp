@@ -107,8 +107,9 @@ int SquishArea::load_message(int __mode, gmsg* __msg, SqshHdr& __hdr) {
   // Convert link.list
   int q = 0;
   int r = __hdr.replies[0] == __hdr.replies[1] ? 2 : 1;
-  while(r<=8) {
-    if(__hdr.replies[r] and __hdr.replies[r-1] != __hdr.replies[r])
+  while (r <= 8)
+  {
+    if (__hdr.replies[r] and __hdr.replies[r-1] != __hdr.replies[r])
       __msg->link.list_set(q++, __hdr.replies[r]);
     r++;
   }

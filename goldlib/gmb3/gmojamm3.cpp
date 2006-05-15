@@ -313,10 +313,12 @@ int JamArea::load_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
   throw_free(_subfield);
 
   // Get reply numbers in chain
-  if(wide->lookreplies and __msg->link.first()) {
+  if (wide->lookreplies and __msg->link.first())
+  {
     int r = 0;
     uint32_t m = __msg->link.first();
-    while(m and (r < __msg->link.list_max())) {
+    while (m)
+    {
       JamHdr _rhdr;
       memset(&_rhdr, 0, sizeof(JamHdr));
       lseekset(data->fhjdx, m-data->hdrinfo.basemsgnum, sizeof(JamIndex));
@@ -324,8 +326,7 @@ int JamArea::load_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
       lseekset(data->fhjhr, _idx.hdroffset);
       read(data->fhjhr, &_rhdr, sizeof(JamHdr));
       m = _rhdr.replynext;
-      if(m)
-        __msg->link.list_set(r++, m);
+      if (m) __msg->link.list_set(r++, m);
     }
   }
 

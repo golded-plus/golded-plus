@@ -1151,17 +1151,22 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
           if(AA->LoadHdr(reply, reply_msgno, false)) {
             uint32_t replynext;
             bool ok2save = false;
-            if(streql(AA->basetype(), "SQUISH")) {
-              if(reply->link.first()) {
-                for(int r=0; r<reply->link.list_max()-1; r++) {
-                  if(reply->link.list(r) == 0) {
+
+            if (streql(AA->basetype(), "SQUISH"))
+            {
+              if (reply->link.first())
+              {
+                for (size_t r = 0; !ok2save; r++)
+                {
+                  if (reply->link.list(r) == 0)
+                  {
                     reply->link.list_set(r, msg->msgno);
                     ok2save = true;
-                    break;
                   }
                 }
               }
-              else {
+              else
+              {
                 reply->link.first_set(msg->msgno);
                 ok2save = true;
               }

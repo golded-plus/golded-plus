@@ -1046,17 +1046,17 @@ void GThreadlist::recursive_build(uint32_t msgn, uint32_t rn, uint32_t level) {
       }
     }
 
-    if(found or (list_size == 0))
+    if (found or (list_size == 0))
       list.push_back(t);
 
     recursive_build(msg.link.first(), msg.link.list(0), level+1);
 
-    for(int n=0; n < msg.link.list_max()-1; n++) {
-      if(msg.link.list(n)) {
+    for(size_t n = 0, max = msg.link.list_max(); n < max; n++)
+    {
+      if (msg.link.list(n))
         recursive_build(msg.link.list(n), msg.link.list(n+1), level+1);
-      } else
-        break;
     }
+
     AA->LoadHdr(&msg, oldmsgno);
   }
 }

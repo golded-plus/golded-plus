@@ -39,6 +39,8 @@
 #include <gvidall.h>
 #include <gmsgattr.h>
 
+#include <vector>
+
 
 //  ------------------------------------------------------------------
 //  Internet name typedefs
@@ -180,36 +182,52 @@ Line* AddHexdump(Line*& line, void* data, size_t datalen);
 
 //  ------------------------------------------------------------------
 
-class gmsg_links {
-
+class gmsg_links
+{
 private:
-
-  enum { list_limit = 29 };
-
   uint32_t reply_to;
   uint32_t reply_first;
-  uint32_t reply_list[list_limit];
   uint32_t reply_next;
+
+  std::vector<uint32_t> reply_list;
 
 public:
 
-  void reset() {
+  void reset()
+  {
     reply_to = reply_first = reply_next = 0;
-    for(int n=0; n<list_max(); n++)
-      reply_list[n] = 0;
+    reply_list.clear();
   }
 
-  int list_max() const          { return list_limit; }
+  int list_max() const             { return reply_list.size(); }
   
   void to_set(uint32_t m)          { reply_to = m; }
   void first_set(uint32_t m)       { reply_first = m; }
-  void list_set(int n, uint32_t m) { reply_list[n] = m; }
   void next_set(uint32_t m)        { reply_next = m; }
-  
+
+  void list_set(size_t n, uint32_t m)
+  {
+    size_t size = reply_list.size();
+    if (n >= size)
+    {
+      for (size_t i = size; i <= n; i++)
+        reply_list.push_back(0);
+    }
+
+    reply_list[n] = m;
+  }
+
   uint32_t to() const              { return reply_to; }
   uint32_t first() const           { return reply_first; }
-  uint32_t list(int n) const       { return reply_list[n]; }
   uint32_t next() const            { return reply_next; }
+
+  uint32_t list(size_t n) const
+  {
+    if (n >= reply_list.size())
+      return 0;
+
+    return reply_list[n];
+  }
 
 };
 
@@ -276,7 +294,7 @@ public:
 
   uint        board;            // Board number (if applicable)
 
-  uint32_t       msgno;            // Message number
+  uint32_t    msgno;            // Message number
   gmsg_links  link;             // Message reply links
 
   ftn_addr    oorig;            // Original origination address

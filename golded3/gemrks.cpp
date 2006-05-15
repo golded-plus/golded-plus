@@ -220,21 +220,18 @@ void MarkMsgs_Txt(int item, char* markstring) {
 
 static void recursive_mark(GMsg* msg, uint32_t msgno, bool markasread)
 {
-  int i;
-  gmsg_links templink;
-
-  if(AA->Msgn.ToReln(msgno) and AA->LoadHdr(msg, msgno, false)) {
-
-    templink = msg->link;
+  if (AA->Msgn.ToReln(msgno) and AA->LoadHdr(msg, msgno, false))
+  {
+    gmsg_links templink = msg->link;
 
     if (!markasread)
     {
-      if(templink.first())
+      if (templink.first())
         AA->Mark.Add(templink.first());
 
-      for(i = 0; i < templink.list_max(); i++)
+      for (size_t i = 0, max = templink.list_max(); i < max; i++)
       {
-        if(templink.list(i))
+        if (templink.list(i))
           AA->Mark.Add(templink.list(i));
       }
     }
@@ -244,13 +241,13 @@ static void recursive_mark(GMsg* msg, uint32_t msgno, bool markasread)
       AA->UpdateTimesread(msg);
     }
 
-    if(templink.first())
+    if (templink.first())
       recursive_mark(msg, templink.first(), markasread);
 
-    for(i = 0; i < templink.list_max(); i++) {
-      if(templink.list(i)) {
+    for (size_t i = 0, max = templink.list_max(); i < max; i++)
+    {
+      if (templink.list(i))
         recursive_mark(msg, templink.list(i), markasread);
-      }
     }
   }
 }

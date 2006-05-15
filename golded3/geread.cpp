@@ -1052,16 +1052,18 @@ void Reader() {
 //  ------------------------------------------------------------------
 //  Determine if the message has replies
 
-uint32_t MsgHasReplies(GMsg* msg) {
-
-  if(msg->link.first())
+uint32_t MsgHasReplies(GMsg* msg)
+{
+  if (msg->link.first())
     return msg->link.first();
 
-  for(int n=0; n<msg->link.list_max(); n++)
-    if(msg->link.list(n))
+  for (size_t n = 0, max = msg->link.list_max(); n < max; n++)
+  {
+    if (msg->link.list(n))
       return msg->link.list(n);
+  }
 
-  if(msg->link.next())
+  if (msg->link.next())
     return msg->link.next();
 
   return 0;
