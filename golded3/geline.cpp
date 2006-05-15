@@ -1774,7 +1774,7 @@ char* XlatStr(char* dest, const char* src, int level, Chs* chrtbl, int qpencoded
   ChsTab* chrs = chrtbl ? chrtbl->t : (ChsTab*)NULL;
 
 #ifdef HAS_ICONV
-  size_t iconvrc=-1;
+  size_t iconvrc=(size_t)(-1);
   if( iconv_cd!=(iconv_t)(-1) ){
     iconvrc=iconv( iconv_cd, NULL, NULL, NULL, NULL ); // init iconv
   }
