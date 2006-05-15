@@ -17,6 +17,7 @@ cd .. ; tar -jcf ${name} \
 	--exclude golded+/lib \
 	--exclude golded+/bin \
 	--exclude golded+/Release \
+	--exclude golded+/Debug \
 	--exclude 'golded+/*.bat' \
 	--exclude 'golded+/*.BAT' \
 	--exclude 'golded+/*.cmd' \
@@ -38,6 +39,7 @@ cd .. ; tar -jcf ${name} \
 	--exclude '*.exe' \
 	--exclude '*.a' \
 	--exclude '*.o' \
+	--exclude '*.*~' \
 	golded+
 
 cp ${name} ${shortname}
