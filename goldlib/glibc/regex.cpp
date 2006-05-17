@@ -19,6 +19,8 @@
 //  write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //  Boston, MA 02111-1307, USA.  */
 
+//  $Id$
+
 /* AIX requires this to be the first thing in the file. */
 #if defined _AIX && !defined REGEX_MALLOC
 #pragma alloca
@@ -126,7 +128,7 @@ by defining INHIBIT_STRING_HEADER.  */
 #   include <string.h>
 #   ifndef bzero
 #    ifndef _LIBC
-#     define bzero(s, n)    (memset (s, '\0', n), (s))
+#     define bzero(s, n)    memset (s, '\0', n)
 #    else
 #     define bzero(s, n)    __bzero (s, n)
 #    endif
@@ -221,7 +223,8 @@ Solaris defines some of these symbols so we must undefine them first.  */
 
 #undef ISASCII
 #if defined STDC_HEADERS || (!defined isascii && !defined HAVE_ISASCII)
-# define ISASCII(c) ((c) < 256)
+//# define ISASCII(c) ((c) < 256)
+inline bool ISASCII(char) { return true; }
 #else
 # define ISASCII(c) isascii(c)
 #endif
