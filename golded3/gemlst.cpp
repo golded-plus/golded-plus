@@ -724,14 +724,16 @@ class GThreadlist : public gwinpick {
 
 private:
 
-  gwindow               window;
-  GMsg                  msg;
-  std::vector<ThreadEntry>   list;
-  ThreadEntry           t;
+  gwindow     window;
+  GMsg        msg;
+  ThreadEntry t;
+
+  std::vector<ThreadEntry>  list;
+  std::vector<std::string>  tree;
 
   void BuildThreadIndex(dword msgno);
-  void recursive_build(uint32_t msgn, uint32_t rn, uint32_t level);
-  void GenTree(char* buf2, int idx, uint32_t maxlev);
+  void recursive_build(uint32_t msgn, uint32_t rn, uint32_t level, uint32_t index);
+  void GenTree(int idx);
   void update_title();
   bool NextThread(bool next);
 
@@ -840,7 +842,15 @@ void GThreadlist::close() {
 
 //  ------------------------------------------------------------------
 
-void GThreadlist::GenTree(char* buf, int idx, uint32_t maxlev) {
+void GThreadlist::GenTree(int idx)
+{
+  if (tree.size() > idx)
+  {
+    if (tree[idx].size())
+      return;
+  }
+  else
+    tree.resize(idx+1);
 
 #ifdef KOI8
   static char graph[4]="†„";
@@ -848,7 +858,8 @@ void GThreadlist::GenTree(char* buf, int idx, uint32_t maxlev) {
   static char graph_ibmpc[4]="ÃÀ³";
   static char graph[4]="";
 
-  if(graph[0] == NUL) {
+  if(graph[0] == NUL)
+  {
     int table = LoadCharset(NULL, NULL, 1);
     int level = LoadCharset(get_dos_charset(CFG->xlatlocalset), CFG->xlatlocalset);
     XlatStr(graph, graph_ibmpc, level, CharTable);
@@ -856,47 +867,43 @@ void GThreadlist::GenTree(char* buf, int idx, uint32_t maxlev) {
       LoadCharset(CFG->xlatimport, CFG->xlatlocalset);
     else
       LoadCharset(CFG->xlatcharset[table].imp, CFG->xlatcharset[table].exp);
+
+#if defined(__UNIX__) && !defined(__USE_NCURSES__)
+    gvid_boxcvt(graph);
+#endif
   }
 #endif
 
   ThreadEntry te = list[idx];
 
-  buf[0] = ' ';
-
-  if(te.level == 0) {
-    buf[1] = NUL;
+  if (te.level == 0)
+  {
+    tree[idx] = " ";
     return;
   }
 
-  if(te.level < maxlev) {
-    buf[(te.level-1)*2+1] = (te.replynext) ? graph[0] : graph[1];
-    buf[(te.level-1)*2+2] = ' ';
-    buf[(te.level-1)*2+3] = NUL;
-  }
+  tree[idx].resize((te.level-1)*2+4, ' ');
 
-  while(te.replyto) {
+  tree[idx][(te.level-1)*2+1] = (te.replynext) ? graph[0] : graph[1];
+  tree[idx][(te.level-1)*2+3] = 0;
+
+  while (te.replyto)
+  {
     te = list[te.replytoindex];
-    if((te.level != 0) and (te.level < maxlev)) {
-      buf[(te.level-1)*2+1] = (te.replynext) ? graph[2] : ' ';
-      buf[(te.level-1)*2+2] = ' ';
+    if (te.level != 0)
+    {
+      if (te.replynext)
+        tree[idx][(te.level-1)*2+1] = graph[2];
     }
   }
-
-  buf[maxlev*2+1] = NUL;
 }
 
 
 //  ------------------------------------------------------------------
 
-void GThreadlist::print_line(uint idx, uint pos, bool isbar) {
-
+void GThreadlist::print_line(uint idx, uint pos, bool isbar)
+{
   char buf[256];
-  uint32_t maxlev = (100*window.width()+h_offset+1)/2;
-#if defined(__USE_ALLOCA__)
-  char *buf2 = (char*)alloca(maxlev*2+2);
-#else
-  __extension__ char buf2[maxlev*2+2];
-#endif
 
   t = list[idx];
   size_t tdlen = xlen - ((AA->Msglistdate() == MSGLISTDATE_NONE) ? 8 : 18);
@@ -922,15 +929,7 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar) {
     attrh = hattr;
   }
 
-  GenTree(buf2, idx, maxlev);
-
-  #if defined(__UNIX__) && !defined(__USE_NCURSES__)
-  gvid_boxcvt(buf2);
-  #endif
-
-  char marks[3];
-
-  strcpy(marks, "  ");
+  char marks[3] = "  ";
 
   if(AA->bookmark == t.msgno)
     marks[0] = MMRK_BOOK;
@@ -969,7 +968,11 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar) {
   window.prints(pos, 0, isbar ? sattr : attrw, buf);
   window.prints(pos, 6, isbar ? sattr : hattr, marks);
 
+  GenTree(idx);
+
+  const char* buf2 = tree[idx].c_str();
   size_t buf2len = strlen(buf2);
+
   if (buf2len > h_offset)
   {
     strxcpy(buf, &buf2[h_offset], tdlen);
@@ -990,9 +993,23 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar) {
   {
     size_t bylen = strlen(msg.By());
     if ((buf2len + bylen) > (tdlen - 1))
-      new_hoffset = (buf2len + bylen)-tdlen+1;
+    {
+      uint offset = (buf2len + bylen) - tdlen + 1;
+      offset = (offset/10 + 1)*10;
+
+      if (offset >= new_hoffset)
+        new_hoffset = offset;
+      else
+      {
+        while ((new_hoffset - offset) >= tdlen*2/3)
+          new_hoffset -= 10;
+      }
+    }
     else
-      new_hoffset = 0;
+    {
+        while (buf2len < new_hoffset)
+          new_hoffset -= 10;
+    }
 
     attr = sattr;
   }
@@ -1016,45 +1033,32 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar) {
 
 //  ------------------------------------------------------------------
 
-void GThreadlist::recursive_build(uint32_t msgn, uint32_t rn, uint32_t level) {
-
+void GThreadlist::recursive_build(uint32_t msgn, uint32_t rn, uint32_t level, uint32_t index)
+{
   uint32_t oldmsgno = msg.msgno;
 
-  if(AA->Msgn.ToReln(msgn) and AA->LoadHdr(&msg, msgn)) {
-
+  if (AA->Msgn.ToReln(msgn) and AA->LoadHdr(&msg, msgn))
+  {
     t.msgno     = msgn;
     t.replyto   = msg.link.to();
     t.reply1st  = msg.link.first();
     t.replynext = rn;
-    t.level     = level;
-    t.replytoindex = 0;
+    t.level     = level++;
+    t.replytoindex = index;
 
-    if(not AA->Msgn.ToReln(t.replyto))
-      t.replyto = 0;
-    if(not AA->Msgn.ToReln(t.reply1st))
-      t.reply1st = 0;
-    if(not AA->Msgn.ToReln(t.replynext))
-      t.replynext = 0;
+    if (!AA->Msgn.ToReln(t.replyto))    t.replyto   = 0;
+    if (!AA->Msgn.ToReln(t.reply1st))   t.reply1st  = 0;
+    if (!AA->Msgn.ToReln(t.replynext))  t.replynext = 0;
 
-    uint j, list_size = list.size();
-    bool found = false;
-    for(j=0; j<list_size; j++) {
-      if(list[j].msgno == t.replyto) {
-        t.replytoindex = j;
-        found = true;
-        break;
-      }
-    }
+    list.push_back(t);
+    index = list.size() - 1;
 
-    if (found or (list_size == 0))
-      list.push_back(t);
+    recursive_build(msg.link.first(), msg.link.list(0), level, index);
 
-    recursive_build(msg.link.first(), msg.link.list(0), level+1);
-
-    for(size_t n = 0, max = msg.link.list_max(); n < max; n++)
+    for (size_t n = 0, max = msg.link.list_max(); n < max; n++)
     {
       if (msg.link.list(n))
-        recursive_build(msg.link.list(n), msg.link.list(n+1), level+1);
+        recursive_build(msg.link.list(n), msg.link.list(n+1), level, index);
     }
 
     AA->LoadHdr(&msg, oldmsgno);
@@ -1064,12 +1068,14 @@ void GThreadlist::recursive_build(uint32_t msgn, uint32_t rn, uint32_t level) {
 
 //  ------------------------------------------------------------------
 
-void GThreadlist::BuildThreadIndex(dword msgn) {
-
+void GThreadlist::BuildThreadIndex(dword msgn)
+{
   w_info(LNG->Wait);
 
   index = maximum_index = position = maximum_position = 0;
+  
   list.clear();
+  tree.clear();
 
   AA->LoadHdr(&msg, msgn);
 
@@ -1090,7 +1096,7 @@ void GThreadlist::BuildThreadIndex(dword msgn) {
     msgno = msg.link.to();
   }
 
-  recursive_build(msg.msgno, 0, 0);
+  recursive_build(msg.msgno, 0, 0, 0);
 
   w_info(NULL);
 

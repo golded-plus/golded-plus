@@ -10,6 +10,10 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ Improved floating reply threads logic (see ReplyLinkFloat).
+
++ Reply tread is generated a bit faster.
+
 = Snapshot for the May 15, 2006.
 
 + Unlimited reply link chain (max was 30 replies).
