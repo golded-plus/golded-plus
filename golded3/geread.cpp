@@ -218,8 +218,10 @@ void Reader() {
     BodyView->highlight_color = C_READH;
     BodyView->Create();
 
-    do {
-
+    do
+    {
+      AA->set_findfirst(true);
+      AA->set_findtype(1);
       AA->isreadpm = false;
       AA->isreadmark = false;
       reader_direction = DIR_NEXT;
@@ -824,16 +826,11 @@ void Reader() {
                 break;
 
               case KK_ReadFindNext:
-                if (!AA->get_findfirst())
-                {
-                  if (AA->get_findtype() == 1)
-                    FindAll(msg, reader_topline, reader_keyok);
-                  else
-                    FindHdr(msg, reader_topline, reader_keyok);
-                }
+                if (AA->get_findtype() == 1)
+                  FindAll(msg, reader_topline, reader_keyok);
                 else
-                  reader_keyok = false;
-              break;
+                  FindHdr(msg, reader_topline, reader_keyok);
+                break;
 
               case KK_ReadSearch:
                 AdvancedSearch(msg, reader_topline, reader_keyok);

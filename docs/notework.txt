@@ -10,6 +10,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ On first pressing ReadFindNext key and ReadFindAll/ReadFindHeader was
+  not pressed before, it will work like ReadFindAll key.
+
 + Improved floating reply threads logic (see ReplyLinkFloat).
 
 + Reply tread is generated a bit faster.
