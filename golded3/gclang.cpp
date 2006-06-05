@@ -26,6 +26,7 @@
 
 #include <golded.h>
 #include <gclang.h>
+#include <gregex.h>
 
 
 //  ------------------------------------------------------------------
@@ -530,12 +531,25 @@ static int CmpLangCrc(LangCrc* a, LangCrc* b) {
 //  ------------------------------------------------------------------
 //  Call the function matching the keyword
 
-static bool SwitchLanguage(word crc, char* str) {
-
+static bool SwitchLanguage(word crc, char* str)
+{
   LangCrc* lptr;
   LangCrc lkey;
-
   lkey.crc = crc;
+
+  switch (crc)
+  {
+  case CRC_ST_EDITSTATUS:
+    gregex reg;
+    reg.compile("^.*%[0-9]*[dioux].*%[0-9]*[dioux].*%[0-9]*[dioux].*%[0-9]*s", gregex::icase);
+    if (!reg.match(str))
+    {
+      STD_PRINTNL("ST_EDITSTATUS have wrong format. Read NOTEWORK.TXT for details or announce author if this error is false positive.");
+      SayBibi();
+      waitkeyt(10000);
+    }
+    break;
+  }
 
   lptr = (LangCrc*)bsearch(&lkey, LangCrcs, sizeof(LangCrcs)/sizeof(LangCrc), sizeof(LangCrc), (StdCmpCP)CmpLangCrc);
   if(lptr != NULL) {
