@@ -725,14 +725,16 @@ int IEclass::downoneline(uint __row) {
 
 //  ------------------------------------------------------------------
 
-void IEclass::GoEOL() {
-
+void IEclass::GoEOL()
+{
   GFTRK("EditGoEOL");
 
   // Move cursor to the last char on the line
-  col = currline->txt.length();
-  if((currline->txt[col-1] == '\n') or ((col != mincol) and (currline->txt[col-1] == ' ')))
-    --col;
+  if (mincol != (col = currline->txt.length()))
+  {
+    if ((currline->txt[col-1] == '\n') || (currline->txt[col-1] == ' '))
+      --col;
+  }
 
   // String must not be longer than the window width
   _test_haltab(col > maxcol, col, maxcol);
@@ -1276,13 +1278,19 @@ void IEclass::insertchar(char __ch) {
 
 //  ------------------------------------------------------------------
 
-void IEclass::DelChar() {
-
+void IEclass::DelChar()
+{
   GFTRK("EditDelChar");
 
   Line* _thisline = currline;
   Line* _nextline = currline->next;
   uint  _thislen = _thisline->txt.length();
+
+  if (!_nextline && (col == _thislen - 1) && (_thisline->txt[col] == '\n'))
+  {
+      GFTRK(0);
+      return;
+  }
 
   // Cannot delete at or beyond the nul-terminator
   if(col < _thislen) {
