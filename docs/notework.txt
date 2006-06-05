@@ -10,6 +10,13 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Additional check of token ST_EDITSTATUS.
+
+- Fixed infinite loop when parsing template, if @random token file
+  was not found.
+
+- Golded+ can crash in editor if line is 0 char long.
+
 + On first pressing ReadFindNext key and ReadFindAll/ReadFindHeader was
   not pressed before, it will work like ReadFindAll key.
 
