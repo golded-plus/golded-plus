@@ -76,7 +76,7 @@ void update_statuslines() {
         __gver_release__,
         __gver_postversion__
       );
-    
+
     int help_len = strlen(help);
     int clk_len = strlen(clkinfo);
     int len = MAXCOL-help_len-clk_len-2;
@@ -631,7 +631,7 @@ static void call_func_geutil(VfvCP func) {
     vcurshow();
 }
 
-  
+
 //  ------------------------------------------------------------------
 
 void call_help() {
@@ -656,7 +656,7 @@ void call_help() {
 
 void CheckTick(gkey quitkey) {
 
-  Clock idle_secs = (gkbd.tickvalue - gkbd.tickpress) / 10L;
+  Clock idle_secs = abs(gkbd.tickvalue - gkbd.tickpress) / 10L;
 
   if(CFG->timeout) {
     if(((signed long)idle_secs > 0) and (idle_secs >= CFG->timeout)) {
