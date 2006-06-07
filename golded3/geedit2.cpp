@@ -1955,12 +1955,22 @@ void IEclass::AskExit() {
 
 //  ------------------------------------------------------------------
 
-void IEclass::QuitNow() {
-
+void IEclass::QuitNow()
+{
   GFTRK("EditQuitNow");
 
-  quitnow = CFG->switches.get(timeoutsavemsg) ? NO : YES;
-  done = CFG->switches.get(timeoutsavemsg) ? MODE_SAVE : MODE_QUIT;
+  if (CFG->switches.get(timeoutsavemsg))
+  {
+    quitnow = NO;
+    done = MODE_SAVE;
+    msgptr->attr.lok1();
+  }
+  else
+  {
+    quitnow = YES;
+    done = MODE_QUIT;
+  }
+
   gkbd.quitall = YES;
 
   GFTRK(0);
@@ -1977,4 +1987,3 @@ int EditMsg(int __mode, uint* __position, GMsg* __msg) {
 
 
 //  ------------------------------------------------------------------
-
