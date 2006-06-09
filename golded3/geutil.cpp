@@ -656,10 +656,10 @@ void call_help() {
 
 void CheckTick(gkey quitkey) {
 
-  Clock idle_secs = abs(gkbd.tickvalue - gkbd.tickpress) / 10L;
+  Clock idle_secs = gkbd.tickvalue > gkbd.tickpress? (gkbd.tickvalue - gkbd.tickpress / 10L) : 0;
 
   if(CFG->timeout) {
-    if(((signed long)idle_secs > 0) and (idle_secs >= CFG->timeout)) {
+    if(idle_secs >= CFG->timeout) {
       kbput(quitkey);
       return;
     }
