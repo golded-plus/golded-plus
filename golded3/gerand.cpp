@@ -34,8 +34,8 @@ char* GetRandomLine(char* __buf, size_t __bufsize, const char* file)
   Path indexfile;
   Path __file;
 
-  strxcpy(__buf, "", __bufsize);
   strxcpy(__file, file, sizeof(Path));
+  strxcpy(__buf, "", __bufsize);
   strschg_environ(__file);
 
   replaceextension(indexfile, __file, ".sdx");
