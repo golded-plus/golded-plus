@@ -708,6 +708,7 @@ CfgGed::CfgGed() {
   arealistechomax = 0;
   arealisttype = AL_TOTNEW;
   areareadonly = READONLY_SOFT;
+  arearecyclebinask = false;
   areareplydirect = false;
   beepfactor = 1000;
   beepyourmail = true;

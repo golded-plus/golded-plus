@@ -145,17 +145,24 @@ void Area::DeleteMsg(GMsg* msg, int direction) {
 
 //  ------------------------------------------------------------------
 
-void Area::DelMsgs(GMsg* msg) {
-
+void Area::DelMsgs(GMsg* msg)
+{
   GFTRK("DelMsgs");
+  GMenuDelete MenuDelete;
 
   if (CFG->arearecyclebin[0])
   {
     int areano = AL.AreaEchoToNo(CFG->arearecyclebin);
     int currno = AL.AreaIdToNo(CurrArea);
+
     if ((areano != currno) && (areano >= 0))
     {
-      CopyMoveForward(true);
+      bool del = true;
+      if(CFG->arearecyclebinask && (NO == MenuDelete.Run(NO, msg)))
+        del = false;
+
+      if (del) CopyMoveForward(true);
+
       GFTRK(0);
       return;
     }
@@ -197,8 +204,9 @@ void Area::DelMsgs(GMsg* msg) {
                 HeaderView->Paint();
                 BodyView->Use(AA, msg, topline);
                 BodyView->Paint();
-                GMenuDelete MenuDelete;
-                switch(MenuDelete.Run(YES, msg)) {
+                
+                switch(MenuDelete.Run(YES, msg))
+                {
                   case YES:       // Yes, delete
                     deletethis = true;
                     break;
@@ -218,8 +226,9 @@ void Area::DelMsgs(GMsg* msg) {
               HeaderView->Paint();
               BodyView->Use(AA, msg, topline);
               BodyView->Paint();
-              GMenuDelete MenuDelete;
-              switch(MenuDelete.Run(YES, msg)) {
+
+              switch (MenuDelete.Run(YES, msg))
+              {
                 case YES:       // Yes, delete
                   break;
                 case NO:        // No, dont delete
@@ -241,11 +250,14 @@ void Area::DelMsgs(GMsg* msg) {
       w_progress(MODE_QUIT, BLACK_|_BLACK, 0, 0, NULL);
     }
   }
-  if(n == 0) {
+
+  if (n == 0)
+  {
     Mark.Del(msg->msgno);
     PMrk.Del(msg->msgno);
-    GMenuDelete MenuDelete;
-    if(Mark.Count() or MenuDelete.Run(NO, msg)) {
+
+    if (Mark.Count() or MenuDelete.Run(NO, msg))
+    {
       HandleGEvent(EVTT_MSGDELETING);
       DeleteMsg(msg, reader_direction);
     }

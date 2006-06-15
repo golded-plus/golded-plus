@@ -10,6 +10,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+! Token AreaRecycleBin changed to AreaRecycleBin <area> [NoAsk/Ask]
+  Default is to not ask.
+
 + Turn on flag 'Locked' if TimeOutSaveMsg is enabled.
 
 - Additional check of token ST_EDITSTATUS.

@@ -424,7 +424,19 @@ void CfgAreareadonly() {
 
 void CfgArearecyclebin()
 {
-  strupr(strxcpy(CFG->arearecyclebin, val, sizeof(Echo)));
+  char* key;
+  getkeyval(&key, &val);
+  strupr(strxcpy(CFG->arearecyclebin, key, sizeof(Echo)));
+
+  if (*val)
+  {
+    if      (strieql(val, "NoAsk"))
+      CFG->arearecyclebinask = false;
+    else if (strieql(val, "Ask"))
+      CFG->arearecyclebinask = true;
+    else
+      CFG->arearecyclebinask = make_bool(GetYesno(val));
+  }
 }
 
 //  ------------------------------------------------------------------

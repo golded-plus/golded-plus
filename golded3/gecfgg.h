@@ -252,6 +252,7 @@ public:
   gstrarray   areapmscanincl;
   int         areareadonly;
   Echo        arearecyclebin;
+  bool        arearecyclebinask;
   std::vector<EchoRen> arearename;
   bool        areareplydirect;
   Echo        areareplyto;
