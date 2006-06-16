@@ -145,12 +145,12 @@ void Area::DeleteMsg(GMsg* msg, int direction) {
 
 //  ------------------------------------------------------------------
 
-void Area::DelMsgs(GMsg* msg)
+void Area::DelMsgs(GMsg* msg, bool force)
 {
   GFTRK("DelMsgs");
   GMenuDelete MenuDelete;
 
-  if (CFG->arearecyclebin[0])
+  if (!force && CFG->arearecyclebin[0])
   {
     int areano = AL.AreaEchoToNo(CFG->arearecyclebin);
     int currno = AL.AreaIdToNo(CurrArea);
@@ -287,10 +287,10 @@ void TwitDeleteMsg(GMsg* msg) {
 
 //  ------------------------------------------------------------------
 
-void Area::DelMsg() {
-
+void Area::DelMsg(bool force)
+{
   if(Msgn.Count())
-    DelMsgs(reader_msg);
+    DelMsgs(reader_msg, force);
 }
 
 

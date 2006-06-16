@@ -233,6 +233,7 @@ const word CRC_READFILEREQUEST      = 0x0A07;
 const word CRC_READFINDALL          = 0xEF19;
 const word CRC_READFINDHEADER       = 0x6343;
 const word CRC_READFINDNEXT         = 0x8082;
+const word CRC_READFORCEDELETEMSG   = 0xD57A;
 const word CRC_READGOTOBOOKMARK     = 0x4383;
 const word CRC_READGOTOFIRSTMSG     = 0x392F;
 const word CRC_READGOTOLASTMSG      = 0x9E72;

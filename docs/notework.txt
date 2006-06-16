@@ -10,6 +10,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ Added ReadForceDeleteMsg (default is #Del) to the goldkeys.cfg used to
+  delete messages without moving them to AreaRecicleBin.
+
 ! Token AreaRecycleBin changed to AreaRecycleBin <area> [NoAsk/Ask]
   Default is to not ask.
 

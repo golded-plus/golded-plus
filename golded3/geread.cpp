@@ -884,13 +884,14 @@ void Reader() {
                 CopyMoveForward();
                 break;
 
+              case KK_ReadForceDeleteMsg:
               case KK_ReadDeleteMsg:
                 if(AA->attr().r_o()) {
                   GMenuReadonly MenuReadonly;
                   if(not MenuReadonly.Run())
                     break;
                 }
-                AA->DelMsg();
+                AA->DelMsg(reader_keycode == KK_ReadForceDeleteMsg);
                 break;
 
               case KK_ReadMakeUserlist:

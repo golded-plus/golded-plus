@@ -308,6 +308,7 @@ M           READcopymoveforward
 @D          READdeletemsg
 D           READdeletemsg
 Del         READdeletemsg
+#Del        READforcedeletemsg  ; Удалить минуя AreaRecycleBin.
 @O          READdosshell
 O           READdosshell
 ^F10        READdosshell

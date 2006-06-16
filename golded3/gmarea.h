@@ -488,8 +488,8 @@ public:
 
   void SetBookmark(uint __relno);
   void DeleteMsg(GMsg* msg, int direction);
-  void DelMsg();
-  void DelMsgs(GMsg* msg);
+  void DelMsg(bool force = false);
+  void DelMsgs(GMsg* msg, bool force = false);
   void SigExportlistUpdate();
   void UpdateAreadata();
 

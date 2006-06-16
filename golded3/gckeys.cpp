@@ -227,6 +227,7 @@ CmdKey DefaultKeyset[] = {
   { Key_A_Z     , KK_ReadFindHeader       , KT_R },
   { Key_F6      , KK_ReadFindHeader       , KT_R },
   { Key_A_F6    , KK_ReadFindNext         , KT_R },
+  { Key_S_Del   , KK_ReadForceDeleteMsg   , KT_R },
   { Key_S_Tab   , KK_ReadGotoBookMark     , KT_R },
   { Key_BS      , KK_ReadGotoBookMark     , KT_R },
   { Key_Lsr     , KK_ReadGotoFirstMsg     , KT_R },
@@ -808,6 +809,7 @@ tglobalkey globalkeys[] = {
   { CRC_EDITTOUPPER            , KK_EditToUpper          , KT_E }, // 0xD3DD
   { CRC_FILEASKEXIT            , KK_FileAskExit          , KT_F }, // 0xD40C
   { CRC_EDITBLOCKDOWN          , KK_EditBlockDown        , KT_E }, // 0xD4E4
+  { CRC_READFORCEDELETEMSG     , KK_ReadForceDeleteMsg   , KT_R }, // 0xD57A
   { CRC_READMESSAGELIST        , KK_ReadMessageList      , KT_R }, // 0xD5D8
   { CRC_EDITGOUP               , KK_EditGoUp             , KT_E }, // 0xD6BA
   { CRC_EDITDOSSHELL           , KK_EditDosShell         , KT_E }, // 0xD6C5
