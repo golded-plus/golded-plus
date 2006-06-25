@@ -1063,26 +1063,27 @@ Line* IEclass::wrapit(Line** __currline, uint* __curr_col, uint* __curr_row, boo
         }
       }
 
-      // Was this line truncated at space?
-      bool truncated_at_space = make_bool(isspace(_thisline->txt[_wrappos]));
-
       // Truncate at the wrapping location
       _thisline->txt.erase(_wrappos);
 
       // Was this line quoted?
-      if(_quotelen) {
-
+      if (_quotelen)
+      {
         // Trim spaces off the end of the line
         int _trimpos = _wrappos - 1;
-        if(isspace(_thisline->txt[_trimpos])) {
-          while(_trimpos > 0 and isspace(_thisline->txt[_trimpos-1]))
+        if (isspace(_thisline->txt[_trimpos]))
+        {
+          while (_trimpos > 0 and isspace(_thisline->txt[_trimpos-1]))
             _trimpos--;
           if(_quotelen and (_trimpos < _quotelen))
             _trimpos++;
           Undo->PushItem(EDIT_UNDO_OVR_CHAR|BATCH_MODE, _thisline, _trimpos);
           _thisline->txt.erase(_trimpos);
         }
-        Undo->PushItem((truncated_at_space?EDIT_UNDO_OVR_CHAR:EDIT_UNDO_INS_CHAR)|BATCH_MODE, _thisline, _trimpos+1);
+        else
+        {
+          Undo->PushItem(EDIT_UNDO_INS_CHAR|BATCH_MODE, _thisline, _trimpos + 1);
+        }
 
         // Append a new linefeed
         _thisline->txt += "\n";
