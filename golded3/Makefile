@@ -22,10 +22,12 @@ INCS=-I. -I$(TOP)/goldlib/gall -I$(TOP)/goldlib/gcfg -I$(TOP)/goldlib/gmb3 -I$(T
 ifeq ($(findstring EMX, $(PATH)), EMX)
 STDLIBS=-los2me -lstdcpp
 GLIBS+=glibc
+INCS+=-I$(TOP)/goldlib/glibc
 else
 ifdef MINGW
 STDLIBS=-luser32 -lwinmm
 GLIBS+=glibc
+INCS+=-I$(TOP)/goldlib/glibc
 endif
 endif
 
