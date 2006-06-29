@@ -73,6 +73,7 @@ bool gareafile::ReadHPTLine(gfile &f, std::string* s, bool add, int state)
       if(state != 1) {
         str.erase(ptr, str.end());
         state = 2;
+		continue;
       }
     }
     else {
@@ -175,6 +176,7 @@ void gareafile::ReadHPTFile(char* path, char* file, char* origin, int group) {
   const word CRC_VERSION = 0xF78F;
   const word CRC_COMMENTCHAR = 0xE2CC;
   const word CRC_ECHOAREADEFAULTS = 0x2CBB;
+  const word CRC_SET = 0x2FC2;
 
   AreaCfg aa;
   Path buf2;
@@ -203,12 +205,19 @@ void gareafile::ReadHPTFile(char* path, char* file, char* origin, int group) {
         char* key;
         char* val = ptr;
         gettok(&key, &val);
-        switch(strCrc16(key)) {
-          case CRC_VERSION:
+        switch (strCrc16(key))
+		{
+		  case CRC_SET:
+				if (strchg(val, '[', '%') != 0)
+					strchg(val, ']', '%');
+				putenv(val);
+			  break;
+
+		  case CRC_VERSION:
             {
               int ver_maj, ver_min;
               sscanf(val, "%d.%d", &ver_maj, &ver_min);
-              if ((ver_maj != 0) and (ver_min >= 0) and (ver_min < 15))
+              if (((ver_maj << 16) + ver_min) > 0x00010009)
               {
                 STD_PRINTNL("* Error: Unknown fidoconfig version " << ver_maj << '.' << ver_min << " - Skipping.");
                 throw_xfree(alptr);
