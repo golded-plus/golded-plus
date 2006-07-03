@@ -141,6 +141,7 @@ endif
 # international builds since latin-1 support will be broken.
 ifeq ($(PLATFORM),lnx)
 CPPFLAGS+=#-DKOI8
+#CFLAGS+=-DHAS_ICONV
 endif
 
 #uncomment the following line if you build version to be used

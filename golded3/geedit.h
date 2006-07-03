@@ -62,7 +62,7 @@
 //  24  ÛGoldED xxxx (statusline)   25
 //   ³  ³                            ³
 //   ³  ³                            ÀÄÄÄÄ one-based old-style coord
-//   ³  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ editor window corrdinates
+//   ³  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ editor window coordinates
 //   ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ actual screen coordinates
 //
 //  ------------------------------------------------------------------
