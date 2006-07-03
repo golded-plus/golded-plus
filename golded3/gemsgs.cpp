@@ -62,7 +62,8 @@ static bool tokenxchg(std::string &input, std::string::iterator &pos,
       for (int i = 0; i < cnt; i++)
       {
         std::string::iterator beg = tokend;
-        if (*beg++ != '{') break;
+        if ((beg == input.end()) || (*beg++ != '{'))
+          break;
 
         std::string::iterator end;
         for (end = beg; end != input.end(); end++)
