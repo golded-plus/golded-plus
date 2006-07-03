@@ -10,7 +10,7 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
-= Snapshot for the June 3, 2006.
+= Snapshot for the Jule 3, 2006.
 
 - Fixed buffer overrun in template parsing.
 
@@ -40,7 +40,7 @@ ______________________________________________________________________
 
 + Improved floating reply threads logic (see ReplyLinkFloat).
 
-+ Reply tread is generated a bit faster.
++ Reply thread is generated a bit faster.
 
 = Snapshot for the May 15, 2006.
 
