@@ -124,14 +124,16 @@ $Date$
      распространяются по файлэхе AFTNGED, её архивы можно найти на FREQ'ах и
      FTP серверах узлов, например ftp://bym.comex.ru/AFTNGED. За самыми
      актуальными исходниками нужно обращаться к анонимному CVS по URL
-     :pserver:anonymous@cvs.sourceforge.net:/cvsroot/golded-plus модуль golded+
-     (инструкции на http://sourceforge.net/projects/golded-plus, страница CVS).
-     Собирать надо компилятором GNU C/C++ (не надо брать нечто древнее 2.8.x,
-     лучше всего какую-нибудь свежую версию) и его производными (djgpp, emx,
-     mingw32). Из других компиляторов поддерживается только Microsoft Visual C
-     (для win32, разумеется). Чтобы все компилировалось без каких-либо проблем
-     - берите как минимум gcc 2.95.4, лучше всего - gcc 3.x (т.е. те egcs, в
-     которых #pragma implementaion и #pragma interface уже были obsolete).
+     :pserver:anonymous@golded-plus.cvs.sourceforge.net:/cvsroot/golded-plus
+     модуль golded+ (инструкции на http://sourceforge.net/projects/golded-plus,
+     страница CVS).
+     Собирать надо компилятором GNU C/C++ (не надо брать нечто древнее
+     2.8.x, лучше всего какую-нибудь свежую версию) и его производными
+     (djgpp, emx, mingw32). Из других компиляторов поддерживается
+     только Microsoft Visual C (для win32, разумеется). Чтобы все
+     компилировалось без каких-либо проблем - берите как минимум gcc
+     2.95.4, лучше всего - gcc 3.x (как минимум те egcs, в которых #pragma
+     implementaion и #pragma interface уже были obsolete).
 
 *Q9:* Типа эта... А писать куда автору? ;-)
 *A:* Писать лучше всего в RU.GOLDED. Даже лучше сначала его почитать, дождаться
