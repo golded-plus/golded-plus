@@ -10,6 +10,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- ^char in commandline keystack should work now.
+
 = Snapshot for the Jule 3, 2006.
 
 - Fixed buffer overrun in template parsing.

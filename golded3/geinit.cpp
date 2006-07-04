@@ -291,10 +291,12 @@ static void kbputstr(const char* buf) {
       case '\t':
       case ' ':
         break;
+
       case '!':
         clearkeys();
         kbclear();
         break;
+
       case '0':
       case '1':
       case '2':
@@ -311,12 +313,14 @@ static void kbputstr(const char* buf) {
             break;
         }
         break;
+
       case '~':
       case '^':
         xkey = (gkey)(g_toupper(buf[++n]) - '@');
-        if(xkey)
-          kbput(xkey);
+        if (xkey)
+          kbput(keyscanxlat(xkey));
         break;
+
       case '@':
         xkey = (gkey)atoi(&buf[++n]);
         if(xkey == 0)
@@ -327,6 +331,7 @@ static void kbputstr(const char* buf) {
             break;
         }
         break;
+
       case '\"':
         for(n+=1; n<x; n++) {
           if(buf[n] == '\"')
@@ -334,6 +339,7 @@ static void kbputstr(const char* buf) {
           kbputc_(buf[n]);
         }
         break;
+
       case '\'':
         for(n+=1; n<x; n++) {
           if(buf[n] == '\'')
@@ -341,6 +347,7 @@ static void kbputstr(const char* buf) {
           kbputc_(buf[n]);
         }
         break;
+
       default:
         kbputc_(buf[n]);
     }
