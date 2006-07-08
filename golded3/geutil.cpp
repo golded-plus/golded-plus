@@ -654,12 +654,19 @@ void call_help() {
 
 //  ------------------------------------------------------------------
 
-void CheckTick(gkey quitkey) {
+void CheckTick(gkey quitkey)
+{
+  Clock idle_secs = gkbd.tickvalue - gkbd.tickpress;
 
-  Clock idle_secs = gkbd.tickvalue > gkbd.tickpress? (gkbd.tickvalue - gkbd.tickpress / 10L) : 0;
+  if (gkbd.tickvalue < gkbd.tickpress)
+    idle_secs = gkbd.tickpress - gkbd.tickvalue;
 
-  if(CFG->timeout) {
-    if(idle_secs >= CFG->timeout) {
+  idle_secs /= 10;
+
+  if (CFG->timeout)
+  {
+    if (idle_secs >= CFG->timeout)
+	{
       kbput(quitkey);
       return;
     }
@@ -693,11 +700,16 @@ void CheckTick(gkey quitkey) {
 
 //  ------------------------------------------------------------------
 
-void IdleCheckSemaphores() {
-
+void IdleCheckSemaphores()
+{
   // I don't like this solution either... :(
   static Clock last_secs = 0;
-  Clock idle_secs = (gkbd.tickvalue - gkbd.tickpress) / 10L;
+  Clock idle_secs = gkbd.tickvalue - gkbd.tickpress;
+
+  if (gkbd.tickvalue < gkbd.tickpress)
+    idle_secs = gkbd.tickpress - gkbd.tickvalue;
+
+  idle_secs /= 10;
 
   // Make sure the stuff below is only run once in a second
   if(not idle_secs or (idle_secs - last_secs == 0))
