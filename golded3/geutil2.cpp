@@ -327,9 +327,13 @@ void ScreenBlankIdle() {
   }
 
   // If timed out, exit screenblanker
-  if(CFG->timeout)
-    if(gkbd.tickvalue >= (gkbd.tickpress+(CFG->timeout*10L)))
+  if (CFG->timeout)
+  {
+    if (gkbd.tickvalue < gkbd.tickpress)
+      gkbd.tickpress = gkbd.tickvalue;
+    if (gkbd.tickvalue >= (gkbd.tickpress+(CFG->timeout*10L)))
       kbput(Key_Tick);
+  }
 }
 
 

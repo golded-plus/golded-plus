@@ -656,12 +656,10 @@ void call_help() {
 
 void CheckTick(gkey quitkey)
 {
-  Clock idle_secs = gkbd.tickvalue - gkbd.tickpress;
-
   if (gkbd.tickvalue < gkbd.tickpress)
-    idle_secs = gkbd.tickpress - gkbd.tickvalue;
+    gkbd.tickpress = gkbd.tickvalue;
 
-  idle_secs /= 10;
+  Clock idle_secs = (gkbd.tickvalue - gkbd.tickpress)/10;
 
   if (CFG->timeout)
   {
@@ -704,12 +702,11 @@ void IdleCheckSemaphores()
 {
   // I don't like this solution either... :(
   static Clock last_secs = 0;
-  Clock idle_secs = gkbd.tickvalue - gkbd.tickpress;
 
   if (gkbd.tickvalue < gkbd.tickpress)
-    idle_secs = gkbd.tickpress - gkbd.tickvalue;
+    gkbd.tickpress = gkbd.tickvalue;
 
-  idle_secs /= 10;
+  Clock idle_secs = (gkbd.tickvalue - gkbd.tickpress)/10;
 
   // Make sure the stuff below is only run once in a second
   if(not idle_secs or (idle_secs - last_secs == 0))
