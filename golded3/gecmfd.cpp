@@ -157,12 +157,7 @@ void Area::DelMsgs(GMsg* msg, bool force)
 
     if ((areano != currno) && (areano >= 0))
     {
-      bool del = true;
-      if(CFG->arearecyclebinask && (NO == MenuDelete.Run(NO, msg)))
-        del = false;
-
-      if (del) CopyMoveForward(true);
-
+      CopyMoveForward(true);
       GFTRK(0);
       return;
     }
@@ -523,8 +518,10 @@ void CmfMsgs(GMsg* msg, bool torecycle)
 
       // Handle unsent msgs
       mode = cmf;
-      if((cmf == MODE_MOVE) and (loadmode & GMSG_UNS_NOT_RCV) and (msg->attr.uns() and not msg->attr.rcv())) {
-
+      if ((loadmode & GMSG_UNS_NOT_RCV) &&
+          ((torecycle && CFG->arearecyclebinask) ||
+          ((cmf == MODE_MOVE) && msg->attr.uns() && !msg->attr.rcv())))
+      {
         // Axe the popup wait window
         w_info(NULL);
 
@@ -537,9 +534,13 @@ void CmfMsgs(GMsg* msg, bool torecycle)
 
         // Ask if it should be deleted
         GMenuDelete MenuDelete;
-        switch(MenuDelete.Run(YES, msg)) {
+        switch(MenuDelete.Run(YES, msg))
+        {
           case YES:  break;
-          case NO:   mode = MODE_COPY;  break;
+          case NO:
+            if (torecycle) continue;
+            mode = MODE_COPY;
+            break;
           default:   loadmode &= ~GMSG_UNS_NOT_RCV;
         }
 
