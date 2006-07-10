@@ -221,9 +221,10 @@ void GMsgList::ReadMlst(int n) {
   ml->written = msg.written;
   ml->arrived = msg.arrived;
   ml->received = msg.received;
-  strcpy(ml->by, msg.By());
-  strcpy(ml->to, msg.To());
-  strcpy(ml->re, msg.re);
+
+  strxcpy(ml->by, msg.By(), ARRAYSIZE(ml->by));
+  strxcpy(ml->to, msg.To(), ARRAYSIZE(ml->to));
+  strxcpy(ml->re, msg.re, ARRAYSIZE(ml->re));
 
   { Addr zero;
     ml->colorby = GetColorName(ml->by, msg.orig, DEFATTR);

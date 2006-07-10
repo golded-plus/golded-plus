@@ -10,6 +10,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Golded+ can crash in message list if size of name or subject is too big.
+
 - Fixed delete menu dialog, when unsent message is to be deleted to recyclebin.
 
 - Fixed idle time counting.
