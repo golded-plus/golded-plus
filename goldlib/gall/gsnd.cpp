@@ -481,8 +481,12 @@ int gsnd::is_playing() {
 
   char return_buffer[BUFFERSIZE];
 
-  if(g_send_mci_string("status noise mode wait", return_buffer))
-    return strieql(return_buffer, "playing") or strieql(return_buffer, "seeking");
+  if (file_open)
+  {
+    if(g_send_mci_string("status noise mode wait", return_buffer))
+      return strieql(return_buffer, "playing") or strieql(return_buffer, "seeking");
+  }
+
   return 0;
 
   #else
