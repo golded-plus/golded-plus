@@ -960,10 +960,6 @@ EndIf
 ;MailingList LIST.GIGO     gigo-owner@gigo.com      gigo@gigo.com
 ;MailingList LIST.HELP-NET help-net@templevm.bitnet
 
-// Часовой пояс для поля "Date:" RFC заголовка.
-;TIMEZONEOFFSET -0600  ; Central Standard Time
-;TIMEZONEOFFSET +0100  ; Central European Time
-
 // Activate quick-n-dirty HTML-tag stripper. <Yes/No>.  Defaults - No.
 // It known to fail in some cases but more likely will not be improoved.
 // The keyword may be used in Random System Group.
