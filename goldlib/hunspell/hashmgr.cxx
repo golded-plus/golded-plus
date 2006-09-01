@@ -257,7 +257,7 @@ int HashMgr::load_tables(const char * tpath)
     // "\/" signs slash in words (not affix separator)
     // "/" at beginning of the line is word character (not affix separator)
     ap = ts;
-    while (ap = strchr(ap,'/')) {
+    while ((ap = strchr(ap,'/'))) {
         if (ap == ts) {
             ap++;
             continue;
