@@ -419,24 +419,41 @@ void CmfMsgs(GMsg* msg, bool torecycle)
   }
 
   // Pick the destination area
+  bool fromrecycle = false;
   int destarea = CurrArea;
   const char* cmfptr;
 
   if (torecycle)
     cmfptr = CFG->arearecyclebin;
   else
-    cmfptr = cmf == MODE_FORWARD ? AA->Areareplyto() : AA->Areacopyto();
+  {
+    if (CFG->arearecyclebin[0])
+    {	
+      int areano = AL.AreaEchoToNo(CFG->arearecyclebin);
+      int currno = AL.AreaIdToNo(CurrArea);
 
-  if(*cmfptr) {
+      if ((areano == currno) && (areano >= 0))
+        fromrecycle = true;
+    }
+
+    if (fromrecycle)
+      cmfptr = msg->areakludgeid;
+    else
+      cmfptr = (cmf == MODE_FORWARD) ? AA->Areareplyto() : AA->Areacopyto();
+  }
+
+  if (cmfptr[0])
+  {
     int a = AL.AreaEchoToNo(cmfptr);
-    if(a != -1)
+    if (a != -1)
       destarea = AL.AreaNoToId(a);
   }
 
   if (!torecycle && (cmf == MODE_FORWARD ? not AA->Areaforwarddirect() : not AA->Areacopydirect()))
     destarea = AreaPick(pickstr, 6, &destarea);
 
-  if(destarea == -1) {
+  if (destarea == -1)
+  {
     GFTRK(0);
     return;
   }
