@@ -942,33 +942,42 @@ UUDecodePart (FILE *datain, FILE *dataout, int *state,
     *state = BEGIN;
   }
 
-  while (!feof (datain) && *state != DONE &&
-     (ftell(datain)<maxpos || flags&FL_TOEND || maxpos==-1 ||
-      (!(flags&FL_PROPER) && uu_fast_scanning))) {
-    if (_FP_fgets (line, 299, datain) == NULL)
+  bool endsection = false;
+
+  while (!feof(datain) && (*state != DONE) &&
+    (ftell(datain)<maxpos || flags&FL_TOEND || maxpos==-1 ||
+    (!(flags&FL_PROPER) && uu_fast_scanning)))
+  {
+    if (_FP_fgets(line, 299, datain) == NULL)
       break;
 
-    if (ferror (datain)) {
+    if (ferror (datain))
+    {
       UUMessage (uunconc_id, __LINE__, UUMSG_ERROR,
-         uustring (S_SOURCE_READ_ERR),
-         strerror (uu_errno = errno));
+        uustring (S_SOURCE_READ_ERR),
+        strerror (uu_errno = errno));
       return UURET_IOERR;
     }
 
-    if (line[0]=='\015' || line[0]=='\012') { /* Empty line? */
-      if (*state == DATA &&
-      (method == UU_ENCODED || method == XX_ENCODED))
-    *state = END;
+    if ((method == UU_ENCODED)  && !strncmp(line, "sum -r/size ", 12))
+    {
+      endsection = true;
+    }
+    
+    if ((line[0] == '\015') || (line[0] == '\012'))
+    {
+      /* Empty line? */
+      if (*state == DATA && (method == UU_ENCODED || method == XX_ENCODED))
+        *state = END;
 
       /*
-       * if we had a whole block of valid lines before, we reset our
-       * 'valid data' flag, tf. Without this 'if', we'd break decoding
-       * files with interleaved blank lines. The value of 5 is chosen
-       * quite arbitrarly.
-       */
+      * if we had a whole block of valid lines before, we reset our
+      * 'valid data' flag, tf. Without this 'if', we'd break decoding
+      * files with interleaved blank lines. The value of 5 is chosen
+      * quite arbitrarly.
+      */
 
-      if (vlc > 5)
-    tf = tc = 0;
+      if (vlc > 5) tf = tc = 0;
       vlc = 0;
       continue;
     }
@@ -1133,8 +1142,9 @@ UUDecodePart (FILE *datain, FILE *dataout, int *state,
     break;
       }
 
-      if ((vflag = UUValidData (line, (tf)?method:0, &bhflag)) == 0)
-    vflag = UURepairData (datain, line, (tf)?method:0, &bhflag);
+      vflag = !endsection && UUValidData(line, tf ? method : 0, &bhflag);
+      if (!vflag)
+        vflag = !endsection && UURepairData(datain, line, tf ? method : 0, &bhflag);
 
       /*
        * correct XX/UUencoded lines that were declared Base64

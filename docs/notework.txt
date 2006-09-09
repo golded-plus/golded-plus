@@ -10,6 +10,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- uudecoder: now are skipped all lines which follows line that starts
+  with "sum -r/size ".
+
 - Win32: Fixed often registry reading when MCI sounds are enabled.
 
 - Golded+ can crash in message list if size of name or subject is too big.
