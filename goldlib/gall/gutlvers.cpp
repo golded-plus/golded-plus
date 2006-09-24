@@ -31,7 +31,9 @@
 
 #if defined(__WIN32__)
 #include <windows.h>
+#if defined(_MSC_VER) && (_MSC_VER > 1200)
 #include <intrin.h>
+#endif
 #elif defined(__GNUC__)
 #include <sys/utsname.h>
 #endif
@@ -46,6 +48,26 @@
 
 #define _MAX_VNAME_LEN  12
 #define _MAX_MNAME_LEN  30
+
+
+//  ------------------------------------------------------------------
+
+#if defined(_MSC_VER) && (_MSC_VER <= 1200)
+static void __cpuid(int CPUInfo[4], int cpuidfun)
+{
+	__asm
+	{
+		mov eax, cpuidfun
+		cpuid
+
+		mov esi, CPUInfo
+		mov [esi + 0], eax
+		mov [esi + 4], ebx
+		mov [esi + 8], ecx
+		mov [esi + 12], edx
+	}
+}
+#endif
 
 
 //  ------------------------------------------------------------------
