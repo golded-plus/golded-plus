@@ -98,16 +98,29 @@
 #define __GVER_SHORTLOGNAME__  "2"
 #define __GVER_CFGEXT__        ".geo"
 #elif defined(__WIN32__)
-#if defined(_MSC_VER)
-#define __GVER_PLATFORM__      "/W32-MSVC"
-#elif defined(__MINGW32__)
-#define __GVER_PLATFORM__      "/W32-MINGW"
-#else
-#define __GVER_PLATFORM__      "/W32"
-#endif
-#define __GVER_SHORTPLATFORM__ "W32"
-#define __GVER_SHORTLOGNAME__  "W"
-#define __GVER_CFGEXT__        ".gew"
+  #if defined(_M_X64)
+    #if defined(_MSC_VER)
+      #define __GVER_PLATFORM__      "/W64-MSVC"
+    #elif defined(__MINGW32__)
+      #define __GVER_PLATFORM__      "/W64-MINGW"
+    #else
+      #define __GVER_PLATFORM__      "/W64"
+    #endif
+    #define __GVER_SHORTPLATFORM__ "W64"
+    #define __GVER_SHORTLOGNAME__  "W"
+    #define __GVER_CFGEXT__        ".gew"
+  #else
+    #if defined(_MSC_VER)
+      #define __GVER_PLATFORM__      "/W32-MSVC"
+    #elif defined(__MINGW32__)
+      #define __GVER_PLATFORM__      "/W32-MINGW"
+    #else
+      #define __GVER_PLATFORM__      "/W32"
+    #endif
+    #define __GVER_SHORTPLATFORM__ "W32"
+    #define __GVER_SHORTLOGNAME__  "W"
+    #define __GVER_CFGEXT__        ".gew"
+  #endif
 #elif defined(__linux__)
 #define __GVER_PLATFORM__      "/LNX"
 #define __GVER_SHORTPLATFORM__ "LNX"

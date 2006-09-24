@@ -49,6 +49,12 @@
 
 //  ------------------------------------------------------------------
 
+#if defined(_M_X64)
+inline static bool HaveCPUID()
+{
+  return false;
+}
+#else
 inline static bool HaveCPUID()
 {
 //  TO_PORT_TAG: CPUID
@@ -73,6 +79,7 @@ inline static bool HaveCPUID()
   return false;
 #endif
 }
+#endif
 
 
 //  ------------------------------------------------------------------
@@ -326,12 +333,17 @@ static void cpuname(int family, int model, const char *v_name, char *m_name)
 
 //  ------------------------------------------------------------------
 
+#if defined(_M_X64)
 char *gcpuid(char *_cpuname)
 {
-
+  return "";
+}
+#else
+char *gcpuid(char *_cpuname)
+{
 #if defined(__GNUC__) && defined(__i386__) || defined(_MSC_VER)
-
-  static struct scpuid_t{
+  static struct scpuid_t
+  {
     dword         cpu;           /* x86, where x=cpu */
     dword         cpu_high;      /* highest CPUID capability */
 #if defined(_MSC_VER)
@@ -541,6 +553,7 @@ char *gcpuid(char *_cpuname)
 
   return _cpuname;
 }
+#endif
 
 
 //  ------------------------------------------------------------------
