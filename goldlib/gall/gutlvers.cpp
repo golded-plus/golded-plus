@@ -31,6 +31,7 @@
 
 #if defined(__WIN32__)
 #include <windows.h>
+#include <intrin.h>
 #elif defined(__GNUC__)
 #include <sys/utsname.h>
 #endif
@@ -49,23 +50,14 @@
 
 //  ------------------------------------------------------------------
 
-#if defined(_M_X64)
-inline static bool HaveCPUID()
-{
-  return false;
-}
-#else
 inline static bool HaveCPUID()
 {
 //  TO_PORT_TAG: CPUID
 #if defined(_MSC_VER)
   __try
   {
-    __asm
-    {
-      xor eax, eax
-      cpuid
-    }
+    int CPUInfo[4];
+    __cpuid(CPUInfo, 0);
   }
   __except(EXCEPTION_EXECUTE_HANDLER)
   {
@@ -79,7 +71,6 @@ inline static bool HaveCPUID()
   return false;
 #endif
 }
-#endif
 
 
 //  ------------------------------------------------------------------
@@ -333,12 +324,6 @@ static void cpuname(int family, int model, const char *v_name, char *m_name)
 
 //  ------------------------------------------------------------------
 
-#if defined(_M_X64)
-char *gcpuid(char *_cpuname)
-{
-  return "";
-}
-#else
 char *gcpuid(char *_cpuname)
 {
 #if defined(__GNUC__) && defined(__i386__) || defined(_MSC_VER)
@@ -369,33 +354,22 @@ char *gcpuid(char *_cpuname)
 #endif
 
 #if defined(_MSC_VER)
-#undef and   // and is defined as &&, this is conflicted with assembler instruction "and"
 
-  __asm
-  {
-    // get the vendor string
-    xor eax, eax
-    cpuid
-//    mov scpuid.cpu_high, eax
-    mov scpuid.dw.dw0, ebx
-    mov scpuid.dw.dw1, edx
-    mov scpuid.dw.dw2, ecx
+  int CPUInfo[4];
 
-    // get the CPU family, model, stepping, features bits
-    mov eax, 1
-    cpuid
-//   mov scpuid.features, edx
-    mov bx, ax
-    and ax, 0x0F0F // 3855          // 0x0F0F
-    mov scpuid.stepping, al
-    mov scpuid.family, ah
-    shr bl, 4
-    mov scpuid.model,bl
-  }
+  // get the vendor string
+  __cpuid(CPUInfo, 0);
+  scpuid.dw.dw0 = CPUInfo[1];
+  scpuid.dw.dw1 = CPUInfo[3];
+  scpuid.dw.dw2 = CPUInfo[2];
 
-#define and &&
+  // get the CPU family, model, stepping, features bits
+  __cpuid(CPUInfo, 1);
+  scpuid.stepping = CPUInfo[0] & 0x0F;
+  scpuid.model = (CPUInfo[0] >> 4) & 0x0F;
+  scpuid.family = (CPUInfo[0] >> 8) & 0x0F;
 
-  cpuname( scpuid.family, scpuid.model, scpuid.vendor, _cpuname);
+  cpuname(scpuid.family, scpuid.model, scpuid.vendor, _cpuname);
 
 #elif defined(__GNUC__) && defined(__i386__)
 
@@ -553,7 +527,6 @@ char *gcpuid(char *_cpuname)
 
   return _cpuname;
 }
-#endif
 
 
 //  ------------------------------------------------------------------
@@ -667,7 +640,10 @@ char* ggetosstring(void) {
           break;
 #ifdef PROCESSOR_ARCHITECTURE_AMD64
         case PROCESSOR_ARCHITECTURE_AMD64:
-          sprintf(processor, "AMD64-%d", si.wProcessorLevel);
+          if (HaveCPUID())
+            gcpuid(processor);
+          else
+            sprintf(processor, "AMD64-%d", si.wProcessorLevel);
           break;
 #endif
         case PROCESSOR_ARCHITECTURE_MIPS:
