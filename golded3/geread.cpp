@@ -33,6 +33,9 @@
 extern bool cmdlinenoscan;
 extern bool cmdlineexportsoup;
 
+class GThreadlist;
+extern GThreadlist *g_ThreadList;
+
 GMsg* reader_msg;
 bool reader_gen_confirm = false;
 int reader_finished;
@@ -1029,6 +1032,9 @@ void Reader() {
         AA->Close();
 
     } while(not reader_finished and not gkbd.quitall);
+
+    delete g_ThreadList;
+    g_ThreadList = 0;
 
     HeaderView->Destroy();
     BodyView->Destroy();

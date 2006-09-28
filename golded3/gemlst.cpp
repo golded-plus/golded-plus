@@ -732,6 +732,10 @@ private:
   std::vector<ThreadEntry>  list;
   std::vector<std::string>  tree;
 
+  dword m_OldMsgno;
+  uint m_OldTags;
+  std::string m_OldEchoId;
+
   void BuildThreadIndex(dword msgno);
   void recursive_build(uint32_t msgn, uint32_t rn, uint32_t level, uint32_t index);
   void GenTree(int idx);
@@ -1073,20 +1077,16 @@ void GThreadlist::BuildThreadIndex(dword msgn)
 {
   w_info(LNG->Wait);
 
-  index = maximum_index = position = maximum_position = 0;
-  
-  list.clear();
-  tree.clear();
-
   AA->LoadHdr(&msg, msgn);
 
   uint32_t msgno = msg.link.to();
   uint32_t prevmsgno = msgn;
 
   // Search backwards
-  while(AA->Msgn.ToReln(msgno)) {
-
-    if(not AA->LoadHdr(&msg, msgno)) {
+  while(AA->Msgn.ToReln(msgno))
+  {
+    if (not AA->LoadHdr(&msg, msgno))
+    {
       msg.link.to_set(0);
       msgno = prevmsgno;
       AA->LoadHdr(&msg, msgno);
@@ -1097,21 +1097,33 @@ void GThreadlist::BuildThreadIndex(dword msgn)
     msgno = msg.link.to();
   }
 
-  recursive_build(msg.msgno, 0, 0, 0);
+  if ((m_OldMsgno != prevmsgno) || (m_OldTags != AA->Msgn.Tags()) || (m_OldEchoId != AA->echoid()))
+  {
+    m_OldMsgno = prevmsgno;
+    m_OldTags = AA->Msgn.Tags();
+    m_OldEchoId = AA->echoid();
+
+    index = maximum_index = position = maximum_position = 0;
+    list.clear();
+    tree.clear();
+
+    recursive_build(msg.msgno, 0, 0, 0);
+
+    minimum_index    = 0;
+    maximum_index    = list.size() - 1;
+    maximum_position = MinV((uint) list.size() - 1, (uint) ylen - 1);
+    index            = 0;
+    h_offset         = 0;
+    new_hoffset      = 0;
+
+    for (uint i = 0; i < list.size(); i++)
+    {
+      if (list[i].msgno == msgn)
+          index = i;
+    }
+  }
 
   w_info(NULL);
-
-  minimum_index    = 0;
-  maximum_index    = list.size() - 1;
-  maximum_position = MinV((uint) list.size() - 1, (uint) ylen - 1);
-  index            = 0;
-  h_offset         = 0;
-  new_hoffset      = 0;
-
-  for(uint i = 0; i<list.size(); i++) {
-    if(list[i].msgno == msgn)
-      index = i;
-  }
 }
 
 
@@ -1304,6 +1316,8 @@ void GThreadlist::Run() {
 
   if(not aborted)
     AA->set_lastread(AA->Msgn.ToReln(list[index].msgno));
+
+  ResetMsg(&msg);
 }
 
 
@@ -1355,18 +1369,24 @@ bool GThreadlist::GoNextUnread(bool reader)
     }
   }
 
+  ResetMsg(&msg);
   return found;
 }
 
 
 //  ------------------------------------------------------------------
 
-void MsgThreadlist() {
+GThreadlist *g_ThreadList = 0;
 
-  GThreadlist p;
 
-  p.Run();
+//  ------------------------------------------------------------------
 
+void MsgThreadlist()
+{
+    if (!g_ThreadList)
+        g_ThreadList = new GThreadlist;
+
+  g_ThreadList->Run();
 }
 
 
@@ -1374,11 +1394,13 @@ void MsgThreadlist() {
 
 void GotoThNextUnread()
 {
+  if (!g_ThreadList)
+    g_ThreadList = new GThreadlist;
+
   w_info(LNG->Wait);
   reader_direction = DIR_NEXT;
 
-  GThreadlist p;
-  if (!p.GoNextUnread(true))
+  if (!g_ThreadList->GoNextUnread(true))
   {
     SayBibi();
     reader_keyok = true;

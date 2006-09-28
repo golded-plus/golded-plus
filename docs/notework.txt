@@ -10,6 +10,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ Cashed last opened thread, that greatly increase tree opening speed,
+  especially useful for READGotoThNextUnread.
+
 + When moving from recyclebin, area from AREA: kludge is selected by default.
 
 - uudecoder: now are skipped all lines which follows line that starts
