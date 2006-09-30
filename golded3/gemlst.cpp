@@ -1115,11 +1115,14 @@ void GThreadlist::BuildThreadIndex(dword msgn)
     index            = 0;
     h_offset         = 0;
     new_hoffset      = 0;
+  }
 
-    for (uint i = 0; i < list.size(); i++)
+  for (uint i = 0; i < list.size(); i++)
+  {
+    if (list[i].msgno == msgn)
     {
-      if (list[i].msgno == msgn)
-          index = i;
+      index = i;
+      break;
     }
   }
 
