@@ -33,7 +33,13 @@
 
 #include <csignal>
 #include <iostream>
-#include <sstream>
+#if defined(__GNUC__)
+  #if __GNUC__ > 2
+    #include <sstream>
+  #endif
+#elif defined(_MSC_VER)
+ #include <sstream>
+#endif
 #include <iomanip>
 // Wrappers for certain mostly DOS/Borland headers
 #include <gshare.h>
