@@ -172,9 +172,9 @@ typedef uint8_t   byte;
 typedef uint16_t  word;
 typedef uint32_t  dword;
 
-#if !defined(__APPLE__)
+/*#if !defined(__APPLE__)*/
 typedef unsigned int uint;
-#endif
+/*#endif*/
 
 typedef uint8_t   bits;
 typedef uint32_t  time32_t;   /* 32-bit time_t type */
