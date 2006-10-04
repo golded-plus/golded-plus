@@ -13,6 +13,7 @@ date=`date +%Y%m%d`
 shortdate=`echo ${date} | sed s/^...//`
 name=../gpw32-115-${date}.zip
 shortname=../gpw${shortdate}.zip
+dizfile=bin/file_id.diz
 
 echo Build a Golded+/w32mingw binary package:  ${name} and ${shortname}
 
@@ -31,16 +32,16 @@ files="${files} docs/rddt.html docs/rddt.txt docs/readme.txt"
 files="${files} docs/rusfaq.txt docs/tips.txt docs/todowork.txt"
 files="${files} docs/tokencfg.txt docs/tokentpl.txt"
 
-printf 'GoldED+1.1.5  [Win32 binaries]\r\n'  >bin/File_ID.Diz
-printf '[Compiled using  MinGW/Cygwin]\r\n' >>bin/File_ID.Diz
-printf 'Snapshot (development version)\r\n' >>bin/File_ID.Diz
-printf 'This is  unstable release  and\r\n' >>bin/File_ID.Diz
-printf 'it should be used for testing.\r\n' >>bin/File_ID.Diz
-printf '------------------------------\r\n' >>bin/File_ID.Diz
-printf 'GoldED+ is a  successor of the\r\n' >>bin/File_ID.Diz
-printf 'wellknown  GoldED mail editor.\r\n' >>bin/File_ID.Diz
-printf '------------------------------\r\n' >>bin/File_ID.Diz
-printf '*golded-plus.sourceforge.net* \r\n' >>bin/File_ID.Diz
+printf 'GoldED+1.1.5  [Win32 binaries]\r\n'  >${dizfile}
+printf '[Compiled using  MinGW/Cygwin]\r\n' >>${dizfile}
+printf 'Snapshot (development version)\r\n' >>${dizfile}
+printf 'This is  unstable release  and\r\n' >>${dizfile}
+printf 'it should be used for testing.\r\n' >>${dizfile}
+printf '------------------------------\r\n' >>${dizfile}
+printf 'GoldED+ is a  successor of the\r\n' >>${dizfile}
+printf 'wellknown  GoldED mail editor.\r\n' >>${dizfile}
+printf '------------------------------\r\n' >>${dizfile}
+printf '*golded-plus.sourceforge.net* \r\n' >>${dizfile}
 
 rm bin/*cyg.exe
 make clean
@@ -52,5 +53,5 @@ for i in ${bines} ; do
   if [ ! -f ${i} ] ; then echo "File ${i} not exists, stop!"; exit 1 ; fi
 done
 
-zip -9DXj ${name} bin/File_ID.Diz $files
+zip -9DXj ${name} ${dizfile} $files
 cp ${name} ${shortname}

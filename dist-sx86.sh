@@ -9,6 +9,7 @@ email=`sed -n -e "/^#define __GVER_VENDOR_EMAIL__/s/#define __GVER_VENDOR_EMAIL_
 date=`date +%Y%m%d`
 name=bin/gpsunx86-115-${date}.zip
 pkgname=golded-plus-x86-115-${date}.pkg
+dizfile=bin/file_id.diz
 
 echo Build a Golded+/sunX86 binary package:  ${name} \(${pkgname}\)
 
@@ -21,15 +22,15 @@ gsed -i.orig -e "s/\#define __GVER_POSTVERSION__ .*/\#define __GVER_POSTVERSION_
 
 if [ ! -d "bin" ] ; then mkdir bin; fi
 
-printf "GoldED+1.1.5 [`uname` `uname -i` pkg]\r\n"  >bin/File_ID.Diz
-printf 'Snapshot (development version)\r\n' >>bin/File_ID.Diz
-printf 'This is  unstable release  and\r\n' >>bin/File_ID.Diz
-printf 'it should be used for testing.\r\n' >>bin/File_ID.Diz
-printf -- '------------------------------\r\n' >>bin/File_ID.Diz
-printf 'GoldED+ is a  successor of the\r\n' >>bin/File_ID.Diz
-printf 'wellknown  GoldED mail editor.\r\n' >>bin/File_ID.Diz
-printf -- '------------------------------\r\n' >>bin/File_ID.Diz
-printf '*golded-plus.sourceforge.net* \r\n' >>bin/File_ID.Diz
+printf "GoldED+1.1.5 [`uname` `uname -i` pkg]\r\n"  >${dizfile}
+printf 'Snapshot (development version)\r\n' >>${dizfile}
+printf 'This is  unstable release  and\r\n' >>${dizfile}
+printf 'it should be used for testing.\r\n' >>${dizfile}
+printf -- '------------------------------\r\n' >>${dizfile}
+printf 'GoldED+ is a  successor of the\r\n'    >>${dizfile}
+printf 'wellknown  GoldED mail editor.\r\n'    >>${dizfile}
+printf -- '------------------------------\r\n' >>${dizfile}
+printf '*golded-plus.sourceforge.net* \r\n'    >>${dizfile}
 
 # make binaries
 
@@ -58,7 +59,7 @@ mkdir $pkgdir
      for i in docs/*.1 ; do pkgproto $i=share/man/man1/`basename $i` ; done ;\
      pkgproto cfgs=share/golded+/cfgs ;\
      (pkgproto docs=share/golded+/docs | grep -v building.txt | grep -v linux | grep -v "\.1=" | grep -v "\.html=") ;\
-     (pkgproto manuals=share/golded+/manuals | grep -v "\.tei=") ) | grep -v CVS | grep -v File_id.diz | grep -v Makefile |\
+     (pkgproto manuals=share/golded+/manuals | grep -v "\.tei=") ) | grep -v CVS | grep -v `basename ${dizfile}` | grep -v Makefile |\
          gsed "s/\.\(chs\|bbs\|cfg\|esc\) 0755 /.\1 0644 /" | awk '{print $1 " " $2 " " $3 " " $4 " root root"}' )) \
     >$pkgdir/Prototype
 echo 'P      CSWncurses   ncurses - ncurses library and utilities' > $pkgdir/depend
@@ -80,4 +81,4 @@ cd ../..
 rm -rf $pkgdir
 
 # zipping
-zip -9DXj ${name} bin/File_ID.Diz bin/$pkgname
+zip -9DXj ${name} ${dizfile} bin/$pkgname

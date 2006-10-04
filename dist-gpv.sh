@@ -7,6 +7,7 @@ date=`date +%Y%m%d`
 name=../gpwin-115-${date}.zip
 shortdate=`echo ${date} | sed s/^...//`
 shortname=../gpv${shortdate}.zip
+dizfile=Release/bin/file_id.diz
 
 echo Build a Golded+/w32mvc binary package:  ${name} and ${shortname}
 
@@ -29,16 +30,16 @@ rm ${bines}
 nmake /f golded.mak CFG="Release" clean
 nmake /f golded.mak CFG="Release"
 
-printf 'GoldED+1.1.5  [Win32 binaries]\r\n'  >Release/bin/File_ID.Diz
-printf '[Compiled using MS Visual C++]\r\n' >>Release/bin/File_ID.Diz
-printf 'Snapshot (development version)\r\n' >>Release/bin/File_ID.Diz
-printf 'This is  unstable release  and\r\n' >>Release/bin/File_ID.Diz
-printf 'it should be  used for testing\r\n' >>Release/bin/File_ID.Diz
-printf '------------------------------\r\n' >>Release/bin/File_ID.Diz
-printf 'GoldED+  is a successor of the\r\n' >>Release/bin/File_ID.Diz
-printf 'wellknown  GoldED mail editor.\r\n' >>Release/bin/File_ID.Diz
-printf '------------------------------\r\n' >>Release/bin/File_ID.Diz
-printf ' *http://golded-plus.sf.net*  \r\n' >>Release/bin/File_ID.Diz
+printf 'GoldED+1.1.5  [Win32 binaries]\r\n'  >${dizfile}
+printf '[Compiled using MS Visual C++]\r\n' >>${dizfile}
+printf 'Snapshot (development version)\r\n' >>${dizfile}
+printf 'This is  unstable release  and\r\n' >>${dizfile}
+printf 'it should be  used for testing\r\n' >>${dizfile}
+printf '------------------------------\r\n' >>${dizfile}
+printf 'GoldED+  is a successor of the\r\n' >>${dizfile}
+printf 'wellknown  GoldED mail editor.\r\n' >>${dizfile}
+printf '------------------------------\r\n' >>${dizfile}
+printf ' *http://golded-plus.sf.net*  \r\n' >>${dizfile}
 
 make docs
 
@@ -46,5 +47,5 @@ for i in ${bines} ; do
   if [ ! -f ${i} ] ; then echo "File ${i} not exists, stop!"; exit 1 ; fi
 done
 
-zip -9DXj ${name} Release/bin/File_ID.Diz $files
+zip -9DXj ${name} ${dizfile} $files
 cp ${name} ${shortname}
