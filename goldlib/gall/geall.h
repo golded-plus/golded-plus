@@ -26,6 +26,10 @@
 #ifndef __GEALL__H
 #define __GEALL__H
 
+#include <map>
+#include <vector>
+#include <string>
+
 #include <gdefs.h>
 
 
