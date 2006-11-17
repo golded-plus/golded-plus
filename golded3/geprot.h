@@ -214,6 +214,44 @@ int ChangeXlatImport();
 
 void MsgThreadlist();
 
+//  ------------------------------------------------------------------
+
+class GThreadlist : public gwinpick {
+
+private:
+
+  gwindow     window;
+  GMsg        msg;
+  ThreadEntry t;
+
+  std::vector<ThreadEntry>  list;
+  std::vector<std::string>  tree;
+
+  dword m_OldMsgno;
+  uint m_OldTags;
+  std::string m_OldEchoId;
+
+  void BuildThreadIndex(dword msgno);
+  void recursive_build(uint32_t msgn, uint32_t rn, uint32_t level, uint32_t index);
+  void GenTree(int idx);
+  void update_title();
+  bool NextThread(bool next);
+
+public:
+
+  void open();                        // Called after window is opened
+  void close();                       // Called after window is closed
+  void print_line(uint idx, uint pos, bool isbar);
+  void do_delayed();
+  bool handle_key();                  // Handles keypress
+
+  void Run();
+  bool GoNextUnread(bool reader);
+
+  GThreadlist() { memset(&msg, 0, sizeof(GMsg)); replylinkfloat = CFG->replylinkfloat; };
+  ~GThreadlist() { ResetMsg(&msg); };
+};
+
 
 //  ------------------------------------------------------------------
 //  GEMRKS prototypes
