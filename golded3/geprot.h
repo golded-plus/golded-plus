@@ -216,6 +216,19 @@ void MsgThreadlist();
 
 //  ------------------------------------------------------------------
 
+class ThreadEntry {
+
+public:
+  uint32_t msgno;
+  uint32_t replyto;
+  uint32_t reply1st;
+  uint32_t replynext;
+  uint32_t replytoindex;
+  uint32_t level;
+};
+
+//  ------------------------------------------------------------------
+
 class GThreadlist : public gwinpick {
 
 private:
