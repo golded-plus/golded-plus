@@ -210,6 +210,21 @@ int ChangeXlatImport();
 
 
 //  ------------------------------------------------------------------
+//  GEMSGS prototypes
+
+void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int origarea);
+void TokenXlat(int mode, char *&input, size_t size, bool resize, GMsg* msg, GMsg* oldmsg, int origarea);
+inline void TokenXlat(int mode, char *input, size_t size, GMsg* msg, GMsg* oldmsg, int origarea)
+{ TokenXlat(mode, input, size, false, msg, oldmsg, origarea); }
+
+void Rot13(GMsg* msg);
+void ResetMsg(GMsg* msg);
+int DoCarboncopy(GMsg* msg, GMsg** carbon);
+void DoCrosspost(GMsg* msg, std::vector<int> &postareas);
+char* ParseInternetAddr(char* __string, char* __name, char* __addr, bool detect_charset = true);
+
+
+//  ------------------------------------------------------------------
 //  GEMLST prototypes
 
 void MsgThreadlist();
@@ -271,21 +286,6 @@ public:
 
 void MarkMsgs(GMsg* msg);
 int NextMarkedmsg(int direction, GMsg* msg);
-
-
-//  ------------------------------------------------------------------
-//  GEMSGS prototypes
-
-void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int origarea);
-void TokenXlat(int mode, char *&input, size_t size, bool resize, GMsg* msg, GMsg* oldmsg, int origarea);
-inline void TokenXlat(int mode, char *input, size_t size, GMsg* msg, GMsg* oldmsg, int origarea)
-{ TokenXlat(mode, input, size, false, msg, oldmsg, origarea); }
-
-void Rot13(GMsg* msg);
-void ResetMsg(GMsg* msg);
-int DoCarboncopy(GMsg* msg, GMsg** carbon);
-void DoCrosspost(GMsg* msg, std::vector<int> &postareas);
-char* ParseInternetAddr(char* __string, char* __name, char* __addr, bool detect_charset = true);
 
 
 //  ------------------------------------------------------------------
