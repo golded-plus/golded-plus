@@ -231,6 +231,7 @@ bool CMSSpellLang::Load(const char *codeset, const char *userdic)
 {
   bool result = false;
 
+  if( mLibrary != NULL ) return true;  // Already loaded
   mLibrary = LoadLibrary(mEngine);
   CHECK_NULL(mLibrary, cleanup0);
 
@@ -474,6 +475,8 @@ bool CMYSpellLang::Init(const gdirentry *entry)
 
 bool CMYSpellLang::Load(const char *codeset, const char *)
 {
+
+  if (mMSpell) return mIsMdrLoaded;
   mMSpell = new Hunspell(mEngine, mDictionary);
 
   if (mMSpell)
@@ -493,6 +496,7 @@ void CMYSpellLang::UnLoad()
   if (!mMSpell) return;
   delete mMSpell;
   mMSpell = NULL;
+  mIsMdrLoaded = false;
   if (mToDicTable) delete mToDicTable;
   if (mToLocTable) delete mToLocTable;
   mToDicTable = mToLocTable = NULL;

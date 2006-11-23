@@ -74,6 +74,7 @@ public:
     mIsMdrLoaded = mIsUdrLoaded = false;
     mToDicTable = mToLocTable = NULL;
   }
+  virtual ~CSpellLang() = 0;
 
   virtual bool Load(const char *codeset, const char *userdic) = 0;
   virtual void UnLoad() = 0;
@@ -217,6 +218,7 @@ public:
     mLibrary = NULL;
     mSpellType = SCHECKET_TYPE_MSSPELL;
   }
+  virtual ~CMSSpellLang(){ UnLoad(); }
 
   bool Init(HKEY hKey, const char *name);
 
@@ -252,6 +254,7 @@ public:
     mMSpell = NULL;
     mSpellType = SCHECKET_TYPE_MYSPELL;
   }
+  virtual ~CMYSpellLang(){ UnLoad(); }
 
   bool Init(const gdirentry *entry);
 
