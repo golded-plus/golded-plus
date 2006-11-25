@@ -725,14 +725,17 @@ void ReadPeekURLs(GMsg* msg) {
         if(ispunct(end[-1]) and (end[-1] != '/'))
           --end;
         if(begin < end) {
-          buf[0] = ' ';
-          strxcpy(buf+1, ptr, MinV((long)((end-ptr)+1), (long)(MAXCOL-2-2-2)));
-          strcat(buf, " ");
+          char* bufurl=(char*)throw_malloc(end-ptr+3);
+          bufurl[0] = ' ';
+          strxcpy(bufurl+1, ptr, (end-ptr)+1);
+          strcat(bufurl, " ");
           for(i = urls.begin(); i != urls.end(); i++)
-            if(strieql(*i, buf))
+            if(strieql(*i, bufurl))
               break;
           if(i == urls.end())
-            urls.push_back(throw_strdup(buf));
+            urls.push_back(bufurl);
+          else
+            throw_free(bufurl);
           ptr = end-1;
         }
       }
