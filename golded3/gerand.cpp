@@ -236,8 +236,10 @@ void Area::InitData() {
 
 void Area::RandomizeData(int mode) {
 
-  if(not adat) {
-    adat = (AreaData*)throw_calloc(1, sizeof(AreaData));
+  if(not adat)
+  {
+//    adat = (AreaData*)throw_calloc(1, sizeof(AreaData));
+    adat = new AreaData;
     InitData();
   }
   else {       // reset to global defaults

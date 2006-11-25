@@ -197,8 +197,10 @@ void RenumberArea() {
 
 void Area::Open() {
 
-  if(not adat) {
-    adat = (AreaData*)throw_calloc(1, sizeof(AreaData));
+  if(not adat)
+  {
+//    adat = (AreaData*)throw_calloc(1, sizeof(AreaData));
+    adat = new AreaData;
     InitData();
   }
 
@@ -228,7 +230,9 @@ void Area::Close() {
 
   UpdateAreadata();
 
-  throw_release(adat);
+//  throw_release(adat);
+  delete adat;
+  adat = 0;
 }
 
 

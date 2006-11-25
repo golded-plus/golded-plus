@@ -31,7 +31,7 @@
 
 #if defined(__WIN32__)
 #include <windows.h>
-#if defined(_MSC_VER) && (_MSC_VER > 1200)
+#if defined(_MSC_VER) && (_MSC_VER >= 1400)
 #include <intrin.h>
 #endif
 #elif defined(__GNUC__)
@@ -52,7 +52,7 @@
 
 //  ------------------------------------------------------------------
 
-#if defined(_MSC_VER) && (_MSC_VER <= 1200)
+#if defined(_MSC_VER) && (_MSC_VER < 1400)
 static void __cpuid(int CPUInfo[4], int cpuidfun)
 {
 	__asm

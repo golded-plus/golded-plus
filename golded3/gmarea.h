@@ -260,7 +260,85 @@ int AreaCmp(const Area** __a, const Area** __b);
 //  ------------------------------------------------------------------
 //  Area data (collected from global/Random System)
 
-struct AreaData {
+struct AreaData
+{
+  AreaData()
+  {
+    akamatching = false;
+    areacopyaddid = false;
+    areacopydirect = false;
+    areaforwarddirect = false;
+    areafreqdirect = false;
+    areareplydirect = false;
+    dispsoftcr = false;
+    edithardterm = false;
+    editmixcase = false;
+    forcetemplate = false;
+    hidestylies = false;
+    usestylies = false;
+    internetmsgid = false;
+    msglistfast = false;
+    msglistfirst = false;
+    msglistheader = false;
+    msglistwidesubj = false;
+    quotewraphard = false;
+    taglinesupport = false;
+    templatematch = false;
+    usearea = false;
+    usesoftcrxlat = false;
+    usetzutc = false;
+    inittwit = false;
+    viewhidden = false;
+    viewkludge = false;
+    viewquote = false;
+    striphtml = false;
+
+    ctrlinfo = 0;
+    internetrfcbody = 0;
+    msglistdate = 0;
+    quotectrl = 0;
+    replyre = 0;
+    usefwd = 0;
+    twitmode = 0;
+    writeheader = 0;
+
+    taglinechar = 0;
+
+    memset(origin, 0, sizeof(origin));
+    memset(quotechars, 0, sizeof(quotechars));
+    memset(quotestring, 0, sizeof(quotestring));
+    memset(quotestops, 0, sizeof(quotestops));
+#if defined(GCFG_SPELL_INCLUDED)
+    memset(scheckerdeflang, 0, sizeof(scheckerdeflang));
+#endif
+    memset(tagline, 0, sizeof(tagline));
+    memset(areacopyto, 0, sizeof(areacopyto));
+    memset(areafreqto, 0, sizeof(areafreqto));
+    memset(areareplyto, 0, sizeof(areareplyto));
+    memset(areayouwroteto, 0, sizeof(areayouwroteto));
+    memset(loadlanguage, 0, sizeof(loadlanguage));
+    memset(quotebuffile, 0, sizeof(quotebuffile));
+    memset(tpl, 0, sizeof(tpl));
+    memset(wtpl, 0, sizeof(wtpl));
+    memset(inputfile, 0, sizeof(inputfile));
+    memset(outputfile, 0, sizeof(outputfile));
+    memset(internetaddress, 0, sizeof(internetaddress));
+    memset(whoto, 0, sizeof(whoto));
+    memset(nickname, 0, sizeof(nickname));
+    memset(netname, 0, sizeof(netname));
+    memset(organization, 0, sizeof(organization));
+    memset(searchfor, 0, sizeof(searchfor));
+    memset(tearline, 0, sizeof(tearline));
+    memset(xlatexport, 0, sizeof(xlatexport));
+    memset(xlatimport, 0, sizeof(xlatimport));
+
+    //classes
+    memset(&aka, 0, sizeof(aka));
+    memset(&attributes, 0, sizeof(attributes));
+    memset(&internetgate, 0, sizeof(internetgate));
+    memset(&play, 0, sizeof(play));
+    memset(&username, 0, sizeof(username));
+  }
 
   // Area
   gaka     aka;

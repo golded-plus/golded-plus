@@ -29,7 +29,9 @@
 
 //  ------------------------------------------------------------------
 
-void ResetMsg(GMsg* msg) {
+void ResetMsg(GMsg* msg)
+{
+  msg->link.reset();
 
   throw_xfree(msg->references);
   throw_xfree(msg->inreplyto);

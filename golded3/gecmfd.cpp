@@ -462,8 +462,10 @@ void CmfMsgs(GMsg* msg, bool torecycle)
 
   AL.SetActiveAreaId(OrigArea);
   AreaData* orig_adat = AA->adat;
-  AA->adat = (AreaData*)throw_calloc(1, sizeof(AreaData));
-  memcpy(AA->adat, orig_adat, sizeof(AreaData));
+//  AA->adat = (AreaData*)throw_calloc(1, sizeof(AreaData));
+//  memcpy(AA->adat, orig_adat, sizeof(AreaData));
+  AA->adat = new AreaData;
+  *AA->adat = *orig_adat;
   AL.SetActiveAreaId(destarea);
   Area* AAdest = AA;
 
@@ -473,9 +475,11 @@ void CmfMsgs(GMsg* msg, bool torecycle)
   // Is it readonly?
   if(AA->attr().r_o()) {
     GMenuReadonly MenuReadonly;
-    if(not MenuReadonly.Run()) {
+    if(not MenuReadonly.Run())
+    {
       AL.SetActiveAreaId(OrigArea);
-      throw_free(AA->adat);
+//      throw_free(AA->adat);
+      delete AA->adat;
       AA->adat = orig_adat;
       GFTRK(0);
       return;
@@ -681,7 +685,8 @@ void CmfMsgs(GMsg* msg, bool torecycle)
 
   // Return to original area and unlock it
   AL.SetActiveAreaId(OrigArea);
-  throw_free(AA->adat);
+//  throw_free(AA->adat);
+  delete AA->adat;
   AA->adat = orig_adat;
   AA->Unlock();
 
