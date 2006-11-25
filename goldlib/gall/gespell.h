@@ -74,7 +74,7 @@ public:
     mIsMdrLoaded = mIsUdrLoaded = false;
     mToDicTable = mToLocTable = NULL;
   }
-  virtual ~CSpellLang() = 0;
+  virtual ~CSpellLang(){};
 
   virtual bool Load(const char *codeset, const char *userdic) = 0;
   virtual void UnLoad() = 0;
