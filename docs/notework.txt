@@ -10,6 +10,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+! UseTZUTC default value changed from "no" to "yes".
+
 = Snapshot for the Nov 16, 2006.
 
 + Cashed last opened thread, that greatly increase tree opening speed,

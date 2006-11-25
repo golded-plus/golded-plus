@@ -812,7 +812,7 @@ CfgGed::CfgGed() {
   usernameno = 0;
   usesoftcrxlat = false;
   usestylies = true;
-  usetzutc = false;
+  usetzutc = true;
   viewhidden = false;
   viewkludge = false;
   viewquote = true;
