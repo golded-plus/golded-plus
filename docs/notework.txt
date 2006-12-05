@@ -10,6 +10,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- uudecoder: now are skipped all lines which follows lines with mask
+  "sum -r/size [0-9]+/[0-9]+ section.*" or "section [0-9]+ end.*"
+
 ! UseTZUTC default value changed from "no" to "yes".
 
 = Snapshot for the Nov 16, 2006.

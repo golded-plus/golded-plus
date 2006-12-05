@@ -54,6 +54,7 @@
 #include <gdefs.h>
 #include <gctype.h>
 #include <gcrcall.h>
+#include <gregex.h>
 #include <uudeview.h>
 #include <uuint.h>
 #include <fptools.h>
@@ -942,6 +943,10 @@ UUDecodePart (FILE *datain, FILE *dataout, int *state,
     *state = BEGIN;
   }
 
+  gregex regexp1, regexp2;
+  regexp1.compile("sum -r/size [0-9]+/[0-9]+ section.*", gregex::extended | gregex::icase);
+  regexp2.compile("section [0-9]+ end.*", gregex::extended | gregex::icase);
+
   bool endsection = false;
 
   while (!feof(datain) && (*state != DONE) &&
@@ -959,7 +964,7 @@ UUDecodePart (FILE *datain, FILE *dataout, int *state,
       return UURET_IOERR;
     }
 
-    if ((method == UU_ENCODED)  && !strncmp(line, "sum -r/size ", 12))
+    if ((method == UU_ENCODED) && (regexp1.match(line) ||  regexp2.match(line)))
     {
       endsection = true;
     }
