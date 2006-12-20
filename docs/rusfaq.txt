@@ -174,8 +174,14 @@ $Date$
      текста и содержимого клипборда.
 
 *Q13:* Не работает backspace в Linux, приходится пользоватся стандартным Ctrl-?
+*Q13:* Вместо удаления буквы удаляет слово.
 *A:* Alexey Froloff: ``keycode 14 = delete delete delete delete'' в keymap'е
      прописать надо.
+*A:* Alexey Vissarionov: В goldkeys.cfg вписать строку:
+     ^H          EditDelLeft
+     и в ~/.screenrc:
+     bindkey -d -k kb stuff \010
+     Запускать golded+ через screen: screen gedlnx
 
 *Q14:* А как нажать Alt-S во FreeBSD? ;-)
 *A:* andrey i. mavlyanov: исправить раскладку по приведённому DIFF'у
