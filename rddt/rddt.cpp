@@ -346,7 +346,15 @@ int main(int argc, char** argv) {
        << endl;
 
   if(argc < 2) {
-    cout << "Syntax: RDDT <routefile> [options] [address or name]" << endl;
+    cout << "Syntax: RDDT <routefile> [options] [address or name]" << 
+       << "\twhere options may be:" << endl
+       << "\t\t-d             - Debug mode" << endl
+       << "\t\t-p             - Decode path" << endl
+       << "\t\t-n ownaddress  - Your own address" << endl
+       << "\t\t-l ownuplink   - Your own uplink" << endl
+       << "\t\t-i num         - indent <num> spaces" << endl
+       << endl;
+
     return 1;
   }
 
