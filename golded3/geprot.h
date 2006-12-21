@@ -231,8 +231,8 @@ void MsgThreadlist();
 
 //  ------------------------------------------------------------------
 
-class ThreadEntry {
-
+class ThreadEntry
+{
 public:
   uint32_t msgno;
   uint32_t replyto;
@@ -240,20 +240,18 @@ public:
   uint32_t replynext;
   uint32_t replytoindex;
   uint32_t level;
+  std::string entrytext;
 };
 
 //  ------------------------------------------------------------------
 
-class GThreadlist : public gwinpick {
-
+class GThreadlist : public gwinpick
+{
 private:
-
   gwindow     window;
   GMsg        msg;
-  ThreadEntry t;
 
-  std::vector<ThreadEntry>  list;
-  std::vector<std::string>  tree;
+  std::vector<ThreadEntry>  treeEntryList;
 
   dword m_OldMsgno;
   uint m_OldTags;
@@ -266,7 +264,6 @@ private:
   bool NextThread(bool next);
 
 public:
-
   void open();                        // Called after window is opened
   void close();                       // Called after window is closed
   void print_line(uint idx, uint pos, bool isbar);
@@ -276,8 +273,16 @@ public:
   void Run();
   bool GoNextUnread(bool reader);
 
-  GThreadlist() { memset(&msg, 0, sizeof(GMsg)); replylinkfloat = CFG->replylinkfloat; };
-  ~GThreadlist() { ResetMsg(&msg); };
+  GThreadlist()
+  {
+    m_OldMsgno = dword(-1);
+    m_OldTags = uint(-1);
+
+    memset(&msg, 0, sizeof(GMsg));
+    replylinkfloat = CFG->replylinkfloat;
+  }
+
+  ~GThreadlist() { ResetMsg(&msg); }
 };
 
 
@@ -352,7 +357,7 @@ void NextArea();
 void PrevArea();
 void Reader();
 void UpdateArea(GMsg* msg);
-int ExternUtil(GMsg* __msg, int __utilno);
+int ExternUtil(GMsg* msg, uint32_t utilno);
 void ExternUtilMenu(GMsg* msg);
 void ReadPeekURLs(GMsg* msg);
 uint next_msg(int direction);

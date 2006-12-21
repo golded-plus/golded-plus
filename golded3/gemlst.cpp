@@ -747,7 +747,7 @@ void GThreadlist::do_delayed() {
     if ((CFG->disphdrlocation & 0xFFFF) == YES)
       CFG->disphdrlocation = NO;
 
-    AA->LoadMsg(&msg, list[index].msgno, CFG->dispmargin-(int)CFG->switches.get(disppagebar));
+    AA->LoadMsg(&msg, treeEntryList[index].msgno, CFG->dispmargin-(int)CFG->switches.get(disppagebar));
     for(std::vector<Node>::iterator x = CFG->username.begin(); x != CFG->username.end(); x++) {
       if(strieql(msg.By(), x->name)) {
         msg.attr.fmu1();
@@ -769,13 +769,15 @@ void GThreadlist::do_delayed() {
 
   if(CFG->switches.get(msglistviewsubj)) {
     // Reload message if not sure that just reread
-    if(not AA->Msglistheader()) {
-      t = list[index];
-      if(AA->Msglistfast()) {
-        AA->LoadHdr(&msg, t.msgno);
+    if(not AA->Msglistheader())
+    {
+      if (AA->Msglistfast())
+      {
+        AA->LoadHdr(&msg, treeEntryList[index].msgno);
       }
-      else {
-        AA->LoadMsg(&msg, t.msgno, CFG->dispmargin-(int)CFG->switches.get(disppagebar));
+      else
+      {
+        AA->LoadMsg(&msg, treeEntryList[index].msgno, CFG->dispmargin - (int)CFG->switches.get(disppagebar));
       }
     }
     wtitle(msg.re, TCENTER|TBOTTOM, tattr);
@@ -801,13 +803,9 @@ void GThreadlist::close() {
 
 void GThreadlist::GenTree(int idx)
 {
-  if (tree.size() > idx)
-  {
-    if (tree[idx].size())
-      return;
-  }
-  else
-    tree.resize(idx+1);
+  ThreadEntry &t = treeEntryList[idx];
+  if (t.entrytext.size())
+    return;
 
 #ifdef KOI8
   static char graph[4]="†„";
@@ -831,26 +829,23 @@ void GThreadlist::GenTree(int idx)
   }
 #endif
 
-  ThreadEntry te = list[idx];
-
-  if (te.level == 0)
+  if (t.level == 0)
   {
-    tree[idx] = " ";
+    t.entrytext = " ";
     return;
   }
 
-  tree[idx].resize((te.level-1)*2+4, ' ');
-
-  tree[idx][(te.level-1)*2+1] = (te.replynext) ? graph[0] : graph[1];
-  tree[idx][(te.level-1)*2+3] = 0;
-
+  t.entrytext.resize((t.level - 1)*2 + 3, ' ');
+  t.entrytext[(t.level - 1)*2 + 1] = (t.replynext) ? graph[0] : graph[1];
+  
+  ThreadEntry te = t;
   while (te.replyto)
   {
-    te = list[te.replytoindex];
+    te = treeEntryList[te.replytoindex];
     if (te.level != 0)
     {
       if (te.replynext)
-        tree[idx][(te.level-1)*2+1] = graph[2];
+        t.entrytext[(te.level - 1)*2 + 1] = graph[2];
     }
   }
 }
@@ -861,8 +856,7 @@ void GThreadlist::GenTree(int idx)
 void GThreadlist::print_line(uint idx, uint pos, bool isbar)
 {
   char buf[256];
-
-  t = list[idx];
+  ThreadEntry &t = treeEntryList[idx];
   size_t tdlen = xlen - ((AA->Msglistdate() == MSGLISTDATE_NONE) ? 8 : 18);
 
   if(AA->Msglistfast()) {
@@ -927,7 +921,7 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar)
 
   GenTree(idx);
 
-  const char* buf2 = tree[idx].c_str();
+  const char* buf2 = treeEntryList[idx].entrytext.c_str();
   size_t buf2len = strlen(buf2);
 
   if (buf2len > h_offset)
@@ -996,6 +990,7 @@ void GThreadlist::recursive_build(uint32_t msgn, uint32_t rn, uint32_t level, ui
 
   if (AA->Msgn.ToReln(msgn) and AA->LoadHdr(&msg, msgn))
   {
+    ThreadEntry t;
     t.msgno     = msgn;
     t.replyto   = msg.link.to();
     t.reply1st  = msg.link.first();
@@ -1007,8 +1002,8 @@ void GThreadlist::recursive_build(uint32_t msgn, uint32_t rn, uint32_t level, ui
     if (!AA->Msgn.ToReln(t.reply1st))   t.reply1st  = 0;
     if (!AA->Msgn.ToReln(t.replynext))  t.replynext = 0;
 
-    list.push_back(t);
-    index = list.size() - 1;
+    treeEntryList.push_back(t);
+    index = treeEntryList.size() - 1;
 
     recursive_build(msg.link.first(), msg.link.list(0), level, index);
 
@@ -1056,22 +1051,21 @@ void GThreadlist::BuildThreadIndex(dword msgn)
     m_OldEchoId = AA->echoid();
 
     index = maximum_index = position = maximum_position = 0;
-    list.clear();
-    tree.clear();
+    treeEntryList.clear();
 
     recursive_build(msg.msgno, 0, 0, 0);
 
     minimum_index    = 0;
-    maximum_index    = list.size() - 1;
-    maximum_position = MinV((uint) list.size() - 1, (uint) ylen - 1);
+    maximum_index    = treeEntryList.size() - 1;
+    maximum_position = MinV((uint)treeEntryList.size() - 1, (uint) ylen - 1);
     index            = 0;
     h_offset         = 0;
     new_hoffset      = 0;
   }
 
-  for (uint i = 0; i < list.size(); i++)
+  for (uint i = 0; i < treeEntryList.size(); i++)
   {
-    if (list[i].msgno == msgn)
+    if (treeEntryList[i].msgno == msgn)
     {
       index = i;
       break;
@@ -1094,8 +1088,10 @@ bool GThreadlist::NextThread(bool next) {
     dword msgn = AA->Msgn[m];
     bool found = false;
 
-    for(uint i = 0; i<list.size(); i++) {
-      if(list[i].msgno == msgn) {
+    for (uint i = 0; i < treeEntryList.size(); i++)
+    {
+      if (treeEntryList[i].msgno == msgn)
+      {
         found = true;
         break;
       }
@@ -1139,7 +1135,7 @@ bool GThreadlist::handle_key() {
     case KK_ListGotoPrev:
     case KK_ListGotoNext:
       NextThread((key == KK_ListGotoNext));
-      if (!CFG->replylinkshowalways && (list.size() <= 1))
+      if (!CFG->replylinkshowalways && (treeEntryList.size() <= 1))
         return false;
       center(CFG->displistcursor);
       break;
@@ -1176,12 +1172,14 @@ bool GThreadlist::handle_key() {
 
     case KK_ListToggleMark:
     {
-      uint32_t temp = AA->Mark.Find(list[index].msgno);
-      if(temp) {
+      uint32_t temp = AA->Mark.Find(treeEntryList[index].msgno);
+      if (temp)
+      {
         AA->Mark.DelReln(temp);
       }
-      else {
-        AA->Mark.Add(list[index].msgno);
+      else
+      {
+        AA->Mark.Add(treeEntryList[index].msgno);
       }
 
       if(index < maximum_index)
@@ -1192,14 +1190,14 @@ bool GThreadlist::handle_key() {
     }
 
     case KK_ListToggleBookMark:
-      if (AA->bookmark == list[index].msgno)
+      if (AA->bookmark == treeEntryList[index].msgno)
       {
         AA->bookmark = 0;
         display_bar();
       }
       else
       {
-        AA->bookmark = list[index].msgno;
+        AA->bookmark = treeEntryList[index].msgno;
         update();
       }
       break;
@@ -1240,8 +1238,9 @@ bool GThreadlist::handle_key() {
 
 //  ------------------------------------------------------------------
 
-void GThreadlist::Run() {
-
+void GThreadlist::Run()
+{
+  aborted = false;
   ypos    = AA->Msglistheader() ? 6 : 1;      // Window Starting Row
   xpos    = 0;                                // Window Starting Column
   ylen    = MAXROW-3-ypos;                    // Window Height
@@ -1259,18 +1258,21 @@ void GThreadlist::Run() {
 
   BuildThreadIndex(reader_msg->msgno);
 
-  size_t size = list.size();
+  size_t size = treeEntryList.size();
   if ((CFG->replylinkshowalways && (size > 0)) || (size > 1))
+  {
     run_picker();
-  else {
+  }
+  else
+  {
     w_info(LNG->NoThreadlist);
     waitkeyt(5000);
     w_info(NULL);
     aborted = true;
   }
 
-  if(not aborted)
-    AA->set_lastread(AA->Msgn.ToReln(list[index].msgno));
+  if (!aborted)
+    AA->set_lastread(AA->Msgn.ToReln(treeEntryList[index].msgno));
 
   ResetMsg(&msg);
 }
@@ -1284,7 +1286,7 @@ bool GThreadlist::GoNextUnread(bool reader)
     BuildThreadIndex(reader_msg->msgno);
 
   bool found = false;
-  size_t size = list.size();
+  size_t size = treeEntryList.size();
 
   if (size > 1)
   {
@@ -1292,7 +1294,7 @@ bool GThreadlist::GoNextUnread(bool reader)
 
     for (idx = index + 1; idx < size; idx++)
     {
-      t = list[idx];
+      ThreadEntry &t = treeEntryList[idx];
       AA->LoadHdr(&msg, t.msgno);
       if (msg.timesread == 0)
       {
@@ -1305,7 +1307,7 @@ bool GThreadlist::GoNextUnread(bool reader)
     {
       for (idx = 0; idx < index; idx++)
       {
-        t = list[idx];
+        ThreadEntry &t = treeEntryList[idx];
         AA->LoadHdr(&msg, t.msgno);
         if (msg.timesread == 0)
         {
@@ -1320,7 +1322,9 @@ bool GThreadlist::GoNextUnread(bool reader)
       index = idx;
 
       if (reader)
-        AA->set_lastread(AA->Msgn.ToReln(list[idx].msgno));
+      {
+        AA->set_lastread(AA->Msgn.ToReln(treeEntryList[idx].msgno));
+      }
     }
   }
 
@@ -1338,8 +1342,8 @@ GThreadlist *g_ThreadList = 0;
 
 void MsgThreadlist()
 {
-    if (!g_ThreadList)
-        g_ThreadList = new GThreadlist;
+  if (!g_ThreadList)
+    g_ThreadList = new GThreadlist;
 
   g_ThreadList->Run();
 }
