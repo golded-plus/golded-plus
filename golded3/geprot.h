@@ -357,7 +357,7 @@ void NextArea();
 void PrevArea();
 void Reader();
 void UpdateArea(GMsg* msg);
-int ExternUtil(GMsg* msg, uint32_t utilno);
+int ExternUtil(GMsg* msg, int utilno);
 void ExternUtilMenu(GMsg* msg);
 void ReadPeekURLs(GMsg* msg);
 uint next_msg(int direction);
@@ -545,4 +545,3 @@ void RemoveHTML(char *&txt);
 #endif
 
 //  ------------------------------------------------------------------
-
