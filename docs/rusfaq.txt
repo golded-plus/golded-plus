@@ -182,6 +182,8 @@ $Date$
      и в ~/.screenrc:
      bindkey -d -k kb stuff \010
      Запускать golded+ через screen: screen gedlnx
+*A:* Alexander Brovikov, Stas Degteff: в xterm Backspace работает нормально, а
+     Konsole и rxvt болеют теми же симптомами.
 
 *Q14:* А как нажать Alt-S во FreeBSD? ;-)
 *A:* andrey i. mavlyanov: исправить раскладку по приведённому DIFF'у
