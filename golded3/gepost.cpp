@@ -996,11 +996,17 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
             if(*msg->references == NUL)
               throw_release(msg->references);
           }
-          if(CurrArea == OrigArea) {
-            if((CFG->replylink == REPLYLINK_DIRECT) or streql(AA->basetype(), "JAM"))
-              reply_msgno = omsg->msgno;
-            else if(CFG->replylink == REPLYLINK_CHAIN)
-              GetLastLink(omsg, reply_msgno);
+
+          if (CurrArea == OrigArea)
+          {
+            if (CFG->replylink != REPLYLINK_NONE)
+            {
+              if ((CFG->replylink == REPLYLINK_DIRECT) or streql(AA->basetype(), "JAM"))
+                reply_msgno = omsg->msgno;
+              else if (CFG->replylink == REPLYLINK_CHAIN)
+                GetLastLink(omsg, reply_msgno);
+            }
+
             msg->link.to_set(reply_msgno);
             if(msg->link.to() == omsg->msgno)
               omsg->link.first_set(msg->msgno);

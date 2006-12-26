@@ -175,11 +175,13 @@ void CfgRa2usersbbs() {
 
 //  ------------------------------------------------------------------
 
-void CfgReplylink() {
-
-  if(strieql(val, "Chain"))
+void CfgReplylink()
+{
+  if (strieql(val, "none"))
+    CFG->replylink = REPLYLINK_NONE;
+  if (strieql(val, "chain"))
     CFG->replylink = REPLYLINK_CHAIN;
-  else if(strieql(val, "Direct"))
+  else if(strieql(val, "direct"))
     CFG->replylink = REPLYLINK_DIRECT;
 }
 
