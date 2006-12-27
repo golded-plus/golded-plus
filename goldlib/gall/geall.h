@@ -239,8 +239,9 @@ const int DISPMSGSIZE_LINES = 3;
 //  ------------------------------------------------------------------
 //  Replylink types
 
-const int REPLYLINK_CHAIN  = 0;
-const int REPLYLINK_DIRECT = 1;
+const int REPLYLINK_DIRECT = 0;
+const int REPLYLINK_CHAIN  = 1;
+const int REPLYLINK_NONE   = 2;
 
 const int REPLYLINKLIST_FAST = 0;
 const int REPLYLINKLIST_FULL = 1;
