@@ -79,5 +79,7 @@
 #CPPFLAGS+=-DGCFG_NO_MSSPELL
 # Uncomment to disable HunSpell spellchecker support (multiplatform)
 #CPPFLAGS+=-DGCFG_NO_MYSPELL
+# Uncomment to disable regex search feature
+#CPPFLAGS+=-DGCFG_NO_REGEX
 # Comment to disable AreaRecycleBin keyword and feature
 CPPFLAGS+=-D__INCLUDE_NEW_KEYWORDS__
