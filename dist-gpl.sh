@@ -18,7 +18,7 @@ fi
 sed -i.orig -e "s/\#define __GVER_POSTVERSION__ .*/\#define __GVER_POSTVERSION__   \"-b${date}\"/" golded3/mygolded.h
 
 bines="bin/gedlnx bin/gnlnx bin/rddtlnx"
-files="${bines} docs/copying docs/copying.lib"
+files="${bines} docs/copying docs/copying.lib bin/requirements.txt"
 files="${files} docs/golded.html docs/golded.txt docs/goldnode.html"
 files="${files} docs/goldnode.txt docs/license.txt docs/notework.txt"
 files="${files} docs/rddt.html docs/rddt.txt docs/readme.txt"
