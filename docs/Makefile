@@ -34,7 +34,9 @@ tokentpl.txt: ../golded3/gemsgs.cpp
 	@echo '==========================================================================' >> $@
 	echo '* These macroses is line prefixes for the template file.' >> $@
 	@echo '==========================================================================' >> $@
-	cat ../golded3/getpls.cpp | sed -ne '/CSTR_COMMA_SIZEOF_CSTR/s/\s*{\s*CSTR_COMMA_SIZEOF_CSTR("\(\w*\)")\s*},\{0,1\}/@\1/p'| sort -u >> $@
+	cat ../golded3/getpls.cpp | sed -ne cat ../golded3/getpls.cpp \
+	  | sed -ne '/ \{0,1\}{ CSTR_COMMA_SIZEOF_CSTR("/s/.\{1,\}"\(\w\{1,\}\)".\{1,\}/@\1/p' \
+	  | sort -u >> $@
 	@echo '==========================================================================' >> $@
 
 #    { CSTR_COMMA_SIZEOF_CSTR("write")        },
