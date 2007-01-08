@@ -26,9 +26,10 @@
 
 #include <golded.h>
 #include <gutlos.h>
+
+#if defined(_MSC_VER) && defined(_DEBUG) && defined(_M_IX86)
 #include <memleak.h>
 
-#if defined(_MSC_VER) && defined(_DEBUG)
 static struct LeakFinder
 {
     LeakFinder()

@@ -638,9 +638,9 @@ int ExternUtil(GMsg *msg, uint32_t utilno)
   std::vector<ExtUtil>::iterator it = CFG->externutil.begin();
   std::vector<ExtUtil>::iterator end = CFG->externutil.end();
   
-  for (uint32_t i = 0; it != end; i++, it++)
+  for (; it != end; it++)
   {
-    if (it->utilno != i) continue;
+    if (it->utilno != utilno) continue;
     return ExternUtil(msg, *it);
   }
 

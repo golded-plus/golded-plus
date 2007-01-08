@@ -21,7 +21,7 @@
 #define __STACKWALKER_H__
 
 // Only valid in the following environment: Intel platform, MS VC++ 5/6/7/7.1/8
-#ifndef _X86_
+#if !defined(_M_IX86)
 #error Only INTEL envirnoments are supported!
 #endif
 
