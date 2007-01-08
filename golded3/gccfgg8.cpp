@@ -329,24 +329,34 @@ void CfgUnpacker() {
 
 //  ------------------------------------------------------------------
 
-void CfgUrlhandler() {
-
+void CfgUrlhandler()
+{
   // Get util number
   char* _key;
   char* _val = val;
 
   // Get options
   int _optbak = CFG->externoptions;
-  while(strchr("-", *_val)) {
+
+  while (strchr("-", *_val))
+  {
     getkeyval(&_key, &_val);
     val = _key;
     CfgExternoptions();
   }
-  CFG->urlhandler.options = CFG->externoptions;
+  
+  UrlHandler url;
+  url.handler.cmdline = _val;
+  url.handler.options = CFG->externoptions;
   CFG->externoptions = _optbak;
 
-  // Get commandline
-  strxcpy(CFG->urlhandler.cmdline, _val, sizeof(CFG->urlhandler.cmdline));
+  CFG->urlhandler.push_back(url);
+}
+
+//  ------------------------------------------------------------------
+
+void CfgUrlscheme()
+{
 }
 
 //  ------------------------------------------------------------------

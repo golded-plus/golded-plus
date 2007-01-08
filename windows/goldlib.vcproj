@@ -609,6 +609,42 @@
 					>
 				</File>
 				<File
+					RelativePath="..\goldlib\gall\gstring.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|x64"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|x64"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\goldlib\gall\gstrmail.cpp"
 					>
 				</File>
@@ -939,6 +975,38 @@
 				<File
 					RelativePath="..\goldlib\gall\gwinput2.cpp"
 					>
+				</File>
+				<File
+					RelativePath="..\goldlib\gall\memleak.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
 				</File>
 			</Filter>
 			<Filter
@@ -1887,11 +1955,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\goldlib\gall\gstrarr.h"
+					RelativePath="..\goldlib\gall\gstrbags.h"
 					>
 				</File>
 				<File
-					RelativePath="..\goldlib\gall\gstrbags.h"
+					RelativePath="..\goldlib\gall\gstring.h"
 					>
 				</File>
 				<File
@@ -2000,6 +2068,10 @@
 				</File>
 				<File
 					RelativePath="..\goldlib\gall\gwinput.h"
+					>
+				</File>
+				<File
+					RelativePath="..\goldlib\gall\memleak.h"
 					>
 				</File>
 			</Filter>

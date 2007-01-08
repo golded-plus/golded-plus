@@ -33,6 +33,7 @@
 //  Required headers
 
 #include <string>
+#include <vector>
 #include <gctype.h>
 #include <cstring>
 #include <gdefs.h>
@@ -55,10 +56,16 @@ char* strlwr(char* s);
 
 
 //  ------------------------------------------------------------------
+
+typedef std::vector<std::string> gstrarray;
+
+
+//  ------------------------------------------------------------------
 //  Function prototypes
 
 bool strblank(const char* str);
-int strchg(char* str, char oldch, char newch);
+size_t strchg(char *str, char oldch, char newch);
+size_t strchg(std::string &str, char oldch, char newch);
 char* stridela(const char* substr, char* str);
 int strnicmpw(const char* str1, const char* str2, int len);
 const char* striinc(const char* str1, const char* str2);
@@ -74,7 +81,8 @@ char* strshr(char* str, int count);
 char* strsrep(char* str, const char* search, const char* replace);
 char* strltrim(char* str);
 char* strtrim(char* str);
-std::string& strtrim(std::string& p);
+std::string &strtrim(std::string &str);
+std::string &strltrim(std::string &str);
 char* struplow(char* str);
 
 char* longdotstr(long num);                               // Convert a long to a dotted string: xxx.xxx.xxx.xxx
@@ -146,6 +154,8 @@ int gsprintf(TCHAR* buffer, size_t sizeOfBuffer, const TCHAR* __file, int __line
 
 //  ------------------------------------------------------------------
 //  String tokenizer class
+
+void tokenize(gstrarray &array, const TCHAR* str, const TCHAR *delim = NULL);
 
 class GTok
 {

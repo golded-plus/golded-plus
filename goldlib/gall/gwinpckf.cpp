@@ -30,6 +30,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <algorithm>
 #include <gmemdbg.h>
 #include <gfilutil.h>
 #include <gwildmat.h>
@@ -49,30 +50,29 @@ static char* namextp;
 
 
 //  ------------------------------------------------------------------
-//  this function is the compare function for qsort()
+//  this function is the compare function for std::sort()
 
-static int compare(const char** str1, const char** str2) {
-
+static bool compare(const std::string str1, const std::string str2)
+{
   // Sort with directories first
-  bool dir1 = !!strchr(*str1, GOLD_SLASH_CHR);
-  bool dir2 = !!strchr(*str2, GOLD_SLASH_CHR);
-  int cmp = compare_two(dir2, dir1);
-  if(cmp != 0)
-    return cmp;
+  bool dir1 = !!strchr(str1.c_str(), GOLD_SLASH_CHR);
+  bool dir2 = !!strchr(str2.c_str(), GOLD_SLASH_CHR);
+  if (dir1 && !dir2) return true;
 
-  Path p1, p2;
-  strcpy(p1, *str1); if(dir1) { p1[strlen(p1)-1] = NUL; }
-  strcpy(p2, *str2); if(dir2) { p2[strlen(p2)-1] = NUL; }
+  std::string s1 = dir1 ? str1.substr(0, str1.length()-1) : str1;
+  std::string s2 = dir2 ? str2.substr(0, str2.length()-1) : str2;
 
-  if(case_sensitive)
-    return strcmp(p1, p2);
-  else {
-    cmp = stricmp(p1, p2);
-    if(cmp == 0)
-      cmp = strcmp(p1, p2);
+  int cmp;
+  if (case_sensitive)
+    cmp = strcmp(s1.c_str(), s2.c_str());
+  else
+  {
+    cmp = stricmp(s1.c_str(), s2.c_str());
+    if (cmp == 0)
+      cmp = strcmp(s1.c_str(), s2.c_str());
   }
 
-  return cmp;
+  return (cmp > 0);
 }
 
 
@@ -101,38 +101,14 @@ static void disp_title() {
 
 
 //  ------------------------------------------------------------------
-//  this function frees all allocated strings in the array of pointers
 
-static void free_strings(char** p, int numelems) {
-
-  for(int i=0;i<numelems;i++)
-    throw_xfree(p[i]);
-}
-
-
-//  ------------------------------------------------------------------
-
-static void pre_exit(char** p, int numelems) {
-
-  free_strings(p,numelems);
-  throw_xfree(p);
-  gchdir(tcwdp);
-}
-
-
-//  ------------------------------------------------------------------
-
-bool wpickfile(int srow, int scol, int erow, int ecol, int btype, vattr bordattr, vattr winattr, vattr barattr, bool title, std::string &filespec, IfcpCP open, bool casesens) {
-
+bool wpickfile(int srow, int scol, int erow, int ecol, int btype, vattr bordattr, vattr winattr, vattr barattr, bool title, std::string &filespec, IfcpCP open, bool casesens)
+{
   Path cwd, dir, namext, tcwd, path, spec;
 
   cwdp = cwd;
   tcwdp = tcwd;
   namextp = namext;
-
-  // allocate space to hold array of char pointers
-  int allocated = 100;
-  char** p = (char**)throw_xmalloc(allocated*sizeof(char*));
 
   // set static variables
   open_function = open;
@@ -165,16 +141,15 @@ bool wpickfile(int srow, int scol, int erow, int ecol, int btype, vattr bordattr
   }
 
   bool finished;
-  int picked, files;
+  int picked;
 
-  do {
-
+  do
+  {
     // if directory was specified, change to it
-    if(*dir) {
-      if(gchdir(dir)) {
-        pre_exit(p, 0);
-        return false;
-      }
+    if (*dir && gchdir(dir))
+    {
+      gchdir(tcwdp);
+      return false;
     }
 
     // get current working directory
@@ -183,77 +158,71 @@ bool wpickfile(int srow, int scol, int erow, int ecol, int btype, vattr bordattr
 
     // find all directories plus all files matching input filespec in
     // current directory, allocating an array element for each
-    files = 0;
     picked = -1;
     gposixdir d(dir);
+    gstrarray strarr;
     const gdirentry *de;
-    if(d.ok) {
-      while((de = d.nextentry()) != NULL) {
+
+    if (d.ok)
+    {
+      while((de = d.nextentry()) != NULL)
+      {
         const char* name = NULL;
-        if(de->is_directory()) {
+        if (de->is_directory())
+        {
           if(de->name != ".") {
             strxmerge(path, sizeof(Path), de->name.c_str(), GOLD_SLASH_STR, NULL);
             name = path;
           }
         }
-        else if(de->is_file()) {
+        else if(de->is_file())
+        {
           if(case_sensitive ? gwildmat(de->name.c_str(), namext) : gwildmati(de->name.c_str(), namext))
             name = de->name.c_str();
         }
-        if(name) {
-          p[files] = throw_xstrdup(name);
-          files++;
-          if(files == allocated-1) {
-            allocated *= 2;
-            p = (char**)throw_xrealloc(p, allocated*sizeof(char*));
-          }
-        }
+
+        if (name) strarr.push_back(name);
       }
     }
-    p[files] = NULL;
 
     // sort files in array by swapping their pointers
-    qsort(p, files, sizeof(char*), (StdCmpCP)compare);
+    sort(strarr.begin( ), strarr.end( ), compare);
+    //std::qsort(p, files, sizeof(char*), (StdCmpCP)compare);
 
     // let user pick file
-    if(files)
-      picked = wpickstr(srow, scol, erow, ecol, btype, bordattr, winattr, barattr, p, 0, disp_title);
-    if(picked == -1 or files == 0) {
-      pre_exit(p, files);
+    if (strarr.size())
+    {
+      picked = wpickstr(srow, scol, erow, ecol, btype, bordattr, winattr, barattr, strarr, 0, disp_title);
+    }
+
+    if (picked == -1 or !strarr.size())
+    {
+      gchdir(tcwdp);
       return false;
     }
 
     // see if a directory was selected. if so save
     // directory name, otherwise build whole path name
-    q = strchr(p[picked], GOLD_SLASH_CHR);
-    if(q) {
+    const char *slash = strchr(strarr[picked].c_str(), GOLD_SLASH_CHR);
+    if (slash)
+    {
       finished = false;
-      strcpy(dir, p[picked]);
+      strcpy(dir, strarr[picked].c_str());
       r = strrchr(dir, GOLD_SLASH_CHR);
-      if(r)
-        *r = NUL;
-      *q = NUL;
+      if (r) *r = NUL;
     }
     else {
       finished = true;
       PathCopy(filespec, cwd);
-      filespec += p[picked];
+      filespec += strarr[picked].c_str();
     }
 
-    // free allocated strings
-    free_strings(p, files);
+    strarr.clear();
+  }
+  while(not finished);  // if a directory was selected, go back and do again
 
-  // if a directory was selected, go back and do again
-  } while(not finished);
-
-  // change back to current drive and directory
-  gchdir(tcwd);
-
-  // free allocated char pointers
-  throw_xfree(p);
-
-  // return normally
-  return true;
+  gchdir(tcwd); // change back to current drive and directory
+  return true;  // return normally
 }
 
 

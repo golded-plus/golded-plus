@@ -31,6 +31,7 @@
 #include <string>
 
 #include <gdefs.h>
+#include <gregex.h>
 
 
 //  ------------------------------------------------------------------
@@ -239,9 +240,9 @@ const int DISPMSGSIZE_LINES = 3;
 //  ------------------------------------------------------------------
 //  Replylink types
 
-const int REPLYLINK_DIRECT = 0;
-const int REPLYLINK_CHAIN  = 1;
-const int REPLYLINK_NONE   = 2;
+const int REPLYLINK_DIRECT   = 0;
+const int REPLYLINK_CHAIN    = 1;
+const int REPLYLINK_NONE     = 2;
 
 const int REPLYLINKLIST_FAST = 0;
 const int REPLYLINKLIST_FULL = 1;
@@ -562,23 +563,32 @@ struct infoLookup {
 //  ------------------------------------------------------------------
 //  Structures and constants for external utilities
 
-const int EXTUTIL_CLS          = 0x0001;
-const int EXTUTIL_CURSOR       = 0x0004;
-const int EXTUTIL_RELOAD       = 0x0008;
-const int EXTUTIL_PAUSE        = 0x0010;
-const int EXTUTIL_PAUSEONERROR = 0x0020;
-const int EXTUTIL_WIPE         = 0x0040;
-const int EXTUTIL_KEEPCTRL     = 0x0080;
+const uint32_t EXTUTIL_CLS          = 0x0001;
+const uint32_t EXTUTIL_CURSOR       = 0x0004;
+const uint32_t EXTUTIL_RELOAD       = 0x0008;
+const uint32_t EXTUTIL_PAUSE        = 0x0010;
+const uint32_t EXTUTIL_PAUSEONERROR = 0x0020;
+const uint32_t EXTUTIL_WIPE         = 0x0040;
+const uint32_t EXTUTIL_KEEPCTRL     = 0x0080;
 
-struct ExtUtil {
-  int  utilno;
-  int  options;
-  char cmdline[256];
+struct ExtUtil
+{
+  uint32_t    utilno;
+  uint32_t    options;
+  std::string cmdline;
 };
 
-struct SaveUtil {
-  int  utilno;
-  char menutext[41];
+struct SaveUtil
+{
+  uint32_t    utilno;
+  std::string menutext;
+};
+
+struct UrlHandler
+{
+  std::string name;
+  gregex      scheme;
+  ExtUtil     handler;
 };
 
 

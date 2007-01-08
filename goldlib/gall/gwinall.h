@@ -371,7 +371,7 @@ int       wopen       (int srow, int scol, int erow, int ecol, int btype, vattr 
 inline int wopen_     (int srow, int scol, int vlen, int hlen, int btype, vattr battr, vattr wattr, vattr sbattr = DEFATTR, vattr loattr = DEFATTR) { return wopen(srow, scol, srow+vlen-1, scol+hlen-1, btype, battr, wattr, sbattr, loattr); }
 int       wperror     (const char* message);
 bool      wpickfile   (int srow, int scol, int erow, int ecol, int btype, vattr bordattr, vattr winattr, vattr barattr, bool title, std::string &filespec, IfcpCP open, bool casesens=false);
-int       wpickstr    (int srow, int scol, int erow, int ecol, int btype, vattr bordattr, vattr winattr, vattr barattr, char* strarr[], int initelem, VfvCP open);
+int       wpickstr    (int srow, int scol, int erow, int ecol, int btype, vattr bordattr, vattr winattr, vattr barattr, gstrarray &strarr, int initelem, VfvCP open);
 int       wprintc     (int wrow, int wcol, vattr attr, vchar ch);
 int       wprintf     (const char* format, ...) __attribute__ ((format (printf, 1, 2)));
 int       wprintaf    (int attr, const char* format, ...) __attribute__ ((format (printf, 2, 3)));
@@ -379,7 +379,7 @@ int       wprintfs    (int wrow, int wcol, vattr attr, const char* format, ...) 
 int       wprints     (int wrow, int wcol, vattr attr, const char* str);
 int       wprints_box (int wrow, int wcol, vattr attr, const char* str);
 int       wprintvs    (int wrow, int wcol, vattr attr, const vchar* str);
-int       wprintns    (int wrow, int wcol, vattr attr, const char* str, uint len, vchar fill=' ', vattr fill_attr = DEFATTR);
+int       wprintns    (int wrow, int wcol, vattr attr, const std::string &str, uint len, vchar fill=' ', vattr fill_attr = DEFATTR);
 int       wprintsf    (int wrow, int wcol, vattr attr, const char* format, const char* str);
 int       wprintws    (int wrow, int wcol, vatch* buf, uint len);
 void      wpropbar    (int xx, int yy, long len, vattr attr, long pos, long size);

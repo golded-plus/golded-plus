@@ -41,7 +41,7 @@ void CfgExcludenodes() {
 }
 
 //  ------------------------------------------------------------------
-              
+
 void CfgExternoptions() {
 
   const word CRC_CLS            = 0x34F4;
@@ -64,7 +64,7 @@ void CfgExternoptions() {
 
     if(*val == '-')
       val++;
-    
+
     char* _key;
     word _crc = getkeyvalcrc(&_key, &val);
 
@@ -119,8 +119,8 @@ void CfgExternoptions() {
 
 //  ------------------------------------------------------------------
 
-void CfgExternutil() {
-             
+void CfgExternutil()
+{
   ExtUtil extutil;
 
   // Get util number
@@ -131,16 +131,18 @@ void CfgExternutil() {
 
   // Get options
   int _optbak = CFG->externoptions;
-  while(strchr("-", *_val)) {
+
+  while(strchr("-", *_val))
+  {
     getkeyval(&_key, &_val);
     val = _key;
     CfgExternoptions();
   }
+
   extutil.options = CFG->externoptions;
   CFG->externoptions = _optbak;
 
-  // Get commandline
-  strxcpy(extutil.cmdline, _val, sizeof(extutil.cmdline));
+  extutil.cmdline = _val;  // Get commandline
 
   // Count it
   CFG->externutil.push_back(extutil);
@@ -293,14 +295,14 @@ void CfgGedhandshake() {
 
   CFG->gedhandshake = make_bool(GetYesno(val));
 }
-  
+
 //  ------------------------------------------------------------------
 
 void CfgGermankeyboard() {
 
   right_alt_same_as_left = not GetYesno(val);
 }
-  
+
 //  ------------------------------------------------------------------
 
 void CfgGoldbasepath(const char *path, bool force) {
@@ -369,4 +371,3 @@ void CfgGroup() {
 }
 
 //  ------------------------------------------------------------------
-

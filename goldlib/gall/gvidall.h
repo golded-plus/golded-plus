@@ -313,8 +313,8 @@ public:
   int      currow;     // Current cursor row
   int      curcol;     // Current cursor column
 
-  int      numrows;    // number of displayed rows
-  int      numcols;    // number of displayed columns
+  size_t   numrows;    // number of displayed rows
+  size_t   numcols;    // number of displayed columns
 
   word     videoseg;   // video buffer segment address
 

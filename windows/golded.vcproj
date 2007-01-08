@@ -2716,10 +2716,6 @@
 					</FileConfiguration>
 				</File>
 			</Filter>
-			<Filter
-				Name="goldlib"
-				>
-			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"

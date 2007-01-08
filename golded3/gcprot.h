@@ -366,6 +366,7 @@ void CfgTwitsubj         ();
 void CfgTwitto           ();
 void CfgUnpacker         ();
 void CfgUrlhandler       ();
+void CfgUrlscheme        ();
 void CfgUsearea          ();
 void CfgUsecharset       ();
 void CfgUseflags         ();

@@ -52,13 +52,37 @@ bool strblank(const char* str) {
 //  ------------------------------------------------------------------
 //  Changes all occurrences of one character to another
 
-int strchg(char* str, char oldch, char newch) {
+size_t strchg(char *str, char oldch, char newch)
+{
+  size_t count = 0;
 
-  int count = 0;
-
-  for(char* p=str; *p; p++) {
-    if(oldch == *p) {
+  for (char *p = str; *p; p++)
+  {
+    if (oldch == *p)
+    {
       *p = newch;
+      count++;
+    }
+  }
+
+  return count;
+}
+
+
+//  ------------------------------------------------------------------
+//  Changes all occurrences of one character to another
+
+size_t strchg(std::string &str, char oldch, char newch)
+{
+  size_t count = 0;
+
+  std::string::iterator it = str.begin();
+  std::string::iterator end = str.end();
+  for (; it != end; it++)
+  {
+    if (oldch == *it)
+    {
+      *it = newch;
       count++;
     }
   }
@@ -478,28 +502,34 @@ char* strtrim(char* p) {
 }
 
 
-std::string& strtrim(std::string& p) {
+std::string &strtrim(std::string &str)
+{
+  if (!str.empty())
+  {
+    std::string::iterator trail = str.end();
 
-  if(not p.empty()) {
-    std::string::iterator trail = p.end();
-    while(trail != p.begin()) {
+    while(trail != str.begin())
+    {
       --trail;
-      if(not isspace(*trail) and not iscntrl(*trail)) {
+      if (not isspace(*trail) and not iscntrl(*trail))
+      {
         ++trail;
         break;
       }
     }
-    p.erase(trail, p.end());
+
+    str.erase(trail, str.end());
   }
-  return p;
+
+  return str;
 }
 
 
 //  ------------------------------------------------------------------
 //  Trims leading spaces off of a string
 
-char* strltrim(char* str) {
-
+char* strltrim(char* str)
+{
   char* p;
   char* q;
 
@@ -516,6 +546,22 @@ char* strltrim(char* str) {
   return str;
 }
 
+//  ------------------------------------------------------------------
+
+std::string &strltrim(std::string &str)
+{
+  if (!str.empty())
+  {
+    std::string::iterator begin = str.begin();
+    std::string::iterator end = str.end();
+    std::string::iterator it = begin;
+
+    for (; (it != end) && isspace(*it); it++) { /**/ }
+    if (it != begin) str.erase(begin, it);
+  }
+
+  return str;
+}
 
 //  ------------------------------------------------------------------
 
@@ -693,6 +739,35 @@ char* strlwr(char* s) {
 }
 
 #endif
+
+
+//  ------------------------------------------------------------------
+
+void tokenize(gstrarray &array, const TCHAR* str, const TCHAR *delim)
+{
+  if (delim == NULL) delim = ", \t";
+
+#if defined(_tcstok_s)
+  TCHAR *tmp = _strdup(str);
+  TCHAR *next_token;
+  TCHAR *token = _tcstok_s(tmp, delim, &next_token);
+#else
+  TCHAR *tmp = strdup(str);
+  TCHAR *token = strtok(tmp, delim);
+#endif
+
+  while (token)
+  {
+    array.push_back(token);
+#if defined(_tcstok_s)
+    token = _tcstok_s(NULL, delim, &next_token);
+#else
+    token = strtok(NULL, delim);
+#endif
+  }
+
+  free(tmp);
+}
 
 
 //  ------------------------------------------------------------------

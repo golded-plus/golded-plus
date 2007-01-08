@@ -681,12 +681,50 @@ void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int __orig
         if (tokenxchg(input, dst, "@tr", "", 0, 1, (int)true))
           continue;
       }
-    }
 
+#if 0
+      if (strnieql(it2str(input, dst), "@uptime", 7))
+      {
+        size_t days = 0;
+        size_t hours = 0;
+        size_t minutes = 0;
+        size_t seconds = 0;
+        size_t useconds = 0;
+
+#ifdef __WIN32__
+        LARGE_INTEGER counter;
+        LARGE_INTEGER frequency;
+        QueryPerformanceCounter(&counter);
+        QueryPerformanceFrequency(&frequency);
+        seconds = counter.QuadPart / frequency.QuadPart;
+        useconds = size_t(double(counter.QuadPart % frequency.QuadPart)*1000 / frequency.QuadPart);
+#endif
+
+        days = seconds/(60*60*24); seconds %= 60*60*24;
+        hours = seconds/(60*60); seconds %= 60*60;
+        minutes = seconds/60; seconds %= 60;
+
+        char uptime[1024];
+/*
+		FormatString(
+		FormatString(
+		FormatString(
+		FormatString(
+		FormatString("%days day(s) %hours:%minutes:%seconds.%useconds",
+			"%days", days),
+			"%hours", hours),
+			"%minutes", minutes),
+			"%seconds", seconds),
+			"%useconds", useconds);
+*/
+
+		tokenxchg(input, dst, "@uptime", uptime);
+      }
+#endif
+    }
     dst++;
   }
 }
-
 
 //  ------------------------------------------------------------------
 

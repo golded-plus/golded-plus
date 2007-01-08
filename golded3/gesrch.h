@@ -26,7 +26,6 @@
 #ifndef __GESRCH_H
 #define __GESRCH_H
 
-#include <gstrarr.h>
 #include <gsrchmgr.h>
 
 

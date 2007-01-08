@@ -503,6 +503,14 @@ BOOL WINAPI GoldedCtrlHandler(DWORD dwCtrlType) {
 
 
 //  ------------------------------------------------------------------
+
+void Uninitialize()
+{
+    delete WideUsername;
+}
+
+
+//  ------------------------------------------------------------------
 //  Initialize defaults and generally get the system up and running
 
 void Initialize(int argc, char* argv[]) {

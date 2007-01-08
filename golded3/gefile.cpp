@@ -25,6 +25,7 @@
 //  ------------------------------------------------------------------
 
 #include <fcntl.h>
+#include <algorithm>
 #include <golded.h>
 #include <gwildmat.h>
 #include <gdirposx.h>
@@ -622,9 +623,9 @@ void CreateFileMsgs(int mode, GMsg* msg) {
 
 //  ------------------------------------------------------------------
 
-static int FreqCmp(const char** a, const char** b) {
-
-  return stricmp(*a, *b);
+static bool FreqCmp(const std::string &a, const std::string &b)
+{
+  return (stricmp(a.c_str(), b.c_str()) < 0);
 }
 
 
@@ -722,27 +723,25 @@ static int frqgetfile(char* file, char* desc, char* filesize, const char* txt) {
 
 //  ------------------------------------------------------------------
 
-void FileRequest(GMsg* msg) {
-
+void FileRequest(GMsg* msg)
+{
   GFTRK("FileRequest");
 
   int oldtopline = reader_topline;
 
-  if(AA->Msgn.Count() and msg->line and msg->lines) {
-
+  if (AA->Msgn.Count() and msg->line and msg->lines)
+  {
+    gstrarray freqfile;
     char buf[256];
     const char* ptr;
     const char* ptr1 = NULL;
     const char* ptr2;
     const char* txtptr;
-    char** freqfile = NULL;
     int gotticket = false;
     int getnextdesc = false;
     Line** lin = msg->line;
     char file[GMAXPATH], desc[200], filesize[10];
-    int freqfiles = 0;
     bool esc = true;
-    int n;
     byte numlines = 0;
 
     *desc = *file = *filesize = NUL;
@@ -753,8 +752,9 @@ void FileRequest(GMsg* msg) {
     int tline = reader_topline;
     if(CFG->frqoptions & FREQ_FROMTOP)
       tline = 0;
-    for(n=tline; n<msg->lines; n++) {
 
+    for (size_t n = tline; n < msg->lines; n++)
+    {
       // Don't look in control info for files
       if(lin[n]->type & (GLINE_KLUDGE|GLINE_TEAR|GLINE_ORIG))
         continue;
@@ -895,13 +895,11 @@ void FileRequest(GMsg* msg) {
       if (*file and *desc)
       {
         // Yes, so add it to the list
-        freqfile = (char**)throw_realloc(freqfile, (freqfiles+3)*sizeof(char*));
         gsprintf(PRINTF_DECLARE_BUFFER(buf), " %-12s %8s %s", file, filesize, desc);
         strsetsz(buf, 76);
-        freqfile[freqfiles] = throw_strdup(buf);
+        freqfile.push_back(buf);
         *desc = *file = *filesize = NUL;
         numlines = 0;
-        freqfiles++;
       }
 
       // Maybe there was a false match, so re-initialize if
@@ -919,27 +917,24 @@ void FileRequest(GMsg* msg) {
     {
       strcpy(file, "FILES");
       gsprintf(PRINTF_DECLARE_BUFFER(desc), LNG->FilelistFrom, msg->By());
-      freqfile = (char**)throw_realloc(freqfile, (freqfiles+3)*sizeof(char*));
       gsprintf(PRINTF_DECLARE_BUFFER(buf), " %-12.12s          %-52.52s ", file, desc);
-      freqfile[freqfiles] = throw_strdup(buf);
+      freqfile.push_back(buf);
       *desc = *file = NUL;
-      freqfiles++;
     }
 
     w_info(NULL);
 
     // Let user select the file(s) to be requested
-    if(freqfile) {
-
-      // NULL terminate list
-      freqfile[freqfiles] = NULL;
-
+    if (freqfile.size())
+    {
       // Sort list if requested
-      if(CFG->frqoptions & FREQ_SORT)
-        qsort(freqfile, freqfiles, sizeof(char*), (StdCmpCP)FreqCmp);
+      if (CFG->frqoptions & FREQ_SORT)
+      {
+        sort(freqfile.begin(), freqfile.end(), FreqCmp);
+      }
 
       // Run the picker
-      int items = MinV(freqfiles, (MAXROW-10));
+      int items = MinV(freqfile.size(), MAXROW-10);
       set_title(LNG->FreqMenuTitle, TCENTER, C_ASKT);
       update_statusline(LNG->FreqStat);
       whelppcat(H_FileRequest);
@@ -963,10 +958,16 @@ void FileRequest(GMsg* msg) {
 
         // Handle picked files
         msg->re[0] = NUL;
-        for(n=0; n<freqfiles; n++) {
-          if(*freqfile[n] != ' ') {
+
+        gstrarray::iterator it = freqfile.begin();
+        gstrarray::iterator end = freqfile.end();
+
+        for (; it != end; it++)
+        {
+          if((*it)[0] != ' ')
+          {
             msg->attr.frq1();
-            ptr = freqfile[n]+1;      //  01234567890123456
+            ptr = &(*it)[1];          //  01234567890123456
             ptr2 = strskip_txt(ptr);
 #if defined(__USE_ALLOCA__)
             char *tmpbuf = (char*)alloca(ptr2-ptr+1);
@@ -987,10 +988,12 @@ void FileRequest(GMsg* msg) {
             }
           }
         }
-        if(freqs == 0) {
+
+        if (freqs == 0)
+        {
           // AARRRGGGHH!!  More bloody duplicate code :-((
           msg->attr.frq1();
-          ptr = freqfile[crsr]+1;      //  01234567890123456
+          ptr = &freqfile[crsr][1];   //  01234567890123456
           ptr2 = strskip_txt(ptr);
 #if defined(__USE_ALLOCA__)
           char *tmpbuf = (char*)alloca(ptr2-ptr+1);
@@ -1033,8 +1036,10 @@ void FileRequest(GMsg* msg) {
       int destarea = CurrArea;
       reader_topline = 0;
       AA->attr().hex0();
-      if(*AA->Areafreqto()) {
-        for(n=0; (uint) n<AL.size(); n++) {
+      if (*AA->Areafreqto())
+      {
+        for (size_t n = 0; n < AL.size(); n++)
+        {
           if(strieql(AL[n]->echoid(), AA->Areafreqto())) {
             destarea = AL[n]->areaid();
             break;
@@ -1063,12 +1068,6 @@ void FileRequest(GMsg* msg) {
           AL.SetActiveAreaId(OrigArea);
         }
       }
-    }
-
-    if(freqfile) {
-      for(n=0; n<freqfiles; n++)
-        throw_release(freqfile[n]);
-      throw_free(freqfile);
     }
 
     if(gkbd.quitall)

@@ -302,7 +302,7 @@ public:
   uint        disptabsize;          // tabsize;
   bool        encodeemailheaders;
   std::vector<GEvent> event;
-  int         externoptions;
+  uint32_t    externoptions;
   std::vector<ExtUtil> externutil;
   Ezycom      ezycom;
   int         ezycomuserno;
@@ -451,7 +451,7 @@ public:
   std::vector<Node> twitname;
   gstrarray   twitsubj;
   std::vector< std::pair<std::string, std::string> > unpacker;
-  ExtUtil     urlhandler;
+  std::vector<UrlHandler> urlhandler;
   bool        usearea;
   bool        usecharset;
   int         usefwd;

@@ -98,8 +98,8 @@ static void hide_mouse_cursor_pck() {
 //  this function updates the current item by either
 //  displaying or erasing the selection bar on it
 
-static void update_curr(char* strarr[], r_t* r, int bar) {
-
+static void update_curr( const gstrarray &strarr, r_t* r, int bar)
+{
   // calculate row and column string will be displayed
   // at, then print out the string character-by-character
 
@@ -119,8 +119,8 @@ static void update_curr(char* strarr[], r_t* r, int bar) {
 
 //  ------------------------------------------------------------------
 
-static void update_line(char* strarr[], r_t* r, int wrow, int upcurr) {
-
+static void update_line(const gstrarray &strarr, r_t* r, int wrow, int upcurr)
+{
   int nomore = false;
   int ccol = r->gapspaces + r->xtraspaces;
   int celem = (wrow*r->strsperline) + r->first;
@@ -142,8 +142,8 @@ static void update_line(char* strarr[], r_t* r, int wrow, int upcurr) {
 //  ------------------------------------------------------------------
 //  this function will update all items in the window
 
-static void update_window(char* strarr[], r_t* r) {
-
+static void update_window(const gstrarray &strarr, r_t* r)
+{
   hide_mouse_cursor_pck();
   for(int crow=0; crow<r->wheight; crow++)
     update_line(strarr, r, crow, 1);
@@ -205,8 +205,8 @@ static int e_endwin(r_t* r, int felem) {
 
 //  ------------------------------------------------------------------
 
-static void goto_item(r_t* r, char* strarr[], int elem) {
-
+static void goto_item(r_t* r, const gstrarray &strarr, int elem)
+{
   if(elem<0 or elem>r->lastelem)
     elem = 0;
   int outside = (elem<r->first or elem>r->last) ? YES : NO;
@@ -260,8 +260,8 @@ static int mouse_on_item(r_t* r, int mcrow, int mccol) {
 
 //  ------------------------------------------------------------------
 
-static void page_down(char* strarr[], r_t* r) {
-
+static void page_down(const gstrarray &strarr, r_t* r)
+{
   if(r->curr != r->last) {
     r->curr = r->last;
     update_window(strarr, r);
@@ -279,8 +279,8 @@ static void page_down(char* strarr[], r_t* r) {
 
 //  ------------------------------------------------------------------
 
-static void page_up(char* strarr[], r_t* r) {
-
+static void page_up(const gstrarray &strarr, r_t* r)
+{
   if(r->curr != r->first) {
     r->curr = r->first;
     update_window(strarr, r);
@@ -297,8 +297,8 @@ static void page_up(char* strarr[], r_t* r) {
 
 //  ------------------------------------------------------------------
 
-static void scroll_down(char* strarr[], r_t* r, int upcurr) {
-
+static void scroll_down(const gstrarray &strarr, r_t* r, int upcurr)
+{
   if(r->first) {
     hide_mouse_cursor_pck();
     if(upcurr)
@@ -317,8 +317,8 @@ static void scroll_down(char* strarr[], r_t* r, int upcurr) {
 
 //  ------------------------------------------------------------------
 
-static void scroll_up(char* strarr[], r_t* r, int upcurr) {
-
+static void scroll_up(const gstrarray &strarr, r_t* r, int upcurr)
+{
   if(r->last!=(r->lastelem)) {
     hide_mouse_cursor_pck();
     if(upcurr)
@@ -339,8 +339,8 @@ static void scroll_up(char* strarr[], r_t* r, int upcurr) {
 //  ------------------------------------------------------------------
 //  this function reads the mouse for input
 
-static gkey read_mouse(char* strarr[], r_t* r) {
-
+static gkey read_mouse(const gstrarray & /*strarr*/, r_t* /*r*/)
+{
   #ifdef GOLD_MOUSE
   // if free-floating mouse cursor support is on
   if(gmou.FreeCursor()) {
@@ -403,12 +403,11 @@ static gkey read_mouse(char* strarr[], r_t* r) {
 
 //  ------------------------------------------------------------------
 
-int wpickstr(int srow, int scol, int erow, int ecol, int btype, vattr bordattr, vattr winattr, vattr barattr, char* strarr[], int initelem, VfvCP open) {
-
-  int i, j, maxlen, outside;
+int wpickstr(int srow, int scol, int erow, int ecol, int btype, vattr bordattr, vattr winattr, vattr barattr, gstrarray &strarr, int initelem, VfvCP open)
+{
+  int outside;
   gkey xch;
   char ch;
-  char* p;
   r_t r;
 
   int quickpos = (strarr[0][0] == ' ') ? 1 : 0;
@@ -416,14 +415,22 @@ int wpickstr(int srow, int scol, int erow, int ecol, int btype, vattr bordattr, 
   // go through input array and determine the longest
   // string, and count the number of elements in the array
 
-  maxlen = strlen(m_title);
+  size_t maxlen = strlen(m_title);
 
-  for (i = 0; strarr[i] != NULL; i++)
-    if ((j = strlen(strarr[i])) > maxlen)
-      maxlen = j;
+  gstrarray::const_iterator it = strarr.begin();
+  gstrarray::const_iterator end = strarr.end();
+  for (; it != end; it++)
+  {
+    size_t len;
+    if ((len = it->length()) > maxlen)
+    {
+      maxlen = len;
+    }
+  }
 
   r.maxstrlen = maxlen;
-  r.lastelem = ((r.numelems=i)-1);
+  r.numelems = strarr.size();
+  r.lastelem = r.numelems - 1;
   r.winattr = winattr;
   r.barattr = barattr;
 
@@ -507,16 +514,18 @@ int wpickstr(int srow, int scol, int erow, int ecol, int btype, vattr bordattr, 
     switch(xch) {
 
       case Key_Space:
-        if(wpickstr_tag) {
-          p = strarr[r.curr];
-          switch(*p) {
+        if (wpickstr_tag)
+        {
+          char p = strarr[r.curr][0];
+          switch (p)
+          {
             case ' ':
-              *p = (char)wpickstr_tag;
-              update_curr(strarr,&r,1);
+              strarr[r.curr][0] = (char)wpickstr_tag;
+              update_curr(strarr, &r, 1);
               break;
             default:
-              *p = ' ';
-              update_curr(strarr,&r,1);
+              strarr[r.curr][0] = ' ';
+              update_curr(strarr, &r, 1);
           }
           kbput(Key_Dwn);
         }
@@ -544,18 +553,26 @@ int wpickstr(int srow, int scol, int erow, int ecol, int btype, vattr bordattr, 
 
       case Key_StrG:
       case Key_S_8:
-        if(wpickstr_tag) {
-          for(i=0; i<r.numelems; i++)
+        if (wpickstr_tag)
+        {
+          for (size_t i = 0; i < r.numelems; i++)
+          {
             strarr[i][0] = (char)wpickstr_tag;
-          update_window(strarr,&r);
+          }
+
+          update_window(strarr, &r);
         }
         break;
 
       case Key_Sls:
-        if(wpickstr_tag) {
-          for(i=0; i<r.numelems; i++)
+        if (wpickstr_tag)
+        {
+          for (size_t i = 0; i < r.numelems; i++)
+          {
             strarr[i][0] = ' ';
-          update_window(strarr,&r);
+          }
+
+          update_window(strarr, &r);
         }
         break;
 
@@ -679,22 +696,29 @@ int wpickstr(int srow, int scol, int erow, int ecol, int btype, vattr bordattr, 
         // character as the keypress.  If not found after current
         // position, search from the beginning for a match
         ch = (char)g_toupper(char(xch & 0xFF));
-        if(!ch)
-          break;
-        for(i=r.curr+1; i<r.numelems; i++)
-          if(ch==g_toupper(strarr[i][quickpos]))
+        if (!ch) break;
+        
+        size_t i;
+        for (i = r.curr + 1; i < r.numelems; i++)
+        {
+          if (ch == g_toupper(strarr[i][quickpos]))
             break;
-        if(i==r.numelems) {
-          for(i=0;i<r.curr;i++)
-            if(ch==g_toupper(strarr[i][quickpos]))
+        }
+
+        if (i == r.numelems)
+        {
+          for (i = 0; i < r.curr; i++)
+          {
+            if (ch == g_toupper(strarr[i][quickpos]))
               break;
-          if(i==r.curr)
-            continue;
+          }
+
+          if (i == r.curr) continue;
         }
 
         // a matching ASCII character was found.  set position
         // to matching element, adjusting window if necessary
-        goto_item(&r,strarr,i);
+        goto_item(&r, strarr, i);
     }
   }
 }

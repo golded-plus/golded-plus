@@ -1390,15 +1390,15 @@ struct ReplySel {
 
 //  ------------------------------------------------------------------
 
-void GotoReplies() {
-
+void GotoReplies()
+{
   reader_direction = DIR_NEXT;
 
   GMsg* msg = reader_msg;
   const int list_max = msg->link.list_max();
 
   char buf[200];
-  int replies = 0;
+  size_t replies = 0;
   int cursorbar = -1;
   uint maxname = 0;
   uint maxaddr = 0;
@@ -1447,40 +1447,38 @@ void GotoReplies() {
   throw_free(rmsg);
 
   int selected = 0;
-  if(replies > 1) {
+  if(replies > 1)
+  {
     uint maxname2 = MAXCOL-16-maxmsgno-maxaddr-maxwritten;
     maxname = MinV(maxname, maxname2);
-    char** listr = (char**)throw_calloc(list_max+3, sizeof(char*));
+    gstrarray listr;
+    
     int n;
-    for(n=0; n<list_max+3; n++) {
-      if(n<replies) {
-        sprintf(buf, "%c %c %*s : %-*.*s  %-*s  %-*s ",
-          rlist[n].isread,
-          rlist[n].msgno[0],
-          maxmsgno, rlist[n].msgno+1,
-          (int) maxname, (int) maxname, rlist[n].name,
-          maxaddr, rlist[n].addr,
-          maxwritten, rlist[n].written
-        );
-        listr[n] = throw_strdup(buf);
-      }
-      else {
-        listr[n] = NULL;
+    for (n = 0; n < list_max + 3; n++)
+    {
+      if (n >= replies)
         break;
-      }
+
+      sprintf(buf, "%c %c %*s : %-*.*s  %-*s  %-*s ",
+        rlist[n].isread,
+        rlist[n].msgno[0],
+        maxmsgno, rlist[n].msgno+1,
+        (int) maxname, (int) maxname, rlist[n].name,
+        maxaddr, rlist[n].addr,
+        maxwritten, rlist[n].written
+        );
+
+      listr.push_back(buf);
     }
     set_title(LNG->Replies, TCENTER, C_ASKT);
     update_statusline(LNG->SelectReply);
     whelppcat(H_GotoReplies);
-    int pick_max = MinV(replies, (MAXROW-10));
+    size_t pick_max = MinV(replies, (MAXROW-10));
     if(cursorbar < 0)
       cursorbar = 0;
     selected = wpickstr(6, 0, 6+pick_max+1, -1, W_BASK, C_ASKB, C_ASKW, C_ASKS, listr, cursorbar, title_shadow);
     whelpop();
     gotolink = (selected != -1) ? rlist[selected].reln : 0;
-    for(n=0; n<replies; n++)
-      throw_free(listr[n]);
-    throw_free(listr);
   }
 
   throw_free(rlist);

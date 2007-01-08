@@ -35,7 +35,6 @@
 using namespace std;
 
 #include <gstrall.h>
-#include <gstrarr.h>
 #include <gftnall.h>
 #include <golded3.h>
 

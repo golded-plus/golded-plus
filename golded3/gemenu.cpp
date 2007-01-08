@@ -387,7 +387,7 @@ static void DispAttrWindow(int show=-1) {
 
   if(show) {
     wh_background = whandle();
-    int wide = MaxV(strlen(LNG->AttrTitle)+2, strlen(LNG->AttrPvt)+2);
+    size_t wide = MaxV(strlen(LNG->AttrTitle)+2, strlen(LNG->AttrPvt)+2);
     wide = MinV(wide, MAXCOL-4);
     wh_attributes = wopen_(6, 0, 17, wide, W_BMENU, C_MENUB, C_MENUW);
     set_title(LNG->AttrTitle, TCENTER, C_MENUT);
@@ -606,9 +606,7 @@ void AskAttributes(GMsg* __msg) {
 int SelectFromFile(const char* file, char* selection, const char* title, const char* nolines)
 {
   char buf[256];
-  int n;
   bool retval=false;
-  char** Listi;
   int lines = 0;
 
   gfile fp(AddPath(CFG->goldpath, file), "rt", CFG->sharemode);
@@ -620,8 +618,10 @@ int SelectFromFile(const char* file, char* selection, const char* title, const c
 
   if (lines)
   {
-    Listi = (char**)throw_calloc(lines+1, sizeof(char*));
+    gstrarray Listi;
     fp.Rewind();
+
+    size_t n;
     for (n = 0; n < lines; n++)
     {
       fp.Fgets(buf, sizeof(buf)-2);
@@ -632,20 +632,21 @@ int SelectFromFile(const char* file, char* selection, const char* title, const c
         buf[MAXCOL-2-2] = NUL;
       Listi[n] = throw_strdup(buf);
     }
+
     n = MinV(n, (MAXROW-10));
     set_title(title, TCENTER, C_ASKT);
     n = wpickstr(6, 0, 6+n+1, -1, W_BASK, C_ASKB, C_ASKW, C_ASKS, Listi, 0, title_shadow);
-    if(n != -1) {
-      strcpy(selection, Listi[n]);
+    
+    if (n != -1)
+    {
+      strcpy(selection, Listi[n].c_str());
       strtrim(selection);
       strltrim(selection);
       retval = true;
     }
-    for(n=0; n<lines; n++)
-      throw_free(Listi[n]);
-    throw_free(Listi);
   }
-  else {
+  else
+  {
     w_info(nolines);
     waitkeyt(10000);
     w_info(NULL);
@@ -657,29 +658,36 @@ int SelectFromFile(const char* file, char* selection, const char* title, const c
 
 //  ------------------------------------------------------------------
 
-int ChangeTagline() {
+int ChangeTagline() 
+{
+  bool retval = false;
 
-  char buf[256];
-  int n;
-  bool retval=false;
-  char** Listi;
+  if (not CFG->tagline.empty())
+  {
+    char buf[256];
+    gstrarray Listi;
 
-  if(not CFG->tagline.empty()) {
-    Listi = (char**)throw_calloc(CFG->tagline.size()+1, sizeof(char*));
-    gstrarray::iterator i;
-    for(n = 0, i = CFG->tagline.begin(); i != CFG->tagline.end(); i++, n++) {
-      if((*i)[0] == '@')
-        strxmerge(buf, MAXCOL-2-2, " [", CleanFilename(i->c_str()+1), "] ", NULL);
+    gstrarray::iterator it = CFG->tagline.begin();
+    gstrarray::iterator end = CFG->tagline.end();
+
+    for (; it != end; it++)
+    {
+      if((*it)[0] == '@')
+        strxmerge(buf, MAXCOL-2-2, " [", CleanFilename(it->c_str() + 1), "] ", NULL);
       else
-        strxmerge(buf, MAXCOL-2-2, " ", i->c_str(), " ", NULL);
-      Listi[n] = throw_strdup(buf);
+        strxmerge(buf, MAXCOL-2-2, " ", it->c_str(), " ", NULL);
+
+      Listi.push_back(buf);
     }
-    n = MinV(n, (MAXROW-10));
+
+    size_t n = MinV(Listi.size(), (MAXROW-10));
     set_title(LNG->Taglines, TCENTER, C_ASKT);
     update_statusline(LNG->ChangeTagline);
     whelppcat(H_ChangeTagline);
     n = wpickstr(6, 0, 6+n+1, -1, W_BASK, C_ASKB, C_ASKW, C_ASKS, Listi, CFG->taglineno, title_shadow);
-    if(n != -1) {
+    
+    if (n != -1)
+    {
       const char *tagl = CFG->tagline[n].c_str();
       if(tagl[0] == '@') {
         strxmerge(buf, MAXCOL-2-2, LNG->Taglines, " [", CleanFilename(tagl+1), "] ", NULL);
@@ -694,45 +702,52 @@ int ChangeTagline() {
         retval = true;
       }
     }
-    for(n=CFG->tagline.size(); n; n--)
-      throw_free(Listi[n-1]);
-    throw_free(Listi);
+
     whelpop();
   }
-  else {
+  else
+  {
     w_info(LNG->NoTagline);
     waitkeyt(10000);
     w_info(NULL);
   }
-  return(retval);
+
+  return retval;
 }
 
 
 //  ------------------------------------------------------------------
 
-int ChangeOrigin() {
+int ChangeOrigin()
+{
+  bool retval = false;
 
-  char buf[256];
-  int n;
-  bool retval=false;
-  char** Listi;
+  if (not CFG->origin.empty())
+  {
+    char buf[256];
+    gstrarray Listi;
 
-  if(not CFG->origin.empty()) {
-    Listi = (char**)throw_calloc(CFG->origin.size()+1, sizeof(char*));
-    gstrarray::iterator i;
-    for(n = 0, i = CFG->origin.begin(); i != CFG->origin.end(); n++, i++) {
-      if((*i)[0] == '@')
-        strxmerge(buf, MAXCOL-2-2, " [", CleanFilename(i->c_str()+1), "] ", NULL);
+    gstrarray::iterator it = CFG->origin.begin();
+    gstrarray::iterator end = CFG->origin.end();
+
+    for (; it !=end; it++)
+    {
+      if ((*it)[0] == '@')
+        strxmerge(buf, MAXCOL-2-2, " [", CleanFilename(it->c_str() + 1), "] ", NULL);
       else
-        strxmerge(buf, MAXCOL-2-2, " ", i->c_str(), " ", NULL);
-      Listi[n] = throw_strdup(buf);
+        strxmerge(buf, MAXCOL-2-2, " ", it->c_str(), " ", NULL);
+
+      Listi.push_back(buf);
     }
-    n = MinV(n, (MAXROW-10));
+
+    size_t n = MinV(Listi.size(), (MAXROW-10));
     set_title(LNG->Origins, TCENTER, C_ASKT);
     update_statusline(LNG->ChangeOrigin);
     whelppcat(H_ChangeOrigin);
     n = wpickstr(6, 0, 6+n+1, -1, W_BASK, C_ASKB, C_ASKW, C_ASKS, Listi, CFG->originno, title_shadow);
-    if(n != -1) {
+
+    if (n != -1)
+    {
       const char *orig = CFG->origin[n].c_str();
       if(orig[0] == '@') {
         strxmerge(buf, MAXCOL-2-2, LNG->Origins, " [", CleanFilename(orig+1), "] ", NULL);
@@ -747,43 +762,48 @@ int ChangeOrigin() {
         retval = true;
       }
     }
-    for(n = CFG->origin.size(); n; n--)
-      throw_free(Listi[n-1]);
-    throw_free(Listi);
+    
     whelpop();
   }
-  else {
+  else
+  {
     w_info(LNG->NoOrigDefined);
     waitkeyt(10000);
     w_info(NULL);
   }
-  return(retval);
+
+  return retval;
 }
 
 
 //  ------------------------------------------------------------------
 
-int ChangeUsername() {
+int ChangeUsername()
+{
+  if(not CFG->username.empty())
+  {
+    char buf[256];
+    char adrs[40];
+    gstrarray Listi;
 
-  char buf[256], adrs[40];
-  int n;
-  char** Listi;
+    std::vector<Node>::iterator it = CFG->username.begin();
+    std::vector<Node>::iterator end = CFG->username.end();
 
-  if(not CFG->username.empty()) {
-    Listi = (char**)throw_calloc(CFG->username.size()+1, sizeof(char*));
-    std::vector<Node>::iterator i;
-    for (n = 0, i = CFG->username.begin(); i != CFG->username.end(); n++, i++)
+    for (; it != end; it++)
     {
-      i->addr.make_string(adrs);
-      gsprintf(PRINTF_DECLARE_BUFFER(buf), " %-35s %s ", i->name, adrs);
-      Listi[n] = throw_strdup(buf);
+      it->addr.make_string(adrs);
+      gsprintf(PRINTF_DECLARE_BUFFER(buf), " %-35s %s ", it->name, adrs);
+      Listi.push_back(buf);
     }
-    n = MinV(n, (MAXROW-10));
+
+    size_t n = MinV(Listi.size(), (MAXROW-10));
     set_title(LNG->Usernames, TCENTER, C_ASKT);
     update_statusline(LNG->ChangeUsername);
     whelppcat(H_ChangeUsername);
     n = wpickstr(6, 0, 6+n+1, -1, W_BASK, C_ASKB, C_ASKW, C_ASKS, Listi, CFG->usernameno, title_shadow);
-    if(n != -1) {
+
+    if (n != -1)
+    {
       CFG->usernameno = n;
       AA->SetUsername(CFG->username[n]);
       for(std::vector<gaka>::iterator a = CFG->aka.begin(); a != CFG->aka.end(); a++) {
@@ -793,94 +813,101 @@ int ChangeUsername() {
         }
       }
     }
-    for(n = CFG->username.size(); n; n--)
-      throw_free(Listi[n-1]);
-    throw_free(Listi);
+
     whelpop();
   }
-  else {
+  else
+  {
     w_info(LNG->NoUserDefined);
     waitkeyt(10000);
     w_info(NULL);
   }
-  return(YES);
+
+  return YES;
 }
 
 
 //  ------------------------------------------------------------------
 
-int ChangeTemplate() {
+int ChangeTemplate()
+{
+  if (not CFG->tpl.empty())
+  {
+    char buf[256];
+    char adrs[40];
+    gstrarray Listi;
 
-  char buf[256], adrs[40];
-  int n;
-  int selected=-1;
-  char** Listi;
+    std::vector<Tpl>::iterator it = CFG->tpl.begin();
+    std::vector<Tpl>::iterator end = CFG->tpl.end();
 
-  if(not CFG->tpl.empty()) {
-    Listi = (char**)throw_calloc(CFG->tpl.size()+1, sizeof(char*));
-    std::vector<Tpl>::iterator t;
-    for (n = 0, t = CFG->tpl.begin(); t != CFG->tpl.end(); n++, t++)
+    for (; it != end; it++)
     {
-      t->match.make_string(adrs);
-      gsprintf(PRINTF_DECLARE_BUFFER(buf), " %-45s %s ", t->name, adrs);
-      Listi[n] = throw_strdup(buf);
+      it->match.make_string(adrs);
+      gsprintf(PRINTF_DECLARE_BUFFER(buf), " %-45s %s ", it->name, adrs);
+      Listi.push_back(buf);
     }
-    n = MinV(n, (MAXROW-10));
+    
+    size_t n = MinV(Listi.size(), (MAXROW-10));
     set_title(LNG->Templates, TCENTER, C_ASKT);
     update_statusline(LNG->ChangeTemplate);
     whelppcat(H_ChangeTemplate);
     n = wpickstr(6, 0, 6+n+1, -1, W_BASK, C_ASKB, C_ASKW, C_ASKS, Listi, CFG->tplno, title_shadow);
     whelpop();
-    if(n != -1) {
+
+    if (n != -1)
+    {
       AA->SetTpl(CFG->tpl[n].file);
       CFG->tplno = n;
     }
-    selected = n;
-    for(n = CFG->tpl.size(); n; n--)
-      throw_free(Listi[n-1]);
-    throw_free(Listi);
+
+    return n;
   }
   else {
     w_info(LNG->NoTplDefined);
     waitkeyt(10000);
     w_info(NULL);
   }
-  return selected;
+
+  return -1;
 }
 
 
 //  ------------------------------------------------------------------
 
-int ChangeAka() {
-  int n;
-  std::vector<gaka>::iterator i;
-  int startat = 0;
-  char** Listi;
-  char addr[100], buf[100];
+int ChangeAka()
+{
+  if (CFG->aka.size() > 1)
+  {
+    size_t startat = 0;
+    char addr[100];
+    char buf[100];
+    gstrarray Listi;
 
-  if(CFG->aka.size() > 1) {
-    Listi = (char**)throw_calloc(CFG->aka.size()+1, sizeof(char*));
-    for (i = CFG->aka.begin(), n=0; i != CFG->aka.end(); n++, i++)
+    std::vector<gaka>::iterator it = CFG->aka.begin();
+    std::vector<gaka>::iterator end = CFG->aka.end();
+
+    for (; it != end; it++)
     {
-      i->addr.make_string(addr, i->domain);
+      it->addr.make_string(addr, it->domain);
       gsprintf(PRINTF_DECLARE_BUFFER(buf), " %s ", addr);
-      Listi[n] = throw_strdup(buf);
-      if(AA->Aka().addr.equals(i->addr))
-        startat = n;
+      Listi.push_back(buf);
+
+      if (AA->Aka().addr.equals(it->addr))
+        startat = Listi.size() - 1;
     }
-    n = MinV(n, (MAXROW-10));
+
+    size_t n = MinV(Listi.size(), (MAXROW-10));
     set_title(LNG->Akas, TCENTER, C_ASKT);
     update_statusline(LNG->ChangeAka);
     whelppcat(H_ChangeAka);
     n = wpickstr(6, 0, 6+n+1, -1, W_BASK, C_ASKB, C_ASKW, C_ASKS, Listi, startat, title_shadow);
     whelpop();
-    if(n != -1)
+
+    if (n != -1)
       AA->SetAka(CFG->aka[n].addr);
-    for(n=CFG->aka.size(); n; n--)
-      throw_free(Listi[n-1]);
-    throw_free(Listi);
   }
-  else {
+  else
+  {
     w_info(LNG->NoAkaDefined);
     waitkeyt(10000);
     w_info(NULL);
@@ -891,61 +918,71 @@ int ChangeAka() {
 
 //  ------------------------------------------------------------------
 
-int ChangeXlatImport() {
+int ChangeXlatImport()
+{
+  if (not CFG->xlatcharset.empty())
+  {
+    size_t startat = 0;
+    int maximport = 0;
+    int maxexport = 0;
 
-  int n, startat = 0;
-  int xlatimports = 1;
-  int maximport = 0;
-  int maxexport = 0;
-  char** Listi;
-  char buf[100];
+    char buf[100];
+    gstrarray Listi;
+    
+    std::vector<Map>::iterator xlt = CFG->xlatcharset.begin();
+    std::vector<Map>::iterator end = CFG->xlatcharset.end();
 
-  if(not CFG->xlatcharset.empty()) {
-    Listi = (char**)throw_calloc(CFG->xlatcharset.size()+2, sizeof(char*));
-    std::vector<Map>::iterator xlt;
-    for(xlt = CFG->xlatcharset.begin(); xlt != CFG->xlatcharset.end(); xlt++) {
-      if(strieql(xlt->exp, CFG->xlatlocalset)) {
+    for (size_t xlatimports = 1; xlt != end; xlt++)
+    {
+      if (strieql(xlt->exp, CFG->xlatlocalset))
+      {
         maximport = MaxV(maximport, (int)strlen(xlt->imp));
         maxexport = MaxV(maxexport, (int)strlen(xlt->exp));
-        if((CFG->ignorecharset == true) and strieql(xlt->imp, AA->Xlatimport()))
+        if ((CFG->ignorecharset == true) and strieql(xlt->imp, AA->Xlatimport()))
           startat = xlatimports;
         xlatimports++;
       }
     }
-    Listi[0] = throw_strdup(LNG->CharsetAuto);
-    xlatimports = 1;
-    for (xlt = CFG->xlatcharset.begin(); xlt != CFG->xlatcharset.end(); xlt++)
+    
+    Listi.push_back(LNG->CharsetAuto);
+
+    for (xlt = CFG->xlatcharset.begin(); xlt != end; xlt++)
     {
       if (strieql(xlt->exp, CFG->xlatlocalset))
       {
         gsprintf(PRINTF_DECLARE_BUFFER(buf), " %*.*s -> %-*.*s ",
           maximport, maximport, xlt->imp, maxexport, maxexport, xlt->exp);
-        Listi[xlatimports++] = throw_strdup(buf);
+        Listi.push_back(buf);
       }
     }
-    n = MinV(xlatimports, (MAXROW-10));
+
+    size_t n = MinV(Listi.size(), (MAXROW-10));
     set_title(LNG->Charsets, TCENTER, C_ASKT);
     update_statusline(LNG->ChangeXlatImp);
     whelppcat(H_ChangeXlatImport);
     n = wpickstr(6, 0, 6+n+1, -1, W_BASK, C_ASKB, C_ASKW, C_ASKS, Listi, startat, title_shadow);
     whelpop();
-    if(n == 0) {
+
+    if (n == 0)
+    {
       CFG->ignorecharset = false;
     }
-    else if(n != -1) {
+    else if (n != -1)
+    {
       CFG->ignorecharset = true;
-      AA->SetXlatimport(strtok(Listi[n], " "));
+      std::string xlatImport = Listi[n].substr(0, Listi[n].find(" "));
+      AA->SetXlatimport(xlatImport.c_str());
     }
+
     LoadCharset(AA->Xlatimport(), CFG->xlatlocalset);
-    for(n=0; n<xlatimports; n++)
-      throw_free(Listi[n]);
-    throw_free(Listi);
   }
-  else {
+  else
+  {
     w_info(LNG->NoXlatImport);
     waitkeyt(10000);
     w_info(NULL);
   }
+
   return true;
 }
 

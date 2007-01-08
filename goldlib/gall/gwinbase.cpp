@@ -951,9 +951,9 @@ int wputy(int wrow, int wcol, vattr attr, vchar chr, uint len) {
 //  ------------------------------------------------------------------
 //  Displays a string inside active window
 
-int wprintns(int wrow, int wcol, vattr attr, const char* str, uint len, vchar fill, vattr fill_attr)
+int wprintns(int wrow, int wcol, vattr attr,  const std::string &str, uint len, vchar fill, vattr fill_attr)
 {
-  char* istr = throw_xstrdup(str);
+  char* istr = throw_xstrdup(str.c_str());
   char* ostr = istr;
   char och = *ostr;
   uint olen = strlen(istr);

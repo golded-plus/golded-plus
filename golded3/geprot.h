@@ -161,6 +161,7 @@ int IsMacro(gkey key, int type);
 //  ------------------------------------------------------------------
 //  GEINIT prototypes
 
+void Uninitialize();
 void Initialize(int argc, char* argv[]);
 
 
@@ -357,7 +358,7 @@ void NextArea();
 void PrevArea();
 void Reader();
 void UpdateArea(GMsg* msg);
-int ExternUtil(GMsg* msg, int utilno);
+int ExternUtil(GMsg* msg, uint32_t utilno);
 void ExternUtilMenu(GMsg* msg);
 void ReadPeekURLs(GMsg* msg);
 uint next_msg(int direction);
@@ -545,3 +546,4 @@ void RemoveHTML(char *&txt);
 #endif
 
 //  ------------------------------------------------------------------
+

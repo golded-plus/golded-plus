@@ -66,7 +66,6 @@
 #include <gprnall.h>
 #include <gsearch.h>
 #include <gstrbags.h>
-#include <gstrarr.h>
 #include <gtimall.h>
 #include <gtxtpara.h>
 #include <gutlgrp.h>

@@ -26,7 +26,22 @@
 
 #include <golded.h>
 #include <gutlos.h>
+#include <memleak.h>
 
+#if defined(_MSC_VER) && defined(_DEBUG)
+static struct LeakFinder
+{
+    LeakFinder()
+    {
+        InitAllocCheck();
+    }
+
+    ~LeakFinder()
+    {
+        DeInitAllocCheck();
+    }
+} leakFinder;
+#endif
 
 //  ------------------------------------------------------------------
 //  Main function
@@ -35,6 +50,7 @@ int main(int argc, char *argv[]) {
 
   Initialize(argc, argv);
   Reader();
+  Uninitialize();
   return errorlevel;
 }
 

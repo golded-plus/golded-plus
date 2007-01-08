@@ -386,6 +386,7 @@ const word CRC_TWITSUBJ         = 0x08C0;
 const word CRC_TWITTO           = 0x9DFE;
 const word CRC_UNPACKER         = 0x5691;
 const word CRC_URLHANDLER       = 0x688E;
+const word CRC_URLSCHEME        = 0x89FC;
 const word CRC_USEAREA          = 0x2FD4;
 const word CRC_USECHARSET       = 0xE1B9;
 const word CRC_USEFLAGS         = 0xE2B6;
