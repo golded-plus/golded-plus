@@ -192,7 +192,7 @@ public:
   char sortspec[20];
 
   // Active msgbases (bitmap of MT_* contants)
-  std::vector<const char *> basetypes;
+  std::vector<std::string> basetypes;
 
   // Additional items to the area scan menu
   GAreaListScan ListScan;
@@ -216,6 +216,7 @@ public:
 
   // Return pointer to a new'd area of the specified format
   Area* NewArea(const char *basetype);
+  Area* NewArea(const std::string &basetype);
 
   // Sort areas
   void Sort(const char* specs=NULL, int first=0, int last=-1);
@@ -489,7 +490,7 @@ public:
         int   areaid() const      { return area->areaid(); }
         int   groupid() const     { return area->groupid(); }
         uint  type() const        { return area->type(); }
-        const char *basetype() const { return area->basetype(); }
+  const std::string &basetype() const { return area->basetype(); }
         uint  board() const       { return area->board(); }
   const ftn_addr& aka() const     { return area->aka(); }
         int   originno() const    { return area->originno(); }
@@ -515,6 +516,7 @@ public:
   void set_groupid(int g)       { area->set_groupid(g); }
   void set_type(uint t)         { area->set_type(t); }
   void set_basetype(const char *m) { area->set_basetype(m); }
+  void set_basetype(const std::string &m) { area->set_basetype(m); }
   void set_board(uint b)        { area->set_board(b); }
   void set_aka(ftn_addr& a)     { area->set_aka(a); }
   void set_originno(int o)      { area->set_originno(o); }

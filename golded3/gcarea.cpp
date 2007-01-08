@@ -166,7 +166,8 @@ void AreaList::AddNewArea(AreaCfg* aa)
   *desc = NUL;
 
   // Make sure the path field is 100% correct for the msgbase
-  if(streql(aa->basetype, "FTS1") or streql(aa->basetype, "OPUS")) {
+  if ((aa->basetype == "FTS1") || (aa->basetype == "OPUS"))
+  {
     if(*aa->path == NUL)
       return;
     MapPath(aa->path);
@@ -174,7 +175,7 @@ void AreaList::AddNewArea(AreaCfg* aa)
     strschg_environ(aa->path);
   }
   #ifndef GMB_NOHUDS
-  else if (streql(aa->basetype, "HUDSON"))
+  else if (aa->basetype == "HUDSON")
   {
     if ((aa->board < 1) or (aa->board > 200))  // Ignore areas with invalid numbers
       return;
@@ -182,7 +183,7 @@ void AreaList::AddNewArea(AreaCfg* aa)
   }
   #endif
   #ifndef GMB_NOGOLD
-  else if (streql(aa->basetype, "GOLDBASE"))
+  else if (aa->basetype == "GOLDBASE")
   {
     if ((aa->board < 1) or (aa->board > 500))  // Ignore areas with invalid numbers
       return;
@@ -190,7 +191,7 @@ void AreaList::AddNewArea(AreaCfg* aa)
   }
   #endif
   #ifndef GMB_NOEZY
-  else if (streql(aa->basetype, "EZYCOM"))
+  else if (aa->basetype == "EZYCOM")
   {
     // Ignore areas with invalid numbers
     if ((aa->board < 1) or (aa->board > 1536))
@@ -199,7 +200,8 @@ void AreaList::AddNewArea(AreaCfg* aa)
   }
   #endif
   #ifndef GMB_NOWCAT
-  else if(streql(aa->basetype, "WILDCAT")) {
+  else if (aa->basetype == "WILDCAT")
+  {
     if(*aa->path == NUL)
       return;
     MapPath(aa->path);
@@ -208,7 +210,8 @@ void AreaList::AddNewArea(AreaCfg* aa)
   }
   #endif
   #ifndef GMB_NOXBBS
-  else if(streql(aa->basetype, "ADEPTXBBS")) {
+  else if (aa->basetype == "ADEPTXBBS")
+  {
     if(*aa->path == NUL)
       return;
     MapPath(aa->path);
@@ -217,7 +220,8 @@ void AreaList::AddNewArea(AreaCfg* aa)
   }
   #endif
   #ifndef GMB_NOSQSH
-  else if(streql(aa->basetype, "SQUISH")) {
+  else if (aa->basetype == "SQUISH")
+  {
     if(*aa->path == NUL)
       return;
     MapPath(aa->path);
@@ -226,7 +230,8 @@ void AreaList::AddNewArea(AreaCfg* aa)
   }
   #endif
   #ifndef GMB_NOJAM
-  else if(streql(aa->basetype, "JAM")) {
+  else if (aa->basetype == "JAM")
+  {
     if(*aa->path == NUL)
       return;
     MapPath(aa->path);
@@ -235,14 +240,16 @@ void AreaList::AddNewArea(AreaCfg* aa)
   }
   #endif
   #ifndef GMB_NOPCB
-  else if(streql(aa->basetype, "PCBOARD")) {
+  else if (aa->basetype == "PCBOARD")
+  {
     MapPath(aa->path);
     StripBackslash(aa->path);
     strschg_environ(aa->path);
   }
   #endif
   #ifndef GMB_NOSMB
-  else if(streql(aa->basetype, "SMB")) {
+  else if (aa->basetype == "SMB")
+  {
     if(*aa->path == NUL)
       return;
     MapPath(aa->path);
@@ -250,7 +257,8 @@ void AreaList::AddNewArea(AreaCfg* aa)
     strschg_environ(aa->path);
   }
   #endif
-  else if(streql(aa->basetype, "SEPARATOR")) {
+  else if (aa->basetype == "SEPARATOR")
+  {
   }
   else {
       return;
@@ -302,13 +310,16 @@ void AreaList::AddNewArea(AreaCfg* aa)
       }
       break;
     }
-    else if(not (*ap)->isseparator()) {
+    else if(not (*ap)->isseparator())
+    {
       bool eq_path    = strieql(aa->path, (*ap)->path());
       bool eq_board   = (aa->board == (*ap)->board());
-      bool eq_msgbase = streql(aa->basetype, (*ap)->basetype());
-      bool eq_isfido  = ((streql(aa->basetype, "OPUS") or streql(aa->basetype, "FTS1"))
-                         and (streql((*ap)->basetype(), "OPUS") or streql((*ap)->basetype(), "FTS1")));
-      if(eq_path and eq_board and (eq_msgbase or eq_isfido)) {
+      bool eq_msgbase = (aa->basetype == (*ap)->basetype());
+      bool eq_isfido  = (((aa->basetype == "OPUS") || (aa->basetype == "FTS1")) &&
+                         (((*ap)->basetype() == "OPUS") || ((*ap)->basetype() == "FTS1")));
+
+      if (eq_path and eq_board and (eq_msgbase or eq_isfido))
+      {
         // We had it already, so override with the new data
         newarea = false;
         if(strblank((*ap)->desc()))

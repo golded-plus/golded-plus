@@ -1001,7 +1001,7 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
           {
             if (CFG->replylink != REPLYLINK_NONE)
             {
-              if ((CFG->replylink == REPLYLINK_DIRECT) or streql(AA->basetype(), "JAM"))
+              if ((CFG->replylink == REPLYLINK_DIRECT) or (AA->basetype() == "JAM"))
                 reply_msgno = omsg->msgno;
               else if (CFG->replylink == REPLYLINK_CHAIN)
                 GetLastLink(omsg, reply_msgno);
@@ -1158,7 +1158,7 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
             uint32_t replynext;
             bool ok2save = false;
 
-            if (streql(AA->basetype(), "SQUISH"))
+            if (AA->basetype() == "SQUISH")
             {
               if (reply->link.first())
               {
@@ -1177,7 +1177,8 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto) {
                 ok2save = true;
               }
             }
-            else if(streql(AA->basetype(), "JAM")) {
+            else if (AA->basetype() == "JAM")
+            {
               if(reply->link.first()) {
                 replynext = reply->link.first();
                 do {

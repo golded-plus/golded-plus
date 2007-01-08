@@ -141,6 +141,10 @@ Area* AreaList::NewArea(const char *basetype) {
   return new Area(ap);
 }
 
+Area* AreaList::NewArea(const std::string &basetype)
+{
+    return NewArea(basetype.c_str());
+}
 
 //  ------------------------------------------------------------------
 //  Write lastreads for the next session
@@ -310,11 +314,11 @@ void AreaList::WriteAreaDef(const char* file)
       else if((*aa)->islocal())
         strcpy(type, "Local");
       #ifndef GMB_NOXBBS
-      if(streql((*aa)->basetype(), "ADEPTXBBS"))
+      if ((*aa)->basetype() == "ADEPTXBBS")
         strcpy(msgbase, "XBBS");
       else
       #endif
-        strxcpy(msgbase, (*aa)->basetype(), sizeof(msgbase));
+        strxcpy(msgbase, (*aa)->basetype().c_str(), sizeof(msgbase));
       if (strchr((*aa)->echoid(), ' '))
         gsprintf(PRINTF_DECLARE_BUFFER(echoid), "\"%s\"", (*aa)->echoid());
       else
@@ -386,11 +390,13 @@ void AreaList::SetAreaDesc(char* echoid, char* desc) {
 //  ------------------------------------------------------------------
 
 #ifndef GMB_NOPCB
-void PcbAdjustArea(uint rec, const char* msgfile) {
-
-  for(uint n=0; n<AL.size(); n++) {
+void PcbAdjustArea(uint rec, const char* msgfile)
+{
+  for (uint n=0; n<AL.size(); n++)
+  {
     Area* a = AL[n];
-    if(streql(a->basetype(), "PCBOARD")) {
+    if (a->basetype() == "PCBOARD")
+    {
       if((a->board() == rec) and (*a->path() == NUL)) {
         a->set_path(msgfile);
         break;

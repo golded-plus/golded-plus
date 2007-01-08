@@ -2069,7 +2069,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode) {
       line = AddLine(line, "");
       ptr = msg->txt;
       uint _size = strlen(msg->txt);
-      if(streql(AA->basetype(), "OPUS") or streql(AA->basetype(), "FTS1"))
+      if ((AA->basetype() == "OPUS") || (AA->basetype() == "FTS1"))
         idxadjust = 190;
       for (idx=0; idx < _size; ptr+=16,idx+=16)
       {

@@ -289,7 +289,7 @@ extern "C" int AreaListCmp(const Area** __a, const Area** __b) {
         else if(B->isseparator()) {
           return sepfirst?1:-1;
         }
-        else if((cmp = strcmp(A->basetype(), B->basetype())) != 0)
+        else if ((cmp = strcmp(A->basetype().c_str(), B->basetype().c_str())) != 0)
           return cmp;
         break;
       case 'Y':

@@ -83,7 +83,7 @@ void gareafile::ReadAdeptXbbsFile(char* path, char* file, char* options) {
             break;
           case CRC_AREAEND:
             aa.setechoid(*usenet ? usenet : name);
-            if(streql(aa.basetype, "OPUS") or streql(aa.basetype, "FTS1"))
+            if ((aa.basetype == "OPUS") || (aa.basetype == "FTS1"))
               aa.setpath(apath);
             else {
               sprintf(buf, "%s%s", apath, name);

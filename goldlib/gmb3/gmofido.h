@@ -139,7 +139,7 @@ protected:
   FidoWide* wide;
   FidoData* data;
 
-  inline bool isopus() const { return streql(cfg.basetype, "OPUS"); }
+  inline bool isopus() const { return (cfg.basetype == "OPUS"); }
 
   void data_open();
   void data_close();

@@ -304,6 +304,7 @@ const char *lookup_nodelist(ftn_addr* addr);
 
 void LookupNodeLocation(GMsg* msg, std::string &location, int what);
 void LookupNode(GMsg* msg, const char* name, int what);
+void LookupNodeClear();
 void CheckNodelists();
 
 
@@ -481,6 +482,7 @@ char* strtmp(const char* str);
 vattr quotecolor(const char* line);
 void  doinvalidate(char* text, const char* find, const char* replace, bool is_tearline = false);
 bool find(const std::vector<const char *> &vec, const char *str);
+bool find(const std::vector<std::string> &vec, const std::string &str);
 vattr GetColorName(const char *name, Addr &addr, vattr color);
 
 

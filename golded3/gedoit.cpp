@@ -377,14 +377,15 @@ char* GetCurrQuotebuf(char* quotebuf) {
     strcpy(quotebuf, AA->Quotebuffile());
     MakePathname(quotebuf, CFG->goldpath, quotebuf);
   }
-  else {
-    if(streql(AA->basetype(), "EZYCOM"))
+  else
+  {
+    if (AA->basetype() == "EZYCOM")
       sprintf(quotebuf, "%sgld%05u.qbf", CFG->ezycom.msgbasepath, AA->board());
-    else if(streql(AA->basetype(), "FTS1") or streql(AA->basetype(), "OPUS"))
+    else if ((AA->basetype() == "FTS1") || (AA->basetype() == "OPUS"))
       sprintf(quotebuf, "%s%s", AA->path(), "golded.qbf");
-    else if(streql(AA->basetype(), "GOLDBASE"))
+    else if (AA->basetype() == "GOLDBASE")
       sprintf(quotebuf, "%sgoldg%03u.qbf", CFG->goldbasepath, AA->board());
-    else if(streql(AA->basetype(), "HUDSON"))
+    else if (AA->basetype() == "HUDSON")
       sprintf(quotebuf, "%sgoldh%03u.qbf", CFG->hudsonpath, AA->board());
     else
       sprintf(quotebuf, "%s%s", AA->path(), ".qbf");

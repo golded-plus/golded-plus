@@ -494,7 +494,7 @@ void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int __orig
 
       if (strnieql(it2str(input, dst), "@area", 5))
       {
-        if (tokenxchg(input, dst, "@areatype", AA->basetype()))
+          if (tokenxchg(input, dst, "@areatype", AA->basetype().c_str()))
           continue;
 
         char areapath[GMAXPATH];
@@ -958,7 +958,7 @@ void GMsg::LinesToText() {
     strxcpy(re, _buf, sizeof(ISub));
   }
 
-  bool _lfterm = EDIT->CrLfTerm() and strcmp(AA->basetype(), "PCBOARD");
+  bool _lfterm = EDIT->CrLfTerm() and (AA->basetype() == "PCBOARD");
   bool _hardterm = AA->Edithardterm() or AA->requirehardterm();
   bool _softterm = AA->requiresoftterm();
 

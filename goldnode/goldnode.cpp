@@ -55,6 +55,7 @@
 #endif
 
 #include <golded3.h>
+#include <gmemdbg.h>
 
 //  ------------------------------------------------------------------
 //  Config versions

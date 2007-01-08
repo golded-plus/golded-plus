@@ -81,7 +81,7 @@ public:
         int   areaid() const      { return cfg.areaid; }
         int   groupid() const     { return cfg.groupid; }
         uint  type() const        { return cfg.type; }
-  const char *basetype() const    { return cfg.basetype; }
+  const std::string &basetype() const { return cfg.basetype; }
         uint  board() const       { return cfg.board; }
   const ftn_addr& aka() const     { return cfg.aka; }
         int   originno() const    { return cfg.originno; }
@@ -104,6 +104,7 @@ public:
   void set_groupid(int g)       { cfg.groupid = g; }
   void set_type(uint t)         { cfg.type = t; }
   void set_basetype(const char *m) { cfg.basetype = m; }
+  void set_basetype(const std::string &m) { cfg.basetype = m; }
   void set_board(uint b)        { cfg.board = b; }
   void set_aka(ftn_addr& a)     { cfg.aka = a; }
   void set_originno(int o)      { cfg.originno = o; }

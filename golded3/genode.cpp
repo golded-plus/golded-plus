@@ -1095,10 +1095,15 @@ struct location_item
   bool operator==(Addr &other) { return addr.equals(other); }
 };
 
+std::vector<location_item> g_LocationCash;
+
+void LookupNodeClear()
+{
+    g_LocationCash.clear();
+}
+
 void LookupNodeLocation(GMsg* msg, std::string &location, int what)
 {
-  static std::vector<location_item> cash;
-
   Subj statuslinebak;
   strcpy(statuslinebak, information);
 
@@ -1119,8 +1124,8 @@ void LookupNodeLocation(GMsg* msg, std::string &location, int what)
   if (addr.zone == 0)
     addr.zone = AA->Aka().addr.zone;
 
-  std::vector<location_item>::iterator it = cash.begin();
-  std::vector<location_item>::iterator end = cash.end();
+  std::vector<location_item>::iterator it = g_LocationCash.begin();
+  std::vector<location_item>::iterator end = g_LocationCash.end();
 
   while ((it != end) && (*it < addr)) it++;
 
@@ -1165,7 +1170,7 @@ void LookupNodeLocation(GMsg* msg, std::string &location, int what)
     }
 
     item.loc = location = city;
-    cash.insert(it, item);
+    g_LocationCash.insert(it, item);
   }
 
   update_statusline(statuslinebak);

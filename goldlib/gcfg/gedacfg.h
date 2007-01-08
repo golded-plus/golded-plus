@@ -65,7 +65,7 @@ public:
   int      originno;        // Origin number
   uint     board;           // Board number (Hudson/Goldbase/Ezycom/PCBoard fmts)
   uint     type;            // Type of msgarea (GMB_xxx)
-  const char *basetype;     // Type of msgbase
+  std::string basetype;     // Type of msgbase
   ftn_addr aka;             // The AKA to use in the area
   ftn_attr attr;            // Default attributes
   byte     scan       : 1;  // TRUE if listed with AREASCAN
@@ -77,7 +77,7 @@ public:
 
   int setorigin(std::string& origin);
 
-  bool isseparator() const           { return streql(basetype, "SEPARATOR"); }
+  bool isseparator() const           { return (basetype == "SEPARATOR"); }
 
   bool isnet() const                 { return !!(type & GMB_NET); }
   bool isecho() const                { return !!(type & GMB_ECHO); }

@@ -601,7 +601,11 @@ void CmfMsgs(GMsg* msg, bool torecycle)
       bool need_fmpt = true;
       bool need_topt = true;
 
-      if(not need_netmail_kludges and streql(AAorig->basetype(), "SQUISH") and strcmp(AAdest->basetype(), "SQUISH") and AAdest->isnet() and AAorig->isnet()) {
+      if (not need_netmail_kludges &&
+          (AAorig->basetype() == "SQUISH") &&
+          (AAdest->basetype() == "SQUISH") &&
+          AAdest->isnet() && AAorig->isnet())
+      {
         if(msg->orig.point and not strstr(msg->txt, "\001FMPT"))
           need_netmail_kludges = true;
         else

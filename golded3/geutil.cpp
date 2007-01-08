@@ -744,3 +744,17 @@ bool find(const std::vector<const char *> &vec, const char *str) {
 
   return false;
 }
+
+bool find(const std::vector<std::string> &vec, const std::string &str)
+{
+  std::vector<std::string>::const_iterator it = vec.begin();
+  std::vector<std::string>::const_iterator end = vec.end();
+
+  for (; it != end; it++)
+  {
+    if ((*it) == str)
+      return true;
+  }
+
+  return false;
+}

@@ -96,9 +96,11 @@ char* MakeTearline(GMsg* msg, char* buf) {
 void MakeFlags(GMsg* msg, Line** line, char* buf) {
 
   // The FrontDoor FLAGS netmail kludge
-  if(CFG->switches.get(useflags)) {
+  if (CFG->switches.get(useflags))
+  {
     sprintf(buf, "\001FLAGS ");
-    if(streql(AA->basetype(), "HUDSON")) {
+    if (AA->basetype() == "HUDSON")
+    {
       if(msg->attr.hld())
         strcat(buf, "HLD ");
       if(msg->attr.frq())
@@ -360,7 +362,9 @@ void DoKludges(int mode, GMsg* msg, int kludges) {
       msg->orig.make_string(buf2, msg->odom);
       gsprintf(PRINTF_DECLARE_BUFFER(msg->msgids), "%s %08x", buf2, getMsgId());
     }
-    if(CFG->switches.get(usemsgid) and strcmp(AA->basetype(), "PCBOARD")) {
+
+    if (CFG->switches.get(usemsgid) && (AA->basetype() == "PCBOARD"))
+    {
       sprintf(buf, "\001MSGID: %s", msg->msgids);
       line = AddKludge(line, buf);
       line->kludge = GKLUD_MSGID;
