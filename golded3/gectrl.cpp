@@ -363,7 +363,7 @@ void DoKludges(int mode, GMsg* msg, int kludges) {
       gsprintf(PRINTF_DECLARE_BUFFER(msg->msgids), "%s %08x", buf2, getMsgId());
     }
 
-    if (CFG->switches.get(usemsgid) && (AA->basetype() == "PCBOARD"))
+    if (CFG->switches.get(usemsgid) && (AA->basetype() != "PCBOARD"))
     {
       sprintf(buf, "\001MSGID: %s", msg->msgids);
       line = AddKludge(line, buf);
