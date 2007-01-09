@@ -630,7 +630,7 @@ int SelectFromFile(const char* file, char* selection, const char* title, const c
       strcat(buf, " ");
       if(strlen(buf) > MAXCOL-2-2)
         buf[MAXCOL-2-2] = NUL;
-      Listi[n] = throw_strdup(buf);
+      Listi.push_back(buf);
     }
 
     n = MinV(n, (MAXROW-10));
