@@ -58,6 +58,7 @@ static bool compare(const std::string str1, const std::string str2)
   bool dir1 = !!strchr(str1.c_str(), GOLD_SLASH_CHR);
   bool dir2 = !!strchr(str2.c_str(), GOLD_SLASH_CHR);
   if (dir1 && !dir2) return true;
+  if (!dir1 && dir2) return false;
 
   std::string s1 = dir1 ? str1.substr(0, str1.length()-1) : str1;
   std::string s2 = dir2 ? str2.substr(0, str2.length()-1) : str2;
@@ -72,7 +73,7 @@ static bool compare(const std::string str1, const std::string str2)
       cmp = strcmp(s1.c_str(), s2.c_str());
   }
 
-  return (cmp > 0);
+  return (cmp < 0);
 }
 
 

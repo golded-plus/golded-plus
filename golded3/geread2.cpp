@@ -700,7 +700,7 @@ void ExternUtilMenu(GMsg* msg)
 
 static bool PeekURLCmp(const std::string &a, const std::string b)
 {
-  return stricmp(a.c_str(), b.c_str()) > 0;
+  return stricmp(a.c_str(), b.c_str()) < 0;
 }
 
 
