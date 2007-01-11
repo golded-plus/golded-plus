@@ -187,8 +187,7 @@ bool wpickfile(int srow, int scol, int erow, int ecol, int btype, vattr bordattr
     }
 
     // sort files in array by swapping their pointers
-    sort(strarr.begin( ), strarr.end( ), compare);
-    //std::qsort(p, files, sizeof(char*), (StdCmpCP)compare);
+    std::sort(strarr.begin(), strarr.end(), compare);
 
     // let user pick file
     if (strarr.size())

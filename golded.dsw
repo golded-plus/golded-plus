@@ -3,7 +3,7 @@ Microsoft Developer Studio Workspace File, Format Version 6.00
 
 ###############################################################################
 
-Project: "BuildAll"=.\windows\BuildAll.dsp - Package Owner=<4>
+Project: "BuildAll"=".\windows\BuildAll.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -20,14 +20,11 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name rddt
     End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name goldlib
-    End Project Dependency
 }}}
 
 ###############################################################################
 
-Project: "golded"=.\windows\golded.dsp - Package Owner=<4>
+Project: "golded"=".\windows\golded.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -42,7 +39,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "goldlib"=.\WINDOWS\goldlib.dsp - Package Owner=<4>
+Project: "goldlib"=".\WINDOWS\goldlib.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -54,7 +51,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "goldnode"=.\windows\goldnode.dsp - Package Owner=<4>
+Project: "goldnode"=".\windows\goldnode.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -72,7 +69,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "rddt"=.\windows\rddt.dsp - Package Owner=<4>
+Project: "rddt"=".\windows\rddt.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{

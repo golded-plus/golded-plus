@@ -773,8 +773,8 @@ void ReadPeekURLs(GMsg* msg)
     }
 
     // Sort list if requested
-    if(CFG->peekurloptions & FREQ_SORT)
-      sort(Listi.begin(), Listi.end(), PeekURLCmp);
+    if (CFG->peekurloptions & FREQ_SORT)
+      std::sort(Listi.begin(), Listi.end(), PeekURLCmp);
 
     // Run the picker
     size_t n = MinV(urls.size(), (MAXROW-10));

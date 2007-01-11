@@ -930,7 +930,7 @@ void FileRequest(GMsg* msg)
       // Sort list if requested
       if (CFG->frqoptions & FREQ_SORT)
       {
-        sort(freqfile.begin(), freqfile.end(), FreqCmp);
+        std::sort(freqfile.begin(), freqfile.end(), FreqCmp);
       }
 
       // Run the picker
