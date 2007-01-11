@@ -69,11 +69,15 @@ void AreaList::SortAreaGroup(const char* options, int beginarea, int endarea) {
 //  ------------------------------------------------------------------
 //  Rename an echoid
 
-void RenameArea(char* echoid) {
+void RenameArea(char* echoid)
+{
+  std::vector<EchoRen>::iterator n = CFG->arearename.begin();
+  std::vector<EchoRen>::iterator end = CFG->arearename.end();
   
-  std::vector<EchoRen>::iterator n;
-  for(n = CFG->arearename.begin(); n != CFG->arearename.end(); n++) {
-    if(strieql(echoid, n->from.c_str())) {
+  for (; n != end; n++)
+  {
+    if (strieql(echoid, n->from.c_str()))
+    {
       strxcpy(echoid, n->to.c_str(), sizeof(Echo));
       break;
     }
@@ -84,20 +88,29 @@ void RenameArea(char* echoid) {
 //  ------------------------------------------------------------------
 //  Check if the echoid is on the exclusion list
 
-bool CheckExcl(char* echoid) {
+bool CheckExcl(char* echoid)
+{
+  gstrarray::iterator n = CFG->areaexcl.begin();
+  gstrarray::iterator end1 = CFG->areaexcl.end();
 
-  gstrarray::iterator n, x;
-  for(n = CFG->areaexcl.begin(); n != CFG->areaexcl.end(); n++) {
-    if(strwild(echoid, n->c_str())) {
-
+  for (; n != end1; n++)
+  {
+    if (strwild(echoid, n->c_str()))
+    {
       // Found excl, now check for incl
-      for(x = CFG->areaincl.begin(); x != CFG->areaincl.end(); x++)
-        if(strwild(echoid, x->c_str()))
+      gstrarray::iterator x = CFG->areaincl.begin();
+      gstrarray::iterator end2 = CFG->areaincl.end();
+
+      for (; x != end2; x++)
+      {
+        if (strwild(echoid, x->c_str()))
           return false;
+      }
 
       return true;   // Echoid is excluded
     }
   }
+
   return false;
 }
 
@@ -105,19 +118,27 @@ bool CheckExcl(char* echoid) {
 //  ------------------------------------------------------------------
 //  Check if the echo is email or news
 
-void CheckEMailOrNews(char* echoid, uint& type) {
+void CheckEMailOrNews(char* echoid, uint& type)
+{
+  gstrarray::iterator i = CFG->areaisemail.begin();
+  gstrarray::iterator end = CFG->areaisemail.end();
 
-  gstrarray::iterator i;
-
-  for(i = CFG->areaisemail.begin(); i != CFG->areaisemail.end(); i++) {
-    if(strwild(echoid, i->c_str())) {
+  for (; i != end; i++)
+  {
+    if (strwild(echoid, i->c_str()))
+    {
       type = GMB_EMAIL | GMB_NET;
       break;
     }
   }
 
-  for(i = CFG->areaisnews.begin(); i != CFG->areaisnews.end(); i++) {
-    if(strwild(echoid, i->c_str())) {
+  i = CFG->areaisnews.begin();
+  end = CFG->areaisnews.end();
+
+  for(; i != end; i++)
+  {
+    if (strwild(echoid, i->c_str()))
+    {
       type = GMB_NEWSGROUP | GMB_ECHO;
       break;
     }
@@ -298,14 +319,19 @@ void AreaList::AddNewArea(AreaCfg* aa)
 
   // Check if we already have the area (dup echoid or path)
   int _currarea = 0;
-  area_iterator ap;
-  for(ap = idx.begin(); ap != idx.end(); ap++) {
+  area_iterator ap = idx.begin();
+  area_iterator end = idx.end();
+
+  for (; ap != end; ap++)
+  {
     ++_currarea;
     int eq_echoid  = strieql(aa->echoid, (*ap)->echoid());
-    if(eq_echoid) {
+    if (eq_echoid)
+    {
       newarea = false;
-      if(not (*ap)->isseparator()) {
-        if(strblank((*ap)->desc()))
+      if (not (*ap)->isseparator())
+      {
+        if (strblank((*ap)->desc()))
           strxcpy(desc, aa->desc, sizeof(desc));
       }
       break;
@@ -346,14 +372,22 @@ void AreaList::AddNewArea(AreaCfg* aa)
   }
 
   // Add aka if not found
-  if(aa->aka.net) {
+  if (aa->aka.net)
+  {
     bool found = false;
-    for(std::vector<gaka>::iterator i = CFG->aka.begin(); i != CFG->aka.end(); i++)
-      if(aa->aka == i->addr) {
+    std::vector<gaka>::iterator i = CFG->aka.begin();
+    std::vector<gaka>::iterator end = CFG->aka.end();
+
+    for (; i != end; i++)
+    {
+      if (aa->aka == i->addr)
+      {
         found = true;
         break;
       }
-    if(not found)     // Then add it
+    }
+
+    if (not found)     // Then add it
       CfgAddress(aa->aka.make_string(buf));  // Add the aka
   }
   else {
@@ -889,11 +923,16 @@ void AreaList::ReadEcholist(char* val)
               else
                 desc = NULL;
             }
-            for(area_iterator ap = idx.begin(); ap != idx.end(); ap++) {
-              if(strieql(key, (*ap)->echoid())) {
+
+            area_iterator ap = idx.begin();
+            area_iterator end = idx.end();
+
+            for (; ap != end; ap++)
+            {
+              if (strieql(key, (*ap)->echoid()))
+              {
                 (*ap)->set_groupid(g_toupper(*grp));
-                if(desc)
-                  (*ap)->set_desc(desc);
+                if (desc) (*ap)->set_desc(desc);
                 break;
               }
             }
@@ -904,8 +943,14 @@ void AreaList::ReadEcholist(char* val)
               tok(&desc, &val);
             else
               desc = val;
-            for(area_iterator ap = idx.begin(); ap != idx.end(); ap++) {
-              if(strieql(key, (*ap)->echoid())) {
+
+            area_iterator ap = idx.begin();
+            area_iterator end = idx.end();
+
+            for (; ap != end; ap++)
+            {
+              if (strieql(key, (*ap)->echoid()))
+              {
                 (*ap)->set_desc(desc);
                 break;
               }
@@ -927,13 +972,20 @@ void AreaList::GetAreaDesc(char* val) {
 
   // Get echoid and find area
   getkeyval(&key, &val);
-  for(area_iterator ap = idx.begin(); ap != idx.end(); ap++) {
-    if(strieql(key, (*ap)->echoid())) {
+
+  area_iterator ap = idx.begin();
+  area_iterator end = idx.end();
+
+  for (; ap != end; ap++)
+  {
+    if (strieql(key, (*ap)->echoid()))
+    {
       aa = *ap;
       break;
     }
   }
-  if(aa == NULL)   // Not found, ignore
+
+  if (aa == NULL)   // Not found, ignore
     return;
 
   // Get description
@@ -1015,16 +1067,19 @@ Area::~Area() {
 
 //  ------------------------------------------------------------------
 
-char* MapPath(char* map, bool reverse) {
-
+char* MapPath(char* map, bool reverse)
+{
   Path buf, cmap;
 
   strxcpy(cmap, map, sizeof(Path));
   if(reverse)
     strchg(cmap, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
 
-  std::vector< std::pair<std::string, std::string> >::iterator i;
-  for(i = CFG->mappath.begin(); i != CFG->mappath.end(); i++) {
+  std::vector< std::pair<std::string, std::string> >::iterator i = CFG->mappath.begin();
+  std::vector< std::pair<std::string, std::string> >::iterator end = CFG->mappath.end();
+  
+  for (i; i != end; i++)
+  {
     const char* p = reverse ? i->second.c_str() : i->first.c_str();
     const char* q = reverse ? i->first.c_str() : i->second.c_str();
     if(strnieql(cmap, p, strlen(p))) {
@@ -1051,15 +1106,19 @@ char* MapPath(char* map, bool reverse) {
 //  ------------------------------------------------------------------
 //  Set area origin
 
-int AreaCfgBase::setorigin(std::string& _origin) {
-
-  if(not strblank(_origin.c_str())) {
-
+int AreaCfgBase::setorigin(std::string& _origin)
+{
+  if (not strblank(_origin.c_str()))
+  {
     // Check if it already exists
-    gstrarray::iterator n;
-    for(n = CFG->origin.begin(), originno = 0; n != CFG->origin.end(); originno++, n++)
-      if(*n == _origin)
+    gstrarray::iterator n = CFG->origin.begin();
+    gstrarray::iterator end = CFG->origin.end();
+
+    for (originno = 0; n != end; originno++, n++)
+    {
+      if (*n == _origin)
         return originno;
+    }
 
     // Not found, so add it
     CfgOrigin(_origin.c_str());

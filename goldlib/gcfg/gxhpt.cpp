@@ -43,60 +43,50 @@ static char comment_char = '#';
 
 //  ------------------------------------------------------------------
 
-bool gareafile::ReadHPTLine(gfile &f, std::string* s, bool add, int state)
+bool gareafile::ReadHPTLine(gfile &f, std::string& str)
 {
-  std::string str;
-  char buf[81];
+  char buf[1024];
 
-  if (!f.Fgets(buf, 81)) return false; // eof
+  if (!f.Fgets(buf, ARRAYSIZE(buf)))
+    return false; // eof
 
   str = buf;
 
-  if (buf[strlen(buf)-1] != '\n')
+  if (!str.empty() && (*(str.end() - 1) != '\n'))
   {
-    while (f.Fgets(buf, 81))
+    while (f.Fgets(buf, ARRAYSIZE(buf)))
     {
       str += buf;
-      if (buf[strlen(buf)-1] == '\n')
+      if (*(str.end() - 1) == '\n')
         break;
     }
   }
 
   std::string::iterator ptr = str.begin();
+  std::string::iterator end = str.end();
+  bool state = false;
 
   // state 0: normal state
   //       1: between ""
   //       2: end
   //       3: whitespace
-  while((ptr != str.end()) and (state != 2)) {
-    if(*ptr == comment_char) {
-      if(state != 1) {
-        str.erase(ptr, str.end());
-        state = 2;
-		continue;
+  for (; ptr != end; ptr++)
+  {
+    if (comment_char == *ptr)
+    {
+      if (!state)
+      {
+        str.erase(ptr, end);
+        break;
       }
     }
-    else {
-      switch(*ptr) {
-        case '\"':
-          state = (state == 1) ? 0 : 1;
-          break;
-        default:
-          break;
-      }
+    else if ('\"' == *ptr)
+    {
+      state = !state;
     }
-    ++ptr;
   }
 
-  while(not str.empty() and ((*(str.end()-1) == '\n') or (*(str.end()-1) == '\r')))
-    str.erase(str.end()-1);
-
-  const char *p = strskip_wht(str.c_str());
-
-  if(add)
-    *s += p;
-  else
-    *s = p;
+  strltrim(strtrim(str));
 
   return true;
 }
@@ -195,10 +185,10 @@ void gareafile::ReadHPTFile(char* path, char* file, char* origin, int group) {
     aa.groupid = group;
 
     std::string s;
-    while (ReadHPTLine(fp, &s))
+    while (ReadHPTLine(fp, s))
     {
-      if(not s.empty()) {
-
+      if (not s.empty())
+      {
         char *alptr = throw_xstrdup(s.c_str());
         char *ptr = alptr;
 
@@ -206,64 +196,64 @@ void gareafile::ReadHPTFile(char* path, char* file, char* origin, int group) {
         char* val = ptr;
         gettok(&key, &val);
         switch (strCrc16(key))
-		{
-		  case CRC_SET:
-				if (strchg(val, '[', '%') != 0)
-					strchg(val, ']', '%');
-				putenv(val);
-			  break;
+        {
+        case CRC_SET:
+          if (strchg(val, '[', '%') != 0)
+            strchg(val, ']', '%');
+          putenv(val);
+          break;
 
-		  case CRC_VERSION:
+        case CRC_VERSION:
+          {
+            int ver_maj, ver_min;
+            sscanf(val, "%d.%d", &ver_maj, &ver_min);
+            if (((ver_maj << 16) + ver_min) > 0x00010009)
             {
-              int ver_maj, ver_min;
-              sscanf(val, "%d.%d", &ver_maj, &ver_min);
-              if (((ver_maj << 16) + ver_min) > 0x00010009)
-              {
-                STD_PRINTNL("* Error: Unknown fidoconfig version " << ver_maj << '.' << ver_min << " - Skipping.");
-                throw_xfree(alptr);
-                goto skip_config;
-              }
+              STD_PRINTNL("* Error: Unknown fidoconfig version " << ver_maj << '.' << ver_min << " - Skipping.");
+              throw_xfree(alptr);
+              goto skip_config;
             }
-            break;
-          case CRC_ADDRESS:
-            CfgAddress(val);
-            break;
-          case CRC_SYSOP:
-            CfgUsername(val);
-            break;
-          case CRC_INCLUDE:
-            strxcpy(buf2, val, sizeof(buf2));
-            if(strchg(buf2, '[', '%') != 0)
-              strchg(buf2, ']', '%');
-            MakePathname(buf2, path, buf2);
-            ReadHPTFile(path, buf2, origin, group);
-            break;
-          case CRC_COMMENTCHAR:
-            if((strlen(val) == 3) and (val[0] == val[2]) and strpbrk(val, "\'\""))
-              comment_char = val[1];
-            else if(*val)
-              comment_char = val[0];
-            break;
-          case CRC_NETAREA:
-          case CRC_NETMAILAREA:
-            aa.type = GMB_NET;
-            break;
-          case CRC_LOCALAREA:
-          case CRC_DUPEAREA:
-          case CRC_BADAREA:
-            aa = echoareadefaults;
-            aa.type = GMB_LOCAL;
-            break;
-          case CRC_ECHOAREA:
-            aa = echoareadefaults;
-            aa.type = GMB_ECHO;
-            break;
-          case CRC_ECHOAREADEFAULTS:
-            echoareadefaults.reset();
-            aa.type = GMB_DEFAULT;
-            aa.basetype = fidomsgtype;
-            aa.groupid = group;
-            break;
+          }
+          break;
+        case CRC_ADDRESS:
+          CfgAddress(val);
+          break;
+        case CRC_SYSOP:
+          CfgUsername(val);
+          break;
+        case CRC_INCLUDE:
+          strxcpy(buf2, val, sizeof(buf2));
+          if(strchg(buf2, '[', '%') != 0)
+            strchg(buf2, ']', '%');
+          MakePathname(buf2, path, buf2);
+          ReadHPTFile(path, buf2, origin, group);
+          break;
+        case CRC_COMMENTCHAR:
+          if((strlen(val) == 3) and (val[0] == val[2]) and strpbrk(val, "\'\""))
+            comment_char = val[1];
+          else if(*val)
+            comment_char = val[0];
+          break;
+        case CRC_NETAREA:
+        case CRC_NETMAILAREA:
+          aa.type = GMB_NET;
+          break;
+        case CRC_LOCALAREA:
+        case CRC_DUPEAREA:
+        case CRC_BADAREA:
+          aa = echoareadefaults;
+          aa.type = GMB_LOCAL;
+          break;
+        case CRC_ECHOAREA:
+          aa = echoareadefaults;
+          aa.type = GMB_ECHO;
+          break;
+        case CRC_ECHOAREADEFAULTS:
+          echoareadefaults.reset();
+          aa.type = GMB_DEFAULT;
+          aa.basetype = fidomsgtype;
+          aa.groupid = group;
+          break;
         }
 
         if(aa.type != GMB_NONE) {
@@ -283,71 +273,73 @@ void gareafile::ReadHPTFile(char* path, char* file, char* origin, int group) {
           }
 
           // If not pass-through
-          if(not strieql("Passthrough", key)) {
-
-            if(strchg(key, '[', '%') != 0)
+          if (not strieql("Passthrough", key))
+          {
+            if (strchg(key, '[', '%') != 0)
               strchg(key, ']', '%');
             aa.setpath(key);
 
             gettok(&key, &val);
 
-            while((*key == '-') or strieql(key, "Squish") or strieql(key, "Jam") or strieql(key, "MSG")) {
-
-              if(strieql(key, "Squish"))
-                aa.basetype = "SQUISH";
-              else if(strieql(key, "Jam"))
-                aa.basetype = "JAM";
-              else if(strieql(key, "MSG"))
-                aa.basetype = fidomsgtype;
-              else {
-
+            for (;;)
+            {
+              if (*key == '-')
+              {
                 char *opt = key + 1;
 
-                if(strieql(opt, "p") or strieql(opt, "$m")
+                if (strieql(opt, "a"))
+                {
+                  gettok(&key, &val);
+                  CfgAddress(key);
+                  aa.aka.set(key);
+                }
+                else if (strieql(opt, "g"))
+                {
+                  gettok(&key, &val);
+
+                  if (isdigit(*key))
+                    aa.groupid = 0x8000 + atoi(key);
+                  else if (g_isalpha(*key))
+                    aa.groupid = g_toupper(*key);
+                }
+                else if (strieql(opt, "d"))
+                {
+                  gettok(&key, &val);
+                  aa.setdesc(key);
+                }
+                else if (strieql(opt, "pass"))
+                {
+                  aa.type = GMB_NONE;
+                  break;
+                }
+                else if (strieql(opt, "p") or strieql(opt, "$m")
                    or strieql(opt, "lr") or strieql(opt, "lw")
                    or strieql(opt, "dupeCheck") or strieql(opt, "dupehistory")
                    or strieql(opt, "r") or strieql(opt, "w")
                    or strieql(opt, "l") or strieql(opt, "fperm")
                    or strieql(opt, "fowner") or strnieql(opt, "sbadd(", 6)
-                   or strnieql(opt, "sbign(", 6)) {
-
+                   or strnieql(opt, "sbign(", 6))
+                {
                   gettok(&key, &val);
                 }
-                else if(strieql(opt, "a")) {
-
-                  gettok(&key, &val);
-                  CfgAddress(key);
-                  aa.aka.set(key);
-                }
-                else if(strieql(opt, "h") or strieql(opt, "manual")
-                        or strieql(opt, "nopause") or strieql(opt, "mandatory")
-                        or strieql(opt, "dosfile") or strieql(opt, "ccoff")
-                        or strieql(opt, "b") or strieql(opt, "tinysb")
-                        or strieql(opt, "killsb") or strieql(opt, "keepunread")
-                        or strieql(opt, "killread") or strieql(opt, "h")
-                        or strieql(opt, "nolink") or strieql(opt, "debug")
-                        or strieql(opt, "nopack") or strieql(opt, "keepsb")
-                        or strieql(opt, "$") or strieql(opt, "0")) {
-                }
-                else if(strieql(opt, "g")) {
-
-                  gettok(&key, &val);
-
-                  if(isdigit(*key))
-                    aa.groupid = 0x8000+atoi(key);
-                  else if(g_isalpha(*key))
-                    aa.groupid = g_toupper(*key);
-                }
-                else if (strieql(opt, "d")) {
-
-                  gettok(&key, &val);
-                  aa.setdesc(key);
-                }
-                else if (strieql(opt, "pass")) {
-
-                  aa.type = GMB_NONE;
-                  break;
-                }
+                //else if(strieql(opt, "h") or strieql(opt, "manual")
+                //        or strieql(opt, "nopause") or strieql(opt, "mandatory")
+                //        or strieql(opt, "dosfile") or strieql(opt, "ccoff")
+                //        or strieql(opt, "b") or strieql(opt, "tinysb")
+                //        or strieql(opt, "killsb") or strieql(opt, "keepunread")
+                //        or strieql(opt, "killread") or strieql(opt, "h")
+                //        or strieql(opt, "nolink") or strieql(opt, "debug")
+                //        or strieql(opt, "nopack") or strieql(opt, "keepsb")
+                //        or strieql(opt, "$") or strieql(opt, "0"))
+                //{
+                //}
+              }
+              else if (strieql(key, "Squish")) aa.basetype = "SQUISH";
+              else if (strieql(key, "Jam"   )) aa.basetype = "JAM";
+              else if (strieql(key, "MSG"   )) aa.basetype = fidomsgtype;
+              else
+              {
+                break;
               }
 
               gettok(&key, &val);

@@ -506,9 +506,10 @@ std::string &strtrim(std::string &str)
 {
   if (!str.empty())
   {
+    std::string::iterator begin = str.begin();
     std::string::iterator trail = str.end();
 
-    while(trail != str.begin())
+    while (trail != begin)
     {
       --trail;
       if (not isspace(*trail) and not iscntrl(*trail))

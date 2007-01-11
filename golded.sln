@@ -79,4 +79,7 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		AMDCaProjectFile = F:\work\_db_cvs\golded+\windows\bin\release\win32\CodeAnalyst\golded.caw
+	EndGlobalSection
 EndGlobal

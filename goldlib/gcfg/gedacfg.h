@@ -219,7 +219,7 @@ protected:
 #endif
 #ifndef GCFG_NOFIDOCONF
   AreaCfg echoareadefaults;
-  bool ReadHPTLine(gfile &f, std::string* s, bool add=false, int state=0);
+  bool ReadHPTLine(gfile &f, std::string& str);
   void ReadHPTFile(char* path, char* file, char* origin, int group);
 #endif
 #ifndef GCFG_NOIMAIL
