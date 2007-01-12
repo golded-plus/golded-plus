@@ -970,8 +970,9 @@ int ChangeXlatImport()
     else if (n != -1)
     {
       CFG->ignorecharset = true;
-      std::string xlatImport = Listi[n].substr(0, Listi[n].find(" "));
-      AA->SetXlatimport(xlatImport.c_str());
+      gstrarray xlat;
+      tokenize(xlat, Listi[n].c_str());
+      AA->SetXlatimport(xlat[0].c_str());
     }
 
     LoadCharset(AA->Xlatimport(), CFG->xlatlocalset);
