@@ -73,7 +73,7 @@ void RenameArea(char* echoid)
 {
   std::vector<EchoRen>::iterator n = CFG->arearename.begin();
   std::vector<EchoRen>::iterator end = CFG->arearename.end();
-  
+
   for (; n != end; n++)
   {
     if (strieql(echoid, n->from.c_str()))
@@ -626,11 +626,11 @@ void AreaList::GetArea(char* def) {
 //  Get area definition (new)
 //
 //  Syntax of AREADEF keyword:
-//  
+//
 //    AREADEF <echoid> <"desc"> <group> <type> <msgbase> <path/board> <aka> <(attrs)> ["origin"]
-//  
+//
 //  Examples:
-//  
+//
 //    AREADEF NET.ALL  "Netmail, Line 1" N Net   Opus   R:\NETMAIL\             2:231/77 (PVT K/S)
 //    AREADEF TEST     "Testing..."      D Echo  Hudson 67                      .        ()
 //    AREADEF 1LOCAL   "Sysop <-> Users" L Local Squish R:\MAX\MSG\LOC\1LOCAL   .        (PVT)     "Your Sysop * The Goldware BBS Line 1"
@@ -1077,8 +1077,8 @@ char* MapPath(char* map, bool reverse)
 
   std::vector< std::pair<std::string, std::string> >::iterator i = CFG->mappath.begin();
   std::vector< std::pair<std::string, std::string> >::iterator end = CFG->mappath.end();
-  
-  for (i; i != end; i++)
+
+  for (; i != end; i++)
   {
     const char* p = reverse ? i->second.c_str() : i->first.c_str();
     const char* q = reverse ? i->first.c_str() : i->second.c_str();
@@ -1139,4 +1139,3 @@ const char* AreaCfg::setautoid(const char* _echoid) {
 
 
 //  ------------------------------------------------------------------
-

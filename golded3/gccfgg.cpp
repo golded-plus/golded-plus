@@ -471,7 +471,7 @@ int InstallFinish()
       aa.setpath(buf);
       aa.attr = CFG->attribsnet;
       AL.AddNewArea(&aa);
-      fp.Printf("AREADEF %s \"%s\" 0 Net %s %s\n", aa.desc, aa.echoid, aa.basetype, buf);
+      fp.Printf("AREADEF %s \"%s\" 0 Net %s %s\n", aa.desc, aa.echoid, aa.basetype.c_str(), buf);
       if (EnterString("Please enter the path *and* filename of your areas.bbs file:", buf, sizeof(buf)))
         return -1;
       fp.Printf("AREAFILE AreasBBS %s\n", buf);

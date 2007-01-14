@@ -664,7 +664,7 @@ void ExternUtilMenu(GMsg* msg)
   for (; it != end; it++)
   {
     char buf[100];
-    sprintf(buf, " %02d %.59s%s ", it->utilno, it->cmdline, (it->cmdline.length() > 59) ? ">" : "" );
+    sprintf(buf, " %02d %.59s%s ", it->utilno, it->cmdline.c_str(), (it->cmdline.length() > 59) ? ">" : "" );
     Listi.push_back(buf);
   }
 

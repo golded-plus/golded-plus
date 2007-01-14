@@ -1,8 +1,23 @@
 # -*- makefile -*-
 
+ifeq ($(TERM),cygwin)
+MINGW=true
+else
+ifeq ($(OSTYPE),msys)
+MINGW=true
+endif
+endif
+
 TOP=../..
 TARGET=gmb3
 INCS=-I$(TOP)/goldlib/gall -I$(TOP)/goldlib/gcfg -I$(TOP)/goldlib/gmb3 -I$(TOP)/goldlib/smblib
+ifdef MINGW
+INCS+=-I$(TOP)/goldlib/glibc
+else
+ifeq ($(findstring EMX, $(PATH)), EMX)
+INCS+=-I$(TOP)/goldlib/glibc
+endif
+endif
 
 include $(TOP)/GNUmakef.inc
 ifeq ($(PLATFORM),emx)
