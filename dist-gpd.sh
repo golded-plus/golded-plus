@@ -38,6 +38,9 @@ echo "Snapshot at ${date} (devel. ver.)" >>${file_id}
 echo 'This is  unstable release  and  it'  >>${file_id}
 echo 'should be used for testing purpose'  >>${file_id}
 echo '----------------------------------'  >>${file_id}
+echo 'GoldED+  is  a  successor  of  the'  >>${dizfile}
+echo 'wellknown GoldED mail editor.'       >>${dizfile}
+echo '----------------------------------'  >>${file_id}
 echo 'http://golded-plus.sourceforge.net'  >>${file_id}
 
 rm ${bines}
