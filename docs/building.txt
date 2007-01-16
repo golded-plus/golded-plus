@@ -7,6 +7,7 @@ Table of contents
 1. Build Golded+ binaries using GNU C.
 2. Build Golded+/Win32 binaries using Microsoft Visual C.
 3. Build Golded+ distribution packages.
+4. Notes for RPM (DEB & etc.) builders.
 
 -------------------------------------------------------------------------------
 
@@ -110,15 +111,17 @@ in linux package.
 Please constructs specs for build Golded+ 1.1.5 using following version
 numeration and naming style:
 
-Development (current) Golded+ 1.1.5:
+Development (current) Golded+ 1.1.5 (snapshot of the Golded+):
 - version number: 1.1.5.0;
-- release name: sources modification date on cvs (you may look this date using
-`cvs log` command).
+- release name: string "currentYYYYMMDD", where YYYYMMDD is modification date
+of sources on cvs (you may look this date using `cvs log` command).
 
-Near next released Golded+ 1.1.5:
+Example of naming Golded+ snapshot RPM:
+Golded+ 1.1.5.0-current20061116
+
+Near future release of Golded+ 1.1.5:
 - version number: 1.1.5.1;
-- release name: release.
+- release name: "release".
 
-Patched next release of Golded+ 1.1.5:
-- version number: 1.1.5.2;
-- release name: release.
+Example of naming Golded+ release RPM:
+Golded+ 1.1.5.1-release

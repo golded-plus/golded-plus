@@ -10,6 +10,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+= Snapshot for the Jan 16, 2007.
+
 + ReplyLink config keyword can be "none" now - do not link.
 
 - Fixed thread lock if ESC is pressed in thread list.
