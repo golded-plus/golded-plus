@@ -92,7 +92,33 @@ If you want to make binary package of Golded+ then you may call one of gp*.sh
 shell scripts:
 - dist-gps.sh to produce full sources package;
 - dist-gpc.sh to produce config files package;
-- dist-gpd.sh to produce dos binaries package;
+- dist-gpd.sh to produce DOS binaries package;
 - dist-gpv.sh to produce Win32 (MS Visual C) binaries package;
-- dist-gpw.sh to produce Win32 (MINGW32) binaries package.
-The InfoZIP archiver or TAR and BZip2 is required.
+- dist-gpw.sh to produce Win32 (MINGW32) binaries package;
+- dist-gpl.sh to produce linux binaries package;
+- dist-sx86.sh to produce Solaris/x86 binaries package.
+
+The InfoZIP archiver is required for make Win32, DOS, Solaris/x86 and config
+packages.
+TAR and BZip2 is required for make linux package.
+Iconv program is required for make russian documentation in several encodings
+in linux package.
+
+
+4. Notes for RPM (DEB & etc.) builders.
+
+Please constructs specs for build Golded+ 1.1.5 using following version
+numeration and naming style:
+
+Development (current) Golded+ 1.1.5:
+- version number: 1.1.5.0;
+- release name: sources modification date on cvs (you may look this date using
+`cvs log` command).
+
+Near next released Golded+ 1.1.5:
+- version number: 1.1.5.1;
+- release name: release.
+
+Patched next release of Golded+ 1.1.5:
+- version number: 1.1.5.2;
+- release name: release.
