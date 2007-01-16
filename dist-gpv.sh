@@ -35,10 +35,10 @@ printf '[Compiled using MS Visual C++]\r\n' >>${dizfile}
 printf 'Snapshot (development version)\r\n' >>${dizfile}
 printf 'This is  unstable release  and\r\n' >>${dizfile}
 printf 'it should be  used for testing\r\n' >>${dizfile}
-printf '------------------------------\r\n' >>${dizfile}
+printf -- '------------------------------\r\n' >>${dizfile}
 printf 'GoldED+  is a successor of the\r\n' >>${dizfile}
 printf 'wellknown  GoldED mail editor.\r\n' >>${dizfile}
-printf '------------------------------\r\n' >>${dizfile}
+printf -- '------------------------------\r\n' >>${dizfile}
 printf ' *http://golded-plus.sf.net*  \r\n' >>${dizfile}
 
 make docs

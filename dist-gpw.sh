@@ -37,10 +37,10 @@ printf '[Compiled using  MinGW/Cygwin]\r\n' >>${dizfile}
 printf 'Snapshot (development version)\r\n' >>${dizfile}
 printf 'This is  unstable release  and\r\n' >>${dizfile}
 printf 'it should be used for testing.\r\n' >>${dizfile}
-printf '------------------------------\r\n' >>${dizfile}
+printf -- '------------------------------\r\n' >>${dizfile}
 printf 'GoldED+ is a  successor of the\r\n' >>${dizfile}
 printf 'wellknown  GoldED mail editor.\r\n' >>${dizfile}
-printf '------------------------------\r\n' >>${dizfile}
+printf -- '------------------------------\r\n' >>${dizfile}
 printf '*golded-plus.sourceforge.net* \r\n' >>${dizfile}
 
 rm bin/*cyg.exe
