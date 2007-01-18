@@ -964,7 +964,8 @@ UUDecodePart (FILE *datain, FILE *dataout, int *state,
       return UURET_IOERR;
     }
 
-    if ((method == UU_ENCODED) && (regexp1.match(line) ||  regexp2.match(line)))
+    if ((method == UU_ENCODED) && (*state == DATA) &&
+        (regexp1.match(line) ||  regexp2.match(line)))
     {
       endsection = true;
     }
