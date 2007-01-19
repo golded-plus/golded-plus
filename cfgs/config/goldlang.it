@@ -134,6 +134,7 @@ MS_LMOCTOBER         "Ottobre"
 MS_LMNOVEMBER        "Novembre"
 MS_LMDECEMBER        "Dicembre"
 
+MS_UPTIME             "%days day(s) %hours:%minutes:%seconds.%useconds"
 
 ----------------------------------------------------------------------
 -- MISCELA DI PAROLE CHIAVE

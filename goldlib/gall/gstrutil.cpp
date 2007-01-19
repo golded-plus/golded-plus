@@ -772,3 +772,29 @@ void tokenize(gstrarray &array, const TCHAR* str, const TCHAR *delim)
 
 
 //  ------------------------------------------------------------------
+
+std::string &FormatString(std::string &format, const char *token, const char *replace)
+{
+  size_t tokenLen = strlen(token);
+  size_t pos = format.find(token);
+
+  for (; pos != std::string::npos; pos = format.find(token))
+  {
+    format.replace(pos, tokenLen, replace);
+  }
+
+  return format;
+}
+
+
+//  ------------------------------------------------------------------
+
+std::string &FormatString(std::string &format, const char *token, size_t replace)
+{
+  char buff[128];
+  gsprintf(PRINTF_DECLARE_BUFFER(buff), "%u", replace);
+  return FormatString(format, token, buff);
+}
+
+
+//  ------------------------------------------------------------------

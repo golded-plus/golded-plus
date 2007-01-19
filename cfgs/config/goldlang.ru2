@@ -125,6 +125,8 @@ MS_LMOCTOBER          "октябрь"
 MS_LMNOVEMBER         "ноябрь"
 MS_LMDECEMBER         "декабрь"
 
+MS_UPTIME             "%days day(s) %hours:%minutes:%seconds.%useconds"
+
 ----------------------------------------------------------------------
 -- MISCELLANEOUS LANGUAGE KEYWORDS
 

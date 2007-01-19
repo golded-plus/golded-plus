@@ -115,6 +115,7 @@ MS_LMOCTOBER         "Oktober"
 MS_LMNOVEMBER        "November"
 MS_LMDECEMBER        "December"
 
+MS_UPTIME             "%days day(s) %hours:%minutes:%seconds.%useconds"
 
 ----------------------------------------------------------------------
 -- MISCELLANEOUS LANGUAGE KEYWORDS

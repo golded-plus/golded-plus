@@ -70,6 +70,8 @@ const word CRC_MS_LMOCTOBER         = 0x51C9;
 const word CRC_MS_LMNOVEMBER        = 0x107D;
 const word CRC_MS_LMDECEMBER        = 0x7733;
 
+const word CRC_MS_UPTIME            = 0x383A;
+
 const word CRC_ST_IMPORTFILE        = 0x027D;
 const word CRC_WT_IMPORTWHICHFILE   = 0xF718;
 const word CRC_WT_IMPORTTXT         = 0xB5DB;

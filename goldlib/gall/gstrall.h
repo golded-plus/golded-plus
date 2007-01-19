@@ -151,6 +151,10 @@ char* strcvtc(char* s);
 #define PRINTF_DECLARE_BUFFER(b) b, ARRAYSIZE(b), __FILE__, __LINE__
 int gsprintf(TCHAR* buffer, size_t sizeOfBuffer, const TCHAR* __file, int __line, const TCHAR* format, ...);
 
+//  ------------------------------------------------------------------
+
+std::string &FormatString(std::string &format, const char *token, const char *replace);
+std::string &FormatString(std::string &format, const char *token, size_t replace);
 
 //  ------------------------------------------------------------------
 //  String tokenizer class

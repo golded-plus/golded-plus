@@ -86,6 +86,8 @@ static LangCrc LangCrcs[] = {
   { CRC_MS_LMNOVEMBER         , NULL  , "November" },
   { CRC_MS_LMDECEMBER         , NULL  , "December" },
 
+  { CRC_MS_UPTIME             , NULL  , "%days day(s) %hours:%minutes:%seconds.%useconds" },
+
   { CRC_ST_IMPORTFILE         , NULL  , "Import File" },
   { CRC_WT_IMPORTWHICHFILE    , NULL  , " Import which file? " },
   { CRC_WT_IMPORTPICK         , NULL  , " Import " },

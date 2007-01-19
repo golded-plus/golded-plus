@@ -144,6 +144,7 @@ MS_LMOCTOBER         "Октября"
 MS_LMNOVEMBER        "Ноября"
 MS_LMDECEMBER        "Декабря"
 
+MS_UPTIME             "%days day(s) %hours:%minutes:%seconds.%useconds"
 
 ----------------------------------------------------------------------
 -- Меню

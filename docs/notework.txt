@@ -10,6 +10,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ Win32: Added @uptime template token and MS_UPTIME stringid to goldlang.cfg
+
 - Fixed multifile UUE decoding.
 
 = Snapshot for the Jan 16, 2007.

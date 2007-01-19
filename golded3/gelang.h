@@ -72,6 +72,8 @@ struct LangGed {
   char*  LMNovember;         // MS_LMNOVEMBER
   char*  LMDecember;         // MS_LMDECEMBER
 
+  char*  Uptime;             // MS_UPTIME
+
   char*  ImportFile;         // ST_IMPORTFILE
   char*  ImportWhichFile;    // WT_IMPORTWHICHFILE
   char*  ImportTitle;        // WT_IMPORTPICK

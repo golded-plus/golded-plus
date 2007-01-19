@@ -140,6 +140,7 @@ inline bool domain_requested(const char *str, size_t pos)
   return strnieql(str+pos, "{domain}", 8);
 }
 
+
 //  ------------------------------------------------------------------
 
 void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int __origarea)
@@ -682,7 +683,7 @@ void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int __orig
           continue;
       }
 
-#if 0
+#ifdef __WIN32__
       if (strnieql(it2str(input, dst), "@uptime", 7))
       {
         size_t days = 0;
@@ -704,21 +705,16 @@ void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int __orig
         hours = seconds/(60*60); seconds %= 60*60;
         minutes = seconds/60; seconds %= 60;
 
-        char uptime[1024];
-/*
-		FormatString(
-		FormatString(
-		FormatString(
-		FormatString(
-		FormatString("%days day(s) %hours:%minutes:%seconds.%useconds",
-			"%days", days),
-			"%hours", hours),
-			"%minutes", minutes),
-			"%seconds", seconds),
-			"%useconds", useconds);
-*/
+        std::string uptime(LNG->Uptime);
 
-		tokenxchg(input, dst, "@uptime", uptime);
+        FormatString( FormatString( FormatString( FormatString( FormatString(
+          uptime, "%days", days),
+                  "%hours", hours),
+                  "%minutes", minutes),
+                  "%seconds", seconds),
+                  "%useconds", useconds);
+
+        tokenxchg(input, dst, "@uptime", uptime.c_str());
       }
 #endif
     }
