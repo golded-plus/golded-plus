@@ -199,7 +199,7 @@ void Area::DelMsgs(GMsg* msg, bool force)
                 HeaderView->Paint();
                 BodyView->Use(AA, msg, topline);
                 BodyView->Paint();
-                
+
                 switch(MenuDelete.Run(YES, msg))
                 {
                   case YES:       // Yes, delete
@@ -428,7 +428,7 @@ void CmfMsgs(GMsg* msg, bool torecycle)
   else
   {
     if (CFG->arearecyclebin[0])
-    {	
+    {
       int areano = AL.AreaEchoToNo(CFG->arearecyclebin);
       int currno = AL.AreaIdToNo(CurrArea);
 

@@ -752,11 +752,11 @@ void DoTearorig(int mode, GMsg* msg) {
     strbtrim(msg->tagline);
   }
 
-  TokenXlat(mode, msg->tearline, sizeof(msg->tearline), msg, msg, CurrArea);
+  TokenXlat(mode, msg->tearline, sizeof(msg->tearline), msg, msg, CurrArea); // tearline translation one point
 
   ctrlinfo = AA->Ctrlinfo();
 
-  if(not *msg->origin)
+  if(not *msg->origin)  // Strange... Origin is created here, but deleted in in next block. To be fixed?
     MakeOrigin(msg, origin.c_str());
 
   // Delete current tag-, tear- and originlines
@@ -801,7 +801,7 @@ void DoTearorig(int mode, GMsg* msg) {
   MakeOrigin(msg, origin.c_str());
 
   TokenXlat(mode, msg->tagline, sizeof(msg->tagline), msg, msg, CurrArea);
-  TokenXlat(mode, msg->tearline, sizeof(msg->tearline), msg, msg, CurrArea);
+  TokenXlat(mode, msg->tearline, sizeof(msg->tearline), msg, msg, CurrArea); // tearline translation two point
   TokenXlat(mode, msg->origin, sizeof(msg->origin), msg, msg, CurrArea);
 
   // Add the tagline, tearline and origin as defined

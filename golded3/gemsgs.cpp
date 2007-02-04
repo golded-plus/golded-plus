@@ -48,8 +48,9 @@ static bool tokenxchg(std::string &input, std::string::iterator &pos,
                       size_t len = 0, size_t cnt = 0, ...)
 {
   size_t toklen = strlen(tok);
+  const char* inp_str_tok=it2str(input, pos);
 
-  if (strnieql(it2str(input, pos), tok, toklen))
+  if ( (strnieql(inp_str_tok, tok, toklen)) && isspace(inp_str_tok[toklen]) )
   {
     std::string str = src;
     std::string::iterator tokend = pos+toklen;
