@@ -684,7 +684,6 @@ void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int __orig
           continue;
       }
 
-#ifdef __WIN32__
       if (strnieql(it2str(input, dst), "@uptime", 7))
       {
         size_t days = 0;
@@ -700,24 +699,50 @@ void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int __orig
         QueryPerformanceFrequency(&frequency);
         seconds = counter.QuadPart / frequency.QuadPart;
         useconds = size_t(double(counter.QuadPart % frequency.QuadPart)*1000 / frequency.QuadPart);
+#elif defined(__unix__)
+        FILE *fd = fopen("/proc/uptime","r");
+        if( fd )
+        {
+          char s[20];
+          if( fgets(s, sizeof(s), fd) )
+          {
+            if( sizeof(size_t) == sizeof(long) )
+              sscanf(s, "%lu.%2lu", &seconds, &useconds);
+/* to future 64-bit unixtime
+            else if( sizeof(size_t) == sizeof(long long) )
+            sscanf(s, "%Lu.%2Lu", &seconds, &useconds);
+*/
+            else if( sizeof(size_t) == sizeof(unsigned) )
+              sscanf(s, "%u.%2u", &seconds, &useconds);
+          }
+        }
+#else
+        LOG.printf("Macros \"@uptime\" is not suppoted on platform %s!", __gver_platform__);
 #endif
 
-        days = seconds/(60*60*24); seconds %= 60*60*24;
-        hours = seconds/(60*60); seconds %= 60*60;
-        minutes = seconds/60; seconds %= 60;
+        if( seconds+useconds>0 )
+        {
+          days = seconds/(60*60*24); seconds %= 60*60*24;
+          hours = seconds/(60*60); seconds %= 60*60;
+          minutes = seconds/60; seconds %= 60;
 
-        std::string uptime(LNG->Uptime);
+          std::string uptime(LNG->Uptime);
 
-        FormatString( FormatString( FormatString( FormatString( FormatString(
-          uptime, "%days", days),
-                  "%hours", hours),
-                  "%minutes", minutes),
-                  "%seconds", seconds),
-                  "%useconds", useconds);
+          FormatString( FormatString( FormatString( FormatString( FormatString(
+            uptime, "%days", days),
+                    "%hours", hours),
+                    "%minutes", minutes),
+                    "%seconds", seconds),
+                    "%useconds", useconds);
 
-        tokenxchg(input, dst, "@uptime", uptime.c_str());
+          tokenxchg(input, dst, "@uptime", uptime.c_str());
+        }
+        else
+        {
+          LOG.printf("Can't determine uptime value, set @uptime empty.");
+          tokenxchg(input, dst, "@uptime", "");
+        }
       }
-#endif
     }
     dst++;
   }
