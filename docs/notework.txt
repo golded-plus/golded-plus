@@ -10,6 +10,11 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+- Fixed macro token recognition: now token should be ended with space char
+  or punctuation char (not alphanumeric).
+
+- Fixed usage of random-lines file in tearline, origin and tagline.
+
 + Win32: Added @uptime template token and MS_UPTIME stringid to goldlang.cfg
 
 - Fixed multifile UUE decoding.
