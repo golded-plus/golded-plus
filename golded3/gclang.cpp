@@ -703,6 +703,8 @@ void LoadLanguage(const char* file)
     // Assign weekday/month names
     AssignDateNames();
   }
+  else
+    LOG.printf("Can't load language file \"%s\", OS reports: %s!", file, strerror(errno));
 }
 
 
