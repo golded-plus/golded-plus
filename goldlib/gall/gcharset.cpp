@@ -28,6 +28,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <clocale>
+#include <stdlib.h>
 #include <gcmpall.h>
 #include <gstrall.h>
 #ifdef __WIN32__
@@ -113,6 +114,14 @@ const char *get_dos_charset(const char *cpfrom)
     if(strieql(cpfrom, cpmap[i].from))
       return cpmap[i].to;
   }
+ #if defined(__unix__)
+  char* lang = getenv("LANG");
+  if( lang && strncmp(lang,"ru_RU",4) ) {
+    return "CP866";
+  }else{
+    return "CP437";
+  }
+ #endif
   return "";
 #endif
 }
