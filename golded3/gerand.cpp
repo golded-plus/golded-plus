@@ -28,14 +28,19 @@
 
 
 //  ------------------------------------------------------------------
-
+//  GetRandomLine() - Get random line from file
+//  1st parameter: buffer to store string, don't changed if file can't opened.
+//  2nd parameter: size of buffer
+//  3rd parameter: file name
+//  Return first parameter.
 char* GetRandomLine(char* __buf, size_t __bufsize, const char* file)
 {
   Path indexfile;
   Path __file;
 
+  if( (__buf==NULL) || (__file==NULL) ) return __buf;
+
   strxcpy(__file, file, sizeof(Path));
-  strxcpy(__buf, "", __bufsize);
   strschg_environ(__file);
 
   replaceextension(indexfile, __file, ".sdx");
@@ -43,6 +48,7 @@ char* GetRandomLine(char* __buf, size_t __bufsize, const char* file)
   gfile fp(AddPath(CFG->goldpath, __file), "rb", CFG->sharemode);
   if (fp.isopen())
   {
+    strxcpy(__buf, "", __bufsize);
     fp.SetvBuf(NULL, _IOFBF, 32000);
 
     // Check if index exists or if it is older than the textfile
@@ -109,7 +115,7 @@ char* HandleRandomLine(char* buf, size_t bufsize) {
 }
 
 
-//  ------------------------------------------------------------------ 
+//  ------------------------------------------------------------------
 
 void Area::InitData() {
 
@@ -352,13 +358,13 @@ void Area::RandomizeData(int mode) {
 
     if(CFG->grp.GetItm(GRP_TAGLINE, buf, sizeof(buf)))
       strxcpy(adat->tagline, buf, sizeof(adat->tagline));
-    
+
     CFG->grp.GetItm(GRP_TAGLINECHAR, adat->taglinechar);
     CFG->grp.GetItm(GRP_TAGLINESUPPORT, adat->taglinesupport);
 
     if(CFG->grp.GetItm(GRP_TEARLINE, buf, sizeof(buf)))
       strxcpy(adat->tearline, buf, sizeof(adat->tearline));
-    
+
     if(not adat->forcetemplate) {
       if(CFG->tplno and (CFG->tplno < CFG->tpl.size()))
         strxcpy(adat->tpl, CFG->tpl[CFG->tplno].file, sizeof(adat->tpl));
