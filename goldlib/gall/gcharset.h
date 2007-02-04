@@ -27,7 +27,9 @@
 #ifndef __gcharset_h
 #define __gcharset_h
 
-
+//  ------------------------------------------------------------------
+//  Charset is set to this value if charset can't be taken from OS
+#define DEFAULT_CHARSET "CP437"
 //  ------------------------------------------------------------------
 
 const char *get_charset(void);

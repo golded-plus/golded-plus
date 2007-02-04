@@ -42,6 +42,7 @@
 #include <dpmi.h>
 #include <sys/farptr.h>
 #endif
+#include <gcharset.h>
 
 static char charsetbuf[256];
 
@@ -51,7 +52,7 @@ const char *get_charset(void)
   int segment, selector;
   __dpmi_regs regs;
 
-  strcpy(charsetbuf, "IBMPC");
+  strcpy(charsetbuf, DEFAULT_CHARSET);
   if ((segment = __dpmi_allocate_dos_memory(3, &selector)) != -1) {
     regs.h.ah = 0x65;
     regs.h.al = 0x01;
@@ -73,20 +74,23 @@ const char *get_charset(void)
   ULONG CCP[8];
   ULONG cb;
 
-  strcpy(charsetbuf, "IBMPC");
+  strcpy(charsetbuf, DEFAULT_CHARSET);
   if(DosQueryCp(sizeof (CCP), CCP, &cb) == 0)
     sprintf(charsetbuf, "CP%i", CCP[0]);
 #else
   const char *cp;
 
-  strcpy(charsetbuf, "LATIN-1");
+  strcpy(charsetbuf, DEFAULT_CHARSET);
   cp = setlocale(LC_CTYPE, "");
   if((cp != NULL) and ((cp = strchr(cp, '.')) != NULL)) {
     cp++;
+/* Commented on reason: Non-standard charset values isn't used in unix locale, may be in very old implementations?
+// Check this.
     if(strieql(cp, "KOI8R") or strieql(cp, "KOI8"))
       cp = "KOI8-R";
     if(strieql(cp, "KOI8U"))
       cp = "KOI8-U";
+*/
     strxcpy(charsetbuf, cp, sizeof(charsetbuf));
   }
 #endif
@@ -97,11 +101,13 @@ const char *get_dos_charset(const char *cpfrom)
 {
 #if defined(__WIN32__) || defined(__MSDOS__) || defined(__OS2__)
   (void)cpfrom; // These platforms use DOS CP on console, so ignore request
+                // Another way is possible in Windows: get charset using GetANSICP()
   return "";
 #else
   static const struct _cpmap {
     char *from, *to;
   } cpmap[] = {
+    { "IBMPC", "CP850" },
     { "LATIN-1", "CP437" },
     { "KOI8", "CP866" },
     { "KOI8-R", "CP866" },
