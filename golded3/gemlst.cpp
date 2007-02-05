@@ -808,16 +808,17 @@ void GThreadlist::GenTree(int idx)
     return;
 
 #ifdef KOI8
-  static char graph[4]="†„";
+  static char graph[4]="†„";       // Pseudographic chars KOI8-R
 #else
-  static char graph_ibmpc[4]="ÃÀ³";
-  static char graph[4]="";
+  static char graph_ibmpc[4]="ÃÀ³"; // Pseudographic chars CP437, CP850, CP866
+  static char graph[4]="+*|";       // Default: plain ASCII7 chars
 
   if(graph[0] == NUL)
   {
     int table = LoadCharset(NULL, NULL, 1);
     int level = LoadCharset(get_dos_charset(CFG->xlatlocalset), CFG->xlatlocalset);
-    XlatStr(graph, graph_ibmpc, level, CharTable);
+    if(level)
+      XlatStr(graph, graph_ibmpc, level, CharTable);
     if(table == -1)
       LoadCharset(CFG->xlatimport, CFG->xlatlocalset);
     else
