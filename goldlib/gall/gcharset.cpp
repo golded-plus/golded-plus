@@ -52,7 +52,7 @@ const char *get_charset(void)
   int segment, selector;
   __dpmi_regs regs;
 
-  strcpy(charsetbuf, DEFAULT_CHARSET);
+  strcpy(charsetbuf, GOLDED_DEFAULT_CHARSET);
   if ((segment = __dpmi_allocate_dos_memory(3, &selector)) != -1) {
     regs.h.ah = 0x65;
     regs.h.al = 0x01;
@@ -74,13 +74,13 @@ const char *get_charset(void)
   ULONG CCP[8];
   ULONG cb;
 
-  strcpy(charsetbuf, DEFAULT_CHARSET);
+  strcpy(charsetbuf, GOLDED_DEFAULT_CHARSET);
   if(DosQueryCp(sizeof (CCP), CCP, &cb) == 0)
     sprintf(charsetbuf, "CP%i", CCP[0]);
 #else
   const char *cp;
 
-  strcpy(charsetbuf, DEFAULT_CHARSET);
+  strcpy(charsetbuf, GOLDED_DEFAULT_CHARSET);
   cp = setlocale(LC_CTYPE, "");
   if((cp != NULL) and ((cp = strchr(cp, '.')) != NULL)) {
     cp++;
