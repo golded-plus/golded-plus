@@ -548,6 +548,7 @@ GoldedCfgEdit::GoldedCfgEdit() {
   QuoteMargin(75);
   SaveMenu(true);
   UnDelete(50);
+  SoftCrXlat(0x8d);
 
   str.push_back(""); cfg.external = str.size()-1;
   str.push_back(GOLDED_MSG); cfg.file = str.size()-1;
