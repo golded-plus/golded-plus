@@ -122,7 +122,7 @@ const char *get_dos_charset(const char *cpfrom)
   }
  #if defined(__unix__)
   char* lang = getenv("LANG");
-  if( lang && strncmp(lang,"ru_RU",4) ) {
+  if( lang && strncmp(lang,"ru_RU",5) ) {
     return "CP866";
   }else{
     return "CP437";
