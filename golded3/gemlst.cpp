@@ -811,7 +811,7 @@ void GThreadlist::GenTree(int idx)
   static char graph[4]="†„";       // Pseudographic chars KOI8-R
 #else
   static char graph_ibmpc[4]="ÃÀ³"; // Pseudographic chars CP437, CP850, CP866
-  static char graph[4]="+*|";       // Default: plain ASCII7 chars
+  static char graph[4]="";
 
   if(graph[0] == NUL)
   {
@@ -819,6 +819,8 @@ void GThreadlist::GenTree(int idx)
     int level = LoadCharset(get_dos_charset(CFG->xlatlocalset), CFG->xlatlocalset);
     if(level)
       XlatStr(graph, graph_ibmpc, level, CharTable);
+    else
+      graph="+*|";       // Default: plain ASCII7 chars
     if(table == -1)
       LoadCharset(CFG->xlatimport, CFG->xlatlocalset);
     else
