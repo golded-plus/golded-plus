@@ -820,7 +820,7 @@ void GThreadlist::GenTree(int idx)
     if(level)
       XlatStr(graph, graph_ibmpc, level, CharTable);
     else
-      graph="+*|";       // Default: plain ASCII7 chars
+      strxcpy(graph, "+*|", ARRAYSIZE(graph));       // Default: plain ASCII7 chars
     if(table == -1)
       LoadCharset(CFG->xlatimport, CFG->xlatlocalset);
     else
