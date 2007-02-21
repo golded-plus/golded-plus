@@ -99,9 +99,14 @@ const char *get_charset(void)
 
 const char *get_dos_charset(const char *cpfrom)
 {
-#if defined(__WIN32__) || defined(__MSDOS__) || defined(__OS2__)
+#if defined(__WIN32__)
+  int cp = GetOEMCP();
+  static char cpto[10]="";
+  if (cp) snprintf(cpto, sizeof(cpto), "CP%u", cp);
+  else cpto[0]='\0';
+  return cpto;
+#elif defined(__MSDOS__) || defined(__OS2__)
   (void)cpfrom; // These platforms use DOS CP on console, so ignore request
-                // Another way is possible in Windows: get charset using GetANSICP()
   return "";
 #else
   static const struct _cpmap {
