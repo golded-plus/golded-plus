@@ -811,16 +811,23 @@ void GThreadlist::GenTree(int idx)
   static char graph[4]="†„";       // Pseudographic chars KOI8-R
 #else
   static char graph_ibmpc[4]="ÃÀ³"; // Pseudographic chars CP437, CP850, CP866
-  static char graph[4]="";
+  static char graph[4]="\0\0\0";
 
   if(graph[0] == NUL)
   {
     int table = LoadCharset(NULL, NULL, 1);
-    int level = LoadCharset(get_dos_charset(CFG->xlatlocalset), CFG->xlatlocalset);
-    if(level)
-      XlatStr(graph, graph_ibmpc, level, CharTable);
+    const char *doscp = get_dos_charset(CFG->xlatlocalset);
+    if(doscp[0]) // console charset is known
+    {
+      int level = LoadCharset(doscp, CFG->xlatlocalset);
+      if(level!=-1)
+        XlatStr(graph, graph_ibmpc, level, CharTable);
+      else
+        strxcpy(graph, "+*|", ARRAYSIZE(graph));       // Default: plain ASCII7 chars
+    }
     else
-      strxcpy(graph, "+*|", ARRAYSIZE(graph));       // Default: plain ASCII7 chars
+        memcpy(graph, graph_ibmpc, sizeof(graph));
+
     if(table == -1)
       LoadCharset(CFG->xlatimport, CFG->xlatlocalset);
     else
