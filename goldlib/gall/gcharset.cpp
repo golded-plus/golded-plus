@@ -102,7 +102,7 @@ const char *get_dos_charset(const char *cpfrom)
 #if defined(__WIN32__)
   int cp = GetOEMCP();
   static char cpto[10]="";
-  if (cp) snprintf(cpto, sizeof(cpto), "CP%u", cp);
+  if (cp) gsprintf(PRINTF_DECLARE_BUFFER(cpto), "CP%u", cp);
   else cpto[0]='\0';
   return cpto;
 #elif defined(__MSDOS__) || defined(__OS2__)
