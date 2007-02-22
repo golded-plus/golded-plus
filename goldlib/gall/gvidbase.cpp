@@ -1840,6 +1840,10 @@ void vcurset(int sline, int eline) {
   cci.dwSize = (eline and sline) ? sline : 100;
   cci.bVisible = make_bool(eline);
 
+// To hide cursor in w98 needs change byte sequnce in compiled gedcyg.exe:
+//   0F 95 C0 89 45 FC
+//   B0 01 90 -- -- --
+
   SetConsoleCursorInfo(gvid_hout, &cci);
 
   #elif defined(__UNIX__)
