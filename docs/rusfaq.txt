@@ -184,6 +184,25 @@ $Date$
      Запускать golded+ через screen: screen gedlnx
 *A:* Alexander Brovikov, Stas Degteff: в xterm Backspace работает нормально, а
      Konsole и rxvt болеют теми же симптомами.
+*A:* Dmitry Pankov: В konsole эта проблема решается правкой .keytab.
+     В /usr/share/apps/konsole (либо в /usr/local/share/apps/konsole, в
+     зависимости от системы) ищем файлики *.keytab. В Linux обычно есть
+     README.default.Keytab - это клавиатурная таблица Konsole, заданная при его
+     компиляции. Копируем этот или другой понравившийся файл *.keytab в
+     ~/.kde/share/apps/konsole под другим именем (например golded+.keytab) и
+     вносим следующие два изменения:
+     === Cut ===
+     -keyboard "XTerm (XFree 4.x.x)"
+     +keyboard "XTerm (xorg 7.x.x)"
+     === Cut ===
+     === Cut ===
+     # Backspace and Delete codes are preserving CTRL-H.
+     -key Backspace      : "\x7f"
+     +key Backspace      : "\x08"
+     === Cut ===
+     После чего запускаем konsole, меню Hастройка -> Клавиатура -> выбираем
+     "XTerm (xorg 7.x.x)" и сохраняем профиль по умолчанию.
+     Все. Теперь Backspace удаляет по одному символу, а не слово целиком.
 
 *Q14:* А как нажать Alt-S во FreeBSD? ;-)
 *A:* andrey i. mavlyanov: исправить раскладку по приведённому DIFF'у
