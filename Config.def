@@ -83,3 +83,5 @@
 #CPPFLAGS+=-DGCFG_NO_REGEX
 # Comment to disable AreaRecycleBin keyword and feature
 CPPFLAGS+=-D__INCLUDE_NEW_KEYWORDS__
+# Uncomment to disable CPUID feature (compilation error in goldlib/gall/gutlvers.cpp)
+#CPPFLAGS+=-DGCFG_NO_CPUID

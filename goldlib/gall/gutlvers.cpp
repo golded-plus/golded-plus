@@ -49,7 +49,10 @@
 #define _MAX_VNAME_LEN  12
 #define _MAX_MNAME_LEN  30
 
-
+#ifdef GCFG_NO_CPUID
+# define gcpuid(pstr) (pstr)
+# define HaveCPUID()  (0)
+#else
 //  ------------------------------------------------------------------
 
 #if defined(_MSC_VER) && (_MSC_VER < 1400)
@@ -549,7 +552,7 @@ char *gcpuid(char *_cpuname)
 
   return _cpuname;
 }
-
+#endif // ifdef GCFG_NO_CPUID
 
 //  ------------------------------------------------------------------
 
