@@ -183,7 +183,9 @@ $Date$
      bindkey -d -k kb stuff \010
      Запускать golded+ через screen: screen gedlnx
 *A:* Alexander Brovikov, Stas Degteff: в xterm Backspace работает нормально, а
-     Konsole и rxvt болеют теми же симптомами.
+     Konsole и rxvt болеют теми же симптомами. В некоторых терминальных
+     программах можно выставить настройку "Нажатие клавиши BackSpace вызывает:
+     Control + H", это поможет
 *A:* Dmitry Pankov: В konsole эта проблема решается правкой .keytab.
      В /usr/share/apps/konsole (либо в /usr/local/share/apps/konsole, в
      зависимости от системы) ищем файлики *.keytab. В Linux обычно есть
