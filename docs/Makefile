@@ -14,6 +14,15 @@ html-doc: $(HTMLS)
 txt: txt-doc
 txt-doc:  $(TXTS)
 
+rus: rusfaq.koi8r rusfaq.utf8 notework.koi8r notework.utf8
+rusfaq.koi8r: rusfaq.txt
+	iconv -f cp866 -t koi8-r -o rusfaq.koi8r rusfaq.txt
+rusfaq.utf8: rusfaq.txt
+	iconv -f cp866 -t utf8 -o rusfaq.utf8 rusfaq.txt
+notework.koi8r: notework.rus
+	iconv -f cp866 -t koi8-r -o notework.koi8r notework.rus
+notework.utf8: notework.rus
+	iconv -f cp866 -t utf8 -o notework.utf8 notework.rus
 
 %.html: %.1
 	groff -Thtml -mman $< >$@
