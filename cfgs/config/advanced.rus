@@ -601,11 +601,6 @@ EditSaveMenu Yes
 // Например: "oDiNn sOrEnSeN" будет переведено в "Odinn Sorensen".
 EditMixCase No
 
-// Ограничение размера сообщения, которое GoldED сможет загрузить.
-// В веpсии +1.1.5 это кейвоpд удален и огpаничений на pазмеp сообщения нет.
-;EditMsgSize 64000    ; Значение по умолчанию для DOS.
-;EditMsgSize 512000   ; Значение по умолчанию для других OS.
-
 // Определение командной строки для корректора орфографии.
 ;If DOS
   EditSpellCheck C:\FIDO\GoldKorr\goldkorr.exe @file /A2 /Q /V2 /Y
