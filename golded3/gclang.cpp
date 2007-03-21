@@ -669,6 +669,13 @@ void LoadLanguage(const char* file)
   int line = 0;
   char buf[256];
 
+  if (file==NULL || *file==0){
+    LOG.printf("! LoadLanguage() is called with empty file name!");
+    #if defined(GFTRK_ENABLE)
+    __gftrk_log();
+    #endif
+    return;
+  }
   gfile fp(AddPath(CFG->goldpath, file), "rt", CFG->sharemode);
   if (fp.isopen())
   {
@@ -704,7 +711,7 @@ void LoadLanguage(const char* file)
     AssignDateNames();
   }
   else
-    LOG.printf("Can't load language file \"%s\", OS reports: %s!", file, strerror(errno));
+    LOG.printf("? Can't load language file \"%s\", OS reports: %s!", file, strerror(errno));
 }
 
 
