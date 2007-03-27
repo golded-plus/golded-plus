@@ -71,6 +71,8 @@ inline int IsInitial(char c) {
 
 int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origarea)
 {
+  GFTRK("TemplateToText");
+
   long fpos;
   Path tplfile;
   int n;
@@ -185,6 +187,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
       strcpy(msg->txt, LNG->RobotMsg);
       TokenXlat(mode, msg->txt, strlen(msg->txt)+1, true, msg, oldmsg, origarea);
       throw_free(buf);
+      GFTRK(0);
       return 0;
     }
   }
@@ -943,6 +946,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
     remove(tplfile);
 
   throw_free(buf);
+  GFTRK(0);
   return disphdr;
 }
 
