@@ -233,7 +233,7 @@ void Area::InitData() {
     CFG->grp.GetItm(GRP_XLATIMPORT, adat->xlatimport, sizeof(adat->xlatimport));
   }
 
-  if(adat->loadlanguage)
+  if(adat->loadlanguage && *adat->loadlanguage)
     LoadLanguage(adat->loadlanguage);
 }
 

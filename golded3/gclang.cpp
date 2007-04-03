@@ -669,11 +669,8 @@ void LoadLanguage(const char* file)
   int line = 0;
   char buf[256];
 
-  if (file==NULL || *file==0){
-    LOG.printf("! LoadLanguage() is called with empty file name!");
-    #if defined(GFTRK_ENABLE)
-    __gftrk_log();
-    #endif
+  if (file==NULL || *file==0)
+  {
     return;
   }
   gfile fp(AddPath(CFG->goldpath, file), "rt", CFG->sharemode);
