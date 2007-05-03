@@ -10,6 +10,8 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+= Snapshot for the May 3, 2007.
+
 + Golded+ may be compiled in MacOS X now (using xcode package).
 
 - Fixed macro token recognition: now token should be ended with space char
