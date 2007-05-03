@@ -34,12 +34,12 @@ files="${files} docs/tokencfg.txt docs/tokentpl.txt ${file_id}"
 
 echo 'GoldED+1.1.5   [DOS-DPMI binaries]'   >${file_id}
 echo '[Compiled  using  DJGPP GNU C/C++]'  >>${file_id}
-echo "Snapshot at ${date} (devel. ver.)" >>${file_id}
+echo "Snapshot at ${date} (devel.ver.)"    >>${file_id}
 echo 'This is  unstable release  and  it'  >>${file_id}
 echo 'should be used for testing purpose'  >>${file_id}
 echo '----------------------------------'  >>${file_id}
-echo 'GoldED+  is  a  successor  of  the'  >>${dizfile}
-echo 'wellknown GoldED mail editor.'       >>${dizfile}
+echo 'GoldED+  is  a  successor  of  the'  >>${file_id}
+echo 'wellknown GoldED mail editor.'       >>${file_id}
 echo '----------------------------------'  >>${file_id}
 echo 'http://golded-plus.sourceforge.net'  >>${file_id}
 
@@ -59,3 +59,4 @@ done
 
 echo ${files} | sed "s/ /\n/g" >files.lst
 pkzip ${dosname} @files.lst
+rm files.lst
