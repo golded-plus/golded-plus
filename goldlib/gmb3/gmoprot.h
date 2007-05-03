@@ -29,7 +29,9 @@
 //  ------------------------------------------------------------------
 
 #include <gdefs.h>
-
+#if defined(__MACH__) // MacOS
+#include <stdint.h>
+#endif
 //  ------------------------------------------------------------------
 
 void EzycomInit(const char* msgbasepath, const char* userbasepath, int userno);
