@@ -222,11 +222,7 @@ int GVid::detectadapter() {
 
   start_color();
 
-  /* init colors */
-  short mycolors[] = { COLOR_BLACK, COLOR_BLUE, COLOR_GREEN, COLOR_CYAN,
-                     COLOR_RED, COLOR_MAGENTA, COLOR_YELLOW, COLOR_WHITE };
-  for(int i = 1; i < 64 and i < COLOR_PAIRS; i++)
-    init_pair(i, mycolors[(~i)&0x07], mycolors[(i>>3)&0x07]);
+  setcolorpairs();
 
   adapter = V_VGA;
 
@@ -435,6 +431,20 @@ int GVid::detectadapter() {
   return adapter;
 }
 
+void GVid::setcolorpairs(bool enabletransparent) {
+  #if defined(__USE_NCURSES__)
+  /* init colors */
+  short mycolors[] = { COLOR_BLACK, COLOR_BLUE, COLOR_GREEN, COLOR_CYAN,
+                     COLOR_RED, COLOR_MAGENTA, COLOR_YELLOW, COLOR_WHITE };
+
+  if(enabletransparent)
+    use_default_colors();
+  for(int i = 1; i < 64 and i < COLOR_PAIRS; i++) {
+    short bg=mycolors[(i>>3)&0x07];
+    init_pair(i, mycolors[(~i)&0x07], ((bg==COLOR_BLACK) && enabletransparent)?-1:bg);
+  }
+  #endif
+}
 
 //  ------------------------------------------------------------------
 //  Video info detect

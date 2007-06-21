@@ -294,6 +294,7 @@ const word CRC_PRINTINIT        = 0xB195;
 const word CRC_PRINTLENGTH      = 0x5D19;
 const word CRC_PRINTMARGIN      = 0xAC75;
 const word CRC_PRINTRESET       = 0xEFBD;
+const word CRC_TRANSPARENTCOLORS= 0xFCB1;
 const word CRC_QUOTEBLANK       = 0xD3BB;
 const word CRC_QUOTEBUFFILE     = 0xDE2A;
 const word CRC_QUOTEBUFMODE     = 0x6A16;

@@ -329,6 +329,8 @@ public:
 
   int  detectadapter  ();
   void detectinfo     (GVidInfo* _info);
+  static
+  void setcolorpairs  (bool enabletransparent=false);
 
   void resetcurr      ();
 

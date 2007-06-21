@@ -332,6 +332,7 @@ public:
   Path        inboundpath;
   Path        inputfile;
   bool        intensecolors;
+  bool        transparentcolors;
   IAdr        internetaddress;
   char        internetdomain[96];
   Node        internetgate;

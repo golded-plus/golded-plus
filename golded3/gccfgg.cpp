@@ -748,6 +748,7 @@ CfgGed::CfgGed() {
   hudsonuserno = 0;
   ignorecharset = false;
   intensecolors = false;
+  transparentcolors = false;
   internetmsgid = false;
   internetrfcbody = 0;
   internetviagate = false;

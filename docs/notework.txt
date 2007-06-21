@@ -10,6 +10,11 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ Added new keyword to support background transparency
+  TRANSPARENTCOLORS Yes/No
+  default is "No". If set to "Yes" BLACK background color will become
+  transparent. Supported for ncurses compilation, otherwise do nothing.
+
 = Snapshot for the May 3, 2007.
 
 + Golded+ may be compiled in MacOS X now (using xcode package).

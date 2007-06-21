@@ -251,6 +251,15 @@ void CfgTranslate()
   CFG->translate.Add(strupr(key), val);
 }
 
+//  ------------------------------------------------------------------                                                                       $
+
+void CfgTransparentcolors() {
+
+    CFG->transparentcolors = make_bool(GetYesno(val));
+    if(CFG->transparentcolors)
+      GVid::setcolorpairs(true);
+}
+
 //  ------------------------------------------------------------------
 
 void CfgTwitmode() {

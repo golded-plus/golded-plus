@@ -1443,6 +1443,12 @@ ScreenShadows Yes
 ;IntenseColors Yes
 IntenseColors No
 
+// Использовать ли прозрачный фон?
+// П/у "No". сли установлено в "Yes", цвет BLACK использованный в 
+// качестве фона, станет прозрачным. Поддерживается только при
+// использовании ncurses, иначе игнорируется.
+;TransparentColors Yes
+
 // Выбор цветов по умолчанию.
 ColorSet Detect     ; Авто определение.
 ;ColorSet Normal    ; Стандартный цвет.

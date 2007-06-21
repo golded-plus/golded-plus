@@ -360,6 +360,7 @@ void CfgTimeout          ();
 void CfgTimeoutsavemsg   ();
 void CfgTitlestatus      ();
 void CfgTranslate        ();
+void CfgTransparentcolors();
 void CfgTwitmode         ();
 void CfgTwitname         ();
 void CfgTwitsubj         ();
