@@ -667,12 +667,23 @@ void ReadXlatTables()
                       ch = 0;
                     else
                       ch = 128;
+                    if(ChsTable.level)
+                    {
+                      for(;*ptr&&isdigit(*ptr);ptr++);
+                      for(;*ptr&&isspace(*ptr);ptr++);
+                      if(*ptr&&isdigit(*ptr))
+                      {
+                        ChsTable.displaylevel = atoi(ptr);
+                        if(!ChsTable.displaylevel) ChsTable.displaylevel = ChsTable.level;
+                      }
+                      else ChsTable.displaylevel = ChsTable.level;
+                    }
                     break;
                   case 4:
                     strcpy(ChsTable.imp, strbtrim(ptr));
                     break;
                   case 5:
-                    if (ChsTable.level)
+                    if (ChsTable.level && ChsTable.version!=-1)
                     {
                       gsprintf(PRINTF_DECLARE_BUFFER(ChsTable.exp), "%s %d",
                                strbtrim(ptr), ChsTable.level);

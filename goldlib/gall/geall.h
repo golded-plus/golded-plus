@@ -852,6 +852,7 @@ struct Chs {
   long   id;
   int    version;
   int    level;
+  int    displaylevel;
   XlatName imp;   // From Charset
   XlatName exp;   // To Charset
   ChsTab t[256];       // The Translation Table

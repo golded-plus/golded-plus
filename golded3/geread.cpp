@@ -1218,7 +1218,7 @@ int LoadMessage(GMsg* msg, int margin) {
 
         msg->attr.upd0();
 
-        if((reader_rcv_noise > 1) and AA->isnet() and msg->attr.cfm()))
+        if((reader_rcv_noise > 1) and AA->isnet() and msg->attr.cfm())
           reader_gen_confirm = true;
       }
     }
