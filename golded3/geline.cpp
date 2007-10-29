@@ -3038,7 +3038,7 @@ int LoadCharset(const char* imp, const char* exp, int query) {
   {
     if (!striinc(xlt->exp, exp)) continue;
 
-    bool imp_found = make_bool(striinc(xlt->imp, imp));
+    bool imp_found = make_bool(strnieql(xlt->imp, imp, strlen(xlt->imp)));
     if (imp_found) imp_found = CheckLevel(imp, xlt->imp, n, current_table);
 
     std::vector< std::pair<std::string, gstrarray> >::iterator als;
