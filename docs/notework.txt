@@ -13,11 +13,12 @@ ______________________________________________________________________
 + Added new keyword to support background transparency
   TRANSPARENTCOLORS Yes/No
   default is "No". If set to "Yes" BLACK background color will become
-  transparent. Supported for ncurses compilation, otherwise do nothing.
+  transparent. Supported for ncurses compilation (gedlnx compileded with
+  libncurses), otherwise do nothing.
 
 = Snapshot for the May 3, 2007.
 
-+ Golded+ may be compiled in MacOS X now (using xcode package).
++ Golded+ may be compiled in MacOSX/x86 now (using xcode package).
 
 - Fixed macro token recognition: now token should be ended with space char
   or punctuation char (not alphanumeric).
