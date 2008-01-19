@@ -1887,7 +1887,6 @@ char* XlatStr(char* dest, const char* src, int level, Chs* chrtbl, int qpencoded
       defaultchardo:
         dochar = *sptr++;
       chardo:
-        // Translate level 1 and 2
         #ifdef HAS_ICONV
         if( iconv_cd!=(iconv_t)(-1) ){
           unsigned srcleft=1;
@@ -1913,7 +1912,7 @@ char* XlatStr(char* dest, const char* src, int level, Chs* chrtbl, int qpencoded
         else
         #endif
 
-        if (((level == 1) || (level == 2)) && chrs)
+        if (chrs)
         {
           tptr = (char*)chrs[(byte)dochar];
           clen = *tptr++;
@@ -2128,8 +2127,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode) {
           // Insert previous quotestring
           for(n=0; n<qlen; n++)
           {
-            // Translate level 1 and 2
-            if (((level == 1) || (level == 2)) && ChsTP)
+            if (ChsTP)
             {
               tptr = (char*)ChsTP[(byte)(*qptr++)];
               chln = *tptr++;
@@ -2605,8 +2603,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode) {
             defaultchardo:
               dochar = *ptr++;
             chardo:
-              // Translate level 1 and 2
-              if (((level == 1) || (level == 2)) && ChsTP)
+              if (ChsTP)
               {
                 tptr = (char*)ChsTP[(byte)dochar];
                 chln = *tptr++;

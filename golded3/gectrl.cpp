@@ -158,7 +158,7 @@ char* mime_header_encode(char* dest, const char* source, GMsg* msg) {
   if(*msg->charset)
   {
     int level = msg->charsetlevel;
-    if (((level == 1) || (level == 2)) && ChsTP)
+    if (ChsTP)
     {
       char chln, *d = temp_src;
 
