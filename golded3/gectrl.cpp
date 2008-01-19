@@ -153,7 +153,7 @@ char* mime_header_encode(char* dest, const char* source, GMsg* msg) {
   const char* s = source;
   char* bp = dest;
   const char* lp;
-  char* temp_src = (char*)throw_malloc(4096);
+  char temp_src[4096];
 
   if(*msg->charset)
   {
@@ -165,11 +165,11 @@ char* mime_header_encode(char* dest, const char* source, GMsg* msg) {
       for(uint len = 0; *s; s++) {
         char* tptr = (char*)ChsTP[(byte)*s];
         chln = *tptr++;
-        while(chln-- and (len < 4096)) {
+        while(chln-- and (len < sizeof(temp_src))) {
           *(d++) = *tptr++;
           ++len;
         }
-        if(len == 4096)
+        if(len == sizeof(temp_src))
           break;
       }
       *d = NUL;
@@ -221,7 +221,6 @@ char* mime_header_encode(char* dest, const char* source, GMsg* msg) {
     lp = s;
 
   strcpy(bp, lp);
-  throw_free(temp_src);
 
   return bp;
 }
