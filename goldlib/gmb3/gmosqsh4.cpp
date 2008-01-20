@@ -35,7 +35,7 @@
 
 #include <gmosqsh.h>
 
-              
+
 //  ------------------------------------------------------------------
 
 void SquishArea::lock() {
@@ -230,7 +230,7 @@ uint CopyToBuf(char* p, char* out, char** end) {
 
   uint len = 1;
 
-  while((*p==CR) or (*p==LF) or (not WideDispsoftcr and *p==SOFTCR))
+  while((*p==CR) or (*p==LF) or issoftcr(*p))
     p++;
 
   while((*p==CTRL_A) or (strncmp(p, "AREA:", 5)==0)) {
@@ -239,7 +239,7 @@ uint CopyToBuf(char* p, char* out, char** end) {
     if(*p == CTRL_A)
       p++;
 
-    while(*p and (*p != CR) and (*p != LF) and (WideDispsoftcr or *p!=SOFTCR)) {
+    while(*p and (*p != CR) and (*p != LF) and !issoftcr(*p)) {
       if(out)
         *out++ = *p;
       len++;
@@ -251,11 +251,11 @@ uint CopyToBuf(char* p, char* out, char** end) {
 
     len++;
 
-    while((*p==LF) or (not WideDispsoftcr and *p==SOFTCR))
+    while((*p==LF) or issoftcr(*p))
       p++;
     if(*p == CR)
       p++;
-    while((*p==LF) or (not WideDispsoftcr and *p==SOFTCR))
+    while((*p==LF) or issoftcr(*p))
       p++;
   }
 
@@ -268,12 +268,12 @@ uint CopyToBuf(char* p, char* out, char** end) {
   // Make sure to leave no trailing CTRL_A's.
   if(out and (out[-1]==CTRL_A))
     out[-1] = NUL;
-  
+
 
   // Now store the new end location of the kludge lines
   if(end)
     *end = p;
-  
+
   return len;
 }
 
