@@ -500,7 +500,7 @@ void edit_addressbook(GMsg* msg);
 
 inline bool issoftcr(char c)
 {
-  return (c == SOFTCR) and not WideDispsoftcr;
+  return not WideDispsoftcr and (c == SOFTCR);
 }
 
 
