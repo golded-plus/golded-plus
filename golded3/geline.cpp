@@ -1912,7 +1912,7 @@ char* XlatStr(char* dest, const char* src, int level, Chs* chrtbl, int qpencoded
         else
         #endif
 
-        if (chrs)
+        if ((level < 0) && chrs)
         {
           tptr = (char*)chrs[(byte)dochar];
           clen = *tptr++;
@@ -2127,7 +2127,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode) {
           // Insert previous quotestring
           for(n=0; n<qlen; n++)
           {
-            if (ChsTP)
+            if ((level > 0) && ChsTP)
             {
               tptr = (char*)ChsTP[(byte)(*qptr++)];
               chln = *tptr++;
@@ -2603,7 +2603,7 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode) {
             defaultchardo:
               dochar = *ptr++;
             chardo:
-              if (ChsTP)
+              if ((level > 0) && ChsTP)
               {
                 tptr = (char*)ChsTP[(byte)dochar];
                 chln = *tptr++;
