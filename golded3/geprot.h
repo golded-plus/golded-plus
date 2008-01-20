@@ -498,31 +498,24 @@ void edit_addressbook(GMsg* msg);
 //  ------------------------------------------------------------------
 //  SOFTCR management
 
+// Detects SoftCR only if DispsoftCR is ON
 inline bool issoftcr(char c)
 {
   return not WideDispsoftcr and (c == SOFTCR);
 }
 
-
+//  Skip spaces and SoftCRs (if DispsoftCR is ON)
 inline char *spanspaces(const char *str)
 {
-  if (WideDispsoftcr)
-    while(isspace(*str) and (*str != CR))
-      str++;
-  else
-    while((isspace(*str)  and (*str != CR)) or (*str == SOFTCR))
+  while ( (isspace(*str) and (*str != CR)) or issoftcr(*str) )
       str++;
   return (char *)str;
 }
 
-
+// Skip LineFeeds and SoftCRs (if DispsoftCR is ON)
 inline char *spanfeeds(const char *str)
 {
-  if (WideDispsoftcr)
-    while(*str == LF)
-      str++;
-  else
-    while((*str == LF) or (*str == SOFTCR))
+  while ( (*str == LF) or issoftcr(*str) )
       str++;
   return (char *)str;
 }
