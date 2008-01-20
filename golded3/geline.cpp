@@ -1912,7 +1912,7 @@ char* XlatStr(char* dest, const char* src, int level, Chs* chrtbl, int qpencoded
         else
         #endif
 
-        if ((level < 0) && chrs)
+        if ((level > 0) && chrs)
         {
           tptr = (char*)chrs[(byte)dochar];
           clen = *tptr++;
