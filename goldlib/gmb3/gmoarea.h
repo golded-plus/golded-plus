@@ -271,15 +271,37 @@ extern uint         WideSharemode;
 extern bool         WideDispsoftcr;  // DispsoftCR for current area
 extern int          WidePersonalmail;
 
-
 //  ------------------------------------------------------------------
 
 bool PopupLocked(long __tries, int __isopen, const char* __file);
 const char* Unpack(const char* archive);
 void CleanUnpacked(const char* unpacked);
 
-
 //  ------------------------------------------------------------------
+//  SOFTCR management
+
+// Detects SoftCR only if DispsoftCR is ON
+inline bool issoftcr(char c)
+{
+  return not WideDispsoftcr and (c == SOFTCR);
+}
+
+//  Skip spaces and SoftCRs (if DispsoftCR is ON)
+inline char *spanspaces(const char *str)
+{
+  while ( (isspace(*str) and (*str != CR)) or issoftcr(*str) )
+      str++;
+  return (char *)str;
+}
+
+// Skip LineFeeds and SoftCRs (if DispsoftCR is ON)
+inline char *spanfeeds(const char *str)
+{
+  while ( (*str == LF) or issoftcr(*str) )
+      str++;
+  return (char *)str;
+}
+
 
 #endif
 

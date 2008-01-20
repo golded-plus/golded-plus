@@ -494,33 +494,6 @@ void build_pseudo(GMsg* msg, bool direction = true);
 void update_addressbook(GMsg* msg, bool reverse = false, bool force = false);
 void edit_addressbook(GMsg* msg);
 
-
-//  ------------------------------------------------------------------
-//  SOFTCR management
-
-// Detects SoftCR only if DispsoftCR is ON
-inline bool issoftcr(char c)
-{
-  return not WideDispsoftcr and (c == SOFTCR);
-}
-
-//  Skip spaces and SoftCRs (if DispsoftCR is ON)
-inline char *spanspaces(const char *str)
-{
-  while ( (isspace(*str) and (*str != CR)) or issoftcr(*str) )
-      str++;
-  return (char *)str;
-}
-
-// Skip LineFeeds and SoftCRs (if DispsoftCR is ON)
-inline char *spanfeeds(const char *str)
-{
-  while ( (*str == LF) or issoftcr(*str) )
-      str++;
-  return (char *)str;
-}
-
-
 //  ------------------------------------------------------------------
 
 bool isuucp(const char *name);
