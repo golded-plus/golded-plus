@@ -1839,7 +1839,9 @@ char* XlatStr(char* dest, const char* src, int level, Chs* chrtbl, int qpencoded
 
       case SOFTCR:
         translated = false;
-        if (CompTable and not WideDispsoftcr)
+        if (WideDispsoftcr)
+          goto defaultchardo;
+        else if (CompTable)
         {
           if(sptr > src) {
             if(not (isspace(*(sptr-1)) or isspace(*(sptr+1)))) {
@@ -1867,8 +1869,6 @@ char* XlatStr(char* dest, const char* src, int level, Chs* chrtbl, int qpencoded
             }
           }
         }
-        else if (WideDispsoftcr)
-          goto defaultchardo;
         if(not translated)
           *dptr++ = *sptr++;
         break;
