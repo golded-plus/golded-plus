@@ -193,7 +193,7 @@ Throw* throw_find_overrun(Throw* pointer) {
   long last_diff = LONG_MAX;
   Throw** i = throw_index;
   for(int n=0; n<throw_index_size; n++,i++) {
-    long diff = (uint32_t)*i - (uint32_t)pointer;
+    long diff = (unsigned long)*i - (unsigned long)pointer;
     if((diff > 0) and (diff < last_diff)) {
       last_candidate = *i;
       last_diff = diff;
@@ -211,7 +211,7 @@ Throw* throw_find_underrun(Throw* pointer) {
   long last_diff = LONG_MAX;
   Throw** i = throw_index;
   for(int n=0; n<throw_index_size; n++,i++) {
-    long diff = (uint32_t)pointer - (uint32_t)*i;
+    long diff = (unsigned long)pointer - (unsigned long)*i;
     if((diff > 0) and (diff < last_diff)) {
       last_candidate = *i;
       last_diff = diff;
