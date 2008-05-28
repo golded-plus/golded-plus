@@ -683,15 +683,17 @@ void Initialize(int argc, char* argv[]) {
       found = FindCfg(cmdlinecfg);
     }
 
+    #ifndef __UNIX__
     // Get it where the the binary file is
     if(not found) {
       extractdirname(cmdlinecfg, argv[0]);
       found = FindCfg(cmdlinecfg);
-
-      // If we still could not find config name...
-      if(not found)
-        strcat(cmdlinecfg, GEDCFG);
     }
+    #endif
+
+    // If we still could not find config name...
+    if(not found)
+      strcat(cmdlinecfg, GEDCFG);
   }
   extractdirname(CFG->goldpath, cmdlinecfg);
   truepathtmp = CFG->goldpath;

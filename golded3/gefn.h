@@ -100,19 +100,19 @@
 
 #ifndef CFGUSERPATH1
 #ifdef __UNIX__
-#define CFGUSERPATH1 "~/.golded/" /* Trailing slash: this is directory */
+#define CFGUSERPATH1 "~/fido/etc/" /* Trailing slash: this is directory */
 #endif
 #endif
 
 #ifndef CFGUSERPATH2
 #ifdef __UNIX__
-#define CFGUSERPATH2 "~/"
+#define CFGUSERPATH2 "~/ftn/etc/" /* Trailing slash: this is directory */
 #endif
 #endif
 
 #ifndef CFGPATH
 #ifdef __UNIX__
-#define CFGPATH "/usr/local/etc/"
+#define CFGPATH "~/.golded/" /* Trailing slash: this is directory */
 #endif
 #endif
 

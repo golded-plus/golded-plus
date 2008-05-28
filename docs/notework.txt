@@ -10,6 +10,15 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+! (UNIX only) Changed sequience for config file search in unix-like OS.
+  New order is:
+  1 - ~/fido/etc/
+  2 - ~/ftn/etc/
+  3 - ~/.golded/
+  4 - current (running) directory
+  Removed from search order: a directory /usr/local/etc/ and the directory
+  where is gedlnx binary.
+
 - Reverce fix for charset level processing (CHRS kludge). Translate all
   levels. (See Snapshot for the January 14, 2006.)
 
