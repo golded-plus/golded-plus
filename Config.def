@@ -85,3 +85,45 @@
 CPPFLAGS+=-D__INCLUDE_NEW_KEYWORDS__
 # Uncomment to disable CPUID feature (compilation error in goldlib/gall/gutlvers.cpp)
 #CPPFLAGS+=-DGCFG_NO_CPUID
+
+ifeq ($(BUILD),minimal)
+CPPFLAGS+=-DGCFG_NOXBBS \
+  -DGCFG_NOCMAIL    \
+  -DGCFG_NOCECHO    \
+  -DGCFG_NODB       \
+  -DGCFG_NODUTCHIE  \
+  -DGCFG_NOEZY      \
+  -DGCFG_NOFE       \
+  -DGCFG_NOFIDOCONF \
+  -DGCFG_NOFIDOPCB  \
+  -DGCFG_NOFMAIL    \
+  -DGCFG_NOFD       \
+  -DGCFG_NOGECHO    \
+  -DGCFG_NOIMAIL    \
+  -DGCFG_NOINTERMAIL \
+  -DGCFG_NOLORA     \
+  -DGCFG_NOMAXIMUS  \
+  -DGCFG_NOME2      \
+  -DGCFG_NOOPUS     \
+  -DGCFG_NOPARTOSS  \
+  -DGCFG_NOPCB      \
+  -DGCFG_NOPORTAL   \
+  -DGCFG_NOPROBOARD \
+  -DGCFG_NOQECHO    \
+  -DGCFG_NOQFRONT   \
+  -DGCFG_NOQBBS     \
+  -DGCFG_NORAECHO   \
+  -DGCFG_NORA       \
+  -DGCFG_NOSPCT     \
+  -DGCFG_NOSQSH     \
+  -DGCFG_NOSBBS     \
+  -DGCFG_NOTERMAIL  \
+  -DGCFG_NOTIMED    \
+  -DGCFG_NOTOSSCAN  \
+  -DGCFG_NOWATERGATE \
+  -DGCFG_NOWMAIL     \
+  -DGCFG_NOXMAIL     \
+  -DGCFG_NOSYNCHRONET \
+  -DGCFG_NO_MSSPELL   \
+  -DGCFG_NO_MYSPELL
+endif
