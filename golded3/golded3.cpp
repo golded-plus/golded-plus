@@ -154,6 +154,11 @@
   #endif
   #define __GVER_SHORTPLATFORM__ "SUN"
   #define __GVER_SHORTLOGNAME__  "S"
+#elif defined(__APPLE__)
+#define __GVER_PLATFORM__      "/OSX"
+#define __GVER_SHORTPLATFORM__ "OSX"
+#define __GVER_SHORTLOGNAME__  "M"
+#define __GVER_CFGEXT__        ".gem"
 #elif defined(__UNIX__)
 #define __GVER_PLATFORM__      "/UNX"
 #define __GVER_SHORTPLATFORM__ "UNX"
