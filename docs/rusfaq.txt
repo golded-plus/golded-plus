@@ -494,8 +494,9 @@ $Date$
      Итак, два варианта запуска Golded+:
      2.1: если в системе есть локаль CP866 (IBM866):
      LANG=ru_RU.IBM866 gedlnx (в текстовой консоли)
-     LC_ALL=ru_RU.KOI8-R konsole --style 1 -e gedlnx
-     LANG=ru_RU.IBM866 luit gedlnx (в xterm)
+     LC_ALL=ru_RU.IBM866 konsole --style 1 -e gedlnx
+     LANG=ru_RU.CP866 Terminal --geometry 80x50 --title "GoldED" --command ./gedlnx &
+     LANG=ru_RU.CP866 luit gedlnx (в xterm)
      2.2: если в системе нет CP866 и есть KOI8-R:
      настроить Golded+ на KOI8-R и выставить локаль KOI8-R при запуске
      терминальной программы:
