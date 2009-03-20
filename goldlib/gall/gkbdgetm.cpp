@@ -231,7 +231,7 @@ gkey getxch(int __tick) {
           gkbd.tickvalue = thistick;
           tickdiff = gkbd.tickinterval + 1;
         }
-        if(tickdiff > gkbd.tickinterval) {
+        if(tickdiff >= gkbd.tickinterval) {
           gkbd.tickvalue = thistick;
           if(gkbd.tickfunc) {
             gkbd.inidle = true;
