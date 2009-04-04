@@ -31,6 +31,10 @@
 #define __gdefs_h
 
 /*  ------------------------------------------------------------------ */
+#include <stdlib.h>
+#include <malloc.h>
+#include <string.h>
+#include <limits.h>
 #include <gcmpall.h>
 
 #ifdef __WIN32__
@@ -44,7 +48,6 @@ typedef char TCHAR;
 #endif
 #ifdef _MSC_VER
 # include <windows.h>
-# include <limits.h>
 #elif defined(__MINGW32__) || defined(__CYGWIN__)
 # include <stdint.h>
 #endif
@@ -53,6 +56,9 @@ typedef char TCHAR;
 #define ARRAYSIZE(A)  sizeof(A)/sizeof((A)[0])
 #endif
 
+#ifndef INT_MAX
+#define INT_MAX 214783647
+#endif
 
 /*  ------------------------------------------------------------------
 // Disable some MS Visual C warnings */

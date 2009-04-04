@@ -33,7 +33,7 @@
 
 #include <gdefs.h>
 #include <string>
-
+#include <stdlib.h>
 
 //  ------------------------------------------------------------------
 //  FTN contants

@@ -31,6 +31,7 @@
   #pragma warning(disable: 4786)
 #endif
 #include <algorithm>
+#include <limits.h>
 #include <golded.h>
 
 #if defined(__USE_ALLOCA__)

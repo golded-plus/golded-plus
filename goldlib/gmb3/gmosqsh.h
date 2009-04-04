@@ -37,6 +37,7 @@
 
 #include <gmoarea.h>
 #include <limits.h>
+#include <gdefs.h>
 #include <gusrmax.h>
 
 

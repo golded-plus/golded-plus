@@ -25,6 +25,7 @@
 //  ------------------------------------------------------------------
 
 #include <cstdarg>
+#include <limits.h>
 #include <golded.h>
 #include <gstrmail.h>
 #include <gutlcode.h>

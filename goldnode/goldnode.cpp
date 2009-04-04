@@ -260,7 +260,7 @@ static char* fast_parse_addr(char* str, Addr* addr) {
   point = strchr(str, '.');
   domain = strchr(str, '@');
   if(domain and point)
-    if((uint32_t)point > (uint32_t)domain)
+    if(point > domain)
       point = NULL;
 
   if(space)
@@ -305,7 +305,7 @@ static char* parse_address(char* str, Addr* addr, Addr* mainaka) {
     char* point = strchr(str, '.');
     domain = strchr(str, '@');
     if(domain and point)
-      if((uint32_t)point > (uint32_t)domain)
+      if(point > domain)
         point = NULL;
 
     if(net) {

@@ -31,6 +31,8 @@
 
 //  ------------------------------------------------------------------
 
+#include <string.h>
+#include <stdlib.h>
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -47,6 +49,7 @@
 #if !defined(__UNIX__)
 #include <io.h>
 #endif
+#include <gdefs.h>
 
 
 //  ------------------------------------------------------------------M

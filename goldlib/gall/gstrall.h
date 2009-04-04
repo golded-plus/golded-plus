@@ -34,6 +34,7 @@
 
 #include <string>
 #include <vector>
+#include <stdlib.h>
 #include <gctype.h>
 #include <cstring>
 #include <gdefs.h>

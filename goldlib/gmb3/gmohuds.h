@@ -46,7 +46,7 @@
 #include <limits.h>
 #include <stdlib.h>
 #include <gdbgerr.h>
-#include <stdlib.h>
+#include <gdefs.h>
 #include <gmemdbg.h>
 #include <gdbgtrk.h>
 #include <gstrall.h>
