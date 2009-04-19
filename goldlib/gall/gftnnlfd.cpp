@@ -29,7 +29,7 @@
 #include <gfilutil.h>
 #include <gstrall.h>
 #include <gftnnlfd.h>
-
+#include <stdlib.h>
 
 //  ------------------------------------------------------------------
 

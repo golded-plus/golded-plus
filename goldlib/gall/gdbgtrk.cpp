@@ -28,7 +28,7 @@
 #include <gdbgtrk.h>
 #include <gmemdbg.h>
 #include <glog.h>
-
+#include <stdlib.h>
 
 //  ------------------------------------------------------------------
 

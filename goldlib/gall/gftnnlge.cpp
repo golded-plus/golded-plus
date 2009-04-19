@@ -30,7 +30,7 @@
 #include <gmemdbg.h>
 #include <gstrall.h>
 #include <gftnnlge.h>
-
+#include <stdlib.h>
 
 //  ------------------------------------------------------------------
 

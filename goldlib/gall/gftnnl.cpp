@@ -27,7 +27,7 @@
 #include <cstdio>
 #include <gstrall.h>
 #include <gftnnl.h>
-
+#include <stdlib.h>
 
 //  ------------------------------------------------------------------
 

@@ -30,7 +30,7 @@
 #include <gutlmisc.h>
 #include <gfilutil.h>
 #include <gdbgerr.h>
-
+#include <string.h>
 
 //  ------------------------------------------------------------------
 

@@ -29,6 +29,7 @@
 #include <gstrall.h>
 #include <gfilutil.h>
 #include <gfile.h>
+#include <stdlib.h>
 
 #if defined(__MINGW32__) || defined(_MSC_VER)
 #include <sys/utime.h>
