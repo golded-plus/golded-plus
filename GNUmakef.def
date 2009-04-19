@@ -114,6 +114,7 @@ PLATFORM=lnx
 EXEEXT=
 OBJEXT=.o
 LIBEXT=.a
+CFLAGS+=-I/usr/include/ncursesw/
 endif
 endif
 endif

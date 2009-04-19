@@ -50,7 +50,7 @@ GNUmakef.def.
 
 -- unix-like ONLY --
 When building in Linux, FreeBSD or another unix-like OS if you wants use
-unicode-compatible Golded+ then build Golded+ using ncurses v.5.4 with
+unicode-compatible Golded+ then build Golded+ using ncurses v.5.x with
 libncursesw. (This issue is suggested by Dmitry Rodin 2:5020/5410@fidonet.)
 ------ COMMON ------
 
