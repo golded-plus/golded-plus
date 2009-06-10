@@ -1,0 +1,75 @@
+______________________________________________________________________
+
+                                GoldED
+                          Goldware Utilities
+                         The Goldware Library
+                       Open Source Code License
+                          21. November 1998
+______________________________________________________________________
+
+
+License
+-------
+
+GoldED and the Goldware Utilities are licensed under the GNU General
+Public License (GPL), version 2. For the full text of the license, see
+the file COPYING.
+
+The Goldware Library is licensed under the GNU Library General Public
+License (LGPL), version 2. For the full text of the license, see the
+file COPYING.LIB. If necessary to comply with GPL, the Goldware
+Library is also licensed under GPL, version 2.
+
+Additionally, permission is hereby specifically given to link GoldED,
+the Goldware Utilities and the Goldware Library with any software or
+software library that meets the Open Source Definition, as given on
+http://www.opensource.org. This includes GPL, LGPL, BSD, X Consortium,
+Artistic, MozPL, QPL and most derivatives of MozPL.
+
+However, the author(s) of GoldED, Goldware Utilities and Goldware
+Library reserve the right to refuse acceptance into the official
+source tree of modifications that make the programs or library depend
+on software or software libraries that is not licensed under GPL or
+LGPL.
+
+
+Comments
+--------
+
+The additional permission to link with non-GPL/LGPL software may be
+slightly controversial. The intent is to allow developers a greater
+freedom to create specialized versions of GoldED. Examples could be a
+GUI "KGoldED" linked with QT, a "MozGoldED" mail/news component for
+Mozilla using NGLayout for displaying HTML, a GoldED with an embedded
+Perl scripting engine or whatever. However, we cannot allow the core
+GoldED or Goldware Library to be dependent on these specialized
+versions, so developers should take care to make their specialized
+modifications modular and "stubifiable" if necessary.
+
+Parts of the Goldware Library is derived from the source of the old
+Shareware CXL 5.2 library by Mike Smedley, from which I bought a
+source license many years ago. I have made very extensive
+modifications (for example, the original was DOS only), but much code
+is essentially unchanged (gwin*.cpp). CXL was taken over from Mike
+Smedley by Innovative Data Concepts (IDC), which renamed it TCXL and
+continued development along somewhat different lines, which I did not
+agree with (or at least not easily port GoldED to). However, it seems
+that TCXL never really became successful. At least I could not find
+anything new about TCXL and Innovative Data Concepts on the Internet
+(as of 15. november 1998). I could not even find IDC's website, so in
+this day and age where any succesful business has a website, I suspect
+that they no longer exist. I even tried to find Mike Smedley, but
+apparently he has vanished off the face of the earth, or has lost
+interest in programming entirely. I did find some postings (on
+DejaNews) on a sports newsgroup by a Mike Smedley, but I doubt that
+it's the same guy.
+
+So, even though parts of the Goldware Library technically are still
+copyrighted by Mike Smedley, I see so serious problems in using them.
+If anyone should happen to know Mike Smedley and how to contact him, I
+would very much appreciate to get the information, so we can clear up
+this issue.
+
+Odinn Sorensen,
+the Golded's author.
+______________________________________________________________________

@@ -1,0 +1,14 @@
+Source: golded-plus
+Section: contrib/mail
+Priority: optional
+Maintainer: Stas Degteff <stas_degteff@users.sourceforge.net>
+Homepage: http://golded-plus.sourceforge.net
+Build-Depends: debhelper (>> 4.0.0), libncurses5-dev, iconv
+#Standards-Version: 3.6.1
+
+Package: golded-plus
+Architecture: i386
+Depends: ${shlibs:Depends}
+Description: Golded+ - an FTN message editor
+ GoldED+ is  popular Fidonet mail editor.
+ It supports message bases: OPUS, JAM, Squish, FrontDoor and more other.

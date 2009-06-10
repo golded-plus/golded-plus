@@ -1,0 +1,133 @@
+#!/usr/bin/make -f
+
+# Uncomment this to turn on verbose mode.
+export DH_VERBOSE=1
+
+export DH_COMPAT=4
+#export DEBIAN=1
+#export PACKAGE=binkd1
+PREFIX=$(CURDIR)/debian/golded-plus
+DOCS= docs/license.txt docs/notework.txt docs/readme.txt \
+      docs/rusfaq.txt docs/rusfaq.koi8r docs/rusfaq.utf8 docs/tips.txt docs/todowork.txt \
+      docs/tokencfg.txt docs/tokentpl.txt docs/notework.rus docs/notework.koi8r \
+      docs/notework.utf8 manuals/gold_ref.txt manuals/gold_usr.txt
+
+IMOPT=-m 644
+IBOPT=-m 755
+
+# These are used for cross-compiling and for saving the configure script
+# from having to guess our platform (since we know it already)
+DEB_HOST_GNU_TYPE   ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+
+ifeq (,$(findstring debug,$(DEB_BUILD_OPTIONS)))
+	CONFIGURE_OPTIONS += --with-debug
+endif
+ifneq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
+	INSTALL_PROGRAM += -s
+endif
+
+default:
+	@echo "What's do?"
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	# Add here commands to configure the package.
+	touch configure-stamp
+
+build: build-stamp
+
+build-stamp: configure-stamp 
+	dh_testdir
+
+	# Add here commands to compile the package.
+	if [ ! -f golded3/mygolded.h ]; then \
+	  cp golded3/mygolded.__h golded3/mygolded.h ;\
+	  echo "golded3/mygolded.h is created now. Please edit this file" ;\
+	  exit 1 ;\
+	fi
+	POSTVER=`sed -n "1s/.*(//; 1s/).*/-debian/; 1s/[^-]*-//; 1p" debian/changelog` sed -i.orig -e "s/\#define __GVER_POSTVERSION__ .*/\#define __GVER_POSTVERSION__   \"-${POSTVER}\"/" golded3/mygolded.h
+	make PLATFORM=lnx
+ifneq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
+	make PLATFORM=lnx strip
+endif
+	cd docs; make tokentpl.txt; make tokencfg.txt
+	iconv -c -f cp866 -t koi8-r docs/rusfaq.txt | sed 2s/cp866/koi8-r/ >docs/rusfaq.koi8r
+	iconv -c -f cp866 -t utf8 docs/rusfaq.txt |  sed 2s/cp866/utf-8/ >docs/rusfaq.utf8
+	iconv -c -f cp866 -t koi8-r docs/notework.rus | sed 2s/cp866/koi8-r/ >docs/notework.koi8r
+	iconv -c -f cp866 -t utf8 docs/notework.rus |  sed 2s/cp866/utf-8/ >docs/notework.utf8
+
+
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp
+
+	# Add here commands to clean up after the build process.
+	-$(MAKE) clean
+	- rm -r bin/
+
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+	install -d $(PREFIX)/usr/bin
+	install $(IBOPT) bin/*lnx bin/golded $(PREFIX)/usr/bin/
+	install -d $(PREFIX)/usr/man/man1
+	install $(IMOPT) docs/*.1 $(PREFIX)/usr/man/man1/
+	ln $(PREFIX)/usr/man/man1/golded.1 $(PREFIX)/usr/man/man1/gedlnx.1
+	ln $(PREFIX)/usr/man/man1/goldnode.1 $(PREFIX)/usr/man/man1/gnlnx.1
+	ln $(PREFIX)/usr/man/man1/rddt.1 $(PREFIX)/usr/man/man1/rddtlnx.1
+	install -d $(PREFIX)/usr/share/doc/golded-plus
+	install $(IMOPT) $(DOCS) $(PREFIX)/usr/share/doc/golded-plus
+	install -d $(PREFIX)/usr/share/doc/golded-plus/examples
+	cp -r cfgs/{config,template} $(PREFIX)/usr/share/doc/golded-plus/examples/
+	install -d $(PREFIX)/usr/share/golded-plus/
+	cp -r cfgs/{charset,colorset} $(PREFIX)/usr/share/golded-plus/
+	-find $(PREFIX)/usr/share/golded-plus/ $(PREFIX)/usr/share/doc/golded-plus/examples/ -name CVS -exec rm -r '{}' ';'
+
+# Build architecture-independent files here.
+binary-indep: build install
+# We have nothing to do by default.
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+#	dh_installdebconf	
+	dh_installdocs
+#	dh_installexamples
+#	dh_installmenu
+#	dh_installlogrotate
+#	dh_installemacsen
+#	dh_installpam
+#	dh_installmime
+#	dh_installinit
+#	dh_installcron
+	dh_installman
+#	dh_installinfo
+#	dh_undocumented
+	dh_installchangelogs
+	dh_link
+ifneq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
+	dh_strip
+endif
+	dh_compress
+	dh_fixperms
+#	dh_makeshlibs
+	dh_installdeb
+#	dh_perl
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure
