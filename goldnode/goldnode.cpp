@@ -1065,7 +1065,7 @@ static void check_nodelists(bool force)
           if(not listdefined or (de->stat_info.st_mtime-listtime > 0)) {
             listtime = de->stat_info.st_mtime;
             listdefined = true;
-            strxmerge(nodelist[n].fn, sizeof(Path), f.fullpath(), GOLD_SLASH_STR, de->name.c_str(), NULL);
+            strxmerge(nodelist[n].fn, sizeof(Path), newpath, de->name.c_str(), NULL);
           }
         }
       strchg(nodelist[n].fn, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
