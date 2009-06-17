@@ -1140,10 +1140,10 @@ ScanData (FILE *datei, char *fname, int *errcode,
           }
         }
         else {
-          if (prevlinefirstchar == '`') {
+//          if (prevlinefirstchar == '`') {
             result->end = 1;
             break;
-          }
+//          }
         }
           }
         }

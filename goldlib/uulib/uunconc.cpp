@@ -1092,7 +1092,9 @@ UUDecodePart (FILE *datain, FILE *dataout, int *state,
     }
     else if ((*state == END) && (method == UU_ENCODED)) {
       if (strncmp (line, "`", 1) == 0)
-    *state = END2;
+        *state = END2;
+      else if (strncmp (line, "end", 3) == 0)
+        *state = DONE;
     }
     else if ((*state == END) && (method == XX_ENCODED)) {
       if (strncmp (line, "+", 1) == 0)
