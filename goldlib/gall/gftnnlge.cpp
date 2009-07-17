@@ -118,9 +118,12 @@ void ftn_golded_nodelist_index::fetchdata() {
     read(fhx, buf, 255);
     if(*buf != ';') {
 
+/*
       char* end = strchr(buf, '\r');
       if(end)
         *end = NUL;
+*/
+      strtok(buf,"\r\n");
 
       data.unpack(buf);
     }
