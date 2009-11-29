@@ -149,9 +149,12 @@ struct Stamp {
 #define chdir _chdir2
 #endif
 
+//  Shareable fopen() for compilers that need it
 FILE* fsopen(const char* path, const char* type, int shflag);
 inline FILE* fsopen(const std::string& path, const char* type, int shflag) { return fsopen(path.c_str(), type, shflag); }
 
+//  ------------------------------------------------------------------
+//  Check if a pathname is a directory
 bool is_dir(const TCHAR *path);
 inline bool is_dir(const std::string &path) { return is_dir(path.c_str()); }
 
@@ -162,38 +165,55 @@ inline bool fexist(const TCHAR *filename) { return *filename ? (0 == (access(fil
 #endif
 inline bool fexist(const std::string& filename) { return fexist(filename.c_str()); }
 
+//  Convert time returned with stat to FFTime
 time32_t gfixstattime(time32_t st_time);
 
+//  Get timestamp of file
 time32_t GetFiletime(const char* file);
 inline time32_t GetFiletime(const std::string& file) { return GetFiletime(file.c_str()); }
 
 inline long FiletimeCmp(const char* file1, const char* file2) { return long(GetFiletime(file1) - GetFiletime(file2)); }
 inline long FiletimeCmp(const std::string& file1, const std::string& file2) { return FiletimeCmp(file1.c_str(), file2.c_str()); }
 
+//  Get size of open file
 long fsize(FILE* fp);
+//  Get size of file
 long GetFilesize(const char* file);
 
+//  Add path to filename if no path is present. Uses static string and don't chech size of 'path', be careful!
 const char* AddPath(const char* path, const char* file);
 inline const char* AddPath(const std::string& path, const char* file) { return AddPath(path.c_str(), file); }
 inline const char* AddPath(const std::string& path, const std::string& file) { return AddPath(path.c_str(), file.c_str()); }
 
+//  Add path to filename, if no path is set. Don't chech size of 'path', be careful!
 void MakePathname(char* pathname, const char* path, const char* name);
 void MakePathname(std::string& pathname, const std::string& path, const std::string& name);
 
+//  Adds the directory-delimiter character into end of string ('\\' in DOS-based, '/' in unix-based OS)
 char* AddBackslash(char* p);
 std::string& AddBackslash(std::string& p);
+
+//  Remove one trailing directory-delimiter character ('\\' in DOS-based, '/' in unix-based OS)
 char* StripBackslash(char* p);
 
+//  Copy pathname with enviroment variables substitution and adds directory delimiter char.
+//  Copy not more sizeof(Path) characters (__dst should be type "Path" or equvalence, size is GMAXPATH)
 char* PathCopy(char* dst, const char* src);
 void PathCopy(std::string& dst, const char* src);
 
+//  Update time of modification for the file 'filename'
 void TouchFile(const TCHAR *filename);
 
+//  Test filesystem for file locks feature
 int TestLockPath(const char* __path);
+
+//  Fill file with garbage (random byte values).
 void WipeFile(const char* file, int options);
 
+//  Return filename without path. (Return pointer to filename part of filepath.)
 const char* CleanFilename(const char* __file);
 
+//  DOS-style enviroment variables substitution in string.
 int strschg_environ(char* s);
 int strschg_environ(std::string& s);
 
@@ -203,6 +223,7 @@ inline char* ReMapPath(char* map) { return MapPath(map, true); }
 inline long lseekset(int fh, long offset) { return lseek(fh, offset, SEEK_SET); }
 inline long lseekset(int fh, long record, long recordsize) { return lseek(fh, record*recordsize, SEEK_SET); }
 
+//  OS-independent change directory
 int gchdir(const char* dir);
 
 
@@ -222,7 +243,9 @@ long filelength(int fh);
 
 //  ------------------------------------------------------------------
 
+//  Replace file suffix with specified in 'ext'
 void replaceextension(char *destpath, const char *srcpath, const char *ext);
+//  Write to 'dir' dirname of the 'path'
 void extractdirname(char *dir, const char *path);
 
 
@@ -263,6 +286,7 @@ inline int chsize(int handle, long size) { return ftruncate(handle, size); }
 
 
 //  ------------------------------------------------------------------
+//  Change dirname to real full pathname
 
 bool maketruepath(std::string &dirname);
 

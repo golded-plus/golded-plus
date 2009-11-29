@@ -56,6 +56,7 @@
 #endif
 
 //  ------------------------------------------------------------------
+//  Adds the directory-delimiter character into end of string ('\\' in DOS-based, '/' in unix-based OS)
 
 char* AddBackslash(char* p) {
 
@@ -72,6 +73,7 @@ char* AddBackslash(char* p) {
 
 
 //  ------------------------------------------------------------------
+//  Remove one trailing directory-delimiter character ('\\' in DOS-based, '/' in unix-based OS)
 
 char* StripBackslash(char* p) {
 
@@ -303,6 +305,7 @@ FILE *fsopen(const char *path, const char *type, int shflag) {
 
 
 //  ------------------------------------------------------------------
+//  Update time of modification for the file 'filename'
 
 void TouchFile(const TCHAR *filename)
 {
@@ -320,6 +323,8 @@ void TouchFile(const TCHAR *filename)
 
 
 //  ------------------------------------------------------------------
+//  Copy pathname with enviroment variables substitution and adds directory delimiter char.
+//  Copy not more sizeof(Path) characters (__dst should be type "Path" or equvalence, size is GMAXPATH)
 
 char* PathCopy(char* __dst, const char* __src) {
   strschg_environ(strxcpy(__dst, __src, sizeof(Path)));
@@ -327,6 +332,7 @@ char* PathCopy(char* __dst, const char* __src) {
 }
 
 //  ------------------------------------------------------------------
+//  Test filesystem for file locks feature
 
 int TestLockPath(const char* __path) {
 
@@ -353,6 +359,7 @@ int TestLockPath(const char* __path) {
 
 
 //  ------------------------------------------------------------------
+//  Return filename without path. (Return pointer to filename part of filepath.)
 
 const char* CleanFilename(const char* __file) {
 
@@ -370,6 +377,7 @@ const char* CleanFilename(const char* __file) {
 
 
 //  ------------------------------------------------------------------
+//  Fill file with garbage (random byte values).
 
 void WipeFile(const char* file, int options) {
 
@@ -394,6 +402,7 @@ void WipeFile(const char* file, int options) {
 
 
 //  ------------------------------------------------------------------
+//  DOS-style enviroment variables substitution in string.
 
 int strschg_environ(char* s) {
 
@@ -401,7 +410,7 @@ int strschg_environ(char* s) {
     return 0;
 
   std::string __s = s;
-  int rv = strschg_environ(__s);
+  int rv = strschg_environ(__s); // Look in gfilutl2.cpp
   if(rv)
     strxcpy(s, __s.c_str(), sizeof(Path));
   return rv;
@@ -409,6 +418,7 @@ int strschg_environ(char* s) {
 
 
 //  ------------------------------------------------------------------
+//  OS-independent change directory
 
 int gchdir(const char* dir) {
 
@@ -438,6 +448,7 @@ int gchdir(const char* dir) {
 
 
 //  ------------------------------------------------------------------
+//  Replace file suffix with specified in 'ext'
 
 void replaceextension(char *destpath, const char *srcpath, const char *ext) {
 
@@ -459,6 +470,7 @@ void replaceextension(char *destpath, const char *srcpath, const char *ext) {
 
 
 //  ------------------------------------------------------------------
+//  Write to 'dir' dirname of the 'path'
 
 void extractdirname(char *dir, const char *path) {
 

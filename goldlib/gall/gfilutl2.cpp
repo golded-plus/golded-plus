@@ -36,6 +36,7 @@
 #include <string.h>
 
 //  ------------------------------------------------------------------
+//  Adds the directory-delimiter character into end of string ('\\' in DOS-based, '/' in unix-based OS)
 
 std::string& AddBackslash(std::string& p) {
 
@@ -49,7 +50,7 @@ std::string& AddBackslash(std::string& p) {
 
 
 //  ------------------------------------------------------------------
-//  Add path to filename, if no path is set
+//  Add path to filename, if no path is set. Don't chech size of 'path', be careful!
 
 void MakePathname(std::string& pathname, const std::string& path, const std::string& name) {
 
@@ -60,6 +61,8 @@ void MakePathname(std::string& pathname, const std::string& path, const std::str
 
 
 //  ------------------------------------------------------------------
+//  Copy pathname with enviroment variables substitution and adds directory delimiter char.
+//  Copy not more sizeof(Path) characters (__dst should be type "Path" or equvalence, size is GMAXPATH)
 
 void PathCopy(std::string& dst, const char* src) {
 
@@ -70,6 +73,7 @@ void PathCopy(std::string& dst, const char* src) {
 
 
 //  ------------------------------------------------------------------
+//  DOS-style enviroment variables substitution in string.
 
 int strschg_environ(std::string& s) {
 
@@ -116,6 +120,7 @@ int strschg_environ(std::string& s) {
 
 
 //  ------------------------------------------------------------------
+//  Change dirname to real full pathname
 
 bool maketruepath(std::string &dirname) {
 
