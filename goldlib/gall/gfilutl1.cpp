@@ -171,9 +171,12 @@ long fsize(FILE* fp) {
 
 bool is_dir(const TCHAR *path)
 {
-  // Check if it's a root path (X:\)
+  // Check if it's a root path (X:\ оr /)
   #if defined(__HAVE_DRIVES__)
   if(g_isalpha(path[0]) and (path[1] == ':') and isslash(path[2]) and (path[3] == NUL))
+    return true;  // The root is a directory
+  # else
+  if( isslash(path[0]) and (path[1] == NUL))
     return true;  // The root is a directory
   #endif
 
