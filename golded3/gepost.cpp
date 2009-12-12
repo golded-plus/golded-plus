@@ -255,6 +255,7 @@ static void MakeMsg3(int& mode, GMsg* msg) {
     tp.tm_isdst = -1;
     time32_t b  = gmktime(&tp);
     a += a - b;
+    msg->written = a;
     if(AA->havereceivedstamp())
       msg->received = a;
     if(AA->havearrivedstamp())
