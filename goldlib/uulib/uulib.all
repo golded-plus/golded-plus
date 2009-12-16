@@ -1,8 +1,8 @@
-fptools  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
-uucheck  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
-uuencode cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
-uulib    cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
-uunconc  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
-uuscan   cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
-uustring cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
-uuutil   cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun
+fptools  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun osx
+uucheck  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun osx
+uuencode cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun osx
+uulib    cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun osx
+uunconc  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun osx
+uuscan   cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun osx
+uustring cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun osx
+uuutil   cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun osx

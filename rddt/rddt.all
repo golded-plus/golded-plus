@@ -21,7 +21,7 @@
 ##  Master build file.
 ##  ------------------------------------------------------------------
 
-rddt     cpp all nov bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
+rddt     cpp all nov bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
 
 ##  ------------------------------------------------------------------
 

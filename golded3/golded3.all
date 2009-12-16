@@ -24,63 +24,63 @@
 ##  Master build file.
 ##  ------------------------------------------------------------------
 
-gcalst   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gcarea   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gccfgg   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gccfgg0  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gccfgg1  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gccfgg2  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gccfgg3  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gccfgg4  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gccfgg5  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gccfgg6  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gccfgg7  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gccfgg8  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gckeys   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gclang   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gcmisc   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gealst   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gearea   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gecarb   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gecmfd   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gectnr   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gectrl   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gedoit   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gedoss   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-geedit   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-geedit2  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-geedit3  cpp all nov bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gefile   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gefind   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-geglob   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gehdre   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-geinit   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-geline   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gelmsg   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gemain   cpp all nov bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gemenu   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gemlst   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gemnus   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gemrks   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gemsgs   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-genode   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-geplay   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gepost   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-geqwks   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gerand   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-geread   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-geread2  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gescan   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gesrch   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gesoup   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-getpls   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-geusrbse cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-geutil   cpp all nov bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-geutil2  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-geview   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gmarea   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-gehtml   cpp all nov bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
-golded3  cpp all nov bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun
+gcalst   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gcarea   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gccfgg   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gccfgg0  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gccfgg1  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gccfgg2  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gccfgg3  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gccfgg4  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gccfgg5  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gccfgg6  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gccfgg7  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gccfgg8  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gckeys   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gclang   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gcmisc   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gealst   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gearea   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gecarb   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gecmfd   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gectnr   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gectrl   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gedoit   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gedoss   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+geedit   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+geedit2  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+geedit3  cpp all nov bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gefile   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gefind   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+geglob   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gehdre   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+geinit   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+geline   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gelmsg   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gemain   cpp all nov bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gemenu   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gemlst   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gemnus   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gemrks   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gemsgs   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+genode   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+geplay   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gepost   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+geqwks   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gerand   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+geread   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+geread2  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gescan   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gesrch   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gesoup   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+getpls   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+geusrbse cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+geutil   cpp all nov bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+geutil2  cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+geview   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gmarea   cpp all ovl bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+gehtml   cpp all nov bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
+golded3  cpp all nov bcd bco bcx djg emx lnx rsx wcn wco wcx cyg be sun osx
 gedcyg   rc                                                  cyg
 gedemx   rc                          emx
 

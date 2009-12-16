@@ -28,6 +28,10 @@ ifeq ($(findstring solaris, $(OSTYPE)), solaris)
 PLATFORM=sun
 endif
 
+ifeq ($(findstring darwin, $(OSTYPE)), darwin)
+PLATFORM=osx
+endif
+
 endif  # ifndef PLATFORM
 
 ifeq ($(PLATFORM),cyg)
@@ -102,6 +106,19 @@ EXEEXT=
 OBJEXT=.o
 LIBEXT=.a
 CFLAGS+=-D__SUNOS__ -D__UNIX__ -DUNIX
+else
+ifeq ($(PLATFORM),osx) # Mac OSX
+CAT=cat
+SED=sed
+GREP=grep
+CC=gcc
+CXX=g++
+AR=ar
+RANLIB=ranlib
+PLATFORM=osx
+EXEEXT=
+OBJEXT=.o
+LIBEXT=.a
 else                   # Linux, *BSD or another unix-like OS
 CAT=cat
 SED=sed
@@ -115,6 +132,7 @@ EXEEXT=
 OBJEXT=.o
 LIBEXT=.a
 CFLAGS+=-I/usr/include/ncursesw/
+endif
 endif
 endif
 endif
@@ -136,6 +154,11 @@ endif
 ifeq ($(PLATFORM),sun)
 CPPFLAGS+=-D__USE_NCURSES__
 STDLIBS+=-L/opt/csw/lib -lncurses
+endif
+
+ifeq ($(PLATFORM),osx)
+CPPFLAGS+=-D__USE_NCURSES__
+STDLIBS+=-lncurses
 endif
 
 # uncomment the next line for better koi-8 support. do not do it for
