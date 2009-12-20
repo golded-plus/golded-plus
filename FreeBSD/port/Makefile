@@ -49,9 +49,9 @@ pre-build:
 	@${FIND} ${WRKSRC} -name '*.bak' -delete
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/bin/gedlnx ${PREFIX}/bin/golded
-	${INSTALL_PROGRAM} ${WRKSRC}/bin/gnlnx ${PREFIX}/bin/goldnode
-	${INSTALL_PROGRAM} ${WRKSRC}/bin/rddtlnx ${PREFIX}/bin/rddt
+	${INSTALL_PROGRAM} ${WRKSRC}/bin/gedlnx ${PREFIX}/bin/gedbsd
+	${INSTALL_PROGRAM} ${WRKSRC}/bin/gnlnx ${PREFIX}/bin/gnbsd
+	${INSTALL_PROGRAM} ${WRKSRC}/bin/rddtlnx ${PREFIX}/bin/rddtbsd
 	for dir in charset colorset config template; do \
 	 ${MKDIR} ${DOCDIR}/$$dir; \
 	 for file in `${LS} ${WRKSRC}/cfgs/$$dir|${GREP} -v CVS`; do\

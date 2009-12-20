@@ -1,7 +1,7 @@
 @comment $FreeBSD$
-bin/golded
-bin/goldnode
-bin/rddt
+bin/gedbsd
+bin/gnbsd
+bin/rddtbsd
 share/golded/charset/850_850.chs
 share/golded/charset/850_asc.chs
 share/golded/charset/can_asc.chs
