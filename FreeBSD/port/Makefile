@@ -6,15 +6,15 @@
 #
 
 PORTNAME=	golded
-PORTVERSION=	1.1.4.7.$(PORTSNAPSHOT)
-CATEGORIES=	news
-MASTER_SITES=	http://mik.nu/golded-plus/development/
+PORTVERSION=	1.1.5.1.$(PORTSNAPSHOT)
+CATEGORIES=	ftn
+MASTER_SITES=	http://golded-plus.sourceforge.net
 DISTNAME=	gps$(PORTSNAPSHOT)
 
 MAINTAINER=	alex@tycobka.lv
 COMMENT=	Full-featured mail/news reader for Fidonet and Internet
 
-PORTSNAPSHOT=	30512
+PORTSNAPSHOT=	0
 USE_BZIP2=	yes
 
 MAN1=		golded.1 goldnode.1 rddt.1
