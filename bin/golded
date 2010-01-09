@@ -2,5 +2,5 @@
 # run this file to launch GoldEd
 # it also contains workaround for Russian language in UTF-8 encoding
 echo "$LC_ALL $LC_CTYPE $LANG" | grep -q "ru_RU.UTF-8" \
- && (export LC_ALL="ru_RU.KOI8-R"; exec luit -encoding koi8-r -- gedlnx $*) \
+ && (export LC_ALL="ru_RU.KOI8-R"; exec luit -x -encoding koi8-r -- gedlnx $*) \
  || exec gedlnx $*
