@@ -73,11 +73,17 @@
   #if defined(__OpenBSD__)
     #define __UNIX__ __OpenBSD__
   #endif
+  #if defined(__DragonFly__)
+    #define __UNIX__ __DragonFly__
+  #endif
   #if defined(__BEOS__)
     #define __UNIX__ __BEOS__
   #endif
   #if defined(__QNXNTO__)
     #define __UNIX__ __QNXNTO__
+  #endif
+  #if defined(__APPLE__)
+    #define __UNIX__ __APPLE__
   #endif
 #endif
 
