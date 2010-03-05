@@ -114,6 +114,10 @@ typedef char TCHAR;
 #define __UNIX__
 #endif
 
+#if defined(unix) || defined(__unix__) || defined(__unix)
+#define __UNIX__
+#endif
+
 #ifdef __UNIX__
 #define NL "\r\n"
 #else
