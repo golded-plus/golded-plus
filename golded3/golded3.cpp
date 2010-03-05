@@ -126,7 +126,7 @@
 #define __GVER_SHORTPLATFORM__ "LNX"
 #define __GVER_SHORTLOGNAME__  "L"
 #define __GVER_CFGEXT__        ".gel"
-#elif defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__)
+#elif defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__DragonFly__)
 #define __GVER_PLATFORM__      "/BSD"
 #define __GVER_SHORTPLATFORM__ "BSD"
 #define __GVER_SHORTLOGNAME__  "B"
