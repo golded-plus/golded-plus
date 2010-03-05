@@ -64,6 +64,11 @@
 #endif
 
 #if !defined(__UNIX__)
+  #if defined(unix) || defined(__unix__) || defined(__unix)
+    #define __UNIX__
+  #endif
+#endif
+#if !defined(__UNIX__)
   #if defined(__linux__)
     #define __UNIX__ __linux__
   #endif
