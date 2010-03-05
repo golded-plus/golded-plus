@@ -546,7 +546,7 @@ static bool SwitchLanguage(word crc, char* str)
     reg.compile("^.*%[0-9]*[dioux].*%[0-9]*[dioux].*%[0-9]*[dioux].*%[0-9]*s", gregex::icase);
     if (!reg.match(str))
     {
-      STD_PRINTNL("ST_EDITSTATUS have wrong format. Read NOTEWORK.TXT for details or announce author if this error is false positive.");
+      STD_PRINTNL("ST_EDITSTATUS has wrong format. Read NOTEWORK.TXT for details or announce author if this error is false positive (first try to set true locale).");
       SayBibi();
       waitkeyt(10000);
     }
