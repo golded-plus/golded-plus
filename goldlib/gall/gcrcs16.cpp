@@ -71,3 +71,11 @@ word strCrc16c(const char* s, bool __case, word mask) {
 
 //  ------------------------------------------------------------------
 
+#ifdef TEST
+#include <stdio.h>
+int main(int argc, char**argv)
+{
+  for ( int c=1; c<argc; c++ )
+    printf( "%s CRC16 0x%04X\n", argv[c], strCrc16(argv[c]) );
+}
+#endif
