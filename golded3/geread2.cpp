@@ -538,25 +538,38 @@ void TouchNetscan(int popup)
 int ExternUtil(GMsg *msg, const ExtUtil &extutil)
 {
   Path editorfile, tmpfile, buf;
+  std::string cmdline = extutil.cmdline;
+  int mode = (extutil.options & EXTUTIL_KEEPCTRL) ? MODE_SAVE : MODE_SAVENOCTRL;
+
+  if(striinc("@tmpfile", cmdline.c_str()))
+  {
+    if( (*CFG->temppath == NUL ) or is_dir(CFG->temppath) )
+    {
+      mktemp(strcpy(tmpfile, AddPath(CFG->temppath, "GDXXXXXX")));
+      SaveLines(mode, tmpfile, msg, 79);
+      strcpy(buf, tmpfile);
+      strchg(buf, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
+      strischg(cmdline, "@tmpfile", buf);
+    }
+    else
+    {
+      w_info(LNG->TMPinvalidpath);
+      SayBibi();
+      waitkeyt(10000);
+      w_info("");
+      return NO;
+    }
+  }
+  else
+    tmpfile[0] = NUL;
+
   strxcpy(editorfile, AddPath(CFG->goldpath, EDIT->File()), sizeof(Path));
 
-  std::string cmdline = extutil.cmdline;
-
-  int mode = (extutil.options & EXTUTIL_KEEPCTRL) ? MODE_SAVE : MODE_SAVENOCTRL;
   SaveLines(mode, editorfile, msg, 79);
   strcpy(buf, editorfile);
   strchg(buf, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
   strischg(cmdline, "@file", buf);
-  if(striinc("@tmpfile", cmdline.c_str()))
-  {
-    mktemp(strcpy(tmpfile, AddPath(CFG->temppath, "GDXXXXXX")));
-    SaveLines(mode, tmpfile, msg, 79);
-    strcpy(buf, tmpfile);
-    strchg(buf, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
-    strischg(cmdline, "@tmpfile", buf);
-  }
-  else
-    tmpfile[0] = NUL;
+
   strcpy(buf, CFG->goldpath);
   strchg(buf, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
   strischg(cmdline, "@path", buf);
@@ -803,7 +816,7 @@ void ReadPeekURLs(GMsg* msg)
       std::string cmdline = it->handler.cmdline;
       std::string buf = "\"" + strtrim(strltrim(Listi[n])) + "\"";
       strischg(cmdline, "@url", buf.c_str());
-      
+
       buf = CFG->goldpath;
       strchg(buf, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
       strischg(cmdline, "@path", buf.c_str());
@@ -839,6 +852,15 @@ void UUDecode(GMsg* msg) {
 
   Path infile, outfile;
   bool ok = false;
+
+  if( not ((*CFG->temppath == NUL ) or is_dir(CFG->temppath)) )
+  {
+    w_info(LNG->TMPinvalidpath);
+    SayBibi();
+    waitkeyt(10000);
+    w_info("");
+    return;
+  }
 
   if((*CFG->uudecodepath == NUL) or is_dir(CFG->uudecodepath)) {
 

@@ -946,6 +946,17 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
     if(filenamebuf.c_str()[0] == '|'){
       Path cmdline;
 
+      if( not ((*CFG->temppath == NUL ) or is_dir(CFG->temppath)) )
+      {
+        w_info(LNG->TMPinvalidpath);
+        SayBibi();
+        waitkeyt(10000);
+        w_info("");
+        AA->SetXlatimport(__oldxlatimport);
+        GFTRK(0);
+        return;
+      }
+
       isPipe = YES;
       mktemp(strxcpy(tmpfile, AddPath(CFG->temppath, "GIXXXXXX"), sizeof(Path)));
       strxmerge(cmdline, sizeof(Path), filenamebuf.c_str()+1, " > ", tmpfile, NULL);
