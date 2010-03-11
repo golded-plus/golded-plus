@@ -218,6 +218,17 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
     }
   }
   if(strieql(tplfile, "built-in") or not fexist(tplfile) or CFG->tpl.empty()) {
+    if( not ((*CFG->temppath == NUL ) or is_dir(CFG->temppath)) )
+    {
+      w_info(LNG->TMPinvalidpath);
+      SayBibi();
+      waitkeyt(10000);
+      w_info("");
+      throw_free(buf);
+      GFTRK(0);
+      return 0;
+    }
+
     tmptpl = YES;   // Create a temporary template
     mktemp(strcpy(tplfile, AddPath(CFG->temppath, "GDXXXXXX")));
 

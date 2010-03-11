@@ -11,8 +11,10 @@ ______________________________________________________________________
 ______________________________________________________________________
 
 ! If TEMPPATH is pointed to unexisted directory the Golded+ displays
-  message and does nothing on UU-decoding, on importing result of shell
-  command and on calling extern utility. Early Golded+ are aborted.
+  message about invalid TEMPPATH and does nothing on UU-decoding, on
+  importing result of shell command, on calling extern utility and
+  on write message to file.  Early Golded+ displayed message like
+  "Can't write to file /temp/D4FC54QW" or aborted.
 
 + New token IL_TMPINVALIDPATH for goldlang.cfg (message "Invalid path
   for temporary files (TEMPPATH) - do nothing").
