@@ -430,6 +430,7 @@ static LangCrc LangCrcs[] = {
   { CRC_IL_COMPLETEDUUDECODE  , NULL  , " Completed uudecode of %s " },
   { CRC_IL_NOTUUENCODED       , NULL  , " Could not find anything to uudecode " },
   { CRC_IL_UUEINVALIDPATH     , NULL  , " Invalid path for uudecoding - file not written " },
+  { CRC_IL_TMPINVALIDPATH     , NULL  , " Invalid path for temporary files (TEMPPATH) - do nothing " },
   { CRC_IL_PATHREPORT         , NULL  , " Generating PATH report " },
   { CRC_IL_ERRORINSOUP        , NULL  , " Error in SOUP file %s " },
   { CRC_IL_WARNALREADYSENT    , NULL  , " WARNING: This message is already sent! " },

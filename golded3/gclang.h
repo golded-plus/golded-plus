@@ -447,6 +447,7 @@ const word CRC_WT_FORWARD           = 0x5902;
 const word CRC_MI_FORWARDYES        = 0x631F;
 const word CRC_MI_FORWARDNO         = 0xD7B0;
 const word CRC_IL_UUEINVALIDPATH    = 0x8aDB;
+const word CRC_IL_TMPINVALIDPATH    = 0x28FB;
 const word CRC_IL_PATHREPORT        = 0x7F52;
 const word CRC_IL_STYLECODESNO      = 0xE43B;
 const word CRC_IL_STYLECODESYES     = 0xEE2F;

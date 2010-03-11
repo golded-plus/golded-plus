@@ -416,6 +416,7 @@ struct LangGed {
   char*  CompletedUUdecode;  // IL_COMPLETEDUUDECODE
   char*  NotUUencoded;       // IL_NOTUUENCODED
   char*  UUEinvalidpath;     // IL_UUEINVALIDPATH
+  char*  TMPinvalidpath;     // IL_TMPINVALIDPATH
   char*  Pathreport;         // IL_PATHREPORT
   char*  ErrorInSoup;        // IL_ERRORINSOUP
   char*  WarnAlreadySent;    // IL_WARNALREADYSENT

@@ -10,6 +10,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
++ New token IL_TMPINVALIDPATH for goldlang.cfg (message "Invalid path
+  for temporary files (TEMPPATH) - do nothing").
+
 + Script openbsd-vt220.sh to create terminfo file for OpenBSD console
   from Dmitri Zubko 2:465/312.
 

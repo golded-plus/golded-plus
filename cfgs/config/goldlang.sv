@@ -460,6 +460,7 @@ IL_NOTUUENCODED      " Hittade inget att avkoda i textn "
 IL_UUEINVALIDPATH    " Ogiltig sökväg för uu-avkodning - fil ej skriven "
 ; Alternative from Mik
 ; IL_UUEINVALIDPATH    " Ogilltig sökväg för uuavkodning - filen sparades ej "
+IL_TMPINVALIDPATH    " Ogilltig sökväg för TMPPATH "
 IL_ERRORINSOUP       " Fel i SOUP-fil %s "
 IL_WARNALREADYSENT   " VARNING: Meddelandet är redan sänt! "
 IL_WAITLOCKED        " Vänta: %s är låst "
