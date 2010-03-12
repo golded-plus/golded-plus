@@ -85,10 +85,11 @@ Del         EditDelChar
 @Y          EditDeleteEol
 ^K          EditDeleteSol ; Удаление текста к началу строки.
 BackSpace   EditDelLeft
+^BackSpace  EditDelLeft
 ^Del        EditDelete
 ^Y          EditDelLine
 ^F5         EditDelLtWord ; Удаление слова слева от курсора.
-^BackSpace  EditDelLtWord ; Удаление слова слева от курсора.
+^W          EditDelLtWord ; Удаление слова слева от курсора.
 ^F6         EditDelRtWord ; Удаление слова справа от курсора.
 ^T          EditDelRtWord ; Удаление слова справа от курсора
 @O          EditDosShell

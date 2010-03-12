@@ -10,6 +10,10 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+! Keyboard shortcats is chnged: now Ctrl-Backspace deletes char to
+  left and Ctrl-W deletes word to left. (Workaround to Ctrl-Backspace
+  detection bug in Linux.)
+
 ! If TEMPPATH is pointed to unexisted directory the Golded+ displays
   message about invalid TEMPPATH and does nothing on UU-decoding, on
   importing result of shell command, on calling extern utility and
