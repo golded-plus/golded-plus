@@ -18,11 +18,15 @@ cd .. ; tar -jcf ${name} \
 	--exclude golded+/bin \
 	--exclude golded+/Release \
 	--exclude golded+/Debug \
+	--exclude golded+/debian/golded+ \
+	--exclude golded+/windows/obj \
 	--exclude 'golded+/*.bat' \
 	--exclude 'golded+/*.BAT' \
 	--exclude 'golded+/*.cmd' \
 	--exclude 'golded+/*.CMD' \
+	--exclude 'mygolded.h' \
 	--exclude '.#*' \
+	--exclude 'cscope.out' \
 	--exclude '*.orig' \
 	--exclude 'bld*.inc' \
 	--exclude '*.diff' \
@@ -39,7 +43,7 @@ cd .. ; tar -jcf ${name} \
 	--exclude '*.exe' \
 	--exclude '*.a' \
 	--exclude '*.o' \
-	--exclude '*.*~' \
+	--exclude '**~' \
 	golded+
 
-cp ${name} ${shortname}
+ln ${name} ${shortname} || cp ${name} ${shortname}
