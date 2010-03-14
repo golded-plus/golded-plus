@@ -14,4 +14,4 @@ echo Build an archive with Golded+ configuration examples:  ${name} and ${shortn
 if [ -f ${name} ] ; then rm $name ; fi
 
 find ${dir} | grep -v CVS | zip -9 -@ -X ${name}
-cp ${name} ${shortname}
+ln ${name} ${shortname} || cp ${name} ${shortname}

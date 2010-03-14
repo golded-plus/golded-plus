@@ -55,4 +55,4 @@ echo Required libraries:  >bin/requirements.txt
 ldd bin/gedlnx | sed -e "s/ =.*//" -e /\\/lib\\//d -e "s/\\.so\\./ /" >>bin/requirements.txt
 
 zip -9DXj ${name} bin/File_ID.Diz $files
-cp ${name} ${shortname}
+ln ${name} ${shortname} || cp ${name} ${shortname}

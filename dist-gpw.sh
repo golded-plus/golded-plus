@@ -54,4 +54,4 @@ for i in ${bines} ; do
 done
 
 zip -9DXj ${name} ${dizfile} $files
-cp ${name} ${shortname}
+ln ${name} ${shortname} || cp ${name} ${shortname}
