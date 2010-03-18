@@ -3,6 +3,27 @@
 # Create a archive 'gpd*.zip' (gpdYMMDD.zip) with DOS/DPMI (DJGPP) build
 # of the Golded+.
 
+# To build, download from http://www.delorie.com/pub/djgpp/current/ following files:
+#   djdev203.zip
+#   djtzn203.zip
+# And from http://www.delorie.com/pub/djgpp/current/v2gnu/ following more files:
+#   bnu219a.zip
+#   bnu219b.zip
+#   bsh204br3.zip
+#   fil41b.zip
+#   gcc442b.zip
+#   gpp442b.zip
+#   grp251ab.zip
+#   gro116b.zip
+#   licv192b.zip
+#   mak3791b.zip
+#   sed421b.zip
+# Next extract all these files into one directory (for example, C:\DJGPP\)
+# Next set enviroment variable DJGPP to C:\DJGPP\DJGPP.ENV
+# Last add the directory "C:\DJGPP\" into PATH enviroment variable.
+# After this, run bash dist-gpd.sh, edir golded3/mygolded.h and run dist-gpd.sh second time.
+#
+
 if [ ! "$OSTYPE" = "msdosdjgpp" ]
 then
   echo "This is not DJGPP enviroment, exit."
