@@ -61,7 +61,7 @@ extern "C" {
 
 #if (defined(__BORLANDC__) && defined(__OS2__)) || defined(__UNIX__) || defined(__EMX__)
 
-long filelength(int handle) {
+off_t filelength(int handle) {
 
   struct stat s;
   if(fstat(handle, &s) == 0)

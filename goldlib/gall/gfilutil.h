@@ -237,7 +237,7 @@ extern "C" {
 //  ------------------------------------------------------------------
 
 #if (defined(__BORLANDC__) && defined(__OS2__)) || defined(__UNIX__) || defined(__EMX__)
-long filelength(int fh);
+off_t filelength(int fh);
 #endif
 
 
