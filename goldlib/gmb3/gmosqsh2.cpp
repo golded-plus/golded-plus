@@ -60,11 +60,12 @@ void SquishArea::refresh() {
 
   // Are there any msgs?
   if(data->base.totalmsgs) {
+    uint idxsize=data->base.totalmsgs*sizeof(SqshIdx);
 
     // Read the index file
-    data->idx = (SqshIdx*)throw_realloc(data->idx, (uint)(data->base.totalmsgs*sizeof(SqshIdx)));
+    data->idx = (SqshIdx*)throw_realloc(data->idx, idxsize);
     lseekset(data->fhsqi, 0);
-    read(data->fhsqi, data->idx, (uint)(data->base.totalmsgs*sizeof(SqshIdx)));
+    read(data->fhsqi, data->idx, idxsize);
   }
 
   GFTRK(0);
