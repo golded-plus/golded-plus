@@ -38,6 +38,7 @@
 //  ------------------------------------------------------------------
 
 int SquishArea::load_message(int __mode, gmsg* __msg, SqshHdr& __hdr) {
+  ssize_t rwresult=0;
 
   // Setup some local variables for speed
   int _fhsqd = data->fhsqd;
@@ -53,11 +54,31 @@ int SquishArea::load_message(int __mode, gmsg* __msg, SqshHdr& __hdr) {
   SqshFrm _frm;
   memset(&_frm, 0, sizeof(SqshFrm));
   lseekset(_fhsqd, _idx[_reln-1].offset);
-  read(_fhsqd, &_frm, sizeof(SqshFrm));
+  rwresult = read(_fhsqd, &_frm, sizeof(SqshFrm));
+  if( rwresult!=sizeof(SqshFrm) ) {
+    if( rwresult<0 )
+      WideLog->printf("! SquishArea::load_message: data file read error \"%s\"", strerror(errno));
+    if( rwresult>=0 )
+      WideLog->printf("! SquishArea::load_message: can't read Squish frame");
+    WideLog->printf(": Info: Your msgbase is corrupted.");
+    WideLog->printf("+ Advice: Run a msgbase index rebuild/recover utility.");
+    GFTRK(0);
+    return false;
+  }
 
   // Load the message header
   memset(&__hdr, 0, sizeof(SqshHdr));
-  read(_fhsqd, &__hdr, sizeof(SqshHdr));
+  rwresult = read(_fhsqd, &__hdr, sizeof(SqshHdr));
+  if( rwresult!=sizeof(SqshHdr) ) {
+    if( rwresult<0 )
+      WideLog->printf("! SquishArea::load_message: data file read error \"%s\"", strerror(errno));
+    if( rwresult>=0 )
+      WideLog->printf("! SquishArea::load_message: can't read Squish message header");
+    WideLog->printf(": Info: Your msgbase is corrupted.");
+    WideLog->printf("+ Advice: Run a msgbase index rebuild/recover utility.");
+    GFTRK(0);
+    return false;
+  }
 
   // Read control info and message text
   if(__mode & GMSG_TXT) {
@@ -68,7 +89,18 @@ int SquishArea::load_message(int __mode, gmsg* __msg, SqshHdr& __hdr) {
       char* _dest = __msg->txt = (char*)throw_calloc(1, (uint)(1+_frm.ctlsize+_frm.totsize-sizeof(SqshHdr)));
       char* _src = _dest + (uint)_frm.ctlsize;
       *_src = NUL;
-      read(_fhsqd, _src, (uint)_frm.ctlsize);
+      rwresult = read(_fhsqd, _src, (uint)_frm.ctlsize);
+      if( rwresult!=_frm.ctlsize ) {
+        if( rwresult<0 )
+          WideLog->printf("! SquishArea::load_message: data file read error \"%s\"", strerror(errno));
+        if( rwresult>=0 )
+          WideLog->printf("! SquishArea::load_message: can't read Squish message kludges");
+        WideLog->printf(": Info: Your msgbase is corrupted.");
+        WideLog->printf("+ Advice: Run a msgbase index rebuild/recover utility.");
+        throw_free(__msg->txt);
+        GFTRK(0);
+        return false;
+      }
 
       // Convert Squish control info to true kludges
       while(*_src and (*_src == CTRL_A) and _src[1]) {
@@ -89,7 +121,18 @@ int SquishArea::load_message(int __mode, gmsg* __msg, SqshHdr& __hdr) {
 
       // Read the message text right after the kludges
       uint _txtlen = (uint)(_frm.totsize - _frm.ctlsize - sizeof(SqshHdr));
-      read(_fhsqd, _dest, _txtlen);
+      rwresult = read(_fhsqd, _dest, _txtlen);
+      if( rwresult!=_txtlen ) {
+        if( rwresult<0 )
+          WideLog->printf("! SquishArea::load_message: data file read error \"%s\"", strerror(errno));
+        if( rwresult>=0 )
+          WideLog->printf("! SquishArea::load_message: can't read Squish message text");
+        WideLog->printf(": Info: Your msgbase is corrupted.");
+        WideLog->printf("+ Advice: Run a msgbase index rebuild/recover utility.");
+        throw_free(__msg->txt);
+        GFTRK(0);
+        return false;
+      }
 
       // Make sure the text is NUL terminated
       _dest[_txtlen] = NUL;
@@ -180,6 +223,11 @@ int SquishArea::load_message(int __mode, gmsg* __msg, SqshHdr& __hdr) {
 
 int SquishArea::load_hdr(gmsg* __msg) {
 
+  if( __msg == NULL )
+  {
+    WideLog->printf("! SquishArea::load_hdr() is called with NULL pointer." );
+    return false;
+  }
   GFTRK("SquishLoadHdr");
 
   SqshHdr _hdr;
@@ -191,6 +239,11 @@ int SquishArea::load_hdr(gmsg* __msg) {
 
 int SquishArea::load_msg(gmsg* __msg) {
 
+  if( __msg == NULL )
+  {
+    WideLog->printf("! SquishArea::load_msg() is called with NULL pointer." );
+    return false;
+  }
   GFTRK("SquishLoadMsg");
 
   SqshHdr _hdr;

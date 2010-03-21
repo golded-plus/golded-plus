@@ -28,7 +28,7 @@
 //  ------------------------------------------------------------------
 
 #include <stdlib.h>
-
+#include <errno.h>
 #include <gmemdbg.h>
 #include <gdbgtrk.h>
 #include <gstrall.h>
@@ -39,12 +39,23 @@
 //  ------------------------------------------------------------------
 
 int JamArea::load_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
+  ssize_t rwresult=0;
 
   // Read index record for msg
   JamIndex _idx;
   memset(&_idx, 0, sizeof(JamIndex));
   lseekset(data->fhjdx, __msg->msgno-data->hdrinfo.basemsgnum, sizeof(JamIndex));
-  read(data->fhjdx, &_idx, sizeof(JamIndex));
+  rwresult = read(data->fhjdx, &_idx, sizeof(JamIndex));
+  if( rwresult!=sizeof(JamIndex) ) {
+    if( rwresult<0 )
+      WideLog->printf("! JamArea::load_message: index file read error \"%s\"", strerror(errno));
+    if( rwresult>=0 )
+      WideLog->printf("! JamArea::load_message: can't read index data");
+    WideLog->printf(": Info: Your msgbase is corrupted.");
+    WideLog->printf("+ Advice: Run a msgbase index rebuild/recover utility.");
+    GFTRK(0);
+    return false;
+  }
 
   if(_idx.hdroffset == 0xFFFFFFFFL) {
     GFTRK(0);
@@ -54,7 +65,17 @@ int JamArea::load_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
   // Read message header
   memset(&__hdr, 0, sizeof(JamHdr));
   lseekset(data->fhjhr, _idx.hdroffset);
-  read(data->fhjhr, &__hdr, sizeof(JamHdr));
+  rwresult = read(data->fhjhr, &__hdr, sizeof(JamHdr));
+  if( rwresult!=sizeof(JamHdr) ) {
+    if( rwresult<0 )
+      WideLog->printf("! JamArea::load_message: data file read error \"%s\"", strerror(errno));
+    if( rwresult>=0 )
+      WideLog->printf("! JamArea::load_message: can't read header");
+    WideLog->printf(": Info: Your msgbase is corrupted.");
+    WideLog->printf("+ Advice: Run a msgbase index rebuild/recover utility.");
+    GFTRK(0);
+    return false;
+  }
 
   if(strncmp(__hdr.signature, "JAM", 4) != 0) {
     WideLog->printf("! Invalid signature found in %s (msgno %d).", path(), __msg->msgno);
@@ -113,13 +134,26 @@ int JamArea::load_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
   // Allocate space for kludge versions of the subfields
   char* _kludges = (char*)throw_malloc((uint)(__hdr.subfieldlen*2)+1);
   *_kludges = NUL;
-  
+
   // Allocate space for seenby/paths
   char* _kludges2 = (char*)throw_malloc((uint)(__hdr.subfieldlen*2)+1);
   *_kludges2 = NUL;
 
   // Read the subfields
-  read(data->fhjhr, _subfield, (uint)__hdr.subfieldlen);
+  rwresult = read(data->fhjhr, _subfield, (uint)__hdr.subfieldlen);
+  if( rwresult!=(ssize_t)__hdr.subfieldlen ) {
+    if( rwresult<0 )
+      WideLog->printf("! JamArea::load_message: data file read error \"%s\"", strerror(errno));
+    if( rwresult>=0 )
+      WideLog->printf("! JamArea::load_message: can't read Jam subfield");
+    WideLog->printf(": Info: Your msgbase is corrupted.");
+    WideLog->printf("+ Advice: Run a msgbase index rebuild/recover utility.");
+    throw_free(_subfield);
+    throw_free(_kludges);
+    throw_free(_kludges2);
+    GFTRK(0);
+    return false;
+  }
 
   // Pointer to the subfields
   JamSubField* _subfieldptr = (JamSubField*)_subfield;
@@ -344,7 +378,20 @@ int JamArea::load_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
 
     // Read the message text
     lseekset(data->fhjdt, __hdr.offset);
-    read(data->fhjdt, __msg->txt+_kludgelen1, (uint)_msgsize);
+    rwresult = read(data->fhjdt, __msg->txt+_kludgelen1, (uint)_msgsize);
+    if( rwresult!=(ssize_t)_msgsize ) {
+      if( rwresult<0 )
+        WideLog->printf("! JamArea::load_message: data file read error \"%s\"", strerror(errno));
+      if( rwresult>=0 )
+        WideLog->printf("! JamArea::load_message: can't read Jam msgtext");
+      WideLog->printf(": Info: Your msgbase is corrupted.");
+      WideLog->printf("+ Advice: Run a msgbase index rebuild/recover utility.");
+      throw_free(_subfield);
+      throw_free(_kludges);
+      throw_free(_kludges2);
+      GFTRK(0);
+      return false;
+    }
 
     // Is there a CR at the end?
     {
@@ -379,6 +426,11 @@ int JamArea::load_message(int __mode, gmsg* __msg, JamHdr& __hdr) {
 
 int JamArea::load_hdr(gmsg* __msg) {
 
+  if( __msg == NULL )
+  {
+    WideLog->printf("! JamArea::load_hdr() is called with NULL pointer." );
+    return false;
+  }
   GFTRK("JamArea::load_hdr");
 
   JamHdr _hdr;
@@ -390,6 +442,11 @@ int JamArea::load_hdr(gmsg* __msg) {
 
 int JamArea::load_msg(gmsg* __msg) {
 
+  if( __msg == NULL )
+  {
+    WideLog->printf("! JamArea::load_msg() is called with NULL pointer." );
+    return false;
+  }
   GFTRK("JamArea::load_msg");
 
   JamHdr _hdr;
@@ -398,4 +455,3 @@ int JamArea::load_msg(gmsg* __msg) {
 
 
 //  ------------------------------------------------------------------
-

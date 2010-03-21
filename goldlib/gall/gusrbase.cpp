@@ -152,7 +152,7 @@ void GUser::seekwrite()
   }
 }
 
-                      
+
 //  ------------------------------------------------------------------
 
 int GUser::find(const char* __name, char* __result, int __wildcards) {
