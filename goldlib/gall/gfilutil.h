@@ -46,7 +46,7 @@
 #include <cstdio>
 #include <string>
 #include <gshare.h>
-#if !defined(__UNIX__)
+#if !defined(__UNIX__) || defined(__DJGPP__)
 #include <io.h>
 #endif
 #include <gdefs.h>
@@ -57,6 +57,12 @@
 #if defined(__UNIX__)
 #if !defined(__BEOS__) && !defined(__QNXNTO__)
 #define O_TEXT 0
+#define O_BINARY 0
+#endif
+#ifndef O_TEXT
+#define O_TEXT 0
+#endif
+#ifndef O_BINARY
 #define O_BINARY 0
 #endif
 #endif
