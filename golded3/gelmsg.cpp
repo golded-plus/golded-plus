@@ -26,11 +26,16 @@
 
 #include <golded.h>
 
-
 //  ------------------------------------------------------------------
 
 void ResetMsg(GMsg* msg)
 {
+  if( msg == NULL )
+  {
+    LOG.printf("! ResetMsg() is called with NULL pointer to msg." );
+    PointerErrorExit();
+  }
+
   msg->link.reset();
 
   throw_xfree(msg->references);
@@ -50,7 +55,13 @@ void ResetMsg(GMsg* msg)
 
 //  ------------------------------------------------------------------
 
-int Area::LoadHdr(GMsg* msg, uint32_t msgno, bool enable_recode) {
+int Area::LoadHdr(GMsg* msg, uint32_t msgno, bool enable_recode)
+{
+  if( msg == NULL )
+  {
+    LOG.printf("! Area::LoadHdr() is called with NULL pointer to msg." );
+    return false;
+  }
 
   ResetMsg(msg);
   msg->msgno = msgno;
@@ -89,7 +100,13 @@ int Area::LoadHdr(GMsg* msg, uint32_t msgno, bool enable_recode) {
 
 //  ------------------------------------------------------------------
 
-int Area::LoadMsg(GMsg* msg, uint32_t msgno, int margin, int mode) {
+int Area::LoadMsg(GMsg* msg, uint32_t msgno, int margin, int mode)
+{
+  if( msg == NULL )
+  {
+    LOG.printf("! Area::LoadMsg() is called with NULL pointer to msg." );
+    return false;
+  }
 
   ResetMsg(msg);
   msg->msgno = msgno;
@@ -120,7 +137,13 @@ int Area::LoadMsg(GMsg* msg, uint32_t msgno, int margin, int mode) {
 
 //  ------------------------------------------------------------------
 
-void Area::SaveHdr(int mode, GMsg* msg) {
+void Area::SaveHdr(int mode, GMsg* msg)
+{
+  if( msg == NULL )
+  {
+    LOG.printf("! Area::LoadMsg() is called with NULL pointer to msg." );
+    PointerErrorExit();
+  }
 
   // Translate softcr to configured char
   if (adat->usesoftcrxlat && EDIT->SoftCrXlat())
@@ -136,6 +159,4 @@ void Area::SaveHdr(int mode, GMsg* msg) {
   UpdateAreadata();
 }
 
-
 //  ------------------------------------------------------------------
-
