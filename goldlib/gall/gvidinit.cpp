@@ -1051,7 +1051,7 @@ void GVid::resize_screen(int columns, int rows) {
   bufwrd = (vatch*)throw_xrealloc(bufwrd, (numcols+1)*sizeof(vatch));
   bufansi = (vchar*)throw_xrealloc(bufansi, 1+(11*numcols));
 
-  #if defined(__UNIX__) && !defined(__USE_NCURSES__)
+  #if defined(__UNIX__) && !defined(__USE_NCURSES__) && !defined(__DJGPP__)
   dmaptr = (gdma)throw_xrealloc(dmaptr, (rows+1)*columns*sizeof(word));
   #endif
 }

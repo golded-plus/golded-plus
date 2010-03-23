@@ -101,7 +101,7 @@ const int ERR_MPTR    = 15;
 
 extern int errorlevel;
 extern int error_exit;
-extern char* etext[];
+extern const char* etext[];
 void ErrorExit(int type);
 
 

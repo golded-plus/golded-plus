@@ -18,6 +18,10 @@
 #   licv192b.zip
 #   mak3791b.zip
 #   sed421b.zip
+# And from http://www.delorie.com/pub/djgpp/current/v2misc/ following more files:
+#   wmemu21b.zip
+# And from http://www.delorie.com/pub/djgpp/current/v2tk/ following more files:
+#   llocl02b.zip
 # Next extract all these files into one directory (for example, C:\DJGPP\)
 # Next set enviroment variable DJGPP to C:\DJGPP\DJGPP.ENV
 # Last add the directory "C:\DJGPP\" into PATH enviroment variable.
