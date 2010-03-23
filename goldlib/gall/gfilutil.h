@@ -55,10 +55,6 @@
 //  ------------------------------------------------------------------M
 
 #if defined(__UNIX__)
-#if !defined(__BEOS__) && !defined(__QNXNTO__)
-#define O_TEXT 0
-#define O_BINARY 0
-#endif
 #ifndef O_TEXT
 #define O_TEXT 0
 #endif
@@ -242,7 +238,7 @@ extern "C" {
 
 //  ------------------------------------------------------------------
 
-#if (defined(__BORLANDC__) && defined(__OS2__)) || defined(__UNIX__) || defined(__EMX__)
+#if !defined(__DJGPP__) && ((defined(__BORLANDC__) && defined(__OS2__)) || defined(__UNIX__) || defined(__EMX__))
 off_t filelength(int fh);
 #endif
 
