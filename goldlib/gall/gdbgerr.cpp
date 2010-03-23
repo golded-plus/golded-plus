@@ -37,7 +37,7 @@
 int errorlevel = 0;
 int error_exit = 0;
 
-char* etext[] = {
+const char* etext[] = {
   "No",
   "Open",
   "Read",
