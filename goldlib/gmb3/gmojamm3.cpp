@@ -33,7 +33,7 @@
 #include <gdbgtrk.h>
 #include <gstrall.h>
 
-#include <gmojamm.h>
+#include "gmojamm.h"
 
 
 //  ------------------------------------------------------------------

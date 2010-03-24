@@ -107,6 +107,7 @@
 #define __inline__ __inline
 #define __extension__
 #define __MSVCRT__
+#define ssize_t size_t
 #endif
 
 
