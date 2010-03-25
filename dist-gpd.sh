@@ -18,6 +18,7 @@
 #   licv192b.zip
 #   mak3791b.zip
 #   sed421b.zip
+#   shl2011b.zip
 # And from http://www.delorie.com/pub/djgpp/current/v2misc/ following more files:
 #   wmemu21b.zip
 # And from http://www.delorie.com/pub/djgpp/current/v2tk/ following more files:
