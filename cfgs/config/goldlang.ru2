@@ -527,6 +527,7 @@ MI_CHARSETAUTO        " Автоматически "
 
 IL_DECODE             "Декодирование"
 IL_PEEKINFONOURLS     " Ни одного URL не найдено "
+IL_PEEKINFONOHANDLER  " В конфиге нет обработчика URL! "
 IL_PREPARING          "Подготовка"
 MI_ALSELECTIONS1      "Отметить фолдеры с новыми сообщениями"
 MI_ALSELECTIONS2      "(не используется)"

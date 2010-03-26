@@ -478,6 +478,7 @@ struct LangGed {
   char*  PeekURLMenuTitle;   // WT_PEEKURL
   char*  PeekURLStat;        // ST_PEEKURL
   char*  PeekInfoNoURLs;     // IL_PEEKINFONOURLS
+  char*  PeekInfoNoHandler;  // IL_PEEKINFONOHANDLER
 
   char*  MMMain;             // MI_MMMAIN
   char*  MMShell;            // MI_MMSHELL

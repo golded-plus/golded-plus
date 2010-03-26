@@ -678,9 +678,10 @@ WT_TOUCHSEMAPHORE     " Введите имя файла-семафора для обновления даты "
 IL_PREPARING          "Подготовка"
 
 //Обработка Интернет адресов
-WT_PEEKURL         "Доступные URL_ы"
-ST_PEEKURL         "Выбор URL"
-IL_PEEKINFONOURLS  " В этом сообщении не обнаружено правильных URL_ов ! "
+WT_PEEKURL            "Доступные URL_ы"
+ST_PEEKURL            "Выбор URL"
+IL_PEEKINFONOURLS     " В этом сообщении не обнаружено правильных URL_ов ! "
+IL_PEEKINFONOHANDLER  " В файле конфигурации не указан обработчик URL-ов ! "
 
 //Меню внешних (External) утилит
 WT_EXTERNUTIL      "Внешние утилиты"

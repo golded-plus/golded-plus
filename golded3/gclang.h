@@ -503,6 +503,7 @@ const word CRC_WT_EXTERNUTIL        = 0x5849;
 const word CRC_WT_PEEKURL           = 0x2A26;
 const word CRC_ST_PEEKURL           = 0x254B;
 const word CRC_IL_PEEKINFONOURLS    = 0x361D;
+const word CRC_IL_PEEKINFONOHANDLER = 0x9FEF;
 
 const word CRC_MI_MMMAIN            = 0x0702;
 const word CRC_MI_MMSHELL           = 0x53DD;

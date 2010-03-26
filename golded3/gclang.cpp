@@ -492,6 +492,7 @@ static LangCrc LangCrcs[] = {
   { CRC_WT_PEEKURL            , NULL  , "Available URLs" },
   { CRC_ST_PEEKURL            , NULL  , "Select URL" },
   { CRC_IL_PEEKINFONOURLS     , NULL  , " No valid URLs were found in this msg! " },
+  { CRC_IL_PEEKINFONOHANDLER  , NULL  , " URL handler are not defined in config file! " },
 
   { CRC_MI_MMMAIN             , NULL  , "M Main " },
   { CRC_MI_MMSHELL            , NULL  , "S Shell to OS " },
