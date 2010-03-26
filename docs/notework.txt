@@ -10,7 +10,13 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
-! Keyboard shortcats is chnged: now Ctrl-Backspace deletes char to
+! If not defined any URLHANDLER and key "READpeekURLs" is pressed,
+  Golded+ does not trap now (segmentation fault fixed).
+
++ New token IL_PEEKINFONOHANDLER for goldlang.cfg (message
+  " URL handler are not defined in config file! "
+
+! Keyboard shortcats is changed: now Ctrl-Backspace deletes char to
   left and Ctrl-W deletes word to left. (Workaround to Ctrl-Backspace
   detection bug in Linux.)
 

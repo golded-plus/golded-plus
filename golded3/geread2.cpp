@@ -721,6 +721,13 @@ static bool PeekURLCmp(const std::string &a, const std::string b)
 
 void ReadPeekURLs(GMsg* msg)
 {
+  if( CFG->urlhandler.empty() )
+  {
+    w_info(LNG->PeekInfoNoHandler);
+    waitkeyt(10000);
+    w_info(NULL);
+    return;
+  }
   w_info(LNG->Wait);
 
   // Scan the current msg for urls

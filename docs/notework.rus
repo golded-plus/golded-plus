@@ -10,6 +10,12 @@ _____________________________________________________________________________
                Заметки для GoldED+ 1.1.5, /snapshot/
 _____________________________________________________________________________
 
+! Если нет ни одного URLHANDLER и вызывается READpeekURLs, Golded+ теперь не
+  падает с segmentation fault.
+
++ Новая директива файла goldlang.cfg "IL_PEEKINFONOHANDLER" (сообщение " URL
+  handler are not defined in config file! ")
+
 ! Переназначены клавиши: Ctrl-Backspace теперь удаляет символ влево, Ctrl-W
   удаляет слово влево. (Обход бага с определением Ctrl-Backspace в Linux.)
 
