@@ -850,6 +850,11 @@ void ReadPeekURLs(GMsg* msg)
     waitkeyt(10000);
     w_info(NULL);
   }
+  while( !urls.empty() )
+  {
+    throw_free(urls.back());
+    urls.pop_back();
+  }
 }
 
 
