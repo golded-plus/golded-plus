@@ -612,7 +612,8 @@ const char* strrword(const char* str, const char *separator) {
 
 
 //  ------------------------------------------------------------------
-
+//  copy not more n-1 bytes of "s" into "d", insert '\0' into end of string.
+//  return d
 TCHAR *strxcpy(TCHAR *d, const TCHAR *s, size_t n)
 {
 #if defined(_tcsncpy_s)

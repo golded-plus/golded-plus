@@ -92,6 +92,8 @@ char* StripQuotes(char* str);
 
 // Safe versions of strcpy, strcat, sequencial strcat...
 TCHAR *strxcpy(TCHAR *d, const TCHAR *s, size_t n);
+// strxcpy: copy not more n-1 bytes of "s" into "d", insert '\0' into end of string.
+//          return d
 char* strxcat(char *dest, const char *src, size_t max);
 char* strxmerge(char *dest, size_t max, ...);
 
