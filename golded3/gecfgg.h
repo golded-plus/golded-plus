@@ -31,6 +31,8 @@
 #include <geall.h>
 #include "gekeys.h"
 
+#define AREALISTSORTSIZE 20  // Size of the "arealistsort" variable
+
 //  ------------------------------------------------------------------
 //  en_gswitches{} enumeration elements shoulds be complemented with
 //  globalbool[] array elements (see gccfgg0.cpp).
@@ -244,7 +246,7 @@ public:
   int         arealistechomax;
   char        arealistformat[80];
   char        arealistgrouporder[256];
-  char        arealistsort[20];     // areasort[10];
+  char        arealistsort[AREALISTSORTSIZE];
   int         arealisttype;
   Path        areapath;
   gstrarray   areapmscan;

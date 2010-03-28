@@ -189,7 +189,7 @@ public:
   area_iterator item;
 
   // Sort specs (for external compare func)
-  char sortspec[20];
+  char sortspec[AREALISTSORTSIZE];
 
   // Active msgbases (bitmap of MT_* contants)
   std::vector<std::string> basetypes;
