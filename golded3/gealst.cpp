@@ -346,7 +346,7 @@ static bool AreaListCmp2(const Area* a, const Area* b) {
 void AreaList::Sort(const char* specs, int first, int last) {
 
   if(specs)
-    strcpy(sortspec, specs);
+    strxcpy(sortspec, specs, sizeof(sortspec));
   else
     strcpy(sortspec, CFG->arealistsort);
   if(last == -1)
