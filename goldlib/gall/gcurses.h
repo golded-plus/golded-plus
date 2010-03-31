@@ -36,6 +36,8 @@
 extern "C" {
 #if defined(__FreeBSD__) && (__FreeBSD__ < 4)
 #include <ncurses/ncurses.h>
+#elif defined(__sun__)
+#include <ncurses/ncurses.h>
 #else
 #include <curses.h>
 #endif
