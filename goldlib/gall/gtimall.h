@@ -206,7 +206,7 @@ inline time32_t gmktime(struct tm *timep)
 
 
 #if defined(__OS2__)
-inline void usleep(long duration) { DosSleep(duration); }
+inline void usleep(int duration) { DosSleep(duration); }
 #elif (defined(__MINGW32__) && __GNUC__*100+__GNUC_MINOR__ < 304) || defined(_MSC_VER)
 inline void usleep(long duration) { Sleep(duration); }
 #endif

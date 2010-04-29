@@ -12,12 +12,8 @@ TOP=..
 SHORTTARGET=rddt
 TARGET=rddt
 INCS=-I$(TOP)/goldlib/gall -I$(TOP)/golded3
-ifeq ($(findstring EMX, $(PATH)), EMX)
-STDLIBS=-lstdcpp
-else
 ifdef MINGW
 STDLIBS=-luser32
-endif
 endif
 GLIBS=gall
 CLEANS=

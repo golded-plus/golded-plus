@@ -269,7 +269,7 @@ int unlock(int handle, long offset, long length);
 int lock(int handle, long offset, long length);
 int unlock(int handle, long offset, long length);
 #if !defined(__QNXNTO__) && !defined(__MINGW32__)
-inline long tell(int fh) { return lseek(fh, 0, SEEK_CUR); }
+inline off_t tell(int fh) { return lseek(fh, 0, SEEK_CUR); }
 #endif
 #endif
 

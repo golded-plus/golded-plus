@@ -40,9 +40,13 @@
 #endif
 #include <ctype.h>
 #if defined(__EMX__)
-#include <sys/nls.h>
-#define g_tolower(c) _nls_tolower((uint8_t)(c))
-#define g_toupper(c) _nls_toupper((uint8_t)(c))
+//old EMX 0.9d code
+//#include <sys/nls.h>
+//#define g_tolower(c) _nls_tolower((uint8_t)(c))
+//#define g_toupper(c) _nls_toupper((uint8_t)(c))
+//old EMX 0.9d code
+#define g_tolower(c) tolower(c)
+#define g_toupper(c) toupper(c)
 #elif defined(__WIN32__)
 #ifdef __cplusplus
 extern "C" {

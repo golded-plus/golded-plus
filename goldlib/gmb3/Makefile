@@ -14,7 +14,7 @@ INCS=-I$(TOP)/goldlib/gall -I$(TOP)/goldlib/gcfg -I$(TOP)/goldlib/gmb3 -I$(TOP)/
 ifdef MINGW
 INCS+=-I$(TOP)/goldlib/glibc
 else
-ifeq ($(findstring EMX, $(PATH)), EMX)
+ifeq ($(PLATFORM),emx)
 INCS+=-I$(TOP)/goldlib/glibc
 endif
 endif

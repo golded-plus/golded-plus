@@ -42,9 +42,11 @@
 //  ------------------------------------------------------------------
 
 #if defined(__EMX__)
-#include <sys/nls.h>
-#define strupr(s) (char *)_nls_strupr((uint8_t *)(s))
-#define strlwr(s) (char *)_nls_strlwr((uint8_t *)(s))
+//old EMX 0.9d code
+//#include <sys/nls.h>
+//#define strupr(s) (char *)_nls_strupr((uint8_t *)(s))
+//#define strlwr(s) (char *)_nls_strlwr((uint8_t *)(s))
+//old EMX 0.9d code
 #elif defined(__GNUC__)
 #if defined(__QNXNTO__) || defined(__SUNOS__)
 #include <strings.h>
