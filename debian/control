@@ -3,7 +3,7 @@ Section: mail
 Priority: optional
 Maintainer: Stas Degteff <stas_degteff@users.sourceforge.net>
 Homepage: http://golded-plus.sourceforge.net
-Build-Depends: debhelper, libncurses5-dev
+Build-Depends: debhelper (>= 5), libncurses5-dev
 #Standards-Version: 3.6.1
 
 Package: golded-plus
