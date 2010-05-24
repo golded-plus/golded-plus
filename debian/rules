@@ -116,7 +116,7 @@ binary-arch: build install
 	dh_installman
 #	dh_installinfo
 #	dh_undocumented
-	dh_installchangelogs
+	dh_installchangelogs -k docs/notework.txt
 	dh_link
 ifneq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
 	dh_strip
