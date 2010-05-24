@@ -88,9 +88,11 @@ install: build
 	install -d $(PREFIX)/usr/share/doc/golded-plus
 	install $(IMOPT) $(DOCS) $(PREFIX)/usr/share/doc/golded-plus
 	install -d $(PREFIX)/usr/share/doc/golded-plus/examples
-	cp -r cfgs/{config,template} $(PREFIX)/usr/share/doc/golded-plus/examples/
+	cp -r cfgs/config $(PREFIX)/usr/share/doc/golded-plus/examples/
+	cp -r cfgs/template $(PREFIX)/usr/share/doc/golded-plus/examples/
 	install -d $(PREFIX)/usr/share/golded-plus/
-	cp -r cfgs/{charset,colorset} $(PREFIX)/usr/share/golded-plus/
+	cp -r cfgs/charset $(PREFIX)/usr/share/golded-plus/
+	cp -r cfgs/colorset $(PREFIX)/usr/share/golded-plus/
 	-find $(PREFIX)/usr/share/golded-plus/ $(PREFIX)/usr/share/doc/golded-plus/examples/ -name CVS -exec rm -r '{}' ';'
 
 # Build architecture-independent files here.
