@@ -13,7 +13,8 @@ TOP=..
 include $(TOP)/Config.def
 SHORTTARGET=ged
 TARGET=golded3
-GLIBS=gmb3 gall gcfg uulib smblib
+#GLIBS=gmb3 gall gcfg uulib smblib
+GLIBS=gmb3 gcfg uulib gall smblib
 ifneq ($(findstring GCFG_NO_MYSPELL, $(CPPFLAGS)), GCFG_NO_MYSPELL)
 GLIBS+=hunspell
 endif
