@@ -23,6 +23,9 @@ clean:
 	@$(SHELL) -ec 'for i in $(EXECUTABLES); do cd $$i; $(MAKE) clean; cd ..; done'
 	@-rm -f $(OBJPATH)/$(PLATFORM)/source.lst
 
+distclean:
+	@-cd $(BIN); rm -f $(EXECUTABLES)
+
 dirs:
 	@mkdir -p $(BIN) $(LIBPATH)/$(PLATFORM)
 	@mkdir -p $(foreach dir,$(LIBS),$(OBJPATH)/$(PLATFORM)/$(dir))
