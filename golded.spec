@@ -59,7 +59,7 @@ rm -rf %{buildroot}
 mkdir -p %{buildroot}%{_bindir} \
 	%{buildroot}%{_prefix}/share/man/man1 \
 	%{buildroot}%{_prefix}/share/golded/charset
-rm -rf bin/CVS
+#rm -rf bin/CVS
 install -m 755 bin/* %{buildroot}%{_bindir}
 install -m 644 docs/*.1 %{buildroot}%{_prefix}/share/man/man1
 install -m 644 cfgs/charset/*{chs,esc} %{buildroot}%{_prefix}/share/golded/charset
