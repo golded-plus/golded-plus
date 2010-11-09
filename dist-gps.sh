@@ -16,6 +16,8 @@ cd .. ; tar -jcf ${name} \
 	--exclude golded+/obj \
 	--exclude golded+/lib \
 	--exclude golded+/bin \
+	--include golded+/bin/golded \
+	--include golded+/bin/openbsd-vt220.sh \
 	--exclude golded+/Release \
 	--exclude golded+/Debug \
 	--exclude golded+/debian/golded+ \
