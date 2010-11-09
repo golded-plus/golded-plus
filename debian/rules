@@ -5,7 +5,7 @@ export DH_VERBOSE=1
 
 export DH_COMPAT=4
 #export DEBIAN=1
-#export PACKAGE=binkd1
+export PACKAGE=golded-plus-snapshot
 PREFIX=$(CURDIR)/debian/golded-plus
 DOCS= docs/license.txt docs/notework.txt docs/readme.txt \
       docs/rusfaq.txt docs/rusfaq.koi8r docs/rusfaq.utf8 docs/tips.txt docs/todowork.txt \
@@ -67,8 +67,7 @@ clean:
 	rm -f build-stamp configure-stamp
 
 	# Add here commands to clean up after the build process.
-	-$(MAKE) clean
-	- rm -r bin/
+	-$(MAKE) clean distclean
 
 	dh_clean
 
