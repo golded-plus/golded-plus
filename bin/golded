@@ -10,12 +10,12 @@ LUIT=`which luit`
 if [ -n $SCREEN ]; then
   CMD_UTF8="$SCREEN -c ${SCREENRC_GOLDED}"
 else if [ -n "$LUIT" ]; then
-       CMD_UTF8="$LUIT -x -encoding koi8-r -- $CMD"
+       CMD_UTF8="export LC_ALL="ru_RU.KOI8-R"; exec $LUIT -x -encoding koi8-r -- $CMD"
      else
        CMD_UTF8=$CMD
      fi
 fi
 
 echo "$LC_ALL $LC_CTYPE $LANG" | grep -q "ru_RU.UTF-8" \
- && (export LC_ALL="ru_RU.KOI8-R"; exec $CMD_UTF8) \
+ && ($CMD_UTF8) \
  || exec $CMD
