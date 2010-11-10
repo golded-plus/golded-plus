@@ -1,0 +1,13 @@
+# $Id$
+# This configuration file for the screen utility containis workaround
+# for Russian language on UTF-8 terminal (console) locale
+# Also this configuration run mailer (binkd in client mode) in background window
+# for parallel mail transfer
+
+startup_message off
+# Set default encoding for new windows
+defencoding koi8-r
+# Exec mailer in first window
+screen /bin/sh -c "binkd -c ~/fido/etc/binkd.conf"
+# Exec Golded+ in foreground window
+screen /bin/sh -c "LANG=ru_RU.KOI8-R gedlnx"
