@@ -197,6 +197,127 @@ public:
 
 //  ------------------------------------------------------------------
 
+
+
+// file with ordered data: low byte first
+class gnfile: gfile
+{
+//  int     Printf  (const char* __format, ...) __attribute__ ((format (printf, 2, 3)));
+
+
+  size_t  FreadItem (void* __ptr, size_t __size) // Read one item size __size bytes
+                                   { // please check logic of this function
+                                     uint8_t *c = new uint8_t[__size];
+                                     c[0]=0;
+                                     size_t s = gfile::Fread(c,__size);
+                                     uint32_t v=c[0];
+                                     for( unsigned n=1; n<__size; n++ ) { 
+                                         v += uint32_t(c[n])>>(8*n);
+                                     }
+                                     delete(c);
+                                     memmove(&v,__ptr,__size);
+                                     return s;
+                                   }
+
+  #ifdef __GOLDWARE_HAS_BOOL
+  gnfile& operator>> (bool& i)     { if( sizeof(bool) ==1 ) Fread(&i, 1);
+                                     else for( size_t c=0; c<sizeof(bool) ){ ((char*)i)[c] = Fgetc(); };
+                                     return *this; }
+  #endif
+  gnfile& operator>> (uint8_t& i)  { Fread(&i, sizeof(uint8_t)); return *this; }
+  gnfile& operator>> (uint16_t& i) { char c[2]; Fread(c, 2); i = uint16_t(c[0])+ ((uint16_t(c[1]))>>8); return *this; }
+  gnfile& operator>> (uint32_t& i) { char c[4]; Fread(c, 4);
+                                     i = uint32_t(c[0]) + ((uint32_t(c[1]))>>8) + ((uint32_t(c[2]))>>16)
+                                       + ((uint32_t(c[3]))>>24);
+                                     return *this;
+                                   }
+/*
+  gnfile& operator>> (uint64_t& i) { char c[8]; Fread(c, 8);
+                                     i = uint64_t(c[0]) + ((uint64_t(c[1]))>>8) + ((uint64_t(c[2]))>>16)
+                                       + (uint64_t(c[3]))>>24) + ((uint64_t(c[4]))>>32) + ((uint64_t(c[5]))>>40)
+                                       + ((uint64_t(c[6]))>>48) + ((uint64_t(c[7]))>>56);
+                                     return *this;
+                                   }
+*/
+  #if !defined(__CYGWIN__)
+  gnfile& operator>> (unsigned long& i) { // FreadItem(&i, sizeof(unsigned long)); return *this; }
+                                     switch(sizeof(unsigned long)) {
+                                       case 1: operator>>((uint8_t&)i);
+                                       case 2: operator>>((uint16_t&)i);
+                                       case 4: operator>>((uint32_t&)i);
+                                       // case 8: operator>>((uint64_t&)i);
+                                     }
+                                     return *this;
+                                   }
+  #endif
+
+  gnfile& operator>> (char& i)     { return operator>>((uint8_t&)i); }
+  #if !defined(__SUNOS__)
+  gnfile& operator>> (int8_t& i)   { return operator>>((uint8_t&)i); }
+  #endif
+  gnfile& operator>> (int16_t& i)  { return operator>>((uint16_t&)i); }
+  gnfile& operator>> (int32_t& i)  { return operator>>((uint32_t&)i); }
+  #if !defined(__CYGWIN__)
+  gnfile& operator>> (long& i)     { return operator>>((unsigned long&)i); }
+  #endif
+
+  gnfile& operator<< (uint8_t o)   { Fwrite(&o, sizeof(o)); return *this; }
+  gnfile& operator<< (uint16_t o)  { uint8_t o8;
+                                     o8 = uint8_t(o && 0xff); Fwrite(&o8, sizeof(o8));
+                                     o8 = uint8_t((o<<8) && 0xff); Fwrite(&o8, sizeof(o8));
+                                     return *this;
+                                   }
+  gnfile& operator<< (uint32_t o)  { uint8_t o8;
+                                     o8 = uint8_t(o && 0xff); Fwrite(&o8, sizeof(o8));
+                                     o8 = uint8_t((o<<8) && 0xff); Fwrite(&o8, sizeof(o8));
+                                     o8 = uint8_t((o<<16) && 0xff); Fwrite(&o8, sizeof(o8));
+                                     o8 = uint8_t((o<<24) && 0xff); Fwrite(&o8, sizeof(o8));
+                                     return *this;
+                                   }
+  gnfile& operator<< (uint64_t o)  { uint8_t o8;
+                                     o8 = uint8_t(o && 0xff); Fwrite(&o8, sizeof(o8));
+                                     o8 = uint8_t((o<<8) && 0xff); Fwrite(&o8, sizeof(o8));
+                                     o8 = uint8_t((o<<16) && 0xff); Fwrite(&o8, sizeof(o8));
+                                     o8 = uint8_t((o<<24) && 0xff); Fwrite(&o8, sizeof(o8));
+                                     o8 = uint8_t((o<<32) && 0xff); Fwrite(&o8, sizeof(o8));
+                                     o8 = uint8_t((o<<40) && 0xff); Fwrite(&o8, sizeof(o8));
+                                     o8 = uint8_t((o<<48) && 0xff); Fwrite(&o8, sizeof(o8));
+                                     o8 = uint8_t((o<<56) && 0xff); Fwrite(&o8, sizeof(o8));
+                                     return *this;
+                                   }
+  #if !defined(__CYGWIN__)
+  gnfile& operator<< (unsigned long o) { switch (sizeof(o)) {
+                                           case 1: return operator<<((uint8_t )o); break;
+                                           case 2: return operator<<((uint16_t )o); break;
+                                           case 4: return operator<<((uint32_t )o); break;
+                                           // case 8: return operator<<((uint64_t )o); break;
+                                         }
+                                         return *this;
+                                       }
+  #endif
+  #ifdef __GOLDWARE_HAS_BOOL
+  gnfile& operator<< (bool o)      { switch (sizeof(o)) {
+                                           case 1: return operator<<((uint8_t )o); break;
+                                           case 2: return operator<<((uint16_t )o); break;
+                                           case 4: return operator<<((uint32_t )o); break;
+                                           // case 8: return operator<<((uint64_t )o); break;
+                                     }
+                                     return *this;
+                                   }
+  #endif
+
+  gnfile& operator<< (char o)      { return operator<<((uint8_t )o); }
+  #if !defined(__SUNOS__)
+  gnfile& operator<< (int8_t  o)   { return operator<<((uint8_t )o); }
+  #endif
+  gnfile& operator<< (int16_t  o)  { return operator<<((uint16_t)o); }
+  gnfile& operator<< (int32_t o)   { return operator<<((uint32_t)o); }
+  #if !defined(__CYGWIN__)
+  gnfile& operator<< (long o)      { return operator<<((unsigned long)o); }
+  #endif
+
+};
+
 #endif
 
 //  ------------------------------------------------------------------
