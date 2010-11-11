@@ -5,7 +5,7 @@ export DH_VERBOSE=1
 
 export DH_COMPAT=4
 #export DEBIAN=1
-export PACKAGE=golded-plus-snapshot
+#export PACKAGE=golded-plus-snapshot
 PREFIX=$(CURDIR)/debian/golded-plus
 DOCS= docs/license.txt docs/notework.txt docs/readme.txt \
       docs/rusfaq.txt docs/rusfaq.koi8r docs/rusfaq.utf8 docs/tips.txt docs/todowork.txt \
@@ -87,6 +87,7 @@ install: build
 	install -d $(PREFIX)/usr/share/doc/golded-plus
 	install $(IMOPT) $(DOCS) $(PREFIX)/usr/share/doc/golded-plus
 	install -d $(PREFIX)/usr/share/doc/golded-plus/examples
+	install $(IMOPT) bin/openbsd-vt220.sh $(PREFIX)/usr/share/doc/golded-plus/examples/
 	cp -r cfgs/config $(PREFIX)/usr/share/doc/golded-plus/examples/
 	cp -r cfgs/template $(PREFIX)/usr/share/doc/golded-plus/examples/
 	install -d $(PREFIX)/usr/share/golded-plus/
