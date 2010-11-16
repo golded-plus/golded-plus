@@ -274,6 +274,7 @@ class gnfile: gfile
                                      o8 = uint8_t((o<<24) && 0xff); Fwrite(&o8, sizeof(o8));
                                      return *this;
                                    }
+/*
   gnfile& operator<< (uint64_t o)  { uint8_t o8;
                                      o8 = uint8_t(o && 0xff); Fwrite(&o8, sizeof(o8));
                                      o8 = uint8_t((o<<8) && 0xff); Fwrite(&o8, sizeof(o8));
@@ -285,6 +286,7 @@ class gnfile: gfile
                                      o8 = uint8_t((o<<56) && 0xff); Fwrite(&o8, sizeof(o8));
                                      return *this;
                                    }
+*/
   #if !defined(__CYGWIN__)
   gnfile& operator<< (unsigned long o) { switch (sizeof(o)) {
                                            case 1: return operator<<((uint8_t )o); break;
