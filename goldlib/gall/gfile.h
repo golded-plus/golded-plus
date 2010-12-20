@@ -225,17 +225,27 @@ class gnfile: gfile
                                      return *this; }
   #endif
   gnfile& operator>> (uint8_t& i)  { Fread(&i, sizeof(uint8_t)); return *this; }
-  gnfile& operator>> (uint16_t& i) { char c[2]; Fread(c, 2); i = uint16_t(c[0])+ ((uint16_t(c[1]))>>8); return *this; }
+  gnfile& operator>> (uint16_t& i) { char c[2]; Fread(c, 2);
+                                     i = uint16_t(c[0])
+                                       + uint16_t((uint16_t(c[1]))>>8);
+                                     return *this; }
   gnfile& operator>> (uint32_t& i) { char c[4]; Fread(c, 4);
-                                     i = uint32_t(c[0]) + ((uint32_t(c[1]))>>8) + ((uint32_t(c[2]))>>16)
-                                       + ((uint32_t(c[3]))>>24);
+                                     i = uint32_t(c[0])
+                                       + uint32_t((uint32_t(c[1]))>>8)
+                                       + uint32_t((uint32_t(c[2]))>>16)
+                                       + uint32_t((uint32_t(c[3]))>>24);
                                      return *this;
                                    }
 /*
   gnfile& operator>> (uint64_t& i) { char c[8]; Fread(c, 8);
-                                     i = uint64_t(c[0]) + ((uint64_t(c[1]))>>8) + ((uint64_t(c[2]))>>16)
-                                       + (uint64_t(c[3]))>>24) + ((uint64_t(c[4]))>>32) + ((uint64_t(c[5]))>>40)
-                                       + ((uint64_t(c[6]))>>48) + ((uint64_t(c[7]))>>56);
+                                     i = uint64_t(c[0])
+                                       + uint64_t((uint64_t(c[1]))>>8)
+                                       + uint64_t((uint64_t(c[2]))>>16)
+                                       + uint64_t((uint64_t(c[3]))>>24)
+                                       + uint64_t((uint64_t(c[4]))>>32)
+                                       + uint64_t((uint64_t(c[5]))>>40)
+                                       + uint64_t((uint64_t(c[6]))>>48)
+                                       + uint64_t((uint64_t(c[7]))>>56);
                                      return *this;
                                    }
 */
