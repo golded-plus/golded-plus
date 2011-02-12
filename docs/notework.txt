@@ -10,6 +10,9 @@ ______________________________________________________________________
                Notes for GoldED+ 1.1.5, /snapshot/
 ______________________________________________________________________
 
+! Check length of charset name (16 characters max): fix buffer
+  overflow.
+
 ! Error in parser @-macro is fixed: macro in end of line are ignored
   before this fix.
 
