@@ -598,10 +598,28 @@ void CfgXlatcharset() {
 
   Map xlt;
   char* ptr = strtok(val, " \t\n\r");
+  short maxtokenlen = sizeof(xlt.imp)-1;
   if(ptr) {
+    if(strlen(ptr) > maxtokenlen) {
+      STD_PRINT("* XLATCHARSET parser: Parameter '" << ptr
+          << "' too long. It is supposed no more than " << maxtokenlen << " characters. A line 'XLATCHARSET "
+          <<  ptr);
+      STD_PRINTNL(ptr+strlen(ptr)+1 << "' ignored.");
+      cfgerrors++;
+      return;
+    }
     strchg(strupr(strcpy(xlt.imp, ptr)), '_', ' ');
     ptr = strtok(NULL, " \t\n\r");
     if(ptr) {
+      if(strlen(ptr) > maxtokenlen) {
+        STD_PRINT("* XLATCHARSET parser: Parameter '" << ptr
+            << "' too long. It is supposed no more than " << maxtokenlen << " characters. A line 'XLATCHARSET "
+            <<  xlt.imp << " " << ptr);
+        STD_PRINTNL(ptr+strlen(ptr)+1 << "' ignored.");
+        cfgerrors++;
+        xlt.imp[0] = '\0';
+        return;
+      }
       strchg(strupr(strcpy(xlt.exp, ptr)), '_', ' ');
       ptr = strtok(NULL, " \t\n\r");
       if(ptr) {

@@ -680,7 +680,20 @@ void ReadXlatTables()
                     }
                     break;
                   case 4:
-                    strcpy(ChsTable.imp, strbtrim(ptr));
+                    {
+                      char *tp = strbtrim(ptr);
+                      if(strlen(tp) >= sizeof(ChsTable.imp)) {
+                        STD_PRINTNL("* " << AddPath(CFG->xlatpath, xlt->mapfile) << ": At line 4 charset name '" << tp
+                           << "' too long. It is supposed no more than " << sizeof(ChsTable.imp)-1 << " characters. A file ignored.");
+                        cfgerrors++;
+                        ifp.Lseek(0, SEEK_END);
+                        ChsTable.displaylevel = 0;
+                        ChsTable.level = 0;
+                        ChsTable.version = 0;
+                        ChsTable.id = 0;
+                      }
+                      else strcpy(ChsTable.imp, strbtrim(ptr));
+                    }
                     break;
                   case 5:
                     if (ChsTable.level && ChsTable.version!=-1)
@@ -689,7 +702,21 @@ void ReadXlatTables()
                                strbtrim(ptr), ChsTable.level);
                     }
                     else
-                      strcpy(ChsTable.exp, strbtrim(ptr));
+                    {
+                      char *tp = strbtrim(ptr);
+                      if(strlen(tp) >= sizeof(ChsTable.exp)) {
+                        STD_PRINTNL("* " << AddPath(CFG->xlatpath, xlt->mapfile) << ": At line 4 charset name '" << tp
+                            << "' too long. It is supposed no more than " << sizeof(ChsTable.exp)-1 << " characters. A file ignored.");
+                        cfgerrors++;
+                        ifp.Lseek(0, SEEK_END);
+                        ChsTable.displaylevel = 0;
+                        ChsTable.level = 0;
+                        ChsTable.version = 0;
+                        ChsTable.id = 0;
+                        ChsTable.imp[0] = '\0';
+                      }
+                      else strcpy(ChsTable.exp, strbtrim(ptr));
+                    }
                     break;
                 }
               }
