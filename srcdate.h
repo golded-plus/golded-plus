@@ -1,1 +1,3 @@
-char src_date[]="20110312";
+#ifndef __SRCDATE__
+#define __SRCDATE__ "20110312"
+#endif
