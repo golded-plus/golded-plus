@@ -202,8 +202,8 @@ typedef uint32_t  time32_t;   /* 32-bit time_t type */
   GUI_Print(str);           \
   }
 #else
-#define STD_PRINT(out) std::cout << out;
-#define STD_PRINTNL(out) std::cout << out << NL;
+#define STD_PRINT(out) std::cerr << out;
+#define STD_PRINTNL(out) std::cerr << out << NL;
 #endif
 
 

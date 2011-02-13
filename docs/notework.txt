@@ -13,6 +13,11 @@ ______________________________________________________________________
 Legend: "-" - bugfix, "+" - new feature, "!" - important modification.
 ______________________________________________________________________
 
+! Now Golded+ outputs errors of reading of a config in stderr instead
+  stdout. To look only errors, the user unix-like OS can use a
+  redirection stderr means of the command processor, for example:
+  (view) `gedlnx 2| less` or (save to file) `gedlnx 2>gedlnxerr.txt`.
+
 - Check length of charset name (16 characters max): fix buffer
   overflow.
 
