@@ -1578,7 +1578,7 @@ static void run_gn(int argc, char* argv[]) {
   }
 
   if(not quiet) {
-    std::cout << __gver_name__ << " Nodelist Compiler v." << __gver_shortver__ << __gver_platform__ << __gver_postversion__ << "." NL
+    std::cout << __gver_name__ << " - Nodelist Compiler for Golded+ v." << __gver_shortver__ << __gver_platform__ << __gver_postversion__ << "." NL
          << "Copyright (C) 1990-1999 Odinn Sorensen" NL
          << "Copyright (C) 1999-2001 Alexander S. Aganichev" NL
          << "Copyright (C) 2005 Stas Degteff & Golded+ team" NL
