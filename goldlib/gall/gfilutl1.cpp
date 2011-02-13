@@ -220,7 +220,8 @@ const char* AddPath(const char* path, const char* file) {
 void MakePathname(char* pathname, const char* path, const char* name) {
 
   Path tmpname;
-  strcpy(tmpname, name);
+
+  strxcpy(tmpname, name,GMAXPATH);
   strschg_environ(tmpname);
 
   if(strblank(tmpname)) {
