@@ -721,6 +721,7 @@ static int do_if(char* val) {
 
 //  ------------------------------------------------------------------
 //  Compile a GoldED text config file
+// Return 1 if success, return 0 if error
 
 int ReadCfg(const char* cfgfile, int ignoreunknown)
 {
@@ -739,8 +740,23 @@ int ReadCfg(const char* cfgfile, int ignoreunknown)
   int cfgignore=NO, line=0;
 
   // Open the file
-  strcpy(cfg, cfgfile);
+  if(strlen(cfgfile) >= GMAXPATH) {
+    STD_PRINTNL("* Filename '" << cfgfile << "' too long (max " << GMAXPATH-1 << " characters).");
+    LOG.ErrOpen();
+    LOG.printf("! Unable to use configuration file because filename too long (see next line):");
+    LOG.printf("%s",cfgfile); 
+    cfgerrors++;
+    return 0; // Error: can't use too long file name
+  }
+  strxcpy(cfg, cfgfile, GMAXPATH);
   MakePathname(cfg, CFG->goldpath, cfg);
+  if(cfg[0] == '\0') {
+    STD_PRINTNL("* Can't read '" << cfgfile << "': ca't construct full pathname, sorry");
+    LOG.ErrOpen();
+    LOG.printf("! Unable to use configuration file '%s' because unable to construct full pathname", cfgfile);
+    cfgerrors++;
+    return 0; // Error: can't use specified file name
+  }
 
   gfile fp(cfg, "rt", CFG->sharemode);
   if (fp.isopen())
