@@ -26,12 +26,27 @@
 
 #include <golded.h>
 
-
 //  ------------------------------------------------------------------
+//  comment out for release
+#define __GVER_SNAPSHOT__
+//  ------------------------------------------------------------------
+#ifndef __SRCDATE__
+#include "../srcdate.h"
+#endif
+
+#ifdef __GVER_SNAPSHOT__
+#define __SO__ "-b"
+#define __SC__ ""
+#else
+#undef __SRCDATE__
+#define __SRCDATE__
+#define __SO__
+#define __SC__
+#endif
 
 #define __GVER_LONGPID__  __GVER_PRENAME__ __GVER_NAME__ __GVER_POSTNAME__ __GVER_PLATFORM__
 #define __GVER_SHORTPID__ __GVER_PRESHORTNAME__ __GVER_SHORTNAME__ __GVER_POSTSHORTNAME__ __GVER_SHORTPLATFORM__
-#define __GVER_VER__(A,B,C) __GVER_PREVERSION__ #A "." #B "." #C __GVER_POSTVERSION__
+#define __GVER_VER__(A,B,C) __GVER_PREVERSION__ #A "." #B "." #C __GVER_POSTVERSION__ __SO__ __SRCDATE__ __SC__
 #define __GVER_SVER__(A,B,C) #A "." #B "." #C
 
 #define __GVER__(__GVER_MAJOR__,__GVER_MINOR__,__GVER_RELEASE__) \
