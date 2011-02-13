@@ -25,7 +25,7 @@
 ;
 2
 ;
-ISO8859-5+KOI8R+H
+ISO-5+KOI8R+H
 CP866
 ;
 \0 \d0

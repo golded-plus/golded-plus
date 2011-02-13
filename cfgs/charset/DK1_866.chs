@@ -24,8 +24,8 @@
 0        ; version number
 2        ; level number
 ;
-DOS+KOI8R; from charset
-CP866    ; to charset
+DOS+KOI8R ; from charset
+CP866     ; to charset
 ;
 \0 á
 \0 â
