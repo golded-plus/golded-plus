@@ -16,7 +16,7 @@ if( -f $ARGV[1] ){
 }
 
 if( ! -d $ARGV[0] ){
-   die "Directory '$ARGV[1]' is not exists, exiting\n";
+   die "Directory '$ARGV[0]' is not exists, exiting\n";
 }
 my $dir=$ARGV[0], $out=$ARGV[1];
 
@@ -36,6 +36,7 @@ HEAD
 
 print "Found " . ($#files+1) . " *.CHS files in $dir\n";
 
+my $errors = 0;
 foreach my $f (@files) {
   if( ! open( IN, "$f" ) ){ print STDERR "Can't open file '$f': $!\n"; next; }
   print "Proceed $f\n";
@@ -48,22 +49,30 @@ foreach my $f (@files) {
      chomp;
      next if( m%^$% ); # empty line
      if( m%^([^\s]+)% ) {
-       if($count==4){ $fromchs=uc($1); }
+       if($count==4){
+         $fromchs=uc($1);
+       }
        elsif($count==5){
+         my $comment;
          $tochs=uc($1);
-         printf OUT "XLATCHARSET %-12s %-12s %s\n", $fromchs, $tochs, $f;
+         if(length($tochs) > 16) {
+           print STDERR "Charset name $tochs too long (max 16 characters). File $f can't used yet.\n";
+           printf OUT "; Error: $tochs too long\n";
+           $errors++; $comment="; ";
+         }
+         if(length($fromchs) > 16) {
+           print STDERR "Charset name $fromchs too long (max 16 characters). File $f can't used yet.\n";
+           printf OUT "; Error: $fromchs too long\n";
+           $errors++; $comment="; ";
+         }
+         printf OUT "%sXLATCHARSET %-12s %-12s %s\n", $comment, $fromchs, $tochs, $f;
          if($fromchs =~ /-/) {
            ( my $temp = $fromchs ) =~ s/-//g ;
-           printf OUT "XLATCHARSET %-12s %-12s %s\n", $temp, $tochs, $f;
+           print OUT $comment."XLATCHARSETALIAS $fromchs $temp\n";
          }
          if($tochs =~ /-/) {
            ( my $temp = $tochs ) =~ s/-//g ;
-           printf OUT "XLATCHARSET %-12s %-12s %s\n", $fromchs, $temp, $f;
-         }
-         if( ($tochs =~ /-/) && ($fromchs =~ /-/) ) {
-           ( my $temp1 = $fromchs ) =~ s/-//g ;
-           ( my $temp2 = $tochs ) =~ s/-//g ;
-           printf OUT "XLATCHARSET %-12s %-12s %s\n", $temp1, $temp2, $f;
+           print OUT $comment."XLATCHARSETALIAS $tochs $temp\n";
          }
        }
        $count++;
@@ -73,3 +82,5 @@ foreach my $f (@files) {
 }
 
 close OUT;
+
+if( $errors >0 ) { print "\n*** Errors found. Please check output file. ***\n"; }
