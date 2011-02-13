@@ -1,4 +1,3 @@
-
 //  ------------------------------------------------------------------
 //  Route Diagram Drawing Tool.
 //  Copyright (C) 1999 Odinn Sorensen
@@ -41,6 +40,13 @@ using namespace std;
 
 int debug = false;
 
+//  ------------------------------------------------------------------
+//  Config versions
+
+#define __GVER_NAME__ "Route Diagram Drawing Tool"
+#define __GVER_SHORTNAME__ "RDDT"
+#define __gver_name__ __GVER_NAME__
+#define __gver_shortname__ __GVER_SHORTNAME__
 
 //  ------------------------------------------------------------------
 
@@ -333,7 +339,7 @@ int main(int argc, char** argv) {
   // set locale
   setlocale(LC_CTYPE, "");
 
-  cout << "Route Diagram Drawing Tool v." << __gver_shortver__ << __gver_platform__ << __gver_postversion__;
+  cout << __gver_name__ << " v." << __gver_preversion__ << __gver_shortver__ << __gver_platform__ << __gver_postversion__;
 #ifdef KOI8
   cout << " (koi8)";
 #endif
