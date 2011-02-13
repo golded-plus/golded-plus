@@ -48,7 +48,7 @@ if [ ! -f golded3/mygolded.h ]; then
   echo "golded3/mygolded.h is created now. Please edit this file"
   exit 1
 fi
-sed -i.orig -e "s/\#define __GVER_POSTVERSION__ .*/\#define __GVER_POSTVERSION__   \"-b${date}\"/" golded3/mygolded.h
+#sed -i.orig -e "s/\#define __GVER_POSTVERSION__ .*/\#define __GVER_POSTVERSION__   \"-b${date}\"/" golded3/mygolded.h
 
 bines="bin/geddjg.exe bin/gndjg.exe bin/rddtdjg.exe"
 files="${bines} docs/copying docs/copying.lib golded.bat"
