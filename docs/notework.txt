@@ -13,6 +13,9 @@ ______________________________________________________________________
 Legend: "-" - bugfix, "+" - new feature, "!" - important modification.
 ______________________________________________________________________
 
++ Date of last change of sources automatically remains in a files
+  srcdate.h and golded.spec.
+
 ! Now Golded+ outputs errors of reading of a config in stderr instead
   stdout. To look only errors, the user unix-like OS can use a
   redirection stderr means of the command processor, for example:
