@@ -384,7 +384,7 @@ skip_config:;
   }
   else
   {
-    STD_PRINTNL(" * AREAFILE FIDOCONFIG: Can't open file '" << path << '/' << file << ": " << strerror(errno) );
+    STD_PRINTNL(" * AREAFILE FIDOCONFIG: Can't open file '" << path << GOLD_SLASH_STR << file << ": " << strerror(errno) );
   }
 }
 

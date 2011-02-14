@@ -2267,7 +2267,7 @@ static void ShowStackRM( HANDLE hThread, CONTEXT& c, FILE *fLogFile, PREAD_PROCE
       for ( p = tt + strlen( tt ) - 1; p >= tt; -- p )
       {
         // locate the rightmost path separator
-        if ( *p == '\\' || *p == '/' || *p == ':' )
+        if ( *p == GOLD_SLASH_CHR || *p == GOLD_WRONG_SLASH_CHR || *p == ':' )
           break;
       }
       // if we found one, p is pointing at it; if not, tt only contains

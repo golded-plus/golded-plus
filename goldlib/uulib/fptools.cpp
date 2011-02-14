@@ -51,6 +51,7 @@
 
 #include <gdefs.h>
 #include <gctype.h>
+#include <gfilutil.h>
 #include <fptools.h>
 
 #if 0
@@ -420,9 +421,9 @@ _FP_cutdir (char *filename)
   if (filename == NULL)
     return NULL;
 
-  if ((ptr = _FP_strrchr (filename, '/')) != NULL)
+  if ((ptr = _FP_strrchr (filename, GOLD_SLASH_CHR)) != NULL)
     ptr++;
-  else if ((ptr = _FP_strrchr (filename, '\\')) != NULL)
+  else if ((ptr = _FP_strrchr (filename, GOLD_WRONG_SLASH_CHR)) != NULL)
     ptr++;
   else
     ptr = filename;

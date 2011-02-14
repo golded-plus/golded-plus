@@ -49,6 +49,7 @@
 #include <fptools.h>
 #include <uustring.h>
 #include <gcrcall.h>
+#include <gfilutil.h>
 
 /* for braindead systems */
 #ifndef SEEK_SET
@@ -1199,8 +1200,8 @@ UUEncodeToFile (FILE *infile, char *infname, int encoding,
   }
 
   if (diskname) {
-    if ((ptr = strchr (diskname, '/')) == NULL)
-      ptr = strchr (diskname, '\\');
+    if ((ptr = strchr (diskname, GOLD_SLASH_CHR)) == NULL)
+      ptr = strchr (diskname, GOLD_WRONG_SLASH_CHR);
     if (ptr) {
       len = strlen (diskname) + ((uuencodeext)?strlen(uuencodeext):3) + 5;
 
@@ -1245,11 +1246,11 @@ UUEncodeToFile (FILE *infile, char *infname, int encoding,
    */
 
   optr = _FP_strrchr (oname, '.');
-  if (optr==NULL || strchr (optr, '/')!=NULL || strchr (optr, '\\')!=NULL) {
+  if (optr==NULL || strchr (optr, GOLD_SLASH_CHR)!=NULL || strchr (optr, GOLD_WRONG_SLASH_CHR)!=NULL) {
     optr = oname + strlen (oname);
     *optr++ = '.';
   }
-  else if (optr==oname || *(optr-1)=='/' || *(optr-1)=='\\') {
+  else if (optr==oname || *(optr-1)==GOLD_SLASH_CHR || *(optr-1)==GOLD_WRONG_SLASH_CHR) {
     optr = oname + strlen (oname);
     *optr++ = '.';
   }

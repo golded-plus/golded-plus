@@ -105,7 +105,7 @@ int strschg_environ(std::string& s) {
     }
     if(pe != NULL) {
       std::string dirname = pe->pw_dir;
-      dirname += "/";
+      dirname += GOLD_SLASH_CHR;
       if(isslash(*p))
         ++p;
       dirname += p;
@@ -185,7 +185,7 @@ bool maketruepath(std::string &dirname) {
         ndirname = chdrive;
       else {
         ndirname = dwd;
-        ndirname += "/";
+        ndirname += GOLD_SLASH_CHR;
       }
       ndirname += dirname.c_str() + inspos;
       dirname = ndirname;
@@ -211,7 +211,7 @@ bool maketruepath(std::string &dirname) {
     struct passwd *pe = getpwnam(ndirname.c_str()); // get home
     if(pe != NULL) {
       ndirname = pe->pw_dir;
-      ndirname += "/";
+      ndirname += GOLD_SLASH_CHR;
       if(isslash(*p))
         ++p;
       ndirname += p;
@@ -222,7 +222,7 @@ bool maketruepath(std::string &dirname) {
     }
   } else if(not dirname.empty() and not isslash(dirname[0])) {
     ndirname = cwd;
-    ndirname += "/";
+    ndirname += GOLD_SLASH_CHR;
     ndirname += dirname;
     dirname = ndirname;
   }

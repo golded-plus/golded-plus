@@ -458,10 +458,10 @@ bool CMYSpellLang::Init(const gdirentry *entry)
   if (entry2)
   {
     strcpy(mEngine, entry2->dirname);
-    strcat(mEngine, "/");
+    strcat(mEngine, GOLD_SLASH_STR);
     strcat(mEngine, entry2->name.c_str());
     strcpy(mDictionary, entry->dirname);
-    strcat(mDictionary, "/");
+    strcat(mDictionary, GOLD_SLASH_STR);
     strcat(mDictionary, entry->name.c_str());
 
     return true;

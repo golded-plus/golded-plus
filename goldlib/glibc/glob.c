@@ -537,7 +537,7 @@ glob (pattern, flags, errfunc, pglob)
   else if (filename == pattern)
     {
       /* "/pattern".  */
-      dirname = "/";
+      dirname = GOLD_SLASH_CHR;
       dirlen = 1;
       ++filename;
     }
@@ -934,9 +934,9 @@ glob (pattern, flags, errfunc, pglob)
 
 #ifdef HAVE_MEMPCPY
           mempcpy (mempcpy (mempcpy (pglob->gl_pathv[pglob->gl_pathc],
-                         dir, dir_len),
-                    "/", 1),
-               filename, filename_len);
+                                     dir, dir_len),
+                            GOLD_SLASH_CHR, 1),
+                   filename, filename_len);
 #else
           memcpy (pglob->gl_pathv[pglob->gl_pathc], dir, dir_len);
           pglob->gl_pathv[pglob->gl_pathc][dir_len] = '/';
@@ -1001,10 +1001,10 @@ glob (pattern, flags, errfunc, pglob)
         char *new = realloc (pglob->gl_pathv[i], len);
         if (new == NULL)
           {
-        globfree (pglob);
-        return GLOB_NOSPACE;
+            globfree (pglob);
+            return GLOB_NOSPACE;
           }
-        strcpy (&new[len - 2], "/");
+        strcpy (&new[len - 2], GOLD_SLASH_CHR);
         pglob->gl_pathv[i] = new;
       }
     }
@@ -1214,11 +1214,11 @@ glob_in_dir (pattern, directory, flags, errfunc, pglob)
 
 # ifdef HAVE_MEMPCPY
       mempcpy (mempcpy (mempcpy (fullname, directory, dirlen),
-                "/", 1),
-           pattern, patlen + 1);
+                        GOLD_SLASH_CHR, 1),
+               pattern, patlen + 1);
 # else
       memcpy (fullname, directory, dirlen);
-      fullname[dirlen] = '/';
+      fullname[dirlen] = GOLD_SLASH_CHR;
       memcpy (&fullname[dirlen + 1], pattern, patlen + 1);
 # endif
       if (((flags & GLOB_ALTDIRFUNC)
