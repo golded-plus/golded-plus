@@ -114,6 +114,14 @@ bool gswitches::handle(word crc, const char* value) {
   uint left,right,middle;
   word cur;
 
+  if (value == NULL) {
+    STD_PRINTNL("! Illegall call of function: gswitches::handle(" << crc << ",NULL). File " __FILE__ " line " << __LINE__);
+    LOG_NULL_POINTER;
+    LOG.printf("! Illegall call of function: gswitches::handle(%04X,NULL). File %s line %i ", crc, __FILE__, __LINE__);
+    PointerErrorExit();
+    return 0;
+  }
+
   left = 0;
   right = gswitches_last - 1;
 
@@ -142,6 +150,14 @@ bool gswitches::handle(word crc, const char* value) {
 //  ------------------------------------------------------------------
 
 int SwitchCfg(word crc, char k, char* v) {
+
+  if (v == NULL) {
+    STD_PRINTNL("! Illegall call of function: SwitchCfg(" << crc << "," << k << "," << "NULL). File " __FILE__ " line " << __LINE__);
+    LOG_NULL_POINTER;
+    LOG.printf("! Illegall call of function: SwitchCfg(%04X,%c,NULL). File %s line %i ", crc, k, __FILE__, __LINE__);
+    PointerErrorExit();
+    return false;
+  }
 
   val = v;
   bool found = true;
@@ -673,6 +689,13 @@ End:
 
 static int do_if(char* val) {
 
+  if (val == NULL) {
+    STD_PRINTNL("! Illegall call of function: do_if(NULL). File " __FILE__ " line " << __LINE__);
+    LOG_NULL_POINTER;
+    LOG.printf("! Illegall call of function: do_if(NULL). File %s line %i.", __FILE__, __LINE__);
+    PointerErrorExit();
+    return 0;
+  }
   if(strieql(val, "OS/2") or strieql(val, "OS2")) {
     #ifdef __OS2__
     return true;
@@ -739,6 +762,13 @@ int ReadCfg(const char* cfgfile, int ignoreunknown)
   word crc;
   int cfgignore=NO, line=0;
 
+  if (cfgfile == NULL) {
+    STD_PRINTNL("! Illegall call of function: ReadCfg(NULL," << ignoreunknown << "). File " __FILE__ " line " << __LINE__);
+    LOG_NULL_POINTER;
+    LOG.printf("! Illegall call of function: ReadCfg(NULL,%i). File %s line %i ", ignoreunknown, __FILE__, __LINE__);
+    PointerErrorExit();
+    return 0;
+  }
   // Open the file
   if(strlen(cfgfile) >= GMAXPATH) {
     STD_PRINTNL("* Filename '" << cfgfile << "' too long (max " << GMAXPATH-1 << " characters).");
@@ -967,4 +997,3 @@ int ReadCfg(const char* cfgfile, int ignoreunknown)
 
 
 //  ------------------------------------------------------------------
-
