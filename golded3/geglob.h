@@ -42,7 +42,8 @@
 //  ------------------------------------------------------------------
 
 extern glog LOG;
-
+#define LOG_NULL_POINTER \
+  LOG.printf("! Parameter is null pointer. This is internal error in program code! Please make report for developers.")
 extern gareafile* AFILE;
 extern CfgGed* CFG;
 extern LangGed* LNG;
