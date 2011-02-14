@@ -27,7 +27,6 @@
 #include <golded.h>
 #include <gmoprot.h>
 
-
 //  ------------------------------------------------------------------
 //  Fix up the echoid and make default if none specified
 
@@ -37,6 +36,12 @@ void FixEchoid(char* echoid, int type) {
   static uint echonum = 1;
   static uint localnum = 1;
 
+  if (echoid == NULL) {
+    LOG_NULL_POINTER;
+    LOG.printf("! Illegall call of function: FixEchoid(NULL,%i). File %s line %i ", type, __FILE__, __LINE__);
+    PointerErrorExit();
+    return;
+  }
   if(*echoid == NUL) {
     const char* t = CFG->areaautoid == AUTOID_LONG ? "MAIL" : "";
     if(type & GMB_NET)
@@ -845,6 +850,12 @@ void getdztoken(char** key, char** val) {
 
   char* p = *val;
 
+  if ((val == NULL)or(key==NULL)) {
+    LOG_NULL_POINTER;
+    LOG.printf("! Illegall call of function: getdztoken(%s,%s). File %s line %i ", key?"key":"NULL", val?"val":"NULL", __FILE__, __LINE__);
+    PointerErrorExit();
+    return;
+  }
   *key = p;
   p = strskip_to(p, ',');
   if(*p == ',')
@@ -863,6 +874,12 @@ void AreaList::ReadEcholist(char* val)
   bool is_sqafix = false;
   bool is_dz = false;
 
+  if (val == NULL) {
+    LOG_NULL_POINTER;
+    LOG.printf("! Illegall call of function: AreaList::ReadEcholist(NULL). File %s line %i ", __FILE__, __LINE__);
+    PointerErrorExit();
+    return;
+  }
   // Get filename or options
   *file = NUL;
   *options = NUL;
@@ -970,6 +987,12 @@ void AreaList::GetAreaDesc(char* val) {
   char* key;
   Area* aa = NULL;
 
+  if (val == NULL) {
+    LOG_NULL_POINTER;
+    LOG.printf("! Illegall call of function: AreaList::GetAreaDesc(NULL). File %s line %i ", __FILE__, __LINE__);
+    PointerErrorExit();
+    return;
+  }
   // Get echoid and find area
   getkeyval(&key, &val);
 
@@ -1071,6 +1094,12 @@ char* MapPath(char* map, bool reverse)
 {
   Path buf, cmap;
 
+  if(map==NULL) {
+    LOG_NULL_POINTER;
+    LOG.printf("! Illegall call of function: MapPath(NULL, %s). File %s line %i ", reverse?"TRUE":"FALSE", __FILE__, __LINE__);
+    PointerErrorExit();
+    return NULL;
+  }
   strxcpy(cmap, map, sizeof(Path));
   if(reverse)
     strchg(cmap, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
@@ -1134,6 +1163,12 @@ int AreaCfgBase::setorigin(std::string& _origin)
 
 const char* AreaCfg::setautoid(const char* _echoid) {
 
+  if (_echoid == NULL) {
+    LOG_NULL_POINTER;
+    LOG.printf("! Illegall call of function: AreaCfg::setautoid(NULL). File %s line %i ", __FILE__, __LINE__);
+    PointerErrorExit();
+    return NULL;
+  }
   return strxcpy(echoid, CFG->areaautoid ? "" : _echoid, sizeof(Echo));
 }
 
