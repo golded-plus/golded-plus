@@ -60,13 +60,15 @@
 
 char* AddBackslash(char* p) {
 
-  if(*p) {
+  if(p != NULL) {
+   if(*p) {
     strchg(p, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
     if(p[strlen(p)-1] != GOLD_SLASH_CHR)
       strcat(p, GOLD_SLASH_STR);
-  }
-  else
+   }
+   else
     strcpy(p, GOLD_SLASH_STR);
+  }
 
   return p;
 }
@@ -76,6 +78,8 @@ char* AddBackslash(char* p) {
 //  Remove one trailing directory-delimiter character ('\\' in DOS-based, '/' in unix-based OS)
 
 char* StripBackslash(char* p) {
+
+  if(p == NULL) return p;
 
   int x = strlen(p) - 1;
 
@@ -90,6 +94,8 @@ char* StripBackslash(char* p) {
 //  Get size of file
 
 long GetFilesize(const char* file) {
+
+  if(file == NULL) return 0;
 
   struct stat info;
   if(stat(file, &info) == 0)
@@ -146,6 +152,9 @@ time32_t gfixstattime(time32_t st_time)
 time32_t GetFiletime(const char* file) {
 
   struct stat st;
+
+  if(file == NULL) return 0;
+
   if(stat(file, &st) == 0) {
     #if defined(__MINGW32__)
     if(st.st_mode & S_IFDIR)
@@ -161,7 +170,7 @@ time32_t GetFiletime(const char* file) {
 //  Get size of open file
 
 long fsize(FILE* fp) {
-
+  if(fp == NULL) return 0;
   return filelength(fileno(fp));
 }
 
@@ -171,6 +180,8 @@ long fsize(FILE* fp) {
 
 bool is_dir(const TCHAR *path)
 {
+  if(path == NULL) return false;
+
   // Check if it's a root path (X:\ оr /)
   #if defined(__HAVE_DRIVES__)
   if(g_isalpha(path[0]) and (path[1] == ':') and isslash(path[2]) and (path[3] == NUL))
@@ -198,6 +209,8 @@ static Path __addpath;
 
 const char* AddPath(const char* path, const char* file) {
 
+  if( (path == NULL) or (file == NULL) ) return file;
+
   if(strpbrk(file, "/\\")) {
     // Don't add path if the filename already contains one
     return file;
@@ -221,7 +234,9 @@ void MakePathname(char* pathname, const char* path, const char* name) {
 
   Path tmpname;
 
-  strxcpy(tmpname, name,GMAXPATH);
+  if( (pathname == NULL) or (path == NULL) or (name == NULL) ) return;
+
+  strxcpy(tmpname, name, GMAXPATH);
   strschg_environ(tmpname);
 
   if(strblank(tmpname)) {
@@ -264,6 +279,8 @@ FILE *fsopen(const char *path, const char *type, int shflag) {
 
   FILE* fp=NULL;
   int fh=-1, acc=0, mode=S_STDRD, c, n;
+
+  if( (path == NULL) or (type == NULL) ) return NULL;
 
   switch(type[0]) {
     case 'r':
@@ -313,6 +330,8 @@ FILE *fsopen(const char *path, const char *type, int shflag) {
 
 void TouchFile(const TCHAR *filename)
 {
+  if(filename == NULL) return;
+
   if (not fexist(filename))
   {
     gfile fh(filename, O_WRONLY|O_CREAT|O_TRUNC);
@@ -331,6 +350,7 @@ void TouchFile(const TCHAR *filename)
 //  Copy not more sizeof(Path) characters (__dst should be type "Path" or equvalence, size is GMAXPATH)
 
 char* PathCopy(char* __dst, const char* __src) {
+  if( (__dst == NULL) or (__src == NULL) ) return __dst;
   strschg_environ(strxcpy(__dst, __src, sizeof(Path)));
   return AddBackslash(__dst);
 }
@@ -343,6 +363,9 @@ int TestLockPath(const char* __path) {
   int _canlock = false;
 
   Path _file;
+
+  if(__path == NULL) return NO;
+
   strxmerge(_file, sizeof(Path), __path, "GDXXXXXX", NULL);
   mktemp(_file);
 
@@ -390,6 +413,8 @@ void WipeFile(const char* file, int options) {
 
   (void)options;
 
+  if(file == NULL) return;
+
   for(n=0; n<512; n++)
     buf[n] = (byte)(rand() % 256);
 
@@ -410,6 +435,7 @@ void WipeFile(const char* file, int options) {
 
 int strschg_environ(char* s) {
 
+  if(s == NULL) return 0;
   if(*s == NUL)
     return 0;
 
@@ -426,6 +452,7 @@ int strschg_environ(char* s) {
 
 int gchdir(const char* dir) {
 
+  if(dir == NULL) return 0;
   #if defined(__WIN32__)
   return not SetCurrentDirectory(dir);
   #else
@@ -458,6 +485,9 @@ void replaceextension(char *destpath, const char *srcpath, const char *ext) {
 
   const char *ptr;
   char *ptr2, *slash, *dot;
+
+  if( (destpath == NULL) or (srcpath == NULL) or (ext == NULL) ) return;
+
   ptr2 = slash = dot = destpath;
   ptr = srcpath;
   while(*ptr) {
@@ -480,6 +510,9 @@ void extractdirname(char *dir, const char *path) {
 
   const char *p1 = path;
   char *p2, *p3;
+
+  if( (dir == NULL) or (path == NULL) ) return;
+
   p3 = p2 = dir;
   *p3 = NUL;
   while(*p1) {
@@ -494,4 +527,3 @@ void extractdirname(char *dir, const char *path) {
 
 
 //  ------------------------------------------------------------------
-
