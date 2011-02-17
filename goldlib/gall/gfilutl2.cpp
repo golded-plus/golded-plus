@@ -101,11 +101,17 @@ void PathCopy(std::string& dst, const char* src) {
   strschg_environ(dst);
   AddBackslash(dst);
 }
+void PathCopy(std::string& dst, const std::string& src) {
+
+  dst = src;
+  strschg_environ(dst);
+  AddBackslash(dst);
+}
 
 
 //  ------------------------------------------------------------------
 //  DOS-style enviroment variables substitution in string.
-//  Unix-style tilde substitution in string.
+//  In unix-like enviroment also tilde substitution in string.
 
 int strschg_environ(std::string& s) {
 
