@@ -37,6 +37,7 @@
 
 //  ------------------------------------------------------------------
 //  Adds the directory-delimiter character into end of string ('\\' in DOS-based, '/' in unix-based OS)
+// Replace wrong directory-delimiter character with good.
 
 std::string& AddBackslash(std::string& p) {
 
@@ -74,6 +75,7 @@ void PathCopy(std::string& dst, const char* src) {
 
 //  ------------------------------------------------------------------
 //  DOS-style enviroment variables substitution in string.
+//  Unix-style tilde substitution in string.
 
 int strschg_environ(std::string& s) {
 
@@ -88,29 +90,25 @@ int strschg_environ(std::string& s) {
     s.replace(posn, posn1-posn+1, rep);
     replaced++;
   }
+  fnd.clear();
 
 #ifndef __HAVE_DRIVES__
-  if(not s.empty() and (s[0] == '~')) {
-    std::string name;
-    const char *p = s.c_str()+1;
+  if( s[0] == '~' ) {
     struct passwd *pe=NULL;
+    size_t slash;
 
-    if((s.length() > 1) and not isslash(*p)) {
-      while(*p and not isslash(*p))
-        name += *p++;
+    if( (s.length() > 2) and not isslash(s[1]) ) {
+      slash = s.find_first_of(GOLD_SLASH_STR GOLD_WRONG_SLASH_STR, 1);
+      std::string name(s,1,slash-1);
       pe = getpwnam(name.c_str());
-    }
-    else {
+    }else {
       pe = getpwuid(getuid());
     }
     if(pe != NULL) {
       std::string dirname = pe->pw_dir;
-      dirname += GOLD_SLASH_CHR;
-      if(isslash(*p))
-        ++p;
-      dirname += p;
-      s = dirname.c_str();
-      replaced++;
+      if ( slash != std::string::npos )
+        dirname += s.substr(slash);
+      s=dirname;
     }
   }
 #endif
