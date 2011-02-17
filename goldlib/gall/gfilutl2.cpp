@@ -49,6 +49,18 @@ std::string& AddBackslash(std::string& p) {
   return p;
 }
 
+//  ------------------------------------------------------------------
+//  Remove one trailing directory-delimiter character ('\\' in DOS-based, '/' in unix-based OS)
+
+std::string& StripBackslash(std::string& p) {
+
+  std::string::iterator pend = p.end();
+
+  if(isslash(*pend))
+    p.erase(pend);
+
+  return p;
+}
 
 //  ------------------------------------------------------------------
 //  Add path to filename, if no path is set. Don't chech size of 'path', be careful!

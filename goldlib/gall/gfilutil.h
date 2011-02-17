@@ -200,6 +200,7 @@ std::string& AddBackslash(std::string& p);
 
 //  Remove one trailing directory-delimiter character ('\\' in DOS-based, '/' in unix-based OS)
 char* StripBackslash(char* p);
+std::string& StripBackslash(std::string& p);
 
 //  Copy pathname with enviroment variables substitution and adds directory delimiter char.
 //  Copy not more sizeof(Path) characters (__dst should be type "Path" or equvalence, size is GMAXPATH)
