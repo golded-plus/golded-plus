@@ -120,6 +120,8 @@
   #define GOLD_SHELL_ENV                    "SHELL"
 #endif
 
+#define GOLD_ALL_SLASH_STR                  "/\\" //  GOLD_SLASH_STR GOLD_WRONG_SLASH_STR
+
 inline bool isslash(char c) { return (c == GOLD_SLASH_CHR) or (c == GOLD_WRONG_SLASH_CHR); }
 
 
@@ -192,6 +194,7 @@ void MakePathname(char* pathname, const char* path, const char* name);
 void MakePathname(std::string& pathname, const std::string& path, const std::string& name);
 
 //  Adds the directory-delimiter character into end of string ('\\' in DOS-based, '/' in unix-based OS)
+// Replace wrong directory-delimiter character with good.
 char* AddBackslash(char* p);
 std::string& AddBackslash(std::string& p);
 

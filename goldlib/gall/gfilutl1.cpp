@@ -57,6 +57,7 @@
 
 //  ------------------------------------------------------------------
 //  Adds the directory-delimiter character into end of string ('\\' in DOS-based, '/' in unix-based OS)
+// Replace wrong directory-delimiter character with good.
 
 char* AddBackslash(char* p) {
 
