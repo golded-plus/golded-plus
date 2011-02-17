@@ -179,10 +179,14 @@ inline time32_t GetFiletime(const std::string& file) { return GetFiletime(file.c
 inline long FiletimeCmp(const char* file1, const char* file2) { return long(GetFiletime(file1) - GetFiletime(file2)); }
 inline long FiletimeCmp(const std::string& file1, const std::string& file2) { return FiletimeCmp(file1.c_str(), file2.c_str()); }
 
-//  Get size of open file
+//  Get size of open file handle
 long fsize(FILE* fp);
-//  Get size of file
+
+//  Get size of disk file.  Return values:
+// positive number or zero - size of file,
+// negative number - error (and error code is stored in errno)
 long GetFilesize(const char* file);
+long GetFilesize(const std::string& filename);
 
 //  Add path to filename if no path is present. Uses static string and don't chech size of 'path', be careful!
 const char* AddPath(const char* path, const char* file);

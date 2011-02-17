@@ -63,6 +63,24 @@ std::string& StripBackslash(std::string& p) {
 }
 
 //  ------------------------------------------------------------------
+//  Get size of file. Return values:
+// positive number or zero - size of file,
+// negative number - error (and error code is stored in errno)
+
+long GetFilesize(const std::string& filename) {
+
+  if(filename.empty()) {
+    errno = EINVAL;
+    return -1;
+  }
+
+  struct stat info;
+  if(stat(filename.c_str(), &info) == 0)
+    return info.st_size;
+  return -1;
+}
+
+//  ------------------------------------------------------------------
 //  Add path to filename, if no path is set. Don't chech size of 'path', be careful!
 
 void MakePathname(std::string& pathname, const std::string& path, const std::string& name) {
