@@ -237,8 +237,8 @@ void MakePathname(char* pathname, const char* path, const char* name) {
 
   if( (pathname == NULL) or (path == NULL) or (name == NULL) ) return;
 
-  strxcpy(tmpname, name, GMAXPATH);
-  strschg_environ(tmpname);
+  strxcpy(tmpname, name, sizeof(tmpname));
+  strschg_environ(tmpname, sizeof(tmpname));
 
   if(strblank(tmpname)) {
     *pathname = NUL;
@@ -352,7 +352,7 @@ void TouchFile(const TCHAR *filename)
 
 char* PathCopy(char* __dst, const char* __src) {
   if( (__dst == NULL) or (__src == NULL) ) return __dst;
-  strschg_environ(strxcpy(__dst, __src, sizeof(Path)));
+  strschg_environ(strxcpy(__dst, __src, sizeof(Path)), sizeof(Path));
   return AddBackslash(__dst);
 }
 

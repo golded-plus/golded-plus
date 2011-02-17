@@ -224,8 +224,9 @@ void WipeFile(const char* file, int options);
 const char* CleanFilename(const char* __file);
 
 //  DOS-style enviroment variables substitution in string.
-int strschg_environ(char* s);
-int strschg_environ(std::string& s);
+int strschg_environ(char* s); /* Possible buffer owerflow! Please use another variant.  */
+int strschg_environ(char* s, size_t s_size); /* With control buffer size */
+int strschg_environ(std::string& s);         /* Use dinamic allocated string.  */
 
 char* MapPath(char* map, bool reverse = false); // gcarea.cpp
 inline char* ReMapPath(char* map) { return MapPath(map, true); }
