@@ -2402,7 +2402,7 @@ AreaFileGroups Yes
 ;  Member            REC.*, SOC.*, SCI.*, TALK.*
 ;  Member            PINGNET.*
 ;  EditHardTerm      Yes
-;  Load Language     GEDLNGUS.CFG
+;  LoadLanguage      GEDLNGUS.CFG
 ;  MsgListWideSubj   Yes
 ;  QuoteChars        "|:;"
 ;  UserName          odinn@winboss.dk
