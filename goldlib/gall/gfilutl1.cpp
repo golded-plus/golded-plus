@@ -443,7 +443,20 @@ int strschg_environ(char* s) {
   std::string __s = s;
   int rv = strschg_environ(__s); // Look in gfilutl2.cpp
   if(rv)
-    strxcpy(s, __s.c_str(), sizeof(Path));
+    strcpy(s, __s.c_str());
+  return rv;
+}
+
+int strschg_environ(char* s, size_t s_size) {
+
+  if(s == NULL) return 0;
+  if(*s == NUL)
+    return 0;
+
+  std::string __s = s;
+  int rv = strschg_environ(__s); // Look in gfilutl2.cpp
+  if(rv)
+    strxcpy(s, __s.c_str(), s_size);
   return rv;
 }
 
