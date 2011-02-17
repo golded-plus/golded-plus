@@ -35,9 +35,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* FreeBSD's malloc.h is deprecated, it drops a warning and */
-/* #includes <stdlib.h>, which is already here.             */
-#if !defined(__FreeBSD__) && !defined(__APPLE__)
+#ifdef HAVE_MALLOC_H
 #include <malloc.h>
 #endif
 

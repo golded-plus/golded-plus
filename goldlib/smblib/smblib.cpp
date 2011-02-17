@@ -49,7 +49,7 @@
 
 /* ANSI C Library headers */
 
-#if !defined(__FreeBSD__) && !defined(__APPLE__)
+#ifdef HAVE_MALLOC_H
     #include <malloc.h>
 #endif
 
