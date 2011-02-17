@@ -113,21 +113,23 @@ int strschg_environ(std::string& s) {
   int replaced = 0;
   size_t posn, posn1;
 
-  while(((posn=s.find('%')) != s.npos) and ((posn1=s.find('%', posn+1)) != s.npos)) {
-    fnd = s.substr(posn+1, posn1-1-posn);
-    const char* rep = getenv(fnd.c_str());
-    rep = rep ? rep : "";
-    s.replace(posn, posn1-posn+1, rep);
-    replaced++;
+  if (s.length() > 1) {
+    while(((posn=s.find('%')) != s.npos) and ((posn1=s.find('%', posn+1)) != s.npos)) {
+      fnd = s.substr(posn+1, posn1-1-posn);
+      const char* rep = getenv(fnd.c_str());
+      rep = rep ? rep : "";
+      s.replace(posn, posn1-posn+1, rep);
+      replaced++;
+    }
+    fnd.clear();
   }
-  fnd.clear();
 
 #ifndef __HAVE_DRIVES__
   if( s[0] == '~' ) {
     struct passwd *pe=NULL;
-    size_t slash;
+    size_t slash = 1;
 
-    if( (s.length() > 2) and not isslash(s[1]) ) {
+    if( (s.length() > 1) and not isslash(s[1]) ) {
       slash = s.find_first_of(GOLD_SLASH_STR GOLD_WRONG_SLASH_STR, 1);
       std::string name(s,1,slash-1);
       pe = getpwnam(name.c_str());
@@ -139,6 +141,7 @@ int strschg_environ(std::string& s) {
       if ( slash != std::string::npos )
         dirname += s.substr(slash);
       s=dirname;
+      replaced++;
     }
   }
 #endif
