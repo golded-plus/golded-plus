@@ -881,7 +881,7 @@ int ReadCfg(const char* cfgfile, int ignoreunknown)
           if(not _gotcond) {
             switch(crc) {
               case CRC_INCLUDE:
-                strschg_environ(val);
+                strschg_environ(val, (buf+sizeof(buf))-val);
                 MapPath(val);
 
                 if (not quiet)
@@ -894,7 +894,7 @@ int ReadCfg(const char* cfgfile, int ignoreunknown)
 
                 break;
               case CRC_AREAFILE:
-                strschg_environ(val);
+                strschg_environ(val, (buf+sizeof(buf))-val);
                 MapPath(val);
 
                 if (not quiet)

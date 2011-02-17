@@ -78,7 +78,7 @@ bool edit_pathname(char* buf, int buf_size, char* title, int helpcat) {
     }
   }
 
-  strschg_environ(buf);
+  strschg_environ(buf, buf_size);
   return true;
 }
 

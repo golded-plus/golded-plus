@@ -656,7 +656,7 @@ void Initialize(int argc, char* argv[]) {
     // Get it in user directory (step 1)
     if(not found) {
       strxcpy(cmdlinecfg, CFGUSERPATH1, sizeof(cmdlinecfg));
-      strschg_environ(cmdlinecfg);
+      strschg_environ(cmdlinecfg, sizeof(cmdlinecfg));
       found = FindCfg(cmdlinecfg);
     }
     #endif
@@ -664,7 +664,7 @@ void Initialize(int argc, char* argv[]) {
     // Get it in user directory (step 2)
     if(not found) {
       strxcpy(cmdlinecfg, CFGUSERPATH2, sizeof(cmdlinecfg));
-      strschg_environ(cmdlinecfg);
+      strschg_environ(cmdlinecfg, sizeof(cmdlinecfg));
       found = FindCfg(cmdlinecfg);
     }
     #endif
@@ -672,7 +672,7 @@ void Initialize(int argc, char* argv[]) {
     // Get it in system config directory
     if(not found) {
       strxcpy(cmdlinecfg, CFGPATH, sizeof(cmdlinecfg));
-      strschg_environ(cmdlinecfg);
+      strschg_environ(cmdlinecfg, sizeof(cmdlinecfg));
       found = FindCfg(cmdlinecfg);
     }
     #endif

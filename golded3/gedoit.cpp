@@ -54,7 +54,7 @@ void SaveLines(int mode, const char* savefile, GMsg* msg, int margin, bool clip)
   else
   {
     strcpy(fnam, savefile);
-    strschg_environ(fnam);
+    strschg_environ(fnam, sizeof(fnam));
     prnfp.Fopen(fnam, prnacc, CFG->sharemode);
   }
   int lines=0;

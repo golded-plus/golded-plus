@@ -198,7 +198,7 @@ void AreaList::AddNewArea(AreaCfg* aa)
       return;
     MapPath(aa->path);
     AddBackslash(aa->path);
-    strschg_environ(aa->path);
+    strschg_environ(aa->path, sizeof(aa->path));
   }
   #ifndef GMB_NOHUDS
   else if (aa->basetype == "HUDSON")
@@ -232,7 +232,7 @@ void AreaList::AddNewArea(AreaCfg* aa)
       return;
     MapPath(aa->path);
     StripBackslash(aa->path);
-    strschg_environ(aa->path);
+    strschg_environ(aa->path, sizeof(aa->path));
   }
   #endif
   #ifndef GMB_NOXBBS
@@ -242,7 +242,7 @@ void AreaList::AddNewArea(AreaCfg* aa)
       return;
     MapPath(aa->path);
     StripBackslash(aa->path);
-    strschg_environ(aa->path);
+    strschg_environ(aa->path, sizeof(aa->path));
   }
   #endif
   #ifndef GMB_NOSQSH
@@ -252,7 +252,7 @@ void AreaList::AddNewArea(AreaCfg* aa)
       return;
     MapPath(aa->path);
     StripBackslash(aa->path);
-    strschg_environ(aa->path);
+    strschg_environ(aa->path, sizeof(aa->path));
   }
   #endif
   #ifndef GMB_NOJAM
@@ -262,7 +262,7 @@ void AreaList::AddNewArea(AreaCfg* aa)
       return;
     MapPath(aa->path);
     StripBackslash(aa->path);
-    strschg_environ(aa->path);
+    strschg_environ(aa->path, sizeof(aa->path));
   }
   #endif
   #ifndef GMB_NOPCB
@@ -270,7 +270,7 @@ void AreaList::AddNewArea(AreaCfg* aa)
   {
     MapPath(aa->path);
     StripBackslash(aa->path);
-    strschg_environ(aa->path);
+    strschg_environ(aa->path, sizeof(aa->path));
   }
   #endif
   #ifndef GMB_NOSMB
@@ -280,7 +280,7 @@ void AreaList::AddNewArea(AreaCfg* aa)
       return;
     MapPath(aa->path);
     StripBackslash(aa->path);
-    strschg_environ(aa->path);
+    strschg_environ(aa->path, sizeof(aa->path));
   }
   #endif
   else if (aa->basetype == "SEPARATOR")

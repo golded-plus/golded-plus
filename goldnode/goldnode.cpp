@@ -1239,6 +1239,7 @@ char* _MapPath(char* fmap, bool reverse) {
 static int parse_config(const char *__configfile, Addr& zoneaddr)
 {
   char buf[512];
+  const char * const top_buf = buf+sizeof(buf);
   char* ptr;
   char* key;
   word crc;
@@ -1328,7 +1329,7 @@ static int parse_config(const char *__configfile, Addr& zoneaddr)
                 ndz.point = 0;
                 ndl.ft = (dword)-1;
                 ndl.fc = NO;
-                strschg_environ(value);
+                strschg_environ(value, top_buf-value);
                 _MapPath(value);
                 strcpy(ndl.fn, value);
                 nodelist.push_back(ndl);
@@ -1353,7 +1354,7 @@ static int parse_config(const char *__configfile, Addr& zoneaddr)
                 ndz.point = 0;
                 ndl.ft = (dword)-1;
                 ndl.fc = NO;
-                strschg_environ(value);
+                strschg_environ(value, top_buf-value);
                 _MapPath(value);
                 strcpy(ndl.fn, value);
                 userlist.push_back(ndl);
@@ -1381,7 +1382,7 @@ static int parse_config(const char *__configfile, Addr& zoneaddr)
                 sh_mod = GetYesno(value) ? SH_DENYNO : SH_COMPAT;
               break;
             case CRC_INCLUDE:
-              strschg_environ(value);
+              strschg_environ(value, top_buf-value);
               _MapPath(value);
               if(not parse_config(value,zoneaddr))     // NOTE! This is a recursive call!
                 if(not quiet) std::cout << "* Could not read configuration file " << value << '!' << NL;
