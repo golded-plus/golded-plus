@@ -95,7 +95,7 @@ int strschg_environ(std::string& s) {
     const char *p = s.c_str()+1;
     struct passwd *pe=NULL;
 
-    if((s.length() != 1) and not isslash(*p)) {
+    if((s.length() > 1) and not isslash(*p)) {
       while(*p and not isslash(*p))
         name += *p++;
       pe = getpwnam(name.c_str());
