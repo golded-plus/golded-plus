@@ -2,7 +2,7 @@
 ;               Sample message template file for GoldED
 ;   ----------------------------------------------------------------------
 ;
-@LoadLanguage GEDLNGUS.CFG
+@LoadLanguage gedlngus.cfg
 ;
 ;   ----------------------------------------------------------------------
 ;   Insert these lines if the message is a moved reply.

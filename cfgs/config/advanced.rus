@@ -571,7 +571,7 @@ EditComment "Odinn"   "That's right :-)"
 EditComment "Odinnn"  "Oops! One 'n' too many! :-)"
 //  Внешний подключаемый словаpь почтовых аббpевиатyp
 //   (в файле GOLDCMNT.CFG) комментиpyемых pедактоpом
-INCLUDE GOLDCMNT.CFG
+INCLUDE goldcmnt.cfg
 
 // Определение строк, которые будут выводится, при вводе сокращённой
 // комбинации клавиш во встроенном редакторе. Выбирайте ключевые строки
@@ -1621,7 +1621,7 @@ IgnoreCharSet Yes
 // Путь к таблицам .chr и .esc перекодировок
 ;XlatPath <путь>
 
-XlatPath C:\FIDO\GED\Xlat\
+XlatPath c:\fido\ged\xlat\
 
 // Определение файлов с ESC-таблицами.
 // Впрочем, в кодировке CP866 практическое применение проблематично.
@@ -2257,7 +2257,7 @@ AreaPath C:\FIDO\SQ\
 ;AREAFILE Maximus    ; Maximus Используя путь из переменной окружения MAXIMUS, либо путь из AREAPATH
 ;AREAFILE ME2          R:\ME2\AREADESC.ME2 R:\ME2\AREAS.BBS
 ;AREAFILE ME2          AREADESC.ME2 AREAS.BBS ; ME2 using token AREAPATH
-;AREAFILE Opus         R:\OPUS\
+;AREAFILE Opus         r:\opus\
 ;AREAFILE Opus       ; Opus Используя путь из переменной окружения OPUS, либо путь из AREAPATH
 ;AREAFILE Partoss      R:\PARTOSS\                     ; == AREAFILE Squish
 ;AREAFILE Pcboard      R:\PCB\
@@ -2370,8 +2370,8 @@ AreaFileGroups Yes
 // Определения для области NET_DEV.
 ;Group NET_DEV
 ;  MsgListHeader     Yes
-;  LoadLanguage      GEDLNGUS.CFG
-;  OutputFile        NET_DEV.TXT
+;  LoadLanguage      gedlngus.cfg
+;  OutputFile        net_dev.txt
 ;  ViewHidden        Yes
 ;  ViewKludge        Yes
 ;  WhoTo             All
@@ -2389,8 +2389,8 @@ AreaFileGroups Yes
 ;  Member            NET_EMAIL*
 ;  Attributes        CRA PVT
 ;  EditHardTerm      Yes
-;  LoadLanguage      GEDLNGUS.CFG
-;  Template          EMAIL.TPL
+;  LoadLanguage      gedlngus.cfg
+;  Template          email.tpl
 ;  UserName          odinn@winboss.dk
 ;  XlatImport        LATIN-1
 ;  XlatExport        LATIN-1
@@ -2402,11 +2402,11 @@ AreaFileGroups Yes
 ;  Member            REC.*, SOC.*, SCI.*, TALK.*
 ;  Member            PINGNET.*
 ;  EditHardTerm      Yes
-;  LoadLanguage      GEDLNGUS.CFG
+;  LoadLanguage      gedlngus.cfg
 ;  MsgListWideSubj   Yes
 ;  QuoteChars        "|:;"
 ;  UserName          odinn@winboss.dk
-;  Template          NEWSGRPS.TPL
+;  Template          newsgrps.tpl
 ;  XlatImport        LATIN-1
 ;  XlatExport        LATIN-1
 ;EndGroup
@@ -2414,8 +2414,8 @@ AreaFileGroups Yes
 // A group for Danish (FidoNet Region 23) echoes.
 ;Group Danish:
 ;  Member            *_R23.*, *.23?
-;  LoadLanguage      GEDLNGDK.CFG
-;  Template          DANSK.TPL
+;  LoadLanguage      gedlngdk.cfg
+;  Template          dansk.tpl
 ;  Whoto             Alle
 ;EndGroup
 
@@ -2423,7 +2423,7 @@ AreaFileGroups Yes
 ;Group FidoNet:
 ;  Member            GOLDED*, INTERCOOK, MUSIC, 4DOS, ENET.SOFT,
 ;  Member            ENET.SYSOP, FDECHO, RA_UTIL, REGCON.EUR, OS2*
-;  LoadLanguage      GEDLNGUS.CFG
+;  LoadLanguage      gedlngus.cfg
 ;  DispSoftCR        No
 ;  UseSoftCRXlat     No
 ;  WhoTo             All
