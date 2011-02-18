@@ -51,15 +51,48 @@ GNUmakef.def.
 -- unix-like ONLY --
 When building in Linux, FreeBSD or another unix-like OS if you wants use
 unicode-compatible Golded+ then build Golded+ using ncurses v.5.x with
-libncursesw. (This issue is suggested by Dmitry Rodin 2:5020/5410@fidonet.)
+libncursesw, a wide-characters ncurses version. (This issue is suggested
+by Dmitry Rodin 2:5020/5410@fidonet.)
 ------ COMMON ------
 
 Now go to golded3 and copy mygolded.__h to mygolded.h and adjust it for
 yourself (put your name, FTN address and e-mail). Goto root again.
 
-Exec 'make' (or `gmake' on BSD) and drink beer or play with bear until
+Exec 'make' (or `gmake' on BSD). You may specify following parameters in the
+make call:
+
+ "BUILD=minimal"   Compile Golded+ with support only most popular formats of
+                   message bases (OPUS, Jam, Squish).
+
+ "USE_NCURSES=0"   if you dislike curses library (Linux version requires to
+                   use curses)
+
+ "WIDE_NCURSES=1"  if it is needed to use wide characters with curses library
+
+ "BUGGY_NCURSES=1" if Golded+ requires additional keypresses to pass areascan
+
+ "KOI8=1"          Better koi-8 support for linux. Do not set this for
+                   international builds since latin-1 support will be broken.
+
+ "ICONV=1"         Use iconv library for recoding text. Experimental! Do not
+                   set this if you don't sure!
+
+ "PLATFORM=xxx"    Overwrite platform auto detection. Here "xxx" may be:
+                   "cyg" - for MinGW or Cygwin (MinGW build),
+                   "lnx" - for GNU/Linux or any BSD,
+                   "emx" - for OS/2 EMX
+                   "sun" - for SunOS (Solaris)
+                   "osx" - for OS X
+                   "djg" - for DJGPP (DOS with DPMI)
+                   "be"  - for BeOS
+
+If you do not know that means the parameter, please do not specify it in
+command line.
+
+While make work, you may drink beer or play with bear until
 compilation in progress. But better - help your wife (if you have one) or
 wives (if you have more :)) with home work ;-)
+
 
 ls bin/
 
