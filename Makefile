@@ -1,23 +1,23 @@
 # $Id$
 # Build Golded+, Goldnode and RDDT using GNU make and CNU C++ compuler.
 # You may use following parameters:
-#   "PLATFORM=xxx", where xxx specifies platform, one of:
-#                   "cyg" - for MinGW in Cygwin,
+# "PLATFORM=xxx", where xxx specifies platform, one of:
+#                   "cyg" - for MinGW or Cygwin (MinGW build),
 #                   "lnx" - for GNU/Linux or any BSD,
 #                   "emx" - for OS/2 EMX
 #                   "sun" - for SunOS (Solaris)
 #                   "osx" - for OS X
 #                   "djg" - for DJGPP (DOS with DPMI)
 #                   "be"  - for BeOS
-#   BUILD=minimal   Compile Golded+ with support only most popular formats of
+# "BUILD=minimal"   Compile Golded+ with support only most popular formats of
 #                   message bases (OPUS, Jam, Squish).
-#   USE_NCURSES=0   if you dislike curses library (Linux version requires to
+# "USE_NCURSES=0"   if you dislike curses library (Linux version requires to
 #                   use curses)
-#   WIDE_NCURSES=1  if it is needed to use wide characters with curses library
-#   BUGGY_NCURSES=1 if Golded+ requires additional keypresses to pass areascan
-#   KOI8=1          Better koi-8 support for linux. Do not set this for
+# "WIDE_NCURSES=1"  if it is needed to use wide characters with curses library
+# "BUGGY_NCURSES=1" if Golded+ requires additional keypresses to pass areascan
+# "KOI8=1"          Better koi-8 support for linux. Do not set this for
 #                   international builds since latin-1 support will be broken.
-#   ICONV=1         Use iconv library for recoding text. Experimental! Do not
+# "ICONV=1"         Use iconv library for recoding text. Experimental! Do not
 #                   set this if you don't sure!
 
 include GNUmakef.def
