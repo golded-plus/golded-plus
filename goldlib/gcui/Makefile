@@ -3,7 +3,7 @@
 ##  -------------------------------------------------------------------
 ## GCUI: Golded+ Character-oriented User Interface library.
 ##  -------------------------------------------------------------------
-# -*- makefile -*-
+# $Id$
 # Build library using GNU make and CNU C++ compuler.
 
 ifeq ($(TERM),cygwin)
@@ -17,11 +17,17 @@ endif
 TOP=../..
 TARGET=gcui
 INCS=-I$(TOP)/goldlib/gcui -I$(TOP)/goldlib/gall
-ifeq ($(PLATFORM),emx) || ($(PLATFORM),MINGW)
+
+ifdef MINGW
 INCS+=-I$(TOP)/goldlib/glibc
+else
+ifeq ($(PLATFORM),emx)
+INCS+=-I$(TOP)/goldlib/glibc
+endif
 endif
 
 include $(TOP)/Config.def
+
 ifneq ($(findstring GCFG_NO_MYSPELL, $(CPPFLAGS)), GCFG_NO_MYSPELL)
 INCS+=-I$(TOP)/goldlib/hunspell
 endif

@@ -24,8 +24,6 @@
 //  Product name and version stuff.
 //  ------------------------------------------------------------------
 
-#include <golded.h>
-
 //  ------------------------------------------------------------------
 //  comment out for release
 #define __GVER_SNAPSHOT__

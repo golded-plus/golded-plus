@@ -1,21 +1,25 @@
-# Uncomment to disable Ezycom messagebase format
+# -*- makefile -*-
+# $Id$
+# Include file for GNU C++ build
+
+# Uncomment to disable Ezycom messagebase format:
 #CPPFLAGS+=-DGMB_NOEZY
-# Uncomment to disable Goldbase messagebase format
+# Uncomment to disable Goldbase messagebase format:
 #CPPFLAGS+=-DGMB_NOGOLD
-# Uncomment to disable Hudson messagebase format
+# Uncomment to disable Hudson messagebase format:
 #CPPFLAGS+=-DGMB_NOHUDS
-# Uncomment to disable JAM messagebase format
-#CPPFLAGS+=-DGMB_NOJAM
-# Uncomment to disable PCBoard messagebase format
+# Uncomment to disable PCBoard messagebase format:
 #CPPFLAGS+=-DGMB_NOPCB
-# Uncomment to disable Squish messagebase format
-#CPPFLAGS+=-DGMB_NOSQSH
-# Uncomment to disable SMB messagebase format
+# Uncomment to disable SMB messagebase format:
 #CPPFLAGS+=-DGMB_NOSMB
-# Uncomment to disable WildCat! messagebase format
+# Uncomment to disable WildCat! messagebase format:
 #CPPFLAGS+=-DGMB_NOWCAT
-# Uncomment to disable AdeptXBBS messagebase format
+# Uncomment to disable AdeptXBBS messagebase format:
 #CPPFLAGS+=-DGMB_NOXBBS
+# Uncomment to disable JAM messagebase format:
+#CPPFLAGS+=-DGMB_NOJAM
+# Uncomment to disable Squish messagebase format:
+#CPPFLAGS+=-DGMB_NOSQSH
 
 ifeq ($(BUILD),minimal)
 CPPFLAGS+=-DGMB_NOEZY -DGMB_NOGOLD -DGMB_NOHUDS -DGMB_NOPCB -DGMB_NOSMB -DGMB_NOWCAT -DGMB_NOXBBS

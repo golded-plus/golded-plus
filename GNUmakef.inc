@@ -1,4 +1,6 @@
 # -*- makefile -*-
+# $Id$
+# Include file for GNU C++ build
 
 .PHONY: all clean sourcelist
 
