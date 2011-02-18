@@ -108,6 +108,11 @@ EXEEXT=
 OBJEXT=.o
 LIBEXT=.a
 CFLAGS+=-D__SUNOS__ -D__UNIX__ -DUNIX
+ifeq ($(WIDE_NCURSES),1)
+LIBCURSES=-L/opt/csw/lib -lncursesw
+else
+LIBCURSES=-L/opt/csw/lib -lncurses
+endif
 else
 ifeq ($(PLATFORM),osx) # Mac OSX
 CAT=cat
@@ -121,6 +126,11 @@ PLATFORM=osx
 EXEEXT=
 OBJEXT=.o
 LIBEXT=.a
+ifeq ($(WIDE_NCURSES),1)
+LIBCURSES=-lncursesw
+else
+LIBCURSES=-lncurses
+endif
 else                   # Linux, *BSD or another unix-like OS
 CAT=cat
 SED=sed
@@ -133,7 +143,12 @@ PLATFORM=lnx
 EXEEXT=
 OBJEXT=.o
 LIBEXT=.a
+ifeq ($(WIDE_NCURSES),1)
 CFLAGS+=-I/usr/include/ncursesw/
+LIBCURSES=-lncursesw
+else
+LIBCURSES=-lncurses
+endif
 endif
 endif
 endif

@@ -36,15 +36,7 @@ endif
 include $(TOP)/GNUmakef.inc
 
 ifeq ($(USE_NCURSES),1)
-ifeq ($(PLATFORM),lnx)
-STDLIBS+= -lncurses
-endif
-ifeq ($(PLATFORM),sun)
-STDLIBS+= -L/opt/csw/lib -lncurses
-endif
-ifeq ($(PLATFORM),osx)
-STDLIBS+= -lncurses
-endif
+STDLIBS+= $(LIBCURSES)
 endif
 
 include $(TOP)/GNUmakef.prg
