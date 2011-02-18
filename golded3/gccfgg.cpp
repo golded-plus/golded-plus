@@ -901,6 +901,7 @@ CfgGed::CfgGed() {
   *play.file = 0;
   for(int n=0; n<16; n++)
     screenpalette[n] = -1;
+  screenpalette[16] = 0;   /* indicates empty array */
   *semaphore.netscan = 0;
   *semaphore.echoscan = 0;
   *semaphore.exportlist = 0;
