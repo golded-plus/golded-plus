@@ -27,6 +27,40 @@
 #include <gctype.h>
 #include <cstdio>
 #include <stdarg.h>
+
+// -------------------------------------------------------------------
+// snprintf() and vsnprintf()
+
+// ---- FIXME: All HAVE_* macro should be defined in makefile or created by autoconf
+#ifdef __GNUC__ 
+#define HAVE_SNPRINTF
+#define HAVE_VSNPRINTF
+#define HAVE_STDARG_H
+#endif
+#if  defined(__WATCOMC__) || defined(_MSC_VER)
+#define HAVE__SNPRINTF
+#define HAVE__VSNPRINTF
+#endif
+
+#ifndef HAVE_SNPRINTF
+# if defined(HAVE__SNPRINTF)
+#  define snprintf _snprintf
+#  define HAVE_SNPRINTF 1
+# endif
+#endif
+#ifndef HAVE_VSNPRINTF
+# if defined(HAVE__VSNPRINTF)
+#  define vsnprintf _vsnprintf
+#  define HAVE_VSNPRINTF 1
+# endif
+#endif
+
+#if !defined(HAVE_SNPRINTF) || !defined(HAVE_VSNPRINTF)
+# include snprintf.c
+#endif
+
+//--------------------------------------------------------------------
+
 #include <gstrall.h>
 #include <glog.h>
 #include <gdbgerr.h>
