@@ -545,10 +545,10 @@ static bool SwitchLanguage(word crc, char* str)
   {
   case CRC_ST_EDITSTATUS:
     gregex reg;
-    reg.compile("^.*%[0-9]*[dioux].*%[0-9]*[dioux].*%[0-9]*[dioux].*%[0-9]*s", gregex::icase);
+    reg.compile("^.*%[0-9-]*[dioux].*%[0-9-]*[dioux].*%[0-9-]*[dioux].*%[-0-9\\.]*s", gregex::icase);
     if (!reg.match(str))
     {
-      STD_PRINTNL("ST_EDITSTATUS has wrong format. Read NOTEWORK.TXT for details or announce author if this error is false positive (first try to set true locale).");
+      STD_PRINTNL("ST_EDITSTATUS has wrong format. Read NOTEWORK.TXT for details or announce author if this error is false positive (first try to set true locale). Your format string is \"" << str << "\", should be 3 numbers and one string.");
       SayBibi();
       waitkeyt(10000);
     }
