@@ -41,7 +41,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "obj\release\win32"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /Gm /GX /Zi /O1 /I "..\goldlib\gall" /I "..\goldlib\gcfg" /I "..\goldlib\glibc" /I "..\goldlib\gmb3" /I "..\goldlib\smblib" /I "..\goldlib\uulib" /I "..\goldlib\hunspell" /D "WIN32" /D "NDEBUG" /D "_LIB" /D "HAVE_CONFIG_H" /D "__INCLUDE_NEW_KEYWORDS__" /J /FD /c
+# ADD CPP /nologo /MD /W3 /Gm /GX /Zi /O1 /I "..\goldlib\gall" /I "..\goldlib\gcui" /I "..\goldlib\gcfg" /I "..\goldlib\glibc" /I "..\goldlib\gmb3" /I "..\goldlib\smblib" /I "..\goldlib\uulib" /I "..\goldlib\hunspell" /D "WIN32" /D "NDEBUG" /D "_LIB" /D "HAVE_CONFIG_H" /D "__INCLUDE_NEW_KEYWORDS__" /J /FD /c
 # ADD BASE RSC /l 0x419 /d "NDEBUG"
 # ADD RSC /l 0x409 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -64,7 +64,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "obj\debug\win32"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
-# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "..\goldlib\gall" /I "..\goldlib\gcfg" /I "..\goldlib\glibc" /I "..\goldlib\gmb3" /I "..\goldlib\smblib" /I "..\goldlib\uulib" /I "..\goldlib\hunspell" /D "WIN32" /D "_DEBUG" /D "_LIB" /D "HAVE_CONFIG_H" /D "__INCLUDE_NEW_KEYWORDS__" /J /FD /GZ /c
+# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "..\goldlib\gall" /I "..\goldlib\gcui" /I "..\goldlib\gcfg" /I "..\goldlib\glibc" /I "..\goldlib\gmb3" /I "..\goldlib\smblib" /I "..\goldlib\uulib" /I "..\goldlib\hunspell" /D "WIN32" /D "_DEBUG" /D "_LIB" /D "HAVE_CONFIG_H" /D "__INCLUDE_NEW_KEYWORDS__" /J /FD /GZ /c
 # ADD BASE RSC /l 0x419 /d "_DEBUG"
 # ADD RSC /l 0x409 /d "_DEBUG"
 BSC32=bscmake.exe
@@ -213,20 +213,8 @@ SOURCE=..\goldlib\gall\ghdrmime.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\goldlib\gall\gkbdbase.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\goldlib\gall\gkbdgetm.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=..\goldlib\gall\gkbdunix.cpp
 # PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
-SOURCE=..\goldlib\gall\gkbdwait.cpp
 # End Source File
 # Begin Source File
 
@@ -239,10 +227,6 @@ SOURCE=..\goldlib\gall\gmemdbg.cpp
 # Begin Source File
 
 SOURCE=..\goldlib\gall\gmemutil.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\goldlib\gall\gmoubase.cpp
 # End Source File
 # Begin Source File
 
@@ -272,10 +256,6 @@ SOURCE=..\goldlib\gall\gsnd.cpp
 # Begin Source File
 
 SOURCE=..\goldlib\gall\gsndwrap.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\goldlib\gall\gsrchmgr.cpp
 # End Source File
 # Begin Source File
 
@@ -404,63 +384,87 @@ SOURCE=..\goldlib\gall\gutlwinm.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\goldlib\gall\gvidbase.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\goldlib\gall\gvidinit.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=..\goldlib\gall\gwildmat.cpp
 # End Source File
+# End Group
+# Begin Group "gcui"
+
+# PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=..\goldlib\gall\gwinbase.cpp
+SOURCE=..\goldlib\gcui\gkbdbase.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\goldlib\gall\gwindow.cpp
+SOURCE=..\goldlib\gcui\gkbdgetm.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\goldlib\gall\gwinhlp1.cpp
+SOURCE=..\goldlib\gcui\gkbdwait.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\goldlib\gall\gwinhlp2.cpp
+SOURCE=..\goldlib\gcui\gmoubase.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\goldlib\gall\gwininit.cpp
+SOURCE=..\goldlib\gcui\gsrchmgr.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\goldlib\gall\gwinline.cpp
+SOURCE=..\goldlib\gcui\gvidbase.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\goldlib\gall\gwinmenu.cpp
+SOURCE=..\goldlib\gcui\gvidinit.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\goldlib\gall\gwinmnub.cpp
+SOURCE=..\goldlib\gcui\gwinbase.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\goldlib\gall\gwinpckf.cpp
+SOURCE=..\goldlib\gcui\gwindow.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\goldlib\gall\gwinpcks.cpp
+SOURCE=..\goldlib\gcui\gwinhlp1.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\goldlib\gall\gwinpick.cpp
+SOURCE=..\goldlib\gcui\gwinhlp2.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\goldlib\gall\gwinput2.cpp
+SOURCE=..\goldlib\gcui\gwininit.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\goldlib\gcui\gwinline.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\goldlib\gcui\gwinmenu.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\goldlib\gcui\gwinmnub.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\goldlib\gcui\gwinpckf.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\goldlib\gcui\gwinpcks.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\goldlib\gcui\gwinpick.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\goldlib\gcui\gwinput2.cpp
 # End Source File
 # End Group
 # Begin Group "gcfg"
@@ -973,10 +977,6 @@ SOURCE=..\goldlib\gall\gctype.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\goldlib\gall\gcurses.h
-# End Source File
-# Begin Source File
-
 SOURCE=..\goldlib\gall\gdbgerr.h
 # End Source File
 # Begin Source File
@@ -1041,14 +1041,6 @@ SOURCE=..\goldlib\gall\ghdrmime.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\goldlib\gall\gkbdbase.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\goldlib\gall\gkbdcode.h
-# End Source File
-# Begin Source File
-
 SOURCE=..\goldlib\gall\gkbdunix.h
 # End Source File
 # Begin Source File
@@ -1066,14 +1058,6 @@ SOURCE=..\goldlib\gall\gmemdbg.h
 # Begin Source File
 
 SOURCE=..\goldlib\gall\gmemi86.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\goldlib\gall\gmnubase.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\goldlib\gall\gmoubase.h
 # End Source File
 # Begin Source File
 
@@ -1106,10 +1090,6 @@ SOURCE=..\goldlib\gall\gsndall.h
 # Begin Source File
 
 SOURCE=..\goldlib\gall\gsndsapi.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\goldlib\gall\gsrchmgr.h
 # End Source File
 # Begin Source File
 
@@ -1205,31 +1185,59 @@ SOURCE=..\goldlib\gall\gutlunix.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\goldlib\gall\gvidall.h
-# End Source File
-# Begin Source File
-
 SOURCE=..\goldlib\gall\gwildmat.h
 # End Source File
+# End Group
+# Begin Group "gcui.h"
+
+# PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=..\goldlib\gall\gwinall.h
+SOURCE=..\goldlib\gcui\gcurses.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\goldlib\gall\gwindow.h
+SOURCE=..\goldlib\gcui\gkbdbase.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\goldlib\gall\gwinhelp.h
+SOURCE=..\goldlib\gcui\gkbdcode.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\goldlib\gall\gwinpick.h
+SOURCE=..\goldlib\gcui\gmnubase.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\goldlib\gall\gwinput.h
+SOURCE=..\goldlib\gcui\gmoubase.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\goldlib\gcui\gsrchmgr.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\goldlib\gcui\gvidall.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\goldlib\gcui\gwinall.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\goldlib\gcui\gwindow.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\goldlib\gcui\gwinhelp.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\goldlib\gcui\gwinpick.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\goldlib\gcui\gwinput.h
 # End Source File
 # End Group
 # Begin Group "gcfg.h"

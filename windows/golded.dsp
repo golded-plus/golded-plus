@@ -42,7 +42,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /Gm /Gi- /GX /Zi /O1 /Ob1 /I "..\golded3" /I "..\goldlib\gall" /I "..\goldlib\gcfg" /I "..\goldlib\glibc" /I "..\goldlib\gmb3" /I "..\goldlib\smblib" /I "..\goldlib\uulib" /I "..\goldlib\hunspell" /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "HAVE_CONFIG_H" /D "__INCLUDE_NEW_KEYWORDS__" /J /FD /c
+# ADD CPP /nologo /MD /W3 /Gm /Gi- /GX /Zi /O1 /Ob1 /I "..\golded3" /I "..\goldlib\gall" /I "..\goldlib\gcui" /I "..\goldlib\gcfg" /I "..\goldlib\glibc" /I "..\goldlib\gmb3" /I "..\goldlib\smblib" /I "..\goldlib\uulib" /I "..\goldlib\hunspell" /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "HAVE_CONFIG_H" /D "__INCLUDE_NEW_KEYWORDS__" /J /FD /c
 # SUBTRACT CPP /Gy /Fr
 # ADD BASE RSC /l 0x419 /d "NDEBUG"
 # ADD RSC /l 0x409 /d "NDEBUG"
@@ -67,7 +67,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /GZ /c
-# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I ".\golded3" /I ".\goldlib\gall" /I ".\goldlib\gcfg" /I ".\goldlib\glibc" /I ".\goldlib\gmb3" /I ".\goldlib\msgidlib" /I ".\goldlib\smblib" /I ".\goldlib\uulib" /I "..\golded3" /I "..\goldlib\gall" /I "..\goldlib\gcfg" /I "..\goldlib\glibc" /I "..\goldlib\gmb3" /I "..\goldlib\smblib" /I "..\goldlib\uulib" /I "..\goldlib\hunspell" /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "HAVE_CONFIG_H" /D "__INCLUDE_NEW_KEYWORDS__" /J /FD /GZ /c
+# ADD CPP /nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I ".\golded3" /I ".\goldlib\gall" /I ".\goldlib\gcui" /I ".\goldlib\gcfg" /I ".\goldlib\glibc" /I ".\goldlib\gmb3" /I ".\goldlib\msgidlib" /I ".\goldlib\smblib" /I ".\goldlib\uulib" /I "..\golded3" /I "..\goldlib\gall" /I "..\goldlib\gcui" /I "..\goldlib\gcfg" /I "..\goldlib\glibc" /I "..\goldlib\gmb3" /I "..\goldlib\smblib" /I "..\goldlib\uulib" /I "..\goldlib\hunspell" /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "HAVE_CONFIG_H" /D "__INCLUDE_NEW_KEYWORDS__" /J /FD /GZ /c
 # SUBTRACT CPP /Fr
 # ADD BASE RSC /l 0x419 /d "_DEBUG"
 # ADD RSC /l 0x409 /d "_DEBUG"

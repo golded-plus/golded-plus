@@ -52,6 +52,7 @@
 #include <tchar.h>
 
 #include "memleak.h"
+#include "gfilutil.h"
 
 // If the following is defined, only the used memories are stored in the hash-table.
 // If the memory is freed, it will be removed from the hash-table (to reduce memory)

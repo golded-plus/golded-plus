@@ -43,7 +43,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\goldlib\gall,..\goldlib\gcfg,..\goldlib\glibc,..\goldlib\gmb3,..\goldlib\hunspell,..\goldlib\smblib,..\goldlib\uulib"
+				AdditionalIncludeDirectories="..\goldlib\gall,..\goldlib\gcui,..\goldlib\gcfg,..\goldlib\glibc,..\goldlib\gmb3,..\goldlib\hunspell,..\goldlib\smblib,..\goldlib\uulib"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;HAVE_CONFIG_H;__INCLUDE_NEW_KEYWORDS__"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
@@ -113,7 +113,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\goldlib\gall,..\goldlib\gcfg,..\goldlib\glibc,..\goldlib\gmb3,..\goldlib\hunspell,..\goldlib\smblib,..\goldlib\uulib"
+				AdditionalIncludeDirectories="..\goldlib\gall,..\goldlib\gcui,..\goldlib\gcfg,..\goldlib\glibc,..\goldlib\gmb3,..\goldlib\hunspell,..\goldlib\smblib,..\goldlib\uulib"
 				PreprocessorDefinitions="WIN64;_DEBUG;_LIB;HAVE_CONFIG_H;__INCLUDE_NEW_KEYWORDS__"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
@@ -187,7 +187,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="2"
 				OmitFramePointers="true"
-				AdditionalIncludeDirectories="..\goldlib\gall,..\goldlib\gcfg,..\goldlib\glibc,..\goldlib\gmb3,..\goldlib\hunspell,..\goldlib\smblib,..\goldlib\uulib"
+				AdditionalIncludeDirectories="..\goldlib\gall,..\goldlib\gcui,..\goldlib\gcfg,..\goldlib\glibc,..\goldlib\gmb3,..\goldlib\hunspell,..\goldlib\smblib,..\goldlib\uulib"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;HAVE_CONFIG_H;__INCLUDE_NEW_KEYWORDS__"
 				StringPooling="true"
 				MinimalRebuild="true"
@@ -261,7 +261,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="2"
 				OmitFramePointers="true"
-				AdditionalIncludeDirectories="..\goldlib\gall,..\goldlib\gcfg,..\goldlib\glibc,..\goldlib\gmb3,..\goldlib\hunspell,..\goldlib\smblib,..\goldlib\uulib"
+				AdditionalIncludeDirectories="..\goldlib\gall,..\goldlib\gcui,..\goldlib\gcfg,..\goldlib\glibc,..\goldlib\gmb3,..\goldlib\hunspell,..\goldlib\smblib,..\goldlib\uulib"
 				PreprocessorDefinitions="WIN64;NDEBUG;_LIB;HAVE_CONFIG_H;__INCLUDE_NEW_KEYWORDS__"
 				StringPooling="true"
 				MinimalRebuild="true"
@@ -334,7 +334,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="2"
 				OmitFramePointers="true"
-				AdditionalIncludeDirectories="..\goldlib\gall,..\goldlib\gcfg,..\goldlib\glibc,..\goldlib\gmb3,..\goldlib\hunspell,..\goldlib\smblib,..\goldlib\uulib"
+				AdditionalIncludeDirectories="..\goldlib\gall,..\goldlib\gcui,..\goldlib\gcfg,..\goldlib\glibc,..\goldlib\gmb3,..\goldlib\hunspell,..\goldlib\smblib,..\goldlib\uulib"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;HAVE_CONFIG_H;__INCLUDE_NEW_KEYWORDS__"
 				StringPooling="true"
 				MinimalRebuild="true"
@@ -408,7 +408,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="2"
 				OmitFramePointers="true"
-				AdditionalIncludeDirectories="..\goldlib\gall,..\goldlib\gcfg,..\goldlib\glibc,..\goldlib\gmb3,..\goldlib\hunspell,..\goldlib\smblib,..\goldlib\uulib"
+				AdditionalIncludeDirectories="..\goldlib\gall,..\goldlib\gcui,..\goldlib\gcfg,..\goldlib\glibc,..\goldlib\gmb3,..\goldlib\hunspell,..\goldlib\smblib,..\goldlib\uulib"
 				PreprocessorDefinitions="WIN64;NDEBUG;_LIB;HAVE_CONFIG_H;__INCLUDE_NEW_KEYWORDS__"
 				StringPooling="true"
 				MinimalRebuild="true"
@@ -636,14 +636,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\goldlib\gall\gkbdbase.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\goldlib\gall\gkbdgetm.cpp"
-					>
-				</File>
-				<File
 					RelativePath="..\goldlib\gall\gkbdunix.cpp"
 					>
 					<FileConfiguration
@@ -696,10 +688,6 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\goldlib\gall\gkbdwait.cpp"
-					>
-				</File>
-				<File
 					RelativePath="..\goldlib\gall\glog.cpp"
 					>
 				</File>
@@ -709,10 +697,6 @@
 				</File>
 				<File
 					RelativePath="..\goldlib\gall\gmemutil.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\goldlib\gall\gmoubase.cpp"
 					>
 				</File>
 				<File
@@ -789,10 +773,6 @@
 				</File>
 				<File
 					RelativePath="..\goldlib\gall\gsndwrap.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\goldlib\gall\gsrchmgr.cpp"
 					>
 				</File>
 				<File
@@ -1208,63 +1188,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\goldlib\gall\gvidbase.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\goldlib\gall\gvidinit.cpp"
-					>
-				</File>
-				<File
 					RelativePath="..\goldlib\gall\gwildmat.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\goldlib\gall\gwinbase.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\goldlib\gall\gwindow.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\goldlib\gall\gwinhlp1.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\goldlib\gall\gwinhlp2.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\goldlib\gall\gwininit.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\goldlib\gall\gwinline.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\goldlib\gall\gwinmenu.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\goldlib\gall\gwinmnub.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\goldlib\gall\gwinpckf.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\goldlib\gall\gwinpcks.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\goldlib\gall\gwinpick.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\goldlib\gall\gwinput2.cpp"
 					>
 				</File>
 				<File
@@ -1295,7 +1219,87 @@
 						/>
 					</FileConfiguration>
 				</File>
-			</Filter>
+      </Filter>
+      <Filter
+				Name="gcui"
+				>
+        <File
+					RelativePath="..\goldlib\gcui\gkbdbase.cpp"
+					>
+        </File>
+        <File
+					RelativePath="..\goldlib\gcui\gkbdgetm.cpp"
+					>
+        </File>
+        <File
+					RelativePath="..\goldlib\gcui\gkbdwait.cpp"
+					>
+        </File>
+        <File
+					RelativePath="..\goldlib\gcui\gmoubase.cpp"
+					>
+        </File>
+        <File
+					RelativePath="..\goldlib\gcui\gsrchmgr.cpp"
+					>
+        </File>
+        <File
+					RelativePath="..\goldlib\gcui\gvidbase.cpp"
+					>
+        </File>
+        <File
+					RelativePath="..\goldlib\gcui\gvidinit.cpp"
+					>
+        </File>
+        <File
+					RelativePath="..\goldlib\gcui\gwinbase.cpp"
+					>
+        </File>
+        <File
+					RelativePath="..\goldlib\gcui\gwindow.cpp"
+					>
+        </File>
+        <File
+					RelativePath="..\goldlib\gcui\gwinhlp1.cpp"
+					>
+        </File>
+        <File
+					RelativePath="..\goldlib\gcui\gwinhlp2.cpp"
+					>
+        </File>
+        <File
+					RelativePath="..\goldlib\gcui\gwininit.cpp"
+					>
+        </File>
+        <File
+					RelativePath="..\goldlib\gcui\gwinline.cpp"
+					>
+        </File>
+        <File
+					RelativePath="..\goldlib\gcui\gwinmenu.cpp"
+					>
+        </File>
+        <File
+					RelativePath="..\goldlib\gcui\gwinmnub.cpp"
+					>
+        </File>
+        <File
+					RelativePath="..\goldlib\gcui\gwinpckf.cpp"
+					>
+        </File>
+        <File
+					RelativePath="..\goldlib\gcui\gwinpcks.cpp"
+					>
+        </File>
+        <File
+					RelativePath="..\goldlib\gcui\gwinpick.cpp"
+					>
+        </File>
+        <File
+					RelativePath="..\goldlib\gcui\gwinput2.cpp"
+					>
+        </File>
+      </Filter>
 			<Filter
 				Name="gcfg"
 				>
@@ -2230,10 +2234,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\goldlib\gall\gcurses.h"
-					>
-				</File>
-				<File
 					RelativePath="..\goldlib\gall\gdbgerr.h"
 					>
 				</File>
@@ -2302,14 +2302,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\goldlib\gall\gkbdbase.h"
-					>
-				</File>
-				<File
-					RelativePath="..\goldlib\gall\gkbdcode.h"
-					>
-				</File>
-				<File
 					RelativePath="..\goldlib\gall\gkbdunix.h"
 					>
 				</File>
@@ -2331,14 +2323,6 @@
 				</File>
 				<File
 					RelativePath="..\goldlib\gall\gmiscdef.h"
-					>
-				</File>
-				<File
-					RelativePath="..\goldlib\gall\gmnubase.h"
-					>
-				</File>
-				<File
-					RelativePath="..\goldlib\gall\gmoubase.h"
 					>
 				</File>
 				<File
@@ -2371,10 +2355,6 @@
 				</File>
 				<File
 					RelativePath="..\goldlib\gall\gsndsapi.h"
-					>
-				</File>
-				<File
-					RelativePath="..\goldlib\gall\gsrchmgr.h"
 					>
 				</File>
 				<File
@@ -2474,38 +2454,66 @@
 					>
 				</File>
 				<File
-					RelativePath="..\goldlib\gall\gvidall.h"
-					>
-				</File>
-				<File
 					RelativePath="..\goldlib\gall\gwildmat.h"
-					>
-				</File>
-				<File
-					RelativePath="..\goldlib\gall\gwinall.h"
-					>
-				</File>
-				<File
-					RelativePath="..\goldlib\gall\gwindow.h"
-					>
-				</File>
-				<File
-					RelativePath="..\goldlib\gall\gwinhelp.h"
-					>
-				</File>
-				<File
-					RelativePath="..\goldlib\gall\gwinpick.h"
-					>
-				</File>
-				<File
-					RelativePath="..\goldlib\gall\gwinput.h"
 					>
 				</File>
 				<File
 					RelativePath="..\goldlib\gall\memleak.h"
 					>
 				</File>
-			</Filter>
+      </Filter>
+      <Filter
+				Name="gcui.h"
+				>
+        <File
+					RelativePath="..\goldlib\gcui\gcurses.h"
+					>
+        </File>
+        <File
+					RelativePath="..\goldlib\gcui\gkbdbase.h"
+					>
+        </File>
+        <File
+					RelativePath="..\goldlib\gcui\gkbdcode.h"
+					>
+        </File>
+        <File
+					RelativePath="..\goldlib\gcui\gmnubase.h"
+					>
+        </File>
+        <File
+					RelativePath="..\goldlib\gcui\gmoubase.h"
+					>
+        </File>
+        <File
+					RelativePath="..\goldlib\gcui\gsrchmgr.h"
+					>
+        </File>
+        <File
+					RelativePath="..\goldlib\gcui\gvidall.h"
+					>
+        </File>
+        <File
+					RelativePath="..\goldlib\gcui\gwinall.h"
+					>
+        </File>
+        <File
+					RelativePath="..\goldlib\gcui\gwindow.h"
+					>
+        </File>
+        <File
+					RelativePath="..\goldlib\gcui\gwinhelp.h"
+					>
+        </File>
+        <File
+					RelativePath="..\goldlib\gcui\gwinpick.h"
+					>
+        </File>
+        <File
+					RelativePath="..\goldlib\gcui\gwinput.h"
+					>
+        </File>
+      </Filter>
 			<Filter
 				Name="gcfg.h"
 				>

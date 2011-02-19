@@ -233,7 +233,7 @@ CLEAN :
     if not exist "$(INTDIR)/$(NULL)" mkdir "$(INTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /Gm /GX /Zi /O1 /I "..\goldlib\gall" /I "..\goldlib\gcfg" /I "..\goldlib\glibc" /I "..\goldlib\gmb3" /I "..\goldlib\smblib" /I "..\goldlib\uulib" /I "..\goldlib\hunspell" /D "WIN32" /D "NDEBUG" /D "_LIB" /D "HAVE_CONFIG_H" /D "__INCLUDE_NEW_KEYWORDS__" /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /J /FD /c 
+CPP_PROJ=/nologo /MD /W3 /Gm /GX /Zi /O1 /I "..\goldlib\gall" /I "..\goldlib\gcui" /I "..\goldlib\gcfg" /I "..\goldlib\glibc" /I "..\goldlib\gmb3" /I "..\goldlib\smblib" /I "..\goldlib\uulib" /I "..\goldlib\hunspell" /D "WIN32" /D "NDEBUG" /D "_LIB" /D "HAVE_CONFIG_H" /D "__INCLUDE_NEW_KEYWORDS__" /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /J /FD /c 
 
 .c{$(INTDIR)}.obj::
    $(CPP) @<<
@@ -672,7 +672,7 @@ CLEAN :
     if not exist "$(INTDIR)/$(NULL)" mkdir "$(INTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "..\goldlib\gall" /I "..\goldlib\gcfg" /I "..\goldlib\glibc" /I "..\goldlib\gmb3" /I "..\goldlib\smblib" /I "..\goldlib\uulib" /I "..\goldlib\hunspell" /D "WIN32" /D "_DEBUG" /D "_LIB" /D "HAVE_CONFIG_H" /D "__INCLUDE_NEW_KEYWORDS__" /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /J /FD /GZ /c 
+CPP_PROJ=/nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "..\goldlib\gall" /I "..\goldlib\gcui" /I "..\goldlib\gcfg" /I "..\goldlib\glibc" /I "..\goldlib\gmb3" /I "..\goldlib\smblib" /I "..\goldlib\uulib" /I "..\goldlib\hunspell" /D "WIN32" /D "_DEBUG" /D "_LIB" /D "HAVE_CONFIG_H" /D "__INCLUDE_NEW_KEYWORDS__" /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /J /FD /GZ /c 
 
 .c{$(INTDIR)}.obj::
    $(CPP) @<<
@@ -1097,20 +1097,20 @@ SOURCE=..\goldlib\gall\ghdrmime.cpp
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\goldlib\gall\gkbdbase.cpp
+SOURCE=..\goldlib\gcui\gkbdbase.cpp
 
 "$(INTDIR)\gkbdbase.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\goldlib\gall\gkbdgetm.cpp
+SOURCE=..\goldlib\gcui\gkbdgetm.cpp
 
 "$(INTDIR)\gkbdgetm.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
 SOURCE=..\goldlib\gall\gkbdunix.cpp
-SOURCE=..\goldlib\gall\gkbdwait.cpp
+SOURCE=..\goldlib\gcui\gkbdwait.cpp
 
 "$(INTDIR)\gkbdwait.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
@@ -1134,7 +1134,7 @@ SOURCE=..\goldlib\gall\gmemutil.cpp
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\goldlib\gall\gmoubase.cpp
+SOURCE=..\goldlib\gcui\gmoubase.cpp
 
 "$(INTDIR)\gmoubase.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
@@ -1177,7 +1177,7 @@ SOURCE=..\goldlib\gall\gsndwrap.cpp
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\goldlib\gall\gsrchmgr.cpp
+SOURCE=..\goldlib\gcui\gsrchmgr.cpp
 
 "$(INTDIR)\gsrchmgr.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
@@ -1338,13 +1338,13 @@ SOURCE=..\goldlib\gall\gutlwinm.cpp
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\goldlib\gall\gvidbase.cpp
+SOURCE=..\goldlib\gcui\gvidbase.cpp
 
 "$(INTDIR)\gvidbase.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\goldlib\gall\gvidinit.cpp
+SOURCE=..\goldlib\gcui\gvidinit.cpp
 
 "$(INTDIR)\gvidinit.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
@@ -1356,73 +1356,73 @@ SOURCE=..\goldlib\gall\gwildmat.cpp
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\goldlib\gall\gwinbase.cpp
+SOURCE=..\goldlib\gcui\gwinbase.cpp
 
 "$(INTDIR)\gwinbase.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\goldlib\gall\gwindow.cpp
+SOURCE=..\goldlib\gcui\gwindow.cpp
 
 "$(INTDIR)\gwindow.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\goldlib\gall\gwinhlp1.cpp
+SOURCE=..\goldlib\gcui\gwinhlp1.cpp
 
 "$(INTDIR)\gwinhlp1.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\goldlib\gall\gwinhlp2.cpp
+SOURCE=..\goldlib\gcui\gwinhlp2.cpp
 
 "$(INTDIR)\gwinhlp2.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\goldlib\gall\gwininit.cpp
+SOURCE=..\goldlib\gcui\gwininit.cpp
 
 "$(INTDIR)\gwininit.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\goldlib\gall\gwinline.cpp
+SOURCE=..\goldlib\gcui\gwinline.cpp
 
 "$(INTDIR)\gwinline.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\goldlib\gall\gwinmenu.cpp
+SOURCE=..\goldlib\gcui\gwinmenu.cpp
 
 "$(INTDIR)\gwinmenu.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\goldlib\gall\gwinmnub.cpp
+SOURCE=..\goldlib\gcui\gwinmnub.cpp
 
 "$(INTDIR)\gwinmnub.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\goldlib\gall\gwinpckf.cpp
+SOURCE=..\goldlib\gcui\gwinpckf.cpp
 
 "$(INTDIR)\gwinpckf.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\goldlib\gall\gwinpcks.cpp
+SOURCE=..\goldlib\gcui\gwinpcks.cpp
 
 "$(INTDIR)\gwinpcks.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\goldlib\gall\gwinpick.cpp
+SOURCE=..\goldlib\gcui\gwinpick.cpp
 
 "$(INTDIR)\gwinpick.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\goldlib\gall\gwinput2.cpp
+SOURCE=..\goldlib\gcui\gwinput2.cpp
 
 "$(INTDIR)\gwinput2.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
