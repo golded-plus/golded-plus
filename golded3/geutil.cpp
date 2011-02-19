@@ -38,8 +38,10 @@ extern GPickArealist* PickArealist;
 
 void update_statuslines() {
 
-  char buf[200];
+  char buf[200];    /* FIXME: it is need to use dinamic arrays in this fuction to prevent buffer overflow or screen garbage */
+  char * const buf_end = buf+199;
   static char old_status_line[200] = "";
+  char * const old_status_line_end = old_status_line_end+199;
   static int called = NO;
 
   HandleGEvent(EVTT_REMOVEVOCBUF);
@@ -57,15 +59,15 @@ void update_statuslines() {
     {
       time32_t t = gtime(NULL);
       struct tm tm; glocaltime(&tm, &t);
-      sprintf(clkinfo, "   %s", strftimei(help, 40, LNG->StatusLineTimeFmt, &tm));
+      snprintf(clkinfo,sizeof(clkinfo), "   %s", strftimei(help, 40, LNG->StatusLineTimeFmt, &tm));
     }
 
     if(CFG->statuslinehelp == -1)
       *help = NUL;
     else if(CFG->statuslinehelp)
-      sprintf(help, "%s   ", LNG->StatusLineHelp);
+        snprintf(help,sizeof(help), "%s   ", LNG->StatusLineHelp);
     else
-      sprintf(help, "%s%s%s%s %s%i.%i.%i%s   ",
+      snprintf(help,sizeof(help), "%s%s%s%s %s%i.%i.%i%s   ",
         __gver_prename__,
         __gver_name__,
         __gver_postname__,
@@ -80,13 +82,13 @@ void update_statuslines() {
     int help_len = strlen(help);
     int clk_len = strlen(clkinfo);
     int len = MAXCOL-help_len-clk_len-2;
-    sprintf(buf, "%c%s%-*.*s%s ", goldmark, help, len, len, information, clkinfo);
+    snprintf(buf,sizeof(buf), "%c%s%-*.*s%s ", goldmark, help, len, len, information, clkinfo);
 
     char *begin = buf;
     char *obegin = old_status_line;
-    char *end = buf + MAXCOL;
-    char *oend = old_status_line + MAXCOL;
-    while((*begin != NUL) and (*begin == *obegin)) {
+    char *end = (sizeof(buf) > MAXCOL) ? buf + MAXCOL: buf_end;
+    char *oend = (sizeof(old_status_line) > MAXCOL) ? old_status_line + MAXCOL: old_status_line_end;
+    while((*begin != NUL) and (*begin == *obegin) and (begin<buf_end) and (obegin<old_status_line_end)) {
       ++begin;
       ++obegin;
     }
@@ -94,12 +96,13 @@ void update_statuslines() {
       return;
     // we have at least one mismatch
     if(*obegin) {
-      while(*end == *oend) {
+      while((*end == *oend) and (buf<end) and (old_status_line<oend) ) {
         --end;
         --oend;
       }
     }
-    memcpy(obegin, begin, end-begin+1);
+    len = end-begin+1;
+    memcpy( obegin, begin, (len<sizeof(old_status_line))? len : sizeof(old_status_line) );
 
     #ifdef GOLD_MOUSE
     gmou.GetStatus();
@@ -120,7 +123,7 @@ void update_statuslines() {
       gmou.ShowCursor();
     #endif
   }
-}
+} /* update_statuslines() */
 
 
 //  ------------------------------------------------------------------
