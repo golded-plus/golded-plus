@@ -100,7 +100,7 @@ static char* strdel(const char* substr, char* str) {
   if(!dest)
     return NULL;
   char* src = dest + strlen(substr);
-  strcpy(dest, src);
+  strcpy(dest, src);  /* Source and destination overlap. This is rigth. */
 
   return str;
 }
