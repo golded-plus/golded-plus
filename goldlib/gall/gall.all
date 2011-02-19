@@ -35,6 +35,8 @@ gcrcs32  cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun osx
 gdbgerr  cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun osx
 gdbgexit cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun osx
 gdbgtrk  cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun osx
+## Debuging for windows
+memleak  cpp
 
 ## Directory handling.
 gdirposx cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun osx
@@ -92,6 +94,8 @@ gstrctyp cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun osx
 gstrmail cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun osx
 gstrname cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun osx
 gstrutil cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun osx
+## snprintf.c required by gstrutil.cpp and included in his file via preprocessor
+snprintf c
 
 ## Time related.
 gtimjuld cpp     all ovl bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun osx
