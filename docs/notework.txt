@@ -13,8 +13,21 @@ ______________________________________________________________________
 Legend: "-" - bugfix, "+" - new feature, "!" - important modification.
 ______________________________________________________________________
 
+- Many mistakes of work in the memory, leading to emergency end of
+  Golded+ in x64 GCC 4.x builds are corrected. Thank Anton Gorlov
+  2:5059/37 for debugging and reporting about bugs.
+
++ Gentoo ebuild is added. Thank for Semen Panevin, 2:5025/121@fidonet.
+
++ You may run make with several parameters to specify variant of build.
+
+! Semen Panevin, 2:5025/121@fidonet has extracted all code related
+  with library ncurses in separate library. Now messages of Goldnode
+  and RDDT are visible on the console of unix-like OS.
+
 + Date of last change of sources automatically remains in a files
-  srcdate.h and golded.spec.
+  srcdate.h and golded.spec. Date from srcdate.h uses for forming
+  version string for Golded+ snapshot.
 
 ! Now Golded+ outputs errors of reading of a config in stderr instead
   stdout. To look only errors, the user unix-like OS can use a

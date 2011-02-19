@@ -41,8 +41,9 @@ void update_statuslines() {
   char buf[200];    /* FIXME: it is need to use dinamic arrays in this fuction to prevent buffer overflow or screen garbage */
   char * const buf_end = buf+199;
   static char old_status_line[200] = "";
-  char * const old_status_line_end = old_status_line_end+199;
+  char * const old_status_line_end = old_status_line+199;
   static int called = NO;
+  const int WIDE= sizeof(buf)>MAXCOL? MAXCOL : sizeof(buf)-1;
 
   HandleGEvent(EVTT_REMOVEVOCBUF);
 
@@ -81,13 +82,13 @@ void update_statuslines() {
 
     int help_len = strlen(help);
     int clk_len = strlen(clkinfo);
-    int len = MAXCOL-help_len-clk_len-2;
+    int len = WIDE-help_len-clk_len-2;
     snprintf(buf,sizeof(buf), "%c%s%-*.*s%s ", goldmark, help, len, len, information, clkinfo);
 
     char *begin = buf;
     char *obegin = old_status_line;
-    char *end = (sizeof(buf) > MAXCOL) ? buf + MAXCOL: buf_end;
-    char *oend = (sizeof(old_status_line) > MAXCOL) ? old_status_line + MAXCOL: old_status_line_end;
+    char *end = buf + WIDE;
+    char *oend = old_status_line + WIDE;
     while((*begin != NUL) and (*begin == *obegin) and (begin<buf_end) and (obegin<old_status_line_end)) {
       ++begin;
       ++obegin;
@@ -115,8 +116,8 @@ void update_statuslines() {
     wwprintstr(W_STAT, 0,begin-buf, C_STATW, begin);
     if(*help and ((begin - buf) < (help_len-1)) and ((end - buf) > (help_len-1)))
       wwprintc(W_STAT, 0,help_len-1, C_STATW, sep);
-    if(((begin - buf) < (MAXCOL-clk_len)) and ((end - buf) > (MAXCOL-clk_len)))
-      wwprintc(W_STAT, 0,MAXCOL-clk_len, C_STATW, sep);
+    if(((begin - buf) < (WIDE-clk_len)) and ((end - buf) > (WIDE-clk_len)))
+      wwprintc(W_STAT, 0,WIDE-clk_len, C_STATW, sep);
     vposset(row, col);
     #ifdef GOLD_MOUSE
     if(gmou.Row() == MAXROW-1)
