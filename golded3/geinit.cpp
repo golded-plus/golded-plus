@@ -506,8 +506,11 @@ BOOL WINAPI GoldedCtrlHandler(DWORD dwCtrlType) {
 
 void Uninitialize()
 {
+  if (WideUsername) {
     delete WideUsername;
-    LookupNodeClear();
+    WideUsername = NULL;
+  }
+  LookupNodeClear();
 }
 
 
