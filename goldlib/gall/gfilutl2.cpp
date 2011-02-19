@@ -127,7 +127,6 @@ int strschg_environ(std::string& s) {
       s.replace(posn, posn1-posn+1, rep);
       replaced++;
     }
-    fnd.clear();
   }
 
 #ifndef __HAVE_DRIVES__
@@ -137,16 +136,16 @@ int strschg_environ(std::string& s) {
 
     if( (s.length() > 1) and not isslash(s[1]) ) {
       slash = s.find_first_of(GOLD_SLASH_STR GOLD_WRONG_SLASH_STR, 1);
-      std::string name(s,1,slash-1);
-      pe = getpwnam(name.c_str());
+      fnd.assign(s,1,slash-1);
+      pe = getpwnam(fnd.c_str());
     }else {
       pe = getpwuid(getuid());
     }
     if(pe != NULL) {
-      std::string dirname = pe->pw_dir;
+      fnd.assign(pe->pw_dir);
       if ( slash != std::string::npos )
-        dirname += s.substr(slash);
-      s=dirname;
+        fnd += s.substr(slash);
+      s=fnd;
       replaced++;
     }
   }
