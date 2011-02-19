@@ -22,7 +22,7 @@ bines="Release/bin/gedwin.exe Release/bin/gnwin.exe Release/bin/rddtwin.exe"
 files="${bines} docs/copying docs/copying.lib golded.bat"
 files="${files} docs/golded.html docs/golded.txt docs/goldnode.html"
 files="${files} docs/goldnode.txt docs/license.txt docs/notework.txt"
-files="${files} docs/rddt.html docs/rddt.txt docs/readme.txt"
+files="${files} docs/rddt.html docs/rddt.txt docs/readme.txt docs/notework.rus"
 files="${files} docs/rusfaq.txt docs/tips.txt docs/todowork.txt"
 files="${files} docs/tokencfg.txt docs/tokentpl.txt"
 
