@@ -1,0 +1,1 @@
+This directory contain an instructions for package managers of different OS.
