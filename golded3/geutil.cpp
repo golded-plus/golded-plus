@@ -60,15 +60,15 @@ void update_statuslines() {
     {
       time32_t t = gtime(NULL);
       struct tm tm; glocaltime(&tm, &t);
-      snprintf(clkinfo,sizeof(clkinfo), "   %s", strftimei(help, 40, LNG->StatusLineTimeFmt, &tm));
+      gsprintf(PRINTF_DECLARE_BUFFER(clkinfo), "   %s", strftimei(help, 40, LNG->StatusLineTimeFmt, &tm));
     }
 
     if(CFG->statuslinehelp == -1)
       *help = NUL;
     else if(CFG->statuslinehelp)
-        snprintf(help,sizeof(help), "%s   ", LNG->StatusLineHelp);
+      gsprintf(PRINTF_DECLARE_BUFFER(help), "%s   ", LNG->StatusLineHelp);
     else
-      snprintf(help,sizeof(help), "%s%s%s%s %s%i.%i.%i%s   ",
+      gsprintf(PRINTF_DECLARE_BUFFER(help), "%s%s%s%s %s%i.%i.%i%s   ",
         __gver_prename__,
         __gver_name__,
         __gver_postname__,
@@ -83,7 +83,7 @@ void update_statuslines() {
     int help_len = strlen(help);
     int clk_len = strlen(clkinfo);
     int len = WIDE-help_len-clk_len-2;
-    snprintf(buf,sizeof(buf), "%c%s%-*.*s%s ", goldmark, help, len, len, information, clkinfo);
+    gsprintf(PRINTF_DECLARE_BUFFER(buf), "%c%s%-*.*s%s ", goldmark, help, len, len, information, clkinfo);
 
     char *begin = buf;
     char *obegin = old_status_line;
