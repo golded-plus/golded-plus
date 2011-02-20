@@ -33,13 +33,35 @@
 
 // ---- FIXME: All HAVE_* macro should be defined in makefile or created by autoconf
 #ifdef __GNUC__ 
-#define HAVE_SNPRINTF
-#define HAVE_VSNPRINTF
-#define HAVE_STDARG_H
+# define HAVE_SNPRINTF
+# define HAVE_VSNPRINTF
+# define HAVE_STDARG_H
 #endif
-#if  defined(__WATCOMC__) || defined(_MSC_VER)
-#define HAVE__SNPRINTF
-#define HAVE__VSNPRINTF
+#if  defined(__WATCOMC__)
+# define HAVE__SNPRINTF
+# define HAVE__VSNPRINTF
+#endif
+#if  defined(_MSC_VER)
+/* It is need to fix implementation "speciality" in snprintf() and vsnprintf() from Microsoft. */
+int snprintf( char *buffer, size_t sizeOfBuffer, const char *format, ... )
+{
+  va_list argptr;
+  va_start(argptr, format);
+  int r = _vsnprintf( buffer, sizeOfBuffer, format, argptr );
+  if( r == -1 || r == sizeOfBuffer )
+    buffer[sizeOfBuffer-1] = '\0';
+  va_end(argptr);
+  return r;
+}
+# define HAVE_SNPRINTF 1
+int vsnprintf( char *buffer, size_t sizeOfBuffer, const char *format, va_list argptr )
+{
+  int r = _vsnprintf( buffer, sizeOfBuffer, format, argptr );
+  if( r == -1 || r == sizeOfBuffer )
+    buffer[sizeOfBuffer-1] = '\0';
+  return r;
+}
+# define HAVE_VSNPRINTF 1
 #endif
 
 #ifndef HAVE_SNPRINTF
