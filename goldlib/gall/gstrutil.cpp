@@ -708,36 +708,85 @@ char *strxmerge(char *dest, size_t max, ...)
 int gsprintf(TCHAR* buffer, size_t sizeOfBuffer, const TCHAR* __file, int __line, const TCHAR* format, ...)
 {
   int ret = -1;
-  va_list argptr;
-  va_start(argptr, format);
 
-  if (sizeOfBuffer)
-  {
-#ifdef _vstprintf_s
-    ret = _vstprintf_s(buffer, sizeOfBuffer, format, argptr);
-    if (ret < 0)
-#else
-    buffer[sizeOfBuffer-1] = 0;
-    #if defined( HAVE_VSNPRINTF )
-    ret = vsnprintf(buffer, sizeOfBuffer, format, argptr);
-    #elif defined( HAVE__VSNPRINTF )
-    ret = _vsnprintf(buffer, sizeOfBuffer, format, argptr);
-    #else
-    ret = vsprintf(buffer, format, argptr);
-    #endif
-    if ((ret < 0) || buffer[sizeOfBuffer-1])
-#endif
-    {
-      LOG.errpointer(__file, __line);
-      LOG.printf("! Buffer overflow or parameter is NULL.");
-      MemoryErrorExit();
-    }
-  }
-  else
+  if (!buffer || !format)
   {
     LOG.errpointer(__file, __line);
-    LOG.printf("! Buffer size is 0.");
-    MemoryErrorExit();
+    LOG.printf( "! Parameter is NULL pointer: gsprintf(%s,%i,%s,...).",
+                (buffer?"buffer":"NULL"), sizeOfBuffer, (format?"format":"NULL") );
+    PointerErrorExit();
+    return -1;
+  }
+  if (!sizeOfBuffer)
+  {
+    LOG.errpointer(__file, __line);
+    LOG.printf("! Buffer size is 0: gsprintf(buf,0,...).");
+    TestErrorExit();
+    return -1;
+  }
+  if (!*format)
+  {
+    LOG.errpointer(__file, __line);
+    LOG.printf("! Format is empty string: gsprintf(buffer,%i,"",...).", sizeOfBuffer);
+    return 0;
+  }
+
+  {
+    va_list argptr;
+    va_start(argptr, format);
+/* _vsnprintf_s() may cause exception. Need to test before enabling.
+#   if __VISUAL_C_NOT_LESS(14,00)  // defined HAVE__VSTPRINTF_S // _vsnprintf_s() recommended in MSDN
+    ret = _vsnprintf_s(buffer, _TRUNCATE, format, argptr);
+    if (ret < 0)
+    {
+      if (sizeOfBuffer>7) strcpy(buffer," ERROR ");
+      else               buffer[sizeOfBuffer-1] = '\0';
+      LOG.errpointer(__FILE__,__LINE__-5);
+      LOG.printf("! gsprintf()(buffer,%i,%s,...): _vsnprintf_s() error: \"%s\".", sizeOfBuffer, format, strerror(errno));
+      return -1;
+    }
+    buffer[sizeOfBuffer-1] = '\0';  // Microsoft implementation don't write final '\0' if buffer full.
+#   elif __VISUAL_C_NOT_LESS(10,00)  // defined HAVE__VSTPRINTF // _vsnprintf() exist in VS6 and deprecated in VS2005
+*/
+#   if __VISUAL_C_NOT_LESS(10,00)  // defined HAVE__VSTPRINTF // _vsnprintf() exist in VS6 and deprecated in VS2005
+
+    ret = _vsnprintf(buffer, sizeof(buffer), format, argptr);
+    if (ret == -1 || ret == sizeof(buffer)) // Microsoft implementation returns -1 when buffer overflow.
+    {
+      if (sizeOfBuffer>17) strcpy(buffer, " ERROR, see log! ");
+      else if (sizeOfBuffer>7) strcpy(buffer," ERROR ");
+      buffer[sizeOfBuffer-1] = '\0';  // Microsoft implementation don't write final '\0' when buffer full.
+      LOG.errpointer(__file, __line);
+      LOG.printf("! gsprintf(buffer,%i,%s,...): buffer overflow (need %i bytes).", sizeOfBuffer, format, ret);
+    }
+    else if (ret < 0)
+    {
+      LOG.errpointer(__file, __line);
+      LOG.printf("! gsprintf()(buffer,%i,%s,...): _vsnprintf() error: \"%s\".", sizeOfBuffer, format, strerror(errno));
+      TestErrorExit();
+    }
+
+#   elif defined HAVE_VSNPRINTF  // C99 and above
+
+    ret = vsnprintf(buffer, sizeOfBuffer, format, argptr);
+    if (ret < 0) // Until glibc 2.0.6 vsnprintf() would return -1 when the output was truncated.
+    {
+      LOG.errpointer(__file, __line);
+      LOG.printf("! gsprintf(buffer,%i,%s,...): vsnprintf() error: \"%s\".", sizeOfBuffer, format, strerror(errno));
+      TestErrorExit();
+    }
+    else if (ret >= sizeOfBuffer)
+    {
+      if (sizeOfBuffer>17) strcpy(buffer, " ERROR, see log! ");
+      else if (sizeOfBuffer>7) strcpy(buffer," ERROR ");
+      else buffer[sizeOfBuffer-1] = '\0';
+      LOG.errpointer(__file, __line);
+      LOG.printf("! gsprintf(buffer,%i,%s,...): buffer overflow (need %i bytes).", sizeOfBuffer, format, ret);
+    }
+
+#   else
+#   error Please look C library of your compiler for function like vsnprintf, what do not write more than size bytes into string.
+#   endif
   }
 
   return ret;
