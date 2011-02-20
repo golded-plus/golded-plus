@@ -45,7 +45,8 @@
 #ifdef __WIN32__
 #include <windows.h>
 #endif
-#if defined(_MSC_VER) && (_MSC_VER >= 1400)
+#if __VISUAL_C_NOT_LESS(14,0)
+//#if defined(_MSC_VER) && (_MSC_VER >= 1400)
 #include <time.h>
 #endif
 
@@ -130,7 +131,8 @@ extern const char* gmonths[];
 inline void ggmtime(struct tm *_tm, const time32_t *timep)
 {
   const time_t temp(*timep);
-#if defined(_MSC_VER) && (_MSC_VER >= 1400)
+#if __VISUAL_C_NOT_LESS(14,0)
+//#if defined(_MSC_VER) && (_MSC_VER >= 1400)
   if (0 != gmtime_s(_tm, &temp))
   {
     const time_t zero(0);
@@ -152,7 +154,8 @@ inline void ggmtime(struct tm *_tm, const time32_t *timep)
 inline void glocaltime(struct tm *_tm, const time32_t *timep)
 {
   const time_t temp(*timep);
-#if defined(_MSC_VER) && (_MSC_VER >= 1400)
+#if __VISUAL_C_NOT_LESS(14,0)
+//#if defined(_MSC_VER) && (_MSC_VER >= 1400)
   if (0 != localtime_s(_tm, &temp))
   {
     const time_t zero(0);
@@ -174,7 +177,8 @@ inline void glocaltime(struct tm *_tm, const time32_t *timep)
 inline void gctime(TCHAR *buffer, size_t sizeInChars, const time32_t *timep)
 {
   const time_t temp(*timep);
-#if defined(_MSC_VER) && (_MSC_VER >= 1400)
+#if __VISUAL_C_NOT_LESS(14,0)
+//#if defined(_MSC_VER) && (_MSC_VER >= 1400)
   if (0 != _tctime_s(buffer, sizeInChars, &temp))
   {
     const time_t zero(0);
@@ -207,7 +211,8 @@ inline time32_t gmktime(struct tm *timep)
 
 #if defined(__OS2__)
 inline void usleep(int duration) { DosSleep(duration); }
-#elif (defined(__MINGW32__) && __GNUC__*100+__GNUC_MINOR__ < 304) || defined(_MSC_VER)
+#elif (defined(__MINGW32__) && __GNUC_LESS(3,4)) || defined(_MSC_VER)
+//#elif (defined(__MINGW32__) && __GNUC__*100+__GNUC_MINOR__ < 304) || defined(_MSC_VER)
 inline void usleep(long duration) { Sleep(duration); }
 #endif
 

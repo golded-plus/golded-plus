@@ -30,6 +30,59 @@
 #ifndef __gdefs_h
 #define __gdefs_h
 
+/*  ------------------------------------------------------------------
+ *  Convenience macros to test the version of GNU C and C++ compiler
+ * Use them like this:
+ *  #if __GNUC_NOT_LESS (4,0)
+ *  ... code requiring gcc 4.0 or later ...
+ *  #endif
+ * Note - they won't work for gcc1 or glibc1, since the _MINOR macros
+ * were not defined then.
+ */
+#if defined __GNUC__ && defined __GNUC_MINOR__
+# define __GNUC_NOT_LESS(maj, min) \
+         ((__GNUC__ << 16) + __GNUC_MINOR__ >= ((maj) << 16) + (min))
+# define __GNUC_LESS(maj, min) (! __GNUC_NOT_LESS(maj, min) )
+#else
+# define __GNUC_NOT_LESS(maj, min)  0
+# define __GNUC_LESS(maj, min)      0
+#endif
+
+/*  ------------------------------------------------------------------
+ *  Convenience macros to test the version of Visua Studio and
+ * macros to test the version of Visual C (cl.exe /? show it).
+ * Use them like this:
+ *  #if __VISUAL_STUDIO_NOT_LESS (6,0)
+ *  ... code requiring MS VS 6.0 or later ...
+ *  #endif
+ */
+#if defined _MSC_VER
+/* FIXME: This condition not tested anywhere, it is true for VS 6.0 and VS 4.2 and  VS 5.0 */
+/* 
+# define __VISUAL_STUDIO_NOT_LESS (maj, min) \
+          ( (1000+ ((maj)-4)*100 + (min)*10) >= _MSC_VER )
+*/
+/* FIXME: This condition not tested anywhere, it is true for VS 4.2, 5.0, 6.0 and VS2005 (VC++ 8.0) */
+# define __VISUAL_STUDIO_NOT_LESS(maj, min) \
+         ( (maj==4)? ((1000+(min)*10)>=_MSC_VER) : \
+           ( (maj==5)? ((1100+(min)*10)>=_MSC_VER) : \
+             ( (maj==6)? ((1200+(min)*10)>=_MSC_VER) : \
+               ( (maj==7)? ((1300+(min)*10)>=_MSC_VER) : \
+                 ( (maj==8)? ((1400+(min)*10)>=_MSC_VER) : \
+                   ( (maj==9)? ((1500+(min)*10)>=_MSC_VER) : \
+                               0 \
+         ) ) ) ) ) )
+# define __VISUAL_C_NOT_LESS(maj, min) \
+         ( _MSC_VER >= ((maj*100) + (min)) )
+# define __VISUAL_STUDIO_LESS(maj, min)  (! __VISUAL_STUDIO_NOT_LESS(maj, min) )
+# define __VISUAL_C_LESS(maj, min)  (! __VISUAL_C_NOT_LESS(maj, min) )
+#else
+# define __VISUAL_STUDIO_NOT_LESS(maj, min)  0
+# define __VISUAL_STUDIO_LESS(maj, min)      0
+# define __VISUAL_C_NOT_LESS(maj, min)       0
+# define __VISUAL_C_LESS(maj, min)           0
+#endif
+
 /*  ------------------------------------------------------------------ */
 #include <stdlib.h>
 #ifdef HAVE_MALLOC_H
