@@ -41,7 +41,6 @@
 
 #ifdef __WIN32__
 #include <tchar.h>
-#define G_HAS_VSNPRINTF
 #else
 typedef char TCHAR;
 #endif

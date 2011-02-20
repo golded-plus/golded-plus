@@ -718,7 +718,9 @@ int gsprintf(TCHAR* buffer, size_t sizeOfBuffer, const TCHAR* __file, int __line
     if (ret < 0)
 #else
     buffer[sizeOfBuffer-1] = 0;
-    #if defined( G_HAS_VSNPRINTF )
+    #if defined( HAVE_VSNPRINTF )
+    ret = vsnprintf(buffer, sizeOfBuffer, format, argptr);
+    #elif defined( HAVE__VSNPRINTF )
     ret = _vsnprintf(buffer, sizeOfBuffer, format, argptr);
     #else
     ret = vsprintf(buffer, format, argptr);
