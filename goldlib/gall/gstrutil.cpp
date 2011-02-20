@@ -42,7 +42,7 @@
 # define HAVE__VSNPRINTF
 #endif
 #if  defined(_MSC_VER)
-/* It is need to fix implementation "speciality" in snprintf() and vsnprintf() from Microsoft. */
+/* It is need a workaround for implementation "speciality" in snprintf() and vsnprintf() from Microsoft. */
 int snprintf( char *buffer, size_t sizeOfBuffer, const char *format, ... )
 {
   va_list argptr;
