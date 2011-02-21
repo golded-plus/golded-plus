@@ -60,7 +60,8 @@ void update_statuslines() {
     {
       time32_t t = gtime(NULL);
       struct tm tm; glocaltime(&tm, &t);
-      gsprintf(PRINTF_DECLARE_BUFFER(clkinfo), "   %s", strftimei(help, 40, LNG->StatusLineTimeFmt, &tm));
+      if( strftimei(help, 40, LNG->StatusLineTimeFmt, &tm) )
+        gsprintf(PRINTF_DECLARE_BUFFER(clkinfo), "   %s", help);
     }
 
     if(CFG->statuslinehelp == -1)
