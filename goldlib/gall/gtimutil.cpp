@@ -183,6 +183,7 @@ static void strfmt(char *str, const char *fmt, ...) {
 //  ------------------------------------------------------------------
 //  In differ to ANSI C strftime this function supports reloading of
 //  field names
+//  Return NULL if output truncated, otherwize return s.
 
 #define setvar(internal,external,field) \
   char **internal = external; \

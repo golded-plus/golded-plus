@@ -229,6 +229,8 @@ inline Clock gclock() { return Clock(clock()*10/CLK_TCK); }
 int str2mon(const char* ptr) __attribute__ ((const));
 int tzoffset();
 
+//  In differ to ANSI C strftime() the function strftimei() supports reloading of field names (loaded from language file).
+//  Return NULL if output truncated, otherwize return s.
 char* strftimei(char* s, size_t maxsize, const char* fmt, const struct tm* t); // __attribute__ ((format (strftime, 3, 0)));
 
 FTime    TimeToFTime(time32_t __time) __attribute__ ((const));
