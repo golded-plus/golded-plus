@@ -47,7 +47,8 @@ void update_statuslines() {
 
   HandleGEvent(EVTT_REMOVEVOCBUF);
 
-  if(CFG->switches.get(dispstatusline) or not called) {
+  if(CFG->switches.get(dispstatusline) or not called) // FIXME: Strange, status line displayed always in first call. May be need to change?
+  {
 
     called = YES;
 
