@@ -127,14 +127,14 @@ CFG=Release
 all:
    cd "windows"
 !IF "$(CFG)" == "Debug"
-   $(MAKE) /$(MAKEFLAGS) /F goldlib.mak  CFG="goldlib - Win32 Debug"
+#   $(MAKE) /$(MAKEFLAGS) /F goldlib.mak  CFG="goldlib - Win32 Debug"
    $(MAKE) /$(MAKEFLAGS) /F golded.mak   CFG="golded - Win32 Debug"
    $(MAKE) /$(MAKEFLAGS) /F goldnode.mak CFG="goldnode - Win32 Debug"
    $(MAKE) /$(MAKEFLAGS) /F rddt.mak     CFG="rddt - Win32 Debug"
 !ELSE
-   $(MAKE) /$(MAKEFLAGS) /F goldlib.mak
-   $(MAKE) /$(MAKEFLAGS) /F golded.mak
-   $(MAKE) /$(MAKEFLAGS) /F goldnode.mak
-   $(MAKE) /$(MAKEFLAGS) /F rddt.mak
+#   $(MAKE) /$(MAKEFLAGS) /F goldlib.mak  CFG="goldlib - Win32 Release"
+   $(MAKE) /$(MAKEFLAGS) /F golded.mak   CFG="golded - Win32 Release"
+   $(MAKE) /$(MAKEFLAGS) /F goldnode.mak CFG="goldnode - Win32 Release"
+   $(MAKE) /$(MAKEFLAGS) /F rddt.mak     CFG="rddt - Win32 Release"
 !ENDIF
    cd ".."
