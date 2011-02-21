@@ -811,6 +811,7 @@ int gsprintf(TCHAR* buffer, size_t sizeOfBuffer, const TCHAR* __file, int __line
 #   else
 #   error Please look C library of your compiler for function like vsnprintf, what do not write more than size bytes into string.
 #   endif
+    va_end(argptr);
   }
 
   return ret;
