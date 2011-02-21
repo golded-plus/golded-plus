@@ -13,6 +13,13 @@ ______________________________________________________________________
 Legend: "-" - bugfix, "+" - new feature, "!" - important modification.
 ______________________________________________________________________
 
+! When buffer overflow causes in string, Golded+ replace broken string
+  with "ERROR" or "ERROR, see log!". If you look these strings, please
+  send a file "golded.log" to developers or create ticket in bugtrack
+  and attach this log file. Direct URL to create ticket:
+  https://sourceforge.net/tracker/?func=add&group_id=2942&atid=102942
+  (http://sourceforge.net/tracker/?func=add&group_id=2942&atid=102942)
+
 - Many mistakes of work in the memory, leading to emergency end of
   Golded+ in x64 GCC 4.x builds are corrected. Thank Anton Gorlov
   2:5059/37 for debugging and reporting about bugs.
