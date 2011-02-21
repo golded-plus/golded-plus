@@ -156,7 +156,8 @@ static char* strdel(const char* substr, char* str) {
   if(!dest)
     return NULL;
   char* src = dest + strlen(substr);
-  strcpy(dest, src);  /* Source and destination overlap. This is rigth. */
+//  strcpy(dest, src);  /* Source and destination overlap. This is rigth. */
+  memmove(dest, src, strlen(src)+1);
 
   return str;
 }
@@ -171,7 +172,8 @@ static char* stridel(const char* substr, char* str) {
   if(!dest)
     return NULL;
   char* src = dest + strlen(substr);
-  strcpy(dest, src);
+//  strcpy(dest, src);
+  memmove(dest, src, strlen(src)+1);  /* Source and destination overlaps. */
 
   return str;
 }
