@@ -113,10 +113,20 @@ void GPickArealist::do_delayed() {
 
   Area* area = AL.AreaNoToPtr(index);
 
-  char buf[256], tmp[200];
+  const size_t buflen=strlen(title)+strlen(area_maybe);
+  const size_t tmplen=(buflen>MAXCOL?buflen:MAXCOL);
+  char * buf = new char[buflen+3];
+  buf[buflen] = '\0';
+  buf[buflen+1] = '\xFF';
+  buf[buflen+2] = '\0';
+  char * tmp = new char[tmplen+3];
+  tmp[tmplen] = '\0';
+  tmp[tmplen+1] = '\xFF';
+  tmp[tmplen+2] = '\0';
 
-  strcpy(tmp, area->echoid());
-  update_statuslinef("%s: %u %s, %u %s, %u %s", "", tmp, area->Msgn.Count(), (area->Msgn.Count() == 1 ? LNG->msg : LNG->msgs), area->unread, LNG->unread, area->PMrk.Count(), LNG->personal);
+  update_statuslinef("%s: %u %s, %u %s, %u %s", "", area->echoid(), area->Msgn.Count(),
+                     (area->Msgn.Count() == 1 ? LNG->msg : LNG->msgs), area->unread,
+                     LNG->unread, area->PMrk.Count(), LNG->personal);
 
   strcpy(stpcpy(buf, title), area_maybe);
   strsetsz(strcpy(tmp, buf), MAXCOL);
@@ -124,6 +134,21 @@ void GPickArealist::do_delayed() {
 
   if(CFG->switches.get(arealistpagebar))
     wscrollbar(W_VERT, maximum_index+1, maximum_index, index);
+
+  if (buf[buflen] || buf[buflen+1]!='\xFF' || buf[buflen+2])
+  {
+    LOG.errpointer(__FILE__,__LINE__);
+    LOG.printf("! Buffer overflow: buf in GPickArealist::do_delayed(), 8 or 9 lines above");
+    PointerErrorExit();
+  }
+  if (tmp[tmplen] || tmp[tmplen+1]!='\xFF' || tmp[tmplen+2])
+  {
+    LOG.errpointer(__FILE__,__LINE__);
+    LOG.printf("! Buffer overflow: tmp in GPickArealist::do_delayed(), 15 or 16 lines above");
+    PointerErrorExit();
+  }
+  delete buf;
+  delete tmp;
 }
 
 
