@@ -774,9 +774,9 @@ int gsprintf(TCHAR* buffer, size_t sizeOfBuffer, const TCHAR* __file, int __line
 */
 #   if __VISUAL_C_NOT_LESS(10,00)  // defined HAVE__VSTPRINTF // _vsnprintf() exist in VS6 and deprecated in VS2005
 
-    char * b1[sizeOfBuffer+1];
+    char * b1 = new char[sizeOfBuffer+1];
     const size_t endOfBuffer = sizeOfBuffer-1;
-    ret = _vsnprintf(b1, sizeof(b1), format, argptr);
+    ret = _vsnprintf(b1, sizeOfBuffer+1, format, argptr);
     if (ret == -1 || ret >= sizeOfBuffer) // Microsoft implementation returns -1 when buffer overflow.
     {
       strncpy(buffer,b1,endOfBuffer);
