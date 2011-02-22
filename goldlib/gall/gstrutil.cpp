@@ -48,7 +48,7 @@ int snprintf( char *buffer, size_t sizeOfBuffer, const char *format, ... )
   va_list argptr;
   va_start(argptr, format);
   int r = _vsnprintf( buffer, sizeOfBuffer, format, argptr );
-  if( r == -1 || r == sizeOfBuffer )
+  if( r == -1 || r >= sizeOfBuffer )
     buffer[sizeOfBuffer-1] = '\0';
   va_end(argptr);
   return r;
@@ -57,7 +57,7 @@ int snprintf( char *buffer, size_t sizeOfBuffer, const char *format, ... )
 int vsnprintf( char *buffer, size_t sizeOfBuffer, const char *format, va_list argptr )
 {
   int r = _vsnprintf( buffer, sizeOfBuffer, format, argptr );
-  if( r == -1 || r == sizeOfBuffer )
+  if( r == -1 || r >= sizeOfBuffer )
     buffer[sizeOfBuffer-1] = '\0';
   return r;
 }
