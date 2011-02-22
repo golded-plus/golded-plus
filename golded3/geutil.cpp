@@ -85,6 +85,9 @@ void update_statuslines() {
     int help_len = strlen(help);
     int clk_len = strlen(clkinfo);
     int len = WIDE-help_len-clk_len-2;
+//    LOG.printf("! --- %i bytes help=\"%s\"", help_len, help?help:"NULL");
+//    LOG.printf("! --- %i bytes information=\"%s\"", len, information?information:"NULL");
+//    LOG.printf("! --- %i bytes clkinfo=\"%s\"", clk_len, clkinfo?clkinfo:"NULL");
     gsprintf(PRINTF_DECLARE_BUFFER(buf), "%c%s%-*.*s%s ", goldmark, help, len, len, information, clkinfo);
 
     char *begin = buf;
