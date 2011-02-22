@@ -106,8 +106,11 @@ void ErrorExit(int type);
 
 
 //  ------------------------------------------------------------------
-
+// Return string (static array): Smth. error exit at [__file,__line].
 char* gerrinfo(int __type, const char* __file, int __line);
+// Return string (static array): __message at [__file,__line].
+char* gerrinfo(const char* __message, const char* __file, int __line);
+// Return string (static array): (OS version) reports error ##: strerror.
 char* gerrosinfo();
 
 

@@ -74,6 +74,15 @@ char* gerrinfo(int __type, const char* __file, int __line) {
 
 // -------------------------------------------------------------------
 
+char* gerrinfo(const char* __message, const char* __file, int __line) {
+
+  snprintf(gerrbuf, sizeof(gerrbuf), "%s at [%s,%u].", __message, CleanFilename(__file), __line);
+  return gerrbuf;
+}
+
+
+// -------------------------------------------------------------------
+
 char* gerrosinfo() {
 
   sprintf(gerrbuf, "%s reports error %u: %s.", ggetosstring(), errno, strerror(errno));
