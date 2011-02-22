@@ -213,7 +213,11 @@ int gfile::Open(const char* __path, int __access, const char* __fmode, int __shf
 int gfile::Close()
 {
   if (fp) return Fclose();
-
+  if (fh==-1)
+  {
+    status = 0;
+    return 0;
+  }
   int _ret = g_close(fh);
   status = _ret ? errno : 0;
   fh = -1;
