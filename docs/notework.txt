@@ -13,6 +13,12 @@ ______________________________________________________________________
 Legend: "-" - bugfix, "+" - new feature, "!" - important modification.
 ______________________________________________________________________
 
+! Fix SOUP and QWK initialisation. (Early Golded+ used buffer with
+  value of last parameter in a config instead of a area name).
+
+! Golded+ more do not try to read soupnewsrcfile at start if the file
+  not specified in the config. (Fix a crash in Visual Studio build.)
+
 ! When buffer overflow causes in string, Golded+ replace broken string
   with "ERROR" or "ERROR, see log!". If you look these strings, please
   send a file "golded.log" to developers or create ticket in bugtrack
