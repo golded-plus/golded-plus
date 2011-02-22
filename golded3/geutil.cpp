@@ -148,8 +148,9 @@ void update_statuslinef(const char *format, const char *token, ...)
   if ( !(format && *format && token && *token) )
   {
     LOG.errpointer(__FILE__, __LINE__);
-    LOG.printf( "! Parameter is NULL pointer or empty string: update_statuslinef(%s,%s,...).",
-                (format?(*format)?"format":"\"\"":"NULL"), (token?(*token)?"token":"\"\"":"NULL") );
+    LOG.printf( "! Parameter is NULL pointer or empty string: update_statuslinef(\"%s\",\"%s\",...).",
+                (format?(*format)?format:"":"(NULL)"), (token?(*token)?token:"":"(NULL)") );
+    update_statusline(" ERROR! Please look a log file and make a report to developers! ");
     return;
   }
 
