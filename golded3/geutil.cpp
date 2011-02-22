@@ -27,6 +27,7 @@
 #include <cstdarg>
 #include <golded.h>
 
+#define UPDATE_STATUSLINE_ERROR    " ERROR! Please look a log file and make a report to developers! "
 
 //  ------------------------------------------------------------------
 
@@ -38,7 +39,7 @@ extern GPickArealist* PickArealist;
 
 void update_statuslines() {
 
-  char buf[200];    /* FIXME: it is need to use dinamic arrays in this fuction to prevent buffer overflow or screen garbage */
+  char buf[200];    /* FIXME: it is need to use dynamic arrays in this fuction to prevent buffer overflow or screen garbage */
   char * const buf_end = buf+199;
   static char old_status_line[200] = "";
   char * const old_status_line_end = old_status_line+199;
@@ -136,7 +137,16 @@ void update_statuslines() {
 
 void update_statusline(const char* info) {
 
-  strxcpy(information, info, sizeof(Subj));
+  if ( !(info) )
+  {
+    LOG.errpointer(__FILE__, __LINE__);
+    LOG.printf( "! Parameter is NULL pointer: update_statusline(NULL).");
+    strxcpy(information, UPDATE_STATUSLINE_ERROR, sizeof(information));
+  }
+  else
+  {
+    strxcpy(information, info, sizeof(information));
+  }
   update_statuslines();
 }
 
@@ -150,7 +160,7 @@ void update_statuslinef(const char *format, const char *token, ...)
     LOG.errpointer(__FILE__, __LINE__);
     LOG.printf( "! Parameter is NULL pointer or empty string: update_statuslinef(\"%s\",\"%s\",...).",
                 (format?(*format)?format:"":"(NULL)"), (token?(*token)?token:"":"(NULL)") );
-    update_statusline(" ERROR! Please look a log file and make a report to developers! ");
+    update_statusline(UPDATE_STATUSLINE_ERROR);
     return;
   }
 
