@@ -57,6 +57,13 @@ char* strupr(char* s);
 char* strlwr(char* s);
 #endif
 
+//  ------------------------------------------------------------------
+
+#if defined(_MSC_VER)
+int snprintf( char *buffer, size_t sizeOfBuffer, const char *format, ... );
+int vsnprintf( char *buffer, size_t sizeOfBuffer, const char *format, va_list argptr );
+#endif
+
 
 //  ------------------------------------------------------------------
 
