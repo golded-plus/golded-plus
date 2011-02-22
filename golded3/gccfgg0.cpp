@@ -936,25 +936,28 @@ int ReadCfg(const char* cfgfile, int ignoreunknown)
     if (inuse == 0)
     {
       // Mark all areas listed in the NEWSRC file as newsgroups
-      gfile gfp(CFG->soupnewsrcfile, "rt");
-      if (gfp.isopen())
+      if (*CFG->soupnewsrcfile)
       {
-        char buf2[512];
-        while (gfp.Fgets(buf2, sizeof(buf2)))
+        gfile gfp(CFG->soupnewsrcfile, "rt");
+        if (gfp.isopen())
         {
-          char* ptr = strpbrk(buf2, ":! ");
-          if(ptr) {
-            *ptr = NUL;
-            Area* ap = AL.AreaEchoToPtr(buf2);
-            if(ap)
-              ap->set_type(ap->isnet() ? GMB_SOUP|GMB_EMAIL|GMB_NET : GMB_SOUP|GMB_NEWSGROUP|GMB_ECHO);
+          char buf2[512];
+          while (gfp.Fgets(buf2, sizeof(buf2)))
+          {
+            char* ptr = strpbrk(buf2, ":! ");
+            if(ptr) {
+              *ptr = NUL;
+              Area* ap = AL.AreaEchoToPtr(buf2);
+              if(ap)
+                ap->set_type(ap->isnet() ? GMB_SOUP|GMB_EMAIL|GMB_NET : GMB_SOUP|GMB_NEWSGROUP|GMB_ECHO);
+            }
           }
+          gfp.Fclose();
         }
-        gfp.Fclose();
       }
 
       if(*CFG->soupemail) {
-        Area* ap = AL.AreaEchoToPtr(buf);
+        Area* ap = AL.AreaEchoToPtr(CFG->soupemail);
         if(ap)
           ap->set_type(GMB_SOUP|GMB_EMAIL|GMB_NET);
       }
@@ -971,7 +974,7 @@ int ReadCfg(const char* cfgfile, int ignoreunknown)
         do {
           if(QWK->FirstConf()) {
             do {
-              Area* ap = AL.AreaEchoToPtr(buf);
+              Area* ap = AL.AreaEchoToPtr(QWK->ConfName());
               if(ap)
                 ap->set_type(ap->type() | GMB_QWK);
             } while(QWK->NextConf());
