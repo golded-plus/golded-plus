@@ -511,7 +511,9 @@ void NewArea(bool jumpnext) {
 
 void DosShell() {
 
-  ShellToDos(getenv(GOLD_SHELL_ENV), LNG->DOS_Shell, LGREY_|_BLACK, YES);
+  char * shell = getenv(GOLD_SHELL_ENV);
+  if( shell && *shell )
+    ShellToDos(shell, LNG->DOS_Shell, LGREY_|_BLACK, YES);
 }
 
 

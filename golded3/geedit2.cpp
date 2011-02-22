@@ -1369,7 +1369,9 @@ void IEclass::DosShell() {
 
   GFTRK("EditDosShell");
 
-  ShellToDos(getenv(GOLD_SHELL_ENV), LNG->DOS_Shell, LGREY_|_BLACK, YES);
+  char * shell = getenv(GOLD_SHELL_ENV);
+  if( shell && *shell )
+    ShellToDos(shell, LNG->DOS_Shell, LGREY_|_BLACK, YES);
   cursoron();
   cursoroff();
 
