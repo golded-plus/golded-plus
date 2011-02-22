@@ -143,10 +143,12 @@ void update_statusline(const char* info) {
     LOG.printf( "! Parameter is NULL pointer: update_statusline(NULL).");
     strxcpy(information, UPDATE_STATUSLINE_ERROR, sizeof(information));
   }
-  else
+  else if (*info)
   {
     strxcpy(information, info, sizeof(information));
   }
+  else
+    *information = '\0';
   update_statuslines();
 }
 
