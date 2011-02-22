@@ -36,6 +36,7 @@
 #include <windows.h>
 extern OSVERSIONINFO WinVer;
 #endif
+#include <gdbgerr.h>
 
 
 //  ------------------------------------------------------------------
@@ -211,13 +212,28 @@ void Cleanup(void) {
 
   // Back to default Ctrl-Break handler
   signal(SIGINT, SIG_DFL);
-}
+} // Cleanup()
 
 
 //  ------------------------------------------------------------------
 //  Multipurpose DOS shell function
 
 int ShellToDos(const char* command, char* message, vattr cls, int cursor, int pause) {
+
+  if ( !(command && message) ) {
+    LOG.errpointer(__FILE__,__LINE__-3);
+    LOG.printf("! Parameter is NULL pointer: ShellToDos(\"%s\",\"%s\").",
+               command?command:"(NULL)", message?message:"(NULL)");
+    update_statusline(" ERROR! See log. ");
+    return 0;
+  }
+
+  if ( !(*command) ) {
+    LOG.errtest(__FILE__,__LINE__-8);
+    LOG.printf("! ShellToDos(): command is empty, message is: \"%s\"", message);
+    update_statusline("ERROR: Command is empty, can't run!");
+    return 0;
+  }
 
   int error = 0;
 
@@ -478,12 +494,26 @@ int ShellToDos(const char* command, char* message, vattr cls, int cursor, int pa
   #endif
 
   return status;
-}
+} // ShellToDos()
 
 
 //  ------------------------------------------------------------------
 
 const char* Unpack(const char* archive) {
+
+  if ( !archive ) {
+    LOG.errpointer(__FILE__,__LINE__-3);
+    LOG.printf("! Parameter is NULL pointer: Unpack(NULL).");
+    update_statusline(" ERROR! See log. ");
+    return NULL;
+  }
+
+  if ( ! *archive ) {
+    LOG.errtest(__FILE__,__LINE__-8);
+    LOG.printf("! Unpack(): archive file name is empty.");
+    update_statusline(" ERROR: archive file name is empty ");
+    return NULL;
+  }
 
   static Path newname;
   const char *filename = CleanFilename(archive);
@@ -526,7 +556,7 @@ const char* Unpack(const char* archive) {
   }
 
   return NULL;
-}
+} // Unpack()
 
 
 //  ------------------------------------------------------------------
@@ -562,7 +592,7 @@ void CleanUnpacked(const char* unpacked) {
       remove(removeme.c_str());
   }
   rmdir(tmpdir);
-}
+} // CleanUnpacked()
 
 //  ------------------------------------------------------------------
 //  Error exit function
@@ -601,7 +631,7 @@ void ErrorExit(int type) {
 
     exit(EXIT_OK);
   }
-}
+} // ErrorExit()
 
 
 //  ------------------------------------------------------------------
