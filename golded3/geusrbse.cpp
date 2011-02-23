@@ -29,6 +29,7 @@
 #include <golded.h>
 #include <geusrbse.h>
 #include <gftnnl.h>
+#include <gstrall.h>
 
 
 //  ------------------------------------------------------------------
@@ -211,35 +212,52 @@ void guserbase::do_delayed() {
 void guserbase::print_line(uint idx, uint pos, bool isbar) {
 
   char buf[200];
-  char buf2[100];
+  const size_t buflen=199;
+  buf[buflen]='\0';
+//  char buf2[100];
+//  const size_t buf2len=199;
+//  buf2[buf2len]='\0';
 
   read_entry(idx);
 
-  *buf2 = NUL;
+//  *buf2 = NUL;
 
+  std::string useraddr;
   if(AA->isinternet() or not entry.fidoaddr.valid()) {
     if(*entry.iaddr) {
-      strcat(buf2, "<");
-      strcat(buf2, entry.iaddr);
-      strcat(buf2, ">");
+//      strcat(buf2, "<");
+//      strcat(buf2, entry.iaddr);
+//      strcat(buf2, ">");
+/*      gsprintf(PRINTF_DECLARE_BUFFER(buf2), "<%s>", entry.iaddr); */
+      ((useraddr = "<") + entry.iaddr) + ">";
     }
   }
   else {
     if(entry.fidoaddr.valid()) {
-      *buf2 = '(';
-      entry.fidoaddr.make_string(buf2+1);
-      strcat(buf2, ")");
+//      *buf2 = '(';
+//      entry.fidoaddr.make_string(buf2+1);
+//      strcat(buf2, ")");
+      entry.fidoaddr.make_string(useraddr);
+      useraddr.insert(useraddr.begin(),'(');
+      useraddr.push_back(')');
+
     }
   }
 
-  sprintf(buf, "%c %-*.*s %-*.*s %s ",
+//  sprintf(buf, "%c %-*.*s %-*.*s %s ",
+  gsprintf(PRINTF_DECLARE_BUFFER(buf), "%c %-*.*s %-*.*s %s ",
     entry.is_deleted ? 'D' : ' ',
     cwidth, (int)cwidth, entry.name,
     (cwidth*2)/3, (int)(cwidth*2)/3, entry.organisation,
-    buf2);
+//    buf2);
+    useraddr.c_str() );
 
-  strsetsz(buf, xlen);
-  window.prints(pos, 0, isbar ? sattr : wattr, buf);
+//  strsetsz(buf, xlen);
+/*  strsetsz(buf, buflen>xlen?xlen:buflen); */
+//  window.prints(pos, 0, isbar ? sattr : wattr, buf);
+  std::string line_to_print(buf);
+  line_to_print.resize(xlen,' ');
+  window.prints(pos, 0, isbar ? sattr : wattr, line_to_print.c_str());
 }
 
 
