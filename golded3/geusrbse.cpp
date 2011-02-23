@@ -239,7 +239,7 @@ void guserbase::print_line(uint idx, uint pos, bool isbar) {
 //      strcat(buf2, ")");
       entry.fidoaddr.make_string(useraddr);
       useraddr.insert(useraddr.begin(),'(');
-      useraddr.push_back(')');
+      useraddr.append(")");
 
     }
   }
