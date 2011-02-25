@@ -3,27 +3,6 @@ Microsoft Developer Studio Workspace File, Format Version 6.00
 
 ###############################################################################
 
-Project: "BuildAll"=".\windows\BuildAll.dsp" - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-    Begin Project Dependency
-    Project_Dep_Name golded
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name goldnode
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name rddt
-    End Project Dependency
-}}}
-
-###############################################################################
-
 Project: "golded"=".\windows\golded.dsp" - Package Owner=<4>
 
 Package=<5>
