@@ -3,13 +3,6 @@
 //  GoldED+
 //  Personalized strings.
 //  ------------------------------------------------------------------
-//  $Id$
-//  ------------------------------------------------------------------
-//  Please do not modify this file. It's just a template for your
-//  local "mygolded.h" settings file. So please change your copy only.
-
-//  ------------------------------------------------------------------
-//  Please edit these fields to match your real name
 
 #undef __GVER_VENDOR_NAME__
 #define __GVER_VENDOR_NAME__ "Semen Panevin"

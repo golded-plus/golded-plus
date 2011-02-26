@@ -19,8 +19,26 @@ SLOT="0"
 KEYWORDS="~x86 ~amd64"
 IUSE="spell -doc"
 DEPEND=">=sys-libs/ncurses-5.4
-	spell? ( app-dicts/myspell-${LINGUAS} )
 	doc? ( sys-apps/texinfo )"
+RDEPEND="${DEPEND}"
+
+pdep=""
+for l in \
+"af" "bg" "ca" "cs" "cy" "da" "de" "de-alt" "el" "en" \
+"eo" "es" "et" "fo" "fr" "ga" "gl" "he"     "hr" "hu" \
+"ia" "id" "it" "ku" "lt" "lv" "mi" "mk"     "ms" "nb" \
+"nl" "nn" "pl" "pt" "ro" "ru" "sk" "sl"     "sv" "sw" \
+"tn" "uk" "zu" \
+; do
+dep="linguas_${l}? ( app-dicts/myspell-${l} )"
+[[ -z ${pdep} ]] &&
+pdep="${dep}" ||
+pdep="${pdep}
+${dep}"
+IUSE="${IUSE} linguas_${l}"
+done
+
+PDEPEND="spell? ( ${pdep} )"
 
 S="${WORKDIR}/${ECVS_LOCALNAME}"
 
