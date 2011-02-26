@@ -1,5 +1,5 @@
-#!/bin/sh
-
+#!/bin/bash
+# $Id$
 # Create a archive 'gpw32-*.zip' (gpwYMMDD.zip) with Win32 (MinGW) build
 # of the Golded+.
 
@@ -9,11 +9,15 @@ then
   exit
 fi
 
-date=`date +%Y%m%d`
-shortdate=`echo ${date} | sed s/^...//`
+srcdatefile=srcdate.h
+build=`sed -n 's/.*"\([[:digit:]]\{8\}\)".*/\1/p' $srcdatefile`
+date="$build"
+shortdate=${date/???/}
 name=../gpw32-115-${date}.zip
 shortname=../gpw${shortdate}.zip
-dizfile=bin/file_id.diz
+binsuffix="cyg.exe"
+binesdir="bin"
+dizfile="$binesdir/file_id.diz"
 
 echo Build a Golded+/w32mingw binary package:  ${name} and ${shortname}
 
@@ -22,9 +26,8 @@ if [ ! -f golded3/mygolded.h ]; then
   echo "golded3/mygolded.h is created now. Please edit this file"
   exit 1
 fi
-#sed -i.orig -e "s/\#define __GVER_POSTVERSION__ .*/\#define __GVER_POSTVERSION__   \"-b${date}\"/" golded3/mygolded.h
 
-bines="bin/gedcyg.exe bin/gncyg.exe bin/rddtcyg.exe"
+bines="${binesdir}/ged${binsuffix} ${binesdir}/gn${binsuffix} ${binesdir}/rddt${binsuffix}"
 files="${bines} docs/copying docs/copying.lib golded.bat"
 files="${files} docs/golded.html docs/golded.txt docs/goldnode.html"
 files="${files} docs/goldnode.txt docs/license.txt docs/notework.txt"
@@ -32,18 +35,16 @@ files="${files} docs/rddt.html docs/rddt.txt docs/readme.txt docs/notework.rus"
 files="${files} docs/rusfaq.txt docs/tips.txt docs/todowork.txt"
 files="${files} docs/tokencfg.txt docs/tokentpl.txt"
 
-printf 'GoldED+1.1.5  [Win32 binaries]\r\n'  >${dizfile}
-printf '[Compiled using  MinGW/Cygwin]\r\n' >>${dizfile}
-printf 'Snapshot (development version)\r\n' >>${dizfile}
-printf 'This is  unstable release  and\r\n' >>${dizfile}
-printf 'it should be used for testing.\r\n' >>${dizfile}
-printf -- '------------------------------\r\n' >>${dizfile}
-printf 'GoldED+ is a  successor of the\r\n' >>${dizfile}
-printf 'wellknown  GoldED mail editor.\r\n' >>${dizfile}
-printf -- '------------------------------\r\n' >>${dizfile}
-printf '*golded-plus.sourceforge.net* \r\n' >>${dizfile}
+compilerver=`gcc -v 2>&1 | sed -n -e '/^gcc version/{s/gcc version \([[:digit:].]\{2,\}\)\s\((\([[:alnum:]]\{2,\}\)\sspecial\).*/\1 \3/p;q}'`
+printf 'GoldED+1.1.5 beta at %8.8s\r\n' $build  >${dizfile}
+printf 'Win32 binaries compiled using\r\n' >>${dizfile}
+printf 'MinGW GNU C/C++ %13.13s\r\n' "$compilerver" >>${dizfile}
+printf 'This is  unstable release and\r\n' >>${dizfile}
+printf 'it should be used for testing\r\n' >>${dizfile}
+printf -- '-----------------------------\r\n' >>${dizfile}
+printf ' *http://golded-plus.sf.net* \r\n' >>${dizfile}
 
-rm bin/*cyg.exe
+for f in ${bines}; do rm $f; done
 make clean
 make
 make strip

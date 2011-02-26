@@ -1,15 +1,23 @@
-#!/bin/sh
-
+#!/bin/bash
+# $Id$
 # Create an archive 'gpsunx86-115-*.zip' (gpsunx86-115-YMMDD.zip)
 # with binary SunOS x86 build installable package
 
-pkgdir=bin/pkg
+srcdatefile=srcdate.h
+build=`sed -n 's/.*"\([[:digit:]]\{8\}\)".*/\1/p' $srcdatefile`
+date="$build"
+#shortdate=`echo ${date} | sed s/^...//`
+shortdate=${date/???/}
+binsuffix="sun"
+platform="sun"
+binesdir="bin"
+dizfile="${binesdir}/file_id.diz"
+pkgdir=${binesdir}/pkg
 vendor=`sed -n -e "/^#define __GVER_VENDOR_NAME__/s/#define __GVER_VENDOR_NAME__ \"\(.*\)\"/\1/p" golded3/mygolded.h`
 email=`sed -n -e "/^#define __GVER_VENDOR_EMAIL__/s/#define __GVER_VENDOR_EMAIL__ \"\(.*\)\"/\1/p" golded3/mygolded.h`
-date=`date +%Y%m%d`
-name=bin/gpsunx86-115-${date}.zip
+name=${binesdir}/gpsunx86-115-${date}.zip
 pkgname=golded-plus-x86-115-${date}.pkg
-dizfile=bin/file_id.diz
+bines="${binesdir}/ged${binsuffix} ${binesdir}/gn${binsuffix} ${binesdir}/rddt${binsuffix}"
 
 echo Build a Golded+/sunX86 binary package:  ${name} \(${pkgname}\)
 
@@ -18,30 +26,29 @@ if [ ! -f golded3/mygolded.h ]; then
   echo "golded3/mygolded.h is created now. Please edit this file"
   exit 1
 fi
-#gsed -i.orig -e "s/\#define __GVER_POSTVERSION__ .*/\#define __GVER_POSTVERSION__   \"-b${date}\"/" golded3/mygolded.h
 
-if [ ! -d "bin" ] ; then mkdir bin; fi
+if [ ! -d "${binesdir}" ] ; then mkdir ${binesdir}; fi
 
-printf "GoldED+1.1.5 [`uname` `uname -i` pkg]\r\n"  >${dizfile}
-printf 'Snapshot (development version)\r\n' >>${dizfile}
-printf 'This is  unstable release  and\r\n' >>${dizfile}
-printf 'it should be used for testing.\r\n' >>${dizfile}
-printf -- '------------------------------\r\n' >>${dizfile}
-printf 'GoldED+ is a  successor of the\r\n'    >>${dizfile}
-printf 'wellknown  GoldED mail editor.\r\n'    >>${dizfile}
-printf -- '------------------------------\r\n' >>${dizfile}
-printf '*golded-plus.sourceforge.net* \r\n'    >>${dizfile}
+compilerver=`gcc -v 2>&1 | sed -n -e '/^gcc version/{s/gcc version \([[:digit:].]\{2,\}\)\s\((\([[:alnum:]]\{2,\}\)\sspecial\).*/\1 \3/p;q}'`
+printf 'GoldED+1.1.5 beta at %8.8s\r\n' $build  >${dizfile}
+
+printf "`uname` `uname -i` pkg compiled\r\n"  >${dizfile}
+printf 'using GNU C/C++ %13.13s\r\n' "$compilerver" >>${dizfile}
+printf 'This is  unstable release and\r\n' >>${dizfile}
+printf 'it should be used for testing\r\n' >>${dizfile}
+printf -- '-----------------------------\r\n' >>${dizfile}
+printf ' *http://golded-plus.sf.net* \r\n' >>${dizfile}
 
 # make binaries
 
-gmake PLATFORM=sun clean
-gmake PLATFORM=sun
-gmake PLATFORM=sun strip
+gmake PLATFORM=${platform} clean
+gmake PLATFORM=${platform}
+gmake PLATFORM=${platform} strip
 cd docs
 gmake tokentpl.txt tokencfg.txt
 cd ..
 
-for i in bin/gedsun bin/gnsun bin/rddtsun ; do
+for i in ${bines} ; do
   if [ ! -f ${i} ] ; then echo "File ${i} not exists, stop!"; exit 1 ; fi
 done
 
@@ -81,4 +88,4 @@ cd ../..
 rm -rf $pkgdir
 
 # zipping
-zip -9DXj ${name} ${dizfile} bin/$pkgname
+zip -9DXj ${name} ${dizfile} ${binesdir}/$pkgname

@@ -1,9 +1,12 @@
-#!/bin/sh
-
+#!/bin/bash
+# $Id$
 # Create a archives 'gps*.tar.bz2' and 'gps*.tb2' with all source tree
 
-date=`date +%Y%m%d`
-shortdate=`echo ${date} | sed s/^...//`
+srcdatefile=srcdate.h
+build=`sed -n 's/.*"\([[:digit:]]\{8\}\)".*/\1/p' $srcdatefile`
+date="$build"
+shortdate=${date/???/}
+
 shortname=gps${shortdate}.tb2
 name=gps115-${date}.tar.bz2
 

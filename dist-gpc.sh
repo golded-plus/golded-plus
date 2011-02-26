@@ -1,9 +1,12 @@
-#!/bin/sh
-
+#!/bin/bash
+# $Id$
 # Create a archive 'gpc*.zip' with configuration files examples.
 
-date=`date +%Y%m%d`
-shortdate=`echo ${date} | sed s/^...//`
+srcdatefile=srcdate.h
+build=`sed -n 's/.*"\([[:digit:]]\{8\}\)".*/\1/p' $srcdatefile`
+date="$build"
+shortdate=${date/???/}
+
 shortname=../gpc${shortdate}.zip
 name=../gpc115-${date}.zip
 
