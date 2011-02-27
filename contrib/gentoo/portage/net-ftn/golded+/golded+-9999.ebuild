@@ -47,8 +47,6 @@ src_unpack() {
 }
 
 src_prepare() {
-	cd "${S}"
-
 	# Add header with personal configuration
 	cp ${FILESDIR}/mygolded.h ./golded3/mygolded.h
 
@@ -61,15 +59,11 @@ src_prepare() {
 }
 
 src_compile() {
-	cd "${S}"
-
-	emake PLATFORM=lnx 
-	use doc && emake docs
+	emake PLATFORM=lnx || die "emake failed"
+	use doc && emake docs || die "emake docs failed"
 }
 
 src_install() {
-	cd "${S}"
-
 	dobin bin/gedlnx bin/gnlnx bin/rddtlnx
 	doman docs/*.1
 	if useq doc ; then
