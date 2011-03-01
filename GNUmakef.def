@@ -48,6 +48,7 @@ WINDRES=windres
 EXEEXT=.exe
 OBJEXT=.o
 LIBEXT=.a
+CFLAGS+=-DHAVE_SNPRINTF -DHAVE_VSNPRINTF -DHAVE_STDARG_H
 else
 ifeq ($(PLATFORM),emx)
 CAT=cat
@@ -69,6 +70,7 @@ LIBEXT=.a
 #OBJEXT=.obj
 #LIBEXT=.lib
 CXX=$(CC)
+CFLAGS+=-DHAVE_SNPRINTF -DHAVE_VSNPRINTF -DHAVE_STDARG_H
 else
 ifeq ($(PLATFORM),djg)
 CAT=command.com /c type
@@ -95,6 +97,7 @@ EXEEXT=
 OBJEXT=.o
 LIBEXT=.a
 LNKFLAGS+=-lbe -ltextencoding
+CFLAGS+=-DHAVE_SNPRINTF -DHAVE_VSNPRINTF -DHAVE_STDARG_H
 else
 ifeq ($(PLATFORM),sun) # SUN Solaris
 CAT=cat
@@ -108,6 +111,7 @@ EXEEXT=
 OBJEXT=.o
 LIBEXT=.a
 CFLAGS+=-D__SUNOS__ -D__UNIX__ -DUNIX
+CFLAGS+=-DHAVE_SNPRINTF -DHAVE_VSNPRINTF -DHAVE_STDARG_H
 ifeq ($(WIDE_NCURSES),1)
 LIBCURSES=-L/opt/csw/lib -lncursesw
 else
@@ -131,6 +135,7 @@ LIBCURSES=-lncursesw
 else
 LIBCURSES=-lncurses
 endif
+CFLAGS+=-DHAVE_SNPRINTF -DHAVE_VSNPRINTF -DHAVE_STDARG_H
 else                   # Linux, *BSD or another unix-like OS
 CAT=cat
 SED=sed
@@ -155,7 +160,7 @@ endif
 endif
 endif
 endif
-CFLAGS+=-funsigned-char -g $(INCS) -Wall -Wno-sign-compare -pedantic -O2 -DPRAGMA_PACK # -fomit-frame-pointer
+CFLAGS+=-funsigned-char -g $(INCS) -Wall -Wno-sign-compare -pedantic -O2 -DPRAGMA_PACK -DHAVE_SNPRINTF -DHAVE_VSNPRINTF -DHAVE_STDARG_H # -fomit-frame-pointer
 LNKFLAGS+=-g
 CPPFLAGS+=$(CFLAGS) -fno-rtti # -fno-exceptions
 

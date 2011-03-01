@@ -31,16 +31,6 @@
 // -------------------------------------------------------------------
 // snprintf() and vsnprintf()
 
-// ---- FIXME: All HAVE_* macro should be defined in makefile or created by autoconf
-#ifdef __GNUC__ 
-# define HAVE_SNPRINTF
-# define HAVE_VSNPRINTF
-# define HAVE_STDARG_H
-#endif
-#if  defined(__WATCOMC__)
-# define HAVE__SNPRINTF
-# define HAVE__VSNPRINTF
-#endif
 #if  defined(_MSC_VER)
 /* It is need a workaround for implementation "speciality" in snprintf() and vsnprintf() from Microsoft. */
 int snprintf( char *buffer, size_t sizeOfBuffer, const char *format, ... )

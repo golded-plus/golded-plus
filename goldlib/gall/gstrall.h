@@ -59,8 +59,10 @@ char* strlwr(char* s);
 
 //  ------------------------------------------------------------------
 
-#if defined(_MSC_VER)
+#if !defined(HAVE_SNPRINTF)
 int snprintf( char *buffer, size_t sizeOfBuffer, const char *format, ... );
+#endif
+#if !defined(HAVE_VSNPRINTF)
 int vsnprintf( char *buffer, size_t sizeOfBuffer, const char *format, va_list argptr );
 #endif
 
