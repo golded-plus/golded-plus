@@ -160,7 +160,7 @@ endif
 endif
 endif
 endif
-CFLAGS+=-funsigned-char -g $(INCS) -Wall -Wno-sign-compare -pedantic -O2 -DPRAGMA_PACK -DHAVE_SNPRINTF -DHAVE_VSNPRINTF -DHAVE_STDARG_H # -fomit-frame-pointer
+CFLAGS+=-funsigned-char -g $(INCS) -Wall -Wno-sign-compare -pedantic -O2 -DPRAGMA_PACK # -fomit-frame-pointer
 LNKFLAGS+=-g
 CPPFLAGS+=$(CFLAGS) -fno-rtti # -fno-exceptions
 

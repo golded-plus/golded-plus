@@ -35,8 +35,12 @@
 #include <string>
 #include <vector>
 #include <stdlib.h>
-#include <gctype.h>
 #include <cstring>
+#if defined(HAVE_STDARG_H)
+# include <stdarg.h>
+#endif
+
+#include <gctype.h>
 #include <gdefs.h>
 
 //  ------------------------------------------------------------------

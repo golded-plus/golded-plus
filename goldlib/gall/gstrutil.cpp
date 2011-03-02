@@ -68,7 +68,7 @@ int vsnprintf( char *buffer, size_t sizeOfBuffer, const char *format, va_list ar
 #endif
 
 #if !defined(HAVE_SNPRINTF) || !defined(HAVE_VSNPRINTF)
-# include snprintf.c
+# include "snprintf.c"
 #endif
 
 //--------------------------------------------------------------------
@@ -726,8 +726,8 @@ int gsprintf(TCHAR* buffer, size_t sizeOfBuffer, const TCHAR* __file, int __line
   if (!buffer || !format)
   {
     LOG.errpointer(__file, __line);
-    LOG.printf( "! Parameter is NULL pointer: gsprintf(%s,%i,%s,...).",
-                (buffer?"buffer":"NULL"), sizeOfBuffer, (format?"format":"NULL") );
+    LOG.printf( "! Parameter is NULL pointer: gsprintf(%s,%ul,%s,...).",
+                (buffer?"buffer":"NULL"), (unsigned long)sizeOfBuffer, (format?"format":"NULL") );
     PointerErrorExit();
     return -1;
   }
@@ -741,7 +741,7 @@ int gsprintf(TCHAR* buffer, size_t sizeOfBuffer, const TCHAR* __file, int __line
   if (!*format)
   {
     LOG.errtest(__file, __line);
-    LOG.printf("! Format is empty string: gsprintf(buffer,%i,"",...).", sizeOfBuffer);
+    LOG.printf("! Format is empty string: gsprintf(buffer,%ul,"",...).", (unsigned long)sizeOfBuffer);
     return 0;
   }
 
