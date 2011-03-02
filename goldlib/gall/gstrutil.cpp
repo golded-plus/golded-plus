@@ -732,7 +732,7 @@ int gsprintf(TCHAR* buffer, size_t sizeOfBuffer, const TCHAR* __file, int __line
   if (!buffer || !format)
   {
     LOG.errpointer(__file, __line);
-    LOG.printf( "! Parameter is NULL pointer: gsprintf(%s,%ul,%s,...).",
+    LOG.printf( "! Parameter is NULL pointer: gsprintf(%s,%lu,%s,...).",
                 (buffer?"buffer":"NULL"), (unsigned long)sizeOfBuffer, (format?"format":"NULL") );
     PointerErrorExit();
     return -1;
@@ -747,7 +747,7 @@ int gsprintf(TCHAR* buffer, size_t sizeOfBuffer, const TCHAR* __file, int __line
   if (!*format)
   {
     LOG.errtest(__file, __line);
-    LOG.printf("! Format is empty string: gsprintf(buffer,%ul,"",...).", (unsigned long)sizeOfBuffer);
+    LOG.printf("! Format is empty string: gsprintf(buffer,%lu,"",...).", (unsigned long)sizeOfBuffer);
     return 0;
   }
 
