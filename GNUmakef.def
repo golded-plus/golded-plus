@@ -84,6 +84,7 @@ SHELL=sh
 EXEEXT=.exe
 OBJEXT=.o
 LIBEXT=.a
+CFLAGS+=-DHAVE_STDARG_H
 else
 ifeq ($(PLATFORM),be)
 CAT=cat
