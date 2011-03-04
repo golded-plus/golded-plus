@@ -74,10 +74,7 @@ printf ' *http://golded-plus.sf.net* \r\n' >>${dizfile}
 
 for f in ${bines}; do rm $f; done
 
-make PLATFORM=${platform} clean
-make PLATFORM=${platform}
-make PLATFORM=${platform} strip
-make docs
+make PLATFORM=${platform} clean all strip docs || (echo "Error $?" ; exit)
 
 for i in ${bines} ; do
   if [ ! -f ${i} ] ; then echo "File ${i} not exists, stop!"; exit 1 ; fi

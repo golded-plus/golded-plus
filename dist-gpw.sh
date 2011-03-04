@@ -45,10 +45,7 @@ printf -- '-----------------------------\r\n' >>${dizfile}
 printf ' *http://golded-plus.sf.net* \r\n' >>${dizfile}
 
 for f in ${bines}; do rm $f; done
-make clean
-make
-make strip
-make docs
+make clean all strip docs || (echo "Error $?" ; exit)
 
 for i in ${bines} ; do
   if [ ! -f ${i} ] ; then echo "File ${i} not exists, stop!"; exit 1 ; fi

@@ -41,9 +41,7 @@ printf ' *http://golded-plus.sf.net* \r\n' >>${dizfile}
 
 # make binaries
 
-gmake PLATFORM=${platform} clean
-gmake PLATFORM=${platform}
-gmake PLATFORM=${platform} strip
+gmake PLATFORM=${platform} clean all strip || (echo "Error $?" ; exit)
 cd docs
 gmake tokentpl.txt tokencfg.txt
 cd ..
