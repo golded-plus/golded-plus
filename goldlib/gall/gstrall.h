@@ -64,7 +64,11 @@ char* strlwr(char* s);
 //  ------------------------------------------------------------------
 
 #if !defined(HAVE_SNPRINTF)
-int snprintf( char *buffer, size_t sizeOfBuffer, const char *format, ... );
+#ifdef HAVE_STDARG_H
+int snprintf (char *str,size_t count,const char *fmt,...);
+#else
+int snprintf (va_alist);
+#endif
 #endif
 #if !defined(HAVE_VSNPRINTF)
 int vsnprintf( char *buffer, size_t sizeOfBuffer, const char *format, va_list argptr );

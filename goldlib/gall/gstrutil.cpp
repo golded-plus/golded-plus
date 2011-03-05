@@ -69,10 +69,10 @@ int vsnprintf( char *buffer, size_t sizeOfBuffer, const char *format, va_list ar
 
 #if !defined(HAVE_SNPRINTF) || !defined(HAVE_VSNPRINTF)
 # include "snprintf.c"
-# if defined(HAVE__SNPRINTF)
+# if !defined(HAVE__SNPRINTF)
 #  define HAVE_SNPRINTF 1
 # endif
-# if defined(HAVE__VSNPRINTF)
+# if !defined(HAVE__VSNPRINTF)
 #  define HAVE_VSNPRINTF 1
 # endif
 #endif
