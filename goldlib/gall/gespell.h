@@ -291,7 +291,7 @@ private:
 
   char mXlatLocalset[256];
 
-  CSpellLang     *mLang;
+  CSpellLangV    mLangsLoaded;
   CSpellLangV    mLangs;
   CSpellSuggestV mSuggest;
 
@@ -303,22 +303,25 @@ public:
   void Close();
 
   bool Load(const char *langId, const char *userDic);
+  void UnLoad(const char *langId);
   void UnLoad();
 
   bool Check(const char *text);
   CSpellSuggestV &Suggest();
 
   bool Check(std::string &text) { return Check(text.c_str()); }
-  bool AddWord() { return IsLoaded() ?  mLang->AddWord(mText) : false; };
+  bool AddWord();
 
   CSpellSuggestV &GetSuggest() { return mSuggest; }
   CSpellLangV    &GetLangs()   { return mLangs; }
+  CSpellLangV    &GetLangsLoaded() { return mLangsLoaded; }
+  const std::vector<const char*> GetLangCodes();
 
-  const char *GetLangCode() { return IsLoaded() ? mLang->GetLangCode() : "?*N/A*?"; }
-  bool IsUdrLoaded() { return IsLoaded() ? mLang->IsUdrLoaded() : false; }
+  bool IsUdrLoaded();
 
   bool IsInited() { return mInited; }
-  bool IsLoaded() { return mLang != NULL; }
+  bool IsLoaded() { return !mLangsLoaded.empty(); }
+  bool IsLoaded(const char *langId);
 };
 
 

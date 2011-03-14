@@ -583,7 +583,6 @@ void CSpellLang::RecodeText(const char *srcText, char *dstText, bool flag)
 CSpellChecker::CSpellChecker()
 {
   mInited = false;
-  mLang = NULL;
   mText[0] = 0;
 }
 
@@ -671,20 +670,22 @@ bool CSpellChecker::Load(const char *langId, const char *userDic)
 {
 
   if (!IsInited()) return false;
-  if (IsLoaded() && streql(mLang->GetLangCode(), langId)) return true;
+  if (IsLoaded(langId))
+  {
+    return true;
+  }
 
   CSpellLangV::iterator it;
   for (it = mLangs.begin(); it != mLangs.end(); it++)
   {
     if (streql((*it)->GetLangCode(), langId) && (*it)->Load(mXlatLocalset, userDic))
     {
-      UnLoad();
-      mLang = *it;
-      break;
+      mLangsLoaded.push_back(*it);
+      return true;
     }
   }
 
-  return IsLoaded();
+  return false;
 }
 
 
@@ -693,8 +694,32 @@ bool CSpellChecker::Load(const char *langId, const char *userDic)
 void CSpellChecker::UnLoad()
 {
   if (!IsLoaded()) return;
-  mLang->UnLoad();
-  mLang = NULL;
+
+  CSpellLangV::iterator it;
+  for (it = mLangsLoaded.begin(); it != mLangsLoaded.end(); it++)
+  {
+    (*it)->UnLoad();
+  }
+  mLangsLoaded.clear();
+}
+
+
+//  ------------------------------------------------------------------
+
+void CSpellChecker::UnLoad(const char *langId)
+{
+  if (!IsLoaded()) return;
+
+  CSpellLangV::iterator it;
+  for (it = mLangsLoaded.begin(); it != mLangsLoaded.end(); it++)
+  {
+    if (streql((*it)->GetLangCode(), langId))
+    {
+      (*it)->UnLoad();
+      mLangsLoaded.erase(it);
+      return;
+    }
+  }
 }
 
 
@@ -704,8 +729,16 @@ bool CSpellChecker::Check(const char *text)
 {
   if (!IsLoaded()) return true;
 
-  mLang->RecodeText(text, mText, true);
-  return mLang->SpellCheck(mText);
+  CSpellLangV::iterator it;
+  for (it = mLangsLoaded.begin(); it != mLangsLoaded.end(); it++)
+  {
+    (*it)->RecodeText(text, mText, true);
+    if ((*it)->SpellCheck(mText))
+    {
+      return true;
+    }
+  }
+  return false;
 }
 
 
@@ -716,9 +749,107 @@ CSpellSuggestV &CSpellChecker::Suggest()
   mSuggest.clear();
   if (!IsLoaded()) return mSuggest;
 
-  mLang->BuildSuggest(mText, mSuggest);
+  CSpellSuggestV allSuggests;
+  
+  CSpellLangV::iterator it;
+  for (it = mLangsLoaded.begin(); it != mLangsLoaded.end(); it++)
+  {
+    (*it)->BuildSuggest(mText, allSuggests);
+  }
+
+  CSpellSuggestV::iterator all;
+  for (all = allSuggests.begin(); all != allSuggests.end(); all++)
+  {
+    CSpellSuggestV::iterator distinct;
+    bool exists = false;
+    for (distinct = mSuggest.begin(); distinct != mSuggest.end(); distinct++)
+    {
+      if ((*distinct).second.compare((*all).second) == 0)
+      {
+        exists = true;
+        break;
+      }
+    }
+
+    if (!exists)
+    {
+      mSuggest.push_back(*all);
+    }
+  }
 
   return mSuggest;
+}
+
+
+//  ------------------------------------------------------------------
+
+bool CSpellChecker::AddWord()
+{
+  if (IsLoaded())
+  {
+    CSpellLangV::iterator it;
+    for (it = mLangsLoaded.begin(); it != mLangsLoaded.end(); it++)
+    {
+      if ((*it)->GetSpellType() == SCHECKET_TYPE_MSSPELL)
+      {
+        return (*it)->AddWord(mText);
+      }
+    }
+  }
+
+  return false;
+}
+
+
+//  ------------------------------------------------------------------
+
+const std::vector<const char*> CSpellChecker::GetLangCodes()
+{
+  std::vector<const char*> codes;
+
+  CSpellLangV::iterator it;
+  for (it = mLangsLoaded.begin(); it != mLangsLoaded.end(); it++)
+  {
+    codes.push_back((*it)->GetLangCode());
+  }
+  return codes;
+}
+
+
+//  ------------------------------------------------------------------
+
+bool CSpellChecker::IsUdrLoaded()
+{
+  if (IsLoaded())
+  {
+    CSpellLangV::iterator it;
+    for (it = mLangsLoaded.begin(); it != mLangsLoaded.end(); it++)
+    {
+      if ((*it)->GetSpellType() == SCHECKET_TYPE_MSSPELL)
+      {
+        return (*it)->IsUdrLoaded();
+      }
+    }
+  }
+
+  return false;
+}
+
+
+//  ------------------------------------------------------------------
+
+bool CSpellChecker::IsLoaded(const char *langId)
+{
+  CSpellLangV::iterator it;
+  for (it = mLangsLoaded.begin(); it != mLangsLoaded.end(); it++)
+  {
+    if (streql((*it)->GetLangCode(), langId))
+    {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 

@@ -384,7 +384,7 @@ struct AreaData
   GPlay    play;
   int      replyre;
 #if defined(GCFG_SPELL_INCLUDED)
-  char     scheckerdeflang[100];
+  char     scheckerdeflang[10240];
 #endif
   char     tagline[76];
   char     taglinechar;

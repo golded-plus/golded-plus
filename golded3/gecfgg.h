@@ -402,7 +402,7 @@ public:
   gstrarray   robotname;
 #if defined(GCFG_SPELL_INCLUDED)
   int         scheckerenabled;
-  char        scheckerdeflang[100];
+  char        scheckerdeflang[10240];
   Path        scheckeruserdic;
   Path        scheckerdicpath;
 #endif

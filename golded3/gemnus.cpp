@@ -1113,7 +1113,7 @@ int GMenuSChecker::Run(CSpellChecker &schecker, const char *word)
   size_t numrows = 7;
 
   CSpellLangV &langs = schecker.GetLangs();
-  const char *lcode = schecker.GetLangCode();
+  std::vector<const char*> lcodes = schecker.GetLangCodes();
 
   std::vector<std::string> langstr;
   size_t langcount = langs.size();
@@ -1126,7 +1126,19 @@ int GMenuSChecker::Run(CSpellChecker &schecker, const char *word)
     const char *code = langs[idx]->GetLangCode();
 
     std::string buff = "  ";
-    buff += streql(lcode, code) ? '\x10' : ' ';
+
+    bool loaded = false;
+    std::vector<const char*>::iterator langit;
+    for (langit = lcodes.begin(); langit != lcodes.end(); langit++)
+    {
+      if (streql(*langit, code))
+      {
+        loaded = true;
+        break;
+      }
+    }
+
+    buff += loaded ? '\x10' : ' ';
 
 #if !(defined(GCFG_NO_MSSPELL) || defined(GCFG_NO_MYSPELL))
     if (type == SCHECKET_TYPE_MSSPELL)
@@ -1224,7 +1236,14 @@ int GMenuSChecker::Run(CSpellChecker &schecker, const char *word)
   }
   else if ((finaltag > TAG_LANG) && (finaltag < TAG_MORE))
   {
-    schecker.Load(langs[finaltag-TAG_LANG-1]->GetLangCode(), CFG->scheckeruserdic);
+    if (!schecker.IsLoaded(langs[finaltag-TAG_LANG-1]->GetLangCode()))
+    {
+      schecker.Load(langs[finaltag-TAG_LANG-1]->GetLangCode(), CFG->scheckeruserdic);
+    }
+    else
+    {
+      schecker.UnLoad(langs[finaltag-TAG_LANG-1]->GetLangCode());
+    }
     return -2;
   }
 

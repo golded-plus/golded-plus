@@ -2094,7 +2094,7 @@ void IEclass::SaveMsg() {
 #if defined(GCFG_SPELL_INCLUDED)
 void IEclass::SCheckerMenu()
 {
-  if (!schecker.IsLoaded())
+  if (!schecker.IsInited())
     return;
 
   const char *txt = currline->txt.c_str();
@@ -2852,7 +2852,15 @@ int IEclass::Start(int __mode, uint* __position, GMsg* __msg) {
   if (CFG->scheckerenabled)
   {
     schecker.Init(CFG->xlatlocalset, CFG->scheckerdicpath);
-    schecker.Load(AA->adat->scheckerdeflang, CFG->scheckeruserdic);
+    char str[sizeof(AA->adat->scheckerdeflang)];
+    strncpy(str, AA->adat->scheckerdeflang, sizeof(str));
+    char *token = strtok(str, " ");
+    while(token != NULL)
+    {
+      schecker.Load(token, CFG->scheckeruserdic);
+      /* Get next token: */
+      token = strtok(NULL, " ");
+    }
   }
 #endif
 
