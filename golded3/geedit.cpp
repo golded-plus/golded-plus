@@ -2852,8 +2852,7 @@ int IEclass::Start(int __mode, uint* __position, GMsg* __msg) {
   if (CFG->scheckerenabled)
   {
     schecker.Init(CFG->xlatlocalset, CFG->scheckerdicpath);
-    char str[sizeof(AA->adat->scheckerdeflang)];
-    strncpy(str, AA->adat->scheckerdeflang, sizeof(str));
+    char *str = strdup(AA->adat->scheckerdeflang);
     char *token = strtok(str, " ");
     while(token != NULL)
     {
@@ -2861,6 +2860,7 @@ int IEclass::Start(int __mode, uint* __position, GMsg* __msg) {
       /* Get next token: */
       token = strtok(NULL, " ");
     }
+    free(str);
   }
 #endif
 
