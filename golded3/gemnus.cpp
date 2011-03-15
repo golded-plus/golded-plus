@@ -1138,7 +1138,11 @@ int GMenuSChecker::Run(CSpellChecker &schecker, const char *word)
       }
     }
 
-    buff += loaded ? '\x10' : ' ';
+#ifdef __USE_NCURSES__
+    buff += loaded ? '>' : ' ';
+#else
+    buff += loaded ? MMRK_MARK : ' ';
+#endif
 
 #if !(defined(GCFG_NO_MSSPELL) || defined(GCFG_NO_MYSPELL))
     if (type == SCHECKET_TYPE_MSSPELL)
