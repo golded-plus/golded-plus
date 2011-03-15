@@ -89,7 +89,11 @@ public:
   virtual void UnLoad() = 0;
 
   virtual void BuildRTable(const char *codeset) = 0;
+
+  // Translate encoding:
+  // flag=1: translate to charset of dictionnary, flag=0: translate to charset of locale
   void RecodeText(const char *srcText, char *dstText, bool flag);
+  void RecodeText(const char *srcText, std::string &dstText, bool flag);
 
   virtual void BuildSuggest(const char *text, CSpellSuggestV &suggest) = 0;
 
@@ -287,7 +291,7 @@ class CSpellChecker
 {
 private:
   bool mInited;
-  char mText[1024];
+  std::string mText;
 
   char mXlatLocalset[256];
 
