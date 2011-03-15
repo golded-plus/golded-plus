@@ -208,8 +208,8 @@ bool CMSSpellLang::Init(HKEY hKey, const char *name)
 
   byte engine[_MAX_PATH];
   byte dictionary[_MAX_PATH];
-  unsigned long esize = sizeof(engine);
-  unsigned long dsize = sizeof(dictionary);
+  const unsigned long esize = sizeof(engine);
+  const unsigned long dsize = sizeof(dictionary);
 
   mLIDC  = atoi(name);
   strcpy(mLangCode, name);
@@ -906,7 +906,7 @@ CSpellSuggestV &CSpellChecker::Suggest()
   if (!IsLoaded()) return mSuggest;
 
   CSpellSuggestV allSuggests;
-  
+
   CSpellLangV::iterator it;
   for (it = mLangsLoaded.begin(); it != mLangsLoaded.end(); it++)
   {
