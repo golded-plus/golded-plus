@@ -1417,7 +1417,7 @@ void GotoReplies()
         AA->LoadMsg(rmsg, msgn, CFG->dispmargin-(int)CFG->switches.get(disppagebar));
       else
         AA->LoadHdr(rmsg, msgn);
-      rlist[replies].isread = ((0 == rmsg->timesread) and CFG->switches.get(highlightunread)) ? '\x10' : ' ';
+      rlist[replies].isread = ((0 == rmsg->timesread) and CFG->switches.get(highlightunread)) ? MMRK_MARK : ' ';
       if((cursorbar == -1) and (0 == rmsg->timesread) and (CFG->switches.get(highlightunread)))
         cursorbar = replies;
       rlist[replies].msgno[0] = (n==list_max+1) ? '*' : '+';
