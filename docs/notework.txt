@@ -14,9 +14,9 @@ Legend: "-" - bugfix, "+" - new feature, "!" - important modification.
 ______________________________________________________________________
 
 + In the Spell Checking feature simultaneous may use a several
-  dictionnaries. The user dictionnaries of MS Spell Checker listed in
-  the statement SCHECKERUSERDIC delimited with space. Path from Semen
-  Panevin 2:5025/121.
+  dictionnaries. The token SCheckerDefLang accepts a list of
+  dictionaries delimited with space. Patch from Semen Panevin,
+  2:5025/121@fidonet
 
 ! Fix SOUP and QWK initialisation. (Early Golded+ used buffer with
   value of last parameter in a config instead of a area name).
