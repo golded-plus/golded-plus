@@ -208,8 +208,8 @@ bool CMSSpellLang::Init(HKEY hKey, const char *name)
 
   byte engine[_MAX_PATH];
   byte dictionary[_MAX_PATH];
-  const unsigned long esize = sizeof(engine);
-  const unsigned long dsize = sizeof(dictionary);
+  unsigned long esize = sizeof(engine);
+  unsigned long dsize = sizeof(dictionary);
 
   mLIDC  = atoi(name);
   strcpy(mLangCode, name);
@@ -355,7 +355,7 @@ void CMSSpellLang::BuildRTable(const char *codeset)
     LOG.errpointer(__FILE__,__LINE__);
     LOG.printf( "! Parameter is NULL pointer: CMSSpellLang::BuildRTable(NULL). "
         "This is bug in program, please make report to developers." );
-    return false;
+    return;
   }
   strcpy(codeset2, "CP");
   GetLocaleInfo(mLIDC, LOCALE_IDEFAULTANSICODEPAGE, &codeset2[2], sizeof(codeset2)-2);
@@ -381,7 +381,7 @@ void CMSSpellLang::BuildSuggest(const char *text, CSpellSuggestV &suggest)
     LOG.errpointer(__FILE__,__LINE__);
     LOG.printf( "! Parameter is NULL pointer: CMSSpellLang::BuildSuggest(NULL,suggest). "
         "This is bug in program, please make report to developers." );
-    return false;
+    return;
   }
   if (!SpellSuggest(text, false)) return;
 
