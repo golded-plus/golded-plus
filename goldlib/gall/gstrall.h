@@ -67,7 +67,7 @@ char* strlwr(char* s);
 #ifdef HAVE_STDARG_H
 int snprintf (char *str,size_t count,const char *fmt,...);
 #else
-int snprintf (va_alist);
+int snprintf (va_list);
 #endif
 #endif
 #if !defined(HAVE_VSNPRINTF)
