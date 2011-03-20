@@ -10,7 +10,7 @@ endif
 
 TOP=../..
 TARGET=gcfg
-INCS=-I$(TOP)/goldlib/gall -I$(TOP)/goldlib/gcfg
+INCS=-I$(TOP)/goldlib -I$(TOP)/goldlib/gall -I$(TOP)/goldlib/gcfg
 ifdef MINGW
 INCS+=-I$(TOP)/goldlib/glibc
 else

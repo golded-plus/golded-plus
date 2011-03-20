@@ -233,7 +233,7 @@ CLEAN :
     if not exist "$(INTDIR)/$(NULL)" mkdir "$(INTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /Gm /GX /Zi /O1 /I "..\goldlib\gall" /I "..\goldlib\gcui" /I "..\goldlib\gcfg" /I "..\goldlib\glibc" /I "..\goldlib\gmb3" /I "..\goldlib\smblib" /I "..\goldlib\uulib" /I "..\goldlib\hunspell" /D "WIN32" /D "NDEBUG" /D "_LIB" /D "HAVE_STDARG_H" /D "HAVE_CONFIG_H" /D "__INCLUDE_NEW_KEYWORDS__" /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /J /FD /c 
+CPP_PROJ=/nologo /MD /W3 /Gm /GX /Zi /O1 /I "..\goldlib\gall" /I "..\goldlib\gcui" /I "..\goldlib\gcfg" /I "..\goldlib\glibc" /I "..\goldlib\gmb3" /I "..\goldlib\smblib" /I "..\goldlib\uulib" /I "..\goldlib" /D "WIN32" /D "NDEBUG" /D "_LIB" /D "HAVE_STDARG_H" /D "HAVE_CONFIG_H" /D "__INCLUDE_NEW_KEYWORDS__" /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /J /FD /c
 
 .c{$(INTDIR)}.obj::
    $(CPP) @<<
@@ -672,7 +672,7 @@ CLEAN :
     if not exist "$(INTDIR)/$(NULL)" mkdir "$(INTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "..\goldlib\gall" /I "..\goldlib\gcui" /I "..\goldlib\gcfg" /I "..\goldlib\glibc" /I "..\goldlib\gmb3" /I "..\goldlib\smblib" /I "..\goldlib\uulib" /I "..\goldlib\hunspell" /D "WIN32" /D "_DEBUG" /D "_LIB" /D "HAVE_STDARG_H" /D "HAVE_CONFIG_H" /D "__INCLUDE_NEW_KEYWORDS__" /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /J /FD /GZ /c 
+CPP_PROJ=/nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I "..\goldlib\gall" /I "..\goldlib\gcui" /I "..\goldlib\gcfg" /I "..\goldlib\glibc" /I "..\goldlib\gmb3" /I "..\goldlib\smblib" /I "..\goldlib\uulib" /I "..\goldlib" /D "WIN32" /D "_DEBUG" /D "_LIB" /D "HAVE_STDARG_H" /D "HAVE_CONFIG_H" /D "__INCLUDE_NEW_KEYWORDS__" /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /J /FD /GZ /c
 
 .c{$(INTDIR)}.obj::
    $(CPP) @<<

@@ -16,7 +16,7 @@ endif
 
 TOP=../..
 TARGET=gcui
-INCS=-I$(TOP)/goldlib/gcui -I$(TOP)/goldlib/gall
+INCS=-I$(TOP)/goldlib -I$(TOP)/goldlib/gcui -I$(TOP)/goldlib/gall
 
 ifdef MINGW
 INCS+=-I$(TOP)/goldlib/glibc
@@ -27,10 +27,6 @@ endif
 endif
 
 include $(TOP)/Config.def
-
-ifneq ($(findstring GCFG_NO_MYSPELL, $(CPPFLAGS)), GCFG_NO_MYSPELL)
-INCS+=-I$(TOP)/goldlib/hunspell
-endif
 
 include $(TOP)/GNUmakef.inc
 

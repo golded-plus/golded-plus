@@ -42,7 +42,7 @@
 #include <glog.h>
 #include <gdbgerr.h>
 #if !defined(GCFG_NO_MYSPELL)
-#include <hunspell.hxx>
+#include <hunspell/hunspell.hxx>
 #endif
 #include <gespell.h>
 

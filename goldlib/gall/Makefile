@@ -10,7 +10,7 @@ endif
 
 TOP=../..
 TARGET=gall
-INCS=-I$(TOP)/goldlib/gall
+INCS=-I$(TOP)/goldlib -I$(TOP)/goldlib/gall
 ifdef MINGW
 INCS+=-I$(TOP)/goldlib/glibc
 else
@@ -20,10 +20,6 @@ endif
 endif
 
 include $(TOP)/Config.def
-ifneq ($(findstring GCFG_NO_MYSPELL, $(CPPFLAGS)), GCFG_NO_MYSPELL)
-INCS+=-I$(TOP)/goldlib/hunspell
-endif
-
 include $(TOP)/GNUmakef.inc
 
 ifeq ($(PLATFORM),emx)

@@ -2,7 +2,7 @@
 
 TOP=../..
 TARGET=smblib
-INCS=-I$(TOP)/goldlib/smblib -I$(TOP)/goldlib/gall
+INCS=-I$(TOP)/goldlib -I$(TOP)/goldlib/smblib -I$(TOP)/goldlib/gall
 CFLAGS=-x c++
 
 include $(TOP)/GNUmakef.inc

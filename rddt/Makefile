@@ -11,7 +11,7 @@ endif
 TOP=..
 SHORTTARGET=rddt
 TARGET=rddt
-INCS=-I$(TOP)/goldlib/gall -I$(TOP)/golded3
+INCS=-I$(TOP)/goldlib -I$(TOP)/goldlib/gall -I$(TOP)/golded3
 ifdef MINGW
 STDLIBS=-luser32
 endif
