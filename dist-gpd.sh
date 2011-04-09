@@ -3,26 +3,27 @@
 # Create a archive 'gpd*.zip' (gpdYMMDD.zip) with DOS/DPMI (DJGPP) build
 # of the Golded+.
 
-# To build, download from http://www.delorie.com/pub/djgpp/current/ following files:
-#   djdev203.zip
-#   djtzn203.zip
-# And from http://www.delorie.com/pub/djgpp/current/v2gnu/ following more files:
-#   bnu219a.zip
-#   bnu219b.zip
-#   bsh204br3.zip
-#   fil41b.zip
-#   gcc442b.zip
-#   gpp442b.zip
-#   grp251ab.zip
-#   gro116b.zip
-#   licv192b.zip
-#   mak3791b.zip
-#   sed421b.zip
-#   shl2011b.zip
-# And from http://www.delorie.com/pub/djgpp/current/v2misc/ following more files:
-#   wmemu21b.zip
-# And from http://www.delorie.com/pub/djgpp/current/v2tk/ following more files:
-#   llocl02b.zip
+# To build, download following files:
+#
+# http://www.delorie.com/pub/djgpp/beta/v2/djdev204.zip
+# http://www.delorie.com/pub/djgpp/beta/v2/djtzn204.zip
+#
+# http://www.delorie.com/pub/djgpp/beta/v2gnu/bnu219a.zip
+# http://www.delorie.com/pub/djgpp/beta/v2gnu/bnu219b.zip
+# http://www.delorie.com/pub/djgpp/beta/v2gnu/bsh205bbr3.zip
+# http://www.delorie.com/pub/djgpp/beta/v2gnu/fil41b.zip
+# http://www.delorie.com/pub/djgpp/beta/v2gnu/gcc442b.zip
+# http://www.delorie.com/pub/djgpp/beta/v2gnu/gpp442b.zip
+# http://www.delorie.com/pub/djgpp/beta/v2gnu/gro116b.zip
+# http://www.delorie.com/pub/djgpp/beta/v2gnu/grp251ab.zip
+# http://www.delorie.com/pub/djgpp/beta/v2gnu/licv192b.zip
+# http://www.delorie.com/pub/djgpp/beta/v2gnu/mak381b.zip
+# http://www.delorie.com/pub/djgpp/beta/v2gnu/sed421b.zip
+# http://www.delorie.com/pub/djgpp/beta/v2gnu/shl2011b.zip
+#
+# http://www.delorie.com/pub/djgpp/current/v2misc/wmemu21b.zip
+# http://www.delorie.com/pub/djgpp/current/v2tk/llocl02b.zip
+#
 # Next extract all these files into one directory (for example, C:\DJGPP\)
 # Next set enviroment variable DJGPP to C:\DJGPP\DJGPP.ENV
 # Last add the directory "C:\DJGPP\" into PATH enviroment variable.
