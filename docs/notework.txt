@@ -13,6 +13,9 @@ ______________________________________________________________________
 Legend: "-" - bugfix, "+" - new feature, "!" - important modification.
 ______________________________________________________________________
 
+- The conflict to standard function pow() in Visual Studio 2010 is
+  eliminated.
+
 + In the Spell Checking feature simultaneous may use a several
   dictionnaries. The token SCheckerDefLang accepts a list of
   dictionaries delimited with space. Patch from Semen Panevin,

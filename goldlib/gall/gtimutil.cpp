@@ -122,7 +122,7 @@ char* glmonth[12] = {
 static char buf[26];
 static char format[] = "%?";
 
-static int pow[5] = { 1, 10, 100, 1000, 10000 };
+static int gpow[5] = { 1, 10, 100, 1000, 10000 };
 
 
 //  ------------------------------------------------------------------
@@ -155,8 +155,8 @@ static void strfmt(char *str, const char *fmt, ...) {
           ival = va_arg(vp, int);
           bool padding = true;
           while(ilen) {
-            ival %= pow[ilen];
-            int cval = ival / pow[ilen-1];
+            ival %= gpow[ilen];
+            int cval = ival / gpow[ilen-1];
             if(cval)
               padding = false;
             if(--ilen and padding)
@@ -167,8 +167,8 @@ static void strfmt(char *str, const char *fmt, ...) {
         else {
           ival = va_arg(vp, int);
           while(ilen) {
-            ival %= pow[ilen--];
-            *str++ = (char)('0' + ival / pow[ilen]);
+            ival %= gpow[ilen--];
+            *str++ = (char)('0' + ival / gpow[ilen]);
           }
         }
       }
