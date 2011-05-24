@@ -198,7 +198,7 @@ void CheckSubject(GMsg* msg, char* subj) {
         {
           ISub subject;
           gsprintf(PRINTF_DECLARE_BUFFER(subject), "%s%s%s%s%s ", fspec[x].delsent ? "^" : "", ReMapPath(fspec[x].path), fspec[x].fblk ? (fspec[x].fblk[m].name ? fspec[x].fblk[m].name : "") : "", *fspec[x].password ? " " : "", fspec[x].password);
-          
+
           if ((strlen(buf) + strlen(subject)) > 71)
           {
             n++;

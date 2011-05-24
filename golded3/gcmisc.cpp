@@ -80,7 +80,7 @@ int ReadHelpCfg(int force) {
             comment = NO;
             HlpL[counter].help = atow(buf+3);
             ptr = strchr(buf, ',');
-            strbtrim(strcpy(HlpL[counter].category, ptr ? ptr+1 : ""));
+            strbtrim(strxcpy(HlpL[counter].category, ptr ? ptr+1 : "", sizeof(HlpL[counter].category)));
             HlpL[counter].offset = offset + strlen(buf);
             counter++;
           }

@@ -2823,7 +2823,7 @@ void MsgLineReIndex(GMsg* msg, int viewhidden, int viewkludge, int viewquote) {
     line = line->next;
   }
 
-  msg->line = (Line**)throw_xcalloc(msg->lines+2, sizeof(Line*));
+  msg->line = (Line**)throw_xcalloc(msg->lines+2, sizeof(Line*)); // FIXME: Memory Leak
 
   x = 0;
   msg->lines = 0;
