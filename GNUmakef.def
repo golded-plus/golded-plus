@@ -164,7 +164,7 @@ endif
 endif
 CFLAGS+=-funsigned-char -g $(INCS) -Wall -Wno-sign-compare -pedantic -O2 -DPRAGMA_PACK # -fomit-frame-pointer
 LNKFLAGS+=-g
-CPPFLAGS+=$(CFLAGS) -fno-rtti # -fno-exceptions
+CPPFLAGS+=$(CFLAGS) -fno-pic -fno-rtti # -fno-exceptions
 
 # Run `make USE_NCURSES=0` if you dislike ncurses
 # Run `make BUGGY_NCURSES=1` if your build requires additional keypresses to
