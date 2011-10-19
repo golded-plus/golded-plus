@@ -306,8 +306,6 @@ void GMsgList::print_line(uint idx, uint pos, bool isbar) {
   int tosiz = mlst_tosiz + fldadd1;
   int resiz = mlst_resiz + fldadd2;
 
-  GFTRK("GMsgList::print_line");
-
   ReadMlst(idx);
   MLst* ml = mlst[idx];
 
@@ -392,8 +390,6 @@ void GMsgList::print_line(uint idx, uint pos, bool isbar) {
   }
 
   goldmark = ml->goldmark;
-
-  GFTRK(0);
 }
 
 

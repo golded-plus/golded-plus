@@ -804,7 +804,12 @@ int gsprintf(TCHAR* buffer, size_t sizeOfBuffer, const TCHAR* __file, int __line
     if (ret < 0) // Until glibc 2.0.6 vsnprintf() would return -1 when the output was truncated.
     {
       LOG.errtest(__file, __line);
-      LOG.printf("! gsprintf(buffer,%i,%s,...): vsnprintf() error: \"%s\".", sizeOfBuffer, format, strerror(errno));
+      char * errstring = strerror(errno);
+      LOG.printf("! gsprintf(buffer,%i,%s,...): vsnprintf() error: \"%s\".", sizeOfBuffer, format, errstring);
+      if ( strcmp(errstring, "Invalid or incomplete multibyte or wide character")==0 )
+      {
+        LOG.printf("! Possible reason: you don't set locale properly");
+      }
       TestErrorExit();
     }
     else if (ret >= sizeOfBuffer)
