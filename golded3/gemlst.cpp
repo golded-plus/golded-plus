@@ -306,6 +306,8 @@ void GMsgList::print_line(uint idx, uint pos, bool isbar) {
   int tosiz = mlst_tosiz + fldadd1;
   int resiz = mlst_resiz + fldadd2;
 
+  GFTRK("GMsgList::print_line");
+
   ReadMlst(idx);
   MLst* ml = mlst[idx];
 
@@ -390,6 +392,8 @@ void GMsgList::print_line(uint idx, uint pos, bool isbar) {
   }
 
   goldmark = ml->goldmark;
+
+  GFTRK(0);
 }
 
 
@@ -808,9 +812,9 @@ void GThreadlist::GenTree(int idx)
     return;
 
 #ifdef KOI8
-  static char graph[4]="ÜÑÅ";       // Pseudographic chars KOI8-R
+  static char graph[4]="\206\204\201";       // Pseudographic chars KOI8-R
 #else
-  static char graph_ibmpc[4]="√¿≥"; // Pseudographic chars CP437, CP850, CP866
+  static char graph_ibmpc[4]="\303\300\263"; // Pseudographic chars CP437, CP850, CP866
   static char graph[4]="\0\0\0";
 
   if(graph[0] == NUL)
