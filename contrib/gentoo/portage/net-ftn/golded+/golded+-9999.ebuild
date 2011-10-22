@@ -66,7 +66,7 @@ src_compile() {
 src_install() {
 	dobin bin/gedlnx bin/gnlnx bin/rddtlnx
 	doman docs/*.1
-	if useq doc ; then
+	if use doc ; then
 		dodoc docs/*.txt docs/notework.rus
 		dodoc manuals/*.txt
 		dohtml docs/*.html
