@@ -5,7 +5,7 @@ Maintainer: Stas Degteff <stas_degteff@users.sourceforge.net>
 Uploaders: RJ Clay <jame@users.sourceforge.net>
 Homepage: http://golded-plus.sourceforge.net
 Build-Depends: debhelper (>= 5), libncurses5-dev
-#Standards-Version: 3.6.1
+Standards-Version: 3.9.1
 Vcs-Browser: http://golded-plus.cvs.sourceforge.net/golded-plus
 
 Package: golded-plus
