@@ -2,6 +2,7 @@ Source: golded-plus
 Section: mail
 Priority: optional
 Maintainer: Stas Degteff <stas_degteff@users.sourceforge.net>
+Uploaders: RJ Clay <jame@users.sourceforge.net>
 Homepage: http://golded-plus.sourceforge.net
 Build-Depends: debhelper (>= 5), libncurses5-dev
 #Standards-Version: 3.6.1
