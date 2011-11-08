@@ -3,7 +3,6 @@
 # Uncomment this to turn on verbose mode.
 export DH_VERBOSE=1
 
-export DH_COMPAT=4
 #export DEBIAN=1
 #export PACKAGE=golded-plus-snapshot
 PREFIX=$(CURDIR)/debian/golded-plus
