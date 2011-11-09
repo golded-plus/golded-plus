@@ -9,7 +9,7 @@ Standards-Version: 3.9.1
 Vcs-Browser: http://golded-plus.cvs.sourceforge.net/golded-plus
 
 Package: golded-plus
-Architecture: i386
+Architecture: any
 Depends: ${shlibs:Depends}
 Description: Golded+ - an FTN message editor
  GoldED+ is  popular Fidonet mail editor.
