@@ -10,7 +10,7 @@ Vcs-Browser: http://golded-plus.cvs.sourceforge.net/golded-plus
 
 Package: goldedplus
 Architecture: any
-Depends: ${shlibs:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Golded+ - an FTN message editor
  GoldED+ is  popular Fidonet mail editor.
  It supports message bases: OPUS, JAM, Squish, FrontDoor and more other.
