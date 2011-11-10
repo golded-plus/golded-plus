@@ -117,9 +117,7 @@ binary-arch: build install
 #	dh_undocumented
 	dh_installchangelogs -k docs/notework.txt
 	dh_link
-ifneq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
-	dh_strip
-endif
+	dh_strip --dbg-package=goldedplus-dbg
 	dh_compress
 	dh_fixperms
 #	dh_makeshlibs

@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Stas Degteff <stas_degteff@users.sourceforge.net>
 Uploaders: RJ Clay <jame@users.sourceforge.net>
 Homepage: http://golded-plus.sourceforge.net
-Build-Depends: debhelper (>= 7), libncurses5-dev
+Build-Depends: debhelper (>= 7.0.50), libncurses5-dev
 Standards-Version: 3.9.1
 Vcs-Browser: http://golded-plus.cvs.sourceforge.net/golded-plus
 
@@ -14,3 +14,14 @@ Depends: ${shlibs:Depends}
 Description: Golded+ - an FTN message editor
  GoldED+ is  popular Fidonet mail editor.
  It supports message bases: OPUS, JAM, Squish, FrontDoor and more other.
+
+Package: goldedplus-dbg
+Architecture: any
+Section: debug
+Priority: extra
+Depends: goldedplus (= ${binary:Version}), ${misc:Depends}
+Description: debugging symbols for Golded+ 
+ GoldED+ is  popular Fidonet mail editor.
+ It supports message bases: OPUS, JAM, Squish, FrontDoor and more other.
+ .
+ This package contains the debugging symbols for goldedplus.
