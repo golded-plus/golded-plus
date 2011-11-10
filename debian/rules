@@ -4,8 +4,8 @@
 export DH_VERBOSE=1
 
 #export DEBIAN=1
-#export PACKAGE=golded-plus-snapshot
-PREFIX=$(CURDIR)/debian/golded-plus
+#export PACKAGE=goldedplus-snapshot
+PREFIX=$(CURDIR)/debian/goldedplus
 DOCS= docs/license.txt docs/notework.txt docs/readme.txt \
       docs/rusfaq.txt docs/rusfaq.koi8r docs/rusfaq.utf8 docs/tips.txt docs/todowork.txt \
       docs/tokencfg.txt docs/tokentpl.txt docs/notework.rus docs/notework.koi8r \
@@ -83,16 +83,16 @@ install: build
 	ln $(PREFIX)/usr/man/man1/golded.1 $(PREFIX)/usr/man/man1/gedlnx.1
 	ln $(PREFIX)/usr/man/man1/goldnode.1 $(PREFIX)/usr/man/man1/gnlnx.1
 	ln $(PREFIX)/usr/man/man1/rddt.1 $(PREFIX)/usr/man/man1/rddtlnx.1
-	install -d $(PREFIX)/usr/share/doc/golded-plus
-	install $(IMOPT) $(DOCS) $(PREFIX)/usr/share/doc/golded-plus
-	install -d $(PREFIX)/usr/share/doc/golded-plus/examples
-	install $(IMOPT) bin/openbsd-vt220.sh $(PREFIX)/usr/share/doc/golded-plus/examples/
-	cp -r cfgs/config $(PREFIX)/usr/share/doc/golded-plus/examples/
-	cp -r cfgs/template $(PREFIX)/usr/share/doc/golded-plus/examples/
-	install -d $(PREFIX)/usr/share/golded-plus/
-	cp -r cfgs/charset $(PREFIX)/usr/share/golded-plus/
-	cp -r cfgs/colorset $(PREFIX)/usr/share/golded-plus/
-	-find $(PREFIX)/usr/share/golded-plus/ $(PREFIX)/usr/share/doc/golded-plus/examples/ -name CVS -exec rm -r '{}' ';'
+	install -d $(PREFIX)/usr/share/doc/goldedplus
+	install $(IMOPT) $(DOCS) $(PREFIX)/usr/share/doc/goldedplus
+	install -d $(PREFIX)/usr/share/doc/goldedplus/examples
+	install $(IMOPT) bin/openbsd-vt220.sh $(PREFIX)/usr/share/doc/goldedplus/examples/
+	cp -r cfgs/config $(PREFIX)/usr/share/doc/goldedplus/examples/
+	cp -r cfgs/template $(PREFIX)/usr/share/doc/goldedplus/examples/
+	install -d $(PREFIX)/usr/share/goldedplus/
+	cp -r cfgs/charset $(PREFIX)/usr/share/goldedplus/
+	cp -r cfgs/colorset $(PREFIX)/usr/share/goldedplus/
+	-find $(PREFIX)/usr/share/goldedplus/ $(PREFIX)/usr/share/doc/goldedplus/examples/ -name CVS -exec rm -r '{}' ';'
 
 # Build architecture-independent files here.
 binary-indep: build install

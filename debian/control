@@ -1,4 +1,4 @@
-Source: golded-plus
+Source: goldedplus
 Section: mail
 Priority: optional
 Maintainer: Stas Degteff <stas_degteff@users.sourceforge.net>
@@ -8,7 +8,7 @@ Build-Depends: debhelper (>= 7), libncurses5-dev
 Standards-Version: 3.9.1
 Vcs-Browser: http://golded-plus.cvs.sourceforge.net/golded-plus
 
-Package: golded-plus
+Package: goldedplus
 Architecture: any
 Depends: ${shlibs:Depends}
 Description: Golded+ - an FTN message editor
