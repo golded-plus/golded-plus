@@ -6,8 +6,8 @@ export DH_VERBOSE=1
 #export DEBIAN=1
 #export PACKAGE=goldedplus-snapshot
 PREFIX=$(CURDIR)/debian/goldedplus
-DOCS= docs/license.txt docs/notework.txt docs/readme.txt \
-      docs/rusfaq.txt docs/rusfaq.koi8r docs/rusfaq.utf8 docs/tips.txt docs/todowork.txt \
+DOCS= docs/license.txt docs/notework.txt docs/rusfaq.txt \
+      docs/rusfaq.koi8r docs/rusfaq.utf8 docs/tips.txt docs/todowork.txt \
       docs/tokencfg.txt docs/tokentpl.txt docs/notework.rus docs/notework.koi8r \
       docs/notework.utf8 manuals/gold_ref.txt manuals/gold_usr.txt
 
