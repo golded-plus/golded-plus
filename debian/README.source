@@ -1,0 +1,9 @@
+Note that an original Debian source archive is created by downloading the
+archive for version n.n.n as gpsnnn.tar.bz2 and is then renamed as
+goldedplus_n.n.n.orig.tar.bz2. If it is a snapshot archive, it is renamed
+or created as something like goldedplus_1.1.5~YYYYMMDD.orig.tar.bz2, where
+YYYYMMDD is the Year, Month, and Day of the snapshot.
+
+Please read /usr/share/doc/quilt/README.source to know how to apply and
+manage Debian specific patches on this package.
+
