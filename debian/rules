@@ -114,7 +114,7 @@ binary-arch: build install
 #	dh_installcron
 	dh_installman
 #	dh_installinfo
-#	dh_undocumented
+	dh_lintian
 	dh_installchangelogs -k docs/notework.txt
 	dh_link
 	dh_strip --dbg-package=goldedplus-dbg
