@@ -1537,7 +1537,7 @@ void ScanKludges(GMsg* msg, int getvalue) {
               line->type |= GLINE_TAGL;
               line->color = C_READG;
               if(AA->Taglinesupport())
-                strbtrim(strcpy(msg->tagline, ptr+3));
+                strbtrim(strxcpy(msg->tagline, ptr+3, sizeof(msg->tagline)));
             }
           }
 
@@ -1561,7 +1561,7 @@ void ScanKludges(GMsg* msg, int getvalue) {
             }
             tearln->type |= GLINE_TEAR;
             tearln->color = C_READT;
-            strbtrim(strcpy(msg->tearline, ptr+3));
+            strbtrim(strxcpy(msg->tearline, ptr+3, sizeof(msg->tearline)));
 
             if(getvalue and CFG->gedhandshake) {
               char* tearid[] = {
@@ -1606,7 +1606,7 @@ void ScanKludges(GMsg* msg, int getvalue) {
             originlineno = lineno;
             line->type |= GLINE_ORIG;
             line->color = C_READO;
-            strcpy(msg->origin, line->txt.c_str()+11);
+            strxcpy(msg->origin, line->txt.c_str()+11, sizeof(msg->origin));
             if(nextor) {  // Get the next line too
               strcat(msg->origin, line->next->txt.c_str());
               line->next->color = C_READO;
