@@ -442,7 +442,9 @@ static void w_brag() {
 
 static bool ExistCfg(char* path, char* file) {
 
+  if(veryverbose) STD_PRINT("Try config file \"" << path << file << "\"... ");
   bool found = fexist(AddPath(path, file));
+  if(veryverbose) STD_PRINTNL( (found?("Found!"):("not found.")) );
   if(found)
     strcat(path, file);
   return found;
@@ -468,14 +470,10 @@ static bool FindCfg(char* path) {
 
   #ifdef GEDCFG2
   found = ExistCfg(path, GEDCFG2);
-  if(veryverbose) STD_PRINTNL( "Try config file \"" << path << (GEDCFG2) <<
-                             "\"... " << (found?("Found!"):("not found.")) );
   #endif
 
   if(not found)
     found = ExistCfg(path, GEDCFG);
-  if(veryverbose) STD_PRINTNL( "Try config file \"" << path << (GEDCFG) <<
-                             "\"... " << (found?("Found!"):("not found.")) );
   return found;
 }
 
