@@ -643,8 +643,8 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
                     }
                   }
                 }
-              }
-            }
+              }// Get a random cookie
+            } // case TPLTOKEN_RANDOM: if(....)
             continue;
 
           case TPLTOKEN_INCLUDE:
@@ -817,7 +817,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
                 strcpy(&(msg->txt[pos]), buf);
                 pos += len;
               }
-            }
+            }// while(oldmsg->line[n])
             continue;
 
           case TPLTOKEN_MESSAGE:
@@ -875,7 +875,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
                 }
                 n++;
               }
-            }
+            } // case TPLTOKEN_MESSAGE: if(....)
             continue;
         }
       }
