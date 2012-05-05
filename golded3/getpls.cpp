@@ -32,6 +32,7 @@
 #endif
 #include <algorithm>
 #include <golded.h>
+#include <getpls.h>
 
 #if defined(__USE_ALLOCA__)
 #include <malloc.h>
@@ -236,16 +237,23 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
     fp.Fopen(tplfile, "wt", CFG->sharemode);
     if (fp.isopen())
     {
+      fp.Fputs(TPL_BUILTIN_TOP_MAIN);
+/*
       fp.Fputs("@header= @oecho (@caddr) @align{79}{=}\n"
                "@header Msg  : @msgno of @msgs@align{44}@attr\n");
-
+*/
       if (AA->isinternet())
       {
+        fp.Fputs(TPL_BUILTIN_TOP_INTERNET);
+/*
         fp.Fputs("@header From : @ofrom@align{60}@odtime\n"
                  "@header To   : @oto\n");
+*/
       }
       else
       {
+        fp.Fputs(TPL_BUILTIN_TOP_FTN);
+/*
         fp.Fputs("@header From : @oname@align{44}@oaddr@align{60}@odtime\n");
 
         if (AA->isnet())
@@ -253,7 +261,9 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
         else
           fp.Fputs("@header To   : @dname\n");
       }
-
+*/
+      fp.Fputs(TPL_BUILTIN_BODY);
+/*
       fp.Fputs("@header Subj : @subject\n"
                "@header@align{79}{=}\n"
                "@moved* Replying to a msg in @oecho (@odesc)\n@moved\n"
@@ -278,6 +288,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
                "@quotebuf\n"
                "@quote\n\n"
                "@cfname\n\n");
+*/
       fp.Fclose();
     }
   }  // built-in template
