@@ -218,6 +218,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
     }
   }
   if(strieql(tplfile, "built-in") or not fexist(tplfile) or CFG->tpl.empty()) {
+  // built-in template
     if( not ((*CFG->temppath == NUL ) or is_dir(CFG->temppath)) )
     {
       w_info(LNG->TMPinvalidpath);
@@ -279,7 +280,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
                "@cfname\n\n");
       fp.Fclose();
     }
-  }
+  }  // built-in template
 
   fp.Fopen(tplfile, "rt", CFG->sharemode);
   if (!fp.isopen())
@@ -959,7 +960,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
   throw_free(buf);
   GFTRK(0);
   return disphdr;
-}
+} // int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origarea)
 
 
 //  ------------------------------------------------------------------
@@ -1021,7 +1022,7 @@ void ChangeMsg() {
         MakeMsg(MODE_CHANGE, reader_msg);
     }
   }
-}
+} // void ChangeMsg()
 
 
 //  ------------------------------------------------------------------
@@ -1036,7 +1037,7 @@ void NewMsg() {
   }
   if(not reader_keyok)
     MakeMsg(MODE_NEW, reader_msg);
-}
+} // void NewMsg()
 
 
 //  ------------------------------------------------------------------
@@ -1076,7 +1077,7 @@ void ConfirmMsg() {
     reader_msg->LinesToText();
     AA->SaveMsg(GMSG_UPDATE, reader_msg);
   }
-}
+} // void ConfirmMsg()
 
 
 //  ------------------------------------------------------------------
@@ -1127,7 +1128,7 @@ void OtherAreaReplyMsg() {
       }
     }
   }
-}
+} // void OtherAreaReplyMsg()
 
 //  ------------------------------------------------------------------
 
@@ -1162,7 +1163,7 @@ void ReplyMsg() {
     if(not reader_keyok)
       MakeMsg(MODE_REPLY, reader_msg);
   }
-}
+} // void ReplyMsg()
 
 
 //  ------------------------------------------------------------------
@@ -1198,7 +1199,7 @@ void QuoteMsg(bool ignore_replyto) {
     if(not reader_keyok)
       MakeMsg(MODE_QUOTE, reader_msg, ignore_replyto);
   }
-}
+} // void QuoteMsg(bool ignore_replyto)
 
 
 //  ------------------------------------------------------------------
@@ -1234,7 +1235,7 @@ void CommentMsg() {
     if(not reader_keyok)
       MakeMsg(MODE_REPLYCOMMENT, reader_msg);
   }
-}
+} // void CommentMsg()
 
 
 //  ------------------------------------------------------------------
@@ -1283,7 +1284,7 @@ void OtherAreaQuoteMsg(bool ignore_replyto) {
       }
     }
   }
-}
+} // void OtherAreaQuoteMsg(bool ignore_replyto)
 
 
 //  ------------------------------------------------------------------
@@ -1336,7 +1337,7 @@ void OtherAreaCommentMsg() {
       }
     }
   }
-}
+} // void OtherAreaCommentMsg()
 
 
 //  ------------------------------------------------------------------
