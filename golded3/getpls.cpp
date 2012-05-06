@@ -32,7 +32,7 @@
 #endif
 #include <algorithm>
 #include <golded.h>
-#include <getpls.h>
+#include "getpls.h"
 
 #if defined(__USE_ALLOCA__)
 #include <malloc.h>
@@ -260,8 +260,8 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
           fp.Fputs("@header To   : @dname@align{44}@daddr\n");
         else
           fp.Fputs("@header To   : @dname\n");
-      }
 */
+      }
       fp.Fputs(TPL_BUILTIN_BODY);
 /*
       fp.Fputs("@header Subj : @subject\n"

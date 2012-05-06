@@ -48,7 +48,7 @@
 
 // alternate lines of built-in template, only for FTN (all areas)
 #define TPL_BUILTIN_TOP_FTN \
-  "@header From : @oname@align{44}@oaddr@align{60}@odtime\n"
+  "@header From : @oname@align{44}@oaddr@align{60}@odtime\n" \
   "@net@header To   : @dname@align{44}@daddr\n" \
   "@echo@header To   : @dname\n" \
   "@local@header To   : @dname\n"
