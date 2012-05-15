@@ -13,6 +13,9 @@ ______________________________________________________________________
 Legend: "-" - bugfix, "+" - new feature, "!" - important modification.
 ______________________________________________________________________
 
+- Don't change actual charset table with spellchecker enabled when
+  "IgnoreCharset YES" in the config file.
+
 - Fix segfault on wide terminal with long tearline, tagline or origin.
 
 - The conflict to standard function pow() in Visual Studio 2010 is
