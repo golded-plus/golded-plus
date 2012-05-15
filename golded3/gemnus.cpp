@@ -1242,7 +1242,12 @@ int GMenuSChecker::Run(CSpellChecker &schecker, const char *word)
   {
     if (!schecker.IsLoaded(langs[finaltag-TAG_LANG-1]->GetLangCode()))
     {
+      int save_chartableno = LoadCharset(NULL,NULL,1); // Workaround: internal for LoadCharset() charset table number changed in the schecker.Load()
       schecker.Load(langs[finaltag-TAG_LANG-1]->GetLangCode(), CFG->scheckeruserdic);
+      if(save_chartableno != -1) // restore value of the default chaset table // workaround: internal for LoadCharset() charset table number changed in the schecker.Load()
+        LoadCharset(CFG->xlatcharset[save_chartableno].imp, CFG->xlatcharset[save_chartableno].exp);
+      else
+        LoadCharset("N/A","N/A");
     }
     else
     {
