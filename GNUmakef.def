@@ -162,7 +162,7 @@ endif
 endif
 endif
 endif
-CFLAGS+=-funsigned-char -g $(INCS) -Wall -Wno-sign-compare -pedantic -O2 -DPRAGMA_PACK # -fomit-frame-pointer
+CFLAGS+=-funsigned-char -g $(INCS) -Wall -Wno-long-long -Wno-sign-compare -pedantic -O2 -DPRAGMA_PACK # -fomit-frame-pointer
 LNKFLAGS+=-g
 CPPFLAGS+=$(CFLAGS) -fno-pic -fno-rtti # -fno-exceptions
 
