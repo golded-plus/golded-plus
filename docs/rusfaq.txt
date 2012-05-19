@@ -120,15 +120,15 @@ $Date$
      после них должен быть пробел или перевод строки.
 
 *Q8:* Где взять GoldED+? А исходники? А чем потом собирать?
-*A:* Родина GoldED+ находится на http://golded-plus.sourceforge.net. Там же вы
-     можете найти список мирроров и взять исходники. Другой вариант этого же
-     источника: http://sourceforge.net/projects/golded-plus. Те же файлы
+*A:* Родина GoldED+ находится на http://golded.org/, а также страничка проекта 
+     на Sourceforge http://sourceforge.net/projects/golded-plus. Те же файлы
      распространяются по файлэхе AFTNGED, её архивы можно найти на FREQ'ах и
-     FTP серверах узлов, например ftp://bym.comex.ru/AFTNGED. За самыми
-     актуальными исходниками нужно обращаться к анонимному CVS по URL
+     FTP серверах узлов, например http://www.filegate.net/r50/aftnged/.
+     За самыми актуальными исходниками нужно обращаться к анонимному CVS по URL
      :pserver:anonymous@golded-plus.cvs.sourceforge.net:/cvsroot/golded-plus
      модуль golded+ (инструкции на http://sourceforge.net/projects/golded-plus,
-     страница CVS).
+     страница CVS). Можно скачать все исходники одним тарболом через ViewCVS:
+     http://golded-plus.cvs.sourceforge.net/viewvc/golded-plus/?view=tar
      Собирать надо компилятором GNU C/C++ (не надо брать нечто древнее
      2.8.x, лучше всего какую-нибудь свежую версию) и его производными
      (djgpp, emx, mingw32). Из других компиляторов поддерживается
@@ -139,7 +139,7 @@ $Date$
 
 *Q9:* Типа эта... А писать куда автору? ;-)
 *A:* Писать лучше всего в RU.GOLDED. Даже лучше сначала его почитать, дождаться
-     местного FAQ, баглиста и только потом писать. Патчи и багрепорты можно сразу
+     местного FAQ+buglist и только потом писать. Патчи и багрепорты можно сразу
      помещать на http://sourceforge.net/projects/golded-plus в соответствующий
      раздел (bugs, patches, feature requests), вас заметят :).
      Если уж сильно приспичит, то можно писать на 2:5080/102, но я не
