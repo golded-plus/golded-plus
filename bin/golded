@@ -3,11 +3,19 @@
 # it also contains workaround for Russian language in UTF-8 encoding
 # $Id$
 
+# unconditionally bypass all tests for non-Russian locales
+echo "$LC_ALL $LC_CTYPE $LANG" | grep -q "ru_" \
+	|| exec gedlnx $* || exit
+
+# same for ru_RU.KOI8-R
+echo "$LC_ALL $LC_CTYPE $LANG" | grep -q "ru_RU.KOI8-R" \
+	&& exec gedlnx $* || exit
+
 CMD="gedlnx $*"
 SCREENRC_GOLDED="/usr/share/golded-plus/screenrc_koi8r"
 SCREEN=`which screen`
 LUIT=`which luit`
-if [ -n $SCREEN ]; then
+if [ -n $SCREEN -a -s $SCREENRC_GOLDED ]; then
   CMD_UTF8="$SCREEN -c ${SCREENRC_GOLDED}"
 else if [ -n "$LUIT" ]; then
        CMD_UTF8="export LC_ALL=ru_RU.KOI8-R ; exec $LUIT -x -encoding koi8-r -- $CMD"
