@@ -505,7 +505,7 @@ $Date$
      2.2.1: LC_ALL=ru_RU.KOI8-R konsole --style 1 -e gedlnx
      2.2.2: LC_ALL=ru_RU.KOI8-R luit gedlnx
      2.2.3: echo "defencoding koi8-r" >~/.golded-screen
-            LC_ALL=ru_RU.KOI8-R screen -c ~/.golded-screen gedlnx
+            screen -c ~/.golded-screen sh -c "LANG=ru_RU.KOI8-R gedlnx"
      3: перекодировать макрокомандой и указать в файлах конфигурации:
      ===========golded.cfg:=============================
      xlatcharset     CP866           UTF-8   866_u8.chs
