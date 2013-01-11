@@ -9,7 +9,7 @@
 #undef __GVER_VENDOR_FIDO__
 #define __GVER_VENDOR_FIDO__  "2:5025/121"
 #undef __GVER_VENDOR_EMAIL__
-#define __GVER_VENDOR_EMAIL__ "panevin@box.vsi.ru"
+#define __GVER_VENDOR_EMAIL__ "semen@icelan.ru"
 
 
 //  ------------------------------------------------------------------
