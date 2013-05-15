@@ -3,26 +3,40 @@
 # it also contains workaround for Russian language in UTF-8 encoding
 # $Id$
 
+GEDLNX=`which gedlnx`
+if [ ! -x $GEDLNX ]; then
+    echo gedlnx is not avaiabled, sorry
+    exit 1
+fi
+CMD="$GEDLNX $*"
+
 # unconditionally bypass all tests for non-Russian locales
 echo "$LC_ALL $LC_CTYPE $LANG" | grep -q "ru_" \
-	|| exec gedlnx $* || exit
+	|| exec $CMD || exit
 
 # same for ru_RU.KOI8-R
 echo "$LC_ALL $LC_CTYPE $LANG" | grep -q "ru_RU.KOI8-R" \
-	&& exec gedlnx $* || exit
+	&& exec $CMD && exit
 
-CMD="gedlnx $*"
-SCREENRC_GOLDED="/usr/share/golded-plus/screenrc_koi8r"
+for SRCG in ~/.golded/screenrc_koi8r ~/.fido/screenrc_koi8r ./screenrc_koi8r /usr/share/golded-plus/screenrc_koi8r ]; do
+  if [ -f $SRCG ] ; then
+    SCREENRC_GOLDED="$SRCG"
+    break
+  fi
+done
+
 SCREEN=`which screen`
 LUIT=`which luit`
+KOI8RXTERM=`which koi8rxterm`
 if [ -n $SCREEN -a -s $SCREENRC_GOLDED ]; then
   CMD_UTF8="$SCREEN -c ${SCREENRC_GOLDED}"
 else if [ -n "$LUIT" ]; then
        CMD_UTF8="export LC_ALL=ru_RU.KOI8-R ; exec $LUIT -x -encoding koi8-r -- $CMD"
-     else
+else if [ -n "$KOI8RXTERM" ]; then
+       CMD_UTF8=$KOI8RXTERM -geometry 130x33 $CMD &
+else
        CMD_UTF8=$CMD
-     fi
-fi
+fi ; fi ; fi
 
 echo "$LC_ALL $LC_CTYPE $LANG" | grep -q "ru_RU.UTF-8" \
  && ($CMD_UTF8) \
