@@ -989,7 +989,7 @@ static void SetKeybDefaults() {
 //  ------------------------------------------------------------------
 
 //bool CmdKeyCmp(CmdKey a, CmdKey b) {
-bool operator<(CmdKey &a, CmdKey &b) {
+bool operator<(const CmdKey &a, const CmdKey &b) {
 
   int cmp = CmpV(a.type, b.type);
   if(cmp != 0)
