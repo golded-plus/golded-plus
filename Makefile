@@ -19,6 +19,19 @@
 #                   international builds since latin-1 support will be broken.
 # "ICONV=1"         Use iconv library for recoding text. Experimental! Do not
 #                   set this if you don't sure!
+# "OLD_SHIFT_FN=1"  Use original code, where use: F1-F12 and
+#                   <Shift>+F3-F12 mapped to F15-F22.
+#
+#                   New code, by default, for orthodox terminals:
+#                   xterm R6, PuTTY, urxvt, mapped <Shift>+F1-F10 to
+#                   F11-F20 and <Ctrl>+<Shift>+F1-F10 to <Ctrl>+F11-F20.
+#
+#                   For modern terminals: xterm R7, gnome-terminal,
+#                   Linux & FreeBSD console, DECFNK, mapped:
+#                   <Shift>+F1-F12 to key_fn13 - key_fn24,
+#                   <Ctrl>+F1-F12 to key_fn25 - key_fn36,
+#                   <Ctrl>+<Shift>+F1-F12 to key_fn37 - key_fn48,
+#                   <Alt>+F1-F12 to key_fn49 - key_fn60
 
 include GNUmakef.def
 include Config.def

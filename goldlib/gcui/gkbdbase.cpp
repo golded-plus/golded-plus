@@ -70,6 +70,42 @@ extern OSVERSIONINFO WinVer;
 
 #if defined(__USE_NCURSES__)
 int curses_initialized = 0;
+
+enum {
+    ARR_UP = 0,
+    ARR_DN,
+    ARR_RIT,
+    ARR_LFT
+};
+
+typedef int arrow_t;
+
+enum {
+    MOD_SHIFT = 1,
+    MOD_ALT = 2,
+    MOD_CTRL = 4,
+    MOD_META = 8
+};
+
+typedef int modmask_t;
+
+const modmask_t MOD_MIN = MOD_ALT;
+const modmask_t MOD_MAX = MOD_ALT|MOD_CTRL|MOD_META|MOD_SHIFT;
+ 
+typedef int modifier_t;
+
+static modifier_t modifier(modmask_t mask) {
+    return mask + 1;
+}
+
+void gkbd_setarrow(modifier_t m, arrow_t a, int k);
+void gkbd_setfnkeys(void);
+
+    #if defined(NCURSES_VERSION_MAJOR) && NCURSES_VERSION_MAJOR-0 >= 5
+	#define HAVE_EXTENDED_NAMES 1
+    #endif
+    //#define NO_MOD_DECFNK_XTERM_R7 1
+    //#define NO_MOD_RXVT 1
 #endif
 
 
@@ -182,6 +218,29 @@ GKbd::GKbd() {
 
   Init();
 
+  #if defined(__USE_NCURSES__) 
+    #ifdef HAVE_EXTENDED_NAMES
+	use_extended_names(TRUE);
+    #endif
+
+    for(modifier_t m = modifier(MOD_MIN); m <= modifier(MOD_MAX); m++) {
+	for(arrow_t a = ARR_UP; a <= ARR_LFT; a++) {
+	    gkbd_setarrow(m, a, L_KEY_UNUSED);
+	}
+    }
+
+    gkbd_setarrow(modifier(MOD_ALT),  ARR_UP,  L_KEY_AUP);
+    gkbd_setarrow(modifier(MOD_ALT),  ARR_DN,  L_KEY_ADOWN);
+    gkbd_setarrow(modifier(MOD_ALT),  ARR_RIT, L_KEY_ARIGHT);
+    gkbd_setarrow(modifier(MOD_ALT),  ARR_LFT, L_KEY_ALEFT);
+
+    gkbd_setarrow(modifier(MOD_CTRL), ARR_UP,  L_KEY_CUP);
+    gkbd_setarrow(modifier(MOD_CTRL), ARR_DN,  L_KEY_CDOWN);
+    gkbd_setarrow(modifier(MOD_CTRL), ARR_RIT, L_KEY_CRIGHT);
+    gkbd_setarrow(modifier(MOD_CTRL), ARR_LFT, L_KEY_CLEFT);
+
+    gkbd_setfnkeys();
+  #endif
   #if defined(__UNIX__) && !defined(__USE_NCURSES__) && !defined(__BEOS__)
 
   gkbd_keymap_init();
@@ -676,8 +735,8 @@ int gkbd_curstable[] = {
   -1,        //  KEY_CLEAR
   -1,        //  KEY_EOS
   -1,        //  KEY_EOL
-  -1,        //  KEY_SF
-  -1,        //  KEY_SR
+  Key_S_Dwn, //  KEY_SF - terminfo Scroll forward == <Shift>+<Down arrow>
+  Key_S_Up,  //  KEY_SR - terminfo Scroll backward == <Shift>+<Up arrow>
   Key_PgDn,  //  KEY_NPAGE
   Key_PgUp,  //  KEY_PPAGE
   Key_Tab,   //  KEY_STAB
@@ -707,10 +766,10 @@ int gkbd_curstable[] = {
   -1,        //  KEY_MARK
   -1,        //  KEY_MESSAGE
   -1,        //  KEY_MOVE
-  -1,        //  KEY_NEXT
+  Key_PgDn,  //  KEY_NEXT
   -1,        //  KEY_OPEN
   -1,        //  KEY_OPTIONS
-  -1,        //  KEY_PREVIOUS
+  Key_PgUp,  //  KEY_PREVIOUS
   -1,        //  KEY_REDO
   -1,        //  KEY_REFERENCE
   -1,        //  KEY_REFRESH
@@ -736,9 +795,9 @@ int gkbd_curstable[] = {
   Key_S_Lft, //  KEY_SLEFT
   -1,        //  KEY_SMESSAGE
   -1,        //  KEY_SMOVE
-  -1,        //  KEY_SNEXT
+  Key_S_PgDn,//  KEY_SNEXT
   -1,        //  KEY_SOPTIONS
-  -1,        //  KEY_SPREVIOUS
+  Key_S_PgUp,//  KEY_SPREVIOUS
   -1,        //  KEY_SPRINT
   -1,        //  KEY_SREDO
   -1,        //  KEY_SREPLACE
@@ -750,8 +809,236 @@ int gkbd_curstable[] = {
   -1,        //  KEY_SUSPEND
   -1,        //  KEY_UNDO
   -1,        //  KEY_MOUSE
-  -1         //  KEY_RESIZE
+  -1,        //  KEY_RESIZE
+  -1,	     //  KEY_EVENT
+    // Gap for future curses versions
+  -1,	     //  
+  -1,	     //  
+  -1,	     //  
+  -1,	     //  
+  -1,	     //  
+  -1,	     //  
+  -1,	     //  
+  -1,	     //  
+  -1,	     //  
+  -1,	     //  
+    // xterm R7/DECFNK
+  Key_A_Up,  //  L_KEY_AUP
+  Key_A_Dwn, //  L_KEY_ADOWN
+  Key_A_Rgt, //  L_KEY_ARIGHT
+  Key_A_Lft, //  L_KEY_ALEFT
+  Key_C_Up,  //  L_KEY_CUP
+  Key_C_Dwn, //  L_KEY_CDOWN
+  Key_C_Rgt, //  L_KEY_CRIGHT
+  Key_C_Lft, //  L_KEY_CLEFT
+  -1         //  L_KEY_UNUSED
 };
+
+void gkbd_setarrow(modifier_t m, arrow_t a, int k) {
+    #ifdef HAVE_EXTENDED_NAMES
+	// Modern terminfo have user-defined capabilities for modifier
+	// arrow
+
+	static const char * const enm[] = { "UP", "DN", "RIT", "LFT" };
+	char udcapname[8];
+
+	snprintf(udcapname, sizeof(udcapname), "k%s%d", enm[a], m);
+
+	char *tc = tigetstr(udcapname);
+
+	if(tc && tc != (char *)-1) {
+	    define_key(tc, k);
+	}
+    #endif
+    #ifndef NO_MOD_DECFNK_XTERM_R7
+    	// Need to disable <Ctrl>+<Shift>+<arrow>, etc.
+
+    	// terminfo.src 1.554 2015/10/24 16:00:04
+	// Don't have any conflicts with /\\E\[1;[3-9][^,]*[ABCD]/
+	
+	char decfnk[8];
+
+	snprintf(decfnk, sizeof(decfnk), "\033[1;%d%c", m, 'A' + a);
+	define_key(decfnk, k);
+    #endif
+    #ifndef NO_MOD_RXVT
+    	// Conflicts with /\\EO[a-d]/ exist, check terminal name first
+
+	if(modifier(MOD_CTRL) == m && strstr(termname(), "rxvt")) {
+	    char rxvt[4];
+
+	    snprintf(rxvt, sizeof(rxvt), "\033O%c", 'a' + a);
+	    define_key(rxvt, k);
+	}
+    #endif
+}
+
+void gkbd_setfnkeys() {
+#ifndef OLD_SHIFT_FN
+  static const int mod_fn12_first = KEY_F(13) - KEY_MIN;
+
+  static const int mod_fn12_keys[] = { // Modern Fn keys
+	  // KEY_F(13-24) - <Shift>+Fn xterm R7/Linux/FreeBSD/DECFNK
+	Key_S_F1,  //  KEY_F(13)
+	Key_S_F2,  //  KEY_F(14)
+	Key_S_F3,  //  KEY_F(15)
+	Key_S_F4,  //  KEY_F(16)
+	Key_S_F5,  //  KEY_F(17)
+	Key_S_F6,  //  KEY_F(18)
+	Key_S_F7,  //  KEY_F(19)
+	Key_S_F8,  //  KEY_F(20)
+	Key_S_F9,  //  KEY_F(21)
+	Key_S_F10, //  KEY_F(22)
+	Key_S_F11, //  KEY_F(23)
+	Key_S_F12, //  KEY_F(24)
+
+	  // KEY_F(25-36) - <Ctrl>+Fn xterm R7/DECFNK
+	Key_C_F1,  //  KEY_F(25)
+	Key_C_F2,  //  KEY_F(26)
+	Key_C_F3,  //  KEY_F(27)
+	Key_C_F4,  //  KEY_F(28)
+	Key_C_F5,  //  KEY_F(29)
+	Key_C_F6,  //  KEY_F(30)
+	Key_C_F7,  //  KEY_F(31)
+	Key_C_F8,  //  KEY_F(32)
+	Key_C_F9,  //  KEY_F(33)
+	Key_C_F10, //  KEY_F(34)
+	Key_C_F11, //  KEY_F(35)
+	Key_C_F12, //  KEY_F(36)
+
+	  // KEY_F(37-48) - <Ctrl>+<Shift>+Fn xterm R7/DECFNK
+	-1,        //  KEY_F(37)
+	-1,        //  KEY_F(38)
+	-1,        //  KEY_F(39)
+	-1,        //  KEY_F(40)
+	-1,        //  KEY_F(41)
+	-1,        //  KEY_F(42)
+	-1,        //  KEY_F(43)
+	-1,        //  KEY_F(44)
+	-1,        //  KEY_F(45)
+	-1,        //  KEY_F(46)
+	-1,        //  KEY_F(47)
+	-1,        //  KEY_F(48)
+
+	  // KEY_F(49-60) - <Alt>+Fn xterm R7/DECFNK
+	Key_A_F1,  //  KEY_F(49)
+	Key_A_F2,  //  KEY_F(50)
+	Key_A_F3,  //  KEY_F(51)
+	Key_A_F4,  //  KEY_F(52)
+	Key_A_F5,  //  KEY_F(53)
+	Key_A_F6,  //  KEY_F(54)
+	Key_A_F7,  //  KEY_F(55)
+	Key_A_F8,  //  KEY_F(56)
+	Key_A_F9,  //  KEY_F(57)
+	Key_A_F10, //  KEY_F(58)
+	Key_A_F11, //  KEY_F(59)
+	Key_A_F12, //  KEY_F(60)
+
+	  // KEY_F(61-63) - <Alt>+<Shift>+Fn xterm R7/DECFNK
+	-1,        //  KEY_F(61)
+	-1,        //  KEY_F(62)
+	-1         //  KEY_F(63)
+      };
+
+  static const char * const ort_fn10_term[] = {
+	"xterm-old",
+	"xterm-r5",
+	"xterm-r6",
+	"screen.xterm-r6",
+	"rxvt",
+	"screen.rxvt",
+	"putty",
+	"screen.putty",
+	"linux",
+	"screen.linux",
+	0
+      };
+
+  static const int ort_fn10_first = KEY_F(11) - KEY_MIN;
+
+  static const int ort_fn10_keys[] = { // Orthodox Fn keys
+		// <Shift> + F1-F10 generates F11-F20
+	Key_S_F1,  //  KEY_F(11)
+	Key_S_F2,  //  KEY_F(12)
+	Key_S_F3,  //  KEY_F(13)
+	Key_S_F4,  //  KEY_F(14)
+	Key_S_F5,  //  KEY_F(15)
+	Key_S_F6,  //  KEY_F(16)
+	Key_S_F7,  //  KEY_F(17)
+	Key_S_F8,  //  KEY_F(18)
+	Key_S_F9,  //  KEY_F(19)
+	Key_S_F10, //  KEY_F(20)
+
+	Key_S_F11, //  KEY_F(21)
+	Key_S_F12, //  KEY_F(22)
+
+	Key_C_F1,  //  KEY_F(23)
+	Key_C_F2,  //  KEY_F(24)
+	Key_C_F3,  //  KEY_F(25)
+	Key_C_F4,  //  KEY_F(26)
+	Key_C_F5,  //  KEY_F(27)
+	Key_C_F6,  //  KEY_F(28)
+	Key_C_F7,  //  KEY_F(29)
+	Key_C_F8,  //  KEY_F(30)
+	Key_C_F9,  //  KEY_F(31)
+	Key_C_F10, //  KEY_F(32)
+
+		// <Ctrl>+<Shift> + F1-F10 generates  <Ctrl>+F11-F20
+	-1,        //  KEY_F(33)
+	-1,        //  KEY_F(34)
+	-1,        //  KEY_F(35)
+	-1,        //  KEY_F(36)
+	-1,        //  KEY_F(37)
+	-1,        //  KEY_F(38)
+	-1,        //  KEY_F(39)
+	-1,        //  KEY_F(40)
+	-1,        //  KEY_F(41)
+	-1,        //  KEY_F(42)
+
+	-1,        //  KEY_F(43)
+	-1,        //  KEY_F(44)
+
+	Key_A_F1,  //  KEY_F(45)
+	Key_A_F2,  //  KEY_F(46)
+	Key_A_F3,  //  KEY_F(47)
+	Key_A_F4,  //  KEY_F(48)
+	Key_A_F5,  //  KEY_F(49)
+	Key_A_F6,  //  KEY_F(50)
+	Key_A_F7,  //  KEY_F(51)
+	Key_A_F8,  //  KEY_F(52)
+	Key_A_F9,  //  KEY_F(53)
+	Key_A_F10, //  KEY_F(54)
+
+		// <Alt>+<Shift> + F1-F10 generates  <Alt>+F11-F20
+	-1,        //  KEY_F(55)
+	-1,        //  KEY_F(56)
+	-1,        //  KEY_F(57)
+	-1,        //  KEY_F(58)
+	-1,        //  KEY_F(59)
+	-1,        //  KEY_F(60)
+	-1,        //  KEY_F(61)
+	-1,        //  KEY_F(62)
+	-1         //  KEY_F(63)
+      };
+
+    const char *term = termname();
+
+    for(int i = 0; 
+	    i < sizeof(mod_fn12_keys)/sizeof(mod_fn12_keys[0]); 
+	    i++) {
+	gkbd_curstable[mod_fn12_first+i] = mod_fn12_keys[i];
+    }
+    for(int j = 0; ort_fn10_term[j]; j++) {
+	if(0 == strncmp(ort_fn10_term[j], term, strlen(ort_fn10_term[j]))) {
+	    for(int i = 0; 
+		    i < sizeof(ort_fn10_keys)/sizeof(ort_fn10_keys[0]); 
+		    i++) {
+		gkbd_curstable[ort_fn10_first+i] = ort_fn10_keys[i];
+	    }
+	}
+    }
+#endif
+}
 
 int gkbd_cursgetch(int mode) {
 
@@ -1042,6 +1329,65 @@ int BeOSShiftState()
 }
 #endif
 
+// TODO: move jcuken_koi8ru[] to configuration files
+
+//       Apple OS X, non-standard or phonetic Belorussian, Russian and
+//       Ukrainian keyboard need <Alt>+<national key> translation by
+//       terminal application
+
+//	 <Alt>+<national key> translation by terminal application does not
+//	 conflict with this code, because it produces the ASCII
+//	 Esc-sequence, and this code only handles KOI8-RU Esc-sequence
+
+gkey gkbd_alt_secondary_keyboard(int key)
+{
+    const static char jcuken_koi8ru[] =  {
+#ifndef DONT_JCUKEN_ALT
+		// КОИ-8: ёйцукенгшщзхъфывапролджэячсмитьбю
+	    0243, 0312, 0303, 0325, 0313, 0305, 0316, 0307, 
+	    0333, 0335, 0332, 0310, 0337, 0306, 0331, 0327,
+	    0301, 0320, 0322, 0317, 0314, 0304, 0326, 0334, 
+	    0321, 0336, 0323, 0315, 0311, 0324, 0330, 0302,
+	    0300,
+
+		// КОИ-8: ЁЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ
+	    0263, 0352, 0343, 0365, 0353, 0345, 0356, 0347, 
+	    0373, 0375, 0372, 0350, 0377, 0346, 0371, 0367,
+	    0341, 0360, 0362, 0357, 0354, 0344, 0366, 0374, 
+	    0361, 0376, 0363, 0355, 0351, 0364, 0370, 0342,
+	    0340,
+
+		// KOI8-RU: ўЎіІ
+	    0256, 0276, 0246, 0266,
+
+	    	// KOI8-RU: їЇґҐєЄ
+	    0247, 0267, 0255, 0275, 0244, 0264, 
+#endif
+	    0
+	};
+    const static char qwerty_ascii[] =
+		// KOI8-R small keys
+	    "`qwertyuiop[]asdfghjkl;'zxcvbnm,."
+		// KOI8-R keys with CapsLock
+	    "`qwertyuiop[]asdfghjkl;'zxcvbnm,."
+		// KOI8-RU Belorussian
+	    "oobb"
+		// KOI8-RU Ukranian
+	    "]]\\\\''"
+	;
+    const char *pjk = strchr(jcuken_koi8ru, key);
+    // TODO: assert(sizeof(qwerty_ascii) <= sizeof(jcuken_koi8ru));
+    if(pjk and (pjk - jcuken_koi8ru < sizeof(qwerty_ascii))) {
+      int ac = qwerty_ascii[pjk - jcuken_koi8ru]&0377;
+
+      if(!g_isalpha(ac)) {
+	  return 0;
+      }
+      return scancode_table[ac];
+    }
+    return 0;
+}
+
 //  ------------------------------------------------------------------
 //  Get key stroke
 
@@ -1061,7 +1407,17 @@ gkey kbxget_raw(int mode) {
     k = kbxget_raw(1);
     key = 0;
     switch(k) {
+      case Key_A_Up:
+      case Key_A_Dwn:
+      case Key_A_Rgt:
+      case Key_A_Lft:
+        key = ALT;
+        break;
       case Key_C_Brk:
+      case Key_C_Up:
+      case Key_C_Dwn:
+      case Key_C_Rgt:
+      case Key_C_Lft:
         key = GCTRL;
         break;
       case Key_S_Tab:
@@ -1071,6 +1427,8 @@ gkey kbxget_raw(int mode) {
       case Key_S_Lft:
       case Key_S_Rgt:
       case Key_S_End:
+      case Key_S_Dwn:
+      case Key_S_Up:
         key = LSHIFT;
         break;
     }
@@ -1093,15 +1451,17 @@ gkey kbxget_raw(int mode) {
       k = 0x7800 + ((key2 - '1') << 8);
     else if(key2 == '0')
       k = 0x8100;
-    else if(g_isalpha(key2))
+    else if(g_isalpha(key2) 
+	    and (0 <= key2)
+	    and (key2 < sizeof(scancode_table)/sizeof(scancode_table[0]))) 
       k = (scancode_table[key2]);
-    else if(key2 == '\010')
+    else if((key2 == '\010') or (key2 == KEY_BACKSPACE))
       k = Key_A_BS;
     else if(key2 == '\011')
       k = Key_A_Tab;
-    else if(key2 == '\015')
+    else if((key2 == '\015') or (key2 == KEY_ENTER))
       k = Key_A_Ent;
-    else {
+    else if(0 == (k = gkbd_alt_secondary_keyboard(key2))) {
       // No correct Alt-sequence; ungetch last key and return Esc
       if (mode != 1)
         ungetch(key2);
@@ -1112,7 +1472,9 @@ gkey kbxget_raw(int mode) {
       ungetch(key2);
   }
   // Curses sequence; lookup in nice table above
-  else if((key >= KEY_MIN) and (key <= KEY_MIN+sizeof(gkbd_curstable)/sizeof(int)))
+  else if((key >= KEY_MIN) 
+	    and (key <= KEY_MIN+sizeof(gkbd_curstable)/sizeof(int)) 
+	    and (0 <= gkbd_curstable[key - KEY_MIN]))
     k = (gkbd_curstable[key - KEY_MIN]);
   else if(key == '\015')
     k = Key_Ent;
@@ -1120,8 +1482,10 @@ gkey kbxget_raw(int mode) {
     k = Key_Tab;
   else if(key == '\000')
     k = Key_Space;
-  else
+  else if(key < KEY_MIN)
     k = key;
+  else
+    return 0;	// Incorrect or unsupported key don't ungetch()
 
   if(mode == 1)
     ungetch(key);
