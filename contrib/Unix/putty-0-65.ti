@@ -39,20 +39,202 @@
 
 # Расширенное terminfo описание терминала putty 0.65
 
-# putty и putty-256color описание терминала с возможностями
-# terminfo (capname): kri/kind (scroll-backward/forward key).
+#
+# putty и putty-256color описание терминала в режиме "ESC[n~" с
+# возможностями terminfo (capname): kri/kind (scroll-backward/forward
+# key).
+#
+# putty-xterm и putty-xterm-256color описание терминала в режиме "Xterm
+# R6"
+#
+# sco-putty исправленное описание терминала в режиме "SCO" с запретом на
+# Shift+F2, который конфликтует с Shift+Tab. Рекомендуется настройка с
+# "The Backspace key = Control-H", иначе возникает конфликт между Del и
+# Backspace.
+#
 
+#
 # Применение в качестве собственного описания обычного пользователя (не
 # root):
-#
 #   $ mkdir $HOME/.terminfo
 #   $ tic contrib/Unix/putty-0-65.ti
-#   $ TERM=putty-256color; export TERM
+#   $ TERM=putty; export TERM
+#
+# или
+#   $ TERM=putty-xterm; export TERM
+#
+# или
+#   $ TERM=sco-putty; export TERM
 #
 
-putty065|PuTTY 0.65 terminal emulator,
-	am, bce, bw, ccc, hs, mir, msgr, xenl, xon,
-	colors#8, it#8, ncv#22, pairs#64,
+#
+# Основные базовые определения были реконструированы по:
+#   http://invisible-island.net/datafiles/current/terminfo.src.gz
+#
+# с помощью `tic -x' и `infocmp -x'
+#
+
+putty-xterm|PuTTY 0.65 terminal emulator Xterm-R6 mode,
+	use=putty+fnkeys+xterm, use=putty,
+
+putty-xterm-256color|PuTTY 0.65 terminal emulator Xterm-R6 mode 256-colors,
+	use=putty+fnkeys+xterm, use=putty-256color,
+
+sco-putty|PuTTY 0.65 terminal emulator SCO mode,
+	kf14@,
+	use=putty-sco,
+
+######## TERMINAL TYPE DESCRIPTIONS SOURCE FILE
+#
+# This version of terminfo.src is distributed with ncurses and is maintained
+# by Thomas E. Dickey (TD).
+#
+# Report bugs and new terminal descriptions to
+#	bug-ncurses@gnu.org
+#
+#	$Revision$
+#	$Date$
+#
+# The original header is preserved below for reference.  It is noted that there
+# is a "newer" version which differs in some cosmetic details (but actually
+# stopped updates several years ago); we have decided to not change the header
+# unless there is also a change in content.
+#
+# To further muddy the waters, it is noted that changes to this file as part of
+# maintenance of ncurses (since 1996) are generally conceded to be copyright
+# under the ncurses MIT-style license.  That was the effect of the agreement
+# which the principal authors of ncurses made in 1998.  However, since much of
+# the file itself is of unknown authorship (and the disclaimer below makes it
+# obvious that Raymond cannot or will not convey rights over those parts),
+# there is no explicit copyright notice on the file itself.
+#
+# It would also be a nuisance to split the file into unknown/known authorship
+# and move pieces as they are maintained, since many of the maintenance changes
+# have been small corrections to Raymond's translations to/from termcap format,
+# correcting the data but not the accompanying annotations.
+#
+# In any case, note that almost half of this file is not data but annotations
+# which reflect creative effort.  Furthermore, the structure of entries to
+# reuse common chunks also is creative (and subject to copyright).  Finally,
+# some portions of the data are derivative work under a compatible MIT-style
+# license from xterm.
+#
+#------------------------------------------------------------------------------
+#	Version 10.2.1
+#	terminfo syntax
+#
+#	Eric S. Raymond		(current maintainer)
+#	John Kunze, Berkeley
+#	Craig Leres, Berkeley
+#
+# Please e-mail changes to terminfo@thyrsus.com; the old termcap@berkeley.edu
+# address is no longer valid.  The latest version can always be found at
+# <http://www.tuxedo.org/terminfo>.
+#
+#...
+
+# 256-colors is a compile-time feature of XFree86 xterm beginning with
+# patch #111 (1999/7/10) -TD
+xterm+256color|xterm 256-color feature,
+	ccc,
+	colors#256, pairs#32767,
+	initc=\E]4;%p1%d;rgb\:%p2%{255}%*%{1000}%/%2.2X/%p3%{255}%*%{1000}%/%2.2X/%p4%{255}%*%{1000}%/%2.2X\E\\,
+	setab=\E[%?%p1%{8}%<%t4%p1%d%e%p1%{16}%<%t10%p1%{8}%-%d%e48;5;%p1%d%;m,
+	setaf=\E[%?%p1%{8}%<%t3%p1%d%e%p1%{16}%<%t9%p1%{8}%-%d%e38;5;%p1%d%;m,
+	setb@, setf@,
+
+xterm+256setaf|xterm 256-color (set-only),
+	ccc@,
+	colors#256, pairs#32767,
+	initc@,
+	setab=\E[%?%p1%{8}%<%t4%p1%d%e%p1%{16}%<%t10%p1%{8}%-%d%e48;5;%p1%d%;m,
+	setaf=\E[%?%p1%{8}%<%t3%p1%d%e%p1%{16}%<%t9%p1%{8}%-%d%e38;5;%p1%d%;m,
+	setb@, setf@,
+
+#
+#...
+#
+
+# palette is hardcoded...
+putty-256color|PuTTY 0.58 with xterm 256-colors,
+	use=xterm+256setaf, use=putty,
+
+# One of the keyboard selections is "VT100+".
+# pterm (the X11 port) uses shifted F1-F10 as F11-F20
+putty-vt100|VT100+ keyboard layout,
+	use=putty+fnkeys+vt100, use=putty,
+
+putty-sco|putty with SCO function keys,
+	use=putty+fnkeys+sco, use=putty,
+
+# PuTTY has more than one section in its Keyboard configuration:
+# a) backspace/delete, which we ignore since that choice largely depends on
+#    whether one matches Unix and BSD or Linux.
+# b) home/end keys, also ignored because the "rxvt" setting sends keys which
+#    are unrelated to rxvt's actual settings.
+# c) function keys and keypad - this is the interesting part.  None of the
+#    selections match any of their respective namesakes, but they are shown
+#    here to help users who expect that the selections do what is implied.
+#
+# This is the default setting for PuTTY
+putty+fnkeys|fn-keys for PuTTY,
+	use=putty+fnkeys+esc,
+
+putty+fnkeys+esc|ESC[n~ fn-keys for PuTTY,
+	kf1=\E[11~, kf10=\E[21~, kf11=\E[23~, kf12=\E[24~,
+	kf13=\E[25~, kf14=\E[26~, kf15=\E[28~, kf16=\E[29~,
+	kf17=\E[31~, kf18=\E[32~, kf19=\E[33~, kf2=\E[12~,
+	kf20=\E[34~, kf3=\E[13~, kf4=\E[14~, kf5=\E[15~,
+	kf6=\E[17~, kf7=\E[18~, kf8=\E[19~, kf9=\E[20~,
+
+putty+fnkeys+linux|Linux fn-keys for PuTTY,
+	kf1=\E[[A, kf2=\E[[B, kf3=\E[[C, kf4=\E[[D, kf5=\E[[E,
+	use=putty+fnkeys+esc,
+
+putty+fnkeys+xterm|Xterm R6 fn-keys for PuTTY,
+	kf1=\EOP, kf2=\EOQ, kf3=\EOR, kf4=\EOS,
+	use=putty+fnkeys+esc,
+
+putty+fnkeys+vt400|VT400 fn-keys for PuTTY,
+	use=putty+fnkeys+esc,
+
+# Shifted F1 is F11.  F13-F20 inherit from the defaults, and the last distinct
+# key is F20.
+putty+fnkeys+vt100|VT100+ fn-keys for PuTTY,
+	kf1=\EOP, kf10=\EOY, kf11=\EOZ, kf12=\EO[, kf2=\EOQ,
+	kf3=\EOR, kf4=\EOS, kf5=\EOT, kf6=\EOU, kf7=\EOV, kf8=\EOW,
+	kf9=\EOX, use=putty+fnkeys+esc,
+
+# Unlike xterm-sco, this leaves kmous ambiguous with kf1.
+#
+# Use modifiers to obtain function keys past 12:
+# F1-F12 - normal
+# F13-F24 - shift
+# F25-F36 - control/alt
+# F37-F48 - control/shift
+#
+putty+fnkeys+sco|SCO fn-keys for PuTTY,
+	kbeg=\E[E, kcub1=\E[D, kcud1=\E[B, kcuf1=\E[C, kcuu1=\E[A,
+	kdch1=\177, kend=\E[F, kf1=\E[M, kf10=\E[V, kf11=\E[W,
+	kf12=\E[X, kf13=\E[Y, kf14=\E[Z, kf15=\E[a, kf16=\E[b,
+	kf17=\E[c, kf18=\E[d, kf19=\E[e, kf2=\E[N, kf20=\E[f,
+	kf21=\E[g, kf22=\E[h, kf23=\E[i, kf24=\E[j, kf25=\E[k,
+	kf26=\E[l, kf27=\E[m, kf28=\E[n, kf29=\E[o, kf3=\E[O,
+	kf30=\E[p, kf31=\E[q, kf32=\E[r, kf33=\E[s, kf34=\E[t,
+	kf35=\E[u, kf36=\E[v, kf37=\E[w, kf38=\E[x, kf39=\E[y,
+	kf4=\E[P, kf40=\E[z, kf41=\E[@, kf42=\E[[, kf43=\E[\\,
+	kf44=\E[], kf45=\E[\^, kf46=\E[_, kf47=\E[`, kf48=\E[{,
+	kf5=\E[Q, kf6=\E[R, kf7=\E[S, kf8=\E[T, kf9=\E[U, khome=\E[H,
+	kich1=\E[L, knp=\E[G, kpp=\E[I,
+
+#
+#...
+#
+
+# Reconstructed via infocmp from file: /Users/leo/.terminfo/70/putty
+putty|PuTTY terminal emulator,
+	am, bce, bw, ccc, hs, mir, msgr, xenl, xon, XT,
+	colors#8, it#8, ncv#22, pairs#64, U8#1,
 	acsc=``aaffggjjkkllmmnnooppqqrrssttuuvvwwxxyyzz{{||}}~~,
 	bel=^G, blink=\E[5m, bold=\E[1m, cbt=\E[Z, civis=\E[?25l,
 	clear=\E[H\E[J, cnorm=\E[?25h, cr=^M,
@@ -68,30 +250,10 @@ putty065|PuTTY 0.65 terminal emulator,
 	indn=\E[%p1%dS,
 	initc=\E]P%p1%x%p2%{255}%*%{1000}%/%02x%p3%{255}%*%{1000}%/%02x%p4%{255}%*%{1000}%/%02x,
 	is2=\E7\E[r\E[m\E[?7h\E[?1;4;6l\E[4l\E8\E>\E]R,
-	kb2=\E[G, kbs=\177, kcbt=\E[Z, kcub1=\E[D,
-	kcud1=\E[B, kcuf1=\E[C, kcuu1=\E[A, kdch1=\E[3~,
-	kend=\E[4~, 
-	kf1=\E[11~, 
-	kf2=\E[12~, 
-	kf3=\E[13~, 
-	kf4=\E[14~,
-	kf5=\E[15~, 
-	kf6=\E[17~, 
-	kf7=\E[18~, 
-	kf8=\E[19~, 
-	kf9=\E[20~,
-	kf10=\E[21~, 
-	kf11=\E[23~,
-	kf12=\E[24~, 
-	kf13=\E[25~,
-	kf14=\E[26~, 
-	kf15=\E[28~, 
-	kf16=\E[29~, 
-	kf17=\E[31~,
-	kf18=\E[32~, 
-	kf19=\E[33~, 
-	kf20=\E[34~, 
-	khome=\E[1~, kich1=\E[2~, kmous=\E[M, knp=\E[6~, kpp=\E[5~,
+	kLFT=\EOD, kRIT=\EOC, kb2=\E[G, kbs=\177, kcbt=\E[Z,
+	kcub1=\E[D, kcud1=\E[B, kcuf1=\E[C, kcuu1=\E[A,
+	kdch1=\E[3~, kend=\E[4~, khome=\E[1~, kich1=\E[2~,
+	kind=\EOB, kmous=\E[M, knp=\E[6~, kpp=\E[5~, kri=\EOA,
 	kspd=^Z, nel=^M^J, oc=\E]R, op=\E[39;49m, rc=\E8, rev=\E[7m,
 	ri=\EM, rin=\E[%p1%dT, rmacs=^O, rmam=\E[?7l,
 	rmcup=\E[2J\E[?47l, rmir=\E[4l, rmpch=\E[10m,
@@ -103,14 +265,5 @@ putty065|PuTTY 0.65 terminal emulator,
 	sgr0=\E[m\017, smacs=^N, smam=\E[?7h, smcup=\E[?47h,
 	smir=\E[4h, smpch=\E[11m, smso=\E[7m, smul=\E[4m,
 	tbc=\E[3g, tsl=\E]0;, u6=\E[%i%d;%dR, u7=\E[6n, u8=\E[?6c,
-	u9=\E[c, vpa=\E[%i%p1%dd,
-	kind=\EOB, kLFT=\EOD, kri=\EOA, kRIT=\EOC,
-	kEND@, kHOM@, kNXT@, kPRV@,
-
-
-putty065-256color|PuTTY 0.65 with xterm 256-colors,
-	colors#256, pairs#32767,
-	initc@,
-	setab=\E[%?%p1%{8}%<%t4%p1%d%e%p1%{16}%<%t10%p1%{8}%-%d%e48;5;%p1%d%;m,
-	setaf=\E[%?%p1%{8}%<%t3%p1%d%e%p1%{16}%<%t9%p1%{8}%-%d%e38;5;%p1%d%;m,
-	use=putty065,
+	u9=\E[c, vpa=\E[%i%p1%dd, E3=\E[3J, TS=\E]0;,
+	use=putty+fnkeys+esc,

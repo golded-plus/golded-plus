@@ -6,19 +6,39 @@
 
 1. putty-0-65.ti - расширенное terminfo описание терминала putty 0.65
 
-    1.1 putty и putty-256color описание терминала с возможностями
+    1.1 putty и putty-256color описание терминала PuTTY при настройке
+	"The Functions keys and keypad = ESC[n~" с возможностями
 	terminfo (capname): kri/kind (scroll-backward/forward key).
-	
-    1.2 Применение в качестве собственного описания обычного
+	(Не отличается от описания в последней версии
+	<http://invisible-island.net/ncurses/ncurses.faq.html#which_terminfo>).
+
+    1.2 putty-xterm и putty-xterm-256color описание терминала PuTTY при
+	настройке "The Functions keys and keypad = Xterm R6" (этого
+	описания в terminfo не было).
+
+    1.3 sco-putty описание терминала PuTTY при настройке "The Functions
+	keys and keypad = SCO" и "The Backspace key = Control-H". При
+	этой настройке программам доступны не только Shift+Fn, но
+	Ctrl+Fn клавиши. Конфликт между Shift+F2 и Shift+Tab разрешён в
+	пользу последнего, т.е. Shift+F2 интерпретируется как KEY_BTAB
+	(Back tab key).
+
+    1.3 Применение в качестве собственного описания обычного
 	пользователя (не root):
 
-	$ mkdir $HOME/.terminfo
-	$ tic -x contrib/Unix/putty-0-65.ti
-	$ TERM=putty-256color; export TERM
+	    $ mkdir $HOME/.terminfo
+	    $ tic -x contrib/Unix/putty-0-65.ti
+	    $ TERM=putty; export TERM
 
-    1.3 Возможно лучше скачать и скомпилировать последнюю версию
-	terminfo.src 
-	<http://invisible-island.net/ncurses/ncurses.faq.html#which_terminfo>
+	или
+
+	    $ TERM=putty-xterm; export TERM
+
+	или
+
+	    $ TERM=sco-putty; export TERM
+
+	в зависимости от настройки PuTTY.
 
 
 2. XTerm-KOI8-U-strict.terminal - файл описания Терминала для OS X 10.9,
