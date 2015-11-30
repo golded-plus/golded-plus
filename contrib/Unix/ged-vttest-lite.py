@@ -42,12 +42,16 @@
 # Простое тестирование терминала на соответствие terminfo
 #
 
-import curses, traceback
+import locale
+import sys
+import traceback
+
+import curses
 from curses import *
 
 def test(y, x, ukey, ckeys, lckey=1):
     m = 2
-    of = 13
+    of = 15
     mysc.addstr(y,x,ukey+": ");
     mysc.addstr(y+m,m,"Press character 'n' twice with pause to next test") 
     n = 0
@@ -88,8 +92,9 @@ def test(y, x, ukey, ckeys, lckey=1):
 #========================================================== 
 #                       MAIN LOOP 
 #========================================================== 
+locale.setlocale(locale.LC_ALL, '')
+mysc = initscr() 
 try: 
-    mysc = initscr() 
     noecho()
     term = termname().decode("ascii")
     shift = 12
@@ -102,29 +107,56 @@ try:
     mysc.keypad(1)
     mysc.clear() 
     mysc.border(0)
-    mysc.addstr(1,8,term + " " + str(mysc.getmaxyx()))
-    test(3,3,"F3",["KEY_F(3)"])
-    test(3,40,"Shift+F3",["KEY_F(" + str(3+shift) + ")"])
-    test(4,3,"F5",["KEY_F(5)"])
-    test(4,40,"Ctrl+F5",["KEY_F(" + str(5+shift+shift2) + ")"])
-    test(5,3,"F9",["KEY_F(9)"])
-    test(5,40,"Alt-F9",["KEY_F(" + str(9+2*(shift+shift2)) + ")"])
-    test(6,3,"Left",["KEY_LEFT"])
-    test(6,40,"Ctrl+Left",["kLFT5"])
-    test(7,3,"Up",["KEY_UP"])
-    test(7,40,"Shify+Up",["KEY_SR"])
-    test(8,3,"PgUp",["KEY_PPAGE"])
-    test(8,40,"Shift+PgUp",["KEY_SPREVIOUS"])
-    test(9,3,"Shift+Tab",["KEY_BTAB"])
-    test(9,40,"Alt+TAB",["\033\t"], 2)
-    test(10,3,"Alt+BackSpace",["\033\b","\033KEY_BACKSPACE"],2)
-    test(10,40,"Alt+Enter",["\033\n","\033KEY_ENTER"],2)
-    test(11,3,"Alt+Z",["\033z","\033Z"],2)
-    test(11,40,"Alt+\312",["\033q","\033Q","\033\312","\033\352"],2)
+    mysc.addstr(1,2, str(sys.version_info))
+    mysc.addstr(3,8,term + " " + str(mysc.getmaxyx()))
+    mysc.addstr(3,45,str(locale.getlocale()))
+    y = 5
+    xl = 3
+    xr = 40
+    if 'KOI8' == locale.nl_langinfo(locale.CODESET)[0:4]:
+        mysc.addstr(y,xl, "Ok: " + locale.nl_langinfo(locale.CODESET))
+        mysc.addstr(y,xr, "Test output: \364\305\323\324 '\312'")
+    else:
+        mysc.addstr(y,xl, "Fail: "+locale.nl_langinfo(locale.CODESET))
+    y = y + 1
+    test(y,xl,"F3",["KEY_F(3)"])
+    test(y,xr,"Shift+F3",["KEY_F(" + str(3+shift) + ")"])
+    y = y + 1
+    test(y,xl,"F5",["KEY_F(5)"])
+    test(y,xr,"Ctrl+F5",["KEY_F(" + str(5+shift+shift2) + ")"])
+    y = y + 1
+    test(y,xl,"F9",["KEY_F(9)"])
+    test(y,xr,"Alt-F9",["KEY_F(" + str(9+2*(shift+shift2)) + ")"])
+    y = y + 1
+    test(y,xl,"Left",["KEY_LEFT"])
+    test(y,xr,"Shift+Left",["KEY_SLEFT"])
+    y = y + 1
+    test(y,xl,"Ctrl+Left",["kLFT5"])
+    test(y,xr,"Alt+Left",["kLFT3"])
+    y = y + 1
+    test(y,xl,"Up",["KEY_UP"])
+    test(y,xr,"Shift+Up",["KEY_SR"])
+    y = y + 1
+    test(y,xl,"Ctrl+Up",["kUP5"])
+    test(y,xr,"Alt+Up",["kUP3"])
+    y = y + 1
+    test(y,xl,"PgUp",["KEY_PPAGE"])
+    test(y,xr,"Shift+PgUp",["KEY_SPREVIOUS"])
+    y = y + 1
+    test(y,xl,"Shift+Tab",["KEY_BTAB"])
+    test(y,xr,"Alt+Tab",["\033\t"], 2)
+    y = y + 1
+    test(y,xl,"Alt+Backspace",["\033\177","\033\b","\033KEY_BACKSPACE"],2)
+    test(y,xr,"Alt+Enter",["\033\n","\033KEY_ENTER"],2)
+    y = y + 1
+    test(y,xl,"Alt+z",["\033z","\033Z"],2)
+    test(y,xr,"Alt+\312",["\033q","\033Q","\033\312","\033\352"],2)
+    y = y + 1
 
     mysc.addstr(23,2,"Press <CR> to exit") 
     mysc.getch() 
-finally: 
+except: 
     endwin()
     traceback.print_exc()
-
+    exit(2)
+endwin()
