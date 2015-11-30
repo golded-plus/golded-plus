@@ -1,5 +1,5 @@
 #!/usr/bin/env python 
-# vim:set sw=4 ts=8 fileencoding=utf8::Кодировка:UTF-8[АБЁЪЯабёъя] 
+# vim:set sw=4 ts=8 et fileencoding=utf8::Кодировка:UTF-8[АБЁЪЯабёъя] 
 #
 #   Авторское право (с) 2015, Сергей Леонтьев, leo@sai.msu.ru
 #
@@ -52,37 +52,37 @@ def test(y, x, ukey, ckeys, lckey=1):
     mysc.addstr(y+m,m,"Press character 'n' twice with pause to next test") 
     n = 0
     while n < 2:
-	key = mysc.getkey()
-	for i in range(lckey):
-	    mysc.timeout(300)
-	    try:
-		key += mysc.getkey()
-	    except:
-		pass
-	    mysc.timeout(-1)
-	found = False
-	for k in ckeys:
-	    if k == key:
-		found = True
-	if found:
-	    mysc.addstr(y,x+of,"                       ")
-	    mysc.addstr(y,x+of,"Ok: " + key)
-	    break
-	elif "n" == key:
-	    n += 1
-	else:
-	    mysc.timeout(300)
-	    keys = "'" + key
-	    try:
-		while 1:
-		    key = mysc.getkey()
-		    keys += key
-	    except:
-		pass
-	    keys += "'"
-	    mysc.timeout(-1)
-	    mysc.addstr(y,x+of,"                       ")
-	    mysc.addstr(y,x+of,"Fail: " + keys)
+        key = mysc.getkey()
+        for i in range(lckey):
+            mysc.timeout(300)
+            try:
+                key += mysc.getkey()
+            except:
+                pass
+            mysc.timeout(-1)
+        found = False
+        for k in ckeys:
+            if k == key:
+                found = True
+        if found:
+            mysc.addstr(y,x+of,"                       ")
+            mysc.addstr(y,x+of,"Ok: " + key)
+            break
+        elif "n" == key:
+            n += 1
+        else:
+            mysc.timeout(300)
+            keys = "'" + key
+            try:
+                while 1:
+                    key = mysc.getkey()
+                    keys += key
+            except:
+                pass
+            keys += "'"
+            mysc.timeout(-1)
+            mysc.addstr(y,x+of,"                       ")
+            mysc.addstr(y,x+of,"Fail: " + keys)
     mysc.addstr(y+m,m,"                                                 ") 
 
 #========================================================== 
@@ -91,18 +91,18 @@ def test(y, x, ukey, ckeys, lckey=1):
 try: 
     mysc = initscr() 
     noecho()
-    term = termname()
+    term = termname().decode("ascii")
     shift = 12
     shift2 = 12
     for t in [ "xterm-old", "xterm-r5", "xterm-r6", "screen.xterm-r6", 
-		"rxvt", "screen.rxvt", "putty", "screen.putty", "linux",
-		"screen.linux" ]:
-	if t == term[0:len(t)]:
-	    shift = 10
+                "rxvt", "screen.rxvt", "putty", "screen.putty", "linux",
+                "screen.linux" ]:
+        if t == term[0:len(t)]:
+            shift = 10
     mysc.keypad(1)
     mysc.clear() 
     mysc.border(0)
-    mysc.addstr(1,8,termname() + " " + str(mysc.getmaxyx()))
+    mysc.addstr(1,8,term + " " + str(mysc.getmaxyx()))
     test(3,3,"F3",["KEY_F(3)"])
     test(3,40,"Shift+F3",["KEY_F(" + str(3+shift) + ")"])
     test(4,3,"F5",["KEY_F(5)"])

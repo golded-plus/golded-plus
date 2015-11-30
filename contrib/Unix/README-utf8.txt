@@ -1,4 +1,5 @@
 # vim:set sw=4 ts=8 tw=72 fileencoding=utf8::Кодировка:UTF-8[АБЁЪЯабёъя] 
+# You can use `iconv -f utf-8 README-utf8.txt'
 
 Описание файлов каталога golded+/contrib/Unix
 
@@ -14,11 +15,11 @@
 
     1.2 putty-xterm и putty-xterm-256color описание терминала PuTTY при
 	настройке "The Functions keys and keypad = Xterm R6" (этого
-	описания в terminfo не было).
+	описания в terminfo [1.554 2015/10/24] не было).
 
     1.3 sco-putty описание терминала PuTTY при настройке "The Functions
 	keys and keypad = SCO" и "The Backspace key = Control-H". При
-	этой настройке программам доступны не только Shift+Fn, но
+	этой настройке программам доступны не только Shift+Fn, но и 
 	Ctrl+Fn клавиши. Конфликт между Shift+F2 и Shift+Tab разрешён в
 	пользу последнего, т.е. Shift+F2 интерпретируется как KEY_BTAB
 	(Back tab key).
@@ -40,6 +41,8 @@
 
 	в зависимости от настройки PuTTY.
 
+	Значение переменной окружения TERM можно настроить в настройках
+	PuTTY Connection->Data->"Terminal-type string".
 
 2. XTerm-KOI8-U-strict.terminal - файл описания Терминала для OS X 10.9,
     10.10 и 10.11 с максимально полным соответствием XTerm R7.  (Получен
