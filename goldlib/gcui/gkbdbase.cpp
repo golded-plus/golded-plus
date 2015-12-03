@@ -1455,7 +1455,7 @@ gkey kbxget_raw(int mode) {
 	    and (0 <= key2)
 	    and (key2 < sizeof(scancode_table)/sizeof(scancode_table[0]))) 
       k = (scancode_table[key2]);
-    else if((key2 == '\010') or (key2 == KEY_BACKSPACE))
+    else if((key2 == '\010') or (key2 == KEY_BACKSPACE) or (key2 == '\177'))
       k = Key_A_BS;
     else if(key2 == '\011')
       k = Key_A_Tab;
