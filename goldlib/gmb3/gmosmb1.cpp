@@ -495,6 +495,18 @@ add2:
   return true;
 }
 
+//  ------------------------------------------------------------------
+//  Returns current timezone offset based on TZ environment variable.
+
+int tzoffset_in_minutes()
+{
+  time32_t t1 = gtime(NULL);
+  struct tm tp; ggmtime(&tp, &t1);
+  tp.tm_isdst = -1;
+  time32_t t2 = gmktime(&tp);
+  int dt = (int)(t1 - t2);
+  return dt / 60;
+}
 
 //  ------------------------------------------------------------------
 
@@ -541,8 +553,10 @@ void SMBArea::save_hdr(int mode, gmsg* msg)
     struct tm tp; ggmtime(&tp, &msg->written);
     tp.tm_isdst = -1;
     smsg.hdr.when_written.time = gmktime(&tp);
+    smsg.hdr.when_written.zone = tzoffset_in_minutes();
   }
   smsg.hdr.when_imported.time = gtime(NULL);
+  smsg.hdr.when_imported.zone = tzoffset_in_minutes();
 
   // Transfer attributes
   if(msg->attr.pvt()) smsg.hdr.attr |= MSG_PRIVATE;
