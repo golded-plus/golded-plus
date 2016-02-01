@@ -43,6 +43,8 @@
 
 //  ------------------------------------------------------------------
 
+const int LEN_CODE = 8;			// Maximum length of internal codes
+const int LEN_EXTCODE = (LEN_CODE*2);	// Code prefix + suffix
 const int LEN_DIR = 63;         // Maximum length of directory paths
 const int LEN_ARSTR = 40;       // Max length of Access Requirement string
 const int LEN_GSNAME = 15;      // Group/Lib short name
@@ -91,7 +93,8 @@ typedef struct {                // Message group info
   char    lname[LEN_GLNAME+1],  // Short name
           sname[LEN_GSNAME+1];  // Long name
   uint8_t ar[LEN_ARSTR+1],      // Access requirements
-          unused[96];           // unused
+ 		  code_prefix[LEN_CODE+1],	// Prefix for internal code of every sub in this group
+          unused[87];           // unused
 } grp_t;
 
 typedef struct {                // Message sub board info
@@ -99,7 +102,7 @@ typedef struct {                // Message sub board info
   char   lname[LEN_SLNAME+1],   // Long name - used for listing
          sname[LEN_SSNAME+1],   // Short name - used for prompts
          qwkname[LEN_SQWKNAME+1], // QWK name
-         code[9],               // Eight character code
+         code_suffix[LEN_CODE+1], // Internal code (or just suffix)
          data_dir[LEN_DIR+1];   // Data file directory
   uint8_t ar[LEN_ARSTR+1],      // Access requirements
           read_ar[LEN_ARSTR+1], // Read requirements
@@ -116,8 +119,9 @@ typedef struct {                // Message sub board info
   uint16_t maxage,              // Max age of messages (in days)
            ptridx;              // Index into pointer file
   uint8_t  mod_ar[LEN_ARSTR+1]; // Moderated user requirements
-  uint16_t qwkconf;             // QWK configuration
-  uint8_t  unused[53];          // unused
+  uint16_t qwkconf;             // QWK conference number
+  char     code[LEN_EXTCODE+1];	// Not actually read from the .cnf file
+  uint8_t  unused[36];          // unused
 } sub_t;
 
 //  ------------------------------------------------------------------

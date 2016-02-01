@@ -44,7 +44,6 @@ void gareafile::ReadSynchronet(char* tag) {
   Path file, path;
   char options[80];
   uint16_t shrt, i;
-  grp_t grp;
   sub_t sub;
 
   strcpy(options, tag);
@@ -102,9 +101,14 @@ void gareafile::ReadSynchronet(char* tag) {
     // unused (0xff)                    512
     fseek(in, 1034, SEEK_CUR);
 
-    if(fread(&shrt, sizeof(uint16_t), 1, in) == 1) {
-      for(i = 0; i < shrt; i++) {
-        if(fread(&grp, sizeof(grp_t), 1, in) != 1)
+    uint16_t total_groups = 0;
+    grp_t* grp = NULL;
+
+    if(fread(&total_groups, sizeof(total_groups), 1, in) == 1
+      && total_groups >= 1
+      && (grp = (grp_t*)malloc(total_groups * sizeof(grp_t))) != NULL) {
+      for(i = 0; i < total_groups; i++) {
+        if(fread(&grp[i], sizeof(grp_t), 1, in) != 1)
           break;
       }
     }
@@ -112,9 +116,14 @@ void gareafile::ReadSynchronet(char* tag) {
       for(i = 0; i < shrt; i++) {
         if(fread(&sub, sizeof(sub_t), 1, in) != 1)
           break;
+        if(sub.grp >= total_groups)	// Illegal group number
+          continue;
+        /* A sub-board's internal code is the combination of the grp's code_prefix & the sub's code_suffix */
+        memset(sub.code, 0, sizeof(sub.code));
+        snprintf(sub.code, sizeof(sub.code)-1, "%s%s", grp[sub.grp].code_prefix, sub.code_suffix);
         AreaCfg aa;
         aa.reset();
-        aa.type = (sub.misc & SUB_QNET) ? GMB_LOCAL : GMB_ECHO;
+        aa.type = (sub.misc & SUB_FIDO) ? GMB_ECHO : GMB_LOCAL;
         aa.attr = attribsecho;
         aa.basetype = "SMB";
         aa.setechoid((sub.misc & SUB_FIDO) ? sub.sname : sub.code);
@@ -132,6 +141,8 @@ void gareafile::ReadSynchronet(char* tag) {
         AddNewArea(aa);
       }
     }
+	if(grp != NULL)
+		free(grp);
   }
   fclose(in);
 }
