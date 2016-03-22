@@ -1,0 +1,531 @@
+This file mostly duplicates tips.txt but also answers on some russian specific
+questions. Please read this before asking for assistance!
+$Date$
+>==============================================================================
+
+                F.A.Q. по использованию GoldED+ в картинках (tm)
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+>Содержание
+>~~~~~~~~~~
+
+ 1. Установка GoldED+.
+ 2. Локальные установки.
+ 3. Замена SoftCR (русской буквы "H"), как это делается в GoldED+ правильно.
+ 4. Макросы или как HЕ надо менять русскую букву "H".
+ 5. Стилевые коды.
+ 6. CUA.
+ 7. Kак не квотить тирлайн и ориджин в GoldED+.
+ 8. Где взять GoldED+? А исходники? А чем потом собирать?
+ 9. Куда писать?
+10. Поиск слов: что-то не так...
+11. Что за левизна в адресах кросспостов, начиная с 1.1.3?
+12. Почему не вводится русская "Э" под Win95?
+13. Backspace в Linux'e
+14. Alt во FreeBSD.
+15. А зачем мне этот <censored> редактор нужен? У Одинна было лучше!
+16. А вот я хочу аналог MCITY встроенный.
+17. $^%$^*! Что ты сделал с сохранением сообщений в 1.1.5?
+18. После установки GoldED+ у меня начали раздаваться стуки из-под пола.
+19. А почему я не могу поставить атрибуты письма?
+20. Как же работает AREAREPLYDIRECT?
+21. Для чего делают сборки разными компиляторами?
+22. Как узнать о новшествах?
+23. Случайно удалил письмо... Как избежать этого?
+24. Не работает макрос и "печенье"!
+25. А как редактировать адресную книгу?
+26. У меня такая проблема: Golded вылетает в Segmentation fault. Что делать?
+27. Как заставить externutil работать глобально?
+28. Как работает и где взять спелчекер?
+29. Не могу настроить кодировку в Linux!
+30. Golded/lnx падает, когда база на расшареном в Windows диске!
+31. У меня Linux 64 bit, и Golded+ падает, если подключен нодлист!
+
+>==============================================================================
+
+*Q1:* А вот я достал GoldED+, как его ставить-то?
+*A:* Нужно два архива: бинарники (gpXДАТА.zip, X соответствует Вашей ОС:
+     w,v,d,o,l,) и конфиги (gpcДАТА.zip). Их нужно распаковать в один каталог
+     и настраивать, конфиги неплохо документированы. Есть ещё архив gpmДАТА.zip
+     с документацией.
+     Если ставите поверх старой версии - прочитайте Notework.txt, там много
+     интересного написано. Особенно полезно его читать, если что-то работает
+     не так, как ожидалось. Если не знаете английского, но знаете, какое
+     ключевое слово глючит - поищите его, 3 предложения перевести со словарем
+     всегда можно. И вообще: читайте доки - они рулез.
+
+*Q2:* А у меня регистронезависимый поиск глючит и время неправильное.
+*A:* Чтобы GoldED+ глючил поменьше, надо настроить региональные установки:
+     для DPMI32: country.sys, переменная TZ
+     для Win32: control panel, переменная TZ
+     для OS/2: [не знаю где настраивается, но региональные настройки - свои],
+     переменная TZ
+     для UNIX: переменные LANG и TZ.
+
+     ВНИМАНИЕ: то, что GoldED+/w32 ранее 1.1.5 показывает неправильное время
+     две недели в году не является багом GoldED+, это проблема CRTDLL.DLL,
+     поставляемого фирмой Microsoft в составе вашей операционной системы.
+     Обратитесь к производителю вашей ОС с просьбой исправить эту ошибку.
+     GoldED+/w32 версии 1.1.5 собирается с MSVCRT.DLL, где этой ошибки нет.
+
+*Q3:* А как же все-таки правильно менять SoftCR при наборе и иметь с этим
+     меньше всего проблем?
+*A:* Чтобы заменять SoftCR (для чайников - это большая русская буква "H")
+     чем-нибудь, надо пользоваться ключевым словом EDITSOFTCRXLAT. При этом
+     НЕОБХОДИМО (с версии 1.1.3) иметь DISPSOFTCR определенное в yes. Все
+     остальные варианты замены GoldED+ не нужны, а ЗАМЕНА ЧЕРЕЗ MACRO и
+     вовсе ПРОТИВОПОКАЗАНА! (см. следующий вопрос).
+     Если пользователь не хочет проводить эту замену, нужно указать параметром
+     EDITSOFTCRXLAT символ с десятичным кодом 141 (символ "Н" в CP866), иначе
+     Golded+ "скушает" букву. Замечание про код символа существенно для
+     пользователей, которые работают с локальной кодировкой, отличной от CP866:
+     буква, которая в вашей кодировке выглядит как Н, не является SoftCR.
+     Для включения и отключения замены в группах арий (random area groups)
+     предназначено ключевое слово USESOFTCRXLAT. К примеру, для международных
+     эхоконференций (ENET.SYSOP, FTSC_PUBLIC и другие) имеет смысл использовать
+     следующие настройки:
+
+     Group International
+       Member        ENET.SYSOP, FTSC_PUBLIC
+       DispSoftCR    No
+       UseSoftCRXlat No
+       LoadLanguage  GedLngUS.cfg
+       Template      English.tpl
+     EndGroup
+
+*Q4:* А почему так странно работает замена через MACRO, EDITMACRO, и пр.?
+*A:* Символы из верхней части ASCII-таблицы (для чайников - русские буквы) в
+     макроподстановках нынче расцениваются как регистронезависимые, как это
+     всегда было для символов нижней половины ASCII-таблицы (латинских букв).
+     Проблема маленькой русской "н" растет отсюда.
+
+*Q5:* А как изменить поведение стилевых кодов?
+*A:* GoldED+ по-умолчанию показывает символы выделения стилей так же, как это
+     было в GoldED 2.50. Если это не устраивает, то почитайте про ключевое
+     слово STYLECODES.
+*A:* А если интересует почему какие-то конкретные не подсвечиваются, то читайте
+     про STYLECODESTOPS.
+
+*Q6:* А где обещанное CUA?
+*A:* Чтобы использовать CUA при выключенном KEYBDEFAULTS надо его определить.
+     Хотя всякие #Left не описаны в документации, они есть :) В Линуксе
+     работает только на консоли, да и то не всегда (точно не работает, если
+     запускать из-под midnight commander'а).
+
+*Q7:* А что за проблемы с INVALIDATE <token> "" ""? Почему все-равно квотится?
+*A:* Это опять недочитанная до конца документация. Используйте ключевое слово
+     QUOTECTRL, которое, кстати, может использоваться и в Random System Group.
+     Тирлайны правильно инвалидируются по трем минусам, GoldED+ сам знает, что
+     после них должен быть пробел или перевод строки.
+
+*Q8:* Где взять GoldED+? А исходники? А чем потом собирать?
+*A:* Родина GoldED+ находится на http://golded.org/, а также страничка проекта 
+     на Sourceforge http://sourceforge.net/projects/golded-plus. Те же файлы
+     распространяются по файлэхе AFTNGED, её архивы можно найти на FREQ'ах и
+     FTP серверах узлов, например http://www.filegate.net/r50/aftnged/.
+     За самыми актуальными исходниками нужно обращаться к анонимному CVS по URL
+     :pserver:anonymous@golded-plus.cvs.sourceforge.net:/cvsroot/golded-plus
+     модуль golded+ (инструкции на http://sourceforge.net/projects/golded-plus,
+     страница CVS). Можно скачать все исходники одним тарболом через ViewCVS:
+     http://golded-plus.cvs.sourceforge.net/viewvc/golded-plus/?view=tar
+     Собирать надо компилятором GNU C/C++ (не надо брать нечто древнее
+     2.8.x, лучше всего какую-нибудь свежую версию) и его производными
+     (djgpp, emx, mingw32). Из других компиляторов поддерживается
+     только Microsoft Visual C (для win32, разумеется). Чтобы все
+     компилировалось без каких-либо проблем - берите как минимум gcc
+     2.95.4, лучше всего - gcc 3.x (как минимум те egcs, в которых #pragma
+     implementaion и #pragma interface уже были obsolete).
+
+*Q9:* Типа эта... А писать куда автору? ;-)
+*A:* Писать лучше всего в RU.GOLDED. Даже лучше сначала его почитать, дождаться
+     местного FAQ+buglist и только потом писать. Патчи и багрепорты можно сразу
+     помещать на http://sourceforge.net/projects/golded-plus в соответствующий
+     раздел (bugs, patches, feature requests), вас заметят :).
+     Если уж сильно приспичит, то можно писать на 2:5080/102, но я не
+     единственный разработчик, а скорее координатор проекта и совсем не
+     гарантирую, что отвечу. Ставьте RRq, Cfm, если хотите знать, что ваше
+     письмо дошло и я просто не стал на него отвечать. Я не отвечаю на вопросы,
+     описанные в этом FAQ и другой документации, также могу не ответить, если
+     не знаю как что-то работает в GoldED+ (я использую немногие его
+     возможности, только те, которые МНЕ необходимы) - читайте документацию,
+     спрашивайте в RU.GOLDED... У меня слишком мало свободного времени, чтобы
+     раскапывать для вас как что-то работает, всем будет лучше, если это время
+     будет потрачено на разработку Golded+.
+
+*Q10:* А как-то поиск нетривиально работает...
+*A:* А вы уверены, что прочитали Notework.txt до предыдущей версии, в которой
+     все работало? Hачиная с 3.00b4 все сильно поменялось. K тому, что там
+     описано, можно добавить, что GoldED+ правильно понимает поиск комбинаций
+     типа "A & B | C & D & E" с приоритетом & над | и что русские слова можно
+     искать такими комбинациями: "?r [пn][рp][иu][вB][еE][тT]", где первая
+     буква русская, вторая латинская (кавычки вводить не следует). Т.е. префикс
+     "?r " указывает, что далее следует регулярное выражение по правилам POSIX
+     regexp.
+
+*Q11:* Что за левизна в адресах кросспостов, начиная с 1.1.3?
+*A:* В goldlang.cfg поменялся формат для слов MS_LISTCC ("%s  %s") и
+     ST_STATUSCC ("CC: %s of %s"). Проверьте свой конфиг и поменяйте по
+     аналогии!
+
+*Q12:* Почему не вводится русская "Э" под Win95?
+*A:* Поставьте тип клавиатуры 101 клавишный США, скорее всего поможет. Если не
+     поможет - поставьте себе нормальный русификатор: это заодно спасет от
+     кривой вставки текста из клипборда в DOS-версии при несовпадении языка
+     текста и содержимого клипборда.
+
+*Q13:* Не работает backspace в Linux, приходится пользоватся стандартным Ctrl-?
+*Q13:* Вместо удаления буквы удаляет слово.
+*A:* Alexey Froloff: ``keycode 14 = delete delete delete delete'' в keymap'е
+     прописать надо.
+*A:* Alexey Vissarionov: В goldkeys.cfg вписать строку:
+     ^H          EditDelLeft
+     и в ~/.screenrc:
+     bindkey -d -k kb stuff \010
+     Запускать golded+ через screen: screen gedlnx
+*A:* Alexander Brovikov, Stas Degteff: в xterm Backspace работает нормально, а
+     Konsole и rxvt болеют теми же симптомами. В некоторых терминальных
+     программах можно выставить настройку "Нажатие клавиши BackSpace вызывает:
+     Control + H", это поможет
+*A:* Dmitry Pankov: В konsole эта проблема решается правкой .keytab.
+     В /usr/share/apps/konsole (либо в /usr/local/share/apps/konsole, в
+     зависимости от системы) ищем файлики *.keytab. В Linux обычно есть
+     README.default.Keytab - это клавиатурная таблица Konsole, заданная при его
+     компиляции. Копируем этот или другой понравившийся файл *.keytab в
+     ~/.kde/share/apps/konsole под другим именем (например golded+.keytab) и
+     вносим следующие два изменения:
+     === Cut ===
+     -keyboard "XTerm (XFree 4.x.x)"
+     +keyboard "XTerm (xorg 7.x.x)"
+     === Cut ===
+     === Cut ===
+     # Backspace and Delete codes are preserving CTRL-H.
+     -key Backspace      : "\x7f"
+     +key Backspace      : "\x08"
+     === Cut ===
+     После чего запускаем konsole, меню Hастройка -> Клавиатура -> выбираем
+     "XTerm (xorg 7.x.x)" и сохраняем профиль по умолчанию.
+     Все. Теперь Backspace удаляет по одному символу, а не слово целиком.
+
+*Q14:* А как нажать Alt-S во FreeBSD? ;-)
+*A:* andrey i. mavlyanov: исправить раскладку по приведённому DIFF'у
+     (привычнее, ИМХО + там на винюковые клавиши альт навешан => все альты
+     используются как альты, потом переключение по Ctrl+Shift, а CapsLock
+     работает во всех режимах как caps.lock).
+
+=== BOF ru.koi8-r.shift.diff ===
+*** ru.koi8-r.shift.kbd Mon Feb 25 19:06:59 2002
+-+- ru.koi8-r.aim.kbd   Mon Feb 25 20:16:52 2002
+***************
+*** 57,67 ****
+    051   ','    '<'    nop    nop    172    188    nop    nop     O
+    052   '.'    '>'    nop    nop    174    190    nop    nop     O
+    053   '/'    '?'    nop    nop    175    191    nop    nop     O
+!   054   rshift rshift rshift rshift rshift rshift rshift rshift  O
+    055   '*'    '*'    nl     nl     170    170    138    138     O
+    056   lalt   lalt   lalt   lalt   lalt   lalt   lalt   lalt    O
+    057   ' '    ' '    nul    ' '    160    160    susp   160     O
+!   058   alock  clock  clock  clock  clock  clock  clock  clock   O
+    059   fkey01 fkey13 fkey25 fkey37 scr01  scr11  scr01  scr11   O
+    060   fkey02 fkey14 fkey26 fkey38 scr02  scr12  scr02  scr12   O
+    061   fkey03 fkey15 fkey27 fkey39 scr03  scr13  scr03  scr13   O
+-+- 57,67 ----
+    051   ','    '<'    nop    nop    172    188    nop    nop     O
+    052   '.'    '>'    nop    nop    174    190    nop    nop     O
+    053   '/'    '?'    nop    nop    175    191    nop    nop     O
+!   054   rshift rshift alock  rshift rshift rshift rshift rshift  O
+    055   '*'    '*'    nl     nl     170    170    138    138     O
+    056   lalt   lalt   lalt   lalt   lalt   lalt   lalt   lalt    O
+    057   ' '    ' '    nul    ' '    160    160    susp   160     O
+!   058   clock  clock  clock  clock  clock  clock  clock  clock   O
+    059   fkey01 fkey13 fkey25 fkey37 scr01  scr11  scr01  scr11   O
+    060   fkey02 fkey14 fkey26 fkey38 scr02  scr12  scr02  scr12   O
+    061   fkey03 fkey15 fkey27 fkey39 scr03  scr13  scr03  scr13   O
+***************
+*** 108,116 ****
+    102   fkey60 fkey60 fkey60 fkey60 fkey60 fkey60 fkey60 fkey60  O
+    103 fkey61 fkey61 fkey61 fkey61 fkey61 fkey61 boot   fkey61  O
+    104   slock  saver  slock  saver  susp   nop    susp   nop     O
+!   105 fkey62 fkey62 fkey62 fkey62 fkey62 fkey62 fkey62 fkey62  O
+!   106 fkey63 fkey63 fkey63 fkey63 fkey63 fkey63 fkey63 fkey63  O
+!   107 fkey64 fkey64 fkey64 fkey64 fkey64 fkey64 fkey64 fkey64  O
+    108   nop    nop    nop    nop    nop    nop    nop    nop     O
+    109   nop    nop    nop    nop    nop    nop    nop    nop     O
+    110   nop    nop    nop    nop    nop    nop    nop    nop     O
+-+- 108,116 ----
+    102   fkey60 fkey60 fkey60 fkey60 fkey60 fkey60 fkey60 fkey60  O
+    103 fkey61 fkey61 fkey61 fkey61 fkey61 fkey61 boot   fkey61  O
+    104   slock  saver  slock  saver  susp   nop    susp   nop     O
+!   105   meta   meta   meta   meta   meta   meta   meta   meta    O
+!   106   meta   meta   meta   meta   meta   meta   meta   meta    O
+!   107   meta   meta   meta   meta   meta   meta   meta   meta    O
+    108   nop    nop    nop    nop    nop    nop    nop    nop     O
+    109   nop    nop    nop    nop    nop    nop    nop    nop     O
+    110   nop    nop    nop    nop    nop    nop    nop    nop     O
+***************
+*** 185,195 ****
+    179   194    226    nop    nop    172    188    nop    nop     C
+    180   192    224    nop    nop    174    190    nop    nop     C
+    181   '/'    '?'    nop    nop    175    191    nop    nop     O
+!   182   rshift rshift rshift rshift rshift rshift rshift rshift  O
+    183   '*'    '*'    nl     nl     170    170    138    138     O
+    184   lalt   lalt   lalt   lalt   lalt   lalt   lalt   lalt    O
+    185   ' '    ' '    nul    ' '    160    160    160    160     O
+!   186   alock  clock  clock  clock  clock  clock  clock  clock   O
+    187   fkey01 fkey13 fkey25 fkey37 scr01  scr11  scr01  scr11   O
+    188   fkey02 fkey14 fkey26 fkey38 scr02  scr12  scr02  scr12   O
+    189   fkey03 fkey15 fkey27 fkey39 scr03  scr13  scr03  scr13   O
+-+- 185,195 ----
+    179   194    226    nop    nop    172    188    nop    nop     C
+    180   192    224    nop    nop    174    190    nop    nop     C
+    181   '/'    '?'    nop    nop    175    191    nop    nop     O
+!   182   rshift rshift alock  rshift rshift rshift rshift rshift  O
+    183   '*'    '*'    nl     nl     170    170    138    138     O
+    184   lalt   lalt   lalt   lalt   lalt   lalt   lalt   lalt    O
+    185   ' '    ' '    nul    ' '    160    160    160    160     O
+!   186   clock  clock  clock  clock  clock  clock  clock  clock   O
+    187   fkey01 fkey13 fkey25 fkey37 scr01  scr11  scr01  scr11   O
+    188   fkey02 fkey14 fkey26 fkey38 scr02  scr12  scr02  scr12   O
+    189   fkey03 fkey15 fkey27 fkey39 scr03  scr13  scr03  scr13   O
+***************
+*** 236,242 ****
+    230   fkey60 fkey60 fkey60 fkey60 fkey60 fkey60 fkey60 fkey60  O
+    231 fkey61 fkey61 fkey61 fkey61 fkey61 fkey61 boot   fkey61  O
+    232   slock  saver  slock  saver  susp   nop    susp   nop     O
+!   233 fkey62 fkey62 fkey62 fkey62 fkey62 fkey62 fkey62 fkey62  O
+!   234 fkey63 fkey63 fkey63 fkey63 fkey63 fkey63 fkey63 fkey63  O
+!   235 fkey64 fkey64 fkey64 fkey64 fkey64 fkey64 fkey64 fkey64  O
+    236   nop    nop    nop    nop    nop    nop    nop    nop     O
+-+- 236,242 ----
+    230   fkey60 fkey60 fkey60 fkey60 fkey60 fkey60 fkey60 fkey60  O
+    231 fkey61 fkey61 fkey61 fkey61 fkey61 fkey61 boot   fkey61  O
+    232   slock  saver  slock  saver  susp   nop    susp   nop     O
+!   233   meta   meta   meta   meta   meta   meta   meta   meta    O
+!   234   meta   meta   meta   meta   meta   meta   meta   meta    O
+!   235   meta   meta   meta   meta   meta   meta   meta   meta    O
+    236   nop    nop    nop    nop    nop    nop    nop    nop     O
+===  EOF ru.koi8-r.shift.diff  ===
+
+*Q15:* А зачем мне этот <censored> редактор нужен? У Одинна было лучше!
+*A:* А кто-то заставляет пользоваться? :-) Не нравится - сноси и пользуйся тем,
+     что нравится.
+
+*Q16:* А вот я хочу аналог MCITY встроенный.
+*A:* Настрой в golded.cfg токены DispHdrLocation, LocationDelimiter и
+     LocationAlias, также в gedcolor.cfg "COLOR HEADER LOCATION".
+
+*Q17:* $^%$^*! Что ты сделал с сохранением сообщений в 1.1.5?
+*A:* Теперь сообщения сохраняются по темплейту, определяемому ключевым словом
+     WRITETEMPLATE. Дополнения во встроенный темплейт, который используется
+     одновременно для всего, выглядят так:
+
+     @header= @oecho (@caddr) @align{79}{=}
+     @header Msg  : @msgno of @msgs@align{44}@attr
+     @header From : @_oname  @_oaddr @odate @otime
+     @header To   : @dname
+     @header Subj : @subject
+     @header@align{79}{=}
+
+     Кроме @header есть ещё и @write, который расширяется при наличии запроса
+     к сохранению тела сообщения, но зачем оно может понадобиться я не
+     придумал. Разве что описать первую строчку как @write ;)
+
+*Q18:* После установки GoldED+ у меня начали раздаваться стуки из-под пола.
+*A:* Откройте погреб и посмотрите, может быть у партизан, спрятанных вашим
+     дедом во время войны, закончились продукты.
+
+*Q19:* А почему я не могу поставить атрибуты письма?
+*A:* А потому что KEYBDEFAULTS NO в конфиг не авторы тебе написали ;-P
+
+*Q20:* Как же работает AREAREPLYDIRECT?
+*A:* Как должен работать написано в доке (не в конфиге, а в доке). По
+     ReadQuoteMsg ответ помещается в фолдер, определённый в порядке
+     приоритета:
+      1) кладжем AREA (можно отключить при помощи USEAREA)
+      2) ключевым словом AREAREPLYTO
+      3) текущий, если первых двух не существует :-)
+     Поэтому разрешать это слово глобально - идея достаточно дурацкая, о чём
+     всегда было написано, просто в большинстве версий неправильно работало
+     (не учитывался второй пункт, хотя и декларировался).
+
+*Q21:* Для чего делают сборки разными компиляторами?
+*A:* Это скорее дело вкуса (личных предпочтений). Функционально такие сборки
+     идентичны, различия в размерах бинарников и в глюках run-time библиотек
+     компиляторов. У Win32-MINGW и Win32-MSVC есть различия в коде определения
+     процессора для @widepid и @osver.
+
+*Q22:* А как узнать о новшествах?
+*A:* Во-первых, в эхе RU.GOLDED публикуются анонсы. Во-вторых, существует email
+     список рассылки golded-plus-cvs@lists.sourceforge.net, по которому
+     рассылаются все изменения в официальном репозитории (в формате unified
+     diff), подписаться на рассылку можно, отправив письмо с темой subscribe на
+     адрес golded-plus-cvs-request@lists.sourceforge.net либо введя свой email
+     на страничке http://lists.sourceforge.net/lists/listinfo/golded-plus-cvs.
+
+*Q23:* Случайно удалил письмо... Как избежать этого?
+*A:* Во-первых, эхобаза формата JAM позволяет восстановить удаленное сообщение:
+     читай в документации про токен JamHardDelete.
+     Во-вторых, предлагаю организовать одностороннюю "корзину": описать в
+     конфиге локальную область сообщений "Корзина" и в goldkeys.cfg задать для
+     клавиши "DEL" макрос "переместить сообщение в область 'корзина'". Пример
+     есть в конфигах.
+
+*Q24:* Не работает макрос и "печенье"! (Golded+ 1.1.5)
+*A:* Т.е. не действует как ожидалось конструкция Tearline @pid @c:\golded\file?
+     Не действует потому что не должна :). Правильно так (Ianos Gnatiuc):
+     в конфиге пишешь только это
+          Tearline @tearline
+     а макросы можешь использовать в самом файле "[GoldPath]\tearline".
+     Таким образом, при создании письма, из файла будет взятa одна строка
+     наугад для тирлайна, после чего она повторно пройдет через темплейт, где
+     макросы работают.
+
+*Q25:* А как редактировать адресную книгу?
+*A:* (Alexander Grishin) Входишь в записную книжку из режима _просмотра_
+     сообщений и нажимаешь Enter на нужной записи.
+
+*Q26:* У меня такая проблема: Golded вылетает в Segmentation fault. Что делать?
+*A:* 1. Найти в notework.txt изменения в ключевых словах и исправить конфиги.
+     Ключевое слово для поиска: WARNING.
+     2. Взять свежую версию, возможно что ошибка уже исправлена.
+     3. Проверить наличие и права доступа всех каталогов и файлов, описанных в
+     конфиге. Как разберёшься, где ошибка - присылай багрепорт (в какой точно
+     ситуации происходит вылет).
+     4. Скомпилировать заново (make), не делать make strip, после образования
+     golded.core выполнить:
+
+     gdb -d путь/к/исходникам/golded3 -d путь/к/исходникам/goldlib/gall \
+      -d путь/к/исходникам/goldlib/gcfg -d путь/к/исходникам/goldlib/glibc \
+      -d путь/к/исходникам/goldlib/gmb3 -d путь/к/исходникам/goldlib/smblib \
+      -d путь/к/исходникам/goldlib/msgidlib -d путь/к/исходникам/goldlib/uulib\
+      golded golded.core
+
+     В gdb выполнить команду where - покажет стек вызовов и строку исходника,
+     при выполении которой произошла ошибка. Вывод where присылай мне или
+     публикуй в ru.golded.
+
+*Q27:* Как заставить externutil работать глобально?
+     (И при чтении сообщений и в списке областей и т.д.?)
+
+*A:* Нельзя, потому что там где используются хоть какие-то @-макросы, нужно
+     иметь арию, из которой берутся данные для этих макросов. И наоборот, если
+     что-то работает глобально, тогда @-макросы использовать нельзя.
+
+*Q28:* Как работает и где взять спелчекер?
+
+*A:* В Win32-версии возможна работа с двумя спелчекерами: от фирмы Microsoft
+     (из состава MS Office) и MySpell (используется в OpenOffice, Mozilla и
+     пр.). На других платформах работает только MySpell.
+     Спеллчекер от Microsoft требует установки DLL и словарей от MS Office не
+     старше 10 версии, можно не устанавливать весь MS Office, а взять комплект
+     для пользователей The Bat!: http://www.nobat.ru/files/spellset.exe.
+     Код MySpell вкомпилирован в Golded+ и требуются только словари, например,
+     от OpenOffice: http://lingucomponent.openoffice.org/spell_dic.html или
+     ftp://ftp.services.openoffice.org/pub/OpenOffice.org/contrib/dictionaries,
+     ftp://scon155.phys.msu.su/pub/russian/ispell/myspell/ или от FarSpell:
+     http://bookmania.com.ru/farspell. (У FARSpell есть универсальный словарь:
+     русский "е" + "ё" http://bookmania.com.ru/farspell/farspell-ru.7z)
+     Также Янош Гнатюк подготовил словарь, в котором буквы е и ё эквивалентны
+     и присутствуют цифры: http://gedwin.narod.ru/ru_RU_e_yo.7z либо
+     http://prdownloads.sourceforge.net/golded-plus/ru_RUyoe.zip?download
+     Недостаток реализации MySpell в golded+ - невозможность задать собственный
+     (пользовательский) словарь (но несложно отредактировать основной).
+     Преимущество - высокая скорость работы и кроссплатформенность.
+     Настройки словаря для MS Spell (win32):
+       - golded.cfg:
+       SCheckerDefLang 1049       ;MSSpell, код русского языка в Microsoft.
+       SCheckerUserDic "user.dic"
+     Настройки словаря для MySpell:
+       - golded.cfg:
+       SCheckerDefLang ru_RU_yo ;В этом словаре MySpell присутствует буква ё
+       SCheckerDicPath "C:\Program Files\OpenOffice.org 2.0\share\dict\ooo"
+     Общие настройки:
+       - golded.cfg:
+       SCheckerEnabled Auto
+       Color SChecker Error White On Black
+       - goldkeys.cfg:
+       #F10  EDITSCheckerMenu
+
+     Для работы MySpell с русскими словарями от OpenOffice.org нужно подключить
+     таблицы перекодировки CP866 <-> KOI8-R (CP866 - в том написании, как
+     указано в параметре xlatlocalset, KOI8-R - как в используемом *.aff).
+     В комплекте конфигов Golded+ все нужные таблицы есть. Вот строки для
+     golded.cfg:
+
+       XLATCHARSET KOI8-R       CP866        koi_866.chs
+       XLATCHARSET CP866        KOI8-R       866_koi.chs
+
+     Эти строки взяты из файла charsets.cfg, включенного в дистрибутивный
+     комплект конфигов gpc*.zip, Вы можете просто включить этот файл в основной
+     конфиг.
+
+*A:* Также можно использовать внешний спелчекер, например ss.exe (лежит по URL
+     http://ricsi.priv.at/ss.zip), настройка указана в advanced.cfg:
+
+       EDITSPELLCHECK C:\PROGR\SS\SS.EXE @file
+
+*Q29:* Не могу настроить кодировку в Linux!
+
+*A:* Самое простое решение - запускать Golded+ из программы screen, в которой
+     выставить кодировку CP866, либо, при работе в X-window, выставить эту
+     кодировку в терминальной программе. Тогда и перекодировка при написании
+     писем не потребуется. Минус такого подхода в том, что импорт текста
+     придётся делать с помощью перекодировщика (iconv или другого).
+
+     Если системная кодировка - KOI8-R, перекодировку Golded+ может делать сам
+     при наличии в файле конфигурации строк:
+     ===========golded.cfg:=============================
+     xlatpath /home/fido/golded/charset
+     xlatescset      COMPOSED        CP866   cmp_866.esc
+     xlatcharset     KOI8-R          CP866   koi_866.chs
+     xlatcharset     CP866           KOI8-R  866_koi.chs
+     xlatimport CP866
+     xlatexport CP866
+     xlatlocalset KOI8-R
+     ===================================================
+     и наличии в каталоге /home/fido/golded/charset файлов 866_koi.chs,
+     koi_866.chs и cmp_866.esc (присутствуют в архиве с конфигами gpc*.zip).
+
+     Если же системная кодировка - UTF-8, то есть три варианта:
+     1: использовать перекодировку в терминале.
+     2: использовать нужную локаль при запуске Golded+, поскольку локаль
+     в *nix может выставляться отдельно для процесса. Для текстовой консоли
+     всё просто, а для X window нужно ещё и со шрифтами разбираться, но тут
+     поможет программа перекодировки, например, перекодировать UTF-8 в 8-бит
+     и обратно умеет luit из пакета xutils и screen из одноимённого пакета.
+     Итак, два варианта запуска Golded+:
+     2.1: если в системе есть локаль CP866 (IBM866):
+     LANG=ru_RU.IBM866 gedlnx (в текстовой консоли)
+     LC_ALL=ru_RU.IBM866 konsole --style 1 -e gedlnx
+     LANG=ru_RU.CP866 Terminal --geometry 80x50 --title "GoldED" --command ./gedlnx &
+     LANG=ru_RU.CP866 luit gedlnx (в xterm)
+     2.2: если в системе нет CP866 и есть KOI8-R:
+     настроить Golded+ на KOI8-R и выставить локаль KOI8-R при запуске
+     терминальной программы:
+     2.2.1: LC_ALL=ru_RU.KOI8-R konsole --style 1 -e gedlnx
+     2.2.2: LC_ALL=ru_RU.KOI8-R luit gedlnx
+     2.2.3: echo "defencoding koi8-r" >~/.golded-screen
+            screen -c ~/.golded-screen sh -c "LANG=ru_RU.KOI8-R gedlnx"
+     3: перекодировать макрокомандой и указать в файлах конфигурации:
+     ===========golded.cfg:=============================
+     xlatcharset     CP866           UTF-8   866_u8.chs
+     xlatimport CP866
+     xlatlocalset UTF-8
+     ExternUtil 1 -Reload iconv -f utf-8 -t cp866 -c @tmpfile>@file
+     ===========goldkeys.cfg:=============================
+     @1 ExternUtil01
+     ===================================================
+     Перекодировка в терминале или выставление локали удобнее :).
+
+*Q30:* Golded+/lnx не работает с базой на расшареном в Windows диске!
+
+*A:*  Используешь Golded+ на 32-битной Linux с ядром "vanilla" 2.6.30+ и Samba
+     версий 3.4.7? Значит нарвался на баг в реализации CIFS. Обходное решение
+     - добавить опцию монтирования "noserverino" в /etc/fstab:
+     //comp/fido /mnt/fido cifs rw,guest,gid=users,codepage=cp866,noserverino
+
+*Q31:* У меня Linux 64 bit, и Golded+ падает, если подключен нодлист!
+
+*A:* Нужно использовать и gedlnx, и gnlnx оба собранные под одну платформу. То
+     есть либо оба 32-хбитные, либо оба 64-хбитные.
+
+>==============================================================================
