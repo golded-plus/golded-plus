@@ -41,7 +41,7 @@
 #endif
 
 struct _GEIdx {
-  long     pos;        // File Number OR'ed with pos in nodelist file
+  uint32_t pos;        // File Number OR'ed with pos in nodelist file
   ftn_addr addr;       // Node address
   char     name[36];   // Name in reversed form
   _GEIdx() : pos(0), addr() { *name = NUL; }
