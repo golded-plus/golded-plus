@@ -50,10 +50,10 @@ struct HudsUsers {
   char  city[26];
   byte  reservedzero;
   byte  language;
-  long  pwdcrc;
+  int32_t  pwdcrc;
   word  pwdchangedate;
   word  expiredate;
-  long  unusedspace;
+  int32_t  unusedspace;
   byte  extraspace[2];
   char  dataphone[13];
   char  homephone[13];
@@ -76,7 +76,7 @@ struct HudsUsers {
   short  len;
   word  combinedptr;  // record number in COMBINED.*
   word  aliasptr;     // record number in ALIAS.*
-  long  birthday;
+  int32_t  birthday;
 };
 
 

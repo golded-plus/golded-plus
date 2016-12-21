@@ -49,10 +49,10 @@ struct GoldUsers {
   char  city[26];
   byte  reservedzero;
   byte  language;
-  long  pwdcrc;
+  int32_t  pwdcrc;
   word  pwdchangedate;
   word  expiredate;
-  long  highmsgread;
+  int32_t  highmsgread;
   byte  extraspace[2];
   char  dataphone[13];
   char  homephone[13];
@@ -75,7 +75,7 @@ struct GoldUsers {
   short  len;
   word  combinedptr;
   word  aliasptr;
-  long  birthday;
+  int32_t  birthday;
 };
 
 

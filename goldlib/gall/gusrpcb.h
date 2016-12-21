@@ -75,7 +75,7 @@ struct PcbUsers {
   dword  totalbytesuploaded[2];    // Total Bytes Uploaded
   char  deleteflag;               // Delete Flag (Y or N)
   dword  lastmsgread[40];          // Last Message Read pointer (conference 0-39)
-  long  usersinfrec;              // Record Number of USERS.INF Record
+  int32_t  usersinfrec;              // Record Number of USERS.INF Record
   byte  bitflags2;                // Bit Flags 2 (see below)
   char  reserved[8];              // Reserved (do not use)
   short  lastconferencein;         // Last Conference In (used instead of offset 192)
@@ -90,9 +90,9 @@ struct PcbUsersInfHdr {
   uint16_t version;               // PCBoard Version Number
   uint16_t numofconf;             // Number of EXTENDED Conferences Allocated in File
   uint16_t sizeofrec;             // Size of the 'static' PCBoard User Record
-  long  sizeofconf;               // Total Size of PCBoard Conference Information
+  int32_t  sizeofconf;               // Total Size of PCBoard Conference Information
   uint16_t numofapps;             // Number of Third Party Apps adding onto the record
-  long  totalrecsize;             // Total Record Size (PCB and all TPA components)
+  int32_t  totalrecsize;             // Total Record Size (PCB and all TPA components)
 };
 
 
@@ -106,7 +106,7 @@ struct PcbUsersInfApp {
   uint16_t sizeofrec;             // Size of Application Record information (0-65535)
   uint16_t sizeofconfrec;         // Size of Conference Record information (0-65535)
   char  keyword[9];               // Keyword to execute Application (NULL terminated)
-  long  offset;                   // Offset in User Record where TPA record begins
+  int32_t  offset;                   // Offset in User Record where TPA record begins
 };
 
 
