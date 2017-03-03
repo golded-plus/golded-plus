@@ -34,7 +34,7 @@ cp866	; to charset
 \0 ?	; unable to convert adequately
 \0 ?	; unable to convert adequately
 \0 ?	; unable to convert adequately
-\0 \xff	; NO-BREAK SPACE
+\0 \x20	; NO-BREAK SPACE
 \0 ?	; unable to convert adequately
 \0 \xf8	; DEGREE SIGN
 \0 \x32	; DIGIT TWO

@@ -152,5 +152,5 @@ KOI8-R	; to charset
 \x4e \x6f	; LATIN CAPITAL LETTER N + LATIN SMALL LETTER O
 \0 ?	; unable to convert adequately
 \0 \x94	; BLACK SQUARE
-\0 \x9a	; NO-BREAK SPACE
+\0 \x20	; NO-BREAK SPACE
 END
