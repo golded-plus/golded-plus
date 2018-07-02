@@ -1,0 +1,10 @@
+language: c
+os:
+  - linux
+compiler:
+  - gcc
+  - clang
+before_install:
+  - cp golded3/mygolded.__h golded3/mygolded.h
+script:
+  - ./dist-gpl.sh
