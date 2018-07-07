@@ -1,0 +1,12 @@
+version: '{build}'
+branches:
+  only:
+    - master
+image:
+  - Visual Studio 2017
+platform:
+  - Win32
+  - x64
+build:
+  parallel: true
+  project: golded.vs2017.sln
