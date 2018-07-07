@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release_Static|Win32">
+      <Configuration>Release_Static</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release_Static|x64">
+      <Configuration>Release_Static</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C23888DA-7024-4A38-A8C5-CE4BEFA4629A}</ProjectGuid>
+    <RootNamespace>golded</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_Static|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_Static|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_Static|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_Static|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>15.0.27625.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)windows\bin\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)windows\obj\$(Configuration)\$(Platform)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <GenerateManifest>true</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)windows\bin\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)windows\obj\$(Configuration)\$(Platform)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <GenerateManifest>true</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)windows\bin\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)windows\obj\$(Configuration)\$(Platform)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)windows\bin\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)windows\obj\$(Configuration)\$(Platform)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_Static|Win32'">
+    <OutDir>$(SolutionDir)windows\bin\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)windows\obj\$(Configuration)\$(Platform)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <GenerateManifest>true</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_Static|x64'">
+    <OutDir>$(SolutionDir)windows\bin\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)windows\obj\$(Configuration)\$(Platform)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <GenerateManifest>true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>/Gy /J %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MinSpace</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>..\golded3;..\goldlib;..\goldlib\gall;..\goldlib\gcui;..\goldlib\gcfg;..\goldlib\glibc;..\goldlib\gmb3;..\goldlib\smblib;..\goldlib\uulib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_NONSTDC_NO_DEPRECATE;HAVE_SNPRINTF;HAVE_VSNPRINTF;_CRT_SECURE_NO_WARNINGS;_ALLOW_RTCc_IN_STL;NDEBUG;WIN32;_CONSOLE;HAVE_CONFIG_H;__INCLUDE_NEW_KEYWORDS__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <MinimalRebuild>true</MinimalRebuild>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <PrecompiledHeaderFile />
+      <ProgramDataBaseFileName>$(OutDir)gedwin.pdb</ProgramDataBaseFileName>
+      <BrowseInformationFile />
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>Winmm.lib;$(OutDir)goldlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)gedwin.exe</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>/Gy /J %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MinSpace</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>..\golded3;..\goldlib;..\goldlib\gall;..\goldlib\gcui;..\goldlib\gcfg;..\goldlib\glibc;..\goldlib\gmb3;..\goldlib\smblib;..\goldlib\uulib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_NONSTDC_NO_DEPRECATE;HAVE_SNPRINTF;HAVE_VSNPRINTF;_CRT_SECURE_NO_WARNINGS;_ALLOW_RTCc_IN_STL;NDEBUG;WIN64;_CONSOLE;HAVE_CONFIG_H;__INCLUDE_NEW_KEYWORDS__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <MinimalRebuild>true</MinimalRebuild>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <PrecompiledHeaderFile />
+      <ProgramDataBaseFileName>$(OutDir)gedwin.pdb</ProgramDataBaseFileName>
+      <BrowseInformationFile />
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>Winmm.lib;$(OutDir)goldlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)gedwin64.exe</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\golded3;..\goldlib;..\goldlib\gall;..\goldlib\gcui;..\goldlib\gcfg;..\goldlib\glibc;..\goldlib\gmb3;..\goldlib\smblib;..\goldlib\uulib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_NONSTDC_NO_DEPRECATE;HAVE_SNPRINTF;HAVE_VSNPRINTF;_CRT_SECURE_NO_WARNINGS;_ALLOW_RTCc_IN_STL;_DEBUG;WIN32;_CONSOLE;HAVE_CONFIG_H;__INCLUDE_NEW_KEYWORDS__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <SmallerTypeCheck>true</SmallerTypeCheck>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <AdditionalOptions> /J</AdditionalOptions>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeaderFile />
+      <ProgramDataBaseFileName>$(OutDir)gedwin.pdb</ProgramDataBaseFileName>
+      <BrowseInformationFile />
+      <WarningLevel>Level4</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <DisableSpecificWarnings>4018;4244;4267;4100;4127;4389;4512;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <EnablePREfast>false</EnablePREfast>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>Winmm.lib;$(OutDir)goldlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)gedwin.exe</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\golded3;..\goldlib;..\goldlib\gall;..\goldlib\gcui;..\goldlib\gcfg;..\goldlib\glibc;..\goldlib\gmb3;..\goldlib\smblib;..\goldlib\uulib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_NONSTDC_NO_DEPRECATE;HAVE_SNPRINTF;HAVE_VSNPRINTF;_CRT_SECURE_NO_WARNINGS;_ALLOW_RTCc_IN_STL;_DEBUG;WIN64;_CONSOLE;HAVE_CONFIG_H;__INCLUDE_NEW_KEYWORDS__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <SmallerTypeCheck>true</SmallerTypeCheck>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <AdditionalOptions> /J</AdditionalOptions>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeaderFile />
+      <ProgramDataBaseFileName>$(OutDir)gedwin.pdb</ProgramDataBaseFileName>
+      <BrowseInformationFile />
+      <WarningLevel>Level4</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <EnablePREfast>false</EnablePREfast>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>Winmm.lib;$(OutDir)goldlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)gedwin64.exe</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_Static|Win32'">
+    <Midl>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>/Gy /J %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MinSpace</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>..\golded3;..\goldlib;..\goldlib\gall;..\goldlib\gcui;..\goldlib\gcfg;..\goldlib\glibc;..\goldlib\gmb3;..\goldlib\smblib;..\goldlib\uulib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_NONSTDC_NO_DEPRECATE;HAVE_SNPRINTF;HAVE_VSNPRINTF;_CRT_SECURE_NO_WARNINGS;_ALLOW_RTCc_IN_STL;NDEBUG;WIN32;_CONSOLE;HAVE_CONFIG_H;__INCLUDE_NEW_KEYWORDS__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <MinimalRebuild>true</MinimalRebuild>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <PrecompiledHeaderFile />
+      <ProgramDataBaseFileName>$(OutDir)gedwin.pdb</ProgramDataBaseFileName>
+      <BrowseInformationFile />
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>Winmm.lib;$(OutDir)goldlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)gedwin.exe</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_Static|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>/Gy /J %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MinSpace</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>..\golded3;..\goldlib;..\goldlib\gall;..\goldlib\gcui;..\goldlib\gcfg;..\goldlib\glibc;..\goldlib\gmb3;..\goldlib\smblib;..\goldlib\uulib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_NONSTDC_NO_DEPRECATE;HAVE_SNPRINTF;HAVE_VSNPRINTF;_CRT_SECURE_NO_WARNINGS;_ALLOW_RTCc_IN_STL;NDEBUG;WIN64;_CONSOLE;HAVE_CONFIG_H;__INCLUDE_NEW_KEYWORDS__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <MinimalRebuild>true</MinimalRebuild>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <PrecompiledHeaderFile />
+      <ProgramDataBaseFileName>$(OutDir)gedwin.pdb</ProgramDataBaseFileName>
+      <BrowseInformationFile />
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>Winmm.lib;$(OutDir)goldlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)gedwin64.exe</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\golded3\gcalst.cpp" />
+    <ClCompile Include="..\golded3\gcarea.cpp" />
+    <ClCompile Include="..\golded3\gccfgg.cpp" />
+    <ClCompile Include="..\golded3\gccfgg0.cpp" />
+    <ClCompile Include="..\golded3\gccfgg1.cpp" />
+    <ClCompile Include="..\golded3\gccfgg2.cpp" />
+    <ClCompile Include="..\golded3\gccfgg3.cpp" />
+    <ClCompile Include="..\golded3\gccfgg4.cpp" />
+    <ClCompile Include="..\golded3\gccfgg5.cpp" />
+    <ClCompile Include="..\golded3\gccfgg6.cpp" />
+    <ClCompile Include="..\golded3\gccfgg7.cpp" />
+    <ClCompile Include="..\golded3\gccfgg8.cpp" />
+    <ClCompile Include="..\golded3\gckeys.cpp" />
+    <ClCompile Include="..\golded3\gclang.cpp" />
+    <ClCompile Include="..\golded3\gcmisc.cpp" />
+    <ClCompile Include="..\golded3\gealst.cpp" />
+    <ClCompile Include="..\golded3\gearea.cpp" />
+    <ClCompile Include="..\golded3\gecarb.cpp" />
+    <ClCompile Include="..\golded3\gecmfd.cpp" />
+    <ClCompile Include="..\golded3\gectnr.cpp" />
+    <ClCompile Include="..\golded3\gectrl.cpp" />
+    <ClCompile Include="..\golded3\gedoit.cpp" />
+    <ClCompile Include="..\golded3\gedoss.cpp" />
+    <ClCompile Include="..\golded3\geedit.cpp" />
+    <ClCompile Include="..\golded3\geedit2.cpp" />
+    <ClCompile Include="..\golded3\geedit3.cpp" />
+    <ClCompile Include="..\golded3\gefile.cpp" />
+    <ClCompile Include="..\golded3\gefind.cpp" />
+    <ClCompile Include="..\golded3\geglob.cpp" />
+    <ClCompile Include="..\golded3\gehdre.cpp" />
+    <ClCompile Include="..\golded3\gehtml.cpp" />
+    <ClCompile Include="..\golded3\geinit.cpp" />
+    <ClCompile Include="..\golded3\geline.cpp" />
+    <ClCompile Include="..\golded3\gelmsg.cpp" />
+    <ClCompile Include="..\golded3\gemain.cpp" />
+    <ClCompile Include="..\golded3\gemenu.cpp" />
+    <ClCompile Include="..\golded3\gemlst.cpp" />
+    <ClCompile Include="..\golded3\gemnus.cpp" />
+    <ClCompile Include="..\golded3\gemrks.cpp" />
+    <ClCompile Include="..\golded3\gemsgs.cpp" />
+    <ClCompile Include="..\golded3\genode.cpp" />
+    <ClCompile Include="..\golded3\geplay.cpp" />
+    <ClCompile Include="..\golded3\gepost.cpp" />
+    <ClCompile Include="..\golded3\geqwks.cpp" />
+    <ClCompile Include="..\golded3\gerand.cpp" />
+    <ClCompile Include="..\golded3\geread.cpp" />
+    <ClCompile Include="..\golded3\geread2.cpp" />
+    <ClCompile Include="..\golded3\gescan.cpp" />
+    <ClCompile Include="..\golded3\gesoup.cpp" />
+    <ClCompile Include="..\golded3\gesrch.cpp" />
+    <ClCompile Include="..\golded3\getpls.cpp" />
+    <ClCompile Include="..\golded3\geusrbse.cpp" />
+    <ClCompile Include="..\golded3\geutil.cpp" />
+    <ClCompile Include="..\golded3\geutil2.cpp" />
+    <ClCompile Include="..\golded3\geview.cpp" />
+    <ClCompile Include="..\golded3\gmarea.cpp" />
+    <ClCompile Include="..\golded3\golded3.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\golded3\gccfgg.h" />
+    <ClInclude Include="..\golded3\gckeys.h" />
+    <ClInclude Include="..\golded3\gclang.h" />
+    <ClInclude Include="..\golded3\gcprot.h" />
+    <ClInclude Include="..\golded3\gecfgg.h" />
+    <ClInclude Include="..\golded3\gectnr.h" />
+    <ClInclude Include="..\golded3\geedit.h" />
+    <ClInclude Include="..\golded3\gefn.h" />
+    <ClInclude Include="..\golded3\geglob.h" />
+    <ClInclude Include="..\golded3\gehelp.h" />
+    <ClInclude Include="..\golded3\gekeys.h" />
+    <ClInclude Include="..\golded3\gelang.h" />
+    <ClInclude Include="..\golded3\gemnus.h" />
+    <ClInclude Include="..\golded3\geprot.h" />
+    <ClInclude Include="..\golded3\geqwks.h" />
+    <ClInclude Include="..\golded3\gesrch.h" />
+    <ClInclude Include="..\golded3\geusrbse.h" />
+    <ClInclude Include="..\golded3\geview.h" />
+    <ClInclude Include="..\golded3\gmarea.h" />
+    <ClInclude Include="..\golded3\golded.h" />
+    <ClInclude Include="..\golded3\golded3.h" />
+    <ClInclude Include="..\golded3\goldres.h" />
+    <ClInclude Include="..\golded3\mygolded.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\golded3\gedcyg.rc">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">golded3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">golded3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release_Static|Win32'">golded3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release_Static|x64'">golded3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">golded3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">golded3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\golded3\gedw.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="goldlib.vcxproj">
+      <Project>{0ab7c044-50c5-4339-9c5d-7474969b6a3c}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

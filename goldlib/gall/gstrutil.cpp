@@ -31,7 +31,7 @@
 // -------------------------------------------------------------------
 // snprintf() and vsnprintf()
 
-#if  defined(_MSC_VER)
+#if  defined(_MSC_VER) && _MSC_VER<1900
 /* It is need a workaround for implementation "speciality" in snprintf() and vsnprintf() from Microsoft. */
 int snprintf( char *buffer, size_t sizeOfBuffer, const char *format, ... )
 {

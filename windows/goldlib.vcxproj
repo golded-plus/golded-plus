@@ -1,0 +1,746 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release_Static|Win32">
+      <Configuration>Release_Static</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release_Static|x64">
+      <Configuration>Release_Static</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{0AB7C044-50C5-4339-9C5D-7474969B6A3C}</ProjectGuid>
+    <RootNamespace>goldlib</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_Static|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>NotSet</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>NotSet</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>NotSet</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_Static|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>NotSet</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>NotSet</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>NotSet</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_Static|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_Static|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>15.0.27625.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)windows\bin\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)windows\obj\$(Configuration)\$(Platform)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)windows\bin\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)windows\obj\$(Configuration)\$(Platform)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)windows\bin\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)windows\obj\$(Configuration)\$(Platform)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)windows\bin\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)windows\obj\$(Configuration)\$(Platform)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_Static|Win32'">
+    <OutDir>$(SolutionDir)windows\bin\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)windows\obj\$(Configuration)\$(Platform)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_Static|x64'">
+    <OutDir>$(SolutionDir)windows\bin\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)windows\obj\$(Configuration)\$(Platform)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\goldlib;..\goldlib\gall;..\goldlib\gcui;..\goldlib\gcfg;..\goldlib\glibc;..\goldlib\gmb3;..\goldlib\smblib;..\goldlib\uulib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_NONSTDC_NO_DEPRECATE;HAVE_SNPRINTF;HAVE_VSNPRINTF;_CRT_SECURE_NO_WARNINGS;_ALLOW_RTCc_IN_STL;WIN32;_DEBUG;_LIB;HAVE_STDARG_H;HAVE_CONFIG_H;__INCLUDE_NEW_KEYWORDS__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <SmallerTypeCheck>true</SmallerTypeCheck>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <AdditionalOptions> /J</AdditionalOptions>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeader />
+      <ProgramDataBaseFileName>$(OutDir)goldlib.pdb</ProgramDataBaseFileName>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\goldlib;..\goldlib\gall;..\goldlib\gcui;..\goldlib\gcfg;..\goldlib\glibc;..\goldlib\gmb3;..\goldlib\smblib;..\goldlib\uulib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_NONSTDC_NO_DEPRECATE;HAVE_SNPRINTF;HAVE_VSNPRINTF;_CRT_SECURE_NO_WARNINGS;_ALLOW_RTCc_IN_STL;WIN64;_DEBUG;_LIB;HAVE_STDARG_H;HAVE_CONFIG_H;__INCLUDE_NEW_KEYWORDS__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <SmallerTypeCheck>true</SmallerTypeCheck>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <AdditionalOptions> /J</AdditionalOptions>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeader />
+      <ProgramDataBaseFileName>$(OutDir)goldlib.pdb</ProgramDataBaseFileName>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MinSpace</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <AdditionalIncludeDirectories>..\goldlib;..\goldlib\gall;..\goldlib\gcui;..\goldlib\gcfg;..\goldlib\glibc;..\goldlib\gmb3;..\goldlib\smblib;..\goldlib\uulib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_NONSTDC_NO_DEPRECATE;HAVE_SNPRINTF;HAVE_VSNPRINTF;_CRT_SECURE_NO_WARNINGS;_ALLOW_RTCc_IN_STL;WIN32;NDEBUG;_LIB;HAVE_STDARG_H;HAVE_CONFIG_H;__INCLUDE_NEW_KEYWORDS__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <MinimalRebuild>true</MinimalRebuild>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <AdditionalOptions> /J</AdditionalOptions>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <PrecompiledHeader />
+      <ProgramDataBaseFileName>$(OutDir)goldlib.pdb</ProgramDataBaseFileName>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <Optimization>MinSpace</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <AdditionalIncludeDirectories>..\goldlib;..\goldlib\gall;..\goldlib\gcui;..\goldlib\gcfg;..\goldlib\glibc;..\goldlib\gmb3;..\goldlib\smblib;..\goldlib\uulib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_NONSTDC_NO_DEPRECATE;HAVE_SNPRINTF;HAVE_VSNPRINTF;_CRT_SECURE_NO_WARNINGS;_ALLOW_RTCc_IN_STL;WIN64;NDEBUG;_LIB;HAVE_STDARG_H;HAVE_CONFIG_H;__INCLUDE_NEW_KEYWORDS__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <MinimalRebuild>true</MinimalRebuild>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <AdditionalOptions> /J</AdditionalOptions>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <PrecompiledHeader />
+      <ProgramDataBaseFileName>$(OutDir)goldlib.pdb</ProgramDataBaseFileName>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_Static|Win32'">
+    <ClCompile>
+      <Optimization>MinSpace</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <AdditionalIncludeDirectories>..\goldlib;..\goldlib\gall;..\goldlib\gcui;..\goldlib\gcfg;..\goldlib\glibc;..\goldlib\gmb3;..\goldlib\smblib;..\goldlib\uulib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_NONSTDC_NO_DEPRECATE;HAVE_SNPRINTF;HAVE_VSNPRINTF;_CRT_SECURE_NO_WARNINGS;_ALLOW_RTCc_IN_STL;WIN32;NDEBUG;_LIB;HAVE_STDARG_H;HAVE_CONFIG_H;__INCLUDE_NEW_KEYWORDS__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <MinimalRebuild>true</MinimalRebuild>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <AdditionalOptions> /J</AdditionalOptions>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <PrecompiledHeader />
+      <ProgramDataBaseFileName>$(OutDir)goldlib.pdb</ProgramDataBaseFileName>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_Static|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <Optimization>MinSpace</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <AdditionalIncludeDirectories>..\goldlib;..\goldlib\gall;..\goldlib\gcui;..\goldlib\gcfg;..\goldlib\glibc;..\goldlib\gmb3;..\goldlib\smblib;..\goldlib\uulib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_NONSTDC_NO_DEPRECATE;HAVE_SNPRINTF;HAVE_VSNPRINTF;_CRT_SECURE_NO_WARNINGS;_ALLOW_RTCc_IN_STL;WIN64;NDEBUG;_LIB;HAVE_STDARG_H;HAVE_CONFIG_H;__INCLUDE_NEW_KEYWORDS__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <MinimalRebuild>true</MinimalRebuild>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <AdditionalOptions> /J</AdditionalOptions>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <PrecompiledHeader />
+      <ProgramDataBaseFileName>$(OutDir)goldlib.pdb</ProgramDataBaseFileName>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\goldlib\gall\be_lock.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\goldlib\gall\gbmh.cpp" />
+    <ClCompile Include="..\goldlib\gall\gcharset.cpp" />
+    <ClCompile Include="..\goldlib\gall\gcrc16tb.cpp" />
+    <ClCompile Include="..\goldlib\gall\gcrc32tb.cpp" />
+    <ClCompile Include="..\goldlib\gall\gcrchash.cpp" />
+    <ClCompile Include="..\goldlib\gall\gcrckeyv.cpp" />
+    <ClCompile Include="..\goldlib\gall\gcrcm16.cpp" />
+    <ClCompile Include="..\goldlib\gall\gcrcm32.cpp" />
+    <ClCompile Include="..\goldlib\gall\gcrcs16.cpp" />
+    <ClCompile Include="..\goldlib\gall\gcrcs32.cpp" />
+    <ClCompile Include="..\goldlib\gall\gdbgerr.cpp" />
+    <ClCompile Include="..\goldlib\gall\gdbgexit.cpp" />
+    <ClCompile Include="..\goldlib\gall\gdbgtrk.cpp" />
+    <ClCompile Include="..\goldlib\gall\gdirposx.cpp" />
+    <ClCompile Include="..\goldlib\gall\gespell.cpp" />
+    <ClCompile Include="..\goldlib\gall\geval.cpp" />
+    <ClCompile Include="..\goldlib\gall\gevalhum.cpp" />
+    <ClCompile Include="..\goldlib\gall\gevalrpn.cpp" />
+    <ClCompile Include="..\goldlib\gall\gfile.cpp" />
+    <ClCompile Include="..\goldlib\gall\gfilport.cpp" />
+    <ClCompile Include="..\goldlib\gall\gfilutl1.cpp" />
+    <ClCompile Include="..\goldlib\gall\gfilutl2.cpp" />
+    <ClCompile Include="..\goldlib\gall\gftnaddr.cpp" />
+    <ClCompile Include="..\goldlib\gall\gftnnl.cpp" />
+    <ClCompile Include="..\goldlib\gall\gftnnlfd.cpp" />
+    <ClCompile Include="..\goldlib\gall\gftnnlfu.cpp" />
+    <ClCompile Include="..\goldlib\gall\gftnnlge.cpp" />
+    <ClCompile Include="..\goldlib\gall\gftnnlv7.cpp" />
+    <ClCompile Include="..\goldlib\gall\gfuzzy.cpp" />
+    <ClCompile Include="..\goldlib\gall\ghdrmime.cpp" />
+    <ClCompile Include="..\goldlib\gall\gkbdunix.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\goldlib\gall\glog.cpp" />
+    <ClCompile Include="..\goldlib\gall\gmemdbg.cpp" />
+    <ClCompile Include="..\goldlib\gall\gmemutil.cpp" />
+    <ClCompile Include="..\goldlib\gall\gmsgattr.cpp" />
+    <ClCompile Include="..\goldlib\gall\gprnutil.cpp" />
+    <ClCompile Include="..\goldlib\gall\gregex.cpp" />
+    <ClCompile Include="..\goldlib\gall\gsearch.cpp" />
+    <ClCompile Include="..\goldlib\gall\gsigunix.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\goldlib\gall\gsnd.cpp" />
+    <ClCompile Include="..\goldlib\gall\gsndwrap.cpp" />
+    <ClCompile Include="..\goldlib\gall\gstrbags.cpp" />
+    <ClCompile Include="..\goldlib\gall\gstrctyp.cpp" />
+    <ClCompile Include="..\goldlib\gall\gstring.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\goldlib\gall\gstrmail.cpp" />
+    <ClCompile Include="..\goldlib\gall\gstrname.cpp" />
+    <ClCompile Include="..\goldlib\gall\gstrutil.cpp" />
+    <ClCompile Include="..\goldlib\gall\gtimjuld.cpp" />
+    <ClCompile Include="..\goldlib\gall\gtimutil.cpp" />
+    <ClCompile Include="..\goldlib\gall\gtxtpara.cpp" />
+    <ClCompile Include="..\goldlib\gall\gusrbase.cpp" />
+    <ClCompile Include="..\goldlib\gall\gusrezyc.cpp" />
+    <ClCompile Include="..\goldlib\gall\gusrgold.cpp" />
+    <ClCompile Include="..\goldlib\gall\gusrhuds.cpp" />
+    <ClCompile Include="..\goldlib\gall\gusrmax.cpp" />
+    <ClCompile Include="..\goldlib\gall\gusrpcb.cpp" />
+    <ClCompile Include="..\goldlib\gall\gusrra2.cpp" />
+    <ClCompile Include="..\goldlib\gall\gusrxbbs.cpp" />
+    <ClCompile Include="..\goldlib\gall\gutlbeos.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\goldlib\gall\gutlclip.cpp" />
+    <ClCompile Include="..\goldlib\gall\gutlcode.cpp" />
+    <ClCompile Include="..\goldlib\gall\gutldos.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\goldlib\gall\gutlgrp.cpp" />
+    <ClCompile Include="..\goldlib\gall\gutlmisc.cpp" />
+    <ClCompile Include="..\goldlib\gall\gutlmtsk.cpp" />
+    <ClCompile Include="..\goldlib\gall\gutlos2.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\goldlib\gall\gutlos2m.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\goldlib\gall\gutltag.cpp" />
+    <ClCompile Include="..\goldlib\gall\gutlunix.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\goldlib\gall\gutlvers.cpp" />
+    <ClCompile Include="..\goldlib\gall\gutlwin.cpp" />
+    <ClCompile Include="..\goldlib\gall\gutlwinm.cpp" />
+    <ClCompile Include="..\goldlib\gall\gwildmat.cpp" />
+    <ClCompile Include="..\goldlib\gall\memleak.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\goldlib\gcfg\gedacfg.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxareas.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxcrash.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxdb.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxdutch.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxezy102.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxezy110.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxfd.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxfecho4.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxfecho5.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxfecho6.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxfidpcb.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxfm092.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxfm100.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxfm116.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxgecho.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxhpt.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gximail4.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gximail5.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gximail6.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxinter.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxlora.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxmax3.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxme2.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxopus.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxpcb.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxportal.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxprobrd.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxqecho.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxqfront.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxquick.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxra.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxraecho.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxspace.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxsquish.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxsuper.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxsync.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxtimed.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxtmail.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxts.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxwmail.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxwtr.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxxbbs.cpp" />
+    <ClCompile Include="..\goldlib\gcfg\gxxmail.cpp" />
+    <ClCompile Include="..\goldlib\gcui\gkbdbase.cpp" />
+    <ClCompile Include="..\goldlib\gcui\gkbdgetm.cpp" />
+    <ClCompile Include="..\goldlib\gcui\gkbdwait.cpp" />
+    <ClCompile Include="..\goldlib\gcui\gmoubase.cpp" />
+    <ClCompile Include="..\goldlib\gcui\gsrchmgr.cpp" />
+    <ClCompile Include="..\goldlib\gcui\gvidbase.cpp" />
+    <ClCompile Include="..\goldlib\gcui\gvidinit.cpp" />
+    <ClCompile Include="..\goldlib\gcui\gwinbase.cpp" />
+    <ClCompile Include="..\goldlib\gcui\gwindow.cpp" />
+    <ClCompile Include="..\goldlib\gcui\gwinhlp1.cpp" />
+    <ClCompile Include="..\goldlib\gcui\gwinhlp2.cpp" />
+    <ClCompile Include="..\goldlib\gcui\gwininit.cpp" />
+    <ClCompile Include="..\goldlib\gcui\gwinline.cpp" />
+    <ClCompile Include="..\goldlib\gcui\gwinmenu.cpp" />
+    <ClCompile Include="..\goldlib\gcui\gwinmnub.cpp" />
+    <ClCompile Include="..\goldlib\gcui\gwinpckf.cpp" />
+    <ClCompile Include="..\goldlib\gcui\gwinpcks.cpp" />
+    <ClCompile Include="..\goldlib\gcui\gwinpick.cpp" />
+    <ClCompile Include="..\goldlib\gcui\gwinput2.cpp" />
+    <ClCompile Include="..\goldlib\glibc\dummy.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\goldlib\glibc\fnmatch.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\goldlib\glibc\glob.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\goldlib\glibc\regex.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmoarea.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmoezyc1.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmoezyc2.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmoezyc3.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmoezyc4.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmoezyc5.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmofido1.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmofido2.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmofido3.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmofido4.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmofido5.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmohuds.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmohuds1.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\goldlib\gmb3\gmohuds2.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\goldlib\gmb3\gmohuds3.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\goldlib\gmb3\gmohuds4.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\goldlib\gmb3\gmohuds5.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\goldlib\gmb3\gmojamm1.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmojamm2.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmojamm3.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmojamm4.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmojamm5.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmopcbd1.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmopcbd2.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmopcbd3.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmopcbd4.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmopcbd5.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmosmb1.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmosmb2.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmosqsh1.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmosqsh2.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmosqsh3.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmosqsh4.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmosqsh5.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmowcat1.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmowcat2.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmowcat3.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmowcat4.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmowcat5.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmoxbbs1.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmoxbbs2.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmoxbbs3.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmoxbbs4.cpp" />
+    <ClCompile Include="..\goldlib\gmb3\gmoxbbs5.cpp" />
+    <ClCompile Include="..\goldlib\hunspell\affentry.cxx" />
+    <ClCompile Include="..\goldlib\hunspell\affixmgr.cxx" />
+    <ClCompile Include="..\goldlib\hunspell\csutil.cxx" />
+    <ClCompile Include="..\goldlib\hunspell\dictmgr.cxx" />
+    <ClCompile Include="..\goldlib\hunspell\hashmgr.cxx" />
+    <ClCompile Include="..\goldlib\hunspell\hunspell.cxx" />
+    <ClCompile Include="..\goldlib\hunspell\suggmgr.cxx" />
+    <ClCompile Include="..\goldlib\hunspell\utf_info.cxx">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\goldlib\smblib\lzh.cpp" />
+    <ClCompile Include="..\goldlib\smblib\smblib.cpp" />
+    <ClCompile Include="..\goldlib\uulib\fptools.cpp" />
+    <ClCompile Include="..\goldlib\uulib\uucheck.cpp" />
+    <ClCompile Include="..\goldlib\uulib\uuencode.cpp" />
+    <ClCompile Include="..\goldlib\uulib\uulib.cpp" />
+    <ClCompile Include="..\goldlib\uulib\uunconc.cpp" />
+    <ClCompile Include="..\goldlib\uulib\uuscan.cpp" />
+    <ClCompile Include="..\goldlib\uulib\uustring.cpp" />
+    <ClCompile Include="..\goldlib\uulib\uuutil.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\goldlib\gall\be_lock.h" />
+    <ClInclude Include="..\goldlib\gall\gasmamis.h" />
+    <ClInclude Include="..\goldlib\gall\gbmh.h" />
+    <ClInclude Include="..\goldlib\gall\gcharset.h" />
+    <ClInclude Include="..\goldlib\gall\gcmpall.h" />
+    <ClInclude Include="..\goldlib\gall\gcrcall.h" />
+    <ClInclude Include="..\goldlib\gall\gctype.h" />
+    <ClInclude Include="..\goldlib\gall\gdbgerr.h" />
+    <ClInclude Include="..\goldlib\gall\gdbgtrk.h" />
+    <ClInclude Include="..\goldlib\gall\gdefs.h" />
+    <ClInclude Include="..\goldlib\gall\gdirposx.h" />
+    <ClInclude Include="..\goldlib\gall\geall.h" />
+    <ClInclude Include="..\goldlib\gall\gespell.h" />
+    <ClInclude Include="..\goldlib\gall\geval.h" />
+    <ClInclude Include="..\goldlib\gall\gfile.h" />
+    <ClInclude Include="..\goldlib\gall\gfilutil.h" />
+    <ClInclude Include="..\goldlib\gall\gftnall.h" />
+    <ClInclude Include="..\goldlib\gall\gftnnl.h" />
+    <ClInclude Include="..\goldlib\gall\gftnnlfd.h" />
+    <ClInclude Include="..\goldlib\gall\gftnnlfu.h" />
+    <ClInclude Include="..\goldlib\gall\gftnnlge.h" />
+    <ClInclude Include="..\goldlib\gall\gftnnlv7.h" />
+    <ClInclude Include="..\goldlib\gall\gfuzzy.h" />
+    <ClInclude Include="..\goldlib\gall\ghdrmime.h" />
+    <ClInclude Include="..\goldlib\gall\gkbdunix.h" />
+    <ClInclude Include="..\goldlib\gall\glog.h" />
+    <ClInclude Include="..\goldlib\gall\gmemall.h" />
+    <ClInclude Include="..\goldlib\gall\gmemdbg.h" />
+    <ClInclude Include="..\goldlib\gall\gmemi86.h" />
+    <ClInclude Include="..\goldlib\gall\gmiscdef.h" />
+    <ClInclude Include="..\goldlib\gall\gmsgattr.h" />
+    <ClInclude Include="..\goldlib\gall\gprnall.h" />
+    <ClInclude Include="..\goldlib\gall\gregex.h" />
+    <ClInclude Include="..\goldlib\gall\gsearch.h" />
+    <ClInclude Include="..\goldlib\gall\gshare.h" />
+    <ClInclude Include="..\goldlib\gall\gsigunix.h" />
+    <ClInclude Include="..\goldlib\gall\gsndall.h" />
+    <ClInclude Include="..\goldlib\gall\gsndsapi.h" />
+    <ClInclude Include="..\goldlib\gall\gstl_inc.h" />
+    <ClInclude Include="..\goldlib\gall\gstrall.h" />
+    <ClInclude Include="..\goldlib\gall\gstrbags.h" />
+    <ClInclude Include="..\goldlib\gall\gstring.h" />
+    <ClInclude Include="..\goldlib\gall\gstrmail.h" />
+    <ClInclude Include="..\goldlib\gall\gtimall.h" />
+    <ClInclude Include="..\goldlib\gall\gtxtpara.h" />
+    <ClInclude Include="..\goldlib\gall\gusrbase.h" />
+    <ClInclude Include="..\goldlib\gall\gusrezyc.h" />
+    <ClInclude Include="..\goldlib\gall\gusrgold.h" />
+    <ClInclude Include="..\goldlib\gall\gusrhuds.h" />
+    <ClInclude Include="..\goldlib\gall\gusrmax.h" />
+    <ClInclude Include="..\goldlib\gall\gusrpcb.h" />
+    <ClInclude Include="..\goldlib\gall\gusrra2.h" />
+    <ClInclude Include="..\goldlib\gall\gusrwcat.h" />
+    <ClInclude Include="..\goldlib\gall\gusrxbbs.h" />
+    <ClInclude Include="..\goldlib\gall\gutlclip.h" />
+    <ClInclude Include="..\goldlib\gall\gutlcode.h" />
+    <ClInclude Include="..\goldlib\gall\gutlgrp.h" />
+    <ClInclude Include="..\goldlib\gall\gutlmisc.h" />
+    <ClInclude Include="..\goldlib\gall\gutlmtsk.h" />
+    <ClInclude Include="..\goldlib\gall\gutlos.h" />
+    <ClInclude Include="..\goldlib\gall\gutltag.h" />
+    <ClInclude Include="..\goldlib\gall\gutlunix.h" />
+    <ClInclude Include="..\goldlib\gall\gwildmat.h" />
+    <ClInclude Include="..\goldlib\gall\memleak.h" />
+    <ClInclude Include="..\goldlib\gcfg\gedacfg.h" />
+    <ClInclude Include="..\goldlib\gcfg\gs_db.h" />
+    <ClInclude Include="..\goldlib\gcfg\gs_ez102.h" />
+    <ClInclude Include="..\goldlib\gcfg\gs_ez110.h" />
+    <ClInclude Include="..\goldlib\gcfg\gs_fd.h" />
+    <ClInclude Include="..\goldlib\gcfg\gs_fech4.h" />
+    <ClInclude Include="..\goldlib\gcfg\gs_fech5.h" />
+    <ClInclude Include="..\goldlib\gcfg\gs_fech6.h" />
+    <ClInclude Include="..\goldlib\gcfg\gs_fm092.h" />
+    <ClInclude Include="..\goldlib\gcfg\gs_fm10g.h" />
+    <ClInclude Include="..\goldlib\gcfg\gs_fm116.h" />
+    <ClInclude Include="..\goldlib\gcfg\gs_ge120.h" />
+    <ClInclude Include="..\goldlib\gcfg\gs_im160.h" />
+    <ClInclude Include="..\goldlib\gcfg\gs_im175.h" />
+    <ClInclude Include="..\goldlib\gcfg\gs_inter.h" />
+    <ClInclude Include="..\goldlib\gcfg\gs_lo240.h" />
+    <ClInclude Include="..\goldlib\gcfg\gs_max3.h" />
+    <ClInclude Include="..\goldlib\gcfg\gs_opus.h" />
+    <ClInclude Include="..\goldlib\gcfg\gs_pb200.h" />
+    <ClInclude Include="..\goldlib\gcfg\gs_pcb.h" />
+    <ClInclude Include="..\goldlib\gcfg\gs_pop.h" />
+    <ClInclude Include="..\goldlib\gcfg\gs_qbbs.h" />
+    <ClInclude Include="..\goldlib\gcfg\gs_qfrnt.h" />
+    <ClInclude Include="..\goldlib\gcfg\gs_qwk.h" />
+    <ClInclude Include="..\goldlib\gcfg\gs_ra.h" />
+    <ClInclude Include="..\goldlib\gcfg\gs_ra2.h" />
+    <ClInclude Include="..\goldlib\gcfg\gs_recho.h" />
+    <ClInclude Include="..\goldlib\gcfg\gs_sbbs.h" />
+    <ClInclude Include="..\goldlib\gcfg\gs_sync.h" />
+    <ClInclude Include="..\goldlib\gcfg\gs_ts.h" />
+    <ClInclude Include="..\goldlib\gcfg\gs_wmail.h" />
+    <ClInclude Include="..\goldlib\gcfg\gs_wtr.h" />
+    <ClInclude Include="..\goldlib\gcfg\gs_xbbs.h" />
+    <ClInclude Include="..\goldlib\gcfg\gs_xmail.h" />
+    <ClInclude Include="..\goldlib\gcui\gcurses.h" />
+    <ClInclude Include="..\goldlib\gcui\gkbdbase.h" />
+    <ClInclude Include="..\goldlib\gcui\gkbdcode.h" />
+    <ClInclude Include="..\goldlib\gcui\gmnubase.h" />
+    <ClInclude Include="..\goldlib\gcui\gmoubase.h" />
+    <ClInclude Include="..\goldlib\gcui\gsrchmgr.h" />
+    <ClInclude Include="..\goldlib\gcui\gvidall.h" />
+    <ClInclude Include="..\goldlib\gcui\gwinall.h" />
+    <ClInclude Include="..\goldlib\gcui\gwindow.h" />
+    <ClInclude Include="..\goldlib\gcui\gwinhelp.h" />
+    <ClInclude Include="..\goldlib\gcui\gwinpick.h" />
+    <ClInclude Include="..\goldlib\gcui\gwinput.h" />
+    <ClInclude Include="..\goldlib\glibc\config.h" />
+    <ClInclude Include="..\goldlib\glibc\fnmatch.h" />
+    <ClInclude Include="..\goldlib\glibc\glob.h" />
+    <ClInclude Include="..\goldlib\glibc\regex.h" />
+    <ClInclude Include="..\goldlib\gmb3\gmoarea.h" />
+    <ClInclude Include="..\goldlib\gmb3\gmoezyc.h" />
+    <ClInclude Include="..\goldlib\gmb3\gmofido.h" />
+    <ClInclude Include="..\goldlib\gmb3\gmohuds.h" />
+    <ClInclude Include="..\goldlib\gmb3\gmojamm.h" />
+    <ClInclude Include="..\goldlib\gmb3\gmopcbd.h" />
+    <ClInclude Include="..\goldlib\gmb3\gmoprot.h" />
+    <ClInclude Include="..\goldlib\gmb3\gmosmb.h" />
+    <ClInclude Include="..\goldlib\gmb3\gmosqsh.h" />
+    <ClInclude Include="..\goldlib\gmb3\gmowcat.h" />
+    <ClInclude Include="..\goldlib\gmb3\gmoxbbs.h" />
+    <ClInclude Include="..\goldlib\gmb3\gmo_msg.h" />
+    <ClInclude Include="..\goldlib\hunspell\affentry.hxx" />
+    <ClInclude Include="..\goldlib\hunspell\affixmgr.hxx" />
+    <ClInclude Include="..\goldlib\hunspell\atypes.hxx" />
+    <ClInclude Include="..\goldlib\hunspell\baseaffi.hxx" />
+    <ClInclude Include="..\goldlib\hunspell\csutil.hxx" />
+    <ClInclude Include="..\goldlib\hunspell\dictmgr.hxx" />
+    <ClInclude Include="..\goldlib\hunspell\hashmgr.hxx" />
+    <ClInclude Include="..\goldlib\hunspell\htypes.hxx" />
+    <ClInclude Include="..\goldlib\hunspell\hunspell.hxx" />
+    <ClInclude Include="..\goldlib\hunspell\langnum.hxx" />
+    <ClInclude Include="..\goldlib\hunspell\suggmgr.hxx" />
+    <ClInclude Include="..\goldlib\smblib\filewrap.h" />
+    <ClInclude Include="..\goldlib\smblib\genwrap.h" />
+    <ClInclude Include="..\goldlib\smblib\lzh.h" />
+    <ClInclude Include="..\goldlib\smblib\smbdefs.h" />
+    <ClInclude Include="..\goldlib\smblib\smblib.h" />
+    <ClInclude Include="..\goldlib\uulib\config.h" />
+    <ClInclude Include="..\goldlib\uulib\crc32.h" />
+    <ClInclude Include="..\goldlib\uulib\fptools.h" />
+    <ClInclude Include="..\goldlib\uulib\uudeview.h" />
+    <ClInclude Include="..\goldlib\uulib\uuint.h" />
+    <ClInclude Include="..\goldlib\uulib\uustring.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\goldlib\hunspell\license.hun" />
+    <None Include="..\goldlib\hunspell\license.mys" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
