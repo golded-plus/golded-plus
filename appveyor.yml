@@ -1,0 +1,14 @@
+version: '{build}'
+branches:
+  only:
+    - master
+image:
+  - Visual Studio 2017
+platform:
+  - Win32
+  - x64
+install:
+  - cmd: copy golded3\mygolded.__h golded3\mygolded.h
+build:
+  parallel: true
+  project: golded.vs2017.sln
