@@ -123,8 +123,12 @@ ifeq ($(PLATFORM),osx) # Mac OSX
 CAT=cat
 SED=sed
 GREP=grep
+ifndef CC
 CC=gcc
+endif
+ifndef CXX
 CXX=g++
+endif
 AR=ar
 RANLIB=ranlib
 PLATFORM=osx
@@ -141,8 +145,12 @@ else                   # Linux, *BSD or another unix-like OS
 CAT=cat
 SED=sed
 GREP=grep
+ifndef CC
 CC=gcc
+endif
+ifndef CXX
 CXX=g++
+endif
 AR=ar
 RANLIB=ranlib
 PLATFORM=lnx
