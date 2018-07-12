@@ -273,15 +273,15 @@ class gnfile: gfile
 
   gnfile& operator<< (uint8_t o)   { Fwrite(&o, sizeof(o)); return *this; }
   gnfile& operator<< (uint16_t o)  { uint8_t o8;
-                                     o8 = uint8_t(o && 0xff); Fwrite(&o8, sizeof(o8));
-                                     o8 = uint8_t((o<<8) && 0xff); Fwrite(&o8, sizeof(o8));
+                                     o8 = uint8_t(o & 0xff); Fwrite(&o8, sizeof(o8));
+                                     o8 = uint8_t((o<<8) & 0xff); Fwrite(&o8, sizeof(o8));
                                      return *this;
                                    }
   gnfile& operator<< (uint32_t o)  { uint8_t o8;
-                                     o8 = uint8_t(o && 0xff); Fwrite(&o8, sizeof(o8));
-                                     o8 = uint8_t((o<<8) && 0xff); Fwrite(&o8, sizeof(o8));
-                                     o8 = uint8_t((o<<16) && 0xff); Fwrite(&o8, sizeof(o8));
-                                     o8 = uint8_t((o<<24) && 0xff); Fwrite(&o8, sizeof(o8));
+                                     o8 = uint8_t(o & 0xff); Fwrite(&o8, sizeof(o8));
+                                     o8 = uint8_t((o<<8) & 0xff); Fwrite(&o8, sizeof(o8));
+                                     o8 = uint8_t((o<<16) & 0xff); Fwrite(&o8, sizeof(o8));
+                                     o8 = uint8_t((o<<24) & 0xff); Fwrite(&o8, sizeof(o8));
                                      return *this;
                                    }
 /*
