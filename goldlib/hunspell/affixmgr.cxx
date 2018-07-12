@@ -269,7 +269,7 @@ int  AffixMgr::parse_file(const char * affpath)
 
        /* parse in the flag used by the controlled compound words */
        if (strncmp(line,"COMPOUNDFLAG",12) == 0) {
-          if (parse_flag(line, &compoundflag, "COMPOUNDFLAG")) {
+          if (parse_flag(line, &compoundflag, (char *)"COMPOUNDFLAG")) {
              return 1;
           }
        }
@@ -277,11 +277,11 @@ int  AffixMgr::parse_file(const char * affpath)
        /* parse in the flag used by compound words */
        if (strncmp(line,"COMPOUNDBEGIN",13) == 0) {
           if (complexprefixes) {
-            if (parse_flag(line, &compoundend, "COMPOUNDBEGIN")) {
+            if (parse_flag(line, &compoundend, (char *)"COMPOUNDBEGIN")) {
               return 1;
             }
           } else {
-            if (parse_flag(line, &compoundbegin, "COMPOUNDBEGIN")) {
+            if (parse_flag(line, &compoundbegin, (char *)"COMPOUNDBEGIN")) {
               return 1;
             }
           }
@@ -289,18 +289,18 @@ int  AffixMgr::parse_file(const char * affpath)
 
        /* parse in the flag used by compound words */
        if (strncmp(line,"COMPOUNDMIDDLE",14) == 0) {
-          if (parse_flag(line, &compoundmiddle, "COMPOUNDMIDDLE")) {
+          if (parse_flag(line, &compoundmiddle, (char *)"COMPOUNDMIDDLE")) {
              return 1;
           }
        }
        /* parse in the flag used by compound words */
        if (strncmp(line,"COMPOUNDEND",11) == 0) {
           if (complexprefixes) {
-            if (parse_flag(line, &compoundbegin, "COMPOUNDEND")) {
+            if (parse_flag(line, &compoundbegin, (char *)"COMPOUNDEND")) {
               return 1;
             }
           } else {
-            if (parse_flag(line, &compoundend, "COMPOUNDEND")) {
+            if (parse_flag(line, &compoundend, (char *)"COMPOUNDEND")) {
               return 1;
             }
           }
@@ -308,28 +308,28 @@ int  AffixMgr::parse_file(const char * affpath)
 
        /* parse in the flag used by compound_check() method */
        if (strncmp(line,"COMPOUNDWORDMAX",15) == 0) {
-          if (parse_num(line, &cpdwordmax, "COMPOUNDWORDMAX")) {
+          if (parse_num(line, &cpdwordmax, (char *)"COMPOUNDWORDMAX")) {
              return 1;
           }
        }
 
        /* parse in the flag sign compounds in dictionary */
        if (strncmp(line,"COMPOUNDROOT",12) == 0) {
-          if (parse_flag(line, &compoundroot, "COMPOUNDROOT")) {
+          if (parse_flag(line, &compoundroot, (char *)"COMPOUNDROOT")) {
              return 1;
           }
        }
 
        /* parse in the flag used by compound_check() method */
        if (strncmp(line,"COMPOUNDPERMITFLAG",18) == 0) {
-          if (parse_flag(line, &compoundpermitflag, "COMPOUNDPERMITFLAG")) {
+          if (parse_flag(line, &compoundpermitflag, (char *)"COMPOUNDPERMITFLAG")) {
              return 1;
           }
        }
 
        /* parse in the flag used by compound_check() method */
        if (strncmp(line,"COMPOUNDFORBIDFLAG",18) == 0) {
-          if (parse_flag(line, &compoundforbidflag, "COMPOUNDFORBIDFLAG")) {
+          if (parse_flag(line, &compoundforbidflag, (char *)"COMPOUNDFORBIDFLAG")) {
              return 1;
           }
        }
@@ -347,56 +347,56 @@ int  AffixMgr::parse_file(const char * affpath)
 		   checkcompoundcase = 1;
 
        if (strncmp(line,"NOSUGGEST",9) == 0) {
-          if (parse_flag(line, &nosuggest, "NOSUGGEST")) {
+          if (parse_flag(line, &nosuggest, (char *)"NOSUGGEST")) {
              return 1;
           }
        }
 
        /* parse in the flag used by forbidden words */
        if (strncmp(line,"FORBIDDENWORD",13) == 0) {
-          if (parse_flag(line, &forbiddenword, "FORBIDDENWORD")) {
+          if (parse_flag(line, &forbiddenword, (char *)"FORBIDDENWORD")) {
              return 1;
           }
        }
 
        /* parse in the flag used by forbidden words */
        if (strncmp(line,"LEMMA_PRESENT",13) == 0) {
-          if (parse_flag(line, &lemma_present, "LEMMA_PRESENT")) {
+          if (parse_flag(line, &lemma_present, (char *)"LEMMA_PRESENT")) {
              return 1;
           }
        }
 
        /* parse in the flag used by circumfixes */
        if (strncmp(line,"CIRCUMFIX",9) == 0) {
-          if (parse_flag(line, &circumfix, "CIRCUMFIX")) {
+          if (parse_flag(line, &circumfix, (char *)"CIRCUMFIX")) {
              return 1;
           }
        }
 
        /* parse in the flag used by fogemorphemes */
        if (strncmp(line,"ONLYINCOMPOUND",14) == 0) {
-          if (parse_flag(line, &onlyincompound, "ONLYINCOMPOUND")) {
+          if (parse_flag(line, &onlyincompound, (char *)"ONLYINCOMPOUND")) {
              return 1;
           }
        }
 
        /* parse in the flag used by `pseudoroots' */
        if (strncmp(line,"PSEUDOROOT",10) == 0) {
-          if (parse_flag(line, &pseudoroot, "PSEUDOROOT")) {
+          if (parse_flag(line, &pseudoroot, (char *)"PSEUDOROOT")) {
              return 1;
           }
        }
 
        /* parse in the flag used by `pseudoroots' */
        if (strncmp(line,"NEEDAFFIX",9) == 0) {
-          if (parse_flag(line, &pseudoroot, "NEEDAFFIX")) {
+          if (parse_flag(line, &pseudoroot, (char *)"NEEDAFFIX")) {
              return 1;
           }
        }
 
        /* parse in the minimal length for words in compounds */
        if (strncmp(line,"COMPOUNDMIN",11) == 0) {
-          if (parse_num(line, &cpdmin, "COMPOUNDMIN")) {
+          if (parse_num(line, &cpdmin, (char *)"COMPOUNDMIN")) {
              return 1;
           }
           if (cpdmin < 1) cpdmin = 1;
@@ -477,7 +477,7 @@ int  AffixMgr::parse_file(const char * affpath)
        }
 
        if (strncmp(line,"MAXNGRAMSUGS",12) == 0) {
-          if (parse_num(line, &maxngramsugs, "MAXNGRAMSUGS")) {
+          if (parse_num(line, &maxngramsugs, (char *)"MAXNGRAMSUGS")) {
              return 1;
           }
        }
@@ -490,7 +490,7 @@ int  AffixMgr::parse_file(const char * affpath)
 
        /* parse in the flag used by forbidden words */
        if (strncmp(line,"KEEPCASE",8) == 0) {
-          if (parse_flag(line, &keepcase, "KEEPCASE")) {
+          if (parse_flag(line, &keepcase, (char *)"KEEPCASE")) {
              return 1;
           }
        }

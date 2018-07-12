@@ -978,7 +978,7 @@ static void read_nodelists()
         if (fidouser)
         {
           char buf[256];
-          fido.Printf("%-36.36s%24.24s\n", curr->name, make_addr_str(buf, &curr->addr, ""));
+          fido.Printf("%-36.36s%24.24s\n", curr->name, make_addr_str(buf, &curr->addr, (char *)""));
         }
       }
 
@@ -1441,7 +1441,7 @@ static bool FindCfg(char* path) {
   found = ExistCfg(path, "gedw32.cfg");
   #endif
   if(not found)
-    found = ExistCfg(path, "golded.cfg");
+    found = ExistCfg(path, (char *)"golded.cfg");
   return found;
 }
 

@@ -218,11 +218,11 @@ void ProcessSoupMsg(char* lbuf, GMsg* msg, int& msgs, char* areaname, int tossto
           char buf[2010];
 
           if(*smsgid) {
-            CvtMessageIDtoMSGID(smsgid, buf, echo_id, "MSGID");
+            CvtMessageIDtoMSGID(smsgid, buf, echo_id, (char *)"MSGID");
             fline = AddKludge(fline, buf);
           }
           if(*sreply) {
-            CvtMessageIDtoMSGID(sreply, buf, echo_id, "REPLY");
+            CvtMessageIDtoMSGID(sreply, buf, echo_id, (char *)"REPLY");
             fline = AddKludge(fline, buf);
           }
         }
@@ -405,7 +405,7 @@ int ImportSOUP() {
 
       while (fpa.Fgets(buf, sizeof(buf)))
       {
-        char* delim = "\t\n";
+        char* delim = (char *)"\t\n";
         char* prefix   = strtok(buf,  delim);
         char* areaname = strtok(NULL, delim);
         char* encoding = strtok(NULL, delim);
@@ -780,9 +780,9 @@ int ExportSOUP() {
     for(uint na = 0; na < AL.size(); na++) {
       Area* ap = AL[na];
       if(ap->isemail() and ap->Expo.Count())
-        mailexported += ExportSoupArea(na, "GOLDMAIL.MSG", mfp, true);
+        mailexported += ExportSoupArea(na, (char *)"GOLDMAIL.MSG", mfp, true);
       else if(ap->isnewsgroup() and ap->Expo.Count())
-        newsexported += ExportSoupArea(na, "GOLDNEWS.MSG", nfp, false);
+        newsexported += ExportSoupArea(na, (char *)"GOLDNEWS.MSG", nfp, false);
     }
 
     // Close any open SOUP files

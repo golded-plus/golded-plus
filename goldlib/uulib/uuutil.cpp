@@ -56,7 +56,7 @@
 #include <fptools.h>
 #include <uustring.h>
 
-char * uuutil_id = "$Id$";
+char * uuutil_id = (char *)"$Id$";
 
 /*
  * Parts with different known extensions will not be merged by SPMS.
@@ -64,10 +64,10 @@ char * uuutil_id = "$Id$";
  */
 
 static char *knownexts[] = {
-  "mpg", "@mpeg", "avi", "mov",
-  "gif", "jpg", "@jpeg", "tif",
-  "voc", "wav", "@wave", "au",
-  "zip", "arj", "tar",
+  (char *)"mpg", (char *)"@mpeg", (char *)"avi", (char *)"mov",
+  (char *)"gif", (char *)"jpg", (char *)"@jpeg", (char *)"tif",
+  (char *)"voc", (char *)"wav", (char *)"@wave", (char *)"au",
+  (char *)"zip", (char *)"arj", (char *)"tar",
   NULL
 };
 

@@ -1232,7 +1232,7 @@ int GMenuSChecker::Run(CSpellChecker &schecker, const char *word)
     char buff[1024];
     strcpy(buff, word);
 
-    if (edit_string(buff, sizeof(buff), " Edit word ", 0) && !schecker.Check(buff))
+    if (edit_string(buff, sizeof(buff), (char *)" Edit word ", 0) && !schecker.Check(buff))
     {
       schecker.AddWord();
       return -2;
