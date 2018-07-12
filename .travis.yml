@@ -1,6 +1,9 @@
-language: c
+language: cpp
 os:
   - linux
+branches:
+  only:
+    - master
 compiler:
   - gcc
   - clang
