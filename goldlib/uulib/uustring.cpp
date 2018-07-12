@@ -49,7 +49,7 @@
 #include <uuint.h>
 #include <uustring.h>
 
-char * uustring_id = "$Id$";
+char * uustring_id = (char *)"$Id$";
 
 typedef struct {
   int code;
@@ -63,51 +63,51 @@ typedef struct {
 
 static stringmap messages[] = {
   /* I/O related errors/messages. Last parameter is strerror() */
-  { S_NOT_OPEN_SOURCE,  "Could not open source file %s: %s" },
-  { S_NOT_OPEN_TARGET,  "Could not open target file %s for writing: %s" },
-  { S_NOT_OPEN_FILE,    "Could not open file %s: %s" },
-  { S_NOT_STAT_FILE,    "Could not stat file %s: %s" },
-  { S_SOURCE_READ_ERR,  "Read error on source file: %s" },
-  { S_READ_ERROR,       "Error reading from %s: %s" },
-  { S_IO_ERR_TARGET,    "I/O error on target file %s: %s" },
-  { S_WR_ERR_TARGET,    "Write error on target file %s: %s" },
-  { S_WR_ERR_TEMP,      "Write error on temp file: %s" },
-  { S_TMP_NOT_REMOVED,  "Could not remove temp file %s: %s (ignored)" },
+  { S_NOT_OPEN_SOURCE,  (char *)"Could not open source file %s: %s" },
+  { S_NOT_OPEN_TARGET,  (char *)"Could not open target file %s for writing: %s" },
+  { S_NOT_OPEN_FILE,    (char *)"Could not open file %s: %s" },
+  { S_NOT_STAT_FILE,    (char *)"Could not stat file %s: %s" },
+  { S_SOURCE_READ_ERR,  (char *)"Read error on source file: %s" },
+  { S_READ_ERROR,       (char *)"Error reading from %s: %s" },
+  { S_IO_ERR_TARGET,    (char *)"I/O error on target file %s: %s" },
+  { S_WR_ERR_TARGET,    (char *)"Write error on target file %s: %s" },
+  { S_WR_ERR_TEMP,      (char *)"Write error on temp file: %s" },
+  { S_TMP_NOT_REMOVED,  (char *)"Could not remove temp file %s: %s (ignored)" },
 
   /* some other problems */
-  { S_OUT_OF_MEMORY,    "Out of memory allocating %d bytes" },
-  { S_TARGET_EXISTS,    "Target file %s exists and overwriting is not allowed" },
-  { S_NOT_RENAME,       "Could not change name of %s to %s" },
-  { S_ERR_ENCODING,     "Error while encoding %s: %s" },
-  { S_STAT_ONE_PART,    "Could not stat input, encoding to one part only" },
-  { S_PARM_CHECK,       "Parameter check failed in %s" },
-  { S_SHORT_BINHEX,     "BinHex encoded file %s ended prematurely (%ld bytes left)" },
-  { S_DECODE_CANCEL,    "Decode operation canceled" },
-  { S_ENCODE_CANCEL,    "Encode operation canceled" },
-  { S_SCAN_CANCEL,      "Scanning canceled" },
-  { S_SIZE_MISMATCH,    "%s: Decoded size (%ld) does not match expected size (%ld)" },
-  { S_PSIZE_MISMATCH,   "%s part %d: Decoded size (%ld) does not match expected size (%ld)" },
-  { S_CRC_MISMATCH,     "CRC32 mismatch in %s. Decoded file probably corrupt." },
-  { S_PCRC_MISMATCH,    "PCRC32 mismatch in %s part %d. Decoded file probably corrupt." },
+  { S_OUT_OF_MEMORY,    (char *)"Out of memory allocating %d bytes" },
+  { S_TARGET_EXISTS,    (char *)"Target file %s exists and overwriting is not allowed" },
+  { S_NOT_RENAME,       (char *)"Could not change name of %s to %s" },
+  { S_ERR_ENCODING,     (char *)"Error while encoding %s: %s" },
+  { S_STAT_ONE_PART,    (char *)"Could not stat input, encoding to one part only" },
+  { S_PARM_CHECK,       (char *)"Parameter check failed in %s" },
+  { S_SHORT_BINHEX,     (char *)"BinHex encoded file %s ended prematurely (%ld bytes left)" },
+  { S_DECODE_CANCEL,    (char *)"Decode operation canceled" },
+  { S_ENCODE_CANCEL,    (char *)"Encode operation canceled" },
+  { S_SCAN_CANCEL,      (char *)"Scanning canceled" },
+  { S_SIZE_MISMATCH,    (char *)"%s: Decoded size (%ld) does not match expected size (%ld)" },
+  { S_PSIZE_MISMATCH,   (char *)"%s part %d: Decoded size (%ld) does not match expected size (%ld)" },
+  { S_CRC_MISMATCH,     (char *)"CRC32 mismatch in %s. Decoded file probably corrupt." },
+  { S_PCRC_MISMATCH,    (char *)"PCRC32 mismatch in %s part %d. Decoded file probably corrupt." },
 
   /* informational messages */
-  { S_LOADED_PART,      "Loaded from %s: '%s' (%s): %s part %d %s %s %s" },
-  { S_NO_DATA_FOUND,    "No encoded data found in %s" },
-  { S_NO_BIN_FILE,      "Oops, could not find decoded file?" },
-  { S_STRIPPED_SETUID,  "Stripped setuid/setgid bits from target file %s mode %d" },
-  { S_DATA_SUSPICIOUS,  "Data looks suspicious. Decoded file might be corrupt." },
-  { S_NO_TEMP_NAME,     "Could not get name for temporary file" },
-  { S_BINHEX_SIZES,     "BinHex file: data/resource fork sizes %ld/%ld" },
-  { S_BINHEX_BOTH,      "BinHex file: both forks non-empty, decoding data fork" },
-  { S_SMERGE_MERGED,    "Parts of '%s' merged with parts of '%s' (%d)" },
+  { S_LOADED_PART,      (char *)"Loaded from %s: '%s' (%s): %s part %d %s %s %s" },
+  { S_NO_DATA_FOUND,    (char *)"No encoded data found in %s" },
+  { S_NO_BIN_FILE,      (char *)"Oops, could not find decoded file?" },
+  { S_STRIPPED_SETUID,  (char *)"Stripped setuid/setgid bits from target file %s mode %d" },
+  { S_DATA_SUSPICIOUS,  (char *)"Data looks suspicious. Decoded file might be corrupt." },
+  { S_NO_TEMP_NAME,     (char *)"Could not get name for temporary file" },
+  { S_BINHEX_SIZES,     (char *)"BinHex file: data/resource fork sizes %ld/%ld" },
+  { S_BINHEX_BOTH,      (char *)"BinHex file: both forks non-empty, decoding data fork" },
+  { S_SMERGE_MERGED,    (char *)"Parts of '%s' merged with parts of '%s' (%d)" },
   
   /* MIME-related messages */
-  { S_MIME_NO_BOUNDARY, "Multipart message without boundary ignored" },
-  { S_MIME_B_NOT_FOUND, "Boundary expected on Multipart message but found EOF" },
-  { S_MIME_MULTI_DEPTH, "Multipart message nested too deep" },
-  { S_MIME_PART_MULTI,  "Handling partial multipart message as plain text" },
+  { S_MIME_NO_BOUNDARY, (char *)"Multipart message without boundary ignored" },
+  { S_MIME_B_NOT_FOUND, (char *)"Boundary expected on Multipart message but found EOF" },
+  { S_MIME_MULTI_DEPTH, (char *)"Multipart message nested too deep" },
+  { S_MIME_PART_MULTI,  (char *)"Handling partial multipart message as plain text" },
 
-  { 0, "" }
+  { 0, (char *)"" }
 };
 
 /*
@@ -115,16 +115,16 @@ static stringmap messages[] = {
  */
 
 char *uuretcodes[] = {
-  "OK",
-  "File I/O Error",
-  "Not Enough Memory",
-  "Illegal Value",
-  "No Data found",
-  "Unexpected End of File",
-  "Unsupported function",
-  "File exists",
-  "Continue -- no error",   /* only to be seen internally */
-  "Operation Canceled"
+  (char *)"OK",
+  (char *)"File I/O Error",
+  (char *)"Not Enough Memory",
+  (char *)"Illegal Value",
+  (char *)"No Data found",
+  (char *)"Unexpected End of File",
+  (char *)"Unsupported function",
+  (char *)"File exists",
+  (char *)"Continue -- no error",   /* only to be seen internally */
+  (char *)"Operation Canceled"
 };
 
 /*
@@ -132,7 +132,7 @@ char *uuretcodes[] = {
  */
 
 char *codenames[8] = {
-  "", "UUdata", "Base64", "XXdata", "Binhex", "Text", "Text", "yEnc"
+  (char *)"", (char *)"UUdata", (char *)"Base64", (char *)"XXdata", (char *)"Binhex", (char *)"Text", (char *)"Text", (char *)"yEnc"
 };
 
 /*
@@ -140,7 +140,7 @@ char *codenames[8] = {
  */
 
 char *msgnames[6] = {
-  "", "Note: ", "Warning: ", "ERROR: ", "FATAL ERROR: ", "PANIC: "
+  (char *)"", (char *)"Note: ", (char *)"Warning: ", (char *)"ERROR: ", (char *)"FATAL ERROR: ", (char *)"PANIC: "
 };
 
 /*
@@ -151,7 +151,7 @@ char *msgnames[6] = {
 char *
 uustring (int codeno)
 {
-  static char * faileddef = "oops";
+  static char * faileddef = (char *)"oops";
   stringmap *ptr = messages;
 
   while (ptr->code) {
@@ -161,7 +161,7 @@ uustring (int codeno)
   }
 
   UUMessage (uustring_id, __LINE__, UUMSG_ERROR,
-         "Could not retrieve string no %d",
+         (char *)"Could not retrieve string no %d",
          codeno);
 
   return faileddef;

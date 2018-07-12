@@ -72,29 +72,29 @@ int tzoffset()
 //  ------------------------------------------------------------------
 
 char* __gampm[2] = {
-  "AM", "PM"
+  (char *)"AM", (char *)"PM"
 };
 
 char* __gsweekday[7] = {
-  "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
+  (char *)"Sun", (char *)"Mon", (char *)"Tue", (char *)"Wed", (char *)"Thu", (char *)"Fri", (char *)"Sat"
 };
 
 char* __glweekday[7] = {
-  "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+  (char *)"Sunday", (char *)"Monday", (char *)"Tuesday", (char *)"Wednesday", (char *)"Thursday", (char *)"Friday", (char *)"Saturday"
 };
 
 char* __gsmonth[12] = {
-  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+  (char *)"Jan", (char *)"Feb", (char *)"Mar", (char *)"Apr", (char *)"May", (char *)"Jun",
+  (char *)"Jul", (char *)"Aug", (char *)"Sep", (char *)"Oct", (char *)"Nov", (char *)"Dec"
 };
 
 char* __glmonth[12] = {
-  "January", "February", "March",     "April",   "May",      "June",
-  "July",    "August",   "September", "October", "November", "December"
+  (char *)"January", (char *)"February", (char *)"March",     (char *)"April",   (char *)"May",      (char *)"June",
+  (char *)"July",    (char *)"August",   (char *)"September", (char *)"October", (char *)"November", (char *)"December"
 };
 
 char* gampm[2] = {
-  "AM", "PM"
+  (char *)"AM", (char *)"PM"
 };
 
 char* gsweekday[7] = {

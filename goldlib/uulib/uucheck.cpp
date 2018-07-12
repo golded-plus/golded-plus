@@ -54,7 +54,7 @@
 #include <fptools.h>
 #include <uustring.h>
 
-char * uucheck_id = "$Id$";
+char * uucheck_id = (char *)"$Id$";
 
 /*
  * Arbitrary number. This is the maximum number of part numbers we
@@ -79,13 +79,13 @@ int lastvalid, lastenc, nofnum;
 char *uucheck_lastname;
 char *uucheck_tempname;
 static int  lastpart = 0;
-static char *nofname = "UNKNOWN";
+static char *nofname = (char *)"UNKNOWN";
 
 /*
  * special characters we allow an unquoted filename to have
  */
 
-char *uufnchars = "._-~!$@";
+char *uufnchars = (char *)"._-~!$@";
 
 /*
  * Policy for extracting a part number from the subject line.
@@ -93,7 +93,7 @@ char *uufnchars = "._-~!$@";
  */
 
 static char *brackchr[] = {
-  "()[]", "[]()"
+  (char *)"()[]", (char *)"[]()"
 };
 
 /*
@@ -135,14 +135,14 @@ UUGetFileName (char *subject, char *ptonum, char *ptonend)
  * a file named "Repost" :-)
  **/
 
-  if (_FP_strnicmp (subject, "repost", 6) == 0)
+  if (_FP_strnicmp (subject, (char *)"repost", 6) == 0)
     subject += 6;
-  if (_FP_strnicmp (subject, "re:", 3) == 0)
+  if (_FP_strnicmp (subject, (char *)"re:", 3) == 0)
     subject += 3;
 
   while (*subject == ' ' || *subject == ':') subject++;
 
-  part = _FP_stristr (subject, "part");
+  part = _FP_stristr (subject, (char *)"part");
   if (part == subject) {
     subject += 4;
     while (*subject == ' ') subject++;
@@ -223,7 +223,7 @@ UUGetFileName (char *subject, char *ptonum, char *ptonend)
       iter  = ptr;
       count = length = alflag = 0;
       
-      if (_FP_strnicmp (ptr, "ftp", 3) == 0) {
+      if (_FP_strnicmp (ptr, (char*)"ftp", 3) == 0) {
     /* hey, that's an ftp address */
     while (g_isalpha(*ptr) || isdigit (*ptr) || *ptr == '.')
       ptr++;
@@ -251,8 +251,8 @@ UUGetFileName (char *subject, char *ptonum, char *ptonend)
     length = 0;
     continue;
       }
-      if (_FP_strnicmp (iter, "edu", 3) == 0 || 
-      _FP_strnicmp (iter, "gov", 3) == 0) {
+      if (_FP_strnicmp (iter, (char *)"edu", 3) == 0 || 
+      _FP_strnicmp (iter, (char *)"gov", 3) == 0) {
     /* hey, that's an ftp address */
     while (g_isalpha(*iter) || isdigit (*iter) || *iter == '.')
       iter++;
@@ -381,7 +381,7 @@ UUGetPartNo (char *subject, char **where, char **whend)
   *whend = NULL; bdel[1] = '\0';
 
   iter  = NULL;
-  delim = "";
+  delim = (char *)"";
 
   if (subject == NULL)
     return -1;
@@ -428,7 +428,7 @@ UUGetPartNo (char *subject, char **where, char **whend)
       while (iter[count] == ' ' || iter[count] == '#' ||
          iter[count] == '/' || iter[count] == '\\')  count++;
       
-      if (_FP_strnicmp (iter + count, "of", 2) == 0)
+      if (_FP_strnicmp (iter + count, (char *)"of", 2) == 0)
     count += 2;
       
       while (iter[count] == ' ')    count++;
@@ -496,7 +496,7 @@ UUGetPartNo (char *subject, char **where, char **whend)
    */
 
   if (length == 0) {
-    if ((iter = _FP_stristr (subject, "part")) != NULL) {
+    if ((iter = _FP_stristr (subject, (char *)"part")) != NULL) {
       iter += 4;
 
       while (isspace (*iter) || *iter == '.' || *iter == '-')
@@ -506,16 +506,16 @@ UUGetPartNo (char *subject, char **where, char **whend)
         length++;
 
       if (length == 0) {
-    if (_FP_strnicmp (iter, "one", 3) == 0)        length = 1;
-    else if (_FP_strnicmp (iter, "two", 3) == 0)   length = 2;
-    else if (_FP_strnicmp (iter, "three", 5) == 0) length = 3;
-    else if (_FP_strnicmp (iter, "four",  4) == 0) length = 4;
-    else if (_FP_strnicmp (iter, "five",  4) == 0) length = 5;
-    else if (_FP_strnicmp (iter, "six",   3) == 0) length = 6;
-    else if (_FP_strnicmp (iter, "seven", 5) == 0) length = 7;
-    else if (_FP_strnicmp (iter, "eight", 5) == 0) length = 8;
-    else if (_FP_strnicmp (iter, "nine",  4) == 0) length = 9;
-    else if (_FP_strnicmp (iter, "ten",   3) == 0) length = 10;
+    if (_FP_strnicmp (iter, (char *)"one", 3) == 0)        length = 1;
+    else if (_FP_strnicmp (iter, (char *)"two", 3) == 0)   length = 2;
+    else if (_FP_strnicmp (iter, (char *)"three", 5) == 0) length = 3;
+    else if (_FP_strnicmp (iter, (char *)"four",  4) == 0) length = 4;
+    else if (_FP_strnicmp (iter, (char *)"five",  4) == 0) length = 5;
+    else if (_FP_strnicmp (iter, (char *)"six",   3) == 0) length = 6;
+    else if (_FP_strnicmp (iter, (char *)"seven", 5) == 0) length = 7;
+    else if (_FP_strnicmp (iter, (char *)"eight", 5) == 0) length = 8;
+    else if (_FP_strnicmp (iter, (char *)"nine",  4) == 0) length = 9;
+    else if (_FP_strnicmp (iter, (char *)"ten",   3) == 0) length = 10;
 
     if (length && (*whend = strchr (iter, ' '))) {
       *where = iter;
@@ -526,7 +526,7 @@ UUGetPartNo (char *subject, char **where, char **whend)
       }
       else {
     *where = iter;
-    delim  = "of";
+    delim  = (char *)"of";
       }
     }
   }
@@ -536,7 +536,7 @@ UUGetPartNo (char *subject, char **where, char **whend)
    */
 
   if (length == 0) {
-    if ((iter = _FP_strirstr (subject, "of")) != NULL) {
+    if ((iter = _FP_strirstr (subject, (char *)"of")) != NULL) {
       while (iter>subject && isspace (*(iter-1)))
     iter--;
       if (isdigit(*(iter-1))) {
@@ -550,7 +550,7 @@ UUGetPartNo (char *subject, char **where, char **whend)
       ptr++; length++;
     }
     *where = iter;
-    delim  = "of";
+    delim  = (char *)"of";
       }
     }
   }
@@ -635,18 +635,18 @@ UUGetPartNo (char *subject, char **where, char **whend)
     /*
      * some people use the strangest things, including spelling mistakes :-)
      */
-    if ((iter = _FP_stristr (subject, "first")) != NULL)        length = 1;
-    else if ((iter = _FP_stristr (subject, "second")) != NULL)  length = 2;
-    else if ((iter = _FP_stristr (subject, "third")) != NULL)   length = 3;
-    else if ((iter = _FP_stristr (subject, "forth")) != NULL)   length = 4;
-    else if ((iter = _FP_stristr (subject, "fourth")) != NULL)  length = 4;
-    else if ((iter = _FP_stristr (subject, "fifth")) != NULL)   length = 5;
-    else if ((iter = _FP_stristr (subject, "sixth")) != NULL)   length = 6;
-    else if ((iter = _FP_stristr (subject, "seventh")) != NULL) length = 7;
-    else if ((iter = _FP_stristr (subject, "eigth")) != NULL)   length = 8;
-    else if ((iter = _FP_stristr (subject, "nineth")) != NULL)  length = 9;
-    else if ((iter = _FP_stristr (subject, "ninth")) != NULL)   length = 9;
-    else if ((iter = _FP_stristr (subject, "tenth")) != NULL)   length = 10;
+    if ((iter = _FP_stristr (subject, (char *)"first")) != NULL)        length = 1;
+    else if ((iter = _FP_stristr (subject, (char *)"second")) != NULL)  length = 2;
+    else if ((iter = _FP_stristr (subject, (char *)"third")) != NULL)   length = 3;
+    else if ((iter = _FP_stristr (subject, (char *)"forth")) != NULL)   length = 4;
+    else if ((iter = _FP_stristr (subject, (char *)"fourth")) != NULL)  length = 4;
+    else if ((iter = _FP_stristr (subject, (char *)"fifth")) != NULL)   length = 5;
+    else if ((iter = _FP_stristr (subject, (char *)"sixth")) != NULL)   length = 6;
+    else if ((iter = _FP_stristr (subject, (char *)"seventh")) != NULL) length = 7;
+    else if ((iter = _FP_stristr (subject, (char *)"eigth")) != NULL)   length = 8;
+    else if ((iter = _FP_stristr (subject, (char *)"nineth")) != NULL)  length = 9;
+    else if ((iter = _FP_stristr (subject, (char *)"ninth")) != NULL)   length = 9;
+    else if ((iter = _FP_stristr (subject, (char *)"tenth")) != NULL)   length = 10;
     else iter = NULL;
 
     if (length && iter && (*whend = strchr (iter, ' '))) {
@@ -1097,8 +1097,8 @@ UUInsertPartToList (uufile *data)
     if (data->partno == fiter->partno) {
           if (fiter->data->subject == NULL)
             return UURET_NODATA;
-      else if (_FP_stristr (fiter->data->subject, "repost") != NULL &&
-           _FP_stristr (data->data->subject,  "repost") == NULL)
+      else if (_FP_stristr (fiter->data->subject, (char *)"repost") != NULL &&
+           _FP_stristr (data->data->subject,  (char *)"repost") == NULL)
         return UURET_NODATA;
           else if (fiter->data->uudet && !data->data->uudet)
             return UURET_NODATA;
@@ -1439,7 +1439,7 @@ UUCheckGlobalList (void)
        */
       _FP_free (liter->filename);
       if (liter->subfname && liter->subfname[0] &&
-          _FP_strpbrk (liter->subfname, "()[];: ") == NULL)
+          _FP_strpbrk (liter->subfname, (char *)"()[];: ") == NULL)
         liter->filename = _FP_strdup (liter->subfname);
       else {
         sprintf (uucheck_tempname, "%s.%03d", nofname, ++nofnum);

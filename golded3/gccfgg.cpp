@@ -287,39 +287,39 @@ struct AF_entry {
 };
 
 struct AF_entry idetect[] = {
-  {    "DUTCHIE",  "dutchie.are", "Dutchie"      },
-  {        "EZY", "constant.ezy", "Ezycom"       },
-  {   "FASTECHO", "fastecho.cfg", "Fastecho"     },
-  {    "FIDOPCB",  "fidopcb.cfg", "FidoPCB"      },
-  {      "FMAIL",    "fmail.cfg", "FMail"        },
-  {      "IMAIL",     "imail.cf", "IMAIL"        },
-  {    "PCBOARD",  "pcboard.dat", "PCBoard"      },
-  { "POPCMDLINE",   "portal.are", "Portal"       },
-  {         "RA",   "config.pro", "ProBoard"     },
-  {     "QFRONT",   "qechos.dat", "QFront"       },
-  {     "RAECHO",    "areas.rae", "RA-ECHO"      },
-  {         "RA",    "config.ra", "RemoteAccess" },
-  {      "TIMED",    "timed.cfg", "timEd"        },
-  {         "TM",       "tm.cfg", "Termail"      },
-  {      "WMAIL",    "wmail.prm", "WMail"        },
-  {         "XM",    "xmail.cfg", "XMail"        },
-  {         "FD",  "areafile.fd", "TosScan"      },
-  {         "GE",     "setup.ge", "GEcho"        },
-  {         "FD",     "setup.fd", "FrontDoor"    },
-  {         "FD",       "fd.sys", "FrontDoor"    },
-  {       "OPUS",   "sysmsg.dat", "Opus"         },
-  {       "LORA",   "sysmsg.dat", "LoraBBS"      },
-  {    "LORABBS",   "sysmsg.dat", "LoraBBS"      },
-  { "FIDOCONFIG",             "", "Fidoconfig"   },
-  {         "DB",  "dbridge.prm", "D\'Bridge"    },
-  {    "DBRIDGE",  "dbridge.prm", "D\'Bridge"    },
-  {   "SUPERBBS",  "sconfig.bbs", "SuperBBS"     },
-  {       "SBBS",  "sconfig.bbs", "SuperBBS"     },
-  {   "QUICKBBS", "quickcfg.dat", "QuickBBS"     },
-  {       "QBBS", "quickcfg.dat", "QuickBBS"     },
-  {   "QUICKBBS",   "config.bbs", "QuickBBS"     },
-  {       "QBBS",   "config.bbs", "QuickBBS"     },
-  {     "SQUISH",   "squish.cfg", "Squish"       }
+  {    (char *)"DUTCHIE",  (char *)"dutchie.are", (char *)"Dutchie"      },
+  {        (char *)"EZY", (char *)"constant.ezy", (char *)"Ezycom"       },
+  {   (char *)"FASTECHO", (char *)"fastecho.cfg", (char *)"Fastecho"     },
+  {    (char *)"FIDOPCB",  (char *)"fidopcb.cfg", (char *)"FidoPCB"      },
+  {      (char *)"FMAIL",    (char *)"fmail.cfg", (char *)"FMail"        },
+  {      (char *)"IMAIL",     (char *)"imail.cf", (char *)"IMAIL"        },
+  {    (char *)"PCBOARD",  (char *)"pcboard.dat", (char *)"PCBoard"      },
+  { (char *)"POPCMDLINE",   (char *)"portal.are", (char *)"Portal"       },
+  {         (char *)"RA",   (char *)"config.pro", (char *)"ProBoard"     },
+  {     (char *)"QFRONT",   (char *)"qechos.dat", (char *)"QFront"       },
+  {     (char *)"RAECHO",    (char *)"areas.rae", (char *)"RA-ECHO"      },
+  {         (char *)"RA",    (char *)"config.ra", (char *)"RemoteAccess" },
+  {      (char *)"TIMED",    (char *)"timed.cfg", (char *)"timEd"        },
+  {         (char *)"TM",       (char *)"tm.cfg", (char *)"Termail"      },
+  {      (char *)"WMAIL",    (char *)"wmail.prm", (char *)"WMail"        },
+  {         (char *)"XM",    (char *)"xmail.cfg", (char *)"XMail"        },
+  {         (char *)"FD",  (char *)"areafile.fd", (char *)"TosScan"      },
+  {         (char *)"GE",     (char *)"setup.ge", (char *)"GEcho"        },
+  {         (char *)"FD",     (char *)"setup.fd", (char *)"FrontDoor"    },
+  {         (char *)"FD",       (char *)"fd.sys", (char *)"FrontDoor"    },
+  {       (char *)"OPUS",   (char *)"sysmsg.dat", (char *)"Opus"         },
+  {       (char *)"LORA",   (char *)"sysmsg.dat", (char *)"LoraBBS"      },
+  {    (char *)"LORABBS",   (char *)"sysmsg.dat", (char *)"LoraBBS"      },
+  { (char *)"FIDOCONFIG",             (char *)"", (char *)"Fidoconfig"   },
+  {         (char *)"DB",  (char *)"dbridge.prm", (char *)"D\'Bridge"    },
+  {    (char *)"DBRIDGE",  (char *)"dbridge.prm", (char *)"D\'Bridge"    },
+  {   (char *)"SUPERBBS",  (char *)"sconfig.bbs", (char *)"SuperBBS"     },
+  {       (char *)"SBBS",  (char *)"sconfig.bbs", (char *)"SuperBBS"     },
+  {   (char *)"QUICKBBS", (char *)"quickcfg.dat", (char *)"QuickBBS"     },
+  {       (char *)"QBBS", (char *)"quickcfg.dat", (char *)"QuickBBS"     },
+  {   (char *)"QUICKBBS",   (char *)"config.bbs", (char *)"QuickBBS"     },
+  {       (char *)"QBBS",   (char *)"config.bbs", (char *)"QuickBBS"     },
+  {     (char *)"SQUISH",   (char *)"squish.cfg", (char *)"Squish"       }
 };
 
 
@@ -446,21 +446,21 @@ int InstallFinish()
     // Check what we have
     if (CFG->username.empty())
     {
-      if (EnterString("Please enter your name:", buf, sizeof(buf)))
+      if (EnterString((char *)"Please enter your name:", buf, sizeof(buf)))
         return -1;
       fp.Printf("USERNAME %s\n", buf);
       CfgUsername(buf);
     }
     if (CFG->aka.empty())
     {
-      if (EnterString("Please enter your FidoNet address:", buf, sizeof(buf)))
+      if (EnterString((char *)"Please enter your FidoNet address:", buf, sizeof(buf)))
         return -1;
       fp.Printf("ADDRESS %s\n", buf);
       CfgAddress(buf);
     }
     if (AL.basetypes.empty())
     {
-      if (EnterString("Please enter the path to your *.msg netmail area:", buf, sizeof(buf)))
+      if (EnterString((char *)"Please enter the path to your *.msg netmail area:", buf, sizeof(buf)))
         return -1;
       AreaCfg aa;
       aa.reset();
@@ -472,7 +472,7 @@ int InstallFinish()
       aa.attr = CFG->attribsnet;
       AL.AddNewArea(&aa);
       fp.Printf("AREADEF %s \"%s\" 0 Net %s %s\n", aa.desc, aa.echoid, aa.basetype.c_str(), buf);
-      if (EnterString("Please enter the path *and* filename of your areas.bbs file:", buf, sizeof(buf)))
+      if (EnterString((char *)"Please enter the path *and* filename of your areas.bbs file:", buf, sizeof(buf)))
         return -1;
       fp.Printf("AREAFILE AreasBBS %s\n", buf);
       char buf2[200]="AreasBBS ";
@@ -482,7 +482,7 @@ int InstallFinish()
     #ifndef GMB_NOHUDS
     if (find(AL.basetypes, "HUDSON") and (*CFG->hudsonpath == NUL))
     {
-      if (EnterString("Please enter the path to your Hudson msgbase files:", buf, sizeof(buf)))
+      if (EnterString((char *)"Please enter the path to your Hudson msgbase files:", buf, sizeof(buf)))
         return -1;
       fp.Printf("HUDSONPATH %s\n", buf);
       PathCopy(CFG->hudsonpath, buf);
@@ -491,7 +491,7 @@ int InstallFinish()
     #ifndef GMB_NOGOLD
     if (find(AL.basetypes, "GOLDBASE") and (*CFG->goldbasepath == NUL))
     {
-      if (EnterString("Please enter the path to your Goldbase msgbase files:", buf, sizeof(buf)))
+      if (EnterString((char *)"Please enter the path to your Goldbase msgbase files:", buf, sizeof(buf)))
         return -1;
       fp.Printf("GOLDBASEPATH %s\n", buf);
       PathCopy(CFG->goldbasepath, buf);
@@ -500,7 +500,7 @@ int InstallFinish()
     #ifndef GMB_NOJAM
     if (find(AL.basetypes, "JAM") and (*CFG->jampath == NUL))
     {
-      if (EnterString("Please enter the path where net/echomail.jam can be placed:", buf, sizeof(buf)))
+      if (EnterString((char *)"Please enter the path where net/echomail.jam can be placed:", buf, sizeof(buf)))
         return -1;
       fp.Printf("JAMPATH %s\n", buf);
       PathCopy(CFG->jampath, buf);
@@ -509,7 +509,7 @@ int InstallFinish()
     #ifndef GMB_NOPCB
     if (find(AL.basetypes, "PCBOARD") and (*CFG->pcboardpath == NUL))
     {
-      if (EnterString("Please enter the path to PCBoard:", buf, sizeof(buf)))
+      if (EnterString((char *)"Please enter the path to PCBoard:", buf, sizeof(buf)))
         return -1;
       fp.Printf("PCBOARDPATH %s\n", buf);
       PathCopy(CFG->pcboardpath, buf);

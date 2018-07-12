@@ -157,7 +157,7 @@ char* ftn_addr::set(const char* str, char* dom, int domsizelimit) {
   bool gotnode = false;
   bool gotpoint = false;
   bool gotdomain = false;
-  static char* nulchar = "";
+  static char* nulchar = (char *)"";
 
   if(*str == '*')
     set_all(ftn::wildcard_all);

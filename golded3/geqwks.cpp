@@ -270,7 +270,7 @@ int ImportQWK() {
                     sptr = mptr + strlen(mptr);
                   while(((*sptr == ' ') or (*sptr == ',')) and *sptr)
                     *sptr++ = NUL;
-                  CvtMessageIDtoMSGID(mptr, kbuf, AA->echoid(), "REPLY");
+                  CvtMessageIDtoMSGID(mptr, kbuf, AA->echoid(), (char *)"REPLY");
                   strcat(kbuf, "\r");
                   uint addlen = strlen(kbuf);
                   msg->txt = (char*)throw_realloc(msg->txt, txtlen+addlen+1);
@@ -283,7 +283,7 @@ int ImportQWK() {
             }
             if(msg->inreplyto) {
               if(not strnieql(msg->inreplyto, "<NOMSGID_", 9)) {
-                CvtMessageIDtoMSGID(msg->inreplyto, kbuf, AA->echoid(), "REPLY");
+                CvtMessageIDtoMSGID(msg->inreplyto, kbuf, AA->echoid(), (char *)"REPLY");
                 strcat(kbuf, "\r");
                 uint addlen = strlen(kbuf);
                 msg->txt = (char*)throw_realloc(msg->txt, txtlen+addlen+1);
@@ -294,7 +294,7 @@ int ImportQWK() {
             }
             if(msg->messageid) {
               if(not strnieql(msg->messageid, "<NOMSGID_", 9)) {
-                CvtMessageIDtoMSGID(msg->messageid, kbuf, AA->echoid(), "MSGID");
+                CvtMessageIDtoMSGID(msg->messageid, kbuf, AA->echoid(), (char *)"MSGID");
                 strcat(kbuf, "\r");
                 uint addlen = strlen(kbuf);
                 msg->txt = (char*)throw_realloc(msg->txt, txtlen+addlen+1);
