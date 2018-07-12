@@ -821,7 +821,7 @@ static void KludgeMESSAGE_ID(GMsg* msg, const char* ptr) {
   char buf[201];
   throw_free(msg->messageid);
   msg->messageid = throw_strdup(ptr);
-  CvtMessageIDtoMSGID(ptr, buf, AA->echoid(), "MSGID");
+  CvtMessageIDtoMSGID(ptr, buf, AA->echoid(), (char *)"MSGID");
   strcpy(msg->msgids, buf+8);
 }
 

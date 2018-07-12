@@ -469,11 +469,11 @@ static bool FindCfg(char* path) {
   AddBackslash(path);
 
   #ifdef GEDCFG2
-  found = ExistCfg(path, GEDCFG2);
+  found = ExistCfg(path, (char *)GEDCFG2);
   #endif
 
   if(not found)
-    found = ExistCfg(path, GEDCFG);
+    found = ExistCfg(path, (char *)GEDCFG);
   return found;
 }
 

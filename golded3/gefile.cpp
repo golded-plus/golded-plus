@@ -542,22 +542,22 @@ void CreateFileMsgs(int mode, GMsg* msg) {
 
   char* LNG_File = NULL;
   char* LNG_Fileing = NULL;
-  char* tokenstr = "";
+  char* tokenstr = (char *)"";
 
   if(msg->attr.att()) {
     LNG_File    = LNG->File_Attach;
     LNG_Fileing = LNG->FileAttaching;
-    tokenstr = "ST_FILEATTACHING";
+    tokenstr = (char *)"ST_FILEATTACHING";
   }
   else if(msg->attr.frq()) {
     LNG_File    = LNG->File_Request;
     LNG_Fileing = LNG->FileRequesting;
-    tokenstr = "ST_FILEREQUESTING";
+    tokenstr = (char *)"ST_FILEREQUESTING";
   }
   else if(msg->attr.urq()) {
     LNG_File    = LNG->File_Updreq;
     LNG_Fileing = LNG->FileUpdreqing;
-    tokenstr = "ST_FILEUPDREQING";
+    tokenstr = (char *)"ST_FILEUPDREQING";
   }
 
   *buf = NUL;

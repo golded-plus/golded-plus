@@ -258,7 +258,7 @@ int ShellToDos(const char* command, char* message, vattr cls, int cursor, int pa
 
   #if defined(GUTLOS_FUNCS)
   g_get_ostitle_name(ge_temptitle);
-  g_set_ostitle_name("OS Shell",0);
+  g_set_ostitle_name((char *)"OS Shell",0);
   #endif
 
   // Close msgbase files
@@ -547,7 +547,7 @@ const char* Unpack(const char* archive) {
     getcwd(orgdir, sizeof(Path));
     gchdir(newdir);
     // Now unpack it
-    ShellToDos(cmdline, "", LGREY_|_BLACK, 0, -1);
+    ShellToDos(cmdline, (char *)"", LGREY_|_BLACK, 0, -1);
     // Restore current directory
     gchdir(orgdir);
     strxcpy(newname, AddPath(AddBackslash(newdir), filename), sizeof(Path));

@@ -96,7 +96,7 @@ int _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::load_message(in
   }
 
   // Read header
-  msgn_t _hdridx = get_hdr_idx(__msg, __FILE__, __LINE__);
+  msgn_t _hdridx = get_hdr_idx(__msg, (char *)__FILE__, __LINE__);
   wide->fhhdr.LseekSet((int32_t)_hdridx*(int32_t)sizeof(HudsHdr));
   wide->fhhdr.Read(&__hdr, sizeof(HudsHdr));
 

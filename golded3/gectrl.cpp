@@ -298,7 +298,7 @@ void DoKludges(int mode, GMsg* msg, int kludges) {
 
                                                        // 123456789012345678901234567
       if(line->next and strneql(line->next->txt.c_str(), "-----BEGIN PGP ", 15)) {
-        line = AddKludge(line, "\001ENC: PGP");
+        line = AddKludge(line, (char *)"\001ENC: PGP");
       }
 
       // The INTL kludge for zone crossing
@@ -352,7 +352,7 @@ void DoKludges(int mode, GMsg* msg, int kludges) {
       sprintf(buf2, "<GED%08X@%s>", getMsgId(), buf);
       throw_release(msg->messageid);
       msg->messageid = throw_strdup(buf2);
-      CvtMessageIDtoMSGID(buf2, buf, AA->echoid(), "MSGID");
+      CvtMessageIDtoMSGID(buf2, buf, AA->echoid(), (char *)"MSGID");
       strcpy(msg->msgids, buf+8);
     }
     else
@@ -545,7 +545,7 @@ void DoKludges(int mode, GMsg* msg, int kludges) {
             else if(not strnieql(nline_txt, "XPost:", 6) and
                     not strnieql(nline_txt, "Copy:", 5) and
                     not strnieql(nline_txt, "BCopy:", 6)) {
-              line = AddKludge(line, "");
+              line = AddKludge(line, (char *)"");
               line->kludge = GKLUD_RFC;
               break;
             }
@@ -690,7 +690,7 @@ void DoKludges(int mode, GMsg* msg, int kludges) {
         }
 
         if(AA->Internetrfcbody() and line->next and not strblank(line->next->txt.c_str())) {
-          line = AddKludge(line, "");
+          line = AddKludge(line, (char *)"");
           line->kludge = GKLUD_RFC;
         }
       }
@@ -708,7 +708,7 @@ void DoKludges(int mode, GMsg* msg, int kludges) {
 
         if(line->next and not strblank(line->next->txt.c_str())) {
           if(AA->Internetrfcbody()) {
-            line = AddKludge(line, "");
+            line = AddKludge(line, (char *)"");
             line->kludge = GKLUD_RFC;
           }
           else {
