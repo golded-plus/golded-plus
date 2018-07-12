@@ -225,15 +225,15 @@ const byte KCRQ_CASE  = 0x0002;
 
 static const Kludges fts_list[] = {
 
-  { "AREA"                       , FTS_AREA                      , KCRQ_CASE  },
-  { "INTL"                       , FTS_INTL                      , KCRQ_CASE  },
-  { "FMPT"                       , FTS_FMPT                      , KCRQ_CASE  },
-  { "TOPT"                       , FTS_TOPT                      , KCRQ_CASE  },
-  { "MSGID"                      , FTS_MSGID                     , KCRQ_CASE  },
-  { "REPLY"                      , FTS_REPLY                     , KCRQ_CASE  },
-  { "SEEN-BY"                    , FTS_SEENBY                    , KCRQ_CASE  },
-  { "PATH"                       , FTS_PATH                      , KCRQ_CASE  },
-  { ""                           , FTS_ZZZZ                      , KCRQ_NONE  },
+  { (char *)"AREA"                       , FTS_AREA                      , KCRQ_CASE  },
+  { (char *)"INTL"                       , FTS_INTL                      , KCRQ_CASE  },
+  { (char *)"FMPT"                       , FTS_FMPT                      , KCRQ_CASE  },
+  { (char *)"TOPT"                       , FTS_TOPT                      , KCRQ_CASE  },
+  { (char *)"MSGID"                      , FTS_MSGID                     , KCRQ_CASE  },
+  { (char *)"REPLY"                      , FTS_REPLY                     , KCRQ_CASE  },
+  { (char *)"SEEN-BY"                    , FTS_SEENBY                    , KCRQ_CASE  },
+  { (char *)"PATH"                       , FTS_PATH                      , KCRQ_CASE  },
+  { (char *)""                           , FTS_ZZZZ                      , KCRQ_NONE  },
 };
 
 
