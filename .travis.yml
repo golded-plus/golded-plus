@@ -11,4 +11,4 @@ compiler:
 before_install:
   - cp golded3/mygolded.__h golded3/mygolded.h
 script:
-  - CFLAGS="-Wno-keyword-macro -Wno-c++11-compat-deprecated-writable-strings -Wno-write-strings" make
+  - CFLAGS="-Wno-keyword-macro -Wno-c++11-compat-deprecated-writable-strings -Wno-write-strings" CPPLAGS="${CFLAGS}" make
