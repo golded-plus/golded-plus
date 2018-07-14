@@ -58,7 +58,7 @@
 #include <fptools.h>
 #include <uustring.h>
 
-char * uuscan_id = (char *)"$Id$";
+char * uuscan_id = "$Id$";
 
 /*
  * Header fields we recognize as such. See RFC822. We add "From ",
@@ -69,25 +69,25 @@ char * uuscan_id = (char *)"$Id$";
  */
 
 static char *knownmsgheaders[] = {
-  (char *)"From ", (char *)"Return-Path:", (char *)"Received:", (char *)"Reply-To:",
-  (char *)"From:", (char *)"Sender:", (char *)"Resent-Reply-To:", (char *)"Resent-From:",
-  (char *)"Resent-Sender:", (char *)"Date:", (char *)"Resent-Date:", (char *)"To:",
-  (char *)"Resent-To:", (char *)"Cc:", (char *)"Bcc:", (char *)"Resent-bcc:",
-  (char *)"Message-ID:", (char *)"Resent-Message-Id:", (char *)"In-Reply-To:",
-  (char *)"References:", (char *)"Keywords:", (char *)"Subject:", (char *)"Comments:",
+  "From ", "Return-Path:", "Received:", "Reply-To:",
+  "From:", "Sender:", "Resent-Reply-To:", "Resent-From:",
+  "Resent-Sender:", "Date:", "Resent-Date:", "To:",
+  "Resent-To:", "Cc:", "Bcc:", "Resent-bcc:",
+  "Message-ID:", "Resent-Message-Id:", "In-Reply-To:",
+  "References:", "Keywords:", "Subject:", "Comments:",
   
-  (char *)"Delivery-Date:", (char *)"Posted-Date:", (char *)"Received-Date:",
-  (char *)"Precedence:", 
+  "Delivery-Date:", "Posted-Date:", "Received-Date:",
+  "Precedence:", 
 
-  (char *)"Path:", (char *)"Newsgroups:", (char *)"Organization:", (char *)"Lines:",
-  (char *)"NNTP-Posting-Host:",
+  "Path:", "Newsgroups:", "Organization:", "Lines:",
+  "NNTP-Posting-Host:",
   NULL
 };
 
 static char *knownmimeheaders[] = {
-  (char *)"Mime-Version:",  (char *)"Content-Transfer-Encoding:",
-  (char *)"Content-Type:", (char *)"Content-Disposition:", 
-  (char *)"Content-Description:", (char *)"Content-Length:",
+  "Mime-Version:",  "Content-Transfer-Encoding:",
+  "Content-Type:", "Content-Disposition:", 
+  "Content-Description:", "Content-Length:",
   NULL
 };
 
@@ -333,86 +333,86 @@ ParseHeader (headers *theheaders, char *line)
   if (line == NULL)
     return theheaders;
 
-  if (_FP_strnicmp (line, (char *)"From:", 5) == 0) {
+  if (_FP_strnicmp (line, "From:", 5) == 0) {
     if (theheaders->from) return theheaders;
     variable = &theheaders->from;
     value    = line+5;
     delimit  = 0;
   }
-  else if (_FP_strnicmp (line, (char *)"Subject:", 8) == 0) {
+  else if (_FP_strnicmp (line, "Subject:", 8) == 0) {
     if (theheaders->subject) return theheaders;
     variable = &theheaders->subject;
     value    = line+8;
     delimit  = 0;
   }
-  else if (_FP_strnicmp (line, (char *)"To:", 3) == 0) {
+  else if (_FP_strnicmp (line, "To:", 3) == 0) {
     if (theheaders->rcpt) return theheaders;
     variable = &theheaders->rcpt;
     value    = line+3;
     delimit  = 0;
   }
-  else if (_FP_strnicmp (line, (char *)"Date:", 5) == 0) {
+  else if (_FP_strnicmp (line, "Date:", 5) == 0) {
     if (theheaders->date) return theheaders;
     variable = &theheaders->date;
     value    = line+5;
     delimit  = 0;
   }
-  else if (_FP_strnicmp (line, (char *)"Mime-Version:", 13) == 0) {
+  else if (_FP_strnicmp (line, "Mime-Version:", 13) == 0) {
     if (theheaders->mimevers) return theheaders;
     variable = &theheaders->mimevers;
     value    = line+13;
     delimit  = 0;
   }
-  else if (_FP_strnicmp (line, (char *)"Content-Type:", 13) == 0) {
+  else if (_FP_strnicmp (line, "Content-Type:", 13) == 0) {
     if (theheaders->ctype) return theheaders;
     variable = &theheaders->ctype;
     value    = line+13;
     delimit  = ';';
 
     /* we can probably extract more information */
-    if ((ptr = _FP_stristr (line, (char *)"boundary")) != NULL) {
+    if ((ptr = _FP_stristr (line, "boundary")) != NULL) {
       if ((thenew = ParseValue (ptr))) {
     if (theheaders->boundary) free (theheaders->boundary);
     theheaders->boundary = _FP_strdup (thenew);
       }
     }
-    if ((ptr = _FP_stristr (line, (char *)"name")) != NULL) {
+    if ((ptr = _FP_stristr (line, "name")) != NULL) {
       if ((thenew = ParseValue (ptr))) {
     if (theheaders->fname) free (theheaders->fname);
     theheaders->fname = _FP_strdup (thenew);
       }
     }
-    if ((ptr = _FP_stristr (line, (char *)"id")) != NULL) {
+    if ((ptr = _FP_stristr (line, "id")) != NULL) {
       if ((thenew = ParseValue (ptr))) {
     if (theheaders->mimeid) free (theheaders->mimeid);
     theheaders->mimeid = _FP_strdup (thenew);
       }
     }
-    if ((ptr = _FP_stristr (line, (char *)"number")) != NULL) {
+    if ((ptr = _FP_stristr (line, "number")) != NULL) {
       if ((thenew = ParseValue (ptr))) {
     theheaders->partno = atoi (thenew);
       }
     }
-    if ((ptr = _FP_stristr (line, (char *)"total")) != NULL) {
+    if ((ptr = _FP_stristr (line, "total")) != NULL) {
       if ((thenew = ParseValue (ptr))) {
     theheaders->numparts = atoi (thenew);
       }
     }
   }
-  else if (_FP_strnicmp (line, (char *)"Content-Transfer-Encoding:", 26) == 0) {
+  else if (_FP_strnicmp (line, "Content-Transfer-Encoding:", 26) == 0) {
     if (theheaders->ctenc) return theheaders;
     variable = &theheaders->ctenc;
     value    = line+26;
     delimit  = ';';
   }
-  else if (_FP_strnicmp (line, (char *)"Content-Disposition:", 20) == 0) {
+  else if (_FP_strnicmp (line, "Content-Disposition:", 20) == 0) {
     /*
      * Some encoders mention the original filename as parameter to
      * Content-Type, others as parameter to Content-Disposition. We
      * do prefer the first solution, but accept this situation, too.
      * TODO: Read RFC1806
      */
-    if ((ptr = _FP_stristr (line, (char *)"name")) != NULL) {
+    if ((ptr = _FP_stristr (line, "name")) != NULL) {
       if (theheaders->fname == NULL && (thenew=ParseValue(ptr)) != NULL) {
     theheaders->fname = _FP_strdup (thenew);
       }
@@ -626,9 +626,9 @@ ScanData (FILE *datei, char *fname, int *errcode,
       break;
     }
     if (boundary != NULL && line[0] == 'C' && line[1] == 'o' &&
-    _FP_strnicmp (line, (char *)"Content-Type:", 13) == 0) {
+    _FP_strnicmp (line, "Content-Type:", 13) == 0) {
       ptr = ScanHeaderLine (datei, line);
-      p2  = (ptr)?_FP_stristr(ptr,(char *)"boundary"):NULL;
+      p2  = (ptr)?_FP_stristr(ptr,"boundary"):NULL;
       p3  = (p2)?ParseValue(p2):NULL;
 
       if (p3 && strcmp (p3, boundary) == 0) {
@@ -641,7 +641,7 @@ ScanData (FILE *datei, char *fname, int *errcode,
     }
 
     if (strncmp      (line, "begin ",       6) == 0 ||
-    _FP_strnicmp (line, (char *)"<pre>begin ", 11) == 0) {
+    _FP_strnicmp (line, "<pre>begin ", 11) == 0) {
       if ((result->begin || result->end ||
        result->uudet == B64ENCODED ||
        result->uudet == BH_ENCODED) && !uu_more_mime) {
@@ -702,19 +702,19 @@ ScanData (FILE *datei, char *fname, int *errcode,
      * Detect a UUDeview-Style header
      */
 
-    if ((_FP_strnicmp (line, (char *)"_=_ Part ", 9) == 0 ||
-    _FP_strnicmp (line, (char *)"section ", 8) == 0) &&
+    if ((_FP_strnicmp (line, "_=_ Part ", 9) == 0 ||
+    _FP_strnicmp (line, "section ", 8) == 0) &&
     result->uudet != YENC_ENCODED) {
       if (result->uudet) {
     fseek (datei, oldposition, SEEK_SET);
     break;
       }
       result->partno = atoi (line + 8);
-      if ((ptr = _FP_stristr (line, (char *)" of ")) != NULL) {
+      if ((ptr = _FP_stristr (line, " of ")) != NULL) {
         int maxpno = atoi (ptr + 4);
         if(maxpno != 0) result->maxpno = maxpno;
       }
-      if ((ptr = _FP_stristr (line, (char *)"of file ")) != NULL) {
+      if ((ptr = _FP_stristr (line, "of file ")) != NULL) {
     ptr += 8;
     while (isspace (*ptr)) ptr++;
     p2 = ptr;
@@ -740,8 +740,8 @@ ScanData (FILE *datei, char *fname, int *errcode,
      */
     if (boundary == NULL && !ismime && !uu_more_mime &&
     result->uudet != YENC_ENCODED) {
-      if (_FP_strnicmp (line, (char *)"Content-Type", 12) == 0 ||
-      _FP_strnicmp (line, (char *)"X-Orcl-Content-Type", 19) == 0) {
+      if (_FP_strnicmp (line, "Content-Type", 12) == 0 ||
+      _FP_strnicmp (line, "X-Orcl-Content-Type", 19) == 0) {
     /*
      * We use Content-Type to mark a new attachment and split the file.
      * However, we do not split if we haven't found anything encoded yet.
@@ -764,15 +764,15 @@ ScanData (FILE *datei, char *fname, int *errcode,
     ctline=0;
     hadct=1;
       }
-      if ((ptr = _FP_stristr (line, (char *)"number=")) && ctline<4) {
+      if ((ptr = _FP_stristr (line, "number=")) && ctline<4) {
     ptr += 7; if (*ptr == '"') ptr++;
     result->partno = atoi (ptr);
       }
-      if ((ptr = _FP_stristr (line, (char *)"total=")) && ctline<4) {
+      if ((ptr = _FP_stristr (line, "total=")) && ctline<4) {
     ptr += 6; if (*ptr == '"') ptr++;
     result->maxpno = atoi (ptr);
       }
-      if ((ptr = _FP_stristr (line, (char *)"name=")) && ctline<4) {
+      if ((ptr = _FP_stristr (line, "name=")) && ctline<4) {
     ptr += 5;
     while (isspace (*ptr)) ptr++;
     if (*ptr == '"' && *(ptr+1) && (p2 = strchr (ptr+2, '"')) != NULL) {
@@ -806,7 +806,7 @@ ScanData (FILE *datei, char *fname, int *errcode,
       *p2 = c;
     }
       }
-      if ((ptr = _FP_stristr (line, (char *)"id=")) && ctline<4) {
+      if ((ptr = _FP_stristr (line, "id=")) && ctline<4) {
     p2 = ptr += 3;
     if (*p2 == '"') {
       p2 = strchr (++ptr, '"');
@@ -850,14 +850,14 @@ ScanData (FILE *datei, char *fname, int *errcode,
 
     if (boundary == NULL && !ismime && !uu_more_mime && dflag <= 1 &&
     line[0] == '-' && line[1] == '-' && strlen(line+2)>10 &&
-    (((ptr = _FP_strrstr (line+2, (char *)"--")) == NULL) ||
+    (((ptr = _FP_strrstr (line+2, "--")) == NULL) ||
      (*(ptr+2) != '\012' && *(ptr+2) != '\015')) &&
-    _FP_strstr (line+2, (char *)"_=_") != NULL) {
+    _FP_strstr (line+2, "_=_") != NULL) {
       prevlinefirstchar = line[0];
       if (_FP_fgets (line, 255, datei) == NULL) {
     break;
       }
-      if (_FP_strnicmp (line, (char *)"Content-", 8) == 0) {
+      if (_FP_strnicmp (line, "Content-", 8) == 0) {
     /*
      * Okay, let's do it. This breaks out of ScanData. ScanPart will
      * recognize the boundary on the next call and use it.
@@ -872,7 +872,7 @@ ScanData (FILE *datei, char *fname, int *errcode,
      */
 
     if (strncmp (line, "=ybegin ", 8) == 0 &&
-    _FP_strstr (line, (char *)" name=") != NULL) {
+    _FP_strstr (line, " name=") != NULL) {
       if ((result->begin || result->end) && !uu_more_mime) {
     fseek (datei, oldposition, SEEK_SET);
     break;
@@ -883,7 +883,7 @@ ScanData (FILE *datei, char *fname, int *errcode,
        */
       
       _FP_free (result->filename);
-      ptr = _FP_strstr (line, (char *)" name=") + 6;
+      ptr = _FP_strstr (line, " name=") + 6;
       result->filename = _FP_strdup (ptr);
 
       while (isspace (result->filename[strlen(result->filename)-1]))
@@ -893,7 +893,7 @@ ScanData (FILE *datei, char *fname, int *errcode,
        * Determine size
        */
 
-      if ((ptr = _FP_strstr (line, (char *)" size=")) != NULL) {
+      if ((ptr = _FP_strstr (line, " size=")) != NULL) {
     ptr += 6;
     yefilesize = atoi (ptr);
       }
@@ -905,7 +905,7 @@ ScanData (FILE *datei, char *fname, int *errcode,
        * check for multipart file and read =ypart line
        */
 
-      if ((ptr = _FP_strstr (line, (char *)" part=")) != NULL) {
+      if ((ptr = _FP_strstr (line, " part=")) != NULL) {
     result->partno = atoi (ptr + 6);
 
     if (result->partno == 1) {
@@ -922,7 +922,7 @@ ScanData (FILE *datei, char *fname, int *errcode,
       break;
     }
 
-    if ((ptr = _FP_strstr (line, (char *)" end=")) == NULL) {
+    if ((ptr = _FP_strstr (line, " end=")) == NULL) {
       break;
     }
        
@@ -1362,7 +1362,7 @@ ScanData (FILE *datei, char *fname, int *errcode,
     return 2;
   else if (boundary && p3 &&
        line[0] == 'C' && line[1] == 'o' &&
-       _FP_strnicmp (line, (char *)"Content-Type:", 13) == 0 &&
+       _FP_strnicmp (line, "Content-Type:", 13) == 0 &&
        strcmp (p3, boundary) == 0)
     return 2;
   else if (IsKnownHeader (line))
@@ -1487,9 +1487,9 @@ ScanPart (FILE *datei, char *fname, int *errcode)
       }
 
       sstate.ismime            = 1;
-      sstate.envelope.mimevers = _FP_strdup ((char *)"1.0");
+      sstate.envelope.mimevers = _FP_strdup ("1.0");
       sstate.envelope.boundary = _FP_strdup (line+2);
-      sstate.envelope.ctype    = _FP_strdup ((char *)"multipart/mixed");
+      sstate.envelope.ctype    = _FP_strdup ("multipart/mixed");
       sstate.mimestate         = MS_SUBPART;
 
       *errcode = UURET_CONT;
@@ -1592,14 +1592,14 @@ ScanPart (FILE *datei, char *fname, int *errcode)
      * headers, don't be too picky about it.
      */
     if (sstate.envelope.ctype && sstate.envelope.mimevers==NULL  &&
-    _FP_stristr (sstate.envelope.ctype, (char *)"multipart") != NULL &&
+    _FP_stristr (sstate.envelope.ctype, "multipart") != NULL &&
     sstate.envelope.boundary != NULL) {
-      sstate.envelope.mimevers = _FP_strdup ((char *)"1.0");
+      sstate.envelope.mimevers = _FP_strdup ("1.0");
       hcount = hlcount.afternl;
     }
     else if (sstate.envelope.mimevers==NULL && sstate.envelope.ctype &&
          sstate.envelope.fname && sstate.envelope.ctenc) {
-      sstate.envelope.mimevers = _FP_strdup ((char *)"1.0");
+      sstate.envelope.mimevers = _FP_strdup ("1.0");
       hcount = hlcount.afternl;
     }
 
@@ -1612,13 +1612,13 @@ ScanPart (FILE *datei, char *fname, int *errcode)
     else if (sstate.envelope.mimevers != NULL) {
       /* this is a MIME file. check the Content-Type */
       sstate.ismime = 1;
-      if (_FP_stristr (sstate.envelope.ctype, (char *)"multipart") != NULL) {
+      if (_FP_stristr (sstate.envelope.ctype, "multipart") != NULL) {
     if (sstate.envelope.boundary == NULL) {
       UUMessage (uuscan_id, __LINE__, UUMSG_WARNING,
              uustring (S_MIME_NO_BOUNDARY));
       sstate.mimestate = MS_BODY;
       _FP_free (sstate.envelope.ctype);
-      sstate.envelope.ctype = _FP_strdup ((char *)"text/plain");
+      sstate.envelope.ctype = _FP_strdup ("text/plain");
     }
     else {
       sstate.mimestate = MS_PREAMBLE;
@@ -1718,7 +1718,7 @@ ScanPart (FILE *datei, char *fname, int *errcode)
       result->filename = _FP_strdup (line);
       result->origin   = _FP_strdup (sstate.envelope.from);
       result->mimeid   = _FP_strdup (sstate.envelope.mimeid);
-      result->mimetype = _FP_strdup ((char *)"text/plain");
+      result->mimetype = _FP_strdup ("text/plain");
       result->mode     = 0644;
       result->uudet    = PT_ENCODED;    /* plain text */
       result->sfname   = _FP_strdup (fname);
@@ -1791,7 +1791,7 @@ ScanPart (FILE *datei, char *fname, int *errcode)
     result->filename = _FP_strdup (line);
     result->origin   = _FP_strdup (sstate.envelope.from);
     result->mimeid   = _FP_strdup (sstate.envelope.mimeid);
-    result->mimetype = _FP_strdup ((char *)"text/plain");
+    result->mimetype = _FP_strdup ("text/plain");
     result->mode     = 0644;
     result->uudet    = PT_ENCODED;  /* plain text */
     result->sfname   = _FP_strdup (fname);
@@ -1856,7 +1856,7 @@ ScanPart (FILE *datei, char *fname, int *errcode)
       /* check for begin and encoded data only at outermost level */
       if (mssdepth == 0 && !uu_more_mime) {
     if (strncmp      (line, "begin ",       6) == 0 ||
-        _FP_strnicmp (line, (char *)"<pre>begin ", 11) == 0) {
+        _FP_strnicmp (line, "<pre>begin ", 11) == 0) {
       preenc  = prevpos;
       begflag = 1;
     }
@@ -1960,7 +1960,7 @@ ScanPart (FILE *datei, char *fname, int *errcode)
       result->filename = _FP_strdup (line);
       result->origin   = _FP_strdup (sstate.envelope.from);
       result->mimeid   = _FP_strdup (sstate.envelope.mimeid);
-      result->mimetype = _FP_strdup ((char *)"text/plain");
+      result->mimetype = _FP_strdup ("text/plain");
       result->mode     = 0644;
       result->uudet    = PT_ENCODED;    /* plain text */
       result->sfname   = _FP_strdup (fname);
@@ -2078,7 +2078,7 @@ ScanPart (FILE *datei, char *fname, int *errcode)
       fseek (datei, prevpos, SEEK_SET);
     }
 
-    if (_FP_stristr (localenv.ctype, (char *)"multipart") != NULL) {
+    if (_FP_stristr (localenv.ctype, "multipart") != NULL) {
       /* oh no, not again */
       if (mssdepth >= MSMAXDEPTH) {
     /* Argh, what an isane message. Treat as plain text */
@@ -2120,23 +2120,23 @@ ScanPart (FILE *datei, char *fname, int *errcode)
      * would then be correctly typed as `text/plain'.
      */
 
-    if (_FP_stristr (localenv.ctenc, (char *)"base64") != NULL)
+    if (_FP_stristr (localenv.ctenc, "base64") != NULL)
       result->uudet = B64ENCODED;
-    else if (_FP_stristr (localenv.ctenc, (char *)"x-uue") != NULL) {
+    else if (_FP_stristr (localenv.ctenc, "x-uue") != NULL) {
       result->uudet = UU_ENCODED;
       result->begin = result->end = 1;
     }
-    else if (_FP_stristr (localenv.ctenc, (char *)"x-yenc") != NULL) {
+    else if (_FP_stristr (localenv.ctenc, "x-yenc") != NULL) {
       result->uudet = YENC_ENCODED;
       result->begin = result->end = 1;
     }
-    else if (_FP_stristr (localenv.ctenc, (char *)"quoted-printable") != NULL)
+    else if (_FP_stristr (localenv.ctenc, "quoted-printable") != NULL)
       result->uudet = QP_ENCODED;
-    else if (_FP_stristr (localenv.ctenc, (char *)"7bit") != NULL ||
-         _FP_stristr (localenv.ctenc, (char *)"8bit") != NULL)
+    else if (_FP_stristr (localenv.ctenc, "7bit") != NULL ||
+         _FP_stristr (localenv.ctenc, "8bit") != NULL)
       result->uudet = PT_ENCODED;
-    else if (_FP_stristr (localenv.ctype, (char *)"multipart") != NULL ||
-         _FP_stristr (localenv.ctype, (char *)"message")   != NULL)
+    else if (_FP_stristr (localenv.ctype, "multipart") != NULL ||
+         _FP_stristr (localenv.ctype, "message")   != NULL)
       result->uudet = PT_ENCODED;
 
     /*
@@ -2176,9 +2176,9 @@ ScanPart (FILE *datei, char *fname, int *errcode)
      * Content-Type: multipart/... boundary="same-boundary"
      */
     if (line[0] == 'C' && line[1] == 'o' &&
-        _FP_strnicmp (line, (char *)"Content-Type:", 13) == 0) {
+        _FP_strnicmp (line, "Content-Type:", 13) == 0) {
       ptr1 = ScanHeaderLine (datei, line);
-      ptr2 = (ptr1)?_FP_stristr(ptr1,(char *)"boundary"):NULL;
+      ptr2 = (ptr1)?_FP_stristr(ptr1,"boundary"):NULL;
       ptr1 = (ptr2)?ParseValue(ptr2):NULL;
       if (ptr1 && strcmp (ptr1, sstate.envelope.boundary) == 0)
         break;
@@ -2336,9 +2336,9 @@ ScanPart (FILE *datei, char *fname, int *errcode)
       strncmp (line+2, sstate.envelope.boundary, blen) == 0)
     break;
       if (line[0] == 'C' && line[1] == 'o' &&
-      _FP_strnicmp (line, (char *)"Content-Type:", 13) == 0) {
+      _FP_strnicmp (line, "Content-Type:", 13) == 0) {
     ptr1 = ScanHeaderLine (datei, line);
-    ptr2 = (ptr1)?_FP_stristr(ptr1,(char *)"boundary"):NULL;
+    ptr2 = (ptr1)?_FP_stristr(ptr1,"boundary"):NULL;
     ptr1 = (ptr2)?ParseValue(ptr2):NULL;
     if (ptr1 && strcmp (ptr1, sstate.envelope.boundary) == 0)
       break;
@@ -2419,7 +2419,7 @@ ScanPart (FILE *datei, char *fname, int *errcode)
      */
 
     if (strcmp (localenv.mimevers, "1.0") == 0 &&
-    _FP_stristr (localenv.ctype, (char *)"text") != NULL &&
+    _FP_stristr (localenv.ctype, "text") != NULL &&
     sstate.ismime && sstate.mimestate == MS_SUBPART &&
     !uu_desperate) {
       if (result->uudet == UU_ENCODED && !(result->begin || result->end)) {
@@ -2451,7 +2451,7 @@ ScanPart (FILE *datei, char *fname, int *errcode)
     }
     if (result->mimetype) _FP_free (result->mimetype);
     if (result->uudet) {
-      if (_FP_stristr (localenv.ctype, (char *)"text") != NULL &&
+      if (_FP_stristr (localenv.ctype, "text") != NULL &&
       result->uudet != QP_ENCODED && result->uudet != PT_ENCODED)
     result->mimetype = NULL; /* better don't set it */
       else
@@ -2496,8 +2496,8 @@ ScanPart (FILE *datei, char *fname, int *errcode)
    */
 
   if (sstate.isfolder && sstate.ismime && sstate.mimestate == MS_BODY &&
-      _FP_stristr (sstate.envelope.ctype, (char *)"message") != NULL &&
-      _FP_stristr (sstate.envelope.ctype, (char *)"partial") != NULL) {
+      _FP_stristr (sstate.envelope.ctype, "message") != NULL &&
+      _FP_stristr (sstate.envelope.ctype, "partial") != NULL) {
 
     result->startpos = ftell (datei);
 
@@ -2544,7 +2544,7 @@ ScanPart (FILE *datei, char *fname, int *errcode)
        * Examine local header. We're mostly interested in the Content-Type
        * and the Content-Transfer-Encoding.
        */
-      if (_FP_stristr (localenv.ctype, (char *)"multipart") != NULL) {
+      if (_FP_stristr (localenv.ctype, "multipart") != NULL) {
     UUMessage (uuscan_id, __LINE__, UUMSG_WARNING,
            uustring (S_MIME_PART_MULTI));
       }
@@ -2561,25 +2561,25 @@ ScanPart (FILE *datei, char *fname, int *errcode)
       if (localenv.ctype)
     result->mimetype = _FP_strdup (localenv.ctype);
       else
-    result->mimetype = _FP_strdup ((char *)"text/plain");
+    result->mimetype = _FP_strdup ("text/plain");
 
-      if (_FP_stristr (localenv.ctenc, (char *)"quoted-printable") != NULL)
+      if (_FP_stristr (localenv.ctenc, "quoted-printable") != NULL)
     result->uudet = QP_ENCODED;
-      else if (_FP_stristr (localenv.ctenc, (char *)"base64") != NULL)
+      else if (_FP_stristr (localenv.ctenc, "base64") != NULL)
     result->uudet = B64ENCODED;
-      else if (_FP_stristr (localenv.ctenc, (char *)"x-uue") != NULL) {
+      else if (_FP_stristr (localenv.ctenc, "x-uue") != NULL) {
     result->uudet = UU_ENCODED;
     result->begin = result->end = 1;
       }
-      else if (_FP_stristr (localenv.ctenc, (char *)"x-yenc") != NULL) {
+      else if (_FP_stristr (localenv.ctenc, "x-yenc") != NULL) {
     result->uudet = YENC_ENCODED;
     result->begin = result->end = 1;
       }
-      else if (_FP_stristr (localenv.ctenc, (char *)"7bit") != NULL ||
-           _FP_stristr (localenv.ctenc, (char *)"8bit") != NULL)
+      else if (_FP_stristr (localenv.ctenc, "7bit") != NULL ||
+           _FP_stristr (localenv.ctenc, "8bit") != NULL)
     result->uudet = PT_ENCODED;
-      else if (_FP_stristr (localenv.ctype, (char *)"multipart") != NULL ||
-           _FP_stristr (localenv.ctype, (char *)"message")   != NULL)
+      else if (_FP_stristr (localenv.ctype, "multipart") != NULL ||
+           _FP_stristr (localenv.ctype, "message")   != NULL)
     result->uudet = PT_ENCODED;
 
       /*
@@ -2616,8 +2616,8 @@ ScanPart (FILE *datei, char *fname, int *errcode)
       hcount = lcount = 0;
       prevpos = ftell (datei);
 
-      if (_FP_stristr (localenv.ctype, (char *)"message") != NULL &&
-      _FP_stristr (localenv.ctype, (char *)"rfc822")  != NULL) {
+      if (_FP_stristr (localenv.ctype, "message") != NULL &&
+      _FP_stristr (localenv.ctype, "rfc822")  != NULL) {
     /*
      * skip over empty lines and local header
      */
@@ -2791,11 +2791,11 @@ ScanPart (FILE *datei, char *fname, int *errcode)
 
   if (sstate.isfolder && sstate.ismime &&
       sstate.mimestate == MS_BODY &&
-      (_FP_stristr (sstate.envelope.ctenc, (char *)"quoted-printable") != NULL ||
-       _FP_stristr (sstate.envelope.ctenc, (char *)"base64")           != NULL ||
-       _FP_stristr (sstate.envelope.ctenc, (char *)"x-uue")            != NULL ||
-       _FP_stristr (sstate.envelope.ctenc, (char *)"x-yenc")           != NULL ||
-       _FP_stristr (sstate.envelope.ctype, (char *)"message")          != NULL ||
+      (_FP_stristr (sstate.envelope.ctenc, "quoted-printable") != NULL ||
+       _FP_stristr (sstate.envelope.ctenc, "base64")           != NULL ||
+       _FP_stristr (sstate.envelope.ctenc, "x-uue")            != NULL ||
+       _FP_stristr (sstate.envelope.ctenc, "x-yenc")           != NULL ||
+       _FP_stristr (sstate.envelope.ctype, "message")          != NULL ||
        sstate.envelope.fname != NULL)) {
 
     if (sstate.envelope.subject)
@@ -2806,24 +2806,24 @@ ScanPart (FILE *datei, char *fname, int *errcode)
     if (sstate.envelope.ctype)
       result->mimetype = _FP_strdup (sstate.envelope.ctype);
     else
-      result->mimetype = _FP_strdup ((char *)"text/plain");
+      result->mimetype = _FP_strdup ("text/plain");
 
-    if (_FP_stristr (sstate.envelope.ctenc, (char *)"quoted-printable") != NULL)
+    if (_FP_stristr (sstate.envelope.ctenc, "quoted-printable") != NULL)
       result->uudet = QP_ENCODED;
-    else if (_FP_stristr (sstate.envelope.ctenc, (char *)"base64") != NULL)
+    else if (_FP_stristr (sstate.envelope.ctenc, "base64") != NULL)
       result->uudet = B64ENCODED;
-    else if (_FP_stristr (sstate.envelope.ctenc, (char *)"x-uue") != NULL) {
+    else if (_FP_stristr (sstate.envelope.ctenc, "x-uue") != NULL) {
       result->uudet = UU_ENCODED;
       result->begin = result->end = 1;
     }
-    else if (_FP_stristr (sstate.envelope.ctenc, (char *)"x-yenc") != NULL) {
+    else if (_FP_stristr (sstate.envelope.ctenc, "x-yenc") != NULL) {
       result->uudet = YENC_ENCODED;
     }
-    else if (_FP_stristr (sstate.envelope.ctenc, (char *)"7bit") != NULL ||
-         _FP_stristr (sstate.envelope.ctenc, (char *)"8bit") != NULL)
+    else if (_FP_stristr (sstate.envelope.ctenc, "7bit") != NULL ||
+         _FP_stristr (sstate.envelope.ctenc, "8bit") != NULL)
       result->uudet = PT_ENCODED;
-    else if (_FP_stristr (sstate.envelope.ctype, (char *)"multipart") != NULL ||
-         _FP_stristr (sstate.envelope.ctype, (char *)"message")   != NULL ||
+    else if (_FP_stristr (sstate.envelope.ctype, "multipart") != NULL ||
+         _FP_stristr (sstate.envelope.ctype, "message")   != NULL ||
          sstate.envelope.fname != NULL)
       result->uudet = PT_ENCODED;
 
@@ -2852,8 +2852,8 @@ ScanPart (FILE *datei, char *fname, int *errcode)
       hcount = lcount = 0;
       prevpos = ftell (datei);
 
-      if (_FP_stristr (sstate.envelope.ctype, (char *)"message") != NULL &&
-      _FP_stristr (sstate.envelope.ctype, (char *)"rfc822")  != NULL) {
+      if (_FP_stristr (sstate.envelope.ctype, "message") != NULL &&
+      _FP_stristr (sstate.envelope.ctype, "rfc822")  != NULL) {
     /*
      * skip over empty lines and local header
      */
@@ -3015,7 +3015,7 @@ ScanPart (FILE *datei, char *fname, int *errcode)
    */
 
   if ((sstate.envelope.ctype == NULL ||
-       _FP_stristr (sstate.envelope.ctype, (char *)"multipart") != NULL) &&
+       _FP_stristr (sstate.envelope.ctype, "multipart") != NULL) &&
       !uu_more_mime) {
     prevpos = ftell (datei);
     while (!feof (datei)) {
@@ -3029,10 +3029,10 @@ ScanPart (FILE *datei, char *fname, int *errcode)
     }
     if (line[0] == '-' && line[1] == '-' &&
     !IsLineEmpty (line+2) && !feof (datei)) {
-      ptr1 = _FP_strrstr (line+2, (char *)"--");
+      ptr1 = _FP_strrstr (line+2, "--");
       ptr2 = ScanHeaderLine (datei, NULL);
       if ((ptr1 == NULL || (*(ptr1+2) != '\012' && *(ptr1+2) != '\015')) &&
-      ptr2 && _FP_strnicmp (ptr2, (char *)"Content-", 8) == 0) {
+      ptr2 && _FP_strnicmp (ptr2, "Content-", 8) == 0) {
     /*
      * hmm, okay, let's do it!
      */
@@ -3047,7 +3047,7 @@ ScanPart (FILE *datei, char *fname, int *errcode)
       ptr1++;
     *ptr1 = '\0';
 
-    sstate.envelope.mimevers = _FP_strdup ((char *)"1.0");
+    sstate.envelope.mimevers = _FP_strdup ("1.0");
     sstate.envelope.boundary = _FP_strdup (line+2);
     
     /*

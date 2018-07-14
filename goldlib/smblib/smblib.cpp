@@ -90,7 +90,7 @@ int SMBCALL smb_ver(void)
 
 char* SMBCALL smb_lib_ver(void)
 {
-    return((char *)SMBLIB_VERSION);
+    return(SMBLIB_VERSION);
 }
 
 /****************************************************************************/

@@ -69,7 +69,7 @@ IEclass::IEclass(int __scol, int __ecol, int __srow, int __erow, int __border) {
   msgptr       = NULL;
   quitnow      = NO;
   thisrow      = 0;
-  unfinished   = (char *)"+$!$+ GoldED Internal Editor: Unfinished Message!";
+  unfinished   = "+$!$+ GoldED Internal Editor: Unfinished Message!";
   blockcol     = -1;
   selecting    = NO;
 
@@ -960,7 +960,7 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt) {
       isPipe = YES;
       mktemp(strxcpy(tmpfile, AddPath(CFG->temppath, "GIXXXXXX"), sizeof(Path)));
       strxmerge(cmdline, sizeof(Path), filenamebuf.c_str()+1, " > ", tmpfile, NULL);
-      ShellToDos(cmdline, (char *)"", BLACK_|_BLACK, NO);
+      ShellToDos(cmdline, "", BLACK_|_BLACK, NO);
       filenamebuf = tmpfile;
       fileselected = true;
     } else {

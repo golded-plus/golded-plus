@@ -583,7 +583,7 @@ int ExternUtil(GMsg *msg, const ExtUtil &extutil)
   if(extutil.options & EXTUTIL_PAUSE)
     pauseval = 1;
 
-  ShellToDos(cmdline.c_str(), (char *)"",
+  ShellToDos(cmdline.c_str(), "",
     extutil.options & EXTUTIL_CLS ? LGREY_|_BLACK : BLACK_|_BLACK,
     extutil.options & EXTUTIL_CURSOR,
     pauseval
@@ -839,7 +839,7 @@ void ReadPeekURLs(GMsg* msg)
       if (it->handler.options & EXTUTIL_PAUSE)
         pauseval = 1;
 
-      ShellToDos(cmdline.c_str(), (char *)"",
+      ShellToDos(cmdline.c_str(), "",
         it->handler.options & EXTUTIL_CLS ? LGREY_|_BLACK : BLACK_|_BLACK,
         it->handler.options & EXTUTIL_CURSOR,
         pauseval

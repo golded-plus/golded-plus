@@ -346,7 +346,7 @@ void GPickArealist::open() {
   int active=NO;
 
   #if defined(GUTLOS_FUNCS)
-  g_set_ostitle_name((char *)"Arealist",0);
+  g_set_ostitle_name("Arealist",0);
   #endif
 
   if(ypos) {
