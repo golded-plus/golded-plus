@@ -214,7 +214,11 @@ class gnfile: gfile
                                      for( unsigned n=1; n<__size; n++ ) { 
                                          v += uint32_t(c[n])>>(8*n);
                                      }
+#ifdef unix
+                                     delete[] c;
+#else
                                      delete(c);
+#endif
                                      memmove(&v,__ptr,__size);
                                      return s;
                                    }
@@ -273,15 +277,15 @@ class gnfile: gfile
 
   gnfile& operator<< (uint8_t o)   { Fwrite(&o, sizeof(o)); return *this; }
   gnfile& operator<< (uint16_t o)  { uint8_t o8;
-                                     o8 = uint8_t(o && 0xff); Fwrite(&o8, sizeof(o8));
-                                     o8 = uint8_t((o<<8) && 0xff); Fwrite(&o8, sizeof(o8));
+                                     o8 = uint8_t(o & 0xff); Fwrite(&o8, sizeof(o8));
+                                     o8 = uint8_t((o<<8) & 0xff); Fwrite(&o8, sizeof(o8));
                                      return *this;
                                    }
   gnfile& operator<< (uint32_t o)  { uint8_t o8;
-                                     o8 = uint8_t(o && 0xff); Fwrite(&o8, sizeof(o8));
-                                     o8 = uint8_t((o<<8) && 0xff); Fwrite(&o8, sizeof(o8));
-                                     o8 = uint8_t((o<<16) && 0xff); Fwrite(&o8, sizeof(o8));
-                                     o8 = uint8_t((o<<24) && 0xff); Fwrite(&o8, sizeof(o8));
+                                     o8 = uint8_t(o & 0xff); Fwrite(&o8, sizeof(o8));
+                                     o8 = uint8_t((o<<8) & 0xff); Fwrite(&o8, sizeof(o8));
+                                     o8 = uint8_t((o<<16) & 0xff); Fwrite(&o8, sizeof(o8));
+                                     o8 = uint8_t((o<<24) & 0xff); Fwrite(&o8, sizeof(o8));
                                      return *this;
                                    }
 /*
