@@ -310,7 +310,7 @@ void CmfMsgs(GMsg* msg, bool torecycle)
   char* markstr = NULL;
   char* progstr = NULL;
   char* statstr = NULL;
-  char* tokenstr = (char *)"";
+  char* tokenstr = "";
   int loadmode = GMSG_UNS_NOT_RCV;
   switch(cmf) {
     case MODE_COPY:
@@ -319,7 +319,7 @@ void CmfMsgs(GMsg* msg, bool torecycle)
       markstr = LNG->Copy;
       progstr = LNG->Copying;
       statstr = LNG->CopyingMsg;
-      tokenstr = (char *)"ST_COPYINGMSG";
+      tokenstr = "ST_COPYINGMSG";
       loadmode |= GMSG_COPY;
       break;
     case MODE_MOVE:
@@ -332,10 +332,10 @@ void CmfMsgs(GMsg* msg, bool torecycle)
       if (torecycle)
       {
         GFTRK("DeleteMsgs");
-        pickstr = (char *)">>Delete To Area: ";
-        markstr = (char *)" Delete ";
-        progstr = (char *)" Deleting ";
-        statstr = (char *)"Deleting Msg %u of %u to %s";
+        pickstr = ">>Delete To Area: ";
+        markstr = " Delete ";
+        progstr = " Deleting ";
+        statstr = "Deleting Msg %u of %u to %s";
       }
       else
       {
@@ -344,7 +344,7 @@ void CmfMsgs(GMsg* msg, bool torecycle)
         markstr = LNG->Move;
         progstr = LNG->Moving;
         statstr = LNG->MovingMsg;
-        tokenstr = (char *)"ST_MOVINGMSG";
+        tokenstr = "ST_MOVINGMSG";
       }
 
       loadmode |= GMSG_MOVE;
@@ -352,9 +352,9 @@ void CmfMsgs(GMsg* msg, bool torecycle)
     case MODE_FORWARD:
       GFTRK("ForwardMsgs");
       pickstr = LNG->ForwardArea;
-      markstr = (char *)" Forward ";
-      progstr = (char *)" Forwarding ";
-      statstr = (char *)"Forwarding Msg %u of %u to %s";
+      markstr = " Forward ";
+      progstr = " Forwarding ";
+      statstr = "Forwarding Msg %u of %u to %s";
       break;
     case MODE_UPDATE:
       GFTRK("ToggleSent");

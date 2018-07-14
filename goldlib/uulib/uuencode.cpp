@@ -60,7 +60,7 @@
 #endif
 #endif
 
-char * uuencode_id = (char *)"$Id$";
+char * uuencode_id = "$Id$";
 
 #if 0
 /*
@@ -192,22 +192,22 @@ typedef struct {
  */
 
 static mimemap mimetable[] = {
-    { (char *)"gif",  (char *)"image/gif"        }, /* Grafics Interchange Format  */
-    { (char *)"jpg",  (char *)"image/jpeg"       }, /* JFIF encoded files          */
-    { (char *)"jpeg", (char *)"image/jpeg"       },
-    { (char *)"tif",  (char *)"image/tiff"       }, /* Tag Image File Format       */
-    { (char *)"tiff", (char *)"image/tiff"       },
-    { (char *)"cgm",  (char *)"image/cgm"        }, /* Computer Graphics Metafile  */
-    { (char *)"au",   (char *)"audio/basic"      }, /* 8kHz ulaw audio data        */
-    { (char *)"mov",  (char *)"video/quicktime"  }, /* Apple Quicktime             */
-    { (char *)"qt",   (char *)"video/quicktime"  }, /* Also infrequently used      */
-    { (char *)"mpeg", (char *)"video/mpeg"       }, /* Motion Picture Expert Group */
-    { (char *)"mpg",  (char *)"video/mpeg"       },
-    { (char *)"mp2",  (char *)"video/mpeg"       }, /* dito, MPEG-2 encoded files  */
-    { (char *)"mp3",  (char *)"audio/mpeg"       }, /* dito, MPEG-3 encoded files  */
-    { (char *)"ps",   (char *)"application/postscript" }, /* Postscript Language   */
-    { (char *)"zip",  (char *)"application/zip"  }, /* ZIP archive                 */
-    { (char *)"doc",  (char *)"application/msword"},/* assume Microsoft Word       */
+    { "gif",  "image/gif"        }, /* Grafics Interchange Format  */
+    { "jpg",  "image/jpeg"       }, /* JFIF encoded files          */
+    { "jpeg", "image/jpeg"       },
+    { "tif",  "image/tiff"       }, /* Tag Image File Format       */
+    { "tiff", "image/tiff"       },
+    { "cgm",  "image/cgm"        }, /* Computer Graphics Metafile  */
+    { "au",   "audio/basic"      }, /* 8kHz ulaw audio data        */
+    { "mov",  "video/quicktime"  }, /* Apple Quicktime             */
+    { "qt",   "video/quicktime"  }, /* Also infrequently used      */
+    { "mpeg", "video/mpeg"       }, /* Motion Picture Expert Group */
+    { "mpg",  "video/mpeg"       },
+    { "mp2",  "video/mpeg"       }, /* dito, MPEG-2 encoded files  */
+    { "mp3",  "audio/mpeg"       }, /* dito, MPEG-3 encoded files  */
+    { "ps",   "application/postscript" }, /* Postscript Language   */
+    { "zip",  "application/zip"  }, /* ZIP archive                 */
+    { "doc",  "application/msword"},/* assume Microsoft Word       */
     { NULL,   NULL               }
 };
 
@@ -697,7 +697,7 @@ UUEncodeMulti (FILE *outfile, FILE *infile, char *infname, int encoding,
   }
 
   if (mimetype == NULL && (encoding == PT_ENCODED || encoding == QP_ENCODED)) {
-    mimetype = (char *)"text/plain";
+    mimetype = "text/plain";
   }
 
   /*
@@ -884,7 +884,7 @@ UUEncodePartial (FILE *outfile, FILE *infile,
     }
 
     if (mimetype == NULL && (encoding==PT_ENCODED || encoding==QP_ENCODED)) {
-      mimetype = (char *)"text/plain";
+      mimetype = "text/plain";
     }
 
     /*
@@ -1535,7 +1535,7 @@ UUE_PrepSingleExt (FILE *outfile, FILE *infile,
     mimetype = NULL;
 
   if (mimetype == NULL && (encoding == PT_ENCODED || encoding == QP_ENCODED)) {
-    mimetype = (char *)"text/plain";
+    mimetype = "text/plain";
   }
 
   if ((subline = (char *) malloc (len)) == NULL) {

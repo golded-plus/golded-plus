@@ -42,11 +42,11 @@ void SaveLines(int mode, const char* savefile, GMsg* msg, int margin, bool clip)
   char* prnacc;
 
   if(mode == MODE_APPEND) {
-    prnacc = (char *)"at";
+    prnacc = "at";
     mode = MODE_WRITE;
   }
   else
-    prnacc = (char *)"wt";
+    prnacc = "wt";
 
   strcpy(fnam, "PRN");
   if(mode == MODE_WRITE and streql(savefile, "\001PRN"))

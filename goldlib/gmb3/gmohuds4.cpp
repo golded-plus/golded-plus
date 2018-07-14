@@ -123,7 +123,7 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::save_message(i
     _hdridx = (msgn_t)(wide->fhhdr.FileLength()/sizeof(HudsHdr));
   }
   else {
-    _hdridx = get_hdr_idx(__msg, (char *)__FILE__, __LINE__);
+    _hdridx = get_hdr_idx(__msg, __FILE__, __LINE__);
   }
 
   __hdr.board = (board_t)board();
@@ -362,7 +362,7 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::update_timesre
 
   lock();
 
-  msgn_t hdridx = get_hdr_idx(msg, (char *)__FILE__, __LINE__);
+  msgn_t hdridx = get_hdr_idx(msg, __FILE__, __LINE__);
   wide->fhhdr.LseekSet(hdridx*sizeof(HudsHdr));
 
   HudsHdr hdr;

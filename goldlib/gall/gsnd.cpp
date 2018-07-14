@@ -289,7 +289,7 @@ int gsnd::close() {
   #elif defined(GUTLOS_FUNCS)
 
   if(file_open) {
-    g_send_mci_string((char *)"close noise wait", NULL);
+    g_send_mci_string("close noise wait", NULL);
     file_open = false;
     return 0;
   }
@@ -316,8 +316,8 @@ int gsnd::play(uint sample_rate) {
   NW(sample_rate);
 
   if(file_open) {
-    g_send_mci_string((char *)"seek noise to start", NULL);
-    g_send_mci_string((char *)"play noise", NULL);
+    g_send_mci_string("seek noise to start", NULL);
+    g_send_mci_string("play noise", NULL);
     return 0;
   }
   return 1;
@@ -342,7 +342,7 @@ int gsnd::stop() {
   #elif defined(GUTLOS_FUNCS)
 
   if(file_open) {
-    g_send_mci_string((char *)"stop noise wait", NULL);
+    g_send_mci_string("stop noise wait", NULL);
     return 0;
   }
   return 1;
@@ -366,7 +366,7 @@ int gsnd::pause() {
   #elif defined(GUTLOS_FUNCS)
 
   if(file_open) {
-    g_send_mci_string((char *)"pause noise", NULL);
+    g_send_mci_string("pause noise", NULL);
     return 0;
   }
   return 1;
@@ -390,7 +390,7 @@ int gsnd::resume() {
   #elif defined(GUTLOS_FUNCS)
 
   if(file_open) {
-    g_send_mci_string((char *)"resume noise", NULL);
+    g_send_mci_string("resume noise", NULL);
     return 0;
   }
   return 1;
@@ -483,7 +483,7 @@ int gsnd::is_playing() {
 
   if (file_open)
   {
-    if(g_send_mci_string((char *)"status noise mode wait", return_buffer))
+    if(g_send_mci_string("status noise mode wait", return_buffer))
       return strieql(return_buffer, "playing") or strieql(return_buffer, "seeking");
   }
 
