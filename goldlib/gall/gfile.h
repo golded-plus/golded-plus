@@ -214,7 +214,11 @@ class gnfile: gfile
                                      for( unsigned n=1; n<__size; n++ ) { 
                                          v += uint32_t(c[n])>>(8*n);
                                      }
+#ifdef unix
+                                     delete[] c;
+#else
                                      delete(c);
+#endif
                                      memmove(&v,__ptr,__size);
                                      return s;
                                    }
