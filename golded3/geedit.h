@@ -119,8 +119,8 @@ extern Path Edit__exportfilename;
 #define _test_halt(__t)
 #define _test_haltab(__t, __a, __b)
 #else
-#define _test_halt(__t)             if(__t) { debugtest((char *)#__t,   0,   0, (char *)__FILE__, __LINE__, false); }
-#define _test_haltab(__t, __a, __b) if(__t) { debugtest((char *)#__t, __a, __b, (char *)__FILE__, __LINE__, true);  }
+#define _test_halt(__t)             if(__t) { debugtest(#__t,   0,   0, __FILE__, __LINE__, false); }
+#define _test_haltab(__t, __a, __b) if(__t) { debugtest(#__t, __a, __b, __FILE__, __LINE__, true);  }
 #endif
 
 

@@ -81,7 +81,7 @@
 #include <fptools.h>
 #include <uustring.h>
 
-char * uulib_id = (char *)"$Id$";
+char * uulib_id = "$Id$";
 
 #ifdef SYSTEM_WINDLL
 BOOL _export WINAPI

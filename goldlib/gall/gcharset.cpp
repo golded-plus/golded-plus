@@ -112,11 +112,11 @@ const char *get_dos_charset(const char *cpfrom)
   static const struct _cpmap {
     char *from, *to;
   } cpmap[] = {
-    { (char *)"IBMPC", (char *)"CP850" },
-    { (char *)"LATIN-1", (char *)"CP437" },
-    { (char *)"KOI8", (char *)"CP866" },
-    { (char *)"KOI8-R", (char *)"CP866" },
-    { (char *)"KOI8-U", (char *)"CP1125" },
+    { "IBMPC", "CP850" },
+    { "LATIN-1", "CP437" },
+    { "KOI8", "CP866" },
+    { "KOI8-R", "CP866" },
+    { "KOI8-U", "CP1125" },
     { NULL, NULL }
   };
 

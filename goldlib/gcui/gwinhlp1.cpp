@@ -306,10 +306,10 @@ static void disp_cat() {
       wmessage(_help, TP_BORD, whelp.ecol-whelp.scol-strlen(_help), whelp.winattr);
 
       // update bottom border of window with PgUp/PgDn info
-      if(page and not end)      p = (char *)" PgUp/PgDn ";
-      else if(not page and end) p = (char *)"";
-      else if(page and end)     p = (char *)" PgUp ";
-      else                      p = (char *)" PgDn ";
+      if(page and not end)      p = " PgUp/PgDn ";
+      else if(not page and end) p = "";
+      else if(page and end)     p = " PgUp ";
+      else                      p = " PgDn ";
       wmessage(p,BT_BORD,whelp.ecol-whelp.scol-strlen(p),whelp.winattr);
       wmessage(" ESC ",BT_BORD,1,whelp.winattr);
 
