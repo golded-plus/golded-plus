@@ -399,7 +399,7 @@ static void w_brag() {
   wprints(4, 46-strlen(__gver_longpid__)-1-strlen(__gver_ver__), C_BRAGW, __gver_longpid__);
   wprints(4, 46-strlen(__gver_ver__), C_BRAGW, __gver_ver__);
 
-  wprints(5, 12, C_BRAGW, "http://golded-plus.sourceforge.net");
+  wprints(5, 12, C_BRAGW, "https://github.com/golded-plus");
 
   wprints(0, 48, C_BRAGW, " GoldED+  Message Editor ");
   gsprintf(PRINTF_DECLARE_BUFFER(buf), " Copyright (C) 1990-%s ",__gver_date__+7);
