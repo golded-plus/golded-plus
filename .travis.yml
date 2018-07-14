@@ -11,4 +11,5 @@ compiler:
 before_install:
   - cp golded3/mygolded.__h golded3/mygolded.h
 script:
-  - CPPFLAGS="-Wno-keyword-macro -Wno-c++11-compat-deprecated-writable-strings -Wno-write-strings" make
+  - if [[ "CXX" == "g++" ]]; then CPPFLAGS="-Wno-write-strings -Wno-unused-result" make; fi
+  - if [[ "CXX" == "clang++" ]]; then CPPFLAGS="-Wno-keyword-macro -Wno-c++11-compat-deprecated-writable-strings" make; fi
