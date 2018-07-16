@@ -1,4 +1,3 @@
-
 //  ------------------------------------------------------------------
 //  GoldED+
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -399,7 +398,7 @@ static void w_brag() {
   wprints(4, 46-strlen(__gver_longpid__)-1-strlen(__gver_ver__), C_BRAGW, __gver_longpid__);
   wprints(4, 46-strlen(__gver_ver__), C_BRAGW, __gver_ver__);
 
-  wprints(5, 12, C_BRAGW, "http://golded-plus.sourceforge.net");
+  wprints(5, 12, C_BRAGW, "https://github.com/golded-plus");
 
   wprints(0, 48, C_BRAGW, " GoldED+  Message Editor ");
   gsprintf(PRINTF_DECLARE_BUFFER(buf), " Copyright (C) 1990-%s ",__gver_date__+7);
@@ -415,28 +414,31 @@ static void w_brag() {
   gsprintf(PRINTF_DECLARE_BUFFER(buf), "---*-*-*** %s ***-*-*---", __gver_releasename__);
   wcenters(8, C_BRAGW, buf);
 
-  wcenters(10, C_BRAGW, "This program is free software; it is licensed under the");
-  wcenters(11, C_BRAGW, "GNU General Public License version 2. You're welcome to");
-  wcenters(12, C_BRAGW, "redistribute the program or any parts hereof under cer-");
-  wcenters(13, C_BRAGW, "tain conditions. See the LICENSE.TXT for more details.");
+  if (MAXROW > 30)
+  {
+    wcenters(10, C_BRAGW, "This program is free software; it is licensed under the");
+    wcenters(11, C_BRAGW, "GNU General Public License version 2. You're welcome to");
+    wcenters(12, C_BRAGW, "redistribute the program or any parts hereof under cer-");
+    wcenters(13, C_BRAGW, "tain conditions. See the LICENSE.TXT for more details.");
+  }
 
-  wcenters(MAXROW-10, C_BRAGW, "This executable is distributed by");
+  wcenters(MAXROW-16, C_BRAGW, "This executable is distributed by");
+
+  gsprintf(PRINTF_DECLARE_BUFFER(buf), "%s", __gver_vendor_name__);
+  wcenters(MAXROW-14, C_BRAGW, buf);
+
   if (*__gver_vendor_fido__)
   {
-    gsprintf(PRINTF_DECLARE_BUFFER(buf), "%s (Fido: %s) - <%s>",
-      __gver_vendor_name__, __gver_vendor_fido__, __gver_vendor_email__);
-  }
-  else
-  {
-    gsprintf(PRINTF_DECLARE_BUFFER(buf), "%s <%s>",
-      __gver_vendor_name__, __gver_vendor_email__);
+    gsprintf(PRINTF_DECLARE_BUFFER(buf), " FIDONet: %s ", __gver_vendor_fido__);
+    wcenters(MAXROW-13, C_BRAGW, buf);
   }
 
-  wcenters(MAXROW-9, C_BRAGW, buf);
+  gsprintf(PRINTF_DECLARE_BUFFER(buf), "%s", __gver_vendor_email__);
+  wcenters(MAXROW-12, C_BRAGW, buf);
+
   gsprintf(PRINTF_DECLARE_BUFFER(buf), "Compiled on %s %s", __gver_date__, __gver_time__);
-  wcenters(MAXROW-8, C_BRAGW, buf);
+  wcenters(MAXROW-10, C_BRAGW, buf);
 }
-
 
 //  ------------------------------------------------------------------
 
