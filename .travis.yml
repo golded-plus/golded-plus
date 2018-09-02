@@ -15,6 +15,7 @@ matrix:
         - MATRIX_EVAL="CC='clang -m32' CXX='clang++ -m32'"
           CF="-DCMAKE_LIBRARY_PATH=/usr/lib32"
           ARCH="i686"
+          PACKAGES="gcc-multilib"
     - os: osx
       env:
         - MATRIX_EVAL="CC=clang CXX=clang++"
@@ -26,6 +27,8 @@ matrix:
           ARCH="i686"
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y rpm; fi
+  - if [ -n "$PACKAGES" ]; then travis_retry sudo apt-get install --no-install-recommends
+    --no-upgrade -qq $PACKAGES; fi
   - cp golded3/mygolded.__h golded3/mygolded.h
 script:
   - eval "${MATRIX_EVAL}"
