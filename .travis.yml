@@ -1,7 +1,5 @@
 language: cpp
-os:
-  - linux
-  - osx
+
 branches:
   only:
     - master
