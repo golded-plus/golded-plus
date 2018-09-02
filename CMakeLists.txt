@@ -36,8 +36,18 @@ add_subdirectory(rddt)
 set (CPACK_STRIP_FILES TRUE)
 
 include(GNUInstallDirs)
-install(FILES docs/copying docs/copying.lib DESTINATION ${CMAKE_INSTALL_DOCDIR})
-
+install(FILES
+  docs/copying
+  docs/copying.lib
+  DESTINATION ${CMAKE_INSTALL_DOCDIR}
+)
+install(FILES
+  docs/golded.1
+  docs/goldnode.1
+  docs/rddt.1
+  DESTINATION "${CMAKE_INSTALL_MANDIR}/man1"
+)
+install(DIRECTORY cfgs DESTINATION ${CMAKE_INSTALL_DOCDIR})
 if (MSVC)
   set(CPACK_GENERATOR ${CPACK_GENERATOR} 7Z)
 else()
