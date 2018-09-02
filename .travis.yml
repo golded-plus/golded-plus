@@ -15,7 +15,7 @@ matrix:
         - MATRIX_EVAL="CC='clang -m32' CXX='clang++ -m32'"
           CF="-DCMAKE_LIBRARY_PATH=/usr/lib32"
           ARCH="i686"
-          PACKAGES="gcc-multilib lib32stdc++-6-dev"
+          PACKAGES="gcc-multilib lib32stdc++-5-dev"
     - os: osx
       env:
         - MATRIX_EVAL="CC=clang CXX=clang++"
