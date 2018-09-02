@@ -1,0 +1,62 @@
+cmake_minimum_required(VERSION 2.8.11)
+project(golded-plus C CXX)
+
+include(CheckFunctionExists)
+include(CheckIncludeFile)
+
+check_function_exists(snprintf HAVE_SNPRINTF)
+if (${HAVE_SNPRINTF})
+  add_definitions(-DHAVE_SNPRINTF=1)
+endif()
+check_function_exists(vsnprintf HAVE_VSNPRINTF)
+if (${HAVE_VSNPRINTF})
+  add_definitions(-DHAVE_VSNPRINTF=1)
+endif()
+CHECK_INCLUDE_FILE("stdarg.h" HAVE_STDARG_H)
+if (${HAVE_STDARG_H})
+  add_definitions(-DHAVE_STDARG_H=1)
+endif()
+include(FindCurses)
+if (CURSES_NCURSES_LIBRARY)
+  add_definitions(-D__USE_NCURSES__)
+endif()
+
+if (MSVC)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /J")
+  add_definitions(-D_CRT_NONSTDC_NO_DEPRECATE -DHAVE_SNPRINTF -DHAVE_VSNPRINTF -D_CRT_SECURE_NO_WARNINGS -D_ALLOW_RTCc_IN_STL  -D_CONSOLE -DHAVE_CONFIG_H -D__INCLUDE_NEW_KEYWORDS__)
+else()
+  add_definitions(-funsigned-char -D__INCLUDE_NEW_KEYWORDS__ -DPRAGMA_PACK -Wno-sign-compare -pedantic -Wno-write-strings)
+endif()
+
+add_subdirectory(goldlib)
+add_subdirectory(golded3)
+add_subdirectory(goldnode)
+add_subdirectory(rddt)
+
+set (CPACK_STRIP_FILES TRUE)
+
+include(GNUInstallDirs)
+install(FILES
+  docs/copying
+  docs/copying.lib
+  DESTINATION ${CMAKE_INSTALL_DOCDIR}
+)
+install(FILES
+  docs/golded.1
+  docs/goldnode.1
+  docs/rddt.1
+  DESTINATION "${CMAKE_INSTALL_MANDIR}/man1"
+)
+install(DIRECTORY cfgs DESTINATION ${CMAKE_INSTALL_DOCDIR})
+if (MSVC)
+  set(CPACK_GENERATOR ${CPACK_GENERATOR} 7Z)
+else()
+  set(CPACK_GENERATOR ${CPACK_GENERATOR} TGZ)
+endif()
+
+set (CPACK_PACKAGE_VERSION_MAJOR "1")
+set (CPACK_PACKAGE_VERSION_MINOR "1")
+file(READ srcdate.h CPACK_PACKAGE_VERSION_PATCH LIMIT 8 OFFSET 41)
+string(SUBSTRING ${CPACK_PACKAGE_VERSION_PATCH} 0 8 CPACK_PACKAGE_VERSION_PATCH)
+set(CPACK_PACKAGE_VERSION_PATCH "5-${CPACK_PACKAGE_VERSION_PATCH}")
+INCLUDE(CPack)
