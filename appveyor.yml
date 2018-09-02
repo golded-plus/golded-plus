@@ -2,13 +2,28 @@ version: '{build}'
 branches:
   only:
     - master
+    - /^golded-.*/
 image:
   - Visual Studio 2017
-platform:
-  - Win32
-  - x64
+environment:
+   matrix:
+    - generator: Visual Studio 15 2017
+    - generator: Visual Studio 15 2017 Win64
 install:
   - cmd: copy golded3\mygolded.__h golded3\mygolded.h
-build:
-  parallel: true
-  project: golded.vs2017.sln
+build_script:
+  - cmd: mkdir build && cd build && cmake --version
+  - cmd: cmake .. -G "%GENERATOR%" 
+  - cmd: cmake --build . -- /P:Configuration=Release
+  - cmd: cpack
+
+artifacts:
+  - path: build\*.7z
+    name: dist
+
+deploy:                                                                                                                                                                                                      
+  provider: GitHub                                                                                                                                                                                           
+  artifact: dist                                                                                                                                                                                             
+  auth_token: $(GITHUB_OAUTH_TOKEN)                                                                                                                                                                          
+  on:                                                                                                                                                                                                        
+    appveyor_repo_tag: true
