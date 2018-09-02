@@ -5,11 +5,54 @@ os:
 branches:
   only:
     - master
-compiler:
-  - gcc
-  - clang
+    - /^golded-.*/
+matrix:
+  include:
+    - os: linux
+      env:
+        - MATRIX_EVAL="CC=clang CXX=clang++"
+          ARCH="x86_64"
+    - os: linux
+      env:
+        - MATRIX_EVAL="CC='clang -m32' CXX='clang++ -m32'"
+          CF="-DCMAKE_LIBRARY_PATH=/usr/lib32"
+          ARCH="i686"
+    - os: osx
+      env:
+        - MATRIX_EVAL="CC=clang CXX=clang++"
+          ARCH="x86_64"
+    - os: osx
+      env:
+        - MATRIX_EVAL="CC='clang -m32' CXX='clang++ -m32'"
+          CF="-DCMAKE_LIBRARY_PATH=/usr/lib32"
+          ARCH="i686"
 before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y rpm; fi
   - cp golded3/mygolded.__h golded3/mygolded.h
 script:
-  - if [[ "$CXX" == "g++" ]]; then CPPFLAGS="-Wno-write-strings -Wno-unused-result" make; fi
-  - if [[ "$CXX" == "clang++" ]]; then CPPFLAGS="-Wno-keyword-macro -Wno-c++11-compat-deprecated-writable-strings" make; fi
+  - eval "${MATRIX_EVAL}"
+  - mkdir build
+  - cd build
+  - cmake .. ${CF} -DCPACK_DEBIAN_PACKAGE_MAINTAINER=travis-ci
+  - cmake --build .
+  - cpack
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cpack -G RPM; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cpack -G DEB; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then for file in *.rpm; do mv $file
+    $(basename $file .rpm).${ARCH}.rpm; done; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then for file in *.deb; do mv $file
+    $(basename $file .deb).${ARCH}.deb; done; fi
+  - for file in *.tar.gz; do mv $file $(basename $file .tar.gz).${ARCH}.tar.gz;
+    done
+deploy:
+  provider: releases
+  api_key: $GITHUB_OAUTH_TOKEN
+  file_glob: true
+  skip_cleanup: true
+  file:
+    - $TRAVIS_BUILD_DIR/build/*.rpm
+    - $TRAVIS_BUILD_DIR/build/*.deb
+    - $TRAVIS_BUILD_DIR/build/*.tar.gz
+  on:
+    tags: true
+    branch: master
