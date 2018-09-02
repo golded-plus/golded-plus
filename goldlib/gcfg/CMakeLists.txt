@@ -45,5 +45,5 @@ set(gcfg_SOURCES
   gxxbbs.cpp
   gxxmail.cpp
 )
-include_directories("../gall")
+include_directories(../gall ../glibc)
 ADD_LIBRARY(gcfg STATIC ${gcfg_SOURCES})

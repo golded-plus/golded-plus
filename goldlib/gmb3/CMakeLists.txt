@@ -40,5 +40,5 @@ set(gmb3_SOURCES
   gmoxbbs4.cpp
   gmoxbbs5.cpp
 )
-include_directories(../gall ../gcfg ../gcui ../smblib)
+include_directories(../gall ../gcfg ../gcui ../smblib ../glibc)
 ADD_LIBRARY(gmb3 STATIC ${gmb3_SOURCES})

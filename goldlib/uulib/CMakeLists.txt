@@ -10,5 +10,5 @@ set(uulib_SOURCES
   uuutil.cpp
 )
 add_definitions(-DHAVE_CONFIG_H)
-include_directories(../gall)
+include_directories(../gall ../glibc)
 ADD_LIBRARY(uulib STATIC ${uulib_SOURCES})

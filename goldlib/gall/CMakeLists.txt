@@ -65,12 +65,17 @@ set(gall_SOURCES
   gwildmat.cpp
 )
 if (UNIX)
-   list(APPEND gall_SOURCES
+  list(APPEND gall_SOURCES
     gkbdunix.cpp
     gsigunix.cpp
     gutlunix.cpp
   )
+elseif (MSVC)
+  list(APPEND gall_SOURCES
+    gutlwin.cpp
+    gutlwinm.cpp
+  )
 endif()
 ADD_LIBRARY(gall STATIC ${gall_SOURCES})
-include_directories("..")
+include_directories(.. ../glibc)
 target_link_libraries(gall hunspell)
