@@ -25,7 +25,6 @@ if (MSVC)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /J")
   add_definitions(-D_CRT_NONSTDC_NO_DEPRECATE -DHAVE_SNPRINTF -DHAVE_VSNPRINTF -D_CRT_SECURE_NO_WARNINGS -D_ALLOW_RTCc_IN_STL  -D_CONSOLE -DHAVE_CONFIG_H -D__INCLUDE_NEW_KEYWORDS__)
 else()
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++03")
   add_definitions(-funsigned-char -D__INCLUDE_NEW_KEYWORDS__ -DPRAGMA_PACK -Wno-sign-compare -pedantic -Wno-write-strings)
 endif()
 
