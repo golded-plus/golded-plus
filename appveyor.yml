@@ -3,27 +3,37 @@ branches:
   only:
     - master
     - /^golded-.*/
-image:
-  - Visual Studio 2017
 environment:
    matrix:
+    - generator: Visual Studio 10 2010
+      pf: "msvc2010"
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    - generator: Visual Studio 10 2010 Win64
+      pf: "msvc2010"
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
     - generator: Visual Studio 15 2017
+      pf: "msvc2017"
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     - generator: Visual Studio 15 2017 Win64
+      pf: "msvc2017"
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 install:
   - cmd: copy golded3\mygolded.__h golded3\mygolded.h
 build_script:
+  - if ["%GENERATOR%"]==["Visual Studio 10 2010 Win64"] if not ["%APPVEYOR_REPO_TAG%"]==["true"] (appveyor exit)
+  - if ["%GENERATOR%"]==["Visual Studio 15 2017 Win64"] if not ["%APPVEYOR_REPO_TAG%"]==["true"] (appveyor exit)
   - cmd: mkdir build && cd build && cmake --version
   - cmd: cmake .. -G "%GENERATOR%" 
   - cmd: cmake --build . -- /P:Configuration=Release
   - cmd: cpack
-
+  - ps:  gci *.7z | %{ rename-item –path $_.Fullname –Newname ( $_.basename +"-"+$Env:pf+$_.extension) }
 artifacts:
   - path: build\*.7z
     name: dist
 
-deploy:                                                                                                                                                                                                      
-  provider: GitHub                                                                                                                                                                                           
-  artifact: dist                                                                                                                                                                                             
-  auth_token: $(GITHUB_OAUTH_TOKEN)                                                                                                                                                                          
-  on:                                                                                                                                                                                                        
+deploy:
+  provider: GitHub
+  artifact: dist
+  auth_token: $(GITHUB_OAUTH_TOKEN)
+  on:
     appveyor_repo_tag: true

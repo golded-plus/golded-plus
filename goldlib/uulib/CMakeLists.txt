@@ -9,6 +9,6 @@ set(uulib_SOURCES
   uustring.cpp
   uuutil.cpp
 )
-add_definitions(-DHAVE_CONFIG_H)
 include_directories(../gall ../glibc)
 ADD_LIBRARY(uulib STATIC ${uulib_SOURCES})
+target_compile_definitions(uulib PRIVATE -DVERSION="15" -DPATCH="0.5")
