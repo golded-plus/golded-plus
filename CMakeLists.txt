@@ -24,6 +24,17 @@ endif()
 if (MSVC)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /J")
   add_definitions(-D_CRT_NONSTDC_NO_DEPRECATE -DHAVE_SNPRINTF -DHAVE_VSNPRINTF -D_CRT_SECURE_NO_WARNINGS -D_ALLOW_RTCc_IN_STL  -D_CONSOLE -DHAVE_CONFIG_H -D__INCLUDE_NEW_KEYWORDS__)
+  set(CompilerFlags
+    CMAKE_CXX_FLAGS
+    CMAKE_CXX_FLAGS_DEBUG
+    CMAKE_CXX_FLAGS_RELEASE
+    CMAKE_C_FLAGS
+    CMAKE_C_FLAGS_DEBUG
+    CMAKE_C_FLAGS_RELEASE
+  )
+  foreach(CompilerFlag ${CompilerFlags})
+    string(REPLACE "/MD" "/MT" ${CompilerFlag} "${${CompilerFlag}}")
+  endforeach()
 else()
   add_definitions(-funsigned-char -D__INCLUDE_NEW_KEYWORDS__ -DPRAGMA_PACK -Wno-sign-compare -pedantic -Wno-write-strings)
 endif()
