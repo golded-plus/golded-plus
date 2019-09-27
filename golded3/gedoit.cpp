@@ -142,7 +142,7 @@ void SaveLines(int mode, const char* savefile, GMsg* msg, int margin, bool clip)
   }
   else
   {
-    char buf[256];
+    char buf[2560];
     gsprintf(PRINTF_DECLARE_BUFFER(buf), LNG->CouldNotOpen, fnam);
     w_info(buf);
     waitkeyt(10000);
@@ -162,7 +162,7 @@ static void WriteMsgs(GMsg* msg) {
 
   GFTRK("WriteMsgs");
 
-  char buf[256];
+  char buf[2560];
   char fname[GMAXPATH], ofname[GMAXPATH];
 
   int overwrite = NO;

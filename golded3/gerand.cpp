@@ -277,7 +277,7 @@ void Area::RandomizeData(int mode) {
   }
 
   if(found) {
-    char buf[256];
+    char buf[2560];
 
     if(CFG->grp.GetItm(GRP_AKA, &adat->aka, sizeof(gaka)))
       SetAka(adat->aka.addr);

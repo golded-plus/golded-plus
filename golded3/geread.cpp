@@ -141,7 +141,7 @@ void Reader() {
 
   int istwit;
   bool istwitto, istwitsubj;
-  char buf[256], buf2[200];
+  char buf[2560], buf2[2560];
 
   GMsg* msg = (GMsg*)throw_calloc(1, sizeof(GMsg));
 

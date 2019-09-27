@@ -3186,7 +3186,7 @@ Line* AddKludge(Line* line, char* buf, int where) {
 
 Line* AddLineF(Line*& line, const char* format, ...) {
 
-  char buf[256];
+  char buf[2560];
   va_list argptr;
   va_start(argptr, format);
   vsprintf(buf, format, argptr);
@@ -3200,7 +3200,7 @@ Line* AddLineF(Line*& line, const char* format, ...) {
 
 Line* AddHexdump(Line*& line, void* data, size_t datalen) {
 
-  char buf[256];
+  char buf[2560];
   uint pos = 0;
   char* ptr = (char*)data;
 
@@ -3306,7 +3306,7 @@ char* ParseInternetAddr(char* __string, char* __name, char* __addr, bool detect_
 void InvalidateControlInfo(GMsg* msg) {
 
   Line* line = msg->lin;
-  char buf[256];
+  char buf[2560];
 
   while(line) {
 

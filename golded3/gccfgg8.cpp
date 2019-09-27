@@ -433,7 +433,7 @@ void CfgUsername() {
   StripQuotes(val);
   if(not strblank(val)) {
     if(cfgingroup) {
-      char buf[256];
+      char buf[2560];
       strxcpy(buf, val, sizeof(buf));
       CFG->grp.AddItm(GRP_USERNAME, buf, strlen(buf)+1);
     }

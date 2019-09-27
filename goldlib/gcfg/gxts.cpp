@@ -50,7 +50,7 @@ void gareafile::ReadTosScan(char* tag) {
   FD_Shared* shared;
   Path tspath, file;
   TS_Areafile* areafile;
-  char buf[256], options[80];
+  char buf[2560], options[2560];
 
   *tspath = NUL;
   editor   = new FD_Editor; throw_new(editor);
