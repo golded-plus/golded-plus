@@ -51,7 +51,7 @@ void gareafile::ReadOpus(char* tag) {
   _msgsys msgsys;
   _systemdat sysdat;
   Path oppath, file;
-  char buf[256], options[80];
+  char buf[2560], options[2560];
 
   *oppath = NUL;
   strcpy(options, tag);

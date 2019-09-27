@@ -202,7 +202,7 @@ void CfgOrganization() {
 
 //  ------------------------------------------------------------------
 
-void CfgOrigin(const char* v)  { char buf[256]; val = strxcpy(buf, v, sizeof(buf)); CfgOrigin(); }
+void CfgOrigin(const char* v)  { char buf[2560]; val = strxcpy(buf, v, sizeof(buf)); CfgOrigin(); }
 void CfgOrigin() {
 
   if(not strblank(val)) {

@@ -43,7 +43,7 @@ void gareafile::ReadDutchie(char* tag)
   char* ptr;
   char* ptr2;
   Path dupath, file;
-  char buf[256], options[80];
+  char buf[2560], options[2560];
 
   *dupath = NUL;
   strcpy(options, tag);

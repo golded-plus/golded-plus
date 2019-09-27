@@ -482,7 +482,7 @@ static void MakeMsg3(int& mode, GMsg* msg) {
 static void MakeMsg2(int& mode, int& status, int& forwstat, int& topline, GMsg* msg, GMsg* oldmsg, GMsg* cmpmsg) {
 
   uint n;
-  char buf[256], buf2[256];
+  char buf[2560], buf2[2560];
   Line* line;
   Line* newline;
 

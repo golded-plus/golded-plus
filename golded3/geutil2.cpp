@@ -159,7 +159,7 @@ void doinvalidate(char* text, const char* find, const char* replace, bool is_tea
 
   int n = strlen(find);
   if(strnieql(text, find, n) and (not is_tearline or (text[n] == NUL) or isspace(text[n]))) {
-    char buf[256];
+    char buf[2560];
 
     strcpy(buf, text);
     strcpy(stpcpy(text, replace), &buf[n]);

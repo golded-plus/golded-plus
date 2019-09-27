@@ -36,7 +36,7 @@ char* CvtPrnstr(char* str, char* prn) {
 
   uint value;
   byte len=0;
-  char buf[256];
+  char buf[2560];
   char* ptr=prn;
 
   while(*ptr) {

@@ -175,7 +175,7 @@ static void ReadEcholists() {
   gfile fp(AddPath(CFG->areapath, CFG->semaphore.importlist), "rt", CFG->sharemode);
   if (fp.isopen())
   {
-    char buf[256];
+    char buf[2560];
     int echonums = 0;
     update_statusline(LNG->ReadingEcholist);
     while (fp.Fgets(buf, sizeof(buf)))
@@ -193,7 +193,7 @@ static void ReadEcholists() {
   // Mark the areas from the import taglist
   for (uint n = 0; n < AL.size(); n++)
   {
-    char buf[256];
+    char buf[2560];
     strcpy(buf, AL[n]->echoid());
     int x = SearchTaglist(echoin, buf);
     if(*echoin[x])
@@ -244,7 +244,7 @@ static void ReadEscsets()
 static void ReadAddrMacros()
 {
   char* ptr;
-  char buf[256], path[GMAXPATH];
+  char buf[2560], path[GMAXPATH];
 
   ptr = getenv("FD");
   if(ptr)

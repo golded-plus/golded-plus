@@ -617,7 +617,7 @@ void CmfMsgs(GMsg* msg, bool torecycle)
       }
 
       if(need_netmail_kludges) {
-        char buf[256] = "";
+        char buf[2560] = "";
 
         if (not strstr(msg->txt, "\001INTL"))
           // The INTL kludge for zone crossing

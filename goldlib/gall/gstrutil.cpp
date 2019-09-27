@@ -622,8 +622,8 @@ std::string &strltrim(std::string &str)
 
 const char* strlword(const char* str, const char *separator) {
 
-  char buf[256];
-  static char left[40];
+  char buf[2560];
+  static char left[2560];
 
   *left = NUL;
   if(*str) {
@@ -642,8 +642,8 @@ const char* strrword(const char* str, const char *separator) {
 
   char* ptr;
   char* ptr2;
-  char buf[256];
-  static char right[40];
+  char buf[2560];
+  static char right[2560];
 
   *right = NUL;
   if(*str) {

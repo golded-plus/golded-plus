@@ -517,7 +517,7 @@ void SMBArea::save_hdr(int mode, gmsg* msg)
   bool done, cr;
   uint32_t l, m, bodylen, taillen, crc;
   char *fbuf, *sbody, *stail;
-  char buf[256];
+  char buf[2560];
   smbmsg_t smsg;
   fidoaddr_t destaddr;
 

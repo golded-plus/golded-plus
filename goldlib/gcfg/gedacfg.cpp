@@ -320,7 +320,7 @@ int EchoListClass::GetEcho(int n, char** echoid, char** path, char** desc) {
 
 void gareafile::GetAreasBBS(char* name, char* origin, char* options)
 {
-  char buf[256];
+  char buf[2560];
   Path areafile;
   char* ptr;
   char* echoid;

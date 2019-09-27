@@ -762,7 +762,7 @@ int ExportSOUP() {
     fp.Fopen(scanfile, "rt");
     if (fp.isopen())
     {
-      char buf[256];
+      char buf[2560];
       while (fp.Fgets(buf, sizeof(buf)))
       {
         char* ptr = strchr(buf, ' ');

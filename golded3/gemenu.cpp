@@ -605,7 +605,7 @@ void AskAttributes(GMsg* __msg) {
 
 int SelectFromFile(const char* file, char* selection, const char* title, const char* nolines)
 {
-  char buf[256];
+  char buf[2560];
   bool retval=false;
   int lines = 0;
 
@@ -664,7 +664,7 @@ int ChangeTagline()
 
   if (not CFG->tagline.empty())
   {
-    char buf[256];
+    char buf[2560];
     gstrarray Listi;
 
     gstrarray::iterator it = CFG->tagline.begin();
@@ -724,7 +724,7 @@ int ChangeOrigin()
 
   if (not CFG->origin.empty())
   {
-    char buf[256];
+    char buf[2560];
     gstrarray Listi;
 
     gstrarray::iterator it = CFG->origin.begin();
@@ -782,7 +782,7 @@ int ChangeUsername()
 {
   if(not CFG->username.empty())
   {
-    char buf[256];
+    char buf[2560];
     char adrs[40];
     gstrarray Listi;
 
@@ -833,7 +833,7 @@ int ChangeTemplate()
 {
   if (not CFG->tpl.empty())
   {
-    char buf[256];
+    char buf[2560];
     char adrs[40];
     gstrarray Listi;
 

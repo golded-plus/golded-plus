@@ -377,7 +377,7 @@ void FileSelect(GMsg* msg, char* title, FileSpec* fspec) {
   gfileselect* p = new gfileselect;
   throw_new(p);
 
-  char buf[256];
+  char buf[2560];
   Path fbuf;
   uint MIN_POS=0, MAX_POS=MIN_POS+MAXROW-10;
   bool done, winop = false;
@@ -732,7 +732,7 @@ void FileRequest(GMsg* msg)
   if (AA->Msgn.Count() and msg->line and msg->lines)
   {
     gstrarray freqfile;
-    char buf[256];
+    char buf[2560];
     const char* ptr;
     const char* ptr1 = NULL;
     const char* ptr2;
