@@ -1032,9 +1032,9 @@ void DoTearorig(int mode, GMsg * msg)
     }
 
     TokenXlat(mode, msg->tearline, sizeof(msg->tearline), msg, msg, CurrArea); // tearline
-                                                                               // translation
-                                                                               // one point
 
+    // translation
+    // one point
     ctrlinfo = AA->Ctrlinfo();
 
     if(not * msg->origin) // Strange... Origin is created here, but deleted in in next block. To

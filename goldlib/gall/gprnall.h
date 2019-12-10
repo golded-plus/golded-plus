@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -26,16 +25,10 @@
 
 #ifndef __gprnall_h
 #define __gprnall_h
-
-
 //  ------------------------------------------------------------------
-
-char* CvtPrnstr(char* str, char* prn);
-
+char * CvtPrnstr(char * str, char * prn);
 
 //  ------------------------------------------------------------------
 
 #endif
-
 //  ------------------------------------------------------------------
-

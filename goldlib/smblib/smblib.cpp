@@ -67,7 +67,7 @@
                               /* High byte major, low byte minor */
 
 #define U_MODE 777 /* permitions for the new files (real: U_MODE XOR UMASK) */
-                              /* This is required for sopen(,,,) */
+/* This is required for sopen(,,,) */
 
 #ifndef __gtimall_h
 time32_t gtime(time32_t * timep)
@@ -105,7 +105,7 @@ int SMBCALL smb_open(smb_t * smb)
     }
 
     if(!smb->retry_delay || smb->retry_delay > (smb->retry_time * 100)) /* at least ten retries
-                                                                           */
+                                                                         */
     {
         smb->retry_delay = 250;   /* milliseconds */
     }
@@ -969,7 +969,7 @@ int SMBCALL smb_getmsghdr(smb_t * smb, smbmsg_t * msg)
                                                                                         1 extra
                                                                                         for NULL
                                                                                         terminator
-                                                                                        */
+                                                                                      */
         {
             sprintf(smb->last_error,
                     "malloc failure of %d bytes for header field %d",
@@ -1435,7 +1435,6 @@ int SMBCALL smb_addcrc(smb_t * smb, uint32_t crc)
 
     lseek(file, 0L, SEEK_END);
     write(file, &crc, sizeof(crc));            /* Write to the end */
-
     FREE(buf);
     close(file);
     return 0;

@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -27,22 +26,23 @@
 
 #include <cstdlib>
 #include <gdbgerr.h>
-
-
 //  ------------------------------------------------------------------
 //  Error exit function
+void ErrorExit(int type)
+{
+    static int in_error_exit = 0;
 
-void ErrorExit(int type) {
+    if(not in_error_exit++)
+    {
+        error_exit = type;
 
-  static int in_error_exit = 0;
+        if(type)
+        {
+            exit(errorlevel);
+        }
 
-  if(not in_error_exit++) {
-    error_exit = type;
-    if(type)
-      exit(errorlevel);
-    exit(0);
-  }
+        exit(0);
+    }
 }
-
 
 //  ------------------------------------------------------------------

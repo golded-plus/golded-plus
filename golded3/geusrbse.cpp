@@ -729,6 +729,7 @@ bool guserbase::handle_key()
         default:
             SayBibi();
     } // switch
+
     return true;
 } // guserbase::handle_key
 

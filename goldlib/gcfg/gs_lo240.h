@@ -335,24 +335,24 @@ struct _configuration                     /* Structure for the CONFIG.DAT file *
     char  areafix_help[40];               /* Areafix's help file name */
     char  alert_nodes[50];                /* Nodes that receives a copy of all areafix response
                                              messages */
-    char  automaint[40];                  /* Batch to execute once a day */
-    byte  min_login_level;                /* Minimum login level */
-    long  min_login_flags;                /* Minimul login flags */
-    byte  min_login_age;                  /* Minimul login age */
-    char  resync_nodes[50];               /* Nodes to resynch the clock with */
-    char  bbs_batch[40];                  /* External BBS batch file */
-    byte  altx_errorlevel;                /* ALT-X command errorlevel */
-    char  fax_response[20];               /* FAX response */
-    byte  fax_errorlevel;                 /* Fax exit errorlevel */
-    char  dl_counter_limits[4];           /* Download counter delimiters */
-    char  areas_bbs[40];                  /* AREAS.BBS path and file name */
-    byte  afx_remote_maint;               /* Areafix level for %FROM command */
-    byte  afx_change_tag;                 /* Areafix level for #<old>:<new> command */
-    bits  allow_rescan    : 1;            /* 1=Allow rescan of new areas */
-    bits  check_city      : 1;            /* 1=Check user's city at logon */
-    bits  check_echo_zone : 1;            /* 1=Check zones in areafix's requests */
-    bits  save_my_mail    : 1;            /* 1=Save mail directed to the Sysop */
-    bits  mail_method     : 2;            /* 0=Separate netmail, 1=Net & echomail */
+    char automaint[40];                   /* Batch to execute once a day */
+    byte min_login_level;                 /* Minimum login level */
+    long min_login_flags;                 /* Minimul login flags */
+    byte min_login_age;                   /* Minimul login age */
+    char resync_nodes[50];                /* Nodes to resynch the clock with */
+    char bbs_batch[40];                   /* External BBS batch file */
+    byte altx_errorlevel;                 /* ALT-X command errorlevel */
+    char fax_response[20];                /* FAX response */
+    byte fax_errorlevel;                  /* Fax exit errorlevel */
+    char dl_counter_limits[4];            /* Download counter delimiters */
+    char areas_bbs[40];                   /* AREAS.BBS path and file name */
+    byte afx_remote_maint;                /* Areafix level for %FROM command */
+    byte afx_change_tag;                  /* Areafix level for #<old>:<new> command */
+    bits allow_rescan    : 1;             /* 1=Allow rescan of new areas */
+    bits check_city      : 1;             /* 1=Check user's city at logon */
+    bits check_echo_zone : 1;             /* 1=Check zones in areafix's requests */
+    bits save_my_mail    : 1;             /* 1=Save mail directed to the Sysop */
+    bits mail_method     : 2;             /* 0=Separate netmail, 1=Net & echomail */
                                           /* in the same packet */
     bits replace_tear    : 2;             /* 0=No, 1=Link unlimited, 2=Link */
                                           /* limited to 35 char, 3=Always */

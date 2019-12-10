@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -28,63 +27,73 @@
 #include <cstddef>
 #include <gregex.h>
 #include <gmemdbg.h>
-
-
 //  ------------------------------------------------------------------
-
-gregex::gregex() {
-
-  preg = NULL;
+gregex::gregex()
+{
+    preg = NULL;
 }
 
-
 //  ------------------------------------------------------------------
-
-gregex::~gregex() {
-
-  reset();
+gregex::~gregex()
+{
+    reset();
 }
 
-
 //  ------------------------------------------------------------------
-
-void gregex::reset() {
-
-  if(preg) {
-    regfree(preg);
-    throw_delete(preg);
-  }
+void gregex::reset()
+{
+    if(preg)
+    {
+        regfree(preg);
+        throw_delete(preg);
+    }
 }
 
+//  ------------------------------------------------------------------
+bool gregex::compile(const char * pattern, int cflags)
+{
+    int cflgs = REG_NOSUB;
+
+    if(cflags & extended)
+    {
+        cflgs |= REG_EXTENDED;
+    }
+
+    if(cflags & icase)
+    {
+        cflgs |= REG_ICASE;
+    }
+
+    if(cflags & newline)
+    {
+        cflgs |= REG_NEWLINE;
+    }
+
+    if(not preg)
+    {
+        preg = new regex_t;
+        throw_new(preg);
+    }
+
+    return make_bool(regcomp(preg, pattern, cflgs));
+} // gregex::compile
 
 //  ------------------------------------------------------------------
+bool gregex::match(const char * str, int eflags)
+{
+    int eflgs = 0;
 
-bool gregex::compile(const char* pattern, int cflags) {
+    if(eflags & notbol)
+    {
+        eflgs |= REG_NOTBOL;
+    }
 
-  int cflgs = REG_NOSUB;
-  if(cflags & extended) cflgs |= REG_EXTENDED;
-  if(cflags & icase)    cflgs |= REG_ICASE;
-  if(cflags & newline)  cflgs |= REG_NEWLINE;
+    if(eflags & noteol)
+    {
+        eflgs |= REG_NOTEOL;
+    }
 
-  if(not preg) {
-    preg = new regex_t;
-    throw_new(preg);
-  }
-
-  return make_bool(regcomp(preg, pattern, cflgs));
+    return not regexec(preg, str, 0, NULL, eflgs);
 }
-
-
-//  ------------------------------------------------------------------
-
-bool gregex::match(const char* str, int eflags) {
-
-  int eflgs = 0;
-  if(eflags & notbol) eflgs |= REG_NOTBOL;
-  if(eflags & noteol) eflgs |= REG_NOTEOL;
-
-  return not regexec(preg, str, 0, NULL, eflgs);
-}
-
 
 //  ------------------------------------------------------------------

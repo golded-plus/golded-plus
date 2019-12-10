@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -27,114 +26,195 @@
 
 #ifndef __gstrbags_h
 #define __gstrbags_h
-
-
 //  ------------------------------------------------------------------
 
 #include <gmemdbg.h>
-
-
 //  ------------------------------------------------------------------
+class GStrBag
+{
+protected: char * bag;
+    int bagsize;
+    int items;
+    int currno;
+public: GStrBag();
+    virtual ~GStrBag();
+    int blocksize;
+    void Reset();
+    int Add(const char * string);
+    int Add(const void * data, int length);
+    void Change(int index, const char * string);
+    void Change(int index, const void * data, int length);
 
-class GStrBag {
+virtual int Count()
+{
+    return items;
+}
 
-protected:
+int CurrNo()
+{
+    return currno;
+}
 
-  char* bag;
-  int bagsize;
-  int items;
-  int currno;
+void CurrNo(int c)
+{
+    currno = c;
+}
 
-public:
+int & Pos(int i)
+{
+    return ((int *)(bag + bagsize))[i];
+}
 
-  GStrBag();
-  virtual ~GStrBag();
+const char * Index(int i)
+{
+    return bag ? bag + Pos(i) : NULL;
+}
 
-  int blocksize;
+int First()
+{
+    if(Count() < 1)
+    {
+        return false;
+    }
 
-  void Reset();
+    currno = 0;
+    return true;
+}
 
-  int Add(const char* string);
-  int Add(const void* data, int length);
+int Next()
+{
+    if(currno >= (Count() - 1))
+    {
+        return false;
+    }
 
-  void Change(int index, const char* string);
-  void Change(int index, const void* data, int length);
+    currno++;
+    return true;
+}
 
-  virtual int Count()  { return items; }
+const char * Current()
+{
+    return Index(currno);
+}
 
-  int CurrNo()         { return currno; }
-  void CurrNo(int c)   { currno = c; }
-
-  int& Pos(int i)      { return ((int*)(bag+bagsize))[i]; }
-  const char* Index(int i)    { return bag ? bag + Pos(i) : NULL; }
-
-  int First()          { if(Count() < 1) return false; currno = 0; return true; }
-  int Next()           { if(currno >= (Count()-1)) return false; currno++; return true; }
-  const char* Current()        { return Index(currno); }
-
-  const char* operator[](int i);
+    const char * operator [](int i);
 };
 
-
 //  ------------------------------------------------------------------
+class GStrBag2 : public GStrBag
+{
+public: GStrBag2() : GStrBag(){}
+inline int Count()
+{
+    return items / 2;
+}
 
-class GStrBag2 : public GStrBag {
+inline int Add(const char * str1, const char * str2)
+{
+    GStrBag::Add(str1);
+    return GStrBag::Add(str2);
+}
 
-public:
+inline int Add(const void * data, int length, const char * string)
+{
+    GStrBag::Add(data, length);
+    return GStrBag::Add(string);
+}
 
-  GStrBag2() : GStrBag() {}
+inline void Change(int index, const char * str1, const char * str2)
+{
+    GStrBag::Change(index - 1, str1);
+    GStrBag::Change(index, str2);
+}
 
-  inline int Count()          { return items / 2; }
+inline const char * Index1(int i)
+{
+    return Index((i * 2));
+}
 
-  inline int Add(const char* str1, const char* str2)               { GStrBag::Add(str1); return GStrBag::Add(str2); }
-  inline int Add(const void* data, int length, const char* string) { GStrBag::Add(data, length); return GStrBag::Add(string); }
+inline const char * Index2(int i)
+{
+    return Index((i * 2) + 1);
+}
 
-  inline void Change(int index, const char* str1, const char* str2) { GStrBag::Change(index-1, str1); GStrBag::Change(index, str2); }
+inline const char * Current1()
+{
+    return Index1(currno);
+}
 
-  inline const char* Index1(int i)   { return Index((i*2)); }
-  inline const char* Index2(int i)   { return Index((i*2)+1); }
-
-  inline const char* Current1()      { return Index1(currno); }
-  inline const char* Current2()      { return Index2(currno); }
+inline const char * Current2()
+{
+    return Index2(currno);
+}
 };
 
-
 //  ------------------------------------------------------------------
+class GStrSet3
+{
+protected: char * set;
+    struct
+    {
+        int size;
+        int pos2;
+        int pos3;
+    } cfg;
 
-class GStrSet3 {
+public: GStrSet3()
+    {
+        set      = NULL;
+        cfg.size = 0;
+        cfg.pos2 = 0;
+        cfg.pos3 = 0;
+    }
 
-protected:
+    ~GStrSet3()
+    {
+        Reset();
+    }
 
-  char* set;
-  struct {
-    int size;
-    int pos2;
-    int pos3;
-  } cfg;
+void Reset()
+{
+    throw_xfree(set);
+}
 
-public:
+    void Put(const char * s1, const char * s2, const char * s3);
+    void Change(const char * s1, const char * s2, const char * s3);
 
-  GStrSet3()   { set = NULL; cfg.size = 0; cfg.pos2 = 0; cfg.pos3 = 0; }
-  ~GStrSet3()  { Reset(); }
+const char * Change1(const char * s)
+{
+    Change(s, Get2(), Get3());
+    return s;
+}
 
-  void Reset()  { throw_xfree(set); }
+const char * Change2(const char * s)
+{
+    Change(Get1(), s, Get3());
+    return s;
+}
 
-  void Put(const char* s1, const char* s2, const char* s3);
+const char * Change3(const char * s)
+{
+    Change(Get1(), Get2(), s);
+    return s;
+}
 
-  void Change(const char* s1, const char* s2, const char* s3);
+const char * Get1() const
+{
+    return set ? set : "";
+}
 
-  const char* Change1(const char* s)  { Change(s, Get2(), Get3()); return s; }
-  const char* Change2(const char* s)  { Change(Get1(), s, Get3()); return s; }
-  const char* Change3(const char* s)  { Change(Get1(), Get2(), s); return s; }
+const char * Get2() const
+{
+    return set ? set + cfg.pos2 : "";
+}
 
-  const char* Get1() const { return set ? set : ""; }
-  const char* Get2() const { return set ? set+cfg.pos2 : ""; }
-  const char* Get3() const { return set ? set+cfg.pos3 : ""; }
+const char * Get3() const
+{
+    return set ? set + cfg.pos3 : "";
+}
 };
 
-
 //  ------------------------------------------------------------------
 
-#endif
-
+#endif // ifndef __gstrbags_h
 //  ------------------------------------------------------------------

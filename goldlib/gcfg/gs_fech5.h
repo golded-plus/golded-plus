@@ -356,12 +356,12 @@ typedef struct
 /********************************************************/
 typedef struct
 {
-    word  type;         /* EH_...                           */
-    dword offset;       /* length of field excluding header */
+    word  type;           /* EH_...                           */
+    dword offset;         /* length of field excluding header */
 } ExtensionHeader;
 
 
-#define EH_AREAFIX 0x0001      /* CONFIG.FWACnt * <ForwardAreaFix> */
+#define EH_AREAFIX 0x0001 /* CONFIG.FWACnt * <ForwardAreaFix> */
 enum AreaFixSendTo {AreaFix = 0, AreaMgr, AreaLink, EchoMgr};
 
 enum AreaFixAreaListFormat {Areas_BBS = 0, Area_List};

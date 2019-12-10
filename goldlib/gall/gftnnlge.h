@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -27,102 +26,98 @@
 
 #ifndef __gftnnlge_h
 #define __gftnnlge_h
-
-
 //  ------------------------------------------------------------------
 
 #include <gftnnl.h>
-
-
 //  ------------------------------------------------------------------
 
-#if defined(GOLD_CANPACK)
+#if defined (GOLD_CANPACK)
 #pragma pack(1)
 #endif
 
-struct _GEIdx {
-  uint32_t pos;        // File Number OR'ed with pos in nodelist file
-  ftn_addr addr;       // Node address
-  char     name[36];   // Name in reversed form
-  _GEIdx() : pos(0), addr() { *name = NUL; }
-  void reset() { pos = 0; addr.reset(); *name = NUL; }
+struct _GEIdx
+{
+    uint32_t pos;      // File Number OR'ed with pos in nodelist file
+    ftn_addr addr;     // Node address
+    char     name[36]; // Name in reversed form
+    _GEIdx() : pos(0), addr()
+    {
+        * name = NUL;
+    }
+
+void reset()
+{
+    pos = 0;
+    addr.reset();
+    * name = NUL;
+}
 };
 
-#if defined(GOLD_CANPACK)
+#if defined (GOLD_CANPACK)
 #pragma pack()
 #endif
-
-
 //  ------------------------------------------------------------------
+class ftn_golded_nodelist_index : public ftn_nodelist_index_base
+{
+protected: struct fstamp
+    {
+        Path filename;
+        long stamp;
+    };
 
-class ftn_golded_nodelist_index : public ftn_nodelist_index_base {
+    int fha;
+    int fhn;
+    int fhx;
+    bool index32;              // New (32-bit) address index used?
+    fstamp * nodelist;
+    int nodelists;
+    int lastfileno;
+    _GEIdx current;
+    long node;
+    long maxnode;
+    long statenode;
+    char searchname[80];
+    ftn_addr searchaddr;
+    void fetchdata();
+    void getnode();
+    int namecmp() const;
+    int addrcmp() const;
 
-protected:
+void compare()
+{
+    exactmatch = not (namebrowse ? namecmp() : addrcmp());
+}
 
-  struct fstamp {
-    Path filename;
-    long stamp;
-  };
+    bool searchfirst();
+    bool search();
 
-  int      fha;
-  int      fhn;
-  int      fhx;
-  bool     index32;            // New (32-bit) address index used?
+public: ftn_golded_nodelist_index();
+    virtual ~ftn_golded_nodelist_index();
+bool can_browse_name() const
+{
+    return true;
+}
 
-  fstamp*  nodelist;
-  int      nodelists;
+bool can_browse_address() const
+{
+    return true;
+}
 
-  int      lastfileno;
-
-  _GEIdx   current;
-
-  long     node;
-  long     maxnode;
-
-  long     statenode;
-
-  char     searchname[80];
-  ftn_addr searchaddr;
-
-  void     fetchdata();
-  void     getnode();
-  int      namecmp() const;
-  int      addrcmp() const;
-  void     compare()           { exactmatch = not (namebrowse ? namecmp() : addrcmp()); }
-  bool     searchfirst();
-  bool     search();
-
-public:
-
-  ftn_golded_nodelist_index();
-  virtual ~ftn_golded_nodelist_index();
-
-  bool can_browse_name() const     { return true; }
-  bool can_browse_address() const  { return true; }
-
-  bool open();
-  void close();
-
-  bool find(const char* name);
-  bool find(const ftn_addr& addr);
-
-  bool previous();
-  bool next();
-
-  void first();
-  void last();
-
-  void push_state();
-  void pop_state();
-
-  const char* index_name() const;
-  const char* nodelist_name() const;
-
+    bool open();
+    void close();
+    bool find(const char * name);
+    bool find(const ftn_addr & addr);
+    bool previous();
+    bool next();
+    void first();
+    void last();
+    void push_state();
+    void pop_state();
+    const char * index_name() const;
+    const char * nodelist_name() const;
 };
 
-
 //  ------------------------------------------------------------------
 
-#endif
-
+#endif // ifndef __gftnnlge_h
 //  ------------------------------------------------------------------

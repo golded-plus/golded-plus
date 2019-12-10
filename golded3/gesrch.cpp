@@ -29,10 +29,8 @@
 #include <gesrch.h>
 //  ------------------------------------------------------------------
 golded_search_manager::golded_search_manager(){}
-
 //  ------------------------------------------------------------------
 golded_search_manager::~golded_search_manager(){}
-
 //  ------------------------------------------------------------------
 inline void search_item_option(bool & a, const char * s)
 {

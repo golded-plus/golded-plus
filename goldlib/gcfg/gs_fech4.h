@@ -338,12 +338,12 @@ typedef struct
 /********************************************************/
 typedef struct
 {
-    word  type;         /* EH_...                           */
-    dword offset;       /* length of field excluding header */
+    word  type;           /* EH_...                           */
+    dword offset;         /* length of field excluding header */
 } ExtensionHeader;
 
 
-#define EH_AREAFIX 0x0001      /* CONFIG.FWACnt * <ForwardAreaFix> */
+#define EH_AREAFIX 0x0001 /* CONFIG.FWACnt * <ForwardAreaFix> */
 enum AreaFixSendTo {AreaFix = 0, AreaMgr, AreaLink, EchoMgr};
 
 enum AreaFixAreaListFormat {Areas_BBS = 0, Area_List};
@@ -395,10 +395,10 @@ typedef struct
     Address main;
     char    domain[28];
     word    pointnet;
-    dword   flags;      /* unused       */
+    dword   flags;          /* unused       */
 } SysAddress;
 
-#define EH_RA111_MSG 0x0100     /* Original records of BBS systems */
+#define EH_RA111_MSG 0x0100 /* Original records of BBS systems */
 #define EH_QBBS_MSG 0x0101
 #define EH_SBBS_MSG 0x0102
 #define EH_PB122_MSG 0x0103

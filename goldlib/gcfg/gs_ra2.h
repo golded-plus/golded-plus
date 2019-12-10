@@ -278,40 +278,38 @@ struct CONFIGrecord
     FlagType CrashFlags;
     Word     FAttachSec;              /*        "    ask 'File Attach ?'     */
     FlagType FAttachFlags;
-    Byte     NormFore, NormBack, StatFore, StatBack, HiBack, HiFore, WindFore,
-             WindBack, ExitLocal, Exit300, Exit1200, Exit2400, Exit4800, Exit9600,
-             Exit19k,
+    Byte     NormFore, NormBack, StatFore, StatBack, HiBack, HiFore, WindFore, WindBack,
+             ExitLocal, Exit300, Exit1200, Exit2400, Exit4800, Exit9600, Exit19k,
              Exit38k;
     Boolean MultiLine;
     Byte    MinPwdLen;
     Word    MinUpSpace;
     AskType HotKeys;
-    Byte    BorderFore, BorderBack, BarFore, BarBack, LogStyle, MultiTasker,
-            PwdBoard;
-    Word           xBufferSize;
-    Char           FKeys[10][61];
-    Boolean        WhyPage;
-    Byte           LeaveMsg;
-    Boolean        ShowMissingFiles, xLockModem;
-    Byte           FreeSpace2[10];
-    Boolean        AllowNetmailReplies;
-    Char           LogonPrompt[41];
-    AskType        CheckNewFiles;
-    Char           ReplyHeader[61];
-    Byte           BlankSecs;
-    Byte           ProtocolAttrib[6];
-    Char           xErrorFreeString[16];
-    Byte           xDefaultCombined[25];
-    Word           RenumThreshold;
-    Char           LeftBracket, RightBracket;
-    Boolean        AskForHandle;
-    Boolean        AskForBirthDate;
-    Word           GroupMailSec;
-    Boolean        ConfirmMsgDeletes;
-    Byte           FreeSpace4[30];
-    Char           TempScanDir[61];
-    AskType        ScanNow;
-    Byte           xUnknownArcAction, xFailedUnpackAction, FailedScanAction; /* Bit 0:Mark
+    Byte    BorderFore, BorderBack, BarFore, BarBack, LogStyle, MultiTasker, PwdBoard;
+    Word    xBufferSize;
+    Char    FKeys[10][61];
+    Boolean WhyPage;
+    Byte    LeaveMsg;
+    Boolean ShowMissingFiles, xLockModem;
+    Byte    FreeSpace2[10];
+    Boolean AllowNetmailReplies;
+    Char    LogonPrompt[41];
+    AskType CheckNewFiles;
+    Char    ReplyHeader[61];
+    Byte    BlankSecs;
+    Byte    ProtocolAttrib[6];
+    Char    xErrorFreeString[16];
+    Byte    xDefaultCombined[25];
+    Word    RenumThreshold;
+    Char    LeftBracket, RightBracket;
+    Boolean AskForHandle;
+    Boolean AskForBirthDate;
+    Word    GroupMailSec;
+    Boolean ConfirmMsgDeletes;
+    Byte    FreeSpace4[30];
+    Char    TempScanDir[61];
+    AskType ScanNow;
+    Byte    xUnknownArcAction, xFailedUnpackAction, FailedScanAction;        /* Bit 0:Mark
                                                                                 deleted, 1:Mark
                                                                                 unlisted, 2:Mark
                                                                                 notavail */

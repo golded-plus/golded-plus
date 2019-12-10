@@ -297,8 +297,8 @@ word carrier_mask;
 word handshake_mask;
 word max_baud;              /* fastest speed we can use                  */
 word com_port;              /* Com1=0, Com2=1, FF=keyboard               */
-byte multitasker;              /* flag for DoubleDos (see below)            */
-byte mailer_type;              /* 0=Opus, 1=load external, 2=call external  */
+byte multitasker;           /* flag for DoubleDos (see below)            */
+byte mailer_type;           /* 0=Opus, 1=load external, 2=call external  */
 byte ModemFlag;             /* (See MODEM FLAG below)                    */
 byte LogFlag;               /* (See LOG FLAG below)                      */
 byte StyleFlag;             /* (See STYLE FLAG below)                    */
@@ -315,11 +315,11 @@ word min_baud;              /* minimum baud to get on-line               */
 word color_baud;            /* min baud for graphics                     */
 word date_style;            /* Used for FILES.BBS display                */
 byte logon_priv;            /* Access level for new users                */
-byte seenby_priv;              /* Min priv to see SEEN_BY line              */
+byte seenby_priv;           /* Min priv to see SEEN_BY line              */
 byte ctla_priv;             /* Priv to see CONTROL-A lines in messages   */
-byte Interline_Flags;            /* Flags relating to interline systems     */
-byte AskPrivs[16];             /* Array of privs. for message attr ask's    */
-byte AssumePrivs[16];          /* Array of privs. for message attr assume's */
+byte Interline_Flags;       /* Flags relating to interline systems     */
+byte AskPrivs[16];          /* Array of privs. for message attr ask's    */
+byte AssumePrivs[16];       /* Array of privs. for message attr assume's */
 word logon_time;            /* time to give for logons                   */
 word matrix_mask;
 word MinNetBaud;            /* minimum baud rate for remote netmail      */
@@ -330,7 +330,7 @@ struct _FOSREGS FosRegs[10];
 word F_Reward;              /* File upload time reward percentage        */
 word last_area;             /* Highest msg area presumed to exist        */
 word last_farea;            /* Highest file area presumed to exist       */
-byte return_secure;            /* 0=ignore LASTUSER, >1 re-read LASTUSER    */
+byte return_secure;         /* 0=ignore LASTUSER, >1 re-read LASTUSER    */
 /*  New for Version 17 */
 byte xuflags;               /* ExtUser Flags: 1=Alias, 2=UserTel         */
 word xlmin;                 /* Lead mins for expiry warning              */
@@ -345,7 +345,7 @@ word Scrn_Size;             /* Local monitor's size, high byte = len    */
 word default_expire_days;   /* Number of days before new users  */
 word default_expire_mins;   /* Number of days before new users  */
 long default_keys;          /* New user's default keys                  */
-long default_section;           /* New user's default section               */
+long default_section;       /* New user's default section               */
 word Point_Net;             /* My point net                             */
 word Boss_Node;             /* My point net                             */
 byte NoPwd_Priv;            /* Priv if you want to allow users without password */
@@ -401,31 +401,31 @@ OFS OFS_Filler1[8];
 /*-------------------------------------------*/
 /* BBS/GBS SUPPORT FILES                     */
 /*-------------------------------------------*/
-OFS logo;                      /* first file shown to a caller              */
-OFS welcome;                   /* shown after logon                         */
+OFS logo;                   /* first file shown to a caller              */
+OFS welcome;                /* shown after logon                         */
 OFS newuser1;
 OFS newuser2;
 OFS rookie;
-OFS HLP_Editor;                /* Intro to msg editor for novices.          */
-OFS HLP_Replace;               /* Explain the Msg.Editor E)dit command      */
-OFS HLP_Inquire;               /* Explain the Msg. I)nquire command         */
-OFS HLP_Locate;                /* Explain the Files L)ocate command         */
-OFS HLP_Contents;              /* Explain the Files C)ontents command       */
-OFS HLP_OPed;                  /* help file for the full-screen editor      */
-OFS OUT_Leaving;               /* Bon Voyage                                */
-OFS OUT_Return;                /* Welcome back from O)utside                */
-OFS ERR_DayLimit;              /* Sorry, you've been on too long...         */
-OFS ERR_TimeWarn;              /* warning about forced hangup               */
-OFS ERR_TooSlow;               /* explains minimum logon baud rate          */
-OFS ERR_XferBaud;              /* explains minimum file transfer baud rate  */
-OFS LIST_MsgAreas;             /* dump file... used instead of Dir.Bbs      */
-OFS LIST_FileAreas;            /* dump file... used instead of Dir.Bbs      */
-OFS FREQ_MyFiles;              /* file to send when FILES is file requested */
-OFS FREQ_OKList;               /* list of files approved for file requests  */
+OFS HLP_Editor;             /* Intro to msg editor for novices.          */
+OFS HLP_Replace;            /* Explain the Msg.Editor E)dit command      */
+OFS HLP_Inquire;            /* Explain the Msg. I)nquire command         */
+OFS HLP_Locate;             /* Explain the Files L)ocate command         */
+OFS HLP_Contents;           /* Explain the Files C)ontents command       */
+OFS HLP_OPed;               /* help file for the full-screen editor      */
+OFS OUT_Leaving;            /* Bon Voyage                                */
+OFS OUT_Return;             /* Welcome back from O)utside                */
+OFS ERR_DayLimit;           /* Sorry, you've been on too long...         */
+OFS ERR_TimeWarn;           /* warning about forced hangup               */
+OFS ERR_TooSlow;            /* explains minimum logon baud rate          */
+OFS ERR_XferBaud;           /* explains minimum file transfer baud rate  */
+OFS LIST_MsgAreas;          /* dump file... used instead of Dir.Bbs      */
+OFS LIST_FileAreas;         /* dump file... used instead of Dir.Bbs      */
+OFS FREQ_MyFiles;           /* file to send when FILES is file requested */
+OFS FREQ_OKList;            /* list of files approved for file requests  */
 OFS FREQ_About;             /* File Request: ABOUT file                  */
 OFS OEC_Quotes;
 OFS byebye;                 /* file displayed at logoff                  */
-OFS local_editor;              /* text editor to use in keyboard mode       */
+OFS local_editor;           /* text editor to use in keyboard mode       */
 OFS barricade;
 OFS STATUS_dir;             /* Where to find INMAIL/ACTIVE/LASTUSER      */
 OFS mailer;                 /* full external mailer command              */
@@ -453,12 +453,12 @@ OFS DL_Log;                 /* Who's downloaded what                    */
 OFS UL_Log;                 /* Who uploaded what                        */
 OFS Name_Filter;            /* Old USERNAME.TXT                         */
 OFS Bad_Name;               /* What to show user if filter catches them */
-OFS CUSTOM1_menu;               /* What to show before CUSTOM1 menu         */
-OFS CUSTOM2_menu;               /* What to show before CUSTOM2 menu         */
-OFS CUSTOM3_menu;               /* What to show before CUSTOM3 menu         */
-OFS CUSTOM4_menu;               /* What to show before CUSTOM4 menu         */
-OFS CUSTOM5_menu;               /* What to show before CUSTOM5 menu         */
-OFS CUSTOM6_menu;               /* What to show before CUSTOM6 menu         */
+OFS CUSTOM1_menu;           /* What to show before CUSTOM1 menu         */
+OFS CUSTOM2_menu;           /* What to show before CUSTOM2 menu         */
+OFS CUSTOM3_menu;           /* What to show before CUSTOM3 menu         */
+OFS CUSTOM4_menu;           /* What to show before CUSTOM4 menu         */
+OFS CUSTOM5_menu;           /* What to show before CUSTOM5 menu         */
+OFS CUSTOM6_menu;           /* What to show before CUSTOM6 menu         */
 OFS EXT_mail_string;        /* What we see when UUCP is coming    */
 OFS MaybeNew;               /* File shown if didn't find user name       */
 OFS Histmenu;               /* ASCII menu at History                     */
@@ -469,7 +469,7 @@ OFS Yell;                   /* Yell OEC                                      */
 OFS HLP_Macro;              /* Help for macro menu                       */
 OFS UUCP_list;              /* Address list for UUCP                     */
 OFS HLP_IChat;              /* Interline chat help                       */
-OFS protocols[MAX_EXTERN];            /* external file protocol programs    */
+OFS protocols[MAX_EXTERN];  /* external file protocol programs    */
 /*v18*/ OFS OFS_Filler[7];
 /*-----------------------------------------------------------*/
 /* Log_Name must always be the last offset in this struct    */
@@ -535,8 +535,8 @@ struct _common_data
 /* MATRIX_CHANGED flags                                                     */
 /*--------------------------------------------------------------------------*/
 
-#define     MATRIX_CHANGED 0x0001     /* Changed matrix area. Scan          */
-#define     LOCAL_CHANGED 0x0002      /* Changed Local area.                */
+#define     MATRIX_CHANGED 0x0001   /* Changed matrix area. Scan          */
+#define     LOCAL_CHANGED 0x0002    /* Changed Local area.                */
 #define     GOT_BUNDLE 0x0100       /* Received a PKT file              */
 #define     GOT_ARCMAIL 0x0200      /* Received an archived file        */
 #define     GOT_REQUESTS 0x0400     /* Got file requests to handle      */
@@ -584,11 +584,11 @@ struct _common_data
 /*--------------------------------------------------------------------------*/
 /* FLAGS 3                                                                  */
 /*--------------------------------------------------------------------------*/
-#define F3STEADY 0x01       /* Can do ARQ steady. &B2                    */
-#define F3GMENU 0x02        /* Will let users do graphics menus          */
-#define F3LOGOFF 0x04       /* Collect logoff messages                   */
-#define F3NOALIAS 0x08      /* Don't put alias' in SEEN-BY               */
-#define F3HINAMES 0x10      /* Allow users with hi-bit names             */
+#define F3STEADY 0x01      /* Can do ARQ steady. &B2                    */
+#define F3GMENU 0x02       /* Will let users do graphics menus          */
+#define F3LOGOFF 0x04      /* Collect logoff messages                   */
+#define F3NOALIAS 0x08     /* Don't put alias' in SEEN-BY               */
+#define F3HINAMES 0x10     /* Allow users with hi-bit names             */
 /*--------------------------------------------------------------------------*/
 /* FWDflags (bits to control IN TRANSIT messages)                           */
 /*--------------------------------------------------------------------------*/
@@ -596,7 +596,7 @@ struct _common_data
 #define FWD_PWD 0x02       /* IN TRANSIT by pwd only              0000 0010 */
 #define FWD_TONET 0x04     /* Accept IN TRANSIT only to my net    0000 0100 */
 #define FWD_NOBITS 0x08    /* No IN TRANSIT if extended bits used 0000 1000 */
-#define FWD_HOST 0x10       /* Send mail to host if can't find.          */
+#define FWD_HOST 0x10      /* Send mail to host if can't find.          */
 #define VERSION6 0x40   /* Use Version 6 nodelist                        */
 #define IMAPOINT 0x80   /* This is a point                              */
 /*--------------------------------------------------------------------------*/
@@ -611,14 +611,14 @@ struct _common_data
 #define M_SNOOP 0x01       /* sysop display on                    0000 0001 */
 #define MOUSE 0x02         /* sysop mouse on                      0000 0010 */
 #define M_BRKCLEAR 0x04    /* Use BREAK to clear outbound buffer  0000 0100 */
-#define SLOW_MODEM 0x08     /* Slow modem and fast computer                 */
+#define SLOW_MODEM 0x08    /* Slow modem and fast computer                 */
 /*--------------------------------------------------------------------------*/
 /* STYLE FLAGS                                                              */
 /*--------------------------------------------------------------------------*/
 #define SF_PATH 0x01       /* use path, not Dir.Bbs               0000 0001 */
 #define SF_KILL 0x02       /* Kill rec'd pvt messages             0000 0010 */
 #define SF_ASKKILL 0x04    /* ASK about killing msgs              0000 0100 */
-#define SF_EUROPE 0x08      /* European date strings */
+#define SF_EUROPE 0x08     /* European date strings */
 #define SF_TIME 0x10    /* Show time remaining on menu         0001 0000 */
 #define SF_NOFLAG 0x20  /* Don't allow user config at logon    0010 0000 */
 #define SF_HANDHOLD 0x40    /* Track user's errors and add help    0100 0000 */
@@ -711,24 +711,24 @@ struct   _usr
     char     Address[32];     /* User's address                        */
     char     My_Ans[64];      /* Reply to prm.My_Question              */
     char     Strfill[32];     /* Filler for more strings               */
-    char     bday_mon;             /* User's birthday/month                 */
-    char     bday_day;             /* User's birthday/day                   */
-    short    bday_year;            /* User's birthday/year                  */
-    uint32_t messages_read;     /* Total number of messages read */
-    int32_t  messages_sent;     /* Number of messages entered by user    */
+    char     bday_mon;        /* User's birthday/month                 */
+    char     bday_day;        /* User's birthday/day                   */
+    short    bday_year;       /* User's birthday/year                  */
+    uint32_t messages_read;   /* Total number of messages read */
+    int32_t  messages_sent;   /* Number of messages entered by user    */
     word     my_section[MAX_USEC]; /* This is just a block of area  */
-                                   /* numbers in the user's Section */
-                                   /* Message areas are first, then */
-                                   /* file areas. The first file    */
-                                   /* area is at my_section[msecs]  */
-    word big_fill[40];             /* Fill out to 512 bytes                 */
-    word Opus_Flags;               /* Stores Opus temporary configuration */
+    /* numbers in the user's Section */
+    /* Message areas are first, then */
+    /* file areas. The first file    */
+    /* area is at my_section[msecs]  */
+    word big_fill[40];        /* Fill out to 512 bytes                 */
+    word Opus_Flags;          /* Stores Opus temporary configuration */
     byte byte_fill;
-    byte Default_Protocol;         /* Default transfer protocol           */
-    byte User_MMacro[16];          /* Message User's keyboard Macro       */
-    byte User_FMacro[16];          /* File User's keyboard Macro          */
-    byte User_DMacro[16];          /* Default User's keyboard Macro       */
-    byte Sysop_Comment[80];        /* Anything you want to say about 'em  */
+    byte Default_Protocol;    /* Default transfer protocol           */
+    byte User_MMacro[16];     /* Message User's keyboard Macro       */
+    byte User_FMacro[16];     /* File User's keyboard Macro          */
+    byte User_DMacro[16];     /* Default User's keyboard Macro       */
+    byte Sysop_Comment[80];   /* Anything you want to say about 'em  */
 #endif
     uint32_t OPUS_id;
     /* The next 7 sets of id and inf data are for    */
@@ -766,20 +766,20 @@ struct   _usr
 /*--------------------------------------------------------------------------*/
 /* 2Bits flags (More user configuration choices....                         */
 /*--------------------------------------------------------------------------*/
-#define  HOTKEYS 0x0001     /* Wants HotKeys at all help levels             */
-#define  QMENU 0x0002       /* Wants to return to last menu instead of MAIN */
+#define  HOTKEYS 0x0001    /* Wants HotKeys at all help levels             */
+#define  QMENU 0x0002      /* Wants to return to last menu instead of MAIN */
 #define  ASKGRAPH 0x0004    /* Wants to be asked about graphics every logon */
-#define  ASCIIMENU 0x0008       /* Wants long tedious graphics menus        */
-#define  SHOW_TIME 0x0010       /* Show time remaining at prompts        */
-#define  BLOCKCHAT 0x4000       /* User doesn't want to be sociable.     */
-#define  INCRITAREA 0x8000      /* Opus is in critical area              */
+#define  ASCIIMENU 0x0008  /* Wants long tedious graphics menus        */
+#define  SHOW_TIME 0x0010  /* Show time remaining at prompts        */
+#define  BLOCKCHAT 0x4000  /* User doesn't want to be sociable.     */
+#define  INCRITAREA 0x8000 /* Opus is in critical area              */
 /*--------------------------------------------------------------------------*/
 /* eXpiration flags                                                         */
 /*--------------------------------------------------------------------------*/
-#define BY_DATE 0x0001          /* Zap users by date                        */
-#define BY_TIME 0x0002          /* Zap users when they run out of credit    */
-#define DEMOTE 0x0010           /* Demote user instead of deleting them     */
-#define AXE 0x0020              /* Delete user                              */
+#define BY_DATE 0x0001     /* Zap users by date                        */
+#define BY_TIME 0x0002     /* Zap users when they run out of credit    */
+#define DEMOTE 0x0010      /* Demote user instead of deleting them     */
+#define AXE 0x0020         /* Delete user                              */
 /*--------------------------------------------------------------------------*/
 /* User help levels                                                         */
 /*--------------------------------------------------------------------------*/
@@ -837,22 +837,22 @@ end;
 struct opus_msg begin byte from[36];
 byte to[36];
 byte subj[72];
-byte date[20];             /* Obsolete/unused ASCII date information        */
-word times;                /* FIDO<tm>: Number of times read                */
-word dest;                 /* Destination node                              */
-word orig;                 /* Origination node number                       */
-word cost;                 /* Unit cost charged to send the message         */
-word orig_net;             /* Origination network number                    */
-word dest_net;             /* Destination network number                    */
-                           /* A TIMESTAMP is a 32-bit integer in the Unix   */
-                           /* flavor (ie. the number of seconds since       */
-                           /* January 1, 1970).  Timestamps in messages are */
-                           /* always Greenwich Mean Time, never local time. */
-struct _stamp date_written;         /* When user wrote the msg              */
-struct _stamp date_arrived;         /* When msg arrived on-line             */
-word reply;                /* Current msg is a reply to this msg number     */
-word attr;                 /* Attribute (behavior) of the message           */
-word up;                   /* Next message in the thread                    */
+byte date[20];              /* Obsolete/unused ASCII date information        */
+word times;                 /* FIDO<tm>: Number of times read                */
+word dest;                  /* Destination node                              */
+word orig;                  /* Origination node number                       */
+word cost;                  /* Unit cost charged to send the message         */
+word orig_net;              /* Origination network number                    */
+word dest_net;              /* Destination network number                    */
+                            /* A TIMESTAMP is a 32-bit integer in the Unix   */
+                            /* flavor (ie. the number of seconds since       */
+                            /* January 1, 1970).  Timestamps in messages are */
+                            /* always Greenwich Mean Time, never local time. */
+struct _stamp date_written; /* When user wrote the msg              */
+struct _stamp date_arrived; /* When msg arrived on-line             */
+word reply;                 /* Current msg is a reply to this msg number     */
+word attr;                  /* Attribute (behavior) of the message           */
+word up;                    /* Next message in the thread                    */
 end;
 /*--------------------------------------------------------------------------*/
 /* Message attributes                                                       */
@@ -946,37 +946,37 @@ end;
 
 struct   _Hello begin word signal; /* always 'o'     (0x6f)                   */
 word hello_version;              /* currently 1    (0x01)                   */
-word product;                      /* product code                            */
-word product_maj;                  /* major revision of the product           */
-word product_min;                  /* minor revision of the product           */
-char my_name[60];                  /* Other end's name                        */
-char sysop[20];                    /* sysop's name                            */
+word product;                    /* product code                            */
+word product_maj;                /* major revision of the product           */
+word product_min;                /* minor revision of the product           */
+char my_name[60];                /* Other end's name                        */
+char sysop[20];                  /* sysop's name                            */
 ADDR my_address;
 byte my_password[8];             /* ONLY 6 CHARACTERS ARE SIGNIFICANT !!!!! */
-byte reserved2[8];                 /* reserved by Opus                        */
-word capabilities;                 /* see below                               */
+byte reserved2[8];               /* reserved by Opus                        */
+word capabilities;               /* see below                               */
 byte reserved3[12];              /* available to non-Opus systems by prior  */
-                                   /* "approval" of 124/108.                  */
+                                 /* "approval" of 124/108.                  */
 end;    /* size 128 bytes */
 /*--------------------------------------------------------------------------*/
 /* YOOHOO<tm> CAPABILITY VALUES                                             */
 /*--------------------------------------------------------------------------*/
 #define Y_DIETIFNA 0x0001  /* Can do LoTek            0000 0000 0000 0001 */
 #define FTB_USER 0x0002    /* reserved by Opus        0000 0000 0000 0010 */
-#define Bit_2 0x0004       /* reserved by Opus        0000 0000 0000 0100 */
+#define Bit_2 0x0004                  /* reserved by Opus        0000 0000 0000 0100 */
 #define ZED_ZAPPER 0x0008  /* Can do ZModem/plain     0000 0000 0000 1000 */
 #define DOES_IANUS 0x0010  /* Does Opus Janus         0000 0000 0001 0000 */
-#define Bit_5 0x0020       /* reserved by Opus        0000 0000 0010 0000 */
-#define Bit_6 0x0040       /* reserved by Opus        0000 0000 0100 0000 */
-#define Bit_7 0x0080       /* reserved by Opus        0000 0000 1000 0000 */
-#define Bit_8 0x0100       /* reserved by Opus        0000 0001 0000 0000 */
-#define Bit_9 0x0200       /* reserved by Opus        0000 0010 0000 0000 */
-#define Bit_a 0x0400       /* reserved by Opus        0000 0100 0000 0000 */
-#define Bit_b 0x0800       /* reserved by Opus        0000 1000 0000 0000 */
-#define Bit_c 0x1000       /* reserved by Opus        0001 0000 0000 0000 */
-#define Bit_d 0x2000       /* reserved by Opus        0010 0000 0000 0000 */
-#define Bit_e 0x4000       /* reserved by Opus        0100 0000 0000 0000 */
-#define WZ_FREQ 0x8000     /* accepts file requests   1000 0000 0000 0000 */
+#define Bit_5 0x0020                  /* reserved by Opus        0000 0000 0010 0000 */
+#define Bit_6 0x0040                  /* reserved by Opus        0000 0000 0100 0000 */
+#define Bit_7 0x0080                  /* reserved by Opus        0000 0000 1000 0000 */
+#define Bit_8 0x0100                  /* reserved by Opus        0000 0001 0000 0000 */
+#define Bit_9 0x0200                  /* reserved by Opus        0000 0010 0000 0000 */
+#define Bit_a 0x0400                  /* reserved by Opus        0000 0100 0000 0000 */
+#define Bit_b 0x0800                  /* reserved by Opus        0000 1000 0000 0000 */
+#define Bit_c 0x1000                  /* reserved by Opus        0001 0000 0000 0000 */
+#define Bit_d 0x2000                  /* reserved by Opus        0010 0000 0000 0000 */
+#define Bit_e 0x4000                  /* reserved by Opus        0100 0000 0000 0000 */
+#define WZ_FREQ 0x8000                /* accepts file requests   1000 0000 0000 0000 */
 /*
 
    User Indexing Support Items
@@ -1013,11 +1013,11 @@ end;    /* size 128 bytes */
 
  */
 
-#define UsrIdx 1                          /* Says, Attempt CRC indexing     */
-#define UsrLok 2                          /* Says, Attempt File Locking     */
+#define UsrIdx 1                      /* Says, Attempt CRC indexing     */
+#define UsrLok 2                      /* Says, Attempt File Locking     */
 #define UsrPwd 4
 
-#define HAS_UF(v) (ctl.UDB_Flags & v)     /* Check if Ufile feature used    */
+#define HAS_UF(v) (ctl.UDB_Flags & v) /* Check if Ufile feature used    */
 #define STOP_UF(v) ctl.UDB_Flags &= ~v    /* Turn off Ufile feature         */
 /* END OF FILE: opus.h */
 // INCLUDE SYSTEM.H //////////////////////////////////////////////////////////
@@ -1073,7 +1073,7 @@ struct  _filesys
     long Section;       /* edit Lock */
     long fill_long[2];
     byte Title_Len;     /* length of Title */
-    byte Prefiles_Len;      /* files shown at Area access like Areainfo */
+    byte Prefiles_Len;  /* files shown at Area access like Areainfo */
     byte Downpath_Len;  /* length of path */
     byte Uppath_Len;    /* length of path */
 /* 88 */
@@ -1201,8 +1201,8 @@ struct  _lf
 /* File Area attributes (limit or describe the behavior of an area)         */
 /*--------------------------------------------------------------------------*/
 
-#define    F_DUPE 0x0001        /* Allow duplicate uploads in this area      */
-#define    F_FREE 0x0002        /* Downloads from this area area all 0K      */
+#define    F_DUPE 0x0001   /* Allow duplicate uploads in this area      */
+#define    F_FREE 0x0002   /* Downloads from this area area all 0K      */
 /*--------------------------------------------------------------------------*/
 /* Area attributes (limit or describe the behavior of an area)              */
 /*--------------------------------------------------------------------------*/
@@ -1211,10 +1211,10 @@ struct  _lf
 #define  NOPUBLIC 0x04     /* OPUS: Disallow public messages                */
 #define  NOPRIVATE 0x08    /* OPUS: Disallow private messages               */
 #define  ANON_OK 0x10      /* OPUS: Enable anonymous messages               */
-#define  _ECHOMAIL 0x20     /* OPUS: Set=Echomail Clear=Not Echomail         */
+#define  _ECHOMAIL 0x20    /* OPUS: Set=Echomail Clear=Not Echomail         */
 #define  USEALIAS 0x40     /* OPUS: Use user's alias in this area if.....   */
 //#define  PASSTHROUGH   0x80     /* OPUS: Allow high-bit characters in echo area  */
-#define  INBOUND 0x0100         /* Inbound Only area */
+#define  INBOUND 0x0100    /* Inbound Only area */
 /*--------------------------------------------------------------------------*/
 /* msgsys.Extern_Flags                                                      */
 /* Opus will not use these flags, set them or anything. The ones that are   */

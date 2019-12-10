@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -26,50 +25,31 @@
 
 #ifndef __gregex_h
 #define __gregex_h
-
-
 //  ------------------------------------------------------------------
 
 #include <gdefs.h>
 #include <sys/types.h>
 #include <regex.h>
-
-
 //  ------------------------------------------------------------------
+class gregex
+{
+protected: regex_t * preg;
+public: enum
+    {
+        // cflags
+        extended = 0x01, icase = 0x02, newline = 0x04,
+        // eflags
+        notbol = 0x10, noteol = 0x20
+    };
 
-class gregex {
-
-protected:
-
-  regex_t* preg;
-
-public:
-
-  enum {
-
-    // cflags
-    extended = 0x01,
-    icase    = 0x02,
-    newline  = 0x04,
-
-    // eflags
-    notbol   = 0x10,
-    noteol   = 0x20
-  };
-
-  gregex();
-  ~gregex();
-
-  void reset();
-
-  bool compile(const char* pattern, int cflags=0);
-  bool match(const char* str, int eflags=0);
-
+    gregex();
+    ~gregex();
+    void reset();
+    bool compile(const char * pattern, int cflags = 0);
+    bool match(const char * str, int eflags = 0);
 };
 
-
 //  ------------------------------------------------------------------
 
-#endif
-
+#endif // ifndef __gregex_h
 //  ------------------------------------------------------------------

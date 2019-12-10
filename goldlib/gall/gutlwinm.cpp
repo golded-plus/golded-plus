@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1999-2000 Alexander S. Aganichev
@@ -30,25 +29,24 @@
 #include <gutlos.h>
 #include <windows.h>
 #include <mmsystem.h>
-
 //  ------------------------------------------------------------------
+int g_send_mci_string(char * string, char * his_buffer)
+{
+    char our_buffer[BUFFERSIZE], * return_buffer;
 
-int g_send_mci_string(char* string, char* his_buffer) {
+    return_buffer = his_buffer ? his_buffer : our_buffer;
+    memset(return_buffer, 0, BUFFERSIZE);
+    MCIERROR rc = mciSendString(string, return_buffer, BUFFERSIZE, NULL);
 
-  char our_buffer[BUFFERSIZE], *return_buffer;
-
-  return_buffer = his_buffer ? his_buffer : our_buffer;
-  memset(return_buffer, 0, BUFFERSIZE);
-  
-  MCIERROR rc = mciSendString(string, return_buffer, BUFFERSIZE, NULL);
-
-  if(rc == 0)
-    return 1;
-  else {
-    mciGetErrorString(rc, return_buffer, BUFFERSIZE);
-    return 0;
-  }
+    if(rc == 0)
+    {
+        return 1;
+    }
+    else
+    {
+        mciGetErrorString(rc, return_buffer, BUFFERSIZE);
+        return 0;
+    }
 }
-
 
 //  ------------------------------------------------------------------

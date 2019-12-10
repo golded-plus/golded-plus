@@ -38,10 +38,10 @@
 #endif
 //  ------------------------------------------------------------------
 AreaList AL;
-int AreaTypeOrder[17] = {0,  1,           // GMB_NET
-                         2,               // GMB_EMAIL
-                         3,               // GMB_NET | GMB_EMAIL
-                         4,               // GMB_ECHO
+int AreaTypeOrder[17] = {0,  1,   // GMB_NET
+                         2,  // GMB_EMAIL
+                         3,  // GMB_NET | GMB_EMAIL
+                         4,  // GMB_ECHO
                          5,  6,   7, 8,   // GMB_NEWSGROUP
                          9,  10,  11, 12, // GMB_ECHO | GMB_NEWSGROUP
                          13, 14,  15, 16  // GMB_LOCAL

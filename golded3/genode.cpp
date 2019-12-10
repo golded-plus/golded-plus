@@ -853,6 +853,7 @@ int NodelistBrowser::DoKey(gkey & keycode)
                 }
             }
     } // switch
+
     return YES;
 } // NodelistBrowser::DoKey
 
@@ -1492,6 +1493,7 @@ void LookupNode(GMsg * msg, const char * name, int what)
             strtok(buf, " \t\n\r"); // Only lookup first word
             break;
     } // switch
+
     Lookup(msg, &addr, ptr, -6, LNG->LookupInfo);
     update_statusline(statuslinebak);
     w_info(NULL);

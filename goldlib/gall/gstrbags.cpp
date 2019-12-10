@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -28,138 +27,137 @@
 #include <gmemdbg.h>
 #include <gstrall.h>
 #include <gstrbags.h>
-
-
 //  ------------------------------------------------------------------
-
 const int BLOCKSIZE = 4096;
-
-
 //  ------------------------------------------------------------------
-
-GStrBag::GStrBag() {
-
-  items = 0;
-  bagsize = 0;
-  bag = NULL;
-  blocksize = BLOCKSIZE;
-  currno = 0;
+GStrBag::GStrBag()
+{
+    items     = 0;
+    bagsize   = 0;
+    bag       = NULL;
+    blocksize = BLOCKSIZE;
+    currno    = 0;
 }
 
-
 //  ------------------------------------------------------------------
-
-GStrBag::~GStrBag() {
-
-  Reset();
+GStrBag::~GStrBag()
+{
+    Reset();
 }
 
-
 //  ------------------------------------------------------------------
-
-void GStrBag::Reset() {
-
-  if(bag != NULL)
-    throw_release(bag);
+void GStrBag::Reset()
+{
+    if(bag != NULL)
+    {
+        throw_release(bag);
+    }
 }
 
-
 //  ------------------------------------------------------------------
-
-int GStrBag::Add(const char* string) {
-
-  return Add(string, strlen(string)+1);
+int GStrBag::Add(const char * string)
+{
+    return Add(string, strlen(string) + 1);
 }
 
-
 //  ------------------------------------------------------------------
+int GStrBag::Add(const void * data, int length)
+{
+    if(items == 0)
+    {
+        bag = (char *)throw_malloc(blocksize);
+    }
 
-int GStrBag::Add(const void* data, int length) {
+    int currsize     = bagsize + (items * sizeof(int));
+    int currsizeblks = (currsize / blocksize) + 1;
+    int newsizeblks  = ((currsize + length + sizeof(int)) / blocksize) + 1;
 
-  if(items == 0)
-    bag = (char*)throw_malloc(blocksize);
-  int currsize = bagsize + (items*sizeof(int));
-  int currsizeblks = (currsize/blocksize) + 1;
-  int newsizeblks = ((currsize+length+sizeof(int))/blocksize) + 1;
-  if(newsizeblks != currsizeblks)
-    bag = (char*)throw_realloc(bag, newsizeblks*blocksize);
-  memmove(bag+bagsize+length, bag+bagsize, items*sizeof(int));
-  memcpy(bag+bagsize, data, length);
-  ((int*)(bag+bagsize+length))[items] = bagsize;
-  bagsize += length;
-  return items++;
-}
-
-
-//  ------------------------------------------------------------------
-
-void GStrBag::Change(int index, const char* string) {
-
-  Change(index, string, strlen(string)+1);
-}
-
-
-//  ------------------------------------------------------------------
-
-void GStrBag::Change(int index, const void* data, int length) {
-
-  int oldpos = Pos(index);
-  int oldlen = bag ? strlen(bag+oldpos)+1 : 0;
-  int lendiff = length - oldlen;
-  int oldsize = bagsize+(items*sizeof(int));
-  int movesize = oldsize - oldpos - oldlen;
-  int currsizeblks = (oldsize/blocksize) + 1;
-  int newsizeblks = ((oldsize+lendiff)/blocksize) + 1;
-  if(lendiff > 0) {
     if(newsizeblks != currsizeblks)
-      bag = (char*)throw_realloc(bag, oldsize+lendiff);
-    memmove(bag+oldpos+length, bag+oldpos+oldlen, movesize);
-  }
-  else if(lendiff < 0) {
-    memmove(bag+oldpos+length, bag+oldpos+oldlen, movesize);
-    if(newsizeblks != currsizeblks)
-      bag = (char*)throw_realloc(bag, oldsize+lendiff);
-  }
-  memcpy(bag+oldpos, data, length);
-  bagsize += lendiff;
-  for(int n=index+1; n<items; n++)
-    Pos(n) += lendiff;
-}
+    {
+        bag = (char *)throw_realloc(bag, newsizeblks * blocksize);
+    }
 
+    memmove(bag + bagsize + length, bag + bagsize, items * sizeof(int));
+    memcpy(bag + bagsize, data, length);
+    ((int *)(bag + bagsize + length))[items] = bagsize;
+    bagsize += length;
+    return items++;
+}
 
 //  ------------------------------------------------------------------
-
-const char* GStrBag::operator[](int index) {
-
-  return Index(index);
+void GStrBag::Change(int index, const char * string)
+{
+    Change(index, string, strlen(string) + 1);
 }
-
 
 //  ------------------------------------------------------------------
+void GStrBag::Change(int index, const void * data, int length)
+{
+    int oldpos       = Pos(index);
+    int oldlen       = bag ? strlen(bag + oldpos) + 1 : 0;
+    int lendiff      = length - oldlen;
+    int oldsize      = bagsize + (items * sizeof(int));
+    int movesize     = oldsize - oldpos - oldlen;
+    int currsizeblks = (oldsize / blocksize) + 1;
+    int newsizeblks  = ((oldsize + lendiff) / blocksize) + 1;
 
-void GStrSet3::Put(const char* s1, const char* s2, const char* s3) {
+    if(lendiff > 0)
+    {
+        if(newsizeblks != currsizeblks)
+        {
+            bag = (char *)throw_realloc(bag, oldsize + lendiff);
+        }
 
-  int len1 = strlen(s1 ? s1 : "")+1;
-  int len2 = strlen(s2 ? s2 : "")+1;
-  int len3 = strlen(s3 ? s3 : "")+1;
-  cfg.size = len1 + len2 + len3;
-  set = (char *)throw_xmalloc(cfg.size);
-  cfg.pos2 = len1;
-  cfg.pos3 = len1 + len2;
-  memcpy(set, s1 ? s1 : "", len1);
-  memcpy(set+cfg.pos2, s2 ? s2 : "", len2);
-  memcpy(set+cfg.pos3, s3 ? s3 : "", len3);
-}
+        memmove(bag + oldpos + length, bag + oldpos + oldlen, movesize);
+    }
+    else if(lendiff < 0)
+    {
+        memmove(bag + oldpos + length, bag + oldpos + oldlen, movesize);
 
+        if(newsizeblks != currsizeblks)
+        {
+            bag = (char *)throw_realloc(bag, oldsize + lendiff);
+        }
+    }
+
+    memcpy(bag + oldpos, data, length);
+    bagsize += lendiff;
+
+    for(int n = index + 1; n < items; n++)
+    {
+        Pos(n) += lendiff;
+    }
+} // GStrBag::Change
 
 //  ------------------------------------------------------------------
-
-void GStrSet3::Change(const char* s1, const char* s2, const char* s3) {
-  
-  char* oldset = set;
-  Put(s1, s2, s3);
-  throw_xfree(oldset);
+const char * GStrBag::operator [](int index)
+{
+    return Index(index);
 }
 
+//  ------------------------------------------------------------------
+void GStrSet3::Put(const char * s1, const char * s2, const char * s3)
+{
+    int len1 = strlen(s1 ? s1 : "") + 1;
+    int len2 = strlen(s2 ? s2 : "") + 1;
+    int len3 = strlen(s3 ? s3 : "") + 1;
+
+    cfg.size = len1 + len2 + len3;
+    set      = (char *)throw_xmalloc(cfg.size);
+    cfg.pos2 = len1;
+    cfg.pos3 = len1 + len2;
+    memcpy(set, s1 ? s1 : "", len1);
+    memcpy(set + cfg.pos2, s2 ? s2 : "", len2);
+    memcpy(set + cfg.pos3, s3 ? s3 : "", len3);
+}
+
+//  ------------------------------------------------------------------
+void GStrSet3::Change(const char * s1, const char * s2, const char * s3)
+{
+    char * oldset = set;
+
+    Put(s1, s2, s3);
+    throw_xfree(oldset);
+}
 
 //  ------------------------------------------------------------------

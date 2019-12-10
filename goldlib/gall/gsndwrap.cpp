@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -26,69 +25,50 @@
 
 #include <cstdlib>
 #include <gsndall.h>
-
-
 //  ------------------------------------------------------------------
-
-static gsnd* snd = NULL;
-
-
+static gsnd * snd = NULL;
 //  ------------------------------------------------------------------
-
-gsound::gsound() {
-
-  snd = new gsnd;
-  installed = (snd->open_api() != -1);
+gsound::gsound()
+{
+    snd       = new gsnd;
+    installed = (snd->open_api() != -1);
 }
 
-
 //  ------------------------------------------------------------------
-
-gsound::~gsound() {
-
-  snd->close_api();
-  delete snd;
+gsound::~gsound()
+{
+    snd->close_api();
+    delete snd;
 }
 
-
 //  ------------------------------------------------------------------
-
-int gsound::load(const char* file) {
-
-  return snd->open(file);
+int gsound::load(const char * file)
+{
+    return snd->open(file);
 }
 
-
 //  ------------------------------------------------------------------
-
-int gsound::unload() {
-
-  return snd->close();
+int gsound::unload()
+{
+    return snd->close();
 }
 
-
 //  ------------------------------------------------------------------
-
-int gsound::play() {
-
-  return snd->play();
+int gsound::play()
+{
+    return snd->play();
 }
 
-
 //  ------------------------------------------------------------------
-
-int gsound::stop() {
-
-  return snd->stop();
+int gsound::stop()
+{
+    return snd->stop();
 }
 
-
 //  ------------------------------------------------------------------
-
-int gsound::is_playing() {
-
-  return snd->is_playing();
+int gsound::is_playing()
+{
+    return snd->is_playing();
 }
-
 
 //  ------------------------------------------------------------------

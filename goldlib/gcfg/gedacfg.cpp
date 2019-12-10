@@ -680,6 +680,7 @@ bool gareafile::ReadAreafile(word crc, char * parameters)
         default:
             return false;
     } // switch
+
     return true;
 } // gareafile::ReadAreafile
 

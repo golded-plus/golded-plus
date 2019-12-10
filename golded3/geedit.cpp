@@ -785,7 +785,6 @@ void IEclass::refresh(Line * __currline, uint __row)
     }
 
 #endif // if defined (GCFG_SPELL_INCLUDED)
-
     GFTRK(0);
 } // IEclass::refresh
 

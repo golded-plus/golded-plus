@@ -35,7 +35,6 @@ template <class msgn_t, class rec_t, class attr_t, class board_t, class last_t,
 template <class msgn_t, class rec_t, class attr_t, class board_t, class last_t,
           bool __HUDSON> void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t,
                                         __HUDSON>::data_close(){}
-
 //  ------------------------------------------------------------------
 template <class msgn_t, class rec_t, class attr_t, class board_t, class last_t,
           bool __HUDSON> void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t,

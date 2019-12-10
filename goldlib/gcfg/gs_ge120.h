@@ -40,17 +40,17 @@
 #define GE_MAJOR 1         // GEcho major revision version
 #define GE_MINOR 20        // GEcho minor revision version
 
-#define AKAS 32                // Main + AKAs
-#define OLDAKAS 11             // Not used
-#define OLDUPLINKS 10          // Not used
-#define OLDGROUPS 26           // Not used
-#define USERS 10               // User names
-#define MAXAREAS 10000         // Area records
-#define MAXCONNECTIONS 500     // Connections per area
-#define MAXGROUPS 256          // Group records
-#define MAXNODES 5000          // Node records
-#define MAXVIAS 60             // Pack "Via" records
-#define MAXROUTES 640          // Pack "Routed node" records
+#define AKAS 32            // Main + AKAs
+#define OLDAKAS 11         // Not used
+#define OLDUPLINKS 10      // Not used
+#define OLDGROUPS 26       // Not used
+#define USERS 10           // User names
+#define MAXAREAS 10000     // Area records
+#define MAXCONNECTIONS 500 // Connections per area
+#define MAXGROUPS 256      // Group records
+#define MAXNODES 5000      // Node records
+#define MAXVIAS 60         // Pack "Via" records
+#define MAXROUTES 640      // Pack "Routed node" records
 
 #define GROUPBYTES ((MAXGROUPS + 7) / 8)
 //  ------------------------------------------------------------------
@@ -58,24 +58,24 @@
 typedef char GROUPS[GROUPBYTES];
 /* --- Log levels */
 
-#define LOG_INBOUND 0x0001      /* Inbound activities */
-#define LOG_OUTBOUND 0x0002     /* Outbound activities */
-#define LOG_PACKETS 0x0004      /* Inbound packet info */
-#define LOG_UNEXPECT 0x0008     /* Extended packet info */
-#define LOG_AREAMGR 0x0010      /* Unexpected passwords */
+#define LOG_INBOUND 0x0001  /* Inbound activities */
+#define LOG_OUTBOUND 0x0002 /* Outbound activities */
+#define LOG_PACKETS 0x0004  /* Inbound packet info */
+#define LOG_UNEXPECT 0x0008 /* Extended packet info */
+#define LOG_AREAMGR 0x0010  /* Unexpected passwords */
 #define LOG_EXTPKTINFO 0x0040   /* AreaMgr messages */
 #define LOG_NETEXPORT 0x0100    /* Exporting of netmail */
 #define LOG_NETIMPORT 0x0200    /* Importing of netmail */
-#define LOG_NETPACK 0x0400      /* Packing of netmail */
-#define LOG_NETMOVED 0x0800     /* Moving Sent/Rcvd mail */
+#define LOG_NETPACK 0x0400  /* Packing of netmail */
+#define LOG_NETMOVED 0x0800 /* Moving Sent/Rcvd mail */
 #define LOG_STATISTICS 0x2000   /* GEcho's statistics */
-#define LOG_MBUTIL 0x4000       /* MBUTIL's activities */
-#define LOG_DEBUG 0x8000        /* DEBUG: All of the above */
+#define LOG_MBUTIL 0x4000   /* MBUTIL's activities */
+#define LOG_DEBUG 0x8000    /* DEBUG: All of the above */
 /* --- Log styles */
 
-#define LOG_FD 0        /* FrontDoor */
-#define LOG_BINK 1      /* BinkleyTerm */
-#define LOG_QUICK 2     /* QuickBBS */
+#define LOG_FD 0            /* FrontDoor */
+#define LOG_BINK 1          /* BinkleyTerm */
+#define LOG_QUICK 2         /* QuickBBS */
 #define LOG_DBRIDGE 3   /* D'Bridge */
 /* --- Setup option bits */
 
@@ -316,22 +316,22 @@ typedef struct
     word      akaarea[AKAS];        /* AKA netmail areas */
     word      userarea[USERS];      /* Netmail areas for system users, 0 = don't import, 65535 =
                                        use AKA area */
-    word      persmailarea[USERS]; /* Personal mail area (0 = don't copy) */
-    word      rcvdarea;             /* Rcvd netmail area (0 = don't move) */
-    word      sentarea;             /* Sent netmail area (0 = don't move) */
-    word      badarea;              /* Where bad echomail is stored (0 = path) */
-    word      reserved5;            /* Not used */
-    char      jampath[53];          /* JAM message base path */
-    char      userbase[53];         /* User base path */
-    char      dos4gw_exe[65];       /* DOS4GW.EXE protected mode run time file */
-    GROUPS    public_groups;        /* Public groups (bits 0-255) */
-    word      maxgroupconnections; /* Maximum number of connections per group */
-    word      maxmsgsize;           /* Maximum message size (64-1024 kB) */
-    word      diskspace_threshold; /* Amount of free disk space that causes packing */
-    byte      pktsort;              /* 0 = No, 1 = Area, 2 = Area + Date/Time */
-    char      wildcatpath[53];      /* Wildcat! home path */
-    byte      wcoptions;            /* Wildcat! options */
-    byte      pcboptions;           /* PCBoard options */
+    word   persmailarea[USERS];    /* Personal mail area (0 = don't copy) */
+    word   rcvdarea;                /* Rcvd netmail area (0 = don't move) */
+    word   sentarea;                /* Sent netmail area (0 = don't move) */
+    word   badarea;                 /* Where bad echomail is stored (0 = path) */
+    word   reserved5;               /* Not used */
+    char   jampath[53];             /* JAM message base path */
+    char   userbase[53];            /* User base path */
+    char   dos4gw_exe[65];          /* DOS4GW.EXE protected mode run time file */
+    GROUPS public_groups;           /* Public groups (bits 0-255) */
+    word   maxgroupconnections;    /* Maximum number of connections per group */
+    word   maxmsgsize;              /* Maximum message size (64-1024 kB) */
+    word   diskspace_threshold;    /* Amount of free disk space that causes packing */
+    byte   pktsort;                 /* 0 = No, 1 = Area, 2 = Area + Date/Time */
+    char   wildcatpath[53];         /* Wildcat! home path */
+    byte   wcoptions;               /* Wildcat! options */
+    byte   pcboptions;              /* PCBoard options */
 } SETUP_GE;
 
 #define IMPORTSB 0x0001   /* Import SEEN-BY lines to message base */

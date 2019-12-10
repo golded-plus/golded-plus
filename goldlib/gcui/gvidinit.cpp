@@ -434,7 +434,6 @@ int GVid::detectadapter()
     adapter          = V_VGA;
 
   #endif // if defined (__USE_NCURSES__)
-
     return adapter;
 } // GVid::detectadapter
 
@@ -711,7 +710,6 @@ void GVid::detectinfo(GVidInfo * _info)
     //printf("init3: c=%i, r=%i\n", c, r);
   #endif // if defined (TIOCGSIZE)
 
-
     if((r <= 0) or (r > 200))
     {
         r = 24;
@@ -737,7 +735,6 @@ void GVid::detectinfo(GVidInfo * _info)
     _info->color.overscan  = 0;
 
   #endif // if defined (__USE_NCURSES__)
-
     getpalette(_info->color.palette);
 } // GVid::detectinfo
 

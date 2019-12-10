@@ -55,8 +55,8 @@
 #define MAXMESSALL 1024
 #define MAXBAUDREC 11
 
-typedef char    AskType;      // 0=yes, 1=no, 2=ask
-typedef char    MsgType;      // 0=localmail, 1=netmail, 2=echomail, 3=passthru, 4=waitthru,
+typedef char AskType;         // 0=yes, 1=no, 2=ask
+typedef char MsgType;         // 0=localmail, 1=netmail, 2=echomail, 3=passthru, 4=waitthru,
                               // 5=allmail
 typedef char    MsgKindsType; // 0=public, 1=private, 2=private or public
 typedef char    UserString[36];
@@ -112,9 +112,9 @@ typedef struct CONFIGRECORD
          filepath[61], freespace51[61], bipath[61], temppath[61], userbasepath[61],
          avatarpath[61], ascpath[61], asclowpath[61], filemaint[61], fileattachpath[61],
          soundpath[61], fastindexpath[61], systempwd[16], // Password to Logon System
-         sysoppwd[16],                                    // Password to Keyboard
+         sysoppwd[16],               // Password to Keyboard
          newuserpwd[16],             // Password for Newuser
-         newtopmenu[9],                                   // NewUser TopMenu
+         newtopmenu[9],              // NewUser TopMenu
          freespace52[4], inboundmail[61], outboundmail[61], uploadpath[61], swapfile[61],
          multipath[61], brackets[3], inactivitytime, minmesscheck, maxlogintime,
     /* unused */ freespace53, answerdelay;

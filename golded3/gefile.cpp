@@ -91,7 +91,6 @@ void gfileselect::open()
 
 //  ------------------------------------------------------------------
 void gfileselect::close(){}
-
 //  ------------------------------------------------------------------
 void gfileselect::scroll(int where)
 {
@@ -346,6 +345,7 @@ bool gfileselect::handle_key()
                 SayBibi();
             }
     } // switch
+
     return true;
 } // gfileselect::handle_key
 

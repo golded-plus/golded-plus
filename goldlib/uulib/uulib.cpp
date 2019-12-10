@@ -195,75 +195,106 @@ typedef struct
     size_t  size;
 } allomap;
 static allomap toallocate[] =
-{                              {&uugen_fnbuffer,
-                                1024                                                                 },/*
-                                          generic filename buffer */
-                               {&uugen_inbuffer,
-                                1024                                                                 },/*
-                                          generic input data buffer */
-                               {&uucheck_lastname,
-                                256                                                                                },/*
-                                         from uucheck.c */
-                               {&uucheck_tempname,
-                                256                                                                                             },
-                               {&uuestr_itemp,
-                                256                                                                                             },/*
-                                         from uuencode.c:UUEncodeStream() */
-                               {&uuestr_otemp,
-                                1024                                                                                                         },
-                               {&uulib_msgstring,
-                                1024                                                                                                                      },/*
-                                          from uulib.c:UUMessage() */
-                               {&uuncdl_fulline,
-                                300                                                                                                                       },/*
-                                         from uunconc.c:UUDecodeLine() */
-                               {&uuncdp_oline,
-                                1200                                                                                                                                   },/*
-                                          from uunconc.c:UUDecodePart() */
-                               {&uunconc_UUxlat,
-                                256 *
-                                sizeof(int)                                                                                                                                   },/*
-                                                   from uunconc.c:toplevel */
-                               {&uunconc_UUxlen,
-                                64 *
-                                sizeof(int)                                                                                                                                                 },
-                               {&uunconc_B64xlat,
-                                256 *
-                                sizeof(int)                                                                                                                                                             },
-                               {&uunconc_XXxlat,
-                                256 *
-                                sizeof(int)                                                                                                                                                                          },
-                               {&uunconc_BHxlat,
-                                256 *
-                                sizeof(int)                                                                                                                                                                                       },
-                               {&uunconc_save,
-                                3 *
-                                300                                                                                                                                                                                                              },/*
-                                         from uunconc.c:decoding buffer */
-                               {&uuscan_shlline,
-                                1024                                                                                                                                                                                                                              },/*
-                                          from uuscan.c:ScanHeaderLine() */
-                               {&uuscan_pvvalue,
-                                300                                                                                                                                                                                                                                            },/*
-                                         from uuscan.c:ParseValue() */
-                               {&uuscan_phtext,
-                                300                                                                                                                                                                                                                                                         },/*
-                                         from uuscan.c:ParseHeader() */
-                               {&uuscan_sdline,
-                                300                                                                                                                                                                                                                                                                      },/*
-                                         from uuscan.c:ScanData() */
-                               {&uuscan_sdbhds1,
-                                300                                                                                                                                                                                                                                                                                   },
-                               {&uuscan_sdbhds2,
-                                300                                                                                                                                                                                                                                                                                                },
-                               {&uuscan_spline,
-                                300                                                                                                                                                                                                                                                                                                             },/*
-                                         from uuscan.c:ScanPart() */
-                               {&uuutil_bhwtmp,
-                                300                                                                                                                                                                                                                                                                                                                          },/*
-                                         from uuutil.c:UUbhwrite() */
-                               {NULL,
-                                0                                                                                                                                                                                                                                                                                                                            }
+{                                 {&uugen_fnbuffer,
+                                   1024                                                    },          /*
+                                                                                                          generic
+                                                                                                             filename
+                                                                                                             buffer
+                                                                                                        */
+                                  {&uugen_inbuffer,
+                                   1024                                       },                       /*
+                                                                                                          generic
+                                                                                                             input
+                                                                                                             data
+                                                                                                             buffer
+                                                                                                        */
+                                  {&uucheck_lastname,
+                                   256                                        },                       /*
+                                                                                                          from
+                                                                                                             uucheck.c
+                                                                                                        */
+                                  {&uucheck_tempname,
+                                   256                                        },
+                                  {&uuestr_itemp,
+                                   256                                        },                       /*
+                                                                                                          from
+                                                                                                             uuencode.c:UUEncodeStream()
+                                                                                                        */
+                                  {&uuestr_otemp,
+                                   1024                                       },
+                                  {&uulib_msgstring,
+                                   1024                                                    },          /*
+                                                                                                          from
+                                                                                                             uulib.c:UUMessage()
+                                                                                                        */
+                                  {&uuncdl_fulline,
+                                   300                                        },                       /*
+                                                                                                          from
+                                                                                                             uunconc.c:UUDecodeLine()
+                                                                                                        */
+                                  {&uuncdp_oline,
+                                   1200                                       },                       /*
+                                                                                                          from
+                                                                                                             uunconc.c:UUDecodePart()
+                                                                                                        */
+                                  {&uunconc_UUxlat,
+                                   256 * sizeof(int)                          },                       /*
+                                                                                                          from
+                                                                                                             uunconc.c:toplevel
+                                                                                                        */
+                                  {&uunconc_UUxlen,
+                                   64 * sizeof(int)                           },
+                                  {&uunconc_B64xlat,
+                                   256 *
+                                   sizeof(int)                                                     },
+                                  {&uunconc_XXxlat,
+                                   256 *
+                                   sizeof(int)                                                     },
+                                  {&uunconc_BHxlat,
+                                   256 *
+                                   sizeof(int)                                                                  },
+                                  {&uunconc_save,
+                                   3 *
+                                   300                                                                            },                                                                                                                               /*
+                                                                                                                                                                                                                                                      from
+                                                                                                                                                                                                                                                         uunconc.c:decoding
+                                                                                                                                                                                                                                                         buffer
+                                                                                                                                                                                                                                                    */
+                                  {&uuscan_shlline,
+                                   1024                                                    },                                                                                                                                                      /*
+                                                                                                                                                                                                                                                      from
+                                                                                                                                                                                                                                                         uuscan.c:ScanHeaderLine()
+                                                                                                                                                                                                                                                    */
+                                  {&uuscan_pvvalue,
+                                   300                                                     },                                                                                                                                                      /*
+                                                                                                                                                                                                                                                      from
+                                                                                                                                                                                                                                                         uuscan.c:ParseValue()
+                                                                                                                                                                                                                                                    */
+                                  {&uuscan_phtext,
+                                   300                                                     },                                                                                                                                                      /*
+                                                                                                                                                                                                                                                      from
+                                                                                                                                                                                                                                                         uuscan.c:ParseHeader()
+                                                                                                                                                                                                                                                    */
+                                  {&uuscan_sdline,
+                                   300                                                     },                                                                                                                                                      /*
+                                                                                                                                                                                                                                                      from
+                                                                                                                                                                                                                                                         uuscan.c:ScanData()
+                                                                                                                                                                                                                                                    */
+                                  {&uuscan_sdbhds1,
+                                   300                                                     },
+                                  {&uuscan_sdbhds2,
+                                   300                                                                                },
+                                  {&uuscan_spline,   300},                                                                                                                                                                                                                                                                                        /*
+                                                                                                                                                                                                                                                                                                                                                     from
+                                                                                                                                                                                                                                                                                                                                                        uuscan.c:ScanPart()
+                                                                                                                                                                                                                                                                                                                                                   */
+                                  {&uuutil_bhwtmp,
+                                   300                                                                                },                                                                                                                                                                                                                          /*
+                                                                                                                                                                                                                                                                                                                                                     from
+                                                                                                                                                                                                                                                                                                                                                        uuutil.c:UUbhwrite()
+                                                                                                                                                                                                                                                                                                                                                   */
+                                  {NULL,
+                                   0                                                                                  }
 };
 /*
  * Handle the printing of messages. Works like printf.
@@ -361,7 +392,6 @@ int UUBusyPoll(void)
     }
 
 #endif // ifdef HAVE_GETTIMEOFDAY
-
     return 0;
 } // UUBusyPoll
 
@@ -607,6 +637,7 @@ int UUEXPORT UUGetOption(int option, int * ivalue, char * cvalue, int clength)
         default:
             return -1;
     } // switch
+
     return result;
 } // UUGetOption
 

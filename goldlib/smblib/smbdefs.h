@@ -404,8 +404,8 @@ typedef struct _PACK        // Message header
     when_t   when_written;    // Time message was written (unix format)
     when_t   when_imported;   // Time message was imported
     uint32_t number;        // Message number
-    uint32_t thread_orig;     // Original message number in thread
-    uint32_t thread_next;     // Next message in thread
+    uint32_t thread_orig;   // Original message number in thread
+    uint32_t thread_next;   // Next message in thread
     uint32_t thread_first;    // First reply to this message
     uint16_t delivery_attempts;   // Delivery attempt counter
     uint8_t  reserved[14];    // Reserved for future use
@@ -444,58 +444,58 @@ typedef struct _PACK        // Network (type and address)
 #endif
 #endif
 
-typedef struct                   // Message
+typedef struct                  // Message
 {
-    idxrec_t idx;                // Index
-    msghdr_t hdr;                // Header record (fixed portion)
-    char *   to,                 // To name
-         * to_ext,               // To extension
-         * from,                 // From name
-         * from_ext,             // From extension
-         * replyto,              // Reply-to name
+    idxrec_t idx;               // Index
+    msghdr_t hdr;               // Header record (fixed portion)
+    char *   to,                // To name
+         * to_ext,              // To extension
+         * from,                // From name
+         * from_ext,            // From extension
+         * replyto,             // Reply-to name
          * replyto_ext,         // Reply-to extension */
-         * id,                   // RFC822 Message-ID
-         * reply_id,             // RFC822 Reply-ID
-         * path,                 // USENET Path
+         * id,                  // RFC822 Message-ID
+         * reply_id,            // RFC822 Reply-ID
+         * path,                // USENET Path
          * newsgroups,          // USENET Newsgroups
-         * ftn_pid,              // FTN PID
-         * ftn_area,             // FTN AREA
-         * ftn_flags,            // FTN FLAGS
-         * ftn_msgid,            // FTN MSGID
-         * ftn_reply,            // FTN REPLY
-         * subj;                 // Subject
-    uint16_t to_agent,           // Type of agent message is to
-             from_agent,         // Type of agent message is from
+         * ftn_pid,             // FTN PID
+         * ftn_area,            // FTN AREA
+         * ftn_flags,           // FTN FLAGS
+         * ftn_msgid,           // FTN MSGID
+         * ftn_reply,           // FTN REPLY
+         * subj;                // Subject
+    uint16_t to_agent,          // Type of agent message is to
+             from_agent,        // Type of agent message is from
              replyto_agent;     // Type of agent replies should be sent to
-    net_t to_net,                // Destination network type and address
-          from_net,              // Origin network address
+    net_t to_net,               // Destination network type and address
+          from_net,             // Origin network address
           replyto_net;          // Network type and address for replies
     uint16_t   total_hfields;   // Total number of header fields
-    hfield_t * hfield;           // Header fields (fixed length portion)
+    hfield_t * hfield;          // Header fields (fixed length portion)
     void **    hfield_dat;      // Header fields (variable length portion)
-    dfield_t * dfield;           // Data fields (fixed length portion)
-    uint32_t   offset;           // Offset (number of records) into index
-    int        forwarded;        // Forwarded from agent to another
-    when_t     expiration;       // Message will exipre on this day (if >0)
+    dfield_t * dfield;          // Data fields (fixed length portion)
+    uint32_t   offset;          // Offset (number of records) into index
+    int        forwarded;       // Forwarded from agent to another
+    when_t     expiration;      // Message will exipre on this day (if >0)
 } smbmsg_t;
-typedef struct                   // Message base
+typedef struct                  // Message base
 {
-    char        file[128];       // Path and base filename (no extension)
-    FILE *      sdt_fp;          // File pointer for data (.sdt) file
-    FILE *      shd_fp;          // File pointer for header (.shd) file
-    FILE *      sid_fp;          // File pointer for index (.sid) file
-    FILE *      sda_fp;          // File pointer for data allocation (.sda) file
-    FILE *      sha_fp;          // File pointer for header allocation (.sha) file
+    char        file[128];      // Path and base filename (no extension)
+    FILE *      sdt_fp;         // File pointer for data (.sdt) file
+    FILE *      shd_fp;         // File pointer for header (.shd) file
+    FILE *      sid_fp;         // File pointer for index (.sid) file
+    FILE *      sda_fp;         // File pointer for data allocation (.sda) file
+    FILE *      sha_fp;         // File pointer for header allocation (.sha) file
     uint32_t    retry_time; // Maximum number of seconds to retry opens/locks
     uint32_t    retry_delay;// Time-slice yield (milliseconds) while retrying
-    smbstatus_t status;          // Status header record
-    int         locked;          // SMB header is locked
+    smbstatus_t status;         // Status header record
+    int         locked;         // SMB header is locked
     char        shd_buf[SHD_BLOCK_LEN]; // File I/O buffer for header file
     char        last_error[128]; // Last error message
     /* Private member variables (not initialized by or used by smblib) */
-    uint32_t subnum;             // Sub-board number
-    uint32_t msgs;               // Number of messages loaded (for user)
-    uint32_t curmsg;             // Current message number (for user)
+    uint32_t subnum;            // Sub-board number
+    uint32_t msgs;              // Number of messages loaded (for user)
+    uint32_t curmsg;            // Current message number (for user)
 } smb_t;
 
 #endif /* Don't add anything after this #endif statement */

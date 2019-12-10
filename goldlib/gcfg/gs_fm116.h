@@ -399,7 +399,7 @@ typedef struct
 } areaStatType;
 typedef struct
 {
-    word signature;          // contains "AE" for echo areas in FMAIL.AR and
+    word signature;       // contains "AE" for echo areas in FMAIL.AR and
     // "AD" for default settings in FMAIL.ARD
     word            writeLevel;
     areaNameType    areaName;

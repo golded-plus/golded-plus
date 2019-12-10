@@ -65,7 +65,7 @@ if (MSVC)
   target_link_libraries(golded glibc winmm.lib)
 endif()
 if (CURSES_NCURSES_LIBRARY)
-  target_link_libraries(golded ${CURSES_NCURSES_LIBRARY})
+  target_link_libraries(golded ${CURSES_NCURSES_LIBRARY} ${CURSES_EXTRA_LIBRARY})
 endif()
 
 INSTALL(TARGETS golded

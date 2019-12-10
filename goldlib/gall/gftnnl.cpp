@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -28,76 +27,82 @@
 #include <gstrall.h>
 #include <gftnnl.h>
 #include <stdlib.h>
-
 //  ------------------------------------------------------------------
+void ftn_nodelist_entry::unpack(char * line)
+{
+    *status   = NUL;
+    *system   = NUL;
+    *location = NUL;
+    *name     = NUL;
+    *phone    = NUL;
+    *baud     = NUL;
+    *flags    = NUL;
+    strchg(strtrim(line), '_', ' ');
+    char * q = line;
+    char * p = strchr(line, ',');
 
-void ftn_nodelist_entry::unpack(char* line) {
-
-  *status = NUL;
-  *system = NUL;
-  *location = NUL;
-  *name = NUL;
-  *phone = NUL;
-  *baud = NUL;
-  *flags = NUL;
-
-  strchg(strtrim(line), '_', ' ');
-
-  char* q = line;
-  char* p = strchr(line, ',');
-  if(p) {
-    *p++ = NUL;
-    strxcpy(status, q, sizeof(status));
-    p = strchr((q=p), ',');
-    if(p) {
-      *p++ = NUL;
-      // Skip over number
-      p = strchr((q=p), ',');
-      if(p) {
+    if(p)
+    {
         *p++ = NUL;
-        strxcpy(system, q, sizeof(system));
-        p = strchr((q=p), ',');
-        if(p) {
-          *p++ = NUL;
-          strxcpy(location, q, sizeof(location));
-          p = strchr((q=p), ',');
-          if(p) {
+        strxcpy(status, q, sizeof(status));
+        p = strchr((q = p), ',');
+
+        if(p)
+        {
             *p++ = NUL;
-            strxcpy(name, q, sizeof(name));
-            p = strchr((q=p), ',');
-            if(p) {
-              *p++ = NUL;
-              strxcpy(phone, q, sizeof(phone));
-              p = strchr((q=p), ',');
-              sprintf(baud, "%lu", atol(q));
-              if(p)
-                strxcpy(flags, p+1, sizeof(flags));
+            // Skip over number
+            p = strchr((q = p), ',');
+
+            if(p)
+            {
+                *p++ = NUL;
+                strxcpy(system, q, sizeof(system));
+                p = strchr((q = p), ',');
+
+                if(p)
+                {
+                    *p++ = NUL;
+                    strxcpy(location, q, sizeof(location));
+                    p = strchr((q = p), ',');
+
+                    if(p)
+                    {
+                        *p++ = NUL;
+                        strxcpy(name, q, sizeof(name));
+                        p = strchr((q = p), ',');
+
+                        if(p)
+                        {
+                            *p++ = NUL;
+                            strxcpy(phone, q, sizeof(phone));
+                            p = strchr((q = p), ',');
+                            sprintf(baud, "%lu", atol(q));
+
+                            if(p)
+                            {
+                                strxcpy(flags, p + 1, sizeof(flags));
+                            }
+                        }
+                    }
+                }
             }
-          }
         }
-      }
     }
-  }
-}
-
+} // ftn_nodelist_entry::unpack
 
 //  ------------------------------------------------------------------
-
-ftn_nodelist_entry& ftn_nodelist_entry::operator=(const ftn_nodelist_entry& e) {
-
-  addr = e.addr;
-  strcpy(address,  e.address);
-  strcpy(name,     e.name);
-  strcpy(status,   e.status);
-  strcpy(system,   e.system);
-  strcpy(location, e.location);
-  strcpy(phone,    e.phone);
-  strcpy(baud,     e.baud);
-  strcpy(flags,    e.flags);
-
-  return *this;
+ftn_nodelist_entry & ftn_nodelist_entry::operator =(const ftn_nodelist_entry & e)
+{
+    addr = e.addr;
+    strcpy(address, e.address);
+    strcpy(name, e.name);
+    strcpy(status, e.status);
+    strcpy(system, e.system);
+    strcpy(location, e.location);
+    strcpy(phone, e.phone);
+    strcpy(baud, e.baud);
+    strcpy(flags, e.flags);
+    return *this;
 }
 
-
 //  ------------------------------------------------------------------
-

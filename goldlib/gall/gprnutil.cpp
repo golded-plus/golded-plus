@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -27,62 +26,88 @@
 #include <cstdio>
 #include <cstdlib>
 #include <gstrall.h>
-
-
 //  ------------------------------------------------------------------
 //  Convert printer definition string to binary codes
+char * CvtPrnstr(char * str, char * prn)
+{
+    uint value;
+    byte len = 0;
+    char buf[256];
+    char * ptr = prn;
 
-char* CvtPrnstr(char* str, char* prn) {
+    while(*ptr)
+    {
+        switch(*ptr)
+        {
+            case '$':
+                ptr++;
 
-  uint value;
-  byte len=0;
-  char buf[256];
-  char* ptr=prn;
+                do
+                {
+                    sscanf(ptr, "%2x", &value);
+                    buf[len++] = (byte)value;
 
-  while(*ptr) {
-    switch(*ptr) {
-      case '$':
-        ptr++;
-        do {
-          sscanf(ptr, "%2x", &value);
-          buf[len++] = (byte)value;
-          if(isxdigit(*ptr) and *ptr)   // Skip first digit
-            ptr++;
-          if(isxdigit(*ptr) and *ptr)   // Skip second digit
-            ptr++;
-        } while(isxdigit(*ptr) and *ptr);
-        break;
-      case '#':
-        ptr++;
-        value = (byte)atoi(ptr);
-        buf[len++] = value;
-        while(isdigit(*ptr) and *ptr)
-          ptr++;
-        break;
-      case '\"':
-        ptr++;
-        while(*ptr != '\"' and *ptr)
-          buf[len++] = *ptr++;
-        if(*ptr)
-          ptr++;
-        break;
-      case '\'':
-        ptr++;
-        while(*ptr != '\'' and *ptr)
-          buf[len++] = *ptr++;
-        if(*ptr)
-          ptr++;
-        break;
-      default:
-        ptr++;
+                    if(isxdigit(*ptr) and * ptr) // Skip first digit
+                    {
+                        ptr++;
+                    }
+
+                    if(isxdigit(*ptr) and * ptr) // Skip second digit
+                    {
+                        ptr++;
+                    }
+                }
+                while(isxdigit(*ptr) and * ptr);
+                break;
+
+            case '#':
+                ptr++;
+                value      = (byte)atoi(ptr);
+                buf[len++] = value;
+
+                while(isdigit(*ptr) and * ptr)
+                {
+                    ptr++;
+                }
+                break;
+
+            case '\"':
+                ptr++;
+
+                while(*ptr != '\"' and * ptr)
+                {
+                    buf[len++] = *ptr++;
+                }
+
+                if(*ptr)
+                {
+                    ptr++;
+                }
+
+                break;
+
+            case '\'':
+                ptr++;
+
+                while(*ptr != '\'' and * ptr)
+                {
+                    buf[len++] = *ptr++;
+                }
+
+                if(*ptr)
+                {
+                    ptr++;
+                }
+
+                break;
+
+            default:
+                ptr++;
+        } // switch
     }
-  }
-
-  *str = len;
-  memcpy(str+1, buf, len);
-
-  return str;
-}
-
+    *str = len;
+    memcpy(str + 1, buf, len);
+    return str;
+} // CvtPrnstr
 
 //  ------------------------------------------------------------------

@@ -140,6 +140,7 @@ bool GMsgHeaderEdit::handle_other_keys(gkey & key)
                 return true;
             }
     } // switch
+
     return false;
 } // GMsgHeaderEdit::handle_other_keys
 

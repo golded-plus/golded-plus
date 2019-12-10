@@ -64,24 +64,24 @@ struct EchoAreaRec
     AddressRec AreaAddress;       // Adress of sender for this echo
     uint8_t    ConferenceNr;      // The conference this echo belongs to. If 0 the echo has NO
                                   // conference
-    uint16_t   maxdays;
-    uint16_t   maxrecv;
-    uint16_t   maxcount;
-    uint16_t   totalimp;
-    uint16_t   totalexp;          // Purge info
-    int32_t    totalimpL;
-    int32_t    totalexpL;         // total # of msgs imported/exported in this echo
-    uint8_t    BasePathStrip;     // Don't import PATH line to base
-    uint8_t    ExportPathStrip;   // Strip PATH line for downlinks
-    uint8_t    BaseSeenStrip;     // Don't import SEEN-BY to base
-    uint8_t    ExportSeenStrip;   // Strip SEEN-BY for downlinks
-    uint16_t   AbsCosts;
-    uint16_t   RelCosts;          // The cost for each mail in this echo
-    int32_t    LastActionDate;    // Last date something happened in this echo
-    uint8_t    NeverRemove;       // Never remove this echo automatically
-    uint16_t   MaxDupes;          // Maximum nr. of Dupes
-    uint8_t    SkipPathCheck;
-    uint8_t    Dummy[106];        // unused
+    uint16_t maxdays;
+    uint16_t maxrecv;
+    uint16_t maxcount;
+    uint16_t totalimp;
+    uint16_t totalexp;            // Purge info
+    int32_t  totalimpL;
+    int32_t  totalexpL;           // total # of msgs imported/exported in this echo
+    uint8_t  BasePathStrip;       // Don't import PATH line to base
+    uint8_t  ExportPathStrip;     // Strip PATH line for downlinks
+    uint8_t  BaseSeenStrip;       // Don't import SEEN-BY to base
+    uint8_t  ExportSeenStrip;     // Strip SEEN-BY for downlinks
+    uint16_t AbsCosts;
+    uint16_t RelCosts;            // The cost for each mail in this echo
+    int32_t  LastActionDate;      // Last date something happened in this echo
+    uint8_t  NeverRemove;         // Never remove this echo automatically
+    uint16_t MaxDupes;            // Maximum nr. of Dupes
+    uint8_t  SkipPathCheck;
+    uint8_t  Dummy[106];          // unused
 };
 
 //  ------------------------------------------------------------------

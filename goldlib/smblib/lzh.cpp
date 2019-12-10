@@ -707,7 +707,6 @@ int32_t LZHCALL lzh_encode(uint8_t * inbuf, int32_t inlen, uint8_t * outbuf)
     }
 
 #endif // ifdef LZH_DYNAMIC_BUF
-
     incnt = 0;
     memcpy(outbuf, &inlen, sizeof(inlen));
     outlen = sizeof(inlen);
@@ -862,7 +861,6 @@ int32_t LZHCALL lzh_decode(uint8_t * inbuf, int32_t inlen, uint8_t * outbuf)
     }
 
 #endif // ifdef LZH_DYNAMIC_BUF
-
     incnt = 0;
     memcpy(&textsize, inbuf, sizeof(textsize));
     incnt += sizeof(textsize);

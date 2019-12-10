@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -26,90 +25,104 @@
 
 #ifndef __gutltag_h
 #define __gutltag_h
-
-
 //  ------------------------------------------------------------------
 
 #include <gdefs.h>
 #include <gfile.h>
-
-
 //  ------------------------------------------------------------------
 //  Constants
-
 const uint32_t TAGN_INVALID = 0;
-const uint RELN_INVALID = 0;
-
-const uint32_t TAGN_MAX = ((uint32_t)-1);
-const uint RELN_MAX = ((uint)-1);
-
-const int TAGN_CLOSEST = true;
-const int TAGN_EXACT   = false;
-
-
+const uint RELN_INVALID     = 0;
+const uint32_t TAGN_MAX     = ((uint32_t)-1);
+const uint RELN_MAX         = ((uint) - 1);
+const int TAGN_CLOSEST      = true;
+const int TAGN_EXACT        = false;
 //  ------------------------------------------------------------------
 //  Tag class
-
-class GTag {
-
+class GTag
+{
 public:
+    //  ----------------------------------------------------------------
+    //  Internal data
+    uint32_t * tag;         // tag array
+    uint tags;              // tags in array
+    uint count;             // fake tags count
+    uint allocated;         // actual allocated tags
+    uint granularity;       // memory allocation optimization
+    //  ----------------------------------------------------------------
+    //  Constructor and destructor
+    GTag();
+    ~GTag();
+    //  ----------------------------------------------------------------
+    //  User functions
+    void Reset();
 
-  //  ----------------------------------------------------------------
-  //  Internal data
+void ResetAll()
+{
+    Reset();
+    count = 0;
+}
 
-  uint32_t* tag;               // tag array
-  uint  tags;               // tags in array
-  uint  count;              // fake tags count
-  uint  allocated;          // actual allocated tags
-  uint  granularity;        // memory allocation optimization
+    uint32_t * Resize(uint __tags);
+    uint32_t * Append(uint32_t __tagn);
+    uint32_t * Add(uint32_t __tagn);
+    uint Del(uint32_t __tagn);
+    uint DelReln(uint __reln);
+    uint DelResize(uint32_t __tagn);
+    void Sort();
+    void ElimDups();
+    uint32_t CvtReln(uint __reln);
+    uint ToReln(uint32_t __tagn);
+    uint ToReln(uint32_t __tagn, int __closest);
 
-  //  ----------------------------------------------------------------
-  //  Constructor and destructor
+uint Find(uint32_t __tagn)
+{
+    return ToReln(__tagn);
+}
 
-  GTag();
-  ~GTag();
+uint Tags() const
+{
+    return tags;
+}
 
-  //  ----------------------------------------------------------------
-  //  User functions
+uint Count() const
+{
+    return count;
+}
 
-  void  Reset();
-  void  ResetAll()  { Reset(); count = 0; }
+uint SetCount(uint n)
+{
+    tags = count = n;
+    return count;
+}
 
-  uint32_t* Resize(uint __tags);
+void Set(uint n, uint32_t t)
+{
+    tag[n] = t;
+}
 
-  uint32_t* Append(uint32_t __tagn);
-  uint32_t* Add(uint32_t __tagn);
-  uint Del(uint32_t __tagn);
-  uint DelReln(uint __reln);
-  uint DelResize(uint32_t __tagn);
-  void  Sort();
-  void  ElimDups();
+uint32_t Get(uint n)
+{
+    return (tags and (n < tags)) ? tag[n] : TAGN_INVALID;
+}
 
-  uint32_t CvtReln(uint __reln);
-  uint ToReln(uint32_t __tagn);
-  uint ToReln(uint32_t __tagn, int __closest);
+uint32_t & operator [](uint n)
+{
+    return tag[n];
+}
 
-  uint Find(uint32_t __tagn)  { return ToReln(__tagn); }
+uint32_t & at(uint n)
+{
+    return tag[n];
+}
 
-  uint Tags() const { return tags; }
-  uint Count() const { return count; }
-  uint SetCount(uint n)  { tags = count = n; return count; }
+    void Load(gfile & fp);
+    void Save(gfile & fp);
 
-  void  Set(uint n, uint32_t t)  { tag[n] = t; }
-  uint32_t Get(uint n)  { return (tags and (n<tags)) ? tag[n] : TAGN_INVALID; }
-
-  uint32_t& operator[](uint n)  { return tag[n]; }
-  uint32_t& at(uint n)  { return tag[n]; }
-
-  void Load(gfile& fp);
-  void Save(gfile& fp);
-
-  //  ----------------------------------------------------------------
+    //  ----------------------------------------------------------------
 };
-
 
 //  ------------------------------------------------------------------
 
-#endif
-
+#endif // ifndef __gutltag_h
 //  ------------------------------------------------------------------

@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -27,27 +26,29 @@
 
 #include <gctype.h>
 #include <gcrcall.h>
-
-
 //  ------------------------------------------------------------------
+word memCrc16(const void * _m, long l, bool __case, word mask)
+{
+    long n;
+    word crc       = mask;
+    const char * m = (const char *)_m;
 
-word memCrc16(const void* _m, long l, bool __case, word mask) {
+    if(__case)
+    {
+        for(n = 0; n < l; n++)
+        {
+            crc = updCrc16(g_toupper(*m++), crc);
+        }
+    }
+    else
+    {
+        for(n = 0; n < l; n++)
+        {
+            crc = updCrc16(*m++, crc);
+        }
+    }
 
-  long n;
-  word crc = mask;
-  const char *m = (const char *)_m;
-
-  if(__case) {
-    for(n=0; n<l; n++)
-      crc = updCrc16(g_toupper(*m++), crc);
-  }
-  else {
-    for(n=0; n<l; n++)
-      crc = updCrc16(*m++, crc);
-  }
-
-  return crc;
+    return crc;
 }
-
 
 //  ------------------------------------------------------------------

@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -27,28 +26,30 @@
 
 #include <gctype.h>
 #include <gcrcall.h>
-
-
 //  ------------------------------------------------------------------
 //  Generate CRC-32 of a memory block
+dword memCrc32(const void * _m, long l, bool __case, dword mask)
+{
+    long n;
+    dword crc      = mask;
+    const char * m = (const char *)_m;
 
-dword memCrc32(const void* _m, long l, bool __case, dword mask) {
+    if(__case)
+    {
+        for(n = 0; n < l; n++)
+        {
+            crc = updCrc32(g_toupper(*m++), crc);
+        }
+    }
+    else
+    {
+        for(n = 0; n < l; n++)
+        {
+            crc = updCrc32(*m++, crc);
+        }
+    }
 
-  long n;
-  dword crc = mask;
-  const char *m = (const char *)_m;
-
-  if(__case) {
-    for(n=0; n<l; n++)
-      crc = updCrc32(g_toupper(*m++), crc);
-  }
-  else {
-    for(n=0; n<l; n++)
-      crc = updCrc32(*m++, crc);
-  }
-
-  return crc;
+    return crc;
 }
-
 
 //  ------------------------------------------------------------------

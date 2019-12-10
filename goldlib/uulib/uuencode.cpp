@@ -184,7 +184,7 @@ static mimemap mimetable[] = {{"gif",  "image/gif"                       }, /* G
                               {"au",   "audio/basic"                     }, /* 8kHz ulaw audio
                                                                                data        */
                               {"mov",  "video/quicktime"                 }, /* Apple Quicktime
-                                                                                           */
+                                                                             */
                               {"qt",   "video/quicktime"                 }, /* Also infrequently
                                                                                used      */
                               {"mpeg", "video/mpeg"                      }, /* Motion Picture
@@ -198,7 +198,7 @@ static mimemap mimetable[] = {{"gif",  "image/gif"                       }, /* G
                                                                                Language   */
                               {"zip",  "application/zip"                 }, /* ZIP archive
 
-                                                                                            */
+                                                                             */
                               {"doc",  "application/msword"              },/* assume Microsoft
                                                                               Word       */
                               {NULL,   NULL                              }

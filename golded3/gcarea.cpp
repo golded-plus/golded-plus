@@ -557,6 +557,7 @@ void AreaList::GetArea(char * def)
         desc  = strskip_txt(tag);
         *desc = NUL;
         aa.reset();
+
         // Split up the string definition
         desc = strskip_wht(desc + 1);
 

@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1999 Alexander Batalov
@@ -37,37 +36,35 @@
 #define INCL_WINFRAMEMGR
 #include <os2.h>
 #include <os2me.h>
-
-
 //  ------------------------------------------------------------------
-
-extern DWORD APIENTRY (*pfnmciSendString)(LPSTR, LPSTR, WORD, HWND, WORD);
-extern DWORD APIENTRY (*pfnmciGetErrorString)(DWORD, LPSTR, WORD);
+extern DWORD APIENTRY (* pfnmciSendString)(LPSTR, LPSTR, WORD, HWND, WORD);
+extern DWORD APIENTRY (* pfnmciGetErrorString)(DWORD, LPSTR, WORD);
 extern HMODULE ge_os2_mdmHandle;
-
-
 //  ------------------------------------------------------------------
 // Send MCI string
+int g_send_mci_string(char * string, char * his_buffer)
+{
+    char our_buffer[BUFFERSIZE], * return_buffer;
 
-int g_send_mci_string(char* string, char* his_buffer) {
+    return_buffer = his_buffer ? his_buffer : our_buffer;
+    memset(return_buffer, 0, BUFFERSIZE);
 
-  char our_buffer[BUFFERSIZE], *return_buffer;
+    if(not ge_os2_mdmHandle)
+    {
+        return 1;
+    }
 
-  return_buffer = his_buffer ? his_buffer : our_buffer;
-  memset(return_buffer, 0, BUFFERSIZE);
+    DWORD rc = pfnmciSendString((LPSTR)string, (LPSTR)return_buffer, BUFFERSIZE, 0, 0);
 
-  if(not ge_os2_mdmHandle)
-    return 1;
-
-  DWORD rc = pfnmciSendString((LPSTR)string, (LPSTR)return_buffer, BUFFERSIZE, 0, 0);
-
-  if(rc == MCIERR_SUCCESS)
-    return 1;
-  else {
-    pfnmciGetErrorString(rc, (LPSTR)return_buffer, BUFFERSIZE);
-    return 0;
-  }
+    if(rc == MCIERR_SUCCESS)
+    {
+        return 1;
+    }
+    else
+    {
+        pfnmciGetErrorString(rc, (LPSTR)return_buffer, BUFFERSIZE);
+        return 0;
+    }
 }
-
 
 //  ------------------------------------------------------------------

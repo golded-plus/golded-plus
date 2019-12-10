@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -28,76 +27,69 @@
 #include <cstring>
 #include <gmemdbg.h>
 #include <gutltag.h>
-
-
 //  ------------------------------------------------------------------
 //  Constructor.
-
-GTag::GTag() {
-
-  granularity = 10;
-
-  tag = NULL;
-  allocated = tags = count = 0;
+GTag::GTag()
+{
+    granularity = 10;
+    tag         = NULL;
+    allocated   = tags = count = 0;
 }
-
 
 //  ------------------------------------------------------------------
 //  Destructor.
-
-GTag::~GTag() {
-
-  Reset();
+GTag::~GTag()
+{
+    Reset();
 }
-
 
 //  ------------------------------------------------------------------
 //  Deallocate and reset internal data.
-
-void GTag::Reset() {
-
-  throw_xrelease(tag);
-  allocated = tags = 0;
-  // NOTE: Does and must NOT reset the count!
+void GTag::Reset()
+{
+    throw_xrelease(tag);
+    allocated = tags = 0;
+    // NOTE: Does and must NOT reset the count!
 }
-
 
 //  ------------------------------------------------------------------
 //  Resize tag array.
 //  Returns NULL if realloc failed.
+uint32_t * GTag::Resize(uint __tags)
+{
+    register uint newsize = 0;
 
-uint32_t* GTag::Resize(uint __tags) {
+    if(__tags >= allocated)
+    {
+        newsize = __tags + granularity;
+    }
+    else if(__tags < allocated)
+    {
+        if((allocated - __tags) > granularity)
+        {
+            newsize = __tags + granularity;
+        }
+    }
 
-  register uint newsize = 0;
+    if(newsize)
+    {
+        tag       = (uint32_t *)throw_realloc(tag, newsize * sizeof(uint32_t));
+        allocated = newsize;
+    }
 
-  if(__tags >= allocated)
-    newsize = __tags + granularity;
-  else if(__tags < allocated) {
-    if((allocated-__tags) > granularity)
-      newsize = __tags + granularity;
-  }
-
-  if(newsize) {
-    tag = (uint32_t*)throw_realloc(tag, newsize*sizeof(uint32_t));
-    allocated = newsize;
-  }
-
-  count = tags = __tags;
-  return tag;
+    count = tags = __tags;
+    return tag;
 }
-
 
 //  ------------------------------------------------------------------
 //  Appends a new tag number to the end of the tag array.
 //  NOTE - Does not check for duplicates or correct sequence!
-
-uint32_t* GTag::Append(uint32_t __tagn) {
-
-  Resize(tags+1);
-  tag[tags-1] = __tagn;
-  return tag;
+uint32_t * GTag::Append(uint32_t __tagn)
+{
+    Resize(tags + 1);
+    tag[tags - 1] = __tagn;
+    return tag;
 }
-
 
 //  ------------------------------------------------------------------
 //  Add a new tag number at the correct position of the tag array.
@@ -124,199 +116,210 @@ uint32_t* GTag::Append(uint32_t __tagn) {
 //    tags-_reln-1 = 7-6-1 = 0
 //
 //  Dry test result: Works!
+uint32_t * GTag::Add(uint32_t __tagn)
+{
+    // Find closest tag number
+    uint _reln = ToReln(__tagn, TAGN_CLOSEST);
 
-uint32_t* GTag::Add(uint32_t __tagn) {
+    // Do we have it already?
+    if((_reln == RELN_INVALID) or (tag[_reln - 1] != __tagn))
+    {
+        // Resize tag array to make room for the new number
+        Resize(tags + 1);
 
-  // Find closest tag number
-  uint _reln = ToReln(__tagn, TAGN_CLOSEST);
+        //  General rule:
+        //    - tag[_reln-1] is smaller than __tagn
+        //
+        //  The exceptions to the rule:
+        //    - no tags in array (if _reln == RELN_INVALID)
+        //    - tag[_reln-1] is larger than __tagn
+        if(_reln and (tag[_reln - 1] > __tagn))
+        {
+            _reln--;
+        }
 
-  // Do we have it already?
-  if((_reln == RELN_INVALID) or (tag[_reln-1] != __tagn)) {
+        // Move data to make room for the new tag number
+        memmove(tag + _reln + 1, tag + _reln, (tags - _reln - 1) * sizeof(uint32_t));
+        // Copy the new tag number to the insert position
+        tag[_reln] = __tagn;
+    }
 
-    // Resize tag array to make room for the new number
-    Resize(tags+1);
-
-    //  General rule:
-    //    - tag[_reln-1] is smaller than __tagn
-    //
-    //  The exceptions to the rule:
-    //    - no tags in array (if _reln == RELN_INVALID)
-    //    - tag[_reln-1] is larger than __tagn
-
-    if(_reln and (tag[_reln-1] > __tagn))
-      _reln--;
-
-    // Move data to make room for the new tag number
-    memmove(tag+_reln+1, tag+_reln, (tags-_reln-1)*sizeof(uint32_t));
-
-    // Copy the new tag number to the insert position
-    tag[_reln] = __tagn;
-  }
-
-  return tag;
-}
-
+    return tag;
+} // GTag::Add
 
 //  ------------------------------------------------------------------
 //  Delete a tag number from the tag array.
 //  Returns the relative tag number or RELN_INVALID if missing.
 //  NOTE - Does not resize the array.
-
-uint GTag::Del(uint32_t __tagn) {
-
-  return DelReln(ToReln(__tagn));
-}
-
-
-//  ------------------------------------------------------------------
-
-uint GTag::DelReln(uint __reln) {
-
-  if(__reln) {
-    memmove(tag+__reln-1, tag+__reln, (tags-__reln)*sizeof(uint32_t));
-    count--;
-    tags--;
-  }
-  return __reln;
-}
-
-
-//  ------------------------------------------------------------------
-
-uint GTag::DelResize(uint32_t __tagn) {
-
-  uint _reln = Del(__tagn);
-  Resize(tags);
-  return _reln;
-}
-
-
-//  ------------------------------------------------------------------
-
-static int TagnCmp(const uint32_t* __a, const uint32_t* __b) {
-
-  return CmpV(*__a, *__b);
-}
-
-
-//  ------------------------------------------------------------------
-
-void GTag::Sort() {
-
-  qsort(tag, tags, sizeof(uint32_t), (StdCmpCP)TagnCmp);
+uint GTag::Del(uint32_t __tagn)
+{
+    return DelReln(ToReln(__tagn));
 }
 
 //  ------------------------------------------------------------------
-
-void GTag::ElimDups() {
-
-  if(tags > 1) {
-    uint _before = tags;
-    uint32_t _last = tag[0];
-    for(uint n=1; n<tags; n++) {
-      if(_last == tag[n]) {
-        memmove(&tag[n-1], &tag[n], (tags-n)*sizeof(uint32_t));
+uint GTag::DelReln(uint __reln)
+{
+    if(__reln)
+    {
+        memmove(tag + __reln - 1, tag + __reln, (tags - __reln) * sizeof(uint32_t));
+        count--;
         tags--;
-        n--;
-      }
-      _last = tag[n];
     }
-    if(_before != tags)
-      Resize(tags);
-  }
+
+    return __reln;
 }
 
+//  ------------------------------------------------------------------
+uint GTag::DelResize(uint32_t __tagn)
+{
+    uint _reln = Del(__tagn);
+
+    Resize(tags);
+    return _reln;
+}
+
+//  ------------------------------------------------------------------
+static int TagnCmp(const uint32_t * __a, const uint32_t * __b)
+{
+    return CmpV(*__a, *__b);
+}
+
+//  ------------------------------------------------------------------
+void GTag::Sort()
+{
+    qsort(tag, tags, sizeof(uint32_t), (StdCmpCP)TagnCmp);
+}
+
+//  ------------------------------------------------------------------
+void GTag::ElimDups()
+{
+    if(tags > 1)
+    {
+        uint _before   = tags;
+        uint32_t _last = tag[0];
+
+        for(uint n = 1; n < tags; n++)
+        {
+            if(_last == tag[n])
+            {
+                memmove(&tag[n - 1], &tag[n], (tags - n) * sizeof(uint32_t));
+                tags--;
+                n--;
+            }
+
+            _last = tag[n];
+        }
+
+        if(_before != tags)
+        {
+            Resize(tags);
+        }
+    }
+}
 
 //  ------------------------------------------------------------------
 //  Return the tag number corresponding to a relative tag number.
 //  Returns TAGN_INVALID, if the requested number did not exist.
-
-uint32_t GTag::CvtReln(uint __reln) {
-
-  if(tag and __reln and (__reln <= tags))
-    return tag[__reln-1];
-  else
-    return TAGN_INVALID;
+uint32_t GTag::CvtReln(uint __reln)
+{
+    if(tag and __reln and (__reln <= tags))
+    {
+        return tag[__reln - 1];
+    }
+    else
+    {
+        return TAGN_INVALID;
+    }
 }
-
 
 //  ------------------------------------------------------------------
 //  Return the relative tag number corresponding to a tag number.
 //  Returns RELN_INVALID if the requested number did not exist.
 //  If __closest is true, the closest smaller tag number is returned.
 //  If no tags exist at all, RELN_INVALID is returned.
+uint GTag::ToReln(uint32_t __tagn, int __closest)
+{
+    uint _lastreln = RELN_INVALID;
 
-uint GTag::ToReln(uint32_t __tagn, int __closest) {
+    if(tag)
+    {
+        if(__tagn and tags)
+        {
+            if(__tagn > tag[tags - 1])
+            {
+                return __closest ? tags : RELN_INVALID;
+            }
+        }
 
-  uint _lastreln = RELN_INVALID;
+        if(tags and __tagn)
+        {
+            int _mid;
+            int _left  = 0;
+            int _right = tags;
 
-  if(tag) {
+            do
+            {
+                _mid = (_left + _right) / 2;
 
-    if(__tagn and tags)
-      if(__tagn > tag[tags-1])
-        return __closest ? tags : RELN_INVALID;
+                if(__tagn < tag[(uint)_mid])
+                {
+                    _right = _mid - 1;
+                }
+                else if(__tagn > tag[(uint)_mid])
+                {
+                    _left = _mid + 1;
+                }
+                else
+                {
+                    return (uint)(_mid + 1);
+                }
+            }
+            while(_left < _right);
+            _lastreln = (uint)(_left + 1);
 
-    if(tags and __tagn) {
-
-      int _mid;
-      int _left = 0;
-      int _right = tags;
-
-      do {
-        _mid = (_left+_right)/2;
-        if(__tagn < tag[(uint)_mid])
-          _right = _mid - 1;
-        else if(__tagn > tag[(uint)_mid])
-          _left = _mid + 1;
-        else
-          return (uint)(_mid + 1);
-      } while(_left < _right);
-
-      _lastreln = (uint)(_left + 1);
-      if(__tagn == tag[(uint)_left])
-        return _lastreln;
+            if(__tagn == tag[(uint)_left])
+            {
+                return _lastreln;
+            }
+        }
     }
-  }
 
-  // Not found
-  return __closest ? _lastreln : RELN_INVALID;
-}
-
+    // Not found
+    return __closest ? _lastreln : RELN_INVALID;
+} // GTag::ToReln
 
 //  ------------------------------------------------------------------
-
-uint GTag::ToReln(uint32_t __tagn) {
-
-  return ToReln(__tagn, TAGN_EXACT);
-}
-
-
-//  ------------------------------------------------------------------
-
-void GTag::Load(gfile& fp)
+uint GTag::ToReln(uint32_t __tagn)
 {
-  dword val;
-
-  fp.Fread(&val, sizeof(dword));
-  count = (uint) val;
-  if (count)
-  {
-    Resize(count);
-    fp.Fread(tag, sizeof(uint32_t), count);
-  }
+    return ToReln(__tagn, TAGN_EXACT);
 }
-
 
 //  ------------------------------------------------------------------
-
-void GTag::Save(gfile& fp)
+void GTag::Load(gfile & fp)
 {
-  dword val = (dword) count;
-  fp.Fwrite(&val, sizeof(dword));
+    dword val;
 
-  if (tag and count)
-    fp.Fwrite(tag, sizeof(uint32_t), count);
+    fp.Fread(&val, sizeof(dword));
+    count = (uint)val;
+
+    if(count)
+    {
+        Resize(count);
+        fp.Fread(tag, sizeof(uint32_t), count);
+    }
 }
 
+//  ------------------------------------------------------------------
+void GTag::Save(gfile & fp)
+{
+    dword val = (dword)count;
+
+    fp.Fwrite(&val, sizeof(dword));
+
+    if(tag and count)
+    {
+        fp.Fwrite(tag, sizeof(uint32_t), count);
+    }
+}
 
 //  ------------------------------------------------------------------

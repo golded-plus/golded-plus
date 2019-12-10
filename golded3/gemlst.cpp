@@ -753,6 +753,7 @@ bool GMsgList::handle_key()
                 return false;
             }
     } // switch
+
     return true;
 } // GMsgList::handle_key
 
@@ -1493,6 +1494,7 @@ bool GThreadlist::handle_key()
                 return false;
             }
     } // switch
+
     return true;
 } // GThreadlist::handle_key
 

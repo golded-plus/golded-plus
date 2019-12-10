@@ -56,8 +56,8 @@
 #define UUFILE_NOEND (4)    /* No 'end' found */
 #define UUFILE_NODATA (8)   /* File does not contain valid uudata */
 #define UUFILE_OK (16)      /* All Parts found, ready to decode */
-#define UUFILE_ERROR (32)       /* Error while decoding */
-#define UUFILE_DECODED (64)     /* Successfully decoded */
+#define UUFILE_ERROR (32)   /* Error while decoding */
+#define UUFILE_DECODED (64) /* Successfully decoded */
 #define UUFILE_TMPFILE (128)    /* Temporary decoded file exists */
 /*
  * Encoding Types

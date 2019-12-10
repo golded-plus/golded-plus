@@ -105,9 +105,9 @@ const char PCBCONFTYPE_EMAIL      = 1;  // Internet Email (Import & Export)
 const char PCBCONFTYPE_USENETJUNK = 2;  // Internet/Usenet Junk (Import Only)
 const char PCBCONFTYPE_USENETMOD  = 3;  // Usenet Moderated Newsgroup (Export Public as Email to
                                         // Moderator / Private as Email to TO:)
-const char PCBCONFTYPE_USENETPUB  = 4;  // Usenet Public Newsgroup (Export Public as Articles /
+const char PCBCONFTYPE_USENETPUB = 4;   // Usenet Public Newsgroup (Export Public as Articles /
                                         // Private as Email to TO:)
-const char PCBCONFTYPE_FIDOCONF   = 5;  // Fido Conference
+const char PCBCONFTYPE_FIDOCONF = 5;    // Fido Conference
 //  ------------------------------------------------------------------
 struct PcbFidoArea
 {

@@ -199,14 +199,14 @@ struct __int10_ah1b_statebuf
     byte  numpages;     //  29h    BYTE    number of pages supported in current mode
     byte  numscanlines; //  2Ah    BYTE    number of scan lines active (0,1,2,3) =
                         // (200,350,400,480) Tseng ET3000: (4,5,6 = 512,600,768)
-    byte  primcharblock; //  2Bh    BYTE    primary character block
-    byte  seccharblock; //  2Ch    BYTE    secondary character block
-    byte  miscflags;    //  2Dh    BYTE    miscellaneous flags (see below)
-    byte  reserved1[3]; //  2Eh  3 BYTEs   reserved (00h)
-    byte  videomem;     //  31h    BYTE    video memory available 00h = 64K, 01h = 128K, 02h =
+    byte primcharblock;  //  2Bh    BYTE    primary character block
+    byte seccharblock;  //  2Ch    BYTE    secondary character block
+    byte miscflags;     //  2Dh    BYTE    miscellaneous flags (see below)
+    byte reserved1[3];  //  2Eh  3 BYTEs   reserved (00h)
+    byte videomem;      //  31h    BYTE    video memory available 00h = 64K, 01h = 128K, 02h =
                         // 192K, 03h = 256K
-    byte  stateflags;   //  32h    BYTE    save pointer state flags (see below)
-    byte  reserved2[13]; //  33h 13 BYTEs   reserved (00h)
+    byte stateflags;    //  32h    BYTE    save pointer state flags (see below)
+    byte reserved2[13];  //  33h 13 BYTEs   reserved (00h)
 };
 
 #endif // if defined (__MSDOS__)
@@ -447,7 +447,6 @@ inline vatch vcatch(vchar chr, vattr atr)
 }
 
 #else // if defined (__USE_NCURSES__)
-
 inline vchar vgchar(vatch chat)
 {
     return chat & 0xff;
@@ -474,7 +473,6 @@ inline vatch vcatch(vchar chr, vattr atr)
 }
 
 #endif // if defined (__USE_NCURSES__)
-
 inline vchar vgetc(int row, int col)
 {
     return vgchar(vgetw(row, col));

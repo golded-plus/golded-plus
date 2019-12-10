@@ -320,6 +320,7 @@ vattr GetColor(char * ink)
             color = REVERSE;
             break;
     } // switch
+
     return color;
 } // GetColor
 
@@ -467,6 +468,7 @@ void GetColors(char * value)
         default:
             return;
     } // switch
+
     crc = strCrc16(strupr(part));
 
     switch(crc)

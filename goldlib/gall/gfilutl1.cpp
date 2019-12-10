@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -31,513 +30,658 @@
 #include <gfile.h>
 #include <stdlib.h>
 
-#if defined(__MINGW32__) || defined(_MSC_VER)
+#if defined (__MINGW32__) || defined (_MSC_VER)
 #include <sys/utime.h>
 #else
 #include <utime.h>
 #endif
 
-#if defined(__OS2__)
+#if defined (__OS2__)
 #define INCL_BASE
 #include <os2.h>
 #endif
 
-#if defined(__WIN32__)
+#if defined (__WIN32__)
 #include <windows.h>
 #endif
 
-#if defined(__MSDOS__)
+#if defined (__MSDOS__)
 #include <dos.h>
 #endif
 
-#if defined(__UNIX__)
+#if defined (__UNIX__)
 #include <pwd.h>
 #include <sys/types.h>
 #endif
-
 //  ------------------------------------------------------------------
-//  Adds the directory-delimiter character into end of string ('\\' in DOS-based, '/' in unix-based OS)
+//  Adds the directory-delimiter character into end of string ('\\' in DOS-based, '/' in
+// unix-based OS)
 // Replace wrong directory-delimiter character with good.
+char * AddBackslash(char * p)
+{
+    if(p != NULL)
+    {
+        if(*p)
+        {
+            strchg(p, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
 
-char* AddBackslash(char* p) {
+            if(p[strlen(p) - 1] != GOLD_SLASH_CHR)
+            {
+                strcat(p, GOLD_SLASH_STR);
+            }
+        }
+        else
+        {
+            strcpy(p, GOLD_SLASH_STR);
+        }
+    }
 
-  if(p != NULL) {
-   if(*p) {
-    strchg(p, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
-    if(p[strlen(p)-1] != GOLD_SLASH_CHR)
-      strcat(p, GOLD_SLASH_STR);
-   }
-   else
-    strcpy(p, GOLD_SLASH_STR);
-  }
-
-  return p;
+    return p;
 }
-
 
 //  ------------------------------------------------------------------
 //  Remove one trailing directory-delimiter character ('\\' in DOS-based, '/' in unix-based OS)
+char * StripBackslash(char * p)
+{
+    if(p == NULL)
+    {
+        return p;
+    }
 
-char* StripBackslash(char* p) {
+    int x = strlen(p) - 1;
 
-  if(p == NULL) return p;
+    if(*p and isslash(p[x]))
+    {
+        p[x] = NUL;
+    }
 
-  int x = strlen(p) - 1;
-
-  if(*p and isslash(p[x]))
-    p[x] = NUL;
-
-  return p;
+    return p;
 }
-
 
 //  ------------------------------------------------------------------
 //  Get size of file
+long GetFilesize(const char * file)
+{
+    if(file == NULL)
+    {
+        return 0;
+    }
 
-long GetFilesize(const char* file) {
+    struct stat info;
 
-  if(file == NULL) return 0;
+    if(stat(file, &info) == 0)
+    {
+        return info.st_size;
+    }
 
-  struct stat info;
-  if(stat(file, &info) == 0)
-    return info.st_size;
-  return -1;
+    return -1;
 }
-
 
 //  ------------------------------------------------------------------
 //  Convert time returned with stat to FFTime
-
 time32_t gfixstattime(time32_t st_time)
 {
-  #if (defined(__MINGW32__) && !defined(__MSVCRT__)) || defined(__CYGWIN__)
-  struct tm f; ggmtime(&f, &st_time);
+  #if (defined (__MINGW32__) && !defined (__MSVCRT__)) || defined (__CYGWIN__)
+    struct tm f;
+    ggmtime(&f, &st_time);
   #else
-  struct tm f; glocaltime(&f, &st_time);
+    struct tm f;
+    glocaltime(&f, &st_time);
   #endif
-  FFTime t;
-  t.ft_year  = f.tm_year - 80;
-  t.ft_month = f.tm_mon + 1;
-  t.ft_day   = f.tm_mday;
-  t.ft_hour  = f.tm_hour;
-  t.ft_min   = f.tm_min;
-  t.ft_tsec  = f.tm_sec / 2;
-  #if (defined(__MINGW32__) && !defined(__MSVCRT__)) || defined(__CYGWIN__)
-  union {
-    DWORD t;
-    struct {
-      WORD wFatTime;
-      WORD wFatDate;
-    } d;
-  } ft;
-  ft.t = (DWORD)t.number();
-  FILETIME FileTime, LocalFileTime;
-  DosDateTimeToFileTime(ft.d.wFatDate, ft.d.wFatTime, &FileTime);
-  FileTimeToLocalFileTime(&FileTime, &LocalFileTime);
-  SYSTEMTIME SystemTime;
-  FileTimeToSystemTime(&LocalFileTime, &SystemTime);
-  t.ft_year = SystemTime.wYear - 1980;
-  t.ft_month = SystemTime.wMonth;
-  t.ft_day = SystemTime.wDay;
-  t.ft_hour = SystemTime.wHour;
-  t.ft_min = SystemTime.wMinute;
-  t.ft_tsec = SystemTime.wSecond / 2;
-  #endif
-  return t.number();
-}
+    FFTime t;
+    t.ft_year  = f.tm_year - 80;
+    t.ft_month = f.tm_mon + 1;
+    t.ft_day   = f.tm_mday;
+    t.ft_hour  = f.tm_hour;
+    t.ft_min   = f.tm_min;
+    t.ft_tsec  = f.tm_sec / 2;
+  #if (defined (__MINGW32__) && !defined (__MSVCRT__)) || defined (__CYGWIN__)
+    union
+    {
+        DWORD t;
+        struct
+        {
+            WORD wFatTime;
+            WORD wFatDate;
+        } d;
+    } ft;
 
+    ft.t = (DWORD)t.number();
+    FILETIME FileTime, LocalFileTime;
+    DosDateTimeToFileTime(ft.d.wFatDate, ft.d.wFatTime, &FileTime);
+    FileTimeToLocalFileTime(&FileTime, &LocalFileTime);
+    SYSTEMTIME SystemTime;
+    FileTimeToSystemTime(&LocalFileTime, &SystemTime);
+    t.ft_year  = SystemTime.wYear - 1980;
+    t.ft_month = SystemTime.wMonth;
+    t.ft_day   = SystemTime.wDay;
+    t.ft_hour  = SystemTime.wHour;
+    t.ft_min   = SystemTime.wMinute;
+    t.ft_tsec  = SystemTime.wSecond / 2;
+  #endif
+    return t.number();
+} // gfixstattime
 
 //  ------------------------------------------------------------------
 //  Get timestamp of file
+time32_t GetFiletime(const char * file)
+{
+    struct stat st;
 
-time32_t GetFiletime(const char* file) {
+    if(file == NULL)
+    {
+        return 0;
+    }
 
-  struct stat st;
+    if(stat(file, &st) == 0)
+    {
+    #if defined (__MINGW32__)
 
-  if(file == NULL) return 0;
+        if(st.st_mode & S_IFDIR)
+        {
+            return 0;
+        }
 
-  if(stat(file, &st) == 0) {
-    #if defined(__MINGW32__)
-    if(st.st_mode & S_IFDIR)
-      return 0;
     #endif
-    return gfixstattime(st.st_mtime);
-  }
-  return 0;
-}
+        return gfixstattime(st.st_mtime);
+    }
 
+    return 0;
+}
 
 //  ------------------------------------------------------------------
 //  Get size of open file
+long fsize(FILE * fp)
+{
+    if(fp == NULL)
+    {
+        return 0;
+    }
 
-long fsize(FILE* fp) {
-  if(fp == NULL) return 0;
-  return filelength(fileno(fp));
+    return filelength(fileno(fp));
 }
-
 
 //  ------------------------------------------------------------------
 //  Check if a pathname is a directory
-
-bool is_dir(const TCHAR *path)
+bool is_dir(const TCHAR * path)
 {
-  if(path == NULL) return false;
+    if(path == NULL)
+    {
+        return false;
+    }
 
-  // Check if it's a root path (X:\ оr /)
-  #if defined(__HAVE_DRIVES__)
-  if(g_isalpha(path[0]) and (path[1] == ':') and isslash(path[2]) and (path[3] == NUL))
-    return true;  // The root is a directory
+    // Check if it's a root path (X:\ оr /)
+  #if defined (__HAVE_DRIVES__)
+
+    if(g_isalpha(path[0]) and (path[1] == ':') and isslash(path[2]) and (path[3] == NUL))
+    {
+        return true; // The root is a directory
+    }
+
   # else
-  if( isslash(path[0]) and (path[1] == NUL))
-    return true;  // The root is a directory
+
+    if(isslash(path[0]) and (path[1] == NUL))
+    {
+        return true; // The root is a directory
+    }
+
   #endif
 
-  Path tmp;
-  strxcpy(tmp, path, sizeof(Path));
-  StripBackslash(tmp);
+    Path tmp;
+    strxcpy(tmp, path, sizeof(Path));
+    StripBackslash(tmp);
+    struct stat st;
 
-  struct stat st;
-  if(stat(tmp, &st) == 0)
-    return make_bool(st.st_mode & S_IFDIR);
-  return false;
-}
+    if(stat(tmp, &st) == 0)
+    {
+        return make_bool(st.st_mode & S_IFDIR);
+    }
 
+    return false;
+} // is_dir
 
 //  ------------------------------------------------------------------
 //  Add path to filename if no path is present
-
 static Path __addpath;
+const char * AddPath(const char * path, const char * file)
+{
+    if((path == NULL) or (file == NULL))
+    {
+        return file;
+    }
 
-const char* AddPath(const char* path, const char* file) {
-
-  if( (path == NULL) or (file == NULL) ) return file;
-
-  if(strpbrk(file, "/\\")) {
-    // Don't add path if the filename already contains one
-    return file;
-  }
-  else if(*path and ((*file == '.') or isslash(path[strlen(path)-1]))) {
-    // Build path+filename if path ends with a slash or backslash
-    strxmerge(__addpath, sizeof(Path), path, file, NULL);
-    return __addpath;
-  }
-  else {
-    // Use filename in path or file
-    return *path ? path : file;
-  }
+    if(strpbrk(file, "/\\"))
+    {
+        // Don't add path if the filename already contains one
+        return file;
+    }
+    else if(*path and ((*file == '.') or isslash(path[strlen(path) - 1])))
+    {
+        // Build path+filename if path ends with a slash or backslash
+        strxmerge(__addpath, sizeof(Path), path, file, NULL);
+        return __addpath;
+    }
+    else
+    {
+        // Use filename in path or file
+        return *path ? path : file;
+    }
 }
-
 
 //  ------------------------------------------------------------------
 //  Add path to filename, if no path is set
+void MakePathname(char * pathname, const char * path, const char * name)
+{
+    Path tmpname;
 
-void MakePathname(char* pathname, const char* path, const char* name) {
+    if((pathname == NULL) or (path == NULL) or (name == NULL))
+    {
+        return;
+    }
 
-  Path tmpname;
+    strxcpy(tmpname, name, sizeof(tmpname));
+    strschg_environ(tmpname, sizeof(tmpname));
 
-  if( (pathname == NULL) or (path == NULL) or (name == NULL) ) return;
+    if(strblank(tmpname))
+    {
+        *pathname = NUL;
+        return;
+    }
 
-  strxcpy(tmpname, name, sizeof(tmpname));
-  strschg_environ(tmpname, sizeof(tmpname));
+    bool have_path = false;
 
-  if(strblank(tmpname)) {
-    *pathname = NUL;
-    return;
-  }
+    if(isslash(tmpname[0]))
+    {
+        have_path = true;
+    }
 
-  bool have_path = false;
-
-  if(isslash(tmpname[0]))
-    have_path = true;
-  #if defined(__HAVE_DRIVES__)
-  // Check if it's a root path (X:\)
-  else if(g_isalpha(tmpname[0]) and (tmpname[1] == ':') and isslash(tmpname[2]))
-    have_path = true;  // The root is a directory
+  #if defined (__HAVE_DRIVES__)
+    // Check if it's a root path (X:\)
+    else if(g_isalpha(tmpname[0]) and (tmpname[1] == ':') and isslash(tmpname[2]))
+    {
+        have_path = true; // The root is a directory
+    }
   #endif
 
-  strchg(tmpname, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
-  if(have_path) {
-    strxcpy(pathname, tmpname, sizeof(Path));
-  }
-  else {
-    Path tmppath;
+    strchg(tmpname, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
 
-    strcpy(tmppath, path);
-    strbtrim(tmppath);
-    strchg(tmppath, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
-    if(*tmppath)
-      AddBackslash(tmppath);
-    strxmerge(pathname, sizeof(Path), tmppath, tmpname, NULL);
-  }
-  strschg_environ(pathname);
-}
+    if(have_path)
+    {
+        strxcpy(pathname, tmpname, sizeof(Path));
+    }
+    else
+    {
+        Path tmppath;
+        strcpy(tmppath, path);
+        strbtrim(tmppath);
+        strchg(tmppath, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
 
+        if(*tmppath)
+        {
+            AddBackslash(tmppath);
+        }
+
+        strxmerge(pathname, sizeof(Path), tmppath, tmpname, NULL);
+    }
+
+    strschg_environ(pathname);
+} // MakePathname
 
 //  ------------------------------------------------------------------
 //  Shareable fopen() for compilers that need it
+FILE * fsopen(const char * path, const char * type, int shflag)
+{
+    FILE * fp = NULL;
+    int fh = -1, acc = 0, mode = S_STDRD, c, n;
 
-FILE *fsopen(const char *path, const char *type, int shflag) {
-
-  FILE* fp=NULL;
-  int fh=-1, acc=0, mode=S_STDRD, c, n;
-
-  if( (path == NULL) or (type == NULL) ) return NULL;
-
-  switch(type[0]) {
-    case 'r':
-      acc |= O_RDONLY;
-      break;
-    case 'w':
-      acc |= (O_TRUNC|O_CREAT|O_WRONLY);
-      mode |= S_STDRW;
-      break;
-    case 'a':
-      acc |= (O_APPEND|O_CREAT|O_WRONLY);
-      mode |= S_STDRW;
-      break;
-    default:
-      return NULL;
-  }
-  n=0;
-  do {
-    c = type[++n];
-    switch(c) {
-      case '+':
-        acc &= (~O_RDONLY);
-        acc &= (~O_WRONLY);
-        acc |= O_RDWR;
-        break;
-      case 'b':
-        acc |= O_BINARY;
-        break;
-      case 't':
-        acc |= O_TEXT;
-        break;
-      default:
-        break;
+    if((path == NULL) or (type == NULL))
+    {
+        return NULL;
     }
-  } while((n < 3) and (c));
 
-  fh = sopen(path, acc, shflag, mode);
-  if(fh != -1)
-    fp = fdopen(fh, (char*)type);
+    switch(type[0])
+    {
+        case 'r':
+            acc |= O_RDONLY;
+            break;
 
-  return fp;
-}
+        case 'w':
+            acc  |= (O_TRUNC | O_CREAT | O_WRONLY);
+            mode |= S_STDRW;
+            break;
 
+        case 'a':
+            acc  |= (O_APPEND | O_CREAT | O_WRONLY);
+            mode |= S_STDRW;
+            break;
+
+        default:
+            return NULL;
+    }
+    n = 0;
+
+    do
+    {
+        c = type[++n];
+
+        switch(c)
+        {
+            case '+':
+                acc &= (~O_RDONLY);
+                acc &= (~O_WRONLY);
+                acc |= O_RDWR;
+                break;
+
+            case 'b':
+                acc |= O_BINARY;
+                break;
+
+            case 't':
+                acc |= O_TEXT;
+                break;
+
+            default:
+                break;
+        }
+    }
+    while((n < 3) and (c));
+    fh = sopen(path, acc, shflag, mode);
+
+    if(fh != -1)
+    {
+        fp = fdopen(fh, (char *)type);
+    }
+
+    return fp;
+} // fsopen
 
 //  ------------------------------------------------------------------
 //  Update time of modification for the file 'filename'
-
-void TouchFile(const TCHAR *filename)
+void TouchFile(const TCHAR * filename)
 {
-  if(filename == NULL) return;
+    if(filename == NULL)
+    {
+        return;
+    }
 
-  if (not fexist(filename))
-  {
-    gfile fh(filename, O_WRONLY|O_CREAT|O_TRUNC);
-  }
-  else
-  {
-    struct utimbuf ut;
-    ut.actime = ut.modtime = time(NULL);
-    utime(filename, &ut);
-  }
+    if(not fexist(filename))
+    {
+        gfile fh(filename, O_WRONLY | O_CREAT | O_TRUNC);
+    }
+    else
+    {
+        struct utimbuf ut;
+        ut.actime = ut.modtime = time(NULL);
+        utime(filename, &ut);
+    }
 }
-
 
 //  ------------------------------------------------------------------
 //  Copy pathname with enviroment variables substitution and adds directory delimiter char.
-//  Copy not more sizeof(Path) characters (__dst should be type "Path" or equvalence, size is GMAXPATH)
+//  Copy not more sizeof(Path) characters (__dst should be type "Path" or equvalence, size is
+// GMAXPATH)
+char * PathCopy(char * __dst, const char * __src)
+{
+    if((__dst == NULL) or (__src == NULL))
+    {
+        return __dst;
+    }
 
-char* PathCopy(char* __dst, const char* __src) {
-  if( (__dst == NULL) or (__src == NULL) ) return __dst;
-  strschg_environ(strxcpy(__dst, __src, sizeof(Path)), sizeof(Path));
-  return AddBackslash(__dst);
+    strschg_environ(strxcpy(__dst, __src, sizeof(Path)), sizeof(Path));
+    return AddBackslash(__dst);
 }
 
 //  ------------------------------------------------------------------
 //  Test filesystem for file locks feature
+int TestLockPath(const char * __path)
+{
+    int _canlock = false;
+    Path _file;
 
-int TestLockPath(const char* __path) {
-
-  int _canlock = false;
-
-  Path _file;
-
-  if(__path == NULL) return NO;
-
-  strxmerge(_file, sizeof(Path), __path, "GDXXXXXX", NULL);
-  mktemp(_file);
-
-  int _fh = sopen(_file, O_RDWR|O_CREAT|O_TRUNC|O_BINARY, SH_DENYNO, S_STDRW);
-  if(_fh != -1) {
-    if(lock(_fh, 0L, 1L) == -1)
-      _canlock = NO;
-    else {
-      _canlock = YES;
-      unlock(_fh, 0L, 1L);
+    if(__path == NULL)
+    {
+        return NO;
     }
-    close(_fh);
-    remove(_file);
-  }
 
-  return _canlock;
-}
+    strxmerge(_file, sizeof(Path), __path, "GDXXXXXX", NULL);
+    mktemp(_file);
+    int _fh = sopen(_file, O_RDWR | O_CREAT | O_TRUNC | O_BINARY, SH_DENYNO, S_STDRW);
 
+    if(_fh != -1)
+    {
+        if(lock(_fh, 0L, 1L) == -1)
+        {
+            _canlock = NO;
+        }
+        else
+        {
+            _canlock = YES;
+            unlock(_fh, 0L, 1L);
+        }
+
+        close(_fh);
+        remove(_file);
+    }
+
+    return _canlock;
+} // TestLockPath
 
 //  ------------------------------------------------------------------
 //  Return filename without path. (Return pointer to filename part of filepath.)
+const char * CleanFilename(const char * __file)
+{
+    static const char * invalidfilename = "<invalid>";
 
-const char* CleanFilename(const char* __file) {
+    if((__file == NULL) or (__file == (char *)0xFFFFFFFFL) or (__file ==
+                                                               (char *)0xEEEEEEEEL))
+    {
+        return invalidfilename;
+    }
 
-  static const char* invalidfilename = "<invalid>";
-  if((__file == NULL) or (__file == (char*)0xFFFFFFFFL) or (__file == (char*)0xEEEEEEEEL))
-    return invalidfilename;
+    const char * tmp, * tmp2;
+    tmp = tmp2 = __file;
 
-  const char *tmp, *tmp2;
-  tmp = tmp2 = __file;
-  while(*tmp)
-    if(isslash(*tmp++))
-      tmp2 = tmp;
-  return *tmp2 ? tmp2 : invalidfilename;
+    while(*tmp)
+    {
+        if(isslash(*tmp++))
+        {
+            tmp2 = tmp;
+        }
+    }
+    return *tmp2 ? tmp2 : invalidfilename;
 }
-
 
 //  ------------------------------------------------------------------
 //  Fill file with garbage (random byte values).
+void WipeFile(const char * file, int options)
+{
+    uint n;
+    byte buf[512];
 
-void WipeFile(const char* file, int options) {
+    (void)options;
 
-  uint n;
-  byte buf[512];
+    if(file == NULL)
+    {
+        return;
+    }
 
-  (void)options;
+    for(n = 0; n < 512; n++)
+    {
+        buf[n] = (byte)(rand() % 256);
+    }
+    int fh = sopen(file, O_RDWR | O_BINARY, SH_DENYRW, S_STDRW);
 
-  if(file == NULL) return;
+    if(fh != -1)
+    {
+        uint blocks = (uint)(filelength(fh) / 512L) + 1;
 
-  for(n=0; n<512; n++)
-    buf[n] = (byte)(rand() % 256);
-
-  int fh = sopen(file, O_RDWR|O_BINARY, SH_DENYRW, S_STDRW);
-  if(fh != -1) {
-    uint blocks = (uint)(filelength(fh) / 512L) + 1;
-    for(n=0; n<blocks; n++)
-      write(fh, buf, 512);
-    chsize(fh, 0);
-    close(fh);
-    remove(file);
-  }
-}
-
+        for(n = 0; n < blocks; n++)
+        {
+            write(fh, buf, 512);
+        }
+        chsize(fh, 0);
+        close(fh);
+        remove(file);
+    }
+} // WipeFile
 
 //  ------------------------------------------------------------------
 //  DOS-style enviroment variables substitution in string.
+int strschg_environ(char * s)
+{
+    if(s == NULL)
+    {
+        return 0;
+    }
 
-int strschg_environ(char* s) {
+    if(*s == NUL)
+    {
+        return 0;
+    }
 
-  if(s == NULL) return 0;
-  if(*s == NUL)
-    return 0;
+    std::string __s = s;
+    int rv          = strschg_environ(__s); // Look in gfilutl2.cpp
 
-  std::string __s = s;
-  int rv = strschg_environ(__s); // Look in gfilutl2.cpp
-  if(rv)
-    strcpy(s, __s.c_str());
-  return rv;
+    if(rv)
+    {
+        strcpy(s, __s.c_str());
+    }
+
+    return rv;
 }
 
-int strschg_environ(char* s, size_t s_size) {
+int strschg_environ(char * s, size_t s_size)
+{
+    if(s == NULL)
+    {
+        return 0;
+    }
 
-  if(s == NULL) return 0;
-  if(*s == NUL)
-    return 0;
+    if(*s == NUL)
+    {
+        return 0;
+    }
 
-  std::string __s = s;
-  int rv = strschg_environ(__s); // Look in gfilutl2.cpp
-  if(rv)
-    strxcpy(s, __s.c_str(), s_size);
-  return rv;
+    std::string __s = s;
+    int rv          = strschg_environ(__s); // Look in gfilutl2.cpp
+
+    if(rv)
+    {
+        strxcpy(s, __s.c_str(), s_size);
+    }
+
+    return rv;
 }
-
 
 //  ------------------------------------------------------------------
 //  OS-independent change directory
+int gchdir(const char * dir)
+{
+    if(dir == NULL)
+    {
+        return 0;
+    }
 
-int gchdir(const char* dir) {
+  #if defined (__WIN32__)
+    return not SetCurrentDirectory(dir);
 
-  if(dir == NULL) return 0;
-  #if defined(__WIN32__)
-  return not SetCurrentDirectory(dir);
   #else
-  #if defined(__HAVE_DRIVES__)
-  if(dir[1] == ':') {
-    #if defined(__EMX__)
-    _chdrive(*dir);
-    #else
-    uint drives;
-    _dos_setdrive(g_toupper(*dir)-'@', &drives);
-    #endif
-  }
-  #endif
-  int e = chdir(dir);
-  if(e) {
-    Path p;
-    strcpy(p, dir);
-    StripBackslash(p);
-    e = chdir(p);
-  }
-  return e;
-  #endif
-}
+  #if defined (__HAVE_DRIVES__)
 
+    if(dir[1] == ':')
+    {
+    #if defined (__EMX__)
+        _chdrive(*dir);
+    #else
+        uint drives;
+        _dos_setdrive(g_toupper(*dir) - '@', &drives);
+    #endif
+    }
+
+  #endif
+    int e = chdir(dir);
+
+    if(e)
+    {
+        Path p;
+        strcpy(p, dir);
+        StripBackslash(p);
+        e = chdir(p);
+    }
+
+    return e;
+
+  #endif // if defined (__WIN32__)
+} // gchdir
 
 //  ------------------------------------------------------------------
 //  Replace file suffix with specified in 'ext'
+void replaceextension(char * destpath, const char * srcpath, const char * ext)
+{
+    const char * ptr;
+    char * ptr2, * slash, * dot;
 
-void replaceextension(char *destpath, const char *srcpath, const char *ext) {
+    if((destpath == NULL) or (srcpath == NULL) or (ext == NULL))
+    {
+        return;
+    }
 
-  const char *ptr;
-  char *ptr2, *slash, *dot;
+    ptr2 = slash = dot = destpath;
+    ptr  = srcpath;
 
-  if( (destpath == NULL) or (srcpath == NULL) or (ext == NULL) ) return;
+    while(*ptr)
+    {
+        if(isslash(*ptr))
+        {
+            slash = ptr2;
+        }
+        else if(*ptr == '.')
+        {
+            dot = ptr2;
+        }
 
-  ptr2 = slash = dot = destpath;
-  ptr = srcpath;
-  while(*ptr) {
-    if(isslash(*ptr))
-      slash = ptr2;
-    else if(*ptr == '.')
-      dot = ptr2;
-    *ptr2++ = *ptr++;
-  }
-  if(dot-slash > 0)
-    ptr2 = dot;
-  strcpy(ptr2, ext);
-}
+        *ptr2++ = *ptr++;
+    }
 
+    if(dot - slash > 0)
+    {
+        ptr2 = dot;
+    }
+
+    strcpy(ptr2, ext);
+} // replaceextension
 
 //  ------------------------------------------------------------------
 //  Write to 'dir' dirname of the 'path'
+void extractdirname(char * dir, const char * path)
+{
+    const char * p1 = path;
+    char * p2, * p3;
 
-void extractdirname(char *dir, const char *path) {
+    if((dir == NULL) or (path == NULL))
+    {
+        return;
+    }
 
-  const char *p1 = path;
-  char *p2, *p3;
+    p3  = p2 = dir;
+    *p3 = NUL;
 
-  if( (dir == NULL) or (path == NULL) ) return;
+    while(*p1)
+    {
+        if(isslash(*p1))
+        {
+            p2 = p3;
+        }
 
-  p3 = p2 = dir;
-  *p3 = NUL;
-  while(*p1) {
-    if(isslash(*p1))
-      p2 = p3;
-    *p3++ = *p1++;
-  }
-  if(isslash(*p2))
-    ++p2;
-  *p2 = NUL;
-}
+        *p3++ = *p1++;
+    }
 
+    if(isslash(*p2))
+    {
+        ++p2;
+    }
+
+    *p2 = NUL;
+} // extractdirname
 
 //  ------------------------------------------------------------------

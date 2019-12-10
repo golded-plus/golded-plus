@@ -298,18 +298,18 @@ typedef struct CONSTANTRECORD
     byte       version[9], system[41];
     UserString sysopname, sysopalias;
     byte       systemlocation[36], multiline; // boolean, multiline operation
-    word       maxmess,                       //  maximum usable message areas
-               maxfile,                       //  maximum usable file areas
-               watchmess,                     //  watchdog message area
-               pagemessboard,                 //  paging message board
-               badpwdmsgboard;                //  bad logon message board
-    byte mintimeforcall,                      //  minimum time to register call today
+    word       maxmess,                //  maximum usable message areas
+               maxfile,                //  maximum usable file areas
+               watchmess,              //  watchdog message area
+               pagemessboard,          //  paging message board
+               badpwdmsgboard;         //  bad logon message board
+    byte mintimeforcall,               //  minimum time to register call today
          freespace2[11];
-    word scantossattr,                        //  ezymail scan/toss info
-         constantattr, maxmsgsrescan;         //  Maximum msgs to rescan (0=disable)
-    Str8 qwkfilename;                         //  Unique QWK Mail filename
-    word qwkmaxmail,                          //  Maximum Msgs for QWK archive
-         qwkmsgboard;                         //  Bad QWK Message Board
+    word scantossattr,                 //  ezymail scan/toss info
+         constantattr, maxmsgsrescan;  //  Maximum msgs to rescan (0=disable)
+    Str8 qwkfilename;                  //  Unique QWK Mail filename
+    word qwkmaxmail,                   //  Maximum Msgs for QWK archive
+         qwkmsgboard;                  //  Bad QWK Message Board
     ftn_addr oldnetaddress[16];
     word     oldnetmailboard[16];
     byte     oldnewareagroup[16];

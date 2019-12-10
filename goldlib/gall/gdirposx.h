@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1999-2000 Alexander S. Aganichev
@@ -26,53 +25,56 @@
 
 #ifndef __gdirposx
 #define __gdirposx
-
-
 //  ------------------------------------------------------------------
 
 #include <gfilutil.h>
 #include <gstrall.h>
-
-
 //  ------------------------------------------------------------------
-
-class gdirentry {
-
-public:
-    std::string name;
+class gdirentry
+{
+public: std::string name;
     struct stat stat_info;
-    const char *dirname;
+    const char * dirname;
     gdirentry();
     ~gdirentry();
-    bool is_directory() const { return S_ISDIR(stat_info.st_mode); }
-    bool is_file() const { return S_ISREG(stat_info.st_mode); }
+bool is_directory() const
+{
+    return S_ISDIR(stat_info.st_mode);
+}
+
+bool is_file() const
+{
+    return S_ISREG(stat_info.st_mode);
+}
 };
 
-
 //  ------------------------------------------------------------------
-
-class gposixdir {
-
-private:
-    std::string dirname;
+class gposixdir
+{
+private: std::string dirname;
     gdirentry ret;
     gstrarray entries;
     uint32_t last_entry;
-
-public:
-    bool ok;
+public: bool ok;
     gposixdir();
-    gposixdir(const char *name);
+    gposixdir(const char * name);
     ~gposixdir();
-    void cd(const char *name, bool relative=false);
-    inline void rewind() { last_entry = 0; }
-    const gdirentry *nextentry(const char *mask=NULL, bool nameonly=false);
-    inline const char *fullpath() { return dirname.c_str(); }
-};
+    void cd(const char * name, bool relative = false);
 
+inline void rewind()
+{
+    last_entry = 0;
+}
+
+    const gdirentry * nextentry(const char * mask = NULL, bool nameonly = false);
+
+inline const char * fullpath()
+{
+    return dirname.c_str();
+}
+};
 
 //  ------------------------------------------------------------------
 
 #endif // __gdirposx
-
 //  ------------------------------------------------------------------

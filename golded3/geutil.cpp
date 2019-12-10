@@ -395,6 +395,7 @@ void w_progress(int mode, vattr attr, long pos, long size, const char * title)
 
             break;
     } // switch
+
     wactiv_(prev_wh);
 } // w_progress
 

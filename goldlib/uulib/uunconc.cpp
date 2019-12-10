@@ -1349,7 +1349,7 @@ int UUDecodePart(FILE * datain,
             if(strncmp(line, "BEGIN", 5) == 0 && _FP_strstr(line, "CUT HERE") && !tf) /* I hate
                                                                                          these
                                                                                          lines
-                                                                                         */
+                                                                                       */
             {
                 tc = tf = vlc = 0;
                 continue;

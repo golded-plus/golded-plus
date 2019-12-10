@@ -1561,7 +1561,6 @@ void vposget(int * row, int * col)
     // Not available
 
   #endif // if defined (__USE_NCURSES__)
-
     *row = gvid->currow;
     *col = gvid->curcol;
 } // vposget
@@ -1681,7 +1680,6 @@ void vclrscr(vattr atr)
     gvid_printf("%s\x1B[2J", gvid_newattr(atr));
 
   #endif // if defined (__USE_NCURSES__)
-
     vposset(0, 0);
 } // vclrscr
 

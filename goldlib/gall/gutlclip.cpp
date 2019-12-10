@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -30,140 +29,170 @@
 #include <gutlclip.h>
 #include <gmemdbg.h>
 #include <gutlos.h>
-
-
 //  ------------------------------------------------------------------
-
 int clipboard_available = -1;
-char *fake_clipboard = NULL;
-
-
+char * fake_clipboard   = NULL;
 //  ------------------------------------------------------------------
-
-void fake_clipboard_destroy() {
-
-  if(fake_clipboard)
-    throw_free(fake_clipboard);
-}
-
-
-//  ------------------------------------------------------------------
-
-gclipbrd::gclipbrd() {
-
-  len = -1;
-  clipdata = NULL;
-  cliphdl = NULL;
-  #if defined(GUTLOS_FUNCS)
-  if(clipboard_available == -1)
-    clipboard_available = g_is_clip_available() ? 1 : 0;
-  #else
-  clipboard_available = 0;
-  #endif
-  if(not clipboard_available and not fake_clipboard) {
-    fake_clipboard = throw_strdup("");
-    atexit(fake_clipboard_destroy);
-  }
-}
-
-
-//  ------------------------------------------------------------------
-
-bool gclipbrd::openread() {
-
-  if(not clipboard_available) {
-
-    cliphdl = clipdata = fake_clipboard;
-    if(fake_clipboard != NULL) {
-      len = strlen(cliphdl);
-      return true;
-    }
-    else
-      return false;
-  }
-
-  #if defined(GUTLOS_FUNCS)
-  cliphdl = clipdata = g_get_clip_text();
-  if (clipdata != NULL) {
-    len = strlen(clipdata);
-    return true;
-  }
-  #endif
-
-  return false;
-}
-
-
-//  ------------------------------------------------------------------
-
-bool gclipbrd::writeclipbrd(const char* buf) {
-
-  if(not clipboard_available) {
+void fake_clipboard_destroy()
+{
     if(fake_clipboard)
-      throw_free(fake_clipboard);
-    fake_clipboard = throw_strdup(buf);
-    return (fake_clipboard != NULL);
-  }
+    {
+        throw_free(fake_clipboard);
+    }
+}
 
-  #if defined(GUTLOS_FUNCS)
-  return (g_put_clip_text(buf) == 0);
+//  ------------------------------------------------------------------
+gclipbrd::gclipbrd()
+{
+    len      = -1;
+    clipdata = NULL;
+    cliphdl  = NULL;
+  #if defined (GUTLOS_FUNCS)
+
+    if(clipboard_available == -1)
+    {
+        clipboard_available = g_is_clip_available() ? 1 : 0;
+    }
+
   #else
-  return false;
+    clipboard_available = 0;
+  #endif
+
+    if(not clipboard_available and not fake_clipboard)
+    {
+        fake_clipboard = throw_strdup("");
+        atexit(fake_clipboard_destroy);
+    }
+}
+
+//  ------------------------------------------------------------------
+bool gclipbrd::openread()
+{
+    if(not clipboard_available)
+    {
+        cliphdl = clipdata = fake_clipboard;
+
+        if(fake_clipboard != NULL)
+        {
+            len = strlen(cliphdl);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+  #if defined (GUTLOS_FUNCS)
+    cliphdl = clipdata = g_get_clip_text();
+
+    if(clipdata != NULL)
+    {
+        len = strlen(clipdata);
+        return true;
+    }
+
+  #endif
+
+    return false;
+} // gclipbrd::openread
+
+//  ------------------------------------------------------------------
+bool gclipbrd::writeclipbrd(const char * buf)
+{
+    if(not clipboard_available)
+    {
+        if(fake_clipboard)
+        {
+            throw_free(fake_clipboard);
+        }
+
+        fake_clipboard = throw_strdup(buf);
+        return fake_clipboard != NULL;
+    }
+
+  #if defined (GUTLOS_FUNCS)
+    return g_put_clip_text(buf) == 0;
+
+  #else
+    return false;
+
   #endif
 }
 
+//  ------------------------------------------------------------------
+char * gclipbrd::read(char * buffer, int maxlen)
+{
+    if(len > 0)
+    {
+        int i    = MinV(len, maxlen - 1);
+        char * p = strpbrk(clipdata, "\r\n");
+
+        if(p)
+        {
+            if(p - clipdata < i)
+            {
+                i = p - clipdata;
+
+                if((len > i) and strchr("\r\n", *(p + 1)) and (*p != *(p + 1)))
+                {
+                    ++i;
+                }
+            }
+            else
+            {
+                p = NULL;
+            }
+        }
+        else
+        {
+            p = NULL;
+        }
+
+        strxcpy(buffer, clipdata, i + 1);
+        char * p2 = strpbrk(buffer, "\r\n");
+
+        if(p2)
+        {
+            *p2 = 0;
+        }
+
+        if(p)
+        {
+            strcat(buffer, "\n");
+            ++i;
+        }
+
+        len      -= MinV(len, i);
+        clipdata += i;
+        return buffer;
+    }
+
+    return NULL;
+} // gclipbrd::read
 
 //  ------------------------------------------------------------------
-
-char* gclipbrd::read(char* buffer, int maxlen) {
-
-  if(len>0) {
-    int i = MinV(len, maxlen-1);
-    char* p = strpbrk(clipdata, "\r\n");
-    if(p) {
-      if(p-clipdata < i) {
-        i = p - clipdata;
-        if((len > i) and strchr("\r\n", *(p+1)) and (*p != *(p+1)))
-          ++i;
-      }
-      else
-        p = NULL;
+void gclipbrd::close()
+{
+    if(not clipboard_available)
+    {
+        return;
     }
-    else
-      p = NULL;
-    strxcpy(buffer, clipdata, i+1);
-    char* p2 = strpbrk(buffer, "\r\n");
-    if(p2) *p2 = 0;
-    if(p) {
-      strcat(buffer, "\n");
-      ++i;
+
+  #if defined (GUTLOS_FUNCS)
+
+    if(len >= 0)
+    {
+        if(cliphdl != NULL)
+        {
+            throw_free(cliphdl);
+        }
+
+        len     = -1;
+        cliphdl = clipdata = NULL;
     }
-    len -= MinV(len, i);
-    clipdata += i;
-    return buffer;
-  }
 
-  return NULL;
-}
-
-
-//  ------------------------------------------------------------------
-
-void gclipbrd::close() {
-
-  if(not clipboard_available)
-    return;
-
-  #if defined(GUTLOS_FUNCS)
-  if(len>=0) {
-    if (cliphdl != NULL)
-      throw_free(cliphdl);
-    len = -1;
-    cliphdl = clipdata = NULL;
-  }
   #endif
 }
 
-
 //  ------------------------------------------------------------------
-

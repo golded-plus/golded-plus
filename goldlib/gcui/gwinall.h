@@ -228,20 +228,20 @@ class _help_t;
 class GWin
 {
 public: _wrec_t * active; // pointer to active window
-    _wrec_t * hidden;     // pointer to head hidden window
-    _menu_t * menu;       // pointer to head menu record
-    _menu_t * cmenu;      // pointer to current menu record
-    _help_t * helptr;     // pointer to help info record
-    int handle;           // last handle given to a window
-    int help;             // current help category
-    int werrno;           // error num from last window func
-    int total;            // total number of open windows
-    int mlevel;           // system variable used in menus
-    int ilevel;           // system variable used in menus
-    int esc;              // check for Esc in input funcions?
+    _wrec_t * hidden;  // pointer to head hidden window
+    _menu_t * menu;    // pointer to head menu record
+    _menu_t * cmenu;   // pointer to current menu record
+    _help_t * helptr;  // pointer to help info record
+    int handle;        // last handle given to a window
+    int help;          // current help category
+    int werrno;        // error num from last window func
+    int total;         // total number of open windows
+    int mlevel;        // system variable used in menus
+    int ilevel;        // system variable used in menus
+    int esc;           // check for Esc in input funcions?
     int tabwidth;      // window TTY output tab width
-    vchar fillch;         // character to fill windows with
-    int style;            // how to open the windows
+    vchar fillch;      // character to fill windows with
+    int style;         // how to open the windows
 public: GWin();
     ~GWin();
 };
@@ -274,10 +274,10 @@ extern GWin gwin;
 //  ------------------------------------------------------------------
 //  Special return codes from wmenuget()
 
-#define M_EXIT 32764        // exit menu
-#define M_EXITALL 32765     // exit all menus
-#define M_PREVPD 32766      // previous pull-down menu
-#define M_NEXTPD 32767      // next pull-down menu
+#define M_EXIT 32764    // exit menu
+#define M_EXITALL 32765 // exit all menus
+#define M_PREVPD 32766  // previous pull-down menu
+#define M_NEXTPD 32767  // next pull-down menu
 //  ------------------------------------------------------------------
 //  Window title position definitions for wtitle()
 

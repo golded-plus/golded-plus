@@ -343,73 +343,73 @@ struct
 typedef struct
 {
     FidoAddrType uplinkaddress; // uplink AKA
-    bool         unconditional;            // allow all new names, or check against file?
-    char         arealistpath[51];         // path to the forwarding file
-    byte         arealist;                 // type of the file. 0=areas.bbs, 1=names list
-    char         areamanager[11];          // name of uplink's AreaFix
-    char         password[11];             // password for uplink's areafix
-    byte         group;                    // group to put new areas in. 0 = Group A1
-    bool         addplus;                  // Add "+" to connect in front of areaname
+    bool         unconditional;      // allow all new names, or check against file?
+    char         arealistpath[51];   // path to the forwarding file
+    byte         arealist;           // type of the file. 0=areas.bbs, 1=names list
+    char         areamanager[11];    // name of uplink's AreaFix
+    char         password[11];       // password for uplink's areafix
+    byte         group;              // group to put new areas in. 0 = Group A1
+    bool         addplus;            // Add "+" to connect in front of areaname
 } AreafixForwardRecord;
 typedef struct
 {
-    char uucpname[11];                     // UUCPname of uplink
-    char arealistpath[50];                 // path to the newsgroups listing
-    byte group;                            // group to put new areas in. 0 = Group A1
+    char uucpname[11];               // UUCPname of uplink
+    char arealistpath[50];           // path to the newsgroups listing
+    byte group;                      // group to put new areas in. 0 = Group A1
 } UUCPForwardRecord;
 typedef struct
 {
-    char         systemdir[80];            // path to the other databases
-    char         sysop[51];                // full name of the sysop
-    word         dupechecks;               // max. number of dupes to remember (16000 max.)
-    bool         dodupechk;                // TRUE = Check for dupes
-    byte         maxhandles;               // max. number of outbound files to keep open
-    bool         cachetdbs;                // TRUE cache the databases in XMS
-    char         toolargepath[80];         // path to the too-large directory for oversized msgs
-    char         logfilepath[80];          // path and filename of the logfile and stats file
+    char         systemdir[80];      // path to the other databases
+    char         sysop[51];          // full name of the sysop
+    word         dupechecks;         // max. number of dupes to remember (16000 max.)
+    bool         dodupechk;          // TRUE = Check for dupes
+    byte         maxhandles;         // max. number of outbound files to keep open
+    bool         cachetdbs;          // TRUE cache the databases in XMS
+    char         toolargepath[80];   // path to the too-large directory for oversized msgs
+    char         logfilepath[80];    // path and filename of the logfile and stats file
     FidoAddrType nodenrs[100];  // system AKAs
-    word         pointnets[100];           // pointnet for each of the system AKAs
-    byte         security_F[2];            // Secure the inbound paths: 0=Yes, 1=No
-    char         inbound_F[80][2];         // paths to the inbound directories
-    char         outbound_F[80];           // path to the outbound directory
+    word         pointnets[100];     // pointnet for each of the system AKAs
+    byte         security_F[2];      // Secure the inbound paths: 0=Yes, 1=No
+    char         inbound_F[80][2];   // paths to the inbound directories
+    char         outbound_F[80];     // path to the outbound directory
     char         comprprgs_F[80][18]; // Fido compress/decompression programs
     dword        maxfidomsglen;
     dword        maxfidoarclen;
-    byte         defgroups_F[16];          // default groups for a new Fido user
-    byte         fidosystem;               // 0=Binkley, 1=Frontdoor, 2=dBridge
-    bool         fidoacceptto;             // scan the To: field for a e-mail address?
-    byte         fidonetmailtype;          // Netmail msgbase type: 0=None, 1=Msg, 2=Squish,
-                                           // 3=Jam
-    char         fidonetmailpath[80]; // path to the database
-    byte         fidobadareatype;          // Bad msgbase type: 0=None, 1=Msg, 2=Squish, 3=Jam
-    char         fidobadpath[80];          // path to the database
-    byte         fidodupeareatype;         // Dupe msgbase type: 0=None, 1=Msg, 2=Squish, 3=Jam
-    char         fidodupepath[80];         // path to the database
-    byte         fidoautocreatetype; // New created areas type: 0=None, 1=Msg, 2=Squish, 3=Jam
-    char         defaultfidomsgpath[80];// default path to use (no filename)
-    bool         stripseenby;              // TRUE = strip seen-bys when importing
-    bool         autolink;                 // TRUE = link after import
-    bool         replacetear;              // replace the tearline when exporting?
-    word         defnumbtokeep_F;          // default number of msgs to keep for an new area
-    word         defdaystokeep_F;          // default number of days to keep msgs for a new area
-    byte         fidoarcmailextension; // 0=Arc(0..9), 1=Hex(0..9,A..F), 2=All(0..9,A..Z)
-    byte         uucpgateway;              // Gateway AKA nr: 1..10, as index in system AKAs
-                                           // array
-    char         nameseparator;            // character to replace spaces with in user names
-                                           // when building an e-mail address.
-    char  origins[2][62];                  // the two system origin lines
-    bool  worldwide;                       // TRUE = system UUCPname is world-reg
-    byte  defgroups_U[16];                 // default groups to use for UUCP
-    char  spoolbasedir[80];                // path to the spool directories
-    dword maxdatlength;                    // Max. length of .DAT files, before compression
-    char  smarthost[11];                   // UUCPname of your smarthost
-    char  uucpname[11];                    // system UUCP name
-    char  backbone[51];                    // domain name of the backbone
-    char  organization[60];                // system organization line
-    char  domains[6][51];                  // system domain names
-    char  comprprg_U[4][80];               // installed compression/decompression programs
-    byte  privmailtype;                    // type of private mail message base:
-                                           // 0=None, 1=*.MSG, 2=Squish, 3=JAM
+    byte         defgroups_F[16];    // default groups for a new Fido user
+    byte         fidosystem;         // 0=Binkley, 1=Frontdoor, 2=dBridge
+    bool         fidoacceptto;       // scan the To: field for a e-mail address?
+    byte         fidonetmailtype;    // Netmail msgbase type: 0=None, 1=Msg, 2=Squish,
+                                     // 3=Jam
+    char fidonetmailpath[80];        // path to the database
+    byte fidobadareatype;            // Bad msgbase type: 0=None, 1=Msg, 2=Squish, 3=Jam
+    char fidobadpath[80];            // path to the database
+    byte fidodupeareatype;           // Dupe msgbase type: 0=None, 1=Msg, 2=Squish, 3=Jam
+    char fidodupepath[80];           // path to the database
+    byte fidoautocreatetype;         // New created areas type: 0=None, 1=Msg, 2=Squish, 3=Jam
+    char defaultfidomsgpath[80];     // default path to use (no filename)
+    bool stripseenby;                // TRUE = strip seen-bys when importing
+    bool autolink;                   // TRUE = link after import
+    bool replacetear;                // replace the tearline when exporting?
+    word defnumbtokeep_F;            // default number of msgs to keep for an new area
+    word defdaystokeep_F;            // default number of days to keep msgs for a new area
+    byte fidoarcmailextension;       // 0=Arc(0..9), 1=Hex(0..9,A..F), 2=All(0..9,A..Z)
+    byte uucpgateway;                // Gateway AKA nr: 1..10, as index in system AKAs
+                                     // array
+    char nameseparator;              // character to replace spaces with in user names
+                                     // when building an e-mail address.
+    char  origins[2][62];            // the two system origin lines
+    bool  worldwide;                 // TRUE = system UUCPname is world-reg
+    byte  defgroups_U[16];           // default groups to use for UUCP
+    char  spoolbasedir[80];          // path to the spool directories
+    dword maxdatlength;              // Max. length of .DAT files, before compression
+    char  smarthost[11];             // UUCPname of your smarthost
+    char  uucpname[11];              // system UUCP name
+    char  backbone[51];              // domain name of the backbone
+    char  organization[60];          // system organization line
+    char  domains[6][51];            // system domain names
+    char  comprprg_U[4][80];         // installed compression/decompression programs
+    byte  privmailtype;              // type of private mail message base:
+                                     // 0=None, 1=*.MSG, 2=Squish, 3=JAM
     char                 privmailpath[80]; // path to the message base
     char                 privmailoption[10][73];
     byte                 privmailselect[10]; // where to search: 0=From, 1=To, 2=Subj
@@ -453,15 +453,15 @@ typedef struct
     bool logexportednetmail;    // TRUE =
     bool log17, log18, log19, log20, log21;
     char copyheadernames[16][30];// names of the e-mail Headers to search for
-                                            // without the trailing space!
+    // without the trailing space!
     byte copyheaderhow[30];                 //  How to store the copied header:
                                             // 0=Not, 1=Kludge, 2=Text
     char gatewayuser[37];                   // user name of the gateway user
     bool bounceunknown;                     // TRUE=bounce undeliverable mail
                                             // FALSE=Write to netmail
-    bool         bouncesmall;               // TRUE=Send only the first approximate 20 lines
-    byte         adminaddrtype;             // 0=None, 1=Fido, 2=Usenet
-    char         adminfidoname[37];         // Full name of the administrator, for the Fidonet
+    bool bouncesmall;                       // TRUE=Send only the first approximate 20 lines
+    byte adminaddrtype;                     // 0=None, 1=Fido, 2=Usenet
+    char adminfidoname[37];                 // Full name of the administrator, for the Fidonet
                                             // address
     FidoAddrType adminfidoaddr; // Fidonet address of the administrator
     char         adminuucpaddr[256]; // E-mail address of the administrator
@@ -470,14 +470,14 @@ typedef struct
                  adminsend8, adminsend9, adminsend10, adminsend11, adminsend12,
                  adminsend13,
                  adminsend14, adminsend15, adminsend16;
-    char  timezone[26];         // time zone description
-    bool  copyheaders_FU;       // TRUE = Scan and copy headers Fido->Usenet
-    char  mailgrade;            // grade letter to use in mail job UUCP filenames
-    char  newsgrade;            // grade letter to use in news batch job UUCP filenames
-    bool  timeslicing;          // FALSE = Do not detect multitasker
-    bool  netmaildecode;        // TRUE = scan and decode files from imported netmail
-    char  netmaildecodepath[80]; // where to store the files
-    bool  privatedecode;        // TRUE = scan and decode files from imported private scanned
+    char timezone[26];          // time zone description
+    bool copyheaders_FU;        // TRUE = Scan and copy headers Fido->Usenet
+    char mailgrade;             // grade letter to use in mail job UUCP filenames
+    char newsgrade;             // grade letter to use in news batch job UUCP filenames
+    bool timeslicing;           // FALSE = Do not detect multitasker
+    bool netmaildecode;         // TRUE = scan and decode files from imported netmail
+    char netmaildecodepath[80];  // where to store the files
+    bool privatedecode;         // TRUE = scan and decode files from imported private scanned
                                 // messages
     char  privatedecodepath[80]; // where to store the files
     word  maxrmaillinelen;      // max len for rmail line in .X file

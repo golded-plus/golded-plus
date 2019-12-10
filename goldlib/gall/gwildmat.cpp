@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -27,13 +26,10 @@
 #include <gstrall.h>
 #include <gwildmat.h>
 
-#if defined(__USE_ALLOCA__)
+#if defined (__USE_ALLOCA__)
   #include <malloc.h>
 #endif
-
-
 //  ------------------------------------------------------------------
-
 /*
 **  Do shell-style pattern matching for ?, \, [], and * characters.
 **  Might not be robust in face of malformed patterns; e.g., "foo[a-"
@@ -70,135 +66,201 @@
 **  released version unless you have a good test data base to try it out
 **  on.
 */
-
-
 //  ------------------------------------------------------------------
+int gwildmatch::match_internal(const char * text, const char * pattern, bool ignorecase)
+{
+    register int last;
+    register int matched;
+    register int reverse;
+    const char * p = pattern;
 
-int gwildmatch::match_internal(const char* text, const char* pattern, bool ignorecase) {
+    for( ; *p; text++, p++)
+    {
+        if(*text == NUL and * p != '*')
+        {
+            return -1;
+        }
 
-  register int last;
-  register int matched;
-  register int reverse;
-  const char* p = pattern;
+        switch(*p)
+        {
+            case '?':
+                // Match anything
+                continue;
 
-  for( ; *p; text++, p++) {
-    if(*text == NUL and *p != '*')
-      return -1;
-    switch (*p) {
-      case '?':
-        // Match anything
-        continue;
-      case '*':
-        while(*++p == '*')    // Consecutive stars act just like one.
-          continue;
-        if(*p == NUL)         // Trailing star matches everything
-          return true;
-        while(*text) {
-          if((matched = match_internal(text++, p, ignorecase)) != false)
-            return matched;
-        }
-        return -1;
-      case '[':
-        reverse = (p[1] == '^');
-        if(reverse)           // Inverted character class
-          p++;
-        matched = false;
-        if(p[1] == ']' or p[1] == '-') {
-          if(ignorecase) {
-            if(g_tolower(*++p) == g_tolower(*text))
-              matched = true;
-          }
-          else {
-            if(*++p == *text)
-              matched = true;
-          }
-        }
-        for(last = *p; *++p and *p != ']'; last = *p) {
-          // This next line requires a good C compiler
-          if(ignorecase) {
-            if(*p == '-' and p[1] != ']' ? g_tolower(*text) <= g_tolower(*++p) and g_tolower(*text) >= g_tolower(last) : g_tolower(*text) == g_tolower(*p))
-              matched = true;
-          }
-          else {
-            if(*p == '-' and p[1] != ']' ? *text <= *++p and *text >= last : *text == *p)
-              matched = true;
-          }
-        }
-        if(matched == reverse)
-          return false;
-        continue;
-      case '\\':
-        // Literal match with following character
-        p++;
-        // FALLTHROUGH
-      default:
-        if(ignorecase) {
-          if(g_tolower(*text) != g_tolower(*p))
-            return false;
-        }
-        else {
-          if(*text != *p)
-            return false;
-        }
-        continue;
+            case '*':
+
+                while(*++p == '*') // Consecutive stars act just like one.
+                {
+                    continue;
+                }
+
+                if(*p == NUL) // Trailing star matches everything
+                {
+                    return true;
+                }
+
+                while(*text)
+                {
+                    if((matched = match_internal(text++, p, ignorecase)) != false)
+                    {
+                        return matched;
+                    }
+                }
+                return -1;
+
+            case '[':
+                reverse = (p[1] == '^');
+
+                if(reverse)   // Inverted character class
+                {
+                    p++;
+                }
+
+                matched = false;
+
+                if(p[1] == ']' or p[1] == '-')
+                {
+                    if(ignorecase)
+                    {
+                        if(g_tolower(*++p) == g_tolower(*text))
+                        {
+                            matched = true;
+                        }
+                    }
+                    else
+                    {
+                        if(*++p == *text)
+                        {
+                            matched = true;
+                        }
+                    }
+                }
+
+                for(last = *p; *++p and * p != ']'; last = *p)
+                {
+                    // This next line requires a good C compiler
+                    if(ignorecase)
+                    {
+                        if(*p == '-' and p[1] != ']' ? g_tolower(*text) <=
+                           g_tolower(*++p) and g_tolower(*text) >=
+                           g_tolower(last) : g_tolower(*text) == g_tolower(*p))
+                        {
+                            matched = true;
+                        }
+                    }
+                    else
+                    {
+                        if(*p == '-' and p[1] != ']' ? *text <= *++p and * text >=
+                           last : *text == *p)
+                        {
+                            matched = true;
+                        }
+                    }
+                }
+
+                if(matched == reverse)
+                {
+                    return false;
+                }
+
+                continue;
+
+            case '\\':
+                // Literal match with following character
+                p++;
+
+            // FALLTHROUGH
+            default:
+
+                if(ignorecase)
+                {
+                    if(g_tolower(*text) != g_tolower(*p))
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    if(*text != *p)
+                    {
+                        return false;
+                    }
+                }
+
+                continue;
+        } // switch
     }
-  }
-
-  return *text == NUL;
-}
-
+    return *text == NUL;
+} // gwildmatch::match_internal
 
 //  ------------------------------------------------------------------
+bool gwildmatch::match(const char * text, const char * pattern, bool ignorecase)
+{
+    if(*pattern == '*' and pattern[1] == NUL)
+    {
+        return true;
+    }
 
-bool gwildmatch::match(const char* text, const char* pattern, bool ignorecase) {
-
-  if(*pattern == '*' and pattern[1] == NUL)
-    return true;
-  return match_internal(text, pattern, ignorecase) == true;
+    return match_internal(text, pattern, ignorecase) == true;
 }
-
 
 //  ------------------------------------------------------------------
 //  4DOS-style wildcard string match.
-
-bool strwild(const char* str, const char* wild) {
-
-  while(*str) {
-    if(*wild == '*') {                        // Match all
-      if(wild[1] == NUL)
-        return true;
-      else {
-#if defined(__USE_ALLOCA__)
-        char *buf = (char *)alloca(strlen(wild));
+bool strwild(const char * str, const char * wild)
+{
+    while(*str)
+    {
+        if(*wild == '*')                      // Match all
+        {
+            if(wild[1] == NUL)
+            {
+                return true;
+            }
+            else
+            {
+#if defined (__USE_ALLOCA__)
+                char * buf = (char *)alloca(strlen(wild));
 #else
-        __extension__ char buf[strlen(wild)];
+                __extension__ char buf[strlen(wild)];
 #endif
-        strcpy(buf, wild+1);
-        char* ptr = strpbrk(buf, "*?");
-        if(ptr)
-          *ptr = NUL;
-        ptr = (char*)striinc(buf, str);
-        if(ptr) {
-          str = ptr + strlen(buf);
-          wild += strlen(buf) + 1;
+                strcpy(buf, wild + 1);
+                char * ptr = strpbrk(buf, "*?");
+
+                if(ptr)
+                {
+                    *ptr = NUL;
+                }
+
+                ptr = (char *)striinc(buf, str);
+
+                if(ptr)
+                {
+                    str   = ptr + strlen(buf);
+                    wild += strlen(buf) + 1;
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+        else if(g_toupper(*str) == g_toupper(*wild) or * wild == '?')
+        {
+            wild++;
+            str++;
         }
         else
-          break;
-      }
+        {
+            break;
+        }
     }
-    else if(g_toupper(*str) == g_toupper(*wild) or *wild == '?') {
-      wild++;
-      str++;
+
+    if((*str == NUL) and (*wild == NUL or (*wild == '*' and wild[1] == NUL)))
+    {
+        return true;
     }
-    else
-      break;
-  }
-  if((*str == NUL) and (*wild == NUL or (*wild == '*' and wild[1] == NUL)))
-    return true;
 
-  return false;
-}
-
+    return false;
+} // strwild
 
 //  ------------------------------------------------------------------
-

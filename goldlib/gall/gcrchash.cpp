@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -26,38 +25,33 @@
 
 #include <gctype.h>
 #include <gcrcall.h>
-
-
 //  ------------------------------------------------------------------
 //  Hash value generation
 //  ------------------------------------------------------------------
 //  From the Maximus/Squish MSGAPI by Scott J. Dudley, 1991.
 //  The prime is 65521. Whatever that means.. ;-)
 //  ------------------------------------------------------------------
-
-
 //  ------------------------------------------------------------------
 //  Generate 32-bit hash value from string
+dword strHash32(const char * s, bool __case)
+{
+    const char * p = s;
+    dword g, hash = 0;
 
-dword strHash32(const char* s, bool __case) {
+    while(*p)
+    {
+        hash = (hash << 4) + (__case ? g_tolower(*p) : *p);
+        g    = hash & 0xF0000000UL;
 
-  const char* p = s;
-  dword g, hash = 0;
+        if(g)
+        {
+            hash |= g >> 24;
+            hash |= g;
+        }
 
-  while(*p) {
-
-    hash = (hash << 4) + (__case ? g_tolower(*p) : *p);
-
-    g = hash & 0xF0000000UL;
-    if(g) {
-      hash |= g >> 24;
-      hash |= g;
+        p++;
     }
-    p++;
-  }
-
-  return hash & 0x7FFFFFFFUL;   // Strip off high bit (used as a flag)
+    return hash & 0x7FFFFFFFUL; // Strip off high bit (used as a flag)
 }
-
 
 //  ------------------------------------------------------------------
