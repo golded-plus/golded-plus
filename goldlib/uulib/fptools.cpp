@@ -15,7 +15,6 @@
 #ifdef SYSTEM_OS2
 #include <os2.h>
 #endif
-
 /*
  * This file provides replacements for some handy functions that aren't
  * available on all systems, like most of the <string.h> functions. They
@@ -56,47 +55,48 @@
 
 #if 0
 #ifdef SYSTEM_WINDLL
-BOOL _export WINAPI
-DllEntryPoint (HINSTANCE hInstance, DWORD seginfo,
-           LPVOID lpCmdLine)
+BOOL _export WINAPI DllEntryPoint(HINSTANCE hInstance, DWORD seginfo, LPVOID lpCmdLine)
 {
-  /* Don't do anything, so just return true */
-  return TRUE;
+    /* Don't do anything, so just return true */
+    return TRUE;
 }
+
 #endif
 #endif
 
 char * fptools_id = "$Id$";
-
 /*
  * some versions of free can't handle a NULL pointer properly
  * (ANSI says, free ignores a NULL pointer, but some machines
  * prefer to SIGSEGV on it)
  */
-
-void TOOLEXPORT
-_FP_free (void *ptr)
+void TOOLEXPORT _FP_free(void * ptr)
 {
-  if (ptr) free (ptr);
+    if(ptr)
+    {
+        free(ptr);
+    }
 }
 
 /*
  * This is non-standard, so I'm defining my own
  */
-
-char * TOOLEXPORT
-_FP_strdup (char *string)
+char * TOOLEXPORT _FP_strdup(char * string)
 {
-  char *result;
+    char * result;
 
-  if (string == NULL)
-    return NULL;
+    if(string == NULL)
+    {
+        return NULL;
+    }
 
-  if ((result = (char *) malloc (strlen (string) + 1)) == NULL)
-    return NULL;
+    if((result = (char *)malloc(strlen(string) + 1)) == NULL)
+    {
+        return NULL;
+    }
 
-  strcpy (result, string);
-  return result;
+    strcpy(result, string);
+    return result;
 }
 
 /*
@@ -104,331 +104,417 @@ _FP_strdup (char *string)
  * the original in that the dest string is always terminated with a
  * NULL character.
  */
-
-char * TOOLEXPORT
-_FP_strncpy (char *dest, char *src, int length)
+char * TOOLEXPORT _FP_strncpy(char * dest, char * src, int length)
 {
-  char *odest=dest;
-  if (src == NULL || dest == NULL || length-- <= 0)
-    return dest;
+    char * odest = dest;
 
-  while (length-- && *src)
-    *dest++ = *src++;
+    if(src == NULL || dest == NULL || length-- <= 0)
+    {
+        return dest;
+    }
 
-  *dest++ = '\0';
-  return odest;
+    while(length-- && *src)
+    {
+        *dest++ = *src++;
+    }
+    *dest++ = '\0';
+    return odest;
 }
 
 /*
  * duplicate a memory area
  */
-
-void * TOOLEXPORT
-_FP_memdup (void *ptr, int len)
+void * TOOLEXPORT _FP_memdup(void * ptr, int len)
 {
-  void *result;
+    void * result;
 
-  if (ptr == NULL)
-    return NULL;
+    if(ptr == NULL)
+    {
+        return NULL;
+    }
 
-  if ((result = malloc (len)) == NULL)
-    return NULL;
+    if((result = malloc(len)) == NULL)
+    {
+        return NULL;
+    }
 
-  memcpy (result, ptr, len);
-  return result;
+    memcpy(result, ptr, len);
+    return result;
 }
 
 /*
  * case-insensitive compare
  */
-
-int TOOLEXPORT
-_FP_stricmp (char *str1, char *str2)
+int TOOLEXPORT _FP_stricmp(char * str1, char * str2)
 {
-  if (str1==NULL || str2==NULL)
-    return -1;
+    if(str1 == NULL || str2 == NULL)
+    {
+        return -1;
+    }
 
-  while (*str1) {
-    if (g_tolower(*str1) != g_tolower(*str2))
-      break;
-    str1++;
-    str2++;
-  }
-  return (g_tolower (*str1) - g_tolower (*str2));
+    while(*str1)
+    {
+        if(g_tolower(*str1) != g_tolower(*str2))
+        {
+            break;
+        }
+
+        str1++;
+        str2++;
+    }
+    return g_tolower(*str1) - g_tolower(*str2);
 }
 
-int TOOLEXPORT
-_FP_strnicmp (char *str1, char *str2, int count)
+int TOOLEXPORT _FP_strnicmp(char * str1, char * str2, int count)
 {
-  if (str1==NULL || str2==NULL)
-    return -1;
+    if(str1 == NULL || str2 == NULL)
+    {
+        return -1;
+    }
 
-  while (*str1 && count) {
-    if (g_tolower(*str1) != g_tolower(*str2))
-      break;
-    str1++;
-    str2++;
-    count--;
-  }
-  return count ? (g_tolower (*str1) - g_tolower (*str2)) : 0;
+    while(*str1 && count)
+    {
+        if(g_tolower(*str1) != g_tolower(*str2))
+        {
+            break;
+        }
+
+        str1++;
+        str2++;
+        count--;
+    }
+    return count ? (g_tolower(*str1) - g_tolower(*str2)) : 0;
 }
 
 /*
  * autoconf says this function might be a compatibility problem
  */
-
-char * TOOLEXPORT
-_FP_strstr (char *str1, char *str2)
+char * TOOLEXPORT _FP_strstr(char * str1, char * str2)
 {
-  char *ptr1, *ptr2;
+    char * ptr1, * ptr2;
 
-  if (str1==NULL)
+    if(str1 == NULL)
+    {
+        return NULL;
+    }
+
+    if(str2 == NULL)
+    {
+        return str1;
+    }
+
+    while(*(ptr1 = str1))
+    {
+        for(ptr2 = str2; *ptr1 && *ptr2 && *ptr1 == *ptr2; ptr1++, ptr2++)
+        {
+            /* empty loop */}
+
+        if(*ptr2 == '\0')
+        {
+            return str1;
+        }
+
+        str1++;
+    }
     return NULL;
-  if (str2==NULL)
-    return str1;
+} // _FP_strstr
 
-  while (*(ptr1=str1)) {
-    for (ptr2=str2;
-     *ptr1 && *ptr2 && *ptr1==*ptr2;
-     ptr1++, ptr2++)
-      /* empty loop */ ;
-
-    if (*ptr2 == '\0')
-      return str1;
-    str1++;
-  }
-  return NULL;
-}
-
-char * TOOLEXPORT
-_FP_strpbrk (char *str, char *accept)
+char * TOOLEXPORT _FP_strpbrk(char * str, char * accept)
 {
-  char *ptr;
+    char * ptr;
 
-  if (str == NULL)
+    if(str == NULL)
+    {
+        return NULL;
+    }
+
+    if(accept == NULL || *accept == '\0')
+    {
+        return str;
+    }
+
+    for( ; *str; str++)
+    {
+        for(ptr = accept; *ptr; ptr++)
+        {
+            if(*str == *ptr)
+            {
+                return str;
+            }
+        }
+    }
     return NULL;
-  if (accept == NULL || *accept == '\0')
-    return str;
-
-  for (; *str; str++)
-    for (ptr=accept; *ptr; ptr++)
-      if (*str == *ptr)
-    return str;
-
-  return NULL;
 }
 
 /*
  * autoconf also complains about this one
  */
-
-char * TOOLEXPORT
-_FP_strtok (char *str1, char *str2)
+char * TOOLEXPORT _FP_strtok(char * str1, char * str2)
 {
-  static char *optr;
-  char *ptr;
+    static char * optr;
+    char * ptr;
 
-  if (str2 == NULL)
-    return NULL;
+    if(str2 == NULL)
+    {
+        return NULL;
+    }
 
-  if (str1) {
-    optr = str1;
-  }
-  else {
-    if (*optr == '\0')
-      return NULL;
-  }
+    if(str1)
+    {
+        optr = str1;
+    }
+    else
+    {
+        if(*optr == '\0')
+        {
+            return NULL;
+        }
+    }
 
-  while (*optr && strchr (str2, *optr)) /* look for beginning of token */
-    optr++;
+    while(*optr && strchr(str2, *optr)) /* look for beginning of token */
+    {
+        optr++;
+    }
 
-  if (*optr == '\0')            /* no token found */
-    return NULL;
+    if(*optr == '\0')           /* no token found */
+    {
+        return NULL;
+    }
 
-  ptr = optr;
-  while (*optr && strchr (str2, *optr) == NULL) /* look for end of token */
-    optr++;
+    ptr = optr;
 
-  if (*optr) {
-    *optr++ = '\0';
-  }
-  return ptr;
-}
+    while(*optr && strchr(str2, *optr) == NULL) /* look for end of token */
+    {
+        optr++;
+    }
+
+    if(*optr)
+    {
+        *optr++ = '\0';
+    }
+
+    return ptr;
+} // _FP_strtok
 
 /*
  * case insensitive strstr.
  */
-
-char * TOOLEXPORT
-_FP_stristr (char *str1, char *str2)
+char * TOOLEXPORT _FP_stristr(char * str1, char * str2)
 {
-  char *ptr1, *ptr2;
+    char * ptr1, * ptr2;
 
-  if (str1==NULL)
+    if(str1 == NULL)
+    {
+        return NULL;
+    }
+
+    if(str2 == NULL)
+    {
+        return str1;
+    }
+
+    while(*(ptr1 = str1))
+    {
+        for(ptr2 = str2; *ptr1 && *ptr2 && g_tolower(*ptr1) == g_tolower(*ptr2);
+            ptr1++, ptr2++)
+        {
+            /* empty loop */}
+
+        if(*ptr2 == '\0')
+        {
+            return str1;
+        }
+
+        str1++;
+    }
     return NULL;
-  if (str2==NULL)
-    return str1;
-
-  while (*(ptr1=str1)) {
-    for (ptr2=str2;
-     *ptr1 && *ptr2 && g_tolower(*ptr1)==g_tolower(*ptr2);
-     ptr1++, ptr2++)
-      /* empty loop */ ;
-
-    if (*ptr2 == '\0')
-      return str1;
-    str1++;
-  }
-  return NULL;
-}
+} // _FP_stristr
 
 /*
  * Nice fake of the real (non-standard) one
  */
-
-char * TOOLEXPORT
-_FP_strrstr (char *ptr, char *str)
+char * TOOLEXPORT _FP_strrstr(char * ptr, char * str)
 {
-  char *found=NULL, *pstr, *iter=ptr;
+    char * found = NULL, * pstr, * iter = ptr;
 
-  if (ptr==NULL || str==NULL)
-    return NULL;
+    if(ptr == NULL || str == NULL)
+    {
+        return NULL;
+    }
 
-  if (*str == '\0')
-    return ptr;
+    if(*str == '\0')
+    {
+        return ptr;
+    }
 
-  while ((pstr = _FP_strstr (iter, str)) != NULL) {
-    found = pstr;
-    iter  = pstr + 1;
-  }
-  return found;
+    while((pstr = _FP_strstr(iter, str)) != NULL)
+    {
+        found = pstr;
+        iter  = pstr + 1;
+    }
+    return found;
 }
 
-char * TOOLEXPORT
-_FP_strirstr (char *ptr, char *str)
+char * TOOLEXPORT _FP_strirstr(char * ptr, char * str)
 {
-  char *found=NULL, *iter=ptr, *pstr;
+    char * found = NULL, * iter = ptr, * pstr;
 
-  if (ptr==NULL || str==NULL)
-    return NULL;
-  if (*str == '\0')
-    return ptr;
+    if(ptr == NULL || str == NULL)
+    {
+        return NULL;
+    }
 
-  while ((pstr = _FP_stristr (iter, str)) != NULL) {
-    found = pstr;
-    iter  = pstr + 1;
-  }
-  return found;
+    if(*str == '\0')
+    {
+        return ptr;
+    }
+
+    while((pstr = _FP_stristr(iter, str)) != NULL)
+    {
+        found = pstr;
+        iter  = pstr + 1;
+    }
+    return found;
 }
 
 /*
  * convert whole string to case
  */
-
-char * TOOLEXPORT
-_FP_stoupper (char *input)
+char * TOOLEXPORT _FP_stoupper(char * input)
 {
-  char *iter = input;
+    char * iter = input;
 
-  if (input == NULL)
-    return NULL;
+    if(input == NULL)
+    {
+        return NULL;
+    }
 
-  while (*iter) {
-    *iter = g_toupper (*iter);
-    iter++;
-  }
-  return input;
+    while(*iter)
+    {
+        *iter = g_toupper(*iter);
+        iter++;
+    }
+    return input;
 }
 
-char * TOOLEXPORT
-_FP_stolower (char *input)
+char * TOOLEXPORT _FP_stolower(char * input)
 {
-  char *iter = input;
+    char * iter = input;
 
-  if (input == NULL)
-    return NULL;
+    if(input == NULL)
+    {
+        return NULL;
+    }
 
-  while (*iter) {
-    *iter = g_tolower (*iter);
-    iter++;
-  }
-  return input;
+    while(*iter)
+    {
+        *iter = g_tolower(*iter);
+        iter++;
+    }
+    return input;
 }
 
 /*
  * string matching with wildcards
  */
-
-int TOOLEXPORT
-_FP_strmatch (char *string, char *pattern)
+int TOOLEXPORT _FP_strmatch(char * string, char * pattern)
 {
-  char *p1 = string, *p2 = pattern;
+    char * p1 = string, * p2 = pattern;
 
-  if (pattern==NULL || string==NULL)
-    return 0;
-
-  while (*p1 && *p2) {
-    if (*p2 == '?') {
-      p1++; p2++;
+    if(pattern == NULL || string == NULL)
+    {
+        return 0;
     }
-    else if (*p2 == '*') {
-      if (*++p2 == '\0')
+
+    while(*p1 && *p2)
+    {
+        if(*p2 == '?')
+        {
+            p1++;
+            p2++;
+        }
+        else if(*p2 == '*')
+        {
+            if(*++p2 == '\0')
+            {
+                return 1;
+            }
+
+            while(*p1 && *p1 != *p2)
+            {
+                p1++;
+            }
+        }
+        else if(*p1 == *p2)
+        {
+            p1++;
+            p2++;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    if(*p1 || *p2)
+    {
+        return 0;
+    }
+
     return 1;
-      while (*p1 && *p1 != *p2)
-    p1++;
-    }
-    else if (*p1 == *p2) {
-      p1++; p2++;
-    }
-    else
-      return 0;
-  }
-  if (*p1 || *p2)
-    return 0;
+} // _FP_strmatch
 
-  return 1;
-}
-
-char * TOOLEXPORT
-_FP_strrchr (char *string, int tc)
+char * TOOLEXPORT _FP_strrchr(char * string, int tc)
 {
-  char *ptr;
+    char * ptr;
 
-  if (string == NULL)
+    if(string == NULL)
+    {
+        return NULL;
+    }
+
+    ptr = string + strlen(string) - 1;
+
+    while(ptr != string && *ptr != tc)
+    {
+        ptr--;
+    }
+
+    if(*ptr == tc)
+    {
+        return ptr;
+    }
+
     return NULL;
-
-  ptr = string + strlen (string) - 1;
-
-  while (ptr != string && *ptr != tc)
-    ptr--;
-
-  if (*ptr == tc)
-    return ptr;
-
-  return NULL;
 }
 
 /*
  * strip directory information from a filename. Works only on DOS and
  * Unix systems so far ...
  */
-
-char * TOOLEXPORT
-_FP_cutdir (char *filename)
+char * TOOLEXPORT _FP_cutdir(char * filename)
 {
-  char *ptr;
+    char * ptr;
 
-  if (filename == NULL)
-    return NULL;
+    if(filename == NULL)
+    {
+        return NULL;
+    }
 
-  if ((ptr = _FP_strrchr (filename, GOLD_SLASH_CHR)) != NULL)
-    ptr++;
-  else if ((ptr = _FP_strrchr (filename, GOLD_WRONG_SLASH_CHR)) != NULL)
-    ptr++;
-  else
-    ptr = filename;
+    if((ptr = _FP_strrchr(filename, GOLD_SLASH_CHR)) != NULL)
+    {
+        ptr++;
+    }
+    else if((ptr = _FP_strrchr(filename, GOLD_WRONG_SLASH_CHR)) != NULL)
+    {
+        ptr++;
+    }
+    else
+    {
+        ptr = filename;
+    }
 
-  return ptr;
+    return ptr;
 }
 
 /*
@@ -436,80 +522,93 @@ _FP_cutdir (char *filename)
  * properly: LF (Unix), CRLF (DOS) and CR (Mac). In all cases, the
  * terminator is replaced by a single LF
  */
-
-char * TOOLEXPORT
-_FP_fgets (char *buf, int n, FILE *stream)
+char * TOOLEXPORT _FP_fgets(char * buf, int n, FILE * stream)
 {
-  char *obp = buf;
-  int c;
+    char * obp = buf;
+    int c;
 
-  if (feof (stream))
-    return NULL;
+    if(feof(stream))
+    {
+        return NULL;
+    }
 
-  while (--n) {
-    if ((c = fgetc (stream)) == EOF) {
-      if (ferror (stream))
-    return NULL;
-      else {
-    if (obp == buf)
-      return NULL;
+    while(--n)
+    {
+        if((c = fgetc(stream)) == EOF)
+        {
+            if(ferror(stream))
+            {
+                return NULL;
+            }
+            else
+            {
+                if(obp == buf)
+                {
+                    return NULL;
+                }
+
+                *buf = '\0';
+                return obp;
+            }
+        }
+
+        if(c == '\015') /* CR */
+        {
+            /*
+             * Peek next character. If it's no LF, push it back.
+             * ungetc(EOF, stream) is handled correctly according
+             * to the manual page
+             */
+            if((c = fgetc(stream)) != '\012')
+            {
+                if(!feof(stream))
+                {
+                    ungetc(c, stream);
+                }
+            }
+
+            *buf++ = '\012';
+            *buf   = '\0';
+            return obp;
+        }
+        else if(c == '\012') /* LF */
+        {
+            *buf++ = '\012';
+            *buf   = '\0';
+            return obp;
+        }
+
+        /*
+         * just another standard character
+         */
+        *buf++ = c;
+    }
+
+    /*
+     * n-1 characters already transferred
+     */
     *buf = '\0';
     return obp;
-      }
-    }
-    if (c == '\015') { /* CR */
-      /*
-       * Peek next character. If it's no LF, push it back.
-       * ungetc(EOF, stream) is handled correctly according
-       * to the manual page
-       */
-      if ((c = fgetc (stream)) != '\012')
-    if (!feof (stream))
-      ungetc (c, stream);
-      *buf++ = '\012';
-      *buf   = '\0';
-      return obp;
-    }
-    else if (c == '\012') { /* LF */
-      *buf++ = '\012';
-      *buf   = '\0';
-      return obp;
-    }
-    /*
-     * just another standard character
-     */
-    *buf++ = c;
-  }
-  /*
-   * n-1 characters already transferred
-   */
-  *buf = '\0';
-
-  return obp;
-}
+} // _FP_fgets
 
 #if 0
 /*
  * A replacement strerror function that just returns the error code
  */
-
-char * TOOLEXPORT
-_FP_strerror (int errcode)
+char * TOOLEXPORT _FP_strerror(int errcode)
 {
-  static char number[8];
+    static char number[8];
 
-  sprintf (number, "%03d", errcode);
-
-  return number;
+    sprintf(number, "%03d", errcode);
+    return number;
 }
 
 /*
  * tempnam is not ANSI, but tmpnam is. Ignore the prefix here.
  */
-
-char * TOOLEXPORT
-_FP_tempnam (char *dir, char *pfx)
+char * TOOLEXPORT _FP_tempnam(char * dir, char * pfx)
 {
-  return _FP_strdup (tmpnam (NULL));
+    return _FP_strdup(tmpnam(NULL));
 }
+
 #endif

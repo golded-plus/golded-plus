@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1999, 2002 Alexander S. Aganichev
@@ -27,94 +26,117 @@
 #include <cstdlib>
 #include <gcrcall.h>
 #include <gstrall.h>
-#if defined(__GOLD_GUI__)
+#if defined (__GOLD_GUI__)
 #include <gvidall.h>
 #include <gvidgui.h>
 #endif
 #undef GCFG_NOQECHO
 #include <gedacfg.h>
-
-
 //  ------------------------------------------------------------------
+void gareafile::ReadQEchoFile(char * file, char * options, char * origin)
+{
+    AreaCfg aa;
+    char buf[512];
+    FILE * fp = fsopen(file, "rb", sharemode);
 
-void gareafile::ReadQEchoFile(char* file, char* options, char* origin) {
+    if(fp)
+    {
+        setvbuf(fp, NULL, _IOFBF, 8192);
 
-  AreaCfg aa;
-  char buf[512];
-
-  FILE* fp = fsopen(file, "rb", sharemode);
-  if (fp)
-  {
-    setvbuf(fp, NULL, _IOFBF, 8192);
-
-    if (not quiet)
-      STD_PRINTNL("* Reading " << file);
-
-    while(fgets(buf, sizeof(buf), fp)) {
-
-      char* ptr = strtok(buf, " \t");
-      aa.reset();
-
-      if(isdigit(*ptr))
-        aa.groupid = 0x8000+atoi(ptr);
-      else if(g_isalpha(*ptr))
-        aa.groupid = g_toupper(*ptr);
-
-      if((ptr = strtok(NULL, " \t")) != NULL) {
-        if(*ptr == '*') {
-          // skip ExpireDays
-          if((ptr = strtok(NULL, " \t")) == NULL)
-            continue;
-          if((ptr = strtok(NULL, " \t")) == NULL)
-            continue;
+        if(not quiet)
+        {
+            STD_PRINTNL("* Reading " << file);
         }
-        aa.type = GMB_ECHO;
-        aa.setechoid(ptr);
-        if((ptr = strtok(NULL, " \t")) != NULL)
-          if(not strieql("Passthrough", ptr)) {
-            aa.setpath(ptr);
-            aa.basetype = "JAM";
-            if((ptr = strtok(NULL, " \t")) != NULL)
-              if((*ptr == '*') and ((ptr = strtok(NULL, " \t")) != NULL)) {
-                CfgAddress(ptr);
-                aa.aka.set(ptr);
-                aa.attr = attribsecho;
-                aa.setorigin(origin);
-                AddNewArea(aa);
-              }
-          }
-      }
-    }
-    fclose(fp);
-  }
-}
 
+        while(fgets(buf, sizeof(buf), fp))
+        {
+            char * ptr = strtok(buf, " \t");
+            aa.reset();
+
+            if(isdigit(*ptr))
+            {
+                aa.groupid = 0x8000 + atoi(ptr);
+            }
+            else if(g_isalpha(*ptr))
+            {
+                aa.groupid = g_toupper(*ptr);
+            }
+
+            if((ptr = strtok(NULL, " \t")) != NULL)
+            {
+                if(*ptr == '*')
+                {
+                    // skip ExpireDays
+                    if((ptr = strtok(NULL, " \t")) == NULL)
+                    {
+                        continue;
+                    }
+
+                    if((ptr = strtok(NULL, " \t")) == NULL)
+                    {
+                        continue;
+                    }
+                }
+
+                aa.type = GMB_ECHO;
+                aa.setechoid(ptr);
+
+                if((ptr = strtok(NULL, " \t")) != NULL)
+                {
+                    if(not strieql("Passthrough", ptr))
+                    {
+                        aa.setpath(ptr);
+                        aa.basetype = "JAM";
+
+                        if((ptr = strtok(NULL, " \t")) != NULL)
+                        {
+                            if((*ptr == '*') and ((ptr = strtok(NULL, " \t")) != NULL))
+                            {
+                                CfgAddress(ptr);
+                                aa.aka.set(ptr);
+                                aa.attr = attribsecho;
+                                aa.setorigin(origin);
+                                AddNewArea(aa);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        fclose(fp);
+    }
+} // gareafile::ReadQEchoFile
 
 //  ------------------------------------------------------------------
 //  Read areas from QEcho (echomail processor)
+void gareafile::ReadQEcho(char * tag)
+{
+    char origin[80];
+    char options[80];
+    Path file;
 
-void gareafile::ReadQEcho(char* tag) {
+    *origin     = NUL;
+    *file       = NUL;
+    options[79] = 0;
+    strncpy(options, tag, 79);
+    char * ptr = strtok(tag, " \t");
 
-  char origin[80];
-  char options[80];
-  Path file;
+    while(ptr)
+    {
+        if(*ptr != '-')
+        {
+            strcpy(file, ptr);
+        }
 
-  *origin = NUL;
-  *file = NUL;
-  options[79] = 0;
-  strncpy(options, tag, 79);
-  char* ptr = strtok(tag, " \t");
-  while(ptr) {
-    if(*ptr != '-')
-      strcpy(file, ptr);
-    ptr = strtok(NULL, " \t");
-  }
+        ptr = strtok(NULL, " \t");
+    }
 
-  if(not *file)
-    strcpy(file, "/etc/qecho/AreaList");
+    if(not * file)
+    {
+        strcpy(file, "/etc/qecho/AreaList");
+    }
 
-  ReadQEchoFile(file, options, origin);
-}
-
+    ReadQEchoFile(file, options, origin);
+} // gareafile::ReadQEcho
 
 //  ------------------------------------------------------------------

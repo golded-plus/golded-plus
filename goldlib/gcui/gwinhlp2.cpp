@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -31,71 +30,68 @@
 #include <gstrall.h>
 #include <gwinall.h>
 #include <gwinhelp.h>
-
 //  ------------------------------------------------------------------
-
 extern _help_t whelp;
-
 //  ------------------------------------------------------------------
+void whelpcompile(const char * helpfile, long & offset)
+{
+    gfile ifp(helpfile, "rb");
 
-void whelpcompile(const char* helpfile, long& offset) {
-
-  gfile ifp(helpfile, "rb");
-  if (ifp.isopen())
-  {
-    ifp.SetvBuf();
-
-    int count = 0;
-    char buf[1024];
-    while (ifp.Fgets(buf, sizeof(buf)))
+    if(ifp.isopen())
     {
-      if(strnieql(buf, "*B ", 3))
-        count++;
+        ifp.SetvBuf();
+        int count = 0;
+        char buf[1024];
+
+        while(ifp.Fgets(buf, sizeof(buf)))
+        {
+            if(strnieql(buf, "*B ", 3))
+            {
+                count++;
+            }
+        }
+        ifp.Rewind();
+        Hlpr * helpindex     = (Hlpr *)throw_xcalloc(count + 2, sizeof(Hlpr));
+        long relative_offset = 0;
+        whelp.fp->Fputs("*I\r\n");
+        whelp.fp->Fwrite(helpindex, count + 1, sizeof(Hlpr));
+        whelp.fp->Fputs("\r\n\r\n");
+        relative_offset += 4 + ((count + 1) * sizeof(Hlpr)) + 4;
+        int counter  = 0;
+        bool comment = true;
+
+        while(ifp.Fgets(buf, sizeof(buf)))
+        {
+            if(strnieql(buf, "*B ", 3))
+            {
+                comment = false;
+                helpindex[counter].help = atow(buf + 3);
+                char * ptr = strchr(buf, ',');
+                strbtrim(strcpy(helpindex[counter].category, ptr ? ptr + 1 : ""));
+                helpindex[counter].offset = relative_offset + strlen(buf);
+                counter++;
+            }
+
+            if(not comment)
+            {
+                whelp.fp->Fputs(buf);
+                relative_offset += strlen(buf);
+            }
+
+            if(strnieql(buf, "*E", 2))
+            {
+                comment = true;
+            }
+        }
+        helpindex[counter].offset = -1L;
+        whelp.fp->FseekSet(offset);
+        whelp.fp->Fputs("*I\r\n");
+        whelp.fp->Fwrite(helpindex, count + 1, sizeof(Hlpr));
+        offset += relative_offset;
+        whelp.fp->FseekSet(offset);
+        throw_xfree(helpindex);
+        ifp.Fclose();
     }
-    ifp.Rewind();
-
-    Hlpr* helpindex = (Hlpr*)throw_xcalloc(count+2, sizeof(Hlpr));
-
-    long relative_offset = 0;
-
-    whelp.fp->Fputs("*I\r\n");
-    whelp.fp->Fwrite(helpindex, count+1, sizeof(Hlpr));
-    whelp.fp->Fputs("\r\n\r\n");
-    relative_offset += 4 + ((count+1)*sizeof(Hlpr)) + 4;
-
-    int counter = 0;
-    bool comment = true;
-    while (ifp.Fgets(buf, sizeof(buf)))
-    {
-      if(strnieql(buf, "*B ", 3)) {
-        comment = false;
-        helpindex[counter].help = atow(buf+3);
-        char* ptr = strchr(buf, ',');
-        strbtrim(strcpy(helpindex[counter].category, ptr ? ptr+1 : ""));
-        helpindex[counter].offset = relative_offset + strlen(buf);
-        counter++;
-      }
-      if (not comment)
-      {
-        whelp.fp->Fputs(buf);
-        relative_offset += strlen(buf);
-      }
-      if(strnieql(buf, "*E", 2))
-        comment = true;
-    }
-    helpindex[counter].offset = -1L;
-
-    whelp.fp->FseekSet(offset);
-    whelp.fp->Fputs("*I\r\n");
-    whelp.fp->Fwrite(helpindex, count+1, sizeof(Hlpr));
-    offset += relative_offset;
-    whelp.fp->FseekSet(offset);
-
-    throw_xfree(helpindex);
-
-    ifp.Fclose();
-  }
 } /* whelpcompile() */
-
 
 //  ------------------------------------------------------------------

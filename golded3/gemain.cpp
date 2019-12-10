@@ -1,4 +1,3 @@
-
 //  ------------------------------------------------------------------
 //  GoldED+
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -27,7 +26,7 @@
 #include <golded.h>
 #include <gutlos.h>
 
-#if 0 && defined(_MSC_VER) && defined(_DEBUG) && defined(_M_IX86)
+#if 0 && defined (_MSC_VER) && defined (_DEBUG) && defined (_M_IX86)
 #include <memleak.h>
 
 static struct LeakFinder
@@ -42,18 +41,16 @@ static struct LeakFinder
         DeInitAllocCheck();
     }
 } leakFinder;
-#endif
 
+#endif
 //  ------------------------------------------------------------------
 //  Main function
-
-int main(int argc, char *argv[]) {
-
-  Initialize(argc, argv);
-  Reader();
-  Uninitialize();
-  return errorlevel;
+int main(int argc, char * argv[])
+{
+    Initialize(argc, argv);
+    Reader();
+    Uninitialize();
+    return errorlevel;
 }
-
 
 //  ------------------------------------------------------------------

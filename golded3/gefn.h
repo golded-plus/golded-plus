@@ -1,4 +1,3 @@
-
 //  ------------------------------------------------------------------
 //  GoldED+
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -29,19 +28,19 @@
 #define __GEFN_H__
 
 #ifndef GEDCFG
-  #define GEDCFG "golded.cfg"
+#define GEDCFG "golded.cfg"
 #endif /* GEDCFG */
 
 #ifndef GEDCFG2
 
-  #if defined(__OS2__)
-  #define GEDCFG2 "ged2.cfg"
-  #elif defined(__WIN32__)
-  #define GEDCFG2 "gedw32.cfg"
-  #elif defined(__DOS__) || defined(__MSDOS__)
-  #define GEDCFG2 "geddos.cfg"
-  #elif defined(__UNIX__)
-  #define GEDCFG2 "golded.conf"
+  #if defined (__OS2__)
+#define GEDCFG2 "ged2.cfg"
+  #elif defined (__WIN32__)
+#define GEDCFG2 "gedw32.cfg"
+  #elif defined (__DOS__) || defined (__MSDOS__)
+#define GEDCFG2 "geddos.cfg"
+  #elif defined (__UNIX__)
+#define GEDCFG2 "golded.conf"
   #endif
 
 #endif /* GEDCFG2 */

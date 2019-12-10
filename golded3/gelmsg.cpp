@@ -1,4 +1,3 @@
-
 //  ------------------------------------------------------------------
 //  GoldED+
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -25,138 +24,160 @@
 //  ------------------------------------------------------------------
 
 #include <golded.h>
-
 //  ------------------------------------------------------------------
-
-void ResetMsg(GMsg* msg)
+void ResetMsg(GMsg * msg)
 {
-  if( msg == NULL )
-  {
-    LOG.printf("! ResetMsg() is called with NULL pointer to msg." );
-    PointerErrorExit();
-  }
-
-  msg->link.reset();
-
-  throw_xfree(msg->references);
-  throw_xfree(msg->inreplyto);
-  throw_xfree(msg->messageid);
-  throw_xfree(msg->txt);
-  throw_xfree(msg->line);
-  Line* line = msg->lin;
-  while(line) {
-    Line* nextline = line->next;
-    throw_xdelete(line);
-    line = nextline;
-  }
-  memset(msg, 0, sizeof(GMsg));
-}
-
-
-//  ------------------------------------------------------------------
-
-int Area::LoadHdr(GMsg* msg, uint32_t msgno, bool enable_recode)
-{
-  if( msg == NULL )
-  {
-    LOG.printf("! Area::LoadHdr() is called with NULL pointer to msg." );
-    return false;
-  }
-
-  ResetMsg(msg);
-  msg->msgno = msgno;
-  int retval = area->load_hdr(msg);
-
-  if (isecho())
-  {
-    if (CFG->akamatchfromto && msg->dest.invalid())
-      msg->dest = Aka().addr;
-    else if (CFG->akamatchfromto == ALWAYS)
-      msg->dest = Aka().addr;
-  }
-
-  // Don't translate charsets if we don't know charset
-  // Currently, it only mime-decodes, so it's okay.
-  if(retval and enable_recode) {
-    // Use default translation by default
-    int table = LoadCharset(NULL, NULL, 1);
-    if((table == -1) or not CFG->ignorecharset)
-      msg->charsetlevel = LoadCharset(AA->Xlatimport(), CFG->xlatlocalset);
-    else
-      msg->charsetlevel = LoadCharset(CFG->xlatcharset[table].imp, CFG->xlatcharset[table].exp);
-
-    // Charset translate header fields
-    strxmimecpy(msg->realby, msg->realby, msg->charsetlevel, sizeof(INam), true);
-    strxmimecpy(msg->realto, msg->realto, msg->charsetlevel, sizeof(INam), true);
-    strxmimecpy(msg->by    , msg->by    , msg->charsetlevel, sizeof(INam), true);
-    strxmimecpy(msg->to    , msg->to    , msg->charsetlevel, sizeof(INam), true);
-
-    if(not (msg->attr.frq() or msg->attr.att() or msg->attr.urq()))
-      strxmimecpy(msg->re  , msg->re    , msg->charsetlevel, sizeof(ISub), true);
-  }
-  return retval;
-}
-
-
-//  ------------------------------------------------------------------
-
-int Area::LoadMsg(GMsg* msg, uint32_t msgno, int margin, int mode)
-{
-  if( msg == NULL )
-  {
-    LOG.printf("! Area::LoadMsg() is called with NULL pointer to msg." );
-    return false;
-  }
-
-  ResetMsg(msg);
-  msg->msgno = msgno;
-  if(msgno and area->load_msg(msg)) {
-
-    if (isecho())
+    if(msg == NULL)
     {
-      if (CFG->akamatchfromto && msg->dest.invalid())
-        msg->dest = Aka().addr;
-      else if (CFG->akamatchfromto == ALWAYS)
-        msg->dest = Aka().addr;
+        LOG.printf("! ResetMsg() is called with NULL pointer to msg.");
+        PointerErrorExit();
     }
 
-    if(mode & (GMSG_COPY|GMSG_MOVE)) {
-      if(not ((mode & GMSG_MOVE) and (mode & GMSG_UNS_NOT_RCV)))
-        return true;
-      if(not (msg->attr.uns() and not msg->attr.rcv()))
-        return true;
+    msg->link.reset();
+    throw_xfree(msg->references);
+    throw_xfree(msg->inreplyto);
+    throw_xfree(msg->messageid);
+    throw_xfree(msg->txt);
+    throw_xfree(msg->line);
+    Line * line = msg->lin;
+
+    while(line)
+    {
+        Line * nextline = line->next;
+        throw_xdelete(line);
+        line = nextline;
     }
-
-    msg->TextToLines(margin);
-
-    return true;
-  }
-  return false;
+    memset(msg, 0, sizeof(GMsg));
 }
 
+//  ------------------------------------------------------------------
+int Area::LoadHdr(GMsg * msg, uint32_t msgno, bool enable_recode)
+{
+    if(msg == NULL)
+    {
+        LOG.printf("! Area::LoadHdr() is called with NULL pointer to msg.");
+        return false;
+    }
+
+    ResetMsg(msg);
+    msg->msgno = msgno;
+    int retval = area->load_hdr(msg);
+
+    if(isecho())
+    {
+        if(CFG->akamatchfromto && msg->dest.invalid())
+        {
+            msg->dest = Aka().addr;
+        }
+        else if(CFG->akamatchfromto == ALWAYS)
+        {
+            msg->dest = Aka().addr;
+        }
+    }
+
+    // Don't translate charsets if we don't know charset
+    // Currently, it only mime-decodes, so it's okay.
+    if(retval and enable_recode)
+    {
+        // Use default translation by default
+        int table = LoadCharset(NULL, NULL, 1);
+
+        if((table == -1) or not CFG->ignorecharset)
+        {
+            msg->charsetlevel = LoadCharset(AA->Xlatimport(), CFG->xlatlocalset);
+        }
+        else
+        {
+            msg->charsetlevel = LoadCharset(CFG->xlatcharset[table].imp,
+                                            CFG->xlatcharset[table].exp);
+        }
+
+        // Charset translate header fields
+        strxmimecpy(msg->realby, msg->realby, msg->charsetlevel, sizeof(INam), true);
+        strxmimecpy(msg->realto, msg->realto, msg->charsetlevel, sizeof(INam), true);
+        strxmimecpy(msg->by, msg->by, msg->charsetlevel, sizeof(INam), true);
+        strxmimecpy(msg->to, msg->to, msg->charsetlevel, sizeof(INam), true);
+
+        if(not (msg->attr.frq() or msg->attr.att() or msg->attr.urq()))
+        {
+            strxmimecpy(msg->re, msg->re, msg->charsetlevel, sizeof(ISub), true);
+        }
+    }
+
+    return retval;
+} // Area::LoadHdr
 
 //  ------------------------------------------------------------------
-
-void Area::SaveHdr(int mode, GMsg* msg)
+int Area::LoadMsg(GMsg * msg, uint32_t msgno, int margin, int mode)
 {
-  if( msg == NULL )
-  {
-    LOG.printf("! Area::LoadMsg() is called with NULL pointer to msg." );
-    PointerErrorExit();
-  }
+    if(msg == NULL)
+    {
+        LOG.printf("! Area::LoadMsg() is called with NULL pointer to msg.");
+        return false;
+    }
 
-  // Translate softcr to configured char
-  if (adat->usesoftcrxlat && EDIT->SoftCrXlat())
-  {
-    strchg(msg->by, SOFTCR, EDIT->SoftCrXlat());
-    strchg(msg->to, SOFTCR, EDIT->SoftCrXlat());
-    strchg(msg->realby, SOFTCR, EDIT->SoftCrXlat());
-    strchg(msg->realto, SOFTCR, EDIT->SoftCrXlat());
-    if(not (msg->attr.frq() or msg->attr.att() or msg->attr.urq()))
-      strchg(msg->re, SOFTCR, EDIT->SoftCrXlat());
-  }
-  area->save_hdr(mode, msg);
-  UpdateAreadata();
+    ResetMsg(msg);
+    msg->msgno = msgno;
+
+    if(msgno and area->load_msg(msg))
+    {
+        if(isecho())
+        {
+            if(CFG->akamatchfromto && msg->dest.invalid())
+            {
+                msg->dest = Aka().addr;
+            }
+            else if(CFG->akamatchfromto == ALWAYS)
+            {
+                msg->dest = Aka().addr;
+            }
+        }
+
+        if(mode & (GMSG_COPY | GMSG_MOVE))
+        {
+            if(not ((mode & GMSG_MOVE) and (mode & GMSG_UNS_NOT_RCV)))
+            {
+                return true;
+            }
+
+            if(not (msg->attr.uns() and not msg->attr.rcv()))
+            {
+                return true;
+            }
+        }
+
+        msg->TextToLines(margin);
+        return true;
+    }
+
+    return false;
+} // Area::LoadMsg
+
+//  ------------------------------------------------------------------
+void Area::SaveHdr(int mode, GMsg * msg)
+{
+    if(msg == NULL)
+    {
+        LOG.printf("! Area::LoadMsg() is called with NULL pointer to msg.");
+        PointerErrorExit();
+    }
+
+    // Translate softcr to configured char
+    if(adat->usesoftcrxlat && EDIT->SoftCrXlat())
+    {
+        strchg(msg->by, SOFTCR, EDIT->SoftCrXlat());
+        strchg(msg->to, SOFTCR, EDIT->SoftCrXlat());
+        strchg(msg->realby, SOFTCR, EDIT->SoftCrXlat());
+        strchg(msg->realto, SOFTCR, EDIT->SoftCrXlat());
+
+        if(not (msg->attr.frq() or msg->attr.att() or msg->attr.urq()))
+        {
+            strchg(msg->re, SOFTCR, EDIT->SoftCrXlat());
+        }
+    }
+
+    area->save_hdr(mode, msg);
+    UpdateAreadata();
 }
 
 //  ------------------------------------------------------------------

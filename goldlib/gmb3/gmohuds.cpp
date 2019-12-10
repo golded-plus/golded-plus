@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -28,94 +27,87 @@
 #include <cerrno>
 #include <gmoprot.h>
 #include <gmohuds.h>
-
-
 //  ------------------------------------------------------------------
-
-HudsWide* hudsonwide = NULL;
-GoldWide* goldbasewide = NULL;
-
-
+HudsWide * hudsonwide   = NULL;
+GoldWide * goldbasewide = NULL;
 //  ------------------------------------------------------------------
-
-void HudsWideOpen() {
-
-  hudsonwide->open();
+void HudsWideOpen()
+{
+    hudsonwide->open();
 }
 
-
 //  ------------------------------------------------------------------
-
-void GoldWideOpen() {
-
-  goldbasewide->open();
+void GoldWideOpen()
+{
+    goldbasewide->open();
 }
 
-
 //  ------------------------------------------------------------------
-
-void HudsWideClose() {
-
-  hudsonwide->close();
+void HudsWideClose()
+{
+    hudsonwide->close();
 }
 
-
 //  ------------------------------------------------------------------
-
-void GoldWideClose() {
-
-  goldbasewide->close();
+void GoldWideClose()
+{
+    goldbasewide->close();
 }
 
-
 //  ------------------------------------------------------------------
+void HudsExit()
+{
+    if(hudsonwide)
+    {
+        hudsonwide->exit();
+    }
 
-void HudsExit() {
-
-  if(hudsonwide)
-    hudsonwide->exit();
-  throw_xrelease(hudsonwide);
+    throw_xrelease(hudsonwide);
 }
 
-
 //  ------------------------------------------------------------------
+void GoldExit()
+{
+    if(goldbasewide)
+    {
+        goldbasewide->exit();
+    }
 
-void GoldExit() {
-
-  if(goldbasewide)
-    goldbasewide->exit();
-  throw_xrelease(goldbasewide);
+    throw_xrelease(goldbasewide);
 }
 
-
 //  ------------------------------------------------------------------
-
-void HudsInit(const char* path, const char* syspath, int userno, int32_t sizewarn, int ra2usersbbs) {
-
-  // Initialize msgbase-wide data
-  hudsonwide = (HudsWide*)throw_calloc(1, sizeof(HudsWide));
-  hudsonwide->path = path;
-  hudsonwide->syspath = syspath;
-  hudsonwide->userno = userno;
-  hudsonwide->sizewarn = sizewarn;
-  hudsonwide->ra2usersbbs = ra2usersbbs;
-  hudsonwide->init();
+void HudsInit(const char * path,
+              const char * syspath,
+              int userno,
+              int32_t sizewarn,
+              int ra2usersbbs)
+{
+    // Initialize msgbase-wide data
+    hudsonwide              = (HudsWide *)throw_calloc(1, sizeof(HudsWide));
+    hudsonwide->path        = path;
+    hudsonwide->syspath     = syspath;
+    hudsonwide->userno      = userno;
+    hudsonwide->sizewarn    = sizewarn;
+    hudsonwide->ra2usersbbs = ra2usersbbs;
+    hudsonwide->init();
 }
 
-
 //  ------------------------------------------------------------------
-
-void GoldInit(const char* path, const char* syspath, int userno, int32_t sizewarn, int ra2usersbbs) {
-
-  // Initialize msgbase-wide data
-  goldbasewide = (GoldWide*)throw_calloc(1, sizeof(GoldWide));
-  goldbasewide->path = path;
-  goldbasewide->syspath = syspath;
-  goldbasewide->userno = userno;
-  NW(sizewarn);
-  NW(ra2usersbbs);
-  goldbasewide->init();
+void GoldInit(const char * path,
+              const char * syspath,
+              int userno,
+              int32_t sizewarn,
+              int ra2usersbbs)
+{
+    // Initialize msgbase-wide data
+    goldbasewide          = (GoldWide *)throw_calloc(1, sizeof(GoldWide));
+    goldbasewide->path    = path;
+    goldbasewide->syspath = syspath;
+    goldbasewide->userno  = userno;
+    NW(sizewarn);
+    NW(ra2usersbbs);
+    goldbasewide->init();
 }
-
 
 //  ------------------------------------------------------------------

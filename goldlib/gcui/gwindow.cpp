@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -28,65 +27,59 @@
 #include <cstdio>
 #include <cstdarg>
 #include <gwindow.h>
-
-
 //  ------------------------------------------------------------------
+int gwindow::printf(const char * format, ...)
+{
+    char buf[255];
+    va_list argptr;
 
-int gwindow::printf(const char* format, ...) {
-
-  char buf[255];
-  va_list argptr;
-  va_start(argptr,format);
-  int result = vsprintf(buf,format,argptr);
-  va_end(argptr);
-  puts(buf);
-  return result;
+    va_start(argptr, format);
+    int result = vsprintf(buf, format, argptr);
+    va_end(argptr);
+    puts(buf);
+    return result;
 }
 
-
 //  ------------------------------------------------------------------
+int gwindow::printf(vattr color, const char * format, ...)
+{
+    char buf[255];
+    va_list argptr;
 
-int gwindow::printf(vattr color, const char* format, ...) {
-
-  char buf[255];
-  va_list argptr;
-  va_start(argptr,format);
-  int result = vsprintf(buf,format,argptr);
-  va_end(argptr);
-  text_color(color);
-  puts(buf);
-  return result;
+    va_start(argptr, format);
+    int result = vsprintf(buf, format, argptr);
+    va_end(argptr);
+    text_color(color);
+    puts(buf);
+    return result;
 }
 
-
 //  ------------------------------------------------------------------
+int gwindow::printf(int row, int col, const char * format, ...)
+{
+    va_list argptr;
+    char buf[256];
 
-int gwindow::printf(int row, int col, const char* format, ...) {
-
-  va_list argptr;
-  char buf[256];
-  *buf = NUL;
-  va_start(argptr, format);
-  int result = vsprintf(buf, format, argptr);
-  va_end(argptr);
-  prints(row, col, window_color, buf);
-  return result;
+    *buf = NUL;
+    va_start(argptr, format);
+    int result = vsprintf(buf, format, argptr);
+    va_end(argptr);
+    prints(row, col, window_color, buf);
+    return result;
 }
 
-
 //  ------------------------------------------------------------------
+int gwindow::printf(int row, int col, vattr color, const char * format, ...)
+{
+    va_list argptr;
+    char buf[256];
 
-int gwindow::printf(int row, int col, vattr color, const char* format, ...) {
-
-  va_list argptr;
-  char buf[256];
-  *buf = NUL;
-  va_start(argptr, format);
-  int result = vsprintf(buf, format, argptr);
-  va_end(argptr);
-  prints(row, col, color, buf);
-  return result;
+    *buf = NUL;
+    va_start(argptr, format);
+    int result = vsprintf(buf, format, argptr);
+    va_end(argptr);
+    prints(row, col, color, buf);
+    return result;
 }
-
 
 //  ------------------------------------------------------------------

@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -27,192 +26,209 @@
 #include <gmemdbg.h>
 #include <gdbgtrk.h>
 #include <gmoxbbs.h>
-
-
 //  ------------------------------------------------------------------
+void XbbsArea::refresh()
+{
+    GFTRK("XbbsRefresh");
+    int32_t indexnum = filelength(data->fhindex) / sizeof(XbbsIdx);
 
-void XbbsArea::refresh() {
-
-  GFTRK("XbbsRefresh");
-
-  int32_t indexnum = filelength(data->fhindex) / sizeof(XbbsIdx);
-
-  // Are there any msgs?
-  if(indexnum) {
-
-    // Read the index file
-    data->idx = (XbbsIdx*)throw_realloc(data->idx, (uint)(indexnum*sizeof(XbbsIdx)));
-    lseekset(data->fhindex, 0);
-    read(data->fhindex, data->idx, (uint)(indexnum*sizeof(XbbsIdx)));
-  }
-
-  data->idx_size = (uint)indexnum;
-
-  GFTRK(0);
-}
-
-
-//  ------------------------------------------------------------------
-
-void XbbsArea::raw_scan(int __keep_index, int __scanpm) {
-
-  GFTRK("XbbsRawScan");
-
-  XbbsData* _was_data = data;
-  if(_was_data == NULL) {
-    data = xbbsdata;
-    wide = xbbswide;
-  }
-
-  int _wasopen = isopen;
-  if(not _wasopen) {
-    if(ispacked()) {
-      const char* newpath = Unpack(path());
-      if(newpath == NULL)
-        packed(false);
-      set_real_path(newpath ? newpath : path());
-    }
-    isopen++;
-  }
-
-  // Load the lastread
-  uint32_t _lastread = 0;
-  int _fh = ::sopen(AddPath(real_path(), ".lmr"), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
-  if(_fh != -1) {
-    lseekset(_fh, wide->userno+1, sizeof(uint32_t));
-    read(_fh, &_lastread, sizeof(uint32_t));
-    ::close(_fh);
-  }
-
-  // Open AdeptXBBS files for scanning unless they are already open
-  if(not _wasopen) {
-
-    data->idx = NULL;
-    data->idx_size = 0;
-
-    // Open index file
-    data->fhindex = ::sopen(AddPath(real_path(), ".Index"), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
-    if(data->fhindex != -1) {
-
-      // Allocate index buffer and read from file
-      refresh();
-
-      // Close index file
-      ::close(data->fhindex);
-      data->fhindex = -1;
-    } 
-    if(ispacked()) {
-      CleanUnpacked(real_path());
-    }
-    isopen--;
-  }
-
-  uint _active = 0;
-  uint _lastread_reln = 0;
-  uint _lastreadfound = 0;
-
-  if(data->idx_size) {
-
-    // (Re)allocate message index
-    if(__keep_index)
-      Msgn->Resize(data->idx_size);
-
-    // Variables for the loop
-    uint _msgno;
-    uint32_t* _msgndxptr = Msgn->tag;
-    uint  _totalmsgs = data->idx_size;
-    uint _firstmsgno = _totalmsgs ? 1 : 0;
-    uint _lastmsgno = 0;
-
-    // Fill message index
-    while(_active < _totalmsgs) {
-
-      _active++;
-      _msgno = _active;
-      if(not _firstmsgno)
-        _firstmsgno = _msgno;
-      if(__keep_index)
-        *_msgndxptr++ = _msgno;
-
-      // Get the lastread
-      if((_msgno >= _lastread) and (_lastread_reln == 0)) {
-        _lastreadfound = _msgno;
-        _lastread_reln = (uint)(_active - (_msgno != _lastread ? 1 : 0));
-      }
-
-      // Store last message number
-      _lastmsgno = _msgno;
+    // Are there any msgs?
+    if(indexnum)
+    {
+        // Read the index file
+        data->idx = (XbbsIdx *)throw_realloc(data->idx,
+                                             (uint)(indexnum * sizeof(XbbsIdx)));
+        lseekset(data->fhindex, 0);
+        read(data->fhindex, data->idx, (uint)(indexnum * sizeof(XbbsIdx)));
     }
 
-    // If the exact lastread was not found
-    if(_active and (_lastreadfound != _lastread)) {
+    data->idx_size = (uint)indexnum;
+    GFTRK(0);
+}
 
-      // Higher than highest or lower than lowest?
-      if(_lastread > _lastmsgno)
-        _lastread_reln = _active;
-      else if(_lastread < _firstmsgno)
-        _lastread_reln = 0;
+//  ------------------------------------------------------------------
+void XbbsArea::raw_scan(int __keep_index, int __scanpm)
+{
+    GFTRK("XbbsRawScan");
+    XbbsData * _was_data = data;
+
+    if(_was_data == NULL)
+    {
+        data = xbbsdata;
+        wide = xbbswide;
     }
-  }
 
-  // Update area data
-  Msgn->SetCount(_active);
-  lastread = _lastread_reln;
-  lastreadentry = _lastreadfound;
+    int _wasopen = isopen;
 
-  // Scan for personal mail
-  if(__scanpm) {
-    // Not implemented yet
-  }
+    if(not _wasopen)
+    {
+        if(ispacked())
+        {
+            const char * newpath = Unpack(path());
 
-  // Free index buffer if just counting
-  if(not __keep_index or __scanpm)
-    throw_release(data->idx);
+            if(newpath == NULL)
+            {
+                packed(false);
+            }
 
-  if(_was_data == NULL) {
-    data = NULL;
-    wide = NULL;
-  }
+            set_real_path(newpath ? newpath : path());
+        }
 
-  GFTRK(0);
-}
+        isopen++;
+    }
 
+    // Load the lastread
+    uint32_t _lastread = 0;
+    int _fh            = ::sopen(AddPath(real_path(), ".lmr"),
+                                 O_RDONLY | O_BINARY,
+                                 WideSharemode,
+                                 S_STDRD);
+
+    if(_fh != -1)
+    {
+        lseekset(_fh, wide->userno + 1, sizeof(uint32_t));
+        read(_fh, &_lastread, sizeof(uint32_t));
+        ::close(_fh);
+    }
+
+    // Open AdeptXBBS files for scanning unless they are already open
+    if(not _wasopen)
+    {
+        data->idx      = NULL;
+        data->idx_size = 0;
+        // Open index file
+        data->fhindex = ::sopen(AddPath(real_path(), ".Index"),
+                                O_RDONLY | O_BINARY,
+                                WideSharemode,
+                                S_STDRD);
+
+        if(data->fhindex != -1)
+        {
+            // Allocate index buffer and read from file
+            refresh();
+            // Close index file
+            ::close(data->fhindex);
+            data->fhindex = -1;
+        }
+
+        if(ispacked())
+        {
+            CleanUnpacked(real_path());
+        }
+
+        isopen--;
+    }
+
+    uint _active        = 0;
+    uint _lastread_reln = 0;
+    uint _lastreadfound = 0;
+
+    if(data->idx_size)
+    {
+        // (Re)allocate message index
+        if(__keep_index)
+        {
+            Msgn->Resize(data->idx_size);
+        }
+
+        // Variables for the loop
+        uint _msgno;
+        uint32_t * _msgndxptr = Msgn->tag;
+        uint _totalmsgs       = data->idx_size;
+        uint _firstmsgno      = _totalmsgs ? 1 : 0;
+        uint _lastmsgno       = 0;
+
+        // Fill message index
+        while(_active < _totalmsgs)
+        {
+            _active++;
+            _msgno = _active;
+
+            if(not _firstmsgno)
+            {
+                _firstmsgno = _msgno;
+            }
+
+            if(__keep_index)
+            {
+                *_msgndxptr++ = _msgno;
+            }
+
+            // Get the lastread
+            if((_msgno >= _lastread) and (_lastread_reln == 0))
+            {
+                _lastreadfound = _msgno;
+                _lastread_reln = (uint)(_active - (_msgno != _lastread ? 1 : 0));
+            }
+
+            // Store last message number
+            _lastmsgno = _msgno;
+        }
+
+        // If the exact lastread was not found
+        if(_active and (_lastreadfound != _lastread))
+        {
+            // Higher than highest or lower than lowest?
+            if(_lastread > _lastmsgno)
+            {
+                _lastread_reln = _active;
+            }
+            else if(_lastread < _firstmsgno)
+            {
+                _lastread_reln = 0;
+            }
+        }
+    }
+
+    // Update area data
+    Msgn->SetCount(_active);
+    lastread      = _lastread_reln;
+    lastreadentry = _lastreadfound;
+
+    // Scan for personal mail
+    if(__scanpm)
+    {
+        // Not implemented yet
+    }
+
+    // Free index buffer if just counting
+    if(not __keep_index or __scanpm)
+    {
+        throw_release(data->idx);
+    }
+
+    if(_was_data == NULL)
+    {
+        data = NULL;
+        wide = NULL;
+    }
+
+    GFTRK(0);
+} // XbbsArea::raw_scan
 
 //  ------------------------------------------------------------------
-
-void XbbsArea::scan() {
-
-  GFTRK("XbbsScan");
-
-  raw_scan(true);
-
-  GFTRK(0);
+void XbbsArea::scan()
+{
+    GFTRK("XbbsScan");
+    raw_scan(true);
+    GFTRK(0);
 }
-
 
 //  ------------------------------------------------------------------
-
-void XbbsArea::scan_area() {
-
-  GFTRK("XbbsScanArea");
-
-  raw_scan(false);
-
-  GFTRK(0);
+void XbbsArea::scan_area()
+{
+    GFTRK("XbbsScanArea");
+    raw_scan(false);
+    GFTRK(0);
 }
-
 
 //  ------------------------------------------------------------------
-
-void XbbsArea::scan_area_pm() {
-
-  GFTRK("XbbsScanArea*M");
-
-  raw_scan(true, true);
-  Msgn->Reset();
-
-  GFTRK(0);
+void XbbsArea::scan_area_pm()
+{
+    GFTRK("XbbsScanArea*M");
+    raw_scan(true, true);
+    Msgn->Reset();
+    GFTRK(0);
 }
-
 
 //  ------------------------------------------------------------------

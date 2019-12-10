@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -27,86 +26,106 @@
 #include <cstdlib>
 #include <gmemdbg.h>
 #include <gstrall.h>
-#if defined(__GOLD_GUI__)
+#if defined (__GOLD_GUI__)
 #include <gvidall.h>
 #include <gvidgui.h>
 #endif
 #undef GCFG_NOQFRONT
 #include <gedacfg.h>
 #include <gs_qfrnt.h>
-
-
 //  ------------------------------------------------------------------
+void gareafile::ReadQFront(char * tag)
+{
+    FILE * fp;
+    AreaCfg aa;
+    char options[80];
+    Path file, path;
 
-void gareafile::ReadQFront(char* tag) {
+    *path = NUL;
+    strcpy(options, tag);
+    char * ptr = strtok(tag, " \t");
 
-  FILE* fp;
-  AreaCfg aa;
-  char options[80];
-  Path file, path;
+    while(ptr)
+    {
+        if(*ptr != '-')
+        {
+            AddBackslash(strcpy(path, ptr));
+            break;
+        }
 
-  *path = NUL;
-  strcpy(options, tag);
-  char* ptr = strtok(tag, " \t");
-  while(ptr) {
-    if(*ptr != '-') {
-      AddBackslash(strcpy(path, ptr));
-      break;
-    }
-    ptr = strtok(NULL, " \t");
-  }
-  if(*path == NUL) {
-    ptr = getenv("QFRONT");
-    if(ptr)
-      AddBackslash(strcpy(path, ptr));
-  }
-  if(*path == NUL)
-    strcpy(path, areapath);
-
-  OriginLineRecord* origin = (OriginLineRecord*)throw_calloc(1, sizeof(OriginLineRecord));
-  MakePathname(file, path, "qorigin.dat");
-  fp = fsopen(file, "rb", sharemode);
-  if (fp)
-  {
-    if (not quiet)
-      STD_PRINTNL("* Reading " << file);
-
-    fread(origin, sizeof(OriginLineRecord), 1, fp);
-    for(int n=0; n<MaxOrigins; n++)
-      STRNP2C(origin->OriginLine[n]);
-    fclose(fp);
-  }
-
-  EchoMailConferenceRecord* area = (EchoMailConferenceRecord*)throw_calloc(1, sizeof(EchoMailConferenceRecord));
-  MakePathname(file, path, "qechos.dat");
-  fp = fsopen(file, "rb", sharemode);
-  if (fp)
-  {
-    setvbuf(fp, NULL, _IOFBF, 8192);
-
-    if (not quiet)
-      STD_PRINTNL("* Reading " << file);
-
-    while(fread(area, sizeof(EchoMailConferenceRecord), 1, fp) == 1) {
-      if(not area->Deleted) {
-        aa.reset();
-        aa.type = GMB_ECHO;
-        aa.attr = attribsecho;
-        STRNP2C(area->AreaName);
-        aa.board = area->ConfNum;
-        aa.basetype = "PCBOARD";
-        aa.setechoid(area->AreaName);
-        aa.setorigin(origin->OriginLine[area->OriginLine]);
-        AddNewArea(aa);
-      }
+        ptr = strtok(NULL, " \t");
     }
 
-    fclose(fp);
-  }
+    if(*path == NUL)
+    {
+        ptr = getenv("QFRONT");
 
-  throw_free(origin);
-  throw_free(area);
-}
+        if(ptr)
+        {
+            AddBackslash(strcpy(path, ptr));
+        }
+    }
 
+    if(*path == NUL)
+    {
+        strcpy(path, areapath);
+    }
+
+    OriginLineRecord * origin =
+        (OriginLineRecord *)throw_calloc(1, sizeof(OriginLineRecord));
+    MakePathname(file, path, "qorigin.dat");
+    fp = fsopen(file, "rb", sharemode);
+
+    if(fp)
+    {
+        if(not quiet)
+        {
+            STD_PRINTNL("* Reading " << file);
+        }
+
+        fread(origin, sizeof(OriginLineRecord), 1, fp);
+
+        for(int n = 0; n < MaxOrigins; n++)
+        {
+            STRNP2C(origin->OriginLine[n]);
+        }
+        fclose(fp);
+    }
+
+    EchoMailConferenceRecord * area =
+        (EchoMailConferenceRecord *)throw_calloc(1, sizeof(EchoMailConferenceRecord));
+    MakePathname(file, path, "qechos.dat");
+    fp = fsopen(file, "rb", sharemode);
+
+    if(fp)
+    {
+        setvbuf(fp, NULL, _IOFBF, 8192);
+
+        if(not quiet)
+        {
+            STD_PRINTNL("* Reading " << file);
+        }
+
+        while(fread(area, sizeof(EchoMailConferenceRecord), 1, fp) == 1)
+        {
+            if(not area->Deleted)
+            {
+                aa.reset();
+                aa.type = GMB_ECHO;
+                aa.attr = attribsecho;
+                STRNP2C(area->AreaName);
+                aa.board    = area->ConfNum;
+                aa.basetype = "PCBOARD";
+                aa.setechoid(area->AreaName);
+                aa.setorigin(origin->OriginLine[area->OriginLine]);
+                AddNewArea(aa);
+            }
+        }
+        fclose(fp);
+    }
+
+    throw_free(origin);
+    throw_free(area);
+} // gareafile::ReadQFront
 
 //  ------------------------------------------------------------------

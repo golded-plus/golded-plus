@@ -1,4 +1,3 @@
-
 //  ------------------------------------------------------------------
 //  GoldED+
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -27,52 +26,33 @@
 #define __GESRCH_H
 
 #include <gsrchmgr.h>
-
-
 //  ------------------------------------------------------------------
-
-class golded_search_manager : public search_manager {
-
-public:
-
-  bool reverse;
-  int direction;
-
-  golded_search_manager();
-  ~golded_search_manager();
-
-  void prepare_from_string(const char* prompt, int what);
-
-  bool search(GMsg* msg, bool quick, bool shortcircuit);
-
+class golded_search_manager : public search_manager
+{
+public: bool reverse;
+    int direction;
+    golded_search_manager();
+    ~golded_search_manager();
+    void prepare_from_string(const char * prompt, int what);
+    bool search(GMsg * msg, bool quick, bool shortcircuit);
 };
 
-
 //  ------------------------------------------------------------------
+class search_mgr_form : public gwinput2
+{
+public: enum
+    {
+        id_direction = 100, id_messages, id_action, id_areas
+    };
 
-class search_mgr_form : public gwinput2 {
-
-public:
-
-  enum {
-    id_direction = 100,
-    id_messages,
-    id_action,
-    id_areas
-  };
-
-  search_mgr_form(gwindow& w) : gwinput2(w) { }
-  virtual ~search_mgr_form() { }
-
-  bool validate();
-
-  void select(gstrarray& menu, const char* title);
-
-  void before();
-  void after();
+    search_mgr_form(gwindow & w) : gwinput2(w){}
+    virtual ~search_mgr_form(){}
+    bool validate();
+    void select(gstrarray & menu, const char * title);
+    void before();
+    void after();
 };
 
-
 //  ------------------------------------------------------------------
 
-#endif
+#endif // ifndef __GESRCH_H

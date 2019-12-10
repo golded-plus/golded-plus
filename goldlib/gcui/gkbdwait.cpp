@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -29,40 +28,47 @@
 #include <gkbdcode.h>
 #include <gtimall.h>
 #include <gutlmtsk.h>
-
-
 //  ------------------------------------------------------------------
 //  Halts execution until a key is pressed
-
-gkey waitkey() {
-
-  clearkeys();
-  return getxch();
+gkey waitkey()
+{
+    clearkeys();
+    return getxch();
 }
-
 
 //  ------------------------------------------------------------------
 //  Halts execution until a key is pressed or the specified time
 //  period has expired
+gkey waitkeyt(int duration)
+{
+    clearkeys();
+    Clock stop        = gclock() + duration;
+    Clock sliced_time = gclock();
 
-gkey waitkeyt(int duration) {
+    while(1)
+    {
+        if(kbmhit())
+        {
+            return getxch();
+        }
 
-  clearkeys();
-  Clock stop = gclock() + duration;
-  Clock sliced_time = gclock();
-  while(1) {
-    if(kbmhit())
-      return getxch();
-    if(gclock() >= stop)
-      return 0;
-    if(gclock() - sliced_time >= 10) {
-      if(gkbd.tickfunc)
-        (*gkbd.tickfunc)();
-      sliced_time = gclock();
+        if(gclock() >= stop)
+        {
+            return 0;
+        }
+
+        if(gclock() - sliced_time >= 10)
+        {
+            if(gkbd.tickfunc)
+            {
+                (*gkbd.tickfunc)();
+            }
+
+            sliced_time = gclock();
+        }
+
+        gmtsk.timeslice();
     }
-    gmtsk.timeslice();
-  }
-}
-
+} // waitkeyt
 
 //  ------------------------------------------------------------------
