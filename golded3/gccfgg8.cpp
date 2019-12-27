@@ -35,331 +35,360 @@ extern char* val;
 
 //  ------------------------------------------------------------------
 
-void CfgSquishuserno() {
+void CfgSquishuserno()
+{
 
-  CFG->squishuserno = atoi(val);
+    CFG->squishuserno = atoi(val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgSquishuserpath(const char *path, bool force) {
+void CfgSquishuserpath(const char *path, bool force)
+{
 
-  if(force or strblank(CFG->squishuserpath)) {
+    if(force or strblank(CFG->squishuserpath))
+    {
 
-    MapPath(PathCopy(CFG->squishuserpath, path));
-    if(not is_dir(CFG->squishuserpath))
-      StripBackslash(CFG->squishuserpath);
-  }
-}
-
-void CfgSquishuserpath() {
-
-  CfgSquishuserpath(val, true);
-}
-
-//  ------------------------------------------------------------------
-
-void CfgStatuslinehelp() {
-
-  CFG->statuslinehelp = strieql(val, "NOLOGO") ? -1 : GetYesno(val);
-}
-
-//  ------------------------------------------------------------------
-
-void CfgStripHTML() {
-
-  bool flag = make_bool(GetYesno(val));
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_STRIPHTML, flag);
-  else
-    CFG->striphtml = flag;
-}
-
-//  ------------------------------------------------------------------
-
-void CfgStylecodepunct() {
-
-  char* key;
-  getkeyval(&key, &val);
-  strxcpy(CFG->stylecodepunct, strcvtc(key), sizeof(CFG->stylecodepunct));
-}
-
-//  ------------------------------------------------------------------
-
-void CfgStylecodes() {
-
-  bool flag1 = false, flag2;
-
-  if (strieql(val, "HIDE"))
-    flag1 = flag2 = true;
-  else 
-    flag2 = make_bool(GetYesno(val));
-
-  if (cfgingroup)
-  {
-    CFG->grp.AddItm(GRP_HIDESTYLIES, flag1);
-    CFG->grp.AddItm(GRP_USESTYLIES, flag2);
-  }
-  else
-  {
-    CFG->hidestylies = flag1;
-    CFG->usestylies = flag2;
-  }
-}
-
-//  ------------------------------------------------------------------
-
-void CfgStylecodestops() {
-
-  char* key;
-  getkeyval(&key, &val);
-  strxcpy(CFG->stylecodestops, strcvtc(key), sizeof(CFG->stylecodestops));
-}
-
-//  ------------------------------------------------------------------
-
-void CfgTagline() {
-
-  char buf[76];
-  strxcpy(buf, val, sizeof(buf));
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_TAGLINE, buf, strlen(buf)+1);
-  else
-    CFG->tagline.push_back(buf);
-}
-
-//  ------------------------------------------------------------------
-
-void CfgTaglinechar() {
-
-  StripQuotes(val);
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_TAGLINECHAR, *val);
-  else
-    CFG->taglinechar = *val;
-}
-
-//  ------------------------------------------------------------------
-
-void CfgTaglinesupport() {
-
-  bool flag = make_bool(GetYesno(val));
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_TAGLINESUPPORT, flag);
-  else
-    CFG->taglinesupport = flag;
-}
-
-//  ------------------------------------------------------------------
-
-void CfgTasktitle(){
-
-  strxcpy(CFG->tasktitle, val,sizeof(CFG->tasktitle));
-}
-
-//  ------------------------------------------------------------------
-
-void CfgTearline() {
-
-  StripQuotes(val);
-  Tear buf;
-  strxcpy(buf, val, sizeof(buf));
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_TEARLINE, buf, strlen(buf)+1);
-  else
-    strcpy(CFG->tearline, buf);
-}
-
-//  ------------------------------------------------------------------
-
-void CfgTemplate() {
-
-  char* key;
-  getkeyval(&key, &val);
-  if(cfgingroup) {
-    Path buf;
-    strxcpy(buf, key, sizeof(buf));
-    CFG->grp.AddItm(GRP_TEMPLATE, buf, strlen(buf)+1);
-  }
-  else {
-    Tpl tp;
-    *tp.name = NUL;
-    tp.match.reset();
-    strcpy(tp.file, key);
-    if((*val == '\'') or (*val == '\"')) {
-      getkeyval(&key, &val);
-      strcpy(tp.name, key);
-      if(*val)
-        tp.match.set(val);
+        MapPath(PathCopy(CFG->squishuserpath, path));
+        if(not is_dir(CFG->squishuserpath))
+            StripBackslash(CFG->squishuserpath);
     }
-    else if(*val)
-      tp.match.set(val);
-    if(not *tp.name)
-      strcpy(tp.name, tp.file);
-    CFG->tpl.push_back(tp);
-  }
+}
+
+void CfgSquishuserpath()
+{
+
+    CfgSquishuserpath(val, true);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgTemplatematch() {
+void CfgStatuslinehelp()
+{
 
-  bool flag = make_bool(GetYesno(val));
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_TEMPLATEMATCH, flag);
-  else
-    CFG->templatematch = flag;
+    CFG->statuslinehelp = strieql(val, "NOLOGO") ? -1 : GetYesno(val);
+}
+
+//  ------------------------------------------------------------------
+
+void CfgStripHTML()
+{
+
+    bool flag = make_bool(GetYesno(val));
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_STRIPHTML, flag);
+    else
+        CFG->striphtml = flag;
+}
+
+//  ------------------------------------------------------------------
+
+void CfgStylecodepunct()
+{
+
+    char* key;
+    getkeyval(&key, &val);
+    strxcpy(CFG->stylecodepunct, strcvtc(key), sizeof(CFG->stylecodepunct));
+}
+
+//  ------------------------------------------------------------------
+
+void CfgStylecodes()
+{
+
+    bool flag1 = false, flag2;
+
+    if (strieql(val, "HIDE"))
+        flag1 = flag2 = true;
+    else
+        flag2 = make_bool(GetYesno(val));
+
+    if (cfgingroup)
+    {
+        CFG->grp.AddItm(GRP_HIDESTYLIES, flag1);
+        CFG->grp.AddItm(GRP_USESTYLIES, flag2);
+    }
+    else
+    {
+        CFG->hidestylies = flag1;
+        CFG->usestylies = flag2;
+    }
+}
+
+//  ------------------------------------------------------------------
+
+void CfgStylecodestops()
+{
+
+    char* key;
+    getkeyval(&key, &val);
+    strxcpy(CFG->stylecodestops, strcvtc(key), sizeof(CFG->stylecodestops));
+}
+
+//  ------------------------------------------------------------------
+
+void CfgTagline()
+{
+
+    char buf[76];
+    strxcpy(buf, val, sizeof(buf));
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_TAGLINE, buf, strlen(buf)+1);
+    else
+        CFG->tagline.push_back(buf);
+}
+
+//  ------------------------------------------------------------------
+
+void CfgTaglinechar()
+{
+
+    StripQuotes(val);
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_TAGLINECHAR, *val);
+    else
+        CFG->taglinechar = *val;
+}
+
+//  ------------------------------------------------------------------
+
+void CfgTaglinesupport()
+{
+
+    bool flag = make_bool(GetYesno(val));
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_TAGLINESUPPORT, flag);
+    else
+        CFG->taglinesupport = flag;
+}
+
+//  ------------------------------------------------------------------
+
+void CfgTasktitle()
+{
+
+    strxcpy(CFG->tasktitle, val,sizeof(CFG->tasktitle));
+}
+
+//  ------------------------------------------------------------------
+
+void CfgTearline()
+{
+
+    StripQuotes(val);
+    Tear buf;
+    strxcpy(buf, val, sizeof(buf));
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_TEARLINE, buf, strlen(buf)+1);
+    else
+        strcpy(CFG->tearline, buf);
+}
+
+//  ------------------------------------------------------------------
+
+void CfgTemplate()
+{
+
+    char* key;
+    getkeyval(&key, &val);
+    if(cfgingroup)
+    {
+        Path buf;
+        strxcpy(buf, key, sizeof(buf));
+        CFG->grp.AddItm(GRP_TEMPLATE, buf, strlen(buf)+1);
+    }
+    else
+    {
+        Tpl tp;
+        *tp.name = NUL;
+        tp.match.reset();
+        strcpy(tp.file, key);
+        if((*val == '\'') or (*val == '\"'))
+        {
+            getkeyval(&key, &val);
+            strcpy(tp.name, key);
+            if(*val)
+                tp.match.set(val);
+        }
+        else if(*val)
+            tp.match.set(val);
+        if(not *tp.name)
+            strcpy(tp.name, tp.file);
+        CFG->tpl.push_back(tp);
+    }
+}
+
+//  ------------------------------------------------------------------
+
+void CfgTemplatematch()
+{
+
+    bool flag = make_bool(GetYesno(val));
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_TEMPLATEMATCH, flag);
+    else
+        CFG->templatematch = flag;
 }
 
 
 //  ------------------------------------------------------------------
 
-void CfgTemplatepath() {
+void CfgTemplatepath()
+{
 
-  PathCopy(CFG->templatepath, val);
+    PathCopy(CFG->templatepath, val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgTemppath() {
+void CfgTemppath()
+{
 
-  PathCopy(CFG->temppath, val);
+    PathCopy(CFG->temppath, val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgTimeout() {
+void CfgTimeout()
+{
 
-  CFG->timeout = atoi(val);
+    CFG->timeout = atoi(val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgTitlestatus(){
+void CfgTitlestatus()
+{
 
-  CFG->titlestatus = make_bool(GetYesno(val));
+    CFG->titlestatus = make_bool(GetYesno(val));
 }
 
 //  ------------------------------------------------------------------
 
 void CfgTranslate()
 {
-  char* key;
-  getkeyval(&key, &val);
-  StripQuotes(key);
-  StripQuotes(val);
-  CFG->translate.Add(strupr(key), val);
+    char* key;
+    getkeyval(&key, &val);
+    StripQuotes(key);
+    StripQuotes(val);
+    CFG->translate.Add(strupr(key), val);
 }
 
 //  ------------------------------------------------------------------                                                                       $
 
-void CfgTransparentcolors() {
+void CfgTransparentcolors()
+{
 
     CFG->transparentcolors = make_bool(GetYesno(val));
     if(CFG->transparentcolors)
-      GVid::setcolorpairs(true);
+        GVid::setcolorpairs(true);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgTwitmode() {
+void CfgTwitmode()
+{
 
-  int tmp = TWIT_SHOW;
-  if(strieql(val, "Skip"))          tmp = TWIT_SKIP;
-  else if(strieql(val, "Blank"))    tmp = TWIT_BLANK;
-  else if(strieql(val, "Show"))     tmp = TWIT_SHOW;
-  else if(strieql(val, "Ignore"))   tmp = TWIT_IGNORE;
-  else if(strieql(val, "Kill"))     tmp = TWIT_KILL;
-  else tmp = GetYesno(val) ? TWIT_SHOW : TWIT_BLANK;
+    int tmp = TWIT_SHOW;
+    if(strieql(val, "Skip"))          tmp = TWIT_SKIP;
+    else if(strieql(val, "Blank"))    tmp = TWIT_BLANK;
+    else if(strieql(val, "Show"))     tmp = TWIT_SHOW;
+    else if(strieql(val, "Ignore"))   tmp = TWIT_IGNORE;
+    else if(strieql(val, "Kill"))     tmp = TWIT_KILL;
+    else tmp = GetYesno(val) ? TWIT_SHOW : TWIT_BLANK;
 
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_TWITMODE, tmp);
-  else
-    CFG->twitmode = tmp;
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_TWITMODE, tmp);
+    else
+        CFG->twitmode = tmp;
 }
 
 //  ------------------------------------------------------------------
 
-void CfgTwitname() {
+void CfgTwitname()
+{
 
-  Node tn;
-  tn.addr.zone = GFTN_ALL;
-  tn.addr.net = GFTN_ALL;
-  tn.addr.node = GFTN_ALL;
-  tn.addr.point = GFTN_ALL;
-  char* ptr = strrchr(val, ' ');
-  if(ptr == NULL)
-    ptr = val;
-  ptr = strskip_wht(ptr);
-  if(isdigit(*ptr)) {
-    if(not CFG->aka.empty())
-      tn.addr = CFG->aka[0].addr;
-    tn.addr.set(ptr);
-    if(tn.addr.net) {
-      // Address was given
-      *ptr = NUL;
-      strbtrim(val);
+    Node tn;
+    tn.addr.zone = GFTN_ALL;
+    tn.addr.net = GFTN_ALL;
+    tn.addr.node = GFTN_ALL;
+    tn.addr.point = GFTN_ALL;
+    char* ptr = strrchr(val, ' ');
+    if(ptr == NULL)
+        ptr = val;
+    ptr = strskip_wht(ptr);
+    if(isdigit(*ptr))
+    {
+        if(not CFG->aka.empty())
+            tn.addr = CFG->aka[0].addr;
+        tn.addr.set(ptr);
+        if(tn.addr.net)
+        {
+            // Address was given
+            *ptr = NUL;
+            strbtrim(val);
+        }
     }
-  }
 
-  strxcpy(tn.name, StripQuotes(val), sizeof(tn.name));
+    strxcpy(tn.name, StripQuotes(val), sizeof(tn.name));
 
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_TWITNAME, &tn, sizeof(tn));
-  else
-    CFG->twitname.push_back(tn);
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_TWITNAME, &tn, sizeof(tn));
+    else
+        CFG->twitname.push_back(tn);
 }
 
 //  ------------------------------------------------------------------
 
 void CfgTwitsubj()
 {
-  std::string str = StripQuotes(val);
+    std::string str = StripQuotes(val);
 
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_TWITSUBJ, str);
-  else
-    CFG->twitsubj.push_back(str);
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_TWITSUBJ, str);
+    else
+        CFG->twitsubj.push_back(str);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgUnpacker() {
+void CfgUnpacker()
+{
 
-  char* key;
-  std::pair<std::string, std::string> unpackerentry;
+    char* key;
+    std::pair<std::string, std::string> unpackerentry;
 
-  getkeyval(&key, &val);
+    getkeyval(&key, &val);
 
-  unpackerentry.first = key;
-  unpackerentry.second = StripQuotes(val);
-  CFG->unpacker.push_back(unpackerentry);
+    unpackerentry.first = key;
+    unpackerentry.second = StripQuotes(val);
+    CFG->unpacker.push_back(unpackerentry);
 }
 
 //  ------------------------------------------------------------------
 
 void CfgUrlhandler()
 {
-  // Get util number
-  char* _key;
-  char* _val = val;
+    // Get util number
+    char* _key;
+    char* _val = val;
 
-  // Get options
-  int _optbak = CFG->externoptions;
+    // Get options
+    int _optbak = CFG->externoptions;
 
-  while (strchr("-", *_val))
-  {
-    getkeyval(&_key, &_val);
-    val = _key;
-    CfgExternoptions();
-  }
-  
-  UrlHandler url;
-  url.handler.cmdline = _val;
-  url.handler.options = CFG->externoptions;
-  CFG->externoptions = _optbak;
+    while (strchr("-", *_val))
+    {
+        getkeyval(&_key, &_val);
+        val = _key;
+        CfgExternoptions();
+    }
 
-  CFG->urlhandler.push_back(url);
+    UrlHandler url;
+    url.handler.cmdline = _val;
+    url.handler.options = CFG->externoptions;
+    CFG->externoptions = _optbak;
+
+    CFG->urlhandler.push_back(url);
 }
 
 //  ------------------------------------------------------------------
@@ -370,368 +399,412 @@ void CfgUrlscheme()
 
 //  ------------------------------------------------------------------
 
-void CfgUsearea() {
+void CfgUsearea()
+{
 
-  bool flag = make_bool(GetYesno(val));
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_USEAREA, flag);
-  else
-    CFG->usearea = flag;
+    bool flag = make_bool(GetYesno(val));
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_USEAREA, flag);
+    else
+        CFG->usearea = flag;
 }
 
 //  ------------------------------------------------------------------
 
-void CfgUsecharset() {
+void CfgUsecharset()
+{
 
-  CFG->usecharset = make_bool(GetYesno(val));
+    CFG->usecharset = make_bool(GetYesno(val));
 }
 
 //  ------------------------------------------------------------------
 
-void CfgUsefwd() {
+void CfgUsefwd()
+{
 
-  int flag = GetYesno(val);
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_USEFWD, flag);
-  else
-    CFG->usefwd = flag;
+    int flag = GetYesno(val);
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_USEFWD, flag);
+    else
+        CFG->usefwd = flag;
 }
 
 //  ------------------------------------------------------------------
 
-void CfgUseintl() {
+void CfgUseintl()
+{
 
-  CFG->useintl = make_bool(GetYesno(val));
+    CFG->useintl = make_bool(GetYesno(val));
 }
 
 //  ------------------------------------------------------------------
 
-void CfgUsepid() {
+void CfgUsepid()
+{
 
-  CFG->usepid = make_bool(GetYesno(val));
+    CFG->usepid = make_bool(GetYesno(val));
 }
 
 //  ------------------------------------------------------------------
 
-void CfgUserlist() {
+void CfgUserlist()
+{
 
-  // Only used by GoldNODE
+    // Only used by GoldNODE
 }
 
 //  ------------------------------------------------------------------
 
-void CfgUserlistfile() {
+void CfgUserlistfile()
+{
 
-  strcpy(CFG->userlistfile, val);
+    strcpy(CFG->userlistfile, val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgUsername(char* v)  { val = v; CfgUsername(); }
-void CfgUsername() {
+void CfgUsername(char* v)
+{
+    val = v;
+    CfgUsername();
+}
+void CfgUsername()
+{
 
-  StripQuotes(val);
-  if(not strblank(val)) {
-    if(cfgingroup) {
-      char buf[256];
-      strxcpy(buf, val, sizeof(buf));
-      CFG->grp.AddItm(GRP_USERNAME, buf, strlen(buf)+1);
-    }
-    else {
-      Node tmp;
-
-      char* aptr = strrchr(val, ',');
-      if(not aptr)
-        aptr = strrchr(val, ' ');
-
-      if(aptr) {
-        char* p = strskip_wht(aptr+1);
-        tmp.addr.reset(p);
-        if(not tmp.addr.valid())
-          aptr = NULL;
-        else {
-          *aptr = NUL;
-          aptr = p;
+    StripQuotes(val);
+    if(not strblank(val))
+    {
+        if(cfgingroup)
+        {
+            char buf[256];
+            strxcpy(buf, val, sizeof(buf));
+            CFG->grp.AddItm(GRP_USERNAME, buf, strlen(buf)+1);
         }
-      }
+        else
+        {
+            Node tmp;
 
-      tmp.addr.set_all(GFTN_ALL);
-      if(aptr) {
-        if(not CFG->aka.empty())
-          tmp.addr = CFG->aka[0].addr;
-        tmp.addr.set(aptr);
-        if(CFG->aka.empty() and tmp.addr.zone != GFTN_ALL
-                         and tmp.addr.net != GFTN_ALL
-                         and tmp.addr.node != GFTN_ALL
-                         and tmp.addr.point != GFTN_ALL)
-          CfgAddress(tmp.addr.make_string(tmp.name));  // tmp.name is temp-var
-      }
+            char* aptr = strrchr(val, ',');
+            if(not aptr)
+                aptr = strrchr(val, ' ');
 
-      strxcpy(tmp.name, strbtrim(val), sizeof(Name));
+            if(aptr)
+            {
+                char* p = strskip_wht(aptr+1);
+                tmp.addr.reset(p);
+                if(not tmp.addr.valid())
+                    aptr = NULL;
+                else
+                {
+                    *aptr = NUL;
+                    aptr = p;
+                }
+            }
 
-      // Check if we have it already
-      std::vector<Node>::iterator u;
-      for(u = CFG->username.begin(); u != CFG->username.end(); u++)
-        if(strieql(tmp.name, u->name))
-          return;
+            tmp.addr.set_all(GFTN_ALL);
+            if(aptr)
+            {
+                if(not CFG->aka.empty())
+                    tmp.addr = CFG->aka[0].addr;
+                tmp.addr.set(aptr);
+                if(CFG->aka.empty() and tmp.addr.zone != GFTN_ALL
+                        and tmp.addr.net != GFTN_ALL
+                        and tmp.addr.node != GFTN_ALL
+                        and tmp.addr.point != GFTN_ALL)
+                    CfgAddress(tmp.addr.make_string(tmp.name));  // tmp.name is temp-var
+            }
 
-      CFG->username.push_back(tmp);
+            strxcpy(tmp.name, strbtrim(val), sizeof(Name));
+
+            // Check if we have it already
+            std::vector<Node>::iterator u;
+            for(u = CFG->username.begin(); u != CFG->username.end(); u++)
+                if(strieql(tmp.name, u->name))
+                    return;
+
+            CFG->username.push_back(tmp);
+        }
     }
-  }
 }
 
 //  ------------------------------------------------------------------
 
 void CfgUsesoftcrxlat()
 {
-  bool flag = make_bool(GetYesno(val));
-  if (cfgingroup)
-    CFG->grp.AddItm(GRP_USESOFTCRXLAT, flag);
-  else
-    CFG->usesoftcrxlat = flag;
+    bool flag = make_bool(GetYesno(val));
+    if (cfgingroup)
+        CFG->grp.AddItm(GRP_USESOFTCRXLAT, flag);
+    else
+        CFG->usesoftcrxlat = flag;
 }
 
 //  ------------------------------------------------------------------
 
-void CfgUsetzutc() {
+void CfgUsetzutc()
+{
 
-  bool flag = make_bool(GetYesno(val));
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_USETZUTC, flag);
-  else
-    CFG->usetzutc = flag;
+    bool flag = make_bool(GetYesno(val));
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_USETZUTC, flag);
+    else
+        CFG->usetzutc = flag;
 }
 
 //  ------------------------------------------------------------------
 
-void CfgUudecodepath() {
+void CfgUudecodepath()
+{
 
-  PathCopy(CFG->uudecodepath, val);
+    PathCopy(CFG->uudecodepath, val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgViewhidden() {
+void CfgViewhidden()
+{
 
-  bool flag = make_bool(GetYesno(val));
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_VIEWHIDDEN, flag);
-  else
-    CFG->viewhidden = flag;
+    bool flag = make_bool(GetYesno(val));
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_VIEWHIDDEN, flag);
+    else
+        CFG->viewhidden = flag;
 }
 
 //  ------------------------------------------------------------------
 
-void CfgViewkludge() {
+void CfgViewkludge()
+{
 
-  bool flag = make_bool(GetYesno(val));
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_VIEWKLUDGE, flag);
-  else
-    CFG->viewkludge = flag;
+    bool flag = make_bool(GetYesno(val));
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_VIEWKLUDGE, flag);
+    else
+        CFG->viewkludge = flag;
 }
 
 //  ------------------------------------------------------------------
 
-void CfgViewquote() {
+void CfgViewquote()
+{
 
-  bool flag = make_bool(GetYesno(val));
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_VIEWQUOTE, flag);
-  else
-    CFG->viewquote = flag;
+    bool flag = make_bool(GetYesno(val));
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_VIEWQUOTE, flag);
+    else
+        CFG->viewquote = flag;
 }
 
 //  ------------------------------------------------------------------
 
-void CfgWhoto() {
+void CfgWhoto()
+{
 
-  Name buf;
-  strxcpy(buf, val, sizeof(buf));
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_WHOTO, buf, strlen(buf)+1);
-  else
-    strcpy(CFG->whoto, buf);
-}
-
-//  ------------------------------------------------------------------
-
-void CfgWildcatuserno() {
-
-  CFG->wildcatuserno = atoi(val);
-}
-
-//  ------------------------------------------------------------------
-
-void CfgWriteheader() {
-
-  int flag;
-
-  if(strieql(val, "ONLY"))
-    flag = 2;
-  else
-    flag = GetYesno(val) ? 1 : 0;
-
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_WRITEHEADER, flag);
-  else
-    CFG->writeheader = flag;
-}
-
-//  ------------------------------------------------------------------
-
-void CfgWritetemplate() {
-
-  if(cfgingroup) {
-    Path buf;
+    Name buf;
     strxcpy(buf, val, sizeof(buf));
-    CFG->grp.AddItm(GRP_WRITETEMPLATE, buf, strlen(buf)+1);
-  }
-  else {
-    CFG->wtpl = val;
-  }
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_WHOTO, buf, strlen(buf)+1);
+    else
+        strcpy(CFG->whoto, buf);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgXlatcharset() {
+void CfgWildcatuserno()
+{
 
-  Map xlt;
-  char* ptr = strtok(val, " \t\n\r");
-  short maxtokenlen = sizeof(xlt.imp)-1;
-  if(ptr) {
-    if(strlen(ptr) > maxtokenlen) {
-      STD_PRINT("* XLATCHARSET parser: Parameter '" << ptr
-          << "' too long. It is supposed no more than " << maxtokenlen << " characters. A line 'XLATCHARSET "
-          <<  ptr);
-      STD_PRINTNL(ptr+strlen(ptr)+1 << "' ignored.");
-      cfgerrors++;
-      return;
+    CFG->wildcatuserno = atoi(val);
+}
+
+//  ------------------------------------------------------------------
+
+void CfgWriteheader()
+{
+
+    int flag;
+
+    if(strieql(val, "ONLY"))
+        flag = 2;
+    else
+        flag = GetYesno(val) ? 1 : 0;
+
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_WRITEHEADER, flag);
+    else
+        CFG->writeheader = flag;
+}
+
+//  ------------------------------------------------------------------
+
+void CfgWritetemplate()
+{
+
+    if(cfgingroup)
+    {
+        Path buf;
+        strxcpy(buf, val, sizeof(buf));
+        CFG->grp.AddItm(GRP_WRITETEMPLATE, buf, strlen(buf)+1);
     }
-    strchg(strupr(strcpy(xlt.imp, ptr)), '_', ' ');
-    ptr = strtok(NULL, " \t\n\r");
-    if(ptr) {
-      if(strlen(ptr) > maxtokenlen) {
-        STD_PRINT("* XLATCHARSET parser: Parameter '" << ptr
-            << "' too long. It is supposed no more than " << maxtokenlen << " characters. A line 'XLATCHARSET "
-            <<  xlt.imp << " " << ptr);
-        STD_PRINTNL(ptr+strlen(ptr)+1 << "' ignored.");
-        cfgerrors++;
-        xlt.imp[0] = '\0';
-        return;
-      }
-      strchg(strupr(strcpy(xlt.exp, ptr)), '_', ' ');
-      ptr = strtok(NULL, " \t\n\r");
-      if(ptr) {
-        if(*CFG->xlatpath == NUL)
-          strcpy(CFG->xlatpath, CFG->goldpath);
-        MakePathname(ptr, CFG->xlatpath, ptr);
-        xlt.mapfile = throw_strdup(ptr);
-        CFG->xlatcharset.push_back(xlt);
-      }
+    else
+    {
+        CFG->wtpl = val;
     }
-  }
+}
+
+//  ------------------------------------------------------------------
+
+void CfgXlatcharset()
+{
+
+    Map xlt;
+    char* ptr = strtok(val, " \t\n\r");
+    short maxtokenlen = sizeof(xlt.imp)-1;
+    if(ptr)
+    {
+        if(strlen(ptr) > maxtokenlen)
+        {
+            STD_PRINT("* XLATCHARSET parser: Parameter '" << ptr
+                      << "' too long. It is supposed no more than " << maxtokenlen << " characters. A line 'XLATCHARSET "
+                      <<  ptr);
+            STD_PRINTNL(ptr+strlen(ptr)+1 << "' ignored.");
+            cfgerrors++;
+            return;
+        }
+        strchg(strupr(strcpy(xlt.imp, ptr)), '_', ' ');
+        ptr = strtok(NULL, " \t\n\r");
+        if(ptr)
+        {
+            if(strlen(ptr) > maxtokenlen)
+            {
+                STD_PRINT("* XLATCHARSET parser: Parameter '" << ptr
+                          << "' too long. It is supposed no more than " << maxtokenlen << " characters. A line 'XLATCHARSET "
+                          <<  xlt.imp << " " << ptr);
+                STD_PRINTNL(ptr+strlen(ptr)+1 << "' ignored.");
+                cfgerrors++;
+                xlt.imp[0] = '\0';
+                return;
+            }
+            strchg(strupr(strcpy(xlt.exp, ptr)), '_', ' ');
+            ptr = strtok(NULL, " \t\n\r");
+            if(ptr)
+            {
+                if(*CFG->xlatpath == NUL)
+                    strcpy(CFG->xlatpath, CFG->goldpath);
+                MakePathname(ptr, CFG->xlatpath, ptr);
+                xlt.mapfile = throw_strdup(ptr);
+                CFG->xlatcharset.push_back(xlt);
+            }
+        }
+    }
 }
 
 //  ------------------------------------------------------------------
 
 void CfgXlatcharsetalias()
 {
-  char* key;
-  getkeyval(&key, &val);
-  if (key[0] == 0) return;
-
-  std::pair<std::string, gstrarray> aliases;
-  aliases.first = key;
-
-  do 
-  {
-    aliases.second.push_back(std::string(key));
+    char* key;
     getkeyval(&key, &val);
-  }
-  while (key[0] != 0);
+    if (key[0] == 0) return;
 
-  CFG->xlatcharsetalias.push_back(aliases);
-}
+    std::pair<std::string, gstrarray> aliases;
+    aliases.first = key;
 
-//  ------------------------------------------------------------------
-
-void CfgXlatescset() {
-
-  Map xlt;
-  char* ptr = strtok(val, " \t\n\r");
-  if(ptr) {
-    strchg(strupr(strcpy(xlt.imp, ptr)), '_', ' ');
-    ptr = strtok(NULL, " \t\n\r");
-    if(ptr) {
-      strchg(strupr(strcpy(xlt.exp, ptr)), '_', ' ');
-      ptr = strtok(NULL, " \t\n\r");
-      if(ptr) {
-        if(*CFG->xlatpath == NUL)
-          strcpy(CFG->xlatpath, CFG->goldpath);
-        MakePathname(ptr, CFG->xlatpath, ptr);
-        xlt.mapfile = throw_strdup(ptr);
-        CFG->xlatescset.push_back(xlt);
-      }
+    do
+    {
+        aliases.second.push_back(std::string(key));
+        getkeyval(&key, &val);
     }
-  }
+    while (key[0] != 0);
+
+    CFG->xlatcharsetalias.push_back(aliases);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgXlatexport() {
+void CfgXlatescset()
+{
 
-  XlatName buf;
-  strchg(strupr(strxcpy(buf, val, sizeof(buf))), '_', ' ');
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_XLATEXPORT, buf, strlen(buf)+1);
-  else
-    strcpy(CFG->xlatexport, buf);
-
-  if (CFG->usecharset and (strieql(buf, "IBMPC") or strieql(buf, "+7_FIDO")))
-  {
-    STD_PRINTNL("* Warning: Charset " << buf << " is obsolete. Consider using CPxxx form.");
-    cfgerrors++;
-  }
+    Map xlt;
+    char* ptr = strtok(val, " \t\n\r");
+    if(ptr)
+    {
+        strchg(strupr(strcpy(xlt.imp, ptr)), '_', ' ');
+        ptr = strtok(NULL, " \t\n\r");
+        if(ptr)
+        {
+            strchg(strupr(strcpy(xlt.exp, ptr)), '_', ' ');
+            ptr = strtok(NULL, " \t\n\r");
+            if(ptr)
+            {
+                if(*CFG->xlatpath == NUL)
+                    strcpy(CFG->xlatpath, CFG->goldpath);
+                MakePathname(ptr, CFG->xlatpath, ptr);
+                xlt.mapfile = throw_strdup(ptr);
+                CFG->xlatescset.push_back(xlt);
+            }
+        }
+    }
 }
 
 //  ------------------------------------------------------------------
 
-void CfgXlatimport() {
+void CfgXlatexport()
+{
 
-  XlatName buf;
-  strchg(strupr(strxcpy(buf, val, sizeof(buf))), '_', ' ');
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_XLATIMPORT, buf, strlen(buf)+1);
-  else
-    strcpy(CFG->xlatimport, buf);
+    XlatName buf;
+    strchg(strupr(strxcpy(buf, val, sizeof(buf))), '_', ' ');
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_XLATEXPORT, buf, strlen(buf)+1);
+    else
+        strcpy(CFG->xlatexport, buf);
+
+    if (CFG->usecharset and (strieql(buf, "IBMPC") or strieql(buf, "+7_FIDO")))
+    {
+        STD_PRINTNL("* Warning: Charset " << buf << " is obsolete. Consider using CPxxx form.");
+        cfgerrors++;
+    }
 }
 
 //  ------------------------------------------------------------------
 
-void CfgXlatlocalset() {
+void CfgXlatimport()
+{
 
-  strupr(strxcpy(CFG->xlatlocalset, val, sizeof(CFG->xlatlocalset)));
-
-  if (CFG->usecharset and (strieql(CFG->xlatlocalset, "IBMPC") or strieql(CFG->xlatlocalset, "+7_FIDO")))
-  {
-    STD_PRINTNL("* Warning: Charset " << CFG->xlatlocalset << " is obsolete. Consider using CPxxx form.");
-    cfgerrors++;
-  }
+    XlatName buf;
+    strchg(strupr(strxcpy(buf, val, sizeof(buf))), '_', ' ');
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_XLATIMPORT, buf, strlen(buf)+1);
+    else
+        strcpy(CFG->xlatimport, buf);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgXlatpath() {
+void CfgXlatlocalset()
+{
 
-  MapPath(PathCopy(CFG->xlatpath, val));
+    strupr(strxcpy(CFG->xlatlocalset, val, sizeof(CFG->xlatlocalset)));
+
+    if (CFG->usecharset and (strieql(CFG->xlatlocalset, "IBMPC") or strieql(CFG->xlatlocalset, "+7_FIDO")))
+    {
+        STD_PRINTNL("* Warning: Charset " << CFG->xlatlocalset << " is obsolete. Consider using CPxxx form.");
+        cfgerrors++;
+    }
 }
 
 //  ------------------------------------------------------------------
 
-void CfgZonegating() {
+void CfgXlatpath()
+{
 
-  CFG->zonegating = GetYesno(val);
+    MapPath(PathCopy(CFG->xlatpath, val));
+}
+
+//  ------------------------------------------------------------------
+
+void CfgZonegating()
+{
+
+    CFG->zonegating = GetYesno(val);
 }
 
 //  ------------------------------------------------------------------

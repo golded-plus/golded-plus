@@ -39,257 +39,285 @@ int       xbbsdatano = 0;
 
 //  ------------------------------------------------------------------
 
-void XbbsArea::data_open() {
+void XbbsArea::data_open()
+{
 
-  wide = xbbswide;
-  data = xbbsdata + (xbbsdatano++);
+    wide = xbbswide;
+    data = xbbsdata + (xbbsdatano++);
 }
 
 
 //  ------------------------------------------------------------------
 
-void XbbsArea::data_close() {
+void XbbsArea::data_close()
+{
 
-  xbbsdatano--;
+    xbbsdatano--;
 }
 
 
 //  ------------------------------------------------------------------
 
-void XbbsArea::raw_close() {
+void XbbsArea::raw_close()
+{
 
-  GFTRK("XbbsRawClose");
+    GFTRK("XbbsRawClose");
 
-  if(data->fhdata != -1)   ::close(data->fhdata);   data->fhdata = -1;
-  if(data->fhindex != -1)  ::close(data->fhindex);  data->fhindex = -1;
-  if(data->fhtext != -1)   ::close(data->fhtext);   data->fhtext = -1;
+    if(data->fhdata != -1)   ::close(data->fhdata);
+    data->fhdata = -1;
+    if(data->fhindex != -1)  ::close(data->fhindex);
+    data->fhindex = -1;
+    if(data->fhtext != -1)   ::close(data->fhtext);
+    data->fhtext = -1;
 
-  if (wide->isopen)
-  {
+    if (wide->isopen)
+    {
+        if (wide->isopen == 1)
+        {
+            if (wide->user->gufh != -1)
+            {
+                ::close(wide->user->gufh);
+                wide->user->gufh = -1;
+            }
+        }
+        wide->isopen--;
+    }
+
+    GFTRK(0);
+}
+
+
+//  ------------------------------------------------------------------
+
+int XbbsArea::test_open(const char* __file, int sharemode)
+{
+
+    GFTRK("XbbsTestOpen");
+
+    int _fh;
+    long _tries = 0;
+    if(sharemode == -1)
+        sharemode = WideSharemode;
+
+    do
+    {
+
+        _fh = ::sopen(__file, O_RDWR|O_BINARY|O_CREAT, sharemode, S_STDRW);
+        if(_fh == -1)
+        {
+
+            // Tell the world
+            if((errno != EACCES) or (PopupLocked(++_tries, false, __file) == false))
+            {
+
+                // User requested to exit
+                WideLog->ErrOpen();
+                raw_close();
+                WideLog->printf("! An AdeptXBBS msgbase file could not be opened.");
+                WideLog->printf(": %s.", __file);
+                WideLog->ErrOSInfo();
+                OpenErrorExit();
+            }
+        }
+    }
+    while(_fh == -1);
+
+    // Remove the popup window
+    if(_tries)
+        PopupLocked(0, 0, NULL);
+
+    GFTRK(0);
+
+    return _fh;
+}
+
+
+//  ------------------------------------------------------------------
+
+void XbbsArea::raw_open()
+{
+
+    GFTRK("XbbsRawOpen");
+
+    data->fhdata  = test_open(AddPath(real_path(), ".Data"));
+    data->fhindex = test_open(AddPath(real_path(), ".Index"));
+    data->fhtext  = test_open(AddPath(real_path(), ".Text"));
+    wide->isopen++;
     if (wide->isopen == 1)
+        wide->user->gufh = ::sopen(AddPath(wide->path, "Users"), O_RDONLY|O_BINARY, WideSharemode, S_STDRW);
+
+    GFTRK(0);
+}
+
+
+//  ------------------------------------------------------------------
+
+void XbbsExit()
+{
+
+    if(xbbswide)
+        delete xbbswide->user;
+    throw_release(xbbswide);
+    throw_release(xbbsdata);
+}
+
+
+//  ------------------------------------------------------------------
+
+void XbbsInit(const char* path, int userno)
+{
+
+    xbbsdata = (XbbsData*)throw_calloc(3, sizeof(XbbsData));
+    xbbswide = (XbbsWide*)throw_calloc(1, sizeof(XbbsWide));
+
+    xbbswide->path = path;
+    xbbswide->userno = userno;
+
+    xbbswide->user = new XbbsUser;
+    throw_new(xbbswide->user);
+
+    xbbswide->user->gufh = -1;
+    xbbswide->fhpmi = -1;
+    xbbswide->pmi = NULL;
+    xbbswide->isopen = 0;
+
+    const char* _username = WideUsername[0];
+    if (xbbswide->userno == -1)
     {
-      if (wide->user->gufh != -1)
-      {
-        ::close(wide->user->gufh);
-        wide->user->gufh = -1;
-      }
+        xbbswide->user->gufh = ::sopen(AddPath(xbbswide->path, "Users"), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
+        if (xbbswide->user->gufh != -1)
+        {
+            xbbswide->user->find(_username);
+            if(not xbbswide->user->found)
+            {
+                xbbswide->userno = 0;
+                //WideLog->printf("* User \"%s\" not found in %sUsers.", _username, xbbswide->path);
+                //xbbswide->user->add(_username);
+                //WideLog->printf("* Now added with user number %u.", xbbswide->user->index);
+            }
+            close(xbbswide->user->gufh);
+        }
+        xbbswide->userno = xbbswide->user->index;
     }
-    wide->isopen--;
-  }
-
-  GFTRK(0);
 }
 
 
 //  ------------------------------------------------------------------
 
-int XbbsArea::test_open(const char* __file, int sharemode) {
+void XbbsArea::open()
+{
 
-  GFTRK("XbbsTestOpen");
+    GFTRK("XbbsOpen");
 
-  int _fh;
-  long _tries = 0;
-  if(sharemode == -1)
-    sharemode = WideSharemode;
-
-  do {
-
-    _fh = ::sopen(__file, O_RDWR|O_BINARY|O_CREAT, sharemode, S_STDRW);
-    if(_fh == -1) {
-
-      // Tell the world
-      if((errno != EACCES) or (PopupLocked(++_tries, false, __file) == false)) {
-
-        // User requested to exit
-        WideLog->ErrOpen();
-        raw_close();
-        WideLog->printf("! An AdeptXBBS msgbase file could not be opened.");
-        WideLog->printf(": %s.", __file);
-        WideLog->ErrOSInfo();
-        OpenErrorExit();
-      }
-    }
-  } while(_fh == -1);
-
-  // Remove the popup window
-  if(_tries)
-    PopupLocked(0, 0, NULL);
-
-  GFTRK(0);
-
-  return _fh;
-}
-
-
-//  ------------------------------------------------------------------
-
-void XbbsArea::raw_open() {
-
-  GFTRK("XbbsRawOpen");
-
-  data->fhdata  = test_open(AddPath(real_path(), ".Data"));
-  data->fhindex = test_open(AddPath(real_path(), ".Index"));
-  data->fhtext  = test_open(AddPath(real_path(), ".Text"));
-  wide->isopen++;
-  if (wide->isopen == 1)
-    wide->user->gufh = ::sopen(AddPath(wide->path, "Users"), O_RDONLY|O_BINARY, WideSharemode, S_STDRW);
-
-  GFTRK(0);
-}
-
-
-//  ------------------------------------------------------------------
-
-void XbbsExit() {
-
-  if(xbbswide)
-    delete xbbswide->user;
-  throw_release(xbbswide);
-  throw_release(xbbsdata);
-}
-
-
-//  ------------------------------------------------------------------
-
-void XbbsInit(const char* path, int userno) {
-
-  xbbsdata = (XbbsData*)throw_calloc(3, sizeof(XbbsData));
-  xbbswide = (XbbsWide*)throw_calloc(1, sizeof(XbbsWide));
-
-  xbbswide->path = path;
-  xbbswide->userno = userno;
-
-  xbbswide->user = new XbbsUser;
-  throw_new(xbbswide->user);
-
-  xbbswide->user->gufh = -1;
-  xbbswide->fhpmi = -1;
-  xbbswide->pmi = NULL;
-  xbbswide->isopen = 0;
-
-  const char* _username = WideUsername[0];
-  if (xbbswide->userno == -1)
-  {
-    xbbswide->user->gufh = ::sopen(AddPath(xbbswide->path, "Users"), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
-    if (xbbswide->user->gufh != -1)
+    isopen++;
+    if(isopen > 2)
     {
-      xbbswide->user->find(_username);
-      if(not xbbswide->user->found) {
-        xbbswide->userno = 0;
-        //WideLog->printf("* User \"%s\" not found in %sUsers.", _username, xbbswide->path);
-        //xbbswide->user->add(_username);
-        //WideLog->printf("* Now added with user number %u.", xbbswide->user->index);
-      }
-      close(xbbswide->user->gufh);
+        WideLog->ErrTest();
+        WideLog->printf("! Trying to open an AdeptXBBS msgbase more than twice.");
+        WideLog->printf(": %s, %s.", echoid(), path());
+        WideLog->printf("+ Info: This indicates a serious bug.");
+        WideLog->printf("+ Advice: Report to the Author immediately.");
+        TestErrorExit();
     }
-    xbbswide->userno = xbbswide->user->index;
-  }
-}
-
-
-//  ------------------------------------------------------------------
-
-void XbbsArea::open() {
-
-  GFTRK("XbbsOpen");
-
-  isopen++;
-  if(isopen > 2) {
-    WideLog->ErrTest();
-    WideLog->printf("! Trying to open an AdeptXBBS msgbase more than twice.");
-    WideLog->printf(": %s, %s.", echoid(), path());
-    WideLog->printf("+ Info: This indicates a serious bug.");
-    WideLog->printf("+ Advice: Report to the Author immediately.");
-    TestErrorExit();
-  }
-  if(isopen == 1) {
-    if(ispacked()) {
-      isopen--;
-      const char* newpath = Unpack(path());
-      if(newpath == NULL)
-        packed(false);
-      set_real_path(newpath ? newpath : path());
-      isopen++;
+    if(isopen == 1)
+    {
+        if(ispacked())
+        {
+            isopen--;
+            const char* newpath = Unpack(path());
+            if(newpath == NULL)
+                packed(false);
+            set_real_path(newpath ? newpath : path());
+            isopen++;
+        }
+        data_open();
+        raw_open();
+        refresh();
+        scan();
     }
-    data_open();
-    raw_open();
-    refresh();
-    scan();
-  }
 
-  GFTRK(0);
+    GFTRK(0);
 }
 
 
 //  ------------------------------------------------------------------
 
-void XbbsArea::save_lastread() {
+void XbbsArea::save_lastread()
+{
 
-  GFTRK("XbbsSaveLastread");
+    GFTRK("XbbsSaveLastread");
 
-  int _fh = ::sopen(AddPath(real_path(), ".lmr"), O_RDWR|O_CREAT|O_BINARY, WideSharemode, S_STDRW);
-  if(_fh != -1) {
-    uint32_t _lastread = Msgn->CvtReln(lastread);
-    lseekset(_fh, wide->userno+1, sizeof(uint32_t));
-    write(_fh, &_lastread, sizeof(uint32_t));
-    ::close(_fh);
-  }
-
-  GFTRK(0);
-}
-
-
-//  ------------------------------------------------------------------
-
-void XbbsArea::close() {
-
-  GFTRK("XbbsClose");
-
-  if(isopen) {
-    if(isopen == 1) {
-      save_lastread();
-      raw_close();
-      Msgn->Reset();
-      throw_release(data->idx);
-      data_close();
-      if(ispacked()) {
-        CleanUnpacked(real_path());
-      }
+    int _fh = ::sopen(AddPath(real_path(), ".lmr"), O_RDWR|O_CREAT|O_BINARY, WideSharemode, S_STDRW);
+    if(_fh != -1)
+    {
+        uint32_t _lastread = Msgn->CvtReln(lastread);
+        lseekset(_fh, wide->userno+1, sizeof(uint32_t));
+        write(_fh, &_lastread, sizeof(uint32_t));
+        ::close(_fh);
     }
-    isopen--;
-  }
-  else {
-    WideLog->ErrTest();
-    WideLog->printf("! Trying to close an already closed AdeptXBBS msgbase.");
-    WideLog->printf(": %s, %s.", echoid(), path());
-    WideLog->printf("+ Info: This indicates a potentially serious bug.");
-    WideLog->printf("+ Advice: Report to the Author immediately.");
-    TestErrorExit();
-  }
 
-  GFTRK(0);
+    GFTRK(0);
 }
 
 
 //  ------------------------------------------------------------------
 
-void XbbsArea::suspend() {
+void XbbsArea::close()
+{
 
-  GFTRK("XbbsSuspend");
+    GFTRK("XbbsClose");
 
-  save_lastread();
+    if(isopen)
+    {
+        if(isopen == 1)
+        {
+            save_lastread();
+            raw_close();
+            Msgn->Reset();
+            throw_release(data->idx);
+            data_close();
+            if(ispacked())
+            {
+                CleanUnpacked(real_path());
+            }
+        }
+        isopen--;
+    }
+    else
+    {
+        WideLog->ErrTest();
+        WideLog->printf("! Trying to close an already closed AdeptXBBS msgbase.");
+        WideLog->printf(": %s, %s.", echoid(), path());
+        WideLog->printf("+ Info: This indicates a potentially serious bug.");
+        WideLog->printf("+ Advice: Report to the Author immediately.");
+        TestErrorExit();
+    }
 
-  GFTRK(0);
+    GFTRK(0);
 }
 
 
 //  ------------------------------------------------------------------
 
-void XbbsArea::resume() {
+void XbbsArea::suspend()
+{
 
-  GFTRK("XbbsResume");
+    GFTRK("XbbsSuspend");
 
-  GFTRK(0);
+    save_lastread();
+
+    GFTRK(0);
+}
+
+
+//  ------------------------------------------------------------------
+
+void XbbsArea::resume()
+{
+
+    GFTRK("XbbsResume");
+
+    GFTRK(0);
 }
 
 

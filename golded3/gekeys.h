@@ -55,7 +55,7 @@ const gkey KK_FileMacro            = 0xFE03;
 const gkey KK_ListMacro            = 0xFE04;
 const gkey KK_NodeMacro            = 0xFE05;
 const gkey KK_ReadMacro            = 0xFE06;
-                                // = 0xFE07-0xFE7F
+// = 0xFE07-0xFE7F
 
 const gkey KK_Commands             = 0xFE80;
 const gkey KK_ExternUtil01         = 0xFE81;
@@ -83,12 +83,12 @@ const gkey KK_ExternUtil22         = 0xFE96;
 const gkey KK_ExternUtil23         = 0xFE97;
 const gkey KK_ExternUtil24         = 0xFE98;
 const gkey KK_ExternUtil25         = 0xFE99;
-                                // = 0xFE9A;
-                                // = 0xFE9B;
-                                // = 0xFE9C;
-                                // = 0xFE9D;
-                                // = 0xFE9E;
-                                // = 0xFE9F;
+// = 0xFE9A;
+// = 0xFE9B;
+// = 0xFE9C;
+// = 0xFE9D;
+// = 0xFE9E;
+// = 0xFE9F;
 
 const gkey KK_AreaAbort            = 0xFEA0;
 const gkey KK_AreaAskExit          = 0xFEA1;
@@ -104,7 +104,7 @@ const gkey KK_AreaHeat             = 0xFEAA;
 const gkey KK_AreaJump             = 0xFEAC;
 const gkey KK_AreaJumpNextMatch    = 0xFEAD;
 const gkey KK_AreaMainMenu         = 0xFEAE;
-                                // = 0xFEAF;
+// = 0xFEAF;
 const gkey KK_AreaQuitNow          = 0xFEB0;
 const gkey KK_AreaScan             = 0xFEB1;
 const gkey KK_AreaScanPM           = 0xFEB2;
@@ -117,10 +117,10 @@ const gkey KK_AreaWriteGoldlast    = 0xFEB8;
 const gkey KK_AreaZap              = 0xFEB9;
 const gkey KK_AreaMark             = 0xFEBA;
 const gkey KK_AreaUnmark           = 0xFEBB;
-                                // = 0xFEBC;
-                                // = 0xFEBD;
-                                // = 0xFEBE;
-                                // = 0xFEBF;
+// = 0xFEBC;
+// = 0xFEBD;
+// = 0xFEBE;
+// = 0xFEBF;
 
 const gkey KK_EditAbort            = 0xFEC0;
 const gkey KK_EditAnchor           = 0xFEC1;
@@ -158,13 +158,13 @@ const gkey KK_EditGoWordRight      = 0xFEE0;
 const gkey KK_EditHeader           = 0xFEE1;
 const gkey KK_EditImportQuotebuf   = 0xFEE2;
 const gkey KK_EditImportText       = 0xFEE3;
-                                // = 0xFEE4;
+// = 0xFEE4;
 const gkey KK_EditLoadFile         = 0xFEE5;
 const gkey KK_EditLookupCursor     = 0xFEE6;
 const gkey KK_EditLookupDest       = 0xFEE7;
 const gkey KK_EditLookupOrig       = 0xFEE8;
-                                // = 0xFEE9;
-                                // = 0xFEEA;
+// = 0xFEE9;
+// = 0xFEEA;
 const gkey KK_EditNewline          = 0xFEEB;
 const gkey KK_EditPaste            = 0xFEEC;
 const gkey KK_EditQuitNow          = 0xFEED;
@@ -203,7 +203,7 @@ const gkey KK_EditSCodeReverse     = 0xFF0C;
 const gkey KK_EditSCheckerMenu     = 0xFF0D;
 #endif
 const gkey KK_EditDrawLines        = 0xFF0E;
-                                // = 0xFE0F;
+// = 0xFE0F;
 
 const gkey KK_FileAbort            = 0xFF10;
 const gkey KK_FileAskExit          = 0xFF11;
@@ -214,7 +214,7 @@ const gkey KK_FileGotoNext         = 0xFF15;
 const gkey KK_FileGotoPrev         = 0xFF16;
 const gkey KK_FileMark             = 0xFF17;
 const gkey KK_FileMarkAll          = 0xFF18;
-                                // = 0xFE19;
+// = 0xFE19;
 const gkey KK_FileQuitNow          = 0xFF1A;
 const gkey KK_FileSelect           = 0xFF1B;
 const gkey KK_FileToggleMark       = 0xFF1C;
@@ -232,7 +232,7 @@ const gkey KK_ListGotoNext         = 0xFF26;
 const gkey KK_ListGotoPrev         = 0xFF27;
 const gkey KK_ListMainMenu         = 0xFF28;
 const gkey KK_ListMarkingOptions   = 0xFF29;
-                                // = 0xFE2A;
+// = 0xFE2A;
 const gkey KK_ListQuitNow          = 0xFF2B;
 const gkey KK_ListSelect           = 0xFF2C;
 const gkey KK_ListToggleBookMark   = 0xFF2D;
@@ -244,17 +244,17 @@ const gkey KK_ListUnmark           = 0xFF32;
 const gkey KK_ListWideSubj         = 0xFF33;
 const gkey KK_ListNarrowSubj       = 0xFF34;
 
-                                // = 0xFE35;
-                                // = 0xFE36;
-                                // = 0xFE37;
-                                // = 0xFE38;
-                                // = 0xFE39;
-                                // = 0xFE3A;
-                                // = 0xFE3B;
-                                // = 0xFE3C;
-                                // = 0xFE3D;
-                                // = 0xFE3E;
-                                // = 0xFE3F;
+// = 0xFE35;
+// = 0xFE36;
+// = 0xFE37;
+// = 0xFE38;
+// = 0xFE39;
+// = 0xFE3A;
+// = 0xFE3B;
+// = 0xFE3C;
+// = 0xFE3D;
+// = 0xFE3E;
+// = 0xFE3F;
 
 const gkey KK_NodeAbort            = 0xFF40;
 const gkey KK_NodeAskExit          = 0xFF41;
@@ -263,8 +263,8 @@ const gkey KK_NodeGotoFirst        = 0xFF43;
 const gkey KK_NodeGotoLast         = 0xFF44;
 const gkey KK_NodeGotoNext         = 0xFF45;
 const gkey KK_NodeGotoPrev         = 0xFF46;
-                                // = 0xFE47;
-                                // = 0xFE48;
+// = 0xFE47;
+// = 0xFE48;
 const gkey KK_NodeQuitNow          = 0xFF49;
 const gkey KK_NodeSelect           = 0xFF4A;
 
@@ -278,8 +278,8 @@ const gkey KK_ReadAddressbookAdd   = 0xFF50;
 const gkey KK_ReadAskExit          = 0xFF51;
 const gkey KK_ReadChangeAka        = 0xFF52;
 const gkey KK_ReadChangeAttrs      = 0xFF53;
-                                // = 0xFE54;
-                                // = 0xFE55;
+// = 0xFE54;
+// = 0xFE55;
 const gkey KK_ReadChangeMsg        = 0xFF56;
 const gkey KK_ReadChangeOrigin     = 0xFF57;
 const gkey KK_ReadChangeTagline    = 0xFF58;
@@ -446,29 +446,32 @@ const int KT_H = 256;  // Header editor
 //  ------------------------------------------------------------------
 //  Key command
 
-struct CmdKey {
-  gkey key;        // Associated key or macro number
-  gkey cmd;        // Command number
-  int  type;       // Type of key
+struct CmdKey
+{
+    gkey key;        // Associated key or macro number
+    gkey cmd;        // Command number
+    int  type;       // Type of key
 };
 
 
 //  ------------------------------------------------------------------
 //  Macro
 
-struct Macro {
-  int  type;       // Type of key
-  gkey key;        // Associated key
-  gkey buf[128];   // Actual keys/commands
+struct Macro
+{
+    int  type;       // Type of key
+    gkey key;        // Associated key
+    gkey buf[128];   // Actual keys/commands
 };
 
 
 //  ------------------------------------------------------------------
 
-struct tglobalkey {
-  word crc_token;
-  gkey keyval;
-  word keytype;
+struct tglobalkey
+{
+    word crc_token;
+    gkey keyval;
+    word keytype;
 };
 
 //  ------------------------------------------------------------------

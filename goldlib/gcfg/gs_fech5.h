@@ -86,7 +86,8 @@
 /********************************************************/
 enum BBSSoft { NoBBSSoft = 0, RemoteAccess111, QuickBBS,
                SuperBBS, ProBoard122, TagBBS, RemoteAccess200,
-           ProBoard130};
+               ProBoard130
+             };
 
 /********************************************************/
 /* CONFIG.CC.what                                       */
@@ -166,7 +167,7 @@ enum ARCmailExt { ARCDigits = 0, ARCHex, ARCAlpha };
 #define PACKER          0xF000
 
 #define PACKS(x) (int)(((x)&PACKER)>>12)        /* Index of used Packer   */
-                        /* 0xf = .PKT, don't pack */
+/* 0xf = .PKT, don't pack */
 
 /********************************************************/
 /* Node.advflags                                        */
@@ -185,7 +186,8 @@ enum ARCmailExt { ARCDigits = 0, ARCHex, ARCAlpha };
 
 enum ARCers { ARC_Unknown = -1, ARC_SeaArc, ARC_PkArc, ARC_Pak,
               ARC_ArcPlus, ARC_Zoo, ARC_PkZip, ARC_Lha, ARC_Arj,
-              ARC_Sqz };        /* CONFIG.Unpackers[]   */
+              ARC_Sqz
+            };        /* CONFIG.Unpackers[]   */
 
 /********************************************************/
 /* Structures                                           */
@@ -193,101 +195,101 @@ enum ARCers { ARC_Unknown = -1, ARC_SeaArc, ARC_PkArc, ARC_Pak,
 
 typedef struct
 {
- word zone,net,node,point;
+    word zone,net,node,point;
 } Address;
 
 #define _MAXPATH 56
 
 typedef struct CONFIGURATION5
 {
- word revision;
- dword flags;
- word NodeCnt,AreaCnt,unused1;
- char NetMPath[_MAXPATH],
-      MsgBase[_MAXPATH],
-      InBound[_MAXPATH],
-      OutBound[_MAXPATH],
-      Unpacker[_MAXPATH],
-      LogFile[_MAXPATH],
-      OriginLine[8][_MAXPATH],
-      StatFile[_MAXPATH],
-      SwapPath[_MAXPATH],
-      SemaphorePath[_MAXPATH],
-      BBSConfigPath[_MAXPATH],
-      DBQueuePath[_MAXPATH],
-      unused2[32],
-      RetearTo[40],
-      SecurePath[_MAXPATH],
-      ExtAfter[_MAXPATH-4],
-      ExtBefore[_MAXPATH-4];
- struct
- {
-  char tag[4];
-  char name[_MAXPATH-2];
-  char list[2];             /* List prefix character */
- } Packer[8];
- struct
- {
-  byte what;
-  char object[31];
-  word conference;
- } CC[10];
- byte security,loglevel;
- short def_days,def_messages;
- struct                                 /* now obsolete         */
- {
-  Address main;
-  char domain[28];
-  word pointnet;
-  dword flags;
- } oldakas[11];                         /* but still maintained */
- word autorenum;
- short def_recvdays;
- word openQQQs;
- word compressafter;
- word msglen;
- word compressfree;
- char TempPath[_MAXPATH];
- byte graphics,BBSSoftware;
- char AreaFixHelp[_MAXPATH];
- char Unpackers[9][_MAXPATH];
- word AreaFixFlags;
- byte QuietLevel,Buffers;
- byte FWACnt,GDCnt;     /* # of ForwardAreaFix records,
+    word revision;
+    dword flags;
+    word NodeCnt,AreaCnt,unused1;
+    char NetMPath[_MAXPATH],
+         MsgBase[_MAXPATH],
+         InBound[_MAXPATH],
+         OutBound[_MAXPATH],
+         Unpacker[_MAXPATH],
+         LogFile[_MAXPATH],
+         OriginLine[8][_MAXPATH],
+         StatFile[_MAXPATH],
+         SwapPath[_MAXPATH],
+         SemaphorePath[_MAXPATH],
+         BBSConfigPath[_MAXPATH],
+         DBQueuePath[_MAXPATH],
+         unused2[32],
+         RetearTo[40],
+         SecurePath[_MAXPATH],
+         ExtAfter[_MAXPATH-4],
+         ExtBefore[_MAXPATH-4];
+    struct
+    {
+        char tag[4];
+        char name[_MAXPATH-2];
+        char list[2];             /* List prefix character */
+    } Packer[8];
+    struct
+    {
+        byte what;
+        char object[31];
+        word conference;
+    } CC[10];
+    byte security,loglevel;
+    short def_days,def_messages;
+    struct                                 /* now obsolete         */
+    {
+        Address main;
+        char domain[28];
+        word pointnet;
+        dword flags;
+    } oldakas[11];                         /* but still maintained */
+    word autorenum;
+    short def_recvdays;
+    word openQQQs;
+    word compressafter;
+    word msglen;
+    word compressfree;
+    char TempPath[_MAXPATH];
+    byte graphics,BBSSoftware;
+    char AreaFixHelp[_MAXPATH];
+    char Unpackers[9][_MAXPATH];
+    word AreaFixFlags;
+    byte QuietLevel,Buffers;
+    byte FWACnt,GDCnt;     /* # of ForwardAreaFix records,
                            # of Group Default records   */
- struct
- {
-  word flags;
-  word days[2];
-  word msgs[2];
- } rescan_def;
- dword duperecords;
- struct
- {
-  byte inb;
-  byte outb;
- } arcext;
- word AFixRcptLen;
- word AkaCnt;
- word maxPKT;
- byte sharing,sorting;
- struct
- {
-  char name[36];
-  dword resv;
- } sysops[11];
- char AreaFixLog[_MAXPATH];
- char TempInBound[_MAXPATH];
- word maxPKTmsgs;
- word RouteCnt;         /* # of PackRoute records */
- char resv2[822];
- word MaxAreas,MaxNodes;              /* Current max values for this config */
- word NodeRecSize;                    /* For internal use only, the 'Node'
+    struct
+    {
+        word flags;
+        word days[2];
+        word msgs[2];
+    } rescan_def;
+    dword duperecords;
+    struct
+    {
+        byte inb;
+        byte outb;
+    } arcext;
+    word AFixRcptLen;
+    word AkaCnt;
+    word maxPKT;
+    byte sharing,sorting;
+    struct
+    {
+        char name[36];
+        dword resv;
+    } sysops[11];
+    char AreaFixLog[_MAXPATH];
+    char TempInBound[_MAXPATH];
+    word maxPKTmsgs;
+    word RouteCnt;         /* # of PackRoute records */
+    char resv2[822];
+    word MaxAreas,MaxNodes;              /* Current max values for this config */
+    word NodeRecSize;                    /* For internal use only, the 'Node'
                                          record will always be written
                                          completely while only the currently
                                          used size will be held in memory
                                          while FE & FESetup is running */
- dword offset;                        /* This is the offset from the current
+    dword offset;                        /* This is the offset from the current
                      file-pointer to the 1st Node        */
 } CONFIG5;
 
@@ -297,58 +299,58 @@ typedef struct CONFIGURATION5
 
 typedef struct
 {
- Address addr;
- Address arcdest;       /* destination for ARCmail file attaches */
- byte aka;                      /* 0 ... MAX_AKAS-1                      */
- byte autopassive;              /* # of days                             */
- byte newgroup;                 /* Default group for new areas           */
- byte advflags;
- word flags;
- word sec_level;
- char password[9];              /* .PKT password                         */
- char areafixpw[9];     /* AreaFix password          */
- dword groups;                  /* Bit-field, Byte 0/Bit 7 = 'A' etc.    */
-                /* false means group is active           */
- dword resv;
- byte areas[MAX_AREAS/8];       /* Bit-field with MAX_AREAS bits, Byte 0/Bit 7 */
-                /* is conference 0, etc.                       */
+    Address addr;
+    Address arcdest;       /* destination for ARCmail file attaches */
+    byte aka;                      /* 0 ... MAX_AKAS-1                      */
+    byte autopassive;              /* # of days                             */
+    byte newgroup;                 /* Default group for new areas           */
+    byte advflags;
+    word flags;
+    word sec_level;
+    char password[9];              /* .PKT password                         */
+    char areafixpw[9];     /* AreaFix password          */
+    dword groups;                  /* Bit-field, Byte 0/Bit 7 = 'A' etc.    */
+    /* false means group is active           */
+    dword resv;
+    byte areas[MAX_AREAS/8];       /* Bit-field with MAX_AREAS bits, Byte 0/Bit 7 */
+    /* is conference 0, etc.                       */
 } FeNode5;
 
 typedef struct
 {
- char name[41];
- byte type;
- word board;
- short messages;
- struct
- {
-  word origin : 3;
-  word group  : 5;              /* 0 ... MAX_GROUPS-1   */
-  word type   : 3;
-  word umlaut : 1;
-  word aka    : 4;              /* 0 ... MAX_AKAS-1     */
- } flags;
- short days;
- word conference;               /* 0 ... MAX_AREAS-1    */
- word read_sec,write_sec;
- struct
- {
-  word autoadded  : 1;
-  word tinyseen   : 1;
-  word cpd        : 1;
-  word passive    : 1;
-  word keepseen   : 1;
-  word mandatory  : 1;
-  word keepsysop  : 1;
-  word killread   : 1;
-  word disablepsv : 1;
-  word resv   : 7;
- } advflags;
- word seenbys;                  /* LSB = Aka0, MSB = Aka15      */
- short recvdays;
- dword resv1;
- char path[_MAXPATH];
- char desc[42];
+    char name[41];
+    byte type;
+    word board;
+    short messages;
+    struct
+    {
+        word origin : 3;
+        word group  : 5;              /* 0 ... MAX_GROUPS-1   */
+        word type   : 3;
+        word umlaut : 1;
+        word aka    : 4;              /* 0 ... MAX_AKAS-1     */
+    } flags;
+    short days;
+    word conference;               /* 0 ... MAX_AREAS-1    */
+    word read_sec,write_sec;
+    struct
+    {
+        word autoadded  : 1;
+        word tinyseen   : 1;
+        word cpd        : 1;
+        word passive    : 1;
+        word keepseen   : 1;
+        word mandatory  : 1;
+        word keepsysop  : 1;
+        word killread   : 1;
+        word disablepsv : 1;
+        word resv   : 7;
+    } advflags;
+    word seenbys;                  /* LSB = Aka0, MSB = Aka15      */
+    short recvdays;
+    dword resv1;
+    char path[_MAXPATH];
+    char desc[42];
 } FeArea5;
 
 
@@ -379,8 +381,8 @@ typedef struct
 
 typedef struct
 {
- word type;             /* EH_...                           */
- dword offset;          /* length of field excluding header */
+    word type;             /* EH_...                           */
+    dword offset;          /* length of field excluding header */
 } ExtensionHeader;
 
 
@@ -391,63 +393,63 @@ enum AreaFixAreaListFormat { Areas_BBS = 0, Area_List };
 
 typedef struct
 {
- word nodenr;
- struct
- {
-  word sendto  : 3;
-  word newgroup: 5;
-  word valid   : 1;
-  word uncond  : 1;
-  word addplus : 1;
-  word addtear : 1;
-  word format  : 3;
-  word active  : 1;
- } flags;
- char file[_MAXPATH];
- dword groups;
- word sec_level;
- char resv[6];
+    word nodenr;
+    struct
+    {
+        word sendto  : 3;
+        word newgroup: 5;
+        word valid   : 1;
+        word uncond  : 1;
+        word addplus : 1;
+        word addtear : 1;
+        word format  : 3;
+        word active  : 1;
+    } flags;
+    char file[_MAXPATH];
+    dword groups;
+    word sec_level;
+    char resv[6];
 } ForwardAreaFix;
 
 #define EH_GROUPS       0x0002  /* 1 record of <GroupNames>     */
 
 typedef struct
 {
- char name[MAX_GROUPS][35];
+    char name[MAX_GROUPS][35];
 } GroupNames;
 
 #define EH_SYSOPNAMES   0x0003  /* CONFIG.NodeCnt * <SysopNames> */
 
 typedef struct
 {
- char name[36];
+    char name[36];
 } SysopNames;
 
 #define EH_GRPDEFAULTS  0x0006  /* CONFIG.GDCnt * <GroupDefaults> */
 
 typedef struct
 {
- byte group;
- FeArea5 area;
- byte nodes[MAX_NODES/8];        /* MAX_NODES bits */
+    byte group;
+    FeArea5 area;
+    byte nodes[MAX_NODES/8];        /* MAX_NODES bits */
 } GroupDefaults;
 
 #define EH_AKAS         0x0007  /* CONFIG.AkaCnt * <SysAddress> */
 
 typedef struct
 {
- Address main;
- char domain[28];
- word pointnet;
- dword flags;           /* unused       */
+    Address main;
+    char domain[28];
+    word pointnet;
+    dword flags;           /* unused       */
 } SysAddress;
 
 #define EH_PACKROUTE 0x0009
 
 typedef struct
 {
- Address dest;
- Address routes[MAX_ROUTE];
+    Address dest;
+    Address routes[MAX_ROUTE];
 } PackRoute;
 
 #define EH_RA111_MSG    0x0100  /* Original records of BBS systems */
@@ -466,22 +468,22 @@ typedef struct
 
 word AddBam(byte *bam,word nr)
 {
-byte c=(1<<(7-(nr&7))),d;
+    byte c=(1<<(7-(nr&7))),d;
 
- d=bam[nr/8]&c;
- bam[nr/8]|=c;
- return(d);
+    d=bam[nr/8]&c;
+    bam[nr/8]|=c;
+    return(d);
 }
 
 void FreeBam(byte *bam,word nr)
 {
- bam[nr/8]&=~(1<<(7-(nr&7)));
+    bam[nr/8]&=~(1<<(7-(nr&7)));
 }
 
 word GetBam(byte *bam,word nr)
 {
- if(bam[nr/8]&(1<<(7-(nr&7)))) return(true);
- return(false);
+    if(bam[nr/8]&(1<<(7-(nr&7)))) return(true);
+    return(false);
 }
 
 #define IsActive(nr,area)      GetBam(Node[nr].areas,area)

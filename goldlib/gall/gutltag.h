@@ -50,61 +50,91 @@ const int TAGN_EXACT   = false;
 //  ------------------------------------------------------------------
 //  Tag class
 
-class GTag {
+class GTag
+{
 
 public:
 
-  //  ----------------------------------------------------------------
-  //  Internal data
+    //  ----------------------------------------------------------------
+    //  Internal data
 
-  uint32_t* tag;               // tag array
-  uint  tags;               // tags in array
-  uint  count;              // fake tags count
-  uint  allocated;          // actual allocated tags
-  uint  granularity;        // memory allocation optimization
+    uint32_t* tag;               // tag array
+    uint  tags;               // tags in array
+    uint  count;              // fake tags count
+    uint  allocated;          // actual allocated tags
+    uint  granularity;        // memory allocation optimization
 
-  //  ----------------------------------------------------------------
-  //  Constructor and destructor
+    //  ----------------------------------------------------------------
+    //  Constructor and destructor
 
-  GTag();
-  ~GTag();
+    GTag();
+    ~GTag();
 
-  //  ----------------------------------------------------------------
-  //  User functions
+    //  ----------------------------------------------------------------
+    //  User functions
 
-  void  Reset();
-  void  ResetAll()  { Reset(); count = 0; }
+    void  Reset();
+    void  ResetAll()
+    {
+        Reset();
+        count = 0;
+    }
 
-  uint32_t* Resize(uint __tags);
+    uint32_t* Resize(uint __tags);
 
-  uint32_t* Append(uint32_t __tagn);
-  uint32_t* Add(uint32_t __tagn);
-  uint Del(uint32_t __tagn);
-  uint DelReln(uint __reln);
-  uint DelResize(uint32_t __tagn);
-  void  Sort();
-  void  ElimDups();
+    uint32_t* Append(uint32_t __tagn);
+    uint32_t* Add(uint32_t __tagn);
+    uint Del(uint32_t __tagn);
+    uint DelReln(uint __reln);
+    uint DelResize(uint32_t __tagn);
+    void  Sort();
+    void  ElimDups();
 
-  uint32_t CvtReln(uint __reln);
-  uint ToReln(uint32_t __tagn);
-  uint ToReln(uint32_t __tagn, int __closest);
+    uint32_t CvtReln(uint __reln);
+    uint ToReln(uint32_t __tagn);
+    uint ToReln(uint32_t __tagn, int __closest);
 
-  uint Find(uint32_t __tagn)  { return ToReln(__tagn); }
+    uint Find(uint32_t __tagn)
+    {
+        return ToReln(__tagn);
+    }
 
-  uint Tags() const { return tags; }
-  uint Count() const { return count; }
-  uint SetCount(uint n)  { tags = count = n; return count; }
+    uint Tags() const
+    {
+        return tags;
+    }
+    uint Count() const
+    {
+        return count;
+    }
+    uint SetCount(uint n)
+    {
+        tags = count = n;
+        return count;
+    }
 
-  void  Set(uint n, uint32_t t)  { tag[n] = t; }
-  uint32_t Get(uint n)  { return (tags and (n<tags)) ? tag[n] : TAGN_INVALID; }
+    void  Set(uint n, uint32_t t)
+    {
+        tag[n] = t;
+    }
+    uint32_t Get(uint n)
+    {
+        return (tags and (n<tags)) ? tag[n] : TAGN_INVALID;
+    }
 
-  uint32_t& operator[](uint n)  { return tag[n]; }
-  uint32_t& at(uint n)  { return tag[n]; }
+    uint32_t& operator[](uint n)
+    {
+        return tag[n];
+    }
+    uint32_t& at(uint n)
+    {
+        return tag[n];
+    }
 
-  void Load(gfile& fp);
-  void Save(gfile& fp);
+    void Load(gfile& fp);
+    void Save(gfile& fp);
 
-  //  ----------------------------------------------------------------
+    //  ----------------------------------------------------------------
 };
 
 

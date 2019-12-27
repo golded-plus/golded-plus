@@ -32,58 +32,65 @@
 
 //  ------------------------------------------------------------------
 
-gregex::gregex() {
+gregex::gregex()
+{
 
-  preg = NULL;
+    preg = NULL;
 }
 
 
 //  ------------------------------------------------------------------
 
-gregex::~gregex() {
+gregex::~gregex()
+{
 
-  reset();
+    reset();
 }
 
 
 //  ------------------------------------------------------------------
 
-void gregex::reset() {
+void gregex::reset()
+{
 
-  if(preg) {
-    regfree(preg);
-    throw_delete(preg);
-  }
+    if(preg)
+    {
+        regfree(preg);
+        throw_delete(preg);
+    }
 }
 
 
 //  ------------------------------------------------------------------
 
-bool gregex::compile(const char* pattern, int cflags) {
+bool gregex::compile(const char* pattern, int cflags)
+{
 
-  int cflgs = REG_NOSUB;
-  if(cflags & extended) cflgs |= REG_EXTENDED;
-  if(cflags & icase)    cflgs |= REG_ICASE;
-  if(cflags & newline)  cflgs |= REG_NEWLINE;
+    int cflgs = REG_NOSUB;
+    if(cflags & extended) cflgs |= REG_EXTENDED;
+    if(cflags & icase)    cflgs |= REG_ICASE;
+    if(cflags & newline)  cflgs |= REG_NEWLINE;
 
-  if(not preg) {
-    preg = new regex_t;
-    throw_new(preg);
-  }
+    if(not preg)
+    {
+        preg = new regex_t;
+        throw_new(preg);
+    }
 
-  return make_bool(regcomp(preg, pattern, cflgs));
+    return make_bool(regcomp(preg, pattern, cflgs));
 }
 
 
 //  ------------------------------------------------------------------
 
-bool gregex::match(const char* str, int eflags) {
+bool gregex::match(const char* str, int eflags)
+{
 
-  int eflgs = 0;
-  if(eflags & notbol) eflgs |= REG_NOTBOL;
-  if(eflags & noteol) eflgs |= REG_NOTEOL;
+    int eflgs = 0;
+    if(eflags & notbol) eflgs |= REG_NOTBOL;
+    if(eflags & noteol) eflgs |= REG_NOTEOL;
 
-  return not regexec(preg, str, 0, NULL, eflgs);
+    return not regexec(preg, str, 0, NULL, eflgs);
 }
 
 

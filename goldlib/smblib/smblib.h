@@ -41,34 +41,34 @@
 #include "lzh.h"
 
 #ifdef SMBEXPORT
-    #undef SMBEXPORT
+#undef SMBEXPORT
 #endif
 
 #ifndef __FLAT__
-    #define __FLAT__    /* only supporting 32-bit targets now */
+#define __FLAT__    /* only supporting 32-bit targets now */
 #endif
 
 #ifdef _WIN32
-    #ifdef __BORLANDC__
-        #define SMBCALL __stdcall
-    #else
-        #define SMBCALL
-    #endif
-    #if defined(SMB_IMPORTS) || defined(SMB_EXPORTS)
-        #if defined(SMB_IMPORTS)
-            #define SMBEXPORT __declspec( dllimport )
-        #else
-            #define SMBEXPORT __declspec( dllexport )
-        #endif
-    #else   /* self-contained executable */
-        #define SMBEXPORT
-    #endif
-#elif defined __unix__
-    #define SMBCALL
-    #define SMBEXPORT
+#ifdef __BORLANDC__
+#define SMBCALL __stdcall
 #else
-    #define SMBCALL
-    #define SMBEXPORT
+#define SMBCALL
+#endif
+#if defined(SMB_IMPORTS) || defined(SMB_EXPORTS)
+#if defined(SMB_IMPORTS)
+#define SMBEXPORT __declspec( dllimport )
+#else
+#define SMBEXPORT __declspec( dllexport )
+#endif
+#else   /* self-contained executable */
+#define SMBEXPORT
+#endif
+#elif defined __unix__
+#define SMBCALL
+#define SMBEXPORT
+#else
+#define SMBCALL
+#define SMBEXPORT
 #endif
 
 #include "smbdefs.h"

@@ -102,13 +102,13 @@
 
 #define SMB_ERR_NOT_OPEN    -100        /* Message base not open */
 
-                                        /* Time zone macros for when_t.zone */
+/* Time zone macros for when_t.zone */
 #define DAYLIGHT            0x8000      /* Daylight savings is active */
 #define US_ZONE             0x4000      /* U.S. time zone */
 #define WESTERN_ZONE        0x2000      /* Non-standard zone west of UT */
 #define EASTERN_ZONE        0x1000      /* Non-standard zone east of UT */
 
-                                        /* US Time Zones (standard) */
+/* US Time Zones (standard) */
 #define AST                 0x40F0      // Atlantic             (-04:00)
 #define EST                 0x412C      // Eastern              (-05:00)
 #define CST                 0x4168      // Central              (-06:00)
@@ -118,7 +118,7 @@
 #define HST                 0x4258      // Hawaii/Alaska        (-10:00)
 #define BST                 0x4294      // Bering               (-11:00)
 
-                                        /* US Time Zones (daylight) */
+/* US Time Zones (daylight) */
 #define ADT                 0xC0F0      // Atlantic             (-03:00)
 #define EDT                 0xC12C      // Eastern              (-04:00)
 #define CDT                 0xC168      // Central              (-05:00)
@@ -128,7 +128,7 @@
 #define HDT                 0xC258      // Hawaii/Alaska        (-09:00)
 #define BDT                 0xC294      // Bering               (-10:00)
 
-                                        /* Non-standard Time Zones */
+/* Non-standard Time Zones */
 #define MID                 0x2294      // Midway               (-11:00)
 #define VAN                 0x21E0      // Vancouver            (-08:00)
 #define EDM                 0x21A4      // Edmonton             (-07:00)
@@ -155,7 +155,7 @@
 #define NOU                 0x1294      // Noumea               (+11:00)
 #define WEL                 0x12D0      // Wellington           (+12:00)
 
-                                        /* Valid hfield_t.types */
+/* Valid hfield_t.types */
 #define SENDER              0x00
 #define SENDERAGENT         0x01
 #define SENDERNETTYPE       0x02
@@ -264,7 +264,7 @@
 #define UNKNOWNASCII        0xf2
 #define UNUSED              0xff
 
-                                        /* Valid dfield_t.types */
+/* Valid dfield_t.types */
 #define TEXT_BODY           0x00
 #define TEXT_SOUL           0x01
 #define TEXT_TAIL           0x02
@@ -279,7 +279,7 @@
 #define UNUSED              0xff
 
 
-                                        /* Message attributes */
+/* Message attributes */
 #define MSG_PRIVATE         (1<<0)
 #define MSG_READ            (1<<1)
 #define MSG_PERMANENT       (1<<2)
@@ -291,7 +291,7 @@
 #define MSG_VALIDATED       (1<<8)
 #define MSG_REPLIED         (1<<9)      // User replied to this message
 
-                                        /* Auxillary header attributes */
+/* Auxillary header attributes */
 #define MSG_FILEREQUEST     (1<<0)      // File request
 #define MSG_FILEATTACH      (1<<1)      // File(s) attached to Msg
 #define MSG_TRUNCFILE       (1<<2)      // Truncate file(s) when sent
@@ -300,7 +300,7 @@
 #define MSG_CONFIRMREQ      (1<<5)      // Confirmation receipt requested
 #define MSG_NODISP          (1<<6)      // Msg may not be displayed to user
 
-                                        /* Message network attributes */
+/* Message network attributes */
 #define MSG_LOCAL           (1<<0)      // Msg created locally
 #define MSG_INTRANSIT       (1<<1)      // Msg is in-transit
 #define MSG_SENT            (1<<2)      // Sent to remote
@@ -318,8 +318,9 @@
 #define MSG_TYPENET         (1<<14)     // Msg is direct network mail
 
 
-enum {
-     NET_NONE               /* Local message */
+enum
+{
+    NET_NONE               /* Local message */
     ,NET_UNKNOWN            /* Unknown network type */
     ,NET_FIDO               /* FidoNet address, faddr_t format (4D) */
     ,NET_POSTLINK           /* Imported with UTI driver */
@@ -329,22 +330,24 @@ enum {
     ,NET_MHS                /* unused */
     ,NET_FIDO_ASCII         /* FidoNet address, ASCIIZ format (e.g. 5D) */
 
-/* Add new ones here */
+    /* Add new ones here */
 
     ,NET_TYPES
-    };
+};
 
-enum {
-     AGENT_PERSON
+enum
+{
+    AGENT_PERSON
     ,AGENT_PROCESS
 
-/* Add new ones here */
+    /* Add new ones here */
 
     ,AGENT_TYPES
-    };
+};
 
-enum {
-     XLAT_NONE              // No translation/End of translation list
+enum
+{
+    XLAT_NONE              // No translation/End of translation list
     ,XLAT_ENCRYPT           // Encrypted data
     ,XLAT_ESCAPED           // 7-bit ASCII escaping for ctrl and 8-bit data
     ,XLAT_HUFFMAN           // Static and adaptive Huffman coding compression
@@ -355,10 +358,10 @@ enum {
     ,XLAT_SHRINK            // Shrink compression (PkZIP)
     ,XLAT_LZH               // LHarc (LHA) Dynamic Huffman coding
 
-/* Add new ones here */
+    /* Add new ones here */
 
     ,XLAT_TYPES
-    };
+};
 
 
 /************/
@@ -366,15 +369,15 @@ enum {
 /************/
 
 #if defined(_WIN32) || defined(__BORLANDC__)
-    #ifndef PRAGMA_PACK
-        #define PRAGMA_PACK
-    #endif
+#ifndef PRAGMA_PACK
+#define PRAGMA_PACK
+#endif
 #endif
 
 #if defined(PRAGMA_PACK)
-    #define _PACK
+#define _PACK
 #else
-    #define _PACK __attribute__ ((packed))
+#define _PACK __attribute__ ((packed))
 #endif
 
 #if defined(PRAGMA_PACK)
@@ -384,14 +387,16 @@ enum {
 #pragma pack(1)
 #endif
 
-typedef struct _PACK {      // Time with time-zone
+typedef struct _PACK        // Time with time-zone
+{
 
     uint32_t  time;         // Local time (unix format)
     int16_t   zone;         // Time zone
 
-    } when_t;
+} when_t;
 
-typedef struct _PACK {      // Index record
+typedef struct _PACK        // Index record
+{
 
     uint16_t  to;           // 16-bit CRC of recipient name (lower case)
     uint16_t  from;         // 16-bit CRC of sender name (lower case)
@@ -401,17 +406,19 @@ typedef struct _PACK {      // Index record
     uint32_t  number;       // number of message (1 based)
     uint32_t  time;         // time/date message was imported/posted
 
-    } idxrec_t;
+} idxrec_t;
 
-typedef struct _PACK {      // Message base header (fixed portion)
+typedef struct _PACK        // Message base header (fixed portion)
+{
 
     uint8_t   id[LEN_HEADER_ID];  // SMB<^Z>
     uint16_t  version;      // version number (initially 100h for 1.00)
     uint16_t  length;       // length including this struct
 
-    } smbhdr_t;
+} smbhdr_t;
 
-typedef struct _PACK {      // Message base status header
+typedef struct _PACK        // Message base status header
+{
 
     uint32_t  last_msg;     // last message number
     uint32_t  total_msgs;   // total messages
@@ -421,9 +428,10 @@ typedef struct _PACK {      // Message base status header
     uint16_t  max_age;      // Maximum age of message to keep in sub (in days)
     uint16_t  attr;         // Attributes for this message base (SMB_HYPER,etc)
 
-    } smbstatus_t;
+} smbstatus_t;
 
-typedef struct _PACK {      // Message header
+typedef struct _PACK        // Message header
+{
 
     uint8_t   id[LEN_HEADER_ID];  // SHD<^Z>
     uint16_t  type;           // Message type (normally 0)
@@ -443,38 +451,42 @@ typedef struct _PACK {      // Message header
     uint32_t  offset;         // Offset for buffer into data file (0 or mod 256)
     uint16_t  total_dfields;  // Total number of data fields
 
-    } msghdr_t;
+} msghdr_t;
 
-typedef struct _PACK {      // Data field
+typedef struct _PACK        // Data field
+{
 
     uint16_t  type;         // Type of data field
     uint32_t  offset;       // Offset into buffer
     uint32_t  length;       // Length of data field
 
-    } dfield_t;
+} dfield_t;
 
-typedef struct _PACK {      // Header field
+typedef struct _PACK        // Header field
+{
 
     uint16_t  type;
     uint16_t  length;       // Length of buffer
 
-    } hfield_t;
+} hfield_t;
 
-typedef struct _PACK {      // FidoNet address (zone:net/node.point)
+typedef struct _PACK        // FidoNet address (zone:net/node.point)
+{
 
     uint16_t  zone;
     uint16_t  net;
     uint16_t  node;
     uint16_t  point;
 
-    } fidoaddr_t;
+} fidoaddr_t;
 
-typedef struct _PACK {      // Network (type and address)
+typedef struct _PACK        // Network (type and address)
+{
 
     uint16_t  type;
     void      *addr;
 
-    } net_t;
+} net_t;
 
 #if defined(PRAGMA_PACK)
 #if defined(__GNUC__)
@@ -484,7 +496,8 @@ typedef struct _PACK {      // Network (type and address)
 #endif
 #endif
 
-typedef struct {                // Message
+typedef struct                  // Message
+{
 
     idxrec_t    idx;            // Index
     msghdr_t    hdr;            // Header record (fixed portion)
@@ -518,9 +531,10 @@ typedef struct {                // Message
     int         forwarded;      // Forwarded from agent to another
     when_t      expiration;     // Message will exipre on this day (if >0)
 
-    } smbmsg_t;
+} smbmsg_t;
 
-typedef struct {            // Message base
+typedef struct              // Message base
+{
 
     char    file[128];      // Path and base filename (no extension)
     FILE    *sdt_fp;        // File pointer for data (.sdt) file
@@ -540,6 +554,6 @@ typedef struct {            // Message base
     uint32_t  msgs;         // Number of messages loaded (for user)
     uint32_t  curmsg;       // Current message number (for user)
 
-    } smb_t;
+} smb_t;
 
 #endif /* Don't add anything after this #endif statement */

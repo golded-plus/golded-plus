@@ -67,7 +67,7 @@
 
 
 //  ------------------------------------------------------------------
-                                     //- Normal key -------- N G E T -
+//- Normal key -------- N G E T -
 #define  Key_0       '0'             // <0>                  - - - -
 #define  Key_1       '1'             // <1>                  - - - -
 #define  Key_2       '2'             // <2>                  - - - -
@@ -160,7 +160,7 @@
 #define  Key_Grv     0x2960          // <`>                  - - - -
 
 //  ------------------------------------------------------------------
-                                     //- Shift key --------- N G E T -
+//- Shift key --------- N G E T -
 #define  Key_S_0     0x0B29          // <0 )>                - - - -
 #define  Key_S_1     0x0221          // <1 !>                - - - -
 #define  Key_S_2     0x0340          // <2 @>                - - - -
@@ -257,7 +257,7 @@
 #endif
 
 //  ------------------------------------------------------------------
-                                     //- Control key ------- N G E T -
+//- Control key ------- N G E T -
 #define  Key_C_2     0x0300          // C <2 @>     [NUL]    - - - -
 #define  Key_C_A     0x1E01          // C <A>       [SOH]    - - - -
 #define  Key_C_B     0x3002          // C <B>       [STX]    - - - -
@@ -333,7 +333,7 @@
 #define  Key_C_Rbr   0x1B1D          // C <] }>     [GS]     - - - -
 
 //  ------------------------------------------------------------------
-                                     //- Alt key ----------- N G E T -
+//- Alt key ----------- N G E T -
 #define  Key_A_0     0x8100          // A <0 )>              - - - -
 #define  Key_A_1     0x7800          // A <1 !>              - - - -
 #define  Key_A_2     0x7900          // A <2 @>              - - - -
@@ -423,7 +423,7 @@
 #define  Key_A_Grv   0x2900          // A <` ~>              - - E -
 
 //  ------------------------------------------------------------------
-                                     //- Mouse KeyCode Returns -------
+//- Mouse KeyCode Returns -------
 #define  Key_M_Scn   0xD4            // Scan-code
 #define  Key_M_Clk   0x30            // Single-click keycodes
 #define  Key_M_ClkL  0xD431          //    Left-button

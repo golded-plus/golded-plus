@@ -74,3 +74,6 @@ docs:
 
 strip:
 	cd $(BIN)/ ; strip *$(PLATFORM)$(EXEEXT)
+
+format:
+	astyle --style=allman -R *.cpp,*.h,*.c,*.cxx,*.hxx

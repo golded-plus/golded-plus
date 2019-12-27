@@ -107,22 +107,25 @@
 //  Misc. defines
 
 #if defined(__MSDOS__) || defined(__OS2__) || defined(__WIN32__)
-  #define GOLD_SLASH_CHR                    '\\'              // Backslash
-  #define GOLD_SLASH_STR                    "\\"
-  #define GOLD_WRONG_SLASH_CHR              '/'               // Fwrdslash
-  #define GOLD_WRONG_SLASH_STR              "/"
-  #define GOLD_SHELL_ENV                    "COMSPEC"
+#define GOLD_SLASH_CHR                    '\\'              // Backslash
+#define GOLD_SLASH_STR                    "\\"
+#define GOLD_WRONG_SLASH_CHR              '/'               // Fwrdslash
+#define GOLD_WRONG_SLASH_STR              "/"
+#define GOLD_SHELL_ENV                    "COMSPEC"
 #else
-  #define GOLD_SLASH_CHR                    '/'               // Fwrdslash
-  #define GOLD_SLASH_STR                    "/"
-  #define GOLD_WRONG_SLASH_CHR              '\\'              // Backslash
-  #define GOLD_WRONG_SLASH_STR              "\\"
-  #define GOLD_SHELL_ENV                    "SHELL"
+#define GOLD_SLASH_CHR                    '/'               // Fwrdslash
+#define GOLD_SLASH_STR                    "/"
+#define GOLD_WRONG_SLASH_CHR              '\\'              // Backslash
+#define GOLD_WRONG_SLASH_STR              "\\"
+#define GOLD_SHELL_ENV                    "SHELL"
 #endif
 
 #define GOLD_ALL_SLASH_STR                  "/\\" //  GOLD_SLASH_STR GOLD_WRONG_SLASH_STR
 
-inline bool isslash(char c) { return (c == GOLD_SLASH_CHR) or (c == GOLD_WRONG_SLASH_CHR); }
+inline bool isslash(char c)
+{
+    return (c == GOLD_SLASH_CHR) or (c == GOLD_WRONG_SLASH_CHR);
+}
 
 
 //  ------------------------------------------------------------------
@@ -134,10 +137,11 @@ typedef char Path[GMAXPATH];
 //  ------------------------------------------------------------------
 //  Structure for filetime stamp checking
 
-struct Stamp {
-  dword ft;  // Timestamp
-  Path fn;   // Filename
-  byte fc;   // Filecheck
+struct Stamp
+{
+    dword ft;  // Timestamp
+    Path fn;   // Filename
+    byte fc;   // Filecheck
 };
 
 
@@ -155,29 +159,53 @@ struct Stamp {
 
 //  Shareable fopen() for compilers that need it
 FILE* fsopen(const char* path, const char* type, int shflag);
-inline FILE* fsopen(const std::string& path, const char* type, int shflag) { return fsopen(path.c_str(), type, shflag); }
+inline FILE* fsopen(const std::string& path, const char* type, int shflag)
+{
+    return fsopen(path.c_str(), type, shflag);
+}
 
 //  ------------------------------------------------------------------
 //  Check if a pathname is a directory
 bool is_dir(const TCHAR *path);
-inline bool is_dir(const std::string &path) { return is_dir(path.c_str()); }
+inline bool is_dir(const std::string &path)
+{
+    return is_dir(path.c_str());
+}
 
 #if defined(_taccess_s)
-inline bool fexist(const TCHAR *filename) { return *filename ? (0 == (_taccess_s(filename, R_OK)) && !is_dir(filename)) : false; }
+inline bool fexist(const TCHAR *filename)
+{
+    return *filename ? (0 == (_taccess_s(filename, R_OK)) && !is_dir(filename)) : false;
+}
 #else
-inline bool fexist(const TCHAR *filename) { return *filename ? (0 == (access(filename, R_OK)) && !is_dir(filename)) : false; }
+inline bool fexist(const TCHAR *filename)
+{
+    return *filename ? (0 == (access(filename, R_OK)) && !is_dir(filename)) : false;
+}
 #endif
-inline bool fexist(const std::string& filename) { return fexist(filename.c_str()); }
+inline bool fexist(const std::string& filename)
+{
+    return fexist(filename.c_str());
+}
 
 //  Convert time returned with stat to FFTime
 time32_t gfixstattime(time32_t st_time);
 
 //  Get timestamp of file
 time32_t GetFiletime(const char* file);
-inline time32_t GetFiletime(const std::string& file) { return GetFiletime(file.c_str()); }
+inline time32_t GetFiletime(const std::string& file)
+{
+    return GetFiletime(file.c_str());
+}
 
-inline long FiletimeCmp(const char* file1, const char* file2) { return long(GetFiletime(file1) - GetFiletime(file2)); }
-inline long FiletimeCmp(const std::string& file1, const std::string& file2) { return FiletimeCmp(file1.c_str(), file2.c_str()); }
+inline long FiletimeCmp(const char* file1, const char* file2)
+{
+    return long(GetFiletime(file1) - GetFiletime(file2));
+}
+inline long FiletimeCmp(const std::string& file1, const std::string& file2)
+{
+    return FiletimeCmp(file1.c_str(), file2.c_str());
+}
 
 //  Get size of open file handle
 long fsize(FILE* fp);
@@ -190,8 +218,14 @@ long GetFilesize(const std::string& filename);
 
 //  Add path to filename if no path is present. Uses static string and don't chech size of 'path', be careful!
 const char* AddPath(const char* path, const char* file);
-inline const char* AddPath(const std::string& path, const char* file) { return AddPath(path.c_str(), file); }
-inline const char* AddPath(const std::string& path, const std::string& file) { return AddPath(path.c_str(), file.c_str()); }
+inline const char* AddPath(const std::string& path, const char* file)
+{
+    return AddPath(path.c_str(), file);
+}
+inline const char* AddPath(const std::string& path, const std::string& file)
+{
+    return AddPath(path.c_str(), file.c_str());
+}
 
 //  Add path to filename, if no path is set. Don't chech size of 'path', be careful!
 void MakePathname(char* pathname, const char* path, const char* name);
@@ -229,10 +263,19 @@ int strschg_environ(char* s, size_t s_size); /* With control buffer size */
 int strschg_environ(std::string& s);         /* Use dinamic allocated string.  */
 
 char* MapPath(char* map, bool reverse = false); // gcarea.cpp
-inline char* ReMapPath(char* map) { return MapPath(map, true); }
+inline char* ReMapPath(char* map)
+{
+    return MapPath(map, true);
+}
 
-inline long lseekset(int fh, long offset) { return lseek(fh, offset, SEEK_SET); }
-inline long lseekset(int fh, long record, long recordsize) { return lseek(fh, record*recordsize, SEEK_SET); }
+inline long lseekset(int fh, long offset)
+{
+    return lseek(fh, offset, SEEK_SET);
+}
+inline long lseekset(int fh, long record, long recordsize)
+{
+    return lseek(fh, record*recordsize, SEEK_SET);
+}
 
 //  OS-independent change directory
 int gchdir(const char* dir);
@@ -278,21 +321,28 @@ int unlock(int handle, long offset, long length);
 int lock(int handle, long offset, long length);
 int unlock(int handle, long offset, long length);
 #if !defined(__QNXNTO__) && !defined(__MINGW32__)
-inline off_t tell(int fh) { return lseek(fh, 0, SEEK_CUR); }
+inline off_t tell(int fh)
+{
+    return lseek(fh, 0, SEEK_CUR);
+}
 #endif
 #endif
 
 #if !defined(sopen) && !defined(__MINGW32__) && !defined(__EMX__) && !defined(__QNXNTO__) && defined(__GNUC__)
-inline int sopen(const char* path, int access, int shflag, int mode) {
+inline int sopen(const char* path, int access, int shflag, int mode)
+{
 #ifdef __UNIX__
-  shflag = 0;
+    shflag = 0;
 #endif
-  return open(path, access|shflag, mode);
+    return open(path, access|shflag, mode);
 }
 #endif
 
 #if defined(__UNIX__) || defined(__CYGWIN__)
-inline int chsize(int handle, long size) { return ftruncate(handle, size); }
+inline int chsize(int handle, long size)
+{
+    return ftruncate(handle, size);
+}
 #endif
 
 

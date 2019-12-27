@@ -48,22 +48,23 @@ const int GMTSK_LINUX    = 6;
 //  ------------------------------------------------------------------
 //  Multitasker base class
 
-class GMTsk {
+class GMTsk
+{
 
 public:
 
-  int detected;
-  const char* name;
+    int detected;
+    const char* name;
 
-  int os2();
-  int win32();
-  int windows();
-  int desqview();
-  int dosint28();
+    int os2();
+    int win32();
+    int windows();
+    int desqview();
+    int dosint28();
 
-  void timeslice();
+    void timeslice();
 
-  GMTsk();
+    GMTsk();
 };
 
 

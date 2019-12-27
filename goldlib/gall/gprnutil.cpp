@@ -32,56 +32,61 @@
 //  ------------------------------------------------------------------
 //  Convert printer definition string to binary codes
 
-char* CvtPrnstr(char* str, char* prn) {
+char* CvtPrnstr(char* str, char* prn)
+{
 
-  uint value;
-  byte len=0;
-  char buf[256];
-  char* ptr=prn;
+    uint value;
+    byte len=0;
+    char buf[256];
+    char* ptr=prn;
 
-  while(*ptr) {
-    switch(*ptr) {
-      case '$':
-        ptr++;
-        do {
-          sscanf(ptr, "%2x", &value);
-          buf[len++] = (byte)value;
-          if(isxdigit(*ptr) and *ptr)   // Skip first digit
+    while(*ptr)
+    {
+        switch(*ptr)
+        {
+        case '$':
             ptr++;
-          if(isxdigit(*ptr) and *ptr)   // Skip second digit
+            do
+            {
+                sscanf(ptr, "%2x", &value);
+                buf[len++] = (byte)value;
+                if(isxdigit(*ptr) and *ptr)   // Skip first digit
+                    ptr++;
+                if(isxdigit(*ptr) and *ptr)   // Skip second digit
+                    ptr++;
+            }
+            while(isxdigit(*ptr) and *ptr);
+            break;
+        case '#':
             ptr++;
-        } while(isxdigit(*ptr) and *ptr);
-        break;
-      case '#':
-        ptr++;
-        value = (byte)atoi(ptr);
-        buf[len++] = value;
-        while(isdigit(*ptr) and *ptr)
-          ptr++;
-        break;
-      case '\"':
-        ptr++;
-        while(*ptr != '\"' and *ptr)
-          buf[len++] = *ptr++;
-        if(*ptr)
-          ptr++;
-        break;
-      case '\'':
-        ptr++;
-        while(*ptr != '\'' and *ptr)
-          buf[len++] = *ptr++;
-        if(*ptr)
-          ptr++;
-        break;
-      default:
-        ptr++;
+            value = (byte)atoi(ptr);
+            buf[len++] = value;
+            while(isdigit(*ptr) and *ptr)
+                ptr++;
+            break;
+        case '\"':
+            ptr++;
+            while(*ptr != '\"' and *ptr)
+                buf[len++] = *ptr++;
+            if(*ptr)
+                ptr++;
+            break;
+        case '\'':
+            ptr++;
+            while(*ptr != '\'' and *ptr)
+                buf[len++] = *ptr++;
+            if(*ptr)
+                ptr++;
+            break;
+        default:
+            ptr++;
+        }
     }
-  }
 
-  *str = len;
-  memcpy(str+1, buf, len);
+    *str = len;
+    memcpy(str+1, buf, len);
 
-  return str;
+    return str;
 }
 
 

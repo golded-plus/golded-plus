@@ -31,7 +31,7 @@
 #define __GEGLOB_H
 
 #ifdef HAS_ICONV
-  #include <iconv.h>
+#include <iconv.h>
 #endif
 
 #include "gelang.h"

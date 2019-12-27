@@ -58,7 +58,7 @@
  */
 #if defined _MSC_VER
 /* FIXME: This condition not tested anywhere, it is true for VS 6.0 and VS 4.2 and  VS 5.0 */
-/* 
+/*
 # define __VISUAL_STUDIO_NOT_LESS (maj, min) \
           ( (1000+ ((maj)-4)*100 + (min)*10) >= _MSC_VER )
 */
@@ -276,14 +276,38 @@ typedef int (*StdCmpCP)(const void*, const void*);
 /*  ------------------------------------------------------------------   */
 /*  Utility templates                                                    */
 
-template <class T> inline bool in_range(T a, T b, T c)   { return (a >= b) and (a <= c); }
-template <class T> inline    T absolute(T a)             { return a < 0 ? -a : a; }
-template <class T> inline  int compare_two(T a, T b)     { return a < b ? -1 : a > b ? 1 : 0; }
-template <class T> inline    T minimum_of_two(T a, T b)  { return (a < b) ? a : b; }
-template <class T> inline    T maximum_of_two(T a, T b)  { return (a > b) ? a : b; }
-template <class T> inline  int zero_or_one(T e)          { return e ? 1 : 0; }
-template <class T> inline bool make_bool(T a)            { return !!a; }
-template <class T> inline bool make_bool_not(T a)        { return !a; }
+template <class T> inline bool in_range(T a, T b, T c)
+{
+    return (a >= b) and (a <= c);
+}
+template <class T> inline    T absolute(T a)
+{
+    return a < 0 ? -a : a;
+}
+template <class T> inline  int compare_two(T a, T b)
+{
+    return a < b ? -1 : a > b ? 1 : 0;
+}
+template <class T> inline    T minimum_of_two(T a, T b)
+{
+    return (a < b) ? a : b;
+}
+template <class T> inline    T maximum_of_two(T a, T b)
+{
+    return (a > b) ? a : b;
+}
+template <class T> inline  int zero_or_one(T e)
+{
+    return e ? 1 : 0;
+}
+template <class T> inline bool make_bool(T a)
+{
+    return !!a;
+}
+template <class T> inline bool make_bool_not(T a)
+{
+    return !a;
+}
 
 
 /*  ------------------------------------------------------------------

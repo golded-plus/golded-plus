@@ -49,9 +49,18 @@ extern dword __crc32_table[];
 //  fill is guaranteed for unsigned operands, and besides we use
 //  prototyped unsigned parameters anyway, so we have no problem here.
 
-inline word updCrc16(byte ch, word crc) { return (word)(__crc16_table[crc >> 8] ^ ((crc << 8) & 0xFFFF) ^ ch); }
-inline word updCrc16c(byte ch, word crc) { return (word)(__crc16_table[(crc >> 8) ^ ch] ^ ((crc << 8) & 0xFFFF)); }
-inline dword updCrc32(byte ch, dword crc) { return (dword)(__crc32_table[(crc & 0xFF) ^ ch] ^ (crc >> 8)); }
+inline word updCrc16(byte ch, word crc)
+{
+    return (word)(__crc16_table[crc >> 8] ^ ((crc << 8) & 0xFFFF) ^ ch);
+}
+inline word updCrc16c(byte ch, word crc)
+{
+    return (word)(__crc16_table[(crc >> 8) ^ ch] ^ ((crc << 8) & 0xFFFF));
+}
+inline dword updCrc32(byte ch, dword crc)
+{
+    return (dword)(__crc32_table[(crc & 0xFF) ^ ch] ^ (crc >> 8));
+}
 
 
 //  ------------------------------------------------------------------
@@ -76,7 +85,7 @@ word  memCrc16(const void* m, long l, bool nocase=true, word mask=CRC16_MASK_NOR
 dword memCrc32(const void* m, long l, bool nocase=true, dword mask=CRC32_MASK_NORMAL);
 inline dword memCrc32(dword crc, const void* m, long l, bool nocase=true, dword mask=CRC32_MASK_NORMAL)
 {
-  return memCrc32(m, l, nocase, crc ^ mask) ^ mask;
+    return memCrc32(m, l, nocase, crc ^ mask) ^ mask;
 }
 
 //  ------------------------------------------------------------------

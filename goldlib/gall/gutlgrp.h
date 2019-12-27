@@ -43,143 +43,169 @@
 
 //  ------------------------------------------------------------------
 
-enum {
-  GRP_AKA,
-  GRP_AKAMATCHING,
-  GRP_AREACOPYADDID,
-  GRP_AREACOPYDIRECT,
-  GRP_AREACOPYTO,
-  GRP_AREAFORWARDDIRECT,
-  GRP_AREAFREQDIRECT,
-  GRP_AREAFREQTO,
-  GRP_AREAREPLYDIRECT,
-  GRP_AREAREPLYTO,
-  GRP_AREAYOUWROTETO,
-  GRP_ATTRIBUTES,
-  GRP_CTRLINFO,
-  GRP_DISPSOFTCR,
-  GRP_EDITHARDTERM,
-  GRP_EDITMIXCASE,
-  GRP_EDITREPLYRE,
-  GRP_FORCETEMPLATE,
-  GRP_HIDESTYLIES,
-  GRP_USESTYLIES,
-  GRP_INPUTFILE,
-  GRP_INTERNETADDRESS,
-  GRP_INTERNETGATE,
-  GRP_INTERNETMSGID,
-  GRP_INTERNETRFCBODY,
-  GRP_LOADLANGUAGE,
-  GRP_MEMBER,
-  GRP_MSGLISTDATE,
-  GRP_MSGLISTFAST,
-  GRP_MSGLISTFIRST,
-  GRP_MSGLISTHEADER,
-  GRP_MSGLISTWIDESUBJ,
-  GRP_NICKNAME,
-  GRP_NETNAME,
-  GRP_ORGANIZATION,
-  GRP_ORIGIN,
-  GRP_OUTPUTFILE,
-  GRP_PLAY,
-  GRP_QUOTEBUFFILE,
-  GRP_QUOTECHARS,
-  GRP_QUOTECTRL,
-  GRP_QUOTESTRING,
-  GRP_QUOTESTOPS,
-  GRP_QUOTEWRAPHARD,
+enum
+{
+    GRP_AKA,
+    GRP_AKAMATCHING,
+    GRP_AREACOPYADDID,
+    GRP_AREACOPYDIRECT,
+    GRP_AREACOPYTO,
+    GRP_AREAFORWARDDIRECT,
+    GRP_AREAFREQDIRECT,
+    GRP_AREAFREQTO,
+    GRP_AREAREPLYDIRECT,
+    GRP_AREAREPLYTO,
+    GRP_AREAYOUWROTETO,
+    GRP_ATTRIBUTES,
+    GRP_CTRLINFO,
+    GRP_DISPSOFTCR,
+    GRP_EDITHARDTERM,
+    GRP_EDITMIXCASE,
+    GRP_EDITREPLYRE,
+    GRP_FORCETEMPLATE,
+    GRP_HIDESTYLIES,
+    GRP_USESTYLIES,
+    GRP_INPUTFILE,
+    GRP_INTERNETADDRESS,
+    GRP_INTERNETGATE,
+    GRP_INTERNETMSGID,
+    GRP_INTERNETRFCBODY,
+    GRP_LOADLANGUAGE,
+    GRP_MEMBER,
+    GRP_MSGLISTDATE,
+    GRP_MSGLISTFAST,
+    GRP_MSGLISTFIRST,
+    GRP_MSGLISTHEADER,
+    GRP_MSGLISTWIDESUBJ,
+    GRP_NICKNAME,
+    GRP_NETNAME,
+    GRP_ORGANIZATION,
+    GRP_ORIGIN,
+    GRP_OUTPUTFILE,
+    GRP_PLAY,
+    GRP_QUOTEBUFFILE,
+    GRP_QUOTECHARS,
+    GRP_QUOTECTRL,
+    GRP_QUOTESTRING,
+    GRP_QUOTESTOPS,
+    GRP_QUOTEWRAPHARD,
 #if defined(GCFG_SPELL_INCLUDED)
-  GRP_SCHECKERDEFLANG,
+    GRP_SCHECKERDEFLANG,
 #endif
-  GRP_SEARCHFOR,
-  GRP_STRIPHTML,
-  GRP_TAGLINE,
-  GRP_TAGLINECHAR,
-  GRP_TAGLINESUPPORT,
-  GRP_TEARLINE,
-  GRP_TEMPLATE,
-  GRP_TEMPLATEMATCH,
-  GRP_TWITMODE,
-  GRP_TWITNAME,
-  GRP_TWITSUBJ,
-  GRP_USEAREA,
-  GRP_USEFWD,
-  GRP_USERNAME,
-  GRP_USESOFTCRXLAT,
-  GRP_USETZUTC,
-  GRP_VIEWHIDDEN,
-  GRP_VIEWKLUDGE,
-  GRP_VIEWQUOTE,
-  GRP_WHOTO,
-  GRP_WRITEHEADER,
-  GRP_WRITETEMPLATE,
-  GRP_XLATEXPORT,
-  GRP_XLATIMPORT,
+    GRP_SEARCHFOR,
+    GRP_STRIPHTML,
+    GRP_TAGLINE,
+    GRP_TAGLINECHAR,
+    GRP_TAGLINESUPPORT,
+    GRP_TEARLINE,
+    GRP_TEMPLATE,
+    GRP_TEMPLATEMATCH,
+    GRP_TWITMODE,
+    GRP_TWITNAME,
+    GRP_TWITSUBJ,
+    GRP_USEAREA,
+    GRP_USEFWD,
+    GRP_USERNAME,
+    GRP_USESOFTCRXLAT,
+    GRP_USETZUTC,
+    GRP_VIEWHIDDEN,
+    GRP_VIEWKLUDGE,
+    GRP_VIEWQUOTE,
+    GRP_WHOTO,
+    GRP_WRITEHEADER,
+    GRP_WRITETEMPLATE,
+    GRP_XLATEXPORT,
+    GRP_XLATIMPORT,
 
-  GRP_MAX
+    GRP_MAX
 };
 
 
 //  ------------------------------------------------------------------
 //  Group class
 
-class Grp {
+class Grp
+{
 
 private:
 
-  class grp_stock { 
+    class grp_stock
+    {
 
-  public:
+    public:
 
-    enum {
-      TYPE_BOOL,
-      TYPE_CHAR,
-      TYPE_INT,
-      TYPE_STRING,
-      TYPE_OBJECT
+        enum
+        {
+            TYPE_BOOL,
+            TYPE_CHAR,
+            TYPE_INT,
+            TYPE_STRING,
+            TYPE_OBJECT
+        };
+
+        int type;
+        union
+        {
+            bool   bool_item;
+            char   char_item;
+            int    int_item;
+            std::string *string_item;
+            void   *object_item;
+        } data;
+
+        grp_stock(bool item)
+        {
+            type = TYPE_BOOL;
+            data.bool_item = item;
+        }
+        grp_stock(char item)
+        {
+            type = TYPE_CHAR;
+            data.char_item = item;
+        }
+        grp_stock(int item)
+        {
+            type = TYPE_INT;
+            data.int_item = item;
+        }
+        grp_stock(const std::string& item)
+        {
+            type = TYPE_STRING;
+            data.string_item = new std::string(item);
+            throw_new(data.string_item);
+        }
+        grp_stock(void *item)
+        {
+            type = TYPE_OBJECT;
+            data.object_item = item;
+        }
     };
 
-    int type;
-    union {
-      bool   bool_item;
-      char   char_item;
-      int    int_item;
-      std::string *string_item;
-      void   *object_item;
-    } data;
-
-    grp_stock(bool item) { type = TYPE_BOOL; data.bool_item = item; }
-    grp_stock(char item) { type = TYPE_CHAR; data.char_item = item; }
-    grp_stock(int item) { type = TYPE_INT; data.int_item = item; }
-    grp_stock(const std::string& item) { type = TYPE_STRING; data.string_item = new std::string(item); throw_new(data.string_item); }
-    grp_stock(void *item) { type = TYPE_OBJECT; data.object_item = item; }
-  };
-
-  std::vector< std::pair<std::string, std::multimap<int, grp_stock> > > container;
-  std::vector< std::pair<std::string, std::multimap<int, grp_stock> > >::iterator currgrp;
+    std::vector< std::pair<std::string, std::multimap<int, grp_stock> > > container;
+    std::vector< std::pair<std::string, std::multimap<int, grp_stock> > >::iterator currgrp;
 
 public:
 
-  int currgrpno;
+    int currgrpno;
 
-  Grp();
-  ~Grp();
+    Grp();
+    ~Grp();
 
-  void AddGrp(const char* id);
-  void AddMbr(const char* id);
-  const char* SetGrp(const char* id);
+    void AddGrp(const char* id);
+    void AddMbr(const char* id);
+    const char* SetGrp(const char* id);
 
-  void AddItm(int __type, bool __data);
-  void AddItm(int __type, char __data);
-  void AddItm(int __type, int __data);
-  void AddItm(int __type, const std::string& __data);
-  void AddItm(int __type, void* __data, int __size);
+    void AddItm(int __type, bool __data);
+    void AddItm(int __type, char __data);
+    void AddItm(int __type, int __data);
+    void AddItm(int __type, const std::string& __data);
+    void AddItm(int __type, void* __data, int __size);
 
-  int GetItm(int __type, bool& __data, int __no=-1);
-  int GetItm(int __type, char& __data, int __no=-1);
-  int GetItm(int __type, int& __data, int __no=-1);
-  int GetItm(int __type, std::string& __data, int __no=-1);
-  int GetItm(int __type, void* __data, int __size, int __no=-1);
+    int GetItm(int __type, bool& __data, int __no=-1);
+    int GetItm(int __type, char& __data, int __no=-1);
+    int GetItm(int __type, int& __data, int __no=-1);
+    int GetItm(int __type, std::string& __data, int __no=-1);
+    int GetItm(int __type, void* __data, int __size, int __no=-1);
 };
 
 

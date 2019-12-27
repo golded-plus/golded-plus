@@ -40,177 +40,195 @@
 //  ------------------------------------------------------------------
 //  Read RemoteAccess MESSAGES.RA
 
-void gareafile::ReadRemoteAccess(char* tag) {
+void gareafile::ReadRemoteAccess(char* tag)
+{
 
-  AreaCfg aa;
-  FILE* fp;
-  char* ptr;
-  Path rapath, file;
-  char origin[80], options[80];
+    AreaCfg aa;
+    FILE* fp;
+    char* ptr;
+    Path rapath, file;
+    char origin[80], options[80];
 
-  *rapath = NUL;
-  *origin = NUL;
+    *rapath = NUL;
+    *origin = NUL;
 
-  CONFIGrecord* config = (CONFIGrecord*)throw_calloc(1, sizeof(CONFIGrecord));
-  if(config) {
+    CONFIGrecord* config = (CONFIGrecord*)throw_calloc(1, sizeof(CONFIGrecord));
+    if(config)
+    {
 
-    ptr = getenv("RA");
-    if(ptr)
-      AddBackslash(strcpy(rapath, ptr));
-    else
-      strcpy(rapath, areapath);
-
-    // Read AREAS.BBS
-    strcpy(options, tag);
-    ptr = strtok(tag, " \t");
-    while(ptr) {
-      if(*ptr != '-') {
-        if(is_dir(ptr) and (*rapath == NUL))
-          AddBackslash(strcpy(rapath, ptr));
+        ptr = getenv("RA");
+        if(ptr)
+            AddBackslash(strcpy(rapath, ptr));
         else
-          GetAreasBBS(ptr, origin, options);
-      }
-      ptr = strtok(NULL, " \t");
-    }
+            strcpy(rapath, areapath);
 
-    MakePathname(file, rapath, "config.ra");
-
-    fp = fsopen(file, "rb", sharemode);
-    if (fp)
-    {
-      if (not quiet)
-        STD_PRINTNL("* Reading " << file);
-
-      fread(config, sizeof(CONFIGrecord), 1, fp);
-      fclose(fp);
-
-      if(config->VersionID >= 0x200)
-        if(ra2usersbbs == 0)
-          ra2usersbbs = 2;
-
-      STRNP2C(config->MsgBasePath);
-      CfgHudsonpath(config->MsgBasePath);
-    }
-
-    MakePathname(file, rapath, "messages.ra");
-    if(not fexist(file))
-      if(*config->SysPath)
-        strnp2cc(rapath, config->SysPath, sizeof(Path));
-
-    fp = fsopen(file, "rb", sharemode);
-    if (fp)
-    {
-      setvbuf(fp, NULL, _IOFBF, 8192);
-
-      if (not quiet)
-        STD_PRINTNL("* Reading " << file);
-
-      if(config->VersionID >= 0x200) {
-        MESSAGErecord* area = new MESSAGErecord; throw_new(area);
-        int n=0;
-        while(fread(area, sizeof(MESSAGErecord), 1, fp) == 1) {
-          n++;
-          if(*area->Name) {
-            aa.reset();
-            aa.aka = CAST(ftn_addr, config->Address[area->AkaAddress]);
-            switch(area->Typ) {
-              case LocalMail:   // Local
-                aa.type = GMB_LOCAL;
-                aa.attr = attribslocal;
-                break;
-              case NetMail:     // Netmail
-                aa.type = GMB_NET;
-                aa.attr = attribsnet;
-                break;
-              default:          // Echomail
-                aa.type = GMB_ECHO;
-                aa.attr = attribsecho;
+        // Read AREAS.BBS
+        strcpy(options, tag);
+        ptr = strtok(tag, " \t");
+        while(ptr)
+        {
+            if(*ptr != '-')
+            {
+                if(is_dir(ptr) and (*rapath == NUL))
+                    AddBackslash(strcpy(rapath, ptr));
+                else
+                    GetAreasBBS(ptr, origin, options);
             }
-            switch(area->MsgKinds) {
-              case Both:
-              case Private:
-                aa.attr.pvt1();
-                break;
-              case Public:
-                aa.attr.pvt0();
-                break;
-              case ROnly:
-                aa.attr.r_o1();
-                break;
-            }
-            if(area->Group)
-              aa.groupid = (char)(area->Group+'A'-1);
-            aa.setdesc(STRNP2C(area->Name));
-            STRNP2C(area->OriginLine);
-            strchg(area->OriginLine, '@', '0');
-            aa.setorigin(area->OriginLine);
-
-            if(area->Attribute & 0x80) {
-              aa.setpath(STRNP2C(area->JAMbase));
-              aa.basetype = "JAM";
-              AddNewArea(aa);
-            }
-            else {
-              if(config->VersionID >= 0x210)
-                aa.board = area->AreaNum;
-              else
-                aa.board = n;
-              aa.basetype = "HUDSON";
-              AddNewArea(aa);
-            }
-          }
+            ptr = strtok(NULL, " \t");
         }
-        throw_delete(area);
-      }
-      else {
-        _messagesra* area = new _messagesra; throw_new(area);
-        for(int n=0; n<200; n++) {
-          fread(area, sizeof(_messagesra), 1, fp);
-          if(*area->name) {
-            aa.reset();
-            aa.basetype = "HUDSON";
-            aa.board = n+1;
-            aa.aka = CAST(ftn_addr, config->Address[area->akaaddress]);
-            switch(area->type) {
-              case LocalMail:   // Local
-                aa.type = GMB_LOCAL;
-                aa.attr = attribslocal;
-                break;
-              case NetMail:     // Netmail
-                aa.type = GMB_NET;
-                aa.attr = attribsnet;
-                break;
-              default:          // Echomail
-                aa.type = GMB_ECHO;
-                aa.attr = attribsecho;
-            }
-            switch(area->msgkinds) {
-              case Both:
-              case Private:
-                aa.attr.pvt1();
-                break;
-              case Public:
-                aa.attr.pvt0();
-                break;
-              case ROnly:
-                aa.attr.r_o1();
-                break;
-            }
-            aa.setdesc(STRNP2C(area->name));
-            STRNP2C(area->originline);
-            strchg(area->originline, '@', '0');
-            aa.setorigin(area->originline);
-            AddNewArea(aa);
-          }
+
+        MakePathname(file, rapath, "config.ra");
+
+        fp = fsopen(file, "rb", sharemode);
+        if (fp)
+        {
+            if (not quiet)
+                STD_PRINTNL("* Reading " << file);
+
+            fread(config, sizeof(CONFIGrecord), 1, fp);
+            fclose(fp);
+
+            if(config->VersionID >= 0x200)
+                if(ra2usersbbs == 0)
+                    ra2usersbbs = 2;
+
+            STRNP2C(config->MsgBasePath);
+            CfgHudsonpath(config->MsgBasePath);
         }
-        throw_delete(area);
-      }
 
-      fclose(fp);
+        MakePathname(file, rapath, "messages.ra");
+        if(not fexist(file))
+            if(*config->SysPath)
+                strnp2cc(rapath, config->SysPath, sizeof(Path));
+
+        fp = fsopen(file, "rb", sharemode);
+        if (fp)
+        {
+            setvbuf(fp, NULL, _IOFBF, 8192);
+
+            if (not quiet)
+                STD_PRINTNL("* Reading " << file);
+
+            if(config->VersionID >= 0x200)
+            {
+                MESSAGErecord* area = new MESSAGErecord;
+                throw_new(area);
+                int n=0;
+                while(fread(area, sizeof(MESSAGErecord), 1, fp) == 1)
+                {
+                    n++;
+                    if(*area->Name)
+                    {
+                        aa.reset();
+                        aa.aka = CAST(ftn_addr, config->Address[area->AkaAddress]);
+                        switch(area->Typ)
+                        {
+                        case LocalMail:   // Local
+                            aa.type = GMB_LOCAL;
+                            aa.attr = attribslocal;
+                            break;
+                        case NetMail:     // Netmail
+                            aa.type = GMB_NET;
+                            aa.attr = attribsnet;
+                            break;
+                        default:          // Echomail
+                            aa.type = GMB_ECHO;
+                            aa.attr = attribsecho;
+                        }
+                        switch(area->MsgKinds)
+                        {
+                        case Both:
+                        case Private:
+                            aa.attr.pvt1();
+                            break;
+                        case Public:
+                            aa.attr.pvt0();
+                            break;
+                        case ROnly:
+                            aa.attr.r_o1();
+                            break;
+                        }
+                        if(area->Group)
+                            aa.groupid = (char)(area->Group+'A'-1);
+                        aa.setdesc(STRNP2C(area->Name));
+                        STRNP2C(area->OriginLine);
+                        strchg(area->OriginLine, '@', '0');
+                        aa.setorigin(area->OriginLine);
+
+                        if(area->Attribute & 0x80)
+                        {
+                            aa.setpath(STRNP2C(area->JAMbase));
+                            aa.basetype = "JAM";
+                            AddNewArea(aa);
+                        }
+                        else
+                        {
+                            if(config->VersionID >= 0x210)
+                                aa.board = area->AreaNum;
+                            else
+                                aa.board = n;
+                            aa.basetype = "HUDSON";
+                            AddNewArea(aa);
+                        }
+                    }
+                }
+                throw_delete(area);
+            }
+            else
+            {
+                _messagesra* area = new _messagesra;
+                throw_new(area);
+                for(int n=0; n<200; n++)
+                {
+                    fread(area, sizeof(_messagesra), 1, fp);
+                    if(*area->name)
+                    {
+                        aa.reset();
+                        aa.basetype = "HUDSON";
+                        aa.board = n+1;
+                        aa.aka = CAST(ftn_addr, config->Address[area->akaaddress]);
+                        switch(area->type)
+                        {
+                        case LocalMail:   // Local
+                            aa.type = GMB_LOCAL;
+                            aa.attr = attribslocal;
+                            break;
+                        case NetMail:     // Netmail
+                            aa.type = GMB_NET;
+                            aa.attr = attribsnet;
+                            break;
+                        default:          // Echomail
+                            aa.type = GMB_ECHO;
+                            aa.attr = attribsecho;
+                        }
+                        switch(area->msgkinds)
+                        {
+                        case Both:
+                        case Private:
+                            aa.attr.pvt1();
+                            break;
+                        case Public:
+                            aa.attr.pvt0();
+                            break;
+                        case ROnly:
+                            aa.attr.r_o1();
+                            break;
+                        }
+                        aa.setdesc(STRNP2C(area->name));
+                        STRNP2C(area->originline);
+                        strchg(area->originline, '@', '0');
+                        aa.setorigin(area->originline);
+                        AddNewArea(aa);
+                    }
+                }
+                throw_delete(area);
+            }
+
+            fclose(fp);
+        }
+
+        throw_free(config);
     }
-
-    throw_free(config);
-  }
 }
 
 

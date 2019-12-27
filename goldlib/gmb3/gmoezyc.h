@@ -88,57 +88,61 @@ const byte EZYC_EXTATTR_SEEN     = 0x80;
 //  ------------------------------------------------------------------
 //  Ezycom message header
 
-struct EzycHdr {
+struct EzycHdr
+{
 
-  word    replyto;
-  word    reply1st;
+    word    replyto;
+    word    reply1st;
 
-  uint32_t   startposition;
-  uint32_t   messagelength;
+    uint32_t   startposition;
+    uint32_t   messagelength;
 
-  Addr    destnet;
-  Addr    orignet;
+    Addr    destnet;
+    Addr    orignet;
 
-  word    cost;           // redefine to replynext?
+    word    cost;           // redefine to replynext?
 
-  byte    msgattr;
-  byte    netattr;
-  byte    extattr;
+    byte    msgattr;
+    byte    netattr;
+    byte    extattr;
 
-  FTime   posttimedate;
-  FTime   recvtimedate;
+    FTime   posttimedate;
+    FTime   recvtimedate;
 
-  char    whoto[EZYC_MAXNAME];
-  char    whofrom[EZYC_MAXNAME];
-  char    subject[EZYC_MAXSUBJ];
+    char    whoto[EZYC_MAXNAME];
+    char    whofrom[EZYC_MAXNAME];
+    char    subject[EZYC_MAXSUBJ];
 };
 
 
 //  ------------------------------------------------------------------
 //  Ezycom LASTCOMB.BBS record structure
 
-struct EzycLast {
-  word combinedinfo;
-  word lastreadinfo[16];
+struct EzycLast
+{
+    word combinedinfo;
+    word lastreadinfo[16];
 };
 
 
 //  ------------------------------------------------------------------
 //  Ezycom MSGFAST.BBS record structure
 
-struct EzycFast {
-  dword whoto;       // 32 bit CRC on WhoTo in MSGHxxx.BBS
-  word msgboard;
-  word msgnumber;
+struct EzycFast
+{
+    dword whoto;       // 32 bit CRC on WhoTo in MSGHxxx.BBS
+    word msgboard;
+    word msgnumber;
 };
 
 
 //  ------------------------------------------------------------------
 //  Ezycom MSGDLTD.BBS record
 
-struct EzycDeleted {
-  word msgboard;
-  word msgnumber;
+struct EzycDeleted
+{
+    word msgboard;
+    word msgnumber;
 };
 
 
@@ -151,98 +155,111 @@ struct EzycDeleted {
 
 //  ------------------------------------------------------------------
 
-struct EzycData {
-  int fhhdr;
-  int fhtxt;
-  int fhnow;
-  int omode;
-  int smode;
-  int timesposted;
-  int islocked;
-  Path ezyfile;
+struct EzycData
+{
+    int fhhdr;
+    int fhtxt;
+    int fhnow;
+    int omode;
+    int smode;
+    int timesposted;
+    int islocked;
+    Path ezyfile;
 };
 
 
 //  ------------------------------------------------------------------
 
-struct EzycWide {
-  int         ver;
-  EzycomUser* user;
-  int         userno;
-  int         maxmess;
-  const char* msgbasepath;
-  const char* userbasepath;
+struct EzycWide
+{
+    int         ver;
+    EzycomUser* user;
+    int         userno;
+    int         maxmess;
+    const char* msgbasepath;
+    const char* userbasepath;
 };
 
 
 //  ------------------------------------------------------------------
 
-class EzycomArea : public gmo_area {
+class EzycomArea : public gmo_area
+{
 
 protected:
 
-  EzycWide* wide;
-  EzycData* data;
+    EzycWide* wide;
+    EzycData* data;
 
-  void data_open();
-  void data_close();
+    void data_open();
+    void data_close();
 
-  char* ret_mess_xxx(char* __path, byte __type);
-  char* ret_mess_area(char* __path);
+    char* ret_mess_xxx(char* __path, byte __type);
+    char* ret_mess_area(char* __path);
 
-  int raw_open();
+    int raw_open();
 
-  void test_raw_open(int __fileline);
-  void raw_close();
-  int test_open(const char* __file, int __mode, int __share);
+    void test_raw_open(int __fileline);
+    void raw_close();
+    int test_open(const char* __file, int __mode, int __share);
 
-  void save_lastread();
+    void save_lastread();
 
-  void raw_scan(int __keep_index);
+    void raw_scan(int __keep_index);
 
-  int load_message(int __mode, gmsg* __msg, EzycHdr& __hdr);
-  void save_message(int __mode, gmsg* __msg, EzycHdr& __hdr);
+    int load_message(int __mode, gmsg* __msg, EzycHdr& __hdr);
+    void save_message(int __mode, gmsg* __msg, EzycHdr& __hdr);
 
 
 public:
 
-  EzycomArea() { wide = NULL; data = NULL; }
-  virtual ~EzycomArea() {}
+    EzycomArea()
+    {
+        wide = NULL;
+        data = NULL;
+    }
+    virtual ~EzycomArea() {}
 
-  virtual bool havereceivedstamp() const { return false; }
-  virtual bool requiresoftterm() const { return true; }
+    virtual bool havereceivedstamp() const
+    {
+        return false;
+    }
+    virtual bool requiresoftterm() const
+    {
+        return true;
+    }
 
-  //  ----------------------------------------------------------------
-  //  Messagebase member functions
-  
-  void open();
-  void close();
+    //  ----------------------------------------------------------------
+    //  Messagebase member functions
 
-  void suspend();
-  void resume();
+    void open();
+    void close();
 
-  void lock();
-  void unlock();
+    void suspend();
+    void resume();
 
-  void scan();
-  void scan_area();
-  void scan_area_pm();
+    void lock();
+    void unlock();
 
-  int load_hdr(gmsg* msg);
-  int load_msg(gmsg* msg);
+    void scan();
+    void scan_area();
+    void scan_area_pm();
 
-  void save_hdr(int mode, gmsg* msg);
-  void save_msg(int mode, gmsg* msg);
+    int load_hdr(gmsg* msg);
+    int load_msg(gmsg* msg);
 
-  void del_msg(gmsg* msg);
+    void save_hdr(int mode, gmsg* msg);
+    void save_msg(int mode, gmsg* msg);
 
-  void new_msgno(gmsg* msg);
-  char* user_lookup(char* lookfor);
-  int renumber();
+    void del_msg(gmsg* msg);
 
-  void update_timesread(gmsg* msg);
+    void new_msgno(gmsg* msg);
+    char* user_lookup(char* lookfor);
+    int renumber();
 
-  Line* make_dump_msg(Line*& lin, gmsg* msg, char* lng_head);
+    void update_timesread(gmsg* msg);
+
+    Line* make_dump_msg(Line*& lin, gmsg* msg, char* lng_head);
 };
 
 

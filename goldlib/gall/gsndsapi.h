@@ -56,18 +56,19 @@
 //  ------------------------------------------------------------------
 //  Goldware Sound API data structure
 
-struct gsapidata {
-           word driver_version;
-           word dsp_version;
-           word io_port;
-           byte irq_number;
-           byte dma_channel;
-           word sample_rate;
-  volatile word status;
-           word buffer_segment;
-           word buffer_offset;
-           long buffer_length;
-           char parameters[80];
+struct gsapidata
+{
+    word driver_version;
+    word dsp_version;
+    word io_port;
+    byte irq_number;
+    byte dma_channel;
+    word sample_rate;
+    volatile word status;
+    word buffer_segment;
+    word buffer_offset;
+    long buffer_length;
+    char parameters[80];
 } __attribute__((packed));
 
 

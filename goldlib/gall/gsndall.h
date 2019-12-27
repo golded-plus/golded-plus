@@ -49,76 +49,84 @@ extern int debug;
 
 //  ------------------------------------------------------------------
 
-class gsnd {
+class gsnd
+{
 
 protected:
 
-  #if defined(__MSDOS__)
-  int mpx;
-  #if defined(__DJGPP__) || (defined(__WATCOMC__) && defined(__386__))
-  int buffer;
-  #else
-  char* buffer;
-  #endif
-  gsapidata* data;
-  uint key_value;
-  int call_api(uint al, uint bx=0);
-  #endif
+#if defined(__MSDOS__)
+    int mpx;
+#if defined(__DJGPP__) || (defined(__WATCOMC__) && defined(__386__))
+    int buffer;
+#else
+    char* buffer;
+#endif
+    gsapidata* data;
+    uint key_value;
+    int call_api(uint al, uint bx=0);
+#endif
 
-  int api_open;
-  int file_open;
+    int api_open;
+    int file_open;
 
-  void free_buffer();
+    void free_buffer();
 
 public:
 
-  gsnd();
-  ~gsnd();
+    gsnd();
+    ~gsnd();
 
-  // API open/close
-  int open_api();
-  int close_api();
+    // API open/close
+    int open_api();
+    int close_api();
 
-  // Sound file open/close
-  int open(const char* file);
-  int close();
+    // Sound file open/close
+    int open(const char* file);
+    int close();
 
-  // Sound play and control
-  int play(uint sample_rate=0);
-  int stop();
-  int pause();
-  int resume();
-  int break_loop(int method=0);
-  void speaker(int onoff);
+    // Sound play and control
+    int play(uint sample_rate=0);
+    int stop();
+    int pause();
+    int resume();
+    int break_loop(int method=0);
+    void speaker(int onoff);
 
-  // Information   
-  uint get_sample_rate();
-  int api_is_open()  { return api_open; }
-  int is_playing();
+    // Information
+    uint get_sample_rate();
+    int api_is_open()
+    {
+        return api_open;
+    }
+    int is_playing();
 };
 
 
 //  ------------------------------------------------------------------
 
-class gsound {
+class gsound
+{
 
 protected:
 
-  int installed;
+    int installed;
 
 public:
 
-  gsound();
-  ~gsound();
+    gsound();
+    ~gsound();
 
-  int load(const char* file);
-  int unload();
-  int play();
-  int stop();
+    int load(const char* file);
+    int unload();
+    int play();
+    int stop();
 
-  int is_playing();
+    int is_playing();
 
-  int is_installed() { return installed; }
+    int is_installed()
+    {
+        return installed;
+    }
 };
 
 

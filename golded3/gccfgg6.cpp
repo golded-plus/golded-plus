@@ -35,368 +35,448 @@ extern char* val;
 
 //  ------------------------------------------------------------------
 
-void CfgMsglistfirst() {
+void CfgMsglistfirst()
+{
 
-  bool flag = make_bool(GetYesno(val));
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_MSGLISTFIRST, flag);
-  else
-    CFG->msglistfirst = flag;
+    bool flag = make_bool(GetYesno(val));
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_MSGLISTFIRST, flag);
+    else
+        CFG->msglistfirst = flag;
 }
 
 //  ------------------------------------------------------------------
 
-void CfgMsglistheader() {
+void CfgMsglistheader()
+{
 
-  bool flag = make_bool(GetYesno(val));
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_MSGLISTHEADER, flag);
-  else
-    CFG->msglistheader = flag;
+    bool flag = make_bool(GetYesno(val));
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_MSGLISTHEADER, flag);
+    else
+        CFG->msglistheader = flag;
 }
 
 //  ------------------------------------------------------------------
 
-void CfgMsglistwidesubj() {
+void CfgMsglistwidesubj()
+{
 
-  bool flag = make_bool(GetYesno(val));
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_MSGLISTWIDESUBJ, flag);
-  else
-    CFG->msglistwidesubj = flag;
+    bool flag = make_bool(GetYesno(val));
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_MSGLISTWIDESUBJ, flag);
+    else
+        CFG->msglistwidesubj = flag;
 }
 
 //  ------------------------------------------------------------------
 
-void CfgNamesfile() {
+void CfgNamesfile()
+{
 
-  strcpy(CFG->namesfile, val);
+    strcpy(CFG->namesfile, val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgNickname() {
-  
-  Name buf;
-  
-  strxcpy(buf, val, sizeof(buf));
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_NICKNAME, buf, strlen(buf)+1);
-  else
-    strcpy(CFG->nickname, buf);
-}
-  
-//  ------------------------------------------------------------------
+void CfgNickname()
+{
 
-void CfgNetname() {
-  
-  Name buf;
-  
-  strxcpy(buf, StripQuotes(val), sizeof(buf));
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_NETNAME, buf, strlen(buf)+1);
-  else
-    strcpy(CFG->netname, buf);
-}
-  
-//  ------------------------------------------------------------------
+    Name buf;
 
-void CfgNodelist() {
-
-  // Only used by GoldNODE
+    strxcpy(buf, val, sizeof(buf));
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_NICKNAME, buf, strlen(buf)+1);
+    else
+        strcpy(CFG->nickname, buf);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgNodepath() {
+void CfgNetname()
+{
 
-  MapPath(PathCopy(CFG->nodepath, val));
+    Name buf;
+
+    strxcpy(buf, StripQuotes(val), sizeof(buf));
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_NETNAME, buf, strlen(buf)+1);
+    else
+        strcpy(CFG->netname, buf);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgNodepathfd() {
+void CfgNodelist()
+{
 
-  MapPath(PathCopy(CFG->nodepathfd, val));
+    // Only used by GoldNODE
 }
 
 //  ------------------------------------------------------------------
 
-void CfgNodepathv7() {
+void CfgNodepath()
+{
 
-  MapPath(PathCopy(CFG->nodepathv7, val));
+    MapPath(PathCopy(CFG->nodepath, val));
+}
+
+//  ------------------------------------------------------------------
+
+void CfgNodepathfd()
+{
+
+    MapPath(PathCopy(CFG->nodepathfd, val));
+}
+
+//  ------------------------------------------------------------------
+
+void CfgNodepathv7()
+{
+
+    MapPath(PathCopy(CFG->nodepathv7, val));
 }
 
 //  ------------------------------------------------------------------
 
 extern char v7nodeflags[16][9];
 
-void CfgNodev7flags() {
+void CfgNodev7flags()
+{
 
-  GTok t;
-  char* flagstring = t.First(val);
-  char* flagvals = t.Next();
-  uint flagval;
-  if(g_tolower(*flagvals) == 'b')
-    flagval = atoi(flagvals+1);
-  else {
-    flagval = atoi(flagvals);
-    switch(flagval) {
-      case    32: flagval =  5; break;
-      case    64: flagval =  6; break;
-      case   128: flagval =  7; break;
-      case   256: flagval =  8; break;
-      case   512: flagval =  9; break;
-      case  1024: flagval = 10; break;
-      case  2048: flagval = 11; break;
-      case  8192: flagval = 13; break;
-      case 16384: flagval = 14; break;
-      default:    flagval = 0;
+    GTok t;
+    char* flagstring = t.First(val);
+    char* flagvals = t.Next();
+    uint flagval;
+    if(g_tolower(*flagvals) == 'b')
+        flagval = atoi(flagvals+1);
+    else
+    {
+        flagval = atoi(flagvals);
+        switch(flagval)
+        {
+        case    32:
+            flagval =  5;
+            break;
+        case    64:
+            flagval =  6;
+            break;
+        case   128:
+            flagval =  7;
+            break;
+        case   256:
+            flagval =  8;
+            break;
+        case   512:
+            flagval =  9;
+            break;
+        case  1024:
+            flagval = 10;
+            break;
+        case  2048:
+            flagval = 11;
+            break;
+        case  8192:
+            flagval = 13;
+            break;
+        case 16384:
+            flagval = 14;
+            break;
+        default:
+            flagval = 0;
+        }
     }
-  }
-  if(flagval)
-    strcpy(stpcpy(v7nodeflags[flagval], flagstring), ",");
+    if(flagval)
+        strcpy(stpcpy(v7nodeflags[flagval], flagstring), ",");
 }
 
 //  ------------------------------------------------------------------
 
 extern char v7modemtype[8][9];
 
-void CfgNodev7modem() {
+void CfgNodev7modem()
+{
 
-  GTok t;
-  char* modemstring = t.First(val);
-  char* modemvals = t.Next();
-  int modemval;
-  if(g_tolower(*modemvals) == 'b')
-    modemval = atoi(modemvals+1);
-  else {
-    modemval = atoi(modemvals);
-    switch(modemval) {
-      case   1: modemval = 0; break;
-      case   2: modemval = 1; break;
-      case   4: modemval = 2; break;
-      case   8: modemval = 3; break;
-      case  16: modemval = 4; break;
-      case  32: modemval = 5; break;
-      case  64: modemval = 6; break;
-      case 128: modemval = 7; break;
-      default:  modemval = -1;
-    }
-  }
-  if(modemval >= 0)
-    strcat(stpcpy(v7modemtype[modemval], modemstring), ",");
-}
-
-//  ------------------------------------------------------------------
-
-void CfgOrganization() {
-
-  INam buf;
-  strxcpy(buf, val, sizeof(buf));
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_ORGANIZATION, buf, strlen(buf)+1);
-  else
-    strcpy(CFG->organization, buf);
-}
-
-//  ------------------------------------------------------------------
-
-void CfgOrigin(const char* v)  { char buf[256]; val = strxcpy(buf, v, sizeof(buf)); CfgOrigin(); }
-void CfgOrigin() {
-
-  if(not strblank(val)) {
-    StripQuotes(val);
-    if(cfgingroup)
-      CFG->grp.AddItm(GRP_ORIGIN, val, strlen(val)+1);
+    GTok t;
+    char* modemstring = t.First(val);
+    char* modemvals = t.Next();
+    int modemval;
+    if(g_tolower(*modemvals) == 'b')
+        modemval = atoi(modemvals+1);
     else
-      CFG->origin.push_back(val);
-  }
+    {
+        modemval = atoi(modemvals);
+        switch(modemval)
+        {
+        case   1:
+            modemval = 0;
+            break;
+        case   2:
+            modemval = 1;
+            break;
+        case   4:
+            modemval = 2;
+            break;
+        case   8:
+            modemval = 3;
+            break;
+        case  16:
+            modemval = 4;
+            break;
+        case  32:
+            modemval = 5;
+            break;
+        case  64:
+            modemval = 6;
+            break;
+        case 128:
+            modemval = 7;
+            break;
+        default:
+            modemval = -1;
+        }
+    }
+    if(modemval >= 0)
+        strcat(stpcpy(v7modemtype[modemval], modemstring), ",");
 }
 
 //  ------------------------------------------------------------------
 
-void CfgOutboundpath() {
+void CfgOrganization()
+{
 
-  PathCopy(CFG->outboundpath, val);
+    INam buf;
+    strxcpy(buf, val, sizeof(buf));
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_ORGANIZATION, buf, strlen(buf)+1);
+    else
+        strcpy(CFG->organization, buf);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgOutputfile() {
-
-  Path buf;
-  strxcpy(buf, val, sizeof(buf));
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_OUTPUTFILE, buf, strlen(buf)+1);
-  else
-    strcpy(CFG->outputfile, buf);
+void CfgOrigin(const char* v)
+{
+    char buf[256];
+    val = strxcpy(buf, v, sizeof(buf));
+    CfgOrigin();
 }
+void CfgOrigin()
+{
 
-void CfgPathreportfile() {
-
-  PathCopy(CFG->pathreportfile, val);
-}
-
-//  ------------------------------------------------------------------
-
-void CfgPcboardpath(const char *path, bool force) {
-
-  if(force or strblank(CFG->pcboardpath))
-    MapPath(PathCopy(CFG->pcboardpath, path));
-}
-
-void CfgPcboardpath() {
-
-  CfgPcboardpath(val, true);
+    if(not strblank(val))
+    {
+        StripQuotes(val);
+        if(cfgingroup)
+            CFG->grp.AddItm(GRP_ORIGIN, val, strlen(val)+1);
+        else
+            CFG->origin.push_back(val);
+    }
 }
 
 //  ------------------------------------------------------------------
 
-void CfgPcboarduserno() {
+void CfgOutboundpath()
+{
 
-  CFG->pcboarduserno = atoi(val);
+    PathCopy(CFG->outboundpath, val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgPeekurloptions() {
+void CfgOutputfile()
+{
 
-  if(striinc("SORT", val))
-    CFG->peekurloptions |= PEEK_SORT;
-  if(striinc("FROMTOP", val))
-    CFG->peekurloptions |= PEEK_FROMTOP;
-  if(striinc("NOTFROMTOP", val))
-    CFG->peekurloptions &= ~PEEK_FROMTOP;
+    Path buf;
+    strxcpy(buf, val, sizeof(buf));
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_OUTPUTFILE, buf, strlen(buf)+1);
+    else
+        strcpy(CFG->outputfile, buf);
+}
+
+void CfgPathreportfile()
+{
+
+    PathCopy(CFG->pathreportfile, val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgPersonalmail() {
+void CfgPcboardpath(const char *path, bool force)
+{
 
-  if(striinc("STARTUP", val))
-    CFG->personalmail |= PM_STARTUP;
-  if(striinc("NOTSTARTUP", val))
-    CFG->personalmail &= ~PM_STARTUP;
-  if(striinc("ALLNAMES", val))
-    CFG->personalmail |= PM_ALLNAMES;
-  if(striinc("NOTALLNAMES", val))
-    CFG->personalmail &= ~PM_ALLNAMES;
-  if(striinc("LISTONLY", val))
-    CFG->personalmail |= PM_LISTONLY;
-  if(striinc("NOTLISTONLY", val))
-    CFG->personalmail &= ~PM_LISTONLY;
+    if(force or strblank(CFG->pcboardpath))
+        MapPath(PathCopy(CFG->pcboardpath, path));
+}
+
+void CfgPcboardpath()
+{
+
+    CfgPcboardpath(val, true);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgPlay() {
+void CfgPcboarduserno()
+{
 
-  Path buf;
-  strxcpy(buf, val, sizeof(buf));
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_PLAY, buf, strlen(buf)+1);
-  else
-    FileToGPlay(&CFG->play, buf);
+    CFG->pcboarduserno = atoi(val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgPrintdevice() {
+void CfgPeekurloptions()
+{
 
-  strcpy(CFG->printdevice, val);
+    if(striinc("SORT", val))
+        CFG->peekurloptions |= PEEK_SORT;
+    if(striinc("FROMTOP", val))
+        CFG->peekurloptions |= PEEK_FROMTOP;
+    if(striinc("NOTFROMTOP", val))
+        CFG->peekurloptions &= ~PEEK_FROMTOP;
 }
 
 //  ------------------------------------------------------------------
 
-void CfgPrintinit() {
+void CfgPersonalmail()
+{
 
-  CvtPrnstr(CFG->printinit, val);
+    if(striinc("STARTUP", val))
+        CFG->personalmail |= PM_STARTUP;
+    if(striinc("NOTSTARTUP", val))
+        CFG->personalmail &= ~PM_STARTUP;
+    if(striinc("ALLNAMES", val))
+        CFG->personalmail |= PM_ALLNAMES;
+    if(striinc("NOTALLNAMES", val))
+        CFG->personalmail &= ~PM_ALLNAMES;
+    if(striinc("LISTONLY", val))
+        CFG->personalmail |= PM_LISTONLY;
+    if(striinc("NOTLISTONLY", val))
+        CFG->personalmail &= ~PM_LISTONLY;
 }
 
 //  ------------------------------------------------------------------
 
-void CfgPrintlength() {
+void CfgPlay()
+{
 
-  CFG->printlength = atoi(val);
+    Path buf;
+    strxcpy(buf, val, sizeof(buf));
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_PLAY, buf, strlen(buf)+1);
+    else
+        FileToGPlay(&CFG->play, buf);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgPrintmargin() {
+void CfgPrintdevice()
+{
 
-  CFG->printmargin = atoi(val);
+    strcpy(CFG->printdevice, val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgPrintreset() {
+void CfgPrintinit()
+{
 
-  CvtPrnstr(CFG->printreset, val);
+    CvtPrnstr(CFG->printinit, val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgQuotebuffile() {
+void CfgPrintlength()
+{
 
-  Path buf;
-  strxcpy(buf, val, sizeof(buf));
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_QUOTEBUFFILE, buf, strlen(buf)+1);
-  else
-    strcpy(CFG->quotebuffile, buf);
+    CFG->printlength = atoi(val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgQuotebufmode() {
+void CfgPrintmargin()
+{
 
-  if(strieql(val, "ASK"))
-    CFG->quotebufmode = QBUF_ASK;
-  else if(strieql(val, "APPEND"))
-    CFG->quotebufmode = QBUF_APPEND;
-  else if(strieql(val, "OVERWRITE"))
-    CFG->quotebufmode = QBUF_OVERWRITE;
+    CFG->printmargin = atoi(val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgQuotechars() {
+void CfgPrintreset()
+{
 
-  char buf[11];
-  strxcpy(buf, StripQuotes(val), sizeof(buf));
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_QUOTECHARS, buf, strlen(buf)+1);
-  else
-    strcpy(CFG->quotechars, buf);
+    CvtPrnstr(CFG->printreset, val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgQuotectrl() {
+void CfgQuotebuffile()
+{
 
-  int ctrlinfo = CI_NONE;
-  if(striinc("NO", val))
-    ctrlinfo = CI_NONE;
-  else if(striinc("YES", val))
-    ctrlinfo = CI_TEAR|CI_ORIG;
-  else {
-    if(striinc("TEARLINE", val))
-      ctrlinfo |= CI_TEAR;
-    if(striinc("ORIGIN", val))
-      ctrlinfo |= CI_ORIG;
-  }
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_QUOTECTRL, ctrlinfo);
-  else
-    CFG->quotectrl = ctrlinfo;
+    Path buf;
+    strxcpy(buf, val, sizeof(buf));
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_QUOTEBUFFILE, buf, strlen(buf)+1);
+    else
+        strcpy(CFG->quotebuffile, buf);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgQuotemargin() {
+void CfgQuotebufmode()
+{
 
-  CFG->quotemargin = atoi(val);
+    if(strieql(val, "ASK"))
+        CFG->quotebufmode = QBUF_ASK;
+    else if(strieql(val, "APPEND"))
+        CFG->quotebufmode = QBUF_APPEND;
+    else if(strieql(val, "OVERWRITE"))
+        CFG->quotebufmode = QBUF_OVERWRITE;
+}
+
+//  ------------------------------------------------------------------
+
+void CfgQuotechars()
+{
+
+    char buf[11];
+    strxcpy(buf, StripQuotes(val), sizeof(buf));
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_QUOTECHARS, buf, strlen(buf)+1);
+    else
+        strcpy(CFG->quotechars, buf);
+}
+
+//  ------------------------------------------------------------------
+
+void CfgQuotectrl()
+{
+
+    int ctrlinfo = CI_NONE;
+    if(striinc("NO", val))
+        ctrlinfo = CI_NONE;
+    else if(striinc("YES", val))
+        ctrlinfo = CI_TEAR|CI_ORIG;
+    else
+    {
+        if(striinc("TEARLINE", val))
+            ctrlinfo |= CI_TEAR;
+        if(striinc("ORIGIN", val))
+            ctrlinfo |= CI_ORIG;
+    }
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_QUOTECTRL, ctrlinfo);
+    else
+        CFG->quotectrl = ctrlinfo;
+}
+
+//  ------------------------------------------------------------------
+
+void CfgQuotemargin()
+{
+
+    CFG->quotemargin = atoi(val);
 }
 
 //  ------------------------------------------------------------------

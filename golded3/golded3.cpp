@@ -111,29 +111,29 @@
 #define __GVER_SHORTLOGNAME__  "2"
 #define __GVER_CFGEXT__        ".geo"
 #elif defined(__WIN32__)
-  #if defined(_M_X64)
-    #if defined(_MSC_VER)
-      #define __GVER_PLATFORM__      "/W64-MSVC"
-    #elif defined(__MINGW32__)
-      #define __GVER_PLATFORM__      "/W64-MINGW"
-    #else
-      #define __GVER_PLATFORM__      "/W64"
-    #endif
-    #define __GVER_SHORTPLATFORM__ "W64"
-    #define __GVER_SHORTLOGNAME__  "W"
-    #define __GVER_CFGEXT__        ".gew"
-  #else
-    #if defined(_MSC_VER)
-      #define __GVER_PLATFORM__      "/W32-MSVC"
-    #elif defined(__MINGW32__)
-      #define __GVER_PLATFORM__      "/W32-MINGW"
-    #else
-      #define __GVER_PLATFORM__      "/W32"
-    #endif
-    #define __GVER_SHORTPLATFORM__ "W32"
-    #define __GVER_SHORTLOGNAME__  "W"
-    #define __GVER_CFGEXT__        ".gew"
-  #endif
+#if defined(_M_X64)
+#if defined(_MSC_VER)
+#define __GVER_PLATFORM__      "/W64-MSVC"
+#elif defined(__MINGW32__)
+#define __GVER_PLATFORM__      "/W64-MINGW"
+#else
+#define __GVER_PLATFORM__      "/W64"
+#endif
+#define __GVER_SHORTPLATFORM__ "W64"
+#define __GVER_SHORTLOGNAME__  "W"
+#define __GVER_CFGEXT__        ".gew"
+#else
+#if defined(_MSC_VER)
+#define __GVER_PLATFORM__      "/W32-MSVC"
+#elif defined(__MINGW32__)
+#define __GVER_PLATFORM__      "/W32-MINGW"
+#else
+#define __GVER_PLATFORM__      "/W32"
+#endif
+#define __GVER_SHORTPLATFORM__ "W32"
+#define __GVER_SHORTLOGNAME__  "W"
+#define __GVER_CFGEXT__        ".gew"
+#endif
 #elif defined(__linux__)
 #define __GVER_PLATFORM__      "/LNX"
 #define __GVER_SHORTPLATFORM__ "LNX"
@@ -155,18 +155,18 @@
 #define __GVER_SHORTLOGNAME__  "Q"
 #define __GVER_CFGEXT__        ".gqx"
 #elif defined(__sun__)
-  #if defined(__i386__)
-    #define __GVER_PLATFORM__      "/SunX86"
-    #define __GVER_CFGEXT__        ".ges"
-  #elif defined(__sparc__)
-    #define __GVER_PLATFORM__      "/SunSparc"
-    #define __GVER_CFGEXT__        ".gsu"
-  #else
-    #define __GVER_PLATFORM__      "/Sun"
-    #define __GVER_CFGEXT__        ".gsu"
-  #endif
-  #define __GVER_SHORTPLATFORM__ "SUN"
-  #define __GVER_SHORTLOGNAME__  "S"
+#if defined(__i386__)
+#define __GVER_PLATFORM__      "/SunX86"
+#define __GVER_CFGEXT__        ".ges"
+#elif defined(__sparc__)
+#define __GVER_PLATFORM__      "/SunSparc"
+#define __GVER_CFGEXT__        ".gsu"
+#else
+#define __GVER_PLATFORM__      "/Sun"
+#define __GVER_CFGEXT__        ".gsu"
+#endif
+#define __GVER_SHORTPLATFORM__ "SUN"
+#define __GVER_SHORTLOGNAME__  "S"
 #elif defined(__APPLE__)
 #define __GVER_PLATFORM__      "/OSX"
 #define __GVER_SHORTPLATFORM__ "OSX"

@@ -123,48 +123,50 @@ struct _uufile;
  * to update the states.
  */
 
-typedef struct _uulist {
-  short    state;       /* Status as described by the macros above */
-  short    mode;        /* file mode as found on begin line        */
+typedef struct _uulist
+{
+    short    state;       /* Status as described by the macros above */
+    short    mode;        /* file mode as found on begin line        */
 
-  int      begin;       /* part number where begin was detected    */
-  int      end;         /* part number where end was detected      */
+    int      begin;       /* part number where begin was detected    */
+    int      end;         /* part number where end was detected      */
 
-  short    uudet;       /* Encoding type (see macros above)        */
-  int      flags;       /* flags, especially for single-part files */
+    short    uudet;       /* Encoding type (see macros above)        */
+    int      flags;       /* flags, especially for single-part files */
 
-  long     size;        /* approximate size of resulting file      */
-  char    *filename;        /* malloc'ed file name                     */
-  char    *subfname;        /* malloc'ed ID from subject line          */
-  char    *mimeid;      /* malloc'ed MIME-ID, if available         */
-  char    *mimetype;        /* malloc'ed Content-Type, if available    */
+    long     size;        /* approximate size of resulting file      */
+    char    *filename;        /* malloc'ed file name                     */
+    char    *subfname;        /* malloc'ed ID from subject line          */
+    char    *mimeid;      /* malloc'ed MIME-ID, if available         */
+    char    *mimetype;        /* malloc'ed Content-Type, if available    */
 
-  char    *binfile;     /* name of temp file, if already decoded   */
+    char    *binfile;     /* name of temp file, if already decoded   */
 
-  struct _uufile *thisfile; /* linked list of this file's parts        */
+    struct _uufile *thisfile; /* linked list of this file's parts        */
 
-  int     *haveparts;       /* the parts we have (max. 256 are listed) */
-  int     *misparts;        /* list of missing parts (max. 256)        */
+    int     *haveparts;       /* the parts we have (max. 256 are listed) */
+    int     *misparts;        /* list of missing parts (max. 256)        */
 
-  struct _uulist *NEXT;     /* next item of the list                   */
-  struct _uulist *PREV;     /* previous item of the list               */
+    struct _uulist *NEXT;     /* next item of the list                   */
+    struct _uulist *PREV;     /* previous item of the list               */
 } uulist;
 
 /*
  * The "progress" structure which is passed to the Busy Callback
  */
 
-typedef struct {
-  int  action;          /* see UUACT_* definitions above           */
-  char curfile[256];        /* the file we are working on, incl. path  */
-  int  partno;          /* part we're currently decoding           */
-  int  numparts;        /* total number of parts of this file      */
-  long fsize;           /* size of the current file                */
-  int  percent;         /* % of _current part_                     */
-  long foffset;         /* file offset -- internal use only        */
-  long totsize;         /* file total size -- internal use only    */
+typedef struct
+{
+    int  action;          /* see UUACT_* definitions above           */
+    char curfile[256];        /* the file we are working on, incl. path  */
+    int  partno;          /* part we're currently decoding           */
+    int  numparts;        /* total number of parts of this file      */
+    long fsize;           /* size of the current file                */
+    int  percent;         /* % of _current part_                     */
+    long foffset;         /* file offset -- internal use only        */
+    long totsize;         /* file total size -- internal use only    */
 } uuprogress;
-  
+
 
 /*
  * Externally visible Functions

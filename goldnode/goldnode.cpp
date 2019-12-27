@@ -80,37 +80,37 @@ typedef std::vector<Stamp>::iterator stamp_iter;
 class _geidxlist : public std::list<_GEIdx>
 {
 public:
-  void sort()
-  {
-    if (2 <= size())
+    void sort()
     {
-      const size_t _MAXN = 15;
-      _Myt _X(allocator), _A[_MAXN + 1];
-      size_t _N = 0;
-
-      while (!empty())
-      {
-        _X.splice(_X.begin(), *this, begin());
-        size_t _I;
-
-        for (_I = 0; _I < _N && !_A[_I].empty(); ++_I)
+        if (2 <= size())
         {
-          _A[_I].merge(_X);
-          _A[_I].swap(_X);
-        }
+            const size_t _MAXN = 15;
+            _Myt _X(allocator), _A[_MAXN + 1];
+            size_t _N = 0;
 
-        if (_I == _MAXN) _A[_I].merge(_X);
-        else
-        {
-          _A[_I].swap(_X);
-          if (_I == _N) ++_N;
-        }
-      }
+            while (!empty())
+            {
+                _X.splice(_X.begin(), *this, begin());
+                size_t _I;
 
-      for (int _NN = _N; _NN >= 0; _NN--)
-        merge(_A[_NN]);
+                for (_I = 0; _I < _N && !_A[_I].empty(); ++_I)
+                {
+                    _A[_I].merge(_X);
+                    _A[_I].swap(_X);
+                }
+
+                if (_I == _MAXN) _A[_I].merge(_X);
+                else
+                {
+                    _A[_I].swap(_X);
+                    if (_I == _N) ++_N;
+                }
+            }
+
+            for (int _NN = _N; _NN >= 0; _NN--)
+                merge(_A[_NN]);
+        }
     }
-  }
 };
 
 typedef _geidxlist geidxlist;
@@ -156,10 +156,11 @@ static bool   quiet = false;
 bool make_stats = false;
 Path statfilename = "goldnode.stt";
 
-struct nl_stat {
-  int nodename[100];
-  int location[100];
-  int sysopname[100];
+struct nl_stat
+{
+    int nodename[100];
+    int location[100];
+    int sysopname[100];
 };
 
 nl_stat statistic;
@@ -173,383 +174,425 @@ char* _MapPath(char* map, bool reverse = false);
 #define TWIRLY_FACTOR 511
 #define ISTWIRLY(n) (not quiet and (((n)&TWIRLY_FACTOR)==0))
 
-static void twirly() {
+static void twirly()
+{
 
-  static int n=0;
+    static int n=0;
 
-  n = (++n)%4;
-  switch(n) {
-    case 0: std::cout << "|\b" << std::flush; break;
-    case 1: std::cout << "/\b" << std::flush; break;
-    case 2: std::cout << "-\b" << std::flush; break;
-    case 3: std::cout << "\\\b" << std::flush; break;
-  }
+    n = (++n)%4;
+    switch(n)
+    {
+    case 0:
+        std::cout << "|\b" << std::flush;
+        break;
+    case 1:
+        std::cout << "/\b" << std::flush;
+        break;
+    case 2:
+        std::cout << "-\b" << std::flush;
+        break;
+    case 3:
+        std::cout << "\\\b" << std::flush;
+        break;
+    }
 }
 
 
 //  ------------------------------------------------------------------
 
-static bool match_addr_mask(Addr* mask, Addr* addr) {
+static bool match_addr_mask(Addr* mask, Addr* addr)
+{
 
-  if(mask->zone == GFTN_ALL or mask->zone == addr->zone)
-    if(mask->net == GFTN_ALL or mask->net == addr->net)
-      if(mask->node == GFTN_ALL or mask->node == addr->node)
-        if(mask->point == GFTN_ALL or mask->point == addr->point)
-          return true;
+    if(mask->zone == GFTN_ALL or mask->zone == addr->zone)
+        if(mask->net == GFTN_ALL or mask->net == addr->net)
+            if(mask->node == GFTN_ALL or mask->node == addr->node)
+                if(mask->point == GFTN_ALL or mask->point == addr->point)
+                    return true;
 
-  return false;
+    return false;
 }
 
 
 //  ------------------------------------------------------------------
 
-static bool macro_addr(char* str, int ap, Addr* addr) {
+static bool macro_addr(char* str, int ap, Addr* addr)
+{
 
-  word part = 0xFFFD;
+    word part = 0xFFFD;
 
-  if(*str == NUL)
-    part = 0;
-  else if(isdigit(*str))
-    part = atow(str);
-  else if(*str == '?' or *str == '*')
-    part = GFTN_ALL;
+    if(*str == NUL)
+        part = 0;
+    else if(isdigit(*str))
+        part = atow(str);
+    else if(*str == '?' or *str == '*')
+        part = GFTN_ALL;
 
-  if(ap == _TEST) {
-    if(part == 0xFFFD)
-      return false;
-    else
-      return true;
-  }
+    if(ap == _TEST)
+    {
+        if(part == 0xFFFD)
+            return false;
+        else
+            return true;
+    }
 
-  switch(ap) {
+    switch(ap)
+    {
     case _ZONE:
-      addr->zone = part;
-      break;
+        addr->zone = part;
+        break;
     case _NET:
-      addr->net = part;
-      break;
+        addr->net = part;
+        break;
     case _NODE:
-      addr->node = part;
-      break;
+        addr->node = part;
+        break;
     case _POINT:
-      addr->point = part;
-      break;
+        addr->point = part;
+        break;
     default:
-      return false;
-  }
-  return true;
+        return false;
+    }
+    return true;
 }
 
 
 //  ------------------------------------------------------------------
 
-static char* fast_parse_addr(char* str, Addr* addr) {
+static char* fast_parse_addr(char* str, Addr* addr)
+{
 
-  char* net;
-  char* node;
-  char* point;
-  char* domain;
-  char* space;
+    char* net;
+    char* node;
+    char* point;
+    char* domain;
+    char* space;
 
-  space = strchr(str, ' ');
-  if(space)
-    *space = NUL;
+    space = strchr(str, ' ');
+    if(space)
+        *space = NUL;
 
-  net = strchr(str, ':');
-  node = strchr(str, '/');
-  point = strchr(str, '.');
-  domain = strchr(str, '@');
-  if(domain and point)
-    if(point > domain)
-      point = NULL;
-
-  if(space)
-    *space = ' ';
-
-  if(net) {
-    addr->zone = atow(str);
-    addr->net = atow(net+1);
-    if(node)
-      addr->node = atow(node+1);
-  }
-  else {
-    if(node) {
-      if(*str != '/')
-        addr->net = atow(str);
-      addr->node = atow(node+1);
-    }
-    else {
-      if(point != str)
-        addr->node = atow(str);
-    }
-  }
-  if(point)
-    addr->point = atow(point+1);
-
-  return domain;
-}
-
-
-//  ------------------------------------------------------------------
-
-static char* parse_address(char* str, Addr* addr, Addr* mainaka) {
-
-  char* domain = NULL;
-
-  str = strskip_wht(str);
-
-  if(isdigit(*str) or *str == '.' or macro_addr(str, _TEST, addr)) {
-
-    char* net = strchr(str, ':');
-    char* node = strchr(str, '/');
-    char* point = strchr(str, '.');
+    net = strchr(str, ':');
+    node = strchr(str, '/');
+    point = strchr(str, '.');
     domain = strchr(str, '@');
     if(domain and point)
-      if(point > domain)
-        point = NULL;
+        if(point > domain)
+            point = NULL;
 
-    if(net) {
-      macro_addr(str, _ZONE, addr);
-      macro_addr(net+1, _NET, addr);
-      if(node)
-        macro_addr(node+1, _NODE, addr);  // zone:net/node
-      else
-        addr->node = mainaka->node;                // zone:net
+    if(space)
+        *space = ' ';
+
+    if(net)
+    {
+        addr->zone = atow(str);
+        addr->net = atow(net+1);
+        if(node)
+            addr->node = atow(node+1);
     }
-    else {
-      addr->zone = mainaka->zone;
-      if(node) {
-        if(*str != '/')
-          macro_addr(str, _NET, addr);      // net/node
+    else
+    {
+        if(node)
+        {
+            if(*str != '/')
+                addr->net = atow(str);
+            addr->node = atow(node+1);
+        }
         else
-          addr->net = mainaka->net;                  // /node
-        macro_addr(node+1, _NODE, addr);
-      }
-      else {
-        if(point == str)
-          addr->node = mainaka->node;                // .point
-        else
-          macro_addr(str, _NODE, addr);     // node.point
-        addr->net = mainaka->net;
-      }
+        {
+            if(point != str)
+                addr->node = atow(str);
+        }
     }
     if(point)
-      macro_addr(point+1, _POINT, addr);
-  }
-  if(domain == NULL)
-    domain = str+strlen(str);   // point at NUL char
+        addr->point = atow(point+1);
 
-  return(domain);
+    return domain;
 }
 
 
 //  ------------------------------------------------------------------
 
-static char* make_addr_str(char* str, Addr* addr, char* domain) {
+static char* parse_address(char* str, Addr* addr, Addr* mainaka)
+{
 
-  char* ptr = str;
-  static char buf[20];
+    char* domain = NULL;
 
-  *ptr = NUL;
+    str = strskip_wht(str);
 
-  if(addr->zone) {
-    if(addr->zone == GFTN_ALL)
-      ptr = stpcpy(ptr, "*");
-    else {
-      sprintf(buf, "%u", addr->zone);
-      ptr = stpcpy(ptr, buf);
+    if(isdigit(*str) or *str == '.' or macro_addr(str, _TEST, addr))
+    {
+
+        char* net = strchr(str, ':');
+        char* node = strchr(str, '/');
+        char* point = strchr(str, '.');
+        domain = strchr(str, '@');
+        if(domain and point)
+            if(point > domain)
+                point = NULL;
+
+        if(net)
+        {
+            macro_addr(str, _ZONE, addr);
+            macro_addr(net+1, _NET, addr);
+            if(node)
+                macro_addr(node+1, _NODE, addr);  // zone:net/node
+            else
+                addr->node = mainaka->node;                // zone:net
+        }
+        else
+        {
+            addr->zone = mainaka->zone;
+            if(node)
+            {
+                if(*str != '/')
+                    macro_addr(str, _NET, addr);      // net/node
+                else
+                    addr->net = mainaka->net;                  // /node
+                macro_addr(node+1, _NODE, addr);
+            }
+            else
+            {
+                if(point == str)
+                    addr->node = mainaka->node;                // .point
+                else
+                    macro_addr(str, _NODE, addr);     // node.point
+                addr->net = mainaka->net;
+            }
+        }
+        if(point)
+            macro_addr(point+1, _POINT, addr);
     }
-    *ptr++ = ':';
-  }
+    if(domain == NULL)
+        domain = str+strlen(str);   // point at NUL char
 
-  if(addr->net == GFTN_ALL)
-    ptr = stpcpy(ptr, "*");
-  else {
-    sprintf(buf, "%u", addr->net);
-    ptr = stpcpy(ptr, buf);
-  }
-  *ptr++ = '/';
+    return(domain);
+}
 
-  if(addr->node == GFTN_ALL)
-    ptr = stpcpy(ptr, "*");
-  else {
-    sprintf(buf, "%u", addr->node);
-    ptr = stpcpy(ptr, buf);
-  }
 
-  if(addr->point) {
-    *ptr++ = '.';
-    if(addr->point == GFTN_ALL)
-      ptr = stpcpy(ptr, "*");
-    else {
-      sprintf(buf, "%u", addr->point);
-      ptr = stpcpy(ptr, buf);
+//  ------------------------------------------------------------------
+
+static char* make_addr_str(char* str, Addr* addr, char* domain)
+{
+
+    char* ptr = str;
+    static char buf[20];
+
+    *ptr = NUL;
+
+    if(addr->zone)
+    {
+        if(addr->zone == GFTN_ALL)
+            ptr = stpcpy(ptr, "*");
+        else
+        {
+            sprintf(buf, "%u", addr->zone);
+            ptr = stpcpy(ptr, buf);
+        }
+        *ptr++ = ':';
     }
-  }
 
-  if(domain and *domain) {
-    *ptr++ = '@';
-    ptr = stpcpy(ptr, domain);
-  }
+    if(addr->net == GFTN_ALL)
+        ptr = stpcpy(ptr, "*");
+    else
+    {
+        sprintf(buf, "%u", addr->net);
+        ptr = stpcpy(ptr, buf);
+    }
+    *ptr++ = '/';
 
-  *ptr = NUL;
+    if(addr->node == GFTN_ALL)
+        ptr = stpcpy(ptr, "*");
+    else
+    {
+        sprintf(buf, "%u", addr->node);
+        ptr = stpcpy(ptr, buf);
+    }
 
-  return(str);
+    if(addr->point)
+    {
+        *ptr++ = '.';
+        if(addr->point == GFTN_ALL)
+            ptr = stpcpy(ptr, "*");
+        else
+        {
+            sprintf(buf, "%u", addr->point);
+            ptr = stpcpy(ptr, buf);
+        }
+    }
+
+    if(domain and *domain)
+    {
+        *ptr++ = '@';
+        ptr = stpcpy(ptr, domain);
+    }
+
+    *ptr = NUL;
+
+    return(str);
 }
 
 
 //  ------------------------------------------------------------------
 //  Compare two nodes by name/address/file/pos
 
-static bool cmp_nnlsts(const _GEIdx &A, const _GEIdx &B) {
+static bool cmp_nnlsts(const _GEIdx &A, const _GEIdx &B)
+{
 
-  int cmp;
+    int cmp;
 
-  if((cmp = stricmp(A.name, B.name)) != 0)
-    return(cmp < 0);
-  if((cmp = CmpV(A.addr.zone, B.addr.zone)) != 0)
-    return(cmp < 0);
-  if((cmp = CmpV(A.addr.net, B.addr.net)) != 0)
-    return(cmp < 0);
-  if((cmp = CmpV(A.addr.node, B.addr.node)) != 0)
-    return(cmp < 0);
-  if((cmp = CmpV(A.addr.point, B.addr.point)) != 0)
-    return(cmp < 0);
-  if((cmp = CmpV(A.pos, B.pos)) != 0)
-    return(cmp < 0);
-  return false;
+    if((cmp = stricmp(A.name, B.name)) != 0)
+        return(cmp < 0);
+    if((cmp = CmpV(A.addr.zone, B.addr.zone)) != 0)
+        return(cmp < 0);
+    if((cmp = CmpV(A.addr.net, B.addr.net)) != 0)
+        return(cmp < 0);
+    if((cmp = CmpV(A.addr.node, B.addr.node)) != 0)
+        return(cmp < 0);
+    if((cmp = CmpV(A.addr.point, B.addr.point)) != 0)
+        return(cmp < 0);
+    if((cmp = CmpV(A.pos, B.pos)) != 0)
+        return(cmp < 0);
+    return false;
 }
 
 
 //  ------------------------------------------------------------------
 //  Compare two nodes by address/name/file/pos
 
-static bool cmp_anlsts(const _GEIdx &A, const _GEIdx &B) {
+static bool cmp_anlsts(const _GEIdx &A, const _GEIdx &B)
+{
 
-  int cmp;
+    int cmp;
 
-  if((cmp = CmpV(A.addr.zone, B.addr.zone)) != 0)
-    return(cmp < 0);
-  if((cmp = CmpV(A.addr.net, B.addr.net)) != 0)
-    return(cmp < 0);
-  if((cmp = CmpV(A.addr.node, B.addr.node)) != 0)
-    return(cmp < 0);
-  if((cmp = CmpV(A.addr.point, B.addr.point)) != 0)
-    return(cmp < 0);
-  if((cmp = stricmp(A.name, B.name)) != 0)
-    return(cmp < 0);
-  if((cmp = CmpV(A.pos, B.pos)) != 0)
-    return(cmp < 0);
-  return false;
+    if((cmp = CmpV(A.addr.zone, B.addr.zone)) != 0)
+        return(cmp < 0);
+    if((cmp = CmpV(A.addr.net, B.addr.net)) != 0)
+        return(cmp < 0);
+    if((cmp = CmpV(A.addr.node, B.addr.node)) != 0)
+        return(cmp < 0);
+    if((cmp = CmpV(A.addr.point, B.addr.point)) != 0)
+        return(cmp < 0);
+    if((cmp = stricmp(A.name, B.name)) != 0)
+        return(cmp < 0);
+    if((cmp = CmpV(A.pos, B.pos)) != 0)
+        return(cmp < 0);
+    return false;
 }
 
 
 //  ------------------------------------------------------------------
 #if defined(_MSC_VER)
-enum{ sort_by_address=0, sort_by_name } static sort_type;
+enum { sort_by_address=0, sort_by_name } static sort_type;
 bool operator<(const _GEIdx &A, const _GEIdx &B)
 {
-  if (sort_type==sort_by_address)
-    return cmp_anlsts(A, B);
-  else
-    return cmp_nnlsts(A, B);
+    if (sort_type==sort_by_address)
+        return cmp_anlsts(A, B);
+    else
+        return cmp_nnlsts(A, B);
 }
 #endif
 //  ------------------------------------------------------------------
 
-static char* CvtName(char* inp) {
+static char* CvtName(char* inp)
+{
 
-  char buf[300];
-  char* p;
-  char* q;
+    char buf[300];
+    char* p;
+    char* q;
 
-  // Convert underlines to spaces
+    // Convert underlines to spaces
 
-  p = inp;
-  while(*p)
-    if(*(p++) == '_')
-      *(p-1) = ' ';
+    p = inp;
+    while(*p)
+        if(*(p++) == '_')
+            *(p-1) = ' ';
 
-  // Strip leading spaces
+    // Strip leading spaces
 
-  p = inp;
-  while(isspace(*p))
-    p++;
-  q = &inp[strlen(p)-1];
+    p = inp;
+    while(isspace(*p))
+        p++;
+    q = &inp[strlen(p)-1];
 
-  // Strip trailing spaces
+    // Strip trailing spaces
 
-  while(isspace(*q))
-    *q-- = NUL;
+    while(isspace(*q))
+        *q-- = NUL;
 
-  // Search for last space or point
+    // Search for last space or point
 
-  while(*q != ' ' and *q != '.' and q > p)
-    q--;
+    while(*q != ' ' and *q != '.' and q > p)
+        q--;
 
-  // If last char is a point, find last space instead
+    // If last char is a point, find last space instead
 
-  if(*(q+1) == 0)
-    while(*q != ' ' and q > p)
-      q--;
+    if(*(q+1) == 0)
+        while(*q != ' ' and q > p)
+            q--;
 
-  // Exchange last name and first name(s)
+    // Exchange last name and first name(s)
 
-  if(p != q) {
-    strcpy(stpcpy(buf, q+1), ", ");
-    *(q+(*q == '.' ? 1 : 0)) = 0;
-    strcat(buf, p);
-    strcpy(inp, buf);
-  }
-  struplow(inp);
-  return inp;
+    if(p != q)
+    {
+        strcpy(stpcpy(buf, q+1), ", ");
+        *(q+(*q == '.' ? 1 : 0)) = 0;
+        strcat(buf, p);
+        strcpy(inp, buf);
+    }
+    struplow(inp);
+    return inp;
 }
 
 
 //  ------------------------------------------------------------------
 
 #ifdef GOLDNODE_STATS
-void calc_statistic(std::ofstream &ofp, int* observation, float N) {
+void calc_statistic(std::ofstream &ofp, int* observation, float N)
+{
 
-  int i;
-  float mean = 0.0;
-  float sumfrekvens = 0.0;
-  float varians = 0.0;
+    int i;
+    float mean = 0.0;
+    float sumfrekvens = 0.0;
+    float varians = 0.0;
 
-  //         12   12345   12345   123456   123456789012
-  ofp << ".---------------------------------------------." << std::endl
-      << "|   x |  h(x) |  f(x) | x*f(x) | (x-m)^2*f(x) |" << std::endl
-      << "|-----+-------+-------+--------+--------------|" << std::endl;
+    //         12   12345   12345   123456   123456789012
+    ofp << ".---------------------------------------------." << std::endl
+        << "|   x |  h(x) |  f(x) | x*f(x) | (x-m)^2*f(x) |" << std::endl
+        << "|-----+-------+-------+--------+--------------|" << std::endl;
 
-  for(i=0; i<100; i++) {
-    float x = i;
-    if(observation[i]) {
-      float hyppighed = observation[i];
-      float frekvens = hyppighed / N;
-      mean += x * frekvens;
-      sumfrekvens += frekvens;
+    for(i=0; i<100; i++)
+    {
+        float x = i;
+        if(observation[i])
+        {
+            float hyppighed = observation[i];
+            float frekvens = hyppighed / N;
+            mean += x * frekvens;
+            sumfrekvens += frekvens;
+        }
     }
-  }
 
-  for(i=0; i<100; i++) {
-    float x = i;
-    if(observation[i]) {
-      float hyppighed = observation[i];
-      float frekvens = hyppighed / N;
-      float vartmp =  (x-mean)*(x-mean)*frekvens;
-      varians += vartmp;
-      ofp << "| " << std::setw(3) << i << " | " << std::setw(5) << observation[i] << " | " << std::setprecision(3) << std::setw(5) << frekvens << " | " << std::setw(6) << x*frekvens << " | " << std::setw(12) << vartmp << " | " << std::endl;
+    for(i=0; i<100; i++)
+    {
+        float x = i;
+        if(observation[i])
+        {
+            float hyppighed = observation[i];
+            float frekvens = hyppighed / N;
+            float vartmp =  (x-mean)*(x-mean)*frekvens;
+            varians += vartmp;
+            ofp << "| " << std::setw(3) << i << " | " << std::setw(5) << observation[i] << " | " << std::setprecision(3) << std::setw(5) << frekvens << " | " << std::setw(6) << x*frekvens << " | " << std::setw(12) << vartmp << " | " << std::endl;
+        }
     }
-  }
 
-  ofp << "|-----+-------+-------+--------+--------------|" << std::endl
-      << "| sum | " << std::setprecision(0) << std::setw(5) << N << " | " << std::setprecision(3) << std::setw(5) << sumfrekvens << " | " << std::setw(6) << mean << " | " << std::setw(12) << varians << " |" << std::endl
-      << "`---------------------------------------------'" << std::endl
-      << std::endl
-      << "Mean: " << std::setprecision(1) << mean << std::endl
-      << "Variance = " << varians << std::endl
-      << "Standard deviation = " << sqrt(varians) << std::endl
-      << std::endl;
+    ofp << "|-----+-------+-------+--------+--------------|" << std::endl
+        << "| sum | " << std::setprecision(0) << std::setw(5) << N << " | " << std::setprecision(3) << std::setw(5) << sumfrekvens << " | " << std::setw(6) << mean << " | " << std::setw(12) << varians << " |" << std::endl
+        << "`---------------------------------------------'" << std::endl
+        << std::endl
+        << "Mean: " << std::setprecision(1) << mean << std::endl
+        << "Variance = " << varians << std::endl
+        << "Standard deviation = " << sqrt(varians) << std::endl
+        << std::endl;
 }
 #endif
 
@@ -557,21 +600,25 @@ void calc_statistic(std::ofstream &ofp, int* observation, float N) {
 //  ------------------------------------------------------------------
 //  some useful string operations
 
-inline void index_line(char* p, char* ptrs[5]) {
+inline void index_line(char* p, char* ptrs[5])
+{
 
-  for(int i=0; i<5; i++) {
-    char* q = p;
-    while(*q != ',' and *q) {
-      if(*q == '_')
-        *q = ' ';
-      q++;
+    for(int i=0; i<5; i++)
+    {
+        char* q = p;
+        while(*q != ',' and *q)
+        {
+            if(*q == '_')
+                *q = ' ';
+            q++;
+        }
+        if(*q)
+        {
+            ptrs[i] = p;
+            *q++ = NUL;
+            p = q;
+        }
     }
-    if(*q) {
-      ptrs[i] = p;
-      *q++ = NUL;
-      p = q;
-    }
-  }
 }
 
 
@@ -580,462 +627,505 @@ inline void index_line(char* p, char* ptrs[5]) {
 
 static void read_nodelists()
 {
-  gfile lfp;
-  long pos;
-  char* ptr;
-  _GEIdx nlst;
-  Addr nlstz;
-  char buf[512], buf2[100];
-  int point;
-  uint line, realfno;
-  size_t no, nodes;
-  const char* name;
-  char* lp[5];
-  geidxlist nodeidx;
-  stamp_iter fno;
-  addr_iter zno;
+    gfile lfp;
+    long pos;
+    char* ptr;
+    _GEIdx nlst;
+    Addr nlstz;
+    char buf[512], buf2[100];
+    int point;
+    uint line, realfno;
+    size_t no, nodes;
+    const char* name;
+    char* lp[5];
+    geidxlist nodeidx;
+    stamp_iter fno;
+    addr_iter zno;
 
-  nodes = 0;
+    nodes = 0;
 
-  if(not quiet) std::cout << std::endl << "* Compiling nodelists:" << std::endl;
+    if(not quiet) std::cout << std::endl << "* Compiling nodelists:" << std::endl;
 
-  // Delete the current indexfiles so they don't take up space
-  remove(addrindex.c_str());
-  remove(nodeindex.c_str());
+    // Delete the current indexfiles so they don't take up space
+    remove(addrindex.c_str());
+    remove(nodeindex.c_str());
 
-  // Compile nodelists
-  for(realfno=0, fno=nodelist.begin(), zno=nodezone.begin(); fno != nodelist.end(); fno++, zno++) {
-
-    if (nodes < maxnodes)
+    // Compile nodelists
+    for(realfno=0, fno=nodelist.begin(), zno=nodezone.begin(); fno != nodelist.end(); fno++, zno++)
     {
-      lfp.Fopen(fno->fn, "rb", sh_mod);
-      if (lfp.isopen())
-      {
-        lfp.SetvBuf(NULL, _IOFBF, 32000);
-        fno->ft = GetFiletime(fno->fn);
 
-        // Initialize for each nodelist file
-        no = 0;
-        pos = 0;
-        line = 0;
-        point = YES;
-        nlst.reset();
-        nlstz = nlst.addr = *zno;
-        name = CleanFilename(fno->fn);
-
-        // Read all nodes
-        while (lfp.Fgets(buf, sizeof(buf)))
+        if (nodes < maxnodes)
         {
-          line++;
+            lfp.Fopen(fno->fn, "rb", sh_mod);
+            if (lfp.isopen())
+            {
+                lfp.SetvBuf(NULL, _IOFBF, 32000);
+                fno->ft = GetFiletime(fno->fn);
 
-          // Break out if eof-marker is found
-          if(*buf == '\x1A')
-            break;
+                // Initialize for each nodelist file
+                no = 0;
+                pos = 0;
+                line = 0;
+                point = YES;
+                nlst.reset();
+                nlstz = nlst.addr = *zno;
+                name = CleanFilename(fno->fn);
 
-          // Note file position
-          nlst.pos = pos;
-
-          // Get line length and fix possible errors
-          uint llen = strlen(buf);
-          ptr = buf+llen-1;
-          while(llen and not (*ptr == '\r' or *ptr == '\n' or *ptr == '\x1A')) {
-            buf[llen] = ' ';
-            if(not quiet) {
-              int len = 16-strlen(name);
-              std::cout << "\r* |--" << name << std::setw((len > 0) ? len : 1) << " " << "Warning line " << line << " - Invalid NUL char encountered." << std::endl;
-            }
-            llen = strlen(buf);
-            ptr = buf+llen-1;
-          }
-          pos += llen;
-
-          // Skip whitespace
-          ptr = buf;
-          while(isspace(*ptr))
-            ptr++;
-
-          if(*ptr != ';' and *ptr) {
-
-            // First test for FD pvt extension
-            if(toupper(*ptr) == 'B') {   // Boss
-              nlst.addr.reset();
-              parse_address(ptr+5, &nlst.addr, &nlstz);
-              point = YES;
-              continue;
-            }
-
-            // Test for Goldware extension
-            if(isdigit(*ptr)) {
-              nlst.addr.reset();
-              parse_address(ptr+5, &nlst.addr, &nlstz);
-              point = YES;
-            }
-
-            // Hold,32,TriCom,Hornbaek,Lars_Joergensen,45-12345678,2400,XX
-
-            // Form the full node address
-            index_line(ptr, lp);
-
-            // NOTE: I use the fact that the third letter in lp[0] is unique
-            //       for all valid attrs to speed up processing
-
-            switch(*lp[0] ? toupper(lp[0][2]) : 0) {
-              case 'N':   // zone
-                nlst.addr.zone = nlst.addr.net = atow(lp[1]);
-                nlst.addr.node = nlst.addr.point = 0;
-                point = NO;
-                break;
-
-              case 'G':   // Region
-                nlst.addr.net = atow(lp[1]);
-                nlst.addr.node = nlst.addr.point = 0;
-                point = NO;
-                if(nlst.addr.net >= 10000)
-                  continue;
-                break;
-
-              case 'S':   // Host
+                // Read all nodes
+                while (lfp.Fgets(buf, sizeof(buf)))
                 {
-                  nlst.addr.net = atow(lp[1]);
-                  nlst.addr.node = nlst.addr.point = 0;
-                  point = NO;
-                  Addr a;
-                  fast_parse_addr(lp[2],&a);
-                  if(a.net) {                   // Is POINTS24 format ?
-                    nlst.addr.net = a.net;
-                    nlst.addr.node = a.node;
-                    nlst.addr.point = 0;
-                    point = YES;
-                  }
+                    line++;
+
+                    // Break out if eof-marker is found
+                    if(*buf == '\x1A')
+                        break;
+
+                    // Note file position
+                    nlst.pos = pos;
+
+                    // Get line length and fix possible errors
+                    uint llen = strlen(buf);
+                    ptr = buf+llen-1;
+                    while(llen and not (*ptr == '\r' or *ptr == '\n' or *ptr == '\x1A'))
+                    {
+                        buf[llen] = ' ';
+                        if(not quiet)
+                        {
+                            int len = 16-strlen(name);
+                            std::cout << "\r* |--" << name << std::setw((len > 0) ? len : 1) << " " << "Warning line " << line << " - Invalid NUL char encountered." << std::endl;
+                        }
+                        llen = strlen(buf);
+                        ptr = buf+llen-1;
+                    }
+                    pos += llen;
+
+                    // Skip whitespace
+                    ptr = buf;
+                    while(isspace(*ptr))
+                        ptr++;
+
+                    if(*ptr != ';' and *ptr)
+                    {
+
+                        // First test for FD pvt extension
+                        if(toupper(*ptr) == 'B')     // Boss
+                        {
+                            nlst.addr.reset();
+                            parse_address(ptr+5, &nlst.addr, &nlstz);
+                            point = YES;
+                            continue;
+                        }
+
+                        // Test for Goldware extension
+                        if(isdigit(*ptr))
+                        {
+                            nlst.addr.reset();
+                            parse_address(ptr+5, &nlst.addr, &nlstz);
+                            point = YES;
+                        }
+
+                        // Hold,32,TriCom,Hornbaek,Lars_Joergensen,45-12345678,2400,XX
+
+                        // Form the full node address
+                        index_line(ptr, lp);
+
+                        // NOTE: I use the fact that the third letter in lp[0] is unique
+                        //       for all valid attrs to speed up processing
+
+                        switch(*lp[0] ? toupper(lp[0][2]) : 0)
+                        {
+                        case 'N':   // zone
+                            nlst.addr.zone = nlst.addr.net = atow(lp[1]);
+                            nlst.addr.node = nlst.addr.point = 0;
+                            point = NO;
+                            break;
+
+                        case 'G':   // Region
+                            nlst.addr.net = atow(lp[1]);
+                            nlst.addr.node = nlst.addr.point = 0;
+                            point = NO;
+                            if(nlst.addr.net >= 10000)
+                                continue;
+                            break;
+
+                        case 'S':   // Host
+                        {
+                            nlst.addr.net = atow(lp[1]);
+                            nlst.addr.node = nlst.addr.point = 0;
+                            point = NO;
+                            Addr a;
+                            fast_parse_addr(lp[2],&a);
+                            if(a.net)                     // Is POINTS24 format ?
+                            {
+                                nlst.addr.net = a.net;
+                                nlst.addr.node = a.node;
+                                nlst.addr.point = 0;
+                                point = YES;
+                            }
+                        }
+                        break;
+
+                        case 'B':   // Hub
+                            nlst.addr.node = atow(lp[1]);
+                            nlst.addr.point = 0;
+                            point = NO;
+                            break;
+
+                        case 'I':   // point
+                            nlst.addr.point = atow(lp[1]);
+                            break;
+
+                        case 'T':   // Pvt
+                        case 'W':   // Down
+                        case 'L':   // Hold
+                        default:
+                            if(point)
+                                nlst.addr.point = atow(lp[1]);
+                            else
+                            {
+                                nlst.addr.node = atow(lp[1]);
+                                nlst.addr.point = 0;
+                            }
+                            break;
+                        }
+
+                        if(ISTWIRLY(no))
+                        {
+                            int len = 16-strlen(name);
+                            std::cout << "\r* \\--" << name << std::setw((len > 0) ? len : 1) << " " << "Zone " << nlst.addr.zone << "   \tNet " << nlst.addr.net << "   \tNodes " << (uint32_t)no << "        " << std::flush;
+                        }
+
+                        bool include = true;
+
+                        // Check address against the exclude masks
+                        for(addr_iter n=excludenode.begin(); n != excludenode.end(); n++)
+                        {
+                            if(match_addr_mask(&(*n), &nlst.addr))
+                            {
+                                include = false;
+                                break;
+                            }
+                        }
+
+                        // Check address against the include masks
+                        if(not include)
+                        {
+                            for(addr_iter n=includenode.begin(); n != includenode.end(); n++)
+                            {
+                                if(match_addr_mask(&(*n), &nlst.addr))
+                                {
+                                    include = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if(include)     // Address was okay
+                        {
+
+                            // Convert name to Goldware standard
+                            strxcpy(nlst.name, CvtName(lp[4]), sizeof(nlst.name));
+
+                            // Prepare the rest
+                            nlst.pos |= ((((dword)realfno) << 24) & 0xFF000000L);
+
+                            // Append to end of list
+                            nodeidx.push_back(nlst);
+                            ++nodes;
+
+                            // Count the node
+                            no++;
+
+                            // Stop if limit is reached
+                            if(nodes >= maxnodes)
+                                break;
+                        }
+                    }
                 }
-                break;
 
-              case 'B':   // Hub
-                nlst.addr.node = atow(lp[1]);
-                nlst.addr.point = 0;
-                point = NO;
-                break;
-
-              case 'I':   // point
-                nlst.addr.point = atow(lp[1]);
-                break;
-
-              case 'T':   // Pvt
-              case 'W':   // Down
-              case 'L':   // Hold
-              default:
-                if(point)
-                  nlst.addr.point = atow(lp[1]);
-                else {
-                  nlst.addr.node = atow(lp[1]);
-                  nlst.addr.point = 0;
+                if(not quiet)
+                {
+                    int len = 16-strlen(name);
+                    std::cout << "\r* " << ((fno == nodelist.end()-1) ? '\\' : '|') << "--" << name << std::setw((len > 0) ? len : 1) << " " << "Nodes read: " << (uint32_t)no << "\tTotal read: " << (uint32_t)nodes << ((nodes >= maxnodes) ? " (Limit reached)" : "                ") << std::endl;
                 }
-                break;
+
+                lfp.Fclose();
+                ++realfno;
             }
-
-            if(ISTWIRLY(no)) {
-              int len = 16-strlen(name);
-              std::cout << "\r* \\--" << name << std::setw((len > 0) ? len : 1) << " " << "Zone " << nlst.addr.zone << "   \tNet " << nlst.addr.net << "   \tNodes " << (uint32_t)no << "        " << std::flush;
+            else
+            {
+                if(not quiet) std::cout << "Error opening nodelist " << fno->fn << '!' << std::endl;
+                *(fno->fn) = NUL;
             }
-
-            bool include = true;
-
-            // Check address against the exclude masks
-            for(addr_iter n=excludenode.begin(); n != excludenode.end(); n++) {
-              if(match_addr_mask(&(*n), &nlst.addr)) {
-                include = false;
-                break;
-              }
-            }
-
-            // Check address against the include masks
-            if(not include) {
-              for(addr_iter n=includenode.begin(); n != includenode.end(); n++) {
-                if(match_addr_mask(&(*n), &nlst.addr)) {
-                  include = true;
-                  break;
-                }
-              }
-            }
-
-            if(include) {   // Address was okay
-
-              // Convert name to Goldware standard
-              strxcpy(nlst.name, CvtName(lp[4]), sizeof(nlst.name));
-
-              // Prepare the rest
-              nlst.pos |= ((((dword)realfno) << 24) & 0xFF000000L);
-
-              // Append to end of list
-              nodeidx.push_back(nlst);
-              ++nodes;
-
-              // Count the node
-              no++;
-
-              // Stop if limit is reached
-              if(nodes >= maxnodes)
-                break;
-            }
-          }
         }
-
-        if(not quiet) {
-          int len = 16-strlen(name);
-          std::cout << "\r* " << ((fno == nodelist.end()-1) ? '\\' : '|') << "--" << name << std::setw((len > 0) ? len : 1) << " " << "Nodes read: " << (uint32_t)no << "\tTotal read: " << (uint32_t)nodes << ((nodes >= maxnodes) ? " (Limit reached)" : "                ") << std::endl;
-        }
-
-        lfp.Fclose();
-        ++realfno;
-      }
-      else {
-        if(not quiet) std::cout << "Error opening nodelist " << fno->fn << '!' << std::endl;
-        *(fno->fn) = NUL;
-      }
     }
-  }
 
-  // Compile userlists
-  if(userlist.size()) {
-    if(not quiet) std::cout << std::endl << "* Compiling userlists:" << std::endl;
-  }
-
-  pos = 0;
-
-  for(fno=userlist.begin(), zno=userzone.begin(); fno != userlist.end() and nodes < maxnodes; fno++, zno++) {
-
-    no = 0;
-
-    lfp.Fopen(fno->fn, "rt", sh_mod);
-    if (lfp.isopen())
+    // Compile userlists
+    if(userlist.size())
     {
-      lfp.SetvBuf(NULL, _IOFBF, 32000);
+        if(not quiet) std::cout << std::endl << "* Compiling userlists:" << std::endl;
+    }
 
-      name = CleanFilename(fno->fn);
+    pos = 0;
 
-      if (nodes < maxnodes)
-      {
-        while (lfp.Fgets(buf, sizeof(buf)))
+    for(fno=userlist.begin(), zno=userzone.begin(); fno != userlist.end() and nodes < maxnodes; fno++, zno++)
+    {
+
+        no = 0;
+
+        lfp.Fopen(fno->fn, "rt", sh_mod);
+        if (lfp.isopen())
         {
-          // Get node data
-          strbtrim(buf);
-          ptr = buf + strlen(buf) - 1;
-          while(*ptr != ' ')
-            ptr--;
-          nlst.reset();
-          nlst.addr = *zno;
-          fast_parse_addr(ptr+1, &nlst.addr);
-          *ptr = NUL;
-          strbtrim(buf);
+            lfp.SetvBuf(NULL, _IOFBF, 32000);
 
-          // Convert "lastname, firstname" to "firstname lastname"
-          ptr = strchr(buf, ',');
-          if(ptr) {
-            *ptr++ = NUL;
-            strxmerge(buf2, 100, strskip_wht(ptr), " ", buf, NULL);
-            ptr = buf2;
-          }
-          else {
-            ptr = buf;
-          }
+            name = CleanFilename(fno->fn);
 
-          // Convert name to Goldware standard
-          strxcpy(nlst.name, CvtName(ptr), sizeof(nlst.name));
+            if (nodes < maxnodes)
+            {
+                while (lfp.Fgets(buf, sizeof(buf)))
+                {
+                    // Get node data
+                    strbtrim(buf);
+                    ptr = buf + strlen(buf) - 1;
+                    while(*ptr != ' ')
+                        ptr--;
+                    nlst.reset();
+                    nlst.addr = *zno;
+                    fast_parse_addr(ptr+1, &nlst.addr);
+                    *ptr = NUL;
+                    strbtrim(buf);
 
-          bool include = true;
+                    // Convert "lastname, firstname" to "firstname lastname"
+                    ptr = strchr(buf, ',');
+                    if(ptr)
+                    {
+                        *ptr++ = NUL;
+                        strxmerge(buf2, 100, strskip_wht(ptr), " ", buf, NULL);
+                        ptr = buf2;
+                    }
+                    else
+                    {
+                        ptr = buf;
+                    }
 
-          // Check address against the exclude masks
-          for(addr_iter n=excludenode.begin(); n != excludenode.end(); n++) {
-            if(match_addr_mask(&(*n), &nlst.addr)) {
-              include = false;
-              break;
+                    // Convert name to Goldware standard
+                    strxcpy(nlst.name, CvtName(ptr), sizeof(nlst.name));
+
+                    bool include = true;
+
+                    // Check address against the exclude masks
+                    for(addr_iter n=excludenode.begin(); n != excludenode.end(); n++)
+                    {
+                        if(match_addr_mask(&(*n), &nlst.addr))
+                        {
+                            include = false;
+                            break;
+                        }
+                    }
+
+                    // Check address against the include masks
+                    if(not include)
+                    {
+                        for(addr_iter n=includenode.begin(); n != includenode.end(); n++)
+                        {
+                            if(match_addr_mask(&(*n), &nlst.addr))
+                            {
+                                include = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if(include)     // Address was okay
+                    {
+
+                        if(ISTWIRLY(nodes))
+                        {
+                            int len = 16-strlen(name);
+                            std::cout << "\r* \\--" << name << std::setw((len > 0) ? len : 1) << " " << "Nodes: " << (uint32_t)nodes << "        " << std::flush;
+                        }
+
+                        // Indicate userlist
+                        nlst.pos = (long)0xFF000000L | (pos++);
+
+                        // Append to end of list
+                        nodeidx.push_back(nlst);
+                        ++nodes;
+
+                        // Count the node
+                        no++;
+
+                        // Stop if limit is reached
+                        if(nodes >= maxnodes)
+                            break;
+                    }
+                }
             }
-          }
 
-          // Check address against the include masks
-          if(not include) {
-            for(addr_iter n=includenode.begin(); n != includenode.end(); n++) {
-              if(match_addr_mask(&(*n), &nlst.addr)) {
-                include = true;
-                break;
-              }
-            }
-          }
-
-          if(include) {   // Address was okay
-
-            if(ISTWIRLY(nodes)) {
-              int len = 16-strlen(name);
-              std::cout << "\r* \\--" << name << std::setw((len > 0) ? len : 1) << " " << "Nodes: " << (uint32_t)nodes << "        " << std::flush;
+            if(not quiet)
+            {
+                int len = 16-strlen(name);
+                std::cout << "\r* " << ((fno == userlist.end()-1) ? '\\' : '|') << "--" << name << std::setw((len > 0) ? len : 1) << " " << "Nodes read: " << (uint32_t)no << "\tTotal read: " << (uint32_t)nodes << ((nodes >= maxnodes) ? " (Limit reached)" : "                ") << std::endl;
             }
 
-            // Indicate userlist
-            nlst.pos = (long)0xFF000000L | (pos++);
-
-            // Append to end of list
-            nodeidx.push_back(nlst);
-            ++nodes;
-
-            // Count the node
-            no++;
-
-            // Stop if limit is reached
-            if(nodes >= maxnodes)
-              break;
-          }
-        }
-      }
-
-      if(not quiet) {
-        int len = 16-strlen(name);
-        std::cout << "\r* " << ((fno == userlist.end()-1) ? '\\' : '|') << "--" << name << std::setw((len > 0) ? len : 1) << " " << "Nodes read: " << (uint32_t)no << "\tTotal read: " << (uint32_t)nodes << ((nodes >= maxnodes) ? " (Limit reached)" : "                ") << std::endl;
-      }
-
-      lfp.Fclose();
-    }
-    else {
-      if(not quiet) std::cout << "Error opening userlist " << fno->fn << '!' << std::endl;
-    }
-  }
-
-  #ifdef GOLDNODE_STATS
-  if(make_stats) {
-
-    if(not quiet) std::cout << "* Writing statistics to " << statfilename << NL;
-
-    std::ofstream ofp(statfilename);
-    if(not ofp) {
-      if(not quiet) std::cout << "Error opening statfile " << statfilename << '!' << NL;
-    }
-    else {
-      ofp << "Nodename size statistics:" << std::endl;
-      calc_statistic(ofp, statistic.nodename, nodes);
-
-      ofp << std::endl << "Location size statistics:" << std::endl;
-      calc_statistic(ofp, statistic.location, nodes);
-
-      ofp << std::endl << "Sysopname size statistics:" << std::endl;
-      calc_statistic(ofp, statistic.sysopname, nodes);
-    }
-  }
-  else {
-  #endif
-    // At last, sort the nodes
-    geidxlist::iterator curr, prev;
-    std::map<long, dword> namepos;
-
-    // Sort by name
-    if(not quiet) std::cout << NL << "* Sorting by name " << std::flush;
-#if defined(_MSC_VER)
-    sort_type = sort_by_name;
-    nodeidx.sort();
-#else
-    nodeidx.sort(cmp_nnlsts);
-#endif
-    // Write the name-sorted .GXN
-    gfile fp(nodeindex.c_str(), "wb", sh_mod);
-    if (fp.isopen())
-    {
-      name = CleanFilename(nodeindex.c_str());
-
-      gfile fido;
-      if (fidouser) fido.Fopen(fidouserlst, "wt", sh_mod);
-      
-      if (!fido.isopen())
-      {
-        if(not quiet) std::cout << "\b, writing " << name << ' ' << std::flush;
-        fidouser = false;
-      }
-      else {
-        if(not quiet) std::cout << "\b, writing " << name << " and " << fidouserlst << ' ' << std::flush;
-      }
-
-      int nn = 0;
-      dword nodenum = 0;
-      for(prev = nodeidx.end(), curr = nodeidx.begin(); curr != nodeidx.end(); prev = curr++) {
-
-        if(ISTWIRLY(nn++))
-          twirly();
-
-        if(ignoredups) {
-          if(prev != nodeidx.end() && match_addr_mask(&curr->addr, &prev->addr)) {
-            if(strieql(curr->name, prev->name)) {
-              #ifdef DEBUG
-              if(not quiet) std::cout << "* Dupe: " << curr->addr.zone << ':' << curr->addr.net << '/' << curr->addr.node << '.' << curr->addr.point << ' ' << curr->name << NL;
-              #endif
-              nodeidx.erase(curr);
-              curr = prev;
-              ++dups;
-              continue;
-            }
-          }
-          fp.Fwrite(&(*curr), sizeof(_GEIdx));
+            lfp.Fclose();
         }
         else
-          fp.Fwrite(&(*curr), sizeof(_GEIdx));
-
-        namepos[curr->pos] = nodenum++;
-        if (fidouser)
         {
-          char buf[256];
-          fido.Printf("%-36.36s%24.24s\n", curr->name, make_addr_str(buf, &curr->addr, ""));
+            if(not quiet) std::cout << "Error opening userlist " << fno->fn << '!' << std::endl;
         }
-      }
-
-      fp.Fclose();
     }
 
-    // Sort by address
-    if(not quiet) std::cout << ' ' << NL "* Sorting by node " << std::flush;
+#ifdef GOLDNODE_STATS
+    if(make_stats)
+    {
+
+        if(not quiet) std::cout << "* Writing statistics to " << statfilename << NL;
+
+        std::ofstream ofp(statfilename);
+        if(not ofp)
+        {
+            if(not quiet) std::cout << "Error opening statfile " << statfilename << '!' << NL;
+        }
+        else
+        {
+            ofp << "Nodename size statistics:" << std::endl;
+            calc_statistic(ofp, statistic.nodename, nodes);
+
+            ofp << std::endl << "Location size statistics:" << std::endl;
+            calc_statistic(ofp, statistic.location, nodes);
+
+            ofp << std::endl << "Sysopname size statistics:" << std::endl;
+            calc_statistic(ofp, statistic.sysopname, nodes);
+        }
+    }
+    else
+    {
+#endif
+        // At last, sort the nodes
+        geidxlist::iterator curr, prev;
+        std::map<long, dword> namepos;
+
+        // Sort by name
+        if(not quiet) std::cout << NL << "* Sorting by name " << std::flush;
 #if defined(_MSC_VER)
-    sort_type = sort_by_address;
-    nodeidx.sort();
+        sort_type = sort_by_name;
+        nodeidx.sort();
 #else
-    nodeidx.sort(cmp_anlsts);
+        nodeidx.sort(cmp_nnlsts);
+#endif
+        // Write the name-sorted .GXN
+        gfile fp(nodeindex.c_str(), "wb", sh_mod);
+        if (fp.isopen())
+        {
+            name = CleanFilename(nodeindex.c_str());
+
+            gfile fido;
+            if (fidouser) fido.Fopen(fidouserlst, "wt", sh_mod);
+
+            if (!fido.isopen())
+            {
+                if(not quiet) std::cout << "\b, writing " << name << ' ' << std::flush;
+                fidouser = false;
+            }
+            else
+            {
+                if(not quiet) std::cout << "\b, writing " << name << " and " << fidouserlst << ' ' << std::flush;
+            }
+
+            int nn = 0;
+            dword nodenum = 0;
+            for(prev = nodeidx.end(), curr = nodeidx.begin(); curr != nodeidx.end(); prev = curr++)
+            {
+
+                if(ISTWIRLY(nn++))
+                    twirly();
+
+                if(ignoredups)
+                {
+                    if(prev != nodeidx.end() && match_addr_mask(&curr->addr, &prev->addr))
+                    {
+                        if(strieql(curr->name, prev->name))
+                        {
+#ifdef DEBUG
+                            if(not quiet) std::cout << "* Dupe: " << curr->addr.zone << ':' << curr->addr.net << '/' << curr->addr.node << '.' << curr->addr.point << ' ' << curr->name << NL;
+#endif
+                            nodeidx.erase(curr);
+                            curr = prev;
+                            ++dups;
+                            continue;
+                        }
+                    }
+                    fp.Fwrite(&(*curr), sizeof(_GEIdx));
+                }
+                else
+                    fp.Fwrite(&(*curr), sizeof(_GEIdx));
+
+                namepos[curr->pos] = nodenum++;
+                if (fidouser)
+                {
+                    char buf[256];
+                    fido.Printf("%-36.36s%24.24s\n", curr->name, make_addr_str(buf, &curr->addr, ""));
+                }
+            }
+
+            fp.Fclose();
+        }
+
+        // Sort by address
+        if(not quiet) std::cout << ' ' << NL "* Sorting by node " << std::flush;
+#if defined(_MSC_VER)
+        sort_type = sort_by_address;
+        nodeidx.sort();
+#else
+        nodeidx.sort(cmp_anlsts);
 #endif
 
-    // Write the address-sorted .GXA
-    fp.Fopen(addrindex.c_str(), "wb", sh_mod);
-    if (fp.isopen())
-    {
-      name = CleanFilename(addrindex.c_str());
-      if(not quiet) std::cout << "\b, writing " << name << ' ' << std::flush;
-      int nn = 0;
-      for(curr = nodeidx.begin(); curr != nodeidx.end(); curr++) {
-        if(ISTWIRLY(nn++))
-          twirly();
-        fp.Fwrite(&namepos[curr->pos], sizeof(dword));
-      }
-      fp.Fclose();
+        // Write the address-sorted .GXA
+        fp.Fopen(addrindex.c_str(), "wb", sh_mod);
+        if (fp.isopen())
+        {
+            name = CleanFilename(addrindex.c_str());
+            if(not quiet) std::cout << "\b, writing " << name << ' ' << std::flush;
+            int nn = 0;
+            for(curr = nodeidx.begin(); curr != nodeidx.end(); curr++)
+            {
+                if(ISTWIRLY(nn++))
+                    twirly();
+                fp.Fwrite(&namepos[curr->pos], sizeof(dword));
+            }
+            fp.Fclose();
+        }
+
+        // Write the list index in .GXL
+        fp.Fopen(listindex.c_str(), "wt", sh_mod);
+        if (fp.isopen())
+        {
+            name = CleanFilename(listindex.c_str());
+            if (not quiet) std::cout << ' ' << NL "* Writing " << name << std::endl;
+            for (fno=nodelist.begin(); fno != nodelist.end(); fno++)
+            {
+                if (*(fno->fn))
+                    fp.Printf("%s %u\n", fno->fn, fno->ft);
+            }
+
+            fp.Fclose();
+        }
+
+        // Note compile time
+        runtime = gtime(NULL) - runtime;
+
+        if(not quiet)
+        {
+            if(dups)
+            {
+                std::cout << NL "* Total duplicate nodes: " << (uint32_t)dups << '.' << NL;
+            }
+            std::cout << NL "* Nodelist compile completed. Compile time: " << (uint32_t)(runtime/60) << " min, " << (uint32_t)(runtime%60) << " sec." << NL;
+        }
+#ifdef GOLDNODE_STATS
     }
-
-    // Write the list index in .GXL
-    fp.Fopen(listindex.c_str(), "wt", sh_mod);
-    if (fp.isopen())
-    {
-      name = CleanFilename(listindex.c_str());
-      if (not quiet) std::cout << ' ' << NL "* Writing " << name << std::endl;
-      for (fno=nodelist.begin(); fno != nodelist.end(); fno++)
-      {
-        if (*(fno->fn))
-          fp.Printf("%s %u\n", fno->fn, fno->ft);
-      }
-
-      fp.Fclose();
-    }
-
-    // Note compile time
-    runtime = gtime(NULL) - runtime;
-
-    if(not quiet) {
-      if(dups) {
-        std::cout << NL "* Total duplicate nodes: " << (uint32_t)dups << '.' << NL;
-      }
-      std::cout << NL "* Nodelist compile completed. Compile time: " << (uint32_t)(runtime/60) << " min, " << (uint32_t)(runtime%60) << " sec." << NL;
-    }
-  #ifdef GOLDNODE_STATS
-  }
-  #endif
+#endif
 }
 
 
@@ -1043,194 +1133,222 @@ static void read_nodelists()
 
 static void check_nodelists(bool force)
 {
-  uint n;
-  int compilen, compileu;
-  static Path buf, newpath;
+    uint n;
+    int compilen, compileu;
+    static Path buf, newpath;
 
-  // Find newest nodelists
-  for(n=0,compilen=0; n<nodelist.size(); n++) {
-
-    strcpy(buf, CleanFilename(nodelist[n].fn));
-    char *ext = strchr(buf, '.');
-    if(ext and ((atoi(ext+1) == 999) or (ext[1] == '*'))) {
-      extractdirname(newpath, nodelist[n].fn);
-      int extpos = ext-buf+1;
-      strcpy(ext, ".*");
-      gposixdir f(newpath);
-      const gdirentry *de;
-      time32_t listtime = 0;
-      bool listdefined = false;
-      while((de = f.nextentry(buf)) != NULL)
-        if(atoi(de->name.c_str()+extpos)) {
-          if(not listdefined or (de->stat_info.st_mtime-listtime > 0)) {
-            listtime = de->stat_info.st_mtime;
-            listdefined = true;
-            strxmerge(nodelist[n].fn, sizeof(Path), newpath, de->name.c_str(), NULL);
-          }
-        }
-      strchg(nodelist[n].fn, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
-    }
-  }
-
-  // Get timestamps from .GXL file
-  gfile fp(listindex.c_str(), "rt", sh_mod);
-  if (fp.isopen())
-  {
-    while (fp.Fgets(buf, sizeof(buf)))
+    // Find newest nodelists
+    for(n=0,compilen=0; n<nodelist.size(); n++)
     {
-      char* key;
-      char* val=buf;
-      getkeyval(&key, &val);
-      key = strxcpy(newpath, strbtrim(key), sizeof(Path));
-      _MapPath(key);
-      strchg(key, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
-      for(n=0; n<nodelist.size(); n++) {
-        if(strieql(nodelist[n].fn, key)) {
-          nodelist[n].ft = atol(val);
-          break;
+
+        strcpy(buf, CleanFilename(nodelist[n].fn));
+        char *ext = strchr(buf, '.');
+        if(ext and ((atoi(ext+1) == 999) or (ext[1] == '*')))
+        {
+            extractdirname(newpath, nodelist[n].fn);
+            int extpos = ext-buf+1;
+            strcpy(ext, ".*");
+            gposixdir f(newpath);
+            const gdirentry *de;
+            time32_t listtime = 0;
+            bool listdefined = false;
+            while((de = f.nextentry(buf)) != NULL)
+                if(atoi(de->name.c_str()+extpos))
+                {
+                    if(not listdefined or (de->stat_info.st_mtime-listtime > 0))
+                    {
+                        listtime = de->stat_info.st_mtime;
+                        listdefined = true;
+                        strxmerge(nodelist[n].fn, sizeof(Path), newpath, de->name.c_str(), NULL);
+                    }
+                }
+            strchg(nodelist[n].fn, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
         }
-      }
-      for(n=0; n<userlist.size(); n++) {
-        if(strieql(userlist[n].fn, key)) {
-          userlist[n].ft = atol(val);
-          break;
+    }
+
+    // Get timestamps from .GXL file
+    gfile fp(listindex.c_str(), "rt", sh_mod);
+    if (fp.isopen())
+    {
+        while (fp.Fgets(buf, sizeof(buf)))
+        {
+            char* key;
+            char* val=buf;
+            getkeyval(&key, &val);
+            key = strxcpy(newpath, strbtrim(key), sizeof(Path));
+            _MapPath(key);
+            strchg(key, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
+            for(n=0; n<nodelist.size(); n++)
+            {
+                if(strieql(nodelist[n].fn, key))
+                {
+                    nodelist[n].ft = atol(val);
+                    break;
+                }
+            }
+            for(n=0; n<userlist.size(); n++)
+            {
+                if(strieql(userlist[n].fn, key))
+                {
+                    userlist[n].ft = atol(val);
+                    break;
+                }
+            }
         }
-      }
+        fp.Fclose();
     }
-    fp.Fclose();
-  } else
-    perror("error opening .gxl file");
+    else
+        perror("error opening .gxl file");
 
-  // Check nodelists
-  for(n=0,compilen=0; n<nodelist.size(); n++) {
-    if(abs(long(GetFiletime(nodelist[n].fn) - nodelist[n].ft)) > 1) {
-      nodelist[n].fc = YES;
-      compilen++;
+    // Check nodelists
+    for(n=0,compilen=0; n<nodelist.size(); n++)
+    {
+        if(abs(long(GetFiletime(nodelist[n].fn) - nodelist[n].ft)) > 1)
+        {
+            nodelist[n].fc = YES;
+            compilen++;
+        }
     }
-  }
 
-  if(not quiet) {
-    if(compilen) {
-      std::cout << "* " << compilen << " new nodelist file" << ((compilen == 1) ? "" : "s") << " found." NL;
+    if(not quiet)
+    {
+        if(compilen)
+        {
+            std::cout << "* " << compilen << " new nodelist file" << ((compilen == 1) ? "" : "s") << " found." NL;
+        }
+        else if(nodelist.size())
+        {
+            std::cout << "* The nodelist file" << ((nodelist.size() == 1) ? " is" : "s are") << " up-to-date." NL;
+        }
     }
-    else if(nodelist.size()) {
-      std::cout << "* The nodelist file" << ((nodelist.size() == 1) ? " is" : "s are") << " up-to-date." NL;
-    }
-  }
 
-  // Check userlists
-  for(n=0,compileu=0; n<userlist.size(); n++) {
-    if(abs(long(GetFiletime(newpath) - userlist[n].ft)) > 1) {
-      userlist[n].fc = YES;
-      compileu++;
+    // Check userlists
+    for(n=0,compileu=0; n<userlist.size(); n++)
+    {
+        if(abs(long(GetFiletime(newpath) - userlist[n].ft)) > 1)
+        {
+            userlist[n].fc = YES;
+            compileu++;
+        }
     }
-  }
 
-  if(not quiet) {
-    if(compileu) {
-      std::cout << "* " << compileu << " new userlist file" << ((compileu == 1) ? "" : "s") << " found." NL;
+    if(not quiet)
+    {
+        if(compileu)
+        {
+            std::cout << "* " << compileu << " new userlist file" << ((compileu == 1) ? "" : "s") << " found." NL;
+        }
+        else if(userlist.size())
+        {
+            std::cout << "* The userlist file" << ((userlist.size() == 1) ? " is" : "s are") << " up-to-date." NL;
+        }
     }
-    else if(userlist.size()) {
-      std::cout << "* The userlist file" << ((userlist.size() == 1) ? " is" : "s are") << " up-to-date." NL;
-    }
-  }
 
-  if(force or compilen or compileu)
-    read_nodelists();
+    if(force or compilen or compileu)
+        read_nodelists();
 }
 
 
 //  ------------------------------------------------------------------
 
-static void fatal_error(const char* what) {
+static void fatal_error(const char* what)
+{
 
-  if(not quiet) std::cout << what << NL;
-  exit(5);
+    if(not quiet) std::cout << what << NL;
+    exit(5);
 }
 
 
 //  ------------------------------------------------------------------
 
-static int do_if(char* val) {
+static int do_if(char* val)
+{
 
-  if(strieql(val, "OS/2") or strieql(val, "OS2")) {
-    #ifdef __OS2__
-    return true;
-    #else
-    return false;
-    #endif
-  }
-  else if(strieql(val, "NT") or strieql(val, "W32") or strieql(val, "WIN32")) {
-    #ifdef __WIN32__
-    return true;
-    #else
-    return false;
-    #endif
-  }
-  else if(strieql(val, "386") or strieql(val, "DOS") or strieql(val, "DPMI32")) {
-    #ifdef __MSDOS__
-    return true;
-    #else
-    return false;
-    #endif
-  }
-  else if(strieql(val, "LINUX") or strieql(val, "UNIX")) {
-    #ifdef __UNIX__
-    return true;
-    #else
-    return false;
-    #endif
-  }
-  else if (strieql(val, "SPELL"))
-  {
-    #ifdef GCFG_SPELL_INCLUDED
-    return true;
-    #else
-    return false;
-    #endif
-  }
-  else if(strieql(val, "FIREBIRD"))
-    return true;
-  else if(strieql(val, "ASA") or strieql(val, "PLUS"))
-    return true;
-  else if(strieql(val, "YES") or strieql(val, "TRUE") or strieql(val, "ON"))
-    return true;
-  return !!atoi(val);
-}
-
-
-//  ------------------------------------------------------------------
-
-char* _MapPath(char* fmap, bool reverse) {
-
-  Path buf, cmap;
-
-  strxcpy(cmap, fmap, sizeof(Path));
-  if(reverse)
-    strchg(cmap, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
-
-  std::vector< std::pair<std::string, std::string> >::iterator i;
-  for(i = mappath.begin(); i != mappath.end(); i++) {
-    const char* p = reverse ? i->second.c_str() : i->first.c_str();
-    const char* q = reverse ? i->first.c_str() : i->second.c_str();
-    if(strnieql(cmap, p, strlen(p))) {
-      strxcpy(buf, fmap, sizeof(Path));
-      strxmerge(fmap, sizeof(Path), q, buf+strlen(p), NULL);
-      char sl1, sl2;
-      const char* ptr;
-
-      ptr = strpbrk(p, "/\\");
-      sl1 = ptr ? *ptr : NUL;
-      ptr = strpbrk(q, "/\\");
-      sl2 = ptr ? *ptr : NUL;
-
-      if(sl1 and sl2 and (sl1 != sl2))
-        strchg(fmap, sl1, sl2);
-
-      break;
+    if(strieql(val, "OS/2") or strieql(val, "OS2"))
+    {
+#ifdef __OS2__
+        return true;
+#else
+        return false;
+#endif
     }
-  }
-  return fmap;
+    else if(strieql(val, "NT") or strieql(val, "W32") or strieql(val, "WIN32"))
+    {
+#ifdef __WIN32__
+        return true;
+#else
+        return false;
+#endif
+    }
+    else if(strieql(val, "386") or strieql(val, "DOS") or strieql(val, "DPMI32"))
+    {
+#ifdef __MSDOS__
+        return true;
+#else
+        return false;
+#endif
+    }
+    else if(strieql(val, "LINUX") or strieql(val, "UNIX"))
+    {
+#ifdef __UNIX__
+        return true;
+#else
+        return false;
+#endif
+    }
+    else if (strieql(val, "SPELL"))
+    {
+#ifdef GCFG_SPELL_INCLUDED
+        return true;
+#else
+        return false;
+#endif
+    }
+    else if(strieql(val, "FIREBIRD"))
+        return true;
+    else if(strieql(val, "ASA") or strieql(val, "PLUS"))
+        return true;
+    else if(strieql(val, "YES") or strieql(val, "TRUE") or strieql(val, "ON"))
+        return true;
+    return !!atoi(val);
+}
+
+
+//  ------------------------------------------------------------------
+
+char* _MapPath(char* fmap, bool reverse)
+{
+
+    Path buf, cmap;
+
+    strxcpy(cmap, fmap, sizeof(Path));
+    if(reverse)
+        strchg(cmap, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
+
+    std::vector< std::pair<std::string, std::string> >::iterator i;
+    for(i = mappath.begin(); i != mappath.end(); i++)
+    {
+        const char* p = reverse ? i->second.c_str() : i->first.c_str();
+        const char* q = reverse ? i->first.c_str() : i->second.c_str();
+        if(strnieql(cmap, p, strlen(p)))
+        {
+            strxcpy(buf, fmap, sizeof(Path));
+            strxmerge(fmap, sizeof(Path), q, buf+strlen(p), NULL);
+            char sl1, sl2;
+            const char* ptr;
+
+            ptr = strpbrk(p, "/\\");
+            sl1 = ptr ? *ptr : NUL;
+            ptr = strpbrk(q, "/\\");
+            sl2 = ptr ? *ptr : NUL;
+
+            if(sl1 and sl2 and (sl1 != sl2))
+                strchg(fmap, sl1, sl2);
+
+            break;
+        }
+    }
+    return fmap;
 }
 
 
@@ -1238,411 +1356,445 @@ char* _MapPath(char* fmap, bool reverse) {
 
 static int parse_config(const char *__configfile, Addr& zoneaddr)
 {
-  char buf[512];
-  const char * const top_buf = buf+sizeof(buf);
-  char* ptr;
-  char* key;
-  word crc;
-  char* value;
-  char* value2;
-  int _gotcond,line = 0;
-  static int in_if = NO;
-  static int in_else = NO;
-  static int cond_status = YES;
+    char buf[512];
+    const char * const top_buf = buf+sizeof(buf);
+    char* ptr;
+    char* key;
+    word crc;
+    char* value;
+    char* value2;
+    int _gotcond,line = 0;
+    static int in_if = NO;
+    static int in_else = NO;
+    static int cond_status = YES;
 
-  gfile fp(__configfile, "rt", sh_mod);
-  if (fp.isopen())
-  {
-    while (fp.Fgets((ptr=buf), sizeof(buf)))
+    gfile fp(__configfile, "rt", sh_mod);
+    if (fp.isopen())
     {
-      line++;
-      // Replace TABs with SPACEs
-      ptr = strskip_wht(ptr);
-      if(*ptr != ';' and *ptr) {
-        crc=getkeyvalcrc(&key, &ptr);
-        getkeyval(&value, &ptr);
-        getkeyval(&value2, &ptr);
+        while (fp.Fgets((ptr=buf), sizeof(buf)))
+        {
+            line++;
+            // Replace TABs with SPACEs
+            ptr = strskip_wht(ptr);
+            if(*ptr != ';' and *ptr)
+            {
+                crc=getkeyvalcrc(&key, &ptr);
+                getkeyval(&value, &ptr);
+                getkeyval(&value2, &ptr);
 
-        _gotcond = YES;
-        switch(crc) {
-          case CRC_IF:
-            if(in_if) {
-              if(not quiet) std::cout << "* " << __configfile << ": Misplaced IF at line " << line << ". IF's cannot be nested." << NL;
+                _gotcond = YES;
+                switch(crc)
+                {
+                case CRC_IF:
+                    if(in_if)
+                    {
+                        if(not quiet) std::cout << "* " << __configfile << ": Misplaced IF at line " << line << ". IF's cannot be nested." << NL;
+                    }
+                    in_if = YES;
+                    cond_status = do_if(value);
+                    break;
+                case CRC_ELIF:
+                case CRC_ELSEIF:
+                    if((not in_if) or in_else)
+                    {
+                        if(not quiet) std::cout << "* " << __configfile << ": Misplaced ELIF/ELSEIF at line " << line <<  '.' << NL;
+                    }
+                    cond_status = do_if(value);
+                    break;
+                case CRC_ELSE:
+                    if((not in_if) or in_else)
+                    {
+                        if(not quiet) std::cout << "* " << __configfile << "Misplaced ELSE at line " << line <<  '.' << NL;
+                    }
+                    in_else = YES;
+                    cond_status ^= YES;
+                    break;
+                case CRC_ENDIF:
+                    if(not in_if)
+                    {
+                        if(not quiet) std::cout << "* " << __configfile << ": Misplaced ENDIF at line " << line << '.' << NL;
+                    }
+                    in_if = in_else = NO;
+                    cond_status = YES;
+                    break;
+                default:
+                    _gotcond = NO;
+                    break;
+                }
+
+                if((not _gotcond) and cond_status)
+                {
+                    switch(crc)
+                    {
+                    case CRC_NODEPATH:
+                        _MapPath(value);
+                        PathCopy(nodepath, value);
+                        break;
+                    case CRC_ADDRESS:
+                    case CRC_AKA:
+                        if(not zoneaddr.net)
+                        {
+                            parse_address(value, &zoneaddr, &zoneaddr);
+                            zoneaddr.point = 0;
+                        }
+                        break;
+                    case CRC_NODELIST:
+                    {
+                        Stamp ndl;
+                        Addr ndz;
+
+                        if(atoi(value2))
+                        {
+                            parse_address(value2, &ndz, &ndz);
+                            if(ndz.zone == 0)
+                            {
+                                ndz.zone  = ndz.node;
+                                ndz.net   = 0;
+                                ndz.node  = 0;
+                            }
+                        }
+                        else
+                            ndz = zoneaddr;
+                        ndz.point = 0;
+                        ndl.ft = (dword)-1;
+                        ndl.fc = NO;
+                        strschg_environ(value, top_buf-value);
+                        _MapPath(value);
+                        strcpy(ndl.fn, value);
+                        nodelist.push_back(ndl);
+                        nodezone.push_back(ndz);
+                    }
+                    break;
+                    case CRC_USERLIST:
+                    {
+                        Stamp ndl;
+                        Addr ndz;
+
+                        if(atoi(value2))
+                        {
+                            parse_address(value2, &ndz, &ndz);
+                            if(ndz.zone == 0)
+                            {
+                                ndz.zone  = ndz.node;
+                                ndz.net   = 0;
+                                ndz.node  = 0;
+                            }
+                        }
+                        else
+                            ndz = zoneaddr;
+                        ndz.point = 0;
+                        ndl.ft = (dword)-1;
+                        ndl.fc = NO;
+                        strschg_environ(value, top_buf-value);
+                        _MapPath(value);
+                        strcpy(ndl.fn, value);
+                        userlist.push_back(ndl);
+                        userzone.push_back(ndz);
+                    }
+                    break;
+                    case CRC_EXCLUDENODES:
+                    {
+                        Addr exn;
+                        parse_address(value, &exn, &zoneaddr);
+                        excludenode.push_back(exn);
+                    }
+                    break;
+                    case CRC_INCLUDENODES:
+                    {
+                        Addr inn;
+                        parse_address(value, &inn, &zoneaddr);
+                        includenode.push_back(inn);
+                    }
+                    break;
+                    case CRC_SHAREMODE:
+                        if(atoi(value))
+                            sh_mod = atoi(value);
+                        else
+                            sh_mod = GetYesno(value) ? SH_DENYNO : SH_COMPAT;
+                        break;
+                    case CRC_INCLUDE:
+                        strschg_environ(value, top_buf-value);
+                        _MapPath(value);
+                        if(not parse_config(value,zoneaddr))     // NOTE! This is a recursive call!
+                            if(not quiet) std::cout << "* Could not read configuration file " << value << '!' << NL;
+                        break;
+                    case CRC_MAPPATH:
+                    {
+                        std::pair<std::string, std::string> mapentry;
+
+                        mapentry.first = value;
+                        mapentry.second = value2;
+                        mappath.push_back(mapentry);
+                    }
+                    break;
+                    default:
+                        break;
+                    }
+                }
             }
-            in_if = YES;
-            cond_status = do_if(value);
-            break;
-          case CRC_ELIF:
-          case CRC_ELSEIF:
-            if((not in_if) or in_else) {
-              if(not quiet) std::cout << "* " << __configfile << ": Misplaced ELIF/ELSEIF at line " << line <<  '.' << NL;
-            }
-            cond_status = do_if(value);
-            break;
-          case CRC_ELSE:
-            if((not in_if) or in_else) {
-              if(not quiet) std::cout << "* " << __configfile << "Misplaced ELSE at line " << line <<  '.' << NL;
-            }
-            in_else = YES;
-            cond_status ^= YES;
-            break;
-          case CRC_ENDIF:
-            if(not in_if) {
-              if(not quiet) std::cout << "* " << __configfile << ": Misplaced ENDIF at line " << line << '.' << NL;
-            }
-            in_if = in_else = NO;
-            cond_status = YES;
-            break;
-          default:
-            _gotcond = NO;
-            break;
         }
 
-        if((not _gotcond) and cond_status) {
-          switch(crc) {
-            case CRC_NODEPATH:
-              _MapPath(value);
-              PathCopy(nodepath, value);
-              break;
-            case CRC_ADDRESS:
-            case CRC_AKA:
-              if(not zoneaddr.net) {
-                parse_address(value, &zoneaddr, &zoneaddr);
-                zoneaddr.point = 0;
-              }
-              break;
-            case CRC_NODELIST:
-              {
-                Stamp ndl;
-                Addr ndz;
+        return(YES);
+    }
+    else
+    {
+        return(NO);
+    }
+}
 
-                if(atoi(value2)) {
-                  parse_address(value2, &ndz, &ndz);
-                  if(ndz.zone == 0) {
-                    ndz.zone  = ndz.node;
-                    ndz.net   = 0;
-                    ndz.node  = 0;
-                  }
-                }
-                else
-                  ndz = zoneaddr;
-                ndz.point = 0;
-                ndl.ft = (dword)-1;
-                ndl.fc = NO;
-                strschg_environ(value, top_buf-value);
-                _MapPath(value);
-                strcpy(ndl.fn, value);
-                nodelist.push_back(ndl);
-                nodezone.push_back(ndz);
-              }
-              break;
-            case CRC_USERLIST:
-              {
-                Stamp ndl;
-                Addr ndz;
 
-                if(atoi(value2)) {
-                  parse_address(value2, &ndz, &ndz);
-                  if(ndz.zone == 0) {
-                    ndz.zone  = ndz.node;
-                    ndz.net   = 0;
-                    ndz.node  = 0;
-                  }
-                }
-                else
-                  ndz = zoneaddr;
-                ndz.point = 0;
-                ndl.ft = (dword)-1;
-                ndl.fc = NO;
-                strschg_environ(value, top_buf-value);
-                _MapPath(value);
-                strcpy(ndl.fn, value);
-                userlist.push_back(ndl);
-                userzone.push_back(ndz);
-              }
-              break;
-            case CRC_EXCLUDENODES:
-              {
-                Addr exn;
-                parse_address(value, &exn, &zoneaddr);
-                excludenode.push_back(exn);
-              }
-              break;
-            case CRC_INCLUDENODES:
-              {
-                Addr inn;
-                parse_address(value, &inn, &zoneaddr);
-                includenode.push_back(inn);
-              }
-              break;
-            case CRC_SHAREMODE:
-              if(atoi(value))
-                sh_mod = atoi(value);
-              else
-                sh_mod = GetYesno(value) ? SH_DENYNO : SH_COMPAT;
-              break;
-            case CRC_INCLUDE:
-              strschg_environ(value, top_buf-value);
-              _MapPath(value);
-              if(not parse_config(value,zoneaddr))     // NOTE! This is a recursive call!
-                if(not quiet) std::cout << "* Could not read configuration file " << value << '!' << NL;
-              break;
-            case CRC_MAPPATH:
-              {
-                std::pair<std::string, std::string> mapentry;
+//  ------------------------------------------------------------------
 
-                mapentry.first = value;
-                mapentry.second = value2;
-                mappath.push_back(mapentry);
-              }
-              break;
-            default:
-              break;
-          }
+static bool ExistCfg(char* path, char* file)
+{
+
+    bool found = fexist(AddPath(path, file));
+    if(found)
+        strcat(path, file);
+    return found;
+}
+
+
+//  ------------------------------------------------------------------
+
+static bool FindCfg(char* path)
+{
+
+    bool found = false;
+
+    if(!is_dir(path))
+    {
+        if(fexist(path))
+            return true;
+        else
+            return false;
+    }
+    AddBackslash(path);
+#if defined(__OS2__)
+    found = ExistCfg(path, "ged2.cfg");
+#elif defined(__WIN32__)
+    found = ExistCfg(path, "gedw32.cfg");
+#endif
+    if(not found)
+        found = ExistCfg(path, "golded.cfg");
+    return found;
+}
+
+
+//  ------------------------------------------------------------------
+
+static bool read_config(const char *cfg, const char *argv_0)
+{
+
+    Addr zoneaddr;
+    Path buf;
+
+    bool found = (*cfg != NUL);
+    if(not found)
+    {
+        // Look for configfilename in the environment
+        const char *ptr = getenv("GOLDNODE");
+#if defined(__OS2__)
+        if(not(ptr and *ptr))
+            ptr = getenv("GED2");
+#elif defined(__WIN32__)
+        if(not(ptr and *ptr))
+            ptr = getenv("GEDW32");
+#endif
+        if(not(ptr and *ptr))
+            ptr = getenv("GOLDED");
+        if(not(ptr and *ptr))
+            ptr = getenv("GED");
+        if(ptr and *ptr)
+        {
+            strxcpy(buf, ptr, sizeof(buf));
+            found = FindCfg(buf);
         }
-      }
-    }
 
-    return(YES);
-  }
-  else {
-    return(NO);
-  }
-}
+        // Get it in current directory
+        if(not found)
+        {
+            getcwd(buf, sizeof(buf));
+            found = FindCfg(buf);
+        }
 
+        // Get it where the the .EXE file is
+        if(not found)
+        {
+            extractdirname(buf, argv_0);
+            found = FindCfg(buf);
 
-//  ------------------------------------------------------------------
-
-static bool ExistCfg(char* path, char* file) {
-
-  bool found = fexist(AddPath(path, file));
-  if(found)
-    strcat(path, file);
-  return found;
-}
-
-
-//  ------------------------------------------------------------------
-
-static bool FindCfg(char* path) {
-
-  bool found = false;
-
-  if(!is_dir(path)) {
-    if(fexist(path))
-      return true;
-    else
-      return false;
-  }
-  AddBackslash(path);
-  #if defined(__OS2__)
-  found = ExistCfg(path, "ged2.cfg");
-  #elif defined(__WIN32__)
-  found = ExistCfg(path, "gedw32.cfg");
-  #endif
-  if(not found)
-    found = ExistCfg(path, "golded.cfg");
-  return found;
-}
-
-
-//  ------------------------------------------------------------------
-
-static bool read_config(const char *cfg, const char *argv_0) {
-
-  Addr zoneaddr;
-  Path buf;
-
-  bool found = (*cfg != NUL);
-  if(not found) {
-    // Look for configfilename in the environment
-    const char *ptr = getenv("GOLDNODE");
-    #if defined(__OS2__)
-    if(not(ptr and *ptr))
-      ptr = getenv("GED2");
-    #elif defined(__WIN32__)
-    if(not(ptr and *ptr))
-      ptr = getenv("GEDW32");
-    #endif
-    if(not(ptr and *ptr))
-      ptr = getenv("GOLDED");
-    if(not(ptr and *ptr))
-      ptr = getenv("GED");
-    if(ptr and *ptr) {
-      strxcpy(buf, ptr, sizeof(buf));
-      found = FindCfg(buf);
-    }
-
-    // Get it in current directory
-    if(not found) {
-      getcwd(buf, sizeof(buf));
-      found = FindCfg(buf);
-    }
-
-    // Get it where the the .EXE file is
-    if(not found) {
-      extractdirname(buf, argv_0);
-      found = FindCfg(buf);
-
-      // If we still could not find config name...
-      if(not found)
-        strcat(buf, "golded.cfg");
-    }
-  }
-  else
-    strxcpy(buf, cfg, sizeof(Path));
-
-  nodelist.clear();
-  nodezone.clear();
-  userlist.clear();
-  userzone.clear();
-  mappath.clear();
-  if(not parse_config(buf, zoneaddr)) {
-    errorlevel = 1;
-    return false;
-  }
-
-  if(nodelist.empty() and userlist.empty() == 0)
-    fatal_error("* Error: No NODELISTs or USERLISTs defined!");
-
-  if(zoneaddr.net == 0)
-    fatal_error("* Error: No ADDRESS or AKAs defined!");
-
-  if(nodepath.empty())
-    nodepath = getcwd(buf, sizeof(buf));
-
-  AddBackslash(nodepath);
-  MakePathname(listindex, nodepath, "goldnode.gxl");
-  MakePathname(nodeindex, nodepath, "goldnode.gxn");
-  MakePathname(addrindex, nodepath, "goldnode.gxa");
-  size_t n;
-  for(n=0; n<nodelist.size(); n++)
-    MakePathname(nodelist[n].fn, nodepath.c_str(), nodelist[n].fn);
-  for(n=0; n<userlist.size(); n++)
-    MakePathname(userlist[n].fn, nodepath.c_str(), userlist[n].fn);
-
-  return true;
-}
-
-
-//  ------------------------------------------------------------------
-
-static void run_gn(int argc, char* argv[]) {
-
-  int n;
-  char* ptr;
-  bool force=false, conditional=false;
-
-  // Note start time
-  runtime = time(NULL);
-
-  const char *cfg = "";
-
-  for(n=1; n<argc; n++) {
-    if(strchr("-", *argv[n])) {
-      ptr = argv[n]+2;
-      if(*ptr == '=')
-        ptr++;
-      switch(toupper(argv[n][1])) {
-
-        case 'C':
-          conditional = true;
-          break;
-
-        case 'D':
-          ignoredups = true;
-          break;
-
-        case 'F':
-          force = true;
-          break;
-
-        case 'Q':
-          quiet = true;
-          break;
-
-        #ifdef GOLDNODE_STATS
-        case 'T':
-          make_stats = true;
-          break;
-        #endif
-
-        case 'U':
-          fidouser = true;
-          strcpy(fidouserlst, ptr);
-          break;
-
-      }
+            // If we still could not find config name...
+            if(not found)
+                strcat(buf, "golded.cfg");
+        }
     }
     else
-      cfg = argv[n];
-  }
+        strxcpy(buf, cfg, sizeof(Path));
 
-  if(not quiet) {
-    std::cout << __gver_name__ << " - Nodelist Compiler for Golded+ v." << __gver_shortver__ << __gver_platform__ << __gver_postversion__ << "." NL
-         << "Copyright (C) 1990-1999 Odinn Sorensen" NL
-         << "Copyright (C) 1999-2001 Alexander S. Aganichev" NL
-         << "Copyright (C) 2005 Stas Degteff & Golded+ team" NL
-         << "-------------------------------------------------------------------------------\n" NL;
-  }
-
-  if(not(force or conditional)) {
-    if(not quiet) {
-      std::cout << "Commandline syntax: " << CleanFilename(argv[0]) << " [-options] [configfile]" NL
-           << "\n[-options] =\t-C\t  Conditional compile." NL
-           << "\t\t-F\t  Forced compile." NL
-           << "\t\t-D\t  Remove duplicate nodes from index while compiling." NL
-           << "\t\t-Q\t  Quiet compile. No screen output improves speed." NL
-           << "\t\t-S<size>  Set max size of a name in the index." NL
-           << "\t\t-U<file>  Create sorted FIDOUSER.LST userlist file." NL
-      #ifdef GOLDNODE_STATS
-           << "\t\t-T\t  Make statistics." NL
-      #endif
-           << "\n[configfile] =\t\t  The path AND filename of GOLDED.CFG" NL
-           << "\t\t\t  configuration file to read.\n" NL;
+    nodelist.clear();
+    nodezone.clear();
+    userlist.clear();
+    userzone.clear();
+    mappath.clear();
+    if(not parse_config(buf, zoneaddr))
+    {
+        errorlevel = 1;
+        return false;
     }
-  }
-  else {
 
-    if(force)
-      if(not quiet) std::cout << "* Forced compile." NL;
+    if(nodelist.empty() and userlist.empty() == 0)
+        fatal_error("* Error: No NODELISTs or USERLISTs defined!");
 
-    if(read_config(cfg, argv[0])) {
-      if(force or conditional)
-        check_nodelists(force);
-    }
-    else {
-      if(not quiet) std::cout << NL "Could not find the configuration file!" NL;
-    }
-  }
+    if(zoneaddr.net == 0)
+        fatal_error("* Error: No ADDRESS or AKAs defined!");
+
+    if(nodepath.empty())
+        nodepath = getcwd(buf, sizeof(buf));
+
+    AddBackslash(nodepath);
+    MakePathname(listindex, nodepath, "goldnode.gxl");
+    MakePathname(nodeindex, nodepath, "goldnode.gxn");
+    MakePathname(addrindex, nodepath, "goldnode.gxa");
+    size_t n;
+    for(n=0; n<nodelist.size(); n++)
+        MakePathname(nodelist[n].fn, nodepath.c_str(), nodelist[n].fn);
+    for(n=0; n<userlist.size(); n++)
+        MakePathname(userlist[n].fn, nodepath.c_str(), userlist[n].fn);
+
+    return true;
 }
 
 
 //  ------------------------------------------------------------------
 
-int main(int argc, char *argv[]) {
+static void run_gn(int argc, char* argv[])
+{
 
-  throw_init();
+    int n;
+    char* ptr;
+    bool force=false, conditional=false;
 
-  // set locale
-  setlocale(LC_CTYPE, "");
-  #if defined(GUTLOS_FUNCS)
-  g_init_os(0);
-  #endif
+    // Note start time
+    runtime = time(NULL);
 
-  #ifdef GOLDNODE_STATS
-  memset(&statistic, 0, sizeof(nl_stat));
-  #endif
+    const char *cfg = "";
 
-  run_gn(argc, argv);
+    for(n=1; n<argc; n++)
+    {
+        if(strchr("-", *argv[n]))
+        {
+            ptr = argv[n]+2;
+            if(*ptr == '=')
+                ptr++;
+            switch(toupper(argv[n][1]))
+            {
 
-  #if defined(GUTLOS_FUNCS)
-  g_deinit_os();
-  #endif
+            case 'C':
+                conditional = true;
+                break;
 
-  THROW_CHECK();
+            case 'D':
+                ignoredups = true;
+                break;
 
-  return errorlevel;
+            case 'F':
+                force = true;
+                break;
+
+            case 'Q':
+                quiet = true;
+                break;
+
+#ifdef GOLDNODE_STATS
+            case 'T':
+                make_stats = true;
+                break;
+#endif
+
+            case 'U':
+                fidouser = true;
+                strcpy(fidouserlst, ptr);
+                break;
+
+            }
+        }
+        else
+            cfg = argv[n];
+    }
+
+    if(not quiet)
+    {
+        std::cout << __gver_name__ << " - Nodelist Compiler for Golded+ v." << __gver_shortver__ << __gver_platform__ << __gver_postversion__ << "." NL
+                  << "Copyright (C) 1990-1999 Odinn Sorensen" NL
+                  << "Copyright (C) 1999-2001 Alexander S. Aganichev" NL
+                  << "Copyright (C) 2005 Stas Degteff & Golded+ team" NL
+                  << "-------------------------------------------------------------------------------\n" NL;
+    }
+
+    if(not(force or conditional))
+    {
+        if(not quiet)
+        {
+            std::cout << "Commandline syntax: " << CleanFilename(argv[0]) << " [-options] [configfile]" NL
+                      << "\n[-options] =\t-C\t  Conditional compile." NL
+                      << "\t\t-F\t  Forced compile." NL
+                      << "\t\t-D\t  Remove duplicate nodes from index while compiling." NL
+                      << "\t\t-Q\t  Quiet compile. No screen output improves speed." NL
+                      << "\t\t-S<size>  Set max size of a name in the index." NL
+                      << "\t\t-U<file>  Create sorted FIDOUSER.LST userlist file." NL
+#ifdef GOLDNODE_STATS
+                      << "\t\t-T\t  Make statistics." NL
+#endif
+                      << "\n[configfile] =\t\t  The path AND filename of GOLDED.CFG" NL
+                      << "\t\t\t  configuration file to read.\n" NL;
+        }
+    }
+    else
+    {
+
+        if(force)
+            if(not quiet) std::cout << "* Forced compile." NL;
+
+        if(read_config(cfg, argv[0]))
+        {
+            if(force or conditional)
+                check_nodelists(force);
+        }
+        else
+        {
+            if(not quiet) std::cout << NL "Could not find the configuration file!" NL;
+        }
+    }
+}
+
+
+//  ------------------------------------------------------------------
+
+int main(int argc, char *argv[])
+{
+
+    throw_init();
+
+    // set locale
+    setlocale(LC_CTYPE, "");
+#if defined(GUTLOS_FUNCS)
+    g_init_os(0);
+#endif
+
+#ifdef GOLDNODE_STATS
+    memset(&statistic, 0, sizeof(nl_stat));
+#endif
+
+    run_gn(argc, argv);
+
+#if defined(GUTLOS_FUNCS)
+    g_deinit_os();
+#endif
+
+    THROW_CHECK();
+
+    return errorlevel;
 }
 
 

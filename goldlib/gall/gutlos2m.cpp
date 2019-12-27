@@ -49,24 +49,26 @@ extern HMODULE ge_os2_mdmHandle;
 //  ------------------------------------------------------------------
 // Send MCI string
 
-int g_send_mci_string(char* string, char* his_buffer) {
+int g_send_mci_string(char* string, char* his_buffer)
+{
 
-  char our_buffer[BUFFERSIZE], *return_buffer;
+    char our_buffer[BUFFERSIZE], *return_buffer;
 
-  return_buffer = his_buffer ? his_buffer : our_buffer;
-  memset(return_buffer, 0, BUFFERSIZE);
+    return_buffer = his_buffer ? his_buffer : our_buffer;
+    memset(return_buffer, 0, BUFFERSIZE);
 
-  if(not ge_os2_mdmHandle)
-    return 1;
+    if(not ge_os2_mdmHandle)
+        return 1;
 
-  DWORD rc = pfnmciSendString((LPSTR)string, (LPSTR)return_buffer, BUFFERSIZE, 0, 0);
+    DWORD rc = pfnmciSendString((LPSTR)string, (LPSTR)return_buffer, BUFFERSIZE, 0, 0);
 
-  if(rc == MCIERR_SUCCESS)
-    return 1;
-  else {
-    pfnmciGetErrorString(rc, (LPSTR)return_buffer, BUFFERSIZE);
-    return 0;
-  }
+    if(rc == MCIERR_SUCCESS)
+        return 1;
+    else
+    {
+        pfnmciGetErrorString(rc, (LPSTR)return_buffer, BUFFERSIZE);
+        return 0;
+    }
 }
 
 

@@ -67,16 +67,20 @@ typedef long Clock;
 //  ------------------------------------------------------------------
 //  DOS "findfirst" timestamp
 
-struct gfiletime {
-  unsigned ft_tsec  : 5;   // Second / 2
-  unsigned ft_min   : 6;   // Minutes
-  unsigned ft_hour  : 5;   // Hours
-  unsigned ft_day   : 5;   // Days
-  unsigned ft_month : 4;   // Months
-  unsigned ft_year  : 7;   // Year - 80
+struct gfiletime
+{
+    unsigned ft_tsec  : 5;   // Second / 2
+    unsigned ft_min   : 6;   // Minutes
+    unsigned ft_hour  : 5;   // Hours
+    unsigned ft_day   : 5;   // Days
+    unsigned ft_month : 4;   // Months
+    unsigned ft_year  : 7;   // Year - 80
 
-  const char* c_str(char* buf);
-  dword number() { return *(dword*)this; }
+    const char* c_str(char* buf);
+    dword number()
+    {
+        return *(dword*)this;
+    }
 };
 
 typedef gfiletime FFTime;
@@ -85,16 +89,20 @@ typedef gfiletime FFTime;
 //  ------------------------------------------------------------------
 //  Opus DOS-style file timestamp
 
-struct gopustime {
-  unsigned ft_day   : 5;   // Days
-  unsigned ft_month : 4;   // Months
-  unsigned ft_year  : 7;   // Year - 80
-  unsigned ft_tsec  : 5;   // Second / 2
-  unsigned ft_min   : 6;   // Minutes
-  unsigned ft_hour  : 5;   // Hours
+struct gopustime
+{
+    unsigned ft_day   : 5;   // Days
+    unsigned ft_month : 4;   // Months
+    unsigned ft_year  : 7;   // Year - 80
+    unsigned ft_tsec  : 5;   // Second / 2
+    unsigned ft_min   : 6;   // Minutes
+    unsigned ft_hour  : 5;   // Hours
 
-  const char* c_str(char* buf);
-  dword number() { return *(dword*)this; }
+    const char* c_str(char* buf);
+    dword number()
+    {
+        return *(dword*)this;
+    }
 };
 
 typedef gopustime FTime;
@@ -130,90 +138,96 @@ extern const char* gmonths[];
 
 inline void ggmtime(struct tm *_tm, const time32_t *timep)
 {
-  const time_t temp(*timep);
+    const time_t temp(*timep);
 #if __VISUAL_C_NOT_LESS(14,0)
 //#if defined(_MSC_VER) && (_MSC_VER >= 1400)
-  if (0 != gmtime_s(_tm, &temp))
-  {
-    const time_t zero(0);
-    gmtime_s(_tm, &zero);
-  }
+    if (0 != gmtime_s(_tm, &temp))
+    {
+        const time_t zero(0);
+        gmtime_s(_tm, &zero);
+    }
 #else
-  struct tm *time = gmtime(&temp);
+    struct tm *time = gmtime(&temp);
 #if defined(__WIN32__)
-  if (NULL == time)
-  {
-    const time_t zero(0);
-    time = gmtime(&zero);
-  }
+    if (NULL == time)
+    {
+        const time_t zero(0);
+        time = gmtime(&zero);
+    }
 #endif
-  *_tm = *time;
+    *_tm = *time;
 #endif
 }
 
 inline void glocaltime(struct tm *_tm, const time32_t *timep)
 {
-  const time_t temp(*timep);
+    const time_t temp(*timep);
 #if __VISUAL_C_NOT_LESS(14,0)
 //#if defined(_MSC_VER) && (_MSC_VER >= 1400)
-  if (0 != localtime_s(_tm, &temp))
-  {
-    const time_t zero(0);
-    localtime_s(_tm, &zero);
-  }
+    if (0 != localtime_s(_tm, &temp))
+    {
+        const time_t zero(0);
+        localtime_s(_tm, &zero);
+    }
 #else
-  struct tm *time = localtime(&temp);
+    struct tm *time = localtime(&temp);
 #if defined(__WIN32__)
-  if (NULL == time)
-  {
-    const time_t zero(0);
-    time = localtime(&zero);
-  }
+    if (NULL == time)
+    {
+        const time_t zero(0);
+        time = localtime(&zero);
+    }
 #endif
-  *_tm = *time;
+    *_tm = *time;
 #endif
 }
 
 inline void gctime(TCHAR *buffer, size_t sizeInChars, const time32_t *timep)
 {
-  const time_t temp(*timep);
+    const time_t temp(*timep);
 #if __VISUAL_C_NOT_LESS(14,0)
 //#if defined(_MSC_VER) && (_MSC_VER >= 1400)
-  if (0 != _tctime_s(buffer, sizeInChars, &temp))
-  {
-    const time_t zero(0);
-    _tctime_s(buffer, sizeInChars, &zero);
-  }
+    if (0 != _tctime_s(buffer, sizeInChars, &temp))
+    {
+        const time_t zero(0);
+        _tctime_s(buffer, sizeInChars, &zero);
+    }
 #else
-  const char *time = ctime(&temp);
+    const char *time = ctime(&temp);
 #if defined(__WIN32__)
-  if (NULL == time)
-  {
-    const time_t zero(0);
-    time = _tctime(&zero);
-  }
+    if (NULL == time)
+    {
+        const time_t zero(0);
+        time = _tctime(&zero);
+    }
 #endif
-  strxcpy(buffer, time, sizeInChars);
+    strxcpy(buffer, time, sizeInChars);
 #endif
 }
 
 inline time32_t gtime(time32_t *timep)
 {
-  time32_t temp = (time32_t)time(NULL);
-  return timep ? *timep = temp : temp;
+    time32_t temp = (time32_t)time(NULL);
+    return timep ? *timep = temp : temp;
 }
 
 inline time32_t gmktime(struct tm *timep)
 {
-  return (time32_t)mktime(timep);
+    return (time32_t)mktime(timep);
 }
 
 
 #if defined(__OS2__)
-inline void usleep(int duration) { DosSleep(duration); }
+inline void usleep(int duration)
+{
+    DosSleep(duration);
+}
 #elif (defined(__MINGW32__) && __GNUC_LESS(3,4)) || defined(_MSC_VER)
 //#elif (defined(__MINGW32__) && __GNUC__*100+__GNUC_MINOR__ < 304) || defined(_MSC_VER)
-inline void usleep(long duration) { Sleep(duration); }
+inline void usleep(long duration)
+{
+    Sleep(duration);
+}
 #endif
 
 #ifndef CLK_TCK
@@ -221,9 +235,16 @@ inline void usleep(long duration) { Sleep(duration); }
 #endif
 
 #ifdef __UNIX__
-inline Clock gclock() { struct tms z; return Clock(times(&z)*10/sysconf(_SC_CLK_TCK)); }
+inline Clock gclock()
+{
+    struct tms z;
+    return Clock(times(&z)*10/sysconf(_SC_CLK_TCK));
+}
 #else
-inline Clock gclock() { return Clock(clock()*10/CLK_TCK); }
+inline Clock gclock()
+{
+    return Clock(clock()*10/CLK_TCK);
+}
 #endif
 
 int str2mon(const char* ptr) __attribute__ ((const));

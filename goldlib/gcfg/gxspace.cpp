@@ -40,307 +40,328 @@ static Path SpaceTossAreafile;
 
 //  ------------------------------------------------------------------
 
-void gareafile::ParseSpaceArea(const char *type_path, AreaCfg &aa) {
+void gareafile::ParseSpaceArea(const char *type_path, AreaCfg &aa)
+{
 
-  if(strnieql(type_path, "msg", 3))
-    aa.basetype = fidomsgtype;
-  else if(strnieql(type_path, "hud", 3)) {
-    aa.basetype = "HUDSON";
-    aa.board = atoi(type_path+3);
-    return;
-  }
-  else if(strnieql(type_path, "jam", 3))
-    aa.basetype = "JAM";
-  else if(strnieql(type_path, "sqh", 3))
-    aa.basetype = "SQUISH";
-  else if(strnieql(type_path, "smb", 3))
-    aa.basetype = "SMB";
-  else {
-    aa.basetype = "";
-    return;
-  }
-  aa.setpath(type_path+3);
+    if(strnieql(type_path, "msg", 3))
+        aa.basetype = fidomsgtype;
+    else if(strnieql(type_path, "hud", 3))
+    {
+        aa.basetype = "HUDSON";
+        aa.board = atoi(type_path+3);
+        return;
+    }
+    else if(strnieql(type_path, "jam", 3))
+        aa.basetype = "JAM";
+    else if(strnieql(type_path, "sqh", 3))
+        aa.basetype = "SQUISH";
+    else if(strnieql(type_path, "smb", 3))
+        aa.basetype = "SMB";
+    else
+    {
+        aa.basetype = "";
+        return;
+    }
+    aa.setpath(type_path+3);
 }
 
 
 //  ------------------------------------------------------------------
 
-void gareafile::ReadSpaceAr(const char* file) {
+void gareafile::ReadSpaceAr(const char* file)
+{
 
-  const word CRC_BEGINAREA = 0x78EE;
-  const word CRC_NAME = 0x3B63;
-  const word CRC_DESC = 0x8A2A;
-  const word CRC_PATH = 0x0212;
-  const word CRC_FLAGS = 0xF81A;
-  const word CRC_GROUP = 0x1C9B;
-  const word CRC_TYPE = 0x59E2;
-  const word CRC_USEAKA = 0x2F7D;
-  const word CRC_ENDAREA = 0x3E9F;
+    const word CRC_BEGINAREA = 0x78EE;
+    const word CRC_NAME = 0x3B63;
+    const word CRC_DESC = 0x8A2A;
+    const word CRC_PATH = 0x0212;
+    const word CRC_FLAGS = 0xF81A;
+    const word CRC_GROUP = 0x1C9B;
+    const word CRC_TYPE = 0x59E2;
+    const word CRC_USEAKA = 0x2F7D;
+    const word CRC_ENDAREA = 0x3E9F;
 
-  FILE* fp = fsopen(file, "rb", sharemode);
-  if (fp)
-  {
-    setvbuf(fp, NULL, _IOFBF, 8192);
+    FILE* fp = fsopen(file, "rb", sharemode);
+    if (fp)
+    {
+        setvbuf(fp, NULL, _IOFBF, 8192);
 
-    if (not quiet)
-      STD_PRINTNL("* Reading " << file);
+        if (not quiet)
+            STD_PRINTNL("* Reading " << file);
 
-    char buf[4000];
-    AreaCfg aa;
+        char buf[4000];
+        AreaCfg aa;
 
-    aa.reset();
+        aa.reset();
 
-    while(fgets(buf, 4000, fp) != NULL) {
+        while(fgets(buf, 4000, fp) != NULL)
+        {
 
-      char* key;
-      char* val = buf;
-      switch(getkeyvalcrc(&key, &val)) {
-        case CRC_BEGINAREA:
-          aa.type = GMB_ECHO;
-          aa.attr = attribsecho;
-          aa.aka = primary_aka;
-          break;
-        case CRC_NAME:
-          aa.setechoid(val);
-          break;
-        case CRC_DESC:
-          aa.setdesc(val);
-          break;
-        case CRC_PATH:
-          ParseSpaceArea(val, aa);
-          break;
-        case CRC_USEAKA:
-          aa.aka.set(val);
-          break;
-        case CRC_FLAGS:
-          if(strpbrk(val,"Ll")) {
-            aa.type = GMB_LOCAL;
-            aa.attr = attribslocal;
-          }
-          break;
-        case CRC_TYPE: {
-          const word CRC_ECHO = 0xC2D1;
-          const word CRC_NET = 0xEC5E;
-          const word CRC_LOCAL = 0x4CD5;
-          const word CRC_DUPE = 0x9B1D;
-          const word CRC_BAD = 0x29C2;
+            char* key;
+            char* val = buf;
+            switch(getkeyvalcrc(&key, &val))
+            {
+            case CRC_BEGINAREA:
+                aa.type = GMB_ECHO;
+                aa.attr = attribsecho;
+                aa.aka = primary_aka;
+                break;
+            case CRC_NAME:
+                aa.setechoid(val);
+                break;
+            case CRC_DESC:
+                aa.setdesc(val);
+                break;
+            case CRC_PATH:
+                ParseSpaceArea(val, aa);
+                break;
+            case CRC_USEAKA:
+                aa.aka.set(val);
+                break;
+            case CRC_FLAGS:
+                if(strpbrk(val,"Ll"))
+                {
+                    aa.type = GMB_LOCAL;
+                    aa.attr = attribslocal;
+                }
+                break;
+            case CRC_TYPE:
+            {
+                const word CRC_ECHO = 0xC2D1;
+                const word CRC_NET = 0xEC5E;
+                const word CRC_LOCAL = 0x4CD5;
+                const word CRC_DUPE = 0x9B1D;
+                const word CRC_BAD = 0x29C2;
 
-          switch(getkeyvalcrc(&key, &val)) {
-            case CRC_ECHO:
-              aa.type = GMB_ECHO;
-              aa.attr = attribsecho;
-              break;
-            case CRC_NET:
-              aa.type = GMB_NET;
-              aa.attr = attribsnet;
-              break;
-            case CRC_LOCAL:
-            case CRC_DUPE:
-            case CRC_BAD:
-              aa.type = GMB_LOCAL;
-              aa.attr = attribslocal;
-              break;
-          }
-          break;
+                switch(getkeyvalcrc(&key, &val))
+                {
+                case CRC_ECHO:
+                    aa.type = GMB_ECHO;
+                    aa.attr = attribsecho;
+                    break;
+                case CRC_NET:
+                    aa.type = GMB_NET;
+                    aa.attr = attribsnet;
+                    break;
+                case CRC_LOCAL:
+                case CRC_DUPE:
+                case CRC_BAD:
+                    aa.type = GMB_LOCAL;
+                    aa.attr = attribslocal;
+                    break;
+                }
+                break;
+            }
+            case CRC_GROUP:
+                if(isdigit(*val))
+                    aa.groupid = 0x8000+atoi(val);
+                else if(g_isalpha(*val))
+                    aa.groupid = g_toupper(*val);
+                break;
+            case CRC_ENDAREA:
+                if(aa.basetype[0] != '\0')
+                    AddNewArea(aa);
+                aa.reset();
+                break;
+            }
         }
-        case CRC_GROUP:
-          if(isdigit(*val))
-            aa.groupid = 0x8000+atoi(val);
-          else if(g_isalpha(*val))
-            aa.groupid = g_toupper(*val);
-          break;
-        case CRC_ENDAREA:
-          if(aa.basetype[0] != '\0')
-            AddNewArea(aa);
-          aa.reset();
-          break;
-      }
-    }
 
-    fclose(fp);
-  }
+        fclose(fp);
+    }
 }
 
 
 //  ------------------------------------------------------------------
 
-void gareafile::ReadSpaceNtm(const char* file) {
+void gareafile::ReadSpaceNtm(const char* file)
+{
 
-  const word CRC_BEGINNETMAIL = 0x4DF0;
-  const word CRC_NAME = 0x3B63;
-  const word CRC_ADDRESS = 0xFDD6;
-  const word CRC_PATH = 0x0212;
-  const word CRC_AUTOEXPORT = 0xE0E1;
-  const word CRC_ENDNETMAIL = 0xD995;
+    const word CRC_BEGINNETMAIL = 0x4DF0;
+    const word CRC_NAME = 0x3B63;
+    const word CRC_ADDRESS = 0xFDD6;
+    const word CRC_PATH = 0x0212;
+    const word CRC_AUTOEXPORT = 0xE0E1;
+    const word CRC_ENDNETMAIL = 0xD995;
 
-  FILE* fp = fsopen(file, "rb", sharemode);
-  if (fp)
-  {
-    setvbuf(fp, NULL, _IOFBF, 8192);
+    FILE* fp = fsopen(file, "rb", sharemode);
+    if (fp)
+    {
+        setvbuf(fp, NULL, _IOFBF, 8192);
 
-    if (not quiet)
-      STD_PRINTNL("* Reading " << file);
+        if (not quiet)
+            STD_PRINTNL("* Reading " << file);
 
-    char buf[4000];
-    AreaCfg aa;
-    bool exportarea = false;
+        char buf[4000];
+        AreaCfg aa;
+        bool exportarea = false;
 
-    aa.reset();
+        aa.reset();
 
-    while(fgets(buf, 4000, fp) != NULL) {
+        while(fgets(buf, 4000, fp) != NULL)
+        {
 
-      char* key;
-      char* val = buf;
-      switch(getkeyvalcrc(&key, &val)) {
-        case CRC_BEGINNETMAIL:
-          aa.setautoid("NETMAIL");
-          aa.type = GMB_NET;
-          aa.attr = attribsnet;
-          aa.aka = primary_aka;
-          exportarea = false;
-          break;
-        case CRC_ADDRESS:
-          aa.aka.set(val);
-        case CRC_NAME: {
-          char echodesc[256];
-          strxmerge(echodesc, 256, "Netmail for ", val, NULL);
-          aa.setdesc(echodesc);
-          break;
+            char* key;
+            char* val = buf;
+            switch(getkeyvalcrc(&key, &val))
+            {
+            case CRC_BEGINNETMAIL:
+                aa.setautoid("NETMAIL");
+                aa.type = GMB_NET;
+                aa.attr = attribsnet;
+                aa.aka = primary_aka;
+                exportarea = false;
+                break;
+            case CRC_ADDRESS:
+                aa.aka.set(val);
+            case CRC_NAME:
+            {
+                char echodesc[256];
+                strxmerge(echodesc, 256, "Netmail for ", val, NULL);
+                aa.setdesc(echodesc);
+                break;
+            }
+            case CRC_PATH:
+                ParseSpaceArea(val, aa);
+                break;
+            case CRC_AUTOEXPORT:
+                exportarea = make_bool(GetYesno(val));
+                break;
+            case CRC_ENDNETMAIL:
+                if(exportarea and (aa.basetype[0] != '\0'))
+                    AddNewArea(aa);
+                aa.reset();
+                break;
+            }
         }
-        case CRC_PATH:
-          ParseSpaceArea(val, aa);
-          break;
-        case CRC_AUTOEXPORT:
-          exportarea = make_bool(GetYesno(val));
-          break;
-        case CRC_ENDNETMAIL:
-          if(exportarea and (aa.basetype[0] != '\0'))
-            AddNewArea(aa);
-          aa.reset();
-          break;
-      }
-    }
 
-    fclose(fp);
-  }
+        fclose(fp);
+    }
 }
 
 
 //  ------------------------------------------------------------------
 
-void gareafile::ReadSpaceCtl(const char* file) {
+void gareafile::ReadSpaceCtl(const char* file)
+{
 
-  const word CRC_ADDRESS = 0xFDD6;
-  const word CRC_AKA = 0x13A4;
-  const word CRC_NETMAIL = 0xE42E;
-  const word CRC_BADMAIL = 0xE697;
-  const word CRC_DUPEMAIL = 0xB38B;
-  const word CRC_HUDSONPATH = 0x52A7;
-  const word CRC_EXPORTLISTS = 0xB709;
-  const word CRC_AREAFILE = 0xB487;
+    const word CRC_ADDRESS = 0xFDD6;
+    const word CRC_AKA = 0x13A4;
+    const word CRC_NETMAIL = 0xE42E;
+    const word CRC_BADMAIL = 0xE697;
+    const word CRC_DUPEMAIL = 0xB38B;
+    const word CRC_HUDSONPATH = 0x52A7;
+    const word CRC_EXPORTLISTS = 0xB709;
+    const word CRC_AREAFILE = 0xB487;
 
-  FILE* fp = fsopen(file, "rb", sharemode);
-  if (fp)
-  {
-    setvbuf(fp, NULL, _IOFBF, 8192);
+    FILE* fp = fsopen(file, "rb", sharemode);
+    if (fp)
+    {
+        setvbuf(fp, NULL, _IOFBF, 8192);
 
-    if (not quiet)
-      STD_PRINTNL("* Reading " << file);
+        if (not quiet)
+            STD_PRINTNL("* Reading " << file);
 
-    char buf[4000];
-    AreaCfg aa;
+        char buf[4000];
+        AreaCfg aa;
 
-    aa.reset();
+        aa.reset();
 
-    while(fgets(buf, 4000, fp) != NULL) {
+        while(fgets(buf, 4000, fp) != NULL)
+        {
 
-      aa.type = GMB_NONE;
+            aa.type = GMB_NONE;
 
-      char* key;
-      char* val = buf;
-      switch(getkeyvalcrc(&key, &val)) {
-        case CRC_ADDRESS:
-        case CRC_AKA:
-          CfgAddress(buf);
-          break;
-        case CRC_NETMAIL:
-          aa.setautoid("NETMAIL");
-          aa.setdesc("SpaceToss Netmail");
-          aa.type = GMB_NET;
-          aa.attr = attribsnet;
-          break;
-        case CRC_BADMAIL:
-          aa.setautoid("BADMAIL");
-          aa.setdesc("SpaceToss Badmail");
-          aa.type = GMB_LOCAL;
-          aa.attr = attribslocal;
-          break;
-        case CRC_DUPEMAIL:
-          aa.setautoid("DUPEMAIL");
-          aa.setdesc("SpaceToss Dupemail");
-          aa.type = GMB_LOCAL;
-          aa.attr = attribslocal;
-          break;
-        case CRC_HUDSONPATH:
-          CfgHudsonpath(val);
-          break;
-        case CRC_EXPORTLISTS:
-          CfgJampath(val);
-          break;
-        case CRC_AREAFILE:
-          strxcpy(SpaceTossAreafile, val, sizeof(SpaceTossAreafile));
-          break;
-      }
+            char* key;
+            char* val = buf;
+            switch(getkeyvalcrc(&key, &val))
+            {
+            case CRC_ADDRESS:
+            case CRC_AKA:
+                CfgAddress(buf);
+                break;
+            case CRC_NETMAIL:
+                aa.setautoid("NETMAIL");
+                aa.setdesc("SpaceToss Netmail");
+                aa.type = GMB_NET;
+                aa.attr = attribsnet;
+                break;
+            case CRC_BADMAIL:
+                aa.setautoid("BADMAIL");
+                aa.setdesc("SpaceToss Badmail");
+                aa.type = GMB_LOCAL;
+                aa.attr = attribslocal;
+                break;
+            case CRC_DUPEMAIL:
+                aa.setautoid("DUPEMAIL");
+                aa.setdesc("SpaceToss Dupemail");
+                aa.type = GMB_LOCAL;
+                aa.attr = attribslocal;
+                break;
+            case CRC_HUDSONPATH:
+                CfgHudsonpath(val);
+                break;
+            case CRC_EXPORTLISTS:
+                CfgJampath(val);
+                break;
+            case CRC_AREAFILE:
+                strxcpy(SpaceTossAreafile, val, sizeof(SpaceTossAreafile));
+                break;
+            }
 
-      if(aa.type != GMB_NONE) {
+            if(aa.type != GMB_NONE)
+            {
 
-        aa.aka = primary_aka;
+                aa.aka = primary_aka;
 
-        // Get type/path
-        ParseSpaceArea(val, aa);
+                // Get type/path
+                ParseSpaceArea(val, aa);
 
-        if(aa.basetype[0] != '\0') {
-          AddNewArea(aa);
+                if(aa.basetype[0] != '\0')
+                {
+                    AddNewArea(aa);
+                }
+            }
+
+            aa.reset();
         }
-      }
 
-      aa.reset();
+        fclose(fp);
     }
-
-    fclose(fp);
-  }
 }
 
 
 //  ------------------------------------------------------------------
 //  Read areas from SpaceToss (echomail processor)
 
-void gareafile::ReadSpaceToss(char* tag) {
+void gareafile::ReadSpaceToss(char* tag)
+{
 
-  Path file, path;
-  char options[80];
+    Path file, path;
+    char options[80];
 
-  strcpy(options, tag);
-  char* ptr = strtok(tag, " \t");
-  while(ptr) {
-    if(*ptr != '-') {
-      strcpy(file, ptr);
+    strcpy(options, tag);
+    char* ptr = strtok(tag, " \t");
+    while(ptr)
+    {
+        if(*ptr != '-')
+        {
+            strcpy(file, ptr);
+        }
+        ptr = strtok(NULL, " \t");
     }
-    ptr = strtok(NULL, " \t");
-  }
 
-  extractdirname(path, file);
+    extractdirname(path, file);
 
-  CfgSquishuserpath(path);
+    CfgSquishuserpath(path);
 
-  strcpy(SpaceTossAreafile, "spctoss.ar");
+    strcpy(SpaceTossAreafile, "spctoss.ar");
 
-  MakePathname(file, path, "spctoss.ctl");
-  ReadSpaceCtl(file);
-  MakePathname(file, path, "spctoss.ntm");
-  ReadSpaceNtm(file);
-  MakePathname(file, path, SpaceTossAreafile);
-  ReadSpaceAr(file);
+    MakePathname(file, path, "spctoss.ctl");
+    ReadSpaceCtl(file);
+    MakePathname(file, path, "spctoss.ntm");
+    ReadSpaceNtm(file);
+    MakePathname(file, path, SpaceTossAreafile);
+    ReadSpaceAr(file);
 }
 
 

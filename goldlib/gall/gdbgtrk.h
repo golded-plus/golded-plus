@@ -35,10 +35,11 @@
 
 //  ------------------------------------------------------------------
 
-struct GFTrk {
-  dword tick;
-  const char* text;
-  int indent;
+struct GFTrk
+{
+    dword tick;
+    const char* text;
+    int indent;
 };
 
 

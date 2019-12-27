@@ -38,11 +38,12 @@
 
 //  ------------------------------------------------------------------
 
-struct fparea {
+struct fparea
+{
 
-  Echo echoid;
-  Path path;
-  int  msgs;
+    Echo echoid;
+    Path path;
+    int  msgs;
 };
 
 
@@ -62,174 +63,185 @@ const word CRC_NODE      = 0xD3AD;
 
 //  ------------------------------------------------------------------
 
-void gareafile::ReadFidoPCB(char* tag) {
+void gareafile::ReadFidoPCB(char* tag)
+{
 
-  AreaCfg aa;
-  char options[80];
-  Path file, path;
+    AreaCfg aa;
+    char options[80];
+    Path file, path;
 
-  *path = NUL;
-  strcpy(options, tag);
-  char* ptr = strtok(tag, " \t");
-  while(ptr) {
-    if(*ptr != '-') {
-      AddBackslash(strcpy(path, ptr));
-      break;
-    }
-    ptr = strtok(NULL, " \t");
-  }
-  if(*path == NUL) {
-    ptr = getenv("FIDOPCB");
-    if(ptr)
-      AddBackslash(strcpy(path, ptr));
-  }
-  if(*path == NUL)
-    strcpy(path, areapath);
-
-  MakePathname(file, path, "fidopcb.cfg");
-
-  FILE* fp = fsopen(file, "rb", sharemode);
-  if (fp)
-  {
-    setvbuf(fp, NULL, _IOFBF, 8192);
-
-    if (not quiet)
-      STD_PRINTNL("* Reading " << file);
-
-    int areas = 0;
-    fparea* area = NULL;
-
-    Path mailpath;
-    *mailpath = NUL;
-    Path lostmailpath;
-    *lostmailpath = NUL;
-    Path netmailpath;
-    *netmailpath = NUL;
-    ftn_addr mainaddr;
-    char origin[80];
-    *origin = NUL;
-    int innode = false;
-
-    char buf[512];
-    while(fgets(buf, sizeof(buf), fp)) {
-
-      char* val = strskip_wht(buf);
-      if(*val != ';' and *val) {
-
-        // Extract keyword and value
-        char* key;
-        word crc = getkeyvalcrc(&key, &val);
-
-        switch(crc) {
-          case CRC_MAIL:
-            PathCopy(mailpath, val);
-            break;
-          case CRC_PCBOARD:
-            CfgPcboardpath(val);
-            break;
-          case CRC_LOST_MAIL:
-            PathCopy(lostmailpath, val);
-            break;
-          case CRC_NET_MAIL:
-            PathCopy(netmailpath, val);
-            break;
-          case CRC_SYSOP:
-            if(not innode)
-              NW(val);
-              //CfgUsername(val);
-            break;
-          case CRC_ORIGIN:
-            mainaddr.set(val);
-            innode = false;
-            break;
-          case CRC_TAG:
-            strxcpy(origin, val, sizeof(origin));
-            break;
-          case CRC_AREA:
-            area = (fparea*)throw_realloc(area, (areas+1)*sizeof(fparea));
-            area[areas].msgs = false;
-            getkeyval(&key, &val);  // Skip the unique number
-            getkeyval(&key, &val);  // Get echoid
-            strxcpy(area[areas].echoid, key, sizeof(Echo));
-            getkeyval(&key, &val);  // Get path
-            PathCopy(area[areas].path, key);
-            areas++;
-            break;
-          case CRC_AREA_MSGS:
-            if(areas) {
-              strcat(area[areas-1].path, val);
-              area[areas-1].msgs = true;
-            }
-            break;
-          case CRC_NODE:
-            innode = true;
+    *path = NUL;
+    strcpy(options, tag);
+    char* ptr = strtok(tag, " \t");
+    while(ptr)
+    {
+        if(*ptr != '-')
+        {
+            AddBackslash(strcpy(path, ptr));
             break;
         }
-
-      }
+        ptr = strtok(NULL, " \t");
     }
-
-    // *.MSG style netmail
-    aa.reset();
-    aa.aka = mainaddr;
-    aa.basetype = fidomsgtype;
-    aa.type = GMB_NET;
-    aa.attr = attribsnet;
-    aa.setpath(mailpath);
-    aa.setdesc("FidoPCB Mailer Netmail");
-    aa.setautoid("NETMAIL");
-    AddNewArea(aa);
-
-    // Matrix area
-    if(*netmailpath) {
-      aa.reset();
-      aa.aka = mainaddr;
-      aa.basetype = "PCBOARD";
-      aa.type = GMB_NET;
-      aa.attr = attribsnet;
-      strcat(AddBackslash(netmailpath), "MATRIX");
-      aa.setpath(netmailpath);
-      aa.setorigin(origin);
-      aa.setdesc("FidoPCB Matrix Board");
-      aa.setautoid("MATRIX");
-      AddNewArea(aa);
+    if(*path == NUL)
+    {
+        ptr = getenv("FIDOPCB");
+        if(ptr)
+            AddBackslash(strcpy(path, ptr));
     }
+    if(*path == NUL)
+        strcpy(path, areapath);
 
-    // Lost mail area
-    if(*lostmailpath) {
-      aa.reset();
-      aa.aka = mainaddr;
-      aa.basetype = "PCBOARD";
-      aa.type = GMB_ECHO;
-      aa.attr = attribsecho;
-      strcat(AddBackslash(lostmailpath), "LOST");
-      aa.setpath(lostmailpath);
-      aa.setorigin(origin);
-      aa.setdesc("FidoPCB Lost Mail Board");
-      aa.setautoid("LOST");
-      AddNewArea(aa);
+    MakePathname(file, path, "fidopcb.cfg");
+
+    FILE* fp = fsopen(file, "rb", sharemode);
+    if (fp)
+    {
+        setvbuf(fp, NULL, _IOFBF, 8192);
+
+        if (not quiet)
+            STD_PRINTNL("* Reading " << file);
+
+        int areas = 0;
+        fparea* area = NULL;
+
+        Path mailpath;
+        *mailpath = NUL;
+        Path lostmailpath;
+        *lostmailpath = NUL;
+        Path netmailpath;
+        *netmailpath = NUL;
+        ftn_addr mainaddr;
+        char origin[80];
+        *origin = NUL;
+        int innode = false;
+
+        char buf[512];
+        while(fgets(buf, sizeof(buf), fp))
+        {
+
+            char* val = strskip_wht(buf);
+            if(*val != ';' and *val)
+            {
+
+                // Extract keyword and value
+                char* key;
+                word crc = getkeyvalcrc(&key, &val);
+
+                switch(crc)
+                {
+                case CRC_MAIL:
+                    PathCopy(mailpath, val);
+                    break;
+                case CRC_PCBOARD:
+                    CfgPcboardpath(val);
+                    break;
+                case CRC_LOST_MAIL:
+                    PathCopy(lostmailpath, val);
+                    break;
+                case CRC_NET_MAIL:
+                    PathCopy(netmailpath, val);
+                    break;
+                case CRC_SYSOP:
+                    if(not innode)
+                        NW(val);
+                    //CfgUsername(val);
+                    break;
+                case CRC_ORIGIN:
+                    mainaddr.set(val);
+                    innode = false;
+                    break;
+                case CRC_TAG:
+                    strxcpy(origin, val, sizeof(origin));
+                    break;
+                case CRC_AREA:
+                    area = (fparea*)throw_realloc(area, (areas+1)*sizeof(fparea));
+                    area[areas].msgs = false;
+                    getkeyval(&key, &val);  // Skip the unique number
+                    getkeyval(&key, &val);  // Get echoid
+                    strxcpy(area[areas].echoid, key, sizeof(Echo));
+                    getkeyval(&key, &val);  // Get path
+                    PathCopy(area[areas].path, key);
+                    areas++;
+                    break;
+                case CRC_AREA_MSGS:
+                    if(areas)
+                    {
+                        strcat(area[areas-1].path, val);
+                        area[areas-1].msgs = true;
+                    }
+                    break;
+                case CRC_NODE:
+                    innode = true;
+                    break;
+                }
+
+            }
+        }
+
+        // *.MSG style netmail
+        aa.reset();
+        aa.aka = mainaddr;
+        aa.basetype = fidomsgtype;
+        aa.type = GMB_NET;
+        aa.attr = attribsnet;
+        aa.setpath(mailpath);
+        aa.setdesc("FidoPCB Mailer Netmail");
+        aa.setautoid("NETMAIL");
+        AddNewArea(aa);
+
+        // Matrix area
+        if(*netmailpath)
+        {
+            aa.reset();
+            aa.aka = mainaddr;
+            aa.basetype = "PCBOARD";
+            aa.type = GMB_NET;
+            aa.attr = attribsnet;
+            strcat(AddBackslash(netmailpath), "MATRIX");
+            aa.setpath(netmailpath);
+            aa.setorigin(origin);
+            aa.setdesc("FidoPCB Matrix Board");
+            aa.setautoid("MATRIX");
+            AddNewArea(aa);
+        }
+
+        // Lost mail area
+        if(*lostmailpath)
+        {
+            aa.reset();
+            aa.aka = mainaddr;
+            aa.basetype = "PCBOARD";
+            aa.type = GMB_ECHO;
+            aa.attr = attribsecho;
+            strcat(AddBackslash(lostmailpath), "LOST");
+            aa.setpath(lostmailpath);
+            aa.setorigin(origin);
+            aa.setdesc("FidoPCB Lost Mail Board");
+            aa.setautoid("LOST");
+            AddNewArea(aa);
+        }
+
+        // Process areas
+        fparea* ap = area;
+        for(int n=0; n<areas; n++,ap++)
+        {
+            aa.reset();
+            aa.aka = mainaddr;
+            aa.basetype = "PCBOARD";
+            aa.type = GMB_ECHO;
+            aa.attr = attribsecho;
+            if(not ap->msgs)
+                strcat(ap->path, "MSGS");
+            aa.setpath(ap->path);
+            aa.setechoid(ap->echoid);
+            aa.setorigin(origin);
+            AddNewArea(aa);
+        }
+
+        throw_free(area);
+
+        fclose(fp);
     }
-
-    // Process areas
-    fparea* ap = area;
-    for(int n=0; n<areas; n++,ap++) {
-      aa.reset();
-      aa.aka = mainaddr;
-      aa.basetype = "PCBOARD";
-      aa.type = GMB_ECHO;
-      aa.attr = attribsecho;
-      if(not ap->msgs)
-        strcat(ap->path, "MSGS");
-      aa.setpath(ap->path);
-      aa.setechoid(ap->echoid);
-      aa.setorigin(origin);
-      AddNewArea(aa);
-    }
-
-    throw_free(area);
-
-    fclose(fp);
-  }
 }
 
 

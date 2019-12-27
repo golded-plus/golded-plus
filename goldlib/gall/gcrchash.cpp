@@ -39,24 +39,27 @@
 //  ------------------------------------------------------------------
 //  Generate 32-bit hash value from string
 
-dword strHash32(const char* s, bool __case) {
+dword strHash32(const char* s, bool __case)
+{
 
-  const char* p = s;
-  dword g, hash = 0;
+    const char* p = s;
+    dword g, hash = 0;
 
-  while(*p) {
+    while(*p)
+    {
 
-    hash = (hash << 4) + (__case ? g_tolower(*p) : *p);
+        hash = (hash << 4) + (__case ? g_tolower(*p) : *p);
 
-    g = hash & 0xF0000000UL;
-    if(g) {
-      hash |= g >> 24;
-      hash |= g;
+        g = hash & 0xF0000000UL;
+        if(g)
+        {
+            hash |= g >> 24;
+            hash |= g;
+        }
+        p++;
     }
-    p++;
-  }
 
-  return hash & 0x7FFFFFFFUL;   // Strip off high bit (used as a flag)
+    return hash & 0x7FFFFFFFUL;   // Strip off high bit (used as a flag)
 }
 
 

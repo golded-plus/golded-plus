@@ -384,14 +384,24 @@ typedef char Desc[MAX_DESC];
 //  ------------------------------------------------------------------
 //  Echo rename struct
 
-class EchoRen {
+class EchoRen
+{
 public:
-  std::string from;
-  std::string to;
-  EchoRen() {}
-  EchoRen(const char *_from, const char *_to) { from = _from; to = _to; }
-  ~EchoRen() {}
-  EchoRen& operator=(const EchoRen& a) { from = a.from; to = a.to; return *this; }
+    std::string from;
+    std::string to;
+    EchoRen() {}
+    EchoRen(const char *_from, const char *_to)
+    {
+        from = _from;
+        to = _to;
+    }
+    ~EchoRen() {}
+    EchoRen& operator=(const EchoRen& a)
+    {
+        from = a.from;
+        to = a.to;
+        return *this;
+    }
 };
 
 
@@ -420,16 +430,17 @@ const byte PLAY_ROL =  7;   // - Adlib songs
 const byte PLAY_SNG =  8;   // - Sequencer plus Jr. songs
 const byte PLAY_MOD =  9;   // - ProTracker MOD songs
 const byte PLAY_STM = 10;   // - ScreamTracker STM/STX songs
-                            //
-                            // * = Supported in the current version
-                            // + = Planned for support "soon"
-                            // - = Will probably not be supported any time soon
+//
+// * = Supported in the current version
+// + = Planned for support "soon"
+// - = Will probably not be supported any time soon
 
-struct GPlay {
-  byte  type;
-  int   effectno;   // For the DOS sound effects SND_xxx
-  Path  file;
-  int   Play() const;
+struct GPlay
+{
+    byte  type;
+    int   effectno;   // For the DOS sound effects SND_xxx
+    Path  file;
+    int   Play() const;
 };
 
 
@@ -477,23 +488,27 @@ const word EVTT_INITCARD       = 0xFFFC;
 const int EVTC_DO_NOTHING    = 0;
 const int EVTC_PLAY          = 1;
 
-struct GEvent {
-  word type;       // EVTT crc value
-  int  command;    // EVTC value
-  union {
-    GPlay play;
-    // Other event command structures can be added here
-  };
-  GEvent& operator=(const GEvent& a) {
-    type = a.type;
-    command = a.command;
-    switch(command) {
-      case EVTC_PLAY:
-        memcpy(&play, &a.play, sizeof(play));
-        break;
+struct GEvent
+{
+    word type;       // EVTT crc value
+    int  command;    // EVTC value
+    union
+    {
+        GPlay play;
+        // Other event command structures can be added here
+    };
+    GEvent& operator=(const GEvent& a)
+    {
+        type = a.type;
+        command = a.command;
+        switch(command)
+        {
+        case EVTC_PLAY:
+            memcpy(&play, &a.play, sizeof(play));
+            break;
+        }
+        return *this;
     }
-    return *this;
-  }
 };
 
 
@@ -504,43 +519,46 @@ const int SNDDEV_NONE  = 0;
 const int SNDDEV_DOS   = 1;
 const int SNDDEV_CARD  = 2;
 
-struct SoundDos {
-  int  type;
-  // Doesn't need more data..
+struct SoundDos
+{
+    int  type;
+    // Doesn't need more data..
 };
 
 
 //  ------------------------------------------------------------------
 //  Enums for the marking menu (GEMENU etc)
 
-enum {
-  TAG_MARKYOURMAIL=100,
-  TAG_MARKHEADER,
-  TAG_MARKTXTHDR,
-  TAG_MARKTHREAD,
-  TAG_MARKASREAD,
-  TAG_MARKNEWMSGS,
-  TAG_MARKOLDMSGS,
-  TAG_MARKALLMSGS,
-  TAG_MARKUNMARK,
-  TAG_MARKRANGE,
-  TAG_MARKTOGGLE,
-  TAG_MARKQUIT
+enum
+{
+    TAG_MARKYOURMAIL=100,
+    TAG_MARKHEADER,
+    TAG_MARKTXTHDR,
+    TAG_MARKTHREAD,
+    TAG_MARKASREAD,
+    TAG_MARKNEWMSGS,
+    TAG_MARKOLDMSGS,
+    TAG_MARKALLMSGS,
+    TAG_MARKUNMARK,
+    TAG_MARKRANGE,
+    TAG_MARKTOGGLE,
+    TAG_MARKQUIT
 };
 
 
 //  ------------------------------------------------------------------
 //  Structure for GOLDNODE.IXL
 
-struct NodeIxl {
+struct NodeIxl
+{
 
-  // Nodelists
-  int    nodelists;
-  Stamp* nodelist;
+    // Nodelists
+    int    nodelists;
+    Stamp* nodelist;
 
-  // Index files
-  Path addrindex;
-  Path nodeindex;
+    // Index files
+    Path addrindex;
+    Path nodeindex;
 
 };
 
@@ -548,15 +566,16 @@ struct NodeIxl {
 //  ------------------------------------------------------------------
 //  GEUSER
 
-struct infoLookup {
-  char*  attr;
-  char*  node;
-  char*  system;
-  char*  location;
-  char*  name;
-  char*  phone;
-  char*  baud;
-  char*  flags;
+struct infoLookup
+{
+    char*  attr;
+    char*  node;
+    char*  system;
+    char*  location;
+    char*  name;
+    char*  phone;
+    char*  baud;
+    char*  flags;
 };
 
 
@@ -573,22 +592,22 @@ const uint32_t EXTUTIL_KEEPCTRL     = 0x0080;
 
 struct ExtUtil
 {
-  uint32_t    utilno;
-  uint32_t    options;
-  std::string cmdline;
+    uint32_t    utilno;
+    uint32_t    options;
+    std::string cmdline;
 };
 
 struct SaveUtil
 {
-  uint32_t    utilno;
-  std::string menutext;
+    uint32_t    utilno;
+    std::string menutext;
 };
 
 struct UrlHandler
 {
-  std::string name;
-  gregex      scheme;
-  ExtUtil     handler;
+    std::string name;
+    gregex      scheme;
+    ExtUtil     handler;
 };
 
 
@@ -848,14 +867,15 @@ struct UrlHandler
 
 typedef byte ChsTab[4];
 
-struct Chs {
-  long   id;
-  int    version;
-  int    level;
-  int    displaylevel;
-  XlatName imp;   // From Charset
-  XlatName exp;   // To Charset
-  ChsTab t[256];       // The Translation Table
+struct Chs
+{
+    long   id;
+    int    version;
+    int    level;
+    int    displaylevel;
+    XlatName imp;   // From Charset
+    XlatName exp;   // To Charset
+    ChsTab t[256];       // The Translation Table
 };
 
 
@@ -864,69 +884,75 @@ struct Chs {
 
 typedef byte EscTab[5];
 
-struct Esc {
-  XlatName exp;   // To Charset
-  byte   esc;          // Escape character
-  int    pos1;         // Relative position of first character
-  int    pos2;         // Relative position of last character
-  uint   size;         // Number of escaped chars in table
-  EscTab t[256];       // The Escaped Characters Table
+struct Esc
+{
+    XlatName exp;   // To Charset
+    byte   esc;          // Escape character
+    int    pos1;         // Relative position of first character
+    int    pos2;         // Relative position of last character
+    uint   size;         // Number of escaped chars in table
+    EscTab t[256];       // The Escaped Characters Table
 };
 
 
 //  ------------------------------------------------------------------
 //  Charset mapping files
 
-struct Map {
-  XlatName imp;         // From Charset
-  XlatName exp;         // To Charset
-  char* mapfile;        // Mapping file and timestamp
+struct Map
+{
+    XlatName imp;         // From Charset
+    XlatName exp;         // To Charset
+    char* mapfile;        // Mapping file and timestamp
 };
 
 
 //  ------------------------------------------------------------------
 
-struct PosLen {
-  int pos;
-  int len;
+struct PosLen
+{
+    int pos;
+    int len;
 };
 
 
 //  ------------------------------------------------------------------
 
-struct Ezycom {
-  Path msgbasepath;
-  Path userbasepath;
+struct Ezycom
+{
+    Path msgbasepath;
+    Path userbasepath;
 };
 
 
 //  ------------------------------------------------------------------
 
-struct Invalidate {
-  std::pair<std::string, std::string> origin, seenby, tearline, cc, xc, xp;
+struct Invalidate
+{
+    std::pair<std::string, std::string> origin, seenby, tearline, cc, xc, xp;
 };
 
 
 //  ------------------------------------------------------------------
 
-struct Semaphore {
-  Path netscan;
-  Path echoscan;
-  Path exportlist;
-  Path importlist;
-  Path scanall;
-  Path scanthis;
-  Path scannetmail;
-  Path pmscanall;
-  Path pmscanthis;
-  Path pmscannetmail;
-  Path qwkimport;
-  Path qwkexport;
-  Path soupimport;
-  Path soupexport;
-  Path exitnow;
+struct Semaphore
+{
+    Path netscan;
+    Path echoscan;
+    Path exportlist;
+    Path importlist;
+    Path scanall;
+    Path scanthis;
+    Path scannetmail;
+    Path pmscanall;
+    Path pmscanthis;
+    Path pmscannetmail;
+    Path qwkimport;
+    Path qwkexport;
+    Path soupimport;
+    Path soupexport;
+    Path exitnow;
 
-  uint  idletime;
+    uint  idletime;
 };
 
 
@@ -934,24 +960,26 @@ struct Semaphore {
 
 typedef char BarList[45];
 
-struct FFblk {
-  int  year;
-  int  month;
-  int  day;
-  int  hour;
-  int  minute;
-  int  second;
-  long size;
-  Path name;
-  bool selected;           // Extra - YES/NO
+struct FFblk
+{
+    int  year;
+    int  month;
+    int  day;
+    int  hour;
+    int  minute;
+    int  second;
+    long size;
+    Path name;
+    bool selected;           // Extra - YES/NO
 };
 
-struct FileSpec {
-  Path   path;             // Path to file(s)
-  char   password[20];     // File Password
-  int    files;            // Number of files
-  bool   delsent;          // Kill files after sent
-  FFblk* fblk;             // Filenames
+struct FileSpec
+{
+    Path   path;             // Path to file(s)
+    char   password[20];     // File Password
+    int    files;            // Number of files
+    bool   delsent;          // Kill files after sent
+    FFblk* fblk;             // Filenames
 };
 
 

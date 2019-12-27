@@ -133,32 +133,84 @@ char* strunrevname(char* unreversedname, const char* name);
 
 #define STRNP2C(str) strnp2c(str, sizeof(str)-1)
 
-inline char* strbtrim(char* st) { return strtrim(strltrim(st)); }
+inline char* strbtrim(char* st)
+{
+    return strtrim(strltrim(st));
+}
 
-inline bool streql  (const TCHAR *str1, const TCHAR *str2)        { return (0 == strcmp  (str1, str2));    }
-inline bool strieql (const TCHAR *str1, const TCHAR *str2)        { return (0 == stricmp (str1, str2));    }
-inline bool strneql (const TCHAR *str1, const TCHAR *str2, int n) { return (0 == strncmp (str1, str2, n)); }
-inline bool strnieql(const TCHAR *str1, const TCHAR *str2, int n) { return (0 == strnicmp(str1, str2, n)); }
+inline bool streql  (const TCHAR *str1, const TCHAR *str2)
+{
+    return (0 == strcmp  (str1, str2));
+}
+inline bool strieql (const TCHAR *str1, const TCHAR *str2)
+{
+    return (0 == stricmp (str1, str2));
+}
+inline bool strneql (const TCHAR *str1, const TCHAR *str2, int n)
+{
+    return (0 == strncmp (str1, str2, n));
+}
+inline bool strnieql(const TCHAR *str1, const TCHAR *str2, int n)
+{
+    return (0 == strnicmp(str1, str2, n));
+}
 
-inline const char* strskip_to(const char* p, char* s) { return p+strcspn(p, s); }
-inline char* strskip_to(char* p, char* s) { return p+strcspn(p, s); }
+inline const char* strskip_to(const char* p, char* s)
+{
+    return p+strcspn(p, s);
+}
+inline char* strskip_to(char* p, char* s)
+{
+    return p+strcspn(p, s);
+}
 
-inline const char* strskip_to(const char* p, char c) { while((*p != c) and *p) p++; return p; }
-inline char* strskip_to(char* p, char c) { while((*p != c) and *p) p++; return p; }
+inline const char* strskip_to(const char* p, char c)
+{
+    while((*p != c) and *p) p++;
+    return p;
+}
+inline char* strskip_to(char* p, char c)
+{
+    while((*p != c) and *p) p++;
+    return p;
+}
 
-inline const char* strskip_txt(const char* p) { while(*p and not isspace(*p)) p++; return p; }
-inline char* strskip_txt(char* p) { while(*p and not isspace(*p)) p++; return p; }
+inline const char* strskip_txt(const char* p)
+{
+    while(*p and not isspace(*p)) p++;
+    return p;
+}
+inline char* strskip_txt(char* p)
+{
+    while(*p and not isspace(*p)) p++;
+    return p;
+}
 
-inline const char* strskip_wht(const char* p) { while(*p and isspace(*p)) p++; return p; }
-inline char* strskip_wht(char* p) { while(*p and isspace(*p)) p++; return p; }
+inline const char* strskip_wht(const char* p)
+{
+    while(*p and isspace(*p)) p++;
+    return p;
+}
+inline char* strskip_wht(char* p)
+{
+    while(*p and isspace(*p)) p++;
+    return p;
+}
 
-inline const char* strskip_digits(const char* p) { return p+strspn(p, "0123456789"); }
-inline char* strskip_digits(char* p) { return p+strspn(p, "0123456789"); }
+inline const char* strskip_digits(const char* p)
+{
+    return p+strspn(p, "0123456789");
+}
+inline char* strskip_digits(char* p)
+{
+    return p+strspn(p, "0123456789");
+}
 
 #if defined(_MSC_VER) || (defined(__GNUC__) && (defined(__WIN32__) || defined(__SUNOS__))) || defined(__WATCOMC__) || defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__)
-inline char * stpcpy(char* dest, const char* src) {
-  while ((*dest++ = *src++) != NUL) {}
-  return --dest;
+inline char * stpcpy(char* dest, const char* src)
+{
+    while ((*dest++ = *src++) != NUL) {}
+    return --dest;
 }
 #endif
 
@@ -186,23 +238,42 @@ void tokenize(gstrarray &array, const TCHAR* str, const TCHAR *delim = NULL);
 class GTok
 {
 protected:
-  const TCHAR *separator;
-  TCHAR *token;
+    const TCHAR *separator;
+    TCHAR *token;
 #if defined(_tcstok_s)
-  TCHAR *next_token;
+    TCHAR *next_token;
 #endif
 
 public:
-  GTok(TCHAR *sep = NULL);
+    GTok(TCHAR *sep = NULL);
 
 #if defined(_tcstok_s)
-  TCHAR *First(TCHAR *buf) { token = _tcstok_s(buf,  separator, &next_token); return token; }
-  TCHAR *Next()            { token = _tcstok_s(NULL, separator, &next_token); return token; }
+    TCHAR *First(TCHAR *buf)
+    {
+        token = _tcstok_s(buf,  separator, &next_token);
+        return token;
+    }
+    TCHAR *Next()
+    {
+        token = _tcstok_s(NULL, separator, &next_token);
+        return token;
+    }
 #else
-  TCHAR *First(TCHAR *buf) { token = strtok(buf,  separator); return token; }
-  TCHAR *Next()            { token = strtok(NULL, separator); return token; }
+    TCHAR *First(TCHAR *buf)
+    {
+        token = strtok(buf,  separator);
+        return token;
+    }
+    TCHAR *Next()
+    {
+        token = strtok(NULL, separator);
+        return token;
+    }
 #endif
-  TCHAR *Token()           { return token; }
+    TCHAR *Token()
+    {
+        return token;
+    }
 };
 
 

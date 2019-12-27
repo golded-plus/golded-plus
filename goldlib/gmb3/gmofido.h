@@ -75,32 +75,36 @@ const uint FIDO_SCANBUFSIZE = 100;
 //  ------------------------------------------------------------------
 //  Fido style message header (FTS-0001.015 compatible)
 
-struct FidoHdr {
-  char  by[36];
-  char  to[36];
-  char  re[72];
-  char  datetime[20];
-  word  timesread;
-  word  destnode;
-  word  orignode;
-  word  cost;
-  word  orignet;
-  word  destnet;
-  union {
-    struct {
-      word  destzone;
-      word  origzone;
-      word  destpoint;
-      word  origpoint;
-    } ftsc;
-    struct {
-      FTime  written;
-      FTime  arrived;
-    } opus;
-  };
-  word  replyto;
-  word  attr;
-  word  reply1st;
+struct FidoHdr
+{
+    char  by[36];
+    char  to[36];
+    char  re[72];
+    char  datetime[20];
+    word  timesread;
+    word  destnode;
+    word  orignode;
+    word  cost;
+    word  orignet;
+    word  destnet;
+    union
+    {
+        struct
+        {
+            word  destzone;
+            word  origzone;
+            word  destpoint;
+            word  origpoint;
+        } ftsc;
+        struct
+        {
+            FTime  written;
+            FTime  arrived;
+        } opus;
+    };
+    word  replyto;
+    word  attr;
+    word  reply1st;
 };
 
 
@@ -113,86 +117,102 @@ struct FidoHdr {
 
 //  ------------------------------------------------------------------
 
-struct FidoData {
-  uint32_t highwatermark;
+struct FidoData
+{
+    uint32_t highwatermark;
 };
 
 
 //  ------------------------------------------------------------------
 
-struct FidoWide {
-  MaximusUser* user;
-  int   userno;
-  int   fidohwmarks;
-  int   fidonullfix;
-  const char* fidolastread;
-  const char* squishuserpath;
+struct FidoWide
+{
+    MaximusUser* user;
+    int   userno;
+    int   fidohwmarks;
+    int   fidonullfix;
+    const char* fidolastread;
+    const char* squishuserpath;
 };
 
 
 //  ------------------------------------------------------------------
 
-class FidoArea : public gmo_area {
+class FidoArea : public gmo_area
+{
 
 protected:
 
-  FidoWide* wide;
-  FidoData* data;
+    FidoWide* wide;
+    FidoData* data;
 
-  inline bool isopus() const { return (cfg.basetype == "OPUS"); }
+    inline bool isopus() const
+    {
+        return (cfg.basetype == "OPUS");
+    }
 
-  void data_open();
-  void data_close();
+    void data_open();
+    void data_close();
 
-  char* build_msgname(char* __buf, uint32_t __msgno);
-  int test_open(const char* __file, int __openmode, int __sharemode, int __fail=NO);
-  void raw_scan(bool __scanpm);
-  int load_message(int __mode, gmsg* __msg, FidoHdr& __hdr);
-  void save_lastread();
-  void save_message(int __mode, gmsg* __msg, FidoHdr& __hdr);
+    char* build_msgname(char* __buf, uint32_t __msgno);
+    int test_open(const char* __file, int __openmode, int __sharemode, int __fail=NO);
+    void raw_scan(bool __scanpm);
+    int load_message(int __mode, gmsg* __msg, FidoHdr& __hdr);
+    void save_lastread();
+    void save_message(int __mode, gmsg* __msg, FidoHdr& __hdr);
 
 public:
 
-  FidoArea() { wide = NULL; data = NULL; }
-  virtual ~FidoArea() {}
+    FidoArea()
+    {
+        wide = NULL;
+        data = NULL;
+    }
+    virtual ~FidoArea() {}
 
-  virtual bool havearrivedstamp() const { return isopus(); }
-  virtual bool havereceivedstamp() const { return false; }
+    virtual bool havearrivedstamp() const
+    {
+        return isopus();
+    }
+    virtual bool havereceivedstamp() const
+    {
+        return false;
+    }
 
-  //  ----------------------------------------------------------------
-  //  Messagebase member functions
-  
-  void open();
-  void close();
+    //  ----------------------------------------------------------------
+    //  Messagebase member functions
 
-  void suspend();
-  void resume();
+    void open();
+    void close();
 
-  void lock();
-  void unlock();
+    void suspend();
+    void resume();
 
-  void scan();
-  void scan_area();
-  void scan_area_pm();
+    void lock();
+    void unlock();
 
-  int load_hdr(gmsg* msg);
-  int load_msg(gmsg* msg);
+    void scan();
+    void scan_area();
+    void scan_area_pm();
 
-  void save_hdr(int mode, gmsg* msg);
-  void save_msg(int mode, gmsg* msg);
+    int load_hdr(gmsg* msg);
+    int load_msg(gmsg* msg);
 
-  void del_msg(gmsg* msg);
+    void save_hdr(int mode, gmsg* msg);
+    void save_msg(int mode, gmsg* msg);
 
-  void new_msgno(gmsg* msg);
-  char* user_lookup(char* lookfor);
-  int renumber();
+    void del_msg(gmsg* msg);
 
-  void update_timesread(gmsg* msg);
+    void new_msgno(gmsg* msg);
+    char* user_lookup(char* lookfor);
+    int renumber();
 
-  Line* make_dump_msg(Line*& lin, gmsg* msg, char* lng_head);
+    void update_timesread(gmsg* msg);
 
-  void set_highwater_mark();
-  void reset_highwater_mark();
+    Line* make_dump_msg(Line*& lin, gmsg* msg, char* lng_head);
+
+    void set_highwater_mark();
+    void reset_highwater_mark();
 };
 
 

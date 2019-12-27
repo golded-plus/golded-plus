@@ -49,90 +49,99 @@ static char charsetbuf[256];
 const char *get_charset(void)
 {
 #if defined(__DJGPP__)
-  int segment, selector;
-  __dpmi_regs regs;
+    int segment, selector;
+    __dpmi_regs regs;
 
-  strcpy(charsetbuf, GOLDED_DEFAULT_CHARSET);
-  if ((segment = __dpmi_allocate_dos_memory(3, &selector)) != -1) {
-    regs.h.ah = 0x65;
-    regs.h.al = 0x01;
-    regs.x.bx = 0xffff;
-    regs.x.dx = 0xffff;
-    regs.x.cx = 41;
-    regs.x.es = segment;
-    regs.x.di = 0;
-    __dpmi_int(0x21, &regs);
-    if (!(regs.x.flags & 1) and (regs.x.cx == 41)) {
-      int CCP = _farpeekw(selector, 5);
-      sprintf(charsetbuf, "CP%i", CCP);
+    strcpy(charsetbuf, GOLDED_DEFAULT_CHARSET);
+    if ((segment = __dpmi_allocate_dos_memory(3, &selector)) != -1)
+    {
+        regs.h.ah = 0x65;
+        regs.h.al = 0x01;
+        regs.x.bx = 0xffff;
+        regs.x.dx = 0xffff;
+        regs.x.cx = 41;
+        regs.x.es = segment;
+        regs.x.di = 0;
+        __dpmi_int(0x21, &regs);
+        if (!(regs.x.flags & 1) and (regs.x.cx == 41))
+        {
+            int CCP = _farpeekw(selector, 5);
+            sprintf(charsetbuf, "CP%i", CCP);
+        }
+        __dpmi_free_dos_memory(selector);
     }
-    __dpmi_free_dos_memory(selector);
-  }
 #elif defined(__WIN32__)
-  sprintf(charsetbuf, "CP%i", GetOEMCP());
+    sprintf(charsetbuf, "CP%i", GetOEMCP());
 #elif defined(__OS2__)
-  ULONG CCP[8];
-  ULONG cb;
+    ULONG CCP[8];
+    ULONG cb;
 
-  strcpy(charsetbuf, GOLDED_DEFAULT_CHARSET);
-  if(DosQueryCp(sizeof (CCP), CCP, &cb) == 0)
-    sprintf(charsetbuf, "CP%i", CCP[0]);
+    strcpy(charsetbuf, GOLDED_DEFAULT_CHARSET);
+    if(DosQueryCp(sizeof (CCP), CCP, &cb) == 0)
+        sprintf(charsetbuf, "CP%i", CCP[0]);
 #else
-  const char *cp;
+    const char *cp;
 
-  strcpy(charsetbuf, GOLDED_DEFAULT_CHARSET);
-  cp = setlocale(LC_CTYPE, "");
-  if((cp != NULL) and ((cp = strchr(cp, '.')) != NULL)) {
-    cp++;
-/* Commented on reason: Non-standard charset values isn't used in unix locale, may be in very old implementations?
-// Check this.
-    if(strieql(cp, "KOI8R") or strieql(cp, "KOI8"))
-      cp = "KOI8-R";
-    if(strieql(cp, "KOI8U"))
-      cp = "KOI8-U";
-*/
-    strxcpy(charsetbuf, cp, sizeof(charsetbuf));
-  }
+    strcpy(charsetbuf, GOLDED_DEFAULT_CHARSET);
+    cp = setlocale(LC_CTYPE, "");
+    if((cp != NULL) and ((cp = strchr(cp, '.')) != NULL))
+    {
+        cp++;
+        /* Commented on reason: Non-standard charset values isn't used in unix locale, may be in very old implementations?
+        // Check this.
+            if(strieql(cp, "KOI8R") or strieql(cp, "KOI8"))
+              cp = "KOI8-R";
+            if(strieql(cp, "KOI8U"))
+              cp = "KOI8-U";
+        */
+        strxcpy(charsetbuf, cp, sizeof(charsetbuf));
+    }
 #endif
-  return charsetbuf;
+    return charsetbuf;
 }
 
 const char *get_dos_charset(const char *cpfrom)
 {
 #if defined(__WIN32__)
-  int cp = GetOEMCP();
-  static char cpto[10]="";
-  if (cp) gsprintf(PRINTF_DECLARE_BUFFER(cpto), "CP%u", cp);
-  else cpto[0]='\0';
-  return cpto;
+    int cp = GetOEMCP();
+    static char cpto[10]="";
+    if (cp) gsprintf(PRINTF_DECLARE_BUFFER(cpto), "CP%u", cp);
+    else cpto[0]='\0';
+    return cpto;
 #elif defined(__MSDOS__) || defined(__OS2__)
-  (void)cpfrom; // These platforms use DOS CP on console, so ignore request
-  return "";
+    (void)cpfrom; // These platforms use DOS CP on console, so ignore request
+    return "";
 #else
-  static const struct _cpmap {
-    char *from, *to;
-  } cpmap[] = {
-    { "IBMPC", "CP850" },
-    { "LATIN-1", "CP437" },
-    { "KOI8", "CP866" },
-    { "KOI8-R", "CP866" },
-    { "KOI8-U", "CP1125" },
-    { NULL, NULL }
-  };
+    static const struct _cpmap
+    {
+        char *from, *to;
+    } cpmap[] =
+    {
+        { "IBMPC", "CP850" },
+        { "LATIN-1", "CP437" },
+        { "KOI8", "CP866" },
+        { "KOI8-R", "CP866" },
+        { "KOI8-U", "CP1125" },
+        { NULL, NULL }
+    };
 
-  int i;
-  for(i = 0; cpmap[i].from != NULL; i++) {
-    if(strieql(cpfrom, cpmap[i].from))
-      return cpmap[i].to;
-  }
- #if defined(__unix__)
-  char* lang = getenv("LANG");
-  if( lang && strncmp(lang,"ru_RU",5) ) {
-    return "CP866";
-  }else{
-    return "CP437";
-  }
- #endif
-  return "";
+    int i;
+    for(i = 0; cpmap[i].from != NULL; i++)
+    {
+        if(strieql(cpfrom, cpmap[i].from))
+            return cpmap[i].to;
+    }
+#if defined(__unix__)
+    char* lang = getenv("LANG");
+    if( lang && strncmp(lang,"ru_RU",5) )
+    {
+        return "CP866";
+    }
+    else
+    {
+        return "CP437";
+    }
+#endif
+    return "";
 #endif
 }

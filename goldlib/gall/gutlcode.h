@@ -43,66 +43,71 @@
 
 //  ------------------------------------------------------------------
 
-class code_engines {
+class code_engines
+{
 
 public:
 
-  virtual char* decode(char* outputbuffer, const char* inputbuffer) = 0;
+    virtual char* decode(char* outputbuffer, const char* inputbuffer) = 0;
 };
 
 
 //  ------------------------------------------------------------------
 
-class uucode_engine : public code_engines {
+class uucode_engine : public code_engines
+{
 
 protected:
 
-  struct {
-    char blank;
-    int  len[63];
-    int  ch[256];
-  } table;
+    struct
+    {
+        char blank;
+        int  len[63];
+        int  ch[256];
+    } table;
 
-  int initialized;
-  int defining_table;
-  int table_index;
+    int initialized;
+    int defining_table;
+    int table_index;
 
-  void initialize();
+    void initialize();
 
 public:
 
-  int complete;
+    int complete;
 
-  uucode_engine();
+    uucode_engine();
 
-  char* decode(char* outputbuffer, const char* inputbuffer);
+    char* decode(char* outputbuffer, const char* inputbuffer);
 };
 
 
 //  ------------------------------------------------------------------
 
-class quoted_printable_engine : public code_engines {
+class quoted_printable_engine : public code_engines
+{
 
 protected:
 
 public:
 
-  char* decode(char* outputbuffer, const char* inputbuffer);
+    char* decode(char* outputbuffer, const char* inputbuffer);
 };
 
 
 //  ------------------------------------------------------------------
 
-class base64_engine : public code_engines {
+class base64_engine : public code_engines
+{
 
 protected:
 
-  static char table[64];
+    static char table[64];
 
 public:
 
-  char* decode(char* outputbuffer, const char* inputbuffer);
-  char* encode(char* outputbuffer, const char* inputbuffer, uint length, bool padding=true);
+    char* decode(char* outputbuffer, const char* inputbuffer);
+    char* encode(char* outputbuffer, const char* inputbuffer, uint length, bool padding=true);
 };
 
 

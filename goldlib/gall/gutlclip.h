@@ -49,20 +49,21 @@
 
 //  ------------------------------------------------------------------
 
-class gclipbrd {
+class gclipbrd
+{
 
-  char *clipdata, *cliphdl;
-  int len;
+    char *clipdata, *cliphdl;
+    int len;
 
 public:
 
-  bool openread();
-  char* read(char* buffer, int maxlen);
-  void close();
+    bool openread();
+    char* read(char* buffer, int maxlen);
+    void close();
 
-  bool writeclipbrd(const char* buf);
+    bool writeclipbrd(const char* buf);
 
-  gclipbrd();
+    gclipbrd();
 
 };
 

@@ -43,39 +43,40 @@
 //  ------------------------------------------------------------------
 //  Goldbase userfile (USERS.DAT) (QuickBBS 2.80 Gamma-3 structure)
 
-struct GoldUsers {
+struct GoldUsers
+{
 
-  char  name[36];
-  char  city[26];
-  byte  reservedzero;
-  byte  language;
-  int32_t  pwdcrc;
-  word  pwdchangedate;
-  word  expiredate;
-  int32_t  highmsgread;
-  byte  extraspace[2];
-  char  dataphone[13];
-  char  homephone[13];
-  char  lasttime[6];
-  char  lastdate[9];
-  byte  attrib;
-  byte  flagsx[4];
-  word  credit;
-  word  pending;
-  word  timesposted;
-  word  obsoletefield;
-  word  seclvl;
-  word  times;
-  word  ups;
-  word  downs;
-  word  upk;
-  word  downk;
-  short  todayk;
-  short  elapsed;
-  short  len;
-  word  combinedptr;
-  word  aliasptr;
-  int32_t  birthday;
+    char  name[36];
+    char  city[26];
+    byte  reservedzero;
+    byte  language;
+    int32_t  pwdcrc;
+    word  pwdchangedate;
+    word  expiredate;
+    int32_t  highmsgread;
+    byte  extraspace[2];
+    char  dataphone[13];
+    char  homephone[13];
+    char  lasttime[6];
+    char  lastdate[9];
+    byte  attrib;
+    byte  flagsx[4];
+    word  credit;
+    word  pending;
+    word  timesposted;
+    word  obsoletefield;
+    word  seclvl;
+    word  times;
+    word  ups;
+    word  downs;
+    word  upk;
+    word  downk;
+    short  todayk;
+    short  elapsed;
+    short  len;
+    word  combinedptr;
+    word  aliasptr;
+    int32_t  birthday;
 };
 
 
@@ -88,22 +89,23 @@ struct GoldUsers {
 //  ------------------------------------------------------------------
 //  Goldbase userfile class
 
-class GoldbaseUser : public GUser {
+class GoldbaseUser : public GUser
+{
 
 public:
 
-  GoldUsers* record;
+    GoldUsers* record;
 
-  GoldbaseUser();
-  ~GoldbaseUser();
+    GoldbaseUser();
+    ~GoldbaseUser();
 
-  int  isvalid();
-  int  read();
-  
-  void     inctimesposted(int __times);
-  uint32_t lastread();
-  void     lastread(uint32_t __lastread);
-  void     recinit(const char* __name);
+    int  isvalid();
+    int  read();
+
+    void     inctimesposted(int __times);
+    uint32_t lastread();
+    void     lastread(uint32_t __lastread);
+    void     recinit(const char* __name);
 };
 
 

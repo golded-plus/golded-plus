@@ -29,40 +29,45 @@
 
 //  ------------------------------------------------------------------
 
-gevalrpn::gevalrpn() {
+gevalrpn::gevalrpn()
+{
 
 }
 
 
 //  ------------------------------------------------------------------
 
-gevalrpn::~gevalrpn() {
+gevalrpn::~gevalrpn()
+{
 
 }
 
 
 //  ------------------------------------------------------------------
 
-int gevalrpn::evaluate() {
+int gevalrpn::evaluate()
+{
 
-  ops o;
-  int x, y=0;
+    ops o;
+    int x, y=0;
 
-  while(ostk.size()) {
-    o = pop_operator();
-    switch(o) {
-      case negation:
-      case logic_not:
-        x = pop_value();
-        break;
-      default:
-        x = pop_value();
-        y = pop_value();
+    while(ostk.size())
+    {
+        o = pop_operator();
+        switch(o)
+        {
+        case negation:
+        case logic_not:
+            x = pop_value();
+            break;
+        default:
+            x = pop_value();
+            y = pop_value();
+        }
+        push_value(evaluate_op(o, y, x));
     }
-    push_value(evaluate_op(o, y, x));
-  }
 
-  return pop_value();
+    return pop_value();
 }
 
 

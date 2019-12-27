@@ -44,39 +44,40 @@
 //  Hudson userfile (USERS.BBS) (QuickBBS 2.80 Gamma-3 structure)
 //  sizeof = 158
 
-struct HudsUsers {
+struct HudsUsers
+{
 
-  char  name[36];
-  char  city[26];
-  byte  reservedzero;
-  byte  language;
-  int32_t  pwdcrc;
-  word  pwdchangedate;
-  word  expiredate;
-  int32_t  unusedspace;
-  byte  extraspace[2];
-  char  dataphone[13];
-  char  homephone[13];
-  char  lasttime[6];
-  char  lastdate[9];
-  byte  attrib;
-  byte  flagsx[4];
-  word  credit;
-  word  pending;
-  word  timesposted;
-  word  highmsgread;
-  word  seclvl;
-  word  times;
-  word  ups;
-  word  downs;
-  word  upk;
-  word  downk;
-  short  todayk;
-  short  elapsed;
-  short  len;
-  word  combinedptr;  // record number in COMBINED.*
-  word  aliasptr;     // record number in ALIAS.*
-  int32_t  birthday;
+    char  name[36];
+    char  city[26];
+    byte  reservedzero;
+    byte  language;
+    int32_t  pwdcrc;
+    word  pwdchangedate;
+    word  expiredate;
+    int32_t  unusedspace;
+    byte  extraspace[2];
+    char  dataphone[13];
+    char  homephone[13];
+    char  lasttime[6];
+    char  lastdate[9];
+    byte  attrib;
+    byte  flagsx[4];
+    word  credit;
+    word  pending;
+    word  timesposted;
+    word  highmsgread;
+    word  seclvl;
+    word  times;
+    word  ups;
+    word  downs;
+    word  upk;
+    word  downk;
+    short  todayk;
+    short  elapsed;
+    short  len;
+    word  combinedptr;  // record number in COMBINED.*
+    word  aliasptr;     // record number in ALIAS.*
+    int32_t  birthday;
 };
 
 
@@ -89,22 +90,23 @@ struct HudsUsers {
 //  ------------------------------------------------------------------
 //  Hudson userfile class
 
-class HudsonUser : public GUser {
+class HudsonUser : public GUser
+{
 
 public:
 
-  HudsUsers* record;
+    HudsUsers* record;
 
-  HudsonUser();
-  ~HudsonUser();
+    HudsonUser();
+    ~HudsonUser();
 
-  int  isvalid();
-  int  read();
-  
-  void     inctimesposted(int __times);
-  uint32_t lastread();
-  void     lastread(uint32_t __lastread);
-  void     recinit(const char* __name);
+    int  isvalid();
+    int  read();
+
+    void     inctimesposted(int __times);
+    uint32_t lastread();
+    void     lastread(uint32_t __lastread);
+    void     recinit(const char* __name);
 };
 
 

@@ -28,87 +28,89 @@
 
 //  ------------------------------------------------------------------
 
-int ReadHelpCfg(int force) {
+int ReadHelpCfg(int force)
+{
 
-  char* ptr;
-  long  offset;
-  char  buf[1024];
-  Hlpr* HlpL;
-  int   count;
-  int   counter;
-  int   comment;
+    char* ptr;
+    long  offset;
+    char  buf[1024];
+    Hlpr* HlpL;
+    int   count;
+    int   counter;
+    int   comment;
 
-  if ((force > 1) or (FiletimeCmp(CFG->helpcfg.fn, CFG->helpged) > 0))
-  {
-    gfile ifp(AddPath(CFG->goldpath, CFG->helpcfg.fn), "rb", CFG->sharemode);
-    if (ifp.isopen())
+    if ((force > 1) or (FiletimeCmp(CFG->helpcfg.fn, CFG->helpged) > 0))
     {
-      ifp.SetvBuf(NULL, _IOFBF, 8192);
-      gfile ofp(AddPath(CFG->goldpath, CFG->helpged), "wb", CFG->sharemode);
-      if (ofp.isopen())
-      {
-        offset = 0L;
-        CFG->helpcfg.ft = GetFiletime(AddPath(CFG->goldpath, CFG->helpcfg.fn));
-
-        if (not quiet)
-          STD_PRINTNL("* Reading " << AddPath(CFG->goldpath, CFG->helpcfg.fn));
-
-        ofp.SetvBuf(NULL, _IOFBF, 8192);
-
-        count = 0;
-        ifp.Rewind();
-
-        while (ifp.Fgets(buf, sizeof(buf)))
+        gfile ifp(AddPath(CFG->goldpath, CFG->helpcfg.fn), "rb", CFG->sharemode);
+        if (ifp.isopen())
         {
-          if(strnieql(buf, "*B ", 3))
-            count++;
+            ifp.SetvBuf(NULL, _IOFBF, 8192);
+            gfile ofp(AddPath(CFG->goldpath, CFG->helpged), "wb", CFG->sharemode);
+            if (ofp.isopen())
+            {
+                offset = 0L;
+                CFG->helpcfg.ft = GetFiletime(AddPath(CFG->goldpath, CFG->helpcfg.fn));
+
+                if (not quiet)
+                    STD_PRINTNL("* Reading " << AddPath(CFG->goldpath, CFG->helpcfg.fn));
+
+                ofp.SetvBuf(NULL, _IOFBF, 8192);
+
+                count = 0;
+                ifp.Rewind();
+
+                while (ifp.Fgets(buf, sizeof(buf)))
+                {
+                    if(strnieql(buf, "*B ", 3))
+                        count++;
+                }
+
+                HlpL = (Hlpr*)throw_calloc(count+2, sizeof(Hlpr));
+
+                ifp.Rewind();
+                ofp.Fputs("*I\r\n");
+                ofp.Fwrite(HlpL, count+1, sizeof(Hlpr));
+                ofp.Fputs("\r\n\r\n");
+                offset += 4 + ((count+1)*sizeof(Hlpr)) + 4;
+
+                counter = 0;
+                comment = YES;
+                while (ifp.Fgets(buf, sizeof(buf)))
+                {
+                    if(strnieql(buf, "*B ", 3))
+                    {
+                        comment = NO;
+                        HlpL[counter].help = atow(buf+3);
+                        ptr = strchr(buf, ',');
+                        strbtrim(strxcpy(HlpL[counter].category, ptr ? ptr+1 : "", sizeof(HlpL[counter].category)));
+                        HlpL[counter].offset = offset + strlen(buf);
+                        counter++;
+                    }
+                    if (not comment)
+                    {
+                        ofp.Fputs(buf);
+                        offset += strlen(buf);
+                    }
+                    if(strnieql(buf, "*E", 2))
+                        comment = YES;
+                }
+                HlpL[counter].offset = -1L;
+
+                ofp.FseekSet(0);
+                ofp.Fputs("*I\r\n");
+                ofp.Fwrite(HlpL, count+1, sizeof(Hlpr));
+
+                throw_free(HlpL);
+            }
         }
-
-        HlpL = (Hlpr*)throw_calloc(count+2, sizeof(Hlpr));
-
-        ifp.Rewind();
-        ofp.Fputs("*I\r\n");
-        ofp.Fwrite(HlpL, count+1, sizeof(Hlpr));
-        ofp.Fputs("\r\n\r\n");
-        offset += 4 + ((count+1)*sizeof(Hlpr)) + 4;
-
-        counter = 0;
-        comment = YES;
-        while (ifp.Fgets(buf, sizeof(buf)))
-        {
-          if(strnieql(buf, "*B ", 3)) {
-            comment = NO;
-            HlpL[counter].help = atow(buf+3);
-            ptr = strchr(buf, ',');
-            strbtrim(strxcpy(HlpL[counter].category, ptr ? ptr+1 : "", sizeof(HlpL[counter].category)));
-            HlpL[counter].offset = offset + strlen(buf);
-            counter++;
-          }
-          if (not comment)
-          {
-            ofp.Fputs(buf);
-            offset += strlen(buf);
-          }
-          if(strnieql(buf, "*E", 2))
-            comment = YES;
-        }
-        HlpL[counter].offset = -1L;
-
-        ofp.FseekSet(0);
-        ofp.Fputs("*I\r\n");
-        ofp.Fwrite(HlpL, count+1, sizeof(Hlpr));
-
-        throw_free(HlpL);
-      }
     }
-  }
 
-  // Init the help system
-  whelpdef(CFG->helpged, Key_F1, C_HELPB, C_HELPW, C_HELPQ, C_HELPS, NULL);
-  whelpwin(0, 0, MAXROW-2, MAXCOL-1, W_BHELP, NO);
-  whelpcat(H_General);
+    // Init the help system
+    whelpdef(CFG->helpged, Key_F1, C_HELPB, C_HELPW, C_HELPQ, C_HELPS, NULL);
+    whelpwin(0, 0, MAXROW-2, MAXCOL-1, W_BHELP, NO);
+    whelpcat(H_General);
 
-  return 0;
+    return 0;
 }
 
 
@@ -234,378 +236,423 @@ const word CRC_SCERROR           = 0xAB65;
 
 vattr GetColor(char* ink)
 {
-  word crc;
-  vattr color = BLACK_|_BLACK;
+    word crc;
+    vattr color = BLACK_|_BLACK;
 
-  crc = strCrc16(strupr(ink));
-  switch(crc) {
+    crc = strCrc16(strupr(ink));
+    switch(crc)
+    {
     // Black is the default
     case CRC_BLACK:
-      color = BLACK_|_BLACK;
-      break;
+        color = BLACK_|_BLACK;
+        break;
     case CRC_BLUE:
-      color = BLUE_|_BLACK;
-      break;
+        color = BLUE_|_BLACK;
+        break;
     case CRC_GREEN:
-      color = GREEN_|_BLACK;
-      break;
+        color = GREEN_|_BLACK;
+        break;
     case CRC_CYAN:
-      color = CYAN_|_BLACK;
-      break;
+        color = CYAN_|_BLACK;
+        break;
     case CRC_RED:
-      color = RED_|_BLACK;
-      break;
+        color = RED_|_BLACK;
+        break;
     case CRC_MAGENTA:
-      color = MAGENTA_|_BLACK;
-      break;
+        color = MAGENTA_|_BLACK;
+        break;
     case CRC_BROWN:
-      color = BROWN_|_BLACK;
-      break;
+        color = BROWN_|_BLACK;
+        break;
     case CRC_LGRAY:
     case CRC_LGREY:
     case CRC_LIGHTGRAY:
     case CRC_LIGHTGREY:
-      color = LGREY_|_BLACK;
-      break;
+        color = LGREY_|_BLACK;
+        break;
     case CRC_DGRAY:
     case CRC_DGREY:
     case CRC_DARKGRAY:
     case CRC_DARKGREY:
-      color = DGREY_|_BLACK;
-      break;
+        color = DGREY_|_BLACK;
+        break;
     case CRC_LBLUE:
     case CRC_LIGHTBLUE:
-      color = LBLUE_|_BLACK;
-      break;
+        color = LBLUE_|_BLACK;
+        break;
     case CRC_LGREEN:
     case CRC_LIGHTGREEN:
-      color = LGREEN_|_BLACK;
-      break;
+        color = LGREEN_|_BLACK;
+        break;
     case CRC_LCYAN:
     case CRC_LIGHTCYAN:
-      color = LCYAN_|_BLACK;
-      break;
+        color = LCYAN_|_BLACK;
+        break;
     case CRC_LRED:
     case CRC_LIGHTRED:
-      color = LRED_|_BLACK;
-      break;
+        color = LRED_|_BLACK;
+        break;
     case CRC_LMAGENTA:
     case CRC_LIGHTMAGENTA:
-      color = LMAGENTA_|_BLACK;
-      break;
+        color = LMAGENTA_|_BLACK;
+        break;
     case CRC_YELLOW:
-      color = YELLOW_|_BLACK;
-      break;
+        color = YELLOW_|_BLACK;
+        break;
     case CRC_WHITE:
-      color = WHITE_|_BLACK;
-      break;
+        color = WHITE_|_BLACK;
+        break;
     case CRC_UNDERLINE:
-      color = UNDERLINE;
-      break;
+        color = UNDERLINE;
+        break;
     case CRC_NORMAL:
-      color = NORMAL;
-      break;
+        color = NORMAL;
+        break;
     case CRC_HIGHLIGHT:
-      color = HIGHLIGHT;
-      break;
+        color = HIGHLIGHT;
+        break;
     case CRC_REVERSE:
-      color = REVERSE;
-      break;
-  }
-  return(color);
+        color = REVERSE;
+        break;
+    }
+    return(color);
 }
 
 
 //  ------------------------------------------------------------------
 //  Evaluates a color string
 
-vattr MakeColor(char* colors) {
+vattr MakeColor(char* colors)
+{
 
-  static int paper=0;
-  int ink=0, blink;
-  char* ink_;
-  char* paper_;
+    static int paper=0;
+    int ink=0, blink;
+    char* ink_;
+    char* paper_;
 
-  #if defined(__UNIX__) || defined(__USE_NCURSES__)
-  blink = 0;
-  #else
-  blink = (stridela("blinking", colors) ? 128 : 0);
-  #endif
+#if defined(__UNIX__) || defined(__USE_NCURSES__)
+    blink = 0;
+#else
+    blink = (stridela("blinking", colors) ? 128 : 0);
+#endif
 
-  ink_ = strtok(colors, " \t");         // Get the Ink color
-  if(ink_) {
-    ink = GetColor(ink_);
-    paper_ = strtok(NULL, " \t");       // Skip the "On"
-    if(paper_) {
-      paper_ = strtok(NULL, " \t");     // Get the Paper color
-      if(paper_)
-        paper = GetColor(paper_);
+    ink_ = strtok(colors, " \t");         // Get the Ink color
+    if(ink_)
+    {
+        ink = GetColor(ink_);
+        paper_ = strtok(NULL, " \t");       // Skip the "On"
+        if(paper_)
+        {
+            paper_ = strtok(NULL, " \t");     // Get the Paper color
+            if(paper_)
+                paper = GetColor(paper_);
+        }
     }
-  }
 
-  if(paper > 7)
-    CFG->intensecolors = true;
+    if(paper > 7)
+        CFG->intensecolors = true;
 
-  return ink | paper*16 | blink;
+    return ink | paper*16 | blink;
 }
 
 
 //  ------------------------------------------------------------------
 //  Get color values
 
-void GetColors(char* value) {
+void GetColors(char* value)
+{
 
-  word  crc;
-  Win*  wptr;
-  vattr attr;
-  char  buf[256];
-  char* win;
-  char* colors;
-  char* part=NULL;
+    word  crc;
+    Win*  wptr;
+    vattr attr;
+    char  buf[256];
+    char* win;
+    char* colors;
+    char* part=NULL;
 
-  *buf = NUL;
-  if((win = strtok(value, " \t")) == NULL)
-    return;
+    *buf = NUL;
+    if((win = strtok(value, " \t")) == NULL)
+        return;
 
-  if(stricmp(win, "shadow")) {
-    part = strtok(NULL,  " \t");
-    if(part == NULL)
-      return;
-  }
-
-  do {
-    colors = strtok(NULL,  " \t\n");
-    if(colors != NULL) {
-      strcat(buf, colors);
-      strcat(buf, " ");
+    if(stricmp(win, "shadow"))
+    {
+        part = strtok(NULL,  " \t");
+        if(part == NULL)
+            return;
     }
-  } while(colors != NULL);
 
-  crc = strCrc16(strupr(win));
-  attr = MakeColor(buf);
-  switch(crc) {
+    do
+    {
+        colors = strtok(NULL,  " \t\n");
+        if(colors != NULL)
+        {
+            strcat(buf, colors);
+            strcat(buf, " ");
+        }
+    }
+    while(colors != NULL);
+
+    crc = strCrc16(strupr(win));
+    attr = MakeColor(buf);
+    switch(crc)
+    {
     case CRC_SHADOW:
-      C_SHADOW = attr;
-      return;
+        C_SHADOW = attr;
+        return;
     case CRC_BACKGROUND:
-      wptr = &GC_BACK_;
-      break;
+        wptr = &GC_BACK_;
+        break;
     case CRC_STATUS:
-      wptr = &GC_STAT_;
-      break;
+        wptr = &GC_STAT_;
+        break;
     case CRC_BRAG:
-      wptr = &GC_BRAG_;
-      break;
+        wptr = &GC_BRAG_;
+        break;
     case CRC_AREA:
-      wptr = &GC_AREA_;
-      break;
+        wptr = &GC_AREA_;
+        break;
     case CRC_READER:
-      wptr = &GC_READ_;
-      break;
+        wptr = &GC_READ_;
+        break;
     case CRC_HEADER:
-      wptr = &GC_HEAD_;
-      break;
+        wptr = &GC_HEAD_;
+        break;
     case CRC_ASK:
-      wptr = &GC_ASK__;
-      break;
+        wptr = &GC_ASK__;
+        break;
     case CRC_MENU:
-      wptr = &GC_MENU_;
-      break;
+        wptr = &GC_MENU_;
+        break;
     case CRC_HELP:
-      wptr = &GC_HELP_;
-      break;
+        wptr = &GC_HELP_;
+        break;
     case CRC_INFO:
-      wptr = &GC_INFO_;
-      break;
+        wptr = &GC_INFO_;
+        break;
     case CRC_STYLECODE:
     case CRC_STYLECODES:
-      wptr = &GC_STYLE_;
-      break;
+        wptr = &GC_STYLE_;
+        break;
 #if defined(GCFG_SPELL_INCLUDED)
     case CRC_SPELL:
-      wptr = &GC_SPELL_;
-      break;
+        wptr = &GC_SPELL_;
+        break;
 #endif
     default:
-      return;
-  }
+        return;
+    }
 
-  crc = strCrc16(strupr(part));
-  switch(crc) {
+    crc = strCrc16(strupr(part));
+    switch(crc)
+    {
     case CRC_WINDOW:
-      wptr->_Window = attr;
-      if(wptr == &GC_HEAD_) {
-        wptr->_From = attr;
-        wptr->_To = attr;
-        wptr->_Subject = attr;
-      }
-      if(wptr == &GC_READ_) {
-        wptr->_Tagline = attr;
-        GC_STYLE_._Bold = attr;
-        GC_STYLE_._Italic = attr;
-        GC_STYLE_._BoldItalic = attr;
-        GC_STYLE_._Underscore = attr;
-        GC_STYLE_._BoldUnderscore = attr;
-        GC_STYLE_._ItalicUnderscore = attr;
-        GC_STYLE_._BoldItalicUnderscore = attr;
-        GC_STYLE_._Reverse = attr;
-        GC_STYLE_._ReverseBold = attr;
-        GC_STYLE_._ReverseItalic = attr;
-        GC_STYLE_._ReverseBoldItalic = attr;
-        GC_STYLE_._ReverseUnderscore = attr;
-        GC_STYLE_._ReverseBoldUnderscore = attr;
-        GC_STYLE_._ReverseItalicUnderscore = attr;
-        GC_STYLE_._ReverseBoldItalicUnderscore = attr;
-      }
-      break;
+        wptr->_Window = attr;
+        if(wptr == &GC_HEAD_)
+        {
+            wptr->_From = attr;
+            wptr->_To = attr;
+            wptr->_Subject = attr;
+        }
+        if(wptr == &GC_READ_)
+        {
+            wptr->_Tagline = attr;
+            GC_STYLE_._Bold = attr;
+            GC_STYLE_._Italic = attr;
+            GC_STYLE_._BoldItalic = attr;
+            GC_STYLE_._Underscore = attr;
+            GC_STYLE_._BoldUnderscore = attr;
+            GC_STYLE_._ItalicUnderscore = attr;
+            GC_STYLE_._BoldItalicUnderscore = attr;
+            GC_STYLE_._Reverse = attr;
+            GC_STYLE_._ReverseBold = attr;
+            GC_STYLE_._ReverseItalic = attr;
+            GC_STYLE_._ReverseBoldItalic = attr;
+            GC_STYLE_._ReverseUnderscore = attr;
+            GC_STYLE_._ReverseBoldUnderscore = attr;
+            GC_STYLE_._ReverseItalicUnderscore = attr;
+            GC_STYLE_._ReverseBoldItalicUnderscore = attr;
+        }
+        break;
     case CRC_BORDER:
-      wptr->_Border = attr;
-      wptr->_Pagebar = attr;
-      break;
+        wptr->_Border = attr;
+        wptr->_Pagebar = attr;
+        break;
     case CRC_BTYPE:
-      wptr->btype = atoi(buf);
-      break;
+        wptr->btype = atoi(buf);
+        break;
     case CRC_TITLE:
-      wptr->_Title = attr;
-      break;
+        wptr->_Title = attr;
+        break;
     case CRC_SELECTOR:
-      wptr->_Selector = attr;
-      break;
+        wptr->_Selector = attr;
+        break;
     case CRC_HIGHLIGHT:
-      wptr->_Highlight = attr;
-      break;
+        wptr->_Highlight = attr;
+        break;
     case CRC_NOSELECT:
-      wptr->_Noselect = attr;
-      break;
+        wptr->_Noselect = attr;
+        break;
     case CRC_QUOTE:
-      wptr->_Quote = attr;
-      wptr->_Quote2 = attr;
-      break;
+        wptr->_Quote = attr;
+        wptr->_Quote2 = attr;
+        break;
     case CRC_CURSOR:
-      wptr->_Cursor = attr;
-      break;
+        wptr->_Cursor = attr;
+        break;
     case CRC_KLUDHIDD:
-      wptr->_Kludge = attr;
-      wptr->_Hidden = attr;
-      break;
+        wptr->_Kludge = attr;
+        wptr->_Hidden = attr;
+        break;
     case CRC_TEARORIG:
-      wptr->_Tearline = attr;
-      wptr->_Origin = attr;
-      break;
+        wptr->_Tearline = attr;
+        wptr->_Origin = attr;
+        break;
     case CRC_EDIT:
-      wptr->_Edit = attr;
-      break;
+        wptr->_Edit = attr;
+        break;
     case CRC_BLOCK:
-      wptr->_Block = attr;
-      break;
+        wptr->_Block = attr;
+        break;
     case CRC_INPUT:
-      wptr->_Input = attr;
-      break;
+        wptr->_Input = attr;
+        break;
     case CRC_FROM:
-      wptr->_From = attr;
-      break;
+        wptr->_From = attr;
+        break;
     case CRC_TO:
-      wptr->_To = attr;
-      break;
+        wptr->_To = attr;
+        break;
     case CRC_SUBJECT:
-      wptr->_Subject = attr;
-      break;
+        wptr->_Subject = attr;
+        break;
     case CRC_LOCATION:
-      wptr->_Location = attr;
-      break;
+        wptr->_Location = attr;
+        break;
     case CRC_KLUDGE:
-      wptr->_Kludge = attr;
-      break;
+        wptr->_Kludge = attr;
+        break;
     case CRC_HIDDEN:
-      wptr->_Hidden = attr;
-      break;
+        wptr->_Hidden = attr;
+        break;
     case CRC_TAGLINE:
-      wptr->_Tagline = attr;
-      break;
+        wptr->_Tagline = attr;
+        break;
     case CRC_TEARLINE:
-      wptr->_Tearline = attr;
-      break;
+        wptr->_Tearline = attr;
+        break;
     case CRC_ORIGIN:
-      wptr->_Origin = attr;
-      break;
+        wptr->_Origin = attr;
+        break;
     case CRC_PAGEBAR:
-      wptr->_Pagebar = attr;
-      break;
+        wptr->_Pagebar = attr;
+        break;
     case CRC_UNREAD:
-      wptr->_WindowUnread = attr;
-      break;
+        wptr->_WindowUnread = attr;
+        break;
     case CRC_UNSENT:
-      wptr->_WindowUnsent = attr;
-      break;
+        wptr->_WindowUnsent = attr;
+        break;
     case CRC_UNREADHIGH:
-      wptr->_HighlightUnread = attr;
-      break;
+        wptr->_HighlightUnread = attr;
+        break;
     case CRC_QUOTE1:
-      wptr->_Quote = attr;
-      break;
+        wptr->_Quote = attr;
+        break;
     case CRC_QUOTE2:
-      wptr->_Quote2 = attr;
-      break;
+        wptr->_Quote2 = attr;
+        break;
     case CRC_SIGNATURE:
-      wptr->_Signature = attr;
-      break;
+        wptr->_Signature = attr;
+        break;
     case CRC_URL:
-      wptr->_URL = attr;
-      break;
+        wptr->_URL = attr;
+        break;
     case CRC_UNSENTHIGH:
-      wptr->_HighlightUnsent = attr;
-      break;
-    case CRC_B:     wptr->_Bold = attr;                         break;
-    case CRC_I:     wptr->_Italic = attr;                       break;
-    case CRC_BI:    wptr->_BoldItalic = attr;                   break;
-    case CRC_U:     wptr->_Underscore = attr;                   break;
-    case CRC_BU:    wptr->_BoldUnderscore = attr;               break;
-    case CRC_IU:    wptr->_ItalicUnderscore = attr;             break;
-    case CRC_BIU:   wptr->_BoldItalicUnderscore = attr;         break;
-    case CRC_R:     wptr->_Reverse = attr;                      break;
-    case CRC_RB:    wptr->_ReverseBold = attr;                  break;
-    case CRC_RI:    wptr->_ReverseItalic = attr;                break;
-    case CRC_RBI:   wptr->_ReverseBoldItalic = attr;            break;
-    case CRC_RU:    wptr->_ReverseUnderscore = attr;            break;
-    case CRC_RBU:   wptr->_ReverseBoldUnderscore = attr;        break;
-    case CRC_RIU:   wptr->_ReverseItalicUnderscore = attr;      break;
-    case CRC_RBIU:  wptr->_ReverseBoldItalicUnderscore = attr;  break;
-    case CRC_ALL:
-      if(wptr == &GC_STYLE_) {
+        wptr->_HighlightUnsent = attr;
+        break;
+    case CRC_B:
         wptr->_Bold = attr;
+        break;
+    case CRC_I:
         wptr->_Italic = attr;
+        break;
+    case CRC_BI:
         wptr->_BoldItalic = attr;
+        break;
+    case CRC_U:
         wptr->_Underscore = attr;
+        break;
+    case CRC_BU:
         wptr->_BoldUnderscore = attr;
+        break;
+    case CRC_IU:
         wptr->_ItalicUnderscore = attr;
+        break;
+    case CRC_BIU:
         wptr->_BoldItalicUnderscore = attr;
+        break;
+    case CRC_R:
         wptr->_Reverse = attr;
+        break;
+    case CRC_RB:
         wptr->_ReverseBold = attr;
+        break;
+    case CRC_RI:
         wptr->_ReverseItalic = attr;
+        break;
+    case CRC_RBI:
         wptr->_ReverseBoldItalic = attr;
+        break;
+    case CRC_RU:
         wptr->_ReverseUnderscore = attr;
+        break;
+    case CRC_RBU:
         wptr->_ReverseBoldUnderscore = attr;
+        break;
+    case CRC_RIU:
         wptr->_ReverseItalicUnderscore = attr;
+        break;
+    case CRC_RBIU:
         wptr->_ReverseBoldItalicUnderscore = attr;
-      }
-      break;
+        break;
+    case CRC_ALL:
+        if(wptr == &GC_STYLE_)
+        {
+            wptr->_Bold = attr;
+            wptr->_Italic = attr;
+            wptr->_BoldItalic = attr;
+            wptr->_Underscore = attr;
+            wptr->_BoldUnderscore = attr;
+            wptr->_ItalicUnderscore = attr;
+            wptr->_BoldItalicUnderscore = attr;
+            wptr->_Reverse = attr;
+            wptr->_ReverseBold = attr;
+            wptr->_ReverseItalic = attr;
+            wptr->_ReverseBoldItalic = attr;
+            wptr->_ReverseUnderscore = attr;
+            wptr->_ReverseBoldUnderscore = attr;
+            wptr->_ReverseItalicUnderscore = attr;
+            wptr->_ReverseBoldItalicUnderscore = attr;
+        }
+        break;
 #if defined(GCFG_SPELL_INCLUDED)
     case CRC_SCERROR:
-      wptr->_SpellError = attr;
-      break;
+        wptr->_SpellError = attr;
+        break;
 #endif
     default:
-      return;
-  }
+        return;
+    }
 }
 
 
 //  ------------------------------------------------------------------
 //  Compare escape table items
 
-static int CmpEsc(const char* a, const char* b) {
+static int CmpEsc(const char* a, const char* b)
+{
 
-  return strncmp(a, b, 5);
+    return strncmp(a, b, 5);
 }
 
 
@@ -614,241 +661,260 @@ static int CmpEsc(const char* a, const char* b) {
 
 void ReadXlatTables()
 {
-  if (not CFG->xlatcharset.empty() or not CFG->xlatescset.empty())
-  {
-    Esc EscTable;
-    Chs ChsTable;
-    char buf[256];
-    char* ptr;
-    char* ptr2;
-    int line, n, x, y, ch=0;
-
-    gfile ofp(AddPath(CFG->goldpath, CFG->xlatged), "wb", CFG->sharemode);
-    if (ofp.isopen())
+    if (not CFG->xlatcharset.empty() or not CFG->xlatescset.empty())
     {
-      // Compile CHARSET tables
-      std::vector<Map>::iterator xlt;
-      for (xlt = CFG->xlatcharset.begin(); xlt != CFG->xlatcharset.end(); xlt++)
-      {
-        // Assign table defaults
-        memset(&ChsTable, 0, sizeof(Chs));
-        for(n=0; n<256; n++) {
-          ChsTable.t[n][0] = 1;
-          ChsTable.t[n][1] = (uint8_t)n;  // The character
-        }
+        Esc EscTable;
+        Chs ChsTable;
+        char buf[256];
+        char* ptr;
+        char* ptr2;
+        int line, n, x, y, ch=0;
 
-        strcpy(buf, AddPath(CFG->xlatpath, xlt->mapfile));
-        gfile ifp(buf, "rb", CFG->sharemode);
-        if (ifp.isopen())
+        gfile ofp(AddPath(CFG->goldpath, CFG->xlatged), "wb", CFG->sharemode);
+        if (ofp.isopen())
         {
-          if (not quiet)
-            STD_PRINTNL("* Reading " << buf);
+            // Compile CHARSET tables
+            std::vector<Map>::iterator xlt;
+            for (xlt = CFG->xlatcharset.begin(); xlt != CFG->xlatcharset.end(); xlt++)
+            {
+                // Assign table defaults
+                memset(&ChsTable, 0, sizeof(Chs));
+                for(n=0; n<256; n++)
+                {
+                    ChsTable.t[n][0] = 1;
+                    ChsTable.t[n][1] = (uint8_t)n;  // The character
+                }
 
-          // Read the definition file
-          line = 1;
-          while (ifp.Fgets(buf, sizeof(buf)))
-          {
-            ptr = buf;
-            if(*ptr != ';' and not strblank(ptr)) {
-              if((ptr2 = strchr(ptr+2, ';')) != NULL)
-                *ptr2 = NUL;
-              strtrim(ptr);
-              if(line < 6) {
-                switch(line) {
-                  case 1:
-                    ChsTable.id = atol(ptr);
-                    break;
-                  case 2:
-                    ChsTable.version = atoi(ptr);
-                    break;
-                  case 3:
-                    ChsTable.level = atoi(ptr);
-                    if((ChsTable.level == 1) or (ChsTable.id > 65535L))
-                      ch = 0;
-                    else
-                      ch = 128;
-                    if(ChsTable.level)
+                strcpy(buf, AddPath(CFG->xlatpath, xlt->mapfile));
+                gfile ifp(buf, "rb", CFG->sharemode);
+                if (ifp.isopen())
+                {
+                    if (not quiet)
+                        STD_PRINTNL("* Reading " << buf);
+
+                    // Read the definition file
+                    line = 1;
+                    while (ifp.Fgets(buf, sizeof(buf)))
                     {
-                      for(;*ptr&&isdigit(*ptr);ptr++);
-                      for(;*ptr&&isspace(*ptr);ptr++);
-                      if(*ptr&&isdigit(*ptr))
-                      {
-                        ChsTable.displaylevel = atoi(ptr);
-                        if(!ChsTable.displaylevel) ChsTable.displaylevel = ChsTable.level;
-                      }
-                      else ChsTable.displaylevel = ChsTable.level;
+                        ptr = buf;
+                        if(*ptr != ';' and not strblank(ptr))
+                        {
+                            if((ptr2 = strchr(ptr+2, ';')) != NULL)
+                                *ptr2 = NUL;
+                            strtrim(ptr);
+                            if(line < 6)
+                            {
+                                switch(line)
+                                {
+                                case 1:
+                                    ChsTable.id = atol(ptr);
+                                    break;
+                                case 2:
+                                    ChsTable.version = atoi(ptr);
+                                    break;
+                                case 3:
+                                    ChsTable.level = atoi(ptr);
+                                    if((ChsTable.level == 1) or (ChsTable.id > 65535L))
+                                        ch = 0;
+                                    else
+                                        ch = 128;
+                                    if(ChsTable.level)
+                                    {
+                                        for(; *ptr&&isdigit(*ptr); ptr++);
+                                        for(; *ptr&&isspace(*ptr); ptr++);
+                                        if(*ptr&&isdigit(*ptr))
+                                        {
+                                            ChsTable.displaylevel = atoi(ptr);
+                                            if(!ChsTable.displaylevel) ChsTable.displaylevel = ChsTable.level;
+                                        }
+                                        else ChsTable.displaylevel = ChsTable.level;
+                                    }
+                                    break;
+                                case 4:
+                                {
+                                    char *tp = strbtrim(ptr);
+                                    if(strlen(tp) >= sizeof(ChsTable.imp))
+                                    {
+                                        STD_PRINTNL("* " << AddPath(CFG->xlatpath, xlt->mapfile) << ": At line 4 charset name '" << tp
+                                                    << "' too long. It is supposed no more than " << sizeof(ChsTable.imp)-1 << " characters. A file ignored.");
+                                        cfgerrors++;
+                                        ifp.Lseek(0, SEEK_END);
+                                        ChsTable.displaylevel = 0;
+                                        ChsTable.level = 0;
+                                        ChsTable.version = 0;
+                                        ChsTable.id = 0;
+                                    }
+                                    else strcpy(ChsTable.imp, strbtrim(ptr));
+                                }
+                                break;
+                                case 5:
+                                    if (ChsTable.level && ChsTable.version!=-1)
+                                    {
+                                        gsprintf(PRINTF_DECLARE_BUFFER(ChsTable.exp), "%s %d",
+                                                 strbtrim(ptr), ChsTable.level);
+                                    }
+                                    else
+                                    {
+                                        char *tp = strbtrim(ptr);
+                                        if(strlen(tp) >= sizeof(ChsTable.exp))
+                                        {
+                                            STD_PRINTNL("* " << AddPath(CFG->xlatpath, xlt->mapfile) << ": At line 4 charset name '" << tp
+                                                        << "' too long. It is supposed no more than " << sizeof(ChsTable.exp)-1 << " characters. A file ignored.");
+                                            cfgerrors++;
+                                            ifp.Lseek(0, SEEK_END);
+                                            ChsTable.displaylevel = 0;
+                                            ChsTable.level = 0;
+                                            ChsTable.version = 0;
+                                            ChsTable.id = 0;
+                                            ChsTable.imp[0] = '\0';
+                                        }
+                                        else strcpy(ChsTable.exp, strbtrim(ptr));
+                                    }
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                ptr = strskip_wht(ptr);
+                                if(ch > 255 or strieql(ptr, "END"))   // End of table reached
+                                    break;
+                                x = 0;
+                                ChsTable.t[ch][0] = (byte)x;
+                                while(*ptr and x < 3)
+                                {
+                                    if(*ptr == '\\')
+                                    {
+                                        ptr++;
+                                        switch(*ptr)
+                                        {
+                                        case '\\':
+                                            ChsTable.t[ch][++x] = (byte)'\\';
+                                            ChsTable.t[ch][0] = (byte)x;
+                                            ptr = strskip_txt(ptr);
+                                            break;
+                                        case 'd':
+                                            y = (uint8_t)atoi(ptr+1);
+                                            ChsTable.t[ch][++x] = (byte)y;
+                                            ChsTable.t[ch][0] = (byte)x;
+                                            ptr = strskip_txt(ptr);
+                                            break;
+                                        case 'x':
+                                            y = (uint8_t)atox(ptr+1);
+                                            ChsTable.t[ch][++x] = (byte)y;
+                                            ChsTable.t[ch][0] = (byte)x;
+                                            ptr = strskip_txt(ptr);
+                                            break;
+                                        case '0':
+                                            ptr = strskip_txt(ptr);
+                                            break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        ChsTable.t[ch][++x] = (byte)*ptr++;
+                                        ChsTable.t[ch][0] = (byte)x;
+                                    }
+                                    ptr = strskip_wht(ptr);
+                                }
+                                ch++;
+                            }
+                            line++;
+                        }
                     }
-                    break;
-                  case 4:
-                    {
-                      char *tp = strbtrim(ptr);
-                      if(strlen(tp) >= sizeof(ChsTable.imp)) {
-                        STD_PRINTNL("* " << AddPath(CFG->xlatpath, xlt->mapfile) << ": At line 4 charset name '" << tp
-                           << "' too long. It is supposed no more than " << sizeof(ChsTable.imp)-1 << " characters. A file ignored.");
-                        cfgerrors++;
-                        ifp.Lseek(0, SEEK_END);
-                        ChsTable.displaylevel = 0;
-                        ChsTable.level = 0;
-                        ChsTable.version = 0;
-                        ChsTable.id = 0;
-                      }
-                      else strcpy(ChsTable.imp, strbtrim(ptr));
-                    }
-                    break;
-                  case 5:
-                    if (ChsTable.level && ChsTable.version!=-1)
-                    {
-                      gsprintf(PRINTF_DECLARE_BUFFER(ChsTable.exp), "%s %d",
-                               strbtrim(ptr), ChsTable.level);
-                    }
-                    else
-                    {
-                      char *tp = strbtrim(ptr);
-                      if(strlen(tp) >= sizeof(ChsTable.exp)) {
-                        STD_PRINTNL("* " << AddPath(CFG->xlatpath, xlt->mapfile) << ": At line 4 charset name '" << tp
-                            << "' too long. It is supposed no more than " << sizeof(ChsTable.exp)-1 << " characters. A file ignored.");
-                        cfgerrors++;
-                        ifp.Lseek(0, SEEK_END);
-                        ChsTable.displaylevel = 0;
-                        ChsTable.level = 0;
-                        ChsTable.version = 0;
-                        ChsTable.id = 0;
-                        ChsTable.imp[0] = '\0';
-                      }
-                      else strcpy(ChsTable.exp, strbtrim(ptr));
-                    }
-                    break;
                 }
-              }
-              else {
-                ptr = strskip_wht(ptr);
-                if(ch > 255 or strieql(ptr, "END"))   // End of table reached
-                  break;
-                x = 0;
-                ChsTable.t[ch][0] = (byte)x;
-                while(*ptr and x < 3) {
-                  if(*ptr == '\\') {
-                    ptr++;
-                    switch(*ptr) {
-                      case '\\':
-                        ChsTable.t[ch][++x] = (byte)'\\';
-                        ChsTable.t[ch][0] = (byte)x;
-                        ptr = strskip_txt(ptr);
-                        break;
-                      case 'd':
-                        y = (uint8_t)atoi(ptr+1);
-                        ChsTable.t[ch][++x] = (byte)y;
-                        ChsTable.t[ch][0] = (byte)x;
-                        ptr = strskip_txt(ptr);
-                        break;
-                      case 'x':
-                        y = (uint8_t)atox(ptr+1);
-                        ChsTable.t[ch][++x] = (byte)y;
-                        ChsTable.t[ch][0] = (byte)x;
-                        ptr = strskip_txt(ptr);
-                        break;
-                      case '0':
-                        ptr = strskip_txt(ptr);
-                        break;
-                    }
-                  }
-                  else {
-                    ChsTable.t[ch][++x] = (byte)*ptr++;
-                    ChsTable.t[ch][0] = (byte)x;
-                  }
-                  ptr = strskip_wht(ptr);
-                }
-                ch++;
-              }
-              line++;
+                else
+                    STD_PRINTNL("* XLAT table " << buf << " could not be opened.");
+
+                ofp.Fwrite(&ChsTable, sizeof(Chs));
             }
-          }
-        }
-        else
-          STD_PRINTNL("* XLAT table " << buf << " could not be opened.");
 
-        ofp.Fwrite(&ChsTable, sizeof(Chs));
-      }
+            // Compile ESCSET tables
+            for (xlt = CFG->xlatescset.begin(); xlt != CFG->xlatescset.end(); xlt++)
+            {
+                // Assign defaults
+                memset(&EscTable, 0, sizeof(Esc));
+                strcpy(buf, AddPath(CFG->xlatpath, xlt->mapfile));
+                gfile ifp(buf, "rb", CFG->sharemode);
+                if (ifp.isopen())
+                {
+                    if (not quiet)
+                        STD_PRINTNL("* Reading " << buf);
 
-      // Compile ESCSET tables
-      for (xlt = CFG->xlatescset.begin(); xlt != CFG->xlatescset.end(); xlt++)
-      {
-        // Assign defaults
-        memset(&EscTable, 0, sizeof(Esc));
-        strcpy(buf, AddPath(CFG->xlatpath, xlt->mapfile));
-        gfile ifp(buf, "rb", CFG->sharemode);
-        if (ifp.isopen())
-        {
-          if (not quiet)
-            STD_PRINTNL("* Reading " << buf);
-
-          // Read the definition file
-          line = 1;
-          while (ifp.Fgets(buf, sizeof(buf)))
-          {
-            ptr = buf;
-            if(*ptr != ';' and not strblank(ptr)) {
-              if((ptr2 = strchr(ptr+2, ';')) != NULL)
-                *ptr2 = NUL;
-              strtrim(ptr);
-              if(line < 2) {
-                switch(line) {
-                  case 1:
-                    strcpy(EscTable.exp, strbtrim(ptr));
-                    break;
-                }
-              }
-              else {
-                n = EscTable.size;
-                if(n > 255 or strieql(ptr, "END"))   // End of table reached
-                  break;
-                EscTable.t[n][0] = ptr[0];
-                EscTable.t[n][1] = ptr[1];
-                x = 2;
-                ptr += 2;
-                ptr = strskip_wht(ptr);
-                while(*ptr and x < 5) {
-                  if(*ptr == '\\') {
-                    ptr++;
-                    switch(*ptr) {
-                      case '\\':
-                        EscTable.t[n][x++] = '\\';
-                        ptr = strskip_txt(ptr);
-                        break;
-                      case 'd':
-                        EscTable.t[n][x++] = (uint8_t)atoi(ptr+1);
-                        ptr = strskip_txt(ptr);
-                        break;
-                      case 'x':
-                        EscTable.t[n][x++] = (uint8_t)atox(ptr+1);
-                        ptr = strskip_txt(ptr);
-                        break;
-                      case '0':
-                        EscTable.t[n][x++] = NUL;
-                        ptr = strskip_txt(ptr);
-                        break;
+                    // Read the definition file
+                    line = 1;
+                    while (ifp.Fgets(buf, sizeof(buf)))
+                    {
+                        ptr = buf;
+                        if(*ptr != ';' and not strblank(ptr))
+                        {
+                            if((ptr2 = strchr(ptr+2, ';')) != NULL)
+                                *ptr2 = NUL;
+                            strtrim(ptr);
+                            if(line < 2)
+                            {
+                                switch(line)
+                                {
+                                case 1:
+                                    strcpy(EscTable.exp, strbtrim(ptr));
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                n = EscTable.size;
+                                if(n > 255 or strieql(ptr, "END"))   // End of table reached
+                                    break;
+                                EscTable.t[n][0] = ptr[0];
+                                EscTable.t[n][1] = ptr[1];
+                                x = 2;
+                                ptr += 2;
+                                ptr = strskip_wht(ptr);
+                                while(*ptr and x < 5)
+                                {
+                                    if(*ptr == '\\')
+                                    {
+                                        ptr++;
+                                        switch(*ptr)
+                                        {
+                                        case '\\':
+                                            EscTable.t[n][x++] = '\\';
+                                            ptr = strskip_txt(ptr);
+                                            break;
+                                        case 'd':
+                                            EscTable.t[n][x++] = (uint8_t)atoi(ptr+1);
+                                            ptr = strskip_txt(ptr);
+                                            break;
+                                        case 'x':
+                                            EscTable.t[n][x++] = (uint8_t)atox(ptr+1);
+                                            ptr = strskip_txt(ptr);
+                                            break;
+                                        case '0':
+                                            EscTable.t[n][x++] = NUL;
+                                            ptr = strskip_txt(ptr);
+                                            break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        EscTable.t[n][x++] = *ptr++;
+                                    }
+                                    ptr = strskip_wht(ptr);
+                                }
+                                EscTable.size++;
+                            }
+                            line++;
+                        }
                     }
-                  }
-                  else {
-                    EscTable.t[n][x++] = *ptr++;
-                  }
-                  ptr = strskip_wht(ptr);
+
+                    qsort(EscTable.t, EscTable.size, 5, (StdCmpCP)CmpEsc);
                 }
-                EscTable.size++;
-              }
-              line++;
+                else
+                    STD_PRINTNL("* XLAT table " << buf << " could not be opened.");
+
+                ofp.Fwrite(&EscTable, sizeof(Esc));
             }
-          }
-
-          qsort(EscTable.t, EscTable.size, 5, (StdCmpCP)CmpEsc);
         }
-        else
-          STD_PRINTNL("* XLAT table " << buf << " could not be opened.");
-
-        ofp.Fwrite(&EscTable, sizeof(Esc));
-      }
     }
-  }
 }
 
 
@@ -856,35 +922,36 @@ void ReadXlatTables()
 
 void CookieIndex(char* textfile, char* indexfile)
 {
-  gfile ifp(textfile, "rb", CFG->sharemode);
-  if (ifp.isopen())
-  {
-    ifp.SetvBuf(NULL, _IOFBF, 32000);
-    gfile ofp(indexfile, "wb", CFG->sharemode);
-    if (ofp.isopen())
+    gfile ifp(textfile, "rb", CFG->sharemode);
+    if (ifp.isopen())
     {
-      ofp.SetvBuf(NULL, _IOFBF, 16000);
-      char buf[256];
-      long fpos = 0;
-      long tpos = 0;
-      bool was_blank = false;
-      while (ifp.Fgets(buf, sizeof(buf)))
-      {
-        if (strblank(buf))
+        ifp.SetvBuf(NULL, _IOFBF, 32000);
+        gfile ofp(indexfile, "wb", CFG->sharemode);
+        if (ofp.isopen())
         {
-          ofp.Fwrite(&fpos, sizeof(long));
-          fpos = tpos + strlen(buf);
-          was_blank = true;
+            ofp.SetvBuf(NULL, _IOFBF, 16000);
+            char buf[256];
+            long fpos = 0;
+            long tpos = 0;
+            bool was_blank = false;
+            while (ifp.Fgets(buf, sizeof(buf)))
+            {
+                if (strblank(buf))
+                {
+                    ofp.Fwrite(&fpos, sizeof(long));
+                    fpos = tpos + strlen(buf);
+                    was_blank = true;
+                }
+                else
+                {
+                    was_blank = false;
+                }
+                tpos += strlen(buf);
+            }
+            if (not was_blank)
+                ofp.Fwrite(&fpos, sizeof(long));
         }
-        else {
-          was_blank = false;
-        }
-        tpos += strlen(buf);
-      }
-      if (not was_blank)
-        ofp.Fwrite(&fpos, sizeof(long));
     }
-  }
 }
 
 

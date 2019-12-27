@@ -38,24 +38,25 @@
 int errorlevel = 0;
 int error_exit = 0;
 
-const char* etext[] = {
-  "No",
-  "Open",
-  "Read",
-  "Seek",
-  "Memory",
-  "Index",
-  "Write",
-  "Tell",
-  "Close",
-  "Config",
-  "Break",
-  "NoKeys",
-  "Test",
-  "Environment",
-  "Lock",
-  "Pointer",
-  ""
+const char* etext[] =
+{
+    "No",
+    "Open",
+    "Read",
+    "Seek",
+    "Memory",
+    "Index",
+    "Write",
+    "Tell",
+    "Close",
+    "Config",
+    "Break",
+    "NoKeys",
+    "Test",
+    "Environment",
+    "Lock",
+    "Pointer",
+    ""
 };
 
 
@@ -66,28 +67,31 @@ static char gerrbuf[100];
 
 // -------------------------------------------------------------------
 
-char* gerrinfo(int __type, const char* __file, int __line) {
+char* gerrinfo(int __type, const char* __file, int __line)
+{
 
-  sprintf(gerrbuf, "%s error exit at [%s,%u].", etext[__type], CleanFilename(__file), __line);
-  return gerrbuf;
+    sprintf(gerrbuf, "%s error exit at [%s,%u].", etext[__type], CleanFilename(__file), __line);
+    return gerrbuf;
 }
 
 
 // -------------------------------------------------------------------
 
-char* gerrinfo(const char* __message, const char* __file, int __line) {
+char* gerrinfo(const char* __message, const char* __file, int __line)
+{
 
-  snprintf(gerrbuf, sizeof(gerrbuf), "%s at [%s,%u].", __message, CleanFilename(__file), __line);
-  return gerrbuf;
+    snprintf(gerrbuf, sizeof(gerrbuf), "%s at [%s,%u].", __message, CleanFilename(__file), __line);
+    return gerrbuf;
 }
 
 
 // -------------------------------------------------------------------
 
-char* gerrosinfo() {
+char* gerrosinfo()
+{
 
-  sprintf(gerrbuf, "%s reports error %u: %s.", ggetosstring(), errno, strerror(errno));
-  return gerrbuf;
+    sprintf(gerrbuf, "%s reports error %u: %s.", ggetosstring(), errno, strerror(errno));
+    return gerrbuf;
 }
 
 

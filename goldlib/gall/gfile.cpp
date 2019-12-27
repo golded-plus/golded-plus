@@ -85,9 +85,9 @@
 
 gfile::gfile()
 {
-  fh = -1;
-  fp = NULL;
-  status = EBADF;
+    fh = -1;
+    fp = NULL;
+    status = EBADF;
 }
 
 
@@ -115,81 +115,81 @@ gfile::gfile(FILE* __fp)
 
 gfile::gfile(const char* __path, int __access, int __shflag, int __mode)
 {
-  fh = -1;
-  fp = NULL;
-  if( !( __path && *__path ) )
-  {
-    status = EINVAL;
-    return;
-  }
-  Open(__path, __access, __shflag, __mode);
+    fh = -1;
+    fp = NULL;
+    if( !( __path && *__path ) )
+    {
+        status = EINVAL;
+        return;
+    }
+    Open(__path, __access, __shflag, __mode);
 }
 
 //  ------------------------------------------------------------------
 
 gfile::gfile(const char* __path, const char* __mode, int __shflag)
 {
-  fh = -1;
-  fp = NULL;
-  if( !( __path && *__path ) )
-  {
-    status = EINVAL;
-    return;
-  }
-  Fopen(__path, __mode, __shflag);
+    fh = -1;
+    fp = NULL;
+    if( !( __path && *__path ) )
+    {
+        status = EINVAL;
+        return;
+    }
+    Fopen(__path, __mode, __shflag);
 }
 
 //  ------------------------------------------------------------------
 
 gfile::~gfile()
 {
-  if (fp != NULL) Fclose();
-  if (fh != -1) Close();
+    if (fp != NULL) Fclose();
+    if (fh != -1) Close();
 }
 
 //  ------------------------------------------------------------------
 
 bool gfile::isopen()
 {
-  if ((fh != -1) or (fp != NULL)) return true;
-  return false;
+    if ((fh != -1) or (fp != NULL)) return true;
+    return false;
 }
 
 //  ------------------------------------------------------------------
 
 int gfile::setfh(int __fh)
 {
-  fh = __fh;
-  status = 0;
-  return fh;
+    fh = __fh;
+    status = 0;
+    return fh;
 }
 
 //  ------------------------------------------------------------------
 
 FILE* gfile::setfp(FILE* __fp)
 {
-  fp = __fp;
-  status = 0;
-  return fp;
+    fp = __fp;
+    status = 0;
+    return fp;
 }
 
 //  ------------------------------------------------------------------
 
 int gfile::Open(const char* __path, int __access, int __shflag, int __mode)
 {
-  if( !( __path && *__path ) )
-  {
-    status = EINVAL;
-    return -1;
-  }
+    if( !( __path && *__path ) )
+    {
+        status = EINVAL;
+        return -1;
+    }
 
 #if defined(_tsopen_s)
-  status = _tsopen_s(&fh, __path, __access, __shflag, __mode);
-  return fh;
+    status = _tsopen_s(&fh, __path, __access, __shflag, __mode);
+    return fh;
 #else
-  fh = g_sopen(__path, __access, __shflag, __mode);
-  status = (fh == -1) ? errno : 0;
-  return fh;
+    fh = g_sopen(__path, __access, __shflag, __mode);
+    status = (fh == -1) ? errno : 0;
+    return fh;
 #endif
 }
 
@@ -198,125 +198,125 @@ int gfile::Open(const char* __path, int __access, int __shflag, int __mode)
 
 int gfile::Open(const char* __path, int __access, const char* __fmode, int __shflag, int __mode)
 {
-  if( !(__path && *__path &&  __fmode && *__fmode) )
-  {
-    status = EINVAL;
-    return -1;
-  }
-  Open(__path, __access, __shflag, __mode);
-  Fdopen(__fmode);
-  return fh;
+    if( !(__path && *__path &&  __fmode && *__fmode) )
+    {
+        status = EINVAL;
+        return -1;
+    }
+    Open(__path, __access, __shflag, __mode);
+    Fdopen(__fmode);
+    return fh;
 }
 
 //  ------------------------------------------------------------------
 
 int gfile::Close()
 {
-  if (fp) return Fclose();
-  if (fh==-1)
-  {
-    status = 0;
-    return 0;
-  }
-  int _ret = g_close(fh);
-  status = _ret ? errno : 0;
-  fh = -1;
-  return _ret;
+    if (fp) return Fclose();
+    if (fh==-1)
+    {
+        status = 0;
+        return 0;
+    }
+    int _ret = g_close(fh);
+    status = _ret ? errno : 0;
+    fh = -1;
+    return _ret;
 }
 
 //  ------------------------------------------------------------------
 
 int gfile::Read(void* __ptr, size_t __len)
 {
-  if( !__ptr )
-  {
-    status = EINVAL;
-    return -1;
-  }
-  int _ret = g_read(fh, __ptr, unsigned(__len));
-  status = (_ret == -1) ? errno : 0;
-  return _ret;
+    if( !__ptr )
+    {
+        status = EINVAL;
+        return -1;
+    }
+    int _ret = g_read(fh, __ptr, unsigned(__len));
+    status = (_ret == -1) ? errno : 0;
+    return _ret;
 }
 
 //  ------------------------------------------------------------------
 
 int gfile::Write(const void* __ptr, size_t __len)
 {
-  if( !__ptr )
-  {
-    status = EINVAL;
-    return -1;
-  }
-  int _ret = g_write(fh, __ptr, unsigned(__len));
-  status = (_ret == -1) ? errno : 0;
-  return _ret;
+    if( !__ptr )
+    {
+        status = EINVAL;
+        return -1;
+    }
+    int _ret = g_write(fh, __ptr, unsigned(__len));
+    status = (_ret == -1) ? errno : 0;
+    return _ret;
 }
 
 //  ------------------------------------------------------------------
 
 long gfile::Tell()
 {
-  long _ret = g_tell(fh);
-  status = (_ret == -1) ? errno : 0;
-  return _ret;
+    long _ret = g_tell(fh);
+    status = (_ret == -1) ? errno : 0;
+    return _ret;
 }
 
 //  ------------------------------------------------------------------
 
 long gfile::Lseek(long __offset, int __direction)
 {
-  long _ret = g_lseek(fh, __offset, __direction);
-  status = (_ret == -1) ? errno : 0;
-  return _ret;
+    long _ret = g_lseek(fh, __offset, __direction);
+    status = (_ret == -1) ? errno : 0;
+    return _ret;
 }
 
 //  ------------------------------------------------------------------
 
 long gfile::FileLength()
 {
-  long _ret = g_filelength(fh);
-  status = (_ret == -1) ? errno : 0;
-  return _ret;
+    long _ret = g_filelength(fh);
+    status = (_ret == -1) ? errno : 0;
+    return _ret;
 }
 
 //  ------------------------------------------------------------------
 
 int gfile::ChSize(long __size)
 {
-  int _ret = g_chsize(fh, __size);
-  status = _ret ? errno : 0;
-  return _ret;
+    int _ret = g_chsize(fh, __size);
+    status = _ret ? errno : 0;
+    return _ret;
 }
 
 //  ------------------------------------------------------------------
 
 int gfile::Lock(long __offset, long __len)
 {
-  int _ret = g_lock(fh, __offset, __len);
-  status = _ret ? errno : 0;
-  return _ret;
+    int _ret = g_lock(fh, __offset, __len);
+    status = _ret ? errno : 0;
+    return _ret;
 }
 
 //  ------------------------------------------------------------------
 
 int gfile::Unlock(long __offset, long __len)
 {
-  int _ret = g_unlock(fh, __offset, __len);
-  status = _ret ? errno : 0;
-  return _ret;
+    int _ret = g_unlock(fh, __offset, __len);
+    status = _ret ? errno : 0;
+    return _ret;
 }
 
 //  ------------------------------------------------------------------
 
 int gfile::GetFTime(time32_t *__ftime)
 {
-  struct stat s;
-  if (fp) Fflush();
-  int rv = fstat(fh, &s);
-  status = (rv) ? errno : 0;
-  if (rv == 0) *__ftime = gfixstattime(time32_t(s.st_mtime));
-  else __ftime = 0;
-  return rv;
+    struct stat s;
+    if (fp) Fflush();
+    int rv = fstat(fh, &s);
+    status = (rv) ? errno : 0;
+    if (rv == 0) *__ftime = gfixstattime(time32_t(s.st_mtime));
+    else __ftime = 0;
+    return rv;
 }
 
 
@@ -324,15 +324,15 @@ int gfile::GetFTime(time32_t *__ftime)
 
 FILE* gfile::Fopen(const char* __path, const char* __mode, int __shflag)
 {
-  if( !(__path && *__path && __mode && *__mode) )
-  {
-    status = EINVAL;
-    return NULL;
-  }
-  fp = g_fsopen(__path, __mode, __shflag);
-  status = (fp == NULL) ? errno : 0;
-  if (fp) fh = g_fileno(fp);
-  return fp;
+    if( !(__path && *__path && __mode && *__mode) )
+    {
+        status = EINVAL;
+        return NULL;
+    }
+    fp = g_fsopen(__path, __mode, __shflag);
+    status = (fp == NULL) ? errno : 0;
+    if (fp) fh = g_fileno(fp);
+    return fp;
 }
 
 
@@ -340,15 +340,15 @@ FILE* gfile::Fopen(const char* __path, const char* __mode, int __shflag)
 
 FILE* gfile::Popen(const char* __path, const char* __mode)
 {
-  if( !(__path && *__path && __mode && *__mode) )
-  {
-    status = EINVAL;
-    return NULL;
-  }
-  fp = g_popen(__path, __mode);
-  status = (fp == NULL) ? errno : 0;
-  if (fp) fh = g_fileno(fp);
-  return fp;
+    if( !(__path && *__path && __mode && *__mode) )
+    {
+        status = EINVAL;
+        return NULL;
+    }
+    fp = g_popen(__path, __mode);
+    status = (fp == NULL) ? errno : 0;
+    if (fp) fh = g_fileno(fp);
+    return fp;
 }
 
 
@@ -356,15 +356,15 @@ FILE* gfile::Popen(const char* __path, const char* __mode)
 
 FILE* gfile::Fdopen(const char* __mode)
 {
-  if( !(__mode) )
-  {
-    status = EINVAL;
-    return NULL;
-  }
-  fp = g_fdopen(fh, __mode);
-  status = fp ? 0 : errno;
-  if (fp) fh = g_fileno(fp);
-  return fp;
+    if( !(__mode) )
+    {
+        status = EINVAL;
+        return NULL;
+    }
+    fp = g_fdopen(fh, __mode);
+    status = fp ? 0 : errno;
+    if (fp) fh = g_fileno(fp);
+    return fp;
 }
 
 
@@ -372,11 +372,12 @@ FILE* gfile::Fdopen(const char* __mode)
 
 int gfile::Fclose()
 {
-  int _ret = 0;
-  if (fp) _ret = g_fclose(fp);
-  status = _ret ? errno : 0;
-  fp = NULL; fh = -1;
-  return _ret;
+    int _ret = 0;
+    if (fp) _ret = g_fclose(fp);
+    status = _ret ? errno : 0;
+    fp = NULL;
+    fh = -1;
+    return _ret;
 }
 
 
@@ -384,25 +385,26 @@ int gfile::Fclose()
 
 int gfile::Pclose()
 {
-  int _ret = 0;
-  if (fp) _ret = g_pclose(fp);
-  status = _ret ? errno : 0;
-  fp = NULL; fh = -1;
-  return _ret;
+    int _ret = 0;
+    if (fp) _ret = g_pclose(fp);
+    status = _ret ? errno : 0;
+    fp = NULL;
+    fh = -1;
+    return _ret;
 }
 
 //  ------------------------------------------------------------------
 
 size_t gfile::Fread(void* __ptr, size_t __size, size_t __items)
 {
-  if( !(__ptr) )
-  {
-    status = EINVAL;
-    return 0;
-  }
-  size_t _ret = g_fread(__ptr, __size, __items, fp);
-  status = ferror_() ? errno : 0;
-  return _ret;
+    if( !(__ptr) )
+    {
+        status = EINVAL;
+        return 0;
+    }
+    size_t _ret = g_fread(__ptr, __size, __items, fp);
+    status = ferror_() ? errno : 0;
+    return _ret;
 }
 
 
@@ -410,14 +412,14 @@ size_t gfile::Fread(void* __ptr, size_t __size, size_t __items)
 
 size_t gfile::Fwrite(const void* __ptr, size_t __size, size_t __items)
 {
-  if( !(__ptr) )
-  {
-    status = EINVAL;
-    return 0;
-  }
-  size_t _ret = g_fwrite(__ptr, __size, __items, fp);
-  status = (_ret < __items) ? errno : 0;
-  return _ret;
+    if( !(__ptr) )
+    {
+        status = EINVAL;
+        return 0;
+    }
+    size_t _ret = g_fwrite(__ptr, __size, __items, fp);
+    status = (_ret < __items) ? errno : 0;
+    return _ret;
 }
 
 
@@ -425,9 +427,9 @@ size_t gfile::Fwrite(const void* __ptr, size_t __size, size_t __items)
 
 int gfile::Fgetc()
 {
-  int _ret = g_fgetc(fp);
-  status = ferror_() ? errno : 0;
-  return _ret;
+    int _ret = g_fgetc(fp);
+    status = ferror_() ? errno : 0;
+    return _ret;
 }
 
 
@@ -435,37 +437,37 @@ int gfile::Fgetc()
 
 int gfile::Fputc(int __ch)
 {
-  int _ret = g_fputc(__ch, fp);
-  status = ferror_() ? errno : 0;
-  return _ret;
+    int _ret = g_fputc(__ch, fp);
+    status = ferror_() ? errno : 0;
+    return _ret;
 }
 
 //  ------------------------------------------------------------------
 
 char* gfile::Fgets(char* __str, size_t __len)
 {
-  if( !(__str) )
-  {
-    status = EINVAL;
-    return NULL;
-  }
-  char* _ret = g_fgets(__str, int(__len), fp);
-  status = (_ret == NULL) ? errno : 0;
-  return _ret;
+    if( !(__str) )
+    {
+        status = EINVAL;
+        return NULL;
+    }
+    char* _ret = g_fgets(__str, int(__len), fp);
+    status = (_ret == NULL) ? errno : 0;
+    return _ret;
 }
 
 //  ------------------------------------------------------------------
 
 int gfile::Fputs(const char* __str)
 {
-  if( !(__str) )
-  {
-    status = EINVAL;
-    return -1;
-  }
-  int _ret = g_fputs(__str, fp);
-  status = (_ret == EOF) ? errno : 0;
-  return _ret;
+    if( !(__str) )
+    {
+        status = EINVAL;
+        return -1;
+    }
+    int _ret = g_fputs(__str, fp);
+    status = (_ret == EOF) ? errno : 0;
+    return _ret;
 }
 
 
@@ -473,57 +475,57 @@ int gfile::Fputs(const char* __str)
 
 int gfile::Printf(const char* __format, ...)
 {
-  if( !(__format && *__format) )
-  {
-    status = EINVAL;
-    return -1;
-  }
-  va_list _argptr;
-  va_start(_argptr, __format);
-  int _outcount = vfprintf(fp, __format, _argptr);
-  va_end(_argptr);
-  return _outcount;
+    if( !(__format && *__format) )
+    {
+        status = EINVAL;
+        return -1;
+    }
+    va_list _argptr;
+    va_start(_argptr, __format);
+    int _outcount = vfprintf(fp, __format, _argptr);
+    va_end(_argptr);
+    return _outcount;
 }
 
 //  ------------------------------------------------------------------
 
 int gfile::Fflush()
 {
-  int _ret = g_fflush(fp);
-  status = _ret ? errno : 0;
-  return _ret;
+    int _ret = g_fflush(fp);
+    status = _ret ? errno : 0;
+    return _ret;
 }
 
 //  ------------------------------------------------------------------
 
 long gfile::Ftell()
 {
-  long _ret = g_ftell(fp);
-  status = (_ret == -1) ? errno : 0;
-  return _ret;
+    long _ret = g_ftell(fp);
+    status = (_ret == -1) ? errno : 0;
+    return _ret;
 }
 
 //  ------------------------------------------------------------------
 
 int gfile::Fseek(long __offset, int __direction)
 {
-  int _ret = ::fseek(fp, __offset, __direction);
-  status = _ret ? errno : 0;
-  return _ret;
+    int _ret = ::fseek(fp, __offset, __direction);
+    status = _ret ? errno : 0;
+    return _ret;
 }
 
 //  ------------------------------------------------------------------
 
 int gfile::SetvBuf(char* __buf, int __type, size_t __size)
 {
-  if( !(__buf && __size) )
-  {
-    status = EINVAL;
-    return -1;
-  }
-  int _ret = ::setvbuf(fp, __buf, __type, __size);
-  status = _ret ? errno : 0;
-  return _ret;
+    if( !(__buf && __size) )
+    {
+        status = EINVAL;
+        return -1;
+    }
+    int _ret = ::setvbuf(fp, __buf, __type, __size);
+    status = _ret ? errno : 0;
+    return _ret;
 }
 
 

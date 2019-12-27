@@ -195,40 +195,41 @@ const vattr REVERSE   = 112;
 //  ------------------------------------------------------------------
 
 #if defined(__MSDOS__)
-struct __int10_ah1b_statebuf {
-                        // Offset  Size    Description
-  dword statfunctable;  //  00h    DWORD   address of static funtionality table (see below)
-  byte  videomode;      //  04h    BYTE    video mode in effect
-  word  columns;        //  05h    WORD    number of columns
-  word  regenbuflen;    //  07h    WORD    length of regen buffer in bytes
-  word  regenbufstart;  //  09h    WORD    starting address of regen buffer
-  word  cursorpos0;     //  0Bh    WORD    cursor position for page 0
-  word  cursorpos1;     //  0Dh    WORD    cursor position for page 1
-  word  cursorpos2;     //  0Fh    WORD    cursor position for page 2
-  word  cursorpos3;     //  11h    WORD    cursor position for page 3
-  word  cursorpos4;     //  13h    WORD    cursor position for page 4
-  word  cursorpos5;     //  15h    WORD    cursor position for page 5
-  word  cursorpos6;     //  17h    WORD    cursor position for page 6
-  word  cursorpos7;     //  19h    WORD    cursor position for page 7
-  word  cursortype;     //  1Bh    WORD    cursor type
-  byte  activepage;     //  1Dh    BYTE    active display page
-  word  crctportaddr;   //  1Eh    WORD    CRTC port address
-  byte  curr_reg_3x8;   //  20h    BYTE    current setting of register (3?8)
-  byte  curr_reg_3x9;   //  21h    BYTE    current setting of register (3?9)
-  byte  rows;           //  22h    BYTE    number of rows
-  word  bytesperchar;   //  23h    WORD    bytes/character
-  byte  dispcombcode;   //  25h    BYTE    display combination code of active display
-  byte  dcc;            //  26h    BYTE    DCC of alternate display
-  word  numcolors;      //  27h    WORD    number of colors supported in current mode
-  byte  numpages;       //  29h    BYTE    number of pages supported in current mode
-  byte  numscanlines;   //  2Ah    BYTE    number of scan lines active (0,1,2,3) = (200,350,400,480) Tseng ET3000: (4,5,6 = 512,600,768)
-  byte  primcharblock;  //  2Bh    BYTE    primary character block
-  byte  seccharblock;   //  2Ch    BYTE    secondary character block
-  byte  miscflags;      //  2Dh    BYTE    miscellaneous flags (see below)
-  byte  reserved1[3];   //  2Eh  3 BYTEs   reserved (00h)
-  byte  videomem;       //  31h    BYTE    video memory available 00h = 64K, 01h = 128K, 02h = 192K, 03h = 256K
-  byte  stateflags;     //  32h    BYTE    save pointer state flags (see below)
-  byte  reserved2[13];  //  33h 13 BYTEs   reserved (00h)
+struct __int10_ah1b_statebuf
+{
+    // Offset  Size    Description
+    dword statfunctable;  //  00h    DWORD   address of static funtionality table (see below)
+    byte  videomode;      //  04h    BYTE    video mode in effect
+    word  columns;        //  05h    WORD    number of columns
+    word  regenbuflen;    //  07h    WORD    length of regen buffer in bytes
+    word  regenbufstart;  //  09h    WORD    starting address of regen buffer
+    word  cursorpos0;     //  0Bh    WORD    cursor position for page 0
+    word  cursorpos1;     //  0Dh    WORD    cursor position for page 1
+    word  cursorpos2;     //  0Fh    WORD    cursor position for page 2
+    word  cursorpos3;     //  11h    WORD    cursor position for page 3
+    word  cursorpos4;     //  13h    WORD    cursor position for page 4
+    word  cursorpos5;     //  15h    WORD    cursor position for page 5
+    word  cursorpos6;     //  17h    WORD    cursor position for page 6
+    word  cursorpos7;     //  19h    WORD    cursor position for page 7
+    word  cursortype;     //  1Bh    WORD    cursor type
+    byte  activepage;     //  1Dh    BYTE    active display page
+    word  crctportaddr;   //  1Eh    WORD    CRTC port address
+    byte  curr_reg_3x8;   //  20h    BYTE    current setting of register (3?8)
+    byte  curr_reg_3x9;   //  21h    BYTE    current setting of register (3?9)
+    byte  rows;           //  22h    BYTE    number of rows
+    word  bytesperchar;   //  23h    WORD    bytes/character
+    byte  dispcombcode;   //  25h    BYTE    display combination code of active display
+    byte  dcc;            //  26h    BYTE    DCC of alternate display
+    word  numcolors;      //  27h    WORD    number of colors supported in current mode
+    byte  numpages;       //  29h    BYTE    number of pages supported in current mode
+    byte  numscanlines;   //  2Ah    BYTE    number of scan lines active (0,1,2,3) = (200,350,400,480) Tseng ET3000: (4,5,6 = 512,600,768)
+    byte  primcharblock;  //  2Bh    BYTE    primary character block
+    byte  seccharblock;   //  2Ch    BYTE    secondary character block
+    byte  miscflags;      //  2Dh    BYTE    miscellaneous flags (see below)
+    byte  reserved1[3];   //  2Eh  3 BYTEs   reserved (00h)
+    byte  videomem;       //  31h    BYTE    video memory available 00h = 64K, 01h = 128K, 02h = 192K, 03h = 256K
+    byte  stateflags;     //  32h    BYTE    save pointer state flags (see below)
+    byte  reserved2[13];  //  33h 13 BYTEs   reserved (00h)
 };
 #endif
 
@@ -249,36 +250,37 @@ struct __int10_ah1b_statebuf {
 //  ------------------------------------------------------------------
 //  Video information structure
 
-struct GVidInfo {
+struct GVidInfo
+{
 
-  // Screen info
-  struct _screen
-  {
-    int  mode;          // Video mode
-    int  rows;          // Number of rows
-    int  columns;       // Number of columns
-    int  cheight;       // Character height
-    int  cwidth;        // Character width
-  } screen;
+    // Screen info
+    struct _screen
+    {
+        int  mode;          // Video mode
+        int  rows;          // Number of rows
+        int  columns;       // Number of columns
+        int  cheight;       // Character height
+        int  cwidth;        // Character width
+    } screen;
 
-  // Cursor info
-  struct _cursor
-  {
-    int  column;        // Cursor column
-    int  row;           // Cursor row
-    int  start;         // Cursor start line
-    int  end;           // Cursor end line
-    word attr;          // Cursor attribute. Hidden if attr == 0xFFFF
-  } cursor;
+    // Cursor info
+    struct _cursor
+    {
+        int  column;        // Cursor column
+        int  row;           // Cursor row
+        int  start;         // Cursor start line
+        int  end;           // Cursor end line
+        word attr;          // Cursor attribute. Hidden if attr == 0xFFFF
+    } cursor;
 
-  // Colors
-  struct _color
-  {
-    vattr textattr;     // Text attribute
-    vattr overscan;     // Overscan color
-    int   intensity;    // Background color state (intense or blinking)
-    int   palette[16];  // Palette state
-  } color;
+    // Colors
+    struct _color
+    {
+        vattr textattr;     // Text attribute
+        vattr overscan;     // Overscan color
+        int   intensity;    // Background color state (intense or blinking)
+        int   palette[16];  // Palette state
+    } color;
 };
 
 
@@ -293,66 +295,76 @@ typedef word*    gdma; // Video DMA pointer
 //  ------------------------------------------------------------------
 //  Video information record
 
-class GVid {
+class GVid
+{
 
 public:
 
-  int      adapter;    // Video adapter type
+    int      adapter;    // Video adapter type
 
-  GVidInfo orig;       // Original video info
-  GVidInfo curr;       // Current video info
+    GVidInfo orig;       // Original video info
+    GVidInfo curr;       // Current video info
 
-  int      device;     // Video device type
+    int      device;     // Video device type
 
-  gdma     dmadir;     // Video DMA pointer (direct)
-  gdma     dmaptr;     // Video DMA pointer (direct or buffered)
+    gdma     dmadir;     // Video DMA pointer (direct)
+    gdma     dmaptr;     // Video DMA pointer (direct or buffered)
 
-  vchar*   bufchr;     // Video line char buffer (char only)
-  vatch*   bufwrd;     // Video line word buffer (char+attr)
-  vchar*   bufansi;    // Video line ANSI buffer (11*numcols)
+    vchar*   bufchr;     // Video line char buffer (char only)
+    vatch*   bufwrd;     // Video line word buffer (char+attr)
+    vchar*   bufansi;    // Video line ANSI buffer (11*numcols)
 
-  int      currow;     // Current cursor row
-  int      curcol;     // Current cursor column
+    int      currow;     // Current cursor row
+    int      curcol;     // Current cursor column
 
-  size_t   numrows;    // number of displayed rows
-  size_t   numcols;    // number of displayed columns
+    size_t   numrows;    // number of displayed rows
+    size_t   numcols;    // number of displayed columns
 
-  word     videoseg;   // video buffer segment address
-
-public:
-
-  GVid();
-  ~GVid();
+    word     videoseg;   // video buffer segment address
 
 public:
 
-  void init();
+    GVid();
+    ~GVid();
 
-  int  detectadapter  ();
-  void detectinfo     (GVidInfo* _info);
-  static
-  void setcolorpairs  (bool enabletransparent=false);
+public:
 
-  void resetcurr      ();
+    void init();
 
-  void setdevice      (int _device);
+    int  detectadapter  ();
+    void detectinfo     (GVidInfo* _info);
+    static
+    void setcolorpairs  (bool enabletransparent=false);
 
-  void setmode        (int _mode);
-  void setrows        (int _rows);
+    void resetcurr      ();
 
-  void setoverscan    (vattr _overscan);
-  void setintensity   (int _intensity);
+    void setdevice      (int _device);
 
-  void getpalette     (int* _palette);
-  void setpalette     (int* _palette);
+    void setmode        (int _mode);
+    void setrows        (int _rows);
 
-  bool isdma()  { return device == GVID_DMA; }
-  bool iscga()  { return device == GVID_CGA; }
-  bool isbios() { return device == GVID_BIO; }
+    void setoverscan    (vattr _overscan);
+    void setintensity   (int _intensity);
 
-  void restore_cursor();
+    void getpalette     (int* _palette);
+    void setpalette     (int* _palette);
 
-  void resize_screen(int columns, int rows);
+    bool isdma()
+    {
+        return device == GVID_DMA;
+    }
+    bool iscga()
+    {
+        return device == GVID_CGA;
+    }
+    bool isbios()
+    {
+        return device == GVID_BIO;
+    }
+
+    void restore_cursor();
+
+    void resize_screen(int columns, int rows);
 
 };
 
@@ -382,7 +394,10 @@ int setvparam  (int setting);
 vattr mapattr  (vattr attr);
 vattr revsattr (vattr attr);
 
-inline vattr attrib(int f, int b, int i, int bl) { return (int)((b<<4)|(f)|(i<<3)|(bl<<7)); }
+inline vattr attrib(int f, int b, int i, int bl)
+{
+    return (int)((b<<4)|(f)|(i<<3)|(bl<<7));
+}
 
 void vputw      (int row, int col, vatch chat);
 void vputws     (int row, int col, vatch* buf, uint len);
@@ -405,9 +420,10 @@ void vposset    (int row, int col);
 void vclrscr    ();
 void vclrscr    (vattr atr);     // Overloaded
 
-typedef struct _vsavebuf {
-  int top, left, right, bottom;
-  __extension__ vatch data[0];
+typedef struct _vsavebuf
+{
+    int top, left, right, bottom;
+    __extension__ vatch data[0];
 } vsavebuf;
 vsavebuf* vsave (int srow=-1, int scol=-1, int erow=-1, int ecol=-1);
 void vrestore   (vsavebuf* buf, int srow=-1, int scol=-1, int erow=-1, int ecol=-1);
@@ -431,31 +447,86 @@ void vfill      (int srow, int scol, int erow, int ecol, vchar chr, vattr atr);
 int gvid_dosattrcalc (int ourattr);
 int gvid_attrcalc (int dosattr);
 
-inline vchar vgchar (vatch chat) { return chat & (A_CHARTEXT | A_ALTCHARSET); }
-inline vattr vgattr (vatch chat) { return gvid_dosattrcalc(chat & ~(A_CHARTEXT | A_ALTCHARSET)); }
-inline vatch vschar (vatch chat, vchar chr) { return (chr & (A_CHARTEXT | A_ALTCHARSET)) | (chat & ~(A_CHARTEXT | A_ALTCHARSET)); }
-inline vatch vsattr (vatch chat, vattr atr) { return (chat & (A_CHARTEXT | A_ALTCHARSET)) | gvid_attrcalc(atr); }
-inline vatch vcatch (vchar chr, vattr atr)  { return chr | gvid_attrcalc(atr); }
+inline vchar vgchar (vatch chat)
+{
+    return chat & (A_CHARTEXT | A_ALTCHARSET);
+}
+inline vattr vgattr (vatch chat)
+{
+    return gvid_dosattrcalc(chat & ~(A_CHARTEXT | A_ALTCHARSET));
+}
+inline vatch vschar (vatch chat, vchar chr)
+{
+    return (chr & (A_CHARTEXT | A_ALTCHARSET)) | (chat & ~(A_CHARTEXT | A_ALTCHARSET));
+}
+inline vatch vsattr (vatch chat, vattr atr)
+{
+    return (chat & (A_CHARTEXT | A_ALTCHARSET)) | gvid_attrcalc(atr);
+}
+inline vatch vcatch (vchar chr, vattr atr)
+{
+    return chr | gvid_attrcalc(atr);
+}
 
 #elif defined(__WIN32__)
 
-inline vchar vgchar (vatch chat) { return chat.Char.AsciiChar; }
-inline vattr vgattr (vatch chat) { return chat.Attributes; }
-inline vatch vschar (vatch chat, vchar chr) { chat.Char.UnicodeChar = 0; chat.Char.AsciiChar = chr; return chat; }
-inline vatch vsattr (vatch chat, vattr atr) { chat.Attributes = WORD(atr); return chat; }
-inline vatch vcatch (vchar chr, vattr atr)  { vatch chat; chat.Char.UnicodeChar = 0; chat.Char.AsciiChar = chr; chat.Attributes = WORD(atr); return chat; }
+inline vchar vgchar (vatch chat)
+{
+    return chat.Char.AsciiChar;
+}
+inline vattr vgattr (vatch chat)
+{
+    return chat.Attributes;
+}
+inline vatch vschar (vatch chat, vchar chr)
+{
+    chat.Char.UnicodeChar = 0;
+    chat.Char.AsciiChar = chr;
+    return chat;
+}
+inline vatch vsattr (vatch chat, vattr atr)
+{
+    chat.Attributes = WORD(atr);
+    return chat;
+}
+inline vatch vcatch (vchar chr, vattr atr)
+{
+    vatch chat;
+    chat.Char.UnicodeChar = 0;
+    chat.Char.AsciiChar = chr;
+    chat.Attributes = WORD(atr);
+    return chat;
+}
 
 #else
 
-inline vchar vgchar (vatch chat) { return chat & 0xff; }
-inline vattr vgattr (vatch chat) { return (chat >> 8) & 0xff; }
-inline vatch vschar (vatch chat, vchar chr) { return (chat & 0xff00) | chr; }
-inline vatch vsattr (vatch chat, vattr atr) { return (chat & 0xff) | (atr << 8); }
-inline vatch vcatch (vchar chr, vattr atr)  { return (chr & 0xff) | ((atr << 8) & 0xff00); }
+inline vchar vgchar (vatch chat)
+{
+    return chat & 0xff;
+}
+inline vattr vgattr (vatch chat)
+{
+    return (chat >> 8) & 0xff;
+}
+inline vatch vschar (vatch chat, vchar chr)
+{
+    return (chat & 0xff00) | chr;
+}
+inline vatch vsattr (vatch chat, vattr atr)
+{
+    return (chat & 0xff) | (atr << 8);
+}
+inline vatch vcatch (vchar chr, vattr atr)
+{
+    return (chr & 0xff) | ((atr << 8) & 0xff00);
+}
 
 #endif
 
-inline vchar vgetc (int row, int col) { return vgchar(vgetw(row, col)); }
+inline vchar vgetc (int row, int col)
+{
+    return vgchar(vgetw(row, col));
+}
 
 typedef void (*VidPutStrCP)(int,int,int,const char*);
 

@@ -41,9 +41,18 @@
 
 uint32_t atoulx(const char* s);
 
-inline word atow(const char* p) { return (word)atoi(p); }
-inline int xtoi(char c)  { return isdigit(c) ? (c - '0') : (g_toupper(c) - ('A' - 10)); }
-inline int atox(const char* s) { return (int)atoulx(s); }
+inline word atow(const char* p)
+{
+    return (word)atoi(p);
+}
+inline int xtoi(char c)
+{
+    return isdigit(c) ? (c - '0') : (g_toupper(c) - ('A' - 10));
+}
+inline int atox(const char* s)
+{
+    return (int)atoulx(s);
+}
 
 char* ltob(char* dst, uint32_t value, int fill=32);
 
@@ -57,7 +66,10 @@ char* ggetosstring();
 dword B2L(dword b);
 dword L2B(dword l);
 
-inline void SwapWord32(uint32_t* dw) { *dw = ((*dw) << 16) | ((*dw) >> 16); }
+inline void SwapWord32(uint32_t* dw)
+{
+    *dw = ((*dw) << 16) | ((*dw) >> 16);
+}
 
 
 //  ------------------------------------------------------------------

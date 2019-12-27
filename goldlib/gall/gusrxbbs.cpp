@@ -31,28 +31,32 @@
 
 //  ------------------------------------------------------------------
 
-XbbsUser::XbbsUser() {
-  
-  recsize = sizeof(XbbsUsers);
-  record = new XbbsUsers;  throw_new(record);
-  recptr = (char*)record;
-  name = record->name;
+XbbsUser::XbbsUser()
+{
+
+    recsize = sizeof(XbbsUsers);
+    record = new XbbsUsers;
+    throw_new(record);
+    recptr = (char*)record;
+    name = record->name;
 }
 
 
 //  ------------------------------------------------------------------
 
-XbbsUser::~XbbsUser() {
-  
-  throw_delete(record);
+XbbsUser::~XbbsUser()
+{
+
+    throw_delete(record);
 }
 
 
 //  ------------------------------------------------------------------
 
-int XbbsUser::isvalid() {
+int XbbsUser::isvalid()
+{
 
-  return not (record->attribs & U_DELETED);
+    return not (record->attribs & U_DELETED);
 }
 
 
@@ -60,27 +64,29 @@ int XbbsUser::isvalid() {
 
 int XbbsUser::read()
 {
-  if (gufh != -1)
-  {
-    ::read(gufh, record, sizeof(XbbsUsers));
-    return isvalid();
-  }
+    if (gufh != -1)
+    {
+        ::read(gufh, record, sizeof(XbbsUsers));
+        return isvalid();
+    }
 
-  return false;
+    return false;
 }
 
 
 //  ------------------------------------------------------------------
 
-void XbbsUser::recinit(const char* __name) {
+void XbbsUser::recinit(const char* __name)
+{
 
-  GUser::recinit(__name);
+    GUser::recinit(__name);
 }
 
 
 //  ------------------------------------------------------------------
 
-void XbbsUser::add(const char*) {
+void XbbsUser::add(const char*)
+{
 
 }
 

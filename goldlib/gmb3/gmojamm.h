@@ -144,89 +144,95 @@
 //  ------------------------------------------------------------------
 //  .JHR file header
 
-struct JamHdrInfo {
+struct JamHdrInfo
+{
 
-  char    signature[4];     // <J><A><M> followed by <NUL>
-  time32_t  datecreated;      // Creation date
-  uint32_t   modcounter;       // Update counter
-  uint32_t   activemsgs;       // Number of active (not deleted) msgs
-  uint32_t   passwordcrc;      // CRC-32 of password to access
-  uint32_t   basemsgnum;       // Lowest message number in index file
-  uint32_t   highwatermark;    // Number of the last msg scanned
-  byte    reserved[996];    // Reserved space
+    char    signature[4];     // <J><A><M> followed by <NUL>
+    time32_t  datecreated;      // Creation date
+    uint32_t   modcounter;       // Update counter
+    uint32_t   activemsgs;       // Number of active (not deleted) msgs
+    uint32_t   passwordcrc;      // CRC-32 of password to access
+    uint32_t   basemsgnum;       // Lowest message number in index file
+    uint32_t   highwatermark;    // Number of the last msg scanned
+    byte    reserved[996];    // Reserved space
 };
 
 
 //  ------------------------------------------------------------------
 //  .JHR message headers
 
-struct JamHdr {
+struct JamHdr
+{
 
-  char    signature[4];   // <J><A><M> followed by <NUL>
-  word    revision;       // Revision level of header
-  word    reservedword;   // Reserved for future use
-  uint32_t   subfieldlen;    // Length of subfields
-  uint32_t   timesread;      // Number of times message read
-  uint32_t   msgidcrc;       // CRC-32 of MSGID line
-  uint32_t   replycrc;       // CRC-32 of REPLY line
-  uint32_t   replyto;        // This msg is a reply to..
-  uint32_t   reply1st;       // First reply to this msg
-  uint32_t   replynext;      // Next msg in reply chain
-  time32_t  datewritten;    // When msg was written
-  time32_t  datereceived;   // When msg was read by recipient
-  time32_t  dateprocessed;  // When msg was processed by tosser/scanner
-  uint32_t   messagenumber;  // Message number (1-based)
-  uint32_t   attribute;      // Msg attribute, see "Msg Attributes"
-  uint32_t   attribute2;     // Reserved for future use
-  uint32_t   offset;         // Offset of text in ????????.JDT file
-  uint32_t   txtlen;         // Length of message text
-  uint32_t   passwordcrc;    // CRC-32 of password to access message
-  uint32_t   cost;           // Cost of message
+    char    signature[4];   // <J><A><M> followed by <NUL>
+    word    revision;       // Revision level of header
+    word    reservedword;   // Reserved for future use
+    uint32_t   subfieldlen;    // Length of subfields
+    uint32_t   timesread;      // Number of times message read
+    uint32_t   msgidcrc;       // CRC-32 of MSGID line
+    uint32_t   replycrc;       // CRC-32 of REPLY line
+    uint32_t   replyto;        // This msg is a reply to..
+    uint32_t   reply1st;       // First reply to this msg
+    uint32_t   replynext;      // Next msg in reply chain
+    time32_t  datewritten;    // When msg was written
+    time32_t  datereceived;   // When msg was read by recipient
+    time32_t  dateprocessed;  // When msg was processed by tosser/scanner
+    uint32_t   messagenumber;  // Message number (1-based)
+    uint32_t   attribute;      // Msg attribute, see "Msg Attributes"
+    uint32_t   attribute2;     // Reserved for future use
+    uint32_t   offset;         // Offset of text in ????????.JDT file
+    uint32_t   txtlen;         // Length of message text
+    uint32_t   passwordcrc;    // CRC-32 of password to access message
+    uint32_t   cost;           // Cost of message
 };
 
 
 //  ------------------------------------------------------------------
 //  .JHR subfield headers
 
-struct JamSubFieldHdr {
+struct JamSubFieldHdr
+{
 
-  word  loid;       // Field ID, 0-65535
-  word  hiid;       // Reserved for future use
-  uint32_t datlen;     // Length of buffer that follows
+    word  loid;       // Field ID, 0-65535
+    word  hiid;       // Reserved for future use
+    uint32_t datlen;     // Length of buffer that follows
 };
 
 
 //  ------------------------------------------------------------------
 //  .JHR subfields
 
-struct JamSubField {
+struct JamSubField
+{
 
-  word  loid;         // Field ID, 0-65535
-  word  hiid;         // Reserved for future use
-  uint32_t datlen;       // Length of buffer that follows
-  char  buffer[101];  // DATLEN bytes of data
+    word  loid;         // Field ID, 0-65535
+    word  hiid;         // Reserved for future use
+    uint32_t datlen;       // Length of buffer that follows
+    char  buffer[101];  // DATLEN bytes of data
 };
 
 
 //  ------------------------------------------------------------------
 //  .JDX message index
 
-struct JamIndex {
+struct JamIndex
+{
 
-  dword  usercrc;    // CRC-32 of destination username
-  uint32_t  hdroffset;  // Offset of header in .JHR file
+    dword  usercrc;    // CRC-32 of destination username
+    uint32_t  hdroffset;  // Offset of header in .JHR file
 };
 
 
 //  ------------------------------------------------------------------
 //  .JLR lastread records
 
-struct JamLast {
+struct JamLast
+{
 
-  dword  usercrc;    // CRC-32 of user name (lowercase)
-  dword  userid;     // Unique UserID
-  dword  lastread;   // Last read message number
-  dword  highread;   // Highest read message number
+    dword  usercrc;    // CRC-32 of user name (lowercase)
+    dword  userid;     // Unique UserID
+    dword  lastread;   // Last read message number
+    dword  highread;   // Highest read message number
 };
 
 
@@ -239,102 +245,113 @@ struct JamLast {
 
 //  ------------------------------------------------------------------
 
-struct JamData {
-  int fhjhr;
-  int fhjdt;
-  int fhjdx;
-  int fhjlr;
-  int fhjhw;             // highwater if available
-  int islocked;          // Area is locked?
-  int timesposted;
-  int32_t lastpos;          // Lastread position
-  int32_t highwater;
-  JamLast lastrec;       // .JLR Lastread record
-  JamHdrInfo hdrinfo;    // .JHR Header info record
+struct JamData
+{
+    int fhjhr;
+    int fhjdt;
+    int fhjdx;
+    int fhjlr;
+    int fhjhw;             // highwater if available
+    int islocked;          // Area is locked?
+    int timesposted;
+    int32_t lastpos;          // Lastread position
+    int32_t highwater;
+    JamLast lastrec;       // .JLR Lastread record
+    JamHdrInfo hdrinfo;    // .JHR Header info record
 };
 
-  
+
 //  ------------------------------------------------------------------
 
-struct JamWide {
-  dword usercrc;
-  dword userid;
-  int lookreplies;
-  const char* jampath;
-  int harddelete;
-  int smapihw;
+struct JamWide
+{
+    dword usercrc;
+    dword userid;
+    int lookreplies;
+    const char* jampath;
+    int harddelete;
+    int smapihw;
 };
 
-  
+
 //  ------------------------------------------------------------------
 
-class JamArea : public gmo_area {
+class JamArea : public gmo_area
+{
 
 protected:
 
-  JamData* data;
-  JamWide* wide;
+    JamData* data;
+    JamWide* wide;
 
-  int just_scanning;
+    int just_scanning;
 
-  void data_open();
-  void data_close();
+    void data_open();
+    void data_close();
 
-  void open_area();
+    void open_area();
 
-  void raw_open();
-  void raw_close();
+    void raw_open();
+    void raw_close();
 
-  void save_lastread();
+    void save_lastread();
 
-  int test_open(const char* file);
+    int test_open(const char* file);
 
-  void raw_scan(int __keep_index, int __scanpm=false);
+    void raw_scan(int __keep_index, int __scanpm=false);
 
-  int load_message(int __mode, gmsg* __msg, JamHdr& __hdr);
+    int load_message(int __mode, gmsg* __msg, JamHdr& __hdr);
 
-  void add_subfield(JamHdr& __hdr, byte*& __subfield, word __loid, word __hiid, char* __data, uint32_t maxlen);
+    void add_subfield(JamHdr& __hdr, byte*& __subfield, word __loid, word __hiid, char* __data, uint32_t maxlen);
 
-  void save_message(int __mode, gmsg* __msg, JamHdr& __hdr);
+    void save_message(int __mode, gmsg* __msg, JamHdr& __hdr);
 
 public:
 
-  JamArea() { wide = NULL; data = NULL; just_scanning = false; }
-  virtual ~JamArea() {}
+    JamArea()
+    {
+        wide = NULL;
+        data = NULL;
+        just_scanning = false;
+    }
+    virtual ~JamArea() {}
 
-  virtual bool issoftdelete() const { return (wide != NULL) ? not wide->harddelete : true; }
+    virtual bool issoftdelete() const
+    {
+        return (wide != NULL) ? not wide->harddelete : true;
+    }
 
-  //  ----------------------------------------------------------------
-  //  Messagebase member functions
-  
-  void open();
-  void close();
+    //  ----------------------------------------------------------------
+    //  Messagebase member functions
 
-  void suspend();
-  void resume();
+    void open();
+    void close();
 
-  void lock();
-  void unlock();
+    void suspend();
+    void resume();
 
-  void scan();
-  void scan_area();
-  void scan_area_pm();
+    void lock();
+    void unlock();
 
-  int load_hdr(gmsg* msg);
-  int load_msg(gmsg* msg);
+    void scan();
+    void scan_area();
+    void scan_area_pm();
 
-  void save_hdr(int mode, gmsg* msg);
-  void save_msg(int mode, gmsg* msg);
+    int load_hdr(gmsg* msg);
+    int load_msg(gmsg* msg);
 
-  void del_msg(gmsg* msg);
+    void save_hdr(int mode, gmsg* msg);
+    void save_msg(int mode, gmsg* msg);
 
-  void new_msgno(gmsg* msg);
-  char* user_lookup(char* lookfor);
-  int renumber();
+    void del_msg(gmsg* msg);
 
-  void update_timesread(gmsg* msg);
+    void new_msgno(gmsg* msg);
+    char* user_lookup(char* lookfor);
+    int renumber();
 
-  Line* make_dump_msg(Line*& lin, gmsg* msg, char* lng_head);
+    void update_timesread(gmsg* msg);
+
+    Line* make_dump_msg(Line*& lin, gmsg* msg, char* lng_head);
 };
 
 

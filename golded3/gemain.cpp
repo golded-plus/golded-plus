@@ -47,12 +47,13 @@ static struct LeakFinder
 //  ------------------------------------------------------------------
 //  Main function
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
 
-  Initialize(argc, argv);
-  Reader();
-  Uninitialize();
-  return errorlevel;
+    Initialize(argc, argv);
+    Reader();
+    Uninitialize();
+    return errorlevel;
 }
 
 

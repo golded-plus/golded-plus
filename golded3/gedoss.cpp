@@ -49,588 +49,659 @@ extern GMsg* reader_msg;
 //  ------------------------------------------------------------------
 //  Clean up the screen, memory and files before exiting to DOS
 
-void Cleanup(void) {
+void Cleanup(void)
+{
 
-  if(CFG) {
+    if(CFG)
+    {
 
-    if(CFG->switches.get(areakeeplast) and startupscan_success)
-      AL.WriteGoldLast();
+        if(CFG->switches.get(areakeeplast) and startupscan_success)
+            AL.WriteGoldLast();
 
-    // Free msg data
-    if (reader_msg != NULL) {
-      ResetMsg(reader_msg);
-      throw_release(reader_msg);
+        // Free msg data
+        if (reader_msg != NULL)
+        {
+            ResetMsg(reader_msg);
+            throw_release(reader_msg);
+        }
+        // Free area data
+        AL.Reset();
+
+#ifndef GMB_NOXBBS
+        if(find(AL.basetypes, "ADEPTXBBS"))
+            XbbsExit();
+#endif
+#ifndef GMB_NOEZY
+        if(find(AL.basetypes, "EZYCOM"))
+            EzycomExit();
+#endif
+        if(find(AL.basetypes, "OPUS") or find(AL.basetypes, "FTS1"))
+            FidoExit();
+#ifndef GMB_NOGOLD
+        if(find(AL.basetypes, "GOLDBASE"))
+            GoldExit();
+#endif
+#ifndef GMB_NOHUDS
+        if(find(AL.basetypes, "HUDSON"))
+            HudsExit();
+#endif
+#ifndef GMB_NOJAM
+        if(find(AL.basetypes, "JAM"))
+            JamExit();
+#endif
+#ifndef GMB_NOPCB
+        if(find(AL.basetypes, "PCBOARD"))
+            PcbExit();
+#endif
+#ifndef GMB_NOSQSH
+        if(find(AL.basetypes, "SQUISH"))
+            SquishExit();
+#endif
+#ifndef GMB_NOWCAT
+        if(find(AL.basetypes, "WILDCAT"))
+            WCatExit();
+#endif
+#ifndef GMB_NOSMB
+        if(find(AL.basetypes, "SMB"))
+            SMBExit();
+#endif
+
+        SearchExit();
+
+        // Free various lists
+        CFG->addressmacro.clear();
+        CFG->aka.clear();
+        CFG->akamatch.clear();
+        CFG->colorname.clear();
+        CFG->event.clear();
+        CFG->externutil.clear();
+        CFG->filealias.clear();
+        CFG->frqext.clear();
+        CFG->frqnodemap.clear();
+        CFG->kludge.clear();
+        CFG->mailinglist.clear();
+        CFG->mappath.clear();
+        CFG->origin.clear();
+        CFG->robotname.clear();
+        CFG->tagline.clear();
+        CFG->tpl.clear();
+        CFG->twitname.clear();
+        CFG->twitsubj.clear();
+        CFG->username.clear();
+        CFG->xlatcharset.clear();
+        CFG->xlatescset.clear();
+        CFG->xlatcharsetalias.clear();
+        CFG->cmdkey.clear();
+        CFG->macro.clear();
+        CFG->unpacker.clear();
+
+        // Free misc data
+        throw_xrelease(CharTable);
+        throw_xrelease(CompTable);
+        throw_xrelease(MNETable);
+        throw_xrelease(I51Table);
+
+        throw_delete(QWK);
+
+        if(errorlevel != EXIT_CFGERR)
+        {
+            if(netpost)
+                TouchFile(AddPath(CFG->areapath, CFG->semaphore.netscan));
+            if(echopost)
+                TouchFile(AddPath(CFG->areapath, CFG->semaphore.echoscan));
+        }
+
+        // Reset border color
+        if (C_BACKB != (BLACK_|_BLACK))
+            gvid->setoverscan(gvid->orig.color.overscan);
+
+        wcloseall();                      // Close all windows
+        if(in_arealist)
+        {
+            PickArealist->close_all();      // Unlink hidden area windows
+            throw_release(areanumbers);
+        }
+        whelpundef();                     // Disengage the help system
+        kbclear();                        // Clear CXL keyboard buffer
+        freonkey();                       // Free all onkeys (macros)
+        FreePastebuf();                   // Free the internal editor cut'n'paste buffer
+
+#if !defined(__UNIX__) && !defined(__USE_NCURSES__)
+        if(CFG->screenpalette[16])
+            gvid->setpalette(gvid->orig.color.palette);
+
+        if(gvid->curr.screen.mode != gvid->orig.screen.mode)
+            gvid->setmode(gvid->orig.screen.mode);
+        if(gvid->curr.screen.rows != gvid->orig.screen.rows)
+            gvid->setrows(gvid->orig.screen.rows);
+
+        if(oldscreen)
+        {
+            vrestore(oldscreen);
+            throw_xrelease(oldscreen);
+        }
+        if(CFG->intensecolors)
+            gvid->setintensity(gvid->orig.color.intensity);
+        vcurset(gvid->orig.cursor.start, gvid->orig.cursor.end);
+#endif
+
+#ifndef __WIN32__
+        vposset(gvid->orig.cursor.row, 0);
+        vputx(gvid->orig.cursor.row, 0, gvid->orig.color.textattr, ' ', gvid->orig.screen.columns);
+#endif
+
+        vposset(gvid->orig.cursor.row-1, 0);
+        vcurshow();
     }
-    // Free area data
-    AL.Reset();
+    throw_xdelete(BodyView);
+    throw_xdelete(HeaderView);
+    throw_xdelete(gvid);
 
-    #ifndef GMB_NOXBBS
-    if(find(AL.basetypes, "ADEPTXBBS"))
-      XbbsExit();
-    #endif
-    #ifndef GMB_NOEZY
-    if(find(AL.basetypes, "EZYCOM"))
-      EzycomExit();
-    #endif
-    if(find(AL.basetypes, "OPUS") or find(AL.basetypes, "FTS1"))
-      FidoExit();
-    #ifndef GMB_NOGOLD
-    if(find(AL.basetypes, "GOLDBASE"))
-      GoldExit();
-    #endif
-    #ifndef GMB_NOHUDS
-    if(find(AL.basetypes, "HUDSON"))
-      HudsExit();
-    #endif
-    #ifndef GMB_NOJAM
-    if(find(AL.basetypes, "JAM"))
-      JamExit();
-    #endif
-    #ifndef GMB_NOPCB
-    if(find(AL.basetypes, "PCBOARD"))
-      PcbExit();
-    #endif
-    #ifndef GMB_NOSQSH
-    if(find(AL.basetypes, "SQUISH"))
-      SquishExit();
-    #endif
-    #ifndef GMB_NOWCAT
-    if(find(AL.basetypes, "WILDCAT"))
-      WCatExit();
-    #endif
-    #ifndef GMB_NOSMB
-    if(find(AL.basetypes, "SMB"))
-      SMBExit();
-    #endif
+    int smax = MinV((int)GLOG_STORELINES, LOG.storelines);
+    for (int s=0; s<smax; s++)
+        STD_PRINTNL(LOG.storeline[s]);
 
-    SearchExit();
+    if (CFG)
+    {
+        if (LOG.storelines > GLOG_STORELINES)
+            STD_PRINTNL("(See also " << CFG->logfile << ")");
 
-    // Free various lists
-    CFG->addressmacro.clear();
-    CFG->aka.clear();
-    CFG->akamatch.clear();
-    CFG->colorname.clear();
-    CFG->event.clear();
-    CFG->externutil.clear();
-    CFG->filealias.clear();
-    CFG->frqext.clear();
-    CFG->frqnodemap.clear();
-    CFG->kludge.clear();
-    CFG->mailinglist.clear();
-    CFG->mappath.clear();
-    CFG->origin.clear();
-    CFG->robotname.clear();
-    CFG->tagline.clear();
-    CFG->tpl.clear();
-    CFG->twitname.clear();
-    CFG->twitsubj.clear();
-    CFG->username.clear();
-    CFG->xlatcharset.clear();
-    CFG->xlatescset.clear();
-    CFG->xlatcharsetalias.clear();
-    CFG->cmdkey.clear();
-    CFG->macro.clear();
-    CFG->unpacker.clear();
+        if (errorlevel > EXIT_NONAME)
+            MakeNoise(SND_S_O_S);
 
-    // Free misc data
-    throw_xrelease(CharTable);
-    throw_xrelease(CompTable);
-    throw_xrelease(MNETable);
-    throw_xrelease(I51Table);
-
-    throw_delete(QWK);
-
-    if(errorlevel != EXIT_CFGERR) {
-      if(netpost)
-        TouchFile(AddPath(CFG->areapath, CFG->semaphore.netscan));
-      if(echopost)
-        TouchFile(AddPath(CFG->areapath, CFG->semaphore.echoscan));
+        CfgReset();
     }
 
-    // Reset border color
-    if (C_BACKB != (BLACK_|_BLACK))
-      gvid->setoverscan(gvid->orig.color.overscan);
+#if defined(GUTLOS_FUNCS)
+    g_deinit_os();
+#endif
 
-    wcloseall();                      // Close all windows
-    if(in_arealist) {
-      PickArealist->close_all();      // Unlink hidden area windows
-      throw_release(areanumbers);
-    }
-    whelpundef();                     // Disengage the help system
-    kbclear();                        // Clear CXL keyboard buffer
-    freonkey();                       // Free all onkeys (macros)
-    FreePastebuf();                   // Free the internal editor cut'n'paste buffer
-
-    #if !defined(__UNIX__) && !defined(__USE_NCURSES__)
-    if(CFG->screenpalette[16])
-      gvid->setpalette(gvid->orig.color.palette);
-
-    if(gvid->curr.screen.mode != gvid->orig.screen.mode)
-      gvid->setmode(gvid->orig.screen.mode);
-    if(gvid->curr.screen.rows != gvid->orig.screen.rows)
-      gvid->setrows(gvid->orig.screen.rows);
-
-    if(oldscreen) {
-      vrestore(oldscreen);
-      throw_xrelease(oldscreen);
-    }
-    if(CFG->intensecolors)
-      gvid->setintensity(gvid->orig.color.intensity);
-    vcurset(gvid->orig.cursor.start, gvid->orig.cursor.end);
-    #endif
-
-    #ifndef __WIN32__
-    vposset(gvid->orig.cursor.row, 0);
-    vputx(gvid->orig.cursor.row, 0, gvid->orig.color.textattr, ' ', gvid->orig.screen.columns);
-    #endif
-
-    vposset(gvid->orig.cursor.row-1, 0);
-    vcurshow();
-  }
-  throw_xdelete(BodyView);
-  throw_xdelete(HeaderView);
-  throw_xdelete(gvid);
-
-  int smax = MinV((int)GLOG_STORELINES, LOG.storelines);
-  for (int s=0; s<smax; s++)
-    STD_PRINTNL(LOG.storeline[s]);
-
-  if (CFG)
-  {
-    if (LOG.storelines > GLOG_STORELINES)
-      STD_PRINTNL("(See also " << CFG->logfile << ")");
-
-    if (errorlevel > EXIT_NONAME)
-      MakeNoise(SND_S_O_S);
-
-    CfgReset();
-  }
-
-  #if defined(GUTLOS_FUNCS)
-  g_deinit_os();
-  #endif
-
-  // Back to default Ctrl-Break handler
-  signal(SIGINT, SIG_DFL);
+    // Back to default Ctrl-Break handler
+    signal(SIGINT, SIG_DFL);
 } // Cleanup()
 
 
 //  ------------------------------------------------------------------
 //  Multipurpose DOS shell function
 
-int ShellToDos(const char* command, char* message, vattr cls, int cursor, int pause) {
+int ShellToDos(const char* command, char* message, vattr cls, int cursor, int pause)
+{
 
-  if ( !(command && message) ) {
-    LOG.errpointer(__FILE__,__LINE__-3);
-    LOG.printf("! Parameter is NULL pointer: ShellToDos(\"%s\",\"%s\").",
-               command?command:"(NULL)", message?message:"(NULL)");
-    update_statusline(" ERROR! See log. ");
-    return 0;
-  }
-
-  if ( !(*command) ) {
-    LOG.errtest(__FILE__,__LINE__-8);
-    LOG.printf("! ShellToDos(): command is empty, message is: \"%s\"", message);
-    update_statusline("ERROR: Command is empty, can't run!");
-    return 0;
-  }
-
-  int error = 0;
-
-  #if defined(GUTLOS_FUNCS)
-  char ge_temptitle[GMAXTITLE+1];
-  #endif
-
-  #ifndef __UNIX__
-  #ifdef __WIN32__
-  if(WinVer.dwPlatformId != VER_PLATFORM_WIN32_NT)
-  #endif
-  if(strlen(command) > 125) {
-    w_info(" Warning: Command line longer than 125 characters! ");
-    waitkeyt(10000);
-    w_info(NULL);
-  }
-  #endif
-
-  // Put up a wait window
-  if(shellvid)
-    w_info(LNG->Wait);
-
-  #if defined(GUTLOS_FUNCS)
-  g_get_ostitle_name(ge_temptitle);
-  g_set_ostitle_name("OS Shell",0);
-  #endif
-
-  // Close msgbase files
-  int _wasopen = AA->isopen();
-  if(_wasopen)
-    AA->Suspend();
-
-  HandleGEvent(EVTT_DOSSHELL);
-
-  // Change the prompt
-  #ifndef __UNIX__
-  static char prompt[256];
-  static char oldprompt[256];
-
-  if(CFG->switches.get(dosprompt)) {
-    #ifdef __DJGPP__
-    const char* p = getenv("PROMPT");
-    if(p) {
-      strcpy(oldprompt, p);
-      strcpy(stpcpy(prompt, LNG->Prompt), p);
-      setenv("PROMPT", prompt, true);
-    }
-    #else
-    int envn = 0;
-    while (environ[envn] and *environ[envn])
+    if ( !(command && message) )
     {
-      if (strnieql(environ[envn], "PROMPT=", 7))
-      {
-        strcpy(oldprompt, environ[envn]);
-        gsprintf(PRINTF_DECLARE_BUFFER(prompt), "PROMPT=%s%s", LNG->Prompt, *oldprompt ? oldprompt+7 : "");
-        environ[envn] = prompt;
-        break;
-      }
-      envn++;
+        LOG.errpointer(__FILE__,__LINE__-3);
+        LOG.printf("! Parameter is NULL pointer: ShellToDos(\"%s\",\"%s\").",
+                   command?command:"(NULL)", message?message:"(NULL)");
+        update_statusline(" ERROR! See log. ");
+        return 0;
     }
-    #endif
-  }
-  #endif
 
-  // Store the screen
-  vsavebuf* scrnbuf = vsave();
+    if ( !(*command) )
+    {
+        LOG.errtest(__FILE__,__LINE__-8);
+        LOG.printf("! ShellToDos(): command is empty, message is: \"%s\"", message);
+        update_statusline("ERROR: Command is empty, can't run!");
+        return 0;
+    }
 
-  // Store current drive/dir
-  Path orgdir;
-  getcwd(orgdir, sizeof(Path));
+    int error = 0;
 
-  // Set cursor position
-  if(gvid->curr.screen.rows != gvid->orig.screen.rows)
-    gvid->setrows(gvid->orig.screen.rows);
-  if(gvid->curr.screen.mode != gvid->orig.screen.mode)
-    gvid->setmode(gvid->orig.screen.mode);
+#if defined(GUTLOS_FUNCS)
+    char ge_temptitle[GMAXTITLE+1];
+#endif
 
-  // Clear screen
-  if (cls != (BLACK_|_BLACK))
-    vclrscr(cls);
+#ifndef __UNIX__
+#ifdef __WIN32__
+    if(WinVer.dwPlatformId != VER_PLATFORM_WIN32_NT)
+#endif
+        if(strlen(command) > 125)
+        {
+            w_info(" Warning: Command line longer than 125 characters! ");
+            waitkeyt(10000);
+            w_info(NULL);
+        }
+#endif
 
-  // Reset border color
-  if (C_BACKB != (BLACK_|_BLACK))
-    gvid->setoverscan(gvid->orig.color.overscan);
+    // Put up a wait window
+    if(shellvid)
+        w_info(LNG->Wait);
 
-  // Turn on the blinking attributes
-  gvid->setintensity(gvid->orig.color.intensity);
+#if defined(GUTLOS_FUNCS)
+    g_get_ostitle_name(ge_temptitle);
+    g_set_ostitle_name("OS Shell",0);
+#endif
 
-  // Restore original palette during the shell
-  if(CFG->screenpalette[16])
-    gvid->setpalette(gvid->orig.color.palette);
+    // Close msgbase files
+    int _wasopen = AA->isopen();
+    if(_wasopen)
+        AA->Suspend();
 
-  #if defined(__USE_NCURSES__)
-  def_prog_mode();
-  reset_shell_mode();
-  #elif defined(__UNIX__)
-  gkbd_tty_reset();
-  #endif
+    HandleGEvent(EVTT_DOSSHELL);
 
-  // Return cursor into 1st column
-  if (cls != (BLACK_|_BLACK)) puts("");
-  // Write message on screen
-  if(*message) puts(message);
+    // Change the prompt
+#ifndef __UNIX__
+    static char prompt[256];
+    static char oldprompt[256];
 
-  // Turn on cursor
-  int yy, xx;
-  if(cursor) {
-    vposget(&yy, &xx);
-    vcurset(gvid->orig.cursor.start, gvid->orig.cursor.end);
-    vcurshow();
-  }
+    if(CFG->switches.get(dosprompt))
+    {
+#ifdef __DJGPP__
+        const char* p = getenv("PROMPT");
+        if(p)
+        {
+            strcpy(oldprompt, p);
+            strcpy(stpcpy(prompt, LNG->Prompt), p);
+            setenv("PROMPT", prompt, true);
+        }
+#else
+        int envn = 0;
+        while (environ[envn] and *environ[envn])
+        {
+            if (strnieql(environ[envn], "PROMPT=", 7))
+            {
+                strcpy(oldprompt, environ[envn]);
+                gsprintf(PRINTF_DECLARE_BUFFER(prompt), "PROMPT=%s%s", LNG->Prompt, *oldprompt ? oldprompt+7 : "");
+                environ[envn] = prompt;
+                break;
+            }
+            envn++;
+        }
+#endif
+    }
+#endif
 
-  HandleGEvent(EVTT_BREAKLOOP);
+    // Store the screen
+    vsavebuf* scrnbuf = vsave();
 
-  // Shell return value
-  int status = -1;
+    // Store current drive/dir
+    Path orgdir;
+    getcwd(orgdir, sizeof(Path));
 
-  // Shell using the regular RTL function
-  #ifndef __CYGWIN__
-  status = system(command);
-  #else
-  // Get executable and parameters
-  char* _arg_v[3];
+    // Set cursor position
+    if(gvid->curr.screen.rows != gvid->orig.screen.rows)
+        gvid->setrows(gvid->orig.screen.rows);
+    if(gvid->curr.screen.mode != gvid->orig.screen.mode)
+        gvid->setmode(gvid->orig.screen.mode);
 
-  char* _pars = "";
-  char _xfn[256] = ""; // Call command interpreter
-  if(strnieql(command, "/c", 2))
-    _pars = strskip_wht(command+2);
-  else {
-    _pars = strpbrk(command, " \t");
-    if(_pars) {
-      ++_pars++;
-      strxcpy(_xfn, command, _pars-command);
-      _pars = strskip_wht(_pars);
+    // Clear screen
+    if (cls != (BLACK_|_BLACK))
+        vclrscr(cls);
+
+    // Reset border color
+    if (C_BACKB != (BLACK_|_BLACK))
+        gvid->setoverscan(gvid->orig.color.overscan);
+
+    // Turn on the blinking attributes
+    gvid->setintensity(gvid->orig.color.intensity);
+
+    // Restore original palette during the shell
+    if(CFG->screenpalette[16])
+        gvid->setpalette(gvid->orig.color.palette);
+
+#if defined(__USE_NCURSES__)
+    def_prog_mode();
+    reset_shell_mode();
+#elif defined(__UNIX__)
+    gkbd_tty_reset();
+#endif
+
+    // Return cursor into 1st column
+    if (cls != (BLACK_|_BLACK)) puts("");
+    // Write message on screen
+    if(*message) puts(message);
+
+    // Turn on cursor
+    int yy, xx;
+    if(cursor)
+    {
+        vposget(&yy, &xx);
+        vcurset(gvid->orig.cursor.start, gvid->orig.cursor.end);
+        vcurshow();
+    }
+
+    HandleGEvent(EVTT_BREAKLOOP);
+
+    // Shell return value
+    int status = -1;
+
+    // Shell using the regular RTL function
+#ifndef __CYGWIN__
+    status = system(command);
+#else
+    // Get executable and parameters
+    char* _arg_v[3];
+
+    char* _pars = "";
+    char _xfn[256] = ""; // Call command interpreter
+    if(strnieql(command, "/c", 2))
+        _pars = strskip_wht(command+2);
+    else
+    {
+        _pars = strpbrk(command, " \t");
+        if(_pars)
+        {
+            ++_pars++;
+            strxcpy(_xfn, command, _pars-command);
+            _pars = strskip_wht(_pars);
+        }
+        else
+            _xfn = command;
+    }
+    _arg_v[0] = _xfn;
+    _arg_v[1] = _pars;
+    _arg_v[2] = NULL;
+    status = spawnvpe(P_WAIT, _xfn, _arg_v, environ);
+#endif
+
+    if(status == -1)
+        error = errno;
+
+    if(status != -1)
+        status = 0;
+
+    // Restore console settings
+#ifdef __USE_NCURSES__
+    reset_prog_mode();
+    clearok(stdscr, TRUE);
+#else
+    gkbd.Init();
+#endif
+
+    // Pause if needed
+    if(pause)
+    {
+        if((pause > 0) or (status != 0))
+            kbxget();
+    }
+
+    // Restore current directory
+    gchdir(orgdir);
+
+    // Restore video mode and rows
+    if(CFG->screensize > 0xFF)
+        gvid->setmode(CFG->screensize >> 8);
+    else if(CFG->screensize)
+        gvid->setrows(CFG->screensize);
+
+    // Restore cursor position and form
+    if(cursor)
+    {
+        vposset(yy+1, xx);
+        vcurhide();
+    }
+
+    // Restore screen
+    if(scrnbuf)
+    {
+        vrestore(scrnbuf);
+        throw_xrelease(scrnbuf);
     }
     else
-      _xfn = command;
-  }
-  _arg_v[0] = _xfn;
-  _arg_v[1] = _pars;
-  _arg_v[2] = NULL;
-  status = spawnvpe(P_WAIT, _xfn, _arg_v, environ);
-  #endif
+        vclrscr();
 
-  if(status == -1)
-    error = errno;
+    // Restore screen intensity
+    gvid->setintensity(CFG->intensecolors);
 
-  if(status != -1)
-    status = 0;
+    // Restore border color
+    if (C_BACKB != (BLACK_|_BLACK))
+        gvid->setoverscan(C_BACKB);
 
-  // Restore console settings
-  #ifdef __USE_NCURSES__
-  reset_prog_mode();
-  clearok(stdscr, TRUE);
-  #else
-  gkbd.Init();
-  #endif
+    // Set palette if changes were specified
+    if(CFG->screenpalette[16])
+        gvid->setpalette(CFG->screenpalette);
 
-  // Pause if needed
-  if(pause) {
-    if((pause > 0) or (status != 0))
-      kbxget();
-  }
-
-  // Restore current directory
-  gchdir(orgdir);
-
-  // Restore video mode and rows
-  if(CFG->screensize > 0xFF)
-    gvid->setmode(CFG->screensize >> 8);
-  else if(CFG->screensize)
-    gvid->setrows(CFG->screensize);
-
-  // Restore cursor position and form
-  if(cursor) {
-    vposset(yy+1, xx);
-    vcurhide();
-  }
-
-  // Restore screen
-  if(scrnbuf) {
-    vrestore(scrnbuf);
-    throw_xrelease(scrnbuf);
-  } else
-    vclrscr();
-
-  // Restore screen intensity
-  gvid->setintensity(CFG->intensecolors);
-
-  // Restore border color
-  if (C_BACKB != (BLACK_|_BLACK))
-    gvid->setoverscan(C_BACKB);
-
-  // Set palette if changes were specified
-  if(CFG->screenpalette[16])
-    gvid->setpalette(CFG->screenpalette);
-
-  // Restore prompt
-  #ifndef __UNIX__
-  if(CFG->switches.get(dosprompt)) {
-    #ifdef __DJGPP__
-    setenv("PROMPT", oldprompt, true);
-    #else
-    int envn = 0;
-    while(environ[envn] and *environ[envn]) {
-      if(strnieql(environ[envn], "PROMPT=", 7)) {
-        environ[envn] = oldprompt;
-        break;
-      }
-      envn++;
+    // Restore prompt
+#ifndef __UNIX__
+    if(CFG->switches.get(dosprompt))
+    {
+#ifdef __DJGPP__
+        setenv("PROMPT", oldprompt, true);
+#else
+        int envn = 0;
+        while(environ[envn] and *environ[envn])
+        {
+            if(strnieql(environ[envn], "PROMPT=", 7))
+            {
+                environ[envn] = oldprompt;
+                break;
+            }
+            envn++;
+        }
+#endif
     }
-    #endif
-  }
-  #endif
+#endif
 
-  // Re-open msgbase
-  if(_wasopen)
-    AA->Resume();
+    // Re-open msgbase
+    if(_wasopen)
+        AA->Resume();
 
-  // Remove the wait window
-  if(shellvid)
-    w_info(NULL);
+    // Remove the wait window
+    if(shellvid)
+        w_info(NULL);
 
-  // Popup error message
-  if(error) {
-    switch(errno) {
-      case E2BIG:   w_info("Argument list too long!");             break;
-      case EACCES:  w_info("Permission denied!");                  break;
-      case EAGAIN:  w_info("Ressource temporarily unavailable!");  break;
-      case EBADF:   w_info("Bad file descriptor!");                break;
-      case EBUSY:   w_info("Resource busy!");                      break;
-      case ECHILD:  w_info("No child processes!");                 break;
-      case EEXIST:  w_info("File exists!");                        break;
-      case EFAULT:  w_info("Bad address!");                        break;
-      case EFBIG:   w_info("File too large!");                     break;
-      case EINTR:   w_info("Interrupted system call!");            break;
-      case EINVAL:  w_info("Invalid argument!");                   break;
-      case EISDIR:  w_info("Is a directory!");                     break;
-      case EMFILE:  w_info("Too many open files!");                break;
-      case ENFILE:  w_info("Too many open files in system!");      break;
-      case ENOENT:  w_info("No such file or directory!");          break;
-      case ENOEXEC: w_info("Unable to execute file!");             break;
-      case ENOMEM:  w_info("Not enough memory!");                  break;
-      default:
-        w_info("error during shelling");
+    // Popup error message
+    if(error)
+    {
+        switch(errno)
+        {
+        case E2BIG:
+            w_info("Argument list too long!");
+            break;
+        case EACCES:
+            w_info("Permission denied!");
+            break;
+        case EAGAIN:
+            w_info("Ressource temporarily unavailable!");
+            break;
+        case EBADF:
+            w_info("Bad file descriptor!");
+            break;
+        case EBUSY:
+            w_info("Resource busy!");
+            break;
+        case ECHILD:
+            w_info("No child processes!");
+            break;
+        case EEXIST:
+            w_info("File exists!");
+            break;
+        case EFAULT:
+            w_info("Bad address!");
+            break;
+        case EFBIG:
+            w_info("File too large!");
+            break;
+        case EINTR:
+            w_info("Interrupted system call!");
+            break;
+        case EINVAL:
+            w_info("Invalid argument!");
+            break;
+        case EISDIR:
+            w_info("Is a directory!");
+            break;
+        case EMFILE:
+            w_info("Too many open files!");
+            break;
+        case ENFILE:
+            w_info("Too many open files in system!");
+            break;
+        case ENOENT:
+            w_info("No such file or directory!");
+            break;
+        case ENOEXEC:
+            w_info("Unable to execute file!");
+            break;
+        case ENOMEM:
+            w_info("Not enough memory!");
+            break;
+        default:
+            w_info("error during shelling");
+        }
+        waitkeyt(10000);
+        w_info(NULL);
     }
-    waitkeyt(10000);
-    w_info(NULL);
-  }
 
-  // Reset tick values to avoid triggering screenblanker or timeout
-  gkbdtickpressreset();
-  gkbdtickvaluereset();
+    // Reset tick values to avoid triggering screenblanker or timeout
+    gkbdtickpressreset();
+    gkbdtickvaluereset();
 
-  #if defined(GUTLOS_FUNCS)
-  g_set_ostitle_name(ge_temptitle, 1);
-  g_set_osicon();
-  #endif
+#if defined(GUTLOS_FUNCS)
+    g_set_ostitle_name(ge_temptitle, 1);
+    g_set_osicon();
+#endif
 
-  return status;
+    return status;
 } // ShellToDos()
 
 
 //  ------------------------------------------------------------------
 
-const char* Unpack(const char* archive) {
+const char* Unpack(const char* archive)
+{
 
-  if ( !archive ) {
-    LOG.errpointer(__FILE__,__LINE__-3);
-    LOG.printf("! Parameter is NULL pointer: Unpack(NULL).");
-    update_statusline(" ERROR! See log. ");
-    return NULL;
-  }
-
-  if ( ! *archive ) {
-    LOG.errtest(__FILE__,__LINE__-8);
-    LOG.printf("! Unpack(): archive file name is empty.");
-    update_statusline(" ERROR: archive file name is empty ");
-    return NULL;
-  }
-
-  static Path newname;
-  const char *filename = CleanFilename(archive);
-
-  std::vector< std::pair<std::string, std::string> >::iterator i;
-  for(i = CFG->unpacker.begin(); i != CFG->unpacker.end(); i++) {
-    int dots;
-    const char *ext, *myext;
-    for(dots = 0, ext = i->first.c_str() - 1; ext != NULL; dots++)
-      ext = strchr(ext+1, '.');
-    for(myext = filename + strlen(filename); (myext != filename) and (dots != 0); dots--) {
-      do
-        --myext;
-      while((myext != filename) and (myext[0] != '.'));
+    if ( !archive )
+    {
+        LOG.errpointer(__FILE__,__LINE__-3);
+        LOG.printf("! Parameter is NULL pointer: Unpack(NULL).");
+        update_statusline(" ERROR! See log. ");
+        return NULL;
     }
-    if(dots or not strieql(myext+1, i->first.c_str()))
-      continue;
 
-    Path newdir;
-    mktemp(strxcpy(newdir, AddPath(CFG->temppath, "GDXXXXXX"), sizeof(Path)));
-    mkdir(newdir, S_IWUSR);
-    char cmdline[1024];
-    strxcpy(cmdline, i->second.c_str(), sizeof(cmdline));
-    std::string archive_truename = archive;
-    maketruepath(archive_truename);
-    strxcpy(newname, archive_truename.c_str(), sizeof(Path));
-    strchg(newname, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
-    strischg(cmdline, "@file", newname);
-    // Store current drive/dir and change it to the temporary
-    Path orgdir;
-    getcwd(orgdir, sizeof(Path));
-    gchdir(newdir);
-    // Now unpack it
-    ShellToDos(cmdline, "", LGREY_|_BLACK, 0, -1);
-    // Restore current directory
-    gchdir(orgdir);
-    strxcpy(newname, AddPath(AddBackslash(newdir), filename), sizeof(Path));
-    newname[strlen(newname) - (i->first.length() + 1)] = NUL;
-    return newname;
-  }
+    if ( ! *archive )
+    {
+        LOG.errtest(__FILE__,__LINE__-8);
+        LOG.printf("! Unpack(): archive file name is empty.");
+        update_statusline(" ERROR: archive file name is empty ");
+        return NULL;
+    }
 
-  return NULL;
+    static Path newname;
+    const char *filename = CleanFilename(archive);
+
+    std::vector< std::pair<std::string, std::string> >::iterator i;
+    for(i = CFG->unpacker.begin(); i != CFG->unpacker.end(); i++)
+    {
+        int dots;
+        const char *ext, *myext;
+        for(dots = 0, ext = i->first.c_str() - 1; ext != NULL; dots++)
+            ext = strchr(ext+1, '.');
+        for(myext = filename + strlen(filename); (myext != filename) and (dots != 0); dots--)
+        {
+            do
+                --myext;
+            while((myext != filename) and (myext[0] != '.'));
+        }
+        if(dots or not strieql(myext+1, i->first.c_str()))
+            continue;
+
+        Path newdir;
+        mktemp(strxcpy(newdir, AddPath(CFG->temppath, "GDXXXXXX"), sizeof(Path)));
+        mkdir(newdir, S_IWUSR);
+        char cmdline[1024];
+        strxcpy(cmdline, i->second.c_str(), sizeof(cmdline));
+        std::string archive_truename = archive;
+        maketruepath(archive_truename);
+        strxcpy(newname, archive_truename.c_str(), sizeof(Path));
+        strchg(newname, GOLD_WRONG_SLASH_CHR, GOLD_SLASH_CHR);
+        strischg(cmdline, "@file", newname);
+        // Store current drive/dir and change it to the temporary
+        Path orgdir;
+        getcwd(orgdir, sizeof(Path));
+        gchdir(newdir);
+        // Now unpack it
+        ShellToDos(cmdline, "", LGREY_|_BLACK, 0, -1);
+        // Restore current directory
+        gchdir(orgdir);
+        strxcpy(newname, AddPath(AddBackslash(newdir), filename), sizeof(Path));
+        newname[strlen(newname) - (i->first.length() + 1)] = NUL;
+        return newname;
+    }
+
+    return NULL;
 } // Unpack()
 
 
 //  ------------------------------------------------------------------
 
-void CleanUnpacked(const char* unpacked) {
+void CleanUnpacked(const char* unpacked)
+{
 
-  gposixdir d(unpacked);
-  const gdirentry *de;
-  std::string removeme;
-  if(is_dir(unpacked)) {
-    while((de = d.nextentry("*", true)) != NULL) {
-      removeme = de->dirname;
-      removeme += GOLD_SLASH_CHR;
-      removeme += de->name;
-      if(is_dir(removeme.c_str()))
-        rmdir(removeme.c_str());
-      else
-        remove(removeme.c_str());
+    gposixdir d(unpacked);
+    const gdirentry *de;
+    std::string removeme;
+    if(is_dir(unpacked))
+    {
+        while((de = d.nextentry("*", true)) != NULL)
+        {
+            removeme = de->dirname;
+            removeme += GOLD_SLASH_CHR;
+            removeme += de->name;
+            if(is_dir(removeme.c_str()))
+                rmdir(removeme.c_str());
+            else
+                remove(removeme.c_str());
+        }
     }
-  }
-  Path tmpdir, tmpdir2;
-  strxcpy(tmpdir2, unpacked, sizeof(Path));
-  StripBackslash(tmpdir2);
-  extractdirname(tmpdir, tmpdir2);
-  d.cd(tmpdir);
-  while((de = d.nextentry("*", true)) != NULL) {
-    removeme = de->dirname;
-    removeme += GOLD_SLASH_CHR;
-    removeme += de->name;
-    if(is_dir(removeme.c_str()))
-      rmdir(removeme.c_str());
-    else
-      remove(removeme.c_str());
-  }
-  rmdir(tmpdir);
+    Path tmpdir, tmpdir2;
+    strxcpy(tmpdir2, unpacked, sizeof(Path));
+    StripBackslash(tmpdir2);
+    extractdirname(tmpdir, tmpdir2);
+    d.cd(tmpdir);
+    while((de = d.nextentry("*", true)) != NULL)
+    {
+        removeme = de->dirname;
+        removeme += GOLD_SLASH_CHR;
+        removeme += de->name;
+        if(is_dir(removeme.c_str()))
+            rmdir(removeme.c_str());
+        else
+            remove(removeme.c_str());
+    }
+    rmdir(tmpdir);
 } // CleanUnpacked()
 
 //  ------------------------------------------------------------------
 //  Error exit function
 
-void ErrorExit(int type) {
+void ErrorExit(int type)
+{
 
-  static int in_error_exit = false;
+    static int in_error_exit = false;
 
-  if(not in_error_exit++) {
+    if(not in_error_exit++)
+    {
 
-    error_exit = type;
+        error_exit = type;
 
-    if(type) {
+        if(type)
+        {
 
-      HandleGEvent(EVTT_ERRORFATAL);
+            HandleGEvent(EVTT_ERRORFATAL);
 
-      if(_in_editor) {
-        LOG.printf("+ TIP: If you were writing a msg and want to recover it,");
-        LOG.printf("+ try looking in the %s file.", AddPath(CFG->goldpath, EDIT->File()));
-      }
+            if(_in_editor)
+            {
+                LOG.printf("+ TIP: If you were writing a msg and want to recover it,");
+                LOG.printf("+ try looking in the %s file.", AddPath(CFG->goldpath, EDIT->File()));
+            }
 
-      // Dump the function tracker log
-      #if defined(GFTRK_ENABLE)
-      __gftrk_log();
-      #endif
+            // Dump the function tracker log
+#if defined(GFTRK_ENABLE)
+            __gftrk_log();
+#endif
 
-      if(type != 9)
-        errorlevel = EXIT_ERRORS;
-      else if(type == 5)
-        errorlevel = 100;
-      else
-        errorlevel = EXIT_CFGERR;
+            if(type != 9)
+                errorlevel = EXIT_ERRORS;
+            else if(type == 5)
+                errorlevel = 100;
+            else
+                errorlevel = EXIT_CFGERR;
 
-      exit(errorlevel);
+            exit(errorlevel);
+        }
+
+        exit(EXIT_OK);
     }
-
-    exit(EXIT_OK);
-  }
 } // ErrorExit()
 
 

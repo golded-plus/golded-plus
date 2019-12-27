@@ -51,8 +51,14 @@
 #ifdef __cplusplus
 extern "C" {
 extern char tl[256], tu[256];
-__inline__ int g_tolower(int c) { return tl[c]; }
-__inline__ int g_toupper(int c) { return tu[c]; }
+__inline__ int g_tolower(int c)
+{
+    return tl[c];
+}
+__inline__ int g_toupper(int c)
+{
+    return tu[c];
+}
 }
 #else
 extern char tl[256], tu[256];

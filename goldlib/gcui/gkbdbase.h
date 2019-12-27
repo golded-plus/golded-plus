@@ -44,57 +44,69 @@ typedef word gkey;
 //  ------------------------------------------------------------------
 //  Keycode object
 
-inline gkey& KCodKey(gkey &key) { return key; }
-inline byte& KCodAsc(gkey &key) { return *(((byte *)&key)+0); }
-inline byte& KCodScn(gkey &key) { return *(((byte *)&key)+1); }
+inline gkey& KCodKey(gkey &key)
+{
+    return key;
+}
+inline byte& KCodAsc(gkey &key)
+{
+    return *(((byte *)&key)+0);
+}
+inline byte& KCodScn(gkey &key)
+{
+    return *(((byte *)&key)+1);
+}
 
 
 //  ------------------------------------------------------------------
 //  Definition of kbuf record
 
-struct KBuf {
-  KBuf* prev;         // previous record
-  KBuf* next;         // next record
-  gkey   xch;         // keypress
+struct KBuf
+{
+    KBuf* prev;         // previous record
+    KBuf* next;         // next record
+    gkey   xch;         // keypress
 };
 
 
 //  ------------------------------------------------------------------
 //  Definition of onkey record
 
-struct KBnd {
-  KBnd* prev;         // pointer to previous record
-  KBnd* next;         // pointer to next record
-  gkey  keycode;      // Scan/ASCII code of trap key
-  VfvCP func;         // address of onkey function
-  gkey  pass;         // key to pass back, 0=don't pass
+struct KBnd
+{
+    KBnd* prev;         // pointer to previous record
+    KBnd* next;         // pointer to next record
+    gkey  keycode;      // Scan/ASCII code of trap key
+    VfvCP func;         // address of onkey function
+    gkey  pass;         // key to pass back, 0=don't pass
 };
 
 
 //  ------------------------------------------------------------------
 //  Definition of keyboard info record
 
-class GKbd {
+class GKbd
+{
 
 public:
 
-  KBuf*  kbuf;           // Pointer to head record in key buffer
-  KBnd*  onkey;          // Pointer to head record in onkey list
-  KBnd*  curronkey;      // Pointer to current onkey record
-  int    inmenu;         // In-menu flag used by menuing functions
-  int    source;         // Source of keypress 0=kb, 1=kbuf, 2=mouse
-  int    extkbd;         // Extended keyboard 0=none, 1=yes
-  int    polling;        // Keyboard polling enabled
-  Clock  tickinterval;   // Minimum interval between ticks
-  Clock  tickvalue;      // Value from last tick
-  VfvCP  tickfunc;       // Function to call when a tick is generated
-  Clock  tickpress;      // Tick value at last keypress
-  bool   inidle;         // In-idle flag used by tickfunc
-  bool   quitall;        // Quit-all flag for menus etc.
+    KBuf*  kbuf;           // Pointer to head record in key buffer
+    KBnd*  onkey;          // Pointer to head record in onkey list
+    KBnd*  curronkey;      // Pointer to current onkey record
+    int    inmenu;         // In-menu flag used by menuing functions
+    int    source;         // Source of keypress 0=kb, 1=kbuf, 2=mouse
+    int    extkbd;         // Extended keyboard 0=none, 1=yes
+    int    polling;        // Keyboard polling enabled
+    Clock  tickinterval;   // Minimum interval between ticks
+    Clock  tickvalue;      // Value from last tick
+    VfvCP  tickfunc;       // Function to call when a tick is generated
+    Clock  tickpress;      // Tick value at last keypress
+    bool   inidle;         // In-idle flag used by tickfunc
+    bool   quitall;        // Quit-all flag for menus etc.
 
-  void Init();
-  GKbd();
-  ~GKbd();
+    void Init();
+    GKbd();
+    ~GKbd();
 };
 
 extern GKbd gkbd;
@@ -151,8 +163,14 @@ void gkbdtickvaluereset();
 //  ------------------------------------------------------------------
 //  Inline functions
 
-inline gkey getxchtick()  { return getxch(true); }
-inline void kbdsettickfunc(VfvCP func)  { gkbd.tickfunc = func; }
+inline gkey getxchtick()
+{
+    return getxch(true);
+}
+inline void kbdsettickfunc(VfvCP func)
+{
+    gkbd.tickfunc = func;
+}
 
 
 //  ------------------------------------------------------------------
@@ -164,20 +182,20 @@ inline void kbdsettickfunc(VfvCP func)  { gkbd.tickfunc = func; }
 //  ------------------------------------------------------------------
 
 
-#if defined(__USE_NCURSES__) 
-  	// TODO: move L_KEY_BASE то KEY_MAX-9, 
-	// TODO: change array gkbd_curstable to std::map
-    #define L_KEY_BASE	(KEY_RESIZE+12)
-    #define L_KEY_AUP     (L_KEY_BASE+0)
-    #define L_KEY_ADOWN   (L_KEY_BASE+1)
-    #define L_KEY_ARIGHT  (L_KEY_BASE+2)
-    #define L_KEY_ALEFT   (L_KEY_BASE+3)
-    #define L_KEY_CUP     (L_KEY_BASE+4)
-    #define L_KEY_CDOWN   (L_KEY_BASE+5)
-    #define L_KEY_CRIGHT  (L_KEY_BASE+6)
-    #define L_KEY_CLEFT   (L_KEY_BASE+7)
-    #define L_KEY_UNUSED  (L_KEY_BASE+8)
-#endif    
+#if defined(__USE_NCURSES__)
+// TODO: move L_KEY_BASE то KEY_MAX-9,
+// TODO: change array gkbd_curstable to std::map
+#define L_KEY_BASE	(KEY_RESIZE+12)
+#define L_KEY_AUP     (L_KEY_BASE+0)
+#define L_KEY_ADOWN   (L_KEY_BASE+1)
+#define L_KEY_ARIGHT  (L_KEY_BASE+2)
+#define L_KEY_ALEFT   (L_KEY_BASE+3)
+#define L_KEY_CUP     (L_KEY_BASE+4)
+#define L_KEY_CDOWN   (L_KEY_BASE+5)
+#define L_KEY_CRIGHT  (L_KEY_BASE+6)
+#define L_KEY_CLEFT   (L_KEY_BASE+7)
+#define L_KEY_UNUSED  (L_KEY_BASE+8)
+#endif
 
 #endif
 

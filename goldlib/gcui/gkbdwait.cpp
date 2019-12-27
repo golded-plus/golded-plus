@@ -34,10 +34,11 @@
 //  ------------------------------------------------------------------
 //  Halts execution until a key is pressed
 
-gkey waitkey() {
+gkey waitkey()
+{
 
-  clearkeys();
-  return getxch();
+    clearkeys();
+    return getxch();
 }
 
 
@@ -45,23 +46,26 @@ gkey waitkey() {
 //  Halts execution until a key is pressed or the specified time
 //  period has expired
 
-gkey waitkeyt(int duration) {
+gkey waitkeyt(int duration)
+{
 
-  clearkeys();
-  Clock stop = gclock() + duration;
-  Clock sliced_time = gclock();
-  while(1) {
-    if(kbmhit())
-      return getxch();
-    if(gclock() >= stop)
-      return 0;
-    if(gclock() - sliced_time >= 10) {
-      if(gkbd.tickfunc)
-        (*gkbd.tickfunc)();
-      sliced_time = gclock();
+    clearkeys();
+    Clock stop = gclock() + duration;
+    Clock sliced_time = gclock();
+    while(1)
+    {
+        if(kbmhit())
+            return getxch();
+        if(gclock() >= stop)
+            return 0;
+        if(gclock() - sliced_time >= 10)
+        {
+            if(gkbd.tickfunc)
+                (*gkbd.tickfunc)();
+            sliced_time = gclock();
+        }
+        gmtsk.timeslice();
     }
-    gmtsk.timeslice();
-  }
 }
 
 

@@ -36,7 +36,8 @@
 
 //  ------------------------------------------------------------------
 
-class gdirentry {
+class gdirentry
+{
 
 public:
     std::string name;
@@ -44,14 +45,21 @@ public:
     const char *dirname;
     gdirentry();
     ~gdirentry();
-    bool is_directory() const { return S_ISDIR(stat_info.st_mode); }
-    bool is_file() const { return S_ISREG(stat_info.st_mode); }
+    bool is_directory() const
+    {
+        return S_ISDIR(stat_info.st_mode);
+    }
+    bool is_file() const
+    {
+        return S_ISREG(stat_info.st_mode);
+    }
 };
 
 
 //  ------------------------------------------------------------------
 
-class gposixdir {
+class gposixdir
+{
 
 private:
     std::string dirname;
@@ -65,9 +73,15 @@ public:
     gposixdir(const char *name);
     ~gposixdir();
     void cd(const char *name, bool relative=false);
-    inline void rewind() { last_entry = 0; }
+    inline void rewind()
+    {
+        last_entry = 0;
+    }
     const gdirentry *nextentry(const char *mask=NULL, bool nameonly=false);
-    inline const char *fullpath() { return dirname.c_str(); }
+    inline const char *fullpath()
+    {
+        return dirname.c_str();
+    }
 };
 
 

@@ -34,11 +34,11 @@
 #include <csignal>
 #include <iostream>
 #if defined(__GNUC__)
-  #if __GNUC__ > 2
-    #include <sstream>
-  #endif
+#if __GNUC__ > 2
+#include <sstream>
+#endif
 #elif defined(_MSC_VER)
- #include <sstream>
+#include <sstream>
 #endif
 #include <iomanip>
 // Wrappers for certain mostly DOS/Borland headers

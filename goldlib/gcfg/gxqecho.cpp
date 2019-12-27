@@ -37,83 +37,91 @@
 
 //  ------------------------------------------------------------------
 
-void gareafile::ReadQEchoFile(char* file, char* options, char* origin) {
+void gareafile::ReadQEchoFile(char* file, char* options, char* origin)
+{
 
-  AreaCfg aa;
-  char buf[512];
+    AreaCfg aa;
+    char buf[512];
 
-  FILE* fp = fsopen(file, "rb", sharemode);
-  if (fp)
-  {
-    setvbuf(fp, NULL, _IOFBF, 8192);
+    FILE* fp = fsopen(file, "rb", sharemode);
+    if (fp)
+    {
+        setvbuf(fp, NULL, _IOFBF, 8192);
 
-    if (not quiet)
-      STD_PRINTNL("* Reading " << file);
+        if (not quiet)
+            STD_PRINTNL("* Reading " << file);
 
-    while(fgets(buf, sizeof(buf), fp)) {
+        while(fgets(buf, sizeof(buf), fp))
+        {
 
-      char* ptr = strtok(buf, " \t");
-      aa.reset();
+            char* ptr = strtok(buf, " \t");
+            aa.reset();
 
-      if(isdigit(*ptr))
-        aa.groupid = 0x8000+atoi(ptr);
-      else if(g_isalpha(*ptr))
-        aa.groupid = g_toupper(*ptr);
+            if(isdigit(*ptr))
+                aa.groupid = 0x8000+atoi(ptr);
+            else if(g_isalpha(*ptr))
+                aa.groupid = g_toupper(*ptr);
 
-      if((ptr = strtok(NULL, " \t")) != NULL) {
-        if(*ptr == '*') {
-          // skip ExpireDays
-          if((ptr = strtok(NULL, " \t")) == NULL)
-            continue;
-          if((ptr = strtok(NULL, " \t")) == NULL)
-            continue;
-        }
-        aa.type = GMB_ECHO;
-        aa.setechoid(ptr);
-        if((ptr = strtok(NULL, " \t")) != NULL)
-          if(not strieql("Passthrough", ptr)) {
-            aa.setpath(ptr);
-            aa.basetype = "JAM";
             if((ptr = strtok(NULL, " \t")) != NULL)
-              if((*ptr == '*') and ((ptr = strtok(NULL, " \t")) != NULL)) {
-                CfgAddress(ptr);
-                aa.aka.set(ptr);
-                aa.attr = attribsecho;
-                aa.setorigin(origin);
-                AddNewArea(aa);
-              }
-          }
-      }
+            {
+                if(*ptr == '*')
+                {
+                    // skip ExpireDays
+                    if((ptr = strtok(NULL, " \t")) == NULL)
+                        continue;
+                    if((ptr = strtok(NULL, " \t")) == NULL)
+                        continue;
+                }
+                aa.type = GMB_ECHO;
+                aa.setechoid(ptr);
+                if((ptr = strtok(NULL, " \t")) != NULL)
+                    if(not strieql("Passthrough", ptr))
+                    {
+                        aa.setpath(ptr);
+                        aa.basetype = "JAM";
+                        if((ptr = strtok(NULL, " \t")) != NULL)
+                            if((*ptr == '*') and ((ptr = strtok(NULL, " \t")) != NULL))
+                            {
+                                CfgAddress(ptr);
+                                aa.aka.set(ptr);
+                                aa.attr = attribsecho;
+                                aa.setorigin(origin);
+                                AddNewArea(aa);
+                            }
+                    }
+            }
+        }
+        fclose(fp);
     }
-    fclose(fp);
-  }
 }
 
 
 //  ------------------------------------------------------------------
 //  Read areas from QEcho (echomail processor)
 
-void gareafile::ReadQEcho(char* tag) {
+void gareafile::ReadQEcho(char* tag)
+{
 
-  char origin[80];
-  char options[80];
-  Path file;
+    char origin[80];
+    char options[80];
+    Path file;
 
-  *origin = NUL;
-  *file = NUL;
-  options[79] = 0;
-  strncpy(options, tag, 79);
-  char* ptr = strtok(tag, " \t");
-  while(ptr) {
-    if(*ptr != '-')
-      strcpy(file, ptr);
-    ptr = strtok(NULL, " \t");
-  }
+    *origin = NUL;
+    *file = NUL;
+    options[79] = 0;
+    strncpy(options, tag, 79);
+    char* ptr = strtok(tag, " \t");
+    while(ptr)
+    {
+        if(*ptr != '-')
+            strcpy(file, ptr);
+        ptr = strtok(NULL, " \t");
+    }
 
-  if(not *file)
-    strcpy(file, "/etc/qecho/AreaList");
+    if(not *file)
+        strcpy(file, "/etc/qecho/AreaList");
 
-  ReadQEchoFile(file, options, origin);
+    ReadQEchoFile(file, options, origin);
 }
 
 

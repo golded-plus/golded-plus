@@ -38,126 +38,133 @@
 //  ------------------------------------------------------------------
 //  Read IMail IMAIL.CF and IMAIL.AR
 
-void gareafile::ReadIMail160(char* options, char* file, char* impath) {
+void gareafile::ReadIMail160(char* options, char* file, char* impath)
+{
 
-  AreaCfg aa;
-  FILE* fp;
-  im_config_type* CF;
-  areas_record_type AR;
+    AreaCfg aa;
+    FILE* fp;
+    im_config_type* CF;
+    areas_record_type AR;
 
-  CF = new im_config_type; throw_new(CF);
-
-  fp = fsopen(file, "rb", sharemode);
-  if (fp)
-  {
-    if (not quiet)
-      STD_PRINTNL("* Reading " << file);
-
-    fread(CF, sizeof(im_config_type), 1, fp);
-    fclose(fp);
-
-    CfgJampath(CF->echojam);
-    CfgHudsonpath(CF->quickbbs);
-
-    // Fido netmail
-    if(not strblank(CF->netmail)) {
-      aa.reset();
-      aa.basetype = fidomsgtype;
-      aa.type = GMB_NET;
-      aa.attr = attribsnet;
-      aa.aka = CAST(ftn_addr, CF->aka[0]);
-      aa.setpath(CF->netmail);
-      aa.setdesc("IMAIL Netmail");
-      aa.setautoid("NETMAIL");
-      AddNewArea(aa);
-    }
-
-    MakePathname(file, impath, "IMAIL.AR");
+    CF = new im_config_type;
+    throw_new(CF);
 
     fp = fsopen(file, "rb", sharemode);
     if (fp)
     {
-      setvbuf(fp, NULL, _IOFBF, 8192);
+        if (not quiet)
+            STD_PRINTNL("* Reading " << file);
 
-      if (not quiet)
-        STD_PRINTNL("* Reading " << file);
+        fread(CF, sizeof(im_config_type), 1, fp);
+        fclose(fp);
 
-      while(fread(&AR, sizeof(areas_record_type), 1, fp) == 1) {
+        CfgJampath(CF->echojam);
+        CfgHudsonpath(CF->quickbbs);
 
-        if(AR.active and (not AR.deleted)) {
-
-          aa.reset();
-
-          switch(AR.msg_base_type & BASEMASK) {
-
-            case MSGTYPE_SDM:
-              aa.basetype = fidomsgtype;
-              strcpy(aa.path, AR.msg_path);
-              break;
-
-            case MSGTYPE_SQUISH:
-              aa.basetype = "SQUISH";
-              strcpy(aa.path, AR.msg_path);
-              break;
-
-            case MSGTYPE_JAM:
-              aa.basetype = "JAM";
-              strcpy(aa.path, AR.msg_path);
-              break;
-
-            case MSGTYPE_HUDSON:
-              aa.basetype = "HUDSON";
-              if ((AR.brd >= 1) and (AR.brd <= 200))
-                aa.board = AR.brd;
-              else
-              {
-                STD_PRINTNL("* Warning: Invalid board " << AR.brd << " (" << AR.aname << ") in IMAIL.AR - Skipping.");
-                continue;
-              }
-              break;
-
-            case MSGTYPE_PASSTH:
-            default:
-              // Passthrough or unknown msgbase type
-              continue;
-          }
-
-          switch(AR.msg_base_type & TYPEMASK) {
-
-            case MSGTYPE_LOCAL:
-              aa.type = GMB_LOCAL;
-              aa.attr = attribslocal;
-              break;
-
-            case MSGTYPE_NET:
-              aa.type = GMB_NET;
-              aa.attr = attribsnet;
-              break;
-
-            case MSGTYPE_ECHO:
-            default:
-              aa.type = GMB_ECHO;
-              aa.attr = attribsecho;
-          }
-
-          if(AR.o_addr)
-            aa.aka = CAST(ftn_addr, CF->aka[AR.o_addr-1]);
-
-          aa.groupid = (char)g_toupper(AR.group);
-
-          aa.setdesc(AR.comment);
-          aa.setechoid(AR.aname);
-          aa.setorigin(AR.origin);
-
-          AddNewArea(aa);
+        // Fido netmail
+        if(not strblank(CF->netmail))
+        {
+            aa.reset();
+            aa.basetype = fidomsgtype;
+            aa.type = GMB_NET;
+            aa.attr = attribsnet;
+            aa.aka = CAST(ftn_addr, CF->aka[0]);
+            aa.setpath(CF->netmail);
+            aa.setdesc("IMAIL Netmail");
+            aa.setautoid("NETMAIL");
+            AddNewArea(aa);
         }
-      }
 
-      fclose(fp);
+        MakePathname(file, impath, "IMAIL.AR");
+
+        fp = fsopen(file, "rb", sharemode);
+        if (fp)
+        {
+            setvbuf(fp, NULL, _IOFBF, 8192);
+
+            if (not quiet)
+                STD_PRINTNL("* Reading " << file);
+
+            while(fread(&AR, sizeof(areas_record_type), 1, fp) == 1)
+            {
+
+                if(AR.active and (not AR.deleted))
+                {
+
+                    aa.reset();
+
+                    switch(AR.msg_base_type & BASEMASK)
+                    {
+
+                    case MSGTYPE_SDM:
+                        aa.basetype = fidomsgtype;
+                        strcpy(aa.path, AR.msg_path);
+                        break;
+
+                    case MSGTYPE_SQUISH:
+                        aa.basetype = "SQUISH";
+                        strcpy(aa.path, AR.msg_path);
+                        break;
+
+                    case MSGTYPE_JAM:
+                        aa.basetype = "JAM";
+                        strcpy(aa.path, AR.msg_path);
+                        break;
+
+                    case MSGTYPE_HUDSON:
+                        aa.basetype = "HUDSON";
+                        if ((AR.brd >= 1) and (AR.brd <= 200))
+                            aa.board = AR.brd;
+                        else
+                        {
+                            STD_PRINTNL("* Warning: Invalid board " << AR.brd << " (" << AR.aname << ") in IMAIL.AR - Skipping.");
+                            continue;
+                        }
+                        break;
+
+                    case MSGTYPE_PASSTH:
+                    default:
+                        // Passthrough or unknown msgbase type
+                        continue;
+                    }
+
+                    switch(AR.msg_base_type & TYPEMASK)
+                    {
+
+                    case MSGTYPE_LOCAL:
+                        aa.type = GMB_LOCAL;
+                        aa.attr = attribslocal;
+                        break;
+
+                    case MSGTYPE_NET:
+                        aa.type = GMB_NET;
+                        aa.attr = attribsnet;
+                        break;
+
+                    case MSGTYPE_ECHO:
+                    default:
+                        aa.type = GMB_ECHO;
+                        aa.attr = attribsecho;
+                    }
+
+                    if(AR.o_addr)
+                        aa.aka = CAST(ftn_addr, CF->aka[AR.o_addr-1]);
+
+                    aa.groupid = (char)g_toupper(AR.group);
+
+                    aa.setdesc(AR.comment);
+                    aa.setechoid(AR.aname);
+                    aa.setorigin(AR.origin);
+
+                    AddNewArea(aa);
+                }
+            }
+
+            fclose(fp);
+        }
     }
-  }
 
-  throw_delete(CF);
+    throw_delete(CF);
 }
 
 

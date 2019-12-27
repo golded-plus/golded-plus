@@ -42,225 +42,252 @@ int       fidodatano = 0;
 
 //  ------------------------------------------------------------------
 
-void FidoArea::data_open() {
+void FidoArea::data_open()
+{
 
-  wide = fidowide;
-  data = fidodata + (fidodatano++);
+    wide = fidowide;
+    data = fidodata + (fidodatano++);
 }
 
 
 //  ------------------------------------------------------------------
 
-void FidoArea::data_close() {
+void FidoArea::data_close()
+{
 
-  fidodatano--;
+    fidodatano--;
 }
 
 
 //  ------------------------------------------------------------------
 
-char* FidoArea::build_msgname(char* __buf, uint32_t __msgno) {
+char* FidoArea::build_msgname(char* __buf, uint32_t __msgno)
+{
 
-  sprintf(__buf, "%s%u.msg", real_path(), __msgno);
-  return __buf;
+    sprintf(__buf, "%s%u.msg", real_path(), __msgno);
+    return __buf;
 }
 
 
 //  ------------------------------------------------------------------
 
-int FidoArea::test_open(const char* __file, int __openmode, int __sharemode, int __fail) {
+int FidoArea::test_open(const char* __file, int __openmode, int __sharemode, int __fail)
+{
 
-  GFTRK("FidoTestOpen");
+    GFTRK("FidoTestOpen");
 
-  int _fh;
-  long _tries = 0;
+    int _fh;
+    long _tries = 0;
 
-  do {
-
-    _fh = ::sopen(__file, __openmode, __sharemode, S_STDRW);
-    if(_fh == -1) {
-
-      if((errno != EACCES) or (PopupLocked(++_tries, false, __file) == false)) {
-
-        // Return instead of halting if requested
-        if((errno != EACCES) and not __fail) {
-          GFTRK(0);
-          return _fh;
-        }
-
-        // User requested to exit
-        WideLog->ErrOpen();
-        WideLog->printf("! A Fido message file could not be opened.");
-        WideLog->printf(": %s", __file);
-        WideLog->ErrOSInfo();
-        OpenErrorExit();
-      }
-    }
-  } while(_fh == -1);
-
-  // Remove the popup window
-  if(_tries)
-    PopupLocked(0, 0, NULL);
-
-  GFTRK(0);
-
-  return _fh;
-}
-
-
-//  ------------------------------------------------------------------
-
-void FidoExit() {
-
-  if(fidowide)
-    delete fidowide->user;
-  throw_release(fidowide);
-  throw_release(fidodata);
-}
-
-
-//  ------------------------------------------------------------------
-
-void FidoInit(const char* fidolastread, int fidohwmarks, int fidonullfix, int fidouserno, const char* squishuserpath) {
-
-  fidodata = (FidoData*)throw_calloc(3, sizeof(FidoData));
-  fidowide = (FidoWide*)throw_calloc(1, sizeof(FidoWide));
-
-  fidowide->fidolastread = fidolastread;
-  fidowide->fidohwmarks = fidohwmarks;
-  fidowide->fidonullfix = fidonullfix;
-  fidowide->userno = fidouserno;
-  fidowide->squishuserpath = squishuserpath;
-
-  fidowide->user = new MaximusUser;
-  throw_new(fidowide->user);
-
-  const char* _username = WideUsername[0];
-  if(fidowide->userno == -1) {
-    Path userfile;
-    strxcpy(userfile, AddPath(fidowide->squishuserpath, "USER.BBS"), sizeof(Path));
-    fidowide->user->gufh = ::sopen(userfile, O_RDWR|O_CREAT|O_BINARY, WideSharemode, S_STDRW);
-    if (fidowide->user->gufh != -1)
+    do
     {
-      fidowide->user->find(_username);
-      if(not fidowide->user->found) {
-        WideLog->printf("* User \"%s\" not found in %s.", _username, userfile);
-        fidowide->user->add(_username);
-        WideLog->printf("* Now added with user number %u.", fidowide->user->index);
-      }
-      ::close(fidowide->user->gufh);
+
+        _fh = ::sopen(__file, __openmode, __sharemode, S_STDRW);
+        if(_fh == -1)
+        {
+
+            if((errno != EACCES) or (PopupLocked(++_tries, false, __file) == false))
+            {
+
+                // Return instead of halting if requested
+                if((errno != EACCES) and not __fail)
+                {
+                    GFTRK(0);
+                    return _fh;
+                }
+
+                // User requested to exit
+                WideLog->ErrOpen();
+                WideLog->printf("! A Fido message file could not be opened.");
+                WideLog->printf(": %s", __file);
+                WideLog->ErrOSInfo();
+                OpenErrorExit();
+            }
+        }
     }
-    fidowide->userno = fidowide->user->index;
-  }
+    while(_fh == -1);
+
+    // Remove the popup window
+    if(_tries)
+        PopupLocked(0, 0, NULL);
+
+    GFTRK(0);
+
+    return _fh;
 }
 
 
 //  ------------------------------------------------------------------
 
-void FidoArea::open() {
+void FidoExit()
+{
 
-  GFTRK("FidoOpen");
+    if(fidowide)
+        delete fidowide->user;
+    throw_release(fidowide);
+    throw_release(fidodata);
+}
 
-  isopen++;
-  if(isopen > 2) {
-    WideLog->ErrTest();
-    WideLog->printf("! Trying to open a *.MSG msgbase more than twice.");
-    WideLog->printf(": %s, %s.", echoid(), path());
-    WideLog->printf("+ Info: This indicates a serious bug.");
-    WideLog->printf("+ Advice: Report to the Author immediately.");
-    TestErrorExit();
-  }
-  if(isopen == 1) {
-    if(ispacked()) {
-      isopen--;
-      Path tmp;
-      strxcpy(tmp, path(), sizeof(Path));
-      StripBackslash(tmp);
-      const char* newpath = Unpack(tmp);
-      if(newpath == NULL)
-        packed(false);
-      else {
-        strcpy(tmp, newpath);
-        AddBackslash(tmp);
-      }
-      set_real_path(newpath ? tmp : path());
-      isopen++;
+
+//  ------------------------------------------------------------------
+
+void FidoInit(const char* fidolastread, int fidohwmarks, int fidonullfix, int fidouserno, const char* squishuserpath)
+{
+
+    fidodata = (FidoData*)throw_calloc(3, sizeof(FidoData));
+    fidowide = (FidoWide*)throw_calloc(1, sizeof(FidoWide));
+
+    fidowide->fidolastread = fidolastread;
+    fidowide->fidohwmarks = fidohwmarks;
+    fidowide->fidonullfix = fidonullfix;
+    fidowide->userno = fidouserno;
+    fidowide->squishuserpath = squishuserpath;
+
+    fidowide->user = new MaximusUser;
+    throw_new(fidowide->user);
+
+    const char* _username = WideUsername[0];
+    if(fidowide->userno == -1)
+    {
+        Path userfile;
+        strxcpy(userfile, AddPath(fidowide->squishuserpath, "USER.BBS"), sizeof(Path));
+        fidowide->user->gufh = ::sopen(userfile, O_RDWR|O_CREAT|O_BINARY, WideSharemode, S_STDRW);
+        if (fidowide->user->gufh != -1)
+        {
+            fidowide->user->find(_username);
+            if(not fidowide->user->found)
+            {
+                WideLog->printf("* User \"%s\" not found in %s.", _username, userfile);
+                fidowide->user->add(_username);
+                WideLog->printf("* Now added with user number %u.", fidowide->user->index);
+            }
+            ::close(fidowide->user->gufh);
+        }
+        fidowide->userno = fidowide->user->index;
     }
-    data_open();
-    scan();
-  }
-
-  GFTRK(0);
 }
 
 
 //  ------------------------------------------------------------------
 
-void FidoArea::save_lastread() {
+void FidoArea::open()
+{
 
-  GFTRK("FidoSaveLastread");
+    GFTRK("FidoOpen");
 
-  int _fh = ::sopen(AddPath(real_path(), wide->fidolastread), O_RDWR|O_CREAT|O_BINARY, WideSharemode, S_STDRW);
-  if(_fh != -1) {
-    word _lastread = (word)Msgn->CvtReln(lastread);
-    lseekset(_fh, wide->userno, sizeof(word));
-    write(_fh, &_lastread, sizeof(word));
-    ::close(_fh);
-  }
-
-  GFTRK(0);
-}
-
-
-//  ------------------------------------------------------------------
-
-void FidoArea::close() {
-
-  GFTRK("FidoClose");
-
-  if(isopen) {
-    if(isopen == 1) {
-      save_lastread();
-      Msgn->Reset();
-      data_close();
-      if(ispacked()) {
-        CleanUnpacked(real_path());
-      }
+    isopen++;
+    if(isopen > 2)
+    {
+        WideLog->ErrTest();
+        WideLog->printf("! Trying to open a *.MSG msgbase more than twice.");
+        WideLog->printf(": %s, %s.", echoid(), path());
+        WideLog->printf("+ Info: This indicates a serious bug.");
+        WideLog->printf("+ Advice: Report to the Author immediately.");
+        TestErrorExit();
     }
-    isopen--;
-  }
-  else {
-    WideLog->ErrTest();
-    WideLog->printf("! Trying to close an already closed *.MSG msgbase.");
-    WideLog->printf(": %s, %s.", echoid(), path());
-    WideLog->printf("+ Info: This indicates a potentially serious bug.");
-    WideLog->printf("+ Advice: Report to the Author immediately.");
-    TestErrorExit();
-  }
+    if(isopen == 1)
+    {
+        if(ispacked())
+        {
+            isopen--;
+            Path tmp;
+            strxcpy(tmp, path(), sizeof(Path));
+            StripBackslash(tmp);
+            const char* newpath = Unpack(tmp);
+            if(newpath == NULL)
+                packed(false);
+            else
+            {
+                strcpy(tmp, newpath);
+                AddBackslash(tmp);
+            }
+            set_real_path(newpath ? tmp : path());
+            isopen++;
+        }
+        data_open();
+        scan();
+    }
 
-  GFTRK(0);
+    GFTRK(0);
 }
 
 
 //  ------------------------------------------------------------------
 
-void FidoArea::suspend() {
+void FidoArea::save_lastread()
+{
 
-  GFTRK("FidoSuspend");
+    GFTRK("FidoSaveLastread");
 
-  save_lastread();
+    int _fh = ::sopen(AddPath(real_path(), wide->fidolastread), O_RDWR|O_CREAT|O_BINARY, WideSharemode, S_STDRW);
+    if(_fh != -1)
+    {
+        word _lastread = (word)Msgn->CvtReln(lastread);
+        lseekset(_fh, wide->userno, sizeof(word));
+        write(_fh, &_lastread, sizeof(word));
+        ::close(_fh);
+    }
 
-  GFTRK(0);
+    GFTRK(0);
 }
 
 
 //  ------------------------------------------------------------------
 
-void FidoArea::resume() {
+void FidoArea::close()
+{
 
-  GFTRK("FidoResume");
+    GFTRK("FidoClose");
 
-  GFTRK(0);
+    if(isopen)
+    {
+        if(isopen == 1)
+        {
+            save_lastread();
+            Msgn->Reset();
+            data_close();
+            if(ispacked())
+            {
+                CleanUnpacked(real_path());
+            }
+        }
+        isopen--;
+    }
+    else
+    {
+        WideLog->ErrTest();
+        WideLog->printf("! Trying to close an already closed *.MSG msgbase.");
+        WideLog->printf(": %s, %s.", echoid(), path());
+        WideLog->printf("+ Info: This indicates a potentially serious bug.");
+        WideLog->printf("+ Advice: Report to the Author immediately.");
+        TestErrorExit();
+    }
+
+    GFTRK(0);
+}
+
+
+//  ------------------------------------------------------------------
+
+void FidoArea::suspend()
+{
+
+    GFTRK("FidoSuspend");
+
+    save_lastread();
+
+    GFTRK(0);
+}
+
+
+//  ------------------------------------------------------------------
+
+void FidoArea::resume()
+{
+
+    GFTRK("FidoResume");
+
+    GFTRK(0);
 }
 
 

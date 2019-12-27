@@ -32,34 +32,38 @@
 
 //  ------------------------------------------------------------------
 
-MaximusUser::MaximusUser() {
+MaximusUser::MaximusUser()
+{
 
-  recsize = sizeof(MaxUsers);
-  recptr = new char [recsize];  throw_new(recptr);
+    recsize = sizeof(MaxUsers);
+    recptr = new char [recsize];
+    throw_new(recptr);
 
-  record = (MaxUsers*)recptr;
-  memset(record, 0, recsize);
+    record = (MaxUsers*)recptr;
+    memset(record, 0, recsize);
 
-  name = record->name;
-  record->struct_len = (byte)(recsize / 20);
+    name = record->name;
+    record->struct_len = (byte)(recsize / 20);
 
-  firstread = true;
+    firstread = true;
 }
 
 
 //  ------------------------------------------------------------------
 
-MaximusUser::~MaximusUser() {
+MaximusUser::~MaximusUser()
+{
 
-  throw_deletearray(recptr);
+    throw_deletearray(recptr);
 }
 
 
 //  ------------------------------------------------------------------
 
-int MaximusUser::isvalid() {
+int MaximusUser::isvalid()
+{
 
-  return not (record->delflag & MAXIMUS_USERDELETED);
+    return not (record->delflag & MAXIMUS_USERDELETED);
 }
 
 
@@ -67,55 +71,59 @@ int MaximusUser::isvalid() {
 
 int MaximusUser::read()
 {
-  if (gufh != -1)
-  {
-    if (firstread)
+    if (gufh != -1)
     {
-      firstread = false;
-      if (filelength(gufh) >= 180)
-      {
-        ::read(gufh, record, recsize);
-        lseek(gufh, -(long)recsize, SEEK_CUR);
-        uint _tmp = record->struct_len ? record->struct_len*20 : 180;
-        if(_tmp != recsize) {
-          recsize = _tmp;
-          throw_deletearray(recptr);
-          recptr = new char [recsize];  throw_new(recptr);
-          record = (MaxUsers*)recptr;
-          name = record->name;
+        if (firstread)
+        {
+            firstread = false;
+            if (filelength(gufh) >= 180)
+            {
+                ::read(gufh, record, recsize);
+                lseek(gufh, -(long)recsize, SEEK_CUR);
+                uint _tmp = record->struct_len ? record->struct_len*20 : 180;
+                if(_tmp != recsize)
+                {
+                    recsize = _tmp;
+                    throw_deletearray(recptr);
+                    recptr = new char [recsize];
+                    throw_new(recptr);
+                    record = (MaxUsers*)recptr;
+                    name = record->name;
+                }
+            }
         }
-      }
+        ::read(gufh, record, recsize);
+        if (isvalid())
+        {
+            index = record->lastread_ptr;
+            maxindex = maximum_of_two(index, maxindex);
+            return true;
+        }
     }
-    ::read(gufh, record, recsize);
-    if (isvalid())
-    {
-      index = record->lastread_ptr;
-      maxindex = maximum_of_two(index, maxindex);
-      return true;
-    }
-  }
-  return false;
+    return false;
 }
 
 
 //  ------------------------------------------------------------------
 
-void MaximusUser::founduser() {
+void MaximusUser::founduser()
+{
 
-  index = record->lastread_ptr;
-  found = true;
+    index = record->lastread_ptr;
+    found = true;
 }
 
 
 //  ------------------------------------------------------------------
 
-void MaximusUser::recinit(const char* __name) {
+void MaximusUser::recinit(const char* __name)
+{
 
-  GUser::recinit(__name);
-  record->lastread_ptr = (word)(++maxindex);
-  record->struct_len   = (byte)(recsize / 20);
-  record->delflag      = MAXIMUS_USERPERMANENT;
-  record->priv         = MAXIMUS_PRIV_TWIT;
+    GUser::recinit(__name);
+    record->lastread_ptr = (word)(++maxindex);
+    record->struct_len   = (byte)(recsize / 20);
+    record->delflag      = MAXIMUS_USERPERMANENT;
+    record->priv         = MAXIMUS_PRIV_TWIT;
 }
 
 

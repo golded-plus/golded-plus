@@ -44,56 +44,57 @@
 //  RA2 USERS.BBS record structure
 //  sizeof = 1016
 
-struct RA2Users {
+struct RA2Users
+{
 
-  char  name[36];
-  char  location[26];
-  char  organisation[51];
-  char  address1[51];
-  char  address2[51];
-  char  address3[51];
-  char  handle[36];
-  char  comment[81];
-  int32_t  passwordcrc;
-  char  dataphone[16];
-  char  voicephone[16];
-  char  lasttime[6];
-  char  lastdate[9];
-  byte  attribute;
-  byte  attribute2;
-  byte  flagsx[4];
-  int32_t  credit;
-  int32_t  pending;
-  word  msgsposted;
-  word  security;
-  int32_t  lastread;
-  int32_t  nocalls;
-  int32_t  uploads;
-  int32_t  downloads;
-  int32_t  uploadsk;
-  int32_t  downloadsk;
-  int32_t  todayk;
-  short  elapsed;
-  word  screenlength;
-  byte  lastpwdchange;
-  word  group;
-  word  combinedinfo[200];
-  char  firstdate[9];
-  char  birthdate[9];
-  char  subdate[9];
-  byte  screenwidth;
-  byte  language;
-  byte  dateformat;
-  char  forwardto[36];
-  word  msgarea;
-  word  filearea;
-  char  defaultprotocol;
-  word  filegroup;
-  byte  lastdobcheck;
-  byte  sex;
-  int32_t  xirecord;
-  word  msggroup;
-  byte  freespace[48];
+    char  name[36];
+    char  location[26];
+    char  organisation[51];
+    char  address1[51];
+    char  address2[51];
+    char  address3[51];
+    char  handle[36];
+    char  comment[81];
+    int32_t  passwordcrc;
+    char  dataphone[16];
+    char  voicephone[16];
+    char  lasttime[6];
+    char  lastdate[9];
+    byte  attribute;
+    byte  attribute2;
+    byte  flagsx[4];
+    int32_t  credit;
+    int32_t  pending;
+    word  msgsposted;
+    word  security;
+    int32_t  lastread;
+    int32_t  nocalls;
+    int32_t  uploads;
+    int32_t  downloads;
+    int32_t  uploadsk;
+    int32_t  downloadsk;
+    int32_t  todayk;
+    short  elapsed;
+    word  screenlength;
+    byte  lastpwdchange;
+    word  group;
+    word  combinedinfo[200];
+    char  firstdate[9];
+    char  birthdate[9];
+    char  subdate[9];
+    byte  screenwidth;
+    byte  language;
+    byte  dateformat;
+    char  forwardto[36];
+    word  msgarea;
+    word  filearea;
+    char  defaultprotocol;
+    word  filegroup;
+    byte  lastdobcheck;
+    byte  sex;
+    int32_t  xirecord;
+    word  msggroup;
+    byte  freespace[48];
 };
 
 
@@ -106,19 +107,21 @@ struct RA2Users {
 //  ------------------------------------------------------------------
 //  RA2 USERSIDX.BBS record structure
 
-struct RA2UsersIdx {
+struct RA2UsersIdx
+{
 
-  dword  namecrc32;
-  dword  handlecrc32;
+    dword  namecrc32;
+    dword  handlecrc32;
 };
 
 
 //  ------------------------------------------------------------------
 //  RA2 USERSXI.BBS record structure
 
-struct RA2UsersXi {
+struct RA2UsersXi
+{
 
-  byte  freespace[200];
+    byte  freespace[200];
 };
 
 
@@ -129,25 +132,25 @@ class RA2User : public GUser
 {
 public:
 
-  gfile* xifh;
-  gfile* idxfh;
+    gfile* xifh;
+    gfile* idxfh;
 
-  RA2Users*    record;
-  RA2UsersXi*  xirec;
-  RA2UsersIdx* idxrec;
+    RA2Users*    record;
+    RA2UsersXi*  xirec;
+    RA2UsersIdx* idxrec;
 
-  RA2User();
-  ~RA2User();
+    RA2User();
+    ~RA2User();
 
-  int  isvalid();
-  int  read();
+    int  isvalid();
+    int  read();
 
-  void     inctimesposted(int __times);
-  uint32_t lastread();
-  void     lastread(uint32_t __lastread);
-  void     recinit(const char* __name);
+    void     inctimesposted(int __times);
+    uint32_t lastread();
+    void     lastread(uint32_t __lastread);
+    void     recinit(const char* __name);
 
-  void  add(const char* __name);
+    void  add(const char* __name);
 };
 
 

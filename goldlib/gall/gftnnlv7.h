@@ -55,69 +55,76 @@
 //  ------------------------------------------------------------------
 //  Index Node records
 
-struct _V7IndxRef {
+struct _V7IndxRef
+{
 
-  word  indxofs;    // Offset of string into block
-  word  indxlen;    // Length of string
-  long  indxdata;   // Record number of string
-  long  indxptr;    // Block number of lower index
+    word  indxofs;    // Offset of string into block
+    word  indxlen;    // Length of string
+    long  indxdata;   // Record number of string
+    long  indxptr;    // Block number of lower index
 };
 
 
 //  ------------------------------------------------------------------
 //  Leaf Node records
 
-struct _V7LeafRef {
+struct _V7LeafRef
+{
 
-  word  keyofs;   // Offset of string into block
-  word  keylen;   // Length of string
-  long  keyval;   // Pointer to data block
+    word  keyofs;   // Offset of string into block
+    word  keylen;   // Length of string
+    long  keyval;   // Pointer to data block
 };
 
 
 //  ------------------------------------------------------------------
 //  Index records
 
-struct _V7Ndx {
+struct _V7Ndx
+{
 
-  union {
+    union
+    {
 
-    // Control Record
-    struct {
-      word        ctlblksize;   // Blocksize of Index Blocks
-      long        ctlroot;      // Block number of Root
-      long        ctlhiblk;     // Block number of last block
-      long        ctlloleaf;    // Block number of first leaf
-      long        ctlhileaf;    // Block number of last leaf
-      long        ctlfree;      // Head of freelist
-      word        ctllvls;      // Number of index levels
-      word        ctlparity;    // XOR of above fields
-    } ctlblk;
+        // Control Record
+        struct
+        {
+            word        ctlblksize;   // Blocksize of Index Blocks
+            long        ctlroot;      // Block number of Root
+            long        ctlhiblk;     // Block number of last block
+            long        ctlloleaf;    // Block number of first leaf
+            long        ctlhileaf;    // Block number of last leaf
+            long        ctlfree;      // Head of freelist
+            word        ctllvls;      // Number of index levels
+            word        ctlparity;    // XOR of above fields
+        } ctlblk;
 
-    // Index Node records
-    struct {
-      long        indxfirst;    // Pointer to next lower level
-      long        indxblink;    // Pointer to previous link
-      long        indxflink;    // Pointer to next link
-      short       indxcnt;      // Count of Items in block
-      word        indxstr;      // Offset in block of 1st str
-      _V7IndxRef  indxref[20];  // If IndxFirst is not -1, this is INode
-    } inodeblk;
+        // Index Node records
+        struct
+        {
+            long        indxfirst;    // Pointer to next lower level
+            long        indxblink;    // Pointer to previous link
+            long        indxflink;    // Pointer to next link
+            short       indxcnt;      // Count of Items in block
+            word        indxstr;      // Offset in block of 1st str
+            _V7IndxRef  indxref[20];  // If IndxFirst is not -1, this is INode
+        } inodeblk;
 
-    // Leaf Node records
-    struct {
-      long        indxfirst;    // Pointer to next lower level (is -1 in LNodes)
-      long        indxblink;    // Pointer to previous link
-      long        indxflink;    // Pointer to next link
-      short       indxcnt;      // Count of Items in block
-      word        indxstr;      // Offset in block of 1st str
-      _V7LeafRef  leafref[30];
-    } lnodeblk;
+        // Leaf Node records
+        struct
+        {
+            long        indxfirst;    // Pointer to next lower level (is -1 in LNodes)
+            long        indxblink;    // Pointer to previous link
+            long        indxflink;    // Pointer to next link
+            short       indxcnt;      // Count of Items in block
+            word        indxstr;      // Offset in block of 1st str
+            _V7LeafRef  leafref[30];
+        } lnodeblk;
 
-    // Raw index data
-    char rawndx[512];
+        // Raw index data
+        char rawndx[512];
 
-  } ndx;
+    } ndx;
 };
 
 
@@ -125,23 +132,24 @@ struct _V7Ndx {
 //  OPUS 1.20 Version 7 Nodelist structure.
 //  Copyright 1991 Wynn Wagner III and Doug Boone.
 
-struct _V7Data {
+struct _V7Data
+{
 
-  word zone;           // Zone
-  word net;            // Net
-  word node;           // Node
-  word hubnode;        // Point (if nodeflags&V7_B_point) or hubnode number
-  word callcost;       // Phone company's charge
-  word msgfee;         // Amount charged to user for a message
-  word nodeflags;      // Set of flags (see below)
-  byte modemtype;      // RESERVED for modem type
-  byte phone_len;      // Length of phone number
-  byte password_len;   // Length of password
-  byte bname_len;      // Length of system name
-  byte sname_len;      // Length of sysop name
-  byte cname_len;      // Length of location
-  byte pack_len;       // Length of packed data
-  byte baudrate;       // baud rate divided by 300
+    word zone;           // Zone
+    word net;            // Net
+    word node;           // Node
+    word hubnode;        // Point (if nodeflags&V7_B_point) or hubnode number
+    word callcost;       // Phone company's charge
+    word msgfee;         // Amount charged to user for a message
+    word nodeflags;      // Set of flags (see below)
+    byte modemtype;      // RESERVED for modem type
+    byte phone_len;      // Length of phone number
+    byte password_len;   // Length of password
+    byte bname_len;      // Length of system name
+    byte sname_len;      // Length of sysop name
+    byte cname_len;      // Length of location
+    byte pack_len;       // Length of packed data
+    byte baudrate;       // baud rate divided by 300
 };
 
 
@@ -188,19 +196,21 @@ struct _V7Data {
 
 //  ------------------------------------------------------------------
 
-struct _V7Stk {
-  long  blockno;
-  int   node;
+struct _V7Stk
+{
+    long  blockno;
+    int   node;
 };
 
 
 //  ------------------------------------------------------------------
 
-struct _V7DTPCtl {
-  word size;           // Size of this control structure
-  byte Version;        // Version of DTP file (current = 0)
-  byte AllFixSize;     // sizeof (_V7DTPAllLnk)
-  byte AddFixSize;     // sizeof (_V7DTPNodeLnk)
+struct _V7DTPCtl
+{
+    word size;           // Size of this control structure
+    byte Version;        // Version of DTP file (current = 0)
+    byte AllFixSize;     // sizeof (_V7DTPAllLnk)
+    byte AddFixSize;     // sizeof (_V7DTPNodeLnk)
 };
 
 #if defined(GOLD_CANPACK)
@@ -210,76 +220,86 @@ struct _V7DTPCtl {
 
 //  ------------------------------------------------------------------
 
-class ftn_version7_nodelist_index : public ftn_nodelist_index_base {
+class ftn_version7_nodelist_index : public ftn_nodelist_index_base
+{
 
-  int       nfh;
-  int       sfh;
-  int       dfh;
-  int       xfh;
-  int       tfh;
+    int       nfh;
+    int       sfh;
+    int       dfh;
+    int       xfh;
+    int       tfh;
 
-  _V7Ndx    ctl;
-  _V7Ndx    block;
-  _V7DTPCtl dtpctl;
+    _V7Ndx    ctl;
+    _V7Ndx    block;
+    _V7DTPCtl dtpctl;
 
-  int       node;
-  int       inode;
-  long      blockno;
-  bool      use_v7plus;
+    int       node;
+    int       inode;
+    long      blockno;
+    bool      use_v7plus;
 
-  char      key[160];
-  uint      keylength;
+    char      key[160];
+    uint      keylength;
 
-  _V7Stk    state;
+    _V7Stk    state;
 
-  char      searchname[80];
-  ftn_addr  searchaddr;
+    char      searchname[80];
+    ftn_addr  searchaddr;
 
-  void      getindexkey();
-  void      getleafkey();
-  void      getblock();
-  void      getleaf();
+    void      getindexkey();
+    void      getleafkey();
+    void      getblock();
+    void      getleaf();
 
-  const char*     namekey() const;
-  const ftn_addr& addrkey() const;
+    const char*     namekey() const;
+    const ftn_addr& addrkey() const;
 
-  int       namecmp() const;
-  int       addrcmp() const;
+    int       namecmp() const;
+    int       addrcmp() const;
 
-  void      fetchdata();
+    void      fetchdata();
 
-  void      push();
-  void      pop();
-  bool      prevnode();
-  bool      nextnode();
-  void      compare()           { exactmatch = not (namebrowse ? namecmp() : addrcmp()); }
-  bool      search();
+    void      push();
+    void      pop();
+    bool      prevnode();
+    bool      nextnode();
+    void      compare()
+    {
+        exactmatch = not (namebrowse ? namecmp() : addrcmp());
+    }
+    bool      search();
 
 public:
 
-  ftn_version7_nodelist_index();
-  virtual ~ftn_version7_nodelist_index();
+    ftn_version7_nodelist_index();
+    virtual ~ftn_version7_nodelist_index();
 
-  bool can_browse_name() const     { return true; }
-  bool can_browse_address() const  { return true; }
+    bool can_browse_name() const
+    {
+        return true;
+    }
+    bool can_browse_address() const
+    {
+        return true;
+    }
 
-  bool open();
-  void close();
+    bool open();
+    void close();
 
-  bool find(const char* name);
-  bool find(const ftn_addr& addr);
+    bool find(const char* name);
+    bool find(const ftn_addr& addr);
 
-  bool previous();
-  bool next();
+    bool previous();
+    bool next();
 
-  void first();
-  void last();
+    void first();
+    void last();
 
-  void push_state();
-  void pop_state();
+    void push_state();
+    void pop_state();
 
-  const char* index_name() const;
-  const char* nodelist_name() const;
+    const char* index_name() const;
+    const char* nodelist_name() const;
 
 };
 
