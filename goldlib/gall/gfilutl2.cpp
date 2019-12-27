@@ -27,10 +27,10 @@
 
 #include <gfilutil.h>
 #ifndef __HAVE_DRIVES__
-#include <pwd.h>
+    #include <pwd.h>
 #endif
 #ifdef __WIN32__
-#include <windows.h>
+    #include <windows.h>
 #endif
 #include <stdlib.h>
 #include <string.h>

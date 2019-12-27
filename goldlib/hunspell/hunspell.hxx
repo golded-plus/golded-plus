@@ -14,16 +14,16 @@
 #define MAXSHARPS 5
 
 #ifdef W32
-#define DLLTEST2_API __declspec(dllexport)
+    #define DLLTEST2_API __declspec(dllexport)
 #endif
 
 #ifndef _MYSPELLMGR_HXX_
 #define _MYSPELLMGR_HXX_
 
 #ifdef W32
-class DLLTEST2_API Hunspell
+    class DLLTEST2_API Hunspell
 #else
-class Hunspell
+    class Hunspell
 #endif
 {
     AffixMgr*       pAMgr;

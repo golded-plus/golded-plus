@@ -23,7 +23,7 @@
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack(1)
+    #pragma pack(1)
 #endif
 
 //  ------------------------------------------------------------------
@@ -131,8 +131,8 @@ typedef struct
 #undef log
 
 #ifndef begin
-# define begin        {
-# define end          }
+    #define begin        {
+    #define end          }
 #endif
 
 
@@ -267,14 +267,14 @@ end;
 #define  THIS_CTL_VERSION  18       /* PRM structure version number         */
 
 #if      COMPILER
-#           define CTLSIZE 0x7fff   /* Only used when compiling OPUS_CTL    */
-#           define OFS     short
+    #define CTLSIZE 0x7fff   /* Only used when compiling OPUS_CTL    */
+    #define OFS     short
 #elif    UTILS
-#           define CTLSIZE 1   /* Only used when compiling Utilities*/
-#           define OFS     short
+    #define CTLSIZE 1   /* Only used when compiling Utilities*/
+    #define OFS     short
 #else
-#           define CTLSIZE 1
-#           define OFS     char*
+    #define CTLSIZE 1
+    #define OFS     char*
 #endif
 
 
@@ -963,20 +963,20 @@ struct   _usr
 /*--------------------------------------------------------------------------*/
 
 #ifdef _TM_DEFINED
-struct _lu_file
+    struct _lu_file
     begin
     struct _usr user;    /* Copy of user record                           */
-word  baud;          /* Current user's baud (0 == keyboard!)          */
-word  port;          /* Current port #                                */
-word  task;          /* Active task number                            */
-word  mins;          /* User's minutes remaining                      */
-word  msgarea;       /* Which message area user is in                 */
-word  filearea;      /* Which file area user is in                    */
-long   timeoff;      /* UNIX GMT of latest time user stays on till    */
-struct tm tmoff;     /* MS-C 'tm' struct of above but as local time   */
-char   laston[25];   /* Orig Last Call Date as ASCIIZ string because  */
-/* same field in user rec now is curr logon time */
-end;
+    word  baud;          /* Current user's baud (0 == keyboard!)          */
+    word  port;          /* Current port #                                */
+    word  task;          /* Active task number                            */
+    word  mins;          /* User's minutes remaining                      */
+    word  msgarea;       /* Which message area user is in                 */
+    word  filearea;      /* Which file area user is in                    */
+    long   timeoff;      /* UNIX GMT of latest time user stays on till    */
+    struct tm tmoff;     /* MS-C 'tm' struct of above but as local time   */
+    char   laston[25];   /* Orig Last Call Date as ASCIIZ string because  */
+    /* same field in user rec now is curr logon time */
+    end;
 #endif
 
 
@@ -1117,23 +1117,23 @@ end;
 /*--------------------------------------------------------------------------*/
 
 #ifndef ACK
-#define ACK    0x06
+    #define ACK    0x06
 #endif
 
 #ifndef NAK
-#define NAK    0x15
+    #define NAK    0x15
 #endif
 
 #ifndef ENQ
-#define ENQ    0x05
+    #define ENQ    0x05
 #endif
 
 #ifndef YOOHOO
-#define YOOHOO 0x00f1     /* 241 (a prime number, I think) */
+    #define YOOHOO 0x00f1     /* 241 (a prime number, I think) */
 #endif
 
 #ifndef  TSYNC
-#define  TSYNC 0x00ae
+    #define  TSYNC 0x00ae
 #endif
 
 struct   _Hello
@@ -1484,7 +1484,7 @@ struct  _lf
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack()
+    #pragma pack()
 #endif
 
 //  ------------------------------------------------------------------

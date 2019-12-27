@@ -183,18 +183,18 @@ inline void kbdsettickfunc(VfvCP func)
 
 
 #if defined(__USE_NCURSES__)
-// TODO: move L_KEY_BASE то KEY_MAX-9,
-// TODO: change array gkbd_curstable to std::map
-#define L_KEY_BASE	(KEY_RESIZE+12)
-#define L_KEY_AUP     (L_KEY_BASE+0)
-#define L_KEY_ADOWN   (L_KEY_BASE+1)
-#define L_KEY_ARIGHT  (L_KEY_BASE+2)
-#define L_KEY_ALEFT   (L_KEY_BASE+3)
-#define L_KEY_CUP     (L_KEY_BASE+4)
-#define L_KEY_CDOWN   (L_KEY_BASE+5)
-#define L_KEY_CRIGHT  (L_KEY_BASE+6)
-#define L_KEY_CLEFT   (L_KEY_BASE+7)
-#define L_KEY_UNUSED  (L_KEY_BASE+8)
+    // TODO: move L_KEY_BASE то KEY_MAX-9,
+    // TODO: change array gkbd_curstable to std::map
+    #define L_KEY_BASE	(KEY_RESIZE+12)
+    #define L_KEY_AUP     (L_KEY_BASE+0)
+    #define L_KEY_ADOWN   (L_KEY_BASE+1)
+    #define L_KEY_ARIGHT  (L_KEY_BASE+2)
+    #define L_KEY_ALEFT   (L_KEY_BASE+3)
+    #define L_KEY_CUP     (L_KEY_BASE+4)
+    #define L_KEY_CDOWN   (L_KEY_BASE+5)
+    #define L_KEY_CRIGHT  (L_KEY_BASE+6)
+    #define L_KEY_CLEFT   (L_KEY_BASE+7)
+    #define L_KEY_UNUSED  (L_KEY_BASE+8)
 #endif
 
 #endif

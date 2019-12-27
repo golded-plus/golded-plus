@@ -13,7 +13,7 @@
 #include "csutil.hxx"
 
 #if !defined(_MSC_VER)
-using namespace std;
+    using namespace std;
 #endif
 
 AffixMgr::AffixMgr(const char * affpath, HashMgr* ptr)

@@ -28,8 +28,8 @@
 #include <cstdlib>
 #include <gmemdbg.h>
 #if defined(__GOLD_GUI__)
-#include <gvidall.h>
-#include <gvidgui.h>
+    #include <gvidall.h>
+    #include <gvidgui.h>
 #endif
 #undef GCFG_NOPROBOARD
 #include <gedacfg.h>

@@ -31,7 +31,7 @@
 #define __GEGLOB_H
 
 #ifdef HAS_ICONV
-#include <iconv.h>
+    #include <iconv.h>
 #endif
 
 #include "gelang.h"
@@ -136,7 +136,7 @@ extern EscTab* MNETP;
 extern ChsTab* ChsTP;
 
 #ifdef HAS_ICONV
-extern iconv_t iconv_cd;
+    extern iconv_t iconv_cd;
 #endif
 
 //extern char gversion[];

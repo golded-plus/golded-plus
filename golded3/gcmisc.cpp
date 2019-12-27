@@ -226,8 +226,8 @@ const word CRC_STYLECODES        = 0x4CB0;
 //  ------------------------------------------------------------------
 
 #if defined(GCFG_SPELL_INCLUDED)
-const word CRC_SPELL             = 0xB8AE;
-const word CRC_SCERROR           = 0xAB65;
+    const word CRC_SPELL             = 0xB8AE;
+    const word CRC_SCERROR           = 0xAB65;
 #endif
 
 

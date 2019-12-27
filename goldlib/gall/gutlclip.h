@@ -37,13 +37,13 @@
 //  ------------------------------------------------------------------
 
 #if defined(__OS2__)
-#define CLIP_NAME "OS/2 Clipboard"
+    #define CLIP_NAME "OS/2 Clipboard"
 #elif defined(__WIN32__) || defined(__MSDOS__)
-#define CLIP_NAME "Windows Clipboard"
+    #define CLIP_NAME "Windows Clipboard"
 #elif defined(__BEOS__)
-#define CLIP_NAME "BeOS Clipboard"
+    #define CLIP_NAME "BeOS Clipboard"
 #else
-#define CLIP_NAME "Fake Clipboard"
+    #define CLIP_NAME "Fake Clipboard"
 #endif
 
 

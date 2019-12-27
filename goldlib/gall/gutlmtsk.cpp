@@ -30,20 +30,20 @@
 #include <gutlmtsk.h>
 
 #ifdef __OS2__
-#define INCL_BASE
-#include <os2.h>
+    #define INCL_BASE
+    #include <os2.h>
 #endif
 
 #ifdef __WIN32__
-#include <windows.h>
+    #include <windows.h>
 #endif
 
 #ifdef __GNUC__
-#include <unistd.h>
+    #include <unistd.h>
 #endif
 
 #ifdef __BEOS__
-#include <OS.h> // sz: snooze() declaration ...
+    #include <OS.h> // sz: snooze() declaration ...
 #endif
 
 //  ------------------------------------------------------------------

@@ -203,7 +203,7 @@ public:
 const word CUR_GOLDLAST_VER = 0x1A02;
 
 #if defined(GOLD_CANPACK)
-#pragma pack(1)
+    #pragma pack(1)
 #endif
 
 struct ggoldlast
@@ -218,7 +218,7 @@ struct ggoldlast
 };
 
 #if defined(GOLD_CANPACK)
-#pragma pack()
+    #pragma pack()
 #endif
 
 

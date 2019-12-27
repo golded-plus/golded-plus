@@ -28,10 +28,10 @@
 //  ------------------------------------------------------------------
 
 #if defined(_MSC_VER)
-/* C4786: 'identifier' : identifier was truncated to 'number'
-      characters in the debug information
-*/
-#pragma warning(disable: 4786)
+    /* C4786: 'identifier' : identifier was truncated to 'number'
+    characters in the debug information
+    */
+    #pragma warning(disable: 4786)
 #endif
 
 #include <vector>
@@ -42,7 +42,7 @@
 #include <glog.h>
 #include <gdbgerr.h>
 #if !defined(GCFG_NO_MYSPELL)
-#include <hunspell/hunspell.hxx>
+    #include <hunspell/hunspell.hxx>
 #endif
 #include <gespell.h>
 
@@ -1052,9 +1052,9 @@ bool CSpellChecker::IsLoaded(const char *langId)
 //  ------------------------------------------------------------------
 
 #if !defined(GCFG_NO_MSSPELL)
-#undef CHECK_ERROR
-#undef CHECK_NULL
-#undef CHECK_SEC
+    #undef CHECK_ERROR
+    #undef CHECK_NULL
+    #undef CHECK_SEC
 #endif
 
 

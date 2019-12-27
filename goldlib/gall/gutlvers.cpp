@@ -30,18 +30,18 @@
 #include <gutlmisc.h>
 
 #if defined(__WIN32__)
-#include <windows.h>
-#if __VISUAL_C_NOT_LESS(14,0)
-//#if defined(_MSC_VER) && (_MSC_VER >= 1400)
-#include <intrin.h>
-#endif
+    #include <windows.h>
+    #if __VISUAL_C_NOT_LESS(14,0)
+        //#if defined(_MSC_VER) && (_MSC_VER >= 1400)
+        #include <intrin.h>
+    #endif
 #elif defined(__GNUC__)
-#include <sys/utsname.h>
+    #include <sys/utsname.h>
 #endif
 
 #if defined(__BEOS__)
-#include <File.h>
-#include <AppFileInfo.h>
+    #include <File.h>
+    #include <AppFileInfo.h>
 #endif
 
 

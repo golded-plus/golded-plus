@@ -31,7 +31,7 @@
 #include <gwinall.h>
 #include <gutlmtsk.h>
 #ifdef GOLD_MOUSE
-#include <gmoubase.h>
+    #include <gmoubase.h>
 #endif
 
 

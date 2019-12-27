@@ -23,21 +23,21 @@
 
 /* AIX requires this to be the first thing in the file. */
 #if defined _AIX && !defined REGEX_MALLOC
-#pragma alloca
+    #pragma alloca
 #endif
 
 #undef  _GNU_SOURCE
 #define _GNU_SOURCE
 
 #ifdef HAVE_CONFIG_H
-# include <config.h>
+    #include <config.h>
 #endif
 
 #if defined STDC_HEADERS && !defined emacs
-# include <stddef.h>
+    #include <stddef.h>
 #else
-/* We need this for `regex.h', and perhaps for the Emacs include files.  */
-# include <sys/types.h>
+    /* We need this for `regex.h', and perhaps for the Emacs include files.  */
+    #include <sys/types.h>
 #endif
 
 #define WIDE_CHAR_SUPPORT (HAVE_WCTYPE_H && HAVE_WCHAR_H && HAVE_BTOWC)
@@ -45,9 +45,9 @@
 /* For platform which support the ISO C amendement 1 functionality we
 support user defined character classes.  */
 #if defined _LIBC || WIDE_CHAR_SUPPORT
-/* Solaris 2.5 has a bug: <wchar.h> must be included before <wctype.h>.  */
-# include <wchar.h>
-# include <wctype.h>
+    /* Solaris 2.5 has a bug: <wchar.h> must be included before <wctype.h>.  */
+    #include <wchar.h>
+    #include <wctype.h>
 #endif
 
 #ifdef _LIBC
@@ -77,15 +77,15 @@ support user defined character classes.  */
 
 /* This is for other GNU distributions with internationalized messages.  */
 #if HAVE_LIBINTL_H || defined _LIBC
-# include <libintl.h>
+    #include <libintl.h>
 #else
-# define gettext(msgid) (msgid)
+    #define gettext(msgid) (msgid)
 #endif
 
 #ifndef gettext_noop
-/* This define is so xgettext can find the internationalizable
-strings.  */
-# define gettext_noop(String) String
+    /* This define is so xgettext can find the internationalizable
+    strings.  */
+    #define gettext_noop(String) String
 #endif
 
 /* The `emacs' switch turns on certain matching commands
@@ -103,46 +103,46 @@ we can't use the relocating allocator
 even if config.h says that we can.  */
 # undef REL_ALLOC
 
-# if defined STDC_HEADERS || defined _LIBC
-#  include <stdlib.h>
-# else
-char *malloc ();
-char *realloc ();
-# endif
+#if defined STDC_HEADERS || defined _LIBC
+    #include <stdlib.h>
+#else
+    char *malloc ();
+    char *realloc ();
+#endif
 
 /* When used in Emacs's lib-src, we need to get bzero and bcopy somehow.
 If nothing else has been done, use the method below.  */
-# ifdef INHIBIT_STRING_HEADER
-#  if !(defined HAVE_BZERO && defined HAVE_BCOPY)
-#   if !defined bzero && !defined bcopy
-#    undef INHIBIT_STRING_HEADER
-#   endif
-#  endif
-# endif
+#ifdef INHIBIT_STRING_HEADER
+    #if !(defined HAVE_BZERO && defined HAVE_BCOPY)
+        #if !defined bzero && !defined bcopy
+            #undef INHIBIT_STRING_HEADER
+        #endif
+    #endif
+#endif
 
 /* This is the normal way of making sure we have a bcopy and a bzero.
 This is used in most programs--a few other programs avoid this
 by defining INHIBIT_STRING_HEADER.  */
-# ifndef INHIBIT_STRING_HEADER
-#  if defined HAVE_STRING_H || defined STDC_HEADERS || defined _LIBC
-#   include <string.h>
-#   ifndef bzero
-#    ifndef _LIBC
-#     define bzero(s, n)    memset (s, '\0', n)
-#    else
-#     define bzero(s, n)    __bzero (s, n)
-#    endif
-#   endif
-#  else
-#   include <strings.h>
-#   ifndef memcmp
-#    define memcmp(s1, s2, n)   bcmp (s1, s2, n)
-#   endif
-#   ifndef memcpy
-#    define memcpy(d, s, n) (bcopy (s, d, n), (d))
-#   endif
-#  endif
-# endif
+#ifndef INHIBIT_STRING_HEADER
+    #if defined HAVE_STRING_H || defined STDC_HEADERS || defined _LIBC
+        #include <string.h>
+        #ifndef bzero
+            #ifndef _LIBC
+                #define bzero(s, n)    memset (s, '\0', n)
+            #else
+                #define bzero(s, n)    __bzero (s, n)
+            #endif
+        #endif
+    #else
+        #include <strings.h>
+        #ifndef memcmp
+            #define memcmp(s1, s2, n)   bcmp (s1, s2, n)
+        #endif
+        #ifndef memcpy
+            #define memcpy(d, s, n) (bcopy (s, d, n), (d))
+        #endif
+    #endif
+#endif
 
 /* isalpha etc. are used for the character classes.  */
 #include <gctype.h>
@@ -151,15 +151,15 @@ by defining INHIBIT_STRING_HEADER.  */
 
 /* This must be nonzero for the wordchar and notwordchar pattern
 commands in re_match_2.  */
-# ifndef Sword
-#  define Sword 1
-# endif
+#ifndef Sword
+    #define Sword 1
+#endif
 
-# ifdef SWITCH_ENUM_BUG
-#  define SWITCH_ENUM_CAST(x) ((int)(x))
-# else
-#  define SWITCH_ENUM_CAST(x) (x)
-# endif
+#ifdef SWITCH_ENUM_BUG
+    #define SWITCH_ENUM_CAST(x) ((int)(x))
+#else
+    #define SWITCH_ENUM_CAST(x) (x)
+#endif
 
 /* How many characters in the character set.  */
 # define CHAR_SET_SIZE 256
@@ -233,14 +233,14 @@ inline bool ISASCII(char)
 #endif
 
 #ifdef isblank
-# define ISBLANK(c) (ISASCII (c) && isblank (c))
+    #define ISBLANK(c) (ISASCII (c) && isblank (c))
 #else
-# define ISBLANK(c) ((c) == ' ' || (c) == '\t')
+    #define ISBLANK(c) ((c) == ' ' || (c) == '\t')
 #endif
 #ifdef isgraph
-# define ISGRAPH(c) (ISASCII (c) && isgraph (c))
+    #define ISGRAPH(c) (ISASCII (c) && isgraph (c))
 #else
-# define ISGRAPH(c) (ISASCII (c) && isprint (c) && !isspace (c))
+    #define ISGRAPH(c) (ISASCII (c) && isprint (c) && !isspace (c))
 #endif
 
 #undef ISPRINT
@@ -256,7 +256,7 @@ inline bool ISASCII(char)
 #define ISXDIGIT(c) (ISASCII (c) && isxdigit  (c))
 
 #ifndef NULL
-# define NULL (void *)0
+    #define NULL (void *)0
 #endif
 
 /* We remove any previous definition of `SIGN_EXTEND_CHAR',
@@ -265,10 +265,10 @@ machines, compilers, `char' and `unsigned char' argument types.
 (Per Bothner suggested the basic approach.)  */
 #undef SIGN_EXTEND_CHAR
 #if __STDC__
-# define SIGN_EXTEND_CHAR(c) ((signed char) (c))
+    #define SIGN_EXTEND_CHAR(c) ((signed char) (c))
 #else  /* not __STDC__ */
-/* As in Harbison and Steele.  */
-# define SIGN_EXTEND_CHAR(c) ((((unsigned char) (c)) ^ 128) - 128)
+    /* As in Harbison and Steele.  */
+    #define SIGN_EXTEND_CHAR(c) ((((unsigned char) (c)) ^ 128) - 128)
 #endif
 
 /* Should we use malloc or alloca?  If REGEX_MALLOC is not defined, we
@@ -290,21 +290,21 @@ function it is called in.  */
 #else /* not REGEX_MALLOC  */
 
 /* Emacs already defines alloca, sometimes.  */
-# ifndef alloca
+#ifndef alloca
 
-/* Make alloca work the best possible way.  */
-#  ifdef __GNUC__
-#   define alloca __builtin_alloca
-#  else /* not __GNUC__ */
-#   if HAVE_ALLOCA_H
-#    include <alloca.h>
-#   endif /* HAVE_ALLOCA_H */
-#   if HAVE_MALLOC_H
-#    include <malloc.h>
-#   endif /* HAVE_MALLOC_H */
-#  endif /* not __GNUC__ */
+    /* Make alloca work the best possible way.  */
+    #ifdef __GNUC__
+        #define alloca __builtin_alloca
+    #else /* not __GNUC__ */
+        #if HAVE_ALLOCA_H
+            #include <alloca.h>
+        #endif /* HAVE_ALLOCA_H */
+        #if HAVE_MALLOC_H
+            #include <malloc.h>
+        #endif /* HAVE_MALLOC_H */
+    #endif /* not __GNUC__ */
 
-# endif /* not alloca */
+#endif /* not alloca */
 
 # define REGEX_ALLOCATE alloca
 
@@ -580,7 +580,7 @@ re_set_syntax (reg_syntax_t syntax)
     return ret;
 }
 #ifdef _LIBC
-weak_alias (__re_set_syntax, re_set_syntax)
+    weak_alias (__re_set_syntax, re_set_syntax)
 #endif
 
 /* This table gives an error message for each of the error codes listed
@@ -634,7 +634,7 @@ faith that they will not malloc.  */
 /* When using GNU C, we are not REALLY using the C alloca, no matter
 what config.h may say.  So don't take precautions for it.  */
 #ifdef __GNUC__
-# undef C_ALLOCA
+    #undef C_ALLOCA
 #endif
 
 /* The match routines may not allocate if (1) they would do it with malloc
@@ -643,7 +643,7 @@ Note that if REL_ALLOC is defined, matching would not use malloc for the
 failure stack, but we would still use it for the register vectors;
 so REL_ALLOC should not affect this.  */
 #if (defined C_ALLOCA || defined REGEX_MALLOC) && defined emacs
-# undef MATCH_MAY_ALLOCATE
+    #undef MATCH_MAY_ALLOCATE
 #endif
 
 
@@ -656,7 +656,7 @@ REGEX_ALLOCATE_STACK.  */
 when matching.  If this number is exceeded, we allocate more
 space, so it is not a hard limit.  */
 #ifndef INIT_FAILURE_ALLOC
-# define INIT_FAILURE_ALLOC 5
+    #define INIT_FAILURE_ALLOC 5
 #endif
 
 /* Roughly the maximum number of failure points on the stack.  Would be
@@ -666,13 +666,13 @@ change it ourselves.  */
 
 #ifdef INT_IS_16BIT
 
-# if defined MATCH_MAY_ALLOCATE
-/* 4400 was enough to cause a crash on Alpha OSF/1,
-whose default stack limit is 2mb.  */
-long int re_max_failures = 4000;
-# else
-long int re_max_failures = 2000;
-# endif
+#if defined MATCH_MAY_ALLOCATE
+    /* 4400 was enough to cause a crash on Alpha OSF/1,
+    whose default stack limit is 2mb.  */
+    long int re_max_failures = 4000;
+#else
+    long int re_max_failures = 2000;
+#endif
 
 union fail_stack_elt
 {
@@ -691,13 +691,13 @@ typedef struct
 
 #else /* not INT_IS_16BIT */
 
-# if defined MATCH_MAY_ALLOCATE
-/* 4400 was enough to cause a crash on Alpha OSF/1,
-whose default stack limit is 2mb.  */
-int re_max_failures = 20000;
-# else
-int re_max_failures = 2000;
-# endif
+#if defined MATCH_MAY_ALLOCATE
+    /* 4400 was enough to cause a crash on Alpha OSF/1,
+    whose default stack limit is 2mb.  */
+    int re_max_failures = 20000;
+#else
+    int re_max_failures = 2000;
+#endif
 
 union fail_stack_elt
 {
@@ -1082,14 +1082,14 @@ MSC and drop MAX_BUF_SIZE a bit.  Otherwise you may end up
 reallocating to 0 bytes.  Such thing is not going to work too well.
 You have been warned!!  */
 #if defined _MSC_VER  && !defined WIN32
-/* Microsoft C 16-bit versions limit malloc to approx 65512 bytes.
-The REALLOC define eliminates a flurry of conversion warnings,
-but is not required. */
-# define MAX_BUF_SIZE  65500L
-# define REALLOC(p,s) realloc ((p), (size_t) (s))
+    /* Microsoft C 16-bit versions limit malloc to approx 65512 bytes.
+    The REALLOC define eliminates a flurry of conversion warnings,
+    but is not required. */
+    #define MAX_BUF_SIZE  65500L
+    #define REALLOC(p,s) realloc ((p), (size_t) (s))
 #else
-# define MAX_BUF_SIZE (1L << 16)
-# define REALLOC(p,s) realloc ((p), (s))
+    #define MAX_BUF_SIZE (1L << 16)
+    #define REALLOC(p,s) realloc ((p), (s))
 #endif
 
 /* Extend the buffer by twice its current size via realloc and
@@ -1192,19 +1192,19 @@ typedef struct
 #if defined _LIBC || WIDE_CHAR_SUPPORT
 /* The GNU C library provides support for user-defined character classes
 and the functions from ISO C amendement 1.  */
-# ifdef CHARCLASS_NAME_MAX
-#  define CHAR_CLASS_MAX_LENGTH CHARCLASS_NAME_MAX
-# else
-/* This shouldn't happen but some implementation might still have this
-problem.  Use a reasonable default value.  */
-#  define CHAR_CLASS_MAX_LENGTH 256
-# endif
+#ifdef CHARCLASS_NAME_MAX
+    #define CHAR_CLASS_MAX_LENGTH CHARCLASS_NAME_MAX
+#else
+    /* This shouldn't happen but some implementation might still have this
+    problem.  Use a reasonable default value.  */
+    #define CHAR_CLASS_MAX_LENGTH 256
+#endif
 
-# ifdef _LIBC
-#  define IS_CHAR_CLASS(string) __wctype (string)
-# else
-#  define IS_CHAR_CLASS(string) wctype (string)
-# endif
+#ifdef _LIBC
+    #define IS_CHAR_CLASS(string) __wctype (string)
+#else
+    #define IS_CHAR_CLASS(string) wctype (string)
+#endif
 #else
 # define CHAR_CLASS_MAX_LENGTH  6 /* Namely, `xdigit'.  */
 
@@ -2873,7 +2873,7 @@ done:
     return 0;
 } /* re_compile_fastmap */
 #ifdef _LIBC
-weak_alias (__re_compile_fastmap, re_compile_fastmap)
+    weak_alias (__re_compile_fastmap, re_compile_fastmap)
 #endif
 
 /* Set REGS to hold NUM_REGS registers, storing them in STARTS and
@@ -2911,7 +2911,7 @@ re_set_registers (struct re_pattern_buffer *bufp,
     }
 }
 #ifdef _LIBC
-weak_alias (__re_set_registers, re_set_registers)
+    weak_alias (__re_set_registers, re_set_registers)
 #endif
 
 /* Searching routines.  */
@@ -2931,7 +2931,7 @@ re_search (struct re_pattern_buffer *bufp,
                         regs, size);
 }
 #ifdef _LIBC
-weak_alias (__re_search, re_search)
+    weak_alias (__re_search, re_search)
 #endif
 
 
@@ -3095,7 +3095,7 @@ advance:
     return -1;
 } /* re_search_2 */
 #ifdef _LIBC
-weak_alias (__re_search_2, re_search_2)
+    weak_alias (__re_search_2, re_search_2)
 #endif
 
 /* This converts PTR, a pointer into one of the search strings `string1'
@@ -3198,9 +3198,9 @@ re_match (struct re_pattern_buffer *bufp,
 # endif
     return result;
 }
-# ifdef _LIBC
-weak_alias (__re_match, re_match)
-# endif
+#ifdef _LIBC
+    weak_alias (__re_match, re_match)
+#endif
 #endif /* not emacs */
 
 static bool group_match_null_string_p(unsigned char **p, unsigned char *end,
@@ -3245,7 +3245,7 @@ re_match_2 (struct re_pattern_buffer *bufp,
     return result;
 }
 #ifdef _LIBC
-weak_alias (__re_match_2, re_match_2)
+    weak_alias (__re_match_2, re_match_2)
 #endif
 
 /* This is a separate function so that we can force an alloca cleanup
@@ -4756,7 +4756,7 @@ re_compile_pattern (const char *pattern,
     return gettext (re_error_msgid[(int) ret]);
 }
 #ifdef _LIBC
-weak_alias (__re_compile_pattern, re_compile_pattern)
+    weak_alias (__re_compile_pattern, re_compile_pattern)
 #endif
 
 /* Entry points compatible with 4.2 BSD regex library.  We don't define
@@ -4769,10 +4769,10 @@ static struct re_pattern_buffer re_comp_buf;
 
 char *
 #ifdef _LIBC
-/* Make these definitions weak in libc, so POSIX programs can redefine
-these names if they don't use our functions, and still use
-regcomp/regexec below without link errors.  */
-weak_function
+    /* Make these definitions weak in libc, so POSIX programs can redefine
+    these names if they don't use our functions, and still use
+    regcomp/regexec below without link errors.  */
+    weak_function
 #endif
 re_comp (s)
 const char *s;
@@ -4816,7 +4816,7 @@ const char *s;
 
 int
 #ifdef _LIBC
-weak_function
+    weak_function
 #endif
 re_exec (s)
 const char *s;
@@ -4940,7 +4940,7 @@ regcomp (regex_t *preg,
     return (int) ret;
 }
 #ifdef _LIBC
-weak_alias (__regcomp, regcomp)
+    weak_alias (__regcomp, regcomp)
 #endif
 
 
@@ -5017,7 +5017,7 @@ regexec (const regex_t *preg,
     return ret >= 0 ? (int) REG_NOERROR : (int) REG_NOMATCH;
 }
 #ifdef _LIBC
-weak_alias (__regexec, regexec)
+    weak_alias (__regexec, regexec)
 #endif
 
 
@@ -5061,7 +5061,7 @@ regerror (int errcode, const regex_t *preg, char *errbuf, size_t errbuf_size)
     return msg_size;
 }
 #ifdef _LIBC
-weak_alias (__regerror, regerror)
+    weak_alias (__regerror, regerror)
 #endif
 
 
@@ -5087,7 +5087,7 @@ regfree (regex_t *preg)
     preg->translate = NULL;
 }
 #ifdef _LIBC
-weak_alias (__regfree, regfree)
+    weak_alias (__regfree, regfree)
 #endif
 
 #endif /* not emacs  */

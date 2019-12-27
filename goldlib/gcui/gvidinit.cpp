@@ -35,29 +35,29 @@
 #include <gmemdbg.h>
 #include <gstrall.h>
 #if defined(__WATCOMC__) || defined(__DJGPP__)
-#include <conio.h>
+    #include <conio.h>
 #endif
 #include <gvidall.h>
 
 #if defined(__OS2__)
-#define INCL_BASE
-#include <os2.h>
+    #define INCL_BASE
+    #include <os2.h>
 #endif
 
 #if defined(__WIN32__)
-#include <windows.h>
+    #include <windows.h>
 #endif
 
 #if !defined(__USE_NCURSES__) && defined(__UNIX__)
-#include <sys/ioctl.h>
-#include <termios.h>
-#include <unistd.h>
-#include <errno.h>
+    #include <sys/ioctl.h>
+    #include <termios.h>
+    #include <unistd.h>
+    #include <errno.h>
 #endif
 
 #if defined(__DJGPP__)
-#include <sys/farptr.h>
-#include <go32.h>
+    #include <sys/farptr.h>
+    #include <go32.h>
 #endif
 
 
@@ -65,20 +65,20 @@
 //  Check if Borland C++ for OS/2 1.0 header has been fixed
 
 #if defined(__OS2__) && defined(__BORLANDC__)
-#if __BORLANDC__ <= 0x400
-#ifndef BCOS2_BSESUB_FIXED
-#error There is a bug in the BSESUB.H header. Please fix it.
-//
-// Add/change the following in BSESUB.H:
-//
-// #define BCOS2_BSESUB_FIXED
-// APIRET16  APIENTRY16    VioGetState (PVOID16 pState, HVIO hvio);
-// APIRET16  APIENTRY16    VioSetState (PVOID16 pState, HVIO hvio);
-//
-// Borland forgot this (was only PVOID)      ^^
-//
-#endif
-#endif
+    #if __BORLANDC__ <= 0x400
+        #ifndef BCOS2_BSESUB_FIXED
+            #error There is a bug in the BSESUB.H header. Please fix it.
+            //
+            // Add/change the following in BSESUB.H:
+            //
+            // #define BCOS2_BSESUB_FIXED
+            // APIRET16  APIENTRY16    VioGetState (PVOID16 pState, HVIO hvio);
+            // APIRET16  APIENTRY16    VioSetState (PVOID16 pState, HVIO hvio);
+            //
+            // Borland forgot this (was only PVOID)      ^^
+            //
+        #endif
+    #endif
 #endif
 
 
@@ -89,24 +89,24 @@ GVid *gvid;
 
 #if defined(__USE_NCURSES__)
 
-// add statics here
+    // add statics here
 
 #elif defined(__UNIX__)
 
-int gvid_stdout = -1;
-const char* gvid_acs_enable;
-const char* gvid_acs_disable;
+    int gvid_stdout = -1;
+    const char* gvid_acs_enable;
+    const char* gvid_acs_disable;
 
-void _vputx(int row, int col, int atr, char chr, uint len);
-void gvid_printf(const char* fmt, ...) __attribute__ ((format (printf, 1, 2)));
+    void _vputx(int row, int col, int atr, char chr, uint len);
+    void gvid_printf(const char* fmt, ...) __attribute__ ((format (printf, 1, 2)));
 
 #elif defined(__WIN32__)
 
-HANDLE gvid_hout = INVALID_HANDLE_VALUE;
+    HANDLE gvid_hout = INVALID_HANDLE_VALUE;
 
 #elif defined(__MSDOS__)
 
-int __gdvdetected = false;
+    int __gdvdetected = false;
 
 #endif
 

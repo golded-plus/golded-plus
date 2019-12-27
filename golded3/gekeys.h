@@ -200,7 +200,7 @@ const gkey KK_EditSCodeItalic      = 0xFF0A;
 const gkey KK_EditSCodeUnderline   = 0xFF0B;
 const gkey KK_EditSCodeReverse     = 0xFF0C;
 #if defined(GCFG_SPELL_INCLUDED)
-const gkey KK_EditSCheckerMenu     = 0xFF0D;
+    const gkey KK_EditSCheckerMenu     = 0xFF0D;
 #endif
 const gkey KK_EditDrawLines        = 0xFF0E;
 // = 0xFE0F;

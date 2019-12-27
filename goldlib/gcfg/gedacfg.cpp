@@ -29,8 +29,8 @@
 #include <gmemdbg.h>
 #include <gstrall.h>
 #if defined(__GOLD_GUI__)
-#include <gvidall.h>
-#include <gvidgui.h>
+    #include <gvidall.h>
+    #include <gvidgui.h>
 #endif
 #include <gedacfg.h>
 

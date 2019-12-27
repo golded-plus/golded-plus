@@ -41,34 +41,34 @@
 #include "lzh.h"
 
 #ifdef SMBEXPORT
-#undef SMBEXPORT
+    #undef SMBEXPORT
 #endif
 
 #ifndef __FLAT__
-#define __FLAT__    /* only supporting 32-bit targets now */
+    #define __FLAT__    /* only supporting 32-bit targets now */
 #endif
 
 #ifdef _WIN32
-#ifdef __BORLANDC__
-#define SMBCALL __stdcall
-#else
-#define SMBCALL
-#endif
-#if defined(SMB_IMPORTS) || defined(SMB_EXPORTS)
-#if defined(SMB_IMPORTS)
-#define SMBEXPORT __declspec( dllimport )
-#else
-#define SMBEXPORT __declspec( dllexport )
-#endif
-#else   /* self-contained executable */
-#define SMBEXPORT
-#endif
+    #ifdef __BORLANDC__
+        #define SMBCALL __stdcall
+    #else
+        #define SMBCALL
+    #endif
+    #if defined(SMB_IMPORTS) || defined(SMB_EXPORTS)
+        #if defined(SMB_IMPORTS)
+            #define SMBEXPORT __declspec( dllimport )
+        #else
+            #define SMBEXPORT __declspec( dllexport )
+        #endif
+    #else   /* self-contained executable */
+        #define SMBEXPORT
+    #endif
 #elif defined __unix__
-#define SMBCALL
-#define SMBEXPORT
+    #define SMBCALL
+    #define SMBEXPORT
 #else
-#define SMBCALL
-#define SMBEXPORT
+    #define SMBCALL
+    #define SMBEXPORT
 #endif
 
 #include "smbdefs.h"
@@ -157,66 +157,66 @@ SMBEXPORT void  SMBCALL smb_clearerr(FILE* fp);
 #endif
 
 #ifdef __WATCOMC__  /* Use MSC standard (prepended underscore) */
-#pragma aux smb_ver             "_*"
-#pragma aux smb_lib_ver         "_*"
-#pragma aux smb_open            "_*"
-#pragma aux smb_close           "_*"
-#pragma aux smb_open_da         "_*"
-#pragma aux smb_close_da        "_*"
-#pragma aux smb_open_ha         "_*"
-#pragma aux smb_close_ha        "_*"
-#pragma aux smb_create          "_*"
-#pragma aux smb_stack           "_*"
-#pragma aux smb_trunchdr        "_*"
-#pragma aux smb_locksmbhdr      "_*"
-#pragma aux smb_getstatus       "_*"
-#pragma aux smb_putstatus       "_*"
-#pragma aux smb_unlocksmbhdr    "_*"
-#pragma aux smb_getmsgidx       "_*"
-#pragma aux smb_getfirstidx     "_*"
-#pragma aux smb_getlastidx      "_*"
-#pragma aux smb_getmsghdrlen    "_*"
-#pragma aux smb_getmsgdatlen    "_*"
-#pragma aux smb_lockmsghdr      "_*"
-#pragma aux smb_getmsghdr       "_*"
-#pragma aux smb_unlockmsghdr    "_*"
-#pragma aux smb_addcrc          "_*"
-#pragma aux smb_hfield          "_*"
-#pragma aux smb_dfield          "_*"
-#pragma aux smb_addmsghdr       "_*"
-#pragma aux smb_putmsg          "_*"
-#pragma aux smb_putmsgidx       "_*"
-#pragma aux smb_putmsghdr       "_*"
-#pragma aux smb_freemsgmem      "_*"
-#pragma aux smb_hdrblocks       "_*"
-#pragma aux smb_datblocks       "_*"
-#pragma aux smb_allochdr        "_*"
-#pragma aux smb_fallochdr       "_*"
-#pragma aux smb_hallochdr       "_*"
-#pragma aux smb_allocdat        "_*"
-#pragma aux smb_fallocdat       "_*"
-#pragma aux smb_hallocdat       "_*"
-#pragma aux smb_incdat          "_*"
-#pragma aux smb_freemsg         "_*"
-#pragma aux smb_freemsgdat      "_*"
-#pragma aux smb_freemsghdr      "_*"
-#pragma aux smb_getmsgtxt       "_*"
-#pragma aux smb_freemsgtxt      "_*"
-#pragma aux smb_feof            "_*"
-#pragma aux smb_ferror          "_*"
-#pragma aux smb_fflush          "_*"
-#pragma aux smb_fgetc           "_*"
-#pragma aux smb_fputc           "_*"
-#pragma aux smb_fseek           "_*"
-#pragma aux smb_ftell           "_*"
-#pragma aux smb_fread           "_*"
-#pragma aux smb_fwrite          "_*"
-#pragma aux smb_fgetlength      "_*"
-#pragma aux smb_fsetlength      "_*"
-#pragma aux smb_rewind          "_*"
-#pragma aux smb_clearerr        "_*"
-#pragma aux lzh_encode          "_*"
-#pragma aux lzh_decode          "_*"
+    #pragma aux smb_ver             "_*"
+    #pragma aux smb_lib_ver         "_*"
+    #pragma aux smb_open            "_*"
+    #pragma aux smb_close           "_*"
+    #pragma aux smb_open_da         "_*"
+    #pragma aux smb_close_da        "_*"
+    #pragma aux smb_open_ha         "_*"
+    #pragma aux smb_close_ha        "_*"
+    #pragma aux smb_create          "_*"
+    #pragma aux smb_stack           "_*"
+    #pragma aux smb_trunchdr        "_*"
+    #pragma aux smb_locksmbhdr      "_*"
+    #pragma aux smb_getstatus       "_*"
+    #pragma aux smb_putstatus       "_*"
+    #pragma aux smb_unlocksmbhdr    "_*"
+    #pragma aux smb_getmsgidx       "_*"
+    #pragma aux smb_getfirstidx     "_*"
+    #pragma aux smb_getlastidx      "_*"
+    #pragma aux smb_getmsghdrlen    "_*"
+    #pragma aux smb_getmsgdatlen    "_*"
+    #pragma aux smb_lockmsghdr      "_*"
+    #pragma aux smb_getmsghdr       "_*"
+    #pragma aux smb_unlockmsghdr    "_*"
+    #pragma aux smb_addcrc          "_*"
+    #pragma aux smb_hfield          "_*"
+    #pragma aux smb_dfield          "_*"
+    #pragma aux smb_addmsghdr       "_*"
+    #pragma aux smb_putmsg          "_*"
+    #pragma aux smb_putmsgidx       "_*"
+    #pragma aux smb_putmsghdr       "_*"
+    #pragma aux smb_freemsgmem      "_*"
+    #pragma aux smb_hdrblocks       "_*"
+    #pragma aux smb_datblocks       "_*"
+    #pragma aux smb_allochdr        "_*"
+    #pragma aux smb_fallochdr       "_*"
+    #pragma aux smb_hallochdr       "_*"
+    #pragma aux smb_allocdat        "_*"
+    #pragma aux smb_fallocdat       "_*"
+    #pragma aux smb_hallocdat       "_*"
+    #pragma aux smb_incdat          "_*"
+    #pragma aux smb_freemsg         "_*"
+    #pragma aux smb_freemsgdat      "_*"
+    #pragma aux smb_freemsghdr      "_*"
+    #pragma aux smb_getmsgtxt       "_*"
+    #pragma aux smb_freemsgtxt      "_*"
+    #pragma aux smb_feof            "_*"
+    #pragma aux smb_ferror          "_*"
+    #pragma aux smb_fflush          "_*"
+    #pragma aux smb_fgetc           "_*"
+    #pragma aux smb_fputc           "_*"
+    #pragma aux smb_fseek           "_*"
+    #pragma aux smb_ftell           "_*"
+    #pragma aux smb_fread           "_*"
+    #pragma aux smb_fwrite          "_*"
+    #pragma aux smb_fgetlength      "_*"
+    #pragma aux smb_fsetlength      "_*"
+    #pragma aux smb_rewind          "_*"
+    #pragma aux smb_clearerr        "_*"
+    #pragma aux lzh_encode          "_*"
+    #pragma aux lzh_decode          "_*"
 #endif  /* Watcom */
 
 

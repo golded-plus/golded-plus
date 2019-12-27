@@ -55,26 +55,26 @@ int vsnprintf( char *buffer, size_t sizeOfBuffer, const char *format, va_list ar
 #endif
 
 #ifndef HAVE_SNPRINTF
-# if defined(HAVE__SNPRINTF)
-#  define snprintf _snprintf
-#  define HAVE_SNPRINTF 1
-# endif
+    #if defined(HAVE__SNPRINTF)
+        #define snprintf _snprintf
+        #define HAVE_SNPRINTF 1
+    #endif
 #endif
 #ifndef HAVE_VSNPRINTF
-# if defined(HAVE__VSNPRINTF)
-#  define vsnprintf _vsnprintf
-#  define HAVE_VSNPRINTF 1
-# endif
+    #if defined(HAVE__VSNPRINTF)
+        #define vsnprintf _vsnprintf
+        #define HAVE_VSNPRINTF 1
+    #endif
 #endif
 
 #if !defined(HAVE_SNPRINTF) || !defined(HAVE_VSNPRINTF)
-# include "snprintf.c"
-# if !defined(HAVE__SNPRINTF)
-#  define HAVE_SNPRINTF 1
-# endif
-# if !defined(HAVE__VSNPRINTF)
-#  define HAVE_VSNPRINTF 1
-# endif
+    #include "snprintf.c"
+    #if !defined(HAVE__SNPRINTF)
+        #define HAVE_SNPRINTF 1
+    #endif
+    #if !defined(HAVE__VSNPRINTF)
+        #define HAVE_VSNPRINTF 1
+    #endif
 #endif
 
 //--------------------------------------------------------------------

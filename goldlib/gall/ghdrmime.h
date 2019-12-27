@@ -23,15 +23,15 @@
 //  ------------------------------------------------------------------
 
 #ifndef __ghdrmime_h
-#define __ghdrmime_h
+    #define __ghdrmime_h
 
 
-//  ------------------------------------------------------------------
+    //  ------------------------------------------------------------------
 
-const char* mime_crack_encoded_word(const char* encoded_word, char* charset, char* encoding, char* text);
+    const char* mime_crack_encoded_word(const char* encoded_word, char* charset, char* encoding, char* text);
 
 
-//  ------------------------------------------------------------------
+    //  ------------------------------------------------------------------
 
 #endif
 

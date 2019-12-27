@@ -31,11 +31,11 @@
 #include <gutlos.h>
 #include <gmemi86.h>
 #ifdef __DJGPP__
-#include <dos.h>
-#include <unistd.h>
-#include <dpmi.h>
-#include <go32.h>
-#include <sys/farptr.h>
+    #include <dos.h>
+    #include <unistd.h>
+    #include <dpmi.h>
+    #include <go32.h>
+    #include <sys/farptr.h>
 #endif
 
 

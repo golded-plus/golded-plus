@@ -36,17 +36,17 @@
 #if defined(GCFG_SPELL_INCLUDED)
 
 #if defined (__WIN32__)
-#include <windows.h>
+    #include <windows.h>
 #else
-#include <sys/param.h>
+    #include <sys/param.h>
 #endif
 
 #ifndef _MAX_PATH
-#define _MAX_PATH 256
+    #define _MAX_PATH 256
 #endif
 
 #ifndef PATH_MAX
-#define PATH_MAX _MAX_PATH
+    #define PATH_MAX _MAX_PATH
 #endif
 
 const uint SCHECKET_TYPE_UNKNOWN = 0;

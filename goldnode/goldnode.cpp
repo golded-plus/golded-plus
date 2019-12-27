@@ -51,7 +51,7 @@
 #define GOLDNODE_STATS 1
 
 #ifdef GOLDNODE_STATS
-#include <math.h>
+    #include <math.h>
 #endif
 
 #include <golded3.h>

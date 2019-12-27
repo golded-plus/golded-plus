@@ -7,7 +7,7 @@
 #include "dictmgr.hxx"
 
 #if !defined(_MSC_VER)
-using namespace std;
+    using namespace std;
 #endif
 
 DictMgr::DictMgr(const char * dictpath, const char * etype)

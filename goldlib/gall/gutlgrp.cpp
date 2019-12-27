@@ -25,7 +25,7 @@
 //  ------------------------------------------------------------------
 
 #ifdef __GNUG__
-#pragma implementation "gutlgrp.h"
+    #pragma implementation "gutlgrp.h"
 #endif
 
 #include <cstdlib>

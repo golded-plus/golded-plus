@@ -3,10 +3,10 @@
 
 /* if not defined by make */
 #if !defined(VERSION)
-#define VERSION "0.5"
+    #define VERSION "0.5"
 #endif
 #if !defined(PATCH)
-#define PATCH   "15"
+    #define PATCH   "15"
 #endif
 
 /* Define to `unsigned' if <sys/types.h> doesn't define.  */
@@ -17,7 +17,7 @@
 
 /* Define if you can safely include both <sys/time.h> and <time.h>.  */
 #ifndef _MSC_VER
-#define TIME_WITH_SYS_TIME 1
+    #define TIME_WITH_SYS_TIME 1
 #endif
 
 /*
@@ -66,7 +66,7 @@
 
 /* Define if you have the <io.h> header file.  */
 #ifdef _MSC_VER
-#define HAVE_IO_H
+    #define HAVE_IO_H
 #endif
 
 /* Define if you have the <malloc.h> header file.  */
@@ -80,12 +80,12 @@
 
 /* Define if you have the <sys/time.h> header file.  */
 #ifndef _MSC_VER
-#define HAVE_SYS_TIME_H 1
+    #define HAVE_SYS_TIME_H 1
 #endif
 
 /* Define if you have the <unistd.h> header file.  */
 #ifndef _MSC_VER
-#define HAVE_UNISTD_H 1
+    #define HAVE_UNISTD_H 1
 #endif
 
 /* Define if you have the <varargs.h> header file.  */

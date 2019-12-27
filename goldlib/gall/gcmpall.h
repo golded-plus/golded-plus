@@ -31,94 +31,94 @@
 /*  Check if type "char" is unsigned or signed                      */
 
 #if '\x80' < 0
-#error Goldware Library requires -funsigned-char to operate properly
+    #error Goldware Library requires -funsigned-char to operate properly
 #endif
 
 
 /*  --------------------------------------------------------------- */
 
 #if !defined(__MSDOS__)
-#if defined(MSDOS)
-#define __MSDOS__ MSDOS
-#elif defined(__DOS__)
-#define __MSDOS__ __DOS__
-#endif
+    #if defined(MSDOS)
+        #define __MSDOS__ MSDOS
+    #elif defined(__DOS__)
+        #define __MSDOS__ __DOS__
+    #endif
 #endif
 
 #if !defined(__OS2__)
-#if defined(OS2)
-#define __OS2__ OS2
-#elif defined(__EMX__) && !defined(__WIN32__)
-#define __OS2__ __EMX__
-#endif
+    #if defined(OS2)
+        #define __OS2__ OS2
+    #elif defined(__EMX__) && !defined(__WIN32__)
+        #define __OS2__ __EMX__
+    #endif
 #endif
 
 #if !defined(__WIN32__)
-#if defined(_WIN32)
-#define __WIN32__ _WIN32
-#elif defined(__NT__)
-#define __WIN32__ __NT__
-#elif defined(WIN32)
-#define __WIN32__ WIN32
-#endif
+    #if defined(_WIN32)
+        #define __WIN32__ _WIN32
+    #elif defined(__NT__)
+        #define __WIN32__ __NT__
+    #elif defined(WIN32)
+        #define __WIN32__ WIN32
+    #endif
 #endif
 
 #if !defined(__UNIX__)
-#if defined(unix) || defined(__unix__) || defined(__unix)
-#define __UNIX__
-#endif
+    #if defined(unix) || defined(__unix__) || defined(__unix)
+        #define __UNIX__
+    #endif
 #endif
 #if !defined(__UNIX__)
-#if defined(__linux__)
-#define __UNIX__ __linux__
-#endif
-#if defined(__FreeBSD__)
-#define __UNIX__ __FreeBSD__
-#endif
-#if defined(__OpenBSD__)
-#define __UNIX__ __OpenBSD__
-#endif
-#if defined(__DragonFly__)
-#define __UNIX__ __DragonFly__
-#endif
-#if defined(__BEOS__)
-#define __UNIX__ __BEOS__
-#endif
-#if defined(__QNXNTO__)
-#define __UNIX__ __QNXNTO__
-#endif
-#if defined(__APPLE__)
-#define __UNIX__ __APPLE__
-#endif
+    #if defined(__linux__)
+        #define __UNIX__ __linux__
+    #endif
+    #if defined(__FreeBSD__)
+        #define __UNIX__ __FreeBSD__
+    #endif
+    #if defined(__OpenBSD__)
+        #define __UNIX__ __OpenBSD__
+    #endif
+    #if defined(__DragonFly__)
+        #define __UNIX__ __DragonFly__
+    #endif
+    #if defined(__BEOS__)
+        #define __UNIX__ __BEOS__
+    #endif
+    #if defined(__QNXNTO__)
+        #define __UNIX__ __QNXNTO__
+    #endif
+    #if defined(__APPLE__)
+        #define __UNIX__ __APPLE__
+    #endif
 #endif
 
 #if defined(__DJGPP__)
-#undef __UNIX__
+    #undef __UNIX__
 #endif
 
 #ifdef __GNUC__
-#if __GNUC__ < 2 || (__GNUC__ == 2 && __GNUC_MINOR__ < 8)
-#error You definetly need to upgrade your gcc at least up to 2.8.x
-#endif
+    #if __GNUC__ < 2 || (__GNUC__ == 2 && __GNUC_MINOR__ < 8)
+        #error You definetly need to upgrade your gcc at least up to 2.8.x
+    #endif
 #endif
 
 #ifdef _MSC_VER
-#define __attribute__(A)
-#define __inline__ __inline
-#define __extension__
-#define __MSVCRT__
-#define ssize_t size_t
+    #define __attribute__(A)
+    #define __inline__ __inline
+    #define __extension__
+    #define __MSVCRT__
+    #define ssize_t size_t
 #endif
 
 
 /*  --------------------------------------------------------------- */
 
 #if defined(__MSDOS__) || defined(__OS2__) || defined(__WIN32__)
-#define __HAVE_DRIVES__
+    #define __HAVE_DRIVES__
 #endif
 
 #if defined(_MSC_VER) || defined(__MINGW32__)
-#define __USE_ALLOCA__
+    #define __USE_ALLOCA__
 #endif
 
 /*  --------------------------------------------------------------- */

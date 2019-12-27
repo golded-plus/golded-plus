@@ -36,23 +36,23 @@
 #include <gvidall.h>
 
 #if defined(__OS2__)
-#define INCL_BASE
-#include <os2.h>
-#ifndef __EMX__
-#define PCCH CHAR*
-#endif
+    #define INCL_BASE
+    #include <os2.h>
+    #ifndef __EMX__
+        #define PCCH CHAR*
+    #endif
 #endif
 
 #ifdef __WIN32__
-#include <windows.h>
+    #include <windows.h>
 #endif
 
 #ifdef __GNUC__
-#include <unistd.h>
+    #include <unistd.h>
 #endif
 
 #if defined(__DJGPP__)
-#include <sys/farptr.h>
+    #include <sys/farptr.h>
 #endif
 
 
@@ -60,20 +60,20 @@
 //  Check if Borland C++ for OS/2 1.0 header has been fixed
 
 #if defined(__OS2__) && defined(__BORLANDC__)
-#if __BORLANDC__ <= 0x400
-#ifndef BCOS2_BSESUB_FIXED
-#error There is a bug in the BSESUB.H header. Please fix it.
-//
-// Add/change the following in BSESUB.H:
-//
-// #define BCOS2_BSESUB_FIXED
-// APIRET16  APIENTRY16    VioGetState (PVOID16 pState, HVIO hvio);
-// APIRET16  APIENTRY16    VioSetState (PVOID16 pState, HVIO hvio);
-//
-// Borland forgot this (was only PVOID)      ^^
-//
-#endif
-#endif
+    #if __BORLANDC__ <= 0x400
+        #ifndef BCOS2_BSESUB_FIXED
+            #error There is a bug in the BSESUB.H header. Please fix it.
+            //
+            // Add/change the following in BSESUB.H:
+            //
+            // #define BCOS2_BSESUB_FIXED
+            // APIRET16  APIENTRY16    VioGetState (PVOID16 pState, HVIO hvio);
+            // APIRET16  APIENTRY16    VioSetState (PVOID16 pState, HVIO hvio);
+            //
+            // Borland forgot this (was only PVOID)      ^^
+            //
+        #endif
+    #endif
 #endif
 
 
@@ -81,7 +81,7 @@
 
 static bool __vcurhidden = false;
 #if defined(__UNIX__) || defined(__USE_NCURSES__)
-static uint32_t gvid_boxcvtc(char);
+    static uint32_t gvid_boxcvtc(char);
 #endif
 
 #if !defined(__USE_NCURSES__)
@@ -111,7 +111,7 @@ inline WCHAR gvid_tcpr(vchar chr)
 #if defined(__MSDOS__) || defined(__UNIX__)
 
 #if defined(__MSDOS__)
-extern int __gdvdetected;
+    extern int __gdvdetected;
 #endif
 
 #ifndef __DJGPP__
@@ -157,9 +157,9 @@ inline void _farsetsel(uint16_t s)
 #endif
 
 #ifdef __DJGPP__
-const int ATTRSIZE = sizeof(word);
+    const int ATTRSIZE = sizeof(word);
 #else
-const int ATTRSIZE = 1;
+    const int ATTRSIZE = 1;
 #endif
 
 inline void gdmacpy(uint16_t seg_d, gdma sel_d, uint16_t seg_s, gdma sel_s, int len)
@@ -462,7 +462,7 @@ char* gvid_newattr(int& attr)
 #if defined(__OS2__)
 
 #ifndef _THUNK_PTR_SIZE_OK
-#define _THUNK_PTR_SIZE_OK(ptr,size) (((ULONG)(ptr) & ~0xffff) == (((ULONG)(ptr) + (size) - 1) & ~0xffff))
+    #define _THUNK_PTR_SIZE_OK(ptr,size) (((ULONG)(ptr) & ~0xffff) == (((ULONG)(ptr) + (size) - 1) & ~0xffff))
 #endif
 
 static USHORT VioReadCellStr_(PCH str, PUSHORT pcb, USHORT row, USHORT col, HVIO hvio)

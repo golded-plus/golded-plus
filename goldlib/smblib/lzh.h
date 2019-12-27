@@ -34,36 +34,36 @@
 #include <gdefs.h>
 
 #ifdef LZHEXPORT
-#undef LZHEXPORT
+    #undef LZHEXPORT
 #endif
 
 #ifdef _WIN32
-#ifndef __FLAT__
-#define __FLAT__
-#endif
-#ifdef __BORLANDC__
-#define LZHCALL __stdcall
-#else
-#define LZHCALL
-#endif
-#ifdef LZHDLL   /* LZH functions in DLL */
-#ifdef LZH_EXPORTS
-#define LZHEXPORT __declspec( dllexport )
-#else
-#define LZHEXPORT __declspec( dllimport )
-#endif
-#else           /* self-contained executable */
-#define LZHEXPORT
-#endif
+    #ifndef __FLAT__
+        #define __FLAT__
+    #endif
+    #ifdef __BORLANDC__
+        #define LZHCALL __stdcall
+    #else
+        #define LZHCALL
+    #endif
+    #ifdef LZHDLL   /* LZH functions in DLL */
+        #ifdef LZH_EXPORTS
+            #define LZHEXPORT __declspec( dllexport )
+        #else
+            #define LZHEXPORT __declspec( dllimport )
+        #endif
+    #else           /* self-contained executable */
+        #define LZHEXPORT
+    #endif
 #elif defined(__unix__) || defined(__GNUC__)
-#ifndef __FLAT__
-#define __FLAT__
-#endif
-#define LZHCALL
-#define LZHEXPORT
+    #ifndef __FLAT__
+        #define __FLAT__
+    #endif
+    #define LZHCALL
+    #define LZHEXPORT
 #else   /* !_WIN32 */
-#define LZHCALL
-#define LZHEXPORT
+    #define LZHCALL
+    #define LZHEXPORT
 #endif
 
 #ifdef __cplusplus
@@ -76,6 +76,6 @@ LZHEXPORT int32_t LZHCALL lzh_decode(uint8_t *inbuf, int32_t inlen, uint8_t *out
 #endif
 
 #ifdef __WATCOMC__  /* Use MSC standard (prepended underscore) */
-#pragma aux lzh_encode          "_*"
-#pragma aux lzh_decode          "_*"
+    #pragma aux lzh_encode          "_*"
+    #pragma aux lzh_decode          "_*"
 #endif

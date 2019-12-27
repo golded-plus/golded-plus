@@ -5,7 +5,7 @@
 #include <cstring>
 #include <cctype>
 #ifdef HAVE_FCNTL_H
-#include <fcntl.h>
+    #include <fcntl.h>
 #endif
 #include <cstdio>
 
@@ -13,8 +13,8 @@
 #include "csutil.hxx"
 
 #if !defined(_MSC_VER)
-#include <unistd.h>
-using namespace std;
+    #include <unistd.h>
+    using namespace std;
 #endif
 
 // build a hash table from a munched word list

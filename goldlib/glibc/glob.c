@@ -17,16 +17,16 @@
 
 /* AIX requires this to be the first thing in the file.  */
 #if defined _AIX && !defined __GNUC__
-#pragma alloca
+    #pragma alloca
 #endif
 
 #ifdef  HAVE_CONFIG_H
-# include <config.h>
+    #include <config.h>
 #endif
 
 /* Enable GNU extensions in glob.h.  */
 #ifndef _GNU_SOURCE
-# define _GNU_SOURCE    1
+    #define _GNU_SOURCE    1
 #endif
 
 #include <errno.h>
@@ -50,125 +50,125 @@
 
 #define GLOB_INTERFACE_VERSION 1
 #if !defined _LIBC && defined __GNU_LIBRARY__ && __GNU_LIBRARY__ > 1
-# include <gnu-versions.h>
-# if _GNU_GLOB_INTERFACE_VERSION == GLOB_INTERFACE_VERSION
-#  define ELIDE_CODE
-# endif
+    #include <gnu-versions.h>
+    #if _GNU_GLOB_INTERFACE_VERSION == GLOB_INTERFACE_VERSION
+        #define ELIDE_CODE
+    #endif
 #endif
 
 #ifndef ELIDE_CODE
 
 #if defined STDC_HEADERS || defined __GNU_LIBRARY__
-# include <stddef.h>
+    #include <stddef.h>
 #endif
 
 #if defined HAVE_UNISTD_H || defined _LIBC
-# include <unistd.h>
-# ifndef POSIX
-#  ifdef _POSIX_VERSION
-#   define POSIX
-#  endif
-# endif
+    #include <unistd.h>
+    #ifndef POSIX
+        #ifdef _POSIX_VERSION
+            #define POSIX
+        #endif
+    #endif
 #endif
 
 #if !defined _AMIGA && !defined VMS && !defined WINDOWS32
-# include <pwd.h>
+    #include <pwd.h>
 #endif
 
 #if !defined __GNU_LIBRARY__ && !defined STDC_HEADERS
-extern int errno;
+    extern int errno;
 #endif
 #ifndef __set_errno
-# define __set_errno(val) errno = (val)
+    #define __set_errno(val) errno = (val)
 #endif
 
 #ifndef NULL
-# define NULL   0
+    #define NULL   0
 #endif
 
 
 #if defined HAVE_DIRENT_H || defined __GNU_LIBRARY__
-# include <dirent.h>
-# define NAMLEN(dirent) strlen((dirent)->d_name)
+    #include <dirent.h>
+    #define NAMLEN(dirent) strlen((dirent)->d_name)
 #else
-# define dirent direct
-# define NAMLEN(dirent) (dirent)->d_namlen
-# ifdef HAVE_SYS_NDIR_H
-#  include <sys/ndir.h>
-# endif
-# ifdef HAVE_SYS_DIR_H
-#  include <sys/dir.h>
-# endif
-# ifdef HAVE_NDIR_H
-#  include <ndir.h>
-# endif
-# ifdef HAVE_VMSDIR_H
-#  include "vmsdir.h"
-# endif /* HAVE_VMSDIR_H */
+    #define dirent direct
+    #define NAMLEN(dirent) (dirent)->d_namlen
+    #ifdef HAVE_SYS_NDIR_H
+        #include <sys/ndir.h>
+    #endif
+    #ifdef HAVE_SYS_DIR_H
+        #include <sys/dir.h>
+    #endif
+    #ifdef HAVE_NDIR_H
+        #include <ndir.h>
+    #endif
+    #ifdef HAVE_VMSDIR_H
+        #include "vmsdir.h"
+    #endif /* HAVE_VMSDIR_H */
 #endif
 
 
 /* In GNU systems, <dirent.h> defines this macro for us.  */
 #ifdef _D_NAMLEN
-# undef NAMLEN
-# define NAMLEN(d) _D_NAMLEN(d)
+    #undef NAMLEN
+    #define NAMLEN(d) _D_NAMLEN(d)
 #endif
 
 /* When used in the GNU libc the symbol _DIRENT_HAVE_D_TYPE is available
    if the `d_type' member for `struct dirent' is available.  */
 #ifdef _DIRENT_HAVE_D_TYPE
-# define HAVE_D_TYPE    1
+    #define HAVE_D_TYPE    1
 #endif
 
 
 #if (defined POSIX || defined WINDOWS32) && !defined __GNU_LIBRARY__
-/* Posix does not require that the d_ino field be present, and some
-   systems do not provide it. */
-# define REAL_DIR_ENTRY(dp) 1
+    /* Posix does not require that the d_ino field be present, and some
+    systems do not provide it. */
+    #define REAL_DIR_ENTRY(dp) 1
 #else
-# define REAL_DIR_ENTRY(dp) (dp->d_ino != 0)
+    #define REAL_DIR_ENTRY(dp) (dp->d_ino != 0)
 #endif /* POSIX */
 
 #if defined STDC_HEADERS || defined __GNU_LIBRARY__
-# include <stdlib.h>
-# include <string.h>
-# define    ANSI_STRING
+    #include <stdlib.h>
+    #include <string.h>
+    #define    ANSI_STRING
 #else   /* No standard headers.  */
 
-extern char *getenv ();
+    extern char *getenv ();
 
-# ifdef HAVE_STRING_H
-#  include <string.h>
-#  define ANSI_STRING
-# else
-#  include <strings.h>
-# endif
-# ifdef HAVE_MEMORY_H
-#  include <memory.h>
-# endif
+    #ifdef HAVE_STRING_H
+        #include <string.h>
+        #define ANSI_STRING
+    #else
+        #include <strings.h>
+    #endif
+    #ifdef HAVE_MEMORY_H
+        #include <memory.h>
+    #endif
 
-extern char *malloc (), *realloc ();
-extern void free ();
+    extern char *malloc (), *realloc ();
+    extern void free ();
 
-extern void qsort ();
-extern void abort (), exit ();
+    extern void qsort ();
+    extern void abort (), exit ();
 
 #endif  /* Standard headers.  */
 
 #ifdef HAVE_GETLOGIN_R
-extern int getlogin_r __P ((char *, size_t));
+    extern int getlogin_r __P ((char *, size_t));
 #else
-extern char *getlogin __P ((void));
+    extern char *getlogin __P ((void));
 #endif
 
 #ifndef ANSI_STRING
 
-# ifndef bzero
-extern void bzero ();
-# endif
-# ifndef bcopy
-extern void bcopy ();
-# endif
+#ifndef bzero
+    extern void bzero ();
+#endif
+#ifndef bcopy
+    extern void bcopy ();
+#endif
 
 # define memcpy(d, s, n)    bcopy ((s), (d), (n))
 # define strrchr    rindex
@@ -178,25 +178,25 @@ extern void bcopy ();
 #endif  /* Not ANSI_STRING.  */
 
 #if !defined HAVE_STRCOLL && !defined _LIBC
-# define strcoll    strcmp
+    #define strcoll    strcmp
 #endif
 
 #if !defined HAVE_MEMPCPY && __GLIBC__ - 0 == 2 && __GLIBC_MINOR__ >= 1
-# define HAVE_MEMPCPY   1
-# undef  mempcpy
-# define mempcpy(Dest, Src, Len) __mempcpy (Dest, Src, Len)
+    #define HAVE_MEMPCPY   1
+    #undef  mempcpy
+    #define mempcpy(Dest, Src, Len) __mempcpy (Dest, Src, Len)
 #endif
 
 #ifndef __GNU_LIBRARY__
-# ifdef __GNUC__
-__inline
-# endif
+#ifdef __GNUC__
+    __inline
+#endif
 # ifndef __SASC
-#  ifdef WINDOWS32
-static void *
-#  else
-static char *
-# endif
+#ifdef WINDOWS32
+    static void *
+#else
+    static char *
+#endif
 my_realloc (p, n)
 char *p;
 unsigned int n;
@@ -214,35 +214,35 @@ unsigned int n;
 
 #if !defined __alloca && !defined __GNU_LIBRARY__
 
-# ifdef __GNUC__
-#  undef alloca
-#  define alloca(n) __builtin_alloca (n)
-# else  /* Not GCC.  */
-#  ifdef HAVE_ALLOCA_H
-#   include <alloca.h>
-#  else /* Not HAVE_ALLOCA_H.  */
-#   ifndef _AIX
-#    ifdef WINDOWS32
-#     include <malloc.h>
-#    else
-extern char *alloca ();
-#    endif /* WINDOWS32 */
-#   endif /* Not _AIX.  */
-#  endif /* sparc or HAVE_ALLOCA_H.  */
-# endif /* GCC.  */
+    #ifdef __GNUC__
+        #undef alloca
+        #define alloca(n) __builtin_alloca (n)
+    #else  /* Not GCC.  */
+        #ifdef HAVE_ALLOCA_H
+            #include <alloca.h>
+        #else /* Not HAVE_ALLOCA_H.  */
+            #ifndef _AIX
+                #ifdef WINDOWS32
+                    #include <malloc.h>
+                #else
+                    extern char *alloca ();
+                #endif /* WINDOWS32 */
+            #endif /* Not _AIX.  */
+        #endif /* sparc or HAVE_ALLOCA_H.  */
+    #endif /* GCC.  */
 
-# define __alloca   alloca
+    #define __alloca   alloca
 
 #endif
 
 #ifndef __GNU_LIBRARY__
-# define __stat stat
-# ifdef STAT_MACROS_BROKEN
-#  undef S_ISDIR
-# endif
-# ifndef S_ISDIR
-#  define S_ISDIR(mode) (((mode) & S_IFMT) == S_IFDIR)
-# endif
+    #define __stat stat
+    #ifdef STAT_MACROS_BROKEN
+        #undef S_ISDIR
+    #endif
+    #ifndef S_ISDIR
+        #define S_ISDIR(mode) (((mode) & S_IFMT) == S_IFDIR)
+    #endif
 #endif
 
 #ifdef _LIBC
@@ -254,42 +254,42 @@ extern char *alloca ();
 # define readdir(str) __readdir (str)
 # define getpwnam_r(name, bufp, buf, len, res) \
    __getpwnam_r (name, bufp, buf, len, res)
-# ifndef __stat
-#  define __stat(fname, buf) __xstat (_STAT_VER, fname, buf)
-# endif
+#ifndef __stat
+    #define __stat(fname, buf) __xstat (_STAT_VER, fname, buf)
+#endif
 #endif
 
 #if !(defined STDC_HEADERS || defined __GNU_LIBRARY__)
-# undef size_t
-# define size_t unsigned int
+    #undef size_t
+    #define size_t unsigned int
 #endif
 
 /* Some system header files erroneously define these.
    We want our own definitions from <fnmatch.h> to take precedence.  */
 #ifndef __GNU_LIBRARY__
-# undef FNM_PATHNAME
-# undef FNM_NOESCAPE
-# undef FNM_PERIOD
+    #undef FNM_PATHNAME
+    #undef FNM_NOESCAPE
+    #undef FNM_PERIOD
 #endif
 #include <fnmatch.h>
 
 /* Some system header files erroneously define these.
    We want our own definitions from <glob.h> to take precedence.  */
 #ifndef __GNU_LIBRARY__
-# undef GLOB_ERR
-# undef GLOB_MARK
-# undef GLOB_NOSORT
-# undef GLOB_DOOFFS
-# undef GLOB_NOCHECK
-# undef GLOB_APPEND
-# undef GLOB_NOESCAPE
-# undef GLOB_PERIOD
+    #undef GLOB_ERR
+    #undef GLOB_MARK
+    #undef GLOB_NOSORT
+    #undef GLOB_DOOFFS
+    #undef GLOB_NOCHECK
+    #undef GLOB_APPEND
+    #undef GLOB_NOESCAPE
+    #undef GLOB_PERIOD
 #endif
 #include <glob.h>
 
 static
 #if __GNUC__ - 0 >= 2
-__inline__
+    __inline__
 #endif
 const char *next_brace_sub __P ((const char *begin));
 static int glob_in_dir __P ((const char *pattern, const char *directory,
@@ -304,7 +304,7 @@ static int collated_compare __P ((const __ptr_t, const __ptr_t));
    this as an inline function if the compiler permits.  */
 static
 #if __GNUC__ - 0 >= 2
-__inline__
+    __inline__
 #endif
 const char *
 next_brace_sub (begin)
@@ -1164,9 +1164,9 @@ int quote;
 
     return 0;
 }
-# ifdef _LIBC
-weak_alias (__glob_pattern_p, glob_pattern_p)
-# endif
+#ifdef _LIBC
+    weak_alias (__glob_pattern_p, glob_pattern_p)
+#endif
 #endif
 
 

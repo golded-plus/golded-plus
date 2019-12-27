@@ -32,27 +32,27 @@
 #include <stdlib.h>
 
 #if defined(__MINGW32__) || defined(_MSC_VER)
-#include <sys/utime.h>
+    #include <sys/utime.h>
 #else
-#include <utime.h>
+    #include <utime.h>
 #endif
 
 #if defined(__OS2__)
-#define INCL_BASE
-#include <os2.h>
+    #define INCL_BASE
+    #include <os2.h>
 #endif
 
 #if defined(__WIN32__)
-#include <windows.h>
+    #include <windows.h>
 #endif
 
 #if defined(__MSDOS__)
-#include <dos.h>
+    #include <dos.h>
 #endif
 
 #if defined(__UNIX__)
-#include <pwd.h>
-#include <sys/types.h>
+    #include <pwd.h>
+    #include <sys/types.h>
 #endif
 
 //  ------------------------------------------------------------------

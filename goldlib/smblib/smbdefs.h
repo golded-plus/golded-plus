@@ -59,35 +59,35 @@
 /* REALLOC is used to re-size a previously MALLOCed or LMALLOCed buffer     */
 /****************************************************************************/
 #if defined(__COMPACT__) || defined(__LARGE__) || defined(__HUGE__)
-#   define HUGE16 huge
-#   define FAR16 far
-#   if defined(__TURBOC__)
-#       define REALLOC(x,y) farrealloc(x,y)
-#       define LMALLOC(x) farmalloc(x)
-#       define MALLOC(x) farmalloc(x)
-#       define LFREE(x) farfree(x)
-#       define FREE(x) farfree(x)
-#   elif defined(__WATCOMC__)
-#       define REALLOC realloc
-#       define LMALLOC(x) halloc(x,1)  /* far heap, but slow */
-#       define MALLOC malloc           /* far heap, but 64k max */
-#       define LFREE hfree
-#       define FREE free
-#   else    /* Other 16-bit Compiler */
-#       define REALLOC realloc
-#       define LMALLOC malloc
-#       define MALLOC malloc
-#       define LFREE free
-#       define FREE free
-#   endif
+    #define HUGE16 huge
+    #define FAR16 far
+    #if defined(__TURBOC__)
+        #define REALLOC(x,y) farrealloc(x,y)
+        #define LMALLOC(x) farmalloc(x)
+        #define MALLOC(x) farmalloc(x)
+        #define LFREE(x) farfree(x)
+        #define FREE(x) farfree(x)
+    #elif defined(__WATCOMC__)
+        #define REALLOC realloc
+        #define LMALLOC(x) halloc(x,1)  /* far heap, but slow */
+        #define MALLOC malloc           /* far heap, but 64k max */
+        #define LFREE hfree
+        #define FREE free
+    #else    /* Other 16-bit Compiler */
+        #define REALLOC realloc
+        #define LMALLOC malloc
+        #define MALLOC malloc
+        #define LFREE free
+        #define FREE free
+    #endif
 #else       /* 32-bit Compiler or Small Memory Model */
-#   define HUGE16
-#   define FAR16
-#   define REALLOC realloc
-#   define LMALLOC malloc
-#   define MALLOC malloc
-#   define LFREE free
-#   define FREE free
+    #define HUGE16
+    #define FAR16
+    #define REALLOC realloc
+    #define LMALLOC malloc
+    #define MALLOC malloc
+    #define LFREE free
+    #define FREE free
 #endif
 
 
@@ -369,22 +369,22 @@ enum
 /************/
 
 #if defined(_WIN32) || defined(__BORLANDC__)
-#ifndef PRAGMA_PACK
-#define PRAGMA_PACK
-#endif
+    #ifndef PRAGMA_PACK
+        #define PRAGMA_PACK
+    #endif
 #endif
 
 #if defined(PRAGMA_PACK)
-#define _PACK
+    #define _PACK
 #else
-#define _PACK __attribute__ ((packed))
+    #define _PACK __attribute__ ((packed))
 #endif
 
 #if defined(PRAGMA_PACK)
-#if !defined(__GNUC__)
-#pragma pack(push)      /* Disk image structures must be packed */
-#endif
-#pragma pack(1)
+    #if !defined(__GNUC__)
+        #pragma pack(push)      /* Disk image structures must be packed */
+    #endif
+    #pragma pack(1)
 #endif
 
 typedef struct _PACK        // Time with time-zone
@@ -489,11 +489,11 @@ typedef struct _PACK        // Network (type and address)
 } net_t;
 
 #if defined(PRAGMA_PACK)
-#if defined(__GNUC__)
-#pragma pack()
-#else
-#pragma pack(pop)       /* original packing */
-#endif
+    #if defined(__GNUC__)
+        #pragma pack()
+    #else
+        #pragma pack(pop)       /* original packing */
+    #endif
 #endif
 
 typedef struct                  // Message

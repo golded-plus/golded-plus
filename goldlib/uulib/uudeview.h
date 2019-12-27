@@ -173,7 +173,7 @@ typedef struct
  */
 
 #ifndef UUEXPORT
-#define UUEXPORT
+    #define UUEXPORT
 #endif
 
 int UUEXPORT UUInitialize       (void);

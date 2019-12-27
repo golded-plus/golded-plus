@@ -32,20 +32,20 @@
 #include <ghdrmime.h>
 
 #if defined(__USE_ALLOCA__)
-#include <malloc.h>
+    #include <malloc.h>
 #endif
 
 #ifdef HAS_ICONV
-#include <iconv.h>
+    #include <iconv.h>
 #endif
 
 
 //  ------------------------------------------------------------------
 
 #ifdef __UNIX__
-#define GOLDMARK '^' // xwindow fonts has no square sign :(
+    #define GOLDMARK '^' // xwindow fonts has no square sign :(
 #else
-#define GOLDMARK '\xFD'
+    #define GOLDMARK '\xFD'
 #endif
 
 

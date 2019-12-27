@@ -29,19 +29,19 @@
 #include <gmoprot.h>
 #include <gdirposx.h>
 #ifdef __WIN32__
-#include <windows.h>
+    #include <windows.h>
 #endif
 
 //  ------------------------------------------------------------------
 //  Handle commandline parameters
 
 #if defined(GFTRK_ENABLE)
-static int gftrk_set_max = -1;
-extern int __gftrk_statusline;
+    static int gftrk_set_max = -1;
+    extern int __gftrk_statusline;
 #endif
 
 #ifdef __OS2__
-extern bool gmem_check_overrun;
+    extern bool gmem_check_overrun;
 #endif
 
 extern bool gKeystacking;

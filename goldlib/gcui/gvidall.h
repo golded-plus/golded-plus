@@ -35,50 +35,50 @@
 
 #include <gdefs.h>
 #if defined(__USE_NCURSES__)
-#include <gcurses.h>
+    #include <gcurses.h>
 #endif
 #if defined(__WIN32__)
-#include <windows.h>
+    #include <windows.h>
 #endif
 
 #if defined(_MSC_VER)
-#pragma warning(disable: 4200)
+    #pragma warning(disable: 4200)
 #endif
 
 
 //  ------------------------------------------------------------------
 
 #ifdef BLINK
-#undef BLINK
+    #undef BLINK
 #endif
 #define BLINK       128
 
 #ifdef INTENSE
-#undef INTENSE
+    #undef INTENSE
 #endif
 #define INTENSE     8
 
 #if defined(__UNIX__) && !defined(__USE_NCURSES__)
-#define ACSET       BLINK
+    #define ACSET       BLINK
 #else
-#define ACSET       0
+    #define ACSET       0
 #endif
 
 
 //  ------------------------------------------------------------------
 
 #if defined(__USE_NCURSES__)
-typedef chtype vchar;     // Type of characters on-screen
-typedef int    vattr;     // Type of screen attributes
-typedef chtype vatch;     // Type of character-attribute groups
+    typedef chtype vchar;     // Type of characters on-screen
+    typedef int    vattr;     // Type of screen attributes
+    typedef chtype vatch;     // Type of character-attribute groups
 #elif defined(__WIN32__)
-typedef char vchar;       // Type of characters on-screen
-typedef int  vattr;       // Type of screen attributes
-typedef CHAR_INFO vatch;  // Type of character-attribute groups
+    typedef char vchar;       // Type of characters on-screen
+    typedef int  vattr;       // Type of screen attributes
+    typedef CHAR_INFO vatch;  // Type of character-attribute groups
 #else
-typedef char vchar;       // Type of characters on-screen
-typedef int  vattr;       // Type of screen attributes
-typedef word vatch;       // Type of character-attribute groups
+    typedef char vchar;       // Type of characters on-screen
+    typedef int  vattr;       // Type of screen attributes
+    typedef word vatch;       // Type of character-attribute groups
 #endif
 
 
@@ -178,17 +178,17 @@ const vattr REVERSE   = 112;
 //  Useful defines for video (0x10) interrupt function numbers
 
 #if defined(__MSDOS__)
-#define V_SET_MODE              0x00
-#define V_SET_CURSOR_POS        0x02
-#define V_GET_CURSOR_POS        0x03
-#define V_SCROLL_UP             0x06
-#define V_SCROLL_DOWN           0x07
-#define V_RD_CHAR_ATTR          0x08
-#define V_WR_CHAR_ATTR          0x09
-#define V_WR_CHAR               0x0A
-#define V_WR_TTY                0x0E
-#define V_GET_MODE              0x0F
-#define V_GET_FONT_INFO         0x1130
+    #define V_SET_MODE              0x00
+    #define V_SET_CURSOR_POS        0x02
+    #define V_GET_CURSOR_POS        0x03
+    #define V_SCROLL_UP             0x06
+    #define V_SCROLL_DOWN           0x07
+    #define V_RD_CHAR_ATTR          0x08
+    #define V_WR_CHAR_ATTR          0x09
+    #define V_WR_CHAR               0x0A
+    #define V_WR_TTY                0x0E
+    #define V_GET_MODE              0x0F
+    #define V_GET_FONT_INFO         0x1130
 #endif
 
 
@@ -287,9 +287,9 @@ struct GVidInfo
 //  ------------------------------------------------------------------
 
 #ifdef __DJGPP__
-typedef uint32_t gdma; // Video DMA linear address
+    typedef uint32_t gdma; // Video DMA linear address
 #else
-typedef word*    gdma; // Video DMA pointer
+    typedef word*    gdma; // Video DMA pointer
 #endif
 
 //  ------------------------------------------------------------------
@@ -376,12 +376,12 @@ extern GVid *gvid;
 
 #if !defined(__USE_NCURSES__)
 
-extern char* __box_table[];
-#define _box_table(i,j) (__box_table[i][j])
+    extern char* __box_table[];
+    #define _box_table(i,j) (__box_table[i][j])
 
 #else
 
-chtype _box_table(int type, int c);
+    chtype _box_table(int type, int c);
 
 #endif
 

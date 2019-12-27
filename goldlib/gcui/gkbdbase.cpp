@@ -36,34 +36,34 @@
 #include <stdlib.h>
 
 #if defined(__OS2__)
-#define INCL_BASE
-#include <os2.h>
+    #define INCL_BASE
+    #include <os2.h>
 #endif
 
 #ifdef __WIN32__
-#include <windows.h>
-extern OSVERSIONINFO WinVer;
+    #include <windows.h>
+    extern OSVERSIONINFO WinVer;
 #endif
 
 #if defined(__UNIX__) && !defined(__USE_NCURSES__)
-#include <gkbdunix.h>
+    #include <gkbdunix.h>
 #endif
 
 #if defined(__DJGPP__)
-#include <sys/farptr.h>
+    #include <sys/farptr.h>
 #endif
 
 #if defined(__USE_NCURSES__)
-#include <gcurses.h>
+    #include <gcurses.h>
 #endif
 
 #if defined(__linux__)
-#include <sys/ioctl.h>
-#include <stdio.h>
+    #include <sys/ioctl.h>
+    #include <stdio.h>
 #endif
 
 #if defined(__BEOS__)
-#include <InterfaceDefs.h>
+    #include <InterfaceDefs.h>
 #endif
 
 //  ------------------------------------------------------------------
@@ -105,7 +105,7 @@ void gkbd_setarrow(modifier_t m, arrow_t a, int k);
 void gkbd_setfnkeys(void);
 
 #if defined(NCURSES_VERSION_MAJOR) && NCURSES_VERSION_MAJOR-0 >= 5
-#define HAVE_EXTENDED_NAMES 1
+    #define HAVE_EXTENDED_NAMES 1
 #endif
 //#define NO_MOD_DECFNK_XTERM_R7 1
 //#define NO_MOD_RXVT 1
@@ -115,7 +115,7 @@ void gkbd_setfnkeys(void);
 //  ------------------------------------------------------------------
 
 #if defined(__WIN32__)
-#define KBD_TEXTMODE (ENABLE_LINE_INPUT | ENABLE_ECHO_INPUT | ENABLE_PROCESSED_INPUT | ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT)
+    #define KBD_TEXTMODE (ENABLE_LINE_INPUT | ENABLE_ECHO_INPUT | ENABLE_PROCESSED_INPUT | ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT)
 #endif
 
 
@@ -123,9 +123,9 @@ void gkbd_setfnkeys(void);
 //  Global keyboard data
 
 #if defined(__WIN32__) && !defined(__USE_NCURSES__)
-HANDLE gkbd_hin;
-DWORD  gkbd_kbdmode;
-int    gkbd_nt;
+    HANDLE gkbd_hin;
+    DWORD  gkbd_kbdmode;
+    int    gkbd_nt;
 #endif
 
 GKbd gkbd;

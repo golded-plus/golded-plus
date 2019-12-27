@@ -37,7 +37,7 @@
 #include <stdlib.h>
 #include <cstring>
 #if defined(HAVE_STDARG_H)
-# include <stdarg.h>
+    #include <stdarg.h>
 #endif
 
 #include <gctype.h>
@@ -46,32 +46,32 @@
 //  ------------------------------------------------------------------
 
 #if defined(__EMX__)
-//old EMX 0.9d code
-//#include <sys/nls.h>
-//#define strupr(s) (char *)_nls_strupr((uint8_t *)(s))
-//#define strlwr(s) (char *)_nls_strlwr((uint8_t *)(s))
-//old EMX 0.9d code
+    //old EMX 0.9d code
+    //#include <sys/nls.h>
+    //#define strupr(s) (char *)_nls_strupr((uint8_t *)(s))
+    //#define strlwr(s) (char *)_nls_strlwr((uint8_t *)(s))
+    //old EMX 0.9d code
 #elif defined(__GNUC__)
-#if defined(__QNXNTO__) || defined(__SUNOS__)
-#include <strings.h>
-#endif
-#define stricmp strcasecmp
-#define strnicmp strncasecmp
-char* strupr(char* s);
-char* strlwr(char* s);
+    #if defined(__QNXNTO__) || defined(__SUNOS__)
+        #include <strings.h>
+    #endif
+    #define stricmp strcasecmp
+    #define strnicmp strncasecmp
+    char* strupr(char* s);
+    char* strlwr(char* s);
 #endif
 
 //  ------------------------------------------------------------------
 
 #if !defined(HAVE_SNPRINTF)
-#ifdef HAVE_STDARG_H
-int snprintf (char *str,size_t count,const char *fmt,...);
-#else
-int snprintf (va_list);
-#endif
+    #ifdef HAVE_STDARG_H
+        int snprintf (char *str,size_t count,const char *fmt,...);
+    #else
+        int snprintf (va_list);
+    #endif
 #endif
 #if !defined(HAVE_VSNPRINTF)
-int vsnprintf( char *buffer, size_t sizeOfBuffer, const char *format, va_list argptr );
+    int vsnprintf( char *buffer, size_t sizeOfBuffer, const char *format, va_list argptr );
 #endif
 
 
@@ -215,7 +215,7 @@ inline char * stpcpy(char* dest, const char* src)
 #endif
 
 #ifndef isoctal
-#define isoctal(c) (((c) >= '0') and ((c) <= '7'))
+    #define isoctal(c) (((c) >= '0') and ((c) <= '7'))
 #endif
 
 char* strcvtc(char* s);

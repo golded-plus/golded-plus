@@ -28,8 +28,8 @@
 #include <gstrall.h>
 #include <gmemdbg.h>
 #if defined(__GOLD_GUI__)
-#include <gvidall.h>
-#include <gvidgui.h>
+    #include <gvidall.h>
+    #include <gvidgui.h>
 #endif
 #undef GCFG_NOSBBS
 #include <gedacfg.h>

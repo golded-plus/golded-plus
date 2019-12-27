@@ -37,7 +37,7 @@
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack(1)
+    #pragma pack(1)
 #endif
 
 
@@ -73,28 +73,28 @@
 //  Message Base Types
 
 #ifndef MSGTYPE_SDM
-#define MSGTYPE_SDM     0x01
+    #define MSGTYPE_SDM     0x01
 #endif
 #ifndef MSGTYPE_SQUISH
-#define MSGTYPE_SQUISH  0x02
+    #define MSGTYPE_SQUISH  0x02
 #endif
 #ifndef MSGTYPE_HUDSON
-#define MSGTYPE_HUDSON  0x03
+    #define MSGTYPE_HUDSON  0x03
 #endif
 #ifndef MSGTYPE_JAM
-#define MSGTYPE_JAM     0x04
+    #define MSGTYPE_JAM     0x04
 #endif
 #ifndef MSGTYPE_PASSTH
-#define MSGTYPE_PASSTH  0x0F
+    #define MSGTYPE_PASSTH  0x0F
 #endif
 #ifndef MSGTYPE_ECHO
-#define MSGTYPE_ECHO    0x80
+    #define MSGTYPE_ECHO    0x80
 #endif
 #ifndef MSGTYPE_LOCAL
-#define MSGTYPE_LOCAL   0x90
+    #define MSGTYPE_LOCAL   0x90
 #endif
 #ifndef MSGTYPE_NET
-#define MSGTYPE_NET     0xA0
+    #define MSGTYPE_NET     0xA0
 #endif
 
 #define BASEMASK          0x0F
@@ -103,19 +103,19 @@
 //  In case your compiler doesn't have these ...
 
 #ifndef MAXPATH
-#define MAXPATH            80
+    #define MAXPATH            80
 #endif
 #ifndef MAXDRIVE
-#define MAXDRIVE           3
+    #define MAXDRIVE           3
 #endif
 #ifndef MAXDIR
-#define MAXDIR             66
+    #define MAXDIR             66
 #endif
 #ifndef MAXFILE
-#define MAXFILE            9
+    #define MAXFILE            9
 #endif
 #ifndef MAXEXT
-#define MAXEXT             5
+    #define MAXEXT             5
 #endif
 
 //  Structs used in IMAIL Configuration files
@@ -339,7 +339,7 @@ struct areas_record_type
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack()
+    #pragma pack()
 #endif
 
 

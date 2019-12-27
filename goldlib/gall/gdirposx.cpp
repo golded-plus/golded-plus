@@ -28,12 +28,12 @@
 #include <gstrall.h>
 #include <gwildmat.h>
 #ifndef _MSC_VER
-#include <dirent.h>
+    #include <dirent.h>
 #else
-#include <io.h>
+    #include <io.h>
 #endif
 #ifndef __HAVE_DRIVES__
-#include <pwd.h>
+    #include <pwd.h>
 #endif
 
 

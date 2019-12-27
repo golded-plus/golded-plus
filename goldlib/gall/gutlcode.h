@@ -32,7 +32,7 @@
 //  ------------------------------------------------------------------
 
 #ifdef __GNUG__
-#pragma interface "gutlcode.h"
+    #pragma interface "gutlcode.h"
 #endif
 
 

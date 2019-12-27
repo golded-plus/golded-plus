@@ -19,36 +19,36 @@
  */
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+    #include "config.h"
 #endif
 
 #ifdef SYSTEM_WINDLL
-#include <windows.h>
+    #include <windows.h>
 #endif
 #ifdef SYSTEM_OS2
-#include <os2.h>
+    #include <os2.h>
 #endif
 
 #include <stdio.h>
 
 #ifdef STDC_HEADERS
-#include <stdlib.h>
-#include <string.h>
+    #include <stdlib.h>
+    #include <string.h>
 #endif
 #ifdef HAVE_MALLOC_H
-#include <malloc.h>
+    #include <malloc.h>
 #endif
 #ifdef HAVE_UNISTD_H
-#include <unistd.h>
+    #include <unistd.h>
 #endif
 #ifdef HAVE_IO_H
-#include <io.h>
+    #include <io.h>
 #endif
 #ifdef HAVE_MEMORY_H
-#include <memory.h>
+    #include <memory.h>
 #endif
 #ifdef HAVE_ERRNO_H
-#include <errno.h>
+    #include <errno.h>
 #endif
 
 #include <uudeview.h>

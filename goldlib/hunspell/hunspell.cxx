@@ -8,7 +8,7 @@
 #include "hunspell.hxx"
 
 #if !defined(_MSC_VER)
-using namespace std;
+    using namespace std;
 #endif
 
 Hunspell::Hunspell(const char * affpath, const char * dpath)

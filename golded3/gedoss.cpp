@@ -30,11 +30,11 @@
 #include <gutlos.h>
 #include <gmoprot.h>
 #ifdef __UNIX__
-#include <gkbdunix.h>
+    #include <gkbdunix.h>
 #endif
 #ifdef __WIN32__
-#include <windows.h>
-extern OSVERSIONINFO WinVer;
+    #include <windows.h>
+    extern OSVERSIONINFO WinVer;
 #endif
 #include <gdbgerr.h>
 

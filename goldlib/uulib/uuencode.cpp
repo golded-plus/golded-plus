@@ -15,14 +15,14 @@
  */
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+    #include "config.h"
 #endif
 
 #ifdef SYSTEM_WINDLL
-#include <windows.h>
+    #include <windows.h>
 #endif
 #ifdef SYSTEM_OS2
-#include <os2.h>
+    #include <os2.h>
 #endif
 
 #include <sys/types.h>
@@ -31,17 +31,17 @@
 #include <time.h>
 
 #ifdef STDC_HEADERS
-#include <stdlib.h>
-#include <string.h>
+    #include <stdlib.h>
+    #include <string.h>
 #endif
 #ifdef HAVE_UNISTD_H
-#include <unistd.h>
+    #include <unistd.h>
 #endif
 #ifdef HAVE_IO_H
-#include <io.h>
+    #include <io.h>
 #endif
 #ifdef HAVE_ERRNO_H
-#include <errno.h>
+    #include <errno.h>
 #endif
 
 #include <uudeview.h>
@@ -53,39 +53,39 @@
 
 /* for braindead systems */
 #ifndef SEEK_SET
-#ifdef L_BEGIN
-#define SEEK_SET L_BEGIN
-#else
-#define SEEK_SET 0
-#endif
+    #ifdef L_BEGIN
+        #define SEEK_SET L_BEGIN
+    #else
+        #define SEEK_SET 0
+    #endif
 #endif
 
 char * uuencode_id = "$Id$";
 
 #if 0
-/*
- * the End-Of-Line string. MIME enforces CRLF, so that's what we use. Some
- * implementations of uudecode will complain about a missing end line, since
- * they look for "end^J" but find "end^J^M". We don't care - especially be-
- * cause they still decode the file properly despite this complaint.
- */
+    /*
+    * the End-Of-Line string. MIME enforces CRLF, so that's what we use. Some
+    * implementations of uudecode will complain about a missing end line, since
+    * they look for "end^J" but find "end^J^M". We don't care - especially be-
+    * cause they still decode the file properly despite this complaint.
+    */
 
-#ifndef EOLSTRING
-#define EOLSTRING   "\015\012"
-#endif
+    #ifndef EOLSTRING
+        #define EOLSTRING   "\015\012"
+    #endif
 
 #else
 
-/*
- * Argh. Some delivery software (inews) has problems with the CRLF
- * line termination. Let's try native EOL and see if we run into
- * any problems.
- * This involves opening output files in text mode instead of binary
- */
+    /*
+    * Argh. Some delivery software (inews) has problems with the CRLF
+    * line termination. Let's try native EOL and see if we run into
+    * any problems.
+    * This involves opening output files in text mode instead of binary
+    */
 
-#ifndef EOLSTRING
-#define EOLSTRING   "\n"
-#endif
+    #ifndef EOLSTRING
+        #define EOLSTRING   "\n"
+    #endif
 
 #endif
 
@@ -102,9 +102,9 @@ char * uuencode_id = "$Id$";
  */
 
 #ifdef EOLSTRING
-static unsigned char *eolstring = (unsigned char *) EOLSTRING;
+    static unsigned char *eolstring = (unsigned char *) EOLSTRING;
 #else
-static unsigned char *eolstring = (unsigned char *) "\012";
+    static unsigned char *eolstring = (unsigned char *) "\012";
 #endif
 
 /*

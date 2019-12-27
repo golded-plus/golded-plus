@@ -20,14 +20,14 @@
  */
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+    #include "config.h"
 #endif
 
 #ifdef SYSTEM_WINDLL
-#include <windows.h>
+    #include <windows.h>
 #endif
 #ifdef SYSTEM_OS2
-#include <os2.h>
+    #include <os2.h>
 #endif
 
 #include <sys/types.h>
@@ -35,45 +35,45 @@
 #include <stdio.h>
 
 #ifdef HAVE_FCNTL_H
-#include <fcntl.h>
+    #include <fcntl.h>
 #endif
 
 #ifdef STDC_HEADERS
-#include <stdlib.h>
-#include <stdarg.h>
-#include <string.h>
+    #include <stdlib.h>
+    #include <stdarg.h>
+    #include <string.h>
 #else
-#ifdef HAVE_STDARG_H
-#include <stdarg.h>
-#else
-#ifdef HAVE_VARARGS_H
-#include <varargs.h>
-#endif
-#endif
+    #ifdef HAVE_STDARG_H
+        #include <stdarg.h>
+    #else
+        #ifdef HAVE_VARARGS_H
+            #include <varargs.h>
+        #endif
+    #endif
 #endif
 
 #ifdef HAVE_UNISTD_H
-#include <unistd.h>
+    #include <unistd.h>
 #endif
 
 #ifdef TIME_WITH_SYS_TIME
-# include <sys/time.h>
-# include <time.h>
+    #include <sys/time.h>
+    #include <time.h>
 #else
-# ifdef HAVE_SYS_TIME_H
-#  include <sys/time.h>
-# else
-#  include <time.h>
-# endif
+    #ifdef HAVE_SYS_TIME_H
+        #include <sys/time.h>
+    #else
+        #include <time.h>
+    #endif
 #endif
 
 #ifdef HAVE_ERRNO_H
-#include <errno.h>
+    #include <errno.h>
 #endif
 
 /* to get open() in Windows */
 #ifdef HAVE_IO_H
-#include <io.h>
+    #include <io.h>
 #endif
 
 #include <uudeview.h>
@@ -98,16 +98,16 @@ DllEntryPoint (HINSTANCE hInstance, DWORD seginfo,
  */
 
 #ifndef O_BINARY
-#define O_BINARY      0
+    #define O_BINARY      0
 #endif
 
 /* for braindead systems */
 #ifndef SEEK_SET
-#ifdef L_BEGIN
-#define SEEK_SET L_BEGIN
-#else
-#define SEEK_SET 0
-#endif
+    #ifdef L_BEGIN
+        #define SEEK_SET L_BEGIN
+    #else
+        #define SEEK_SET 0
+    #endif
 #endif
 
 /*
@@ -261,12 +261,12 @@ static allomap toallocate[] =
  */
 
 #if defined(STDC_HEADERS) || defined(HAVE_STDARG_H)
-int
-UUMessage (char *file, int line, int level, char *format, ...)
+    int
+    UUMessage (char *file, int line, int level, char *format, ...)
 #else
-int
-UUMessage (va_alist)
-va_dcl
+    int
+    UUMessage (va_alist)
+    va_dcl
 #endif
 {
     char *msgptr;

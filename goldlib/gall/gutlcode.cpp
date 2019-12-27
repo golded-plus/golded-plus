@@ -26,7 +26,7 @@
 //  ------------------------------------------------------------------
 
 #ifdef __GNUG__
-#pragma implementation "gutlcode.h"
+    #pragma implementation "gutlcode.h"
 #endif
 
 

@@ -36,7 +36,7 @@
 #include <string.h>
 
 #ifdef HAVE_MALLOC_H
-#include <malloc.h>
+    #include <malloc.h>
 #endif
 
 #include "lzh.h"
@@ -50,31 +50,31 @@
 /* REALLOC is used to re-size a previously MALLOCed or LMALLOCed buffer     */
 /****************************************************************************/
 #if defined(__COMPACT__) || defined(__LARGE__) || defined(__HUGE__)
-#if defined(__TURBOC__)
-#define REALLOC(x,y) farrealloc(x,y)
-#define LMALLOC(x) farmalloc(x)
-#define MALLOC(x) farmalloc(x)
-#define LFREE(x) farfree(x)
-#define FREE(x) farfree(x)
-#elif defined(__WATCOMC__)
-#define REALLOC realloc
-#define LMALLOC(x) halloc(x,1)  /* far heap, but slow */
-#define MALLOC malloc           /* far heap, but 64k max */
-#define LFREE hfree
-#define FREE free
-#else   /* Other 16-bit Compiler */
-#define REALLOC realloc
-#define LMALLOC malloc
-#define MALLOC malloc
-#define LFREE free
-#define FREE free
-#endif
+    #if defined(__TURBOC__)
+        #define REALLOC(x,y) farrealloc(x,y)
+        #define LMALLOC(x) farmalloc(x)
+        #define MALLOC(x) farmalloc(x)
+        #define LFREE(x) farfree(x)
+        #define FREE(x) farfree(x)
+    #elif defined(__WATCOMC__)
+        #define REALLOC realloc
+        #define LMALLOC(x) halloc(x,1)  /* far heap, but slow */
+        #define MALLOC malloc           /* far heap, but 64k max */
+        #define LFREE hfree
+        #define FREE free
+    #else   /* Other 16-bit Compiler */
+        #define REALLOC realloc
+        #define LMALLOC malloc
+        #define MALLOC malloc
+        #define LFREE free
+        #define FREE free
+    #endif
 #else       /* 32-bit Compiler or Small Memory Model */
-#define REALLOC realloc
-#define LMALLOC malloc
-#define MALLOC malloc
-#define LFREE free
-#define FREE free
+    #define REALLOC realloc
+    #define LMALLOC malloc
+    #define MALLOC malloc
+    #define LFREE free
+    #define FREE free
 #endif
 
 
@@ -88,15 +88,15 @@
 
 #ifdef LZH_DYNAMIC_BUF
 
-uint8_t *lzh_text_buf;
-int16_t lzh_match_position, lzh_match_length,
-        *lzh_lson, *lzh_rson, *lzh_dad;
+    uint8_t *lzh_text_buf;
+    int16_t lzh_match_position, lzh_match_length,
+    *lzh_lson, *lzh_rson, *lzh_dad;
 
 #else
 
-uint8_t lzh_text_buf[LZH_N + LZH_F - 1];
-int16_t lzh_match_position, lzh_match_length,
-        lzh_lson[LZH_N + 1], lzh_rson[LZH_N + 257], lzh_dad[LZH_N + 1];
+    uint8_t lzh_text_buf[LZH_N + LZH_F - 1];
+    int16_t lzh_match_position, lzh_match_length,
+    lzh_lson[LZH_N + 1], lzh_rson[LZH_N + 257], lzh_dad[LZH_N + 1];
 
 #endif
 
@@ -333,22 +333,22 @@ uint8_t lzh_d_len[256] =
 
 #ifdef LZH_DYNAMIC_BUF
 
-uint16_t  *lzh_freq = NULL;     /* cumulative freq table */
+    uint16_t  *lzh_freq = NULL;     /* cumulative freq table */
 
-/*
- * pointing parent nodes.
- * area [LZH_T..(LZH_T + LZH_N_CHAR - 1)] are pointers for leaves
- */
-int16_t   *lzh_prnt = NULL;
+    /*
+    * pointing parent nodes.
+    * area [LZH_T..(LZH_T + LZH_N_CHAR - 1)] are pointers for leaves
+    */
+    int16_t   *lzh_prnt = NULL;
 
-/* pointing children nodes (son[], son[] + 1)*/
-int16_t   *lzh_son = NULL;
+    /* pointing children nodes (son[], son[] + 1)*/
+    int16_t   *lzh_son = NULL;
 
 #else   /* STATIC */
 
-uint16_t  lzh_freq[LZH_T + 1];  /* cumulative freq table */
-int16_t   lzh_prnt[LZH_T + LZH_N_CHAR];
-int16_t   lzh_son[LZH_T + 1];   /* bug fixed by Digital Dynamics */
+    uint16_t  lzh_freq[LZH_T + 1];  /* cumulative freq table */
+    int16_t   lzh_prnt[LZH_T + LZH_N_CHAR];
+    int16_t   lzh_son[LZH_T + 1];   /* bug fixed by Digital Dynamics */
 
 #endif
 

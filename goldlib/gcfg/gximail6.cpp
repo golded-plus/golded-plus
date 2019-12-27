@@ -32,15 +32,15 @@
 #include <stdlib.h>
 #include <gstrall.h>
 #if defined(__GOLD_GUI__)
-#include <gvidall.h>
-#include <gvidgui.h>
+    #include <gvidall.h>
+    #include <gvidgui.h>
 #endif
 #undef GCFG_NOIMAIL
 #include <gedacfg.h>
 
 #ifdef HAVE_IM18X
-#include <gmemdbg.h>
-#include <gs_im187.h>
+    #include <gmemdbg.h>
+    #include <gs_im187.h>
 #endif
 
 

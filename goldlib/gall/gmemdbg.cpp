@@ -39,8 +39,8 @@
 int throw_alloc_extra = 0;
 
 #if defined(GTHROW_LOG)
-glog* throw_log = NULL;
-#define TLOG if(throw_log) throw_log
+    glog* throw_log = NULL;
+    #define TLOG if(throw_log) throw_log
 #endif
 
 
@@ -76,7 +76,7 @@ const size_t MALLOC_SIZE = 0xEEEEEEEE;
 //  Struct
 
 #if defined(GOLD_CANPACK)
-#pragma pack(1)
+    #pragma pack(1)
 #endif
 
 struct Throw
@@ -92,7 +92,7 @@ struct Throw
 };
 
 #if defined(GOLD_CANPACK)
-#pragma pack()
+    #pragma pack()
 #endif
 
 //  ------------------------------------------------------------------
@@ -658,16 +658,16 @@ void throw_init()
 //  ------------------------------------------------------------------
 
 #ifdef gmem_strdup
-#undef gmem_strdup
-#define gmem_strdup(a) throw_strdup_debug(a, file, line)
-#undef gmem_malloc
-#define gmem_malloc(a) throw_malloc_debug(a, file, line)
-#undef gmem_calloc
-#define gmem_calloc(a,b) throw_calloc_debug(a, b, file, line)
-#undef gmem_realloc
-#define gmem_realloc(a,b) throw_realloc_debug(a, b, file, line)
-#undef gmem_free
-#define gmem_free(a) throw_free_debug(a, file, line)
+    #undef gmem_strdup
+    #define gmem_strdup(a) throw_strdup_debug(a, file, line)
+    #undef gmem_malloc
+    #define gmem_malloc(a) throw_malloc_debug(a, file, line)
+    #undef gmem_calloc
+    #define gmem_calloc(a,b) throw_calloc_debug(a, b, file, line)
+    #undef gmem_realloc
+    #define gmem_realloc(a,b) throw_realloc_debug(a, b, file, line)
+    #undef gmem_free
+    #define gmem_free(a) throw_free_debug(a, file, line)
 #endif
 
 #endif

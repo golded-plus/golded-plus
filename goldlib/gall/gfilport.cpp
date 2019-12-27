@@ -28,25 +28,25 @@
 #include <gfilutil.h>
 
 #if defined(__OS2__)
-#define INCL_BASE
-#define INCL_ERROR_H
-#include <os2.h>
+    #define INCL_BASE
+    #define INCL_ERROR_H
+    #include <os2.h>
 #endif
 
 #if defined(__WIN32__)
-#include <windows.h>
+    #include <windows.h>
 #endif
 
 #if defined(__CYGWIN__)
-#include <io.h>
+    #include <io.h>
 #endif
 
 #if defined(__MINGW32__)
-#include <sys/locking.h>
+    #include <sys/locking.h>
 #endif
 
 #if defined(__BEOS__)
-#include "be_lock.h"
+    #include "be_lock.h"
 #endif
 
 

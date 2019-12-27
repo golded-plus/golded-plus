@@ -75,7 +75,7 @@
 // _S is SMTP and _P is POP3.
 
 #if defined(GOLD_CANPACK)
-#pragma pack(1)
+    #pragma pack(1)
 #endif
 
 /*
@@ -544,7 +544,7 @@ typedef struct
 }  ConfigRecord;
 
 #if defined(GOLD_CANPACK)
-#pragma pack()
+    #pragma pack()
 #endif
 
 //==== END OF FILE ==========================================================

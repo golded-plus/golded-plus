@@ -29,17 +29,17 @@
 #define __GVER_SNAPSHOT__
 //  ------------------------------------------------------------------
 #ifndef __SRCDATE__
-#include "../srcdate.h"
+    #include "../srcdate.h"
 #endif
 
 #ifdef __GVER_SNAPSHOT__
-#define __SO__ "-b"
-#define __SC__ ""
+    #define __SO__ "-b"
+    #define __SC__ ""
 #else
-#undef __SRCDATE__
-#define __SRCDATE__
-#define __SO__
-#define __SC__
+    #undef __SRCDATE__
+    #define __SRCDATE__
+    #define __SO__
+    #define __SC__
 #endif
 
 #define __GVER_LONGPID__  __GVER_PRENAME__ __GVER_NAME__ __GVER_POSTNAME__ __GVER_PLATFORM__
@@ -96,92 +96,92 @@
 //  Platform specific strings.
 
 #if defined(__MSDOS__)
-#define __GVER_PLATFORM__      "/DPMI32"
-#define __GVER_SHORTPLATFORM__ "DPMI"
-#define __GVER_SHORTLOGNAME__  "X"
-#define __GVER_CFGEXT__        ".gex"
+    #define __GVER_PLATFORM__      "/DPMI32"
+    #define __GVER_SHORTPLATFORM__ "DPMI"
+    #define __GVER_SHORTLOGNAME__  "X"
+    #define __GVER_CFGEXT__        ".gex"
 #elif defined(__EMX__)
-#define __GVER_PLATFORM__      "/EMX"
-#define __GVER_SHORTPLATFORM__ "2"
-#define __GVER_SHORTLOGNAME__  "2"
-#define __GVER_CFGEXT__        ".geo"
+    #define __GVER_PLATFORM__      "/EMX"
+    #define __GVER_SHORTPLATFORM__ "2"
+    #define __GVER_SHORTLOGNAME__  "2"
+    #define __GVER_CFGEXT__        ".geo"
 #elif defined(__OS2__)
-#define __GVER_PLATFORM__      "/2"
-#define __GVER_SHORTPLATFORM__ "2"
-#define __GVER_SHORTLOGNAME__  "2"
-#define __GVER_CFGEXT__        ".geo"
+    #define __GVER_PLATFORM__      "/2"
+    #define __GVER_SHORTPLATFORM__ "2"
+    #define __GVER_SHORTLOGNAME__  "2"
+    #define __GVER_CFGEXT__        ".geo"
 #elif defined(__WIN32__)
-#if defined(_M_X64)
-#if defined(_MSC_VER)
-#define __GVER_PLATFORM__      "/W64-MSVC"
-#elif defined(__MINGW32__)
-#define __GVER_PLATFORM__      "/W64-MINGW"
-#else
-#define __GVER_PLATFORM__      "/W64"
-#endif
-#define __GVER_SHORTPLATFORM__ "W64"
-#define __GVER_SHORTLOGNAME__  "W"
-#define __GVER_CFGEXT__        ".gew"
-#else
-#if defined(_MSC_VER)
-#define __GVER_PLATFORM__      "/W32-MSVC"
-#elif defined(__MINGW32__)
-#define __GVER_PLATFORM__      "/W32-MINGW"
-#else
-#define __GVER_PLATFORM__      "/W32"
-#endif
-#define __GVER_SHORTPLATFORM__ "W32"
-#define __GVER_SHORTLOGNAME__  "W"
-#define __GVER_CFGEXT__        ".gew"
-#endif
+    #if defined(_M_X64)
+        #if defined(_MSC_VER)
+            #define __GVER_PLATFORM__      "/W64-MSVC"
+        #elif defined(__MINGW32__)
+            #define __GVER_PLATFORM__      "/W64-MINGW"
+        #else
+            #define __GVER_PLATFORM__      "/W64"
+        #endif
+        #define __GVER_SHORTPLATFORM__ "W64"
+        #define __GVER_SHORTLOGNAME__  "W"
+        #define __GVER_CFGEXT__        ".gew"
+    #else
+        #if defined(_MSC_VER)
+            #define __GVER_PLATFORM__      "/W32-MSVC"
+        #elif defined(__MINGW32__)
+            #define __GVER_PLATFORM__      "/W32-MINGW"
+        #else
+            #define __GVER_PLATFORM__      "/W32"
+        #endif
+        #define __GVER_SHORTPLATFORM__ "W32"
+        #define __GVER_SHORTLOGNAME__  "W"
+        #define __GVER_CFGEXT__        ".gew"
+    #endif
 #elif defined(__linux__)
-#define __GVER_PLATFORM__      "/LNX"
-#define __GVER_SHORTPLATFORM__ "LNX"
-#define __GVER_SHORTLOGNAME__  "L"
-#define __GVER_CFGEXT__        ".gel"
+    #define __GVER_PLATFORM__      "/LNX"
+    #define __GVER_SHORTPLATFORM__ "LNX"
+    #define __GVER_SHORTLOGNAME__  "L"
+    #define __GVER_CFGEXT__        ".gel"
 #elif defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__DragonFly__)
-#define __GVER_PLATFORM__      "/BSD"
-#define __GVER_SHORTPLATFORM__ "BSD"
-#define __GVER_SHORTLOGNAME__  "B"
-#define __GVER_CFGEXT__        ".geb"
+    #define __GVER_PLATFORM__      "/BSD"
+    #define __GVER_SHORTPLATFORM__ "BSD"
+    #define __GVER_SHORTLOGNAME__  "B"
+    #define __GVER_CFGEXT__        ".geb"
 #elif defined(__BEOS__)
-#define __GVER_PLATFORM__      "/BeOS"
-#define __GVER_SHORTPLATFORM__ "BeOS"
-#define __GVER_SHORTLOGNAME__  "B"
-#define __GVER_CFGEXT__        ".gbe"
+    #define __GVER_PLATFORM__      "/BeOS"
+    #define __GVER_SHORTPLATFORM__ "BeOS"
+    #define __GVER_SHORTLOGNAME__  "B"
+    #define __GVER_CFGEXT__        ".gbe"
 #elif defined(__QNXNTO__)
-#define __GVER_PLATFORM__      "/QNX"
-#define __GVER_SHORTPLATFORM__ "QNX"
-#define __GVER_SHORTLOGNAME__  "Q"
-#define __GVER_CFGEXT__        ".gqx"
+    #define __GVER_PLATFORM__      "/QNX"
+    #define __GVER_SHORTPLATFORM__ "QNX"
+    #define __GVER_SHORTLOGNAME__  "Q"
+    #define __GVER_CFGEXT__        ".gqx"
 #elif defined(__sun__)
-#if defined(__i386__)
-#define __GVER_PLATFORM__      "/SunX86"
-#define __GVER_CFGEXT__        ".ges"
-#elif defined(__sparc__)
-#define __GVER_PLATFORM__      "/SunSparc"
-#define __GVER_CFGEXT__        ".gsu"
-#else
-#define __GVER_PLATFORM__      "/Sun"
-#define __GVER_CFGEXT__        ".gsu"
-#endif
-#define __GVER_SHORTPLATFORM__ "SUN"
-#define __GVER_SHORTLOGNAME__  "S"
+    #if defined(__i386__)
+        #define __GVER_PLATFORM__      "/SunX86"
+        #define __GVER_CFGEXT__        ".ges"
+    #elif defined(__sparc__)
+        #define __GVER_PLATFORM__      "/SunSparc"
+        #define __GVER_CFGEXT__        ".gsu"
+    #else
+        #define __GVER_PLATFORM__      "/Sun"
+        #define __GVER_CFGEXT__        ".gsu"
+    #endif
+    #define __GVER_SHORTPLATFORM__ "SUN"
+    #define __GVER_SHORTLOGNAME__  "S"
 #elif defined(__APPLE__)
-#define __GVER_PLATFORM__      "/OSX"
-#define __GVER_SHORTPLATFORM__ "OSX"
-#define __GVER_SHORTLOGNAME__  "M"
-#define __GVER_CFGEXT__        ".gem"
+    #define __GVER_PLATFORM__      "/OSX"
+    #define __GVER_SHORTPLATFORM__ "OSX"
+    #define __GVER_SHORTLOGNAME__  "M"
+    #define __GVER_CFGEXT__        ".gem"
 #elif defined(__UNIX__)
-#define __GVER_PLATFORM__      "/UNX"
-#define __GVER_SHORTPLATFORM__ "UNX"
-#define __GVER_SHORTLOGNAME__  "U"
-#define __GVER_CFGEXT__        ".geu"
+    #define __GVER_PLATFORM__      "/UNX"
+    #define __GVER_SHORTPLATFORM__ "UNX"
+    #define __GVER_SHORTLOGNAME__  "U"
+    #define __GVER_CFGEXT__        ".geu"
 #else
-#define __GVER_PLATFORM__      ""
-#define __GVER_SHORTPLATFORM__ ""
-#define __GVER_SHORTLOGNAME__  "D"
-#define __GVER_CFGEXT__        ".ged"
+    #define __GVER_PLATFORM__      ""
+    #define __GVER_SHORTPLATFORM__ ""
+    #define __GVER_SHORTLOGNAME__  "D"
+    #define __GVER_CFGEXT__        ".ged"
 #endif
 
 //  ------------------------------------------------------------------

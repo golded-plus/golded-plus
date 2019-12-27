@@ -37,17 +37,17 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #ifndef _MSC_VER
-#include <unistd.h>
+    #include <unistd.h>
 #else
-#include <cstdlib>
-#include <direct.h>
+    #include <cstdlib>
+    #include <direct.h>
 #endif
 #include <cerrno>
 #include <cstdio>
 #include <string>
 #include <gshare.h>
 #if !defined(__UNIX__) || defined(__DJGPP__)
-#include <io.h>
+    #include <io.h>
 #endif
 #include <gdefs.h>
 
@@ -55,37 +55,37 @@
 //  ------------------------------------------------------------------M
 
 #if defined(__UNIX__)
-#ifndef O_TEXT
-#define O_TEXT 0
-#endif
-#ifndef O_BINARY
-#define O_BINARY 0
-#endif
+    #ifndef O_TEXT
+        #define O_TEXT 0
+    #endif
+    #ifndef O_BINARY
+        #define O_BINARY 0
+    #endif
 #endif
 
 #ifndef S_IWUSR
-#define S_IWUSR S_IWRITE
-#define S_IRUSR S_IREAD
+    #define S_IWUSR S_IWRITE
+    #define S_IRUSR S_IREAD
 #endif
 
 #if defined(__UNIX__)
-#define S_STDRW (S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH)
-#define S_STDRD (S_IRUSR|S_IRGRP|S_IROTH)
+    #define S_STDRW (S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH)
+    #define S_STDRD (S_IRUSR|S_IRGRP|S_IROTH)
 #else
-#define S_STDRW (S_IRUSR|S_IWUSR)
-#define S_STDRD S_IRUSR
+    #define S_STDRW (S_IRUSR|S_IWUSR)
+    #define S_STDRD S_IRUSR
 #endif
 
 #ifndef S_ISDIR
-#define S_ISDIR(st_mode) (make_bool((st_mode)&_S_IFDIR))
+    #define S_ISDIR(st_mode) (make_bool((st_mode)&_S_IFDIR))
 #endif
 
 #ifndef S_ISREG
-#define S_ISREG(st_mode) (make_bool((st_mode)&_S_IFREG))
+    #define S_ISREG(st_mode) (make_bool((st_mode)&_S_IFREG))
 #endif
 
 #ifndef R_OK
-#define R_OK 0
+    #define R_OK 0
 #endif
 
 //  ------------------------------------------------------------------
@@ -107,17 +107,17 @@
 //  Misc. defines
 
 #if defined(__MSDOS__) || defined(__OS2__) || defined(__WIN32__)
-#define GOLD_SLASH_CHR                    '\\'              // Backslash
-#define GOLD_SLASH_STR                    "\\"
-#define GOLD_WRONG_SLASH_CHR              '/'               // Fwrdslash
-#define GOLD_WRONG_SLASH_STR              "/"
-#define GOLD_SHELL_ENV                    "COMSPEC"
+    #define GOLD_SLASH_CHR                    '\\'              // Backslash
+    #define GOLD_SLASH_STR                    "\\"
+    #define GOLD_WRONG_SLASH_CHR              '/'               // Fwrdslash
+    #define GOLD_WRONG_SLASH_STR              "/"
+    #define GOLD_SHELL_ENV                    "COMSPEC"
 #else
-#define GOLD_SLASH_CHR                    '/'               // Fwrdslash
-#define GOLD_SLASH_STR                    "/"
-#define GOLD_WRONG_SLASH_CHR              '\\'              // Backslash
-#define GOLD_WRONG_SLASH_STR              "\\"
-#define GOLD_SHELL_ENV                    "SHELL"
+    #define GOLD_SLASH_CHR                    '/'               // Fwrdslash
+    #define GOLD_SLASH_STR                    "/"
+    #define GOLD_WRONG_SLASH_CHR              '\\'              // Backslash
+    #define GOLD_WRONG_SLASH_STR              "\\"
+    #define GOLD_SHELL_ENV                    "SHELL"
 #endif
 
 #define GOLD_ALL_SLASH_STR                  "/\\" //  GOLD_SLASH_STR GOLD_WRONG_SLASH_STR
@@ -149,12 +149,12 @@ struct Stamp
 //  Prototypes
 
 #if !defined(__GNUC__) || defined(__MINGW32__)
-#define mkdir(path,unused) mkdir(path)
+    #define mkdir(path,unused) mkdir(path)
 #endif
 
 #ifdef __EMX__
-#define getcwd _getcwd2
-#define chdir _chdir2
+    #define getcwd _getcwd2
+    #define chdir _chdir2
 #endif
 
 //  Shareable fopen() for compilers that need it

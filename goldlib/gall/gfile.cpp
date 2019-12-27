@@ -31,39 +31,39 @@
 
 #if defined(_MSC_VER) /*&& (_MSC_VER >= 1400)*/
 
-#define g_popen(comm, mode)         _tpopen(comm, mode)
-#define g_pclose(fp)                _pclose(fp)
+    #define g_popen(comm, mode)         _tpopen(comm, mode)
+    #define g_pclose(fp)                _pclose(fp)
 
-#define g_sopen(fn, of, sh, pm)     _tsopen(fn, of, sh, pm)
-#define g_close(fh)                 _close(fh)
-#define g_read(fh, buf, cnt)        _read(fh, buf, cnt)
-#define g_write(fh, buf, cnt)       _write(fh, buf, cnt)
-#define g_tell(fh)                  _tell(fh)
-#define g_lseek(fh, off, org)       _lseek(fh, off, org)
-#define g_filelength(fh)            _filelength(fh)
-#define g_chsize(fh, size)          _chsize(fh, size)
+    #define g_sopen(fn, of, sh, pm)     _tsopen(fn, of, sh, pm)
+    #define g_close(fh)                 _close(fh)
+    #define g_read(fh, buf, cnt)        _read(fh, buf, cnt)
+    #define g_write(fh, buf, cnt)       _write(fh, buf, cnt)
+    #define g_tell(fh)                  _tell(fh)
+    #define g_lseek(fh, off, org)       _lseek(fh, off, org)
+    #define g_filelength(fh)            _filelength(fh)
+    #define g_chsize(fh, size)          _chsize(fh, size)
 
-#define g_fsopen(fn, of, sh)        _tfsopen(fn, of, sh)
-#define g_fdopen(fp, of)            _tfdopen(fp, of)
-#define g_fileno(fp)                _fileno(fp)
+    #define g_fsopen(fn, of, sh)        _tfsopen(fn, of, sh)
+    #define g_fdopen(fp, of)            _tfdopen(fp, of)
+    #define g_fileno(fp)                _fileno(fp)
 
 #else
 
-#define g_popen(comm, mode)         popen(comm, mode)
-#define g_pclose(fp)                pclose(fp)
+    #define g_popen(comm, mode)         popen(comm, mode)
+    #define g_pclose(fp)                pclose(fp)
 
-#define g_sopen(fn, of, sh, pm)     sopen(fn, of, sh, pm)
-#define g_close(fh)                 close(fh)
-#define g_read(fh, buf, cnt)        read(fh, buf, cnt)
-#define g_write(fh, buf, cnt)       write(fh, buf, cnt)
-#define g_tell(fh)                  tell(fh)
-#define g_lseek(fh, off, org)       lseek(fh, off, org)
-#define g_filelength(fh)            filelength(fh)
-#define g_chsize(fh, size)          chsize(fh, size)
+    #define g_sopen(fn, of, sh, pm)     sopen(fn, of, sh, pm)
+    #define g_close(fh)                 close(fh)
+    #define g_read(fh, buf, cnt)        read(fh, buf, cnt)
+    #define g_write(fh, buf, cnt)       write(fh, buf, cnt)
+    #define g_tell(fh)                  tell(fh)
+    #define g_lseek(fh, off, org)       lseek(fh, off, org)
+    #define g_filelength(fh)            filelength(fh)
+    #define g_chsize(fh, size)          chsize(fh, size)
 
-#define g_fsopen(fn, of, sh)        fsopen(fn, of, sh)
-#define g_fdopen(fp, of)            fdopen(fp, of)
-#define g_fileno(fp)                fileno(fp)
+    #define g_fsopen(fn, of, sh)        fsopen(fn, of, sh)
+    #define g_fdopen(fp, of)            fdopen(fp, of)
+    #define g_fileno(fp)                fileno(fp)
 
 #endif
 

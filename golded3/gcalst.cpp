@@ -33,28 +33,28 @@
 // FTS-0001 is FTS so leave it anyway :-)
 #include <gmofido.h>
 #ifndef GMB_NOEZY
-#include <gmoezyc.h>
+    #include <gmoezyc.h>
 #endif
 #if !defined(GMB_NOHUDS) || !defined(GMB_NOGOLD)
-#include <gmohuds.h>
+    #include <gmohuds.h>
 #endif
 #ifndef GMB_NOJAM
-#include <gmojamm.h>
+    #include <gmojamm.h>
 #endif
 #ifndef GMB_NOSQSH
-#include <gmosqsh.h>
+    #include <gmosqsh.h>
 #endif
 #ifndef GMB_NOPCB
-#include <gmopcbd.h>
+    #include <gmopcbd.h>
 #endif
 #ifndef GMB_NOWCAT
-#include <gmowcat.h>
+    #include <gmowcat.h>
 #endif
 #ifndef GMB_NOXBBS
-#include <gmoxbbs.h>
+    #include <gmoxbbs.h>
 #endif
 #ifndef GMB_NOSMB
-#include <gmosmb.h>
+    #include <gmosmb.h>
 #endif
 
 //  ------------------------------------------------------------------

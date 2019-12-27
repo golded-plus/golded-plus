@@ -44,16 +44,16 @@
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack(1)
+    #pragma pack(1)
 #endif
 
 
 //  ------------------------------------------------------------------
 
 #ifdef GOLD_16BIT
-const long MAX_IDXBUFSIZE = 65300L;
+    const long MAX_IDXBUFSIZE = 65300L;
 #else
-const long MAX_IDXBUFSIZE = LONG_MAX;
+    const long MAX_IDXBUFSIZE = LONG_MAX;
 #endif
 
 
@@ -230,7 +230,7 @@ struct SqshBase
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack()
+    #pragma pack()
 #endif
 
 

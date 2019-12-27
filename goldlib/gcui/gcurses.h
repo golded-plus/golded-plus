@@ -198,9 +198,9 @@ inline int (scrollok)(WINDOW* win, bool bf)
 #undef scrollok
 #else
 #ifndef hpux
-extern "C" int scrollok(WINDOW*, bool);
+    extern "C" int scrollok(WINDOW*, bool);
 #else
-extern "C" int scrollok(WINDOW*, char);
+    extern "C" int scrollok(WINDOW*, char);
 #endif
 #endif
 #ifdef standend

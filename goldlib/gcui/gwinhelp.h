@@ -89,7 +89,7 @@ public:
 //  Help index file record definition
 
 #if defined(GOLD_CANPACK)
-#pragma pack(1)
+    #pragma pack(1)
 #endif
 
 typedef struct _hlpidx_t
@@ -100,7 +100,7 @@ typedef struct _hlpidx_t
 } Hlpr;
 
 #if defined(GOLD_CANPACK)
-#pragma pack()
+    #pragma pack()
 #endif
 
 

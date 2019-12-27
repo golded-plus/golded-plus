@@ -34,7 +34,7 @@
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack(1)
+    #pragma pack(1)
 #endif
 
 
@@ -59,7 +59,7 @@ typedef word zstr;            // Offset of string within area heap
 #define MSGTYPE_SQUISH  0x02
 
 #ifdef PATHLEN
-#undef PATHLEN
+    #undef PATHLEN
 #endif
 
 #define PATHLEN           120 // Max. length of a path
@@ -140,11 +140,11 @@ typedef enum
 typedef word OFS;
 
 #ifndef MAX_DRIVES
-#define MAX_DRIVES           26   // Maximum number of drives on system
+    #define MAX_DRIVES           26   // Maximum number of drives on system
 #endif
 
 #ifndef CHAR_BITS
-#define CHAR_BITS             8   // Number of bits in a 'char'
+    #define CHAR_BITS             8   // Number of bits in a 'char'
 #endif
 
 #define CTL_VER               9   // Version number of bbs.prm
@@ -599,7 +599,7 @@ struct _msgarea
 //  -----------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack()
+    #pragma pack()
 #endif
 
 

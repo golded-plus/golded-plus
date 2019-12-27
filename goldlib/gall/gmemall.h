@@ -34,7 +34,7 @@
 #include <stdlib.h>
 #include <gdefs.h>
 #if defined(__MSDOS__)
-#include <gmemi86.h>
+    #include <gmemi86.h>
 #endif
 
 

@@ -70,7 +70,7 @@
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack(1)
+    #pragma pack(1)
 #endif
 
 
@@ -163,12 +163,12 @@ struct HudsToIdx
 
 typedef word HudsLast[HUDS_MAXBOARD]
 #ifndef __DJGPP__
-__attribute__((packed))
+    __attribute__((packed))
 #endif
 ;
 typedef word GoldLast[GOLD_MAXBOARD]
 #ifndef __DJGPP__
-__attribute__((packed))
+    __attribute__((packed))
 #endif
 ;
 
@@ -176,7 +176,7 @@ __attribute__((packed))
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack()
+    #pragma pack()
 #endif
 
 

@@ -37,7 +37,7 @@
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack(1)
+    #pragma pack(1)
 #endif
 
 
@@ -629,7 +629,7 @@ struct UrlHandler
 #define GC_STYLE_   CFG->color[12]
 #define GC_SHAD_    CFG->color[13]
 #if defined(GCFG_SPELL_INCLUDED)
-#define GC_SPELL_   CFG->color[14]
+    #define GC_SPELL_   CFG->color[14]
 #endif
 
 
@@ -684,7 +684,7 @@ struct UrlHandler
 #define _ReverseBoldItalicUnderscore  c[15]
 
 #if defined(GCFG_SPELL_INCLUDED)
-#define _SpellError                   c[0]
+    #define _SpellError                   c[0]
 #endif
 
 
@@ -804,7 +804,7 @@ struct UrlHandler
 #define C_STYLERUIB GC_STYLE_._ReverseBoldItalicUnderscore
 
 #if defined(GCFG_SPELL_INCLUDED)
-#define C_SCERROR   GC_SPELL_._SpellError
+    #define C_SCERROR   GC_SPELL_._SpellError
 #endif
 
 
@@ -1000,7 +1000,7 @@ const uint TO_ALL  = 16;
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack()
+    #pragma pack()
 #endif
 
 

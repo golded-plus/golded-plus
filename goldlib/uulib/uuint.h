@@ -268,9 +268,9 @@ extern char * (*uu_FNameFilter)  (void *, char *);
  */
 
 #if defined(STDC_HEADERS) || defined(HAVE_STDARG_H)
-int     UUMessage       (char *, int, int, char *, ...);
+    int     UUMessage       (char *, int, int, char *, ...);
 #else
-int     UUMessage       ();
+    int     UUMessage       ();
 #endif
 int     UUBusyPoll      (void);
 

@@ -35,19 +35,19 @@
 #include <cstddef>
 #include <gdefs.h>
 #ifdef __UNIX__
-#include <unistd.h>
-#include <sys/times.h>
+    #include <unistd.h>
+    #include <sys/times.h>
 #endif
 #ifdef __OS2__
-#define INCL_BASE
-#include <os2.h>
+    #define INCL_BASE
+    #include <os2.h>
 #endif
 #ifdef __WIN32__
-#include <windows.h>
+    #include <windows.h>
 #endif
 #if __VISUAL_C_NOT_LESS(14,0)
-//#if defined(_MSC_VER) && (_MSC_VER >= 1400)
-#include <time.h>
+    //#if defined(_MSC_VER) && (_MSC_VER >= 1400)
+    #include <time.h>
 #endif
 
 #include "gstrall.h"
@@ -60,7 +60,7 @@ typedef long Clock;
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack(1)
+    #pragma pack(1)
 #endif
 
 
@@ -111,7 +111,7 @@ typedef gopustime FTime;
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack()
+    #pragma pack()
 #endif
 
 
@@ -231,7 +231,7 @@ inline void usleep(long duration)
 #endif
 
 #ifndef CLK_TCK
-#define CLK_TCK CLOCKS_PER_SEC
+    #define CLK_TCK CLOCKS_PER_SEC
 #endif
 
 #ifdef __UNIX__

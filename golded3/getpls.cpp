@@ -25,17 +25,17 @@
 //  ------------------------------------------------------------------
 
 #if defined(_MSC_VER)
-/* C4786: 'identifier' : identifier was truncated to 'number'
-      characters in the debug information
-*/
-#pragma warning(disable: 4786)
+    /* C4786: 'identifier' : identifier was truncated to 'number'
+    characters in the debug information
+    */
+    #pragma warning(disable: 4786)
 #endif
 #include <algorithm>
 #include <golded.h>
 #include "getpls.h"
 
 #if defined(__USE_ALLOCA__)
-#include <malloc.h>
+    #include <malloc.h>
 #endif
 
 

@@ -23,19 +23,19 @@
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack(1)
+    #pragma pack(1)
 #endif
 
 //  ------------------------------------------------------------------
 
 #ifdef __OS2__
-#define INCL_BASE
-#include <os2.h>
+    #define INCL_BASE
+    #include <os2.h>
 #else
-typedef char     CHAR;
-typedef uint8_t  UCHAR;
-typedef  int16_t SHORT;
-typedef uint16_t USHORT;
+    typedef char     CHAR;
+    typedef uint8_t  UCHAR;
+    typedef  int16_t SHORT;
+    typedef uint16_t USHORT;
 #endif
 
 
@@ -654,7 +654,7 @@ typedef struct _xmsg
 /*----------------------------------------------------*/
 
 #if defined(GOLD_CANPACK)
-#pragma pack()
+    #pragma pack()
 #endif
 
 //  ------------------------------------------------------------------

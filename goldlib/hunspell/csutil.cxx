@@ -10,7 +10,7 @@
 #define UTF_LST_LEN (sizeof(utf_lst) / (sizeof(unicode_info)))
 
 #if !defined(_MSC_VER)
-using namespace std;
+    using namespace std;
 #endif
 
 /* only UTF-16 (BMP) implementation */

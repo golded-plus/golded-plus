@@ -32,15 +32,15 @@
 #include <gcmpall.h>
 #include <gstrall.h>
 #ifdef __WIN32__
-#include <windows.h>
+    #include <windows.h>
 #endif
 #ifdef __OS2__
-#define INCL_DOS
-#include <os2.h>
+    #define INCL_DOS
+    #include <os2.h>
 #endif
 #ifdef __DJGPP__
-#include <dpmi.h>
-#include <sys/farptr.h>
+    #include <dpmi.h>
+    #include <sys/farptr.h>
 #endif
 #include <gcharset.h>
 

@@ -36,21 +36,21 @@
  ****************************************************************************/
 
 #if defined __WATCOMC__ || defined __TURBOC__
-#include <mem.h>
+    #include <mem.h>
 #else
-#include <memory.h>
+    #include <memory.h>
 #endif
 
 #ifdef __WATCOMC__
-#include <dos.h>
+    #include <dos.h>
 #elif defined __TURBOC__
-#include <dir.h>
+    #include <dir.h>
 #endif
 
 /* ANSI C Library headers */
 
 #ifdef HAVE_MALLOC_H
-#include <malloc.h>
+    #include <malloc.h>
 #endif
 
 #include <time.h>

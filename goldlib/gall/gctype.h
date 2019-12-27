@@ -34,9 +34,9 @@
 /*  --------------------------------------------------------------- */
 
 #ifdef __BORLANDC__
-#define __USELOCALES__
+    #define __USELOCALES__
 #elif defined(__EMX__)
-#define _CTYPE_FUN
+    #define _CTYPE_FUN
 #endif
 #include <ctype.h>
 #if defined(__EMX__)
@@ -98,13 +98,13 @@ int isxalnum(int c);
 #endif
 
 #ifdef __BEOS__
-/* sz: there are some problems under BeOS with that function - symbols
- * from second half of ASCII table are assumed as control ones ...
- * This is a real disaster for cyrillic users ...
- * It's also not possible to use setlocale() to change it's behaviour. =-(
- */
-# undef iscntrl
-# define iscntrl(c) ((c < 0x7f) ? __isctype((c), _IScntrl) : 0)
+    /* sz: there are some problems under BeOS with that function - symbols
+    * from second half of ASCII table are assumed as control ones ...
+    * This is a real disaster for cyrillic users ...
+    * It's also not possible to use setlocale() to change it's behaviour. =-(
+    */
+    #undef iscntrl
+    #define iscntrl(c) ((c < 0x7f) ? __isctype((c), _IScntrl) : 0)
 #endif /* __BEOS__ */
 
 /*  --------------------------------------------------------------- */

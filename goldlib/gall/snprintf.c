@@ -55,33 +55,33 @@
 /* varargs declarations: */
 
 #if defined(HAVE_STDARG_H)
-# include <stdarg.h>
-# define HAVE_STDARGS    /* let's hope that works everywhere (mj) */
-# define VA_LOCAL_DECL   va_list ap
-# define VA_START(f)     va_start(ap, f)
-# define VA_SHIFT(v,t)  ;   /* no-op for ANSI */
-# define VA_END          va_end(ap)
+    #include <stdarg.h>
+    #define HAVE_STDARGS    /* let's hope that works everywhere (mj) */
+    #define VA_LOCAL_DECL   va_list ap
+    #define VA_START(f)     va_start(ap, f)
+    #define VA_SHIFT(v,t)  ;   /* no-op for ANSI */
+    #define VA_END          va_end(ap)
 #else
-# if defined(HAVE_VARARGS_H)
-#  include <varargs.h>
-#  undef HAVE_STDARGS
-#  define VA_LOCAL_DECL   va_list ap
-#  define VA_START(f)     va_start(ap)      /* f is ignored! */
-#  define VA_SHIFT(v,t) v = va_arg(ap,t)
-#  define VA_END        va_end(ap)
-# else
-/*XX ** NO VARARGS ** XX*/
-# endif
+    #if defined(HAVE_VARARGS_H)
+        #include <varargs.h>
+        #undef HAVE_STDARGS
+        #define VA_LOCAL_DECL   va_list ap
+        #define VA_START(f)     va_start(ap)      /* f is ignored! */
+        #define VA_SHIFT(v,t) v = va_arg(ap,t)
+        #define VA_END        va_end(ap)
+    #else
+        /*XX ** NO VARARGS ** XX*/
+    #endif
 #endif
 
 #ifdef _MSC_VER
-typedef __int64 int64_t;
-typedef unsigned __int64 uint64_t;
-typedef __int64* pint64_t;
+    typedef __int64 int64_t;
+    typedef unsigned __int64 uint64_t;
+    typedef __int64* pint64_t;
 #else
-typedef long long int64_t;
-typedef unsigned long long uint64_t;
-typedef long long * pint64_t;
+    typedef long long int64_t;
+    typedef unsigned long long uint64_t;
+    typedef long long * pint64_t;
 #endif
 
 /*int snprintf (char *str, size_t count, const char *fmt, ...);*/
@@ -734,9 +734,9 @@ int vsnprintf (char *str, size_t count, const char *fmt, va_list args)
 #ifndef HAVE_SNPRINTF
 /* VARARGS3 */
 #ifdef HAVE_STDARGS
-int snprintf (char *str,size_t count,const char *fmt,...)
+    int snprintf (char *str,size_t count,const char *fmt,...)
 #else
-int snprintf (va_alist) va_dcl
+    int snprintf (va_alist) va_dcl
 #endif
 {
 #ifndef HAVE_STDARGS
@@ -757,7 +757,7 @@ int snprintf (va_alist) va_dcl
 
 #ifdef TEST_SNPRINTF
 #ifndef LONG_STRING
-#define LONG_STRING 1024
+    #define LONG_STRING 1024
 #endif
 int main (void)
 {

@@ -44,20 +44,20 @@
 
 #if defined(__WATCOMC__)
 
-#define GREGPACK REGPACK
+    #define GREGPACK REGPACK
 
 #elif defined(__DJGPP__)
 
-#include <dpmi.h>
-#define GREGPACK __dpmi_regs
+    #include <dpmi.h>
+    #define GREGPACK __dpmi_regs
 
 #elif defined(__BORLANDC__)
 
-#define GREGPACK REGS
+    #define GREGPACK REGS
 
 #else
 
-#error not supported!
+    #error not supported!
 
 #endif
 

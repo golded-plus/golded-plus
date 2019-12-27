@@ -17,12 +17,12 @@
    Boston, MA 02111-1307, USA.  */
 
 #if HAVE_CONFIG_H
-# include <config.h>
+    #include <config.h>
 #endif
 
 /* Enable GNU extensions in fnmatch.h.  */
 #ifndef _GNU_SOURCE
-# define _GNU_SOURCE    1
+    #define _GNU_SOURCE    1
 #endif
 
 #include <errno.h>
@@ -30,21 +30,21 @@
 #include <gctype.h>
 
 #if HAVE_STRING_H
-# include <string.h>
+    #include <string.h>
 #else
-# include <strings.h>
+    #include <strings.h>
 #endif
 
 #if defined STDC_HEADERS || defined _LIBC
-# include <stdlib.h>
+    #include <stdlib.h>
 #endif
 
 /* For platform which support the ISO C amendement 1 functionality we
    support user defined character classes.  */
 #if defined _LIBC || (defined HAVE_WCTYPE_H && defined HAVE_WCHAR_H)
-/* Solaris 2.5 has a bug: <wchar.h> must be included before <wctype.h>.  */
-# include <wchar.h>
-# include <wctype.h>
+    /* Solaris 2.5 has a bug: <wchar.h> must be included before <wctype.h>.  */
+    #include <wchar.h>
+    #include <wctype.h>
 #endif
 
 /* Comment out all this code if we are using the GNU C Library, and are not
@@ -58,21 +58,21 @@
 #if defined _LIBC || !defined __GNU_LIBRARY__
 
 
-# if defined STDC_HEADERS || !defined isascii
-#  define ISASCII(c) 1
-# else
-#  define ISASCII(c) isascii(c)
-# endif
+#if defined STDC_HEADERS || !defined isascii
+    #define ISASCII(c) 1
+#else
+    #define ISASCII(c) isascii(c)
+#endif
 
 #ifdef isblank
-# define ISBLANK(c) (ISASCII (c) && isblank (c))
+    #define ISBLANK(c) (ISASCII (c) && isblank (c))
 #else
-# define ISBLANK(c) ((c) == ' ' || (c) == '\t')
+    #define ISBLANK(c) ((c) == ' ' || (c) == '\t')
 #endif
 #ifdef isgraph
-# define ISGRAPH(c) (ISASCII (c) && isgraph (c))
+    #define ISGRAPH(c) (ISASCII (c) && isgraph (c))
 #else
-# define ISGRAPH(c) (ISASCII (c) && isprint (c) && !isspace (c))
+    #define ISGRAPH(c) (ISASCII (c) && isprint (c) && !isspace (c))
 #endif
 
 #define ISPRINT(c)  (ISASCII (c) && isprint   (c))
@@ -91,19 +91,19 @@
 # if defined _LIBC || (defined HAVE_WCTYPE_H && defined HAVE_WCHAR_H)
 /* The GNU C library provides support for user-defined character classes
    and the functions from ISO C amendement 1.  */
-#  ifdef CHARCLASS_NAME_MAX
-#   define CHAR_CLASS_MAX_LENGTH CHARCLASS_NAME_MAX
-#  else
-/* This shouldn't happen but some implementation might still have this
-   problem.  Use a reasonable default value.  */
-#   define CHAR_CLASS_MAX_LENGTH 256
-#  endif
+#ifdef CHARCLASS_NAME_MAX
+    #define CHAR_CLASS_MAX_LENGTH CHARCLASS_NAME_MAX
+#else
+    /* This shouldn't happen but some implementation might still have this
+    problem.  Use a reasonable default value.  */
+    #define CHAR_CLASS_MAX_LENGTH 256
+#endif
 
-#  ifdef _LIBC
-#   define IS_CHAR_CLASS(string) __wctype (string)
-#  else
-#   define IS_CHAR_CLASS(string) wctype (string)
-#  endif
+#ifdef _LIBC
+    #define IS_CHAR_CLASS(string) __wctype (string)
+#else
+    #define IS_CHAR_CLASS(string) wctype (string)
+#endif
 # else
 #  define CHAR_CLASS_MAX_LENGTH  6 /* Namely, `xdigit'.  */
 
@@ -119,13 +119,13 @@
 /* Avoid depending on library functions or files
    whose names are inconsistent.  */
 
-# if !defined _LIBC && !defined getenv
-extern char *getenv ();
-# endif
+#if !defined _LIBC && !defined getenv
+    extern char *getenv ();
+#endif
 
-# ifndef errno
-extern int errno;
-# endif
+#ifndef errno
+    extern int errno;
+#endif
 
 /* Match STRING against the filename pattern PATTERN, returning zero if
    it matches, nonzero if not.  */
