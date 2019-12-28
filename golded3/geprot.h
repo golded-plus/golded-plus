@@ -189,7 +189,7 @@ char* mime_header_decode(char* decoded, const char* encoded, char* charset = NUL
 char* strxmimecpy(char* dest, const char* source, int level, int size, bool detect = false);
 void InvalidateControlInfo(GMsg *msg);
 #ifdef HAS_ICONV
-void IconvClear(void);
+    void IconvClear(void);
 #endif
 
 
@@ -216,7 +216,9 @@ int ChangeXlatImport();
 void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int origarea);
 void TokenXlat(int mode, char *&input, size_t size, bool resize, GMsg* msg, GMsg* oldmsg, int origarea);
 inline void TokenXlat(int mode, char *input, size_t size, GMsg* msg, GMsg* oldmsg, int origarea)
-{ TokenXlat(mode, input, size, false, msg, oldmsg, origarea); }
+{
+    TokenXlat(mode, input, size, false, msg, oldmsg, origarea);
+}
 
 void Rot13(GMsg* msg);
 void ResetMsg(GMsg* msg);
@@ -235,13 +237,13 @@ void MsgThreadlist();
 class ThreadEntry
 {
 public:
-  uint32_t msgno;
-  uint32_t replyto;
-  uint32_t reply1st;
-  uint32_t replynext;
-  uint32_t replytoindex;
-  uint32_t level;
-  std::string entrytext;
+    uint32_t msgno;
+    uint32_t replyto;
+    uint32_t reply1st;
+    uint32_t replynext;
+    uint32_t replytoindex;
+    uint32_t level;
+    std::string entrytext;
 };
 
 //  ------------------------------------------------------------------
@@ -249,41 +251,44 @@ public:
 class GThreadlist : public gwinpick
 {
 private:
-  gwindow     window;
-  GMsg        msg;
+    gwindow     window;
+    GMsg        msg;
 
-  std::vector<ThreadEntry>  treeEntryList;
+    std::vector<ThreadEntry>  treeEntryList;
 
-  dword m_OldMsgno;
-  uint m_OldTags;
-  std::string m_OldEchoId;
+    dword m_OldMsgno;
+    uint m_OldTags;
+    std::string m_OldEchoId;
 
-  void BuildThreadIndex(dword msgno);
-  void recursive_build(uint32_t msgn, uint32_t rn, uint32_t level, uint32_t index);
-  void GenTree(int idx);
-  void update_title();
-  bool NextThread(bool next);
+    void BuildThreadIndex(dword msgno);
+    void recursive_build(uint32_t msgn, uint32_t rn, uint32_t level, uint32_t index);
+    void GenTree(int idx);
+    void update_title();
+    bool NextThread(bool next);
 
 public:
-  void open();                        // Called after window is opened
-  void close();                       // Called after window is closed
-  void print_line(uint idx, uint pos, bool isbar);
-  void do_delayed();
-  bool handle_key();                  // Handles keypress
+    void open();                        // Called after window is opened
+    void close();                       // Called after window is closed
+    void print_line(uint idx, uint pos, bool isbar);
+    void do_delayed();
+    bool handle_key();                  // Handles keypress
 
-  void Run();
-  bool GoNextUnread(bool reader);
+    void Run();
+    bool GoNextUnread(bool reader);
 
-  GThreadlist()
-  {
-    m_OldMsgno = dword(-1);
-    m_OldTags = uint(-1);
+    GThreadlist()
+    {
+        m_OldMsgno = dword(-1);
+        m_OldTags = uint(-1);
 
-    memset(&msg, 0, sizeof(GMsg));
-    replylinkfloat = CFG->replylinkfloat;
-  }
+        memset(&msg, 0, sizeof(GMsg));
+        replylinkfloat = CFG->replylinkfloat;
+    }
 
-  ~GThreadlist() { ResetMsg(&msg); }
+    ~GThreadlist()
+    {
+        ResetMsg(&msg);
+    }
 };
 
 
@@ -321,9 +326,10 @@ void SayBibi();
 //  ------------------------------------------------------------------
 //  GEHDRE prototypes
 
-typedef struct {
-  char *buf;
-  bool update;
+typedef struct
+{
+    char *buf;
+    bool update;
 } gsetaddr;
 
 bool set_to_address(GMsg* msg, gsetaddr* toname, gsetaddr* toaddr, gsetaddr* fromaddr, gsetaddr* subj, int pos, char* lng_lookup, bool lookup=true);

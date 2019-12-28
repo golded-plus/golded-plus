@@ -39,210 +39,236 @@ int       wcatdatano = 0;
 
 //  ------------------------------------------------------------------
 
-void WCatArea::data_open() {
+void WCatArea::data_open()
+{
 
-  wide = wcatwide;
-  data = wcatdata + (wcatdatano++);
+    wide = wcatwide;
+    data = wcatdata + (wcatdatano++);
 }
 
 
 //  ------------------------------------------------------------------
 
-void WCatArea::data_close() {
+void WCatArea::data_close()
+{
 
-  wcatdatano--;
+    wcatdatano--;
 }
 
 
 //  ------------------------------------------------------------------
 
-void WCatArea::raw_close() {
+void WCatArea::raw_close()
+{
 
-  GFTRK("WCatRawClose");
+    GFTRK("WCatRawClose");
 
-  if(data->fhix != -1)   ::close(data->fhix);   data->fhix = -1;
-  if(data->fhdat != -1)  ::close(data->fhdat);  data->fhdat = -1;
+    if(data->fhix != -1)   ::close(data->fhix);
+    data->fhix = -1;
+    if(data->fhdat != -1)  ::close(data->fhdat);
+    data->fhdat = -1;
 
-  GFTRK(0);
+    GFTRK(0);
 }
 
 
 //  ------------------------------------------------------------------
 
-int WCatArea::test_open(const char* __file) {
+int WCatArea::test_open(const char* __file)
+{
 
-  GFTRK("WCatTestOpen");
+    GFTRK("WCatTestOpen");
 
-  int _fh;
-  long _tries = 0;
+    int _fh;
+    long _tries = 0;
 
-  do {
+    do
+    {
 
-    _fh = ::sopen(__file, O_RDWR|O_BINARY|O_CREAT, WideSharemode, S_STDRW);
-    if(_fh == -1) {
+        _fh = ::sopen(__file, O_RDWR|O_BINARY|O_CREAT, WideSharemode, S_STDRW);
+        if(_fh == -1)
+        {
 
-      // Tell the world
-      if((errno != EACCES) or (PopupLocked(++_tries, false, __file) == false)) {
+            // Tell the world
+            if((errno != EACCES) or (PopupLocked(++_tries, false, __file) == false))
+            {
 
-        // User requested to exit
-        WideLog->ErrOpen();
-        raw_close();
-        WideLog->printf("! A WildCat! msgbase file could not be opened.");
-        WideLog->printf(": %s.", __file);
-        WideLog->ErrOSInfo();
-        OpenErrorExit();
-      }
+                // User requested to exit
+                WideLog->ErrOpen();
+                raw_close();
+                WideLog->printf("! A WildCat! msgbase file could not be opened.");
+                WideLog->printf(": %s.", __file);
+                WideLog->ErrOSInfo();
+                OpenErrorExit();
+            }
+        }
     }
-  } while(_fh == -1);
+    while(_fh == -1);
 
-  // Remove the popup window
-  if(_tries)
-    PopupLocked(0, 0, NULL);
+    // Remove the popup window
+    if(_tries)
+        PopupLocked(0, 0, NULL);
 
-  GFTRK(0);
+    GFTRK(0);
 
-  return _fh;
+    return _fh;
 }
 
 
 //  ------------------------------------------------------------------
 
-void WCatArea::raw_open() {
+void WCatArea::raw_open()
+{
 
-  GFTRK("WCatRawOpen");
+    GFTRK("WCatRawOpen");
 
-  data->fhix  = test_open(AddPath(real_path(), ".ix"));
-  data->fhdat = test_open(AddPath(real_path(), ".dat"));
+    data->fhix  = test_open(AddPath(real_path(), ".ix"));
+    data->fhdat = test_open(AddPath(real_path(), ".dat"));
 
-  GFTRK(0);
+    GFTRK(0);
 }
 
 
 //  ------------------------------------------------------------------
 
-void WCatExit() {
+void WCatExit()
+{
 
-  throw_xrelease(wcatwide);
-  throw_xrelease(wcatdata);
+    throw_xrelease(wcatwide);
+    throw_xrelease(wcatdata);
 }
 
 
 //  ------------------------------------------------------------------
 
-void WCatInit(int userno) {
+void WCatInit(int userno)
+{
 
-  wcatdata = (WCatData*)throw_calloc(3, sizeof(WCatData));
-  wcatwide = (WCatWide*)throw_calloc(1, sizeof(WCatWide));
+    wcatdata = (WCatData*)throw_calloc(3, sizeof(WCatData));
+    wcatwide = (WCatWide*)throw_calloc(1, sizeof(WCatWide));
 
-  wcatwide->userno = userno;
+    wcatwide->userno = userno;
 }
 
 
 //  ------------------------------------------------------------------
 
-void WCatArea::open() {
+void WCatArea::open()
+{
 
-  GFTRK("WCatOpen");
+    GFTRK("WCatOpen");
 
-  isopen++;
-  if(isopen > 2) {
-    WideLog->ErrTest();
-    WideLog->printf("! Trying to open a WildCat! msgbase more than twice.");
-    WideLog->printf(": %s, %s.", echoid(), path());
-    WideLog->printf("+ Info: This indicates a serious bug.");
-    WideLog->printf("+ Advice: Report to the Author immediately.");
-    TestErrorExit();
-  }
-  if(isopen == 1) {
-    if(ispacked()) {
-      isopen--;
-      const char* newpath = Unpack(path());
-      if(newpath == NULL)
-        packed(false);
-      set_real_path(newpath ? newpath : path());
-      isopen++;
+    isopen++;
+    if(isopen > 2)
+    {
+        WideLog->ErrTest();
+        WideLog->printf("! Trying to open a WildCat! msgbase more than twice.");
+        WideLog->printf(": %s, %s.", echoid(), path());
+        WideLog->printf("+ Info: This indicates a serious bug.");
+        WideLog->printf("+ Advice: Report to the Author immediately.");
+        TestErrorExit();
     }
-    data_open();
-    raw_open();
-    refresh();
-    scan();
-  }
-
-  GFTRK(0);
-}
-
-
-//  ------------------------------------------------------------------
-
-void WCatArea::save_lastread() {
-
-  GFTRK("WCatSaveLastread");
-
-  int _fh = ::sopen(AddPath(real_path(), ".lrd"), O_RDWR|O_CREAT|O_BINARY, WideSharemode, S_STDRW);
-  if(_fh != -1) {
-    word _lastread = (word)Msgn->CvtReln(lastread);
-    lseekset(_fh, wcatwide->userno, sizeof(word));
-    write(_fh, &_lastread, sizeof(word));
-    ::close(_fh);
-  }
-
-  GFTRK(0);
-}
-
-
-//  ------------------------------------------------------------------
-
-void WCatArea::close() {
-
-  GFTRK("WCatClose");
-
-  if(isopen) {
-    if(isopen == 1) {
-      save_lastread();
-      raw_close();
-      Msgn->Reset();
-      throw_release(data->idx);
-      data_close();
-      if(ispacked()) {
-        CleanUnpacked(real_path());
-      }
+    if(isopen == 1)
+    {
+        if(ispacked())
+        {
+            isopen--;
+            const char* newpath = Unpack(path());
+            if(newpath == NULL)
+                packed(false);
+            set_real_path(newpath ? newpath : path());
+            isopen++;
+        }
+        data_open();
+        raw_open();
+        refresh();
+        scan();
     }
-    isopen--;
-  }
-  else {
-    WideLog->ErrTest();
-    WideLog->printf("! Trying to close an already closed WildCat! msgbase.");
-    WideLog->printf(": %s, %s.", echoid(), path());
-    WideLog->printf("+ Info: This indicates a potentially serious bug.");
-    WideLog->printf("+ Advice: Report to the Author immediately.");
-    TestErrorExit();
-  }
 
-  GFTRK(0);
+    GFTRK(0);
 }
 
 
 //  ------------------------------------------------------------------
 
-void WCatArea::suspend() {
+void WCatArea::save_lastread()
+{
 
-  GFTRK("WCatSuspend");
+    GFTRK("WCatSaveLastread");
 
-  save_lastread();
+    int _fh = ::sopen(AddPath(real_path(), ".lrd"), O_RDWR|O_CREAT|O_BINARY, WideSharemode, S_STDRW);
+    if(_fh != -1)
+    {
+        word _lastread = (word)Msgn->CvtReln(lastread);
+        lseekset(_fh, wcatwide->userno, sizeof(word));
+        write(_fh, &_lastread, sizeof(word));
+        ::close(_fh);
+    }
 
-  GFTRK(0);
+    GFTRK(0);
 }
 
 
 //  ------------------------------------------------------------------
 
-void WCatArea::resume() {
+void WCatArea::close()
+{
 
-  GFTRK("WCatResume");
+    GFTRK("WCatClose");
+
+    if(isopen)
+    {
+        if(isopen == 1)
+        {
+            save_lastread();
+            raw_close();
+            Msgn->Reset();
+            throw_release(data->idx);
+            data_close();
+            if(ispacked())
+            {
+                CleanUnpacked(real_path());
+            }
+        }
+        isopen--;
+    }
+    else
+    {
+        WideLog->ErrTest();
+        WideLog->printf("! Trying to close an already closed WildCat! msgbase.");
+        WideLog->printf(": %s, %s.", echoid(), path());
+        WideLog->printf("+ Info: This indicates a potentially serious bug.");
+        WideLog->printf("+ Advice: Report to the Author immediately.");
+        TestErrorExit();
+    }
+
+    GFTRK(0);
+}
+
+
+//  ------------------------------------------------------------------
+
+void WCatArea::suspend()
+{
+
+    GFTRK("WCatSuspend");
+
+    save_lastread();
+
+    GFTRK(0);
+}
+
+
+//  ------------------------------------------------------------------
+
+void WCatArea::resume()
+{
+
+    GFTRK("WCatResume");
 
 
 
-  GFTRK(0);
+    GFTRK(0);
 }
 
 

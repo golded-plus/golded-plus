@@ -43,90 +43,98 @@ typedef struct _item_t GMnuItm;
 //  ------------------------------------------------------------------
 //  Menu class
 
-class GMnu {
+class GMnu
+{
 
 protected:
 
-  int   bordertype;
-  vattr bordercolor;
+    int   bordertype;
+    vattr bordercolor;
 
-  vattr textcolor;
-  vattr quickcolor;
-  vattr noselcolor;
-  vattr barcolor;
-  vattr shadowcolor;
+    vattr textcolor;
+    vattr quickcolor;
+    vattr noselcolor;
+    vattr barcolor;
+    vattr shadowcolor;
 
-  const char*  title;
-  int   titlepos;
-  vattr titlecolor;
+    const char*  title;
+    int   titlepos;
+    vattr titlecolor;
 
-  int   deschdl;
-  int   descrow;
-  int   desccolumn;
-  vattr desccolor;
+    int   deschdl;
+    int   descrow;
+    int   desccolumn;
+    vattr desccolor;
 
-  int  helpnumber;
+    int  helpnumber;
 
-  int  beginrow;
-  int  begincolumn;
-  int  beginwidth;
-  int  beginheight;
+    int  beginrow;
+    int  begincolumn;
+    int  beginwidth;
+    int  beginheight;
 
-  VfvCP menuopen;
-  int  itemmask;
+    VfvCP menuopen;
+    int  itemmask;
 
-  int  escape;
-  int  overtag;
-  int  finaltag;
-  int  status;
+    int  escape;
+    int  overtag;
+    int  finaltag;
+    int  status;
 
-  int  depth;
-  struct {
-    int  tag;
-    int  type;
-    int  winrow;
-    int  wincolumn;
-    int  winwidth;
-    int  winheight;
-    int  itemrow;
-    int  itemcolumn;
-  } stack[10];
+    int  depth;
+    struct
+    {
+        int  tag;
+        int  type;
+        int  winrow;
+        int  wincolumn;
+        int  winwidth;
+        int  winheight;
+        int  itemrow;
+        int  itemcolumn;
+    } stack[10];
 
 public:
 
-  void Init();
+    void Init();
 
-  void SetBorder(int type, vattr color);
-  void SetColor(vattr text, vattr quick, vattr nosel, vattr bar, vattr shadow = DEFATTR);
-  void SetTitle(const char* title, vattr color, int pos=TCENTER);
-  void SetTitle(const char* title);
-  void SetDesc(int hdl, int row, int col, vattr color);
-  void SetPos(int row, int col, int width=0, int height=0);
-  void SetEsc(int option);
-  void SetHelp(int help);
-  void SetMask(int mask);
-  void SetTag(int tag);
+    void SetBorder(int type, vattr color);
+    void SetColor(vattr text, vattr quick, vattr nosel, vattr bar, vattr shadow = DEFATTR);
+    void SetTitle(const char* title, vattr color, int pos=TCENTER);
+    void SetTitle(const char* title);
+    void SetDesc(int hdl, int row, int col, vattr color);
+    void SetPos(int row, int col, int width=0, int height=0);
+    void SetEsc(int option);
+    void SetHelp(int help);
+    void SetMask(int mask);
+    void SetTag(int tag);
 
-  void Begin(int type=M_VERT);
-  void BeginPullDown(int type=0) { Begin(M_VERT|M_PD|type); }
-  void End();
-  void Start();
+    void Begin(int type=M_VERT);
+    void BeginPullDown(int type=0)
+    {
+        Begin(M_VERT|M_PD|type);
+    }
+    void End();
+    void Start();
 
-  void Item(int tag, const char* text);
-  void Item(int tag, const char* text, int fmask);
-  void Item(int tag, const char* text, VfvCP select, int fmask=M_CLOSE);
-  void Item(int tag, const char* text, int fmask, VfvCP select, gkey hotkey=0);
-  void ItemDesc(const char* text);
-  void ItemSep();
-  void ItemFuncs(VfvCP before, VfvCP after);
+    void Item(int tag, const char* text);
+    void Item(int tag, const char* text, int fmask);
+    void Item(int tag, const char* text, VfvCP select, int fmask=M_CLOSE);
+    void Item(int tag, const char* text, int fmask, VfvCP select, gkey hotkey=0);
+    void ItemDesc(const char* text);
+    void ItemSep();
+    void ItemFuncs(VfvCP before, VfvCP after);
 
-  void SetNextItem(int tag);
-  void DisableItem(int tag);
-  void EnableItem(int tag);
+    void SetNextItem(int tag);
+    void DisableItem(int tag);
+    void EnableItem(int tag);
 
-  GMnuItm* FindItem(int tag);
+    GMnuItm* FindItem(int tag);
 
-  int FinalTag() { return finaltag; }
+    int FinalTag()
+    {
+        return finaltag;
+    }
 };
 
 

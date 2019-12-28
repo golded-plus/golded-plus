@@ -28,8 +28,8 @@
 #include <gstrall.h>
 #include <gmemdbg.h>
 #if defined(__GOLD_GUI__)
-#include <gvidall.h>
-#include <gvidgui.h>
+    #include <gvidall.h>
+    #include <gvidgui.h>
 #endif
 #undef GCFG_NOTOSSCAN
 #include <gedacfg.h>
@@ -40,118 +40,131 @@
 //  ------------------------------------------------------------------
 //  Read TosScan AREAFILE.FD
 
-void gareafile::ReadTosScan(char* tag) {
+void gareafile::ReadTosScan(char* tag)
+{
 
-  AreaCfg aa;
-  FILE* fp;
-  char* ptr;
-  word sysrev;
-  FD_Editor* editor;
-  FD_Shared* shared;
-  Path tspath, file;
-  TS_Areafile* areafile;
-  char buf[256], options[80];
+    AreaCfg aa;
+    FILE* fp;
+    char* ptr;
+    word sysrev;
+    FD_Editor* editor;
+    FD_Shared* shared;
+    Path tspath, file;
+    TS_Areafile* areafile;
+    char buf[256], options[80];
 
-  *tspath = NUL;
-  editor   = new FD_Editor; throw_new(editor);
-  shared   = new FD_Shared; throw_new(shared);
-  areafile = new TS_Areafile; throw_new(areafile);
+    *tspath = NUL;
+    editor   = new FD_Editor;
+    throw_new(editor);
+    shared   = new FD_Shared;
+    throw_new(shared);
+    areafile = new TS_Areafile;
+    throw_new(areafile);
 
-  strcpy(options, tag);
-  ptr = strtok(tag, " \t");
-  while(ptr) {
-    if(*ptr != '-') {
-      AddBackslash(strcpy(tspath, ptr));
-      break;
-    }
-    ptr = strtok(NULL, " \t");
-  }
-  if(*tspath == NUL) {
-    ptr = getenv("FD");
-    if(ptr)
-      AddBackslash(strcpy(tspath, ptr));
-  }
-  if(*tspath == NUL)
-    strcpy(tspath, areapath);
-
-  if(fexist(AddPath(tspath, "areafile.fd"))) {
-
-    if(fexist(AddPath(tspath, "setup.fd")))
-      MakePathname(file, tspath, "setup.fd");
-    else
-      MakePathname(file, tspath, "fd.sys");
-
-    fp = fsopen(file, "rb", sharemode);
-    if (fp)
+    strcpy(options, tag);
+    ptr = strtok(tag, " \t");
+    while(ptr)
     {
-      if (not quiet)
-        STD_PRINTNL("* Reading " << file);
-
-      fread(buf, 5, 1, fp);
-      if(streql(buf, "JoHo")) {   // Check to see that it is v1.99b or higher
-        fread(&sysrev, sizeof(word), 1, fp);
-        // This probably ought to be if(sysrev == FD_THISREV)..
-        fseek(fp, 4, SEEK_CUR);                   // Seek past CRC32
-        fseek(fp, sizeof(FD_Mailer), SEEK_CUR);   // Seek past some data
-        fread(editor, sizeof(FD_Editor), 1, fp);
-        fread(shared, sizeof(FD_Shared), 1, fp);
-        CfgHudsonpath(editor->qbase);
-        aa.reset();
-        aa.type = GMB_NET;
-        aa.attr = attribsnet;
-        aa.basetype = fidomsgtype;
-        aa.attr.r_o(editor->netfolderflags & EDREADONLY);
-        aa.attr.pvt(editor->msgbits & MSGPRIVATE);
-        aa.attr.cra(editor->msgbits & MSGCRASH);
-        aa.attr.k_s(editor->msgbits & MSGKILL);
-        aa.setpath(shared->mailpath);
-        aa.setdesc("FrontDoor Netmail");
-        aa.setautoid("NETMAIL");
-        AddNewArea(aa);
-      }
-      fclose(fp);
-    }
-
-    MakePathname(file, tspath, "areafile.fd");
-
-    fp = fsopen(file, "rb", sharemode);
-    if (fp)
-    {
-      setvbuf(fp, NULL, _IOFBF, 8192);
-
-      if (not quiet)
-        STD_PRINTNL("* Reading " << file);
-
-      fseek(fp, 4L, SEEK_SET);  // Skip CRC32
-
-      while(fread(areafile, sizeof(TS_Areafile), 1, fp) == 1) {
-        if(not (areafile->deleted or areafile->passthru) and not strblank(areafile->echoname) and (areafile->board ? areafile->board < 201 : 1)) {
-          aa.reset();
-          aa.groupid = (char)g_toupper(areafile->groupid);
-          aa.aka = shared->aka[areafile->akano];
-          aa.type = GMB_ECHO;
-          aa.attr = attribsecho;
-          if(areafile->board) {
-            aa.basetype = "HUDSON";
-            aa.board = areafile->board;
-          }
-          else {
-            aa.basetype = fidomsgtype;
-            aa.setpath(areafile->path);
-          }
-          aa.setdesc(areafile->desc);
-          aa.setechoid(areafile->echoname);
-          aa.setorigin(editor->origin[areafile->origno-1]);
-          AddNewArea(aa);
+        if(*ptr != '-')
+        {
+            AddBackslash(strcpy(tspath, ptr));
+            break;
         }
-      }
-      fclose(fp);
+        ptr = strtok(NULL, " \t");
     }
-  }
+    if(*tspath == NUL)
+    {
+        ptr = getenv("FD");
+        if(ptr)
+            AddBackslash(strcpy(tspath, ptr));
+    }
+    if(*tspath == NUL)
+        strcpy(tspath, areapath);
 
-  throw_delete(areafile);
-  throw_delete(editor);
-  throw_delete(shared);
+    if(fexist(AddPath(tspath, "areafile.fd")))
+    {
+
+        if(fexist(AddPath(tspath, "setup.fd")))
+            MakePathname(file, tspath, "setup.fd");
+        else
+            MakePathname(file, tspath, "fd.sys");
+
+        fp = fsopen(file, "rb", sharemode);
+        if (fp)
+        {
+            if (not quiet)
+                STD_PRINTNL("* Reading " << file);
+
+            fread(buf, 5, 1, fp);
+            if(streql(buf, "JoHo"))     // Check to see that it is v1.99b or higher
+            {
+                fread(&sysrev, sizeof(word), 1, fp);
+                // This probably ought to be if(sysrev == FD_THISREV)..
+                fseek(fp, 4, SEEK_CUR);                   // Seek past CRC32
+                fseek(fp, sizeof(FD_Mailer), SEEK_CUR);   // Seek past some data
+                fread(editor, sizeof(FD_Editor), 1, fp);
+                fread(shared, sizeof(FD_Shared), 1, fp);
+                CfgHudsonpath(editor->qbase);
+                aa.reset();
+                aa.type = GMB_NET;
+                aa.attr = attribsnet;
+                aa.basetype = fidomsgtype;
+                aa.attr.r_o(editor->netfolderflags & EDREADONLY);
+                aa.attr.pvt(editor->msgbits & MSGPRIVATE);
+                aa.attr.cra(editor->msgbits & MSGCRASH);
+                aa.attr.k_s(editor->msgbits & MSGKILL);
+                aa.setpath(shared->mailpath);
+                aa.setdesc("FrontDoor Netmail");
+                aa.setautoid("NETMAIL");
+                AddNewArea(aa);
+            }
+            fclose(fp);
+        }
+
+        MakePathname(file, tspath, "areafile.fd");
+
+        fp = fsopen(file, "rb", sharemode);
+        if (fp)
+        {
+            setvbuf(fp, NULL, _IOFBF, 8192);
+
+            if (not quiet)
+                STD_PRINTNL("* Reading " << file);
+
+            fseek(fp, 4L, SEEK_SET);  // Skip CRC32
+
+            while(fread(areafile, sizeof(TS_Areafile), 1, fp) == 1)
+            {
+                if(not (areafile->deleted or areafile->passthru) and not strblank(areafile->echoname) and (areafile->board ? areafile->board < 201 : 1))
+                {
+                    aa.reset();
+                    aa.groupid = (char)g_toupper(areafile->groupid);
+                    aa.aka = shared->aka[areafile->akano];
+                    aa.type = GMB_ECHO;
+                    aa.attr = attribsecho;
+                    if(areafile->board)
+                    {
+                        aa.basetype = "HUDSON";
+                        aa.board = areafile->board;
+                    }
+                    else
+                    {
+                        aa.basetype = fidomsgtype;
+                        aa.setpath(areafile->path);
+                    }
+                    aa.setdesc(areafile->desc);
+                    aa.setechoid(areafile->echoname);
+                    aa.setorigin(editor->origin[areafile->origno-1]);
+                    AddNewArea(aa);
+                }
+            }
+            fclose(fp);
+        }
+    }
+
+    throw_delete(areafile);
+    throw_delete(editor);
+    throw_delete(shared);
 }
 
 

@@ -34,135 +34,150 @@
 
 //  ------------------------------------------------------------------
 
-gsearch::gsearch() {
+gsearch::gsearch()
+{
 
-  regexp         = NULL;
-  fuzzyp         = NULL;
-  plainp         = NULL;
-  type           = plain;
-  case_sensitive = false;
-  reverse        = false;
-  fuzzydegree    = 1;
-  score_success  = 1;
-  score_failure  = 0;
-  score          = 0;
-  found          = false;
+    regexp         = NULL;
+    fuzzyp         = NULL;
+    plainp         = NULL;
+    type           = plain;
+    case_sensitive = false;
+    reverse        = false;
+    fuzzydegree    = 1;
+    score_success  = 1;
+    score_failure  = 0;
+    score          = 0;
+    found          = false;
 }
 
 
 //  ------------------------------------------------------------------
 
-gsearch::~gsearch() {
+gsearch::~gsearch()
+{
 
-  delete regexp;
-  delete fuzzyp;
-  delete plainp;
+    delete regexp;
+    delete fuzzyp;
+    delete plainp;
 }
 
 
 //  ------------------------------------------------------------------
 
-void gsearch::set_pattern(const char* a) {
+void gsearch::set_pattern(const char* a)
+{
 
-  delete regexp;  regexp = NULL;
-  delete fuzzyp;  fuzzyp = NULL;
-  delete plainp;  plainp = NULL;
+    delete regexp;
+    regexp = NULL;
+    delete fuzzyp;
+    fuzzyp = NULL;
+    delete plainp;
+    plainp = NULL;
 
-  pattern = a;
+    pattern = a;
 }
 
 
 //  ------------------------------------------------------------------
 
-bool gsearch::search(const std::string& str) {
+bool gsearch::search(const std::string& str)
+{
 
-  int discard_result;
-  return search(str, discard_result);
+    int discard_result;
+    return search(str, discard_result);
 }
 
 
 //  ------------------------------------------------------------------
 
-bool gsearch::search(const std::string& str, int& result) {
+bool gsearch::search(const std::string& str, int& result)
+{
 
-  return search(str.c_str(), result);
+    return search(str.c_str(), result);
 }
 
 
 //  ------------------------------------------------------------------
 
-bool gsearch::search(const char* str) {
+bool gsearch::search(const char* str)
+{
 
-  int discard_result;
-  return search(str, discard_result);
+    int discard_result;
+    return search(str, discard_result);
 }
 
 
 //  ------------------------------------------------------------------
 
-bool gsearch::search(const char* str, int& result) {
+bool gsearch::search(const char* str, int& result)
+{
 
-  found = false;
+    found = false;
 
-  switch(type) {
+    switch(type)
+    {
 
     case regex:
-      if(regexp == NULL) {
-        regexp = new gregex;
-        throw_new(regexp);
-        regexp->compile(pattern.c_str(), gregex::extended | (case_sensitive ? 0 : gregex::icase));
-      }
-      found = regexp->match(str);
-      break;
+        if(regexp == NULL)
+        {
+            regexp = new gregex;
+            throw_new(regexp);
+            regexp->compile(pattern.c_str(), gregex::extended | (case_sensitive ? 0 : gregex::icase));
+        }
+        found = regexp->match(str);
+        break;
 
     case wildcard:
-      found = gwildmat(str, pattern.c_str(), not case_sensitive);
-      break;
+        found = gwildmat(str, pattern.c_str(), not case_sensitive);
+        break;
 
     case fuzzy:
-      if(fuzzyp == NULL) {
-        fuzzyp = new gfuzzy;
-        throw_new(fuzzyp);
-        fuzzyp->init(pattern.c_str(), fuzzydegree, case_sensitive);
-      }
-      found = fuzzyp->findfirst(str);
-      break;
+        if(fuzzyp == NULL)
+        {
+            fuzzyp = new gfuzzy;
+            throw_new(fuzzyp);
+            fuzzyp->init(pattern.c_str(), fuzzydegree, case_sensitive);
+        }
+        found = fuzzyp->findfirst(str);
+        break;
 
     case plain:
-      if(plainp == NULL) {
-        plainp = new gbmh;
-        throw_new(plainp);
-        plainp->init(pattern.c_str(), not case_sensitive);
-      }
-      found = plainp->find(str);
-      break;
-  }
+        if(plainp == NULL)
+        {
+            plainp = new gbmh;
+            throw_new(plainp);
+            plainp->init(pattern.c_str(), not case_sensitive);
+        }
+        found = plainp->find(str);
+        break;
+    }
 
-  if(reverse)
-    score = score_failure;
-  else
-    score = score_success;
-  result = score;
-  return found;
+    if(reverse)
+        score = score_failure;
+    else
+        score = score_success;
+    result = score;
+    return found;
 }
 
 
 //  ------------------------------------------------------------------
 
-gsearch& gsearch::operator=(const gsearch& a) {
+gsearch& gsearch::operator=(const gsearch& a)
+{
 
-  regexp         = NULL;
-  fuzzyp         = NULL;
-  plainp         = NULL;
-  id             = a.id;
-  pattern        = a.pattern;
-  type           = a.type;
-  case_sensitive = a.case_sensitive;
-  reverse        = a.reverse;
-  score_success  = a.score_success;
-  score_failure  = a.score_failure;
+    regexp         = NULL;
+    fuzzyp         = NULL;
+    plainp         = NULL;
+    id             = a.id;
+    pattern        = a.pattern;
+    type           = a.type;
+    case_sensitive = a.case_sensitive;
+    reverse        = a.reverse;
+    score_success  = a.score_success;
+    score_failure  = a.score_failure;
 
-  return *this;
+    return *this;
 }
 
 

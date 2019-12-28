@@ -37,86 +37,106 @@
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack(1)
+    #pragma pack(1)
 #endif
 
-struct _GEIdx {
-  uint32_t pos;        // File Number OR'ed with pos in nodelist file
-  ftn_addr addr;       // Node address
-  char     name[36];   // Name in reversed form
-  _GEIdx() : pos(0), addr() { *name = NUL; }
-  void reset() { pos = 0; addr.reset(); *name = NUL; }
+struct _GEIdx
+{
+    uint32_t pos;        // File Number OR'ed with pos in nodelist file
+    ftn_addr addr;       // Node address
+    char     name[36];   // Name in reversed form
+    _GEIdx() : pos(0), addr()
+    {
+        *name = NUL;
+    }
+    void reset()
+    {
+        pos = 0;
+        addr.reset();
+        *name = NUL;
+    }
 };
 
 #if defined(GOLD_CANPACK)
-#pragma pack()
+    #pragma pack()
 #endif
 
 
 //  ------------------------------------------------------------------
 
-class ftn_golded_nodelist_index : public ftn_nodelist_index_base {
+class ftn_golded_nodelist_index : public ftn_nodelist_index_base
+{
 
 protected:
 
-  struct fstamp {
-    Path filename;
-    long stamp;
-  };
+    struct fstamp
+    {
+        Path filename;
+        long stamp;
+    };
 
-  int      fha;
-  int      fhn;
-  int      fhx;
-  bool     index32;            // New (32-bit) address index used?
+    int      fha;
+    int      fhn;
+    int      fhx;
+    bool     index32;            // New (32-bit) address index used?
 
-  fstamp*  nodelist;
-  int      nodelists;
+    fstamp*  nodelist;
+    int      nodelists;
 
-  int      lastfileno;
+    int      lastfileno;
 
-  _GEIdx   current;
+    _GEIdx   current;
 
-  long     node;
-  long     maxnode;
+    long     node;
+    long     maxnode;
 
-  long     statenode;
+    long     statenode;
 
-  char     searchname[80];
-  ftn_addr searchaddr;
+    char     searchname[80];
+    ftn_addr searchaddr;
 
-  void     fetchdata();
-  void     getnode();
-  int      namecmp() const;
-  int      addrcmp() const;
-  void     compare()           { exactmatch = not (namebrowse ? namecmp() : addrcmp()); }
-  bool     searchfirst();
-  bool     search();
+    void     fetchdata();
+    void     getnode();
+    int      namecmp() const;
+    int      addrcmp() const;
+    void     compare()
+    {
+        exactmatch = not (namebrowse ? namecmp() : addrcmp());
+    }
+    bool     searchfirst();
+    bool     search();
 
 public:
 
-  ftn_golded_nodelist_index();
-  virtual ~ftn_golded_nodelist_index();
+    ftn_golded_nodelist_index();
+    virtual ~ftn_golded_nodelist_index();
 
-  bool can_browse_name() const     { return true; }
-  bool can_browse_address() const  { return true; }
+    bool can_browse_name() const
+    {
+        return true;
+    }
+    bool can_browse_address() const
+    {
+        return true;
+    }
 
-  bool open();
-  void close();
+    bool open();
+    void close();
 
-  bool find(const char* name);
-  bool find(const ftn_addr& addr);
+    bool find(const char* name);
+    bool find(const ftn_addr& addr);
 
-  bool previous();
-  bool next();
+    bool previous();
+    bool next();
 
-  void first();
-  void last();
+    void first();
+    void last();
 
-  void push_state();
-  void pop_state();
+    void push_state();
+    void pop_state();
 
-  const char* index_name() const;
-  const char* nodelist_name() const;
+    const char* index_name() const;
+    const char* nodelist_name() const;
 
 };
 

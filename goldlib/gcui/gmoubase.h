@@ -94,68 +94,115 @@ const word MSMOUSE_SET_TEXT_CURSOR          = 0x0A;
 //  ------------------------------------------------------------------
 //  Mouse class
 
-class GMou {
+class GMou
+{
 
-  #if 0
-  #ifdef __OS2__
-  HMOU hmou;
-  #endif
-  #endif
+#if 0
+#ifdef __OS2__
+    HMOU hmou;
+#endif
+#endif
 
 public:
 
-  int      detected;   // true if a mouse driver was detected
-  int      level;      // Mouse support level (GMOU_LEVEL_xxxx)
-  int      hidden;     // Depth of cursor hides
+    int      detected;   // true if a mouse driver was detected
+    int      level;      // Mouse support level (GMOU_LEVEL_xxxx)
+    int      hidden;     // Depth of cursor hides
 
-  struct {
-    int    button;
-    int    count;
-    int    row;
-    int    column;
-  } hit;
+    struct
+    {
+        int    button;
+        int    count;
+        int    row;
+        int    column;
+    } hit;
 
-  GMou();
-  ~GMou();
+    GMou();
+    ~GMou();
 
-  void SetLevel(int __level);
+    void SetLevel(int __level);
 
-  void Reset();
-  void Init();
+    void Reset();
+    void Init();
 
-  void ClearEvents();
+    void ClearEvents();
 
-  void GetStatus();
-  void GetPress(int __button);
-  void GetRelease(int __button);
+    void GetStatus();
+    void GetPress(int __button);
+    void GetRelease(int __button);
 
-  void SetCursor(int __curtype, int __smask, int __cmask);
+    void SetCursor(int __curtype, int __smask, int __cmask);
 
-  void SetPosition(int __row, int __col);
+    void SetPosition(int __row, int __col);
 
-  void HideCursor();
-  void ShowCursor();
+    void HideCursor();
+    void ShowCursor();
 
-  int Hidden() { return make_bool(hidden); }
+    int Hidden()
+    {
+        return make_bool(hidden);
+    }
 
-  int Enabled() { return level > GMOU_LEVEL_NONE; }
+    int Enabled()
+    {
+        return level > GMOU_LEVEL_NONE;
+    }
 
-  int FreeCursor() { return level & GMOU_LEVEL_CURS; }
-  int KeysEmulate() { return level & GMOU_LEVEL_KEYS; }
+    int FreeCursor()
+    {
+        return level & GMOU_LEVEL_CURS;
+    }
+    int KeysEmulate()
+    {
+        return level & GMOU_LEVEL_KEYS;
+    }
 
-  int Button() { return hit.button; }
-  int LeftButton() { return hit.button & GMOU_LEFT_PRESSED; }
-  int RightButton() { return hit.button & GMOU_RIGHT_PRESSED; }
-  int MiddleButton() { return hit.button & GMOU_MIDDLE_PRESSED; }
-  int Count() { return hit.count; }
-  int Row() { return hit.row; }
-  int Column() { return hit.column; }
+    int Button()
+    {
+        return hit.button;
+    }
+    int LeftButton()
+    {
+        return hit.button & GMOU_LEFT_PRESSED;
+    }
+    int RightButton()
+    {
+        return hit.button & GMOU_RIGHT_PRESSED;
+    }
+    int MiddleButton()
+    {
+        return hit.button & GMOU_MIDDLE_PRESSED;
+    }
+    int Count()
+    {
+        return hit.count;
+    }
+    int Row()
+    {
+        return hit.row;
+    }
+    int Column()
+    {
+        return hit.column;
+    }
 
-  void GetLeftPress() { GetPress(GMOU_LEFT_BUTTON); }
-  void GetRightPress() { GetPress(GMOU_RIGHT_BUTTON); }
+    void GetLeftPress()
+    {
+        GetPress(GMOU_LEFT_BUTTON);
+    }
+    void GetRightPress()
+    {
+        GetPress(GMOU_RIGHT_BUTTON);
+    }
 
-  void GetLeftRelease() { GetRelease(GMOU_LEFT_BUTTON); }
-  void GetRightRelease() { GetRelease(GMOU_RIGHT_BUTTON); }
+    void GetLeftRelease()
+    {
+        GetRelease(GMOU_LEFT_BUTTON);
+    }
+    void GetRightRelease()
+    {
+        GetRelease(GMOU_RIGHT_BUTTON);
+    }
 };
 
 extern GMou gmou;

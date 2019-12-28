@@ -70,7 +70,7 @@
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack(1)
+    #pragma pack(1)
 #endif
 
 
@@ -100,28 +100,29 @@
 //  Hudson Message Header (MSGHDR.BBS)
 
 template <class msgn_t, class rec_t, class attr_t, class board_t, class last_t>
-struct _HudsHdr {
-  msgn_t  msgno;
-  msgn_t  replyto;
-  msgn_t  reply1st;
-  word    timesread;
-  rec_t   startrec;
-  word    numrecs;
-  word    destnet;
-  word    destnode;
-  word    orignet;
-  word    orignode;
-  byte    destzone;
-  byte    origzone;
-  word    cost;
-  attr_t  msgattr;
-  attr_t  netattr;
-  board_t board;
-  char    time[6];
-  char    date[9];
-  char    to[36];
-  char    by[36];
-  char    re[73];
+struct _HudsHdr
+{
+    msgn_t  msgno;
+    msgn_t  replyto;
+    msgn_t  reply1st;
+    word    timesread;
+    rec_t   startrec;
+    word    numrecs;
+    word    destnet;
+    word    destnode;
+    word    orignet;
+    word    orignode;
+    byte    destzone;
+    byte    origzone;
+    word    cost;
+    attr_t  msgattr;
+    attr_t  netattr;
+    board_t board;
+    char    time[6];
+    char    date[9];
+    char    to[36];
+    char    by[36];
+    char    re[73];
 } __attribute__ ((packed));
 
 
@@ -129,11 +130,12 @@ struct _HudsHdr {
 //  Hudson Messagebase Information (MSGINFO.BBS)
 
 template <class msgn_t, class rec_t, class attr_t, class board_t, class last_t>
-struct _HudsInfo {
-  msgn_t low;
-  msgn_t high;
-  msgn_t total;
-  last_t active;
+struct _HudsInfo
+{
+    msgn_t low;
+    msgn_t high;
+    msgn_t total;
+    last_t active;
 } __attribute__ ((packed));
 
 
@@ -141,17 +143,19 @@ struct _HudsInfo {
 //  Hudson Message Header Index (MSGIDX.BBS)
 
 template <class msgn_t, class rec_t, class attr_t, class board_t, class last_t>
-struct _HudsIdx {
-  msgn_t  msgno;
-  board_t board;
+struct _HudsIdx
+{
+    msgn_t  msgno;
+    board_t board;
 } __attribute__((packed));
 
 
 //  ------------------------------------------------------------------
 //  Hudson Message Name Index (MSGTOIDX.BBS)
 
-struct HudsToIdx {
-  char  name[36];
+struct HudsToIdx
+{
+    char  name[36];
 } __attribute__((packed));
 
 
@@ -159,12 +163,12 @@ struct HudsToIdx {
 
 typedef word HudsLast[HUDS_MAXBOARD]
 #ifndef __DJGPP__
- __attribute__((packed))
+    __attribute__((packed))
 #endif
 ;
 typedef word GoldLast[GOLD_MAXBOARD]
 #ifndef __DJGPP__
- __attribute__((packed))
+    __attribute__((packed))
 #endif
 ;
 
@@ -172,21 +176,22 @@ typedef word GoldLast[GOLD_MAXBOARD]
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack()
+    #pragma pack()
 #endif
 
 
 //  ------------------------------------------------------------------
 
-struct HudsScan {
-  uint count;
-  uint active;
-  uint32_t lastread;
-  uint lastreadreln;
-  uint32_t lastreadfound;
-  uint32_t firstmsgno;
-  uint32_t lastmsgno;
-  uint pmcount;
+struct HudsScan
+{
+    uint count;
+    uint active;
+    uint32_t lastread;
+    uint lastreadreln;
+    uint32_t lastreadfound;
+    uint32_t firstmsgno;
+    uint32_t lastmsgno;
+    uint pmcount;
 };
 
 
@@ -194,146 +199,157 @@ struct HudsScan {
 
 
 template <class msgn_t, class rec_t, class attr_t, class board_t, class last_t, bool __HUDSON>
-struct _HudsWide {
+struct _HudsWide
+{
 
 #if defined(GOLD_CANPACK)
 #pragma pack(1)
 #endif
-  // <class msgn_t, class rec_t, class attr_t, class board_t, class last_t>
-  typedef _HudsHdr<msgn_t, rec_t, attr_t, board_t, last_t> HudsHdr;
-  typedef _HudsInfo<msgn_t, rec_t, attr_t, board_t, last_t> HudsInfo;
-  typedef _HudsIdx<msgn_t, rec_t, attr_t, board_t, last_t> HudsIdx;
+    // <class msgn_t, class rec_t, class attr_t, class board_t, class last_t>
+    typedef _HudsHdr<msgn_t, rec_t, attr_t, board_t, last_t> HudsHdr;
+    typedef _HudsInfo<msgn_t, rec_t, attr_t, board_t, last_t> HudsInfo;
+    typedef _HudsIdx<msgn_t, rec_t, attr_t, board_t, last_t> HudsIdx;
 #if defined(GOLD_CANPACK)
 #pragma pack()
 #endif
 
-  gfile    fhtxt;
-  gfile    fhhdr;
-  gfile    fhidx;
-  gfile    fhinf;
-  gfile    fhlrd;
-  gfile    fhtoi;
-  gfile    fhusr;
-  gfile    fhuix;
-  gfile    fhuxi;
-  int      isopen;
-  int      islocked;
-  int      timesposted;
-  int32_t     msgidxsize;
-  HudsIdx* msgidxptr;
-  HudsInfo msginfo;
-  last_t   lastrec;
-  GUser*   user;
-  int      userno;
-  HudsScan* scn;
-  HudsIdx* pmscan;
-  uint     pmscantotal;
-  int      iswideopen;
-  int      ispmscanned;
-  int      iswidescanned;
-  const char* path;
-  const char* syspath;
-  int32_t sizewarn;
-  int  ra2usersbbs;
+    gfile    fhtxt;
+    gfile    fhhdr;
+    gfile    fhidx;
+    gfile    fhinf;
+    gfile    fhlrd;
+    gfile    fhtoi;
+    gfile    fhusr;
+    gfile    fhuix;
+    gfile    fhuxi;
+    int      isopen;
+    int      islocked;
+    int      timesposted;
+    int32_t     msgidxsize;
+    HudsIdx* msgidxptr;
+    HudsInfo msginfo;
+    last_t   lastrec;
+    GUser*   user;
+    int      userno;
+    HudsScan* scn;
+    HudsIdx* pmscan;
+    uint     pmscantotal;
+    int      iswideopen;
+    int      ispmscanned;
+    int      iswidescanned;
+    const char* path;
+    const char* syspath;
+    int32_t sizewarn;
+    int  ra2usersbbs;
 
-  void init();
-  void exit();
+    void init();
+    void exit();
 
-  void open();
-  void close();
+    void open();
+    void close();
 
-  void lock();
-  void unlock();
+    void lock();
+    void unlock();
 
-  void scan();
+    void scan();
 
-  void raw_open_scan();
-  void scan_pm();
+    void raw_open_scan();
+    void scan_pm();
 
-  void realloc_pm_scan();
+    void realloc_pm_scan();
 
-  void update_netecho(const char* __name, msgn_t __hdridx, int __delete);
+    void update_netecho(const char* __name, msgn_t __hdridx, int __delete);
 
-  void test_open(gfile &__file, const char* __fname, int __oaccess);
-  void raw_open(int __oaccess=0, int __all=true);
-  void raw_close();
-  void refresh();
-  void save_lastread(board_t board, msgn_t msgno);
+    void test_open(gfile &__file, const char* __fname, int __oaccess);
+    void raw_open(int __oaccess=0, int __all=true);
+    void raw_close();
+    void refresh();
+    void save_lastread(board_t board, msgn_t msgno);
 };
 
 
 //  ------------------------------------------------------------------
 
 template <class msgn_t, class rec_t, class attr_t, class board_t, class last_t, bool __HUDSON>
-class _HudsArea : public gmo_area {
+class _HudsArea : public gmo_area
+{
 
-  // <class msgn_t, class rec_t, class attr_t, class board_t, class last_t, bool __HUDSON>
-  typedef _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON> HudsWide;
+    // <class msgn_t, class rec_t, class attr_t, class board_t, class last_t, bool __HUDSON>
+    typedef _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON> HudsWide;
 
 #if defined(GOLD_CANPACK)
 #pragma pack(1)
 #endif
-  // <class msgn_t, class rec_t, class attr_t, class board_t, class last_t>
-  typedef _HudsHdr<msgn_t, rec_t, attr_t, board_t, last_t> HudsHdr;
-  typedef _HudsInfo<msgn_t, rec_t, attr_t, board_t, last_t> HudsInfo;
-  typedef _HudsIdx<msgn_t, rec_t, attr_t, board_t, last_t> HudsIdx;
+    // <class msgn_t, class rec_t, class attr_t, class board_t, class last_t>
+    typedef _HudsHdr<msgn_t, rec_t, attr_t, board_t, last_t> HudsHdr;
+    typedef _HudsInfo<msgn_t, rec_t, attr_t, board_t, last_t> HudsInfo;
+    typedef _HudsIdx<msgn_t, rec_t, attr_t, board_t, last_t> HudsIdx;
 #if defined(GOLD_CANPACK)
 #pragma pack()
 #endif
 
 protected:
 
-  HudsWide* wide;
+    HudsWide* wide;
 
-  void data_open();
-  void data_close();
+    void data_open();
+    void data_close();
 
-  void raw_scan(int __keep_index);
+    void raw_scan(int __keep_index);
 
-  msgn_t get_hdr_idx(gmsg* __msg, char* __file__, int __line__);
+    msgn_t get_hdr_idx(gmsg* __msg, char* __file__, int __line__);
 
-  int load_message(int __mode, gmsg* __msg, HudsHdr& __hdr);
-  void save_message(int __mode, gmsg* __msg, HudsHdr& __hdr);
+    int load_message(int __mode, gmsg* __msg, HudsHdr& __hdr);
+    void save_message(int __mode, gmsg* __msg, HudsHdr& __hdr);
 
 public:
 
-  _HudsArea() { wide = NULL; }
-  virtual ~_HudsArea() {}
+    _HudsArea()
+    {
+        wide = NULL;
+    }
+    virtual ~_HudsArea() {}
 
-  virtual bool havearrivedstamp() const { return false; }
-  virtual bool havereceivedstamp() const { return false; }
+    virtual bool havearrivedstamp() const
+    {
+        return false;
+    }
+    virtual bool havereceivedstamp() const
+    {
+        return false;
+    }
 
-  //  ----------------------------------------------------------------
-  //  Messagebase member functions
+    //  ----------------------------------------------------------------
+    //  Messagebase member functions
 
-  void open();
-  void close();
+    void open();
+    void close();
 
-  void suspend();
-  void resume();
+    void suspend();
+    void resume();
 
-  void lock();
-  void unlock();
+    void lock();
+    void unlock();
 
-  void scan();
-  void scan_area();
-  void scan_area_pm();
+    void scan();
+    void scan_area();
+    void scan_area_pm();
 
-  int load_hdr(gmsg* msg);
-  int load_msg(gmsg* msg);
+    int load_hdr(gmsg* msg);
+    int load_msg(gmsg* msg);
 
-  void save_hdr(int mode, gmsg* msg);
-  void save_msg(int mode, gmsg* msg);
+    void save_hdr(int mode, gmsg* msg);
+    void save_msg(int mode, gmsg* msg);
 
-  void del_msg(gmsg* msg);
+    void del_msg(gmsg* msg);
 
-  void new_msgno(gmsg* msg);
-  char* user_lookup(char* lookfor);
-  int renumber();
+    void new_msgno(gmsg* msg);
+    char* user_lookup(char* lookfor);
+    int renumber();
 
-  void update_timesread(gmsg* msg);
+    void update_timesread(gmsg* msg);
 
-  Line* make_dump_msg(Line*& lin, gmsg* msg, char* lng_head);
+    Line* make_dump_msg(Line*& lin, gmsg* msg, char* lng_head);
 };
 
 

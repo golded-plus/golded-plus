@@ -140,36 +140,89 @@ const int GCHENC_QP  = 0x0008;    // Quoted-Printable
 //  ------------------------------------------------------------------
 //  Line record
 
-class Line {
+class Line
+{
 
 public:
 
-  vattr color;            // Line color
-  uint  type;             // GLINE_*
-  uint  kludge;           // GKLUD_*
-  std::string txt;             // The line text
-  Line* prev;             // Pointer to previous line
-  Line* next;             // Pointer to next line
+    vattr color;            // Line color
+    uint  type;             // GLINE_*
+    uint  kludge;           // GKLUD_*
+    std::string txt;             // The line text
+    Line* prev;             // Pointer to previous line
+    Line* next;             // Pointer to next line
 
-  Line() : txt ("")     { color = BLACK_|_BLACK; type = kludge = 0; prev = next = NULL; }
-  Line(const char *str) : txt (str) { color = BLACK_|_BLACK; type = kludge = 0; prev = next = NULL; }
-  ~Line()              {}
+    Line() : txt ("")
+    {
+        color = BLACK_|_BLACK;
+        type = kludge = 0;
+        prev = next = NULL;
+    }
+    Line(const char *str) : txt (str)
+    {
+        color = BLACK_|_BLACK;
+        type = kludge = 0;
+        prev = next = NULL;
+    }
+    ~Line()              {}
 
-  int  istearline()    { return !!(type & GLINE_TEAR); }
-  int  isorigin()      { return !!(type & GLINE_ORIG); }
-  int  ishidden()      { return !!(type & GLINE_HIDD); }
-  int  iskludge()      { return !!(type & GLINE_KLUD); }
-  int  isquote()       { return !!(type & GLINE_QUOT); }
-  int  ishard()        { return !!(type & GLINE_HARD); }
-  int  iswrapped()     { return !!(type & GLINE_WRAP); }
-  int  isblock()       { return !!(type & GLINE_BLOK); }
-  int  isposition()    { return !!(type & GLINE_POSI); }
-  int  ishighlighted() { return !!(type & GLINE_HIGH); }
-  int  istagline()     { return !!(type & GLINE_TAGL); }
-  int  istxthidden()   { return !!(type & GLINE_TXTH); }
-  int  isheader()      { return !!kludge; }
+    int  istearline()
+    {
+        return !!(type & GLINE_TEAR);
+    }
+    int  isorigin()
+    {
+        return !!(type & GLINE_ORIG);
+    }
+    int  ishidden()
+    {
+        return !!(type & GLINE_HIDD);
+    }
+    int  iskludge()
+    {
+        return !!(type & GLINE_KLUD);
+    }
+    int  isquote()
+    {
+        return !!(type & GLINE_QUOT);
+    }
+    int  ishard()
+    {
+        return !!(type & GLINE_HARD);
+    }
+    int  iswrapped()
+    {
+        return !!(type & GLINE_WRAP);
+    }
+    int  isblock()
+    {
+        return !!(type & GLINE_BLOK);
+    }
+    int  isposition()
+    {
+        return !!(type & GLINE_POSI);
+    }
+    int  ishighlighted()
+    {
+        return !!(type & GLINE_HIGH);
+    }
+    int  istagline()
+    {
+        return !!(type & GLINE_TAGL);
+    }
+    int  istxthidden()
+    {
+        return !!(type & GLINE_TXTH);
+    }
+    int  isheader()
+    {
+        return !!kludge;
+    }
 
-  int  isallocated()   { return !(type & GLINE_NOAL); }
+    int  isallocated()
+    {
+        return !(type & GLINE_NOAL);
+    }
 };
 
 
@@ -185,155 +238,182 @@ Line* AddHexdump(Line*& line, void* data, size_t datalen);
 class gmsg_links
 {
 private:
-  uint32_t reply_to;
-  uint32_t reply_first;
-  uint32_t reply_next;
+    uint32_t reply_to;
+    uint32_t reply_first;
+    uint32_t reply_next;
 
-  std::vector<uint32_t> reply_list;
+    std::vector<uint32_t> reply_list;
 
 public:
 
-  void reset()
-  {
-    reply_to = reply_first = reply_next = 0;
-    reply_list.clear();
-  }
-
-  int list_max() const             { return reply_list.size(); }
-  
-  void to_set(uint32_t m)          { reply_to = m; }
-  void first_set(uint32_t m)       { reply_first = m; }
-  void next_set(uint32_t m)        { reply_next = m; }
-
-  void list_set(size_t n, uint32_t m)
-  {
-    size_t size = reply_list.size();
-    if (n >= size)
+    void reset()
     {
-      for (size_t i = size; i <= n; i++)
-        reply_list.push_back(0);
+        reply_to = reply_first = reply_next = 0;
+        reply_list.clear();
     }
 
-    reply_list[n] = m;
-  }
+    int list_max() const
+    {
+        return reply_list.size();
+    }
 
-  uint32_t to() const              { return reply_to; }
-  uint32_t first() const           { return reply_first; }
-  uint32_t next() const            { return reply_next; }
+    void to_set(uint32_t m)
+    {
+        reply_to = m;
+    }
+    void first_set(uint32_t m)
+    {
+        reply_first = m;
+    }
+    void next_set(uint32_t m)
+    {
+        reply_next = m;
+    }
 
-  uint32_t list(size_t n) const
-  {
-    if (n >= reply_list.size())
-      return 0;
+    void list_set(size_t n, uint32_t m)
+    {
+        size_t size = reply_list.size();
+        if (n >= size)
+        {
+            for (size_t i = size; i <= n; i++)
+                reply_list.push_back(0);
+        }
 
-    return reply_list[n];
-  }
+        reply_list[n] = m;
+    }
+
+    uint32_t to() const
+    {
+        return reply_to;
+    }
+    uint32_t first() const
+    {
+        return reply_first;
+    }
+    uint32_t next() const
+    {
+        return reply_next;
+    }
+
+    uint32_t list(size_t n) const
+    {
+        if (n >= reply_list.size())
+            return 0;
+
+        return reply_list[n];
+    }
 
 };
 
 
 //  ------------------------------------------------------------------
 
-struct gmsg_jam_fields {
+struct gmsg_jam_fields
+{
 
-  int32_t subfieldlen;   // Size of subfields
+    int32_t subfieldlen;   // Size of subfields
 };
 
 
 //  ------------------------------------------------------------------
 
-struct gmsg_pcboard_fields {
+struct gmsg_pcboard_fields
+{
 
-  char status;          // Msg header status byte
-  byte exthdrflags;     // Msg extended header flags
-  char password[13];    // Password needed to read the message
-  time32_t reply_written;   // Timestamp of the original
+    char status;          // Msg header status byte
+    byte exthdrflags;     // Msg extended header flags
+    char password[13];    // Password needed to read the message
+    time32_t reply_written;   // Timestamp of the original
 };
 
 
 //  ------------------------------------------------------------------
 
-struct gmsg_wildcat_fields {
+struct gmsg_wildcat_fields
+{
 
-  char  from_title[11];
-  int32_t  from_userid;
-  char  to_title[11];
-  int32_t  to_userid;
-  char  network[9];
-  char  internal_attach[13];
-  char  external_attach[13];
-  uint32_t next_unread;
-  uint32_t prev_unread;
-  char  reserved[20];
+    char  from_title[11];
+    int32_t  from_userid;
+    char  to_title[11];
+    int32_t  to_userid;
+    char  network[9];
+    char  internal_attach[13];
+    char  external_attach[13];
+    uint32_t next_unread;
+    uint32_t prev_unread;
+    char  reserved[20];
 };
 
 
 //  ------------------------------------------------------------------
 
-struct gmsg_adeptxbbs_fields {
+struct gmsg_adeptxbbs_fields
+{
 
-  uint32_t iflags;       // Internet related flags
-  uint32_t oflags;       // Other network related flags
+    uint32_t iflags;       // Internet related flags
+    uint32_t oflags;       // Other network related flags
 };
 
 
 //  ------------------------------------------------------------------
 
-struct gmsg_ezycom_fields {
+struct gmsg_ezycom_fields
+{
 
-  byte extattr;
+    byte extattr;
 };
 
 
 //  ------------------------------------------------------------------
 //  Base class
 
-class gmsg {
+class gmsg
+{
 
 public:
 
-  uint        board;            // Board number (if applicable)
+    uint        board;            // Board number (if applicable)
 
-  uint32_t    msgno;            // Message number
-  gmsg_links  link;             // Message reply links
+    uint32_t    msgno;            // Message number
+    gmsg_links  link;             // Message reply links
 
-  ftn_addr    oorig;            // Original origination address
-  ftn_addr    orig;             // Origination address
-  ftn_domain  odom;             // Originating domain
+    ftn_addr    oorig;            // Original origination address
+    ftn_addr    orig;             // Origination address
+    ftn_domain  odom;             // Originating domain
 
-  ftn_addr    odest;            // Original destination address
-  ftn_addr    dest;             // Destination address
-  ftn_domain  ddom;             // Destination domain
+    ftn_addr    odest;            // Original destination address
+    ftn_addr    dest;             // Destination address
+    ftn_domain  ddom;             // Destination domain
 
-  INam        by;               // Who from
-  INam        to;               // Who to
-  ISub        re;               // Subject
+    INam        by;               // Who from
+    INam        to;               // Who to
+    ISub        re;               // Subject
 
-  time32_t      written;          // Timestamp
-  time32_t      arrived;          // Timestamp
-  time32_t      received;         // Timestamp
+    time32_t      written;          // Timestamp
+    time32_t      arrived;          // Timestamp
+    time32_t      received;         // Timestamp
 
-  Attr        attr;             // Message attributes
-  uint        cost;             // Cost of msg if Netmail
-  uint        timesread;        // Number of times read
+    Attr        attr;             // Message attributes
+    uint        cost;             // Cost of msg if Netmail
+    uint        timesread;        // Number of times read
 
-  ftn_addr    msgid;            // MSGID kludge address
-  char        msgids[201];      // MSGID kludge string
-  char        replys[201];      // REPLY kludge string
+    ftn_addr    msgid;            // MSGID kludge address
+    char        msgids[201];      // MSGID kludge string
+    char        replys[201];      // REPLY kludge string
 
-  char        pid[80];          // PID kludge string
+    char        pid[80];          // PID kludge string
 
-  int32_t        txtstart;         // Text starting position or record
-  int32_t        txtlength;        // Text length or number of records
-  uint        txtblocks;        // Number of msg text blocks
+    int32_t        txtstart;         // Text starting position or record
+    int32_t        txtlength;        // Text length or number of records
+    uint        txtblocks;        // Number of msg text blocks
 
-  char*       txt;              // Message text
+    char*       txt;              // Message text
 
-  gmsg_jam_fields       jam;
-  gmsg_pcboard_fields   pcboard;
-  gmsg_wildcat_fields   wildcat;
-  gmsg_adeptxbbs_fields adeptxbbs;
-  gmsg_ezycom_fields    ezycom;
+    gmsg_jam_fields       jam;
+    gmsg_pcboard_fields   pcboard;
+    gmsg_wildcat_fields   wildcat;
+    gmsg_adeptxbbs_fields adeptxbbs;
+    gmsg_ezycom_fields    ezycom;
 
 };
 

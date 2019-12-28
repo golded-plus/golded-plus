@@ -27,7 +27,7 @@
 #define __GEEDIT_H
 
 #ifdef __GNUG__
-#pragma interface "geedit.h"
+    #pragma interface "geedit.h"
 #endif
 
 
@@ -116,330 +116,354 @@ extern Path Edit__exportfilename;
 //  Reality check define and function
 
 #ifdef NDEBUG
-#define _test_halt(__t)
-#define _test_haltab(__t, __a, __b)
+    #define _test_halt(__t)
+    #define _test_haltab(__t, __a, __b)
 #else
-#define _test_halt(__t)             if(__t) { debugtest(#__t,   0,   0, __FILE__, __LINE__, false); }
-#define _test_haltab(__t, __a, __b) if(__t) { debugtest(#__t, __a, __b, __FILE__, __LINE__, true);  }
+    #define _test_halt(__t)             if(__t) { debugtest(#__t,   0,   0, __FILE__, __LINE__, false); }
+    #define _test_haltab(__t, __a, __b) if(__t) { debugtest(#__t, __a, __b, __FILE__, __LINE__, true);  }
 #endif
 
 
 //  ------------------------------------------------------------------
 //  Undo data structures
 
-class text_item {
+class text_item
+{
 
 public:
 
-  uint  col;       // Begining offset in the .text string
-  uint  len;       // Text length
-  __extension__ char text[0]; // Text string itself
+    uint  col;       // Begining offset in the .text string
+    uint  len;       // Text length
+    __extension__ char text[0]; // Text string itself
 
-  text_item(uint __col, uint __len) : col(__col), len(__len) { }
-  void* operator new(size_t size, uint text_len = 0) { return malloc(sizeof(text_item) + size + text_len); }
-  void operator delete(void* ptr) { free(ptr); }
-  void operator delete(void* ptr, uint) { free(ptr); }
+    text_item(uint __col, uint __len) : col(__col), len(__len) { }
+    void* operator new(size_t size, uint text_len = 0)
+    {
+        return malloc(sizeof(text_item) + size + text_len);
+    }
+    void operator delete(void* ptr)
+    {
+        free(ptr);
+    }
+    void operator delete(void* ptr, uint)
+    {
+        free(ptr);
+    }
 };
 
 //  ----------------------------------------------------------------
 
-union data_rec {
+union data_rec
+{
 
-  text_item* text_ptr;
-  Line*      line_ptr;
-  void*      void_ptr;
-  char       char_int;
+    text_item* text_ptr;
+    Line*      line_ptr;
+    void*      void_ptr;
+    char       char_int;
 };
 
-struct col_rec {
+struct col_rec
+{
 
-  uint       num;
-  uint       sav;
+    uint       num;
+    uint       sav;
 };
 
 //  ----------------------------------------------------------------
 
-class UndoItem {
+class UndoItem
+{
 
-  static UndoItem** last_item;
+    static UndoItem** last_item;
 
-  friend class UndoStack;
+    friend class UndoStack;
 
 public:
 
-  UndoItem*  prev;
+    UndoItem*  prev;
 
-  Line*      line;     // Cursor line
-  col_rec    col;      // Cursor column
-  uint       pcol;     // After undo move cursor to pcol, prow
-  uint       prow;     //
-  uint       action;   // Undo action
-  data_rec   data;     // Undo data
+    Line*      line;     // Cursor line
+    col_rec    col;      // Cursor column
+    uint       pcol;     // After undo move cursor to pcol, prow
+    uint       prow;     //
+    uint       action;   // Undo action
+    data_rec   data;     // Undo data
 
-  UndoItem()  { this->prev = *last_item; }
-  ~UndoItem() { *last_item = this->prev; }
+    UndoItem()
+    {
+        this->prev = *last_item;
+    }
+    ~UndoItem()
+    {
+        *last_item = this->prev;
+    }
 };
 
 //  ----------------------------------------------------------------
 
 class IEclass;
 
-class UndoStack {
+class UndoStack
+{
 
-  IEclass*   editor;
+    IEclass*   editor;
 
-  uint&      row;
-  uint&      col;
-  uint&      pcol;
-  uint&      prow;
-  uint&      minrow;
-  uint&      maxrow;
-  uint&      thisrow;
-  Line*&     currline;
-  bool&      undo_ready;
+    uint&      row;
+    uint&      col;
+    uint&      pcol;
+    uint&      prow;
+    uint&      minrow;
+    uint&      maxrow;
+    uint&      thisrow;
+    Line*&     currline;
+    bool&      undo_ready;
 
 public:
 
-  UndoItem*  last_item;
-  bool       undo_enabled;
+    UndoItem*  last_item;
+    bool       undo_enabled;
 
-  UndoStack(IEclass* this_editor);
-  ~UndoStack();
+    UndoStack(IEclass* this_editor);
+    ~UndoStack();
 
-  bool FixPushLine(Line* __line);
-  void PushItem(uint action, Line* __line = NULL, uint __col = NO_VALUE, uint __len = NO_VALUE);
-  void PlayItem();
+    bool FixPushLine(Line* __line);
+    void PushItem(uint action, Line* __line = NULL, uint __col = NO_VALUE, uint __len = NO_VALUE);
+    void PlayItem();
 };
 
 
 //  ------------------------------------------------------------------
 //  Internal Editor Class
 
-class IEclass : public Container {
+class IEclass : public Container
+{
 
 public:
 
-  gwindow editwin;       // window
+    gwindow editwin;       // window
 
 protected:
 
-  //  ----------------------------------------------------------------
-  //  Editor window data
+    //  ----------------------------------------------------------------
+    //  Editor window data
 
-  int    win_mincol;     // First column
-  int    win_minrow;     // First row
-  int    win_maxcol;     // Last column
-  int    win_maxrow;     // Last row
-  int    win_border;     // Border type
-  int    win_hasborder;  // 1 == window has a border, 0  == no border
-
-
-  //  ----------------------------------------------------------------
-  //  Window-relative minimum/maximum values
-
-  uint  mincol;
-  uint  minrow;
-  uint  maxcol;
-  uint  maxrow;
+    int    win_mincol;     // First column
+    int    win_minrow;     // First row
+    int    win_maxcol;     // Last column
+    int    win_maxrow;     // Last row
+    int    win_border;     // Border type
+    int    win_hasborder;  // 1 == window has a border, 0  == no border
 
 
-  //  ----------------------------------------------------------------
-  //  Cursor coordinates
+    //  ----------------------------------------------------------------
+    //  Window-relative minimum/maximum values
 
-  uint col;
-  uint row;
-  uint pcol;
-  uint prow;
-  uint ccol;
-  uint crow;
+    uint  mincol;
+    uint  minrow;
+    uint  maxcol;
+    uint  maxrow;
 
 
-  //  ----------------------------------------------------------------
-  //  Undo stuff
+    //  ----------------------------------------------------------------
+    //  Cursor coordinates
 
-  friend class UndoStack;
+    uint col;
+    uint row;
+    uint pcol;
+    uint prow;
+    uint ccol;
+    uint crow;
 
-  UndoStack* Undo;
-  long  batch_mode;
-  bool  undo_ready;
+
+    //  ----------------------------------------------------------------
+    //  Undo stuff
+
+    friend class UndoStack;
+
+    UndoStack* Undo;
+    long  batch_mode;
+    bool  undo_ready;
 
 
-  //  ----------------------------------------------------------------
-  //  Misc.
+    //  ----------------------------------------------------------------
+    //  Misc.
 
-  int  chartyped;
-  Line* currline;
-  int  done;
-  int  insert;
-  int  drawlines;
-  int  drawflag;
-  int  marginquotes;
-  int  margintext;
-  int  msgmode;
-  GMsg* msgptr;
-  int  quitnow;
-  uint  thisrow;
-  char*  unfinished;
-  int  blockcol;
-  int  selecting;
+    int  chartyped;
+    Line* currline;
+    int  done;
+    int  insert;
+    int  drawlines;
+    int  drawflag;
+    int  marginquotes;
+    int  margintext;
+    int  msgmode;
+    GMsg* msgptr;
+    int  quitnow;
+    uint  thisrow;
+    char*  unfinished;
+    int  blockcol;
+    int  selecting;
 
-  //  ----------------------------------------------------------------
-  //  Speller (DLL)
+    //  ----------------------------------------------------------------
+    //  Speller (DLL)
 
 #if defined(GCFG_SPELL_INCLUDED)
-  CSpellChecker schecker;
+    CSpellChecker schecker;
 #endif
 
-  //  ----------------------------------------------------------------
-  //  Internal helper functions
+    //  ----------------------------------------------------------------
+    //  Internal helper functions
 
-  void  clreol          (int __col=-1, int __row=-1);
-  void  cursoroff       ();
-  void  cursoron        ();
-  void  deleteline      (bool zapquotesbelow = false);
-  vattr dispchar        (vchar __ch, vattr attr = DEFATTR);
-  void  dispins         ();
-  void  dispdl          ();
-  void  displine        (Line* __line, uint __row);
+    void  clreol          (int __col=-1, int __row=-1);
+    void  cursoroff       ();
+    void  cursoron        ();
+    void  deleteline      (bool zapquotesbelow = false);
+    vattr dispchar        (vchar __ch, vattr attr = DEFATTR);
+    void  dispins         ();
+    void  dispdl          ();
+    void  displine        (Line* __line, uint __row);
 #if defined(GCFG_SPELL_INCLUDED)
-  void  dispstringsc    (char *__buf, uint __beg, uint __end, uint __row, uint __col, char endchar);
-  void  dispstring      (Line* line, uint __row);
+    void  dispstringsc    (char *__buf, uint __beg, uint __end, uint __row, uint __col, char endchar);
+    void  dispstring      (Line* line, uint __row);
 #else
-  void  dispstring      (const char* __string, uint __row, int attr=-1, Line* line=NULL);
+    void  dispstring      (const char* __string, uint __row, int attr=-1, Line* line=NULL);
 #endif
-  int   downoneline     (uint __row);
-  void  editexport      (Line* __exportline, int __endat);
-  Line* findanchor      ();
-  Line* findfirstline   ();
-  Line* findtopline     ();
-  void  getthisrow      (Line* __currline);
-  void  gotorowcol      (uint __col, uint __row);
-  int   handlekey       (gkey __key);
-  void  editimport      (Line* __line, char* __filename, bool imptxt = false);
-  void  imptxt          (char* __filename, bool imptxt = false);
-  void  insertchar      (char __ch);
-  Line* insertlinebelow (Line* __currline, const char* __text = NULL, long __batch_mode = 0);
-  int   isempty         (Line* __line=NULL);
-  void  killkillbuf     ();
-  void  killpastebuf    ();
-  void  prints          (int wrow, int wcol, vattr atr, const char* str);
-  int   reflowok        (char* __qstr);
-  void  refresh         (Line* __currline, uint __row);
-  void  savefile        (int __status);
-  void  scrolldown      (int __scol, int __srow, int __ecol, int __erow, int __lines=1);
-  void  scrollup        (int __scol, int __srow, int __ecol, int __erow, int __lines=1);
-  void  setcolor        (Line* __line);
-  void  setlinetype     (Line* __line);
-  void  statusline      ();
-  void  windowclose     ();
-  void  windowopen      ();
-  Line* wrapit          (Line** __currline, uint* __curr_col, uint* __curr_row, bool __display=true);
-  Line* wrapdel         (Line** __currline, uint* __curr_col, uint* __curr_row, bool __display=true);
-  Line* wrapins         (Line** __currline, uint* __curr_col, uint* __curr_row, bool __display=true);
+    int   downoneline     (uint __row);
+    void  editexport      (Line* __exportline, int __endat);
+    Line* findanchor      ();
+    Line* findfirstline   ();
+    Line* findtopline     ();
+    void  getthisrow      (Line* __currline);
+    void  gotorowcol      (uint __col, uint __row);
+    int   handlekey       (gkey __key);
+    void  editimport      (Line* __line, char* __filename, bool imptxt = false);
+    void  imptxt          (char* __filename, bool imptxt = false);
+    void  insertchar      (char __ch);
+    Line* insertlinebelow (Line* __currline, const char* __text = NULL, long __batch_mode = 0);
+    int   isempty         (Line* __line=NULL);
+    void  killkillbuf     ();
+    void  killpastebuf    ();
+    void  prints          (int wrow, int wcol, vattr atr, const char* str);
+    int   reflowok        (char* __qstr);
+    void  refresh         (Line* __currline, uint __row);
+    void  savefile        (int __status);
+    void  scrolldown      (int __scol, int __srow, int __ecol, int __erow, int __lines=1);
+    void  scrollup        (int __scol, int __srow, int __ecol, int __erow, int __lines=1);
+    void  setcolor        (Line* __line);
+    void  setlinetype     (Line* __line);
+    void  statusline      ();
+    void  windowclose     ();
+    void  windowopen      ();
+    Line* wrapit          (Line** __currline, uint* __curr_col, uint* __curr_row, bool __display=true);
+    Line* wrapdel         (Line** __currline, uint* __curr_col, uint* __curr_row, bool __display=true);
+    Line* wrapins         (Line** __currline, uint* __curr_col, uint* __curr_row, bool __display=true);
 
-  #ifndef NDEBUG
-  void  debugtest       (char* __test, int __a, int __b, char* __file, int __line, int __values);
-  #endif
+#ifndef NDEBUG
+    void  debugtest       (char* __test, int __a, int __b, char* __file, int __line, int __values);
+#endif
 
-  void  Buf2Clip       ();
-  void  Clip2Buf       ();
+    void  Buf2Clip       ();
+    void  Clip2Buf       ();
 
 
 public:
 
-  //  ----------------------------------------------------------------
-  //  Constructor and destructor
+    //  ----------------------------------------------------------------
+    //  Constructor and destructor
 
-  IEclass(int __scol, int __ecol, int __srow, int __erow, int __border);
-  ~IEclass();
-
-
-  //  ----------------------------------------------------------------
-  //  Function to start the editor
-
-  int Start(int __mode, uint* __position, GMsg* __msg);
+    IEclass(int __scol, int __ecol, int __srow, int __erow, int __border);
+    ~IEclass();
 
 
-  //  ----------------------------------------------------------------
-  //  User key functions
+    //  ----------------------------------------------------------------
+    //  Function to start the editor
 
-  void Abort          ();
-  void AskExit        ();
-  void BlockAnchor    ();
-  void BlockCopy      ();
-  void BlockCut       (bool just_delete = false);
-  void BlockPaste     ();
-  void BlockDel       (Line* _anchor);
-  void ClearDeleteBuf ();
-  void ClearPasteBuf  ();
-  void CopyAboveChar  ();
-  void DelChar        ();
-  void DeleteEOL      ();
-  void DeleteSOL      ();
-  void DelLeft        ();
-  void DelLine        ();
-  void DelLtWord      ();
-  void DelRtWord      ();
-  void DosShell       ();
-  void DupLine        ();
-  void ExitMsg        ();
-  void ExportText     ();
-  void GoBegLine      ();
-  void GoBotLine      ();
-  void GoBotMsg       ();
-  void GoDown         ();
-  void GoEOL          ();
-  void GoLeft         ();
-  void GoPgDn         ();
-  void GoPgUp         ();
-  void GoRight        ();
-  void GoTopLine      ();
-  void GoTopMsg       ();
-  void GoUp           ();
-  void GoWordLeft     ();
-  void GoWordRight    ();
-  void Header         ();
-  void ImportQuotebuf ();
-  void ImportText     ();
-  void LoadFile       ();
-  void LookupCursor   ();
-  void LookupDest     ();
-  void LookupOrig     ();
-  void Newline        ();
-  void QuitNow        ();
-  void Reflow         ();
-  void ReTab          ();
-  void SaveFile       ();
-  void SaveMsg        ();
+    int Start(int __mode, uint* __position, GMsg* __msg);
+
+
+    //  ----------------------------------------------------------------
+    //  User key functions
+
+    void Abort          ();
+    void AskExit        ();
+    void BlockAnchor    ();
+    void BlockCopy      ();
+    void BlockCut       (bool just_delete = false);
+    void BlockPaste     ();
+    void BlockDel       (Line* _anchor);
+    void ClearDeleteBuf ();
+    void ClearPasteBuf  ();
+    void CopyAboveChar  ();
+    void DelChar        ();
+    void DeleteEOL      ();
+    void DeleteSOL      ();
+    void DelLeft        ();
+    void DelLine        ();
+    void DelLtWord      ();
+    void DelRtWord      ();
+    void DosShell       ();
+    void DupLine        ();
+    void ExitMsg        ();
+    void ExportText     ();
+    void GoBegLine      ();
+    void GoBotLine      ();
+    void GoBotMsg       ();
+    void GoDown         ();
+    void GoEOL          ();
+    void GoLeft         ();
+    void GoPgDn         ();
+    void GoPgUp         ();
+    void GoRight        ();
+    void GoTopLine      ();
+    void GoTopMsg       ();
+    void GoUp           ();
+    void GoWordLeft     ();
+    void GoWordRight    ();
+    void Header         ();
+    void ImportQuotebuf ();
+    void ImportText     ();
+    void LoadFile       ();
+    void LookupCursor   ();
+    void LookupDest     ();
+    void LookupOrig     ();
+    void Newline        ();
+    void QuitNow        ();
+    void Reflow         ();
+    void ReTab          ();
+    void SaveFile       ();
+    void SaveMsg        ();
 #if defined(GCFG_SPELL_INCLUDED)
-  void SCheckerMenu   ();
+    void SCheckerMenu   ();
 #endif
-  void Soundkill      ();
-  // External spell check tool
-  void SpellCheck     ();
-  void Tab            ();
-  void ToggleCase     ();
-  void ToggleCaseBlock(gkey key);
-  void SCodeChange(gkey key);
-  void ToggleInsert   ();
-  void ToggleDrawLines();
-  void DrawLines      (gkey key);
-  void ToLower        ();
-  void ToUpper        ();
-  void UnDelete       (bool before=true);
-  void ZapQuoteBelow  ();
+    void Soundkill      ();
+    // External spell check tool
+    void SpellCheck     ();
+    void Tab            ();
+    void ToggleCase     ();
+    void ToggleCaseBlock(gkey key);
+    void SCodeChange(gkey key);
+    void ToggleInsert   ();
+    void ToggleDrawLines();
+    void DrawLines      (gkey key);
+    void ToLower        ();
+    void ToUpper        ();
+    void UnDelete       (bool before=true);
+    void ZapQuoteBelow  ();
 
 private:
-  void ToggleCaseChar(gkey key, std::string::iterator it, Line *ln, int n);
+    void ToggleCaseChar(gkey key, std::string::iterator it, Line *ln, int n);
 
-  //  ----------------------------------------------------------------
+    //  ----------------------------------------------------------------
 };
 
 //  ------------------------------------------------------------------
 
 void Edit__killpastebuf(void);
 
-inline void IEclass::killpastebuf() { Edit__killpastebuf(); }
+inline void IEclass::killpastebuf()
+{
+    Edit__killpastebuf();
+}
 
 //  ------------------------------------------------------------------
 

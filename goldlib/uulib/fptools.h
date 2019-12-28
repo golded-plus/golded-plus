@@ -17,7 +17,7 @@
 #define __FPTOOLS_H__
 
 #ifndef TOOLEXPORT
-#define TOOLEXPORT
+    #define TOOLEXPORT
 #endif
 
 void    TOOLEXPORT  _FP_free    (void *);
@@ -39,8 +39,8 @@ char *  TOOLEXPORT  _FP_strpbrk (char *, char *);
 char *  TOOLEXPORT  _FP_strtok  (char *, char *);
 char *  TOOLEXPORT  _FP_cutdir  (char *);
 #if 0
-char *  TOOLEXPORT  _FP_strerror(int);
-char *  TOOLEXPORT  _FP_tempnam (char *, char *);
+    char *  TOOLEXPORT  _FP_strerror(int);
+    char *  TOOLEXPORT  _FP_tempnam (char *, char *);
 #endif
 
 #endif

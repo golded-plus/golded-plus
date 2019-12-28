@@ -35,184 +35,211 @@ extern GMsg* reader_msg;
 
 //  ------------------------------------------------------------------
 
-int NextMarkedmsg(int direction, GMsg* msg) {
+int NextMarkedmsg(int direction, GMsg* msg)
+{
 
-  GTag& tag = AA->isreadpm ? AA->PMrk : AA->Mark;
+    GTag& tag = AA->isreadpm ? AA->PMrk : AA->Mark;
 
-  if(tag.Count()) {
-    uint n;
-    uint32_t msgno = 0;
-    if(direction == DIR_NEXT) {
-      if(msg->msgno != tag[tag.Count()-1]) {
-        for(n=0; n<tag.Count(); n++) {
-          if(tag[n] > msg->msgno) {
-            break;
-          }
+    if(tag.Count())
+    {
+        uint n;
+        uint32_t msgno = 0;
+        if(direction == DIR_NEXT)
+        {
+            if(msg->msgno != tag[tag.Count()-1])
+            {
+                for(n=0; n<tag.Count(); n++)
+                {
+                    if(tag[n] > msg->msgno)
+                    {
+                        break;
+                    }
+                }
+                if(n >= tag.Count())
+                    n = tag.Count()-1;
+                msgno = n+1;
+            }
+            else
+            {
+                n = tag.Count()-1;
+            }
+            AA->set_lastread(AA->Msgn.ToReln(tag[n]));
         }
-        if(n >= tag.Count())
-          n = tag.Count()-1;
-        msgno = n+1;
-      }
-      else {
-        n = tag.Count()-1;
-      }
-      AA->set_lastread(AA->Msgn.ToReln(tag[n]));
+        else
+        {
+            if(msg->msgno != tag[0])
+            {
+                n = tag.Count();
+                do
+                {
+                    if(tag[--n] < msg->msgno)
+                        break;
+                }
+                while(n);
+                msgno = n+1;
+            }
+            else
+            {
+                n = 0;
+            }
+            AA->set_lastread(AA->Msgn.ToReln(tag[n]));
+        }
+        return msgno ? 1 : 0;
     }
-    else {
-      if(msg->msgno != tag[0]) {
-        n = tag.Count();
-        do {
-          if(tag[--n] < msg->msgno)
-            break;
-        } while(n);
-        msgno = n+1;
-      }
-      else {
-        n = 0;
-      }
-      AA->set_lastread(AA->Msgn.ToReln(tag[n]));
-    }
-    return msgno ? 1 : 0;
-  }
-  return 0;
+    return 0;
 }
 
 
 //  ------------------------------------------------------------------
 
-void MarkMsgs_Unmark() {
+void MarkMsgs_Unmark()
+{
 
-  AA->Mark.ResetAll();
-  AA->isreadmark = false;
+    AA->Mark.ResetAll();
+    AA->isreadmark = false;
 }
 
 
 //  ------------------------------------------------------------------
 
-void MarkMsgs_Toggle() {
+void MarkMsgs_Toggle()
+{
 
-  GTag tmp;
+    GTag tmp;
 
-  // Transplant current marks
-  tmp.SetCount(AA->Mark.Count());
-  tmp.tag = AA->Mark.tag;
-  tmp.allocated = AA->Mark.allocated;
+    // Transplant current marks
+    tmp.SetCount(AA->Mark.Count());
+    tmp.tag = AA->Mark.tag;
+    tmp.allocated = AA->Mark.allocated;
 
-  // Reset marks
-  AA->Mark.SetCount(0);
-  AA->Mark.tag = NULL;
-  AA->Mark.allocated = 0;
-  AA->isreadmark = false;
+    // Reset marks
+    AA->Mark.SetCount(0);
+    AA->Mark.tag = NULL;
+    AA->Mark.allocated = 0;
+    AA->isreadmark = false;
 
-  if(tmp.Count()) {
-    AA->Mark.Resize(AA->Msgn.Count()-tmp.Count());
-    uint m=0, x=0;
-    for(uint n = 0; n < AA->Msgn.Count(); n++) {
-      if(tmp.tag[x] != AA->Msgn[n])
-        AA->Mark[m++] = AA->Msgn[n];
-      else
-        x++;
-    }
-  }
-
-  tmp.Reset();
-}
-
-
-//  ------------------------------------------------------------------
-
-void MarkMsgs_All() {
-
-  AA->Mark.Resize(AA->Msgn.Count());
-  memcpy(AA->Mark.tag, AA->Msgn.tag, AA->Msgn.Count()*sizeof(uint32_t));
-}
-
-
-//  ------------------------------------------------------------------
-
-void MarkMsgs_New() {
-
-  uint oldmarks = AA->Mark.Count();
-  AA->Mark.Resize(AA->Mark.Count()+(AA->Msgn.Count() - AA->lastread()));
-  memcpy(AA->Mark.tag+oldmarks, AA->Msgn.tag+AA->lastread(), (AA->Msgn.Count()-AA->lastread())*sizeof(uint32_t));
-  AA->Mark.Sort();
-  AA->Mark.ElimDups();
-}
-
-
-//  ------------------------------------------------------------------
-
-void MarkMsgs_Old() {
-
-  uint oldmarks = AA->Mark.Count();
-  AA->Mark.Resize(AA->Mark.Count() + (AA->lastread() - 1));
-  memcpy(AA->Mark.tag+oldmarks, AA->Msgn.tag, (AA->lastread()-1)*sizeof(uint32_t));
-  AA->Mark.Sort();
-  AA->Mark.ElimDups();
-}
-
-
-//  ------------------------------------------------------------------
-
-void MarkMsgs_Range() {
-
-  uint markstart = AA->Msgn.ToReln(AA->bookmark);
-  uint markstop = AA->lastread();
-  uint temp = MinV(markstart, markstop);
-  uint mrks = (MaxV(markstart, markstop) - MinV(markstart, markstop)) + 1;
-  uint oldmarks = AA->Mark.Count();
-  AA->Mark.Resize(AA->Mark.Count() + mrks);
-  for(uint n=0; n<mrks; n++)
-    AA->Mark[oldmarks+n] = AA->Msgn[temp+n-1];
-  AA->Mark.Sort();
-  AA->Mark.ElimDups();
-}
-
-
-//  ------------------------------------------------------------------
-
-void MarkMsgs_Txt(int item, char* markstring) {
-
-  if(item == TAG_MARKHEADER or item == TAG_MARKTXTHDR) {
-    if(not edit_string(markstring, sizeof(INam), LNG->EnterMarkString, H_MarkString))
-      return;
-  }
-
-  GMsg* msg = (GMsg*)throw_calloc(1, sizeof(GMsg));
-
-  golded_search_manager srchmgr;
-  srchmgr.prepare_from_string(markstring, (item == TAG_MARKTXTHDR) ? GFIND_HDRTXT : GFIND_HDR);
-
-  w_progress(MODE_NEW, C_INFOW, 0, AA->Msgn.Count(), LNG->AdvancedMarking);
-
-  uint n;
-  int marked=0;
-  for(n=AA->lastread(); srchmgr.direction == DIR_NEXT ? (n<=AA->Msgn.Count()) : (n>=1); srchmgr.direction == DIR_NEXT ? n++ : n--) {
-    if(kbxhit()) {
-      if(kbxget() == Key_Esc) {
-        HandleGEvent(EVTT_SEARCHFAILED);
-        break;
-      }
+    if(tmp.Count())
+    {
+        AA->Mark.Resize(AA->Msgn.Count()-tmp.Count());
+        uint m=0, x=0;
+        for(uint n = 0; n < AA->Msgn.Count(); n++)
+        {
+            if(tmp.tag[x] != AA->Msgn[n])
+                AA->Mark[m++] = AA->Msgn[n];
+            else
+                x++;
+        }
     }
 
-    update_statuslinef(LNG->SearchingMsg, "ST_SEARCHINGMSG", n, AA->Msgn.Count(), marked);
-    w_progress(MODE_UPDATE, C_INFOW, n, AA->Msgn.Count(), NULL);
+    tmp.Reset();
+}
 
-    if(AA->LoadMsg(msg, AA->Msgn[n-1], CFG->dispmargin-(int)CFG->switches.get(disppagebar))) {
 
-      bool success = srchmgr.search(msg, false, true);
+//  ------------------------------------------------------------------
 
-      if(srchmgr.reverse ? not success : success) {
-        AA->Mark.Add(msg->msgno);
-        update_statuslinef(LNG->SearchingMsg, "ST_SEARCHINGMSG", n, AA->Msgn.Count(), ++marked);
-      }
+void MarkMsgs_All()
+{
+
+    AA->Mark.Resize(AA->Msgn.Count());
+    memcpy(AA->Mark.tag, AA->Msgn.tag, AA->Msgn.Count()*sizeof(uint32_t));
+}
+
+
+//  ------------------------------------------------------------------
+
+void MarkMsgs_New()
+{
+
+    uint oldmarks = AA->Mark.Count();
+    AA->Mark.Resize(AA->Mark.Count()+(AA->Msgn.Count() - AA->lastread()));
+    memcpy(AA->Mark.tag+oldmarks, AA->Msgn.tag+AA->lastread(), (AA->Msgn.Count()-AA->lastread())*sizeof(uint32_t));
+    AA->Mark.Sort();
+    AA->Mark.ElimDups();
+}
+
+
+//  ------------------------------------------------------------------
+
+void MarkMsgs_Old()
+{
+
+    uint oldmarks = AA->Mark.Count();
+    AA->Mark.Resize(AA->Mark.Count() + (AA->lastread() - 1));
+    memcpy(AA->Mark.tag+oldmarks, AA->Msgn.tag, (AA->lastread()-1)*sizeof(uint32_t));
+    AA->Mark.Sort();
+    AA->Mark.ElimDups();
+}
+
+
+//  ------------------------------------------------------------------
+
+void MarkMsgs_Range()
+{
+
+    uint markstart = AA->Msgn.ToReln(AA->bookmark);
+    uint markstop = AA->lastread();
+    uint temp = MinV(markstart, markstop);
+    uint mrks = (MaxV(markstart, markstop) - MinV(markstart, markstop)) + 1;
+    uint oldmarks = AA->Mark.Count();
+    AA->Mark.Resize(AA->Mark.Count() + mrks);
+    for(uint n=0; n<mrks; n++)
+        AA->Mark[oldmarks+n] = AA->Msgn[temp+n-1];
+    AA->Mark.Sort();
+    AA->Mark.ElimDups();
+}
+
+
+//  ------------------------------------------------------------------
+
+void MarkMsgs_Txt(int item, char* markstring)
+{
+
+    if(item == TAG_MARKHEADER or item == TAG_MARKTXTHDR)
+    {
+        if(not edit_string(markstring, sizeof(INam), LNG->EnterMarkString, H_MarkString))
+            return;
     }
-  }
 
-  w_progress(MODE_QUIT, BLACK_|_BLACK, 0, 0, NULL);
+    GMsg* msg = (GMsg*)throw_calloc(1, sizeof(GMsg));
 
-  ResetMsg(msg);
-  throw_free(msg);
+    golded_search_manager srchmgr;
+    srchmgr.prepare_from_string(markstring, (item == TAG_MARKTXTHDR) ? GFIND_HDRTXT : GFIND_HDR);
+
+    w_progress(MODE_NEW, C_INFOW, 0, AA->Msgn.Count(), LNG->AdvancedMarking);
+
+    uint n;
+    int marked=0;
+    for(n=AA->lastread(); srchmgr.direction == DIR_NEXT ? (n<=AA->Msgn.Count()) : (n>=1); srchmgr.direction == DIR_NEXT ? n++ : n--)
+    {
+        if(kbxhit())
+        {
+            if(kbxget() == Key_Esc)
+            {
+                HandleGEvent(EVTT_SEARCHFAILED);
+                break;
+            }
+        }
+
+        update_statuslinef(LNG->SearchingMsg, "ST_SEARCHINGMSG", n, AA->Msgn.Count(), marked);
+        w_progress(MODE_UPDATE, C_INFOW, n, AA->Msgn.Count(), NULL);
+
+        if(AA->LoadMsg(msg, AA->Msgn[n-1], CFG->dispmargin-(int)CFG->switches.get(disppagebar)))
+        {
+
+            bool success = srchmgr.search(msg, false, true);
+
+            if(srchmgr.reverse ? not success : success)
+            {
+                AA->Mark.Add(msg->msgno);
+                update_statuslinef(LNG->SearchingMsg, "ST_SEARCHINGMSG", n, AA->Msgn.Count(), ++marked);
+            }
+        }
+    }
+
+    w_progress(MODE_QUIT, BLACK_|_BLACK, 0, 0, NULL);
+
+    ResetMsg(msg);
+    throw_free(msg);
 }
 
 
@@ -220,36 +247,36 @@ void MarkMsgs_Txt(int item, char* markstring) {
 
 static void recursive_mark(GMsg* msg, uint32_t msgno, bool markasread)
 {
-  if (AA->Msgn.ToReln(msgno) and AA->LoadHdr(msg, msgno, false))
-  {
-    gmsg_links templink = msg->link;
-
-    if (!markasread)
+    if (AA->Msgn.ToReln(msgno) and AA->LoadHdr(msg, msgno, false))
     {
-      if (templink.first())
-        AA->Mark.Add(templink.first());
+        gmsg_links templink = msg->link;
 
-      for (size_t i = 0, max = templink.list_max(); i < max; i++)
-      {
-        if (templink.list(i))
-          AA->Mark.Add(templink.list(i));
-      }
-    }
-    else if (!msg->timesread)
-    {
-      msg->timesread++;
-      AA->UpdateTimesread(msg);
-    }
+        if (!markasread)
+        {
+            if (templink.first())
+                AA->Mark.Add(templink.first());
 
-    if (templink.first())
-      recursive_mark(msg, templink.first(), markasread);
+            for (size_t i = 0, max = templink.list_max(); i < max; i++)
+            {
+                if (templink.list(i))
+                    AA->Mark.Add(templink.list(i));
+            }
+        }
+        else if (!msg->timesread)
+        {
+            msg->timesread++;
+            AA->UpdateTimesread(msg);
+        }
 
-    for (size_t i = 0, max = templink.list_max(); i < max; i++)
-    {
-      if (templink.list(i))
-        recursive_mark(msg, templink.list(i), markasread);
+        if (templink.first())
+            recursive_mark(msg, templink.first(), markasread);
+
+        for (size_t i = 0, max = templink.list_max(); i < max; i++)
+        {
+            if (templink.list(i))
+                recursive_mark(msg, templink.list(i), markasread);
+        }
     }
-  }
 }
 
 
@@ -257,119 +284,122 @@ static void recursive_mark(GMsg* msg, uint32_t msgno, bool markasread)
 
 void MarkMsgs_Thread(GMsg* msg, bool markasread)
 {
-  GMsg* tempmsg = (GMsg*)throw_calloc(1, sizeof(GMsg));
-  tempmsg->msgno = msg->msgno;
+    GMsg* tempmsg = (GMsg*)throw_calloc(1, sizeof(GMsg));
+    tempmsg->msgno = msg->msgno;
 
-  w_info(LNG->Wait);
+    w_info(LNG->Wait);
 
-  if (!markasread)
-    AA->Mark.Add(msg->msgno);
-  else if (!msg->timesread)
-  {
-    msg->timesread++;
-    AA->UpdateTimesread(msg);
-  }
-
-  uint32_t msgno = msg->link.to();
-  while(AA->Msgn.ToReln(msgno))   // Search backwards
-  {
     if (!markasread)
-      AA->Mark.Add(msgno);
-
-    if(not AA->LoadHdr(tempmsg, msgno, false))
-      tempmsg->link.to_set(0);
-    else if (markasread && !tempmsg->timesread)
+        AA->Mark.Add(msg->msgno);
+    else if (!msg->timesread)
     {
-      tempmsg->timesread++;
-      AA->UpdateTimesread(tempmsg);
+        msg->timesread++;
+        AA->UpdateTimesread(msg);
     }
 
-    msgno = tempmsg->link.to();
-  }
+    uint32_t msgno = msg->link.to();
+    while(AA->Msgn.ToReln(msgno))   // Search backwards
+    {
+        if (!markasread)
+            AA->Mark.Add(msgno);
 
-  recursive_mark(tempmsg, tempmsg->msgno, markasread);
+        if(not AA->LoadHdr(tempmsg, msgno, false))
+            tempmsg->link.to_set(0);
+        else if (markasread && !tempmsg->timesread)
+        {
+            tempmsg->timesread++;
+            AA->UpdateTimesread(tempmsg);
+        }
 
-  w_info(NULL);
+        msgno = tempmsg->link.to();
+    }
 
-  ResetMsg(tempmsg);
-  throw_free(tempmsg);
+    recursive_mark(tempmsg, tempmsg->msgno, markasread);
+
+    w_info(NULL);
+
+    ResetMsg(tempmsg);
+    throw_free(tempmsg);
 }
 
 
 //  ------------------------------------------------------------------
 
-void MarkMsgs(GMsg* msg) {
+void MarkMsgs(GMsg* msg)
+{
 
-  GFTRK("MarkMsgs");
+    GFTRK("MarkMsgs");
 
-  static INam markstring;
+    static INam markstring;
 
-  GMenuMarkMsgs MenuMarkMsgs;
-  int item = MenuMarkMsgs.Run();
+    GMenuMarkMsgs MenuMarkMsgs;
+    int item = MenuMarkMsgs.Run();
 
-  switch(item) {
+    switch(item)
+    {
 
     // ---------------------------------------------------------------
     case TAG_MARKUNMARK:
-      MarkMsgs_Unmark();
-      break;
+        MarkMsgs_Unmark();
+        break;
 
     // ---------------------------------------------------------------
     case TAG_MARKTOGGLE:
-      MarkMsgs_Toggle();
-      break;
+        MarkMsgs_Toggle();
+        break;
 
     // ---------------------------------------------------------------
     case TAG_MARKALLMSGS:
-      MarkMsgs_All();
-      break;
+        MarkMsgs_All();
+        break;
 
     // ---------------------------------------------------------------
     case TAG_MARKNEWMSGS:
-      MarkMsgs_New();
-      break;
+        MarkMsgs_New();
+        break;
 
     // ---------------------------------------------------------------
     case TAG_MARKOLDMSGS:
-      MarkMsgs_Old();
-      break;
+        MarkMsgs_Old();
+        break;
 
     // ---------------------------------------------------------------
     case TAG_MARKRANGE:
-      MarkMsgs_Range();
-      break;
+        MarkMsgs_Range();
+        break;
 
     // ---------------------------------------------------------------
     case TAG_MARKYOURMAIL:
-      gsprintf(PRINTF_DECLARE_BUFFER(markstring), "\"%s\"", AA->Username().name);
-      // Drop through!
+        gsprintf(PRINTF_DECLARE_BUFFER(markstring), "\"%s\"", AA->Username().name);
+    // Drop through!
 
     // ---------------------------------------------------------------
     case TAG_MARKHEADER:
-      // Drop through!
+    // Drop through!
 
     // ---------------------------------------------------------------
     case TAG_MARKTXTHDR:
-      MarkMsgs_Txt(item, markstring);
-      break;
+        MarkMsgs_Txt(item, markstring);
+        break;
 
     // ---------------------------------------------------------------
     case TAG_MARKTHREAD:
     case TAG_MARKASREAD:
-      MarkMsgs_Thread(msg, item == TAG_MARKASREAD);
-      break;
-  }
+        MarkMsgs_Thread(msg, item == TAG_MARKASREAD);
+        break;
+    }
 
-  GFTRK(0);
+    GFTRK(0);
 }
 
 
 //  ------------------------------------------------------------------
 
-void MarkingOptions() {
+void MarkingOptions()
+{
 
-  if(AA->Msgn.Count())
-    MarkMsgs(reader_msg);
+    if(AA->Msgn.Count())
+        MarkMsgs(reader_msg);
 }
 
 

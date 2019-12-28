@@ -33,161 +33,177 @@
 //  ------------------------------------------------------------------
 //  Get yes/no value
 
-int GetYesno(const char* value) {
+int GetYesno(const char* value)
+{
 
-  if(isdigit(*value))
-    return atoi(value);
+    if(isdigit(*value))
+        return atoi(value);
 
-  switch(g_toupper(*value)) {
+    switch(g_toupper(*value))
+    {
 
     case NUL:   // Blank
     case 'T':   // True
     case 'Y':   // Yes
-      return YES;
+        return YES;
 
     case 'F':   // False
     case 'N':   // No
-      return NO;
-
-    case 'O':   // On or Off
-      if(g_toupper(value[1]) == 'N')
-        return YES;
-      else
         return NO;
 
+    case 'O':   // On or Off
+        if(g_toupper(value[1]) == 'N')
+            return YES;
+        else
+            return NO;
+
     case 'A':   // Always, Ask or Auto
-      if(g_toupper(value[1]) == 'L')
-        return ALWAYS;
-      else if(g_toupper(value[1]) == 'S')
-        return ASK;
-      else
-        return GAUTO;
+        if(g_toupper(value[1]) == 'L')
+            return ALWAYS;
+        else if(g_toupper(value[1]) == 'S')
+            return ASK;
+        else
+            return GAUTO;
 
     case 'M':   // Maybe
-      return MAYBE;
-  }
+        return MAYBE;
+    }
 
-  return NO;
+    return NO;
 }
 
 
 //  ------------------------------------------------------------------
 //  Calculates a percentage
 
-int Pct(uint32_t x, uint32_t y) {
+int Pct(uint32_t x, uint32_t y)
+{
 
-  if(x) {
+    if(x)
+    {
 
-    uint32_t p = (((x-y)*100)/x);
-    uint32_t r = (((x-y)*100)%x);
+        uint32_t p = (((x-y)*100)/x);
+        uint32_t r = (((x-y)*100)%x);
 
-    if(((r*10)/x)>4)
-      p++;
+        if(((r*10)/x)>4)
+            p++;
 
-    return (int)p;
-  }
+        return (int)p;
+    }
 
-  return 100;
+    return 100;
 }
 
 
 //  ------------------------------------------------------------------
 //  Calculates next tab stop from given column
 
-int tabstop(int column, int tabwidth) {
+int tabstop(int column, int tabwidth)
+{
 
-  int sum = column + tabwidth;
-  return sum - (sum % tabwidth);
+    int sum = column + tabwidth;
+    return sum - (sum % tabwidth);
 }
 
 
 //  ------------------------------------------------------------------
 //  Convert hex string to integer
 
-uint32_t atoulx(const char* s) {
+uint32_t atoulx(const char* s)
+{
 
-  uint32_t retval = 0;
+    uint32_t retval = 0;
 
-  s = strskip_wht(s);
+    s = strskip_wht(s);
 
-  while(isxdigit(*s)) {
-    retval <<= 4;
-    retval |= xtoi(*s);
-    s++;
-  }
+    while(isxdigit(*s))
+    {
+        retval <<= 4;
+        retval |= xtoi(*s);
+        s++;
+    }
 
-  return retval;
+    return retval;
 }
 
 
 //  ------------------------------------------------------------------
 
-char* ltob(char* dst, uint32_t value, int fill) {
+char* ltob(char* dst, uint32_t value, int fill)
+{
 
-  char* p = dst;
+    char* p = dst;
 
-  for(int b=1,g=0; b<33; b++) {
-    if(value & 0x80000000L) {
-      g = 1;
-      *p++ = '1';
+    for(int b=1,g=0; b<33; b++)
+    {
+        if(value & 0x80000000L)
+        {
+            g = 1;
+            *p++ = '1';
+        }
+        else
+        {
+            if(g or (b >= fill))
+                *p++ = '0';
+        }
+        value <<= 1;
     }
-    else {
-      if(g or (b >= fill))
-        *p++ = '0';
-    }
-    value <<= 1;
-  }
-  *p = NUL;
+    *p = NUL;
 
-  return dst;
+    return dst;
 }
 
 
 // ------------------------------------------------------------------
 
-dword B2L(dword b) {
+dword B2L(dword b)
+{
 
-  byte* bp = (byte*)&b;
-  return ((*bp + ((dword)bp[1] << 8) + ((dword)bp[2] << 16)) | 0x800000L) >> (24 - (bp[3] - 0x80));
+    byte* bp = (byte*)&b;
+    return ((*bp + ((dword)bp[1] << 8) + ((dword)bp[2] << 16)) | 0x800000L) >> (24 - (bp[3] - 0x80));
 }
 
 
 // ------------------------------------------------------------------
 
-dword L2B(dword l) {
+dword L2B(dword l)
+{
 
-  // Special case for zero
-  if(l == 0)
-    return 0;
+    // Special case for zero
+    if(l == 0)
+        return 0;
 
-  // Look for the largest power of 2
-  int s = 31;
-  dword p = 0x80000000UL;
-  while(s > 0) {
-    if(p & l)
-      break;
-    p >>= 1;
-    s--;
-  }
-
-  // Fillup the mantisse with useful information
-  dword b = 0;
-  int n = 0;
-  int e = s--;
-  l -= 1UL << e;
-  while(l > 0) {
-    dword t = (1UL << s);
-    if(l >= t) {
-      b += 1UL << (22 - n);
-      if(l < t)
-        break;
-      l -= t;
+    // Look for the largest power of 2
+    int s = 31;
+    dword p = 0x80000000UL;
+    while(s > 0)
+    {
+        if(p & l)
+            break;
+        p >>= 1;
+        s--;
     }
-    n++;
-    s--;
-  }
 
-  return b | ((0x81UL+e) << 24);
+    // Fillup the mantisse with useful information
+    dword b = 0;
+    int n = 0;
+    int e = s--;
+    l -= 1UL << e;
+    while(l > 0)
+    {
+        dword t = (1UL << s);
+        if(l >= t)
+        {
+            b += 1UL << (22 - n);
+            if(l < t)
+                break;
+            l -= t;
+        }
+        n++;
+        s--;
+    }
+
+    return b | ((0x81UL+e) << 24);
 }
 
 

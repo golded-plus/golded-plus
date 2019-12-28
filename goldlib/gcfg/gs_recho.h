@@ -25,7 +25,7 @@
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack(1)
+    #pragma pack(1)
 #endif
 
 //  ------------------------------------------------------------------
@@ -153,59 +153,62 @@
 
 //  ------------------------------------------------------------------
 
-enum {
-  RAE_ECHO,
-  RAE_NET,
-  RAE_LOCAL
+enum
+{
+    RAE_ECHO,
+    RAE_NET,
+    RAE_LOCAL
 };
 
 
 //  ------------------------------------------------------------------
 //  Structure for AREAS.RAE Version 1.00
 
-typedef struct {
-  char  echoid[41];
-  char  desc[61];
-  byte  type;
-  byte  isopus;
-  char  path[61];
-  word  readsec;
-  word  writesec;
-  char  origin[61];
-  ftn_addr addr;
-  char  domain[21];
-  byte  conference;
+typedef struct
+{
+    char  echoid[41];
+    char  desc[61];
+    byte  type;
+    byte  isopus;
+    char  path[61];
+    word  readsec;
+    word  writesec;
+    char  origin[61];
+    ftn_addr addr;
+    char  domain[21];
+    byte  conference;
 } TRaEchoArea100, *PRaEchoArea100;
 
 
 //  ------------------------------------------------------------------
 //  Structure for AREAS.RAE Version 1.01 (I hope!)
 
-typedef struct {
-  char  echoid[41];
-  char  desc[61];
-  byte  type;
-  byte  isopus;
-  char  path[61];
-  word  readsec;
-  word  writesec;
-  char  origin[61];
-  ftn_addr addr;
-  char  domain[21];
-  byte  conference;
-  word  maxdays;
-  word  maxrecv;
-  word  maxcount;
-  word  totalimp;
-  word  totalexp;
-  char  dummy[130];
+typedef struct
+{
+    char  echoid[41];
+    char  desc[61];
+    byte  type;
+    byte  isopus;
+    char  path[61];
+    word  readsec;
+    word  writesec;
+    char  origin[61];
+    ftn_addr addr;
+    char  domain[21];
+    byte  conference;
+    word  maxdays;
+    word  maxrecv;
+    word  maxcount;
+    word  totalimp;
+    word  totalexp;
+    char  dummy[130];
 } TRaEchoArea101, *PRaEchoArea101;
 
 
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack()
+    #pragma pack()
 #endif
 
 //  ------------------------------------------------------------------

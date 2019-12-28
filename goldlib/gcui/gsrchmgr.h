@@ -40,98 +40,107 @@
 
 //  ------------------------------------------------------------------
 
-class search_item : public gsearch {
+class search_item : public gsearch
+{
 
 public:
 
-  enum item_logic {
-    logic_and,
-    logic_or
-  };
+    enum item_logic
+    {
+        logic_and,
+        logic_or
+    };
 
-  struct item_where {
-    bool from;
-    bool to;
-    bool subject;
-    bool body;
-    bool tagline;
-    bool tearline;
-    bool origin;
-    bool signature;
-    bool kludges;
-  };
+    struct item_where
+    {
+        bool from;
+        bool to;
+        bool subject;
+        bool body;
+        bool tagline;
+        bool tearline;
+        bool origin;
+        bool signature;
+        bool kludges;
+    };
 
-  item_logic logic;
-  item_where where;
+    item_logic logic;
+    item_where where;
 
-  search_item();
-  virtual ~search_item();
+    search_item();
+    virtual ~search_item();
 
-  search_item& operator=(const search_item& a);
+    search_item& operator=(const search_item& a);
 
 };
 
 
 //  ------------------------------------------------------------------
 
-class search_manager : public gwinput2 {
+class search_manager : public gwinput2
+{
 
 public:
 
-  enum {
-    if_nothing,
-    id_pattern1, id_logic1, id_options1,
-    id_pattern2, id_logic2, id_options2,
-    id_pattern3, id_logic3, id_options3,
-    id_pattern4, id_logic4, id_options4,
-    id_pattern5, id_logic5, id_options5,
-    id_pattern6, id_logic6, id_options6,
-    id_pattern7, id_logic7, id_options7,
-    id_pattern8, id_logic8, id_options8,
-    id_pattern9, id_logic9, id_options9,
-    id_direction,
-    id_messages,
-    id_action,
-    id_areas
-  };
+    enum
+    {
+        if_nothing,
+        id_pattern1, id_logic1, id_options1,
+        id_pattern2, id_logic2, id_options2,
+        id_pattern3, id_logic3, id_options3,
+        id_pattern4, id_logic4, id_options4,
+        id_pattern5, id_logic5, id_options5,
+        id_pattern6, id_logic6, id_options6,
+        id_pattern7, id_logic7, id_options7,
+        id_pattern8, id_logic8, id_options8,
+        id_pattern9, id_logic9, id_options9,
+        id_direction,
+        id_messages,
+        id_action,
+        id_areas
+    };
 
-  enum search_direction {
-    direction_backward,
-    direction_forward
-  };
+    enum search_direction
+    {
+        direction_backward,
+        direction_forward
+    };
 
-  enum search_messages {
-    messages_new,
-    messages_unread,
-    messages_all
-  };
+    enum search_messages
+    {
+        messages_new,
+        messages_unread,
+        messages_all
+    };
 
-  enum search_action {
-    action_read,
-    action_mark,
-    action_delete,
-    action_write,
-    action_copy,
-    action_move
-  };
+    enum search_action
+    {
+        action_read,
+        action_mark,
+        action_delete,
+        action_write,
+        action_copy,
+        action_move
+    };
 
-  enum search_areas {
-    areas_current,
-    areas_tagged,
-    areas_all
-  };
+    enum search_areas
+    {
+        areas_current,
+        areas_tagged,
+        areas_all
+    };
 
-  std::vector<search_item> items;
+    std::vector<search_item> items;
 
-  search_direction    direction;
-  search_messages     messages;
-  search_action       action;
-  search_areas        areas;
+    search_direction    direction;
+    search_messages     messages;
+    search_action       action;
+    search_areas        areas;
 
-  gwindow window;
+    gwindow window;
 
-  search_manager();
-  virtual ~search_manager();
+    search_manager();
+    virtual ~search_manager();
 
 };
 

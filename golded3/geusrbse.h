@@ -33,51 +33,53 @@
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack(1)
+    #pragma pack(1)
 #endif
 
-struct gusrbaseheader {
-  word version;
-  byte reserved[4094];
+struct gusrbaseheader
+{
+    word version;
+    byte reserved[4094];
 };
 
 
-struct gusrbaseentry {
+struct gusrbaseentry
+{
 
- char     macro[20];
- IAdr     name;
- ftn_addr fidoaddr;
- IAdr     iaddr;
- byte     prefer_internet;
- byte     is_deleted;
+    char     macro[20];
+    IAdr     name;
+    ftn_addr fidoaddr;
+    IAdr     iaddr;
+    byte     prefer_internet;
+    byte     is_deleted;
 
- char   pseudo[40];
- char   organisation[78];
- char   snail1[78];
- char   snail2[78];
- char   snail3[78];
+    char   pseudo[40];
+    char   organisation[78];
+    char   snail1[78];
+    char   snail2[78];
+    char   snail3[78];
 
- char   dataphone[40];
- char   voicephone[40];
- char   faxphone[40];
+    char   dataphone[40];
+    char   voicephone[40];
+    char   faxphone[40];
 
- uint32_t firstdate;
- uint32_t lastdate;
- uint32_t times;
+    uint32_t firstdate;
+    uint32_t lastdate;
+    uint32_t times;
 
- char   homepage[128];
- byte   group;
+    char   homepage[128];
+    byte   group;
 
- char   comment1[78];
- char   comment2[78];
- char   comment3[78];
+    char   comment1[78];
+    char   comment2[78];
+    char   comment3[78];
 
- byte   reserved[915];
+    byte   reserved[915];
 };
 
 
 #if defined(GOLD_CANPACK)
-#pragma pack()
+    #pragma pack()
 #endif
 
 
@@ -85,114 +87,117 @@ struct gusrbaseentry {
 
 class guserbase;
 
-class addressbook_form : public gwinput2 {
+class addressbook_form : public gwinput2
+{
 
-  std::string macro;
-  std::string name;
-  std::string fidoaddr;
-  std::string iaddr;
-  std::string pseudo;
-  std::string organisation;
-  std::string snail1;
-  std::string snail2;
-  std::string snail3;
-  std::string dataphone;
-  std::string voicephone;
-  std::string faxphone;
-  std::string homepage;
-  std::string group;
-  std::string comment1;
-  std::string comment2;
-  std::string comment3;
+    std::string macro;
+    std::string name;
+    std::string fidoaddr;
+    std::string iaddr;
+    std::string pseudo;
+    std::string organisation;
+    std::string snail1;
+    std::string snail2;
+    std::string snail3;
+    std::string dataphone;
+    std::string voicephone;
+    std::string faxphone;
+    std::string homepage;
+    std::string group;
+    std::string comment1;
+    std::string comment2;
+    std::string comment3;
 
-  bool validate();
-  void before();
-  void after();
+    bool validate();
+    void before();
+    void after();
 
-  void LoadForm();
-  void SaveForm();
+    void LoadForm();
+    void SaveForm();
 
-  enum {
-    id_macro,
-    id_name,
-    id_fidoaddr,
-    id_iaddr,
-    id_prefer_internet,
-    id_pseudo,
-    id_organisation,
-    id_snail1,
-    id_snail2,
-    id_snail3,
-    id_dataphone,
-    id_voicephone,
-    id_faxphone,
-    id_firstdate,
-    id_lastdate,
-    id_times,
-    id_homepage,
-    id_group,
-    id_comment1,
-    id_comment2,
-    id_comment3
-  };
+    enum
+    {
+        id_macro,
+        id_name,
+        id_fidoaddr,
+        id_iaddr,
+        id_prefer_internet,
+        id_pseudo,
+        id_organisation,
+        id_snail1,
+        id_snail2,
+        id_snail3,
+        id_dataphone,
+        id_voicephone,
+        id_faxphone,
+        id_firstdate,
+        id_lastdate,
+        id_times,
+        id_homepage,
+        id_group,
+        id_comment1,
+        id_comment2,
+        id_comment3
+    };
 
-  friend class guserbase;
+    friend class guserbase;
 
 public:
-  guserbase* g;
+    guserbase* g;
 
-  addressbook_form(gwindow& w);
-  virtual ~addressbook_form();
+    addressbook_form(gwindow& w);
+    virtual ~addressbook_form();
 
-  void select();
+    void select();
 };
 
 
 //  ------------------------------------------------------------------
 
-class guserbase : public gwinpick {
+class guserbase : public gwinpick
+{
 
 private:
 
-  gwindow               window;
-  gfile                 usrbase;
-  gusrbaseheader        header;
-  gusrbaseentry         entry;
-  uint                  cwidth;
-  bool                  select_list;
-  bool                  need_update;
-  dword                 read_time;
-  Path                  fname;
+    gwindow               window;
+    gfile                 usrbase;
+    gusrbaseheader        header;
+    gusrbaseentry         entry;
+    uint                  cwidth;
+    bool                  select_list;
+    bool                  need_update;
+    dword                 read_time;
+    Path                  fname;
 
-  void open();
-  void close();
-  void lock();
-  void unlock();
-  void refresh_maximum_index();
-  void print_line(uint idx, uint pos, bool isbar);
-  void do_delayed();
-  bool handle_key();
+    void open();
+    void close();
+    void lock();
+    void unlock();
+    void refresh_maximum_index();
+    void print_line(uint idx, uint pos, bool isbar);
+    void do_delayed();
+    bool handle_key();
 
-  bool edit_entry(uint idx);
-  void clear_entry(gusrbaseentry *ent);
-  bool read_entry(uint idx, gusrbaseentry *ent=NULL);
-  void write_entry(uint idx, bool updateit = false);
-  bool find_entry(char* name, bool lookup = false);
-  void pack_addressbook();
-  void update_screen(bool force = true);
+    bool edit_entry(uint idx);
+    void clear_entry(gusrbaseentry *ent);
+    bool read_entry(uint idx, gusrbaseentry *ent=NULL);
+    void write_entry(uint idx, bool updateit = false);
+    bool find_entry(char* name, bool lookup = false);
+    void pack_addressbook();
+    void update_screen(bool force = true);
 
-  friend class addressbook_form;
+    friend class addressbook_form;
 
 public:
 
-  bool lookup_addressbook(GMsg* msg, char* name, char* aka, bool browser);
-  void build_pseudo(GMsg* msg, char* name, char* aka, bool direction = true);
-  void update_addressbook(GMsg* msg, bool reverse = false, bool force = false);
-  bool run(GMsg* msg, bool selectonly);
+    bool lookup_addressbook(GMsg* msg, char* name, char* aka, bool browser);
+    void build_pseudo(GMsg* msg, char* name, char* aka, bool direction = true);
+    void update_addressbook(GMsg* msg, bool reverse = false, bool force = false);
+    bool run(GMsg* msg, bool selectonly);
 
 
-  guserbase();
-  ~guserbase();
+    guserbase();
+    ~guserbase();
 };
 
 

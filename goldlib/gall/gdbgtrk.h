@@ -35,10 +35,11 @@
 
 //  ------------------------------------------------------------------
 
-struct GFTrk {
-  dword tick;
-  const char* text;
-  int indent;
+struct GFTrk
+{
+    dword tick;
+    const char* text;
+    int indent;
 };
 
 
@@ -56,17 +57,17 @@ extern GFTrk* __gftrk_list;
 //  ------------------------------------------------------------------
 
 #if defined(GFTRK_ENABLE)
-#if defined(__GNUC__)
-#define GFTRK(t)  if(__gftrk) __gftrk_track(t ? __PRETTY_FUNCTION__ : t);
-#elif defined(_MSC_VER) && defined(__FUNCSIG__)
-#define GFTRK(t)  if(__gftrk) __gftrk_track(t ? __FUNCSIG__ : t);
+    #if defined(__GNUC__)
+        #define GFTRK(t)  if(__gftrk) __gftrk_track(t ? __PRETTY_FUNCTION__ : t);
+    #elif defined(_MSC_VER) && defined(__FUNCSIG__)
+        #define GFTRK(t)  if(__gftrk) __gftrk_track(t ? __FUNCSIG__ : t);
+    #else
+        #define GFTRK(t)  if(__gftrk) __gftrk_track(t);
+    #endif
+    #define GFTrkInit(t) __gftrk_init(t)
 #else
-#define GFTRK(t)  if(__gftrk) __gftrk_track(t);
-#endif
-#define GFTrkInit(t) __gftrk_init(t)
-#else
-#define GFTRK(t)
-#define GFTrkInit(t)
+    #define GFTRK(t)
+    #define GFTrkInit(t)
 #endif
 
 

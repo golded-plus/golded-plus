@@ -44,16 +44,16 @@
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack(1)
+    #pragma pack(1)
 #endif
 
 
 //  ------------------------------------------------------------------
 
 #ifdef GOLD_16BIT
-const long MAX_IDXBUFSIZE = 65300L;
+    const long MAX_IDXBUFSIZE = 65300L;
 #else
-const long MAX_IDXBUFSIZE = LONG_MAX;
+    const long MAX_IDXBUFSIZE = LONG_MAX;
 #endif
 
 
@@ -148,20 +148,21 @@ const int UID_PREV  = 2;
 //  ------------------------------------------------------------------
 //  Structure of message headers in .SQD
 
-struct SqshHdr {
-  dword    attr;
-  char    from[36];
-  char    to[36];
-  char    subj[72];
-  Addr    orig;
-  Addr    dest;
-  FTime   date_written;   // When user wrote the msg (UTC)
-  FTime   date_arrived;   // When msg arrived on-line (UTC)
-  short    utc_offset;     // Offset from UTC of message writer, in minutes.
-  dword    replyto;
-  dword    replies[MAX_REPLY];
-  dword    umsgid;
-  char    ftsc_date[20];
+struct SqshHdr
+{
+    dword    attr;
+    char    from[36];
+    char    to[36];
+    char    subj[72];
+    Addr    orig;
+    Addr    dest;
+    FTime   date_written;   // When user wrote the msg (UTC)
+    FTime   date_arrived;   // When msg arrived on-line (UTC)
+    short    utc_offset;     // Offset from UTC of message writer, in minutes.
+    dword    replyto;
+    dword    replies[MAX_REPLY];
+    dword    umsgid;
+    char    ftsc_date[20];
 };
 
 
@@ -177,150 +178,160 @@ const word SQFRAME_FREE   = 1;
 //  ------------------------------------------------------------------
 //  Structure of message frames in .SQD
 
-struct SqshFrm {
-  dword  id;               // Must always equal SQFRAMEID
-  int32_t  next;             // Offset of next frame
-  int32_t  prev;             // Offset of previous frame
-  dword  length;           // Length of this frame
-  dword  totsize;          // Length of data in frame (hdr+ctl+txt)
-  dword  ctlsize;          // Length of control info
-  word  type;             // Frm type (normal or free)
-  word  reserved;         // Reserved
+struct SqshFrm
+{
+    dword  id;               // Must always equal SQFRAMEID
+    int32_t  next;             // Offset of next frame
+    int32_t  prev;             // Offset of previous frame
+    dword  length;           // Length of this frame
+    dword  totsize;          // Length of data in frame (hdr+ctl+txt)
+    dword  ctlsize;          // Length of control info
+    word  type;             // Frm type (normal or free)
+    word  reserved;         // Reserved
 };
 
 
 //  ------------------------------------------------------------------
 //  Structure of index file .SQI
 
-struct SqshIdx {
-  int32_t  offset;           // Offset of frame in .SQD
-  dword  msgno;            // Message number
-  dword  hash;             // Hash value of TO: name
+struct SqshIdx
+{
+    int32_t  offset;           // Offset of frame in .SQD
+    dword  msgno;            // Message number
+    dword  hash;             // Hash value of TO: name
 };
 
 
 //  ------------------------------------------------------------------
 //  Structure of base record in .SQD
 
-struct SqshBase {
-  word  size;             // sizeof(SqshBaseT)
-  word  reserved1;        // reserved
-  dword totalmsgs;        // Number of messages in area
-  dword highestmsg;       // Highest msg in area. Same as totalmsgs
-  dword protmsgs;         // Skip killing first x msgs in area
-  dword highwatermark;    // Relno (not Tagno) of HWM
-  dword nextmsgno;        // Next message number to use
-  char  name[80];         // Base name of SquishFile
-  dword firstframe;       // Offset of first frame in file
-  dword lastframe;        // Offset to last frame in file
-  dword firstfreeframe;   // Offset of first FREE frame in file
-  dword lastfreeframe;    // Offset of last free frame in file
-  dword endframe;         // Pointer to end of file
-  dword maxmsgs;          // Max # of msgs to keep in area
-  word  daystokeep;       // Max age of msgs in area (for packing util)
-  word  framesize;        // sizeof(SqshFrmT)
-  byte  reserved2[124];   // Reserved by Squish for future use
+struct SqshBase
+{
+    word  size;             // sizeof(SqshBaseT)
+    word  reserved1;        // reserved
+    dword totalmsgs;        // Number of messages in area
+    dword highestmsg;       // Highest msg in area. Same as totalmsgs
+    dword protmsgs;         // Skip killing first x msgs in area
+    dword highwatermark;    // Relno (not Tagno) of HWM
+    dword nextmsgno;        // Next message number to use
+    char  name[80];         // Base name of SquishFile
+    dword firstframe;       // Offset of first frame in file
+    dword lastframe;        // Offset to last frame in file
+    dword firstfreeframe;   // Offset of first FREE frame in file
+    dword lastfreeframe;    // Offset of last free frame in file
+    dword endframe;         // Pointer to end of file
+    dword maxmsgs;          // Max # of msgs to keep in area
+    word  daystokeep;       // Max age of msgs in area (for packing util)
+    word  framesize;        // sizeof(SqshFrmT)
+    byte  reserved2[124];   // Reserved by Squish for future use
 };
 
 
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack()
+    #pragma pack()
 #endif
 
 
 //  ------------------------------------------------------------------
 
-struct SqshData {
-  int        fhsqd;
-  int        fhsqi;
-  SqshBase   base;
-  SqshIdx*   idx;
-  int        softlock;
-  int        islocked;
+struct SqshData
+{
+    int        fhsqd;
+    int        fhsqi;
+    SqshBase   base;
+    SqshIdx*   idx;
+    int        softlock;
+    int        islocked;
 };
 
 
 //  ------------------------------------------------------------------
 
-struct SqshWide {
-  int          userno;
-  MaximusUser* user;
-  const char*  userpath;
-  int          direct;
-  int          recycle;
-  int          squishscan;
+struct SqshWide
+{
+    int          userno;
+    MaximusUser* user;
+    const char*  userpath;
+    int          direct;
+    int          recycle;
+    int          squishscan;
 };
 
 
 //  ------------------------------------------------------------------
 
-class SquishArea : public gmo_area {
+class SquishArea : public gmo_area
+{
 
 protected:
 
-  SqshWide* wide;
-  SqshData* data;
+    SqshWide* wide;
+    SqshData* data;
 
-  void data_open();
-  void data_close();
+    void data_open();
+    void data_close();
 
-  int test_open(const char* __file);
-  void save_lastread();
-  void raw_scan(int __keep_index, int __scanpm=false);
-  void raw_open();
-  void raw_close();
-  void refresh();
-  int load_message(int __mode, gmsg* __msg, SqshHdr& __hdr);
+    int test_open(const char* __file);
+    void save_lastread();
+    void raw_scan(int __keep_index, int __scanpm=false);
+    void raw_open();
+    void raw_close();
+    void refresh();
+    int load_message(int __mode, gmsg* __msg, SqshHdr& __hdr);
 
-  void read_frm(dword __offset, SqshFrm* __frm);
-  void write_frm(dword __offset, SqshFrm* __frm);
-  void upd_frm_next(dword __offset, SqshFrm* __frm, dword __next);
-  void upd_frm_prev(dword __offset, SqshFrm* __frm, dword __prev);
-  void add_to_free_chain(dword __delframe, SqshFrm* __delfrm);
-  void delete_msg(uint __reln);
-  void init_frm(SqshFrm* __frm);
-  void excess_frm(dword __lastframe, dword __newframe, SqshFrm* __newfrm, dword __totsize);
-  uint find_msgn(uint32_t __tagn);
-  void save_message(int __mode, gmsg* __msg);
+    void read_frm(dword __offset, SqshFrm* __frm);
+    void write_frm(dword __offset, SqshFrm* __frm);
+    void upd_frm_next(dword __offset, SqshFrm* __frm, dword __next);
+    void upd_frm_prev(dword __offset, SqshFrm* __frm, dword __prev);
+    void add_to_free_chain(dword __delframe, SqshFrm* __delfrm);
+    void delete_msg(uint __reln);
+    void init_frm(SqshFrm* __frm);
+    void excess_frm(dword __lastframe, dword __newframe, SqshFrm* __newfrm, dword __totsize);
+    uint find_msgn(uint32_t __tagn);
+    void save_message(int __mode, gmsg* __msg);
 
 public:
 
-  SquishArea() { wide = NULL; data = NULL; }
-  virtual ~SquishArea() {}
+    SquishArea()
+    {
+        wide = NULL;
+        data = NULL;
+    }
+    virtual ~SquishArea() {}
 
-  //  ----------------------------------------------------------------
-  //  Messagebase member functions
-  
-  void open();
-  void close();
+    //  ----------------------------------------------------------------
+    //  Messagebase member functions
 
-  void suspend();
-  void resume();
+    void open();
+    void close();
 
-  void lock();
-  void unlock();
+    void suspend();
+    void resume();
 
-  void scan();
-  void scan_area();
-  void scan_area_pm();
+    void lock();
+    void unlock();
 
-  int load_hdr(gmsg* msg);
-  int load_msg(gmsg* msg);
+    void scan();
+    void scan_area();
+    void scan_area_pm();
 
-  void save_hdr(int mode, gmsg* msg);
-  void save_msg(int mode, gmsg* msg);
+    int load_hdr(gmsg* msg);
+    int load_msg(gmsg* msg);
 
-  void del_msg(gmsg* msg);
+    void save_hdr(int mode, gmsg* msg);
+    void save_msg(int mode, gmsg* msg);
 
-  void new_msgno(gmsg* msg);
-  char* user_lookup(char* lookfor);
-  int renumber();
+    void del_msg(gmsg* msg);
 
-  void update_timesread(gmsg* msg);
+    void new_msgno(gmsg* msg);
+    char* user_lookup(char* lookfor);
+    int renumber();
 
-  Line* make_dump_msg(Line*& lin, gmsg* msg, char* lng_head);
+    void update_timesread(gmsg* msg);
+
+    Line* make_dump_msg(Line*& lin, gmsg* msg, char* lng_head);
 };
 
 

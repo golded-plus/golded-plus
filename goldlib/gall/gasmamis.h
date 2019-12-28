@@ -28,10 +28,11 @@
 
 //  ------------------------------------------------------------------
 
-struct amis_signature {
-  char manufacturer[8];
-  char product_name[8];
-  char product_description[64];
+struct amis_signature
+{
+    char manufacturer[8];
+    char product_name[8];
+    char product_description[64];
 } __attribute__((packed));
 
 

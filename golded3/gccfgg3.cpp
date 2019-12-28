@@ -34,349 +34,393 @@ extern char* val;
 
 //  ------------------------------------------------------------------
 
-void CfgDispmargin() {
+void CfgDispmargin()
+{
 
-  CFG->dispmargin = atoi(val);
+    CFG->dispmargin = atoi(val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgDispmsgsize() {
+void CfgDispmsgsize()
+{
 
-  if(strieql("NO", val))
-    CFG->dispmsgsize = NO;
-  else if(strieql("BYTES", val))
-    CFG->dispmsgsize = DISPMSGSIZE_BYTES;
-  else if(strieql("KBYTES", val))
-    CFG->dispmsgsize = DISPMSGSIZE_KBYTES;
-  else if(strieql("LINES", val))
-    CFG->dispmsgsize = DISPMSGSIZE_LINES;
+    if(strieql("NO", val))
+        CFG->dispmsgsize = NO;
+    else if(strieql("BYTES", val))
+        CFG->dispmsgsize = DISPMSGSIZE_BYTES;
+    else if(strieql("KBYTES", val))
+        CFG->dispmsgsize = DISPMSGSIZE_KBYTES;
+    else if(strieql("LINES", val))
+        CFG->dispmsgsize = DISPMSGSIZE_LINES;
 }
 
 //  ------------------------------------------------------------------
 
-void CfgDispareano() {
+void CfgDispareano()
+{
 
-  CFG->dispareano = GetYesno(val);
+    CFG->dispareano = GetYesno(val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgDisppmfirst() {
+void CfgDisppmfirst()
+{
 
-  CFG->disppmfirst = make_bool(GetYesno(val));
+    CFG->disppmfirst = make_bool(GetYesno(val));
 }
 
 //  ------------------------------------------------------------------
 
 void CfgDispsoftcr()
 {
-  bool flag = make_bool(GetYesno(val));
+    bool flag = make_bool(GetYesno(val));
 
-  if (cfgingroup)
-    CFG->grp.AddItm(GRP_DISPSOFTCR, flag);
-  else
-    CFG->dispsoftcr = flag;
+    if (cfgingroup)
+        CFG->grp.AddItm(GRP_DISPSOFTCR, flag);
+    else
+        CFG->dispsoftcr = flag;
 }
 
 //  ------------------------------------------------------------------
 
-void CfgDisptabsize() {
+void CfgDisptabsize()
+{
 
-  CFG->disptabsize = atoi(val);
+    CFG->disptabsize = atoi(val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgEditautoattach() {
+void CfgEditautoattach()
+{
 
-  EDIT->AutoAttach(make_bool(GetYesno(val)));
+    EDIT->AutoAttach(make_bool(GetYesno(val)));
 }
 
 //  ------------------------------------------------------------------
 
-void CfgEditautosave() {
+void CfgEditautosave()
+{
 
-  EDIT->AutoSave(atoi(val));
+    EDIT->AutoSave(atoi(val));
 }
 
 //  ------------------------------------------------------------------
 
-void CfgEditchangedate() {
+void CfgEditchangedate()
+{
 
-  EDIT->ChangeDate(GetYesno(val));
+    EDIT->ChangeDate(GetYesno(val));
 }
 
 //  ------------------------------------------------------------------
 
-void CfgEditcharpara() {
+void CfgEditcharpara()
+{
 
-  char ch = *StripQuotes(val);
-  if(ch)
-    EDIT->CharPara(ch);
+    char ch = *StripQuotes(val);
+    if(ch)
+        EDIT->CharPara(ch);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgEditcharspace() {
+void CfgEditcharspace()
+{
 
-  char ch = *StripQuotes(val);
-  if(ch)
-    EDIT->CharSpace(ch);
+    char ch = *StripQuotes(val);
+    if(ch)
+        EDIT->CharSpace(ch);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgEditcomment() {
+void CfgEditcomment()
+{
 
-  char* key;
-  getkeyval(&key, &val);
-  StripQuotes(key);
-  StripQuotes(val);
-  EDIT->Comment.Add(key, val);
+    char* key;
+    getkeyval(&key, &val);
+    StripQuotes(key);
+    StripQuotes(val);
+    EDIT->Comment.Add(key, val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgEditcompletion() {
+void CfgEditcompletion()
+{
 
-  char* key;
-  getkeyval(&key, &val);
-  StripQuotes(key);
-  StripQuotes(val);
-  EDIT->Completion.Add(key, val);
+    char* key;
+    getkeyval(&key, &val);
+    StripQuotes(key);
+    StripQuotes(val);
+    EDIT->Completion.Add(key, val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgEditcrlfterm() {
+void CfgEditcrlfterm()
+{
 
-  EDIT->CrLfTerm(make_bool(GetYesno(val)));
+    EDIT->CrLfTerm(make_bool(GetYesno(val)));
 }
 
 //  ------------------------------------------------------------------
 
-void CfgEditfieldclear() {
+void CfgEditfieldclear()
+{
 
-  EDIT->FieldClear(make_bool(GetYesno(val)));
+    EDIT->FieldClear(make_bool(GetYesno(val)));
 }
 
 //  ------------------------------------------------------------------
 
-void CfgEdithardline() {
+void CfgEdithardline()
+{
 
-  EDIT->HardLine(StripQuotes(val));
+    EDIT->HardLine(StripQuotes(val));
 }
 
 //  ------------------------------------------------------------------
 
-void CfgEdithardlines() {
+void CfgEdithardlines()
+{
 
-  EDIT->HardLines(make_bool(GetYesno(val)));
+    EDIT->HardLines(make_bool(GetYesno(val)));
 }
 
 //  ------------------------------------------------------------------
 
-void CfgEdithardterm() {
+void CfgEdithardterm()
+{
 
-  bool flag = make_bool(GetYesno(val));
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_EDITHARDTERM, flag);
-  else
-    EDIT->HardTerm(flag);
+    bool flag = make_bool(GetYesno(val));
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_EDITHARDTERM, flag);
+    else
+        EDIT->HardTerm(flag);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgEdithdrnameset() {
+void CfgEdithdrnameset()
+{
 
-  char* key;
-  getkeyval(&key, &val);
-  EDIT->HdrNamePos(atoi(key));
-  EDIT->HdrNameLen(atoi(val));
+    char* key;
+    getkeyval(&key, &val);
+    EDIT->HdrNamePos(atoi(key));
+    EDIT->HdrNameLen(atoi(val));
 }
 
 //  ------------------------------------------------------------------
 
-void CfgEdithdrnodeset() {
+void CfgEdithdrnodeset()
+{
 
-  char* key;
-  getkeyval(&key, &val);
-  EDIT->HdrNodePos(atoi(key));
-  EDIT->HdrNodeLen(atoi(val));
+    char* key;
+    getkeyval(&key, &val);
+    EDIT->HdrNodePos(atoi(key));
+    EDIT->HdrNodeLen(atoi(val));
 }
 
 //  ------------------------------------------------------------------
 
-void CfgEditheaderattrs() {
+void CfgEditheaderattrs()
+{
 
-  EDIT->HeaderAttrs(make_bool(GetYesno(val)));
+    EDIT->HeaderAttrs(make_bool(GetYesno(val)));
 }
 
 //  ------------------------------------------------------------------
 
-void CfgEditheaderfirst() {
+void CfgEditheaderfirst()
+{
 
-  int v = EDITHEADERFIRST_NO;
-  GTok t;
-  if(t.First(val)) {
-    do {
-      if(strieql("NEW", t.Token()))
-        v |= EDITHEADERFIRST_NEW;
-      else if(strieql("CHANGES", t.Token()))
-        v |= EDITHEADERFIRST_CHANGES;
-      else if(strieql("REPLIES", t.Token()))
-        v |= EDITHEADERFIRST_REPLIES;
-      else if(strieql("FORWARDS", t.Token()))
-        v |= EDITHEADERFIRST_FORWARDS;
-      else
-        v = GetYesno(t.Token()) ? EDITHEADERFIRST_YES : EDITHEADERFIRST_NO;
-    } while(t.Next());
-  }
-  EDIT->HeaderFirst(v);
+    int v = EDITHEADERFIRST_NO;
+    GTok t;
+    if(t.First(val))
+    {
+        do
+        {
+            if(strieql("NEW", t.Token()))
+                v |= EDITHEADERFIRST_NEW;
+            else if(strieql("CHANGES", t.Token()))
+                v |= EDITHEADERFIRST_CHANGES;
+            else if(strieql("REPLIES", t.Token()))
+                v |= EDITHEADERFIRST_REPLIES;
+            else if(strieql("FORWARDS", t.Token()))
+                v |= EDITHEADERFIRST_FORWARDS;
+            else
+                v = GetYesno(t.Token()) ? EDITHEADERFIRST_YES : EDITHEADERFIRST_NO;
+        }
+        while(t.Next());
+    }
+    EDIT->HeaderFirst(v);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgEditinternal() {
+void CfgEditinternal()
+{
 
-  EDIT->Internal(make_bool(GetYesno(val)));
+    EDIT->Internal(make_bool(GetYesno(val)));
 }
 
 //  ------------------------------------------------------------------
 
-void CfgEditmenu() {
+void CfgEditmenu()
+{
 
-  EDIT->Menu(make_bool(GetYesno(val)));
+    EDIT->Menu(make_bool(GetYesno(val)));
 }
 
 //  ------------------------------------------------------------------
 
-void CfgEditmixcase() {
+void CfgEditmixcase()
+{
 
-  bool flag = make_bool(GetYesno(val));
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_EDITMIXCASE, flag);
-  else
-    EDIT->MixCase(flag);
+    bool flag = make_bool(GetYesno(val));
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_EDITMIXCASE, flag);
+    else
+        EDIT->MixCase(flag);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgEditor() {
+void CfgEditor()
+{
 
-  EDIT->External(val);
+    EDIT->External(val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgEditorfile() {
+void CfgEditorfile()
+{
 
-  EDIT->File(val);
+    EDIT->File(val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgEditquotemargin() {
+void CfgEditquotemargin()
+{
 
-  EDIT->QuoteMargin(atoi(val));
+    EDIT->QuoteMargin(atoi(val));
 }
 
 //  ------------------------------------------------------------------
 
-void CfgEditreplyre() {
+void CfgEditreplyre()
+{
 
-  int replyre;
-  if(strieql(val, "NUMERIC"))
-    replyre = REPLYRE_NUMERIC;
-  else
-    replyre = GetYesno(val) ? REPLYRE_YES : REPLYRE_NO;
+    int replyre;
+    if(strieql(val, "NUMERIC"))
+        replyre = REPLYRE_NUMERIC;
+    else
+        replyre = GetYesno(val) ? REPLYRE_YES : REPLYRE_NO;
 
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_EDITREPLYRE, replyre);
-  else
-    EDIT->ReplyRe(replyre);
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_EDITREPLYRE, replyre);
+    else
+        EDIT->ReplyRe(replyre);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgEditsavemenu() {
+void CfgEditsavemenu()
+{
 
-  EDIT->SaveMenu(make_bool(GetYesno(val)));
+    EDIT->SaveMenu(make_bool(GetYesno(val)));
 }
 
 //  ------------------------------------------------------------------
 
-void CfgEditsaveutil() {
+void CfgEditsaveutil()
+{
 
-  char* _key;
-  getkeyval(&_key, &val);
-  int n = atoi(_key);
-  EDIT->SaveUtil.Add(n, StripQuotes(val));
+    char* _key;
+    getkeyval(&_key, &val);
+    int n = atoi(_key);
+    EDIT->SaveUtil.Add(n, StripQuotes(val));
 }
 
 //  ------------------------------------------------------------------
 
-void CfgEditsoftcrxlat() {
+void CfgEditsoftcrxlat()
+{
 
-  EDIT->SoftCrXlat(*val);
+    EDIT->SoftCrXlat(*val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgEditspellcheck() {
+void CfgEditspellcheck()
+{
 
-  EDIT->SpellChecker(val);
+    EDIT->SpellChecker(val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgEditundelete() {
+void CfgEditundelete()
+{
 
-  EDIT->UnDelete(atoi(val));
+    EDIT->UnDelete(atoi(val));
 }
 
 //  ------------------------------------------------------------------
 
-void CfgEncodeemailheaders() {
+void CfgEncodeemailheaders()
+{
 
-  CFG->encodeemailheaders = make_bool(GetYesno(val));
+    CFG->encodeemailheaders = make_bool(GetYesno(val));
 }
 
 //  ------------------------------------------------------------------
 
-void CfgEndgroup() {
+void CfgEndgroup()
+{
 
-  cfgingroup = false;
+    cfgingroup = false;
 }
 
 //  ------------------------------------------------------------------
 
-void CfgEvent(char* v)  { val = v; CfgEvent(); }
-void CfgEvent() {
+void CfgEvent(char* v)
+{
+    val = v;
+    CfgEvent();
+}
+void CfgEvent()
+{
 
-  char* key;
-  word x;
-  std::vector<GEvent>::iterator n;
-  GEvent tmp;
+    char* key;
+    word x;
+    std::vector<GEvent>::iterator n;
+    GEvent tmp;
 
-  x = getkeyvalcrc(&key, &val);
+    x = getkeyvalcrc(&key, &val);
 
-  for(n = CFG->event.begin(); n != CFG->event.end(); n++)
-    if(x == n->type)
-      break;
+    for(n = CFG->event.begin(); n != CFG->event.end(); n++)
+        if(x == n->type)
+            break;
 
-  tmp.type = x;
-  getkeyval(&key, &val);
-  if(strieql(key, "PLAY")) {
-    tmp.command = EVTC_PLAY;
-    FileToGPlay(&tmp.play, val);
-  }
+    tmp.type = x;
+    getkeyval(&key, &val);
+    if(strieql(key, "PLAY"))
+    {
+        tmp.command = EVTC_PLAY;
+        FileToGPlay(&tmp.play, val);
+    }
 
-  if(n == CFG->event.end())
-    CFG->event.push_back(tmp);
-  else
-    *n = tmp;
+    if(n == CFG->event.end())
+        CFG->event.push_back(tmp);
+    else
+        *n = tmp;
 }
 
 //  ------------------------------------------------------------------

@@ -70,94 +70,100 @@ const dword CHR4_FLAGS   = MK_CHR4('\001','F','L','A');
 //  ------------------------------------------------------------------
 //  Control line enumeration
 
-enum {
+enum
+{
 
-  // Non-ctrl line
-  NOT_CTRL = 0,
+    // Non-ctrl line
+    NOT_CTRL = 0,
 
-  // Standard non-kludge control lines
-  CTRL_AREA,
-  CTRL_TEARLINE,
-  CTRL_ORIGIN,
+    // Standard non-kludge control lines
+    CTRL_AREA,
+    CTRL_TEARLINE,
+    CTRL_ORIGIN,
 
-  // Standard known kludges
-  CTRL_KLUDGE,
-  CTRL_INTL,
-  CTRL_FMPT,
-  CTRL_TOPT,
-  CTRL_MSGID,
-  CTRL_REPLY,
-  CTRL_PID,
-  CTRL_SEENBY,
-  CTRL_SEENBY1,
-  CTRL_PATH,
-  CTRL_CHARSET,
-  CTRL_CHRS,
-  CTRL_TZUTC,
-  CTRL_VIA,
-  CTRL_FLAGS,
+    // Standard known kludges
+    CTRL_KLUDGE,
+    CTRL_INTL,
+    CTRL_FMPT,
+    CTRL_TOPT,
+    CTRL_MSGID,
+    CTRL_REPLY,
+    CTRL_PID,
+    CTRL_SEENBY,
+    CTRL_SEENBY1,
+    CTRL_PATH,
+    CTRL_CHARSET,
+    CTRL_CHRS,
+    CTRL_TZUTC,
+    CTRL_VIA,
+    CTRL_FLAGS,
 
-  // Unknown kludges
-  CTRL_UNKNOWNKLUDGE
+    // Unknown kludges
+    CTRL_UNKNOWNKLUDGE
 };
 
 
 //  ------------------------------------------------------------------
 
-struct GParaData {
+struct GParaData
+{
 
-  char* text;
-  uint length;
-  uint control;
+    char* text;
+    uint length;
+    uint control;
 };
 
 
 //  ------------------------------------------------------------------
 
-class GParagraph {
+class GParagraph
+{
 
 public:
 
-  int lines;
-  char softcr;
-  GParaData* paraidx;
+    int lines;
+    char softcr;
+    GParaData* paraidx;
 
-  GParagraph();
-  ~GParagraph();
+    GParagraph();
+    ~GParagraph();
 
-  void AddParagraph(char* __text, uint __length);
-  int ConvertText(char* __text, uint __length);
-  uint CheckCtrlLines();
+    void AddParagraph(char* __text, uint __length);
+    int ConvertText(char* __text, uint __length);
+    uint CheckCtrlLines();
 };
 
 
 //  ------------------------------------------------------------------
 
-inline GParagraph::GParagraph() {
+inline GParagraph::GParagraph()
+{
 
-  lines = 0;
-  softcr = LF;
-  paraidx = NULL;
+    lines = 0;
+    softcr = LF;
+    paraidx = NULL;
 }
 
 
 //  ------------------------------------------------------------------
 
-inline GParagraph::~GParagraph() {
+inline GParagraph::~GParagraph()
+{
 
-  throw_free(paraidx);
+    throw_free(paraidx);
 }
 
 
 //  ------------------------------------------------------------------
 
-inline void GParagraph::AddParagraph(char* __text, uint __length) {
+inline void GParagraph::AddParagraph(char* __text, uint __length)
+{
 
-  paraidx = (GParaData*)throw_realloc(paraidx, (lines+1)*sizeof(GParaData));
-  GParaData* _para = paraidx + lines++;
-  _para->text = __text;
-  _para->length = __length;
-  _para->control = 0;
+    paraidx = (GParaData*)throw_realloc(paraidx, (lines+1)*sizeof(GParaData));
+    GParaData* _para = paraidx + lines++;
+    _para->text = __text;
+    _para->length = __length;
+    _para->control = 0;
 }
 
 

@@ -32,60 +32,64 @@
 
 //  ------------------------------------------------------------------
 
-int gwindow::printf(const char* format, ...) {
+int gwindow::printf(const char* format, ...)
+{
 
-  char buf[255];
-  va_list argptr;
-  va_start(argptr,format);
-  int result = vsprintf(buf,format,argptr);
-  va_end(argptr);
-  puts(buf);
-  return result;
+    char buf[255];
+    va_list argptr;
+    va_start(argptr,format);
+    int result = vsprintf(buf,format,argptr);
+    va_end(argptr);
+    puts(buf);
+    return result;
 }
 
 
 //  ------------------------------------------------------------------
 
-int gwindow::printf(vattr color, const char* format, ...) {
+int gwindow::printf(vattr color, const char* format, ...)
+{
 
-  char buf[255];
-  va_list argptr;
-  va_start(argptr,format);
-  int result = vsprintf(buf,format,argptr);
-  va_end(argptr);
-  text_color(color);
-  puts(buf);
-  return result;
+    char buf[255];
+    va_list argptr;
+    va_start(argptr,format);
+    int result = vsprintf(buf,format,argptr);
+    va_end(argptr);
+    text_color(color);
+    puts(buf);
+    return result;
 }
 
 
 //  ------------------------------------------------------------------
 
-int gwindow::printf(int row, int col, const char* format, ...) {
+int gwindow::printf(int row, int col, const char* format, ...)
+{
 
-  va_list argptr;
-  char buf[256];
-  *buf = NUL;
-  va_start(argptr, format);
-  int result = vsprintf(buf, format, argptr);
-  va_end(argptr);
-  prints(row, col, window_color, buf);
-  return result;
+    va_list argptr;
+    char buf[256];
+    *buf = NUL;
+    va_start(argptr, format);
+    int result = vsprintf(buf, format, argptr);
+    va_end(argptr);
+    prints(row, col, window_color, buf);
+    return result;
 }
 
 
 //  ------------------------------------------------------------------
 
-int gwindow::printf(int row, int col, vattr color, const char* format, ...) {
+int gwindow::printf(int row, int col, vattr color, const char* format, ...)
+{
 
-  va_list argptr;
-  char buf[256];
-  *buf = NUL;
-  va_start(argptr, format);
-  int result = vsprintf(buf, format, argptr);
-  va_end(argptr);
-  prints(row, col, color, buf);
-  return result;
+    va_list argptr;
+    char buf[256];
+    *buf = NUL;
+    va_start(argptr, format);
+    int result = vsprintf(buf, format, argptr);
+    va_end(argptr);
+    prints(row, col, color, buf);
+    return result;
 }
 
 

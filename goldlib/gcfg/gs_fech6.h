@@ -37,7 +37,7 @@
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack(1)
+    #pragma pack(1)
 #endif
 
 
@@ -84,87 +84,91 @@
 
 typedef struct CONFIGURATION6
 {
-  word     revision;
-  dword    flags;
-  word     NodeCnt, AreaCnt, unused1;
-  char     NetMPath[_MAXPATH],
-           MsgBase[_MAXPATH],
-           InBound[_MAXPATH],
-           OutBound[_MAXPATH],
-           Unpacker[_MAXPATH],
-           LogFile[_MAXPATH],
-           unused2[448],
-           StatFile[_MAXPATH],
-           SwapPath[_MAXPATH],
-           SemaphorePath[_MAXPATH],
-           BBSConfigPath[_MAXPATH],
-           DBQueuePath[_MAXPATH],
-           unused3[32],
-           RetearTo[40],
-           SecurePath[_MAXPATH],
-           ExtAfter[_MAXPATH-4],
-           ExtBefore[_MAXPATH-4];
-  byte     unused4[480];
-  struct {
-    byte what;
-    char object[31];
-    word conference;
-  }        CC[10];
-  byte     security,
-           loglevel;
-  word     def_days,
-           def_messages;
-  byte     unused5[462];
-  word     autorenum;
-  word     def_recvdays;
-  word     openQQQs;
-  word     compressafter;
-  word     afixmaxmsglen;
-  word     compressfree;
-  char     TempPath[_MAXPATH];
-  byte     graphics,
-           BBSSoftware;
-  char     AreaFixHelp[_MAXPATH];
-  byte     unused6[504];
-  word     AreaFixFlags;
-  byte     QuietLevel,
-           Buffers;
-  byte     FWACnt,                      // # of ForwardAreaFix records,
-           GDCnt;                       // # of Group Default records
-  struct {
-    word flags;
-    word days[2];
-    word msgs[2];
-  }        rescan_def;
-  dword    duperecords;
-  struct {
-    byte inb;
-    byte outb;
-  }        arcext;
-  word     AFixRcptLen;
-  word     AkaCnt;                      // # of Aka records stored */
-  word     maxPKT;
-  byte     sharing,
-           sorting;
-  struct {
-    char name[36];
-    dword resv;
-  } sysops[11];
-  char     AreaFixLog[_MAXPATH];
-  char     TempInBound[_MAXPATH];
-  word     maxPKTmsgs;
-  word     RouteCnt;                    // # of PackRoute records
-  word     maxPACKratio;
-  byte     PackerCnt, UnpackerCnt;      // # of Packers and Unpackers records
-  byte     GroupCnt, OriginCnt;         // # of GroupNames and Origin records
-  word     mailer;
-  char     resv[810];
-  word     AreaRecSize, GrpDefRecSize;  // Size  of  Area  and  GroupDefaults
-                                        // records stored in this file
-  word     MaxAreas, MaxNodes;          // Current max values for this config
-  word     NodeRecSize;                 // Size of each stored Node record
-  dword    offset;                      // This is the offset from the current
-                                        // file-pointer to the 1st Node
+    word     revision;
+    dword    flags;
+    word     NodeCnt, AreaCnt, unused1;
+    char     NetMPath[_MAXPATH],
+             MsgBase[_MAXPATH],
+             InBound[_MAXPATH],
+             OutBound[_MAXPATH],
+             Unpacker[_MAXPATH],
+             LogFile[_MAXPATH],
+             unused2[448],
+             StatFile[_MAXPATH],
+             SwapPath[_MAXPATH],
+             SemaphorePath[_MAXPATH],
+             BBSConfigPath[_MAXPATH],
+             DBQueuePath[_MAXPATH],
+             unused3[32],
+             RetearTo[40],
+             SecurePath[_MAXPATH],
+             ExtAfter[_MAXPATH-4],
+             ExtBefore[_MAXPATH-4];
+    byte     unused4[480];
+    struct
+    {
+        byte what;
+        char object[31];
+        word conference;
+    }        CC[10];
+    byte     security,
+             loglevel;
+    word     def_days,
+             def_messages;
+    byte     unused5[462];
+    word     autorenum;
+    word     def_recvdays;
+    word     openQQQs;
+    word     compressafter;
+    word     afixmaxmsglen;
+    word     compressfree;
+    char     TempPath[_MAXPATH];
+    byte     graphics,
+             BBSSoftware;
+    char     AreaFixHelp[_MAXPATH];
+    byte     unused6[504];
+    word     AreaFixFlags;
+    byte     QuietLevel,
+             Buffers;
+    byte     FWACnt,                      // # of ForwardAreaFix records,
+             GDCnt;                       // # of Group Default records
+    struct
+    {
+        word flags;
+        word days[2];
+        word msgs[2];
+    }        rescan_def;
+    dword    duperecords;
+    struct
+    {
+        byte inb;
+        byte outb;
+    }        arcext;
+    word     AFixRcptLen;
+    word     AkaCnt;                      // # of Aka records stored */
+    word     maxPKT;
+    byte     sharing,
+             sorting;
+    struct
+    {
+        char name[36];
+        dword resv;
+    } sysops[11];
+    char     AreaFixLog[_MAXPATH];
+    char     TempInBound[_MAXPATH];
+    word     maxPKTmsgs;
+    word     RouteCnt;                    // # of PackRoute records
+    word     maxPACKratio;
+    byte     PackerCnt, UnpackerCnt;      // # of Packers and Unpackers records
+    byte     GroupCnt, OriginCnt;         // # of GroupNames and Origin records
+    word     mailer;
+    char     resv[810];
+    word     AreaRecSize, GrpDefRecSize;  // Size  of  Area  and  GroupDefaults
+    // records stored in this file
+    word     MaxAreas, MaxNodes;          // Current max values for this config
+    word     NodeRecSize;                 // Size of each stored Node record
+    dword    offset;                      // This is the offset from the current
+    // file-pointer to the 1st Node
 } CONFIG6;
 
 
@@ -172,75 +176,81 @@ typedef struct CONFIGURATION6
 
 typedef struct
 {
-  char     name[52];
-  word     board;                       // 1-200 Hudson, others reserved/special 
-  word     conference;                  // 0 ... CONFIG.MaxAreas-1
-  word     read_sec, write_sec;
-  struct {
-    word aka    : 8;                    // 0 ... CONFIG.AkaCnt
-    word group  : 8;                    // 0 ... CONFIG.GroupCnt
-  }        info;
-  struct {
-    word storage: 4;
-    word atype  : 4;
-    word origin : 5;                    // # of origin line
-    word resv   : 3;
-  }        flags;
-  struct {
-    word autoadded  : 1;
-    word tinyseen   : 1;
-    word cpd        : 1;
-    word passive    : 1;
-    word keepseen   : 1;
-    word mandatory  : 1;
-    word keepsysop  : 1;
-    word killread   : 1;
-    word disablepsv : 1;
-    word keepmails  : 1;
-    word hide       : 1;
-    word nomanual   : 1;
-    word umlaut     : 1;
-    word resv       : 3;
-  }        advflags;
-  word     resv1;
-  dword    seenbys;                     // LSB = Aka0, MSB = Aka31
-  dword    resv2;
-  short    days;
-  short    messages;
-  short    recvdays;
-  char     path[_MAXPATH];
-  char     desc[52];
+    char     name[52];
+    word     board;                       // 1-200 Hudson, others reserved/special
+    word     conference;                  // 0 ... CONFIG.MaxAreas-1
+    word     read_sec, write_sec;
+    struct
+    {
+        word aka    : 8;                    // 0 ... CONFIG.AkaCnt
+        word group  : 8;                    // 0 ... CONFIG.GroupCnt
+    }        info;
+    struct
+    {
+        word storage: 4;
+        word atype  : 4;
+        word origin : 5;                    // # of origin line
+        word resv   : 3;
+    }        flags;
+    struct
+    {
+        word autoadded  : 1;
+        word tinyseen   : 1;
+        word cpd        : 1;
+        word passive    : 1;
+        word keepseen   : 1;
+        word mandatory  : 1;
+        word keepsysop  : 1;
+        word killread   : 1;
+        word disablepsv : 1;
+        word keepmails  : 1;
+        word hide       : 1;
+        word nomanual   : 1;
+        word umlaut     : 1;
+        word resv       : 3;
+    }        advflags;
+    word     resv1;
+    dword    seenbys;                     // LSB = Aka0, MSB = Aka31
+    dword    resv2;
+    short    days;
+    short    messages;
+    short    recvdays;
+    char     path[_MAXPATH];
+    char     desc[52];
 } FeArea6;
 
 
 //  ------------------------------------------------------------------
 //  Optional Extensions
 
-typedef struct {
-  word     type;                        // EH_...
-  dword    offset;                      // length of field excluding header
+typedef struct
+{
+    word     type;                        // EH_...
+    dword    offset;                      // length of field excluding header
 } ExtensionHeader;
 
 #define EH_AKAS         0x0007          // CONFIG.AkaCnt * <SysAddress>
 
-typedef struct {
-  ftn_addr main;
-  char     domain[28];
-  word     pointnet;
-  dword    flags;                       // unused
+typedef struct
+{
+    ftn_addr main;
+    char     domain[28];
+    word     pointnet;
+    dword    flags;                       // unused
 } SysAddress;
 
 #define EH_ORIGINS      0x0008          // CONFIG.OriginCnt * <OriginLines>
 
-typedef struct {
-  char     line[62];
+typedef struct
+{
+    char     line[62];
 } OriginLines;
 
 
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack()
+    #pragma pack()
 #endif
 
 

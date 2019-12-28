@@ -30,64 +30,69 @@
 
 //  ------------------------------------------------------------------
 
-search_item::search_item() {
+search_item::search_item()
+{
 
-  logic = logic_or;
+    logic = logic_or;
 
-  where.from      = false;
-  where.to        = false;
-  where.subject   = false;
-  where.body      = false;
-  where.tagline   = false;
-  where.tearline  = false;
-  where.origin    = false;
-  where.signature = false;
-  where.kludges   = false;
+    where.from      = false;
+    where.to        = false;
+    where.subject   = false;
+    where.body      = false;
+    where.tagline   = false;
+    where.tearline  = false;
+    where.origin    = false;
+    where.signature = false;
+    where.kludges   = false;
 }
 
 
 //  ------------------------------------------------------------------
 
-search_item::~search_item() {
+search_item::~search_item()
+{
 
 }
 
 
 //  ------------------------------------------------------------------
 
-search_item& search_item::operator=(const search_item& a) {
+search_item& search_item::operator=(const search_item& a)
+{
 
-  gsearch::operator=(a);
+    gsearch::operator=(a);
 
-  logic           = a.logic;
-  where.from      = a.where.from;
-  where.to        = a.where.to;
-  where.subject   = a.where.subject;
-  where.body      = a.where.body;
-  where.tagline   = a.where.tagline;
-  where.tearline  = a.where.tearline;
-  where.origin    = a.where.origin;
-  where.signature = a.where.signature;
-  where.kludges   = a.where.kludges;
+    logic           = a.logic;
+    where.from      = a.where.from;
+    where.to        = a.where.to;
+    where.subject   = a.where.subject;
+    where.body      = a.where.body;
+    where.tagline   = a.where.tagline;
+    where.tearline  = a.where.tearline;
+    where.origin    = a.where.origin;
+    where.signature = a.where.signature;
+    where.kludges   = a.where.kludges;
 
-  return *this;
+    return *this;
 }
 
 
 //  ------------------------------------------------------------------
 
-search_manager::search_manager() : gwinput2(window) {
+search_manager::search_manager() : gwinput2(window)
+{
 
-  direction = direction_forward;
-  messages = messages_new;
-  action = action_read;
-  areas = areas_current;
+    direction = direction_forward;
+    messages = messages_new;
+    action = action_read;
+    areas = areas_current;
 }
 
 
 //  ------------------------------------------------------------------
 
-search_manager::~search_manager() {
+search_manager::~search_manager()
+{
 
 }
 

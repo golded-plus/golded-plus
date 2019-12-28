@@ -37,14 +37,15 @@
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack(1)
+    #pragma pack(1)
 #endif
 
 
 //  ------------------------------------------------------------------
 
-struct WCatUserConfFileHdr {
-  word  totalconfs;
+struct WCatUserConfFileHdr
+{
+    word  totalconfs;
 };
 
 
@@ -53,35 +54,39 @@ struct WCatUserConfFileHdr {
 const byte ucrIndex = 0;
 const byte ucrData  = 1;
 
-struct WCatUserConfIndex {
-  word  reclen;
-  byte  rectype;
-  long  offsets[32];
+struct WCatUserConfIndex
+{
+    word  reclen;
+    byte  rectype;
+    long  offsets[32];
 };
 
-struct WCatUserConfData {
-  byte  flags;
-  word  lastread;
-  word  firstunread;
+struct WCatUserConfData
+{
+    byte  flags;
+    word  lastread;
+    word  firstunread;
 };
 
 typedef WCatUserConfData WCatUserConfArray[1024];
 
-struct WCatUserConfPageHeader {
-  word  reclen;
-  byte  rectype;
-  long  userid;
-  short  page;
-  long  thisx;
+struct WCatUserConfPageHeader
+{
+    word  reclen;
+    byte  rectype;
+    long  userid;
+    short  page;
+    long  thisx;
 };
 
-struct WCatUserConfPage {
-  word              reclen;
-  byte              rectype;
-  long              userid;
-  short             page;
-  long              thisx;
-  WCatUserConfArray userconfdata;
+struct WCatUserConfPage
+{
+    word              reclen;
+    byte              rectype;
+    long              userid;
+    short             page;
+    long              thisx;
+    WCatUserConfArray userconfdata;
 };
 
 #define MaxChunk 1024
@@ -91,29 +96,30 @@ struct WCatUserConfPage {
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack()
+    #pragma pack()
 #endif
 
 
 //  ------------------------------------------------------------------
 //  WildCat! userfile class
 
-class WCatUser : public GUser {
+class WCatUser : public GUser
+{
 
 public:
 
-  uint maxindex;
-  int firstread;
-  WCatUserConfIndex header;
+    uint maxindex;
+    int firstread;
+    WCatUserConfIndex header;
 
-  WCatUser();
-  ~WCatUser();
+    WCatUser();
+    ~WCatUser();
 
-  int  isvalid();
-  int  read();
+    int  isvalid();
+    int  read();
 
-  void  founduser();
-  void  recinit(const char* __name);
+    void  founduser();
+    void  recinit(const char* __name);
 };
 
 

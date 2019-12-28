@@ -42,136 +42,156 @@
 
 //  ------------------------------------------------------------------
 
-int g_init_os(int flags) {
+int g_init_os(int flags)
+{
 
-  NW(flags);
-  return 0;
+    NW(flags);
+    return 0;
 }
 
 
 //  ------------------------------------------------------------------
 
-void g_deinit_os(void) {
+void g_deinit_os(void)
+{
 
-  // do nothing
+    // do nothing
 }
 
 
 //  ------------------------------------------------------------------
 
-void g_init_title(char *tasktitle, int titlestatus) {
+void g_init_title(char *tasktitle, int titlestatus)
+{
 
-  NW(tasktitle); NW(titlestatus);
+    NW(tasktitle);
+    NW(titlestatus);
 }
 
 
 //  ------------------------------------------------------------------
 
-void g_increase_priority(void) {
+void g_increase_priority(void)
+{
 
-  // Do nothing
+    // Do nothing
 }
 
 
 //  ------------------------------------------------------------------
 
-void g_set_ostitle(char* title, word dx) {
+void g_set_ostitle(char* title, word dx)
+{
 
-  NW(dx); NW(title);
+    NW(dx);
+    NW(title);
 }
 
 
 //  ------------------------------------------------------------------
 
-void g_set_osicon(void) {
+void g_set_osicon(void)
+{
 
-  // do nothing
+    // do nothing
 }
 
 
 //  ------------------------------------------------------------------
 
-bool g_is_clip_available(void) {
-  bool rc;
+bool g_is_clip_available(void)
+{
+    bool rc;
 
-  std::string clipdir = CLIPDIR;
-  strschg_environ(clipdir);
-  rc = is_dir(clipdir);
-  if( !rc ) {
-    std::string clipdir = CLIPDIR_OLD;
+    std::string clipdir = CLIPDIR;
     strschg_environ(clipdir);
     rc = is_dir(clipdir);
-  }
-  return rc;
+    if( !rc )
+    {
+        std::string clipdir = CLIPDIR_OLD;
+        strschg_environ(clipdir);
+        rc = is_dir(clipdir);
+    }
+    return rc;
 }
 
 
 //  ------------------------------------------------------------------
 
-char* g_get_clip_text(void) {
+char* g_get_clip_text(void)
+{
 
-  std::string clipfile = CLIPDIR;
-  clipfile += CLIPFILE;
-  strschg_environ(clipfile);
-  size_t size = GetFilesize(clipfile.c_str());
+    std::string clipfile = CLIPDIR;
+    clipfile += CLIPFILE;
+    strschg_environ(clipfile);
+    size_t size = GetFilesize(clipfile.c_str());
 
-  if(size != -1) {
-    char *text = (char *)throw_malloc(size+1);
-    *text = NUL;
+    if(size != -1)
+    {
+        char *text = (char *)throw_malloc(size+1);
+        *text = NUL;
 
-    FILE *f = fopen(clipfile.c_str(), "rt");
-    if(f != NULL) {
-      fread(text, 1, size, f);
-      text[size] = NUL;
-      fclose(f);
+        FILE *f = fopen(clipfile.c_str(), "rt");
+        if(f != NULL)
+        {
+            fread(text, 1, size, f);
+            text[size] = NUL;
+            fclose(f);
+        }
+
+        return text;
     }
 
-    return text;
-  }
-
-  return NULL;
+    return NULL;
 }
 
 
 //  ------------------------------------------------------------------
 
-int g_put_clip_text(const char* buf) {
+int g_put_clip_text(const char* buf)
+{
 
-  std::string clipfile = CLIPDIR;
-  clipfile += CLIPFILE;
-  strschg_environ(clipfile);
-  FILE *f = fopen(clipfile.c_str(), "wt");
-  if(f != NULL) {
-    fwrite(buf, 1, strlen(buf), f);
-    fclose(f);
-    return 0;
-  }
-  return -1;
+    std::string clipfile = CLIPDIR;
+    clipfile += CLIPFILE;
+    strschg_environ(clipfile);
+    FILE *f = fopen(clipfile.c_str(), "wt");
+    if(f != NULL)
+    {
+        fwrite(buf, 1, strlen(buf), f);
+        fclose(f);
+        return 0;
+    }
+    return -1;
 }
 
 
 //  ------------------------------------------------------------------
 
-void g_get_ostitle_name(char* title) {
+void g_get_ostitle_name(char* title)
+{
 
-  *title = NUL;
+    *title = NUL;
 }
 
 
 //  ------------------------------------------------------------------
 
-void g_set_ostitle_name(char* title, int mode) {
+void g_set_ostitle_name(char* title, int mode)
+{
 
-  NW(title); NW(mode);
+    NW(title);
+    NW(mode);
 }
 
 
 //  ------------------------------------------------------------------
 
-int g_send_mci_string(char* str, char* his_buffer) {
+int g_send_mci_string(char* str, char* his_buffer)
+{
 
-  NW(str); NW(his_buffer);
-  return 1;
+    NW(str);
+    NW(his_buffer);
+    return 1;
 }
 
 

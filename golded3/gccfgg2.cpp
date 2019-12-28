@@ -35,199 +35,236 @@ extern char* val;
 
 //  ------------------------------------------------------------------
 
-void CfgAreareplydirect() {
+void CfgAreareplydirect()
+{
 
-  bool flag = make_bool(GetYesno(val));
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_AREAREPLYDIRECT, flag);
-  else
-    CFG->areareplydirect = flag;
+    bool flag = make_bool(GetYesno(val));
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_AREAREPLYDIRECT, flag);
+    else
+        CFG->areareplydirect = flag;
 }
 
 //  ------------------------------------------------------------------
 
-void CfgAreareplyto() {
+void CfgAreareplyto()
+{
 
-  Echo buf;
-  strxcpy(buf, val, sizeof(buf));
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_AREAREPLYTO, buf, strlen(buf)+1);
-  else
-    strcpy(CFG->areareplyto, buf);
+    Echo buf;
+    strxcpy(buf, val, sizeof(buf));
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_AREAREPLYTO, buf, strlen(buf)+1);
+    else
+        strcpy(CFG->areareplyto, buf);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgAreascan() {
+void CfgAreascan()
+{
 
-  tokenize(CFG->areascan, val);
+    tokenize(CFG->areascan, val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgAreascanexcl() {
+void CfgAreascanexcl()
+{
 
-  tokenize(CFG->areascanexcl, val);
+    tokenize(CFG->areascanexcl, val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgAreascanincl() {
+void CfgAreascanincl()
+{
 
-  tokenize(CFG->areascanincl, val);
+    tokenize(CFG->areascanincl, val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgAreascansort() {
+void CfgAreascansort()
+{
 
-  strupr(strxcpy(CFG->areascansort, val, sizeof(CFG->areascansort)));
+    strupr(strxcpy(CFG->areascansort, val, sizeof(CFG->areascansort)));
 }
 
 //  ------------------------------------------------------------------
 
-void CfgAreasep() {
+void CfgAreasep()
+{
 
-  AL.GetAreaSep(val);
+    AL.GetAreaSep(val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgAreastart() {
+void CfgAreastart()
+{
 
-  strupr(strxcpy(CFG->areastart, val, sizeof(Echo)));
+    strupr(strxcpy(CFG->areastart, val, sizeof(Echo)));
 }
 
 //  ------------------------------------------------------------------
 
-void CfgAreatypeorder() {
-  
-  const word CRC_NET   = 0xEC5E;
-  const word CRC_ECHO  = 0xC2D1;
-  const word CRC_LOCAL = 0x4CD5;
-  const word CRC_EMAIL = 0x9C64;
-  const word CRC_NEWS  = 0x61F1;
+void CfgAreatypeorder()
+{
 
-  GTok t;
-  int order = 1;
-  if(t.First(val)) {
-    do {
-      switch(strCrc16(t.Token())) {
-        case CRC_NET:    CFG->areatypeorder[GMB_NET] = order;  break;
-        case CRC_EMAIL:  CFG->areatypeorder[GMB_NET|GMB_EMAIL] = order;  break;
-        case CRC_ECHO:   CFG->areatypeorder[GMB_ECHO] = order;  break;
-        case CRC_NEWS:   CFG->areatypeorder[GMB_ECHO|GMB_NEWSGROUP] = order;  break;
-        case CRC_LOCAL:  CFG->areatypeorder[GMB_LOCAL] = order; break;
-      }
-      order++;
-    } while(t.Next());
-  }
+    const word CRC_NET   = 0xEC5E;
+    const word CRC_ECHO  = 0xC2D1;
+    const word CRC_LOCAL = 0x4CD5;
+    const word CRC_EMAIL = 0x9C64;
+    const word CRC_NEWS  = 0x61F1;
+
+    GTok t;
+    int order = 1;
+    if(t.First(val))
+    {
+        do
+        {
+            switch(strCrc16(t.Token()))
+            {
+            case CRC_NET:
+                CFG->areatypeorder[GMB_NET] = order;
+                break;
+            case CRC_EMAIL:
+                CFG->areatypeorder[GMB_NET|GMB_EMAIL] = order;
+                break;
+            case CRC_ECHO:
+                CFG->areatypeorder[GMB_ECHO] = order;
+                break;
+            case CRC_NEWS:
+                CFG->areatypeorder[GMB_ECHO|GMB_NEWSGROUP] = order;
+                break;
+            case CRC_LOCAL:
+                CFG->areatypeorder[GMB_LOCAL] = order;
+                break;
+            }
+            order++;
+        }
+        while(t.Next());
+    }
 }
 
 //  ------------------------------------------------------------------
 
-void CfgAreayouwroteto() {
+void CfgAreayouwroteto()
+{
 
-  Echo buf;
-  strxcpy(buf, val, sizeof(buf));
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_AREAYOUWROTETO, buf, strlen(buf)+1);
-  else
-    strcpy(CFG->areayouwroteto, buf);
+    Echo buf;
+    strxcpy(buf, val, sizeof(buf));
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_AREAYOUWROTETO, buf, strlen(buf)+1);
+    else
+        strcpy(CFG->areayouwroteto, buf);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgAttachpath() {
+void CfgAttachpath()
+{
 
-  PathCopy(CFG->attachpath, val);
+    PathCopy(CFG->attachpath, val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgAttribsattach() {
+void CfgAttribsattach()
+{
 
-  GetAttribstr(&CFG->attribsattach, val);
+    GetAttribstr(&CFG->attribsattach, val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgAttribscc() {
+void CfgAttribscc()
+{
 
-  GetAttribstr(&CFG->attribscc, val);
+    GetAttribstr(&CFG->attribscc, val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgAttribscfm() {
+void CfgAttribscfm()
+{
 
-  GetAttribstr(&CFG->attribscfm, val);
+    GetAttribstr(&CFG->attribscfm, val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgAttribsecho() {
+void CfgAttribsecho()
+{
 
-  GetAttribstr(&CFG->attribsecho, val);
+    GetAttribstr(&CFG->attribsecho, val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgAttribsemail() {
+void CfgAttribsemail()
+{
 
-  GetAttribstr(&CFG->attribsemail, val);
+    GetAttribstr(&CFG->attribsemail, val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgAttribsfrq() {
+void CfgAttribsfrq()
+{
 
-  GetAttribstr(&CFG->attribsfrq, val);
+    GetAttribstr(&CFG->attribsfrq, val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgAttribslocal() {
+void CfgAttribslocal()
+{
 
-  GetAttribstr(&CFG->attribslocal, val);
+    GetAttribstr(&CFG->attribslocal, val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgAttribsnet() {
+void CfgAttribsnet()
+{
 
-  GetAttribstr(&CFG->attribsnet, val);
+    GetAttribstr(&CFG->attribsnet, val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgAttribsnews() {
+void CfgAttribsnews()
+{
 
-  GetAttribstr(&CFG->attribsnews, val);
+    GetAttribstr(&CFG->attribsnews, val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgAttributes() {
+void CfgAttributes()
+{
 
-  char buf[256];
-  strxcpy(buf, val, 256);
-  if(cfgingroup)
-    CFG->grp.AddItm(GRP_ATTRIBUTES, buf, strlen(buf)+1);
+    char buf[256];
+    strxcpy(buf, val, 256);
+    if(cfgingroup)
+        CFG->grp.AddItm(GRP_ATTRIBUTES, buf, strlen(buf)+1);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgBeepfactor() {
+void CfgBeepfactor()
+{
 
-  CFG->beepfactor = atoi(val);
+    CFG->beepfactor = atoi(val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgBeepyourmail() {
+void CfgBeepyourmail()
+{
 
-  CFG->beepyourmail = GetYesno(val);
+    CFG->beepyourmail = GetYesno(val);
 }
 
 //  ------------------------------------------------------------------
@@ -238,104 +275,125 @@ void CfgBeepyourmail() {
 #define CRC_NAMES    0xE46B
 #define CRC_KEEP     0x8C07
 
-void CfgCarboncopylist() {
+void CfgCarboncopylist()
+{
 
-  switch(strCrc16(val)) {
-    case CRC_REMOVE:   CFG->carboncopylist = CC_REMOVE;   break;
-    case CRC_HIDDEN:   CFG->carboncopylist = CC_HIDDEN;   break;
-    case CRC_VISIBLE:  CFG->carboncopylist = CC_VISIBLE;  break;
-    case CRC_NAMES:    CFG->carboncopylist = CC_NAMES;    break;
-    case CRC_KEEP:     CFG->carboncopylist = CC_KEEP;     break;
+    switch(strCrc16(val))
+    {
+    case CRC_REMOVE:
+        CFG->carboncopylist = CC_REMOVE;
+        break;
+    case CRC_HIDDEN:
+        CFG->carboncopylist = CC_HIDDEN;
+        break;
+    case CRC_VISIBLE:
+        CFG->carboncopylist = CC_VISIBLE;
+        break;
+    case CRC_NAMES:
+        CFG->carboncopylist = CC_NAMES;
+        break;
+    case CRC_KEEP:
+        CFG->carboncopylist = CC_KEEP;
+        break;
     default:
-      CFG->carboncopylist = GetYesno(val) ? CC_KEEP : CC_REMOVE;
-  }
+        CFG->carboncopylist = GetYesno(val) ? CC_KEEP : CC_REMOVE;
+    }
 }
 
 //  ------------------------------------------------------------------
 
-void CfgColor() {
+void CfgColor()
+{
 
-  GetColors(val);
+    GetColors(val);
 }
 
 //  ------------------------------------------------------------------
 
 void CfgColorname()
 {
-  char* ptr = strrchr(val, ' ');
-  if (!ptr) return;
-  ptr = strskip_wht(ptr);
+    char* ptr = strrchr(val, ' ');
+    if (!ptr) return;
+    ptr = strskip_wht(ptr);
 
-  Node cn;
-  vattr color = atoi(ptr);
+    Node cn;
+    vattr color = atoi(ptr);
 
-  // color was given
-  *ptr = NUL;
-  strbtrim(val);
+    // color was given
+    *ptr = NUL;
+    strbtrim(val);
 
-  ptr = strrchr(val, ' ');
-  if (!ptr) ptr = val;
-  ptr = strskip_wht(ptr);
+    ptr = strrchr(val, ' ');
+    if (!ptr) ptr = val;
+    ptr = strskip_wht(ptr);
 
-  if (isdigit(*ptr))
-  {
-    cn.addr.set(ptr);
-
-    if (cn.addr.net)
+    if (isdigit(*ptr))
     {
-      // Address was given
-      *ptr = NUL;
-      strbtrim(val);
+        cn.addr.set(ptr);
+
+        if (cn.addr.net)
+        {
+            // Address was given
+            *ptr = NUL;
+            strbtrim(val);
+        }
     }
-  }
 
-  strxcpy(cn.name, val, sizeof(cn.name));
+    strxcpy(cn.name, val, sizeof(cn.name));
 
-  CFG->colorname.push_back(std::pair<Node, vattr>(cn, color));
+    CFG->colorname.push_back(std::pair<Node, vattr>(cn, color));
 }
 
 //  ------------------------------------------------------------------
 
-void CfgColorset() {
+void CfgColorset()
+{
 
-  if(strieql(val, "Normal")) {
-    memcpy(CFG->color, gold_color1, sizeof(Win)*16);
-  }
-  else if(strieql(val, "Intense")) {
-    CFG->intensecolors = true;
-    memcpy(CFG->color, gold_color2, sizeof(Win)*16);
-  }
-  else if(strieql(val, "Mono")) {
-    memcpy(CFG->color, gold_mono1, sizeof(Win)*16);
-  }
+    if(strieql(val, "Normal"))
+    {
+        memcpy(CFG->color, gold_color1, sizeof(Win)*16);
+    }
+    else if(strieql(val, "Intense"))
+    {
+        CFG->intensecolors = true;
+        memcpy(CFG->color, gold_color2, sizeof(Win)*16);
+    }
+    else if(strieql(val, "Mono"))
+    {
+        memcpy(CFG->color, gold_mono1, sizeof(Win)*16);
+    }
 }
 
 //  ------------------------------------------------------------------
 
-void CfgConfirmresponse() {
+void CfgConfirmresponse()
+{
 
-  CFG->confirmresponse = GetYesno(val);
+    CFG->confirmresponse = GetYesno(val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgConfirmfile() {
+void CfgConfirmfile()
+{
 
-  strcpy(CFG->confirmfile, val);
+    strcpy(CFG->confirmfile, val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgCookiepath() {
+void CfgCookiepath()
+{
 
-  PathCopy(CFG->cookiepath, val);
+    PathCopy(CFG->cookiepath, val);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgCrosspost() {
+void CfgCrosspost()
+{
 
-  CFG->crosspost = GetYesno(val);
+    CFG->crosspost = GetYesno(val);
 }
 
 //  ------------------------------------------------------------------
@@ -344,199 +402,225 @@ void CfgCrosspost() {
 #define CRC_RAW     0x3BE0
 #define CRC_VERBOSE 0xBB00
 
-void CfgCrosspostlist() {
+void CfgCrosspostlist()
+{
 
-  switch(strCrc16(val)) {
-    case CRC_NONE:    CFG->crosspostlist = CC_REMOVE;  break;
-    case CRC_VERBOSE: CFG->crosspostlist = CC_NAMES;   break;
-    case CRC_RAW:     CFG->crosspostlist = CC_KEEP;    break;
+    switch(strCrc16(val))
+    {
+    case CRC_NONE:
+        CFG->crosspostlist = CC_REMOVE;
+        break;
+    case CRC_VERBOSE:
+        CFG->crosspostlist = CC_NAMES;
+        break;
+    case CRC_RAW:
+        CFG->crosspostlist = CC_KEEP;
+        break;
     default:
-      CFG->crosspostlist = GetYesno(val) ? CC_VISIBLE : CC_REMOVE;
-  }
-}
-
-//  ------------------------------------------------------------------
-
-void CfgCtrlinfo() {
-
-  if(cfgingroup) {
-    int ctrlinfo = CI_NONE;
-    if(striinc("NO", val))
-      ctrlinfo = CI_NONE;
-    else if(striinc("YES", val))
-      ctrlinfo = CI_TEAR|CI_ORIG;
-    else {
-      if(striinc("TEARLINE", val))
-        ctrlinfo |= CI_TEAR;
-      if(striinc("ORIGIN", val))
-        ctrlinfo |= CI_ORIG;
+        CFG->crosspostlist = GetYesno(val) ? CC_VISIBLE : CC_REMOVE;
     }
-    CFG->grp.AddItm(GRP_CTRLINFO, ctrlinfo);
-  }
 }
 
 //  ------------------------------------------------------------------
 
-void CfgCtrlinfoecho() {
+void CfgCtrlinfo()
+{
 
-  CFG->ctrlinfoecho = CI_NONE;
-  if(striinc("NO", val))
+    if(cfgingroup)
+    {
+        int ctrlinfo = CI_NONE;
+        if(striinc("NO", val))
+            ctrlinfo = CI_NONE;
+        else if(striinc("YES", val))
+            ctrlinfo = CI_TEAR|CI_ORIG;
+        else
+        {
+            if(striinc("TEARLINE", val))
+                ctrlinfo |= CI_TEAR;
+            if(striinc("ORIGIN", val))
+                ctrlinfo |= CI_ORIG;
+        }
+        CFG->grp.AddItm(GRP_CTRLINFO, ctrlinfo);
+    }
+}
+
+//  ------------------------------------------------------------------
+
+void CfgCtrlinfoecho()
+{
+
     CFG->ctrlinfoecho = CI_NONE;
-  else if(striinc("YES", val))
-    CFG->ctrlinfoecho = CI_TEAR|CI_ORIG;
-  else {
-    if(striinc("TEARLINE", val))
-      CFG->ctrlinfoecho |= CI_TEAR;
-    if(striinc("ORIGIN", val))
-      CFG->ctrlinfoecho |= CI_ORIG;
-  }
+    if(striinc("NO", val))
+        CFG->ctrlinfoecho = CI_NONE;
+    else if(striinc("YES", val))
+        CFG->ctrlinfoecho = CI_TEAR|CI_ORIG;
+    else
+    {
+        if(striinc("TEARLINE", val))
+            CFG->ctrlinfoecho |= CI_TEAR;
+        if(striinc("ORIGIN", val))
+            CFG->ctrlinfoecho |= CI_ORIG;
+    }
 }
 
 //  ------------------------------------------------------------------
 
-void CfgCtrlinfoemail() {
+void CfgCtrlinfoemail()
+{
 
-  CFG->ctrlinfoemail = CI_NONE;
-  if(striinc("NO", val))
     CFG->ctrlinfoemail = CI_NONE;
-  else if(striinc("YES", val))
-    CFG->ctrlinfoemail = CI_TEAR|CI_ORIG;
-  else {
-    if(striinc("TEARLINE", val))
-      CFG->ctrlinfoemail |= CI_TEAR;
-    if(striinc("ORIGIN", val))
-      CFG->ctrlinfoemail |= CI_ORIG;
-  }
+    if(striinc("NO", val))
+        CFG->ctrlinfoemail = CI_NONE;
+    else if(striinc("YES", val))
+        CFG->ctrlinfoemail = CI_TEAR|CI_ORIG;
+    else
+    {
+        if(striinc("TEARLINE", val))
+            CFG->ctrlinfoemail |= CI_TEAR;
+        if(striinc("ORIGIN", val))
+            CFG->ctrlinfoemail |= CI_ORIG;
+    }
 }
 
 //  ------------------------------------------------------------------
 
-void CfgCtrlinfolocal() {
+void CfgCtrlinfolocal()
+{
 
-  CFG->ctrlinfolocal = CI_NONE;
-  if(striinc("NO", val))
     CFG->ctrlinfolocal = CI_NONE;
-  else if(striinc("YES", val))
-    CFG->ctrlinfolocal = CI_TEAR|CI_ORIG;
-  else {
-    if(striinc("TEARLINE", val))
-      CFG->ctrlinfolocal |= CI_TEAR;
-    if(striinc("ORIGIN", val))
-      CFG->ctrlinfolocal |= CI_ORIG;
-  }
+    if(striinc("NO", val))
+        CFG->ctrlinfolocal = CI_NONE;
+    else if(striinc("YES", val))
+        CFG->ctrlinfolocal = CI_TEAR|CI_ORIG;
+    else
+    {
+        if(striinc("TEARLINE", val))
+            CFG->ctrlinfolocal |= CI_TEAR;
+        if(striinc("ORIGIN", val))
+            CFG->ctrlinfolocal |= CI_ORIG;
+    }
 }
 
 //  ------------------------------------------------------------------
 
-void CfgCtrlinfonet() {
+void CfgCtrlinfonet()
+{
 
-  CFG->ctrlinfonet = CI_NONE;
-  if(striinc("NO", val))
-    CFG->ctrlinfonet &= ~CI_ORIG;
-  else if(striinc("YES", val))
-    CFG->ctrlinfonet = CI_TEAR|CI_ORIG;
-  else {
-    if(striinc("TEARLINE", val))
-      CFG->ctrlinfonet |= CI_TEAR;
-    if(striinc("ORIGIN", val))
-      CFG->ctrlinfonet |= CI_ORIG;
-  }
+    CFG->ctrlinfonet = CI_NONE;
+    if(striinc("NO", val))
+        CFG->ctrlinfonet &= ~CI_ORIG;
+    else if(striinc("YES", val))
+        CFG->ctrlinfonet = CI_TEAR|CI_ORIG;
+    else
+    {
+        if(striinc("TEARLINE", val))
+            CFG->ctrlinfonet |= CI_TEAR;
+        if(striinc("ORIGIN", val))
+            CFG->ctrlinfonet |= CI_ORIG;
+    }
 }
 
 //  ------------------------------------------------------------------
 
-void CfgCtrlinfonews() {
+void CfgCtrlinfonews()
+{
 
-  CFG->ctrlinfonews = CI_NONE;
-  if(striinc("NO", val))
     CFG->ctrlinfonews = CI_NONE;
-  else if(striinc("YES", val))
-    CFG->ctrlinfonews = CI_TEAR|CI_ORIG;
-  else {
-    if(striinc("TEARLINE", val))
-      CFG->ctrlinfonews |= CI_TEAR;
-    if(striinc("ORIGIN", val))
-      CFG->ctrlinfonews |= CI_ORIG;
-  }
+    if(striinc("NO", val))
+        CFG->ctrlinfonews = CI_NONE;
+    else if(striinc("YES", val))
+        CFG->ctrlinfonews = CI_TEAR|CI_ORIG;
+    else
+    {
+        if(striinc("TEARLINE", val))
+            CFG->ctrlinfonews |= CI_TEAR;
+        if(striinc("ORIGIN", val))
+            CFG->ctrlinfonews |= CI_ORIG;
+    }
 }
 
 //  ------------------------------------------------------------------
 
-void CfgDispattachsize() {
+void CfgDispattachsize()
+{
 
-  if(strieql("NO", val))
-    CFG->dispattachsize = NO;
-  else if(strieql("BYTES", val))
-    CFG->dispattachsize = ATTACH_BYTES;
-  else if(strieql("KBYTES", val))
-    CFG->dispattachsize = ATTACH_KBYTES;
+    if(strieql("NO", val))
+        CFG->dispattachsize = NO;
+    else if(strieql("BYTES", val))
+        CFG->dispattachsize = ATTACH_BYTES;
+    else if(strieql("KBYTES", val))
+        CFG->dispattachsize = ATTACH_KBYTES;
 }
 
 //  ------------------------------------------------------------------
 
-void CfgDisphdrdateset() {
+void CfgDisphdrdateset()
+{
 
-  char* key;
-  getkeyval(&key, &val);
-  CFG->disphdrdateset.pos = atoi(key);
-  getkeyval(&key, &val);
-  CFG->disphdrdateset.len = atoi(key);
+    char* key;
+    getkeyval(&key, &val);
+    CFG->disphdrdateset.pos = atoi(key);
+    getkeyval(&key, &val);
+    CFG->disphdrdateset.len = atoi(key);
 }
 
 //  ------------------------------------------------------------------
 
 void CfgDisphdrlocation()
 {
-  char* key;
-  getkeyval(&key, &val);
+    char* key;
+    getkeyval(&key, &val);
 
-  CFG->disphdrlocation = GetYesno(key);
+    CFG->disphdrlocation = GetYesno(key);
 
-  if (CFG->disphdrlocation != NO)
-  {
-    if (strieql("CENTER", val))
-      CFG->disphdrlocation = CFG->disphdrlocation + (TCENTER << 16);
-    else
-      CFG->disphdrlocation = CFG->disphdrlocation + (TRIGHT << 16);
-  }
+    if (CFG->disphdrlocation != NO)
+    {
+        if (strieql("CENTER", val))
+            CFG->disphdrlocation = CFG->disphdrlocation + (TCENTER << 16);
+        else
+            CFG->disphdrlocation = CFG->disphdrlocation + (TRIGHT << 16);
+    }
 }
 
 //  ------------------------------------------------------------------
 
-void CfgDisphdrnameset() {
+void CfgDisphdrnameset()
+{
 
-  char* key;
-  getkeyval(&key, &val);
-  CFG->disphdrnameset.pos = atoi(key);
-  getkeyval(&key, &val);
-  CFG->disphdrnameset.len = atoi(key);
+    char* key;
+    getkeyval(&key, &val);
+    CFG->disphdrnameset.pos = atoi(key);
+    getkeyval(&key, &val);
+    CFG->disphdrnameset.len = atoi(key);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgDisphdrnodeset() {
+void CfgDisphdrnodeset()
+{
 
-  char* key;
-  getkeyval(&key, &val);
-  CFG->disphdrnodeset.pos = atoi(key);
-  getkeyval(&key, &val);
-  CFG->disphdrnodeset.len = atoi(key);
+    char* key;
+    getkeyval(&key, &val);
+    CFG->disphdrnodeset.pos = atoi(key);
+    getkeyval(&key, &val);
+    CFG->disphdrnodeset.len = atoi(key);
 }
 
 //  ------------------------------------------------------------------
 
-void CfgDisplistcursor() {
+void CfgDisplistcursor()
+{
 
-  if(strieql(val, "TOP"))
-    CFG->displistcursor = LIST_TOP;
-  else if(strieql(val, "NEARTOP"))
-    CFG->displistcursor = LIST_NEARTOP;
-  else if(strieql(val, "MIDDLE"))
-    CFG->displistcursor = LIST_MIDDLE;
-  else if(strieql(val, "NEARBOTTOM"))
-    CFG->displistcursor = LIST_NEARBOTTOM;
-  else if(strieql(val, "BOTTOM"))
-    CFG->displistcursor = LIST_BOTTOM;
+    if(strieql(val, "TOP"))
+        CFG->displistcursor = LIST_TOP;
+    else if(strieql(val, "NEARTOP"))
+        CFG->displistcursor = LIST_NEARTOP;
+    else if(strieql(val, "MIDDLE"))
+        CFG->displistcursor = LIST_MIDDLE;
+    else if(strieql(val, "NEARBOTTOM"))
+        CFG->displistcursor = LIST_NEARBOTTOM;
+    else if(strieql(val, "BOTTOM"))
+        CFG->displistcursor = LIST_BOTTOM;
 }
 
 //  ------------------------------------------------------------------

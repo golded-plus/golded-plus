@@ -32,20 +32,23 @@
 //  ------------------------------------------------------------------
 //  Generate CRC-32 of a normal nul-terminated string
 
-dword strCrc32(const char* s, bool __case, dword mask) {
+dword strCrc32(const char* s, bool __case, dword mask)
+{
 
-  dword crc = mask;
+    dword crc = mask;
 
-  if(__case) {
-    while(*s)
-      crc = updCrc32(g_toupper(*s++), crc);
-  }
-  else {
-    while(*s)
-      crc = updCrc32(*s++, crc);
-  }
+    if(__case)
+    {
+        while(*s)
+            crc = updCrc32(g_toupper(*s++), crc);
+    }
+    else
+    {
+        while(*s)
+            crc = updCrc32(*s++, crc);
+    }
 
-  return crc;
+    return crc;
 }
 
 

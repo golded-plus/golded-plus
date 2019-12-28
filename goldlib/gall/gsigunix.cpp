@@ -40,42 +40,44 @@ static volatile uint gsig_blocked_depth;
 
 //  ------------------------------------------------------------------
 
-int gsig_block_signals() {
+int gsig_block_signals()
+{
 
-  sigset_t new_mask;
+    sigset_t new_mask;
 
-  gsig_blocked_depth++;
-  if(gsig_blocked_depth != 1)
+    gsig_blocked_depth++;
+    if(gsig_blocked_depth != 1)
+        return 0;
+
+    sigemptyset(&new_mask);
+    sigaddset(&new_mask, SIGINT);
+    sigaddset(&new_mask, SIGQUIT);
+#ifdef SIGTSTP
+    sigaddset(&new_mask, SIGTSTP);
+    sigaddset(&new_mask, SIGTTIN);
+    sigaddset(&new_mask, SIGTTOU);
+#endif
+
+    sigprocmask(SIG_BLOCK, &new_mask, &gsig_old_signal_mask);
     return 0;
-
-  sigemptyset(&new_mask);
-  sigaddset(&new_mask, SIGINT);
-  sigaddset(&new_mask, SIGQUIT);
-  #ifdef SIGTSTP
-  sigaddset(&new_mask, SIGTSTP);
-  sigaddset(&new_mask, SIGTTIN);
-  sigaddset(&new_mask, SIGTTOU);
-  #endif
-
-  sigprocmask(SIG_BLOCK, &new_mask, &gsig_old_signal_mask);
-  return 0;
 }
 
 
 //  ------------------------------------------------------------------
 
-int gsig_unblock_signals() {
+int gsig_unblock_signals()
+{
 
-  if(gsig_blocked_depth == 0)
-    return -1;
+    if(gsig_blocked_depth == 0)
+        return -1;
 
-  gsig_blocked_depth--;
+    gsig_blocked_depth--;
 
-  if(gsig_blocked_depth != 0)
+    if(gsig_blocked_depth != 0)
+        return 0;
+
+    sigprocmask(SIG_SETMASK, &gsig_old_signal_mask, NULL);
     return 0;
-
-  sigprocmask(SIG_SETMASK, &gsig_old_signal_mask, NULL);
-  return 0;
 }
 
 

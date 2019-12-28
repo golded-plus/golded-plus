@@ -23,32 +23,33 @@
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack(1)
+    #pragma pack(1)
 #endif
 
 //  ------------------------------------------------------------------
 
-struct QWKHdr {
-  byte  status;
-  char  msgno[7];
-  char  date[8];
-  char  time[5];
-  char  to[25];
-  char  from[25];
-  char  subject[25];
-  char  password[12];
-  char  refno[8];
-  char  blocks[6];
-  byte  activestatus;
-  word  confno;
-  word  pktmsgno;
-  char  tagline;
+struct QWKHdr
+{
+    byte  status;
+    char  msgno[7];
+    char  date[8];
+    char  time[5];
+    char  to[25];
+    char  from[25];
+    char  subject[25];
+    char  password[12];
+    char  refno[8];
+    char  blocks[6];
+    byte  activestatus;
+    word  confno;
+    word  pktmsgno;
+    char  tagline;
 };
 
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack()
+    #pragma pack()
 #endif
 
 //  ------------------------------------------------------------------

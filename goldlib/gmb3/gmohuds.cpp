@@ -38,83 +38,91 @@ GoldWide* goldbasewide = NULL;
 
 //  ------------------------------------------------------------------
 
-void HudsWideOpen() {
+void HudsWideOpen()
+{
 
-  hudsonwide->open();
+    hudsonwide->open();
 }
 
 
 //  ------------------------------------------------------------------
 
-void GoldWideOpen() {
+void GoldWideOpen()
+{
 
-  goldbasewide->open();
+    goldbasewide->open();
 }
 
 
 //  ------------------------------------------------------------------
 
-void HudsWideClose() {
+void HudsWideClose()
+{
 
-  hudsonwide->close();
+    hudsonwide->close();
 }
 
 
 //  ------------------------------------------------------------------
 
-void GoldWideClose() {
+void GoldWideClose()
+{
 
-  goldbasewide->close();
+    goldbasewide->close();
 }
 
 
 //  ------------------------------------------------------------------
 
-void HudsExit() {
+void HudsExit()
+{
 
-  if(hudsonwide)
-    hudsonwide->exit();
-  throw_xrelease(hudsonwide);
+    if(hudsonwide)
+        hudsonwide->exit();
+    throw_xrelease(hudsonwide);
 }
 
 
 //  ------------------------------------------------------------------
 
-void GoldExit() {
+void GoldExit()
+{
 
-  if(goldbasewide)
-    goldbasewide->exit();
-  throw_xrelease(goldbasewide);
+    if(goldbasewide)
+        goldbasewide->exit();
+    throw_xrelease(goldbasewide);
 }
 
 
 //  ------------------------------------------------------------------
 
-void HudsInit(const char* path, const char* syspath, int userno, int32_t sizewarn, int ra2usersbbs) {
+void HudsInit(const char* path, const char* syspath, int userno, int32_t sizewarn, int ra2usersbbs)
+{
 
-  // Initialize msgbase-wide data
-  hudsonwide = (HudsWide*)throw_calloc(1, sizeof(HudsWide));
-  hudsonwide->path = path;
-  hudsonwide->syspath = syspath;
-  hudsonwide->userno = userno;
-  hudsonwide->sizewarn = sizewarn;
-  hudsonwide->ra2usersbbs = ra2usersbbs;
-  hudsonwide->init();
+    // Initialize msgbase-wide data
+    hudsonwide = (HudsWide*)throw_calloc(1, sizeof(HudsWide));
+    hudsonwide->path = path;
+    hudsonwide->syspath = syspath;
+    hudsonwide->userno = userno;
+    hudsonwide->sizewarn = sizewarn;
+    hudsonwide->ra2usersbbs = ra2usersbbs;
+    hudsonwide->init();
 }
 
 
 //  ------------------------------------------------------------------
 
-void GoldInit(const char* path, const char* syspath, int userno, int32_t sizewarn, int ra2usersbbs) {
+void GoldInit(const char* path, const char* syspath, int userno, int32_t sizewarn, int ra2usersbbs)
+{
 
-  // Initialize msgbase-wide data
-  goldbasewide = (GoldWide*)throw_calloc(1, sizeof(GoldWide));
-  goldbasewide->path = path;
-  goldbasewide->syspath = syspath;
-  goldbasewide->userno = userno;
-  NW(sizewarn);
-  NW(ra2usersbbs);
-  goldbasewide->init();
+    // Initialize msgbase-wide data
+    goldbasewide = (GoldWide*)throw_calloc(1, sizeof(GoldWide));
+    goldbasewide->path = path;
+    goldbasewide->syspath = syspath;
+    goldbasewide->userno = userno;
+    NW(sizewarn);
+    NW(ra2usersbbs);
+    goldbasewide->init();
 }
 
 

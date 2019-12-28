@@ -33,272 +33,302 @@
 //  ------------------------------------------------------------------
 //  General menu with ASK colors
 
-class GMnuAsk : public GMnu {
+class GMnuAsk : public GMnu
+{
 
 public:
-  void AskInit(int __row, int __col, char* __title, int __help);
+    void AskInit(int __row, int __col, char* __title, int __help);
 };
 
 
 //  ------------------------------------------------------------------
 //  General YES/NO selection menu
 
-class GMnuYesNo : public GMnuAsk {
+class GMnuYesNo : public GMnuAsk
+{
 
 public:
-  int YesNo(int __row, int __col, char* __title, char* __yes, char* __no, int __help, int __yesno=YES);
+    int YesNo(int __row, int __col, char* __title, char* __yes, char* __no, int __help, int __yesno=YES);
 };
 
 
 //  ------------------------------------------------------------------
 
-class GMenuQuit : public GMnuYesNo {
+class GMenuQuit : public GMnuYesNo
+{
 
 public:
-  int Run();
+    int Run();
 };
 
 
 //  ------------------------------------------------------------------
 
-class GMenuReadonly : public GMnuYesNo {
+class GMenuReadonly : public GMnuYesNo
+{
 
 public:
-  int Run();
+    int Run();
 };
 
 
 //  ------------------------------------------------------------------
 
-class GMenuChange : public GMnuYesNo {
+class GMenuChange : public GMnuYesNo
+{
 
 public:
-  int Run(char* info);
+    int Run(char* info);
 };
 
 
 //  ------------------------------------------------------------------
 
-class GMenuLockLoop : public GMnuYesNo {
+class GMenuLockLoop : public GMnuYesNo
+{
 
 public:
-  int Run();
+    int Run();
 };
 
 
 //  ------------------------------------------------------------------
 
-class GMenuDelorig : public GMnuYesNo {
+class GMenuDelorig : public GMnuYesNo
+{
 
 public:
-  int Run();
+    int Run();
 };
 
 
 //  ------------------------------------------------------------------
 
-class GMenuDropmsg : public GMnuYesNo {
+class GMenuDropmsg : public GMnuYesNo
+{
 
 public:
-  int Run();
+    int Run();
 };
 
 
 //  ------------------------------------------------------------------
 
-class GMenuZonegate : public GMnuYesNo {
+class GMenuZonegate : public GMnuYesNo
+{
 
 public:
-  int Run();
+    int Run();
 };
 
 
 //  ------------------------------------------------------------------
 
-class GMenuForward : public GMnuYesNo {
+class GMenuForward : public GMnuYesNo
+{
 
 public:
-  int Run();
+    int Run();
 };
 
 
 //  ------------------------------------------------------------------
 
-class GMenuOverwrite : public GMnuAsk {
+class GMenuOverwrite : public GMnuAsk
+{
 
 public:
-  int Run();
+    int Run();
 };
 
 
 //  ------------------------------------------------------------------
 
-class GMenuDelete : public GMnuAsk {
+class GMenuDelete : public GMnuAsk
+{
 
 public:
-  int Run(int all, GMsg* __msg);
+    int Run(int all, GMsg* __msg);
 };
 
 
 //  ------------------------------------------------------------------
 
-class GMenuNewarea : public GMnuAsk {
+class GMenuNewarea : public GMnuAsk
+{
 
 public:
-  int Run();
+    int Run();
 };
 
 
 //  ------------------------------------------------------------------
 
-class GMenuCMF : public GMnuAsk {
+class GMenuCMF : public GMnuAsk
+{
 
 public:
-  int Run();
+    int Run();
 };
 
 
 //  ------------------------------------------------------------------
 
-class GMenuDomarks : public GMnuAsk {
+class GMenuDomarks : public GMnuAsk
+{
 
 public:
-  int Run(char* dowhat);
+    int Run(char* dowhat);
 };
 
 
 //  ------------------------------------------------------------------
 
-class GMenuWriteMsg : public GMnuAsk {
+class GMenuWriteMsg : public GMnuAsk
+{
 
 public:
-  int Run();
+    int Run();
 };
 
 
 //  ------------------------------------------------------------------
 
-class GMenuImportTxt : public GMnuAsk {
+class GMenuImportTxt : public GMnuAsk
+{
 
 public:
-  int Run();
+    int Run();
 };
 
 
 //  ------------------------------------------------------------------
 
-class GMenuMarkMsgs : public GMnuAsk {
+class GMenuMarkMsgs : public GMnuAsk
+{
 
 public:
-  int Run();
+    int Run();
 };
 
 
 //  ------------------------------------------------------------------
 
-class GMenuEditfile : public GMnuAsk {
+class GMenuEditfile : public GMnuAsk
+{
 
 public:
-  int Run(GMsg* __msg);
+    int Run(GMsg* __msg);
 };
 
 
 //  ------------------------------------------------------------------
 
-class GMenuCarbon : public GMnuAsk {
+class GMenuCarbon : public GMnuAsk
+{
 
 public:
-  int Run(GMsg* __msg);
+    int Run(GMsg* __msg);
 };
 
 
 //  ------------------------------------------------------------------
 
-class GMenuCross : public GMnuAsk {
+class GMenuCross : public GMnuAsk
+{
 
 public:
-  int Run(GMsg* __msg);
+    int Run(GMsg* __msg);
 };
 
 
 //  ------------------------------------------------------------------
 
-class GMnuAreaDo : public GMnuAsk {
+class GMnuAreaDo : public GMnuAsk
+{
 
 public:
-  int With(char* __title, char* __all, char* __marked, char* __current, int __full, char* __no, int __help);
+    int With(char* __title, char* __all, char* __marked, char* __current, int __full, char* __no, int __help);
 };
 
 
 //  ------------------------------------------------------------------
 
-class GMenuAreaScan : public GMnuAreaDo {
+class GMenuAreaScan : public GMnuAreaDo
+{
 
 public:
-  int Run(int pmscan);
+    int Run(int pmscan);
 };
 
 
 //  ------------------------------------------------------------------
 
-class GMenuAreaHeat : public GMnuAreaDo {
+class GMenuAreaHeat : public GMnuAreaDo
+{
 
 public:
-  int Run();
+    int Run();
 };
 
 
 //  ------------------------------------------------------------------
 
-class GMenuAreaZap : public GMnuAreaDo {
+class GMenuAreaZap : public GMnuAreaDo
+{
 
 public:
-  int Run();
+    int Run();
 };
 
 
 //  ------------------------------------------------------------------
 
-class GMenuAreaCatchup : public GMnuAreaDo {
+class GMenuAreaCatchup : public GMnuAreaDo
+{
 
 public:
-  int Run();
+    int Run();
 };
 
 
 //  ------------------------------------------------------------------
 
-class GMenuAreaDropMarks : public GMnuAreaDo {
+class GMenuAreaDropMarks : public GMnuAreaDo
+{
 
 public:
-  int Run();
+    int Run();
 };
 
 
 //  ------------------------------------------------------------------
 
-class GMenuEditHeader : public GMnu {
+class GMenuEditHeader : public GMnu
+{
 
 public:
-  int Run(int mode, GMsg* msg);
+    int Run(int mode, GMsg* msg);
 };
 
 
 //  ------------------------------------------------------------------
 
-class GMenuConfirm : public GMnuYesNo {
+class GMenuConfirm : public GMnuYesNo
+{
 
 public:
-  int Run();
+    int Run();
 };
 
 
 //  ------------------------------------------------------------------
 
-class GMenuNavigate : public GMnu {
+class GMenuNavigate : public GMnu
+{
 
 public:
-  int Run();
+    int Run();
 };
 
 
@@ -308,7 +338,7 @@ public:
 class GMenuSChecker : public GMnu
 {
 public:
-  int Run(CSpellChecker &schecker, const char *word);
+    int Run(CSpellChecker &schecker, const char *word);
 };
 #endif
 

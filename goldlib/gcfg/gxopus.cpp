@@ -31,8 +31,8 @@
 #include <gdirposx.h>
 #include <gwildmat.h>
 #if defined(__GOLD_GUI__)
-#include <gvidall.h>
-#include <gvidgui.h>
+    #include <gvidall.h>
+    #include <gvidgui.h>
 #endif
 #undef GCFG_NOOPUS
 #include <gedacfg.h>
@@ -43,123 +43,134 @@
 //  ------------------------------------------------------------------
 //  Read Opus
 
-void gareafile::ReadOpus(char* tag) {
+void gareafile::ReadOpus(char* tag)
+{
 
-  FILE* fp;
-  AreaCfg aa;
-  char* ptr;
-  _msgsys msgsys;
-  _systemdat sysdat;
-  Path oppath, file;
-  char buf[256], options[80];
+    FILE* fp;
+    AreaCfg aa;
+    char* ptr;
+    _msgsys msgsys;
+    _systemdat sysdat;
+    Path oppath, file;
+    char buf[256], options[80];
 
-  *oppath = NUL;
-  strcpy(options, tag);
+    *oppath = NUL;
+    strcpy(options, tag);
 
-  ptr = strtok(tag, " \t");
-  while(ptr) {
-    if(*ptr != '-') {
-      AddBackslash(strcpy(oppath, ptr));
-      break;
-    }
-    ptr = strtok(NULL, " \t");
-  }
-  if(*oppath == NUL) {
-    ptr = getenv("OPUS");
-    if(ptr)
-      AddBackslash(strcpy(oppath, ptr));
-  }
-  if(*oppath == NUL)
-    strcpy(oppath, areapath);
-
-  MakePathname(file, oppath, "sysmsg.dat");
-
-  if(fexist(file)) {
-
-    // Found Opus 1.7x config files
-
-    fp = fsopen(file, "rb", sharemode);
-    if (fp)
+    ptr = strtok(tag, " \t");
+    while(ptr)
     {
-      setvbuf(fp, NULL, _IOFBF, 8192);
-
-      if (not quiet)
-        STD_PRINTNL("* Reading " << file);
-
-      while(fread(&msgsys, sizeof(_msgsys), 1, fp) == 1) {
-
-        aa.reset();
-
-        memset(buf, 0, sizeof(buf));
-        fread(buf, msgsys.Path_Len, 1, fp);
-        aa.setpath(buf);
-        memset(buf, 0, sizeof(buf));
-        fread(buf, msgsys.Title_Len, 1, fp);
-        aa.setdesc(buf);
-        fread(buf, msgsys.Barricade_Len, 1, fp);
-        memset(buf, 0, sizeof(buf));
-        fread(buf, msgsys.Origin_Len, 1, fp);
-        aa.setorigin(buf);
-        fseek(fp, (long)msgsys.Domain_Len, SEEK_CUR);
-        fseek(fp, (long)msgsys.Menu_Len, SEEK_CUR);
-        fseek(fp, (long)msgsys.Vol_Len, SEEK_CUR);
-        fseek(fp, (long)msgsys.Help_Len, SEEK_CUR);
-        fseek(fp, (long)msgsys.Scan_Len*(long)sizeof(struct _ascan), SEEK_CUR);
-        fseek(fp, (long)msgsys.Other_Len, SEEK_CUR);
-
-        aa.basetype = fidomsgtype;
-        aa.type = ((msgsys.Attrib & SYSMAIL) ? GMB_NET : (msgsys.Attrib & _ECHOMAIL) ? GMB_ECHO : GMB_LOCAL);
-        aa.attr = ((msgsys.Attrib & SYSMAIL) ? attribsnet : (msgsys.Attrib & _ECHOMAIL) ? attribsecho : attribslocal);
-        aa.setechoid(*msgsys.Echo_Name ? msgsys.Echo_Name : msgsys.Area_Name);
-
-        if(msgsys.Net) {
-          aa.aka.zone = msgsys.Zone;
-          aa.aka.net = msgsys.Net;
-          aa.aka.node = msgsys.Node;
-          aa.aka.point = msgsys.Point;
+        if(*ptr != '-')
+        {
+            AddBackslash(strcpy(oppath, ptr));
+            break;
         }
-
-        AddNewArea(aa);
-      }
-
-      fclose(fp);
+        ptr = strtok(NULL, " \t");
     }
-  }
-  else {
+    if(*oppath == NUL)
+    {
+        ptr = getenv("OPUS");
+        if(ptr)
+            AddBackslash(strcpy(oppath, ptr));
+    }
+    if(*oppath == NUL)
+        strcpy(oppath, areapath);
 
-    // Try for the old 1.1x files
+    MakePathname(file, oppath, "sysmsg.dat");
 
-    gposixdir d(oppath);
-    const gdirentry *de;
-    if(d.ok) {
-      while((de = d.nextentry("system*.dat", true)) != NULL) {
+    if(fexist(file))
+    {
 
-        MakePathname(file, oppath, de->name.c_str());
+        // Found Opus 1.7x config files
+
         fp = fsopen(file, "rb", sharemode);
         if (fp)
         {
-          setvbuf(fp, NULL, _IOFBF, 8192);
+            setvbuf(fp, NULL, _IOFBF, 8192);
 
-          if (not quiet)
-            STD_PRINTNL("* Reading " << file);
+            if (not quiet)
+                STD_PRINTNL("* Reading " << file);
 
-          fread(&sysdat, sizeof(_systemdat), 1, fp);
-          if(*sysdat.msgpath and *sysdat.msgtitle) {
-            aa.reset();
-            aa.basetype = fidomsgtype;
-            aa.setpath(sysdat.msgpath);
-            aa.setdesc(sysdat.msgtitle);
-            aa.setechoid(sysdat.EchoName);
-            aa.type = ((sysdat.attrib & SYSMAIL) ? GMB_NET : (sysdat.attrib & _ECHOMAIL) ? GMB_ECHO : GMB_LOCAL);
-            aa.attr = ((sysdat.attrib & SYSMAIL) ? attribsnet : (sysdat.attrib & _ECHOMAIL) ? attribsecho : attribslocal);
-            AddNewArea(aa);
-          }
+            while(fread(&msgsys, sizeof(_msgsys), 1, fp) == 1)
+            {
 
-          fclose(fp);
+                aa.reset();
+
+                memset(buf, 0, sizeof(buf));
+                fread(buf, msgsys.Path_Len, 1, fp);
+                aa.setpath(buf);
+                memset(buf, 0, sizeof(buf));
+                fread(buf, msgsys.Title_Len, 1, fp);
+                aa.setdesc(buf);
+                fread(buf, msgsys.Barricade_Len, 1, fp);
+                memset(buf, 0, sizeof(buf));
+                fread(buf, msgsys.Origin_Len, 1, fp);
+                aa.setorigin(buf);
+                fseek(fp, (long)msgsys.Domain_Len, SEEK_CUR);
+                fseek(fp, (long)msgsys.Menu_Len, SEEK_CUR);
+                fseek(fp, (long)msgsys.Vol_Len, SEEK_CUR);
+                fseek(fp, (long)msgsys.Help_Len, SEEK_CUR);
+                fseek(fp, (long)msgsys.Scan_Len*(long)sizeof(struct _ascan), SEEK_CUR);
+                fseek(fp, (long)msgsys.Other_Len, SEEK_CUR);
+
+                aa.basetype = fidomsgtype;
+                aa.type = ((msgsys.Attrib & SYSMAIL) ? GMB_NET : (msgsys.Attrib & _ECHOMAIL) ? GMB_ECHO : GMB_LOCAL);
+                aa.attr = ((msgsys.Attrib & SYSMAIL) ? attribsnet : (msgsys.Attrib & _ECHOMAIL) ? attribsecho : attribslocal);
+                aa.setechoid(*msgsys.Echo_Name ? msgsys.Echo_Name : msgsys.Area_Name);
+
+                if(msgsys.Net)
+                {
+                    aa.aka.zone = msgsys.Zone;
+                    aa.aka.net = msgsys.Net;
+                    aa.aka.node = msgsys.Node;
+                    aa.aka.point = msgsys.Point;
+                }
+
+                AddNewArea(aa);
+            }
+
+            fclose(fp);
         }
-      }
     }
-  }
+    else
+    {
+
+        // Try for the old 1.1x files
+
+        gposixdir d(oppath);
+        const gdirentry *de;
+        if(d.ok)
+        {
+            while((de = d.nextentry("system*.dat", true)) != NULL)
+            {
+
+                MakePathname(file, oppath, de->name.c_str());
+                fp = fsopen(file, "rb", sharemode);
+                if (fp)
+                {
+                    setvbuf(fp, NULL, _IOFBF, 8192);
+
+                    if (not quiet)
+                        STD_PRINTNL("* Reading " << file);
+
+                    fread(&sysdat, sizeof(_systemdat), 1, fp);
+                    if(*sysdat.msgpath and *sysdat.msgtitle)
+                    {
+                        aa.reset();
+                        aa.basetype = fidomsgtype;
+                        aa.setpath(sysdat.msgpath);
+                        aa.setdesc(sysdat.msgtitle);
+                        aa.setechoid(sysdat.EchoName);
+                        aa.type = ((sysdat.attrib & SYSMAIL) ? GMB_NET : (sysdat.attrib & _ECHOMAIL) ? GMB_ECHO : GMB_LOCAL);
+                        aa.attr = ((sysdat.attrib & SYSMAIL) ? attribsnet : (sysdat.attrib & _ECHOMAIL) ? attribsecho : attribslocal);
+                        AddNewArea(aa);
+                    }
+
+                    fclose(fp);
+                }
+            }
+        }
+    }
 }
 
 

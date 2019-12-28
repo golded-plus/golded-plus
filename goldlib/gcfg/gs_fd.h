@@ -37,172 +37,175 @@
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack(1)
+    #pragma pack(1)
 #endif
 
 
 //  ------------------------------------------------------------------
 //  Actually only size of the following structure used
 
-typedef struct {
+typedef struct
+{
 
-  // The logfile
+    // The logfile
 
-  char    log[71];
-  word    loglevel;                   // See --- Loglevels
+    char    log[71];
+    word    loglevel;                   // See --- Loglevels
 
-  // Number manipulation
+    // Number manipulation
 
-  char    prefix[31];                 // Always added
-  char    hidden[10][31];             // Strip these if they are in #
-  char    postfix[31];                // Always appended
+    char    prefix[31];                 // Always added
+    char    hidden[10][31];             // Strip these if they are in #
+    char    postfix[31];                // Always appended
 
-  // Miscellaneous flags
+    // Miscellaneous flags
 
-  long    flags;                      // See --- Miscellaneous flags
-  long    flags_reserved;             // Reserved flags
-  word    audio;                      // See --- Audio flags
-  byte    synchtimer;                 // Number of seconds for sync
+    long    flags;                      // See --- Miscellaneous flags
+    long    flags_reserved;             // Reserved flags
+    word    audio;                      // See --- Audio flags
+    byte    synchtimer;                 // Number of seconds for sync
 
-  // Errorlevels
+    // Errorlevels
 
-  byte    crashexit;                  // Mail exit
-  byte    bbs300;
-  byte    bbs1200;
-  byte    bbs1275;
-  byte    bbs2400;
-  byte    bbs4800;
-  byte    bbs9600;
-  byte    bbs19200;
-  byte    bbs38400;
+    byte    crashexit;                  // Mail exit
+    byte    bbs300;
+    byte    bbs1200;
+    byte    bbs1275;
+    byte    bbs2400;
+    byte    bbs4800;
+    byte    bbs9600;
+    byte    bbs19200;
+    byte    bbs38400;
 
-  // Modem
+    // Modem
 
-  word    modembaud;                  // 30=300, 24=2400, etc.
-  byte    modemport;                  // 1-255 (COM1=1, COM2=2, etc.)
-  byte    modemdelay;                 // 1/10 seconds delay / line sent
+    word    modembaud;                  // 30=300, 24=2400, etc.
+    byte    modemport;                  // 1-255 (COM1=1, COM2=2, etc.)
+    byte    modemdelay;                 // 1/10 seconds delay / line sent
 
-  // Messages
+    // Messages
 
-  char    b300msg[16];
-  char    b1200msg[16];
-  char    b1275msg[16];
-  char    b2400msg[16];
-  char    b4800msg[16];
-  char    b9600msg[16];
-  char    b19200msg[16];
-  char    b38400msg[16];
-  char    errormsg[16];
-  char    busymsg[16];
-  char    carriermsg[16];
-  char    okmsg[16];
-  char    ringmsg[16];
-  char    nodialmsg[16];
-  char    noanswmsg[16];
-  char    voicemsg[16];
+    char    b300msg[16];
+    char    b1200msg[16];
+    char    b1275msg[16];
+    char    b2400msg[16];
+    char    b4800msg[16];
+    char    b9600msg[16];
+    char    b19200msg[16];
+    char    b38400msg[16];
+    char    errormsg[16];
+    char    busymsg[16];
+    char    carriermsg[16];
+    char    okmsg[16];
+    char    ringmsg[16];
+    char    nodialmsg[16];
+    char    noanswmsg[16];
+    char    voicemsg[16];
 
-  // Commands
+    // Commands
 
-  char    escapestr[11];
-  char    offhookstr[11];
-  char    reconnectstr[11];
-  char    init1[50];
-  char    init2[50];
-  char    init3[50];
-  char    resetstr[50];
-  char    downstr[50];
-  char    hangupstr[11];
-  char    dialstr[11];
+    char    escapestr[11];
+    char    offhookstr[11];
+    char    reconnectstr[11];
+    char    init1[50];
+    char    init2[50];
+    char    init3[50];
+    char    resetstr[50];
+    char    downstr[50];
+    char    hangupstr[11];
+    char    dialstr[11];
 
-  // Manual answer stuff
+    // Manual answer stuff
 
-  char    modemanswer[11];
-  byte    answerdelay;
+    char    modemanswer[11];
+    byte    answerdelay;
 
-  // Limited answer start and end times
+    // Limited answer start and end times
 
-  byte    begin_hour;
-  byte    begin_minute;
-  byte    end_hour;
-  byte    end_minute;
+    byte    begin_hour;
+    byte    begin_minute;
+    byte    end_hour;
+    byte    end_minute;
 
-  // Calling control
+    // Calling control
 
-  byte    retrybusy;
-  byte    retryresend;
-  byte    retrydelay;
+    byte    retrybusy;
+    byte    retryresend;
+    byte    retrydelay;
 
-  // File request control
+    // File request control
 
-  char    reqlist[71];            // List to scan for reqable dirs
-  char    reqalias[71];           // Magic filenames
-  char    reqmessage[71];         // Appended to FAILED REQUEST message
-  byte    reqtype;                // Bit field
-  byte    reqmaxfiles;            // Max number of files to send on 1 req
-  word    reqmaxtime;             // Maximum number of minutes for req
-  word    reqmaxsize;             // Maximum size (in KB) for req
-  word    reqminbaud;             // Minimum baudrate for req
-  byte    reqstarthr;             // Start time for file requests, can be
-  byte    reqstartmin;            // combined with the reqdays field.
-  byte    reqendhr;
-  byte    reqendmin;
-  byte    reqdays;
+    char    reqlist[71];            // List to scan for reqable dirs
+    char    reqalias[71];           // Magic filenames
+    char    reqmessage[71];         // Appended to FAILED REQUEST message
+    byte    reqtype;                // Bit field
+    byte    reqmaxfiles;            // Max number of files to send on 1 req
+    word    reqmaxtime;             // Maximum number of minutes for req
+    word    reqmaxsize;             // Maximum size (in KB) for req
+    word    reqminbaud;             // Minimum baudrate for req
+    byte    reqstarthr;             // Start time for file requests, can be
+    byte    reqstartmin;            // combined with the reqdays field.
+    byte    reqendhr;
+    byte    reqendmin;
+    byte    reqdays;
 
-  // File to send when human callers are let thru
+    // File to send when human callers are let thru
 
-  char    bbsname[11];
-  char    beforebbsbanner[71];
+    char    bbsname[11];
+    char    beforebbsbanner[71];
 
-  // Function keys from mailer menu
+    // Function keys from mailer menu
 
-  struct {
-    char cmd[61];
-    char title[26];
-    byte behavior;
-  }       key[24];
+    struct
+    {
+        char cmd[61];
+        char title[26];
+        byte behavior;
+    }       key[24];
 
-  // Mailer colors
+    // Mailer colors
 
-  byte    color[11];
+    byte    color[11];
 
-  // Number of days to keep entries in history files
+    // Number of days to keep entries in history files
 
-  byte    keep_history;
+    byte    keep_history;
 
-  // FDServer password, if none given, server is INactive
+    // FDServer password, if none given, server is INactive
 
-  char    slavepwd[21];
+    char    slavepwd[21];
 
-  // File displayed to users when system is in event for no callers
+    // File displayed to users when system is in event for no callers
 
-  char    ineventfile[71];
+    char    ineventfile[71];
 
-  // File displayed when human callers are seen on mail-only system
+    // File displayed when human callers are seen on mail-only system
 
-  char    mailonlyfile[71];
+    char    mailonlyfile[71];
 
-  // External programs to run on certain "wake-up" strings
+    // External programs to run on certain "wake-up" strings
 
-  struct {
-    char wakeupstr[40];
-    byte errorlevel;
-  }       externmail[10];
+    struct
+    {
+        char wakeupstr[40];
+        byte errorlevel;
+    }       externmail[10];
 
-  // RESERVED FIELD
+    // RESERVED FIELD
 
-  // Limited audio start and end times. If the below four bytes
-  // are all zero (0), audio is enabled all the time
+    // Limited audio start and end times. If the below four bytes
+    // are all zero (0), audio is enabled all the time
 
-  byte    audio_begin_hour;
-  byte    audio_begin_minute;
-  byte    audio_end_hour;
-  byte    audio_end_minute;
+    byte    audio_begin_hour;
+    byte    audio_begin_minute;
+    byte    audio_end_hour;
+    byte    audio_end_minute;
 
-  // Minimum cost for system to possibly end up in undialable list
+    // Minimum cost for system to possibly end up in undialable list
 
-  word    min_undial_cost;
+    word    min_undial_cost;
 
-  char    RESERVERAT[1018];
+    char    RESERVERAT[1018];
 
 } FD_Mailer;
 
@@ -233,83 +236,86 @@ typedef struct {
 #define MSGAREQ         0x4000
 #define MSGFUPDREQ      0x8000
 
-typedef struct {
+typedef struct
+{
 
-  // Macro keys
+    // Macro keys
 
-  char    macrokey[24][61];
+    char    macrokey[24][61];
 
-  // Margin, default==60
+    // Margin, default==60
 
-  byte    margin;
+    byte    margin;
 
-  // Default message status
+    // Default message status
 
-  word    msgbits;
+    word    msgbits;
 
-  // Miscellaneous settings
+    // Miscellaneous settings
 
-  long    flags;
+    long    flags;
 
-  // Origin lines
+    // Origin lines
 
-  char    origin[20][61];
+    char    origin[20][61];
 
-  // Editor colors
+    // Editor colors
 
-  byte    color[15];
+    byte    color[15];
 
-  // Netmail folder flags
+    // Netmail folder flags
 
-  long    netfolderflags;
+    long    netfolderflags;
 
-  // Translation tables IN/OUT
+    // Translation tables IN/OUT
 
-  byte    translate_in[256];
-  byte    translate_out[256];
+    byte    translate_in[256];
+    byte    translate_out[256];
 
-  // Where RemoteAccess/QuickBBS message base files are
+    // Where RemoteAccess/QuickBBS message base files are
 
-  char    qbase[71];
+    char    qbase[71];
 
-  // RESERVED
+    // RESERVED
 
-  char    RESERVERAT[1024];
+    char    RESERVERAT[1024];
 
 } FD_Editor;
 
 
 //  ------------------------------------------------------------------
 
-typedef struct {
+typedef struct
+{
 
-  char    systempath[71];
-  char    mailpath[71];
-  char    swap_path[71];
-  char    RESERVED_path_1[71];
-  char    RESERVED_path_2[71];
-  char    infilepath[71];
-  char    packetpath[71];
-  char    nodelistpath[71];
+    char    systempath[71];
+    char    mailpath[71];
+    char    swap_path[71];
+    char    RESERVED_path_1[71];
+    char    RESERVED_path_2[71];
+    char    infilepath[71];
+    char    packetpath[71];
+    char    nodelistpath[71];
 
-  word    countrycode;
+    word    countrycode;
 
-  ftn_addr   aka[11];
+    ftn_addr   aka[11];
 
-  // Timeout value for screen blanker in SECONDS (0-255)
+    // Timeout value for screen blanker in SECONDS (0-255)
 
-  long    flags;
-  byte    blackout_time;
+    long    flags;
+    byte    blackout_time;
 
-  // User record
+    // User record
 
-  struct {
-    char  name[37];
-    long  pwdcrc; // Crc-32 of user password, -1L No pwd
-    dword flags;
-  }       user[10];
+    struct
+    {
+        char  name[37];
+        long  pwdcrc; // Crc-32 of user password, -1L No pwd
+        dword flags;
+    }       user[10];
 
-  char    RESERVED[1024];
+    char    RESERVED[1024];
 
 } FD_Shared;
 
@@ -346,16 +352,17 @@ typedef struct {
 #define FOLDER_USER_9       0x00000100L
 #define FOLDER_USER_10      0x00000200L
 
-typedef struct {
+typedef struct
+{
 
-  char    path[65],       // Path if "board==0", otherwise emtpy
-          title[41];      // Title to appear on screen
-  byte    origin;         // Default origin line, 0-19
-  long    behave;         // Behavior, see above
-  long    pwdcrc;         // CRC32 of password or -1L if unprotected
-  long    userok;         // Users with initial access
-  byte    useaka;         // AKA to use, 0==primary
-  word    board;          // QuickBBS/RemoteAccess board number
+    char    path[65],       // Path if "board==0", otherwise emtpy
+            title[41];      // Title to appear on screen
+    byte    origin;         // Default origin line, 0-19
+    long    behave;         // Behavior, see above
+    long    pwdcrc;         // CRC32 of password or -1L if unprotected
+    long    userok;         // Users with initial access
+    byte    useaka;         // AKA to use, 0==primary
+    word    board;          // QuickBBS/RemoteAccess board number
 
 } FD_Folder, *FOLDERPTR;
 
@@ -363,7 +370,7 @@ typedef struct {
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack()
+    #pragma pack()
 #endif
 
 

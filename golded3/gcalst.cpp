@@ -33,112 +33,118 @@
 // FTS-0001 is FTS so leave it anyway :-)
 #include <gmofido.h>
 #ifndef GMB_NOEZY
-#include <gmoezyc.h>
+    #include <gmoezyc.h>
 #endif
 #if !defined(GMB_NOHUDS) || !defined(GMB_NOGOLD)
-#include <gmohuds.h>
+    #include <gmohuds.h>
 #endif
 #ifndef GMB_NOJAM
-#include <gmojamm.h>
+    #include <gmojamm.h>
 #endif
 #ifndef GMB_NOSQSH
-#include <gmosqsh.h>
+    #include <gmosqsh.h>
 #endif
 #ifndef GMB_NOPCB
-#include <gmopcbd.h>
+    #include <gmopcbd.h>
 #endif
 #ifndef GMB_NOWCAT
-#include <gmowcat.h>
+    #include <gmowcat.h>
 #endif
 #ifndef GMB_NOXBBS
-#include <gmoxbbs.h>
+    #include <gmoxbbs.h>
 #endif
 #ifndef GMB_NOSMB
-#include <gmosmb.h>
+    #include <gmosmb.h>
 #endif
 
 //  ------------------------------------------------------------------
 //  Arealist constructor
 
-AreaList::AreaList() : idx() {
+AreaList::AreaList() : idx()
+{
 
-  item = idx.begin();
-  *sortspec = NUL;
+    item = idx.begin();
+    *sortspec = NUL;
 
-  for(uint i = 0; i < 16; i++)
-    *alistselections[0] = NUL;
+    for(uint i = 0; i < 16; i++)
+        *alistselections[0] = NUL;
 }
 
 
 //  ------------------------------------------------------------------
 //  Arealist destructor
 
-AreaList::~AreaList() {
+AreaList::~AreaList()
+{
 
-  Reset();
+    Reset();
 }
 
 
 //  ------------------------------------------------------------------
 
-void AreaList::SetDefaultMarks() {
+void AreaList::SetDefaultMarks()
+{
 
-  strcpy(alistselections[0], LNG->ArealistSelections1);
+    strcpy(alistselections[0], LNG->ArealistSelections1);
 
-  for(uint i = 1; i < 16; i++)
-    strcpy(alistselections[i], LNG->ArealistSelections2);
+    for(uint i = 1; i < 16; i++)
+        strcpy(alistselections[i], LNG->ArealistSelections2);
 }
 
 
 //  ------------------------------------------------------------------
 //  Arealist deallocate and reset data
 
-void AreaList::Reset() {
+void AreaList::Reset()
+{
 
-  ListScan.Reset();
-  while(not idx.empty()) {
-    delete idx.back();
-    idx.pop_back();
-  }
+    ListScan.Reset();
+    while(not idx.empty())
+    {
+        delete idx.back();
+        idx.pop_back();
+    }
 }
 
 
 //  ------------------------------------------------------------------
 //  Return a new'ed area of the specified format
 
-Area* AreaList::NewArea(const char *basetype) {
+Area* AreaList::NewArea(const char *basetype)
+{
 
-  gmo_area* ap = NULL;
-  if(streql(basetype, "SEPARATOR")) ap = new SepArea;
-  else if(streql(basetype, "FTS1") or streql(basetype, "OPUS")) ap = new FidoArea;
-  #ifndef GMB_NOEZY
-  else if(streql(basetype, "EZYCOM")) ap = new EzycomArea;
-  #endif
-  #ifndef GMB_NOGOLD
-  else if(streql(basetype, "GOLDBASE")) ap = new GoldArea;
-  #endif
-  #ifndef GMB_NOHUDS
-  else if(streql(basetype, "HUDSON")) ap = new HudsArea;
-  #endif
-  #ifndef GMB_NOJAM
-  else if(streql(basetype, "JAM")) ap = new JamArea;
-  #endif
-  #ifndef GMB_NOPCB
-  else if(streql(basetype, "PCBOARD")) ap = new PcbArea;
-  #endif
-  #ifndef GMB_NOSQSH
-  else if(streql(basetype, "SQUISH")) ap = new SquishArea;
-  #endif
-  #ifndef GMB_NOWCAT
-  else if(streql(basetype, "WILDCAT")) ap = new WCatArea;
-  #endif
-  #ifndef GMB_NOXBBS
-  else if(streql(basetype, "ADEPTXBBS")) ap = new XbbsArea;
-  #endif
-  #ifndef GMB_NOSMB
-  else if(streql(basetype, "SMB")) ap = new SMBArea;
-  #endif
-  return new Area(ap);
+    gmo_area* ap = NULL;
+    if(streql(basetype, "SEPARATOR")) ap = new SepArea;
+    else if(streql(basetype, "FTS1") or streql(basetype, "OPUS")) ap = new FidoArea;
+#ifndef GMB_NOEZY
+    else if(streql(basetype, "EZYCOM")) ap = new EzycomArea;
+#endif
+#ifndef GMB_NOGOLD
+    else if(streql(basetype, "GOLDBASE")) ap = new GoldArea;
+#endif
+#ifndef GMB_NOHUDS
+    else if(streql(basetype, "HUDSON")) ap = new HudsArea;
+#endif
+#ifndef GMB_NOJAM
+    else if(streql(basetype, "JAM")) ap = new JamArea;
+#endif
+#ifndef GMB_NOPCB
+    else if(streql(basetype, "PCBOARD")) ap = new PcbArea;
+#endif
+#ifndef GMB_NOSQSH
+    else if(streql(basetype, "SQUISH")) ap = new SquishArea;
+#endif
+#ifndef GMB_NOWCAT
+    else if(streql(basetype, "WILDCAT")) ap = new WCatArea;
+#endif
+#ifndef GMB_NOXBBS
+    else if(streql(basetype, "ADEPTXBBS")) ap = new XbbsArea;
+#endif
+#ifndef GMB_NOSMB
+    else if(streql(basetype, "SMB")) ap = new SMBArea;
+#endif
+    return new Area(ap);
 }
 
 Area* AreaList::NewArea(const std::string &basetype)
@@ -151,45 +157,47 @@ Area* AreaList::NewArea(const std::string &basetype)
 
 void AreaList::WriteGoldLast()
 {
-  word GOLDLAST_VER = CUR_GOLDLAST_VER;
-  ggoldlast entry;
-  Path lst;
+    word GOLDLAST_VER = CUR_GOLDLAST_VER;
+    ggoldlast entry;
+    Path lst;
 
-  strcpy(lst, AddPath(CFG->goldpath, CFG->goldlast));
+    strcpy(lst, AddPath(CFG->goldpath, CFG->goldlast));
 
-  gfile fp(lst, "wb", CFG->sharemode);
-  if (fp.isopen())
-  {
-    fp.SetvBuf(NULL, _IOFBF, 8192);
-    fp.Fwrite(&GOLDLAST_VER, sizeof(word));
-    fp.Fwrite(AL.alistselections, sizeof(AL.alistselections));
+    gfile fp(lst, "wb", CFG->sharemode);
+    if (fp.isopen())
+    {
+        fp.SetvBuf(NULL, _IOFBF, 8192);
+        fp.Fwrite(&GOLDLAST_VER, sizeof(word));
+        fp.Fwrite(AL.alistselections, sizeof(AL.alistselections));
 
-    for(area_iterator ap = idx.begin(); ap != idx.end(); ap++) {
+        for(area_iterator ap = idx.begin(); ap != idx.end(); ap++)
+        {
 
-      if((*ap)->isscanned and not (*ap)->isseparator()) {
+            if((*ap)->isscanned and not (*ap)->isseparator())
+            {
 
-        // Write fixed header
-        entry.crcechoid    = strCrc32((*ap)->echoid(), false);
-        entry.lastread     = (*ap)->lastread();
-        entry.msgncount    = (*ap)->Msgn.Count();
-        entry.unread       = (*ap)->unread;
-        entry.marks        = (*ap)->marks;
-        entry.flags        = 0;
-        if((*ap)->isscanned)
-          entry.flags |= 1;
-        if((*ap)->isvalidchg)
-          entry.flags |= 2;
-        if((*ap)->isunreadchg)
-          entry.flags |= 4;
+                // Write fixed header
+                entry.crcechoid    = strCrc32((*ap)->echoid(), false);
+                entry.lastread     = (*ap)->lastread();
+                entry.msgncount    = (*ap)->Msgn.Count();
+                entry.unread       = (*ap)->unread;
+                entry.marks        = (*ap)->marks;
+                entry.flags        = 0;
+                if((*ap)->isscanned)
+                    entry.flags |= 1;
+                if((*ap)->isvalidchg)
+                    entry.flags |= 2;
+                if((*ap)->isunreadchg)
+                    entry.flags |= 4;
 
-        fp.Fwrite(&entry, sizeof(entry));
+                fp.Fwrite(&entry, sizeof(entry));
 
-        // Write variable length extensions
-        (*ap)->Mark.Save(fp);
-        (*ap)->PMrk.Save(fp);
-      }
+                // Write variable length extensions
+                (*ap)->Mark.Save(fp);
+                (*ap)->PMrk.Save(fp);
+            }
+        }
     }
-  }
 }
 
 
@@ -198,55 +206,57 @@ void AreaList::WriteGoldLast()
 
 void AreaList::ReadGoldLast()
 {
-  word GOLDLAST_VER;
-  ggoldlast entry;
+    word GOLDLAST_VER;
+    ggoldlast entry;
 
-  gfile fp(AddPath(CFG->goldpath, CFG->goldlast), "rb", CFG->sharemode);
-  if (fp.isopen())
-  {
-    fp.SetvBuf(NULL, _IOFBF, 8192);
-    fp.Fread(&GOLDLAST_VER, sizeof(word));
-
-    if (GOLDLAST_VER != CUR_GOLDLAST_VER)
-      return;
-
-    fp.Fread(AL.alistselections, sizeof(AL.alistselections));
-
-    while (fp.Fread(&entry, sizeof(entry)))
+    gfile fp(AddPath(CFG->goldpath, CFG->goldlast), "rb", CFG->sharemode);
+    if (fp.isopen())
     {
-      bool found = false;
+        fp.SetvBuf(NULL, _IOFBF, 8192);
+        fp.Fread(&GOLDLAST_VER, sizeof(word));
 
-      for(area_iterator ap = idx.begin(); ap != idx.end(); ap++) {
-        if(strCrc32((*ap)->echoid(), false) == entry.crcechoid) {
+        if (GOLDLAST_VER != CUR_GOLDLAST_VER)
+            return;
 
-          (*ap)->set_lastread(entry.lastread);
-          (*ap)->Msgn.count  = entry.msgncount;
-          (*ap)->unread      = entry.unread;
-          (*ap)->marks       = entry.marks;
-          (*ap)->isscanned   = make_bool(entry.flags & 1);
-          (*ap)->isvalidchg  = make_bool(entry.flags & 2);
-          (*ap)->UpdateAreadata();
-          (*ap)->isunreadchg = make_bool(entry.flags & 4);
+        fp.Fread(AL.alistselections, sizeof(AL.alistselections));
 
-          (*ap)->Mark.Load(fp);
-          (*ap)->PMrk.Load(fp);
+        while (fp.Fread(&entry, sizeof(entry)))
+        {
+            bool found = false;
 
-          found = true;
-          break;
+            for(area_iterator ap = idx.begin(); ap != idx.end(); ap++)
+            {
+                if(strCrc32((*ap)->echoid(), false) == entry.crcechoid)
+                {
+
+                    (*ap)->set_lastread(entry.lastread);
+                    (*ap)->Msgn.count  = entry.msgncount;
+                    (*ap)->unread      = entry.unread;
+                    (*ap)->marks       = entry.marks;
+                    (*ap)->isscanned   = make_bool(entry.flags & 1);
+                    (*ap)->isvalidchg  = make_bool(entry.flags & 2);
+                    (*ap)->UpdateAreadata();
+                    (*ap)->isunreadchg = make_bool(entry.flags & 4);
+
+                    (*ap)->Mark.Load(fp);
+                    (*ap)->PMrk.Load(fp);
+
+                    found = true;
+                    break;
+                }
+            }
+
+            if (not found)
+            {
+                // skip stored message marks
+                dword dw;
+                fp.Fread(&dw, sizeof(dword));
+                fp.Fseek(dw*sizeof(dword), SEEK_CUR);
+                fp.Fread(&dw, sizeof(dword));
+                fp.Fseek(dw*sizeof(dword), SEEK_CUR);
+            }
         }
-      }
-
-      if (not found)
-      {
-        // skip stored message marks
-        dword dw;
-        fp.Fread(&dw, sizeof(dword));
-        fp.Fseek(dw*sizeof(dword), SEEK_CUR);
-        fp.Fread(&dw, sizeof(dword));
-        fp.Fseek(dw*sizeof(dword), SEEK_CUR);
-      }
     }
-  }
 }
 
 
@@ -255,135 +265,140 @@ void AreaList::ReadGoldLast()
 
 void AreaList::WriteAreaDef(const char* file)
 {
-  int tmp;
-  Path path;
-  char groupid[10], echoid[sizeof(Echo)+2];
-  int maxechoid=0, maxdesc=0, maxgroupid=0, maxpath=0, maxaddr=0, maxattr=0;
-  char desc[sizeof(Desc)+2], type[6], msgbase[9], addr[40], attr[150], origin[163];
+    int tmp;
+    Path path;
+    char groupid[10], echoid[sizeof(Echo)+2];
+    int maxechoid=0, maxdesc=0, maxgroupid=0, maxpath=0, maxaddr=0, maxattr=0;
+    char desc[sizeof(Desc)+2], type[6], msgbase[9], addr[40], attr[150], origin[163];
 
-  gfile fp(file, "wt", CFG->sharemode);
-  if (fp.isopen())
-  {
-    area_iterator aa;
-    for(aa = idx.begin(); aa != idx.end(); aa++) {
-      tmp = strlen((*aa)->echoid());
-      if(strchr((*aa)->echoid(), ' '))
-        tmp += 2;
-      maxechoid = MaxV(maxechoid, tmp);
-      tmp = strlen((*aa)->desc())+2;
-      maxdesc = MaxV(maxdesc, tmp);
-      tmp = strlen((*aa)->path());
-      if(strchr((*aa)->path(), ' '))
-        tmp += 2;
-      maxpath = MaxV(maxpath, tmp);
-      if ((*aa)->groupid() & 0x8000u)
-        gsprintf(PRINTF_DECLARE_BUFFER(groupid), "#%u", (*aa)->groupid()&0x7FFF);
-      else if (g_isupper((*aa)->groupid()))
-        *groupid = (char)(*aa)->groupid(), groupid[1] = NUL;
-      else
-        *groupid = '0', groupid[1] = NUL;
-      tmp = strlen(groupid);
-      maxgroupid = MaxV(maxgroupid, tmp);
-      if(memcmp(&(*aa)->aka(), &CFG->aka[0], sizeof(Addr)))
-        (*aa)->aka().make_string(addr);
-      else
-        strcpy(addr, ".");
-      tmp = strlen(addr);
-      maxaddr = MaxV(maxaddr, tmp);
-      tmp = strlen(MakeAttrStr(attr, sizeof(attr), &(*aa)->attr()));
-      maxattr = MaxV(maxattr, tmp+2);
-    }
-
-    for (aa = idx.begin(); aa != idx.end(); aa++)
+    gfile fp(file, "wt", CFG->sharemode);
+    if (fp.isopen())
     {
-      gsprintf(PRINTF_DECLARE_BUFFER(desc), "\"%s\"", (*aa)->desc());
-      if ((*aa)->groupid() & 0x8000u)
-        gsprintf(PRINTF_DECLARE_BUFFER(groupid), "#%u", (*aa)->groupid()&0x7FFF);
-      else if (g_isupper((*aa)->groupid()))
-        *groupid = (char)(*aa)->groupid(), groupid[1] = NUL;
-      else
-        *groupid = '0', groupid[1] = NUL;
-      if((*aa)->isemail())
-        strcpy(type, "EMail");
-      else if((*aa)->isnewsgroup())
-        strcpy(type, "News ");
-      else if((*aa)->isnet())
-        strcpy(type, "Net  ");
-      else if((*aa)->isecho())
-        strcpy(type, "Echo ");
-      else if((*aa)->islocal())
-        strcpy(type, "Local");
-      #ifndef GMB_NOXBBS
-      if ((*aa)->basetype() == "ADEPTXBBS")
-        strcpy(msgbase, "XBBS");
-      else
-      #endif
-        strxcpy(msgbase, (*aa)->basetype().c_str(), sizeof(msgbase));
-      if (strchr((*aa)->echoid(), ' '))
-        gsprintf(PRINTF_DECLARE_BUFFER(echoid), "\"%s\"", (*aa)->echoid());
-      else
-        strcpy(echoid, (*aa)->echoid());
-      if ((*aa)->isseparator())
-      {
-        fp.Printf("AREASEP %-*s %-*s %*s %s\n",
-          maxechoid,  echoid,
-          maxdesc,    desc,
-          maxgroupid, groupid,
-          strtrim(type)
-        );
-      }
-      else
-      {
-        if (strchr((*aa)->path(), ' '))
-          gsprintf(PRINTF_DECLARE_BUFFER(path), "\"%s\"", (*aa)->path());
-        else
-          strcpy(path, (*aa)->path());
-        if(memcmp(&(*aa)->aka(), &CFG->aka[0], sizeof(Addr)))
-          (*aa)->aka().make_string(addr);
-        else
-          strcpy(addr, ".");
-        *attr = '(';  /*)*/
-        MakeAttrStr(attr+1, sizeof(attr)-2, &(*aa)->attr());
-        strcat(attr, /*(*/ ")");
-        if ((*aa)->originno())
-          gsprintf(PRINTF_DECLARE_BUFFER(origin), " \"%.*s\"", (int)sizeof(origin)-4, CFG->origin[(*aa)->originno()].c_str());
-        else
-          *origin = NUL;
-        fp.Printf("AREADEF %-*s %-*s %*s %s %s %-*s %-*s %-*s%s\n",
-          maxechoid,  echoid,
-          maxdesc,    desc,
-          maxgroupid, groupid,
-          type,
-          msgbase,
-          maxpath, path,
-          maxaddr, addr,
-          maxattr, attr,
-          origin
-        );
-      }
+        area_iterator aa;
+        for(aa = idx.begin(); aa != idx.end(); aa++)
+        {
+            tmp = strlen((*aa)->echoid());
+            if(strchr((*aa)->echoid(), ' '))
+                tmp += 2;
+            maxechoid = MaxV(maxechoid, tmp);
+            tmp = strlen((*aa)->desc())+2;
+            maxdesc = MaxV(maxdesc, tmp);
+            tmp = strlen((*aa)->path());
+            if(strchr((*aa)->path(), ' '))
+                tmp += 2;
+            maxpath = MaxV(maxpath, tmp);
+            if ((*aa)->groupid() & 0x8000u)
+                gsprintf(PRINTF_DECLARE_BUFFER(groupid), "#%u", (*aa)->groupid()&0x7FFF);
+            else if (g_isupper((*aa)->groupid()))
+                *groupid = (char)(*aa)->groupid(), groupid[1] = NUL;
+            else
+                *groupid = '0', groupid[1] = NUL;
+            tmp = strlen(groupid);
+            maxgroupid = MaxV(maxgroupid, tmp);
+            if(memcmp(&(*aa)->aka(), &CFG->aka[0], sizeof(Addr)))
+                (*aa)->aka().make_string(addr);
+            else
+                strcpy(addr, ".");
+            tmp = strlen(addr);
+            maxaddr = MaxV(maxaddr, tmp);
+            tmp = strlen(MakeAttrStr(attr, sizeof(attr), &(*aa)->attr()));
+            maxattr = MaxV(maxattr, tmp+2);
+        }
+
+        for (aa = idx.begin(); aa != idx.end(); aa++)
+        {
+            gsprintf(PRINTF_DECLARE_BUFFER(desc), "\"%s\"", (*aa)->desc());
+            if ((*aa)->groupid() & 0x8000u)
+                gsprintf(PRINTF_DECLARE_BUFFER(groupid), "#%u", (*aa)->groupid()&0x7FFF);
+            else if (g_isupper((*aa)->groupid()))
+                *groupid = (char)(*aa)->groupid(), groupid[1] = NUL;
+            else
+                *groupid = '0', groupid[1] = NUL;
+            if((*aa)->isemail())
+                strcpy(type, "EMail");
+            else if((*aa)->isnewsgroup())
+                strcpy(type, "News ");
+            else if((*aa)->isnet())
+                strcpy(type, "Net  ");
+            else if((*aa)->isecho())
+                strcpy(type, "Echo ");
+            else if((*aa)->islocal())
+                strcpy(type, "Local");
+#ifndef GMB_NOXBBS
+            if ((*aa)->basetype() == "ADEPTXBBS")
+                strcpy(msgbase, "XBBS");
+            else
+#endif
+                strxcpy(msgbase, (*aa)->basetype().c_str(), sizeof(msgbase));
+            if (strchr((*aa)->echoid(), ' '))
+                gsprintf(PRINTF_DECLARE_BUFFER(echoid), "\"%s\"", (*aa)->echoid());
+            else
+                strcpy(echoid, (*aa)->echoid());
+            if ((*aa)->isseparator())
+            {
+                fp.Printf("AREASEP %-*s %-*s %*s %s\n",
+                          maxechoid,  echoid,
+                          maxdesc,    desc,
+                          maxgroupid, groupid,
+                          strtrim(type)
+                         );
+            }
+            else
+            {
+                if (strchr((*aa)->path(), ' '))
+                    gsprintf(PRINTF_DECLARE_BUFFER(path), "\"%s\"", (*aa)->path());
+                else
+                    strcpy(path, (*aa)->path());
+                if(memcmp(&(*aa)->aka(), &CFG->aka[0], sizeof(Addr)))
+                    (*aa)->aka().make_string(addr);
+                else
+                    strcpy(addr, ".");
+                *attr = '(';  /*)*/
+                MakeAttrStr(attr+1, sizeof(attr)-2, &(*aa)->attr());
+                strcat(attr, /*(*/ ")");
+                if ((*aa)->originno())
+                    gsprintf(PRINTF_DECLARE_BUFFER(origin), " \"%.*s\"", (int)sizeof(origin)-4, CFG->origin[(*aa)->originno()].c_str());
+                else
+                    *origin = NUL;
+                fp.Printf("AREADEF %-*s %-*s %*s %s %s %-*s %-*s %-*s%s\n",
+                          maxechoid,  echoid,
+                          maxdesc,    desc,
+                          maxgroupid, groupid,
+                          type,
+                          msgbase,
+                          maxpath, path,
+                          maxaddr, addr,
+                          maxattr, attr,
+                          origin
+                         );
+            }
+        }
     }
-  }
 }
 
 
 //  ------------------------------------------------------------------
 
-void SetAreaDesc(char* echoid, char* desc) {
+void SetAreaDesc(char* echoid, char* desc)
+{
 
-  AL.SetAreaDesc(echoid, desc);
+    AL.SetAreaDesc(echoid, desc);
 }
 
 
 //  ------------------------------------------------------------------
 
-void AreaList::SetAreaDesc(char* echoid, char* desc) {
+void AreaList::SetAreaDesc(char* echoid, char* desc)
+{
 
-  for(area_iterator ap = idx.begin(); ap != idx.end(); ap++) {
-    if(strieql(echoid, (*ap)->echoid())) {
-      (*ap)->set_desc(desc);
-      break;
+    for(area_iterator ap = idx.begin(); ap != idx.end(); ap++)
+    {
+        if(strieql(echoid, (*ap)->echoid()))
+        {
+            (*ap)->set_desc(desc);
+            break;
+        }
     }
-  }
 }
 
 
@@ -392,21 +407,23 @@ void AreaList::SetAreaDesc(char* echoid, char* desc) {
 #ifndef GMB_NOPCB
 void PcbAdjustArea(uint rec, const char* msgfile)
 {
-  for (uint n=0; n<AL.size(); n++)
-  {
-    Area* a = AL[n];
-    if (a->basetype() == "PCBOARD")
+    for (uint n=0; n<AL.size(); n++)
     {
-      if((a->board() == rec) and (*a->path() == NUL)) {
-        a->set_path(msgfile);
-        break;
-      }
-      else if(strieql(a->path(), msgfile)) {
-        a->set_board(rec);
-        break;
-      }
+        Area* a = AL[n];
+        if (a->basetype() == "PCBOARD")
+        {
+            if((a->board() == rec) and (*a->path() == NUL))
+            {
+                a->set_path(msgfile);
+                break;
+            }
+            else if(strieql(a->path(), msgfile))
+            {
+                a->set_board(rec);
+                break;
+            }
+        }
     }
-  }
 }
 #endif
 

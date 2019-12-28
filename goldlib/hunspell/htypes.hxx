@@ -13,13 +13,13 @@
 
 struct hentry
 {
-  short    wlen;
-  short    alen;
-  char *   word;
-  unsigned short * astr;
-  struct   hentry * next;
-  struct   hentry * next_homonym;
-  char *   description;
+    short    wlen;
+    short    alen;
+    char *   word;
+    unsigned short * astr;
+    struct   hentry * next;
+    struct   hentry * next_homonym;
+    char *   description;
 };
 
 #endif

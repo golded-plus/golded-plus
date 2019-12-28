@@ -53,42 +53,43 @@ const int GLOG_STORELINES = 10;
 //  ------------------------------------------------------------------
 //  Logfile base class
 
-class glog {
+class glog
+{
 
 private:
 
-  gfile fp;
+    gfile fp;
 
-  static int        count;
-  static struct tm  time_now;
-  static time32_t   secs_now;
-  static char       timebuf[20];
+    static int        count;
+    static struct tm  time_now;
+    static time32_t   secs_now;
+    static char       timebuf[20];
 
 protected:
 
-  uint  bufsize;
-  int   logtype;
-  const char* progname;
-  const char* shortprogname;
-  int   lineswritten;
+    uint  bufsize;
+    int   logtype;
+    const char* progname;
+    const char* shortprogname;
+    int   lineswritten;
 
 public:
 
-  int status;
+    int status;
 
-  char storeline[GLOG_STORELINES][79];
-  int  storelines;
+    char storeline[GLOG_STORELINES][79];
+    int  storelines;
 
-  glog();
-  ~glog();
+    glog();
+    ~glog();
 
-  int open(const char* filename, const char* name, const char* shortname=NULL, int type=GLOG_NONE, uint bufsz=0, int shflag=SH_DENYWR);
-  void close();
+    int open(const char* filename, const char* name, const char* shortname=NULL, int type=GLOG_NONE, uint bufsz=0, int shflag=SH_DENYWR);
+    void close();
 
-  void init(const char* name=NULL, const char* shortname=NULL, int type=GLOG_NONE);
-  void printf(const char* format, ...) __attribute__ ((format (printf, 2, 3)));
+    void init(const char* name=NULL, const char* shortname=NULL, int type=GLOG_NONE);
+    void printf(const char* format, ...) __attribute__ ((format (printf, 2, 3)));
 
-  void store();
+    void store();
 };
 
 

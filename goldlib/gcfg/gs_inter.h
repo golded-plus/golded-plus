@@ -2,7 +2,7 @@
 
 //  ------------------------------------------------------------------
 //  The Goldware Library
-//  Copyright (C) 1989-1994 Peter Stewart & InterZone Software, inc. 
+//  Copyright (C) 1989-1994 Peter Stewart & InterZone Software, inc.
 //  Copyright (C) 1990-1999 Odinn Sorensen
 //  ------------------------------------------------------------------
 //  This library is free software; you can redistribute it and/or
@@ -37,173 +37,176 @@
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack(1)
+    #pragma pack(1)
 #endif
 
 
 //  ------------------------------------------------------------------
 
-typedef struct {
+typedef struct
+{
 
-  /* The logfile */
+    /* The logfile */
 
-  char     log[71];
-  word     loglevel;                /* See --- Loglevels */
+    char     log[71];
+    word     loglevel;                /* See --- Loglevels */
 
-  /* Number manipulation */
+    /* Number manipulation */
 
-  char     prefix[31];              /* Always added */
-  char     hidden[10][31];          /* Strip these if they are in # */
-  char     postfix[31];             /* Always appended */
+    char     prefix[31];              /* Always added */
+    char     hidden[10][31];          /* Strip these if they are in # */
+    char     postfix[31];             /* Always appended */
 
-  /* Miscellaneous flags */
+    /* Miscellaneous flags */
 
-  long     flags;                   /* See --- Miscellaneous flags */
-  long     flags_reserved;          /* Reserved flags */
-  word     audio;                   /* See --- Audio flags */
-  byte     synchtimer;              /* Number of seconds for sync */
+    long     flags;                   /* See --- Miscellaneous flags */
+    long     flags_reserved;          /* Reserved flags */
+    word     audio;                   /* See --- Audio flags */
+    byte     synchtimer;              /* Number of seconds for sync */
 
-  /* Errorlevels */
+    /* Errorlevels */
 
-  byte     crashexit;               /* Mail exit */
-  byte     bbs300;
-  byte     bbs1200;
-  byte     bbs1275;
-  byte     bbs2400;
-  byte     bbs4800;
-  byte     bbs9600;
-  byte     bbs19200;
-  byte     bbs38400;
+    byte     crashexit;               /* Mail exit */
+    byte     bbs300;
+    byte     bbs1200;
+    byte     bbs1275;
+    byte     bbs2400;
+    byte     bbs4800;
+    byte     bbs9600;
+    byte     bbs19200;
+    byte     bbs38400;
 
-  /* Modem */
+    /* Modem */
 
-  word     modembaud;               /* 30=300, 24=2400, etc. */
-  byte     modemport;               /* 1-255 (COM1=1, COM2=2, etc.) */
-  byte     modemdelay;              /* 1/10 seconds delay / line sent */
+    word     modembaud;               /* 30=300, 24=2400, etc. */
+    byte     modemport;               /* 1-255 (COM1=1, COM2=2, etc.) */
+    byte     modemdelay;              /* 1/10 seconds delay / line sent */
 
-  /* --- Messages */
+    /* --- Messages */
 
-  char     b300msg[16];
-  char     b1200msg[16];
-  char     b1275msg[16];
-  char     b2400msg[16];
-  char     b4800msg[16];
-  char     b9600msg[16];
-  char     b19200msg[16];
-  char     b38400msg[16];
-  char     errormsg[16];
-  char     busymsg[16];
-  char     carriermsg[16];
-  char     okmsg[16];
-  char     ringmsg[16];
-  char     nodialmsg[16];
-  char     noanswmsg[16];
-  char     voicemsg[16];
+    char     b300msg[16];
+    char     b1200msg[16];
+    char     b1275msg[16];
+    char     b2400msg[16];
+    char     b4800msg[16];
+    char     b9600msg[16];
+    char     b19200msg[16];
+    char     b38400msg[16];
+    char     errormsg[16];
+    char     busymsg[16];
+    char     carriermsg[16];
+    char     okmsg[16];
+    char     ringmsg[16];
+    char     nodialmsg[16];
+    char     noanswmsg[16];
+    char     voicemsg[16];
 
-  /* --- Commands */
+    /* --- Commands */
 
-  char     escapestr[11];
-  char     offhookstr[11];
-  char     reconnectstr[11];
-  char     init1[50];
-  char     init2[50];
-  char     init3[50];
-  char     resetstr[50];
-  char     downstr[50];
-  char     hangupstr[11];
-  char     dialstr[11];
+    char     escapestr[11];
+    char     offhookstr[11];
+    char     reconnectstr[11];
+    char     init1[50];
+    char     init2[50];
+    char     init3[50];
+    char     resetstr[50];
+    char     downstr[50];
+    char     hangupstr[11];
+    char     dialstr[11];
 
-  /* --- Manual answer stuff */
+    /* --- Manual answer stuff */
 
-  char     modemanswer[11];
-  byte     answerdelay;
+    char     modemanswer[11];
+    byte     answerdelay;
 
-  /* ------ Limited answer start and end times */
+    /* ------ Limited answer start and end times */
 
-  byte     begin_hour;
-  byte     begin_minute;
-  byte     end_hour;
-  byte     end_minute;
+    byte     begin_hour;
+    byte     begin_minute;
+    byte     end_hour;
+    byte     end_minute;
 
-  /* Calling control */
+    /* Calling control */
 
-  byte     retrybusy;
-  byte     retryresend;
-  byte     retrydelay;
+    byte     retrybusy;
+    byte     retryresend;
+    byte     retrydelay;
 
-  /* File request control */
+    /* File request control */
 
-  char     reqlist[71];             /* List to scan for reqable dirs    */
-  char     reqalias[71];            /* Magic filenames                  */
-  char     reqmessage[71];          /* Appended to FAILED REQUEST message */
-  byte     reqtype;                 /* Bit field                        */
-  byte     reqmaxfiles;             /* Max number of files to send on 1 req*/
-  word     reqmaxtime;              /* Maximum number of minutes for req*/
-  word     reqmaxsize;              /* Maximum size (in KB) for req     */
-  word     reqminbaud;              /* Minimum baudrate for req         */
-  byte     reqstarthr;              /* Start time for file requests, can be*/
-  byte     reqstartmin;             /* combined with the reqdays field. */
-  byte     reqendhr;
-  byte     reqendmin;
-  byte     reqdays;
+    char     reqlist[71];             /* List to scan for reqable dirs    */
+    char     reqalias[71];            /* Magic filenames                  */
+    char     reqmessage[71];          /* Appended to FAILED REQUEST message */
+    byte     reqtype;                 /* Bit field                        */
+    byte     reqmaxfiles;             /* Max number of files to send on 1 req*/
+    word     reqmaxtime;              /* Maximum number of minutes for req*/
+    word     reqmaxsize;              /* Maximum size (in KB) for req     */
+    word     reqminbaud;              /* Minimum baudrate for req         */
+    byte     reqstarthr;              /* Start time for file requests, can be*/
+    byte     reqstartmin;             /* combined with the reqdays field. */
+    byte     reqendhr;
+    byte     reqendmin;
+    byte     reqdays;
 
-  /* File to send when human callers are let thru */
+    /* File to send when human callers are let thru */
 
-  char     bbsname[11];
-  char     beforebbsbanner[71];
+    char     bbsname[11];
+    char     beforebbsbanner[71];
 
-  /* Function keys from mailer menu */
+    /* Function keys from mailer menu */
 
-  struct {
-    char cmd[61];
-    char title[26];
-    byte behavior;             /* 1-Pause, 2-Process msg base */
-  } key[24];
+    struct
+    {
+        char cmd[61];
+        char title[26];
+        byte behavior;             /* 1-Pause, 2-Process msg base */
+    } key[24];
 
-  /* Mailer colors */
+    /* Mailer colors */
 
-  byte     color[11];
+    byte     color[11];
 
-  /* Number of days to keep entries in history files */
+    /* Number of days to keep entries in history files */
 
-  byte     keep_history;
+    byte     keep_history;
 
-  /* FDServer password, if none given, server is INactive */
+    /* FDServer password, if none given, server is INactive */
 
-  char     slavepwd[21];
+    char     slavepwd[21];
 
-  /* File displayed to users when system is in event for no callers */
+    /* File displayed to users when system is in event for no callers */
 
-  char     ineventfile[71];
+    char     ineventfile[71];
 
-  /* File displayed when human callers are seen on mail-only system */
+    /* File displayed when human callers are seen on mail-only system */
 
-  char     mailonlyfile[71];
+    char     mailonlyfile[71];
 
-  /* External programs to run on certain "wake-up" strings */
+    /* External programs to run on certain "wake-up" strings */
 
-  struct {
-    char wakeupstr[40];
-    byte errorlevel;
-  } externmail[10];
+    struct
+    {
+        char wakeupstr[40];
+        byte errorlevel;
+    } externmail[10];
 
-  /* RESERVED FIELD */
+    /* RESERVED FIELD */
 
-  /* --- Limited audio start and end times. If the below four bytes
-         are all zero (0), audio is enabled all the time */
+    /* --- Limited audio start and end times. If the below four bytes
+           are all zero (0), audio is enabled all the time */
 
-  byte     audio_begin_hour;
-  byte     audio_begin_minute;
-  byte     audio_end_hour;
-  byte     audio_end_minute;
+    byte     audio_begin_hour;
+    byte     audio_begin_minute;
+    byte     audio_end_hour;
+    byte     audio_end_minute;
 
-  /* ---    Minimum cost to process undialable */
+    /* ---    Minimum cost to process undialable */
 
-  word     min_undial_cost;
+    word     min_undial_cost;
 
-  char     RESERVERAT[886];
-  char     extrnreq  [71];
-  char     modem_name[61];            /* modem name, for 'modem selection' */
+    char     RESERVERAT[886];
+    char     extrnreq  [71];
+    char     modem_name[61];            /* modem name, for 'modem selection' */
 } _mailer;
 
 
@@ -218,24 +221,25 @@ typedef struct {
 
 #define SAVEBAD         0x00000001L
 
-typedef struct {
-  char    path[65];      /* Path if "board==0", otherwise empty (65) */
-  byte    ftype;         /* Folder type                              */
-  char    areatag[39];   /* Echomail area tag                        */
-  byte    origin;        /* Default origin line, 0-19                */
-  char    title[41];     /* Title to appear on screen                */
-  byte    useaka;        /* AKA to use, 0==primary                   */
-  word    board;         /* QuickBBS/RemoteAccess/WC board number    */
-  word    upzone;        /* Uplink zone                              */
-  word    upnet;         /* Uplink net                               */
-  word    upnode;        /* Uplink node                              */
-  word    uppoint;       /* Uplink point                             */
-  long    behave;        /* Behavior, see above                      */
-  long    hiwater;       /* Highwater mark for echomail              */
-  long    pwdcrc;        /* CRC32 of password or -1L if unprotected  */
-  long    userok;        /* Users with initial access                */
-  long    accflags;      /* access flags, for network environment    */
-  char    reserved[8];   /* for future expansion                     */
+typedef struct
+{
+    char    path[65];      /* Path if "board==0", otherwise empty (65) */
+    byte    ftype;         /* Folder type                              */
+    char    areatag[39];   /* Echomail area tag                        */
+    byte    origin;        /* Default origin line, 0-19                */
+    char    title[41];     /* Title to appear on screen                */
+    byte    useaka;        /* AKA to use, 0==primary                   */
+    word    board;         /* QuickBBS/RemoteAccess/WC board number    */
+    word    upzone;        /* Uplink zone                              */
+    word    upnet;         /* Uplink net                               */
+    word    upnode;        /* Uplink node                              */
+    word    uppoint;       /* Uplink point                             */
+    long    behave;        /* Behavior, see above                      */
+    long    hiwater;       /* Highwater mark for echomail              */
+    long    pwdcrc;        /* CRC32 of password or -1L if unprotected  */
+    long    userok;        /* Users with initial access                */
+    long    accflags;      /* access flags, for network environment    */
+    char    reserved[8];   /* for future expansion                     */
 } _eFOLDER;
 
 #define MSGPRIVATE      0x0001
@@ -255,155 +259,161 @@ typedef struct {
 #define MSGAREQ         0x4000
 #define MSGFUPDREQ      0x8000
 
-typedef struct {
+typedef struct
+{
 
-  /* Macro keys */
+    /* Macro keys */
 
-  char     macrokey[24][61];        /* F1-F12, Shift F1-F12 */
+    char     macrokey[24][61];        /* F1-F12, Shift F1-F12 */
 
-  /* Margin, default==60 */
+    /* Margin, default==60 */
 
-  byte     margin;
+    byte     margin;
 
-  /* Default message status */
+    /* Default message status */
 
-  word     msgbits;
+    word     msgbits;
 
-  /* Miscellaneous settings */
+    /* Miscellaneous settings */
 
-  long     flags;
+    long     flags;
 
-  /* Origin lines */
+    /* Origin lines */
 
-  char     origin[20][61];
+    char     origin[20][61];
 
-  /* Editor colors */
+    /* Editor colors */
 
-  byte     color[15];
+    byte     color[15];
 
-  /* Netmail folder flags */
+    /* Netmail folder flags */
 
-  long     netfolderflags;
+    long     netfolderflags;
 
-  /* Translation tables IN/OUT */
+    /* Translation tables IN/OUT */
 
-  byte     translate_in[256];
-  byte     translate_out[256];
+    byte     translate_in[256];
+    byte     translate_out[256];
 
-  /* Where RemoteAccess/QuickBBS message base files are */
+    /* Where RemoteAccess/QuickBBS message base files are */
 
-  char     qbase[71];
-  char     WCmain[71];
+    char     qbase[71];
+    char     WCmain[71];
 
-  /* RESERVED */
+    /* RESERVED */
 
-  char     RESERVERAT[255];
-  long     echoflags;
-  _eFOLDER BBSnet;
-  _eFOLDER dupes;
-  _eFOLDER badecho;
-  char     echolog[65];
-  char     IMEWork[71];
+    char     RESERVERAT[255];
+    long     echoflags;
+    _eFOLDER BBSnet;
+    _eFOLDER dupes;
+    _eFOLDER badecho;
+    char     echolog[65];
+    char     IMEWork[71];
 
 } _editor;
 
-typedef struct {
-  char     systempath[71];
-  char     mailpath[71];
-  char     swap_path[71];
-  char     semaphore[71];
-  char     secfilespath[71];
-  char     infilepath[71];
-  char     packetpath[71];
-  char     nodelistpath[71];
+typedef struct
+{
+    char     systempath[71];
+    char     mailpath[71];
+    char     swap_path[71];
+    char     semaphore[71];
+    char     secfilespath[71];
+    char     infilepath[71];
+    char     packetpath[71];
+    char     nodelistpath[71];
 
-  word     countrycode;
+    word     countrycode;
 
-  ftn_addr aka[11];
+    ftn_addr aka[11];
 
-  /* Timeout value for screen blanker in SECONDS (0-255) */
+    /* Timeout value for screen blanker in SECONDS (0-255) */
 
-  long     flags;
-  byte     blackout_time;
+    long     flags;
+    byte     blackout_time;
 
-  /* User record */
+    /* User record */
 
-  struct {
-    char  name[37];
-    long  pwdcrc;           /* Crc-32 of user password, -1L No pwd */
-    dword flags;
-  }        user[10];
+    struct
+    {
+        char  name[37];
+        long  pwdcrc;           /* Crc-32 of user password, -1L No pwd */
+        dword flags;
+    }        user[10];
 
-  /* Protection of exits */
+    /* Protection of exits */
 
-  dword    exitpwdcrc;          /* Password for DOS shell, exits, etc. */
-  dword    exitflags;           /* Which flags should be protected */
-  char     filler[760];         /* contains domain stuff */
-  char     systemname[50];      /* site_info - system name */
-  char     systemloc[40];       /* site_info - location */
-  char     systemphone[24];     /* site_info - phone */
-  char     fill[6];             /* 6 loose bytes :) */
-  char     systemflags[20];     /* site_info - nodelist flags */
-  char     systemcountry[26];   /* site_info - country */
-  char     serial[14];          /* serial number */
-  char     outecho[66];         /* outbound echomail packets */
-  char     reserved[10];        /* reserved space */
+    dword    exitpwdcrc;          /* Password for DOS shell, exits, etc. */
+    dword    exitflags;           /* Which flags should be protected */
+    char     filler[760];         /* contains domain stuff */
+    char     systemname[50];      /* site_info - system name */
+    char     systemloc[40];       /* site_info - location */
+    char     systemphone[24];     /* site_info - phone */
+    char     fill[6];             /* 6 loose bytes :) */
+    char     systemflags[20];     /* site_info - nodelist flags */
+    char     systemcountry[26];   /* site_info - country */
+    char     serial[14];          /* serial number */
+    char     outecho[66];         /* outbound echomail packets */
+    char     reserved[10];        /* reserved space */
 } _shared;
 
-typedef struct {
-  char     initstring[41];      /* Init string                         */
-  word     scrollsize;          /* Max memory to use for buffer (in K) */
-  byte     emulation;           /* 0=TTY, 1=ANSI, 2=VT52, 3=VT100      */
-  byte     protocol;            /* Index in protocol list              */
-  char     shiftkey[12][31];    /* Shift F1-F12 macro settings         */
-  char     ctrlkey[12][31];     /* Ctrl  F1-F12 macro settings         */
-  char     downloadpath[60];    /* Default download path               */
-  char     uploadpath[60];      /* Default upload path                 */
-  byte     translate_in[256];   /* Translation table - modem->screen   */
-  byte     translate_out[256];  /* Translation table - screen->modem   */
-  byte     retrywait;           /* Seconds to wait before next dial..  */
-  dword    flags;               /* Behavior, sounds, flashes.. etc.    */
-  dword    directorypwd;        /* CRC-32 of password to enter phoneDir*/
-  char     editor[60];          /* Invoked with Alt-I                  */
-  char     RESERVERAT[796];     /* Reserved space                      */
-  ftn_addr newaka[21];
+typedef struct
+{
+    char     initstring[41];      /* Init string                         */
+    word     scrollsize;          /* Max memory to use for buffer (in K) */
+    byte     emulation;           /* 0=TTY, 1=ANSI, 2=VT52, 3=VT100      */
+    byte     protocol;            /* Index in protocol list              */
+    char     shiftkey[12][31];    /* Shift F1-F12 macro settings         */
+    char     ctrlkey[12][31];     /* Ctrl  F1-F12 macro settings         */
+    char     downloadpath[60];    /* Default download path               */
+    char     uploadpath[60];      /* Default upload path                 */
+    byte     translate_in[256];   /* Translation table - modem->screen   */
+    byte     translate_out[256];  /* Translation table - screen->modem   */
+    byte     retrywait;           /* Seconds to wait before next dial..  */
+    dword    flags;               /* Behavior, sounds, flashes.. etc.    */
+    dword    directorypwd;        /* CRC-32 of password to enter phoneDir*/
+    char     editor[60];          /* Invoked with Alt-I                  */
+    char     RESERVERAT[796];     /* Reserved space                      */
+    ftn_addr newaka[21];
 } _terminal;
 
-typedef struct {
-  char     port;       /* 0 LPT1, 1 LPT2, 2 LPT3, 3 COM1, 4 COM2 */
-  char     baud;       /* 0 9600, 1 4800, 2 2400, 3 1200 */
-  byte     stopbits;   /* 0x00 - 1, 0x01 - 2 */
-  byte     wordlength; /* 0x00 - 7, 0x01 - 8 */
-  byte     parity;     /* 0x00 - Even, 0x01 - Odd, 0x02 - None */
-  byte     pagelen;
-  long     behavior;
-  char     init[71];
-  char     reset[71];
-  char     bold_on[31];
-  char     bold_off[31];
-  char     pr1RESERVED[62];
-  char     italic_on[31];
-  char     italic_off[31];
-  byte     pagewidth;           /* Width in columns of a page */
-  byte     leftmargin;          /* Left margin, ie. start printing at column*/
-  byte     footer;              /* Footer margin, ie. leave nn lines */
-  byte     header;              /* Header margin, ie. skip nn lines */
-  byte     translate_out[256];  /* Translation table - disk->printer */
-  char     pr2RESERVED[100];
+typedef struct
+{
+    char     port;       /* 0 LPT1, 1 LPT2, 2 LPT3, 3 COM1, 4 COM2 */
+    char     baud;       /* 0 9600, 1 4800, 2 2400, 3 1200 */
+    byte     stopbits;   /* 0x00 - 1, 0x01 - 2 */
+    byte     wordlength; /* 0x00 - 7, 0x01 - 8 */
+    byte     parity;     /* 0x00 - Even, 0x01 - Odd, 0x02 - None */
+    byte     pagelen;
+    long     behavior;
+    char     init[71];
+    char     reset[71];
+    char     bold_on[31];
+    char     bold_off[31];
+    char     pr1RESERVED[62];
+    char     italic_on[31];
+    char     italic_off[31];
+    byte     pagewidth;           /* Width in columns of a page */
+    byte     leftmargin;          /* Left margin, ie. start printing at column*/
+    byte     footer;              /* Footer margin, ie. leave nn lines */
+    byte     header;              /* Header margin, ie. skip nn lines */
+    byte     translate_out[256];  /* Translation table - disk->printer */
+    char     pr2RESERVED[100];
 } _printer;
 
 #define IM_THISREV 0x0100
 
-struct _ctl {
-  char      fingerprint[5];  /* Must contain "JoHo" */
-  word      sysrev;          /* Must contain THISREV above */
-  dword     ctlcrc;          /* CRC-32 of struct excluding the 1st 11 bytes */
-  _mailer   m;
-  _editor   e;
-  _shared   s;
-  _terminal t;
-  _printer  p;
-  dword     ctlcrc2;         /* CRC-32 of all the above */
+struct _ctl
+{
+    char      fingerprint[5];  /* Must contain "JoHo" */
+    word      sysrev;          /* Must contain THISREV above */
+    dword     ctlcrc;          /* CRC-32 of struct excluding the 1st 11 bytes */
+    _mailer   m;
+    _editor   e;
+    _shared   s;
+    _terminal t;
+    _printer  p;
+    dword     ctlcrc2;         /* CRC-32 of all the above */
 };
 
 //  Constant long bit values
@@ -428,45 +438,47 @@ struct _ctl {
 
 //  Folder structure
 
-typedef struct {
-  char    path[65];      /* Path if "board==0", otherwise empty (65) */
-  byte    ftype;         /* Folder type                              */
-  char    areatag[39];   /* Echomail area tag                        */
-  byte    origin;        /* Default origin line, 0-19                */
-  char    title[41];     /* Title to appear on screen                */
-  byte    useaka;        /* AKA to use, 0==primary                   */
-  word    board;         /* QuickBBS/RemoteAccess/WC conf number     */
-  word    upzone;        /* Uplink zone                              */
-  word    upnet;         /* Uplink net                               */
-  word    upnode;        /* Uplink node                              */
-  word    uppoint;       /* Uplink point                             */
-  long    behave;        /* Behavior, see above                      */
-  long    hiwater;       /* Highwater mark for echomail              */
-  long    pwdcrc;        /* CRC32 of password or -1L if unprotected  */
-  long    userok;        /* Users with initial access                */
-  long    accflags;      /* access flags, for network environment    */
-  long    timestamp;     /* Time stamp for detecting msg base updates*/
-  char    reserved[4];   /* for future expansion                     */
+typedef struct
+{
+    char    path[65];      /* Path if "board==0", otherwise empty (65) */
+    byte    ftype;         /* Folder type                              */
+    char    areatag[39];   /* Echomail area tag                        */
+    byte    origin;        /* Default origin line, 0-19                */
+    char    title[41];     /* Title to appear on screen                */
+    byte    useaka;        /* AKA to use, 0==primary                   */
+    word    board;         /* QuickBBS/RemoteAccess/WC conf number     */
+    word    upzone;        /* Uplink zone                              */
+    word    upnet;         /* Uplink net                               */
+    word    upnode;        /* Uplink node                              */
+    word    uppoint;       /* Uplink point                             */
+    long    behave;        /* Behavior, see above                      */
+    long    hiwater;       /* Highwater mark for echomail              */
+    long    pwdcrc;        /* CRC32 of password or -1L if unprotected  */
+    long    userok;        /* Users with initial access                */
+    long    accflags;      /* access flags, for network environment    */
+    long    timestamp;     /* Time stamp for detecting msg base updates*/
+    char    reserved[4];   /* for future expansion                     */
 } FOLDER;
 
 //  The following struct was used in IM 2.00-2.25, file name FOLDER.CFG.
 
-typedef struct {
-  char    path[65];      /* Path if "board==0", otherwise empty (65) */
-  char    title[41];     /* Title to appear on screen                */
-  byte    origin;        /* Default origin line, 0-19                */
-  long    behave;        /* Behavior, see above                      */
-  long    pwdcrc;        /* CRC32 of password or -1L if unprotected  */
-  long    userok;        /* Users with initial access                */
-  byte    useaka;        /* AKA to use, 0==primary                   */
-  word    board;         /* QuickBBS/RemoteAccess/WC board number    */
+typedef struct
+{
+    char    path[65];      /* Path if "board==0", otherwise empty (65) */
+    char    title[41];     /* Title to appear on screen                */
+    byte    origin;        /* Default origin line, 0-19                */
+    long    behave;        /* Behavior, see above                      */
+    long    pwdcrc;        /* CRC32 of password or -1L if unprotected  */
+    long    userok;        /* Users with initial access                */
+    byte    useaka;        /* AKA to use, 0==primary                   */
+    word    board;         /* QuickBBS/RemoteAccess/WC board number    */
 } OLDFOLDER;
 
 
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack()
+    #pragma pack()
 #endif
 
 

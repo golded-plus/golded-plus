@@ -35,59 +35,66 @@ static gsnd* snd = NULL;
 
 //  ------------------------------------------------------------------
 
-gsound::gsound() {
+gsound::gsound()
+{
 
-  snd = new gsnd;
-  installed = (snd->open_api() != -1);
+    snd = new gsnd;
+    installed = (snd->open_api() != -1);
 }
 
 
 //  ------------------------------------------------------------------
 
-gsound::~gsound() {
+gsound::~gsound()
+{
 
-  snd->close_api();
-  delete snd;
+    snd->close_api();
+    delete snd;
 }
 
 
 //  ------------------------------------------------------------------
 
-int gsound::load(const char* file) {
+int gsound::load(const char* file)
+{
 
-  return snd->open(file);
+    return snd->open(file);
 }
 
 
 //  ------------------------------------------------------------------
 
-int gsound::unload() {
+int gsound::unload()
+{
 
-  return snd->close();
+    return snd->close();
 }
 
 
 //  ------------------------------------------------------------------
 
-int gsound::play() {
+int gsound::play()
+{
 
-  return snd->play();
+    return snd->play();
 }
 
 
 //  ------------------------------------------------------------------
 
-int gsound::stop() {
+int gsound::stop()
+{
 
-  return snd->stop();
+    return snd->stop();
 }
 
 
 //  ------------------------------------------------------------------
 
-int gsound::is_playing() {
+int gsound::is_playing()
+{
 
-  return snd->is_playing();
+    return snd->is_playing();
 }
 
 

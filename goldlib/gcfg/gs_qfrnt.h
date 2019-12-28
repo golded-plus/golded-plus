@@ -31,7 +31,7 @@
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack(1)
+    #pragma pack(1)
 #endif
 
 
@@ -46,10 +46,11 @@ const int MaxOrigins = 35;
 //  Stores : Information about each of your origin lines.
 //
 
-struct OriginLineRecord {
+struct OriginLineRecord
+{
 
-  char OriginLine[MaxOrigins][61];
-  byte Extra[50];
+    char OriginLine[MaxOrigins][61];
+    byte Extra[50];
 };
 
 
@@ -67,40 +68,41 @@ struct OriginLineRecord {
 //           not add any more than MaxConferences records to this file.
 //
 
-struct EchoMailConferenceRecord {
+struct EchoMailConferenceRecord
+{
 
-  bool    PassThru;
+    bool    PassThru;
 
-  word    ConfNum;
-  word    ConfTag;
-  char    AreaName[81];
+    word    ConfNum;
+    word    ConfTag;
+    char    AreaName[81];
 
-  long    HighMsgPointer;
+    long    HighMsgPointer;
 
-  word    AreaLevel;
+    word    AreaLevel;
 
-  bool    CheckForDupes;
-  bool    ImportSeenByLines;
-  bool    ImportPathLines;
-  bool    KeepPrivate;
+    bool    CheckForDupes;
+    bool    ImportSeenByLines;
+    bool    ImportPathLines;
+    bool    KeepPrivate;
 
-  bool    Deleted;
+    bool    Deleted;
 
-  byte    OriginLine;
-  byte    Group;
+    byte    OriginLine;
+    byte    Group;
 
-  bool    ScanPrivate;
-  bool    Mandatory;
-  bool    ForcePrivate;
+    bool    ScanPrivate;
+    bool    Mandatory;
+    bool    ForcePrivate;
 
-  byte    Extra[45];
+    byte    Extra[45];
 };
 
 
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack()
+    #pragma pack()
 #endif
 
 //  ------------------------------------------------------------------

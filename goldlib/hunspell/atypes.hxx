@@ -34,47 +34,53 @@ enum {IN_CPD_NOT, IN_CPD_BEGIN, IN_CPD_END, IN_CPD_OTHER};
 
 struct affentry
 {
-   char * strip;
-   char * appnd;
-   unsigned char stripl;
-   unsigned char appndl;
-   char  numconds;
-   char  opts;
-   unsigned short aflag;
-   union {
-   	char   base[SETSIZE];
-	struct {
-		char ascii[SETSIZE/2];
-                char neg[8];
-                char all[8];
-                w_char * wchars[8];
-		int wlen[8];
-	} utf8;
-   } conds;
-   char *       morphcode;
-   unsigned short * contclass;
-   short        contclasslen;
+    char * strip;
+    char * appnd;
+    unsigned char stripl;
+    unsigned char appndl;
+    char  numconds;
+    char  opts;
+    unsigned short aflag;
+    union
+    {
+        char   base[SETSIZE];
+        struct
+        {
+            char ascii[SETSIZE/2];
+            char neg[8];
+            char all[8];
+            w_char * wchars[8];
+            int wlen[8];
+        } utf8;
+    } conds;
+    char *       morphcode;
+    unsigned short * contclass;
+    short        contclasslen;
 };
 
-struct replentry {
-  char * pattern;
-  char * pattern2;
+struct replentry
+{
+    char * pattern;
+    char * pattern2;
 };
 
-struct mapentry {
-  char * set;
-  w_char * set_utf16;
-  int len;
+struct mapentry
+{
+    char * set;
+    w_char * set_utf16;
+    int len;
 };
 
-struct flagentry {
-  FLAG * def;
-  int len;
+struct flagentry
+{
+    FLAG * def;
+    int len;
 };
 
-struct guessword {
-  char * word;
-  bool allow;
+struct guessword
+{
+    char * word;
+    bool allow;
 };
 
 #endif

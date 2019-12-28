@@ -31,70 +31,84 @@
 
 //  ------------------------------------------------------------------
 
-gevalhum::gevalhum() {
+gevalhum::gevalhum()
+{
 
 }
 
 
 //  ------------------------------------------------------------------
 
-gevalhum::~gevalhum() {
+gevalhum::~gevalhum()
+{
 
 }
 
 
 //  ------------------------------------------------------------------
 
-int gevalhum::evaluate() {
+int gevalhum::evaluate()
+{
 
-  while(vstk.size() and ostk.size()) {
+    while(vstk.size() and ostk.size())
+    {
 
-    while(ostk.size()) {
+        while(ostk.size())
+        {
 
-      std::vector<int>::iterator vptr = vstk.begin();
-      std::vector<ops>::iterator optr = ostk.begin();
+            std::vector<int>::iterator vptr = vstk.begin();
+            std::vector<ops>::iterator optr = ostk.begin();
 
-      while(optr < ostk.end()) {
+            while(optr < ostk.end())
+            {
 
-        if(optr < (ostk.end() - 1)) {
+                if(optr < (ostk.end() - 1))
+                {
 
-          if(*optr == parenthesis_left) {
-            if(optr[1] == parenthesis_right) {
-              ostk.erase(optr, optr+2);
-              break;
+                    if(*optr == parenthesis_left)
+                    {
+                        if(optr[1] == parenthesis_right)
+                        {
+                            ostk.erase(optr, optr+2);
+                            break;
+                        }
+                        else
+                        {
+                            optr++;
+                        }
+                        continue;
+                    }
+                    else if(((*optr == negation) or (*optr == logic_not)) and (optr[1] == parenthesis_left))
+                    {
+                        optr++;
+                        continue;
+                    }
+                    else if((*optr < optr[1]) and (optr[1] != parenthesis_right))
+                    {
+                        optr++;
+                        vptr++;
+                        continue;
+                    }
+                }
+
+                if(ostk.size())
+                {
+                    if((*optr == negation) or (*optr == logic_not))
+                        *vptr = evaluate_ops(optr, vptr, vptr);
+                    else
+                    {
+                        *vptr = evaluate_ops(optr, vptr, vptr+1);
+                        if(vptr+1 < vstk.end())
+                            vstk.erase(vptr+1);
+                    }
+                    ostk.erase(optr);
+                }
+                break;
             }
-            else {
-              optr++;
-            }
-            continue;
-          }
-          else if(((*optr == negation) or (*optr == logic_not)) and (optr[1] == parenthesis_left)) {
-            optr++;
-            continue;
-          }
-          else if((*optr < optr[1]) and (optr[1] != parenthesis_right)) {
-            optr++;
-            vptr++;
-            continue;
-          }
         }
-
-        if(ostk.size()) {
-          if((*optr == negation) or (*optr == logic_not))
-            *vptr = evaluate_ops(optr, vptr, vptr);
-          else {
-            *vptr = evaluate_ops(optr, vptr, vptr+1);
-            if(vptr+1 < vstk.end())
-              vstk.erase(vptr+1);
-          }
-          ostk.erase(optr);
-        }
-        break;
-      }
     }
-  }
 
-  return pop_value();
+    return pop_value();
 }
 
 
