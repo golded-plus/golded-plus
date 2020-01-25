@@ -58,6 +58,10 @@ set(golded_SOURCES
   gehtml.cpp
   golded3.cpp
 )
+if (MSVC)
+  list(APPEND golded_SOURCES gedcyg.rc)
+endif()
+
 include_directories(../goldlib/gall ../goldlib/gcui ../goldlib/gmb3 ../goldlib/gcfg ../goldlib/smblib ../goldlib/uulib ../goldlib/glibc)
 add_executable(golded ${golded_SOURCES})
 target_link_libraries(golded gmb3 gcfg  uulib gall  gcui smblib hunspell)
