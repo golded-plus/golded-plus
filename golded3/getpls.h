@@ -68,7 +68,7 @@
   "@message\n" \
   "@forward\n" \
   "\n" \
-  "   Hello @pseudo{}{}{everybody}!\n" \
+  "Hello @pseudo{}{}{everybody}!\n" \
   "@new\n" \
   "@position\n" \
   "@replyReplying to a msg dated @odate @otime, from @oname{me}{you} to @dname{me}{you}{all}.\n" \
