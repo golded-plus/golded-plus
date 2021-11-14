@@ -2,9 +2,25 @@
 %define reltype C
 # may be one of: C (current), R (release), S (stable)
 
+%global relnum 2
+
+# for generic build; it will be overriden for some distributions
+%global vendor_prefix %nil
+%global vendor_suffix %nil
+
+# for CentOS, Fedora and RHEL
+%if "%_vendor" == "redhat"
+    %global vendor_suffix %dist
+%endif
+
+# for ALT Linux
+%if "%_vendor" == "alt"
+    %global vendor_prefix %_vendor
+%endif
+
 Name: golded+
 Version: 1.1.5.%{reldate}%{reltype}
-Release: 1
+Release: %{vendor_prefix}%relnum%{vendor_suffix}
 Group: Applications/FTN
 Summary: GoldEd - the FTN editor
 URL: http://golded-plus.sf.net
