@@ -58,7 +58,7 @@
  */
 #if defined _MSC_VER
 /* FIXME: This condition not tested anywhere, it is true for VS 6.0 and VS 4.2 and  VS 5.0 */
-/* 
+/*
 # define __VISUAL_STUDIO_NOT_LESS (maj, min) \
           ( (1000+ ((maj)-4)*100 + (min)*10) >= _MSC_VER )
 */
@@ -86,47 +86,47 @@
 /*  ------------------------------------------------------------------ */
 #include <stdlib.h>
 #ifdef HAVE_MALLOC_H
-#include <malloc.h>
+    #include <malloc.h>
 #endif
 #include <string.h>
 #include <limits.h>
 #include <gcmpall.h>
 
 #ifdef __WIN32__
-#include <tchar.h>
+    #include <tchar.h>
 #else
-typedef char TCHAR;
+    typedef char TCHAR;
 #endif
 #ifdef __cplusplus
-# include <cstddef>
+    #include <cstddef>
 #endif
 #ifdef _MSC_VER
-# include <windows.h>
+    #include <windows.h>
 #elif defined(__MINGW32__) || defined(__CYGWIN__)
-# include <stdint.h>
+    #include <stdint.h>
 #endif
 
 #if !defined(ARRAYSIZE)
-#define ARRAYSIZE(A)  sizeof(A)/sizeof((A)[0])
+    #define ARRAYSIZE(A)  sizeof(A)/sizeof((A)[0])
 #endif
 
 #ifndef INT_MAX
-#define INT_MAX 214783647
+    #define INT_MAX 214783647
 #endif
 
 /*  ------------------------------------------------------------------
 // Disable some MS Visual C warnings */
 
 #if defined(_MSC_VER)
-/*
-// C4786: 'identifier' : identifier was truncated to 'number'
-//        characters in the debug information
-//
-// C4065: switch statement contains 'default' but no 'case' labels
-//
-// C4200: nonstandard extension used : zero-sized array in struct/union
-*/
-#pragma warning(disable: 4200 4786 4065)
+    /*
+    // C4786: 'identifier' : identifier was truncated to 'number'
+    //        characters in the debug information
+    //
+    // C4065: switch statement contains 'default' but no 'case' labels
+    //
+    // C4200: nonstandard extension used : zero-sized array in struct/union
+    */
+    #pragma warning(disable: 4200 4786 4065)
 #endif
 
 /*  ------------------------------------------------------------------
@@ -134,16 +134,16 @@ typedef char TCHAR;
 
 /* GCC after 2.95.x have "and", "not", and "or" predefined */
 #if __GNUC__ < 2 || (__GNUC__ == 2 && __GNUC_MINOR__ < 96)
-#ifndef and
-#define not      !
-#define and      &&
-#define or       ||
-#endif
+    #ifndef and
+        #define not      !
+        #define and      &&
+        #define or       ||
+    #endif
 #endif
 
 #ifndef true
-#define true  1
-#define false 0
+    #define true  1
+    #define false 0
 #endif
 
 #define NO     0
@@ -163,19 +163,19 @@ typedef char TCHAR;
 #define ESC '\x1B'
 
 #ifdef __UNIX__
-#define NL "\r\n"
+    #define NL "\r\n"
 #else
-#define NL "\n"
+    #define NL "\n"
 #endif
 
 /*  ------------------------------------------------------------------
 //  Spellchecker */
 #if !defined(__WIN32__) && !defined(GCFG_NO_MSSPELL)
-#define GCFG_NO_MSSPELL
+    #define GCFG_NO_MSSPELL
 #endif
 
 #if !(defined(GCFG_NO_MSSPELL) && defined(GCFG_NO_MYSPELL))
-#define GCFG_SPELL_INCLUDED
+    #define GCFG_SPELL_INCLUDED
 #endif
 
 
@@ -190,38 +190,38 @@ typedef char TCHAR;
 //  Supplements for the built-in types   */
 
 #ifdef _MSC_VER
-#if (UCHAR_MAX == 0xFF)
-typedef   signed char    int8_t;
-typedef unsigned char   uint8_t;
-#else
-#error Dont know how to define 8 bit integers
-#endif
-#if (USHRT_MAX == 0xFFFF)
-typedef   signed short   int16_t;
-typedef unsigned short  uint16_t;
-#else
-#error Dont know how to define 16 bit integers
-#endif
-#if (UINT_MAX == 0xFFFFFFFF)
-typedef   signed int     int32_t;
-typedef unsigned int    uint32_t;
-#else
-#error Dont know how to define 32 bit integers
-#endif
+    #if (UCHAR_MAX == 0xFF)
+        typedef   signed char    int8_t;
+        typedef unsigned char   uint8_t;
+    #else
+        #error Dont know how to define 8 bit integers
+    #endif
+    #if (USHRT_MAX == 0xFFFF)
+        typedef   signed short   int16_t;
+        typedef unsigned short  uint16_t;
+    #else
+        #error Dont know how to define 16 bit integers
+    #endif
+    #if (UINT_MAX == 0xFFFFFFFF)
+        typedef   signed int     int32_t;
+        typedef unsigned int    uint32_t;
+    #else
+        #error Dont know how to define 32 bit integers
+    #endif
 #endif  /*#ifdef _MSC_VER */
 
 #if defined(__GNUC__) && !defined(__MINGW32__) && !defined(__CYGWIN__)
-typedef unsigned char  uint8_t;
-typedef unsigned short uint16_t;
-typedef unsigned int   uint32_t;
+    typedef unsigned char  uint8_t;
+    typedef unsigned short uint16_t;
+    typedef unsigned int   uint32_t;
 
-#if !defined(__APPLE__)
-#if !defined(__SUNOS__)
-typedef   signed char   int8_t;
-#endif
-typedef   signed short  int16_t;
-typedef   signed int    int32_t;
-#endif
+    #if !defined(__APPLE__)
+        #if !defined(__SUNOS__)
+            typedef   signed char   int8_t;
+        #endif
+        typedef   signed short  int16_t;
+        typedef   signed int    int32_t;
+    #endif
 #endif
 
 typedef uint8_t   byte;
@@ -276,14 +276,38 @@ typedef int (*StdCmpCP)(const void*, const void*);
 /*  ------------------------------------------------------------------   */
 /*  Utility templates                                                    */
 
-template <class T> inline bool in_range(T a, T b, T c)   { return (a >= b) and (a <= c); }
-template <class T> inline    T absolute(T a)             { return a < 0 ? -a : a; }
-template <class T> inline  int compare_two(T a, T b)     { return a < b ? -1 : a > b ? 1 : 0; }
-template <class T> inline    T minimum_of_two(T a, T b)  { return (a < b) ? a : b; }
-template <class T> inline    T maximum_of_two(T a, T b)  { return (a > b) ? a : b; }
-template <class T> inline  int zero_or_one(T e)          { return e ? 1 : 0; }
-template <class T> inline bool make_bool(T a)            { return !!a; }
-template <class T> inline bool make_bool_not(T a)        { return !a; }
+template <class T> inline bool in_range(T a, T b, T c)
+{
+    return (a >= b) and (a <= c);
+}
+template <class T> inline    T absolute(T a)
+{
+    return a < 0 ? -a : a;
+}
+template <class T> inline  int compare_two(T a, T b)
+{
+    return a < b ? -1 : a > b ? 1 : 0;
+}
+template <class T> inline    T minimum_of_two(T a, T b)
+{
+    return (a < b) ? a : b;
+}
+template <class T> inline    T maximum_of_two(T a, T b)
+{
+    return (a > b) ? a : b;
+}
+template <class T> inline  int zero_or_one(T e)
+{
+    return e ? 1 : 0;
+}
+template <class T> inline bool make_bool(T a)
+{
+    return !!a;
+}
+template <class T> inline bool make_bool_not(T a)
+{
+    return !a;
+}
 
 
 /*  ------------------------------------------------------------------

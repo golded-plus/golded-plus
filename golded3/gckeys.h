@@ -114,7 +114,7 @@ const word CRC_EDITREFLOW           = 0x13F9;
 const word CRC_EDITSAVEFILE         = 0x64A4;
 const word CRC_EDITSAVEMSG          = 0x660C;
 #if defined(GCFG_SPELL_INCLUDED)
-const word CRC_EDITSCHECKERMENU     = 0x881F;
+    const word CRC_EDITSCHECKERMENU     = 0x881F;
 #endif
 const word CRC_EDITSCODENORMAL      = 0xE4CE;
 const word CRC_EDITSCODEBOLD        = 0x657D;
@@ -544,16 +544,16 @@ const word CRC_KK_MACRO             = 0x4BE9;
 const word CRC_KK_AUTO              = 0x60E2;
 
 #if !defined(__UNIX__) || defined(__USE_NCURSES__)
-const word CRC_K_SINS               = 0xC40B;
-const word CRC_K_SDEL               = 0x1EB9;
-const word CRC_K_SHOME              = 0xAF9D;
-const word CRC_K_SEND               = 0x0590;
-const word CRC_K_SPGUP              = 0xBC5A;
-const word CRC_K_SPGDN              = 0xAD44;
-const word CRC_K_SLEFT              = 0xC902;
-const word CRC_K_SRIGHT             = 0x5B1F;
-const word CRC_K_SUP                = 0x4151;
-const word CRC_K_SDOWN              = 0xF0FB;
+    const word CRC_K_SINS               = 0xC40B;
+    const word CRC_K_SDEL               = 0x1EB9;
+    const word CRC_K_SHOME              = 0xAF9D;
+    const word CRC_K_SEND               = 0x0590;
+    const word CRC_K_SPGUP              = 0xBC5A;
+    const word CRC_K_SPGDN              = 0xAD44;
+    const word CRC_K_SLEFT              = 0xC902;
+    const word CRC_K_SRIGHT             = 0x5B1F;
+    const word CRC_K_SUP                = 0x4151;
+    const word CRC_K_SDOWN              = 0xF0FB;
 #endif
 
 //  ------------------------------------------------------------------

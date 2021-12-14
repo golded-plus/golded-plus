@@ -35,35 +35,39 @@
 
 //  ------------------------------------------------------------------
 
-class gfuzzy {
+class gfuzzy
+{
 
 protected:
 
-  const char* text;
-  const char* pattern;  // Pointers to search strings
-  int   textloc;  // Current search position in Text
-  int   plen;     // Length of Pattern
-  int   degree;   // Max degree of allowed mismatch
-  int*  ldiffs;
-  int*  ldiff;
-  int*  rdiff;    // Dynamic difference arrays
-  int*  loffs;
-  int*  roffs;    // Used to calculate start of match
-  bool  casing;
+    const char* text;
+    const char* pattern;  // Pointers to search strings
+    int   textloc;  // Current search position in Text
+    int   plen;     // Length of Pattern
+    int   degree;   // Max degree of allowed mismatch
+    int*  ldiffs;
+    int*  ldiff;
+    int*  rdiff;    // Dynamic difference arrays
+    int*  loffs;
+    int*  roffs;    // Used to calculate start of match
+    bool  casing;
 
 public:
 
-  gfuzzy();
-  ~gfuzzy();
+    gfuzzy();
+    ~gfuzzy();
 
-  const char* start;
-  const char* end;
-  int howclose;
-  int length()  { return end - start + 1; }
+    const char* start;
+    const char* end;
+    int howclose;
+    int length()
+    {
+        return end - start + 1;
+    }
 
-  void init(const char* pat, int fuzzydegree, bool case_sensitive);
-  bool findfirst(const char* string);
-  bool findnext();
+    void init(const char* pat, int fuzzydegree, bool case_sensitive);
+    bool findfirst(const char* string);
+    bool findnext();
 
 
 };

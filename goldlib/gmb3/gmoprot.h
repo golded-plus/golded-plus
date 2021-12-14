@@ -30,7 +30,7 @@
 
 #include <gdefs.h>
 #if defined(__MACH__) // MacOS
-#include <stdint.h>
+    #include <stdint.h>
 #endif
 //  ------------------------------------------------------------------
 

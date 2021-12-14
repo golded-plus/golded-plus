@@ -37,33 +37,35 @@
 
 //  ------------------------------------------------------------------
 
-class gregex {
+class gregex
+{
 
 protected:
 
-  regex_t* preg;
+    regex_t* preg;
 
 public:
 
-  enum {
+    enum
+    {
 
-    // cflags
-    extended = 0x01,
-    icase    = 0x02,
-    newline  = 0x04,
+        // cflags
+        extended = 0x01,
+        icase    = 0x02,
+        newline  = 0x04,
 
-    // eflags
-    notbol   = 0x10,
-    noteol   = 0x20
-  };
+        // eflags
+        notbol   = 0x10,
+        noteol   = 0x20
+    };
 
-  gregex();
-  ~gregex();
+    gregex();
+    ~gregex();
 
-  void reset();
+    void reset();
 
-  bool compile(const char* pattern, int cflags=0);
-  bool match(const char* str, int eflags=0);
+    bool compile(const char* pattern, int cflags=0);
+    bool match(const char* str, int eflags=0);
 
 };
 

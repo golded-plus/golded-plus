@@ -76,6 +76,6 @@ LZHEXPORT int32_t LZHCALL lzh_decode(uint8_t *inbuf, int32_t inlen, uint8_t *out
 #endif
 
 #ifdef __WATCOMC__  /* Use MSC standard (prepended underscore) */
-#pragma aux lzh_encode          "_*"
-#pragma aux lzh_decode          "_*"
+    #pragma aux lzh_encode          "_*"
+    #pragma aux lzh_decode          "_*"
 #endif

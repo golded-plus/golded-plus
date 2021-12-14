@@ -86,272 +86,303 @@ ULONG             ge_os2_oldicon;
 
 //  ------------------------------------------------------------------
 
-static struct {
-  PPIB ppib;
-  HAB hab;
-  HMQ hmq;
-  ULONG savedtype;
-  BOOL opened;
+static struct
+{
+    PPIB ppib;
+    HAB hab;
+    HMQ hmq;
+    ULONG savedtype;
+    BOOL opened;
 } pminfo;
 
 
 //  ------------------------------------------------------------------
 // Init os/2 pm functions
 
-int g_init_os(int flags) {
+int g_init_os(int flags)
+{
 
-  int rc;
-  PTIB ptib;
-  const char *env;
+    int rc;
+    PTIB ptib;
+    const char *env;
 
-  memset(&pminfo, 0, sizeof (pminfo));
+    memset(&pminfo, 0, sizeof (pminfo));
 
-  DosGetInfoBlocks(&ptib, &pminfo.ppib);
-  pminfo.savedtype = pminfo.ppib->pib_ultype;
+    DosGetInfoBlocks(&ptib, &pminfo.ppib);
+    pminfo.savedtype = pminfo.ppib->pib_ultype;
 
-  // Check PMWIN environment variable, if it set to NO do not try to use
-  // PMWIN functions
-  if(((env = getenv("PMWIN")) != NULL) and strieql(env, "NO")) {
-    rc = 1;
-  }
-  else {
-    // Morph application into PM
-    rc = DosQueryModuleHandle((PSZ)"PMWIN", &ge_os2_hmte);
-  }
+    // Check PMWIN environment variable, if it set to NO do not try to use
+    // PMWIN functions
+    if(((env = getenv("PMWIN")) != NULL) and strieql(env, "NO"))
+    {
+        rc = 1;
+    }
+    else
+    {
+        // Morph application into PM
+        rc = DosQueryModuleHandle((PSZ)"PMWIN", &ge_os2_hmte);
+    }
 
-  if(not rc) {
-    pminfo.ppib->pib_ultype = 3;
-    rc = DosLoadModule((PSZ)ge_os2_loaderr, sizeof(ge_os2_loaderr), (PSZ)"PMWIN", &ge_os2_hmte);
-    if(rc)
-      return 1;
+    if(not rc)
+    {
+        pminfo.ppib->pib_ultype = 3;
+        rc = DosLoadModule((PSZ)ge_os2_loaderr, sizeof(ge_os2_loaderr), (PSZ)"PMWIN", &ge_os2_hmte);
+        if(rc)
+            return 1;
 
-    // Load the functions dinamically
-    rc = DosQueryProcAddr(ge_os2_hmte, 707, 0, (PFN*)&pfnWinCloseClipbrd);
-    rc = DosQueryProcAddr(ge_os2_hmte, 716, 0, (PFN*)&pfnWinCreateMsgQueue);
-    rc = DosQueryProcAddr(ge_os2_hmte, 726, 0, (PFN*)&pfnWinDestroyMsgQueue);
-    rc = DosQueryProcAddr(ge_os2_hmte, 733, 0, (PFN*)&pfnWinEmptyClipbrd);
-    rc = DosQueryProcAddr(ge_os2_hmte, 763, 0, (PFN*)&pfnWinInitialize);
-    rc = DosQueryProcAddr(ge_os2_hmte, 793, 0, (PFN*)&pfnWinOpenClipbrd);
-    rc = DosQueryProcAddr(ge_os2_hmte, 806, 0, (PFN*)&pfnWinQueryClipbrdData);
-    rc = DosQueryProcAddr(ge_os2_hmte, 807, 0, (PFN*)&pfnWinQueryClipbrdFmtInfo);
-    rc = DosQueryProcAddr(ge_os2_hmte, 854, 0, (PFN*)&pfnWinSetClipbrdData);
-    rc = DosQueryProcAddr(ge_os2_hmte, 888, 0, (PFN*)&pfnWinTerminate);
-    rc = DosQueryProcAddr(ge_os2_hmte, 841, 0, (PFN*)&pfnWinQueryWindowText);
-    rc = DosQueryProcAddr(ge_os2_hmte, 877, 0, (PFN*)&pfnWinSetWindowText);
-    rc = DosQueryProcAddr(ge_os2_hmte, 920, 0, (PFN*)&pfnWinSendMsg);
-    rc = DosQueryProcAddr(ge_os2_hmte, 780, 0, (PFN*)&pfnWinLoadPointer);
-    rc = DosQueryProcAddr(ge_os2_hmte, 765, 0, (PFN*)&pfnWinInvalidateRect);
+        // Load the functions dinamically
+        rc = DosQueryProcAddr(ge_os2_hmte, 707, 0, (PFN*)&pfnWinCloseClipbrd);
+        rc = DosQueryProcAddr(ge_os2_hmte, 716, 0, (PFN*)&pfnWinCreateMsgQueue);
+        rc = DosQueryProcAddr(ge_os2_hmte, 726, 0, (PFN*)&pfnWinDestroyMsgQueue);
+        rc = DosQueryProcAddr(ge_os2_hmte, 733, 0, (PFN*)&pfnWinEmptyClipbrd);
+        rc = DosQueryProcAddr(ge_os2_hmte, 763, 0, (PFN*)&pfnWinInitialize);
+        rc = DosQueryProcAddr(ge_os2_hmte, 793, 0, (PFN*)&pfnWinOpenClipbrd);
+        rc = DosQueryProcAddr(ge_os2_hmte, 806, 0, (PFN*)&pfnWinQueryClipbrdData);
+        rc = DosQueryProcAddr(ge_os2_hmte, 807, 0, (PFN*)&pfnWinQueryClipbrdFmtInfo);
+        rc = DosQueryProcAddr(ge_os2_hmte, 854, 0, (PFN*)&pfnWinSetClipbrdData);
+        rc = DosQueryProcAddr(ge_os2_hmte, 888, 0, (PFN*)&pfnWinTerminate);
+        rc = DosQueryProcAddr(ge_os2_hmte, 841, 0, (PFN*)&pfnWinQueryWindowText);
+        rc = DosQueryProcAddr(ge_os2_hmte, 877, 0, (PFN*)&pfnWinSetWindowText);
+        rc = DosQueryProcAddr(ge_os2_hmte, 920, 0, (PFN*)&pfnWinSendMsg);
+        rc = DosQueryProcAddr(ge_os2_hmte, 780, 0, (PFN*)&pfnWinLoadPointer);
+        rc = DosQueryProcAddr(ge_os2_hmte, 765, 0, (PFN*)&pfnWinInvalidateRect);
 
-    rc = DosQueryModuleHandle((PSZ)"PMSHAPI", &ge_os2_hmte2);
-    if(rc)
-      return 1;
-    rc = DosLoadModule((PSZ)ge_os2_loaderr, sizeof(ge_os2_loaderr), (PSZ)"PMSHAPI", &ge_os2_hmte2);
-    if(rc)
-      return 1;
-    DosQueryProcAddr(ge_os2_hmte2, 123, 0, (PFN*)&pfnWinChangeSwitchEntry);
-    DosQueryProcAddr(ge_os2_hmte2, 124, 0, (PFN*)&pfnWinQuerySwitchEntry);
-    DosQueryProcAddr(ge_os2_hmte2, 125, 0, (PFN*)&pfnWinQuerySwitchHandle);
+        rc = DosQueryModuleHandle((PSZ)"PMSHAPI", &ge_os2_hmte2);
+        if(rc)
+            return 1;
+        rc = DosLoadModule((PSZ)ge_os2_loaderr, sizeof(ge_os2_loaderr), (PSZ)"PMSHAPI", &ge_os2_hmte2);
+        if(rc)
+            return 1;
+        DosQueryProcAddr(ge_os2_hmte2, 123, 0, (PFN*)&pfnWinChangeSwitchEntry);
+        DosQueryProcAddr(ge_os2_hmte2, 124, 0, (PFN*)&pfnWinQuerySwitchEntry);
+        DosQueryProcAddr(ge_os2_hmte2, 125, 0, (PFN*)&pfnWinQuerySwitchHandle);
 
-    if(flags & 1) {
-      rc = DosQueryModuleHandle((PSZ)"MDM", &ge_os2_hmte);
-      if(not rc) {
-        rc = DosLoadModule((PSZ)ge_os2_loaderr, sizeof(ge_os2_loaderr), (PSZ)"MDM", &ge_os2_mdmHandle);
-        if(not rc) {
-          DosQueryProcAddr(ge_os2_mdmHandle, 0, (PSZ)"mciSendString", (PFN*)&pfnmciSendString);
-          DosQueryProcAddr(ge_os2_mdmHandle, 0, (PSZ)"mciGetErrorString", (PFN*)&pfnmciGetErrorString);
+        if(flags & 1)
+        {
+            rc = DosQueryModuleHandle((PSZ)"MDM", &ge_os2_hmte);
+            if(not rc)
+            {
+                rc = DosLoadModule((PSZ)ge_os2_loaderr, sizeof(ge_os2_loaderr), (PSZ)"MDM", &ge_os2_mdmHandle);
+                if(not rc)
+                {
+                    DosQueryProcAddr(ge_os2_mdmHandle, 0, (PSZ)"mciSendString", (PFN*)&pfnmciSendString);
+                    DosQueryProcAddr(ge_os2_mdmHandle, 0, (PSZ)"mciGetErrorString", (PFN*)&pfnmciGetErrorString);
+                }
+            }
         }
-      }
-    }
 
-    // Make queue
-    ge_os2_hab = pfnWinInitialize(0);
-    ge_os2_hmq = pfnWinCreateMsgQueue(ge_os2_hab, 0);
+        // Make queue
+        ge_os2_hab = pfnWinInitialize(0);
+        ge_os2_hmq = pfnWinCreateMsgQueue(ge_os2_hab, 0);
 
-    // Find our hSw
-    ge_os2_hsw = pfnWinQuerySwitchHandle(0, pminfo.ppib->pib_ulpid);
-    if(ge_os2_hsw) {
-      pfnWinQuerySwitchEntry(ge_os2_hsw, &ge_os2_swolddata);
-      ge_os2_swdata = ge_os2_swolddata;
-      ge_os2_hwndframe = ge_os2_swdata.hwnd;
-      pfnWinQueryWindowText(ge_os2_hwndframe, sizeof(ge_os2_coldtitle), ge_os2_coldtitle);
+        // Find our hSw
+        ge_os2_hsw = pfnWinQuerySwitchHandle(0, pminfo.ppib->pib_ulpid);
+        if(ge_os2_hsw)
+        {
+            pfnWinQuerySwitchEntry(ge_os2_hsw, &ge_os2_swolddata);
+            ge_os2_swdata = ge_os2_swolddata;
+            ge_os2_hwndframe = ge_os2_swdata.hwnd;
+            pfnWinQueryWindowText(ge_os2_hwndframe, sizeof(ge_os2_coldtitle), ge_os2_coldtitle);
+        }
     }
-  }
-  DosSetPriority(PRTYS_PROCESS, PRTYC_REGULAR, PRTYD_MINIMUM, 0);
-  return 0;
+    DosSetPriority(PRTYS_PROCESS, PRTYC_REGULAR, PRTYD_MINIMUM, 0);
+    return 0;
 }
 
 
 //  ------------------------------------------------------------------
 // deInit os/2 pm functions
 
-void g_deinit_os(void) {
+void g_deinit_os(void)
+{
 
-  if(ge_os2_hwndframe) {
-    pfnWinChangeSwitchEntry(ge_os2_hsw, &ge_os2_swolddata);
-    g_set_ostitle(ge_os2_coldtitle);
-    pfnWinSendMsg(ge_os2_hwndframe, WM_SETICON, (MPARAM) ge_os2_swolddata.hwndIcon, (MPARAM) 0);
-  }
-  if(ge_os2_hmq)
-    pfnWinDestroyMsgQueue(ge_os2_hmq);
-  if(ge_os2_hab)
-    pfnWinTerminate(ge_os2_hab);
-  if(ge_os2_hmte)
-    DosFreeModule(ge_os2_hmte);
-  if(ge_os2_hmte2)
-    DosFreeModule(ge_os2_hmte2);
-  if(ge_os2_mdmHandle)
-    DosFreeModule(ge_os2_mdmHandle);
+    if(ge_os2_hwndframe)
+    {
+        pfnWinChangeSwitchEntry(ge_os2_hsw, &ge_os2_swolddata);
+        g_set_ostitle(ge_os2_coldtitle);
+        pfnWinSendMsg(ge_os2_hwndframe, WM_SETICON, (MPARAM) ge_os2_swolddata.hwndIcon, (MPARAM) 0);
+    }
+    if(ge_os2_hmq)
+        pfnWinDestroyMsgQueue(ge_os2_hmq);
+    if(ge_os2_hab)
+        pfnWinTerminate(ge_os2_hab);
+    if(ge_os2_hmte)
+        DosFreeModule(ge_os2_hmte);
+    if(ge_os2_hmte2)
+        DosFreeModule(ge_os2_hmte2);
+    if(ge_os2_mdmHandle)
+        DosFreeModule(ge_os2_mdmHandle);
 }
 
 
 //  ------------------------------------------------------------------
 
-void g_init_title(char *tasktitle, int titlestatus) {
+void g_init_title(char *tasktitle, int titlestatus)
+{
 
-  strxcpy(ge_os2_title, tasktitle, GMAXTITLE);
-  ge_os2_ext_title = titlestatus;
+    strxcpy(ge_os2_title, tasktitle, GMAXTITLE);
+    ge_os2_ext_title = titlestatus;
 }
 
 
 //  ------------------------------------------------------------------
 
-void g_increase_priority(void) {
+void g_increase_priority(void)
+{
 
-  DosSetPriority(PRTYS_PROCESS, PRTYC_REGULAR, PRTYD_MAXIMUM, 0);
+    DosSetPriority(PRTYS_PROCESS, PRTYC_REGULAR, PRTYD_MAXIMUM, 0);
 }
 
 
 //  ------------------------------------------------------------------
 // Change title
 
-void g_set_ostitle(char *title) {
+void g_set_ostitle(char *title)
+{
 
-  if(ge_os2_hsw and ge_os2_hwndframe) {
-    strxcpy(ge_os2_swdata.szSwtitle, title, MAXNAMEL);
-    pfnWinChangeSwitchEntry(ge_os2_hsw, &ge_os2_swdata);
-    pfnWinSetWindowText(ge_os2_hwndframe, (PSZ)title);
-  }
+    if(ge_os2_hsw and ge_os2_hwndframe)
+    {
+        strxcpy(ge_os2_swdata.szSwtitle, title, MAXNAMEL);
+        pfnWinChangeSwitchEntry(ge_os2_hsw, &ge_os2_swdata);
+        pfnWinSetWindowText(ge_os2_hwndframe, (PSZ)title);
+    }
 }
 
 
 //  ------------------------------------------------------------------
 // Change icon
 
-void g_set_osicon(void) {
+void g_set_osicon(void)
+{
 
-  if(ge_os2_hwndframe and ge_os2_hsw) {
-    ULONG ulPicture = (ULONG) pfnWinLoadPointer(HWND_DESKTOP, 0, 1);
-    if(ulPicture) {
-      pfnWinSendMsg(ge_os2_hwndframe, WM_SETICON, (MPARAM) ulPicture, (MPARAM) 0);
-      pfnWinInvalidateRect(ge_os2_hwndframe, 0, 1);
-      pfnWinChangeSwitchEntry(ge_os2_hsw, &ge_os2_swdata);
+    if(ge_os2_hwndframe and ge_os2_hsw)
+    {
+        ULONG ulPicture = (ULONG) pfnWinLoadPointer(HWND_DESKTOP, 0, 1);
+        if(ulPicture)
+        {
+            pfnWinSendMsg(ge_os2_hwndframe, WM_SETICON, (MPARAM) ulPicture, (MPARAM) 0);
+            pfnWinInvalidateRect(ge_os2_hwndframe, 0, 1);
+            pfnWinChangeSwitchEntry(ge_os2_hsw, &ge_os2_swdata);
+        }
     }
-  }
 }
 
 
 //  ------------------------------------------------------------------
 
-bool g_is_clip_available(void) {
+bool g_is_clip_available(void)
+{
 
-  return make_bool(ge_os2_hab);
+    return make_bool(ge_os2_hab);
 }
 
 
 //  ------------------------------------------------------------------
 
-char *g_get_clip_text(void) {
+char *g_get_clip_text(void)
+{
 
-  char *text = NULL;
-  char *cd = NULL;
-  BOOL clip_open = false;
-  if(ge_os2_hab) {
-    if((clip_open = access_pm_clipboard()) != true)
-      return NULL;
-    if((text = (char *) pfnWinQueryClipbrdData(ge_os2_hab, CF_TEXT)) != NULL)
-      cd = throw_strdup(text);
-    leave_pm_clipboard(clip_open);
-  }
-  return cd;
+    char *text = NULL;
+    char *cd = NULL;
+    BOOL clip_open = false;
+    if(ge_os2_hab)
+    {
+        if((clip_open = access_pm_clipboard()) != true)
+            return NULL;
+        if((text = (char *) pfnWinQueryClipbrdData(ge_os2_hab, CF_TEXT)) != NULL)
+            cd = throw_strdup(text);
+        leave_pm_clipboard(clip_open);
+    }
+    return cd;
 }
 
 
 //  ------------------------------------------------------------------
 
-void g_get_ostitle_name(char *currtitle) {
+void g_get_ostitle_name(char *currtitle)
+{
 
-  if(ge_os2_hwndframe)
-    pfnWinQueryWindowText(ge_os2_hwndframe, GMAXTITLE, currtitle);
+    if(ge_os2_hwndframe)
+        pfnWinQueryWindowText(ge_os2_hwndframe, GMAXTITLE, currtitle);
 }
 
 
 //  ------------------------------------------------------------------
 
-void g_set_ostitle_name(char *title, int mode) {
+void g_set_ostitle_name(char *title, int mode)
+{
 
-  if(mode == 0) {
-    char fulltitle[GMAXTITLE+1];
-    strcpy(fulltitle, ge_os2_title);
-    if(ge_os2_ext_title) {
-      int len = strlen(fulltitle);
-      if(len < GMAXTITLE-3) {
+    if(mode == 0)
+    {
+        char fulltitle[GMAXTITLE+1];
+        strcpy(fulltitle, ge_os2_title);
+        if(ge_os2_ext_title)
+        {
+            int len = strlen(fulltitle);
+            if(len < GMAXTITLE-3)
+            {
+                if(len)
+                    strcat(fulltitle, " - ");
+                strxcpy(fulltitle+len+3, title, GMAXTITLE-len-3);
+            }
+        }
+        g_set_ostitle(fulltitle);
+    }
+    else
+        g_set_ostitle(title);
+}
+
+
+//  ------------------------------------------------------------------
+
+static BOOL access_pm_clipboard(void)
+{
+
+    BOOL clip_opened = false;
+    if(pfnWinOpenClipbrd(ge_os2_hab) == true)
+        clip_opened = true;
+    else
+        leave_pm_clipboard(clip_opened);
+    return clip_opened;
+}
+
+
+//  ------------------------------------------------------------------
+
+static void leave_pm_clipboard(int mode)
+{
+
+    if(mode == true)
+        pfnWinCloseClipbrd(ge_os2_hab);
+}
+
+
+//  ------------------------------------------------------------------
+
+int g_put_clip_text(const char *cd)
+{
+
+    ULONG len;
+    void *text;
+    int rc = -1;
+    BOOL clip_open = false;
+    if(ge_os2_hab)
+    {
+        if((clip_open = access_pm_clipboard()) != true)
+            return rc;
+        pfnWinEmptyClipbrd(ge_os2_hab);
+        len = strlen(cd);
+
         if(len)
-          strcat(fulltitle, " - ");
-        strxcpy(fulltitle+len+3, title, GMAXTITLE-len-3);
-      }
+        {
+            DosAllocSharedMem((void **) &text, 0, len + 1, PAG_READ | PAG_WRITE | PAG_COMMIT | OBJ_GIVEABLE);
+            strxcpy((char *) text, cd, len + 1);
+            if(pfnWinSetClipbrdData(ge_os2_hab, (ULONG) text, CF_TEXT, CFI_POINTER))
+                rc = 0;
+        }
+        leave_pm_clipboard(clip_open);
     }
-    g_set_ostitle(fulltitle);
-  }
-  else
-    g_set_ostitle(title);
-}
-
-
-//  ------------------------------------------------------------------
-
-static BOOL access_pm_clipboard(void) {
-
-  BOOL clip_opened = false;
-  if(pfnWinOpenClipbrd(ge_os2_hab) == true)
-    clip_opened = true;
-  else
-    leave_pm_clipboard(clip_opened);
-  return clip_opened;
-}
-
-
-//  ------------------------------------------------------------------
-
-static void leave_pm_clipboard(int mode) {
-
-  if(mode == true)
-    pfnWinCloseClipbrd(ge_os2_hab);
-}
-
-
-//  ------------------------------------------------------------------
-
-int g_put_clip_text(const char *cd) {
-
-  ULONG len;
-  void *text;
-  int rc = -1;
-  BOOL clip_open = false;
-  if(ge_os2_hab) {
-    if((clip_open = access_pm_clipboard()) != true)
-      return rc;
-    pfnWinEmptyClipbrd(ge_os2_hab);
-    len = strlen(cd);
-
-    if(len) {
-      DosAllocSharedMem((void **) &text, 0, len + 1, PAG_READ | PAG_WRITE | PAG_COMMIT | OBJ_GIVEABLE);
-      strxcpy((char *) text, cd, len + 1);
-      if(pfnWinSetClipbrdData(ge_os2_hab, (ULONG) text, CF_TEXT, CFI_POINTER))
-        rc = 0;
-    }
-    leave_pm_clipboard(clip_open);
-  }
-  return rc;
+    return rc;
 }
 
 

@@ -33,34 +33,37 @@
 
 //  ------------------------------------------------------------------
 
-class gwildmatch {
+class gwildmatch
+{
 
 protected:
 
-  int match_internal(const char* text, const char* pattern, bool ignorecase);
+    int match_internal(const char* text, const char* pattern, bool ignorecase);
 
 public:
 
-  bool match(const char* text, const char* pattern, bool ignorecase);
+    bool match(const char* text, const char* pattern, bool ignorecase);
 
 };
 
 
 //  ------------------------------------------------------------------
 
-inline bool gwildmat(const char* text, const char* pattern, bool ignorecase=true) {
+inline bool gwildmat(const char* text, const char* pattern, bool ignorecase=true)
+{
 
-  class gwildmatch m;
-  return m.match(text, pattern, ignorecase);
+    class gwildmatch m;
+    return m.match(text, pattern, ignorecase);
 }
 
 
 //  ------------------------------------------------------------------
 
-inline bool gwildmati(const char* text, const char* pattern) {
+inline bool gwildmati(const char* text, const char* pattern)
+{
 
-  class gwildmatch m;
-  return m.match(text, pattern, true);
+    class gwildmatch m;
+    return m.match(text, pattern, true);
 }
 
 

@@ -33,21 +33,23 @@
 
 //  ------------------------------------------------------------------
 
-int g_send_mci_string(char* string, char* his_buffer) {
+int g_send_mci_string(char* string, char* his_buffer)
+{
 
-  char our_buffer[BUFFERSIZE], *return_buffer;
+    char our_buffer[BUFFERSIZE], *return_buffer;
 
-  return_buffer = his_buffer ? his_buffer : our_buffer;
-  memset(return_buffer, 0, BUFFERSIZE);
-  
-  MCIERROR rc = mciSendString(string, return_buffer, BUFFERSIZE, NULL);
+    return_buffer = his_buffer ? his_buffer : our_buffer;
+    memset(return_buffer, 0, BUFFERSIZE);
 
-  if(rc == 0)
-    return 1;
-  else {
-    mciGetErrorString(rc, return_buffer, BUFFERSIZE);
-    return 0;
-  }
+    MCIERROR rc = mciSendString(string, return_buffer, BUFFERSIZE, NULL);
+
+    if(rc == 0)
+        return 1;
+    else
+    {
+        mciGetErrorString(rc, return_buffer, BUFFERSIZE);
+        return 0;
+    }
 }
 
 

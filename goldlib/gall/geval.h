@@ -37,74 +37,78 @@
 //  ------------------------------------------------------------------
 //  Base class
 
-class geval {
+class geval
+{
 
 public:
 
-  enum ops {
-    lowest,
-    logic_or,
-    logic_and,
-    logic_xor,
-    not_equal,
-    equal,
-    greater_or_equal,
-    greater,
-    lesser_or_equal,
-    lesser,
-    subtraction,
-    addition,
-    modulus,
-    division,
-    multiplication,
-    negation,
-    logic_not,
-    parenthesis_right,
-    parenthesis_left,
-    highest
-  };
+    enum ops
+    {
+        lowest,
+        logic_or,
+        logic_and,
+        logic_xor,
+        not_equal,
+        equal,
+        greater_or_equal,
+        greater,
+        lesser_or_equal,
+        lesser,
+        subtraction,
+        addition,
+        modulus,
+        division,
+        multiplication,
+        negation,
+        logic_not,
+        parenthesis_right,
+        parenthesis_left,
+        highest
+    };
 
 protected:
 
-  std::vector<ops> ostk;
-  std::vector<int> vstk;
+    std::vector<ops> ostk;
+    std::vector<int> vstk;
 
-  ops pop_operator();
-  int pop_value();
+    ops pop_operator();
+    int pop_value();
 
 public:
 
-  geval();
-  ~geval();
+    geval();
+    ~geval();
 
-  void push_value(int v);
-  void push_operator(ops o);
+    void push_value(int v);
+    void push_operator(ops o);
 
-  int evaluate_op(ops o, int y, int x);
-  int evaluate_ops(std::vector<ops>::iterator o, std::vector<int>::iterator y, std::vector<int>::iterator x);
+    int evaluate_op(ops o, int y, int x);
+    int evaluate_ops(std::vector<ops>::iterator o, std::vector<int>::iterator y, std::vector<int>::iterator x);
 
 };
 
 
 //  ------------------------------------------------------------------
 
-inline int geval::evaluate_ops(std::vector<ops>::iterator o, std::vector<int>::iterator y, std::vector<int>::iterator x) {
+inline int geval::evaluate_ops(std::vector<ops>::iterator o, std::vector<int>::iterator y, std::vector<int>::iterator x)
+{
 
-  return evaluate_op(*o, *y, *x);
+    return evaluate_op(*o, *y, *x);
 }
 
 
 //  ------------------------------------------------------------------
 //  Reverse Polish Notation expression evaluator.
 
-class gevalrpn : public geval {
+class gevalrpn : public geval
+{
 
 public:
 
-  gevalrpn();
-  ~gevalrpn();
+    gevalrpn();
+    ~gevalrpn();
 
-  int evaluate();
+    int evaluate();
 
 };
 
@@ -112,14 +116,15 @@ public:
 //  ------------------------------------------------------------------
 //  Human (left-to-right) expression evaluator.
 
-class gevalhum : public geval {
+class gevalhum : public geval
+{
 
 public:
 
-  gevalhum();
-  ~gevalhum();
+    gevalhum();
+    ~gevalhum();
 
-  int evaluate();
+    int evaluate();
 
 };
 

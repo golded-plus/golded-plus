@@ -75,7 +75,7 @@ extern "C" {
 /* Match STRING against the filename pattern PATTERN,
    returning zero if it matches, FNM_NOMATCH if not.  */
 extern int fnmatch __P ((__const char *__pattern, __const char *__string,
-             int __flags));
+                         int __flags));
 
 #ifdef  __cplusplus
 }

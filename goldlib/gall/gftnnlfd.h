@@ -38,35 +38,38 @@
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack(1)
+    #pragma pack(1)
 #endif
 
-struct _FDHdr {
-  word rsvd1;
-  byte rsvd2;
-  word master_idx;
+struct _FDHdr
+{
+    word rsvd1;
+    byte rsvd2;
+    word master_idx;
 };
 
 
 //  ------------------------------------------------------------------
 //  The four-byte header at the beginning of each Btree block
 
-struct _FDInf {
-  char nodes;
-  word index;
-  char rsvd[2];
+struct _FDInf
+{
+    char nodes;
+    word index;
+    char rsvd[2];
 };
 
 
 //  ------------------------------------------------------------------
 //  Layout of first record
 
-struct _FDCtl {
-  _FDInf inf;
-  _FDHdr hdr;
-  char   stuff[246];
-  byte   unknown;
-  char   nl_ext[3];
+struct _FDCtl
+{
+    _FDInf inf;
+    _FDHdr hdr;
+    char   stuff[246];
+    byte   unknown;
+    char   nl_ext[3];
 };
 
 
@@ -80,30 +83,32 @@ const uint32_t IN_FDPOINT = 0x20000000UL;  // Data in FDPOINT.PVT
 
 //  ------------------------------------------------------------------
 
-struct _FDGdx {
-  dword nlofs;
-  word  block_num;
+struct _FDGdx
+{
+    dword nlofs;
+    word  block_num;
 };
 
 
 //  ------------------------------------------------------------------
 //  A FrontDoor USERLIST.FDX record
 
-struct _FDUdx {
-  dword nlofs;                     // Index into raw nodelist.
-  word  block_num;                 // Block number (used in index recs only)
-  word  rsvd1;                     // Unknown
-  byte  rsvd2;                     // Unknown - always '\x18'
-  char  name[15];                  // Space-padded, uppercase
-  byte  zone_hi;                   // MSB of zone
-  byte  zone_lo;                   // LSB of zone
-  byte  net_hi;                    // MSB of net
-  byte  net_lo;                    // LSB of net
-  byte  node_hi;                   // MSB of node
-  byte  node_lo;                   // LSB of node
-  byte  point_hi;                  // MSB of point
-  byte  point_lo;                  // LSB of point
-  byte  type;                      // See TYPE_XXX
+struct _FDUdx
+{
+    dword nlofs;                     // Index into raw nodelist.
+    word  block_num;                 // Block number (used in index recs only)
+    word  rsvd1;                     // Unknown
+    byte  rsvd2;                     // Unknown - always '\x18'
+    char  name[15];                  // Space-padded, uppercase
+    byte  zone_hi;                   // MSB of zone
+    byte  zone_lo;                   // LSB of zone
+    byte  net_hi;                    // MSB of net
+    byte  net_lo;                    // LSB of net
+    byte  node_hi;                   // MSB of node
+    byte  node_lo;                   // LSB of node
+    byte  point_hi;                  // MSB of point
+    byte  point_lo;                  // LSB of point
+    byte  type;                      // See TYPE_XXX
 };
 
 
@@ -112,32 +117,34 @@ struct _FDUdx {
 //  is always 1061 bytes long, and the file length is always a
 //  multiple of this
 
-struct _FDUdb {
-  _FDInf inf;
-  _FDUdx udx[32];
+struct _FDUdb
+{
+    _FDInf inf;
+    _FDUdx udx[32];
 };
 
 
 //  ------------------------------------------------------------------
 //  A FrontDoor NODELIST.FDX record
 
-struct _FDFdx {
-  dword nlofs;                     // Index into raw nodelist.
-  word  block_num;                 // Block number (used in index recs only)
-  word  rsvd1;                     // Unknown
-  byte  rsvd2;                     // Unknown - always '\x0e'
-  byte  zone_hi;                   // MSB of zone
-  byte  zone_lo;                   // LSB of zone
-  byte  net_hi;                    // MSB of net
-  byte  net_lo;                    // LSB of net
-  byte  node_hi;                   // MSB of node
-  byte  node_lo;                   // LSB of node
-  byte  point_hi;                  // MSB of point
-  byte  point_lo;                  // LSB of point
-  word  host_route;                // Net# for host routng, or 0 if none
-  word  hub_route;                 // Hub# for hub routing, or 0 if none
-  byte  type;                      // See TYPE_XXX
-  byte  sentinel;                  // Always 0xFF
+struct _FDFdx
+{
+    dword nlofs;                     // Index into raw nodelist.
+    word  block_num;                 // Block number (used in index recs only)
+    word  rsvd1;                     // Unknown
+    byte  rsvd2;                     // Unknown - always '\x0e'
+    byte  zone_hi;                   // MSB of zone
+    byte  zone_lo;                   // LSB of zone
+    byte  net_hi;                    // MSB of net
+    byte  net_lo;                    // LSB of net
+    byte  node_hi;                   // MSB of node
+    byte  node_lo;                   // LSB of node
+    byte  point_hi;                  // MSB of point
+    byte  point_lo;                  // LSB of point
+    word  host_route;                // Net# for host routng, or 0 if none
+    word  hub_route;                 // Hub# for hub routing, or 0 if none
+    byte  type;                      // See TYPE_XXX
+    byte  sentinel;                  // Always 0xFF
 };
 
 
@@ -146,21 +153,24 @@ struct _FDFdx {
 //  is always 741 bytes long, and the file length is always a multiple
 //  of this
 
-struct _FDFdb {
-  _FDInf inf;
-  _FDFdx fdx[32];
+struct _FDFdb
+{
+    _FDInf inf;
+    _FDFdx fdx[32];
 };
 
 
 //  ------------------------------------------------------------------
 //  B-Tree common data block with union for convenience
 
-struct _FDBlk {
-  _FDInf info;
-  union {
-    _FDUdx name[32];
-    _FDFdx addr[32];
-  } node;
+struct _FDBlk
+{
+    _FDInf info;
+    union
+    {
+        _FDUdx name[32];
+        _FDFdx addr[32];
+    } node;
 };
 
 
@@ -228,130 +238,143 @@ struct _FDBlk {
 #define ISBAUD115200    19
 
 // Record structure
-struct _FDFdn {
-  long erased;            // Used to signal erased status
-  byte status;            // Zone, host, hub, etc.
-  word node;              // Network address
-  word net;               //
-  word zone;              //
-  word point;             //
-  word routnode;          // Default routing within zone
-  word routnet;           //
-  word cost;              // Cost per minute for system
-  long capability;        // Capability flags
-  byte maxbaud;           // Maximum baud rate
-  char name[31];          // Name of system
-  char telephone[41];     // Raw telephone number
-  char location[41];      // Location of system
-  char user[37];          // SysOp name
-  char selecttag[4];      // Group field
+struct _FDFdn
+{
+    long erased;            // Used to signal erased status
+    byte status;            // Zone, host, hub, etc.
+    word node;              // Network address
+    word net;               //
+    word zone;              //
+    word point;             //
+    word routnode;          // Default routing within zone
+    word routnet;           //
+    word cost;              // Cost per minute for system
+    long capability;        // Capability flags
+    byte maxbaud;           // Maximum baud rate
+    char name[31];          // Name of system
+    char telephone[41];     // Raw telephone number
+    char location[41];      // Location of system
+    char user[37];          // SysOp name
+    char selecttag[4];      // Group field
 };
 
 
 //  ------------------------------------------------------------------
 //
 
-struct _FDStk {
-  uint blockno;
-  uint block_num;
-  int  maxnodes;
-  int  node;
+struct _FDStk
+{
+    uint blockno;
+    uint block_num;
+    int  maxnodes;
+    int  node;
 };
 
 
 //  ------------------------------------------------------------------
 
-struct _FDstate {
-  uint   depth;
-  _FDStk stack[8];
-  int    blockno;
-  int    node;
+struct _FDstate
+{
+    uint   depth;
+    _FDStk stack[8];
+    int    blockno;
+    int    node;
 };
 
 #if defined(GOLD_CANPACK)
-#pragma pack()
+    #pragma pack()
 #endif
 
 
 //  ------------------------------------------------------------------
 
-class ftn_frontdoor_nodelist_index : public ftn_nodelist_index_base {
+class ftn_frontdoor_nodelist_index : public ftn_nodelist_index_base
+{
 
-  bool          is_intermail;
+    bool          is_intermail;
 
-  int           fdfd;
-  int           nfd;
-  int           pfd;
-  int           ppfd;
-  int           ufd;
-  int           xfd;
+    int           fdfd;
+    int           nfd;
+    int           pfd;
+    int           ppfd;
+    int           ufd;
+    int           xfd;
 
-  _FDCtl        ctl;
+    _FDCtl        ctl;
 
-  _FDBlk        block;
-  uint          blocksize;
-  uint          blockno;
-  uint          maxblockno;
-  uint          lastblockno;
-  int           node;
+    _FDBlk        block;
+    uint          blocksize;
+    uint          blockno;
+    uint          maxblockno;
+    uint          lastblockno;
+    int           node;
 
-  _FDStk        stack[8];
-  uint          depth;
+    _FDStk        stack[8];
+    uint          depth;
 
-  _FDstate      state;
+    _FDstate      state;
 
-  char          nodelist[13];
-  long          nodelistoffset;
+    char          nodelist[13];
+    long          nodelistoffset;
 
-  char          searchname[16];
-  ftn_addr      searchaddr;
+    char          searchname[16];
+    ftn_addr      searchaddr;
 
-  const _FDUdx& namerec() const;
-  const _FDFdx& addrrec() const;
-  const _FDGdx& noderec() const;
-  void          getaddr(ftn_addr& addr) const;
-  void          getblock();
-  int           namecmp() const;
-  int           addrcmp() const;
-  void          getstatus(char* status, int type) const;
-  void          fetchdata();
-  void          getnodedata();
-  void          push();
-  void          pop();
-  bool          prevnode();
-  bool          nextnode();
-  void          compare()               { exactmatch = not (namebrowse ? namecmp() : addrcmp()); }
-  bool          search();
+    const _FDUdx& namerec() const;
+    const _FDFdx& addrrec() const;
+    const _FDGdx& noderec() const;
+    void          getaddr(ftn_addr& addr) const;
+    void          getblock();
+    int           namecmp() const;
+    int           addrcmp() const;
+    void          getstatus(char* status, int type) const;
+    void          fetchdata();
+    void          getnodedata();
+    void          push();
+    void          pop();
+    bool          prevnode();
+    bool          nextnode();
+    void          compare()
+    {
+        exactmatch = not (namebrowse ? namecmp() : addrcmp());
+    }
+    bool          search();
 
-  #ifdef DEBUG
-  void          printnode() const;
-  #endif
+#ifdef DEBUG
+    void          printnode() const;
+#endif
 
 public:
 
-  ftn_frontdoor_nodelist_index();
-  virtual ~ftn_frontdoor_nodelist_index();
+    ftn_frontdoor_nodelist_index();
+    virtual ~ftn_frontdoor_nodelist_index();
 
-  bool can_browse_name() const     { return true; }
-  bool can_browse_address() const  { return true; }
+    bool can_browse_name() const
+    {
+        return true;
+    }
+    bool can_browse_address() const
+    {
+        return true;
+    }
 
-  bool open();
-  void close();
+    bool open();
+    void close();
 
-  bool find(const char* name);
-  bool find(const ftn_addr& addr);
+    bool find(const char* name);
+    bool find(const ftn_addr& addr);
 
-  bool previous();
-  bool next();
+    bool previous();
+    bool next();
 
-  void first();
-  void last();
+    void first();
+    void last();
 
-  void push_state();
-  void pop_state();
+    void push_state();
+    void pop_state();
 
-  const char* index_name() const;
-  const char* nodelist_name() const;
+    const char* index_name() const;
+    const char* nodelist_name() const;
 
 };
 

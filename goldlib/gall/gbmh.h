@@ -37,23 +37,24 @@
 
 //  ------------------------------------------------------------------
 
-class gbmh {
+class gbmh
+{
 
 protected:
 
-  int   skip[256];   // skip-ahead count for test chars
-  int   skip2;       // skip-ahead after non-match with matching final char
-  char* pat;
-  int   patlen;
-  bool  ignore_case;
+    int   skip[256];   // skip-ahead count for test chars
+    int   skip2;       // skip-ahead after non-match with matching final char
+    char* pat;
+    int   patlen;
+    bool  ignore_case;
 
 public:
 
-  gbmh();
-  ~gbmh();
+    gbmh();
+    ~gbmh();
 
-  void init(const char* pattern, bool ignorecase);
-  bool find(const char* string);
+    void init(const char* pattern, bool ignorecase);
+    bool find(const char* string);
 
 };
 

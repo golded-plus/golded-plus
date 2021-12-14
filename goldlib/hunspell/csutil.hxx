@@ -3,7 +3,8 @@
 
 // First some base level utility routines
 
-typedef struct {
+typedef struct
+{
     unsigned char l;
     unsigned char h;
 } w_char;
@@ -41,54 +42,59 @@ char * mystrrep(char *, const char *, const char *);
 void strlinecat(char * lines, const char * s);
 
 // tokenize into lines with new line
-   int line_tok(const char * text, char *** lines);
+int line_tok(const char * text, char *** lines);
 
 // tokenize into lines with new line and uniq in place
-   char * line_uniq(char * text);
+char * line_uniq(char * text);
 
 // change \n to c in place
-   char * line_join(char * text, char c);
+char * line_join(char * text, char c);
 
 // leave only last {[^}]*} pattern in string
-   char * delete_zeros(char * morphout);
+char * delete_zeros(char * morphout);
 
 // reverse word
-   void reverseword(char *);
+void reverseword(char *);
 
 // reverse word
-   void reverseword_utf(char *);
+void reverseword_utf(char *);
 
 // character encoding information
-struct cs_info {
-  unsigned char ccase;
-  unsigned char clower;
-  unsigned char cupper;
+struct cs_info
+{
+    unsigned char ccase;
+    unsigned char clower;
+    unsigned char cupper;
 };
 
 // Unicode character encoding information
-struct unicode_info {
-  unsigned short c;
-  unsigned short cupper;
-  unsigned short clower;
+struct unicode_info
+{
+    unsigned short c;
+    unsigned short cupper;
+    unsigned short clower;
 };
 
-struct unicode_info2 {
-  char cletter;
-  unsigned short cupper;
-  unsigned short clower;
+struct unicode_info2
+{
+    char cletter;
+    unsigned short cupper;
+    unsigned short clower;
 };
 
-struct enc_entry {
-  const char * enc_name;
-  struct cs_info * cs_table;
+struct enc_entry
+{
+    const char * enc_name;
+    struct cs_info * cs_table;
 };
 
 // language to encoding default map
 
-struct lang_map {
-  const char * lang;
-  const char * def_enc;
-  int num;
+struct lang_map
+{
+    const char * lang;
+    const char * def_enc;
+    int num;
 };
 
 struct cs_info * get_current_cs(const char * es);

@@ -42,59 +42,82 @@ class gbmh;
 
 //  ------------------------------------------------------------------
 
-class gsearch {
+class gsearch
+{
 
 public:
 
-  enum patterntype {
-    regex,                // Extended regular expressions
-    wildcard,             // Shell-style with wildcards
-    fuzzy,                // Fuzzy matching
-    plain                 // Plain BMH match
-  };
+    enum patterntype
+    {
+        regex,                // Extended regular expressions
+        wildcard,             // Shell-style with wildcards
+        fuzzy,                // Fuzzy matching
+        plain                 // Plain BMH match
+    };
 
 protected:
 
-  class gregex* regexp;
-  class gfuzzy* fuzzyp;
-  class gbmh*   plainp;
+    class gregex* regexp;
+    class gfuzzy* fuzzyp;
+    class gbmh*   plainp;
 
 public:
 
-  // Configuration
-  std::string    id;
-  std::string    pattern;
-  patterntype    type;
-  bool           case_sensitive;
-  bool           reverse;
-  int            fuzzydegree;
-  int            score_success;
-  int            score_failure;
+    // Configuration
+    std::string    id;
+    std::string    pattern;
+    patterntype    type;
+    bool           case_sensitive;
+    bool           reverse;
+    int            fuzzydegree;
+    int            score_success;
+    int            score_failure;
 
-  gsearch();
-  virtual ~gsearch();
+    gsearch();
+    virtual ~gsearch();
 
-  void set_id(const char* a)          { id = a; }
-  void set_type(patterntype a)        { type = a; }
-  void set_pattern(const char* a);
-  void set_case_sensitive(bool a)     { case_sensitive = a; }
-  void set_reverse(bool a)            { reverse = a; }
-  void set_fuzzydegree(int a)         { fuzzydegree = a; }
-  void set_score_success(int a)       { score_success = a; }
-  void set_score_failure(int a)       { score_failure = a; }
+    void set_id(const char* a)
+    {
+        id = a;
+    }
+    void set_type(patterntype a)
+    {
+        type = a;
+    }
+    void set_pattern(const char* a);
+    void set_case_sensitive(bool a)
+    {
+        case_sensitive = a;
+    }
+    void set_reverse(bool a)
+    {
+        reverse = a;
+    }
+    void set_fuzzydegree(int a)
+    {
+        fuzzydegree = a;
+    }
+    void set_score_success(int a)
+    {
+        score_success = a;
+    }
+    void set_score_failure(int a)
+    {
+        score_failure = a;
+    }
 
-  // Result of last search
-  bool found;
-  int score;
+    // Result of last search
+    bool found;
+    int score;
 
-  // Search a string for the pattern.
-  // Return true for success, false for failure.
-  bool search(const char* string);
-  bool search(const std::string& str);
-  bool search(const char* str, int& result);
-  bool search(const std::string& str, int& result);
+    // Search a string for the pattern.
+    // Return true for success, false for failure.
+    bool search(const char* string);
+    bool search(const std::string& str);
+    bool search(const char* str, int& result);
+    bool search(const std::string& str, int& result);
 
-  gsearch& operator=(const gsearch& a);
+    gsearch& operator=(const gsearch& a);
 
 };
 

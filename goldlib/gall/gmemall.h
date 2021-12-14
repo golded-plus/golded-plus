@@ -34,7 +34,7 @@
 #include <stdlib.h>
 #include <gdefs.h>
 #if defined(__MSDOS__)
-#include <gmemi86.h>
+    #include <gmemi86.h>
 #endif
 
 
@@ -43,20 +43,44 @@
 #if defined(__MSDOS__)
 #if defined(__WATCOMC__)
 
-inline short peek(unsigned segment, unsigned offset) { return *((short *)MK_FP(segment,offset)); }
-inline char  peekb(unsigned segment, unsigned offset) { return *((char *)MK_FP(segment,offset)); }
-inline void  poke(unsigned segment, unsigned offset, short value) { *((short *)MK_FP(segment,offset)) = value; }
-inline void  pokeb(unsigned segment, unsigned offset, char value) { *((char *)MK_FP(segment,offset)) = value; }
+inline short peek(unsigned segment, unsigned offset)
+{
+    return *((short *)MK_FP(segment,offset));
+}
+inline char  peekb(unsigned segment, unsigned offset)
+{
+    return *((char *)MK_FP(segment,offset));
+}
+inline void  poke(unsigned segment, unsigned offset, short value)
+{
+    *((short *)MK_FP(segment,offset)) = value;
+}
+inline void  pokeb(unsigned segment, unsigned offset, char value)
+{
+    *((char *)MK_FP(segment,offset)) = value;
+}
 
 #elif defined(__DJGPP__)
 
 #include <go32.h>
 #include <sys/farptr.h>
 
-inline short peek (unsigned segment, unsigned offset) { return _farpeekw(_dos_ds, segment*16 + offset); }
-inline char  peekb(unsigned segment, unsigned offset) { return _farpeekb(_dos_ds, segment*16 + offset); }
-inline void  poke (unsigned segment, unsigned offset, short value) { _farpokew(_dos_ds, segment*16 + offset, value); }
-inline void  pokeb(unsigned segment, unsigned offset, char value)  { _farpokeb(_dos_ds, segment*16 + offset, value); }
+inline short peek (unsigned segment, unsigned offset)
+{
+    return _farpeekw(_dos_ds, segment*16 + offset);
+}
+inline char  peekb(unsigned segment, unsigned offset)
+{
+    return _farpeekb(_dos_ds, segment*16 + offset);
+}
+inline void  poke (unsigned segment, unsigned offset, short value)
+{
+    _farpokew(_dos_ds, segment*16 + offset, value);
+}
+inline void  pokeb(unsigned segment, unsigned offset, char value)
+{
+    _farpokeb(_dos_ds, segment*16 + offset, value);
+}
 
 #endif
 #endif
@@ -68,7 +92,10 @@ inline void  pokeb(unsigned segment, unsigned offset, char value)  { _farpokeb(_
 #define HEX_DUMP2 2
 
 char* HexDump16(char* strbuf, const char* memptr, int limit, const char* fmt, int fmtno=0);
-inline char* HexDump16(char* strbuf, const char* memptr, int limit, int fmtno) { return HexDump16(strbuf, memptr, limit, NULL, fmtno); }
+inline char* HexDump16(char* strbuf, const char* memptr, int limit, int fmtno)
+{
+    return HexDump16(strbuf, memptr, limit, NULL, fmtno);
+}
 
 
 //  ------------------------------------------------------------------

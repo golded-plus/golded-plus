@@ -22,19 +22,19 @@
 
 // Only valid in the following environment: Intel platform, MS VC++ 5/6/7/7.1/8
 #if !defined(_M_IX86)
-#error Only INTEL envirnoments are supported!
+    #error Only INTEL envirnoments are supported!
 #endif
 
 // Only MS VC++ 5 to 7
 #if (_MSC_VER < 1100) //|| (_MSC_VER > 1400)
-#error Only MS VC++ 5/6/7/7.1/8 supported. Check if the '_CrtMemBlockHeader' has not changed with this compiler!
+    #error Only MS VC++ 5/6/7/7.1/8 supported. Check if the '_CrtMemBlockHeader' has not changed with this compiler!
 #endif
 
 typedef enum eAllocCheckOutput
 {
-  ACOutput_Simple,
-  ACOutput_Advanced,
-  ACOutput_XML
+    ACOutput_Simple,
+    ACOutput_Advanced,
+    ACOutput_XML
 };
 
 // Make extern "C", so it will also work with normal C-Programs

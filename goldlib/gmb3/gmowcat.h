@@ -42,7 +42,7 @@
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack(1)
+    #pragma pack(1)
 #endif
 
 
@@ -93,142 +93,158 @@ const word mfSent        = 0x0800;
 //  ------------------------------------------------------------------
 //  WildCat! 4.0 Message Header
 
-struct WCatHdr {
-  uint32_t  magicnumber;
-  word  msgno;
-  char  from[71];
-  char  fromtitle[11];
-  int32_t  fromuserid;
-  char  to[71];
-  char  totitle[11];
-  int32_t  touserid;
-  char  subject[71];
-  char  network[9];
-  word  msgdate;
-  int32_t  msgtime;
-  word  readdate;
-  int32_t  readtime;
-  word  mflags;
-  word  reference;
-  Addr  origaddr;
-  Addr  destaddr;
-  word  msgbytes;
-  char  internalattach[13];
-  char  externalattach[13];
-  word  prevunread;
-  word  nextunread;
-  word  fidoflags;
-  int32_t  cost;
-  byte  reserved[20];
+struct WCatHdr
+{
+    uint32_t  magicnumber;
+    word  msgno;
+    char  from[71];
+    char  fromtitle[11];
+    int32_t  fromuserid;
+    char  to[71];
+    char  totitle[11];
+    int32_t  touserid;
+    char  subject[71];
+    char  network[9];
+    word  msgdate;
+    int32_t  msgtime;
+    word  readdate;
+    int32_t  readtime;
+    word  mflags;
+    word  reference;
+    Addr  origaddr;
+    Addr  destaddr;
+    word  msgbytes;
+    char  internalattach[13];
+    char  externalattach[13];
+    word  prevunread;
+    word  nextunread;
+    word  fidoflags;
+    int32_t  cost;
+    byte  reserved[20];
 };
 
-  
+
 //  ------------------------------------------------------------------
 //  WildCat! 4.0 Message Index Base Record
 
-struct WCatBase {
-  word recsize;
-  word active;
-  word nextmsgno;
+struct WCatBase
+{
+    word recsize;
+    word active;
+    word nextmsgno;
 };
 
-  
+
 //  ------------------------------------------------------------------
 //  WildCat! 4.0 Message Index Record
 
-struct WCatIdx {
-  word msgno;
-  int32_t offset;
+struct WCatIdx
+{
+    word msgno;
+    int32_t offset;
 };
 
 
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack()
+    #pragma pack()
 #endif
 
 
 //  ------------------------------------------------------------------
 
-struct WCatData {
-  int      fhix;
-  int      fhdat;
-  WCatBase base;
-  WCatIdx* idx;
-  int      islocked;
+struct WCatData
+{
+    int      fhix;
+    int      fhdat;
+    WCatBase base;
+    WCatIdx* idx;
+    int      islocked;
 };
 
 
 //  ------------------------------------------------------------------
 
-struct WCatWide {
-  int          userno;
+struct WCatWide
+{
+    int          userno;
 //  WildCatUser*  user;
 };
 
 
 //  ------------------------------------------------------------------
 
-class WCatArea : public gmo_area {
+class WCatArea : public gmo_area
+{
 
 protected:
 
-  WCatWide* wide;
-  WCatData* data;
+    WCatWide* wide;
+    WCatData* data;
 
-  void data_open();
-  void data_close();
+    void data_open();
+    void data_close();
 
-  int test_open(const char* __file);
-  void raw_open();
-  void save_lastread();
-  void raw_scan(int __keep_index, int __scanpm=false);
-  void save_message(int __mode, gmsg* __msg, WCatHdr& __hdr);
+    int test_open(const char* __file);
+    void raw_open();
+    void save_lastread();
+    void raw_scan(int __keep_index, int __scanpm=false);
+    void save_message(int __mode, gmsg* __msg, WCatHdr& __hdr);
 
-  void raw_close();
-  void refresh();
-  int load_message(int __mode, gmsg* __msg, WCatHdr& __hdr);
+    void raw_close();
+    void refresh();
+    int load_message(int __mode, gmsg* __msg, WCatHdr& __hdr);
 
 public:
 
-  WCatArea() { wide = NULL; data = NULL; }
-  virtual ~WCatArea() {}
+    WCatArea()
+    {
+        wide = NULL;
+        data = NULL;
+    }
+    virtual ~WCatArea() {}
 
-  virtual bool issoftdelete() const { return true; }
-  virtual bool requirehardterm() const { return true; }
+    virtual bool issoftdelete() const
+    {
+        return true;
+    }
+    virtual bool requirehardterm() const
+    {
+        return true;
+    }
 
-  //  ----------------------------------------------------------------
-  //  Messagebase member functions
-  
-  void open();
-  void close();
+    //  ----------------------------------------------------------------
+    //  Messagebase member functions
 
-  void suspend();
-  void resume();
+    void open();
+    void close();
 
-  void lock();
-  void unlock();
+    void suspend();
+    void resume();
 
-  void scan();
-  void scan_area();
-  void scan_area_pm();
+    void lock();
+    void unlock();
 
-  int load_hdr(gmsg* msg);
-  int load_msg(gmsg* msg);
+    void scan();
+    void scan_area();
+    void scan_area_pm();
 
-  void save_hdr(int mode, gmsg* msg);
-  void save_msg(int mode, gmsg* msg);
+    int load_hdr(gmsg* msg);
+    int load_msg(gmsg* msg);
 
-  void del_msg(gmsg* msg);
+    void save_hdr(int mode, gmsg* msg);
+    void save_msg(int mode, gmsg* msg);
 
-  void new_msgno(gmsg* msg);
-  char* user_lookup(char* lookfor);
-  int renumber();
+    void del_msg(gmsg* msg);
 
-  void update_timesread(gmsg* msg);
+    void new_msgno(gmsg* msg);
+    char* user_lookup(char* lookfor);
+    int renumber();
 
-  Line* make_dump_msg(Line*& lin, gmsg* msg, char* lng_head);
+    void update_timesread(gmsg* msg);
+
+    Line* make_dump_msg(Line*& lin, gmsg* msg, char* lng_head);
 };
 
 

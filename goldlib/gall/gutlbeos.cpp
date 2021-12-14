@@ -44,148 +44,169 @@ static BClipboard g_clipboard("system", true);
 
 //  ------------------------------------------------------------------
 
-int g_init_os(int flags) {
+int g_init_os(int flags)
+{
 
-  NW(flags);
-  return 0;
+    NW(flags);
+    return 0;
 }
 
 
 //  ------------------------------------------------------------------
 
-void g_deinit_os(void) {
+void g_deinit_os(void)
+{
 
-  // do nothing
+    // do nothing
 }
 
 
 //  ------------------------------------------------------------------
 
-void g_init_title(char *tasktitle, int titlestatus) {
+void g_init_title(char *tasktitle, int titlestatus)
+{
 
-  strxcpy(ge_beos_title, tasktitle, GMAXTITLE);
-  ge_beos_ext_title = titlestatus;
+    strxcpy(ge_beos_title, tasktitle, GMAXTITLE);
+    ge_beos_ext_title = titlestatus;
 }
 
 
 //  ------------------------------------------------------------------
 
-void g_increase_priority(void) {
+void g_increase_priority(void)
+{
 
-  // Do nothing
+    // Do nothing
 }
 
 
 //  ------------------------------------------------------------------
 
-void g_set_ostitle(char* title) {
+void g_set_ostitle(char* title)
+{
 
-  printf("\x1b\x5d\x32\x3b%s\x07", title);
-  fflush(stdout);
+    printf("\x1b\x5d\x32\x3b%s\x07", title);
+    fflush(stdout);
 }
 
 //  ------------------------------------------------------------------
 
-void g_set_osicon(void) {
+void g_set_osicon(void)
+{
 
-  // do nothing
+    // do nothing
 }
 
 
 //  ------------------------------------------------------------------
 
-bool g_is_clip_available(void) {
+bool g_is_clip_available(void)
+{
 
-  return true;
+    return true;
 }
 
 //  ------------------------------------------------------------------
 
-char* g_get_clip_text(void) {
+char* g_get_clip_text(void)
+{
 
-  char *clip_text = NUL;
-  const char *text = NUL;
-  int32 textLen; 
-  BMessage *clip = (BMessage *)NUL; 
+    char *clip_text = NUL;
+    const char *text = NUL;
+    int32 textLen;
+    BMessage *clip = (BMessage *)NUL;
 
-  if(g_clipboard.Lock()){ 
-    if((clip = g_clipboard.Data()) != NUL){
-      if(B_OK == clip->FindData("text/plain", B_MIME_TYPE, 
-                            (const void **)&text, &textLen)){
-        clip_text = (char *)throw_malloc(textLen * 2 + 1);
-        *clip_text = NUL;
-        int32 state = 0, destLen = textLen * 2;
-        convert_from_utf8(B_ISO5_CONVERSION, text, &textLen,
-                          clip_text, &destLen, &state);
-        clip_text[destLen] = NUL;
-      }
+    if(g_clipboard.Lock())
+    {
+        if((clip = g_clipboard.Data()) != NUL)
+        {
+            if(B_OK == clip->FindData("text/plain", B_MIME_TYPE,
+                                      (const void **)&text, &textLen))
+            {
+                clip_text = (char *)throw_malloc(textLen * 2 + 1);
+                *clip_text = NUL;
+                int32 state = 0, destLen = textLen * 2;
+                convert_from_utf8(B_ISO5_CONVERSION, text, &textLen,
+                                  clip_text, &destLen, &state);
+                clip_text[destLen] = NUL;
+            }
+        }
+        g_clipboard.Unlock();
     }
-    g_clipboard.Unlock(); 
-  } 
-  return clip_text;
+    return clip_text;
 }
 
 //  ------------------------------------------------------------------
 
-int g_put_clip_text(const char* buf) {
+int g_put_clip_text(const char* buf)
+{
 
-  int ret = -1;
-  BMessage *clip = (BMessage *)NULL; 
-  if(g_clipboard.Lock()){
-    g_clipboard.Clear();
-    if((clip = g_clipboard.Data()) != NUL){
-      int32 textLen = strlen(buf);
-      int32 destLen = textLen * 3;
-      char *clip_text = (char *)throw_malloc(destLen);
-      *clip_text = NUL;
-      int32 state = 0;
-      convert_to_utf8(B_ISO5_CONVERSION, buf, &textLen, clip_text, &destLen, &state);
-      clip->AddData("text/plain", B_MIME_TYPE, clip_text, destLen);
-      g_clipboard.Commit();
-      ret = 0;
+    int ret = -1;
+    BMessage *clip = (BMessage *)NULL;
+    if(g_clipboard.Lock())
+    {
+        g_clipboard.Clear();
+        if((clip = g_clipboard.Data()) != NUL)
+        {
+            int32 textLen = strlen(buf);
+            int32 destLen = textLen * 3;
+            char *clip_text = (char *)throw_malloc(destLen);
+            *clip_text = NUL;
+            int32 state = 0;
+            convert_to_utf8(B_ISO5_CONVERSION, buf, &textLen, clip_text, &destLen, &state);
+            clip->AddData("text/plain", B_MIME_TYPE, clip_text, destLen);
+            g_clipboard.Commit();
+            ret = 0;
+        }
+        g_clipboard.Unlock();
     }
-    g_clipboard.Unlock();
-  } 
-  return -1;
+    return -1;
 }
 
 
 //  ------------------------------------------------------------------
 
-void g_get_ostitle_name(char* title) {
+void g_get_ostitle_name(char* title)
+{
 
-  *title = NUL;
+    *title = NUL;
 }
 
 
 //  ------------------------------------------------------------------
 
-void g_set_ostitle_name(char* title, int mode) {
+void g_set_ostitle_name(char* title, int mode)
+{
 
-  if(mode == 0) {
-    char fulltitle[GMAXTITLE+1];
-    strcpy(fulltitle, ge_beos_title);
-    if(ge_beos_ext_title) {
-      int len = strlen(fulltitle);
-      if(len < GMAXTITLE-3) {
-        if(len)
-          strcat(fulltitle, " - ");
-        strxcpy(fulltitle+len+3, title, GMAXTITLE-len-3);
-      }
+    if(mode == 0)
+    {
+        char fulltitle[GMAXTITLE+1];
+        strcpy(fulltitle, ge_beos_title);
+        if(ge_beos_ext_title)
+        {
+            int len = strlen(fulltitle);
+            if(len < GMAXTITLE-3)
+            {
+                if(len)
+                    strcat(fulltitle, " - ");
+                strxcpy(fulltitle+len+3, title, GMAXTITLE-len-3);
+            }
+        }
+        g_set_ostitle(fulltitle);
     }
-    g_set_ostitle(fulltitle);
-  }
-  else
-    g_set_ostitle(title);
+    else
+        g_set_ostitle(title);
 }
 
 
 //  ------------------------------------------------------------------
 
-int g_send_mci_string(char* str, char* his_buffer) {
+int g_send_mci_string(char* str, char* his_buffer)
+{
 
-  NW(str); NW(his_buffer);
-  return 1;
+    NW(str);
+    NW(his_buffer);
+    return 1;
 }
 
 

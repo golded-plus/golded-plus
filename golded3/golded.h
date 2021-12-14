@@ -25,80 +25,80 @@
 //  ------------------------------------------------------------------
 
 #ifndef __GOLDED_H
-#define __GOLDED_H
+    #define __GOLDED_H
 
 
-//  ------------------------------------------------------------------
-//  Standard library headers
+    //  ------------------------------------------------------------------
+    //  Standard library headers
 
-#include <csignal>
-#include <iostream>
-#if defined(__GNUC__)
-  #if __GNUC__ > 2
-    #include <sstream>
-  #endif
-#elif defined(_MSC_VER)
- #include <sstream>
-#endif
-#include <iomanip>
-// Wrappers for certain mostly DOS/Borland headers
-#include <gshare.h>
-
-
-//  ------------------------------------------------------------------
-//  Goldware Library headers
-
-#include <gdefs.h>
-#include <gstrall.h>
-#include <gcrcall.h>
-#include <gdbgerr.h>
-#include <gmemdbg.h>
-#include <gdbgtrk.h>
-#include <gfile.h>
-#include <gfilutil.h>
-#include <gftnall.h>
-#include <gkbdbase.h>
-#include <gkbdcode.h>
-#include <glog.h>
-#include <gmemall.h>
-#include <gmoubase.h>
-#include <gmsgattr.h>
-#include <gprnall.h>
-#include <gsearch.h>
-#include <gstrbags.h>
-#include <gtimall.h>
-#include <gtxtpara.h>
-#include <gutlgrp.h>
-#include <gutlmisc.h>
-#include <gutlmtsk.h>
-#include <gutltag.h>
-#include <gvidall.h>
-#include <gwildmat.h>
-#include <gwinall.h>
-#include <gwinhelp.h>
-#include <gwinpick.h>
-#include <gespell.h>
+    #include <csignal>
+    #include <iostream>
+    #if defined(__GNUC__)
+        #if __GNUC__ > 2
+            #include <sstream>
+        #endif
+    #elif defined(_MSC_VER)
+        #include <sstream>
+    #endif
+    #include <iomanip>
+    // Wrappers for certain mostly DOS/Borland headers
+    #include <gshare.h>
 
 
-//  ------------------------------------------------------------------
-//  GoldED specific headers
-#include <gehelp.h>
-#include <gekeys.h>
-#include <gelang.h>
-#include <gmarea.h>
-#include <gecfgg.h>
+    //  ------------------------------------------------------------------
+    //  Goldware Library headers
 
-#include <geqwks.h>
-#include <gectnr.h>
-#include <geview.h>
-#include <geglob.h>
-#include <geprot.h>
-#include <gemnus.h>
-#include <gefn.h>
-#include "gehelp.h"
+    #include <gdefs.h>
+    #include <gstrall.h>
+    #include <gcrcall.h>
+    #include <gdbgerr.h>
+    #include <gmemdbg.h>
+    #include <gdbgtrk.h>
+    #include <gfile.h>
+    #include <gfilutil.h>
+    #include <gftnall.h>
+    #include <gkbdbase.h>
+    #include <gkbdcode.h>
+    #include <glog.h>
+    #include <gmemall.h>
+    #include <gmoubase.h>
+    #include <gmsgattr.h>
+    #include <gprnall.h>
+    #include <gsearch.h>
+    #include <gstrbags.h>
+    #include <gtimall.h>
+    #include <gtxtpara.h>
+    #include <gutlgrp.h>
+    #include <gutlmisc.h>
+    #include <gutlmtsk.h>
+    #include <gutltag.h>
+    #include <gvidall.h>
+    #include <gwildmat.h>
+    #include <gwinall.h>
+    #include <gwinhelp.h>
+    #include <gwinpick.h>
+    #include <gespell.h>
 
 
-//  ------------------------------------------------------------------
+    //  ------------------------------------------------------------------
+    //  GoldED specific headers
+    #include <gehelp.h>
+    #include <gekeys.h>
+    #include <gelang.h>
+    #include <gmarea.h>
+    #include <gecfgg.h>
+
+    #include <geqwks.h>
+    #include <gectnr.h>
+    #include <geview.h>
+    #include <geglob.h>
+    #include <geprot.h>
+    #include <gemnus.h>
+    #include <gefn.h>
+    #include "gehelp.h"
+
+
+    //  ------------------------------------------------------------------
 
 #endif
 

@@ -69,7 +69,7 @@
 
 #define UUPERCENT(a,b)  ((int) ((unsigned long)(a) / \
                 (((unsigned long)(b)/100)+1)))
-     
+
 /*
  * Make the Busy Callback easier. The macro returns true if the BusyCallback
  * wants us to terminate.
@@ -84,10 +84,11 @@ extern unsigned long uuyctr;
  * mails, less restrictive for Freestyle
  */
 
-typedef struct {
-  int restart;      /* restarting after a MIME body (not subpart) */
-  int afterdata;    /* after we had useful data in freestyle mode */
-  int afternl;      /* after an empty line in freestyle mode      */
+typedef struct
+{
+    int restart;      /* restarting after a MIME body (not subpart) */
+    int afterdata;    /* after we had useful data in freestyle mode */
+    int afternl;      /* after an empty line in freestyle mode      */
 } headercount;
 
 extern headercount hlcount;
@@ -98,32 +99,34 @@ extern headercount hlcount;
  * then this message does not comply to the MIME standard.
  */
 
-typedef struct _headers {
-  char *from;       /* From:                                          */
-  char *subject;    /* Subject:                                       */
-  char *rcpt;       /* To:                                            */
-  char *date;       /* Date:                                          */
-  char *mimevers;   /* MIME-Version:                                  */
-  char *ctype;      /* Content-Type:                                  */
-  char *ctenc;      /* Content-Transfer-Encoding:                     */
-  char *fname;      /* Potential Filename from Content-Type Parameter */
-  char *boundary;   /* MIME-Boundary from Content-Type Parameter      */
-  char *mimeid;     /* MIME-Id for Message/Partial                    */
-  int partno;       /* part number for Message/Partial                */
-  int numparts;     /* number of parts for Message/Partial            */
+typedef struct _headers
+{
+    char *from;       /* From:                                          */
+    char *subject;    /* Subject:                                       */
+    char *rcpt;       /* To:                                            */
+    char *date;       /* Date:                                          */
+    char *mimevers;   /* MIME-Version:                                  */
+    char *ctype;      /* Content-Type:                                  */
+    char *ctenc;      /* Content-Transfer-Encoding:                     */
+    char *fname;      /* Potential Filename from Content-Type Parameter */
+    char *boundary;   /* MIME-Boundary from Content-Type Parameter      */
+    char *mimeid;     /* MIME-Id for Message/Partial                    */
+    int partno;       /* part number for Message/Partial                */
+    int numparts;     /* number of parts for Message/Partial            */
 } headers;
 
 /*
  * Scanner state
  */
 
-typedef struct _scanstate {
-  int isfolder;     /* if we think this is a valid email folder       */
-  int ismime;       /* if we are within a valid MIME message          */
-  int mimestate;    /* state of MIME scanner                          */
-  int mimeenc;      /* encoding of this MIME file                     */
-  char *source;     /* source filename                                */
-  headers envelope; /* mail envelope headers                          */
+typedef struct _scanstate
+{
+    int isfolder;     /* if we think this is a valid email folder       */
+    int ismime;       /* if we are within a valid MIME message          */
+    int mimestate;    /* state of MIME scanner                          */
+    int mimeenc;      /* encoding of this MIME file                     */
+    char *source;     /* source filename                                */
+    headers envelope; /* mail envelope headers                          */
 } scanstate;
 
 /*
@@ -136,24 +139,25 @@ typedef struct _scanstate {
  * in 'origin'.
  **/
 
-typedef struct _fileread {
-  char *subject;    /* Whole subject line */
-  char *filename;   /* Only filled in if begin detected */
-  char *origin;     /* Whole 'From:' line */
-  char *mimeid;     /* the ID for Mime-encoded files */
-  char *mimetype;   /* Content-Type */
-  short mode;       /* Mode of File (from 'begin') */
-  int   begin;      /* begin detected */
-  int   end;        /* end detected */
-  int   flags;      /* associated flags */
+typedef struct _fileread
+{
+    char *subject;    /* Whole subject line */
+    char *filename;   /* Only filled in if begin detected */
+    char *origin;     /* Whole 'From:' line */
+    char *mimeid;     /* the ID for Mime-encoded files */
+    char *mimetype;   /* Content-Type */
+    short mode;       /* Mode of File (from 'begin') */
+    int   begin;      /* begin detected */
+    int   end;        /* end detected */
+    int   flags;      /* associated flags */
 
-  short uudet;      /* valid encoded data. value indicates encoding */
-  short partno;     /* Mime-files have a part number within */
-  short maxpno;     /* ... plus the total number of parts   */
+    short uudet;      /* valid encoded data. value indicates encoding */
+    short partno;     /* Mime-files have a part number within */
+    short maxpno;     /* ... plus the total number of parts   */
 
-  char *sfname;     /* Associated source file */
-  long startpos;    /* ftell() position where data starts */
-  long length;      /* length of data */
+    char *sfname;     /* Associated source file */
+    long startpos;    /* ftell() position where data starts */
+    long length;      /* length of data */
 } fileread;
 
 /*
@@ -163,14 +167,15 @@ typedef struct _fileread {
  * Linked List, ordered by partno.
  **/
 
-typedef struct _uufile {
-  char     *filename;
-  char     *subfname;
-  char     *mimeid;
-  char     *mimetype;
-  short     partno;
-  fileread *data;
-  struct _uufile *NEXT;
+typedef struct _uufile
+{
+    char     *filename;
+    char     *subfname;
+    char     *mimeid;
+    char     *mimetype;
+    short     partno;
+    fileread *data;
+    struct _uufile *NEXT;
 } uufile;
 
 extern void *uu_MsgCBArg;
@@ -263,9 +268,9 @@ extern char * (*uu_FNameFilter)  (void *, char *);
  */
 
 #if defined(STDC_HEADERS) || defined(HAVE_STDARG_H)
-int     UUMessage       (char *, int, int, char *, ...);
+    int     UUMessage       (char *, int, int, char *, ...);
 #else
-int     UUMessage       ();
+    int     UUMessage       ();
 #endif
 int     UUBusyPoll      (void);
 

@@ -41,19 +41,21 @@ int          WidePersonalmail = 0;
 
 //  ------------------------------------------------------------------
 
-gmo_area::gmo_area() : cfg(), cfg2() {
+gmo_area::gmo_area() : cfg(), cfg2()
+{
 
-  Msgn = NULL;
-  PMrk = NULL;
-  lastread = 0;
-  lastreadentry = 0;
-  isopen = false;
+    Msgn = NULL;
+    PMrk = NULL;
+    lastread = 0;
+    lastreadentry = 0;
+    isopen = false;
 }
 
 
 //  ------------------------------------------------------------------
 
-gmo_area::~gmo_area() {
+gmo_area::~gmo_area()
+{
 
 }
 

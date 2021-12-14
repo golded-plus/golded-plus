@@ -72,887 +72,994 @@ int groupid_width = 0;
 
 //  ------------------------------------------------------------------
 
-GPickArealist::GPickArealist() {
+GPickArealist::GPickArealist()
+{
 
-  areawin1 = 0;
-  areawin2 = 0;
-  tempwin1 = 0;
-  tempwin2 = 0;
+    areawin1 = 0;
+    areawin2 = 0;
+    tempwin1 = 0;
+    tempwin2 = 0;
 
-  pmails   = 0;
-  pmareas  = 0;
-  pmscan   = false;
+    pmails   = 0;
+    pmareas  = 0;
+    pmscan   = false;
 
-  area_fuzidx = 0;
-
-}
-
-
-//  ------------------------------------------------------------------
-
-void GPickArealist::AreasRenumber() {
-
-  for(int n=0,a=1,t=AL.size(); n<t; n++)
-    areanumbers[n] = AL[n]->isseparator() ? 0 : a++;
-}
-
-
-//  ------------------------------------------------------------------
-
-bool GPickArealist::is_selectable(uint idx) {
-
-  Area* area = AL.AreaNoToPtr(idx);
-  return (not area->isseparator());
+    area_fuzidx = 0;
 
 }
 
 
 //  ------------------------------------------------------------------
 
-void GPickArealist::do_delayed() {
+void GPickArealist::AreasRenumber()
+{
 
-  Area* area = AL.AreaNoToPtr(index);
-
-  const size_t buflen=strlen(title)+strlen(area_maybe);
-  const size_t tmplen=(buflen>MAXCOL?buflen:MAXCOL);
-  char * buf = new char[buflen+3];
-  buf[buflen] = '\0';
-  buf[buflen+1] = '\xFF';
-  buf[buflen+2] = '\0';
-  char * tmp = new char[tmplen+3];
-  tmp[tmplen] = '\0';
-  tmp[tmplen+1] = '\xFF';
-  tmp[tmplen+2] = '\0';
-
-  update_statuslinef("%s: %u %s, %u %s, %u %s", "", area->echoid(), area->Msgn.Count(),
-                     (area->Msgn.Count() == 1 ? LNG->msg : LNG->msgs), area->unread,
-                     LNG->unread, area->PMrk.Count(), LNG->personal);
-
-  strcpy(stpcpy(buf, title), area_maybe);
-  strsetsz(strcpy(tmp, buf), MAXCOL);
-  wwprintstr(tempwin, 0, 0, wattr, tmp);
-
-  if(CFG->switches.get(arealistpagebar))
-    wscrollbar(W_VERT, maximum_index+1, maximum_index, index);
-
-  if (buf[buflen] || buf[buflen+1]!='\xFF' || buf[buflen+2])
-  {
-    LOG.errpointer(__FILE__,__LINE__);
-    LOG.printf("! Buffer overflow: buf in GPickArealist::do_delayed(), 8 or 9 lines above");
-    PointerErrorExit();
-  }
-  if (tmp[tmplen] || tmp[tmplen+1]!='\xFF' || tmp[tmplen+2])
-  {
-    LOG.errpointer(__FILE__,__LINE__);
-    LOG.printf("! Buffer overflow: tmp in GPickArealist::do_delayed(), 15 or 16 lines above");
-    PointerErrorExit();
-  }
-  delete buf;
-  delete tmp;
+    for(int n=0,a=1,t=AL.size(); n<t; n++)
+        areanumbers[n] = AL[n]->isseparator() ? 0 : a++;
 }
 
 
 //  ------------------------------------------------------------------
 
-void GPickArealist::close_all() {
+bool GPickArealist::is_selectable(uint idx)
+{
 
-  if(areawin1)
-    wunlink(areawin1);
-  if(areawin2)
-    wunlink(areawin2);
-  if(tempwin1)
-    wunlink(tempwin1);
-  if(tempwin2)
-    wunlink(tempwin2);
+    Area* area = AL.AreaNoToPtr(idx);
+    return (not area->isseparator());
+
 }
 
 
 //  ------------------------------------------------------------------
 
-void GPickArealist::dispbuf(char* buf, int areano) {
+void GPickArealist::do_delayed()
+{
 
-  Area* area = AL.AreaNoToPtr(areano);
+    Area* area = AL.AreaNoToPtr(index);
 
-  memset(buf, ' ', MAXCOL-2);
-  buf[MAXCOL-2] = NUL;
+    const size_t buflen=strlen(title)+strlen(area_maybe);
+    const size_t tmplen=(buflen>MAXCOL?buflen:MAXCOL);
+    char * buf = new char[buflen+3];
+    buf[buflen] = '\0';
+    buf[buflen+1] = '\xFF';
+    buf[buflen+2] = '\0';
+    char * tmp = new char[tmplen+3];
+    tmp[tmplen] = '\0';
+    tmp[tmplen+1] = '\xFF';
+    tmp[tmplen+2] = '\0';
 
-  char areabuf[33];
-  gsprintf(PRINTF_DECLARE_BUFFER(areabuf), "%u", CFG->switches.get(arealistnos) ? area->board() : areanumbers[areano]);
-  int areawidth = strlen(areabuf);
+    update_statuslinef("%s: %u %s, %u %s, %u %s", "", area->echoid(), area->Msgn.Count(),
+                       (area->Msgn.Count() == 1 ? LNG->msg : LNG->msgs), area->unread,
+                       LNG->unread, area->PMrk.Count(), LNG->personal);
 
-  char markedbuf[2] = { " " };
-  *markedbuf = area->ismarked() ? marked_char : ' ';
-  int markedwidth = 1;
+    strcpy(stpcpy(buf, title), area_maybe);
+    strsetsz(strcpy(tmp, buf), MAXCOL);
+    wwprintstr(tempwin, 0, 0, wattr, tmp);
 
-  char descbuf[100];
-  int descwidth = strlen(strcpy(descbuf, area->desc()));
+    if(CFG->switches.get(arealistpagebar))
+        wscrollbar(W_VERT, maximum_index+1, maximum_index, index);
 
-  char countbuf[33];
-  if (area->isscanned)
-    gsprintf(PRINTF_DECLARE_BUFFER(countbuf), "%u", (uint)area->Msgn.Count());
-  else
-    strcpy(countbuf,  "-");
-  int countwidth = strlen(countbuf);
-
-  char pmarkbuf[2] = { " " };
-  *pmarkbuf = area->PMrk.Count() ? pmark_char : ' ';
-  int pmarkwidth = 1;
-
-  char unreadbuf[33];
-  if (area->isscanned)
-    gsprintf(PRINTF_DECLARE_BUFFER(unreadbuf), "%u", (uint)((CFG->arealisttype == AL_TOTNEW) ? area->unread : area->lastread()));
-  else
-    strcpy(unreadbuf, "-");
-  int unreadwidth = strlen(unreadbuf);
-
-  char changedbuf[2] = { " " };
-  *changedbuf = area->isunreadchg ? changed_char : ' ';
-  int changedwidth = 1;
-
-  char echoidbuf[100];
-  int echoidwidth = strlen(strcpy(echoidbuf, area->echoid()));
-
-  char groupidbuf[10] = { "" };
-  if (groupid_width)
-  {
-    if (area->groupid() & 0x8000u)
+    if (buf[buflen] || buf[buflen+1]!='\xFF' || buf[buflen+2])
     {
-      if (groupid_width > 2)
-        gsprintf(PRINTF_DECLARE_BUFFER(groupidbuf), "%u", area->groupid()&0x7FFF);
+        LOG.errpointer(__FILE__,__LINE__);
+        LOG.printf("! Buffer overflow: buf in GPickArealist::do_delayed(), 8 or 9 lines above");
+        PointerErrorExit();
     }
-    else if (g_isupper(area->groupid()))
-      gsprintf(PRINTF_DECLARE_BUFFER(groupidbuf), "%c", (char)area->groupid());
-  }
-  int groupidwidth = strlen(groupidbuf);
-
-  areawidth    = MinV(areawidth,    area_width);
-  markedwidth  = MinV(markedwidth,  marked_width);
-  descwidth    = MinV(descwidth,    desc_width);
-  countwidth   = MinV(countwidth,   count_width);
-  pmarkwidth   = MinV(pmarkwidth,   pmark_width);
-  unreadwidth  = MinV(unreadwidth,  unread_width);
-  changedwidth = MinV(changedwidth, changed_width);
-  echoidwidth  = MinV(echoidwidth,  echoid_width);
-  groupidwidth = MinV(groupidwidth, groupid_width);
-
-  memcpy(buf+area_pos+area_width-areawidth,          areabuf,    areawidth);
-  memcpy(buf+marked_pos,                             markedbuf,  markedwidth);
-  memcpy(buf+desc_pos,                               descbuf,    descwidth);
-  memcpy(buf+count_pos+count_width-countwidth,       countbuf,   countwidth);
-  memcpy(buf+pmark_pos,                              pmarkbuf,   pmarkwidth);
-  memcpy(buf+unread_pos+unread_width-unreadwidth,    unreadbuf,  unreadwidth);
-  memcpy(buf+changed_pos,                            changedbuf, changedwidth);
-  memcpy(buf+echoid_pos,                             echoidbuf,  echoidwidth);
-  memcpy(buf+groupid_pos+groupid_width-groupidwidth, groupidbuf, groupidwidth);
+    if (tmp[tmplen] || tmp[tmplen+1]!='\xFF' || tmp[tmplen+2])
+    {
+        LOG.errpointer(__FILE__,__LINE__);
+        LOG.printf("! Buffer overflow: tmp in GPickArealist::do_delayed(), 15 or 16 lines above");
+        PointerErrorExit();
+    }
+    delete buf;
+    delete tmp;
 }
+
 
 //  ------------------------------------------------------------------
 
-void GPickArealist::center() {
+void GPickArealist::close_all()
+{
 
-  uint room, toproom, botroom;
+    if(areawin1)
+        wunlink(areawin1);
+    if(areawin2)
+        wunlink(areawin2);
+    if(tempwin1)
+        wunlink(tempwin1);
+    if(tempwin2)
+        wunlink(tempwin2);
+}
 
-  toproom = index;
-  botroom = maximum_index - index;
-  if(toproom > maximum_position/2) {
-    if(botroom > maximum_position/2)
-      room = maximum_position/2;
-    else if(botroom)
-      room = maximum_position - botroom;
+
+//  ------------------------------------------------------------------
+
+void GPickArealist::dispbuf(char* buf, int areano)
+{
+
+    Area* area = AL.AreaNoToPtr(areano);
+
+    memset(buf, ' ', MAXCOL-2);
+    buf[MAXCOL-2] = NUL;
+
+    char areabuf[33];
+    gsprintf(PRINTF_DECLARE_BUFFER(areabuf), "%u", CFG->switches.get(arealistnos) ? area->board() : areanumbers[areano]);
+    int areawidth = strlen(areabuf);
+
+    char markedbuf[2] = { " " };
+    *markedbuf = area->ismarked() ? marked_char : ' ';
+    int markedwidth = 1;
+
+    char descbuf[100];
+    int descwidth = strlen(strcpy(descbuf, area->desc()));
+
+    char countbuf[33];
+    if (area->isscanned)
+        gsprintf(PRINTF_DECLARE_BUFFER(countbuf), "%u", (uint)area->Msgn.Count());
     else
-      room = maximum_position;
-  }
-  else
-    room = toproom;
+        strcpy(countbuf,  "-");
+    int countwidth = strlen(countbuf);
 
-  position = room;
-  display_page();
+    char pmarkbuf[2] = { " " };
+    *pmarkbuf = area->PMrk.Count() ? pmark_char : ' ';
+    int pmarkwidth = 1;
+
+    char unreadbuf[33];
+    if (area->isscanned)
+        gsprintf(PRINTF_DECLARE_BUFFER(unreadbuf), "%u", (uint)((CFG->arealisttype == AL_TOTNEW) ? area->unread : area->lastread()));
+    else
+        strcpy(unreadbuf, "-");
+    int unreadwidth = strlen(unreadbuf);
+
+    char changedbuf[2] = { " " };
+    *changedbuf = area->isunreadchg ? changed_char : ' ';
+    int changedwidth = 1;
+
+    char echoidbuf[100];
+    int echoidwidth = strlen(strcpy(echoidbuf, area->echoid()));
+
+    char groupidbuf[10] = { "" };
+    if (groupid_width)
+    {
+        if (area->groupid() & 0x8000u)
+        {
+            if (groupid_width > 2)
+                gsprintf(PRINTF_DECLARE_BUFFER(groupidbuf), "%u", area->groupid()&0x7FFF);
+        }
+        else if (g_isupper(area->groupid()))
+            gsprintf(PRINTF_DECLARE_BUFFER(groupidbuf), "%c", (char)area->groupid());
+    }
+    int groupidwidth = strlen(groupidbuf);
+
+    areawidth    = MinV(areawidth,    area_width);
+    markedwidth  = MinV(markedwidth,  marked_width);
+    descwidth    = MinV(descwidth,    desc_width);
+    countwidth   = MinV(countwidth,   count_width);
+    pmarkwidth   = MinV(pmarkwidth,   pmark_width);
+    unreadwidth  = MinV(unreadwidth,  unread_width);
+    changedwidth = MinV(changedwidth, changed_width);
+    echoidwidth  = MinV(echoidwidth,  echoid_width);
+    groupidwidth = MinV(groupidwidth, groupid_width);
+
+    memcpy(buf+area_pos+area_width-areawidth,          areabuf,    areawidth);
+    memcpy(buf+marked_pos,                             markedbuf,  markedwidth);
+    memcpy(buf+desc_pos,                               descbuf,    descwidth);
+    memcpy(buf+count_pos+count_width-countwidth,       countbuf,   countwidth);
+    memcpy(buf+pmark_pos,                              pmarkbuf,   pmarkwidth);
+    memcpy(buf+unread_pos+unread_width-unreadwidth,    unreadbuf,  unreadwidth);
+    memcpy(buf+changed_pos,                            changedbuf, changedwidth);
+    memcpy(buf+echoid_pos,                             echoidbuf,  echoidwidth);
+    memcpy(buf+groupid_pos+groupid_width-groupidwidth, groupidbuf, groupidwidth);
+}
+
+//  ------------------------------------------------------------------
+
+void GPickArealist::center()
+{
+
+    uint room, toproom, botroom;
+
+    toproom = index;
+    botroom = maximum_index - index;
+    if(toproom > maximum_position/2)
+    {
+        if(botroom > maximum_position/2)
+            room = maximum_position/2;
+        else if(botroom)
+            room = maximum_position - botroom;
+        else
+            room = maximum_position;
+    }
+    else
+        room = toproom;
+
+    position = room;
+    display_page();
 }
 
 
 //  ------------------------------------------------------------------
 
-void GPickArealist::jump_to() {
+void GPickArealist::jump_to()
+{
 
-  uint n = index+1;
-  bool found = false;
-  // Search for next marked area, wrapping 'round if needed
-  for(; n<=maximum_index; n++) {
-    if(not AL[n]->isseparator() and AL[n]->ismarked()) {
-      found = true;
-      break;
-    }
-  }
-
-  if(not found) {
-    for(n = minimum_index; n <= index; n++) {
-      if(not AL[n]->isseparator() and AL[n]->ismarked())
-        break;
-    }
-  }
-
-  if(n > maximum_index)
-    n = minimum_index;
-
-  while(AL[n]->isseparator()) {
-    if((++n) > maximum_index)
-      n = minimum_index;
-  }
-
-  index = n;
-  center();
-}
-
-
-//  ------------------------------------------------------------------
-
-void GPickArealist::jumpmatch() {
-
-  uint n = index+1;
-  bool found = false;
-  // Search for next marked area, wrapping 'round if needed
-  for(; n<=maximum_index; n++) {
-    if(not AL[n]->isseparator() and (strnieql(area_maybe, AL[n]->echoid(), area_fuzidx) or striinc(area_maybe, AL[n]->echoid()))) {
-      found = true;
-      break;
-    }
-  }
-
-  if(not found) {
-    for(n = minimum_index; n <= index; n++) {
-      if(not AL[n]->isseparator() and (strnieql(area_maybe, AL[n]->echoid(), area_fuzidx) or striinc(area_maybe, AL[n]->echoid())))
-        break;
-    }
-  }
-
-  if(n > maximum_index)
-    n = minimum_index;
-
-  while(AL[n]->isseparator()) {
-    if((++n) > maximum_index)
-      n = minimum_index;
-  }
-
-  index = n;
-  center();
-
-}
-
-
-//  ------------------------------------------------------------------
-
-void GPickArealist::open() {
-
-  int active=NO;
-
-  #if defined(GUTLOS_FUNCS)
-  g_set_ostitle_name("Arealist",0);
-  #endif
-
-  if(ypos) {
-    if(tempwin1) {
-      tempwin = tempwin1;
-      areawin = areawin1;
-      active = YES;
-    }
-  }
-  else {
-    if(tempwin2) {
-      tempwin = tempwin2;
-      areawin = areawin2;
-      active = YES;
-    }
-  }
-
-  if(active) {
-    wunhide(tempwin);
-    wprints(0,0, wattr, title);
-    wunhide(areawin);
-  }
-  else {
-    tempwin = wopen_(ypos, xpos, 1, MAXCOL, 5, battr, wattr, sbattr);
-    wprints(0,0, wattr, title);
-    areawin = wopen_(ypos+1, xpos, ylen+2, MAXCOL, btype, battr, wattr, sbattr);
-
-    if(ypos) {
-      tempwin1 = tempwin;
-      areawin1 = areawin;
-    }
-    else {
-      tempwin2 = tempwin;
-      areawin2 = areawin;
+    uint n = index+1;
+    bool found = false;
+    // Search for next marked area, wrapping 'round if needed
+    for(; n<=maximum_index; n++)
+    {
+        if(not AL[n]->isseparator() and AL[n]->ismarked())
+        {
+            found = true;
+            break;
+        }
     }
 
-    if(area_width)
-      wmessage(LNG->Area, TP_BORD, 1+area_pos+(marked_pos==area_pos+area_width?1:0), tattr);
-    if(desc_width)
-      wmessage(LNG->Description, TP_BORD, 1+desc_pos, tattr);
-    if(count_width)
-      wmessage(LNG->Msgs, TP_BORD, 1+count_pos+count_width-strlen(LNG->Msgs), tattr);
-    if(unread_width) {
-      if(CFG->arealisttype == AL_TOTLST)
-        wmessage(LNG->Last, TP_BORD, 1+unread_pos+unread_width-strlen(LNG->Last), tattr);
-      else if(CFG->arealisttype == AL_TOTNEW)
-        wmessage(LNG->New, TP_BORD, 1+unread_pos+unread_width-strlen(LNG->New), tattr);
-    }
-    if(echoid_width)
-      wmessage(LNG->EchoID, TP_BORD, 1+echoid_pos, tattr);
-    if(groupid_width) {
-      char grpbuf[40];
-      if(groupid_width > 2)
-        strcpy(grpbuf, LNG->Grp);
-      else {
-        *grpbuf = *(LNG->Grp);
-        grpbuf[1] = NUL;
-      }
-      wmessage(grpbuf, TP_BORD, 1+groupid_pos, tattr);
+    if(not found)
+    {
+        for(n = minimum_index; n <= index; n++)
+        {
+            if(not AL[n]->isseparator() and AL[n]->ismarked())
+                break;
+        }
     }
 
-  }
-  if(CFG->switches.get(areaautonext) and ypos == 0 and index >= minimum_index and not AL[index]->ismarked()) {
-    jump_to();
-  }
-  else
+    if(n > maximum_index)
+        n = minimum_index;
+
+    while(AL[n]->isseparator())
+    {
+        if((++n) > maximum_index)
+            n = minimum_index;
+    }
+
+    index = n;
     center();
 }
 
 
 //  ------------------------------------------------------------------
 
-void GPickArealist::close() {
+void GPickArealist::jumpmatch()
+{
 
-  whide();
-  whide();
-}
+    uint n = index+1;
+    bool found = false;
+    // Search for next marked area, wrapping 'round if needed
+    for(; n<=maximum_index; n++)
+    {
+        if(not AL[n]->isseparator() and (strnieql(area_maybe, AL[n]->echoid(), area_fuzidx) or striinc(area_maybe, AL[n]->echoid())))
+        {
+            found = true;
+            break;
+        }
+    }
 
-//  ------------------------------------------------------------------
+    if(not found)
+    {
+        for(n = minimum_index; n <= index; n++)
+        {
+            if(not AL[n]->isseparator() and (strnieql(area_maybe, AL[n]->echoid(), area_fuzidx) or striinc(area_maybe, AL[n]->echoid())))
+                break;
+        }
+    }
 
-void GPickArealist::precursor() {
+    if(n > maximum_index)
+        n = minimum_index;
 
-  *area_maybe = 0;
-  area_fuzidx = 0;
-}
+    while(AL[n]->isseparator())
+    {
+        if((++n) > maximum_index)
+            n = minimum_index;
+    }
 
-
-//  ------------------------------------------------------------------
-
-void GPickArealist::print_line(uint idx, uint pos, bool isbar) {
-
-  vchar vbuf[256];
-  char buf[256];
-
-  if(AL[idx]->isseparator()) {
-    Area* area = AL.AreaNoToPtr(idx);
-
-    int sep_pos = (desc_pos != -1) ? desc_pos : echoid_pos;
-
-    {for(int c = 0; c < sep_pos; c++)
-      vbuf[c] = _box_table(btype, 1);}
-    vbuf[sep_pos] = NUL;
-    wprintvs(pos, 0, battr|ACSET, vbuf);
-    wprints(pos, sep_pos, tattr, area->desc());
-
-    int l = strlen(area->desc());
-    int n = MAXCOL-2-sep_pos-l;
-
-    {for(int c = 0; c < n; c++)
-      vbuf[c] = _box_table(btype,1);}
-    vbuf[n] = NUL;
-    wprintvs(pos, sep_pos+l, battr|ACSET, vbuf);
-  }
-  else {
-    dispbuf(buf, idx);
-    wprints(pos, 0, isbar ? sattr : wattr, buf);
-    if(AL[idx]->ismarked())
-      wprintc(pos, marked_pos, isbar ? sattr : hattr, marked_char);
-  }
+    index = n;
+    center();
 
 }
 
 
 //  ------------------------------------------------------------------
 
-void GPickArealist::AreaCatchUp(uint n) {
+void GPickArealist::open()
+{
 
-  // Do not do catch up if there's active area
-  if(AA->isopen())
-    return;
+    int active=NO;
 
-  GMenuAreaCatchup MenuAreaCatchup;
-  GMsg* msg = (GMsg*)throw_calloc(1, sizeof(GMsg));
+#if defined(GUTLOS_FUNCS)
+    g_set_ostitle_name("Arealist",0);
+#endif
 
-  int mode = MenuAreaCatchup.Run();
+    if(ypos)
+    {
+        if(tempwin1)
+        {
+            tempwin = tempwin1;
+            areawin = areawin1;
+            active = YES;
+        }
+    }
+    else
+    {
+        if(tempwin2)
+        {
+            tempwin = tempwin2;
+            areawin = areawin2;
+            active = YES;
+        }
+    }
 
-  if(mode != SCAN_QUIT) {
-    for(AL.item = AL.idx.begin(); AL.item != AL.idx.end(); AL.item++) {
+    if(active)
+    {
+        wunhide(tempwin);
+        wprints(0,0, wattr, title);
+        wunhide(areawin);
+    }
+    else
+    {
+        tempwin = wopen_(ypos, xpos, 1, MAXCOL, 5, battr, wattr, sbattr);
+        wprints(0,0, wattr, title);
+        areawin = wopen_(ypos+1, xpos, ylen+2, MAXCOL, btype, battr, wattr, sbattr);
 
-      if((mode == SCAN_MARKED and (*AL.item)->ismarked()) or mode == SCAN_ALL or (mode == SCAN_CURRENT and (*AL.item) == AL[n])) {
-
-        if((*AL.item)->isseparator())
-          continue;
-
-        update_statuslinef("%s ...", "", (*AL.item)->echoid());
-
-        AA = (*AL.item);
-        AA->Open();
-
-        if(CFG->switches.get(highlightunread) and CFG->switches.get(areacatchupread)) {
-          w_info(LNG->Wait);
-          for(uint i=AA->lastread()+1; i <= AA->Msgn.Count(); i++) {
-            AA->LoadHdr(msg, AA->Msgn.CvtReln(i), false);
-            if(msg->timesread++ == 0)
-              AA->UpdateTimesread(msg);
-          }
-          w_info(NULL);
+        if(ypos)
+        {
+            tempwin1 = tempwin;
+            areawin1 = areawin;
+        }
+        else
+        {
+            tempwin2 = tempwin;
+            areawin2 = areawin;
         }
 
-        AA->set_lastread(AA->Msgn.Count());
-        AA->isvalidchg = false;
-        AA->Close();
-      }
+        if(area_width)
+            wmessage(LNG->Area, TP_BORD, 1+area_pos+(marked_pos==area_pos+area_width?1:0), tattr);
+        if(desc_width)
+            wmessage(LNG->Description, TP_BORD, 1+desc_pos, tattr);
+        if(count_width)
+            wmessage(LNG->Msgs, TP_BORD, 1+count_pos+count_width-strlen(LNG->Msgs), tattr);
+        if(unread_width)
+        {
+            if(CFG->arealisttype == AL_TOTLST)
+                wmessage(LNG->Last, TP_BORD, 1+unread_pos+unread_width-strlen(LNG->Last), tattr);
+            else if(CFG->arealisttype == AL_TOTNEW)
+                wmessage(LNG->New, TP_BORD, 1+unread_pos+unread_width-strlen(LNG->New), tattr);
+        }
+        if(echoid_width)
+            wmessage(LNG->EchoID, TP_BORD, 1+echoid_pos, tattr);
+        if(groupid_width)
+        {
+            char grpbuf[40];
+            if(groupid_width > 2)
+                strcpy(grpbuf, LNG->Grp);
+            else
+            {
+                *grpbuf = *(LNG->Grp);
+                grpbuf[1] = NUL;
+            }
+            wmessage(grpbuf, TP_BORD, 1+groupid_pos, tattr);
+        }
+
     }
-  }
-  throw_free(msg);
+    if(CFG->switches.get(areaautonext) and ypos == 0 and index >= minimum_index and not AL[index]->ismarked())
+    {
+        jump_to();
+    }
+    else
+        center();
 }
 
 
 //  ------------------------------------------------------------------
 
-void GPickArealist::AreaDropMsgMarks(uint n) {
+void GPickArealist::close()
+{
 
-  GMenuAreaDropMarks MenuAreaDropMarks;
+    whide();
+    whide();
+}
 
-  uint nummarks = 0;
+//  ------------------------------------------------------------------
 
-  for(AL.item = AL.idx.begin(); AL.item != AL.idx.end(); AL.item++)
-    nummarks += (*AL.item)->Mark.Count();
+void GPickArealist::precursor()
+{
 
-  char buf[256];
-  gsprintf(PRINTF_DECLARE_BUFFER(buf), LNG->DropMarksInfo, longdotstr(nummarks));
-
-  w_info(buf);
-  int mode = MenuAreaDropMarks.Run();
-  w_info(NULL);
-
-  if(mode != SCAN_QUIT) {
-    for(AL.item = AL.idx.begin(); AL.item != AL.idx.end(); AL.item++) {
-      if((mode == SCAN_MARKED and (*AL.item)->ismarked()) or mode == SCAN_ALL or (mode == SCAN_CURRENT and (*AL.item) == AL[n])) {
-
-        if((*AL.item)->isseparator())
-          continue;
-
-        (*AL.item)->Mark.ResetAll();
-      }
-    }
-  }
+    *area_maybe = 0;
+    area_fuzidx = 0;
 }
 
 
 //  ------------------------------------------------------------------
 
-bool GPickArealist::handle_key() {
+void GPickArealist::print_line(uint idx, uint pos, bool isbar)
+{
 
-  uint n;
-  uint x;
-  const char* adesc;
-  char buf[256], tmp[256];
+    vchar vbuf[256];
+    char buf[256];
 
-  int mode, changed, currno;
+    if(AL[idx]->isseparator())
+    {
+        Area* area = AL.AreaNoToPtr(idx);
 
-  gkey kk;
+        int sep_pos = (desc_pos != -1) ? desc_pos : echoid_pos;
 
-  if(key < KK_Commands) {
-    key = key_tolower(key);
-    if((key == Key_Esc) and esc_abort)
-      key = KK_AreaAbort;
-    else {
-      kk = SearchKey(key, AreaKey, AreaKeys);
-      if(kk)
-        key = kk;
+        {
+            for(int c = 0; c < sep_pos; c++)
+                vbuf[c] = _box_table(btype, 1);
+        }
+        vbuf[sep_pos] = NUL;
+        wprintvs(pos, 0, battr|ACSET, vbuf);
+        wprints(pos, sep_pos, tattr, area->desc());
+
+        int l = strlen(area->desc());
+        int n = MAXCOL-2-sep_pos-l;
+
+        {
+            for(int c = 0; c < n; c++)
+                vbuf[c] = _box_table(btype,1);
+        }
+        vbuf[n] = NUL;
+        wprintvs(pos, sep_pos+l, battr|ACSET, vbuf);
     }
-  }
+    else
+    {
+        dispbuf(buf, idx);
+        wprints(pos, 0, isbar ? sattr : wattr, buf);
+        if(AL[idx]->ismarked())
+            wprintc(pos, marked_pos, isbar ? sattr : hattr, marked_char);
+    }
+
+}
 
 
-  switch(key) {
+//  ------------------------------------------------------------------
+
+void GPickArealist::AreaCatchUp(uint n)
+{
+
+    // Do not do catch up if there's active area
+    if(AA->isopen())
+        return;
+
+    GMenuAreaCatchup MenuAreaCatchup;
+    GMsg* msg = (GMsg*)throw_calloc(1, sizeof(GMsg));
+
+    int mode = MenuAreaCatchup.Run();
+
+    if(mode != SCAN_QUIT)
+    {
+        for(AL.item = AL.idx.begin(); AL.item != AL.idx.end(); AL.item++)
+        {
+
+            if((mode == SCAN_MARKED and (*AL.item)->ismarked()) or mode == SCAN_ALL or (mode == SCAN_CURRENT and (*AL.item) == AL[n]))
+            {
+
+                if((*AL.item)->isseparator())
+                    continue;
+
+                update_statuslinef("%s ...", "", (*AL.item)->echoid());
+
+                AA = (*AL.item);
+                AA->Open();
+
+                if(CFG->switches.get(highlightunread) and CFG->switches.get(areacatchupread))
+                {
+                    w_info(LNG->Wait);
+                    for(uint i=AA->lastread()+1; i <= AA->Msgn.Count(); i++)
+                    {
+                        AA->LoadHdr(msg, AA->Msgn.CvtReln(i), false);
+                        if(msg->timesread++ == 0)
+                            AA->UpdateTimesread(msg);
+                    }
+                    w_info(NULL);
+                }
+
+                AA->set_lastread(AA->Msgn.Count());
+                AA->isvalidchg = false;
+                AA->Close();
+            }
+        }
+    }
+    throw_free(msg);
+}
+
+
+//  ------------------------------------------------------------------
+
+void GPickArealist::AreaDropMsgMarks(uint n)
+{
+
+    GMenuAreaDropMarks MenuAreaDropMarks;
+
+    uint nummarks = 0;
+
+    for(AL.item = AL.idx.begin(); AL.item != AL.idx.end(); AL.item++)
+        nummarks += (*AL.item)->Mark.Count();
+
+    char buf[256];
+    gsprintf(PRINTF_DECLARE_BUFFER(buf), LNG->DropMarksInfo, longdotstr(nummarks));
+
+    w_info(buf);
+    int mode = MenuAreaDropMarks.Run();
+    w_info(NULL);
+
+    if(mode != SCAN_QUIT)
+    {
+        for(AL.item = AL.idx.begin(); AL.item != AL.idx.end(); AL.item++)
+        {
+            if((mode == SCAN_MARKED and (*AL.item)->ismarked()) or mode == SCAN_ALL or (mode == SCAN_CURRENT and (*AL.item) == AL[n]))
+            {
+
+                if((*AL.item)->isseparator())
+                    continue;
+
+                (*AL.item)->Mark.ResetAll();
+            }
+        }
+    }
+}
+
+
+//  ------------------------------------------------------------------
+
+bool GPickArealist::handle_key()
+{
+
+    uint n;
+    uint x;
+    const char* adesc;
+    char buf[256], tmp[256];
+
+    int mode, changed, currno;
+
+    gkey kk;
+
+    if(key < KK_Commands)
+    {
+        key = key_tolower(key);
+        if((key == Key_Esc) and esc_abort)
+            key = KK_AreaAbort;
+        else
+        {
+            kk = SearchKey(key, AreaKey, AreaKeys);
+            if(kk)
+                key = kk;
+        }
+    }
+
+
+    switch(key)
+    {
 
     case KK_AreaDropMsgMarks:
-      AreaDropMsgMarks(index);
-      break;
+        AreaDropMsgMarks(index);
+        break;
 
     case KK_AreaSelectMarks:
-      AL.Select_Mask();
-      break;
+        AL.Select_Mask();
+        break;
 
     case KK_AreaAskExit:
-      {
+    {
         GMenuQuit MenuQuit;
         aborted = gkbd.quitall = (MenuQuit.Run()!=0);
-        if(gkbd.quitall) {
-          precursor();
-          return false;
+        if(gkbd.quitall)
+        {
+            precursor();
+            return false;
         }
-      }
-      break;
+    }
+    break;
 
     case KK_AreaAbort:
-      aborted = true;
-      // Drop Through
+        aborted = true;
+    // Drop Through
 
     case KK_AreaSelect:
-      if(AL[index]->isseparator()) {
-        if(not PlayMacro(key, KT_A))
-          SayBibi();
-        break;
-      }
-      precursor();
-      return false;
+        if(AL[index]->isseparator())
+        {
+            if(not PlayMacro(key, KT_A))
+                SayBibi();
+            break;
+        }
+        precursor();
+        return false;
 
     case KK_AreaQuitNow:
-      aborted = gkbd.quitall = true;
-      precursor();
-      return false;
+        aborted = gkbd.quitall = true;
+        precursor();
+        return false;
 
     case KK_AreaToggle:
-      AL[index]->set_marked(not AL[index]->ismarked());
-      display_bar();
-      precursor();
-      cursor_down();
-      break;
+        AL[index]->set_marked(not AL[index]->ismarked());
+        display_bar();
+        precursor();
+        cursor_down();
+        break;
 
     case KK_AreaMark:
-      AL[index]->set_marked(true);
-      display_bar();
-      precursor();
-      cursor_down();
-      break;
+        AL[index]->set_marked(true);
+        display_bar();
+        precursor();
+        cursor_down();
+        break;
 
     case KK_AreaUnmark:
-      AL[index]->set_marked(false);
-      display_bar();
-      precursor();
-      cursor_down();
-      break;
+        AL[index]->set_marked(false);
+        display_bar();
+        precursor();
+        cursor_down();
+        break;
 
     case KK_AreaBoardnos:
-      CFG->switches.set(arealistnos, not CFG->switches.get(arealistnos));
-      update();
-      break;
+        CFG->switches.set(arealistnos, not CFG->switches.get(arealistnos));
+        update();
+        break;
 
     case KK_AreaCatchUp:
-      AreaCatchUp(index);
-      update();
-      break;
+        AreaCatchUp(index);
+        update();
+        break;
 
     case KK_AreaJumpNextMatch:
-      jumpmatch();
-      break;
+        jumpmatch();
+        break;
 
     case KK_AreaJump:
-      {
+    {
         precursor();
         jump_to();
-      }
-      break;
+    }
+    break;
 
     case KK_AreaDosShell:
-      DosShell();
-      break;
+        DosShell();
+        break;
 
-    case KK_AreaGotoPrev:   precursor(); cursor_up();    break;
-    case KK_AreaGotoNext:   precursor(); cursor_down();  break;
-    case KK_AreaGotoFirst:  precursor(); cursor_first(); break;
-    case KK_AreaGotoLast:   precursor(); cursor_last();  break;
+    case KK_AreaGotoPrev:
+        precursor();
+        cursor_up();
+        break;
+    case KK_AreaGotoNext:
+        precursor();
+        cursor_down();
+        break;
+    case KK_AreaGotoFirst:
+        precursor();
+        cursor_first();
+        break;
+    case KK_AreaGotoLast:
+        precursor();
+        cursor_last();
+        break;
 
     case KK_AreaSoundkill:
-      HandleGEvent(EVTT_STOPVOICE);
-      break;
+        HandleGEvent(EVTT_STOPVOICE);
+        break;
 
     case KK_AreaTouchNetscan:
-      TouchNetscan();
-      break;
+        TouchNetscan();
+        break;
 
     case KK_AreaHeat:
-      {
+    {
         GMenuAreaHeat MenuAreaHeat;
         mode = MenuAreaHeat.Run();
-        if(mode != SCAN_QUIT) {
-          for(AL.item = AL.idx.begin(); AL.item != AL.idx.end(); AL.item++) {
-            if((mode == SCAN_MARKED and (*AL.item)->ismarked()) or mode == SCAN_ALL or (mode == SCAN_CURRENT and (*AL.item) == AL[index-1])) {
-              update_statuslinef("%s %s", "", 1+LNG->ScanningArea, (*AL.item)->echoid());
-              (*AL.item)->SetHighwaterMark();
+        if(mode != SCAN_QUIT)
+        {
+            for(AL.item = AL.idx.begin(); AL.item != AL.idx.end(); AL.item++)
+            {
+                if((mode == SCAN_MARKED and (*AL.item)->ismarked()) or mode == SCAN_ALL or (mode == SCAN_CURRENT and (*AL.item) == AL[index-1]))
+                {
+                    update_statuslinef("%s %s", "", 1+LNG->ScanningArea, (*AL.item)->echoid());
+                    (*AL.item)->SetHighwaterMark();
+                }
             }
-          }
         }
-      }
-      break;
+    }
+    break;
 
     case KK_AreaZap:
-      {
+    {
         GMenuAreaZap MenuAreaZap;
         mode = MenuAreaZap.Run();
-        if(mode != SCAN_QUIT) {
-          for(AL.item = AL.idx.begin(); AL.item != AL.idx.end(); AL.item++) {
-            if((mode == SCAN_MARKED and (*AL.item)->ismarked()) or mode == SCAN_ALL or (mode == SCAN_CURRENT and (*AL.item) == AL[index-1])) {
-              update_statuslinef("%s %s", "", 1+LNG->ScanningArea, (*AL.item)->echoid());
-              (*AL.item)->ResetHighwaterMark();
+        if(mode != SCAN_QUIT)
+        {
+            for(AL.item = AL.idx.begin(); AL.item != AL.idx.end(); AL.item++)
+            {
+                if((mode == SCAN_MARKED and (*AL.item)->ismarked()) or mode == SCAN_ALL or (mode == SCAN_CURRENT and (*AL.item) == AL[index-1]))
+                {
+                    update_statuslinef("%s %s", "", 1+LNG->ScanningArea, (*AL.item)->echoid());
+                    (*AL.item)->ResetHighwaterMark();
+                }
             }
-          }
         }
-      }
-      break;
+    }
+    break;
 
     case KK_AreaScanPM:
-      pmscan = true;
-      pmails = 0;
-      pmareas = 0;
-      // DROP THROUGH //
+        pmscan = true;
+        pmails = 0;
+        pmareas = 0;
+    // DROP THROUGH //
 
     case KK_AreaScan:
-      {
+    {
         currno = index;
         GMenuAreaScan MenuAreaScan;
         mode = MenuAreaScan.Run(pmscan);
-        if(mode != SCAN_QUIT) {
+        if(mode != SCAN_QUIT)
+        {
 
-          w_info(LNG->Wait);
+            w_info(LNG->Wait);
 
-          strcpy(stecho, AL[index]->echoid());
+            strcpy(stecho, AL[index]->echoid());
 
-          if(mode == SCAN_IMPORTQWK)
-            changed = ImportQWK();
-          else if(mode == SCAN_EXPORTQWK)
-            changed = ExportQWK();
-          else if(mode == SCAN_IMPORTSOUP)
-            changed = ImportSOUP();
-          else if(mode == SCAN_EXPORTSOUP)
-            changed = ExportSOUP();
-          else {
-            if(cmdlinedebughg)
-              LOG.printf("- AreaScan from arealist");
-            changed = AL.AreaScan(mode, currno, pmscan, pmails, pmareas);
-          }
-
-          w_info();
-
-          AL.SetActiveAreaNo(currno);
-          if(changed) {
-            AL.Sort();
-            AreasRenumber();
-            index = AL.AreaEchoToNo(stecho);
-            center();
-          }
-
-          if(pmscan) {
-            if(pmails) {
-              w_infof(LNG->FoundPersonal,
-                pmails, (pmails==1?"":"s"),
-                pmareas, (pmareas==1?"":"s")
-              );
+            if(mode == SCAN_IMPORTQWK)
+                changed = ImportQWK();
+            else if(mode == SCAN_EXPORTQWK)
+                changed = ExportQWK();
+            else if(mode == SCAN_IMPORTSOUP)
+                changed = ImportSOUP();
+            else if(mode == SCAN_EXPORTSOUP)
+                changed = ExportSOUP();
+            else
+            {
+                if(cmdlinedebughg)
+                    LOG.printf("- AreaScan from arealist");
+                changed = AL.AreaScan(mode, currno, pmscan, pmails, pmareas);
             }
-            else {
-              w_info(LNG->NoPersonal);
-            }
-            waitkeyt(10000);
+
             w_info();
-          }
+
+            AL.SetActiveAreaNo(currno);
+            if(changed)
+            {
+                AL.Sort();
+                AreasRenumber();
+                index = AL.AreaEchoToNo(stecho);
+                center();
+            }
+
+            if(pmscan)
+            {
+                if(pmails)
+                {
+                    w_infof(LNG->FoundPersonal,
+                            pmails, (pmails==1?"":"s"),
+                            pmareas, (pmareas==1?"":"s")
+                           );
+                }
+                else
+                {
+                    w_info(LNG->NoPersonal);
+                }
+                waitkeyt(10000);
+                w_info();
+            }
         }
         pmscan = false;
-      }
-      break;
+    }
+    break;
 
     case Key_Tick:
-      CheckTick(KK_AreaQuitNow);
-      break;
+        CheckTick(KK_AreaQuitNow);
+        break;
 
     case KK_AreaUndefine:
-      break;
+        break;
 
     case KK_AreaWriteGoldlast:
-      w_info(LNG->Wait);
-      AL.WriteGoldLast();
-      w_info();
-      break;
+        w_info(LNG->Wait);
+        AL.WriteGoldLast();
+        w_info();
+        break;
 
     default:
-      if(key < KK_Macro) {
-        n = g_toupper(key & 0xFF);
-        if((area_fuzidx < area_maxfuz) or (key == Key_BS)) {
+        if(key < KK_Macro)
+        {
+            n = g_toupper(key & 0xFF);
+            if((area_fuzidx < area_maxfuz) or (key == Key_BS))
+            {
 
-          // Incremental search in the echoids
-          if(not iscntrl(n) or (key == Key_BS)) {
-            if(n == ' ')
-              n = '_';
-            if(key != Key_BS)
-              area_maybe[area_fuzidx++] = (char)n;
-            else if(area_fuzidx)
-              area_fuzidx--;
-            area_maybe[area_fuzidx] = NUL;
-            strcpy(stpcpy(buf, title), area_maybe);
-            strsetsz(strcpy(tmp, buf), MAXCOL);
-            wwprintstr(tempwin, 0, 0, wattr, tmp);
-            if(area_fuzidx) {
-
-              x = atoi(area_maybe);
-              if(x) {
-                if(CFG->switches.get(arealistnos) and (isdigit(area_maybe[1]) or (area_maybe[1] == NUL))) {
-                  for(n=0; n<AL.size(); n++) {
-                    if(AL[n]->board() == x) {
-                      x = n;
-                      goto RedrawAreas;
-                    }
-                  }
-                  x = 0;  // No match found
-                }
-                else {
-                  for(n=0; n<area_fuzidx; n++) {
-                    if(not isdigit(area_maybe[n])) {
-                      x = 0;
-                      break;
-                    }
-                  }
-                }
-              }
-
-              if(x >= 1 and x<=AL.size()) {
+                // Incremental search in the echoids
+                if(not iscntrl(n) or (key == Key_BS))
                 {
-                  for(int a=0, at=AL.size(); a<at; a++) {
-                    if(areanumbers[a] == x) {
-                      x = a;
-                      goto RedrawAreas;
+                    if(n == ' ')
+                        n = '_';
+                    if(key != Key_BS)
+                        area_maybe[area_fuzidx++] = (char)n;
+                    else if(area_fuzidx)
+                        area_fuzidx--;
+                    area_maybe[area_fuzidx] = NUL;
+                    strcpy(stpcpy(buf, title), area_maybe);
+                    strsetsz(strcpy(tmp, buf), MAXCOL);
+                    wwprintstr(tempwin, 0, 0, wattr, tmp);
+                    if(area_fuzidx)
+                    {
+
+                        x = atoi(area_maybe);
+                        if(x)
+                        {
+                            if(CFG->switches.get(arealistnos) and (isdigit(area_maybe[1]) or (area_maybe[1] == NUL)))
+                            {
+                                for(n=0; n<AL.size(); n++)
+                                {
+                                    if(AL[n]->board() == x)
+                                    {
+                                        x = n;
+                                        goto RedrawAreas;
+                                    }
+                                }
+                                x = 0;  // No match found
+                            }
+                            else
+                            {
+                                for(n=0; n<area_fuzidx; n++)
+                                {
+                                    if(not isdigit(area_maybe[n]))
+                                    {
+                                        x = 0;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        if(x >= 1 and x<=AL.size())
+                        {
+                            {
+                                for(int a=0, at=AL.size(); a<at; a++)
+                                {
+                                    if(areanumbers[a] == x)
+                                    {
+                                        x = a;
+                                        goto RedrawAreas;
+                                    }
+                                }
+                            }
+                            x = (uint)-1;
+
+RedrawAreas:
+
+                            if(x == (uint)-1)
+                                x = index;
+                            while(AL[x]->isseparator())
+                            {
+                                x++;
+                                if(x > maximum_index)
+                                    x = minimum_index;
+                            }
+                            if(x != index)
+                                display_line();
+#define _topidx (index-position)                    // Shorthand..
+#define _botidx (index+(maximum_position-position)) // Shorthand..
+                            if((_topidx <= x) and (x <= _botidx))
+                            {
+                                position += (x-index);
+                                index = x;
+                                display_page();    /////////// NEW
+                            }
+                            else
+                            {
+                                index = x;
+                                center();
+                            }
+                            break;
+                        }
+                        else
+                        {
+                            // Regular search
+                            for(n=0; n<AL.size(); n++)
+                            {
+                                adesc = AL[n]->echoid();
+                                if(strnicmp(area_maybe, adesc, area_fuzidx) == 0)
+                                {
+                                    AL.Sort();
+                                    AreasRenumber();
+                                    x = AL.AreaEchoToNo(adesc);
+                                    goto RedrawAreas;
+                                }
+                            }
+                            // Search inside
+                            for(n=0; n<AL.size(); n++)
+                            {
+                                adesc = AL[n]->echoid();
+                                if(striinc(area_maybe, adesc))
+                                {
+                                    AL.Sort();
+                                    AreasRenumber();
+                                    x = AL.AreaEchoToNo(adesc);
+                                    goto RedrawAreas;
+                                }
+                            }
+                        }
                     }
-                  }
+                    else
+                    {
+                        adesc = AL[index]->echoid();
+                        AL.Sort();
+                        AreasRenumber();
+                        index = AL.AreaEchoToNo(adesc);
+                        center();
+                    }
+                    break;
                 }
-                x = (uint)-1;
-
-              RedrawAreas:
-
-                if(x == (uint)-1)
-                  x = index;
-                while(AL[x]->isseparator()) {
-                  x++;
-                  if(x > maximum_index)
-                    x = minimum_index;
-                }
-                if(x != index)
-                  display_line();
-                #define _topidx (index-position)                    // Shorthand..
-                #define _botidx (index+(maximum_position-position)) // Shorthand..
-                if((_topidx <= x) and (x <= _botidx)) {
-                  position += (x-index);
-                  index = x;
-                  display_page();    /////////// NEW
-                }
-                else {
-                  index = x;
-                  center();
-                }
-                break;
-              }
-              else {
-                // Regular search
-                for(n=0; n<AL.size(); n++) {
-                  adesc = AL[n]->echoid();
-                  if(strnicmp(area_maybe, adesc, area_fuzidx) == 0) {
-                    AL.Sort();
-                    AreasRenumber();
-                    x = AL.AreaEchoToNo(adesc);
-                    goto RedrawAreas;
-                  }
-                }
-                // Search inside
-                for(n=0; n<AL.size(); n++) {
-                  adesc = AL[n]->echoid();
-                  if(striinc(area_maybe, adesc)) {
-                    AL.Sort();
-                    AreasRenumber();
-                    x = AL.AreaEchoToNo(adesc);
-                    goto RedrawAreas;
-                  }
-                }
-              }
             }
-            else {
-              adesc = AL[index]->echoid();
-              AL.Sort();
-              AreasRenumber();
-              index = AL.AreaEchoToNo(adesc);
-              center();
-            }
-            break;
-          }
         }
-      }
-      if(not PlayMacro(key, KT_A))
-        SayBibi();
-  }
+        if(not PlayMacro(key, KT_A))
+            SayBibi();
+    }
 
-  return true;
+    return true;
 }
 
 //  ------------------------------------------------------------------
 
-int GPickArealist::Run(const char* _title, int wpos, int& idx) {
+int GPickArealist::Run(const char* _title, int wpos, int& idx)
+{
 
-  HandleGEvent(EVTT_AREALIST);
+    HandleGEvent(EVTT_AREALIST);
 
-  xpos     = 0;                             // Window starting coloumn
-  ypos     = wpos;                          // Window starting row
-  xlen     = MAXCOL-2;                      // Window ending coloumn
-  ylen     = MAXROW-wpos-4;                 // Window ending row
-  title    = _title;                        // Window title
-  btype    = W_BAREA;                       // Window border type
-  battr    = C_AREAB;                       // Window border attributes
-  wattr    = C_AREAW;                       // Window Color
-  tattr    = C_AREAT;                       // Window Title Color
-  sattr    = C_AREAS;                       // Window Selection Bar Color
-  hattr    = C_AREAQ;                       // Window Highlight Color
-  sbattr   = C_AREAPB;                      // Window Scrollbar Color
-  helpcat  = H_Area;                        // Window Help Category
+    xpos     = 0;                             // Window starting coloumn
+    ypos     = wpos;                          // Window starting row
+    xlen     = MAXCOL-2;                      // Window ending coloumn
+    ylen     = MAXROW-wpos-4;                 // Window ending row
+    title    = _title;                        // Window title
+    btype    = W_BAREA;                       // Window border type
+    battr    = C_AREAB;                       // Window border attributes
+    wattr    = C_AREAW;                       // Window Color
+    tattr    = C_AREAT;                       // Window Title Color
+    sattr    = C_AREAS;                       // Window Selection Bar Color
+    hattr    = C_AREAQ;                       // Window Highlight Color
+    sbattr   = C_AREAPB;                      // Window Scrollbar Color
+    helpcat  = H_Area;                        // Window Help Category
 
-  maximum_index    = AL.size() - 1;             // List Entries - 1
-  maximum_position = MinV((size_t)ylen-1, AL.size()-1); // Display Pos
-  index            = AL.AreaIdToNo(idx);        // List Index
-  listwrap         = CFG->switches.get(displistwrap);  // True if wrap-around is supported
-  esc_abort        = (wpos!=0);
-  area_maxfuz      = MinV(sizeof(Echo), MAXCOL-strlen(title)-1);
+    maximum_index    = AL.size() - 1;             // List Entries - 1
+    maximum_position = MinV((size_t)ylen-1, AL.size()-1); // Display Pos
+    index            = AL.AreaIdToNo(idx);        // List Index
+    listwrap         = CFG->switches.get(displistwrap);  // True if wrap-around is supported
+    esc_abort        = (wpos!=0);
+    area_maxfuz      = MinV(sizeof(Echo), MAXCOL-strlen(title)-1);
 
-  goldmark = ' ';
+    goldmark = ' ';
 
-  areanumbers = (uint*)throw_calloc(AL.size(), sizeof(uint));
-  AreasRenumber();
+    areanumbers = (uint*)throw_calloc(AL.size(), sizeof(uint));
+    AreasRenumber();
 
-  run_picker();
+    run_picker();
 
-  throw_release(areanumbers);
+    throw_release(areanumbers);
 
-  if(not aborted)
-    return AL[index]->areaid();
+    if(not aborted)
+        return AL[index]->areaid();
 
-  idx = AL[index]->areaid();
+    idx = AL[index]->areaid();
 
-  return -1;
-}
-
-
-//  ------------------------------------------------------------------
-
-int AreaPick(char* title, int wpos, int* idx) {
-
-  GPickArealist p;
-  int new_area;
-
-  if(gkbd.quitall)
     return -1;
+}
 
-  PickArealist = &p;
 
-  in_arealist = true;
-  new_area = p.Run(title, wpos, *idx);
-  in_arealist = false;
+//  ------------------------------------------------------------------
 
-  PickArealist = NULL;
+int AreaPick(char* title, int wpos, int* idx)
+{
 
-  return new_area;
+    GPickArealist p;
+    int new_area;
+
+    if(gkbd.quitall)
+        return -1;
+
+    PickArealist = &p;
+
+    in_arealist = true;
+    new_area = p.Run(title, wpos, *idx);
+    in_arealist = false;
+
+    PickArealist = NULL;
+
+    return new_area;
 }
 
 

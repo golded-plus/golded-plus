@@ -37,195 +37,200 @@
 
 //  ------------------------------------------------------------------
 
-class gwinput {
+class gwinput
+{
 
 public:
 
-  class field {
+    class field
+    {
 
-  public:
+    public:
 
-    gwinput* form;
+        gwinput* form;
 
-    int   pos;
-    int   max_pos;
-    vattr attr;
-    bool  fill_acs;
-    vchar fill;
-    int   entry;
+        int   pos;
+        int   max_pos;
+        vattr attr;
+        bool  fill_acs;
+        vchar fill;
+        int   entry;
 
-    char* buf;
-    int buf_left_pos;
-    int buf_end_pos;
-    int buf_pos;
-    int buf_len;
+        char* buf;
+        int buf_left_pos;
+        int buf_end_pos;
+        int buf_pos;
+        int buf_len;
 
-    std::string& destination;
+        std::string& destination;
 
-    int id;
-    int row;
-    int column;
-    int max_column;
-    int conversion;
-    int entry_mode;
+        int id;
+        int row;
+        int column;
+        int max_column;
+        int conversion;
+        int entry_mode;
 
-    field* prev;
-    field* next;
+        field* prev;
+        field* next;
 
-    field(gwinput* iform, int idnum, int wrow, int wcol, int field_width, std::string& dest, int dest_size, int cvt, int mode);
-    ~field();
+        field(gwinput* iform, int idnum, int wrow, int wcol, int field_width, std::string& dest, int dest_size, int cvt, int mode);
+        ~field();
 
-    bool visible();
+        bool visible();
 
-    void move_left();
-    void move_right();
+        void move_left();
+        void move_right();
 
-    bool left();
-    bool right();
-    bool left_word();
-    bool right_word();
-    bool delete_left();
-    bool delete_char();
-    bool delete_word(bool left);
-    bool insert_char(char ch);
-    bool overwrite_char(char ch);
-    bool home();
-    bool end();
+        bool left();
+        bool right();
+        bool left_word();
+        bool right_word();
+        bool delete_left();
+        bool delete_char();
+        bool delete_word(bool left);
+        bool insert_char(char ch);
+        bool overwrite_char(char ch);
+        bool home();
+        bool end();
 
-    void update();
-    void activate();
-    void deactivate();
+        void update();
+        void activate();
+        void deactivate();
 
-    void restore();
-    void commit();
+        void restore();
+        void commit();
 
-    void convert();
-    bool adjust_mode();
-    void conditional();
+        void convert();
+        bool adjust_mode();
+        void conditional();
 
-    void move_cursor();
-    void draw(int from_pos=0);
+        void move_cursor();
+        void draw(int from_pos=0);
+
+        void clear_field();
+
+        void clipboard_paste();
+        void clipboard_copy();
+    };
+
+    field* first_field;
+    field* current;
+
+    enum
+    {
+        entry_new,
+        entry_update,
+        entry_conditional,
+        entry_noedit
+    };
+
+    enum
+    {
+        cvt_none,
+        cvt_lowercase,
+        cvt_uppercase,
+        cvt_mixedcase
+    };
+
+    vattr idle_attr;
+    vattr active_attr;
+    vattr edit_attr;
+    bool fill_acs;
+
+    vchar idle_fill;
+    vchar active_fill;
+    vchar edit_fill;
+
+    int insert_mode;
+
+    int done;
+    int dropped;
+
+    int start_id;
+
+    bool cursor_was_hidden;
+
+    gwindow &window;
+
+    gwinput(gwindow &w);
+    virtual ~gwinput();
+
+    void setup(vattr i_attr, vattr a_attr, vattr e_attr, vchar fill, bool fill_acs);
+
+    void add_field(int idnum, int wrow, int wcol, int field_width, std::string& dest, int dest_size, int cvt=gwinput::cvt_none, int mode=gwinput::entry_conditional);
+
+    bool first(int id=0);
+    bool next();
+    bool previous();
+    bool last();
+
+    bool first_visible();
+    bool next_visible();
+    bool previous_visible();
+    bool last_visible();
+
+    bool move_to(int wrow, int wcol);
+
+    field* field_at(int wrow, int wcol);
+    field* get_field(int id);
+
+    void draw_all();
+    void reload_all();
+    void show_cursor();
+
+    void drop_form();
+    void form_complete();
+    void field_complete();
+    void go_next_field();
+    void go_previous_field();
+    void go_up();
+    void go_down();
+    void go_left();
+    void go_right();
+    void delete_left();
+    void delete_char();
+    void go_field_begin();
+    void go_field_end();
+    void go_form_begin();
+    void go_form_end();
+    void toggle_insert();
+    void restore_field();
+    void delete_left_word();
+    void delete_right_word();
+    void go_left_word();
+    void go_right_word();
+    void enter_char(char ch);
+
+    void prepare_form();
+    void finish_form();
 
     void clear_field();
 
+    void clipboard_cut();
     void clipboard_paste();
     void clipboard_copy();
-  };
 
-  field* first_field;
-  field* current;
+    bool handle_key(gkey key);
 
-  enum {
-    entry_new,
-    entry_update,
-    entry_conditional,
-    entry_noedit
-  };
-
-  enum {
-    cvt_none,
-    cvt_lowercase,
-    cvt_uppercase,
-    cvt_mixedcase
-  };
-
-  vattr idle_attr;
-  vattr active_attr;
-  vattr edit_attr;
-  bool fill_acs;
-
-  vchar idle_fill;
-  vchar active_fill;
-  vchar edit_fill;
-
-  int insert_mode;
-
-  int done;
-  int dropped;
-
-  int start_id;
-
-  bool cursor_was_hidden;
-
-  gwindow &window;
-
-  gwinput(gwindow &w);
-  virtual ~gwinput();
-
-  void setup(vattr i_attr, vattr a_attr, vattr e_attr, vchar fill, bool fill_acs);
-
-  void add_field(int idnum, int wrow, int wcol, int field_width, std::string& dest, int dest_size, int cvt=gwinput::cvt_none, int mode=gwinput::entry_conditional);
-
-  bool first(int id=0);
-  bool next();
-  bool previous();
-  bool last();
-
-  bool first_visible();
-  bool next_visible();
-  bool previous_visible();
-  bool last_visible();
-
-  bool move_to(int wrow, int wcol);
-
-  field* field_at(int wrow, int wcol);
-  field* get_field(int id);
-
-  void draw_all();
-  void reload_all();
-  void show_cursor();
-
-  void drop_form();
-  void form_complete();
-  void field_complete();
-  void go_next_field();
-  void go_previous_field();
-  void go_up();
-  void go_down();
-  void go_left();
-  void go_right();
-  void delete_left();
-  void delete_char();
-  void go_field_begin();
-  void go_field_end();
-  void go_form_begin();
-  void go_form_end();
-  void toggle_insert();
-  void restore_field();
-  void delete_left_word();
-  void delete_right_word();
-  void go_left_word();
-  void go_right_word();
-  void enter_char(char ch);
-
-  void prepare_form();
-  void finish_form();
-
-  void clear_field();
-
-  void clipboard_cut();
-  void clipboard_paste();
-  void clipboard_copy();
-
-  bool handle_key(gkey key);
-
-  // These are supposed to be overridden by the inheriting class
-  virtual bool handle_other_keys(gkey& key);
-  virtual bool validate();
-  virtual void before();
-  virtual void after();
+    // These are supposed to be overridden by the inheriting class
+    virtual bool handle_other_keys(gkey& key);
+    virtual bool validate();
+    virtual void before();
+    virtual void after();
 };
 
 
 //  ------------------------------------------------------------------
 
-class gwinput2 : public gwinput {
+class gwinput2 : public gwinput
+{
 
 public:
 
-  gwinput2(gwindow &w) : gwinput(w) { }
+    gwinput2(gwindow &w) : gwinput(w) { }
 
-  bool run(int helpcat);
+    bool run(int helpcat);
 };
 
 

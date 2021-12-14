@@ -58,261 +58,283 @@
 
 //  ------------------------------------------------------------------
 
-static int disp_char(int wrow,int wcol, vattr attr,int btype,vchar ch,int direc) {
+static int disp_char(int wrow,int wcol, vattr attr,int btype,vchar ch,int direc)
+{
 
-  attr = attr|ACSET;
+    attr = attr|ACSET;
 
-  // see if next to a border, if so, connect to it
-  if(gwin.active->border) {
+    // see if next to a border, if so, connect to it
+    if(gwin.active->border)
+    {
 
-    // abbreviate pointer
-    const int bt = btype;
+        // abbreviate pointer
+        const int bt = btype;
 
-    // calculate effective row and column
-    int row = gwin.active->srow+gwin.active->border+wrow;
-    int col = gwin.active->scol+gwin.active->border+wcol;
+        // calculate effective row and column
+        int row = gwin.active->srow+gwin.active->border+wrow;
+        int col = gwin.active->scol+gwin.active->border+wcol;
 
-    // see if this is a horizontal or vertical line
-    if(direc==HORZ) {
+        // see if this is a horizontal or vertical line
+        if(direc==HORZ)
+        {
 
-      // make sure that the box type characters match
-      if(LVL==_box_table(gwin.active->btype, 3)) {
+            // make sure that the box type characters match
+            if(LVL==_box_table(gwin.active->btype, 3))
+            {
 
-        // check left border
-        if(col==(gwin.active->scol+1)) {
-          vputc(row,gwin.active->scol,attr,LVJ);
-          ch=UHL;
+                // check left border
+                if(col==(gwin.active->scol+1))
+                {
+                    vputc(row,gwin.active->scol,attr,LVJ);
+                    ch=UHL;
+                }
+
+                // check right border
+                if(col==(gwin.active->ecol-1))
+                {
+                    vputc(row,gwin.active->ecol,attr,RVJ);
+                    ch=UHL;
+                }
+            }
         }
+        else
+        {
 
-        // check right border
-        if(col==(gwin.active->ecol-1)) {
-          vputc(row,gwin.active->ecol,attr,RVJ);
-          ch=UHL;
+            // make sure that the box type characters match
+            if(UHL==_box_table(gwin.active->btype, 1))
+            {
+
+                // check top border
+                if(row==(gwin.active->srow+1))
+                {
+                    vputc(gwin.active->srow,col,attr,UHJ);
+                    ch=LVL;
+                }
+
+                // check bottom border
+                if(row==(gwin.active->erow-1))
+                {
+                    vputc(gwin.active->erow,col,attr,LHJ);
+                    ch=LVL;
+                }
+            }
         }
-      }
     }
-    else {
 
-      // make sure that the box type characters match
-      if(UHL==_box_table(gwin.active->btype, 1)) {
+    // display character
+    if(wprintc(wrow,wcol,attr,ch))
+        return gwin.werrno;
 
-        // check top border
-        if(row==(gwin.active->srow+1)) {
-          vputc(gwin.active->srow,col,attr,UHJ);
-          ch=LVL;
-        }
-
-        // check bottom border
-        if(row==(gwin.active->erow-1)) {
-          vputc(gwin.active->erow,col,attr,LHJ);
-          ch=LVL;
-        }
-      }
-    }
-  }
-
-  // display character
-  if(wprintc(wrow,wcol,attr,ch))
-    return gwin.werrno;
-
-  // return normally
-  return 0;
+    // return normally
+    return 0;
 } /* disp_char() */
 
 
 //  ------------------------------------------------------------------
 
-static inline int isupvert(int btype, vchar ch) {
+static inline int isupvert(int btype, vchar ch)
+{
 
-  const int bt = btype;
-  return (ch==LVL or ch==UHJ or ch==ULC or ch==URC or ch==LVJ or ch==RVJ or ch==MJ) ? YES : NO;
+    const int bt = btype;
+    return (ch==LVL or ch==UHJ or ch==ULC or ch==URC or ch==LVJ or ch==RVJ or ch==MJ) ? YES : NO;
 }
 
 
 //  ------------------------------------------------------------------
 
-static inline int isdownvert(int btype, vchar ch) {
+static inline int isdownvert(int btype, vchar ch)
+{
 
-  const int bt = btype;
-  return (ch==LVL or ch==LHJ or ch==LLC or ch==LRC or ch==LVJ or ch==RVJ or ch==MJ) ? YES : NO;
+    const int bt = btype;
+    return (ch==LVL or ch==LHJ or ch==LLC or ch==LRC or ch==LVJ or ch==RVJ or ch==MJ) ? YES : NO;
 }
 
 
 //  ------------------------------------------------------------------
 
-static inline int islefthorz(int btype, vchar ch) {
+static inline int islefthorz(int btype, vchar ch)
+{
 
-  const int bt = btype;
-  return (ch==UHL or ch==LVJ or ch==LLC or ch==ULC or ch==UHJ or ch==LHJ or ch==MJ) ? YES : NO;
+    const int bt = btype;
+    return (ch==UHL or ch==LVJ or ch==LLC or ch==ULC or ch==UHJ or ch==LHJ or ch==MJ) ? YES : NO;
 }
 
 
 //  ------------------------------------------------------------------
 
-static inline int isrighthorz(int btype, vchar ch) {
+static inline int isrighthorz(int btype, vchar ch)
+{
 
-  const int bt = btype;
-  return (ch==UHL or ch==RVJ or ch==LRC or ch==URC or ch==UHJ or ch==LHJ or ch==MJ) ? YES : NO;
+    const int bt = btype;
+    return (ch==UHL or ch==RVJ or ch==LRC or ch==URC or ch==UHJ or ch==LHJ or ch==MJ) ? YES : NO;
 }
 
 
 //  ------------------------------------------------------------------
 
-int whline(int wsrow, int wscol, int count, int btype, vattr attr) {
+int whline(int wsrow, int wscol, int count, int btype, vattr attr)
+{
 
-  register int bt;
-  int row,col,up,down;
-  vchar ch;
+    register int bt;
+    int row,col,up,down;
+    vchar ch;
 
-  row=wsrow;
-  col=wscol;
+    row=wsrow;
+    col=wscol;
 
-  // abbreviate pointer
-  bt = btype;
+    // abbreviate pointer
+    bt = btype;
 
-  if(count) {
+    if(count)
+    {
 
-    // see if a left junction or corner is needed
-    up   = isupvert  (btype,wgetc(row-1,col));
-    down = isdownvert(btype,wgetc(row+1,col));
-    if(up and down)
-      ch=LVJ;
-    else if(up)
-      ch=LLC;
-    else if(down)
-      ch=ULC;
-    else
-      ch=UHL;
+        // see if a left junction or corner is needed
+        up   = isupvert  (btype,wgetc(row-1,col));
+        down = isdownvert(btype,wgetc(row+1,col));
+        if(up and down)
+            ch=LVJ;
+        else if(up)
+            ch=LLC;
+        else if(down)
+            ch=ULC;
+        else
+            ch=UHL;
 
-    // display leftmost character
-    if(disp_char(row,col,attr,btype,ch,HORZ))
-      return gwin.werrno;
-    col++;
-    count--;
-  }
+        // display leftmost character
+        if(disp_char(row,col,attr,btype,ch,HORZ))
+            return gwin.werrno;
+        col++;
+        count--;
+    }
 
-  // do while not last character
-  while(count>1) {
+    // do while not last character
+    while(count>1)
+    {
 
-    // see if a middle junction is needed
-    up   = isupvert  (btype,wgetc(row-1,col));
-    down = isdownvert(btype,wgetc(row+1,col));
-    if(up and down)
-      ch=MJ;
-    else if(up)
-      ch=LHJ;
-    else if(down)
-      ch=UHJ;
-    else
-      ch=UHL;
+        // see if a middle junction is needed
+        up   = isupvert  (btype,wgetc(row-1,col));
+        down = isdownvert(btype,wgetc(row+1,col));
+        if(up and down)
+            ch=MJ;
+        else if(up)
+            ch=LHJ;
+        else if(down)
+            ch=UHJ;
+        else
+            ch=UHL;
 
-    // display middle character
-    if(disp_char(row,col,attr,btype,ch,HORZ))
-      return gwin.werrno;
-    col++;
-    count--;
-  }
+        // display middle character
+        if(disp_char(row,col,attr,btype,ch,HORZ))
+            return gwin.werrno;
+        col++;
+        count--;
+    }
 
-  if(count) {
+    if(count)
+    {
 
-    // see if a right junction or corner is needed
-    up   = isupvert  (btype,wgetc(row-1,col));
-    down = isdownvert(btype,wgetc(row+1,col));
-    if(up and down)
-      ch=RVJ;
-    else if(up)
-      ch=LRC;
-    else if(down)
-      ch=URC;
-    else
-      ch=UHL;
+        // see if a right junction or corner is needed
+        up   = isupvert  (btype,wgetc(row-1,col));
+        down = isdownvert(btype,wgetc(row+1,col));
+        if(up and down)
+            ch=RVJ;
+        else if(up)
+            ch=LRC;
+        else if(down)
+            ch=URC;
+        else
+            ch=UHL;
 
-    // display rightmost character
-    if(disp_char(row,col,attr,btype,ch,HORZ))
-      return gwin.werrno;
-  }
+        // display rightmost character
+        if(disp_char(row,col,attr,btype,ch,HORZ))
+            return gwin.werrno;
+    }
 
-  // return normally
-  return gwin.werrno=W_NOERROR;
+    // return normally
+    return gwin.werrno=W_NOERROR;
 } /* whline() */
 
 
 //  ------------------------------------------------------------------
 
-int wvline(int wsrow, int wscol, int count, int btype, vattr attr) {
+int wvline(int wsrow, int wscol, int count, int btype, vattr attr)
+{
 
-  register int bt;
-  int row,col,left,right;
-  vchar ch;
+    register int bt;
+    int row,col,left,right;
+    vchar ch;
 
-  row=wsrow;
-  col=wscol;
+    row=wsrow;
+    col=wscol;
 
-  // abbreviate pointer
-  bt = btype;
+    // abbreviate pointer
+    bt = btype;
 
-  if(count) {
+    if(count)
+    {
 
-    // see if a top junction or corner is needed
-    left  = islefthorz (btype,wgetc(row,col-1));
-    right = isrighthorz(btype,wgetc(row,col+1));
-    if(left and right)
-      ch=UHJ;
-    else if(left)
-      ch=URC;
-    else if(right)
-      ch=ULC;
-    else
-      ch=LVL;
+        // see if a top junction or corner is needed
+        left  = islefthorz (btype,wgetc(row,col-1));
+        right = isrighthorz(btype,wgetc(row,col+1));
+        if(left and right)
+            ch=UHJ;
+        else if(left)
+            ch=URC;
+        else if(right)
+            ch=ULC;
+        else
+            ch=LVL;
 
-    // display uppermost character
-    if(disp_char(row,col,attr,btype,ch,VERT))
-      return gwin.werrno;
-    row++;
-    count--;
-  }
+        // display uppermost character
+        if(disp_char(row,col,attr,btype,ch,VERT))
+            return gwin.werrno;
+        row++;
+        count--;
+    }
 
-  // do while not last character
-  while(count>1) {
-    left  = islefthorz (btype,wgetc(row,col-1));
-    right = isrighthorz(btype,wgetc(row,col+1));
-    if(left and right)
-      ch=MJ;
-    else if(left)
-      ch=RVJ;
-    else if(right)
-      ch=LVJ;
-    else
-      ch=LVL;
+    // do while not last character
+    while(count>1)
+    {
+        left  = islefthorz (btype,wgetc(row,col-1));
+        right = isrighthorz(btype,wgetc(row,col+1));
+        if(left and right)
+            ch=MJ;
+        else if(left)
+            ch=RVJ;
+        else if(right)
+            ch=LVJ;
+        else
+            ch=LVL;
 
-    // display middle character
-    if(disp_char(row,col,attr,btype,ch,VERT))
-      return gwin.werrno;
-    row++;
-    count--;
-  }
+        // display middle character
+        if(disp_char(row,col,attr,btype,ch,VERT))
+            return gwin.werrno;
+        row++;
+        count--;
+    }
 
-  if(count) {
+    if(count)
+    {
 
-    // see if a bottom junction or corner is needed
-    left  = islefthorz (btype,wgetc(row,col-1));
-    right = isrighthorz(btype,wgetc(row,col+1));
-    if(left and right)
-      ch=LHJ;
-    else if(left)
-      ch=LRC;
-    else if(right)
-      ch=LLC;
-    else
-      ch=LVL;
+        // see if a bottom junction or corner is needed
+        left  = islefthorz (btype,wgetc(row,col-1));
+        right = isrighthorz(btype,wgetc(row,col+1));
+        if(left and right)
+            ch=LHJ;
+        else if(left)
+            ch=LRC;
+        else if(right)
+            ch=LLC;
+        else
+            ch=LVL;
 
-    // display bottommost character
-    if(disp_char(row,col,attr,btype,ch,VERT))
-      return gwin.werrno;
-  }
+        // display bottommost character
+        if(disp_char(row,col,attr,btype,ch,VERT))
+            return gwin.werrno;
+    }
 
-  // return normally
-  return gwin.werrno=W_NOERROR;
+    // return normally
+    return gwin.werrno=W_NOERROR;
 } /* wvline() */
 
 //  ------------------------------------------------------------------

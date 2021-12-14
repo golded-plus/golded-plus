@@ -28,12 +28,12 @@
 #include <gstrall.h>
 #include <gwildmat.h>
 #ifndef _MSC_VER
-#include <dirent.h>
+    #include <dirent.h>
 #else
-#include <io.h>
+    #include <io.h>
 #endif
 #ifndef __HAVE_DRIVES__
-#include <pwd.h>
+    #include <pwd.h>
 #endif
 
 
@@ -82,19 +82,23 @@ void gposixdir::cd(const char *name, bool relative)
     std::string ndirname;
     if(not *name)
         name = ".";
-    if(relative) {
+    if(relative)
+    {
         dirname += "/";
         dirname += name;
-    } else
+    }
+    else
         dirname = name;
     ok = maketruepath(dirname);
     entries.clear();
     DIR *d = opendir(dirname.c_str());
     if(d == NULL)
         ok = false;
-    else {
+    else
+    {
         struct dirent *de;
-        while((de=readdir(d)) != NULL) {
+        while((de=readdir(d)) != NULL)
+        {
             ndirname = de->d_name;
 #ifdef __HAVE_DRIVES__
             if((ndirname != ".") and not ((ndirname == "..") and streql(dirname.c_str()+1, ":/")))
@@ -113,10 +117,12 @@ void gposixdir::cd(const char *name, bool relative)
     std::string ndirname;
     if(not *name)
         name = ".";
-    if(relative) {
+    if(relative)
+    {
         dirname += "/";
         dirname += name;
-    } else
+    }
+    else
         dirname = name;
     ok = maketruepath(dirname);
     entries.clear();
@@ -131,14 +137,17 @@ void gposixdir::cd(const char *name, bool relative)
 #else
     long d = _findfirst(ndirname.c_str(), &de);
 #endif
-    if(d == -1) {
+    if(d == -1)
+    {
         if(is_dir(dirname))
             ok = true;
         else
             ok = false;
     }
-    else {
-        do {
+    else
+    {
+        do
+        {
             ndirname = de.name;
 #ifdef __HAVE_DRIVES__
             if((ndirname != ".") and not ((ndirname == "..") and streql(dirname.c_str()+1, ":/")))
@@ -146,7 +155,8 @@ void gposixdir::cd(const char *name, bool relative)
             if((ndirname != ".") and not ((ndirname == "..") and (dirname == "/")))
 #endif
                 entries.push_back(ndirname);
-        } while(_findnext(d, &de) == 0);
+        }
+        while(_findnext(d, &de) == 0);
         _findclose(d);
         rewind();
     }
@@ -157,14 +167,17 @@ void gposixdir::cd(const char *name, bool relative)
 
 const gdirentry *gposixdir::nextentry(const char *mask, bool nameonly)
 {
-    while(last_entry < entries.size()) {
-        if(mask and not gwildmat(entries[last_entry].c_str(), mask)) {
+    while(last_entry < entries.size())
+    {
+        if(mask and not gwildmat(entries[last_entry].c_str(), mask))
+        {
             ++last_entry;
             continue;
         }
         ret.name = entries[last_entry];
         ret.dirname = dirname.c_str();
-        if(not nameonly) {
+        if(not nameonly)
+        {
             std::string pn = ret.dirname;
             pn += "/";
             pn += ret.name;

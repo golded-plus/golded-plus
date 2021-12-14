@@ -39,48 +39,49 @@
 //  ------------------------------------------------------------------
 //  Window help information record
 
-class _help_t {
+class _help_t
+{
 
 public:
 
-  int         help[20];       // help stack
-  const char* file;           // help file name
-  int         helpptr;        // help stack pointer
-  gkey        key;            // help hot key
-  vattr       winattr;        // help window attribute
-  vattr       textattr;       // help window text attribute
-  vattr       selattr;        // selection text attribute
-  vattr       barattr;        // selection bar attribute
-  int         srow;           // help window start row
-  int         scol;           // help window start column
-  int         erow;           // help window end row
-  int         ecol;           // help window end column
-  int         btype;          // help window box type
-  int         title;          // display "Help" title?
-  VfvCP       open;           // pointer to open function
-  gfile*      fp;             // help file
-  long        offset;         // help file offset
+    int         help[20];       // help stack
+    const char* file;           // help file name
+    int         helpptr;        // help stack pointer
+    gkey        key;            // help hot key
+    vattr       winattr;        // help window attribute
+    vattr       textattr;       // help window text attribute
+    vattr       selattr;        // selection text attribute
+    vattr       barattr;        // selection bar attribute
+    int         srow;           // help window start row
+    int         scol;           // help window start column
+    int         erow;           // help window end row
+    int         ecol;           // help window end column
+    int         btype;          // help window box type
+    int         title;          // display "Help" title?
+    VfvCP       open;           // pointer to open function
+    gfile*      fp;             // help file
+    long        offset;         // help file offset
 
-  _help_t()
-  {
-    memset(help, 0, sizeof(help));
-    file = NULL;
-    helpptr = -1;
-    key = 0;
-    winattr = BLACK_|_BLACK;
-    textattr = BLACK_|_BLACK;
-    selattr = BLACK_|_BLACK;
-    barattr = BLACK_|_BLACK;
-    srow = 3;
-    scol = 8;
-    erow = 21;
-    ecol = 71;
-    btype = 0;
-    title = YES;
-    open = NULL;
-    fp = NULL;
-    offset = 0;
-  }
+    _help_t()
+    {
+        memset(help, 0, sizeof(help));
+        file = NULL;
+        helpptr = -1;
+        key = 0;
+        winattr = BLACK_|_BLACK;
+        textattr = BLACK_|_BLACK;
+        selattr = BLACK_|_BLACK;
+        barattr = BLACK_|_BLACK;
+        srow = 3;
+        scol = 8;
+        erow = 21;
+        ecol = 71;
+        btype = 0;
+        title = YES;
+        open = NULL;
+        fp = NULL;
+        offset = 0;
+    }
 };
 
 
@@ -88,17 +89,18 @@ public:
 //  Help index file record definition
 
 #if defined(GOLD_CANPACK)
-#pragma pack(1)
+    #pragma pack(1)
 #endif
 
-typedef struct _hlpidx_t {
-  word help;
-  char category[30];
-  long offset;
+typedef struct _hlpidx_t
+{
+    word help;
+    char category[30];
+    long offset;
 } Hlpr;
 
 #if defined(GOLD_CANPACK)
-#pragma pack()
+    #pragma pack()
 #endif
 
 
@@ -114,7 +116,10 @@ int whelpush();
 int whelpushc(int cat);
 int whelpwin(int srow, int scol, int erow, int ecol, int btype, int title);
 void whelpcompile(const char* helpfile, long& offset);
-inline int whelpundef() { return whelpdef(NULL,0,BLACK_|_BLACK,BLACK_|_BLACK,BLACK_|_BLACK,BLACK_|_BLACK,NULL); }
+inline int whelpundef()
+{
+    return whelpdef(NULL,0,BLACK_|_BLACK,BLACK_|_BLACK,BLACK_|_BLACK,BLACK_|_BLACK,NULL);
+}
 
 
 //  ------------------------------------------------------------------

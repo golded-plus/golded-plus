@@ -32,38 +32,43 @@
 
 //  ------------------------------------------------------------------
 
-HudsonUser::HudsonUser() {
-  
-  recsize = sizeof(HudsUsers);
-  record = new HudsUsers;  throw_new(record);
-  recptr = (char*)record;
-  name = record->name;
+HudsonUser::HudsonUser()
+{
+
+    recsize = sizeof(HudsUsers);
+    record = new HudsUsers;
+    throw_new(record);
+    recptr = (char*)record;
+    name = record->name;
 }
 
 
 //  ------------------------------------------------------------------
 
-HudsonUser::~HudsonUser() {
-  
-  throw_delete(record);
+HudsonUser::~HudsonUser()
+{
+
+    throw_delete(record);
 }
 
 
 //  ------------------------------------------------------------------
 
-void HudsonUser::inctimesposted(int __times) {
-  
-  seekread();
-  record->timesposted += (word)__times;
-  seekwrite();
+void HudsonUser::inctimesposted(int __times)
+{
+
+    seekread();
+    record->timesposted += (word)__times;
+    seekwrite();
 }
 
 
 //  ------------------------------------------------------------------
 
-int HudsonUser::isvalid() {
+int HudsonUser::isvalid()
+{
 
-  return not (record->attrib & HUDS_USERDELETED);
+    return not (record->attrib & HUDS_USERDELETED);
 }
 
 
@@ -71,43 +76,46 @@ int HudsonUser::isvalid() {
 
 int HudsonUser::read()
 {
-  if (gufh != -1)
-  {
-    ::read(gufh, record, sizeof(HudsUsers));
-    STRNP2C(record->name);
+    if (gufh != -1)
+    {
+        ::read(gufh, record, sizeof(HudsUsers));
+        STRNP2C(record->name);
 
-    return isvalid();
-  }
+        return isvalid();
+    }
 
-  return false;
+    return false;
 }
 
 
 //  ------------------------------------------------------------------
 
-uint32_t HudsonUser::lastread() {
+uint32_t HudsonUser::lastread()
+{
 
-  seekread();
-  return record->highmsgread;
+    seekread();
+    return record->highmsgread;
 }
 
 
 //  ------------------------------------------------------------------
 
-void HudsonUser::lastread(uint32_t __lastread) {
-  
-  seekread();
-  record->highmsgread = (word)__lastread;
-  seekwrite();
+void HudsonUser::lastread(uint32_t __lastread)
+{
+
+    seekread();
+    record->highmsgread = (word)__lastread;
+    seekwrite();
 }
 
 
 //  ------------------------------------------------------------------
 
-void HudsonUser::recinit(const char* __name) {
+void HudsonUser::recinit(const char* __name)
+{
 
-  GUser::recinit(__name);
-  strc2p(record->name);
+    GUser::recinit(__name);
+    strc2p(record->name);
 }
 
 

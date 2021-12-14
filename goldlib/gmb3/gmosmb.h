@@ -37,56 +37,66 @@
 
 //  ------------------------------------------------------------------
 
-class SMBArea : public gmo_area {
+class SMBArea : public gmo_area
+{
 
 protected:
 
-  smb_t *data;
+    smb_t *data;
 
-  void  data_open();
-  void  data_close();
+    void  data_open();
+    void  data_close();
 
-  void  raw_scan(bool keep_index=false, bool scanpm=false);
-  int   load_hdr(gmsg* __msg, smbmsg_t *msg);
+    void  raw_scan(bool keep_index=false, bool scanpm=false);
+    int   load_hdr(gmsg* __msg, smbmsg_t *msg);
 
 public:
 
-  SMBArea() { data = NULL; }
-  virtual ~SMBArea() {}
+    SMBArea()
+    {
+        data = NULL;
+    }
+    virtual ~SMBArea() {}
 
-  virtual bool issoftdelete() const { return true; }
+    virtual bool issoftdelete() const
+    {
+        return true;
+    }
 
-  //  ----------------------------------------------------------------
-  //  Messagebase member functions
-  
-  void open();
-  void close();
+    //  ----------------------------------------------------------------
+    //  Messagebase member functions
 
-  void suspend();
-  void resume();
+    void open();
+    void close();
 
-  void lock();
-  void unlock();
+    void suspend();
+    void resume();
 
-  void scan();
-  void scan_area();
-  void scan_area_pm();
+    void lock();
+    void unlock();
 
-  int load_hdr(gmsg* msg) { return load_hdr(msg, NULL); }
-  int load_msg(gmsg* msg);
+    void scan();
+    void scan_area();
+    void scan_area_pm();
 
-  void save_hdr(int mode, gmsg* msg);
-  void save_msg(int mode, gmsg* msg);
+    int load_hdr(gmsg* msg)
+    {
+        return load_hdr(msg, NULL);
+    }
+    int load_msg(gmsg* msg);
 
-  void del_msg(gmsg* msg);
+    void save_hdr(int mode, gmsg* msg);
+    void save_msg(int mode, gmsg* msg);
 
-  void new_msgno(gmsg* msg);
-  char* user_lookup(char* lookfor);
-  int renumber();
+    void del_msg(gmsg* msg);
 
-  void update_timesread(gmsg* msg);
+    void new_msgno(gmsg* msg);
+    char* user_lookup(char* lookfor);
+    int renumber();
 
-  Line* make_dump_msg(Line*& lin, gmsg* msg, char* lng_head);
+    void update_timesread(gmsg* msg);
+
+    Line* make_dump_msg(Line*& lin, gmsg* msg, char* lng_head);
 };
 
 

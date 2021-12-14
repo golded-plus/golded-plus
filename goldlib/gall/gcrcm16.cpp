@@ -31,22 +31,25 @@
 
 //  ------------------------------------------------------------------
 
-word memCrc16(const void* _m, long l, bool __case, word mask) {
+word memCrc16(const void* _m, long l, bool __case, word mask)
+{
 
-  long n;
-  word crc = mask;
-  const char *m = (const char *)_m;
+    long n;
+    word crc = mask;
+    const char *m = (const char *)_m;
 
-  if(__case) {
-    for(n=0; n<l; n++)
-      crc = updCrc16(g_toupper(*m++), crc);
-  }
-  else {
-    for(n=0; n<l; n++)
-      crc = updCrc16(*m++, crc);
-  }
+    if(__case)
+    {
+        for(n=0; n<l; n++)
+            crc = updCrc16(g_toupper(*m++), crc);
+    }
+    else
+    {
+        for(n=0; n<l; n++)
+            crc = updCrc16(*m++, crc);
+    }
 
-  return crc;
+    return crc;
 }
 
 

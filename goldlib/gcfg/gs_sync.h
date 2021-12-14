@@ -37,7 +37,7 @@
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack(1)
+    #pragma pack(1)
 #endif
 
 
@@ -89,45 +89,47 @@ const int SUB_HYPER = (1L<<27);   // Hyper allocation
 
 //  ------------------------------------------------------------------
 
-typedef struct {                // Message group info
-  char    lname[LEN_GLNAME+1],  // Short name
-          sname[LEN_GSNAME+1];  // Long name
-  uint8_t ar[LEN_ARSTR+1],      // Access requirements
- 		  code_prefix[LEN_CODE+1],	// Prefix for internal code of every sub in this group
-          unused[87];           // unused
+typedef struct                  // Message group info
+{
+    char    lname[LEN_GLNAME+1],  // Short name
+            sname[LEN_GSNAME+1];  // Long name
+    uint8_t ar[LEN_ARSTR+1],      // Access requirements
+            code_prefix[LEN_CODE+1],	// Prefix for internal code of every sub in this group
+            unused[87];           // unused
 } grp_t;
 
-typedef struct {                // Message sub board info
-  uint16_t grp;                 // Which group this sub belongs to
-  char   lname[LEN_SLNAME+1],   // Long name - used for listing
-         sname[LEN_SSNAME+1],   // Short name - used for prompts
-         qwkname[LEN_SQWKNAME+1], // QWK name
-         code_suffix[LEN_CODE+1], // Internal code (or just suffix)
-         data_dir[LEN_DIR+1];   // Data file directory
-  uint8_t ar[LEN_ARSTR+1],      // Access requirements
-          read_ar[LEN_ARSTR+1], // Read requirements
-          post_ar[LEN_ARSTR+1], // Post requirements
-          op_ar[LEN_ARSTR+1];   // Operator requirements
-  uint32_t misc;                // Miscellaneous flags
-  char   tagline[81],           // Optional QWK net tag line
-         origline[51],          // Optional EchoMail origin line
-         echomail_sem[LEN_DIR+1], // EchoMail semaphore for this sub
-         echopath[LEN_DIR+1];   // EchoMail path
-  ftn_addr faddr;               // FidoNet address
-  uint32_t maxmsgs,             // Max number of messages allowed
-           maxcrcs;             // Max number of CRCs to keep
-  uint16_t maxage,              // Max age of messages (in days)
-           ptridx;              // Index into pointer file
-  uint8_t  mod_ar[LEN_ARSTR+1]; // Moderated user requirements
-  uint16_t qwkconf;             // QWK conference number
-  char     code[LEN_EXTCODE+1];	// Not actually read from the .cnf file
-  uint8_t  unused[36];          // unused
+typedef struct                  // Message sub board info
+{
+    uint16_t grp;                 // Which group this sub belongs to
+    char   lname[LEN_SLNAME+1],   // Long name - used for listing
+           sname[LEN_SSNAME+1],   // Short name - used for prompts
+           qwkname[LEN_SQWKNAME+1], // QWK name
+           code_suffix[LEN_CODE+1], // Internal code (or just suffix)
+           data_dir[LEN_DIR+1];   // Data file directory
+    uint8_t ar[LEN_ARSTR+1],      // Access requirements
+            read_ar[LEN_ARSTR+1], // Read requirements
+            post_ar[LEN_ARSTR+1], // Post requirements
+            op_ar[LEN_ARSTR+1];   // Operator requirements
+    uint32_t misc;                // Miscellaneous flags
+    char   tagline[81],           // Optional QWK net tag line
+           origline[51],          // Optional EchoMail origin line
+           echomail_sem[LEN_DIR+1], // EchoMail semaphore for this sub
+           echopath[LEN_DIR+1];   // EchoMail path
+    ftn_addr faddr;               // FidoNet address
+    uint32_t maxmsgs,             // Max number of messages allowed
+             maxcrcs;             // Max number of CRCs to keep
+    uint16_t maxage,              // Max age of messages (in days)
+             ptridx;              // Index into pointer file
+    uint8_t  mod_ar[LEN_ARSTR+1]; // Moderated user requirements
+    uint16_t qwkconf;             // QWK conference number
+    char     code[LEN_EXTCODE+1];	// Not actually read from the .cnf file
+    uint8_t  unused[36];          // unused
 } sub_t;
 
 //  ------------------------------------------------------------------
 
 #if defined(GOLD_CANPACK)
-#pragma pack()
+    #pragma pack()
 #endif
 
 //  ------------------------------------------------------------------

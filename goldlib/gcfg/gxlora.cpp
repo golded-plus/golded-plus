@@ -28,8 +28,8 @@
 #include <gmemdbg.h>
 #include <gstrall.h>
 #if defined(__GOLD_GUI__)
-#include <gvidall.h>
-#include <gvidgui.h>
+    #include <gvidall.h>
+    #include <gvidgui.h>
 #endif
 #undef GCFG_NOLORA
 #include <gedacfg.h>
@@ -38,166 +38,183 @@
 
 //  ------------------------------------------------------------------
 
-void gareafile::ReadLoraBBS(char* tag) {
+void gareafile::ReadLoraBBS(char* tag)
+{
 
-  Path _path;
-  *_path = NUL;
-  char options[80];
-  strcpy(options, tag);
-  char* ptr = strtok(tag, " \t");
-  while(ptr) {
-    if(*ptr != '-') {
-      AddBackslash(strcpy(_path, ptr));
-      break;
+    Path _path;
+    *_path = NUL;
+    char options[80];
+    strcpy(options, tag);
+    char* ptr = strtok(tag, " \t");
+    while(ptr)
+    {
+        if(*ptr != '-')
+        {
+            AddBackslash(strcpy(_path, ptr));
+            break;
+        }
+        ptr = strtok(NULL, " \t");
     }
-    ptr = strtok(NULL, " \t");
-  }
-  if(*_path == NUL) {
-    ptr = getenv("LORA");
-    if(ptr)
-      AddBackslash(strcpy(_path, ptr));
-  }
-  if(*_path == NUL) {
-    ptr = getenv("LORABBS");
-    if(ptr)
-      AddBackslash(strcpy(_path, ptr));
-  }
-  if(*_path == NUL)
-    strcpy(_path, areapath);
-
-  const char* _file = AddPath(_path, "config.dat");
-  gfile fp(_file, "rb");
-  if (fp.isopen())
-  {
-    if (not quiet)
-      STD_PRINTNL("* Reading " << _file);
-
-    _configuration* cfg = (_configuration*)throw_calloc(1, sizeof(_configuration));
-    fp.Fread(cfg, sizeof(_configuration));
-    fp.Fclose();
-
-    //CfgUsername(cfg->sysop);
-
-    CfgHudsonpath(cfg->quick_msgpath);
-    CfgGoldbasepath(cfg->quick_msgpath);
-
-    AreaCfg aa;
-
-    // Netmail *.MSG
-    if(not strblank(cfg->netmail_dir)) {
-      aa.reset();
-      aa.basetype = "OPUS";
-      aa.type = GMB_NET;
-      aa.aka = CAST(ftn_addr, cfg->alias[0]);
-      aa.setpath(cfg->netmail_dir);
-      aa.setdesc("LoraBBS Netmail");
-      aa.setautoid("NETMAIL");
-      AddNewArea(aa);
+    if(*_path == NUL)
+    {
+        ptr = getenv("LORA");
+        if(ptr)
+            AddBackslash(strcpy(_path, ptr));
     }
-
-    // Bad *.MSG
-    if(not strblank(cfg->bad_msgs)) {
-      aa.reset();
-      aa.basetype = "OPUS";
-      aa.type = GMB_ECHO;
-      aa.aka = CAST(ftn_addr, cfg->alias[0]);
-      aa.setpath(cfg->bad_msgs);
-      aa.setdesc("LoraBBS Bad Echo");
-      aa.setautoid("ECHO_BAD");
-      AddNewArea(aa);
+    if(*_path == NUL)
+    {
+        ptr = getenv("LORABBS");
+        if(ptr)
+            AddBackslash(strcpy(_path, ptr));
     }
+    if(*_path == NUL)
+        strcpy(_path, areapath);
 
-    // Dupes *.MSG
-    if(not strblank(cfg->dupes)) {
-      aa.reset();
-      aa.basetype = "OPUS";
-      aa.type = GMB_ECHO;
-      aa.aka = CAST(ftn_addr, cfg->alias[0]);
-      aa.setpath(cfg->dupes);
-      aa.setdesc("LoraBBS Duplicate Msgs");
-      aa.setautoid("ECHO_DUPES");
-      AddNewArea(aa);
-    }
-
-    // Personal mail *.MSG
-    if(cfg->save_my_mail and not strblank(cfg->my_mail)) {
-      aa.reset();
-      aa.basetype = "OPUS";
-      aa.type = GMB_ECHO;
-      aa.aka = CAST(ftn_addr, cfg->alias[0]);
-      aa.setpath(cfg->my_mail);
-      aa.setdesc("LoraBBS Personal Mail");
-      aa.setautoid("ECHO_PERSONAL");
-      AddNewArea(aa);
-    }
-
-    _file = AddPath(_path, "sysmsg.dat");
-    fp.Fopen(_file, "rb");
+    const char* _file = AddPath(_path, "config.dat");
+    gfile fp(_file, "rb");
     if (fp.isopen())
     {
-      fp.SetvBuf(NULL, _IOFBF, 8192);
+        if (not quiet)
+            STD_PRINTNL("* Reading " << _file);
 
-      if (not quiet)
-        STD_PRINTNL("* Reading " << _file);
+        _configuration* cfg = (_configuration*)throw_calloc(1, sizeof(_configuration));
+        fp.Fread(cfg, sizeof(_configuration));
+        fp.Fclose();
 
-      _sysmsg* sysmsg = (_sysmsg*)throw_calloc(1, sizeof(_sysmsg));
+        //CfgUsername(cfg->sysop);
 
-      while (fp.Fread(sysmsg, sizeof(_sysmsg)) == 1)
-      {
-        if(sysmsg->passthrough)
-          continue;
+        CfgHudsonpath(cfg->quick_msgpath);
+        CfgGoldbasepath(cfg->quick_msgpath);
 
-        aa.reset();
+        AreaCfg aa;
 
-        if(sysmsg->gold_board) {
-          aa.basetype = "GOLDBASE";
-          aa.board = sysmsg->gold_board;
-        }
-        else if(sysmsg->quick_board) {
-          aa.basetype = "HUDSON";
-          aa.board = sysmsg->quick_board;
-        }
-        else if(sysmsg->pip_board) {
-          // Not supported (yet)
-          continue;
-        }
-        else if(sysmsg->squish) {
-          aa.basetype = "SQUISH";
-          aa.setpath(sysmsg->msg_path);
-        }
-        else {
-          aa.basetype = "OPUS";
-          aa.setpath(sysmsg->msg_path);
+        // Netmail *.MSG
+        if(not strblank(cfg->netmail_dir))
+        {
+            aa.reset();
+            aa.basetype = "OPUS";
+            aa.type = GMB_NET;
+            aa.aka = CAST(ftn_addr, cfg->alias[0]);
+            aa.setpath(cfg->netmail_dir);
+            aa.setdesc("LoraBBS Netmail");
+            aa.setautoid("NETMAIL");
+            AddNewArea(aa);
         }
 
-        if(sysmsg->netmail) {
-          aa.type = GMB_NET;
-          aa.attr = attribsnet;
+        // Bad *.MSG
+        if(not strblank(cfg->bad_msgs))
+        {
+            aa.reset();
+            aa.basetype = "OPUS";
+            aa.type = GMB_ECHO;
+            aa.aka = CAST(ftn_addr, cfg->alias[0]);
+            aa.setpath(cfg->bad_msgs);
+            aa.setdesc("LoraBBS Bad Echo");
+            aa.setautoid("ECHO_BAD");
+            AddNewArea(aa);
         }
-        else if(sysmsg->echomail) {
-          aa.type = GMB_ECHO;
-          aa.attr = attribsecho;
+
+        // Dupes *.MSG
+        if(not strblank(cfg->dupes))
+        {
+            aa.reset();
+            aa.basetype = "OPUS";
+            aa.type = GMB_ECHO;
+            aa.aka = CAST(ftn_addr, cfg->alias[0]);
+            aa.setpath(cfg->dupes);
+            aa.setdesc("LoraBBS Duplicate Msgs");
+            aa.setautoid("ECHO_DUPES");
+            AddNewArea(aa);
         }
-        else {
-          aa.type = GMB_LOCAL;
-          aa.attr = attribslocal;
+
+        // Personal mail *.MSG
+        if(cfg->save_my_mail and not strblank(cfg->my_mail))
+        {
+            aa.reset();
+            aa.basetype = "OPUS";
+            aa.type = GMB_ECHO;
+            aa.aka = CAST(ftn_addr, cfg->alias[0]);
+            aa.setpath(cfg->my_mail);
+            aa.setdesc("LoraBBS Personal Mail");
+            aa.setautoid("ECHO_PERSONAL");
+            AddNewArea(aa);
         }
 
-        aa.attr.pvt(sysmsg->doprivate);
+        _file = AddPath(_path, "sysmsg.dat");
+        fp.Fopen(_file, "rb");
+        if (fp.isopen())
+        {
+            fp.SetvBuf(NULL, _IOFBF, 8192);
 
-        aa.aka = CAST(ftn_addr, cfg->alias[sysmsg->use_alias]);
+            if (not quiet)
+                STD_PRINTNL("* Reading " << _file);
 
-        aa.setdesc(sysmsg->msg_name);
-        aa.setechoid(sysmsg->echotag);
-        aa.setorigin(sysmsg->origin);
+            _sysmsg* sysmsg = (_sysmsg*)throw_calloc(1, sizeof(_sysmsg));
 
-        AddNewArea(aa);
-      }
-      throw_free(sysmsg);
-      fp.Fclose();
+            while (fp.Fread(sysmsg, sizeof(_sysmsg)) == 1)
+            {
+                if(sysmsg->passthrough)
+                    continue;
+
+                aa.reset();
+
+                if(sysmsg->gold_board)
+                {
+                    aa.basetype = "GOLDBASE";
+                    aa.board = sysmsg->gold_board;
+                }
+                else if(sysmsg->quick_board)
+                {
+                    aa.basetype = "HUDSON";
+                    aa.board = sysmsg->quick_board;
+                }
+                else if(sysmsg->pip_board)
+                {
+                    // Not supported (yet)
+                    continue;
+                }
+                else if(sysmsg->squish)
+                {
+                    aa.basetype = "SQUISH";
+                    aa.setpath(sysmsg->msg_path);
+                }
+                else
+                {
+                    aa.basetype = "OPUS";
+                    aa.setpath(sysmsg->msg_path);
+                }
+
+                if(sysmsg->netmail)
+                {
+                    aa.type = GMB_NET;
+                    aa.attr = attribsnet;
+                }
+                else if(sysmsg->echomail)
+                {
+                    aa.type = GMB_ECHO;
+                    aa.attr = attribsecho;
+                }
+                else
+                {
+                    aa.type = GMB_LOCAL;
+                    aa.attr = attribslocal;
+                }
+
+                aa.attr.pvt(sysmsg->doprivate);
+
+                aa.aka = CAST(ftn_addr, cfg->alias[sysmsg->use_alias]);
+
+                aa.setdesc(sysmsg->msg_name);
+                aa.setechoid(sysmsg->echotag);
+                aa.setorigin(sysmsg->origin);
+
+                AddNewArea(aa);
+            }
+            throw_free(sysmsg);
+            fp.Fclose();
+        }
+        throw_free(cfg);
     }
-    throw_free(cfg);
-  }
 }
 
 

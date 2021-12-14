@@ -31,105 +31,110 @@
 
 //  ------------------------------------------------------------------
 
-class GMsgHeaderView {
+class GMsgHeaderView
+{
 
-  int alive;
+    int alive;
 
 protected:
 
 public:
 
-  Area *area;
-  GMsg *msg;
-  gwindow window;
+    Area *area;
+    GMsg *msg;
+    gwindow window;
 
-  GMsgHeaderView();
-  ~GMsgHeaderView();
+    GMsgHeaderView();
+    ~GMsgHeaderView();
 
-  // Window setup
-  int   at_row;
-  int   at_column;
-  int   width;
-  int   height;
-  int   border_type;
-  vattr border_color;
-  vattr window_color;
-  vattr title_color;
+    // Window setup
+    int   at_row;
+    int   at_column;
+    int   width;
+    int   height;
+    int   border_type;
+    vattr border_color;
+    vattr window_color;
+    vattr title_color;
 
-  vattr highlight_color;
-  vattr from_color;
-  vattr to_color;
-  vattr subject_color;
-  vattr location_color;
+    vattr highlight_color;
+    vattr from_color;
+    vattr to_color;
+    vattr subject_color;
+    vattr location_color;
 
-  void Use(Area *areaptr, GMsg *msgptr);
+    void Use(Area *areaptr, GMsg *msgptr);
 
-  void Create();
-  void Destroy();
+    void Create();
+    void Destroy();
 
-  void Paint();
+    void Paint();
 };
 
 
 //  ------------------------------------------------------------------
 
-class GMsgBodyView : public Container {
+class GMsgBodyView : public Container
+{
 
-  int alive;
+    int alive;
 
 protected:
 
-  // View data
-  int visible_width;
-  int scrollbar_visible;
-  Line dummy_line;
-  int can_pagedown;
-  int upperline;
-  int lowerline;
+    // View data
+    int visible_width;
+    int scrollbar_visible;
+    Line dummy_line;
+    int can_pagedown;
+    int upperline;
+    int lowerline;
 
-  void PaintLine(int row, Line *line);
-  void UpdateScrollbar();
-  void prints(int wrow, int wcol, vattr atr, const char* str);
-  void printns(int wrow, int wcol, vattr atr, const char* str, uint len);
+    void PaintLine(int row, Line *line);
+    void UpdateScrollbar();
+    void prints(int wrow, int wcol, vattr atr, const char* str);
+    void printns(int wrow, int wcol, vattr atr, const char* str, uint len);
 
 public:
 
-  Area *area;
-  GMsg *msg;
-  gwindow window;
+    Area *area;
+    GMsg *msg;
+    gwindow window;
 
-  GMsgBodyView();
-  ~GMsgBodyView();
+    GMsgBodyView();
+    ~GMsgBodyView();
 
-  // Window setup
-  int   at_row;
-  int   at_column;
-  int   width;
-  int   height;
-  int   border_type;
-  vattr border_color;
-  vattr window_color;
-  vattr scrollbar_color;
-  vattr highlight_color;
+    // Window setup
+    int   at_row;
+    int   at_column;
+    int   width;
+    int   height;
+    int   border_type;
+    vattr border_color;
+    vattr window_color;
+    vattr scrollbar_color;
+    vattr highlight_color;
 
-  void Use(Area *areaptr, GMsg *msgptr, int startline=0);
+    void Use(Area *areaptr, GMsg *msgptr, int startline=0);
 
-  int UpperLine() { return upperline; }
+    int UpperLine()
+    {
+        return upperline;
+    }
 
-  void Create();
-  void Destroy();
+    void Create();
+    void Destroy();
 
-  void Paint();
+    void Paint();
 
-  int Top(int redraw=false);
-  int Bottom();
-  int PageUp();
-  int PageDown();
-  int LineUp();
-  int LineDown();
-  int Continue();
-  int ThumbTrack(int pos);
-  int ThumbPosition(int pos);
+    int Top(int redraw=false);
+    int Bottom();
+    int PageUp();
+    int PageDown();
+    int LineUp();
+    int LineDown();
+    int Continue();
+    int ThumbTrack(int pos);
+    int ThumbPosition(int pos);
 };
 
 
