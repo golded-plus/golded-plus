@@ -305,7 +305,7 @@ void gareafile::ReadDBridge(char* tag)
   AreaCfg aa;
   char* ptr;
   int line;
-  char buf[2560], type, options[2560];
+  char buf[256], type, options[80];
   Path dbpath, file, badecho, netpath;
 
   *dbpath = NUL;

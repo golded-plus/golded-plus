@@ -95,7 +95,7 @@ int DoCarboncopy(GMsg* msg, GMsg** carbon) {
   Attr attr;
   bool cchide;
   bool ignorecc = false;
-  char buf[2560], buf2[2560];
+  char buf[256], buf2[256];
   Line* line;
   Line* newline;
   Line* ccline = NULL;
@@ -334,7 +334,7 @@ void DoCrosspost(GMsg* msg, std::vector<int> &postareas) {
 
   if(CFG->crosspost == NO)
     return;
-  char buf[2560];
+  char buf[256];
   const char *ptr;
   bool ignorexc = false;
   Line* newline;

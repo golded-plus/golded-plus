@@ -669,7 +669,7 @@ void LoadLanguage(const char* file)
   char* ptr;
   char* str;
   int line = 0;
-  char buf[2560];
+  char buf[256];
 
   if (file==NULL || *file==0)
   {

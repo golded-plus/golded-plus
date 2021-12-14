@@ -618,7 +618,7 @@ void ReadXlatTables()
   {
     Esc EscTable;
     Chs ChsTable;
-    char buf[2560];
+    char buf[256];
     char* ptr;
     char* ptr2;
     int line, n, x, y, ch=0;
@@ -864,7 +864,7 @@ void CookieIndex(char* textfile, char* indexfile)
     if (ofp.isopen())
     {
       ofp.SetvBuf(NULL, _IOFBF, 16000);
-      char buf[2560];
+      char buf[256];
       long fpos = 0;
       long tpos = 0;
       bool was_blank = false;

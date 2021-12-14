@@ -60,7 +60,7 @@ bool isuucp(const char *name) {
 
 char* MakeOrigin(GMsg* msg, const char* orig) {
 
-  char buf[2560];
+  char buf[256];
   char origin[100];
 
   strxcpy(origin, orig, sizeof(origin));

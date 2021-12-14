@@ -1133,7 +1133,7 @@ void LookupNodeLocation(GMsg* msg, std::string &location, int what)
     location = it->loc;
   else
   {
-    char buf[2560];
+    char buf[256];
     location_item item(addr);
 
     addr.make_string(buf);
@@ -1191,7 +1191,7 @@ void LookupNode(GMsg* msg, const char* name, int what) {
   w_info(LNG->Wait);
 
   Addr addr;
-  char buf[2560];
+  char buf[256];
   char* ptr = buf;
 
   switch(what) {
@@ -1257,7 +1257,7 @@ void CheckNodelists() {
     if (fp.isopen())
     {
       // Read the list index
-      char buf[2560];
+      char buf[256];
       NODE->nodelists = 0;
       while (fp.Fgets(buf, sizeof(buf)))
       {

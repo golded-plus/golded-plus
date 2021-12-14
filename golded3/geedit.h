@@ -71,8 +71,8 @@
 //  ------------------------------------------------------------------
 //  Defines
 
-#define EDIT_BUFLEN           4096
-#define EDIT_PARABUFLEN       1048576
+#define EDIT_BUFLEN           256
+#define EDIT_PARABUFLEN       2048
 
 #define EDIT_UNDO_CHAR        0x00000010U
 #define EDIT_UNDO_INS_CHAR    0x00000011U

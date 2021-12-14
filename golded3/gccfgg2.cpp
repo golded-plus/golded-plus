@@ -210,8 +210,8 @@ void CfgAttribsnews() {
 
 void CfgAttributes() {
 
-  char buf[2560];
-  strxcpy(buf, val, sizeof(buf));
+  char buf[256];
+  strxcpy(buf, val, 256);
   if(cfgingroup)
     CFG->grp.AddItm(GRP_ATTRIBUTES, buf, strlen(buf)+1);
 }

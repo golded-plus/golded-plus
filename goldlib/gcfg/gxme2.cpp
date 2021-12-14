@@ -46,7 +46,7 @@ void gareafile::ReadME2(char* tag) {
   char* desc;
   char* group;
   char* echoid;
-  char buf[2560], options[2560];
+  char buf[256], options[80];
 
   if(*tag) {
     ptr2 = strskip_wht(tag);

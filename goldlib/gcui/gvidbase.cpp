@@ -1049,7 +1049,7 @@ void vputx(int row, int col, vattr atr, vchar chr, uint len) {
 
   #elif defined(__UNIX__)
 
-  char buf[2560];
+  char buf[256];
   char* color = gvid_newattr(atr);
   gvid_cvtchr(chr);
   _vputx(row, col, atr, chr, len);

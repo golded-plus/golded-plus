@@ -166,7 +166,7 @@ void golded_search_manager::prepare_from_string(const char* prompt, int what)
   default_item.where.kludges   = false;
   default_item.where.signature = false;
 
-  char buf[2560];
+  char buf[256];
   char* b = buf;
   bool item_complete = false;
 

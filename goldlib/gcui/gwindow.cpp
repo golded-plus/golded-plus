@@ -64,7 +64,7 @@ int gwindow::printf(vattr color, const char* format, ...) {
 int gwindow::printf(int row, int col, const char* format, ...) {
 
   va_list argptr;
-  char buf[2560];
+  char buf[256];
   *buf = NUL;
   va_start(argptr, format);
   int result = vsprintf(buf, format, argptr);
@@ -79,7 +79,7 @@ int gwindow::printf(int row, int col, const char* format, ...) {
 int gwindow::printf(int row, int col, vattr color, const char* format, ...) {
 
   va_list argptr;
-  char buf[2560];
+  char buf[256];
   *buf = NUL;
   va_start(argptr, format);
   int result = vsprintf(buf, format, argptr);

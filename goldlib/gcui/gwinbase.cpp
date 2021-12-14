@@ -857,7 +857,7 @@ int wprintf(const char* format, ...) {
 int wprintfs(int wrow, int wcol, vattr attr, const char* format, ...) {
 
   va_list argptr;
-  char buf[2560];
+  char buf[256];
 
   *buf = NUL;
   va_start(argptr, format);

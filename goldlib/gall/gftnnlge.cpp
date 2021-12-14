@@ -336,7 +336,7 @@ bool ftn_golded_nodelist_index::open() {
   }
 
   // Read the list index
-  char buf[2560];
+  char buf[256];
   nodelists = 0;
   while(fgets(buf, sizeof(buf), fp)) {
     nodelist = (fstamp*)throw_realloc(nodelist, (nodelists+1)*sizeof(fstamp));

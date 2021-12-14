@@ -50,7 +50,7 @@ void gareafile::ReadFrontDoor(char* tag) {
   FD_Editor* editor;
   FD_Shared* shared;
   Path fdpath, file;
-  char buf[2560], origin[2560], options[2560];
+  char buf[256], origin[80], options[80];
 
   *fdpath = NUL;
   *origin = NUL;

@@ -106,8 +106,8 @@ void glog::init(const char* name, const char* shortname, int type) {
 void glog::printf(const char* format, ...) {
 
   va_list argptr;
-  char buf[2560];
-  char logbuf[2560];
+  char buf[256];
+  char logbuf[256];
 
   secs_now = gtime(NULL);
   glocaltime(&time_now, &secs_now);

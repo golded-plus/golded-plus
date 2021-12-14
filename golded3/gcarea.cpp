@@ -184,7 +184,7 @@ void AreaList::AddNewArea(AreaCfg* aa)
   }
 
   Desc desc;
-  char buf[2560];
+  char buf[256];
   bool newarea = true;
   static int serial = 0;
   static int net1st = false;
@@ -870,7 +870,7 @@ void AreaList::ReadEcholist(char* val)
 {
   char* key;
   Path file;
-  char buf[2560], options[2560];
+  char buf[256], options[80];
   bool is_sqafix = false;
   bool is_dz = false;
 

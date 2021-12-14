@@ -44,7 +44,7 @@ static void ReadGldFile() {
     {
       char* key;
       char* val;
-      char buf[2560];
+      char buf[256];
       while (fp.Fgets(buf, sizeof(buf)))
       {
         val = strtrim(buf);
@@ -75,7 +75,7 @@ int ImportQWK() {
   gfile fp(file, "rt");
   if (fp.isopen())
   {
-    char buf[2560];
+    char buf[256];
     int line = 0;
     int confno = 0;
     int confcnt = 0;
@@ -342,7 +342,7 @@ int ImportQWK() {
 
     if (imported and *QWK->ReplyLinker())
     {
-      char buf[2560];
+      char buf[256];
       gsprintf(PRINTF_DECLARE_BUFFER(buf), LNG->Replylinker, QWK->ReplyLinker());
       ShellToDos(QWK->ReplyLinker(), buf, LGREY_|_BLACK, YES);
     }
@@ -542,7 +542,7 @@ int ExportQWK() {
   fp.Fopen(scanfile, "rt");
   if (fp.isopen())
   {
-    char buf[2560];
+    char buf[256];
     while (fp.Fgets(buf, sizeof(buf)))
     {
       char* ptr = strchr(buf, ' ');
