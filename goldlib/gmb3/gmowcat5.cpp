@@ -108,7 +108,7 @@ Line* WCatArea::make_dump_msg(Line*& lin, gmsg* msg, char* lng_head)
     line = AddLine(line, "");
     AddLineF(line, "UserRecno  : %u (%s)", wide->userno, WideUsername[0]);
     line = AddLine(line, "");
-    AddLineF(line, lng_head);
+    AddLine(line, lng_head);
     line = AddLine(line, "");
 
     int _count;

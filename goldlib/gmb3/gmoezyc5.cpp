@@ -90,7 +90,7 @@ Line* EzycomArea::make_dump_msg(Line*& lin, gmsg* msg, char* lng_head)
     AddLineF(line, "MsgLength: %u", _hdr.messagelength);
     AddLineF(line, "UserRecno: %u (%s)", wide->userno, WideUsername[0]);
     line = AddLine(line, "");
-    AddLineF(line, lng_head);
+    AddLine(line, lng_head);
     line = AddLine(line, "");
 
     uint _count = 0;

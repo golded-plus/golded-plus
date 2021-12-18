@@ -368,7 +368,7 @@ void GMsgList::print_line(uint idx, uint pos, bool isbar)
         mattr_ = hattr;
     }
 
-    char buf[256];
+    char buf[MAXCOL];
 
     if(AA->Msglistwidesubj())
     {
@@ -950,7 +950,7 @@ void GThreadlist::GenTree(int idx)
 
 void GThreadlist::print_line(uint idx, uint pos, bool isbar)
 {
-    char buf[256];
+    char buf[MAXCOL];
     ThreadEntry &t = treeEntryList[idx];
     size_t tdlen = xlen - ((AA->Msglistdate() == MSGLISTDATE_NONE) ? 8 : 18);
 

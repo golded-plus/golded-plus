@@ -222,8 +222,8 @@ void guserbase::do_delayed()
 void guserbase::print_line(uint idx, uint pos, bool isbar)
 {
 
-    char buf[200];
-    const size_t buflen=199;
+    char buf[MAXCOL];
+    const size_t buflen=MAXCOL;
     buf[buflen]='\0';
 //  char buf2[100];
 //  const size_t buf2len=199;

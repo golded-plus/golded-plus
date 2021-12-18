@@ -109,7 +109,7 @@ Line* XbbsArea::make_dump_msg(Line*& lin, gmsg* msg, char* lng_head)
     AddLineF(line, "ReplyidCrc      : %08Xh (%u)", idx->replycrc,      idx->replycrc);
     AddLineF(line, "ReplyidSerialNo : %08Xh (%u)", idx->replyserialno, idx->replyserialno);
     line = AddLine(line, "");
-    AddLineF(line, lng_head);
+    AddLine(line, lng_head);
     line = AddLine(line, "");
 
     int _count;

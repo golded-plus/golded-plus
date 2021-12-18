@@ -139,7 +139,7 @@ Line* SquishArea::make_dump_msg(Line*& lin, gmsg* msg, char* lng_head)
     AddLineF(line, "TotalLength    : %u", _frm.totsize);
     AddLineF(line, "CtrlLength     : %u", _frm.ctlsize);
     line = AddLine(line, "");
-    AddLineF(line, lng_head);
+    AddLine(line, lng_head);
     line = AddLine(line, "");
 
     int _count = 0;
