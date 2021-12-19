@@ -410,7 +410,8 @@ void GMsgList::print_line(uint idx, uint pos, bool isbar)
         *dbuf = NUL;
 
     gsprintf(PRINTF_DECLARE_BUFFER(nbuf), "%5u", (CFG->switches.get(disprealmsgno) ? ml->msgno : AA->Msgn.ToReln(ml->msgno)));
-    gsprintf(PRINTF_DECLARE_BUFFER(buf), "%-5.5s%s%-*.*s %-*.*s%s%-*.*s %s",
+#if defined(__USE_ALLOCA__)    
+    gsprintf(buf, MAXCOL, __FILE__, __LINE__, "%-5.5s%s%-*.*s %-*.*s%s%-*.*s %s",
              nbuf, ml->marks,
              bysiz, bysiz, ml->by,
              tosiz, tosiz, ml->to,
@@ -418,7 +419,16 @@ void GMsgList::print_line(uint idx, uint pos, bool isbar)
              resiz, resiz, ml->re,
              dbuf
             );
-
+#else
+    gsprintf(PRINTF_DECLARE_BUFFER(buf), "%-5.5s%s%-*.*s %-*.*s%s%-*.*s %s",
+             nbuf, ml->marks,
+             bysiz, bysiz, ml->by,
+             tosiz, tosiz, ml->to,
+             (tosiz ? " " : ""),
+             resiz, resiz, ml->re,
+             dbuf
+    );    
+#endif
     window.prints(pos, 0, wattr_, buf);
 
     if (ml->high & (MLST_HIGH_BOOK|MLST_HIGH_MARK))
@@ -998,8 +1008,11 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar)
         if(AA->Mark.Find(t.msgno))
             marks[1] = MMRK_MARK;
     }
-
+#if defined(__USE_ALLOCA__)
+    gsprintf(buf, MAXCOL, __FILE__, __LINE__, "%6u  %*c", (CFG->switches.get(disprealmsgno) ? t.msgno : AA->Msgn.ToReln(t.msgno)), tdlen, ' ');
+#else
     gsprintf(PRINTF_DECLARE_BUFFER(buf), "%6u  %*c", (CFG->switches.get(disprealmsgno) ? t.msgno : AA->Msgn.ToReln(t.msgno)), tdlen, ' ');
+#endif
 
     if(AA->Msglistdate() != MSGLISTDATE_NONE)
     {

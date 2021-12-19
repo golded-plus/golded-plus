@@ -582,11 +582,11 @@ void GPickArealist::AreaDropMsgMarks(uint n)
 
 #if defined(__USE_ALLOCA__)
     char *buf = (char*)alloca(MAXCOL);
+    gsprintf(buf, MAXCOL, __FILE__, __LINE__, LNG->DropMarksInfo, longdotstr(nummarks));
 #else
     __extension__ char buf[MAXCOL];
+    gsprintf(PRINTF_DECLARE_BUFFER(buf), LNG->DropMarksInfo, longdotstr(nummarks));    
 #endif
-
-    gsprintf(PRINTF_DECLARE_BUFFER(buf), LNG->DropMarksInfo, longdotstr(nummarks));
 
     w_info(buf);
     int mode = MenuAreaDropMarks.Run();

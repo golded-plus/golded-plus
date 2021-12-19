@@ -264,12 +264,22 @@ void guserbase::print_line(uint idx, uint pos, bool isbar)
     }
 
 //  sprintf(buf, "%c %-*.*s %-*.*s %s ",
-    gsprintf(PRINTF_DECLARE_BUFFER(buf), "%c %-*.*s %-*.*s %s ",
+
+#if defined(__USE_ALLOCA__)
+    gsprintf(buf, MAXCOL, __FILE__, __LINE__, "%c %-*.*s %-*.*s %s ",
              entry.is_deleted ? 'D' : ' ',
              cwidth, (int)cwidth, entry.name,
              (cwidth*2)/3, (int)(cwidth*2)/3, entry.organisation,
 //    buf2);
              useraddr.c_str() );
+#else
+    gsprintf(PRINTF_DECLARE_BUFFER(buf), "%c %-*.*s %-*.*s %s ",
+             entry.is_deleted ? 'D' : ' ',
+             cwidth, (int)cwidth, entry.name,
+             (cwidth*2)/3, (int)(cwidth*2)/3, entry.organisation,
+             //    buf2);
+             useraddr.c_str() );   
+#endif
 
 //  strsetsz(buf, xlen);
     /*  strsetsz(buf, buflen>xlen?xlen:buflen); */
