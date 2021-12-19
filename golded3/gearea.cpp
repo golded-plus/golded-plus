@@ -475,7 +475,7 @@ void GPickArealist::print_line(uint idx, uint pos, bool isbar)
 {
 #if defined(__USE_ALLOCA__)
     char *buf = (char*)alloca(MAXCOL);
-    vchar vbuf = (vchar*)alloca(MAXCOL*2);
+    vchar *vbuf = (vchar*)alloca(MAXCOL*2);
 #else
     __extension__ char buf[MAXCOL];
     __extension__ vchar vbuf[MAXCOL*2];
