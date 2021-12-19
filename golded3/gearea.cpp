@@ -473,9 +473,13 @@ void GPickArealist::precursor()
 
 void GPickArealist::print_line(uint idx, uint pos, bool isbar)
 {
-
-    vchar vbuf[MAXCOL];
-    char buf[MAXCOL];
+#if defined(__USE_ALLOCA__)
+    char *buf = (char*)alloca(MAXCOL);
+    vchar vbuf = (vchar*)alloca(MAXCOL*2);
+#else
+    __extension__ char buf[MAXCOL];
+    __extension__ vchar buf[MAXCOL*2];
+#endif
 
     if(AL[idx]->isseparator())
     {
@@ -576,7 +580,12 @@ void GPickArealist::AreaDropMsgMarks(uint n)
     for(AL.item = AL.idx.begin(); AL.item != AL.idx.end(); AL.item++)
         nummarks += (*AL.item)->Mark.Count();
 
-    char buf[MAXCOL];
+#if defined(__USE_ALLOCA__)
+    char *buf = (char*)alloca(MAXCOL);
+#else
+    __extension__ char buf[MAXCOL];
+#endif
+
     gsprintf(PRINTF_DECLARE_BUFFER(buf), LNG->DropMarksInfo, longdotstr(nummarks));
 
     w_info(buf);
@@ -608,7 +617,13 @@ bool GPickArealist::handle_key()
     uint n;
     uint x;
     const char* adesc;
-    char buf[MAXCOL], tmp[MAXCOL];
+#if defined(__USE_ALLOCA__)
+    char *buf = (char*)alloca(MAXCOL);
+    char *tmp = (char*)alloca(MAXCOL);
+#else
+    __extension__ char buf[MAXCOL];
+    __extension__ char tmp[MAXCOL];
+#endif
 
     int mode, changed, currno;
 

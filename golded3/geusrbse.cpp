@@ -222,7 +222,11 @@ void guserbase::do_delayed()
 void guserbase::print_line(uint idx, uint pos, bool isbar)
 {
 
-    char buf[MAXCOL];
+#if defined(__USE_ALLOCA__)
+    char *buf = (char*)alloca(MAXCOL);
+#else
+    __extension__ char buf[MAXCOL];
+#endif
     const size_t buflen=MAXCOL;
     buf[buflen]='\0';
 //  char buf2[100];

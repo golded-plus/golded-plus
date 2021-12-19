@@ -368,7 +368,11 @@ void GMsgList::print_line(uint idx, uint pos, bool isbar)
         mattr_ = hattr;
     }
 
-    char buf[MAXCOL];
+#if defined(__USE_ALLOCA__)
+    char *buf = (char*)alloca(MAXCOL);
+#else
+    __extension__ char buf[MAXCOL];
+#endif
 
     if(AA->Msglistwidesubj())
     {
@@ -950,7 +954,11 @@ void GThreadlist::GenTree(int idx)
 
 void GThreadlist::print_line(uint idx, uint pos, bool isbar)
 {
-    char buf[MAXCOL];
+#if defined(__USE_ALLOCA__)
+    char *buf = (char*)alloca(MAXCOL);
+#else
+    __extension__ char buf[MAXCOL];
+#endif
     ThreadEntry &t = treeEntryList[idx];
     size_t tdlen = xlen - ((AA->Msglistdate() == MSGLISTDATE_NONE) ? 8 : 18);
 
