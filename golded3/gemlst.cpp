@@ -368,11 +368,7 @@ void GMsgList::print_line(uint idx, uint pos, bool isbar)
         mattr_ = hattr;
     }
 
-#if defined(__USE_ALLOCA__)
-    char *buf = (char*)alloca(MAXCOL);
-#else
-    __extension__ char buf[MAXCOL];
-#endif
+    CREATEBUFFER(char, buf, MAXCOL);
 
     if(AA->Msglistwidesubj())
     {
@@ -410,17 +406,7 @@ void GMsgList::print_line(uint idx, uint pos, bool isbar)
         *dbuf = NUL;
 
     gsprintf(PRINTF_DECLARE_BUFFER(nbuf), "%5u", (CFG->switches.get(disprealmsgno) ? ml->msgno : AA->Msgn.ToReln(ml->msgno)));
-#if defined(__USE_ALLOCA__)    
-    gsprintf(buf, MAXCOL, __FILE__, __LINE__, "%-5.5s%s%-*.*s %-*.*s%s%-*.*s %s",
-             nbuf, ml->marks,
-             bysiz, bysiz, ml->by,
-             tosiz, tosiz, ml->to,
-             (tosiz ? " " : ""),
-             resiz, resiz, ml->re,
-             dbuf
-            );
-#else
-    gsprintf(PRINTF_DECLARE_BUFFER(buf), "%-5.5s%s%-*.*s %-*.*s%s%-*.*s %s",
+    gsprintf(PRINTF_DECLARE_BUFFER_AUTO(buf, MAXCOL), "%-5.5s%s%-*.*s %-*.*s%s%-*.*s %s",
              nbuf, ml->marks,
              bysiz, bysiz, ml->by,
              tosiz, tosiz, ml->to,
@@ -428,7 +414,7 @@ void GMsgList::print_line(uint idx, uint pos, bool isbar)
              resiz, resiz, ml->re,
              dbuf
     );    
-#endif
+
     window.prints(pos, 0, wattr_, buf);
 
     if (ml->high & (MLST_HIGH_BOOK|MLST_HIGH_MARK))
@@ -448,6 +434,7 @@ void GMsgList::print_line(uint idx, uint pos, bool isbar)
     }
 
     goldmark = ml->goldmark;
+    FREEBUFFER(buf, MAXCOL);
 }
 
 
@@ -964,11 +951,7 @@ void GThreadlist::GenTree(int idx)
 
 void GThreadlist::print_line(uint idx, uint pos, bool isbar)
 {
-#if defined(__USE_ALLOCA__)
-    char *buf = (char*)alloca(MAXCOL);
-#else
-    __extension__ char buf[MAXCOL];
-#endif
+    CREATEBUFFER(char, buf, MAXCOL);
     ThreadEntry &t = treeEntryList[idx];
     size_t tdlen = xlen - ((AA->Msglistdate() == MSGLISTDATE_NONE) ? 8 : 18);
 
@@ -1008,11 +991,7 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar)
         if(AA->Mark.Find(t.msgno))
             marks[1] = MMRK_MARK;
     }
-#if defined(__USE_ALLOCA__)
-    gsprintf(buf, MAXCOL, __FILE__, __LINE__, "%6u  %*c", (CFG->switches.get(disprealmsgno) ? t.msgno : AA->Msgn.ToReln(t.msgno)), tdlen, ' ');
-#else
-    gsprintf(PRINTF_DECLARE_BUFFER(buf), "%6u  %*c", (CFG->switches.get(disprealmsgno) ? t.msgno : AA->Msgn.ToReln(t.msgno)), tdlen, ' ');
-#endif
+    gsprintf(PRINTF_DECLARE_BUFFER_AUTO(buf, MAXCOL), "%6u  %*c", (CFG->switches.get(disprealmsgno) ? t.msgno : AA->Msgn.ToReln(t.msgno)), tdlen, ' ');
 
     if(AA->Msglistdate() != MSGLISTDATE_NONE)
     {
@@ -1111,6 +1090,7 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar)
 
         window.prints(pos, 8 + buflen, attr, buf);
     }
+    FREEBUFFER(buf, MAXCOL);
 }
 
 

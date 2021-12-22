@@ -473,13 +473,8 @@ void GPickArealist::precursor()
 
 void GPickArealist::print_line(uint idx, uint pos, bool isbar)
 {
-#if defined(__USE_ALLOCA__)
-    char *buf = (char*)alloca(MAXCOL);
-    vchar *vbuf = (vchar*)alloca(MAXCOL*2);
-#else
-    __extension__ char buf[MAXCOL];
-    __extension__ vchar vbuf[MAXCOL*2];
-#endif
+    CREATEBUFFER(char, buf, MAXCOL);
+    CREATEBUFFER(vchar, vbuf, MAXCOL*2);
 
     if(AL[idx]->isseparator())
     {
@@ -512,7 +507,8 @@ void GPickArealist::print_line(uint idx, uint pos, bool isbar)
         if(AL[idx]->ismarked())
             wprintc(pos, marked_pos, isbar ? sattr : hattr, marked_char);
     }
-
+    FREEBUFFER(buf, MAXCOL);
+    FREEBUFFER(vbuf, MAXCOL*2);
 }
 
 
@@ -580,13 +576,8 @@ void GPickArealist::AreaDropMsgMarks(uint n)
     for(AL.item = AL.idx.begin(); AL.item != AL.idx.end(); AL.item++)
         nummarks += (*AL.item)->Mark.Count();
 
-#if defined(__USE_ALLOCA__)
-    char *buf = (char*)alloca(MAXCOL);
-    gsprintf(buf, MAXCOL, __FILE__, __LINE__, LNG->DropMarksInfo, longdotstr(nummarks));
-#else
-    __extension__ char buf[MAXCOL];
-    gsprintf(PRINTF_DECLARE_BUFFER(buf), LNG->DropMarksInfo, longdotstr(nummarks));    
-#endif
+    CREATEBUFFER(char, buf, MAXCOL);
+    gsprintf(PRINTF_DECLARE_BUFFER_AUTO(buf, MAXCOL), LNG->DropMarksInfo, longdotstr(nummarks));
 
     w_info(buf);
     int mode = MenuAreaDropMarks.Run();
@@ -606,6 +597,7 @@ void GPickArealist::AreaDropMsgMarks(uint n)
             }
         }
     }
+    FREEBUFFER(buf, MAXCOL);
 }
 
 
@@ -617,13 +609,9 @@ bool GPickArealist::handle_key()
     uint n;
     uint x;
     const char* adesc;
-#if defined(__USE_ALLOCA__)
-    char *buf = (char*)alloca(MAXCOL);
-    char *tmp = (char*)alloca(MAXCOL);
-#else
-    __extension__ char buf[MAXCOL];
-    __extension__ char tmp[MAXCOL];
-#endif
+
+    CREATEBUFFER(char, buf, MAXCOL);
+    CREATEBUFFER(char, tmp, MAXCOL);
 
     int mode, changed, currno;
 
@@ -661,6 +649,8 @@ bool GPickArealist::handle_key()
         if(gkbd.quitall)
         {
             precursor();
+            FREEBUFFER(tmp, MAXCOL);
+            FREEBUFFER(buf, MAXCOL);
             return false;
         }
     }
@@ -678,6 +668,8 @@ bool GPickArealist::handle_key()
             break;
         }
         precursor();
+        FREEBUFFER(tmp, MAXCOL);
+        FREEBUFFER(buf, MAXCOL);
         return false;
 
     case KK_AreaQuitNow:
@@ -1005,7 +997,8 @@ RedrawAreas:
         if(not PlayMacro(key, KT_A))
             SayBibi();
     }
-
+    FREEBUFFER(tmp, MAXCOL);
+    FREEBUFFER(buf, MAXCOL);
     return true;
 }
 

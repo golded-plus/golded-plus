@@ -222,11 +222,7 @@ void guserbase::do_delayed()
 void guserbase::print_line(uint idx, uint pos, bool isbar)
 {
 
-#if defined(__USE_ALLOCA__)
-    char *buf = (char*)alloca(MAXCOL);
-#else
-    __extension__ char buf[MAXCOL];
-#endif
+    CREATEBUFFER(char, buf, MAXCOL);
     const size_t buflen=MAXCOL;
     buf[buflen]='\0';
 //  char buf2[100];
@@ -264,22 +260,13 @@ void guserbase::print_line(uint idx, uint pos, bool isbar)
     }
 
 //  sprintf(buf, "%c %-*.*s %-*.*s %s ",
-
-#if defined(__USE_ALLOCA__)
-    gsprintf(buf, MAXCOL, __FILE__, __LINE__, "%c %-*.*s %-*.*s %s ",
-             entry.is_deleted ? 'D' : ' ',
-             cwidth, (int)cwidth, entry.name,
-             (cwidth*2)/3, (int)(cwidth*2)/3, entry.organisation,
-//    buf2);
-             useraddr.c_str() );
-#else
-    gsprintf(PRINTF_DECLARE_BUFFER(buf), "%c %-*.*s %-*.*s %s ",
+    gsprintf(PRINTF_DECLARE_BUFFER_AUTO(buf, MAXCOL), "%c %-*.*s %-*.*s %s ",
              entry.is_deleted ? 'D' : ' ',
              cwidth, (int)cwidth, entry.name,
              (cwidth*2)/3, (int)(cwidth*2)/3, entry.organisation,
              //    buf2);
-             useraddr.c_str() );   
-#endif
+             useraddr.c_str() );
+
 
 //  strsetsz(buf, xlen);
     /*  strsetsz(buf, buflen>xlen?xlen:buflen); */
@@ -287,6 +274,7 @@ void guserbase::print_line(uint idx, uint pos, bool isbar)
     std::string line_to_print(buf);
     line_to_print.resize(xlen,' ');
     window.prints(pos, 0, isbar ? sattr : wattr, line_to_print.c_str());
+    FREEBUFFER(buf, MAXCOL);
 }
 
 
