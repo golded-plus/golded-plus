@@ -264,7 +264,7 @@ void guserbase::print_line(uint idx, uint pos, bool isbar)
              entry.is_deleted ? 'D' : ' ',
              cwidth, (int)cwidth, entry.name,
              (cwidth*2)/3, (int)(cwidth*2)/3, entry.organisation,
-             //    buf2);
+//    buf2);
              useraddr.c_str() );
 
 
