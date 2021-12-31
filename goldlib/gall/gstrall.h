@@ -226,10 +226,8 @@ char* strcvtc(char* s);
 #define PRINTF_DECLARE_BUFFER_AUTO(b,size) b, size, __FILE__, __LINE__
 #if defined(__USE_ALLOCA__)
     #define CREATEBUFFER(type, name, size) type *name = (type*)alloca(size)
-    #define FREEBUFFER(name, size) free(name)
 #else
     #define CREATEBUFFER(type, name, size) __extension__ type name[size]
-    #define FREEBUFFER(name, size) memset(name, 0, size)
 #endif
 int gsprintf(TCHAR* buffer, size_t sizeOfBuffer, const TCHAR* __file, int __line, const TCHAR* format, ...);
 

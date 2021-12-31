@@ -434,7 +434,6 @@ void GMsgList::print_line(uint idx, uint pos, bool isbar)
     }
 
     goldmark = ml->goldmark;
-    FREEBUFFER(buf, MAXCOL);
 }
 
 
@@ -1090,7 +1089,6 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar)
 
         window.prints(pos, 8 + buflen, attr, buf);
     }
-    FREEBUFFER(buf, MAXCOL);
 }
 
 

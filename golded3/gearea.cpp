@@ -507,8 +507,6 @@ void GPickArealist::print_line(uint idx, uint pos, bool isbar)
         if(AL[idx]->ismarked())
             wprintc(pos, marked_pos, isbar ? sattr : hattr, marked_char);
     }
-    FREEBUFFER(buf, MAXCOL);
-    FREEBUFFER(vbuf, MAXCOL*2);
 }
 
 
@@ -597,7 +595,6 @@ void GPickArealist::AreaDropMsgMarks(uint n)
             }
         }
     }
-    FREEBUFFER(buf, MAXCOL);
 }
 
 
@@ -649,8 +646,6 @@ bool GPickArealist::handle_key()
         if(gkbd.quitall)
         {
             precursor();
-            FREEBUFFER(tmp, MAXCOL);
-            FREEBUFFER(buf, MAXCOL);
             return false;
         }
     }
@@ -668,8 +663,6 @@ bool GPickArealist::handle_key()
             break;
         }
         precursor();
-        FREEBUFFER(tmp, MAXCOL);
-        FREEBUFFER(buf, MAXCOL);
         return false;
 
     case KK_AreaQuitNow:
@@ -997,8 +990,6 @@ RedrawAreas:
         if(not PlayMacro(key, KT_A))
             SayBibi();
     }
-    FREEBUFFER(tmp, MAXCOL);
-    FREEBUFFER(buf, MAXCOL);
     return true;
 }
 

@@ -274,7 +274,6 @@ void guserbase::print_line(uint idx, uint pos, bool isbar)
     std::string line_to_print(buf);
     line_to_print.resize(xlen,' ');
     window.prints(pos, 0, isbar ? sattr : wattr, line_to_print.c_str());
-    FREEBUFFER(buf, MAXCOL);
 }
 
 
