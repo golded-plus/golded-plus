@@ -201,13 +201,16 @@ void gareafile::ReadHPTFile(char* path, char* file, char* origin, int group)
 
                 char* key;
                 char* val = ptr;
+                char* memory = NULL;
                 gettok(&key, &val);
                 switch (strCrc16(key))
                 {
                 case CRC_SET:
                     if (strchg(val, '[', '%') != 0)
                         strchg(val, ']', '%');
-                    putenv(val);
+                    memory = static_cast<char*>(malloc(strlen(val)));
+                    strcpy(memory, val);
+                    putenv(memory);
                     break;
 
                 case CRC_VERSION:
