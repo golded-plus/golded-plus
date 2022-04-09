@@ -671,7 +671,7 @@ int SMBCALL smb_getlastidx(smb_t* smb, idxrec_t *idx)
 /* Figures out the total length of the header record for 'msg'              */
 /* Returns length                                                           */
 /****************************************************************************/
-uint SMBCALL smb_getmsghdrlen(smbmsg_t* msg)
+uint32_t SMBCALL smb_getmsghdrlen(smbmsg_t* msg)
 {
     int i;
 
