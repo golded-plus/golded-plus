@@ -71,6 +71,7 @@ LIBEXT=.a
 #LIBEXT=.lib
 CXX=$(CC)
 CFLAGS+=-DHAVE_SNPRINTF -DHAVE_VSNPRINTF -DHAVE_STDARG_H
+LNKFLAGS+=-s
 else
 ifeq ($(PLATFORM),djg)
 CAT=command.com /c type
