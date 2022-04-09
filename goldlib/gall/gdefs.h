@@ -102,7 +102,7 @@
 #endif
 #ifdef _MSC_VER
     #include <windows.h>
-#elif defined(__MINGW32__) || defined(__CYGWIN__)
+#elif defined(__MINGW32__) || defined(__CYGWIN__) || defined(__DJGPP__)
     #include <stdint.h>
 #endif
 
@@ -210,7 +210,7 @@
     #endif
 #endif  /*#ifdef _MSC_VER */
 
-#if defined(__GNUC__) && !defined(__MINGW32__) && !defined(__CYGWIN__)
+#if defined(__GNUC__) && !defined(__MINGW32__) && !defined(__CYGWIN__) && !defined(__DJGPP__)
     typedef unsigned char  uint8_t;
     typedef unsigned short uint16_t;
     typedef unsigned int   uint32_t;

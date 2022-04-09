@@ -208,7 +208,7 @@ public:
         Fread(&i, sizeof(uint32_t));
         return *this;
     }
-#if !defined(__CYGWIN__)
+#if !defined(__CYGWIN__) && !defined(__DJGPP__)
     gfile& operator>> (unsigned long& i)
     {
         Fread(&i, sizeof(unsigned long));
@@ -220,7 +220,7 @@ public:
     {
         return operator>>((uint8_t&)i);
     }
-#if !defined(__SUNOS__)
+#if !defined(__SUNOS__) && !defined(__DJGPP__)
     gfile& operator>> (int8_t& i)
     {
         return operator>>((uint8_t&)i);
@@ -234,7 +234,7 @@ public:
     {
         return operator>>((uint32_t&)i);
     }
-#if !defined(__CYGWIN__)
+#if !defined(__CYGWIN__) && !defined(__DJGPP__)
     gfile& operator>> (long& i)
     {
         return operator>>((unsigned long&)i);
@@ -263,7 +263,7 @@ public:
         Fwrite(&o, sizeof(o));
         return *this;
     }
-#if !defined(__CYGWIN__)
+#if !defined(__CYGWIN__) && !defined(__DJGPP__)
     gfile& operator<< (unsigned long o)
     {
         Fwrite(&o, sizeof(o));
@@ -275,7 +275,7 @@ public:
     {
         return operator<<((uint8_t )o);
     }
-#if !defined(__SUNOS__)
+#if !defined(__SUNOS__) && !defined(__DJGPP__)
     gfile& operator<< (int8_t  o)
     {
         return operator<<((uint8_t )o);
@@ -289,7 +289,7 @@ public:
     {
         return operator<<((uint32_t)o);
     }
-#if !defined(__CYGWIN__)
+#if !defined(__CYGWIN__) && !defined(__DJGPP__)
     gfile& operator<< (long o)
     {
         return operator<<((unsigned long)o);
@@ -375,7 +375,7 @@ class gnfile: gfile
                                          return *this;
                                        }
     */
-#if !defined(__CYGWIN__)
+#if !defined(__CYGWIN__) && !defined(__DJGPP__)
     gnfile& operator>> (unsigned long& i)   // FreadItem(&i, sizeof(unsigned long)); return *this; }
     {
         switch(sizeof(unsigned long))
@@ -396,7 +396,7 @@ class gnfile: gfile
     {
         return operator>>((uint8_t&)i);
     }
-#if !defined(__SUNOS__)
+#if !defined(__SUNOS__) && !defined(__DJGPP__)
     gnfile& operator>> (int8_t& i)
     {
         return operator>>((uint8_t&)i);
@@ -410,7 +410,7 @@ class gnfile: gfile
     {
         return operator>>((uint32_t&)i);
     }
-#if !defined(__CYGWIN__)
+#if !defined(__CYGWIN__) && !defined(__DJGPP__)
     gnfile& operator>> (long& i)
     {
         return operator>>((unsigned long&)i);
@@ -457,7 +457,7 @@ class gnfile: gfile
                                          return *this;
                                        }
     */
-#if !defined(__CYGWIN__)
+#if !defined(__CYGWIN__) && !defined(__DJGPP__)
     gnfile& operator<< (unsigned long o)
     {
         switch (sizeof(o))
@@ -500,7 +500,7 @@ class gnfile: gfile
     {
         return operator<<((uint8_t )o);
     }
-#if !defined(__SUNOS__)
+#if !defined(__SUNOS__) && !defined(__DJGPP__)
     gnfile& operator<< (int8_t  o)
     {
         return operator<<((uint8_t )o);
@@ -514,7 +514,7 @@ class gnfile: gfile
     {
         return operator<<((uint32_t)o);
     }
-#if !defined(__CYGWIN__)
+#if !defined(__CYGWIN__) && !defined(__DJGPP__)
     gnfile& operator<< (long o)
     {
         return operator<<((unsigned long)o);
