@@ -29,7 +29,7 @@ bld$(PLATFORM).inc: $(TARGET).all
 
 $(FOBJPATH)/%$(OBJEXT): %.cpp
 	@echo building $(basename $<)$(OBJEXT)
-	$(CXX) -c -MD $(CPPFLAGS) -o $@ $<
+	@$(CXX) -c -MD $(CPPFLAGS) -o $@ $<
 	@$(SHELL) -c "[ -s $(patsubst %.cpp,%.d,$<) ] &&					\
 		echo -n $(FOBJPATH)/>$(FDEPPATH)/$(patsubst %.cpp,%.d,$<) &&		\
 		$(CAT) $(patsubst %.cpp,%.d,$<)>>$(FDEPPATH)/$(patsubst %.cpp,%.d,$<) &&\
@@ -37,7 +37,7 @@ $(FOBJPATH)/%$(OBJEXT): %.cpp
 
 $(FOBJPATH)/%$(OBJEXT): %.cxx
 	@echo building $(basename $<)$(OBJEXT)
-	$(CXX) -c -MD $(CPPFLAGS) -o $@ $<
+	@$(CXX) -c -MD $(CPPFLAGS) -o $@ $<
 	@$(SHELL) -c "[ -s $(patsubst %.cxx,%.d,$<) ] &&					\
 		echo -n $(FOBJPATH)/>$(FDEPPATH)/$(patsubst %.cxx,%.d,$<) &&		\
 		$(CAT) $(patsubst %.cxx,%.d,$<)>>$(FDEPPATH)/$(patsubst %.cxx,%.d,$<) &&\
@@ -45,7 +45,7 @@ $(FOBJPATH)/%$(OBJEXT): %.cxx
 
 $(FOBJPATH)/%$(OBJEXT): %.c
 	@echo building $(basename $<)$(OBJEXT)
-	$(CC) -c -MD $(CFLAGS) -o $@ $<
+	@$(CC) -c -MD $(CFLAGS) -o $@ $<
 	@$(SHELL) -c "[ -s $(patsubst %.c,%.d,$<) ] &&					\
 		echo -n $(FOBJPATH)/>$(FDEPPATH)/$(patsubst %.c,%.d,$<) &&		\
 		$(CAT) $(patsubst %.c,%.d,$<)>>$(FDEPPATH)/$(patsubst %.c,%.d,$<) &&	\
