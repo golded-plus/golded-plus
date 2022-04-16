@@ -222,8 +222,8 @@ void guserbase::do_delayed()
 void guserbase::print_line(uint idx, uint pos, bool isbar)
 {
 
-    char buf[200];
-    const size_t buflen=199;
+    CREATEBUFFER(char, buf, MAXCOL);
+    const size_t buflen=MAXCOL;
     buf[buflen]='\0';
 //  char buf2[100];
 //  const size_t buf2len=199;
@@ -260,12 +260,13 @@ void guserbase::print_line(uint idx, uint pos, bool isbar)
     }
 
 //  sprintf(buf, "%c %-*.*s %-*.*s %s ",
-    gsprintf(PRINTF_DECLARE_BUFFER(buf), "%c %-*.*s %-*.*s %s ",
+    gsprintf(PRINTF_DECLARE_BUFFER_AUTO(buf, MAXCOL), "%c %-*.*s %-*.*s %s ",
              entry.is_deleted ? 'D' : ' ',
              cwidth, (int)cwidth, entry.name,
              (cwidth*2)/3, (int)(cwidth*2)/3, entry.organisation,
 //    buf2);
              useraddr.c_str() );
+
 
 //  strsetsz(buf, xlen);
     /*  strsetsz(buf, buflen>xlen?xlen:buflen); */

@@ -118,7 +118,7 @@ Line* _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::make_dump_msg
                 );
     }
     line = AddLine(line, "");
-    AddLineF(line, lng_head);
+    AddLine(line, lng_head);
     line = AddLine(line, "");
 
     int _count = 0;

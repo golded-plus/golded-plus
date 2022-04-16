@@ -473,9 +473,8 @@ void GPickArealist::precursor()
 
 void GPickArealist::print_line(uint idx, uint pos, bool isbar)
 {
-
-    vchar vbuf[256];
-    char buf[256];
+    CREATEBUFFER(char, buf, MAXCOL);
+    CREATEBUFFER(vchar, vbuf, MAXCOL*2);
 
     if(AL[idx]->isseparator())
     {
@@ -508,7 +507,6 @@ void GPickArealist::print_line(uint idx, uint pos, bool isbar)
         if(AL[idx]->ismarked())
             wprintc(pos, marked_pos, isbar ? sattr : hattr, marked_char);
     }
-
 }
 
 
@@ -576,8 +574,8 @@ void GPickArealist::AreaDropMsgMarks(uint n)
     for(AL.item = AL.idx.begin(); AL.item != AL.idx.end(); AL.item++)
         nummarks += (*AL.item)->Mark.Count();
 
-    char buf[256];
-    gsprintf(PRINTF_DECLARE_BUFFER(buf), LNG->DropMarksInfo, longdotstr(nummarks));
+    CREATEBUFFER(char, buf, MAXCOL);
+    gsprintf(PRINTF_DECLARE_BUFFER_AUTO(buf, MAXCOL), LNG->DropMarksInfo, longdotstr(nummarks));
 
     w_info(buf);
     int mode = MenuAreaDropMarks.Run();
@@ -608,7 +606,9 @@ bool GPickArealist::handle_key()
     uint n;
     uint x;
     const char* adesc;
-    char buf[256], tmp[256];
+
+    CREATEBUFFER(char, buf, MAXCOL);
+    CREATEBUFFER(char, tmp, MAXCOL);
 
     int mode, changed, currno;
 
@@ -990,7 +990,6 @@ RedrawAreas:
         if(not PlayMacro(key, KT_A))
             SayBibi();
     }
-
     return true;
 }
 

@@ -368,7 +368,7 @@ void GMsgList::print_line(uint idx, uint pos, bool isbar)
         mattr_ = hattr;
     }
 
-    char buf[256];
+    CREATEBUFFER(char, buf, MAXCOL);
 
     if(AA->Msglistwidesubj())
     {
@@ -406,14 +406,14 @@ void GMsgList::print_line(uint idx, uint pos, bool isbar)
         *dbuf = NUL;
 
     gsprintf(PRINTF_DECLARE_BUFFER(nbuf), "%5u", (CFG->switches.get(disprealmsgno) ? ml->msgno : AA->Msgn.ToReln(ml->msgno)));
-    gsprintf(PRINTF_DECLARE_BUFFER(buf), "%-5.5s%s%-*.*s %-*.*s%s%-*.*s %s",
+    gsprintf(PRINTF_DECLARE_BUFFER_AUTO(buf, MAXCOL), "%-5.5s%s%-*.*s %-*.*s%s%-*.*s %s",
              nbuf, ml->marks,
              bysiz, bysiz, ml->by,
              tosiz, tosiz, ml->to,
              (tosiz ? " " : ""),
              resiz, resiz, ml->re,
              dbuf
-            );
+    );    
 
     window.prints(pos, 0, wattr_, buf);
 
@@ -950,7 +950,7 @@ void GThreadlist::GenTree(int idx)
 
 void GThreadlist::print_line(uint idx, uint pos, bool isbar)
 {
-    char buf[256];
+    CREATEBUFFER(char, buf, MAXCOL);
     ThreadEntry &t = treeEntryList[idx];
     size_t tdlen = xlen - ((AA->Msglistdate() == MSGLISTDATE_NONE) ? 8 : 18);
 
@@ -990,8 +990,7 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar)
         if(AA->Mark.Find(t.msgno))
             marks[1] = MMRK_MARK;
     }
-
-    gsprintf(PRINTF_DECLARE_BUFFER(buf), "%6u  %*c", (CFG->switches.get(disprealmsgno) ? t.msgno : AA->Msgn.ToReln(t.msgno)), tdlen, ' ');
+    gsprintf(PRINTF_DECLARE_BUFFER_AUTO(buf, MAXCOL), "%6u  %*c", (CFG->switches.get(disprealmsgno) ? t.msgno : AA->Msgn.ToReln(t.msgno)), tdlen, ' ');
 
     if(AA->Msglistdate() != MSGLISTDATE_NONE)
     {

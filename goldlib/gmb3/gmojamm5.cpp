@@ -182,7 +182,7 @@ Line* JamArea::make_dump_msg(Line*& lin, gmsg* __msg, char* lng_head)
     throw_free(_subfield);
 
     line = AddLine(line, "");
-    AddLineF(line, lng_head);
+    AddLine(line, lng_head);
     line = AddLine(line, "");
 
     AddHexdump(line, _hdr, sizeof(JamHdr));

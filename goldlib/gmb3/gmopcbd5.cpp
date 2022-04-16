@@ -158,7 +158,7 @@ Line* PcbArea::make_dump_msg(Line*& lin, gmsg* __msg, char* lng_head)
         AddLineF(line, "Board %4u : %10u / %08Xh", n, dumplr[n], dumplr[n]);
 
     line = AddLine(line, "");
-    AddLineF(line, lng_head);
+    AddLine(line, lng_head);
     line = AddLine(line, "");
 
     char _buf[256];
