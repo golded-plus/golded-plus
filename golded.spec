@@ -23,7 +23,7 @@ Version: 1.1.5.%{reldate}%{reltype}
 Release: %{vendor_prefix}%relnum%{vendor_suffix}
 Group: Applications/FTN
 Summary: GoldEd - the FTN editor
-URL: http://golded-plus.sf.net
+URL: https://github.com/golded-plus/
 License: GPL
 Source: %{name}.tar.gz
 #Patch0: golded-vendor.diff

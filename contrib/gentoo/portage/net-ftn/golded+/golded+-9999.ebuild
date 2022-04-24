@@ -12,7 +12,7 @@ inherit cvs
 
 DESCRIPTION="FTN Editor ${PN}"
 SRC_URI=""
-HOMEPAGE="http://golded-plus.sourceforge.net"
+HOMEPAGE="https://github.com/golded-plus/"
 
 LICENSE="LGPL-2"
 SLOT="0"

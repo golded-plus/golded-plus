@@ -3,7 +3,7 @@ Section: mail
 Priority: optional
 Maintainer: Stas Degteff <stas_degteff@users.sourceforge.net>
 Uploaders: RJ Clay <jame@users.sourceforge.net>
-Homepage: http://golded-plus.sourceforge.net
+Homepage: https://github.com/golded-plus/
 Build-Depends: debhelper (>= 7.0.50), libncurses5-dev
 Standards-Version: 3.9.1
 Vcs-Browser: http://golded-plus.cvs.sourceforge.net/golded-plus

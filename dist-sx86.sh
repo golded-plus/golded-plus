@@ -37,7 +37,7 @@ printf 'using GNU C/C++ %13.13s\r\n' "$compilerver" >>${dizfile}
 printf 'This is  unstable release and\r\n' >>${dizfile}
 printf 'it should be used for testing\r\n' >>${dizfile}
 printf -- '-----------------------------\r\n' >>${dizfile}
-printf ' *http://golded-plus.sf.net* \r\n' >>${dizfile}
+printf 'https://github.com/golded-plus/\r\n' >>${dizfile}
 
 # make binaries
 
@@ -76,8 +76,8 @@ echo 'CLASSES="none"' >> $pkgdir/pkginfo
 echo 'VERSION="1.1.5"' >> $pkgdir/pkginfo
 echo 'BASEDIR="/opt/csw"' >> $pkgdir/pkginfo
 echo "EMAIL=\"$email\"" >> $pkgdir/pkginfo
-echo "VENDOR=\"http://golded-plus.sourceforge.net/ packaged by $vendor\"" >> $pkgdir/pkginfo
-echo 'HOTLINE="http://golded-plus.sourceforge.net"' >> $pkgdir/pkginfo
+echo "VENDOR=\"https://github.com/golded-plus/ packaged by $vendor\"" >> $pkgdir/pkginfo
+echo 'HOTLINE="https://github.com/golded-plus/"' >> $pkgdir/pkginfo
 echo 'MAXINST="1"' >> $pkgdir/pkginfo
 cd $pkgdir
 pkgmk -o -d . -f ./Prototype -r ../..

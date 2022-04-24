@@ -8,7 +8,7 @@
 PORTNAME=	golded
 PORTVERSION=	1.1.5.1.$(PORTSNAPSHOT)
 CATEGORIES=	ftn
-MASTER_SITES=	http://golded-plus.sourceforge.net
+MASTER_SITES=	https://github.com/golded-plus/
 DISTNAME=	gps$(PORTSNAPSHOT)
 
 MAINTAINER=	alex@tycobka.lv

@@ -42,7 +42,7 @@ printf 'MinGW GNU C/C++ %13.13s\r\n' "$compilerver" >>${dizfile}
 printf 'This is  unstable release and\r\n' >>${dizfile}
 printf 'it should be used for testing\r\n' >>${dizfile}
 printf -- '-----------------------------\r\n' >>${dizfile}
-printf ' *http://golded-plus.sf.net* \r\n' >>${dizfile}
+printf 'https://github.com/golded-plus/\r\n' >>${dizfile}
 
 for f in ${bines}; do rm $f; done
 make clean all strip docs || (echo "Error $?" ; exit)
