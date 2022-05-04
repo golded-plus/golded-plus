@@ -39,6 +39,9 @@
 #if defined(HAVE_STDARG_H)
     #include <stdarg.h>
 #endif
+#if defined(__USE_ALLOCA__)
+    #include <malloc.h>
+#endif
 
 #include <gctype.h>
 #include <gdefs.h>
