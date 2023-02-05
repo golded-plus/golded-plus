@@ -536,7 +536,7 @@ void Uninitialize()
 {
     if (WideUsername)
     {
-        delete WideUsername;
+        delete[] WideUsername;
         WideUsername = NULL;
     }
     LookupNodeClear();
