@@ -223,25 +223,16 @@ void guserbase::print_line(uint idx, uint pos, bool isbar)
 {
 
     CREATEBUFFER(char, buf, MAXCOL);
-    const size_t buflen=MAXCOL;
-    buf[buflen]='\0';
-//  char buf2[100];
-//  const size_t buf2len=199;
-//  buf2[buf2len]='\0';
+    const size_t buflen = MAXCOL;
+    buf[buflen - 1] = '\0';
 
     read_entry(idx);
-
-//  *buf2 = NUL;
 
     std::string useraddr;
     if(AA->isinternet() or not entry.fidoaddr.valid())
     {
         if(*entry.iaddr)
         {
-//      strcat(buf2, "<");
-//      strcat(buf2, entry.iaddr);
-//      strcat(buf2, ">");
-            /*      gsprintf(PRINTF_DECLARE_BUFFER(buf2), "<%s>", entry.iaddr); */
             ((useraddr = "<") + entry.iaddr) + ">";
         }
     }
@@ -249,9 +240,6 @@ void guserbase::print_line(uint idx, uint pos, bool isbar)
     {
         if(entry.fidoaddr.valid())
         {
-//      *buf2 = '(';
-//      entry.fidoaddr.make_string(buf2+1);
-//      strcat(buf2, ")");
             entry.fidoaddr.make_string(useraddr);
             useraddr.insert(useraddr.begin(),'(');
             useraddr.append(")");
@@ -259,18 +247,13 @@ void guserbase::print_line(uint idx, uint pos, bool isbar)
         }
     }
 
-//  sprintf(buf, "%c %-*.*s %-*.*s %s ",
     gsprintf(PRINTF_DECLARE_BUFFER_AUTO(buf, MAXCOL), "%c %-*.*s %-*.*s %s ",
              entry.is_deleted ? 'D' : ' ',
              cwidth, (int)cwidth, entry.name,
              (cwidth*2)/3, (int)(cwidth*2)/3, entry.organisation,
-//    buf2);
              useraddr.c_str() );
 
 
-//  strsetsz(buf, xlen);
-    /*  strsetsz(buf, buflen>xlen?xlen:buflen); */
-//  window.prints(pos, 0, isbar ? sattr : wattr, buf);
     std::string line_to_print(buf);
     line_to_print.resize(xlen,' ');
     window.prints(pos, 0, isbar ? sattr : wattr, line_to_print.c_str());
