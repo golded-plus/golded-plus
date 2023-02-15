@@ -389,6 +389,7 @@ static void MakeMsg3(int& mode, GMsg* msg)
             A->SaveMsg(GMSG_NEW|GMSG_NOLSTUPD, msg);
             A->Close();
             AA->Open();
+            AA->RandomizeData(mode);
             if(back)
                 memmove(msg->txt, back, mlen);
             msg->msgno = oldmsgno;
