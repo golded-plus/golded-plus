@@ -294,8 +294,9 @@ void gareafile::ReadHPTFile(char* path, char* file, char* origin, int group)
 
                         gettok(&key, &val);
 
-                        for (;;)
+                        while (*key)
                         {
+
                             if (*key == '-')
                             {
                                 char *opt = key + 1;
@@ -305,6 +306,18 @@ void gareafile::ReadHPTFile(char* path, char* file, char* origin, int group)
                                     gettok(&key, &val);
                                     CfgAddress(key);
                                     aa.aka.set(key);
+                                }
+                                else if (strieql(opt, "b"))
+                                {
+                                    gettok(&key, &val);
+                                    if (strieql(key, "Squish")) aa.basetype = "SQUISH";
+                                    else if (strieql(key, "Jam")) aa.basetype = "JAM";
+                                    else if (strieql(key, "MSG")) aa.basetype = fidomsgtype;
+                                    else
+                                    {
+                                        aa.basetype = GMB_NONE;
+                                        break;
+                                    }
                                 }
                                 else if (strieql(opt, "g"))
                                 {
@@ -325,34 +338,6 @@ void gareafile::ReadHPTFile(char* path, char* file, char* origin, int group)
                                     aa.type = GMB_NONE;
                                     break;
                                 }
-                                else if (strieql(opt, "p") or strieql(opt, "$m")
-                                         or strieql(opt, "lr") or strieql(opt, "lw")
-                                         or strieql(opt, "dupeCheck") or strieql(opt, "dupehistory")
-                                         or strieql(opt, "r") or strieql(opt, "w")
-                                         or strieql(opt, "l") or strieql(opt, "fperm")
-                                         or strieql(opt, "fowner") or strnieql(opt, "sbadd(", 6)
-                                         or strnieql(opt, "sbign(", 6))
-                                {
-                                    gettok(&key, &val);
-                                }
-                                //else if(strieql(opt, "h") or strieql(opt, "manual")
-                                //        or strieql(opt, "nopause") or strieql(opt, "mandatory")
-                                //        or strieql(opt, "dosfile") or strieql(opt, "ccoff")
-                                //        or strieql(opt, "b") or strieql(opt, "tinysb")
-                                //        or strieql(opt, "killsb") or strieql(opt, "keepunread")
-                                //        or strieql(opt, "killread") or strieql(opt, "h")
-                                //        or strieql(opt, "nolink") or strieql(opt, "debug")
-                                //        or strieql(opt, "nopack") or strieql(opt, "keepsb")
-                                //        or strieql(opt, "$") or strieql(opt, "0"))
-                                //{
-                                //}
-                            }
-                            else if (strieql(key, "Squish")) aa.basetype = "SQUISH";
-                            else if (strieql(key, "Jam"   )) aa.basetype = "JAM";
-                            else if (strieql(key, "MSG"   )) aa.basetype = fidomsgtype;
-                            else
-                            {
-                                break;
                             }
 
                             gettok(&key, &val);
