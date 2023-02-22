@@ -4,174 +4,168 @@
 
 ifndef PLATFORM
 
-ifeq ($(TERM),cygwin)
-MINGW=true
-PLATFORM=cyg
-else
-ifeq ($(OSTYPE),msys)
-MINGW=true
-PLATFORM=cyg
-endif
-endif
+    ifeq ($(TERM),cygwin)
+        MINGW=true
+        PLATFORM=cyg
+    else
+        ifeq ($(OSTYPE),msys)
+            MINGW=true
+            PLATFORM=cyg
+        endif
+    endif
 
-ifeq ($(findstring EMX, $(PATH)), EMX)
-PLATFORM=emx
-endif
+    ifeq ($(findstring EMX, $(PATH)), EMX)
+        PLATFORM=emx
+    endif
 
-ifneq ($(DJGPP),)     # DJGPP build (enviroment variable 'DJGPP' is defined)
-PLATFORM=djg
-endif
+    ifneq ($(DJGPP),)     # DJGPP build (enviroment variable 'DJGPP' is defined)
+        PLATFORM=djg
+    endif
 
-ifeq ($(OSTYPE),beos) # BeOS build
-PLATFORM=be
-endif
+    ifeq ($(OSTYPE),beos) # BeOS build
+        PLATFORM=be
+    endif
 
-ifeq ($(findstring solaris, $(OSTYPE)), solaris)
-PLATFORM=sun
-endif
+    ifeq ($(findstring solaris, $(OSTYPE)), solaris)
+        PLATFORM=sun
+    endif
 
-ifeq ($(findstring darwin, $(OSTYPE)), darwin)
-PLATFORM=osx
-endif
+    ifeq ($(findstring darwin, $(OSTYPE)), darwin)
+        PLATFORM=osx
+    endif
 
 endif  # ifndef PLATFORM
 
 ifeq ($(PLATFORM),cyg)
-CAT=cat
-SED=sed
-GREP=grep
-CC=gcc -mno-cygwin
-CXX=g++ -mno-cygwin
-AR=ar
-RANLIB=ranlib
-WINDRES=windres
-EXEEXT=.exe
-OBJEXT=.o
-LIBEXT=.a
-CFLAGS+=-DHAVE_SNPRINTF -DHAVE_VSNPRINTF -DHAVE_STDARG_H
-else
-ifeq ($(PLATFORM),emx)
-CAT=cat
-SED=sed
-GREP=grep
-CC=gcc
-AR=ar
-RANLIB=ar s
-SHELL=bash
-EXEEXT=.exe
-OBJEXT=.o
-LIBEXT=.a
-#CC=gcc -Zomf
-#AR=emxomfar
-#RANLIB=emxomfar s
-#PLATFORM=emx
-#SHELL=bash
-#EXEEXT=.exe
-#OBJEXT=.obj
-#LIBEXT=.lib
-CXX=$(CC)
-CFLAGS+=-DHAVE_SNPRINTF -DHAVE_VSNPRINTF -DHAVE_STDARG_H
-LNKFLAGS+=-s
-else
-ifeq ($(PLATFORM),djg)
-CAT=command.com /c type
-SED=sed
-GREP=grep
-CC=gcc
-CXX=gxx
-AR=ar
-RANLIB=ranlib
-SHELL=sh
-EXEEXT=.exe
-OBJEXT=.o
-LIBEXT=.a
-CFLAGS+=-DHAVE_SNPRINTF -DHAVE_VSNPRINTF -DHAVE_STDARG_H
-else
-ifeq ($(PLATFORM),be)
-CAT=cat
-SED=sed
-GREP=grep
-CC=gcc
-CXX=g++
-AR=ar
-RANLIB=ranlib
-EXEEXT=
-OBJEXT=.o
-LIBEXT=.a
-LNKFLAGS+=-lbe -ltextencoding
-CFLAGS+=-DHAVE_SNPRINTF -DHAVE_VSNPRINTF -DHAVE_STDARG_H
-else
-ifeq ($(PLATFORM),sun) # SUN Solaris
-CAT=cat
-SED=gsed
-GREP=ggrep
-CC=gcc
-CXX=g++
-AR=ar
-RANLIB=ranlib
-EXEEXT=
-OBJEXT=.o
-LIBEXT=.a
-CFLAGS+=-D__SUNOS__ -D__UNIX__ -DUNIX
-CFLAGS+=-DHAVE_SNPRINTF -DHAVE_VSNPRINTF -DHAVE_STDARG_H
-ifeq ($(WIDE_NCURSES),1)
-LIBCURSES=-L/opt/csw/lib -lncursesw
-else
-LIBCURSES=-L/opt/csw/lib -lncurses
-endif
-else
-ifeq ($(PLATFORM),osx) # Mac OSX
-CAT=cat
-SED=sed
-GREP=grep
-ifndef CC
-CC=gcc
-endif
-ifndef CXX
-CXX=g++
-endif
-AR=ar
-RANLIB=ranlib
-PLATFORM=osx
-EXEEXT=
-OBJEXT=.o
-LIBEXT=.a
-ifeq ($(WIDE_NCURSES),1)
-LIBCURSES=-lncursesw
-else
-LIBCURSES=-lncurses
-endif
-CFLAGS+=-DHAVE_SNPRINTF -DHAVE_VSNPRINTF -DHAVE_STDARG_H
+    CAT=cat
+    SED=sed
+    GREP=grep
+    CC=gcc -mno-cygwin
+    CXX=g++ -mno-cygwin
+    AR=ar
+    RANLIB=ranlib
+    WINDRES=windres
+    EXEEXT=.exe
+    OBJEXT=.o
+    LIBEXT=.a
+    CFLAGS+=-DHAVE_SNPRINTF -DHAVE_VSNPRINTF -DHAVE_STDARG_H
+else ifeq ($(PLATFORM),emx)
+    CAT=cat
+    SED=sed
+    GREP=grep
+    CC=gcc
+    AR=ar
+    RANLIB=ar s
+    SHELL=bash
+    EXEEXT=.exe
+    OBJEXT=.o
+    LIBEXT=.a
+    #CC=gcc -Zomf
+    #AR=emxomfar
+    #RANLIB=emxomfar s
+    #PLATFORM=emx
+    #SHELL=bash
+    #EXEEXT=.exe
+    #OBJEXT=.obj
+    #LIBEXT=.lib
+    CXX=$(CC)
+    CFLAGS+=-DHAVE_SNPRINTF -DHAVE_VSNPRINTF -DHAVE_STDARG_H
+    LNKFLAGS+=-s
+else ifeq ($(PLATFORM),djg)
+    CAT=command.com /c type
+    SED=sed
+    GREP=grep
+    CC=gcc
+    CXX=gxx
+    AR=ar
+    RANLIB=ranlib
+    SHELL=sh
+    EXEEXT=.exe
+    OBJEXT=.o
+    LIBEXT=.a
+    CFLAGS+=-DHAVE_SNPRINTF -DHAVE_VSNPRINTF -DHAVE_STDARG_H
+else ifeq ($(PLATFORM),be)
+    CAT=cat
+    SED=sed
+    GREP=grep
+    CC=gcc
+    CXX=g++
+    AR=ar
+    RANLIB=ranlib
+    EXEEXT=
+    OBJEXT=.o
+    LIBEXT=.a
+    LNKFLAGS+=-lbe -ltextencoding
+    CFLAGS+=-DHAVE_SNPRINTF -DHAVE_VSNPRINTF -DHAVE_STDARG_H
+else ifeq ($(PLATFORM),sun) # SUN Solaris
+    CAT=cat
+    SED=gsed
+    GREP=ggrep
+    CC=gcc
+    CXX=g++
+    AR=ar
+    RANLIB=ranlib
+    EXEEXT=
+    OBJEXT=.o
+    LIBEXT=.a
+    CFLAGS+=-D__SUNOS__ -D__UNIX__ -DUNIX
+    CFLAGS+=-DHAVE_SNPRINTF -DHAVE_VSNPRINTF -DHAVE_STDARG_H
+    ifeq ($(WIDE_NCURSES),1)
+        LIBCURSES=-L/opt/csw/lib -lncursesw
+    else
+        LIBCURSES=-L/opt/csw/lib -lncurses
+    endif
+else ifeq ($(PLATFORM),osx) # Mac OSX
+    CAT=cat
+    SED=sed
+    GREP=grep
+    ifndef CC
+        CC=gcc
+    endif
+    ifndef CXX
+        CXX=g++
+    endif
+    AR=ar
+    RANLIB=ranlib
+    PLATFORM=osx
+    EXEEXT=
+    OBJEXT=.o
+    LIBEXT=.a
+    ifeq ($(WIDE_NCURSES),1)
+        LIBCURSES=-lncursesw
+    else
+        LIBCURSES=-lncurses
+    endif
+    CFLAGS+=-DHAVE_SNPRINTF -DHAVE_VSNPRINTF -DHAVE_STDARG_H
 else                   # Linux, *BSD or another unix-like OS
-CAT=cat
-SED=sed
-GREP=grep
-ifndef CC
-CC=gcc
+    CAT=cat
+    SED=sed
+    GREP=grep
+    ifndef CC
+        CC=gcc
+    endif
+    ifndef CXX
+        CXX=g++
+    endif
+    AR=ar
+    RANLIB=ranlib
+    PLATFORM=lnx
+    EXEEXT=
+    OBJEXT=.o
+    LIBEXT=.a
+    CFLAGS+=-DHAVE_SNPRINTF -DHAVE_VSNPRINTF -DHAVE_STDARG_H
+    ifeq ($(WIDE_NCURSES),1)
+        CFLAGS+=-I/usr/include/ncursesw/
+        LIBCURSES=-lncursesw
+    else
+        LIBCURSES=-lncurses
+    endif
 endif
-ifndef CXX
-CXX=g++
-endif
-AR=ar
-RANLIB=ranlib
-PLATFORM=lnx
-EXEEXT=
-OBJEXT=.o
-LIBEXT=.a
-CFLAGS+=-DHAVE_SNPRINTF -DHAVE_VSNPRINTF -DHAVE_STDARG_H
-ifeq ($(WIDE_NCURSES),1)
-CFLAGS+=-I/usr/include/ncursesw/
-LIBCURSES=-lncursesw
+ifeq ($(DEBUG),1)
+    CFLAGS+=-funsigned-char -g -Og $(INCS) -Wall -Wno-long-long -Wno-sign-compare -pedantic -DPRAGMA_PACK # -fomit-frame-pointer
 else
-LIBCURSES=-lncurses
+    CFLAGS+=-funsigned-char -g -O2 $(INCS) -Wall -Wno-long-long -Wno-sign-compare -pedantic -DPRAGMA_PACK # -fomit-frame-pointer
 endif
-endif
-endif
-endif
-endif
-endif
-endif
-CFLAGS+=-funsigned-char -g $(INCS) -Wall -Wno-long-long -Wno-sign-compare -pedantic -O2 -DPRAGMA_PACK # -fomit-frame-pointer
 LNKFLAGS+=-g
 CPPFLAGS+=$(CFLAGS)
 
@@ -183,53 +177,53 @@ USE_NCURSES?=1
 BUGGY_NCURSES?=0
 
 ifeq ($(PLATFORM),lnx)
-ifeq ($(USE_NCURSES),1)
-CPPFLAGS+=-D__USE_NCURSES__
-ifeq ($(BUGGY_NCURSES),1)
-CPPFLAGS+=-DBUGGY_NCURSES
-endif
-endif
+    ifeq ($(USE_NCURSES),1)
+        CPPFLAGS+=-D__USE_NCURSES__
+        ifeq ($(BUGGY_NCURSES),1)
+            CPPFLAGS+=-DBUGGY_NCURSES
+        endif
+    endif
 endif
 
 ifeq ($(PLATFORM),sun)
-ifeq ($(USE_NCURSES),1)
-CPPFLAGS+=-D__USE_NCURSES__
-endif
+    ifeq ($(USE_NCURSES),1)
+        CPPFLAGS+=-D__USE_NCURSES__
+    endif
 endif
 
 ifeq ($(PLATFORM),osx)
-ifeq ($(USE_NCURSES),1)
-CPPFLAGS+=-D__USE_NCURSES__
-endif
+    ifeq ($(USE_NCURSES),1)
+        CPPFLAGS+=-D__USE_NCURSES__
+    endif
 endif
 
 # uncomment the next line for better koi-8 support. do not do it for
 # international builds since latin-1 support will be broken.
 ifeq ($(PLATFORM),lnx)
-ifeq ($(KOI8),1)
-CPPFLAGS+=-DKOI8
-endif
+    ifeq ($(KOI8),1)
+        CPPFLAGS+=-DKOI8
+    endif
 endif
 ifeq "$(ICONV)" "1"
-CFLAGS+=-DHAS_ICONV
+    CFLAGS+=-DHAS_ICONV
 endif
 
 #uncomment the following line if you build version to be used
 #on BONE-powered systems(Dan0 etc.) This improves some operations ...
 ifeq ($(PLATFORM),be)
-CPPFLAGS+=#-DBEOS_BONE_BUILD
+    CPPFLAGS+=#-DBEOS_BONE_BUILD
 endif
 
 # force not to use coprocessor features in DOS, if you have one you may remove this
 ifeq ($(PLATFORM),djg)
-#CFLAGS+=-mcpu=i386  # GCC v2.x.x
-CFLAGS+=-march=i386 #-mtune=i686 # GCC v3.x.x
-STDLIBS+=-llocal
+    #CFLAGS+=-mcpu=i386  # GCC v2.x.x
+    CFLAGS+=-march=i386 #-mtune=i686 # GCC v3.x.x
+    STDLIBS+=-llocal
 endif
 
 # force not to use coprocessor features in DOS, if you have one you may remove this
 ifeq ($(PLATFORM),djg)
-#STDLIBS+= -lwmemu
+    #STDLIBS+= -lwmemu
 endif
 
 BIN=bin
