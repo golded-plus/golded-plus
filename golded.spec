@@ -2,7 +2,7 @@
 %define reltype C
 # may be one of: C (current), R (release), S (stable)
 
-%global relnum 2
+%global relnum 3
 
 # for generic build; it will be overriden for some distributions
 %global vendor_prefix %nil
@@ -72,17 +72,12 @@ __MYGOLDED_H_EOF__
 %make_build DEBUG=1
 
 %install
-rm -rf %{buildroot}
 mkdir -p %{buildroot}%{_bindir} \
 	%{buildroot}%{_prefix}/share/man/man1 \
 	%{buildroot}%{_prefix}/share/golded/charset
-#rm -rf bin/CVS
 install -m 755 bin/* %{buildroot}%{_bindir}
 install -m 644 docs/*.1 %{buildroot}%{_prefix}/share/man/man1
 install -m 644 cfgs/charset/*{chs,esc} %{buildroot}%{_prefix}/share/golded/charset
-
-%clean
-rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
