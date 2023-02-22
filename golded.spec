@@ -69,8 +69,7 @@ __GVER__(1,1,5)
 __MYGOLDED_H_EOF__
 
 %build
-make
-make strip
+%make_build DEBUG=1
 
 %install
 rm -rf %{buildroot}
