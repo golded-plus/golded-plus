@@ -29,6 +29,8 @@ Source: %{name}.tar.gz
 #Patch0: golded-vendor.diff
 Provides: golded
 Requires: ncurses >= 5.4
+BuildRequires: make
+BuildRequires: gcc-c++
 BuildRequires: ncurses-devel >= 5.4
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 
