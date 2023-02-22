@@ -32,11 +32,6 @@
 
 
 //  ------------------------------------------------------------------
-
-typedef char ListStr[160];
-
-
-//  ------------------------------------------------------------------
 //  Static data for the browser and associated functions
 
 static ftn_nodelist_index_base* NLP = NULL;
@@ -72,7 +67,7 @@ public:
     int  listwrap;                     // True if wrap-around is supported
 
     ftn_nodelist_entry*  entries;
-    ListStr* liststr;
+    std::vector<std::string> liststr;
     gwindow nodewin;
     gwindow listwin;
     char     user_maybe[45];
@@ -132,7 +127,6 @@ NodelistBrowser::NodelistBrowser()
 NodelistBrowser::~NodelistBrowser()
 {
 
-    throw_release(liststr);
     throw_release(entries);
 }
 
@@ -149,7 +143,7 @@ void NodelistBrowser::Open()
     listwin.openxy(ypos+2, xpos, ylen-2, xlen, btype, battr, wattr, sbattr);
 
     entries = (ftn_nodelist_entry*)throw_calloc(maxpos, sizeof(ftn_nodelist_entry));
-    liststr = (ListStr*)throw_calloc(maxpos, sizeof(ListStr));
+    liststr.resize(maxpos);
 
     InitDisplay();
 }
@@ -178,32 +172,33 @@ void NodelistBrowser::BeforeCursor()
 
 void NodelistBrowser::AfterCursor()
 {
-
-    char buf[200], line1[200], line2[200];
+    CREATEBUFFER(char, buf, MAXCOL);
+    CREATEBUFFER(char, line1, MAXCOL);
+    CREATEBUFFER(char, line2, MAXCOL);
 
     ftn_nodelist_entry* entryp = entries + (pos - 1);
 
-    gsprintf(PRINTF_DECLARE_BUFFER(line1), " %s%s%s%s%s%s ",
+    gsprintf(PRINTF_DECLARE_BUFFER_AUTO(line1, MAXCOL), " %s%s%s%s%s%s ",
              entryp->name,
              (*entryp->system ? ", " : ""), entryp->system,
              (*entryp->status ? " <" : ""), entryp->status,
              (*entryp->status ? ">" : "")
             );
-    gsprintf(PRINTF_DECLARE_BUFFER(buf), "%s %s", LNG->Phone, *entryp->phone ? entryp->phone : "-Unpublished-");
-    strrjust(strsetsz(buf, MAXCOL-strlen(line1)-1));
+    gsprintf(PRINTF_DECLARE_BUFFER_AUTO(buf, MAXCOL), "%s %s", LNG->Phone, *entryp->phone ? entryp->phone : "-Unpublished-");
+    strrjust(strsetsz(buf, MAXCOL-strlen(line1)-2));
     strcat(line1, buf);
     strcat(line1, " ");
 
-    gsprintf(PRINTF_DECLARE_BUFFER(line2), " %s%s%s",
+    gsprintf(PRINTF_DECLARE_BUFFER_AUTO(line2, MAXCOL), " %s%s%s",
              entryp->location,
              (*entryp->location ? ", " : ""), entryp->address
             );
-    gsprintf(PRINTF_DECLARE_BUFFER(buf), "%s%s%s%s",
+    gsprintf(PRINTF_DECLARE_BUFFER_AUTO(buf, MAXCOL), "%s%s%s%s",
              entryp->baud,
              (*entryp->baud ? " Bps" : ""),
              ((*entryp->baud and *entryp->flags) ? ", " : ""), entryp->flags
             );
-    strrjust(strsetsz(buf, MAXCOL-strlen(line2)-1));
+    strrjust(strsetsz(buf, MAXCOL-strlen(line2)-2));
     strcat(line2, buf);
     strcat(line2, " ");
     nodewin.prints(0,0, wattr, line1);
@@ -264,10 +259,13 @@ void NodelistBrowser::BuildListString(int line)
     ftn_nodelist_entry* entryp = entries + (line - 1);
     *entryp = NLP->entry();
 
+    CREATEBUFFER(char, buf, MAXCOL);
+    buf[MAXCOL - 1] = '\0';
     if(NLP->browsing_names())
-        sprintf(liststr[line-1], " %-*.*s %-*.*s %-*.*s ", 24+x1, 24+x1, entryp->name, 21+x2, 21+x2, entryp->address, 29+x3, 29+x3, entryp->system);
+        sprintf(buf, " %-*.*s %-*.*s %-*.*s ", 24+x1, 24+x1, entryp->name, 21+x2, 21+x2, entryp->address, 29+x3, 29+x3, entryp->system);
     else
-        sprintf(liststr[line-1], " %-*.*s %-*.*s %-*.*s ", 21+x2, 21+x2, entryp->address, 24+x1, 24+x1, entryp->name, 29+x3, 29+x3, entryp->system);
+        sprintf(buf, " %-*.*s %-*.*s %-*.*s ", 21+x2, 21+x2, entryp->address, 24+x1, 24+x1, entryp->name, 29+x3, 29+x3, entryp->system);
+    liststr[line - 1] = buf;
 }
 
 
@@ -305,7 +303,7 @@ void NodelistBrowser::DisplayPage()
     w_info(NULL);
 
     line = 1;
-    char linebuf[200];
+    CREATEBUFFER(char, linebuf, MAXCOL);
     linebuf[MAXCOL-2] = NUL;
 
     // Display blank lines if necessary
@@ -375,9 +373,9 @@ void NodelistBrowser::End()
 
 void NodelistBrowser::ScrollUp()
 {
-
     memmove(entries, entries+1, (maxpos-1)*sizeof(ftn_nodelist_entry));
-    memmove(liststr, liststr+1, (maxpos-1)*sizeof(ListStr));
+    liststr.erase(liststr.begin());
+    liststr.resize(liststr.size() + 1);
     BuildListString(maxpos);
     listwin.scroll_up();
 }
@@ -389,7 +387,8 @@ void NodelistBrowser::ScrollDown()
 {
 
     memmove(entries+1, entries, (maxpos-1)*sizeof(ftn_nodelist_entry));
-    memmove(liststr+1, liststr, (maxpos-1)*sizeof(ListStr));
+    liststr.insert(liststr.begin(), std::string());
+    liststr.resize(liststr.size() - 1);
     BuildListString(1);
     listwin.scroll_down();
 }
