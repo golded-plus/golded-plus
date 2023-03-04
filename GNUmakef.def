@@ -49,7 +49,8 @@ ifeq ($(PLATFORM),cyg)
     OBJEXT=.o
     LIBEXT=.a
     CFLAGS+=-DHAVE_SNPRINTF -DHAVE_VSNPRINTF -DHAVE_STDARG_H
-else ifeq ($(PLATFORM),emx)
+else
+ifeq ($(PLATFORM),emx)
     CAT=cat
     SED=sed
     GREP=grep
@@ -71,7 +72,8 @@ else ifeq ($(PLATFORM),emx)
     CXX=$(CC)
     CFLAGS+=-DHAVE_SNPRINTF -DHAVE_VSNPRINTF -DHAVE_STDARG_H
     LNKFLAGS+=-s
-else ifeq ($(PLATFORM),djg)
+else
+ifeq ($(PLATFORM),djg)
     CAT=command.com /c type
     SED=sed
     GREP=grep
@@ -84,7 +86,8 @@ else ifeq ($(PLATFORM),djg)
     OBJEXT=.o
     LIBEXT=.a
     CFLAGS+=-DHAVE_SNPRINTF -DHAVE_VSNPRINTF -DHAVE_STDARG_H
-else ifeq ($(PLATFORM),be)
+else
+ifeq ($(PLATFORM),be)
     CAT=cat
     SED=sed
     GREP=grep
@@ -97,7 +100,8 @@ else ifeq ($(PLATFORM),be)
     LIBEXT=.a
     LNKFLAGS+=-lbe -ltextencoding
     CFLAGS+=-DHAVE_SNPRINTF -DHAVE_VSNPRINTF -DHAVE_STDARG_H
-else ifeq ($(PLATFORM),sun) # SUN Solaris
+else
+ifeq ($(PLATFORM),sun) # SUN Solaris
     CAT=cat
     SED=gsed
     GREP=ggrep
@@ -115,7 +119,8 @@ else ifeq ($(PLATFORM),sun) # SUN Solaris
     else
         LIBCURSES=-L/opt/csw/lib -lncurses
     endif
-else ifeq ($(PLATFORM),osx) # Mac OSX
+else
+ifeq ($(PLATFORM),osx) # Mac OSX
     CAT=cat
     SED=sed
     GREP=grep
@@ -161,6 +166,12 @@ else                   # Linux, *BSD or another unix-like OS
         LIBCURSES=-lncurses
     endif
 endif
+endif
+endif
+endif
+endif
+endif
+
 ifeq ($(DEBUG),1)
     CFLAGS+=-funsigned-char -g -Og $(INCS) -Wall -Wno-long-long -Wno-sign-compare -pedantic -DPRAGMA_PACK # -fomit-frame-pointer
 else
