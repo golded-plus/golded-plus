@@ -1740,7 +1740,7 @@ void ScanKludges(GMsg* msg, int getvalue)
                         strxcpy(msg->origin, line->txt.c_str()+11, sizeof(msg->origin));
                         if(nextor)    // Get the next line too
                         {
-                            strcat(msg->origin, line->next->txt.c_str());
+                            strxcat(msg->origin, line->next->txt.c_str(), sizeof(msg->origin));
                             line->next->color = C_READO;
                             line->next->type |= GLINE_ORIG;     // Mark next line as Origin too
                         }
