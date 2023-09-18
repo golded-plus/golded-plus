@@ -126,7 +126,6 @@ CLEAN :
 	-@erase "$(INTDIR)\gsnd.obj"
 	-@erase "$(INTDIR)\gsndwrap.obj"
 	-@erase "$(INTDIR)\gsrchmgr.obj"
-	-@erase "$(INTDIR)\gstrbags.obj"
 	-@erase "$(INTDIR)\gstrctyp.obj"
 	-@erase "$(INTDIR)\gstrmail.obj"
 	-@erase "$(INTDIR)\gstrname.obj"
@@ -317,7 +316,6 @@ LIB32_OBJS= \
 	"$(INTDIR)\gsnd.obj" \
 	"$(INTDIR)\gsndwrap.obj" \
 	"$(INTDIR)\gsrchmgr.obj" \
-	"$(INTDIR)\gstrbags.obj" \
 	"$(INTDIR)\gstrctyp.obj" \
 	"$(INTDIR)\gstrmail.obj" \
 	"$(INTDIR)\gstrname.obj" \
@@ -565,7 +563,6 @@ CLEAN :
 	-@erase "$(INTDIR)\gsnd.obj"
 	-@erase "$(INTDIR)\gsndwrap.obj"
 	-@erase "$(INTDIR)\gsrchmgr.obj"
-	-@erase "$(INTDIR)\gstrbags.obj"
 	-@erase "$(INTDIR)\gstrctyp.obj"
 	-@erase "$(INTDIR)\gstrmail.obj"
 	-@erase "$(INTDIR)\gstrname.obj"
@@ -756,7 +753,6 @@ LIB32_OBJS= \
 	"$(INTDIR)\gsnd.obj" \
 	"$(INTDIR)\gsndwrap.obj" \
 	"$(INTDIR)\gsrchmgr.obj" \
-	"$(INTDIR)\gstrbags.obj" \
 	"$(INTDIR)\gstrctyp.obj" \
 	"$(INTDIR)\gstrmail.obj" \
 	"$(INTDIR)\gstrname.obj" \
@@ -1180,12 +1176,6 @@ SOURCE=..\goldlib\gall\gsndwrap.cpp
 SOURCE=..\goldlib\gcui\gsrchmgr.cpp
 
 "$(INTDIR)\gsrchmgr.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE=..\goldlib\gall\gstrbags.cpp
-
-"$(INTDIR)\gstrbags.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

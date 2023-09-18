@@ -39,7 +39,6 @@ set(gall_SOURCES
   gsearch.cpp
   gsnd.cpp
   gsndwrap.cpp
-  gstrbags.cpp
   gstrctyp.cpp
   gstrmail.cpp
   gstrname.cpp

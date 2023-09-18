@@ -2838,63 +2838,54 @@ void IEclass::Soundkill()
 
 void IEclass::statusline()
 {
-
     if(chartyped)
     {
-        if(EDIT->Completion.First())
+        for (std::map<std::string, std::string>::iterator it = EDIT->Completion.begin();
+             it != EDIT->Completion.end(); ++it)
         {
-            do
-            {
-                const char* trig = EDIT->Completion.Trigger();
-                uint tlen = strlen(trig);
-                if(col >= tlen)
-                {
-                    if(strneql(trig, currline->txt.c_str()+col-tlen, tlen))
-                    {
-                        int saved_insert = insert;
-                        insert = true;
-                        batch_mode = BATCH_MODE;
-                        uint n;
-                        for(n=0; n<tlen; n++)
-                            DelLeft();
-                        const char* cptr = EDIT->Completion.Text();
-                        uint clen = strlen(cptr);
-                        for(n=0; n<clen; n++)
-                            insertchar(*cptr++);
-                        HandleGEvent(EVTT_EDITCOMPLETION);
-                        insert = saved_insert;
-                        break;
-                    }
-                }
-            }
-            while(EDIT->Completion.Next());
-        }
-    }
-
-    char _buf[EDIT_BUFLEN];
-    *_buf = NUL;
-
-    if(EDIT->Comment.First())
-    {
-        do
-        {
-            const char* trig = EDIT->Comment.Trigger();
-            uint tlen = strlen(trig);
+            const std::string& trig = it->first;
+            const std::string& text = it->second;
+            uint tlen = trig.size();
             if(col >= tlen)
             {
-                if(strnieql(trig, currline->txt.c_str()+col-tlen, tlen))
+                if(strneql(trig.c_str(), currline->txt.c_str() + col - tlen, tlen))
                 {
-                    strcpy(_buf, EDIT->Comment.Text());
+                    int saved_insert = insert;
+                    insert = true;
+                    batch_mode = BATCH_MODE;
+                    for(size_t n = 0; n < tlen; n++)
+                        DelLeft();
+                    for (size_t n = 0; n < text.size(); ++n)
+                        insertchar(text[n]);
+                    HandleGEvent(EVTT_EDITCOMPLETION);
+                    insert = saved_insert;
                     break;
                 }
             }
         }
-        while(EDIT->Comment.Next());
+    }
+
+    std::string commentText;
+
+    for (std::map<std::string, std::string>::iterator it = EDIT->Comment.begin();
+         it != EDIT->Comment.end(); ++it)
+    {
+        const std::string& trig = it->first;
+        const std::string& text = it->second;
+        uint tlen = trig.size();
+        if(col >= tlen)
+        {
+            if(strnieql(trig.c_str(), currline->txt.c_str() + col - tlen, tlen))
+            {
+                commentText = text;
+                break;
+            }
+        }
     }
 
     uint chr = currline->txt[col];
-    update_statuslinef(LNG->EditStatus, "ST_EDITSTATUS", 1+thisrow, 1+col, chr, _buf);
-    if(*_buf and CFG->switches.get(beepcomment))
+    update_statuslinef(LNG->EditStatus, "ST_EDITSTATUS", 1+thisrow, 1+col, chr, commentText.c_str());
+    if(!commentText.empty() && CFG->switches.get(beepcomment))
     {
         HandleGEvent(EVTT_EDITCOMMENT);
     }

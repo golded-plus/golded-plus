@@ -259,10 +259,6 @@ SOURCE=..\goldlib\gall\gsndwrap.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\goldlib\gall\gstrbags.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=..\goldlib\gall\gstrctyp.cpp
 # End Source File
 # Begin Source File
@@ -1098,10 +1094,6 @@ SOURCE=..\goldlib\gall\gstrall.h
 # Begin Source File
 
 SOURCE=..\goldlib\gall\gstrarr.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\goldlib\gall\gstrbags.h
 # End Source File
 # Begin Source File
 

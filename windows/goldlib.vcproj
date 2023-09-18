@@ -776,10 +776,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\goldlib\gall\gstrbags.cpp"
-					>
-				</File>
-				<File
 					RelativePath="..\goldlib\gall\gstrctyp.cpp"
 					>
 				</File>
@@ -2363,10 +2359,6 @@
 				</File>
 				<File
 					RelativePath="..\goldlib\gall\gstrall.h"
-					>
-				</File>
-				<File
-					RelativePath="..\goldlib\gall\gstrbags.h"
 					>
 				</File>
 				<File

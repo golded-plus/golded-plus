@@ -41,7 +41,7 @@ int          WidePersonalmail = 0;
 
 //  ------------------------------------------------------------------
 
-gmo_area::gmo_area() : cfg(), cfg2()
+gmo_area::gmo_area() : cfg()
 {
 
     Msgn = NULL;

@@ -27,6 +27,8 @@
 #define __GECFGG__H
 
 #include <list>
+#include <map>
+#include <vector>
 #include <gmo_msg.h>
 #include <geall.h>
 #include "gekeys.h"
@@ -378,7 +380,7 @@ public:
     bool        latin2local;
     char        latintolocal[256];
     Path        loadlanguage;
-    GStrBag2    locationalias;
+    std::map<std::string, std::string> locationalias;
     std::string locationdelimiter;
     Path        logfile;              // goldedlog;
     int         logformat;
@@ -471,7 +473,7 @@ public:
     char        tasktitle[60];
     Tear        tearline;
     bool        titlestatus;
-    GStrBag2    translate;
+    std::map<std::string, std::string> translate;
     std::vector<Tpl> tpl;
     int         tplno;
     bool        templatematch;
@@ -512,66 +514,6 @@ public:
     int         zonegating;
 
     gswitches   switches;
-};
-
-
-
-//  ------------------------------------------------------------------
-
-class GSaveUtil : public GStrBag2
-{
-
-public:
-
-    void Add(int n, char* s)
-    {
-        GStrBag2::Add((void*)&n, sizeof(n), s);
-    }
-
-    int Number()
-    {
-        return *(int*)Current1();
-    }
-    const char* Text()
-    {
-        return Current2();
-    }
-
-    int Number(int i)
-    {
-        return *(int*)Index1(i);
-    }
-    const char* Text(int i)
-    {
-        return Index2(i);
-    }
-};
-
-
-//  ------------------------------------------------------------------
-
-class GEditTrigger : public GStrBag2
-{
-
-public:
-
-    const char* Trigger()
-    {
-        return Current1();
-    }
-    const char* Text()
-    {
-        return Current2();
-    }
-
-    const char* Trigger(int i)
-    {
-        return Index1(i);
-    }
-    const char* Text(int i)
-    {
-        return Index2(i);
-    }
 };
 
 
@@ -632,9 +574,9 @@ public:
     // -----------------------------------------------------------------
     // Configuration data
 
-    GEditTrigger Comment;
-    GEditTrigger Completion;
-    GSaveUtil    SaveUtil;
+    std::map<std::string, std::string> Comment;
+    std::map<std::string, std::string> Completion;
+    std::vector<std::pair<int, std::string>> SaveUtil;
 
 
     // -----------------------------------------------------------------

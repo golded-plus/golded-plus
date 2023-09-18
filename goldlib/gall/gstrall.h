@@ -85,7 +85,8 @@ typedef std::vector<std::string> gstrarray;
 
 //  ------------------------------------------------------------------
 //  Function prototypes
-
+void strupr(std::string& s);
+void strlwr(std::string& s);
 bool strblank(const char* str);
 size_t strchg(char *str, char oldch, char newch);
 size_t strchg(std::string &str, char oldch, char newch);
