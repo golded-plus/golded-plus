@@ -314,7 +314,6 @@
     </ClCompile>
     <ClCompile Include="..\goldlib\gall\gsnd.cpp" />
     <ClCompile Include="..\goldlib\gall\gsndwrap.cpp" />
-    <ClCompile Include="..\goldlib\gall\gstrbags.cpp" />
     <ClCompile Include="..\goldlib\gall\gstrctyp.cpp" />
     <ClCompile Include="..\goldlib\gall\gstring.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -627,7 +626,6 @@
     <ClInclude Include="..\goldlib\gall\gsndsapi.h" />
     <ClInclude Include="..\goldlib\gall\gstl_inc.h" />
     <ClInclude Include="..\goldlib\gall\gstrall.h" />
-    <ClInclude Include="..\goldlib\gall\gstrbags.h" />
     <ClInclude Include="..\goldlib\gall\gstring.h" />
     <ClInclude Include="..\goldlib\gall\gstrmail.h" />
     <ClInclude Include="..\goldlib\gall\gtimall.h" />

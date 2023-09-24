@@ -144,7 +144,7 @@ void CfgEditcomment()
     getkeyval(&key, &val);
     StripQuotes(key);
     StripQuotes(val);
-    EDIT->Comment.Add(key, val);
+    EDIT->Comment[key] = val;
 }
 
 //  ------------------------------------------------------------------
@@ -156,7 +156,7 @@ void CfgEditcompletion()
     getkeyval(&key, &val);
     StripQuotes(key);
     StripQuotes(val);
-    EDIT->Completion.Add(key, val);
+    EDIT->Completion[key] = val;
 }
 
 //  ------------------------------------------------------------------
@@ -345,7 +345,7 @@ void CfgEditsaveutil()
     char* _key;
     getkeyval(&_key, &val);
     int n = atoi(_key);
-    EDIT->SaveUtil.Add(n, StripQuotes(val));
+    EDIT->SaveUtil.push_back(std::pair<int, std::string>(n, StripQuotes(val)));
 }
 
 //  ------------------------------------------------------------------

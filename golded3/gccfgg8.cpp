@@ -271,7 +271,7 @@ void CfgTranslate()
     getkeyval(&key, &val);
     StripQuotes(key);
     StripQuotes(val);
-    CFG->translate.Add(strupr(key), val);
+    CFG->translate[strupr(key)] = val;
 }
 
 //  ------------------------------------------------------------------                                                                       $

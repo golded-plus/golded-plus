@@ -103,32 +103,25 @@ static bool tokenxchg(std::string &input, std::string::iterator &pos,
 
 static void translate(std::string &text)
 {
-    GStrBag2 &strbag = CFG->translate;
-
-    if (strbag.First())
+    std::map<std::string, std::string>::iterator it = CFG->translate.begin();
+    for (; it != CFG->translate.end(); ++it)
     {
-        do
+        const std::string& str1 = it->first;
+        const std::string& str2 = it->second;
+
+        size_t length = text.length();
+
+        for (size_t pos = 0; (pos < length) && (text[pos] != '}'); )
         {
-            const char* str1 = strbag.Current1();
-            size_t s1len = strlen(str1);
-            size_t length = text.length();
-
-            for (size_t pos = 0; (pos < length) && (text[pos] != '}'); )
+            if (strnieql(&(text.c_str()[pos]), str1.c_str(), str1.length()))
             {
-                if (strnieql(&(text.c_str()[pos]), str1, s1len))
-                {
-                    const char* str2 = strbag.Current2();
-                    size_t s2len = strlen(str2);
-
-                    text.replace(pos, s1len, str2, s2len);
-                    pos += s2len;
-                    length = text.length();
-                }
-                else
-                    pos++;
+                text.replace(pos, str1.length(), str2);
+                pos += str2.length();
+                length = text.length();
             }
+            else
+                pos++;
         }
-        while (strbag.Next());
     }
 }
 

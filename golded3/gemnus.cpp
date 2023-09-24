@@ -547,14 +547,10 @@ int GMenuEditfile::Run(GMsg* __msg)
         Item(TAG_ORIGIN,   LNG->OriginS);
         Item(TAG_VIEW,     LNG->View);
         Item(TAG_HEADER,   LNG->HeaderEdit);
-        if(EDIT->SaveUtil.First())
+
+        for (int n = 0; n < EDIT->SaveUtil.size(); ++n)
         {
-            int n = 0;
-            do
-            {
-                Item(TAG_UTILS+(n++), (char*)EDIT->SaveUtil.Text());  // WARNING!!!
-            }
-            while(EDIT->SaveUtil.Next());
+            Item(TAG_UTILS + n, EDIT->SaveUtil[n].second.c_str());
         }
         End();
 
@@ -648,7 +644,7 @@ int GMenuEditfile::Run(GMsg* __msg)
                 // Save current charset
                 strcpy(__oldxlatimport, AA->Xlatimport());
                 AA->SetXlatimport(CFG->xlatlocalset);
-                ExternUtil(__msg, EDIT->SaveUtil.Number(finaltag-TAG_UTILS));
+                ExternUtil(__msg, EDIT->SaveUtil[finaltag - TAG_UTILS].first);
                 AA->SetXlatimport(__oldxlatimport);
                 BodyView->Use(AA, __msg, _topline);
                 BodyView->Paint();

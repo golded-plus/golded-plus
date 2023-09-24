@@ -35,7 +35,6 @@
 //  ------------------------------------------------------------------
 
 #include <string>
-#include <gstrbags.h>
 #include <gutltag.h>
 #include <glog.h>
 #include <gedacfg.h>
@@ -47,15 +46,7 @@
 
 class gmo_area
 {
-
 public:
-
-    //  ----------------------------------------------------------------
-    //  Config data
-
-    AreaCfgBase cfg;
-    GStrSet3    cfg2;
-
 
     //  ----------------------------------------------------------------
     //  Constructor and destructor
@@ -75,6 +66,18 @@ public:
 
     int     isopen;             // NONZERO if open
 
+protected:
+    //  ----------------------------------------------------------------
+    //  Config data
+
+    AreaCfgBase cfg;
+
+private:
+    std::string sEchoid;
+    std::string sDesc;
+    std::string sPath;
+
+public:
 
     //  ----------------------------------------------------------------
     //  Access config data
@@ -147,15 +150,15 @@ public:
 
     const char* echoid() const
     {
-        return cfg2.Get1();
+        return sEchoid.c_str();
     }
     const char* desc() const
     {
-        return cfg2.Get2();
+        return sDesc.c_str();
     }
     const char* path() const
     {
-        return cfg2.Get3();
+        return sPath.c_str();
     }
 
     void set_areaid(int a)
@@ -227,15 +230,15 @@ public:
 
     void set_echoid(const char* s)
     {
-        cfg2.Change1(s);
+        sEchoid = s;
     }
     void set_desc(const char* s)
     {
-        cfg2.Change2(s);
+        sDesc = s;
     }
     void set_path(const char* s)
     {
-        cfg2.Change3(s);
+        sPath = s;
     }
 
 

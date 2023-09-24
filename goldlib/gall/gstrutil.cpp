@@ -923,6 +923,22 @@ char* strlwr(char* s)
 
 #endif
 
+void strupr(std::string& s)
+{
+    for (std::string::iterator it = s.begin(); it !=s.end(); ++it)
+    {
+        *it = g_toupper(*it);
+    }
+}
+
+void strlwr(std::string& s)
+{
+    for (std::string::iterator it = s.begin(); it !=s.end(); ++it)
+    {
+        *it = g_tolower(*it);
+    }
+}
+
 
 //  ------------------------------------------------------------------
 

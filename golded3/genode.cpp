@@ -1212,11 +1212,11 @@ struct location_item
     }
 };
 
-std::vector<location_item> g_LocationCash;
+std::vector<location_item> g_LocationCache;
 
 void LookupNodeClear()
 {
-    g_LocationCash.clear();
+    g_LocationCache.clear();
 }
 
 void LookupNodeLocation(GMsg* msg, std::string &location, int what)
@@ -1241,13 +1241,13 @@ void LookupNodeLocation(GMsg* msg, std::string &location, int what)
     if (addr.zone == 0)
         addr.zone = AA->Aka().addr.zone;
 
-    std::vector<location_item>::iterator it = g_LocationCash.begin();
-    std::vector<location_item>::iterator end = g_LocationCash.end();
+    std::vector<location_item>::iterator cacheIt = g_LocationCache.begin();
+    std::vector<location_item>::iterator cacheEnd = g_LocationCache.end();
 
-    while ((it != end) && (*it < addr)) it++;
+    while ((cacheIt != cacheEnd) && (*cacheIt < addr)) cacheIt++;
 
-    if ((it != end) && (*it == addr))
-        location = it->loc;
+    if ((cacheIt != cacheEnd) && (*cacheIt == addr))
+        location = cacheIt->loc;
     else
     {
         char buf[256];
@@ -1260,34 +1260,31 @@ void LookupNodeLocation(GMsg* msg, std::string &location, int what)
             buf[0] = NUL;
 
         std::string city = buf;
-        GStrBag2 &strbag = CFG->locationalias;
 
-        if (strbag.First())
+        if (!CFG->locationalias.empty())
         {
-            char *city_upr = (char*)throw_malloc(city.length()+1);
-            strcpy(city_upr, city.c_str());
+            std::map<std::string, std::string>::iterator it = CFG->locationalias.begin();
+            std::map<std::string, std::string>::const_iterator end = CFG->locationalias.end();
+
+            std::string city_upr = city;
             strupr(city_upr);
 
-            do
+            for (; it != end; ++it)
             {
-                const char* str = strbag.Current1();
-                char* ptr = strstr(city_upr, str);
-                if (ptr)
+                const std::string& src = it->first;
+                const std::string& alias = it->second;
+                std::string::size_type pos = city_upr.find(src);
+                if (pos != std::string::npos)
                 {
-                    size_t len = strlen(str);
-                    city.replace(ptr-city_upr, len, strbag.Current2());
-                    city_upr = (char*)throw_realloc(city_upr, city.length()+1);
-                    strcpy(city_upr, city.c_str());
+                    city.replace(pos, src.size(), alias);
+                    city_upr = city;
                     strupr(city_upr);
                 }
             }
-            while (strbag.Next());
-
-            throw_free(city_upr);
         }
 
         item.loc = location = city;
-        g_LocationCash.insert(it, item);
+        g_LocationCache.insert(cacheIt, item);
     }
 
     update_statusline(statuslinebak);
