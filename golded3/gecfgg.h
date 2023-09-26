@@ -576,7 +576,7 @@ public:
 
     std::map<std::string, std::string> Comment;
     std::map<std::string, std::string> Completion;
-    std::vector<std::pair<int, std::string>> SaveUtil;
+    std::vector<std::pair<int, std::string> > SaveUtil;
 
 
     // -----------------------------------------------------------------
