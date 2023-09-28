@@ -151,8 +151,8 @@ void GPickArealist::do_delayed()
         LOG.printf("! Buffer overflow: tmp in GPickArealist::do_delayed(), 15 or 16 lines above");
         PointerErrorExit();
     }
-    delete buf;
-    delete tmp;
+    delete[] buf;
+    delete[] tmp;
 }
 
 

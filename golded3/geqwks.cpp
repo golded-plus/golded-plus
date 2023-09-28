@@ -657,11 +657,15 @@ int ExportQWK()
 //  ------------------------------------------------------------------
 
 Qwk::Qwk()
-{
+    : cfg()
+    , bbs()
+    , bbss()
+    , bbsp()
+    , bbsn()
+    , mapp()
+    , mapn()
 
-    bbs = bbsp = NULL;
-    mapp = NULL;
-    bbss = 0;
+{
 }
 
 
