@@ -897,36 +897,35 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
                     if((mode == MODE_FORWARD) or (mode == MODE_CHANGE) or
                             (mode == MODE_WRITEHEADER) or (mode == MODE_WRITE))
                     {
-                        n = 0;
-                        while(oldmsg->line[n])
+                        for (size_t n = 0; oldmsg->line[n]; ++n)
                         {
                             if(oldmsg->line[n]->txt.c_str())
                             {
-                                strcpy(buf, oldmsg->line[n]->txt.c_str());
+                                std::string tmpLine = oldmsg->line[n]->txt;
                                 if(mode == MODE_FORWARD)
                                 {
                                     // Invalidate tearline
                                     if(not CFG->invalidate.tearline.first.empty())
-                                        doinvalidate(buf, CFG->invalidate.tearline.first.c_str(), CFG->invalidate.tearline.second.c_str(), true);
+                                        doinvalidate(tmpLine, CFG->invalidate.tearline.first, CFG->invalidate.tearline.second, true);
                                     // Invalidate originline
                                     if(not CFG->invalidate.origin.first.empty())
-                                        doinvalidate(buf, CFG->invalidate.origin.first.c_str(), CFG->invalidate.origin.second.c_str());
+                                        doinvalidate(tmpLine, CFG->invalidate.origin.first, CFG->invalidate.origin.second);
                                     // Invalidate SEEN-BY's
                                     if(not CFG->invalidate.seenby.first.empty())
-                                        doinvalidate(buf, CFG->invalidate.seenby.first.c_str(), CFG->invalidate.seenby.second.c_str());
+                                        doinvalidate(tmpLine, CFG->invalidate.seenby.first, CFG->invalidate.seenby.second);
                                     // Invalidate CC's
                                     if(not CFG->invalidate.cc.first.empty())
-                                        doinvalidate(buf, CFG->invalidate.cc.first.c_str(), CFG->invalidate.cc.second.c_str());
+                                        doinvalidate(tmpLine, CFG->invalidate.cc.first, CFG->invalidate.cc.second);
                                     // Invalidate XC's
                                     if(not CFG->invalidate.xc.first.empty())
-                                        doinvalidate(buf, CFG->invalidate.xc.first.c_str(), CFG->invalidate.xc.second.c_str());
+                                        doinvalidate(tmpLine, CFG->invalidate.xc.first, CFG->invalidate.xc.second);
                                     // Invalidate XP's
                                     if(not CFG->invalidate.xp.first.empty())
-                                        doinvalidate(buf, CFG->invalidate.xp.first.c_str(), CFG->invalidate.xp.second.c_str());
+                                        doinvalidate(tmpLine, CFG->invalidate.xp.first, CFG->invalidate.xp.second);
                                     // Invalidate kludge chars
-                                    strchg(buf, CTRL_A, '@');
+                                    strchg(tmpLine, CTRL_A, '@');
                                 }
-                                len = strlen(buf);
+                                len = tmpLine.size();
                                 size += len;
                                 if(msg_txt_realloc_cache >= (len+1))
                                 {
@@ -937,7 +936,7 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
                                     msg_txt_realloc_cache += (size <= oldmsg_size) ? oldmsg_size : REALLOC_CACHE_SIZE;
                                     msg->txt = (char*)throw_realloc(msg->txt, size+10+msg_txt_realloc_cache);
                                 }
-                                strcpy(&(msg->txt[pos]), buf);
+                                strcpy(&(msg->txt[pos]), tmpLine.c_str());
                                 pos += len;
                                 if(oldmsg->line[n]->type & GLINE_HARD)
                                 {
@@ -956,7 +955,6 @@ int TemplateToText(int mode, GMsg* msg, GMsg* oldmsg, const char* tpl, int origa
                                     }
                                 }
                             }
-                            n++;
                         }
                     } // case TPLTOKEN_MESSAGE: if(....)
                     continue;

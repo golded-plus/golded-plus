@@ -167,17 +167,16 @@ int GetAkaNo(const ftn_addr& aka)
 
 //  ------------------------------------------------------------------
 
-void doinvalidate(char* text, const char* find, const char* replace, bool is_tearline)
+bool doinvalidate(std::string& text, const std::string& find, const std::string& replace, bool is_tearline)
 {
 
-    int n = strlen(find);
-    if(strnieql(text, find, n) and (not is_tearline or (text[n] == NUL) or isspace(text[n])))
+    const size_t n = find.size();
+    if(strieql(text.c_str(), find.c_str()) and (not is_tearline or (text.size() == n) or isspace(text[n])))
     {
-        char buf[256];
-
-        strcpy(buf, text);
-        strcpy(stpcpy(text, replace), &buf[n]);
+        text.replace(0, n, replace);
+        return true;
     }
+    return false;
 }
 
 

@@ -1067,17 +1067,20 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto)
                 }
                 else
                 {
-                    char* r;
+                    const char* r;
                     uint32_t number;
-                    char* ptr = msg->re;
+                    const char* ptr = msg->re;
                     do
                     {
-                        r = (char*)get_subject_re_info(ptr, number);
+                        r = get_subject_re_info(ptr, number);
                         if(r)
                             ptr = strskip_wht(r);
                     }
                     while(r);
-                    strcpy(msg->re, ptr);
+                    if (ptr != msg->re)
+                    {
+                        memmove(msg->re, ptr, strlen(ptr) + 1);
+                    }
                 }
                 strcpy(msg->ddom, omsg->odom);
                 if((mode == MODE_REPLYCOMMENT) and omsg->fwdorig.net)

@@ -3681,40 +3681,35 @@ void InvalidateControlInfo(GMsg* msg)
 {
 
     Line* line = msg->lin;
-    char buf[256];
-
     while(line)
     {
 
         if(not (line->type & (GLINE_TEAR | GLINE_ORIG)))
         {
-
-            strcpy(buf, line->txt.c_str());
-
+            bool invalidated = false;
             // Invalidate tearline
             if(not CFG->invalidate.tearline.first.empty())
-                doinvalidate(buf, CFG->invalidate.tearline.first.c_str(), CFG->invalidate.tearline.second.c_str(), true);
+                invalidated |= doinvalidate(line->txt, CFG->invalidate.tearline.first, CFG->invalidate.tearline.second, true);
             else
-                doinvalidate(buf, "---", "-+-", true);
+                invalidated |= doinvalidate(line->txt, "---", "-+-", true);
 
             // Invalidate originline
             if(not CFG->invalidate.origin.first.empty())
-                doinvalidate(buf, CFG->invalidate.origin.first.c_str(), CFG->invalidate.origin.second.c_str());
+                invalidated |= doinvalidate(line->txt, CFG->invalidate.origin.first.c_str(), CFG->invalidate.origin.second.c_str());
             else
-                doinvalidate(buf, " * Origin: ", " + Origin: ");
+                invalidated |= doinvalidate(line->txt, " * Origin: ", " + Origin: ");
 
             // Invalidate SEEN-BY's
             if(not CFG->invalidate.seenby.first.empty())
-                doinvalidate(buf, CFG->invalidate.seenby.first.c_str(), CFG->invalidate.seenby.second.c_str());
+                invalidated |= doinvalidate(line->txt, CFG->invalidate.seenby.first.c_str(), CFG->invalidate.seenby.second.c_str());
             else
-                doinvalidate(buf, "SEEN-BY: ", "SEEN+BY: ");
+                invalidated |= doinvalidate(line->txt, "SEEN-BY: ", "SEEN+BY: ");
 
-            if(stricmp(buf, line->txt.c_str()))
+            if(invalidated)
             {
                 line->type &= ~GLINE_KLUDGE;
                 line->kludge = 0;
                 line->color = C_READW;
-                line->txt = buf;
             }
 
         }

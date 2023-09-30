@@ -486,7 +486,7 @@ void  w_shadow();
 void  ZonegateIt(ftn_addr& gate, ftn_addr& orig, ftn_addr& dest);
 char* strtmp(const char* str);
 vattr quotecolor(const char* line);
-void  doinvalidate(char* text, const char* find, const char* replace, bool is_tearline = false);
+bool  doinvalidate(std::string& text, const std::string& find, const std::string& replace, bool is_tearline = false);
 bool find(const std::vector<const char *> &vec, const char *str);
 bool find(const std::vector<std::string> &vec, const std::string &str);
 vattr GetColorName(const char *name, Addr &addr, vattr color);
