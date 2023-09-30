@@ -1198,15 +1198,7 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt)
             {
 
                 int tabsz = CFG->disptabsize ? CFG->disptabsize : 1;
-#if defined(__USE_ALLOCA__)
-                char *spaces = (char*)alloca(tabsz+1);
-#else
-                __extension__ char spaces[tabsz+1];
-#endif
-                memset(spaces, ' ', tabsz);
-                spaces[tabsz] = NUL;
                 int level = LoadCharset(AA->Xlatimport(), CFG->xlatlocalset);
-                size_t buf_len = EDIT_PARABUFLEN;
                 char* buf = (char*) throw_malloc(EDIT_PARABUFLEN);
                 Line* saveline = __line->next;
                 __line->next = NULL;
@@ -1216,58 +1208,55 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt)
                 {
                     XlatStr(buf, _parabuf, level, CharTable);
 
+                    std::string tmp = buf;
+                    throw_free(buf);
+
                     // Insert a quotestring if asked
                     if(quoteit)
-                        strins(" > ", buf, 0);
+                        tmp.insert(0, " > ");
                     else
                     {
                         // Invalidate tearline
                         if(not CFG->invalidate.tearline.first.empty())
-                            doinvalidate(buf, CFG->invalidate.tearline.first.c_str(), CFG->invalidate.tearline.second.c_str(), true);
+                            doinvalidate(tmp, CFG->invalidate.tearline.first, CFG->invalidate.tearline.second, true);
 
                         // Invalidate originline
                         if(not CFG->invalidate.origin.first.empty())
-                            doinvalidate(buf, CFG->invalidate.origin.first.c_str(), CFG->invalidate.origin.second.c_str());
+                            doinvalidate(tmp, CFG->invalidate.origin.first, CFG->invalidate.origin.second);
 
                         // Invalidate SEEN-BY's
                         if(not CFG->invalidate.seenby.first.empty())
-                            doinvalidate(buf, CFG->invalidate.seenby.first.c_str(), CFG->invalidate.seenby.second.c_str());
+                            doinvalidate(tmp, CFG->invalidate.seenby.first, CFG->invalidate.seenby.second);
 
                         // Invalidate CC's
                         if(not CFG->invalidate.cc.first.empty())
-                            doinvalidate(buf, CFG->invalidate.cc.first.c_str(), CFG->invalidate.cc.second.c_str());
+                            doinvalidate(tmp, CFG->invalidate.cc.first, CFG->invalidate.cc.second);
 
                         // Invalidate XC's
                         if(not CFG->invalidate.xc.first.empty())
-                            doinvalidate(buf, CFG->invalidate.xc.first.c_str(), CFG->invalidate.xc.second.c_str());
+                            doinvalidate(tmp, CFG->invalidate.xc.first, CFG->invalidate.xc.second);
 
                         // Invalidate XP's
                         if(not CFG->invalidate.xp.first.empty())
-                            doinvalidate(buf, CFG->invalidate.xp.first.c_str(), CFG->invalidate.xp.second.c_str());
+                            doinvalidate(tmp, CFG->invalidate.xp.first, CFG->invalidate.xp.second);
                     }
 
-                    size_t read_len = strlen(buf);
-
                     // Replace tabs
-                    char *ht = buf;
-                    while((ht = strchr(ht, '\t')) != NULL)
+
+                    for (std::string::size_type n = 0; (n = tmp.find('\t', n) != std::string::npos); ++n)
                     {
-                        int rposn = ht-buf;
-                        int rstart = rposn%tabsz+1;
-                        *ht = ' ';
-                        if(tabsz > rstart)
+                        tmp[n] = ' ';
+                        const int rstart = n % tabsz + 1;
+                        if (tabsz > rstart)
                         {
-                            if((read_len + tabsz - rstart) >= (buf_len - 7))
-                            {
-                                buf_len += tabsz;
-                                buf = (char*)throw_realloc(buf, buf_len);
-                            }
-                            strins(spaces+rstart, buf, rposn);
+                            const int ins = tabsz - rstart;
+                            tmp.insert(n + 1, ins, ' ');
+                            n += ins;
                         }
                     }
 
                     // Copy the paragraph to the new line and retype it
-                    Line* _newline = __line = insertlinebelow(__line, buf);
+                    Line* _newline = __line = insertlinebelow(__line, tmp.c_str());
                     setlinetype(_newline);
 
                     // If the paragraph is longer than one line
@@ -1298,8 +1287,6 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt)
                 __line->next = saveline;
                 if(saveline)
                     saveline->prev = __line;
-
-                throw_free(buf);
             }
 
             // Add import end text, if any
