@@ -3369,7 +3369,7 @@ struct hentry * AffixMgr::lookup(const char * word)
 }
 
 // return the value of suffix
-const int AffixMgr::have_contclass()
+int AffixMgr::have_contclass()
 {
     return havecontclass;
 }

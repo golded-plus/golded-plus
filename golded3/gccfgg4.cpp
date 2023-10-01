@@ -195,7 +195,7 @@ void CfgEzycomuserno()
 void CfgFidolastread(const char *path)
 {
 
-    MapPath(strxcpy(CFG->fidolastread, val, sizeof(Path)));
+    MapPath(strxcpy(CFG->fidolastread, path, sizeof(Path)));
 }
 
 void CfgFidolastread()

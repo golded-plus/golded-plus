@@ -123,7 +123,7 @@ int SuggestMgr::suggest(char*** slst, const char * w, int nsug)
 
         // perhaps we made chose the wrong char from a related set
         if ((nsug < maxSug) && (nsug > -1))
-            nsug = mapchars(wlst, word, nsug, cpdsuggest);
+            nsug = mapchars(wlst, word, nsug);
 
         // did we swap the order of chars by mistake
         if ((nsug < maxSug) && (nsug > -1))
@@ -216,7 +216,7 @@ int SuggestMgr::suggest_auto(char*** slst, const char * w, int nsug)
 
         // perhaps we made chose the wrong char from a related set
         if ((nsug < maxSug) && (nsug > -1) && (cpdsuggest == 0))
-            nsug = mapchars(wlst, word, nsug, cpdsuggest);
+            nsug = mapchars(wlst, word, nsug);
 
         if ((cpdsuggest==0) && (nsug>0)) nocompoundtwowords=1;
 
@@ -243,7 +243,7 @@ int SuggestMgr::suggest_auto(char*** slst, const char * w, int nsug)
 
 
 // suggestions for when chose the wrong char out of a related set
-int SuggestMgr::mapchars(char** wlst, const char * word, int ns, int cpdsuggest)
+int SuggestMgr::mapchars(char** wlst, const char * word, int ns)
 {
     time_t timelimit;
     int timer;
@@ -1542,8 +1542,6 @@ int SuggestMgr::suggest_pos_stems(char*** slst, const char * w, int nsug)
 {
     char ** wlst;
 
-    struct hentry * rv = NULL;
-
     char w2[MAXSWUTF8L];
     const char * word = w;
 
@@ -1569,7 +1567,7 @@ int SuggestMgr::suggest_pos_stems(char*** slst, const char * w, int nsug)
         if (wlst == NULL) return -1;
     }
 
-    rv = pAMgr->suffix_check(word, wl, 0, NULL, wlst, maxSug, &nsug);
+    pAMgr->suffix_check(word, wl, 0, NULL, wlst, maxSug, &nsug);
 
     // delete dash from end of word
     if (nsug > 0)

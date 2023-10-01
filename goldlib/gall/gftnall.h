@@ -84,7 +84,6 @@ public:
     ftn_addr(uint a);
     ftn_addr(const char* s);
     ftn_addr(const std::string& s);
-    ftn_addr(const ftn_addr& a);
     ftn_addr(uint zn, uint nt, uint nd, uint pt);
 
     bool valid() const
@@ -126,7 +125,6 @@ public:
     ftn_addr& operator=(int n);
     ftn_addr& operator=(const char* s);
     ftn_addr& operator=(const std::string& s);
-    ftn_addr& operator=(const ftn_addr& a);
 };
 
 
@@ -194,15 +192,6 @@ inline ftn_addr::ftn_addr(const std::string& s) : zone(0), net(0), node(0), poin
 
 //  ------------------------------------------------------------------
 
-inline ftn_addr::ftn_addr(const ftn_addr& a) : zone(0), net(0), node(0), point(0)
-{
-
-    set_fast(a);
-}
-
-
-//  ------------------------------------------------------------------
-
 inline ftn_addr::ftn_addr(uint zn, uint nt, uint nd, uint pt) : zone(0), net(0), node(0), point(0)
 {
 
@@ -255,11 +244,6 @@ inline ftn_addr& ftn_addr::operator=(const char* s)
 inline ftn_addr& ftn_addr::operator=(const std::string& s)
 {
     reset(s);
-    return *this;
-}
-inline ftn_addr& ftn_addr::operator=(const ftn_addr& a)
-{
-    set_fast(a);
     return *this;
 }
 

@@ -1017,7 +1017,7 @@ bool operator<(const CmdKey &a, const CmdKey &b)
 
 //  ------------------------------------------------------------------
 
-int ReadKeysCfg(int force)
+int ReadKeysCfg()
 {
     byte ch;
     gkey* mac;

@@ -38,7 +38,7 @@
 
 //  ------------------------------------------------------------------
 
-void gareafile::ReadAdeptXbbsFile(char* path, char* file, char* options)
+void gareafile::ReadAdeptXbbsFile(char* path, char* file)
 {
 
     const word CRC_ADDRESS   = 0xFDD6;
@@ -175,13 +175,10 @@ void gareafile::ReadAdeptXbbsFile(char* path, char* file, char* options)
 void gareafile::ReadAdeptXBBS(char* tag)
 {
 
-    char options[80];
     Path file, path, cfg;
 
     *path = NUL;
-    options[79] = 0;
     strcpy(cfg, "System\\Message_Areas");
-    strncpy(options, tag, 79);
     char* ptr = strtok(tag, " \t");
     while(ptr)
     {
@@ -196,7 +193,7 @@ void gareafile::ReadAdeptXBBS(char* tag)
 
     CfgAdeptxbbspath(path);
 
-    ReadAdeptXbbsFile(path, file, options);
+    ReadAdeptXbbsFile(path, file);
 }
 
 

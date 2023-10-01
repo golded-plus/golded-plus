@@ -213,7 +213,7 @@ enum
 
 struct Kludges
 {
-    char* key;
+    const char* key;
     uint  num;
     byte  req;
 };
@@ -2172,7 +2172,7 @@ static bool check_multipart(const char* ptr, char* boundary)
 
 //  ------------------------------------------------------------------
 
-inline bool put_on_new_line(const char *ptr, const char *prev_ptr)
+inline bool put_on_new_line(const char *ptr)
 {
 
     if((*ptr == CR) or
@@ -2180,8 +2180,7 @@ inline bool put_on_new_line(const char *ptr, const char *prev_ptr)
             is_quote(ptr) or
             ((ptr[0] == ptr[1]) and (ptr[0] == ptr[2])) or
             (strneql(ptr, "-- ", 3) and (ptr[3] == CR)) or
-            strneql(ptr, " * Origin: ", 11) /*or
-     (ptr[0] == prev_ptr[0]) and (ptr[1] == prev_ptr[1])*/)
+            strneql(ptr, " * Origin: ", 11))
         return true;
     // Put RFC kludges and SEEN-BY on new line
     while(*ptr and (isxalnum(*ptr) or (*ptr == '-')))
@@ -2277,9 +2276,6 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode)
     }
     else    // Convert the message text to a list of separately allocated lines
     {
-
-        char prev_ptr[3] = {"\xFF\xFF"};
-
         if(AA->StripHTML())
             RemoveHTML(msg->txt);
         ptr = spanfeeds(msg->txt);
@@ -2625,7 +2621,7 @@ do_cr:
                                         wraps = 0;
                                         break;
                                     }
-                                    if(put_on_new_line(ptr, prev_ptr))
+                                    if(put_on_new_line(ptr))
                                     {
                                         wraps = 0;
                                         break;
@@ -2674,7 +2670,7 @@ do_cr:
                                         para = GLINE_QUOT;
                                         if((*ptr != ' ') and (*bp != ' '))
                                         {
-                                            if(put_on_new_line(ptr, prev_ptr))
+                                            if(put_on_new_line(ptr))
                                             {
                                                 ptr -= qlen2;
                                                 wraps = 0;
@@ -2959,8 +2955,6 @@ chardo:
 
                 // Store line
                 line->txt = linetmp+1;
-                prev_ptr[0] = line->txt.empty() ? 0xFF : line->txt[0];
-                prev_ptr[1] = line->txt.length() < 2 ? 0xFF : line->txt[1];
 
                 // Set line color and type
                 if((line->type & GLINE_QUOT) and not is_quote(line->txt.c_str()))

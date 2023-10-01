@@ -46,7 +46,7 @@ void gareafile::ReadSuperBBS(char* tag)
     FILE* fp;
     char* ptr;
     Path sbpath, file;
-    char origin[80], options[80];
+    char origin[80];
 
     ExtraConfigP sconfig = new ExtraConfigT;
     throw_new(sconfig);
@@ -67,7 +67,6 @@ void gareafile::ReadSuperBBS(char* tag)
         strcpy(sbpath, areapath);
 
     // Read AREAS.BBS
-    strcpy(options, tag);
     ptr = strtok(tag, " \t");
     while(ptr)
     {
@@ -76,7 +75,7 @@ void gareafile::ReadSuperBBS(char* tag)
             if(is_dir(ptr) and (*sbpath == NUL))
                 AddBackslash(strcpy(sbpath, ptr));
             else
-                GetAreasBBS(ptr, origin, options);
+                GetAreasBBS(ptr, origin);
         }
         ptr = strtok(NULL, " \t");
     }

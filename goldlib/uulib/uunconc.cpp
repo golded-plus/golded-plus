@@ -832,8 +832,7 @@ UUDecodeLine (char *s, char *d, int method)
  */
 
 int
-UUDecodeQP (FILE *datain, FILE *dataout, int *state,
-            long maxpos, int method, int flags,
+UUDecodeQP (FILE *datain, FILE *dataout, long maxpos, int flags,
             char *boundary)
 {
     char *line=uugen_inbuffer, *p1, *p2;
@@ -939,8 +938,7 @@ UUDecodeQP (FILE *datain, FILE *dataout, int *state,
  */
 
 int
-UUDecodePT (FILE *datain, FILE *dataout, int *state,
-            long maxpos, int method, int flags,
+UUDecodePT (FILE *datain, FILE *dataout, long maxpos, int flags,
             char *boundary)
 {
     char *line=uugen_inbuffer, *ptr;
@@ -1035,11 +1033,9 @@ UUDecodePart (FILE *datain, FILE *dataout, int *state,
      */
 
     if (method == QP_ENCODED)
-        return UUDecodeQP (datain, dataout, state, maxpos,
-                           method, flags, boundary);
+        return UUDecodeQP (datain, dataout, maxpos, flags, boundary);
     else if (method == PT_ENCODED)
-        return UUDecodePT (datain, dataout, state, maxpos,
-                           method, flags, boundary);
+        return UUDecodePT (datain, dataout, maxpos, flags, boundary);
 
     lc[0] = lc[1] = 0;
     vflag = 0;
@@ -1373,7 +1369,7 @@ UUDecodePart (FILE *datain, FILE *dataout, int *state,
         {
             if (method == BH_ENCODED)
             {
-                if (UUbhwrite (oline, 1, count, dataout) != count)
+                if (UUbhwrite (oline, count, dataout) != count)
                 {
                     UUMessage (uunconc_id, __LINE__, UUMSG_ERROR,
                                uustring (S_WR_ERR_TEMP),
@@ -1403,7 +1399,7 @@ UUDecodePart (FILE *datain, FILE *dataout, int *state,
         {
             if (method == BH_ENCODED)
             {
-                if (UUbhwrite (oline, 1, count, dataout) != count)
+                if (UUbhwrite (oline, count, dataout) != count)
                 {
                     UUMessage (uunconc_id, __LINE__, UUMSG_ERROR,
                                uustring (S_WR_ERR_TEMP),
@@ -1492,7 +1488,7 @@ UUDecode (uulist *data)
         state = DATA;
 
     (void) UUDecodeLine (NULL, NULL, 0);                   /* init */
-    (void) UUbhwrite    (NULL, 0, 0, NULL);                /* dito */
+    (void) UUbhwrite    (NULL, 0, NULL);                   /* dito */
     (void) UUDecodePart (NULL, NULL, NULL, 0, 0, 0, NULL); /* yep  */
 
     /*

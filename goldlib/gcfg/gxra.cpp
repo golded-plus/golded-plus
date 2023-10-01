@@ -47,7 +47,7 @@ void gareafile::ReadRemoteAccess(char* tag)
     FILE* fp;
     char* ptr;
     Path rapath, file;
-    char origin[80], options[80];
+    char origin[80];
 
     *rapath = NUL;
     *origin = NUL;
@@ -63,7 +63,6 @@ void gareafile::ReadRemoteAccess(char* tag)
             strcpy(rapath, areapath);
 
         // Read AREAS.BBS
-        strcpy(options, tag);
         ptr = strtok(tag, " \t");
         while(ptr)
         {
@@ -72,7 +71,7 @@ void gareafile::ReadRemoteAccess(char* tag)
                 if(is_dir(ptr) and (*rapath == NUL))
                     AddBackslash(strcpy(rapath, ptr));
                 else
-                    GetAreasBBS(ptr, origin, options);
+                    GetAreasBBS(ptr, origin);
             }
             ptr = strtok(NULL, " \t");
         }

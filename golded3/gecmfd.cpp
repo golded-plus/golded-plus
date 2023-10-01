@@ -41,8 +41,10 @@ void Area::DeleteMsg(GMsg* msg, int direction)
 
     uint32_t replyto=0, reply1st=0, lread;
 
-    GMsg* uplink = (GMsg*)throw_calloc(1, sizeof(GMsg));
-    GMsg* downlink = (GMsg*)throw_calloc(1, sizeof(GMsg));
+    GMsg* uplink = new GMsg();
+    throw_new(uplink);
+    GMsg* downlink = new GMsg();
+    throw_new(downlink);
 
     if(msg->msgno)
     {
@@ -151,11 +153,10 @@ void Area::DeleteMsg(GMsg* msg, int direction)
         UpdateAreadata();
     }
 
-    ResetMsg(downlink);
-    throw_free(downlink);
-
-    ResetMsg(uplink);
-    throw_free(uplink);
+    downlink->Reset();
+    throw_delete(downlink);
+    uplink->Reset();
+    throw_delete(uplink);
 }
 
 

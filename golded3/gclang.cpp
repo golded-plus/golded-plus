@@ -730,7 +730,7 @@ void LoadLanguage(const char* file)
 //  ------------------------------------------------------------------
 //  Read the main language definition file
 
-bool ReadLangCfg(int force)
+bool ReadLangCfg()
 {
     char* ptr;
     char* str;

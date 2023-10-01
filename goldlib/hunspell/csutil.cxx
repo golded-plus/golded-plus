@@ -5032,7 +5032,7 @@ int get_utf_cs_len()
 
 static struct lang_map *get_lang2enc(bool what = true)
 {
-    struct lang_map lang2enc[] =
+    static struct lang_map lang2enc[] =
     {
         {"az", "UTF-8", LANG_az},
         {"bg", "microsoft-cp1251", LANG_bg},

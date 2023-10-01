@@ -801,7 +801,7 @@ int NodelistBrowser::DoKey(gkey& keycode)
 
 //  ------------------------------------------------------------------
 
-static int browse_nodelist(GMsg* msg, char* title, int topline)
+static int browse_nodelist(char* title, int topline)
 {
 
     w_info(NULL);
@@ -1140,7 +1140,7 @@ void Lookup(GMsg* msg, Addr* addr, char* name, int topline, char* status)
             {
                 strcpy(buf, information);
                 update_statusline(status);
-                found = make_bool(browse_nodelist(msg, tmpname, abs(topline)));
+                found = make_bool(browse_nodelist(tmpname, abs(topline)));
                 update_statusline(buf);
             }
         }

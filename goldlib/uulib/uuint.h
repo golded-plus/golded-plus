@@ -294,7 +294,7 @@ void        UUkillheaders       (headers *);
 fileread *  ScanPart  (FILE *, char *, int *);
 int     UUbhdecomp    (char *, char *, char *, int *,
                        size_t, size_t, size_t *);
-size_t  UUbhwrite     (char *, size_t, size_t, FILE *);
+size_t  UUbhwrite     (char *, size_t, FILE *);
 
 /*
  * Functions from uunconc.c

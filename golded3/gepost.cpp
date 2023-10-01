@@ -295,8 +295,8 @@ static void MakeMsg3(int& mode, GMsg* msg)
             msg->arrived = a;
     }
 
-    GMsg* carbon=NULL;
-    int cc = DoCarboncopy(msg, &carbon);
+    std::vector<GMsg> carbon;
+    int cc = DoCarboncopy(*msg, carbon);
 
     if(AA->isecho() or have_origin(msg))
         DoTearorig(mode, msg);
@@ -523,7 +523,6 @@ static void MakeMsg3(int& mode, GMsg* msg)
                 msg->references = cmsg->references;
             }
         }
-        throw_release(carbon);
 
         if(A != AA)
         {
@@ -772,7 +771,8 @@ static void MakeMsg2(int& mode, int& status, int& forwstat, int& topline, GMsg* 
 static void GetLastLink(GMsg* msg, uint32_t& msgno)
 {
 
-    GMsg* uplink = (GMsg*)throw_calloc(1, sizeof(GMsg));
+    GMsg* uplink = new GMsg();
+    throw_new(uplink);
 
     uplink->msgno = msg->msgno;
     uplink->link.first_set(msg->link.first());
@@ -789,8 +789,8 @@ static void GetLastLink(GMsg* msg, uint32_t& msgno)
     // Return msgno of the last link
     msgno = uplink->msgno;
 
-    ResetMsg(uplink);
-    throw_free(uplink);
+    uplink->Reset();
+    throw_delete(uplink);
 }
 
 
@@ -805,9 +805,12 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto)
     _in_editor = YES;
 
     // Allocate some msgs
-    GMsg* msg = (GMsg*)throw_calloc(1, sizeof(GMsg));
-    GMsg* reply = (GMsg*)throw_calloc(1, sizeof(GMsg));
-    GMsg* cmpmsg = (GMsg*)throw_calloc(1, sizeof(GMsg));
+    GMsg* msg = new GMsg();
+    throw_new(msg);
+    GMsg* reply = new GMsg();
+    throw_new(reply);
+    GMsg* cmpmsg = new GMsg();
+    throw_new(cmpmsg);
     uint32_t reply_msgno = 0;
 
     // Keep copy of original aka for later restoration
@@ -869,11 +872,11 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto)
 
         // Get msg number and reset/copy msg data
         if(mode != MODE_COPY)
-            ResetMsg(msg);
+            msg->Reset();
         switch(mode)
         {
         case MODE_FORWARD:
-            memcpy(msg, omsg, sizeof(GMsg));
+            *msg = *omsg;
             msg->txt = (char*)throw_strdup(msg->txt);
             msg->lin = NULL;
             msg->line = NULL;
@@ -901,7 +904,7 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto)
             msg->link.reset();
             break;
         case MODE_CHANGE:
-            memcpy(msg, omsg, sizeof(GMsg));
+            *msg = *omsg;
             msg->txt = (char*)throw_strdup(msg->txt);
             msg->lin = NULL;
             msg->line = NULL;
@@ -1416,14 +1419,14 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto)
     AA->SetAka(origaka);
     akamatchreply = false;
 
-    ResetMsg(omsg);
-    ResetMsg(cmpmsg);
-    ResetMsg(reply);
-    ResetMsg(msg);
+    omsg->Reset();
+    cmpmsg->Reset();
+    reply->Reset();
+    msg->Reset();
 
-    throw_free(cmpmsg);
-    throw_free(reply);
-    throw_free(msg);
+    throw_delete(cmpmsg);
+    throw_delete(reply);
+    throw_delete(msg);
 
     LoadLanguage(AA->Loadlanguage());
 

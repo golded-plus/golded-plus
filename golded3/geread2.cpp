@@ -55,8 +55,8 @@ void ChangeAttributes()
             AA->LoadMsg(reader_msg, reader_msg->msgno, CFG->dispmargin-(int)CFG->switches.get(disppagebar));
         }
 
-        GMsg* msg = (GMsg*)throw_malloc(sizeof(GMsg));
-        memcpy(msg, reader_msg, sizeof(GMsg));
+        GMsg* msg = new GMsg(*reader_msg);
+        throw_new(msg);
         AskAttributes(reader_msg);
         if(memcmp(msg, reader_msg, sizeof(GMsg)))
         {
@@ -65,7 +65,7 @@ void ChangeAttributes()
             reader_msg->LinesToText();
             AA->SaveMsg(GMSG_UPDATE, reader_msg);
         }
-        throw_free(msg);
+        throw_delete(msg);
     }
 }
 
@@ -1028,7 +1028,8 @@ void Make_Userlist(const char* userlist)
     uint n, x;
     char userline[80], adrs[40];
 
-    GMsg* msg = (GMsg*)throw_calloc(1, sizeof(GMsg));
+    GMsg* msg = new GMsg();
+    throw_new(msg);
 
     crclist = (word*)throw_calloc(AA->Msgn.Count()+1, sizeof(word));
     gfile fp(userlist, "ab", CFG->sharemode);
@@ -1056,8 +1057,8 @@ void Make_Userlist(const char* userlist)
         w_progress(MODE_QUIT, BLACK_|_BLACK, 0, 0, NULL);
     }
 
-    ResetMsg(msg);
-    throw_free(msg);
+    msg->Reset();
+    throw_delete(msg);
 }
 
 
@@ -1099,7 +1100,8 @@ void make_pathreport(const char* reportfile)
         std::string path;
         ftn_addr address;
         std::vector<ftn_addr> alist;
-        GMsg* msg = (GMsg*)throw_calloc(1, sizeof(GMsg));
+        GMsg* msg = new GMsg();
+        throw_new(msg);
         w_progress(MODE_NEW, C_INFOW, 0, AA->Msgn.Count(), "Generating PATH report");
         for(int n=AA->Msgn.Count(); n>=AA->lastread(); n--)
         {
@@ -1140,8 +1142,9 @@ void make_pathreport(const char* reportfile)
             }
         }
         w_progress(MODE_QUIT, BLACK_|_BLACK, 0, 0, NULL);
-        ResetMsg(msg);
-        throw_free(msg);
+
+        msg->Reset();
+        throw_delete(msg);
     }
 }
 

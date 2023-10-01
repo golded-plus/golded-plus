@@ -412,7 +412,7 @@ void ProcessSoupMsg(char* lbuf, GMsg* msg, int& msgs, char* areaname, int tossto
             AA->SaveMsg(GMSG_NEW, msg);
         }
 
-        ResetMsg(msg);
+        msg->Reset();
 
         CurrArea = entryCurrArea;
     }
@@ -460,7 +460,8 @@ int ImportSOUP()
             char* mbuf = (char*)throw_malloc(MBUF_SIZE);
             char* lbuf = (char*)throw_malloc(LBUF_SIZE);
 
-            GMsg* msg = (GMsg*)throw_calloc(1, sizeof(GMsg));
+            GMsg* msg = new GMsg();
+            throw_new(msg);
 
             while (fpa.Fgets(buf, sizeof(buf)))
             {
@@ -637,8 +638,8 @@ int ImportSOUP()
                     remove(idxfile);
             }
 
-            ResetMsg(msg);
-            throw_free(msg);
+            msg->Reset();
+            throw_delete(msg);
 
             throw_free(lbuf);
             throw_free(mbuf);
@@ -815,7 +816,8 @@ int ExportSoupArea(int areano, char* msgfile, gfile& fp, int ismail)
     AA->Lock();
     AA->RandomizeData();
 
-    GMsg* msg = (GMsg*)throw_calloc(1, sizeof(GMsg));
+    GMsg* msg = new GMsg();
+    throw_new(msg);
 
     for(uint n=0; n<AA->Expo.Count(); n++)
     {
@@ -829,8 +831,8 @@ int ExportSoupArea(int areano, char* msgfile, gfile& fp, int ismail)
         }
     }
 
-    ResetMsg(msg);
-    throw_free(msg);
+    msg->Reset();
+    throw_delete(msg);
 
     AA->Unlock();
     AA->Close();

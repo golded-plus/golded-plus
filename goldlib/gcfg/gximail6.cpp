@@ -48,7 +48,7 @@
 //  Read IMail IMAIL.CF and IMAIL.AR
 
 #ifdef HAVE_IM18X
-void gareafile::ReadIMail185(char* options, char* file, char* impath)
+void gareafile::ReadIMail185(char* file, char* impath)
 {
 
     AreaCfg aa;
@@ -188,12 +188,10 @@ void gareafile::ReadIMail(char* tag)
     char* ptr;
     byte imver[2];
     byte imstructver[2];
-    char options[80];
     Path impath, file;
 
     *file = NUL;
     *impath = NUL;
-    strcpy(options, tag);
     ptr = strtok(tag, " \t");
     while(ptr)
     {
@@ -226,14 +224,14 @@ void gareafile::ReadIMail(char* tag)
             switch(imstructver[0])
             {
             case 4:
-                ReadIMail160(options, file, impath);
+                ReadIMail160(file, impath);
                 return;
             case 5:
-                ReadIMail170(options, file, impath);
+                ReadIMail170(file, impath);
                 return;
 #ifdef HAVE_IM18X
             case 6:
-                ReadIMail185(options, file, impath);
+                ReadIMail185(file, impath);
                 return;
 #endif
             }

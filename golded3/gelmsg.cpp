@@ -28,34 +28,6 @@
 
 //  ------------------------------------------------------------------
 
-void ResetMsg(GMsg* msg)
-{
-    if( msg == NULL )
-    {
-        LOG.printf("! ResetMsg() is called with NULL pointer to msg." );
-        PointerErrorExit();
-    }
-
-    msg->link.reset();
-
-    throw_xfree(msg->references);
-    throw_xfree(msg->inreplyto);
-    throw_xfree(msg->messageid);
-    throw_xfree(msg->txt);
-    throw_xfree(msg->line);
-    Line* line = msg->lin;
-    while(line)
-    {
-        Line* nextline = line->next;
-        throw_xdelete(line);
-        line = nextline;
-    }
-    memset(msg, 0, sizeof(GMsg));
-}
-
-
-//  ------------------------------------------------------------------
-
 int Area::LoadHdr(GMsg* msg, uint32_t msgno, bool enable_recode)
 {
     if( msg == NULL )
@@ -64,7 +36,7 @@ int Area::LoadHdr(GMsg* msg, uint32_t msgno, bool enable_recode)
         return false;
     }
 
-    ResetMsg(msg);
+    msg->Reset();
     msg->msgno = msgno;
     int retval = area->load_hdr(msg);
 
@@ -110,7 +82,7 @@ int Area::LoadMsg(GMsg* msg, uint32_t msgno, int margin, int mode)
         return false;
     }
 
-    ResetMsg(msg);
+    msg->Reset();
     msg->msgno = msgno;
     if(msgno and area->load_msg(msg))
     {

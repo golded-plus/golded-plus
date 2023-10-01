@@ -346,7 +346,7 @@ int EchoListClass::GetEcho(int n, char** echoid, char** path, char** desc)
 //  ------------------------------------------------------------------
 //  Read AREAS.BBS (any flavor!) and store echoid, path and desc.
 
-void gareafile::GetAreasBBS(char* name, char* origin, char* options)
+void gareafile::GetAreasBBS(char* name, char* origin)
 {
     char buf[256];
     Path areafile;

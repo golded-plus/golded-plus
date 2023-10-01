@@ -306,7 +306,6 @@ bool golded_search_manager::search(GMsg* msg, bool quick, bool shortcircuit)
     std::vector<search_item>::iterator item = items.begin();
     bool exit = false;
     bool and_cycle = false;
-    bool or_cycle = false;
 
     for(int i=0; i<items.size(); i++, item++)
     {
@@ -338,7 +337,6 @@ bool golded_search_manager::search(GMsg* msg, bool quick, bool shortcircuit)
                     if(exit)
                         return true;
                 }
-                or_cycle = (item->logic == search_item::logic_or);
             }
         }
 

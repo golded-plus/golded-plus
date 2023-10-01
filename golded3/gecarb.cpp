@@ -1,4 +1,3 @@
-
 //  ------------------------------------------------------------------
 //  GoldED+
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -28,18 +27,20 @@
 
 //  ------------------------------------------------------------------
 
-void AddCCList(const char *ptr, bool cchide, GMsg* msg, GMsg** carbon, int &cc, Area* A, Area* AA, int &xc2to)
+void AddCCList(const char *ptr, bool cchide, GMsg& msg, std::vector<GMsg>& carbons, int &cc, Area* A, Area* AA, int &xc2to)
 {
     Addr addr;
     char name[256];
 
     addr.reset_fast();
-    strtrim(strcpy(name, strskip_wht(ptr)));
-    (*carbon) = (GMsg*)throw_realloc((*carbon), sizeof(GMsg)*(cc+2));
-    (*carbon)[cc] = *msg;
-    (*carbon)[cc].dest.reset_fast();
-    (*carbon)[cc].odest.reset_fast();
-    (*carbon)[cc].attr.nwm1();
+    strtrim(strxcpy(name, strskip_wht(ptr), sizeof(name)));
+    carbons.resize(cc+1);
+    GMsg& carbon = carbons[cc];
+
+    carbon = msg;
+    carbon.dest.reset_fast();
+    carbon.odest.reset_fast();
+    carbon.attr.nwm1();
     if(strchr(name, ':'))
     {
         char* d = strchr(name, '@');
@@ -47,22 +48,22 @@ void AddCCList(const char *ptr, bool cchide, GMsg* msg, GMsg** carbon, int &cc, 
     }
     if(strchr(name, '@'))
     {
-        ParseInternetAddr(name, (*carbon)[cc].realto, (*carbon)[cc].iaddr);
-        strxcpy((*carbon)[cc].to, (*carbon)[cc].iaddr, sizeof(Name));
+        ParseInternetAddr(name, carbon.realto, carbon.iaddr);
+        strxcpy(carbon.to, carbon.iaddr, sizeof(carbon.to));
     }
     else
     {
-        (*carbon)[cc].iaddr[0] = NUL;
-        strxcpy((*carbon)[cc].to, name, sizeof(Name));
+        carbon.iaddr[0] = NUL;
+        strxcpy(carbon.to, name, sizeof(carbon.to));
     }
-    HeaderView->Use(AA, &(*carbon)[cc]);
+    HeaderView->Use(AA, &carbon);
     HeaderView->Paint();
     if(AA->isnet())
     {
         gsetaddr toname, toaddr, fromaddr;
         IAdr addr1, addr2;
 
-        addr = (*carbon)[cc].orig;
+        addr = carbon.orig;
         toname.buf = name;
         toname.update = false;
         toaddr.buf = addr1;
@@ -71,10 +72,10 @@ void AddCCList(const char *ptr, bool cchide, GMsg* msg, GMsg** carbon, int &cc, 
         fromaddr.buf = addr2;
         fromaddr.update = false;
         *addr2 = NUL;
-        if(set_to_address(&(*carbon)[cc], &toname, &toaddr, &fromaddr, NULL, 6, LNG->DestinationCC, true))
+        if(set_to_address(&carbon, &toname, &toaddr, &fromaddr, NULL, 6, LNG->DestinationCC, true))
             addr.net = 0;
         else
-            addr.set(addr1, (*carbon)[cc].odom);
+            addr.set(addr1, carbon.odom);
     }
     else
         addr = AA->Aka().addr;
@@ -82,15 +83,15 @@ void AddCCList(const char *ptr, bool cchide, GMsg* msg, GMsg** carbon, int &cc, 
     if(addr.net or AA->islocal())
     {
         // Create a CC if either address or name is different than the original.
-        if(memcmp(&addr, &msg->dest, sizeof(Addr)) or stricmp(name, msg->to) or (A != AA and not xc2to++))
+        if((addr == msg.dest) or stricmp(name, msg.to) or (A != AA and not xc2to++))
         {
-            (*carbon)[cc].odest = addr;
-            (*carbon)[cc].dest = addr;
+            carbon.odest = addr;
+            carbon.dest = addr;
             if(cchide)
-                (*carbon)[cc].attr.tou0();
+                carbon.attr.tou0();
             else
-                (*carbon)[cc].attr.tou1();
-            strxcpy((*carbon)[cc].to, name, sizeof(Name));
+                carbon.attr.tou1();
+            strxcpy(carbon.to, name, sizeof(carbon.to));
             cc++;
         }
     }
@@ -99,7 +100,7 @@ void AddCCList(const char *ptr, bool cchide, GMsg* msg, GMsg** carbon, int &cc, 
 
 //  ------------------------------------------------------------------
 
-int DoCarboncopy(GMsg* msg, GMsg** carbon)
+int DoCarboncopy(GMsg& msg, std::vector<GMsg>& carbon)
 {
 
     int n, cc = 0;
@@ -122,7 +123,7 @@ int DoCarboncopy(GMsg* msg, GMsg** carbon)
 
     newline = new Line();
     throw_xnew(newline);
-    msg->lin = newline = line = InsertLine(newline, msg->lin, DIR_PREV);
+    msg.lin = newline = line = InsertLine(newline, msg.lin, DIR_PREV);
 
     // Deal with carbon copies
 
@@ -139,7 +140,7 @@ int DoCarboncopy(GMsg* msg, GMsg** carbon)
             AA = A;
     }
 
-    attr = msg->attr;
+    attr = msg.attr;
     if(not AA->isecho() and line)
     {
         bool ask = true;
@@ -154,14 +155,14 @@ int DoCarboncopy(GMsg* msg, GMsg** carbon)
                 {
                     if(ask)
                     {
-                        msg->attr.nwm1();
+                        msg.attr.nwm1();
 
-                        AttrAdd(&msg->attr, &CFG->attribscc);
+                        AttrAdd(&msg.attr, &CFG->attribscc);
 
-                        HeaderView->Use(AA, msg);
+                        HeaderView->Use(AA, &msg);
                         HeaderView->Paint();
                         GMenuCarbon MenuCarbon;
-                        ignorecc = make_bool_not(MenuCarbon.Run(msg));
+                        ignorecc = make_bool_not(MenuCarbon.Run(&msg));
                         if(ignorecc)                    // Do not process carbon copies
                             break;
                         if(newline)
@@ -233,19 +234,19 @@ int DoCarboncopy(GMsg* msg, GMsg** carbon)
                 // Keep list as it was entered
                 break;
             case CC_HIDDEN:
-                ccline = msg->lin;
+                ccline = msg.lin;
                 if (A == AA)
                 {
-                    gsprintf(PRINTF_DECLARE_BUFFER(buf), "\001CC: %s %s", msg->To(), msg->dest.make_string(temp).c_str());
+                    gsprintf(PRINTF_DECLARE_BUFFER(buf), "\001CC: %s %s", msg.To(), msg.dest.make_string(temp).c_str());
                     ccline = AddKludge(ccline, buf);
                 }
                 for (n=0; n<cc; n++)
                 {
-                    if ((*carbon)[n].attr.tou())
+                    if (carbon[n].attr.tou())
                     {
-                        gsprintf(PRINTF_DECLARE_BUFFER(buf), "\001CC: %s %s", (*carbon)[n].To(), (*carbon)[n].dest.make_string(temp).c_str());
+                        gsprintf(PRINTF_DECLARE_BUFFER(buf), "\001CC: %s %s", carbon[n].To(), carbon[n].dest.make_string(temp).c_str());
                         ccline = AddKludge(ccline, buf);
-                        (*carbon)[n].attr.tou0();
+                        carbon[n].attr.tou0();
                     }
                 }
                 break;
@@ -253,16 +254,16 @@ int DoCarboncopy(GMsg* msg, GMsg** carbon)
                 gsprintf(PRINTF_DECLARE_BUFFER(buf2), LNG->CCTo, LNG->ListCC);
                 if (A == AA)
                 {
-                    gsprintf(PRINTF_DECLARE_BUFFER(buf), buf2, msg->To(), msg->dest.make_string(temp).c_str());
+                    gsprintf(PRINTF_DECLARE_BUFFER(buf), buf2, msg.To(), msg.dest.make_string(temp).c_str());
                     ccline = AddLine(ccline, buf);
                 }
                 for (n = 0; n < cc; n++)
                 {
-                    if ((*carbon)[n].attr.tou())
+                    if (carbon[n].attr.tou())
                     {
-                        gsprintf(PRINTF_DECLARE_BUFFER(buf), buf2, (*carbon)[n].To(), (*carbon)[n].dest.make_string(temp).c_str());
+                        gsprintf(PRINTF_DECLARE_BUFFER(buf), buf2, carbon[n].To(), carbon[n].dest.make_string(temp).c_str());
                         ccline = AddLine(ccline, buf);
-                        (*carbon)[n].attr.tou0();
+                        carbon[n].attr.tou0();
                     }
                 }
                 break;
@@ -276,14 +277,14 @@ int DoCarboncopy(GMsg* msg, GMsg** carbon)
 
                 if(A == AA)
                 {
-                    hline += msg->To();
+                    hline += msg.To();
                     ++line_items;
                 }
                 for (n = 0; n < cc; n++)
                 {
-                    if ((*carbon)[n].attr.tou())
+                    if (carbon[n].attr.tou())
                     {
-                        const char *user = (*carbon)[n].To();
+                        const char *user = carbon[n].To();
                         if ((hline.length() + strlen(user) + 2 > margintext) and line_items)
                         {
                             gsprintf(PRINTF_DECLARE_BUFFER(buf), LNG->CCTo, hline.c_str());
@@ -295,7 +296,7 @@ int DoCarboncopy(GMsg* msg, GMsg** carbon)
                             hline += ", ";
                         hline += user;
                         ++line_items;
-                        (*carbon)[n].attr.tou0();
+                        carbon[n].attr.tou0();
                     }
                 }
                 if (line_items)
@@ -311,11 +312,8 @@ int DoCarboncopy(GMsg* msg, GMsg** carbon)
 
     // Reset line pointer
 
-    msg->lin = DeleteLine(msg->lin);  // Delete the empty top line again
-    msg->attr = attr;
-
-    if(*carbon and not cc)
-        throw_release(*carbon);
+    msg.lin = DeleteLine(msg.lin);  // Delete the empty top line again
+    msg.attr = attr;
 
     if(A != AA)
     {

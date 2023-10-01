@@ -136,7 +136,8 @@ int ImportQWK()
 
         QWKHdr hdr;
 
-        GMsg* msg = (GMsg*)throw_calloc(1, sizeof(GMsg));
+        GMsg* msg = new GMsg();
+        throw_new(msg);
 
         // Read each message, header first
         int tosstobadmsgs = false;
@@ -145,7 +146,7 @@ int ImportQWK()
         do
         {
 
-            ResetMsg(msg);
+            msg->Reset();
 
             memset(&hdr, 0, sizeof(QWKHdr));
             more = 1 == fp.Fread(&hdr, sizeof(QWKHdr));
@@ -345,8 +346,8 @@ int ImportQWK()
             AA->Close();
         }
 
-        ResetMsg(msg);
-        throw_free(msg);
+        msg->Reset();
+        throw_delete(msg);
 
         fp.Fclose();
         remove(file);
@@ -547,7 +548,8 @@ int ExportQwkArea(int areano, gfile& fp, int confno, int& pktmsgno)
     AA->Lock();
     AA->RandomizeData();
 
-    GMsg* msg = (GMsg*)throw_calloc(1, sizeof(GMsg));
+    GMsg* msg = new GMsg();
+    throw_new(msg);
 
     for(uint n=0; n<AA->Expo.Count(); n++)
     {
@@ -561,8 +563,8 @@ int ExportQwkArea(int areano, gfile& fp, int confno, int& pktmsgno)
         }
     }
 
-    ResetMsg(msg);
-    throw_free(msg);
+    msg->Reset();
+    throw_delete(msg);
 
     AA->Unlock();
     AA->Close();

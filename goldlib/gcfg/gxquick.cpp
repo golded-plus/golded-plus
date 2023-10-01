@@ -39,7 +39,7 @@
 //  ------------------------------------------------------------------
 //  Read QuickBBS 2.60 (old) area config
 
-void gareafile::ReadQ260(char* qbpath, char* origin, char* options)
+void gareafile::ReadQ260(char* qbpath, char* origin)
 {
 
     AreaCfg aa;
@@ -136,7 +136,7 @@ void gareafile::ReadQ260(char* qbpath, char* origin, char* options)
 //  ------------------------------------------------------------------
 //  Read QuickBBS 2.76.G2 (new) area config
 
-void gareafile::ReadQ276(char* qbpath, char* origin, char* options)
+void gareafile::ReadQ276(char* qbpath, char* origin)
 {
 
     AreaCfg aa;
@@ -249,7 +249,7 @@ void gareafile::ReadQuickBBS(char* tag)
 
     char* ptr;
     Path qbpath;
-    char origin[80], options[80];
+    char origin[80];
 
     ptr = getenv("QUICKBBS");
     if(ptr == NULL)
@@ -262,7 +262,6 @@ void gareafile::ReadQuickBBS(char* tag)
     // Read AREAS.BBS
     *qbpath = NUL;
     *origin = NUL;
-    strcpy(options, tag);
     ptr = strtok(tag, " \t");
     while(ptr)
     {
@@ -271,16 +270,16 @@ void gareafile::ReadQuickBBS(char* tag)
             if(is_dir(ptr) and (*qbpath == NUL))
                 AddBackslash(strcpy(qbpath, ptr));
             else
-                GetAreasBBS(ptr, origin, options);
+                GetAreasBBS(ptr, origin);
         }
         ptr = strtok(NULL, " \t");
     }
 
     // Detect general version range of QuickBBS
     if(fexist(AddPath(qbpath, "quickcfg.dat")))
-        ReadQ276(qbpath, origin, options);
+        ReadQ276(qbpath, origin);
     else
-        ReadQ260(qbpath, origin, options);
+        ReadQ260(qbpath, origin);
 }
 
 

@@ -37,7 +37,7 @@
 
 //  ------------------------------------------------------------------
 
-void gareafile::ReadEzycom102(gfile &fp, char* path, char* file, char* options)
+void gareafile::ReadEzycom102(gfile &fp, char* path, char* file)
 {
     int n;
     AreaCfg aa;

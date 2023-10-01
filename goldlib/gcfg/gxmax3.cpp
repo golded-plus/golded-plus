@@ -41,7 +41,7 @@
 //  ------------------------------------------------------------------
 //  Read areas from Maximus 3.xx
 
-void gareafile::ReadMaximus3(char* mxpath, char* areafile, char* options)
+void gareafile::ReadMaximus3(char* mxpath, char* areafile)
 {
 
     FILE* fp;
@@ -181,7 +181,6 @@ void gareafile::ReadMaximus3(char* mxpath, char* areafile, char* options)
 void gareafile::ReadMaximus(char* tag)
 {
 
-    char options[80];
     int is_maximus3 = false;
     Path maximuspath, mxpath, areafile, path;
     char* ptr;
@@ -200,7 +199,6 @@ void gareafile::ReadMaximus(char* tag)
 
     // Get the path or filename from the parameters
     *path = NUL;
-    strcpy(options, tag);
     ptr = strtok(tag, " \t");
     while(ptr)
     {
@@ -257,7 +255,7 @@ void gareafile::ReadMaximus(char* tag)
     CfgSquishuserpath(mxpath);
 
     if(is_maximus3)
-        ReadMaximus3(mxpath, areafile, options);
+        ReadMaximus3(mxpath, areafile);
 }
 
 

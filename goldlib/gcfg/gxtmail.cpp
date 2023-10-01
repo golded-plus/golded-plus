@@ -37,7 +37,7 @@
 
 //  ------------------------------------------------------------------
 
-void gareafile::ReadTmailFile(char* file, char* options, char* origin)
+void gareafile::ReadTmailFile(char* file, char* origin)
 {
 
     const word CRC_NAME = 0x3B63;
@@ -127,13 +127,11 @@ void gareafile::ReadTmail(char* tag)
 {
 
     char origin[80];
-    char options[80];
     Path file, path, tmailcfg;
 
     *path = NUL;
     *origin = NUL;
     strcpy(tmailcfg, "tmail.cfg");
-    strcpy(options, tag);
     char* ptr = strtok(tag, " \t");
     while(ptr)
     {
@@ -167,7 +165,7 @@ void gareafile::ReadTmail(char* tag)
     }
 
     strcpy(pathprefix, path);
-    ReadTmailFile(file, options, origin);
+    ReadTmailFile(file, origin);
     *pathprefix = NUL;
 }
 

@@ -38,6 +38,7 @@
 #include <gtimall.h>
 #include <gvidall.h>
 #include <gmsgattr.h>
+#include <gmemdbg.h>
 
 #include <vector>
 
@@ -415,6 +416,40 @@ public:
     gmsg_adeptxbbs_fields adeptxbbs;
     gmsg_ezycom_fields    ezycom;
 
+    void reset()
+    {
+        board = 0;
+        msgno = 0;
+        link.reset();
+        oorig.reset();
+        orig.reset();
+        odom[0] = 0;
+        odest.reset();
+        dest.reset();
+        ddom[0] = 0;
+        by[0] = 0;
+        to[0] = 0;
+        re[0] = 0;
+        written = 0;
+        arrived = 0;
+        received = 0;
+        attr.reset();
+        cost = 0;
+        timesread = 0;
+        msgid.reset();
+        msgids[0] = 0;
+        replys[0] = 0;
+        pid[0] = 0;
+        txtstart = 0;
+        txtlength = 0;
+        txtblocks = 0;
+        throw_xrelease(txt);
+        jam = gmsg_jam_fields();
+        pcboard = gmsg_pcboard_fields();
+        wildcat = gmsg_wildcat_fields();
+        adeptxbbs = gmsg_adeptxbbs_fields();
+        ezycom = gmsg_ezycom_fields();
+    }
 };
 
 

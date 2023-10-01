@@ -38,7 +38,7 @@
 
 //  ------------------------------------------------------------------
 
-void gareafile::ReadEzycom110(gfile &fp, char* path, char* file, char* options)
+void gareafile::ReadEzycom110(gfile &fp, char* path, char* file)
 {
     int n;
     AreaCfg aa;
@@ -297,11 +297,10 @@ void gareafile::ReadEzycom(char* tag)
 {
     char* ptr;
     Path path, file;
-    char options[80], abuf[40];
+    char abuf[40];
 
     *file = NUL;
     *path = NUL;
-    strcpy(options, tag);
     ptr = strtok(tag, " \t");
     while(ptr)
     {
@@ -348,9 +347,9 @@ void gareafile::ReadEzycom(char* tag)
             return;
         }
         else if(strnicmp(_verstr, "1.10", 4) >= 0)
-            ReadEzycom110(fp, path, file, options);
+            ReadEzycom110(fp, path, file);
         else
-            ReadEzycom102(fp, path, file, options);
+            ReadEzycom102(fp, path, file);
     }
 }
 

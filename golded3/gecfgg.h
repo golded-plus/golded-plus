@@ -148,12 +148,6 @@ struct Node
 {
     Name name;
     Addr addr;
-    Node &operator=(const Node &a)
-    {
-        strxcpy(name, a.name, ARRAYSIZE(name));
-        addr=a.addr;
-        return *this;
-    }
 };
 
 
@@ -164,12 +158,6 @@ struct FileAlias
 {
     char alias[9];
     Path file;
-    FileAlias& operator=(const FileAlias& a)
-    {
-        strxcpy(alias, a.alias, sizeof(alias));
-        strxcpy(file, a.file, sizeof(Path));
-        return *this;
-    }
 };
 
 

@@ -155,7 +155,7 @@ void Area::InitData()
     adat->usestylies = CFG->usestylies;
     strcpy(adat->inputfile, CFG->inputfile);
     strcpy(adat->internetaddress, CFG->internetaddress);
-    memcpy(&adat->internetgate, &CFG->internetgate, sizeof(Node));
+    adat->internetgate = CFG->internetgate;
     adat->internetmsgid = CFG->internetmsgid;
     adat->internetrfcbody = CFG->internetrfcbody;
     strcpy(adat->loadlanguage, CFG->loadlanguage);

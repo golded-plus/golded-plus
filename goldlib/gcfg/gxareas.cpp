@@ -38,14 +38,13 @@ void gareafile::ReadAreasBBS(char* tag)
 
     AreaCfg aa;
     int echos;
-    char origin[80], options[80];
+    char origin[80];
     char* ptr;
     char* echoid=NULL;
     char* path=NULL;
     char* desc=NULL;
 
     *origin = NUL;
-    strcpy(options, tag);
     ptr = strtok(tag, " \t");
 
     // Read each AREAS.BBS
@@ -54,7 +53,7 @@ void gareafile::ReadAreasBBS(char* tag)
         if(*ptr != '-')
         {
             int echos_before = echolist.Echos();
-            GetAreasBBS(ptr, origin, options);
+            GetAreasBBS(ptr, origin);
             echos = echolist.Echos();
             for(int n=echos_before; n<echos; n++)
             {

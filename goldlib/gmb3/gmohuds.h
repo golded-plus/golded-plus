@@ -161,16 +161,8 @@ struct HudsToIdx
 
 //  ------------------------------------------------------------------
 
-typedef word HudsLast[HUDS_MAXBOARD]
-#ifndef __DJGPP__
-    __attribute__((packed))
-#endif
-;
-typedef word GoldLast[GOLD_MAXBOARD]
-#ifndef __DJGPP__
-    __attribute__((packed))
-#endif
-;
+typedef word HudsLast[HUDS_MAXBOARD];
+typedef word GoldLast[GOLD_MAXBOARD];
 
 
 //  ------------------------------------------------------------------

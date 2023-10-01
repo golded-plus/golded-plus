@@ -38,7 +38,7 @@
 
 //  ------------------------------------------------------------------
 
-void gareafile::ReadFMail116(gfile &fp, char* path, char* file, char* options)
+void gareafile::ReadFMail116(gfile &fp, char* path, char* file)
 {
     AreaCfg aa;
 
@@ -262,12 +262,9 @@ void gareafile::ReadFMail116(gfile &fp, char* path, char* file, char* options)
 void gareafile::ReadFMail(char* tag)
 {
     char* ptr;
-    char options[80];
     Path path, file;
 
     *file = NUL;
-    options[79] = 0;
-    strncpy(options, tag, 79);
     ptr = strtok(tag, " \t");
     while(ptr)
     {
@@ -304,7 +301,7 @@ void gareafile::ReadFMail(char* tag)
         uint fmver = (_rev.vmajor << 8) | _rev.vminor;
 
         if(fmver < 94)
-            ReadFMail092(fp, path, file, options);
+            ReadFMail092(fp, path, file);
         else
         {
 
@@ -320,9 +317,9 @@ void gareafile::ReadFMail(char* tag)
             uint32_t ar_rev = (uint16_t)ar.revNumber;
 
             if((ar_rev >= 0x0100) and (ar_rev < 0x0110))
-                ReadFMail098(fp, path, file, options);
+                ReadFMail098(fp, path, file);
             else if((ar_rev >= 0x0110) and (ar_rev < 0x0200))
-                ReadFMail116(fp, path, file, options);
+                ReadFMail116(fp, path, file);
             else
             {
                 char buff[56+sizeof(uint)*2];

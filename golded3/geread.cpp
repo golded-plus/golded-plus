@@ -152,7 +152,8 @@ void Reader()
     bool istwitto, istwitsubj;
     char buf[256], buf2[200];
 
-    GMsg* msg = (GMsg*)throw_calloc(1, sizeof(GMsg));
+    GMsg* msg = new GMsg();
+    throw_new(msg);
 
     reader_finished = false;
     reader_msg = msg;
@@ -1146,8 +1147,8 @@ void Reader()
         BodyView->Destroy();
     }
 
-    ResetMsg(msg);
-    throw_free(msg);
+    msg->Reset();
+    throw_delete(msg);
     // Invalidate reader_msg since the actual data has just been freed.
     reader_msg = NULL;
 
@@ -1341,13 +1342,14 @@ int LoadMessage(GMsg* msg, int margin)
 
                 if(reader_rcv_noise > 1)
                 {
-                    GMsg* tmsg = (GMsg*) throw_calloc(1, sizeof(GMsg));
+                    GMsg* tmsg = new GMsg();
+                    throw_new(tmsg);
                     AA->LoadHdr(tmsg, msg->msgno, false);
                     tmsg->attr = msg->attr;
                     tmsg->orig_timesread = msg->orig_timesread;
                     tmsg->received = msg->received;
                     AA->SaveHdr(GMSG_UPDATE, tmsg);
-                    throw_free(tmsg);
+                    throw_delete(tmsg);
                 }
 
                 msg->attr.upd0();
@@ -1565,7 +1567,8 @@ void GotoReplies()
     uint maxmsgno = 0;
     uint maxwritten = 0;
 
-    GMsg* rmsg = (GMsg*)throw_calloc(1, sizeof(GMsg));
+    GMsg* rmsg = new GMsg();
+    throw_new(rmsg);
     ReplySel* rlist = (ReplySel*)throw_calloc(list_max+3, sizeof(ReplySel));
 
     for(int n=0; n<list_max+2; n++)
@@ -1606,8 +1609,8 @@ void GotoReplies()
                 gotolink = reln;
         }
     }
-    ResetMsg(rmsg);
-    throw_free(rmsg);
+    rmsg->Reset();
+    throw_delete(rmsg);
 
     int selected = 0;
     if(replies > 1)
@@ -1685,7 +1688,8 @@ void GotoReplyNext()
 
     if (!gotolink && AA->Msgn.ToReln(msgno))
     {
-        GMsg* tempmsg = (GMsg*)throw_calloc(1, sizeof(GMsg));
+        GMsg* tempmsg = new GMsg();
+        throw_new(tempmsg);
         AA->LoadHdr(tempmsg, msgno, false);
 
         if (tempmsg->link.first() == reader_msg->msgno)
@@ -1702,8 +1706,8 @@ void GotoReplyNext()
 
         gotolink = AA->Msgn.ToReln(gotolink);
 
-        ResetMsg(tempmsg);
-        throw_free(tempmsg);
+        tempmsg->Reset();
+        throw_delete(tempmsg);
     }
 
     if(gotolink)
@@ -1741,7 +1745,8 @@ void GotoPrevUnread()
     reader_direction = DIR_PREV;
     w_info(LNG->Wait);
 
-    GMsg* msg = (GMsg*)throw_calloc(1, sizeof(GMsg));
+    GMsg* msg = new GMsg();
+    throw_new(msg);
 
     bool found = false;
     int prev = AA->lastread();
@@ -1757,8 +1762,8 @@ void GotoPrevUnread()
         }
     }
 
-    ResetMsg(msg);
-    throw_free(msg);
+    msg->Reset();
+    throw_delete(msg);
 
     if(not found)
     {
@@ -1777,7 +1782,8 @@ void GotoNextUnread()
     w_info(LNG->Wait);
     reader_direction = DIR_NEXT;
 
-    GMsg* msg = (GMsg*)throw_calloc(1, sizeof(GMsg));
+    GMsg* msg = new GMsg();
+    throw_new(msg);
 
     bool found = false;
     int count = AA->Msgn.Count();
@@ -1794,8 +1800,8 @@ void GotoNextUnread()
         }
     }
 
-    ResetMsg(msg);
-    throw_free(msg);
+    msg->Reset();
+    throw_delete(msg);
 
     if(not found)
     {

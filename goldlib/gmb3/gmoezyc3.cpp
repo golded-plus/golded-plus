@@ -41,7 +41,7 @@ int EzycomArea::load_message(int __mode, gmsg* __msg, EzycHdr& __hdr)
 {
 
     // Load the header
-    memset(&__hdr, 0, sizeof(EzycHdr));
+    __hdr = EzycHdr();
     lseekset(data->fhhdr, __msg->msgno-1, sizeof(EzycHdr));
     read(data->fhhdr, &__hdr, sizeof(EzycHdr));
 

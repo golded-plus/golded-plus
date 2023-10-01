@@ -312,7 +312,7 @@ UUbhdecomp (char *in, char *out, char *last, int *rpc,
  */
 
 size_t
-UUbhwrite (char *ptr, size_t sel, size_t nel, FILE *file)
+UUbhwrite (char *ptr, size_t nel, FILE *file)
 {
     char *tmpstring=uuutil_bhwtmp;
     static int rpc = 0;

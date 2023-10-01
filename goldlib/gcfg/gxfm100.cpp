@@ -34,7 +34,7 @@
 
 //  ------------------------------------------------------------------
 
-void gareafile::ReadFMail098(gfile &fp, char* path, char* file, char* options)
+void gareafile::ReadFMail098(gfile &fp, char* path, char* file)
 {
     AreaCfg aa;
 

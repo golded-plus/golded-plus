@@ -556,9 +556,8 @@ UUScanHeader (FILE *datei, headers *envelope)
  */
 
 static int
-ScanData (FILE *datei, char *fname, int *errcode,
-          char *boundary, int ismime, int checkheaders,
-          fileread *result)
+ScanData (FILE *datei, int *errcode, char *boundary, int ismime,
+          int checkheaders, fileread *result)
 {
     char *line=uuscan_sdline, *bhds1=uuscan_sdbhds1, *bhds2=uuscan_sdbhds2;
     static char *ptr, *p2, *p3=NULL, *bhdsp, bhl;
@@ -2509,7 +2508,7 @@ ScanPart (FILE *datei, char *fname, int *errcode)
                 }
                 memset (result, 0, sizeof (fileread));
 
-                if ((res = ScanData (datei, fname, errcode, NULL, 1, 1, result))==-1)
+                if ((res = ScanData (datei, errcode, NULL, 1, 1, result))==-1)
                 {
                     /* oops, something went wrong */
                     sstate.isfolder = 0;
@@ -2589,7 +2588,7 @@ ScanPart (FILE *datei, char *fname, int *errcode)
          * ourselves.
          */
 
-        if ((res = ScanData (datei, fname, errcode,
+        if ((res = ScanData (datei, errcode,
                              sstate.envelope.boundary,
                              1, 0, result)) == -1)
         {
@@ -2679,7 +2678,7 @@ ScanPart (FILE *datei, char *fname, int *errcode)
             }
             memset (result, 0, sizeof (fileread));
 
-            if ((res = ScanData (datei, fname, errcode, NULL, 1, 1, result))==-1)
+            if ((res = ScanData (datei, errcode, NULL, 1, 1, result))==-1)
             {
                 /* oops, something went wrong */
                 sstate.isfolder = 0;
@@ -3015,7 +3014,7 @@ ScanPart (FILE *datei, char *fname, int *errcode)
              * Otherwise, let's see what we can find ourself. No
              * boundary (NULL) but MIME, and respect new headers.
              */
-            if ((res = ScanData (datei, fname, errcode, NULL, 1, 1, result)) == -1)
+            if ((res = ScanData (datei, errcode, NULL, 1, 1, result)) == -1)
             {
                 /* oops, something went wrong */
                 sstate.isfolder = 0;
@@ -3272,7 +3271,7 @@ ScanPart (FILE *datei, char *fname, int *errcode)
              * Otherwise, let's see what we can find ourself. No
              * boundary (NULL) but MIME, and respect new headers.
              */
-            if ((res = ScanData (datei, fname, errcode, NULL, 1, 1, result)) == -1)
+            if ((res = ScanData (datei, errcode, NULL, 1, 1, result)) == -1)
             {
                 /* oops, something went wrong */
                 sstate.isfolder = 0;
@@ -3436,7 +3435,7 @@ ScanPart (FILE *datei, char *fname, int *errcode)
     if (sstate.envelope.ctype)
         result->mimetype = _FP_strdup (sstate.envelope.ctype);
 
-    if ((res=ScanData (datei, fname, errcode, NULL,
+    if ((res=ScanData (datei, errcode, NULL,
                        sstate.ismime, 1, result))==-1)
     {
         /* oops, something went wrong */
