@@ -762,7 +762,7 @@ void Initialize(int argc, char* argv[])
     }
 
     // Read/compile the config files
-    compiled = ReadGoldedCfg(cmdlineforce);
+    compiled = ReadGoldedCfg();
 
     // Call install finish procedure
     if (cmdlineinstall && InstallFinish())
@@ -804,8 +804,8 @@ void Initialize(int argc, char* argv[])
     LOG.open(CFG->logfile, buf, __gver_shortlogname__, CFG->logformat);
 
     // Read/compile various configs
-    compiled |= ReadLangCfg(cmdlineforce);
-    compiled |= make_bool(ReadKeysCfg(cmdlineforce));
+    compiled |= ReadLangCfg();
+    compiled |= make_bool(ReadKeysCfg());
     compiled |= make_bool(ReadHelpCfg(cmdlineforce));
 
     // Initialize sound system

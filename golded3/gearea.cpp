@@ -520,7 +520,8 @@ void GPickArealist::AreaCatchUp(uint n)
         return;
 
     GMenuAreaCatchup MenuAreaCatchup;
-    GMsg* msg = (GMsg*)throw_calloc(1, sizeof(GMsg));
+    GMsg* msg = new GMsg();
+    throw_new(msg);
 
     int mode = MenuAreaCatchup.Run();
 
@@ -558,7 +559,7 @@ void GPickArealist::AreaCatchUp(uint n)
             }
         }
     }
-    throw_free(msg);
+    throw_delete(msg);
 }
 
 

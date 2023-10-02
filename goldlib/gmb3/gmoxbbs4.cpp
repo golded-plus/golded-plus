@@ -131,7 +131,7 @@ void XbbsArea::save_message(int __mode, gmsg* __msg, XbbsHdr& __hdr)
 {
 
     // Reset header
-    memset(&__hdr, 0, sizeof(XbbsHdr));
+    __hdr = XbbsHdr();
 
     if(__mode & GMSG_NEW)
     {

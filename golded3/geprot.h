@@ -50,7 +50,7 @@ int SwitchCfgAtoG(word crc, char* val);
 int SwitchCfgHtoZ(word crc, char* val);
 
 int ReadGoldCfg(int force);
-bool ReadGoldedCfg(int& force);
+bool ReadGoldedCfg();
 void WriteGoldGed();
 
 void InstallDetect(char* path);
@@ -62,7 +62,7 @@ int getgroup(const char *key);
 //  ------------------------------------------------------------------
 //  GCKEYS prototypes
 
-int ReadKeysCfg(int force);
+int ReadKeysCfg();
 void KeyCmdAdd(gkey cmd, gkey val, int type);
 void RunMacro(Macro* m);
 
@@ -71,7 +71,7 @@ void RunMacro(Macro* m);
 //  GCLANG prototypes
 
 void LangInit();
-bool ReadLangCfg(int force);
+bool ReadLangCfg();
 void LoadLanguage(const char* file);
 
 
@@ -221,8 +221,7 @@ inline void TokenXlat(int mode, char *input, size_t size, GMsg* msg, GMsg* oldms
 }
 
 void Rot13(GMsg* msg);
-void ResetMsg(GMsg* msg);
-int DoCarboncopy(GMsg* msg, GMsg** carbon);
+int DoCarboncopy(GMsg& msg, std::vector<GMsg>& carbon);
 void DoCrosspost(GMsg* msg, std::vector<int> &postareas);
 char* ParseInternetAddr(char* __string, char* __name, char* __addr, bool detect_charset = true);
 
@@ -277,17 +276,17 @@ public:
     bool GoNextUnread(bool reader);
 
     GThreadlist()
+        : msg()
     {
         m_OldMsgno = dword(-1);
         m_OldTags = uint(-1);
 
-        memset(&msg, 0, sizeof(GMsg));
         replylinkfloat = CFG->replylinkfloat;
     }
 
     ~GThreadlist()
     {
-        ResetMsg(&msg);
+        msg.Reset();
     }
 };
 

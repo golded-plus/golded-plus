@@ -38,7 +38,7 @@
 //  ------------------------------------------------------------------
 //  Read IMail IMAIL.CF and IMAIL.AR
 
-void gareafile::ReadIMail160(char* options, char* file, char* impath)
+void gareafile::ReadIMail160(char* file, char* impath)
 {
 
     AreaCfg aa;

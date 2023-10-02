@@ -79,7 +79,7 @@ void EzycomArea::save_message(int __mode, gmsg* __msg, EzycHdr& __hdr)
         __msg->msgno = (filelength(data->fhhdr) / sizeof(EzycHdr)) + 1;
 
     // Reset header
-    memset(&__hdr, 0, sizeof(EzycHdr));
+    __hdr = EzycHdr();
 
     // Convert attributes
     __hdr.msgattr |= (byte)(__msg->attr.del() ? EZYC_MSGATTR_DELETED  : 0);

@@ -200,7 +200,8 @@ void MarkMsgs_Txt(int item, char* markstring)
             return;
     }
 
-    GMsg* msg = (GMsg*)throw_calloc(1, sizeof(GMsg));
+    GMsg* msg = new GMsg();
+    throw_new(msg);
 
     golded_search_manager srchmgr;
     srchmgr.prepare_from_string(markstring, (item == TAG_MARKTXTHDR) ? GFIND_HDRTXT : GFIND_HDR);
@@ -238,8 +239,8 @@ void MarkMsgs_Txt(int item, char* markstring)
 
     w_progress(MODE_QUIT, BLACK_|_BLACK, 0, 0, NULL);
 
-    ResetMsg(msg);
-    throw_free(msg);
+    msg->Reset();
+    throw_delete(msg);
 }
 
 
@@ -284,7 +285,8 @@ static void recursive_mark(GMsg* msg, uint32_t msgno, bool markasread)
 
 void MarkMsgs_Thread(GMsg* msg, bool markasread)
 {
-    GMsg* tempmsg = (GMsg*)throw_calloc(1, sizeof(GMsg));
+    GMsg* tempmsg = new GMsg();
+    throw_new(tempmsg);
     tempmsg->msgno = msg->msgno;
 
     w_info(LNG->Wait);
@@ -318,8 +320,8 @@ void MarkMsgs_Thread(GMsg* msg, bool markasread)
 
     w_info(NULL);
 
-    ResetMsg(tempmsg);
-    throw_free(tempmsg);
+    tempmsg->Reset();
+    throw_delete(tempmsg);
 }
 
 

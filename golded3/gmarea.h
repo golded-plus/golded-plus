@@ -96,38 +96,18 @@ public:
 
     const char* areakludgeid;     // Echoid from AREA: kludge or NULL
 
-    char* By()
-    {
-        return *realby ? realby : by;
-    }
-    char* To()
-    {
-        return *realto ? realto : to;
-    }
-
-    bool to_me()
-    {
-        return make_bool(you_and_I & TO_ME );
-    }
-    bool to_all()
-    {
-        return make_bool(you_and_I & TO_ALL);
-    }
-    bool by_me()
-    {
-        return make_bool(you_and_I & BY_ME );
-    }
-    bool to_you()
-    {
-        return make_bool(you_and_I & TO_YOU);
-    }
-    bool by_you()
-    {
-        return make_bool(you_and_I & BY_YOU);
-    }
+    char* By();
+    char* To();
+    bool to_me();
+    bool to_all();
+    bool by_me();
+    bool to_you();
+    bool by_you();
 
     void TextToLines(int __line_width, bool getvalue = true, bool header_recode = true);
     void LinesToText();
+
+    void Reset();
 };
 
 
@@ -400,11 +380,11 @@ struct AreaData
         memset(xlatimport, 0, sizeof(xlatimport));
 
         //classes
-        memset(&aka, 0, sizeof(aka));
-        memset(&attributes, 0, sizeof(attributes));
-        memset(&internetgate, 0, sizeof(internetgate));
+        aka = gaka();
+        attributes = ftn_attr();
+        internetgate = Node();
         memset(&play, 0, sizeof(play));
-        memset(&username, 0, sizeof(username));
+        username = Node();
     }
 
     // Area
@@ -972,7 +952,7 @@ public:
     {
         return adat->play;
     }
-    const int    Replyre() const
+    int    Replyre() const
     {
         return adat->replyre;
     }

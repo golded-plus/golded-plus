@@ -206,6 +206,109 @@ void RenumberArea()
     }
 }
 
+//  ------------------------------------------------------------------
+
+char* GMsg::By()
+{
+    return *realby ? realby : by;
+}
+
+//  ------------------------------------------------------------------
+
+char* GMsg::To()
+{
+    return *realto ? realto : to;
+}
+
+//  ------------------------------------------------------------------
+
+bool GMsg::to_me()
+{
+    return make_bool(you_and_I & TO_ME );
+}
+
+//  ------------------------------------------------------------------
+
+bool GMsg::to_all()
+{
+    return make_bool(you_and_I & TO_ALL);
+}
+
+//  ------------------------------------------------------------------
+
+bool GMsg::by_me()
+{
+    return make_bool(you_and_I & BY_ME );
+}
+
+//  ------------------------------------------------------------------
+
+bool GMsg::to_you()
+{
+    return make_bool(you_and_I & TO_YOU);
+}
+
+//  ------------------------------------------------------------------
+
+bool GMsg::by_you()
+{
+    return make_bool(you_and_I & BY_YOU);
+}
+
+//  ------------------------------------------------------------------
+
+void GMsg::Reset()
+{
+    iorig[0] = 0;
+    idest[0] = 0;
+    ireplyto[0] = 0;
+    iaddr[0] = 0;
+    igate[0] = 0;
+    ifrom[0] = 0;
+    ito[0] = 0;
+    icc[0] = 0;
+    ibcc[0] = 0;
+    organization[0] = 0;
+    realby[0] = 0;
+    realto[0] = 0;
+    pseudoto[0] = 0;
+    pseudofrom[0] = 0;
+    you_and_I = 0;
+    fwdfrom[0] = 0;
+    fwdorig.reset();
+    fwdto[0] = 0;
+    fwddest.reset();
+    fwdsubj[0] = 0;
+    fwdarea[0] = 0;
+    fwdmsgid[0] = 0;
+    i51 = false;
+    charset[0] = 0;
+    charsetlevel = 0;
+    charsetencoding = 0;
+    tzutc = 0;
+    tagline[0] = 0;
+    tearline[0] = 0;
+    origin[0] = 0;
+    lines = 0;
+    quotepct = 0;
+    foundwhere = 0;
+    foundtopline = 0;
+    orig_timesread = 0;
+    areakludgeid = NULL;
+    throw_xrelease(references);
+    throw_xrelease(inreplyto);
+    throw_xrelease(messageid);
+    throw_xrelease(line);
+    Line* ln = lin;
+    lin = NULL;
+    while(ln)
+    {
+        Line* nextline = ln->next;
+        throw_delete(ln);
+        ln = nextline;
+    }
+    gmsg::reset();
+}
 
 //  ------------------------------------------------------------------
 
@@ -330,8 +433,8 @@ void Area::SaveMsg(int mode, GMsg* msg)
             {
                 Path p;
 
-                sprintf(file, "%s%smail.jam", CFG->jampath, isecho() ? "echo" : "net");
-                sprintf(line, "%s %u", ReMapPath(strcpy(p, path())), msg->msgno);
+                snprintf(file, sizeof(file), "%s%smail.jam", CFG->jampath, isecho() ? "echo" : "net");
+                snprintf(line, sizeof(line), "%s %u", ReMapPath(strcpy(p, path())), msg->msgno);
                 WriteNoDupes(file, line);
             }
             if(isqwk())

@@ -415,7 +415,7 @@ void SquishArea::save_message(int __mode, gmsg* __msg)
         uint _reln = (__mode & GMSG_NEW) ? 0 : (Msgn->ToReln(__msg->msgno) - 1);
 
         // Reset header
-        memset(&__hdr, 0, sizeof(SqshHdr));
+        __hdr =SqshHdr();
 
         // Convert attributes
         __hdr.attr |= MSGUID;

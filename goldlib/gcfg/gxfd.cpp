@@ -51,7 +51,7 @@ void gareafile::ReadFrontDoor(char* tag)
     FD_Editor* editor;
     FD_Shared* shared;
     Path fdpath, file;
-    char buf[256], origin[80], options[80];
+    char buf[256], origin[80];
 
     *fdpath = NUL;
     *origin = NUL;
@@ -69,7 +69,6 @@ void gareafile::ReadFrontDoor(char* tag)
         strcpy(fdpath, areapath);
 
     // Read AREAS.BBS
-    strcpy(options, tag);
     ptr = strtok(tag, " \t");
     while(ptr)
     {
@@ -78,7 +77,7 @@ void gareafile::ReadFrontDoor(char* tag)
             if(is_dir(ptr) and (*fdpath == NUL))
                 AddBackslash(strcpy(fdpath, ptr));
             else
-                GetAreasBBS(ptr, origin, options);
+                GetAreasBBS(ptr, origin);
         }
         ptr = strtok(NULL, " \t");
     }

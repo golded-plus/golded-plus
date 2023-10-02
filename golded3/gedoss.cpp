@@ -61,8 +61,8 @@ void Cleanup(void)
         // Free msg data
         if (reader_msg != NULL)
         {
-            ResetMsg(reader_msg);
-            throw_release(reader_msg);
+            reader_msg->Reset();
+            throw_delete(reader_msg);
         }
         // Free area data
         AL.Reset();

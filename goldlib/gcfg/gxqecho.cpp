@@ -37,7 +37,7 @@
 
 //  ------------------------------------------------------------------
 
-void gareafile::ReadQEchoFile(char* file, char* options, char* origin)
+void gareafile::ReadQEchoFile(char* file, char* origin)
 {
 
     AreaCfg aa;
@@ -103,13 +103,10 @@ void gareafile::ReadQEcho(char* tag)
 {
 
     char origin[80];
-    char options[80];
     Path file;
 
     *origin = NUL;
     *file = NUL;
-    options[79] = 0;
-    strncpy(options, tag, 79);
     char* ptr = strtok(tag, " \t");
     while(ptr)
     {
@@ -121,7 +118,7 @@ void gareafile::ReadQEcho(char* tag)
     if(not *file)
         strcpy(file, "/etc/qecho/AreaList");
 
-    ReadQEchoFile(file, options, origin);
+    ReadQEchoFile(file, origin);
 }
 
 

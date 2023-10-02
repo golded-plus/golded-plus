@@ -70,7 +70,7 @@ char* gareafile::ClipDosFilename(char* __file)
 
 //  ------------------------------------------------------------------
 
-void gareafile::ReadxMailFile(char* file, char* options)
+void gareafile::ReadxMailFile(char* file)
 {
 
     const word CRC_SYSOP = 0x967F;
@@ -146,12 +146,10 @@ void gareafile::ReadXMail(char* tag)
     FILE* fp;
     char* ptr;
     int areano;
-    char options[80];
     Path xmailpath, file;
     EchoAreaRec area;
 
     *xmailpath = NUL;
-    strcpy(options, tag);
     ptr = strtok(tag, " \t");
     while(ptr)
     {
@@ -172,7 +170,7 @@ void gareafile::ReadXMail(char* tag)
         strcpy(xmailpath, areapath);
 
     MakePathname(file, xmailpath, "xmail.cfg");
-    ReadxMailFile(file, options);
+    ReadxMailFile(file);
 
     MakePathname(file, xmailpath, "areas.xm");
     fp = fsopen(file, "rb", sharemode);

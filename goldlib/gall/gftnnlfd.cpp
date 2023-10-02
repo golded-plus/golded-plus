@@ -719,9 +719,9 @@ void ftn_frontdoor_nodelist_index::close()
 bool ftn_frontdoor_nodelist_index::find(const char* lookup_name)
 {
 
-    char buf[80], tmp[80];
+    char buf[80], tmp[16];
 
-    strcpy(tmp, lookup_name);
+    strncpy(tmp, lookup_name, sizeof(tmp));
     namebrowse = true;
     char* ptr = strrchr(tmp, ' ');
     if(ptr)

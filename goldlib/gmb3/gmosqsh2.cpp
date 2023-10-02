@@ -257,8 +257,7 @@ void SquishArea::raw_scan(int __keep_index, int __scanpm)
                         {
                             lseekset(data->fhsqd, idx->offset + sizeof(SqshFrm));
                             // Load the message header
-                            SqshHdr __hdr;
-                            memset(&__hdr, 0, sizeof(SqshHdr));
+                            SqshHdr __hdr = SqshHdr();
                             read(data->fhsqd, &__hdr, sizeof(SqshHdr));
                             if(not isopen)
                             {

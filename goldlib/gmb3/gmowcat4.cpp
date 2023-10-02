@@ -93,7 +93,7 @@ void WCatArea::save_message(int __mode, gmsg* __msg, WCatHdr& __hdr)
     if(not _was_locked)
         lock();
 
-    memset(&__hdr, 0, sizeof(WCatHdr));
+    __hdr = WCatHdr();
 
     if(__mode & GMSG_NEW)
     {

@@ -59,7 +59,7 @@ const char *gareafile::gettype(const char *msgtype, const byte wtrtype)
 //  ------------------------------------------------------------------
 //  Read WaterGate v0.93
 
-void gareafile::ReadWtrGteFile(char* options, gfile &fp)
+void gareafile::ReadWtrGteFile(gfile &fp)
 {
     AreaCfg aa;
     ConfigRecord* _tmp = new ConfigRecord;
@@ -198,12 +198,10 @@ void gareafile::ReadWtrGteFile(char* options, gfile &fp)
 void gareafile::ReadWtrGte(char* tag)
 {
     char* ptr;
-    char options[80];
     Path wtrpath, file;
 
     *file = NUL;
     *wtrpath = NUL;
-    strcpy(options, tag);
     ptr = strtok(tag, " \t");
     while(ptr)
     {
@@ -235,7 +233,7 @@ void gareafile::ReadWtrGte(char* tag)
         strp2c(header);
 
         if(streql(header, ConfigHeader))
-            ReadWtrGteFile(options, fp);
+            ReadWtrGteFile(fp);
         else
             STD_PRINTNL("* Error: WaterGate \"" << header << "\" is not supported - Skipping.");
     }

@@ -114,14 +114,14 @@ public:
     void Run();
 
     GMsgList()
+        : msg()
     {
-        memset(&msg, 0, sizeof(GMsg));
         mlst = NULL;
         maximum_index = AA->Msgn.Count()-1;
     };
     ~GMsgList()
     {
-        ResetMsg(&msg);
+        msg.Reset();
         if(mlst)
         {
             for(uint i=0; i<= maximum_index; i++)
@@ -413,7 +413,7 @@ void GMsgList::print_line(uint idx, uint pos, bool isbar)
              (tosiz ? " " : ""),
              resiz, resiz, ml->re,
              dbuf
-    );    
+    );
 
     window.prints(pos, 0, wattr_, buf);
 
@@ -880,7 +880,7 @@ void GThreadlist::close()
 {
 
     window.close();
-    ResetMsg(&msg);
+    msg.Reset();
 }
 
 
@@ -1394,7 +1394,7 @@ void GThreadlist::Run()
     if (!aborted)
         AA->set_lastread(AA->Msgn.ToReln(treeEntryList[index].msgno));
 
-    ResetMsg(&msg);
+    msg.Reset();
 }
 
 
@@ -1448,7 +1448,7 @@ bool GThreadlist::GoNextUnread(bool reader)
         }
     }
 
-    ResetMsg(&msg);
+    msg.Reset();
     return found;
 }
 

@@ -553,7 +553,6 @@ int tzoffset_in_minutes()
 
 void SMBArea::save_hdr(int mode, gmsg* msg)
 {
-    int rv;
     char ch;
     bool done, cr;
     uint32_t l, m, bodylen, taillen, crc;
@@ -812,7 +811,7 @@ void SMBArea::save_hdr(int mode, gmsg* msg)
         bodylen-=2; // remove last CRLF if present
 
     crc = ~memCrc32(sbody, bodylen, false, CRC32_MASK_CCITT);
-    rv = smb_addcrc(data, crc);
+    smb_addcrc(data, crc);
 
     while(taillen and (iscntrl(stail[taillen-1]) or isspace(stail[taillen-1])))
         taillen--;
@@ -982,10 +981,8 @@ int SMBArea::renumber()
 
 //  ------------------------------------------------------------------
 
-void SMBArea::update_timesread(gmsg* msg)
+void SMBArea::update_timesread(gmsg*)
 {
-    NW(msg);
-    return;
 }
 
 

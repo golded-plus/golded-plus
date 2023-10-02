@@ -45,7 +45,7 @@ int WCatArea::load_message(int __mode, gmsg* __msg, WCatHdr& __hdr)
     uint _reln = Msgn->ToReln(__msg->msgno);
 
     // Load the message header
-    memset(&__hdr, 0, sizeof(WCatHdr));
+    __hdr = WCatHdr();
     lseekset(_fhdat, _idx[_reln-1].offset);
     read(_fhdat, &__hdr, sizeof(WCatHdr));
 

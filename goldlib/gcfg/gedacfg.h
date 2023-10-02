@@ -243,8 +243,8 @@ protected:
     void ReadDB2011(char* file, int reclen, char* tag);
 #endif
 #ifndef GCFG_NOEZY
-    void ReadEzycom102(gfile &fp, char* path, char* file, char* options);
-    void ReadEzycom110(gfile &fp, char* path, char* file, char* options);
+    void ReadEzycom102(gfile &fp, char* path, char* file);
+    void ReadEzycom110(gfile &fp, char* path, char* file);
 #endif
 #ifndef GCFG_NOFE
     void ReadFastecho11x(int fh);
@@ -252,9 +252,9 @@ protected:
     void ReadFastecho142(int fh);
 #endif
 #ifndef GCFG_NOFMAIL
-    void ReadFMail092(gfile &fp, char* path, char* file, char* options);
-    void ReadFMail098(gfile &fp, char* path, char* file, char* options);
-    void ReadFMail116(gfile &fp, char* path, char* file, char* options);
+    void ReadFMail092(gfile &fp, char* path, char* file);
+    void ReadFMail098(gfile &fp, char* path, char* file);
+    void ReadFMail116(gfile &fp, char* path, char* file);
 #endif
 #ifndef GCFG_NOFIDOCONF
     AreaCfg echoareadefaults;
@@ -262,19 +262,19 @@ protected:
     void ReadHPTFile(char* path, char* file, char* origin, int group);
 #endif
 #ifndef GCFG_NOIMAIL
-    void ReadIMail160(char* options, char* file, char* impath);
-    void ReadIMail170(char* options, char* file, char* impath);
-    void ReadIMail185(char* options, char* file, char* impath);
+    void ReadIMail160(char* file, char* impath);
+    void ReadIMail170(char* file, char* impath);
+    void ReadIMail185(char* file, char* impath);
 #endif
 #ifndef GCFG_NOMAXIMUS
-    void ReadMaximus3(char* mxpath, char* areafile, char* options);
+    void ReadMaximus3(char* mxpath, char* areafile);
 #endif
 #ifndef GCFG_NOQBBS
-    void ReadQ260(char* qbpath, char* origin, char* options);
-    void ReadQ276(char* qbpath, char* origin, char* options);
+    void ReadQ260(char* qbpath, char* origin);
+    void ReadQ276(char* qbpath, char* origin);
 #endif
 #ifndef GCFG_NOQECHO
-    void ReadQEchoFile(char* file, char* options, char* origin);
+    void ReadQEchoFile(char* file, char* origin);
 #endif
 #ifndef GCFG_NOSPCT
     void ParseSpaceArea(const char *type_path, AreaCfg &aa);
@@ -289,16 +289,16 @@ protected:
     void ReadTimedFile(char* path, char* file, char* options, char* origin);
 #endif
 #ifndef GCFG_NOTERMAIL
-    void ReadTmailFile(char* file, char* options, char* origin);
+    void ReadTmailFile(char* file, char* origin);
 #endif
 #ifndef GCFG_NOWATERGATE
-    void ReadWtrGteFile(char* options, gfile &fp);
+    void ReadWtrGteFile(gfile &fp);
 #endif
 #ifndef GCFG_NOXBBS
-    void ReadAdeptXbbsFile(char* path, char* file, char* options);
+    void ReadAdeptXbbsFile(char* path, char* file);
 #endif
 #ifndef GCFG_NOXMAIL
-    void ReadxMailFile(char* file, char* options);
+    void ReadxMailFile(char* file);
 #endif
 
 public:
@@ -325,7 +325,7 @@ public:
     ftn_attr attribsemail;
     ftn_attr attribslocal;
 
-    void GetAreasBBS(char* name, char* origin, char* options);
+    void GetAreasBBS(char* name, char* origin);
 
     void ReadAreasBBS(char* tag);
 #ifndef GCFG_NOXBBS

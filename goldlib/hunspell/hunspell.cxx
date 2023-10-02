@@ -732,7 +732,6 @@ int Hunspell::suggest(char*** slst, const char * word)
     int ns = 0;
     *slst = NULL;
     int capwords = 0;
-    int ngramsugs = 0;
 
     switch(captype)
     {
@@ -854,7 +853,6 @@ int Hunspell::suggest(char*** slst, const char * word)
     // try ngram approach since found nothing
     if ((ns == 0) && pAMgr && (pAMgr->get_maxngramsugs() != 0))
     {
-        ngramsugs = 1;
         switch(captype)
         {
         case NOCAP:

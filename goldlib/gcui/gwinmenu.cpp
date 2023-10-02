@@ -586,7 +586,7 @@ static void pre_exit(int w,int close)
 
 static gkey read_mouse(_item_t* citem)
 {
-
+(void)(citem);
 #ifdef GOLD_MOUSE
     register _item_t *item;
 

@@ -70,7 +70,7 @@ private:
     int badchar_utf(char **, const w_char *, int wl, int, int);
     int swapchar_utf(char **, const w_char *, int wl, int, int);
 
-    int mapchars(char**, const char *, int, int);
+    int mapchars(char**, const char *, int);
     int map_related(const char *, int, char ** wlst, int, const mapentry*, int, int *, time_t *);
     int map_related_utf(w_char *, int, int, char ** wlst, int, const mapentry*, int, int *, time_t *);
     int ngram(int n, char * s1, const char * s2, int uselen);

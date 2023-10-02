@@ -70,7 +70,7 @@ int SquishArea::load_message(int __mode, gmsg* __msg, SqshHdr& __hdr)
     }
 
     // Load the message header
-    memset(&__hdr, 0, sizeof(SqshHdr));
+    __hdr = SqshHdr();
     rwresult = read(_fhsqd, &__hdr, sizeof(SqshHdr));
     if( rwresult!=sizeof(SqshHdr) )
     {

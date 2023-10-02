@@ -49,7 +49,7 @@ int getgroup(const char *key)
 //  ------------------------------------------------------------------
 //  Read GOLDED.CFG
 
-bool ReadGoldedCfg(int& force)
+bool ReadGoldedCfg()
 {
 
     gfile fp;

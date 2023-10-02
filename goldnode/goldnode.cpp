@@ -179,7 +179,7 @@ static void twirly()
 
     static int n=0;
 
-    n = (++n)%4;
+    n = (n + 1) % 4;
     switch(n)
     {
     case 0:
