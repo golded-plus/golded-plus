@@ -439,7 +439,6 @@ int ExportQwkMsg(GMsg* msg, gfile& fp, int confno, int& pktmsgno)
     if(CharTable)
         level = CharTable->level ? CharTable->level : 2;
 
-    char mbuf[512];
     uint msglen = 0;
 
     if(msg->charsetencoding & GCHENC_MNE)
@@ -469,8 +468,8 @@ int ExportQwkMsg(GMsg* msg, gfile& fp, int confno, int& pktmsgno)
             {
                 if ((line->kludge == GKLUD_RFC) or (line->kludge == 0))
                 {
-                    XlatStr(mbuf, line->txt.c_str(), level, CharTable);
-                    msglen += fp.Printf("%s%c", mbuf, qwkterm);
+                    const std::string convLine = XlatStr(line->txt.c_str(), level, CharTable);
+                    msglen += fp.Printf("%s%c", convLine.c_str(), qwkterm);
                 }
                 else if(line->type & GLINE_WRAP)
                 {
@@ -482,8 +481,8 @@ int ExportQwkMsg(GMsg* msg, gfile& fp, int confno, int& pktmsgno)
             {
                 if ((line->type & GLINE_KLUDGE) and QWK->KludgesAllowed())
                 {
-                    XlatStr(mbuf, line->txt.c_str(), level, CharTable);
-                    msglen += fp.Printf("%s%c", mbuf, qwkterm);
+                    const std::string convLine = XlatStr(line->txt.c_str(), level, CharTable);
+                    msglen += fp.Printf("%s%c", convLine.c_str(), qwkterm);
                 }
             }
         }
@@ -500,8 +499,8 @@ int ExportQwkMsg(GMsg* msg, gfile& fp, int confno, int& pktmsgno)
     {
         if (not (line->type & GLINE_KLUDGE))
         {
-            XlatStr(mbuf, line->txt.c_str(), level, CharTable);
-            msglen += fp.Printf("%s%c", mbuf, qwkterm);
+            const std::string convLine = XlatStr(line->txt.c_str(), level, CharTable);
+            msglen += fp.Printf("%s%c", convLine.c_str(), qwkterm);
         }
         line = line->next;
     }

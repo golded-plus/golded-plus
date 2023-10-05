@@ -467,7 +467,7 @@ char* strxmimecpy(char* dest, const char* source, int level, int size, bool dete
         }
     }
 
-    XlatStr(buf, buf2, level, CharTable);
+    const std::string converted = XlatStr(buf2, level, CharTable);
 
     if(detect)
     {
@@ -477,7 +477,7 @@ char* strxmimecpy(char* dest, const char* source, int level, int size, bool dete
             LoadCharset(CFG->xlatcharset[table].imp, CFG->xlatcharset[table].exp);
     }
 
-    strxcpy(dest, buf, size);
+    strxcpy(dest, converted.c_str(), size);
 
     return dest;
 }
@@ -1898,26 +1898,21 @@ void IconvClear(void)
 
 //  ------------------------------------------------------------------
 
-char* XlatStr(char* dest, const char* src, int level, Chs* chrtbl, int qpencoded, bool i51)
+std::string XlatStr(const char* src, int level, Chs* chrtbl, int qpencoded, bool i51)
 {
 
     if( src==NULL )
-        return dest;
+        return std::string();
 
     if( not chrtbl
 #ifdef HAS_ICONV
             && iconv_cd==(iconv_t)(-1)
 #endif
       )
-        return stpcpy(dest, src);
+        return src;
 
-    uint n;
-    int clen;
-    int translated;
-    char* tptr;
-    char* escp;
+    std::string result;
     const char* sptr = src;
-    char* dptr = dest;
     char dochar;
     ChsTab* chrs = chrtbl ? chrtbl->t : (ChsTab*)NULL;
 
@@ -1935,33 +1930,26 @@ char* XlatStr(char* dest, const char* src, int level, Chs* chrtbl, int qpencoded
         case 0x02:
             if(i51 and I51Table)
             {
-                for(n=0; n<I51Table->size; n++)
+                bool charFound = false;
+                for(uint n=0; n<I51Table->size; n++)
                 {
-                    tptr = (char*)I51TP[n];
+                    const char* tptr = (char*)I51TP[n];
                     if(*(sptr+1) == tptr[0])
                     {
                         if(*(sptr+2) == tptr[1])
                         {
-                            escp = &tptr[2];
-                            if(*escp)
+                            const char* escp = &tptr[2];
+                            for (size_t c = 0; c < 3 && *escp; ++escp)
                             {
-                                *dptr++ = *escp++;
-                                if(*escp)
-                                {
-                                    *dptr++ = *escp++;
-                                    if(*escp)
-                                    {
-                                        *dptr++ = *escp;
-                                    }
-                                }
+                                result += *escp;
                             }
                             sptr += 2;
-                            n = (uint)-1;
+                            charFound = true;
                             break;
                         }
                     }
                 }
-                if(n != (uint)-1)   // I51 char not found, use fallback method
+                if(!charFound)   // I51 char not found, use fallback method
                     sptr++;
             }
             sptr++;
@@ -1970,80 +1958,75 @@ char* XlatStr(char* dest, const char* src, int level, Chs* chrtbl, int qpencoded
         case 29:
             if(MNETable)
             {
-                for(n=0; n<MNETable->size; n++)
+                bool charFound = false;
+                for(uint n=0; n<MNETable->size; n++)
                 {
-                    tptr = (char*)MNETP[n];
+                    const char* tptr = (char*)MNETP[n];
                     if(*(sptr+1) == tptr[0])
                     {
                         if(*(sptr+2) == tptr[1])
                         {
-                            escp = &tptr[2];
-                            if(*escp)
+                            const char* escp = &tptr[2];
+                            for (size_t c = 0; c < 3 && *escp; ++escp)
                             {
-                                *dptr++ = *escp++;
-                                if(*escp)
-                                {
-                                    *dptr++ = *escp++;
-                                    if(*escp)
-                                    {
-                                        *dptr++ = *escp;
-                                    }
-                                }
+                                result += *escp;
                             }
                             sptr += 2;
-                            n = (uint)-1;
+                            charFound = true;
                             break;
                         }
                     }
                 }
-                if(n != (uint)-1)   // MNEMONIC char not found, use fallback method
+                if(!charFound)   // MNEMONIC char not found, use fallback method
                     sptr++;
             }
             sptr++;
             break;
 
         case SOFTCR:
-            translated = false;
-            if (WideDispsoftcr)
-                goto defaultchardo;
-            else if (CompTable)
             {
-                if(sptr > src)
+                bool translated = false;
+                if (WideDispsoftcr)
+                    goto defaultchardo;
+                else if (CompTable)
                 {
-                    if(not (isspace(*(sptr-1)) or isspace(*(sptr+1))))
+                    if(sptr > src)
                     {
-                        for(n=0; n<CompTable->size; n++)
+                        if(not (isspace(*(sptr-1)) or isspace(*(sptr+1))))
                         {
-                            tptr = (char*)CompTP[n];
-                            if(*(sptr-1) == tptr[0])
+                            for(uint n=0; n<CompTable->size; n++)
                             {
-                                if(*(sptr+1) == tptr[1])
+                                const char* tptr = (char*)CompTP[n];
+                                if(*(sptr-1) == tptr[0])
                                 {
-                                    escp = &tptr[2];
-                                    if(*escp)
+                                    if(*(sptr+1) == tptr[1])
                                     {
-                                        dptr--;
-                                        *dptr++ = *escp++;
+                                        const char* escp = &tptr[2];
                                         if(*escp)
                                         {
-                                            *dptr++ = *escp++;
+                                            result.erase(result.end() - 1);
+                                            result += *escp++;
                                             if(*escp)
                                             {
-                                                *dptr++ = *escp;
-                                                translated = true;
+                                                result += *escp++;
+                                                if(*escp)
+                                                {
+                                                    result += *escp;
+                                                    translated = true;
+                                                }
                                             }
                                         }
+                                        sptr += 2;
+                                        break;
                                     }
-                                    sptr += 2;
-                                    break;
                                 }
                             }
                         }
                     }
                 }
+                if(not translated)
+                    result += *sptr++;
             }
-            if(not translated)
-                *dptr++ = *sptr++;
             break;
 
         case '=':
@@ -2065,11 +2048,13 @@ chardo:
 #ifdef HAS_ICONV
             if( iconv_cd!=(iconv_t)(-1) )
             {
-                unsigned srcleft=1;
-                unsigned dstleft=3;
+                size_t srcleft=1;
+                size_t dstleft=3;
                 char* tsptr = &dochar;
+                char encBuf[3];
+                char* encPtr = encBuf;
 
-                iconvrc=iconv( iconv_cd, &tsptr, &srcleft, &dptr, &dstleft );
+                iconvrc=iconv( iconv_cd, &tsptr, &srcleft, &encPtr, &dstleft );
                 if( iconvrc==((size_t)-1) )
                 {
                     switch( errno )
@@ -2086,25 +2071,28 @@ chardo:
                         LOG.printf("Unknown error %u in iconv() before %s", errno, sptr);
                     }
                 }
+                else
+                {
+                    result.append(encBuf, encPtr - encBuf);
+                }
             }
             else
 #endif
 
                 if ((level > 0) && chrs)
                 {
-                    tptr = (char*)chrs[(byte)dochar];
-                    clen = *tptr++;
+                    const char* tptr = (const char*)chrs[(byte)dochar];
+                    char clen = *tptr++;
                     while(clen--)
-                        *dptr++ = *tptr++;
+                        result += *tptr++;
                 }
                 else
                 {
-                    *dptr++ = dochar;
+                    result += dochar;
                 }
         }
     }
-    *dptr = NUL;
-    return dptr;
+    return result;
 }
 
 
@@ -3509,7 +3497,7 @@ Line* AddLine(Line* line, const char* buf)
 
 //  ------------------------------------------------------------------
 
-Line* AddLineFast(Line* oldline, char* text)
+Line* AddLineFast(Line* oldline, const char* text)
 {
 
     Line* newline = new Line(text);
@@ -3527,7 +3515,7 @@ Line* AddLineFast(Line* oldline, char* text)
 
 //  ------------------------------------------------------------------
 
-Line* AddKludge(Line* line, char* buf, int where)
+Line* AddKludge(Line* line, const char* buf, int where)
 {
 
     Line* newline = new Line(buf);

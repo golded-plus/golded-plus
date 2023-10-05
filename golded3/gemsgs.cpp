@@ -987,44 +987,22 @@ void GMsg::LinesToText()
     Chs* _xlat_table = CharTable;
     int _xlat_level = _xlat_table ? (_xlat_table->level ? _xlat_table->level : 2) : 0;
 
-    XlatStr(_buf, realby, _xlat_level, _xlat_table);
-    strxcpy(realby, _buf, sizeof(INam));
-    XlatStr(_buf, realto, _xlat_level, _xlat_table);
-    strxcpy(realto, _buf, sizeof(INam));
-    XlatStr(_buf, by, _xlat_level, _xlat_table);
-    strxcpy(by, _buf, sizeof(INam));
-    XlatStr(_buf, to, _xlat_level, _xlat_table);
-    strxcpy(to, _buf, sizeof(INam));
+    strxcpy(realby, XlatStr(realby, _xlat_level, _xlat_table).c_str(), sizeof(realby));
+    strxcpy(realto, XlatStr(realto, _xlat_level, _xlat_table).c_str(), sizeof(realto));
+    strxcpy(by, XlatStr(by, _xlat_level, _xlat_table).c_str(), sizeof(by));
+    strxcpy(to, XlatStr(to, _xlat_level, _xlat_table).c_str(), sizeof(to));
     if(not (attr.frq() or attr.att() or attr.urq()))
     {
-        XlatStr(_buf, re, _xlat_level, _xlat_table);
-        strxcpy(re, _buf, sizeof(ISub));
+        strxcpy(re, XlatStr(re, _xlat_level, _xlat_table).c_str(), sizeof(re));
     }
 
     bool _lfterm = EDIT->CrLfTerm() and (AA->basetype() == "PCBOARD");
     bool _hardterm = AA->Edithardterm() or AA->requirehardterm();
     bool _softterm = AA->requiresoftterm();
 
-    uint _alloc_size = 1024;
-    Line* _line = lin;
-    uint _lines = 0;
-
-    // Approximate the size of the text
-    while(_line)
-    {
-        _alloc_size += _line->txt.length();
-        _line = _line->next;
-        _lines++;
-    }
-    _alloc_size += _lines * (_lfterm ? 2 : 1);
-
-    // Allocate the text
-    txt = (char*)throw_realloc(txt, _alloc_size);
-
     // Setup variables for the loop
-    _line = lin;
-    uint _size = 0;
-    char* _ptr = txt;
+    Line* _line = lin;
+    std::string text;
 
     // Build the text from the lines
 
@@ -1035,62 +1013,49 @@ void GMsg::LinesToText()
         bool _hterm = true;
         if(_line->isheader())
         {
-            _bptr = stpcpy(_buf, _line->txt.c_str());
+            text += _line->txt;
             while(_line->next and _line->iswrapped())
             {
                 _line = _line->next;
-                _bptr = stpcpy(_bptr, _line->txt.c_str());
-                if((_bptr-_buf) > (bufsize-256))
-                {
-                    int bptrlen = (int)(_bptr - _buf);
-                    bufsize += 4096;
-                    _buf = (char*)throw_realloc(_buf, bufsize);
-                    _bptr = _buf + bptrlen;
-                }
+                text += _line->txt;
             }
         }
         else
         {
-            _bptr = XlatStr(_buf, _line->txt.c_str(), _xlat_level, _xlat_table);
-            if(*_buf and not _line->ishard())
+            text += XlatStr(_line->txt.c_str(), _xlat_level, _xlat_table);
+
+            if(!text.empty() and not _line->ishard())
             {
                 if(_line->next)
                 {
-                    if((*(_bptr-1) != ' ') and (*_line->next->txt.c_str() != ' '))
+                    if(text[text.size() - 1] != ' ' and _line->next->txt[0] != ' ')
+                    {
                         if(_softterm or not _hardterm)
-                            *_bptr++ = ' ';
+                            text += ' ';
+                    }
                     if (not _hardterm)
                     {
                         if (_softterm and not WideDispsoftcr)
-                            *_bptr++ = SOFTCR;
+                            text += SOFTCR;
                         _hterm = false;
                     }
                 }
             }
         }
+
         if(_hterm)
         {
-            *_bptr++ = CR;
+            text += CR;
             if(_lfterm)
-                *_bptr++ = LF;
+                text += LF;
         }
-        if(*_buf)
-        {
-            uint _buflen = (uint)(_bptr-_buf);
-            _size += _buflen;
-            if(_size >= _alloc_size)
-            {
-                _alloc_size += 1024;
-                txt = (char*)throw_realloc(txt, _alloc_size);
-            }
-            _ptr = txt + _size;
-            memcpy(_ptr-_buflen, _buf, _buflen);
-        }
+
         _line = _line->next;
     }
-    *_ptr = NUL;
 
-    throw_free(_buf);
+    // Allocate the text
+    txt = (char*)throw_realloc(txt, text.size() + 1);
+    strcpy(txt, text.c_str());
 }
 
 

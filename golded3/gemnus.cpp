@@ -1346,7 +1346,7 @@ int GMenuSChecker::Run(CSpellChecker &schecker, const char *word)
 
     for (idx = 0; idx < suggest.size(); idx++)
     {
-        Item(TAG_INDEX + idx, suggest[idx].second.c_str());
+        Item(TAG_INDEX + idx, suggest[idx].c_str());
 
         if ((numrows == (gvid->numrows - 5)) && (idx < suggest.size()-3))
         {

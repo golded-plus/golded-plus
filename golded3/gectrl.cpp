@@ -446,9 +446,9 @@ void DoKludges(int mode, GMsg* msg, int kludges)
 
             if(*msg->fwdfrom)
             {
-                strcpy(buf, "\001FWDFROM ");
-                XlatStr(buf + 9, msg->fwdfrom, _xlat_level, CharTable);
-                line = AddKludge(line, buf);
+                std::string kludge("\001FWDFROM ");
+                kludge += XlatStr(msg->fwdfrom, _xlat_level, CharTable);
+                line = AddKludge(line, kludge.c_str());
                 line->kludge = GKLUD_FWD;
             }
             if(msg->fwdorig.net)
@@ -459,9 +459,9 @@ void DoKludges(int mode, GMsg* msg, int kludges)
             }
             if(*msg->fwdto)
             {
-                strcpy(buf, "\001FWDTO ");
-                XlatStr(buf + 7, msg->fwdto, _xlat_level, CharTable);
-                line = AddKludge(line, buf);
+                std::string kludge("\001FWDTO ");
+                kludge += XlatStr(msg->fwdto, _xlat_level, CharTable);
+                line = AddKludge(line, kludge.c_str());
                 line->kludge = GKLUD_FWD;
             }
             if(msg->fwddest.net)
@@ -472,9 +472,9 @@ void DoKludges(int mode, GMsg* msg, int kludges)
             }
             if(*msg->fwdsubj)
             {
-                strcpy(buf, "\001FWDSUBJ ");
-                XlatStr(buf + 9, msg->fwdsubj, _xlat_level, CharTable);
-                line = AddKludge(line, buf);
+                std::string kludge("\001FWDSUBJ ");
+                kludge += XlatStr(msg->fwdsubj, _xlat_level, CharTable);
+                line = AddKludge(line, kludge.c_str());
                 line->kludge = GKLUD_FWD;
             }
             if(*msg->fwdarea)
