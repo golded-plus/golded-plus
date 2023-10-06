@@ -221,7 +221,7 @@ const char* gvid_x0 = "x@xxxxxxxxxxxxxx><xxxxxx^vxxxx^v";
 inline void gvid_cvtchr(char& ch)
 {
 
-    register const char* x0 = gvid_x0;
+    const char* x0 = gvid_x0;
 
     if(ch < ' ')
         ch = x0[ch];
@@ -233,7 +233,7 @@ inline void gvid_cvtchr(char& ch)
 void gvid_cvtstr(char* s, int len)
 {
 
-    register char* p = s;
+    char* p = s;
 
     for(int n=0; n<len; n++,p++)
         gvid_cvtchr(*p);
@@ -245,7 +245,7 @@ void gvid_cvtstr(char* s, int len)
 void gvid_cvtstr(word* ws, int len)
 {
 
-    register word* wp = ws;
+    word* wp = ws;
 
     for(int n=0; n<len; n++,wp++)
         gvid_cvtchr(*(char*)wp);

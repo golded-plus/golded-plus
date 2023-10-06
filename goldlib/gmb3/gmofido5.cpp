@@ -68,8 +68,8 @@ int FidoArea::renumber()
         _msgno1st++;
 
     // Renumber *.MSG files
-    register uint _count = 0;
-    register uint _msgno = _msgno1st;
+    uint _count = 0;
+    uint _msgno = _msgno1st;
     while(_count < Msgn->Count())
     {
 
@@ -203,4 +203,3 @@ Line* FidoArea::make_dump_msg(Line*& lin, gmsg* msg, char* lng_head)
 
 
 //  ------------------------------------------------------------------
-

@@ -155,7 +155,7 @@ int FidoArea::load_message(int __mode, gmsg* __msg, FidoHdr& __hdr)
         read(_fh, __msg->txt, (uint)_txtlen);
 
         // Fix msgs handled by brain-dead programs
-        register char* _ptr = __msg->txt;
+        char* _ptr = __msg->txt;
         if(!*_ptr)
             if(_txtlen)
                 *_ptr = LF;  // Quick fix

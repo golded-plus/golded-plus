@@ -300,7 +300,7 @@ void PcbArea::raw_scan(int __keep_index, int __scanpm)
     PcbIdx* _idxptr = _idxbuf;
 
     // Fill message index
-    register uint n = 0;
+    uint n = 0;
     while((n++) < _totalmsgs)
     {
         if(_idxptr->offset > 0)
@@ -344,9 +344,9 @@ void PcbArea::raw_scan(int __keep_index, int __scanpm)
         for(int un=0; un<umax; un++)
             strsetsz(strxcpy(uname[un], WideUsername[un], sizeof(PcbName)), 25);
         PMrk->ResetAll();
-        register uint n = lastread + 1;
-        register uint cnt = Msgn->Count();
-        register int gotpm = false;
+        uint n = lastread + 1;
+        uint cnt = Msgn->Count();
+        int gotpm = false;
         while(n <= cnt)
         {
             PcbIdx* idx = _idxbuf + (uint)(Msgn->at(n-1) - data->base.lowmsgno);

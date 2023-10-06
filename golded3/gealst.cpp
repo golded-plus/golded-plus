@@ -70,8 +70,8 @@ int AreaTypeOrder[17] =
 
 int compare_groups(int _ga, int _gb)
 {
-    register int ga = _ga ? _ga : INT_MAX;
-    register int gb = _gb ? _gb : INT_MAX;
+    int ga = _ga ? _ga : INT_MAX;
+    int gb = _gb ? _gb : INT_MAX;
 
     const char *gap = NULL;
     const char *gbp = NULL;
@@ -231,8 +231,8 @@ extern "C" int AreaListCmp(const Area** __a, const Area** __b)
             }
             else
             {
-                register int aunread = A->PMrk.Count();
-                register int bunread = B->PMrk.Count();
+                int aunread = A->PMrk.Count();
+                int bunread = B->PMrk.Count();
 
                 aunread = (rev or aunread) ? aunread : INT_MAX;
                 bunread = (rev or bunread) ? bunread : INT_MAX;
@@ -282,8 +282,8 @@ extern "C" int AreaListCmp(const Area** __a, const Area** __b)
             }
             else
             {
-                register int aunread = A->unread;
-                register int bunread = B->unread;
+                int aunread = A->unread;
+                int bunread = B->unread;
 
                 aunread = (rev or aunread) ? aunread : INT_MAX;
                 bunread = (rev or bunread) ? bunread : INT_MAX;
@@ -625,4 +625,3 @@ void AreaList::Select_Mask()
 
 
 //  ------------------------------------------------------------------
-

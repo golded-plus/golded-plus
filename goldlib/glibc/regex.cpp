@@ -175,7 +175,7 @@ static char re_syntax_table[CHAR_SET_SIZE];
 static void
 init_syntax_once ()
 {
-    register int c;
+    int c;
     static int done = 0;
 
     if (done)
@@ -1299,7 +1299,7 @@ regex_compile (const char *pattern,
     /* We fetch characters from PATTERN here.  Even though PATTERN is
     `char *' (i.e., signed), we declare these variables as unsigned, so
     they can be reliably used as array indices.  */
-    register unsigned char c, c1;
+    unsigned char c, c1;
 
     /* A random temporary spot in PATTERN.  */
     const char *p1;
@@ -2429,8 +2429,8 @@ insert_op1 (re_opcode_t op,
             int arg,
             unsigned char *end)
 {
-    register unsigned char *pfrom = end;
-    register unsigned char *pto = end + 3;
+    unsigned char *pfrom = end;
+    unsigned char *pto = end + 3;
 
     while (pfrom != loc)
         *--pto = *--pfrom;
@@ -2448,8 +2448,8 @@ insert_op2 (re_opcode_t op,
             int arg2,
             unsigned char *end)
 {
-    register unsigned char *pfrom = end;
-    register unsigned char *pto = end + 5;
+    unsigned char *pfrom = end;
+    unsigned char *pto = end + 5;
 
     while (pfrom != loc)
         *--pto = *--pfrom;
@@ -2600,10 +2600,10 @@ re_compile_fastmap (struct re_pattern_buffer *bufp)
     char *destination;
 #endif
 
-    register char *fastmap = bufp->fastmap;
+    char *fastmap = bufp->fastmap;
     unsigned char *pattern = bufp->buffer;
     unsigned char *p = pattern;
-    register unsigned char *pend = pattern + bufp->used;
+    unsigned char *pend = pattern + bufp->used;
 
 #ifdef REL_ALLOC
     /* This holds the pointer to the failure stack, when
@@ -2968,8 +2968,8 @@ re_search_2 (struct re_pattern_buffer *bufp,
              int stop)
 {
     int val;
-    register char *fastmap = bufp->fastmap;
-    register RE_TRANSLATE_TYPE translate = bufp->translate;
+    char *fastmap = bufp->fastmap;
+    RE_TRANSLATE_TYPE translate = bufp->translate;
     int total_size = size1 + size2;
     int endpos = startpos + range;
 
@@ -3026,8 +3026,8 @@ re_search_2 (struct re_pattern_buffer *bufp,
         {
             if (range > 0)    /* Searching forwards.  */
             {
-                register const char *d;
-                register int lim = 0;
+                const char *d;
+                int lim = 0;
                 int irange = range;
 
                 if (startpos < size1 && startpos + range >= size1)
@@ -3050,7 +3050,7 @@ re_search_2 (struct re_pattern_buffer *bufp,
             }
             else              /* Searching backwards.  */
             {
-                register char c = (size1 == 0 || startpos >= size1
+                char c = (size1 == 0 || startpos >= size1
                                    ? string2[startpos - size1]
                                    : string1[startpos]);
 
@@ -4059,7 +4059,7 @@ on_failure:
         case maybe_pop_jump:
             EXTRACT_NUMBER_AND_INCR (mcnt, p);
             {
-                register unsigned char *p2 = p;
+                unsigned char *p2 = p;
 
                 /* Compare the beginning of the repeat with what in the
                 pattern follows its end. If we can establish that there
@@ -4108,7 +4108,7 @@ on_failure:
                 else if ((re_opcode_t) *p2 == exactn
                          || (bufp->newline_anchor && (re_opcode_t) *p2 == endline))
                 {
-                    register unsigned char c
+                    unsigned char c
                         = *p2 == (unsigned char) endline ? '\n' : p2[2];
 
                     if ((re_opcode_t) p1[3] == exactn && p1[5] != c)
@@ -4706,11 +4706,11 @@ bytes; nonzero otherwise.  */
 static int
 bcmp_translate (const char *s1,
                 const char *s2,
-                register int len,
+                int len,
                 RE_TRANSLATE_TYPE translate)
 {
-    register const unsigned char *p1 = (const unsigned char *) s1;
-    register const unsigned char *p2 = (const unsigned char *) s2;
+    const unsigned char *p1 = (const unsigned char *) s1;
+    const unsigned char *p2 = (const unsigned char *) s2;
     while (len)
     {
         if (translate[*p1++] != translate[*p2++]) return 1;

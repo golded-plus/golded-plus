@@ -492,7 +492,7 @@ static void disp_cat()
 static void help_handler()
 {
 
-    register int i;
+    int i;
     int help,cat;
     int found;
     KBnd* savekb;

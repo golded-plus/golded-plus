@@ -355,7 +355,7 @@ void gwinpick::display_page()
     else
         index = 0;
 
-    register uint m = maximum_index-index;
+    uint m = maximum_index-index;
 
     uint n;
 
@@ -617,4 +617,3 @@ int gwinpick::run_picker()
 
 
 //  ------------------------------------------------------------------
-
