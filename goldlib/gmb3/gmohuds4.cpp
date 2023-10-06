@@ -202,16 +202,16 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::save_message(i
             __hdr.startrec = (msgn_t)(wide->fhtxt.FileLength()/256L);
 
         // Calculate the number of text records to write
-        register uint _fullrecs = _txtlen / 255;
-        register byte _extrarec = (byte)(_txtlen % 255);
+        uint _fullrecs = _txtlen / 255;
+        byte _extrarec = (byte)(_txtlen % 255);
         __hdr.numrecs = (word)(_fullrecs + (_extrarec ? 1 : 0));
 
         // Seek to the text write position
         wide->fhtxt.LseekSet(__hdr.startrec*256L);
 
         // Write the message text
-        register uint _count = 0;
-        register char* _txt = __msg->txt;
+        uint _count = 0;
+        char* _txt = __msg->txt;
         char _txtbuf[256];
         char* _txtptr = _txtbuf + 1;
         *_txtbuf = 255;
@@ -263,9 +263,9 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::save_message(i
         wide->msginfo.active[__hdr.board-1]--;
         if(__hdr.msgno == wide->msginfo.low)
         {
-            register uint _count = 0;
-            register msgn_t _total = (msgn_t)(wide->msgidxsize/sizeof(HudsIdx));
-            register HudsIdx* _msgidx_ptr = wide->msgidxptr;
+            uint _count = 0;
+            msgn_t _total = (msgn_t)(wide->msgidxsize/sizeof(HudsIdx));
+            HudsIdx* _msgidx_ptr = wide->msgidxptr;
             while((_count++) < _total)
             {
                 if(_msgidx_ptr->msgno != (__HUDSON ? HUDS_DELETEDMSGNO : GOLD_DELETEDMSGNO))
@@ -278,8 +278,8 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::save_message(i
         }
         if(__hdr.msgno == wide->msginfo.high)
         {
-            register uint _count = (uint)(wide->msgidxsize/sizeof(HudsIdx));
-            register HudsIdx* _msgidx_ptr = wide->msgidxptr + (_count-1);
+            uint _count = (uint)(wide->msgidxsize/sizeof(HudsIdx));
+            HudsIdx* _msgidx_ptr = wide->msgidxptr + (_count-1);
             while(_count--)
             {
                 if(_msgidx_ptr->msgno != (__HUDSON ? HUDS_DELETEDMSGNO : GOLD_DELETEDMSGNO))
@@ -408,4 +408,3 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::update_timesre
 
 
 //  ------------------------------------------------------------------
-

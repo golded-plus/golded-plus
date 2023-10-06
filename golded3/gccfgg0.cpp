@@ -1494,7 +1494,7 @@ int ReadCfg(const char* cfgfile, int ignoreunknown)
         STD_PRINTNL("* Filename '" << cfgfile << "' too long (max " << GMAXPATH-1 << " characters).");
         LOG.ErrOpen();
         LOG.printf("! Unable to use configuration file because filename too long (see next line):");
-        LOG.printf("%s",cfgfile);
+        LOG.printf(": %s",cfgfile);
         cfgerrors++;
         return 0; // Error: can't use too long file name
     }

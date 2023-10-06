@@ -216,6 +216,15 @@ inline char * stpcpy(char* dest, const char* src)
     while ((*dest++ = *src++) != NUL) {}
     return --dest;
 }
+
+inline char* stpncpy(char* dest, const char* src, size_t n)
+{
+    while (n && *src) { --n; *dest++ = *src++; }
+    char* tmp = dest;
+    while (n--) { *tmp++ = '\0'; }
+    return dest;
+}
+
 #endif
 
 #ifndef isoctal

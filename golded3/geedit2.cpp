@@ -1199,17 +1199,13 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt)
 
                 int tabsz = CFG->disptabsize ? CFG->disptabsize : 1;
                 int level = LoadCharset(AA->Xlatimport(), CFG->xlatlocalset);
-                char* buf = (char*) throw_malloc(EDIT_PARABUFLEN);
                 Line* saveline = __line->next;
                 __line->next = NULL;
 
                 // Read paragraphs
                 while (getclip ? clipbrd.read(_parabuf, EDIT_PARABUFLEN-7) : fp.Fgets(_parabuf, EDIT_PARABUFLEN-7))
                 {
-                    XlatStr(buf, _parabuf, level, CharTable);
-
-                    std::string tmp = buf;
-                    throw_free(buf);
+                    std::string tmp = XlatStr(_parabuf, level, CharTable);
 
                     // Insert a quotestring if asked
                     if(quoteit)

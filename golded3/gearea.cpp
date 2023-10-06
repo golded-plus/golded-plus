@@ -608,8 +608,8 @@ bool GPickArealist::handle_key()
     uint x;
     const char* adesc;
 
-    CREATEBUFFER(char, buf, MAXCOL);
-    CREATEBUFFER(char, tmp, MAXCOL);
+    CREATEBUFFER(char, buf, MAXCOL+1);
+    CREATEBUFFER(char, tmp, MAXCOL+1);
 
     int mode, changed, currno;
 

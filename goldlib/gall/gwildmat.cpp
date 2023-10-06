@@ -77,9 +77,9 @@
 int gwildmatch::match_internal(const char* text, const char* pattern, bool ignorecase)
 {
 
-    register int last;
-    register int matched;
-    register int reverse;
+    int last;
+    int matched;
+    int reverse;
     const char* p = pattern;
 
     for( ; *p; text++, p++)
@@ -220,4 +220,3 @@ bool strwild(const char* str, const char* wild)
 
 
 //  ------------------------------------------------------------------
-

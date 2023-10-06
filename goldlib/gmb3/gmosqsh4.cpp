@@ -364,8 +364,8 @@ uint SquishArea::find_msgn(uint32_t __tagn)
     if(data->idx)
     {
 
-        register SqshIdx* tag = data->idx;
-        register uint tags = (uint)data->base.totalmsgs;
+        SqshIdx* tag = data->idx;
+        uint tags = (uint)data->base.totalmsgs;
 
         if(__tagn and tags and (__tagn > tag[tags-1].msgno))
             return 0;
@@ -373,9 +373,9 @@ uint SquishArea::find_msgn(uint32_t __tagn)
         if(tags and __tagn)
         {
 
-            register int32_t _mid;
-            register int32_t _left = 0;
-            register int32_t _right = tags;
+            int32_t _mid;
+            int32_t _left = 0;
+            int32_t _right = tags;
 
             do
             {
@@ -770,4 +770,3 @@ void SquishArea::update_timesread(gmsg* msg)
 
 
 //  ------------------------------------------------------------------
-

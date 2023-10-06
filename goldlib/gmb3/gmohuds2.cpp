@@ -306,8 +306,8 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::scan()
     scn = (HudsScan*)throw_calloc((__HUDSON ? HUDS_MAXBOARD : GOLD_MAXBOARD), sizeof(HudsScan));
 
     // Board and scan array pointer
-    register int _board;
-    register HudsScan* _scan = scn;
+    int _board;
+    HudsScan* _scan = scn;
 
     // Init wide scan array
     _board = 0;
@@ -320,9 +320,9 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::scan()
     }
 
     // Setup MSGIDX pointer and counters
-    register HudsIdx* _msgidx_ptr = msgidxptr;
-    register uint    _msgidx_count = 0;
-    register uint    _msgidx_total = (uint)(msgidxsize/sizeof(HudsIdx));
+    HudsIdx* _msgidx_ptr = msgidxptr;
+    uint    _msgidx_count = 0;
+    uint    _msgidx_total = (uint)(msgidxsize/sizeof(HudsIdx));
     int         _invalidboards = 0;
 
     // Scan the index
@@ -333,7 +333,7 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::scan()
         if(_msgidx_ptr->msgno != (__HUDSON ? HUDS_DELETEDMSGNO : GOLD_DELETEDMSGNO))
         {
 
-            register int _idxboard = _msgidx_ptr->board;
+            int _idxboard = _msgidx_ptr->board;
             if(_idxboard and (_idxboard <= (__HUDSON ? HUDS_MAXBOARD : GOLD_MAXBOARD)))
             {
 
@@ -437,7 +437,7 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::raw_scan(int _
     {
 
         // Update area data
-        register HudsScan* _scan = wide->scn + (board() - 1);
+        HudsScan* _scan = wide->scn + (board() - 1);
         Msgn->SetCount(_scan->count);
         lastread = _scan->lastreadreln;
         lastreadentry = _scan->lastreadfound;
@@ -451,16 +451,16 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::raw_scan(int _
             wide->open();
 
         // Get the number of active msgs in the area
-        register board_t _board = (board_t)board();
-        register uint _active = wide->msginfo.active[_board-1];
-        register msgn_t _lastread = wide->lastrec[_board-1];
+        board_t _board = (board_t)board();
+        uint _active = wide->msginfo.active[_board-1];
+        msgn_t _lastread = wide->lastrec[_board-1];
 
         // Setup pointers and counts
-        register uint    _msg_count = 0;
-        register HudsIdx* _msgidx_ptr = wide->msgidxptr;
-        register uint    _msgidx_count = 0;
-        register uint    _msgidx_total = (uint)(wide->msgidxsize/sizeof(HudsIdx));
-        register uint    _lastread_reln = 0;
+        uint    _msg_count = 0;
+        HudsIdx* _msgidx_ptr = wide->msgidxptr;
+        uint    _msgidx_count = 0;
+        uint    _msgidx_total = (uint)(wide->msgidxsize/sizeof(HudsIdx));
+        uint    _lastread_reln = 0;
 
         // (Re)Allocate index
         if(__keep_index)
@@ -724,20 +724,20 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::scan_area_pm()
     if(wide->scn)
     {
 
-        register board_t _board = (board_t)board();
-        register HudsScan* _scan = wide->scn + (_board - 1);
+        board_t _board = (board_t)board();
+        HudsScan* _scan = wide->scn + (_board - 1);
 
         if(wide->pmscan)
         {
             if(_scan->pmcount)
             {
 
-                register HudsIdx* pmscanptr = wide->pmscan;
+                HudsIdx* pmscanptr = wide->pmscan;
                 while(pmscanptr->board != _board)
                     pmscanptr++;
 
-                register uint n = 0;
-                register uint cnt = _scan->pmcount;
+                uint n = 0;
+                uint cnt = _scan->pmcount;
                 while(n < cnt)
                 {
                     PMrk->Append(pmscanptr->msgno);
@@ -778,4 +778,3 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::scan_area_pm()
 
 
 //  ------------------------------------------------------------------
-

@@ -1378,8 +1378,8 @@ static GOLD_INLINE vatch* calc_rshadow(_wrec_t *wrec)
 static void swap_contents(vatch* pfound, vatch* pcurr, int shadow)
 {
 
-    register _wrec_t *wptr;
-    register vatch temp, chat;
+    _wrec_t *wptr;
+    vatch temp, chat;
 
     // display character from current position in window to
     // activate on the screen.  if character is part of a
@@ -1445,7 +1445,7 @@ static void swap_contents(vatch* pfound, vatch* pcurr, int shadow)
 int wactiv(int whandle)
 {
 
-    register int startcol, stopcol;
+    int startcol, stopcol;
     _wrec_t *prev, *next;
 
     // check for active window
@@ -1913,7 +1913,7 @@ int wwprintstr(int whandle, int wrow, int wcol, vattr attr, const char* str)
 int wborder(int btype)
 {
 
-    register int border;
+    int border;
 
     // check for active window
     if(!gwin.total)

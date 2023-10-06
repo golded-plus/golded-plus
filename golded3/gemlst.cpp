@@ -906,7 +906,9 @@ void GThreadlist::GenTree(int idx)
         {
             int level = LoadCharset(doscp, CFG->xlatlocalset);
             if(level!=-1)
-                XlatStr(graph, graph_ibmpc, level, CharTable);
+            {
+                strxcpy(graph, XlatStr(graph_ibmpc, level, CharTable).c_str(), ARRAYSIZE(graph));
+            }
             else
                 strxcpy(graph, "+*|", ARRAYSIZE(graph));       // Default: plain ASCII7 chars
         }

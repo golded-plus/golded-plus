@@ -89,7 +89,7 @@ GWin::~GWin()
 int wcenters(int wrow, vattr attr, const char* str)
 {
 
-    register int window_width, string_length;
+    int window_width, string_length;
     int start_column, border;
 
     // check for active window
@@ -146,8 +146,8 @@ int wdrag(int direction)
     vsavebuf* win_image;
     vsavebuf* wp;
     vatch* p;
-    register vatch* src;
-    register vatch* dest;
+    vatch* src;
+    vatch* dest;
 
     // check for active window
     if(!gwin.total)

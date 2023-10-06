@@ -694,10 +694,10 @@ int ExternUtil(GMsg *msg, const ExtUtil &extutil)
             if(level)
             {
                 // do recode
-                char *msg_txt_chrs = (char *)throw_malloc(strlen(msg->txt)*3+16);
-                XlatStr(msg_txt_chrs, msg->txt, level, CharTable);
+                const std::string convTxt = XlatStr(msg->txt, level, CharTable);
                 throw_free(msg->txt);
-                msg->txt = (char *)throw_realloc(msg_txt_chrs, strlen(msg_txt_chrs)+16);
+                msg->txt = (char *)throw_malloc(convTxt.size() + 16);
+                strcpy(msg->txt, convTxt.c_str());
             }
         }
         msg->charsetlevel = LoadCharset(msg->charset, CFG->xlatlocalset);
