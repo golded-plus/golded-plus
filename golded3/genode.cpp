@@ -650,8 +650,8 @@ int NodelistBrowser::DoKey(gkey& keycode)
     break;
 
     case KK_NodeQuitNow:
-        gkbd.quitall = YES;
-        if(gkbd.kbuf == NULL)
+        gkbd->quitall = YES;
+        if(gkbd->kbuf == NULL)
             kbput(Key_Esc);
     // Drop through
 

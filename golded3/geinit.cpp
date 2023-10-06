@@ -658,7 +658,8 @@ void Initialize(int argc, char* argv[])
         exit(0);
     }
 
-    gvid = new GVid;
+    gkbd = new GKbd();
+    gvid = new GVid();
     throw_new(gvid);
     CfgInit();
     GFTrkInit(gftrk_set_max);
@@ -813,7 +814,7 @@ void Initialize(int argc, char* argv[])
 
     // Handle extended keyboard
     if(not CFG->switches.get(keybext))
-        gkbd.extkbd = CFG->switches.get(keybext);
+        gkbd->extkbd = CFG->switches.get(keybext);
 
     // Report detected multitasker
     if (!quiet && gmtsk.detected)
@@ -905,8 +906,8 @@ void Initialize(int argc, char* argv[])
     {
 
         // Switch to keyboard polling instead of blocking
-        gkbd.polling = true;
-        gkbd.tickinterval = 5;      // Tick twice per second
+        gkbd->polling = true;
+        gkbd->tickinterval = 5;      // Tick twice per second
         kbdsettickfunc(update_statuslines);
     }
 

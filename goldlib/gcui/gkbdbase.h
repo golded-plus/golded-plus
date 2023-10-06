@@ -109,7 +109,7 @@ public:
     ~GKbd();
 };
 
-extern GKbd gkbd;
+extern GKbd* gkbd;
 
 
 //  ------------------------------------------------------------------
@@ -169,7 +169,7 @@ inline gkey getxchtick()
 }
 inline void kbdsettickfunc(VfvCP func)
 {
-    gkbd.tickfunc = func;
+    gkbd->tickfunc = func;
 }
 
 

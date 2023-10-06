@@ -598,12 +598,12 @@ static gkey read_mouse(_item_t* citem)
         gmou.ClearEvents();
 
         // loop until a key is pressed
-        while(!kbxhit() and gkbd.kbuf==NULL)
+        while(!kbxhit() and gkbd->kbuf==NULL)
         {
 
             // call the keyboard loop function
-            //if(gkbd.kbloop!=NULL)
-            //(*gkbd.kbloop)();
+            //if(gkbd->kbloop!=NULL)
+            //(*gkbd->kbloop)();
 
             // if left button was pressed, and mouse cursor is on
             // a selectable menu item, then move selection bar to
@@ -1055,14 +1055,14 @@ int wmenuget()
 
         // read mouse/keyboard for keypress, then test the keypress
         gwin.menu->hotkey = false;
-        gkbd.inmenu=true;
+        gkbd->inmenu=true;
         xch = read_mouse(citem);
         citem=gwin.cmenu->citem;
         if(!xch)
         {
             xch = getxch();
         }
-        gkbd.inmenu=false;
+        gkbd->inmenu=false;
 
         _overtagid = citem->tagid;
 

@@ -128,7 +128,7 @@ void gkbd_setfnkeys(void);
     int    gkbd_nt;
 #endif
 
-GKbd gkbd;
+GKbd* gkbd;
 
 int blanked = false;
 
@@ -1562,7 +1562,7 @@ gkey kbxget_raw(int mode)
 
 #elif defined(__MSDOS__)
 
-    if(gkbd.extkbd)
+    if(gkbd->extkbd)
         mode |= 0x10;
 
     i86 cpu;
@@ -2281,12 +2281,12 @@ gkey kbxhit()
 void kbclear()
 {
 
-    while(gkbd.kbuf != NULL)
+    while(gkbd->kbuf != NULL)
     {
 
-        KBuf *kbuf = gkbd.kbuf->next;
-        throw_free(gkbd.kbuf);
-        gkbd.kbuf = kbuf;
+        KBuf *kbuf = gkbd->kbuf->next;
+        throw_free(gkbd->kbuf);
+        gkbd->kbuf = kbuf;
     }
 }
 
@@ -2311,7 +2311,7 @@ int kbput(gkey xch)
 {
     if (gKeystacking)
     {
-        if (gkbd.kbuf != NULL)
+        if (gkbd->kbuf != NULL)
             return -1;
 
         gKeystacking = false;
@@ -2324,7 +2324,7 @@ int kbput(gkey xch)
     kbuf=(KBuf*)throw_malloc(sizeof(KBuf));
 
     // find last record in linked list
-    if((temp=gkbd.kbuf)!=NULL)
+    if((temp=gkbd->kbuf)!=NULL)
         for(; temp->next!=NULL; temp=temp->next);
 
     // add new record to end of linked list
@@ -2337,8 +2337,8 @@ int kbput(gkey xch)
     kbuf->xch=xch;
 
     // if kbuf pointer was NULL, point it to new record
-    if(gkbd.kbuf == NULL)
-        gkbd.kbuf=kbuf;
+    if(gkbd->kbuf == NULL)
+        gkbd->kbuf=kbuf;
 
     // return normally
     return 0;
@@ -2354,7 +2354,7 @@ gkey kbput_(gkey xch)
 #if defined(__MSDOS__)
 
 #if defined(__DJGPP__)
-    if(gkbd.extkbd)
+    if(gkbd->extkbd)
     {
         i86 cpu;
 
@@ -2418,8 +2418,8 @@ KBnd* chgonkey(KBnd* list)
 
     KBnd* temp;
 
-    temp = gkbd.onkey;
-    gkbd.onkey = list;
+    temp = gkbd->onkey;
+    gkbd->onkey = list;
 
     return temp;
 }
@@ -2434,11 +2434,11 @@ void freonkey()
     KBnd* temp;
 
     // free all onkey records in linked list
-    while(gkbd.onkey!=NULL)
+    while(gkbd->onkey!=NULL)
     {
-        temp = gkbd.onkey->prev;
-        throw_free(gkbd.onkey);
-        gkbd.onkey = temp;
+        temp = gkbd->onkey->prev;
+        throw_free(gkbd->onkey);
+        gkbd->onkey = temp;
     }
 }
 
@@ -2450,7 +2450,7 @@ int setonkey(gkey keycode, VfvCP func, gkey pass)
 {
 
     // search for a keycode that is already defined
-    KBnd* onkey = gkbd.onkey;
+    KBnd* onkey = gkbd->onkey;
     while(onkey)
     {
         if(onkey->keycode == keycode)
@@ -2473,8 +2473,8 @@ int setonkey(gkey keycode, VfvCP func, gkey pass)
             prev->next = next;
         if(next)
             next->prev = prev;
-        if(onkey == gkbd.onkey)
-            gkbd.onkey = prev;
+        if(onkey == gkbd->onkey)
+            gkbd->onkey = prev;
 
         // free memory allocated for deleted record
         throw_free(onkey);
@@ -2495,16 +2495,16 @@ int setonkey(gkey keycode, VfvCP func, gkey pass)
                 return 1;
 
             // add new record to linked list
-            if(gkbd.onkey)
-                gkbd.onkey->next = onkey;
-            onkey->prev = gkbd.onkey;
+            if(gkbd->onkey)
+                gkbd->onkey->next = onkey;
+            onkey->prev = gkbd->onkey;
             onkey->next = NULL;
-            gkbd.onkey = onkey;
+            gkbd->onkey = onkey;
 
             // save info in onkey record
-            gkbd.onkey->keycode = keycode;
-            gkbd.onkey->func = func;
-            gkbd.onkey->pass = pass;
+            gkbd->onkey->keycode = keycode;
+            gkbd->onkey->func = func;
+            gkbd->onkey->pass = pass;
         }
     }
 

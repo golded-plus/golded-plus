@@ -13,6 +13,10 @@ ______________________________________________________________________
 Legend: "-" - bugfix, "+" - new feature, "!" - important modification.
 ______________________________________________________________________
 
+- Modified ncurses initialization. That allow to see commandline help
+  and trailing critical log records on Linux. Install procedure,
+  when started with -INSTALL argument still need to be reworked.
+
 - Don't change actual charset table with spellchecker enabled when
   "IgnoreCharset YES" in the config file.
 
