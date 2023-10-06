@@ -13,6 +13,10 @@ ______________________________________________________________________
 Legend: "-" - bugfix, "+" - new feature, "!" - important modification.
 ______________________________________________________________________
 
+- Refactored charset conversion to avoid buffer overuns. Previous code
+  was especially dangerous for converting from one byte to multibyte
+  encodings.
+
 - Don't change actual charset table with spellchecker enabled when
   "IgnoreCharset YES" in the config file.
 

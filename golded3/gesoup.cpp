@@ -698,8 +698,6 @@ int ExportSoupMsg(GMsg* msg, char* msgfile, gfile& fp, int ismail)
         if(CharTable)
             level = CharTable->level ? CharTable->level : 2;
 
-        char mbuf[1030];
-
         // Write placeholder for message length
         dword msglen = 0xFFFFFFFFL;
         fp.Fwrite(&msglen, 4);
@@ -730,8 +728,8 @@ int ExportSoupMsg(GMsg* msg, char* msgfile, gfile& fp, int ismail)
                 if((line->kludge == GKLUD_RFC) or (line->kludge == 0))
                 {
                     const char *ltxt = line->txt.c_str();
-                    XlatStr(mbuf, (*ltxt == CTRL_A) ? (ltxt + 1) : ltxt, level, CharTable);
-                    msglen += fp.Printf("%s%s", mbuf, (line->type & GLINE_WRAP) ? "" : "\n");
+                    const std::string converted = XlatStr((*ltxt == CTRL_A) ? (ltxt + 1) : ltxt, level, CharTable);
+                    msglen += fp.Printf("%s%s", converted.c_str(), (line->type & GLINE_WRAP) ? "" : "\n");
                 }
                 else if(line->type & GLINE_WRAP)
                 {
@@ -751,9 +749,10 @@ int ExportSoupMsg(GMsg* msg, char* msgfile, gfile& fp, int ismail)
         {
             if(not (line->type & (GLINE_KLUDGE|GLINE_TEAR|GLINE_ORIG)))
             {
-                XlatStr(mbuf, line->txt.c_str(), level, CharTable);
-                char* mptr = mbuf;
-                if(qp and strlen(mptr) > 76)
+                std::string convLine = XlatStr(line->txt.c_str(), level, CharTable);
+                const size_t len = convLine.size();
+                size_t mpos = 0;
+                if(qp and len > 76)
                 {
                     // 12345v7890
                     //     =FF    - back one
@@ -761,18 +760,18 @@ int ExportSoupMsg(GMsg* msg, char* msgfile, gfile& fp, int ismail)
                     //   =FF      - okay
                     do
                     {
-                        char* mbeg = mptr;
-                        mptr += 75;
-                        if(*(mptr-2) == '=')
-                            mptr -= 2;
-                        else if(*(mptr-1) == '=')
-                            mptr--;
-                        int mlen = (int)(mptr - mbeg);
-                        msglen += fp.Printf("%*.*s=\n", mlen, mlen, mbeg);
+                        const size_t mbeg = mpos;
+                        mpos += 75;
+                        if(convLine[mpos-2] == '=')
+                            mpos -= 2;
+                        else if(convLine[mpos-1] == '=')
+                            mpos--;
+                        int mlen = (int)(mpos - mbeg);
+                        msglen += fp.Printf("%*.*s=\n", mlen, mlen, convLine.c_str() + mbeg);
                     }
-                    while(strlen(mptr) > 76);
+                    while((len - mpos) > 76);
                 }
-                msglen += fp.Printf("%s\n", mptr);
+                msglen += fp.Printf("%s\n", convLine.c_str() + mpos);
             }
             line = line->next;
         }

@@ -45,6 +45,7 @@
     #include <hunspell/hunspell.hxx>
 #endif
 #include <gespell.h>
+#include <string>
 
 typedef char XlatName[17];
 typedef byte ChsTab[4];
@@ -60,7 +61,7 @@ struct Chs
 };
 
 int   LoadCharset(const char* imp, const char* exp, int query = 0);
-char* XlatStr(char* dest, const char* src, int level, Chs* chrtbl, int qpencoded=false, bool i51=false);
+std::string XlatStr(const char* src, int level, Chs* chrtbl, int qpencoded=false, bool i51=false);
 
 extern Chs* CharTable;
 
@@ -423,8 +424,7 @@ void CMSSpellLang::BuildSuggest(const char *text, CSpellSuggestV &suggest)
         if (flag && mSZ[idx])
         {
             flag = false;
-            RecodeText(&mSZ[idx], &mSZ[idx], false);
-            suggest.push_back(std::pair<byte, std::string>(0, "  " + std::string(&mSZ[idx]) + char(' ')));
+            suggest.push_back("  " + RecodeText(&mSZ[idx], false) + char(' '));
         }
         else if (!more && !mSZ[idx])
         {
@@ -655,11 +655,8 @@ void CMYSpellLang::BuildSuggest(const char *text, CSpellSuggestV &suggest)
 
     for (int i=0; i < ns; i++)
     {
-        char *buff = new char[strlen(wlst[i])+1];
-        RecodeText(wlst[i], buff, false);
-        suggest.push_back(std::pair<byte, std::string>(0, "  " + std::string(buff) + char(' ')));
+        suggest.push_back("  " + RecodeText(wlst[i], false) + char(' '));
         free(wlst[i]);
-        delete[] buff;
     }
 
     free(wlst);
@@ -707,43 +704,19 @@ bool CMYSpellLang::AddWord(const char *text)
 
 //  ------------------------------------------------------------------
 
-void CSpellLang::RecodeText(const char *srcText, char *dstText, bool flag)
-{
-    if (!srcText || !dstText)
-    {
-        LOG.errpointer(__FILE__,__LINE__);
-        LOG.printf( "! Parameter is NULL pointer in CSpellLang::RecodeText. "
-                    "This is bug in program, please make report to developers." );
-        return;
-    }
-    if (flag)
-        XlatStr(dstText, srcText, mToDicTable->level, mToDicTable);
-    else
-        XlatStr(dstText, srcText, mToLocTable->level, mToLocTable);
-}
-
-
-void CSpellLang::RecodeText(const char *srcText, std::string &dstText, bool flag)
+std::string CSpellLang::RecodeText(const char *srcText, bool flag)
 {
     if (!srcText)
     {
         LOG.errpointer(__FILE__,__LINE__);
         LOG.printf( "! Parameter is NULL pointer: CSpellLang::RecodeText(NULL,dstText,flag). "
                     "This is bug in program, please make report to developers." );
-        return;
+        return std::string();
     }
-    size_t srcLen=strlen(srcText);
-    char *dstbuffer = new char[srcLen+1];
-    if (dstbuffer)
-    {
-        *dstbuffer = '\0';
-        if (flag)
-            XlatStr(dstbuffer, srcText, mToDicTable->level, mToDicTable);
-        else
-            XlatStr(dstbuffer, srcText, mToLocTable->level, mToLocTable);
-        dstText.assign(dstbuffer);
-        delete[] dstbuffer;
-    }
+    if (flag)
+        return XlatStr(srcText, mToDicTable->level, mToDicTable);
+    else
+        return XlatStr(srcText, mToLocTable->level, mToLocTable);
 }
 
 //  ------------------------------------------------------------------
@@ -834,6 +807,11 @@ void CSpellChecker::Close()
 {
     if (!IsInited()) return;
     UnLoad();
+    CSpellLangV::iterator it;
+    for (it = mLangs.begin(); it != mLangs.end(); it++)
+    {
+        delete(*it);
+    }
     mLangs.clear();
     mInited = false;
 }
@@ -928,7 +906,7 @@ bool CSpellChecker::Check(const char *text)
     CSpellLangV::iterator it;
     for (it = mLangsLoaded.begin(); it != mLangsLoaded.end(); it++)
     {
-        (*it)->RecodeText(text, mText, true);
+        mText = (*it)->RecodeText(text, true);
         if ((*it)->SpellCheck(mText.c_str()))
         {
             return true;
@@ -960,7 +938,7 @@ CSpellSuggestV &CSpellChecker::Suggest()
         bool exists = false;
         for (distinct = mSuggest.begin(); distinct != mSuggest.end(); distinct++)
         {
-            if ((*distinct).second.compare((*all).second) == 0)
+            if ((*distinct).compare((*all)) == 0)
             {
                 exists = true;
                 break;

@@ -499,20 +499,18 @@ char* strschg(char* str, const char* find, const char* replace)
 
 //  ------------------------------------------------------------------
 //  Adjusts the size of a string
+//  NOTE Buffer shall be at least one byte longer than newsize!
 
 char* strsetsz(char* str, int newsize)
 {
-
-    int i;
 
     int len = strlen(str);
     if(newsize < len)
         *(str+newsize) = NUL;
     else
     {
-        for(i=len; i<newsize; i++)
-            *(str+i) = ' ';
-        *(str+i) = NUL;
+        memset(str+len, ' ', newsize-len);
+        *(str+newsize) = NUL;
     }
 
     return str;

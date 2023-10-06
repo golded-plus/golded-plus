@@ -2330,7 +2330,7 @@ void IEclass::SCheckerMenu()
         finaltag = menu.Run(schecker, buff);
         if (finaltag >= 0)
         {
-            std::string &str = schecker.GetSuggest()[finaltag].second;
+            std::string &str = schecker.GetSuggest()[finaltag];
             size_t len2 = str.length() - 3;
             txt = &str.c_str()[2];
 
