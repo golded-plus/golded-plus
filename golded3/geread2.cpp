@@ -324,7 +324,7 @@ void GotoMsgno()
         int inhdr = AA->Msglistheader() or not _in_msglist;
 
         if(reader_keycode < KK_Macro)
-            if(gkbd.kbuf == NULL)
+            if(gkbd->kbuf == NULL)
                 kbput(reader_keycode); // Put back the key
 
         char buf[150];
@@ -550,7 +550,7 @@ void NewArea(bool jumpnext)
     AL.Sort();
     reader_done = YES;
 
-    if(gkbd.quitall)
+    if(gkbd->quitall)
         QuitNow();
     else
     {

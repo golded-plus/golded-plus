@@ -336,7 +336,7 @@ void CheckSemaphores()
 
     if(fexist(AddPath(CFG->areapath, CFG->semaphore.exitnow)) and in_arealist)
     {
-        gkbd.quitall = YES;
+        gkbd->quitall = YES;
         kbput(KK_AreaAbort);
         remove(AddPath(CFG->areapath, CFG->semaphore.exitnow));
     }

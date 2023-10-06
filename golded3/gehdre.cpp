@@ -503,7 +503,7 @@ int EditHeaderinfo(int mode, GMsgHeaderView &view, bool doedithdr)
     else
         hedit.dropped = false;
 
-    if(not hedit.dropped and not gkbd.quitall)
+    if(not hedit.dropped and not gkbd->quitall)
     {
 
         strcpy(msg->by, from_name.c_str());

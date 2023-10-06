@@ -282,7 +282,7 @@ bool gfileselect::handle_key()
     ////////////// Drop through
 
     case KK_FileQuitNow:
-        gkbd.quitall = true;
+        gkbd->quitall = true;
     ////////////// Drop through
 
     case KK_FileAbort:
@@ -1175,7 +1175,7 @@ void FileRequest(GMsg* msg)
             }
         }
 
-        if(gkbd.quitall)
+        if(gkbd->quitall)
             QuitNow();
     }
 

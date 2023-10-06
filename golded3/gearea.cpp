@@ -643,8 +643,8 @@ bool GPickArealist::handle_key()
     case KK_AreaAskExit:
     {
         GMenuQuit MenuQuit;
-        aborted = gkbd.quitall = (MenuQuit.Run()!=0);
-        if(gkbd.quitall)
+        aborted = gkbd->quitall = (MenuQuit.Run()!=0);
+        if(gkbd->quitall)
         {
             precursor();
             return false;
@@ -667,7 +667,7 @@ bool GPickArealist::handle_key()
         return false;
 
     case KK_AreaQuitNow:
-        aborted = gkbd.quitall = true;
+        aborted = gkbd->quitall = true;
         precursor();
         return false;
 
@@ -1048,7 +1048,7 @@ int AreaPick(char* title, int wpos, int* idx)
     GPickArealist p;
     int new_area;
 
-    if(gkbd.quitall)
+    if(gkbd->quitall)
         return -1;
 
     PickArealist = &p;
