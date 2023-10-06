@@ -424,7 +424,7 @@ void CMSSpellLang::BuildSuggest(const char *text, CSpellSuggestV &suggest)
         if (flag && mSZ[idx])
         {
             flag = false;
-            suggest.push_back("  " + RecodeText(&mSZ[idx], false)) + char(' '));
+            suggest.push_back("  " + RecodeText(&mSZ[idx], false) + char(' '));
         }
         else if (!more && !mSZ[idx])
         {
