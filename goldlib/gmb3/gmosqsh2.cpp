@@ -238,9 +238,9 @@ void SquishArea::raw_scan(int __keep_index, int __scanpm)
         for(int uh=0; uh<umax; uh++)
             uhash.push_back(strHash32(WideUsername[uh]));
         PMrk->Reset();
-        register uint n = lastread + 1;
-        register uint cnt = Msgn->Count();
-        register int gotpm = false;
+        uint n = lastread + 1;
+        uint cnt = Msgn->Count();
+        int gotpm = false;
         while(n <= cnt)
         {
             SqshIdx* idx = data->idx + (n-1);

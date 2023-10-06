@@ -98,7 +98,7 @@ static int dispdesc=YES;
 
 static int calc_bar_width(_menu_t *wmenu,_item_t *witem)
 {
-    register int width;
+    int width;
 
     width=strlen(witem->str);
     if(wmenu->barwidth) width=wmenu->barwidth;
@@ -218,8 +218,8 @@ static void disp_item(_item_t *witem,int bar)
     char ch;
     vattr chattr;
     _wrec_t* whp;
-    register const char* p;
-    register vatch* ptr=(vatch*)buf;
+    const char* p;
+    vatch* ptr=(vatch*)buf;
     int i, textend,width,wcol,found=NO;
 
     // if mouse cursor is on, temporarily hide it
@@ -588,7 +588,7 @@ static gkey read_mouse(_item_t* citem)
 {
 (void)(citem);
 #ifdef GOLD_MOUSE
-    register _item_t *item;
+    _item_t *item;
 
     // if free-floating mouse cursor support is on
     if(gmou.FreeCursor())

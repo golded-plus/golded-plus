@@ -72,7 +72,7 @@ void GTag::Reset()
 uint32_t* GTag::Resize(uint __tags)
 {
 
-    register uint newsize = 0;
+    uint newsize = 0;
 
     if(__tags >= allocated)
         newsize = __tags + granularity;

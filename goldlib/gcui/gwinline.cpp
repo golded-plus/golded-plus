@@ -175,7 +175,7 @@ static inline int isrighthorz(int btype, vchar ch)
 int whline(int wsrow, int wscol, int count, int btype, vattr attr)
 {
 
-    register int bt;
+    int bt;
     int row,col,up,down;
     vchar ch;
 
@@ -260,7 +260,7 @@ int whline(int wsrow, int wscol, int count, int btype, vattr attr)
 int wvline(int wsrow, int wscol, int count, int btype, vattr attr)
 {
 
-    register int bt;
+    int bt;
     int row,col,left,right;
     vchar ch;
 
