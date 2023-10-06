@@ -2075,15 +2075,15 @@ chardo:
                     switch( errno )
                     {
                     case EINVAL:
-                        LOG.printf("An incomplete multibyte sequence has been encountered before:");
-                        LOG.printf("%s",sptr);
+                        LOG.printf("! An incomplete multibyte sequence has been encountered before:");
+                        LOG.printf("+ %s",sptr);
                     case EILSEQ:
-                        LOG.printf("An invalid multibyte sequence has been encountered in the input before:");
-                        LOG.printf("%s",sptr);
+                        LOG.printf("! An invalid multibyte sequence has been encountered in the input before:");
+                        LOG.printf("+ %s",sptr);
                     case E2BIG:
-                        LOG.printf("There is not sufficient destination size before '%s'", sptr);
+                        LOG.printf("! There is not sufficient destination size before '%s'", sptr);
                     default:
-                        LOG.printf("Unknown error %u in iconv() before %s", errno, sptr);
+                        LOG.printf("! Unknown error %u in iconv() before %s", errno, sptr);
                     }
                 }
             }
@@ -3367,9 +3367,9 @@ int LoadCharset(const char* imp, const char* exp, int query)
         iconv_close(iconv_cd);
     iconv_cd = iconv_open(exp, imp);
     if(iconv_cd != (iconv_t)(-1) )
-        LOG.printf("iconv is initialised to convert from %s to %s", imp, exp);
+        LOG.printf("+ iconv is initialised to convert from %s to %s", imp, exp);
     else
-        LOG.printf("Can't initialise iconv to convert from %s to %s", imp, exp);
+        LOG.printf("+ Can't initialise iconv to convert from %s to %s", imp, exp);
 #endif
 
     // Find and load charset table

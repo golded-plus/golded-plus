@@ -711,7 +711,7 @@ void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int __orig
                     }
                 }
 #else
-                LOG.printf("Macros \"@uptime\" is not suppoted on platform %s!", __gver_platform__);
+                LOG.printf("! Macros \"@uptime\" is not suppoted on platform %s!", __gver_platform__);
 #endif
 
                 if( seconds+useconds>0 )
@@ -736,7 +736,7 @@ void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int __orig
                 }
                 else
                 {
-                    LOG.printf("Can't determine uptime value, set @uptime empty.");
+                    LOG.printf("! Can't determine uptime value, set @uptime empty.");
                     tokenxchg(input, dst, "@uptime", "");
                 }
             }
