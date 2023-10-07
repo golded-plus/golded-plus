@@ -2852,10 +2852,11 @@ void IEclass::statusline()
                 {
                     int saved_insert = insert;
                     insert = true;
+                    size_t n;
                     batch_mode = BATCH_MODE;
-                    for(size_t n = 0; n < tlen; n++)
+                    for(n = 0; n < tlen; n++)
                         DelLeft();
-                    for (size_t n = 0; n < text.size(); ++n)
+                    for (n = 0; n < text.size(); ++n)
                         insertchar(text[n]);
                     HandleGEvent(EVTT_EDITCOMPLETION);
                     insert = saved_insert;
