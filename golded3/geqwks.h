@@ -29,6 +29,7 @@
 
 struct QwkCfg
 {
+    QwkCfg();
     Echo badmsgs;
     Path exportpath;
     Path importpath;

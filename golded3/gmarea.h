@@ -96,6 +96,7 @@ public:
 
     const char* areakludgeid;     // Echoid from AREA: kludge or NULL
 
+    GMsg();
     char* By();
     char* To();
     bool to_me();
@@ -380,11 +381,11 @@ struct AreaData
         memset(xlatimport, 0, sizeof(xlatimport));
 
         //classes
-        aka = gaka();
-        attributes = ftn_attr();
-        internetgate = Node();
+        memset(&aka, 0, sizeof(aka));
+        memset(&attributes, 0, sizeof(attributes));
+        memset(&internetgate, 0, sizeof(internetgate));
         memset(&play, 0, sizeof(play));
-        username = Node();
+        memset(&username, 0, sizeof(username));
     }
 
     // Area

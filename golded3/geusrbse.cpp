@@ -502,7 +502,7 @@ void guserbase::write_entry(uint idx, bool updateit)
 
 void guserbase::clear_entry(gusrbaseentry *ent)
 {
-    *ent = gusrbaseentry();
+    memset(ent, 0, sizeof(gusrbaseentry));
 }
 
 //  ------------------------------------------------------------------

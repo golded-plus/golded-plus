@@ -150,7 +150,9 @@ const int UID_PREV  = 2;
 
 struct SqshHdr
 {
-    dword    attr;
+    SqshHdr();
+
+    dword   attr;
     char    from[36];
     char    to[36];
     char    subj[72];
@@ -158,10 +160,10 @@ struct SqshHdr
     Addr    dest;
     FTime   date_written;   // When user wrote the msg (UTC)
     FTime   date_arrived;   // When msg arrived on-line (UTC)
-    short    utc_offset;     // Offset from UTC of message writer, in minutes.
-    dword    replyto;
-    dword    replies[MAX_REPLY];
-    dword    umsgid;
+    short   utc_offset;     // Offset from UTC of message writer, in minutes.
+    dword   replyto;
+    dword   replies[MAX_REPLY];
+    dword   umsgid;
     char    ftsc_date[20];
 };
 

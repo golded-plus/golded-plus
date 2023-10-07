@@ -114,7 +114,6 @@ public:
     void Run();
 
     GMsgList()
-        : msg()
     {
         mlst = NULL;
         maximum_index = AA->Msgn.Count()-1;

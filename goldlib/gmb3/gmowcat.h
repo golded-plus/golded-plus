@@ -95,6 +95,8 @@ const word mfSent        = 0x0800;
 
 struct WCatHdr
 {
+    WCatHdr();
+
     uint32_t  magicnumber;
     word  msgno;
     char  from[71];
