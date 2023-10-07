@@ -52,7 +52,7 @@ void gareafile::ReadDB130(char* /*tag*/, char* dbpath)
     gfile fp1(file1, "rb", sharemode);
     if (fp1.isopen())
     {
-        fp1.SetvBuf(NULL, _IOFBF, 8192);
+        fp1.SetvBuf(NULL, _IOFBF, BUFSIZ);
 
         if (not quiet)
             STD_PRINTNL("* Reading " << file1);
@@ -60,7 +60,7 @@ void gareafile::ReadDB130(char* /*tag*/, char* dbpath)
         gfile fp2(file2, "rb", sharemode);
         if (fp2.isopen())
         {
-            fp2.SetvBuf(NULL, _IOFBF, 8192);
+            fp2.SetvBuf(NULL, _IOFBF, BUFSIZ);
 
             if (not quiet)
                 STD_PRINTNL("* Reading " << file2);
@@ -123,7 +123,7 @@ void gareafile::ReadDB1046(char* file, char* /*tag*/)
     gfile fp(file, "rb", sharemode);
     if (fp.isopen())
     {
-        fp.SetvBuf(NULL, _IOFBF, 8192);
+        fp.SetvBuf(NULL, _IOFBF, BUFSIZ);
 
         if (not quiet)
             STD_PRINTNL("* Reading " << file);
@@ -187,7 +187,7 @@ void gareafile::ReadDB1047A22(char* file, int reclen, char* /*tag*/)
         gfile fp(file, "rb", sharemode);
         if (fp.isopen())
         {
-            fp.SetvBuf(NULL, _IOFBF, 8192);
+            fp.SetvBuf(NULL, _IOFBF, BUFSIZ);
 
             if (not quiet)
                 STD_PRINTNL("* Reading " << file);
@@ -252,7 +252,7 @@ void gareafile::ReadDB2011(char* file, int reclen, char* /*tag*/)
         gfile fp(file, "rb", sharemode);
         if (fp.isopen())
         {
-            fp.SetvBuf(NULL, _IOFBF, 8192);
+            fp.SetvBuf(NULL, _IOFBF, BUFSIZ);
 
             if (not quiet)
                 STD_PRINTNL("* Reading " << file);

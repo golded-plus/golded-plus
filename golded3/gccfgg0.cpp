@@ -1520,7 +1520,7 @@ int ReadCfg(const char* cfgfile, int ignoreunknown)
             STD_PRINTNL("* Reading " << cfg);
 
         // Assign file buffer
-        fp.SetvBuf(NULL, _IOFBF, 8192);
+        fp.SetvBuf(NULL, _IOFBF, BUFSIZ);
 
         // Read each line
         while (fp.Fgets((val=buf), sizeof(buf)))

@@ -97,7 +97,7 @@ void gareafile::ReadSynchronet(char* tag)
     FILE* in = fsopen(file, "rb", sharemode);
     if (in)
     {
-        setvbuf(in, NULL, _IOFBF, 8192);
+        setvbuf(in, NULL, _IOFBF, BUFSIZ);
 
         if (not quiet)
             STD_PRINTNL("* Reading " << file);

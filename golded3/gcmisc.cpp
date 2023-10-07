@@ -44,7 +44,7 @@ int ReadHelpCfg(int force)
         gfile ifp(AddPath(CFG->goldpath, CFG->helpcfg.fn), "rb", CFG->sharemode);
         if (ifp.isopen())
         {
-            ifp.SetvBuf(NULL, _IOFBF, 8192);
+            ifp.SetvBuf(NULL, _IOFBF, BUFSIZ);
             gfile ofp(AddPath(CFG->goldpath, CFG->helpged), "wb", CFG->sharemode);
             if (ofp.isopen())
             {
@@ -54,7 +54,7 @@ int ReadHelpCfg(int force)
                 if (not quiet)
                     STD_PRINTNL("* Reading " << AddPath(CFG->goldpath, CFG->helpcfg.fn));
 
-                ofp.SetvBuf(NULL, _IOFBF, 8192);
+                ofp.SetvBuf(NULL, _IOFBF, BUFSIZ);
 
                 count = 0;
                 ifp.Rewind();

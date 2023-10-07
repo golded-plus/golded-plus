@@ -687,7 +687,7 @@ void LoadLanguage(const char* file)
     gfile fp(AddPath(CFG->goldpath, file), "rt", CFG->sharemode);
     if (fp.isopen())
     {
-        fp.SetvBuf(NULL, _IOFBF, 8192);
+        fp.SetvBuf(NULL, _IOFBF, BUFSIZ);
         while (fp.Fgets((ptr=buf), sizeof(buf)))
         {
             line++;
@@ -745,7 +745,7 @@ bool ReadLangCfg()
     gfile fpi(cfgname, "rt", CFG->sharemode);
     if (fpi.isopen())
     {
-        fpi.SetvBuf(NULL, _IOFBF, 8192);
+        fpi.SetvBuf(NULL, _IOFBF, BUFSIZ);
 
         if (not quiet)
             STD_PRINTNL("* Reading " << cfgname);
@@ -803,4 +803,3 @@ bool ReadLangCfg()
 
 
 //  ------------------------------------------------------------------
-

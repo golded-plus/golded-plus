@@ -71,7 +71,7 @@ void gareafile::ReadDutchie(char* tag)
     gfile fp(file, "rb", sharemode);
     if (fp.isopen())
     {
-        fp.SetvBuf(NULL, _IOFBF, 8192);
+        fp.SetvBuf(NULL, _IOFBF, BUFSIZ);
 
         if (not quiet)
             STD_PRINTNL("* Reading " << file);

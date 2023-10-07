@@ -87,7 +87,7 @@ void gareafile::ReadCrashmailCfg(const char* file)
     gfile fp(file, "rt", sharemode);
     if (fp.isopen())
     {
-        fp.SetvBuf(NULL, _IOFBF, 8192);
+        fp.SetvBuf(NULL, _IOFBF, BUFSIZ);
 
         if (not quiet)
             STD_PRINTNL("* Reading " << file);

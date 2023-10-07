@@ -84,7 +84,7 @@ void gareafile::ReadSpaceAr(const char* file)
     FILE* fp = fsopen(file, "rb", sharemode);
     if (fp)
     {
-        setvbuf(fp, NULL, _IOFBF, 8192);
+        setvbuf(fp, NULL, _IOFBF, BUFSIZ);
 
         if (not quiet)
             STD_PRINTNL("* Reading " << file);
@@ -186,7 +186,7 @@ void gareafile::ReadSpaceNtm(const char* file)
     FILE* fp = fsopen(file, "rb", sharemode);
     if (fp)
     {
-        setvbuf(fp, NULL, _IOFBF, 8192);
+        setvbuf(fp, NULL, _IOFBF, BUFSIZ);
 
         if (not quiet)
             STD_PRINTNL("* Reading " << file);
@@ -256,7 +256,7 @@ void gareafile::ReadSpaceCtl(const char* file)
     FILE* fp = fsopen(file, "rb", sharemode);
     if (fp)
     {
-        setvbuf(fp, NULL, _IOFBF, 8192);
+        setvbuf(fp, NULL, _IOFBF, BUFSIZ);
 
         if (not quiet)
             STD_PRINTNL("* Reading " << file);

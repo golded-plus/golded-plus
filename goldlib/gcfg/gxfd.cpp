@@ -129,7 +129,7 @@ void gareafile::ReadFrontDoor(char* tag)
     fp = fsopen(file, "rb", sharemode);
     if (fp)
     {
-        setvbuf(fp, NULL, _IOFBF, 8192);
+        setvbuf(fp, NULL, _IOFBF, BUFSIZ);
 
         if (not quiet)
             STD_PRINTNL("* Reading " << file);

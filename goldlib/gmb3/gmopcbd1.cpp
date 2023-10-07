@@ -90,7 +90,7 @@ void PcbInit(const char* path, int userno)
         // Get some paths/filenames
         int _line = 0;
         char _buf[256];
-        fp.SetvBuf(NULL, _IOFBF, 8192);
+        fp.SetvBuf(NULL, _IOFBF, BUFSIZ);
         while (fp.Fgets(_buf, sizeof(_buf)))
         {
             _line++;
@@ -113,7 +113,7 @@ void PcbInit(const char* path, int userno)
 
         // Get board numbers for lastread indexing in the userfiles
         word _recsize = 0;
-        fp.SetvBuf(NULL, _IOFBF, 8192);
+        fp.SetvBuf(NULL, _IOFBF, BUFSIZ);
         fp.Fread(&_recsize, 2);
         if (_recsize)
         {
