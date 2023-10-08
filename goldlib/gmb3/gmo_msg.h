@@ -247,6 +247,13 @@ private:
 
 public:
 
+    gmsg_links()
+        : reply_to(0)
+        , reply_first(0)
+        , reply_next(0)
+    {
+    }
+
     void reset()
     {
         reply_to = reply_first = reply_next = 0;
@@ -416,6 +423,38 @@ public:
     gmsg_adeptxbbs_fields adeptxbbs;
     gmsg_ezycom_fields    ezycom;
 
+    gmsg()
+        : board(0)
+        , msgno(0)
+        , link()
+        , oorig()
+        , orig()
+        , odom()
+        , odest()
+        , dest()
+        , ddom()
+        , written(0)
+        , arrived(0)
+        , received(0)
+        , attr()
+        , cost(0)
+        , timesread(0)
+        , msgid()
+        , txt(NULL)
+    {
+        by[0] = 0;
+        to[0] = 0;
+        re[0] = 0;
+        msgids[0] = 0;
+        replys[0] = 0;
+        pid[0] = 0;
+        memset(&jam, 0, sizeof(jam));
+        memset(&pcboard, 0, sizeof(pcboard));
+        memset(&wildcat, 0, sizeof(wildcat));
+        memset(&adeptxbbs, 0, sizeof(adeptxbbs));
+        memset(&ezycom, 0, sizeof(ezycom));
+    }
+
     void reset()
     {
         board = 0;
@@ -444,11 +483,11 @@ public:
         txtlength = 0;
         txtblocks = 0;
         throw_xrelease(txt);
-        jam = gmsg_jam_fields();
-        pcboard = gmsg_pcboard_fields();
-        wildcat = gmsg_wildcat_fields();
-        adeptxbbs = gmsg_adeptxbbs_fields();
-        ezycom = gmsg_ezycom_fields();
+        memset(&jam, 0, sizeof(jam));
+        memset(&pcboard, 0, sizeof(pcboard));
+        memset(&wildcat, 0, sizeof(wildcat));
+        memset(&adeptxbbs, 0, sizeof(adeptxbbs));
+        memset(&ezycom, 0, sizeof(ezycom));
     }
 };
 

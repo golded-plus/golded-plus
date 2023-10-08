@@ -42,6 +42,27 @@ int       ezycomdatano = 0;
 
 //  ------------------------------------------------------------------
 
+EzycHdr::EzycHdr()
+    : replyto(0)
+    , reply1st(0)
+    , startposition(0)
+    , messagelength(0)
+    , destnet()
+    , orignet()
+    , cost(0)
+    , msgattr(0)
+    , netattr(0)
+    , extattr(0)
+{
+    memset(&posttimedate, 0, sizeof(posttimedate));
+    memset(&recvtimedate, 0, sizeof(recvtimedate));
+    whoto[0] = NUL;
+    whofrom[0] = NUL;
+    subject[0] = NUL;
+}
+
+//  ------------------------------------------------------------------
+
 void EzycomArea::data_open()
 {
 

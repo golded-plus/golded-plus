@@ -36,6 +36,32 @@ XbbsWide* xbbswide = NULL;
 XbbsData* xbbsdata = NULL;
 int       xbbsdatano = 0;
 
+XbbsHdr::XbbsHdr()
+    : majorversion(0)
+    , minorversion(0)
+    , structlen(0)
+    , msgnum(0)
+    , timesread(0)
+    , timerecv(0)
+    , length(0)
+    , start(0)
+    , extra1(0)
+    , extra2(0)
+    , extra3(0)
+    , origaddr()
+    , destaddr()
+    , cost(0)
+    , fflags(0)
+    , xflags(0)
+    , iflags(0)
+    , oflags(0)
+{
+    from[0] = NUL;
+    to[0] = NUL;
+    subj[0] = NUL;
+    date[0] = NUL;
+    indate[0] =NUL;
+}
 
 //  ------------------------------------------------------------------
 
