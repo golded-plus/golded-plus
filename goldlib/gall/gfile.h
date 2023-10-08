@@ -168,7 +168,7 @@ public:
         rewind(fp);
     }
 
-    int     SetvBuf (char* __buf=NULL, int __type=_IOFBF, size_t __size=8192);
+    int     SetvBuf (char* __buf=NULL, int __type=_IOFBF, size_t __size=BUFSIZ);
     int     SetvBuf (size_t __size)
     {
         return SetvBuf(NULL, _IOFBF, __size);

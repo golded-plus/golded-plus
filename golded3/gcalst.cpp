@@ -166,7 +166,7 @@ void AreaList::WriteGoldLast()
     gfile fp(lst, "wb", CFG->sharemode);
     if (fp.isopen())
     {
-        fp.SetvBuf(NULL, _IOFBF, 8192);
+        fp.SetvBuf(NULL, _IOFBF, BUFSIZ);
         fp.Fwrite(&GOLDLAST_VER, sizeof(word));
         fp.Fwrite(AL.alistselections, sizeof(AL.alistselections));
 
@@ -212,7 +212,7 @@ void AreaList::ReadGoldLast()
     gfile fp(AddPath(CFG->goldpath, CFG->goldlast), "rb", CFG->sharemode);
     if (fp.isopen())
     {
-        fp.SetvBuf(NULL, _IOFBF, 8192);
+        fp.SetvBuf(NULL, _IOFBF, BUFSIZ);
         fp.Fread(&GOLDLAST_VER, sizeof(word));
 
         if (GOLDLAST_VER != CUR_GOLDLAST_VER)

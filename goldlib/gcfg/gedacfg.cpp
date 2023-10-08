@@ -362,7 +362,7 @@ void gareafile::GetAreasBBS(char* name, char* origin)
     gfile fp(areafile, "rt", sharemode);
     if (fp.isopen())
     {
-        fp.SetvBuf(NULL, _IOFBF, 8192);
+        fp.SetvBuf(NULL, _IOFBF, BUFSIZ);
 
         if (not quiet)
             STD_PRINTNL("* Reading " << areafile);

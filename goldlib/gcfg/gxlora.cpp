@@ -144,7 +144,7 @@ void gareafile::ReadLoraBBS(char* tag)
         fp.Fopen(_file, "rb");
         if (fp.isopen())
         {
-            fp.SetvBuf(NULL, _IOFBF, 8192);
+            fp.SetvBuf(NULL, _IOFBF, BUFSIZ);
 
             if (not quiet)
                 STD_PRINTNL("* Reading " << _file);

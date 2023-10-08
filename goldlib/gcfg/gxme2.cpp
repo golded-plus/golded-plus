@@ -65,7 +65,7 @@ void gareafile::ReadME2(char* tag)
             fp = fsopen(file, "rt", sharemode);
             if (fp)
             {
-                setvbuf(fp, NULL, _IOFBF, 8192);
+                setvbuf(fp, NULL, _IOFBF, BUFSIZ);
 
                 if (not quiet)
                     STD_PRINTNL("* Reading " << file);
