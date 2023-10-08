@@ -208,6 +208,54 @@ void RenumberArea()
 
 //  ------------------------------------------------------------------
 
+GMsg::GMsg()
+    : you_and_I(0)
+    , fwdorig()
+    , fwddest()
+    , i51(false)
+    , charsetlevel(0)
+    , charsetencoding(0)
+    , tzutc(0)
+    , lin(NULL)
+    , line(NULL)
+    , lines(0)
+    , quotepct(0)
+    , foundwhere(0)
+    , foundtopline(0)
+    , orig_timesread(0)
+    , messageid(NULL)
+    , inreplyto(NULL)
+    , references(NULL)
+    , areakludgeid(NULL)
+{
+    gmsg::reset();
+    iorig[0] = NUL;
+    idest[0] = NUL;
+    ireplyto[0] = NUL;
+    iaddr[0] = NUL;
+    igate[0] = NUL;
+    ifrom[0] = NUL;
+    ito[0] = NUL;
+    icc[0] = NUL;
+    ibcc[0] = NUL;
+    organization[0] = NUL;
+    realby[0] = NUL;
+    realto[0] = NUL;
+    pseudoto[0] = NUL;
+    pseudofrom[0] = NUL;
+    fwdfrom[0] = NUL;
+    fwdto[0] = NUL;
+    fwdsubj[0] = NUL;
+    fwdarea[0] = NUL;
+    fwdmsgid[0] = NUL;
+    charset[0] = NUL;
+    tagline[0] = NUL;
+    tearline[0] = NUL;
+    origin[0] = NUL;
+}
+
+//  ------------------------------------------------------------------
+
 char* GMsg::By()
 {
     return *realby ? realby : by;

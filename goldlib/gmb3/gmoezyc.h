@@ -91,6 +91,8 @@ const byte EZYC_EXTATTR_SEEN     = 0x80;
 struct EzycHdr
 {
 
+    EzycHdr();
+
     word    replyto;
     word    reply1st;
 

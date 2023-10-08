@@ -654,21 +654,30 @@ int ExportQWK()
     return exported;
 }
 
+//  ------------------------------------------------------------------
+
+QwkCfg::QwkCfg()
+{
+    badmsgs[0] = NUL;
+    exportpath[0] = NUL;
+    importpath[0] = NUL;
+    replylinker[0] = NUL;
+    tosslog[0] = NUL;
+}
 
 //  ------------------------------------------------------------------
 
 Qwk::Qwk()
     : cfg()
-    , bbs()
-    , bbss()
-    , bbsp()
-    , bbsn()
-    , mapp()
-    , mapn()
+    , bbs(NULL)
+    , bbss(0)
+    , bbsp(NULL)
+    , bbsn(0)
+    , mapp(NULL)
+    , mapn(0)
 
 {
 }
-
 
 //  ------------------------------------------------------------------
 

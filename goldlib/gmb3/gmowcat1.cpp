@@ -36,6 +36,37 @@ WCatWide* wcatwide = NULL;
 WCatData* wcatdata = NULL;
 int       wcatdatano = 0;
 
+//  ------------------------------------------------------------------
+
+WCatHdr::WCatHdr()
+    : magicnumber(0)
+    , msgno(0)
+    , fromuserid(0)
+    , touserid(0)
+    , msgdate(0)
+    , msgtime(0)
+    , readdate(0)
+    , readtime(0)
+    , mflags(0)
+    , reference(0)
+    , origaddr()
+    , destaddr()
+    , msgbytes(0)
+    , prevunread(0)
+    , nextunread(0)
+    , fidoflags(0)
+    , cost(0)
+{
+    from[0] = NUL;
+    fromtitle[0] = NUL;
+    to[0] = NUL;
+    totitle[0] = NUL;
+    subject[0] = NUL;
+    network[0] = NUL;
+    internalattach[0] = NUL;
+    externalattach[0] = NUL;
+    reserved[0] = NUL;
+}
 
 //  ------------------------------------------------------------------
 

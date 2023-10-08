@@ -1264,7 +1264,7 @@ void LookupNodeLocation(GMsg* msg, std::string &location, int what)
         if (!CFG->locationalias.empty())
         {
             std::map<std::string, std::string>::iterator it = CFG->locationalias.begin();
-            std::map<std::string, std::string>::const_iterator end = CFG->locationalias.end();
+            std::map<std::string, std::string>::iterator end = CFG->locationalias.end();
 
             std::string city_upr = city;
             strupr(city_upr);

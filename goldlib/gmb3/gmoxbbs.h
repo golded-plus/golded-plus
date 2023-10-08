@@ -95,6 +95,8 @@
 
 struct XbbsHdr
 {
+    XbbsHdr();
+
     char    majorversion; // Minor revision number of this message style
     char    minorversion; // Minor revision number of this message style
     uint16_t  structlen;  // The length of this data structure

@@ -33,6 +33,25 @@
 
 //  ------------------------------------------------------------------
 
+SqshHdr::SqshHdr()
+    : attr()
+    , orig()
+    , dest()
+    , utc_offset(0)
+    , replyto(0)
+    , umsgid(0)
+{
+    from[0] = NUL;
+    to[0] = NUL;
+    subj[0] = NUL;
+    memset(&date_written, 0, sizeof(date_written));
+    memset(&date_arrived, 0, sizeof(date_arrived));
+    memset(&replies, 0, sizeof(replies));
+    memset(&ftsc_date, 0, sizeof(ftsc_date));
+}
+
+//  ------------------------------------------------------------------
+
 SqshData* squishdata = NULL;
 SqshWide* squishwide = NULL;
 int       squishdatano = 0;
