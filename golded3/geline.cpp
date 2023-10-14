@@ -505,7 +505,7 @@ static void KludgeINTL(GMsg* msg, const char* ptr)
     char buf1[201], buf2[201];
     word fmpt = msg->orig.point;
     word topt = msg->dest.point;
-    sscanf(ptr, "%s %s", buf1, buf2);
+    sscanf(ptr, "%200s %200s", buf1, buf2);
     msg->dest.set(buf1);
     msg->orig.set(buf2);
     msg->orig.point = fmpt;
@@ -556,7 +556,7 @@ static void KludgeDOMAIN(GMsg* msg, const char* ptr)
 {
 
     char buf1[201], buf2[201];
-    sscanf(ptr, "%s %s %s %s", msg->ddom, buf1, msg->odom, buf2);
+    sscanf(ptr, "%40s %200s %40s %200s", msg->ddom, buf1, msg->odom, buf2);
     msg->dest.reset(buf1);
     msg->orig.reset(buf2);
 }
