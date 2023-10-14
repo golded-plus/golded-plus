@@ -980,10 +980,6 @@ void LoadText(GMsg* msg, const char* textfile)
 void GMsg::LinesToText()
 {
 
-    // Allow paragraphs up to 64k-1 long in the transfer buffer
-    int bufsize = 65535;
-    char* _buf = (char*)throw_malloc(bufsize);
-
     Chs* _xlat_table = CharTable;
     int _xlat_level = _xlat_table ? (_xlat_table->level ? _xlat_table->level : 2) : 0;
 
@@ -1008,8 +1004,6 @@ void GMsg::LinesToText()
 
     while(_line)
     {
-        *_buf = NUL;
-        char* _bptr;
         bool _hterm = true;
         if(_line->isheader())
         {
