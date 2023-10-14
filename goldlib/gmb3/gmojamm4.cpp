@@ -193,7 +193,7 @@ void JamArea::save_message(int __mode, gmsg* __msg, JamHdr& __hdr)
                 case CTRL_INTL:
                     fmpt = __msg->orig.point;
                     topt = __msg->dest.point;
-                    sscanf(_pdptr->text+6, "%s %s", buf1, buf2);
+                    sscanf(_pdptr->text+6, "%200s %200s", buf1, buf2);
                     __msg->dest.set(buf1);
                     __msg->orig.set(buf2);
                     __msg->orig.point = fmpt;
@@ -580,4 +580,3 @@ void JamArea::update_timesread(gmsg* msg)
 
 
 //  ------------------------------------------------------------------
-
