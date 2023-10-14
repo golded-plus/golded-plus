@@ -657,12 +657,11 @@ int GMsgBodyView::LineUp()
 #ifdef GOLD_MOUSE
             gmou.HideCursor();
 #endif
-            PaintLine(0, msg->line[upperline]);
 #ifdef GOLD_MOUSE
             gmou.ShowCursor();
 #endif
             can_pagedown = lowerline < (msg->lines-1);
-            UpdateScrollbar();
+            Paint();
             return true;
         }
     }
@@ -685,12 +684,11 @@ int GMsgBodyView::LineDown()
 #ifdef GOLD_MOUSE
             gmou.HideCursor();
 #endif
-            PaintLine(height-1, msg->line[lowerline]);
 #ifdef GOLD_MOUSE
             gmou.ShowCursor();
 #endif
             can_pagedown = lowerline < (msg->lines-1);
-            UpdateScrollbar();
+            Paint();
             return true;
         }
     }
