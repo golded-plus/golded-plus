@@ -498,53 +498,49 @@ void GMsgBodyView::Use(Area *areaptr, GMsg *msgptr, int startline)
 
 //  ------------------------------------------------------------------
 
-void GMsgBodyView::PaintLine(int row, Line *line)
-{
-
+void GMsgBodyView::PaintLine(int row, Line *line) {
     // Calculate effective coordinates for vputs
     int vrow = gwin.active->srow + row;
-    uint llen = line->txt.length();
+    std::string& text = line->txt;
+    size_t textLength = text.length();
 
     vattr color = (line->type & GLINE_HIGH) ? highlight_color : line->color;
 
-    // Trim line if it longer than should be. This actually happens in very rare
-    // cases, but always when hex dump displayed.
-    if(llen > visible_width)
-    {
-        llen = visible_width;
-        line->txt.erase(llen);
+    // Trim line if it is longer than it should be
+    if (textLength > visible_width) {
+        text = text.substr(0, visible_width);
+        textLength = visible_width;
     }
 
-    // Print it
-    if(not SearchHighlight(line, vrow, visible_width, highlight_color))
-    {
-        if(line->type & GLINE_ORIG and strneql(line->txt.c_str(), " * Origin: ", 11))
-        {
+    // Print the line
+    if (!SearchHighlight(line, vrow, visible_width, highlight_color)) {
+        if ((line->type & GLINE_ORIG) && text.compare(0, 11, " * Origin: ") == 0) {
             prints(vrow, 0, color, " * Origin: ");
-            StyleCodeHighlight(line->txt.c_str()+11, vrow, 11, not AA->attr().hex() and AA->adat->hidestylies, color);
+            StyleCodeHighlight(text.c_str() + 11, vrow, 11, !AA->attr().hex() && AA->adat->hidestylies, color);
+        } else {
+            StyleCodeHighlight(text.c_str(), vrow, 0, !AA->attr().hex() && AA->adat->hidestylies, color);
         }
-        else
-            StyleCodeHighlight(line->txt.c_str(), vrow, 0, not AA->attr().hex() and AA->adat->hidestylies, color);
-        int tlen = strlen(line->txt.c_str());
-        printns(vrow, tlen, color, "", visible_width-tlen);
+        int tlen = textLength;
+        printns(vrow, tlen, color, "", visible_width - tlen);
+    } else {
+        printns(vrow, 0, color, text.c_str(), visible_width);
     }
-    else
-        printns(vrow, 0, color, line->txt.c_str(), visible_width);
 }
+
 
 
 //  ------------------------------------------------------------------
 
-void GMsgBodyView::Paint()
-{
-
+void GMsgBodyView::Paint() {
     window.activate_quick();
 
-    Line* dummy_index = NULL;
+    Line* dummy_index = nullptr;
     Line** line_index = msg->line ? (msg->line + upperline) : &dummy_index;
 
-    for(int row=0; row<height; row++)
-        PaintLine(row, *line_index ? *line_index++ : &dummy_line);
+    for (int row = 0; row < height; ++row) {
+        Line* current_line = (line_index && *line_index) ? *line_index++ : &dummy_line;
+        PaintLine(row, current_line);
+    }
 
     UpdateScrollbar();
 }
@@ -657,12 +653,11 @@ int GMsgBodyView::LineUp()
 #ifdef GOLD_MOUSE
             gmou.HideCursor();
 #endif
-            PaintLine(0, msg->line[upperline]);
 #ifdef GOLD_MOUSE
             gmou.ShowCursor();
 #endif
             can_pagedown = lowerline < (msg->lines-1);
-            UpdateScrollbar();
+            Paint();
             return true;
         }
     }
@@ -685,12 +680,11 @@ int GMsgBodyView::LineDown()
 #ifdef GOLD_MOUSE
             gmou.HideCursor();
 #endif
-            PaintLine(height-1, msg->line[lowerline]);
 #ifdef GOLD_MOUSE
             gmou.ShowCursor();
 #endif
             can_pagedown = lowerline < (msg->lines-1);
-            UpdateScrollbar();
+            Paint();
             return true;
         }
     }
