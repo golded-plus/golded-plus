@@ -1474,12 +1474,11 @@ Include gedcolor.cfg
 // Для Microsoft Spellchecker указывается цифровой код языка (американский
 // английский - 1033, русский - 1049, остальные смотрите в документации
 // Microsoft).
-// Для MySpell указывается название словаря, регистрозависимое (имя файла без
-// суффикса .dic или .aff).
+// Для MySpell указывается разделенные пробелами названия словарей,
+// регистрозависимые (имя файла без суффикса .dic или .aff).
 
-// SCheckerUserDic <MS Spell user dictionnary filename>
-// Имя файла пользовательского словаря, используется только в Microsoft
-// Spellchecker, игноригуется в MySpell.
+// SCheckerUserDic <user dictionnary filename>
+// Имя файла пользовательского словаря.
 
 // SCheckerDicPath <MySpell dictionaries directory>
 // Каталог со словарями MySpell, игноригуется в Microsoft Spellchecker.
@@ -1501,7 +1500,9 @@ SCheckerEnabled No              ; выключить
 ;SCheckerDefLang ru_RU           ; MYSPELL, Русский с аббревиатурами
 ;SCheckerDefLang en_US           ; MYSPELL, Английский (американский диалект)
 
-// используется только для MSSPELL
+// Полное имя файла пользовательского словаря. Пользовательский словарь будет
+// создан в том же каталоге, что и golded.cfg, если задано только имя файла
+// без пути.
 ;SCheckerUserDic "user.dic"
 // используется только для MYSPELL
 //  windows с установленным openoffice

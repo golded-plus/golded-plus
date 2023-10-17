@@ -13,6 +13,12 @@ ______________________________________________________________________
 Legend: "-" - bugfix, "+" - new feature, "!" - important modification.
 ______________________________________________________________________
 
++ Added user dictionary support for MySpell spell checker. User
+  dictionary is associated with first language in SCheckerDefLang
+  list. That means if that language is unloaded, user dictionary
+  unloaded too. User dictionary is a simple text file with one word
+  by line in local charset.
+
 - Modified ncurses initialization. That allow to see commandline help
   and trailing critical log records on Linux. Install procedure,
   when started with -INSTALL argument still need to be reworked.
