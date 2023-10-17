@@ -386,7 +386,6 @@ void* throw_realloc_debug(void* __oldptr, size_t __size, const char* __file, int
 {
 
     void* _ptr;
-    Throw* dl = throw_ptrtodl(__oldptr);
 
     if(__size == 0)
     {
@@ -399,6 +398,7 @@ void* throw_realloc_debug(void* __oldptr, size_t __size, const char* __file, int
     }
     else
     {
+        Throw* dl = throw_ptrtodl(__oldptr);
         _ptr = throw_malloc_debug(__size,__file,__line);
         if(dl->nbytes < __size)
             __size = dl->nbytes;
