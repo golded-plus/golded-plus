@@ -60,17 +60,9 @@
 //#if defined(_MSC_VER) && (_MSC_VER < 1400)
 static void __cpuid(int CPUInfo[4], int cpuidfun)
 {
-    __asm
-    {
-        mov eax, cpuidfun
-        cpuid
-
-        mov esi, CPUInfo
-        mov [esi + 0], eax
-        mov [esi + 4], ebx
-        mov [esi + 8], ecx
-        mov [esi + 12], edx
-    }
+    asm volatile
+      ("cpuid" : "=a" (CPUInfo[0]), "=b" (CPUInfo[1]), "=c" (CPUInfo[2]), "=d" (CPUInfo[3])
+       : "a" (cpuidfun), "c" (0));
 }
 #endif
 
@@ -362,10 +354,13 @@ char *gcpuid(char *_cpuname)
     {
         dword         cpu;           /* x86, where x=cpu */
         dword         cpu_high;      /* highest CPUID capability */
-#if defined(_MSC_VER)
         union
         {
+#if defined(_MSC_VER)
             char vendor[_MAX_VNAME_LEN+1];
+#else
+            char vendor[3*sizeof(dword)+1]; /* CPU vendor string 12 bytes, 13th byte is zero */
+#endif
             struct
             {
                 dword dw0;
@@ -373,9 +368,6 @@ char *gcpuid(char *_cpuname)
                 dword dw2;
             } dw;
         };
-#else
-        char          vendor[3*sizeof(dword)+1]; /* CPU vendor string 12 bytes, 13th byte is zero */
-#endif
         uint8_t family;        /* CPU stepping number, 4 bits */
         uint8_t model;         /* CPU model number, 4 bits */
         uint8_t stepping;      /* CPU stepping value, 4 bits */
@@ -440,9 +432,8 @@ char *gcpuid(char *_cpuname)
         "popfl\n\t"
         "movl $5,%0\n\t"              /* CPU NX586 */
         "movl $0x4778654e,%1\n\t"     /* store vendor string */
-        "movl $0x72446e65,%1+4\n\t"   /* "NexGenDriven"      */
-        "movl $0x6e657669,%1+8\n\t"
-//      "movl   $0,%1+12\n\t"           // vendor is zero-filled already
+        "movl $0x72446e65,%6\n\t"   /* "NexGenDriven"      */
+        "movl $0x6e657669,%7\n\t"
         "jmp  end\n"
 
         /* Step2. Try to toggle identification flag; does not exist on early 486s.*/
@@ -490,8 +481,8 @@ char *gcpuid(char *_cpuname)
          * brand of Cyrix CPUs).
          */
         "movl $0x69727943,%1\n\t"     /* store vendor string */
-        "movl $0x736e4978,%1+4\n\t"   /* "CyrixInstead"      */
-        "movl $0x64616574,%1+8\n\t"
+        "movl $0x736e4978,%6\n\t"   /* "CyrixInstead"      */
+        "movl $0x64616574,%7\n\t"
         "jmp  end\n"
 
         /* Step 3. Use the `cpuid' instruction. */
@@ -500,9 +491,8 @@ char *gcpuid(char *_cpuname)
         ".byte    0x0f,0xa2\n\t"      /* cpuid 0 */
         "movl %%eax,%2\n\t"       /* "cpuid 1" capability */
         "movl %%ebx,%1\n\t"       /* store vendor string */
-        "movl %%edx,%1+4\n\t"
-        "movl %%ecx,%1+8\n\t"
-//      "movb   $0,%1+12\n\t"   // vendor is zero-filled already
+        "movl %%edx,%6\n\t"
+        "movl %%ecx,%7\n\t"
 
         "andl     %%eax,%%eax\n\t"        /* "cpuid 1" is allowed? (eax==1?) */
         "jz       i586\n\t"               /* no, skip "cpuid 1"  */
@@ -537,11 +527,11 @@ char *gcpuid(char *_cpuname)
         ,"=m" (scpuid.family)      /* %3 */
         ,"=m" (scpuid.model)       /* %4 */
         ,"=m" (scpuid.stepping)    /* %5 */
-//       ,"=m" (scpuid.cpu_id)      /* %6 */
-//       ,"=m" (scpuid.features)    /* %7 */
+        ,"=m" (scpuid.dw.dw1)      /* %6 */
+        ,"=m" (scpuid.dw.dw2)      /* %7 */
         : /* no input */
         : /* modified registers */
-        "eax", "ebx", "ecx", "edx", "esp"
+        "eax", "ebx", "ecx", "edx"
     );
 
     cpuname(scpuid.family?scpuid.family:scpuid.cpu, scpuid.model, scpuid.vendor, _cpuname);
