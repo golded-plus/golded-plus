@@ -61,7 +61,6 @@ struct Chs;
 
 class CSpellLang
 {
-    friend class CSpellChecker;
 
 protected:
     uint mSpellType;
@@ -76,6 +75,8 @@ protected:
     Chs  *mToDicTable;
     Chs  *mToLocTable;
 
+    std::string userDicPath;
+
 public:
     CSpellLang()
     {
@@ -87,12 +88,6 @@ public:
 
     virtual bool Load(const char *codeset, const char *userdic) = 0;
     virtual void UnLoad() = 0;
-
-    virtual void BuildRTable(const char *codeset) = 0;
-
-    // Translate encoding:
-    // flag=1: translate to charset of dictionnary, flag=0: translate to charset of locale
-    std::string RecodeText(const char *srcText, bool flag);
 
     virtual void BuildSuggest(const char *text, CSpellSuggestV &suggest) = 0;
 
@@ -116,6 +111,11 @@ public:
     {
         return mSpellType;
     }
+
+protected:
+    // Translate encoding:
+    // flag=true: translate to charset of dictionnary, flag=false: translate to charset of locale
+    std::string RecodeText(const char *srcText, bool flag);
 };
 
 
@@ -201,7 +201,6 @@ typedef SEC (*SpellVerifyMdr_fn   ) (char*, LIDC, LIDC*);
 
 class CMSSpellLang: public CSpellLang
 {
-    friend class CSpellChecker;
 
 private:
     LIDC mLIDC;
@@ -235,6 +234,7 @@ private:
 
 private:
     bool SpellSuggest(const char *text, bool more);
+    void BuildRTable(const char *codeset);
 
 public:
     CMSSpellLang()
@@ -252,8 +252,6 @@ public:
     virtual bool Load(const char *codeset, const char *userdic);
     virtual void UnLoad();
 
-    virtual void BuildRTable(const char *codeset);
-
     virtual void BuildSuggest(const char *text, CSpellSuggestV &suggest);
 
     virtual bool SpellCheck(const char *text);
@@ -270,7 +268,6 @@ class Hunspell;
 
 class CMYSpellLang: public CSpellLang
 {
-    friend class CSpellChecker;
 
 private:
     Hunspell *mMSpell;
@@ -291,12 +288,14 @@ public:
     virtual bool Load(const char *codeset, const char *);
     virtual void UnLoad();
 
-    virtual void BuildRTable(const char *codeset);
-
     virtual void BuildSuggest(const char *text, CSpellSuggestV &suggest);
 
     virtual bool SpellCheck(const char *text);
     virtual bool AddWord(const char *);
+
+private:
+    void BuildRTable(const char *codeset);
+    bool LoadUserDictionary(const char *userDic);
 };
 
 #endif  //#if !defined(GCFG_NO_MYSPELL)
@@ -308,7 +307,6 @@ class CSpellChecker
 {
 private:
     bool mInited;
-    std::string mText;
 
     char mXlatLocalset[256];
 
@@ -331,13 +329,9 @@ public:
     void UnLoad();
 
     bool Check(const char *text);
-    CSpellSuggestV &Suggest();
+    CSpellSuggestV &Suggest(const char *text);
 
-    bool Check(std::string &text)
-    {
-        return Check(text.c_str());
-    }
-    bool AddWord();
+    bool AddWord(const char *text);
 
     CSpellSuggestV &GetSuggest()
     {
