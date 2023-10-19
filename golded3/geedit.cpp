@@ -3256,9 +3256,11 @@ int IEclass::Start(int __mode, uint* __position, GMsg* __msg)
         schecker.Init(CFG->xlatlocalset, CFG->scheckerdicpath);
         char *str = strdup(AA->adat->scheckerdeflang);
         char *token = strtok(str, " ");
+        const char* userDic = CFG->scheckeruserdic;
         while(token != NULL)
         {
-            schecker.Load(token, CFG->scheckeruserdic);
+            schecker.Load(token, userDic);
+            userDic = NULL; // Only first language will have user dictionary.
             /* Get next token: */
             token = strtok(NULL, " ");
         }
