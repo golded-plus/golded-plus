@@ -354,21 +354,13 @@ char *gcpuid(char *_cpuname)
     {
         dword         cpu;           /* x86, where x=cpu */
         dword         cpu_high;      /* highest CPUID capability */
+        union
+        {
 #if defined(_MSC_VER)
-        union
-        {
             char vendor[_MAX_VNAME_LEN+1];
-            struct
-            {
-                dword dw0;
-                dword dw1;
-                dword dw2;
-            } dw;
-        };
 #else
-        union
-        {
             char vendor[3*sizeof(dword)+1]; /* CPU vendor string 12 bytes, 13th byte is zero */
+#endif
             struct
             {
                 dword dw0;
@@ -376,7 +368,6 @@ char *gcpuid(char *_cpuname)
                 dword dw2;
             } dw;
         };
-#endif
         uint8_t family;        /* CPU stepping number, 4 bits */
         uint8_t model;         /* CPU model number, 4 bits */
         uint8_t stepping;      /* CPU stepping value, 4 bits */
