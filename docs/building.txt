@@ -113,7 +113,7 @@ Next, copy golded3\mygolded.__h to golded3\mygolded.h and edit last to adjust
 it for yourself (put your name, FTN address and e-mail).
 
 Last, run following command:
-nmake /f golded.mak CFG="Release"
+nmake /f gedwin.mak CFG="Release"
 and make some home work :) until compulation ends.
 
 Locate following files in Release\bin sub-directory: gedwin.exe, gnwin.exe and rddtwin.exe.
