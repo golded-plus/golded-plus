@@ -68,90 +68,52 @@
  * SUCH DAMAGE.
  */
 
-#ifndef HASHMGR_HXX_
-#define HASHMGR_HXX_
-
+#include <cstdlib>
+#include <cstring>
 #include <cstdio>
-#include <string>
-#include <vector>
 
-#include "htypes.hxx"
 #include "filemgr.hxx"
-#include "w_char.hxx"
+#include "csutil.hxx"
 
-enum flag { FLAG_CHAR, FLAG_LONG, FLAG_NUM, FLAG_UNI };
+int FileMgr::fail(const char* err, const char* par) {
+  fprintf(stderr, err, par);
+  return -1;
+}
 
-// morphological description of a dictionary item can contain
-// arbitrary number "ph:" (MORPH_PHON) fields to store typical
-// phonetic or other misspellings of that word.
-// ratio of lines/lines with "ph:" in the dic file: 1/MORPH_PHON_RATIO
-#define MORPH_PHON_RATIO 500
+FileMgr::FileMgr(const char* file, const char* key) : hin(NULL), linenum(0) {
+  in[0] = '\0';
 
-class HashMgr {
-  std::vector<struct hentry*> tableptr;
-  flag flag_mode;
-  int complexprefixes;
-  int utf8;
-  unsigned short forbiddenword;
-  int langnum;
-  std::string enc;
-  std::string lang;
-  struct cs_info* csconv;
-  std::string ignorechars;
-  std::vector<w_char> ignorechars_utf16;
-  std::vector<unsigned short*> aliasf; // flag vector `compression' with aliases
-  std::vector<unsigned short> aliasflen;
-  std::vector<char*> aliasm; // morphological desciption `compression' with aliases
-  // reptable created from REP table of aff file and from "ph:" fields
-  // of the dic file. It contains phonetic and other common misspellings
-  // (letters, letter groups and words) for better suggestions
-  std::vector<replentry> reptable;
+  if (!file || !strlen(file))
+    return;
+  myopen(fin, file, std::ios_base::in);
+  if (!fin.is_open()) {
+    // check hzipped file
+    std::string st(file);
+    st.append(HZIP_EXTENSION);
+    hin = new Hunzip(st.c_str(), key);
+  }
+  if (!fin.is_open() && !hin->is_open())
+    fail(MSG_OPEN, file);
+}
 
- public:
-  HashMgr(const char* tpath, const char* apath, const char* key = NULL);
-  ~HashMgr();
+FileMgr::~FileMgr() {
+  delete hin;
+}
 
-  struct hentry* lookup(const char* word, size_t len) const;
-  int hash(const char* word, size_t len) const;
-  struct hentry* walk_hashtable(int& col, struct hentry* hp) const;
+bool FileMgr::getline(std::string& dest) {
+  bool ret = false;
+  ++linenum;
+  if (fin.is_open()) {
+    ret = static_cast<bool>(std::getline(fin, dest));
+  } else if (hin && hin->is_open()) {
+    ret = hin->getline(dest);
+  }
+  if (!ret) {
+    --linenum;
+  }
+  return ret;
+}
 
-  int add(const std::string& word);
-  int add_with_affix(const std::string& word, const std::string& pattern);
-  int remove(const std::string& word);
-  int decode_flags(unsigned short** result, const std::string& flags, FileMgr* af) const;
-  bool decode_flags(std::vector<unsigned short>& result, const std::string& flags, FileMgr* af) const;
-  unsigned short decode_flag(const std::string& flag) const;
-  std::string encode_flag(unsigned short flag) const;
-  int is_aliasf() const;
-  int get_aliasf(int index, unsigned short** fvec, FileMgr* af) const;
-  int is_aliasm() const;
-  char* get_aliasm(int index) const;
-  const std::vector<replentry>& get_reptable() const;
-
- private:
-  int get_clen_and_captype(const std::string& word, int* captype);
-  int get_clen_and_captype(const std::string& word, int* captype, std::vector<w_char> &workbuf);
-  int load_tables(const char* tpath, const char* key);
-  int add_word(const std::string& word,
-               int wcl,
-               unsigned short* ap,
-               int al,
-               const std::string* desc,
-               bool onlyupcase,
-               int captype);
-  int load_config(const char* affpath, const char* key);
-  bool parse_aliasf(const std::string& line, FileMgr* af);
-  int add_hidden_capitalized_word(const std::string& word,
-                                  int wcl,
-                                  unsigned short* flags,
-                                  int al,
-                                  const std::string* dp,
-                                  int captype);
-  bool parse_aliasm(const std::string& line, FileMgr* af);
-  bool parse_reptable(const std::string& line, FileMgr* af);
-  int remove_forbidden_flag(const std::string& word);
-  void free_table();
-  void free_flag(unsigned short* astr, short alen);
-};
-
-#endif
+int FileMgr::getlinenum() {
+  return linenum;
+}

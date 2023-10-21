@@ -562,18 +562,13 @@
     <ClCompile Include="..\goldlib\hunspell\affentry.cxx" />
     <ClCompile Include="..\goldlib\hunspell\affixmgr.cxx" />
     <ClCompile Include="..\goldlib\hunspell\csutil.cxx" />
-    <ClCompile Include="..\goldlib\hunspell\dictmgr.cxx" />
+    <ClCompile Include="..\goldlib\hunspell\filemgr.cxx" />
     <ClCompile Include="..\goldlib\hunspell\hashmgr.cxx" />
     <ClCompile Include="..\goldlib\hunspell\hunspell.cxx" />
-    <ClCompile Include="..\goldlib\hunspell\suggmgr.cxx" />
-    <ClCompile Include="..\goldlib\hunspell\utf_info.cxx">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Static|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="..\goldlib\hunspell\hunzip.cxx" />
+    <ClCompile Include="..\goldlib\hunspell\phonet.cxx" />
+    <ClCompile Include="..\goldlib\hunspell\replist.cxx" />
+    <ClCompile Include="..\goldlib\hunspell\suggestmgr.cxx" />
     <ClCompile Include="..\goldlib\smblib\lzh.cpp" />
     <ClCompile Include="..\goldlib\smblib\smblib.cpp" />
     <ClCompile Include="..\goldlib\uulib\fptools.cpp" />
@@ -714,14 +709,21 @@
     <ClInclude Include="..\goldlib\hunspell\affentry.hxx" />
     <ClInclude Include="..\goldlib\hunspell\affixmgr.hxx" />
     <ClInclude Include="..\goldlib\hunspell\atypes.hxx" />
-    <ClInclude Include="..\goldlib\hunspell\baseaffi.hxx" />
+    <ClInclude Include="..\goldlib\hunspell\baseaffix.hxx" />
     <ClInclude Include="..\goldlib\hunspell\csutil.hxx" />
-    <ClInclude Include="..\goldlib\hunspell\dictmgr.hxx" />
+    <ClInclude Include="..\goldlib\hunspell\filemgr.hxx" />
     <ClInclude Include="..\goldlib\hunspell\hashmgr.hxx" />
     <ClInclude Include="..\goldlib\hunspell\htypes.hxx" />
     <ClInclude Include="..\goldlib\hunspell\hunspell.hxx" />
+    <ClInclude Include="..\goldlib\hunspell\hunspell.h" />
+    <ClInclude Include="..\goldlib\hunspell\hunvisapi.h" />
+    <ClInclude Include="..\goldlib\hunspell\hunzip.hxx" />
     <ClInclude Include="..\goldlib\hunspell\langnum.hxx" />
-    <ClInclude Include="..\goldlib\hunspell\suggmgr.hxx" />
+    <ClInclude Include="..\goldlib\hunspell\phonet.hxx" />
+    <ClInclude Include="..\goldlib\hunspell\replist.hxx" />
+    <ClInclude Include="..\goldlib\hunspell\suggestmgr.hxx" />
+    <ClInclude Include="..\goldlib\hunspell\utf_info.hxx" />
+    <ClInclude Include="..\goldlib\hunspell\w_char.hxx" />
     <ClInclude Include="..\goldlib\smblib\filewrap.h" />
     <ClInclude Include="..\goldlib\smblib\genwrap.h" />
     <ClInclude Include="..\goldlib\smblib\lzh.h" />
@@ -735,8 +737,8 @@
     <ClInclude Include="..\goldlib\uulib\uustring.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\goldlib\hunspell\license.hun" />
-    <None Include="..\goldlib\hunspell\license.mys" />
+    <None Include="..\goldlib\hunspell\license.hunspell" />
+    <None Include="..\goldlib\hunspell\license.myspell" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

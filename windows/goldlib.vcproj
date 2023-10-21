@@ -2076,7 +2076,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\goldlib\hunspell\dictmgr.cxx"
+					RelativePath="..\goldlib\hunspell\filemgr.cxx"
 					>
 				</File>
 				<File
@@ -2088,60 +2088,20 @@
 					>
 				</File>
 				<File
-					RelativePath="..\goldlib\hunspell\suggmgr.cxx"
+					RelativePath="..\goldlib\hunspell\hunzip.cxx"
 					>
 				</File>
 				<File
-					RelativePath="..\goldlib\hunspell\utf_info.cxx"
+					RelativePath="..\goldlib\hunspell\phonet.cxx"
 					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug|x64"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|x64"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release_Static|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release_Static|x64"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\goldlib\hunspell\replist.cxx"
+					>
+				</File>
+				<File
+					RelativePath="..\goldlib\hunspell\suggestmgr.cxx"
+					>
 				</File>
 			</Filter>
 			<Filter
@@ -2734,7 +2694,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\goldlib\hunspell\baseaffi.hxx"
+					RelativePath="..\goldlib\hunspell\baseaffix.hxx"
 					>
 				</File>
 				<File
@@ -2742,7 +2702,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\goldlib\hunspell\dictmgr.hxx"
+					RelativePath="..\goldlib\hunspell\filemgr.hxx"
 					>
 				</File>
 				<File
@@ -2758,19 +2718,47 @@
 					>
 				</File>
 				<File
+					RelativePath="..\goldlib\hunspell\hunspell.h"
+					>
+				</File>
+				<File
+					RelativePath="..\goldlib\hunspell\hunvisapi.h"
+					>
+				</File>
+				<File
+					RelativePath="..\goldlib\hunspell\hunzip.hxx"
+					>
+				</File>
+				<File
 					RelativePath="..\goldlib\hunspell\langnum.hxx"
 					>
 				</File>
 				<File
-					RelativePath="..\goldlib\hunspell\license.hun"
+					RelativePath="..\goldlib\hunspell\license.hunspell"
 					>
 				</File>
 				<File
-					RelativePath="..\goldlib\hunspell\license.mys"
+					RelativePath="..\goldlib\hunspell\license.myspell"
 					>
 				</File>
 				<File
-					RelativePath="..\goldlib\hunspell\suggmgr.hxx"
+					RelativePath="..\goldlib\hunspell\phonet.hxx"
+					>
+				</File>
+				<File
+					RelativePath="..\goldlib\hunspell\replist.hxx"
+					>
+				</File>
+				<File
+					RelativePath="..\goldlib\hunspell\suggestmgr.hxx"
+					>
+				</File>
+				<File
+					RelativePath="..\goldlib\hunspell\utf_info.hxx"
+					>
+				</File>
+				<File
+					RelativePath="..\goldlib\hunspell\w_char.hxx"
 					>
 				</File>
 			</Filter>

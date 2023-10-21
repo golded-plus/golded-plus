@@ -68,90 +68,142 @@
  * SUCH DAMAGE.
  */
 
-#ifndef HASHMGR_HXX_
-#define HASHMGR_HXX_
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <limits>
 
-#include <cstdio>
-#include <string>
-#include <vector>
+#include "replist.hxx"
+#include "csutil.hxx"
 
-#include "htypes.hxx"
-#include "filemgr.hxx"
-#include "w_char.hxx"
+RepList::RepList(int n) {
+  dat.reserve(n < 16384 ? n : 16384);
+}
 
-enum flag { FLAG_CHAR, FLAG_LONG, FLAG_NUM, FLAG_UNI };
+RepList::~RepList() {
+  for (std::vector<replentry*>::iterator it = dat.begin(); it != dat.end(); ++it) {
+    delete *it;
+  }
+}
 
-// morphological description of a dictionary item can contain
-// arbitrary number "ph:" (MORPH_PHON) fields to store typical
-// phonetic or other misspellings of that word.
-// ratio of lines/lines with "ph:" in the dic file: 1/MORPH_PHON_RATIO
-#define MORPH_PHON_RATIO 500
+int RepList::find(const char* word) {
+  int p1 = 0;
+  int p2 = dat.size() - 1;
+  int ret = -1;
+  while (p1 <= p2) {
+    int m = ((unsigned)p1 + (unsigned)p2) >> 1;
+    int c = strncmp(word, dat[m]->pattern.c_str(), dat[m]->pattern.size());
+    if (c < 0)
+      p2 = m - 1;
+    else if (c > 0)
+      p1 = m + 1;
+    else {      // scan in the right half for a longer match
+      ret = m;
+      p1 = m + 1;
+    }
+  }
+  return ret;
+}
 
-class HashMgr {
-  std::vector<struct hentry*> tableptr;
-  flag flag_mode;
-  int complexprefixes;
-  int utf8;
-  unsigned short forbiddenword;
-  int langnum;
-  std::string enc;
-  std::string lang;
-  struct cs_info* csconv;
-  std::string ignorechars;
-  std::vector<w_char> ignorechars_utf16;
-  std::vector<unsigned short*> aliasf; // flag vector `compression' with aliases
-  std::vector<unsigned short> aliasflen;
-  std::vector<char*> aliasm; // morphological desciption `compression' with aliases
-  // reptable created from REP table of aff file and from "ph:" fields
-  // of the dic file. It contains phonetic and other common misspellings
-  // (letters, letter groups and words) for better suggestions
-  std::vector<replentry> reptable;
+std::string RepList::replace(const size_t wordlen, int ind, bool atstart) {
+  int type = atstart ? 1 : 0;
+  if (wordlen == dat[ind]->pattern.size())
+    type = atstart ? 3 : 2;
+  while (type && dat[ind]->outstrings[type].empty())
+    type = (type == 2 && !atstart) ? 0 : type - 1;
+  return dat[ind]->outstrings[type];
+}
 
- public:
-  HashMgr(const char* tpath, const char* apath, const char* key = NULL);
-  ~HashMgr();
+int RepList::add(const std::string& in_pat1, const std::string& pat2) {
+  if (in_pat1.empty() || pat2.empty()) {
+    return 1;
+  }
+  // analyse word context
+  int type = 0;
+  std::string pat1(in_pat1);
+  if (pat1[0] == '_') {
+    pat1.erase(0, 1);
+    type = 1;
+  }
+  if (!pat1.empty() && pat1[pat1.size() - 1] == '_') {
+    type = type + 2;
+    pat1.erase(pat1.size() - 1);
+  }
+  mystrrep(pat1, "_", " ");
 
-  struct hentry* lookup(const char* word, size_t len) const;
-  int hash(const char* word, size_t len) const;
-  struct hentry* walk_hashtable(int& col, struct hentry* hp) const;
+  // find existing entry
+  int m = find(pat1.c_str());
+  if (m >= 0 && dat[m]->pattern == pat1) {
+    // since already used
+    dat[m]->outstrings[type] = pat2;
+    mystrrep(dat[m]->outstrings[type], "_", " ");
+    return 0;
+  }
 
-  int add(const std::string& word);
-  int add_with_affix(const std::string& word, const std::string& pattern);
-  int remove(const std::string& word);
-  int decode_flags(unsigned short** result, const std::string& flags, FileMgr* af) const;
-  bool decode_flags(std::vector<unsigned short>& result, const std::string& flags, FileMgr* af) const;
-  unsigned short decode_flag(const std::string& flag) const;
-  std::string encode_flag(unsigned short flag) const;
-  int is_aliasf() const;
-  int get_aliasf(int index, unsigned short** fvec, FileMgr* af) const;
-  int is_aliasm() const;
-  char* get_aliasm(int index) const;
-  const std::vector<replentry>& get_reptable() const;
+  // make a new entry if none exists
+  replentry* r = new replentry;
+  if (r == NULL)
+    return 1;
+  r->pattern = pat1;
+  r->outstrings[type] = pat2;
+  mystrrep(r->outstrings[type], "_", " ");
+  dat.push_back(r);
+  // sort to the right place in the list
+  size_t i;
+  for (i = dat.size() - 1; i > 0; --i) {
+    if (strcmp(r->pattern.c_str(), dat[i - 1]->pattern.c_str()) < 0) {
+      dat[i] = dat[i - 1];
+    } else
+      break;
+  }
+  dat[i] = r;
+  return 0;
+}
 
- private:
-  int get_clen_and_captype(const std::string& word, int* captype);
-  int get_clen_and_captype(const std::string& word, int* captype, std::vector<w_char> &workbuf);
-  int load_tables(const char* tpath, const char* key);
-  int add_word(const std::string& word,
-               int wcl,
-               unsigned short* ap,
-               int al,
-               const std::string* desc,
-               bool onlyupcase,
-               int captype);
-  int load_config(const char* affpath, const char* key);
-  bool parse_aliasf(const std::string& line, FileMgr* af);
-  int add_hidden_capitalized_word(const std::string& word,
-                                  int wcl,
-                                  unsigned short* flags,
-                                  int al,
-                                  const std::string* dp,
-                                  int captype);
-  bool parse_aliasm(const std::string& line, FileMgr* af);
-  bool parse_reptable(const std::string& line, FileMgr* af);
-  int remove_forbidden_flag(const std::string& word);
-  void free_table();
-  void free_flag(unsigned short* astr, short alen);
-};
+bool RepList::conv(const std::string& in_word, std::string& dest) {
+  dest = std::string();
 
-#endif
+  const size_t wordlen = in_word.size();
+  const char* word = in_word.c_str();
+
+  bool change = false;
+  for (size_t i = 0; i < wordlen; ++i) {
+    int n = find(word + i);
+
+    bool empty = n < 0;
+    if (empty) {
+      dest += word[i];
+      continue;
+    }
+
+    std::string l = replace(wordlen - i, n, i == 0);
+    if (l.empty()) {
+      dest += word[i];
+      continue;
+    }
+
+    dest.append(l);
+    if (!dat[n]->pattern.empty()) {
+      i += dat[n]->pattern.size() - 1;
+    }
+    change = true;
+  }
+
+  return change;
+}
+
+bool RepList::check_against_breaktable(const std::vector<std::string>& breaktable) const {
+  for (std::vector<replentry*>::const_iterator dIt = dat.begin(); dIt != dat.end(); ++dIt) {
+	const replentry& re = **dIt;
+    for (size_t o = 0; o < sizeof(re.outstrings) / sizeof(std::string); ++o) {
+      const std::string& outstring = re.outstrings[o];
+      for (std::vector<std::string>::const_iterator bIt = breaktable.begin(); bIt != breaktable.end(); ++bIt) {
+        if (outstring.find(*bIt) != std::string::npos) {
+          return false;
+        }
+      }
+    }
+  }
+
+  return true;
+}

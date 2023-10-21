@@ -916,7 +916,7 @@ SOURCE=..\goldlib\hunspell\csutil.cxx
 # End Source File
 # Begin Source File
 
-SOURCE=..\goldlib\hunspell\dictmgr.cxx
+SOURCE=..\goldlib\hunspell\filemgr.cxx
 # End Source File
 # Begin Source File
 
@@ -928,12 +928,19 @@ SOURCE=..\goldlib\hunspell\hunspell.cxx
 # End Source File
 # Begin Source File
 
-SOURCE=..\goldlib\hunspell\suggmgr.cxx
+SOURCE=..\goldlib\hunspell\hunzip.cxx
 # End Source File
 # Begin Source File
 
-SOURCE=..\goldlib\hunspell\utf_info.cxx
-# PROP Exclude_From_Build 1
+SOURCE=..\goldlib\hunspell\phonet.cxx
+# End Source File
+# Begin Source File
+
+SOURCE=..\goldlib\hunspell\replist.cxx
+# End Source File
+# Begin Source File
+
+SOURCE=..\goldlib\hunspell\suggestmgr.cxx
 # End Source File
 # End Group
 # End Group
@@ -1513,7 +1520,7 @@ SOURCE=..\goldlib\hunspell\atypes.hxx
 # End Source File
 # Begin Source File
 
-SOURCE=..\goldlib\hunspell\baseaffi.hxx
+SOURCE=..\goldlib\hunspell\baseaffix.hxx
 # End Source File
 # Begin Source File
 
@@ -1521,7 +1528,7 @@ SOURCE=..\goldlib\hunspell\csutil.hxx
 # End Source File
 # Begin Source File
 
-SOURCE=..\goldlib\hunspell\dictmgr.hxx
+SOURCE=..\goldlib\hunspell\filemgr.hxx
 # End Source File
 # Begin Source File
 
@@ -1537,11 +1544,39 @@ SOURCE=..\goldlib\hunspell\hunspell.hxx
 # End Source File
 # Begin Source File
 
+SOURCE=..\goldlib\hunspell\hunspell.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\goldlib\hunspell\hunvisapi.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\goldlib\hunspell\hunzip.hxx
+# End Source File
+# Begin Source File
+
 SOURCE=..\goldlib\hunspell\langnum.hxx
 # End Source File
 # Begin Source File
 
-SOURCE=..\goldlib\hunspell\suggmgr.hxx
+SOURCE=..\goldlib\hunspell\phonet.hxx
+# End Source File
+# Begin Source File
+
+SOURCE=..\goldlib\hunspell\replist.hxx
+# End Source File
+# Begin Source File
+
+SOURCE=..\goldlib\hunspell\suggestmgr.hxx
+# End Source File
+# Begin Source File
+
+SOURCE=..\goldlib\hunspell\utf_info.hxx
+# End Source File
+# Begin Source File
+
+SOURCE=..\goldlib\hunspell\w_char.hxx
 # End Source File
 # End Group
 # End Group

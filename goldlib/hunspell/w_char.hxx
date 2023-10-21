@@ -35,42 +35,59 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-#ifndef LANGNUM_HXX_
-#define LANGNUM_HXX_
+#ifndef W_CHAR_HXX_
+#define W_CHAR_HXX_
 
-/*
- language numbers for language specific codes
- see https://wiki.openoffice.org/w/index.php?title=Languages&oldid=230199
-*/
+#include <string>
 
-enum {
-  LANG_ar = 96,
-  LANG_az = 100,  // custom number
-  LANG_bg = 41,
-  LANG_ca = 37,
-  LANG_crh = 102, // custom number
-  LANG_cs = 42,
-  LANG_da = 45,
-  LANG_de = 49,
-  LANG_el = 30,
-  LANG_en = 01,
-  LANG_es = 34,
-  LANG_eu = 10,
-  LANG_fr = 02,
-  LANG_gl = 38,
-  LANG_hr = 78,
-  LANG_hu = 36,
-  LANG_it = 39,
-  LANG_la = 99,   // custom number
-  LANG_lv = 101,  // custom number
-  LANG_nl = 31,
-  LANG_pl = 48,
-  LANG_pt = 03,
-  LANG_ru = 07,
-  LANG_sv = 50,
-  LANG_tr = 90,
-  LANG_uk = 80,
-  LANG_xx = 999
+#if __cplusplus >= 202002L
+#include <bit>
+#else
+#include <cstring>
+#endif
+
+#ifndef GCC
+struct w_char {
+#else
+struct __attribute__((packed)) w_char {
+#endif
+  unsigned char l;
+  unsigned char h;
+
+  operator unsigned short() const
+  {
+#if defined(__i386__) || defined(_M_IX86) || defined(_M_X64)
+    //use little-endian optimized version
+#if __cplusplus >= 202002L
+    return std::bit_cast<unsigned short>(*this);
+#else
+    unsigned short u;
+    memcpy(&u, this, sizeof(unsigned short));
+    return u;
+#endif
+
+#else
+    return ((unsigned short)h << 8) | (unsigned short)l;
+#endif
+  }
+
+  friend bool operator<(const w_char a, const w_char b) {
+    return (unsigned short)a < (unsigned short)b;
+  }
+
+  friend bool operator==(const w_char a, const w_char b) {
+    return (unsigned short)a == (unsigned short)b;
+  }
+
+  friend bool operator!=(const w_char a, const w_char b) {
+    return !(a == b);
+  }
+};
+
+// two character arrays
+struct replentry {
+  std::string pattern;
+  std::string outstrings[4]; // med, ini, fin, isol
 };
 
 #endif

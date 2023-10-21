@@ -35,42 +35,53 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-#ifndef LANGNUM_HXX_
-#define LANGNUM_HXX_
+/* hunzip: file decompression for sorted dictionaries with optional encryption,
+ * algorithm: prefix-suffix encoding and 16-bit Huffman encoding */
 
-/*
- language numbers for language specific codes
- see https://wiki.openoffice.org/w/index.php?title=Languages&oldid=230199
-*/
+#ifndef HUNZIP_HXX_
+#define HUNZIP_HXX_
 
-enum {
-  LANG_ar = 96,
-  LANG_az = 100,  // custom number
-  LANG_bg = 41,
-  LANG_ca = 37,
-  LANG_crh = 102, // custom number
-  LANG_cs = 42,
-  LANG_da = 45,
-  LANG_de = 49,
-  LANG_el = 30,
-  LANG_en = 01,
-  LANG_es = 34,
-  LANG_eu = 10,
-  LANG_fr = 02,
-  LANG_gl = 38,
-  LANG_hr = 78,
-  LANG_hu = 36,
-  LANG_it = 39,
-  LANG_la = 99,   // custom number
-  LANG_lv = 101,  // custom number
-  LANG_nl = 31,
-  LANG_pl = 48,
-  LANG_pt = 03,
-  LANG_ru = 07,
-  LANG_sv = 50,
-  LANG_tr = 90,
-  LANG_uk = 80,
-  LANG_xx = 999
+#include "hunvisapi.h"
+
+#include <cstdio>
+#include <fstream>
+#include <vector>
+
+#define BUFSIZE 65536
+#define HZIP_EXTENSION ".hz"
+
+#define MSG_OPEN "error: %s: cannot open\n"
+#define MSG_FORMAT "error: %s: not in hzip format\n"
+#define MSG_MEMORY "error: %s: missing memory\n"
+#define MSG_KEY "error: %s: missing or bad password\n"
+
+struct bit {
+  unsigned char c[2];
+  int v[2];
+};
+
+class LIBHUNSPELL_DLL_EXPORTED Hunzip {
+ protected:
+  std::string filename;
+  std::ifstream fin;
+  int bufsiz, lastbit, inc, inbits, outc;
+  std::vector<bit> dec;     // code table
+  char in[BUFSIZE];         // input buffer
+  char out[BUFSIZE + 1];    // Huffman-decoded buffer
+  char line[BUFSIZE + 50];  // decoded line
+  int getcode(const char* key);
+  int getbuf();
+  int fail(const char* err, const std::string& par);
+
+ public:
+  Hunzip(const char* filename, const char* key = NULL);
+  ~Hunzip();
+  bool is_open() { return fin.is_open(); }
+  bool getline(std::string& dest);
+
+private:
+  Hunzip(const Hunzip&);
+  Hunzip& operator=(const Hunzip&);
 };
 
 #endif
