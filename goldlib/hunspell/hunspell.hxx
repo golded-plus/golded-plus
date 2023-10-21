@@ -1,143 +1,231 @@
-#include "hashmgr.hxx"
-#include "affixmgr.hxx"
-#include "suggmgr.hxx"
-#include "csutil.hxx"
-#include "langnum.hxx"
+/* ***** BEGIN LICENSE BLOCK *****
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * Copyright (C) 2002-2022 Németh László
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * Hunspell is based on MySpell which is Copyright (C) 2002 Kevin Hendricks.
+ *
+ * Contributor(s): David Einstein, Davide Prina, Giuseppe Modugno,
+ * Gianluca Turconi, Simon Brouwer, Noll János, Bíró Árpád,
+ * Goldman Eleonóra, Sarlós Tamás, Bencsáth Boldizsár, Halácsy Péter,
+ * Dvornik László, Gefferth András, Nagy Viktor, Varga Dániel, Chris Halls,
+ * Rene Engelhard, Bram Moolenaar, Dafydd Jones, Harri Pitkänen
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * either the GNU General Public License Version 2 or later (the "GPL"), or
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+ * in which case the provisions of the GPL or the LGPL are applicable instead
+ * of those above. If you wish to allow use of your version of this file only
+ * under the terms of either the GPL or the LGPL, and not to allow others to
+ * use your version of this file under the terms of the MPL, indicate your
+ * decision by deleting the provisions above and replace them with the notice
+ * and other provisions required by the GPL or the LGPL. If you do not delete
+ * the provisions above, a recipient may use your version of this file under
+ * the terms of any one of the MPL, the GPL or the LGPL.
+ *
+ * ***** END LICENSE BLOCK ***** */
+/*
+ * Copyright 2002 Kevin B. Hendricks, Stratford, Ontario, Canada
+ * And Contributors.  All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * 3. All modifications to the source code must be clearly marked as
+ *    such.  Binary redistributions based on modified source code
+ *    must be clearly marked as modified versions in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY KEVIN B. HENDRICKS AND CONTRIBUTORS
+ * ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
+ * KEVIN B. HENDRICKS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+#ifndef MYSPELLMGR_HXX_
+#define MYSPELLMGR_HXX_
 
-#define NOCAP   0
-#define INITCAP 1
-#define ALLCAP  2
-#define HUHCAP  3
-#define HUHINITCAP  4
+#include "hunvisapi.h"
+#include "w_char.hxx"
+#include "atypes.hxx"
+#include <string>
+#include <vector>
 
-#define MAXSUGGESTION 100
+#define SPELL_XML "<?xml?>"
+
+#ifndef MAXSUGGESTION
+#define MAXSUGGESTION 15
+#endif
+
 #define MAXSHARPS 5
 
-#ifdef W32
-    #define DLLTEST2_API __declspec(dllexport)
+#ifndef MAXWORDLEN
+#define MAXWORDLEN 100
 #endif
 
-#ifndef _MYSPELLMGR_HXX_
-#define _MYSPELLMGR_HXX_
-
-#ifdef W32
-    class DLLTEST2_API Hunspell
+#if defined __GNUC__ && (__GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1))
+#  define H_DEPRECATED __attribute__((__deprecated__))
+#elif defined(_MSC_VER) && (_MSC_VER >= 1300)
+#  define H_DEPRECATED __declspec(deprecated)
 #else
-    class Hunspell
+#  define H_DEPRECATED
 #endif
-{
-    AffixMgr*       pAMgr;
-    HashMgr*        pHMgr;
-    SuggestMgr*     pSMgr;
-    char *          encoding;
-    struct cs_info * csconv;
-    struct unicode_info2 * utfconv;
-    int             langnum;
-    int             utf8;
-    int             complexprefixes;
-    char**          wordbreak;
 
-    /* XXX not stateless variables for compound handling */
-    char *	  prevroot;
-    int             prevcompound;
+class HunspellImpl;
 
-    /* forbidden_compound:
-     * 0 = not forbidden
-     * 1 = forbidden
-     * 2 = forbidden compound (written without dash in Hungarian)
-     */
-    int		  forbidden_compound;
+class LIBHUNSPELL_DLL_EXPORTED Hunspell {
+ private:
+  HunspellImpl* m_Impl;
+  // Non copyable
+  Hunspell(const Hunspell&);
+  Hunspell& operator=(const Hunspell&);
 
+ public:
+  /* Hunspell(aff, dic) - constructor of Hunspell class
+   * input: path of affix file and dictionary file
+   *
+   * In WIN32 environment, use UTF-8 encoded paths started with the long path
+   * prefix \\\\?\\ to handle system-independent character encoding and very
+   * long path names (without the long path prefix Hunspell will use fopen()
+   * with system-dependent character encoding instead of _wfopen()).
+   */
+  Hunspell(const char* affpath, const char* dpath, const char* key = NULL);
+  ~Hunspell();
 
-public:
+  /* load extra dictionaries (only dic files) */
+  int add_dic(const char* dpath, const char* key = NULL);
 
-    /* Hunspell(aff, dic) - constructor of Hunspell class
-     * input: path of affix file and dictionary file
-     */
+  /* spell(word) - spellcheck word
+   * output: false = bad word, true = good word
+   *
+   * plus output:
+   *   info: information bit array, fields:
+   *     SPELL_COMPOUND  = a compound word
+   *     SPELL_FORBIDDEN = an explicit forbidden word
+   *   root: root (stem), when input is a word with affix(es)
+   */
+  bool spell(const std::string& word, int* info = NULL, std::string* root = NULL);
+  H_DEPRECATED int spell(const char* word, int* info = NULL, char** root = NULL);
 
-    Hunspell(const char * affpath, const char * dpath);
+  /* suggest(suggestions, word) - search suggestions
+   * input: pointer to an array of strings pointer and the (bad) word
+   *   array of strings pointer (here *slst) may not be initialized
+   * output: number of suggestions in string array, and suggestions in
+   *   a newly allocated array of strings (*slts will be NULL when number
+   *   of suggestion equals 0.)
+   */
+  std::vector<std::string> suggest(const std::string& word);
+  H_DEPRECATED int suggest(char*** slst, const char* word);
 
-    ~Hunspell();
+  /* Suggest words from suffix rules
+   * suffix_suggest(suggestions, root_word)
+   * input: pointer to an array of strings pointer and the  word
+   *   array of strings pointer (here *slst) may not be initialized
+   * output: number of suggestions in string array, and suggestions in
+   *   a newly allocated array of strings (*slts will be NULL when number
+   *   of suggestion equals 0.)
+   */
+  std::vector<std::string> suffix_suggest(const std::string& root_word);
+  H_DEPRECATED int suffix_suggest(char*** slst, const char* root_word);
 
-    /* spell(word) - spellcheck word
-     * output: 0 = bad word, not 0 = good word
-     */
+  /* deallocate suggestion lists */
+  H_DEPRECATED void free_list(char*** slst, int n);
 
-    int spell(const char *);
+  const std::string& get_dict_encoding() const;
+  char* get_dic_encoding();
 
-    /* suggest(suggestions, word) - search suggestions
-     * input: pointer to an array of strings pointer and the (bad) word
-     *   array of strings pointer (here *slst) may not be initialized
-     * output: number of suggestions in string array, and suggestions in
-     *   a newly allocated array of strings (*slts will be NULL when number
-     *   of suggestion equals 0.)
-     */
+  /* morphological functions */
 
-    int suggest(char*** slst, const char * word);
+  /* analyze(result, word) - morphological analysis of the word */
+  std::vector<std::string> analyze(const std::string& word);
+  H_DEPRECATED int analyze(char*** slst, const char* word);
 
-    /* handling custom dictionary */
+  /* stem(word) - stemmer function */
+  std::vector<std::string> stem(const std::string& word);
+  H_DEPRECATED int stem(char*** slst, const char* word);
 
-    int put_word(const char * word);
+  /* stem(analysis, n) - get stems from a morph. analysis
+   * example:
+   * char ** result, result2;
+   * int n1 = analyze(&result, "words");
+   * int n2 = stem(&result2, result, n1);
+   */
+  std::vector<std::string> stem(const std::vector<std::string>& morph);
+  H_DEPRECATED int stem(char*** slst, char** morph, int n);
 
-    /* suffix is an affix flag string, similarly in dictionary files */
+  /* generate(result, word, word2) - morphological generation by example(s) */
+  std::vector<std::string> generate(const std::string& word, const std::string& word2);
+  H_DEPRECATED int generate(char*** slst, const char* word, const char* word2);
 
-    int put_word_suffix(const char * word, const char * suffix);
+  /* generate(result, word, desc, n) - generation by morph. description(s)
+   * example:
+   * char ** result;
+   * char * affix = "is:plural"; // description depends from dictionaries, too
+   * int n = generate(&result, "word", &affix, 1);
+   * for (int i = 0; i < n; i++) printf("%s\n", result[i]);
+   */
+  std::vector<std::string> generate(const std::string& word, const std::vector<std::string>& pl);
+  H_DEPRECATED int generate(char*** slst, const char* word, char** desc, int n);
 
-    /* pattern is a sample dictionary word
-     * put word into custom dictionary with affix flags of pattern word
-     */
+  /* functions for run-time modification of the dictionary */
 
-    int put_word_pattern(const char * word, const char * pattern);
+  /* add word to the run-time dictionary */
 
-    /* other */
+  int add(const std::string& word);
 
-    char * get_dic_encoding();
-    const char * get_wordchars();
-    unsigned short * get_wordchars_utf16(int * len);
-    struct cs_info * get_csconv();
-    struct unicode_info2 * get_utf_conv();
-    const char * get_version();
+  /* add word to the run-time dictionary with affix flags of
+   * the example (a dictionary word): Hunspell will recognize
+   * affixed forms of the new word, too.
+   */
 
-    /* experimental functions */
+  int add_with_affix(const std::string& word, const std::string& example);
 
-    /* morphological analysis */
+  /* remove word from the run-time dictionary */
 
-    char * morph(const char * word);
-    int analyze(char*** out, const char *word);
+  int remove(const std::string& word);
 
-    char * morph_with_correction(const char * word);
+  /* other */
 
-    /* stemmer function */
+  /* get extra word characters definied in affix file for tokenization */
+  const char* get_wordchars() const;
+  const std::string& get_wordchars_cpp() const;
+  const std::vector<w_char>& get_wordchars_utf16() const;
 
-    int stem(char*** slst, const char * word);
+  struct cs_info* get_csconv();
+  
+  const char* get_version() const;
+  const std::string& get_version_cpp() const;
 
-    /* spec. suggestions */
-    int suggest_auto(char*** slst, const char * word);
-    int suggest_pos_stems(char*** slst, const char * word);
-    char * get_possible_root();
+  int get_langnum() const;
 
-    /* not threadsafe functions for Hunspell command line API */
-
-    char * get_prevroot();
-    int get_prevcompound();
-    int get_forbidden_compound();
-
-private:
-    int    cleanword(char *, const char *, int * pcaptype, int * pabbrev);
-    int    cleanword2(char *, const char *, w_char *, int * w_len, int * pcaptype, int * pabbrev);
-    void   mkinitcap(char *);
-    int    mkinitcap2(char * p, w_char * u, int nc);
-    int    mkinitsmall2(char * p, w_char * u, int nc);
-    void   mkallcap(char *);
-    int    mkallcap2(char * p, w_char * u, int nc);
-    void   mkallsmall(char *);
-    int    mkallsmall2(char * p, w_char * u, int nc);
-    struct hentry * check(const char *);
-    char * sharps_u8_l1(char * dest, char * source);
-    hentry * spellsharps(char * base, char *, int, int, char * tmp);
-    int    is_keepcase(const hentry * rv);
-    int    insert_sug(char ***slst, char * word, int *ns);
-
+  /* need for putdic */
+  bool input_conv(const std::string& word, std::string& dest);
+  H_DEPRECATED int input_conv(const char* word, char* dest, size_t destsize);
 };
 
 #endif

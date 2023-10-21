@@ -643,16 +643,12 @@ void CMYSpellLang::BuildSuggest(const char *text, CSpellSuggestV &suggest)
                     "This is bug in program, please make report to developers." );
         return;
     }
-    char ** wlst = NULL;
-    int ns = mMSpell->suggest(&wlst, RecodeText(text, true).c_str());
 
-    for (int i=0; i < ns; i++)
+    std::vector<std::string> suggests = mMSpell->suggest(RecodeText(text, true));
+    for (std::vector<std::string>::const_iterator it = suggests.begin(); it != suggests.end(); ++it)
     {
-        suggest.push_back("  " + RecodeText(wlst[i], false) + char(' '));
-        free(wlst[i]);
+        suggest.push_back("  " + RecodeText(it->c_str(), false) + char(' '));
     }
-
-    free(wlst);
 }
 
 
@@ -669,7 +665,7 @@ bool CMYSpellLang::SpellCheck(const char *text)
     }
     if (!IsMdrLoaded()) return true;
 
-    return mMSpell->spell(RecodeText(text, true).c_str());
+    return mMSpell->spell(RecodeText(text, true));
 }
 
 
@@ -695,7 +691,7 @@ bool CMYSpellLang::AddWord(const char *text)
         LOG.printf("! Can't open user dictionary file to add new word.");
         LOG.printf("+ %s", userDicPath.c_str());
     }
-    mMSpell->put_word(RecodeText(text, true).c_str());
+    mMSpell->add(RecodeText(text, true).c_str());
     return true;
 }
 
@@ -712,7 +708,7 @@ bool CMYSpellLang::LoadUserDictionary(const char *userDic)
             char buf[256];
             while (udFile.Fgets(buf, sizeof(buf)))
             {
-                mMSpell->put_word(RecodeText(strbtrim(buf), true).c_str());
+                mMSpell->add(RecodeText(strbtrim(buf), true).c_str());
             }
         }
         else

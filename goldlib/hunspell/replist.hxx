@@ -68,90 +68,30 @@
  * SUCH DAMAGE.
  */
 
-#ifndef HASHMGR_HXX_
-#define HASHMGR_HXX_
+/* string replacement list class */
+#ifndef REPLIST_HXX_
+#define REPLIST_HXX_
 
-#include <cstdio>
+#include "w_char.hxx"
+
 #include <string>
 #include <vector>
 
-#include "htypes.hxx"
-#include "filemgr.hxx"
-#include "w_char.hxx"
-
-enum flag { FLAG_CHAR, FLAG_LONG, FLAG_NUM, FLAG_UNI };
-
-// morphological description of a dictionary item can contain
-// arbitrary number "ph:" (MORPH_PHON) fields to store typical
-// phonetic or other misspellings of that word.
-// ratio of lines/lines with "ph:" in the dic file: 1/MORPH_PHON_RATIO
-#define MORPH_PHON_RATIO 500
-
-class HashMgr {
-  std::vector<struct hentry*> tableptr;
-  flag flag_mode;
-  int complexprefixes;
-  int utf8;
-  unsigned short forbiddenword;
-  int langnum;
-  std::string enc;
-  std::string lang;
-  struct cs_info* csconv;
-  std::string ignorechars;
-  std::vector<w_char> ignorechars_utf16;
-  std::vector<unsigned short*> aliasf; // flag vector `compression' with aliases
-  std::vector<unsigned short> aliasflen;
-  std::vector<char*> aliasm; // morphological desciption `compression' with aliases
-  // reptable created from REP table of aff file and from "ph:" fields
-  // of the dic file. It contains phonetic and other common misspellings
-  // (letters, letter groups and words) for better suggestions
-  std::vector<replentry> reptable;
+class RepList {
+ private:
+  std::vector<replentry*> dat;
+  RepList(const RepList&);
+  RepList& operator=(const RepList&);
 
  public:
-  HashMgr(const char* tpath, const char* apath, const char* key = NULL);
-  ~HashMgr();
+  explicit RepList(int n);
+  ~RepList();
 
-  struct hentry* lookup(const char* word, size_t len) const;
-  int hash(const char* word, size_t len) const;
-  struct hentry* walk_hashtable(int& col, struct hentry* hp) const;
+  bool check_against_breaktable(const std::vector<std::string>& breaktable) const;
 
-  int add(const std::string& word);
-  int add_with_affix(const std::string& word, const std::string& pattern);
-  int remove(const std::string& word);
-  int decode_flags(unsigned short** result, const std::string& flags, FileMgr* af) const;
-  bool decode_flags(std::vector<unsigned short>& result, const std::string& flags, FileMgr* af) const;
-  unsigned short decode_flag(const std::string& flag) const;
-  std::string encode_flag(unsigned short flag) const;
-  int is_aliasf() const;
-  int get_aliasf(int index, unsigned short** fvec, FileMgr* af) const;
-  int is_aliasm() const;
-  char* get_aliasm(int index) const;
-  const std::vector<replentry>& get_reptable() const;
-
- private:
-  int get_clen_and_captype(const std::string& word, int* captype);
-  int get_clen_and_captype(const std::string& word, int* captype, std::vector<w_char> &workbuf);
-  int load_tables(const char* tpath, const char* key);
-  int add_word(const std::string& word,
-               int wcl,
-               unsigned short* ap,
-               int al,
-               const std::string* desc,
-               bool onlyupcase,
-               int captype);
-  int load_config(const char* affpath, const char* key);
-  bool parse_aliasf(const std::string& line, FileMgr* af);
-  int add_hidden_capitalized_word(const std::string& word,
-                                  int wcl,
-                                  unsigned short* flags,
-                                  int al,
-                                  const std::string* dp,
-                                  int captype);
-  bool parse_aliasm(const std::string& line, FileMgr* af);
-  bool parse_reptable(const std::string& line, FileMgr* af);
-  int remove_forbidden_flag(const std::string& word);
-  void free_table();
-  void free_flag(unsigned short* astr, short alen);
+  int add(const std::string& pat1, const std::string& pat2);
+  int find(const char* word);
+  std::string replace(const size_t wordlen, int n, bool atstart);
+  bool conv(const std::string& word, std::string& dest);
 };
-
 #endif

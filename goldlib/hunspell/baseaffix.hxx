@@ -1,6 +1,8 @@
 /* ***** BEGIN LICENSE BLOCK *****
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
  *
+ * Copyright (C) 2002-2022 Németh László
+ *
  * The contents of this file are subject to the Mozilla Public License Version
  * 1.1 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
@@ -11,36 +13,13 @@
  * for the specific language governing rights and limitations under the
  * License.
  *
- * The Original Code is Hunspell, based on MySpell.
+ * Hunspell is based on MySpell which is Copyright (C) 2002 Kevin Hendricks.
  *
- * The Initial Developers of the Original Code are
- * Kevin Hendricks (MySpell) and Németh László (Hunspell).
- * Portions created by the Initial Developers are Copyright (C) 2002-2005
- * the Initial Developers. All Rights Reserved.
- *
- * Contributor(s):
- * David Einstein 
- * Davide Prina
- * Giuseppe Modugno 
- * Gianluca Turconi
- * Simon Brouwer
- * Noll János
- * Bíró Árpád
- * Goldman Eleonóra
- * Sarlós Tamás
- * Bencsáth Boldizsár
- * Halácsy Péter
- * Dvornik László
- * Gefferth András
- * Nagy Viktor
- * Varga Dániel
- * Chris Halls
- * Rene Engelhard
- * Bram Moolenaar
- * Dafydd Jones
- * Harri Pitkänen
- * András Tímár
- * Tor Lillqvist
+ * Contributor(s): David Einstein, Davide Prina, Giuseppe Modugno,
+ * Gianluca Turconi, Simon Brouwer, Noll János, Bíró Árpád,
+ * Goldman Eleonóra, Sarlós Tamás, Bencsáth Boldizsár, Halácsy Péter,
+ * Dvornik László, Gefferth András, Nagy Viktor, Varga Dániel, Chris Halls,
+ * Rene Engelhard, Bram Moolenaar, Dafydd Jones, Harri Pitkänen
  *
  * Alternatively, the contents of this file may be used under the terms of
  * either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -55,3 +34,41 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
+
+#ifndef BASEAFF_HXX_
+#define BASEAFF_HXX_
+
+#include <string>
+
+class AffEntry {
+ public:
+  AffEntry()
+      : numconds(0),
+        opts(0),
+        aflag(0),
+        morphcode(0),
+        contclass(NULL),
+        contclasslen(0) {}
+  virtual ~AffEntry();
+  std::string appnd;
+  std::string strip;
+  unsigned char numconds;
+  char opts;
+  unsigned short aflag;
+  union {
+    char conds[MAXCONDLEN];
+    struct {
+      char conds1[MAXCONDLEN_1];
+      char* conds2;
+    } l;
+  } c;
+  char* morphcode;
+  unsigned short* contclass;
+  unsigned short contclasslen;
+
+private:
+  AffEntry(const AffEntry&);
+  AffEntry& operator=(const AffEntry&);
+};
+
+#endif

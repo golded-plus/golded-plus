@@ -40,7 +40,7 @@ CLEAN :
 	-@erase "$(INTDIR)\affentry.obj"
 	-@erase "$(INTDIR)\affixmgr.obj"
 	-@erase "$(INTDIR)\csutil.obj"
-	-@erase "$(INTDIR)\dictmgr.obj"
+	-@erase "$(INTDIR)\filemgr.obj"
 	-@erase "$(INTDIR)\fptools.obj"
 	-@erase "$(INTDIR)\gbmh.obj"
 	-@erase "$(INTDIR)\gcharset.obj"
@@ -210,10 +210,13 @@ CLEAN :
 	-@erase "$(INTDIR)\gxxmail.obj"
 	-@erase "$(INTDIR)\hashmgr.obj"
 	-@erase "$(INTDIR)\hunspell.obj"
+	-@erase "$(INTDIR)\hunzip.obj"
 	-@erase "$(INTDIR)\lzh.obj"
+	-@erase "$(INTDIR)\phonet.obj"
 	-@erase "$(INTDIR)\regex.obj"
+	-@erase "$(INTDIR)\replist.obj"
 	-@erase "$(INTDIR)\smblib.obj"
-	-@erase "$(INTDIR)\suggmgr.obj"
+	-@erase "$(INTDIR)\suggestmgr.obj"
 	-@erase "$(INTDIR)\uucheck.obj"
 	-@erase "$(INTDIR)\uuencode.obj"
 	-@erase "$(INTDIR)\uulib.obj"
@@ -232,7 +235,7 @@ CLEAN :
     if not exist "$(INTDIR)/$(NULL)" mkdir "$(INTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /Gm /GX /Zi /O1 /I "..\goldlib" /I "..\goldlib\gall" /I "..\goldlib\gcui" /I "..\goldlib\gcfg" /I "..\goldlib\glibc" /I "..\goldlib\gmb3" /I "..\goldlib\smblib" /I "..\goldlib\uulib" /I "..\goldlib" /D "WIN32" /D "NDEBUG" /D "_LIB" /D "HAVE_STDARG_H" /D "HAVE_CONFIG_H" /D "__INCLUDE_NEW_KEYWORDS__" /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /J /FD /c
+CPP_PROJ=/nologo /Zm128 /MD /W3 /Gm /GX /Zi /O1 /I "..\goldlib" /I "..\goldlib\gall" /I "..\goldlib\gcui" /I "..\goldlib\gcfg" /I "..\goldlib\glibc" /I "..\goldlib\gmb3" /I "..\goldlib\smblib" /I "..\goldlib\uulib" /I "..\goldlib" /D "WIN32" /D "NDEBUG" /D "_LIB" /D "HAVE_STDARG_H" /D "HAVE_CONFIG_H" /D "__INCLUDE_NEW_KEYWORDS__" /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /J /FD /c
 
 .c{$(INTDIR)}.obj::
    $(CPP) @<<
@@ -272,6 +275,11 @@ BSC32_SBRS= \
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"$(OUTDIR)\goldlib.lib" 
 LIB32_OBJS= \
+	"$(INTDIR)\affentry.obj" \
+	"$(INTDIR)\affixmgr.obj" \
+	"$(INTDIR)\csutil.obj" \
+	"$(INTDIR)\filemgr.obj" \
+	"$(INTDIR)\fptools.obj" \
 	"$(INTDIR)\gbmh.obj" \
 	"$(INTDIR)\gcharset.obj" \
 	"$(INTDIR)\gcrc16tb.obj" \
@@ -286,6 +294,7 @@ LIB32_OBJS= \
 	"$(INTDIR)\gdbgexit.obj" \
 	"$(INTDIR)\gdbgtrk.obj" \
 	"$(INTDIR)\gdirposx.obj" \
+	"$(INTDIR)\gedacfg.obj" \
 	"$(INTDIR)\gespell.obj" \
 	"$(INTDIR)\geval.obj" \
 	"$(INTDIR)\gevalhum.obj" \
@@ -308,7 +317,46 @@ LIB32_OBJS= \
 	"$(INTDIR)\glog.obj" \
 	"$(INTDIR)\gmemdbg.obj" \
 	"$(INTDIR)\gmemutil.obj" \
+	"$(INTDIR)\gmoarea.obj" \
+	"$(INTDIR)\gmoezyc1.obj" \
+	"$(INTDIR)\gmoezyc2.obj" \
+	"$(INTDIR)\gmoezyc3.obj" \
+	"$(INTDIR)\gmoezyc4.obj" \
+	"$(INTDIR)\gmoezyc5.obj" \
+	"$(INTDIR)\gmofido1.obj" \
+	"$(INTDIR)\gmofido2.obj" \
+	"$(INTDIR)\gmofido3.obj" \
+	"$(INTDIR)\gmofido4.obj" \
+	"$(INTDIR)\gmofido5.obj" \
+	"$(INTDIR)\gmohuds.obj" \
+	"$(INTDIR)\gmojamm1.obj" \
+	"$(INTDIR)\gmojamm2.obj" \
+	"$(INTDIR)\gmojamm3.obj" \
+	"$(INTDIR)\gmojamm4.obj" \
+	"$(INTDIR)\gmojamm5.obj" \
+	"$(INTDIR)\gmopcbd1.obj" \
+	"$(INTDIR)\gmopcbd2.obj" \
+	"$(INTDIR)\gmopcbd3.obj" \
+	"$(INTDIR)\gmopcbd4.obj" \
+	"$(INTDIR)\gmopcbd5.obj" \
+	"$(INTDIR)\gmosmb1.obj" \
+	"$(INTDIR)\gmosmb2.obj" \
+	"$(INTDIR)\gmosqsh1.obj" \
+	"$(INTDIR)\gmosqsh2.obj" \
+	"$(INTDIR)\gmosqsh3.obj" \
+	"$(INTDIR)\gmosqsh4.obj" \
+	"$(INTDIR)\gmosqsh5.obj" \
 	"$(INTDIR)\gmoubase.obj" \
+	"$(INTDIR)\gmowcat1.obj" \
+	"$(INTDIR)\gmowcat2.obj" \
+	"$(INTDIR)\gmowcat3.obj" \
+	"$(INTDIR)\gmowcat4.obj" \
+	"$(INTDIR)\gmowcat5.obj" \
+	"$(INTDIR)\gmoxbbs1.obj" \
+	"$(INTDIR)\gmoxbbs2.obj" \
+	"$(INTDIR)\gmoxbbs3.obj" \
+	"$(INTDIR)\gmoxbbs4.obj" \
+	"$(INTDIR)\gmoxbbs5.obj" \
 	"$(INTDIR)\gmsgattr.obj" \
 	"$(INTDIR)\gprnutil.obj" \
 	"$(INTDIR)\gregex.obj" \
@@ -355,7 +403,6 @@ LIB32_OBJS= \
 	"$(INTDIR)\gwinpcks.obj" \
 	"$(INTDIR)\gwinpick.obj" \
 	"$(INTDIR)\gwinput2.obj" \
-	"$(INTDIR)\gedacfg.obj" \
 	"$(INTDIR)\gxareas.obj" \
 	"$(INTDIR)\gxcrash.obj" \
 	"$(INTDIR)\gxdb.obj" \
@@ -399,63 +446,22 @@ LIB32_OBJS= \
 	"$(INTDIR)\gxwtr.obj" \
 	"$(INTDIR)\gxxbbs.obj" \
 	"$(INTDIR)\gxxmail.obj" \
-	"$(INTDIR)\regex.obj" \
-	"$(INTDIR)\gmoarea.obj" \
-	"$(INTDIR)\gmoezyc1.obj" \
-	"$(INTDIR)\gmoezyc2.obj" \
-	"$(INTDIR)\gmoezyc3.obj" \
-	"$(INTDIR)\gmoezyc4.obj" \
-	"$(INTDIR)\gmoezyc5.obj" \
-	"$(INTDIR)\gmofido1.obj" \
-	"$(INTDIR)\gmofido2.obj" \
-	"$(INTDIR)\gmofido3.obj" \
-	"$(INTDIR)\gmofido4.obj" \
-	"$(INTDIR)\gmofido5.obj" \
-	"$(INTDIR)\gmohuds.obj" \
-	"$(INTDIR)\gmojamm1.obj" \
-	"$(INTDIR)\gmojamm2.obj" \
-	"$(INTDIR)\gmojamm3.obj" \
-	"$(INTDIR)\gmojamm4.obj" \
-	"$(INTDIR)\gmojamm5.obj" \
-	"$(INTDIR)\gmopcbd1.obj" \
-	"$(INTDIR)\gmopcbd2.obj" \
-	"$(INTDIR)\gmopcbd3.obj" \
-	"$(INTDIR)\gmopcbd4.obj" \
-	"$(INTDIR)\gmopcbd5.obj" \
-	"$(INTDIR)\gmosmb1.obj" \
-	"$(INTDIR)\gmosmb2.obj" \
-	"$(INTDIR)\gmosqsh1.obj" \
-	"$(INTDIR)\gmosqsh2.obj" \
-	"$(INTDIR)\gmosqsh3.obj" \
-	"$(INTDIR)\gmosqsh4.obj" \
-	"$(INTDIR)\gmosqsh5.obj" \
-	"$(INTDIR)\gmowcat1.obj" \
-	"$(INTDIR)\gmowcat2.obj" \
-	"$(INTDIR)\gmowcat3.obj" \
-	"$(INTDIR)\gmowcat4.obj" \
-	"$(INTDIR)\gmowcat5.obj" \
-	"$(INTDIR)\gmoxbbs1.obj" \
-	"$(INTDIR)\gmoxbbs2.obj" \
-	"$(INTDIR)\gmoxbbs3.obj" \
-	"$(INTDIR)\gmoxbbs4.obj" \
-	"$(INTDIR)\gmoxbbs5.obj" \
+	"$(INTDIR)\hashmgr.obj" \
+	"$(INTDIR)\hunspell.obj" \
+	"$(INTDIR)\hunzip.obj" \
 	"$(INTDIR)\lzh.obj" \
+	"$(INTDIR)\phonet.obj" \
+	"$(INTDIR)\regex.obj" \
+	"$(INTDIR)\replist.obj" \
 	"$(INTDIR)\smblib.obj" \
-	"$(INTDIR)\fptools.obj" \
+	"$(INTDIR)\suggestmgr.obj" \
 	"$(INTDIR)\uucheck.obj" \
 	"$(INTDIR)\uuencode.obj" \
 	"$(INTDIR)\uulib.obj" \
 	"$(INTDIR)\uunconc.obj" \
 	"$(INTDIR)\uuscan.obj" \
 	"$(INTDIR)\uustring.obj" \
-	"$(INTDIR)\uuutil.obj" \
-	"$(INTDIR)\affentry.obj" \
-	"$(INTDIR)\affixmgr.obj" \
-	"$(INTDIR)\csutil.obj" \
-	"$(INTDIR)\dictmgr.obj" \
-	"$(INTDIR)\hashmgr.obj" \
-	"$(INTDIR)\hunspell.obj" \
-	"$(INTDIR)\suggmgr.obj"
+	"$(INTDIR)\uuutil.obj"
 
 "$(OUTDIR)\goldlib.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
@@ -477,7 +483,7 @@ CLEAN :
 	-@erase "$(INTDIR)\affentry.obj"
 	-@erase "$(INTDIR)\affixmgr.obj"
 	-@erase "$(INTDIR)\csutil.obj"
-	-@erase "$(INTDIR)\dictmgr.obj"
+	-@erase "$(INTDIR)\filemgr.obj"
 	-@erase "$(INTDIR)\fptools.obj"
 	-@erase "$(INTDIR)\gbmh.obj"
 	-@erase "$(INTDIR)\gcharset.obj"
@@ -647,10 +653,13 @@ CLEAN :
 	-@erase "$(INTDIR)\gxxmail.obj"
 	-@erase "$(INTDIR)\hashmgr.obj"
 	-@erase "$(INTDIR)\hunspell.obj"
+	-@erase "$(INTDIR)\hunzip.obj"
+	-@erase "$(INTDIR)\phonet.obj"
+	-@erase "$(INTDIR)\replist.obj"
 	-@erase "$(INTDIR)\lzh.obj"
 	-@erase "$(INTDIR)\regex.obj"
 	-@erase "$(INTDIR)\smblib.obj"
-	-@erase "$(INTDIR)\suggmgr.obj"
+	-@erase "$(INTDIR)\suggestmgr.obj"
 	-@erase "$(INTDIR)\uucheck.obj"
 	-@erase "$(INTDIR)\uuencode.obj"
 	-@erase "$(INTDIR)\uulib.obj"
@@ -889,10 +898,13 @@ LIB32_OBJS= \
 	"$(INTDIR)\affentry.obj" \
 	"$(INTDIR)\affixmgr.obj" \
 	"$(INTDIR)\csutil.obj" \
-	"$(INTDIR)\dictmgr.obj" \
+	"$(INTDIR)\filemgr.obj" \
 	"$(INTDIR)\hashmgr.obj" \
 	"$(INTDIR)\hunspell.obj" \
-	"$(INTDIR)\suggmgr.obj"
+	"$(INTDIR)\hunzip.obj" \
+	"$(INTDIR)\phonet.obj" \
+	"$(INTDIR)\replist.obj" \
+	"$(INTDIR)\suggestmgr.obj"
 
 "$(OUTDIR)\goldlib.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
@@ -2008,9 +2020,9 @@ SOURCE=..\goldlib\hunspell\csutil.cxx
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\goldlib\hunspell\dictmgr.cxx
+SOURCE=..\goldlib\hunspell\filemgr.cxx
 
-"$(INTDIR)\dictmgr.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\filemgr.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -2026,9 +2038,27 @@ SOURCE=..\goldlib\hunspell\hunspell.cxx
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\goldlib\hunspell\suggmgr.cxx
+SOURCE=..\goldlib\hunspell\hunzip.cxx
 
-"$(INTDIR)\suggmgr.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\hunzip.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\goldlib\hunspell\phonet.cxx
+
+"$(INTDIR)\phonet.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\goldlib\hunspell\replist.cxx
+
+"$(INTDIR)\replist.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\goldlib\hunspell\suggestmgr.cxx
+
+"$(INTDIR)\suggestmgr.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

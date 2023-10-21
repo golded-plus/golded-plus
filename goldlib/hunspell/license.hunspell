@@ -15,11 +15,29 @@
  *
  * Hunspell is based on MySpell which is Copyright (C) 2002 Kevin Hendricks.
  *
- * Contributor(s): David Einstein, Davide Prina, Giuseppe Modugno,
- * Gianluca Turconi, Simon Brouwer, Noll János, Bíró Árpád,
- * Goldman Eleonóra, Sarlós Tamás, Bencsáth Boldizsár, Halácsy Péter,
- * Dvornik László, Gefferth András, Nagy Viktor, Varga Dániel, Chris Halls,
- * Rene Engelhard, Bram Moolenaar, Dafydd Jones, Harri Pitkänen
+ * Contributor(s):
+ * David Einstein 
+ * Davide Prina
+ * Giuseppe Modugno 
+ * Gianluca Turconi
+ * Simon Brouwer
+ * Noll János
+ * Bíró Árpád
+ * Goldman Eleonóra
+ * Sarlós Tamás
+ * Bencsáth Boldizsár
+ * Halácsy Péter
+ * Dvornik László
+ * Gefferth András
+ * Nagy Viktor
+ * Varga Dániel
+ * Chris Halls
+ * Rene Engelhard
+ * Bram Moolenaar
+ * Dafydd Jones
+ * Harri Pitkänen
+ * Andras Timar
+ * Tor Lillqvist
  *
  * Alternatively, the contents of this file may be used under the terms of
  * either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -34,43 +52,3 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
-
-#ifndef LANGNUM_HXX_
-#define LANGNUM_HXX_
-
-/*
- language numbers for language specific codes
- see https://wiki.openoffice.org/w/index.php?title=Languages&oldid=230199
-*/
-
-enum {
-  LANG_ar = 96,
-  LANG_az = 100,  // custom number
-  LANG_bg = 41,
-  LANG_ca = 37,
-  LANG_crh = 102, // custom number
-  LANG_cs = 42,
-  LANG_da = 45,
-  LANG_de = 49,
-  LANG_el = 30,
-  LANG_en = 01,
-  LANG_es = 34,
-  LANG_eu = 10,
-  LANG_fr = 02,
-  LANG_gl = 38,
-  LANG_hr = 78,
-  LANG_hu = 36,
-  LANG_it = 39,
-  LANG_la = 99,   // custom number
-  LANG_lv = 101,  // custom number
-  LANG_nl = 31,
-  LANG_pl = 48,
-  LANG_pt = 03,
-  LANG_ru = 07,
-  LANG_sv = 50,
-  LANG_tr = 90,
-  LANG_uk = 80,
-  LANG_xx = 999
-};
-
-#endif

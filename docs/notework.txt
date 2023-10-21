@@ -13,6 +13,9 @@ ______________________________________________________________________
 Legend: "-" - bugfix, "+" - new feature, "!" - important modification.
 ______________________________________________________________________
 
++ Updated hunspell library to version 1.7.2 (latest stable version).
+  Rewritten C++11 code to be able to compile in MSVC 6.
+
 + Added user dictionary support for MySpell spell checker. User
   dictionary is associated with first language in SCheckerDefLang
   list. That means if that language is unloaded, user dictionary
