@@ -60,9 +60,17 @@
 //#if defined(_MSC_VER) && (_MSC_VER < 1400)
 static void __cpuid(int CPUInfo[4], int cpuidfun)
 {
-    asm volatile
-      ("cpuid" : "=a" (CPUInfo[0]), "=b" (CPUInfo[1]), "=c" (CPUInfo[2]), "=d" (CPUInfo[3])
-       : "a" (cpuidfun), "c" (0));
+    __asm
+    {
+        mov eax, cpuidfun
+        cpuid
+
+        mov esi, CPUInfo
+        mov [esi + 0], eax
+        mov [esi + 4], ebx
+        mov [esi + 8], ecx
+        mov [esi + 12], edx
+    }
 }
 #endif
 
