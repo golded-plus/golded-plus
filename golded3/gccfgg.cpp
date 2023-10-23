@@ -111,7 +111,9 @@ bool ReadGoldedCfg()
         MakePathname(CFG->outputfile, CFG->goldpath, CFG->outputfile);
         MakePathname(CFG->inputfile, CFG->goldpath, CFG->inputfile);
 
+#if defined(GCFG_SPELL_INCLUDED)
         MakePathname(CFG->scheckeruserdic, CFG->goldpath, CFG->scheckeruserdic);
+#endif
 
         if(*CFG->seqdir)
             MakePathname(CFG->seqdir, CFG->goldpath, CFG->seqdir);
