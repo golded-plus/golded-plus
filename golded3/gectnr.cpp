@@ -95,7 +95,7 @@ void Container::StyleCodeHighlight(const char* text, int row, int col, bool dohi
 
     uint sclen = 0;
     const char* txptr = text;
-    char buf[200];
+    CREATEBUFFER(char, buf, MAXCOL+1);
     const char* ptr = text;
     const char* stylemargins = " -|\\";    // we probably have to make a keyword for it
     char* punctchars = CFG->stylecodepunct;
