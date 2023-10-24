@@ -53,6 +53,7 @@ jobs:
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
+
     - name: Set golded version
       shell: bash
       run: |
@@ -71,3 +72,33 @@ jobs:
     - name: Build
       # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+
+    - uses: benjlevesque/short-sha@v2.2
+      id: short-sha
+      with:
+        length: 6
+
+    - if: matrix.os == 'windows-latest'
+      name: Zip binaries
+      run: >
+        git archive --format=zip -o golded-${{ matrix.os }}-${{ matrix.build_type }}-${{ matrix.c_compiler }}-${{ steps.short-sha.outputs.sha }}.zip
+        --add-file=${{ steps.strings.outputs.build-output-dir }}/golded3/Release/golded.exe
+        --add-file=${{ steps.strings.outputs.build-output-dir }}/goldnode/Release/goldnode.exe
+        --add-file=${{ steps.strings.outputs.build-output-dir }}/rddt/Release/rddt.exe
+        HEAD README.md
+
+    - if: matrix.os != 'windows-latest'
+      name: Zip binaries
+      run: >
+        git archive --format=zip -o golded-${{ matrix.os }}-${{ matrix.build_type }}-${{ matrix.c_compiler }}-${{ steps.short-sha.outputs.sha }}.zip
+        --add-file=${{ steps.strings.outputs.build-output-dir }}/golded3/golded
+        --add-file=${{ steps.strings.outputs.build-output-dir }}/goldnode/goldnode
+        --add-file=${{ steps.strings.outputs.build-output-dir }}/rddt/rddt
+        HEAD README.md
+
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v3
+      with:
+          name: golded-${{ matrix.os }}-${{ matrix.build_type }}-${{ matrix.c_compiler }}-${{ steps.short-sha.outputs.sha }}
+          path: |
+            golded-${{ matrix.os }}-${{ matrix.build_type }}-${{ matrix.c_compiler }}-${{ steps.short-sha.outputs.sha }}.zip
