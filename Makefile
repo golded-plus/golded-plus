@@ -54,7 +54,8 @@ all: sourcelists
 clean:
 	@$(SHELL) -ec 'for i in $(foreach dir,$(LIBS),goldlib/$(dir)); do cd $$i; $(MAKE) clean; cd ../..; done'
 	@$(SHELL) -ec 'for i in $(EXECUTABLES); do cd $$i; $(MAKE) clean; cd ..; done'
-	@-rm -f $(OBJPATH)/$(PLATFORM)/source.lst
+	@-rm -rf $(OBJPATH)
+	@-rm -rf $(LIBPATH)
 
 distclean:
 	@-cd $(BIN); rm -f $(EXECUTABLES)
