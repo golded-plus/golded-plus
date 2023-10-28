@@ -131,7 +131,7 @@ typedef enum
          // enumeration uses a word, instead of a byte, in case we
          // really expand this structure sometime soon.
 
-} __attribute__((packed)) max_option;
+} max_option __attribute__((packed));
 
 
 //  ------------------------------------------------------------------

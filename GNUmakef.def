@@ -69,7 +69,7 @@ ifeq ($(PLATFORM),emx)
     #EXEEXT=.exe
     #OBJEXT=.obj
     #LIBEXT=.lib
-    CXX=$(CC)
+    CXX=g++
     CFLAGS+=-DHAVE_SNPRINTF -DHAVE_VSNPRINTF -DHAVE_STDARG_H
     LNKFLAGS+=-s
 else
