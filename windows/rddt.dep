@@ -1,0 +1,11 @@
+# Microsoft Developer Studio Generated Dependency File, included by rddt.mak
+
+..\rddt\rddt.cpp : \
+	"..\golded3\golded3.h"\
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gstrall.h"\
+	

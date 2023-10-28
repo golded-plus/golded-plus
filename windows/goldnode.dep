@@ -1,0 +1,26 @@
+# Microsoft Developer Studio Generated Dependency File, included by goldnode.mak
+
+..\goldnode\goldnode.cpp : \
+	"..\golded3\gccfgg.h"\
+	"..\golded3\golded3.h"\
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gcrcall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgerr.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gdirposx.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gftnnl.h"\
+	"..\goldlib\gall\gftnnlge.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmemi86.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gutlmisc.h"\
+	"..\goldlib\gall\gutlos.h"\
+	
