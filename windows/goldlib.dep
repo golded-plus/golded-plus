@@ -1,0 +1,3151 @@
+# Microsoft Developer Studio Generated Dependency File, included by goldlib.mak
+
+..\goldlib\gall\gbmh.cpp : \
+	"..\goldlib\gall\gbmh.h"\
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gstrall.h"\
+	
+
+..\goldlib\gall\gcharset.cpp : \
+	"..\goldlib\gall\gcharset.h"\
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gstrall.h"\
+	
+
+..\goldlib\gall\gcrc16tb.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gcrcall.h"\
+	"..\goldlib\gall\gdefs.h"\
+	
+
+..\goldlib\gall\gcrc32tb.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gcrcall.h"\
+	"..\goldlib\gall\gdefs.h"\
+	
+
+..\goldlib\gall\gcrchash.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gcrcall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	
+
+..\goldlib\gall\gcrckeyv.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gcrcall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gstrall.h"\
+	
+
+..\goldlib\gall\gcrcm16.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gcrcall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	
+
+..\goldlib\gall\gcrcm32.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gcrcall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	
+
+..\goldlib\gall\gcrcs16.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gcrcall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	
+
+..\goldlib\gall\gcrcs32.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gcrcall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	
+
+..\goldlib\gall\gdbgerr.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgerr.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gutlmisc.h"\
+	
+
+..\goldlib\gall\gdbgexit.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gdbgerr.h"\
+	"..\goldlib\gall\gdefs.h"\
+	
+
+..\goldlib\gall\gdbgtrk.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	
+
+..\goldlib\gall\gdirposx.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gdirposx.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gwildmat.h"\
+	
+
+..\goldlib\gall\gespell.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgerr.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gdirposx.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gespell.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\hunspell\atypes.hxx"\
+	"..\goldlib\hunspell\hunspell.hxx"\
+	"..\goldlib\hunspell\hunvisapi.h"\
+	"..\goldlib\hunspell\w_char.hxx"\
+	
+
+..\goldlib\gall\geval.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geval.h"\
+	
+
+..\goldlib\gall\gevalhum.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geval.h"\
+	
+
+..\goldlib\gall\gevalrpn.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geval.h"\
+	
+
+..\goldlib\gall\gfile.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gshare.h"\
+	
+
+..\goldlib\gall\gfilport.cpp : \
+	"..\goldlib\gall\be_lock.h"\
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gshare.h"\
+	
+
+..\goldlib\gall\gfilutl1.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	
+
+..\goldlib\gall\gfilutl2.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gshare.h"\
+	
+
+..\goldlib\gall\gftnaddr.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gutlmisc.h"\
+	
+
+..\goldlib\gall\gftnnl.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gftnnl.h"\
+	"..\goldlib\gall\gstrall.h"\
+	
+
+..\goldlib\gall\gftnnlfd.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gftnnl.h"\
+	"..\goldlib\gall\gftnnlfd.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	
+
+..\goldlib\gall\gftnnlfu.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gftnnl.h"\
+	"..\goldlib\gall\gftnnlfu.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	
+
+..\goldlib\gall\gftnnlge.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gcrcall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gftnnl.h"\
+	"..\goldlib\gall\gftnnlge.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	
+
+..\goldlib\gall\gftnnlv7.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gftnnl.h"\
+	"..\goldlib\gall\gftnnlv7.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gutlmisc.h"\
+	
+
+..\goldlib\gall\gfuzzy.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gfuzzy.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gstrall.h"\
+	
+
+..\goldlib\gall\ghdrmime.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\ghdrmime.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gstrmail.h"\
+	
+
+..\goldlib\gall\glog.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgerr.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	
+
+..\goldlib\gall\gmemdbg.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gdbgerr.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmemi86.h"\
+	"..\goldlib\gall\gshare.h"\
+	
+
+..\goldlib\gall\gmemutil.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gmemall.h"\
+	"..\goldlib\gall\gmemi86.h"\
+	
+
+..\goldlib\gall\gmsgattr.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gstrall.h"\
+	
+
+..\goldlib\gall\gprnutil.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gstrall.h"\
+	
+
+..\goldlib\gall\gregex.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gall\gsearch.cpp : \
+	"..\goldlib\gall\gbmh.h"\
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gfuzzy.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gsearch.h"\
+	"..\goldlib\gall\gwildmat.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gall\gsnd.cpp : \
+	"..\goldlib\gall\gasmamis.h"\
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmemi86.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gsndall.h"\
+	"..\goldlib\gall\gsndsapi.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gutlos.h"\
+	
+
+..\goldlib\gall\gsndwrap.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gsndall.h"\
+	"..\goldlib\gall\gsndsapi.h"\
+	
+
+..\goldlib\gall\gstrctyp.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gutlmisc.h"\
+	
+
+..\goldlib\gall\gstrmail.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gstrmail.h"\
+	
+
+..\goldlib\gall\gstrname.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gstrall.h"\
+	
+
+..\goldlib\gall\gstrutil.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgerr.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\snprintf.c"\
+	
+
+..\goldlib\gall\gtimjuld.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	
+
+..\goldlib\gall\gtimutil.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gmemall.h"\
+	"..\goldlib\gall\gmemi86.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gutlmisc.h"\
+	"..\goldlib\gall\gutlmtsk.h"\
+	
+
+..\goldlib\gall\gtxtpara.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtxtpara.h"\
+	
+
+..\goldlib\gall\gusrbase.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gwildmat.h"\
+	
+
+..\goldlib\gall\gusrezyc.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrezyc.h"\
+	
+
+..\goldlib\gall\gusrgold.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrgold.h"\
+	
+
+..\goldlib\gall\gusrhuds.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrhuds.h"\
+	
+
+..\goldlib\gall\gusrmax.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrmax.h"\
+	
+
+..\goldlib\gall\gusrpcb.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gcrcall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrpcb.h"\
+	
+
+..\goldlib\gall\gusrra2.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gcrcall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrra2.h"\
+	
+
+..\goldlib\gall\gusrxbbs.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrxbbs.h"\
+	
+
+..\goldlib\gall\gutlclip.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gutlclip.h"\
+	"..\goldlib\gall\gutlmisc.h"\
+	"..\goldlib\gall\gutlos.h"\
+	
+
+..\goldlib\gall\gutlcode.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gutlcode.h"\
+	"..\goldlib\gall\gutlmisc.h"\
+	
+
+..\goldlib\gall\gutlgrp.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gutlgrp.h"\
+	"..\goldlib\gall\gwildmat.h"\
+	
+
+..\goldlib\gall\gutlmisc.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gutlmisc.h"\
+	
+
+..\goldlib\gall\gutlmtsk.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gmemall.h"\
+	"..\goldlib\gall\gmemi86.h"\
+	"..\goldlib\gall\gutlmtsk.h"\
+	
+
+..\goldlib\gall\gutltag.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gutltag.h"\
+	
+
+..\goldlib\gall\gutlvers.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gutlmisc.h"\
+	
+
+..\goldlib\gall\gutlwin.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gutlos.h"\
+	
+
+..\goldlib\gall\gutlwinm.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gutlos.h"\
+	
+
+..\goldlib\gall\gwildmat.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gwildmat.h"\
+	
+
+..\goldlib\gcui\gkbdbase.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gkbdunix.h"\
+	"..\goldlib\gall\gmemall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmemi86.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gkbdbase.h"\
+	"..\goldlib\gcui\gkbdcode.h"\
+	
+
+..\goldlib\gcui\gkbdgetm.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gutlmtsk.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gkbdbase.h"\
+	"..\goldlib\gcui\gkbdcode.h"\
+	"..\goldlib\gcui\gmoubase.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\gcui\gwinall.h"\
+	
+
+..\goldlib\gcui\gkbdwait.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gutlmtsk.h"\
+	"..\goldlib\gcui\gkbdbase.h"\
+	"..\goldlib\gcui\gkbdcode.h"\
+	
+
+..\goldlib\gcui\gmoubase.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gmemall.h"\
+	"..\goldlib\gall\gmemi86.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gmoubase.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	
+
+..\goldlib\gcui\gsrchmgr.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gsearch.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gkbdbase.h"\
+	"..\goldlib\gcui\gsrchmgr.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\gcui\gwinall.h"\
+	"..\goldlib\gcui\gwindow.h"\
+	"..\goldlib\gcui\gwinput.h"\
+	
+
+..\goldlib\gcui\gvidbase.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gmemall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmemi86.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	
+
+..\goldlib\gcui\gvidinit.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gmemall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmemi86.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	
+
+..\goldlib\gcui\gwinbase.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gutlmisc.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gkbdbase.h"\
+	"..\goldlib\gcui\gkbdcode.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\gcui\gwinall.h"\
+	
+
+..\goldlib\gcui\gwindow.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gkbdbase.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\gcui\gwinall.h"\
+	"..\goldlib\gcui\gwindow.h"\
+	
+
+..\goldlib\gcui\gwinhlp1.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gutlmisc.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gkbdbase.h"\
+	"..\goldlib\gcui\gkbdcode.h"\
+	"..\goldlib\gcui\gmoubase.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\gcui\gwinall.h"\
+	"..\goldlib\gcui\gwinhelp.h"\
+	
+
+..\goldlib\gcui\gwinhlp2.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gutlmisc.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gkbdbase.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\gcui\gwinall.h"\
+	"..\goldlib\gcui\gwinhelp.h"\
+	
+
+..\goldlib\gcui\gwininit.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gutlmisc.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gkbdbase.h"\
+	"..\goldlib\gcui\gkbdcode.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\gcui\gwinall.h"\
+	
+
+..\goldlib\gcui\gwinline.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gkbdbase.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\gcui\gwinall.h"\
+	
+
+..\goldlib\gcui\gwinmenu.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gkbdbase.h"\
+	"..\goldlib\gcui\gkbdcode.h"\
+	"..\goldlib\gcui\gmoubase.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\gcui\gwinall.h"\
+	"..\goldlib\gcui\gwinhelp.h"\
+	
+
+..\goldlib\gcui\gwinmnub.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gkbdbase.h"\
+	"..\goldlib\gcui\gmnubase.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\gcui\gwinall.h"\
+	
+
+..\goldlib\gcui\gwinpckf.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gdirposx.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gwildmat.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gkbdbase.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\gcui\gwinall.h"\
+	
+
+..\goldlib\gcui\gwinpcks.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gkbdbase.h"\
+	"..\goldlib\gcui\gkbdcode.h"\
+	"..\goldlib\gcui\gmoubase.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\gcui\gwinall.h"\
+	
+
+..\goldlib\gcui\gwinpick.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gutlmisc.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gkbdbase.h"\
+	"..\goldlib\gcui\gkbdcode.h"\
+	"..\goldlib\gcui\gmoubase.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\gcui\gwinall.h"\
+	"..\goldlib\gcui\gwinhelp.h"\
+	"..\goldlib\gcui\gwinpick.h"\
+	
+
+..\goldlib\gcui\gwinput2.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gutlclip.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gkbdbase.h"\
+	"..\goldlib\gcui\gkbdcode.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\gcui\gwinall.h"\
+	"..\goldlib\gcui\gwindow.h"\
+	"..\goldlib\gcui\gwinhelp.h"\
+	"..\goldlib\gcui\gwinput.h"\
+	
+
+..\goldlib\gcfg\gedacfg.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxareas.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxcrash.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gcrcall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxdb.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_db.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxdutch.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxezy102.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_ez102.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxezy110.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_ez110.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxfd.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_fd.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxfecho4.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_fech4.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxfecho5.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_fech5.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxfecho6.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_fech6.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxfidpcb.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gcrcall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxfm092.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_fm092.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxfm100.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_fm10g.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxfm116.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_fm116.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxgecho.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_ge120.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxhpt.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gcrcall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gximail4.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_im160.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gximail5.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_im175.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gximail6.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxinter.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_inter.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxlora.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_lo240.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxmax3.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_max3.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxme2.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxopus.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gdirposx.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gwildmat.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_opus.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxpcb.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_pcb.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxportal.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_pop.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxprobrd.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_pb200.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxqecho.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gcrcall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxqfront.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_qfrnt.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxquick.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_qbbs.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxra.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_ra.h"\
+	"..\goldlib\gcfg\gs_ra2.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxraecho.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_recho.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxspace.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gcrcall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gutlmisc.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxsquish.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gcrcall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxsuper.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_sbbs.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxsync.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gcrcall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_sync.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxtimed.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gcrcall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxtmail.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gcrcall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxts.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_fd.h"\
+	"..\goldlib\gcfg\gs_ts.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxwmail.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_wmail.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxwtr.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_wtr.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxxbbs.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gcrcall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_xbbs.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gcfg\gxxmail.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gcrcall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_xmail.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\glibc\regex.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\glibc\config.h"\
+	"..\goldlib\glibc\regex.h"\
+	
+
+..\goldlib\gmb3\gmoarea.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	
+
+..\goldlib\gmb3\gmoezyc1.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgerr.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrezyc.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmoezyc.h"\
+	
+
+..\goldlib\gmb3\gmoezyc2.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrezyc.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmoezyc.h"\
+	
+
+..\goldlib\gmb3\gmoezyc3.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrezyc.h"\
+	"..\goldlib\gall\gutlmisc.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmoezyc.h"\
+	
+
+..\goldlib\gmb3\gmoezyc4.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gcrcall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgerr.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrezyc.h"\
+	"..\goldlib\gall\gutlmisc.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmoezyc.h"\
+	
+
+..\goldlib\gmb3\gmoezyc5.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmemi86.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrezyc.h"\
+	"..\goldlib\gall\gutlmisc.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmoezyc.h"\
+	
+
+..\goldlib\gmb3\gmofido1.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgerr.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrmax.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmofido.h"\
+	
+
+..\goldlib\gmb3\gmofido2.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gdirposx.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrmax.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmofido.h"\
+	
+
+..\goldlib\gmb3\gmofido3.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrmax.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmofido.h"\
+	
+
+..\goldlib\gmb3\gmofido4.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrmax.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmofido.h"\
+	
+
+..\goldlib\gmb3\gmofido5.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmemi86.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrmax.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmofido.h"\
+	"..\goldlib\gmb3\gmoprot.h"\
+	
+
+..\goldlib\gmb3\gmohuds.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgerr.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmemi86.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrgold.h"\
+	"..\goldlib\gall\gusrhuds.h"\
+	"..\goldlib\gall\gusrra2.h"\
+	"..\goldlib\gall\gutlmisc.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmohuds.h"\
+	"..\goldlib\gmb3\gmohuds1.cpp"\
+	"..\goldlib\gmb3\gmohuds2.cpp"\
+	"..\goldlib\gmb3\gmohuds3.cpp"\
+	"..\goldlib\gmb3\gmohuds4.cpp"\
+	"..\goldlib\gmb3\gmohuds5.cpp"\
+	"..\goldlib\gmb3\gmoprot.h"\
+	
+
+..\goldlib\gmb3\gmojamm1.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gcrcall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgerr.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmojamm.h"\
+	
+
+..\goldlib\gmb3\gmojamm2.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gcrcall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgerr.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmojamm.h"\
+	
+
+..\goldlib\gmb3\gmojamm3.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmojamm.h"\
+	
+
+..\goldlib\gmb3\gmojamm4.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gcrcall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgerr.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gtxtpara.h"\
+	"..\goldlib\gall\gutlmisc.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmojamm.h"\
+	
+
+..\goldlib\gmb3\gmojamm5.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gutlmisc.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmojamm.h"\
+	
+
+..\goldlib\gmb3\gmopcbd1.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgerr.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrpcb.h"\
+	"..\goldlib\gall\gutlmisc.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_pcb.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmopcbd.h"\
+	"..\goldlib\gmb3\gmoprot.h"\
+	
+
+..\goldlib\gmb3\gmopcbd2.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgerr.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrpcb.h"\
+	"..\goldlib\gall\gutlmisc.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_pcb.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmopcbd.h"\
+	"..\goldlib\gmb3\gmoprot.h"\
+	
+
+..\goldlib\gmb3\gmopcbd3.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrpcb.h"\
+	"..\goldlib\gall\gutlmisc.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_pcb.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmopcbd.h"\
+	
+
+..\goldlib\gmb3\gmopcbd4.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgerr.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrpcb.h"\
+	"..\goldlib\gall\gutlmisc.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_pcb.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmopcbd.h"\
+	
+
+..\goldlib\gmb3\gmopcbd5.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmemi86.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrpcb.h"\
+	"..\goldlib\gall\gutlmisc.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcfg\gs_pcb.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmopcbd.h"\
+	
+
+..\goldlib\gmb3\gmosmb1.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gcrcall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgerr.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmemi86.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmosmb.h"\
+	"..\goldlib\smblib\lzh.h"\
+	"..\goldlib\smblib\smbdefs.h"\
+	"..\goldlib\smblib\smblib.h"\
+	
+
+..\goldlib\gmb3\gmosmb2.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmosmb.h"\
+	"..\goldlib\smblib\lzh.h"\
+	"..\goldlib\smblib\smbdefs.h"\
+	"..\goldlib\smblib\smblib.h"\
+	
+
+..\goldlib\gmb3\gmosqsh1.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgerr.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrmax.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmosqsh.h"\
+	
+
+..\goldlib\gmb3\gmosqsh2.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gcrcall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgerr.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrmax.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmosqsh.h"\
+	
+
+..\goldlib\gmb3\gmosqsh3.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gtxtpara.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrmax.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmosqsh.h"\
+	
+
+..\goldlib\gmb3\gmosqsh4.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gcrcall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgerr.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrmax.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmosqsh.h"\
+	
+
+..\goldlib\gmb3\gmosqsh5.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmemi86.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrmax.h"\
+	"..\goldlib\gall\gutlmisc.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmosqsh.h"\
+	
+
+..\goldlib\gmb3\gmowcat1.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgerr.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrwcat.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmowcat.h"\
+	
+
+..\goldlib\gmb3\gmowcat2.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgerr.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrwcat.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmowcat.h"\
+	
+
+..\goldlib\gmb3\gmowcat3.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrwcat.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmowcat.h"\
+	
+
+..\goldlib\gmb3\gmowcat4.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgerr.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrwcat.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmowcat.h"\
+	
+
+..\goldlib\gmb3\gmowcat5.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmemi86.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrwcat.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmowcat.h"\
+	
+
+..\goldlib\gmb3\gmoxbbs1.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgerr.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrxbbs.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmoxbbs.h"\
+	
+
+..\goldlib\gmb3\gmoxbbs2.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrxbbs.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmoxbbs.h"\
+	
+
+..\goldlib\gmb3\gmoxbbs3.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrxbbs.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmoxbbs.h"\
+	
+
+..\goldlib\gmb3\gmoxbbs4.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gcrcall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgerr.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrxbbs.h"\
+	"..\goldlib\gall\gutlmisc.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmoxbbs.h"\
+	
+
+..\goldlib\gmb3\gmoxbbs5.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdbgtrk.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\geall.h"\
+	"..\goldlib\gall\gfile.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\glog.h"\
+	"..\goldlib\gall\gmemall.h"\
+	"..\goldlib\gall\gmemdbg.h"\
+	"..\goldlib\gall\gmemi86.h"\
+	"..\goldlib\gall\gmsgattr.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\gall\gusrbase.h"\
+	"..\goldlib\gall\gusrxbbs.h"\
+	"..\goldlib\gall\gutltag.h"\
+	"..\goldlib\gcfg\gedacfg.h"\
+	"..\goldlib\gcui\gcurses.h"\
+	"..\goldlib\gcui\gvidall.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\gmb3\gmo_msg.h"\
+	"..\goldlib\gmb3\gmoarea.h"\
+	"..\goldlib\gmb3\gmoxbbs.h"\
+	
+
+..\goldlib\smblib\lzh.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\smblib\lzh.h"\
+	
+
+..\goldlib\smblib\smblib.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\gall\gstrall.h"\
+	"..\goldlib\gall\gtimall.h"\
+	"..\goldlib\smblib\lzh.h"\
+	"..\goldlib\smblib\smbdefs.h"\
+	"..\goldlib\smblib\smblib.h"\
+	
+
+..\goldlib\uulib\fptools.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\uulib\config.h"\
+	"..\goldlib\uulib\fptools.h"\
+	
+
+..\goldlib\uulib\uucheck.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\uulib\config.h"\
+	"..\goldlib\uulib\fptools.h"\
+	"..\goldlib\uulib\uudeview.h"\
+	"..\goldlib\uulib\uuint.h"\
+	"..\goldlib\uulib\uustring.h"\
+	
+
+..\goldlib\uulib\uuencode.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gcrcall.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gfilutil.h"\
+	"..\goldlib\gall\gshare.h"\
+	"..\goldlib\uulib\config.h"\
+	"..\goldlib\uulib\fptools.h"\
+	"..\goldlib\uulib\uudeview.h"\
+	"..\goldlib\uulib\uuint.h"\
+	"..\goldlib\uulib\uustring.h"\
+	
+
+..\goldlib\uulib\uulib.cpp : \
+	"..\goldlib\uulib\config.h"\
+	"..\goldlib\uulib\fptools.h"\
+	"..\goldlib\uulib\uudeview.h"\
+	"..\goldlib\uulib\uuint.h"\
+	"..\goldlib\uulib\uustring.h"\
+	
+
+..\goldlib\uulib\uunconc.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gcrcall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\gregex.h"\
+	"..\goldlib\glibc\regex.h"\
+	"..\goldlib\uulib\config.h"\
+	"..\goldlib\uulib\fptools.h"\
+	"..\goldlib\uulib\uudeview.h"\
+	"..\goldlib\uulib\uuint.h"\
+	"..\goldlib\uulib\uustring.h"\
+	
+
+..\goldlib\uulib\uuscan.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\uulib\config.h"\
+	"..\goldlib\uulib\fptools.h"\
+	"..\goldlib\uulib\uudeview.h"\
+	"..\goldlib\uulib\uuint.h"\
+	"..\goldlib\uulib\uustring.h"\
+	
+
+..\goldlib\uulib\uustring.cpp : \
+	"..\goldlib\uulib\config.h"\
+	"..\goldlib\uulib\uudeview.h"\
+	"..\goldlib\uulib\uuint.h"\
+	"..\goldlib\uulib\uustring.h"\
+	
+
+..\goldlib\uulib\uuutil.cpp : \
+	"..\goldlib\uulib\config.h"\
+	"..\goldlib\uulib\fptools.h"\
+	"..\goldlib\uulib\uudeview.h"\
+	"..\goldlib\uulib\uuint.h"\
+	"..\goldlib\uulib\uustring.h"\
+	
+
+..\goldlib\hunspell\affentry.cxx : \
+	"..\goldlib\hunspell\affentry.hxx"\
+	"..\goldlib\hunspell\affixmgr.hxx"\
+	"..\goldlib\hunspell\atypes.hxx"\
+	"..\goldlib\hunspell\baseaffix.hxx"\
+	"..\goldlib\hunspell\csutil.hxx"\
+	"..\goldlib\hunspell\filemgr.hxx"\
+	"..\goldlib\hunspell\hashmgr.hxx"\
+	"..\goldlib\hunspell\htypes.hxx"\
+	"..\goldlib\hunspell\hunvisapi.h"\
+	"..\goldlib\hunspell\hunzip.hxx"\
+	"..\goldlib\hunspell\phonet.hxx"\
+	"..\goldlib\hunspell\replist.hxx"\
+	"..\goldlib\hunspell\w_char.hxx"\
+	
+
+..\goldlib\hunspell\affixmgr.cxx : \
+	"..\goldlib\hunspell\affentry.hxx"\
+	"..\goldlib\hunspell\affixmgr.hxx"\
+	"..\goldlib\hunspell\atypes.hxx"\
+	"..\goldlib\hunspell\baseaffix.hxx"\
+	"..\goldlib\hunspell\csutil.hxx"\
+	"..\goldlib\hunspell\filemgr.hxx"\
+	"..\goldlib\hunspell\hashmgr.hxx"\
+	"..\goldlib\hunspell\htypes.hxx"\
+	"..\goldlib\hunspell\hunvisapi.h"\
+	"..\goldlib\hunspell\hunzip.hxx"\
+	"..\goldlib\hunspell\langnum.hxx"\
+	"..\goldlib\hunspell\phonet.hxx"\
+	"..\goldlib\hunspell\replist.hxx"\
+	"..\goldlib\hunspell\w_char.hxx"\
+	
+
+..\goldlib\hunspell\csutil.cxx : \
+	"..\goldlib\hunspell\atypes.hxx"\
+	"..\goldlib\hunspell\csutil.hxx"\
+	"..\goldlib\hunspell\htypes.hxx"\
+	"..\goldlib\hunspell\hunvisapi.h"\
+	"..\goldlib\hunspell\langnum.hxx"\
+	"..\goldlib\hunspell\utf_info.hxx"\
+	"..\goldlib\hunspell\w_char.hxx"\
+	
+
+..\goldlib\hunspell\filemgr.cxx : \
+	"..\goldlib\hunspell\csutil.hxx"\
+	"..\goldlib\hunspell\filemgr.hxx"\
+	"..\goldlib\hunspell\htypes.hxx"\
+	"..\goldlib\hunspell\hunvisapi.h"\
+	"..\goldlib\hunspell\hunzip.hxx"\
+	"..\goldlib\hunspell\w_char.hxx"\
+	
+
+..\goldlib\hunspell\hashmgr.cxx : \
+	"..\goldlib\hunspell\atypes.hxx"\
+	"..\goldlib\hunspell\csutil.hxx"\
+	"..\goldlib\hunspell\filemgr.hxx"\
+	"..\goldlib\hunspell\hashmgr.hxx"\
+	"..\goldlib\hunspell\htypes.hxx"\
+	"..\goldlib\hunspell\hunvisapi.h"\
+	"..\goldlib\hunspell\hunzip.hxx"\
+	"..\goldlib\hunspell\langnum.hxx"\
+	"..\goldlib\hunspell\w_char.hxx"\
+	
+
+..\goldlib\hunspell\hunspell.cxx : \
+	"..\goldlib\hunspell\affixmgr.hxx"\
+	"..\goldlib\hunspell\atypes.hxx"\
+	"..\goldlib\hunspell\baseaffix.hxx"\
+	"..\goldlib\hunspell\csutil.hxx"\
+	"..\goldlib\hunspell\filemgr.hxx"\
+	"..\goldlib\hunspell\hashmgr.hxx"\
+	"..\goldlib\hunspell\htypes.hxx"\
+	"..\goldlib\hunspell\hunspell.h"\
+	"..\goldlib\hunspell\hunspell.hxx"\
+	"..\goldlib\hunspell\hunvisapi.h"\
+	"..\goldlib\hunspell\hunzip.hxx"\
+	"..\goldlib\hunspell\langnum.hxx"\
+	"..\goldlib\hunspell\phonet.hxx"\
+	"..\goldlib\hunspell\replist.hxx"\
+	"..\goldlib\hunspell\suggestmgr.hxx"\
+	"..\goldlib\hunspell\w_char.hxx"\
+	
+
+..\goldlib\hunspell\hunzip.cxx : \
+	"..\goldlib\hunspell\csutil.hxx"\
+	"..\goldlib\hunspell\htypes.hxx"\
+	"..\goldlib\hunspell\hunvisapi.h"\
+	"..\goldlib\hunspell\hunzip.hxx"\
+	"..\goldlib\hunspell\w_char.hxx"\
+	
+
+..\goldlib\hunspell\phonet.cxx : \
+	"..\goldlib\hunspell\csutil.hxx"\
+	"..\goldlib\hunspell\htypes.hxx"\
+	"..\goldlib\hunspell\hunvisapi.h"\
+	"..\goldlib\hunspell\phonet.hxx"\
+	"..\goldlib\hunspell\w_char.hxx"\
+	
+
+..\goldlib\hunspell\replist.cxx : \
+	"..\goldlib\hunspell\csutil.hxx"\
+	"..\goldlib\hunspell\htypes.hxx"\
+	"..\goldlib\hunspell\hunvisapi.h"\
+	"..\goldlib\hunspell\replist.hxx"\
+	"..\goldlib\hunspell\w_char.hxx"\
+	
+
+..\goldlib\hunspell\suggestmgr.cxx : \
+	"..\goldlib\hunspell\affixmgr.hxx"\
+	"..\goldlib\hunspell\atypes.hxx"\
+	"..\goldlib\hunspell\baseaffix.hxx"\
+	"..\goldlib\hunspell\csutil.hxx"\
+	"..\goldlib\hunspell\filemgr.hxx"\
+	"..\goldlib\hunspell\hashmgr.hxx"\
+	"..\goldlib\hunspell\htypes.hxx"\
+	"..\goldlib\hunspell\hunvisapi.h"\
+	"..\goldlib\hunspell\hunzip.hxx"\
+	"..\goldlib\hunspell\langnum.hxx"\
+	"..\goldlib\hunspell\phonet.hxx"\
+	"..\goldlib\hunspell\replist.hxx"\
+	"..\goldlib\hunspell\suggestmgr.hxx"\
+	"..\goldlib\hunspell\w_char.hxx"\
+	
