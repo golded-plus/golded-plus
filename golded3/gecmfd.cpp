@@ -489,7 +489,7 @@ void CmfMsgs(GMsg* msg, bool torecycle)
         return;
     }
 
-    int xlat_table = LoadCharset(NULL, NULL, 1);
+    int xlat_table = GetCurrentTable();
 
     AL.SetActiveAreaId(OrigArea);
     AreaData* orig_adat = AA->adat;
@@ -741,10 +741,7 @@ void CmfMsgs(GMsg* msg, bool torecycle)
     AA->adat = orig_adat;
     AA->Unlock();
 
-    if(xlat_table != -1)
-        LoadCharset(CFG->xlatcharset[xlat_table].imp, CFG->xlatcharset[xlat_table].exp);
-    else
-        LoadCharset("N/A", "N/A");
+    LoadCharset(xlat_table);
 
     if(do_mode == MODE_MARKED)
     {

@@ -455,7 +455,7 @@ int ImportSOUP()
         {
             char buf[2048];
 
-            LoadCharset("N/A", "N/A");
+            LoadCharset(-1);
 
             char* mbuf = (char*)throw_malloc(MBUF_SIZE);
             char* lbuf = (char*)throw_malloc(LBUF_SIZE);

@@ -53,11 +53,11 @@ int Area::LoadHdr(GMsg* msg, uint32_t msgno, bool enable_recode)
     if(retval and enable_recode)
     {
         // Use default translation by default
-        int table = LoadCharset(NULL, NULL, 1);
+        int table = GetCurrentTable();
         if((table == -1) or not CFG->ignorecharset)
             msg->charsetlevel = LoadCharset(AA->Xlatimport(), CFG->xlatlocalset);
         else
-            msg->charsetlevel = LoadCharset(CFG->xlatcharset[table].imp, CFG->xlatcharset[table].exp);
+            msg->charsetlevel = LoadCharset(table);
 
         // Charset translate header fields
         strxmimecpy(msg->realby, msg->realby, msg->charsetlevel, sizeof(INam), true);

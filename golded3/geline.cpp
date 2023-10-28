@@ -51,6 +51,11 @@
 
 //  ------------------------------------------------------------------
 
+namespace
+{
+
+int current_table = -1;
+
 const int BODYLINE = 0;
 const int HEADERLINE = 1;
 const int USERDEFINED = 2;
@@ -388,6 +393,7 @@ static const Kludges rfc_list[] =
     { "", RFC_ZZZZ, KCRQ_NONE  },
 };
 
+} // namespace
 
 char* mime_header_decode(char* decoded, const char* encoded, char *charset)
 {
@@ -459,7 +465,7 @@ char* strxmimecpy(char* dest, const char* source, int level, int size, bool dete
 
     if(detect)
     {
-        table = LoadCharset(NULL, NULL, 1);
+        table = GetCurrentTable();
         level = LoadCharset(charset, CFG->xlatlocalset);
         if(not level)
         {
@@ -471,10 +477,7 @@ char* strxmimecpy(char* dest, const char* source, int level, int size, bool dete
 
     if(detect)
     {
-        if(table == -1)
-            LoadCharset("N/A", "N/A");
-        else
-            LoadCharset(CFG->xlatcharset[table].imp, CFG->xlatcharset[table].exp);
+        LoadCharset(table);
     }
 
     strxcpy(dest, converted.c_str(), size);
@@ -3295,6 +3298,66 @@ char *ISO2Latin(char *latin_encoding, const char *iso_encoding)
         return strxmerge(latin_encoding, 8, "latin-", latinno[chsno], NULL);
 }
 
+//  ------------------------------------------------------------------
+
+static bool LoadCharTable(int index)
+{
+    if (index < 0)
+    {
+        // No conversion case.
+        throw_release(CharTable);
+        ChsTP = NULL;
+        current_table = index;
+        return true;
+    }
+    else
+    {
+        gfile fp(AddPath(CFG->goldpath, CFG->xlatged), "rb", CFG->sharemode);
+        if (fp.isopen())
+        {
+            if (!CharTable) CharTable = (Chs*)throw_calloc(1, sizeof(Chs));
+            fp.FseekSet(index, sizeof(Chs));
+            fp.Fread(CharTable, sizeof(Chs));
+
+            ChsTP = CharTable->t;
+            current_table = index;
+
+            // Disable softcr translation unless DISPSOFTCR is enabled
+            if (not WideDispsoftcr)
+            {
+                char* tptr = (char*)ChsTP[SOFTCR];
+                *tptr++ = 1;
+                *tptr = SOFTCR;
+            }
+            return true;
+        }
+    }
+    return false;
+}
+
+//  ------------------------------------------------------------------
+//  Checks if converting to the same charset taking into account aliases
+
+static bool IsZeroConversion(const char* imp, const char* exp)
+{
+    const std::string withoutLevel(imp, strskip_txt(imp) - imp);
+    if (strieql(withoutLevel.c_str(), exp))
+        return true;
+
+    // Try to match with aliases.
+    std::vector< std::pair<std::string, gstrarray> >::iterator als;
+    for (als = CFG->xlatcharsetalias.begin(); als != CFG->xlatcharsetalias.end(); als++)
+    {
+        if (strieql(withoutLevel.c_str(), als->first.c_str()))
+        {
+            for (gstrarray::iterator it = als->second.begin(); it != als->second.end(); it++)
+                if (strieql(withoutLevel.c_str(), it->c_str()))
+                    return true;
+        }
+    }
+
+    return false;
+}
 
 //  ------------------------------------------------------------------
 
@@ -3309,46 +3372,47 @@ static bool CheckLevel(const char* imp, const char* imp2, int n, int &current_ta
     if (CharTable && (n == current_table) && (level <= CharTable->level))
         return true;
 
-    gfile fp(AddPath(CFG->goldpath, CFG->xlatged), "rb", CFG->sharemode);
-    if (fp.isopen())
-    {
-        if (!CharTable) CharTable = (Chs*)throw_calloc(1, sizeof(Chs));
-        fp.FseekSet(n, sizeof(Chs));
-        fp.Fread(CharTable, sizeof(Chs));
-
-        ChsTP = CharTable->t;
-        current_table = n;
-
-        // Disable softcr translation unless DISPSOFTCR is enabled
-        if (not WideDispsoftcr)
-        {
-            char* tptr = (char*)ChsTP[SOFTCR];
-            *tptr++ = 1;
-            *tptr = SOFTCR;
-        }
-
-        if (level <= CharTable->level) return true;
-    }
-
-    return false;
+    return LoadCharTable(n) && level <= CharTable->level;
 }
 
 
 //  ------------------------------------------------------------------
 
-int LoadCharset(const char* imp, const char* exp, int query)
+int GetCurrentTable()
+{
+    return current_table;
+}
+
+//  ------------------------------------------------------------------
+
+int LoadCharset(int index)
 {
 
-    static int current_table = -1;
-    int n;
-
-    switch(query)
+    if (index > 0 && index >= CFG->xlatcharset.size())
     {
-    case 1:
-        return current_table;
-    default:
-        break;
+        LOG.printf("! LoadCharset called with invalid index %d, maximum index is %d.",
+            index, CFG->xlatcharset.size() - 1);
+        return -1;
     }
+    else if (index != current_table)
+    {
+        LoadCharTable(index);
+    }
+
+    return CharTable ? CharTable->level : 2;
+}
+
+//  ------------------------------------------------------------------
+
+int LoadCharset(const char* imp, const char* exp)
+{
+
+    if (IsZeroConversion(imp, exp))
+    {
+        return LoadCharset(-1);
+    }
+
+    int n;
 
 #ifdef HAS_ICONV
     if( iconv_cd != (iconv_t)(-1) )

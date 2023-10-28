@@ -51,7 +51,7 @@
 #include <geall.h>
 #include <string>
 
-int   LoadCharset(const char* imp, const char* exp, int query = 0);
+int LoadCharset(const char* imp, const char* exp);
 std::string XlatStr(const char* src, int level, Chs* chrtbl, int qpencoded=false, bool i51=false);
 
 extern Chs* CharTable;
@@ -370,9 +370,6 @@ void CMSSpellLang::BuildRTable(const char *codeset)
     }
     strcpy(codeset2, "CP");
     GetLocaleInfo(mLIDC, LOCALE_IDEFAULTANSICODEPAGE, &codeset2[2], sizeof(codeset2)-2);
-    /*
-      int save_chartableno = LoadCharset(NULL,NULL,1);
-    */
     LoadCharset(codeset, codeset2);
     mToDicTable = new Chs;
     memset(mToDicTable, 0, sizeof(Chs));
@@ -382,12 +379,6 @@ void CMSSpellLang::BuildRTable(const char *codeset)
     mToLocTable = new Chs;
     memset(mToLocTable, 0, sizeof(Chs));
     if (CharTable ) *mToLocTable = *CharTable;
-    /*
-      if(save_chartableno != -1) // restore value of the default chaset table
-        LoadCharset(CFG->xlatcharset[save_chartableno].imp, CFG->xlatcharset[save_chartableno].exp);
-      else
-        LoadCharset("N/A","N/A");
-    */
 }
 
 
