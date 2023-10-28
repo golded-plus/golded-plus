@@ -1,76 +1,63 @@
-# Copyright 1999-2006 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=2
+EAPI=8
 
-ECVS_AUTH="pserver"
-ECVS_SERVER="golded-plus.cvs.sourceforge.net:/cvsroot/golded-plus"
-ECVS_MODULE="${PN}"
-ECVS_LOCALNAME="${PN}"
-
-inherit cvs
+inherit git-r3
 
 DESCRIPTION="FTN Editor ${PN}"
-SRC_URI=""
-HOMEPAGE="https://github.com/golded-plus/"
+EGIT_REPO_URI="https://github.com/golded-plus/golded-plus.git"
+HOMEPAGE="http://golded-plus.sourceforge.net"
 
 LICENSE="LGPL-2"
 SLOT="0"
 KEYWORDS="~x86 ~amd64"
-IUSE="spell -doc"
-DEPEND=">=sys-libs/ncurses-5.4
-	doc? ( sys-apps/texinfo )"
-RDEPEND="${DEPEND}"
+IUSE="spell -iconv -old_shift_fn -doc"
 
-pdep=""
-for l in \
-"af" "bg" "ca" "cs" "cy" "da" "de" "de-alt" "el" "en" \
-"eo" "es" "et" "fo" "fr" "ga" "gl" "he"     "hr" "hu" \
-"ia" "id" "it" "ku" "lt" "lv" "mi" "mk"     "ms" "nb" \
-"nl" "nn" "pl" "pt" "ro" "ru" "sk" "sl"     "sv" "sw" \
-"tn" "uk" "zu" \
-; do
-dep="linguas_${l}? ( app-dicts/myspell-${l} )"
-[[ -z ${pdep} ]] &&
-pdep="${dep}" ||
-pdep="${pdep}
-${dep}"
-IUSE="${IUSE} linguas_${l}"
-done
-
-PDEPEND="spell? ( ${pdep} )"
-
-S="${WORKDIR}/${ECVS_LOCALNAME}"
-
-src_unpack() {
-	cvs_src_unpack
-}
+RDEPEND=">=sys-libs/ncurses-5.4
+	spell? ( app-text/hunspell )
+	iconv? ( dev-erlang/iconv )"
+DEPEND="${RDEPEND}"
+BDEPEND="doc? ( sys-apps/texinfo )"
 
 src_prepare() {
+	use iconv && ewarn "Use iconv library for recoding text. Experimental! Do not set this if you are unsure!"
+
 	# Add header with personal configuration
 	cp ${FILESDIR}/mygolded.h ./golded3/mygolded.h
 
 	# Disable MS Office spellchecker support
 	sed -i 's/#CPPFLAGS+=-DGCFG_NO_MSSPELL/CPPFLAGS+=-DGCFG_NO_MSSPELL/' ./Config.def
 
-	# Disable HunSpell spellchecker support if need
-	use spell || sed -i 's/#CPPFLAGS+=-DGCFG_NO_MYSPELL/CPPFLAGS+=-DGCFG_NO_MYSPELL/' ./Config.def
+	# Disable Hunspell spellchecker support if need
+	use !spell && sed -i 's/#CPPFLAGS+=-DGCFG_NO_MYSPELL/CPPFLAGS+=-DGCFG_NO_MYSPELL/' ./Config.def
 
+	# Patch for dynamic linking of hunspell
+	if use spell ; then
+		eapply -p0 ${FILESDIR}/hunspell-dynlib.patch || die "eapply failed"
+		rm -rf ./goldlib/hunspell
+		HUNSPELL_LIB_VERSION=$(ver_cut 1-2 \
+		$( echo $( best_version app-text/hunspell ) | sed -e "s~app-text/hunspell~~" ) )
+		sed -i "s/STDLIBS+=-lhunspell/STDLIBS+=-lhunspell-${HUNSPELL_LIB_VERSION}/" ./golded3/Makefile
+	fi
+
+	# Fix linking error with libtinfo
+	eapply -p0 ${FILESDIR}/libtinfo.patch || die "eapply failed"
+
+	eapply_user
 }
 
 src_compile() {
-	emake PLATFORM=lnx || die "emake failed"
-	use doc && emake docs || die "emake docs failed"
+	emake PLATFORM=lnx ICONV=$(usex iconv 1 0) OLD_SHIFT_FN=$(usex old_shift_fn 1 0) || die "emake failed"
+	use doc && (emake docs || die "emake docs failed")
 }
 
 src_install() {
 	dobin bin/gedlnx bin/gnlnx bin/rddtlnx
 	doman docs/*.1
-	if use doc ; then
-		dodoc docs/*.txt docs/notework.rus
-		dodoc manuals/*.txt
-		dohtml docs/*.html
-	fi
+	use doc && \
+		DOCS="docs/*.txt docs/notework.rus manuals/*.txt" \
+		HTML_DOCS="docs/*.html" \
+		einstalldocs
 	insinto /usr/share/golded-plus
 	doins bin/screenrc_koi8r
 	exeinto /etc/ftn/golded.sample

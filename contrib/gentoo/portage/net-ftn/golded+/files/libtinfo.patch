@@ -1,0 +1,30 @@
+Index: golded3/Makefile
+===================================================================
+RCS file: /cvsroot/golded-plus/golded+/golded3/Makefile,v
+retrieving revision 1.15
+diff -u -r1.15 Makefile
+--- golded3/Makefile	18 Feb 2011 22:16:25 -0000	1.15
++++ golded3/Makefile	18 Aug 2019 11:24:22 -0000
+@@ -9,6 +9,7 @@
+ endif
+ 
+ TOP=..
++STDLIBS=-ltinfo
+ 
+ include $(TOP)/Config.def
+ SHORTTARGET=ged
+@@ -22,12 +23,12 @@
+ INCS=-I. -I$(TOP)/goldlib/gall -I$(TOP)/goldlib/gcui -I$(TOP)/goldlib/gcfg -I$(TOP)/goldlib/gmb3 -I$(TOP)/goldlib/uulib -I$(TOP)/goldlib/smblib
+ 
+ ifeq ($(PLATFORM),emx)
+-STDLIBS=-los2me
++STDLIBS+=-los2me
+ GLIBS+=glibc
+ INCS+=-I$(TOP)/goldlib/glibc
+ else
+ ifdef MINGW
+-STDLIBS=-luser32 -lwinmm
++STDLIBS+=-luser32 -lwinmm
+ GLIBS+=glibc
+ INCS+=-I$(TOP)/goldlib/glibc
+ endif
