@@ -72,6 +72,13 @@ static void __cpuid(int CPUInfo[4], int cpuidfun)
         mov [esi + 12], edx
     }
 }
+#elif defined(__GNUC__) && defined(__x86_64__)
+static void __cpuid(int CPUInfo[4], int cpuidfun)
+{
+    asm volatile
+      ("cpuid" : "=a" (CPUInfo[0]), "=b" (CPUInfo[1]), "=c" (CPUInfo[2]), "=d" (CPUInfo[3])
+       : "a" (cpuidfun), "c" (0));
+}
 #endif
 
 
@@ -357,7 +364,7 @@ static void cpuname(int family, int model, const char *v_name, char *m_name)
 
 char *gcpuid(char *_cpuname)
 {
-#if defined(__GNUC__) && defined(__i386__) || defined(_MSC_VER)
+#if defined(__GNUC__) && (defined(__i386__) || defined(__x86_64__)) || defined(_MSC_VER)
     static struct scpuid_t
     {
         dword         cpu;           /* x86, where x=cpu */
@@ -384,7 +391,7 @@ char *gcpuid(char *_cpuname)
     } scpuid;  /* ISO C: static variabled is initialised with 0 */
 #endif
 
-#if defined(_MSC_VER)
+#if defined(__GNUC__) && defined(__x86_64__) || defined(_MSC_VER)
 
     int CPUInfo[4];
 
