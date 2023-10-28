@@ -3252,7 +3252,7 @@ int IEclass::Start(int __mode, uint* __position, GMsg* __msg)
 #if defined(GCFG_SPELL_INCLUDED)
     if (CFG->scheckerenabled)
     {
-        int save_chartableno = LoadCharset(NULL,NULL,1); // Workaround: internal for LoadCharset() charset table number changed in the schecker.Load()
+        int save_chartableno = GetCurrentTable(); // Workaround: internal for LoadCharset() charset table number changed in the schecker.Load()
         schecker.Init(CFG->xlatlocalset, CFG->scheckerdicpath);
         char *str = strdup(AA->adat->scheckerdeflang);
         char *token = strtok(str, " ");
@@ -3266,10 +3266,7 @@ int IEclass::Start(int __mode, uint* __position, GMsg* __msg)
         }
         free(str);
 
-        if(save_chartableno != -1) // restore value of the default chaset table // workaround: internal for LoadCharset() charset table number changed in the schecker.Load()
-            LoadCharset(CFG->xlatcharset[save_chartableno].imp, CFG->xlatcharset[save_chartableno].exp);
-        else
-            LoadCharset("N/A","N/A");
+        LoadCharset(save_chartableno);
     }
 #endif
 

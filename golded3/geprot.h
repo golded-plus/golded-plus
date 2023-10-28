@@ -173,7 +173,11 @@ char *ISO2Latin(char *latin_encoding, const char *iso_encoding);
 char *MakeQuotedPrintable(const char *encoding);
 char *ExtractPlainCharset(const char *encoding);
 bool  IsQuotedPrintable(const char *encoding);
-int   LoadCharset(const char* imp, const char* exp, int query = 0);
+int   GetCurrentTable();
+// Loads charset using index returned by GetCurrentTable.
+// If index < 0 - reset current charset.
+int   LoadCharset(int index);
+int   LoadCharset(const char* imp, const char* exp);
 Line* AddKludge(Line* line, const char* buf, int where=DIR_BELOW);
 Line* AddLineFast(Line* line, const char* text);
 Line* DeleteLine(Line* line);

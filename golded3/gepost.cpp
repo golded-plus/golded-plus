@@ -272,7 +272,7 @@ static void MakeMsg3(int& mode, GMsg* msg)
     if (*AA->Xlatexport())
     {
         msg->charsetlevel = LoadCharset(CFG->xlatlocalset, AA->Xlatexport());
-        if (msg->charsetlevel)
+        if (msg->charsetlevel && CharTable)
 //      gsprintf(PRINTF_DECLARE_BUFFER(msg->charset), "%s %d", AA->Xlatexport(), msg->charsetlevel);
             gsprintf(PRINTF_DECLARE_BUFFER(msg->charset), "%s %d", AA->Xlatexport(), CharTable->displaylevel);
         else
@@ -636,7 +636,7 @@ static void MakeMsg2(int& mode, int& status, int& forwstat, int& topline, GMsg* 
                 }
                 if(status != MODE_QUIT)
                 {
-                    LoadCharset("N/A", "N/A");
+                    LoadCharset(-1);
                     strcpy(stpcpy(msg->charset, CFG->xlatlocalset), " 2");
                     msg->charsetlevel = 2;
                 }
@@ -694,7 +694,7 @@ static void MakeMsg2(int& mode, int& status, int& forwstat, int& topline, GMsg* 
                         }
                         line = line->next;
                     }
-                    LoadCharset("N/A", "N/A");
+                    LoadCharset(-1);
                     strcpy(stpcpy(msg->charset, CFG->xlatlocalset), " 2");
                     msg->charsetlevel = 2;
                     msg->LinesToText();
@@ -850,7 +850,7 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto)
             msg->TextToLines(CFG->dispmargin-1);
             msg->orig = AA->Aka().addr;
             msg->charsetlevel = LoadCharset(CFG->xlatlocalset, AA->Xlatexport());
-            if (msg->charsetlevel)
+            if (msg->charsetlevel && CharTable)
 //      gsprintf(PRINTF_DECLARE_BUFFER(msg->charset), "%s %d", AA->Xlatexport(), msg->charsetlevel);
                 gsprintf(PRINTF_DECLARE_BUFFER(msg->charset), "%s %d", AA->Xlatexport(), CharTable->displaylevel);
             else

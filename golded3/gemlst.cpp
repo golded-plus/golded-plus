@@ -899,7 +899,7 @@ void GThreadlist::GenTree(int idx)
 
     if(graph[0] == NUL)
     {
-        int table = LoadCharset(NULL, NULL, 1);
+        int table = GetCurrentTable();
         const char *doscp = get_dos_charset(CFG->xlatlocalset);
         if(doscp[0]) // console charset is known
         {
@@ -914,10 +914,7 @@ void GThreadlist::GenTree(int idx)
         else
             memcpy(graph, graph_ibmpc, sizeof(graph));
 
-        if(table == -1)
-            LoadCharset(CFG->xlatimport, CFG->xlatlocalset);
-        else
-            LoadCharset(CFG->xlatcharset[table].imp, CFG->xlatcharset[table].exp);
+        LoadCharset(table);
 
 #if defined(__UNIX__) && !defined(__USE_NCURSES__)
         gvid_boxcvt(graph);

@@ -13,6 +13,18 @@ ______________________________________________________________________
 Legend: "-" - bugfix, "+" - new feature, "!" - important modification.
 ______________________________________________________________________
 
++ Fixed charset "zero conversion". In some cases, GoldED needs to
+  "convert" string to the same charset, but it was not working
+  properly, if such charset table is missing in config. In some cases,
+  that yields wrong results. For example, if import charset is set to
+  CP866, local charset set to KOI8-R and message in KOI8-R encoding.
+  In this case, GoldED will try to "convert" text from KOI8-R to
+  KOI8-R, but as long as such conversion table is not found, will
+  fallback to conversion from import charset to local, which corrupts
+  the text. After this change, there is no need to configure "zero
+  conversion" charset tables. GoldED will process such cases
+  correctly.
+
 + Updated hunspell library to version 1.7.2 (latest stable version).
   Rewritten C++11 code to be able to compile in MSVC 6.
 
