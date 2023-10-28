@@ -22,7 +22,7 @@
 
 //  ------------------------------------------------------------------
 //  It is highly recommended to leave these fields unchanged.
-//  They are reserved for future use.
+//  They are reserved for future use. 
 
 #undef __GVER_PRENAME__
 #define __GVER_PRENAME__       ""
