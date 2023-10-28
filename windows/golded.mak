@@ -33,196 +33,9 @@ INTDIR=.\obj\release\win32
 OutDir=.\bin\release\win32
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
-
-ALL : "$(OUTDIR)\gedwin.exe"
-
-!ELSE 
-
-ALL : "goldlib - Win32 Release" "$(OUTDIR)\gedwin.exe"
-
-!ENDIF 
-
-!IF "$(RECURSE)" == "1" 
-CLEAN :"goldlib - Win32 ReleaseCLEAN" 
-!ELSE 
-CLEAN :
-!ENDIF 
-	-@erase "$(INTDIR)\gcalst.obj"
-	-@erase "$(INTDIR)\gcarea.obj"
-	-@erase "$(INTDIR)\gccfgg.obj"
-	-@erase "$(INTDIR)\gccfgg0.obj"
-	-@erase "$(INTDIR)\gccfgg1.obj"
-	-@erase "$(INTDIR)\gccfgg2.obj"
-	-@erase "$(INTDIR)\gccfgg3.obj"
-	-@erase "$(INTDIR)\gccfgg4.obj"
-	-@erase "$(INTDIR)\gccfgg5.obj"
-	-@erase "$(INTDIR)\gccfgg6.obj"
-	-@erase "$(INTDIR)\gccfgg7.obj"
-	-@erase "$(INTDIR)\gccfgg8.obj"
-	-@erase "$(INTDIR)\gckeys.obj"
-	-@erase "$(INTDIR)\gclang.obj"
-	-@erase "$(INTDIR)\gcmisc.obj"
-	-@erase "$(INTDIR)\gealst.obj"
-	-@erase "$(INTDIR)\gearea.obj"
-	-@erase "$(INTDIR)\gecarb.obj"
-	-@erase "$(INTDIR)\gecmfd.obj"
-	-@erase "$(INTDIR)\gectnr.obj"
-	-@erase "$(INTDIR)\gectrl.obj"
-	-@erase "$(INTDIR)\gedcyg.res"
-	-@erase "$(INTDIR)\gedoit.obj"
-	-@erase "$(INTDIR)\gedoss.obj"
-	-@erase "$(INTDIR)\geedit.obj"
-	-@erase "$(INTDIR)\geedit2.obj"
-	-@erase "$(INTDIR)\geedit3.obj"
-	-@erase "$(INTDIR)\gefile.obj"
-	-@erase "$(INTDIR)\gefind.obj"
-	-@erase "$(INTDIR)\geglob.obj"
-	-@erase "$(INTDIR)\gehdre.obj"
-	-@erase "$(INTDIR)\gehtml.obj"
-	-@erase "$(INTDIR)\geinit.obj"
-	-@erase "$(INTDIR)\geline.obj"
-	-@erase "$(INTDIR)\gelmsg.obj"
-	-@erase "$(INTDIR)\gemain.obj"
-	-@erase "$(INTDIR)\gemenu.obj"
-	-@erase "$(INTDIR)\gemlst.obj"
-	-@erase "$(INTDIR)\gemnus.obj"
-	-@erase "$(INTDIR)\gemrks.obj"
-	-@erase "$(INTDIR)\gemsgs.obj"
-	-@erase "$(INTDIR)\genode.obj"
-	-@erase "$(INTDIR)\geplay.obj"
-	-@erase "$(INTDIR)\gepost.obj"
-	-@erase "$(INTDIR)\geqwks.obj"
-	-@erase "$(INTDIR)\gerand.obj"
-	-@erase "$(INTDIR)\geread.obj"
-	-@erase "$(INTDIR)\geread2.obj"
-	-@erase "$(INTDIR)\gescan.obj"
-	-@erase "$(INTDIR)\gesoup.obj"
-	-@erase "$(INTDIR)\gesrch.obj"
-	-@erase "$(INTDIR)\getpls.obj"
-	-@erase "$(INTDIR)\geusrbse.obj"
-	-@erase "$(INTDIR)\geutil.obj"
-	-@erase "$(INTDIR)\geutil2.obj"
-	-@erase "$(INTDIR)\geview.obj"
-	-@erase "$(INTDIR)\gmarea.obj"
-	-@erase "$(INTDIR)\golded3.obj"
-	-@erase "$(INTDIR)\vc60.idb"
-	-@erase "$(INTDIR)\vc60.pdb"
-	-@erase "$(OUTDIR)\gedwin.exe"
-	-@erase "$(OUTDIR)\gedwin.pdb"
-
-"$(OUTDIR)" :
-    if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
-
-"$(INTDIR)" :
-    if not exist "$(INTDIR)/$(NULL)" mkdir "$(INTDIR)"
-
-CPP=cl.exe
 CPP_PROJ=/nologo /MD /W3 /Gm /GX /Zi /O1 /I "..\golded3" /I "..\goldlib" /I "..\goldlib\gall" /I "..\goldlib\gcui" /I "..\goldlib\gcfg" /I "..\goldlib\glibc" /I "..\goldlib\gmb3" /I "..\goldlib\smblib" /I "..\goldlib\uulib" /I "..\goldlib" /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "HAVE_STDARG_H" /D "HAVE_CONFIG_H" /D "__INCLUDE_NEW_KEYWORDS__" /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /J /FD /c
 
-.c{$(INTDIR)}.obj::
-   $(CPP) @<<
-   $(CPP_PROJ) $< 
-<<
-
-.cpp{$(INTDIR)}.obj::
-   $(CPP) @<<
-   $(CPP_PROJ) $< 
-<<
-
-.cxx{$(INTDIR)}.obj::
-   $(CPP) @<<
-   $(CPP_PROJ) $< 
-<<
-
-.c{$(INTDIR)}.sbr::
-   $(CPP) @<<
-   $(CPP_PROJ) $< 
-<<
-
-.cpp{$(INTDIR)}.sbr::
-   $(CPP) @<<
-   $(CPP_PROJ) $< 
-<<
-
-.cxx{$(INTDIR)}.sbr::
-   $(CPP) @<<
-   $(CPP_PROJ) $< 
-<<
-
-RSC=rc.exe
-RSC_PROJ=/l 0x409 /fo"$(INTDIR)\gedcyg.res" /d "NDEBUG" 
-BSC32=bscmake.exe
-BSC32_FLAGS=/nologo /o"$(OUTDIR)\golded.bsc" 
-BSC32_SBRS= \
-	
-LINK32=link.exe
 LINK32_FLAGS=winmm.lib user32.lib advapi32.lib /nologo /subsystem:console /incremental:no /pdb:"$(OUTDIR)\gedwin.pdb" /debug /machine:I386 /out:"$(OUTDIR)\gedwin.exe" 
-LINK32_OBJS= \
-	"$(INTDIR)\gcalst.obj" \
-	"$(INTDIR)\gcarea.obj" \
-	"$(INTDIR)\gccfgg.obj" \
-	"$(INTDIR)\gccfgg0.obj" \
-	"$(INTDIR)\gccfgg1.obj" \
-	"$(INTDIR)\gccfgg2.obj" \
-	"$(INTDIR)\gccfgg3.obj" \
-	"$(INTDIR)\gccfgg4.obj" \
-	"$(INTDIR)\gccfgg5.obj" \
-	"$(INTDIR)\gccfgg6.obj" \
-	"$(INTDIR)\gccfgg7.obj" \
-	"$(INTDIR)\gccfgg8.obj" \
-	"$(INTDIR)\gckeys.obj" \
-	"$(INTDIR)\gclang.obj" \
-	"$(INTDIR)\gcmisc.obj" \
-	"$(INTDIR)\gealst.obj" \
-	"$(INTDIR)\gearea.obj" \
-	"$(INTDIR)\gecarb.obj" \
-	"$(INTDIR)\gecmfd.obj" \
-	"$(INTDIR)\gectnr.obj" \
-	"$(INTDIR)\gectrl.obj" \
-	"$(INTDIR)\gedoit.obj" \
-	"$(INTDIR)\gedoss.obj" \
-	"$(INTDIR)\geedit.obj" \
-	"$(INTDIR)\geedit2.obj" \
-	"$(INTDIR)\geedit3.obj" \
-	"$(INTDIR)\gefile.obj" \
-	"$(INTDIR)\gefind.obj" \
-	"$(INTDIR)\geglob.obj" \
-	"$(INTDIR)\gehdre.obj" \
-	"$(INTDIR)\gehtml.obj" \
-	"$(INTDIR)\geinit.obj" \
-	"$(INTDIR)\geline.obj" \
-	"$(INTDIR)\gelmsg.obj" \
-	"$(INTDIR)\gemain.obj" \
-	"$(INTDIR)\gemenu.obj" \
-	"$(INTDIR)\gemlst.obj" \
-	"$(INTDIR)\gemnus.obj" \
-	"$(INTDIR)\gemrks.obj" \
-	"$(INTDIR)\gemsgs.obj" \
-	"$(INTDIR)\genode.obj" \
-	"$(INTDIR)\geplay.obj" \
-	"$(INTDIR)\gepost.obj" \
-	"$(INTDIR)\geqwks.obj" \
-	"$(INTDIR)\gerand.obj" \
-	"$(INTDIR)\geread.obj" \
-	"$(INTDIR)\geread2.obj" \
-	"$(INTDIR)\gescan.obj" \
-	"$(INTDIR)\gesoup.obj" \
-	"$(INTDIR)\gesrch.obj" \
-	"$(INTDIR)\getpls.obj" \
-	"$(INTDIR)\geusrbse.obj" \
-	"$(INTDIR)\geutil.obj" \
-	"$(INTDIR)\geutil2.obj" \
-	"$(INTDIR)\geview.obj" \
-	"$(INTDIR)\gmarea.obj" \
-	"$(INTDIR)\golded3.obj" \
-	"$(INTDIR)\gedcyg.res" \
-	"$(OUTDIR)\goldlib.lib"
-
-"$(OUTDIR)\gedwin.exe" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
-    $(LINK32) @<<
-  $(LINK32_FLAGS) $(LINK32_OBJS)
-<<
 
 !ELSEIF  "$(CFG)" == "golded - Win32 Debug"
 
@@ -232,21 +45,15 @@ INTDIR=.\obj\debug\win32
 OutDir=.\bin\debug\win32
 # End Custom Macros
 
-!IF "$(RECURSE)" == "0" 
+CPP_PROJ=/nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I ".\golded3" /I ".\goldlib" /I ".\goldlib\gall" /I ".\goldlib\gcui" /I ".\goldlib\gcfg" /I ".\goldlib\glibc" /I ".\goldlib\gmb3" /I ".\goldlib\msgidlib" /I ".\goldlib\smblib" /I ".\goldlib\uulib" /I "..\golded3" /I "..\goldlib" /I "..\goldlib\gall" /I "..\goldlib\gcui" /I "..\goldlib\gcfg" /I "..\goldlib\glibc" /I "..\goldlib\gmb3" /I "..\goldlib\smblib" /I "..\goldlib\uulib" /I "..\goldlib" /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "HAVE_STDARG_H" /D "HAVE_CONFIG_H" /D "__INCLUDE_NEW_KEYWORDS__" /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /J /FD /GZ /c
+
+LINK32_FLAGS=winmm.lib user32.lib advapi32.lib /nologo /subsystem:console /incremental:yes /pdb:"$(OUTDIR)\gedwin.pdb" /debug /machine:I386 /out:"$(OUTDIR)\gedwin.exe" /pdbtype:sept 
+
+!ENDIF
 
 ALL : "$(OUTDIR)\gedwin.exe"
 
-!ELSE 
-
-ALL : "goldlib - Win32 Debug" "$(OUTDIR)\gedwin.exe"
-
-!ENDIF 
-
-!IF "$(RECURSE)" == "1" 
-CLEAN :"goldlib - Win32 DebugCLEAN" 
-!ELSE 
 CLEAN :
-!ENDIF 
 	-@erase "$(INTDIR)\gcalst.obj"
 	-@erase "$(INTDIR)\gcarea.obj"
 	-@erase "$(INTDIR)\gccfgg.obj"
@@ -318,7 +125,6 @@ CLEAN :
     if not exist "$(INTDIR)/$(NULL)" mkdir "$(INTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I ".\golded3" /I ".\goldlib" /I ".\goldlib\gall" /I ".\goldlib\gcui" /I ".\goldlib\gcfg" /I ".\goldlib\glibc" /I ".\goldlib\gmb3" /I ".\goldlib\msgidlib" /I ".\goldlib\smblib" /I ".\goldlib\uulib" /I "..\golded3" /I "..\goldlib" /I "..\goldlib\gall" /I "..\goldlib\gcui" /I "..\goldlib\gcfg" /I "..\goldlib\glibc" /I "..\goldlib\gmb3" /I "..\goldlib\smblib" /I "..\goldlib\uulib" /I "..\goldlib" /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "HAVE_STDARG_H" /D "HAVE_CONFIG_H" /D "__INCLUDE_NEW_KEYWORDS__" /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /J /FD /GZ /c
 
 .c{$(INTDIR)}.obj::
    $(CPP) @<<
@@ -351,13 +157,12 @@ CPP_PROJ=/nologo /MDd /W3 /Gm /Gi /GX /ZI /Od /I ".\golded3" /I ".\goldlib" /I "
 <<
 
 RSC=rc.exe
-RSC_PROJ=/l 0x409 /fo"$(INTDIR)\gedcyg.res" /d "_DEBUG" 
+RSC_PROJ=/l 0x409 /fo"$(INTDIR)\gedcyg.res" /d "NDEBUG" 
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\golded.bsc" 
 BSC32_SBRS= \
 	
 LINK32=link.exe
-LINK32_FLAGS=winmm.lib user32.lib advapi32.lib /nologo /subsystem:console /incremental:yes /pdb:"$(OUTDIR)\gedwin.pdb" /debug /machine:I386 /out:"$(OUTDIR)\gedwin.exe" /pdbtype:sept 
 LINK32_OBJS= \
 	"$(INTDIR)\gcalst.obj" \
 	"$(INTDIR)\gcarea.obj" \
@@ -424,8 +229,6 @@ LINK32_OBJS= \
   $(LINK32_FLAGS) $(LINK32_OBJS)
 <<
 
-!ENDIF 
-
 
 !IF "$(NO_EXTERNAL_DEPS)" != "1"
 !IF EXISTS("golded.dep")
@@ -436,7 +239,6 @@ LINK32_OBJS= \
 !ENDIF 
 
 
-!IF "$(CFG)" == "golded - Win32 Release" || "$(CFG)" == "golded - Win32 Debug"
 SOURCE=..\golded3\gcalst.cpp
 
 "$(INTDIR)\gcalst.obj" : $(SOURCE) "$(INTDIR)"
@@ -796,33 +598,3 @@ SOURCE=..\golded3\gedcyg.rc
 
 
 !ENDIF 
-
-!IF  "$(CFG)" == "golded - Win32 Release"
-
-"goldlib - Win32 Release" : 
-   cd "."
-   $(MAKE) /$(MAKEFLAGS) /F .\goldlib.mak CFG="goldlib - Win32 Release" 
-   cd "."
-
-"goldlib - Win32 ReleaseCLEAN" : 
-   cd "."
-   $(MAKE) /$(MAKEFLAGS) /F .\goldlib.mak CFG="goldlib - Win32 Release" RECURSE=1 CLEAN 
-   cd "."
-
-!ELSEIF  "$(CFG)" == "golded - Win32 Debug"
-
-"goldlib - Win32 Debug" : 
-   cd "."
-   $(MAKE) /$(MAKEFLAGS) /F .\goldlib.mak CFG="goldlib - Win32 Debug" 
-   cd "."
-
-"goldlib - Win32 DebugCLEAN" : 
-   cd "."
-   $(MAKE) /$(MAKEFLAGS) /F .\goldlib.mak CFG="goldlib - Win32 Debug" RECURSE=1 CLEAN 
-   cd "."
-
-!ENDIF 
-
-
-!ENDIF 
-
