@@ -272,9 +272,9 @@ static void MakeMsg3(int& mode, GMsg* msg)
     if (*AA->Xlatexport())
     {
         msg->charsetlevel = LoadCharset(CFG->xlatlocalset, AA->Xlatexport());
-        if (msg->charsetlevel && CharTable)
-//      gsprintf(PRINTF_DECLARE_BUFFER(msg->charset), "%s %d", AA->Xlatexport(), msg->charsetlevel);
-            gsprintf(PRINTF_DECLARE_BUFFER(msg->charset), "%s %d", AA->Xlatexport(), CharTable->displaylevel);
+        if (msg->charsetlevel)
+            gsprintf(PRINTF_DECLARE_BUFFER(msg->charset), "%s %d", AA->Xlatexport(),
+                CharTable ? CharTable->displaylevel : msg->charsetlevel);
         else
             gsprintf(PRINTF_DECLARE_BUFFER(msg->charset), "%s 2", CFG->xlatlocalset);
     }
@@ -850,9 +850,9 @@ void MakeMsg(int mode, GMsg* omsg, bool ignore_replyto)
             msg->TextToLines(CFG->dispmargin-1);
             msg->orig = AA->Aka().addr;
             msg->charsetlevel = LoadCharset(CFG->xlatlocalset, AA->Xlatexport());
-            if (msg->charsetlevel && CharTable)
-//      gsprintf(PRINTF_DECLARE_BUFFER(msg->charset), "%s %d", AA->Xlatexport(), msg->charsetlevel);
-                gsprintf(PRINTF_DECLARE_BUFFER(msg->charset), "%s %d", AA->Xlatexport(), CharTable->displaylevel);
+            if (msg->charsetlevel)
+                gsprintf(PRINTF_DECLARE_BUFFER(msg->charset), "%s %d", AA->Xlatexport(),
+                    CharTable ? CharTable->displaylevel : msg->charsetlevel);
             else
                 gsprintf(PRINTF_DECLARE_BUFFER(msg->charset), "%s 2", CFG->xlatlocalset);
             strcpy(msg->odom, CFG->aka[AkaMatch(&msg->orig, &AA->Aka().addr)].domain);
