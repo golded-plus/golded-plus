@@ -3348,7 +3348,7 @@ static bool IsZeroConversion(const char* imp, const char* exp)
     std::vector< std::pair<std::string, gstrarray> >::iterator als;
     for (als = CFG->xlatcharsetalias.begin(); als != CFG->xlatcharsetalias.end(); ++als)
     {
-        if (strieql(withoutLevel.c_str(), als->first.c_str()))
+        if (strieql(exp, als->first.c_str()))
         {
             for (gstrarray::iterator it = als->second.begin(); it != als->second.end(); ++it)
                 if (strieql(withoutLevel.c_str(), it->c_str()))
