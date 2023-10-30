@@ -371,7 +371,7 @@ void CfgLocationalias()
     getkeyval(&key, &val);
     StripQuotes(key);
     StripQuotes(val);
-    CFG->locationalias[strupr(key)] = val;
+    CFG->locationalias.push_back(std::pair<std::string, std::string>(strupr(key), val));
 }
 
 //  ------------------------------------------------------------------

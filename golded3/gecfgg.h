@@ -368,7 +368,7 @@ public:
     bool        latin2local;
     char        latintolocal[256];
     Path        loadlanguage;
-    std::map<std::string, std::string> locationalias;
+    std::vector< std::pair<std::string, std::string> > locationalias;
     std::string locationdelimiter;
     Path        logfile;              // goldedlog;
     int         logformat;
