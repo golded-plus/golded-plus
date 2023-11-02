@@ -15,7 +15,7 @@ IUSE="spell -iconv -old_shift_fn -doc"
 
 RDEPEND=">=sys-libs/ncurses-5.4
 	spell? ( app-text/hunspell )
-	iconv? ( dev-erlang/iconv )"
+	iconv? ( virtual/libiconv )"
 DEPEND="${RDEPEND}"
 BDEPEND="doc? ( sys-apps/texinfo )"
 
