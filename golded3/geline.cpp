@@ -3407,11 +3407,6 @@ int LoadCharset(int index)
 int LoadCharset(const char* imp, const char* exp)
 {
 
-    if (IsZeroConversion(imp, exp))
-    {
-        return LoadCharset(-1);
-    }
-
     int n;
 
 #ifdef HAS_ICONV
@@ -3452,6 +3447,12 @@ int LoadCharset(const char* imp, const char* exp)
     throw_release(CharTable);
     ChsTP = NULL;
     current_table = -1;
+
+    if (IsZeroConversion(imp, exp))
+    {
+        return LoadCharset(-1);
+    }
+
     return 0;
 }
 
