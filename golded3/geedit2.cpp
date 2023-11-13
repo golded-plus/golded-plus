@@ -1238,8 +1238,7 @@ void IEclass::editimport(Line* __line, char* __filename, bool imptxt)
                     }
 
                     // Replace tabs
-
-                    for (std::string::size_type n = 0; (n = tmp.find('\t', n) != std::string::npos); ++n)
+                    for (std::string::size_type n = 0; (n = tmp.find('\t', n)) != std::string::npos;)
                     {
                         tmp[n] = ' ';
                         const int rstart = n % tabsz + 1;
