@@ -36,7 +36,7 @@ GMsg* MenuMsgPtr;
 void DispHeadAttrs(GMsg* msg)
 {
 
-    char atrs[200];
+    CREATEBUFFER(char, atrs, MAXCOL+1);
     MakeAttrStr(atrs, sizeof(atrs), &msg->attr);
     strsetsz(atrs, MAXCOL-CFG->disphdrnodeset.pos);
 
