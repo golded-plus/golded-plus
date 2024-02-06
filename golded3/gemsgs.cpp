@@ -1024,7 +1024,7 @@ void GMsg::LinesToText()
                 {
                     if(text[text.size() - 1] != ' ' and _line->next->txt[0] != ' ')
                     {
-                        if(_softterm or not _hardterm)
+                        if(_softterm)
                             text += ' ';
                     }
                     if (not _hardterm)
