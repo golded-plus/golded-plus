@@ -34,10 +34,6 @@ ______________________________________________________________________
   unloaded too. User dictionary is a simple text file with one word
   by line in local charset.
 
-- Modified ncurses initialization. That allow to see commandline help
-  and trailing critical log records on Linux. Install procedure,
-  when started with -INSTALL argument still need to be reworked.
-
 - Refactored charset conversion to avoid buffer overuns. Previous code
   was especially dangerous for converting from one byte to multibyte
   encodings.

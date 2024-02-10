@@ -978,7 +978,7 @@ void RunMacro(Macro* m)
 static void PlayMacro()
 {
 
-    RunMacro(&CFG->macro[0xFFFF-gkbd->curronkey->pass]);
+    RunMacro(&CFG->macro[0xFFFF-gkbd.curronkey->pass]);
 }
 
 

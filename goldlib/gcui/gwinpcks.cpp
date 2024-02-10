@@ -374,12 +374,12 @@ static gkey read_mouse(const gstrarray & /*strarr*/, r_t* /*r*/)
         gmou.ClearEvents();
 
         // loop until a key is pressed
-        while(!kbxhit() and gkbd->kbuf==NULL)
+        while(!kbxhit() and gkbd.kbuf==NULL)
         {
 
             // call the keyboard loop function, if defined
-            //if(gkbd->kbloop!=NULL)
-            //(*gkbd->kbloop)();
+            //if(gkbd.kbloop!=NULL)
+            //(*gkbd.kbloop)();
 
             // see if the right button (Esc) was pressed
             gmou.GetRightRelease();
@@ -536,13 +536,13 @@ int wpickstr(int srow, int scol, int erow, int ecol, int btype, vattr bordattr, 
     {
 
         // get keystroke/mouse movement
-        gkbd->inmenu = true;
+        gkbd.inmenu = true;
         xch = read_mouse(strarr,&r);
         if(!xch)
         {
             xch = getxch();
         }
-        gkbd->inmenu=false;
+        gkbd.inmenu=false;
 
         // test keystroke for a special key
         switch(xch)

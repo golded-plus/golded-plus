@@ -488,8 +488,8 @@ bool GMsgList::handle_key()
     case KK_ListAskExit:
     {
         GMenuQuit MenuQuit;
-        aborted = gkbd->quitall = make_bool(MenuQuit.Run());
-        if(gkbd->quitall)
+        aborted = gkbd.quitall = make_bool(MenuQuit.Run());
+        if(gkbd.quitall)
         {
             AA->bookmark = AA->Msgn.CvtReln(msgmark2);
             return false;
@@ -498,7 +498,7 @@ bool GMsgList::handle_key()
     break;
 
     case KK_ListQuitNow:
-        gkbd->quitall = true;
+        gkbd.quitall = true;
     ///////////////// Drop Through
 
     case KK_ListAbort:
@@ -678,7 +678,7 @@ bool GMsgList::handle_key()
     default:
         if(not PlayMacro(key, KT_M))
         {
-            if(gkbd->kbuf == NULL)
+            if(gkbd.kbuf == NULL)
                 kbput(key);
             switch(key)
             {
@@ -768,7 +768,7 @@ void MessageBrowse()
             AA->isreadpm = false;
         if(AA->Mark.Count() == 0)
             AA->isreadmark = false;
-        if(gkbd->quitall)
+        if(gkbd.quitall)
             QuitNow();
     }
 }
@@ -1269,14 +1269,14 @@ bool GThreadlist::handle_key()
     case KK_ListAskExit:
     {
         GMenuQuit MenuQuit;
-        aborted = gkbd->quitall = make_bool(MenuQuit.Run());
-        if(gkbd->quitall)
+        aborted = gkbd.quitall = make_bool(MenuQuit.Run());
+        if(gkbd.quitall)
             return false;
     }
     break;
 
     case KK_ListQuitNow:
-        gkbd->quitall = true;
+        gkbd.quitall = true;
     ///////////////// Drop Through
 
     case KK_ListAbort:
@@ -1339,7 +1339,7 @@ bool GThreadlist::handle_key()
     default:
         if(not PlayMacro(key, KT_M))
         {
-            if(gkbd->kbuf == NULL)
+            if(gkbd.kbuf == NULL)
                 kbput(key);
             switch(key)
             {

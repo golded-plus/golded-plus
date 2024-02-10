@@ -196,7 +196,6 @@ void Cleanup(void)
     throw_xdelete(BodyView);
     throw_xdelete(HeaderView);
     throw_xdelete(gvid);
-    throw_xdelete(gkbd);
 
     int smax = MinV((int)GLOG_STORELINES, LOG.storelines);
     for (int s=0; s<smax; s++)
@@ -405,7 +404,7 @@ int ShellToDos(const char* command, char* message, vattr cls, int cursor, int pa
     reset_prog_mode();
     clearok(stdscr, TRUE);
 #else
-    gkbd->Init();
+    gkbd.Init();
 #endif
 
     // Pause if needed

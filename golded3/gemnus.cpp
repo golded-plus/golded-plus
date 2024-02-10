@@ -227,11 +227,11 @@ int GMenuDelete::Run(int all, GMsg* __msg)
 
 static void PressY()
 {
-    if(gkbd->kbuf == NULL) kbput(*LNG->GotoNextYes);
+    if(gkbd.kbuf == NULL) kbput(*LNG->GotoNextYes);
 }
 static void PressN()
 {
-    if(gkbd->kbuf == NULL) kbput(*LNG->GotoNextNo);
+    if(gkbd.kbuf == NULL) kbput(*LNG->GotoNextNo);
 }
 
 int GMenuNewarea::Run()
@@ -1008,7 +1008,7 @@ int GMenuEditHeader::Run(int mode, GMsg* msg)
         update_statusline(LNG->EditHeader);
 
         _tag = EditHeaderinfo(mode, *HeaderView, make_bool(doedithdr));
-        if((_tag == W_ESCPRESS) or gkbd->quitall)
+        if((_tag == W_ESCPRESS) or gkbd.quitall)
             break;
 
         do
@@ -1100,7 +1100,7 @@ int GMenuEditHeader::Run(int mode, GMsg* msg)
     HeaderView->Use(AA, msg);
     HeaderView->Paint();
 
-    if(not gkbd->quitall)
+    if(not gkbd.quitall)
     {
         switch(_tag)
         {

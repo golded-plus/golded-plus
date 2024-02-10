@@ -323,7 +323,7 @@ void ScreenBlankIdle()
         whb = wopen(0,0,MAXROW-1,MAXCOL-1, 5, LGREY_|_BLACK, LGREY_|_BLACK);
         if(CFG->screenblankertype == BLANK_SLIDEWIN)
             whh = wopen_(ry, rx, windowheight, blankmsglen+2, W_BINFO, C_INFOB, C_INFOW);
-        lastmoved = gkbd->tickvalue;
+        lastmoved = gkbd.tickvalue;
     }
 
     if(not blanked and (whb != -1))
@@ -346,9 +346,9 @@ void ScreenBlankIdle()
         return;
     }
 
-    if(gkbd->tickvalue > (lastmoved+50L))
+    if(gkbd.tickvalue > (lastmoved+50L))
     {
-        lastmoved = gkbd->tickvalue;
+        lastmoved = gkbd.tickvalue;
         if(CFG->screenblankertype == BLANK_SLIDEWIN)
             wslide(ry, rx);
     }
@@ -363,9 +363,9 @@ void ScreenBlankIdle()
     // If timed out, exit screenblanker
     if (CFG->timeout)
     {
-        if (gkbd->tickvalue < gkbd->tickpress)
-            gkbd->tickpress = gkbd->tickvalue;
-        if (gkbd->tickvalue >= (gkbd->tickpress+(CFG->timeout*10L)))
+        if (gkbd.tickvalue < gkbd.tickpress)
+            gkbd.tickpress = gkbd.tickvalue;
+        if (gkbd.tickvalue >= (gkbd.tickpress+(CFG->timeout*10L)))
             kbput(Key_Tick);
     }
 }

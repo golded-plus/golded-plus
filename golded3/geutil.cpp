@@ -714,7 +714,7 @@ void call_help()
     // then save the current environment, call the
     // onkey's function, and restore the environment.
 
-    KBnd* onkey = gkbd->onkey;
+    KBnd* onkey = gkbd.onkey;
     while(onkey != NULL)
     {
         if(onkey->keycode == Key_F1)
@@ -731,10 +731,10 @@ void call_help()
 
 void CheckTick(gkey quitkey)
 {
-    if (gkbd->tickvalue < gkbd->tickpress)
-        gkbd->tickpress = gkbd->tickvalue;
+    if (gkbd.tickvalue < gkbd.tickpress)
+        gkbd.tickpress = gkbd.tickvalue;
 
-    Clock idle_secs = (gkbd->tickvalue - gkbd->tickpress)/10;
+    Clock idle_secs = (gkbd.tickvalue - gkbd.tickpress)/10;
 
     if (CFG->timeout)
     {
@@ -781,10 +781,10 @@ void IdleCheckSemaphores()
     // I don't like this solution either... :(
     static Clock last_secs = 0;
 
-    if (gkbd->tickvalue < gkbd->tickpress)
-        gkbd->tickpress = gkbd->tickvalue;
+    if (gkbd.tickvalue < gkbd.tickpress)
+        gkbd.tickpress = gkbd.tickvalue;
 
-    Clock idle_secs = (gkbd->tickvalue - gkbd->tickpress)/10;
+    Clock idle_secs = (gkbd.tickvalue - gkbd.tickpress)/10;
 
     // Make sure the stuff below is only run once in a second
     if(not idle_secs or (idle_secs - last_secs == 0))
