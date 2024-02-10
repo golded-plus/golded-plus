@@ -49,7 +49,7 @@ const int GEVT_TICK     = 3;
 void gkbdtickpressreset()
 {
 
-    gkbd->tickpress = gclock();
+    gkbd.tickpress = gclock();
 }
 
 
@@ -58,7 +58,7 @@ void gkbdtickpressreset()
 void gkbdtickvaluereset()
 {
 
-    gkbd->tickvalue = gclock();
+    gkbd.tickvalue = gclock();
 }
 
 
@@ -70,14 +70,14 @@ gkey kbmhit()
     gkey k;
 
     // Check for keypress in internal buffer or keyboard
-    if(gkbd->kbuf)
+    if(gkbd.kbuf)
     {
-        gkbd->source = GEVT_BUFFER;
-        k = gkbd->kbuf->xch;
+        gkbd.source = GEVT_BUFFER;
+        k = gkbd.kbuf->xch;
     }
     else
     {
-        gkbd->source = GEVT_KEYBOARD;
+        gkbd.source = GEVT_KEYBOARD;
         k = kbxhit();
     }
 
@@ -237,25 +237,25 @@ gkey getxch(int __tick)
     {
 
         // Keyboard polling loop
-        if(gkbd->polling)
+        if(gkbd.polling)
         {
             while(not kbmhit())
             {
                 Clock thistick = gclock();
-                long tickdiff = thistick - gkbd->tickvalue;
+                long tickdiff = thistick - gkbd.tickvalue;
                 if(tickdiff < 0)
                 {
-                    gkbd->tickvalue = thistick;
-                    tickdiff = gkbd->tickinterval + 1;
+                    gkbd.tickvalue = thistick;
+                    tickdiff = gkbd.tickinterval + 1;
                 }
-                if(tickdiff >= gkbd->tickinterval)
+                if(tickdiff >= gkbd.tickinterval)
                 {
-                    gkbd->tickvalue = thistick;
-                    if(gkbd->tickfunc)
+                    gkbd.tickvalue = thistick;
+                    if(gkbd.tickfunc)
                     {
-                        gkbd->inidle = true;
-                        (*gkbd->tickfunc)();
-                        gkbd->inidle = false;
+                        gkbd.inidle = true;
+                        (*gkbd.tickfunc)();
+                        gkbd.inidle = false;
                     }
                     if(__tick)
                         kbput(Key_Tick);
@@ -266,22 +266,22 @@ gkey getxch(int __tick)
         }
 
         // Get key from internal buffer or keyboard
-        if(gkbd->kbuf)
+        if(gkbd.kbuf)
         {
-            gkbd->source = GEVT_BUFFER;
-            k = gkbd->kbuf->xch;
-            KBuf* _kbuf = gkbd->kbuf->next;
-            throw_free(gkbd->kbuf);
-            gkbd->kbuf = _kbuf;
-            if(gkbd->kbuf)
-                gkbd->kbuf->prev = NULL;
+            gkbd.source = GEVT_BUFFER;
+            k = gkbd.kbuf->xch;
+            KBuf* _kbuf = gkbd.kbuf->next;
+            throw_free(gkbd.kbuf);
+            gkbd.kbuf = _kbuf;
+            if(gkbd.kbuf)
+                gkbd.kbuf->prev = NULL;
         }
         else
         {
-            gkbd->source = GEVT_KEYBOARD;
+            gkbd.source = GEVT_KEYBOARD;
             k = kbxget();
             gkey s = kbxget(2);   // Read shift status
-            if(not gkbd->extkbd)
+            if(not gkbd.extkbd)
             {
                 if(s & (LSHIFT|RSHIFT|GCTRL|ALT))
                     makeextkey(s,k);
@@ -299,15 +299,15 @@ gkey getxch(int __tick)
 
         if(not blanked)
         {
-            KBnd* _onkey = gkbd->onkey;
+            KBnd* _onkey = gkbd.onkey;
             while(_onkey)
             {
                 if(_onkey->keycode == k)
                 {
-                    gkbd->curronkey = _onkey;
+                    gkbd.curronkey = _onkey;
                     kbd_call_func(_onkey->func);
 #ifdef GOLD_MOUSE
-                    if(gkbd->inmenu and gmou.FreeCursor())
+                    if(gkbd.inmenu and gmou.FreeCursor())
                         return 0;
 #endif
                     break;
@@ -336,7 +336,7 @@ gkey getxch(int __tick)
                         gwin.menu->hotkey = true;
                         kbd_call_func(item->select);
 #ifdef GOLD_MOUSE
-                        if(gkbd->inmenu and gmou.FreeCursor())
+                        if(gkbd.inmenu and gmou.FreeCursor())
                             return 0;
 #endif
                         k = 0;

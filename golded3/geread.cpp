@@ -351,7 +351,7 @@ void Reader()
                                 {
                                     if(AA->lastread() < AA->Msgn.Count())
                                     {
-                                        if(gkbd->kbuf == NULL)
+                                        if(gkbd.kbuf == NULL)
                                         {
                                             switch(reader_lastcode)
                                             {
@@ -378,7 +378,7 @@ void Reader()
                                 {
                                     if(AA->lastread() > 1)
                                     {
-                                        if(gkbd->kbuf == NULL)
+                                        if(gkbd.kbuf == NULL)
                                         {
                                             if(reader_lastcode == KK_ReadGotoReplyPrev)
                                             {
@@ -1128,7 +1128,7 @@ void Reader()
                     while(reader_keyok);
                 }
 
-                if(gkbd->quitall)
+                if(gkbd.quitall)
                     break;
 
             }
@@ -1138,7 +1138,7 @@ void Reader()
                 AA->Close();
 
         }
-        while(not reader_finished and not gkbd->quitall);
+        while(not reader_finished and not gkbd.quitall);
 
         delete g_ThreadList;
         g_ThreadList = 0;

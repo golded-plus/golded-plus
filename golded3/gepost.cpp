@@ -733,7 +733,7 @@ static void MakeMsg2(int& mode, int& status, int& forwstat, int& topline, GMsg* 
                     BodyView->Paint();
                     do
                     {
-                        if(gkbd->quitall)
+                        if(gkbd.quitall)
                             status = MODE_SAVE;
                         else
                         {

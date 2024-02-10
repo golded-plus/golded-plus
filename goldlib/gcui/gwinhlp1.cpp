@@ -383,17 +383,17 @@ static void disp_cat()
                 arraycnt=0;
                 if(kbmhit())
                 {
-                    gkbd->inmenu = true;
+                    gkbd.inmenu = true;
                     kbch = getxch();
-                    gkbd->inmenu = false;
+                    gkbd.inmenu = false;
                 }
             }
             else
             {
 
-                gkbd->inmenu = true;
+                gkbd.inmenu = true;
                 kbch = getxch();
-                gkbd->inmenu = false;
+                gkbd.inmenu = false;
             }
 
             if ((kbch == word(-1)) || (kbch == Key_Esc))

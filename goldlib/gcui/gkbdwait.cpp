@@ -60,8 +60,8 @@ gkey waitkeyt(int duration)
             return 0;
         if(gclock() - sliced_time >= 10)
         {
-            if(gkbd->tickfunc)
-                (*gkbd->tickfunc)();
+            if(gkbd.tickfunc)
+                (*gkbd.tickfunc)();
             sliced_time = gclock();
         }
         gmtsk.timeslice();
