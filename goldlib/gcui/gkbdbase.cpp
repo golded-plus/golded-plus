@@ -59,6 +59,7 @@
 
 #if defined(__linux__)
     #include <sys/ioctl.h>
+    #include <linux/tiocl.h>
     #include <stdio.h>
 #endif
 
@@ -1847,18 +1848,23 @@ gkey kbxget_raw(int mode)
 
     if(mode == 2)
     {
-        int key;
 #if defined(__linux__)
-        // Under Linux we could use TIOCLINUX fn. 6 to read shift states on console
+        // Under Linux we could use TIOCLINUX ioctl_console with
+        // TIOCL_GETSHIFTSTATE subcode to read the shift state variable.
         // Of course it is very unportable but should produce good results :-)
-        key = 6;
+        // Note: valgrind complains with "Syscall param ioctl(TIOCLINUX) points
+        // to uninitialised byte(s)".  This is expected. valgrind does not
+        // understand how the ioctl works.  Try to run with a
+        // --sim-hints=lax-ioctls option.
+        char key = TIOCL_GETSHIFTSTATE;
         if(ioctl(fileno(stdin), TIOCLINUX, &key) == -1)
+#else
+        int key = 0;
 #endif
-            key = 0;
 #ifdef __BEOS__
         key = BeOSShiftState();
 #endif
-        return key;
+        return (int)key;
     }
     else if(mode & 0x01)
     {
@@ -1875,11 +1881,9 @@ gkey kbxget_raw(int mode)
 #endif
 
 #ifdef __linux__
+    char shifts = TIOCL_GETSHIFTSTATE;
     if(linux_cui_key(k))
     {
-        // Under Linux we could use TIOCLINUX fn. 6 to read shift states on console
-        // Of course it is very unportable but should produce good results :-)
-        int shifts = 6;
         if(ioctl(fileno(stdin), TIOCLINUX, &shifts) == -1)
             shifts = 0;
         if(shifts & (LSHIFT | RSHIFT))
@@ -1923,9 +1927,6 @@ gkey kbxget_raw(int mode)
     }
     else if(k == Key_BS)
     {
-        // Under Linux we could use TIOCLINUX fn. 6 to read shift states on console
-        // Of course it is very unportable but should produce good results :-)
-        int shifts = 6;
         if(ioctl(fileno(stdin), TIOCLINUX, &shifts) == -1)
             shifts = 0;
         if(shifts & ALT)
