@@ -176,21 +176,7 @@ void update_statuslinef(const char *format, const char *token, ...)
     char winfobuf[350];
     va_list argptr;
     va_start(argptr, token);
-
-    try
-    {
-        vsprintf(winfobuf, format, argptr);
-    }
-    catch(...)
-    {
-        if (*token)
-            sprintf(winfobuf, "ERROR: Update %s in your GOLDLANG.CFG or report to author.", token);
-        else
-            sprintf(winfobuf, "ERROR: \"%s\". Report to author.", format);
-
-        error = true;
-    }
-
+    vsprintf(winfobuf, format, argptr);
     va_end(argptr);
     update_statusline(winfobuf);
 
