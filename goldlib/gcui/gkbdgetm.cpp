@@ -280,7 +280,7 @@ gkey getxch(int __tick)
         {
             gkbd.source = GEVT_KEYBOARD;
             k = kbxget();
-            gkey s = kbxget(2);   // Read shift status
+            gkey s = kbxget(KeyMode_Shift);   // Read shift status
             if(not gkbd.extkbd)
             {
                 if(s & (LSHIFT|RSHIFT|GCTRL|ALT))
