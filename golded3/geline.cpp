@@ -30,6 +30,7 @@
 #include <gstrmail.h>
 #include <gutlcode.h>
 #include <ghdrmime.h>
+#include <iterator>
 
 #if defined(__USE_ALLOCA__)
     #include <malloc.h>
@@ -3336,43 +3337,13 @@ static bool LoadCharTable(int index)
 }
 
 //  ------------------------------------------------------------------
-//  Checks if converting to the same charset taking into account aliases
 
-static bool IsZeroConversion(const char* imp, const char* exp)
+bool CheckCharset(int n)
 {
-    const std::string withoutLevel(imp, strskip_txt(imp) - imp);
-    if (strieql(withoutLevel.c_str(), exp))
+    if (CharTable && (n == current_table))
         return true;
 
-    // Try to match with aliases.
-    std::vector< std::pair<std::string, gstrarray> >::iterator als;
-    for (als = CFG->xlatcharsetalias.begin(); als != CFG->xlatcharsetalias.end(); ++als)
-    {
-        if (strieql(exp, als->first.c_str()))
-        {
-            for (gstrarray::iterator it = als->second.begin(); it != als->second.end(); ++it)
-                if (strieql(withoutLevel.c_str(), it->c_str()))
-                    return true;
-        }
-    }
-
-    return false;
-}
-
-//  ------------------------------------------------------------------
-
-static bool CheckLevel(const char* imp, const char* imp2, int n, int &current_table)
-{
-    const char *ptr = striinc(imp2, imp);
-    ptr += strlen(imp2);
-    strskip_wht(ptr);
-
-    int level = atoi(ptr);
-
-    if (CharTable && (n == current_table) && (level <= CharTable->level))
-        return true;
-
-    return LoadCharTable(n) && level <= CharTable->level;
+    return LoadCharTable(n);
 }
 
 
@@ -3388,10 +3359,10 @@ int GetCurrentTable()
 int LoadCharset(int index)
 {
 
-    if (index > 0 && index >= CFG->xlatcharset.size())
+    if (index > 0 && index >= CFG->xlatcharsets.size())
     {
         LOG.printf("! LoadCharset called with invalid index %d, maximum index is %d.",
-            index, CFG->xlatcharset.size() - 1);
+            index, CFG->xlatcharsets.size() - 1);
         return -1;
     }
     else if (index != current_table)
@@ -3419,28 +3390,38 @@ int LoadCharset(const char* imp, const char* exp)
         LOG.printf("+ Can't initialise iconv to convert from %s to %s", imp, exp);
 #endif
 
+    // Strip charset level if any
+    std::string impCharset(strlword(imp));
+    strupr(impCharset);
+
+    std::string expCharset(exp);
+    strupr(expCharset);
+
     // Find and load charset table
-    std::vector<Map>::iterator xlt;
-    for(n = 0, xlt = CFG->xlatcharset.begin(); xlt != CFG->xlatcharset.end(); xlt++, n++)
+    ChrsMap::iterator chrsIt = CFG->xlatcharsets.find(ImpExp(impCharset, expCharset));
+    if (chrsIt != CFG->xlatcharsets.end())
     {
-        if (!striinc(xlt->exp, exp)) continue;
-
-        bool imp_found = make_bool(strnieql(xlt->imp, imp, strlen(xlt->imp)));
-        if (imp_found) imp_found = CheckLevel(imp, xlt->imp, n, current_table);
-
-        std::vector< std::pair<std::string, gstrarray> >::iterator als;
-        for (als = CFG->xlatcharsetalias.begin();
-                !imp_found && (als != CFG->xlatcharsetalias.end()); als++)
+        if (CheckCharset(std::distance(CFG->xlatcharsets.begin(), chrsIt)))
         {
-            if (strieql(xlt->imp, als->first.c_str()))
+            return CharTable->level;
+        }
+    }
+
+    // Try to find alias
+    std::map<std::string, std::string>::iterator alsIt = CFG->xlatcharsetalias.find(impCharset);
+    if (alsIt != CFG->xlatcharsetalias.end())
+    {
+        impCharset = alsIt->second;
+        strupr(impCharset);
+
+        ChrsMap::iterator chrsIt = CFG->xlatcharsets.find(ImpExp(impCharset, expCharset));
+        if (chrsIt != CFG->xlatcharsets.end())
+        {
+            if (CheckCharset(std::distance(CFG->xlatcharsets.begin(), chrsIt)))
             {
-                for (gstrarray::iterator it = als->second.begin(); !imp_found && (it != als->second.end()); it++)
-                    if (striinc(it->c_str(), imp))
-                        imp_found = CheckLevel(imp, it->c_str(), n, current_table);
+                return CharTable->level;
             }
         }
-
-        if (imp_found) return CharTable->level;
     }
 
     // No matching table found
@@ -3448,12 +3429,7 @@ int LoadCharset(const char* imp, const char* exp)
     ChsTP = NULL;
     current_table = -1;
 
-    if (IsZeroConversion(imp, exp))
-    {
-        return LoadCharset(-1);
-    }
-
-    return 0;
+    return impCharset == expCharset ? 2 : 0;
 }
 
 

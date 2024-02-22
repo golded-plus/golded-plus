@@ -898,13 +898,8 @@ struct Esc
 //  ------------------------------------------------------------------
 //  Charset mapping files
 
-struct Map
-{
-    XlatName imp;         // From Charset
-    XlatName exp;         // To Charset
-    char* mapfile;        // Mapping file and timestamp
-};
-
+typedef std::pair<std::string, std::string> ImpExp;
+typedef std::map<ImpExp, std::string> ChrsMap;
 
 //  ------------------------------------------------------------------
 

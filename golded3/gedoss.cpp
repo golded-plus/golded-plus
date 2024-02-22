@@ -128,8 +128,8 @@ void Cleanup(void)
         CFG->twitname.clear();
         CFG->twitsubj.clear();
         CFG->username.clear();
-        CFG->xlatcharset.clear();
-        CFG->xlatescset.clear();
+        CFG->xlatcharsets.clear();
+        CFG->xlatescsets.clear();
         CFG->xlatcharsetalias.clear();
         CFG->cmdkey.clear();
         CFG->macro.clear();
