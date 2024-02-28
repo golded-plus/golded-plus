@@ -32,9 +32,7 @@
 
 #include <golded.h>
 #include <geedit.h>
-
-gkey kbxget_raw(int mode);
-
+#include <gkbdbase.h>
 
 //  ------------------------------------------------------------------
 //  Globals
@@ -3369,9 +3367,9 @@ int IEclass::Start(int __mode, uint* __position, GMsg* __msg)
         do
         {
             _ch = getxchtick();
-//  TO_PORT_TAG: kbxget_raw(3)
+//  TO_PORT_TAG: kbxget_raw(KeyMode_Control)
 #if defined(__WIN32__)
-            keystatus = kbxget_raw(3);
+            keystatus = kbxget_raw(KeyMode_Control);
 #endif
 
             if(EDIT->AutoSave())
@@ -3400,7 +3398,7 @@ int IEclass::Start(int __mode, uint* __position, GMsg* __msg)
         {
             _ch = _kk;
 
-//  TO_PORT_TAG: kbxget_raw(3)
+//  TO_PORT_TAG: kbxget_raw(KeyMode_Shift)
 #if defined(__WIN32__)
             if (keystatus & SHIFT_PRESSED)
 #else

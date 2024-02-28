@@ -40,6 +40,20 @@
 
 typedef word gkey;
 
+// Operation modes for reading keystrokes, using in the following functions
+// kbxget, kbxget_raw and gkbd_cursgetch.
+enum eKeyModes
+{
+    // Waits for a pressed key and returns a code
+    KeyMode_Wait = 0,
+    // Returns a keystroke if available, otherwise 0
+    KeyMode_Test,
+    // Returns Shifts key status
+    KeyMode_Shift,
+    // Returns Control key status
+    KeyMode_Control
+};
+
 
 //  ------------------------------------------------------------------
 //  Keycode object
@@ -134,6 +148,7 @@ extern bool right_alt_same_as_left;
 //  ------------------------------------------------------------------
 //  Function prototypes
 
+gkey  kbxget_raw(eKeyModes mode);
 KBnd* chgonkey  (KBnd* kblist);
 void  clearkeys ();
 void  freonkey  ();
@@ -141,7 +156,7 @@ int   setonkey  (gkey keycode, VfvCP func, gkey pass);
 gkey  getxch    (int __tick=false);
 void  kbclear   ();
 gkey  kbmhit    ();
-gkey  kbxget    (int mode=0);
+gkey  kbxget    (eKeyModes mode=KeyMode_Wait);
 gkey  kbxhit    ();
 int   kbput     (gkey xch);
 word  kbput_    (gkey xch);

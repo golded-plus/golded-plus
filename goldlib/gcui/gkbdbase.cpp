@@ -59,6 +59,7 @@
 
 #if defined(__linux__)
     #include <sys/ioctl.h>
+    #include <linux/tiocl.h>
     #include <stdio.h>
 #endif
 
@@ -1069,14 +1070,14 @@ void gkbd_setfnkeys()
 #endif
 }
 
-int gkbd_cursgetch(int mode)
+int gkbd_cursgetch(eKeyModes mode)
 {
 
     int key;
 #ifndef BUGGY_NCURSES
     nodelay(stdscr, mode);
 #else
-    wtimeout(stdscr, mode ? 0 : -1);
+    wtimeout(stdscr, (mode != KeyMode_Wait) ? 0 : -1);
 #endif
     key = getch();
 #ifndef BUGGY_NCURSES
@@ -1456,22 +1457,18 @@ gkey gkbd_alt_secondary_keyboard(int key)
 //  ------------------------------------------------------------------
 //  Get key stroke
 
-gkey kbxget_raw(int mode)
+gkey kbxget_raw(eKeyModes mode)
 {
-//  mode - =0 - wait for key is pressed (returns code)
-//         =1 - test if keystroke is available (returns code if YES,
-//              otherwise returns 0)
-//         =2 - return Shifts key status
     gkey k;
 
-//  TO_PORT_TAG: kbxget_raw(3)
+//  TO_PORT_TAG: kbxget_raw(KeyMode_Control)
 #if defined(__USE_NCURSES__)
 
     int key;
-    if(mode == 2)
+    if(mode == KeyMode_Shift)
     {
         // We can't do much but we can at least this :-)
-        k = kbxget_raw(1);
+        k = kbxget_raw(KeyMode_Test);
         key = 0;
         switch(k)
         {
@@ -1511,7 +1508,7 @@ gkey kbxget_raw(int mode)
     // Prefix for Meta-key or Alt-key sequences
     if(key == 27)
     {
-        int key2 = gkbd_cursgetch(TRUE);
+        int key2 = gkbd_cursgetch(KeyMode_Test);
         // If no key follows, it is no Meta- or Alt- seq, but a single Esc
         if(key2 == ERR)
             k = Key_Esc;
@@ -1533,12 +1530,12 @@ gkey kbxget_raw(int mode)
         else if(0 == (k = gkbd_alt_secondary_keyboard(key2)))
         {
             // No correct Alt-sequence; ungetch last key and return Esc
-            if (mode != 1)
+            if (mode != KeyMode_Test)
                 ungetch(key2);
             k = Key_Esc;
         }
 
-        if((key2 != ERR) and (mode == 1))
+        if((key2 != ERR) and (mode == KeyMode_Test))
             ungetch(key2);
     }
     // Curses sequence; lookup in nice table above
@@ -1557,27 +1554,27 @@ gkey kbxget_raw(int mode)
     else
         return 0;	// Incorrect or unsupported key don't ungetch()
 
-    if(mode == 1)
+    if(mode == KeyMode_Test)
         ungetch(key);
 
 #elif defined(__MSDOS__)
-
+    int dos_mode = (int)mode;
     if(gkbd.extkbd)
-        mode |= 0x10;
+        dos_mode |= 0x10;
 
     i86 cpu;
-    cpu.ah((byte)mode);
+    cpu.ah((byte)dos_mode);
     cpu.genint(0x16);
-    if(mode & 0x01)
+    if(dos_mode & 0x01)
         if(cpu.flags() & 0x40)   // if ZF is set, no key is available
             return 0;
     k = (gkey)cpu.ax();
 
-    if((mode & ~0x10) == 0)
+    if((dos_mode & ~0x10) == 0)
     {
         if((KCodAsc(k) == 0xE0) and (KCodScn(k) != 0))
         {
-            if(kbxget_raw(2) & (LSHIFT | RSHIFT))
+            if(kbxget_raw(KeyMode_Shift) & (LSHIFT | RSHIFT))
             {
                 KCodAsc(k) = 0;
                 KCodScn(k) |= 0x80;
@@ -1597,7 +1594,7 @@ gkey kbxget_raw(int mode)
             case 0x52:
             case 0x53:
             {
-                int shifts = kbxget_raw(2);
+                int shifts = kbxget_raw(KeyMode_Shift);
                 if(shifts & (LSHIFT | RSHIFT))
                 {
                     if(shifts & NUMLOCK)
@@ -1620,16 +1617,15 @@ gkey kbxget_raw(int mode)
     // for testing for keys.  This can be done with by bioskey (1) or
     // bioskey (0x11).  Failing to do so can cause trouble in multitasking
     // environments like DESQview/X. (Taken from DJGPP documentation)
-    if((mode & 0x02) == 1)
-        kbxget_raw(1);
+    if((dos_mode & 0x02) == 1)
+        kbxget_raw(KeyMode_Test);
 
 #elif defined(__OS2__)
 
     KBDKEYINFO kb;
-    mode &= 0xF;
-    if(mode == 0)
+    if(mode == KeyMode_Wait)
         KbdCharIn(&kb, IO_WAIT, 0);
-    else if(mode == 2)
+    else if(mode == KeyMode_Shift)
     {
         KbdPeek(&kb, 0);
         if(kb.fbStatus)
@@ -1699,15 +1695,15 @@ gkey kbxget_raw(int mode)
     DWORD nread;
     static gkey KeyCtrlState = 0;
 
-    if (mode == 3)
+    if (mode == KeyMode_Control)
     {
         return KeyCtrlState;
     }
-    else if(mode == 2)
+    else if(mode == KeyMode_Shift)
     {
         return 0;
     }
-    else if(mode & 0x01)
+    else if(mode == KeyMode_Test)
     {
 
         // Peek at next key
@@ -1732,7 +1728,7 @@ gkey kbxget_raw(int mode)
             }
         }
     }
-    else
+    else // KeyMode_Wait
     {
 
         DWORD &CKS = inp.Event.KeyEvent.dwControlKeyState;
@@ -1845,41 +1841,42 @@ gkey kbxget_raw(int mode)
 
 #elif defined(__UNIX__)
 
-    if(mode == 2)
+    if(mode == KeyMode_Shift)
     {
-        int key;
 #if defined(__linux__)
-        // Under Linux we could use TIOCLINUX fn. 6 to read shift states on console
+        // Under Linux we could use TIOCLINUX ioctl_console with
+        // TIOCL_GETSHIFTSTATE subcode to read the shift state variable.
         // Of course it is very unportable but should produce good results :-)
-        key = 6;
+        // Note: valgrind complains with "Syscall param ioctl(TIOCLINUX) points
+        // to uninitialised byte(s)".  This is expected. valgrind does not
+        // understand how the ioctl works.  Try to run with a
+        // --sim-hints=lax-ioctls option.
+        char key = TIOCL_GETSHIFTSTATE;
         if(ioctl(fileno(stdin), TIOCLINUX, &key) == -1)
+#else
+        int key = 0;
 #endif
-            key = 0;
 #ifdef __BEOS__
         key = BeOSShiftState();
 #endif
-        return key;
+        return (int)key;
     }
-    else if(mode & 0x01)
+    else if(mode == KeyMode_Test)
     {
-
         // Peek at next key
         return gkbd_input_pending() ? 0xFFFF : 0;
     }
     else
     {
-
         k = gkbd_getmappedkey();
     }
 
 #endif
 
 #ifdef __linux__
+    char shifts = TIOCL_GETSHIFTSTATE;
     if(linux_cui_key(k))
     {
-        // Under Linux we could use TIOCLINUX fn. 6 to read shift states on console
-        // Of course it is very unportable but should produce good results :-)
-        int shifts = 6;
         if(ioctl(fileno(stdin), TIOCLINUX, &shifts) == -1)
             shifts = 0;
         if(shifts & (LSHIFT | RSHIFT))
@@ -1923,9 +1920,6 @@ gkey kbxget_raw(int mode)
     }
     else if(k == Key_BS)
     {
-        // Under Linux we could use TIOCLINUX fn. 6 to read shift states on console
-        // Of course it is very unportable but should produce good results :-)
-        int shifts = 6;
         if(ioctl(fileno(stdin), TIOCLINUX, &shifts) == -1)
             shifts = 0;
         if(shifts & ALT)
@@ -2247,7 +2241,7 @@ gkey kbxget_raw(int mode)
     }
 #endif
 
-//  TO_PORT_TAG: kbxget_raw(3)
+//  TO_PORT_TAG: kbxget_raw(KeyMode_Control)
 #if defined(__WIN32__)
     KeyCtrlState = (gkey)(inp.Event.KeyEvent.dwControlKeyState & 0xFFFF);
 #endif
@@ -2258,7 +2252,7 @@ gkey kbxget_raw(int mode)
 //  ------------------------------------------------------------------
 //  Get key stroke
 
-gkey kbxget(int mode)
+gkey kbxget(eKeyModes mode)
 {
 
     return keyscanxlat(kbxget_raw(mode));
@@ -2271,7 +2265,7 @@ gkey kbxget(int mode)
 gkey kbxhit()
 {
 
-    return kbxget(0x01);
+    return kbxget(KeyMode_Test);
 }
 
 
@@ -2298,7 +2292,7 @@ void clearkeys()
 {
 
     while(kbxhit())
-        kbxget(0x00);
+        kbxget(KeyMode_Wait);
 }
 
 
