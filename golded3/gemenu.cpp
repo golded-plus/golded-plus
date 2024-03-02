@@ -1009,7 +1009,7 @@ int ChangeXlatImport()
 
         Listi.push_back(LNG->CharsetAuto);
 
-        for (xlt = CFG->xlatcharsets.begin(); xlt != end; xlt++)
+        for (xlt = CFG->xlatcharsets.begin(); xlt != end; ++xlt)
         {
             if (strieql(xlt->first.second.c_str(), CFG->xlatlocalset))
             {

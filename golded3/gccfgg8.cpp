@@ -670,7 +670,6 @@ void CfgXlatcharset()
             {
                 if(*CFG->xlatpath == NUL)
                     strcpy(CFG->xlatpath, CFG->goldpath);
-                std::string ch = ptr;
                 MakePathname(ptr, CFG->xlatpath, ptr);
                 if (CFG->xlatcharsets.find(impExp) == CFG->xlatcharsets.end())
                 {

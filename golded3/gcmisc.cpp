@@ -675,7 +675,7 @@ void ReadXlatTables()
         {
             // Compile CHARSET tables
             ChrsMap::iterator mapIt;
-            for (mapIt = CFG->xlatcharsets.begin(); mapIt != CFG->xlatcharsets.end(); mapIt++)
+            for (mapIt = CFG->xlatcharsets.begin(); mapIt != CFG->xlatcharsets.end(); ++mapIt)
             {
                 // Assign table defaults
                 memset(&ChsTable, 0, sizeof(Chs));
@@ -828,7 +828,7 @@ void ReadXlatTables()
             }
 
             // Compile ESCSET tables
-            for (mapIt = CFG->xlatescsets.begin(); mapIt != CFG->xlatescsets.end(); mapIt++)
+            for (mapIt = CFG->xlatescsets.begin(); mapIt != CFG->xlatescsets.end(); ++mapIt)
             {
                 // Assign defaults
                 memset(&EscTable, 0, sizeof(Esc));

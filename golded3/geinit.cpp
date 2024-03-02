@@ -216,7 +216,7 @@ static void ReadEcholists()
 static void ReadEscsets()
 {
     ChrsMap::iterator it = CFG->xlatescsets.begin();
-    for (int n = 0; it != CFG->xlatescsets.end(); it++, n++)
+    for (int n = 0; it != CFG->xlatescsets.end(); ++it, ++n)
     {
         gfile fp(AddPath(CFG->goldpath, CFG->xlatged), "rb", CFG->sharemode);
         if (fp.isopen())
