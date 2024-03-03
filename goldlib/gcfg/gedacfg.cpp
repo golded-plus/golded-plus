@@ -468,7 +468,7 @@ bool gareafile::ReadAreafile(word crc, char* parameters)
     const word CRC_WATERGATE     = 0x3ADB;
     const word CRC_WMAIL         = 0xB167;
     const word CRC_XMAIL         = 0x9D56;
-    const word CRC_SBBS          = 0xFD1E;
+    const word CRC_SBBS          = 0x7139;
 
     switch(crc)
     {

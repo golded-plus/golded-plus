@@ -3238,6 +3238,7 @@
 	
 
 ..\golded3\golded3.cpp : \
+	"..\golded3\mygolded.h"\
 	"..\goldlib\gall\gcmpall.h"\
 	"..\srcdate.h"\
 	

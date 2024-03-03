@@ -274,6 +274,14 @@
 	"..\goldlib\gall\gstrmail.h"\
 	
 
+..\goldlib\gall\giniprsr.cpp : \
+	"..\goldlib\gall\gcmpall.h"\
+	"..\goldlib\gall\gctype.h"\
+	"..\goldlib\gall\gdefs.h"\
+	"..\goldlib\gall\giniprsr.h"\
+	"..\goldlib\gall\gstrall.h"\
+	
+
 ..\goldlib\gall\glog.cpp : \
 	"..\goldlib\gall\gcmpall.h"\
 	"..\goldlib\gall\gctype.h"\
@@ -1612,6 +1620,7 @@
 	"..\goldlib\gall\gfile.h"\
 	"..\goldlib\gall\gfilutil.h"\
 	"..\goldlib\gall\gftnall.h"\
+	"..\goldlib\gall\giniprsr.h"\
 	"..\goldlib\gall\gmsgattr.h"\
 	"..\goldlib\gall\gregex.h"\
 	"..\goldlib\gall\gshare.h"\
