@@ -157,13 +157,6 @@ bool ReadGoldedCfg()
 
     ReadXlatTables();
 
-    // Free all mapfile name allocations
-    std::vector<Map>::iterator xlt;
-    for(xlt = CFG->xlatescset.begin(); xlt != CFG->xlatescset.end(); xlt++)
-        throw_release(xlt->mapfile);
-    for(xlt = CFG->xlatcharset.begin(); xlt != CFG->xlatcharset.end(); xlt++)
-        throw_release(xlt->mapfile);
-
     return true;
 }
 

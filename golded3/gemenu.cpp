@@ -983,7 +983,7 @@ int ChangeAka()
 
 int ChangeXlatImport()
 {
-    if (not CFG->xlatcharset.empty())
+    if (not CFG->xlatcharsets.empty())
     {
         size_t startat = 0;
         int maximport = 0;
@@ -992,16 +992,16 @@ int ChangeXlatImport()
         char buf[100];
         gstrarray Listi;
 
-        std::vector<Map>::iterator xlt = CFG->xlatcharset.begin();
-        std::vector<Map>::iterator end = CFG->xlatcharset.end();
+        ChrsMap::iterator xlt = CFG->xlatcharsets.begin();
+        ChrsMap::iterator end = CFG->xlatcharsets.end();
 
         for (size_t xlatimports = 1; xlt != end; xlt++)
         {
-            if (strieql(xlt->exp, CFG->xlatlocalset))
+            if (strieql(xlt->first.second.c_str(), CFG->xlatlocalset))
             {
-                maximport = MaxV(maximport, (int)strlen(xlt->imp));
-                maxexport = MaxV(maxexport, (int)strlen(xlt->exp));
-                if ((CFG->ignorecharset == true) and strieql(xlt->imp, AA->Xlatimport()))
+                maximport = MaxV(maximport, (int)xlt->first.first.size());
+                maxexport = MaxV(maxexport, (int)xlt->first.second.size());
+                if ((CFG->ignorecharset == true) and strieql(xlt->first.first.c_str(), AA->Xlatimport()))
                     startat = xlatimports;
                 xlatimports++;
             }
@@ -1009,12 +1009,12 @@ int ChangeXlatImport()
 
         Listi.push_back(LNG->CharsetAuto);
 
-        for (xlt = CFG->xlatcharset.begin(); xlt != end; xlt++)
+        for (xlt = CFG->xlatcharsets.begin(); xlt != end; ++xlt)
         {
-            if (strieql(xlt->exp, CFG->xlatlocalset))
+            if (strieql(xlt->first.second.c_str(), CFG->xlatlocalset))
             {
                 gsprintf(PRINTF_DECLARE_BUFFER(buf), " %*.*s -> %-*.*s ",
-                         maximport, maximport, xlt->imp, maxexport, maxexport, xlt->exp);
+                         maximport, maximport, xlt->first.first.c_str(), maxexport, maxexport, xlt->first.second.c_str());
                 Listi.push_back(buf);
             }
         }

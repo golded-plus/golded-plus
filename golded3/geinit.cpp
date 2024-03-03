@@ -215,27 +215,27 @@ static void ReadEcholists()
 
 static void ReadEscsets()
 {
-    std::vector<Map>::iterator x = CFG->xlatescset.begin();
-    for (int n = 0; x != CFG->xlatescset.end(); x++, n++)
+    ChrsMap::iterator it = CFG->xlatescsets.begin();
+    for (int n = 0; it != CFG->xlatescsets.end(); ++it, ++n)
     {
         gfile fp(AddPath(CFG->goldpath, CFG->xlatged), "rb", CFG->sharemode);
         if (fp.isopen())
         {
-            fp.FseekSet(((long)CFG->xlatcharset.size()*(long)sizeof(Chs)) + ((long)n*(long)sizeof(Esc)));
+            fp.FseekSet(((long)CFG->xlatcharsets.size()*(long)sizeof(Chs)) + ((long)n*(long)sizeof(Esc)));
 
-            if (strieql(x->imp, "Composed"))
+            if (strieql(it->first.first.c_str(), "Composed"))
             {
                 CompTable = (Esc*)throw_realloc(CompTable, sizeof(Esc));
                 fp.Fread(CompTable, sizeof(Esc));
                 CompTP = CompTable->t;
             }
-            else if (strieql(x->imp, "I51"))
+            else if (strieql(it->first.first.c_str(), "I51"))
             {
                 I51Table = (Esc*)throw_realloc(I51Table, sizeof(Esc));
                 fp.Fread(I51Table, sizeof(Esc));
                 I51TP = I51Table->t;
             }
-            else if (strieql(x->imp, "MNEMONIC"))
+            else if (strieql(it->first.first.c_str(), "MNEMONIC"))
             {
                 MNETable = (Esc*)throw_realloc(MNETable, sizeof(Esc));
                 fp.Fread(MNETable, sizeof(Esc));

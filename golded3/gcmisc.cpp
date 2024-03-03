@@ -661,7 +661,7 @@ static int CmpEsc(const char* a, const char* b)
 
 void ReadXlatTables()
 {
-    if (not CFG->xlatcharset.empty() or not CFG->xlatescset.empty())
+    if (not CFG->xlatcharsets.empty() or not CFG->xlatescsets.empty())
     {
         Esc EscTable;
         Chs ChsTable;
@@ -674,8 +674,8 @@ void ReadXlatTables()
         if (ofp.isopen())
         {
             // Compile CHARSET tables
-            std::vector<Map>::iterator xlt;
-            for (xlt = CFG->xlatcharset.begin(); xlt != CFG->xlatcharset.end(); xlt++)
+            ChrsMap::iterator mapIt;
+            for (mapIt = CFG->xlatcharsets.begin(); mapIt != CFG->xlatcharsets.end(); ++mapIt)
             {
                 // Assign table defaults
                 memset(&ChsTable, 0, sizeof(Chs));
@@ -685,12 +685,11 @@ void ReadXlatTables()
                     ChsTable.t[n][1] = (uint8_t)n;  // The character
                 }
 
-                strcpy(buf, AddPath(CFG->xlatpath, xlt->mapfile));
-                gfile ifp(buf, "rb", CFG->sharemode);
+                gfile ifp(mapIt->second.c_str(), "rb", CFG->sharemode);
                 if (ifp.isopen())
                 {
                     if (not quiet)
-                        STD_PRINTNL("* Reading " << buf);
+                        STD_PRINTNL("* Reading " << mapIt->second);
 
                     // Read the definition file
                     line = 1;
@@ -735,7 +734,7 @@ void ReadXlatTables()
                                     char *tp = strbtrim(ptr);
                                     if(strlen(tp) >= sizeof(ChsTable.imp))
                                     {
-                                        STD_PRINTNL("* " << AddPath(CFG->xlatpath, xlt->mapfile) << ": At line 4 charset name '" << tp
+                                        STD_PRINTNL("* " << mapIt->second << ": At line 4 charset name '" << tp
                                                     << "' too long. It is supposed no more than " << sizeof(ChsTable.imp)-1 << " characters. A file ignored.");
                                         cfgerrors++;
                                         ifp.Lseek(0, SEEK_END);
@@ -758,7 +757,7 @@ void ReadXlatTables()
                                         char *tp = strbtrim(ptr);
                                         if(strlen(tp) >= sizeof(ChsTable.exp))
                                         {
-                                            STD_PRINTNL("* " << AddPath(CFG->xlatpath, xlt->mapfile) << ": At line 4 charset name '" << tp
+                                            STD_PRINTNL("* " << mapIt->second << ": At line 4 charset name '" << tp
                                                         << "' too long. It is supposed no more than " << sizeof(ChsTable.exp)-1 << " characters. A file ignored.");
                                             cfgerrors++;
                                             ifp.Lseek(0, SEEK_END);
@@ -823,22 +822,21 @@ void ReadXlatTables()
                     }
                 }
                 else
-                    STD_PRINTNL("* XLAT table " << buf << " could not be opened.");
+                    STD_PRINTNL("* XLAT table " << mapIt->second << " could not be opened.");
 
                 ofp.Fwrite(&ChsTable, sizeof(Chs));
             }
 
             // Compile ESCSET tables
-            for (xlt = CFG->xlatescset.begin(); xlt != CFG->xlatescset.end(); xlt++)
+            for (mapIt = CFG->xlatescsets.begin(); mapIt != CFG->xlatescsets.end(); ++mapIt)
             {
                 // Assign defaults
                 memset(&EscTable, 0, sizeof(Esc));
-                strcpy(buf, AddPath(CFG->xlatpath, xlt->mapfile));
-                gfile ifp(buf, "rb", CFG->sharemode);
+                gfile ifp(mapIt->second.c_str(), "rb", CFG->sharemode);
                 if (ifp.isopen())
                 {
                     if (not quiet)
-                        STD_PRINTNL("* Reading " << buf);
+                        STD_PRINTNL("* Reading " << mapIt->second);
 
                     // Read the definition file
                     line = 1;
@@ -909,7 +907,7 @@ void ReadXlatTables()
                     qsort(EscTable.t, EscTable.size, 5, (StdCmpCP)CmpEsc);
                 }
                 else
-                    STD_PRINTNL("* XLAT table " << buf << " could not be opened.");
+                    STD_PRINTNL("* XLAT table " << mapIt->second << " could not be opened.");
 
                 ofp.Fwrite(&EscTable, sizeof(Esc));
             }

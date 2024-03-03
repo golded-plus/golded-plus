@@ -655,43 +655,26 @@ void CfgWritetemplate()
 void CfgXlatcharset()
 {
 
-    Map xlt;
+    ImpExp impExp;
     char* ptr = strtok(val, " \t\n\r");
-    short maxtokenlen = sizeof(xlt.imp)-1;
     if(ptr)
     {
-        if(strlen(ptr) > maxtokenlen)
-        {
-            STD_PRINT("* XLATCHARSET parser: Parameter '" << ptr
-                      << "' too long. It is supposed no more than " << maxtokenlen << " characters. A line 'XLATCHARSET "
-                      <<  ptr);
-            STD_PRINTNL(ptr+strlen(ptr)+1 << "' ignored.");
-            cfgerrors++;
-            return;
-        }
-        strchg(strupr(strcpy(xlt.imp, ptr)), '_', ' ');
+        impExp.first = strupr(ptr);
+
         ptr = strtok(NULL, " \t\n\r");
         if(ptr)
         {
-            if(strlen(ptr) > maxtokenlen)
-            {
-                STD_PRINT("* XLATCHARSET parser: Parameter '" << ptr
-                          << "' too long. It is supposed no more than " << maxtokenlen << " characters. A line 'XLATCHARSET "
-                          <<  xlt.imp << " " << ptr);
-                STD_PRINTNL(ptr+strlen(ptr)+1 << "' ignored.");
-                cfgerrors++;
-                xlt.imp[0] = '\0';
-                return;
-            }
-            strchg(strupr(strcpy(xlt.exp, ptr)), '_', ' ');
+            impExp.second = strupr(ptr);
             ptr = strtok(NULL, " \t\n\r");
             if(ptr)
             {
                 if(*CFG->xlatpath == NUL)
                     strcpy(CFG->xlatpath, CFG->goldpath);
                 MakePathname(ptr, CFG->xlatpath, ptr);
-                xlt.mapfile = throw_strdup(ptr);
-                CFG->xlatcharset.push_back(xlt);
+                if (CFG->xlatcharsets.find(impExp) == CFG->xlatcharsets.end())
+                {
+                    CFG->xlatcharsets[impExp] = ptr;
+                }
             }
         }
     }
@@ -705,17 +688,15 @@ void CfgXlatcharsetalias()
     getkeyval(&key, &val);
     if (key[0] == 0) return;
 
-    std::pair<std::string, gstrarray> aliases;
-    aliases.first = key;
+    std::string dstCharset = strupr(key);
 
-    do
+    getkeyval(&key, &val);
+
+    while (key[0] != 0)
     {
-        aliases.second.push_back(std::string(key));
+        CFG->xlatcharsetalias[strupr(key)] = dstCharset;
         getkeyval(&key, &val);
     }
-    while (key[0] != 0);
-
-    CFG->xlatcharsetalias.push_back(aliases);
 }
 
 //  ------------------------------------------------------------------
@@ -723,23 +704,22 @@ void CfgXlatcharsetalias()
 void CfgXlatescset()
 {
 
-    Map xlt;
+    ImpExp impExp;
     char* ptr = strtok(val, " \t\n\r");
     if(ptr)
     {
-        strchg(strupr(strcpy(xlt.imp, ptr)), '_', ' ');
+        impExp.first = strupr(ptr);
         ptr = strtok(NULL, " \t\n\r");
         if(ptr)
         {
-            strchg(strupr(strcpy(xlt.exp, ptr)), '_', ' ');
+            impExp.second = strupr(ptr);
             ptr = strtok(NULL, " \t\n\r");
             if(ptr)
             {
                 if(*CFG->xlatpath == NUL)
                     strcpy(CFG->xlatpath, CFG->goldpath);
                 MakePathname(ptr, CFG->xlatpath, ptr);
-                xlt.mapfile = throw_strdup(ptr);
-                CFG->xlatescset.push_back(xlt);
+                CFG->xlatescsets[impExp] = ptr;
             }
         }
     }

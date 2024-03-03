@@ -441,7 +441,7 @@ int GMenuImportTxt::Run()
     Item(TAG_BINMIME, LNG->ImportTxtMime);
     Item(TAG_CLIPBRD, LNG->ImportTxtClip);
 
-    if(not CFG->xlatcharset.empty())
+    if(not CFG->xlatcharsets.empty())
         Item(TAG_XLAT, LNG->ImportTxtXlat, 0, do_changexlatimport);
 
     Item(TAG_QUIT, LNG->ImportTxtQuit);
