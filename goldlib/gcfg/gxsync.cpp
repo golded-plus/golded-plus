@@ -71,7 +71,7 @@ Groups getGroups(const Sections& sections)
     {
         const string& section = grpIt->first;
         const Variables& vars = grpIt->second;
-        if (section.find("grp:") == 0)
+        if (section.rfind("grp:", 0) == 0)
         {
             // Ignore duplicates
             string group = section.substr(4);
@@ -99,7 +99,7 @@ void readIniFile(string file, const string& path, const gareafile& areafile)
 
         for (Sections::const_iterator secIt = sections.begin(); secIt != sections.end(); ++secIt)
         {
-            if (secIt->first.find("sub:") != 0)
+            if (secIt->first.rfind("sub:", 0) != 0)
                 continue;
 
             string section(secIt->first.substr(4));
@@ -219,20 +219,20 @@ bool configExists(Path& file, Path& path, const char* cfgFile)
     if(not fexist(file))
     {
         AddBackslash(file);
-        strxcat(file, cfgFile, sizeof(Path));
+        strxcat(file, cfgFile, sizeof(path));
     }
 
     if(not fexist(file))
     {
         extractdirname(path, file);
         AddBackslash(path);
-        strxmerge(file, sizeof(Path), path, "ctrl/", cfgFile, NULL);
+        strxmerge(file, sizeof(file), path, "ctrl", GOLD_SLASH_STR, cfgFile, NULL);
     }
 
     if(fexist(file))
     {
         // Check file type
-        size_t fileLen = strlen(file);
+        size_t fileLen = strxlen(file, sizeof(file));
         size_t maskLen = strlen(cfgFile);
         if (fileLen >= 4 && strcmp(file + fileLen - 4, cfgFile + maskLen - 4))
         {
@@ -241,7 +241,7 @@ bool configExists(Path& file, Path& path, const char* cfgFile)
 
         Path ctrl;
         extractdirname(ctrl, file);
-        size_t len = strlen(ctrl);
+        size_t len = strxlen(ctrl, sizeof(ctrl));
         if((len > 0) and isslash(ctrl[len - 1]))
         {
             ctrl[len - 1] = NUL;
@@ -249,10 +249,10 @@ bool configExists(Path& file, Path& path, const char* cfgFile)
         }
         else
         {
-            strcpy(path, ctrl);
+            strxcpy(path, ctrl, sizeof(path));
         }
         AddBackslash(path);
-        strxcat(path, "data/subs/", sizeof(Path));
+        strxcat(path, "data/subs/", sizeof(path));
         return true;
     }
 
@@ -270,13 +270,13 @@ void gareafile::ReadSynchronet(char* tag)
     {
         if(*ptr != '-')
         {
-            strxcpy(iniFile, ptr, sizeof(Path));
+            strxcpy(iniFile, ptr, sizeof(path));
             strschg_environ(iniFile);
         }
         ptr = strtok(NULL, " \t");
     }
 
-    strxcpy(cnfFile, iniFile, sizeof(Path));
+    strxcpy(cnfFile, iniFile, sizeof(path));
 
     if (configExists(iniFile, path, "msgs.ini"))
     {

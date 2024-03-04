@@ -776,6 +776,17 @@ char *strxmerge(char *dest, size_t max, ...)
 
 //  ------------------------------------------------------------------
 
+size_t strxlen(const char* str, size_t max)
+{
+    const char * end = (const char *)memchr(str, '\0', max);
+    if (end == NULL)
+        return max;
+    else
+        return end - str;
+}
+
+//  ------------------------------------------------------------------
+
 int gsprintf(TCHAR* buffer, size_t sizeOfBuffer, const TCHAR* __file, int __line, const TCHAR* format, ...)
 {
     int ret = -1;
