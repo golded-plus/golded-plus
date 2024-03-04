@@ -778,7 +778,7 @@ char *strxmerge(char *dest, size_t max, ...)
 
 size_t strxlen(const char* str, size_t max)
 {
-    const char * end = (const char *)memchr(str, '\0', max);
+    const char * end = static_cast<const char *>(memchr(str, '\0', max));
     if (end == NULL)
         return max;
     else
