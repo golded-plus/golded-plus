@@ -214,27 +214,27 @@ void readCnfFile(string file, const string& path, const gareafile& areafile)
     fclose(in);
 }
 
-bool configExists(Path& file, Path& path, const char* cfgFile)
+bool configExists(Path& file, Path& path, const string& cfgFile)
 {
     if(not fexist(file))
     {
         AddBackslash(file);
-        strxcat(file, cfgFile, sizeof(path));
+        strxcat(file, cfgFile.c_str(), sizeof(path));
     }
 
     if(not fexist(file))
     {
         extractdirname(path, file);
         AddBackslash(path);
-        strxmerge(file, sizeof(file), path, "ctrl", GOLD_SLASH_STR, cfgFile, NULL);
+        strxmerge(file, sizeof(file), path, "ctrl", GOLD_SLASH_STR, cfgFile.c_str(), NULL);
     }
 
     if(fexist(file))
     {
         // Check file type
         size_t fileLen = strxlen(file, sizeof(file));
-        size_t maskLen = strlen(cfgFile);
-        if (fileLen >= 4 && strcmp(file + fileLen - 4, cfgFile + maskLen - 4))
+        size_t maskLen = cfgFile.size();
+        if (fileLen >= 4 && strcmp(file + fileLen - 4, cfgFile.c_str() + maskLen - 4))
         {
             return false;
         }
