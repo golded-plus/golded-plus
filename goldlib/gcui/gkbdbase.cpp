@@ -35,6 +35,8 @@
 
 #include <stdlib.h>
 
+#include <locale.h>
+
 #if defined(__OS2__)
     #define INCL_BASE
     #include <os2.h>
@@ -146,6 +148,7 @@ void GKbd::Init()
     // Both screen and keyboard must be initialized at once
     if(0 == (curses_initialized++))
     {
+        setlocale(LC_ALL, "");
         initscr();
         raw();
         noecho();
