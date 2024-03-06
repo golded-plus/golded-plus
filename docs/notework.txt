@@ -13,6 +13,9 @@ ______________________________________________________________________
 Legend: "-" - bugfix, "+" - new feature, "!" - important modification.
 ______________________________________________________________________
 
++ Updated Synchronet config parser to read msgs.ini config. Old format
+  is also supported for backward compatibility.
+
 + Fixed charset "zero conversion". In some cases, GoldED needs to
   "convert" string to the same charset, but it was not working
   properly, if such charset table is missing in config. In some cases,

@@ -129,6 +129,7 @@ gutlmtsk cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun osx
 gutltag  cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun osx
 gutlvers cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun osx
 gcharset cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun osx
+giniprsr cpp     all nov bcd bco bcx wcn wco wcx lnx emx djg rsx cyg be sun osx
 
 ## OS specific utilities
 gutldos  cpp     all                                     djg

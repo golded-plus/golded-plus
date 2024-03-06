@@ -119,6 +119,7 @@ TCHAR *strxcpy(TCHAR *d, const TCHAR *s, size_t n);
 //          return d
 char* strxcat(char *dest, const char *src, size_t max);
 char* strxmerge(char *dest, size_t max, ...);
+size_t strxlen(const char* str, size_t max);
 
 char* strc2p(char* str);
 char* strnp2c(char* str, int n);

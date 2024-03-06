@@ -26,6 +26,7 @@
 
 #include <cstdlib>
 #include <gcrcall.h>
+#include <giniprsr.h>
 #include <gstrall.h>
 #if defined(__GOLD_GUI__)
     #include <gvidall.h>
@@ -34,72 +35,123 @@
 #undef GCFG_NOSYNCHRONET
 #include <gedacfg.h>
 #include <gs_sync.h>
+#include <map>
 
 
 //  ------------------------------------------------------------------
 //  Synchronet configuration reader
 
-void gareafile::ReadSynchronet(char* tag)
+namespace
 {
 
-    Path file, path;
-    char options[80];
-    uint16_t shrt, i;
-    sub_t sub;
+using namespace std;
+using namespace ini;
 
-    strcpy(options, tag);
-    char* ptr = strtok(tag, " \t");
-    while(ptr)
+struct GroupInfo
+{
+    string prefix;
+    uint16_t index;
+};
+
+typedef map<string, GroupInfo> Groups;
+
+const string& GetValue(const Variables& vars, const std::string& name)
+{
+    static string empty;
+    Variables::const_iterator it = vars.find(name);
+    return it == vars.end() ? empty : it->second;
+}
+
+Groups getGroups(const Sections& sections)
+{
+    Groups result;
+    uint16_t index = 0;
+
+    for (Sections::const_iterator grpIt = sections.begin(); grpIt != sections.end(); ++grpIt)
     {
-        if(*ptr != '-')
+        const string& section = grpIt->first;
+        const Variables& vars = grpIt->second;
+        if (section.rfind("grp:", 0) == 0)
         {
-            strcpy(file, ptr);
-            strschg_environ(file);
+            // Ignore duplicates
+            string group = section.substr(4);
+            if (result.find(group) == result.end())
+            {
+                GroupInfo& info = result[group];
+                info.index = index++;
+                info.prefix = GetValue(vars, "code_prefix");
+            }
         }
-        ptr = strtok(NULL, " \t");
     }
 
-    if(not fexist(file))
-    {
-        AddBackslash(file);
-        strxcat(file, "msgs.cnf", sizeof(Path));
-    }
+    return result;
+}
 
-    if(not fexist(file))
-    {
-        extractdirname(path, file);
-        AddBackslash(path);
-        strxmerge(file, sizeof(Path), path, "ctrl/msgs.cnf", NULL);
-    }
+void readIniFile(string file, const string& path, const gareafile& areafile)
+{
+    if (not areafile.quiet)
+            STD_PRINTNL("* Reading " << file);
 
-    if(fexist(file))
+    Sections sections;
+    if (ReadIniFile(file.c_str(), sections))
     {
-        Path ctrl;
-        extractdirname(ctrl, file);
-        size_t len = strlen(ctrl);
-        if((len > 0) and isslash(ctrl[len - 1]))
+        const Groups groups = getGroups(sections);
+
+        for (Sections::const_iterator secIt = sections.begin(); secIt != sections.end(); ++secIt)
         {
-            ctrl[len - 1] = NUL;
-            extractdirname(path, ctrl);
-        }
-        else
-        {
-            strcpy(path, ctrl);
-        }
-        AddBackslash(path);
-        strxcat(path, "data/subs/", sizeof(Path));
-    }
-    else
-    {
-        *path = NUL;
-    }
+            if (secIt->first.rfind("sub:", 0) != 0)
+                continue;
 
-    FILE* in = fsopen(file, "rb", sharemode);
+            string section(secIt->first.substr(4));
+            size_t pos = section.rfind(':');
+            if (pos == string::npos)
+                continue;
+
+            const string group = section.substr(0, pos);
+            const string suffix = section.substr(pos + 1);
+
+            Groups::const_iterator grpIt = groups.find(group);
+            if (grpIt == groups.end())
+                continue;
+
+            const GroupInfo& groupInfo = grpIt->second;
+            const Variables& sectionInfo = secIt->second;
+
+            /* A sub-board's internal code is the combination of the grp's code_prefix & the sub's code_suffix */
+            string subCode = groupInfo.prefix + suffix;
+            AreaCfg aa;
+            uint32_t settings = strtoul(GetValue(sectionInfo, "settings").c_str(), NULL, 0);
+
+            aa.type = (settings & SUB_FIDO) ? GMB_ECHO : GMB_LOCAL;
+            aa.attr = areafile.attribsecho;
+            aa.basetype = "SMB";
+            aa.setechoid(((settings & SUB_FIDO) ? GetValue(sectionInfo, "name") : subCode).c_str());
+            aa.setdesc(GetValue(sectionInfo, "description").c_str());
+            aa.groupid = 0x8000 + groupInfo.index;
+            string dataDir = GetValue(sectionInfo, "data_dir");
+            string subCodeLwr(subCode);
+            strlwr(subCodeLwr);
+            if(!dataDir.empty())
+                MakePathname(file, dataDir, subCodeLwr);
+            else
+                MakePathname(file, path, subCodeLwr);
+            aa.setpath(file.c_str());
+            aa.aka = areafile.primary_aka;
+            aa.aka.set(GetValue(sectionInfo, "fidonet_addr"));
+            aa.setorigin(GetValue(sectionInfo, "fidonet_origin").c_str());
+            AddNewArea(aa);
+        }
+    }
+}
+
+void readCnfFile(string file, const string& path, const gareafile& areafile)
+{
+    FILE* in = fsopen(file, "rb", areafile.sharemode);
     if (in)
     {
         setvbuf(in, NULL, _IOFBF, BUFSIZ);
 
-        if (not quiet)
+        if (not areafile.quiet)
             STD_PRINTNL("* Reading " << file);
 
         // Skip header:
@@ -117,16 +169,18 @@ void gareafile::ReadSynchronet(char* tag)
                 && total_groups >= 1
                 && (grp = (grp_t*)malloc(total_groups * sizeof(grp_t))) != NULL)
         {
-            for(i = 0; i < total_groups; i++)
+            for(uint16_t i = 0; i < total_groups; i++)
             {
                 if(fread(&grp[i], sizeof(grp_t), 1, in) != 1)
                     break;
             }
         }
+        uint16_t shrt;
         if(fread(&shrt, sizeof(uint16_t), 1, in) == 1)
         {
-            for(i = 0; i < shrt; i++)
+            for(uint16_t i = 0; i < shrt; i++)
             {
+                sub_t sub;
                 if(fread(&sub, sizeof(sub_t), 1, in) != 1)
                     break;
                 if(sub.grp >= total_groups)	// Illegal group number
@@ -137,7 +191,7 @@ void gareafile::ReadSynchronet(char* tag)
                 AreaCfg aa;
                 aa.reset();
                 aa.type = (sub.misc & SUB_FIDO) ? GMB_ECHO : GMB_LOCAL;
-                aa.attr = attribsecho;
+                aa.attr = areafile.attribsecho;
                 aa.basetype = "SMB";
                 aa.setechoid((sub.misc & SUB_FIDO) ? sub.sname : sub.code);
                 aa.setdesc(sub.lname);
@@ -146,8 +200,8 @@ void gareafile::ReadSynchronet(char* tag)
                     MakePathname(file, sub.data_dir, strlwr(sub.code));
                 else
                     MakePathname(file, path, strlwr(sub.code));
-                aa.setpath(file);
-                aa.aka = primary_aka;
+                aa.setpath(file.c_str());
+                aa.aka = areafile.primary_aka;
                 aa.aka.set(sub.faddr);
                 if(*sub.origline)
                     aa.setorigin(sub.origline);
@@ -158,6 +212,80 @@ void gareafile::ReadSynchronet(char* tag)
             free(grp);
     }
     fclose(in);
+}
+
+bool configExists(Path& file, Path& path, const string& cfgFile)
+{
+    if(not fexist(file))
+    {
+        AddBackslash(file);
+        strxcat(file, cfgFile.c_str(), sizeof(path));
+    }
+
+    if(not fexist(file))
+    {
+        extractdirname(path, file);
+        AddBackslash(path);
+        strxmerge(file, sizeof(file), path, "ctrl", GOLD_SLASH_STR, cfgFile.c_str(), NULL);
+    }
+
+    if(fexist(file))
+    {
+        // Check file type
+        size_t fileLen = strxlen(file, sizeof(file));
+        size_t maskLen = cfgFile.size();
+        if (fileLen >= 4 && strcmp(file + fileLen - 4, cfgFile.c_str() + maskLen - 4))
+        {
+            return false;
+        }
+
+        Path ctrl;
+        extractdirname(ctrl, file);
+        size_t len = strxlen(ctrl, sizeof(ctrl));
+        if((len > 0) and isslash(ctrl[len - 1]))
+        {
+            ctrl[len - 1] = NUL;
+            extractdirname(path, ctrl);
+        }
+        else
+        {
+            strxcpy(path, ctrl, sizeof(path));
+        }
+        AddBackslash(path);
+        strxcat(path, "data/subs/", sizeof(path));
+        return true;
+    }
+
+    return false;
+}
+
+} // namespace
+
+void gareafile::ReadSynchronet(char* tag)
+{
+    Path iniFile, cnfFile, path;
+
+    char* ptr = strtok(tag, " \t");
+    while(ptr)
+    {
+        if(*ptr != '-')
+        {
+            strxcpy(iniFile, ptr, sizeof(path));
+            strschg_environ(iniFile);
+        }
+        ptr = strtok(NULL, " \t");
+    }
+
+    strxcpy(cnfFile, iniFile, sizeof(path));
+
+    if (configExists(iniFile, path, "msgs.ini"))
+    {
+        readIniFile(iniFile, path, *this);
+    }
+    else if (configExists(cnfFile, path, "msgs.cnf"))
+    {
+        readCnfFile(cnfFile, path, *this);
+    }
 }
 
 
