@@ -228,7 +228,7 @@ void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int __orig
             if (tokenxchg(input, dst, "@odtime", odtime))
                 continue;
 
-            if (tokenxchg(input, dst, "@otzoffset", (oldmsg->tzutc == -32767) ? "" : (gsprintf(PRINTF_DECLARE_BUFFER(buf), " %+05d", oldmsg->tzutc), buf)))
+            if (tokenxchg(input, dst, "@otzoffset", (oldmsg->tzutc == -32767) ? "" : (gsprintf(PRINTF_DECLARE_BUFFER(buf), "%+05d", oldmsg->tzutc), buf)))
                 continue;
 
             if (tokenxchg(input, dst, "@ofrom", oldmsg->ifrom))
@@ -381,7 +381,7 @@ void TokenXlat(int mode, std::string &input, GMsg* msg, GMsg* oldmsg, int __orig
             if (tokenxchg(input, dst, "@cdtime", cdtime))
                 continue;
 
-            if (tokenxchg(input, dst, "@ctzoffset", AA->Usetzutc() ? (gsprintf(PRINTF_DECLARE_BUFFER(buf), " %+05d", tzoffset()), buf) : ""))
+            if (tokenxchg(input, dst, "@ctzoffset", AA->Usetzutc() ? (gsprintf(PRINTF_DECLARE_BUFFER(buf), "%+05d", tzoffset()), buf) : ""))
                 continue;
 
             if (tokenxchg(input, dst, "@fname", strbtrim(strtmp(msg->By())), 34))
