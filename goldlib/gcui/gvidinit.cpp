@@ -31,6 +31,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstdarg>
+#include <locale.h>
 #include <gmemall.h>
 #include <gmemdbg.h>
 #include <gstrall.h>
@@ -169,6 +170,7 @@ void GVid::init()
     // Both display and keyboard will be initialized at once
     if(0 == (curses_initialized++))
     {
+        setlocale(LC_ALL, "");
         initscr();
         raw();
         noecho();
