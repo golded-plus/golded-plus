@@ -289,6 +289,7 @@
     <ClCompile Include="..\goldlib\gall\gftnnlv7.cpp" />
     <ClCompile Include="..\goldlib\gall\gfuzzy.cpp" />
     <ClCompile Include="..\goldlib\gall\ghdrmime.cpp" />
+    <ClCompile Include="..\goldlib\gall\giniprsr.cpp" />
     <ClCompile Include="..\goldlib\gall\gkbdunix.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -605,6 +606,7 @@
     <ClInclude Include="..\goldlib\gall\gftnnlv7.h" />
     <ClInclude Include="..\goldlib\gall\gfuzzy.h" />
     <ClInclude Include="..\goldlib\gall\ghdrmime.h" />
+    <ClInclude Include="..\goldlib\gall\giniprsr.h" />
     <ClInclude Include="..\goldlib\gall\gkbdunix.h" />
     <ClInclude Include="..\goldlib\gall\glog.h" />
     <ClInclude Include="..\goldlib\gall\gmemall.h" />
