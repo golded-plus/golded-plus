@@ -3252,17 +3252,14 @@ int IEclass::Start(int __mode, uint* __position, GMsg* __msg)
     {
         int save_chartableno = GetCurrentTable(); // Workaround: internal for LoadCharset() charset table number changed in the schecker.Load()
         schecker.Init(CFG->xlatlocalset, CFG->scheckerdicpath);
-        char *str = strdup(AA->adat->scheckerdeflang);
-        char *token = strtok(str, " ");
+        gstrarray dicts;
+        tokenize(dicts, AA->adat->scheckerdeflang);
         const char* userDic = CFG->scheckeruserdic;
-        while(token != NULL)
+        for (gstrarray::const_iterator it = dicts.begin(); it != dicts.end(); ++it)
         {
-            schecker.Load(token, userDic);
+            schecker.Load(it->c_str(), userDic);
             userDic = NULL; // Only first language will have user dictionary.
-            /* Get next token: */
-            token = strtok(NULL, " ");
         }
-        free(str);
 
         LoadCharset(save_chartableno);
     }
