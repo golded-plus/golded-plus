@@ -636,6 +636,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\goldlib\gall\giniprsr.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\goldlib\gall\gkbdunix.cpp"
 					>
 					<FileConfiguration
@@ -2255,6 +2259,10 @@
 				</File>
 				<File
 					RelativePath="..\goldlib\gall\ghdrmime.h"
+					>
+				</File>
+				<File
+					RelativePath="..\goldlib\gall\giniprsr.h"
 					>
 				</File>
 				<File

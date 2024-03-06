@@ -2,28 +2,28 @@
 !IF "$(CFG)" == ""
 CFG=goldlib - Win32 Debug
 !MESSAGE No configuration specified. Defaulting to goldlib - Win32 Debug.
-!ENDIF 
+!ENDIF
 
 !IF "$(CFG)" != "goldlib - Win32 Release" && "$(CFG)" != "goldlib - Win32 Debug"
 !MESSAGE Invalid configuration "$(CFG)" specified.
 !MESSAGE You can specify a configuration when running NMAKE
 !MESSAGE by defining the macro CFG on the command line. For example:
-!MESSAGE 
+!MESSAGE
 !MESSAGE NMAKE /f "goldlib.mak" CFG="goldlib - Win32 Debug"
-!MESSAGE 
+!MESSAGE
 !MESSAGE Possible choices for configuration are:
-!MESSAGE 
+!MESSAGE
 !MESSAGE "goldlib - Win32 Release" (based on "Win32 (x86) Static Library")
 !MESSAGE "goldlib - Win32 Debug" (based on "Win32 (x86) Static Library")
-!MESSAGE 
+!MESSAGE
 !ERROR An invalid configuration is specified.
-!ENDIF 
+!ENDIF
 
 !IF "$(OS)" == "Windows_NT"
 NULL=
-!ELSE 
+!ELSE
 NULL=nul
-!ENDIF 
+!ENDIF
 
 !IF  "$(CFG)" == "goldlib - Win32 Release"
 
@@ -86,6 +86,7 @@ CLEAN :
 	-@erase "$(INTDIR)\gftnnlv7.obj"
 	-@erase "$(INTDIR)\gfuzzy.obj"
 	-@erase "$(INTDIR)\ghdrmime.obj"
+	-@erase "$(INTDIR)\giniprsr.obj"
 	-@erase "$(INTDIR)\gkbdbase.obj"
 	-@erase "$(INTDIR)\gkbdgetm.obj"
 	-@erase "$(INTDIR)\gkbdwait.obj"
@@ -251,41 +252,41 @@ CPP=cl.exe
 
 .c{$(INTDIR)}.obj::
    $(CPP) @<<
-   $(CPP_PROJ) $< 
+   $(CPP_PROJ) $<
 <<
 
 .cpp{$(INTDIR)}.obj::
    $(CPP) @<<
-   $(CPP_PROJ) $< 
+   $(CPP_PROJ) $<
 <<
 
 .cxx{$(INTDIR)}.obj::
    $(CPP) @<<
-   $(CPP_PROJ) $< 
+   $(CPP_PROJ) $<
 <<
 
 .c{$(INTDIR)}.sbr::
    $(CPP) @<<
-   $(CPP_PROJ) $< 
+   $(CPP_PROJ) $<
 <<
 
 .cpp{$(INTDIR)}.sbr::
    $(CPP) @<<
-   $(CPP_PROJ) $< 
+   $(CPP_PROJ) $<
 <<
 
 .cxx{$(INTDIR)}.sbr::
    $(CPP) @<<
-   $(CPP_PROJ) $< 
+   $(CPP_PROJ) $<
 <<
 
 RSC=rc.exe
 BSC32=bscmake.exe
-BSC32_FLAGS=/nologo /o"$(OUTDIR)\goldlib.bsc" 
+BSC32_FLAGS=/nologo /o"$(OUTDIR)\goldlib.bsc"
 BSC32_SBRS= \
-	
+
 LIB32=link.exe -lib
-LIB32_FLAGS=/nologo /out:"$(OUTDIR)\goldlib.lib" 
+LIB32_FLAGS=/nologo /out:"$(OUTDIR)\goldlib.lib"
 LIB32_OBJS= \
 	"$(INTDIR)\affentry.obj" \
 	"$(INTDIR)\affixmgr.obj" \
@@ -323,6 +324,7 @@ LIB32_OBJS= \
 	"$(INTDIR)\gftnnlv7.obj" \
 	"$(INTDIR)\gfuzzy.obj" \
 	"$(INTDIR)\ghdrmime.obj" \
+	"$(INTDIR)\giniprsr.obj" \
 	"$(INTDIR)\gkbdbase.obj" \
 	"$(INTDIR)\gkbdgetm.obj" \
 	"$(INTDIR)\gkbdwait.obj" \
@@ -483,10 +485,10 @@ LIB32_OBJS= \
 !IF "$(NO_EXTERNAL_DEPS)" != "1"
 !IF EXISTS("goldlib.dep")
 !INCLUDE "goldlib.dep"
-!ELSE 
+!ELSE
 !MESSAGE Warning: cannot find "goldlib.dep"
-!ENDIF 
-!ENDIF 
+!ENDIF
+!ENDIF
 
 
 SOURCE=..\goldlib\gall\be_lock.c
@@ -667,6 +669,12 @@ SOURCE=..\goldlib\gall\gfuzzy.cpp
 SOURCE=..\goldlib\gall\ghdrmime.cpp
 
 "$(INTDIR)\ghdrmime.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\goldlib\gall\giniprsr.cpp
+
+"$(INTDIR)\giniprsr.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

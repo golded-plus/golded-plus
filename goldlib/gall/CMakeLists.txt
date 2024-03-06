@@ -30,6 +30,7 @@ set(gall_SOURCES
   gftnnlv7.cpp
   gfuzzy.cpp
   ghdrmime.cpp
+  giniprsr.cpp
   glog.cpp
   gmemdbg.cpp
   gmemutil.cpp

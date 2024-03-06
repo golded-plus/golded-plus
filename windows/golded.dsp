@@ -344,10 +344,6 @@ SOURCE=..\golded3\gcprot.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\golded3\geall.h
-# End Source File
-# Begin Source File
-
 SOURCE=..\golded3\gecfgg.h
 # End Source File
 # Begin Source File
