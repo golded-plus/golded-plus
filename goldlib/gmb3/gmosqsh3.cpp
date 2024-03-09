@@ -69,6 +69,14 @@ int SquishArea::load_message(int __mode, gmsg* __msg, SqshHdr& __hdr)
         return false;
     }
 
+    // Check if this frame is normal
+    if (_frm.type != SQFRAME_NORMAL)
+    {
+        WideLog->printf("! SquishArea::load_message: reln=%d frame type=%d is not normal", _reln, (int)_frm.type);
+        GFTRK(0);
+        return false;
+    }
+
     // Load the message header
     __hdr = SqshHdr();
     rwresult = read(_fhsqd, &__hdr, sizeof(SqshHdr));
@@ -87,10 +95,8 @@ int SquishArea::load_message(int __mode, gmsg* __msg, SqshHdr& __hdr)
     // Read control info and message text
     if(__mode & GMSG_TXT)
     {
-
-        if(_frm.length)
+        if(_frm.ctlsize+_frm.totsize >= sizeof(SqshHdr))
         {
-
             // Allocate memory for kludges and message text, then read control info
             char* _dest = __msg->txt = (char*)throw_calloc(1, (uint)(1+_frm.ctlsize+_frm.totsize-sizeof(SqshHdr)));
             char* _src = _dest + (uint)_frm.ctlsize;
