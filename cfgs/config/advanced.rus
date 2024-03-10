@@ -2294,9 +2294,9 @@ AreaPath C:\FIDO\SQ\
 ;AREAFILE WMail      ; WMail Используя путь из переменной окружения WMAIL, либо путь из AREAPATH
 ;AREAFILE XMail        R:\XMAIL\
 ;AREAFILE XMail      ; WMail Используя путь из переменной окружения XM, либо путь из AREAPATH
+;AREAFILE SBBS         R:\SBBS\ctrl\main.ini     ; Synchronet BBS с указанием файла конфигурации
 ;AREAFILE SBBS         R:\SBBS\                  ; Synchronet BBS с указанием каталога
 ;AREAFILE SBBS         R:\SBBS\ctrl\             ; Synchronet BBS с указанием каталога конфигурации
-;AREAFILE SBBS         R:\SBBS\ctrl\msgs.ini     ; Synchronet BBS с указанием файла конфигурации
 ;AREAFILE SBBS         R:\SBBS\ctrl\msgs.cnf     ; Synchronet BBS с указанием файла конфигурации
 
 // Установка формата файла users.bbs файла Hudson базы.

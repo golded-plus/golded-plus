@@ -164,6 +164,12 @@ inline FILE* fsopen(const std::string& path, const char* type, int shflag)
     return fsopen(path.c_str(), type, shflag);
 }
 
+bool is_absolute_path(const char* path);
+inline bool is_absolute_path(const std::string& path)
+{
+    return is_absolute_path(path.c_str());
+}
+
 //  ------------------------------------------------------------------
 //  Check if a pathname is a directory
 bool is_dir(const TCHAR *path);

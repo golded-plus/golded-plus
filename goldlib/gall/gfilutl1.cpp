@@ -187,6 +187,16 @@ long fsize(FILE* fp)
     return filelength(fileno(fp));
 }
 
+bool is_absolute_path(const char* path)
+{
+    if (path == NULL) return false;
+
+#if defined(__HAVE_DRIVES__)
+    return path[1] != NULL && g_isalpha(path[0]) && path[1] == ":";
+# else
+    return isslash(path[0]);
+#endif
+}
 
 //  ------------------------------------------------------------------
 //  Check if a pathname is a directory
