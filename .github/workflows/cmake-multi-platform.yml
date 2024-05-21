@@ -44,7 +44,7 @@ jobs:
             cpp_compiler: clang++
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set reusable strings
       # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
@@ -73,7 +73,7 @@ jobs:
       # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
-    - uses: benjlevesque/short-sha@v2.2
+    - uses: benjlevesque/short-sha@v3.0
       id: short-sha
       with:
         length: 6
@@ -93,7 +93,7 @@ jobs:
         cp ${{ steps.strings.outputs.build-output-dir }}/rddt/rddt artifacts/rddt
 
     - name: Archive production artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
           name: golded-${{ matrix.os }}-${{ matrix.build_type }}-${{ matrix.c_compiler }}-${{ steps.strings.outputs.__SRCDATE__ }}-${{ steps.short-sha.outputs.sha }}
           path: |
