@@ -1,4 +1,3 @@
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -27,10 +26,10 @@
 //  SpellChecker classes functions implementation.
 //  ------------------------------------------------------------------
 
-#if defined(_MSC_VER)
-    /* C4786: 'identifier' : identifier was truncated to 'number'
-    characters in the debug information
-    */
+#if defined (_MSC_VER)
+/* C4786: 'identifier' : identifier was truncated to 'number'
+   characters in the debug information
+ */
     #pragma warning(disable: 4786)
 #endif
 
@@ -43,7 +42,7 @@
 #include <gstrall.h>
 #include <glog.h>
 #include <gdbgerr.h>
-#if !defined(GCFG_NO_MYSPELL)
+#if !defined (GCFG_NO_MYSPELL)
     #include <hunspell/hunspell.hxx>
     #include <gfile.h>
 #endif
@@ -51,150 +50,143 @@
 #include <geall.h>
 #include <string>
 
-int LoadCharset(const char* imp, const char* exp);
-std::string XlatStr(const char* src, int level, Chs* chrtbl, int qpencoded=false, bool i51=false);
+int LoadCharset(const char * imp, const char * exp);
+std::string XlatStr(const char * src,
+                    int level,
+                    Chs * chrtbl,
+                    int qpencoded = false,
+                    bool i51      = false);
 
-extern Chs* CharTable;
-
-
+extern Chs * CharTable;
 //  ------------------------------------------------------------------
 
-#if defined(GCFG_SPELL_INCLUDED)
-
-
+#if defined (GCFG_SPELL_INCLUDED)
 //  ------------------------------------------------------------------
 
-#if !defined(GCFG_NO_MSSPELL)
-
-
+#if !defined (GCFG_NO_MSSPELL)
 //  ------------------------------------------------------------------
 
-#define CHECK_ERROR(jump)     if (error != ERROR_SUCCESS) goto jump
-#define CHECK_NULL(ptr, jump) if (ptr == NULL) goto jump
-#define CHECK_SEC(jump)       if ((sec & 0xFF) != SC_SEC_NoErrors) goto jump
-
+#define CHECK_ERROR(jump) if(error != ERROR_SUCCESS) goto jump
+#define CHECK_NULL(ptr, jump) if(ptr == NULL) goto jump
+#define CHECK_SEC(jump) if((sec & 0xFF) != SC_SEC_NoErrors) goto jump
 //  ------------------------------------------------------------------
-
-const char SC_RKEY_Prooftools[]   = "Software\\Microsoft\\Shared Tools\\Proofing Tools";
-const char SC_RKEY_Grammar[]      = "Grammar";
-const char SC_RKEY_Spelling[]     = "Spelling";
-const char SC_RKEY_Hyphenation[]  = "Hyphenation";
-const char SC_RKEY_Thesaurus[]    = "Thesaurus";
-
+const char SC_RKEY_Prooftools[]  = "Software\\Microsoft\\Shared Tools\\Proofing Tools";
+const char SC_RKEY_Grammar[]     = "Grammar";
+const char SC_RKEY_Spelling[]    = "Spelling";
+const char SC_RKEY_Hyphenation[] = "Hyphenation";
+const char SC_RKEY_Thesaurus[]   = "Thesaurus";
 //  Spell Check Command Code
-const SCCC SC_SCCC_VerifyWord     = 1;
-const SCCC SC_SCCC_VerifyBuffer   = 2;
-const SCCC SC_SCCC_Suggest        = 3;
-const SCCC SC_SCCC_SuggestMore    = 4;
-const SCCC SC_SCCC_HyphInfo       = 5;
-const SCCC SC_SCCC_Wildcard       = 6;
-const SCCC SC_SCCC_Anagram        = 7;
-
+const SCCC SC_SCCC_VerifyWord   = 1;
+const SCCC SC_SCCC_VerifyBuffer = 2;
+const SCCC SC_SCCC_Suggest      = 3;
+const SCCC SC_SCCC_SuggestMore  = 4;
+const SCCC SC_SCCC_HyphInfo     = 5;
+const SCCC SC_SCCC_Wildcard     = 6;
+const SCCC SC_SCCC_Anagram      = 7;
 //  Spell Check Return Status
-const SCRS SC_SRCS_NoErrors                     = 0;
-const SCRS SC_SRCS_UnknownInputWord             = 1;
-const SCRS SC_SRCS_ReturningChangeAlways        = 2;
-const SCRS SC_SRCS_ReturningChangeOnce          = 3;
-const SCRS SC_SRCS_InvalidHyphenation           = 4;
-const SCRS SC_SRCS_ErrorCapitalization          = 5;
-const SCRS SC_SRCS_WordConsideredAbbreviation   = 6;
-const SCRS SC_SRCS_HyphChangesSpelling          = 7;
-const SCRS SC_SRCS_NoMoreSuggestions            = 8;
-const SCRS SC_SRCS_MoreInfoThanBufferCouldHold  = 9;
-const SCRS SC_SRCS_NoSentenceStartCap           = 10;
-const SCRS SC_SRCS_RepeatWord                   = 11;
-const SCRS SC_SRCS_ExtraSpaces                  = 12;
-const SCRS SC_SRCS_MissingSpace                 = 13;
-const SCRS SC_SRCS_InitialNumeral               = 14;
-
+const SCRS SC_SRCS_NoErrors                    = 0;
+const SCRS SC_SRCS_UnknownInputWord            = 1;
+const SCRS SC_SRCS_ReturningChangeAlways       = 2;
+const SCRS SC_SRCS_ReturningChangeOnce         = 3;
+const SCRS SC_SRCS_InvalidHyphenation          = 4;
+const SCRS SC_SRCS_ErrorCapitalization         = 5;
+const SCRS SC_SRCS_WordConsideredAbbreviation  = 6;
+const SCRS SC_SRCS_HyphChangesSpelling         = 7;
+const SCRS SC_SRCS_NoMoreSuggestions           = 8;
+const SCRS SC_SRCS_MoreInfoThanBufferCouldHold = 9;
+const SCRS SC_SRCS_NoSentenceStartCap          = 10;
+const SCRS SC_SRCS_RepeatWord                  = 11;
+const SCRS SC_SRCS_ExtraSpaces                 = 12;
+const SCRS SC_SRCS_MissingSpace                = 13;
+const SCRS SC_SRCS_InitialNumeral              = 14;
 //  Major Error Codes (Low Byte of SEC)
-const SEC  SC_SEC_NoErrors        = 0;
-const SEC  SC_SEC_OOM             = 1;
-const SEC  SC_SEC_ModuleError     = 2;
-const SEC  SC_SEC_IOErrorMdr      = 3;
-const SEC  SC_SEC_IOErrorUdr      = 4;
-
+const SEC SC_SEC_NoErrors    = 0;
+const SEC SC_SEC_OOM         = 1;
+const SEC SC_SEC_ModuleError = 2;
+const SEC SC_SEC_IOErrorMdr  = 3;
+const SEC SC_SEC_IOErrorUdr  = 4;
 //  Minor Error Codes (High Byte of SEC)
-const SEC  SC_SEC_ModuleAlreadyBusy       = 128 << 8;
-const SEC  SC_SEC_InvalidID               = 129 << 8;
-const SEC  SC_SEC_InvalidWsc              = 130 << 8;
-const SEC  SC_SEC_InvalidMdr              = 131 << 8;
-const SEC  SC_SEC_InvalidUdr              = 132 << 8;
-const SEC  SC_SEC_InvalidSCC              = 133 << 8;
-const SEC  SC_SEC_InvalidMainDict         = 134 << 8;
-const SEC  SC_SEC_OperNotMatchedUserDict  = 135 << 8;
-const SEC  SC_SEC_FileReadError           = 136 << 8;
-const SEC  SC_SEC_FileWriteError          = 137 << 8;
-const SEC  SC_SEC_FileCreateError         = 138 << 8;
-const SEC  SC_SEC_FileShareError          = 139 << 8;
-const SEC  SC_SEC_ModuleNotTerminated     = 140 << 8;
-const SEC  SC_SEC_UserDictFull            = 141 << 8;
-const SEC  SC_SEC_InvalidUdrEntry         = 142 << 8;
-const SEC  SC_SEC_UdrEntryTooLong         = 143 << 8;
-const SEC  SC_SEC_MdrCountExceeded        = 144 << 8;
-const SEC  SC_SEC_UdrCountExceeded        = 145 << 8;
-const SEC  SC_SEC_FileOpenError           = 146 << 8;
-const SEC  SC_SEC_FileTooLargeError       = 147 << 8;
-const SEC  SC_SEC_UdrReadOnly             = 148 << 8;
-
+const SEC SC_SEC_ModuleAlreadyBusy      = 128 << 8;
+const SEC SC_SEC_InvalidID              = 129 << 8;
+const SEC SC_SEC_InvalidWsc             = 130 << 8;
+const SEC SC_SEC_InvalidMdr             = 131 << 8;
+const SEC SC_SEC_InvalidUdr             = 132 << 8;
+const SEC SC_SEC_InvalidSCC             = 133 << 8;
+const SEC SC_SEC_InvalidMainDict        = 134 << 8;
+const SEC SC_SEC_OperNotMatchedUserDict = 135 << 8;
+const SEC SC_SEC_FileReadError          = 136 << 8;
+const SEC SC_SEC_FileWriteError         = 137 << 8;
+const SEC SC_SEC_FileCreateError        = 138 << 8;
+const SEC SC_SEC_FileShareError         = 139 << 8;
+const SEC SC_SEC_ModuleNotTerminated    = 140 << 8;
+const SEC SC_SEC_UserDictFull           = 141 << 8;
+const SEC SC_SEC_InvalidUdrEntry        = 142 << 8;
+const SEC SC_SEC_UdrEntryTooLong        = 143 << 8;
+const SEC SC_SEC_MdrCountExceeded       = 144 << 8;
+const SEC SC_SEC_UdrCountExceeded       = 145 << 8;
+const SEC SC_SEC_FileOpenError          = 146 << 8;
+const SEC SC_SEC_FileTooLargeError      = 147 << 8;
+const SEC SC_SEC_UdrReadOnly            = 148 << 8;
 //  Spell Options bitfield definitions
-const dword SC_SO_SuggestFromUserDict     = 0x0001; // Scan UDR as well as MDR
-const dword SC_SO_IgnoreAllCaps           = 0x0002; // Ignore a word if all upppercase
-const dword SC_SO_IgnoreMixedDigits       = 0x0004; // Ignore word if has any numbers in it
-const dword SC_SO_IgnoreRomanNumerals     = 0x0008; // Ignore word composed of all roman numerals
-const dword SC_SO_FindUncappedSentences   = 0x0010; // Flag sentences which don't start with a cap
-const dword SC_SO_FindMissingSpaces       = 0x0020; // Find missing spaces between words/sentences
-const dword SC_SO_FindRepeatWord          = 0x0040; // CSAPI to flag repeated words
-const dword SC_SO_FindExtraSpaces         = 0x0080; // CSAPI to flag extra spaces between words
-const dword SC_SO_FindSpacesBeforePunc    = 0x0100; // CSAPI to flag space preceeding certain punc
-const dword SC_SO_FindSpacesAfterPunc     = 0x0200; // CSAPI to flag space after certain punc
-const dword SC_SO_RateSuggestions         = 0x0400;
+const dword SC_SO_SuggestFromUserDict   = 0x0001;   // Scan UDR as well as MDR
+const dword SC_SO_IgnoreAllCaps         = 0x0002;   // Ignore a word if all upppercase
+const dword SC_SO_IgnoreMixedDigits     = 0x0004;   // Ignore word if has any numbers in it
+const dword SC_SO_IgnoreRomanNumerals   = 0x0008;   // Ignore word composed of all roman
+                                                    // numerals
+const dword SC_SO_FindUncappedSentences = 0x0010;   // Flag sentences which don't start with a
+                                                    // cap
+const dword SC_SO_FindMissingSpaces     = 0x0020;   // Find missing spaces between
+                                                    // words/sentences
+const dword SC_SO_FindRepeatWord        = 0x0040;   // CSAPI to flag repeated words
+const dword SC_SO_FindExtraSpaces       = 0x0080;   // CSAPI to flag extra spaces between words
+const dword SC_SO_FindSpacesBeforePunc  = 0x0100;   // CSAPI to flag space preceeding certain
+                                                    // punc
+const dword SC_SO_FindSpacesAfterPunc   = 0x0200;   // CSAPI to flag space after certain punc
+const dword SC_SO_RateSuggestions       = 0x0400;
 // All suggestions returned should be given some scaled value
 // corresponding to liklihood of being correct alternative.
 // Scale is 1..255, 255 most likely correction and 1 least likely
-const dword SC_SO_FindInitialNumerals     = 0x0800; // Flag words starting with number(s)
-const dword SC_SO_ReportUDHits            = 0x1000;
+const dword SC_SO_FindInitialNumerals = 0x0800;     // Flag words starting with number(s)
+const dword SC_SO_ReportUDHits        = 0x1000;
 // Report (via scrsNoErrorsUDHit) where user dict was used during verification
-const dword SC_SO_QuickSuggest            = 0x2000; // Don't use typo suggest code (Soft-Art only)
-const dword SC_SO_UseAllOpenUdr           = 0x4000;
+const dword SC_SO_QuickSuggest  = 0x2000;           // Don't use typo suggest code (Soft-Art
+                                                    // only)
+const dword SC_SO_UseAllOpenUdr = 0x4000;
 // Automatically use all udr's opened after this option is set,
 // or all opened udr's with mdr's opened after this option is set.
 // This option does not allow exclusion dicts to be edited. (HM only)
-const dword SC_SO_SwapMdr                 = 0x8000;
+const dword SC_SO_SwapMdr = 0x8000;
 // Keep the most recent 2 mdr's around. swap between them instead of actually
 // closing and reopening mdr's. (HM only)
-const dword SC_SO_SglStepSugg             = 0x10000;
+const dword SC_SO_SglStepSugg = 0x10000;
 // Break after each suggestion task for faster return of control to the
 // application. (HM only)
-
-const dword SC_SO_LangMode                    = 0xF0000000; // Language Mode mask
+const dword SC_SO_LangMode = 0xF0000000;                    // Language Mode mask
 // Hebrew Language Modes -- (CT only)
 const dword SC_SO_HebrewFullScript            = 0x00000000;
 const dword SC_SO_HebrewPartialScript         = 0x10000000;
 const dword SC_SO_HebrewMixedScript           = 0x20000000;
 const dword SC_SO_HebrewMixedAuthorizedScript = 0x30000000;
 // French Language Modes -- (HM only)
-const dword SC_SO_FrenchDialectDefault        = 0x00000000;
-const dword SC_SO_FrenchUnaccentedUppercase   = 0x10000000;
-const dword SC_SO_FrenchAccentedUppercase     = 0x20000000;
+const dword SC_SO_FrenchDialectDefault      = 0x00000000;
+const dword SC_SO_FrenchUnaccentedUppercase = 0x10000000;
+const dword SC_SO_FrenchAccentedUppercase   = 0x20000000;
 // Russian Language Modes -- (HM only)
-const dword SC_SO_RussianDialectDefault       = 0x00000000;
-const dword SC_SO_RussianIE                   = 0x10000000;
-const dword SC_SO_RussianIO                   = 0x20000000;
-
-
+const dword SC_SO_RussianDialectDefault = 0x00000000;
+const dword SC_SO_RussianIE             = 0x10000000;
+const dword SC_SO_RussianIO             = 0x20000000;
 //  ------------------------------------------------------------------
-
-bool CMSSpellLang::Init(HKEY hKey, const char *name)
+bool CMSSpellLang::Init(HKEY hKey, const char * name)
 {
     bool result = false;
-    int  error;
+    int error;
     HKEY hKeyLang;
-    if (!name)
+
+    if(!name)
     {
-        LOG.errpointer(__FILE__,__LINE__);
-        LOG.printf( "! Parameter is NULL pointer: CMSSpellLang::Init(hkey,NULL). "
-                    "This is bug in program, please make report to developers." );
+        LOG.errpointer(__FILE__, __LINE__);
+        LOG.printf("! Parameter is NULL pointer: CMSSpellLang::Init(hkey,NULL). "
+                   "This is bug in program, please make report to developers.");
         return false;
     }
 
@@ -202,347 +194,373 @@ bool CMSSpellLang::Init(HKEY hKey, const char *name)
     byte dictionary[_MAX_PATH];
     unsigned long esize = sizeof(engine);
     unsigned long dsize = sizeof(dictionary);
-
-    mLIDC  = atoi(name);
+    mLIDC = atoi(name);
     strcpy(mLangCode, name);
-
-    char *name2 = new char[strlen(name)+8];
+    char * name2 = new char[strlen(name) + 8];
     strcpy(name2, name);
     strcat(name2, "\\Normal");
-
     error = RegOpenKeyEx(hKey, name2, 0, KEY_READ, &hKeyLang);
     CHECK_ERROR(cleanup0);
     delete[] name2;
-
     error = RegQueryValueEx(hKeyLang, "Engine", NULL, NULL, engine, &esize);
     CHECK_ERROR(cleanup1);
     error = RegQueryValueEx(hKeyLang, "Dictionary", NULL, NULL, dictionary, &dsize);
     CHECK_ERROR(cleanup1);
-
-    strcpy(mEngine, (char*)engine);
-    strcpy(mDictionary, (char*)dictionary);
-
+    strcpy(mEngine, (char *)engine);
+    strcpy(mDictionary, (char *)dictionary);
     result = true;
-
-cleanup1:
-    RegCloseKey(hKeyLang);
-cleanup0:
-    return result;
-}
-
+cleanup1: RegCloseKey(hKeyLang);
+cleanup0: return result;
+} // CMSSpellLang::Init
 
 //  ------------------------------------------------------------------
-
-bool CMSSpellLang::Load(const char *codeset, const char *userdic)
+bool CMSSpellLang::Load(const char * codeset, const char * userdic)
 {
     bool result = false;
-    if (!codeset)
+
+    if(!codeset)
     {
-        LOG.errpointer(__FILE__,__LINE__);
-        LOG.printf( "! Parameter is NULL pointer: CMSSpellLang::Load(NULL,userdic). "
-                    "This is bug in program, please make report to developers." );
+        LOG.errpointer(__FILE__, __LINE__);
+        LOG.printf("! Parameter is NULL pointer: CMSSpellLang::Load(NULL,userdic). "
+                   "This is bug in program, please make report to developers.");
         return false;
     }
 
-    if( mLibrary != NULL ) return true;  // Already loaded
+    if(mLibrary != NULL)
+    {
+        return true;                     // Already loaded
+    }
+
     mLibrary = LoadLibrary(mEngine);
     CHECK_NULL(mLibrary, cleanup0);
-
-    mSpellVer          = (SpellVer_fn         ) GetProcAddress(mLibrary, "SpellVer"         );
+    mSpellVer = (SpellVer_fn)GetProcAddress(mLibrary, "SpellVer");
     CHECK_NULL(mSpellVer, cleanup1);
-    mSpellInit         = (SpellInit_fn        ) GetProcAddress(mLibrary, "SpellInit"        );
+    mSpellInit = (SpellInit_fn)GetProcAddress(mLibrary, "SpellInit");
     CHECK_NULL(mSpellInit, cleanup1);
-    mSpellOptions      = (SpellOptions_fn     ) GetProcAddress(mLibrary, "SpellOptions"     );
+    mSpellOptions = (SpellOptions_fn)GetProcAddress(mLibrary, "SpellOptions");
     CHECK_NULL(mSpellOptions, cleanup1);
-    mSpellCheck        = (SpellCheck_fn       ) GetProcAddress(mLibrary, "SpellCheck"       );
+    mSpellCheck = (SpellCheck_fn)GetProcAddress(mLibrary, "SpellCheck");
     CHECK_NULL(mSpellCheck, cleanup1);
-    mSpellTerminate    = (SpellTerminate_fn   ) GetProcAddress(mLibrary, "SpellTerminate"   );
+    mSpellTerminate = (SpellTerminate_fn)GetProcAddress(mLibrary, "SpellTerminate");
     CHECK_NULL(mSpellTerminate, cleanup1);
-    mSpellOpenMdr      = (SpellOpenMdr_fn     ) GetProcAddress(mLibrary, "SpellOpenMdr"     );
+    mSpellOpenMdr = (SpellOpenMdr_fn)GetProcAddress(mLibrary, "SpellOpenMdr");
     CHECK_NULL(mSpellOpenMdr, cleanup1);
-    mSpellCloseMdr     = (SpellCloseMdr_fn    ) GetProcAddress(mLibrary, "SpellCloseMdr"    );
+    mSpellCloseMdr = (SpellCloseMdr_fn)GetProcAddress(mLibrary, "SpellCloseMdr");
     CHECK_NULL(mSpellCloseMdr, cleanup1);
-    mSpellOpenUdr      = (SpellOpenUdr_fn     ) GetProcAddress(mLibrary, "SpellOpenUdr"     );
+    mSpellOpenUdr = (SpellOpenUdr_fn)GetProcAddress(mLibrary, "SpellOpenUdr");
     CHECK_NULL(mSpellOpenUdr, cleanup1);
-    mSpellAddUdr       = (SpellAddUdr_fn      ) GetProcAddress(mLibrary, "SpellAddUdr"      );
+    mSpellAddUdr = (SpellAddUdr_fn)GetProcAddress(mLibrary, "SpellAddUdr");
     CHECK_NULL(mSpellAddUdr, cleanup1);
-    mSpellCloseUdr     = (SpellCloseUdr_fn    ) GetProcAddress(mLibrary, "SpellCloseUdr"    );
+    mSpellCloseUdr = (SpellCloseUdr_fn)GetProcAddress(mLibrary, "SpellCloseUdr");
     CHECK_NULL(mSpellCloseUdr, cleanup1);
-    mSpellAddChangeUdr = (SpellAddChangeUdr_fn) GetProcAddress(mLibrary, "SpellAddChangeUdr");
+    mSpellAddChangeUdr = (SpellAddChangeUdr_fn)GetProcAddress(mLibrary,
+                                                              "SpellAddChangeUdr");
     CHECK_NULL(mSpellAddChangeUdr, cleanup1);
-    mSpellDelUdr       = (SpellDelUdr_fn      ) GetProcAddress(mLibrary, "SpellDelUdr"      );
+    mSpellDelUdr = (SpellDelUdr_fn)GetProcAddress(mLibrary, "SpellDelUdr");
     CHECK_NULL(mSpellDelUdr, cleanup1);
-    mSpellClearUdr     = (SpellClearUdr_fn    ) GetProcAddress(mLibrary, "SpellClearUdr"    );
+    mSpellClearUdr = (SpellClearUdr_fn)GetProcAddress(mLibrary, "SpellClearUdr");
     CHECK_NULL(mSpellClearUdr, cleanup1);
-    mSpellGetSizeUdr   = (SpellGetSizeUdr_fn  ) GetProcAddress(mLibrary, "SpellGetSizeUdr"  );
+    mSpellGetSizeUdr = (SpellGetSizeUdr_fn)GetProcAddress(mLibrary, "SpellGetSizeUdr");
     CHECK_NULL(mSpellGetSizeUdr, cleanup1);
-    mSpellGetListUdr   = (SpellGetListUdr_fn  ) GetProcAddress(mLibrary, "SpellGetListUdr"  );
+    mSpellGetListUdr = (SpellGetListUdr_fn)GetProcAddress(mLibrary, "SpellGetListUdr");
     CHECK_NULL(mSpellGetListUdr, cleanup1);
-    mSpellVerifyMdr    = (SpellVerifyMdr_fn   ) GetProcAddress(mLibrary, "SpellVerifyMdr"   );
+    mSpellVerifyMdr = (SpellVerifyMdr_fn)GetProcAddress(mLibrary, "SpellVerifyMdr");
     CHECK_NULL(mSpellVerifyMdr, cleanup1);
-
     memset(&mSIB, 0, sizeof(mSIB));
     memset(&mSRB, 0, sizeof(mSRB));
     memset(&mMDRS, 0, sizeof(mMDRS));
     mSLID = mUDR = 0;
-
     SEC sec;
-
 //  word w1, w2, w3;
 //  mSpellVer(&w1, &w2, &w3);
-
     WSC wsc;
     memset(&wsc, 0, sizeof(wsc));
     sec = mSpellInit(&mSLID, &wsc);
     CHECK_SEC(cleanup1);
-
     sec = mSpellOpenMdr(mSLID, mDictionary, 0, 0, 1, mLIDC, &mMDRS);
     CHECK_SEC(cleanup2);
-
-    mSIB.cMdr = 1;
+    mSIB.cMdr   = 1;
     mSIB.lrgMdr = &mMDRS.mdr;
-
-    sec = mSpellOptions(mSLID, SC_SO_SuggestFromUserDict|SC_SO_IgnoreAllCaps|SC_SO_IgnoreMixedDigits|SC_SO_IgnoreRomanNumerals|SC_SO_RateSuggestions);
+    sec         = mSpellOptions(mSLID,
+                                SC_SO_SuggestFromUserDict | SC_SO_IgnoreAllCaps |
+                                SC_SO_IgnoreMixedDigits | SC_SO_IgnoreRomanNumerals |
+                                SC_SO_RateSuggestions);
     CHECK_SEC(cleanup2);
 
-    if (userdic || !userDicPath.empty())
+    if(userdic || !userDicPath.empty())
     {
-        char* effPath = strdup(userdic ? userdic : userDicPath.c_str());
-        BOOL ronly = FALSE;
+        char * effPath = strdup(userdic ? userdic : userDicPath.c_str());
+        BOOL ronly     = FALSE;
         sec = mSpellOpenUdr(mSLID, effPath, TRUE, 0xfffe, &mUDR, &ronly);
 
-        if ((sec & 0xFF) == SC_SEC_NoErrors)
+        if((sec & 0xFF) == SC_SEC_NoErrors)
         {
-            mSIB.cUdr = 1;
+            mSIB.cUdr   = 1;
             mSIB.lrgUdr = &mUDR;
             userDicPath = effPath;
         }
+
         free(effPath);
     }
 
     result = true;
     goto cleanup0;
-
-cleanup2:
-    mSpellTerminate(mSLID, TRUE);
-cleanup1:
-    FreeLibrary(mLibrary);
+cleanup2: mSpellTerminate(mSLID, TRUE);
+cleanup1: FreeLibrary(mLibrary);
     mLibrary = NULL;
 cleanup0:
-    if (result)
+
+    if(result)
     {
         BuildRTable(codeset);
         mIsMdrLoaded = (mSIB.cMdr != 0);
         mIsUdrLoaded = (mSIB.cUdr != 0);
     }
-    return result;
-}
 
+    return result;
+} // CMSSpellLang::Load
 
 //  ------------------------------------------------------------------
-
 void CMSSpellLang::UnLoad()
 {
-    if (!mLibrary) return;
-
-    if (mSIB.cUdr) mSpellCloseUdr(mSLID, mUDR, TRUE);
-    if (mSIB.cMdr) mSpellCloseMdr(mSLID, &mMDRS);
-    if (mToDicTable) delete mToDicTable;
-    if (mToLocTable) delete mToLocTable;
-    mToDicTable = mToLocTable = NULL;
-
-    FreeLibrary(mLibrary);
-    mLibrary = NULL;
-}
-
-
-//  ------------------------------------------------------------------
-
-void CMSSpellLang::BuildRTable(const char *codeset)
-{
-    char codeset2[20];
-    if (!codeset)
+    if(!mLibrary)
     {
-        LOG.errpointer(__FILE__,__LINE__);
-        LOG.printf( "! Parameter is NULL pointer: CMSSpellLang::BuildRTable(NULL). "
-                    "This is bug in program, please make report to developers." );
         return;
     }
+
+    if(mSIB.cUdr)
+    {
+        mSpellCloseUdr(mSLID, mUDR, TRUE);
+    }
+
+    if(mSIB.cMdr)
+    {
+        mSpellCloseMdr(mSLID, &mMDRS);
+    }
+
+    if(mToDicTable)
+    {
+        delete mToDicTable;
+    }
+
+    if(mToLocTable)
+    {
+        delete mToLocTable;
+    }
+
+    mToDicTable = mToLocTable = NULL;
+    FreeLibrary(mLibrary);
+    mLibrary = NULL;
+} // CMSSpellLang::UnLoad
+
+//  ------------------------------------------------------------------
+void CMSSpellLang::BuildRTable(const char * codeset)
+{
+    char codeset2[20];
+
+    if(!codeset)
+    {
+        LOG.errpointer(__FILE__, __LINE__);
+        LOG.printf("! Parameter is NULL pointer: CMSSpellLang::BuildRTable(NULL). "
+                   "This is bug in program, please make report to developers.");
+        return;
+    }
+
     strcpy(codeset2, "CP");
-    GetLocaleInfo(mLIDC, LOCALE_IDEFAULTANSICODEPAGE, &codeset2[2], sizeof(codeset2)-2);
+    GetLocaleInfo(mLIDC, LOCALE_IDEFAULTANSICODEPAGE, &codeset2[2],
+                  sizeof(codeset2) - 2);
     LoadCharset(codeset, codeset2);
     mToDicTable = new Chs;
     memset(mToDicTable, 0, sizeof(Chs));
-    if (CharTable ) *mToDicTable = *CharTable;
+
+    if(CharTable)
+    {
+        *mToDicTable = *CharTable;
+    }
 
     LoadCharset(codeset2, codeset);
     mToLocTable = new Chs;
     memset(mToLocTable, 0, sizeof(Chs));
-    if (CharTable ) *mToLocTable = *CharTable;
-}
 
+    if(CharTable)
+    {
+        *mToLocTable = *CharTable;
+    }
+} // CMSSpellLang::BuildRTable
 
 //  ------------------------------------------------------------------
-
-void CMSSpellLang::BuildSuggest(const char *text, CSpellSuggestV &suggest)
+void CMSSpellLang::BuildSuggest(const char * text, CSpellSuggestV & suggest)
 {
-    if (!text)
+    if(!text)
     {
-        LOG.errpointer(__FILE__,__LINE__);
-        LOG.printf( "! Parameter is NULL pointer: CMSSpellLang::BuildSuggest(NULL,suggest). "
-                    "This is bug in program, please make report to developers." );
+        LOG.errpointer(__FILE__, __LINE__);
+        LOG.printf(
+            "! Parameter is NULL pointer: CMSSpellLang::BuildSuggest(NULL,suggest). "
+            "This is bug in program, please make report to developers.");
         return;
     }
 
     const std::string recoded = RecodeText(text, true);
 
-    if (!SpellSuggest(recoded.c_str(), false)) return;
+    if(!SpellSuggest(recoded.c_str(), false))
+    {
+        return;
+    }
 
     bool flag = true;
     bool more = false;
 
-    for (int idx = 0; idx < mSRB.cChrMac; idx++)
+    for(int idx = 0; idx < mSRB.cChrMac; idx++)
     {
-        if (mSZ[idx] == 0)
+        if(mSZ[idx] == 0)
         {
             idx++;
             flag = true;
         }
 
-        if (flag && mSZ[idx])
+        if(flag && mSZ[idx])
         {
             flag = false;
             suggest.push_back("  " + RecodeText(&mSZ[idx], false) + char(' '));
         }
-        else if (!more && !mSZ[idx])
+        else if(!more && !mSZ[idx])
         {
             more = true;
 
-            if (!SpellSuggest(recoded.c_str(), more = true))
+            if(!SpellSuggest(recoded.c_str(), more = true))
+            {
                 return;
+            }
             else
             {
                 flag = true;
-                idx = -1;
+                idx  = -1;
             }
         }
     }
-}
-
+} // CMSSpellLang::BuildSuggest
 
 //  ------------------------------------------------------------------
-
-bool CMSSpellLang::SpellCheck(const char *text)
+bool CMSSpellLang::SpellCheck(const char * text)
 {
-    if (!text)
+    if(!text)
     {
-        LOG.errpointer(__FILE__,__LINE__);
-        LOG.printf( "! Parameter is NULL pointer: CMSSpellLang::SpellCheck(NULL). "
-                    "This is bug in program, please make report to developers." );
+        LOG.errpointer(__FILE__, __LINE__);
+        LOG.printf("! Parameter is NULL pointer: CMSSpellLang::SpellCheck(NULL). "
+                   "This is bug in program, please make report to developers.");
         return false;
     }
-    if (!IsMdrLoaded()) return true;
+
+    if(!IsMdrLoaded())
+    {
+        return true;
+    }
 
     const std::string recoded = RecodeText(text, true);
     mSIB.wSpellState = 0;
-    mSIB.lrgChr = strdup(recoded.c_str());
-    mSIB.cChr = recoded.size();
-
-    mSRB.cChr = sizeof(mSZ);
-    mSRB.cbRate = sizeof(mRate);
-    mSRB.lrgSZ = mSZ;
-    mSRB.lrgbRate = mRate;
-
+    mSIB.lrgChr      = strdup(recoded.c_str());
+    mSIB.cChr        = recoded.size();
+    mSRB.cChr        = sizeof(mSZ);
+    mSRB.cbRate      = sizeof(mRate);
+    mSRB.lrgSZ       = mSZ;
+    mSRB.lrgbRate    = mRate;
     SEC error = mSpellCheck(mSLID, SC_SCCC_VerifyBuffer, &mSIB, &mSRB);
-    free( mSIB.lrgChr );
+    free(mSIB.lrgChr);
     mSIB.lrgChr = NULL;
-    if (error & 0xFF) return false;
 
-    return mSRB.scrs == SC_SRCS_NoErrors;
-}
-
-
-//  ------------------------------------------------------------------
-
-bool CMSSpellLang::SpellSuggest(const char *text, bool more)
-{
-    if (!text)
+    if(error & 0xFF)
     {
-        LOG.errpointer(__FILE__,__LINE__);
-        LOG.printf( "! Parameter is NULL pointer: CMSSpellLang::SpellSuggest(NULL). "
-                    "This is bug in program, please make report to developers." );
         return false;
     }
-    if (!IsMdrLoaded()) return false;
+
+    return mSRB.scrs == SC_SRCS_NoErrors;
+} // CMSSpellLang::SpellCheck
+
+//  ------------------------------------------------------------------
+bool CMSSpellLang::SpellSuggest(const char * text, bool more)
+{
+    if(!text)
+    {
+        LOG.errpointer(__FILE__, __LINE__);
+        LOG.printf("! Parameter is NULL pointer: CMSSpellLang::SpellSuggest(NULL). "
+                   "This is bug in program, please make report to developers.");
+        return false;
+    }
+
+    if(!IsMdrLoaded())
+    {
+        return false;
+    }
 
     mSIB.wSpellState = 0;
-    mSIB.lrgChr = strdup(text);
-    mSIB.cChr = strlen(text);
-
+    mSIB.lrgChr      = strdup(text);
+    mSIB.cChr        = strlen(text);
     memset(mSZ, 0, sizeof(mSZ));
-
-    mSRB.cChr = sizeof(mSZ);
-    mSRB.cbRate = sizeof(mRate);
-    mSRB.lrgSZ = mSZ;
+    mSRB.cChr     = sizeof(mSZ);
+    mSRB.cbRate   = sizeof(mRate);
+    mSRB.lrgSZ    = mSZ;
     mSRB.lrgbRate = mRate;
-
-    SEC error = mSpellCheck(mSLID, more ? SC_SCCC_SuggestMore : SC_SCCC_Suggest, &mSIB, &mSRB);
-    free( mSIB.lrgChr );
+    SEC error = mSpellCheck(mSLID,
+                            more ? SC_SCCC_SuggestMore : SC_SCCC_Suggest,
+                            &mSIB,
+                            &mSRB);
+    free(mSIB.lrgChr);
     mSIB.lrgChr = NULL;
-    if (error & 0xFF) return false;
 
-    return mSRB.scrs == SC_SRCS_NoErrors;
-}
-
-
-//  ------------------------------------------------------------------
-
-bool CMSSpellLang::AddWord(const char *text)
-{
-    if (!text)
+    if(error & 0xFF)
     {
-        LOG.errpointer(__FILE__,__LINE__);
-        LOG.printf( "! Parameter is NULL pointer: CMSSpellLang::AddWord(NULL). "
-                    "This is bug in program, please make report to developers." );
         return false;
     }
-    if (!IsMdrLoaded()) return false;
+
+    return mSRB.scrs == SC_SRCS_NoErrors;
+} // CMSSpellLang::SpellSuggest
+
+//  ------------------------------------------------------------------
+bool CMSSpellLang::AddWord(const char * text)
+{
+    if(!text)
+    {
+        LOG.errpointer(__FILE__, __LINE__);
+        LOG.printf("! Parameter is NULL pointer: CMSSpellLang::AddWord(NULL). "
+                   "This is bug in program, please make report to developers.");
+        return false;
+    }
+
+    if(!IsMdrLoaded())
+    {
+        return false;
+    }
+
     const std::string recoded = RecodeText(text, true);
-    char *t = strdup(recoded.c_str());
+    char * t  = strdup(recoded.c_str());
     SEC error = mSpellAddUdr(mSLID, mUDR, t);
     free(t);
     return (error & 0xFF) == 0;
 }
 
-
 //  ------------------------------------------------------------------
 
-#endif  //#if !defined(GCFG_NO_MSSPELL)
-
-
+#endif //#if !defined(GCFG_NO_MSSPELL)
 //  ------------------------------------------------------------------
 
-#if !defined(GCFG_NO_MYSPELL)
-
-
+#if !defined (GCFG_NO_MYSPELL)
 //  ------------------------------------------------------------------
-
-bool CMYSpellLang::Init(const gdirentry *entry)
+bool CMYSpellLang::Init(const gdirentry * entry)
 {
-    if (!entry)
+    if(!entry)
     {
         LOG.errpointer(__FILE__, __LINE__);
-        LOG.printf( "! Parameter is NULL pointer: CMYSpellLang::Init(NULL). "
-                    "This is bug in program, please make report to developers." );
+        LOG.printf("! Parameter is NULL pointer: CMYSpellLang::Init(NULL). "
+                   "This is bug in program, please make report to developers.");
         return false;
     }
+
     gposixdir dir(entry->dirname);
-
-    std::string affname = entry->name.substr(0, entry->name.length()-4);
+    std::string affname = entry->name.substr(0, entry->name.length() - 4);
     strcpy(mLangCode, affname.c_str());
+    const gdirentry * entry2 = dir.nextentry((affname + ".aff").c_str(), true);
 
-    const gdirentry *entry2 = dir.nextentry((affname+".aff").c_str(), true);
-    if (entry2)
+    if(entry2)
     {
         strcpy(mEngine, entry2->dirname);
         strcat(mEngine, GOLD_SLASH_STR);
@@ -550,130 +568,149 @@ bool CMYSpellLang::Init(const gdirentry *entry)
         strcpy(mDictionary, entry->dirname);
         strcat(mDictionary, GOLD_SLASH_STR);
         strcat(mDictionary, entry->name.c_str());
-
         return true;
     }
 
     return false;
-}
-
+} // CMYSpellLang::Init
 
 //  ------------------------------------------------------------------
-
-bool CMYSpellLang::Load(const char *codeset, const char *userDic)
+bool CMYSpellLang::Load(const char * codeset, const char * userDic)
 {
-    if (!codeset)
+    if(!codeset)
     {
-        LOG.errpointer(__FILE__,__LINE__);
-        LOG.printf( "! Parameter is NULL pointer: CMYSpellLang::Load(NULL,userDic). "
-                    "This is bug in program, please make report to developers." );
+        LOG.errpointer(__FILE__, __LINE__);
+        LOG.printf("! Parameter is NULL pointer: CMYSpellLang::Load(NULL,userDic). "
+                   "This is bug in program, please make report to developers.");
         return false;
     }
 
-    if (mMSpell) return mIsMdrLoaded;
+    if(mMSpell)
+    {
+        return mIsMdrLoaded;
+    }
+
     mMSpell = new Hunspell(mEngine, mDictionary);
 
-    if (mMSpell)
+    if(mMSpell)
     {
         BuildRTable(codeset);
-        mIsUdrLoaded = LoadUserDictionary(userDic);
+        mIsUdrLoaded        = LoadUserDictionary(userDic);
         return mIsMdrLoaded = true;
     }
 
     return false;
 }
 
-
 //  ------------------------------------------------------------------
-
 void CMYSpellLang::UnLoad()
 {
-    if (!mMSpell) return;
+    if(!mMSpell)
+    {
+        return;
+    }
+
     delete mMSpell;
-    mMSpell = NULL;
+    mMSpell      = NULL;
     mIsMdrLoaded = false;
-    if (mToDicTable) delete mToDicTable;
-    if (mToLocTable) delete mToLocTable;
+
+    if(mToDicTable)
+    {
+        delete mToDicTable;
+    }
+
+    if(mToLocTable)
+    {
+        delete mToLocTable;
+    }
+
     mToDicTable = mToLocTable = NULL;
 }
 
-
 //  ------------------------------------------------------------------
-
-void CMYSpellLang::BuildRTable(const char *codeset)
+void CMYSpellLang::BuildRTable(const char * codeset)
 {
-    if (!codeset)
+    if(!codeset)
     {
-        LOG.errpointer(__FILE__,__LINE__);
-        LOG.printf( "! Parameter is NULL pointer: CMYSpellLang::BuildRTable(NULL). "
-                    "This is bug in program, please make report to developers." );
+        LOG.errpointer(__FILE__, __LINE__);
+        LOG.printf("! Parameter is NULL pointer: CMYSpellLang::BuildRTable(NULL). "
+                   "This is bug in program, please make report to developers.");
         return;
     }
+
     LoadCharset(codeset, mMSpell->get_dic_encoding());
-    if (CharTable )
+
+    if(CharTable)
     {
         mToDicTable = new Chs(*CharTable);
     }
 
     LoadCharset(mMSpell->get_dic_encoding(), codeset);
-    if (CharTable )
+
+    if(CharTable)
     {
         mToLocTable = new Chs(*CharTable);
     }
 }
 
-
 //  ------------------------------------------------------------------
-
-void CMYSpellLang::BuildSuggest(const char *text, CSpellSuggestV &suggest)
+void CMYSpellLang::BuildSuggest(const char * text, CSpellSuggestV & suggest)
 {
-    if (!text)
+    if(!text)
     {
-        LOG.errpointer(__FILE__,__LINE__);
-        LOG.printf( "! Parameter is NULL pointer: CMYSpellLang::BuildSuggest(NULL,suggest). "
-                    "This is bug in program, please make report to developers." );
+        LOG.errpointer(__FILE__, __LINE__);
+        LOG.printf(
+            "! Parameter is NULL pointer: CMYSpellLang::BuildSuggest(NULL,suggest). "
+            "This is bug in program, please make report to developers.");
         return;
     }
 
     std::vector<std::string> suggests = mMSpell->suggest(RecodeText(text, true));
-    for (std::vector<std::string>::const_iterator it = suggests.begin(); it != suggests.end(); ++it)
+
+    for(std::vector<std::string>::const_iterator it = suggests.begin();
+        it != suggests.end(); ++it)
     {
         suggest.push_back("  " + RecodeText(it->c_str(), false) + char(' '));
     }
 }
 
-
 //  ------------------------------------------------------------------
-
-bool CMYSpellLang::SpellCheck(const char *text)
+bool CMYSpellLang::SpellCheck(const char * text)
 {
-    if (!text)
+    if(!text)
     {
-        LOG.errpointer(__FILE__,__LINE__);
-        LOG.printf( "! Parameter is NULL pointer: CMYSpellLang::SpellCheck(NULL). "
-                    "This is bug in program, please make report to developers." );
+        LOG.errpointer(__FILE__, __LINE__);
+        LOG.printf("! Parameter is NULL pointer: CMYSpellLang::SpellCheck(NULL). "
+                   "This is bug in program, please make report to developers.");
         return false;
     }
-    if (!IsMdrLoaded()) return true;
+
+    if(!IsMdrLoaded())
+    {
+        return true;
+    }
 
     return mMSpell->spell(RecodeText(text, true));
 }
 
-
 //  ------------------------------------------------------------------
-
-bool CMYSpellLang::AddWord(const char *text)
+bool CMYSpellLang::AddWord(const char * text)
 {
-    if (!text)
+    if(!text)
     {
-        LOG.errpointer(__FILE__,__LINE__);
-        LOG.printf( "! Parameter is NULL pointer: CMYSpellLang::AddWord(NULL). "
-                    "This is bug in program, please make report to developers." );
+        LOG.errpointer(__FILE__, __LINE__);
+        LOG.printf("! Parameter is NULL pointer: CMYSpellLang::AddWord(NULL). "
+                   "This is bug in program, please make report to developers.");
     }
-    if (!IsMdrLoaded() || !IsUdrLoaded()) return false;
+
+    if(!IsMdrLoaded() || !IsUdrLoaded())
+    {
+        return false;
+    }
 
     gfile udFile(userDicPath.c_str(), "at");
-    if (udFile.isopen())
+
+    if(udFile.isopen())
     {
         udFile.Printf("%s\n", text);
     }
@@ -682,22 +719,24 @@ bool CMYSpellLang::AddWord(const char *text)
         LOG.printf("! Can't open user dictionary file to add new word.");
         LOG.printf("+ %s", userDicPath.c_str());
     }
+
     mMSpell->add(RecodeText(text, true).c_str());
     return true;
-}
+} // CMYSpellLang::AddWord
 
 //  ------------------------------------------------------------------
-
-bool CMYSpellLang::LoadUserDictionary(const char *userDic)
+bool CMYSpellLang::LoadUserDictionary(const char * userDic)
 {
-    if (userDic || !userDicPath.empty())
+    if(userDic || !userDicPath.empty())
     {
-        const char* effPath = userDic ? userDic : userDicPath.c_str();
+        const char * effPath = userDic ? userDic : userDicPath.c_str();
         gfile udFile(effPath, "rt");
-        if (udFile.isopen())
+
+        if(udFile.isopen())
         {
             char buf[256];
-            while (udFile.Fgets(buf, sizeof(buf)))
+
+            while(udFile.Fgets(buf, sizeof(buf)))
             {
                 mMSpell->add(RecodeText(strbtrim(buf), true).c_str());
             }
@@ -706,73 +745,74 @@ bool CMYSpellLang::LoadUserDictionary(const char *userDic)
         {
             // Could be no file yet. Try to create new file.
             gfile newUdFile(effPath, "at");
-            if (!newUdFile.isopen())
+
+            if(!newUdFile.isopen())
             {
                 LOG.printf("! Can't open user dictionary file to add new word.");
                 LOG.printf("+ %s", effPath);
-
                 return false;
             }
         }
+
         userDicPath = effPath;
         return true; // File will be created when word added.
     }
+
     return false;
-}
+} // CMYSpellLang::LoadUserDictionary
 
 //  ------------------------------------------------------------------
 
-#endif  //#if !defined(GCFG_NO_MYSPELL)
-
-
+#endif //#if !defined(GCFG_NO_MYSPELL)
 //  ------------------------------------------------------------------
-
-std::string CSpellLang::RecodeText(const char *srcText, bool flag)
+std::string CSpellLang::RecodeText(const char * srcText, bool flag)
 {
-    if (!srcText)
+    if(!srcText)
     {
-        LOG.errpointer(__FILE__,__LINE__);
-        LOG.printf( "! Parameter is NULL pointer: CSpellLang::RecodeText(NULL,dstText,flag). "
-                    "This is bug in program, please make report to developers." );
+        LOG.errpointer(__FILE__, __LINE__);
+        LOG.printf(
+            "! Parameter is NULL pointer: CSpellLang::RecodeText(NULL,dstText,flag). "
+            "This is bug in program, please make report to developers.");
         return std::string();
     }
-    if (flag)
+
+    if(flag)
+    {
         return XlatStr(srcText, mToDicTable ? mToDicTable->level : 0, mToDicTable);
+    }
     else
+    {
         return XlatStr(srcText, mToLocTable ? mToLocTable->level : 0, mToLocTable);
+    }
 }
 
 //  ------------------------------------------------------------------
-
 CSpellChecker::CSpellChecker()
 {
     mInited = false;
 }
 
-
 //  ------------------------------------------------------------------
-
-bool CSpellChecker::Init(const char *codeset, const char *dicPath)
+bool CSpellChecker::Init(const char * codeset,
+                         const char * dicPath)
 {
-    if (!codeset)
+    if(!codeset)
     {
-        LOG.errpointer(__FILE__,__LINE__);
-        LOG.printf( "! Parameter is NULL pointer: CSpellChecker::Init(NULL,dicPath). "
-                    "This is bug in program, please make report to developers." );
+        LOG.errpointer(__FILE__, __LINE__);
+        LOG.printf("! Parameter is NULL pointer: CSpellChecker::Init(NULL,dicPath). "
+                   "This is bug in program, please make report to developers.");
         return false;
     }
 
-#if !defined(GCFG_NO_MSSPELL)
+#if !defined (GCFG_NO_MSSPELL)
 
-    int  error;
+    int error;
     unsigned long index = 0;
-
     HKEY hKeyPTools;
     HKEY hKeySpelling;
-
-    error = RegOpenKeyEx(HKEY_LOCAL_MACHINE, SC_RKEY_Prooftools, 0, KEY_READ, &hKeyPTools);
+    error = RegOpenKeyEx(HKEY_LOCAL_MACHINE, SC_RKEY_Prooftools, 0, KEY_READ,
+                         &hKeyPTools);
     CHECK_ERROR(cleanup0);
-
     error = RegOpenKeyEx(hKeyPTools, SC_RKEY_Spelling, 0, KEY_READ, &hKeySpelling);
     CHECK_ERROR(cleanup1);
 
@@ -780,130 +820,146 @@ bool CSpellChecker::Init(const char *codeset, const char *dicPath)
     {
         char name[1024];
         unsigned long nsize = sizeof(name);
-
         error = RegEnumKeyEx(hKeySpelling, index, name, &nsize, NULL, NULL, NULL, NULL);
-        if (error == ERROR_SUCCESS)
+
+        if(error == ERROR_SUCCESS)
         {
-            CMSSpellLang *lang = new CMSSpellLang;
-            if (lang->Init(hKeySpelling, name))
+            CMSSpellLang * lang = new CMSSpellLang;
+
+            if(lang->Init(hKeySpelling, name))
+            {
                 mLangs.push_back(lang);
+            }
             else
+            {
                 delete lang;
+            }
 
             index++;
         }
     }
-    while (error != ERROR_NO_MORE_ITEMS);
-
+    while(error != ERROR_NO_MORE_ITEMS);
     RegCloseKey(hKeySpelling);
-cleanup1:
-    RegCloseKey(hKeyPTools);
+cleanup1: RegCloseKey(hKeyPTools);
 cleanup0:
 
-#endif  //#if !defined(GCFG_NO_MSSPELL)
+#endif //#if !defined(GCFG_NO_MSSPELL)
 
-#if !defined(GCFG_NO_MYSPELL)
+#if !defined (GCFG_NO_MYSPELL)
 
     gposixdir d(dicPath);
-    const gdirentry *de;
+    const gdirentry * de;
 
-    while ((de = d.nextentry("*.dic", true)) != NULL)
+    while((de = d.nextentry("*.dic", true)) != NULL)
     {
-        CMYSpellLang *lang = new CMYSpellLang;
-        if (lang->Init(de))
+        CMYSpellLang * lang = new CMYSpellLang;
+
+        if(lang->Init(de))
+        {
             mLangs.push_back(lang);
+        }
         else
+        {
             delete lang;
+        }
     }
 
-#endif  //#if !defined(GCFG_NO_MSSPELL)
-
+#endif //#if !defined(GCFG_NO_MSSPELL)
     strcpy(mXlatLocalset, codeset);
-
     return mInited = (mLangs.size() > 0);
-}
-
+} // CSpellChecker::Init
 
 //  ------------------------------------------------------------------
-
 void CSpellChecker::Close()
 {
-    if (!IsInited()) return;
+    if(!IsInited())
+    {
+        return;
+    }
+
     UnLoad();
     CSpellLangV::iterator it;
-    for (it = mLangs.begin(); it != mLangs.end(); it++)
+
+    for(it = mLangs.begin(); it != mLangs.end(); it++)
     {
-        delete(*it);
+        delete (*it);
     }
     mLangs.clear();
     mInited = false;
 }
 
-
 //  ------------------------------------------------------------------
-
-bool CSpellChecker::Load(const char *langId, const char *userDic)
+bool CSpellChecker::Load(const char * langId, const char * userDic)
 {
-    if (!langId)
+    if(!langId)
     {
-        LOG.errpointer(__FILE__,__LINE__);
-        LOG.printf( "! Parameter is NULL pointer: CSpellChecker::Load(NULL,userDic). "
-                    "This is bug in program, please make report to developers." );
+        LOG.errpointer(__FILE__, __LINE__);
+        LOG.printf("! Parameter is NULL pointer: CSpellChecker::Load(NULL,userDic). "
+                   "This is bug in program, please make report to developers.");
         return false;
     }
 
-    if (!IsInited()) return false;
-    if (IsLoaded(langId))
+    if(!IsInited())
+    {
+        return false;
+    }
+
+    if(IsLoaded(langId))
     {
         return true;
     }
 
     CSpellLangV::iterator it;
-    for (it = mLangs.begin(); it != mLangs.end(); it++)
+
+    for(it = mLangs.begin(); it != mLangs.end(); it++)
     {
-        if (streql((*it)->GetLangCode(), langId) && (*it)->Load(mXlatLocalset, userDic))
+        if(streql((*it)->GetLangCode(), langId) && (*it)->Load(mXlatLocalset, userDic))
         {
             mLangsLoaded.push_back(*it);
             return true;
         }
     }
-
     return false;
-}
-
+} // CSpellChecker::Load
 
 //  ------------------------------------------------------------------
-
 void CSpellChecker::UnLoad()
 {
-    if (!IsLoaded()) return;
+    if(!IsLoaded())
+    {
+        return;
+    }
 
     CSpellLangV::iterator it;
-    for (it = mLangsLoaded.begin(); it != mLangsLoaded.end(); it++)
+
+    for(it = mLangsLoaded.begin(); it != mLangsLoaded.end(); it++)
     {
         (*it)->UnLoad();
     }
     mLangsLoaded.clear();
 }
 
-
 //  ------------------------------------------------------------------
-
-void CSpellChecker::UnLoad(const char *langId)
+void CSpellChecker::UnLoad(const char * langId)
 {
-    if (!langId)
+    if(!langId)
     {
-        LOG.errpointer(__FILE__,__LINE__);
-        LOG.printf( "! Parameter is NULL pointer: CSpellChecker::UnLoad(NULL). "
-                    "This is bug in program, please make report to developers." );
+        LOG.errpointer(__FILE__, __LINE__);
+        LOG.printf("! Parameter is NULL pointer: CSpellChecker::UnLoad(NULL). "
+                   "This is bug in program, please make report to developers.");
         return;
     }
-    if (!IsLoaded()) return;
+
+    if(!IsLoaded())
+    {
+        return;
+    }
 
     CSpellLangV::iterator it;
-    for (it = mLangsLoaded.begin(); it != mLangsLoaded.end(); it++)
+
+    for(it = mLangsLoaded.begin(); it != mLangsLoaded.end(); it++)
     {
-        if (streql((*it)->GetLangCode(), langId))
+        if(streql((*it)->GetLangCode(), langId))
         {
             (*it)->UnLoad();
             mLangsLoaded.erase(it);
@@ -912,24 +968,27 @@ void CSpellChecker::UnLoad(const char *langId)
     }
 }
 
-
 //  ------------------------------------------------------------------
-
-bool CSpellChecker::Check(const char *text)
+bool CSpellChecker::Check(const char * text)
 {
-    if (!IsLoaded()) return true;
-    if (!text)
+    if(!IsLoaded())
     {
-        LOG.errpointer(__FILE__,__LINE__);
-        LOG.printf( "! Parameter is NULL pointer: CSpellChecker::Check(NULL). "
-                    "This is bug in program, please make report to developers." );
+        return true;
+    }
+
+    if(!text)
+    {
+        LOG.errpointer(__FILE__, __LINE__);
+        LOG.printf("! Parameter is NULL pointer: CSpellChecker::Check(NULL). "
+                   "This is bug in program, please make report to developers.");
         return false;
     }
 
     CSpellLangV::iterator it;
-    for (it = mLangsLoaded.begin(); it != mLangsLoaded.end(); it++)
+
+    for(it = mLangsLoaded.begin(); it != mLangsLoaded.end(); it++)
     {
-        if ((*it)->SpellCheck(text))
+        if((*it)->SpellCheck(text))
         {
             return true;
         }
@@ -937,105 +996,102 @@ bool CSpellChecker::Check(const char *text)
     return false;
 }
 
-
 //  ------------------------------------------------------------------
-
-CSpellSuggestV &CSpellChecker::Suggest(const char* text)
+CSpellSuggestV & CSpellChecker::Suggest(const char * text)
 {
     mSuggest.clear();
-    if (!IsLoaded()) return mSuggest;
+
+    if(!IsLoaded())
+    {
+        return mSuggest;
+    }
 
     CSpellLangV::iterator it;
-    for (it = mLangsLoaded.begin(); it != mLangsLoaded.end(); it++)
+
+    for(it = mLangsLoaded.begin(); it != mLangsLoaded.end(); it++)
     {
         (*it)->BuildSuggest(text, mSuggest);
     }
-
     std::sort(mSuggest.begin(), mSuggest.end());
     mSuggest.erase(std::unique(mSuggest.begin(), mSuggest.end()), mSuggest.end());
-
     return mSuggest;
 }
 
-
 //  ------------------------------------------------------------------
-
-bool CSpellChecker::AddWord(const char *text)
+bool CSpellChecker::AddWord(const char * text)
 {
-    if (IsLoaded())
+    if(IsLoaded())
     {
         CSpellLangV::iterator it;
-        for (it = mLangsLoaded.begin(); it != mLangsLoaded.end(); it++)
+
+        for(it = mLangsLoaded.begin(); it != mLangsLoaded.end(); it++)
         {
             // Only one language has user dictionary loaded.
-            if ((*it)->AddWord(text)) return true;
+            if((*it)->AddWord(text))
+            {
+                return true;
+            }
         }
     }
 
     return false;
 }
 
-
 //  ------------------------------------------------------------------
-
-const std::vector<const char*> CSpellChecker::GetLangCodes()
+const std::vector<const char *> CSpellChecker::GetLangCodes()
 {
-    std::vector<const char*> codes;
-
+    std::vector<const char *> codes;
     CSpellLangV::iterator it;
-    for (it = mLangsLoaded.begin(); it != mLangsLoaded.end(); it++)
+
+    for(it = mLangsLoaded.begin(); it != mLangsLoaded.end(); it++)
     {
         codes.push_back((*it)->GetLangCode());
     }
     return codes;
 }
 
-
 //  ------------------------------------------------------------------
-
 bool CSpellChecker::IsUdrLoaded()
 {
-    if (IsLoaded())
+    if(IsLoaded())
     {
         CSpellLangV::iterator it;
-        for (it = mLangsLoaded.begin(); it != mLangsLoaded.end(); it++)
+
+        for(it = mLangsLoaded.begin(); it != mLangsLoaded.end(); it++)
         {
-            if ((*it)->IsUdrLoaded()) return true;
+            if((*it)->IsUdrLoaded())
+            {
+                return true;
+            }
         }
     }
 
     return false;
 }
 
-
 //  ------------------------------------------------------------------
-
-bool CSpellChecker::IsLoaded(const char *langId)
+bool CSpellChecker::IsLoaded(const char * langId)
 {
     CSpellLangV::iterator it;
-    for (it = mLangsLoaded.begin(); it != mLangsLoaded.end(); it++)
+
+    for(it = mLangsLoaded.begin(); it != mLangsLoaded.end(); it++)
     {
-        if (streql((*it)->GetLangCode(), langId))
+        if(streql((*it)->GetLangCode(), langId))
         {
             return true;
         }
     }
-
     return false;
 }
 
-
 //  ------------------------------------------------------------------
 
-#if !defined(GCFG_NO_MSSPELL)
+#if !defined (GCFG_NO_MSSPELL)
     #undef CHECK_ERROR
     #undef CHECK_NULL
     #undef CHECK_SEC
 #endif
-
-
 //  ------------------------------------------------------------------
 
-#endif  //#if defined(GCFG_SPELL_INCLUDED)
-
+#endif //#if defined(GCFG_SPELL_INCLUDED)
 //  ------------------------------------------------------------------

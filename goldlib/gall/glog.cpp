@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -30,44 +29,38 @@
 #include <gstrall.h>
 #include <gdbgerr.h>
 #include <glog.h>
-
-
 //  ------------------------------------------------------------------
-
 struct tm glog::time_now;
-int       glog::count = 0;
-time32_t  glog::secs_now;
-char      glog::timebuf[20];
-
-
+int glog::count = 0;
+time32_t glog::secs_now;
+char glog::timebuf[20];
 //  ------------------------------------------------------------------
-
 glog::glog()
 {
-
-    bufsize = 0;
-    logtype = GLOG_FD;
-    progname = NULL;
-    status = GOLD_NO_ERROR;
+    bufsize    = 0;
+    logtype    = GLOG_FD;
+    progname   = NULL;
+    status     = GOLD_NO_ERROR;
     storelines = -1;
 }
 
-
 //  ------------------------------------------------------------------
-
 glog::~glog()
 {
-
     close();
 }
 
-
 //  ------------------------------------------------------------------
-
-int glog::open(const char* filename, const char* name, const char* shortname, int type, uint bufsz, int shflag)
+int glog::open(const char * filename,
+               const char * name,
+               const char * shortname,
+               int type,
+               uint bufsz,
+               int shflag)
 {
     fp.Fopen(filename, "at", shflag);
-    if (fp.status)
+
+    if(fp.status)
     {
         status = fp.status;
         return status;
@@ -76,77 +69,90 @@ int glog::open(const char* filename, const char* name, const char* shortname, in
     count++;
     bufsize = bufsz;
     fp.SetvBuf(NULL, bufsize ? _IOFBF : _IONBF, bufsize);
-
     init(name, shortname, type);
-
     return status;
 }
 
-
 //  ------------------------------------------------------------------
-
 void glog::close()
 {
     fp.Fclose();
     count--;
 }
 
-
 //  ------------------------------------------------------------------
-
-void glog::init(const char* name, const char* shortname, int type)
+void glog::init(const char * name, const char * shortname, int type)
 {
-
-    lineswritten = 0;
-    logtype = (type!=GLOG_NONE) ? type : logtype;
-    progname = name ? name : progname;
+    lineswritten  = 0;
+    logtype       = (type != GLOG_NONE) ? type : logtype;
+    progname      = name ? name : progname;
     shortprogname = shortname ? shortname : (shortprogname ? shortprogname : progname);
 }
 
-
 //  ------------------------------------------------------------------
-
-void glog::printf(const char* format, ...)
+void glog::printf(const char * format, ...)
 {
-
     va_list argptr;
     char buf[256];
     char logbuf[256];
-
     secs_now = gtime(NULL);
     glocaltime(&time_now, &secs_now);
-
     lineswritten++;
 
     if(lineswritten == 1)
     {
-
         switch(logtype)
         {
+            case GLOG_FD:
+                sprintf(logbuf, "\n----------  %s, %s\n", strftimei(timebuf,
+                                                                    20,
+                                                                    "%a %d %b %y",
+                                                                    &time_now),
+                        progname);
+                break;
 
-        case GLOG_FD:
-            sprintf(logbuf, "\n----------  %s, %s\n", strftimei(timebuf, 20, "%a %d %b %y", &time_now), progname);
-            break;
+            case GLOG_MAX:
+                sprintf(logbuf,
+                        "\n+ %s %4.4s Begin, %s\n",
+                        strftimei(timebuf,
+                                  20,
+                                  "%d %b %H:%M:%S",
+                                  &time_now),
+                        shortprogname,
+                        progname);
+                break;
 
-        case GLOG_MAX:
-            sprintf(logbuf, "\n+ %s %4.4s Begin, %s\n", strftimei(timebuf, 20, "%d %b %H:%M:%S", &time_now), shortprogname, progname);
-            break;
+            case GLOG_BINK:
+                sprintf(logbuf,
+                        "\n> %s %4.4s %s\n",
+                        strftimei(timebuf,
+                                  20,
+                                  "%d-%b %H:%M:%S",
+                                  &time_now),
+                        shortprogname,
+                        progname);
+                break;
 
-        case GLOG_BINK:
-            sprintf(logbuf, "\n> %s %4.4s %s\n", strftimei(timebuf, 20, "%d-%b %H:%M:%S", &time_now), shortprogname, progname);
-            break;
+            case GLOG_QBBS:
+                sprintf(logbuf,
+                        "\n%s  **************************************************\n%s  %s\n",
+                        strftimei(timebuf, 20, "%d-%b-%y %H:%M", &time_now),
+                        timebuf,
+                        progname);
+                break;
 
-        case GLOG_QBBS:
-            sprintf(logbuf, "\n%s  **************************************************\n%s  %s\n", strftimei(timebuf, 20, "%d-%b-%y %H:%M", &time_now), timebuf, progname);
-            break;
-
-        case GLOG_DB:
-            sprintf(logbuf, "\n%s  %s\n", strftimei(timebuf, 20, "%m/%d/%y %H:%M", &time_now), progname);
-            break;
+            case GLOG_DB:
+                sprintf(logbuf, "\n%s  %s\n", strftimei(timebuf,
+                                                        20,
+                                                        "%m/%d/%y %H:%M",
+                                                        &time_now), progname);
+                break;
         }
 
-        if (fp.isopen())
+        if(fp.isopen())
+        {
             fp.Printf("%s", logbuf);
+        }
     }
 
     *buf = NUL;
@@ -155,58 +161,84 @@ void glog::printf(const char* format, ...)
     va_end(argptr);
 
     if(*buf == '!')
+    {
         store();
+    }
 
     switch(logtype)
     {
+        case GLOG_FD:
+            sprintf(logbuf, "%c %s  %s", *buf, strftimei(timebuf,
+                                                         10,
+                                                         "%H:%M:%S",
+                                                         &time_now), buf + 2);
+            break;
 
-    case GLOG_FD:
-        sprintf(logbuf, "%c %s  %s", *buf, strftimei(timebuf, 10, "%H:%M:%S", &time_now), buf+2);
-        break;
+        case GLOG_MAX:
+            sprintf(logbuf,
+                    "%c %s %4.4s %s",
+                    *buf,
+                    strftimei(timebuf,
+                              20,
+                              "%d %b %H:%M:%S",
+                              &time_now),
+                    shortprogname,
+                    buf + 2);
+            break;
 
-    case GLOG_MAX:
-        sprintf(logbuf, "%c %s %4.4s %s", *buf, strftimei(timebuf, 20, "%d %b %H:%M:%S", &time_now), shortprogname, buf+2);
-        break;
+        case GLOG_BINK:
+            sprintf(logbuf,
+                    "%c %s %4.4s %s",
+                    *buf,
+                    strftimei(timebuf,
+                              20,
+                              "%d-%b %H:%M:%S",
+                              &time_now),
+                    shortprogname,
+                    buf + 2);
+            break;
 
-    case GLOG_BINK:
-        sprintf(logbuf, "%c %s %4.4s %s", *buf, strftimei(timebuf, 20, "%d-%b %H:%M:%S", &time_now), shortprogname, buf+2);
-        break;
+        case GLOG_QBBS:
+            sprintf(logbuf,
+                    "%s  %s",
+                    strftimei(timebuf, 20, "%d-%b-%y %H:%M", &time_now),
+                    buf + 2);
+            break;
 
-    case GLOG_QBBS:
-        sprintf(logbuf, "%s  %s", strftimei(timebuf, 20, "%d-%b-%y %H:%M", &time_now), buf+2);
-        break;
-
-    case GLOG_DB:
-        sprintf(logbuf, "%s  %s", strftimei(timebuf, 20, "%m/%d/%y %H:%M", &time_now), buf+2);
-        break;
+        case GLOG_DB:
+            sprintf(logbuf,
+                    "%s  %s",
+                    strftimei(timebuf, 20, "%m/%d/%y %H:%M", &time_now),
+                    buf + 2);
+            break;
     }
-    if (fp.isopen())
+
+    if(fp.isopen())
     {
         fp.Printf("%s\n", logbuf);
         fp.Fflush();
     }
+
     if(storelines != -1)
     {
         if(storelines < GLOG_STORELINES)
+        {
             strxcpy(storeline[storelines], logbuf, 79);
+        }
+
         storelines++;
+    }
+} // glog::printf
+
+//  ------------------------------------------------------------------
+void glog::store()
+{
+    if(storelines == -1)
+    {
+        storelines = 0;
     }
 }
 
-
 //  ------------------------------------------------------------------
-
-void glog::store()
-{
-
-    if(storelines == -1)
-        storelines = 0;
-}
-
-
-//  ------------------------------------------------------------------
-
 glog LOG;
-
-
 //  ------------------------------------------------------------------

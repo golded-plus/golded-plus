@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -28,61 +27,61 @@
 #include <gfilutil.h>
 #include <gstrall.h>
 #include <gftnnlfu.h>
-
-
 //  ------------------------------------------------------------------
-
 bool ftn_fidouser_nodelist_index::getnode()
 {
-
 #ifdef DEBUG
     printf("<%05ld> ", node);
 #endif
 
-    lseekset(fh, (node-1L)*62L);
+    lseekset(fh, (node - 1L) * 62L);
+
     if(read(fh, nodebuf, 62) == 62)
     {
         nodebuf[60] = NUL;
-        char* ptr = strrchr(nodebuf, ' ');
+        char * ptr = strrchr(nodebuf, ' ');
+
         if(ptr)
         {
-            data.addr.reset(ptr+1);
+            data.addr.reset(ptr + 1);
             data.addr.make_string(data.address);
             *ptr = NUL;
             strtrim(nodebuf);
             strunrevname(data.name, nodebuf);
-            *data.status = NUL;
-            *data.system = NUL;
+            *data.status   = NUL;
+            *data.system   = NUL;
             *data.location = NUL;
-            *data.phone = NUL;
-            *data.baud = NUL;
-            *data.flags = NUL;
+            *data.phone    = NUL;
+            *data.baud     = NUL;
+            *data.flags    = NUL;
             return true;
         }
     }
 
     return false;
-}
-
+} // ftn_fidouser_nodelist_index::getnode
 
 //  ------------------------------------------------------------------
-
 int ftn_fidouser_nodelist_index::namecmp() const
 {
-
 #ifdef DEBUG
     printf("[%s] [%s] ", searchname, nodebuf);
 #endif
 
-    const char* a = searchname;
-    const char* b = nodebuf;
-    int n = 1;
+    const char * a = searchname;
+    const char * b = nodebuf;
+    int n          = 1;
     int d;
+
     while(1)
     {
         d = g_tolower(*a) - g_tolower(*b);
+
         if((d != 0) or (*a == NUL) or (*b == NUL))
+        {
             break;
+        }
+
         a++;
         b++;
         n++;
@@ -90,35 +89,36 @@ int ftn_fidouser_nodelist_index::namecmp() const
     return d != 0 ? (d > 0 ? n : -n) : 0;
 }
 
-
 //  ------------------------------------------------------------------
-
 bool ftn_fidouser_nodelist_index::search()
 {
-
     if(maxnode)
     {
-
         long mid;
-        long left = 0;
+        long left  = 0;
         long right = maxnode;
-        int diff = 0;
+        int diff   = 0;
         int prevdiff;
 
         do
         {
-            mid = (left+right)/2;
+            mid  = (left + right) / 2;
             node = mid + 1;
             getnode();
             prevdiff = diff;
-            diff = namecmp();
+            diff     = namecmp();
 #ifdef DEBUG
             printf("(%d)\n", diff);
 #endif
+
             if(diff < 0)
+            {
                 right = mid - 1;
+            }
             else if(diff > 0)
+            {
                 left = mid + 1;
+            }
             else
             {
                 exactmatch = true;
@@ -132,10 +132,11 @@ bool ftn_fidouser_nodelist_index::search()
             node = left + 1;
             getnode();
             prevdiff = diff;
-            diff = namecmp();
+            diff     = namecmp();
 #ifdef DEBUG
             printf("(%d)\n", diff);
 #endif
+
             if(diff == 0)
             {
                 exactmatch = true;
@@ -144,60 +145,62 @@ bool ftn_fidouser_nodelist_index::search()
         }
 
         if(absolute(prevdiff) > absolute(diff))
+        {
             previous();
+        }
         else
         {
             prevdiff = diff;
+
             if(next())
             {
                 diff = namecmp();
 #ifdef DEBUG
                 printf("(%d)\n", diff);
 #endif
+
                 if(absolute(prevdiff) >= absolute(diff))
+                {
                     previous();
+                }
             }
         }
     }
 
     exactmatch = false;
     return false;
-}
-
+} // ftn_fidouser_nodelist_index::search
 
 //  ------------------------------------------------------------------
-
 ftn_fidouser_nodelist_index::ftn_fidouser_nodelist_index()
 {
-
-    fh = -1;
-    isopen = false;
+    fh          = -1;
+    isopen      = false;
     nodebuf[62] = NUL;
-    node = 1;
-    namebrowse = true;
+    node        = 1;
+    namebrowse  = true;
 }
 
-
 //  ------------------------------------------------------------------
-
 ftn_fidouser_nodelist_index::~ftn_fidouser_nodelist_index()
 {
-
     if(isopen)
+    {
         close();
+    }
 }
 
-
 //  ------------------------------------------------------------------
-
 bool ftn_fidouser_nodelist_index::open()
 {
-
     if(isopen)
+    {
         close();
+    }
 
     // Open the list file
-    fh = ::sopen(nlpath, O_RDONLY|O_BINARY, SH_DENYNO, S_STDRD);
+    fh = ::sopen(nlpath, O_RDONLY | O_BINARY, SH_DENYNO, S_STDRD);
+
     if(fh == -1)
     {
         close();
@@ -206,43 +209,33 @@ bool ftn_fidouser_nodelist_index::open()
 
     maxnode = filelength(fh) / 62L;
     getnode();
-
     isopen = true;
-
     return true;
 }
 
-
 //  ------------------------------------------------------------------
-
 void ftn_fidouser_nodelist_index::close()
 {
+    if(fh != -1)
+    {
+        ::close(fh);
+    }
 
-    if(fh != -1)  ::close(fh);
-    fh = -1;
-
+    fh     = -1;
     isopen = false;
 }
 
-
 //  ------------------------------------------------------------------
-
-bool ftn_fidouser_nodelist_index::find(const char* lookup_name)
+bool ftn_fidouser_nodelist_index::find(const char * lookup_name)
 {
-
     namebrowse = true;
-
     struplow(strrevname(searchname, lookup_name));
-
     return search();
 }
 
-
 //  ------------------------------------------------------------------
-
 bool ftn_fidouser_nodelist_index::previous()
 {
-
     if(node > 1)
     {
         node--;
@@ -254,12 +247,9 @@ bool ftn_fidouser_nodelist_index::previous()
     return false;
 }
 
-
 //  ------------------------------------------------------------------
-
 bool ftn_fidouser_nodelist_index::next()
 {
-
     if(node < maxnode)
     {
         node++;
@@ -271,67 +261,47 @@ bool ftn_fidouser_nodelist_index::next()
     return false;
 }
 
-
 //  ------------------------------------------------------------------
-
 void ftn_fidouser_nodelist_index::first()
 {
-
     node = 1;
     getnode();
     compare();
 }
 
-
 //  ------------------------------------------------------------------
-
 void ftn_fidouser_nodelist_index::last()
 {
-
     node = maxnode;
     getnode();
     compare();
 }
 
-
 //  ------------------------------------------------------------------
-
 void ftn_fidouser_nodelist_index::push_state()
 {
-
     statenode = node;
 }
 
-
 //  ------------------------------------------------------------------
-
 void ftn_fidouser_nodelist_index::pop_state()
 {
-
     node = statenode;
     getnode();
     compare();
 }
 
-
 //  ------------------------------------------------------------------
-
-const char* ftn_fidouser_nodelist_index::index_name() const
+const char * ftn_fidouser_nodelist_index::index_name() const
 {
-
-    const char* ptr = strrchr(nlpath, '\\');
-    return ptr ? ptr+1 : nlpath;
+    const char * ptr = strrchr(nlpath, '\\');
+    return ptr ? ptr + 1 : nlpath;
 }
 
-
 //  ------------------------------------------------------------------
-
-const char* ftn_fidouser_nodelist_index::nodelist_name() const
+const char * ftn_fidouser_nodelist_index::nodelist_name() const
 {
-
     return NULL;
 }
 
-
 //  ------------------------------------------------------------------
-

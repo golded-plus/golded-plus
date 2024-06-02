@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -30,24 +29,20 @@
 #undef GCFG_NOPORTAL
 #include <gedacfg.h>
 #include <gs_pop.h>
-
-
 //  ------------------------------------------------------------------
-
-void gareafile::ReadPortal(char* tag)
+void gareafile::ReadPortal(char * tag)
 {
-
-    FILE* fp;
-    char* ptr;
-    char* ptr2;
+    FILE * fp;
+    char * ptr;
+    char * ptr2;
     AreaCfg aa;
     int poptask = 0;
     Path path, file;
     char options[80];
-
     *file = NUL;
     strcpy(options, tag);
     ptr = strtok(tag, " \t");
+
     while(ptr)
     {
         if(*ptr != '-')
@@ -55,34 +50,44 @@ void gareafile::ReadPortal(char* tag)
             AddBackslash(strcpy(path, ptr));
             break;
         }
+
         ptr = strtok(NULL, " \t");
     }
+
     if(*file == NUL)
     {
         ptr = getenv("POPCMDLINE");
+
         if(ptr)
         {
             while(*ptr)
             {
                 if(strnieql(ptr, "-T", 2))
-                    poptask = atoi(ptr+2);
+                {
+                    poptask = atoi(ptr + 2);
+                }
                 else if(strnieql(ptr, "-H", 2))
                 {
-                    ptr2 = strskip_txt(strcpy(path, ptr+2));
+                    ptr2  = strskip_txt(strcpy(path, ptr + 2));
                     *ptr2 = NUL;
                     AddBackslash(path);
                 }
-                else if(*ptr != '-' and *ptr != '/')
+                else if(*ptr != '-' and * ptr != '/')
                 {
-                    ptr2 = strskip_txt(strcpy(file, ptr));
+                    ptr2 = strskip_txt(strcpy(file,
+                                              ptr));
                     *ptr2 = NUL;
                 }
+
                 ptr = strskip_wht(strskip_txt(ptr));
             }
         }
     }
+
     if(*path == NUL)
+    {
         strcpy(path, areapath);
+    }
 
     ConfigP popcfg = new ConfigT;
     throw_new(popcfg);
@@ -90,17 +95,21 @@ void gareafile::ReadPortal(char* tag)
     if(*file == NUL)
     {
         if(poptask)
+        {
             sprintf(file, "portal%02u.cfg", poptask);
+        }
         else
+        {
             strcpy(file, "portal.cfg");
+        }
+
         MakePathname(file, path, file);
     }
 
     fp = fsopen(file, "rb", sharemode);
+
     if(fp)
     {
-
-
         fread(popcfg, sizeof(ConfigT), 1, fp);
         fclose(fp);
 
@@ -108,11 +117,11 @@ void gareafile::ReadPortal(char* tag)
         if(popcfg->MailScanner.NetMailBoard and popcfg->MailScanner.NetMailBoard < 201)
         {
             aa.reset();
-            aa.aka = CAST(ftn_addr, popcfg->Adresses[popcfg->MainAdrNum]);
+            aa.aka      = CAST(ftn_addr, popcfg->Adresses[popcfg->MainAdrNum]);
             aa.basetype = "HUDSON";
-            aa.type = GMB_NET;
-            aa.attr = attribsnet;
-            aa.board = popcfg->MailScanner.NetMailBoard;
+            aa.type     = GMB_NET;
+            aa.attr     = attribsnet;
+            aa.board    = popcfg->MailScanner.NetMailBoard;
             strcpy(aa.desc, "Portal Netmail");
             aa.setautoid("NETMAIL");
             AddNewArea(aa);
@@ -120,10 +129,10 @@ void gareafile::ReadPortal(char* tag)
         else if(not strblank(popcfg->MailScanner.NetMailDir))
         {
             aa.reset();
-            aa.aka = CAST(ftn_addr, popcfg->Adresses[popcfg->MainAdrNum]);
+            aa.aka      = CAST(ftn_addr, popcfg->Adresses[popcfg->MainAdrNum]);
             aa.basetype = fidomsgtype;
-            aa.type = GMB_NET;
-            aa.attr = attribsnet;
+            aa.type     = GMB_NET;
+            aa.attr     = attribsnet;
             aa.setpath(popcfg->MailScanner.NetMailDir);
             aa.setdesc("Portal Netmail");
             aa.setautoid("NETMAIL");
@@ -134,10 +143,10 @@ void gareafile::ReadPortal(char* tag)
         if(not strblank(popcfg->MailScanner.BadMsgs))
         {
             aa.reset();
-            aa.aka = CAST(ftn_addr, popcfg->Adresses[popcfg->MainAdrNum]);
+            aa.aka      = CAST(ftn_addr, popcfg->Adresses[popcfg->MainAdrNum]);
             aa.basetype = fidomsgtype;
-            aa.type = GMB_ECHO;
-            aa.attr = attribsecho;
+            aa.type     = GMB_ECHO;
+            aa.attr     = attribsecho;
             aa.setpath(popcfg->MailScanner.BadMsgs);
             aa.setdesc("Portal Bad Msgs");
             aa.setautoid("ECHO_BAD");
@@ -148,10 +157,10 @@ void gareafile::ReadPortal(char* tag)
         if(not strblank(popcfg->MailScanner.SaveDupesDir))
         {
             aa.reset();
-            aa.aka = CAST(ftn_addr, popcfg->Adresses[popcfg->MainAdrNum]);
+            aa.aka      = CAST(ftn_addr, popcfg->Adresses[popcfg->MainAdrNum]);
             aa.basetype = fidomsgtype;
-            aa.type = GMB_ECHO;
-            aa.attr = attribsecho;
+            aa.type     = GMB_ECHO;
+            aa.attr     = attribsecho;
             aa.setpath(popcfg->MailScanner.SaveDupesDir);
             aa.setdesc("Portal Saved Dupes");
             aa.setautoid("ECHO_DUPES");
@@ -160,24 +169,22 @@ void gareafile::ReadPortal(char* tag)
 
         AreasTypeP poparea = new AreasTypeT;
         throw_new(poparea);
-
         MakePathname(file, path, "portal.are");
-
         fp = fsopen(file, "rb", sharemode);
+
         if(fp)
         {
-
-
             while(fread(poparea, sizeof(AreasTypeT), 1, fp) == 1)
             {
-
                 if(*poparea->Directory != 0)
                 {
-
                     aa.reset();
-                    aa.aka = CAST(ftn_addr, poparea->UsedAka ? popcfg->Adresses[popcfg->MainAdrNum] : popcfg->Adresses[poparea->UsedAka]);
-                    aa.type = GMB_ECHO;
-                    aa.attr = attribsecho;
+                    aa.aka = CAST(ftn_addr,
+                                  poparea->UsedAka ?
+                                  popcfg->Adresses[popcfg->MainAdrNum] :
+                                  popcfg->Adresses[poparea->UsedAka]);
+                    aa.type     = GMB_ECHO;
+                    aa.attr     = attribsecho;
                     aa.basetype = fidomsgtype;
                     aa.setdesc(STRNP2C(poparea->Description));
                     aa.setechoid(STRNP2C(poparea->EchoNames[0]));
@@ -185,7 +192,6 @@ void gareafile::ReadPortal(char* tag)
                     AddNewArea(aa);
                 }
             }
-
             fclose(fp);
         }
 
@@ -193,7 +199,6 @@ void gareafile::ReadPortal(char* tag)
     }
 
     throw_delete(popcfg);
-}
-
+} // gareafile::ReadPortal
 
 //  ------------------------------------------------------------------

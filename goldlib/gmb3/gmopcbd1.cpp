@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -31,140 +30,166 @@
 #include <gutlmisc.h>
 #include <gmoprot.h>
 #include <gmopcbd.h>
-
-
 //  ------------------------------------------------------------------
-
-PcbData* pcbdata = NULL;
-PcbWide* pcbwide = NULL;
-int      pcbdatano = 0;
-
-
+PcbData * pcbdata = NULL;
+PcbWide * pcbwide = NULL;
+int pcbdatano     = 0;
 // ------------------------------------------------------------------
-
 void PcbExit()
 {
-
     if(pcbwide)
     {
         throw_free(pcbwide->lastread);
         delete pcbwide->user;
     }
+
     throw_xrelease(pcbwide);
     throw_xrelease(pcbdata);
 }
 
-
 // ------------------------------------------------------------------
-
-void PcbInit(const char* path, int userno)
+void PcbInit(const char * path, int userno)
 {
-
-    pcbdata = (PcbData*)throw_calloc(3, sizeof(PcbData));
-    pcbwide = (PcbWide*)throw_calloc(1, sizeof(PcbWide));
-
-    pcbwide->path = path;
+    pcbdata         = (PcbData *)throw_calloc(3, sizeof(PcbData));
+    pcbwide         = (PcbWide *)throw_calloc(1, sizeof(PcbWide));
+    pcbwide->path   = path;
     pcbwide->userno = userno;
-
-    pcbwide->fhusr = pcbwide->fhinf = -1;
-
-    pcbwide->user = new PcbUser;
+    pcbwide->fhusr  = pcbwide->fhinf = -1;
+    pcbwide->user   = new PcbUser;
     throw_new(pcbwide->user);
-
     // Get PCBoard path
     Path _path;
-    char* _ptr = getenv("PCBOARD");
+    char * _ptr = getenv("PCBOARD");
+
     if(_ptr)
+    {
         AddBackslash(strcpy(_path, _ptr));
+    }
     else
+    {
         strcpy(_path, path);
+    }
 
     Path _cnamespath;
     *_cnamespath = NUL;
-
     // Open PCBOARD.DAT
-    const char* _file = AddPath(_path, "PCBOARD.DAT");
+    const char * _file = AddPath(_path, "PCBOARD.DAT");
     gfile fp(_file, "rt", WideSharemode);
-    if (fp.isopen())
+
+    if(fp.isopen())
     {
         // Get some paths/filenames
         int _line = 0;
         char _buf[256];
         fp.SetvBuf(NULL, _IOFBF, BUFSIZ);
-        while (fp.Fgets(_buf, sizeof(_buf)))
+
+        while(fp.Fgets(_buf, sizeof(_buf)))
         {
             _line++;
+
             if(_line == 28)
+            {
                 strxcpy(pcbwide->usersidxpath, strbtrim(_buf), sizeof(Path));
+            }
             else if(_line == 29)
+            {
                 strxcpy(pcbwide->users, strbtrim(_buf), sizeof(Path));
+            }
             else if(_line == 31)
+            {
                 strxcpy(_cnamespath, strbtrim(_buf), sizeof(Path));
+            }
             else if(_line == 180)
+            {
                 strxcpy(pcbwide->usersinf, strbtrim(_buf), sizeof(Path));
+            }
             else if(_line == 208)
+            {
                 pcbwide->foreign = atoi(_buf);
+            }
         }
         fp.Fclose();
-
         // Open CNAMES.@@@
         _file = AddPath(_cnamespath, ".@@@");
         fp.Fopen(_file, "rb", WideSharemode);
-
         // Get board numbers for lastread indexing in the userfiles
         word _recsize = 0;
         fp.SetvBuf(NULL, _IOFBF, BUFSIZ);
         fp.Fread(&_recsize, 2);
-        if (_recsize)
+
+        if(_recsize)
         {
-            PcbConf* _cnames = (PcbConf*)throw_calloc(1, _recsize);
-            int _rec = 0;
-            pcbwide->numareas = (int)((fp.FileLength()-2)/_recsize);
-            pcbwide->confbytelen = (pcbwide->numareas/8) + ((pcbwide->numareas%8) != 0 ? 1 : 0);
+            PcbConf * _cnames = (PcbConf *)throw_calloc(1, _recsize);
+            int _rec          = 0;
+            pcbwide->numareas    = (int)((fp.FileLength() - 2) / _recsize);
+            pcbwide->confbytelen = (pcbwide->numareas / 8) + ((pcbwide->numareas % 8) !=
+                                                              0 ? 1 : 0);
+
             if(pcbwide->confbytelen < 5)
+            {
                 pcbwide->confbytelen = 5;
+            }
+
             pcbwide->extconflen = pcbwide->confbytelen - 5;
-            pcbwide->lastread = (int32_t*)throw_calloc(pcbwide->numareas, sizeof(int32_t));
-            while (fp.Fread(_cnames, _recsize) == 1)
+            pcbwide->lastread   = (int32_t *)throw_calloc(pcbwide->numareas,
+                                                          sizeof(int32_t));
+
+            while(fp.Fread(_cnames, _recsize) == 1)
             {
                 PcbAdjustArea((uint)_rec, _cnames->msgfile);
                 _rec++;
             }
             throw_free(_cnames);
         }
-        fp.Fclose();
 
-        const char* _username = WideUsername[0];
-        pcbwide->user->gufh = ::sopen(AddPath(_path, pcbwide->users), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
-        if (pcbwide->user->gufh != -1)
+        fp.Fclose();
+        const char * _username = WideUsername[0];
+        pcbwide->user->gufh = ::sopen(AddPath(_path, pcbwide->users),
+                                      O_RDONLY | O_BINARY,
+                                      WideSharemode,
+                                      S_STDRD);
+
+        if(pcbwide->user->gufh != -1)
         {
-            pcbwide->user->fhinf = ::sopen(AddPath(_path, pcbwide->usersinf), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
+            pcbwide->user->fhinf = ::sopen(AddPath(_path, pcbwide->usersinf),
+                                           O_RDONLY | O_BINARY,
+                                           WideSharemode,
+                                           S_STDRD);
+
             if(pcbwide->user->fhinf != -1)
             {
                 ::read(pcbwide->user->fhinf, &pcbwide->usershdr, sizeof(PcbUsersInfHdr));
-                pcbwide->usershdrsize = sizeof(PcbUsersInfHdr) + (pcbwide->usershdr.numofapps*sizeof(PcbUsersInfApp));
-                pcbwide->user->usershdr = &pcbwide->usershdr;
+                pcbwide->usershdrsize = sizeof(PcbUsersInfHdr) +
+                                        (pcbwide->usershdr.numofapps *
+                                         sizeof(PcbUsersInfApp));
+                pcbwide->user->usershdr     = &pcbwide->usershdr;
                 pcbwide->user->usershdrsize = pcbwide->usershdrsize;
+
                 if(pcbwide->userno == -1)
                 {
                     pcbwide->user->find(_username);
+
                     if(not pcbwide->user->found)
                     {
                         pcbwide->userno = 0;
-                        //WideLog->printf("* User \"%s\" not found in %sUSERS.", _username, _path);
+                        //WideLog->printf("* User \"%s\" not found in %sUSERS.", _username,
+                        // _path);
                         //pcbwide->user->add(_username);
-                        //WideLog->printf("* Now added with user number %u.", pcbwide->user->index);
+                        //WideLog->printf("* Now added with user number %u.",
+                        // pcbwide->user->index);
                     }
                 }
+
                 close(pcbwide->user->fhinf);
             }
+
             close(pcbwide->user->gufh);
         }
+
         pcbwide->userno = pcbwide->user->index;
     }
     else
     {
-
         WideLog->ErrOpen();
         WideLog->printf("! Configured for PCBoard, but can't find it.");
         WideLog->printf(": %s.", _file);
@@ -172,17 +197,14 @@ void PcbInit(const char* path, int userno)
         WideLog->ErrOSInfo();
         OpenErrorExit();
     }
-}
-
+} // PcbInit
 
 // ------------------------------------------------------------------
-
 void PcbArea::open()
 {
-
     GFTRK("PcbOpen");
-
     isopen++;
+
     if(isopen > 2)
     {
         WideLog->ErrTest();
@@ -192,17 +214,23 @@ void PcbArea::open()
         WideLog->printf("+ Advice: Report to the Author immediately.");
         TestErrorExit();
     }
+
     if(isopen == 1)
     {
         if(ispacked())
         {
             isopen--;
-            const char* newpath = Unpack(path());
+            const char * newpath = Unpack(path());
+
             if(newpath == NULL)
+            {
                 packed(false);
+            }
+
             set_real_path(newpath ? newpath : path());
             isopen++;
         }
+
         PcbWideOpen();
         data_open();
         raw_open();
@@ -210,24 +238,21 @@ void PcbArea::open()
     }
 
     GFTRK(0);
-}
-
+} // PcbArea::open
 
 // ------------------------------------------------------------------
-
 void PcbArea::save_lastread()
 {
-
     GFTRK("PcbSaveLastread");
-
     dword tmplr = Msgn->CvtReln(lastread);
+
     if(board() < 40)
     {
         // Write lastreads to USERS file
-        lseekset(wide->fhusr, wide->userno*sizeof(PcbUsers));
+        lseekset(wide->fhusr, wide->userno * sizeof(PcbUsers));
         read(wide->fhusr, &wide->usersrec, sizeof(PcbUsers));
         wide->usersrec.lastmsgread[board()] = L2B(tmplr);
-        lseekset(wide->fhusr, wide->userno*sizeof(PcbUsers));
+        lseekset(wide->fhusr, wide->userno * sizeof(PcbUsers));
         write(wide->fhusr, &wide->usersrec, sizeof(PcbUsers));
     }
     else
@@ -235,9 +260,10 @@ void PcbArea::save_lastread()
         // Write lastreads to USERS.INF file
         if(wide->extconflen)
         {
-            int32_t _offset = (wide->usersrec.usersinfrec-1)*wide->usershdr.totalrecsize;
-            _offset +=     wide->usershdrsize;
-            _offset +=     wide->usershdr.sizeofrec;
+            int32_t _offset = (wide->usersrec.usersinfrec - 1) *
+                              wide->usershdr.totalrecsize;
+            _offset += wide->usershdrsize;
+            _offset += wide->usershdr.sizeofrec;
             _offset += 2 * wide->confbytelen;
             _offset += 3 * wide->extconflen;
             _offset += sizeof(dword) * (board() - 40);
@@ -247,14 +273,11 @@ void PcbArea::save_lastread()
     }
 
     GFTRK(0);
-}
-
+} // PcbArea::save_lastread
 
 // ------------------------------------------------------------------
-
 void PcbArea::close()
 {
-
     GFTRK("PcbClose");
 
     if(isopen)
@@ -266,11 +289,13 @@ void PcbArea::close()
             Msgn->Reset();
             data_close();
             PcbWideClose();
+
             if(ispacked())
             {
                 CleanUnpacked(real_path());
             }
         }
+
         isopen--;
     }
     else
@@ -284,36 +309,25 @@ void PcbArea::close()
     }
 
     GFTRK(0);
-}
-
+} // PcbArea::close
 
 // ------------------------------------------------------------------
-
 void PcbArea::suspend()
 {
-
     GFTRK("PcbSuspend");
-
     save_lastread();
     raw_close();
     PcbWideClose();
-
     GFTRK(0);
 }
-
 
 // ------------------------------------------------------------------
-
 void PcbArea::resume()
 {
-
     GFTRK("PcbResume");
-
     PcbWideOpen();
     raw_open();
-
     GFTRK(0);
 }
-
 
 // ------------------------------------------------------------------

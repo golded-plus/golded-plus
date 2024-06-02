@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -26,48 +25,56 @@
 
 #include <cstdio>
 #include <gmemall.h>
-
-
 //  ------------------------------------------------------------------
 //  Dump 16 bytes as hex and characters
-
-char* HexDump16(char* strbuf, const char* memptr, int limit, const char* fmt, int fmtno)
+char * HexDump16(char * strbuf,
+                 const char * memptr,
+                 int limit,
+                 const char * fmt,
+                 int fmtno)
 {
-
     int n;
     word mem[16];
     char str[17];
-    word* mptr=mem;
-    char* sptr=str;
-    const char* fmts[] =
-    {
-        fmt,
-        "%02X%02X %02X%02X %02X%02X %02X%02X  %02X%02X %02X%02X %02X%02X %02X%02X  %s",
-        "%02X %02X %02X %02X  %02X %02X %02X %02X  %02X %02X %02X %02X  %02X %02X %02X %02X  %s"
-    };
-
+    word * mptr         = mem;
+    char * sptr         = str;
+    const char * fmts[] = {fmt,
+                           "%02X%02X %02X%02X %02X%02X %02X%02X  %02X%02X %02X%02X %02X%02X %02X%02X  %s",
+                           "%02X %02X %02X %02X  %02X %02X %02X %02X  %02X %02X %02X %02X  %02X %02X %02X %02X  %s"};
     limit = (limit > 16) ? 16 : limit;
 
-    for(n=0; n<limit; n++, memptr++)
+    for(n = 0; n < limit; n++, memptr++)
     {
         *mptr++ = *memptr;
         *sptr++ = *memptr >= ' ' ? *memptr : '.';
     }
-    for(; n<16; n++, memptr++)
+
+    for( ; n < 16; n++, memptr++)
     {
         *mptr++ = 0;
         *sptr++ = '.';
     }
     *sptr = NUL;
-
-    sprintf(strbuf, fmts[fmtno],
-            mem[0], mem[1], mem[2],  mem[3],  mem[4],  mem[5],  mem[6],  mem[7],
-            mem[8], mem[9], mem[10], mem[11], mem[12], mem[13], mem[14], mem[15],
-            str
-           );
-
+    sprintf(strbuf,
+            fmts[fmtno],
+            mem[0],
+            mem[1],
+            mem[2],
+            mem[3],
+            mem[4],
+            mem[5],
+            mem[6],
+            mem[7],
+            mem[8],
+            mem[9],
+            mem[10],
+            mem[11],
+            mem[12],
+            mem[13],
+            mem[14],
+            mem[15],
+            str);
     return strbuf;
 }
-
 
 //  ------------------------------------------------------------------

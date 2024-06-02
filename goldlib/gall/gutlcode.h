@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -27,92 +26,54 @@
 
 #ifndef __gutlcode_h
 #define __gutlcode_h
-
-
 //  ------------------------------------------------------------------
 
 #ifdef __GNUG__
     #pragma interface "gutlcode.h"
 #endif
-
-
 //  ------------------------------------------------------------------
 
 #include <gdefs.h>
-
-
 //  ------------------------------------------------------------------
-
 class code_engines
 {
-
-public:
-
-    virtual char* decode(char* outputbuffer, const char* inputbuffer) = 0;
+public: virtual char * decode(char * outputbuffer, const char * inputbuffer) = 0;
 };
 
-
 //  ------------------------------------------------------------------
-
 class uucode_engine : public code_engines
 {
-
-protected:
-
-    struct
+protected: struct
     {
         char blank;
         int  len[63];
         int  ch[256];
     } table;
-
     int initialized;
     int defining_table;
     int table_index;
-
     void initialize();
 
-public:
-
-    int complete;
-
+public: int complete;
     uucode_engine();
-
-    char* decode(char* outputbuffer, const char* inputbuffer);
+    char * decode(char * outputbuffer, const char * inputbuffer);
 };
-
-
 //  ------------------------------------------------------------------
-
 class quoted_printable_engine : public code_engines
 {
-
-protected:
-
-public:
-
-    char* decode(char* outputbuffer, const char* inputbuffer);
+protected: public: char * decode(char * outputbuffer, const char * inputbuffer);
 };
-
-
 //  ------------------------------------------------------------------
-
 class base64_engine : public code_engines
 {
-
-protected:
-
-    static char table[64];
-
-public:
-
-    char* decode(char* outputbuffer, const char* inputbuffer);
-    char* encode(char* outputbuffer, const char* inputbuffer, uint length, bool padding=true);
+protected: static char table[64];
+public: char * decode(char * outputbuffer, const char * inputbuffer);
+    char * encode(char * outputbuffer,
+                  const char * inputbuffer,
+                  uint length,
+                  bool padding = true);
 };
-
-
 //  ------------------------------------------------------------------
 
-#endif
-
+#endif // ifndef __gutlcode_h
 //  ------------------------------------------------------------------

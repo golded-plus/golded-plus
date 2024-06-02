@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -24,56 +23,44 @@
 
 #ifndef __g_sapi_h
 #define __g_sapi_h
-
-
 //  ------------------------------------------------------------------
 
 #include <gdefs.h>
-
-
 //  ------------------------------------------------------------------
 //  Goldware Sound API version
 
 #define GSAPI_VERSION 0x0100
-
-
 //  ------------------------------------------------------------------
 //  Goldware Sound API functions
 
-#define GSAPI_INSTALL_CHECK       0x00
-#define GSAPI_OPEN_API            0x10
-#define GSAPI_CLOSE_API           0x11
-#define GSAPI_OPEN_AND_LOAD_FILE  0x12
-#define GSAPI_CLOSE_FILE          0x13
-#define GSAPI_PLAY                0x14
-#define GSAPI_STOP                0x15
-#define GSAPI_PAUSE               0x16
-#define GSAPI_RESUME              0x17
-#define GSAPI_BREAK_LOOP          0x18
-#define GSAPI_SPEAKER_ON_OFF      0x19
-
-
+#define GSAPI_INSTALL_CHECK 0x00
+#define GSAPI_OPEN_API 0x10
+#define GSAPI_CLOSE_API 0x11
+#define GSAPI_OPEN_AND_LOAD_FILE 0x12
+#define GSAPI_CLOSE_FILE 0x13
+#define GSAPI_PLAY 0x14
+#define GSAPI_STOP 0x15
+#define GSAPI_PAUSE 0x16
+#define GSAPI_RESUME 0x17
+#define GSAPI_BREAK_LOOP 0x18
+#define GSAPI_SPEAKER_ON_OFF 0x19
 //  ------------------------------------------------------------------
 //  Goldware Sound API data structure
-
 struct gsapidata
 {
-    word driver_version;
-    word dsp_version;
-    word io_port;
-    byte irq_number;
-    byte dma_channel;
-    word sample_rate;
+    word          driver_version;
+    word          dsp_version;
+    word          io_port;
+    byte          irq_number;
+    byte          dma_channel;
+    word          sample_rate;
     volatile word status;
-    word buffer_segment;
-    word buffer_offset;
-    long buffer_length;
-    char parameters[80];
-} __attribute__((packed));
-
-
+    word          buffer_segment;
+    word          buffer_offset;
+    long          buffer_length;
+    char          parameters[80];
+} __attribute__ ((packed));
 //  ------------------------------------------------------------------
 
-#endif
-
+#endif // ifndef __g_sapi_h
 //  ------------------------------------------------------------------

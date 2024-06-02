@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -29,111 +28,117 @@
 #include <gmemdbg.h>
 #include <glog.h>
 #include <stdlib.h>
-
 //  ------------------------------------------------------------------
 
-#if defined(GFTRK_ENABLE)
-
-
+#if defined (GFTRK_ENABLE)
 //  ------------------------------------------------------------------
 //  Externals
-
 extern glog LOG;
-
-
 //  ------------------------------------------------------------------
 //  Global vars
-
-int __gftrk = false;
-int __gftrk_on = true;
+int __gftrk     = false;
+int __gftrk_on  = true;
 int __gftrk_max = 50;
 int __gftrk_curr;
 int __gftrk_indent;
-GFTrk* __gftrk_ptr;
-GFTrk* __gftrk_list;
-
+GFTrk * __gftrk_ptr;
+GFTrk * __gftrk_list;
 int __gftrk_statusline = false;
-
-
 //  ------------------------------------------------------------------
-
 static void __gftrk_term(void)
 {
-
     if(__gftrk)
+    {
         free(__gftrk_list);
+    }
 }
 
-
 //  ------------------------------------------------------------------
-
 void __gftrk_init(int trackmax)
 {
-
     if(trackmax != -1)
+    {
         __gftrk_max = trackmax;
-    __gftrk_list = (GFTrk*)calloc(__gftrk_max, sizeof(GFTrk));
+    }
+
+    __gftrk_list = (GFTrk *)calloc(__gftrk_max, sizeof(GFTrk));
+
     if(__gftrk_list)
     {
-        __gftrk = true;
-        __gftrk_curr = 0;
+        __gftrk        = true;
+        __gftrk_curr   = 0;
         __gftrk_indent = 0;
         atexit(__gftrk_term);
     }
 }
 
-
 //  ------------------------------------------------------------------
-
 extern bool cmdlinedebughg;
-void update_statusline(const char* info);
+void update_statusline(const char * info);
 
-void __gftrk_track(const char* text)
+void __gftrk_track(const char * text)
 {
-
     if(__gftrk_on)
     {
         if(text)
         {
-            __gftrk_ptr = __gftrk_list + __gftrk_curr;
-            __gftrk_ptr->tick = clock();
-            __gftrk_ptr->text = *text ? text : text+1;
+            __gftrk_ptr         = __gftrk_list + __gftrk_curr;
+            __gftrk_ptr->tick   = clock();
+            __gftrk_ptr->text   = *text ? text : text + 1;
             __gftrk_ptr->indent = __gftrk_indent;
+
             if(*text)
             {
                 __gftrk_indent++;
+
                 if(__gftrk_statusline)
+                {
                     update_statusline(text);
+                }
+
                 if(cmdlinedebughg)
-                    LOG.printf("- %08u  %*s%s", __gftrk_ptr->tick, __gftrk_ptr->indent*2, "", __gftrk_ptr->text);
+                {
+                    LOG.printf("- %08u  %*s%s",
+                               __gftrk_ptr->tick,
+                               __gftrk_ptr->indent * 2,
+                               "",
+                               __gftrk_ptr->text);
+                }
             }
+
             __gftrk_curr = (++__gftrk_curr) % __gftrk_max;
         }
         else
         {
             __gftrk_indent--;
         }
-        if(__gftrk_statusline)
-            THROW_CHECK();
-    }
-}
 
+        if(__gftrk_statusline)
+        {
+            THROW_CHECK();
+        }
+    }
+} // __gftrk_track
 
 //  ------------------------------------------------------------------
-
 void __gftrk_log()
 {
-
     if(__gftrk)
     {
         int _curr = __gftrk_curr - 1;
+
         if(_curr == -1)
+        {
             _curr = __gftrk_max - 1;
+        }
+
         int _count = 0;
         int _first = true;
+
         while(_count < __gftrk_max)
         {
-            GFTrk* _ptr = __gftrk_list + _curr;
+            GFTrk * _ptr = __gftrk_list + _curr;
+
             if(_ptr->text)
             {
                 if(_first)
@@ -141,19 +146,23 @@ void __gftrk_log()
                     LOG.printf("! Function track dump follows:");
                     _first = false;
                 }
-                LOG.printf("- %08u  %*s%s", _ptr->tick, _ptr->indent*2, "", _ptr->text);
+
+                LOG.printf("- %08u  %*s%s", _ptr->tick, _ptr->indent * 2, "",
+                           _ptr->text);
             }
+
             _count++;
             _curr--;
+
             if(_curr == -1)
+            {
                 _curr = __gftrk_max - 1;
+            }
         }
     }
-}
-
+} // __gftrk_log
 
 //  ------------------------------------------------------------------
 
-#endif
-
+#endif // if defined (GFTRK_ENABLE)
 //  ------------------------------------------------------------------

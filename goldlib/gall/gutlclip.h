@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -27,49 +26,34 @@
 
 #ifndef __gutlclip_h
 #define __gutlclip_h
-
-
 //  ------------------------------------------------------------------
 
 #include <gdefs.h>
-
-
 //  ------------------------------------------------------------------
 
-#if defined(__OS2__)
-    #define CLIP_NAME "OS/2 Clipboard"
-#elif defined(__WIN32__) || defined(__MSDOS__)
-    #define CLIP_NAME "Windows Clipboard"
-#elif defined(__BEOS__)
-    #define CLIP_NAME "BeOS Clipboard"
+#if defined (__OS2__)
+#define CLIP_NAME "OS/2 Clipboard"
+#elif defined (__WIN32__) || defined (__MSDOS__)
+#define CLIP_NAME "Windows Clipboard"
+#elif defined (__BEOS__)
+#define CLIP_NAME "BeOS Clipboard"
 #else
-    #define CLIP_NAME "Fake Clipboard"
+#define CLIP_NAME "Fake Clipboard"
 #endif
-
-
 //  ------------------------------------------------------------------
-
 class gclipbrd
 {
-
-    char *clipdata, *cliphdl;
+    char * clipdata, * cliphdl;
     int len;
-
-public:
-
-    bool openread();
-    char* read(char* buffer, int maxlen);
+public: bool openread();
+    char * read(char * buffer, int maxlen);
     void close();
-
-    bool writeclipbrd(const char* buf);
+    bool writeclipbrd(const char * buf);
 
     gclipbrd();
-
 };
-
 
 //  ------------------------------------------------------------------
 
-#endif
-
+#endif // ifndef __gutlclip_h
 //  ------------------------------------------------------------------

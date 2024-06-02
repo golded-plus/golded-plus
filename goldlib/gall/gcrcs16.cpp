@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -27,61 +26,64 @@
 
 #include <gctype.h>
 #include <gcrcall.h>
-
-
 //  ------------------------------------------------------------------
 //  Generate CRC-16 of a normal nul-terminated string
-
-word strCrc16(const char* s, bool __case, word mask)
+word strCrc16(const char * s, bool __case, word mask)
 {
-
     word crc = mask;
 
     if(__case)
     {
         while(*s)
+        {
             crc = updCrc16(g_toupper(*s++), crc);
+        }
     }
     else
     {
         while(*s)
+        {
             crc = updCrc16(*s++, crc);
+        }
     }
 
     return crc;
 }
-
 
 //  ------------------------------------------------------------------
 //  Generate bugfree CRC-16 of a normal nul-terminated string
-
-word strCrc16c(const char* s, bool __case, word mask)
+word strCrc16c(const char * s, bool __case, word mask)
 {
-
     word crc = mask;
 
     if(__case)
     {
         while(*s)
+        {
             crc = updCrc16c(g_toupper(*s++), crc);
+        }
     }
     else
     {
         while(*s)
+        {
             crc = updCrc16c(*s++, crc);
+        }
     }
 
     return crc;
 }
-
 
 //  ------------------------------------------------------------------
 
 #ifdef TEST
 #include <stdio.h>
-int main(int argc, char**argv)
+int main(int argc, char ** argv)
 {
-    for ( int c=1; c<argc; c++ )
-        printf( "%s CRC16 0x%04X\n", argv[c], strCrc16(argv[c]) );
+    for( int c = 1; c < argc; c++ )
+    {
+        printf("%s CRC16 0x%04X\n", argv[c], strCrc16(argv[c]));
+    }
 }
+
 #endif

@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -24,33 +23,26 @@
 //  ------------------------------------------------------------------
 //  Hudson / Goldbase msgbase handling
 //  ------------------------------------------------------------------
-
-
 //  ------------------------------------------------------------------
-
-template <class msgn_t, class rec_t, class attr_t, class board_t, class last_t, bool __HUDSON>
-void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::data_open()
+template <class msgn_t, class rec_t, class attr_t, class board_t, class last_t,
+          bool __HUDSON> void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t,
+                                        __HUDSON>::data_open()
 {
-
-    wide = (HudsWide*) (__HUDSON ? (void *)hudsonwide : (void *)goldbasewide);
+    wide = (HudsWide *)(__HUDSON ? (void *)hudsonwide : (void *)goldbasewide);
 }
 
-
 //  ------------------------------------------------------------------
-
-template <class msgn_t, class rec_t, class attr_t, class board_t, class last_t, bool __HUDSON>
-void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::data_close()
+template <class msgn_t, class rec_t, class attr_t, class board_t, class last_t,
+          bool __HUDSON> void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t,
+                                        __HUDSON>::data_close()
 {
-
 }
 
-
 //  ------------------------------------------------------------------
-
-template <class msgn_t, class rec_t, class attr_t, class board_t, class last_t, bool __HUDSON>
-void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::exit()
+template <class msgn_t, class rec_t, class attr_t, class board_t, class last_t,
+          bool __HUDSON> void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t,
+                                        __HUDSON>::exit()
 {
-
     if(__HUDSON)
     {
         delete hudsonwide->user;
@@ -63,38 +55,39 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::exit()
     }
 }
 
-
 //  ------------------------------------------------------------------
-
-template <class msgn_t, class rec_t, class attr_t, class board_t, class last_t, bool __HUDSON>
-void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::init()
+template <class msgn_t, class rec_t, class attr_t, class board_t, class last_t,
+          bool __HUDSON> void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t,
+                                        __HUDSON>::init()
 {
-
     GFTRK("HudsInit");
 
-    if (WideDebug)
+    if(WideDebug)
+    {
         WideLog->printf("- Begin init for %s.", path);
+    }
 
-    isopen = 0;
-    islocked = false;
+    isopen      = 0;
+    islocked    = false;
     timesposted = 0;
-    msgidxsize = 0;
-    msgidxptr = NULL;
-    pmscan = NULL;
-    scn = NULL;
+    msgidxsize  = 0;
+    msgidxptr   = NULL;
+    pmscan      = NULL;
+    scn         = NULL;
 
     // Open complete msgbase, create if none exists
-    if (not fexist(AddPath(path, __HUDSON ? "msghdr" HUDS_EXT : "msghdr" GOLD_EXT)))
+    if(not fexist(AddPath(path, __HUDSON ? "msghdr" HUDS_EXT : "msghdr" GOLD_EXT)))
     {
         WideLog->printf("* Creating new msgbase at %s", path);
         raw_open(O_CREAT);
 
-        if (fhinf.FileLength() == 0)
+        if(fhinf.FileLength() == 0)
         {
             memset(&msginfo, 0, sizeof(HudsInfo));
             fhinf.Write(&msginfo, sizeof(HudsInfo));
         }
-        if (fhlrd.FileLength() == 0)
+
+        if(fhlrd.FileLength() == 0)
         {
             memset(lastrec, 0, sizeof(HudsLast));
             fhlrd.Write(lastrec, sizeof(HudsLast));
@@ -109,22 +102,35 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::init()
     lock();
 
     // Check if MSGTXT.BBS is approaching dangerous size
-    if (__HUDSON and (fhtxt.FileLength() > sizewarn))
+    if(__HUDSON and (fhtxt.FileLength() > sizewarn))
+    {
         HudsSizewarn();
+    }
 
     // Check for mismatch between the header and the index files
-    uint _hdrsize = fhhdr.FileLength()/sizeof(HudsHdr);
-    uint _idxsize = fhidx.FileLength()/sizeof(HudsIdx);
-    uint _toisize = fhtoi.FileLength()/sizeof(HudsToIdx);
-    if ((_hdrsize != _idxsize) or (_hdrsize != _toisize))
+    uint _hdrsize = fhhdr.FileLength() / sizeof(HudsHdr);
+    uint _idxsize = fhidx.FileLength() / sizeof(HudsIdx);
+    uint _toisize = fhtoi.FileLength() / sizeof(HudsToIdx);
+
+    if((_hdrsize != _idxsize) or (_hdrsize != _toisize))
     {
         raw_close();
         HGWarnRebuild();
         WideLog->ErrIndex();
-        WideLog->printf("! The %s msgbase files do not have the same number of records.", __HUDSON ? HUDS_NAME : GOLD_NAME);
-        WideLog->printf(": %smsghdr%s   (%u records).", path, __HUDSON ? HUDS_EXT : GOLD_EXT, _hdrsize);
-        WideLog->printf(": %smsgidx%s   (%u records).", path, __HUDSON ? HUDS_EXT : GOLD_EXT, _idxsize);
-        WideLog->printf(": %smsgtoidx%s (%u records).", path, __HUDSON ? HUDS_EXT : GOLD_EXT, _toisize);
+        WideLog->printf("! The %s msgbase files do not have the same number of records.",
+                        __HUDSON ? HUDS_NAME : GOLD_NAME);
+        WideLog->printf(": %smsghdr%s   (%u records).",
+                        path,
+                        __HUDSON ? HUDS_EXT : GOLD_EXT,
+                        _hdrsize);
+        WideLog->printf(": %smsgidx%s   (%u records).",
+                        path,
+                        __HUDSON ? HUDS_EXT : GOLD_EXT,
+                        _idxsize);
+        WideLog->printf(": %smsgtoidx%s (%u records).",
+                        path,
+                        __HUDSON ? HUDS_EXT : GOLD_EXT,
+                        _toisize);
         WideLog->printf("+ Advice: You need to run a msgbase index rebuild utility.");
         IndexErrorExit();
     }
@@ -132,38 +138,53 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::init()
     // Detect USERS.BBS format unless user has configured it
     if(__HUDSON and (ra2usersbbs == 0))
     {
-
         // Get size of USERS.BBS
         int len = fhusr.FileLength();
-
         // Does size match Hudson format?
         int hudsmatch = (len % sizeof(HudsUsers)) == 0;
+
         if(hudsmatch)
+        {
             ra2usersbbs = 1;
+        }
 
         // Does size match RA2 format?
         int ra2match = (len % sizeof(RA2Users)) == 0;
+
         if(ra2match)
+        {
             ra2usersbbs = 2;
+        }
 
         // If it matches both of them
-        if (hudsmatch and ra2match)
+        if(hudsmatch and ra2match)
         {
             // Check version in CONFIG.RA to make sure
             Path rapath, file;
-            char* ptr = getenv("RA");
-            if (ptr) AddBackslash(strcpy(rapath, ptr));
-            MakePathname(file, rapath, "messages.ra");
+            char * ptr = getenv("RA");
 
-            gfile fh(file, O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
-            if (fh.isopen())
+            if(ptr)
+            {
+                AddBackslash(strcpy(rapath,
+                                    ptr));
+            }
+
+            MakePathname(file, rapath, "messages.ra");
+            gfile fh(file, O_RDONLY | O_BINARY, WideSharemode, S_STDRD);
+
+            if(fh.isopen())
             {
                 word VersionID = 0;
                 fh.Read(&VersionID, sizeof(word));
-                if (VersionID >= 0x200)
+
+                if(VersionID >= 0x200)
+                {
                     ra2usersbbs = 2;
+                }
                 else
+                {
                     ra2usersbbs = 1;
+                }
             }
         }
 
@@ -173,64 +194,88 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::init()
             WideLog->ErrIndex();
             WideLog->printf("! The users.bbs file has an incorrect size.");
             WideLog->printf(": %susers.bbs, %u bytes.", path, len);
-            WideLog->printf(": Should be %u bytes if it's in RA2 format.", (uint)((len/sizeof(RA2Users))*sizeof(RA2Users)));
-            WideLog->printf(": Should be %u bytes if it's in Hudson format.", (uint)((len/sizeof(HudsUsers))*sizeof(HudsUsers)));
+            WideLog->printf(": Should be %u bytes if it's in RA2 format.",
+                            (uint)((len / sizeof(RA2Users)) * sizeof(RA2Users)));
+            WideLog->printf(": Should be %u bytes if it's in Hudson format.",
+                            (uint)((len / sizeof(HudsUsers)) * sizeof(HudsUsers)));
+
             if(ra2usersbbs)
-                WideLog->printf(": It appears to be in %s format.", (ra2usersbbs == 2) ? "RA2" : "Hudson");
+            {
+                WideLog->printf(": It appears to be in %s format.",
+                                (ra2usersbbs == 2) ? "RA2" : "Hudson");
+            }
+
             WideLog->printf("+ Advice: Run a userbase packing utility.");
             IndexErrorExit();
         }
     }
 
-    if (__HUDSON)
+    if(__HUDSON)
     {
-        if (ra2usersbbs == 2)
+        if(ra2usersbbs == 2)
         {
-            if (WideDebug)
+            if(WideDebug)
+            {
                 WideLog->printf("- Using a RA2 format userbase.");
+            }
+
             user = new RA2User;
         }
         else
         {
             if(WideDebug)
+            {
                 WideLog->printf("- Using a Hudson format userbase.");
+            }
+
             user = new HudsonUser;
         }
     }
     else
+    {
         user = new GoldbaseUser;
+    }
+
     throw_new(user);
 
     // Open RA2 files
-    if (__HUDSON and (ra2usersbbs == 2))
+    if(__HUDSON and (ra2usersbbs == 2))
     {
-        RA2User* _user2 = (RA2User*)user;
+        RA2User * _user2 = (RA2User *)user;
         test_open(fhuix, "usersidx.bbs", O_CREAT);
         test_open(fhuxi, "usersxi.bbs", O_CREAT);
         _user2->idxfh = &fhuix;
-        _user2->xifh = &fhuxi;
+        _user2->xifh  = &fhuxi;
     }
 
     // Find user
-    const char* _username = WideUsername[0];
-    if (userno == -1)
+    const char * _username = WideUsername[0];
+
+    if(userno == -1)
     {
         user->gufh = fhusr.fh;
         user->find(_username);
+
         if(not user->found)
         {
-            WideLog->printf("* User \"%s\" not found in %susers%s.", _username, path, __HUDSON ? HUDS_EXT : GOLD_EXT);
+            WideLog->printf("* User \"%s\" not found in %susers%s.",
+                            _username,
+                            path,
+                            __HUDSON ? HUDS_EXT : GOLD_EXT);
             user->add(_username);
             WideLog->printf("* Now added with user number %u.", user->index);
         }
+
         userno = user->index;
     }
 
     if(WideDebug)
+    {
         WideLog->printf("- Using user record number %u.", userno);
+    }
 
     // Close RA2 files
-    if (__HUDSON and (ra2usersbbs == 2))
+    if(__HUDSON and (ra2usersbbs == 2))
     {
         fhuix.Close();
         fhuxi.Close();
@@ -241,31 +286,34 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::init()
     raw_close();
 
     if(WideDebug)
+    {
         WideLog->printf("- End init for %s.", path);
+    }
 
     GFTRK(0);
-}
-
+} // >::init
 
 //  ------------------------------------------------------------------
-
-template <class msgn_t, class rec_t, class attr_t, class board_t, class last_t, bool __HUDSON>
-void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::save_lastread(board_t board, msgn_t msgno)
+template <class msgn_t, class rec_t, class attr_t, class board_t, class last_t,
+          bool __HUDSON> void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t,
+                                        __HUDSON>::save_lastread(board_t board,
+                                                                 msgn_t msgno)
 {
-
     GFTRK("HudsSaveLast");
-
     // Update lastread record
-    msgn_t _lastread = lastrec[board-1] = msgno;
-    fhlrd.LseekSet(userno*sizeof(HudsLast));
+    msgn_t _lastread = lastrec[board - 1] = msgno;
+    fhlrd.LseekSet(userno * sizeof(HudsLast));
     fhlrd.Write(lastrec, sizeof(HudsLast));
-
     // Update user record
     user->gufh = fhusr.fh;
     user->moveto(userno);
-    if (user->lastread() < _lastread)
+
+    if(user->lastread() < _lastread)
+    {
         user->lastread(_lastread);
-    if (timesposted)
+    }
+
+    if(timesposted)
     {
         user->inctimesposted(timesposted);
         timesposted = 0;
@@ -274,23 +322,22 @@ void _HudsWide<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::save_lastread(
     GFTRK(0);
 }
 
-
 //  ------------------------------------------------------------------
-
-template <class msgn_t, class rec_t, class attr_t, class board_t, class last_t, bool __HUDSON>
-void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::open()
+template <class msgn_t, class rec_t, class attr_t, class board_t, class last_t,
+          bool __HUDSON> void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t,
+                                        __HUDSON>::open()
 {
-
     GFTRK("HudsOpen");
-
     data_open();
     wide->isopen++;
+
     if(wide->isopen == 1)
     {
         wide->raw_open();
         wide->refresh();
         wide->timesposted = 0;
     }
+
     if(wide->isopen > 2)
     {
         WideLog->ErrTest();
@@ -298,6 +345,7 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::open()
     }
 
     isopen++;
+
     if(isopen > 2)
     {
         WideLog->ErrTest();
@@ -306,25 +354,20 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::open()
 
     scan();
     goto done;
-
-error:
-    WideLog->printf("! Trying to open a %s msgbase more than twice.", __HUDSON ? HUDS_NAME : GOLD_NAME);
+error: WideLog->printf("! Trying to open a %s msgbase more than twice.",
+                       __HUDSON ? HUDS_NAME : GOLD_NAME);
     WideLog->printf(": %s, board %u.", echoid(), board());
     WideLog->printf("+ Info: This indicates a serious bug.");
     WideLog->printf("+ Advice: Report to the Author immediately.");
     TestErrorExit();
-
-done:
-    GFTRK(0);
-}
-
+done: GFTRK(0);
+} // >::open
 
 //  ------------------------------------------------------------------
-
-template <class msgn_t, class rec_t, class attr_t, class board_t, class last_t, bool __HUDSON>
-void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::close()
+template <class msgn_t, class rec_t, class attr_t, class board_t, class last_t,
+          bool __HUDSON> void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t,
+                                        __HUDSON>::close()
 {
-
     GFTRK("HudsClose");
 
     if(isopen)
@@ -334,6 +377,7 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::close()
             wide->save_lastread((board_t)board(), (msgn_t)Msgn->CvtReln(lastread));
             Msgn->Reset();
         }
+
         isopen--;
     }
     else
@@ -347,10 +391,14 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::close()
         if(wide->isopen == 1)
         {
             if(wide->islocked)
+            {
                 wide->unlock();
+            }
+
             wide->raw_close();
             throw_release(wide->msgidxptr);
         }
+
         wide->isopen--;
     }
     else
@@ -358,49 +406,37 @@ void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::close()
         WideLog->ErrTest();
         goto error;
     }
-    goto done;
 
-error:
-    WideLog->printf("! Trying to close an already closed %s msgbase.", __HUDSON ? HUDS_NAME : GOLD_NAME);
+    goto done;
+error: WideLog->printf("! Trying to close an already closed %s msgbase.",
+                       __HUDSON ? HUDS_NAME : GOLD_NAME);
     WideLog->printf(": %s, board %u.", echoid(), board());
     WideLog->printf("+ Info: This indicates a potentially serious bug.");
     WideLog->printf("+ Advice: Report to the Author immediately.");
     TestErrorExit();
-
-done:
-    data_close();
-
+done: data_close();
     GFTRK(0);
-}
-
+} // >::close
 
 //  ------------------------------------------------------------------
-
-template <class msgn_t, class rec_t, class attr_t, class board_t, class last_t, bool __HUDSON>
-void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::suspend()
+template <class msgn_t, class rec_t, class attr_t, class board_t, class last_t,
+          bool __HUDSON> void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t,
+                                        __HUDSON>::suspend()
 {
-
     GFTRK("HudsSuspend");
-
     wide->save_lastread((board_t)board(), (msgn_t)Msgn->CvtReln(lastread));
     wide->raw_close();
-
     GFTRK(0);
 }
-
 
 //  ------------------------------------------------------------------
-
-template <class msgn_t, class rec_t, class attr_t, class board_t, class last_t, bool __HUDSON>
-void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t, __HUDSON>::resume()
+template <class msgn_t, class rec_t, class attr_t, class board_t, class last_t,
+          bool __HUDSON> void _HudsArea<msgn_t, rec_t, attr_t, board_t, last_t,
+                                        __HUDSON>::resume()
 {
-
     GFTRK("HudsResume");
-
     wide->raw_open();
-
     GFTRK(0);
 }
-
 
 //  ------------------------------------------------------------------

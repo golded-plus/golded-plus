@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -27,58 +26,44 @@
 #include <gdefs.h>
 #include <geval.h>
 #include <iterator>
-
-
 //  ------------------------------------------------------------------
-
 gevalhum::gevalhum()
-{
-
-}
-
+{}
 
 //  ------------------------------------------------------------------
-
 gevalhum::~gevalhum()
-{
-
-}
-
+{}
 
 //  ------------------------------------------------------------------
-
 int gevalhum::evaluate()
 {
-
     while(vstk.size() and ostk.size())
     {
-
         while(ostk.size())
         {
-
             std::vector<int>::iterator vptr = vstk.begin();
             std::vector<ops>::iterator optr = ostk.begin();
 
             while(optr < ostk.end())
             {
-
                 if(optr < (ostk.end() - 1))
                 {
-
                     if(*optr == parenthesis_left)
                     {
                         if(optr[1] == parenthesis_right)
                         {
-                            ostk.erase(optr, optr+2);
+                            ostk.erase(optr, optr + 2);
                             break;
                         }
                         else
                         {
                             optr++;
                         }
+
                         continue;
                     }
-                    else if(((*optr == negation) or (*optr == logic_not)) and (optr[1] == parenthesis_left))
+                    else if(((*optr == negation) or (*optr == logic_not)) and (optr[1] ==
+                                                                               parenthesis_left))
                     {
                         optr++;
                         continue;
@@ -94,22 +79,27 @@ int gevalhum::evaluate()
                 if(ostk.size())
                 {
                     if((*optr == negation) or (*optr == logic_not))
+                    {
                         *vptr = evaluate_ops(optr, vptr, vptr);
+                    }
                     else
                     {
-                        *vptr = evaluate_ops(optr, vptr, vptr+1);
-                        if(vptr+1 < vstk.end())
-                            vstk.erase(vptr+1);
+                        *vptr = evaluate_ops(optr, vptr, vptr + 1);
+
+                        if(vptr + 1 < vstk.end())
+                        {
+                            vstk.erase(vptr + 1);
+                        }
                     }
+
                     ostk.erase(optr);
                 }
+
                 break;
             }
         }
     }
-
     return pop_value();
-}
-
+} // gevalhum::evaluate
 
 //  ------------------------------------------------------------------

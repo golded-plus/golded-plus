@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -24,35 +23,29 @@
 //  ------------------------------------------------------------------
 
 #ifndef __gshare_h
-    #define __gshare_h
-
-
-    //  ------------------------------------------------------------------
+#define __gshare_h
+//  ------------------------------------------------------------------
 
     #include <gdefs.h>
+//  ------------------------------------------------------------------
 
-
-    //  ------------------------------------------------------------------
-
-    #if !defined(__GNUC__) || defined(__DJGPP__) || defined(__EMX__) || defined(__MINGW32__)
+    #if !defined (__GNUC__) || defined (__DJGPP__) || defined (__EMX__) || \
+    defined (__MINGW32__)
         #include <share.h>
-        #if defined(__MINGW32__)        // SH_COMPAT doesn't work in Mingw32
+        #if defined (__MINGW32__)        // SH_COMPAT doesn't work in Mingw32
             #undef SH_COMPAT
         #endif
-    #elif !defined(SH_DENYNO)
-        #define SH_DENYRW   0x10    // Deny read/write
-        #define SH_DENYWR   0x20    // Deny write
-        #define SH_DENYRD   0x30    // Deny read
-        #define SH_DENYNO   0x40    // Deny nothing
+    #elif !defined (SH_DENYNO)
+#define SH_DENYRW 0x10              // Deny read/write
+#define SH_DENYWR 0x20              // Deny write
+#define SH_DENYRD 0x30              // Deny read
+#define SH_DENYNO 0x40              // Deny nothing
     #endif
 
     #ifndef SH_COMPAT
-        #define SH_COMPAT SH_DENYNO
+#define SH_COMPAT SH_DENYNO
     #endif
-
-
-    //  ------------------------------------------------------------------
+//  ------------------------------------------------------------------
 
 #endif
-
 //  ------------------------------------------------------------------

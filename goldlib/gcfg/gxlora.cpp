@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -27,25 +26,22 @@
 #include <cstdlib>
 #include <gmemdbg.h>
 #include <gstrall.h>
-#if defined(__GOLD_GUI__)
+#if defined (__GOLD_GUI__)
     #include <gvidall.h>
     #include <gvidgui.h>
 #endif
 #undef GCFG_NOLORA
 #include <gedacfg.h>
 #include <gs_lo240.h>
-
-
 //  ------------------------------------------------------------------
-
-void gareafile::ReadLoraBBS(char* tag)
+void gareafile::ReadLoraBBS(char * tag)
 {
-
     Path _path;
     *_path = NUL;
     char options[80];
     strcpy(options, tag);
-    char* ptr = strtok(tag, " \t");
+    char * ptr = strtok(tag, " \t");
+
     while(ptr)
     {
         if(*ptr != '-')
@@ -53,39 +49,51 @@ void gareafile::ReadLoraBBS(char* tag)
             AddBackslash(strcpy(_path, ptr));
             break;
         }
+
         ptr = strtok(NULL, " \t");
     }
+
     if(*_path == NUL)
     {
         ptr = getenv("LORA");
+
         if(ptr)
+        {
             AddBackslash(strcpy(_path, ptr));
+        }
     }
+
     if(*_path == NUL)
     {
         ptr = getenv("LORABBS");
+
         if(ptr)
+        {
             AddBackslash(strcpy(_path, ptr));
+        }
     }
+
     if(*_path == NUL)
-        strcpy(_path, areapath);
-
-    const char* _file = AddPath(_path, "config.dat");
-    gfile fp(_file, "rb");
-    if (fp.isopen())
     {
-        if (not quiet)
-            STD_PRINTNL("* Reading " << _file);
+        strcpy(_path, areapath);
+    }
 
-        _configuration* cfg = (_configuration*)throw_calloc(1, sizeof(_configuration));
+    const char * _file = AddPath(_path, "config.dat");
+    gfile fp(_file, "rb");
+
+    if(fp.isopen())
+    {
+        if(not quiet)
+        {
+            STD_PRINTNL("* Reading " << _file);
+        }
+
+        _configuration * cfg = (_configuration *)throw_calloc(1, sizeof(_configuration));
         fp.Fread(cfg, sizeof(_configuration));
         fp.Fclose();
-
         //CfgUsername(cfg->sysop);
-
         CfgHudsonpath(cfg->quick_msgpath);
         CfgGoldbasepath(cfg->quick_msgpath);
-
         AreaCfg aa;
 
         // Netmail *.MSG
@@ -93,8 +101,8 @@ void gareafile::ReadLoraBBS(char* tag)
         {
             aa.reset();
             aa.basetype = "OPUS";
-            aa.type = GMB_NET;
-            aa.aka = CAST(ftn_addr, cfg->alias[0]);
+            aa.type     = GMB_NET;
+            aa.aka      = CAST(ftn_addr, cfg->alias[0]);
             aa.setpath(cfg->netmail_dir);
             aa.setdesc("LoraBBS Netmail");
             aa.setautoid("NETMAIL");
@@ -106,8 +114,8 @@ void gareafile::ReadLoraBBS(char* tag)
         {
             aa.reset();
             aa.basetype = "OPUS";
-            aa.type = GMB_ECHO;
-            aa.aka = CAST(ftn_addr, cfg->alias[0]);
+            aa.type     = GMB_ECHO;
+            aa.aka      = CAST(ftn_addr, cfg->alias[0]);
             aa.setpath(cfg->bad_msgs);
             aa.setdesc("LoraBBS Bad Echo");
             aa.setautoid("ECHO_BAD");
@@ -119,8 +127,8 @@ void gareafile::ReadLoraBBS(char* tag)
         {
             aa.reset();
             aa.basetype = "OPUS";
-            aa.type = GMB_ECHO;
-            aa.aka = CAST(ftn_addr, cfg->alias[0]);
+            aa.type     = GMB_ECHO;
+            aa.aka      = CAST(ftn_addr, cfg->alias[0]);
             aa.setpath(cfg->dupes);
             aa.setdesc("LoraBBS Duplicate Msgs");
             aa.setautoid("ECHO_DUPES");
@@ -132,8 +140,8 @@ void gareafile::ReadLoraBBS(char* tag)
         {
             aa.reset();
             aa.basetype = "OPUS";
-            aa.type = GMB_ECHO;
-            aa.aka = CAST(ftn_addr, cfg->alias[0]);
+            aa.type     = GMB_ECHO;
+            aa.aka      = CAST(ftn_addr, cfg->alias[0]);
             aa.setpath(cfg->my_mail);
             aa.setdesc("LoraBBS Personal Mail");
             aa.setautoid("ECHO_PERSONAL");
@@ -142,31 +150,36 @@ void gareafile::ReadLoraBBS(char* tag)
 
         _file = AddPath(_path, "sysmsg.dat");
         fp.Fopen(_file, "rb");
-        if (fp.isopen())
+
+        if(fp.isopen())
         {
             fp.SetvBuf(NULL, _IOFBF, BUFSIZ);
 
-            if (not quiet)
+            if(not quiet)
+            {
                 STD_PRINTNL("* Reading " << _file);
+            }
 
-            _sysmsg* sysmsg = (_sysmsg*)throw_calloc(1, sizeof(_sysmsg));
+            _sysmsg * sysmsg = (_sysmsg *)throw_calloc(1, sizeof(_sysmsg));
 
-            while (fp.Fread(sysmsg, sizeof(_sysmsg)) == 1)
+            while(fp.Fread(sysmsg, sizeof(_sysmsg)) == 1)
             {
                 if(sysmsg->passthrough)
+                {
                     continue;
+                }
 
                 aa.reset();
 
                 if(sysmsg->gold_board)
                 {
                     aa.basetype = "GOLDBASE";
-                    aa.board = sysmsg->gold_board;
+                    aa.board    = sysmsg->gold_board;
                 }
                 else if(sysmsg->quick_board)
                 {
                     aa.basetype = "HUDSON";
-                    aa.board = sysmsg->quick_board;
+                    aa.board    = sysmsg->quick_board;
                 }
                 else if(sysmsg->pip_board)
                 {
@@ -201,21 +214,18 @@ void gareafile::ReadLoraBBS(char* tag)
                 }
 
                 aa.attr.pvt(sysmsg->doprivate);
-
                 aa.aka = CAST(ftn_addr, cfg->alias[sysmsg->use_alias]);
-
                 aa.setdesc(sysmsg->msg_name);
                 aa.setechoid(sysmsg->echotag);
                 aa.setorigin(sysmsg->origin);
-
                 AddNewArea(aa);
             }
             throw_free(sysmsg);
             fp.Fclose();
         }
+
         throw_free(cfg);
     }
-}
-
+} // gareafile::ReadLoraBBS
 
 //  ------------------------------------------------------------------

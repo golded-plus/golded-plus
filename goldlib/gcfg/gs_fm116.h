@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1996 Folkert J. Wijnstra
@@ -27,45 +26,33 @@
 
 #ifndef __gs_fm116_h
 #define __gs_fm116_h
-
-
 //  ------------------------------------------------------------------
 
 #include <gftnall.h>
-
-
 //  ------------------------------------------------------------------
 
-#if defined(GOLD_CANPACK)
+#if defined (GOLD_CANPACK)
     #pragma pack(1)
 #endif
-
-
 //  ------------------------------------------------------------------
-
 typedef struct
 {
-    char  programName[46];
-    word  memRequired;
+    char programName[46];
+    word memRequired;
 } archiverInfo;
-
 typedef char pathType[48];
-
 typedef struct
 {
-    ftn_addr    nodeNum;
-    word        fakeNet;
+    ftn_addr nodeNum;
+    word     fakeNet;
 } nodeFakeType;
-
-
 //  ------------------------------------------------------------------
 //  File header structure
 
-#define DATATYPE_CF    0x0102 // not used yet
-#define DATATYPE_NO    0x0202 // node file
-#define DATATYPE_AD    0x0401 // area file for echo mail defaults
-#define DATATYPE_AE    0x0402 // area file for echo mail
-
+#define DATATYPE_CF 0x0102    // not used yet
+#define DATATYPE_NO 0x0202    // node file
+#define DATATYPE_AD 0x0401    // area file for echo mail defaults
+#define DATATYPE_AE 0x0402    // area file for echo mail
 typedef struct
 {
     char    versionString[32];  // Always starts with 'FMail'
@@ -77,47 +64,40 @@ typedef struct
     word    totalRecords;
     word    recordSize;
 } headerType;
-
-
 //  ------------------------------------------------------------------
 //  The structure below is used by the Areas File and (only partly)
 //  by the Config File
-
 typedef struct
 {
     word active      : 1; /* Bit  0 */
     word tinySeenBy  : 1; /* Bit  1 */
     word security    : 1; /* Bit  2 */
-    word             : 1; /* Bit  3 */
+    word : 1;             /* Bit  3 */
     word allowPrivate: 1; /* Bit  4 */
     word impSeenBy   : 1; /* Bit  5 */
     word checkSeenBy : 1; /* Bit  6 */
-    word             : 1; /* Bit  7 */
+    word : 1;             /* Bit  7 */
     word local       : 1; /* Bit  8 */
     word disconnected: 1; /* Bit  9 */
     word _reserved   : 1; /* Bit 10 */
     word allowAreafix: 1; /* Bit 11 */
-    word             : 2; /* Bit 12-13 */
+    word : 2;             /* Bit 12-13 */
     word arrivalDate : 1; /* Bit 14 */
     word sysopRead   : 1; /* Bit 15 */
 } areaOptionsType;
-
-
 /* ********** FMAIL.CFG ********** */
 
-#define MAX_AKAS      32
-#define MAX_AKAS_F    64
-#define MAX_AKAS_OLD  16
-#define MAX_NA_OLD    11
-#define MAX_NETAKAS   32
+#define MAX_AKAS 32
+#define MAX_AKAS_F 64
+#define MAX_AKAS_OLD 16
+#define MAX_NA_OLD 11
+#define MAX_NETAKAS 32
 #define MAX_NETAKAS_F 64
-#define MAX_USERS     16
-#define MAX_UPLREQ    32
-#define MAX_MATCH     16           // not used yet
-
+#define MAX_USERS 16
+#define MAX_UPLREQ 32
+#define MAX_MATCH 16               // not used yet
 typedef nodeFakeType _akaListType[MAX_AKAS_OLD];
 typedef nodeFakeType akaListType[MAX_AKAS_F];
-
 typedef struct
 {
     word useEMS       : 1; /* BIT 0 */
@@ -125,26 +105,25 @@ typedef struct
     word swap         : 1; /* BIT 2 */
     word swapEMS      : 1; /* BIT 3 */
     word swapXMS      : 1; /* BIT 4 */
-    word              : 1;
+    word : 1;
     word monochrome   : 1; /* BIT 6 */
     word commentFFD   : 1; /* BIT 7 */
     word PTAreasBBS   : 1; /* BIT 8 */
     word commentFRA   : 1; /* BIT 9 */
-    word              : 1; /* BIT 10 */
+    word : 1;              /* BIT 10 */
     word incBDRRA     : 1; /* BIT 11 */
-    word              : 1; /* BIT 12 */
-    word              : 2;
+    word : 1;              /* BIT 12 */
+    word : 2;
     word _RA2         : 1; /* BIT 15 */
 } genOptionsType;
-
 typedef struct
 {
     word removeNetKludges : 1; /* Bit 0 */
-    word                  : 1;
+    word : 1;
     word checkPktDest     : 1; /* Bit 2 */
-    word                  : 1;
+    word : 1;
     word createSema       : 1; /* Bit 4 */
-    word                  : 1;
+    word : 1;
     word warnNewMail      : 1; /* bit 6 */
     word killBadFAtt      : 1; /* Bit 7 */
     word dupDetection     : 1; /* Bit 8 */
@@ -156,85 +135,77 @@ typedef struct
     word keepExpNetmail   : 1; /* Bit 14 */
     word killEmptyNetmail : 1; /* Bit 15 */
 } mailOptionsType;
-
 typedef struct
 {
     word sortNew      : 1; /* bit  0   */
     word sortSubject  : 1; /* bit  1   */
     word updateChains : 1; /* bit  2   */
     word reTear       : 1; /* bit  3   */
-    word              : 1; /* bit  4   */
-    word              : 1; /* bit  5   */
+    word : 1;              /* bit  4   */
+    word : 1;              /* bit  5   */
     word removeRe     : 1; /* bit  6   */
     word removeLfSr   : 1; /* bit  7   */
     word scanAlways   : 1; /* bit  8   */
     word scanUpdate   : 1; /* bit  9   */
     word multiLine    : 1; /* bit 10   */
-    word              : 1; /* bit 11   */
+    word : 1;              /* bit 11   */
     word quickToss    : 1; /* bit 12   */
-    word              : 1; /* bit 13   */
-    word              : 1; /* bit 14   */
+    word : 1;              /* bit 13   */
+    word : 1;              /* bit 14   */
     word sysopImport  : 1; /* bit 15   */
 } mbOptionsType;
-
 typedef struct
 {
     word keepRequest  : 1; /* Bit  0 */
     word keepReceipt  : 1; /* Bit  1 */
-    word              : 2; /* Bit 2-3 */
+    word : 2;              /* Bit 2-3 */
     word autoDiscArea : 1; /* Bit  4 */
     word autoDiscDel  : 1; /* Bit  5 has temp. no effect, rec is always deleted */
-    word              : 3; /* Bit 6-8 */
+    word : 3;              /* Bit 6-8 */
     word allowAddAll  : 1; /* Bit  9 */
     word allowActive  : 1; /* Bit 10 */
-    word              : 1; /* Bit 11 */
+    word : 1;              /* Bit 11 */
     word allowPassword: 1; /* Bit 12 */
     word allowPktPwd  : 1; /* Bit 13 */
     word allowNotify  : 1; /* Bit 14 */
     word allowCompr   : 1; /* Bit 15 */
 } mgrOptionsType;
-
 typedef struct
 {
     word addPlusPrefix :  1; /* BIT 0 */
-    word               :  3;
+    word :  3;
     word unconditional :  1; /* BIT 4 */
-    word               : 11;
+    word : 11;
 } uplOptType;
-
 typedef struct
 {
     char userName[36];
     byte reserved[28];
 } userType;
-
 typedef struct
 {
-    ftn_addr    node;
-    char        program[9];
-    byte        password[17];
-    char        fileName[13];
-    byte        fileType;
-    dword       groups;
-    byte        originAka;
-    uplOptType  options;
-    byte        reserved[9];
+    ftn_addr   node;
+    char       program[9];
+    byte       password[17];
+    char       fileName[13];
+    byte       fileType;
+    dword      groups;
+    byte       originAka;
+    uplOptType options;
+    byte       reserved[9];
 } uplinkReqType;
-
 typedef struct
 {
-    word  valid;
-    word  zone;
-    word  net;
-    word  node;
+    word valid;
+    word zone;
+    word net;
+    word node;
 } akaMatchNodeType;
-
 typedef struct
 {
     akaMatchNodeType amNode;
     word             aka;
 } akaMatchType;
-
 typedef struct
 {
     byte            versionMajor;
@@ -248,7 +219,7 @@ typedef struct
     mgrOptionsType  mgrOptions;
     _akaListType    _akaList;
     word            _netmailBoard[MAX_NA_OLD];
-    word            _reservedNet[16-MAX_NA_OLD];
+    word            _reservedNet[16 - MAX_NA_OLD];
     genOptionsType  genOptions;
     mbOptionsType   mbOptions;
     mailOptionsType mailOptions;
@@ -343,7 +314,7 @@ typedef struct
     byte            _descrAKA[MAX_NA_OLD][51];
     userType        users[MAX_USERS];
     akaMatchType    akaMatch[MAX_MATCH];     // not used yet
-    byte            reserved6[1040-10*MAX_MATCH];
+    byte            reserved6[1040 - 10 * MAX_MATCH];
     pathType        sentEchoPath;
     archiverInfo    preUnarc;
     archiverInfo    postUnarc;
@@ -355,7 +326,7 @@ typedef struct
     archiverInfo    uc2;
     archiverInfo    rar;
     archiverInfo    resPack[6];
-    uplinkReqType   uplinkReq[MAX_UPLREQ+32];
+    uplinkReqType   uplinkReq[MAX_UPLREQ + 32];
     archiverInfo    unArc32;
     archiverInfo    unZip32;
     archiverInfo    unLzh32;
@@ -411,27 +382,24 @@ typedef struct
     akaListType     akaList;
 } configType;
 
-#define MAX_FORWARD   64
+#define MAX_FORWARD 64
 
-#define MB_PATH_LEN_OLD   19
-#define MB_PATH_LEN       61
-#define ECHONAME_LEN_090  25
-#define ECHONAME_LEN      51
-#define COMMENT_LEN       51
-#define ORGLINE_LEN       59
+#define MB_PATH_LEN_OLD 19
+#define MB_PATH_LEN 61
+#define ECHONAME_LEN_090 25
+#define ECHONAME_LEN 51
+#define COMMENT_LEN 51
+#define ORGLINE_LEN 59
 
 typedef char areaNameType[ECHONAME_LEN];
-
 typedef struct
 {
     word tossedTo     : 1;  /* BIT 0 */
-    word              : 15; /* BIT 1-15 */
+    word : 15;              /* BIT 1-15 */
 } areaStatType;
-
 typedef struct
 {
-
-    word            signature; // contains "AE" for echo areas in FMAIL.AR and
+    word signature;            // contains "AE" for echo areas in FMAIL.AR and
     // "AD" for default settings in FMAIL.ARD
     word            writeLevel;
     areaNameType    areaName;
@@ -448,9 +416,7 @@ typedef struct
     word            msgs;
     word            days;
     word            daysRcvd;
-
     ftn_addr        exp[MAX_FORWARD];
-
     word            readSecRA;
     byte            flagsRdRA[4];
     byte            flagsRdNotRA[4];
@@ -482,17 +448,12 @@ typedef struct
     areaStatType    stat;
     byte            reserved[180];
 } rawEchoType116;
-
-
 //  ------------------------------------------------------------------
 
-#if defined(GOLD_CANPACK)
+#if defined (GOLD_CANPACK)
     #pragma pack()
 #endif
-
-
 //  ------------------------------------------------------------------
 
-#endif
-
+#endif // ifndef __gs_fm116_h
 //  ------------------------------------------------------------------

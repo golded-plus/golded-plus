@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -23,8 +22,6 @@
 //  ------------------------------------------------------------------
 //  WildCat! 4.x messagebase engine.
 //  ------------------------------------------------------------------
-
-
 //  ------------------------------------------------------------------
 
 #include <gdbgtrk.h>
@@ -32,42 +29,30 @@
 #include <gstrall.h>
 
 #include <gmowcat.h>
-
-
 //  ------------------------------------------------------------------
-
-char* WCatArea::user_lookup(char* __lookfor)
+char * WCatArea::user_lookup(char * __lookfor)
 {
-
     NW(__lookfor);
     return NULL;
 }
 
-
 //  ------------------------------------------------------------------
-
 int WCatArea::renumber()
 {
-
     return false;
 }
 
-
 //  ------------------------------------------------------------------
 //  Hexdump the current message header
-
-Line* WCatArea::make_dump_msg(Line*& lin, gmsg* msg, char* lng_head)
+Line * WCatArea::make_dump_msg(Line *& lin, gmsg * msg, char * lng_head)
 {
-
     GFTRK("WCatMakeDump");
-
     WCatHdr _hdr;
     load_message(GMSG_HDRTXT, msg, _hdr);
-
     char buf[100];
-    Line* line = lin =
-                     AddLine (NULL, "Hexdump of WildCat! message header and text");
-    AddLineF(line, "------------------------------------------------------------------------------");
+    Line * line = lin = AddLine(NULL, "Hexdump of WildCat! message header and text");
+    AddLineF(line,
+             "------------------------------------------------------------------------------");
     line = AddLine(line, "");
     AddLineF(line, "Path       : %s", real_path());
     AddLineF(line, "MagicNumber: %08Xh", _hdr.magicnumber);
@@ -82,13 +67,37 @@ Line* WCatArea::make_dump_msg(Line*& lin, gmsg* msg, char* lng_head)
     AddLineF(line, "Network    : %s", STRNP2C(_hdr.network));
     struct tm _tm;
     ggmtime(&_tm, &msg->written);
-    AddLineF(line, "MsgTime    : %s (%u, %i)", strftimei(buf, 100, "%d %b %y  %H:%M:%S", &_tm), _hdr.msgdate, _hdr.msgtime);
+    AddLineF(line,
+             "MsgTime    : %s (%u, %i)",
+             strftimei(buf,
+                       100,
+                       "%d %b %y  %H:%M:%S",
+                       &_tm),
+             _hdr.msgdate,
+             _hdr.msgtime);
     ggmtime(&_tm, &msg->received);
-    AddLineF(line, "ReadTime   : %s (%u, %i)", strftimei(buf, 100, "%d %b %y  %H:%M:%S", &_tm), _hdr.readdate, _hdr.readtime);
+    AddLineF(line,
+             "ReadTime   : %s (%u, %i)",
+             strftimei(buf,
+                       100,
+                       "%d %b %y  %H:%M:%S",
+                       &_tm),
+             _hdr.readdate,
+             _hdr.readtime);
     AddLineF(line, "mFlags     : %u (%04Xh)", _hdr.mflags, _hdr.mflags);
     AddLineF(line, "Reference  : %u", _hdr.reference);
-    AddLineF(line, "FidoFrom   : %u:%u/%u.%u", _hdr.origaddr.zone, _hdr.origaddr.net, _hdr.origaddr.node, _hdr.origaddr.point);
-    AddLineF(line, "FidoTo     : %u:%u/%u.%u", _hdr.origaddr.zone, _hdr.destaddr.net, _hdr.destaddr.node, _hdr.destaddr.point);
+    AddLineF(line,
+             "FidoFrom   : %u:%u/%u.%u",
+             _hdr.origaddr.zone,
+             _hdr.origaddr.net,
+             _hdr.origaddr.node,
+             _hdr.origaddr.point);
+    AddLineF(line,
+             "FidoTo     : %u:%u/%u.%u",
+             _hdr.origaddr.zone,
+             _hdr.destaddr.net,
+             _hdr.destaddr.node,
+             _hdr.destaddr.point);
     AddLineF(line, "MsgBytes   : %u", _hdr.msgbytes);
     AddLineF(line, "Int.Attach : %s", STRNP2C(_hdr.internalattach));
     AddLineF(line, "Ext.Attach : %s", STRNP2C(_hdr.externalattach));
@@ -96,38 +105,47 @@ Line* WCatArea::make_dump_msg(Line*& lin, gmsg* msg, char* lng_head)
     AddLineF(line, "NextUnread : %u", _hdr.nextunread);
     AddLineF(line, "FidoFlags  : %u (%04Xh)", _hdr.fidoflags, _hdr.fidoflags);
     AddLineF(line, "Cost       : %i", _hdr.cost);
-    AddLineF(line, "Reserved   : %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X",
-             _hdr.reserved[0], _hdr.reserved[1], _hdr.reserved[2],
-             _hdr.reserved[3], _hdr.reserved[4], _hdr.reserved[5],
-             _hdr.reserved[6], _hdr.reserved[7], _hdr.reserved[8],
-             _hdr.reserved[9], _hdr.reserved[10], _hdr.reserved[11],
-             _hdr.reserved[12], _hdr.reserved[13], _hdr.reserved[14],
-             _hdr.reserved[15], _hdr.reserved[16], _hdr.reserved[17],
-             _hdr.reserved[18], _hdr.reserved[19]
-            );
+    AddLineF(line,
+             "Reserved   : %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X",
+             _hdr.reserved[0],
+             _hdr.reserved[1],
+             _hdr.reserved[2],
+             _hdr.reserved[3],
+             _hdr.reserved[4],
+             _hdr.reserved[5],
+             _hdr.reserved[6],
+             _hdr.reserved[7],
+             _hdr.reserved[8],
+             _hdr.reserved[9],
+             _hdr.reserved[10],
+             _hdr.reserved[11],
+             _hdr.reserved[12],
+             _hdr.reserved[13],
+             _hdr.reserved[14],
+             _hdr.reserved[15],
+             _hdr.reserved[16],
+             _hdr.reserved[17],
+             _hdr.reserved[18],
+             _hdr.reserved[19]);
     line = AddLine(line, "");
     AddLineF(line, "UserRecno  : %u (%s)", wide->userno, WideUsername[0]);
     line = AddLine(line, "");
     AddLine(line, lng_head);
     line = AddLine(line, "");
-
     int _count;
-    char* _ptr = (char*)&_hdr;
-    for(_count=0; _count<sizeof(WCatHdr); _ptr+=16,_count+=16)
+    char * _ptr = (char *)&_hdr;
+
+    for(_count = 0; _count < sizeof(WCatHdr); _ptr += 16, _count += 16)
     {
         sprintf(buf, "%04X   ", _count);
-        HexDump16(buf+7, _ptr, 16, HEX_DUMP2);
+        HexDump16(buf + 7, _ptr, 16, HEX_DUMP2);
         line = AddLine(line, buf);
     }
     sprintf(buf, "%04X   ", _count);
-    HexDump16(buf+7, _ptr, 14, HEX_DUMP2);
+    HexDump16(buf + 7, _ptr, 14, HEX_DUMP2);
     line = AddLine(line, buf);
-
     GFTRK(0);
-
     return line;
-}
-
+} // WCatArea::make_dump_msg
 
 //  ------------------------------------------------------------------
-

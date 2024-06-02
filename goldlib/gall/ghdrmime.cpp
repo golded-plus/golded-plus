@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -27,50 +26,81 @@
 #include <gstrall.h>
 #include <gstrmail.h>
 #include <ghdrmime.h>
-
-
 //  ------------------------------------------------------------------
-
-const char* mime_crack_encoded_word(const char* encoded_word, char* charset, char* encoding, char* text)
+const char * mime_crack_encoded_word(const char * encoded_word,
+                                     char * charset,
+                                     char * encoding,
+                                     char * text)
 {
+    if(charset)
+    {
+        *charset = NUL;
+    }
 
-    if(charset) *charset = NUL;
-    if(encoding) *encoding = NUL;
-    if(text) *text = NUL;
+    if(encoding)
+    {
+        *encoding = NUL;
+    }
 
-    const char* ptr = encoded_word;
+    if(text)
+    {
+        *text = NUL;
+    }
+
+    const char * ptr = encoded_word;
+
     if((ptr[0] == '=') and (ptr[1] == '?'))
     {
         ptr += 2;
-        const char* begin = ptr;
+        const char * begin = ptr;
+
         while(*ptr and not is_mime_especial(*ptr))
-            ptr++;
-        if((ptr-begin) and (*ptr == '?'))
         {
             ptr++;
+        }
+
+        if((ptr - begin) and (*ptr == '?'))
+        {
+            ptr++;
+
             if(charset)
-                strxcpy(charset, begin, (uint)(ptr-begin));
+            {
+                strxcpy(charset, begin, (uint)(ptr - begin));
+            }
+
             begin = ptr;
+
             while(*ptr and not is_mime_especial(*ptr))
-                ptr++;
-            if((ptr-begin) and (*ptr == '?'))
             {
                 ptr++;
+            }
+
+            if((ptr - begin) and (*ptr == '?'))
+            {
+                ptr++;
+
                 if(encoding)
-                    strxcpy(encoding, begin, (uint)(ptr-begin));
-                begin = ptr;
-                while(*ptr and (*ptr != '?'))
-                    ptr++;
-                if(ptr-begin)
                 {
-                    strxcpy(text, begin, 1+(int)(ptr-begin));
+                    strxcpy(encoding, begin, (uint)(ptr - begin));
+                }
+
+                begin = ptr;
+
+                while(*ptr and (*ptr != '?'))
+                {
+                    ptr++;
+                }
+
+                if(ptr - begin)
+                {
+                    strxcpy(text, begin, 1 + (int)(ptr - begin));
                     return ptr + (ptr[0] == '?') + (ptr[1] == '=');
                 }
             }
         }
     }
-    return NULL;
-}
 
+    return NULL;
+} // mime_crack_encoded_word
 
 //  ------------------------------------------------------------------

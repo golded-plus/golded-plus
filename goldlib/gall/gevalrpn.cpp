@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -25,50 +24,38 @@
 //  ------------------------------------------------------------------
 
 #include <geval.h>
-
-
 //  ------------------------------------------------------------------
-
 gevalrpn::gevalrpn()
-{
-
-}
-
+{}
 
 //  ------------------------------------------------------------------
-
 gevalrpn::~gevalrpn()
-{
-
-}
-
+{}
 
 //  ------------------------------------------------------------------
-
 int gevalrpn::evaluate()
 {
-
     ops o;
-    int x, y=0;
+    int x, y = 0;
 
     while(ostk.size())
     {
         o = pop_operator();
+
         switch(o)
         {
-        case negation:
-        case logic_not:
-            x = pop_value();
-            break;
-        default:
-            x = pop_value();
-            y = pop_value();
+            case negation:
+            case logic_not:
+                x = pop_value();
+                break;
+
+            default:
+                x = pop_value();
+                y = pop_value();
         }
         push_value(evaluate_op(o, y, x));
     }
-
     return pop_value();
 }
-
 
 //  ------------------------------------------------------------------

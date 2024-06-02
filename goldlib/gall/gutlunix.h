@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -25,39 +24,31 @@
 //  ------------------------------------------------------------------
 
 #ifndef __gutlunix_h
-    #define __gutlunix_h
-
-
-    //  ------------------------------------------------------------------
+#define __gutlunix_h
+//  ------------------------------------------------------------------
 
     #ifdef _POSIX_VDISABLE
-        #define NULL_VALUE (unsigned)_POSIX_VDISABLE
+#define NULL_VALUE (unsigned)_POSIX_VDISABLE
     #else
-        #define NULL_VALUE 255
+#define NULL_VALUE 255
     #endif
 
     #ifdef __BEOS__
         #include <net/socket.h> // defintions of FD_xx - to avoid problems with code below
     #endif
-
-    //  ------------------------------------------------------------------
+//  ------------------------------------------------------------------
 
     #ifndef FD_SET
-        #define FD_SET(fd, tthis)    *(tthis) = 1 << (fd)
-        #define FD_ZERO(tthis)       *(tthis) = 0
-        #define FD_ISSET(fd, tthis) (*(tthis) & (1 << fd))
-        typedef int fd_set;
+#define FD_SET(fd, tthis) *(tthis) = 1 << (fd)
+#define FD_ZERO(tthis) *(tthis)    = 0
+#define FD_ISSET(fd, tthis) (*(tthis) & (1 << fd))
+typedef int fd_set;
     #endif
+//  ------------------------------------------------------------------
 
+#define GET_TERMIOS(fd, x) tcgetattr(fd, x)
+#define SET_TERMIOS(fd, x) tcsetattr(fd, TCSADRAIN, x)
+//  ------------------------------------------------------------------
 
-    //  ------------------------------------------------------------------
-
-    #define GET_TERMIOS(fd, x) tcgetattr(fd, x)
-    #define SET_TERMIOS(fd, x) tcsetattr(fd, TCSADRAIN, x)
-
-
-    //  ------------------------------------------------------------------
-
-#endif
-
+#endif // ifndef __gutlunix_h
 //  ------------------------------------------------------------------

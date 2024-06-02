@@ -1,4 +1,3 @@
-
 //  ------------------------------------------------------------------
 //  GoldED+
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -26,26 +25,17 @@
 
 #include <golded.h>
 #include <gcprot.h>
-
-
 //  ------------------------------------------------------------------
-
-extern char* val;
-
-
+extern char * val;
 //  ------------------------------------------------------------------
-
 void CfgExcludenodes()
 {
-
     // Only used by GoldNODE
 }
 
 //  ------------------------------------------------------------------
-
 void CfgExternoptions()
 {
-
     const word CRC_CLS            = 0x34F4;
     const word CRC_CURSOR         = 0x0D67;
     const word CRC_RELOAD         = 0xDEC0;
@@ -64,75 +54,84 @@ void CfgExternoptions()
     // Handle options
     while(*val)
     {
-
         if(*val == '-')
+        {
             val++;
+        }
 
-        char* _key;
+        char * _key;
         word _crc = getkeyvalcrc(&_key, &val);
 
         switch(_crc)
         {
+            case CRC_CLS:
+                CFG->externoptions |= EXTUTIL_CLS;
+                break;
 
-        case CRC_CLS:
-            CFG->externoptions |= EXTUTIL_CLS;
-            break;
-        case CRC_CURSOR:
-            CFG->externoptions |= EXTUTIL_CURSOR;
-            break;
-        case CRC_RELOAD:
-            CFG->externoptions |= EXTUTIL_RELOAD;
-            break;
-        case CRC_PAUSE:
-            CFG->externoptions |= EXTUTIL_PAUSE;
-            break;
-        case CRC_PAUSEONERROR:
-            CFG->externoptions |= EXTUTIL_PAUSEONERROR;
-            break;
-        case CRC_WIPE:
-            CFG->externoptions |= EXTUTIL_WIPE;
-            break;
-        case CRC_KEEPCTRL:
-            CFG->externoptions |= EXTUTIL_KEEPCTRL;
-            break;
-        case CRC_NOCLS:
-            CFG->externoptions &= ~EXTUTIL_CLS;
-            break;
-        case CRC_NOCURSOR:
-            CFG->externoptions &= ~EXTUTIL_CURSOR;
-            break;
-        case CRC_NORELOAD:
-            CFG->externoptions &= ~EXTUTIL_RELOAD;
-            break;
-        case CRC_NOPAUSE:
-            CFG->externoptions &= ~EXTUTIL_PAUSE;
-            break;
-        case CRC_NOPAUSEONERROR:
-            CFG->externoptions &= ~EXTUTIL_PAUSEONERROR;
-            break;
-        case CRC_NOWIPE:
-            CFG->externoptions &= ~EXTUTIL_WIPE;
-            break;
-        case CRC_NOKEEPCTRL:
-            CFG->externoptions &= ~EXTUTIL_KEEPCTRL;
-            break;
-        }
+            case CRC_CURSOR:
+                CFG->externoptions |= EXTUTIL_CURSOR;
+                break;
+
+            case CRC_RELOAD:
+                CFG->externoptions |= EXTUTIL_RELOAD;
+                break;
+
+            case CRC_PAUSE:
+                CFG->externoptions |= EXTUTIL_PAUSE;
+                break;
+
+            case CRC_PAUSEONERROR:
+                CFG->externoptions |= EXTUTIL_PAUSEONERROR;
+                break;
+
+            case CRC_WIPE:
+                CFG->externoptions |= EXTUTIL_WIPE;
+                break;
+
+            case CRC_KEEPCTRL:
+                CFG->externoptions |= EXTUTIL_KEEPCTRL;
+                break;
+
+            case CRC_NOCLS:
+                CFG->externoptions &= ~EXTUTIL_CLS;
+                break;
+
+            case CRC_NOCURSOR:
+                CFG->externoptions &= ~EXTUTIL_CURSOR;
+                break;
+
+            case CRC_NORELOAD:
+                CFG->externoptions &= ~EXTUTIL_RELOAD;
+                break;
+
+            case CRC_NOPAUSE:
+                CFG->externoptions &= ~EXTUTIL_PAUSE;
+                break;
+
+            case CRC_NOPAUSEONERROR:
+                CFG->externoptions &= ~EXTUTIL_PAUSEONERROR;
+                break;
+
+            case CRC_NOWIPE:
+                CFG->externoptions &= ~EXTUTIL_WIPE;
+                break;
+
+            case CRC_NOKEEPCTRL:
+                CFG->externoptions &= ~EXTUTIL_KEEPCTRL;
+                break;
+        } // switch
     }
-}
-
+} // CfgExternoptions
 
 //  ------------------------------------------------------------------
-
 void CfgExternutil()
 {
     ExtUtil extutil;
-
     // Get util number
-    char* _key;
-    char* _val = val;
+    char * _key;
+    char * _val = val;
     getkeyval(&_key, &_val);
     extutil.utilno = atoi(_key);
-
     // Get options
     int _optbak = CFG->externoptions;
 
@@ -142,105 +141,92 @@ void CfgExternutil()
         val = _key;
         CfgExternoptions();
     }
-
-    extutil.options = CFG->externoptions;
+    extutil.options    = CFG->externoptions;
     CFG->externoptions = _optbak;
-
-    extutil.cmdline = _val;  // Get commandline
-
+    extutil.cmdline    = _val; // Get commandline
     // Count it
     CFG->externutil.push_back(extutil);
 }
 
 //  ------------------------------------------------------------------
-
-void CfgEzycommsgbase(const char *path, bool force)
+void CfgEzycommsgbase(const char * path, bool force)
 {
-
     if(force or strblank(CFG->ezycom.msgbasepath))
+    {
         MapPath(PathCopy(CFG->ezycom.msgbasepath, path));
+    }
 }
 
 void CfgEzycommsgbase()
 {
-
     CfgEzycommsgbase(val, true);
 }
 
 //  ------------------------------------------------------------------
-
-void CfgEzycomuserbase(const char *path, bool force)
+void CfgEzycomuserbase(const char * path, bool force)
 {
-
     if(force or strblank(CFG->ezycom.userbasepath))
+    {
         MapPath(PathCopy(CFG->ezycom.userbasepath, path));
+    }
 }
 
 void CfgEzycomuserbase()
 {
-
     CfgEzycomuserbase(val, true);
 }
 
 //  ------------------------------------------------------------------
-
 void CfgEzycomuserno()
 {
-
     CFG->ezycomuserno = atoi(val);
 }
 
 //  ------------------------------------------------------------------
-
-void CfgFidolastread(const char *path)
+void CfgFidolastread(const char * path)
 {
-
     MapPath(strxcpy(CFG->fidolastread, path, sizeof(Path)));
 }
 
 void CfgFidolastread()
 {
-
     CfgFidolastread(val);
 }
 
 //  ------------------------------------------------------------------
-
 void CfgFidomsgtype()
 {
-
     if(striinc("FTS", val))
+    {
         CFG->fidomsgtype = "FTS1";
+    }
     else
+    {
         CFG->fidomsgtype = "OPUS";
+    }
 }
 
 //  ------------------------------------------------------------------
-
 void CfgFidouserlist()
 {
-
     strcpy(CFG->fidouserlist, val);
 }
 
 //  ------------------------------------------------------------------
-
 void CfgFidouserno()
 {
-
     CFG->fidouserno = atoi(val);
 }
 
 //  ------------------------------------------------------------------
-
 void CfgFilealias()
 {
+    char * ptr = strskip_txt(val);
 
-    char* ptr = strskip_txt(val);
     if(*ptr)
     {
         *ptr++ = NUL;
-        ptr = strskip_wht(ptr);
+        ptr    = strskip_wht(ptr);
         FileAlias tmp;
         strxcpy(tmp.alias, val, sizeof(tmp.alias));
         strxcpy(tmp.file, ptr, sizeof(Path));
@@ -249,154 +235,147 @@ void CfgFilealias()
 }
 
 //  ------------------------------------------------------------------
-
 void CfgForcetemplate()
 {
-
     bool flag = make_bool(GetYesno(val));
+
     if(cfgingroup)
+    {
         CFG->grp.AddItm(GRP_FORCETEMPLATE, flag);
+    }
     else
+    {
         CFG->forcetemplate = flag;
+    }
 }
 
 //  ------------------------------------------------------------------
-
-void CfgFrqext(const char* v)
+void CfgFrqext(const char * v)
 {
-
-    char* ptr = val = throw_strdup(v);
+    char * ptr = val = throw_strdup(v);
     CfgFrqext();
     throw_free(ptr);
 }
 
 void CfgFrqext()
 {
-
     tokenize(CFG->frqext, val);
 }
 
 //  ------------------------------------------------------------------
-
 void CfgFrqnodemap()
 {
-
-    char* key;
+    char * key;
     FrqNodeMap fnm;
     getkeyval(&key, &val);
     fnm.to.reset(key);
     getkeyval(&key, &val);
     fnm.from.reset(key);
-
     CFG->frqnodemap.push_back(fnm);
 }
 
 //  ------------------------------------------------------------------
-
 void CfgFrqoptions()
 {
-
     if(striinc("SORT", val))
+    {
         CFG->frqoptions |= FREQ_SORT;
+    }
+
     if(striinc("FROMTOP", val))
+    {
         CFG->frqoptions |= FREQ_FROMTOP;
+    }
+
     if(striinc("NOFILES", val))
+    {
         CFG->frqoptions |= FREQ_NOFILES;
+    }
+
     if(striinc("FAST", val))
+    {
         CFG->frqoptions |= FREQ_FAST;
+    }
+
     if(striinc("NOWAZOOMSG", val))
+    {
         CFG->frqoptions |= FREQ_NOWAZOOMSG;
+    }
+
     if(striinc("NOTFROMTOP", val))
+    {
         CFG->frqoptions &= ~FREQ_FROMTOP;
-}
+    }
+} // CfgFrqoptions
 
 //  ------------------------------------------------------------------
-
 void CfgGedhandshake()
 {
-
     CFG->gedhandshake = make_bool(GetYesno(val));
 }
 
 //  ------------------------------------------------------------------
-
 void CfgGermankeyboard()
 {
-
     right_alt_same_as_left = not GetYesno(val);
 }
 
 //  ------------------------------------------------------------------
-
-void CfgGoldbasepath(const char *path, bool force)
+void CfgGoldbasepath(const char * path, bool force)
 {
-
     if(force or strblank(CFG->goldbasepath))
+    {
         MapPath(PathCopy(CFG->goldbasepath, path));
+    }
 }
 
 void CfgGoldbasepath()
 {
-
     CfgGoldbasepath(val, true);
 }
 
 //  ------------------------------------------------------------------
-
 void CfgGoldbasesyspath()
 {
-
     PathCopy(CFG->goldbasesyspath, val);
 }
 
 //  ------------------------------------------------------------------
-
 void CfgGoldbaseuserno()
 {
-
     CFG->goldbaseuserno = atoi(val);
 }
 
 //  ------------------------------------------------------------------
-
 void CfgGoldhelp()
 {
-
     MapPath(strxcpy(CFG->helpcfg.fn, val, sizeof(Path)));
     replaceextension(CFG->helpged, CFG->helpcfg.fn, __gver_cfgext__);
 }
 
 //  ------------------------------------------------------------------
-
 void CfgGoldlang()
 {
-
     MapPath(strxcpy(CFG->langcfg, val, sizeof(Path)));
 }
 
 //  ------------------------------------------------------------------
-
 void CfgGoldpath()
 {
-
     MapPath(PathCopy(CFG->goldpath, val));
 }
 
 //  ------------------------------------------------------------------
-
 void CfgGoldxlat()
 {
-
     MapPath(val);
     replaceextension(CFG->xlatged, val, __gver_cfgext__);
 }
 
 //  ------------------------------------------------------------------
-
 void CfgGroup()
 {
-
-    char* _key;
+    char * _key;
     getkeyval(&_key, &val);
     CFG->grp.AddGrp(_key);
     cfgingroup = true;

@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -24,10 +23,9 @@
 //  TosScan Areafile struct. Reverse engineered spec!
 //  ------------------------------------------------------------------
 
-#if defined(GOLD_CANPACK)
+#if defined (GOLD_CANPACK)
     #pragma pack(1)
 #endif
-
 //  ------------------------------------------------------------------
 //
 //  The TosScan AREAFILE.FD
@@ -46,43 +44,37 @@
 //  The same record format is used for TosScan/QBBS and TosScan/MSG.
 //
 //  ------------------------------------------------------------------
-
-
 //  ------------------------------------------------------------------
 //  Structure of the records
-
 typedef struct
 {
-    char  echoname[51];   /* Echomail conference name */
-    char  path[51];       /* Path, if .MSG format otherwise NUL'ed */
-    bits  seenbys  : 1;   /* 1 = Import Seen-By 0 = No Seen-By   */
-    bits  security : 1;   /* 1 = Security On    0 = Security Off */
-    bits  passthru : 1;   /* 1 = Passthru       0 = Not Passthru */
-    bits  visible  : 1;   /* 1 = Visible        0 = Not visible  */
-    bits  deleted  : 1;   /* 1 = Deleted        0 = In Use       */
-    bits  cpp      : 1;   /* 1 = CPP On         0 = CPP Off      */
-    bits  tiny     : 1;   /* 1 = Tiny           0 = Not Tiny     */
-    bits  Private  : 1;   /* 1 = Private        0 = Not Private  */
-    byte  originno;       /* FrontDoor origin number? Seems to follow origno */
+    char     echoname[51]; /* Echomail conference name */
+    char     path[51];    /* Path, if .MSG format otherwise NUL'ed */
+    bits     seenbys  : 1;/* 1 = Import Seen-By 0 = No Seen-By   */
+    bits     security : 1; /* 1 = Security On    0 = Security Off */
+    bits     passthru : 1; /* 1 = Passthru       0 = Not Passthru */
+    bits     visible  : 1;/* 1 = Visible        0 = Not visible  */
+    bits     deleted  : 1;/* 1 = Deleted        0 = In Use       */
+    bits     cpp      : 1;/* 1 = CPP On         0 = CPP Off      */
+    bits     tiny     : 1;/* 1 = Tiny           0 = Not Tiny     */
+    bits     Private  : 1;/* 1 = Private        0 = Not Private  */
+    byte     originno;    /* FrontDoor origin number? Seems to follow origno */
     ftn_addr feeders[60];    /* List of feeds. Sorted descending, NUL-padded */
-    char  fill2[4];       /* Unknown */
-    byte  groupid;        /* Group-relation. (A-Z, uppercase) */
-    byte  board;          /* Board number, if QBBS format - otherwise zero */
-    bits  akano  : 4;     /* Index in FD.SYS - Aka number */
-    bits  origno : 4;     /* Index in FD.SYS - Origin number */
-    char  fill3;          /* Unknown */
-    short  maxmsgs;        /* Max msgs in area (max 20000) */
-    short  dayskeep;       /* Day to keep before deleting (max 365) */
-    char  fill4[4];       /* Unknown */
-    char  desc[40];       /* Area description for AreaMgr */
-    char  fill5[10];      /* Unknown */
+    char     fill2[4];    /* Unknown */
+    byte     groupid;     /* Group-relation. (A-Z, uppercase) */
+    byte     board;       /* Board number, if QBBS format - otherwise zero */
+    bits     akano  : 4;  /* Index in FD.SYS - Aka number */
+    bits     origno : 4;  /* Index in FD.SYS - Origin number */
+    char     fill3;       /* Unknown */
+    short    maxmsgs;     /* Max msgs in area (max 20000) */
+    short    dayskeep;    /* Day to keep before deleting (max 365) */
+    char     fill4[4];    /* Unknown */
+    char     desc[40];    /* Area description for AreaMgr */
+    char     fill5[10];   /* Unknown */
 } TS_Areafile;
-
-
 //  ------------------------------------------------------------------
 
-#if defined(GOLD_CANPACK)
+#if defined (GOLD_CANPACK)
     #pragma pack()
 #endif
-
 //  ------------------------------------------------------------------

@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -27,41 +26,25 @@
 
 #ifndef __gbmh_h
 #define __gbmh_h
-
-
 //  ------------------------------------------------------------------
 
 #include <limits.h>
 #include <gdefs.h>
-
-
 //  ------------------------------------------------------------------
-
 class gbmh
 {
-
-protected:
-
-    int   skip[256];   // skip-ahead count for test chars
-    int   skip2;       // skip-ahead after non-match with matching final char
-    char* pat;
-    int   patlen;
-    bool  ignore_case;
-
-public:
-
-    gbmh();
+protected: int skip[256]; // skip-ahead count for test chars
+    int skip2;         // skip-ahead after non-match with matching final char
+    char * pat;
+    int patlen;
+    bool ignore_case;
+public: gbmh();
     ~gbmh();
-
-    void init(const char* pattern, bool ignorecase);
-    bool find(const char* string);
-
+    void init(const char * pattern, bool ignorecase);
+    bool find(const char * string);
 };
-
 
 //  ------------------------------------------------------------------
 
 #endif
-
 //  ------------------------------------------------------------------
-

@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 2002 Alexander S. Aganichev
@@ -28,7 +27,7 @@
 #include <gcrcall.h>
 #include <giniprsr.h>
 #include <gstrall.h>
-#if defined(__GOLD_GUI__)
+#if defined (__GOLD_GUI__)
     #include <gvidall.h>
     #include <gvidgui.h>
 #endif
@@ -36,105 +35,120 @@
 #include <gedacfg.h>
 #include <gs_sync.h>
 #include <map>
-
-
 //  ------------------------------------------------------------------
 //  Synchronet configuration reader
-
 namespace
 {
+    using namespace std;
+    using namespace ini;
+    struct GroupInfo
+    {
+        string   prefix;
+        uint16_t index;
+    };
 
-using namespace std;
-using namespace ini;
-
-struct GroupInfo
-{
-    string prefix;
-    uint16_t index;
-};
-
-typedef map<string, GroupInfo> Groups;
-
-const string& GetValue(const Variables& vars, const std::string& name)
+    typedef map<string, GroupInfo> Groups;
+const string & GetValue(const Variables & vars, const std::string & name)
 {
     static string empty;
     Variables::const_iterator it = vars.find(name);
     return it == vars.end() ? empty : it->second;
 }
 
-Groups getGroups(const Sections& sections)
+Groups getGroups(const Sections & sections)
 {
     Groups result;
     uint16_t index = 0;
 
-    for (Sections::const_iterator grpIt = sections.begin(); grpIt != sections.end(); ++grpIt)
+    for(Sections::const_iterator grpIt = sections.begin(); grpIt != sections.end();
+        ++grpIt)
     {
-        const string& section = grpIt->first;
-        const Variables& vars = grpIt->second;
-        if (section.rfind("grp:", 0) == 0)
+        const string & section = grpIt->first;
+        const Variables & vars = grpIt->second;
+
+        if(section.rfind("grp:", 0) == 0)
         {
             // Ignore duplicates
             string group = section.substr(4);
-            if (result.find(group) == result.end())
+
+            if(result.find(group) == result.end())
             {
-                GroupInfo& info = result[group];
-                info.index = index++;
+                GroupInfo & info = result[group];
+                info.index  = index++;
                 info.prefix = GetValue(vars, "code_prefix");
             }
         }
     }
-
     return result;
 }
 
-void readIniFile(string file, const string& path, const gareafile& areafile)
+void readIniFile(string file, const string & path, const gareafile & areafile)
 {
-    if (not areafile.quiet)
-            STD_PRINTNL("* Reading " << file);
+    if(not areafile.quiet)
+    {
+        STD_PRINTNL("* Reading " << file);
+    }
 
     Sections sections;
-    if (ReadIniFile(file.c_str(), sections))
+
+    if(ReadIniFile(file.c_str(), sections))
     {
         const Groups groups = getGroups(sections);
 
-        for (Sections::const_iterator secIt = sections.begin(); secIt != sections.end(); ++secIt)
+        for(Sections::const_iterator secIt = sections.begin(); secIt != sections.end();
+            ++secIt)
         {
-            if (secIt->first.rfind("sub:", 0) != 0)
+            if(secIt->first.rfind("sub:", 0) != 0)
+            {
                 continue;
+            }
 
             string section(secIt->first.substr(4));
             size_t pos = section.rfind(':');
-            if (pos == string::npos)
+
+            if(pos == string::npos)
+            {
                 continue;
+            }
 
-            const string group = section.substr(0, pos);
-            const string suffix = section.substr(pos + 1);
-
+            const string group           = section.substr(0, pos);
+            const string suffix          = section.substr(pos + 1);
             Groups::const_iterator grpIt = groups.find(group);
-            if (grpIt == groups.end())
+
+            if(grpIt == groups.end())
+            {
                 continue;
+            }
 
-            const GroupInfo& groupInfo = grpIt->second;
-            const Variables& sectionInfo = secIt->second;
-
-            /* A sub-board's internal code is the combination of the grp's code_prefix & the sub's code_suffix */
+            const GroupInfo & groupInfo   = grpIt->second;
+            const Variables & sectionInfo = secIt->second;
+            /* A sub-board's internal code is the combination of the grp's code_prefix & the
+               sub's code_suffix */
             string subCode = groupInfo.prefix + suffix;
             AreaCfg aa;
-            uint32_t settings = strtoul(GetValue(sectionInfo, "settings").c_str(), NULL, 0);
-
-            aa.type = (settings & SUB_FIDO) ? GMB_ECHO : GMB_LOCAL;
-            aa.attr = areafile.attribsecho;
+            uint32_t settings = strtoul(GetValue(sectionInfo, "settings").c_str(),
+                                        NULL,
+                                        0);
+            aa.type     = (settings & SUB_FIDO) ? GMB_ECHO : GMB_LOCAL;
+            aa.attr     = areafile.attribsecho;
             aa.basetype = "SMB";
-            aa.setechoid(((settings & SUB_FIDO) ? GetValue(sectionInfo, "name") : subCode).c_str());
+            aa.setechoid(((settings & SUB_FIDO) ? GetValue(sectionInfo,
+                                                           "name") : subCode).c_str());
             aa.setdesc(GetValue(sectionInfo, "description").c_str());
             aa.groupid = 0x8000 + groupInfo.index;
             string dataDir = GetValue(sectionInfo, "data_dir");
             string subCodeLwr(subCode);
             strlwr(subCodeLwr);
+
             if(!dataDir.empty())
+            {
                 MakePathname(file, dataDir, subCodeLwr);
+            }
             else
+            {
                 MakePathname(file, path, subCodeLwr);
+            }
+
             aa.setpath(file.c_str());
             aa.aka = areafile.primary_aka;
             aa.aka.set(GetValue(sectionInfo, "fidonet_addr"));
@@ -142,17 +156,20 @@ void readIniFile(string file, const string& path, const gareafile& areafile)
             AddNewArea(aa);
         }
     }
-}
+} // readIniFile
 
-void readCnfFile(string file, const string& path, const gareafile& areafile)
+void readCnfFile(string file, const string & path, const gareafile & areafile)
 {
-    FILE* in = fsopen(file, "rb", areafile.sharemode);
-    if (in)
+    FILE * in = fsopen(file, "rb", areafile.sharemode);
+
+    if(in)
     {
         setvbuf(in, NULL, _IOFBF, BUFSIZ);
 
-        if (not areafile.quiet)
+        if(not areafile.quiet)
+        {
             STD_PRINTNL("* Reading " << file);
+        }
 
         // Skip header:
         // max_qwkmsgs                  4
@@ -161,60 +178,89 @@ void readCnfFile(string file, const string& path, const gareafile& areafile)
         // unused (NULL)                    512
         // unused (0xff)                    512
         fseek(in, 1034, SEEK_CUR);
-
         uint16_t total_groups = 0;
-        grp_t* grp = NULL;
+        grp_t * grp           = NULL;
 
-        if(fread(&total_groups, sizeof(total_groups), 1, in) == 1
-                && total_groups >= 1
-                && (grp = (grp_t*)malloc(total_groups * sizeof(grp_t))) != NULL)
+        if(fread(&total_groups, sizeof(total_groups), 1,
+                 in) == 1 && total_groups >= 1 &&
+           (grp = (grp_t *)malloc(total_groups * sizeof(grp_t))) != NULL)
         {
             for(uint16_t i = 0; i < total_groups; i++)
             {
                 if(fread(&grp[i], sizeof(grp_t), 1, in) != 1)
+                {
                     break;
+                }
             }
         }
+
         uint16_t shrt;
+
         if(fread(&shrt, sizeof(uint16_t), 1, in) == 1)
         {
             for(uint16_t i = 0; i < shrt; i++)
             {
                 sub_t sub;
+
                 if(fread(&sub, sizeof(sub_t), 1, in) != 1)
+                {
                     break;
-                if(sub.grp >= total_groups)	// Illegal group number
+                }
+
+                if(sub.grp >= total_groups) // Illegal group number
+                {
                     continue;
-                /* A sub-board's internal code is the combination of the grp's code_prefix & the sub's code_suffix */
+                }
+
+                /* A sub-board's internal code is the combination of the grp's code_prefix & the
+                   sub's code_suffix */
                 memset(sub.code, 0, sizeof(sub.code));
-                snprintf(sub.code, sizeof(sub.code)-1, "%s%s", grp[sub.grp].code_prefix, sub.code_suffix);
+                snprintf(sub.code,
+                         sizeof(sub.code) - 1,
+                         "%s%s",
+                         grp[sub.grp].code_prefix,
+                         sub.code_suffix);
                 AreaCfg aa;
                 aa.reset();
-                aa.type = (sub.misc & SUB_FIDO) ? GMB_ECHO : GMB_LOCAL;
-                aa.attr = areafile.attribsecho;
+                aa.type     = (sub.misc & SUB_FIDO) ? GMB_ECHO : GMB_LOCAL;
+                aa.attr     = areafile.attribsecho;
                 aa.basetype = "SMB";
                 aa.setechoid((sub.misc & SUB_FIDO) ? sub.sname : sub.code);
                 aa.setdesc(sub.lname);
                 aa.groupid = 0x8000 + sub.grp;
+
                 if(*sub.data_dir)
+                {
                     MakePathname(file, sub.data_dir, strlwr(sub.code));
+                }
                 else
+                {
                     MakePathname(file, path, strlwr(sub.code));
+                }
+
                 aa.setpath(file.c_str());
                 aa.aka = areafile.primary_aka;
                 aa.aka.set(sub.faddr);
+
                 if(*sub.origline)
+                {
                     aa.setorigin(sub.origline);
+                }
+
                 AddNewArea(aa);
             }
         }
-        if(grp != NULL)
-            free(grp);
-    }
-    fclose(in);
-}
 
-bool configExists(Path& file, Path& path, const string& cfgFile)
+        if(grp != NULL)
+        {
+            free(grp);
+        }
+    }
+
+    fclose(in);
+} // readCnfFile
+
+bool configExists(Path & file, Path & path, const string & cfgFile)
 {
     if(not fexist(file))
     {
@@ -226,7 +272,8 @@ bool configExists(Path& file, Path& path, const string& cfgFile)
     {
         extractdirname(path, file);
         AddBackslash(path);
-        strxmerge(file, sizeof(file), path, "ctrl", GOLD_SLASH_STR, cfgFile.c_str(), NULL);
+        strxmerge(file, sizeof(file), path, "ctrl", GOLD_SLASH_STR, cfgFile.c_str(),
+                  NULL);
     }
 
     if(fexist(file))
@@ -234,7 +281,8 @@ bool configExists(Path& file, Path& path, const string& cfgFile)
         // Check file type
         size_t fileLen = strxlen(file, sizeof(file));
         size_t maskLen = cfgFile.size();
-        if (fileLen >= 4 && strcmp(file + fileLen - 4, cfgFile.c_str() + maskLen - 4))
+
+        if(fileLen >= 4 && strcmp(file + fileLen - 4, cfgFile.c_str() + maskLen - 4))
         {
             return false;
         }
@@ -242,6 +290,7 @@ bool configExists(Path& file, Path& path, const string& cfgFile)
         Path ctrl;
         extractdirname(ctrl, file);
         size_t len = strxlen(ctrl, sizeof(ctrl));
+
         if((len > 0) and isslash(ctrl[len - 1]))
         {
             ctrl[len - 1] = NUL;
@@ -251,21 +300,20 @@ bool configExists(Path& file, Path& path, const string& cfgFile)
         {
             strxcpy(path, ctrl, sizeof(path));
         }
+
         AddBackslash(path);
         strxcat(path, "data/subs/", sizeof(path));
         return true;
     }
 
     return false;
-}
-
+} // configExists
 } // namespace
-
-void gareafile::ReadSynchronet(char* tag)
+void gareafile::ReadSynchronet(char * tag)
 {
     Path iniFile, cnfFile, path;
+    char * ptr = strtok(tag, " \t");
 
-    char* ptr = strtok(tag, " \t");
     while(ptr)
     {
         if(*ptr != '-')
@@ -273,20 +321,19 @@ void gareafile::ReadSynchronet(char* tag)
             strxcpy(iniFile, ptr, sizeof(path));
             strschg_environ(iniFile);
         }
+
         ptr = strtok(NULL, " \t");
     }
-
     strxcpy(cnfFile, iniFile, sizeof(path));
 
-    if (configExists(iniFile, path, "msgs.ini"))
+    if(configExists(iniFile, path, "msgs.ini"))
     {
         readIniFile(iniFile, path, *this);
     }
-    else if (configExists(cnfFile, path, "msgs.cnf"))
+    else if(configExists(cnfFile, path, "msgs.cnf"))
     {
         readCnfFile(cnfFile, path, *this);
     }
 }
-
 
 //  ------------------------------------------------------------------

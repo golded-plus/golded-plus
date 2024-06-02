@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -26,14 +25,12 @@
 
 #ifndef __gcharset_h
 #define __gcharset_h
-
 //  ------------------------------------------------------------------
 //  Charset is set to this value if charset can't be taken from OS
 #define GOLDED_DEFAULT_CHARSET "CP437"
 //  ------------------------------------------------------------------
-
-const char *get_charset(void);
-const char *get_dos_charset(const char *);
+const char * get_charset(void);
+const char * get_dos_charset(const char *);
 
 //  ------------------------------------------------------------------
 

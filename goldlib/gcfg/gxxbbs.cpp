@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -27,20 +26,16 @@
 #include <cstdlib>
 #include <gcrcall.h>
 #include <gstrall.h>
-#if defined(__GOLD_GUI__)
+#if defined (__GOLD_GUI__)
     #include <gvidall.h>
     #include <gvidgui.h>
 #endif
 #undef GCFG_NOXBBS
 #include <gedacfg.h>
 #include <gs_xbbs.h>
-
-
 //  ------------------------------------------------------------------
-
-void gareafile::ReadAdeptXbbsFile(char* path, char* file)
+void gareafile::ReadAdeptXbbsFile(char * path, char * file)
 {
-
     const word CRC_ADDRESS   = 0xFDD6;
     const word CRC_AREABEGIN = 0x44D7;
     const word CRC_AREAEND   = 0xBDEF;
@@ -51,150 +46,174 @@ void gareafile::ReadAdeptXbbsFile(char* path, char* file)
     const word CRC_ORIGIN    = 0x4CE5;
     const word CRC_PATH      = 0x0212;
     const word CRC_USENET    = 0xD087;
-
     AreaCfg aa;
     uint32_t flags;
     char buf[512];
     char name[256];
     char usenet[256];
     Path apath;
+    FILE * fp = fsopen(file, "rb", sharemode);
 
-    FILE* fp = fsopen(file, "rb", sharemode);
-    if (fp)
+    if(fp)
     {
         setvbuf(fp, NULL, _IOFBF, BUFSIZ);
 
-        if (not quiet)
+        if(not quiet)
+        {
             STD_PRINTNL("* Reading " << file);
+        }
 
         aa.reset();
 
         while(fgets(buf, sizeof(buf), fp))
         {
+            char * ptr = strskip_wht(strtrim(buf));
 
-            char* ptr = strskip_wht(strtrim(buf));
-            if(*ptr != ';' and *ptr)
+            if(*ptr != ';' and * ptr)
             {
+                char * key;
+                char * val = ptr;
 
-                char* key;
-                char* val = ptr;
                 switch(getkeyvalcrc(&key, &val))
                 {
-                case CRC_AREABEGIN:
-                    aa.reset();
-                    sprintf(apath, "%sMessage_Bases\\", path);
-                    *usenet = NUL;
-                    break;
-                case CRC_AREAEND:
-                    aa.setechoid(*usenet ? usenet : name);
-                    if ((aa.basetype == "OPUS") || (aa.basetype == "FTS1"))
-                        aa.setpath(apath);
-                    else
-                    {
-                        sprintf(buf, "%s%s", apath, name);
-                        aa.setpath(buf);
-                    }
-                    AddNewArea(aa);
-                    aa.reset();
-                    break;
-                case CRC_ADDRESS:
-                    aa.aka.set(val);
-                    break;
-                case CRC_DESC:
-                    aa.setdesc(val);
-                    break;
-                case CRC_FLAGS:
-                    flags = atol(val);
-                    if(flags & (M_NET | M_EMAIL))
-                    {
-                        if(flags & M_EMAIL)
+                    case CRC_AREABEGIN:
+                        aa.reset();
+                        sprintf(apath, "%sMessage_Bases\\", path);
+                        *usenet = NUL;
+                        break;
+
+                    case CRC_AREAEND:
+                        aa.setechoid(*usenet ? usenet : name);
+
+                        if((aa.basetype == "OPUS") || (aa.basetype == "FTS1"))
                         {
-                            aa.type = GMB_NET|GMB_EMAIL;
-                            aa.attr = attribsemail;
+                            aa.setpath(apath);
                         }
                         else
                         {
-                            aa.type = GMB_NET;
-                            aa.attr = attribsnet;
+                            sprintf(buf, "%s%s", apath, name);
+                            aa.setpath(buf);
                         }
-                    }
-                    else if(flags & (M_ECHO | M_GROUP | M_USENET))
-                    {
-                        if(flags & M_USENET)
+
+                        AddNewArea(aa);
+                        aa.reset();
+                        break;
+
+                    case CRC_ADDRESS:
+                        aa.aka.set(val);
+                        break;
+
+                    case CRC_DESC:
+                        aa.setdesc(val);
+                        break;
+
+                    case CRC_FLAGS:
+                        flags = atol(val);
+
+                        if(flags & (M_NET | M_EMAIL))
                         {
-                            aa.type = GMB_ECHO|GMB_NEWSGROUP;
-                            aa.attr = attribsnews;
+                            if(flags & M_EMAIL)
+                            {
+                                aa.type = GMB_NET | GMB_EMAIL;
+                                aa.attr = attribsemail;
+                            }
+                            else
+                            {
+                                aa.type = GMB_NET;
+                                aa.attr = attribsnet;
+                            }
+                        }
+                        else if(flags & (M_ECHO | M_GROUP | M_USENET))
+                        {
+                            if(flags & M_USENET)
+                            {
+                                aa.type = GMB_ECHO | GMB_NEWSGROUP;
+                                aa.attr = attribsnews;
+                            }
+                            else
+                            {
+                                aa.type = GMB_ECHO;
+                                aa.attr = attribsecho;
+                            }
                         }
                         else
                         {
-                            aa.type = GMB_ECHO;
-                            aa.attr = attribsecho;
+                            aa.type = GMB_LOCAL;
+                            aa.attr = attribslocal;
                         }
-                    }
-                    else
-                    {
-                        aa.type = GMB_LOCAL;
-                        aa.attr = attribslocal;
-                    }
-                    if(flags & M_SQUISH)
-                        aa.basetype = "SQUISH";
-                    else if(flags & M_FIDO)
-                        aa.basetype = "OPUS";
-                    else if(flags & M_JAM)
-                        aa.basetype = "JAM";
-                    else
-                        aa.basetype = "ADEPTXBBS";
-                    break;
-                case CRC_USENET:
-                    strcpy(usenet, val);
-                    break;
-                case CRC_NAME:
-                    strcpy(name, val);
-                    break;
-                case CRC_NUMBER:
-                    aa.board = atoi(val);
-                    break;
-                case CRC_ORIGIN:
-                    aa.setorigin(val);
-                    break;
-                case CRC_PATH:
-                    PathCopy(apath, val);
-                    break;
-                }
+
+                        if(flags & M_SQUISH)
+                        {
+                            aa.basetype = "SQUISH";
+                        }
+                        else if(flags & M_FIDO)
+                        {
+                            aa.basetype = "OPUS";
+                        }
+                        else if(flags & M_JAM)
+                        {
+                            aa.basetype = "JAM";
+                        }
+                        else
+                        {
+                            aa.basetype = "ADEPTXBBS";
+                        }
+
+                        break;
+
+                    case CRC_USENET:
+                        strcpy(usenet, val);
+                        break;
+
+                    case CRC_NAME:
+                        strcpy(name, val);
+                        break;
+
+                    case CRC_NUMBER:
+                        aa.board = atoi(val);
+                        break;
+
+                    case CRC_ORIGIN:
+                        aa.setorigin(val);
+                        break;
+
+                    case CRC_PATH:
+                        PathCopy(apath, val);
+                        break;
+                } // switch
             }
         }
-
         fclose(fp);
     }
-}
-
+} // gareafile::ReadAdeptXbbsFile
 
 //  ------------------------------------------------------------------
 //  Read areas from AdeptXBBS
-
-void gareafile::ReadAdeptXBBS(char* tag)
+void gareafile::ReadAdeptXBBS(char * tag)
 {
-
     Path file, path, cfg;
-
     *path = NUL;
     strcpy(cfg, "System\\Message_Areas");
-    char* ptr = strtok(tag, " \t");
+    char * ptr = strtok(tag, " \t");
+
     while(ptr)
     {
         if(*ptr != '-')
+        {
             AddBackslash(strcpy(path, ptr));
+        }
+
         ptr = strtok(NULL, " \t");
     }
+
     if(*path == NUL)
+    {
         strcpy(path, areapath);
+    }
 
     strcpy(stpcpy(file, path), cfg);
-
     CfgAdeptxbbspath(path);
-
     ReadAdeptXbbsFile(path, file);
 }
-
 
 //  ------------------------------------------------------------------

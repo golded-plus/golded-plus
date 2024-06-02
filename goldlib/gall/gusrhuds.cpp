@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -28,95 +27,69 @@
 #include <gmemdbg.h>
 #include <gstrall.h>
 #include <gusrhuds.h>
-
-
 //  ------------------------------------------------------------------
-
 HudsonUser::HudsonUser()
 {
-
     recsize = sizeof(HudsUsers);
-    record = new HudsUsers;
+    record  = new HudsUsers;
     throw_new(record);
-    recptr = (char*)record;
-    name = record->name;
+    recptr = (char *)record;
+    name   = record->name;
 }
 
-
 //  ------------------------------------------------------------------
-
 HudsonUser::~HudsonUser()
 {
-
     throw_delete(record);
 }
 
-
 //  ------------------------------------------------------------------
-
 void HudsonUser::inctimesposted(int __times)
 {
-
     seekread();
     record->timesposted += (word)__times;
     seekwrite();
 }
 
-
 //  ------------------------------------------------------------------
-
 int HudsonUser::isvalid()
 {
-
     return not (record->attrib & HUDS_USERDELETED);
 }
 
-
 //  ------------------------------------------------------------------
-
 int HudsonUser::read()
 {
-    if (gufh != -1)
+    if(gufh != -1)
     {
         ::read(gufh, record, sizeof(HudsUsers));
         STRNP2C(record->name);
-
         return isvalid();
     }
 
     return false;
 }
 
-
 //  ------------------------------------------------------------------
-
 uint32_t HudsonUser::lastread()
 {
-
     seekread();
     return record->highmsgread;
 }
 
-
 //  ------------------------------------------------------------------
-
 void HudsonUser::lastread(uint32_t __lastread)
 {
-
     seekread();
     record->highmsgread = (word)__lastread;
     seekwrite();
 }
 
-
 //  ------------------------------------------------------------------
-
-void HudsonUser::recinit(const char* __name)
+void HudsonUser::recinit(const char * __name)
 {
-
     GUser::recinit(__name);
     strc2p(record->name);
 }
-
 
 //  ------------------------------------------------------------------

@@ -1,4 +1,3 @@
-
 //  ------------------------------------------------------------------
 //  GoldED+
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -25,28 +24,24 @@
 //  ------------------------------------------------------------------
 
 #ifndef __GOLDED_H
-    #define __GOLDED_H
-
-
-    //  ------------------------------------------------------------------
-    //  Standard library headers
+#define __GOLDED_H
+//  ------------------------------------------------------------------
+//  Standard library headers
 
     #include <csignal>
     #include <iostream>
-    #if defined(__GNUC__)
+    #if defined (__GNUC__)
         #if __GNUC__ > 2
             #include <sstream>
         #endif
-    #elif defined(_MSC_VER)
+    #elif defined (_MSC_VER)
         #include <sstream>
     #endif
     #include <iomanip>
-    // Wrappers for certain mostly DOS/Borland headers
+// Wrappers for certain mostly DOS/Borland headers
     #include <gshare.h>
-
-
-    //  ------------------------------------------------------------------
-    //  Goldware Library headers
+//  ------------------------------------------------------------------
+//  Goldware Library headers
 
     #include <gdefs.h>
     #include <gstrall.h>
@@ -77,10 +72,8 @@
     #include <gwinhelp.h>
     #include <gwinpick.h>
     #include <gespell.h>
-
-
-    //  ------------------------------------------------------------------
-    //  GoldED specific headers
+//  ------------------------------------------------------------------
+//  GoldED specific headers
     #include <gehelp.h>
     #include <gekeys.h>
     #include <gelang.h>
@@ -95,10 +88,7 @@
     #include <gemnus.h>
     #include <gefn.h>
     #include "gehelp.h"
+//  ------------------------------------------------------------------
 
-
-    //  ------------------------------------------------------------------
-
-#endif
-
+#endif // ifndef __GOLDED_H
 //  ------------------------------------------------------------------

@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -23,16 +22,14 @@
 //  ------------------------------------------------------------------
 
 #ifndef __ghdrmime_h
-    #define __ghdrmime_h
+#define __ghdrmime_h
+//  ------------------------------------------------------------------
+const char * mime_crack_encoded_word(const char * encoded_word,
+                                     char * charset,
+                                     char * encoding,
+                                     char * text);
 
-
-    //  ------------------------------------------------------------------
-
-    const char* mime_crack_encoded_word(const char* encoded_word, char* charset, char* encoding, char* text);
-
-
-    //  ------------------------------------------------------------------
+//  ------------------------------------------------------------------
 
 #endif
-
 //  ------------------------------------------------------------------

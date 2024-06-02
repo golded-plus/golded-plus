@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -27,7 +26,7 @@
 #include <cstdlib>
 #include <gmemdbg.h>
 #include <gstrall.h>
-#if defined(__GOLD_GUI__)
+#if defined (__GOLD_GUI__)
     #include <gvidall.h>
     #include <gvidgui.h>
 #endif
@@ -35,120 +34,150 @@
 #include <gedacfg.h>
 #include <gs_ra.h>
 #include <gs_ra2.h>
-
-
 //  ------------------------------------------------------------------
 //  Read RemoteAccess MESSAGES.RA
-
-void gareafile::ReadRemoteAccess(char* tag)
+void gareafile::ReadRemoteAccess(char * tag)
 {
-
     AreaCfg aa;
-    FILE* fp;
-    char* ptr;
+    FILE * fp;
+    char * ptr;
     Path rapath, file;
     char origin[80];
-
     *rapath = NUL;
     *origin = NUL;
+    CONFIGrecord * config = (CONFIGrecord *)throw_calloc(1, sizeof(CONFIGrecord));
 
-    CONFIGrecord* config = (CONFIGrecord*)throw_calloc(1, sizeof(CONFIGrecord));
     if(config)
     {
-
         ptr = getenv("RA");
+
         if(ptr)
+        {
             AddBackslash(strcpy(rapath, ptr));
+        }
         else
+        {
             strcpy(rapath, areapath);
+        }
 
         // Read AREAS.BBS
         ptr = strtok(tag, " \t");
+
         while(ptr)
         {
             if(*ptr != '-')
             {
                 if(is_dir(ptr) and (*rapath == NUL))
+                {
                     AddBackslash(strcpy(rapath, ptr));
+                }
                 else
+                {
                     GetAreasBBS(ptr, origin);
+                }
             }
+
             ptr = strtok(NULL, " \t");
         }
-
         MakePathname(file, rapath, "config.ra");
-
         fp = fsopen(file, "rb", sharemode);
-        if (fp)
+
+        if(fp)
         {
-            if (not quiet)
+            if(not quiet)
+            {
                 STD_PRINTNL("* Reading " << file);
+            }
 
             fread(config, sizeof(CONFIGrecord), 1, fp);
             fclose(fp);
 
             if(config->VersionID >= 0x200)
+            {
                 if(ra2usersbbs == 0)
+                {
                     ra2usersbbs = 2;
+                }
+            }
 
             STRNP2C(config->MsgBasePath);
             CfgHudsonpath(config->MsgBasePath);
         }
 
         MakePathname(file, rapath, "messages.ra");
+
         if(not fexist(file))
+        {
             if(*config->SysPath)
+            {
                 strnp2cc(rapath, config->SysPath, sizeof(Path));
+            }
+        }
 
         fp = fsopen(file, "rb", sharemode);
-        if (fp)
+
+        if(fp)
         {
             setvbuf(fp, NULL, _IOFBF, BUFSIZ);
 
-            if (not quiet)
+            if(not quiet)
+            {
                 STD_PRINTNL("* Reading " << file);
+            }
 
             if(config->VersionID >= 0x200)
             {
-                MESSAGErecord* area = new MESSAGErecord;
+                MESSAGErecord * area = new MESSAGErecord;
                 throw_new(area);
-                int n=0;
+                int n = 0;
+
                 while(fread(area, sizeof(MESSAGErecord), 1, fp) == 1)
                 {
                     n++;
+
                     if(*area->Name)
                     {
                         aa.reset();
                         aa.aka = CAST(ftn_addr, config->Address[area->AkaAddress]);
+
                         switch(area->Typ)
                         {
-                        case LocalMail:   // Local
-                            aa.type = GMB_LOCAL;
-                            aa.attr = attribslocal;
-                            break;
-                        case NetMail:     // Netmail
-                            aa.type = GMB_NET;
-                            aa.attr = attribsnet;
-                            break;
-                        default:          // Echomail
-                            aa.type = GMB_ECHO;
-                            aa.attr = attribsecho;
+                            case LocalMail: // Local
+                                aa.type = GMB_LOCAL;
+                                aa.attr = attribslocal;
+                                break;
+
+                            case NetMail: // Netmail
+                                aa.type = GMB_NET;
+                                aa.attr = attribsnet;
+                                break;
+
+                            default:      // Echomail
+                                aa.type = GMB_ECHO;
+                                aa.attr = attribsecho;
                         }
+
                         switch(area->MsgKinds)
                         {
-                        case Both:
-                        case Private:
-                            aa.attr.pvt1();
-                            break;
-                        case Public:
-                            aa.attr.pvt0();
-                            break;
-                        case ROnly:
-                            aa.attr.r_o1();
-                            break;
+                            case Both:
+                            case Private:
+                                aa.attr.pvt1();
+                                break;
+
+                            case Public:
+                                aa.attr.pvt0();
+                                break;
+
+                            case ROnly:
+                                aa.attr.r_o1();
+                                break;
                         }
+
                         if(area->Group)
-                            aa.groupid = (char)(area->Group+'A'-1);
+                        {
+                            aa.groupid = (char)(area->Group + 'A' - 1);
+                        }
+
                         aa.setdesc(STRNP2C(area->Name));
                         STRNP2C(area->OriginLine);
                         strchg(area->OriginLine, '@', '0');
@@ -163,9 +192,14 @@ void gareafile::ReadRemoteAccess(char* tag)
                         else
                         {
                             if(config->VersionID >= 0x210)
+                            {
                                 aa.board = area->AreaNum;
+                            }
                             else
+                            {
                                 aa.board = n;
+                            }
+
                             aa.basetype = "HUDSON";
                             AddNewArea(aa);
                         }
@@ -175,43 +209,51 @@ void gareafile::ReadRemoteAccess(char* tag)
             }
             else
             {
-                _messagesra* area = new _messagesra;
+                _messagesra * area = new _messagesra;
                 throw_new(area);
-                for(int n=0; n<200; n++)
+
+                for(int n = 0; n < 200; n++)
                 {
                     fread(area, sizeof(_messagesra), 1, fp);
+
                     if(*area->name)
                     {
                         aa.reset();
                         aa.basetype = "HUDSON";
-                        aa.board = n+1;
-                        aa.aka = CAST(ftn_addr, config->Address[area->akaaddress]);
+                        aa.board    = n + 1;
+                        aa.aka      = CAST(ftn_addr, config->Address[area->akaaddress]);
+
                         switch(area->type)
                         {
-                        case LocalMail:   // Local
-                            aa.type = GMB_LOCAL;
-                            aa.attr = attribslocal;
-                            break;
-                        case NetMail:     // Netmail
-                            aa.type = GMB_NET;
-                            aa.attr = attribsnet;
-                            break;
-                        default:          // Echomail
-                            aa.type = GMB_ECHO;
-                            aa.attr = attribsecho;
+                            case LocalMail: // Local
+                                aa.type = GMB_LOCAL;
+                                aa.attr = attribslocal;
+                                break;
+
+                            case NetMail: // Netmail
+                                aa.type = GMB_NET;
+                                aa.attr = attribsnet;
+                                break;
+
+                            default:      // Echomail
+                                aa.type = GMB_ECHO;
+                                aa.attr = attribsecho;
                         }
+
                         switch(area->msgkinds)
                         {
-                        case Both:
-                        case Private:
-                            aa.attr.pvt1();
-                            break;
-                        case Public:
-                            aa.attr.pvt0();
-                            break;
-                        case ROnly:
-                            aa.attr.r_o1();
-                            break;
+                            case Both:
+                            case Private:
+                                aa.attr.pvt1();
+                                break;
+
+                            case Public:
+                                aa.attr.pvt0();
+                                break;
+
+                            case ROnly:
+                                aa.attr.r_o1();
+                                break;
                         }
                         aa.setdesc(STRNP2C(area->name));
                         STRNP2C(area->originline);
@@ -228,7 +270,6 @@ void gareafile::ReadRemoteAccess(char* tag)
 
         throw_free(config);
     }
-}
-
+} // gareafile::ReadRemoteAccess
 
 //  ------------------------------------------------------------------

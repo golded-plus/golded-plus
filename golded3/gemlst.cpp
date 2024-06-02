@@ -1,4 +1,3 @@
-
 //  ------------------------------------------------------------------
 //  GoldED+
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -29,36 +28,26 @@
 #include <iostream>
 #include <iomanip>
 
-#if defined(__USE_ALLOCA__)
+#if defined (__USE_ALLOCA__)
     #include <malloc.h>
 #endif
-
 //  ------------------------------------------------------------------
-
-extern GMsg* reader_msg;
-
+extern GMsg * reader_msg;
 static int mlst_bysiz;
 static int mlst_tosiz;
 static int mlst_resiz;
 static int fldadd1;
 static int fldadd2;
-
-
 //  ------------------------------------------------------------------
-
-const byte MLST_HIGH_FROM   =  1;
-const byte MLST_HIGH_TO     =  2;
-const byte MLST_HIGH_BOOK   =  4;
-const byte MLST_HIGH_MARK   =  8;
+const byte MLST_HIGH_FROM   = 1;
+const byte MLST_HIGH_TO     = 2;
+const byte MLST_HIGH_BOOK   = 4;
+const byte MLST_HIGH_MARK   = 8;
 const byte MLST_HIGH_UNREAD = 16;
 const byte MLST_HIGH_UNSENT = 32;
-
-
 //  ------------------------------------------------------------------
-
 inline void mlst_with_date(int with_date)
 {
-
     if(with_date)
     {
         mlst_bysiz = 19;
@@ -67,103 +56,91 @@ inline void mlst_with_date(int with_date)
     }
     else
     {
-        mlst_bysiz = 19+3;
-        mlst_tosiz = 19+3;
-        mlst_resiz = 20+4;
+        mlst_bysiz = 19 + 3;
+        mlst_tosiz = 19 + 3;
+        mlst_resiz = 20 + 4;
     }
 }
 
-
 //  ------------------------------------------------------------------
-
 class GMsgList : public gwinpick
 {
     struct MLst
     {
-        uint32_t  msgno;
-        byte      high;
-        char      num[8];
-        char      marks[3];
-        char      by[sizeof(Name)+20];
-        char      to[sizeof(Name)+20];
-        Subj      re;
-        time32_t  written;
-        time32_t  arrived;
-        time32_t  received;
-        char      goldmark;
-        vattr     colorby;
-        vattr     colorto;
+        uint32_t msgno;
+        byte     high;
+        char     num[8];
+        char     marks[3];
+        char     by[sizeof(Name) + 20];
+        char     to[sizeof(Name) + 20];
+        Subj     re;
+        time32_t written;
+        time32_t arrived;
+        time32_t received;
+        char     goldmark;
+        vattr    colorby;
+        vattr    colorto;
     };
 
-    gwindow        window;
-    GMsg           msg;
-    MLst           **mlst;
-    uint           msgmark2;
-
+    gwindow window;
+    GMsg msg;
+    MLst ** mlst;
+    uint msgmark2;
     void open();                        // Called after window is opened
     void close();                       // Called after window is closed
     void update_title();
     void do_delayed();
     void print_line(uint idx, uint pos, bool isbar);
     bool handle_key();                  // Handles keypress
-    void update_marks(MLst *ml);
+    void update_marks(MLst * ml);
     void ReadMlst(int n);
 
-public:
-
-    void Run();
+public: void Run();
 
     GMsgList()
     {
-        mlst = NULL;
-        maximum_index = AA->Msgn.Count()-1;
-    };
+        mlst          = NULL;
+        maximum_index = AA->Msgn.Count() - 1;
+    }
+
     ~GMsgList()
     {
         msg.Reset();
+
         if(mlst)
         {
-            for(uint i=0; i<= maximum_index; i++)
+            for(uint i = 0; i <= maximum_index; i++)
+            {
                 throw_xdelete(mlst[i]);
+            }
             throw_free(mlst);
         }
-    };
+    }
 };
-
-
 //  ------------------------------------------------------------------
-
 void GMsgList::open()
 {
-
-    window.openxy(ypos, xpos, ylen+2, xlen+2, btype, battr, wattr, sbattr);
+    window.openxy(ypos, xpos, ylen + 2, xlen + 2, btype, battr, wattr, sbattr);
     update_title();
     center(CFG->displistcursor);
 }
 
-
 //  ------------------------------------------------------------------
-
 void GMsgList::close()
 {
-
     window.close();
 }
 
-
 //  ------------------------------------------------------------------
-
-void GMsgList::update_marks(MLst *ml)
+void GMsgList::update_marks(MLst * ml)
 {
-
-    ml->high &= ~(MLST_HIGH_BOOK|MLST_HIGH_MARK);
-
+    ml->high &= ~(MLST_HIGH_BOOK | MLST_HIGH_MARK);
     strcpy(ml->marks, "  ");
 
     if(AA->bookmark == ml->msgno)
     {
         ml->marks[0] = MMRK_BOOK;
-        ml->high |= MLST_HIGH_BOOK;
+        ml->high    |= MLST_HIGH_BOOK;
     }
 
     if(AA->Mark.Count())
@@ -171,28 +148,25 @@ void GMsgList::update_marks(MLst *ml)
         if(AA->Mark.Find(ml->msgno))
         {
             ml->marks[1] = MMRK_MARK;
-            ml->high |= MLST_HIGH_MARK;
+            ml->high    |= MLST_HIGH_MARK;
         }
     }
 }
 
-
 //  ------------------------------------------------------------------
-
 void GMsgList::ReadMlst(int n)
 {
-
-    MLst* ml = mlst[n];
+    MLst * ml = mlst[n];
 
     if(ml != NULL)
+    {
         return;
+    }
 
     ml = mlst[n] = new MLst;
     throw_new(ml);
-
     ml->msgno = AA->Msgn.CvtReln(n + 1);
-
-    ml->high = 0;
+    ml->high  = 0;
     update_marks(ml);
 
     if(AA->Msglistfast())
@@ -201,23 +175,29 @@ void GMsgList::ReadMlst(int n)
     }
     else
     {
-        AA->LoadMsg(&msg, ml->msgno, CFG->dispmargin-(int)CFG->switches.get(disppagebar));
+        AA->LoadMsg(&msg,
+                    ml->msgno,
+                    CFG->dispmargin - (int)CFG->switches.get(disppagebar));
     }
+
     ml->goldmark = goldmark;
 
-    for(std::vector<Node>::iterator x = CFG->username.begin(); x != CFG->username.end(); x++)
+    for(std::vector<Node>::iterator x = CFG->username.begin(); x != CFG->username.end();
+        x++)
     {
         if(strieql(msg.By(), x->name))
         {
             ml->high |= MLST_HIGH_FROM;
             msg.attr.fmu1();
         }
+
         if(strieql(msg.to, x->name))
         {
             ml->high |= MLST_HIGH_TO;
             msg.attr.tou1();
         }
     }
+
     if(strieql(msg.to, AA->Internetaddress()))
     {
         ml->high |= MLST_HIGH_TO;
@@ -226,122 +206,144 @@ void GMsgList::ReadMlst(int n)
 
     // Highlight FROM if local
     if(CFG->switches.get(displocalhigh) and msg.attr.loc())
+    {
         ml->high |= MLST_HIGH_FROM;
+    }
 
     // Highlight if unread
     if((msg.timesread == 0) and CFG->switches.get(highlightunread))
+    {
         ml->high |= MLST_HIGH_UNREAD;
+    }
 
     // Highlight if unsent
     if(msg.attr.uns() and not msg.attr.rcv() and not msg.attr.del())
+    {
         ml->high |= MLST_HIGH_UNSENT;
+    }
 
-    ml->written = msg.written;
-    ml->arrived = msg.arrived;
+    ml->written  = msg.written;
+    ml->arrived  = msg.arrived;
     ml->received = msg.received;
-
     strxcpy(ml->by, msg.By(), ARRAYSIZE(ml->by));
     strxcpy(ml->to, msg.To(), ARRAYSIZE(ml->to));
     strxcpy(ml->re, msg.re, ARRAYSIZE(ml->re));
-
     {
         Addr zero;
         ml->colorby = GetColorName(ml->by, msg.orig, DEFATTR);
         ml->colorto = GetColorName(ml->to, AA->isnet() ? msg.dest : zero, DEFATTR);
     }
-}
-
+} // GMsgList::ReadMlst
 
 //  ------------------------------------------------------------------
-
 void GMsgList::do_delayed()
 {
-
     // Update header and statusline
     if(AA->Msglistheader())
     {
         int disphdrlocation = CFG->disphdrlocation;
-        if ((CFG->disphdrlocation & 0xFFFF) == YES)
+
+        if((CFG->disphdrlocation & 0xFFFF) == YES)
+        {
             CFG->disphdrlocation = NO;
+        }
 
         ReadMlst(index);
-        AA->LoadMsg(&msg, mlst[index]->msgno, CFG->dispmargin-(int)CFG->switches.get(disppagebar));
+        AA->LoadMsg(&msg, mlst[index]->msgno,
+                    CFG->dispmargin - (int)CFG->switches.get(disppagebar));
         mlst[index]->goldmark = goldmark;
+
         if(mlst[index]->high & MLST_HIGH_FROM)
+        {
             msg.attr.fmu1();
+        }
+
         if(mlst[index]->high & MLST_HIGH_TO)
+        {
             msg.attr.tou1();
+        }
+
         int mlstwh = whandle();
         HeaderView->Use(AA, &msg);
         HeaderView->Paint();
         wactiv_(mlstwh);
-
         CFG->disphdrlocation = disphdrlocation;
     }
 
     if(CFG->switches.get(msglistviewsubj))
     {
         ReadMlst(index);
-        wtitle(mlst[index]->re, TCENTER|TBOTTOM, tattr);
+        wtitle(mlst[index]->re, TCENTER | TBOTTOM, tattr);
     }
 
     if(CFG->switches.get(msglistpagebar))
-        wscrollbar(W_VERT, maximum_index+1, maximum_index, index);
+    {
+        wscrollbar(W_VERT, maximum_index + 1, maximum_index, index);
+    }
 
-    update_statuslinef(LNG->MsgLister, "ST_MSGLISTER", index+1, maximum_index+1, maximum_index-index);
-}
-
+    update_statuslinef(LNG->MsgLister,
+                       "ST_MSGLISTER",
+                       index + 1,
+                       maximum_index + 1,
+                       maximum_index - index);
+} // GMsgList::do_delayed
 
 //  ------------------------------------------------------------------
-
 void GMsgList::update_title()
 {
-
     int bycol = 8;
     int tocol = bycol + mlst_bysiz + 1 + fldadd1;
     int recol = tocol + mlst_tosiz + 1 + fldadd1;
     int dtcol = recol + mlst_resiz + 1 + fldadd2;
+
     if(AA->Msglistwidesubj())
+    {
         recol = tocol;
+    }
 
     window.title(NULL, tattr, TCENTER);
-    window.message(CFG->switches.get(disprealmsgno) ? LNG->MsgReal : LNG->Msg, TP_BORD, 3, tattr);
+    window.message(CFG->switches.get(disprealmsgno) ? LNG->MsgReal : LNG->Msg,
+                   TP_BORD,
+                   3,
+                   tattr);
     window.message(LNG->FromL, TP_BORD, bycol, tattr);
+
     if(not AA->Msglistwidesubj())
+    {
         window.message(LNG->ToL, TP_BORD, tocol, tattr);
+    }
+
     window.message(LNG->SubjL, TP_BORD, recol, tattr);
+
     switch(AA->Msglistdate())
     {
-    case MSGLISTDATE_WRITTEN:
-        window.message(LNG->Written, TP_BORD, dtcol, tattr);
-        break;
-    case MSGLISTDATE_ARRIVED:
-        window.message(LNG->Arrived, TP_BORD, dtcol, tattr);
-        break;
-    case MSGLISTDATE_RECEIVED:
-        window.message(LNG->Received, TP_BORD, dtcol, tattr);
-        break;
-    }
-}
+        case MSGLISTDATE_WRITTEN:
+            window.message(LNG->Written, TP_BORD, dtcol, tattr);
+            break;
 
+        case MSGLISTDATE_ARRIVED:
+            window.message(LNG->Arrived, TP_BORD, dtcol, tattr);
+            break;
+
+        case MSGLISTDATE_RECEIVED:
+            window.message(LNG->Received, TP_BORD, dtcol, tattr);
+            break;
+    }
+} // GMsgList::update_title
 
 //  ------------------------------------------------------------------
-
 void GMsgList::print_line(uint idx, uint pos, bool isbar)
 {
-
     int bycol = 7;
     int tocol = bycol + mlst_bysiz + 1 + fldadd1;
     int bysiz = mlst_bysiz + fldadd1;
     int tosiz = mlst_tosiz + fldadd1;
     int resiz = mlst_resiz + fldadd2;
-
     ReadMlst(idx);
-    MLst* ml = mlst[idx];
-
+    MLst * ml = mlst[idx];
     update_marks(ml);
-
     vattr wattr_, hattr_, mattr_;
+
     if(isbar)
     {
         wattr_ = sattr;
@@ -372,27 +374,29 @@ void GMsgList::print_line(uint idx, uint pos, bool isbar)
     if(AA->Msglistwidesubj())
     {
         resiz += tosiz + 1;
-        tosiz = 0;
+        tosiz  = 0;
     }
 
     char nbuf[33], dbuf[20];
     strcpy(dbuf, LNG->n_a);
-
     time32_t dt = 0;
+
     switch(AA->Msglistdate())
     {
-    case MSGLISTDATE_WRITTEN:
-        dt = ml->written;
-        break;
-    case MSGLISTDATE_ARRIVED:
-        dt = ml->arrived;
-        break;
-    case MSGLISTDATE_RECEIVED:
-        dt = ml->received;
-        break;
+        case MSGLISTDATE_WRITTEN:
+            dt = ml->written;
+            break;
+
+        case MSGLISTDATE_ARRIVED:
+            dt = ml->arrived;
+            break;
+
+        case MSGLISTDATE_RECEIVED:
+            dt = ml->received;
+            break;
     }
 
-    if (dt)
+    if(dt)
     {
         struct tm tm;
         ggmtime(&tm, &dt);
@@ -400,63 +404,79 @@ void GMsgList::print_line(uint idx, uint pos, bool isbar)
     }
 
     if(AA->Msglistdate())
+    {
         strsetsz(dbuf, 10);
+    }
     else
+    {
         *dbuf = NUL;
+    }
 
-    gsprintf(PRINTF_DECLARE_BUFFER(nbuf), "%5u", (CFG->switches.get(disprealmsgno) ? ml->msgno : AA->Msgn.ToReln(ml->msgno)));
-    gsprintf(PRINTF_DECLARE_BUFFER_AUTO(buf, MAXCOL), "%-5.5s%s%-*.*s %-*.*s%s%-*.*s %s",
-             nbuf, ml->marks,
-             bysiz, bysiz, ml->by,
-             tosiz, tosiz, ml->to,
+    gsprintf(PRINTF_DECLARE_BUFFER(nbuf), "%5u",
+             (CFG->switches.get(disprealmsgno) ? ml->msgno :
+              AA->Msgn.ToReln(ml->msgno)));
+    gsprintf(PRINTF_DECLARE_BUFFER_AUTO(buf, MAXCOL),
+             "%-5.5s%s%-*.*s %-*.*s%s%-*.*s %s",
+             nbuf,
+             ml->marks,
+             bysiz,
+             bysiz,
+             ml->by,
+             tosiz,
+             tosiz,
+             ml->to,
              (tosiz ? " " : ""),
-             resiz, resiz, ml->re,
-             dbuf
-    );
-
+             resiz,
+             resiz,
+             ml->re,
+             dbuf);
     window.prints(pos, 0, wattr_, buf);
 
-    if (ml->high & (MLST_HIGH_BOOK|MLST_HIGH_MARK))
+    if(ml->high & (MLST_HIGH_BOOK | MLST_HIGH_MARK))
+    {
         window.prints(pos, 5, mattr_, ml->marks);
+    }
 
-    if ((ml->high & MLST_HIGH_FROM) || (ml->colorby != DEFATTR))
+    if((ml->high & MLST_HIGH_FROM) || (ml->colorby != DEFATTR))
     {
         vattr color = ((ml->colorby != DEFATTR) && !isbar) ? ml->colorby : hattr_;
         window.printns(pos, bycol, color, ml->by, bysiz);
     }
 
-    if (((ml->high & MLST_HIGH_TO) || (ml->colorto != DEFATTR)) &&
-            !AA->Msglistwidesubj())
+    if(((ml->high & MLST_HIGH_TO) || (ml->colorto != DEFATTR)) && !AA->Msglistwidesubj())
     {
         vattr color = ((ml->colorto != DEFATTR) && !isbar) ? ml->colorto : hattr_;
         window.printns(pos, tocol, color, ml->to, tosiz);
     }
 
     goldmark = ml->goldmark;
-}
-
+} // GMsgList::print_line
 
 //  ------------------------------------------------------------------
-
 bool GMsgList::handle_key()
 {
-
     gkey kk;
 
     if(key < KK_Commands)
     {
         // See if it's a listkey
         kk = SearchKey(key, ListKey, ListKeys);
+
         if(kk)
+        {
             key = kk;
+        }
         else
         {
             // If not a listkey, see if it matches a readkey
             if(not IsMacro(key, KT_M))
             {
                 kk = SearchKey(key, ReadKey, ReadKeys);
+
                 if(kk)
+                {
                     key = kk;
+                }
             }
         }
     }
@@ -465,239 +485,279 @@ bool GMsgList::handle_key()
 
     switch(key)
     {
-    case KK_ListGotoPrev:
-        key = Key_Up;
-        default_handle_key();
-        break;
+        case KK_ListGotoPrev:
+            key = Key_Up;
+            default_handle_key();
+            break;
 
-    case KK_ListGotoNext:
-        key = Key_Dwn;
-        default_handle_key();
-        break;
+        case KK_ListGotoNext:
+            key = Key_Dwn;
+            default_handle_key();
+            break;
 
-    case KK_ListGotoFirst:
-        key = Key_Home;
-        default_handle_key();
-        break;
+        case KK_ListGotoFirst:
+            key = Key_Home;
+            default_handle_key();
+            break;
 
-    case KK_ListGotoLast:
-        key = Key_End;
-        default_handle_key();
-        break;
+        case KK_ListGotoLast:
+            key = Key_End;
+            default_handle_key();
+            break;
 
-    case KK_ListAskExit:
-    {
-        GMenuQuit MenuQuit;
-        aborted = gkbd.quitall = make_bool(MenuQuit.Run());
-        if(gkbd.quitall)
+        case KK_ListAskExit:
         {
-            AA->bookmark = AA->Msgn.CvtReln(msgmark2);
-            return false;
-        }
-    }
-    break;
+            GMenuQuit MenuQuit;
+            aborted = gkbd.quitall = make_bool(MenuQuit.Run());
 
-    case KK_ListQuitNow:
-        gkbd.quitall = true;
-    ///////////////// Drop Through
-
-    case KK_ListAbort:
-        aborted = true;
-        AA->bookmark = AA->Msgn.CvtReln(msgmark2);
-    ///////////////// Drop Through
-
-    case KK_ListSelect:
-        return false;
-
-    case KK_ListMark:
-    {
-        uint32_t temp = AA->Mark.Find(mlst[index]->msgno);
-        if(not temp)
-        {
-            AA->Mark.Add(mlst[index]->msgno);
-            update_marks(mlst[index]);
-        }
-    }
-    if(index < maximum_index)
-        cursor_down();
-    else
-        display_bar();
-    break;
-
-    case KK_ListUnmark:
-    {
-        uint32_t temp = AA->Mark.Find(mlst[index]->msgno);
-        if(temp)
-        {
-            AA->Mark.DelReln(temp);
-            update_marks(mlst[index]);
-        }
-    }
-    if(index < maximum_index)
-        cursor_down();
-    else
-        display_bar();
-    break;
-
-    case KK_ListToggleMark:
-    {
-        uint32_t temp = AA->Mark.Find(mlst[index]->msgno);
-        if(temp)
-        {
-            AA->Mark.DelReln(temp);
-        }
-        else
-        {
-            AA->Mark.Add(mlst[index]->msgno);
-        }
-        update_marks(mlst[index]);
-    }
-    if(index < maximum_index)
-        cursor_down();
-    else
-        display_bar();
-    break;
-
-    case KK_ListToggleBookMark:
-        if(AA->bookmark == mlst[index]->msgno)
-        {
-            mlst[index]->marks[0] = ' ';
-            AA->bookmark = 0;
-            mlst[index]->high &= ~MLST_HIGH_BOOK;
-            display_bar();
-        }
-        else
-        {
-            long prevbm = AA->Msgn.ToReln(AA->bookmark-1);
-            long newbm = index;
-            AA->bookmark = mlst[index]->msgno;
-            mlst[index]->marks[0] = MMRK_BOOK;
-            mlst[index]->high |= MLST_HIGH_BOOK;
-            display_bar();
-            if(prevbm)
+            if(gkbd.quitall)
             {
-                if(in_range((long)position + prevbm - newbm, 0l, (long)maximum_position))
-                {
-                    ReadMlst(prevbm);
-                    mlst[prevbm]->marks[0] = ' ';
-                    mlst[prevbm]->high &= ~MLST_HIGH_BOOK;
-                    index = prevbm;
-                    position += prevbm - newbm;
-                    display_line();
-                    index = newbm;
-                    position -= prevbm - newbm;
-                }
+                AA->bookmark = AA->Msgn.CvtReln(msgmark2);
+                return false;
             }
         }
         break;
 
-    case KK_ListGotoBookMark:
-        if(AA->bookmark)
+        case KK_ListQuitNow:
+            gkbd.quitall = true;
+
+        ///////////////// Drop Through
+        case KK_ListAbort:
+            aborted      = true;
+            AA->bookmark = AA->Msgn.CvtReln(msgmark2);
+
+        ///////////////// Drop Through
+        case KK_ListSelect:
+            return false;
+
+        case KK_ListMark:
         {
-            long prevbm = AA->Msgn.ToReln(AA->bookmark-1);
-            long newbm = index;
-            index = prevbm;
-            AA->bookmark = mlst[newbm]->msgno;
-            if(in_range((long)position + prevbm - newbm, 0l, (long)maximum_position))
+            uint32_t temp = AA->Mark.Find(mlst[index]->msgno);
+
+            if(not temp)
             {
-                mlst[newbm]->marks[0] = MMRK_BOOK;
-                mlst[newbm]->high |= MLST_HIGH_BOOK;
-                index = newbm;
-                display_line();
-                index = prevbm;
-                ReadMlst(index);
+                AA->Mark.Add(mlst[index]->msgno);
+                update_marks(mlst[index]);
+            }
+        }
+
+            if(index < maximum_index)
+            {
+                cursor_down();
+            }
+            else
+            {
+                display_bar();
+            }
+
+            break;
+
+        case KK_ListUnmark:
+        {
+            uint32_t temp = AA->Mark.Find(mlst[index]->msgno);
+
+            if(temp)
+            {
+                AA->Mark.DelReln(temp);
+                update_marks(mlst[index]);
+            }
+        }
+
+            if(index < maximum_index)
+            {
+                cursor_down();
+            }
+            else
+            {
+                display_bar();
+            }
+
+            break;
+
+        case KK_ListToggleMark:
+        {
+            uint32_t temp = AA->Mark.Find(mlst[index]->msgno);
+
+            if(temp)
+            {
+                AA->Mark.DelReln(temp);
+            }
+            else
+            {
+                AA->Mark.Add(mlst[index]->msgno);
+            }
+
+            update_marks(mlst[index]);
+        }
+
+            if(index < maximum_index)
+            {
+                cursor_down();
+            }
+            else
+            {
+                display_bar();
+            }
+
+            break;
+
+        case KK_ListToggleBookMark:
+
+            if(AA->bookmark == mlst[index]->msgno)
+            {
                 mlst[index]->marks[0] = ' ';
-                mlst[index]->high &= ~MLST_HIGH_BOOK;
-                position += prevbm - newbm;
+                AA->bookmark          = 0;
+                mlst[index]->high    &= ~MLST_HIGH_BOOK;
                 display_bar();
             }
             else
-                center(CFG->displistcursor);
-        }
-        else
-            SayBibi();
-        break;
-
-    case KK_ListMarkingOptions:
-    {
-        uint lrbak = AA->lastread();
-        AA->set_lastread(index + 1);
-        msg.msgno = AA->Msgn.CvtReln(AA->lastread());
-        MarkMsgs(&msg);
-        AA->set_lastread(lrbak);
-        update();
-    }
-    break;
-
-    case KK_ListDosShell:
-        DosShell();
-        break;
-
-    case KK_ListWideSubj:
-        if(not AA->Msglistwidesubj())
-        {
-            AA->ToggleMsglistwidesubj();
-            update_title();
-            update();
-        }
-        break;
-
-    case KK_ListNarrowSubj:
-        if(AA->Msglistwidesubj())
-        {
-            AA->ToggleMsglistwidesubj();
-            update_title();
-            update();
-        }
-        break;
-
-    case KK_ListToggleWideSubj:
-        AA->ToggleMsglistwidesubj();
-        update_title();
-        update();
-        break;
-
-    case KK_ListToggleDate:
-        AA->NextMsglistdate();
-        mlst_with_date(AA->Msglistdate());
-        update_title();
-        update();
-        break;
-
-    case KK_ReadMessageList:
-        center(CFG->displistcursor);
-        break;
-
-    case Key_Tick:
-        CheckTick(KK_ListQuitNow);
-        break;
-
-    case KK_ListUndefine:
-        break;
-
-    default:
-        if(not PlayMacro(key, KT_M))
-        {
-            if(gkbd.kbuf == NULL)
-                kbput(key);
-            switch(key)
             {
-            case KK_ListAbort:
-            case KK_ReadNewArea:
-                aborted = true;
-            }
-            return false;
-        }
-    }
-    return true;
-}
+                long prevbm = AA->Msgn.ToReln(AA->bookmark - 1);
+                long newbm  = index;
+                AA->bookmark          = mlst[index]->msgno;
+                mlst[index]->marks[0] = MMRK_BOOK;
+                mlst[index]->high    |= MLST_HIGH_BOOK;
+                display_bar();
 
+                if(prevbm)
+                {
+                    if(in_range((long)position + prevbm - newbm,
+                                0l,
+                                (long)maximum_position))
+                    {
+                        ReadMlst(prevbm);
+                        mlst[prevbm]->marks[0] = ' ';
+                        mlst[prevbm]->high    &= ~MLST_HIGH_BOOK;
+                        index     = prevbm;
+                        position += prevbm - newbm;
+                        display_line();
+                        index     = newbm;
+                        position -= prevbm - newbm;
+                    }
+                }
+            }
+
+            break;
+
+        case KK_ListGotoBookMark:
+
+            if(AA->bookmark)
+            {
+                long prevbm = AA->Msgn.ToReln(AA->bookmark - 1);
+                long newbm  = index;
+                index        = prevbm;
+                AA->bookmark = mlst[newbm]->msgno;
+
+                if(in_range((long)position + prevbm - newbm, 0l, (long)maximum_position))
+                {
+                    mlst[newbm]->marks[0] = MMRK_BOOK;
+                    mlst[newbm]->high    |= MLST_HIGH_BOOK;
+                    index = newbm;
+                    display_line();
+                    index = prevbm;
+                    ReadMlst(index);
+                    mlst[index]->marks[0] = ' ';
+                    mlst[index]->high    &= ~MLST_HIGH_BOOK;
+                    position += prevbm - newbm;
+                    display_bar();
+                }
+                else
+                {
+                    center(CFG->displistcursor);
+                }
+            }
+            else
+            {
+                SayBibi();
+            }
+
+            break;
+
+        case KK_ListMarkingOptions:
+        {
+            uint lrbak = AA->lastread();
+            AA->set_lastread(index + 1);
+            msg.msgno = AA->Msgn.CvtReln(AA->lastread());
+            MarkMsgs(&msg);
+            AA->set_lastread(lrbak);
+            update();
+        }
+        break;
+
+        case KK_ListDosShell:
+            DosShell();
+            break;
+
+        case KK_ListWideSubj:
+
+            if(not AA->Msglistwidesubj())
+            {
+                AA->ToggleMsglistwidesubj();
+                update_title();
+                update();
+            }
+
+            break;
+
+        case KK_ListNarrowSubj:
+
+            if(AA->Msglistwidesubj())
+            {
+                AA->ToggleMsglistwidesubj();
+                update_title();
+                update();
+            }
+
+            break;
+
+        case KK_ListToggleWideSubj:
+            AA->ToggleMsglistwidesubj();
+            update_title();
+            update();
+            break;
+
+        case KK_ListToggleDate:
+            AA->NextMsglistdate();
+            mlst_with_date(AA->Msglistdate());
+            update_title();
+            update();
+            break;
+
+        case KK_ReadMessageList:
+            center(CFG->displistcursor);
+            break;
+
+        case Key_Tick:
+            CheckTick(KK_ListQuitNow);
+            break;
+
+        case KK_ListUndefine:
+            break;
+
+        default:
+
+            if(not PlayMacro(key, KT_M))
+            {
+                if(gkbd.kbuf == NULL)
+                {
+                    kbput(key);
+                }
+
+                switch(key)
+                {
+                    case KK_ListAbort:
+                    case KK_ReadNewArea:
+                        aborted = true;
+                }
+                return false;
+            }
+    } // switch
+    return true;
+} // GMsgList::handle_key
 
 //  ------------------------------------------------------------------
-
 void GMsgList::Run()
 {
-
     if(maximum_index == 0)
     {
         aborted = true;
@@ -705,44 +765,50 @@ void GMsgList::Run()
     }
 
     if(AA->Msgn.ToReln(reader_msg->msgno) != 0)
-        index = AA->Msgn.ToReln(reader_msg->msgno)-1;
+    {
+        index = AA->Msgn.ToReln(reader_msg->msgno) - 1;
+    }
     else
+    {
         index = 0;
-    minimum_index = 0;
-    msgmark2 = AA->Msgn.ToReln(AA->bookmark);
+    }
 
-    ypos    = AA->Msglistheader() ? 6 : 1;      // Window Starting Row
-    xpos    = 0;                                // Window Starting Column
-    ylen    = MAXROW-3-ypos;                    // Window Height
-    xlen    = MAXCOL-2;                         // Window Width
-    btype   = W_BMENU;                          // Window Border Type
-    battr   = C_MENUB;                          // Window Border Color
-    wattr   = C_MENUW;                          // Window Color
-    tattr   = C_MENUT;                          // Window Title Color
-    sattr   = C_MENUS;                          // Window Selection Bar Color
-    hattr   = C_MENUQ;                          // Window Highlight Color
-    sbattr  = C_MENUPB;                         // Window Scrollbar Color
-    title   = LNG->ThreadlistTitle;             // Window Title
-    helpcat = H_MessageBrowser;                 // Window Help Category
-    listwrap  = CFG->switches.get(displistwrap);
+    minimum_index = 0;
+    msgmark2      = AA->Msgn.ToReln(AA->bookmark);
+    ypos          = AA->Msglistheader() ? 6 : 1; // Window Starting Row
+    xpos          = 0;                           // Window Starting Column
+    ylen          = MAXROW - 3 - ypos;           // Window Height
+    xlen          = MAXCOL - 2;                  // Window Width
+    btype         = W_BMENU;                     // Window Border Type
+    battr         = C_MENUB;                     // Window Border Color
+    wattr         = C_MENUW;                     // Window Color
+    tattr         = C_MENUT;                     // Window Title Color
+    sattr         = C_MENUS;                     // Window Selection Bar Color
+    hattr         = C_MENUQ;                     // Window Highlight Color
+    sbattr        = C_MENUPB;                    // Window Scrollbar Color
+    title         = LNG->ThreadlistTitle;        // Window Title
+    helpcat       = H_MessageBrowser;            // Window Help Category
+    listwrap      = CFG->switches.get(displistwrap);
 
     if((AA->Msglistdate() == MSGLISTDATE_RECEIVED) and not AA->havereceivedstamp())
+    {
         AA->SetMsglistdate(MSGLISTDATE_WRITTEN);
+    }
     else if((AA->Msglistdate() == MSGLISTDATE_ARRIVED) and not AA->havearrivedstamp())
+    {
         AA->SetMsglistdate(MSGLISTDATE_WRITTEN);
+    }
 
     mlst_with_date(AA->Msglistdate());
+    fldadd1 = (MAXCOL - 80) / 3;
+    fldadd2 = (MAXCOL - 80) - (fldadd1 * 2);
+    mlst    = (MLst **)throw_malloc(sizeof(MLst *) * (maximum_index + 1));
 
-    fldadd1 = (MAXCOL-80)/3;
-    fldadd2 = (MAXCOL-80) - (fldadd1*2);
-
-    mlst = (MLst **)throw_malloc(sizeof(MLst *) * (maximum_index + 1));
-
-    for(uint i=0; i<= maximum_index; i++)
+    for(uint i = 0; i <= maximum_index; i++)
+    {
         mlst[i] = NULL;
-
+    }
     maximum_position = MinV((uint)maximum_index, (uint)ylen - 1);
-
     run_picker();
 
     if(not aborted)
@@ -750,102 +816,110 @@ void GMsgList::Run()
         ReadMlst(index);
         AA->set_lastread(AA->Msgn.ToReln(mlst[index]->msgno));
     }
-}
-
+} // GMsgList::Run
 
 //  ------------------------------------------------------------------
-
 void MessageBrowse()
 {
-
     if(AA->Msgn.Count())
     {
         GMsgList p;
         _in_msglist = true;
         p.Run();
         _in_msglist = false;
+
         if(AA->PMrk.Tags() == 0)
+        {
             AA->isreadpm = false;
+        }
+
         if(AA->Mark.Count() == 0)
+        {
             AA->isreadmark = false;
+        }
+
         if(gkbd.quitall)
+        {
             QuitNow();
+        }
     }
 }
 
-
 //  ------------------------------------------------------------------
-
 //#define MAX_LEVEL 20
-
 //  ------------------------------------------------------------------
-
 void GThreadlist::open()
 {
-
-    window.openxy(ypos, xpos, ylen+2, xlen+2,  btype, battr, LGREY_|_BLACK);
+    window.openxy(ypos, xpos, ylen + 2, xlen + 2, btype, battr, LGREY_ | _BLACK);
     update_title();
-
     center(CFG->displistcursor);
 }
 
-
 //  ------------------------------------------------------------------
-
 void GThreadlist::update_title()
 {
-
     window.title(title, tattr);
-    window.message(CFG->switches.get(disprealmsgno) ? LNG->MsgReal : LNG->Msg, TP_BORD, 3, tattr);
+    window.message(CFG->switches.get(disprealmsgno) ? LNG->MsgReal : LNG->Msg,
+                   TP_BORD,
+                   3,
+                   tattr);
 
     switch(AA->Msglistdate())
     {
-    case MSGLISTDATE_WRITTEN:
-        window.message(LNG->Written, TP_BORD, xlen-9, tattr);
-        break;
-    case MSGLISTDATE_ARRIVED:
-        window.message(LNG->Arrived, TP_BORD, xlen-9, tattr);
-        break;
-    case MSGLISTDATE_RECEIVED:
-        window.message(LNG->Received, TP_BORD, xlen-9, tattr);
-        break;
+        case MSGLISTDATE_WRITTEN:
+            window.message(LNG->Written, TP_BORD, xlen - 9, tattr);
+            break;
+
+        case MSGLISTDATE_ARRIVED:
+            window.message(LNG->Arrived, TP_BORD, xlen - 9, tattr);
+            break;
+
+        case MSGLISTDATE_RECEIVED:
+            window.message(LNG->Received, TP_BORD, xlen - 9, tattr);
+            break;
     }
 }
 
-
 //  ------------------------------------------------------------------
-
 void GThreadlist::do_delayed()
 {
-
     // Update header and statusline
     if(AA->Msglistheader())
     {
         int disphdrlocation = CFG->disphdrlocation;
-        if ((CFG->disphdrlocation & 0xFFFF) == YES)
-            CFG->disphdrlocation = NO;
 
-        AA->LoadMsg(&msg, treeEntryList[index].msgno, CFG->dispmargin-(int)CFG->switches.get(disppagebar));
-        for(std::vector<Node>::iterator x = CFG->username.begin(); x != CFG->username.end(); x++)
+        if((CFG->disphdrlocation & 0xFFFF) == YES)
+        {
+            CFG->disphdrlocation = NO;
+        }
+
+        AA->LoadMsg(&msg,
+                    treeEntryList[index].msgno,
+                    CFG->dispmargin - (int)CFG->switches.get(disppagebar));
+
+        for(std::vector<Node>::iterator x = CFG->username.begin();
+            x != CFG->username.end(); x++)
         {
             if(strieql(msg.By(), x->name))
             {
                 msg.attr.fmu1();
             }
+
             if(strieql(msg.to, x->name))
             {
                 msg.attr.tou1();
             }
         }
+
         if(strieql(msg.to, AA->Internetaddress()))
         {
             msg.attr.tou1();
         }
+
         int mlstwh = whandle();
         HeaderView->Use(AA, &msg);
         HeaderView->Paint();
         wactiv_(mlstwh);
-
         CFG->disphdrlocation = disphdrlocation;
     }
 
@@ -854,103 +928,119 @@ void GThreadlist::do_delayed()
         // Reload message if not sure that just reread
         if(not AA->Msglistheader())
         {
-            if (AA->Msglistfast())
+            if(AA->Msglistfast())
             {
                 AA->LoadHdr(&msg, treeEntryList[index].msgno);
             }
             else
             {
-                AA->LoadMsg(&msg, treeEntryList[index].msgno, CFG->dispmargin - (int)CFG->switches.get(disppagebar));
+                AA->LoadMsg(&msg,
+                            treeEntryList[index].msgno,
+                            CFG->dispmargin - (int)CFG->switches.get(disppagebar));
             }
         }
-        wtitle(msg.re, TCENTER|TBOTTOM, tattr);
+
+        wtitle(msg.re, TCENTER | TBOTTOM, tattr);
     }
 
     if(CFG->switches.get(msglistpagebar))
-        wscrollbar(W_VERT, maximum_index+1, maximum_index, index);
+    {
+        wscrollbar(W_VERT, maximum_index + 1, maximum_index, index);
+    }
 
-    update_statuslinef(LNG->MsgLister, "ST_MSGLISTER", index+1, maximum_index+1, maximum_index-index);
-}
-
+    update_statuslinef(LNG->MsgLister,
+                       "ST_MSGLISTER",
+                       index + 1,
+                       maximum_index + 1,
+                       maximum_index - index);
+} // GThreadlist::do_delayed
 
 //  ------------------------------------------------------------------
-
 void GThreadlist::close()
 {
-
     window.close();
     msg.Reset();
 }
 
-
 //  ------------------------------------------------------------------
-
 void GThreadlist::GenTree(int idx)
 {
-    ThreadEntry &t = treeEntryList[idx];
-    if (t.entrytext.size())
+    ThreadEntry & t = treeEntryList[idx];
+
+    if(t.entrytext.size())
+    {
         return;
+    }
 
 #ifdef KOI8
-    static char graph[4]="\206\204\201";       // Pseudographic chars KOI8-R
+    static char graph[4] = "\206\204\201";       // Pseudographic chars KOI8-R
 #else
-    static char graph_ibmpc[4]="\303\300\263"; // Pseudographic chars CP437, CP850, CP866
-    static char graph[4]="\0\0\0";
+    static char graph_ibmpc[4] = "\303\300\263"; // Pseudographic chars CP437, CP850, CP866
+    static char graph[4]       = "\0\0\0";
 
     if(graph[0] == NUL)
     {
-        int table = GetCurrentTable();
-        const char *doscp = get_dos_charset(CFG->xlatlocalset);
+        int table          = GetCurrentTable();
+        const char * doscp = get_dos_charset(CFG->xlatlocalset);
+
         if(doscp[0]) // console charset is known
         {
             int level = LoadCharset(doscp, CFG->xlatlocalset);
-            if(level!=-1)
+
+            if(level != -1)
             {
-                strxcpy(graph, XlatStr(graph_ibmpc, level, CharTable).c_str(), ARRAYSIZE(graph));
+                strxcpy(graph, XlatStr(graph_ibmpc, level, CharTable).c_str(),
+                        ARRAYSIZE(graph));
             }
             else
+            {
                 strxcpy(graph, "+*|", ARRAYSIZE(graph));       // Default: plain ASCII7 chars
+            }
         }
         else
+        {
             memcpy(graph, graph_ibmpc, sizeof(graph));
+        }
 
         LoadCharset(table);
 
-#if defined(__UNIX__) && !defined(__USE_NCURSES__)
+#if defined (__UNIX__) && !defined (__USE_NCURSES__)
         gvid_boxcvt(graph);
 #endif
     }
-#endif
 
-    if (t.level == 0)
+#endif // ifdef KOI8
+
+    if(t.level == 0)
     {
         t.entrytext = " ";
         return;
     }
 
-    t.entrytext.resize((t.level - 1)*2 + 3, ' ');
-    t.entrytext[(t.level - 1)*2 + 1] = (t.replynext) ? graph[0] : graph[1];
-
+    t.entrytext.resize((t.level - 1) * 2 + 3, ' ');
+    t.entrytext[(t.level - 1) * 2 + 1] = (t.replynext) ? graph[0] : graph[1];
     ThreadEntry te = t;
-    while (te.replyto)
+
+    while(te.replyto)
     {
         te = treeEntryList[te.replytoindex];
-        if (te.level != 0)
+
+        if(te.level != 0)
         {
-            if (te.replynext)
-                t.entrytext[(te.level - 1)*2 + 1] = graph[2];
+            if(te.replynext)
+            {
+                t.entrytext[(te.level - 1) * 2 + 1] = graph[2];
+            }
         }
     }
-}
-
+} // GThreadlist::GenTree
 
 //  ------------------------------------------------------------------
-
 void GThreadlist::print_line(uint idx, uint pos, bool isbar)
 {
     CREATEBUFFER(char, buf, MAXCOL);
-    ThreadEntry &t = treeEntryList[idx];
-    size_t tdlen = xlen - ((AA->Msglistdate() == MSGLISTDATE_NONE) ? 8 : 18);
+    ThreadEntry & t = treeEntryList[idx];
+    size_t tdlen    = xlen - ((AA->Msglistdate() == MSGLISTDATE_NONE) ? 8 : 18);
 
     if(AA->Msglistfast())
     {
@@ -958,10 +1048,12 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar)
     }
     else
     {
-        AA->LoadMsg(&msg, t.msgno, CFG->dispmargin-(int)CFG->switches.get(disppagebar));
+        AA->LoadMsg(&msg, t.msgno,
+                    CFG->dispmargin - (int)CFG->switches.get(disppagebar));
     }
 
     vattr attrh, attrw;
+
     if(msg.attr.uns() and not msg.attr.rcv() and not msg.attr.del())
     {
         attrw = C_MENUW_UNSENT;
@@ -981,38 +1073,48 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar)
     char marks[3] = "  ";
 
     if(AA->bookmark == t.msgno)
+    {
         marks[0] = MMRK_BOOK;
+    }
 
     if(AA->Mark.Count())
     {
         if(AA->Mark.Find(t.msgno))
+        {
             marks[1] = MMRK_MARK;
+        }
     }
-    gsprintf(PRINTF_DECLARE_BUFFER_AUTO(buf, MAXCOL), "%6u  %*c", (CFG->switches.get(disprealmsgno) ? t.msgno : AA->Msgn.ToReln(t.msgno)), tdlen, ' ');
+
+    gsprintf(PRINTF_DECLARE_BUFFER_AUTO(buf, MAXCOL),
+             "%6u  %*c",
+             (CFG->switches.get(disprealmsgno) ? t.msgno : AA->Msgn.ToReln(t.msgno)),
+             tdlen,
+             ' ');
 
     if(AA->Msglistdate() != MSGLISTDATE_NONE)
     {
         char dbuf[11];
         time32_t dt = 0;
-
         memset(dbuf, ' ', 10);
         dbuf[10] = NUL;
         strncpy(dbuf, LNG->n_a, strlen(LNG->n_a));
 
         switch(AA->Msglistdate())
         {
-        case MSGLISTDATE_WRITTEN:
-            dt = msg.written;
-            break;
-        case MSGLISTDATE_ARRIVED:
-            dt = msg.arrived;
-            break;
-        case MSGLISTDATE_RECEIVED:
-            dt = msg.received;
-            break;
+            case MSGLISTDATE_WRITTEN:
+                dt = msg.written;
+                break;
+
+            case MSGLISTDATE_ARRIVED:
+                dt = msg.arrived;
+                break;
+
+            case MSGLISTDATE_RECEIVED:
+                dt = msg.received;
+                break;
         }
 
-        if (dt)
+        if(dt)
         {
             struct tm tm;
             ggmtime(&tm, &dt);
@@ -1021,126 +1123,147 @@ void GThreadlist::print_line(uint idx, uint pos, bool isbar)
 
         strcat(buf, dbuf);
     }
-    strcat(buf, " ");
 
+    strcat(buf, " ");
     window.prints(pos, 0, isbar ? sattr : attrw, buf);
     window.prints(pos, 6, isbar ? sattr : hattr, marks);
-
     GenTree(idx);
+    const char * buf2 = treeEntryList[idx].entrytext.c_str();
+    size_t buf2len    = strlen(buf2);
 
-    const char* buf2 = treeEntryList[idx].entrytext.c_str();
-    size_t buf2len = strlen(buf2);
-
-    if (buf2len > h_offset)
+    if(buf2len > h_offset)
     {
         strxcpy(buf, &buf2[h_offset], tdlen);
-        window.prints(pos, 8, isbar ? (sattr|ACSET) : (wattr|ACSET), buf);
+        window.prints(pos, 8, isbar ? (sattr | ACSET) : (wattr | ACSET), buf);
     }
 
     vattr attr = attrw;
 
-    for(std::vector<Node>::iterator x = CFG->username.begin(); x != CFG->username.end(); x++)
+    for(std::vector<Node>::iterator x = CFG->username.begin(); x != CFG->username.end();
+        x++)
+    {
         if(strieql(msg.By(), x->name))
         {
             attr = attrh;
             break;
         }
+    }
 
-    if (!isbar)
+    if(!isbar)
+    {
         attr = GetColorName(msg.By(), msg.orig, attr);
-    else if (CFG->replylinkfloat)
+    }
+    else if(CFG->replylinkfloat)
     {
         size_t bylen = strlen(msg.By());
-        if ((buf2len + bylen) > (tdlen - 1))
+
+        if((buf2len + bylen) > (tdlen - 1))
         {
             uint offset = (buf2len + bylen) - tdlen + 1;
-            offset = (offset/10 + 1)*10;
+            offset = (offset / 10 + 1) * 10;
 
-            if (offset >= new_hoffset)
+            if(offset >= new_hoffset)
+            {
                 new_hoffset = offset;
+            }
             else
             {
-                while ((new_hoffset - offset) >= tdlen*2/3)
+                while((new_hoffset - offset) >= tdlen * 2 / 3)
+                {
                     new_hoffset -= 10;
+                }
             }
         }
         else
         {
-            while (buf2len < new_hoffset)
+            while(buf2len < new_hoffset)
+            {
                 new_hoffset -= 10;
+            }
         }
 
         attr = sattr;
     }
 
     size_t buflen = (buf2len > h_offset) ? strlen(&buf2[h_offset]) : 0;
-    if (buflen < tdlen)
+
+    if(buflen < tdlen)
     {
-        if (CFG->replylinkfloat && (buf2len < h_offset))
+        if(CFG->replylinkfloat && (buf2len < h_offset))
         {
             size_t bylen = strlen(msg.By());
-            size_t pos = (bylen < (h_offset-buf2len)) ? bylen : h_offset-buf2len;
+            size_t pos   = (bylen < (h_offset - buf2len)) ? bylen : h_offset - buf2len;
             strxcpy(buf, &msg.By()[pos], tdlen);
         }
         else
+        {
             strxcpy(buf, msg.By(), tdlen - buflen);
+        }
 
         window.prints(pos, 8 + buflen, attr, buf);
     }
-}
-
+} // GThreadlist::print_line
 
 //  ------------------------------------------------------------------
-
-void GThreadlist::recursive_build(uint32_t msgn, uint32_t rn, uint32_t level, uint32_t index)
+void GThreadlist::recursive_build(uint32_t msgn,
+                                  uint32_t rn,
+                                  uint32_t level,
+                                  uint32_t index)
 {
     uint32_t oldmsgno = msg.msgno;
 
-    if (AA->Msgn.ToReln(msgn) and AA->LoadHdr(&msg, msgn))
+    if(AA->Msgn.ToReln(msgn) and AA->LoadHdr(&msg, msgn))
     {
         ThreadEntry t;
-        t.msgno     = msgn;
-        t.replyto   = msg.link.to();
-        t.reply1st  = msg.link.first();
-        t.replynext = rn;
-        t.level     = level++;
+        t.msgno        = msgn;
+        t.replyto      = msg.link.to();
+        t.reply1st     = msg.link.first();
+        t.replynext    = rn;
+        t.level        = level++;
         t.replytoindex = index;
 
-        if (!AA->Msgn.ToReln(t.replyto))    t.replyto   = 0;
-        if (!AA->Msgn.ToReln(t.reply1st))   t.reply1st  = 0;
-        if (!AA->Msgn.ToReln(t.replynext))  t.replynext = 0;
+        if(!AA->Msgn.ToReln(t.replyto))
+        {
+            t.replyto = 0;
+        }
+
+        if(!AA->Msgn.ToReln(t.reply1st))
+        {
+            t.reply1st = 0;
+        }
+
+        if(!AA->Msgn.ToReln(t.replynext))
+        {
+            t.replynext = 0;
+        }
 
         treeEntryList.push_back(t);
         index = treeEntryList.size() - 1;
-
         recursive_build(msg.link.first(), msg.link.list(0), level, index);
 
-        for (size_t n = 0, max = msg.link.list_max(); n < max; n++)
+        for(size_t n = 0, max = msg.link.list_max(); n < max; n++)
         {
-            if (msg.link.list(n))
-                recursive_build(msg.link.list(n), msg.link.list(n+1), level, index);
+            if(msg.link.list(n))
+            {
+                recursive_build(msg.link.list(n), msg.link.list(n + 1), level, index);
+            }
         }
-
         AA->LoadHdr(&msg, oldmsgno);
     }
-}
-
+} // GThreadlist::recursive_build
 
 //  ------------------------------------------------------------------
-
 void GThreadlist::BuildThreadIndex(dword msgn)
 {
     w_info(LNG->Wait);
-
     AA->LoadHdr(&msg, msgn);
-
-    uint32_t msgno = msg.link.to();
+    uint32_t msgno     = msg.link.to();
     uint32_t prevmsgno = msgn;
 
     // Search backwards
     while(AA->Msgn.ToReln(msgno))
     {
-        if (not AA->LoadHdr(&msg, msgno))
+        if(not AA->LoadHdr(&msg, msgno))
         {
             msg.link.to_set(0);
             msgno = prevmsgno;
@@ -1149,58 +1272,50 @@ void GThreadlist::BuildThreadIndex(dword msgn)
         }
 
         prevmsgno = msgno;
-        msgno = msg.link.to();
+        msgno     = msg.link.to();
     }
 
-    if ((m_OldMsgno != prevmsgno) || (m_OldTags != AA->Msgn.Tags()) || (m_OldEchoId != AA->echoid()))
+    if((m_OldMsgno != prevmsgno) || (m_OldTags != AA->Msgn.Tags()) ||
+       (m_OldEchoId != AA->echoid()))
     {
-        m_OldMsgno = prevmsgno;
-        m_OldTags = AA->Msgn.Tags();
+        m_OldMsgno  = prevmsgno;
+        m_OldTags   = AA->Msgn.Tags();
         m_OldEchoId = AA->echoid();
-
-        index = maximum_index = position = maximum_position = 0;
+        index       = maximum_index = position = maximum_position = 0;
         treeEntryList.clear();
-
         recursive_build(msg.msgno, 0, 0, 0);
-
         minimum_index    = 0;
         maximum_index    = treeEntryList.size() - 1;
-        maximum_position = MinV((uint)treeEntryList.size() - 1, (uint) ylen - 1);
+        maximum_position = MinV((uint)treeEntryList.size() - 1, (uint)ylen - 1);
         index            = 0;
         h_offset         = 0;
         new_hoffset      = 0;
     }
 
-    for (uint i = 0; i < treeEntryList.size(); i++)
+    for(uint i = 0; i < treeEntryList.size(); i++)
     {
-        if (treeEntryList[i].msgno == msgn)
+        if(treeEntryList[i].msgno == msgn)
         {
             index = i;
             break;
         }
     }
-
     w_info(NULL);
-}
-
+} // GThreadlist::BuildThreadIndex
 
 //  ------------------------------------------------------------------
-
 bool GThreadlist::NextThread(bool next)
 {
-
     uint m = AA->Msgn.ToReln(reader_msg->msgno);
-    for(m = m ? m-1 : 0;
-            next ? m < AA->Msgn.Count() : m!=-1;
-            next ? m++ : m--)
-    {
 
+    for(m = m ? m - 1 : 0; next ? m < AA->Msgn.Count() : m != -1; next ? m++ : m--)
+    {
         dword msgn = AA->Msgn[m];
         bool found = false;
 
-        for (uint i = 0; i < treeEntryList.size(); i++)
+        for(uint i = 0; i < treeEntryList.size(); i++)
         {
-            if (treeEntryList[i].msgno == msgn)
+            if(treeEntryList[i].msgno == msgn)
             {
                 found = true;
                 break;
@@ -1211,20 +1326,16 @@ bool GThreadlist::NextThread(bool next)
         {
             reader_msg->msgno = msgn;
             AA->set_lastread(AA->Msgn.ToReln(msgn));
-
             BuildThreadIndex(msgn);
             return true;
         }
     }
     return true;
-}
+} // GThreadlist::NextThread
 
 //  ------------------------------------------------------------------
-
-
 bool GThreadlist::handle_key()
 {
-
     gkey kk;
 
     if(key < KK_Commands)
@@ -1232,152 +1343,174 @@ bool GThreadlist::handle_key()
         key = key_tolower(key);
         // See if it's a listkey
         kk = SearchKey(key, ListKey, ListKeys);
+
         if(kk)
+        {
             key = kk;
+        }
         else
         {
             // If not a listkey, see if it matches a readkey
             if(not IsMacro(key, KT_M))
             {
                 kk = SearchKey(key, ReadKey, ReadKeys);
+
                 if(kk)
+                {
                     key = kk;
+                }
             }
         }
     }
 
     switch(key)
     {
-    case KK_ListGotoPrev:
-    case KK_ListGotoNext:
-        NextThread((key == KK_ListGotoNext));
-        if (!CFG->replylinkshowalways && (treeEntryList.size() <= 1))
-            return false;
-        center(CFG->displistcursor);
-        break;
+        case KK_ListGotoPrev:
+        case KK_ListGotoNext:
+            NextThread((key == KK_ListGotoNext));
 
-    case KK_ListGotoFirst:
-        key = Key_Home;
-        default_handle_key();
-        break;
-
-    case KK_ListGotoLast:
-        key = Key_End;
-        default_handle_key();
-        break;
-
-    case KK_ListAskExit:
-    {
-        GMenuQuit MenuQuit;
-        aborted = gkbd.quitall = make_bool(MenuQuit.Run());
-        if(gkbd.quitall)
-            return false;
-    }
-    break;
-
-    case KK_ListQuitNow:
-        gkbd.quitall = true;
-    ///////////////// Drop Through
-
-    case KK_ListAbort:
-        aborted = true;
-    ///////////////// Drop Through
-
-    case KK_ListSelect:
-        return false;
-
-    case KK_ListToggleMark:
-    {
-        uint32_t temp = AA->Mark.Find(treeEntryList[index].msgno);
-        if (temp)
-        {
-            AA->Mark.DelReln(temp);
-        }
-        else
-        {
-            AA->Mark.Add(treeEntryList[index].msgno);
-        }
-
-        if(index < maximum_index)
-            cursor_down();
-        else
-            display_bar();
-        break;
-    }
-
-    case KK_ListToggleBookMark:
-        if (AA->bookmark == treeEntryList[index].msgno)
-        {
-            AA->bookmark = 0;
-            display_bar();
-        }
-        else
-        {
-            AA->bookmark = treeEntryList[index].msgno;
-            update();
-        }
-        break;
-
-    case KK_ListDosShell:
-        DosShell();
-        break;
-
-    case KK_ListToggleDate:
-        AA->NextMsglistdate();
-        mlst_with_date(AA->Msglistdate());
-        update_title();
-        update();
-        break;
-
-    case Key_Tick:
-        CheckTick(KK_ListQuitNow);
-        break;
-
-    case KK_ListUndefine:
-        break;
-
-    default:
-        if(not PlayMacro(key, KT_M))
-        {
-            if(gkbd.kbuf == NULL)
-                kbput(key);
-            switch(key)
+            if(!CFG->replylinkshowalways && (treeEntryList.size() <= 1))
             {
-            case KK_ListAbort:
-            case KK_ReadNewArea:
-                aborted = true;
+                return false;
             }
-            return false;
-        }
-    }
-    return true;
-}
 
+            center(CFG->displistcursor);
+            break;
+
+        case KK_ListGotoFirst:
+            key = Key_Home;
+            default_handle_key();
+            break;
+
+        case KK_ListGotoLast:
+            key = Key_End;
+            default_handle_key();
+            break;
+
+        case KK_ListAskExit:
+        {
+            GMenuQuit MenuQuit;
+            aborted = gkbd.quitall = make_bool(MenuQuit.Run());
+
+            if(gkbd.quitall)
+            {
+                return false;
+            }
+        }
+        break;
+
+        case KK_ListQuitNow:
+            gkbd.quitall = true;
+
+        ///////////////// Drop Through
+        case KK_ListAbort:
+            aborted = true;
+
+        ///////////////// Drop Through
+        case KK_ListSelect:
+            return false;
+
+        case KK_ListToggleMark:
+        {
+            uint32_t temp = AA->Mark.Find(treeEntryList[index].msgno);
+
+            if(temp)
+            {
+                AA->Mark.DelReln(temp);
+            }
+            else
+            {
+                AA->Mark.Add(treeEntryList[index].msgno);
+            }
+
+            if(index < maximum_index)
+            {
+                cursor_down();
+            }
+            else
+            {
+                display_bar();
+            }
+
+            break;
+        }
+
+        case KK_ListToggleBookMark:
+
+            if(AA->bookmark == treeEntryList[index].msgno)
+            {
+                AA->bookmark = 0;
+                display_bar();
+            }
+            else
+            {
+                AA->bookmark = treeEntryList[index].msgno;
+                update();
+            }
+
+            break;
+
+        case KK_ListDosShell:
+            DosShell();
+            break;
+
+        case KK_ListToggleDate:
+            AA->NextMsglistdate();
+            mlst_with_date(AA->Msglistdate());
+            update_title();
+            update();
+            break;
+
+        case Key_Tick:
+            CheckTick(KK_ListQuitNow);
+            break;
+
+        case KK_ListUndefine:
+            break;
+
+        default:
+
+            if(not PlayMacro(key, KT_M))
+            {
+                if(gkbd.kbuf == NULL)
+                {
+                    kbput(key);
+                }
+
+                switch(key)
+                {
+                    case KK_ListAbort:
+                    case KK_ReadNewArea:
+                        aborted = true;
+                }
+                return false;
+            }
+    } // switch
+    return true;
+} // GThreadlist::handle_key
 
 //  ------------------------------------------------------------------
-
 void GThreadlist::Run()
 {
-    aborted = false;
-    ypos    = AA->Msglistheader() ? 6 : 1;      // Window Starting Row
-    xpos    = 0;                                // Window Starting Column
-    ylen    = MAXROW-3-ypos;                    // Window Height
-    xlen    = MAXCOL-2;                         // Window Width
-    btype   = W_BMENU;                          // Window Border Type
-    battr   = C_MENUB;                          // Window Border Color
-    wattr   = C_MENUW;                          // Window Color
-    tattr   = C_MENUT;                          // Window Title Color
-    sattr   = C_MENUS;                          // Window Selection Bar Color
-    hattr   = C_MENUQ;                          // Window Highlight Color
-    sbattr  = C_MENUPB;                         // Window Scrollbar Color
-    title   = LNG->ThreadlistTitle;             // Window Title
-    helpcat = H_ReplyThread;                    // Window Help Category
-    listwrap  = CFG->switches.get(displistwrap);
-
+    aborted  = false;
+    ypos     = AA->Msglistheader() ? 6 : 1;     // Window Starting Row
+    xpos     = 0;                               // Window Starting Column
+    ylen     = MAXROW - 3 - ypos;               // Window Height
+    xlen     = MAXCOL - 2;                      // Window Width
+    btype    = W_BMENU;                         // Window Border Type
+    battr    = C_MENUB;                         // Window Border Color
+    wattr    = C_MENUW;                         // Window Color
+    tattr    = C_MENUT;                         // Window Title Color
+    sattr    = C_MENUS;                         // Window Selection Bar Color
+    hattr    = C_MENUQ;                         // Window Highlight Color
+    sbattr   = C_MENUPB;                        // Window Scrollbar Color
+    title    = LNG->ThreadlistTitle;            // Window Title
+    helpcat  = H_ReplyThread;                   // Window Help Category
+    listwrap = CFG->switches.get(displistwrap);
     BuildThreadIndex(reader_msg->msgno);
-
     size_t size = treeEntryList.size();
-    if ((CFG->replylinkshowalways && (size > 0)) || (size > 1))
+
+    if((CFG->replylinkshowalways && (size > 0)) || (size > 1))
     {
         run_picker();
     }
@@ -1389,45 +1522,49 @@ void GThreadlist::Run()
         aborted = true;
     }
 
-    if (!aborted)
+    if(!aborted)
+    {
         AA->set_lastread(AA->Msgn.ToReln(treeEntryList[index].msgno));
+    }
 
     msg.Reset();
-}
-
+} // GThreadlist::Run
 
 //  ------------------------------------------------------------------
-
 bool GThreadlist::GoNextUnread(bool reader)
 {
-    if (reader)
+    if(reader)
+    {
         BuildThreadIndex(reader_msg->msgno);
+    }
 
-    bool found = false;
+    bool found  = false;
     size_t size = treeEntryList.size();
 
-    if (size > 1)
+    if(size > 1)
     {
         size_t idx;
 
-        for (idx = index + 1; idx < size; idx++)
+        for(idx = index + 1; idx < size; idx++)
         {
-            ThreadEntry &t = treeEntryList[idx];
+            ThreadEntry & t = treeEntryList[idx];
             AA->LoadHdr(&msg, t.msgno);
-            if (msg.timesread == 0)
+
+            if(msg.timesread == 0)
             {
                 found = true;
                 break;
             }
         }
 
-        if (!found)
+        if(!found)
         {
-            for (idx = 0; idx < index; idx++)
+            for(idx = 0; idx < index; idx++)
             {
-                ThreadEntry &t = treeEntryList[idx];
+                ThreadEntry & t = treeEntryList[idx];
                 AA->LoadHdr(&msg, t.msgno);
-                if (msg.timesread == 0)
+
+                if(msg.timesread == 0)
                 {
                     found = true;
                     break;
@@ -1435,11 +1572,11 @@ bool GThreadlist::GoNextUnread(bool reader)
             }
         }
 
-        if (found)
+        if(found)
         {
             index = idx;
 
-            if (reader)
+            if(reader)
             {
                 AA->set_lastread(AA->Msgn.ToReln(treeEntryList[idx].msgno));
             }
@@ -1448,36 +1585,33 @@ bool GThreadlist::GoNextUnread(bool reader)
 
     msg.Reset();
     return found;
-}
-
-
-//  ------------------------------------------------------------------
-
-GThreadlist *g_ThreadList = 0;
-
+} // GThreadlist::GoNextUnread
 
 //  ------------------------------------------------------------------
-
+GThreadlist * g_ThreadList = 0;
+//  ------------------------------------------------------------------
 void MsgThreadlist()
 {
-    if (!g_ThreadList)
+    if(!g_ThreadList)
+    {
         g_ThreadList = new GThreadlist;
+    }
 
     g_ThreadList->Run();
 }
 
-
 //  ------------------------------------------------------------------
-
 void GotoThNextUnread()
 {
-    if (!g_ThreadList)
+    if(!g_ThreadList)
+    {
         g_ThreadList = new GThreadlist;
+    }
 
     w_info(LNG->Wait);
     reader_direction = DIR_NEXT;
 
-    if (!g_ThreadList->GoNextUnread(true))
+    if(!g_ThreadList->GoNextUnread(true))
     {
         SayBibi();
         reader_keyok = true;
@@ -1485,6 +1619,5 @@ void GotoThNextUnread()
 
     w_info(NULL);
 }
-
 
 //  ------------------------------------------------------------------

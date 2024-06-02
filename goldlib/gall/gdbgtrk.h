@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -26,60 +25,46 @@
 
 #ifndef __gdbgtrck_h
 #define __gdbgtrck_h
-
-
 //  ------------------------------------------------------------------
 
 #include <gdefs.h>
-
-
 //  ------------------------------------------------------------------
-
 struct GFTrk
 {
-    dword tick;
-    const char* text;
-    int indent;
+    dword        tick;
+    const char * text;
+    int          indent;
 };
 
-
 //  ------------------------------------------------------------------
-
 extern int __gftrk;
 extern int __gftrk_on;
 extern int __gftrk_max;
 extern int __gftrk_curr;
 extern int __gftrk_indent;
-extern GFTrk* __gftrk_ptr;
-extern GFTrk* __gftrk_list;
-
-
+extern GFTrk * __gftrk_ptr;
+extern GFTrk * __gftrk_list;
 //  ------------------------------------------------------------------
 
-#if defined(GFTRK_ENABLE)
-    #if defined(__GNUC__)
-        #define GFTRK(t)  if(__gftrk) __gftrk_track(t ? __PRETTY_FUNCTION__ : t);
-    #elif defined(_MSC_VER) && defined(__FUNCSIG__)
-        #define GFTRK(t)  if(__gftrk) __gftrk_track(t ? __FUNCSIG__ : t);
+#if defined (GFTRK_ENABLE)
+    #if defined (__GNUC__)
+#define GFTRK(t) if(__gftrk) __gftrk_track(t ? __PRETTY_FUNCTION__ : t);
+    #elif defined (_MSC_VER) && defined (__FUNCSIG__)
+#define GFTRK(t) if(__gftrk) __gftrk_track(t ? __FUNCSIG__ : t);
     #else
-        #define GFTRK(t)  if(__gftrk) __gftrk_track(t);
+#define GFTRK(t) if(__gftrk) __gftrk_track(t);
     #endif
-    #define GFTrkInit(t) __gftrk_init(t)
+#define GFTrkInit(t) __gftrk_init(t)
 #else
-    #define GFTRK(t)
-    #define GFTrkInit(t)
+#define GFTRK(t)
+#define GFTrkInit(t)
 #endif
-
-
 //  ------------------------------------------------------------------
-
-void __gftrk_init(int trackmax=-1);
-void __gftrk_track(const char* text);
+void __gftrk_init(int trackmax = -1);
+void __gftrk_track(const char * text);
 void __gftrk_log();
 
-
 //  ------------------------------------------------------------------
 
-#endif
-
+#endif // ifndef __gdbgtrck_h
 //  ------------------------------------------------------------------

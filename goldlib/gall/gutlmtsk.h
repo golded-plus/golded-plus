@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -26,16 +25,11 @@
 
 #ifndef __gutlmtsk_h
 #define __gutlmtsk_h
-
-
 //  ------------------------------------------------------------------
 
 #include <gdefs.h>
-
-
 //  ------------------------------------------------------------------
 //  Supported multitaskers
-
 const int GMTSK_NONE     = 0;
 const int GMTSK_OS2      = 1;
 const int GMTSK_WINDOWS  = 2;
@@ -43,39 +37,26 @@ const int GMTSK_DESQVIEW = 3;
 const int GMTSK_DOS      = 4;
 const int GMTSK_W32      = 5;
 const int GMTSK_LINUX    = 6;
-
-
 //  ------------------------------------------------------------------
 //  Multitasker base class
-
 class GMTsk
 {
-
-public:
-
-    int detected;
-    const char* name;
-
+public: int detected;
+    const char * name;
     int os2();
     int win32();
     int windows();
     int desqview();
     int dosint28();
-
     void timeslice();
 
     GMTsk();
 };
 
-
 //  ------------------------------------------------------------------
 //  Globals
-
 extern GMTsk gmtsk;
-
-
 //  ------------------------------------------------------------------
 
-#endif
-
+#endif // ifndef __gutlmtsk_h
 //  ------------------------------------------------------------------

@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -26,112 +25,91 @@
 
 #ifndef __gsndall_h
 #define __gsndall_h
-
-
 //  ------------------------------------------------------------------
 
 #include <gsndsapi.h>
 #ifdef __OS2__
-    #define INCL_BASE
+#define INCL_BASE
     #include <os2.h>
 #endif
 #ifdef __WIN32__
     #include <windows.h>
 #endif
-
-
 //  ------------------------------------------------------------------
 
 #ifdef DEBUG
-    extern int debug;
+extern int debug;
 #endif
-
-
 //  ------------------------------------------------------------------
-
 class gsnd
 {
-
 protected:
 
-#if defined(__MSDOS__)
+#if defined (__MSDOS__)
     int mpx;
-#if defined(__DJGPP__) || (defined(__WATCOMC__) && defined(__386__))
+#if defined (__DJGPP__) || (defined (__WATCOMC__) && defined (__386__))
     int buffer;
 #else
-    char* buffer;
+    char * buffer;
 #endif
-    gsapidata* data;
+    gsapidata * data;
     uint key_value;
-    int call_api(uint al, uint bx=0);
+    int call_api(uint al, uint bx = 0);
+
 #endif
 
     int api_open;
     int file_open;
-
     void free_buffer();
 
-public:
-
-    gsnd();
+public: gsnd();
     ~gsnd();
-
     // API open/close
     int open_api();
     int close_api();
 
     // Sound file open/close
-    int open(const char* file);
+    int open(const char * file);
     int close();
 
     // Sound play and control
-    int play(uint sample_rate=0);
+    int play(uint sample_rate = 0);
     int stop();
     int pause();
     int resume();
-    int break_loop(int method=0);
+    int break_loop(int method = 0);
     void speaker(int onoff);
 
     // Information
     uint get_sample_rate();
-    int api_is_open()
-    {
-        return api_open;
-    }
+
+int api_is_open()
+{
+    return api_open;
+}
+
     int is_playing();
 };
 
-
 //  ------------------------------------------------------------------
-
 class gsound
 {
-
-protected:
-
-    int installed;
-
-public:
-
-    gsound();
+protected: int installed;
+public: gsound();
     ~gsound();
-
-    int load(const char* file);
+    int load(const char * file);
     int unload();
     int play();
     int stop();
-
     int is_playing();
 
-    int is_installed()
-    {
-        return installed;
-    }
+int is_installed()
+{
+    return installed;
+}
 };
-
 
 //  ------------------------------------------------------------------
 
-#endif
-
+#endif // ifndef __gsndall_h
 //  ------------------------------------------------------------------

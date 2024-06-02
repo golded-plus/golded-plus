@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -26,33 +25,23 @@
 
 #ifndef __GS_QFRNT_H
 #define __GS_QFRNT_H
-
-
 //  ------------------------------------------------------------------
 
-#if defined(GOLD_CANPACK)
+#if defined (GOLD_CANPACK)
     #pragma pack(1)
 #endif
-
-
 //  ------------------------------------------------------------------
 //  Constants
-
 const int MaxOrigins = 35;
-
-
 //  ------------------------------------------------------------------
 //  File   : QORIGIN.DAT
 //  Stores : Information about each of your origin lines.
 //
-
 struct OriginLineRecord
 {
-
     char OriginLine[MaxOrigins][61];
     byte Extra[50];
 };
-
 
 //  ------------------------------------------------------------------
 //  File   : QECHOS.DAT
@@ -67,47 +56,33 @@ struct OriginLineRecord
 //           duplicate selected conferences for all of your nodes.  You must
 //           not add any more than MaxConferences records to this file.
 //
-
 struct EchoMailConferenceRecord
 {
-
-    bool    PassThru;
-
-    word    ConfNum;
-    word    ConfTag;
-    char    AreaName[81];
-
-    long    HighMsgPointer;
-
-    word    AreaLevel;
-
-    bool    CheckForDupes;
-    bool    ImportSeenByLines;
-    bool    ImportPathLines;
-    bool    KeepPrivate;
-
-    bool    Deleted;
-
-    byte    OriginLine;
-    byte    Group;
-
-    bool    ScanPrivate;
-    bool    Mandatory;
-    bool    ForcePrivate;
-
-    byte    Extra[45];
+    bool PassThru;
+    word ConfNum;
+    word ConfTag;
+    char AreaName[81];
+    long HighMsgPointer;
+    word AreaLevel;
+    bool CheckForDupes;
+    bool ImportSeenByLines;
+    bool ImportPathLines;
+    bool KeepPrivate;
+    bool Deleted;
+    byte OriginLine;
+    byte Group;
+    bool ScanPrivate;
+    bool Mandatory;
+    bool ForcePrivate;
+    byte Extra[45];
 };
 
-
 //  ------------------------------------------------------------------
 
-#if defined(GOLD_CANPACK)
+#if defined (GOLD_CANPACK)
     #pragma pack()
 #endif
-
 //  ------------------------------------------------------------------
 
-#endif
-
+#endif // ifndef __GS_QFRNT_H
 //  ------------------------------------------------------------------
-

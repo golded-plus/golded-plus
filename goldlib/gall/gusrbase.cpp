@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -28,10 +27,7 @@
 #include <gstrall.h>
 #include <gwildmat.h>
 #include <gusrbase.h>
-
-
 //  ------------------------------------------------------------------
-
 GUser::GUser()
 {
     gufh    = -1;
@@ -44,169 +40,134 @@ GUser::GUser()
     recsize = 0;
 }
 
-
 //  ------------------------------------------------------------------
-
 GUser::~GUser()
 {
-
     // No action
 }
 
-
 //  ------------------------------------------------------------------
-
 void GUser::founduser()
 {
-
     index = recno;
     found = true;
 }
 
-
 //  ------------------------------------------------------------------
-
 void GUser::inctimesposted(int)
 {
-
     // No action
 }
 
-
 //  ------------------------------------------------------------------
-
 uint32_t GUser::lastread()
 {
-
     // No action
     return 0;
 }
 
-
 //  ------------------------------------------------------------------
-
 void GUser::lastread(uint32_t)
 {
-
     // No action
 }
 
-
 //  ------------------------------------------------------------------
-
-void GUser::recinit(const char* __name)
+void GUser::recinit(const char * __name)
 {
-
     memset(recptr, 0, recsize);
     strcpy(name, __name);
 }
 
-
 //  ------------------------------------------------------------------
-
 int GUser::moveto(uint __rec)
 {
-    if (gufh != -1)
+    if(gufh != -1)
     {
         if(__rec <= records)
         {
-            lseek(gufh, (long)__rec*(long)recsize, SEEK_SET);
+            lseek(gufh, (long)__rec * (long)recsize, SEEK_SET);
             recno = __rec;
             return true;
         }
     }
+
     recno = records;
     return false;
 }
 
-
 //  ------------------------------------------------------------------
-
 int GUser::next()
 {
-
     return moveto(++recno);
 }
 
-
 //  ------------------------------------------------------------------
-
 int GUser::prev()
 {
-
     return moveto(--recno);
 }
 
-
 //  ------------------------------------------------------------------
-
 void GUser::seekread()
 {
-    if (gufh != -1)
+    if(gufh != -1)
     {
-        lseek(gufh, (long)recno*(long)recsize, SEEK_SET);
+        lseek(gufh, (long)recno * (long)recsize, SEEK_SET);
         ::read(gufh, recptr, recsize);
     }
 }
 
-
 //  ------------------------------------------------------------------
-
 void GUser::seekwrite()
 {
-    if (gufh != -1)
+    if(gufh != -1)
     {
-        lseek(gufh, (long)recno*(long)recsize, SEEK_SET);
+        lseek(gufh, (long)recno * (long)recsize, SEEK_SET);
         ::write(gufh, recptr, recsize);
     }
 }
 
-
 //  ------------------------------------------------------------------
-
-int GUser::find(const char* __name, char* __result, int __wildcards)
+int GUser::find(const char * __name, char * __result, int __wildcards)
 {
-
     // Init variables
     index = 0;
     recno = 0;
     found = false;
 
     // If userfile is open
-    if (gufh != -1)
+    if(gufh != -1)
     {
         // Rewind file to start
         lseek(gufh, 0, SEEK_SET);
-
         // Get number of records in the userfile
-        records = (uint)(filelength(gufh)/recsize);
+        records = (uint)(filelength(gufh) / recsize);
 
         // Searching loop
-        for(recno=0; recno<records; recno++)
+        for(recno = 0; recno < records; recno++)
         {
-
             // Read a user record
             if(read())
             {
-
                 // Compare our name with name in user record
                 if(__wildcards)
                 {
-
                     // Compare for wildcard match
                     if(strwild(name, __name))
                     {
-
                         // Copy the name we found
                         if(__result)
+                        {
                             strcpy(__result, name);
+                        }
+
                         founduser();
                         break;
                     }
                 }
                 else
                 {
-
                     // Compare for exact, case-insensitive, match
                     if(strieql(name, __name))
                     {
@@ -220,23 +181,17 @@ int GUser::find(const char* __name, char* __result, int __wildcards)
 
     // Report the result
     return found;
-}
-
+} // GUser::find
 
 //  ------------------------------------------------------------------
-
-int GUser::findwild(const char* __name, char* __result)
+int GUser::findwild(const char * __name, char * __result)
 {
-
     return find(__name, __result, true);
 }
 
-
 //  ------------------------------------------------------------------
-
-void GUser::add(const char* __name)
+void GUser::add(const char * __name)
 {
-
     recinit(__name);
     recno = records++;
     seekwrite();
@@ -244,6 +199,5 @@ void GUser::add(const char* __name)
     read();
     founduser();
 }
-
 
 //  ------------------------------------------------------------------

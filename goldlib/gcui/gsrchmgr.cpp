@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -26,15 +25,10 @@
 //  ------------------------------------------------------------------
 
 #include <gsrchmgr.h>
-
-
 //  ------------------------------------------------------------------
-
 search_item::search_item()
 {
-
-    logic = logic_or;
-
+    logic           = logic_or;
     where.from      = false;
     where.to        = false;
     where.subject   = false;
@@ -46,22 +40,14 @@ search_item::search_item()
     where.kludges   = false;
 }
 
-
 //  ------------------------------------------------------------------
-
 search_item::~search_item()
-{
-
-}
-
+{}
 
 //  ------------------------------------------------------------------
-
-search_item& search_item::operator=(const search_item& a)
+search_item & search_item::operator =(const search_item & a)
 {
-
-    gsearch::operator=(a);
-
+    gsearch::operator =(a);
     logic           = a.logic;
     where.from      = a.where.from;
     where.to        = a.where.to;
@@ -72,29 +58,20 @@ search_item& search_item::operator=(const search_item& a)
     where.origin    = a.where.origin;
     where.signature = a.where.signature;
     where.kludges   = a.where.kludges;
-
     return *this;
 }
 
-
 //  ------------------------------------------------------------------
-
 search_manager::search_manager() : gwinput2(window)
 {
-
     direction = direction_forward;
-    messages = messages_new;
-    action = action_read;
-    areas = areas_current;
+    messages  = messages_new;
+    action    = action_read;
+    areas     = areas_current;
 }
-
 
 //  ------------------------------------------------------------------
-
 search_manager::~search_manager()
-{
-
-}
-
+{}
 
 //  ------------------------------------------------------------------

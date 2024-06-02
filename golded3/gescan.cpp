@@ -1,4 +1,3 @@
-
 //  ------------------------------------------------------------------
 //  GoldED+
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -26,29 +25,24 @@
 
 #include <golded.h>
 #include <gmoprot.h>
-
-
 //  ------------------------------------------------------------------
-
 extern bool in_arealist;
-extern GPickArealist* PickArealist;
-
+extern GPickArealist * PickArealist;
 //  ------------------------------------------------------------------
-
 void Area::UpdateAreadata()
 {
-
     if(isscanned)
     {
-
         uint _unread = Msgn.Count() - lastread();
+
         if(not isvalidchg)
         {
-            unread = _unread;
+            unread     = _unread;
             isvalidchg = true;
         }
+
         isunreadchg = (unread != _unread);
-        unread = _unread;
+        unread      = _unread;
         word oldmask = AL.mask;
         AL.mask = 0;
         set_marked(make_bool(_unread));
@@ -56,88 +50,82 @@ void Area::UpdateAreadata()
     }
 }
 
-
 //  ------------------------------------------------------------------
-
 void Area::ScanArea()
 {
-
     if(cmdlinedebughg)
+    {
         LOG.printf("- ScanArea: %s", echoid());
+    }
 
     area->Msgn = &Msgn;
     area->PMrk = &PMrk;
-
     area->scan_area();
-
     isscanned = true;
-
     UpdateAreadata();
 }
 
-
 //  ------------------------------------------------------------------
-
 void Area::ScanAreaPM()
 {
-
     if(cmdlinedebughg)
+    {
         LOG.printf("- ScanAreaPM: %s", echoid());
+    }
 
     area->Msgn = &Msgn;
     area->PMrk = &PMrk;
-
     area->scan_area_pm();
-
-    isscanned = true;
+    isscanned   = true;
     ispmscanned = true;
-
     UpdateAreadata();
 }
 
-
 //  ------------------------------------------------------------------
-
 int AreaList::SetActiveAreaNo(int __areano)
 {
-
-    AA = idx[__areano];
-    CurrArea = AA->areaid();
+    AA            = idx[__areano];
+    CurrArea      = AA->areaid();
     CFG->originno = AA->originno();
-
     return CurrArea;  // Return the areaid
 }
 
-
 //  ------------------------------------------------------------------
-
-int AreaList::AreaScan(int mode, uint currno, int pmscan, int& pmails, int& pmareas, const char* file)
+int AreaList::AreaScan(int mode,
+                       uint currno,
+                       int pmscan,
+                       int & pmails,
+                       int & pmareas,
+                       const char * file)
 {
-
     // Never scan if there's active area
     if(AA and AA->isopen())
+    {
         return false;
+    }
 
     gstrarray bag;
     int groupid = -1;
 
     // Load scan list into a string bag
-    if (mode == SCAN_LIST)
+    if(mode == SCAN_LIST)
     {
         Path tmp;
         strcpy(tmp, file ? file : ListScan.File());
-        char* listfile;
-        char* option=tmp;
+        char * listfile;
+        char * option = tmp;
         getkeyval(&listfile, &option);
         gfile fp(AddPath(CFG->goldpath, listfile), "rt");
 
-        if (fp.isopen())
+        if(fp.isopen())
         {
             char buf[512];
-            while (fp.Fgets(buf, sizeof(buf)))
+
+            while(fp.Fgets(buf, sizeof(buf)))
             {
                 strbtrim(buf);
-                char* val = strtok(buf, ", \t");
+                char * val = strtok(buf, ", \t");
+
                 while(val)
                 {
                     bag.push_back(val);
@@ -145,8 +133,11 @@ int AreaList::AreaScan(int mode, uint currno, int pmscan, int& pmails, int& pmar
                 }
             }
             fp.Fclose();
-            if (((*option == '-') or (*option == '/')) and strieql(option+1, "delete"))
+
+            if(((*option == '-') or (*option == '/')) and strieql(option + 1, "delete"))
+            {
                 remove(listfile);
+            }
         }
     }
     else if(mode == SCAN_GROUP)
@@ -154,8 +145,7 @@ int AreaList::AreaScan(int mode, uint currno, int pmscan, int& pmails, int& pmar
         groupid = idx[currno]->groupid();
     }
 
-    int currid = AreaNoToId(currno);
-
+    int currid  = AreaNoToId(currno);
     int scanned = false;
 
     // For optimized overlay usage, sort arealist by msgbase type, path, board and echoid
@@ -168,90 +158,136 @@ int AreaList::AreaScan(int mode, uint currno, int pmscan, int& pmails, int& pmar
     currno = AreaIdToNo(currid);
 
 #ifndef GMB_NOPCB
-    if(find(AL.basetypes, "PCBOARD"))    PcbWideOpen();
+
+    if(find(AL.basetypes, "PCBOARD"))
+    {
+        PcbWideOpen();
+    }
+
 #endif
 #ifndef GMB_NOGOLD
-    if(find(AL.basetypes, "GOLDBASE"))   GoldWideOpen();
+
+    if(find(AL.basetypes, "GOLDBASE"))
+    {
+        GoldWideOpen();
+    }
+
 #endif
 #ifndef GMB_NOHUDS
-    if(find(AL.basetypes, "HUDSON"))     HudsWideOpen();
+
+    if(find(AL.basetypes, "HUDSON"))
+    {
+        HudsWideOpen();
+    }
+
 #endif
 
-    for(uint n=0; n<idx.size(); n++)
+    for(uint n = 0; n < idx.size(); n++)
     {
-
         // Check if ESC was pressed to skip the scan
         gkey xch = kbxhit();
+
         if(xch)
         {
             xch = kbxget();
+
             if(xch == Key_Esc)
+            {
                 break;
+            }
             else
+            {
                 kbput(xch);
+            }
         }
 
         SetActiveAreaNo(n);
 
         if(not AA->isseparator())
         {
-
-            int scanit     = false;
-
+            int scanit       = false;
             int dopmscan     = pmscan and AA->pmscan();
             int dopmscanexcl = pmscan and AA->pmscanexcl();
             int dopmscanincl = pmscan and AA->pmscanincl();
-
-            int doscan     = AA->scan()     or dopmscan;
+            int doscan       = AA->scan()     or dopmscan;
             //if Area is excluded from pm-scanning, scan it instead
             int doscanexcl = AA->scanexcl();
             int doscanincl = AA->scanincl() or dopmscanincl or (dopmscanexcl and doscan);
 
             if(mode != SCAN_STARTUP and pmscan)
+            {
                 dopmscan = true;
+            }
 
             switch(mode)
             {
-            case SCAN_STARTUP:
-                if(doscan and (not doscanexcl or doscanincl))
-                    scanit = true;
-                break;
-            case SCAN_ALL:
-                if(not doscanexcl or doscanincl)
-                    scanit = true;
-                break;
-            case SCAN_CURRENT:
-                scanit = n == currno;
-                break;
-            case SCAN_MARKED:
-                if(AA->ismarked())
-                    scanit = true;
-                break;
-            case SCAN_MATCHING:
-                if(striinc(area_maybe, AA->echoid()))
-                    scanit = true;
-                break;
-            case SCAN_UNSCANNED:
-                scanit = not (pmscan ? AA->ispmscanned : AA->isscanned);
-                break;
-            case SCAN_GROUP:
-                scanit = AA->groupid() == groupid;
-                break;
-            case SCAN_NETMAIL:
-                scanit = AA->isnet();
-                break;
-            case SCAN_LIST:
-            {
-                gstrarray::iterator i;
-                for(i = bag.begin(); i != bag.end(); i++)
-                    if(strwild(AA->echoid(), i->c_str()))
+                case SCAN_STARTUP:
+
+                    if(doscan and (not doscanexcl or doscanincl))
                     {
                         scanit = true;
-                        break;
                     }
-            }
-            break;
-            }
+
+                    break;
+
+                case SCAN_ALL:
+
+                    if(not doscanexcl or doscanincl)
+                    {
+                        scanit = true;
+                    }
+
+                    break;
+
+                case SCAN_CURRENT:
+                    scanit = n == currno;
+                    break;
+
+                case SCAN_MARKED:
+
+                    if(AA->ismarked())
+                    {
+                        scanit = true;
+                    }
+
+                    break;
+
+                case SCAN_MATCHING:
+
+                    if(striinc(area_maybe, AA->echoid()))
+                    {
+                        scanit = true;
+                    }
+
+                    break;
+
+                case SCAN_UNSCANNED:
+                    scanit = not (pmscan ? AA->ispmscanned : AA->isscanned);
+                    break;
+
+                case SCAN_GROUP:
+                    scanit = AA->groupid() == groupid;
+                    break;
+
+                case SCAN_NETMAIL:
+                    scanit = AA->isnet();
+                    break;
+
+                case SCAN_LIST:
+                {
+                    gstrarray::iterator i;
+
+                    for(i = bag.begin(); i != bag.end(); i++)
+                    {
+                        if(strwild(AA->echoid(), i->c_str()))
+                        {
+                            scanit = true;
+                            break;
+                        }
+                    }
+                }
+                break;
+            } // switch
 
             if(scanit)
             {
@@ -261,20 +297,29 @@ int AreaList::AreaScan(int mode, uint currno, int pmscan, int& pmails, int& pmar
                     AA->Mark.ResetAll();
                     AA->PMrk.ResetAll();
                 }
+
                 scanned = YES;
+
                 if(not blanked)
-                    update_statuslinef("%s %s", "", 1+LNG->ScanningArea, AA->echoid());
+                {
+                    update_statuslinef("%s %s", "", 1 + LNG->ScanningArea, AA->echoid());
+                }
+
                 if(dopmscan and (not dopmscanexcl or dopmscanincl))
                 {
                     AA->ScanAreaPM();
                     uint count = AA->PMrk.Count();
+
                     if(count)
                     {
                         pmails += count;
                         pmareas++;
                     }
+
                     if(CFG->personalmail & PM_LISTONLY)
+                    {
                         AA->PMrk.Reset();
+                    }
                 }
                 else
                 {
@@ -285,28 +330,40 @@ int AreaList::AreaScan(int mode, uint currno, int pmscan, int& pmails, int& pmar
     }
 
 #ifndef GMB_NOHUDS
-    if(find(AL.basetypes, "HUDSON"))     HudsWideClose();
+
+    if(find(AL.basetypes, "HUDSON"))
+    {
+        HudsWideClose();
+    }
+
 #endif
 #ifndef GMB_NOGOLD
-    if(find(AL.basetypes, "GOLDBASE"))   GoldWideClose();
+
+    if(find(AL.basetypes, "GOLDBASE"))
+    {
+        GoldWideClose();
+    }
+
 #endif
 #ifndef GMB_NOPCB
-    if(find(AL.basetypes, "PCBOARD"))    PcbWideClose();
+
+    if(find(AL.basetypes, "PCBOARD"))
+    {
+        PcbWideClose();
+    }
+
 #endif
 
     return scanned;
-}
-
+} // AreaList::AreaScan
 
 //  ------------------------------------------------------------------
-
 void CheckSemaphores()
 {
-
     Path file;
     int scanned = 0;
     int pmareas = 0;
-    int pmails = 0;
+    int pmails  = 0;
 
     if(fexist(AddPath(CFG->areapath, CFG->semaphore.qwkimport)))
     {
@@ -342,7 +399,6 @@ void CheckSemaphores()
     }
     else
     {
-
         if(fexist(AddPath(CFG->areapath, CFG->semaphore.scanall)))
         {
             scanned += AL.AreaScan(SCAN_ALL, 0, false, pmails, pmareas);
@@ -369,7 +425,8 @@ void CheckSemaphores()
 
         if(fexist(AddPath(CFG->areapath, CFG->semaphore.pmscanthis)))
         {
-            sprintf(file, "%s -delete", AddPath(CFG->areapath, CFG->semaphore.pmscanthis));
+            sprintf(file, "%s -delete",
+                    AddPath(CFG->areapath, CFG->semaphore.pmscanthis));
             scanned += AL.AreaScan(SCAN_LIST, 0, true, pmails, pmareas, file);
         }
 
@@ -383,15 +440,15 @@ void CheckSemaphores()
     if(scanned)
     {
         AL.Sort();
+
         if(in_arealist and not blanked)
         {
             PickArealist->update();        // update arealist-display
             PickArealist->do_delayed();    // update statusline
         }
+
         AL.WriteGoldLast();
     }
-}
-
+} // CheckSemaphores
 
 //  ------------------------------------------------------------------
-

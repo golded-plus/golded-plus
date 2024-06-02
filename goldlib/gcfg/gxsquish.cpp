@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -27,92 +26,96 @@
 #include <cstdlib>
 #include <gcrcall.h>
 #include <gstrall.h>
-#if defined(__GOLD_GUI__)
+#if defined (__GOLD_GUI__)
     #include <gvidall.h>
     #include <gvidgui.h>
 #endif
 #undef GCFG_NOSQSH
 #include <gedacfg.h>
-
-
 //  ------------------------------------------------------------------
-
-void gareafile::ReadSquishFile(char* path, char* file, char* options, char* origin, int group)
+void gareafile::ReadSquishFile(char * path,
+                               char * file,
+                               char * options,
+                               char * origin,
+                               int group)
 {
-
-    const word CRC_ADDRESS = 0xFDD6;
-    const word CRC_ORIGIN = 0x4CE5;
-    const word CRC_INCLUDE = 0x379B;
-    const word CRC_AREASBBS = 0xF77C;
-    const word CRC_NETAREA = 0x8F1C;
-    const word CRC_ECHOAREA = 0x0D63;
+    const word CRC_ADDRESS   = 0xFDD6;
+    const word CRC_ORIGIN    = 0x4CE5;
+    const word CRC_INCLUDE   = 0x379B;
+    const word CRC_AREASBBS  = 0xF77C;
+    const word CRC_NETAREA   = 0x8F1C;
+    const word CRC_ECHOAREA  = 0x0D63;
     const word CRC_LOCALAREA = 0xAEC1;
-    const word CRC_DUPEAREA = 0xD8B9;
-    const word CRC_BADAREA = 0x8DA5;
-
+    const word CRC_DUPEAREA  = 0xD8B9;
+    const word CRC_BADAREA   = 0x8DA5;
     AreaCfg aa;
     char buf[512];
     Path buf2;
+    FILE * fp = fsopen(file, "rb", sharemode);
 
-    FILE* fp = fsopen(file, "rb", sharemode);
-    if (fp)
+    if(fp)
     {
         setvbuf(fp, NULL, _IOFBF, BUFSIZ);
 
-        if (not quiet)
+        if(not quiet)
+        {
             STD_PRINTNL("* Reading " << file);
+        }
 
         aa.reset();
 
         while(fgets(buf, sizeof(buf), fp))
         {
+            char * ptr = strskip_wht(strtrim(buf));
 
-            char* ptr = strskip_wht(strtrim(buf));
-            if(*ptr != ';' and *ptr)
+            if(*ptr != ';' and * ptr)
             {
-
                 aa.type = GMB_NONE;
+                char * key;
+                char * val = ptr;
 
-                char* key;
-                char* val = ptr;
                 switch(getkeyvalcrc(&key, &val))
                 {
-                case CRC_ADDRESS:
-                    CfgAddress(val);
-                    break;
-                case CRC_ORIGIN:
-                    strcpy(origin, val);
-                    break;
-                case CRC_INCLUDE:
-                    strxcpy(buf2, val, sizeof(buf2));
-                    MakePathname(buf2, path, buf2);
-                    ReadSquishFile(path, buf2, options, origin, group);
-                    break;
-                case CRC_AREASBBS:
-                    strcpy(buf2, val);
-                    MakePathname(buf2, path, buf2);
-                    ReadAreasBBS(buf2);
-                    break;
-                case CRC_NETAREA:
-                    aa.type = GMB_NET;
-                    break;
-                case CRC_ECHOAREA:
-                    aa.type = GMB_ECHO;
-                    break;
-                case CRC_DUPEAREA:
-                case CRC_BADAREA:
-                case CRC_LOCALAREA:
-                    aa.type = GMB_LOCAL;
-                    break;
-                }
+                    case CRC_ADDRESS:
+                        CfgAddress(val);
+                        break;
+
+                    case CRC_ORIGIN:
+                        strcpy(origin, val);
+                        break;
+
+                    case CRC_INCLUDE:
+                        strxcpy(buf2, val, sizeof(buf2));
+                        MakePathname(buf2, path, buf2);
+                        ReadSquishFile(path, buf2, options, origin, group);
+                        break;
+
+                    case CRC_AREASBBS:
+                        strcpy(buf2, val);
+                        MakePathname(buf2, path, buf2);
+                        ReadAreasBBS(buf2);
+                        break;
+
+                    case CRC_NETAREA:
+                        aa.type = GMB_NET;
+                        break;
+
+                    case CRC_ECHOAREA:
+                        aa.type = GMB_ECHO;
+                        break;
+
+                    case CRC_DUPEAREA:
+                    case CRC_BADAREA:
+                    case CRC_LOCALAREA:
+                        aa.type = GMB_LOCAL;
+                        break;
+                } // switch
 
                 if(aa.type != GMB_NONE)
                 {
-
                     // Get echoid
                     getkeyval(&key, &val);
                     aa.setechoid(key);
-
                     // Get path
                     getkeyval(&key, &val);
                     aa.setpath(key);
@@ -120,23 +123,27 @@ void gareafile::ReadSquishFile(char* path, char* file, char* options, char* orig
                     // If not pass-through
                     if(not striinc("-0", val))
                     {
-
                         aa.basetype = fidomsgtype;
-                        aa.groupid = group;
-                        char* p = val;
+                        aa.groupid  = group;
+                        char * p = val;
 
                         while(*p)
                         {
                             if(strnieql(p, "-$", 2))
                             {
                                 aa.basetype = "SQUISH";
-                                p += 2;
+                                p          += 2;
+
                                 if((g_tolower(*p) == 'g') and g_isalpha(p[1]))
                                 {
                                     if(isdigit(p[1]))
-                                        aa.groupid = 0x8000+atoi(p+1);
+                                    {
+                                        aa.groupid = 0x8000 + atoi(p + 1);
+                                    }
                                     else if(g_isalpha(p[1]))
+                                    {
                                         aa.groupid = g_toupper(p[1]);
+                                    }
                                 }
                                 else if(g_tolower(*p) == 'n')
                                 {
@@ -149,27 +156,30 @@ void gareafile::ReadSquishFile(char* path, char* file, char* options, char* orig
                             else if(strnieql(p, "-f", 2))
                             {
                                 aa.basetype = fidomsgtype;
-                                p += 2;
+                                p          += 2;
                             }
                             else if(strnieql(p, "-p", 2))
                             {
                                 aa.aka = primary_aka;
-                                aa.aka.set(p+2);
+                                aa.aka.set(p + 2);
                             }
+
                             p = strskip_wht(strskip_txt(p));
                         }
 
                         switch(aa.type)
                         {
-                        case GMB_LOCAL:
-                            aa.attr = attribslocal;
-                            break;
-                        case GMB_NET:
-                            aa.attr = attribsnet;
-                            break;
-                        case GMB_ECHO:
-                            aa.attr = attribsecho;
-                            break;
+                            case GMB_LOCAL:
+                                aa.attr = attribslocal;
+                                break;
+
+                            case GMB_NET:
+                                aa.attr = attribsnet;
+                                break;
+
+                            case GMB_ECHO:
+                                aa.attr = attribsecho;
+                                break;
                         }
                         aa.setorigin(origin);
                         AddNewArea(aa);
@@ -179,32 +189,29 @@ void gareafile::ReadSquishFile(char* path, char* file, char* options, char* orig
                 }
             }
         }
-
         fclose(fp);
     }
-}
-
+} // gareafile::ReadSquishFile
 
 //  ------------------------------------------------------------------
 //  Read areas from Squish (echomail processor)
-
-void gareafile::ReadSquish(char* tag)
+void gareafile::ReadSquish(char * tag)
 {
-
     char origin[80];
     char options[80];
     word defaultgroup = 0;
     Path file, path;
-
     *origin = NUL;
-    *file = NUL;
+    *file   = NUL;
     strcpy(options, tag);
-    char* ptr = strtok(tag, " \t");
+    char * ptr = strtok(tag, " \t");
+
     while(ptr)
     {
         if(*ptr != '-')
         {
             strcpy(file, ptr);
+
             if(is_dir(file))
             {
                 AddBackslash(file);
@@ -216,19 +223,28 @@ void gareafile::ReadSquish(char* tag)
             if(g_toupper(*(++ptr)) == 'G')
             {
                 if(*(++ptr) == '=')
+                {
                     ptr++;
+                }
+
                 if(*ptr == '#')
-                    defaultgroup = (word)(atoi(ptr+1)+0x8000u);
+                {
+                    defaultgroup = (word)(atoi(ptr + 1) + 0x8000u);
+                }
                 else
+                {
                     defaultgroup = (word)(g_isupper(*ptr) ? *ptr : 0);
+                }
             }
         }
+
         ptr = strtok(NULL, " \t");
     }
 
-    if(not *file and ((ptr = getenv("SQUISH"))!=NULL))
+    if(not * file and ((ptr = getenv("SQUISH")) != NULL))
     {
         strcpy(file, ptr);
+
         if(is_dir(file))
         {
             AddBackslash(file);
@@ -237,11 +253,8 @@ void gareafile::ReadSquish(char* tag)
     }
 
     extractdirname(path, file);
-
     CfgSquishuserpath(path);
-
     ReadSquishFile(path, file, options, origin, defaultgroup);
-}
-
+} // gareafile::ReadSquish
 
 //  ------------------------------------------------------------------

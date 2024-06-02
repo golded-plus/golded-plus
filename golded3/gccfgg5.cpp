@@ -1,4 +1,3 @@
-
 //  ------------------------------------------------------------------
 //  GoldED+
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -27,151 +26,131 @@
 #include <golded.h>
 #include <gccfgg.h>
 #include <gcprot.h>
-
-
 //  ------------------------------------------------------------------
-
-extern char* val;
-
-
+extern char * val;
 //  ------------------------------------------------------------------
-
 void CfgHighlighturls()
 {
-
     CFG->highlighturls = make_bool(GetYesno(val));
 }
 
 //  ------------------------------------------------------------------
-
-void CfgHudsonpath(const char *path, bool force)
+void CfgHudsonpath(const char * path, bool force)
 {
-
     if(force or strblank(CFG->hudsonpath))
+    {
         MapPath(PathCopy(CFG->hudsonpath, path));
+    }
 }
 
 void CfgHudsonpath()
 {
-
     CfgHudsonpath(val, true);
 }
 
 //  ------------------------------------------------------------------
-
 void CfgHudsonsizewarn()
 {
-
     CFG->hudsonsizewarn = atol(val);
 }
 
 //  ------------------------------------------------------------------
-
 void CfgHudsonsyspath()
 {
-
     PathCopy(CFG->hudsonsyspath, val);
 }
 
 //  ------------------------------------------------------------------
-
 void CfgHudsonuserno()
 {
-
     CFG->hudsonuserno = atoi(val);
 }
 
 //  ------------------------------------------------------------------
-
 void CfgIgnorecharset()
 {
-
     CFG->ignorecharset = make_bool(GetYesno(val));
 }
 
 //  ------------------------------------------------------------------
-
 void CfgImportbegin()
 {
-
     strxcpy(CFG->importbegin, StripQuotes(val), sizeof(CFG->importbegin));
 }
 
 //  ------------------------------------------------------------------
-
 void CfgImportend()
 {
-
     strxcpy(CFG->importend, StripQuotes(val), sizeof(CFG->importend));
 }
 
 //  ------------------------------------------------------------------
-
 void CfgInboundpath()
 {
-
     PathCopy(CFG->inboundpath, val);
 }
 
 //  ------------------------------------------------------------------
-
 void CfgIncludenodes()
 {
-
     // Only used by GoldNODE
 }
 
 //  ------------------------------------------------------------------
-
 void CfgInputfile()
 {
-
     Path buf;
     strxcpy(buf, val, sizeof(buf));
+
     if(cfgingroup)
-        CFG->grp.AddItm(GRP_INPUTFILE, buf, strlen(buf)+1);
+    {
+        CFG->grp.AddItm(GRP_INPUTFILE, buf, strlen(buf) + 1);
+    }
     else
+    {
         strcpy(CFG->inputfile, buf);
+    }
 }
 
 //  ------------------------------------------------------------------
-
 void CfgIntensecolors()
 {
-
     CFG->intensecolors = make_bool(GetYesno(val));
+
     if(CFG->intensecolors)
+    {
         memcpy(CFG->color, gold_color2, sizeof(CFG->color));
+    }
 }
 
 //  ------------------------------------------------------------------
-
 void CfgInternetaddress()
 {
-
     IAdr buf;
     strxcpy(buf, val, sizeof(buf));
+
     if(cfgingroup)
-        CFG->grp.AddItm(GRP_INTERNETADDRESS, buf, strlen(buf)+1);
+    {
+        CFG->grp.AddItm(GRP_INTERNETADDRESS, buf, strlen(buf) + 1);
+    }
     else
+    {
         strcpy(CFG->internetaddress, buf);
+    }
 }
 
 //  ------------------------------------------------------------------
-
 void CfgInternetdomain()
 {
-
     strxcpy(CFG->internetdomain, val, sizeof(CFG->internetdomain));
 }
 
 //  ------------------------------------------------------------------
-
 void CfgInternetgate()
 {
-
     Node tmp;
-    char* ptr = strchr(val, ',');
+    char * ptr = strchr(val, ',');
+
     if(ptr)
     {
         *ptr++ = NUL;
@@ -179,195 +158,225 @@ void CfgInternetgate()
     }
     else
     {
-        ptr = val;
+        ptr         = val;
         tmp.name[0] = NUL;
     }
+
     if(not CFG->aka.empty())
+    {
         tmp.addr = CFG->aka[0].addr;
+    }
+
     tmp.addr.set(strskip_wht(ptr));
+
     if(cfgingroup)
+    {
         CFG->grp.AddItm(GRP_INTERNETGATE, &tmp, sizeof(Node));
+    }
     else
+    {
         CFG->internetgate = tmp;
-}
+    }
+} // CfgInternetgate
 
 //  ------------------------------------------------------------------
-
 void CfgInternetgateexp()
 {
-
     uint exp = 0;
-    char *key;
+    char * key;
+
     do
     {
         getkeyval(&key, &val);
+
         if(strieql(key, "Name"))
+        {
             exp = (exp << 2) | RFCName;
+        }
+
         if(strieql(key, "Address"))
+        {
             exp = (exp << 2) | RFCAddress;
+        }
     }
     while(*val != NUL);
     CFG->internetgateexp = exp;
 }
 
 //  ------------------------------------------------------------------
-
 void CfgInternetmsgid()
 {
-
     bool flag = make_bool(GetYesno(val));
+
     if(cfgingroup)
-        CFG->grp.AddItm(GRP_INTERNETMSGID, flag);
-    else
-        CFG->internetmsgid = flag;
-}
-
-//  ------------------------------------------------------------------
-
-void CfgInternetrfcbody()
-{
-
-    int flag = atoi(val);
-    if(flag == 0)
-        flag = GetYesno(val) ? 1 : 0;
-    if(cfgingroup)
-        CFG->grp.AddItm(GRP_INTERNETRFCBODY, flag);
-    else
-        CFG->internetrfcbody = flag;
-}
-
-//  ------------------------------------------------------------------
-
-void CfgInternetviagate()
-{
-
-    CFG->internetviagate = make_bool(GetYesno(val));
-}
-
-//  ------------------------------------------------------------------
-
-void CfgInvalidate()
-{
-
-    const word CRC_SEENBY = 0x01D0;
-    const word CRC_CC     = 0x4343;
-    const word CRC_XC     = 0x5843;
-    const word CRC_XP     = 0x5850;
-
-    char* key;
-
-    switch(getkeyvalcrc(&key, &val))
     {
-    case CRC_TEARLINE:
-        getkeyval(&key, &val);
-        CFG->invalidate.tearline.first = StripQuotes(key);
-        CFG->invalidate.tearline.second = StripQuotes(val);
-        break;
-    case CRC_ORIGIN:
-        getkeyval(&key, &val);
-        CFG->invalidate.origin.first = StripQuotes(key);
-        CFG->invalidate.origin.second = StripQuotes(val);
-        break;
-    case CRC_SEENBY:
-        getkeyval(&key, &val);
-        CFG->invalidate.seenby.first = StripQuotes(key);
-        CFG->invalidate.seenby.second = StripQuotes(val);
-        break;
-    case CRC_CC:
-        getkeyval(&key, &val);
-        CFG->invalidate.cc.first = StripQuotes(key);
-        CFG->invalidate.cc.second = StripQuotes(val);
-        break;
-    case CRC_XC:
-        getkeyval(&key, &val);
-        CFG->invalidate.xc.first = StripQuotes(key);
-        CFG->invalidate.xc.second = StripQuotes(val);
-        break;
-    case CRC_XP:
-        getkeyval(&key, &val);
-        CFG->invalidate.xp.first = StripQuotes(key);
-        CFG->invalidate.xp.second = StripQuotes(val);
-        break;
+        CFG->grp.AddItm(GRP_INTERNETMSGID, flag);
+    }
+    else
+    {
+        CFG->internetmsgid = flag;
     }
 }
 
 //  ------------------------------------------------------------------
-
-void CfgJampath(const char *path, bool force)
+void CfgInternetrfcbody()
 {
+    int flag = atoi(val);
 
+    if(flag == 0)
+    {
+        flag = GetYesno(val) ? 1 : 0;
+    }
+
+    if(cfgingroup)
+    {
+        CFG->grp.AddItm(GRP_INTERNETRFCBODY, flag);
+    }
+    else
+    {
+        CFG->internetrfcbody = flag;
+    }
+}
+
+//  ------------------------------------------------------------------
+void CfgInternetviagate()
+{
+    CFG->internetviagate = make_bool(GetYesno(val));
+}
+
+//  ------------------------------------------------------------------
+void CfgInvalidate()
+{
+    const word CRC_SEENBY = 0x01D0;
+    const word CRC_CC     = 0x4343;
+    const word CRC_XC     = 0x5843;
+    const word CRC_XP     = 0x5850;
+    char * key;
+
+    switch(getkeyvalcrc(&key, &val))
+    {
+        case CRC_TEARLINE:
+            getkeyval(&key, &val);
+            CFG->invalidate.tearline.first  = StripQuotes(key);
+            CFG->invalidate.tearline.second = StripQuotes(val);
+            break;
+
+        case CRC_ORIGIN:
+            getkeyval(&key, &val);
+            CFG->invalidate.origin.first  = StripQuotes(key);
+            CFG->invalidate.origin.second = StripQuotes(val);
+            break;
+
+        case CRC_SEENBY:
+            getkeyval(&key, &val);
+            CFG->invalidate.seenby.first  = StripQuotes(key);
+            CFG->invalidate.seenby.second = StripQuotes(val);
+            break;
+
+        case CRC_CC:
+            getkeyval(&key, &val);
+            CFG->invalidate.cc.first  = StripQuotes(key);
+            CFG->invalidate.cc.second = StripQuotes(val);
+            break;
+
+        case CRC_XC:
+            getkeyval(&key, &val);
+            CFG->invalidate.xc.first  = StripQuotes(key);
+            CFG->invalidate.xc.second = StripQuotes(val);
+            break;
+
+        case CRC_XP:
+            getkeyval(&key, &val);
+            CFG->invalidate.xp.first  = StripQuotes(key);
+            CFG->invalidate.xp.second = StripQuotes(val);
+            break;
+    } // switch
+} // CfgInvalidate
+
+//  ------------------------------------------------------------------
+void CfgJampath(const char * path, bool force)
+{
     if(force or strblank(CFG->jampath))
+    {
         MapPath(PathCopy(CFG->jampath, path));
+    }
 }
 
 void CfgJampath()
 {
-
     CfgJampath(val, true);
 }
 
 //  ------------------------------------------------------------------
-
 void CfgKeybmode()
 {
-
     if(strnieql(val, "Poll", 4))
+    {
         CFG->keybmode = KEYB_POLL;
+    }
     else if(strnieql(val, "Block", 5))
+    {
         CFG->keybmode = KEYB_BLOCK;
+    }
 }
 
 //  ------------------------------------------------------------------
-
 void CfgKeybstack()
 {
-
     strcat(CFG->keybstack, val);
 }
 
 //  ------------------------------------------------------------------
-
 void CfgKludge()
 {
-
     StripQuotes(val);
+
     if(*val == CTRL_A)
+    {
         val++;
+    }
+
     CFG->kludge.push_back(val);
 }
 
 //  ------------------------------------------------------------------
-
 void CfgLatintolocal()
 {
     memset(CFG->latintolocal, 0, sizeof(CFG->latintolocal));
     CFG->latin2local = true;
+    char * ptr = val, chr;
 
-    char *ptr = val, chr;
-    for (chr = 'A'; chr <= 'Z'; chr++, ptr++)
+    for(chr = 'A'; chr <= 'Z'; chr++, ptr++)
+    {
         CFG->latintolocal[int(chr)] = *ptr;
-    for (chr = 'a'; chr <= 'z'; chr++, ptr++)
+    }
+
+    for(chr = 'a'; chr <= 'z'; chr++, ptr++)
+    {
         CFG->latintolocal[int(chr)] = *ptr;
+    }
 }
 
 //  ------------------------------------------------------------------
-
 void CfgLoadlanguage()
 {
-
     Path buf;
     strxcpy(buf, val, sizeof(buf));
+
     if(cfgingroup)
-        CFG->grp.AddItm(GRP_LOADLANGUAGE, buf, strlen(buf)+1);
+    {
+        CFG->grp.AddItm(GRP_LOADLANGUAGE, buf, strlen(buf) + 1);
+    }
     else
+    {
         strcpy(CFG->loadlanguage, buf);
+    }
 }
 
 //  ------------------------------------------------------------------
-
 void CfgLocationalias()
 {
-    char* key;
+    char * key;
     getkeyval(&key, &val);
     StripQuotes(key);
     StripQuotes(val);
@@ -375,7 +384,6 @@ void CfgLocationalias()
 }
 
 //  ------------------------------------------------------------------
-
 void CfgLocationdelimiter()
 {
     StripQuotes(val);
@@ -383,36 +391,40 @@ void CfgLocationdelimiter()
 }
 
 //  ------------------------------------------------------------------
-
 void CfgLogfile()
 {
-
     strcpy(CFG->logfile, val);
 }
 
 //  ------------------------------------------------------------------
-
 void CfgLogformat()
 {
-
     if(strieql(val, "FD"))
+    {
         CFG->logformat = GLOG_FD;
+    }
     else if(strieql(val, "MAX"))
+    {
         CFG->logformat = GLOG_MAX;
+    }
     else if(strieql(val, "BINK"))
+    {
         CFG->logformat = GLOG_BINK;
+    }
     else if(strieql(val, "QBBS"))
+    {
         CFG->logformat = GLOG_QBBS;
+    }
     else if(strieql(val, "DB"))
+    {
         CFG->logformat = GLOG_DB;
+    }
 }
 
 //  ------------------------------------------------------------------
-
 void CfgMailinglist()
 {
-
-    char* key;
+    char * key;
     MailList mlst;
     mlst.sender_is_pattern = false;
     getkeyval(&key, &val);
@@ -425,11 +437,9 @@ void CfgMailinglist()
 }
 
 //  ------------------------------------------------------------------
-
 void CfgMailtoss()
 {
-
-    char* key;
+    char * key;
     MailList mlst;
     mlst.sender_is_pattern = true;
     getkeyval(&key, &val);
@@ -441,28 +451,23 @@ void CfgMailtoss()
 }
 
 //  ------------------------------------------------------------------
-
 void CfgMappath()
 {
-
-    char* key;
+    char * key;
     std::pair<std::string, std::string> mapentry;
-
     getkeyval(&key, &val);
-
-    mapentry.first = key;
+    mapentry.first  = key;
     mapentry.second = val;
     CFG->mappath.push_back(mapentry);
 }
 
 //  ------------------------------------------------------------------
-
 void CfgMember()
 {
-
     if(cfgingroup)
     {
         val = strtok(val, ", \t");
+
         while(val)
         {
             CFG->grp.AddMbr(val);
@@ -472,61 +477,84 @@ void CfgMember()
 }
 
 //  ------------------------------------------------------------------
-
 void CfgMenumarked()
 {
-
     if(strieql(val, "Marked"))
+    {
         CFG->menumarked = MODE_MARKED;
+    }
     else if(strieql(val, "Current"))
+    {
         CFG->menumarked = MODE_CURRENT;
+    }
     else if(strieql(val, "Previous"))
+    {
         CFG->menumarked = MODE_PREVIOUS;
+    }
     else
+    {
         CFG->menumarked = MODE_DONT;
+    }
 }
 
 //  ------------------------------------------------------------------
-
 void CfgMenunextarea()
 {
-    if (strieql(val, "Unread"))
+    if(strieql(val, "Unread"))
+    {
         CFG->menunextarea = ALWAYS;
+    }
     else
+    {
         CFG->menunextarea = GetYesno(val);
+    }
 }
 
 //  ------------------------------------------------------------------
-
 void CfgMsglistdate()
 {
-
     int flag;
+
     if(strieql(val, "Written"))
+    {
         flag = MSGLISTDATE_WRITTEN;
+    }
     else if(strieql(val, "Arrived"))
+    {
         flag = MSGLISTDATE_ARRIVED;
+    }
     else if(strieql(val, "Received"))
+    {
         flag = MSGLISTDATE_RECEIVED;
+    }
     else
+    {
         flag = GetYesno(val) ? MSGLISTDATE_WRITTEN : MSGLISTDATE_NONE;
+    }
+
     if(cfgingroup)
+    {
         CFG->grp.AddItm(GRP_MSGLISTDATE, flag);
+    }
     else
+    {
         CFG->msglistdate = flag;
-}
+    }
+} // CfgMsglistdate
 
 //  ------------------------------------------------------------------
-
 void CfgMsglistfast()
 {
-
     bool flag = make_bool(GetYesno(val));
+
     if(cfgingroup)
+    {
         CFG->grp.AddItm(GRP_MSGLISTFAST, flag);
+    }
     else
+    {
         CFG->msglistfast = flag;
+    }
 }
 
 //  ------------------------------------------------------------------
-

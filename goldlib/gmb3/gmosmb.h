@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 2000 Alexander S. Aganichev
@@ -27,87 +26,62 @@
 
 #ifndef __GMOSMB_H
 #define __GMOSMB_H
-
-
 //  ------------------------------------------------------------------
 
 #include <smblib.h>
 #include <gmoarea.h>
-
-
 //  ------------------------------------------------------------------
-
 class SMBArea : public gmo_area
 {
+protected: smb_t * data;
+    void data_open();
+    void data_close();
+    void raw_scan(bool keep_index = false, bool scanpm = false);
+    int load_hdr(gmsg * __msg, smbmsg_t * msg);
 
-protected:
-
-    smb_t *data;
-
-    void  data_open();
-    void  data_close();
-
-    void  raw_scan(bool keep_index=false, bool scanpm=false);
-    int   load_hdr(gmsg* __msg, smbmsg_t *msg);
-
-public:
-
-    SMBArea()
+public: SMBArea()
     {
         data = NULL;
     }
-    virtual ~SMBArea() {}
 
-    virtual bool issoftdelete() const
-    {
-        return true;
-    }
+    virtual ~SMBArea()
+    {}
+virtual bool issoftdelete() const
+{
+    return true;
+}
 
     //  ----------------------------------------------------------------
     //  Messagebase member functions
-
     void open();
     void close();
-
     void suspend();
     void resume();
-
     void lock();
     void unlock();
-
     void scan();
     void scan_area();
     void scan_area_pm();
 
-    int load_hdr(gmsg* msg)
-    {
-        return load_hdr(msg, NULL);
-    }
-    int load_msg(gmsg* msg);
+int load_hdr(gmsg * msg)
+{
+    return load_hdr(msg, NULL);
+}
 
-    void save_hdr(int mode, gmsg* msg);
-    void save_msg(int mode, gmsg* msg);
-
-    void del_msg(gmsg* msg);
-
-    void new_msgno(gmsg* msg);
-    char* user_lookup(char* lookfor);
+    int load_msg(gmsg * msg);
+    void save_hdr(int mode, gmsg * msg);
+    void save_msg(int mode, gmsg * msg);
+    void del_msg(gmsg * msg);
+    void new_msgno(gmsg * msg);
+    char * user_lookup(char * lookfor);
     int renumber();
-
-    void update_timesread(gmsg* msg);
-
-    Line* make_dump_msg(Line*& lin, gmsg* msg, char* lng_head);
+    void update_timesread(gmsg * msg);
+    Line * make_dump_msg(Line *& lin, gmsg * msg, char * lng_head);
 };
-
-
 //  ------------------------------------------------------------------
-
-extern smb_t *smbdata;
+extern smb_t * smbdata;
 extern int smbdatano;
-
-
 //  ------------------------------------------------------------------
 
-#endif
-
+#endif // ifndef __GMOSMB_H
 //  ------------------------------------------------------------------

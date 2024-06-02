@@ -1,4 +1,3 @@
-
 //  ------------------------------------------------------------------
 //  The Goldware Library. Copyright (C) Odinn Sorensen.
 //  ------------------------------------------------------------------
@@ -28,60 +27,54 @@
 #undef GCFG_NOFE
 #include <gedacfg.h>
 #include <gs_fech5.h>
-
-
 //  ------------------------------------------------------------------
 //  Read FASTECHO.CFG
-
 void gareafile::ReadFastecho141(int fh)
 {
-
     AreaCfg aa;
-
-    CONFIG5* cfg = (CONFIG5*)throw_calloc(1, sizeof(CONFIG5));
-    FeArea5* area = (FeArea5*)throw_calloc(1, sizeof(FeArea5));
-
+    CONFIG5 * cfg  = (CONFIG5 *)throw_calloc(1, sizeof(CONFIG5));
+    FeArea5 * area = (FeArea5 *)throw_calloc(1, sizeof(FeArea5));
     // Read main config record
     read(fh, cfg, sizeof(CONFIG5));
-
     // Get usernames
     //for(int u=0; u<11; u++)
     //CfgUsername(cfg->sysops[u].name);
-
     // Get Hudson msgbase path
     CfgHudsonpath(cfg->MsgBase);
-
     // Setup aka list
-    SysAddress* aka = (SysAddress*)throw_calloc(cfg->AkaCnt, sizeof(SysAddress));
-    for(int c=0; c<11; c++)
-        aka[c].main = cfg->oldakas[c].main;
+    SysAddress * aka = (SysAddress *)throw_calloc(cfg->AkaCnt, sizeof(SysAddress));
 
+    for(int c = 0; c < 11; c++)
+    {
+        aka[c].main = cfg->oldakas[c].main;
+    }
     // Process extended headers
     uint32_t offset = 0;
+
     while(offset < cfg->offset)
     {
         ExtensionHeader ehdr;
         read(fh, &ehdr, sizeof(ExtensionHeader));
         offset += sizeof(ExtensionHeader);
+
         switch(ehdr.type)
         {
-        case EH_AKAS:
-            read(fh, aka, cfg->AkaCnt*sizeof(SysAddress));
-            break;
-        default:
-            lseek(fh, ehdr.offset, SEEK_CUR);
+            case EH_AKAS:
+                read(fh, aka, cfg->AkaCnt * sizeof(SysAddress));
+                break;
+
+            default:
+                lseek(fh, ehdr.offset, SEEK_CUR);
         }
         offset += ehdr.offset;
     }
-
     // Skip node records
-    lseek(fh, (long)(cfg->NodeCnt)*(long)sizeof(FeNode5), SEEK_CUR);
-
+    lseek(fh, (long)(cfg->NodeCnt) * (long)sizeof(FeNode5), SEEK_CUR);
     // The *.MSG netmail area
     aa.reset();
-    aa.aka = CAST(ftn_addr, aka[0].main);
-    aa.type = GMB_NET;
-    aa.attr = attribsnet;
+    aa.aka      = CAST(ftn_addr, aka[0].main);
+    aa.type     = GMB_NET;
+    aa.attr     = attribsnet;
     aa.basetype = fidomsgtype;
     aa.setpath(cfg->NetMPath);
     aa.setdesc("FastEcho Netmail");
@@ -89,64 +82,74 @@ void gareafile::ReadFastecho141(int fh)
     AddNewArea(aa);
 
     // All the echomail areas
-    for(int n=0; n<cfg->AreaCnt; n++)
+    for(int n = 0; n < cfg->AreaCnt; n++)
     {
         read(fh, area, sizeof(FeArea5));
+
         if(area->board != AREA_DELETED)
         {
             aa.reset();
             aa.aka = CAST(ftn_addr, aka[area->flags.aka].main);
+
             switch(area->flags.type)
             {
-            case QBBS:
-                aa.basetype = "HUDSON";
-                aa.board = area->board;
-                break;
-            case FIDO:
-                aa.basetype = fidomsgtype;
-                aa.setpath(area->path);
-                break;
-            case SQUISH:
-                aa.basetype = "SQUISH";
-                aa.setpath(area->path);
-                break;
-            case JAM:
-                aa.basetype = "JAM";
-                aa.setpath(area->path);
-                break;
-            case PT_BOARD:
-            default:
-                // Passthrough or unknown
-                continue;
-            }
+                case QBBS:
+                    aa.basetype = "HUDSON";
+                    aa.board    = area->board;
+                    break;
+
+                case FIDO:
+                    aa.basetype = fidomsgtype;
+                    aa.setpath(area->path);
+                    break;
+
+                case SQUISH:
+                    aa.basetype = "SQUISH";
+                    aa.setpath(area->path);
+                    break;
+
+                case JAM:
+                    aa.basetype = "JAM";
+                    aa.setpath(area->path);
+                    break;
+
+                case PT_BOARD:
+                default:
+                    // Passthrough or unknown
+                    continue;
+            } // switch
 
             switch(area->type)
             {
-            case AREA_ECHOMAIL:
-                aa.type = GMB_ECHO;
-                aa.attr = attribsecho;
-                break;
-            case AREA_NETMAIL:
-                aa.type = GMB_NET;
-                aa.attr = attribsnet;
-                break;
-            case AREA_LOCAL:
-                aa.type = GMB_LOCAL;
-                aa.attr = attribslocal;
-                break;
-            case AREA_BADMAILBOARD:
-                aa.type = GMB_ECHO;
-                aa.attr = attribsecho;
-                break;
-            case AREA_DUPEBOARD:
-                aa.type = GMB_ECHO;
-                aa.attr = attribsecho;
-                break;
-            default:
-                // Unknown type
-                continue;
+                case AREA_ECHOMAIL:
+                    aa.type = GMB_ECHO;
+                    aa.attr = attribsecho;
+                    break;
 
-            }
+                case AREA_NETMAIL:
+                    aa.type = GMB_NET;
+                    aa.attr = attribsnet;
+                    break;
+
+                case AREA_LOCAL:
+                    aa.type = GMB_LOCAL;
+                    aa.attr = attribslocal;
+                    break;
+
+                case AREA_BADMAILBOARD:
+                    aa.type = GMB_ECHO;
+                    aa.attr = attribsecho;
+                    break;
+
+                case AREA_DUPEBOARD:
+                    aa.type = GMB_ECHO;
+                    aa.attr = attribsecho;
+                    break;
+
+                default:
+                    // Unknown type
+                    continue;
+            } // switch
             aa.setdesc(area->desc);
             aa.setechoid(area->name);
             aa.setorigin(cfg->OriginLine[area->flags.origin]);
@@ -154,12 +157,9 @@ void gareafile::ReadFastecho141(int fh)
             AddNewArea(aa);
         }
     }
-
     throw_free(aka);
     throw_free(area);
     throw_free(cfg);
-}
-
+} // gareafile::ReadFastecho141
 
 //  ------------------------------------------------------------------
-

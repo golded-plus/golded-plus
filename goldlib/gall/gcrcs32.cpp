@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -27,30 +26,28 @@
 
 #include <gctype.h>
 #include <gcrcall.h>
-
-
 //  ------------------------------------------------------------------
 //  Generate CRC-32 of a normal nul-terminated string
-
-dword strCrc32(const char* s, bool __case, dword mask)
+dword strCrc32(const char * s, bool __case, dword mask)
 {
-
     dword crc = mask;
 
     if(__case)
     {
         while(*s)
+        {
             crc = updCrc32(g_toupper(*s++), crc);
+        }
     }
     else
     {
         while(*s)
+        {
             crc = updCrc32(*s++, crc);
+        }
     }
 
     return crc;
 }
 
-
 //  ------------------------------------------------------------------
-
