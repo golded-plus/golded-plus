@@ -1,4 +1,3 @@
-
 //  ------------------------------------------------------------------
 //  GoldED+
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -28,59 +27,40 @@
 
 #include <gwindow.h>
 #include "gmarea.h"
-
 //  ------------------------------------------------------------------
-
 class GMsgHeaderView
 {
-
     int alive;
-
-protected:
-
-public:
-
-    Area *area;
-    GMsg *msg;
+protected: public: Area * area;
+    GMsg * msg;
     gwindow window;
-
     GMsgHeaderView();
     ~GMsgHeaderView();
-
     // Window setup
-    int   at_row;
-    int   at_column;
-    int   width;
-    int   height;
-    int   border_type;
+    int at_row;
+    int at_column;
+    int width;
+    int height;
+    int border_type;
     vattr border_color;
     vattr window_color;
     vattr title_color;
-
     vattr highlight_color;
     vattr from_color;
     vattr to_color;
     vattr subject_color;
     vattr location_color;
-
-    void Use(Area *areaptr, GMsg *msgptr);
-
+    void Use(Area * areaptr, GMsg * msgptr);
     void Create();
     void Destroy();
-
     void Paint();
 };
 
-
 //  ------------------------------------------------------------------
-
 class GMsgBodyView : public Container
 {
-
     int alive;
-
 protected:
-
     // View data
     int visible_width;
     int scrollbar_visible;
@@ -88,45 +68,37 @@ protected:
     int can_pagedown;
     int upperline;
     int lowerline;
-
-    void PaintLine(int row, Line *line);
+    void PaintLine(int row, Line * line);
     void UpdateScrollbar();
-    void prints(int wrow, int wcol, vattr atr, const char* str);
-    void printns(int wrow, int wcol, vattr atr, const char* str, uint len);
+    void prints(int wrow, int wcol, vattr atr, const char * str);
+    void printns(int wrow, int wcol, vattr atr, const char * str, uint len);
 
-public:
-
-    Area *area;
-    GMsg *msg;
+public: Area * area;
+    GMsg * msg;
     gwindow window;
-
     GMsgBodyView();
     ~GMsgBodyView();
-
     // Window setup
-    int   at_row;
-    int   at_column;
-    int   width;
-    int   height;
-    int   border_type;
+    int at_row;
+    int at_column;
+    int width;
+    int height;
+    int border_type;
     vattr border_color;
     vattr window_color;
     vattr scrollbar_color;
     vattr highlight_color;
+    void Use(Area * areaptr, GMsg * msgptr, int startline = 0);
 
-    void Use(Area *areaptr, GMsg *msgptr, int startline=0);
-
-    int UpperLine()
-    {
-        return upperline;
-    }
+int UpperLine()
+{
+    return upperline;
+}
 
     void Create();
     void Destroy();
-
     void Paint();
-
-    int Top(int redraw=false);
+    int Top(int redraw = false);
     int Bottom();
     int PageUp();
     int PageDown();
@@ -136,8 +108,6 @@ public:
     int ThumbTrack(int pos);
     int ThumbPosition(int pos);
 };
-
-
 //  ------------------------------------------------------------------
 
-#endif
+#endif // ifndef __GEVIEW_H

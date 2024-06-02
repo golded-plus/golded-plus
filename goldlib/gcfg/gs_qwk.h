@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -22,34 +21,31 @@
 //  $Id$
 //  ------------------------------------------------------------------
 
-#if defined(GOLD_CANPACK)
+#if defined (GOLD_CANPACK)
     #pragma pack(1)
 #endif
-
 //  ------------------------------------------------------------------
-
 struct QWKHdr
 {
-    byte  status;
-    char  msgno[7];
-    char  date[8];
-    char  time[5];
-    char  to[25];
-    char  from[25];
-    char  subject[25];
-    char  password[12];
-    char  refno[8];
-    char  blocks[6];
-    byte  activestatus;
-    word  confno;
-    word  pktmsgno;
-    char  tagline;
+    byte status;
+    char msgno[7];
+    char date[8];
+    char time[5];
+    char to[25];
+    char from[25];
+    char subject[25];
+    char password[12];
+    char refno[8];
+    char blocks[6];
+    byte activestatus;
+    word confno;
+    word pktmsgno;
+    char tagline;
 };
 
 //  ------------------------------------------------------------------
 
-#if defined(GOLD_CANPACK)
+#if defined (GOLD_CANPACK)
     #pragma pack()
 #endif
-
 //  ------------------------------------------------------------------

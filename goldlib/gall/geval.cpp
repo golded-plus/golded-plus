@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -26,109 +25,100 @@
 
 #include <gdefs.h>
 #include <geval.h>
-
-
 //  ------------------------------------------------------------------
-
 geval::geval()
 {
-
     // nothing to do
 }
 
-
 //  ------------------------------------------------------------------
-
 geval::~geval()
 {
-
     // nothing
 }
 
-
 //  ------------------------------------------------------------------
-
 geval::ops geval::pop_operator()
 {
-
     ops o = ostk.back();
     ostk.pop_back();
     return o;
 }
 
-
 //  ------------------------------------------------------------------
-
 int geval::pop_value()
 {
-
     int v = vstk.back();
     vstk.pop_back();
     return v;
 }
 
-
 //  ------------------------------------------------------------------
-
 void geval::push_value(int v)
 {
-
     vstk.push_back(v);
 }
 
-
 //  ------------------------------------------------------------------
-
 void geval::push_operator(geval::ops o)
 {
-
     ostk.push_back(o);
 }
 
-
 //  ------------------------------------------------------------------
-
 int geval::evaluate_op(geval::ops o, int y, int x)
 {
-
     switch(o)
     {
-    case addition:
-        return y + x;
-    case subtraction:
-        return y - x;
-    case multiplication:
-        return y * x;
-    case division:
-        return y / x;
-    case modulus:
-        return y % x;
-    case negation:
-        return -x;
-    case logic_not:
-        return (not x) ? 1 : 0;
-    case logic_and:
-        return (y and x) ? 1 : 0;
-    case logic_xor:
-        return (y ^ x) ? 1 : 0;
-    case equal:
-        return (y == x) ? 1 : 0;
-    case not_equal:
-        return (y != x) ? 1 : 0;
-    case greater:
-        return (y > x) ? 1 : 0;
-    case greater_or_equal:
-        return (y >= x) ? 1 : 0;
-    case lesser:
-        return (y < x) ? 1 : 0;
-    case lesser_or_equal:
-        return (y <= x) ? 1 : 0;
-    default:
-        ;
-    }
+        case addition:
+            return y + x;
 
+        case subtraction:
+            return y - x;
+
+        case multiplication:
+            return y * x;
+
+        case division:
+            return y / x;
+
+        case modulus:
+            return y % x;
+
+        case negation:
+            return -x;
+
+        case logic_not:
+            return (not x) ? 1 : 0;
+
+        case logic_and:
+            return (y and x) ? 1 : 0;
+
+        case logic_xor:
+            return (y ^ x) ? 1 : 0;
+
+        case equal:
+            return (y == x) ? 1 : 0;
+
+        case not_equal:
+            return (y != x) ? 1 : 0;
+
+        case greater:
+            return (y > x) ? 1 : 0;
+
+        case greater_or_equal:
+            return (y >= x) ? 1 : 0;
+
+        case lesser:
+            return (y < x) ? 1 : 0;
+
+        case lesser_or_equal:
+            return (y <= x) ? 1 : 0;
+
+        default:
+            ;
+    } // switch
     return 0;
-}
-
+} // geval::evaluate_op
 
 //  ------------------------------------------------------------------

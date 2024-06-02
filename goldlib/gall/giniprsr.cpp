@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 2024 Vitaliy Aksyonov
@@ -27,54 +26,64 @@
 #include <fstream>
 
 using namespace std;
-
 namespace ini
 {
-
-bool ReadIniFile(const char* fileName, Sections& sections)
+bool ReadIniFile(const char * fileName, Sections & sections)
 {
     ifstream file(fileName);
 
-    if (!file.is_open())
+    if(!file.is_open())
+    {
         return false;
+    }
 
     string currentSection;
-    for (string line; getline(file, line);)
+
+    for(string line; getline(file, line); )
     {
         strltrim(strtrim(line));
+
         // Skip comments and empty lines
-        if (line.empty() || line[0] == ';')
+        if(line.empty() || line[0] == ';')
+        {
             continue;
+        }
 
         // New section
-        if (line[0] == '[')
+        if(line[0] == '[')
         {
             // Skip invalid section header
-            size_t sz = line.size();
+            size_t sz  = line.size();
             size_t pos = line.find(']');
-            if (pos == string::npos || pos != (sz - 1))
+
+            if(pos == string::npos || pos != (sz - 1))
+            {
                 continue;
+            }
 
             currentSection = line.substr(1, sz - 2);
         }
         else
         {
             size_t pos = line.find('=');
-            if (pos != string::npos)
+
+            if(pos != string::npos)
             {
                 string key = line.substr(0, pos);
                 strtrim(key);
                 string value = line.substr(pos + 1);
                 strltrim(strtrim(value));
-                Variables& vars = sections[currentSection];
+                Variables & vars = sections[currentSection];
                 // Skip if variable already exist in section.
                 Variables::iterator it = vars.find(key);
-                if (it == vars.end())
+
+                if(it == vars.end())
+                {
                     vars[key] = value;
+                }
             }
         }
     }
     return true;
-}
-
+} // ReadIniFile
 } // namespace ini

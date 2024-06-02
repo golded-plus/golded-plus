@@ -1,9 +1,6 @@
 /* lzh.h */
-
 /* Synchronet LZH compression library */
-
 /* $Id$ */
-
 /****************************************************************************
  * @format.tab-size 4       (Plain Text/Source Code File Header)            *
  * @format.use-tabs true    (see http://www.synchro.net/ptsc_hdr.html)      *
@@ -39,38 +36,39 @@
 
 #ifdef _WIN32
     #ifndef __FLAT__
-        #define __FLAT__
+#define __FLAT__
     #endif
     #ifdef __BORLANDC__
-        #define LZHCALL __stdcall
+#define LZHCALL __stdcall
     #else
-        #define LZHCALL
+#define LZHCALL
     #endif
     #ifdef LZHDLL   /* LZH functions in DLL */
         #ifdef LZH_EXPORTS
-            #define LZHEXPORT __declspec( dllexport )
+#define LZHEXPORT __declspec(dllexport)
         #else
-            #define LZHEXPORT __declspec( dllimport )
+#define LZHEXPORT __declspec(dllimport)
         #endif
-    #else           /* self-contained executable */
-        #define LZHEXPORT
+    #else /* self-contained executable */
+#define LZHEXPORT
     #endif
-#elif defined(__unix__) || defined(__GNUC__)
+#elif defined (__unix__) || defined (__GNUC__)
     #ifndef __FLAT__
-        #define __FLAT__
+#define __FLAT__
     #endif
-    #define LZHCALL
-    #define LZHEXPORT
-#else   /* !_WIN32 */
-    #define LZHCALL
-    #define LZHEXPORT
-#endif
+#define LZHCALL
+#define LZHEXPORT
+#else /* !_WIN32 */
+#define LZHCALL
+#define LZHEXPORT
+#endif // ifdef _WIN32
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-LZHEXPORT int32_t LZHCALL lzh_encode(uint8_t *inbuf, int32_t inlen, uint8_t *outbuf);
-LZHEXPORT int32_t LZHCALL lzh_decode(uint8_t *inbuf, int32_t inlen, uint8_t *outbuf);
+LZHEXPORT int32_t LZHCALL lzh_encode(uint8_t * inbuf, int32_t inlen, uint8_t * outbuf);
+LZHEXPORT int32_t LZHCALL lzh_decode(uint8_t * inbuf, int32_t inlen, uint8_t * outbuf);
+
 #ifdef __cplusplus
 }
 #endif

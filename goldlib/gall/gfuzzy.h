@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -26,55 +25,39 @@
 
 #ifndef __gfuzzy_h
 #define __gfuzzy_h
-
-
 //  ------------------------------------------------------------------
 
 #include <gdefs.h>
-
-
 //  ------------------------------------------------------------------
-
 class gfuzzy
 {
-
-protected:
-
-    const char* text;
-    const char* pattern;  // Pointers to search strings
-    int   textloc;  // Current search position in Text
-    int   plen;     // Length of Pattern
-    int   degree;   // Max degree of allowed mismatch
-    int*  ldiffs;
-    int*  ldiff;
-    int*  rdiff;    // Dynamic difference arrays
-    int*  loffs;
-    int*  roffs;    // Used to calculate start of match
-    bool  casing;
-
-public:
-
-    gfuzzy();
+protected: const char * text;
+    const char * pattern; // Pointers to search strings
+    int textloc;    // Current search position in Text
+    int plen;       // Length of Pattern
+    int degree;     // Max degree of allowed mismatch
+    int * ldiffs;
+    int * ldiff;
+    int * rdiff;    // Dynamic difference arrays
+    int * loffs;
+    int * roffs;    // Used to calculate start of match
+    bool casing;
+public: gfuzzy();
     ~gfuzzy();
-
-    const char* start;
-    const char* end;
+    const char * start;
+    const char * end;
     int howclose;
-    int length()
-    {
-        return end - start + 1;
-    }
+int length()
+{
+    return end - start + 1;
+}
 
-    void init(const char* pat, int fuzzydegree, bool case_sensitive);
-    bool findfirst(const char* string);
+    void init(const char * pat, int fuzzydegree, bool case_sensitive);
+    bool findfirst(const char * string);
     bool findnext();
-
-
 };
-
 
 //  ------------------------------------------------------------------
 
-#endif
-
+#endif // ifndef __gfuzzy_h
 //  ------------------------------------------------------------------

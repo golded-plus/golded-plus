@@ -1,4 +1,3 @@
-
 //  ------------------------------------------------------------------
 //  GoldED+
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -27,29 +26,28 @@
 #include <fcntl.h>
 #include <golded.h>
 #include <gesrch.h>
-
+//  ------------------------------------------------------------------
+void KludgeDATE(GMsg * msg, const char * ptr);
 
 //  ------------------------------------------------------------------
-
-void KludgeDATE(GMsg* msg, const char* ptr);
-
-//  ------------------------------------------------------------------
-
-char* CvtMessageIDtoMSGID(const char* mptr, char* msgidbuf, const char* echoid, char* kludge)
+char * CvtMessageIDtoMSGID(const char * mptr,
+                           char * msgidbuf,
+                           const char * echoid,
+                           char * kludge)
 {
-
-    sprintf(msgidbuf, "\x1""%s: ", kludge);
-    char* bptr = msgidbuf + strlen(msgidbuf);
+    sprintf(msgidbuf, "\x1" "%s: ", kludge);
+    char * bptr = msgidbuf + strlen(msgidbuf);
 
     if(strnieql(mptr, "<MSGID_", 7))
     {
         mptr += 7;
-        while((*mptr != '@') and *mptr)
+
+        while((*mptr != '@') and * mptr)
         {
             if(*mptr == '=')
             {
                 *bptr++ = (char)((xtoi(mptr[1]) << 4) | xtoi(mptr[2]));
-                mptr += 3;
+                mptr   += 3;
             }
             else if(*mptr == '_')
             {
@@ -60,54 +58,70 @@ char* CvtMessageIDtoMSGID(const char* mptr, char* msgidbuf, const char* echoid, 
             {
                 *bptr++ = *mptr++;
             }
-            if(bptr-msgidbuf > 200) // Check for overrun
+
+            if(bptr - msgidbuf > 200) // Check for overrun
+            {
                 break;
+            }
         }
         *bptr = NUL;
     }
     else
     {
-
         bool spaces = make_bool(strchr(mptr, ' '));
-
         dword crc32 = CRC32_MASK_CCITT;
-        crc32 = strCrc32(mptr, NO, crc32);
-        crc32 = strCrc32(echoid, YES, crc32);
+        crc32  = strCrc32(mptr, NO, crc32);
+        crc32  = strCrc32(echoid, YES, crc32);
         crc32 ^= CRC32_MASK_CCITT;
 
         if(spaces)
+        {
             *bptr++ = '\"';
+        }
+
         while(*mptr)
         {
             if(spaces and (*mptr == '\"'))
+            {
                 *bptr++ = '\"';
+            }
+
             *bptr++ = *mptr++;
-            if(bptr-msgidbuf > (200-9-(spaces?2:0))) // Check for overrun
+
+            if(bptr - msgidbuf > (200 - 9 - (spaces ? 2 : 0))) // Check for overrun
+            {
                 break;
+            }
         }
+
         if(spaces)
+        {
             *bptr++ = '\"';
+        }
+
         sprintf(bptr, " %08x", crc32);
     }
 
     return msgidbuf;
-}
-
+} // CvtMessageIDtoMSGID
 
 //  ------------------------------------------------------------------
-
-char* UnfoldLine(char* mptr)
+char * UnfoldLine(char * mptr)
 {
+    char * eptr = mptr;
 
-    char* eptr = mptr;
     do
     {
         eptr = strskip_to(eptr, '\n');
+
         if(*eptr)
         {
             char lwsp = eptr[1];
+
             if((lwsp == ' ') or (lwsp == '\t'))
+            {
                 *eptr = lwsp;
+            }
             else
             {
                 *eptr++ = NUL;
@@ -116,114 +130,125 @@ char* UnfoldLine(char* mptr)
         }
     }
     while(*eptr);
-
     return eptr;
 }
 
 //  ------------------------------------------------------------------
-
-int CheckMailinglists(GMsg* msg, int current)
+int CheckMailinglists(GMsg * msg, int current)
 {
-
     if(AA->isemail())
     {
         std::vector<MailList>::iterator z;
+
         for(z = CFG->mailinglist.begin(); z != CFG->mailinglist.end(); z++)
+        {
             if(z->sender_is_pattern)
             {
                 golded_search_manager srchmgr;
                 srchmgr.prepare_from_string(z->sender, GFIND_HDRTXT);
                 bool success = srchmgr.search(msg, true, true);
+
                 if(srchmgr.reverse ? not success : success)
                 {
                     int areano = AL.AreaEchoToNo(z->echoid);
+
                     if(areano != -1)
+                    {
                         return AL.AreaNoToId(areano);
+                    }
                 }
             }
+        }
     }
-    return current;
-}
 
+    return current;
+} // CheckMailinglists
 
 //  ------------------------------------------------------------------
-
-int CheckMailinglists(const char* what, int current)
+int CheckMailinglists(const char * what, int current)
 {
-
     if(AA->isemail())
     {
         std::vector<MailList>::iterator z;
+
         for(z = CFG->mailinglist.begin(); z != CFG->mailinglist.end(); z++)
+        {
             if(not z->sender_is_pattern and strieql(what, z->sender))
             {
                 int areano = AL.AreaEchoToNo(z->echoid);
+
                 if(areano != -1)
+                {
                     return AL.AreaNoToId(areano);
+                }
             }
+        }
     }
+
     return current;
 }
 
-
 //  ------------------------------------------------------------------
-
-bool MatchRFC(char*& p, const char* what)
+bool MatchRFC(char *& p, const char * what)
 {
-
     bool match = strnieql(p, what, strlen(what));
 
     if(match)
+    {
         p = strskip_wht(p + strlen(what) - 1);
+    }
 
     return match;
 }
 
-
 //  ------------------------------------------------------------------
-
-void ProcessSoupMsg(char* lbuf, GMsg* msg, int& msgs, char* areaname, int tosstobadmsgs)
+void ProcessSoupMsg(char * lbuf,
+                    GMsg * msg,
+                    int & msgs,
+                    char * areaname,
+                    int tosstobadmsgs)
 {
-
     int entryCurrArea = CurrArea;
 
     if(msg->txt)
     {
-
         msgs++;
-
-        msg->orig = msg->oorig = CFG->internetgate.addr.valid() ? CFG->internetgate.addr : AA->aka();
+        msg->orig = msg->oorig =
+            CFG->internetgate.addr.valid() ? CFG->internetgate.addr : AA->aka();
         msg->dest = msg->odest = AA->aka();
-        time32_t a   = gtime(NULL);
+        time32_t a = gtime(NULL);
         struct tm tp;
         ggmtime(&tp, &a);
-        tp.tm_isdst  = -1;
-        time32_t b   = gmktime(&tp);
+        tp.tm_isdst = -1;
+        time32_t b = gmktime(&tp);
         msg->arrived = a + a - b;
-
-        Line* line = NULL;
-        Line* fline = NULL;
-        int lineno = 0;
-        int inhdr = true;
-        char* mptr = msg->txt;
+        Line * line  = NULL;
+        Line * fline = NULL;
+        int lineno   = 0;
+        int inhdr    = true;
+        char * mptr  = msg->txt;
         char smsgid[2010];
         *smsgid = NUL;
         char sreply[2010];
-        *sreply= NUL;
+        *sreply = NUL;
 
         if(tosstobadmsgs)
+        {
             AddLineF(line, "AREA:%s", areaname);
+        }
 
         while(*mptr)
         {
+            char * eptr = mptr;
 
-            char* eptr = mptr;
             do
             {
                 eptr = strskip_to(eptr, '\n');
+
                 if(*eptr)
                 {
                     char lwsp = eptr[1];
+
                     if(inhdr and (mptr != eptr) and ((lwsp == ' ') or (lwsp == '\t')))
                     {
                         *eptr = lwsp;
@@ -236,18 +261,15 @@ void ProcessSoupMsg(char* lbuf, GMsg* msg, int& msgs, char* areaname, int tossto
                 }
             }
             while(*eptr);
-
             strchg(mptr, '\t', ' ');
 
             if(inhdr)
             {
                 if(*mptr == NUL)
                 {
-                    inhdr = false;
-
+                    inhdr    = false;
                     CurrArea = CheckMailinglists(msg, CurrArea);
-
-                    const char* echo_id = AL.AreaIdToPtr(CurrArea)->echoid();
+                    const char * echo_id = AL.AreaIdToPtr(CurrArea)->echoid();
                     fline = FirstLine(line);
                     char buf[2010];
 
@@ -256,6 +278,7 @@ void ProcessSoupMsg(char* lbuf, GMsg* msg, int& msgs, char* areaname, int tossto
                         CvtMessageIDtoMSGID(smsgid, buf, echo_id, "MSGID");
                         fline = AddKludge(fline, buf);
                     }
+
                     if(*sreply)
                     {
                         CvtMessageIDtoMSGID(sreply, buf, echo_id, "REPLY");
@@ -264,29 +287,33 @@ void ProcessSoupMsg(char* lbuf, GMsg* msg, int& msgs, char* areaname, int tossto
                 }
                 else
                 {
-
                     int addkludge = true;
                     *lbuf = CTRL_A;
-                    strcpy(lbuf+1, mptr);
+                    strcpy(lbuf + 1,
+                           mptr);
 
                     if(MatchRFC(mptr, "From: "))
                     {
                         INam fromname;
                         IAdr fromaddr;
                         ParseInternetAddr(mptr, fromname, fromaddr, false);
-                        strxcpy(msg->by, *fromname ? fromname : fromaddr, sizeof(msg->by));
+                        strxcpy(msg->by, *fromname ? fromname : fromaddr,
+                                sizeof(msg->by));
+
                         if(AA->Internetgate().addr.valid())
                         {
                             char abuf[40];
                             char kbuf[2048];
-                            sprintf(kbuf, "\x1""REPLYTO %s %s",
+                            sprintf(kbuf,
+                                    "\x1" "REPLYTO %s %s",
                                     AA->Internetgate().addr.make_string(abuf),
-                                    *AA->Internetgate().name ? AA->Internetgate().name : "UUCP"
-                                   );
+                                    *AA->Internetgate().name ? AA->Internetgate().name :
+                                    "UUCP");
                             line = AddKludge(line, kbuf);
-                            sprintf(kbuf, "\x1""REPLYADDR %s", fromaddr);
+                            sprintf(kbuf, "\x1" "REPLYADDR %s", fromaddr);
                             line = AddKludge(line, kbuf);
                         }
+
                         CurrArea = CheckMailinglists(fromaddr, CurrArea);
                     }
                     else if(MatchRFC(mptr, "To: "))
@@ -303,15 +330,19 @@ void ProcessSoupMsg(char* lbuf, GMsg* msg, int& msgs, char* areaname, int tossto
                     }
                     else if(MatchRFC(mptr, "Cc: "))
                     {
-                        char* ccbuf = (char*)throw_malloc(strlen(msg->icc) + strlen(mptr) + 3);
-                        strcpy(stpcpy(stpcpy(ccbuf, msg->icc), *msg->icc ? ", " : ""), mptr);
+                        char * ccbuf = (char *)throw_malloc(strlen(msg->icc) +
+                                                            strlen(mptr) + 3);
+                        strcpy(stpcpy(stpcpy(ccbuf, msg->icc), *msg->icc ? ", " : ""),
+                               mptr);
                         strxcpy(msg->icc, ccbuf, sizeof(msg->icc));
                         throw_free(ccbuf);
                     }
                     else if(MatchRFC(mptr, "Bcc: "))
                     {
-                        char* bccbuf = (char*)throw_malloc(strlen(msg->ibcc) + strlen(mptr) + 3);
-                        strcpy(stpcpy(stpcpy(bccbuf, msg->ibcc), *msg->ibcc ? ", " : ""), mptr);
+                        char * bccbuf = (char *)throw_malloc(strlen(msg->ibcc) +
+                                                             strlen(mptr) + 3);
+                        strcpy(stpcpy(stpcpy(bccbuf, msg->ibcc), *msg->ibcc ? ", " : ""),
+                               mptr);
                         strxcpy(msg->ibcc, bccbuf, sizeof(msg->ibcc));
                         throw_free(bccbuf);
                     }
@@ -337,26 +368,40 @@ void ProcessSoupMsg(char* lbuf, GMsg* msg, int& msgs, char* areaname, int tossto
                     else if(MatchRFC(mptr, "Message-ID: "))
                     {
                         if(not strnieql(mptr, "<NOMSGID_", 9))
+                        {
                             strxcpy(smsgid, mptr, 201);
+                        }
                     }
                     else if(MatchRFC(mptr, "References: "))
                     {
                         while(*mptr)
                         {
-                            char* sptr = strpbrk(mptr, " ,");
+                            char * sptr = strpbrk(mptr, " ,");
+
                             if(sptr == NULL)
+                            {
                                 sptr = mptr + strlen(mptr);
-                            while(((*sptr == ' ') or (*sptr == ',')) and *sptr)
+                            }
+
+                            while(((*sptr == ' ') or (*sptr == ',')) and * sptr)
+                            {
                                 *sptr++ = NUL;
+                            }
+
                             if(not strnieql(mptr, "<NOMSGID_", 9))
+                            {
                                 strxcpy(sreply, mptr, 201);
+                            }
+
                             mptr = sptr;
                         }
                     }
                     else if(MatchRFC(mptr, "In-Reply-To: "))
                     {
                         if(not strnieql(mptr, "<NOMSGID_", 9))
+                        {
                             strxcpy(sreply, mptr, 201);
+                        }
                     }
                     else if(MatchRFC(mptr, "Sender: "))
                     {
@@ -374,7 +419,9 @@ void ProcessSoupMsg(char* lbuf, GMsg* msg, int& msgs, char* areaname, int tossto
                     }
 
                     if(addkludge)
+                    {
                         line = AddKludge(line, lbuf);
+                    }
                 }
             }
             else
@@ -386,8 +433,10 @@ void ProcessSoupMsg(char* lbuf, GMsg* msg, int& msgs, char* areaname, int tossto
             mptr = eptr;
         }
 
-        if(not *msg->to)
+        if(not * msg->to)
+        {
             strcpy(msg->to, AA->Whoto());
+        }
 
         msg->lin = FirstLine(line);
 
@@ -404,101 +453,88 @@ void ProcessSoupMsg(char* lbuf, GMsg* msg, int& msgs, char* areaname, int tossto
 
         if(lineno)
         {
-
             AA->istossed = true;
             update_statuslinef("%s: %u", "", AA->echoid(), msgs);
-
             msg->LinesToText();
             AA->SaveMsg(GMSG_NEW, msg);
         }
 
         msg->Reset();
-
         CurrArea = entryCurrArea;
     }
-}
-
+} // ProcessSoupMsg
 
 //  ------------------------------------------------------------------
-
 dword swapendian(dword n)
 {
-
-    byte* c = (byte*)&n;
-    n = ((c[0]*256 + c[1])*256 + c[2])*256 + c[3];
+    byte * c = (byte *)&n;
+    n = ((c[0] * 256 + c[1]) * 256 + c[2]) * 256 + c[3];
     return n;
 }
 
-
 //  ------------------------------------------------------------------
-
 int ImportSOUP()
 {
-
     int imported = 0;
 
     if(*CFG->soupimportpath)
     {
-
         const int MBUF_SIZE = 65535;
         const int LBUF_SIZE = 65535;
-
         gfile fpm;   // For *.MSG files
-
         int importedmsgs = 0;
-
         Path areasfile;
         strcpy(areasfile, AddPath(CFG->soupimportpath, "AREAS"));
         gfile fpa(areasfile, "rt");
 
-        if (fpa.isopen())
+        if(fpa.isopen())
         {
             char buf[2048];
-
             LoadCharset(-1);
-
-            char* mbuf = (char*)throw_malloc(MBUF_SIZE);
-            char* lbuf = (char*)throw_malloc(LBUF_SIZE);
-
-            GMsg* msg = new GMsg();
+            char * mbuf = (char *)throw_malloc(MBUF_SIZE);
+            char * lbuf = (char *)throw_malloc(LBUF_SIZE);
+            GMsg * msg  = new GMsg();
             throw_new(msg);
 
-            while (fpa.Fgets(buf, sizeof(buf)))
+            while(fpa.Fgets(buf, sizeof(buf)))
             {
-                char* delim = "\t\n";
-                char* prefix   = strtok(buf,  delim);
-                char* areaname = strtok(NULL, delim);
-                char* encoding = strtok(NULL, delim);
+                char * delim    = "\t\n";
+                char * prefix   = strtok(buf, delim);
+                char * areaname = strtok(NULL, delim);
+                char * encoding = strtok(NULL, delim);
+                char msgfmt     = *encoding++;
+                char idxfmt     = (char)(*encoding ? *encoding++ : 0);
+                char kind       = (char)(*encoding ? *encoding : 0);
+                int isemail     = false;
+                int isnews      = false;
 
-                char msgfmt = *encoding++;
-                char idxfmt = (char)(*encoding ? *encoding++ : 0);
-                char kind   = (char)(*encoding ? *encoding   : 0);
-
-                int isemail = false;
-                int isnews = false;
                 switch(msgfmt)
                 {
-                case 'M':
-                    // not supported yet
-                    break;
-                case 'm':
-                case 'b':
-                    isemail = true;
-                    break;
-                case 'u':
-                    if(kind == 'm')
-                    {
+                    case 'M':
+                        // not supported yet
+                        break;
+
+                    case 'm':
+                    case 'b':
                         isemail = true;
                         break;
-                    }
-                case 'B':
-                    isnews = true;
-                    break;
-                }
 
+                    case 'u':
+
+                        if(kind == 'm')
+                        {
+                            isemail = true;
+                            break;
+                        }
+
+                    case 'B':
+                        isnews = true;
+                        break;
+                }
                 Path msgfile, idxfile;
                 strcpy(stpcpy(msgfile, prefix), ".msg");
                 strcpy(msgfile, AddPath(CFG->soupimportpath, msgfile));
+
                 if(idxfmt)
                 {
                     strcpy(stpcpy(idxfile, prefix), ".idx");
@@ -507,75 +543,93 @@ int ImportSOUP()
 
                 strupr(areaname);
                 int tosstobadmsgs = false;
+
                 if(isemail)
+                {
                     areaname = CFG->soupemail;
+                }
+
                 int areano = AL.AreaEchoToNo(areaname);
+
                 if(areano == -1)
                 {
-                    areano = AL.AreaEchoToNo(CFG->soupbadmsgs);
+                    areano        = AL.AreaEchoToNo(CFG->soupbadmsgs);
                     tosstobadmsgs = true;
                 }
 
                 if((areano != -1) and (isemail or isnews))
                 {
-
                     AL.SetActiveAreaNo(areano);
                     OrigArea = CurrArea;
-
                     fpm.Fopen(msgfile, "rb");
-                    if (fpm.isopen())
+
+                    if(fpm.isopen())
                     {
                         imported++;
-
                         int msgs = 0;
-
                         AA->Open();
                         AA->Lock();
                         AA->RandomizeData();
-
-                        uint txtlen = 0;
-                        char* txtptr = NULL;
+                        uint txtlen        = 0;
+                        char * txtptr      = NULL;
                         uint allocated_len = 0;
 
                         if((msgfmt == 'b') or (msgfmt == 'B'))
                         {
-
                             // Get binary formats
-
                             dword msglen = 0;
-                            while (fpm.Fread(&msglen, 4) == 1)
+
+                            while(fpm.Fread(&msglen, 4) == 1)
                             {
                                 msglen = swapendian(msglen);
                                 uint msglensz = (uint)msglen;
+
                                 if(msglen != msglensz)
+                                {
                                     msglensz--;
-                                msg->txt = (char*)throw_calloc(1, msglensz+1);
+                                }
+
+                                msg->txt = (char *)throw_calloc(1, msglensz + 1);
                                 fpm.Fread(msg->txt, msglensz);
-                                if (msglen != msglensz)
-                                    fpm.Fseek(msglen-msglensz, SEEK_CUR);
+
+                                if(msglen != msglensz)
+                                {
+                                    fpm.Fseek(msglen - msglensz, SEEK_CUR);
+                                }
+
                                 ProcessSoupMsg(lbuf, msg, msgs, areaname, tosstobadmsgs);
                             }
                         }
                         else
                         {
-
                             // Get non-binary formats
-
-                            while (fpm.Fgets(mbuf, MBUF_SIZE))
+                            while(fpm.Fgets(mbuf, MBUF_SIZE))
                             {
                                 if(msgfmt == 'u')
                                 {
                                     if(strneql(mbuf, "#! rnews ", 9))
                                     {
-                                        dword msglen = atol(mbuf+9);
+                                        dword msglen  = atol(mbuf + 9);
                                         uint msglensz = (uint)msglen;
+
                                         if(msglen != msglensz)
+                                        {
                                             msglensz--;
-                                        msg->txt = (char*)throw_calloc(1, msglensz+1);
+                                        }
+
+                                        msg->txt = (char *)throw_calloc(1, msglensz + 1);
                                         fpm.Fread(msg->txt, msglensz);
-                                        if (msglen != msglensz)
-                                            fpm.Fseek(msglen-msglensz, SEEK_CUR);
-                                        ProcessSoupMsg(lbuf, msg, msgs, areaname, tosstobadmsgs);
+
+                                        if(msglen != msglensz)
+                                        {
+                                            fpm.Fseek(msglen - msglensz, SEEK_CUR);
+                                        }
+
+                                        ProcessSoupMsg(lbuf,
+                                                       msg,
+                                                       msgs,
+                                                       areaname,
+                                                       tosstobadmsgs);
                                     }
                                     else
                                     {
@@ -589,22 +643,35 @@ int ImportSOUP()
                                 {
                                     if(strneql(mbuf, "From ", 5))
                                     {
-                                        msg->txt = txtptr;
-                                        txtptr = NULL;
-                                        txtlen = 0;
+                                        msg->txt      = txtptr;
+                                        txtptr        = NULL;
+                                        txtlen        = 0;
                                         allocated_len = 0;
-                                        ProcessSoupMsg(lbuf, msg, msgs, areaname, tosstobadmsgs);
+                                        ProcessSoupMsg(lbuf,
+                                                       msg,
+                                                       msgs,
+                                                       areaname,
+                                                       tosstobadmsgs);
                                     }
+
                                     uint len = strlen(mbuf);
-                                    if((txtlen+len+1) > allocated_len)
+
+                                    if((txtlen + len + 1) > allocated_len)
                                     {
                                         if(allocated_len)
+                                        {
                                             allocated_len *= 2;
+                                        }
                                         else
-                                            allocated_len = (txtlen+len+1) * 100;
-                                        txtptr = (char*)throw_realloc(txtptr, allocated_len);
+                                        {
+                                            allocated_len = (txtlen + len + 1) * 100;
+                                        }
+
+                                        txtptr = (char *)throw_realloc(txtptr,
+                                                                       allocated_len);
                                     }
-                                    strcpy(txtptr+txtlen, mbuf);
+
+                                    strcpy(txtptr + txtlen, mbuf);
                                     txtlen += len;
                                 }
                                 else if(msgfmt == 'M')
@@ -618,96 +685,114 @@ int ImportSOUP()
                                 if(txtptr)
                                 {
                                     msg->txt = txtptr;
-                                    txtptr = NULL;
-                                    ProcessSoupMsg(lbuf, msg, msgs, areaname, tosstobadmsgs);
+                                    txtptr   = NULL;
+                                    ProcessSoupMsg(lbuf,
+                                                   msg,
+                                                   msgs,
+                                                   areaname,
+                                                   tosstobadmsgs);
                                 }
                             }
                         }
 
                         throw_free(txtptr);
-
                         AA->Unlock();
                         AA->Close();
 
-                        if (msgs) importedmsgs += msgs;
+                        if(msgs)
+                        {
+                            importedmsgs += msgs;
+                        }
                     }
                 }
 
                 remove(msgfile);
-                if(idxfmt)
-                    remove(idxfile);
-            }
 
+                if(idxfmt)
+                {
+                    remove(idxfile);
+                }
+            }
             msg->Reset();
             throw_delete(msg);
-
             throw_free(lbuf);
             throw_free(mbuf);
-
             fpa.Fclose();
             remove(areasfile);
 
-            if (*CFG->souptosslog)
+            if(*CFG->souptosslog)
+            {
                 fpa.Fopen(CFG->souptosslog, "at");
+            }
 
             for(uint na = 0; na < AL.size(); na++)
             {
                 if(AL[na]->istossed)
                 {
-                    AL[na]->istossed = false;
+                    AL[na]->istossed    = false;
                     AL[na]->isunreadchg = true;
-                    if (fpa.isopen())
+
+                    if(fpa.isopen())
+                    {
                         fpa.Printf("%s\n", AL[na]->echoid());
+                    }
                 }
             }
-
             fpa.Fclose();
 
-            if(importedmsgs and *CFG->soupreplylinker)
+            if(importedmsgs and * CFG->soupreplylinker)
             {
                 sprintf(buf, LNG->Replylinker, CFG->soupreplylinker);
-                ShellToDos(CFG->soupreplylinker, buf, LGREY_|_BLACK, YES);
+                ShellToDos(CFG->soupreplylinker, buf, LGREY_ | _BLACK, YES);
             }
         }
     }
 
     if(imported)
-        startupscan_success = true;
-
-    return imported;
-}
-
-
-//  ------------------------------------------------------------------
-
-int ExportSoupMsg(GMsg* msg, char* msgfile, gfile& fp, int ismail)
-{
-
-    NW(ismail);
-
-    if (not fp.isopen())
     {
-        fp.Open(AddPath(CFG->soupexportpath, msgfile), O_RDWR|O_CREAT|O_BINARY, "rb+");
-        if (fp.isopen())
-            fp.Fseek(0, SEEK_END);
+        startupscan_success = true;
     }
 
-    if (fp.isopen())
+    return imported;
+} // ImportSOUP
+
+//  ------------------------------------------------------------------
+int ExportSoupMsg(GMsg * msg, char * msgfile, gfile & fp, int ismail)
+{
+    NW(ismail);
+
+    if(not fp.isopen())
+    {
+        fp.Open(AddPath(CFG->soupexportpath, msgfile), O_RDWR | O_CREAT | O_BINARY,
+                "rb+");
+
+        if(fp.isopen())
+        {
+            fp.Fseek(0, SEEK_END);
+        }
+    }
+
+    if(fp.isopen())
     {
         int level = 0;
+
         if(CharTable)
+        {
             level = CharTable->level ? CharTable->level : 2;
+        }
 
         // Write placeholder for message length
         dword msglen = 0xFFFFFFFFL;
         fp.Fwrite(&msglen, 4);
         msglen = 0;
-
         bool qp = false;
+
         if(msg->charsetencoding & GCHENC_MNE)
         {
             if(not CharTable or not striinc("MNEMONIC", CharTable->exp))
+            {
                 LoadCharset(CFG->xlatlocalset, "MNEMONIC");
+            }
         }
         else if(IsQuotedPrintable(msg->charset))
         {
@@ -720,38 +805,46 @@ int ExportSoupMsg(GMsg* msg, char* msgfile, gfile& fp, int ismail)
         }
 
         // Process kludges and write header lines
-        Line* line = msg->lin;
+        Line * line = msg->lin;
+
         while(line)
         {
             if(line->type & GLINE_KLUDGE)
             {
                 if((line->kludge == GKLUD_RFC) or (line->kludge == 0))
                 {
-                    const char *ltxt = line->txt.c_str();
-                    const std::string converted = XlatStr((*ltxt == CTRL_A) ? (ltxt + 1) : ltxt, level, CharTable);
-                    msglen += fp.Printf("%s%s", converted.c_str(), (line->type & GLINE_WRAP) ? "" : "\n");
+                    const char * ltxt           = line->txt.c_str();
+                    const std::string converted = XlatStr((*ltxt ==
+                                                           CTRL_A) ? (ltxt + 1) : ltxt,
+                                                          level,
+                                                          CharTable);
+                    msglen += fp.Printf("%s%s", converted.c_str(),
+                                        (line->type & GLINE_WRAP) ? "" : "\n");
                 }
                 else if(line->type & GLINE_WRAP)
                 {
                     while(line->next and (line->type & GLINE_WRAP))
+                    {
                         line = line->next;
+                    }
                 }
             }
+
             line = line->next;
         }
-
         // Write blank line after header lines
         msglen += fp.Printf("\n");
-
         // Write all message lines
         line = msg->lin;
+
         while(line)
         {
-            if(not (line->type & (GLINE_KLUDGE|GLINE_TEAR|GLINE_ORIG)))
+            if(not (line->type & (GLINE_KLUDGE | GLINE_TEAR | GLINE_ORIG)))
             {
                 std::string convLine = XlatStr(line->txt.c_str(), level, CharTable);
-                const size_t len = convLine.size();
-                size_t mpos = 0;
+                const size_t len     = convLine.size();
+                size_t mpos          = 0;
+
                 if(qp and len > 76)
                 {
                     // 12345v7890
@@ -762,63 +855,69 @@ int ExportSoupMsg(GMsg* msg, char* msgfile, gfile& fp, int ismail)
                     {
                         const size_t mbeg = mpos;
                         mpos += 75;
-                        if(convLine[mpos-2] == '=')
+
+                        if(convLine[mpos - 2] == '=')
+                        {
                             mpos -= 2;
-                        else if(convLine[mpos-1] == '=')
+                        }
+                        else if(convLine[mpos - 1] == '=')
+                        {
                             mpos--;
+                        }
+
                         int mlen = (int)(mpos - mbeg);
-                        msglen += fp.Printf("%*.*s=\n", mlen, mlen, convLine.c_str() + mbeg);
+                        msglen += fp.Printf("%*.*s=\n",
+                                            mlen,
+                                            mlen,
+                                            convLine.c_str() + mbeg);
                     }
                     while((len - mpos) > 76);
                 }
+
                 msglen += fp.Printf("%s\n", convLine.c_str() + mpos);
             }
+
             line = line->next;
         }
-
         // Re-write the correct message length
-        fp.Fseek(-(msglen+4), SEEK_CUR);
+        fp.Fseek(-(msglen + 4), SEEK_CUR);
         dword be_msglen = swapendian(msglen);
         fp.Fwrite(&be_msglen, 4);
         fp.Fseek(msglen, SEEK_CUR);
-
         msg->attr.snt1();
         msg->attr.scn1();
         msg->attr.uns0();
-        time32_t a   = gtime(NULL);
+        time32_t a = gtime(NULL);
         struct tm tp;
         ggmtime(&tp, &a);
-        tp.tm_isdst  = -1;
-        time32_t b   = gmktime(&tp);
+        tp.tm_isdst = -1;
+        time32_t b = gmktime(&tp);
         msg->arrived = a + a - b;
         AA->SaveHdr(GMSG_UPDATE, msg);
+
         if(msg->attr.k_s())
+        {
             AA->DeleteMsg(msg, DIR_NEXT);
+        }
 
         return 1;
     }
 
     return 0;
-}
-
+} // ExportSoupMsg
 
 //  ------------------------------------------------------------------
-
-int ExportSoupArea(int areano, char* msgfile, gfile& fp, int ismail)
+int ExportSoupArea(int areano, char * msgfile, gfile & fp, int ismail)
 {
-
     int exported = 0;
-
     AL.SetActiveAreaNo(areano);
-
     AA->Open();
     AA->Lock();
     AA->RandomizeData();
-
-    GMsg* msg = new GMsg();
+    GMsg * msg = new GMsg();
     throw_new(msg);
 
-    for(uint n=0; n<AA->Expo.Count(); n++)
+    for(uint n = 0; n < AA->Expo.Count(); n++)
     {
         if(AA->LoadMsg(msg, AA->Expo[n], CFG->soupexportmargin))
         {
@@ -829,48 +928,45 @@ int ExportSoupArea(int areano, char* msgfile, gfile& fp, int ismail)
             }
         }
     }
-
     msg->Reset();
     throw_delete(msg);
-
     AA->Unlock();
     AA->Close();
-
     AA->Expo.ResetAll();
-
     return exported;
-}
-
+} // ExportSoupArea
 
 //  ------------------------------------------------------------------
-
 int ExportSOUP()
 {
-
     int mailexported = 0;
     int newsexported = 0;
 
     if(*CFG->soupexportpath)
     {
-
         Path scanfile;
         gfile fp, mfp, nfp;
-
         // Get the scan list
         strcpy(scanfile, AddPath(CFG->goldpath, "goldsoup.lst"));
         fp.Fopen(scanfile, "rt");
-        if (fp.isopen())
+
+        if(fp.isopen())
         {
             char buf[256];
-            while (fp.Fgets(buf, sizeof(buf)))
+
+            while(fp.Fgets(buf, sizeof(buf)))
             {
-                char* ptr = strchr(buf, ' ');
+                char * ptr = strchr(buf, ' ');
+
                 if(ptr)
                 {
                     *ptr++ = NUL;
                     int a = AL.AreaEchoToNo(buf);
+
                     if(a != -1)
+                    {
                         AL[a]->Expo.Add(atol(ptr));
+                    }
                 }
             }
             fp.Fclose();
@@ -879,36 +975,55 @@ int ExportSOUP()
         // Export from the e-mail and newsgroup areas
         for(uint na = 0; na < AL.size(); na++)
         {
-            Area* ap = AL[na];
-            if(ap->isemail() and ap->Expo.Count())
-                mailexported += ExportSoupArea(na, "GOLDMAIL.MSG", mfp, true);
-            else if(ap->isnewsgroup() and ap->Expo.Count())
-                newsexported += ExportSoupArea(na, "GOLDNEWS.MSG", nfp, false);
-        }
+            Area * ap = AL[na];
 
+            if(ap->isemail() and ap->Expo.Count())
+            {
+                mailexported += ExportSoupArea(na, "GOLDMAIL.MSG", mfp, true);
+            }
+            else if(ap->isnewsgroup() and ap->Expo.Count())
+            {
+                newsexported += ExportSoupArea(na, "GOLDNEWS.MSG", nfp, false);
+            }
+        }
         // Close any open SOUP files
         mfp.Fclose();
         nfp.Fclose();
-
         // Update the REPLIES file
-        fp.Open(AddPath(CFG->soupexportpath, "REPLIES"), O_RDWR|O_CREAT|O_BINARY, "rb+");
-        if (fp.isopen())
+        fp.Open(AddPath(CFG->soupexportpath, "REPLIES"),
+                O_RDWR | O_CREAT | O_BINARY,
+                "rb+");
+
+        if(fp.isopen())
         {
             char buf[512];
             int hasmail = false;
             int hasnews = false;
-            while (fp.Fgets(buf, sizeof(buf)))
+
+            while(fp.Fgets(buf, sizeof(buf)))
             {
                 strtok(buf, "\t\n");
+
                 if(strieql(buf, "GOLDMAIL"))
+                {
                     hasmail = true;
+                }
                 else if(strieql(buf, "GOLDNEWS"))
+                {
                     hasnews = true;
+                }
             }
-            if (mailexported and not hasmail)
+
+            if(mailexported and not hasmail)
+            {
                 fp.Printf("GOLDMAIL\tmail\tbn\n");
-            if (newsexported and not hasnews)
+            }
+
+            if(newsexported and not hasnews)
+            {
                 fp.Printf("GOLDNEWS\tnews\tBn\n");
+            }
+
             fp.Fclose();
         }
 
@@ -917,8 +1032,6 @@ int ExportSOUP()
     }
 
     return mailexported + newsexported;
-}
-
+} // ExportSOUP
 
 //  ------------------------------------------------------------------
-

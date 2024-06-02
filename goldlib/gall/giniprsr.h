@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 2024 Vitaliy Aksyonov
@@ -30,12 +29,9 @@
 
 namespace ini
 {
-
-typedef std::map<std::string, std::string> Variables;
-typedef std::map<std::string, Variables> Sections;
-
-bool ReadIniFile(const char* fileName, Sections& sections);
-
+    typedef std::map<std::string, std::string> Variables;
+    typedef std::map<std::string, Variables>   Sections;
+    bool ReadIniFile(const char * fileName, Sections & sections);
 } // namespace ini
 
 #endif // __GINIPRSR_H

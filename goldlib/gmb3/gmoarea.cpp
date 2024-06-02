@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -25,40 +24,27 @@
 //  ------------------------------------------------------------------
 
 #include <gmoarea.h>
-
-
 //  ------------------------------------------------------------------
-
-glog*        WideLog = NULL;
-int          WideDebug = false;
-int          WideCanLock = true;
-const char** WideUsername = NULL;
-int          WideUsernames = 0;
-uint         WideSharemode = SH_DENYNO;
-bool         WideDispsoftcr = true;
-int          WidePersonalmail = 0;
-
-
+glog * WideLog             = NULL;
+int WideDebug              = false;
+int WideCanLock            = true;
+const char ** WideUsername = NULL;
+int WideUsernames          = 0;
+uint WideSharemode         = SH_DENYNO;
+bool WideDispsoftcr        = true;
+int WidePersonalmail       = 0;
 //  ------------------------------------------------------------------
-
 gmo_area::gmo_area() : cfg()
 {
-
-    Msgn = NULL;
-    PMrk = NULL;
-    lastread = 0;
+    Msgn          = NULL;
+    PMrk          = NULL;
+    lastread      = 0;
     lastreadentry = 0;
-    isopen = false;
+    isopen        = false;
 }
 
-
 //  ------------------------------------------------------------------
-
 gmo_area::~gmo_area()
-{
-
-}
-
+{}
 
 //  ------------------------------------------------------------------
-

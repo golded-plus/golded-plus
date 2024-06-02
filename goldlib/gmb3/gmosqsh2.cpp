@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -31,13 +30,9 @@
 #include <gstrall.h>
 #include <gcrcall.h>
 #include <gmosqsh.h>
-
-
 //  ------------------------------------------------------------------
-
 void SquishArea::refresh()
 {
-
     GFTRK("SquishRefresh");
 
     // Create new base record or read the existing one
@@ -45,11 +40,11 @@ void SquishArea::refresh()
     {
         if(filelength(data->fhsqd) < sizeof(SqshBase))
         {
-            SqshBase& _base = data->base;
+            SqshBase & _base = data->base;
             memset(&_base, 0, sizeof(SqshBase));
             _base.size = sizeof(SqshBase);
             strxcpy(_base.name, real_path(), sizeof(_base.name));
-            _base.endframe = _base.size;
+            _base.endframe  = _base.size;
             _base.framesize = sizeof(SqshFrm);
             _base.nextmsgno = 2;
             lseekset(data->fhsqd, 0);
@@ -65,26 +60,22 @@ void SquishArea::refresh()
     // Are there any msgs?
     if(data->base.totalmsgs)
     {
-        uint idxsize=data->base.totalmsgs*sizeof(SqshIdx);
-
+        uint idxsize = data->base.totalmsgs * sizeof(SqshIdx);
         // Read the index file
-        data->idx = (SqshIdx*)throw_realloc(data->idx, idxsize);
+        data->idx = (SqshIdx *)throw_realloc(data->idx, idxsize);
         lseekset(data->fhsqi, 0);
         read(data->fhsqi, data->idx, idxsize);
     }
 
     GFTRK(0);
-}
-
+} // SquishArea::refresh
 
 //  ------------------------------------------------------------------
-
 void SquishArea::raw_scan(int __keep_index, int __scanpm)
 {
-
     GFTRK("SquishRawScan");
+    SqshData * _was_data = data;
 
-    SqshData* _was_data = data;
     if(_was_data == NULL)
     {
         data = squishdata;
@@ -92,21 +83,31 @@ void SquishArea::raw_scan(int __keep_index, int __scanpm)
     }
 
     int _wasopen = isopen;
+
     if(not _wasopen)
     {
         if(ispacked())
         {
-            const char* newpath = Unpack(path());
+            const char * newpath = Unpack(path());
+
             if(newpath == NULL)
+            {
                 packed(false);
+            }
+
             set_real_path(newpath ? newpath : path());
         }
+
         isopen++;
     }
 
     // Load the lastread
     dword _lastread = 0;
-    int _fh = ::sopen(AddPath(real_path(), ".sql"), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
+    int _fh         = ::sopen(AddPath(real_path(), ".sql"),
+                              O_RDONLY | O_BINARY,
+                              WideSharemode,
+                              S_STDRD);
+
     if(_fh != -1)
     {
         lseekset(_fh, wide->userno, sizeof(dword));
@@ -117,15 +118,16 @@ void SquishArea::raw_scan(int __keep_index, int __scanpm)
     // Open Squish files for scanning unless they are already open
     if(not _wasopen)
     {
-
-        data->idx = NULL;
+        data->idx            = NULL;
         data->base.totalmsgs = 0;
-
         // Open index file
-        data->fhsqi = ::sopen(AddPath(real_path(), ".sqi"), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
+        data->fhsqi = ::sopen(AddPath(real_path(), ".sqi"),
+                              O_RDONLY | O_BINARY,
+                              WideSharemode,
+                              S_STDRD);
+
         if(data->fhsqi != -1)
         {
-
             // Get the number of index records
             data->base.totalmsgs = filelength(data->fhsqi) / sizeof(SqshIdx);
 
@@ -134,9 +136,12 @@ void SquishArea::raw_scan(int __keep_index, int __scanpm)
             // the exact number of msgs in this case or if requested.
             if((data->base.totalmsgs == 1) or (wide->squishscan == SQS_API))
             {
-
                 // Open, read and close data file
-                data->fhsqd = ::sopen(AddPath(real_path(), ".sqd"), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
+                data->fhsqd = ::sopen(AddPath(real_path(), ".sqd"),
+                                      O_RDONLY | O_BINARY,
+                                      WideSharemode,
+                                      S_STDRD);
+
                 if(data->fhsqd != -1)
                 {
                     read(data->fhsqd, &data->base, sizeof(SqshBase));
@@ -151,54 +156,60 @@ void SquishArea::raw_scan(int __keep_index, int __scanpm)
 
             // Allocate index buffer and read from file
             refresh();
-
             // Close index file
             ::close(data->fhsqi);
             data->fhsqi = -1;
         }
+
         if(ispacked())
         {
             CleanUnpacked(real_path());
         }
+
         isopen--;
     }
 
     uint _msgno;
-    SqshIdx* _sqiptr = data->idx;
-    dword  _totalmsgs = data->base.totalmsgs;
-    uint _firstmsgno = _totalmsgs ? _sqiptr->msgno : 0;
-    uint _lastmsgno = 0;
-    uint _active = 0;
+    SqshIdx * _sqiptr   = data->idx;
+    dword _totalmsgs    = data->base.totalmsgs;
+    uint _firstmsgno    = _totalmsgs ? _sqiptr->msgno : 0;
+    uint _lastmsgno     = 0;
+    uint _active        = 0;
     uint _lastread_reln = 0;
     uint _lastreadfound = 0;
 
     if(data->base.totalmsgs)
     {
-
         // (Re)allocate message index
         if(__keep_index)
+        {
             Msgn->Resize((uint)data->base.totalmsgs);
+        }
 
-        uint32_t* _msgndxptr = Msgn->tag;
+        uint32_t * _msgndxptr = Msgn->tag;
 
         // Fill message index
         while(_active < _totalmsgs)
         {
-
             _active++;
             _msgno = (_sqiptr++)->msgno;
+
             if(__keep_index)
+            {
                 *_msgndxptr++ = _msgno;
+            }
 
             // Check for premature end of index (free frames)
             if((_msgno <= _lastmsgno) or (_msgno == 0xFFFFFFFFL))
             {
                 _active--;
+
                 if((_msgno == _lastmsgno) and (_active == 1))
                 {
                     _lastread_reln = 0;
-                    _active = 0;
+                    _active        = 0;
                 }
+
                 break;
             }
 
@@ -216,18 +227,21 @@ void SquishArea::raw_scan(int __keep_index, int __scanpm)
         // If the exact lastread was not found
         if(_active and (_lastreadfound != _lastread))
         {
-
             // Higher than highest or lower than lowest?
             if(_lastread > _lastmsgno)
+            {
                 _lastread_reln = _active;
+            }
             else if(_lastread < _firstmsgno)
+            {
                 _lastread_reln = 0;
+            }
         }
     }
 
     // Update area data
     Msgn->SetCount(_active);
-    lastread = _lastread_reln;
+    lastread      = _lastread_reln;
     lastreadentry = _lastreadfound;
 
     // Scan for personal mail
@@ -235,16 +249,21 @@ void SquishArea::raw_scan(int __keep_index, int __scanpm)
     {
         int umax = (WidePersonalmail & PM_ALLNAMES) ? WideUsernames : 1;
         std::vector<dword> uhash;
-        for(int uh=0; uh<umax; uh++)
+
+        for(int uh = 0; uh < umax; uh++)
+        {
             uhash.push_back(strHash32(WideUsername[uh]));
+        }
         PMrk->Reset();
-        uint n = lastread + 1;
-        uint cnt = Msgn->Count();
+        uint n    = lastread + 1;
+        uint cnt  = Msgn->Count();
         int gotpm = false;
+
         while(n <= cnt)
         {
-            SqshIdx* idx = data->idx + (n-1);
-            for(int u=0; u<umax; u++)
+            SqshIdx * idx = data->idx + (n - 1);
+
+            for(int u = 0; u < umax; u++)
             {
                 if((idx->hash & 0x80000000LU) == 0)
                 {
@@ -252,18 +271,26 @@ void SquishArea::raw_scan(int __keep_index, int __scanpm)
                     {
                         // Open, read and close data file
                         if(not isopen)
-                            data->fhsqd = ::sopen(AddPath(real_path(), ".sqd"), O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
+                        {
+                            data->fhsqd = ::sopen(AddPath(real_path(), ".sqd"),
+                                                  O_RDONLY | O_BINARY,
+                                                  WideSharemode,
+                                                  S_STDRD);
+                        }
+
                         if(data->fhsqd != -1)
                         {
                             lseekset(data->fhsqd, idx->offset + sizeof(SqshFrm));
                             // Load the message header
                             SqshHdr __hdr = SqshHdr();
                             read(data->fhsqd, &__hdr, sizeof(SqshHdr));
+
                             if(not isopen)
                             {
                                 ::close(data->fhsqd);
                                 data->fhsqd = -1;
                             }
+
                             if(streql(__hdr.to, WideUsername[u]))
                             {
                                 gotpm = true;
@@ -273,11 +300,13 @@ void SquishArea::raw_scan(int __keep_index, int __scanpm)
                     }
                 }
             }
+
             if(gotpm)
             {
-                PMrk->Append(Msgn->at(n-1));
+                PMrk->Append(Msgn->at(n - 1));
                 gotpm = false;
             }
+
             n++;
         }
     }
@@ -292,13 +321,14 @@ void SquishArea::raw_scan(int __keep_index, int __scanpm)
                         _lastmsgno,
                         _lastread,
                         wide->userno,
-                        __scanpm ? (int)PMrk->Count() : -1
-                       );
+                        __scanpm ? (int)PMrk->Count() : -1);
     }
 
     // Free index buffer if just counting
     if(not __keep_index or __scanpm)
+    {
         throw_xrelease(data->idx);
+    }
 
     if(_was_data == NULL)
     {
@@ -307,47 +337,31 @@ void SquishArea::raw_scan(int __keep_index, int __scanpm)
     }
 
     GFTRK(0);
-}
-
+} // SquishArea::raw_scan
 
 //  ------------------------------------------------------------------
-
 void SquishArea::scan()
 {
-
     GFTRK("SquishScan");
-
     raw_scan(true);
-
     GFTRK(0);
 }
 
-
 //  ------------------------------------------------------------------
-
 void SquishArea::scan_area()
 {
-
     GFTRK("SquishScanArea");
-
     raw_scan(false);
-
     GFTRK(0);
 }
-
 
 //  ------------------------------------------------------------------
-
 void SquishArea::scan_area_pm()
 {
-
     GFTRK("SquishScanAreaPM");
-
     raw_scan(true, true);
     Msgn->Reset();
-
     GFTRK(0);
 }
-
 
 //  ------------------------------------------------------------------

@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -31,15 +30,11 @@
 #include <gutlmisc.h>
 #include <gmoprot.h>
 #include <gmopcbd.h>
-
-
 //  ------------------------------------------------------------------
-
 void PcbArea::data_open()
 {
-
-    wide = pcbwide;
-    data = pcbdata + (pcbdatano++);
+    wide        = pcbwide;
+    data        = pcbdata + (pcbdatano++);
     data->fhmsg = data->fhidx = -1;
     memset(&data->base, 0x20, sizeof(PcbBase));
     data->base.highmsgno = 0;
@@ -47,33 +42,25 @@ void PcbArea::data_open()
     data->base.active    = 0;
 }
 
-
 // ------------------------------------------------------------------
-
 void PcbArea::data_close()
 {
-
     pcbdatano--;
 }
 
-
 //  ------------------------------------------------------------------
-
-int PcbWideTestOpen(char* __file)
+int PcbWideTestOpen(char * __file)
 {
-
     GFTRK("PcbWideTestOpen");
-
     int _fh;
     long _tries = 0;
 
     do
     {
+        _fh = ::sopen(__file, O_RDWR | O_BINARY | O_CREAT, WideSharemode, S_STDRW);
 
-        _fh = ::sopen(__file, O_RDWR|O_BINARY|O_CREAT, WideSharemode, S_STDRW);
         if(_fh == -1)
         {
-
             // Tell the world
             if((errno != EACCES) or (PopupLocked(++_tries, false, __file) == false))
             {
@@ -90,108 +77,116 @@ int PcbWideTestOpen(char* __file)
 
     // Remove the popup window
     if(_tries)
+    {
         PopupLocked(0, 0, NULL);
+    }
 
     GFTRK(0);
-
     return _fh;
-}
-
+} // PcbWideTestOpen
 
 // ------------------------------------------------------------------
-
 void PcbWideOpen()
 {
-
     GFTRK("PcbWideOpen");
 
     if(not pcbwide->isopen)
     {
-
-        pcbwide->fhusr = PcbWideTestOpen(pcbwide->users);
-        pcbwide->fhinf = PcbWideTestOpen(pcbwide->usersinf);
-        pcbwide->user->gufh = pcbwide->fhusr;
+        pcbwide->fhusr       = PcbWideTestOpen(pcbwide->users);
+        pcbwide->fhinf       = PcbWideTestOpen(pcbwide->usersinf);
+        pcbwide->user->gufh  = pcbwide->fhusr;
         pcbwide->user->fhinf = pcbwide->fhinf;
-
         // Read lastreads from USERS file
-        lseekset(pcbwide->fhusr, pcbwide->userno*sizeof(PcbUsers));
+        lseekset(pcbwide->fhusr, pcbwide->userno * sizeof(PcbUsers));
         read(pcbwide->fhusr, &pcbwide->usersrec, sizeof(PcbUsers));
         int _maxlr = MinV(pcbwide->numareas, 40);
-        for(int n=0; n<_maxlr; n++)
+
+        for(int n = 0; n < _maxlr; n++)
+        {
             pcbwide->lastread[n] = B2L(pcbwide->usersrec.lastmsgread[n]);
+        }
 
         // Read lastreads from USERS.INF file
         if(pcbwide->extconflen)
         {
-            int32_t _offset = (pcbwide->usersrec.usersinfrec-1)*pcbwide->usershdr.totalrecsize;
-            _offset +=     pcbwide->usershdrsize;
-            _offset +=     pcbwide->usershdr.sizeofrec;
+            int32_t _offset = (pcbwide->usersrec.usersinfrec - 1) *
+                              pcbwide->usershdr.totalrecsize;
+            _offset += pcbwide->usershdrsize;
+            _offset += pcbwide->usershdr.sizeofrec;
             _offset += 2 * pcbwide->confbytelen;
             _offset += 3 * pcbwide->extconflen;
             lseekset(pcbwide->fhinf, _offset);
-            read(pcbwide->fhinf, pcbwide->lastread+40, (pcbwide->numareas-40)*sizeof(int32_t));
+            read(pcbwide->fhinf,
+                 pcbwide->lastread + 40,
+                 (pcbwide->numareas - 40) * sizeof(int32_t));
         }
 
         pcbwide->isopen = true;
     }
 
     GFTRK(0);
-}
-
+} // PcbWideOpen
 
 // ------------------------------------------------------------------
-
 void PcbWideClose()
 {
-
     GFTRK("PcbWideClose");
 
     if(pcbwide->isopen)
     {
-        if(pcbwide->fhinf != -1)  ::close(pcbwide->fhinf);
+        if(pcbwide->fhinf != -1)
+        {
+            ::close(pcbwide->fhinf);
+        }
+
         pcbwide->fhinf = -1;
-        if(pcbwide->fhusr != -1)  ::close(pcbwide->fhusr);
-        pcbwide->fhusr = -1;
+
+        if(pcbwide->fhusr != -1)
+        {
+            ::close(pcbwide->fhusr);
+        }
+
+        pcbwide->fhusr  = -1;
         pcbwide->isopen = false;
     }
 
     GFTRK(0);
 }
 
-
 //  ------------------------------------------------------------------
-
 void PcbArea::raw_close()
 {
-
     GFTRK("PcbRawClose");
 
-    if(data->fhidx != -1)  ::close(data->fhidx);
-    data->fhidx = -1;
-    if(data->fhmsg != -1)  ::close(data->fhmsg);
-    data->fhmsg = -1;
+    if(data->fhidx != -1)
+    {
+        ::close(data->fhidx);
+    }
 
+    data->fhidx = -1;
+
+    if(data->fhmsg != -1)
+    {
+        ::close(data->fhmsg);
+    }
+
+    data->fhmsg = -1;
     GFTRK(0);
 }
 
-
 //  ------------------------------------------------------------------
-
-int PcbArea::test_open(const char* __file)
+int PcbArea::test_open(const char * __file)
 {
-
     GFTRK("PcbArea::test_open");
-
     int _fh;
     long _tries = 0;
 
     do
     {
+        _fh = ::sopen(__file, O_RDWR | O_BINARY | O_CREAT, WideSharemode, S_STDRW);
 
-        _fh = ::sopen(__file, O_RDWR|O_BINARY|O_CREAT, WideSharemode, S_STDRW);
         if(_fh == -1)
         {
-
             // Tell the world
             if((errno != EACCES) or (PopupLocked(++_tries, false, __file) == false))
             {
@@ -209,49 +204,54 @@ int PcbArea::test_open(const char* __file)
 
     // Remove the popup window
     if(_tries)
+    {
         PopupLocked(0, 0, NULL);
+    }
 
     GFTRK(0);
-
     return _fh;
-}
-
+} // PcbArea::test_open
 
 // ------------------------------------------------------------------
-
 void PcbArea::raw_open()
 {
-
     GFTRK("PcbRawOpen");
 
     if(not just_scanning)
+    {
         data->fhmsg = test_open(real_path());
-    data->fhidx = test_open(AddPath(real_path(), ".idx"));
+    }
 
+    data->fhidx = test_open(AddPath(real_path(), ".idx"));
     GFTRK(0);
 }
 
-
 // ------------------------------------------------------------------
-
 void PcbArea::raw_scan(int __keep_index, int __scanpm)
 {
-
     GFTRK("PcbRawScan");
-
     // Open the msgbase if it wasn't already
     int _was_open = isopen;
+
     if(not _was_open)
     {
         if(not __keep_index)
+        {
             just_scanning = true;
+        }
+
         if(ispacked())
         {
-            const char* newpath = Unpack(path());
+            const char * newpath = Unpack(path());
+
             if(newpath == NULL)
+            {
                 packed(false);
+            }
+
             set_real_path(newpath ? newpath : path());
         }
+
         isopen++;
         data_open();
         raw_open();
@@ -259,8 +259,11 @@ void PcbArea::raw_scan(int __keep_index, int __scanpm)
     }
 
     int _was_wideopen = wide->isopen;
+
     if(not _was_wideopen)
+    {
         PcbWideOpen();
+    }
 
     // Load the base header
     if(__keep_index)
@@ -273,84 +276,100 @@ void PcbArea::raw_scan(int __keep_index, int __scanpm)
     }
 
     // Get some sizes
-    uint _idxlen = filelength(data->fhidx);
+    uint _idxlen   = filelength(data->fhidx);
     uint _idxsize  = (uint)_idxlen;
     uint _idxtotal = _idxsize / sizeof(PcbIdx);
 
     // (Re)Allocate message index
     if(__keep_index)
+    {
         Msgn->Resize(_idxtotal);
+    }
 
     // Allocate buffer to hold .IDX data
-    PcbIdx* _idxbuf = (PcbIdx*)throw_malloc(_idxsize+1);
-
+    PcbIdx * _idxbuf = (PcbIdx *)throw_malloc(_idxsize + 1);
     // Read the entire .IDX file into memory
     lseekset(data->fhidx, 0);
     read(data->fhidx, _idxbuf, _idxsize);
-
     // Variables for the loop
-    uint _active = 0;
-    uint _firstmsgno = 0;
-    uint _lastmsgno = 0;
-    uint _lastreadfound = 0;
-    uint _totalmsgs = _idxtotal;
-    uint _lastread = wide->lastread[board()];
-    uint _lastread_reln = 0;
-    uint32_t* _msgndxptr = Msgn->tag;
-    PcbIdx* _idxptr = _idxbuf;
-
+    uint _active          = 0;
+    uint _firstmsgno      = 0;
+    uint _lastmsgno       = 0;
+    uint _lastreadfound   = 0;
+    uint _totalmsgs       = _idxtotal;
+    uint _lastread        = wide->lastread[board()];
+    uint _lastread_reln   = 0;
+    uint32_t * _msgndxptr = Msgn->tag;
+    PcbIdx * _idxptr      = _idxbuf;
     // Fill message index
     uint n = 0;
+
     while((n++) < _totalmsgs)
     {
         if(_idxptr->offset > 0)
         {
             _active++;
             _lastmsgno = _idxptr->num;
+
             if(not _firstmsgno)
+            {
                 _firstmsgno = _lastmsgno;
+            }
+
             if(__keep_index)
+            {
                 *_msgndxptr++ = _lastmsgno;
+            }
+
             if((_lastmsgno >= _lastread) and (_lastread_reln == 0))
             {
                 _lastreadfound = _lastmsgno;
                 _lastread_reln = (uint)(_active - (_lastmsgno != _lastread ? 1 : 0));
             }
         }
+
         _idxptr++;
     }
 
     // If the exact lastread was not found
     if(_active and (_lastreadfound != _lastread))
     {
-
         // Higher than highest or lower than lowest?
         if(_lastread > _lastmsgno)
+        {
             _lastread_reln = _active;
+        }
         else if(_lastread < _firstmsgno)
+        {
             _lastread_reln = 0;
+        }
     }
 
     // Update area data
     Msgn->SetCount(_active);
-    lastread = _lastread_reln;
+    lastread      = _lastread_reln;
     lastreadentry = _lastreadfound;
 
     // Scan for personal mail
     if(__scanpm)
     {
-        int umax = (WidePersonalmail & PM_ALLNAMES) ? WideUsernames : 1;
-        PcbName* uname = (PcbName*)throw_calloc(umax, sizeof(PcbName));
-        for(int un=0; un<umax; un++)
+        int umax        = (WidePersonalmail & PM_ALLNAMES) ? WideUsernames : 1;
+        PcbName * uname = (PcbName *)throw_calloc(umax, sizeof(PcbName));
+
+        for(int un = 0; un < umax; un++)
+        {
             strsetsz(strxcpy(uname[un], WideUsername[un], sizeof(PcbName)), 25);
+        }
         PMrk->ResetAll();
-        uint n = lastread + 1;
-        uint cnt = Msgn->Count();
+        uint n    = lastread + 1;
+        uint cnt  = Msgn->Count();
         int gotpm = false;
+
         while(n <= cnt)
         {
-            PcbIdx* idx = _idxbuf + (uint)(Msgn->at(n-1) - data->base.lowmsgno);
-            for(int u=0; u<umax; u++)
+            PcbIdx * idx = _idxbuf + (uint)(Msgn->at(n - 1) - data->base.lowmsgno);
+
+            for(int u = 0; u < umax; u++)
             {
                 if(strnieql(idx->to, uname[u], 25))
                 {
@@ -358,21 +377,24 @@ void PcbArea::raw_scan(int __keep_index, int __scanpm)
                     break;
                 }
             }
+
             if(gotpm)
             {
                 switch(idx->status)
                 {
-                case '+':
-                case '-':
-                case '`':
-                case '^':
-                case '#':
-                    break;
-                default:
-                    PMrk->Append(idx->num);
+                    case '+':
+                    case '-':
+                    case '`':
+                    case '^':
+                    case '#':
+                        break;
+
+                    default:
+                        PMrk->Append(idx->num);
                 }
                 gotpm = false;
             }
+
             n++;
         }
         throw_free(uname);
@@ -382,62 +404,50 @@ void PcbArea::raw_scan(int __keep_index, int __scanpm)
     throw_free(_idxbuf);
 
     if(not _was_wideopen)
+    {
         PcbWideClose();
+    }
 
     // Close the msgbase again if we opened it in here
     if(not _was_open)
     {
         raw_close();
         data_close();
+
         if(ispacked())
         {
             CleanUnpacked(real_path());
         }
+
         isopen--;
     }
 
     GFTRK(0);
-}
-
+} // PcbArea::raw_scan
 
 // ------------------------------------------------------------------
-
 void PcbArea::scan()
 {
-
     GFTRK("PcbScan");
-
     raw_scan(true);
-
     GFTRK(0);
 }
-
 
 // ------------------------------------------------------------------
-
 void PcbArea::scan_area()
 {
-
     GFTRK("PcbScanArea");
-
     raw_scan(false);
-
     GFTRK(0);
 }
-
 
 //  ------------------------------------------------------------------
-
 void PcbArea::scan_area_pm()
 {
-
     GFTRK("PcbScanArea*M");
-
     raw_scan(true, true);
     Msgn->Reset();
-
     GFTRK(0);
 }
-
 
 // ------------------------------------------------------------------

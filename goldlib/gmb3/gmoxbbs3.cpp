@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -23,8 +22,6 @@
 //  ------------------------------------------------------------------
 //  AdeptXBBS messagebase engine.
 //  ------------------------------------------------------------------
-
-
 //  ------------------------------------------------------------------
 
 #include <gmemdbg.h>
@@ -32,63 +29,51 @@
 #include <gstrall.h>
 
 #include <gmoxbbs.h>
-
-
 //  ------------------------------------------------------------------
-
-int XbbsArea::load_message(int __mode, gmsg* __msg, XbbsHdr& __hdr)
+int XbbsArea::load_message(int __mode, gmsg * __msg, XbbsHdr & __hdr)
 {
-
     // Setup some local variables for speed
     int _fhdata = data->fhdata;
-    uint _reln = Msgn->ToReln(__msg->msgno);
-
+    uint _reln  = Msgn->ToReln(__msg->msgno);
     // Load the message header
     __hdr = XbbsHdr();
-    lseekset(_fhdata, (_reln-1)*sizeof(XbbsHdr));
+    lseekset(_fhdata, (_reln - 1) * sizeof(XbbsHdr));
     read(_fhdata, &__hdr, sizeof(XbbsHdr));
-
     // Convert header
-
     strcpy(__msg->by, __hdr.from);
     strcpy(__msg->to, __hdr.to);
     strcpy(__msg->re, __hdr.subj);
-
-    __msg->orig.zone  = __msg->oorig.zone  = __hdr.origaddr.zone;
-    __msg->orig.net   = __msg->oorig.net   = __hdr.origaddr.net;
-    __msg->orig.node  = __msg->oorig.node  = __hdr.origaddr.node;
+    __msg->orig.zone  = __msg->oorig.zone = __hdr.origaddr.zone;
+    __msg->orig.net   = __msg->oorig.net = __hdr.origaddr.net;
+    __msg->orig.node  = __msg->oorig.node = __hdr.origaddr.node;
     __msg->orig.point = __msg->oorig.point = __hdr.origaddr.point;
-
-    __msg->dest.zone  = __msg->odest.zone  = __hdr.destaddr.zone;
-    __msg->dest.net   = __msg->odest.net   = __hdr.destaddr.net;
-    __msg->dest.node  = __msg->odest.node  = __hdr.destaddr.node;
+    __msg->dest.zone  = __msg->odest.zone = __hdr.destaddr.zone;
+    __msg->dest.net   = __msg->odest.net = __hdr.destaddr.net;
+    __msg->dest.node  = __msg->odest.node = __hdr.destaddr.node;
     __msg->dest.point = __msg->odest.point = __hdr.destaddr.point;
-
-    __msg->written = FidoTimeToUnix(__hdr.date);
-    __msg->received = __hdr.timerecv;
+    __msg->written    = FidoTimeToUnix(__hdr.date);
+    __msg->received   = __hdr.timerecv;
 
     if(__hdr.indate[2])
     {
         struct tm t;
-        t.tm_year   = __hdr.indate[0]+89;
-        t.tm_mon    = __hdr.indate[1]-1;
-        t.tm_mday   = __hdr.indate[2];
-        t.tm_hour   = t.tm_min = t.tm_sec = 0;
-        t.tm_isdst  = -1;
-        time32_t a  = gmktime(&t);
+        t.tm_year  = __hdr.indate[0] + 89;
+        t.tm_mon   = __hdr.indate[1] - 1;
+        t.tm_mday  = __hdr.indate[2];
+        t.tm_hour  = t.tm_min = t.tm_sec = 0;
+        t.tm_isdst = -1;
+        time32_t a = gmktime(&t);
         struct tm tp;
         ggmtime(&tp, &a);
         tp.tm_isdst = -1;
-        time32_t b  = gmktime(&tp);
+        time32_t b = gmktime(&tp);
         __msg->arrived = a + a - b;
     }
 
     __msg->cost      = __hdr.cost;
     __msg->timesread = __hdr.timesread;
-
     __msg->txtstart  = __hdr.start;
     __msg->txtlength = __hdr.length;
-
     // Convert fflag attributes
     __msg->attr.pvt(__hdr.fflags & FFLAGS_MSGPRIVATE);
     __msg->attr.cra(__hdr.fflags & FFLAGS_MSGCRASH);
@@ -104,7 +89,6 @@ int XbbsArea::load_message(int __mode, gmsg* __msg, XbbsHdr& __hdr)
     __msg->attr.rrc(__hdr.fflags & FFLAGS_MSGCPT);
     __msg->attr.arq(__hdr.fflags & FFLAGS_MSGARQ);
     __msg->attr.urq(__hdr.fflags & FFLAGS_MSGURQ);
-
     // Convert xflag attributes
     __msg->attr.del(__hdr.xflags & XFLAGS_MSGDELETED);
     __msg->attr.ano(__hdr.xflags & XFLAGS_MSGANON);
@@ -118,17 +102,25 @@ int XbbsArea::load_message(int __mode, gmsg* __msg, XbbsHdr& __hdr)
     __msg->attr.rsc(__hdr.xflags & XFLAGS_MSGRSCAN);
     __msg->attr.arc(__hdr.xflags & XFLAGS_MSGARCHIVED);
     __msg->attr.tag(__hdr.xflags & XFLAGS_MSGTAGGED);
-
     // Set the unsent attribute
 #if 0
+
     if(isnet())
-        __msg->attr.uns((__msg->attr.loc() and not __msg->attr.snt()) or (__hdr.xflags & XFLAGS_MSGNET));
+    {
+        __msg->attr.uns((__msg->attr.loc() and not __msg->attr.snt()) or (__hdr.xflags &
+                                                                          XFLAGS_MSGNET));
+    }
     else
+    {
         __msg->attr.uns(__hdr.xflags & XFLAGS_MSGECHO);
+    }
+
 #endif
 
     if(isnet() or isecho())
+    {
         __msg->attr.uns(not (__hdr.xflags & XFLAGS_MSGSCANNED));
+    }
 
     __msg->adeptxbbs.iflags = __hdr.iflags;
     __msg->adeptxbbs.oflags = __hdr.oflags;
@@ -136,48 +128,34 @@ int XbbsArea::load_message(int __mode, gmsg* __msg, XbbsHdr& __hdr)
     // If message text is requested
     if(__mode & GMSG_TXT)
     {
-
         // Get length of message text
         uint _txtlen = __hdr.length;
-
         // Allocate space for the message text
-        __msg->txt = (char*)throw_calloc(1, _txtlen+256);
-
+        __msg->txt = (char *)throw_calloc(1, _txtlen + 256);
         // Read the message text
         lseekset(data->fhtext, __hdr.start);
         read(data->fhtext, __msg->txt, _txtlen);
     }
 
     GFTRK(0);
-
     // Success
     return true;
-}
-
+} // XbbsArea::load_message
 
 //  ------------------------------------------------------------------
-
-int XbbsArea::load_hdr(gmsg* __msg)
+int XbbsArea::load_hdr(gmsg * __msg)
 {
-
     GFTRK("XbbsLoadHdr");
-
     XbbsHdr _hdr;
     return load_message(GMSG_HDR, __msg, _hdr);
 }
 
-
 //  ------------------------------------------------------------------
-
-int XbbsArea::load_msg(gmsg* __msg)
+int XbbsArea::load_msg(gmsg * __msg)
 {
-
     GFTRK("XbbsLoadMsg");
-
     XbbsHdr _hdr;
     return load_message(GMSG_HDRTXT, __msg, _hdr);
 }
 
-
 //  ------------------------------------------------------------------
-

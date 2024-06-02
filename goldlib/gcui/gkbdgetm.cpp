@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -33,235 +32,304 @@
 #ifdef GOLD_MOUSE
     #include <gmoubase.h>
 #endif
-
-
 //  ------------------------------------------------------------------
 //  Event sources
-
 const int GEVT_KEYBOARD = 0;
 const int GEVT_BUFFER   = 1;
 const int GEVT_MOUSE    = 2;
 const int GEVT_TICK     = 3;
-
-
 //  ------------------------------------------------------------------
-
 void gkbdtickpressreset()
 {
-
     gkbd.tickpress = gclock();
 }
 
-
 //  ------------------------------------------------------------------
-
 void gkbdtickvaluereset()
 {
-
     gkbd.tickvalue = gclock();
 }
 
-
 //  ------------------------------------------------------------------
-
 gkey kbmhit()
 {
-
     gkey k;
 
     // Check for keypress in internal buffer or keyboard
     if(gkbd.kbuf)
     {
         gkbd.source = GEVT_BUFFER;
-        k = gkbd.kbuf->xch;
+        k           = gkbd.kbuf->xch;
     }
     else
     {
         gkbd.source = GEVT_KEYBOARD;
-        k = kbxhit();
+        k           = kbxhit();
     }
 
     return k;
 }
 
-
 //  ------------------------------------------------------------------
-
 static void kbd_call_func(VfvCP func)
 {
-
     int row, col;
     bool hidden = vcurhidden();
-    vposget(&row,&col);
-    _menu_t* menu = gwin.cmenu;
+    vposget(&row, &col);
+    _menu_t * menu = gwin.cmenu;
     (*func)();
     gwin.cmenu = menu;
-    vposset(row,col);
+    vposset(row, col);
+
     if(hidden)
+    {
         vcurhide();
+    }
     else
+    {
         vcurshow();
+    }
 }
 
-
 //  ------------------------------------------------------------------
-
-static _item_t* find_hotkey(_menu_t* wmenu, gkey xch)
+static _item_t * find_hotkey(_menu_t * wmenu, gkey xch)
 {
-
-    _item_t* witem;
-    _item_t* item;
+    _item_t * witem;
+    _item_t * item;
 
     // do while more items in this menu
-    for(witem=wmenu->item; witem!=NULL; witem=witem->prev)
+    for(witem = wmenu->item; witem != NULL; witem = witem->prev)
     {
-
         // if hot key matches keypress, return its item address
-        if(witem->hotkey==xch and (!(witem->fmask&M_NOSEL)) and witem->select!=NULL)
+        if(witem->hotkey == xch and (!(witem->fmask & M_NOSEL)) and witem->select !=
+           NULL)
+        {
             return witem;
+        }
 
         // if current item has a child menu, process it
-        if(witem->child!=NULL)
+        if(witem->child != NULL)
         {
-            item = find_hotkey((_menu_t*)witem->child, xch);
-            if(item!=NULL)
+            item = find_hotkey((_menu_t *)witem->child, xch);
+
+            if(item != NULL)
+            {
                 return item;
+            }
         }
     }
-
     // return address of item found
     return witem;
-}
-
+} // find_hotkey
 
 //  ------------------------------------------------------------------
-
-static void makeextkey(gkey xshift, gkey& xkey)
+static void makeextkey(gkey xshift, gkey & xkey)
 {
-
     switch(xkey)
     {
-    case Key_Home:
-    case Key_C_Home:
-        if(xshift & ALT)
-            xkey = Key_A_HomeG;
-        if(xshift & (LSHIFT | RSHIFT))
-            KCodScn(xkey) |= 0x80;
-        break;
+        case Key_Home:
+        case Key_C_Home:
 
-    case Key_End:
-    case Key_C_End:
-        if(xshift & ALT)
-            xkey = Key_A_EndG;
-        if(xshift & (LSHIFT | RSHIFT))
-            KCodScn(xkey) |= 0x80;
-        break;
+            if(xshift & ALT)
+            {
+                xkey = Key_A_HomeG;
+            }
 
-    case Key_Up:
-        if(xshift & ALT)
-            xkey = Key_A_UpG;
-        else if(xshift & GCTRL)
-            xkey = Key_C_Up;
-        if(xshift & (LSHIFT | RSHIFT))
-            KCodScn(xkey) |= 0x80;
-        break;
+            if(xshift & (LSHIFT | RSHIFT))
+            {
+                KCodScn(xkey) |= 0x80;
+            }
 
-    case Key_Dwn:
-        if(xshift & ALT)
-            xkey = Key_A_DwnG;
-        else if(xshift & GCTRL)
-            xkey = Key_C_Dwn;
-        if(xshift & (LSHIFT | RSHIFT))
-            KCodScn(xkey) |= 0x80;
-        break;
+            break;
 
-    case Key_Lft:
-        if(xshift & ALT)
-            xkey = Key_A_LftG;
-        if(xshift & (LSHIFT | RSHIFT))
-            KCodScn(xkey) |= 0x80;
-        break;
+        case Key_End:
+        case Key_C_End:
 
-    case Key_Rgt:
-        if(xshift & ALT)
-            xkey = Key_A_RgtG;
-        if(xshift & (LSHIFT | RSHIFT))
-            KCodScn(xkey) |= 0x80;
-        break;
+            if(xshift & ALT)
+            {
+                xkey = Key_A_EndG;
+            }
 
-    case Key_PgUp:
-        if(xshift & ALT)
-            xkey = Key_A_PgUpG;
-        if(xshift & (LSHIFT | RSHIFT))
-            KCodScn(xkey) |= 0x80;
-        break;
+            if(xshift & (LSHIFT | RSHIFT))
+            {
+                KCodScn(xkey) |= 0x80;
+            }
 
-    case Key_PgDn:
-        if(xshift & ALT)
-            xkey = Key_A_PgDnG;
-        if(xshift & (LSHIFT | RSHIFT))
-            KCodScn(xkey) |= 0x80;
-        break;
+            break;
 
-    case Key_Ins:
-        if(xshift & ALT)
-            xkey = Key_A_InsG;
-        else if(xshift & GCTRL)
-            xkey = Key_C_Ins;
-        if(xshift & (LSHIFT | RSHIFT))
-            KCodScn(xkey) |= 0x80;
-        break;
+        case Key_Up:
 
-    case Key_Del:
-        if(xshift & ALT)
-            xkey = Key_A_DelG;
-        else if(xshift & GCTRL)
-            xkey = Key_C_Del;
-        if(xshift & (LSHIFT | RSHIFT))
-            KCodScn(xkey) |= 0x80;
-        break;
-    }
-}
+            if(xshift & ALT)
+            {
+                xkey = Key_A_UpG;
+            }
+            else if(xshift & GCTRL)
+            {
+                xkey = Key_C_Up;
+            }
 
+            if(xshift & (LSHIFT | RSHIFT))
+            {
+                KCodScn(xkey) |= 0x80;
+            }
+
+            break;
+
+        case Key_Dwn:
+
+            if(xshift & ALT)
+            {
+                xkey = Key_A_DwnG;
+            }
+            else if(xshift & GCTRL)
+            {
+                xkey = Key_C_Dwn;
+            }
+
+            if(xshift & (LSHIFT | RSHIFT))
+            {
+                KCodScn(xkey) |= 0x80;
+            }
+
+            break;
+
+        case Key_Lft:
+
+            if(xshift & ALT)
+            {
+                xkey = Key_A_LftG;
+            }
+
+            if(xshift & (LSHIFT | RSHIFT))
+            {
+                KCodScn(xkey) |= 0x80;
+            }
+
+            break;
+
+        case Key_Rgt:
+
+            if(xshift & ALT)
+            {
+                xkey = Key_A_RgtG;
+            }
+
+            if(xshift & (LSHIFT | RSHIFT))
+            {
+                KCodScn(xkey) |= 0x80;
+            }
+
+            break;
+
+        case Key_PgUp:
+
+            if(xshift & ALT)
+            {
+                xkey = Key_A_PgUpG;
+            }
+
+            if(xshift & (LSHIFT | RSHIFT))
+            {
+                KCodScn(xkey) |= 0x80;
+            }
+
+            break;
+
+        case Key_PgDn:
+
+            if(xshift & ALT)
+            {
+                xkey = Key_A_PgDnG;
+            }
+
+            if(xshift & (LSHIFT | RSHIFT))
+            {
+                KCodScn(xkey) |= 0x80;
+            }
+
+            break;
+
+        case Key_Ins:
+
+            if(xshift & ALT)
+            {
+                xkey = Key_A_InsG;
+            }
+            else if(xshift & GCTRL)
+            {
+                xkey = Key_C_Ins;
+            }
+
+            if(xshift & (LSHIFT | RSHIFT))
+            {
+                KCodScn(xkey) |= 0x80;
+            }
+
+            break;
+
+        case Key_Del:
+
+            if(xshift & ALT)
+            {
+                xkey = Key_A_DelG;
+            }
+            else if(xshift & GCTRL)
+            {
+                xkey = Key_C_Del;
+            }
+
+            if(xshift & (LSHIFT | RSHIFT))
+            {
+                KCodScn(xkey) |= 0x80;
+            }
+
+            break;
+    } // switch
+} // makeextkey
 
 //  ------------------------------------------------------------------
-
 extern int blanked;
-
 gkey getxch(int __tick)
 {
-
     gkey k;
 
     while(1)
     {
-
         // Keyboard polling loop
         if(gkbd.polling)
         {
             while(not kbmhit())
             {
                 Clock thistick = gclock();
-                long tickdiff = thistick - gkbd.tickvalue;
+                long tickdiff  = thistick - gkbd.tickvalue;
+
                 if(tickdiff < 0)
                 {
                     gkbd.tickvalue = thistick;
-                    tickdiff = gkbd.tickinterval + 1;
+                    tickdiff       = gkbd.tickinterval + 1;
                 }
+
                 if(tickdiff >= gkbd.tickinterval)
                 {
                     gkbd.tickvalue = thistick;
+
                     if(gkbd.tickfunc)
                     {
                         gkbd.inidle = true;
                         (*gkbd.tickfunc)();
                         gkbd.inidle = false;
                     }
+
                     if(__tick)
+                    {
                         kbput(Key_Tick);
+                    }
                 }
+
                 if(gmtsk.detected)
+                {
                     gmtsk.timeslice();
+                }
             }
         }
 
@@ -269,37 +337,45 @@ gkey getxch(int __tick)
         if(gkbd.kbuf)
         {
             gkbd.source = GEVT_BUFFER;
-            k = gkbd.kbuf->xch;
-            KBuf* _kbuf = gkbd.kbuf->next;
+            k           = gkbd.kbuf->xch;
+            KBuf * _kbuf = gkbd.kbuf->next;
             throw_free(gkbd.kbuf);
             gkbd.kbuf = _kbuf;
+
             if(gkbd.kbuf)
+            {
                 gkbd.kbuf->prev = NULL;
+            }
         }
         else
         {
             gkbd.source = GEVT_KEYBOARD;
-            k = kbxget();
+            k           = kbxget();
             gkey s = kbxget(KeyMode_Shift);   // Read shift status
+
             if(not gkbd.extkbd)
             {
-                if(s & (LSHIFT|RSHIFT|GCTRL|ALT))
-                    makeextkey(s,k);
+                if(s & (LSHIFT | RSHIFT | GCTRL | ALT))
+                {
+                    makeextkey(s, k);
+                }
             }
         }
 
         // Note time of keypress unless it's a tick
         if(k != Key_Tick)
+        {
             gkbdtickpressreset();
+        }
 
         // Search through onkey linked list for a
         // matching defined onkey. If one is found,
         // then save the current environment, call the
         // onkey's function, and restore the environment.
-
         if(not blanked)
         {
-            KBnd* _onkey = gkbd.onkey;
+            KBnd * _onkey = gkbd.onkey;
+
             while(_onkey)
             {
                 if(_onkey->keycode == k)
@@ -307,37 +383,50 @@ gkey getxch(int __tick)
                     gkbd.curronkey = _onkey;
                     kbd_call_func(_onkey->func);
 #ifdef GOLD_MOUSE
+
                     if(gkbd.inmenu and gmou.FreeCursor())
+                    {
                         return 0;
+                    }
+
 #endif
                     break;
                 }
+
                 _onkey = _onkey->prev;
             }
+
             if(_onkey)
             {
                 if(not _onkey->pass or (_onkey->pass >= 0xFE00))
+                {
                     k = 0;
+                }
                 else
+                {
                     k = _onkey->pass;
+                }
             }
             else
             {
-
                 // Search for a menu hot key. If one is found,
                 // then save the current environment, call the
                 // hotkey's function, and restore the environment.
-
                 if(gwin.menu)
                 {
-                    _item_t* item = find_hotkey(gwin.menu,k);
+                    _item_t * item = find_hotkey(gwin.menu, k);
+
                     if(item)
                     {
                         gwin.menu->hotkey = true;
                         kbd_call_func(item->select);
 #ifdef GOLD_MOUSE
+
                         if(gkbd.inmenu and gmou.FreeCursor())
+                        {
                             return 0;
+                        }
+
 #endif
                         k = 0;
                     }
@@ -347,12 +436,12 @@ gkey getxch(int __tick)
 
         // If we still have a keycode, exit the loop
         if(k)
+        {
             break;
+        }
     }
-
     // Return keycode
     return k;
-}
-
+} // getxch
 
 //  ------------------------------------------------------------------

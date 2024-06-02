@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -23,8 +22,6 @@
 //  ------------------------------------------------------------------
 //  JAM msgbase implementation, initialization.
 //  ------------------------------------------------------------------
-
-
 //  ------------------------------------------------------------------
 
 #include <gdbgerr.h>
@@ -34,59 +31,41 @@
 #include <gcrcall.h>
 
 #include <gmojamm.h>
-
-
 //  ------------------------------------------------------------------
-
-JamWide* jamwide = NULL;
-JamData* jamdata = NULL;
-int      jamdatano = 0;
-
-
+JamWide * jamwide = NULL;
+JamData * jamdata = NULL;
+int jamdatano     = 0;
 //  ------------------------------------------------------------------
-
 void JamExit()
 {
-
     throw_xrelease(jamwide);
     throw_xrelease(jamdata);
 }
 
-
 //  ------------------------------------------------------------------
-
-void JamInit(const char* jampath, int harddelete, int jamsmapihw)
+void JamInit(const char * jampath, int harddelete, int jamsmapihw)
 {
-
     GFTRK("JamInit");
-
-    jamdata = (JamData*)throw_calloc(3, sizeof(JamData));
-    jamwide = (JamWide*)throw_calloc(1, sizeof(JamWide));
-
-    jamwide->jampath = jampath;
+    jamdata             = (JamData *)throw_calloc(3, sizeof(JamData));
+    jamwide             = (JamWide *)throw_calloc(1, sizeof(JamWide));
+    jamwide->jampath    = jampath;
     jamwide->harddelete = harddelete;
-    jamwide->smapihw = jamsmapihw;
-
+    jamwide->smapihw    = jamsmapihw;
     // Calculate CRC32 of our username for the lastreads
     INam _name;
     jamstrlwr(strcpy(_name, WideUsername[0]));
     jamwide->userid = jamwide->usercrc = strCrc32(_name, NO, CRC32_MASK_CCITT);
-
     // Enable replies lookahead feature
     jamwide->lookreplies = true;
-
     GFTRK(0);
 }
 
-
 //  ------------------------------------------------------------------
-
 void JamArea::open()
 {
-
     GFTRK("JamArea::open");
-
     isopen++;
+
     if(isopen > 2)
     {
         WideLog->ErrTest();
@@ -96,78 +75,77 @@ void JamArea::open()
         WideLog->printf("+ Advice: Report to the Author immediately.");
         TestErrorExit();
     }
+
     if(isopen == 1)
     {
         if(ispacked())
         {
             isopen--;
-            const char* newpath = Unpack(path());
+            const char * newpath = Unpack(path());
+
             if(newpath == NULL)
+            {
                 packed(false);
+            }
+
             set_real_path(newpath ? newpath : path());
             isopen++;
         }
+
         data_open();
         open_area();
         scan();
     }
 
     GFTRK(0);
-}
-
+} // JamArea::open
 
 //  ------------------------------------------------------------------
-
 void JamArea::save_lastread()
 {
-
     GFTRK("JamArea::save_lastread");
-
     // Lock area while we are updating
     lock();
-
     // Update .JLR record
     data->lastrec.lastread = Msgn->CvtReln(lastread);
+
     if(data->lastrec.lastread > data->lastrec.highread)
+    {
         data->lastrec.highread = data->lastrec.lastread;
+    }
 
     // Seek to users lastread position
     lseekset(data->fhjlr, data->lastpos, sizeof(JamLast));
-
     // Write the .JLR record
     write(data->fhjlr, &data->lastrec, sizeof(JamLast));
-
     // Update header info record
     data->hdrinfo.modcounter++;
+
     if(data->hdrinfo.basemsgnum == 0)
+    {
         data->hdrinfo.basemsgnum = 1;
+    }
 
     // Seek to beginning of the .JHR
     lseekset(data->fhjhr, 0);
-
     // Write header info record
     write(data->fhjhr, &data->hdrinfo, sizeof(JamHdrInfo));
 
     // Update userfile
     if(data->timesposted)
     {
-
         // Currently not supported ...
         data->timesposted = 0;
     }
 
     // Unlock area
     unlock();
-
     GFTRK(0);
-}
-
+} // JamArea::save_lastread
 
 //  ------------------------------------------------------------------
-
 void JamArea::close()
 {
-
     GFTRK("JamArea::close");
 
     if(isopen)
@@ -175,17 +153,25 @@ void JamArea::close()
         if(isopen == 1)
         {
             if(data->fhjhr != -1)
+            {
                 save_lastread();
+            }
+
             if(data->islocked)
+            {
                 unlock();
+            }
+
             raw_close();
             Msgn->Reset();
             data_close();
+
             if(ispacked())
             {
                 CleanUnpacked(real_path());
             }
         }
+
         isopen--;
     }
     else
@@ -199,46 +185,37 @@ void JamArea::close()
     }
 
     GFTRK(0);
-}
-
+} // JamArea::close
 
 //  ------------------------------------------------------------------
-
 void JamArea::suspend()
 {
-
     GFTRK("JamArea::suspend");
-
     save_lastread();
     raw_close();
-
     GFTRK(0);
 }
 
-
 //  ------------------------------------------------------------------
-
 void JamArea::resume()
 {
-
     GFTRK("JamSuspendOff");
-
     raw_open();
-
     GFTRK(0);
 }
 
-
 //  ------------------------------------------------------------------
-
-char *jamstrlwr(char *str)
+char * jamstrlwr(char * str)
 {
+    char * p = str;
 
-    char *p = str;
     while(*p)
     {
         if((*p >= 'A') && (*p <= 'Z'))
+        {
             *p = *p - 'A' + 'a';
+        }
+
         ++p;
     }
     return str;

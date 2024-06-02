@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -31,64 +30,45 @@
 #include <gdbgtrk.h>
 #include <gstrall.h>
 #include <gmofido.h>
-
-
 //  ------------------------------------------------------------------
-
-FidoWide* fidowide = NULL;
-FidoData* fidodata = NULL;
-int       fidodatano = 0;
-
-
+FidoWide * fidowide = NULL;
+FidoData * fidodata = NULL;
+int fidodatano      = 0;
 //  ------------------------------------------------------------------
-
 void FidoArea::data_open()
 {
-
     wide = fidowide;
     data = fidodata + (fidodatano++);
 }
 
-
 //  ------------------------------------------------------------------
-
 void FidoArea::data_close()
 {
-
     fidodatano--;
 }
 
-
 //  ------------------------------------------------------------------
-
-char* FidoArea::build_msgname(char* __buf, uint32_t __msgno)
+char * FidoArea::build_msgname(char * __buf, uint32_t __msgno)
 {
-
     sprintf(__buf, "%s%u.msg", real_path(), __msgno);
     return __buf;
 }
 
-
 //  ------------------------------------------------------------------
-
-int FidoArea::test_open(const char* __file, int __openmode, int __sharemode, int __fail)
+int FidoArea::test_open(const char * __file, int __openmode, int __sharemode, int __fail)
 {
-
     GFTRK("FidoTestOpen");
-
     int _fh;
     long _tries = 0;
 
     do
     {
-
         _fh = ::sopen(__file, __openmode, __sharemode, S_STDRW);
+
         if(_fh == -1)
         {
-
             if((errno != EACCES) or (PopupLocked(++_tries, false, __file) == false))
             {
-
                 // Return instead of halting if requested
                 if((errno != EACCES) and not __fail)
                 {
@@ -109,73 +89,78 @@ int FidoArea::test_open(const char* __file, int __openmode, int __sharemode, int
 
     // Remove the popup window
     if(_tries)
+    {
         PopupLocked(0, 0, NULL);
+    }
 
     GFTRK(0);
-
     return _fh;
-}
-
+} // FidoArea::test_open
 
 //  ------------------------------------------------------------------
-
 void FidoExit()
 {
-
     if(fidowide)
+    {
         delete fidowide->user;
+    }
+
     throw_release(fidowide);
     throw_release(fidodata);
 }
 
-
 //  ------------------------------------------------------------------
-
-void FidoInit(const char* fidolastread, int fidohwmarks, int fidonullfix, int fidouserno, const char* squishuserpath)
+void FidoInit(const char * fidolastread,
+              int fidohwmarks,
+              int fidonullfix,
+              int fidouserno,
+              const char * squishuserpath)
 {
-
-    fidodata = (FidoData*)throw_calloc(3, sizeof(FidoData));
-    fidowide = (FidoWide*)throw_calloc(1, sizeof(FidoWide));
-
-    fidowide->fidolastread = fidolastread;
-    fidowide->fidohwmarks = fidohwmarks;
-    fidowide->fidonullfix = fidonullfix;
-    fidowide->userno = fidouserno;
+    fidodata = (FidoData *)throw_calloc(3, sizeof(FidoData));
+    fidowide = (FidoWide *)throw_calloc(1, sizeof(FidoWide));
+    fidowide->fidolastread   = fidolastread;
+    fidowide->fidohwmarks    = fidohwmarks;
+    fidowide->fidonullfix    = fidonullfix;
+    fidowide->userno         = fidouserno;
     fidowide->squishuserpath = squishuserpath;
-
-    fidowide->user = new MaximusUser;
+    fidowide->user           = new MaximusUser;
     throw_new(fidowide->user);
+    const char * _username = WideUsername[0];
 
-    const char* _username = WideUsername[0];
     if(fidowide->userno == -1)
     {
         Path userfile;
         strxcpy(userfile, AddPath(fidowide->squishuserpath, "USER.BBS"), sizeof(Path));
-        fidowide->user->gufh = ::sopen(userfile, O_RDWR|O_CREAT|O_BINARY, WideSharemode, S_STDRW);
-        if (fidowide->user->gufh != -1)
+        fidowide->user->gufh = ::sopen(userfile,
+                                       O_RDWR | O_CREAT | O_BINARY,
+                                       WideSharemode,
+                                       S_STDRW);
+
+        if(fidowide->user->gufh != -1)
         {
             fidowide->user->find(_username);
+
             if(not fidowide->user->found)
             {
                 WideLog->printf("* User \"%s\" not found in %s.", _username, userfile);
                 fidowide->user->add(_username);
-                WideLog->printf("* Now added with user number %u.", fidowide->user->index);
+                WideLog->printf("* Now added with user number %u.",
+                                fidowide->user->index);
             }
+
             ::close(fidowide->user->gufh);
         }
+
         fidowide->userno = fidowide->user->index;
     }
-}
-
+} // FidoInit
 
 //  ------------------------------------------------------------------
-
 void FidoArea::open()
 {
-
     GFTRK("FidoOpen");
-
     isopen++;
+
     if(isopen > 2)
     {
         WideLog->ErrTest();
@@ -185,6 +170,7 @@ void FidoArea::open()
         WideLog->printf("+ Advice: Report to the Author immediately.");
         TestErrorExit();
     }
+
     if(isopen == 1)
     {
         if(ispacked())
@@ -193,33 +179,38 @@ void FidoArea::open()
             Path tmp;
             strxcpy(tmp, path(), sizeof(Path));
             StripBackslash(tmp);
-            const char* newpath = Unpack(tmp);
+            const char * newpath = Unpack(tmp);
+
             if(newpath == NULL)
+            {
                 packed(false);
+            }
             else
             {
                 strcpy(tmp, newpath);
                 AddBackslash(tmp);
             }
+
             set_real_path(newpath ? tmp : path());
             isopen++;
         }
+
         data_open();
         scan();
     }
 
     GFTRK(0);
-}
-
+} // FidoArea::open
 
 //  ------------------------------------------------------------------
-
 void FidoArea::save_lastread()
 {
-
     GFTRK("FidoSaveLastread");
+    int _fh = ::sopen(AddPath(real_path(), wide->fidolastread),
+                      O_RDWR | O_CREAT | O_BINARY,
+                      WideSharemode,
+                      S_STDRW);
 
-    int _fh = ::sopen(AddPath(real_path(), wide->fidolastread), O_RDWR|O_CREAT|O_BINARY, WideSharemode, S_STDRW);
     if(_fh != -1)
     {
         word _lastread = (word)Msgn->CvtReln(lastread);
@@ -231,12 +222,9 @@ void FidoArea::save_lastread()
     GFTRK(0);
 }
 
-
 //  ------------------------------------------------------------------
-
 void FidoArea::close()
 {
-
     GFTRK("FidoClose");
 
     if(isopen)
@@ -246,11 +234,13 @@ void FidoArea::close()
             save_lastread();
             Msgn->Reset();
             data_close();
+
             if(ispacked())
             {
                 CleanUnpacked(real_path());
             }
         }
+
         isopen--;
     }
     else
@@ -264,31 +254,21 @@ void FidoArea::close()
     }
 
     GFTRK(0);
-}
-
+} // FidoArea::close
 
 //  ------------------------------------------------------------------
-
 void FidoArea::suspend()
 {
-
     GFTRK("FidoSuspend");
-
     save_lastread();
-
     GFTRK(0);
 }
-
 
 //  ------------------------------------------------------------------
-
 void FidoArea::resume()
 {
-
     GFTRK("FidoResume");
-
     GFTRK(0);
 }
-
 
 //  ------------------------------------------------------------------

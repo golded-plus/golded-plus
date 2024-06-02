@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -29,52 +28,33 @@
 #define __GWILDMAT_H
 
 #include <gdefs.h>
-
-
 //  ------------------------------------------------------------------
-
 class gwildmatch
 {
+protected: int match_internal(const char * text, const char * pattern, bool ignorecase);
 
-protected:
-
-    int match_internal(const char* text, const char* pattern, bool ignorecase);
-
-public:
-
-    bool match(const char* text, const char* pattern, bool ignorecase);
-
+public: bool match(const char * text, const char * pattern, bool ignorecase);
 };
 
-
 //  ------------------------------------------------------------------
-
-inline bool gwildmat(const char* text, const char* pattern, bool ignorecase=true)
+inline bool gwildmat(const char * text, const char * pattern, bool ignorecase = true)
 {
-
     class gwildmatch m;
     return m.match(text, pattern, ignorecase);
 }
 
-
 //  ------------------------------------------------------------------
-
-inline bool gwildmati(const char* text, const char* pattern)
+inline bool gwildmati(const char * text, const char * pattern)
 {
-
     class gwildmatch m;
     return m.match(text, pattern, true);
 }
 
-
 //  ------------------------------------------------------------------
 //  4DOS-style wildcard pattern match
-
-bool strwild(const char* str, const char* wild);
-
+bool strwild(const char * str, const char * wild);
 
 //  ------------------------------------------------------------------
 
-#endif
-
+#endif // ifndef __GWILDMAT_H
 //  ------------------------------------------------------------------

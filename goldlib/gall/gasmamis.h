@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -24,20 +23,14 @@
 
 #ifndef __gasmamis_h
 #define __gasmamis_h
-
-
 //  ------------------------------------------------------------------
-
 struct amis_signature
 {
     char manufacturer[8];
     char product_name[8];
     char product_description[64];
-} __attribute__((packed));
-
-
+} __attribute__ ((packed));
 //  ------------------------------------------------------------------
 
 #endif
-
 //  ------------------------------------------------------------------

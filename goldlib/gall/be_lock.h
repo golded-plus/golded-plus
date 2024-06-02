@@ -1,60 +1,59 @@
 /*
 
-BeLock.h - interface to Fido-style message bases lock BeOS library.
+   BeLock.h - interface to Fido-style message bases lock BeOS library.
 
-This code is written by Siarzhuk Zharski <imker@gmx.li> for free and
-can be used for any purposes in any form without any warranties.
+   This code is written by Siarzhuk Zharski <imker@gmx.li> for free and
+   can be used for any purposes in any form without any warranties.
 
-*/
-
+ */
 /*
- COMMENT: Many of Fidonet message bases uses file locks for theirs work in
- concurrent environment. The Be Operating System has not such possibility.
- Existing BeOS inplementations of locking allows to block only "nodes" from
- any access. This blocking cannot prevent from some "entry" modification
- attempts - for example, you can delete such file without problems or move
- it to somewhere. The node is still locked but it is not that we wait for.
+   COMMENT: Many of Fidonet message bases uses file locks for theirs work in
+   concurrent environment. The Be Operating System has not such possibility.
+   Existing BeOS inplementations of locking allows to block only "nodes" from
+   any access. This blocking cannot prevent from some "entry" modification
+   attempts - for example, you can delete such file without problems or move
+   it to somewhere. The node is still locked but it is not that we wait for.
 
- After long discussion on beos developer mail-lists I have not found usable
- solution for this problem. That's why I decide to implement some alternative
- locking technology. The key idea of my locking is using some BeOS-specific
- kernel objects. At this time I found only single one to be accessible from
- many processes - the BeOS kernel ports. See BeBook->Kernel Kit->Ports for
- details. We can create port with some name and we can look for port with
- such name in the system. Than, the locking algorithm is below:
+   After long discussion on beos developer mail-lists I have not found usable
+   solution for this problem. That's why I decide to implement some alternative
+   locking technology. The key idea of my locking is using some BeOS-specific
+   kernel objects. At this time I found only single one to be accessible from
+   many processes - the BeOS kernel ports. See BeBook->Kernel Kit->Ports for
+   details. We can create port with some name and we can look for port with
+   such name in the system. Than, the locking algorithm is below:
 
- 1) Get the device  and node IDs for file handle we going to lock:
+   1) Get the device  and node IDs for file handle we going to lock:
 
- fstat(file_handle, &stat_info);
+   fstat(file_handle, &stat_info);
 
- 2) Create the name for the port to be used as locking object:
+   2) Create the name for the port to be used as locking object:
 
- sprintf(name, "FidoLock:%08X:%08X", stat_info.st_dev, stat_info.st_ino);
+   sprintf(name, "FidoLock:%08X:%08X", stat_info.st_dev, stat_info.st_ino);
 
- 3) Look for existing port with this name:
+   3) Look for existing port with this name:
 
- pid = find_port(name);
- if(pid == B_NAME_NOT_FOUND)
- {
+   pid = find_port(name);
+   if(pid == B_NAME_NOT_FOUND)
+   {
 
    4) Create such port.
 
     pid = create_port(1, name);
 
- }
- else
- {
+   }
+   else
+   {
     5) If such port exists - the file is locked - we must not touch it now -
        say calling program about failed lock.
- }
+   }
 
- To unlock locked file - just delete the port
+   To unlock locked file - just delete the port
 
- delete_port(pid);
+   delete_port(pid);
 
- This technique is also not perfect, but, in my opinion it is more safe than
- node locking and more safe that work without any locking at al.
-*/
+   This technique is also not perfect, but, in my opinion it is more safe than
+   node locking and more safe that work without any locking at al.
+ */
 
 #ifndef __BeLock_H_
 #define __BeLock_H_
@@ -64,7 +63,6 @@ can be used for any purposes in any form without any warranties.
 #ifdef __cplusplus
 extern "C" {
 #endif //__cplusplus
-
 /* be[os]_[f][un]lock() - acquires/releases file lock for file handle or stream
      parameters:
        file_handle - hanlde to file you want to [un]lock
@@ -97,19 +95,17 @@ extern "C" {
          B_BAD_PORT_ID
          [0x80001200] - port doesn't identify an open port.
 
-$Id$
+   $Id$
 
-*/
-
+ */
 int be_lock(int file_handle);
 int be_unlock(int file_handle);
-int be_flock(FILE *file);
-int be_funlock(FILE *file);
-
+int be_flock(FILE * file);
+int be_funlock(FILE * file);
 status_t beos_lock(int file_handle);
 status_t beos_unlock(int file_handle);
-status_t beos_flock(FILE *file);
-status_t beos_funlock(FILE *file);
+status_t beos_flock(FILE * file);
+status_t beos_funlock(FILE * file);
 
 #ifdef __cplusplus
 } //extern "C"

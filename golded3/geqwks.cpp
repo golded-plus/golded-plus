@@ -1,4 +1,3 @@
-
 //  ------------------------------------------------------------------
 //  GoldED+
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -26,63 +25,63 @@
 
 #include <golded.h>
 #include <gs_qwk.h>
-
-
 //  ------------------------------------------------------------------
-
 static void ReadGldFile()
 {
-
-    if (QWK->FoundBBS())
+    if(QWK->FoundBBS())
     {
         Path gldfile;
-
         QWK->ResetConfNo();
-        gsprintf(PRINTF_DECLARE_BUFFER(gldfile), "%s%s.GLD", CFG->goldpath, QWK->BbsID());
-
+        gsprintf(PRINTF_DECLARE_BUFFER(gldfile), "%s%s.GLD", CFG->goldpath,
+                 QWK->BbsID());
         gfile fp(gldfile, "rt");
-        if (fp.isopen())
+
+        if(fp.isopen())
         {
-            char* key;
-            char* val;
+            char * key;
+            char * val;
             char buf[256];
-            while (fp.Fgets(buf, sizeof(buf)))
+
+            while(fp.Fgets(buf, sizeof(buf)))
             {
                 val = strtrim(buf);
                 getkeyval(&key, &val);
                 strtrim(StripQuotes(val));
+
                 if(QWK->FindEcho(val))
+                {
                     QWK->ConfNo(atoi(key));
+                }
             }
         }
     }
-}
-
+} // ReadGldFile
 
 //  ------------------------------------------------------------------
-
 int ImportQWK()
 {
-
-    if(not *QWK->ImportPath())
+    if(not * QWK->ImportPath())
+    {
         return 0;
+    }
 
     gfile fpb;   // For BBSID.GLD
     Path file;
     Path gldfile;
     char bbsid[9] = {""};
-
     // Parse the control file
     strcpy(file, AddPath(QWK->ImportPath(), "CONTROL.DAT"));
     gfile fp(file, "rt");
-    if (fp.isopen())
+
+    if(fp.isopen())
     {
         char buf[256];
-        int line = 0;
-        int confno = 0;
+        int line    = 0;
+        int confno  = 0;
         int confcnt = 0;
         int confnos = 0;
-        while (fp.Fgets(buf, sizeof(buf)))
+
+        while(fp.Fgets(buf, sizeof(buf)))
         {
             line++;
             strtrim(buf);
@@ -91,95 +90,106 @@ int ImportQWK()
             {
                 if(line % 2)
                 {
-                    if (fpb.isopen())
+                    if(fpb.isopen())
+                    {
                         fpb.Printf("%u \"%s\"\n", confno, buf);
+                    }
+
                     confcnt++;
                 }
                 else
+                {
                     confno = atoi(buf);
+                }
             }
             else if(line == 5)
             {
-                char* ptr = strchr(buf, ',');
-                if (ptr)
+                char * ptr = strchr(buf, ',');
+
+                if(ptr)
                 {
-                    strxcpy(bbsid, strskip_wht(ptr+1), 9);
-                    gsprintf(PRINTF_DECLARE_BUFFER(gldfile), "%s%s.GLD", CFG->goldpath, bbsid);
+                    strxcpy(bbsid, strskip_wht(ptr + 1), 9);
+                    gsprintf(PRINTF_DECLARE_BUFFER(gldfile),
+                             "%s%s.GLD",
+                             CFG->goldpath,
+                             bbsid);
                     fpb.Fopen(gldfile, "wt");
                 }
             }
             else if(line == 11)
+            {
                 confnos = atoi(buf) + 1;
+            }
         }
-
         fpb.Fclose();
         fp.Fclose();
         remove(file);
     }
 
     if(strblank(bbsid))
+    {
         return 0;
+    }
 
     QWK->FindBBS(bbsid);
     ReadGldFile();
-
     int imported = 0;
-
     OrigArea = CurrArea = -1;
-
     strcpy(file, AddPath(QWK->ImportPath(), "MESSAGES.DAT"));
     fp.Fopen(file, "rb");
-    if (fp.isopen())
+
+    if(fp.isopen())
     {
         // Skip past product info header
         fp.FseekSet(sizeof(QWKHdr));
-
         QWKHdr hdr;
-
-        GMsg* msg = new GMsg();
+        GMsg * msg = new GMsg();
         throw_new(msg);
-
         // Read each message, header first
         int tosstobadmsgs = false;
-        int lastconfno = -1;
+        int lastconfno    = -1;
         int more;
+
         do
         {
-
             msg->Reset();
-
             memset(&hdr, 0, sizeof(QWKHdr));
             more = 1 == fp.Fread(&hdr, sizeof(QWKHdr));
+
             if(more)
             {
-
                 char blocks[7];
                 strxcpy(blocks, hdr.blocks, 7);
                 uint msglen = atoi(blocks);
+
                 if(msglen == 0)
                 {
                     break;
                 }
-                msglen = (msglen-1)*128;
+
+                msglen = (msglen - 1) * 128;
 
                 if(hdr.confno != lastconfno)
                 {
                     lastconfno = hdr.confno;
+
                     if(QWK->FindEcho(hdr.confno))
                     {
                         int areano = AL.AreaEchoToNo(QWK->EchoID());
+
                         if(areano != -1)
                         {
-                            CurrArea = AL.AreaNoToId(areano);
+                            CurrArea      = AL.AreaNoToId(areano);
                             tosstobadmsgs = false;
                         }
                     }
                     else
                     {
                         int areano = AL.AreaEchoToNo(QWK->BadMsgs());
+
                         if(areano != -1)
                         {
-                            CurrArea = AL.AreaNoToId(areano);
+                            CurrArea      = AL.AreaNoToId(areano);
                             tosstobadmsgs = true;
                         }
                         else
@@ -192,7 +202,6 @@ int ImportQWK()
 
                 if(tosstobadmsgs != -1)
                 {
-
                     if(OrigArea != CurrArea)
                     {
                         if(AA->isopen())
@@ -200,6 +209,7 @@ int ImportQWK()
                             AA->Unlock();
                             AA->Close();
                         }
+
                         AL.SetActiveAreaId(CurrArea);
                         OrigArea = CurrArea;
                         AA->Open();
@@ -211,128 +221,160 @@ int ImportQWK()
                     msg->orig = msg->oorig = AA->aka();
                     msg->dest = msg->odest = AA->aka();
                     msg->attr.pvt(hdr.status == '*' or hdr.status == '+');
-                    msg->attr.rcv(hdr.status == '+' or hdr.status == '-' or hdr.status == '`' or hdr.status == '^' or hdr.status == '#');
+                    msg->attr.rcv(hdr.status == '+' or hdr.status == '-' or hdr.status ==
+                                  '`' or hdr.status == '^' or hdr.status == '#');
                     msg->attr.del(hdr.activestatus == 226);
                     strtrim(strxcpy(msg->by, hdr.from, 26));
                     strtrim(strxcpy(msg->to, hdr.to, 26));
-                    strtrim(strxcpy(msg->re, hdr.subject,  26));
+                    strtrim(strxcpy(msg->re, hdr.subject, 26));
                     int _year, _month, _day, _hour, _minute;
                     sscanf(hdr.date, "%d%*c%d%*c%2d", &_month, &_day, &_year);
                     sscanf(hdr.time, "%d%*c%2d", &_hour, &_minute);
                     struct tm _tm;
-                    _tm.tm_year  = (_year < 80) ? (_year+100) : _year;
+                    _tm.tm_year  = (_year < 80) ? (_year + 100) : _year;
                     _tm.tm_mon   = _month - 1;
                     _tm.tm_mday  = _day;
                     _tm.tm_hour  = _hour;
                     _tm.tm_min   = _minute;
                     _tm.tm_sec   = 0;
                     _tm.tm_isdst = -1;
-                    time32_t a   = gmktime(&_tm);
+                    time32_t a = gmktime(&_tm);
                     struct tm tp;
                     ggmtime(&tp, &a);
-                    tp.tm_isdst  = -1;
-                    time32_t b   = gmktime(&tp);
+                    tp.tm_isdst = -1;
+                    time32_t b = gmktime(&tp);
                     msg->written = a + a - b;
-                    a = gtime(NULL);
+                    a            = gtime(NULL);
                     ggmtime(&tp, &a);
                     tp.tm_isdst  = -1;
-                    b = gmktime(&tp);
+                    b            = gmktime(&tp);
                     msg->arrived = a + a - b;
-
                     // Read message text
-                    char* txtptr = msg->txt = (char*)throw_calloc(1, msglen+128);
+                    char * txtptr = msg->txt = (char *)throw_calloc(1, msglen + 128);
+
                     if(tosstobadmsgs)
                     {
                         sprintf(msg->txt, "AREA:%s_%u\r", bbsid, hdr.confno);
                         txtptr += strlen(msg->txt);
                     }
+
                     fp.Fread(txtptr, msglen);
                     strtrim(txtptr);
                     strchg(txtptr, 0xE3, 0x0D);
-
                     imported++;
                     AA->istossed = true;
                     update_statuslinef("%s: %u", "", AA->echoid(), imported);
+                    msg->TextToLines(CFG->dispmargin - 1);
 
-                    msg->TextToLines(CFG->dispmargin-1);
-                    if(msg->messageid or msg->references or msg->inreplyto or *msg->ifrom)
+                    if(msg->messageid or msg->references or msg->inreplyto or *
+                       msg->ifrom)
                     {
                         char kbuf[256];
                         uint txtlen = strlen(msg->txt);
+
                         if(*msg->ifrom)
                         {
                             INam _fromname;
                             IAdr _fromaddr;
                             ParseInternetAddr(msg->ifrom, _fromname, _fromaddr);
-                            if (AA->Internetgate().addr.valid())
+
+                            if(AA->Internetgate().addr.valid())
                             {
                                 char abuf[40];
                                 gsprintf(PRINTF_DECLARE_BUFFER(kbuf),
-                                         "\x1""REPLYTO %s %s\r""\x1""REPLYADDR %s\r",
+                                         "\x1" "REPLYTO %s %s\r" "\x1" "REPLYADDR %s\r",
                                          AA->Internetgate().addr.make_string(abuf),
-                                         *AA->Internetgate().name ? AA->Internetgate().name : "UUCP",
-                                         _fromaddr
-                                        );
+                                         *AA->Internetgate().name ?
+                                         AA->Internetgate().name :
+                                         "UUCP",
+                                         _fromaddr);
                                 uint addlen = strlen(kbuf);
-                                msg->txt = (char*)throw_realloc(msg->txt, txtlen+addlen+1);
-                                memmove(msg->txt+addlen, msg->txt, txtlen+1);
-                                memcpy(msg->txt, kbuf, addlen);
+                                msg->txt = (char *)throw_realloc(msg->txt,
+                                                                 txtlen + addlen + 1);
+                                memmove(msg->txt + addlen, msg->txt, txtlen + 1);
+                                memcpy(msg->txt,
+                                       kbuf,
+                                       addlen);
                                 txtlen += addlen;
                             }
                         }
+
                         if(msg->references)
                         {
-                            char* mptr = msg->references;
-                            char* sptr = mptr;
+                            char * mptr = msg->references;
+                            char * sptr = mptr;
+
                             while(*mptr)
                             {
                                 if(not strnieql(mptr, "<NOMSGID_", 9))
                                 {
                                     sptr = strpbrk(mptr, " ,");
+
                                     if(sptr == NULL)
+                                    {
                                         sptr = mptr + strlen(mptr);
-                                    while(((*sptr == ' ') or (*sptr == ',')) and *sptr)
+                                    }
+
+                                    while(((*sptr == ' ') or (*sptr == ',')) and * sptr)
+                                    {
                                         *sptr++ = NUL;
-                                    CvtMessageIDtoMSGID(mptr, kbuf, AA->echoid(), "REPLY");
+                                    }
+                                    CvtMessageIDtoMSGID(mptr, kbuf, AA->echoid(),
+                                                        "REPLY");
                                     strcat(kbuf, "\r");
                                     uint addlen = strlen(kbuf);
-                                    msg->txt = (char*)throw_realloc(msg->txt, txtlen+addlen+1);
-                                    memmove(msg->txt+addlen, msg->txt, txtlen+1);
+                                    msg->txt = (char *)throw_realloc(msg->txt,
+                                                                     txtlen + addlen +
+                                                                     1);
+                                    memmove(msg->txt + addlen, msg->txt, txtlen + 1);
                                     memcpy(msg->txt, kbuf, addlen);
                                     txtlen += addlen;
                                 }
+
                                 mptr = sptr;
                             }
                         }
+
                         if(msg->inreplyto)
                         {
                             if(not strnieql(msg->inreplyto, "<NOMSGID_", 9))
                             {
-                                CvtMessageIDtoMSGID(msg->inreplyto, kbuf, AA->echoid(), "REPLY");
+                                CvtMessageIDtoMSGID(msg->inreplyto,
+                                                    kbuf,
+                                                    AA->echoid(),
+                                                    "REPLY");
                                 strcat(kbuf, "\r");
                                 uint addlen = strlen(kbuf);
-                                msg->txt = (char*)throw_realloc(msg->txt, txtlen+addlen+1);
-                                memmove(msg->txt+addlen, msg->txt, txtlen+1);
+                                msg->txt = (char *)throw_realloc(msg->txt,
+                                                                 txtlen + addlen + 1);
+                                memmove(msg->txt + addlen, msg->txt, txtlen + 1);
                                 memcpy(msg->txt, kbuf, addlen);
                                 txtlen += addlen;
                             }
                         }
+
                         if(msg->messageid)
                         {
                             if(not strnieql(msg->messageid, "<NOMSGID_", 9))
                             {
-                                CvtMessageIDtoMSGID(msg->messageid, kbuf, AA->echoid(), "MSGID");
+                                CvtMessageIDtoMSGID(msg->messageid,
+                                                    kbuf,
+                                                    AA->echoid(),
+                                                    "MSGID");
                                 strcat(kbuf, "\r");
                                 uint addlen = strlen(kbuf);
-                                msg->txt = (char*)throw_realloc(msg->txt, txtlen+addlen+1);
-                                memmove(msg->txt+addlen, msg->txt, txtlen+1);
+                                msg->txt = (char *)throw_realloc(msg->txt,
+                                                                 txtlen + addlen + 1);
+                                memmove(msg->txt + addlen, msg->txt, txtlen + 1);
                                 memcpy(msg->txt, kbuf, addlen);
                             }
                         }
                     }
 
-                    if(*msg->realto and (strieql(msg->to, AA->Whoto()) or not *msg->to))
+                    if(*msg->realto and (strieql(msg->to, AA->Whoto()) or not * msg->to))
+                    {
                         strcpy(msg->to, msg->realto);
+                    }
 
                     AA->SaveMsg(GMSG_NEW, msg);
                 }
@@ -348,65 +390,71 @@ int ImportQWK()
 
         msg->Reset();
         throw_delete(msg);
-
         fp.Fclose();
         remove(file);
 
-        if (*QWK->TossLog())
+        if(*QWK->TossLog())
         {
             fp.Fopen(QWK->TossLog(), "at");
-            if (fp.isopen())
+
+            if(fp.isopen())
             {
                 uint na = 0;
+
                 while(na < AL.size())
                 {
                     if(AL[na]->istossed)
                     {
-                        AL[na]->istossed = false;
+                        AL[na]->istossed    = false;
                         AL[na]->isunreadchg = true;
                         fp.Printf("%s\n", AL[na]->echoid());
                     }
+
                     na++;
                 }
             }
         }
 
-        if (imported and *QWK->ReplyLinker())
+        if(imported and * QWK->ReplyLinker())
         {
             char buf[256];
             gsprintf(PRINTF_DECLARE_BUFFER(buf), LNG->Replylinker, QWK->ReplyLinker());
-            ShellToDos(QWK->ReplyLinker(), buf, LGREY_|_BLACK, YES);
+            ShellToDos(QWK->ReplyLinker(), buf, LGREY_ | _BLACK, YES);
         }
     }
 
     if(imported)
+    {
         startupscan_success = true;
+    }
 
     return imported;
-}
-
+} // ImportQWK
 
 //  ------------------------------------------------------------------
-
-int ExportQwkMsg(GMsg* msg, gfile& fp, int confno, int& pktmsgno)
+int ExportQwkMsg(GMsg * msg, gfile & fp, int confno, int & pktmsgno)
 {
-
     // Prepare for Return Receipt Request
     char msg__re[26];
-    if (QWK->ReceiptAllowed() and msg->attr.rrq())
+
+    if(QWK->ReceiptAllowed() and msg->attr.rrq())
+    {
         gsprintf(PRINTF_DECLARE_BUFFER(msg__re), "RRR%-22.22s", msg->re);
+    }
     else
+    {
         strxcpy(msg__re, msg->re, 26);
+    }
 
     // Build QWK header
     QWKHdr hdr;
     char buf[26];
     int tolen = strlen(msg->to);
-    tolen = MinV(25,tolen);
+    tolen = MinV(25, tolen);
     int bylen = strlen(msg->by);
-    bylen = MinV(25,bylen);
+    bylen = MinV(25, bylen);
     int relen = strlen(msg__re);
-    relen = MinV(25,relen);
+    relen = MinV(25, relen);
     memset(&hdr, ' ', sizeof(QWKHdr));
     hdr.status = msg->attr.pvt() ? '*' : ' ';
     gsprintf(PRINTF_DECLARE_BUFFER(buf), "%u", confno);
@@ -414,37 +462,52 @@ int ExportQwkMsg(GMsg* msg, gfile& fp, int confno, int& pktmsgno)
     struct tm _tm;
     ggmtime(&_tm, &msg->written);
     int _year = _tm.tm_year % 100;
-    gsprintf(PRINTF_DECLARE_BUFFER(buf), "%02d-%02d-%02d", _tm.tm_mon+1, _tm.tm_mday, _year);
+    gsprintf(PRINTF_DECLARE_BUFFER(buf),
+             "%02d-%02d-%02d",
+             _tm.tm_mon + 1,
+             _tm.tm_mday,
+             _year);
     memcpy(hdr.date, buf, 8);
     gsprintf(PRINTF_DECLARE_BUFFER(buf), "%02d:%02d", _tm.tm_hour, _tm.tm_min);
     memcpy(hdr.time, buf, 5);
-    strxcpy(buf, msg->to, tolen+1);
+    strxcpy(buf, msg->to, tolen + 1);
+
     if(not QWK->MixCaseAllowed())
+    {
         strupr(buf);
+    }
+
     memcpy(hdr.to, buf, tolen);
-    strxcpy(buf, msg->by, bylen+1);
+    strxcpy(buf, msg->by, bylen + 1);
+
     if(not QWK->MixCaseAllowed())
+    {
         strupr(buf);
+    }
+
     memcpy(hdr.from, buf, bylen);
     memcpy(hdr.subject, msg__re, relen);
     hdr.activestatus = '\xE1';
-    hdr.confno = (word)confno;
-    hdr.pktmsgno = (word)++pktmsgno;
-
+    hdr.confno       = (word)confno;
+    hdr.pktmsgno     = (word)++ pktmsgno;
     // Write preliminary header
     fp.Fwrite(&hdr, sizeof(QWKHdr));
-
     // Write body
     int level = 0;
+
     if(CharTable)
+    {
         level = CharTable->level ? CharTable->level : 2;
+    }
 
     uint msglen = 0;
 
     if(msg->charsetencoding & GCHENC_MNE)
     {
         if(not striinc("MNEMONIC", CharTable->exp))
+        {
             LoadCharset(CFG->xlatlocalset, "MNEMONIC");
+        }
     }
     // ASA: Do we need it at all?
     else if(IsQuotedPrintable(msg->charset))
@@ -457,100 +520,102 @@ int ExportQwkMsg(GMsg* msg, gfile& fp, int confno, int& pktmsgno)
     }
 
     char qwkterm = '\xE3';
-
     // Process kludges and write header lines
-    Line* line = msg->lin;
+    Line * line = msg->lin;
+
     while(line)
     {
         if(line->type & GLINE_KLUDGE)
         {
             if(AA->isinternet())
             {
-                if ((line->kludge == GKLUD_RFC) or (line->kludge == 0))
+                if((line->kludge == GKLUD_RFC) or (line->kludge == 0))
                 {
-                    const std::string convLine = XlatStr(line->txt.c_str(), level, CharTable);
+                    const std::string convLine = XlatStr(line->txt.c_str(),
+                                                         level,
+                                                         CharTable);
                     msglen += fp.Printf("%s%c", convLine.c_str(), qwkterm);
                 }
                 else if(line->type & GLINE_WRAP)
                 {
                     while(line->next and (line->type & GLINE_WRAP))
+                    {
                         line = line->next;
+                    }
                 }
             }
             else
             {
-                if ((line->type & GLINE_KLUDGE) and QWK->KludgesAllowed())
+                if((line->type & GLINE_KLUDGE) and QWK->KludgesAllowed())
                 {
-                    const std::string convLine = XlatStr(line->txt.c_str(), level, CharTable);
+                    const std::string convLine = XlatStr(line->txt.c_str(),
+                                                         level,
+                                                         CharTable);
                     msglen += fp.Printf("%s%c", convLine.c_str(), qwkterm);
                 }
             }
         }
+
         line = line->next;
     }
 
     // Write blank line after header lines
-    if (AA->Internetrfcbody())
+    if(AA->Internetrfcbody())
+    {
         msglen += fp.Printf("%c", qwkterm);
+    }
 
     // Write all message lines
     line = msg->lin;
+
     while(line)
     {
-        if (not (line->type & GLINE_KLUDGE))
+        if(not (line->type & GLINE_KLUDGE))
         {
             const std::string convLine = XlatStr(line->txt.c_str(), level, CharTable);
             msglen += fp.Printf("%s%c", convLine.c_str(), qwkterm);
         }
+
         line = line->next;
     }
-
     // Calculate blocks
     uint endlen = msglen % 128;
-    uint blocks = 1+(msglen/128)+(endlen?1:0);
+    uint blocks = 1 + (msglen / 128) + (endlen ? 1 : 0);
     gsprintf(PRINTF_DECLARE_BUFFER(buf), "%u", blocks);
     memcpy(hdr.blocks, buf, strlen(buf));
 
     // Write padding spaces at the end if necessary
-    if (endlen)
+    if(endlen)
     {
         char padding[128];
         memset(padding, ' ', 128);
-        fp.Fwrite(padding, 128-endlen);
+        fp.Fwrite(padding, 128 - endlen);
     }
 
     // Re-write the header
-    fp.Fseek(-(blocks*128), SEEK_CUR);
+    fp.Fseek(-(blocks * 128), SEEK_CUR);
     fp.Fwrite(&hdr, sizeof(QWKHdr));
-    fp.Fseek((blocks-1)*128, SEEK_CUR);
-
+    fp.Fseek((blocks - 1) * 128, SEEK_CUR);
     // Mark msg as sent
     msg->attr.snt1();
     msg->attr.scn1();
     msg->attr.uns0();
     AA->SaveHdr(GMSG_UPDATE, msg);
-
     return 1;
-}
-
+} // ExportQwkMsg
 
 //  ------------------------------------------------------------------
-
-int ExportQwkArea(int areano, gfile& fp, int confno, int& pktmsgno)
+int ExportQwkArea(int areano, gfile & fp, int confno, int & pktmsgno)
 {
-
     int exported = 0;
-
     AL.SetActiveAreaNo(areano);
-
     AA->Open();
     AA->Lock();
     AA->RandomizeData();
-
-    GMsg* msg = new GMsg();
+    GMsg * msg = new GMsg();
     throw_new(msg);
 
-    for(uint n=0; n<AA->Expo.Count(); n++)
+    for(uint n = 0; n < AA->Expo.Count(); n++)
     {
         if(AA->LoadMsg(msg, AA->Expo[n], 80))
         {
@@ -561,47 +626,46 @@ int ExportQwkArea(int areano, gfile& fp, int confno, int& pktmsgno)
             }
         }
     }
-
     msg->Reset();
     throw_delete(msg);
-
     AA->Unlock();
     AA->Close();
-
     AA->Expo.ResetAll();
-
     return exported;
-}
-
+} // ExportQwkArea
 
 //  ------------------------------------------------------------------
-
 int ExportQWK()
 {
-
-    if(not *QWK->ExportPath())
+    if(not * QWK->ExportPath())
+    {
         return 0;
+    }
 
     int exported = 0;
-
     gfile fp;
     Path scanfile;
-
     // Get the scan list
     strcpy(scanfile, AddPath(CFG->goldpath, "GOLDQWK.LST"));
     fp.Fopen(scanfile, "rt");
-    if (fp.isopen())
+
+    if(fp.isopen())
     {
         char buf[256];
-        while (fp.Fgets(buf, sizeof(buf)))
+
+        while(fp.Fgets(buf, sizeof(buf)))
         {
-            char* ptr = strchr(buf, ' ');
+            char * ptr = strchr(buf, ' ');
+
             if(ptr)
             {
                 *ptr++ = NUL;
                 int a = AL.AreaEchoToNo(buf);
+
                 if(a != -1 and AL[a]->isqwk())
+                {
                     AL[a]->Expo.Add(atol(ptr));
+                }
             }
         }
         fp.Fclose();
@@ -615,11 +679,16 @@ int ExportQWK()
             ReadGldFile();
             Path replyfile;
             int pktmsgno = 0;
-            if (QWK->FirstConf())
+
+            if(QWK->FirstConf())
             {
-                gsprintf(PRINTF_DECLARE_BUFFER(replyfile), "%s%s.MSG", QWK->ExportPath(), QWK->BbsID());
+                gsprintf(PRINTF_DECLARE_BUFFER(replyfile),
+                         "%s%s.MSG",
+                         QWK->ExportPath(),
+                         QWK->BbsID());
                 fp.Fopen(replyfile, "wb");
-                if (fp.isopen())
+
+                if(fp.isopen())
                 {
                     char firstrec[128];
                     memset(firstrec, ' ', 128);
@@ -627,22 +696,30 @@ int ExportQWK()
                     fp.Fwrite(firstrec, 128);
                     pktmsgno = 0;
                 }
+
                 do
                 {
                     int a = AL.AreaEchoToNo(QWK->EchoID());
+
                     if(a != -1 and AL[a]->Expo.Count())
                     {
                         if(QWK->ConfNo() != -1)
+                        {
                             exported += ExportQwkArea(a, fp, QWK->ConfNo(), pktmsgno);
+                        }
                     }
                 }
                 while(QWK->NextConf());
             }
-            if (fp.isopen())
+
+            if(fp.isopen())
             {
                 fp.Fclose();
+
                 if(pktmsgno == 0)
+                {
                     remove(replyfile);
+                }
             }
         }
         while(QWK->NextBBS());
@@ -650,97 +727,74 @@ int ExportQWK()
 
     // Delete the scanfile
     remove(scanfile);
-
     return exported;
-}
+} // ExportQWK
 
 //  ------------------------------------------------------------------
-
 QwkCfg::QwkCfg()
 {
-    badmsgs[0] = NUL;
-    exportpath[0] = NUL;
-    importpath[0] = NUL;
+    badmsgs[0]     = NUL;
+    exportpath[0]  = NUL;
+    importpath[0]  = NUL;
     replylinker[0] = NUL;
-    tosslog[0] = NUL;
+    tosslog[0]     = NUL;
 }
 
 //  ------------------------------------------------------------------
-
-Qwk::Qwk()
-    : cfg()
-    , bbs(NULL)
-    , bbss(0)
-    , bbsp(NULL)
-    , bbsn(0)
-    , mapp(NULL)
-    , mapn(0)
-
-{
-}
+Qwk::Qwk() : cfg(), bbs(NULL), bbss(0), bbsp(NULL), bbsn(0), mapp(NULL), mapn(0)
+{}
 
 //  ------------------------------------------------------------------
-
 Qwk::~Qwk()
 {
-
     Reset();
 }
 
-
 //  ------------------------------------------------------------------
-
 void Qwk::Reset()
 {
-
-    for(int n=0; n<bbss; n++)
+    for(int n = 0; n < bbss; n++)
+    {
         throw_release(bbs[n].map);
+    }
     throw_xrelease(bbs);
     bbsp = NULL;
     mapp = NULL;
     bbss = 0;
 }
 
-
 //  ------------------------------------------------------------------
-
-void Qwk::AddBBS(char* bbsid)
+void Qwk::AddBBS(char * bbsid)
 {
-
-    bbs = (QwkBbs*)throw_realloc(bbs, (bbss+1)*sizeof(QwkBbs));
+    bbs  = (QwkBbs *)throw_realloc(bbs, (bbss + 1) * sizeof(QwkBbs));
     bbsp = bbs + bbss++;
     strxcpy(bbsp->bbsid, bbsid, sizeof(bbsp->bbsid));
-    bbsp->kludges = false;
-    bbsp->mixcase = false;
-    bbsp->receipt = false;
+    bbsp->kludges  = false;
+    bbsp->mixcase  = false;
+    bbsp->receipt  = false;
     bbsp->maxlines = -1;
-    bbsp->map = NULL;
-    bbsp->maps = 0;
-    mapp = NULL;
+    bbsp->map      = NULL;
+    bbsp->maps     = 0;
+    mapp           = NULL;
 }
 
-
 //  ------------------------------------------------------------------
-
-void Qwk::AddMap(char* bbsid, char* echoid, char* confname, int confno)
+void Qwk::AddMap(char * bbsid, char * echoid, char * confname, int confno)
 {
-
     FindAddBBS(bbsid);
-    bbsp->map = (QwkMap*)throw_realloc(bbsp->map, (bbsp->maps+1)*sizeof(QwkMap));
-    mapp = bbsp->map + bbsp->maps++;
+    bbsp->map = (QwkMap *)throw_realloc(bbsp->map, (bbsp->maps + 1) * sizeof(QwkMap));
+    mapp      = bbsp->map + bbsp->maps++;
     strxcpy(mapp->confname, confname, sizeof(mapp->confname));
     strxcpy(mapp->echoid, echoid, sizeof(mapp->echoid));
     mapp->confno = confno;
 }
 
-
 //  ------------------------------------------------------------------
-
-int Qwk::FindBBS(char* bbsid)
+int Qwk::FindBBS(char * bbsid)
 {
-
     bbsp = bbs;
-    for(int n=0; n<bbss; n++,bbsp++)
+
+    for(int n = 0; n < bbss; n++, bbsp++)
     {
         if(strieql(bbsid, bbsp->bbsid))
         {
@@ -752,22 +806,18 @@ int Qwk::FindBBS(char* bbsid)
     return false;
 }
 
-
 //  ------------------------------------------------------------------
-
-void Qwk::FindAddBBS(char* bbsid)
+void Qwk::FindAddBBS(char * bbsid)
 {
-
     if(not FindBBS(bbsid))
+    {
         AddBBS(bbsid);
+    }
 }
 
-
 //  ------------------------------------------------------------------
-
 int Qwk::FirstBBS()
 {
-
     if(bbs)
     {
         bbsp = bbs;
@@ -780,12 +830,9 @@ int Qwk::FirstBBS()
     return false;
 }
 
-
 //  ------------------------------------------------------------------
-
 int Qwk::NextBBS()
 {
-
     if(bbsp and (bbsn < bbss))
     {
         bbsp++;
@@ -798,66 +845,69 @@ int Qwk::NextBBS()
     return false;
 }
 
-
 //  ------------------------------------------------------------------
-
-int Qwk::FindConf(char* echoid)
+int Qwk::FindConf(char * echoid)
 {
-
     if(bbsp)
     {
         mapp = bbsp->map;
-        for(int n=0; n<bbsp->maps; n++,mapp++)
+
+        for(int n = 0; n < bbsp->maps; n++, mapp++)
+        {
             if(strieql(echoid, mapp->echoid))
+            {
                 return true;
+            }
+        }
     }
 
     mapp = NULL;
     return false;
 }
 
-
 //  ------------------------------------------------------------------
-
-int Qwk::FindEcho(char* confname)
+int Qwk::FindEcho(char * confname)
 {
-
     if(bbsp)
     {
         mapp = bbsp->map;
-        for(int n=0; n<bbsp->maps; n++,mapp++)
+
+        for(int n = 0; n < bbsp->maps; n++, mapp++)
+        {
             if(strieql(confname, mapp->confname))
+            {
                 return true;
+            }
+        }
     }
 
     mapp = NULL;
     return false;
 }
 
-
 //  ------------------------------------------------------------------
-
 int Qwk::FindEcho(int confno)
 {
-
     if(bbsp)
     {
         mapp = bbsp->map;
-        for(int n=0; n<bbsp->maps; n++,mapp++)
+
+        for(int n = 0; n < bbsp->maps; n++, mapp++)
+        {
             if(confno == mapp->confno)
+            {
                 return true;
+            }
+        }
     }
 
     mapp = NULL;
     return false;
 }
 
-
 //  ------------------------------------------------------------------
-
 int Qwk::FirstConf()
 {
-
     if(bbsp and bbsp->map)
     {
         mapp = bbsp->map;
@@ -870,12 +920,9 @@ int Qwk::FirstConf()
     return false;
 }
 
-
 //  ------------------------------------------------------------------
-
 int Qwk::NextConf()
 {
-
     if(mapp and (mapn < bbsp->maps))
     {
         mapp++;
@@ -888,186 +935,171 @@ int Qwk::NextConf()
     return false;
 }
 
-
 //  ------------------------------------------------------------------
-
-const char* Qwk::BbsID()
+const char * Qwk::BbsID()
 {
-
     return bbsp ? bbsp->bbsid : "";
 }
 
-
 //  ------------------------------------------------------------------
-
-const char* Qwk::ConfName()
+const char * Qwk::ConfName()
 {
-
     return mapp ? mapp->confname : "";
 }
 
-
 //  ------------------------------------------------------------------
-
 int Qwk::ConfNo(int set)
 {
-
     if(mapp)
     {
         if(set != -2)
+        {
             mapp->confno = set;
+        }
+
         return mapp->confno;
     }
+
     return -1;
 }
 
-
 //  ------------------------------------------------------------------
-
-const char* Qwk::EchoID()
+const char * Qwk::EchoID()
 {
-
     return mapp ? mapp->echoid : "";
 }
 
-
 //  ------------------------------------------------------------------
-
 int Qwk::KludgesAllowed(int set)
 {
-
     if(bbsp)
     {
         if(set != -1)
+        {
             bbsp->kludges = set;
+        }
+
         return bbsp->kludges;
     }
 
     return false;
 }
 
-
 //  ------------------------------------------------------------------
-
 int Qwk::MixCaseAllowed(int set)
 {
-
     if(bbsp)
     {
         if(set != -1)
+        {
             bbsp->mixcase = set;
+        }
+
         return bbsp->mixcase;
     }
 
     return false;
 }
 
-
 //  ------------------------------------------------------------------
-
 int Qwk::ReceiptAllowed(int set)
 {
-
     if(bbsp)
     {
         if(set != -1)
+        {
             bbsp->receipt = set;
+        }
+
         return bbsp->receipt;
     }
 
     return false;
 }
 
-
 //  ------------------------------------------------------------------
-
 int Qwk::MaxLines(int set)
 {
-
     if(bbsp)
     {
         if(set != -1)
+        {
             bbsp->maxlines = set;
+        }
+
         return bbsp->maxlines;
     }
 
     return 0;
 }
 
-
 //  ------------------------------------------------------------------
-
 void Qwk::ResetConfNo(int set)
 {
-
     if(bbsp)
     {
         mapp = bbsp->map;
-        for(int n=0; n<bbsp->maps; n++,mapp++)
+
+        for(int n = 0; n < bbsp->maps; n++, mapp++)
+        {
             mapp->confno = set;
+        }
     }
 }
 
-
 //  ------------------------------------------------------------------
-
-char* Qwk::BadMsgs(char* set)
+char * Qwk::BadMsgs(char * set)
 {
-
     if(set)
+    {
         strxcpy(cfg.badmsgs, set, sizeof(Echo));
+    }
 
     return cfg.badmsgs;
 }
 
-
 //  ------------------------------------------------------------------
-
-char* Qwk::ExportPath(char* set)
+char * Qwk::ExportPath(char * set)
 {
-
     if(set)
+    {
         PathCopy(cfg.exportpath, set);
+    }
 
     return cfg.exportpath;
 }
 
-
 //  ------------------------------------------------------------------
-
-char* Qwk::ImportPath(char* set)
+char * Qwk::ImportPath(char * set)
 {
-
     if(set)
+    {
         PathCopy(cfg.importpath, set);
+    }
 
     return cfg.importpath;
 }
 
-
 //  ------------------------------------------------------------------
-
-char* Qwk::ReplyLinker(char* set)
+char * Qwk::ReplyLinker(char * set)
 {
-
     if(set)
+    {
         strxcpy(cfg.replylinker, set, sizeof(Path));
+    }
 
     return cfg.replylinker;
 }
 
-
 //  ------------------------------------------------------------------
-
-char* Qwk::TossLog(char* set)
+char * Qwk::TossLog(char * set)
 {
-
     if(set)
+    {
         strxcpy(cfg.tosslog, set, sizeof(Path));
+    }
 
     return cfg.tosslog;
 }
 
-
 //  ------------------------------------------------------------------
-

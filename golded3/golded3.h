@@ -1,4 +1,3 @@
-
 //  ------------------------------------------------------------------
 //  GoldED+
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -29,34 +28,32 @@
 
 #ifndef __GOLDED3_H
 #define __GOLDED3_H
-
 //  ------------------------------------------------------------------
 //  Global compile constants
+extern const char * __gver_vendor_name__;
+extern const char * __gver_vendor_fido__;
+extern const char * __gver_vendor_email__;
+extern const char * __gver_prename__;
+extern const char * __gver_preshortname__;
+extern const char * __gver_name__;
+extern const char * __gver_shortname__;
+extern const char * __gver_shortlogname__;
+extern const char * __gver_postshortname__;
+extern const char * __gver_postname__;
+extern const char * __gver_platform__;
+extern const char * __gver_shortplatform__;
+extern const char * __gver_cfgext__;
+extern const char * __gver_preversion__;
+extern const char * __gver_postversion__;
+extern int __gver_major__;
+extern int __gver_minor__;
+extern int __gver_release__;
+extern const char * __gver_releasename__;
+extern const char * __gver_date__;
+extern const char * __gver_time__;
+extern const char * __gver_longpid__;
+extern const char * __gver_shortpid__;
+extern const char * __gver_ver__;
+extern const char * __gver_shortver__;
 
-extern const char* __gver_vendor_name__;
-extern const char* __gver_vendor_fido__;
-extern const char* __gver_vendor_email__;
-extern const char* __gver_prename__;
-extern const char* __gver_preshortname__;
-extern const char* __gver_name__;
-extern const char* __gver_shortname__;
-extern const char* __gver_shortlogname__;
-extern const char* __gver_postshortname__;
-extern const char* __gver_postname__;
-extern const char* __gver_platform__;
-extern const char* __gver_shortplatform__;
-extern const char* __gver_cfgext__;
-extern const char* __gver_preversion__;
-extern const char* __gver_postversion__;
-extern int         __gver_major__;
-extern int         __gver_minor__;
-extern int         __gver_release__;
-extern const char* __gver_releasename__;
-extern const char* __gver_date__;
-extern const char* __gver_time__;
-extern const char* __gver_longpid__;
-extern const char* __gver_shortpid__;
-extern const char* __gver_ver__;
-extern const char* __gver_shortver__;
-
-#endif
+#endif // ifndef __GOLDED3_H

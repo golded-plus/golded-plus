@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -27,54 +26,46 @@
 
 #ifndef __gutlmisc_h
 #define __gutlmisc_h
-
-
 //  ------------------------------------------------------------------
 
 #include <gdefs.h>
 #include <gctype.h>
 #include <cstdlib>
-
-
 //  ------------------------------------------------------------------
 //  Prototypes
+uint32_t atoulx(const char * s);
 
-uint32_t atoulx(const char* s);
-
-inline word atow(const char* p)
+inline word atow(const char * p)
 {
     return (word)atoi(p);
 }
+
 inline int xtoi(char c)
 {
     return isdigit(c) ? (c - '0') : (g_toupper(c) - ('A' - 10));
 }
-inline int atox(const char* s)
+
+inline int atox(const char * s)
 {
     return (int)atoulx(s);
 }
 
-char* ltob(char* dst, uint32_t value, int fill=32);
-
-int GetYesno(const char* value);
+char * ltob(char * dst, uint32_t value, int fill = 32);
+int GetYesno(const char * value);
 int Pct(uint32_t x, uint32_t y);
 int tabstop(int col, int tabwidth);
-
-char* ggetosstring();
+char * ggetosstring();
 
 // Convert between Microsoft MKS format and long int
 dword B2L(dword b);
 dword L2B(dword l);
 
-inline void SwapWord32(uint32_t* dw)
+inline void SwapWord32(uint32_t * dw)
 {
     *dw = ((*dw) << 16) | ((*dw) >> 16);
 }
 
-
 //  ------------------------------------------------------------------
 
-#endif
-
+#endif // ifndef __gutlmisc_h
 //  ------------------------------------------------------------------
-

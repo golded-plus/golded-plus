@@ -1,4 +1,3 @@
-
 //  ------------------------------------------------------------------
 //  GoldED+
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -30,42 +29,35 @@
 #ifdef GOLD_SOUNDSUPPORT
     #include <gsndall.h>
 #endif
-
-
 //  ------------------------------------------------------------------
 
 #ifdef GOLD_SOUNDSUPPORT
-    gsound* snd = NULL;
+gsound * snd = NULL;
 #endif
-
-
 //  ------------------------------------------------------------------
 
-#if defined(__MSDOS__)
-    #define Beep(A,B) { sound(A); usleep(CFG ? B*CFG->beepfactor+1 : B*1000); }
-    #define Sleep(A)  { usleep(CFG ? A*CFG->beepfactor/1000+1 : A); }
-    #define NoSound() { nosound(); }
-#elif defined(__OS2__)
-    #define Beep(A,B) { DosBeep(A, CFG ? B*CFG->beepfactor/1000+1 : B); }
-    #define Sleep(A)  { usleep(CFG ? A*CFG->beepfactor/1000+1 : A); }
-    #define NoSound() { }
-#elif defined(__WIN32__)
-    #define Beep(A,B) { (Beep)(A, CFG ? B*CFG->beepfactor/1000+1 : B); }
-    #define Sleep(A)  { usleep(CFG ? A*CFG->beepfactor/1000+1 : A); }
-    #define NoSound() { }
+#if defined (__MSDOS__)
+#define Beep(A, B) {sound(A); usleep(CFG ? B * CFG->beepfactor + 1 : B * 1000);}
+#define Sleep(A) {usleep(CFG ? A * CFG->beepfactor / 1000 + 1 : A);}
+#define NoSound() {nosound();}
+#elif defined (__OS2__)
+#define Beep(A, B) {DosBeep(A, CFG ? B * CFG->beepfactor / 1000 + 1 : B);}
+#define Sleep(A) {usleep(CFG ? A * CFG->beepfactor / 1000 + 1 : A);}
+#define NoSound() {}
+#elif defined (__WIN32__)
+#define Beep(A, B) {(Beep)(A, CFG ? B * CFG->beepfactor / 1000 + 1 : B);}
+#define Sleep(A) {usleep(CFG ? A * CFG->beepfactor / 1000 + 1 : A);}
+#define NoSound() {}
 #else
-    #define Beep(A,B) { }
-    #define Sleep(A)  { }
-    #define NoSound() { }
+#define Beep(A, B) {}
+#define Sleep(A) {}
+#define NoSound() {}
 #endif
-
-
 //  ------------------------------------------------------------------
-
 void ResetSound(void)
 {
-
 #ifdef GOLD_SOUNDSUPPORT
+
     if(snd->is_installed())
     {
         while(snd->is_playing())
@@ -80,86 +72,105 @@ void ResetSound(void)
             }
         }
     }
+
     delete snd;
     snd = NULL;
 #endif
 }
 
-
 //  ------------------------------------------------------------------
-
 void InitSound()
 {
-
     // Find out if there are any sound files to be played
 #ifdef GOLD_SOUNDSUPPORT
     std::vector<GEvent>::iterator n;
+
     for(n = CFG->event.begin(); n != CFG->event.end(); n++)
     {
         if(n->play.type == PLAY_VOC)
         {
             snd = new gsound;
-            if (snd->is_installed())
+
+            if(snd->is_installed())
             {
-                if (not quiet)
+                if(not quiet)
+                {
                     STD_PRINTNL("* Soundcard support was successfully initialized.");
+                }
+
                 atexit(ResetSound);
             }
             else
             {
-                if (not quiet)
+                if(not quiet)
+                {
                     STD_PRINTNL("* Soundcard support could NOT be initialized!");
+                }
+
                 ResetSound();
             }
+
             break;
         }
     }
-#endif
-}
-
+#endif // ifdef GOLD_SOUNDSUPPORT
+} // InitSound
 
 //  ------------------------------------------------------------------
 //  Fill out a GPlay struct using a filename
-
-void FileToGPlay(GPlay* playbuf, char* filename)
+void FileToGPlay(GPlay * playbuf, char * filename)
 {
-
     if(strchr(CleanFilename(filename), '.') != NULL)
+    {
         playbuf->type = PLAY_VOC;
+    }
     else
     {
         playbuf->type = PLAY_DOS;
+
         if(strieql(filename, "TheEnd"))
+        {
             playbuf->effectno = SND_THEEND;
+        }
         else if(strieql(filename, "GotIt"))
+        {
             playbuf->effectno = SND_GOTIT;
+        }
         else if(strieql(filename, "TooBad"))
+        {
             playbuf->effectno = SND_TOOBAD;
+        }
         else if(strieql(filename, "ToYou"))
+        {
             playbuf->effectno = SND_TOYOU;
+        }
         else if(strieql(filename, "SayBiBi"))
+        {
             playbuf->effectno = SND_SAYBIBI;
+        }
         else if(strieql(filename, "SOS"))
+        {
             playbuf->effectno = SND_S_O_S;
+        }
         else
+        {
             playbuf->effectno = 0xFFFF;
+        }
     }
 
     strcpy(playbuf->file, filename);
-}
-
+} // FileToGPlay
 
 //  ------------------------------------------------------------------
 //  Handle event
-
 int HandleGEvent(uint event)
 {
-
     int retval = -1;     // Event could not be handled
 
     if(event == EVTT_BREAKLOOP)
     {
 #ifdef GOLD_SOUNDSUPPORT
+
         if(snd)
         {
             while(snd->is_playing())
@@ -174,6 +185,7 @@ int HandleGEvent(uint event)
                 }
             }
         }
+
 #endif
         return 0;
     }
@@ -181,8 +193,12 @@ int HandleGEvent(uint event)
     if(event == EVTT_STOPVOICE)
     {
 #ifdef GOLD_SOUNDSUPPORT
+
         if(snd)
+        {
             snd->stop();
+        }
+
 #endif
         return 0;
     }
@@ -190,11 +206,15 @@ int HandleGEvent(uint event)
     if(event == EVTT_REMOVEVOCBUF)
     {
 #ifdef GOLD_SOUNDSUPPORT
+
         if(snd)
         {
             if(not snd->is_playing())
+            {
                 snd->unload();
+            }
         }
+
 #endif
         return 0;
     }
@@ -202,16 +222,17 @@ int HandleGEvent(uint event)
     if(CFG)
     {
         std::vector<GEvent>::iterator n;
+
         for(n = CFG->event.begin(); n != CFG->event.end(); n++)
         {
             if(event == n->type)
             {
                 switch(n->command)
                 {
-                case EVTC_PLAY:
-                    n->play.Play();
-                    retval = 0;   // Event was found and handled
-                    break;
+                    case EVTC_PLAY:
+                        n->play.Play();
+                        retval = 0; // Event was found and handled
+                        break;
                 }
                 break;
             }
@@ -223,124 +244,122 @@ int HandleGEvent(uint event)
     }
 
     return retval;
-}
-
+} // HandleGEvent
 
 //  ------------------------------------------------------------------
 //  Make infernal noises
-
 int MakeNoise(int type)
 {
-
     int n;
 
     if((CFG and CFG->switches.get(beepnoises)) and not disablesound)
     {
-
         switch(type)
         {
+            case SND_SAYBIBI:
+                Beep(440, 111);
+                NoSound();
+                break;
 
-        case SND_SAYBIBI:
-            Beep(440, 111);
-            NoSound();
-            break;
+            case SND_TOYOU:
 
-        case SND_TOYOU:
-            for(n=100; n<800; n+=400)
-                Beep(n, 18);
-            for(; n>100; n-=400)
-                Beep(n, 18);
-            NoSound();
-            break;
+                for(n = 100; n < 800; n += 400)
+                {
+                    Beep(n, 18);
+                }
 
-        case SND_THEEND:
-            Beep(220, 111);
-            Beep(110, 167);
-            NoSound();
-            break;
+                for( ; n > 100; n -= 400)
+                {
+                    Beep(n, 18);
+                }
+                NoSound();
+                break;
 
-        case SND_GOTIT:
-            Beep(110, 56);
-            Beep(220, 56);
-            Beep(110, 56);
-            Beep(220, 111);
-            NoSound();
-            break;
+            case SND_THEEND:
+                Beep(220, 111);
+                Beep(110, 167);
+                NoSound();
+                break;
 
-        case SND_TOOBAD:
-            Beep(440, 111);
-            Beep(220, 111);
-            Beep(110, 167);
-            NoSound();
-            break;
+            case SND_GOTIT:
+                Beep(110, 56);
+                Beep(220, 56);
+                Beep(110, 56);
+                Beep(220, 111);
+                NoSound();
+                break;
 
-        case SND_S_O_S:
-            Beep(1000, 56);
-            Sleep(111);
-            Beep(1000, 56);
-            Sleep(111);
-            Beep(1000, 56);
-            Sleep(222);
-            Beep(1000, 167);
-            Sleep(167);
-            Beep(1000, 167);
-            Sleep(167);
-            Beep(1000, 167);
-            Sleep(222);
-            Beep(1000, 56);
-            Sleep(111);
-            Beep(1000, 56);
-            Sleep(111);
-            Beep(1000, 56);
-            NoSound();
-            break;
-        }
+            case SND_TOOBAD:
+                Beep(440, 111);
+                Beep(220, 111);
+                Beep(110, 167);
+                NoSound();
+                break;
+
+            case SND_S_O_S:
+                Beep(1000, 56);
+                Sleep(111);
+                Beep(1000, 56);
+                Sleep(111);
+                Beep(1000, 56);
+                Sleep(222);
+                Beep(1000, 167);
+                Sleep(167);
+                Beep(1000, 167);
+                Sleep(167);
+                Beep(1000, 167);
+                Sleep(222);
+                Beep(1000, 56);
+                Sleep(111);
+                Beep(1000, 56);
+                Sleep(111);
+                Beep(1000, 56);
+                NoSound();
+                break;
+        } // switch
     }
-    return(type);
-}
 
+    return type;
+} // MakeNoise
 
 //  ------------------------------------------------------------------
 //  Play a file
-
 int GPlay::Play() const
 {
-
     switch(type)
     {
+        case PLAY_DOS:
+            MakeNoise(effectno);
+            break;
 
-    case PLAY_DOS:
-        MakeNoise(effectno);
-        break;
+        case PLAY_VOC:
 
-    case PLAY_VOC:
-        if(not disablesound)
-        {
-#ifdef GOLD_SOUNDSUPPORT
-            if(snd)
+            if(not disablesound)
             {
-                snd->load(AddPath(CFG->soundpath, file));
-                snd->play();
-            }
+#ifdef GOLD_SOUNDSUPPORT
+
+                if(snd)
+                {
+                    snd->load(AddPath(CFG->soundpath, file));
+                    snd->play();
+                }
+
 #endif
-        }
-        break;
+            }
+
+            break;
     }
-
     return 0;
-}
-
+} // GPlay::Play
 
 //  ------------------------------------------------------------------
 //  Say a simple bibi
-
 void SayBibi()
 {
-
     if(CFG and CFG->switches.get(beepnoises))
+    {
         HandleGEvent(EVTT_SAYBIBI);
+    }
 }
 
-
 //  ------------------------------------------------------------------
-

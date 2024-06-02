@@ -1,5 +1,4 @@
 //  This may look like C code, but it is really -*- C++ -*-
-
 //  ------------------------------------------------------------------
 //  The Goldware Library
 //  Copyright (C) 1990-1999 Odinn Sorensen
@@ -31,126 +30,108 @@
 #include <gstrall.h>
 #include <glog.h>
 #include <gmoezyc.h>
-
-
 //  ------------------------------------------------------------------
-
-EzycWide* ezycomwide = NULL;
-EzycData* ezycomdata = NULL;
-int       ezycomdatano = 0;
-
-
+EzycWide * ezycomwide = NULL;
+EzycData * ezycomdata = NULL;
+int ezycomdatano      = 0;
 //  ------------------------------------------------------------------
-
-EzycHdr::EzycHdr()
-    : replyto(0)
-    , reply1st(0)
-    , startposition(0)
-    , messagelength(0)
-    , destnet()
-    , orignet()
-    , cost(0)
-    , msgattr(0)
-    , netattr(0)
-    , extattr(0)
+EzycHdr::EzycHdr() : replyto(0), reply1st(0), startposition(0), messagelength(0),
+    destnet(), orignet(), cost(0), msgattr(0), netattr(0), extattr(0)
 {
     memset(&posttimedate, 0, sizeof(posttimedate));
     memset(&recvtimedate, 0, sizeof(recvtimedate));
-    whoto[0] = NUL;
+    whoto[0]   = NUL;
     whofrom[0] = NUL;
     subject[0] = NUL;
 }
 
 //  ------------------------------------------------------------------
-
 void EzycomArea::data_open()
 {
-
-    wide = ezycomwide;
-    data = ezycomdata + (ezycomdatano++);
-    data->fhhdr = data->fhtxt = data->fhnow = -1;
-    data->omode = O_RDONLY;
-    data->smode = SH_DENYNO;
+    wide              = ezycomwide;
+    data              = ezycomdata + (ezycomdatano++);
+    data->fhhdr       = data->fhtxt = data->fhnow = -1;
+    data->omode       = O_RDONLY;
+    data->smode       = SH_DENYNO;
     data->timesposted = 0;
 }
 
-
 //  ------------------------------------------------------------------
-
 void EzycomArea::data_close()
 {
-
     ezycomdatano--;
 }
 
-
 //  ------------------------------------------------------------------
-
-char* EzycomArea::ret_mess_xxx(char* __path, byte __type)
+char * EzycomArea::ret_mess_xxx(char * __path, byte __type)
 {
-
     if(wide->ver >= 110)
     {
-        sprintf(__path, "%sAREA%u\\M%c%05u.BBS",
+        sprintf(__path,
+                "%sAREA%u\\M%c%05u.BBS",
                 wide->msgbasepath,
-                ((board()-1) / 100) + 1,
+                ((board() - 1) / 100) + 1,
                 (__type == 1) ? 'H' : 'T',
-                board()
-               );
+                board());
     }
     else
     {
-        sprintf(__path, "%sAREA%u\\MSG%c%03u.BBS",
+        sprintf(__path,
+                "%sAREA%u\\MSG%c%03u.BBS",
                 wide->msgbasepath,
-                ((board()-1) / 100) + 1,
+                ((board() - 1) / 100) + 1,
                 (__type == 1) ? 'H' : 'T',
-                (board() > 999) ? board()/10 : board()
-               );
+                (board() > 999) ? board() / 10 : board());
     }
+
     return __path;
 }
 
-
 //  ------------------------------------------------------------------
-
-char* EzycomArea::ret_mess_area(char* __path)
+char * EzycomArea::ret_mess_area(char * __path)
 {
-
-    sprintf(__path, "%sAREA%u",
-            wide->msgbasepath,
-            ((board()-1) / 100) + 1
-           );
+    sprintf(__path, "%sAREA%u", wide->msgbasepath, ((board() - 1) / 100) + 1);
     return __path;
 }
 
-
 //  ------------------------------------------------------------------
-
 void EzycomArea::raw_close()
 {
-
     GFTRK("EzycomRawClose");
 
-    if(data->fhhdr != -1)  ::close(data->fhhdr);
+    if(data->fhhdr != -1)
+    {
+        ::close(data->fhhdr);
+    }
+
     data->fhhdr = -1;
-    if(data->fhtxt != -1)  ::close(data->fhtxt);
+
+    if(data->fhtxt != -1)
+    {
+        ::close(data->fhtxt);
+    }
+
     data->fhtxt = -1;
-    if(data->fhnow != -1)  ::close(data->fhnow);
+
+    if(data->fhnow != -1)
+    {
+        ::close(data->fhnow);
+    }
+
     data->fhnow = -1;
+
     if(data->omode == O_WRONLY)
+    {
         remove(AddPath(wide->msgbasepath, "EZYMSG.NOW"));
+    }
 
     GFTRK(0);
-}
-
+} // EzycomArea::raw_close
 
 //  ------------------------------------------------------------------
-
-int EzycomArea::test_open(const char* __file, int __mode, int __share)
+int EzycomArea::test_open(const char * __file, int __mode, int __share)
 {
-
     GFTRK("EzycomTestOpen");
-
     int _fh;
     long _tries = 0;
     Path _path;
@@ -158,11 +139,10 @@ int EzycomArea::test_open(const char* __file, int __mode, int __share)
 
     do
     {
-
         _fh = ::sopen(_path, __mode, __share, S_STDRW);
+
         if(_fh == -1)
         {
-
             // Tell the world
             if((errno != EACCES) or (PopupLocked(++_tries, false, _path) == false))
             {
@@ -179,49 +159,52 @@ int EzycomArea::test_open(const char* __file, int __mode, int __share)
 
     // Remove the popup window
     if(_tries)
+    {
         PopupLocked(0, 0, NULL);
+    }
 
     GFTRK(0);
-
     return _fh;
-}
-
+} // EzycomArea::test_open
 
 //  ------------------------------------------------------------------
-
 int EzycomArea::raw_open()
 {
-
     GFTRK("EzycomRawOpen");
-
     int _tryagain = 0;
 
     do
     {
-
         int _sopen_access = data->omode | O_BINARY;
         int _sopen_permit = 0;
 
-        if(not fexist(ret_mess_xxx(data->ezyfile,1)))
+        if(not fexist(ret_mess_xxx(data->ezyfile, 1)))
         {
             _sopen_access |= O_CREAT;
-            _sopen_permit = S_STDRW;
+            _sopen_permit  = S_STDRW;
         }
 
         ret_mess_xxx(data->ezyfile, 1);
         data->fhhdr = ::sopen(data->ezyfile, _sopen_access, data->smode, _sopen_permit);
+
         if(data->fhhdr != -1)
         {
             ret_mess_xxx(data->ezyfile, 2);
-            data->fhtxt = ::sopen(data->ezyfile, _sopen_access, data->smode, _sopen_permit);
+            data->fhtxt = ::sopen(data->ezyfile,
+                                  _sopen_access,
+                                  data->smode,
+                                  _sopen_permit);
+
             if(data->fhtxt != -1)
             {
                 if(data->omode == O_WRONLY)
                 {
-
                     // Create semaphore file
                     byte _sema = 0;
-                    data->fhnow = ::sopen(AddPath(wide->msgbasepath, "EZYMSG.NOW"), O_WRONLY|O_CREAT|O_TRUNC|O_BINARY, WideSharemode, S_STDRW);
+                    data->fhnow = ::sopen(AddPath(wide->msgbasepath, "EZYMSG.NOW"),
+                                          O_WRONLY | O_CREAT | O_TRUNC | O_BINARY,
+                                          WideSharemode,
+                                          S_STDRW);
                     write(data->fhnow, &_sema, 1);  // Write some dummy data
                 }
 
@@ -229,13 +212,17 @@ int EzycomArea::raw_open()
                 return true;
             }
         }
+
         raw_close();
+
         if(fexist(AddPath(wide->msgbasepath, "EZYMSG.NOW")))
         {
             errno = EACCES;
             break;
         }
+
         Path _path;
+
         if(not is_dir(ret_mess_area(_path)))
         {
             mkdir(ret_mess_area(_path), S_IWUSR);
@@ -243,35 +230,26 @@ int EzycomArea::raw_open()
         }
     }
     while(_tryagain == 1);
-
     GFTRK(0);
-
     return false;
-}
-
+} // EzycomArea::raw_open
 
 //  ------------------------------------------------------------------
-
 void EzycomArea::test_raw_open(int __fileline)
 {
-
     GFTRK("EzycomTestRawOpen");
-
     int _isopen;
     long _tries = 0;
 
     do
     {
-
         _isopen = raw_open();
 
         if(not _isopen)
         {
-
             // Tell the world
             if((errno != EACCES) or PopupLocked(++_tries, false, data->ezyfile) == false)
             {
-
                 // User requested to exit
                 WideLog->erropen(__FILE__, __fileline);
                 WideLog->printf("! A Ezycom msgbase file could not be opened.");
@@ -285,111 +263,133 @@ void EzycomArea::test_raw_open(int __fileline)
 
     // Remove the popup window
     if(_tries)
+    {
         PopupLocked(0, 0, NULL);
+    }
 
     GFTRK(0);
-}
-
+} // EzycomArea::test_raw_open
 
 //  ------------------------------------------------------------------
-
 void EzycomExit()
 {
-
     if(ezycomwide)
+    {
         delete ezycomwide->user;
+    }
+
     throw_xrelease(ezycomwide);
     throw_xrelease(ezycomdata);
 }
 
-
 //  ------------------------------------------------------------------
-
-void EzycomInit(const char* msgbasepath, const char* userbasepath, int userno)
+void EzycomInit(const char * msgbasepath, const char * userbasepath, int userno)
 {
-
-    ezycomdata = (EzycData*)throw_calloc(3, sizeof(EzycData));
-    ezycomwide = (EzycWide*)throw_calloc(1, sizeof(EzycWide));
-
-    ezycomwide->msgbasepath = msgbasepath;
+    ezycomdata = (EzycData *)throw_calloc(3, sizeof(EzycData));
+    ezycomwide = (EzycWide *)throw_calloc(1, sizeof(EzycWide));
+    ezycomwide->msgbasepath  = msgbasepath;
     ezycomwide->userbasepath = userbasepath;
-    ezycomwide->userno = userno;
-
+    ezycomwide->userno       = userno;
     Path _path;
     *_path = NUL;
-    char* _ptr = getenv("EZY");
-    if(_ptr and *_ptr)
+    char * _ptr = getenv("EZY");
+
+    if(_ptr and * _ptr)
     {
         _ptr = strcpy(_path, _ptr);
-        char* _ptr2 = strchr(_ptr, ' ');
+        char * _ptr2 = strchr(_ptr, ' ');
+
         if(_ptr2)
+        {
             *_ptr2 = NUL;
+        }
+
         AddBackslash(_path);
     }
-    const char* _file = "";
+
+    const char * _file = "";
     _ptr = getenv("TASK");
-    if(_ptr and *_ptr)
+
+    if(_ptr and * _ptr)
     {
         char _tmp[20];
         sprintf(_tmp, "CONFIG.%u", atoi(_ptr));
         _file = AddPath(_path, _tmp);
     }
-    if(not fexist(_file))
-        _file = AddPath(_path, "CONFIG.EZY");
 
-    ezycomwide->ver = 102;
+    if(not fexist(_file))
+    {
+        _file = AddPath(_path, "CONFIG.EZY");
+    }
+
+    ezycomwide->ver     = 102;
     ezycomwide->maxmess = EZYC_MAXMESS102;
-    int _fh = ::sopen(_file, O_RDONLY|O_BINARY, WideSharemode, S_STDRD);
+    int _fh = ::sopen(_file, O_RDONLY | O_BINARY, WideSharemode, S_STDRD);
+
     if(_fh != -1)
     {
         char _verstr[9];
         read(_fh, _verstr, 9);
         close(_fh);
         strp2c(_verstr);
+
         if(strnicmp(_verstr, "1.10", 4) >= 0)
         {
-            ezycomwide->ver = 110;
+            ezycomwide->ver     = 110;
             ezycomwide->maxmess = EZYC_MAXMESS110;
         }
     }
 
     ezycomwide->user = new EzycomUser;
     throw_new(ezycomwide->user);
-
-    const char* _username = WideUsername[0];
+    const char * _username = WideUsername[0];
     ezycomwide->user->ver = ezycomwide->ver;
-    if (ezycomwide->userno == -1)
+
+    if(ezycomwide->userno == -1)
     {
-        ezycomwide->user->gufh = ::sopen(AddPath(ezycomwide->userbasepath, "USERS.BBS"), O_RDWR|O_CREAT|O_BINARY, WideSharemode, S_STDRW);
-        if (ezycomwide->user->gufh != -1)
+        ezycomwide->user->gufh = ::sopen(AddPath(ezycomwide->userbasepath, "USERS.BBS"),
+                                         O_RDWR | O_CREAT | O_BINARY,
+                                         WideSharemode,
+                                         S_STDRW);
+
+        if(ezycomwide->user->gufh != -1)
         {
-            ezycomwide->user->extfh = ::sopen(AddPath(ezycomwide->userbasepath, "USERSEXT.BBS"), O_RDWR|O_CREAT|O_BINARY, WideSharemode, S_STDRW);
+            ezycomwide->user->extfh = ::sopen(AddPath(ezycomwide->userbasepath,
+                                                      "USERSEXT.BBS"),
+                                              O_RDWR | O_CREAT | O_BINARY,
+                                              WideSharemode,
+                                              S_STDRW);
+
             if(ezycomwide->user->extfh != -1)
             {
                 ezycomwide->user->find(_username);
+
                 if(not ezycomwide->user->found)
                 {
-                    WideLog->printf("* User \"%s\" not found in %sUSERS.BBS.", _username, ezycomwide->userbasepath);
+                    WideLog->printf("* User \"%s\" not found in %sUSERS.BBS.",
+                                    _username,
+                                    ezycomwide->userbasepath);
                     ezycomwide->user->add(_username);
-                    WideLog->printf("* Now added with user number %u.", ezycomwide->user->index);
+                    WideLog->printf("* Now added with user number %u.",
+                                    ezycomwide->user->index);
                 }
+
                 close(ezycomwide->user->extfh);
             }
+
             close(ezycomwide->user->gufh);
         }
+
         ezycomwide->userno = ezycomwide->user->index;
     }
-}
-
+} // EzycomInit
 
 //  ------------------------------------------------------------------
-
 void EzycomArea::open()
 {
-
     GFTRK("EzycomOpen");
-
     isopen++;
+
     if(isopen > 2)
     {
         WideLog->ErrTest();
@@ -399,48 +399,57 @@ void EzycomArea::open()
         WideLog->printf("+ Advice: Report to the Author immediately.");
         TestErrorExit();
     }
+
     if(isopen == 1)
     {
         if(ispacked())
         {
             isopen--;
-            const char* newpath = Unpack(path());
+            const char * newpath = Unpack(path());
+
             if(newpath == NULL)
+            {
                 packed(false);
+            }
+
             set_real_path(newpath ? newpath : path());
             isopen++;
         }
+
         data_open();
         test_raw_open(__LINE__);
         scan();
     }
 
     GFTRK(0);
-}
-
+} // EzycomArea::open
 
 //  ------------------------------------------------------------------
-
 void EzycomArea::save_lastread()
 {
-
     GFTRK("EzycomSaveLastread");
+    int _fh = test_open(AddPath(wide->userbasepath, "LASTCOMB.BBS"),
+                        O_RDWR | O_CREAT | O_BINARY,
+                        SH_DENYNO);
 
-    int _fh = test_open(AddPath(wide->userbasepath, "LASTCOMB.BBS"), O_RDWR|O_CREAT|O_BINARY, SH_DENYNO);
     if(_fh != -1)
     {
-        word _lastread = (word)(Msgn->CvtReln(lastread)+1);
-        lseekset(_fh, wide->userno * (wide->maxmess / 16) * sizeof(EzycLast) +
+        word _lastread = (word)(Msgn->CvtReln(lastread) + 1);
+        lseekset(_fh,
+                 wide->userno * (wide->maxmess / 16) * sizeof(EzycLast) +
                  (((board() - 1) / 16) * sizeof(EzycLast) + sizeof(word)) +
-                 (board()-1) % 16 * sizeof(word)
-                );
+                 (board() - 1) % 16 * sizeof(word));
         write(_fh, &_lastread, sizeof(word));
         ::close(_fh);
     }
 
     if(data->timesposted)
     {
-        wide->user->extfh = ::sopen(AddPath(wide->userbasepath, "USERSEXT.BBS"), O_RDWR|O_BINARY, SH_DENYNO, S_STDRW);
+        wide->user->extfh = ::sopen(AddPath(wide->userbasepath, "USERSEXT.BBS"),
+                                    O_RDWR | O_BINARY,
+                                    SH_DENYNO,
+                                    S_STDRW);
+
         if(wide->user->extfh != -1)
         {
             wide->user->moveto(wide->userno);
@@ -451,14 +460,11 @@ void EzycomArea::save_lastread()
     }
 
     GFTRK(0);
-}
-
+} // EzycomArea::save_lastread
 
 //  ------------------------------------------------------------------
-
 void EzycomArea::close()
 {
-
     GFTRK("EzycomClose");
 
     if(isopen)
@@ -469,11 +475,13 @@ void EzycomArea::close()
             raw_close();
             Msgn->Reset();
             data_close();
+
             if(ispacked())
             {
                 CleanUnpacked(real_path());
             }
         }
+
         isopen--;
     }
     else
@@ -487,29 +495,22 @@ void EzycomArea::close()
     }
 
     GFTRK(0);
-}
-
+} // EzycomArea::close
 
 //  ------------------------------------------------------------------
-
 void EzycomArea::suspend()
 {
-
     GFTRK("EzycomSuspend");
-
     save_lastread();
     raw_close();
-
     GFTRK(0);
 }
 
-
 //  ------------------------------------------------------------------
-
 void EzycomArea::resume()
 {
-
     GFTRK("EzycomResume");
+
     if(not raw_open())
     {
         Path _path;
@@ -522,6 +523,5 @@ void EzycomArea::resume()
 
     GFTRK(0);
 }
-
 
 //  ------------------------------------------------------------------
