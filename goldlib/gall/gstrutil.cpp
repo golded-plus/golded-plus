@@ -877,7 +877,7 @@ int gsprintf(TCHAR* buffer, size_t sizeOfBuffer, const TCHAR* __file, int __line
         else if (ret >= sizeOfBuffer)
         {
             buffer[sizeOfBuffer-1] = '\0';
-            LOG.printf("! %s", gerrinfo("Line trunkated", __file, __line));
+            LOG.printf("! %s", gerrinfo("Line truncated", __file, __line));
             LOG.printf("! gsprintf(buffer,%i,%s,...): line trunkated to buffer size (need %i bytes).", sizeOfBuffer, format, ret);
         }
 
