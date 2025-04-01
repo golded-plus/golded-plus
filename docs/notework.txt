@@ -13,13 +13,6 @@ ______________________________________________________________________
 Legend: "-" - bugfix, "+" - new feature, "!" - important modification.
 ______________________________________________________________________
 
-+ Update the vsave and vrestore window buffer methods to use wide
-  character ncurses methods for builds with wide ncurses enabled.
-
-! Update the vsave and vrestore window buffer methods to use rows only
-  for capturing and restoring the characters instead of rows*cols loops.
-  Should improve scrolling expirience.
-
 + Updated Synchronet config parser to read msgs.ini config. Old format
   is also supported for backward compatibility.
 

@@ -1700,42 +1700,23 @@ vsavebuf* vsave(int srow, int scol, int erow, int ecol)
     if(erow == -1)  erow = gvid->numrows-1;
     if(ecol == -1)  ecol = gvid->numcols-1;
 
-    // Calculate the number of rows and columns to save
-    int num_rows = erow - srow + 1;
-    int num_cols = ecol - scol + 1;
+    vsavebuf* sbuf = (vsavebuf*)throw_xmalloc(sizeof(vsavebuf) + (erow - srow + 1) * (ecol - scol + 1) * sizeof(vatch));
 
-#if defined(__USE_NCURSES__) && defined(__USE_WIDE_NCURSES__)
-    vsavebuf *sbuf = reinterpret_cast<vsavebuf *>(throw_xmalloc(
-        sizeof(vsavebuf) + num_rows * (num_cols) * sizeof(cchar_t) +
-        sizeof(cchar_t)));
-#else
-    vsavebuf *sbuf = reinterpret_cast<vsavebuf *>(throw_xmalloc(
-        sizeof(vsavebuf) + num_rows * (num_cols) * sizeof(vatch) +
-        sizeof(vatch)));
-#endif
+    if(sbuf)
+    {
 
-    if (sbuf)
-      {
-#if defined(__USE_NCURSES__) && defined(__USE_WIDE_NCURSES__)
-      cchar_t *buf = reinterpret_cast<cchar_t *>(sbuf->data);
-#else
-      vatch *buf = sbuf->data;
-#endif
+        vatch* buf = sbuf->data;
 
-      sbuf->top = srow;
-      sbuf->left = scol;
-      sbuf->bottom = erow;
-      sbuf->right = ecol;
+        sbuf->top = srow;
+        sbuf->left = scol;
+        sbuf->bottom = erow;
+        sbuf->right = ecol;
+
 #if defined(__USE_NCURSES__)
 
-        for (int row = srow; row <= erow; row++) {
-#if defined(__USE_WIDE_NCURSES__)
-          mvin_wchnstr(row, scol, buf, num_cols);
-#else
-          mvinchnstr(row, scol, buf, num_cols);
-#endif
-          buf += num_cols;
-        }
+        for(int row=srow; row<=erow; row++)
+            for(int col=scol; col<=ecol; col++)
+                *buf++ = mvinch(row, col);
 
 #elif defined(__MSDOS__)
 
@@ -1832,6 +1813,7 @@ static void _vredraw(word* buf, int len1, int srow, int scol, int erow)
 }
 #endif
 
+
 //  ------------------------------------------------------------------
 //  Redraws a previously saved screen
 
@@ -1848,24 +1830,14 @@ void vrestore(vsavebuf* sbuf, int srow, int scol, int erow, int ecol)
     erow = sbuf->bottom;
     ecol = sbuf->right;
 
-#if defined(__USE_NCURSES__) && defined(__USE_WIDE_NCURSES__)
-    cchar_t *buf = reinterpret_cast<cchar_t *>(sbuf->data);
-#else
     vatch *buf = sbuf->data;
-#endif
 
 #if defined(__USE_NCURSES__)
-    int num_cols = ecol - scol + 1;
 
-    for (int row = srow; row <= erow; row++)
-    {
-#if defined(__USE_WIDE_NCURSES__)
-      mvadd_wchnstr(row, scol, buf, num_cols);
-#else
-      mvaddchnstr(row, scol, buf, num_cols);
-#endif
-      buf+=num_cols;
-    }
+    for(int row=srow; row<=erow; row++)
+        for(int col=scol; col<=ecol; col++)
+            mvaddch(row, col, *buf++);
+
     refresh();
 
 #elif defined(__MSDOS__)
