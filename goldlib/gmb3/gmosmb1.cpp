@@ -446,6 +446,9 @@ int SMBArea::load_msg(gmsg* msg)
             if(not strncmp((char *)smsg.hfield_dat[i], "Via:", 4))
                 break;
             sprintf(buf, "\001%s\r", (char *)smsg.hfield_dat[i]);
+            goto add;
+        case FIDOCHARSET:
+            sprintf(buf, "\001CHRS: %s\r", (char *)smsg.hfield_dat[i]);
 add:
             outlen = strlen(buf);
             msg->txt = (char *)throw_realloc(msg->txt, txt_len+outlen);
@@ -755,6 +758,15 @@ void SMBArea::save_hdr(int mode, gmsg* msg)
                 while(fbuf[m] and not iscntrl(fbuf[m])) m++;
                 if(m != l)
                     smb_hfield(&smsg, FIDOPID, m-l, fbuf+l);
+            }
+            else if(not strncmp(fbuf+l, "CHRS:", 5))
+            {
+                l += 5;
+                while(fbuf[l] and fbuf[l] == ' ') l++;
+                m = l;
+                while(fbuf[m] and not iscntrl(fbuf[m])) m++;
+                if(m != l)
+                    smb_hfield(&smsg, FIDOCHARSET, m-l, fbuf+l);
             }
             else
             {

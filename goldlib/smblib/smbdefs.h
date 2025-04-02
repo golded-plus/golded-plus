@@ -249,6 +249,7 @@
 #define FIDOREPLYID         0xa5
 #define FIDOPID             0xa6
 #define FIDOFLAGS           0xa7
+#define FIDOCHARSET         0xa9
 
 #define RFC822HEADER        0xb0
 #define RFC822MSGID         0xb1
