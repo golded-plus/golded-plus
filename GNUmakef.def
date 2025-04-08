@@ -115,6 +115,7 @@ ifeq ($(PLATFORM),sun) # SUN Solaris
     CFLAGS+=-D__SUNOS__ -D__UNIX__ -DUNIX
     CFLAGS+=-DHAVE_SNPRINTF -DHAVE_VSNPRINTF -DHAVE_STDARG_H
     ifeq ($(WIDE_NCURSES),1)
+        CPPFLAGS+=-D__USE_WIDE_NCURSES__
         LIBCURSES=-L/opt/csw/lib -lncursesw
     else
         LIBCURSES=-L/opt/csw/lib -lncurses
@@ -137,6 +138,7 @@ ifeq ($(PLATFORM),osx) # Mac OSX
     OBJEXT=.o
     LIBEXT=.a
     ifeq ($(WIDE_NCURSES),1)
+        CPPFLAGS+=-D__USE_WIDE_NCURSES__
         LIBCURSES=-lncursesw
     else
         LIBCURSES=-lncurses
@@ -160,6 +162,7 @@ else                   # Linux, *BSD or another unix-like OS
     LIBEXT=.a
     CFLAGS+=-DHAVE_SNPRINTF -DHAVE_VSNPRINTF -DHAVE_STDARG_H
     ifeq ($(WIDE_NCURSES),1)
+        CPPFLAGS+=-D__USE_WIDE_NCURSES__
         CFLAGS+=-I/usr/include/ncursesw/
         LIBCURSES=-lncursesw
     else

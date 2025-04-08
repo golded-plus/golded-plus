@@ -837,16 +837,14 @@ int gsprintf(TCHAR* buffer, size_t sizeOfBuffer, const TCHAR* __file, int __line
         ret = _vsnprintf(b1, sizeOfBuffer+1, format, argptr);
         if (ret == -1 || ret >= sizeOfBuffer) // Microsoft implementation returns -1 when buffer overflow.
         {
+            if (ret < 0 && errno != EINVAL)
+				ret = _vscprintf(format, argptr); //only for LOG message - symbols count
+
             strncpy(buffer,b1,endOfBuffer);
             buffer[endOfBuffer] = '\0';  // Microsoft implementation don't write final '\0' when buffer full.
-            if (b1[sizeOfBuffer] && strlen(buffer)>=endOfBuffer)
-            {
-                LOG.printf("! %s", gerrinfo("Memory error", __file, __line));
-                LOG.printf("! gsprintf(buffer,%i,%s,...): buffer overflow, result in next line:", sizeOfBuffer, format);
-                LOG.printf("! %s", buffer);
-                if (sizeOfBuffer>17) memcpy(buffer, " ERROR, see log! ", 17);
-                else if (sizeOfBuffer>7) memcpy(buffer," ERROR ", 7);
-            }
+
+            LOG.printf("! %s", gerrinfo("Line truncated", __file, __line));
+            LOG.printf("! gsprintf(buffer,%i,%s,...): line truncated to buffer size (need %i bytes).", sizeOfBuffer, format, ret);
         }
         else if (ret < 0)
         {
