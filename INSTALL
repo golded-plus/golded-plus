@@ -41,7 +41,9 @@ verified on gcc, clang and msvc with corresponding sdk's.
 (see below for a note about it).
 
 4. CMake build process.
-
+    
+    First, copy golded3\mygolded.__h to golded3\mygolded.h and edit last to adjust
+it for yourself (put your name, FTN address and e-mail).
     Make a separate folder for building and chdir into it:
         >   mkdir build && cd build
 run cmake tool to generate native build system and obtain environment 
