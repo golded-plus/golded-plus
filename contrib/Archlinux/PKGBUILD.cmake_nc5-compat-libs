@@ -3,7 +3,7 @@ pkgver=r1651.1e0fab3
 pkgrel=1
 pkgdesc="golded-plus Fidonet Mail Reader/Editor"
 arch=('i686' 'x86_64' 'aarch64')
-url="http://bbconf.sourceforge.net/"
+url="https://github.com/golded-plus/golded-plus"
 license=('GPL2')
 source=(
     "${pkgname}::git+https://github.com/golded-plus/golded-plus.git"
