@@ -1,0 +1,77 @@
+
+                          #       #             #
+   FTN editor             #       #             #
+                          #       #             #
+             ###    ###   #    ####   ###    ####
+            #   #  #   #  #   #   #  #   #  #   #
+            #   #  #   #  #   #   #  #####  #   #
+            #   #  #   #  #   #   #  #      #   #
+             ####   ###    ##  ####   ###    ####
+                #                                
+            #   #   1.1.5-20250407               
+             ###               ...at the moment  
+             
+             
+             --: INSTALLATION INSTRUCTION :--
+             
+  
+1. Get sources
+
+    The official source tree is located now on github repository. If you
+are not familiar with git and it's checkout process we highly recommend
+you to get latest (g)zipped source tree from the master branch of the
+repo. Just go to https://github.com/golded-plus/golded-plus and choose
+download method you prefer.
+
+2. Installation methods.
+
+    There are several methods to build binaries from obtained source. 
+The recommended and most robust is to use cmake build utility, which is
+universal, multiplatform and easy to use.
+    Second (legacy) method is described in docs/building.txt and must be
+used anywhere when cmake is missing. It uses native build methods 
+depending on host system and architecture. 
+
+3. Prerequisites.
+
+    Of course, C++ compiler with standart libs and headers. Builds are 
+verified on gcc, clang and msvc with corresponding sdk's. 
+    CMake as a build system
+    For *nixes you will need a ncurses library, built with legacy ABI v5
+(see below for a note about it).
+
+4. CMake build process.
+
+    Make a separate folder for building and chdir into it:
+        >   mkdir build && cd build
+run cmake tool to generate native build system and obtain environment 
+variables:
+        >   cmake -DCMAKE_BUILD_TYPE:STRING=Release ..
+the "-DCMAKE_BUILD_TYPE:STRING=Release" sets the build environment to 
+link against orbitrary runtime libs, as the debugging ones may be
+absent on the target system. The two-dots arg ".." represents the 
+location of CMakeLists.txt file in the root of the source tree.
+    Now we are ready to build:
+        >   cmake --build . -j 4
+Where "-j 4" is added to parallelize compiling on multithreaded 
+multicore system.
+    
+    After successful build you can get your binaries from golded3,rddt
+and goldnode folders inside build folder, or, if you add "-t package"
+to the last command - in the zipped file nearby.
+    
+5. NCURSES ABI support.
+
+    Ncurses library is known for it long-time support but new major 
+release of ncurses brought up new ABI with versioned symbols in libs. 
+New ncurses can be built up with ABIv5 support included (which most 
+distros have), so linking against libncursesw is (in most cases) normal.
+But if you have ncurses6 library without legacy ABIv5 support it would
+cause some artifacts on message scrolling, so we hightly recommend you 
+to seek for a compatibility package or building your own ncurses to 
+bundle it with golded.
+    We are working on this.
+    * some Archlinux PKGBUILD's included to contrib folder represent 
+different ways to make golded working - with different make approaches 
+and with ncurses-6 bundled or with dependancy to ncurses5-compat-libs 
+aur package.
