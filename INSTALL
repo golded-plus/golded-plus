@@ -8,7 +8,7 @@
             #   #  #   #  #   #   #  #      #   #
              ####   ###    ##  ####   ###    ####
                 #                                
-            #   #   1.1.5-20250409               
+            #   #   1.1.5               
              ###               ...at the moment  
              
              
@@ -54,8 +54,8 @@ link against orbitrary runtime libs, as the debugging ones may be
 absent on the target system. The two-dots arg ".." represents the 
 location of CMakeLists.txt file in the root of the source tree.
     Now we are ready to build:
-        >   cmake --build . -j 4
-Where "-j 4" is added to parallelize compiling on multithreaded 
+        >   cmake --build .
+You can add "-j <jobs>" to parallelize compiling on multithreaded 
 multicore system.
     
     After successful build you can get your binaries from golded3,rddt
