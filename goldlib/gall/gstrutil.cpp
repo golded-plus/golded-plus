@@ -838,7 +838,7 @@ int gsprintf(TCHAR* buffer, size_t sizeOfBuffer, const TCHAR* __file, int __line
         if (ret == -1 || ret >= sizeOfBuffer) // Microsoft implementation returns -1 when buffer overflow.
         {
             if (ret < 0 && errno != EINVAL)
-				ret = _vscprintf(format, argptr); //only for LOG message - symbols count
+                ret = _vsnprintf(NULL, 0, format, argptr); //only for LOG message - symbols count
 
             strncpy(buffer,b1,endOfBuffer);
             buffer[endOfBuffer] = '\0';  // Microsoft implementation don't write final '\0' when buffer full.
