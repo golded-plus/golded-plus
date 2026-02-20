@@ -2478,19 +2478,23 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode)
                                         strxcpy(chsbuf, strrword(mime_charset+8), sizeof(chsbuf));
                                     if(striinc("8859", chsbuf))
                                         ISO2Latin(chsbuf, chsbuf);
-                                    chslev = LoadCharset(chsbuf, CFG->xlatlocalset);
-                                    if(not chslev)
+                                    // Only set from RFC charset if not already set by CHRS/CHARSET kludge
+                                    if (*msg->charset == NUL)
                                     {
-                                        strxcpy(chsbuf, AA->Xlatimport(), sizeof(chsbuf));
                                         chslev = LoadCharset(chsbuf, CFG->xlatlocalset);
+                                        if(not chslev)
+                                        {
+                                           strxcpy(chsbuf, AA->Xlatimport(), sizeof(chsbuf));
+                                           chslev = LoadCharset(chsbuf, CFG->xlatlocalset);
+                                        }
+                                        if(chslev)
+                                        {
+                                            level = msg->charsetlevel = chslev;
+                                            strcpy(msg->charset, chsbuf);
+                                        }
+                                        if(*msg->charset == NUL)
+                                            strcpy(msg->charset, chsbuf);
                                     }
-                                    if(chslev)
-                                    {
-                                        level = msg->charsetlevel = chslev;
-                                        strcpy(msg->charset, chsbuf);
-                                    }
-                                    if(*msg->charset == NUL)
-                                        strcpy(msg->charset, chsbuf);
                                     gotmime = true;
                                 }
                                 else if(check_multipart(ptr, boundary))
