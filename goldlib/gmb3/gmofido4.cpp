@@ -62,6 +62,7 @@ void FidoArea::unlock()
 
 void FidoArea::save_message(int __mode, gmsg* __msg, FidoHdr& __hdr)
 {
+    GFTRK("FidoSaveMessage");
 
     // Build message filename
     Path _msgfile;
@@ -264,9 +265,88 @@ void FidoArea::del_msg(gmsg* __msg)
 
     FidoHdr _hdr;
     save_message(GMSG_HDR | GMSG_DELETE, __msg, _hdr);
+
+    // Determine the highest remaining message number and the highest
+    // remaining message number that is lower than the deleted message
+    uint32_t _deleted_msgno = __msg->msgno;
+    word _max_msgno = 0;
+    word _prev_msgno = 0;
+    uint _count = Msgn->Count();
+
+    if (_count > 0) {
+        _max_msgno = (word)Msgn->at(_count - 1);
+        if (_max_msgno == _deleted_msgno) {
+            _max_msgno = (word)((_count > 1) ? Msgn->at(_count - 2) : 0);
+        }
+
+        // Binary search for the largest message number less than _deleted_msgno
+        int left = 0, right = _count - 1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            uint32_t val = Msgn->at(mid);
+            if (val < _deleted_msgno) {
+                _prev_msgno = (word)val;
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+    }
+
+    // Update lastread pointers for all users in the lastread file.
+    int _fh = ::sopen(AddPath(real_path(), wide->fidolastread), O_RDWR|O_BINARY, WideSharemode, S_STDRW);
+    if(_fh != -1)
+    {
+        // Get the file size to determine how many user entries exist
+        long _filesize = filelength(_fh);
+        long _numusers = _filesize / (long)sizeof(word);
+
+        if(_numusers > 0)
+        {
+            word* _lr_array = new word[_numusers];
+
+            // Read the entire lastread file into memory
+            lseekset(_fh, 0);
+            if(read(_fh, _lr_array, _numusers * sizeof(word)) == (int)(_numusers * sizeof(word)))
+            {
+                bool _changed = false;
+
+                // Scan through all user entries
+                for(long _u = 0; _u < _numusers; _u++)
+                {
+                    // If this user's lastread points to the deleted message,
+                    // update it to the next lower existing message number.
+                    if(_lr_array[_u] == (word)_deleted_msgno)
+                    {
+                        _lr_array[_u] = _prev_msgno;
+                        _changed = true;
+                    }
+
+                    // If a user's lastread pointer is higher than the maximum
+                    // available message (e.g., due to corruption), set it to max.
+                    if(_lr_array[_u] > _max_msgno)
+                    {
+                        _lr_array[_u] = _max_msgno;
+                        _changed = true;
+                    }
+                }
+
+                // If any pointers were updated, write the array back to disk
+                if(_changed)
+                {
+                    lseekset(_fh, 0);
+                    write(_fh, _lr_array, _numusers * sizeof(word));
+                }
+            }
+
+            delete[] _lr_array;
+        }
+
+        ::close(_fh);
+    }
+
+    GFTRK(0);
 }
-
-
 //  ------------------------------------------------------------------
 
 void FidoArea::new_msgno(gmsg* __msg)

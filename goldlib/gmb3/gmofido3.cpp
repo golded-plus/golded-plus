@@ -36,6 +36,7 @@
 
 int FidoArea::load_message(int __mode, gmsg* __msg, FidoHdr& __hdr)
 {
+    GFTRK("FidoLoadMessage");
 
     // Build message filename
     Path _msgfile;
