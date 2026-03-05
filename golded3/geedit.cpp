@@ -114,7 +114,12 @@ void IEclass::setlinetype(Line* __line)
 
     __line->type &= ~(GLINE_ALL|GLINE_TEAR|GLINE_ORIG|GLINE_TAGL);
 
-    if (is_quote(__line->txt.c_str()) &&
+    // Treat UUE Encoded Payload as strict un-wrappable hard lines unconditionally
+    if (is_uue_line(__line->txt.c_str()))
+    {
+        __line->type |= GLINE_HARD;
+    }
+    else if (is_quote(__line->txt.c_str()) &&
             is_quote2(__line, __line->txt.c_str()))
     {
         __line->type |= GLINE_QUOT;

@@ -373,6 +373,65 @@ void title_shadow()
     w_shadow();
 }
 
+//  ------------------------------------------------------------------
+// UUE character decode: maps ASCII to 6-bit value, -1 = invalid.
+static int uu_xlat(unsigned char c)
+{
+    if (c >= ' ' && c < (' ' + 64))     return c - ' ';
+    if (c >= '`' && c < ('`' + 32))     return c - '`'; // lowercase alias
+    return -1;
+}
+
+// UUE Detection Heuristic
+bool is_uue_line(const char* ptr)
+{
+    if (!ptr || !*ptr) return false;
+
+    const unsigned char* s = (const unsigned char*)ptr;
+    int linelen = 0;
+    while (s[linelen] && s[linelen] != '\r' && s[linelen] != '\n') {
+        linelen++;
+    }
+
+    if (linelen == 0) return false;
+
+    int decoded_bytes = uu_xlat(s[0]);
+    if (decoded_bytes < 0 || decoded_bytes > 45) return false;
+
+    // An empty line encoding 0 bytes (e.g. at the end of UUE blocks)
+    if (decoded_bytes == 0) return (linelen <= 2);
+
+    int expected = 1 + ((decoded_bytes + 2) / 3) * 4;
+    int datalen = linelen;
+
+    // Tolerate one trailing checksum character
+    if (datalen == expected + 1) datalen = expected;
+
+    bool length_ok = false;
+    if (datalen == expected) {
+        length_ok = true;
+    } else {
+        int max_expected = 61; // 1 + ceil(45/3)*4
+        if (datalen > expected && datalen <= max_expected) {
+            length_ok = true;
+        } else {
+            // Padding variance handling
+            switch (decoded_bytes % 3) {
+                case 1: if (expected - 2 == datalen) length_ok = true; break;
+                case 2: if (expected - 1 == datalen) length_ok = true; break;
+            }
+        }
+    }
+
+    if (!length_ok) return false;
+
+    // Validate overall data stream
+    for (int i = 0; i < datalen; i++) {
+        if (uu_xlat(s[i]) < 0) return false;
+    }
+
+    return true;
+}
 
 //  ------------------------------------------------------------------
 
@@ -395,12 +454,17 @@ int IsQuoteChar(const char* s)
 
 int is_quote(const char* ptr)
 {
+    // Prevent corrupting UUE Lines
+    if (is_uue_line(ptr)) return false;
 
     const char* endptr = ptr + 11;
 
     // Skip leading whitespace
     while((*ptr == ' ') or (*ptr == LF) or issoftcr(*ptr))
         ptr++;
+
+    // Prevent corrupting UUE Lines with accidental leading whitespace
+    if (is_uue_line(ptr)) return false;
 
     // Check for empty string
     if((*ptr == NUL) or (ptr >= endptr))
@@ -453,6 +517,9 @@ int is_quote(const char* ptr)
 
 bool is_quote2(Line* line, const char* ptr)
 {
+    // Prevent treating UUE lines as quotes
+    if (is_uue_line(ptr)) return false;
+
     if (!CFG->quoteusenewai) return true;
 
     char *head = (char *)ptr;

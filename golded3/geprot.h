@@ -467,6 +467,7 @@ bool  edit_pathname(char* buf, int buf_size, char* title, int helpcat);
 int   GetAkaNo(const ftn_addr& __aka);
 int   GetQuotestr(const char* ptr, char* qbuf, uint* qlen);
 int   cmp_quotes(char* q1, char* q2);
+bool  is_uue_line(const char* ptr);
 int   is_quote(const char* ptr);
 bool  is_quote2(Line* line, const char* ptr);
 int   IsQuoteChar(const char* s);

@@ -2167,6 +2167,10 @@ static bool check_multipart(const char* ptr, char* boundary)
 inline bool put_on_new_line(const char *ptr)
 {
 
+    // Never allow UUE encodings to be concatenated behind unwrapped strings
+    if (is_uue_line(ptr))
+        return true;
+
     if((*ptr == CR) or
             (*ptr == CTRL_A) or
             is_quote(ptr) or
