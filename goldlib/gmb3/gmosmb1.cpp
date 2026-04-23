@@ -38,6 +38,69 @@
 smb_t* smbdata = NULL;
 int smbdatano = 0;
 
+//  ------------------------------------------------------------------
+//  Decode Synchronet SMB 3.10+ when_written timestamps.
+//
+//  Synchronet changed when_written.time from a plain Unix time_t to a packed
+//  local wall-clock format for SMB v3.10+. In that format, the 16 bits that
+//  used to be the upper half of netattr now carry the year, while the low
+//  26 bits of when_written.time carry month/day/hour/minute/second.
+//
+//  Older GoldED+ code treated when_written.time as a raw Unix timestamp,
+//  which causes imported Synchronet messages to display as 1970-era dates.
+//
+//  Existing/legacy SMB messages are still stored as normal Unix timestamps.
+//  Synchronet detects those by the presence of bits outside the packed-date
+//  mask. We mirror that logic here.
+//  ------------------------------------------------------------------
+
+static const uint32_t SMB_DATE_MON_SHIFT = 22;
+static const uint32_t SMB_DATE_DAY_SHIFT = 17;
+static const uint32_t SMB_DATE_HR_SHIFT  = 12;
+static const uint32_t SMB_DATE_MIN_SHIFT = 6;
+static const uint32_t SMB_DATE_SEC_SHIFT = 0;
+
+static const uint32_t SMB_DATE_MON_MASK = 0x03C00000UL;
+static const uint32_t SMB_DATE_DAY_MASK = 0x003E0000UL;
+static const uint32_t SMB_DATE_HR_MASK  = 0x0001F000UL;
+static const uint32_t SMB_DATE_MIN_MASK = 0x00000FC0UL;
+static const uint32_t SMB_DATE_SEC_MASK = 0x0000003FUL;
+static const uint32_t SMB_DATE_MASK     = (SMB_DATE_MON_MASK | SMB_DATE_DAY_MASK | SMB_DATE_HR_MASK | SMB_DATE_MIN_MASK | SMB_DATE_SEC_MASK);
+
+static time32_t smb_written_time_to_golded(const msghdr_t& hdr)
+{
+    const time32_t raw = hdr.when_written.time;
+
+    // Legacy SMB messages store a normal Unix timestamp directly.
+    if(raw & ~SMB_DATE_MASK)
+        return raw;
+
+    // Synchronet SMB 3.10+ stores the year in the upper 16 bits of netattr.
+    // GoldED's older headers still see netattr as a 32-bit field, so we can
+    // recover the year from the high word.
+    const uint16_t year = (uint16_t)((hdr.netattr >> 16) & 0xFFFFU);
+    if(year < 1970 || year > 9999)
+        return raw;
+
+    struct tm tp;
+    memset(&tp, 0, sizeof(tp));
+    tp.tm_year = (int)year - 1900;
+    tp.tm_mon  = (int)((raw & SMB_DATE_MON_MASK) >> SMB_DATE_MON_SHIFT) - 1;
+    tp.tm_mday = (int)((raw & SMB_DATE_DAY_MASK) >> SMB_DATE_DAY_SHIFT);
+    tp.tm_hour = (int)((raw & SMB_DATE_HR_MASK)  >> SMB_DATE_HR_SHIFT);
+    tp.tm_min  = (int)((raw & SMB_DATE_MIN_MASK) >> SMB_DATE_MIN_SHIFT);
+    tp.tm_sec  = (int)((raw & SMB_DATE_SEC_MASK) >> SMB_DATE_SEC_SHIFT);
+    tp.tm_isdst = -1;
+
+    return gmktime(&tp);
+}
+
+static time32_t smb_imported_time_to_golded(const msghdr_t& hdr)
+{
+    return hdr.when_imported.time;
+}
+
+
 
 //  ------------------------------------------------------------------
 
@@ -353,16 +416,8 @@ int SMBArea::load_hdr(gmsg* __msg, smbmsg_t *smsg)
     __msg->attr.cfm(smsgp->hdr.auxattr & MSG_CONFIRMREQ);
     __msg->attr.tfs(smsgp->hdr.auxattr & MSG_TRUNCFILE);
 
-    time32_t a  = smsgp->hdr.when_written.time;
-    struct tm tp;
-    ggmtime(&tp, &a);
-    tp.tm_isdst = -1;
-    time32_t b  = gmktime(&tp);
-    __msg->written = a + a - b;
-    a = smsgp->hdr.when_imported.time;
-    ggmtime(&tp, &a);
-    b = gmktime(&tp);
-    __msg->arrived = a + a - b;
+    __msg->written = smb_written_time_to_golded(smsgp->hdr);
+    __msg->arrived = smb_imported_time_to_golded(smsgp->hdr);
     __msg->received = 0;
 
     if(not smsg)
@@ -1076,9 +1131,11 @@ Line* SMBArea::make_dump_msg(Line*& lin, gmsg* msg, char* lng_head)
     line = AddLineF(line, "Attr              : %04Xh", smsg.hdr.attr);
     line = AddLineF(line, "AUXAttr           : %04Xh", smsg.hdr.auxattr);
     line = AddLineF(line, "NetAttr           : %04Xh", smsg.hdr.netattr);
-    gctime(buf, ARRAYSIZE(buf), &smsg.hdr.when_written.time);
+    time32_t written = smb_written_time_to_golded(smsg.hdr);
+    gctime(buf, ARRAYSIZE(buf), &written);
     line = AddLineF(line, "Written           : %s", buf);
-    gctime(buf, ARRAYSIZE(buf), &smsg.hdr.when_imported.time);
+    time32_t imported = smb_imported_time_to_golded(smsg.hdr);
+    gctime(buf, ARRAYSIZE(buf), &imported);
     line = AddLineF(line, "Imported          : %s", buf);
     line = AddLineF(line, "Number            : %d (%d)", smsg.hdr.number, (int32_t)(ftell(data->sid_fp)/sizeof(idxrec_t)));
     line = AddLineF(line, "Thread orig       : %d", smsg.hdr.thread_orig);
