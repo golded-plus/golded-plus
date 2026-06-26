@@ -1,71 +1,60 @@
-# New ports collection makefile for: GoldED+
-# Date created:        4 June 2003
-# Whom:                alexander smishlajev
-#
-# $FreeBSD$
-#
+PORTNAME=       golded+
+PORTVERSION=    1.1.5.20260425
+CATEGORIES=     news mail
 
-PORTNAME=	golded
-PORTVERSION=	1.1.5.1.$(PORTSNAPSHOT)
-CATEGORIES=	ftn
-MASTER_SITES=	https://github.com/golded-plus/
-DISTNAME=	gps$(PORTSNAPSHOT)
+MAINTAINER=     ports@FreeBSD.org
+COMMENT=        GoldEd+ (FTN message editor)
+WWW=            https://github.com/golded-plus/golded-plus
 
-MAINTAINER=	alex@tycobka.lv
-COMMENT=	Full-featured mail/news reader for Fidonet and Internet
+# GoldED+ uses the GNU General Public License v2
+LICENSE=        GPLv2
+LICENSE_FILE=   ${WRKSRC}/docs/copying
 
-PORTSNAPSHOT=	0
-USE_BZIP2=	yes
+USES=           gmake ncurses
 
-MAN1=		golded.1 goldnode.1 rddt.1
-MANCOMPRESSED=	no
-USE_GMAKE=	yes
-NO_WRKSUBDIR=	yes
-USE_REINPLACE=	yes
+USE_GITHUB=     yes
+GH_ACCOUNT=     golded-plus
+GH_PROJECT=     golded-plus
+GH_TAGNAME=     golded-plus-1.1.5-20260425
 
-DOCS=		copying copying.lib license.txt notework.txt rusfaq.txt tips.txt
-DOCDIR=		$(PREFIX)/share/golded
+SNAPDATE=       20260425
+
+DOCS_DOCS=      copying copying.lib license.txt notework.txt rusfaq.txt tips.txt
+DOCS_MANUALS=   gold_ref.txt gold_usr.txt
+PORTDOCS=       ${DOCS_DOCS} ${DOCS_MANUALS}
+PORTEXAMPLES=   *
+
+OPTIONS_DEFINE= DOCS EXAMPLES KOI8
+OPTIONS_DEFAULT=DOCS EXAMPLES
+KOI8_DESC=      Enable KOI8-R charset support
 
 do-configure:
-	@${SED} \
-	  -e 's,^\(#define __GVER_VENDOR_NAME__\).*,\1 "Alexander S. Aganichev",' \
-	  -e 's,\(#define __GVER_VENDOR_FIDO__\).*,\1 "2:5020/201.58",' \
-	  -e 's,\(#define __GVER_VENDOR_EMAIL__\).*,\1 "asa@users.sf.net",' \
-	  -e 's,\(#define __GVER_RELEASENAME__\).*,\1 "FreeBSD port",' \
-	 <${WRKSRC}/golded3/mygolded.__h >${WRKSRC}/golded3/mygolded.h
-.if defined(USE_KOI8)
-	@${REINPLACE_CMD} -e 's,#-DKOI8,-DKOI8,' ${WRKSRC}/GNUmakef.def
-.endif
+        @${SED} \
+        -e 's,^\(#define __GVER_VENDOR_NAME__\).*,\1 "",' \
+        -e 's,^\(#define __GVER_VENDOR_FIDO__\).*,\1 "",' \
+        -e 's,^\(#define __GVER_VENDOR_EMAIL__\).*,\1 "${MAINTAINER}",' \
+        -e 's,^\(#define __GVER_RELEASENAME__\).*,\1 "Golded+ FreeBSD port",' \
+        -e 's,^\(#define __GVER_POSTVERSION__\).*,\1 "-${SNAPDATE}",' \
+        <${WRKSRC}/golded3/mygolded.__h >${WRKSRC}/golded3/mygolded.h
 
-# snapshot distribution uses CRLF line endings but gcc requires LF
-# remove CR characters from all sources
-# XXX is it possible to match \r?  how?
-pre-build:
-	@${FIND} ${WRKSRC} -name '*.cpp' -or -name '*.c' -or -name '*.h' \
-	  -or -name '*.1' -or -name '*.txt' \
-	  -or -name '*.cfg' -or -name '*.tpl' \
-	  -or -name '*.chs' -or -name '*.esc' \
-	 | ${XARGS} ${REINPLACE_CMD} -e 's,[[:cntrl:]]$$,,'
-	@${FIND} ${WRKSRC} -name '*.bak' -delete
+.include <bsd.port.options.mk>
+
+do-configure-KOI8-on:
+        @${REINPLACE_CMD} -e 's,#-DKOI8,-DKOI8,' ${WRKSRC}/GNUmakef.def
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/bin/gedlnx ${PREFIX}/bin/gedbsd
-	${INSTALL_PROGRAM} ${WRKSRC}/bin/gnlnx ${PREFIX}/bin/gnbsd
-	${INSTALL_PROGRAM} ${WRKSRC}/bin/rddtlnx ${PREFIX}/bin/rddtbsd
-	for dir in charset colorset config template; do \
-	 ${MKDIR} ${DOCDIR}/$$dir; \
-	 for file in `${LS} ${WRKSRC}/cfgs/$$dir|${GREP} -v CVS`; do\
-	  ${INSTALL_DATA} ${WRKSRC}/cfgs/$$dir/$$file ${DOCDIR}/$$dir; \
-	 done; \
-	done
-	for f in $(MAN1); do \
-	 ${INSTALL_MAN} ${WRKSRC}/docs/$$f ${MAN1PREFIX}/man/man1; \
-	done
-.if !defined(NOPORTDOCS)
-	@${MKDIR} ${DOCDIR}
-	for f in $(DOCS); do \
-	 ${INSTALL_MAN} ${WRKSRC}/docs/$$f ${DOCDIR}; \
-	done
-.endif
+        ${INSTALL_PROGRAM} ${WRKSRC}/bin/gedlnx ${STAGEDIR}${PREFIX}/bin/golded
+        ${INSTALL_PROGRAM} ${WRKSRC}/bin/gnlnx ${STAGEDIR}${PREFIX}/bin/goldnode
+        ${INSTALL_PROGRAM} ${WRKSRC}/bin/rddtlnx ${STAGEDIR}${PREFIX}/bin/rddt
+        ${INSTALL_MAN} ${WRKSRC}/docs/*.1 ${STAGEDIR}${PREFIX}/share/man/man1
+
+do-install-EXAMPLES-on:
+        @${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/charset
+        (cd ${WRKSRC}/cfgs/charset && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}/charset)
+
+do-install-DOCS-on:
+        @${MKDIR} ${STAGEDIR}${DOCSDIR}
+        ${INSTALL_DATA} ${DOCS_DOCS:S,^,${WRKSRC}/docs/,} ${STAGEDIR}${DOCSDIR}
+        ${INSTALL_DATA} ${DOCS_MANUALS:S,^,${WRKSRC}/manuals/,} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>
