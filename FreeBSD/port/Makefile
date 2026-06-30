@@ -34,7 +34,6 @@ do-configure:
         -e 's,^\(#define __GVER_VENDOR_FIDO__\).*,\1 "",' \
         -e 's,^\(#define __GVER_VENDOR_EMAIL__\).*,\1 "${MAINTAINER}",' \
         -e 's,^\(#define __GVER_RELEASENAME__\).*,\1 "Golded+ FreeBSD port",' \
-        -e 's,^\(#define __GVER_POSTVERSION__\).*,\1 "-${SNAPDATE}",' \
         <${WRKSRC}/golded3/mygolded.__h >${WRKSRC}/golded3/mygolded.h
 
 .include <bsd.port.options.mk>
