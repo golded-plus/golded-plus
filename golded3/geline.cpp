@@ -261,8 +261,8 @@ static std::string GoldedAnsiRender(const char* src)
 
             int vals[32];
             int count = 0;
-            for(int n=0; n<32; n++)
-                vals[n] = 0;
+            for(int nn=0; nn<32; nn++)
+                vals[nn] = 0;
 
             bool have_value = false;
 
