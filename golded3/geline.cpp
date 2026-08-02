@@ -31,6 +31,8 @@
 #include <gutlcode.h>
 #include <ghdrmime.h>
 #include <iterator>
+#include <vector>
+#include <string>
 
 #if defined(__USE_ALLOCA__)
     #include <malloc.h>
@@ -38,7 +40,473 @@
 
 #ifdef HAS_ICONV
     #include <iconv.h>
+
 #endif
+
+
+//  ------------------------------------------------------------------
+//  ANSI renderer for message-body ANSI art.
+//
+//  GoldED normally stores one color per message line.  ANSI art requires
+//  a character canvas plus one color attribute per character.  These helpers
+//  render common ANSI CSI screen/cursor/color sequences into a temporary
+//  text+attribute canvas, then MakeLineIndex attaches those attributes to
+//  the created Line records.
+//  ------------------------------------------------------------------
+
+struct GoldedAnsiLine
+{
+    std::string text;
+    std::vector<vattr> attr;
+};
+
+static std::vector<GoldedAnsiLine> GoldedAnsiRenderedLines;
+static size_t GoldedAnsiRenderedIndex = 0;
+static bool GoldedAnsiRenderedActive = false;
+
+static bool GoldedIsAnsiIntro(const unsigned char* p)
+{
+    if(p == NULL or *p == 0)
+        return false;
+
+    // Normal ANSI CSI starts with ESC[.
+    if(p[0] == 0x1B and p[1] == '[')
+        return true;
+
+    // Some GoldED/console paths display or preserve the ESC control byte as
+    // the CP437 left-arrow/control glyph. Keep this broad enough to catch
+    // translated control introducers, but still require '[' immediately after.
+    if(p[1] == '[' and p[0] < 0x20)
+        return true;
+
+    return false;
+}
+
+
+static bool GoldedHasAnsiCsi(const char* src)
+{
+    if(src == NULL)
+        return false;
+
+    for(const unsigned char* p = (const unsigned char*)src; *p; p++)
+    {
+        if(GoldedIsAnsiIntro(p))
+            return true;
+    }
+
+    return false;
+}
+
+static vattr GoldedAnsiFg(int fg, bool intense)
+{
+    switch(fg)
+    {
+    case 0: return intense ? DGREY_    : BLACK_;
+    case 1: return intense ? LRED_     : RED_;
+    case 2: return intense ? LGREEN_   : GREEN_;
+    case 3: return intense ? YELLOW_   : BROWN_;
+    case 4: return intense ? LBLUE_    : BLUE_;
+    case 5: return intense ? LMAGENTA_ : MAGENTA_;
+    case 6: return intense ? LCYAN_    : CYAN_;
+    case 7: return intense ? WHITE_    : LGREY_;
+    }
+    return intense ? WHITE_ : LGREY_;
+}
+
+static vattr GoldedAnsiBg(int bg)
+{
+    switch(bg)
+    {
+    case 0: return _BLACK;
+    case 1: return _RED;
+    case 2: return _GREEN;
+    case 3: return _BROWN;
+    case 4: return _BLUE;
+    case 5: return _MAGENTA;
+    case 6: return _CYAN;
+    case 7: return _LGREY;
+    }
+    return _BLACK;
+}
+
+static vattr GoldedAnsiAttr(int fg, int bg, bool intense)
+{
+    return GoldedAnsiFg(fg, intense) | GoldedAnsiBg(bg);
+}
+
+static void GoldedAnsiEnsureCanvas(std::vector<std::string>& canvas,
+                                   std::vector<std::vector<vattr> >& attrs,
+                                   int row,
+                                   int col,
+                                   vattr attr)
+{
+    if(row < 0)
+        row = 0;
+    if(col < 0)
+        col = 0;
+
+    while((int)canvas.size() <= row)
+    {
+        canvas.push_back(std::string());
+        attrs.push_back(std::vector<vattr>());
+    }
+
+    while((int)canvas[row].length() < col)
+    {
+        canvas[row] += ' ';
+        attrs[row].push_back(attr);
+    }
+}
+
+static void GoldedAnsiPutChar(std::vector<std::string>& canvas,
+                              std::vector<std::vector<vattr> >& attrs,
+                              int row,
+                              int col,
+                              char ch,
+                              vattr attr)
+{
+    GoldedAnsiEnsureCanvas(canvas, attrs, row, col, attr);
+
+    if((int)canvas[row].length() == col)
+    {
+        canvas[row] += ch;
+        attrs[row].push_back(attr);
+    }
+    else
+    {
+        canvas[row][col] = ch;
+        if((int)attrs[row].size() <= col)
+            attrs[row].resize(col + 1, attr);
+        attrs[row][col] = attr;
+    }
+}
+
+static void GoldedAnsiApplySgr(int* vals, int count, int& fg, int& bg, bool& intense)
+{
+    if(count == 0)
+    {
+        fg = 7;
+        bg = 0;
+        intense = false;
+        return;
+    }
+
+    for(int i = 0; i < count; i++)
+    {
+        int v = vals[i];
+        if(v == 0)
+        {
+            fg = 7;
+            bg = 0;
+            intense = false;
+        }
+        else if(v == 1)
+            intense = true;
+        else if(v == 22)
+            intense = false;
+        else if(v >= 30 and v <= 37)
+            fg = v - 30;
+        else if(v >= 40 and v <= 47)
+            bg = v - 40;
+        else if(v >= 90 and v <= 97)
+        {
+            fg = v - 90;
+            intense = true;
+        }
+        else if(v >= 100 and v <= 107)
+            bg = v - 100;
+        else if(v == 39)
+            fg = 7;
+        else if(v == 49)
+            bg = 0;
+    }
+}
+
+static std::string GoldedAnsiRender(const char* src)
+{
+    const int max_width = 255;
+    const int max_rows = 1000;
+
+    GoldedAnsiRenderedLines.clear();
+    GoldedAnsiRenderedIndex = 0;
+    GoldedAnsiRenderedActive = false;
+
+    std::vector<std::string> canvas;
+    std::vector<std::vector<vattr> > attrs;
+    int row = 0;
+    int col = 0;
+    int saved_row = 0;
+    int saved_col = 0;
+    int maxrow = 0;
+    int fg = 7;
+    int bg = 0;
+    bool intense = false;
+    vattr curattr = GoldedAnsiAttr(fg, bg, intense);
+
+    canvas.push_back(std::string());
+    attrs.push_back(std::vector<vattr>());
+
+    for(const unsigned char* p = (const unsigned char*)src; *p;)
+    {
+        if(GoldedIsAnsiIntro(p))
+        {
+            p += 2;
+
+            bool priv = false;
+            if(*p == '?')
+            {
+                priv = true;
+                p++;
+            }
+
+            int vals[32];
+            int count = 0;
+            for(int nn=0; nn<32; nn++)
+                vals[nn] = 0;
+
+            bool have_value = false;
+
+            while(*p)
+            {
+                if(isdigit(*p))
+                {
+                    int value = 0;
+                    while(isdigit(*p))
+                    {
+                        value = (value * 10) + (*p - '0');
+                        p++;
+                    }
+                    if(count < 32)
+                        vals[count++] = value;
+                    have_value = true;
+                    if(*p == ';')
+                    {
+                        p++;
+                        if((*p == ';') and (count < 32))
+                            vals[count++] = 0;
+                        continue;
+                    }
+                    continue;
+                }
+                else if(*p == ';')
+                {
+                    if(count < 32)
+                        vals[count++] = 0;
+                    p++;
+                    continue;
+                }
+                break;
+            }
+
+            unsigned char cmd = *p;
+            if(cmd)
+                p++;
+
+            int n = (have_value and count > 0 and vals[0] > 0) ? vals[0] : 1;
+
+            switch(cmd)
+            {
+            case 'm':
+                GoldedAnsiApplySgr(vals, count, fg, bg, intense);
+                curattr = GoldedAnsiAttr(fg, bg, intense);
+                break;
+
+            case 'C':
+                while(n-- > 0 and col < max_width)
+                {
+                    GoldedAnsiPutChar(canvas, attrs, row, col, ' ', curattr);
+                    col++;
+                }
+                break;
+
+            case 'D':
+                col -= n;
+                if(col < 0)
+                    col = 0;
+                break;
+
+            case 'A':
+                row -= n;
+                if(row < 0)
+                    row = 0;
+                break;
+
+            case 'B':
+                row += n;
+                if(row >= max_rows)
+                    row = max_rows - 1;
+                if(row > maxrow)
+                    maxrow = row;
+                break;
+
+            case 'G':
+                col = (n > 0) ? n - 1 : 0;
+                if(col > max_width)
+                    col = max_width;
+                break;
+
+            case 'H':
+            case 'f':
+                row = (count >= 1 and vals[0] > 0) ? vals[0] - 1 : 0;
+                col = (count >= 2 and vals[1] > 0) ? vals[1] - 1 : 0;
+                if(row < 0)
+                    row = 0;
+                if(col < 0)
+                    col = 0;
+                if(row >= max_rows)
+                    row = max_rows - 1;
+                if(col > max_width)
+                    col = max_width;
+                if(row > maxrow)
+                    maxrow = row;
+                break;
+
+            case 'J':
+                if((count == 0) or vals[0] == 2)
+                {
+                    canvas.clear();
+                    attrs.clear();
+                    canvas.push_back(std::string());
+                    attrs.push_back(std::vector<vattr>());
+                    row = col = saved_row = saved_col = maxrow = 0;
+                }
+                break;
+
+            case 'K':
+                GoldedAnsiEnsureCanvas(canvas, attrs, row, col, curattr);
+                if((int)canvas[row].length() > col)
+                    canvas[row].erase(col);
+                if((int)attrs[row].size() > col)
+                    attrs[row].erase(attrs[row].begin() + col, attrs[row].end());
+                break;
+
+            case 's':
+                saved_row = row;
+                saved_col = col;
+                break;
+
+            case 'u':
+                row = saved_row;
+                col = saved_col;
+                break;
+
+            case 'h':
+            case 'l':
+                (void)priv;
+                break;
+
+            default:
+                break;
+            }
+
+            continue;
+        }
+
+        if(*p == '\r')
+        {
+            // JAM/Mystic and many BBS messages use CR-only line endings.
+            // Treat CR as a newline; if an LF follows, consume it so CRLF
+            // still advances only one row.
+            row++;
+            col = 0;
+            if(row >= max_rows)
+                row = max_rows - 1;
+            if(row > maxrow)
+                maxrow = row;
+            p++;
+            if(*p == '\n')
+                p++;
+            continue;
+        }
+
+        if(*p == '\n')
+        {
+            row++;
+            col = 0;
+            if(row >= max_rows)
+                row = max_rows - 1;
+            if(row > maxrow)
+                maxrow = row;
+            p++;
+            continue;
+        }
+
+        if(*p == '\t')
+        {
+            int spaces = 8 - (col % 8);
+            while(spaces-- and col < max_width)
+            {
+                GoldedAnsiPutChar(canvas, attrs, row, col, ' ', curattr);
+                col++;
+            }
+            p++;
+            continue;
+        }
+
+        if(col < max_width)
+        {
+            GoldedAnsiPutChar(canvas, attrs, row, col, (char)*p, curattr);
+            col++;
+        }
+
+        if(row > maxrow)
+            maxrow = row;
+
+        p++;
+    }
+
+    std::string out;
+    int last = MinV(maxrow, (int)canvas.size() - 1);
+
+    while(last > 0 and canvas[last].empty())
+        last--;
+
+    for(int r=0; r<=last; r++)
+    {
+        GoldedAnsiLine line;
+        line.text = canvas[r];
+        line.attr = attrs[r];
+
+        while(not line.text.empty() and line.text[line.text.length()-1] == ' ')
+        {
+            line.text.erase(line.text.length()-1);
+            if(not line.attr.empty())
+                line.attr.erase(line.attr.end()-1);
+        }
+
+        if(line.attr.size() < line.text.length())
+            line.attr.resize(line.text.length(), C_READW);
+        else if(line.attr.size() > line.text.length())
+            line.attr.resize(line.text.length());
+
+        GoldedAnsiRenderedLines.push_back(line);
+        out += line.text;
+        out += "\r\n";
+    }
+
+    GoldedAnsiRenderedActive = not GoldedAnsiRenderedLines.empty();
+    return out;
+}
+
+static void GoldedAnsiAttachToLine(Line* line)
+{
+    if(not GoldedAnsiRenderedActive or line == NULL)
+        return;
+
+    if(GoldedAnsiRenderedIndex >= GoldedAnsiRenderedLines.size())
+        return;
+
+    GoldedAnsiLine& rendered = GoldedAnsiRenderedLines[GoldedAnsiRenderedIndex++];
+
+    // Assign attributes only when the generated display text lines match the
+    // original ANSI canvas order.  If GoldED later reflows or wraps a normal
+    // non-ANSI message, this function is inactive and has no effect.
+    line->ansi_color = rendered.attr;
+    if(line->ansi_color.size() < line->txt.length())
+        line->ansi_color.resize(line->txt.length(), line->color);
+    else if(line->ansi_color.size() > line->txt.length())
+        line->ansi_color.resize(line->txt.length());
+}
 
 
 //  ------------------------------------------------------------------
@@ -2201,6 +2669,8 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode)
     Line* nextline=NULL;
     char* bp;
     char* btmp=NULL;
+    char* ansi_msgtxt=NULL;
+    char* original_msgtxt=msg->txt;
     char* tptr;
     char* escp;
     char* bptr;
@@ -2274,7 +2744,26 @@ void MakeLineIndex(GMsg* msg, int margin, bool getvalue, bool header_recode)
     {
         if(AA->StripHTML())
             RemoveHTML(msg->txt);
-        ptr = spanfeeds(msg->txt);
+
+        if(GoldedHasAnsiCsi(msg->txt))
+        {
+            std::string ansi_plain = GoldedAnsiRender(msg->txt);
+            ansi_msgtxt = throw_strdup(ansi_plain.c_str());
+
+            // Force every later parsing path in MakeLineIndex() to use the
+            // ANSI-rendered message body.  This is required for JAM/Mystic
+            // areas, whose later line-scanning paths may otherwise fall back
+            // to msg->txt and bypass the rendered buffer.
+            msg->txt = ansi_msgtxt;
+            ptr = spanfeeds(msg->txt);
+        }
+        else
+        {
+            GoldedAnsiRenderedLines.clear();
+            GoldedAnsiRenderedIndex = 0;
+            GoldedAnsiRenderedActive = false;
+            ptr = spanfeeds(msg->txt);
+        }
 
         // Set default conversion table for area
         if(getvalue)
@@ -2966,6 +3455,8 @@ chardo:
                 else
                     line->color = C_READW;
 
+                GoldedAnsiAttachToLine(line);
+
                 Line* prevline = line;
                 line = new Line();
                 throw_xnew(line);
@@ -3081,6 +3572,16 @@ chardo:
             }
         }
     }
+
+    if(ansi_msgtxt)
+    {
+        msg->txt = original_msgtxt;
+        throw_free(ansi_msgtxt);
+    }
+
+    GoldedAnsiRenderedLines.clear();
+    GoldedAnsiRenderedIndex = 0;
+    GoldedAnsiRenderedActive = false;
 
     // Make the index to the line index as allowed by config
     MsgLineReIndex(msg);

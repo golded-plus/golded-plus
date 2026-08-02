@@ -150,6 +150,7 @@ public:
     uint  type;             // GLINE_*
     uint  kludge;           // GKLUD_*
     std::string txt;             // The line text
+    std::vector<vattr> ansi_color; // Optional per-character color attributes for ANSI-rendered message lines
     Line* prev;             // Pointer to previous line
     Line* next;             // Pointer to next line
 
@@ -165,6 +166,17 @@ public:
         type = kludge = 0;
         prev = next = NULL;
     }
+
+    bool has_ansi_color() const
+    {
+        return not ansi_color.empty();
+    }
+
+    void clear_ansi_color()
+    {
+        ansi_color.clear();
+    }
+
     ~Line()              {}
 
     int  istearline()

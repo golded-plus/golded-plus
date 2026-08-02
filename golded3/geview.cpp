@@ -513,6 +513,24 @@ void GMsgBodyView::PaintLine(int row, Line *line)
     {
         llen = visible_width;
         line->txt.erase(llen);
+        if(line->ansi_color.size() > llen)
+            line->ansi_color.resize(llen);
+    }
+
+    // ANSI-rendered lines carry one attribute per character.  Paint those
+    // directly and bypass normal style-code highlighting, which assumes a
+    // single base color for the whole line.
+    if(line->has_ansi_color())
+    {
+        uint tlen = MinV((uint)line->txt.length(), (uint)visible_width);
+        for(uint n = 0; n < tlen; n++)
+        {
+            vattr acolor = (n < line->ansi_color.size()) ? line->ansi_color[n] : color;
+            vputc(vrow, n, acolor, line->txt[n]);
+        }
+        if(tlen < (uint)visible_width)
+            printns(vrow, tlen, color, "", visible_width-tlen);
+        return;
     }
 
     // Print it
